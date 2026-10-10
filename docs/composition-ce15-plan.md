@@ -2643,3 +2643,29 @@ package boundaries pass.
 Deliver all three findings in one final normal push to `codex/composition-ce15`.
 Owner review/merge is next; the owner checkout remains untouched and GitHub
 Actions remain prohibited.
+
+## Typography assessment export follow-up (2026-10-08)
+
+**Restored and reconciled:** 2026-10-09. The owner accepted the typography
+assessment's cached-upload reliability and actionable CLI-cause work within
+CE15. CE15 is now delivered and merged; these historical observations must be
+checked against current source and existing repair evidence before scheduling
+residual work. This record neither reopens completed CE15 acceptance nor asserts
+that the assessment's exact input has been reproduced on the released source.
+
+Use the restored [cached-export disposition](./typography-motion-engine-plan.md#cached-export-reliability)
+and [diagnostic disposition](./typography-motion-engine-plan.md#actionable-cli-diagnostics)
+for the source-bound observations and complete acceptance requirements:
+
+- [ ] Establish whether later transport repairs close the historical SS01 cached
+      failure. Record rejected-part type, size and surface identity if it persists;
+      verify valid partitions, exact totals/checksums and cache/worker ownership.
+- [ ] Verify public CLI receipts preserve sanitized root causes, stage, relevant
+      asset or JSON path and a useful next action for the accepted failure cases.
+- [ ] Bind closure to exact source/input/backend identity and relevant cached,
+      uncached and repeated output comparisons. Carry unresolved evidence into
+      [MS0](./mechanism-shorts-production-plan.md#ms0-baseline-and-dependency-audit)
+      and MS1 diagnostics without duplicating completed infrastructure.
+
+Implementation or reproduction remains separately scheduled. The current session
+restores planning continuity and runs document checks only.

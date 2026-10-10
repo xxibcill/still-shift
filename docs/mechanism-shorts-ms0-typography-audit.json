@@ -1,0 +1,953 @@
+{
+  "schemaVersion": "still-shift-ms0-typography-audit-1",
+  "date": "2026-10-09",
+  "timezone": "Asia/Bangkok",
+  "scope": "Read-only current-source, historical-packet availability and fresh exact-font metadata audit; no renderer/export/test run; no repository edit.",
+  "source": {
+    "root": "/Users/jjae/Documents/playground/still-shift",
+    "head": "e6eb7b06e3b5a042be2c1e2568a1a84cf9c041ad",
+    "branch": "codex/roadmap-reconciliation",
+    "files": [
+      {
+        "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/prepared-fonts.ts",
+        "sha256": "08941425fd0832602a92955e1c0c08064aac0798fab6aac9a842dab342b4972e"
+      },
+      {
+        "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/font-metrics.ts",
+        "sha256": "2c49f9a0ffe1ead35d3f19ad33e1258c460bef8a1a047d90c0a606d83899aa78"
+      },
+      {
+        "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/typography-text-values.ts",
+        "sha256": "17b75347026ec233ed1588f85f9105029402efb4b88315ea18976200b0c70005"
+      },
+      {
+        "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/component-text-fit.ts",
+        "sha256": "9f27d1cfa653c07cdf8981b1e76c48cfbb8694fb2858f4c6535d6a920a05abc6"
+      },
+      {
+        "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/component-annotations.ts",
+        "sha256": "ce4c79cae568ec16018562d87db8aaa48c176a160fcc48bc0e4f70c6adac009a"
+      },
+      {
+        "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/shaped-text.ts",
+        "sha256": "102fb1fb8aa9df218ad8d632abfd637abd2d56dc170a8af6741a3378d192fe3b"
+      },
+      {
+        "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/typography-renderer.ts",
+        "sha256": "a4a0e433f5db96cf9c7bff9fce8f5869ab7015e716867af0745aeb95535debb9"
+      },
+      {
+        "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/typography-quality.ts",
+        "sha256": "f3bb98b84e9855a8f0b311c4dc86d16df8d7fefcf5281abf3f75a1a931153570"
+      },
+      {
+        "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/composition/quality-policy.ts",
+        "sha256": "c3bcb0e5c07c1389142d71e0a4ba275cdfacf44a6ca52efb602647132a329cae"
+      },
+      {
+        "path": "/Users/jjae/Documents/playground/still-shift/packages/motion-builder/src/layers.ts",
+        "sha256": "e25d0c88e1a934cce8a0489fb565ba5702ce89e40e7539bcd08b1f18e67a3376"
+      }
+    ]
+  },
+  "method": {
+    "freshChecks": [
+      "Current source inspection",
+      "Local historical packet input/output existence checks",
+      "SHA-256 of current bundled fonts and historical SS01–SS05 inputs",
+      "fontTools name/OS2/fvar/cmap metadata and exact-copy coverage of SS01–SS05 direct text"
+    ],
+    "notRun": [
+      "Current-source compile/export/pixel lint",
+      "Browser platform-font resolution",
+      "Encoded-video visual review",
+      "Continuous playback or listening",
+      "Real-phone readability/comprehension",
+      "Full/focused test suite"
+    ],
+    "metadataReader": {
+      "python": "3.11.6",
+      "fontTools": "4.61.1",
+      "qualification": "Auxiliary read-only metadata tooling, not a pinned production-render qualification."
+    }
+  },
+  "planReferences": [
+    {
+      "path": "/Users/jjae/Documents/playground/still-shift/docs/mechanism-shorts-production-plan.md",
+      "line": 432
+    },
+    {
+      "path": "/Users/jjae/Documents/playground/still-shift/docs/mechanism-shorts-production-plan.md",
+      "line": 469
+    },
+    {
+      "path": "/Users/jjae/Documents/playground/still-shift/docs/typography-motion-engine-plan.md",
+      "line": 435
+    },
+    {
+      "path": "/Users/jjae/Documents/playground/still-shift/docs/typography-motion-engine-plan.md",
+      "line": 574
+    },
+    {
+      "path": "/Users/jjae/Documents/playground/still-shift/docs/typography-motion-engine-plan.md",
+      "line": 613
+    }
+  ],
+  "fonts": [
+    {
+      "path": "/Users/jjae/Documents/playground/still-shift/assets/story-motion/fonts/plex-sans-medium.ttf",
+      "sha256": "331c8639d7598b2cde62a911a71db195e30cb655cd6bdf2e324a7e984955f907",
+      "family": "IBM Plex Sans Medm",
+      "subfamily": "Regular",
+      "fullName": "IBM Plex Sans Medm",
+      "weightClass": 500,
+      "fsSelection": 256,
+      "mappedCodepoints": 895,
+      "thaiMappedCodepoints": 1,
+      "axes": {}
+    },
+    {
+      "path": "/Users/jjae/Documents/playground/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+      "sha256": "a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+      "family": "IBM Plex Sans SmBld",
+      "subfamily": "Regular",
+      "fullName": "IBM Plex Sans SmBld",
+      "weightClass": 600,
+      "fsSelection": 256,
+      "mappedCodepoints": 895,
+      "thaiMappedCodepoints": 1,
+      "axes": {}
+    },
+    {
+      "path": "/Users/jjae/Documents/playground/still-shift/assets/story-motion/fonts/source-serif-4-semibold.otf",
+      "sha256": "25e034392847d9965c92f98971b3646436b7ab919ece9118b0c0e5ec94c02efc",
+      "family": "Source Serif 4 Semibold",
+      "subfamily": "Regular",
+      "fullName": "Source Serif 4 Semibold",
+      "weightClass": 600,
+      "fsSelection": 0,
+      "mappedCodepoints": 920,
+      "thaiMappedCodepoints": 0,
+      "axes": {}
+    },
+    {
+      "path": "/Users/jjae/Documents/playground/still-shift/assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+      "sha256": "5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+      "family": "Noto Sans Thai",
+      "subfamily": "Regular",
+      "fullName": "Noto Sans Thai Regular",
+      "weightClass": 400,
+      "fsSelection": 192,
+      "mappedCodepoints": 426,
+      "thaiMappedCodepoints": 87,
+      "axes": {
+        "wght": {
+          "min": 100.0,
+          "default": 400.0,
+          "max": 900.0
+        },
+        "wdth": {
+          "min": 62.5,
+          "default": 100.0,
+          "max": 100.0
+        }
+      }
+    }
+  ],
+  "historicalPackets": {
+    "root": "/Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/packets/v003",
+    "readme": "/Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/packets/v003/README.md",
+    "assessment": "/Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/assessment.md",
+    "fontLayoutAudit": "/Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/fonts-and-layout.md",
+    "sourceCommit": "c2473c2369b15067e6f209285aaf694d2c020a64",
+    "qualification": "Historical dirty-checkout evidence. The packet states all five compile/export Canvas2D/H264, one worker, cache-static false, 120 frames at 30 fps; all default pixel-lint runs fail. Existence and exact input/font bytes were freshly checked; export/visual verdicts were not rerun.",
+    "cases": [
+      {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/packets/v003/inputs/SS01-emphasis.json",
+        "sha256": "34ac384d4b27af681a4b4df8eeb470e017a750cec1d2c17c738ebbb8f2169993",
+        "dimensions": [1920, 1080],
+        "frameCount": 120,
+        "fps": 30,
+        "textNodes": [
+          {
+            "id": "phrase",
+            "text": "Make the change\nvisible",
+            "fontAsset": "semibold",
+            "fontPath": "/Users/jjae/Documents/playground/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+            "fontSha256": "a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+            "locale": "en",
+            "fontSize": 144,
+            "role": "heading",
+            "missingNonWhitespaceCodepoints": []
+          }
+        ],
+        "textEvents": [
+          {
+            "node": "phrase",
+            "span": "change",
+            "verb": "emphasize",
+            "manner": "color",
+            "color": "#176e67",
+            "at": 36,
+            "duration": 12
+          },
+          {
+            "node": "phrase",
+            "span": "change",
+            "verb": "release",
+            "at": 66,
+            "duration": 12
+          },
+          {
+            "node": "phrase",
+            "span": "visible",
+            "verb": "emphasize",
+            "manner": "color",
+            "color": "#176e67",
+            "at": 78,
+            "duration": 12
+          }
+        ],
+        "textAnimators": [],
+        "compiledCompositionExists": true,
+        "mp4Exists": true
+      },
+      {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/packets/v003/inputs/SS02-thai-phrase.json",
+        "sha256": "b0927bb54cba3989601979e215cd564fac877ea16ce70f29091514f4ad1815d8",
+        "dimensions": [1920, 1080],
+        "frameCount": 120,
+        "fps": 30,
+        "textNodes": [
+          {
+            "id": "phrase",
+            "text": "ทำให้การเปลี่ยนแปลง\nมองเห็นได้",
+            "fontAsset": "thai",
+            "fontPath": "/Users/jjae/Documents/playground/still-shift/assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+            "fontSha256": "5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+            "locale": "th",
+            "fontSize": 123,
+            "role": "heading",
+            "missingNonWhitespaceCodepoints": []
+          }
+        ],
+        "textEvents": [],
+        "textAnimators": [
+          {
+            "node": "phrase",
+            "unit": "line",
+            "start": 18,
+            "end": 42,
+            "stagger": 0,
+            "anchor": "all",
+            "mask": "none",
+            "from": {
+              "offset": [0, 27],
+              "opacity": 0
+            },
+            "selector": {
+              "start": 0,
+              "end": 1
+            },
+            "excludeSpaces": false
+          }
+        ],
+        "compiledCompositionExists": true,
+        "mp4Exists": true
+      },
+      {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/packets/v003/inputs/SS03-qualified-value.json",
+        "sha256": "965392bbf57e57782998163264fbd6dd9e3bb27a31f7b0ea63026c33be1e9d2e",
+        "dimensions": [1920, 1080],
+        "frameCount": 120,
+        "fps": 30,
+        "textNodes": [
+          {
+            "id": "value",
+            "text": "12",
+            "fontAsset": "semibold",
+            "fontPath": "/Users/jjae/Documents/playground/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+            "fontSha256": "a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+            "locale": "en",
+            "fontSize": 240,
+            "role": "label",
+            "missingNonWhitespaceCodepoints": []
+          },
+          {
+            "id": "unit",
+            "text": "units",
+            "fontAsset": "medium",
+            "fontPath": "/Users/jjae/Documents/playground/still-shift/assets/story-motion/fonts/plex-sans-medium.ttf",
+            "fontSha256": "331c8639d7598b2cde62a911a71db195e30cb655cd6bdf2e324a7e984955f907",
+            "locale": "en",
+            "fontSize": 96,
+            "role": "label",
+            "missingNonWhitespaceCodepoints": []
+          },
+          {
+            "id": "qualifier",
+            "text": "Example value",
+            "fontAsset": "medium",
+            "fontPath": "/Users/jjae/Documents/playground/still-shift/assets/story-motion/fonts/plex-sans-medium.ttf",
+            "fontSha256": "331c8639d7598b2cde62a911a71db195e30cb655cd6bdf2e324a7e984955f907",
+            "locale": "en",
+            "fontSize": 54,
+            "role": "qualification",
+            "missingNonWhitespaceCodepoints": []
+          }
+        ],
+        "textEvents": [],
+        "textAnimators": [],
+        "compiledCompositionExists": true,
+        "mp4Exists": true
+      },
+      {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/packets/v003/inputs/SS04-deliberate-missing-context.json",
+        "sha256": "fe7eba9d75558baa346a853a605193e356979104e7c299aada6818c9c1f8a0c7",
+        "dimensions": [1920, 1080],
+        "frameCount": 120,
+        "fps": 30,
+        "textNodes": [
+          {
+            "id": "value",
+            "text": "12",
+            "fontAsset": "semibold",
+            "fontPath": "/Users/jjae/Documents/playground/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+            "fontSha256": "a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+            "locale": "en",
+            "fontSize": 240,
+            "role": "label",
+            "missingNonWhitespaceCodepoints": []
+          },
+          {
+            "id": "unit",
+            "text": "units",
+            "fontAsset": "medium",
+            "fontPath": "/Users/jjae/Documents/playground/still-shift/assets/story-motion/fonts/plex-sans-medium.ttf",
+            "fontSha256": "331c8639d7598b2cde62a911a71db195e30cb655cd6bdf2e324a7e984955f907",
+            "locale": "en",
+            "fontSize": 96,
+            "role": "label",
+            "missingNonWhitespaceCodepoints": []
+          },
+          {
+            "id": "qualifier",
+            "text": "Example value",
+            "fontAsset": "medium",
+            "fontPath": "/Users/jjae/Documents/playground/still-shift/assets/story-motion/fonts/plex-sans-medium.ttf",
+            "fontSha256": "331c8639d7598b2cde62a911a71db195e30cb655cd6bdf2e324a7e984955f907",
+            "locale": "en",
+            "fontSize": 54,
+            "role": "qualification",
+            "missingNonWhitespaceCodepoints": []
+          }
+        ],
+        "textEvents": [],
+        "textAnimators": [],
+        "compiledCompositionExists": true,
+        "mp4Exists": true
+      },
+      {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/packets/v003/inputs/SS05-deliberate-font-coverage.json",
+        "sha256": "3f7157031c004f02f9991eb9bfd6c491cb9e27550081b31977aaf17c3d241e35",
+        "dimensions": [1920, 1080],
+        "frameCount": 120,
+        "fps": 30,
+        "textNodes": [
+          {
+            "id": "phrase",
+            "text": "ทำให้การเปลี่ยนแปลง\nมองเห็นได้",
+            "fontAsset": "semibold",
+            "fontPath": "/Users/jjae/Documents/playground/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+            "fontSha256": "a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+            "locale": "th",
+            "fontSize": 123,
+            "role": "heading",
+            "missingNonWhitespaceCodepoints": [
+              "U+0E01",
+              "U+0E07",
+              "U+0E14",
+              "U+0E17",
+              "U+0E19",
+              "U+0E1B",
+              "U+0E21",
+              "U+0E22",
+              "U+0E23",
+              "U+0E25",
+              "U+0E2B",
+              "U+0E2D",
+              "U+0E32",
+              "U+0E33",
+              "U+0E35",
+              "U+0E40",
+              "U+0E41",
+              "U+0E43",
+              "U+0E44",
+              "U+0E47",
+              "U+0E48",
+              "U+0E49"
+            ]
+          }
+        ],
+        "textEvents": [],
+        "textAnimators": [
+          {
+            "node": "phrase",
+            "unit": "line",
+            "start": 18,
+            "end": 42,
+            "stagger": 0,
+            "anchor": "all",
+            "mask": "none",
+            "from": {
+              "offset": [0, 27],
+              "opacity": 0
+            },
+            "selector": {
+              "start": 0,
+              "end": 1
+            },
+            "excludeSpaces": false
+          }
+        ],
+        "compiledCompositionExists": true,
+        "mp4Exists": true
+      }
+    ]
+  },
+  "exactCopyConclusions": [
+    {
+      "case": "SS05",
+      "classification": "Freshly confirmed cmap coverage gap, with a separately documented historical successful export",
+      "node": "phrase",
+      "resolvedFont": "semibold / Plex Sans Semibold",
+      "missingUniqueCodepoints": 22,
+      "contrastControl": "SS02 resolves the identical Thai phrase to pinned Noto; fresh cmap check finds zero missing non-whitespace codepoints.",
+      "limits": "A cmap pass does not prove shaping or actual browser face resolution. This check covers direct text only, not every future reachable state/run."
+    },
+    {
+      "classification": "Current-source validation gap",
+      "finding": "Font preparation checks bytes and variable axes, but metrics lacks cmap, names and OS/2.usWeightClass; static weight/style declarations are trusted.",
+      "evidence": [
+        {
+          "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/prepared-fonts.ts",
+          "line": 31
+        },
+        {
+          "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/prepared-fonts.ts",
+          "line": 64
+        },
+        {
+          "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/font-metrics.ts",
+          "line": 3
+        },
+        {
+          "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/font-metrics.ts",
+          "line": 14
+        }
+      ],
+      "counterexampleToAdd": "Plex Semibold declared 600 control versus deliberately false static weight; do not call false-cut pixel failure observed until rendered."
+    },
+    {
+      "classification": "Coverage enumeration requirement",
+      "finding": "Reuse typographyTextValues for base text, explicit states, component variants and per-integer-frame counts. Corrections are prepared separately; include correction replacements and caseText per resolved grapheme/font run. New fallback behavior needs explicit pinned assets/policy and measured resolution where available.",
+      "evidence": [
+        {
+          "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/typography-text-values.ts",
+          "line": 6
+        },
+        {
+          "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/shaped-text.ts",
+          "line": 225
+        },
+        {
+          "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/typography-renderer.ts",
+          "line": 401
+        },
+        {
+          "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/typography-style.ts",
+          "line": 32
+        }
+      ],
+      "requiredSpecialCases": [
+        "Whitespace and controls have an explicit coverage policy",
+        "Combining marks remain checked",
+        "Mixed Latin/Thai spans use their own resolved font",
+        "Case expansion/punctuation and state-generated characters",
+        "Malformed/unsupported SFNT metadata",
+        "Legacy warnings versus explicit strict production profile"
+      ]
+    }
+  ],
+  "reusableApis": [
+    {
+      "name": "loadPreparedFonts / loadTextStyleFont",
+      "evidence": {
+        "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/prepared-fonts.ts",
+        "line": 24
+      },
+      "owns": "Checksum-bound font bytes, FontFace load/registration, named and span styles, actual variable-axis range and feature validation, tabular digit-width probe.",
+      "reuseBoundary": "Extend shared font facts/diagnostics. Keep SFNT TTF/OTF scope and resource/cache ownership; browser remains shaper."
+    },
+    {
+      "name": "loadCompositionFonts / prepareCompositionText",
+      "evidence": {
+        "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/composition/render/text.ts",
+        "line": 205
+      },
+      "owns": "Native composition wraps pinned text as type-1 and calls existing shared font/typography preparation, including corrections and animation-axis variants.",
+      "reuseBoundary": "No typography-only exporter or second font stack."
+    },
+    {
+      "name": "typographyTextValues / countText / reserveCountWidth",
+      "evidence": {
+        "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/typography-text-values.ts",
+        "line": 6
+      },
+      "owns": "Bounded reachable strings, formatted count values and stable-width numeric preparation.",
+      "reuseBoundary": "Shared fitter currently uses explicit states only; update its permitted route after a reproduction."
+    },
+    {
+      "name": "shapeText / applyTextStyle / caseText",
+      "evidence": {
+        "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/shaped-text.ts",
+        "line": 188
+      },
+      "owns": "Locale-aware grapheme/word segmentation, wrapping, case transformation, per-run styles and complete browser-shaped run raster route.",
+      "reuseBoundary": "Grapheme slices are not a browser shaping-cluster map; verify independent Thai poses before support claims."
+    },
+    {
+      "name": "prepareTextFits / prepareComponentTextFits",
+      "evidence": {
+        "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/component-text-fit.ts",
+        "line": 18
+      },
+      "owns": "One stable fitted size across supplied states, isolated fitted style, panel geometry.",
+      "reuseBoundary": "Valid shared-fit caller required; native composition authoring does not imply auto-fit; numeric component-binding+fit remains rejected."
+    },
+    {
+      "name": "resolveComponentAnchor / evaluateComponentAnnotation / validateComponentAnnotations",
+      "evidence": {
+        "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/component-annotations.ts",
+        "line": 19
+      },
+      "owns": "Source crop mapping, outside-crop rejection, world transform, authored offsets and commerce protected-region clearance.",
+      "reuseBoundary": "Semantic part identity and optical placement remain authored; preserve coordinate semantics."
+    },
+    {
+      "name": "resolveStoryFormat / motion-builder Layer.anchor",
+      "evidence": [
+        {
+          "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/story-template.ts",
+          "line": 46
+        },
+        {
+          "path": "/Users/jjae/Documents/playground/still-shift/packages/motion-builder/src/layers.ts",
+          "line": 75
+        }
+      ],
+      "owns": "Authored vertical overrides and named anchors derived from declared layer size.",
+      "reuseBoundary": "Named text center without size resolves from [0,0], not measured ink; require explicit size/offset contract."
+    },
+    {
+      "name": "CompositionQualityPolicySchema / resolveCompositionQualityPolicy / composition typography reading checks",
+      "evidence": [
+        {
+          "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/composition/quality-policy.ts",
+          "line": 42
+        },
+        {
+          "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/typography-quality.ts",
+          "line": 539
+        }
+      ],
+      "owns": "Configured roles, shots/cuts, opacity/reveal/velocity thresholds, reading diagnostics and raw pixel/freeze policy.",
+      "reuseBoundary": "Add bounded purpose/association/interval metadata here; persist in project/sidecar and record policy identity; preserve unannotated defaults."
+    }
+  ],
+  "currentCapabilityGaps": [
+    {
+      "classification": "Confirmed source contract gap",
+      "area": "Font copy/cut",
+      "finding": "No exact glyph coverage/static cut identity diagnostic; no platform-resolved-face evidence."
+    },
+    {
+      "classification": "Confirmed source contract gap with historical intentional negative",
+      "area": "Complete quantities",
+      "finding": "Generic groups/roles/formatting do not declare association/member IDs, units/qualification or a jointly readable interval. SS03 complete group and SS04 value-only until frame 70 are preserved as historical positive/negative input designs; this is not a renderer defect."
+    },
+    {
+      "classification": "Confirmed source contract gap with historical default-lint failures",
+      "area": "Purposeful holds",
+      "finding": "Current quality policy has no purpose-specific reading hold declaration. Defaults: maxFrozenFrames 6, opacity 0.9, reveal 0.95, velocity 20. Reading eligibility also requires unchanged textClock; this can interrupt eligibility during color-only animation. Word counting uses runtime default locale, not authored layer locale.",
+      "evidence": [
+        {
+          "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/composition/quality-policy.ts",
+          "line": 205
+        },
+        {
+          "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/typography-quality.ts",
+          "line": 571
+        },
+        {
+          "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/typography-quality.ts",
+          "line": 633
+        }
+      ]
+    },
+    {
+      "classification": "Source-proven semantic mismatch; implementations already exist",
+      "area": "Genuine weight versus outline",
+      "finding": "Semantic automatic weight may resolve to wght or Canvas outline. Requested/resolved route, units and fallback reason need receipts in MS2; preserve legacy automatic pixels."
+    },
+    {
+      "classification": "Deferred capability, not MS1 gap to implement",
+      "area": "Continuous true size relayout",
+      "finding": "Scale and variable font axes already exist; continuous font-size reraster/reflow is not currently an animator property and remains conditional."
+    }
+  ],
+  "validIndependentProbes": [
+    {
+      "id": "font-coverage-and-cut",
+      "milestone": "MS1",
+      "currentEvidence": "SS05 exact-copy coverage gap fresh; historical compile/export available. False static cut source gap only.",
+      "route": "Stage SS02/SS05 JSON outside checkout. Compile through compileStoryComposition/current CLI; native loadCompositionFonts uses shared loader. Preserve pinned fonts. Add static wrong-weight and Noto range/malformed-font cases.",
+      "controls": [
+        "SS02 same text Noto control",
+        "Plex Semibold actual weight 600",
+        "Mixed Latin/Thai and generated correction/case/count characters"
+      ],
+      "independentOracle": "fontTools cmap/name/OS2/fvar metadata plus browser platform-font resolution where measurable, encoded mark endpoints and exact bytes.",
+      "scope": "No WOFF2/font-collection expansion; no silent font replacement."
+    },
+    {
+      "id": "mixed-size-masks",
+      "milestone": "MS1 reproduction before repair",
+      "currentEvidence": "Unverified rendering risk: shapeText expands individual line ascent/descent, but drawRaster mask y/bottom still use layout.ascent/descent. No fresh failure/control render.",
+      "evidence": [
+        {
+          "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/shaped-text.ts",
+          "line": 364
+        },
+        {
+          "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/typography-renderer.ts",
+          "line": 890
+        }
+      ],
+      "route": "Native pinned text with base size 36 and 96-size inline span; same text/styles and frames through line mask, word mask and unmasked control. Include Latin descenders and Noto upper/lower marks. Use existing async composition preview/resources or headless typography harness.",
+      "oracle": "Compare visible settled ink to unmasked same-run control and complete text bounds; inspect intentional reveal clipping separately at entry, active and resolved frames; save encoded states and reverse-seek checks.",
+      "repairCondition": "Only scope renderer extent fix after a saved failure/control; version affected pixel contract and preserve ordinary masks."
+    },
+    {
+      "id": "generated-count-fit",
+      "milestone": "MS2 reproduction before reusable count-fit treatment",
+      "currentEvidence": "Source enumeration mismatch: fitter uses node.states ?? [node.text]; raster preparation enumerates decimal strings. No fresh browser failure.",
+      "evidence": [
+        {
+          "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/component-text-fit.ts",
+          "line": 52
+        },
+        {
+          "path": "/Users/jjae/Documents/playground/still-shift/packages/renderer-core/src/typography-text-values.ts",
+          "line": 12
+        }
+      ],
+      "route": "Use permitted direct prepareTextFits caller or existing story textFits with pinned tabular style, states 1 and 2, count decimals 2, narrow measured text box. Fit then prepareTypography; enumerate all generated values. Existing typography helper has native-fit/panel-fit/component-fit variants.",
+      "controls": [
+        "No-fit raster preparation",
+        "Wide measured box",
+        "Existing numeric-binding+fit rejection remains enforced"
+      ],
+      "oracle": "Every reachable formatted string fits the one chosen size or combination rejected before success claim; compare stable anchor/width and stored compiled size.",
+      "limits": "10,000 reachable string cap. Native composition has no implicit auto-fitter."
+    },
+    {
+      "id": "thai-run-poses-and-tracking",
+      "milestone": "MS2",
+      "currentEvidence": "Unverified source-audited finer-segmentation risk; SS02 intact phrase historical marks are a bounded positive. opticalTracking(96) = -25 per 1000 em / -2.4 px is source-defined opt-in policy, ordinary default tracking zero.",
+      "route": "Exact six KB strings plus production copy, fixed Noto hash and axes, intact full selection/zero stagger/anchor all/mask none control versus translation/rotation/opacity/retype on finer graphemes; also color boundary and size/font boundary. Paired tracking 0 versus opt-in formula.",
+      "stressStrings": [
+        "เกี๊ยะ น้ำ ผู้ซื้อ กุ้ง ญี่ปุ่น",
+        "รุ่น X2 รองรับ Wi-Fi 6E และ USB-C 30W",
+        "฿299 • 500 มล. • 2 ชิ้น",
+        "โปรดี ๆ สำหรับลูกค้าใหม่เท่านั้น ซื้อครบ 499 บาท ส่งฟรี",
+        "คำสั่งซื้อแรก ลด 20%",
+        "เฉพาะคำสั่งซื้อแรก เมื่อซื้อครบ 499 บาท ไม่รวมค่าจัดส่ง"
+      ],
+      "oracle": "Consecutive encoded change windows, attached marks/ink overlap/full meaning at master and declared bitmap reductions; report supported exact units, no general broken/safe Thai claim.",
+      "scope": "Explicit authored tracking wins; no global default change or new shaping engine."
+    },
+    {
+      "id": "portrait-target-and-label-clearance",
+      "milestone": "MS1 then MS2 recipes",
+      "currentEvidence": "Geometric crop/world/offset/clearance paths and test controls exist; semantic/optical negative and corrected portrait production pair still to create.",
+      "route": "Extend tests/unit/reusable-components.test.ts and composition-commerce-path.test.ts with authored vertical variant, same target part ID, crop, nested translation/scale/rotation, caption/contact exclusions, changed text size; include named center with omitted text size.",
+      "oracle": "Independent source/world endpoint analytic expectation plus encoded entry/mid/exit visual proof of intended part, visible leader/label and clearance. Save/reload and reverse seeks.",
+      "scope": "No automatic semantic recomposition; repair engine only when valid input reproduces an engine fault."
+    },
+    {
+      "id": "association-and-purposeful-readability",
+      "milestone": "MS1",
+      "currentEvidence": "SS03/SS04 preserved. Policy schema lacks association/purpose declarations, so current lint cannot identify missing semantic context.",
+      "route": "Add bounded project/review policy members + reading intervals; complete English/Thai quantity controls versus value-only, faint qualifier, changing units, replaced copy and wrong/missing IDs. Add intentional readable hold, unexplained frozen/blank hold, color-only emphasis, movement/content replacement and abrupt opacity/velocity cases.",
+      "oracle": "Every declared member is jointly sufficiently readable throughout designated interval; retain raw freeze/pop/velocity measurements and all seven E01 label holds >=30 consecutive fully readable frames (longer text can need more).",
+      "dimensions": "24 and 30 fps; interval boundaries; authored locales; save/reload; unchanged pixels for metadata-only declarations. No narration padding/slowing."
+    }
+  ],
+  "existingTestsToReuse": [
+    {
+      "path": "/Users/jjae/Documents/playground/still-shift/tests/unit/typography-layout.test.ts",
+      "covers": "Counter-width stable anchors, stable fit shrink/rethrow, mixed-span actual line metrics/overflow, locale wrapping, malformed-font basic parser check.",
+      "doesNotEstablish": "Exact cmap/cut validation, generated-decimal fit raster success or mixed-size mask pixels."
+    },
+    {
+      "path": "/Users/jjae/Documents/playground/still-shift/tests/unit/typography-contract.test.ts",
+      "covers": "Pinned opt-in styles, span states, tabular counts, axes/ranges and strict tags."
+    },
+    {
+      "path": "/Users/jjae/Documents/playground/still-shift/tests/unit/typography-events.test.ts",
+      "covers": "Compiled variable weight, outline/release boundaries, every reading window, later-state reading, counts, jump diagnostics and semantics."
+    },
+    {
+      "path": "/Users/jjae/Documents/playground/still-shift/tests/unit/composition-typography-adapter.test.ts",
+      "covers": "Native rich/Thai mapping and pinned measured fit prerequisite."
+    },
+    {
+      "path": "/Users/jjae/Documents/playground/still-shift/tests/unit/reusable-components.test.ts",
+      "covers": "Annotation nested transforms for story/commerce, source crop and protected-region controls."
+    },
+    {
+      "path": "/Users/jjae/Documents/playground/still-shift/tests/unit/composition-commerce-path.test.ts",
+      "covers": "Cropped source offsets/nested transforms and protection rejection through native adapter."
+    },
+    {
+      "path": "/Users/jjae/Documents/playground/still-shift/tests/browser/typography.ts",
+      "covers": "Focused raster/control tests and counter layout/backward seeks."
+    },
+    {
+      "path": "/Users/jjae/Documents/playground/still-shift/tests/browser/typography-fixtures.ts",
+      "covers": "Persisted fixtures, handoff/end comparisons, variable Thai widths/axis raster and Thai line-break stability.",
+      "doesNotEstablish": "Every Thai stress string mark or safe independent finer-grapheme motion."
+    },
+    {
+      "path": "/Users/jjae/Documents/playground/still-shift/tests/browser/composition-typography-adapter.ts",
+      "covers": "Legacy/native all-frame parity including fit and variant helpers."
+    },
+    {
+      "path": "/Users/jjae/Documents/playground/still-shift/tests/browser/composition-provider-typography.ts",
+      "covers": "Native/provider numeric/rich layer/group/precomp parity and seeks for Canvas2D/WebGL2."
+    }
+  ],
+  "visualRubricRecommendation": {
+    "status": "Proposed MS0 protocol; no current creative acceptance",
+    "scoring": "For each of the ten plan dimensions record pass/fail/not-assessable and located encoded frame(s)/shot/interval. A total numeric score must not compensate for a causal/mechanical/readability failure. Keep human review distinct from technical gate.",
+    "dimensions": [
+      {
+        "name": "Recognizable object",
+        "evidence": "Housing/blade/hook silhouette in opening and wide returned view; human identification verdict."
+      },
+      {
+        "name": "Solid side faces",
+        "evidence": "Entry/mid/exit oblique angles reveal actual solid side surfaces; no plane-only proxy."
+      },
+      {
+        "name": "Real slots",
+        "evidence": "Slot openings and rivet travel relationship visible in designated macro proof states; authored mesh/analytic relationship and encoded images."
+      },
+      {
+        "name": "Readable blade curvature",
+        "evidence": "Silhouette and highlight remain coherent through camera motion; encoded comparison to frozen reference views."
+      },
+      {
+        "name": "Bevel highlights",
+        "evidence": "Bevel highlights present and material-separated; not clipped glare obscuring hook/contact."
+      },
+      {
+        "name": "Material separation",
+        "evidence": "Blade/hook/rivets/housing/contact surfaces individually identifiable at proof holds; final encode and declared reductions."
+      },
+      {
+        "name": "Contact shadow",
+        "evidence": "Contact state has coherent grounding/shadow, with no unexplained floating gap; scene state and encoded proof."
+      },
+      {
+        "name": "Visible causal contact",
+        "evidence": "Contact-face/state/travel analytic expectation across all relevant frames plus human causal reading at normal playback; label terminology separately resolved."
+      },
+      {
+        "name": "Stable framing",
+        "evidence": "Required surfaces/anchors remain in frame through approach/hold/return; clearance and cuts explicit; random/reverse-seek invariance."
+      },
+      {
+        "name": "Readable labels and captions",
+        "evidence": "Bounds, protected-region clearance, exact font/copy coverage/cut and declared complete associations; >=30 consecutive readable E01 label frames plus longer text requirement; final MP4 entry/change/resolved picks."
+      }
+    ],
+    "reviewChannels": [
+      "Technical analytic/encoded-decoded checks",
+      "Selected-frame visual review",
+      "Continuous normal-speed visual playback",
+      "Continuous listening and sync",
+      "Actual reader/device testing if later performed"
+    ],
+    "reducedViews": "320/360-width LANCZOS bitmap stress previews may be saved with method; label them bitmap reductions, never actual phone/platform/comprehension evidence."
+  },
+  "measurementProtocolRecommendation": {
+    "sourceIdentity": [
+      "Exact source commit plus dirty diff hash",
+      "Input/asset/font/copy hashes and immutable dependency versions",
+      "Toolchain, renderer/evaluator, backend/profile, dimensions/fps/codec, workers/cache mode",
+      "Resolved spec/project revision and quality-policy identity"
+    ],
+    "taskPairs": [
+      "First clean one-frame and contact-shot preparation",
+      "Complete comparable episode delivery",
+      "Label-only TRAVEL text revision",
+      "Seeded callout overlap detect/patch/affected rerender/recheck",
+      "Fresh-session project handoff and relocation"
+    ],
+    "comparability": "Freeze source task requirements/quality/resolution/narration/deliverable completeness and cohort before comparing historical bespoke route with reusable bridge/native routes. Record learning/model/provider changes; do not execute historical customer scripts as setup.",
+    "rawRowFields": [
+      "episode/task/family ID",
+      "baseline or bridge/native route",
+      "shared-setup/family-onboarding/routine classification",
+      "model/provider identity",
+      "actual input/output/cached-input token counts",
+      "billable cost",
+      "tool calls",
+      "attempt/retry/failure category",
+      "stage monotonic start/end/wall duration",
+      "worker render time",
+      "3D/native-overlay frames rendered",
+      "cache hits/misses and plate hashes",
+      "active creator minutes",
+      "peak application-owned memory and process RSS separately",
+      "storage/output bytes",
+      "revision/render/check receipts",
+      "technical/visual/listening review status"
+    ],
+    "unknowns": "Unavailable token/time/reader/platform measurements are null with reason and availability count, never estimated counts or zero.",
+    "aggregation": "Raw attempts retained, including failures and deferred work. p50/p95 routine tokens/wall time with sample count, percentile method and measured availability. Worker time separate from elapsed critical path; overlapping stages not summed. Ten rows yield only coarse p95. First-pass success means first submitted job complete without retry/repair/manual recovery.",
+    "savings": "Use measured comparable means/totals including shared setup and new-family onboarding for cohort cost; medians for routine-effort pilot target. If baseline mean <= reusable mean no recurring advantage claim. Keep compute/storage/human effort separate from tokens.",
+    "source": {
+      "path": "/Users/jjae/Documents/playground/still-shift/docs/mechanism-shorts-production-plan.md",
+      "line": 889
+    }
+  },
+  "initialBudgetRecommendations": {
+    "status": "Conservative proposed operating subset, not benchmarked capacity or implemented Three.js limit",
+    "concurrency": "One render worker, one active prepared scene and one camera/output; measure memory/throughput before increasing concurrency. Stream clean frames per shot; do not retain complete E01 raw frame arrays.",
+    "proofStage": "Use bounded 1-frame then 30–60-frame contact/PBR/alpha proof before 696-frame exact E01 export. E01 final format remains 1080x1920 at30fps; no quality reduction to satisfy benchmark.",
+    "frameMath": {
+      "rgbaBytesPer1080x1920Frame": 8294400,
+      "rgbaBytesFor696Frames": 5772902400,
+      "reason": "Full raw-frame retention is ~5.38GiB; use disk artifacts and bounded live preparation."
+    },
+    "inheritedTypographyCaps": {
+      "clustersPerState": 4096,
+      "reachableFormattedValues": 10000,
+      "axisCombinations": 2048,
+      "textLayerMegapixels": 32,
+      "cachedTextSceneMegapixels": 128,
+      "scope": "Current guards; retain rather than widening for bridge."
+    },
+    "inheritedMediaDefaults": {
+      "maxDurationSeconds": 600,
+      "maxWidth": 8192,
+      "maxHeight": 8192,
+      "decodedCacheBytes": 8589934592,
+      "decodedFrameBytes": 134217728,
+      "decodedTextureBytes": 134217728,
+      "audioWorkingBytes": 536870912,
+      "scope": "Current public maxima/default budgets, not recommendations to allocate them all; actual single episode should operate beneath them and report observed peaks."
+    },
+    "episodeSubset": "Start only required E01/engineering-fixture text/font assets; current SFNT TTF/OTF, pinned bytes, no new WOFF2/font collection or shaping runtime. Keep JSON response budgets bounded under episode contract and defer geometry/import numeric caps to measured MS1 one-frame proof.",
+    "preflight": "Verify pinned tools, installed browser/runtime, imports and isolated optimizer/cache directories before expensive browser/export checks; retain failures and reruns; no fixture regeneration in owner checkout."
+  },
+  "workEstimates": {
+    "qualification": "Audit-informed engineering effort ranges copied/refined from accepted plan disposition; not deadlines. Integration overlap means rows must not be naively added. Runtime reproduction and early Three.js visual/memory proof may change scope.",
+    "rows": [
+      {
+        "milestone": "MS0",
+        "slice": "Typography copy/font inventory, permitted reproduction routes and protocol",
+        "estimateDays": [0.5, 1],
+        "uncertainty": "Original E01 inputs recovered and hashed; low metadata uncertainty. Rendered typography and historical Arial cut identity still need MS1 evidence."
+      },
+      {
+        "milestone": "MS1",
+        "slice": "Shared exact-copy font coverage/static cut+axis gate with strict/legacy policy",
+        "estimateDays": [3, 5],
+        "uncertainty": "Medium: malformed SFNT cmap/name bounds, per-run reachable case/correction coverage, actual platform resolution and fingerprint/parity impact."
+      },
+      {
+        "milestone": "MS1",
+        "slice": "Complete quantity/qualification and intact phrase project/review contracts",
+        "estimateDays": [2, 4],
+        "uncertainty": "Medium: bounded persistence/IDs and eligibility; share with interval fixtures."
+      },
+      {
+        "milestone": "MS1",
+        "slice": "Purposeful reading holds and locale/policy identity diagnostics",
+        "estimateDays": [2, 4],
+        "uncertainty": "Medium: clock eligibility and pixel/readability integration without disabling real faults."
+      },
+      {
+        "milestone": "MS1",
+        "slice": "Portrait target negative/control and transformed clearance proof",
+        "estimateDays": [1, 2],
+        "uncertainty": "Low–medium: geometric APIs/tests available; new semantic visual verification still needed."
+      },
+      {
+        "milestone": "MS1",
+        "slice": "Mixed-size mask reproduction",
+        "estimateDays": [0.5, 1],
+        "conditionalRepairDays": [1, 2],
+        "uncertainty": "Medium: predicted clipping unverified; repair only after saved failure/control."
+      },
+      {
+        "milestone": "MS1N",
+        "slice": "Typography overlay regression carried through shared native3D scene identity",
+        "estimateDays": null,
+        "uncertainty": "Needs MS1 3D camera/occlusion contract and actual bridge/native proof; reuse same fonts/overlays, do not rebuild typography."
+      },
+      {
+        "milestone": "MS2",
+        "slice": "Requested/resolved genuine variable weight versus explicit outline receipts",
+        "estimateDays": [1, 3],
+        "uncertainty": "Low–medium: compiler already emits both routes; persistence/discovery semantics need integration."
+      },
+      {
+        "milestone": "MS2",
+        "slice": "Generated-count fitting reproduction",
+        "estimateDays": [0.5, 1],
+        "conditionalRepairDays": [1, 2],
+        "uncertainty": "Medium: validate permitted shared-fit route and all generated strings; no new native auto-fitter."
+      },
+      {
+        "milestone": "MS2",
+        "slice": "Combined finer Thai shaping/pose and paired tracking probes",
+        "estimateDays": [1, 2],
+        "uncertainty": "Medium–high: result may support bounded units or justify a separately scoped shaping change; do not assume replacement."
+      },
+      {
+        "milestone": "MS3",
+        "slice": "Pilot typography/hold/association negative suite and one-command measured reports",
+        "estimateDays": null,
+        "uncertainty": "Requires compiled MS1/MS2 schemas/recipes and actual pilot cohort. Preserve measured/null statuses and human-review boundary."
+      }
+    ]
+  },
+  "openItems": [
+    "Original E01 font/copy and narration/caption/cue dependencies are recovered and hashed in docs/mechanism-shorts-ms0-inputs.json. Exact E01 Plex cut/cmap passes; historical blade Arial cut identity remains unrecorded.",
+    "All fresh browser/export/encoded visual reproductions remain unperformed by this audit.",
+    "Static wrong-cut, mixed-size-mask, decimal-count-fit and portrait semantic negative/control fixtures need preserved current-source runtime outputs before closure.",
+    "Human continuous visual/listening acceptance remains pending; no software inference can close it."
+  ],
+  "inputRecoveryDisposition": {
+    "status": "recovered",
+    "evidence": "./mechanism-shorts-ms0-inputs.json",
+    "e01ExactPlexCopyCoverage": "pass",
+    "historicalBladeArialCut": "unrecorded",
+    "runtimeProbes": "not-run-in-MS0"
+  }
+}

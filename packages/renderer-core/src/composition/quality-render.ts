@@ -1,3 +1,4 @@
+import { resolveCompositionQualityPolicy } from "./quality-policy.ts";
 import type { Composition } from "@still-shift/scene-contract";
 import {
   analyzeCompositionQuality,
@@ -16,11 +17,18 @@ export async function analyzeRenderedCompositionQuality(
   options: { signal?: AbortSignal; onFrame?: (frame: number) => void } = {},
 ) {
   options.signal?.throwIfAborted();
+  const pixelChannelThreshold = resolveCompositionQualityPolicy(
+    comp,
+    policy,
+  ).pixelChannelThreshold;
   assertCompositionQualityCapacity(comp.frameCount * comp.layers.length);
   const counts: number[] = [];
   let previous: Uint8Array | undefined;
   const native = comp.assets.some(
-    (asset) => asset.type === "video" || asset.type === "sequence",
+    (asset) =>
+      asset.type === "video" ||
+      asset.type === "sequence" ||
+      asset.type === "native3d",
   );
   for (let frame = 0; frame < comp.frameCount; frame++) {
     options.signal?.throwIfAborted();
@@ -38,9 +46,7 @@ export async function analyzeRenderedCompositionQuality(
           0.114 * rgba[i * 4 + 2]!,
       );
     counts.push(
-      previous
-        ? measureFrameEnergy(previous, gray, policy.pixelChannelThreshold ?? 4)
-        : 0,
+      previous ? measureFrameEnergy(previous, gray, pixelChannelThreshold) : 0,
     );
     previous = gray;
     options.onFrame?.(frame);
@@ -52,7 +58,11 @@ export async function analyzeRenderedCompositionQuality(
     ...analyzeCompositionQuality(comp, {
       ...policy,
       pixelChangedCounts: counts,
-      evaluation: { ...policy.evaluation, textBounds: preview.textBounds },
+      evaluation: {
+        ...policy.evaluation,
+        ...preview.evaluationOptions,
+        textBounds: preview.textBounds,
+      },
     }),
     backend: preview.backend,
     rendererVersion: preview.rendererVersion,

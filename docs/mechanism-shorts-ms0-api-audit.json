@@ -1,0 +1,705 @@
+{
+  "schemaVersion": "mechanism-ms0-api-audit-1",
+  "date": "2026-10-09",
+  "mode": "read-only current-source audit; no repository edits, commits, test or render runs",
+  "baseline": {
+    "main": "e6eb7b06e3b5a042be2c1e2568a1a84cf9c041ad",
+    "releaseSource": "db28a938eeef63bee5626590359ed3e0b1293355",
+    "compositionBaselineIdentity": "e6eb7b06e3b5a042be2c1e2568a1a84cf9c041ad",
+    "sourceTreeComparison": {
+      "status": "passed",
+      "method": "git diff --name-status release-source main across complete tracked trees; all differences are documentation",
+      "changedPaths": [
+        {
+          "status": "M",
+          "path": "docs/dev-log.md"
+        },
+        {
+          "status": "M",
+          "path": "docs/npm-release-plan.md"
+        },
+        {
+          "status": "M",
+          "path": "docs/npm-release-results.json"
+        },
+        {
+          "status": "A",
+          "path": "docs/release-branch-setup-results.json"
+        }
+      ],
+      "nonDocumentationChanges": [],
+      "trackedPathsAtRelease": 2578,
+      "trackedPathsAtMain": 2579,
+      "unchangedNonDocumentationPaths": 2191,
+      "sourceAndBuildInputPathsCompared": 1150,
+      "sourceAndBuildInputPrefixes": [
+        "packages/",
+        "tools/",
+        "services/",
+        "apps/",
+        "scripts/",
+        "examples/",
+        "benchmarks/fixtures/"
+      ],
+      "buildRootNames": [
+        ".npmrc",
+        "eslint.config.mjs",
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        "pyproject.toml",
+        "toolchain.json",
+        "tsconfig.build.json",
+        "tsconfig.json",
+        "uv.lock",
+        "vite.config.ts",
+        "vitest.config.ts"
+      ],
+      "note": "This comparison covers complete committed trees. Dirty owner documentation/skill changes in the primary checkout are not baseline changes and were not modified."
+    },
+    "versions": {
+      "compositionSchema": "composition-1",
+      "evaluator": "composition-evaluator-57",
+      "canvasRenderer": "composition-canvas-1.47.7",
+      "webglRenderer": "composition-webgl2-0.68.7",
+      "mediaDecoder": "composition-media-decoder-2",
+      "audioDecoder": "composition-audio-decoder-1",
+      "audioMixer": "composition-audio-mixer-2",
+      "output": "composition-output-1",
+      "compositionExportRuntime": "chromium-ffmpeg-0.7.1",
+      "parallelExportRuntime": "chromium-ffmpeg-0.8.1",
+      "browserProfile": "chromium-software-2"
+    },
+    "toolchain": {
+      "node": "22.23.1",
+      "pnpm": "10.29.3",
+      "python": "3.12.11",
+      "uv": "0.7.12",
+      "playwright": "1.62.1",
+      "chromiumRevision": "1234",
+      "chromiumVersion": "151.0.7922.34",
+      "ffmpeg": "8.0.1"
+    }
+  },
+  "reusableApis": [
+    {
+      "owner": "@still-shift/scene-contract",
+      "files": [
+        "packages/scene-contract/src/index.ts",
+        "packages/scene-contract/src/composition/index.ts",
+        "packages/scene-contract/src/composition/composition.ts",
+        "packages/scene-contract/src/composition/media.ts",
+        "packages/scene-contract/src/composition/audio.ts",
+        "packages/scene-contract/src/composition/audio-clock.ts",
+        "packages/scene-contract/src/soundtrack-project.ts"
+      ],
+      "functions": [
+        "validateComposition",
+        "CompositionSchema",
+        "CompositionVideoAssetSchema",
+        "CompositionSequenceAssetSchema",
+        "CompositionAudioAssetSchema",
+        "CompositionSequenceManifestSchema",
+        "CompositionPreparedMediaSchema",
+        "CompositionPreparedAudioSchema",
+        "compositionPcmBoundary",
+        "CompositionPcmClock",
+        "SoundtrackProjectSchema",
+        "validateSoundtrackProject"
+      ],
+      "reuse": "Preserve source identities, rational media rates, exact PCM clocks and located validation; put shared episode/pack/rig/sidecar contracts and semantic errors here."
+    },
+    {
+      "owner": "@still-shift/motion",
+      "files": [
+        "packages/motion-builder/src/index.ts",
+        "packages/motion-builder/src/comp.ts",
+        "packages/motion-builder/src/layers.ts",
+        "packages/motion-builder/src/timeline.ts",
+        "packages/motion-builder/src/fonts.ts"
+      ],
+      "functions": [
+        "comp",
+        "CompositionBuilder",
+        "text",
+        "shape.native",
+        "camera",
+        "video",
+        "sequence",
+        "audio",
+        "seq",
+        "par",
+        "stagger",
+        "delay",
+        "after",
+        "at",
+        "frames",
+        "expr",
+        "expression",
+        "ref",
+        "instance",
+        "authoredFontDiagnostics"
+      ],
+      "reuse": "Lower episode overlays, captions, authored labels, timing and controls into existing composition authoring; no new typography or audio engine."
+    },
+    {
+      "owner": "@still-shift/animation-engine",
+      "files": [
+        "packages/animation-engine/src/index.ts",
+        "packages/animation-engine/src/composition-source.ts",
+        "packages/animation-engine/src/composition-render.ts",
+        "packages/animation-engine/src/composition-media.ts",
+        "packages/animation-engine/src/composition-media-cache.ts",
+        "packages/animation-engine/src/composition-media-probe.ts",
+        "packages/animation-engine/src/composition-media-audio.ts",
+        "packages/animation-engine/src/composition-audio-mix.ts"
+      ],
+      "functions": [
+        "readCompositionSource",
+        "loadComposition",
+        "renderComposition",
+        "prepareCompositionMedia",
+        "prepareCompositionVisualMedia",
+        "probeCompositionVideo",
+        "compositionMediaChecksum",
+        "prepareCompositionAudioSource",
+        "prepareCompositionAudio"
+      ],
+      "reuse": "Coordinate prepared bridge media and unchanged original audio through current validation, source checks, caching, preview and export."
+    },
+    {
+      "owner": "@still-shift/renderer-core",
+      "files": [
+        "packages/renderer-core/src/index.ts",
+        "packages/renderer-core/src/composition/evaluate/index.ts",
+        "packages/renderer-core/src/composition/render/index.ts",
+        "packages/renderer-core/src/composition/render/renderer.ts",
+        "packages/renderer-core/src/composition/render/providers.ts",
+        "packages/renderer-core/src/component-annotations.ts",
+        "packages/renderer-core/src/component-layout.ts",
+        "packages/renderer-core/src/story-quality.ts"
+      ],
+      "functions": [
+        "evaluateComp",
+        "evaluateProperty",
+        "evaluateStageProperty",
+        "evaluateStageProperties",
+        "evaluateCompositionAudio",
+        "evaluateCompositionExposure",
+        "compositionExposureFrames",
+        "compositionScene",
+        "loadCompositionResources",
+        "createCompositionPreviewAsync",
+        "buildRenderGraph",
+        "createCanvas2dBackend",
+        "createWebgl2Backend",
+        "prepareCompositionProviders",
+        "resolveComponentAnchor",
+        "evaluateComponentAnnotation",
+        "validateComponentAnnotations",
+        "layoutComponentBoxes",
+        "analyzeCompositionQuality",
+        "analyzeRenderedCompositionQuality"
+      ],
+      "reuse": "Preserve pure seek evaluation, native typography, graphs and established backend policy; native mesh support belongs in this owner together with scene-contract."
+    },
+    {
+      "owner": "@still-shift/execution-runtime",
+      "files": [
+        "packages/execution-runtime/src/index.ts",
+        "packages/execution-runtime/src/export-worker.ts",
+        "packages/execution-runtime/src/composition-output.ts",
+        "packages/execution-runtime/src/artifact-locks.ts",
+        "packages/execution-runtime/src/artifact-publication.ts",
+        "packages/execution-runtime/src/subprocess.ts",
+        "packages/execution-runtime/src/render-browser.ts"
+      ],
+      "functions": [
+        "exportScene",
+        "COMPOSITION_OUTPUT_FORMATS",
+        "COMPOSITION_OUTPUT_VERSION",
+        "acquireArtifactLock",
+        "publishArtifacts",
+        "runProcess",
+        "launchRenderBrowser",
+        "probeRenderEnvironment",
+        "assertPinnedRenderEnvironment"
+      ],
+      "reuse": "Reuse workers, ordered frame delivery, cancellation, atomic artifacts and memory accounting. Import its public entry points; execution runtime cannot depend on animation-engine."
+    },
+    {
+      "owner": "Existing soundtrack authority across scene-contract, renderer-core, animation-engine",
+      "files": [
+        "packages/scene-contract/src/soundtrack-project.ts",
+        "packages/renderer-core/src/soundtrack-edits.ts",
+        "packages/animation-engine/src/soundtrack-project-io.ts",
+        "packages/animation-engine/src/soundtrack-render.ts",
+        "packages/animation-engine/src/soundtrack-passage.ts"
+      ],
+      "functions": [
+        "readSoundtrackProject",
+        "verifySoundtrackSources",
+        "updateSoundtrackProject",
+        "saveSoundtrackEdits",
+        "retimeSoundtrackProject",
+        "packageSoundtrackProject",
+        "renderSoundtrackProject",
+        "soundtrackFromPassage",
+        "renderPassageSoundtrack",
+        "editSoundtrackProject",
+        "resolveSoundtrackAnchors",
+        "retimeSoundtrackAnchors",
+        "validateSoundtrackNarration"
+      ],
+      "reuse": "Reuse revision-safe audio persistence, source checks, relocation, anchors, unchanged narration and opt-in DSP worker. Human listening remains distinct from software checks."
+    }
+  ],
+  "dependencyOwnership": {
+    "sceneContract": ["zod 4.1.5"],
+    "motionBuilder": ["@still-shift/scene-contract"],
+    "rendererCore": [
+      "@still-shift/scene-contract",
+      "clipper2-ts 2.0.1-18",
+      "earcut 3.0.2",
+      "zod 4.1.5"
+    ],
+    "executionRuntime": [
+      "@still-shift/scene-contract",
+      "@still-shift/renderer-core",
+      "playwright 1.62.1",
+      "vite 7.3.6"
+    ],
+    "animationEngine": [
+      "@still-shift/execution-runtime",
+      "@still-shift/renderer-core",
+      "@still-shift/scene-contract",
+      "image-size 2.0.4",
+      "playwright 1.62.1",
+      "vite 7.3.6",
+      "zod 4.1.5"
+    ],
+    "threeJsStatus": "No current direct Three.js dependency in these packages; dedicated bridge dependency/version is an MS1 implementation decision.",
+    "rules": [
+      "Shared packages cannot import application implementations.",
+      "Execution runtime cannot depend on animation-engine.",
+      "Consumers use execution-runtime public package entry points.",
+      "Declare package dependencies even for cross-package relative imports."
+    ],
+    "rulesFile": "scripts/check-package-boundaries.ts"
+  },
+  "equivalentDeliveredFeatures": [
+    {
+      "feature": "CE13 native media",
+      "existing": "Canonical prepared RGBA8 PNGs; source and sequence manifest hashes; source-ordinal dependency preparation; rational-rate clocks; synchronous still and async native-media preview; strict PNG metadata/color authority; separate alpha preservation.",
+      "files": [
+        "packages/animation-engine/src/composition-media.ts",
+        "packages/animation-engine/src/composition-media-cache.ts",
+        "packages/animation-engine/src/composition-media-color.ts",
+        "packages/renderer-core/src/composition/render/media-resources.ts"
+      ]
+    },
+    {
+      "feature": "CE15 outputs/caches/workers",
+      "existing": "Seven explicit outputs; source/static/prefix/root caching; one-four workers; ordered frame delivery; aggregate admission; cancellation; atomic publication and metrics.",
+      "limitations": [
+        "PNG16 output expands an 8-bit render source; it is not a higher-precision renderer.",
+        "Memory admission is declared application storage, not a total RSS guarantee.",
+        "Current pinned software export policy remains; hardware is preview-only."
+      ]
+    },
+    {
+      "feature": "CE16 soundtrack",
+      "existing": "Revision-aware project/edits; source validation; relocation; stems, ducking and sample-exact float32 renders/reloads; picture/audio integration.",
+      "evidence": "docs/composition-ce16-completion-audit.md",
+      "limitations": [
+        "Separate Python/DawDreamer runtime for DSP projects.",
+        "Native composition audio has its own existing FFmpeg/PCM preparation route.",
+        "Human listening and audiovisual acceptance are not established by software checks."
+      ]
+    },
+    {
+      "feature": "Native overlays/anchors/timing",
+      "existing": "Native shapes, text, fitted typography, masks, component anchors/leaders/annotations, expressions, cues, pure evaluation and quality lint.",
+      "remaining": "Mesh-specific anchor projection/visibility, crowded label layout, semantic part assertions and episode-level event compilation."
+    }
+  ],
+  "historicalCe15Followups": [
+    {
+      "id": "cached-upload-partition",
+      "classification": "source-level root-cause adapter delivered; exact assessment-input closure not yet established",
+      "historicalObservation": "SS01 cached CLI/API rejected a part at the Uint8Array/65536-byte guard; actual part type/size/surface were not instrumented in the historical assessment.",
+      "currentEvidence": [
+        {
+          "path": "packages/execution-runtime/src/composition-surface-broker.ts",
+          "line": 102,
+          "finding": "IncomingMessage socket chunks are normalized to <=65536-byte subarray views using a bounded generator before store.publish."
+        },
+        {
+          "path": "packages/execution-runtime/src/composition-surface-store.ts",
+          "line": 237,
+          "finding": "Store keeps strict type, per-part size, total length, checksum, lease and worker ownership checks."
+        },
+        {
+          "path": "tests/runtime/composition-surface-store.test.ts",
+          "line": 56,
+          "finding": "Oversized direct-store-part negative remains; raw float32 bits and cross-worker leases are also covered."
+        },
+        {
+          "path": "docs/composition-ce15-completion-results.json",
+          "finding": "Records coalesced-socket failure and bounded broker repair; later full-area acceptance covers both backends, 1/24/60 fps, 1-4 workers, cache off/on."
+        }
+      ],
+      "remainingEvidence": [
+        "No exact historical SS01 re-export was performed by this audit.",
+        "No new real-client/broker byte/float partition test was run.",
+        "Do not infer input-specific closure merely from merge or prior acceptance."
+      ],
+      "next": "Reuse current adapter. Bind any closure receipt to exact source/input/backend and fresh cached, uncached and repeated complete comparisons."
+    },
+    {
+      "id": "actionable-cli-causes",
+      "classification": "confirmed current capability gap for MS1 shared diagnostic work; completed CE15 acceptance is not reopened",
+      "currentEvidence": [
+        {
+          "path": "tools/still-shift-cli/src/cli.ts",
+          "line": 167,
+          "finding": "toCliFailure preserves PassageError/AnimationEngineError but maps unknown errors to generic RENDER_FAILED, animate operation and blanket retry guidance."
+        },
+        {
+          "path": "tools/still-shift-cli/src/composition/commands.ts",
+          "line": 346,
+          "finding": "comp render delegates non-program errors to the same renderFailure mapper."
+        },
+        {
+          "path": "tests/unit/cli-error.test.ts",
+          "finding": "Existing expectation explicitly freezes generic unknown-error output and suppressed private detail."
+        },
+        {
+          "path": "packages/scene-contract/src/errors.ts",
+          "finding": "AnimationEngineError.toFailure serializes code/message/context without Error.cause."
+        }
+      ],
+      "next": "Add one bounded sanitized shared stage/cause mapper and actionable failure receipts in MS1. Preserve exit codes/outer envelope and existing structured diagnostics. Do not duplicate an episode-only mapper.",
+      "acceptance": [
+        "Actual CLI bind EPERM, missing font, incompatible asset, unsupported backend and transport failures expose code, stage, relevant asset/JSON path and useful command.",
+        "Bound cause chain length/bytes and redact credentials, environment values, raw scene text and unrestricted stacks.",
+        "Retain unknown Error, non-Error, cancellation and structured-error semantics."
+      ]
+    }
+  ],
+  "native3dCurrentLimits": {
+    "layerUnion": [
+      "solid",
+      "image",
+      "depth-image",
+      "text",
+      "null",
+      "provider",
+      "group",
+      "precomp",
+      "adjustment",
+      "shape",
+      "camera",
+      "light",
+      "video",
+      "sequence",
+      "audio"
+    ],
+    "solidMeshLayerExists": false,
+    "facts": [
+      "CE14 mesh-warp/puppet effects deform raster artwork; they do not expose general solid topology, normals or material slots.",
+      "Camera/threeD/artwork-plane/flat-lighting concepts are reusable but do not establish general shared mesh/graphic depth.",
+      "Depth-image is a bounded displaced image surface.",
+      "CanvasContentProvider.prepare returns Canvas drawers and is not a ready-made Three.js preparation/export lifecycle."
+    ],
+    "evidencePaths": [
+      "packages/scene-contract/src/composition/layers.ts",
+      "packages/scene-contract/src/composition/depth-image.ts",
+      "packages/renderer-core/src/composition/render/graph.ts",
+      "packages/renderer-core/src/composition/render/providers.ts",
+      "packages/renderer-core/src/composition/render/webgl2.ts"
+    ]
+  },
+  "recommendedBoundaries": [
+    {
+      "owner": "scene-contract",
+      "contract": "Versioned immutable scene/pack/material/camera/rig/sidecar IDs and hashes; part hierarchy, pivots, transform order, normal transforms and named anchor coordinate spaces.",
+      "conventions": "Right-handed Y-up; explicit source-unit and E01 Z-up conversion; measured/sourced/illustrative dimensions separated."
+    },
+    {
+      "owner": "dedicated pure mechanism module",
+      "contract": "frame + parameters + controls + seed -> rigid part transforms, resolved camera, anchors and independent mechanical assertions",
+      "constraints": "No filesystem, browser, playback-history state, automatic factual geometry or general physics."
+    },
+    {
+      "owner": "dedicated Three.js bridge module plus animation-engine orchestration",
+      "contract": "resolved shared scene -> clean color sequence + versioned anchor visibility sidecar",
+      "delivery": "Tagged sRGB RGBA PNGs and composition-sequence-1 hashes; tone map once; explicit alpha convention; pin scene/assets/camera/renderer/source ordinal.",
+      "limits": "Explicit foreground/background ordering only; reject transparent interleaving/shared-depth requirements; scene-derived ray/visibility method records reasons."
+    },
+    {
+      "owner": "scene-contract + renderer-core + motion-builder",
+      "contract": "MS1N native solid indexed mesh/primitive support consumes the same shared scene and pure evaluator",
+      "constraints": "Extend schema, evaluator, graph and WebGL2 together; explicit opaque/cutout/depth/normal/clip/material subset; Canvas and unsupported transparency fail with located diagnostics."
+    },
+    {
+      "owner": "animation-engine / CLI / Lab",
+      "contract": "Episode compiler/orchestration, dependency invalidation, compact receipts, persisted revisions, lifecycle and optional inspection",
+      "constraints": "Native typography/audio remain shared. CLI/Lab consume APIs; packages do not import application implementations."
+    }
+  ],
+  "recommendedInitialImportSubset": {
+    "status": "proposal requiring MS1/MS1N contract and validation proof",
+    "firstSlice": "Minimal versioned E01 pack with bounded explicit rigid indexed meshes or narrowly supported primitives; validate independent geometry and topology before reuse.",
+    "metadata": [
+      "named rigid parts/hierarchy",
+      "pivots and bounds",
+      "units and transform convention",
+      "normals/material slots",
+      "named anchors",
+      "hashes/provenance/dimension status"
+    ],
+    "futureSharedMs2Subset": [
+      "glTF/GLB named rigid hierarchy",
+      "baked transforms",
+      "normals and UVs",
+      "base color/metalness/roughness",
+      "normal maps and declared texture color spaces",
+      "explicit extension and local dependency validation"
+    ],
+    "rejectUntilSupported": [
+      "skins",
+      "morphs",
+      "embedded animations",
+      "compression",
+      "undeclared material features",
+      "remote unpinned dependencies",
+      "unsupported topology",
+      "general CSG/CAD or arbitrary sectioning"
+    ],
+    "evidence": "docs/mechanism-shorts-production-plan.md:647"
+  },
+  "resourceBudgets": {
+    "status": "existing composition limits plus proposed bridge budgets to measure, not new accepted performance limits",
+    "composition": {
+      "maxSize": 8192,
+      "maxFrameCount": 108000,
+      "maxLayers": 2000,
+      "maxAssets": 500,
+      "maxMetadataBytes": 65536,
+      "maxJsonBytes": 65536,
+      "preparedMediaFrameEntries": 131072
+    },
+    "mediaDefaults": {
+      "maxDurationSeconds": 600,
+      "maxWidth": 8192,
+      "maxHeight": 8192,
+      "decodedCacheBytes": 8589934592,
+      "decodedFrameBytes": 134217728,
+      "decodedTextureBytes": 134217728,
+      "audioWorkingBytes": 536870912
+    },
+    "runtime": {
+      "applicationLimitBytes": 8589934592,
+      "nodeAllowanceBytes": 536870912,
+      "workerCountRange": [1, 4],
+      "scope": "declared application storage; native/driver/browser/FFmpeg RSS measured separately"
+    },
+    "e01RawRgbaBytes": 5772902400,
+    "recommendations": [
+      "One-frame/contact-shot pinned-software PBR/shadow benchmark before full E01 renders.",
+      "Explicit scene part/vertex/triangle/texture/import-byte bounds set during bridge contract work; no arbitrary unbounded mesh import.",
+      "Record peak application admission and process-tree RSS separately.",
+      "Measure full sequence disk/cache footprint and clean-plate label-only reuse.",
+      "Never silently switch software export to hardware or weaken existing baselines."
+    ]
+  },
+  "focusedVerification": [
+    "Real broker/client byte and float surface partitions below/at/above 65536 bytes; exact totals/checksums; malformed type/truncation/extra bytes/lease ownership/cancellation negatives.",
+    "Recover exact SS01 identity, export cached/uncached/repeated from frozen current source, compare complete decode and critical encoded states; retain one/four-worker evidence.",
+    "Actual failing public CLI commands plus bounded sanitized cause/redaction/exit and cancellation tests.",
+    "One bridge frame then a complete contact shot through current sequence manifest/media APIs; independent alpha/color references on Canvas/WebGL2 and pinned export.",
+    "Forward/reverse/random frame transforms and anchors; stale sidecar/source identities; per-frame independent mechanical assertions; unchanged original audio/terminal samples.",
+    "Native overlay hold/portrait/target-clearance probes against declared copy and font coverage; label-only edits preserve clean-plate hashes and record zero 3D renders.",
+    "MS1N independent solid geometry/projection/depth cases, invalid topology/resources, mixed graphic occlusion and explicit unsupported Canvas/transparency errors.",
+    "Use required local repository verification tiers; no GitHub Actions or blanket new full-gate rerun solely for this read-only audit."
+  ],
+  "releaseEvidenceRevalidation": {
+    "record": "docs/npm-release-results.json",
+    "checks": [
+      {
+        "path": "benchmarks/results/npm-release-20261009/continuation.json",
+        "absolutePath": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/npm-release-20261009/continuation.json",
+        "available": true,
+        "expectedSha256": "f6db929f262366bd2364274f1b9f0eb55ee3d2a79df88fe1f388966c9def4ac9",
+        "actualSha256": "f6db929f262366bd2364274f1b9f0eb55ee3d2a79df88fe1f388966c9def4ac9",
+        "hashMatches": true,
+        "byteLength": 2883
+      },
+      {
+        "path": "benchmarks/results/npm-release-20261009/continuation.log",
+        "absolutePath": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/npm-release-20261009/continuation.log",
+        "available": true,
+        "expectedSha256": "92133a67f7784dd766c06b132b2091a8f95ada8fd52a3be8a805bdda1387013e",
+        "actualSha256": "92133a67f7784dd766c06b132b2091a8f95ada8fd52a3be8a805bdda1387013e",
+        "hashMatches": true,
+        "byteLength": 204002
+      },
+      {
+        "path": "benchmarks/results/npm-release-20261009/full-gate.json",
+        "absolutePath": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/npm-release-20261009/full-gate.json",
+        "available": true,
+        "expectedSha256": "34debec41d97f3653a009cd3ec7cf98b7b91d1cb368f20f3d3c64b20103b2445",
+        "actualSha256": "34debec41d97f3653a009cd3ec7cf98b7b91d1cb368f20f3d3c64b20103b2445",
+        "hashMatches": true,
+        "byteLength": 503
+      },
+      {
+        "path": "benchmarks/results/npm-release-20261009/full-gate.log",
+        "absolutePath": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/npm-release-20261009/full-gate.log",
+        "available": true,
+        "expectedSha256": "d48e240eb3367bf8202695aaffd20b20dce2f237bd344e2ed597ed0baf69e34a",
+        "actualSha256": "d48e240eb3367bf8202695aaffd20b20dce2f237bd344e2ed597ed0baf69e34a",
+        "hashMatches": true,
+        "byteLength": 3204476
+      },
+      {
+        "path": "benchmarks/results/npm-release-20261009/panel-rerun.log",
+        "absolutePath": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/npm-release-20261009/panel-rerun.log",
+        "available": true,
+        "expectedSha256": "9e847b6313ace8b7867a8febb8ea8f4c946472b7ef3f0e8621e6299fd50dc799",
+        "actualSha256": "9e847b6313ace8b7867a8febb8ea8f4c946472b7ef3f0e8621e6299fd50dc799",
+        "hashMatches": true,
+        "byteLength": 1049
+      }
+    ],
+    "allRequestedArtifactsAvailable": true,
+    "allRecordedHashesMatch": true,
+    "recordedFullGate": {
+      "command": "pnpm release:check",
+      "startedAt": "2026-10-09T09:49:23.531002+00:00",
+      "baseCommit": "bd0197cdcbef7ef78f84d41d55c3dad508c34b7f",
+      "trackedDiffSha256": "91787f54c9a875a0d2b7b46ce626d2262b2ca4e948a80a523e888dce01165516",
+      "log": "benchmarks/results/npm-release-20261009/full-gate.log",
+      "status": "failed",
+      "exitCode": 1,
+      "elapsedSeconds": 5860.625,
+      "finishedAt": "2026-10-09T11:27:04.141985+00:00",
+      "logSha256": "d48e240eb3367bf8202695aaffd20b20dce2f237bd344e2ed597ed0baf69e34a",
+      "failure": "commerce/atom-panel render + readback median ratio 1.2667984198048172 exceeds the unchanged 1.25 limit; pixel parity passed."
+    },
+    "recordedContinuation": {
+      "commands": [
+        "pnpm test:browser:composition-commerce-adapter",
+        "pnpm test:browser:composition-cinematic-adapter",
+        "pnpm test:browser:composition-typography-adapter",
+        "pnpm test:browser:composition-provider-typography",
+        "pnpm test:browser:composition-program",
+        "pnpm test:browser:composition-inspector",
+        "pnpm test:browser:composition-builder",
+        "pnpm test:browser:composition-depth",
+        "pnpm test:browser:composition-legacy-adapter",
+        "pnpm test:browser:composition-family-timeline",
+        "pnpm test:browser:composition-family-defaults",
+        "pnpm test:browser:composition-baselines",
+        "pnpm benchmark",
+        "pnpm test:package"
+      ],
+      "startedAt": "2026-10-09T11:28:47.913435+00:00",
+      "baseCommit": "bd0197cdcbef7ef78f84d41d55c3dad508c34b7f",
+      "log": "benchmarks/results/npm-release-20261009/continuation.log",
+      "status": "failed",
+      "completedCommands": [
+        {
+          "command": "pnpm test:browser:composition-commerce-adapter",
+          "exitCode": 0,
+          "seconds": 2576.553
+        },
+        {
+          "command": "pnpm test:browser:composition-cinematic-adapter",
+          "exitCode": 0,
+          "seconds": 3891.173
+        },
+        {
+          "command": "pnpm test:browser:composition-typography-adapter",
+          "exitCode": 0,
+          "seconds": 199.165
+        },
+        {
+          "command": "pnpm test:browser:composition-provider-typography",
+          "exitCode": 0,
+          "seconds": 10.148
+        },
+        {
+          "command": "pnpm test:browser:composition-program",
+          "exitCode": 0,
+          "seconds": 14.424
+        },
+        {
+          "command": "pnpm test:browser:composition-inspector",
+          "exitCode": 0,
+          "seconds": 18.672
+        },
+        {
+          "command": "pnpm test:browser:composition-builder",
+          "exitCode": 0,
+          "seconds": 27.248
+        },
+        {
+          "command": "pnpm test:browser:composition-depth",
+          "exitCode": 0,
+          "seconds": 520.715
+        },
+        {
+          "command": "pnpm test:browser:composition-legacy-adapter",
+          "exitCode": 0,
+          "seconds": 1510.48
+        },
+        {
+          "command": "pnpm test:browser:composition-family-timeline",
+          "exitCode": 0,
+          "seconds": 15.186
+        },
+        {
+          "command": "pnpm test:browser:composition-family-defaults",
+          "exitCode": 0,
+          "seconds": 1325.746
+        },
+        {
+          "command": "pnpm test:browser:composition-baselines",
+          "exitCode": 0,
+          "seconds": 286.034
+        },
+        {
+          "command": "pnpm benchmark",
+          "exitCode": 0,
+          "seconds": 2.761
+        },
+        {
+          "command": "pnpm test:package",
+          "exitCode": 1,
+          "seconds": 41.64
+        }
+      ],
+      "reason": "Rerun the full commerce suite after a panel timing outlier, then every remaining release check without changing thresholds.",
+      "exitCode": 1,
+      "elapsedSeconds": 10439.963,
+      "finishedAt": "2026-10-09T14:22:47.954318+00:00",
+      "logSha256": "92133a67f7784dd766c06b132b2091a8f95ada8fd52a3be8a805bdda1387013e"
+    },
+    "technicalVerification": {
+      "status": "passed-in-stages",
+      "softwareGate": "pnpm check && pnpm benchmark",
+      "packageGate": "pnpm test:package",
+      "uninterruptedAggregatePass": false,
+      "explanation": "All required software checks passed across the initial run and complete failed-suite rerun/continuation. The initial panel timing outlier passed focused and complete-suite reruns without threshold changes. The continuation then exposed an installed browser-setup path bug; after repair, all 26 final archive checks passed. After making the root package public, synchronize the pnpm publication lock metadata and repair missing runtime shrinkwrap inclusion. Root packing and all 26 corrected archive checks pass; renderer/engine sources and dependency versions remain unchanged."
+    },
+    "interpretation": "These are independently rehashed retained historical logs, not a new gate run. Full release gate failed on a timing outlier; focused/complete-suite reruns and continuation/software completion plus final package checks establish passed-in-stages status. Preserve failures and do not relabel as an uninterrupted pass."
+  },
+  "limitations": [
+    "No fresh browser/render/test run was performed.",
+    "No exact E01/SS01 reconstruction or creative/listening acceptance is claimed.",
+    "No new defect is inferred solely from historical source evidence.",
+    "Proposed mesh/import/resource details need implementation and measured acceptance."
+  ]
+}

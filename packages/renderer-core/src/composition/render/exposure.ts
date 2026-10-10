@@ -5,7 +5,12 @@ import { compositionRenderGraphs } from "./graphs.ts";
 import { requireSpatialCapabilities } from "./spatial-capabilities.ts";
 import type { PassageDiagnostic } from "../../passage-diagnostics.ts";
 import { type RenderGraphOptions, type SurfaceNode } from "./graph.ts";
-import { executeGraph, type RenderBackend, type Surface } from "./backend.ts";
+import {
+  executeGraph,
+  validateRenderGraphNativeDepth,
+  type RenderBackend,
+  type Surface,
+} from "./backend.ts";
 import {
   allocateRenderMetadata,
   releaseRenderMetadata,
@@ -74,6 +79,9 @@ export function renderCompositionExposure<S extends Surface>(
   cache?: CompositionFrameCache,
 ) {
   const sampleFrames = compositionExposureFrames(comp, frame, options);
+  const compiled = compileComposition(comp);
+  const nativeObservationRequired =
+    options.nativeObservationRequired === true && compiled.native3D;
   const graphs = () =>
     compositionRenderGraphs(comp, frame, options, sampleFrames);
   const candidates = graphs();
@@ -84,30 +92,35 @@ export function renderCompositionExposure<S extends Surface>(
     const firstKey = firstOwner
       ? firstOwner.value
       : backend.frameKey?.(first.graph.root);
-    let stationary = true;
-    for (const candidate of candidates) {
-      let changed: boolean;
-      if (firstKey === undefined)
-        changed = !equal(first.graph.root, candidate.graph.root);
-      else {
-        const candidateOwner = backend.frameMetadataKey?.(candidate.graph.root);
-        try {
-          changed =
-            firstKey !==
-            (candidateOwner
-              ? candidateOwner.value
-              : backend.frameKey!(candidate.graph.root));
-        } finally {
-          candidateOwner?.release();
+    let stationary = !nativeObservationRequired;
+    if (!nativeObservationRequired)
+      for (const candidate of candidates) {
+        let changed: boolean;
+        if (firstKey === undefined)
+          changed = !equal(first.graph.root, candidate.graph.root);
+        else {
+          const candidateOwner = backend.frameMetadataKey?.(
+            candidate.graph.root,
+          );
+          try {
+            changed =
+              firstKey !==
+              (candidateOwner
+                ? candidateOwner.value
+                : backend.frameKey!(candidate.graph.root));
+          } finally {
+            candidateOwner?.release();
+          }
+        }
+        if (changed) {
+          stationary = false;
+          break;
         }
       }
-      if (changed) {
-        stationary = false;
-        break;
-      }
-    }
     // All spatial shutter samples must pass before accumulation can touch the retained frame.
-    const compiled = compileComposition(comp);
+    if (compiled.native3D)
+      for (const candidate of graphs())
+        validateRenderGraphNativeDepth(backend, candidate.graph);
     if (compiled.spatialScopes.size || compiled.imagePlanes)
       for (const candidate of graphs())
         if (candidate.graph.spatial)

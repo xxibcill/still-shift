@@ -87,13 +87,14 @@ export function createCompositionOverlay() {
       | {
           composition: Composition;
           frame: number;
-          textBounds: EvaluationOptions["textBounds"];
+          options: EvaluationOptions;
         }
       | undefined;
   let cached:
     | {
         composition: Composition;
         selection: string;
+        options: EvaluationOptions;
         points: Map<string, Point[]>;
       }
     | undefined;
@@ -114,16 +115,15 @@ export function createCompositionOverlay() {
   function draw(
     composition: Composition,
     frame: number,
-    textBounds: EvaluationOptions["textBounds"],
+    options: EvaluationOptions = {},
   ) {
-    last = { composition, frame, textBounds };
+    last = { composition, frame, options };
     root.replaceChildren();
     root.setAttribute(
       "viewBox",
       `0 0 ${composition.width} ${composition.height}`,
     );
-    const options = textBounds ? { textBounds } : {},
-      items = locate(evaluateComp(composition, frame, options));
+    const items = locate(evaluateComp(composition, frame, options));
     if (safe.checked) {
       const x = composition.width * 0.05,
         y = composition.height * 0.05;
@@ -374,7 +374,13 @@ export function createCompositionOverlay() {
       const selection = JSON.stringify([selected.scope, selected.layer]);
       if (
         cached?.composition !== composition ||
-        cached.selection !== selection
+        cached.selection !== selection ||
+        cached.options.textBounds !== options.textBounds ||
+        cached.options.preparedNative3D !== options.preparedNative3D ||
+        cached.options.scopeTimes !== options.scopeTimes ||
+        cached.options.includeGuides !== options.includeGuides ||
+        cached.options.nativeObservationRequired !==
+          options.nativeObservationRequired
       ) {
         const points = new Map<string, Point[]>(),
           count = Math.min(120, composition.frameCount);
@@ -397,7 +403,7 @@ export function createCompositionOverlay() {
             if (anchor) list.push(anchor);
             points.set(item.route, list);
           }
-        cached = { composition, selection, points };
+        cached = { composition, selection, options, points };
       }
       for (const [route, points] of cached.points)
         add("polyline", {
@@ -412,7 +418,7 @@ export function createCompositionOverlay() {
   }
   for (const checkbox of [bounds, paths, safe])
     checkbox.onchange = () => {
-      if (last) draw(last.composition, last.frame, last.textBounds);
+      if (last) draw(last.composition, last.frame, last.options);
     };
   return {
     select(selection: InspectorSelection | undefined) {

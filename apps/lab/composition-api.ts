@@ -15,6 +15,7 @@ import { validateComposition } from "../../packages/scene-contract/src/index.ts"
 import { readCompositionSource } from "../../packages/animation-engine/src/composition-source.ts";
 import { prepareCompositionMedia } from "../../packages/animation-engine/src/composition-media.ts";
 import { prepareCompositionAudio } from "../../packages/animation-engine/src/composition-audio-mix.ts";
+import { prepareCompositionNative3D } from "../../packages/animation-engine/src/composition-native3d.ts";
 import { compositionSequenceFramePath } from "../../packages/animation-engine/src/composition-media-sequence.ts";
 import {
   captureCompositionAssets,
@@ -395,6 +396,11 @@ export const compositionApi = (): Plugin => {
               );
               const assets = await captureCompositionAssets(loaded);
               const nativeDocument = capturedMediaComposition(document, assets);
+              const native = await prepareCompositionNative3D(
+                nativeDocument,
+                dirname(scene),
+                { signal: controller.signal },
+              );
               const prepared = await prepareCompositionMedia(
                 nativeDocument,
                 dirname(scene),
@@ -405,7 +411,11 @@ export const compositionApi = (): Plugin => {
                 dirname(scene),
                 { signal: controller.signal },
               );
-              const paths = { ...prepared?.assetPaths, ...audio?.assetPaths };
+              const paths = {
+                ...native?.assetPaths,
+                ...prepared?.assetPaths,
+                ...audio?.assetPaths,
+              };
               controller.signal.throwIfAborted();
               if (captures.get(capture) !== reserved)
                 throw new CompositionSaveError(
@@ -423,6 +433,11 @@ export const compositionApi = (): Plugin => {
                   capture,
                   preparedMedia: prepared?.preparedMedia,
                   preparedAudio: audio?.preparedAudio,
+                  preparedNative3D: native?.preparedNative3D,
+                  nativeAppearanceCodeIdentity:
+                    native?.nativeAppearanceCodeIdentity,
+                  nativeAppearanceCodeSha256:
+                    native?.nativeAppearanceCodeSha256,
                   assets: Object.fromEntries(
                     Object.keys(paths).map((id) => [
                       id,

@@ -22,6 +22,7 @@ import {
   type CompositionDiagnostic,
 } from "@still-shift/scene-contract";
 import type { IncomingMessage, ServerResponse } from "node:http";
+import { native3DEditDiagnostics } from "../../../../packages/scene-contract/src/composition/native3d-edit.ts";
 
 export class CompositionSaveError extends PassageError {
   readonly status: number;
@@ -123,6 +124,16 @@ export function editableDocument(
       "An inspector edit cannot change source asset bindings",
     );
   const fonts = authoredFontDiagnostics(result.composition);
+  const native = native3DEditDiagnostics(base, result.composition);
+  if (native.length)
+    throw new CompositionSaveError(
+      422,
+      "comp-native3d-topology",
+      native
+        .map((diagnostic) => `${diagnostic.path}: ${diagnostic.message}`)
+        .join("\n"),
+      native,
+    );
   if (fonts.length)
     throw new CompositionSaveError(
       422,

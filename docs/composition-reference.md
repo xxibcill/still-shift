@@ -71,6 +71,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | Field                 | Required | JSON form                                                                                                                                                                                             |
 | --------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `id`                  | yes      | string                                                                                                                                                                                                |
+| `native3D`            | no       | object                                                                                                                                                                                                |
+| `overlayAfter`        | no       | string                                                                                                                                                                                                |
 | `name`                | no       | string                                                                                                                                                                                                |
 | `inPoint`             | no       | integer                                                                                                                                                                                               |
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
@@ -107,6 +109,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | Field                 | Required | JSON form                                                                                                                                                                                             |
 | --------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `id`                  | yes      | string                                                                                                                                                                                                |
+| `native3D`            | no       | object                                                                                                                                                                                                |
+| `overlayAfter`        | no       | string                                                                                                                                                                                                |
 | `name`                | no       | string                                                                                                                                                                                                |
 | `inPoint`             | no       | integer                                                                                                                                                                                               |
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
@@ -151,6 +155,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | Field                 | Required | JSON form                                                                                                                                                                                             |
 | --------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `id`                  | yes      | string                                                                                                                                                                                                |
+| `native3D`            | no       | object                                                                                                                                                                                                |
+| `overlayAfter`        | no       | string                                                                                                                                                                                                |
 | `name`                | no       | string                                                                                                                                                                                                |
 | `inPoint`             | no       | integer                                                                                                                                                                                               |
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
@@ -193,6 +199,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | Field                 | Required | JSON form                                                                                                                                                                                             |
 | --------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `id`                  | yes      | string                                                                                                                                                                                                |
+| `native3D`            | no       | object                                                                                                                                                                                                |
+| `overlayAfter`        | no       | string                                                                                                                                                                                                |
 | `name`                | no       | string                                                                                                                                                                                                |
 | `inPoint`             | no       | integer                                                                                                                                                                                               |
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
@@ -258,6 +266,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | Field                 | Required | JSON form                                                                                                                                                                                             |
 | --------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `id`                  | yes      | string                                                                                                                                                                                                |
+| `native3D`            | no       | object                                                                                                                                                                                                |
+| `overlayAfter`        | no       | string                                                                                                                                                                                                |
 | `name`                | no       | string                                                                                                                                                                                                |
 | `inPoint`             | no       | integer                                                                                                                                                                                               |
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
@@ -292,6 +302,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | Field                 | Required | JSON form                                                                                                                                                                                             |
 | --------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `id`                  | yes      | string                                                                                                                                                                                                |
+| `native3D`            | no       | object                                                                                                                                                                                                |
+| `overlayAfter`        | no       | string                                                                                                                                                                                                |
 | `name`                | no       | string                                                                                                                                                                                                |
 | `inPoint`             | no       | integer                                                                                                                                                                                               |
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
@@ -334,6 +346,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | Field                 | Required | JSON form                                                                                                                                                                                             |
 | --------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `id`                  | yes      | string                                                                                                                                                                                                |
+| `native3D`            | no       | object                                                                                                                                                                                                |
+| `overlayAfter`        | no       | string                                                                                                                                                                                                |
 | `name`                | no       | string                                                                                                                                                                                                |
 | `inPoint`             | no       | integer                                                                                                                                                                                               |
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
@@ -370,6 +384,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | Field                 | Required | JSON form                                                                                                                                                                                             |
 | --------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `id`                  | yes      | string                                                                                                                                                                                                |
+| `native3D`            | no       | object                                                                                                                                                                                                |
+| `overlayAfter`        | no       | string                                                                                                                                                                                                |
 | `name`                | no       | string                                                                                                                                                                                                |
 | `inPoint`             | no       | integer                                                                                                                                                                                               |
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
@@ -409,6 +425,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | Field                 | Required | JSON form                                                                                                                                                                                             |
 | --------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `id`                  | yes      | string                                                                                                                                                                                                |
+| `native3D`            | no       | object                                                                                                                                                                                                |
+| `overlayAfter`        | no       | string                                                                                                                                                                                                |
 | `name`                | no       | string                                                                                                                                                                                                |
 | `inPoint`             | no       | integer                                                                                                                                                                                               |
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
@@ -444,6 +462,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | Field                 | Required | JSON form                                                                                                                                                                                             |
 | --------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `id`                  | yes      | string                                                                                                                                                                                                |
+| `native3D`            | no       | object                                                                                                                                                                                                |
+| `overlayAfter`        | no       | string                                                                                                                                                                                                |
 | `name`                | no       | string                                                                                                                                                                                                |
 | `inPoint`             | no       | integer                                                                                                                                                                                               |
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
@@ -479,6 +499,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | Field                 | Required | JSON form                                                                                                                                                                                             |
 | --------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `id`                  | yes      | string                                                                                                                                                                                                |
+| `native3D`            | no       | object                                                                                                                                                                                                |
+| `overlayAfter`        | no       | string                                                                                                                                                                                                |
 | `name`                | no       | string                                                                                                                                                                                                |
 | `inPoint`             | no       | integer                                                                                                                                                                                               |
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
@@ -527,6 +549,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | Field                 | Required | JSON form                                                                                                                                                                                             |
 | --------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `id`                  | yes      | string                                                                                                                                                                                                |
+| `native3D`            | no       | object                                                                                                                                                                                                |
+| `overlayAfter`        | no       | string                                                                                                                                                                                                |
 | `name`                | no       | string                                                                                                                                                                                                |
 | `inPoint`             | no       | integer                                                                                                                                                                                               |
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
@@ -568,6 +592,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | Field                 | Required | JSON form                                                                                                                                                                                             |
 | --------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `id`                  | yes      | string                                                                                                                                                                                                |
+| `native3D`            | no       | object                                                                                                                                                                                                |
+| `overlayAfter`        | no       | string                                                                                                                                                                                                |
 | `name`                | no       | string                                                                                                                                                                                                |
 | `inPoint`             | no       | integer                                                                                                                                                                                               |
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
@@ -609,6 +635,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | Field                 | Required | JSON form                                                                                                                                                                                             |
 | --------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `id`                  | yes      | string                                                                                                                                                                                                |
+| `native3D`            | no       | object                                                                                                                                                                                                |
+| `overlayAfter`        | no       | string                                                                                                                                                                                                |
 | `name`                | no       | string                                                                                                                                                                                                |
 | `inPoint`             | no       | integer                                                                                                                                                                                               |
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
@@ -650,6 +678,8 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | Field                 | Required | JSON form                                                                                                                                                                                             |
 | --------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `id`                  | yes      | string                                                                                                                                                                                                |
+| `native3D`            | no       | object                                                                                                                                                                                                |
+| `overlayAfter`        | no       | string                                                                                                                                                                                                |
 | `name`                | no       | string                                                                                                                                                                                                |
 | `inPoint`             | no       | integer                                                                                                                                                                                               |
 | `outPoint`            | no       | integer                                                                                                                                                                                               |
@@ -689,6 +719,52 @@ See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1
 | `fadeOutSamples`      | no       | integer                                                                                                                                                                                               |
 | `fadeInCurve`         | no       | `linear`, `equal-power`                                                                                                                                                                               |
 | `fadeOutCurve`        | no       | `linear`, `equal-power`                                                                                                                                                                               |
+
+### `native3d` contract
+
+| Field                 | Required | JSON form                                                                                                                                                                                             |
+| --------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`                  | yes      | string                                                                                                                                                                                                |
+| `native3D`            | no       | object                                                                                                                                                                                                |
+| `overlayAfter`        | no       | string                                                                                                                                                                                                |
+| `name`                | no       | string                                                                                                                                                                                                |
+| `inPoint`             | no       | integer                                                                                                                                                                                               |
+| `outPoint`            | no       | integer                                                                                                                                                                                               |
+| `startFrame`          | no       | integer                                                                                                                                                                                               |
+| `stretch`             | no       | number                                                                                                                                                                                                |
+| `posterizeFps`        | no       | number                                                                                                                                                                                                |
+| `holdFrame`           | no       | number                                                                                                                                                                                                |
+| `sampleTimes`         | no       | array                                                                                                                                                                                                 |
+| `parent`              | no       | string                                                                                                                                                                                                |
+| `enabled`             | no       | boolean                                                                                                                                                                                               |
+| `solo`                | no       | boolean                                                                                                                                                                                               |
+| `guide`               | no       | boolean                                                                                                                                                                                               |
+| `threeD`              | no       | boolean                                                                                                                                                                                               |
+| `focusDepth`          | no       | number                                                                                                                                                                                                |
+| `receivesLight`       | no       | boolean                                                                                                                                                                                               |
+| `transform`           | no       | object                                                                                                                                                                                                |
+| `constraintReference` | no       | [number, number] or [number, number, number] or object                                                                                                                                                |
+| `blendMode`           | no       | `normal`, `multiply`, `screen`, `overlay`, `darken`, `lighten`, `color-dodge`, `color-burn`, `hard-light`, `soft-light`, `difference`, `exclusion`, `hue`, `saturation`, `color`, `luminosity`, `add` |
+| `trackMatte`          | no       | object                                                                                                                                                                                                |
+| `masks`               | no       | array                                                                                                                                                                                                 |
+| `effects`             | no       | array                                                                                                                                                                                                 |
+| `motionBlur`          | no       | boolean                                                                                                                                                                                               |
+| `cameraDepth`         | no       | number                                                                                                                                                                                                |
+| `coverage`            | no       | `required`, `optional`                                                                                                                                                                                |
+| `qualification`       | no       | string                                                                                                                                                                                                |
+| `source`              | no       | object                                                                                                                                                                                                |
+| `metadata`            | no       | object                                                                                                                                                                                                |
+| `type`                | yes      | `native3d`                                                                                                                                                                                            |
+| `asset`               | yes      | string                                                                                                                                                                                                |
+| `sourceStartFrame`    | yes      | number                                                                                                                                                                                                |
+| `sourceFps`           | yes      | number                                                                                                                                                                                                |
+| `controls`            | no       | object                                                                                                                                                                                                |
+| `camera`              | no       | object                                                                                                                                                                                                |
+| `cameraKeys`          | no       | array                                                                                                                                                                                                 |
+| `hiddenParts`         | no       | array                                                                                                                                                                                                 |
+| `seed`                | no       | integer                                                                                                                                                                                               |
+| `partOverrides`       | no       | object                                                                                                                                                                                                |
+| `materialOverrides`   | no       | object                                                                                                                                                                                                |
 
 ## Generated property aliases
 
@@ -1107,154 +1183,172 @@ Motion intents: `settle`, `press`, `recoil`, `handoff`, `breathe`, `draw-on`, `l
 
 Schema validation yields stable codes with JSON paths; builder input also yields authored file:line:column sites. Warnings can be promoted for authored input, including unpinned system fonts.
 
-| Code                               | Meaning                                                                                                  |
-| ---------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `comp-media-format`                | A native source has unsupported streams or file structure.                                               |
-| `comp-media-vfr`                   | Presentation timestamps do not form one quantized rational CFR timeline.                                 |
-| `comp-media-rotation`              | A source has nonidentity display rotation or transformation.                                             |
-| `comp-media-checksum`              | Source bytes differ from their pinned media identity.                                                    |
-| `comp-media-not-ready`             | Prepare native media resources before drawing the frame.                                                 |
-| `comp-media-provenance`            | Actual probed media metadata differs from the authored descriptor.                                       |
-| `comp-media-rate`                  | A source rate is not reduced or exceeds 240 fps.                                                         |
-| `comp-media-color`                 | Source color metadata is unsupported or inconsistent.                                                    |
-| `comp-media-limit`                 | Media exceeds a configured source or decoded-resource limit.                                             |
-| `comp-media-sequence`              | A numbered sequence pattern or manifest is invalid.                                                      |
-| `comp-media-trim`                  | A source trim or fade lies outside the pinned source interval.                                           |
-| `comp-media-audio-property`        | A visual-only property is authored on an audio layer.                                                    |
-| `comp-media-narration-clock`       | Narration has a nonidentity local or inherited source clock.                                             |
-| `comp-media-narration-range`       | The complete authorized voice interval does not fit its picture windows.                                 |
-| `comp-schema-version`              | `schemaVersion` is not `composition-1`.                                                                  |
-| `comp-schema-type`                 | A value has the wrong JSON type.                                                                         |
-| `comp-schema-unknown-key`          | An object has a field the contract does not define.                                                      |
-| `comp-schema-value`                | A value is not one of the allowed literals or enum members.                                              |
-| `comp-schema-format`               | A string does not match its required format (id, colour, hash).                                          |
-| `comp-schema-range`                | A number is outside its allowed range.                                                                   |
-| `comp-schema-union`                | A value matches none of the allowed forms (for example an unknown layer `type`).                         |
-| `comp-schema`                      | Any other structural error.                                                                              |
-| `comp-limit`                       | An array, string or record exceeds its size limit.                                                       |
-| `comp-effect-layer`                | An effect input slot is missing, undeclared or outside its scope.                                        |
-| `comp-effect-cycle`                | Layer inputs, mattes or group descendants form a render dependency cycle.                                |
-| `comp-effect-budget`               | The scoped effect source graph exceeds its bounded work budget.                                          |
-| `comp-effect-registration`         | Effect registration requires a unique ID, valid definition and GPU callback.                             |
-| `comp-effect-surface`              | Effect scratch textures and output must belong to the current callback and meet size/budget constraints. |
-| `comp-effect-version`              | Registered effect versions differ from the captured export snapshot.                                     |
-| `comp-depth-motion`                | Depth-image local motion exceeds its safe bounded envelope.                                              |
-| `comp-depth-provenance`            | Prepared depth motion, dimensions or request provenance are inconsistent.                                |
-| `comp-image-plane`                 | Image-plane local sampling controls exceed their bounded envelope.                                       |
-| `comp-effect-params`               | Check evaluated effect controls and their cross-parameter invariants.                                    |
-| `comp-effect-curve`                | Evaluated color curve points must be bounded, ordered and span the input domain.                         |
-| `comp-effect-bounds`               | An effect bounds callback failed or returned a non-finite/reversed rectangle.                            |
-| `comp-key-order`                   | Key frames are not strictly increasing.                                                                  |
-| `comp-sample-time-order`           | Baked sample times are not strictly increasing.                                                          |
-| `comp-motion-blur-range`           | The exposure interval or cut list is outside the composition or not increasing.                          |
-| `comp-key-smooth`                  | A smooth key is the first or last key.                                                                   |
-| `comp-key-bezier`                  | `interpolation: "bezier"` without `bezier` handles.                                                      |
-| `comp-key-speed-vector`            | A temporal handle `speed` on a vector or colour property.                                                |
-| `comp-path-tangents`               | A bezier path's tangent count differs from its vertex count.                                             |
-| `comp-path-vertex-count`           | Keys of one path property have different vertex counts.                                                  |
-| `comp-vector-dimension`            | A three-component vector on a layer without `threeD`.                                                    |
-| `comp-duplicate-id`                | An id is used twice in its namespace.                                                                    |
-| `comp-reserved-id`                 | A layer or precomp uses the reserved id `comp`.                                                          |
-| `comp-layer-time`                  | `inPoint` is not before `outPoint`.                                                                      |
-| `comp-time-control`                | A finite precomp loop count requires a loop mode.                                                        |
-| `comp-media-time`                  | Media sampling needs finite source time and a positive safe integer frame count.                         |
-| `comp-media-frame-blending`        | Frame blending must be hold or linear.                                                                   |
-| `comp-layer-limit`                 | More than 2,000 layers across the composition and its precomps.                                          |
-| `comp-parent-missing`              | `parent` names no layer in the same composition.                                                         |
-| `comp-parent-cycle`                | A parent chain loops.                                                                                    |
-| `comp-parent-depth`                | A parent chain is deeper than 32.                                                                        |
-| `comp-matte-missing`               | `trackMatte.layer` names no layer in the same composition.                                               |
-| `comp-matte-self`                  | A layer is its own track matte.                                                                          |
-| `comp-matte-cycle`                 | Track mattes reference each other in a loop.                                                             |
-| `comp-mask-open`                   | A mask path is not closed.                                                                               |
-| `comp-precomp-missing`             | A precomp layer references an unknown precomp.                                                           |
-| `comp-precomp-cycle`               | A precomp contains itself directly or indirectly.                                                        |
-| `comp-precomp-depth`               | Precomps nest deeper than 8.                                                                             |
-| `comp-asset-missing`               | A layer references an unknown asset.                                                                     |
-| `comp-asset-type`                  | A layer references an asset of the wrong type.                                                           |
-| `comp-crop-bounds`                 | An image crop extends beyond its asset.                                                                  |
-| `comp-image-registration`          | Pose registration on an image whose fit is not `contain`.                                                |
-| `comp-state-range`                 | A `state` or `stateFrom` value has no matching source or text state.                                     |
-| `comp-state-mix`                   | Only one of `stateFrom` and `stateMix` is set.                                                           |
-| `comp-text-style-missing`          | A text layer uses an unknown text style.                                                                 |
-| `comp-text-font`                   | A text size above 180 without a pinned font.                                                             |
-| `comp-text-pinned-font`            | Spans, decorations, transitions, text animators or `textBox` on a text layer without a pinned font.      |
-| `comp-text-box-size`               | A `textBox` text layer without a `size`.                                                                 |
-| `comp-marker-frame`                | A marker lies at or after `frameCount`.                                                                  |
-| `comp-marker-duration`             | A marker's `duration` runs past `frameCount`.                                                            |
-| `comp-text-span-range`             | A text span ends after the text or a state, or overlaps another span.                                    |
-| `comp-text-span-missing`           | A decoration or text animator names an unknown span.                                                     |
-| `comp-text-font-axis`              | A style, span or animated variable-font axis is absent or outside the pinned font's range.               |
-| `comp-text-locale`                 | A text layer's locale is not recognised.                                                                 |
-| `comp-text-transition`             | Conflicting, overlapping or impossible text transitions.                                                 |
-| `comp-camera-key-range`            | A `camera2d` key lies at or after `frameCount`.                                                          |
-| `comp-light-limit`                 | More than eight authored light layers in one scope, including disabled lights.                           |
-| `comp-light-settings`              | Invalid light type controls, bounded values, cone/falloff relations or finite GPU coefficients.          |
-| `comp-light-receiver`              | Lighting opt-in requires explicitly 3D image, solid, text, shape or flat precomp artwork.                |
-| `comp-camera-settings`             | Native camera optical controls, model or clip planes are invalid after sampling.                         |
-| `comp-3d-constraint`               | The constraint uses 2D geometry and cannot reference a spatial layer or parent chain.                    |
-| `comp-3d-transform`                | Spatial transform sampling or parent composition produces non-finite world geometry.                     |
-| `comp-camera-cycle`                | An active camera cannot depend on a camera-facing parent transform.                                      |
-| `comp-3d-surface-budget`           | A projected local artwork surface exceeds the bounded allocation budget.                                 |
-| `comp-3d-collapse`                 | Perspective precomps render as flat surfaces and cannot collapse transforms.                             |
-| `comp-3d-effect`                   | A projected layer requires a scope-space adjustment or precomp for time echo.                            |
-| `comp-3d-effect-space`             | Cross-plane effect coordinates require an affine relation between planes.                                |
-| `comp-camera-geometry`             | Camera world basis or point of interest is degenerate after parent evaluation.                           |
-| `comp-marker-missing`              | A `cue` names no marker in the same composition.                                                         |
-| `comp-signal-missing`              | A reference names no signal.                                                                             |
-| `comp-constraint-target`           | A constraint names no layer in the same composition.                                                     |
-| `comp-text-animator-target`        | A text animator's `node` is not a text layer in the same composition.                                    |
-| `comp-camera-depth`                | `cameraDepth` on a parented layer or inside a precomp.                                                   |
-| `comp-camera-jolt`                 | A camera jolt starts at or after `frameCount`.                                                           |
-| `comp-format-size`                 | `format` disagrees with `width` and `height`.                                                            |
-| `comp-metadata-size`               | Metadata serialises to more than 64 KiB.                                                                 |
-| `comp-json-size`                   | An opaque JSON payload serialises to more than 64 KiB.                                                   |
-| `comp-json-depth`                  | A JSON payload exceeds its payload-specific container-depth bound below its root.                        |
-| `comp-metadata-depth`              | Metadata nests more than 64 container levels below its root.                                             |
-| `comp-driver-source`               | A driver has none or several of `signal`, `source` and `sum`.                                            |
-| `comp-motion-cycle`                | Driver, constraint or parent dependencies form a cycle.                                                  |
-| `comp-periodic`                    | Invalid periodic motion window, generator or target form.                                                |
-| `comp-expression-syntax`           | Expression text does not match the grammar (including unknown identifiers).                              |
-| `comp-expression-unknown-function` | An expression calls a function that is not a registered built-in.                                        |
-| `comp-expression-type`             | An expression's types do not fit an operator, built-in or its target property.                           |
-| `comp-expression-limit`            | An expression exceeds 2,000 characters, 500 AST nodes, 64 nesting levels or a literal argument bound.    |
-| `comp-expression-mismatch`         | An expression's `ast` differs from the AST parsed from its `source`.                                     |
-| `comp-expression-cycle`            | Expression reads form a dependency cycle, alone or with drivers, constraints or parents.                 |
-| `comp-expression-overlap`          | Two expressions or behaviours target the same property or one of its components.                         |
-| `comp-key-speed-dimension`         | A grouped temporal speed tuple does not match its value's dimensions.                                    |
-| `comp-key-speed-spatial`           | A component speed tuple on spatial keys, or `spatialSpeed` on keys without spatial tangents.             |
-| `comp-path-syntax`                 | A property path does not match the grammar.                                                              |
-| `comp-path-scope`                  | A path's precomp layer instance is missing or not a precomp at that level.                               |
-| `comp-path-layer`                  | A path names no layer in its composition.                                                                |
-| `comp-path-property`               | A path names no property of its layer.                                                                   |
-| `comp-path-type`                   | A driver or periodic motion targets a non-scalar property.                                               |
-| `comp-path-readonly`               | A path that can only be read is used as a target.                                                        |
-| `comp-shape-id`                    | Shape content or gradient stop IDs are not unique in their collection.                                   |
-| `comp-shape-limit`                 | A native shape tree exceeds its content or nesting limits.                                               |
-| `comp-shape-value`                 | A sampled native shape value is not finite.                                                              |
-| `comp-shape-range`                 | A generated primitive has invalid dimensions or point counts.                                            |
-| `comp-shape-work-limit`            | Generated geometry or reference copies exceed the shared evaluation budget.                              |
-| `comp-shape-coordinate`            | Generated coordinates exceed their finite coordinate envelope.                                           |
-| `comp-shape-flatten-limit`         | Cubic flattening cannot meet its fixed tolerance within the depth limit.                                 |
-| `comp-shape-polygon-limit`         | A polygon operation exceeds its input-vertex complexity limit.                                           |
-| `comp-shape-polygon-coordinate`    | Quantized polygon coordinates are not safe integers.                                                     |
-| `comp-shape-polygon`               | The pinned polygon library rejected an operation.                                                        |
-| `comp-shape-repeater-range`        | Repeater copies exceed their supported range.                                                            |
-| `comp-shape-repeater-scale`        | A repeated scale power is undefined or not finite.                                                       |
-| `comp-shape-repeater-transform`    | A repeated transform is not finite.                                                                      |
-| `comp-shape-dash-precision`        | Nib dash spacing is below the available coordinate precision.                                            |
-| `comp-shape-follow-empty`          | A follow-path source has no contour or zero arc length.                                                  |
-| `comp-constraint-path`             | A follow-path source is not a native shape layer.                                                        |
-| `comp-feature-unavailable`         | A contract feature whose implementation milestone has not landed.                                        |
-| `comp-provider-bounds`             | Provider bounds have non-positive width or height.                                                       |
-| `comp-provider-unavailable`        | A versioned content provider is not registered in this renderer.                                         |
-| `comp-provider-duplicate`          | A provider id was registered more than once.                                                             |
-| `comp-provider-params`             | A provider payload fails its registered schema.                                                          |
-| `comp-provider-asset`              | A provider uses an undeclared, missing or incompatible asset.                                            |
-| `comp-camera-coverage`             | A persisted story image cover leaves the viewport uncovered or samples transparent pixels.               |
-| `comp-adapter-unsupported`         | A family feature is not supported by the current adapter slice.                                          |
-| `comp-adapter-limit`               | Baking an adapter scene would exceed composition limits.                                                 |
-| `comp-adapter-layout-required`     | Font-dependent geometry needs a pinned-font measurement context before compilation.                      |
+| Code                                 | Meaning                                                                                                  |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------------- |
+| `comp-native3d-source`               | A native source is invalid or disagrees with its declared format.                                        |
+| `comp-native3d-checksum`             | Native source or prepared effective bytes differ from their pinned identity.                             |
+| `comp-native3d-not-ready`            | Prepare the complete immutable native catalogue before drawing or evaluation.                            |
+| `comp-native3d-topology`             | A native edit changes protected geometry, hierarchy or controller topology.                              |
+| `comp-native3d-limit`                | Native variants, graphics, dimensions or observations exceed bounded limits.                             |
+| `comp-native3d-controller-transform` | A native controller or organizing ancestor has nonidentity spatial placement.                            |
+| `comp-native3d-controller-style`     | A native controller or organizing ancestor has unsupported opacity, blend or effects.                    |
+| `comp-native3d-binding`              | A native binding has an invalid controller, physical anchor or target.                                   |
+| `comp-native3d-scope`                | A native binding crosses an owning composition scope.                                                    |
+| `comp-native3d-overlap`              | More than one native world is active in one scope sample.                                                |
+| `comp-native3d-cycle`                | Native dependencies or bindings form a cycle.                                                            |
+| `comp-native3d-clock`                | A native dependency samples an incompatible physical clock.                                              |
+| `comp-native3d-material`             | A native material exceeds the admitted opaque or hard-mask subset.                                       |
+| `comp-native3d-graphic`              | A native graphic exceeds the admitted local artwork subset.                                              |
+| `comp-native3d-backend`              | Native 3D requires the WebGL2 backend.                                                                   |
+| `comp-native3d-profile`              | The device cannot satisfy the pinned native HDR, depth and MSAA profile.                                 |
+| `comp-native3d-observation`          | Native render observations are incomplete or inconsistent with their execution.                          |
+| `comp-native3d-protocol`             | Native observation and assigned pixel transport do not agree.                                            |
+| `comp-media-format`                  | A native source has unsupported streams or file structure.                                               |
+| `comp-media-vfr`                     | Presentation timestamps do not form one quantized rational CFR timeline.                                 |
+| `comp-media-rotation`                | A source has nonidentity display rotation or transformation.                                             |
+| `comp-media-checksum`                | Source bytes differ from their pinned media identity.                                                    |
+| `comp-media-not-ready`               | Prepare native media resources before drawing the frame.                                                 |
+| `comp-media-provenance`              | Actual probed media metadata differs from the authored descriptor.                                       |
+| `comp-media-rate`                    | A source rate is not reduced or exceeds 240 fps.                                                         |
+| `comp-media-color`                   | Source color metadata is unsupported or inconsistent.                                                    |
+| `comp-media-limit`                   | Media exceeds a configured source or decoded-resource limit.                                             |
+| `comp-media-sequence`                | A numbered sequence pattern or manifest is invalid.                                                      |
+| `comp-media-trim`                    | A source trim or fade lies outside the pinned source interval.                                           |
+| `comp-media-audio-property`          | A visual-only property is authored on an audio layer.                                                    |
+| `comp-media-narration-clock`         | Narration has a nonidentity local or inherited source clock.                                             |
+| `comp-media-narration-range`         | The complete authorized voice interval does not fit its picture windows.                                 |
+| `comp-schema-version`                | `schemaVersion` is not `composition-1`.                                                                  |
+| `comp-schema-type`                   | A value has the wrong JSON type.                                                                         |
+| `comp-schema-unknown-key`            | An object has a field the contract does not define.                                                      |
+| `comp-schema-value`                  | A value is not one of the allowed literals or enum members.                                              |
+| `comp-schema-format`                 | A string does not match its required format (id, colour, hash).                                          |
+| `comp-schema-range`                  | A number is outside its allowed range.                                                                   |
+| `comp-schema-union`                  | A value matches none of the allowed forms (for example an unknown layer `type`).                         |
+| `comp-schema`                        | Any other structural error.                                                                              |
+| `comp-limit`                         | An array, string or record exceeds its size limit.                                                       |
+| `comp-effect-layer`                  | An effect input slot is missing, undeclared or outside its scope.                                        |
+| `comp-effect-cycle`                  | Layer inputs, mattes or group descendants form a render dependency cycle.                                |
+| `comp-effect-budget`                 | The scoped effect source graph exceeds its bounded work budget.                                          |
+| `comp-effect-registration`           | Effect registration requires a unique ID, valid definition and GPU callback.                             |
+| `comp-effect-surface`                | Effect scratch textures and output must belong to the current callback and meet size/budget constraints. |
+| `comp-effect-version`                | Registered effect versions differ from the captured export snapshot.                                     |
+| `comp-depth-motion`                  | Depth-image local motion exceeds its safe bounded envelope.                                              |
+| `comp-depth-provenance`              | Prepared depth motion, dimensions or request provenance are inconsistent.                                |
+| `comp-image-plane`                   | Image-plane local sampling controls exceed their bounded envelope.                                       |
+| `comp-effect-params`                 | Check evaluated effect controls and their cross-parameter invariants.                                    |
+| `comp-effect-curve`                  | Evaluated color curve points must be bounded, ordered and span the input domain.                         |
+| `comp-effect-bounds`                 | An effect bounds callback failed or returned a non-finite/reversed rectangle.                            |
+| `comp-key-order`                     | Key frames are not strictly increasing.                                                                  |
+| `comp-sample-time-order`             | Baked sample times are not strictly increasing.                                                          |
+| `comp-motion-blur-range`             | The exposure interval or cut list is outside the composition or not increasing.                          |
+| `comp-key-smooth`                    | A smooth key is the first or last key.                                                                   |
+| `comp-key-bezier`                    | `interpolation: "bezier"` without `bezier` handles.                                                      |
+| `comp-key-speed-vector`              | A temporal handle `speed` on a vector or colour property.                                                |
+| `comp-path-tangents`                 | A bezier path's tangent count differs from its vertex count.                                             |
+| `comp-path-vertex-count`             | Keys of one path property have different vertex counts.                                                  |
+| `comp-vector-dimension`              | A three-component vector on a layer without `threeD`.                                                    |
+| `comp-duplicate-id`                  | An id is used twice in its namespace.                                                                    |
+| `comp-reserved-id`                   | A layer or precomp uses the reserved id `comp`.                                                          |
+| `comp-layer-time`                    | `inPoint` is not before `outPoint`.                                                                      |
+| `comp-time-control`                  | A finite precomp loop count requires a loop mode.                                                        |
+| `comp-media-time`                    | Media sampling needs finite source time and a positive safe integer frame count.                         |
+| `comp-media-frame-blending`          | Frame blending must be hold or linear.                                                                   |
+| `comp-layer-limit`                   | More than 2,000 layers across the composition and its precomps.                                          |
+| `comp-parent-missing`                | `parent` names no layer in the same composition.                                                         |
+| `comp-parent-cycle`                  | A parent chain loops.                                                                                    |
+| `comp-parent-depth`                  | A parent chain is deeper than 32.                                                                        |
+| `comp-matte-missing`                 | `trackMatte.layer` names no layer in the same composition.                                               |
+| `comp-matte-self`                    | A layer is its own track matte.                                                                          |
+| `comp-matte-cycle`                   | Track mattes reference each other in a loop.                                                             |
+| `comp-mask-open`                     | A mask path is not closed.                                                                               |
+| `comp-precomp-missing`               | A precomp layer references an unknown precomp.                                                           |
+| `comp-precomp-cycle`                 | A precomp contains itself directly or indirectly.                                                        |
+| `comp-precomp-depth`                 | Precomps nest deeper than 8.                                                                             |
+| `comp-asset-missing`                 | A layer references an unknown asset.                                                                     |
+| `comp-asset-type`                    | A layer references an asset of the wrong type.                                                           |
+| `comp-crop-bounds`                   | An image crop extends beyond its asset.                                                                  |
+| `comp-image-registration`            | Pose registration on an image whose fit is not `contain`.                                                |
+| `comp-state-range`                   | A `state` or `stateFrom` value has no matching source or text state.                                     |
+| `comp-state-mix`                     | Only one of `stateFrom` and `stateMix` is set.                                                           |
+| `comp-text-style-missing`            | A text layer uses an unknown text style.                                                                 |
+| `comp-text-font`                     | A text size above 180 without a pinned font.                                                             |
+| `comp-text-pinned-font`              | Spans, decorations, transitions, text animators or `textBox` on a text layer without a pinned font.      |
+| `comp-text-box-size`                 | A `textBox` text layer without a `size`.                                                                 |
+| `comp-marker-frame`                  | A marker lies at or after `frameCount`.                                                                  |
+| `comp-marker-duration`               | A marker's `duration` runs past `frameCount`.                                                            |
+| `comp-text-span-range`               | A text span ends after the text or a state, or overlaps another span.                                    |
+| `comp-text-span-missing`             | A decoration or text animator names an unknown span.                                                     |
+| `comp-text-font-axis`                | A style, span or animated variable-font axis is absent or outside the pinned font's range.               |
+| `comp-text-locale`                   | A text layer's locale is not recognised.                                                                 |
+| `comp-text-transition`               | Conflicting, overlapping or impossible text transitions.                                                 |
+| `comp-camera-key-range`              | A `camera2d` key lies at or after `frameCount`.                                                          |
+| `comp-light-limit`                   | More than eight authored light layers in one scope, including disabled lights.                           |
+| `comp-light-settings`                | Invalid light type controls, bounded values, cone/falloff relations or finite GPU coefficients.          |
+| `comp-light-receiver`                | Lighting opt-in requires explicitly 3D image, solid, text, shape or flat precomp artwork.                |
+| `comp-camera-settings`               | Native camera optical controls, model or clip planes are invalid after sampling.                         |
+| `comp-3d-constraint`                 | The constraint uses 2D geometry and cannot reference a spatial layer or parent chain.                    |
+| `comp-3d-transform`                  | Spatial transform sampling or parent composition produces non-finite world geometry.                     |
+| `comp-camera-cycle`                  | An active camera cannot depend on a camera-facing parent transform.                                      |
+| `comp-3d-surface-budget`             | A projected local artwork surface exceeds the bounded allocation budget.                                 |
+| `comp-3d-collapse`                   | Perspective precomps render as flat surfaces and cannot collapse transforms.                             |
+| `comp-3d-effect`                     | A projected layer requires a scope-space adjustment or precomp for time echo.                            |
+| `comp-3d-effect-space`               | Cross-plane effect coordinates require an affine relation between planes.                                |
+| `comp-camera-geometry`               | Camera world basis or point of interest is degenerate after parent evaluation.                           |
+| `comp-marker-missing`                | A `cue` names no marker in the same composition.                                                         |
+| `comp-signal-missing`                | A reference names no signal.                                                                             |
+| `comp-constraint-target`             | A constraint names no layer in the same composition.                                                     |
+| `comp-text-animator-target`          | A text animator's `node` is not a text layer in the same composition.                                    |
+| `comp-camera-depth`                  | `cameraDepth` on a parented layer or inside a precomp.                                                   |
+| `comp-camera-jolt`                   | A camera jolt starts at or after `frameCount`.                                                           |
+| `comp-format-size`                   | `format` disagrees with `width` and `height`.                                                            |
+| `comp-metadata-size`                 | Metadata serialises to more than 64 KiB.                                                                 |
+| `comp-json-size`                     | An opaque JSON payload serialises to more than 64 KiB.                                                   |
+| `comp-json-depth`                    | A JSON payload exceeds its payload-specific container-depth bound below its root.                        |
+| `comp-metadata-depth`                | Metadata nests more than 64 container levels below its root.                                             |
+| `comp-driver-source`                 | A driver has none or several of `signal`, `source` and `sum`.                                            |
+| `comp-motion-cycle`                  | Driver, constraint or parent dependencies form a cycle.                                                  |
+| `comp-periodic`                      | Invalid periodic motion window, generator or target form.                                                |
+| `comp-expression-syntax`             | Expression text does not match the grammar (including unknown identifiers).                              |
+| `comp-expression-unknown-function`   | An expression calls a function that is not a registered built-in.                                        |
+| `comp-expression-type`               | An expression's types do not fit an operator, built-in or its target property.                           |
+| `comp-expression-limit`              | An expression exceeds 2,000 characters, 500 AST nodes, 64 nesting levels or a literal argument bound.    |
+| `comp-expression-mismatch`           | An expression's `ast` differs from the AST parsed from its `source`.                                     |
+| `comp-expression-cycle`              | Expression reads form a dependency cycle, alone or with drivers, constraints or parents.                 |
+| `comp-expression-overlap`            | Two expressions or behaviours target the same property or one of its components.                         |
+| `comp-key-speed-dimension`           | A grouped temporal speed tuple does not match its value's dimensions.                                    |
+| `comp-key-speed-spatial`             | A component speed tuple on spatial keys, or `spatialSpeed` on keys without spatial tangents.             |
+| `comp-path-syntax`                   | A property path does not match the grammar.                                                              |
+| `comp-path-scope`                    | A path's precomp layer instance is missing or not a precomp at that level.                               |
+| `comp-path-layer`                    | A path names no layer in its composition.                                                                |
+| `comp-path-property`                 | A path names no property of its layer.                                                                   |
+| `comp-path-type`                     | A driver or periodic motion targets a non-scalar property.                                               |
+| `comp-path-readonly`                 | A path that can only be read is used as a target.                                                        |
+| `comp-shape-id`                      | Shape content or gradient stop IDs are not unique in their collection.                                   |
+| `comp-shape-limit`                   | A native shape tree exceeds its content or nesting limits.                                               |
+| `comp-shape-value`                   | A sampled native shape value is not finite.                                                              |
+| `comp-shape-range`                   | A generated primitive has invalid dimensions or point counts.                                            |
+| `comp-shape-work-limit`              | Generated geometry or reference copies exceed the shared evaluation budget.                              |
+| `comp-shape-coordinate`              | Generated coordinates exceed their finite coordinate envelope.                                           |
+| `comp-shape-flatten-limit`           | Cubic flattening cannot meet its fixed tolerance within the depth limit.                                 |
+| `comp-shape-polygon-limit`           | A polygon operation exceeds its input-vertex complexity limit.                                           |
+| `comp-shape-polygon-coordinate`      | Quantized polygon coordinates are not safe integers.                                                     |
+| `comp-shape-polygon`                 | The pinned polygon library rejected an operation.                                                        |
+| `comp-shape-repeater-range`          | Repeater copies exceed their supported range.                                                            |
+| `comp-shape-repeater-scale`          | A repeated scale power is undefined or not finite.                                                       |
+| `comp-shape-repeater-transform`      | A repeated transform is not finite.                                                                      |
+| `comp-shape-dash-precision`          | Nib dash spacing is below the available coordinate precision.                                            |
+| `comp-shape-follow-empty`            | A follow-path source has no contour or zero arc length.                                                  |
+| `comp-constraint-path`               | A follow-path source is not a native shape layer.                                                        |
+| `comp-feature-unavailable`           | A contract feature whose implementation milestone has not landed.                                        |
+| `comp-provider-bounds`               | Provider bounds have non-positive width or height.                                                       |
+| `comp-provider-unavailable`          | A versioned content provider is not registered in this renderer.                                         |
+| `comp-provider-duplicate`            | A provider id was registered more than once.                                                             |
+| `comp-provider-params`               | A provider payload fails its registered schema.                                                          |
+| `comp-provider-asset`                | A provider uses an undeclared, missing or incompatible asset.                                            |
+| `comp-camera-coverage`               | A persisted story image cover leaves the viewport uncovered or samples transparent pixels.               |
+| `comp-adapter-unsupported`           | A family feature is not supported by the current adapter slice.                                          |
+| `comp-adapter-limit`                 | Baking an adapter scene would exceed composition limits.                                                 |
+| `comp-adapter-layout-required`       | Font-dependent geometry needs a pinned-font measurement context before compilation.                      |
 
 ---
 

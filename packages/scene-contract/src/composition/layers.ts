@@ -4,6 +4,19 @@ import { PoseAnchorSchema } from "../character-actions.ts";
 import { TextContainerSchema } from "../story-acting.ts";
 import { PoseRegistrationSchema } from "../story-acting.ts";
 import { compositionTypographyFields } from "./typography.ts";
+import {
+  Native3DBindingSchema,
+  Native3DSourceOverridesSchema,
+} from "./native3d.ts";
+import {
+  MechanismCameraSchema,
+  MechanismCameraKeysSchema,
+  MechanismControlsSchema,
+} from "../mechanism/scene.ts";
+import {
+  MechanismIdSchema,
+  MECHANISM_LIMITS,
+} from "../mechanism/primitives.ts";
 import { ShapeContentsSchema } from "./shapes.ts";
 import { depthImageFields, ImagePlaneSchema } from "./depth-image.ts";
 import {
@@ -123,6 +136,8 @@ export const TransformSchema = z
 
 const layerBase = {
   id: compositionId,
+  native3D: Native3DBindingSchema.optional(),
+  overlayAfter: compositionId.optional(),
   name: label.optional(),
   /** Inclusive, in composition frames. Defaults to 0. */
   inPoint: compFrame.optional(),
@@ -458,6 +473,27 @@ export const AudioLayerSchema = mediaLayer("audio").extend({
   fadeOutCurve: SoundtrackFadeCurveSchema.optional(),
 });
 
+/** A physical world controller; its viewport is the owning composition scope. */
+export const Native3DLayerSchema = z
+  .object({
+    ...layerBase,
+    type: z.literal("native3d"),
+    asset: compositionId,
+    sourceStartFrame: finite.min(0).max(MECHANISM_LIMITS.frames),
+    sourceFps: finite.positive().max(240),
+    controls: MechanismControlsSchema.optional(),
+    camera: MechanismCameraSchema.optional(),
+    cameraKeys: MechanismCameraKeysSchema.optional(),
+    hiddenParts: z
+      .array(MechanismIdSchema)
+      .max(MECHANISM_LIMITS.parts)
+      .optional(),
+    seed: finite.int().min(0).max(2_147_483_647).optional(),
+    ...Native3DSourceOverridesSchema.shape,
+  })
+  .strict();
+export type Native3DLayer = z.infer<typeof Native3DLayerSchema>;
+
 export const CompositionLayerSchema: z.ZodDiscriminatedUnion<
   [
     typeof SolidLayerSchema,
@@ -475,6 +511,7 @@ export const CompositionLayerSchema: z.ZodDiscriminatedUnion<
     typeof VideoLayerSchema,
     typeof SequenceLayerSchema,
     typeof AudioLayerSchema,
+    typeof Native3DLayerSchema,
   ],
   "type"
 > = z.discriminatedUnion("type", [
@@ -493,6 +530,7 @@ export const CompositionLayerSchema: z.ZodDiscriminatedUnion<
   VideoLayerSchema,
   SequenceLayerSchema,
   AudioLayerSchema,
+  Native3DLayerSchema,
 ]);
 
 export type CompositionLayer = z.infer<typeof CompositionLayerSchema>;

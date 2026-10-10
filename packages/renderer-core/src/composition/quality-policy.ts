@@ -21,6 +21,10 @@ export const MOTION_LINT_CODES = [
   "coverage",
   "scale-pop",
   "opacity-pop",
+  "semantic-context-required",
+  "semantic-context-incomplete",
+  "semantic-copy-changed",
+  "semantic-member-reference",
 ] as const;
 export type MotionLintCode = (typeof MOTION_LINT_CODES)[number];
 export type MotionLintDiagnostic = PassageDiagnostic & {
@@ -28,6 +32,19 @@ export type MotionLintDiagnostic = PassageDiagnostic & {
   nodes: string[];
   measured: number;
   shot?: string;
+  readingPurposes?: { id: string; purpose: string }[];
+  classification?:
+    | "declared-reading-hold"
+    | "speech-following-caption"
+    | "declared-physical-proof-hold";
+  speechCaption?: {
+    cueId: string;
+    sourceSha256: string;
+    audioLayer: string;
+    wordsPerSecond: number;
+  };
+  proofPurposes?: { id: string; purpose: string; evidenceSha256: string }[];
+  rawSeverity?: "error" | "warning";
 };
 const nonnegative = z.number().finite().nonnegative();
 const positive = z.number().finite().positive();
@@ -39,8 +56,93 @@ const reading = z
     minimumSeconds: nonnegative.max(60),
   })
   .strict();
+export const CompositionReadingMemberSchema = z
+  .object({
+    layer: z.string().min(1).max(1024),
+    text: z.string().min(1).max(COMPOSITION_LIMITS.maxTextLength),
+    kind: z.enum(["value", "unit", "qualification"]),
+    locale: z.enum(["en", "th"]).optional(),
+  })
+  .strict();
+export const CompositionReadingDeclarationSchema = z
+  .object({
+    id: z.string().min(1).max(200),
+    purpose: z.string().min(1).max(400),
+    start: frame,
+    end: frame,
+    members: z.array(CompositionReadingMemberSchema).min(1).max(16),
+  })
+  .strict();
+export const CompositionSemanticAssociationSchema = z
+  .object({
+    id: z.string().min(1).max(200),
+    purpose: z.string().min(1).max(400),
+    kind: z.enum(["quantity", "phrase"]),
+    start: frame,
+    end: frame,
+    members: z.array(CompositionReadingMemberSchema).min(1).max(16),
+    requiredKinds: z
+      .array(z.enum(["unit", "qualification"]))
+      .max(2)
+      .optional(),
+  })
+  .strict();
+export type CompositionSemanticAssociation = z.infer<
+  typeof CompositionSemanticAssociationSchema
+>;
+export type CompositionReadingDeclaration = z.infer<
+  typeof CompositionReadingDeclarationSchema
+>;
+export const CompositionSpeechCaptionSchema = z
+  .object({
+    id: z.string().min(1).max(200),
+    cueId: z.string().min(1).max(200),
+    purpose: z.string().min(1).max(400),
+    layer: z.string().min(1).max(1024),
+    text: z.string().min(1).max(COMPOSITION_LIMITS.maxTextLength),
+    start: frame,
+    end: frame,
+    sourceSha256: z.string().regex(/^sha256:[a-f0-9]{64}$/),
+    audioLayer: z.string().min(1).max(1024),
+    audioSha256: z.string().regex(/^sha256:[a-f0-9]{64}$/),
+    locale: z.enum(["en", "th"]).optional(),
+  })
+  .strict();
+export type CompositionSpeechCaption = z.infer<
+  typeof CompositionSpeechCaptionSchema
+>;
+export const CompositionPhysicalProofHoldSchema = z
+  .object({
+    id: z.string().min(1).max(200),
+    purpose: z.string().min(1).max(400),
+    layer: z.string().min(1).max(1024),
+    start: frame,
+    end: frame,
+    evidenceSha256: z.string().regex(/^sha256:[a-f0-9]{64}$/),
+    frames: z
+      .array(
+        z
+          .object({
+            frame,
+            plateSha256: z.string().regex(/^sha256:[a-f0-9]{64}$/),
+            physicalSha256: z.string().regex(/^sha256:[a-f0-9]{64}$/),
+          })
+          .strict(),
+      )
+      .min(1)
+      .max(COMPOSITION_LIMITS.maxFrameCount),
+  })
+  .strict();
+export type CompositionPhysicalProofHold = z.infer<
+  typeof CompositionPhysicalProofHoldSchema
+>;
 export const CompositionQualityPolicySchema = z
   .object({
+    semanticProfile: z.enum(["legacy", "require-declared-context"]).optional(),
+    semanticAssociations: z
+      .array(CompositionSemanticAssociationSchema)
+      .max(COMPOSITION_LIMITS.maxLayers)
+      .optional(),
     maxFrozenFrames: frame.optional(),
     pixelChannelThreshold: nonnegative.int().max(255).optional(),
     pixelMinimumChanges: positive
@@ -70,6 +172,18 @@ export const CompositionQualityPolicySchema = z
         body: reading.optional(),
       })
       .strict()
+      .optional(),
+    readingDeclarations: z
+      .array(CompositionReadingDeclarationSchema)
+      .max(COMPOSITION_LIMITS.maxLayers)
+      .optional(),
+    physicalProofHolds: z
+      .array(CompositionPhysicalProofHoldSchema)
+      .max(1000)
+      .optional(),
+    speechCaptions: z
+      .array(CompositionSpeechCaptionSchema)
+      .max(COMPOSITION_LIMITS.maxLayers)
       .optional(),
     coverageLayers: z
       .array(z.string().min(1).max(1024))
@@ -102,7 +216,20 @@ export function resolveCompositionQualityPolicy(
   input: CompositionQualityPolicy,
 ) {
   const { pixelHashes, pixelChangedCounts, evaluation, ...settings } = input;
-  const policy = CompositionQualityPolicySchema.parse(settings);
+  const savedPolicy = comp.metadata?.readingPolicy;
+  if (
+    savedPolicy !== undefined &&
+    (!savedPolicy ||
+      typeof savedPolicy !== "object" ||
+      Array.isArray(savedPolicy))
+  )
+    passageError("comp-lint-policy", "Saved readingPolicy must be an object", {
+      path: "metadata.readingPolicy",
+    });
+  const policy = CompositionQualityPolicySchema.parse({
+    ...savedPolicy,
+    ...settings,
+  });
   if (
     pixelHashes &&
     (pixelHashes.length !== comp.frameCount ||
@@ -199,8 +326,183 @@ export function resolveCompositionQualityPolicy(
       "Shots must cover the complete composition timeline",
       { path: `shots.${shots.length - 1}.end` },
     );
+  const declarationIds = new Set<string>();
+  for (const [index, declaration] of (
+    policy.readingDeclarations ?? []
+  ).entries()) {
+    const path = `readingDeclarations.${index}`;
+    if (declarationIds.has(declaration.id))
+      passageError(
+        "comp-lint-reading-id",
+        "Reading declarations must have unique IDs",
+        { path: path + ".id" },
+      );
+    declarationIds.add(declaration.id);
+    if (
+      declaration.end <= declaration.start ||
+      declaration.end > comp.frameCount
+    )
+      passageError(
+        "comp-lint-reading-range",
+        "Reading interval must be positive and stay inside the composition timeline",
+        { path: path + ".end" },
+      );
+    const members = new Set<string>();
+    for (const [memberIndex, member] of declaration.members.entries()) {
+      if (members.has(member.layer))
+        passageError(
+          "comp-lint-reading-member",
+          "A phrase cannot repeat a layer",
+          { path: path + `.members.${memberIndex}.layer` },
+        );
+      members.add(member.layer);
+    }
+    if (!declaration.members.some((member) => member.kind === "value"))
+      passageError(
+        "comp-lint-reading-value",
+        "A reading declaration requires an explicit value or whole phrase",
+        { path: path + ".members" },
+      );
+  }
+  const associationIds = new Set<string>();
+  for (const [index, association] of (
+    policy.semanticAssociations ?? []
+  ).entries()) {
+    const path = `semanticAssociations.${index}`;
+    if (associationIds.has(association.id))
+      passageError("comp-lint-semantic-id", "Semantic IDs must be unique", {
+        path: path + ".id",
+      });
+    associationIds.add(association.id);
+    if (
+      association.end <= association.start ||
+      association.end > comp.frameCount
+    )
+      passageError(
+        "comp-lint-semantic-range",
+        "Semantic interval must be positive and stay inside the composition timeline",
+        { path: path + ".end" },
+      );
+    const memberIds = new Set<string>();
+    for (const [memberIndex, member] of association.members.entries()) {
+      if (memberIds.has(member.layer))
+        passageError(
+          "comp-lint-semantic-member",
+          "Members cannot repeat a layer",
+          {
+            path: path + `.members.${memberIndex}.layer`,
+          },
+        );
+      memberIds.add(member.layer);
+    }
+    const required = new Set([
+      "value",
+      ...(association.kind === "quantity" ? ["unit"] : []),
+      ...(association.requiredKinds ?? []),
+    ]);
+    for (const kind of required)
+      if (!association.members.some((member) => member.kind === kind))
+        passageError(
+          "comp-lint-semantic-member",
+          `Semantic association requires an explicit ${kind} member`,
+          { path: path + ".members" },
+        );
+  }
+  const proofIds = new Set<string>();
+  let proofFrames = 0;
+  for (const [index, proof] of (policy.physicalProofHolds ?? []).entries()) {
+    const path = `physicalProofHolds.${index}`;
+    const layer = comp.layers.find((layer) => layer.id === proof.layer);
+    const metadata = layer?.metadata?.physicalProof;
+    const captured =
+      metadata && typeof metadata === "object"
+        ? CompositionPhysicalProofHoldSchema.safeParse(metadata)
+        : undefined;
+    proofFrames += proof.frames.length;
+    if (
+      proofIds.has(proof.id) ||
+      proof.end <= proof.start ||
+      proof.end > comp.frameCount ||
+      proof.frames.length !== proof.end - proof.start ||
+      proof.frames.some((row, index) => row.frame !== proof.start + index) ||
+      proofFrames > comp.frameCount
+    )
+      passageError(
+        "comp-lint-proof-hold",
+        "Physical proof holds require unique IDs and bounded complete ordered samples",
+        { path },
+      );
+    proofIds.add(proof.id);
+    if (
+      layer?.type !== "sequence" ||
+      layer.inPoint !== proof.start ||
+      layer.outPoint !== proof.end ||
+      !captured?.success ||
+      JSON.stringify(captured.data) !== JSON.stringify(proof)
+    )
+      passageError(
+        "comp-lint-proof-hold",
+        "Physical proof declarations must match native capture evidence and its complete shot range",
+        { path: path + ".layer" },
+      );
+  }
+  const speechIds = new Set<string>();
+  for (const [index, cue] of (policy.speechCaptions ?? []).entries()) {
+    const path = `speechCaptions.${index}`;
+    const text = comp.layers.find((layer) => layer.id === cue.layer);
+    const audio = comp.layers.find((layer) => layer.id === cue.audioLayer);
+    const asset =
+      audio?.type === "audio"
+        ? comp.assets.find((asset) => asset.id === audio.asset)
+        : undefined;
+    if (
+      speechIds.has(cue.id) ||
+      cue.end <= cue.start ||
+      cue.end > comp.frameCount
+    )
+      passageError(
+        "comp-lint-speech-caption",
+        "Speech cue IDs and complete source intervals must be valid",
+        { path },
+      );
+    speechIds.add(cue.id);
+    const sourceCue = CompositionSpeechCaptionSchema.safeParse(
+      text?.metadata?.speechCue,
+    );
+    if (
+      text?.type !== "text" ||
+      text.textRole !== "body" ||
+      !sourceCue.success ||
+      JSON.stringify(sourceCue.data) !== JSON.stringify(cue) ||
+      text.text !== cue.text ||
+      text.inPoint !== cue.start ||
+      text.outPoint !== cue.end
+    )
+      passageError(
+        "comp-lint-speech-caption",
+        "Speech captions require exact copy and unchanged source cue boundaries",
+        { path: path + ".layer" },
+      );
+    if (
+      audio?.type !== "audio" ||
+      audio.role !== "narration" ||
+      asset?.type !== "audio" ||
+      asset.sha256 !== cue.audioSha256 ||
+      (audio.inPoint ?? 0) > cue.start ||
+      (audio.outPoint ?? comp.frameCount) < cue.end ||
+      (audio.sourceEndSample ?? asset.sampleCount) -
+        (audio.sourceStartSample ?? 0) <
+        ((cue.end - (audio.inPoint ?? 0)) * asset.sampleRate) / comp.fps
+    )
+      passageError(
+        "comp-lint-speech-caption",
+        "Speech captions require pinned narration samples covering their complete cue",
+        { path: path + ".audioLayer" },
+      );
+  }
   return {
     ...policy,
+    semanticProfile: policy.semanticProfile ?? "legacy",
     maxFrozenFrames: policy.maxFrozenFrames ?? 6,
     pixelChannelThreshold: policy.pixelChannelThreshold ?? 4,
     pixelMinimumChanges: policy.pixelMinimumChanges ?? 200,
@@ -242,6 +544,10 @@ export function lintSeverity(
       "coverage",
       "scale-pop",
       "opacity-pop",
+      "semantic-context-required",
+      "semantic-context-incomplete",
+      "semantic-copy-changed",
+      "semantic-member-reference",
     ].includes(code)
       ? "error"
       : "warning")

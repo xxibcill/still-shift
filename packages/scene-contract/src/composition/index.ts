@@ -36,3 +36,7 @@ export {
   compositionProtectedNarration,
   type CompositionProtectedNarration,
 } from "./validate-media.ts";
+
+export * from "./native3d.ts";
+
+export * from "./native3d-edit.ts";

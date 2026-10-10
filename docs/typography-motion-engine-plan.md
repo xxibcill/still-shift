@@ -1,6 +1,6 @@
 # Typography and text motion engine plan
 
-- **Updated:** 2026-09-28
+- **Updated:** 2026-10-09 (restored 2026-10-08 research planning)
 - **Status:** TY1–TY8 implemented on `codex/typography-motion-engine`. The post-implementation review defects and its three production follow-ups are fixed and re-verified. See [review fixes](#review-fixes-2026-09-28) and [follow-up fixes](#follow-up-fixes-2026-09-28).
 - **Baseline:** `1e63aa3` on `main` (story renderer `story-canvas-0.21.0`)
 - **Scope owner decision:** engine primitives and authoring tools only; motion studies are acceptance fixtures, not deliverables (see the [engine tooling plan](story-engine-tooling-plan.md#objective-and-scope), 2026-09-26). The owner named text and typography as the next focus on 2026-09-28.
@@ -304,3 +304,367 @@ The three craft follow-ups from the review are resolved:
 3. **Lint coverage.** `moving-while-read` checks every reading window. `idle-type-motion` requires a cue, signal, or time-overlapping semantic text event, so naming a layer alone cannot suppress it. Unit tests cover later-window motion and a named drift layer.
 
 The measured `animator-handoff-snap` check also now samples the later of the animator end and its final weight key, matching the fixture checks for releases. The focused browser test verifies a release ending after its animator window. The eight typography fixtures, seven preview/export samples and the focused browser test pass after these changes.
+
+## Research disposition (2026-10-08)
+
+**Restored:** 2026-10-09 from the original planning chat. The source statuses,
+reproductions and estimates below describe the recorded `8faae4be` checkpoint,
+not current `main`. Core CE15/CE14 delivery is now complete; review unresolved
+findings against the released source before scheduling any repair. MS0–MS2 retain
+the accepted production requirements. Restoration establishes planning continuity,
+not fresh implementation or runtime acceptance.
+
+This is the detailed disposition within the existing plan, not a new milestone
+series. The [active roadmap](../ROADMAP.md) retains CE15 → CE14 → composition
+closeout → MS0/MS1 → MS1N → MS2. Accept means include in the named phase's scope;
+defer means no scheduled implementation; decline means do not adopt the suggested
+approach. A reproduction task does not authorize a speculative renderer repair.
+
+### Evidence boundary and current baseline
+
+Read the [assessment][ta], [research index][tr], design/review guidance and the
+assessment's font/layout, semantic, workflow, cache and independent review evidence.
+Its final source revision is `f848b9a170d55062f4f716f1d977b6f663b7897b`.
+Fresh v003 exports instead began at `c2473c2369b15067e6f209285aaf694d2c020a64`
+with recorded working-tree drift in `managed-metadata.ts`; the later source
+continuity review is not a fresh f848 runtime qualification. See the
+[v003 packet][tv3] and [final integration addendum][tfinal].
+
+This planning audit inspected local `codex/composition-ce15` HEAD `8faae4be`.
+The two subsequent commits (`61d7b911`, `8faae4be`) repair GPU/Canvas color work
+lifetimes. The only production source changed since f848 is `color-effects.ts`.
+All 60 distinct code-file SHA-256 bindings extracted from the assessment's
+font/layout, semantic, workflow and cache notes still match current files.
+The specific gaps below therefore remained in that recorded source; no new
+runtime reproduction on that HEAD, remote-delivery claim or full gate was asserted.
+Existing owner edits were retained. The original session changed documentation
+only; the 2026-10-09 restoration updates the repository development log.
+
+Reuse completed TY1–TY8, the September review/follow-up repairs, CE4 adapter and
+text-clock work, CE12 linting and CE15 cache/worker checkpoints. In particular,
+font integrity/loading, axes/features, full-run shaping, color-span spacing,
+state preparation, counters, bounds, vertical overrides and target bindings exist.
+Do not rebuild these capabilities or relabel old checks as fresh results. CE12's
+completed default stillness checks and CE15's successful cache fixtures remain
+valid in their recorded scope; neither covers every new assessment input.
+
+Five no-cache Canvas/H264/single-worker v003 outputs have recorded full decode
+and byte/frame identity with v002 (600 frames), supporting only the saved bounded
+visual findings. All five default pixel-lint runs failed. The clips are silent;
+there is no continuous playback, listening, reader, real-phone or broad production
+pass. The precise substituted platform face in SS05 is unknown. The earlier v001
+unused SVG decode failure is superseded by the corrected PNG probes and is not
+accepted here as a general SVG defect. Historical temporary export files that are
+now absent remain dated reported results, not fresh acceptance evidence.
+
+### Phase placement and size estimates
+
+Estimates are planning ranges in active engineering days, including focused
+regressions and evidence preparation, excluding milestone-wide gates and production
+review. They are not deadlines or additive commitments: shared fixtures, font
+metadata and diagnostic plumbing should be implemented once. Re-estimate at the
+phase entry against its then-current code and available production inputs.
+
+| Existing phase                                                | Accepted work                                                                                                               | Priority and estimated incremental scope                                                             |
+| ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| CE15 remaining cache/export acceptance                        | Cached upload reliability and actionable CLI causes, one transport/lifecycle slice                                          | P1; 2–4 days transport plus 1–2 days diagnostics, sharing tests                                      |
+| MS0 baseline/dependency audit                                 | Exact font/copy inventory; confirm reproduction routes and carry forward unresolved evidence                                | P1 font inventory; P2 risk triage; about 1 day shared preparation                                    |
+| MS1 native overlays and portable E01                          | Font gate; declared quantity/phrase contracts; intentional holds; portrait-anchor negative/positive pair; mask reproduction | P1 font work 3–5 days; P2 contracts 2–4, holds 2–4, portrait 1–2; mask probe 0.5–1                   |
+| MS2 reusable authoring, before the relevant treatment is used | Explicit weight/outline choice, count-fit reproduction, Thai segmentation/tracking probes                                   | P2; weight 1–3 days, fit probe 0.5–1, combined Thai probes 1–2                                       |
+| Conditional investment after a named shot demonstrates need   | Continuous genuine font-size relayout; broader shaping or automatic optical layout                                          | P3; unscheduled; font-size prototype/implementation roughly 5–10 days, re-estimate after feasibility |
+
+MS1's complete-quantity and phrase work starts with authored metadata/examples
+using existing primitives. A generalized automatic semantic group compiler is
+only justified by repeated MS2 friction. Risk probes can share the MS0 inventory;
+their scheduled phase owns actual reproduction and any separately sized repair.
+No typography capability expansion is a new prerequisite for CE14 or a reason to
+interrupt CE15's valid in-flight verification.
+
+### Cached export reliability
+
+**Current status: unresolved in source. Classification: observed failure. Accept,
+P1, in [CE15's existing cache acceptance](composition-ce15-plan.md#typography-assessment-export-follow-up-2026-10-08).**
+SS01 cached CLI and API fail on the assessment's recorded run; explicit
+`--workers 1 --cache-static false` exports that same input. The stack identifies
+the per-part guard: non-`Uint8Array` **or** more than 65,536 bytes. The rejected
+part's actual type, size and surface identity were not instrumented. This is not
+proof of total surface overflow, exhausted cache memory or a font error.
+
+The [store](../packages/execution-runtime/src/composition-surface-store.ts),
+[broker](../packages/execution-runtime/src/composition-surface-broker.ts) and
+[client](../packages/execution-runtime/src/composition-surface-client.ts) still
+combine a complete browser byte body with a raw HTTP stream and a fixed per-part
+ceiling. Accept because this is a demonstrated public export blocker within CE15's
+current remit. Depend on its ownership/admission lifecycle; normalize valid stream
+partitioning at the transport boundary or provide equivalently bounded consumption.
+Preserve exact totals, checksum, leases, backpressure, cancellation and aggregate
+budgets. Do not silently disable static caching or loosen aggregate limits.
+
+Acceptance/evidence: capture rejected-part facts in a fresh isolated reproduction;
+exercise valid equal-byte bodies partitioned below, at and above the threshold
+through the real client/broker, including byte and float surfaces. Export exact
+SS01 cached and uncached from the same frozen checkpoint, retain commands/input
+hashes and compare full decode, critical encoded states and repeated outputs.
+Keep malformed types, truncation, extra bytes, checksum/ownership failures,
+cancellation and foreign-output protection negative. Extend affected one/four-worker
+checks; the five old no-cache exports establish no multiworker result. The existing
+oversized-part unit expectation must be retained behind a normalizing adapter or
+replaced with an explicit revised store contract and equally strong budget checks.
+
+### Actionable CLI diagnostics
+
+**Current status: unresolved. Classification: observed failure. Accept, P1, in the
+same CE15 slice; MS1 reuses it.** [CLI exception mapping](../tools/still-shift-cli/src/cli.ts)
+preserves `AnimationEngineError` but masks other failures behind
+`RENDER_FAILED: Unexpected animation command failure` and generic retry advice.
+The [cache review][tcache] and saved CLI/API records demonstrate the lost cause.
+
+Retain existing exit codes and the outer failure envelope. Add bounded, sanitized
+stage/cause details and useful recovery guidance, distinguishing stream type/part,
+aggregate length, checksum and ownership failures. Do not expose broker credentials,
+raw scene contents or unrestricted stacks. Depend on transport error distinctions;
+reuse the same diagnostic path for MS1 receipts instead of building a second mapper.
+Scope is 1–2 days shared with transport and CLI integration tests.
+
+Acceptance/evidence: actual failing CLI commands emit machine-readable and useful
+human diagnostics without requiring an API rerun; known structured errors, unknown
+errors, non-Error reasons and cancellation retain correct semantics. Assert bounded
+cause output and redaction, unchanged exit behavior and no misleading blanket retry.
+Retain failure stdout/stderr alongside the successful repaired cached export.
+
+### Exact-copy font coverage
+
+**Current status: integrity/loading addressed; glyph coverage unresolved.
+Classification: observed failure. Accept, P1, MS0 inventory → MS1 shared font gate.**
+SS05's Plex-only Thai compiles/exports without a coverage diagnostic;
+`systemFontLayers: []` describes explicitly unpinned layers and does not prove
+absence of glyph fallback. [Font loading](../packages/renderer-core/src/prepared-fonts.ts)
+and [metrics parsing](../packages/renderer-core/src/font-metrics.ts) still omit
+`cmap` coverage. Accept because portable native overlays need predictable copy.
+
+Inspect exact reachable text per resolved font run, including states, corrections,
+formatted counts, case transformations and punctuation. Reuse bounded prepared-value
+collection; account explicitly for controls, combining marks and unsupported font
+formats. A Unicode coverage check is necessary evidence, not proof of shaping or
+platform resolution. Keep the current SFNT TTF/OTF scope; do not add WOFF2/collections
+incidentally. Share parsing/preparation across native and adapter routes.
+
+Acceptance/evidence: exact SS05 negative names font hash/id, affected text/span and
+missing code points; the Noto SS02 control covers its copy and preserves inspected
+marks. Include mixed Latin/Thai, state-generated characters and malformed metadata.
+For an explicitly allowed fallback, retain declared policy, exact pinned fallback
+assets and actual resolution evidence where measurable; otherwise say unmeasured
+and do not certify exact-face rendering. Preserve historical warning behavior for
+legacy inputs while reporting the gap; use an explicit strict production check for
+MS1. Never silently replace a pinned font. Coverage and identity together estimate
+3–5 days plus the shared MS0 inventory.
+
+### Truthful font cut and axis identity
+
+**Current status: axis range/feature validation exists; static identity incomplete.
+Classification: design-contract gap, source established. Accept, P1, merged with
+the font gate above.** Hashes bind bytes; authored weight descriptors are accepted
+without reading font names or `OS/2.usWeightClass`. The assessment did not freshly
+render an intentionally misdeclared static weight, so do not call that an observed
+pixel failure. See the [font/layout audit][tfont].
+
+Record actual family/subfamily and cut/style metadata with variable axes/defaults;
+validate authored declarations against the applicable static or variable contract.
+A variable face's default weight is not its only valid instance. Synthetic bold or
+an outline must not be reported as a genuine cut. Preserve old JSON interpretation;
+add diagnostics/strict-profile behavior before considering breaking validation.
+
+Acceptance/evidence: Plex Semibold declared 600 passes and a deliberately false
+static declaration is diagnosed; real Noto ranges/instances pass and unsupported
+axes/ranges fail. Bind exact files and resolved instances, show compiled/rendered
+route and encoded endpoints. Loading success alone cannot close this item. Font
+coverage/identity validation must not perturb CE15 cache keys or resource ownership
+without corresponding fingerprint/version and affected parity checks.
+
+### Genuine weight versus outline emphasis
+
+**Current status: both routes implemented; semantic distinction not explicit enough.
+Classification: design-contract gap. Accept, P2, MS2 reusable authoring.**
+[Event compilation](../packages/scene-contract/src/typography-events.ts) selects
+`wght` only if every targeted run has positive headroom; otherwise it outlines.
+`amount` consequently switches between axis units and outline pixels. Existing
+unit/browser tests cover these implementations; they do not make the fallback a
+truthful genuine-weight recipe.
+
+Expose requested and resolved treatment, units, font instance/range and fallback
+reason. New genuine-weight requests must report unavailable headroom rather than
+silently change treatment. Keep legacy automatic events numerically/pixel compatible
+and report their resolved route; explicit outline remains a valid graphic treatment.
+Depend on MS1 font identity and reuse compiled animators. Do not introduce another
+renderer or add visual vocabulary to frozen family schemas; story conveniences
+may compile to the existing native primitives. Estimate 1–3 days.
+
+Acceptance/evidence: genuine variable weight, static face, maximum-weight face and
+mixed-run headroom cases have explicit resolved receipts; test release/end boundaries
+and backward seeks. Retain actual compiled axis versus stroke values and encoded
+states, including natural English gaps. A changed raster alone is insufficient to
+prove genuine weight; legacy fallback behavior remains covered.
+
+### Continuous genuine font-size relayout
+
+**Current status: absent; geometric scale and genuine axis variants already exist.
+Classification: proposed capability. Defer, P3, conditional investment.**
+[Animator properties](../packages/scene-contract/src/motion-craft.ts) have scale,
+tracking, leading and axes, but no continuous size-relayout property. Do not relabel
+raster scaling or `wght` as the research's continuous 128→196 px size fixture.
+There is no named MS1 requirement that justifies its layout/cache cost yet.
+
+If scheduled, begin with a bounded native-composition design: deterministic sampled
+sizes, wrapping/reflow semantics, anchor stability, complete ink bounds, resource
+budgets, cache identity and exposure/fractional-frame behavior. Depend on shared
+font preparation and CE15 budgets. Preserve existing scale semantics and version
+any new output contract; do not expand frozen family visual schemas. Estimate
+5–10 days subject to feasibility and scope, with no implementation commitment.
+
+Acceptance/evidence: exact genuine size metrics and rerasterized intermediate
+states for the 128→196 case, a deliberate line-wrap boundary, reverse/random seeks,
+encoded preview/export parity and bounded cache/memory cost. Compare endpoints
+with real static typesetting, not only enlarged raster pixels. A named production
+shot must demonstrate why existing treatments are insufficient before scheduling.
+
+### Complete quantity, unit and qualification associations
+
+**Current status: grouping/formatting exists; semantic association incomplete.
+Classification: design-contract gap, demonstrated by an intentional negative.
+Accept, P2, MS1 overlay contract; generalize only as needed in MS2.**
+SS03 resolves to the complete group; SS04 deliberately renders only `12` before
+unit/qualification appears at frame 70. That faithfully rendered input is not a
+renderer defect. Generic opacity/reading warnings do not identify its missing
+semantic context. Count formatting and width reservation do not establish factual
+intermediate values.
+
+Add explicit member IDs, units, required qualification and designated reading
+intervals to the authored review/project contract, with stable references through
+save/reload/compile. Validate jointly readable context over those intervals and
+review the entrance for misleading value-only states. Reuse normal groups and
+roles. Never infer semantic associations or historical truth from adjacency or
+numeric interpolation. Endpoint presentation is the default when intermediates
+lack an authored meaning. Scope 2–4 days shared with phrase contracts.
+
+Acceptance/evidence: retain SS03 and SS04; the negative reports association/member
+and exact interval, while an authored complete English/Thai control passes the
+association check. Inspect native and declared reduced encoded first/change/resolved
+states, especially low-alpha qualifiers: equal opacity is not equal readability.
+Wrong/missing IDs, replaced copy, units changing mid-count and saved-project
+round trips remain covered. Legacy unannotated scenes still render with an explicit
+unassessed semantic status; a new strict project profile requires declared context.
+
+### Intact phrase treatments
+
+**Current status: explicitly authorable and observed for one Noto phrase; no general
+safe-phrase guarantee. Classification: design-contract gap. Accept, P2, merged into
+MS1 authored treatments; decline a new segmentation engine for this capability.**
+Full selection, zero stagger, all-text anchor and no mask already express intact
+motion. Semantic `reveal` instead defaults to staggered lines/words and a line mask.
+Reuse an explicit recipe/brief, preserving meaningful phrases, technical identifiers,
+negation and authored breaks. Do not change existing reveal defaults globally or
+claim that Unicode graphemes encode meaning. Depend on exact font/copy checks.
+
+Acceptance/evidence: compiled treatment retains full selection and phrase timing;
+English spacing and SS02 Thai marks survive entry/change/end encoded states,
+backward seeks and saved-project reload. Include `Wi-Fi 6E`, `USB-C 30W` and a
+quantity/negation example without splitting their intended association. This closes
+only the inspected full-phrase route; finer Thai units remain the separate probe below.
+
+### Intentional reading holds and motion diagnostics
+
+**Current status: configurable CE12 thresholds/roles/shots exist; purpose-specific
+holds and reading eligibility remain incomplete. Classification: design-contract
+gap with observed default-lint failures. Accept, P2, MS1 reading/label verification.**
+Use [existing policy](../packages/renderer-core/src/composition/quality-policy.ts)
+and [typography analysis](../packages/renderer-core/src/typography-quality.ts).
+Do not recreate CE12 or the older authoring-feedback plan. Its default six frozen
+comparisons is an intentional continuous-motion policy, not a universal reading
+rule. SS01's 1.20-second eligible interval against a 1.33-second heuristic is not
+measured unreadability; text-clock changes can interrupt reading eligibility even
+when copy remains present. Completed settled/idle clock cache work does not resolve
+that distinction.
+
+Add bounded purpose/interval metadata through the existing quality-policy seam;
+report justified reading holds separately while retaining raw measurements and
+unexplained freezes. Define eligibility from stable, sufficiently visible/readable
+content, including color-only emphasis and authored locale, rather than assuming
+all animation clocks destroy reading time. Record policy identity in reports;
+persistence belongs in the portable project/sidecar, not frame rendering. Default
+unannotated continuous-motion behavior stays unchanged. Estimate 2–4 days; share
+quantity/label interval fixtures and dependencies with MS1.
+
+Acceptance/evidence: default SS01–SS05 reports remain reproducible; an intentional
+readable hold is distinguished from an unintentional freeze or blank hold. Color-only
+emphasis with adequate contrast can retain eligible reading time; content replacement,
+low opacity, significant movement, SS03's clamp velocity change and SS04's late
+opacity jump remain detectable. Test 24/30 fps, interval boundaries, Thai/English
+locale, save/reload and unchanged pixels. Preserve MS1's 30 consecutive fully readable
+label frames and any longer text-specific requirement. Decline filler motion,
+blank padding, silence or slowed narration as heuristic repairs; fix copy, hierarchy,
+event order or purposeful timing instead. Playback/listening remain separate review.
+
+### Scoped validation of source-audited risks
+
+Accept the following **reproductions**, P2, not an assumed defect list. Each needs
+an exact valid input and saved failure/control before a repair is scoped. If the
+predicted failure does not reproduce, record that result and retain only the supported
+contract limitation. No blanket renderer rewrite or baseline regeneration follows.
+
+| Finding and current code status                                                                                                                                                              | Classification, disposition, phase and dependencies                                                                                                                              | Acceptance and retained evidence; compatibility and size                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Mixed-size masks: line metrics expand for spans, but non-none masks still use base layout ascent/descent in `typography-renderer.ts`; native bounds already include more than authored boxes | Source-audited risk. Accept MS1 reproduction beside overlay checks; depend on real loaded fonts and the existing mask path                                                       | Base 36/inline 96, Latin descenders and Thai upper/lower marks; line/word masks versus unmasked control at entry, active and resolved frames, including reverse seeks. Distinguish intentional reveal clipping from unintended lost ink. Save encoded samples and independent visual recheck. Probe 0.5–1 day; if confirmed, likely 1–2 days scoped extent repair, with versioned intended pixel changes and unchanged ordinary masks                                                                                                               |
+| Generated count values in shared fitting: `prepareTextFits` uses explicit states, while `typographyTextValues` enumerates formatted counts; width reservation already exists                 | Source-audited risk. Accept MS2 reproduction before reusable count+fit use; depend on a permitted shared-fit caller, not direct native authoring                                 | Valid `1`→`2`, decimals 2, tabular pinned text in a narrow box; run fit then raster preparation and compare every generated string. Fit once for all reachable values or reject unsupported combination before claiming success. Keep 10,000-value budget, stable anchor and existing numeric-binding+fit rejection. Probe 0.5–1 day; possible 1–2 day repair sharing reachable-value collection; no new native auto-fitter                                                                                                                         |
+| Finer Thai segmentation: complete runs are painted, then grapheme-estimated slices receive poses; no actual browser shaping-cluster map                                                      | Source-audited risk. Accept MS2 probe; defer finer-unit support claims/architectural replacement until results. Depend on MS1 coverage and fixed Noto bytes/axes                 | Six research stress strings plus production copy; intact control versus independent translation/rotation/opacity/retype, color boundary and size/font boundary. Inspect consecutive encoded windows, marks, ink overlap and final states at native/declared reduced sizes. Record which units are supported; no blanket broken-Thai claim. Share 1–2 days with tracking; shaping-engine replacement needs a new scoped estimate                                                                                                                     |
+| Script-sensitive tracking: opt-in size-only `opticalTracking(96)` yields −25/1000 em (−2.4 px); ordinary default is zero                                                                     | Source-audited risk; source-proven policy mismatch, no observed defect in SS02. Accept MS2 paired probe and explicit script-aware authoring warning; defer global default change | Same exact Thai/mixed copy, font and size with tracking 0 versus opt-in formula. Retain resolved values and encoded mark/gap checks. Explicit authored tracking wins; existing outputs do not silently change. A new safe profile must specify script/run behavior and justify any prohibition. No universal automatic optical-spacing claim; share Thai probe effort                                                                                                                                                                               |
+| Portrait annotation anchors: vertical overrides, crop/world mapping and outside-crop rejection exist; semantic target and optical placement are authored                                     | Source-audited risk. Accept MS1 portrait test, extend existing MS2 anchor recipes; no new automatic recomposition engine                                                         | Recreate lost-label/leader negative and corrected portrait control, preserve target ID through crop/scale/rotation, caption/contact exclusions and text size changes. Check source/world endpoint analytically and intended part/clearance in encoded entry/mid/exit frames. Include named center without measured text size; require explicit geometry/offset instead of inferred ink center. Save/reload and reverse seeks; 1–2 days shared with E01 anchor tests. Existing coordinate semantics unchanged; repair only a reproduced engine fault |
+
+### Architectural decisions and implementation evidence
+
+1. Keep one composition/typography implementation. Shared font facts, reachable
+   text and compiled treatments feed native rendering, adapters and diagnostics.
+   Browser shaping remains the baseline; `cmap` and grapheme segmentation do not
+   substitute for shaped-pixel inspection. Do not adopt a new shaping engine now.
+2. Preserve the frozen family visual vocabulary and existing scale/reveal/weight
+   defaults. New semantic authoring recipes compile to existing primitives;
+   genuinely new visual properties belong in native composition. Use explicit
+   profile/version transitions for stricter validation or changed pixels, with
+   migration notes and affected compatibility checks.
+3. Keep semantic association and reading intent in the existing portable authoring/
+   quality-policy path, with stable layer IDs, input hashes and report policy
+   identity. They do not change pixels implicitly. No duplicate lint service,
+   typography-only exporter or automatic factual-quantity inference is planned.
+4. Cache transport accepts valid bytes independently of HTTP partitioning while
+   retaining resource and integrity bounds. Errors carry sanitized actionable
+   causes. MS1 consumes that CE15 work rather than duplicating it.
+5. Technical correctness, exact-font evidence, semantic completeness, selected-frame
+   readability, normal-speed playback/listening and human comprehension are separate
+   verdicts. Neither font readiness, successful export nor lint alone establishes
+   production quality. Real-phone results cannot be inferred from 320/360 bitmap
+   reductions; project permissions and natural narration remain binding.
+
+When implementation is scheduled, retain a packet keyed by exact source/dirty diff,
+input/font hashes, toolchain, backend, renderer/evaluator, FPS, dimensions, codec,
+workers and cache mode. Save commands, full diagnostics, compiled route, negative
+controls, encoded boundary picks, full technical decode and repeat-output comparisons
+where export changes. Seek/preview checks alone do not replace final-file review.
+Explicitly label unmeasured platform resolution, playback, listening and reader claims.
+
+Use existing local pnpm commands for relevant unit/runtime/CLI and browser suites:
+`test:runtime`, `test:integration`, `test:browser:composition-surfaces`,
+`test:browser:composition-parallel`, `test:browser:typography`,
+`test:browser:typography:fixtures`, `test:browser:composition-typography-adapter`,
+`test:browser:composition-provider-typography` and `test:browser:composition-quality`,
+selecting affected checks at each slice. Preserve thresholds and frozen baselines.
+Before expensive runs verify pinned tools, Python, imports, browser startup and
+isolated optimizer/config caches. No fixture regeneration in the active owner
+checkout. Scoped repairs do not require a new full gate; CE15 and later milestones
+still require their original acceptance gates, with cost explained before starting.
+This planning session runs document checks only; GitHub Actions remain prohibited.
+
+[ta]: </Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/assessment.md>
+[tr]: </Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/README.md>
+[tv3]: </Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/packets/v003/README.md>
+[tfinal]: </Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/qa/final-integration-addendum.md>
+[tcache]: </Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/qa/cache-failure-independent-review.md>
+[tfont]: </Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/fonts-and-layout.md>

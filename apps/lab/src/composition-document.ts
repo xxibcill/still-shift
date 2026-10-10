@@ -3,6 +3,7 @@ import {
   type Composition,
   type CompositionDiagnostic,
 } from "../../../packages/scene-contract/src/index.ts";
+import { native3DEditDiagnostics } from "../../../packages/scene-contract/src/composition/native3d-edit.ts";
 
 export type JsonPath = readonly (string | number)[];
 export class CompositionEditError extends Error {
@@ -65,6 +66,7 @@ export class CompositionDocument {
   private proposals = new WeakSet<object>();
   private readonly maxEntries: number;
   private readonly maxBytes: number;
+  private readonly authoredBase: Composition;
   constructor(
     document: Composition,
     limits: { entries?: number; bytes?: number } = {},
@@ -82,6 +84,7 @@ export class CompositionDocument {
         "History needs at least two entries and a positive serialized-byte budget",
       );
     const initial = this.entry(structuredClone(document), "Loaded source");
+    this.authoredBase = initial.document;
     this.entries = [initial];
     this.saved = initial.serialized;
   }
@@ -136,6 +139,11 @@ export class CompositionDocument {
     const draft = structuredClone(this.document);
     edit(draft);
     const candidate = this.entry(draft, label);
+    const native = native3DEditDiagnostics(
+      this.authoredBase,
+      candidate.document,
+    );
+    if (native.length) throw new CompositionEditError(native);
     if (candidate.serialized === this.entries[this.cursor]!.serialized)
       return undefined;
     return this.proposal(candidate.document, label, "edit", this.cursor + 1);

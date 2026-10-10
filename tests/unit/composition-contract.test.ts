@@ -42,6 +42,115 @@ const minimalComposition = (): Composition => ({
   layers: [],
 });
 
+// Native admission has its own declared fixture: ordinary spatial CE1 fixtures
+// cannot share a scope with a native controller. Keep all visual inputs intact.
+const nativeContractComposition = (): Composition => ({
+  ...minimalComposition(),
+  id: "native-contract",
+  assets: [
+    pinnedFont(),
+    {
+      id: "physical-scene",
+      type: "native3d",
+      path: "scene.json",
+      sha256: `sha256:${"a".repeat(64)}`,
+      format: "mechanism-scene-1",
+      textureFont: "display",
+    },
+  ],
+  layers: [
+    {
+      id: "physical-world",
+      type: "native3d",
+      asset: "physical-scene",
+      sourceStartFrame: 0.25,
+      sourceFps: 30,
+      camera: {
+        position: [0, 0, 10],
+        target: [0, 0, 0],
+        up: [0, 1, 0],
+        fovDegrees: 45,
+        near: 0.1,
+        far: 100,
+      },
+      cameraKeys: [
+        {
+          frame: 0,
+          position: [0, 0, 10],
+          target: [0, 0, 0],
+          fovDegrees: 45,
+          easing: "linear",
+        },
+      ],
+      controls: { slider: { travel: 0.5, contactMode: "free" } },
+      hiddenParts: ["board"],
+      seed: 42,
+      partOverrides: {
+        hook: {
+          visible: true,
+          transform: {
+            position: [0.1, 0, 0],
+            rotation: [0, 0, 0],
+            scale: [1, 1, 1],
+            pivot: [0, 0, 0],
+          },
+        },
+      },
+      materialOverrides: {
+        steel: {
+          color: "#b7c2c5",
+          roughness: 0.4,
+          metalness: 0.9,
+          opacity: 1,
+          alphaMode: "mask",
+          alphaCutoff: 0.5,
+          side: "double",
+          emissive: "#000000",
+          emissiveIntensity: 0,
+        },
+      },
+    },
+    {
+      id: "world-artwork",
+      type: "solid",
+      size: [32, 16],
+      color: "#ffffff",
+      native3D: {
+        role: "world-graphic",
+        sceneLayer: "physical-world",
+        part: "hook",
+        transform: {
+          position: [0, 0, 1],
+          rotation: [0, 0, 0],
+          scale: [1, 1, 1],
+          pivot: [0, 0, 0],
+        },
+        pixelsPerUnit: 100,
+        originPixels: [16, 8],
+        side: "double",
+        alphaMode: "mask",
+        alphaCutoff: 0.5,
+      },
+    },
+    {
+      id: "screen-annotation",
+      type: "group",
+      size: [100, 100],
+      overlayAfter: "physical-world",
+      native3D: {
+        role: "screen-anchor",
+        sceneLayer: "physical-world",
+        anchor: "hook.pullProof",
+        visibilityPolicy: "offscreen-indicator",
+        visibleWhen: "shown",
+        insetPixels: 12,
+        offsetPixels: [8, 0],
+        target: { kind: "visibility" },
+      },
+    },
+  ],
+});
+
 type Doc = ReturnType<typeof everyField> & Record<string, unknown>;
 type AnyLayer = Record<string, unknown> & { id: string; type: string };
 const layerOf = (doc: Doc, id: string) =>
@@ -573,7 +682,14 @@ describe("composition-1 fixtures", () => {
       ),
     ) as Composition;
     expect(validateComposition(nativeMedia).ok).toBe(true);
-    expect(missing(CompositionSchema, [doc, nativeMedia])).toEqual([]);
+    const nativeContract = nativeContractComposition();
+    expect(validateComposition(nativeContract)).toMatchObject({
+      ok: true,
+      diagnostics: [],
+    });
+    expect(
+      missing(CompositionSchema, [doc, nativeMedia, nativeContract]),
+    ).toEqual([]);
     expect(missing(PrecompSchema, doc.precomps!)).toEqual([]);
     expect(
       missing(CompositionMarkerSchema, [
@@ -586,14 +702,21 @@ describe("composition-1 fixtures", () => {
       expect(
         missing(
           option,
-          [...doc.assets, ...nativeMedia.assets].filter((a) => a.type === type),
+          [
+            ...doc.assets,
+            ...nativeMedia.assets,
+            ...nativeContract.assets,
+          ].filter((a) => a.type === type),
         ),
         type,
       ).toEqual([]);
     }
-    const allLayers = [doc, ...doc.precomps!, nativeMedia].flatMap(
-      (s) => s.layers,
-    );
+    const allLayers = [
+      doc,
+      ...doc.precomps!,
+      nativeMedia,
+      nativeContract,
+    ].flatMap((s) => s.layers);
     // CE4 providers have their own fixture; keep the CE1 acceptance file unchanged.
     const providers = JSON.parse(
       readFileSync(

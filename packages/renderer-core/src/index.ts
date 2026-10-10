@@ -126,12 +126,24 @@ export { requiresCompositionTextLayout } from "./composition/adapters/layout.ts"
 export {
   analyzeCompositionQuality,
   CompositionQualityPolicySchema,
+  CompositionSemanticAssociationSchema,
+  CompositionReadingMemberSchema,
   MOTION_LINT_CODES,
   type CompositionQualityPolicy,
+  type CompositionQualityReport,
+  type CompositionSemanticAssociation,
+  type SemanticAssociationAssessment,
+  type SemanticViolationInterval,
   type MotionLintDiagnostic,
   type MotionLintCode,
 } from "./story-quality.ts";
 export { analyzeRenderedCompositionQuality } from "./composition/quality-render.ts";
+export {
+  compositionQualityFrame,
+  compositionQualityTree,
+  type CompositionQualityFrame,
+  type CompositionQualitySample,
+} from "./composition/quality-samples.ts";
 
 export {
   validatePassageCompositions,
@@ -169,3 +181,9 @@ export {
   resizeRenderStorage,
   withManagedMemory,
 } from "./managed-memory-context.ts";
+
+export * from "./mechanism/index.ts";
+export * from "./font-identity.ts";
+export { collectFontTextRuns } from "./font-copy.ts";
+
+export * from "./native3d/index.ts";

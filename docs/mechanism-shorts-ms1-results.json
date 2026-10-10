@@ -1,0 +1,734 @@
+{
+  "schemaVersion": "mechanism-milestone-results-1",
+  "milestone": "MS1",
+  "date": "2026-10-10",
+  "status": "software-verified-in-stages-human-review-pending",
+  "owner": "Codex",
+  "branch": "codex/mechanism-ms1",
+  "base": "e6eb7b06e3b5a042be2c1e2568a1a84cf9c041ad",
+  "prerequisite": {
+    "commit": "d55908fa",
+    "pr": "https://github.com/xxibcill/still-shift/pull/51",
+    "merged": false
+  },
+  "checkpoints": [
+    {
+      "date": "2026-10-10",
+      "slice": "shared-sanitized-failure-diagnostics",
+      "status": "implemented-focused-verified",
+      "behavior": "Optional bounded stage/path/nextAction/cause chain across engine and CLI. Existing error codes retained; unknown command causes choose classified recovery instead of blanket retry. Secrets/stacks/environment objects omitted; large diagnosticsJson remains parseable.",
+      "fullGate": "not-run-in-this-checkpoint"
+    },
+    {
+      "date": "2026-10-10",
+      "slice": "shared-scene-evaluator-font-and-solid-geometry",
+      "status": "implemented-focused-verified",
+      "behavior": "Versioned bounded scene/mesh/episode/sidecar/frame contracts, immutable prepared mesh catalog, independent pure hierarchy/camera/contact/rivet state, strict opt-in actual-font identity/copy preflight, reusable solid tape-hook geometry. Through-slot endpoint bevel clearance widened from illustrative source 0.095 to 0.115 after an actual mesh intersection negative. No manufacturing claim or full E01 render acceptance.",
+      "fullGate": "not-run-in-this-checkpoint"
+    },
+    {
+      "date": "2026-10-10",
+      "slice": "first-party-bounded-capture-and-independent-mechanics",
+      "status": "implemented-focused-verified",
+      "behavior": "Pinned software Three.js capture with manifest/sidecar/PNG identities, bounded requests, cancellation/failure retention and immutable validated cache. Independent checker reconstructs authored transforms, controls, contact faces, travel and stationary rivets rather than trusting copied assertion flags. Real nine-shot portrait probe and contact export performed; full E01 and final acceptance remain in flight.",
+      "fullGate": "not-run-in-this-checkpoint"
+    },
+    {
+      "date": "2026-10-10",
+      "slice": "supported-episode-lifecycle-and-native-typography",
+      "status": "implemented-focused-verified-acceptance-in-progress",
+      "behavior": "Versioned bounded CLI discovery/schemas/inspect/deps/save/patch/prepare/compile/preview/render/check/package; actual source font identity/axes/license, immutable plates, independent final audio and media identities. Mixed-size line/word masks repaired after exact reproduced pixel-loss negatives. Explicit reading associations preserve raw faults and unannotated defaults. Native full-timeline plate group preserves required coverage. Full E01 exposes real caption-origin/painter-order faults; fixes and speech-specific policy still being verified.",
+      "fullGate": "not-run-in-this-checkpoint"
+    },
+    {
+      "date": "2026-10-10",
+      "slice": "native-caption-order-and-portable-result-closure",
+      "status": "implemented-focused-verified-full-E01-rerun-pending",
+      "behavior": "Actual decoded frame0 exposed plates painting above all native copy. Correct top-layer order and wrap origin restored; source-bound speech cues remain intact across cuts. Explicit stationary proof declarations retain raw lint measurements, protect moving/faint/lost copy, and require human review. Delivery copies/rebases verified scene/export/lifecycle/report closure and rejects stale/swapped finals.",
+      "fullGate": "not-run-in-this-checkpoint"
+    },
+    {
+      "date": "2026-10-10",
+      "slice": "portable-alias-closure-and-fresh-session-overlap-repair",
+      "status": "implemented-focused-verified",
+      "behavior": "Resolve authored paths against lexical directories before canonicalization; actual macOS tmp aliases retain font/audio/plate closure. One fresh-session revision-aware position patch restores69 readable TRAVEL frames with all696 actual clean-plate hashes unchanged and zero new3D renders. Nested render checks expose located findings through compact CLI receipts. Monotonic whole-lifecycle stage telemetry added.",
+      "fullGate": "pending"
+    },
+    {
+      "date": "2026-10-10",
+      "slice": "installed-archive-isolated-E01-and-text-only-proof",
+      "status": "implemented-installed-verified",
+      "sourceCommit": "ff82eae91f96d4517b572b6a8d1e5954f9e5f492",
+      "behavior": "Exact archive passes26 offline package checks. OS-denied consumer validates/reloads737-file delivery and exports both original and TRAVEL RANGE696-frame finals with independent mechanics/layout/audio QA, unchanged696 actual clean plates, zero new3D renders and current native/final identity closure. Consumer-only live-libproc process inspection exception is explicit; historical failed fresh capture and final QA remain retained.",
+      "fullGate": "in-progress"
+    },
+    {
+      "date": "2026-10-10",
+      "slice": "persisted-complete-semantic-context",
+      "status": "implemented-focused-verified-encoded-packet-in-progress",
+      "behavior": "Explicit quantity/phrase associations assess entire presentation intervals independently of longest reading holds. Strict profile requires context; legacy unannotated scenes report unassessed. Missing/faint context, copy/unit changes and invalid references retain exact member/frame faults. Shared saved-policy resolution reaches CLI/Lab and pixel thresholds; normalized policy/version and measured value-frame counts are reported. No quantity inference or rendered-glyph/factual truth claim.",
+      "fullGate": "pending-rerun"
+    },
+    {
+      "date": "2026-10-10",
+      "slice": "actual-displayed-copy-and-public-report-closure",
+      "status": "implemented-focused-verified-encoded-packet-in-progress",
+      "behavior": "Reproduced count endpoint false pass repaired with existing display/source-clock and correction-onset resolvers. Actual held blend endpoints are readable; mixed/partial and persistent correction artwork cannot establish intact declared context. Public schemas/report types and persisted strict installed pixel lint regression are included. No rendered pixel change or glyph/factual acceptance inferred.",
+      "record": "./mechanism-shorts-ms1-semantic-display-results.json",
+      "fullGate": "pending-rerun"
+    }
+  ],
+  "verification": [
+    {
+      "command": "vitest run failure-diagnostics,cli-error,animation-error --maxWorkers=2",
+      "status": "passed",
+      "files": 3,
+      "tests": 7
+    },
+    {
+      "command": "schema:generate; prettier and eslint on diagnostic slice",
+      "status": "passed"
+    },
+    {
+      "command": "focused mechanism contract/evaluator",
+      "status": "passed",
+      "tests": 17
+    },
+    {
+      "command": "focused font identity/preparation/typography tests",
+      "status": "passed",
+      "tests": 75,
+      "files": 6
+    },
+    {
+      "command": "focused solid geometry tests",
+      "status": "passed",
+      "tests": 6
+    },
+    {
+      "command": "pnpm build after shared module integration",
+      "status": "passed",
+      "log": "/tmp/still-shift-ms1-root-build-1.log"
+    },
+    {
+      "command": "owned-file lint/format, font package boundaries and diff hygiene",
+      "status": "passed",
+      "details": "docs/mechanism-shorts-ms1-font-results.json"
+    },
+    {
+      "command": "focused geometry/assertions/capture",
+      "status": "passed",
+      "files": 3,
+      "tests": 24,
+      "seconds": 20.49,
+      "details": "mechanism-shorts-ms1-capture-results.json"
+    },
+    {
+      "command": "pinnedNode22 CLI/package/audio/failure receipts sequenced group",
+      "status": "passed",
+      "tests": 25,
+      "files": 4,
+      "log": "/tmp/still-shift-ms1-api-fault-audio-final.log"
+    },
+    {
+      "command": "focused typography/reading/native overlay",
+      "status": "passed",
+      "tests": 186,
+      "details": "mechanism-shorts-ms1-overlay-results.json"
+    },
+    {
+      "command": "focused geometry/mechanics/capture/alpha bridge",
+      "status": "passed",
+      "tests": 27,
+      "details": "mechanism-shorts-ms1-capture-results.json"
+    },
+    {
+      "command": "pnpm build; pnpm check:boundaries",
+      "status": "passed",
+      "logs": [
+        "/tmp/still-shift-ms1-root-build-5.log",
+        "/tmp/still-shift-ms1-root-boundaries-2.log"
+      ]
+    },
+    {
+      "command": "pnpm schema:generate then schema:check; frozen offline dependencies",
+      "status": "passed",
+      "notes": "All seven mechanism schemas now drift-checked. CLI direct Zod4.1.5 added; only three importer lines change existing locked graph."
+    },
+    {
+      "command": "focused source-bound speech/proof/native-overlay/legacy quality plus tsc and narrow lint",
+      "status": "passed",
+      "tests": 113,
+      "log": "/tmp/still-shift-ms1-caption-proof-unit-final.log"
+    },
+    {
+      "command": "portable live-result closure and stale final/report/symlink negatives",
+      "status": "passed",
+      "tests": 13,
+      "log": "/private/tmp/mechanism-package-live-green-attempt2.log"
+    },
+    {
+      "command": "fresh source summary CLI and overlay tests",
+      "status": "passed",
+      "tests": 18,
+      "log": "/tmp/still-shift-ms1-cache-summary-runtime-2.log",
+      "notes": "Capture suite separately failed due Vitest import.meta.resolve adaptation; not a combined pass."
+    },
+    {
+      "command": "actual originalSS01 native cached/uncached repeated one/four workers bothbackends; exactcurrentencoder and realHTTP broker partition/closure/fault checks",
+      "status": "passed-in-stages",
+      "exports": 16,
+      "decodedFramesEach": 120,
+      "historicalMP4Exact": true,
+      "retainedTests": 28,
+      "encoderCases": 12,
+      "brokerCases": 16,
+      "details": "mechanism-shorts-ms1-transport-results.json",
+      "notes": "Temporary harness callback failure and passing rerun retained; unknown original rejected chunk type/size remains unavailable."
+    },
+    {
+      "command": "capture runtime identity/cancellation/immutable cache recheck",
+      "status": "passed",
+      "tests": 8,
+      "log": "/tmp/still-shift-ms1-cache-summary-runtime-3.log",
+      "notes": "Identity hashes actual Three module/core/RoomEnvironment/package bytes and refuses mid-capture source changes."
+    },
+    {
+      "command": "native all696 proof samples under unchanged metadata budget",
+      "status": "passed",
+      "tests": 9,
+      "log": "/tmp/still-shift-ms1-proof-metadata-budget.log"
+    },
+    {
+      "command": "active native pixel-check cancellation and pre-aborted input checks",
+      "status": "passed",
+      "tests": 2,
+      "log": "/tmp/still-shift-ms1-check-cancellation-1.log"
+    },
+    {
+      "command": "portable closure and staged cancellation checks",
+      "status": "passed",
+      "tests": 16,
+      "log": "/private/tmp/mechanism-package-cancel-green.log",
+      "typecheck": "/private/tmp/mechanism-package-cancel-types-rerun.log"
+    },
+    {
+      "command": "shared dependency supported-input dry-run/loader runtime controls, global types and narrow lint/format",
+      "status": "passed",
+      "tests": 15,
+      "details": "mechanism-shorts-ms1-dependency-results.json",
+      "notes": "Matching-hash scene99/font/audio/geometry/reference negatives first reproduced; independent findings and no project writes verified."
+    },
+    {
+      "command": "full unfiltered composition:baselines --write with old/new pixel comparison",
+      "status": "passed",
+      "items": 176,
+      "frames": 36061,
+      "seconds": 300.7,
+      "pixelChanges": {
+        "fixture": "typography/editorial",
+        "frames": "11..39",
+        "count": 29,
+        "reason": "Reproduced mixed-size word/line mask loss repair; other175fixtures and remaining editorial frames retain exact pixels."
+      },
+      "profileMigration": "chromium-software-1 legacy/no-machine to chromium-software-2 same fingerprint + AppleM5Pro15cores",
+      "details": "mechanism-shorts-ms1-baseline-migration.json",
+      "notes": "Original hashes/timings and29 changed encoded-state images retained; full check still pending."
+    },
+    {
+      "command": "fresh-agent supported CLI overlap diagnosis/patch/render/final-check/artifact audit",
+      "status": "passed-in-stages",
+      "frames": 696,
+      "new3dRenders": 0,
+      "cacheHits": 696,
+      "details": "mechanism-shorts-ms1-repair-results.json",
+      "notes": "Initial sandbox IPC EPERM and escalated retry retained; no implementation/history access; successful render includes actual final media/audio/check."
+    },
+    {
+      "command": "actual40-frame offscreen CLI export plus compact/full finding association",
+      "status": "passed",
+      "tests": 11,
+      "log": "/tmp/still-shift-ms1-cli-render-findings-4.log"
+    },
+    {
+      "command": "tmp-alias package closure regression",
+      "status": "passed",
+      "tests": 17,
+      "log": "/private/tmp/mechanism-package-alias-green-rerun.log"
+    },
+    {
+      "command": "integrated build and edited-file eslint after final slice",
+      "status": "passed",
+      "logs": [
+        "/tmp/still-shift-ms1-root-build-10.log",
+        "/tmp/still-shift-ms1-final-slice-lint.log"
+      ]
+    },
+    {
+      "command": "actual embedded Chromium/Python stack sanitization and CLI failure contract",
+      "status": "passed",
+      "tests": 11,
+      "log": "/tmp/still-shift-ms1-embedded-stack-diagnostics-2.log",
+      "build": "/tmp/still-shift-ms1-root-build-12.log"
+    },
+    {
+      "command": "browser module-script bootstrap, actualCLI layout failure and cancellation cleanup",
+      "status": "passed-in-stages",
+      "tests": 13,
+      "logs": [
+        "/tmp/still-shift-ms1-browser-bootstrap-checks-2.log",
+        "/tmp/still-shift-ms1-browser-bootstrap-checks-3.log"
+      ],
+      "notes": "CLI11pass in combined run; cancellation2pass after correcting its real full-coverage fixture. Combined attempts failed and remain retained. Integrated types/narrowlint pass; installed archive rerun pending."
+    },
+    {
+      "command": "pnpm test:package (offline exact archive); isolated production CLI load/edit/save/reload/render/check",
+      "status": "passed",
+      "packageChecks": 26,
+      "archiveSha256": "sha256:f6c3d80b021d58cd74b2cd6732771e48d165de9786cdc872099581eccfdb1888",
+      "details": [
+        "mechanism-shorts-ms1-package-gate-results.json",
+        "mechanism-shorts-ms1-installed-e01-results.json"
+      ],
+      "notes": "Separate staged attempts retained. Source-byte OS denial with explicit process-runtime exception. Human continuous playback/listening remains pending."
+    },
+    {
+      "command": "pnpm check attempt1",
+      "status": "failed",
+      "sourceCodeCommit": "ff82eae91f96d4517b572b6a8d1e5954f9e5f492",
+      "log": "/tmp/still-shift-ms1-full-check-1.log",
+      "completed": [
+        "toolchain",
+        "schemas",
+        "boundaries",
+        "format",
+        "lint",
+        "build"
+      ],
+      "unitPassed": 3748,
+      "unitFailed": 1,
+      "remainingRuntimeIntegrationBrowserGroups": "not-run-after-unit-stop",
+      "reason": "Existing gradient metadata original table/getter trace test exceeds unchanged5000ms timeout."
+    },
+    {
+      "command": "focused gradient metadata unchanged rerun then bounded trace suffix repair",
+      "status": "passed-after-test-instrumentation-repair",
+      "tests": 10,
+      "failedLog": "/tmp/still-shift-ms1-gradient-timeout-rerun.log",
+      "passedLog": "/tmp/still-shift-ms1-gradient-trace-ring-rerun.log",
+      "firstTestMillisecondsBefore": 5399,
+      "firstTestMillisecondsAfter": 2729,
+      "notes": "Only32-entry suffix recorder replaces per-getter Array.shift with circular buffer. All16 frozen complete output/getter hashes, counts/order, prefix/suffix assertions and5000ms timeout unchanged; production gradient implementation unchanged. Independent review confirms chronological suffix equivalence."
+    },
+    {
+      "command": "semantic policy + existing reading/speech/quality regressions; build/lint",
+      "status": "passed",
+      "tests": 118,
+      "files": 4,
+      "logs": [
+        "/tmp/still-shift-ms1-semantic-focused-4.log",
+        "/tmp/still-shift-ms1-semantic-build-4.log",
+        "/tmp/still-shift-ms1-semantic-lint-3.log"
+      ],
+      "failedAttempts": [
+        "/tmp/still-shift-ms1-semantic-build-1.log",
+        "/tmp/still-shift-ms1-semantic-focused-3.log"
+      ],
+      "notes": "Initial test type widened an optional evaluation field; then pixel fixture used4x4 below published16 minimum. Both test setup faults retained and corrected; assertions unchanged."
+    },
+    {
+      "command": "focused display semantic/reading/speech/general quality",
+      "status": "passed",
+      "files": 4,
+      "tests": 127,
+      "log": "/tmp/still-shift-ms1-display-focused-4.log"
+    },
+    {
+      "command": "pnpm test:package with pinned offline store",
+      "sourceCommit": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
+      "status": "passed",
+      "checks": 26,
+      "archiveSha256": "sha256:78fb7016080e371955e4c5b39266a8c1a71e4a4c3b78298aa9b6e4a7b5735309",
+      "details": "./mechanism-shorts-ms1-package-gate-results.json",
+      "isolatedE01Refresh": "passed",
+      "fullGate": "pending-rerun",
+      "isolatedE01Evidence": "./mechanism-shorts-ms1-installed-e01-results.json",
+      "notes": "Both actual installed exports reuse696 verified clean3D frames with0 new3D renders; native frame/audio caches are fresh. Exact archive/source/input/report closure and OS read denials pass; explicit live-libproc process-inspection exception and failed pre-render invocation retained. E01 semantic profile is legacy/unassessed; strict-context acceptance is separate."
+    },
+    {
+      "command": "Historical and hermetic encoded strict-context/font/reading packet; assertion-only settled exactness replay",
+      "status": "passed-expected-controls-and-negatives",
+      "casesPerRun": 24,
+      "encodedExportsPerRun": 24,
+      "encodedFramesPerRun": 2832,
+      "sampledNativeFramesPerRun": 158,
+      "sampledReducedFramesPerRun": 158,
+      "details": "./mechanism-shorts-ms1-semantic-typography-results.json",
+      "notes": "Complete English/Thai endpoint and opaque color-only controls pass overall quality and eligible holds; intact phrase holds pass with original full-composition entry/frozen faults retained. Actual count value44..119, changed unit60..119, partial-copy31..119 and local decoded Thai ink-loss negatives asserted. Glyph-opacity/factual truth/general readability remain explicit limits. No production or archive-input changes."
+    },
+    {
+      "command": "pnpm check attempt2",
+      "status": "failed-at-integration",
+      "codeCheckpoint": "4d289b3f02bd3889aa13cb29b3103db68f81b431",
+      "unitPassed": 3771,
+      "runtimePassed": 148,
+      "integrationPassed": 278,
+      "integrationFailed": 40,
+      "details": "./mechanism-shorts-ms1-full-gate-results.json",
+      "notes": "36 missing soundtrack runtime,2 bare-Python NumPy setup failures and2 unchanged depth timeouts; remaining Python/browser/baseline gates not run."
+    },
+    {
+      "command": "Offline pinned soundtrack setup; unchanged focused setup-affected audio/depth integrations",
+      "status": "passed-in-stages",
+      "audioTests": 77,
+      "depthTests": 5,
+      "details": "./mechanism-shorts-ms1-full-gate-results.json",
+      "notes": "Project Python and isolated soundtrack environment corrected; no source/test or timeout changes. Original depth timing cause remains unproven; complete gate attempt3 is next."
+    },
+    {
+      "command": "pnpm check attempt3",
+      "status": "failed-at-canvas-story-timing",
+      "codeCheckpoint": "09ce824b86e03b3e95616c9fb91b549b9c88845c",
+      "completedRequiredTestGroups": 61,
+      "unitPassed": 3771,
+      "runtimePassed": 148,
+      "integrationPassed": 318,
+      "depthPythonPassed": 14,
+      "fixture": "component/story-visibility",
+      "maxPixelDelta": 0,
+      "ratio": 1.3510960029139472,
+      "limit": 1.25,
+      "details": "./mechanism-shorts-ms1-full-gate-results.json",
+      "notes": "Canvas timing is required, not deferred WebGL performance. All14 downstream groups remain unrun in this failed aggregate."
+    },
+    {
+      "command": "Unchanged focused Canvas story-visibility rerun",
+      "status": "passed",
+      "frames": 192,
+      "maxPixelDelta": 0,
+      "ratio": 1.1443214495713567,
+      "limit": 1.25,
+      "details": "./mechanism-shorts-ms1-full-gate-results.json",
+      "notes": "Prior timing cause remains unproven. Complete matrix plus14 downstream groups now run sequentially; staged completion will not be described as an uninterrupted pnpm check pass."
+    },
+    {
+      "command": "Unchanged required suffix through mechanism-portrait",
+      "status": "passed-in-stages-final-baseline-pending",
+      "codeCheckpoint": "09ce824b86e03b3e95616c9fb91b549b9c88845c",
+      "completedRequiredGroups": 75,
+      "familyDefaultItems": 176,
+      "familyDefaultFrames": 36061,
+      "freshSemanticPacket": {
+        "path": "/private/tmp/still-shift-ms1-semantic-typography-OFcEyi/result.json",
+        "sha256": "2a6aeb96b635739418c66cf33f736a8f11d23af2924820491614c4b604951454",
+        "bytes": 2174209
+      },
+      "details": "./mechanism-shorts-ms1-full-gate-results.json",
+      "notes": "Final baseline command is running; aggregate attempts1–3 remain failed and no uninterrupted pnpm check pass is claimed."
+    },
+    {
+      "command": "Complete original required groups via unchanged-source15-command sequential continuation",
+      "status": "passed-in-stages",
+      "codeCheckpoint": "09ce824b86e03b3e95616c9fb91b549b9c88845c",
+      "exitCode": 0,
+      "completedRequiredGroups": 76,
+      "prefixGroupsFromFailedAggregate": 61,
+      "successfulSuffixGroups": 15,
+      "finalBaselines": {
+        "items": 176,
+        "frames": 36061,
+        "seconds": 267.68
+      },
+      "log": {
+        "path": "/tmp/still-shift-ms1-remaining-required-groups-1.log",
+        "bytes": 217251,
+        "sha256": "5b86ab547312491a5b7c44adb37724576dc923608d97de43fd5e9b5f7092d1de",
+        "lines": 1282
+      },
+      "details": "./mechanism-shorts-ms1-full-gate-results.json",
+      "coverageAudit": "./mechanism-shorts-ms1-required-groups-coverage.json",
+      "notes": "Initial toolchain/schema/boundaries/format/lint/build plus 3,771 units/148 runtime/318 integrations/14 Python tests pass in attempt 3; strict Story and all downstream groups pass unchanged continuation. Earlier aggregate failures remain retained."
+    }
+  ],
+  "renderEvidence": [
+    {
+      "kind": "first-portrait-frame",
+      "sourceFrame": 138,
+      "new3dRenders": 1,
+      "wallSeconds": 3.012054458,
+      "nodeRssBytesSample": 711262208,
+      "rgbaPngSha256": "sha256:74d78a4f52f6163305d4c99c289a2254d014c50035b451a5478c172946ad3e33",
+      "review": "Solids, through-slots, curved blade, bevel/environment highlights and contact shadow inspected. Physical inner face correctly occluded; separate external proof-anchor treatment required."
+    },
+    {
+      "kind": "nine-shot-probe",
+      "sourceFrames": [0, 138, 223, 306, 380, 445, 500, 565, 675],
+      "new3dRenders": 9,
+      "wallSeconds": 4.747,
+      "nodeRssBytesSample": 566673408,
+      "independentProjectionMaxErrorPixels": 1.833e-12,
+      "independentAnchorVisibilityStates": 99,
+      "review": "External datum anchor at445 hidden by contact board; move along existing datum tube. Continuous/human acceptance not inferred."
+    },
+    {
+      "kind": "contact-shot-native-export",
+      "frames": 85,
+      "captureWallSeconds": 15.108,
+      "preparationWallSeconds": 15.5379,
+      "new3dRenders": 85,
+      "repeatNew3dRenders": 0,
+      "output": "/tmp/still-shift-ms1-contact-proof-render-v2/episode.mp4",
+      "check": "Mechanical pass; measured PULL hold72frames and no layout errors after repairs. CE12 unchanged evaluated-state contact hold errors retained; overall acceptance pending."
+    },
+    {
+      "kind": "full-e01-clean-capture-and-native-layout-probe",
+      "frames": 696,
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "audioSourceSamples": 1113600,
+      "cleanCapture": "All696complete in nine first-party captures. Transparent edge renderer-source fix requires refreshed capture before final acceptance.",
+      "nativeOutput": "/tmp/still-shift-ms1-e01-v4-layout.mp4",
+      "nativeOutputSha256": "sha256:8f6edae00e84b4306a41857a51b323e142ed70c73c9dd56204c8f46c34bbc234",
+      "mechanics": "all696pass",
+      "audio": "AAC512 padding within1023; correlation0.99939898; early/mid/late lag0; active terminal tail retained",
+      "readableLabelHolds": [72, 71, 49, 69, 41, 41, 64],
+      "acceptance": "failed actual caption-origin/painter-order check and generic body-reading/static-pixel policy. Do not use this file as corrected acceptance evidence."
+    },
+    {
+      "kind": "full-corrected-E01-v6",
+      "frames": 696,
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "new3dRenders": 696,
+      "cacheHits": 0,
+      "output": "/tmp/still-shift-ms1-e01-render-v6/episode.mp4",
+      "sha256": "sha256:e0c369e69b76bc73ba81a59930d89ae432d91035c64a531a51e8699b53eb632d",
+      "softwareValid": true,
+      "overlayFindings": 0,
+      "qualityErrors": 0,
+      "retainedQualityWarnings": 50,
+      "readableLabelHolds": [72, 71, 76, 69, 41, 41, 64],
+      "audioCorrelation": 0.99939897716988,
+      "audioMaxLagSamples": 0,
+      "AACPaddingSamples": 512,
+      "tailPreserved": true,
+      "preparationWallSeconds": 143.246622167,
+      "nativeExportWallSeconds": 37.470625583,
+      "peakSampledExportTreeRssBytes": 3510878208,
+      "declaredWorkerPeakBytes": 5942553640,
+      "timingContext": "Some independent serial SS01 exports overlapped; no comparative performance claim.",
+      "samples": "/tmp/still-shift-ms1-e01-final-samples-v6/index.json",
+      "review": "Sampled final0/380/445 visually inspected: native caption/qualifier/leader visible, physicaldatum distinction retained. Continuous motion/listening remain pending human review."
+    }
+  ],
+  "failedRuns": [
+    {
+      "command": "focused failure-diagnostics initial run",
+      "result": "1 of7 tests failed",
+      "reason": "Test matched public phrase operating environment instead of leaked environment object key.",
+      "repair": "Assert absent serialized environment property and secrets.",
+      "rerun": "all7pass"
+    },
+    {
+      "command": "geometry surface clearance endpoint negative",
+      "reason": "Original flange bevel intersected rivet stem at travel endpoint with 0.095 margin.",
+      "repair": "Use 0.115 illustrative margin; four thickness variants and three travel positions clear actual mesh surfaces.",
+      "rerun": "6 geometry tests pass"
+    },
+    {
+      "command": "initial geometry material-group test",
+      "reason": "Test assumed local group index zero instead of global material catalog slot.",
+      "repair": "Assert declared global material index.",
+      "rerun": "6 geometry tests pass"
+    },
+    {
+      "command": "bridge file ESLint first run",
+      "reason": "Two import() type annotations violate consistent-type-imports.",
+      "repair": "Use an explicit Object3D type import.",
+      "rerun": "pending final bridge check"
+    },
+    {
+      "command": "font early red/type/fixture runs",
+      "reason": "See complete retained record in mechanism-shorts-ms1-font-results.json.",
+      "repair": "Parser, narrowing, correction fixture and temp type config repaired.",
+      "rerun": "75 focused tests and scoped checks pass"
+    },
+    {
+      "command": "contact native export first attempt",
+      "reason": "Sequence implicit center anchor left half of viewport uncovered. Coverage guard rejected export.",
+      "repair": "Native full-frame sequence explicitly anchored at[0,0] and positioned[0,0].",
+      "rerun": "Native85frameexport succeeded; later pixel-check failure retained separately."
+    },
+    {
+      "command": "contact export final pixel check second attempt",
+      "reason": "Lint eagerly embedded all85preparedPNGbytes in page.evaluate and omitted preparedMedia; browser closed.",
+      "repair": "Known-resource loopback streaming and preparedMedia supplied to existing bounded native frame LRU. No pixel check skipped.",
+      "rerun": "Measured full85framecheck completed; purposeful contact-hold policy findings remain."
+    },
+    {
+      "command": "full E01 native export first attempt",
+      "reason": "Per-shot required coverage applied across entire timeline, including inactive V8-02 atframe0.",
+      "repair": "One full-timeline required native group owns hard-cut shot sequence children; coverage remains required."
+    },
+    {
+      "command": "native layout probe helper first and second attempts",
+      "reason": "Helper omitted required sidecarPath metadata, then used wrong renderComposition argument names.",
+      "repair": "Supply required typed descriptor fields and compositionPath/outputPath; full native file then exported."
+    },
+    {
+      "command": "alpha independent edge negative",
+      "reason": "Transparent MSAA PNG stored premultiplied RGB while declared straight alpha.",
+      "repair": "Use premultiplied context so canvas encoding restores straight alpha. Both native backend alpha oracles pass ≤1byte; source edge ≤1byte. Retained pre-fix artifacts."
+    },
+    {
+      "command": "alpha PNG8 export oracle first run",
+      "reason": "Oracle omitted declared sRGB→BT709 delivery transfer.",
+      "repair": "Independent transfer oracle; both backend final PNG8 preview/export delta0 with tolerance1."
+    },
+    {
+      "command": "failure receipt test attempts1–3",
+      "reason": "New tests assumed nonexistent diagnostic property/rows instead of documented summary and SCENE_INVALID exit2.",
+      "repair": "Assert documented summary/fullreport and public exitcodes; four tests pass including discovered real top-level secret redaction regression."
+    },
+    {
+      "command": "independent MS1 diagnostic review",
+      "reason": "Raw CLI summary and package cause bypassed shared sanitization; summary recovery used unsupported --patch flag and full report replaced useful recovery.",
+      "repair": "Sanitize all failure summary/cause fields, preserve classified recovery with report access, use --request; 25sequenced checks pass."
+    },
+    {
+      "command": "integrated types/boundaries early runs",
+      "reason": "Missing optional preparedMedia spread/moduleURL binding, deep Playwright fixture generics, direct CLI Zod dependency omitted.",
+      "repair": "Exact optional spread, declared package module path, serialized testpayload, pinned directdependency; build/boundaries pass."
+    },
+    {
+      "command": "partial editorial baseline refresh",
+      "reason": "Existing software1 baseline has no machine metadata; pinned currentsoftware2 provenance forbids partialwrite.",
+      "repair": "No golden changed; full provenance migration and complete176itemcheck remain required."
+    }
+  ],
+  "review": {
+    "sampledVisual": "All26 entry/mid/exit/cut-adjacent actual decoded frames inspected;0/380/445/500 full-size checked against solid/slot/curve/material/shadow/native-copy rubric.",
+    "continuousMotion": "not-reviewed",
+    "listening": "not-reviewed",
+    "humanCreativeAcceptance": "not-reviewed"
+  },
+  "limits": [
+    "All 76 required local groups completed in stages on unchanged source. Aggregate attempts 1–3 remain failed; no uninterrupted pnpm check pass is claimed. Canvas timing cause remains unproven.",
+    "E01 semantic profile remains legacy/unassessed; strict-context acceptance is a separate authored fixture packet.",
+    "Isolated consumer uses the documented live-libproc process-inspection runtime exception; installed package bytes remain unchanged.",
+    "Customer source media remains outside Git; public redistribution is not established.",
+    "Human continuous motion, listening and creative acceptance remain pending."
+  ],
+  "retainedFailures": [
+    {
+      "attempt": "full E01 v4 native MP4",
+      "reason": "Actual painter-order failure hides captions/labels; caption origin offscreen. Mechanics/audio positive do not establish visual acceptance.",
+      "output": "/tmp/still-shift-ms1-e01-v4-layout.mp4",
+      "evidence": "/tmp/still-shift-ms1-e01-v4-layout-result.json"
+    },
+    {
+      "attempt": "full E01 v5 capture/compile",
+      "reason": "All696 plates complete. Full proof rows duplicated at root exceeded unchanged65,536byte metadata limit; compact root declarations now reference bounded per-shot evidence.",
+      "log": "/tmp/still-shift-ms1-e01-render-v5.log"
+    },
+    {
+      "attempt": "root build6",
+      "reason": "Optional locale metadata not valid JSON type; absent optional key now explicitly removed.",
+      "log": "/tmp/still-shift-ms1-root-build-6.log"
+    },
+    {
+      "attempt": "cache/summary runtime1 and build7",
+      "reason": "Added runtime identity test reused existing receipt variable; renamed.",
+      "log": "/tmp/still-shift-ms1-cache-summary-runtime-1.log"
+    },
+    {
+      "attempt": "cache/summary runtime2",
+      "reason": "Vitest SSR lacks import.meta.resolve; package-resolved Three module/core/addon hashes now use createRequire without executing CommonJS.",
+      "log": "/tmp/still-shift-ms1-cache-summary-runtime-2.log"
+    },
+    {
+      "attempt": "actual v6 portable package macOS tmp alias",
+      "reason": "Canonicalization before resolving authored paths incorrectly doubled private in the audio dependency.",
+      "repair": "Resolve against declared lexical path first, then canonicalize; regression17/17 and actual737-file delivery relocation pass.",
+      "evidence": [
+        "/tmp/.still-shift-ms1-e01-delivery-v6.package-attempt-2O2I3e/failure.json",
+        "/private/tmp/mechanism-package-alias-green-rerun.log"
+      ]
+    },
+    {
+      "attempt": "compact-render regression fixture attempts1..3",
+      "reason": "Vitest transformed browser-side dynamic import when invoking renderer in-process; next process-backed fixture assumed a nonexistent evaluatedFrameCount result field.",
+      "repair": "Invoke supported CLI in a child Node process and assert documented checkedFrames; actual40frame final findings agree with compact receipt.",
+      "logs": [
+        "/tmp/still-shift-ms1-cli-render-findings.log",
+        "/tmp/still-shift-ms1-cli-render-findings-2.log",
+        "/tmp/still-shift-ms1-cli-render-findings-3.log"
+      ],
+      "rerun": "/tmp/still-shift-ms1-cli-render-findings-4.log"
+    },
+    {
+      "attempt": "first installed candidate from eeb162ad",
+      "archiveSha256": "sha256:057e26a5dfa1adf70c1d892150895b81e8b67a6e8a3dd12b8615f6539219f7c4",
+      "reason": "Actual browser/Python errors embed stack frames in message text; consumer save/render also meets macOS seatbelt prohibition on launching setuid ps, before any3D capture.",
+      "repair": "Remove stack frames/stack context while preserving terminal exception; rebuild archive. Consumer uses byte-identical ps copy with setuid removed, keeping original source-byte denial.",
+      "evidence": "/private/tmp/still-shift-ms1-installed-e01-eQbmEw",
+      "status": "replacement-verification-pending"
+    },
+    {
+      "attempt": "installed archive5554344f fullE01 final check",
+      "archiveSha256": "sha256:e107a5bac04e457a145c2ebc20a32dc1ee6d95fa165199a8a1154e4beac15974",
+      "reason": "Emitted TypeScript rewrites variable import inside serialized page.evaluate callback to helper unavailable in browser.",
+      "measured": "All696 actual fresh plate hashes and exported final MP4 exactly match acceptedv6, but overall final-check command failed; not accepted.",
+      "repair": "Import renderer in an actual browser module script before evaluating lint callback; installed pixel-analysis regression added to package gate.",
+      "evidence": "/private/tmp/still-shift-ms1-installed-e01-final-H8M4Hf/failure-final-check.json"
+    },
+    {
+      "attempt": "browser bootstrap focused checks attempts1..2",
+      "reason": "Faster valid module loading exposed cancellation fixture coverage fault; first correction used fields outside declared transform object.",
+      "repair": "Keep required coverage and explicitly use transform anchor/position[0,0].",
+      "rerun": "/tmp/still-shift-ms1-browser-bootstrap-checks-3.log"
+    },
+    {
+      "attempt": "installed package gate1 on a5710b8d",
+      "reason": "New pixel-analysis regression called low-level JSON API with TypeScript authoring source; valid JSON fixture required.",
+      "repair": "Use actual4frame composition JSON, keep TypeScript program checks separately.",
+      "log": "/tmp/still-shift-ms1-installed-package-gate-1.log",
+      "rerun": "pending"
+    }
+  ],
+  "portableDelivery": {
+    "directory": "/tmp/still-shift-ms1-e01-delivery-v6-relocated",
+    "manifestFiles": 737,
+    "bytes": 535346887,
+    "manifestSha256": "sha256:80d22abd1f378d92277b054e44fc5549d708ace777f3e7a2f17ffec8262b418a",
+    "finalSha256": "sha256:e0c369e69b76bc73ba81a59930d89ae432d91035c64a531a51e8699b53eb632d",
+    "verification": "Actual CLI relocation/deps/validate/summary/save/reload and all737 declared hashes pass. Current b4f0119d archive also passes OS-denied installed E01/edit lifecycle; consumer process-inspection runtime exception remains explicit.",
+    "evidence": "/tmp/still-shift-ms1-v6-package-handoff.md",
+    "installedEvidence": "./mechanism-shorts-ms1-installed-e01-results.json"
+  },
+  "currentCompletion": {
+    "recordedAt": "2026-10-10T01:59:15.878798+00:00",
+    "status": "software-verified-in-stages-human-review-pending",
+    "completionNote": "./mechanism-shorts-ms1-completion.md",
+    "requiredGate": "./mechanism-shorts-ms1-full-gate-results.json",
+    "requiredGroupCoverage": "./mechanism-shorts-ms1-required-groups-coverage.json",
+    "sourceTestCheckpoint": "09ce824b86e03b3e95616c9fb91b549b9c88845c",
+    "packageSource": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
+    "packageArchiveSha256": "sha256:78fb7016080e371955e4c5b39266a8c1a71e4a4c3b78298aa9b6e4a7b5735309",
+    "packageChecks": 26,
+    "installedE01": "./mechanism-shorts-ms1-installed-e01-results.json",
+    "semanticProfileE01": "legacy-unassessed",
+    "humanContinuousPlaybackListeningAndCreativeAcceptance": "pending",
+    "pr": {
+      "url": "https://github.com/xxibcill/still-shift/pull/52",
+      "number": 52,
+      "base": "main",
+      "head": "codex/mechanism-ms1",
+      "stateAtCreation": "open-unmerged",
+      "creationCommit": "b8887c4507a0be78ea4c49869bf4adae02d45093"
+    },
+    "historicalCheckpoints": "Earlier in-progress/pending fields describe their dated checkpoint. Current completion is here; they are not retroactively converted into uninterrupted passes."
+  }
+}

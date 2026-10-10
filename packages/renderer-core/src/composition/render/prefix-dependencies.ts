@@ -342,5 +342,9 @@ export function compositionLayerVariation(composition: Composition) {
     for (const [track, left] of remaining) if (left < 0) ignored.delete(track);
   }
   return (layer: CompositionLayer, node: string) =>
-    driven.has(node) || hasVaryingKeys(layer, ignoredKeys.get(node));
+    layer.type === "native3d" ||
+    layer.native3D !== undefined ||
+    layer.overlayAfter !== undefined ||
+    driven.has(node) ||
+    hasVaryingKeys(layer, ignoredKeys.get(node));
 }

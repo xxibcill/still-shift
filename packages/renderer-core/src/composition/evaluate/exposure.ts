@@ -17,6 +17,7 @@ import { adaptiveExposureSamples } from "./adaptive.ts";
 import { discrete, scalar } from "./sample.ts";
 import { compositionSampleIndex } from "./sample-clock.ts";
 import type { EvaluatedLayerTree, EvaluationOptions } from "./types.ts";
+import { passageError } from "../../passage-diagnostics.ts";
 
 type ExposureCut = { time: number; inclusive: "before" | "after" };
 const scopeCuts = new WeakMap<
@@ -180,7 +181,7 @@ export function compositionExposureFrames(
   const clamp = (time: number) =>
     withinCut(Math.max(0, Math.min(comp.frameCount - 1, time)), frame, cuts);
   let count = blur.samples;
-  if (blur.adaptive) {
+  if (blur.adaptive && !options.nativeObservationRequired) {
     const base = evaluateComp(comp, frame, options);
     const times = Array.from({ length: 9 }, (_, index) =>
       clamp(
@@ -309,6 +310,22 @@ function mixExposure(
     return inherited;
   };
   const layers = base.layers.map((state, index) => {
+    let controllerId =
+      state.layer.native3D?.sceneLayer ?? state.layer.overlayAfter;
+    for (let parent = state.layer.parent; !controllerId && parent; ) {
+      const ancestor = definitions.get(parent)!;
+      controllerId = ancestor.native3D?.sceneLayer ?? ancestor.overlayAfter;
+      parent = ancestor.parent;
+    }
+    if (
+      controllerId &&
+      enabled(state.layer) !== enabled(definitions.get(controllerId)!)
+    )
+      passageError(
+        "comp-native3d-clock",
+        "Bound native content and its controller require one coupled exposure clock",
+        { node: state.id, path: `${state.id}.motionBlur`, frame: sampleTime },
+      );
     const moving = enabled(state.layer),
       other = sample.layers[index]!;
     const source = moving ? other : state;
@@ -345,7 +362,7 @@ function mixExposure(
       parent = group.layer.parent;
     }
   }
-  return { ...base, layers };
+  return { ...base, layers, sampleFrame: sampleTime };
 }
 
 /** Stream samples so memory stays bounded independently of the shutter count. */
@@ -358,7 +375,7 @@ export function* evaluateCompositionExposure(
   const base = evaluateComp(comp, frame, options);
   for (const time of plannedFrames ??
     compositionExposureFrames(comp, frame, options)) {
-    if (time === frame) yield base;
+    if (time === frame) yield { ...base, sampleFrame: time };
     else
       yield mixExposure(
         base,

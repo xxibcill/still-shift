@@ -17,7 +17,13 @@ import {
   type SurfaceEncoding,
   type SurfacePixels,
 } from "./backend.ts";
-import type { IsolateOp, RenderGraph, RenderOp, SurfaceNode } from "./graph.ts";
+import {
+  hasNativeDepth,
+  type IsolateOp,
+  type RenderGraph,
+  type RenderOp,
+  type SurfaceNode,
+} from "./graph.ts";
 import { requireSpatialCapabilities } from "./spatial-capabilities.ts";
 import {
   preparedVisualState,
@@ -157,6 +163,7 @@ function* independentSurfaces(graph: RenderGraph): Generator<Candidate> {
     yield* operations(node.ops, node.width, node.height);
     active.delete(node);
     add(visited, node);
+    if (hasNativeDepth(node.ops)) return;
     yield allocateRenderMetadata(160, () => ({
       kind: "surface" as const,
       name: node.id,
@@ -175,6 +182,10 @@ function* independentSurfaces(graph: RenderGraph): Generator<Candidate> {
     add(active, ops);
     try {
       for (const op of ops) {
+        if (op.kind === "native-depth") {
+          for (const graphic of op.graphics) yield* surface(graphic.surface);
+          continue;
+        }
         if (op.kind === "draw") {
           if (op.content.type === "surface") yield* surface(op.content.surface);
           continue;
@@ -203,7 +214,7 @@ function* independentSurfaces(graph: RenderGraph): Generator<Candidate> {
           }
         }
         if (op.matte) yield* operations(op.matte.ops, width, height);
-        if (op.kind === "isolate")
+        if (op.kind === "isolate" && !hasNativeDepth([op]))
           yield allocateRenderMetadata(160, () => ({
             kind: "isolate" as const,
             name: op.layer,
@@ -269,6 +280,7 @@ export class CompositionSurfaceCache<S extends Surface> {
       () => this.clear(),
     );
     backend.renderIsolate = (op, like, draw) => {
+      if (hasNativeDepth([op])) return draw();
       const candidate = allocateRenderMetadata(160, () => ({
         kind: "isolate" as const,
         name: op.layer,
@@ -288,6 +300,7 @@ export class CompositionSurfaceCache<S extends Surface> {
       }
     };
     backend.renderSurface = (node, draw) => {
+      if (hasNativeDepth(node.ops)) return draw();
       const candidate = allocateRenderMetadata(160, () => ({
         kind: "surface" as const,
         name: node.id,

@@ -17,6 +17,11 @@ import type {
   TextAnimator,
 } from "@still-shift/scene-contract";
 import { loadPreparedFonts, type LoadedFont } from "../../prepared-fonts.ts";
+import type { FontValidationOptions } from "../../font-identity.ts";
+import {
+  collectFontTextRuns,
+  type CollectedFontTextRun,
+} from "../../font-copy.ts";
 import { loadTextAnimationFonts } from "../../typography-axes.ts";
 import {
   drawTypography,
@@ -36,7 +41,7 @@ import {
 import { drawStoryText } from "../../story-text.ts";
 import { passageError } from "../../passage-diagnostics.ts";
 import { rgba } from "../evaluate/sample.ts";
-import type { Bounds } from "../evaluate/types.ts";
+import type { Bounds, EvaluationOptions } from "../evaluate/types.ts";
 import {
   cssColor,
   requiresSoftwareFilters,
@@ -49,6 +54,7 @@ import {
   type CompositionTextFrames,
 } from "./text-frames.ts";
 import { preparedTextBounds } from "./text-bounds.ts";
+import { nativeTypographyContentBounds } from "./native-text-bounds.ts";
 import { typographyClock } from "./text-clock.ts";
 
 type TextLayer = Extract<CompositionLayer, { type: "text" }>;
@@ -64,6 +70,7 @@ export type CompositionText = {
   preparePixels(content: TextContent): void;
   contentKey(content: TextContent): string | undefined;
   contentBounds(content: TextContent): Bounds | undefined;
+  nativeContentBounds(content: TextContent): Bounds | undefined;
   singleImage(content: TextContent): boolean;
   stableImages(content: TextContent): boolean;
 };
@@ -206,6 +213,8 @@ function typographyScene(
 export async function loadCompositionFonts(
   comp: Composition,
   assetUrl: (id: string) => string,
+  validation?: FontValidationOptions,
+  evaluationOptions: EvaluationOptions = {},
 ): Promise<Map<string, LoadedFont>> {
   const fonts = comp.assets.flatMap((a) =>
     a.type === "font"
@@ -235,11 +244,22 @@ export async function loadCompositionFonts(
       textStyles: comp.textStyles ?? {},
     },
     assetUrl,
+    validation
+      ? {
+          ...validation,
+          textRuns: validation.textRuns ?? compositionFontTextRuns(comp, typed),
+        }
+      : undefined,
   );
   const probeCanvas = createRenderCanvas();
   let frames: CompositionTextFrames;
   try {
-    frames = compositionTextFrames(comp, loaded, probeCanvas.getContext("2d")!);
+    frames = compositionTextFrames(
+      comp,
+      loaded,
+      probeCanvas.getContext("2d")!,
+      evaluationOptions,
+    );
   } finally {
     releaseRenderCanvas(probeCanvas);
   }
@@ -257,10 +277,46 @@ export async function loadCompositionFonts(
   return loaded;
 }
 
+function compositionFontTextRuns(
+  comp: Composition,
+  typed: TypographyScene[],
+): CollectedFontTextRun[] {
+  return scopes(comp).flatMap(([scope], scopeIndex) => {
+    const scene = typed[scopeIndex]!;
+    const prefix = scope === comp ? "" : `precomps.${scopeIndex - 1}.`;
+    const layerPaths = new Map(
+      scope.layers.map((layer, index) => [
+        layer.id,
+        `${prefix}layers.${index}`,
+      ]),
+    );
+    const ids = new Set(scene.nodes.map((node) => node.id));
+    const correctionPaths = textLayers(scope)
+      .filter((layer) => ids.has(layer.id))
+      .flatMap((layer) =>
+        (layer.corrections ?? []).map(
+          (_, index) =>
+            `${layerPaths.get(layer.id)}.corrections.${index}.replacement`,
+        ),
+      );
+    return collectFontTextRuns(scene).map((run) => {
+      const event = /^textEvents\.(\d+)\.replacement$/u.exec(run.path ?? "");
+      const path = event
+        ? correctionPaths[Number(event[1])]
+        : run.path?.replace(
+            /^nodes\.\d+/u,
+            layerPaths.get(run.node ?? "") ?? "layers",
+          );
+      return { ...run, ...(path ? { path } : {}) };
+    });
+  });
+}
+
 function compositionTextFrames(
   comp: Composition,
   fonts: Map<string, LoadedFont>,
   context: CanvasRenderingContext2D,
+  evaluation: EvaluationOptions,
 ): CompositionTextFrames {
   const animated = [comp, ...(comp.precomps ?? [])].some(
     (scope) => animatedTextNodes(scope).size > 0,
@@ -296,9 +352,10 @@ function compositionTextFrames(
       {},
       undefined,
       boundsOnly,
+      evaluation,
     );
     try {
-      return collectCompositionTextFrames(comp, measured.bounds);
+      return collectCompositionTextFrames(comp, measured.bounds, evaluation);
     } finally {
       measured.dispose();
     }
@@ -349,8 +406,9 @@ export function prepareCompositionText(
   frames: CompositionTextFrames | undefined = undefined,
   textProbe?: TextProbe,
   sourceCanvas?: CanvasPixelSource,
+  evaluation: EvaluationOptions = {},
 ): CompositionText {
-  frames ??= compositionTextFrames(comp, fonts, measureContext);
+  frames ??= compositionTextFrames(comp, fonts, measureContext, evaluation);
   const entries = new Map<string, Entry>();
   const bounds: Record<string, Bounds[]> = {};
   for (const [scope, prefix] of scopes(comp)) {
@@ -535,6 +593,32 @@ export function prepareCompositionText(
       const key =
         entry.kind === "system" ? "static" : String(entry.clock(content.time));
       return probe ? `${probe}:${key}` : key;
+    },
+    nativeContentBounds(content) {
+      const entry = entries.get(content.key);
+      if (!entry) return undefined;
+      const mix = content.stateMix ?? 1;
+      const states =
+        content.stateFrom === undefined ||
+        mix === 1 ||
+        content.stateFrom === content.state
+          ? [content.state]
+          : mix === 0
+            ? [content.stateFrom]
+            : [content.stateFrom, content.state];
+      if (entry.kind === "typography")
+        return union(
+          states.map((state) =>
+            nativeTypographyContentBounds(
+              entry.node,
+              entry.prepared,
+              state,
+              content.reveal,
+              content.time,
+            ),
+          ),
+        );
+      return union(states.map((state) => bounds[content.key]![state]!));
     },
     contentBounds(content) {
       const states = bounds[content.key];

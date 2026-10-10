@@ -1,0 +1,356 @@
+{
+  "schemaVersion": "mechanism-ms1-historical-ss01-transport-results-1",
+  "recordedAtUtc": "2026-10-09T18:39:55.131193+00:00",
+  "status": "passed-in-stages",
+  "worktree": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift",
+  "observedHeadBeforeExportMatrix": "6ed1a5d032ea7ed6d1919e5b0e54f3531891131d",
+  "observedHeadAtConsolidation": "6ed1a5d032ea7ed6d1919e5b0e54f3531891131d",
+  "sourceChanges": {
+    "sourceOrDocsEditedByThisTask": false,
+    "filesWritten": "Only fresh /tmp scripts, logs, reports and proof outputs",
+    "transportAndCompositionSnapshotFiles": 201,
+    "sourceSnapshotBeforeDuringAfterEachExportExact": true,
+    "laterChangesAfterCompletedProof": [
+      {
+        "path": "packages/animation-engine/src/composition-lint.ts",
+        "completedProofSha256": "sha256:d94a7180f1a9a7e10a0a2730593e5fa83d5691b286d59fc538cae03ef446747f",
+        "currentSha256": "sha256:4ac1f4801cd585682575c1d5c34b336eb18f544f7c101f8e7feaa593160106b0"
+      }
+    ],
+    "laterChangeScope": "Parent reported an unrelated composition-lint.ts AbortSignal/browser cleanup edit after the completed matrix; original export/surface and renderer-core composition modules were untouched."
+  },
+  "historicalIdentity": {
+    "context": "Typography English-emphasis SS01 static-cache upload regression; distinct from E01 tape-hook mechanism source",
+    "compiledInputSha256": "sha256:220c4a5b5f3c77f1fc513fc2331ebfe269a09f4dcff85ad5c4edb60ad7ef047d",
+    "input": "packets/v003/outputs/SS01-emphasis.composition.json",
+    "recordedHistoricalFailedSourceCommit": "c2473c2369b15067e6f209285aaf694d2c020a64",
+    "failedOriginalModes": [
+      "CLI Canvas2D H264 workers1 cacheStatic true",
+      "API Canvas2D H264 workers1 cacheStatic true"
+    ],
+    "historicalObservation": "Store iteration-part guard rejected a non-Uint8Array or >65536-byte part; the actual rejected old part type/size/surface were not instrumented and remain unknown.",
+    "originals": [
+      {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/packets/v003/inputs/SS01-emphasis.json",
+        "bytes": 2859,
+        "sha256": "sha256:34ac384d4b27af681a4b4df8eeb470e017a750cec1d2c17c738ebbb8f2169993"
+      },
+      {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/packets/v003/outputs/SS01-emphasis.composition.json",
+        "bytes": 3680,
+        "sha256": "sha256:220c4a5b5f3c77f1fc513fc2331ebfe269a09f4dcff85ad5c4edb60ad7ef047d"
+      },
+      {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/packets/v003/logs/SS01-cached.command.json",
+        "bytes": 1276,
+        "sha256": "sha256:359ac5cd0fcf80c17e35df99dbebd2cebf3ac33aeb4ef4a6a806e7c0806fdd6d"
+      },
+      {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/packets/v003/logs/SS01-cached.stderr",
+        "bytes": 230,
+        "sha256": "sha256:b067a1290d4edb1fa62b25b09da7d4d1cc876c7fa3983e6943259eabed48d825"
+      },
+      {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/packets/v003/logs/SS01-api-cached.command.json",
+        "bytes": 1164,
+        "sha256": "sha256:8353b0051ab37853a38992c3a457059564cb042b69883675b43b999b008db4b2"
+      },
+      {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/packets/v003/logs/SS01-api-cached.stderr",
+        "bytes": 615,
+        "sha256": "sha256:efd3530265bb674fd2eaa3763bf4f31b24ebb2882acd6eb55c4c0af2f85541ff"
+      },
+      {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/packets/v003/outputs/SS01-emphasis.mp4",
+        "bytes": 59069,
+        "sha256": "sha256:f5171328216cb1bdfd2f3302446d3e53fb75ef1651be8c35d71b6245f6639739"
+      },
+      {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/packets/v003/outputs/SS01-emphasis.mp4.result.json",
+        "bytes": 25161,
+        "sha256": "sha256:e84855653aab92f2e194e8fb42f52876122179c6870d145ee72928e135c85c55"
+      },
+      {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/qa/cache-failure-independent-review.md",
+        "bytes": 9731,
+        "sha256": "sha256:304f11094307c8b2f1ffaa448172f05e4bc6eee9708a0b5329e3e26f9e2b9c4c"
+      },
+      {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/qa/latest-revision-source-review.md",
+        "bytes": 8722,
+        "sha256": "sha256:30438386887a8d5cd2e072fea10b999259057d8b26bde39a750a015704c85f11"
+      }
+    ],
+    "originalAssets": [
+      {
+        "id": "unused",
+        "type": "image",
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/packets/v003/inputs/unused.png",
+        "bytes": 70,
+        "sha256": "sha256:c2153f77e11087fcb078ae38527fa83bef29791e3700e30cc87fec4405a66d0f"
+      },
+      {
+        "id": "semibold",
+        "type": "font",
+        "path": "/Users/jjae/Documents/playground/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+        "bytes": 202632,
+        "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1"
+      },
+      {
+        "id": "medium",
+        "type": "font",
+        "path": "/Users/jjae/Documents/playground/still-shift/assets/story-motion/fonts/plex-sans-medium.ttf",
+        "bytes": 202460,
+        "sha256": "sha256:331c8639d7598b2cde62a911a71db195e30cb655cd6bdf2e324a7e984955f907"
+      },
+      {
+        "id": "thai",
+        "type": "font",
+        "path": "/Users/jjae/Documents/playground/still-shift/assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+        "bytes": 218652,
+        "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8"
+      }
+    ],
+    "inputSha256BeforeAfterExact": true
+  },
+  "actualExportMatrix": {
+    "report": {
+      "path": "/tmp/still-shift-ms1-ss01-exports-1791570695642/report.json",
+      "bytes": 1570117,
+      "sha256": "sha256:5a3c75fb398fc810a2a31aaf8740f8530e24f5fa4422ae799cdb0c46f03a67cc"
+    },
+    "scope": "Exact original unmodified composition bytes, original linked assets, pinned Chromium software-2 and FFmpeg H264 public routes; 1920\u00d71080, 30 fps, 120 complete frames",
+    "passedExports": 16,
+    "failedExports": 0,
+    "axes": {
+      "backends": ["canvas2d", "webgl2"],
+      "workers": [1, 4],
+      "cacheStatic": [false, true],
+      "repetitions": [0, 1]
+    },
+    "publicCliCase": "canvas2d-w1-cached-r0; exact arguments/output/stdout/stderr in command receipt",
+    "all16EncodedOutputSha256": "sha256:f5171328216cb1bdfd2f3302446d3e53fb75ef1651be8c35d71b6245f6639739",
+    "all16EncodedBytes": 59069,
+    "encodedEqualToHistoricalUncached": true,
+    "all16CompleteDecodedSha256": "sha256:12f0367114e49bf7ec7a06ac5b6463b0ec874f5c1649de31666d28f8dc23b003",
+    "decodedBytesPerExport": 995328000,
+    "all120FrameHashesExact": true,
+    "historicalCompleteDecodeEqual": true,
+    "criticalFrames": [0, 35, 36, 42, 48, 66, 69, 78, 90, 119],
+    "actualCachedSurfaceEvidence": [
+      {
+        "name": "canvas2d-w1-cached-r0",
+        "leasesGranted": 12,
+        "hits": 0,
+        "waits": 0,
+        "publishedSurfaces": 12,
+        "reservedDiskBytes": 37588676,
+        "writtenDiskBytes": 37588676,
+        "dynamicPaths": 0
+      },
+      {
+        "name": "canvas2d-w1-cached-r1",
+        "leasesGranted": 12,
+        "hits": 0,
+        "waits": 0,
+        "publishedSurfaces": 12,
+        "reservedDiskBytes": 37588676,
+        "writtenDiskBytes": 37588676,
+        "dynamicPaths": 0
+      },
+      {
+        "name": "canvas2d-w4-cached-r0",
+        "leasesGranted": 12,
+        "hits": 18,
+        "waits": 8,
+        "publishedSurfaces": 12,
+        "reservedDiskBytes": 37588676,
+        "writtenDiskBytes": 37588676,
+        "dynamicPaths": 0
+      },
+      {
+        "name": "canvas2d-w4-cached-r1",
+        "leasesGranted": 12,
+        "hits": 18,
+        "waits": 8,
+        "publishedSurfaces": 12,
+        "reservedDiskBytes": 37588676,
+        "writtenDiskBytes": 37588676,
+        "dynamicPaths": 0
+      },
+      {
+        "name": "webgl2-w1-cached-r0",
+        "leasesGranted": 12,
+        "hits": 0,
+        "waits": 0,
+        "publishedSurfaces": 12,
+        "reservedDiskBytes": 37588676,
+        "writtenDiskBytes": 37588676,
+        "dynamicPaths": 0
+      },
+      {
+        "name": "webgl2-w1-cached-r1",
+        "leasesGranted": 12,
+        "hits": 0,
+        "waits": 0,
+        "publishedSurfaces": 12,
+        "reservedDiskBytes": 37588676,
+        "writtenDiskBytes": 37588676,
+        "dynamicPaths": 0
+      },
+      {
+        "name": "webgl2-w4-cached-r0",
+        "leasesGranted": 12,
+        "hits": 18,
+        "waits": 8,
+        "publishedSurfaces": 12,
+        "reservedDiskBytes": 37588676,
+        "writtenDiskBytes": 37588676,
+        "dynamicPaths": 0
+      },
+      {
+        "name": "webgl2-w4-cached-r1",
+        "leasesGranted": 12,
+        "hits": 18,
+        "waits": 6,
+        "publishedSurfaces": 12,
+        "reservedDiskBytes": 37588676,
+        "writtenDiskBytes": 37588676,
+        "dynamicPaths": 0
+      }
+    ],
+    "method": "Independent streamed FFmpeg RGBA decode, complete-stream checksum and every frame checksum; no sampled-only replacement. Complete encoded MP4 hashes also match original saved endpoint."
+  },
+  "exactEncoderSourceCloseProof": {
+    "report": {
+      "path": "/tmp/still-shift-ms1-ss01-partition-proof-1791570990905/report.json",
+      "bytes": 13359,
+      "sha256": "sha256:4da5a683a80d4ec223b30c4cb4d11d528893e9fb7cd6ddabafcc99e9958a65be"
+    },
+    "actualPrivateFunction": {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/execution-runtime/src/export-worker.ts",
+      "sha256": "sha256:2394a7316c7425b76d27d25c4d699b25cefaf22cf29255f976afd8eb082e9bd0",
+      "functionSha256": "sha256:37af7f86d62c2766cddedd1a4cf4f40ff1aeb772269371d3dcf10fb101c497d5",
+      "method": "Read exact private readBodyToEncoder source slice, erase only TypeScript types via pinned compiler, execute unchanged body with Buffer; combine with real current ordered-frame and broker/client/store modules."
+    },
+    "cases": 12,
+    "firstChunkByteSizes": [65535, 65536, 65537, 131072, 262145],
+    "validCompleteBytes": 262145,
+    "maximumEncoderWritePartBytes": 65536,
+    "checks": [
+      "complete byte totals/hash and source ended",
+      "truncated body",
+      "extra body bytes",
+      "wrong declared content length",
+      "maxFrameBytes header bound",
+      "encoder write failure exact reason and source destroyed",
+      "four-worker absolute ordered bytes from coalesced bodies",
+      "queued original source closes before its turn; same original reason reaches active and queued workers; both sources destroyed; zero frames delivered"
+    ],
+    "scope": "Private function copied byte-identically and only TypeScript types erased for isolated fault injection. Production export matrix separately executes the actual imported module and original HTTP lifecycle."
+  },
+  "actualBrokerClientPartitions": {
+    "cases": 16,
+    "validWireCases": 8,
+    "negativeCases": 8,
+    "encodings": ["rgba8-straight", "rgba32f-premultiplied"],
+    "surfaceByteSizes": [66564, 266256],
+    "clientFragmentBytes": [
+      65535,
+      65536,
+      65537,
+      "actual full typed array via compositionSurfaceExchange"
+    ],
+    "largestObservedRealIncomingMessagePartBytes": 266256,
+    "largestObservedNormalizedStorePartBytes": 65536,
+    "float32BitsAndByteChecksumsExact": true,
+    "sameSurfaceRetrievedByWorker3": true,
+    "negativeModes": [
+      "malformed non-Uint8Array direct-store part",
+      "truncated",
+      "extra",
+      "wrong complete checksum",
+      "foreign lease worker",
+      "wrong credential",
+      "duplicate publication",
+      "actual HTTP upload cancellation"
+    ],
+    "cancellation": "Client preserves exact owner AbortSignal reason; actual server receives ECONNRESET/aborted wire error, never publishes a complete surface.",
+    "instrumentation": "Real loopback HTTP server highWaterMark 1MiB and a 30ms delayed consume produce actual network coalescing. Pass-through observation wrappers record IncomingMessage and original broker-normalized part sizes without rewriting/splitting chunks themselves."
+  },
+  "retainedTests": {
+    "passed": 28,
+    "store": 12,
+    "orderedFrames": 13,
+    "client": 3,
+    "log": "/tmp/still-shift-ms1-ss01-retained-tests.log"
+  },
+  "commands": [
+    {
+      "name": "retained tests",
+      "command": "set -o pipefail\nsource ~/.nvm/nvm.sh && nvm use 22.23.1 && corepack pnpm exec vitest run tests/runtime/composition-surface-store.test.ts tests/runtime/composition-ordered-frames.test.ts tests/unit/composition-surface-client.test.ts | tee /tmp/still-shift-ms1-ss01-retained-tests.log",
+      "cwd": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift",
+      "exitCode": 0,
+      "result": "28 tests across three retained files passed",
+      "log": "/tmp/still-shift-ms1-ss01-retained-tests.log"
+    },
+    {
+      "name": "exact original SS01 export matrix",
+      "command": "set -o pipefail\nsource ~/.nvm/nvm.sh && nvm use 22.23.1 && node --import tsx /tmp/still-shift-ms1-ss01-exports.mts | tee /tmp/still-shift-ms1-ss01-exports.log",
+      "cwd": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift",
+      "exitCode": 0,
+      "log": "/tmp/still-shift-ms1-ss01-exports.log",
+      "script": {
+        "path": "/tmp/still-shift-ms1-ss01-exports.mts",
+        "bytes": 9283,
+        "sha256": "sha256:5b8d2fe86fbb5d809470f0019b8edba64cb3b871a8ee2010880b34ab2ef68c64"
+      }
+    },
+    {
+      "name": "source-close and actual client/broker partition proof initial run",
+      "command": "set -o pipefail\nsource ~/.nvm/nvm.sh && nvm use 22.23.1 && node --import tsx /tmp/still-shift-ms1-ss01-partition-proof.mts | tee /tmp/still-shift-ms1-ss01-partition-proof.log",
+      "cwd": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift",
+      "exitCode": 1,
+      "log": "/tmp/still-shift-ms1-ss01-partition-proof.log",
+      "reportPath": "/tmp/still-shift-ms1-ss01-partition-proof-1791570897042/report.json",
+      "failurePath": "/tmp/still-shift-ms1-ss01-partition-proof-1791570897042/failure.json",
+      "cause": "Temporary proof error callback invoked nonexistent store.fail, stopping before negative cases; 12 exact-source encoder and eight positive real HTTP coalescing cases had completed. No production source repair."
+    },
+    {
+      "name": "source-close and actual client/broker partition final rerun",
+      "command": "set -o pipefail\nsource ~/.nvm/nvm.sh && nvm use 22.23.1 && node --import tsx /tmp/still-shift-ms1-ss01-partition-proof.mts | tee /tmp/still-shift-ms1-ss01-partition-proof-rerun.log",
+      "cwd": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift",
+      "exitCode": 0,
+      "log": "/tmp/still-shift-ms1-ss01-partition-proof-rerun.log",
+      "script": {
+        "path": "/tmp/still-shift-ms1-ss01-partition-proof.mts",
+        "bytes": 15051,
+        "sha256": "sha256:39e178564b27209d93f7040fc7cb489c0610425d77dbba084e780e5d45550db4"
+      }
+    }
+  ],
+  "limitations": [
+    "No precise claim about the historical rejected chunk size/type or identity of its surface, because original logs did not instrument those facts.",
+    "This closes the exact SS01 cached/uncached transport input and supported modes; it does not claim all inputs or all transport/encoder formats are verified.",
+    "Source-close fault cases use the unchanged private helper plus real ordered-frame module with controlled streams; the full original-input matrix and broker cancellation separately use actual browser/HTTP routes.",
+    "Elapsed timings include closure hashing and full output decoding during concurrent mechanism work; no speed/capacity comparison or performance acceptance is claimed.",
+    "No new visual/listening acceptance follows from byte-exact transport evidence.",
+    "No historical host-specific scripts were executed; customer originals were read in place and never copied into Git."
+  ],
+  "toolchain": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "typescript": "5.9.2",
+    "browser": "Exact original unmodified composition bytes, original linked assets, pinned Chromium software-2 and FFmpeg H264 public routes; 1920\u00d71080, 30 fps, 120 complete frames",
+    "frameTransport": "png_pipe",
+    "format": "h264",
+    "ffmpeg": "8.0.1"
+  },
+  "failureRecording": {
+    "initialTemporaryHarnessRun": "/tmp/still-shift-ms1-ss01-partition-proof-1791570897042/failure.json",
+    "initialStdoutLog": "/tmp/still-shift-ms1-ss01-partition-proof.log",
+    "initialStderr": "Relevant TypeError and stack were retained by tool output and failure JSON; the stdout tee did not directly capture stderr.",
+    "failedRunMethod": "Partial reports retain all completed encoder/positive broker rows; corrected temporary harness rerun has a separate immutable output directory.",
+    "uninterruptedPassClaim": false
+  }
+}

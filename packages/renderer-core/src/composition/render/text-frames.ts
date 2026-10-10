@@ -3,7 +3,11 @@ import type {
   CompositionScope,
 } from "@still-shift/scene-contract";
 import { evaluateCompositionExposure } from "../evaluate/exposure.ts";
-import type { Bounds, EvaluatedLayerTree } from "../evaluate/types.ts";
+import type {
+  Bounds,
+  EvaluatedLayerTree,
+  EvaluationOptions,
+} from "../evaluate/types.ts";
 import { buildRenderGraph, type RenderOp } from "./graph.ts";
 
 export type CompositionTextFrames = Record<string, readonly number[]>;
@@ -16,6 +20,7 @@ export function animatedTextNodes(scope: CompositionScope): Set<string> {
 export function collectCompositionTextFrames(
   comp: Composition,
   textBounds: Record<string, Bounds[]>,
+  options: EvaluationOptions = {},
 ): CompositionTextFrames {
   const samples = new Map<string, Set<number>>();
   for (const scope of [comp, ...(comp.precomps ?? [])]) {
@@ -35,6 +40,10 @@ export function collectCompositionTextFrames(
   );
   const visitOps = (ops: RenderOp[]) => {
     for (const op of ops) {
+      if (op.kind === "native-depth") {
+        for (const graphic of op.graphics) visitOps(graphic.surface.ops);
+        continue;
+      }
       if (op.kind === "draw") {
         if (op.content.type === "text")
           samples.get(op.content.key)?.add(Math.round(op.content.time));
@@ -79,12 +88,18 @@ export function collectCompositionTextFrames(
   };
   for (let frame = 0; frame < comp.frameCount; frame++) {
     for (const tree of evaluateCompositionExposure(comp, frame, {
+      ...options,
       textBounds,
     })) {
       visit(tree, comp, "");
       if (needsGraph)
         visitOps(
-          buildRenderGraph(comp, tree, { textBounds, cull: false }).root.ops,
+          buildRenderGraph(comp, tree, {
+            ...options,
+            textBounds,
+            cull: false,
+            nativeArtworkPreparation: true,
+          }).root.ops,
         );
     }
   }
