@@ -14,10 +14,8 @@ import {
   NativeAppearanceCodeIdentitySchema,
   type NativeAppearanceCodeIdentity,
 } from "@still-shift/scene-contract";
-import {
-  canonicalMechanismJson,
-  passageError,
-} from "@still-shift/renderer-core";
+import { canonicalMechanismJson } from "../../renderer-core/src/mechanism/canonical.ts";
+import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 import {
   native3DAppearanceModules,
   native3DAppearanceExternalModules,

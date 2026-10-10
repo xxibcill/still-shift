@@ -303,8 +303,19 @@ type Shard = {
   frames: number;
 };
 
+type NativeObservationSinkOptions = {
+  outputPath: string;
+  exportId: string;
+  frameCount: number;
+  maximumPacketBytes: number;
+  execution: NativeObservationExecutionBinding;
+  expectedPasses(frame: number): readonly NativeObservationExpectedPass[];
+  reserve(bytes: number): { release(): void };
+};
+
 /** One export-owned pending packet; only accepted pixel bodies make durable rows. */
 export class NativeObservationSink {
+  private readonly options: NativeObservationSinkOptions;
   private pending: Pending | undefined;
   private shard: Shard | undefined;
   private readonly artifacts: NativeObservationArtifact[] = [];
@@ -322,17 +333,8 @@ export class NativeObservationSink {
   private activeWrite: Promise<void> | undefined;
   readonly manifestPath: string;
   readonly executionSha256: string;
-  constructor(
-    private readonly options: {
-      outputPath: string;
-      exportId: string;
-      frameCount: number;
-      maximumPacketBytes: number;
-      execution: NativeObservationExecutionBinding;
-      expectedPasses(frame: number): readonly NativeObservationExpectedPass[];
-      reserve(bytes: number): { release(): void };
-    },
-  ) {
+  constructor(options: NativeObservationSinkOptions) {
+    this.options = options;
     admitNativeObservationCapacity(
       options.frameCount,
       options.maximumPacketBytes,
