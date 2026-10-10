@@ -21,6 +21,10 @@ import {
 } from "./composition-keys.ts";
 import { curveGraph, resolvedGraph } from "./composition-graph.ts";
 import {
+  nativeInspectorControls,
+  type NativeInspectorControlSelection,
+} from "./composition-native-controls.ts";
+import {
   evaluateProperty,
   type EvaluationOptions,
 } from "../../../packages/renderer-core/src/composition/evaluate/index.ts";
@@ -58,6 +62,10 @@ export function createCompositionInspector(options: {
     track: KeyTrack | undefined;
   let keyIndex = 0;
   let rootPath: string | undefined;
+  let lastFrame = 0;
+  let updateNativeFrame: ((frame: number) => void) | undefined;
+  let nativeSelectionKey: string | undefined;
+  let nativeControlSelection: NativeInspectorControlSelection = {};
   const visibility = new Map<string, { enabled?: boolean; solo?: boolean }>();
   const message = element("edit-message"),
     fieldset = element<HTMLFieldSetElement>("inspector-edit"),
@@ -336,6 +344,23 @@ export function createCompositionInspector(options: {
     copy.disabled = true;
     copy.onclick = null;
     area.replaceChildren();
+    const nativeKey = selected ? JSON.stringify(selected.path) : undefined;
+    if (nativeKey !== nativeSelectionKey) {
+      nativeSelectionKey = nativeKey;
+      nativeControlSelection = {};
+    }
+    updateNativeFrame =
+      selected && history
+        ? nativeInspectorControls(area, {
+            document: () => history!.document,
+            evaluation: options.evaluation,
+            path: selected.path,
+            frame: lastFrame,
+            selection: nativeControlSelection,
+            submit,
+            report,
+          })
+        : undefined;
     chart.replaceChildren();
     element("resolved-graph").replaceChildren();
     if (!track) {
@@ -814,6 +839,8 @@ export function createCompositionInspector(options: {
       composition: Composition,
       evaluation: EvaluationOptions,
     ) {
+      lastFrame = frame;
+      updateNativeFrame?.(frame);
       const output = element("resolved-value");
       if (!rootPath) {
         output.textContent =

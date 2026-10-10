@@ -43,26 +43,18 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS1N implementation checkpoint (2026-10-10):** separate
-  `codex/mechanism-ms1n` carries exact MS1 `13b62b84` (PR #52, open).
-  Native contracts, frozen variants, joint HDR/depth rendering, live bindings,
-  authenticated pixel-paired observations, saved recipe refresh, CLI and portable
-  package paths are implemented. Fresh `check:fast` passes 3,861 units and every
-  prelude; 25 focused runtime/CLI/package cases and independent 14-case GPU
-  controls pass. Five fresh bridge PNGs match exactly; the first harness mismatch
-  was a missing production sRGB tag, with zero changed decoded pixels.
-  Implementation is committed at `cfcb020e`; the first actual E01 PNG/receipt
-  exists but its external harness failed on an unconsumed generator. That harness
-  is repaired; source-publication, historical descriptor self-hash and native raw
-  row-order fixes now pass actual focused regressions and fresh fast3/3,861 units.
-  Bare-Node full bridge attempt stopped before rendering on a dependency lookup
-  masked by pnpm's injected path. Renderer-owned resolution now passes17 focused
-  checks; associated saved-preparation render admission passes actual camera40
-  export and non-overwrite controls. Fresh fast4 passes all3,861 units.
-  Earlier failures remain retained. Full E01/edit proof, full696 fresh bridge,
-  hardware/installed execution, complete local gate/176 baselines and human
-  acceptance remain pending. [Design](./mechanism-shorts-ms1n-design.md),
-  [results](./mechanism-shorts-ms1n-results.json).
+- **MS1N implementation (2026-10-10):** `codex/mechanism-ms1n` carries exact
+  MS1 `13b62b84` (PR #52 open). Native rendering, authenticated pixel-paired
+  observations, saved refresh, CLI and portable paths are committed at `cfcb020e`,
+  with publication/row-order/provenance repairs at `ae76e3a1` and renderer-owned
+  dependency resolution/saved-render admission at `fd88faa3`. Native Lab controls
+  now pass eight focused regressions and fresh fast6/all3,869 units. Actual native
+  baselines0/88 and camera88 pass; part0 stopped before submission on browser
+  module readiness timeout. Full bridge2 stopped before rendering on a private
+  signed-zero/JSON comparison; harness corrected. All earlier failures remain.
+  Actual Lab/edit/full696/native repeat/hardware/installed proofs and all77 groups/
+  176 unchanged baselines remain pending; human playback/listening is separate.
+  [Design](./mechanism-shorts-ms1n-design.md), [results](./mechanism-shorts-ms1n-results.json).
 
 - **MS1 software complete in stages (2026-10-10):** `codex/mechanism-ms1` carries
   exact MS0 prerequisite `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51)
@@ -189,6 +181,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — MS1N native Lab controls and current checks
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, after `fd88faa3`.
+- **Done:** carry accepted native evaluation context through QA, overlay and
+  inspector; expose physical IDs, camera samples, part placement, PBR and visible
+  label states through revision-safe proposals. Keep readiness out of saved data.
+- **Results:** focused8 and fresh fast6/all3,869 pass; initial fast5 retained with
+  one test-only type error. Actual native baseline0/label88/camera88 previews pass.
+- **Retained:** full bridge2 signed-zero wire assertion failed before rendering;
+  native part preview module readiness timed out before edit submission. Diagnose
+  actual browser loading before any source repair; no missing stages count as pass.
+- **Open / next:** bounded maintained native Lab UI save/reload, remaining edited
+  previews, full696 native/bridge and package/hardware/full77 gate.
+- **Records:** [native results](./mechanism-shorts-ms1n-results.json).
 
 ### 2026-10-10 — MS1N bare runtime and saved render repairs
 

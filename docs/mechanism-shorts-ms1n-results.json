@@ -497,6 +497,71 @@
       "tests": 3861,
       "testFiles": 375,
       "scope": "Fresh complete development gate after renderer-owned dependency resolution and associated saved-preparation render admission; schema/identity/boundary/format/lint/type/unit stages pass."
+    },
+    {
+      "id": "bridge-factor-full-2",
+      "status": "failed",
+      "node": "22.23.1",
+      "sourceCommit": "fd88faa3583ea268b7b847f0d61f4357dba9f5c7",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-bridge-factor-full-2.log",
+        "bytes": 8753,
+        "sha256": "sha256:958436215283251b91a8392d582bc2c58881e34f9e662d0e0ed74585e5adc679"
+      },
+      "directory": "/private/tmp/still-shift-ms1n-bridge-factor-full-U83JXd",
+      "new3dRenders": 0,
+      "scope": "Private harness compared live matrix signed zero using Object.is semantics against persisted JSON zero; stopped during source/sidecar admission before rendering. Exact executed harness retained; canonical finite JSON wire comparison repair changes no source, baseline or pixel tolerance."
+    },
+    {
+      "id": "e01-native-preview-2",
+      "status": "failed",
+      "sourceCommit": "fd88faa3583ea268b7b847f0d61f4357dba9f5c7",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-e01-preview-proof-2.log",
+        "bytes": 1391,
+        "sha256": "sha256:812b5bb8b73aa81ccf28d03f47319a6058f7f4a4a9195f4d1e7ae53d791c89e2"
+      },
+      "directory": "/private/tmp/still-shift-ms1n-e01-preview-proof-2",
+      "actualPositivePreviewsPassed": 3,
+      "scope": "Original frame0, anchored label88 and saved camera88 actual packets/PNG readback pass. Saved blade-part0 preparation refreshed, then fixed30s renderer-module readiness wait timed out before part JSON/resource/render submission. No edited-part render acceptance; remaining material/label/fractional/reverse/negative controls not reached. Failure retained; bounded actual module diagnostics pending."
+    },
+    {
+      "id": "check-fast-5",
+      "status": "failed",
+      "command": "pnpm check:fast",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-check-fast-5.log",
+        "bytes": 1626,
+        "sha256": "sha256:c4743b1a2474235bc1657987e5912bd8ac3ef3bdaee0450fe6cdcf4198a43f45"
+      },
+      "scope": "All preludes through lint pass; type check reports one test-only optional indexed-layer narrowing. Fixture nonempty assertion corrected; no units ran in this attempt."
+    },
+    {
+      "id": "native-lab-units-1",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-lab-units-1.log",
+        "bytes": 320,
+        "sha256": "sha256:ccd5ee02ed2c2267e2dfc5d8b220aafcf45f615431f4132595d6c90b9fbef06e"
+      },
+      "tests": 8,
+      "scope": "Native readiness propagation/current bounds, owning-scope physical lookup, camera/base/key, parts, PBR and visible text-state edits, located bounds/IDs, revision history and cached overlay context. No actual browser UI proof."
+    },
+    {
+      "id": "check-fast-6",
+      "status": "passed",
+      "command": "pnpm check:fast",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-check-fast-6.log",
+        "bytes": 29395,
+        "sha256": "sha256:ed47a46fc3a4a5d1b6937d66d1fb21a794b9b89765a237a889dbed0be4c021e8"
+      },
+      "tests": 3869,
+      "testFiles": 376,
+      "scope": "Fresh full development gate for native Lab controls/context; all schema/identity/boundary/format/lint/type/unit stages pass. The eight new Lab units are included in3869."
     }
   ],
   "implementationEvidence": {
@@ -529,7 +594,7 @@
       "nativeSourceRepairPending": [],
       "humanAcceptance": "pending",
       "repairs": "Captured descriptor self-hash, authored source-edge validation immediately before publication, and canonical top-first raw/default encoder row order implemented. Fresh source checkpoint/proofs pending.",
-      "dependencyResolutionRepair": "Actual renderer-owned descriptor context resolves pinned dependencies without NODE_PATH/global fallback; bare Node17 focused checks pass. Current source checkpoint/full proofs pending.",
+      "dependencyResolutionRepair": "Actual renderer-owned descriptor context resolves pinned dependencies without NODE_PATH/global fallback; bare Node17 focused checks pass at fd88faa3. Full native preview/edit rerun in progress; full bridge harness2 failed before GPU on signed-zero JSON comparison and is repaired separately.",
       "existingPreparedRenderAdmission": "Fresh root or sole real associated preparation admitted; prior finals/unrelated/file/symlink roots reject without modifying them. Public actual two-frame saved-camera render passed; full696 installed proof pending."
     },
     "portableInstalledExecution": "pending",
@@ -561,6 +626,11 @@
       "inputs": 2130,
       "sha256": "sha256:123ca24297da0def3a0f9b58513d3724365272a0e20f368d2d2f35f6f623582c",
       "scope": "Current source/test/build bytes unchanged through focused real export/identity and passing fast4; parent ae76e3a1. Accompanying commit records exact repair checkpoint."
+    },
+    "runtimeRepairCheckpoint": "fd88faa3583ea268b7b847f0d61f4357dba9f5c7",
+    "labNativeAuthoring": {
+      "status": "implemented-fast-gate-passed-browser-proof-pending",
+      "scope": "Transient accepted native evaluation context for QA/overlay/inspector; declared physical IDs and sampled pure evaluation; exact camera-key/base FOV, part translation, metalness/roughness and visible label-state edits through existing revision/session/save flow. Pure evaluation is not GPU observation. Bounded actual UI save/reload proof pending."
     }
   },
   "humanContinuousPlaybackListeningAndCreativeAcceptance": "pending",

@@ -25,6 +25,7 @@ import {
 } from "./composition-document.ts";
 import { createCompositionInspector } from "./composition-inspector.ts";
 import { createCompositionOverlay } from "./composition-overlay.ts";
+import { compositionPreviewEvaluation } from "./composition-preview-evaluation.ts";
 import { CompositionAudioPreviewLoader } from "./composition-audio-player.ts";
 import {
   presentCompositionAudioWaveforms,
@@ -155,8 +156,7 @@ let pendingSave: string | undefined;
 let currentProgram: ProgramResponse["snapshot"];
 const inspector = createCompositionInspector({
   evaluation() {
-    const bounds = session.snapshot?.preview.textBounds;
-    return bounds ? { textBounds: bounds } : {};
+    return compositionPreviewEvaluation(session.snapshot?.preview);
   },
   async propose(proposal) {
     if (!documentHistory?.accepts(proposal)) return false;
@@ -180,7 +180,7 @@ const inspector = createCompositionInspector({
       overlay.draw(
         snapshot.composition,
         session.frame,
-        snapshot.preview.textBounds,
+        compositionPreviewEvaluation(snapshot.preview),
       );
   },
 });
@@ -245,7 +245,7 @@ const session = createPreviewSession<CompositionSnapshot>({
     try {
       showLint(
         analyzeCompositionQuality(comp, {
-          evaluation: { textBounds: preview.textBounds },
+          evaluation: compositionPreviewEvaluation(preview),
         }),
       );
       lintAvailable = true;
@@ -291,10 +291,9 @@ const session = createPreviewSession<CompositionSnapshot>({
       );
     el("time").textContent =
       `${(frame / snapshot.scene.fps).toFixed(2)} s · ${frame + 1} / ${snapshot.scene.frameCount}`;
-    overlay.draw(snapshot.composition, frame, snapshot.preview.textBounds);
-    inspector.frame(frame, snapshot.composition, {
-      textBounds: snapshot.preview.textBounds,
-    });
+    const evaluation = compositionPreviewEvaluation(snapshot.preview);
+    overlay.draw(snapshot.composition, frame, evaluation);
+    inspector.frame(frame, snapshot.composition, evaluation);
     listDiagnostics([
       ...snapshot.warnings,
       ...snapshot.report.diagnostics.map((d) => ({
