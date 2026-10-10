@@ -37,6 +37,11 @@ const release = registerCompositionEffect({
 release();
 ```
 
+For installed applications, import from `still-shift/schema` and
+`still-shift/renderer` respectively. Register the callbacks in every rendering
+host; a composition JSON file contains the effect identity/parameters and does
+not install executable plugins into the stock CLI.
+
 GPU textures contain premultiplied RGBA in top-left image coordinates. A pass has
 `source`, `backdrop`, `coverage`, then `input3`, `input4`, etc. samplers. The shader
 header supplies `uv`, `pixel` and the byte-rounding function `bytes`. Uniforms are
@@ -130,7 +135,8 @@ preserve all supported integer seed bits in shader uniforms.
 
 All four kernels run as actual GPU passes, with pure Canvas coverage references.
 They apply to isolated drawable layers, groups, precomps and captured adjustment
-backdrops. Gradient wipe follows the remaining scoped-input dependency work.
+backdrops. `transition.gradient-wipe` is also available with a scoped map-layer
+input; see [displacement maps and gradient wipes](#displacement-maps-and-gradient-wipes).
 
 ## Native sampled blur
 

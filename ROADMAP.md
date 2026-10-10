@@ -93,8 +93,8 @@ See the [missing-records audit](./docs/production-release-preparation.md#missing
 | MS2     | Transfer packs, rigs, camera/annotation recipes and narration-linked timing across three distinct mechanism families.                                           | Reusable authoring (source record unavailable)                                       |
 | MS3     | Run the ten-episode pilot and measure authoring effort, repair burden, technical completion and reviewed output quality.                                        | Production pilot (source record unavailable)                                         |
 
-Use the supported Three.js preparation bridge for the first solid-object proof,
-feeding the existing composition media pipeline. Reuse typography, audio and
+The planned Three.js preparation bridge would feed rendered media for the first
+solid-object proof into the existing composition media pipeline. Reuse typography, audio and
 export machinery. Native mesh composition requires a demonstrated limitation in
 shared depth, transparent interleaving or camera interaction.
 

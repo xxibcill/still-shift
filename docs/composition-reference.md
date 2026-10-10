@@ -62,7 +62,7 @@ pnpm still-shift comp render --input program.ts --output clip.mp4
 | `camera2d`      | no       | object                  |
 | `metadata`      | no       | object                  |
 
-See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1.schema.json) for full nested bounds and structural unions. Run semantic validation for references, paths and cycles. The layer schemas reserve some future features; the implementation notes' availability section records delivered behavior.
+See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1.schema.json) for full nested bounds and structural unions. Run semantic validation for references, paths and cycles. All listed layer types are implemented; the implementation notes' availability section records backend requirements, operating guides and deferred follow-ups.
 
 ## Generated layer contracts
 
@@ -1269,9 +1269,11 @@ Schema validation yields stable codes with JSON paths; builder input also yields
 
 A composition describes timed layers, their animated properties and how they combine,
 in the spirit of an After Effects composition. It is plain JSON, validated in two steps:
-a structural schema, then semantic rules (references, cycles, limits). The CE1 milestone
-defines and validates the format. CE2 evaluates it without drawing; the CE3 render
-graph and Canvas 2D backend [render](#rendering-a-composition) the evaluated state.
+a structural schema, then semantic rules (references, cycles, limits). The contract validates the format, the evaluator samples it without drawing, and
+the shared render graph [renders](#rendering-a-composition) that state on Canvas 2D
+or WebGL2. Core CE0–CE16 features are delivered; the
+[availability summary](#feature-availability) links to the operating guides and
+records the remaining production and performance limits.
 
 ## Native shape contents (CE5)
 
@@ -1353,7 +1355,8 @@ These pure functions run in Node and browsers. They validate once per compositio
 object, compile curves into identity-keyed weak caches and memoise dependencies within
 each evaluation. Treat the composition and its nested objects as immutable: replace
 the composition object after an edit. Returned states are fresh on every call.
-`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-51`.
+`COMPOSITION_EVALUATOR_VERSION` is `composition-evaluator-57`; export and cache
+manifests record the actual identity used for a render.
 
 `evaluateComp` returns an `EvaluatedLayerTree`: scope id, time, dimensions, fps,
 floating-point RGBA background, ordered `layers` and structured `diagnostics`.
@@ -1458,11 +1461,14 @@ raw value; child tree `time` reports the wrapped/clamped sample. A single native
 hold remap key, for example `{ keys: [{ frame: 0, value: 12, interpolation: "hold" }] }`,
 freezes the keyed source without a duplicate freeze field.
 
-Video/sequence reserve `frameBlending: "hold" | "linear"` (default hold); audio
-rejects this visual field. Media decoding/rendering remains unavailable until
-CE13. `sourceFramePair` returns clamped floor/next source indices and a fractional
-mix, or the held floor index. It requires finite source time and a positive safe
-integer frame count. CE13 must wire decoding and mixing to this policy.
+Video/sequence implement `frameBlending: "hold" | "linear"` (default hold); audio
+rejects this visual field. Native decoding prepares verified original frame
+ordinals, and linear blending combines adjacent frames into one premultiplied
+image layer. Media `timeRemap` uses absolute source seconds; precomp `timeRemap`
+uses source frames. See [native composition media](./composition-media.md) for
+trim, rational-rate, Q32 frame selection and PCM clock rules. `sourceFramePair` is
+the pure clamped floor/next selection helper: it requires finite source time and a
+positive safe integer frame count.
 
 Each instance of a reused precomp gets its own clock and memoised state. Property
 paths traverse named precomp layer instances, following each host's `comp` source
@@ -1508,8 +1514,8 @@ Bounds arrays are indexed by text state; keys are root layer ids or
 `comp-text-layout-missing` warning; a safe-area constraint requiring those bounds
 returns an error. Attach/look-at/contact points on text also use measured local bounds
 and require those measurements. CE3 prepares these measurements, including text animator geometry,
-with the pinned font/layout path. Shape bounds and follow-path constraints arrive in
-CE5. Attach, look-at, contact and safe-area correction are available now. Singular
+with the pinned font/layout path. Native shape bounds and follow-path constraints are implemented. Attach, look-at,
+contact and safe-area correction are available for supported measured geometry. Singular
 parents are valid transforms; constraints that need their inverse report
 `comp-constraint-singular`. Evaluation limits each call to 20,000 layer instances
 and accepts finite root times within ±216,000 frames.
@@ -1550,7 +1556,9 @@ instance motion paths/tangents and 5% safe-area guides use a separate SVG surfac
 and never enter render output. Diagnostic jumps use root composition frames.
 Native CE8 cameras show actual near/focus-plane world corners in an X/Z inset
 (or X/Y for a vertical camera). XYZ and POI tracks expose three-component tangent
-edits. Source-backed waveform overlays follow CE13.
+edits. Native media exposes source-clock keys, gain/pan tracks, source and
+processed PCM waveforms, complete-mix peaks and synchronized audio-clock playback;
+see [native media](./composition-media.md).
 
 Fixed JSON previews offer **Save JSON source**, guarded by source revision and
 byte hash. Saves preserve raw native fields, metadata, source asset paths and file
@@ -1583,6 +1591,7 @@ const resources = await loadCompositionResources(composition, (id) =>
   urlFor(id),
 );
 const preview = createCompositionPreview(canvas, composition, resources);
+await preview.prepareFrame(42);
 const { diagnostics, culled } = preview.renderFrame(42);
 ```
 
@@ -1592,20 +1601,26 @@ pnpm --silent still-shift comp render --input first-slice.json --output gpu.mp4 
 ```
 
 `loadCompositionResources` fetches every image and font, checks its SHA-256 and pixel
-size, and loads style and animated-axis font variants. Lab preview
+size, and loads style and animated-axis font variants. Native video/sequence
+callers also supply `{ preparedMedia }` as its third argument, from verified Node
+source preparation; `assetUrl` resolves captured PNG IDs. Await
+`preview.prepareFrame(frame)` before drawing native frames; it returns void for
+still-only resources. CLI/Lab/export handle this preparation automatically. See
+[native media](./composition-media.md) for capture and PCM playback ownership. Lab preview
 (`/composition.html`) and export call the same `createCompositionPreview`, so they
 share evaluator and backend code; export runs it in the pinned software browser. On a
-hardware GPU the Lab labels its preview approximate: previews stay within the
-`perceptual` tier except feathered masks until CE6 (measured by
+hardware GPU the Lab labels its preview approximate; hardware/export agreement
+uses the documented perceptual policy (measured by
 `pnpm composition:hardware-preview`). `renderComposition` (animation engine) and
 `comp render` resolve asset paths relative to the composition file and write the MP4,
 a scene manifest and a result manifest. The manifest records
-`COMPOSITION_RENDERER_VERSION` (`composition-canvas-1.1.0`) and
+`COMPOSITION_RENDERER_VERSION` (`composition-canvas-1.47.7` for Canvas) and
 `COMPOSITION_EVALUATOR_VERSION`, so both participate in cache identity.
 
-MP4 export requires even composition width and height for H.264's `yuv420p` format;
-`renderComposition` rejects odd dimensions before encoding. Odd dimensions remain
-valid for preview.
+The default MP4 path and explicit `h264` / `hevc10` profiles require even
+composition width and height; `renderComposition` rejects odd dimensions before
+encoding those profiles. Odd dimensions remain valid for preview and the other
+explicit profiles below.
 
 The graph carries both the combined matrix for geometry and the camera/parent/local
 transform sequence for drawing. Canvas concatenates that sequence in order: passing
@@ -1613,14 +1628,71 @@ only the combined matrix rounds its translation differently at the Canvas API
 boundary, which can change edge pixels despite identical evaluated geometry. Settled
 image states draw directly; only active crossfades allocate a blend surface.
 
-The output canvas is opaque: a transparent or absent `background` renders over black
-until alpha output formats arrive (CE15). Internal surfaces keep premultiplied alpha.
+The default preview/output canvas is opaque: a transparent or absent `background`
+renders over black. `createCompositionPreview(..., { preserveAlpha: true })` and
+alpha export profiles retain the root alpha; author a transparent background for
+transparent delivery. Internal surfaces keep premultiplied alpha.
+
+### Output formats and parallel rendering (CE15)
+
+`comp render --format` selects an explicit delivery profile. Omission keeps the
+existing opaque MP4 path. The profile controls container, color conversion, alpha
+and native-audio codec; use the matching output filename or PNG pattern.
+
+| `--format`      | Delivery                     | Alpha | Native audio          |
+| --------------- | ---------------------------- | ----- | --------------------- |
+| `h264`          | 8-bit H.264 MP4              | No    | AAC                   |
+| `hevc10`        | 10-bit HEVC MP4              | No    | AAC                   |
+| `prores422hq`   | ProRes 422 HQ MOV            | No    | Float32 PCM           |
+| `prores4444`    | ProRes 4444 MOV              | Yes   | Float32 PCM           |
+| `vp9alpha`      | VP9 WebM                     | Yes   | Opus                  |
+| `png8`, `png16` | 8-/16-bit RGBA numbered PNGs | Yes   | Companion Float32 WAV |
+
+Explicit profiles convert encoded-sRGB renderer bytes to BT.709 RGB and preserve
+linear alpha. PNG16 and high-bit-depth video encode the captured RGBA8 image at the
+profile's depth; they do not create additional source detail. PNG sequences require
+one `%06d.png` filename pattern, start at zero and publish an ordered hash manifest
+at `<pattern>.sequence.json`. Audio, when present, is written to
+`<pattern>.audio.wav`. Native sequence input requires sRGB source PNGs; normalize
+BT.709 delivery frames and create source descriptors before reimport.
+
+```sh
+pnpm still-shift comp render --input program.ts --output clip.mov --format prores4444 --workers 4 --cache-static true
+pnpm still-shift comp render --input program.ts --output frames/frame.%06d.png --format png16 --transport raw_rgba
+```
+
+`--workers 1|2|3|4` uses independent renderer processes with bounded frame blocks
+and ordered encoder submission; the count cannot exceed the composition's frame
+count. `--cache-static true|false` controls shared static-surface reuse and defaults
+to true when worker/cache options are supplied. Use a fresh output path for each
+run. `png_pipe` is the default transport; explicit profiles require `png_pipe` or
+`raw_rgba`. Programmatic `renderComposition` accepts `format`, `workers`,
+`cacheStatic`, `transport` and media `cacheDirectory`. Results record actual worker,
+cache, timing, memory, profile and source identities. Cancellation or verification
+failure publishes no completed output. See [CE15 delivery evidence](./composition-ce15-completion-results.json).
+
+### Mesh warp and puppet pins (CE14)
+
+`distort.mesh-warp` deforms rectangular input with a 2–8 row/column Bezier grid;
+`distort.puppet` builds a bounded alpha-outline mesh and animates material pins.
+Both are native layer-space effects on Canvas and WebGL2. Keep puppet `rest`
+positions fixed and animate `pins`; add starch regions for stiffness and overlap
+regions for stable local draw ordering. Point paths such as
+`actor.effects[puppet].pins[p5].y` support keys, drivers and expressions. A
+constrained prop uses a null helper plus solved-position drivers, converted into
+the puppet layer's local coordinates.
+
+Read [native puppet authoring](./story-acting.md#native-composition-puppet-acting)
+for coordinate systems, topology limits and `comp-mesh-budget` / `comp-mesh-pin` /
+`comp-mesh-flip` diagnostics. The [arm and house examples](../examples/composition/12-puppet-acting/README.md)
+include both a pin-only gesture and prop following. Sweep the entire animation
+before export: overlap controls draw order and does not permit folded meshes.
 
 ### Render graph
 
 Each frame, `buildRenderGraph(comp, tree)` turns the evaluated tree into a pure,
 backend-independent graph (no DOM). `executeGraph` runs it on any `RenderBackend`;
-the Canvas 2D backend is the reference and CE6 adds WebGL2 behind the same interface.
+Canvas 2D is the reference and WebGL2 uses the same graph interface.
 
 - Layers paint from the last array entry (bottom) to `layers[0]` (top).
 - A layer draws straight into its scope's surface unless it needs its own: a
@@ -1783,9 +1855,13 @@ parameter and cue binding; passage handoffs remain in the passage engine.
 Rich typography uses the versioned `component.typography@1.*` providers. Pixel
 effects compile into native effect controls; spatial paths, path morphs and animated
 stroke/trim use `component.path@1.*` and `component.flow@1.1.0`. Primitive blur and
-animated paint preserve their source semantics. Story source motion blur remains
-unsupported and depends on the remaining CE7 exposure work. Scenes longer than
-2,000 frames also return explicit unsupported-feature diagnostics.
+animated paint preserve their source semantics. Story source `motion-blur`
+compiles to the shared native shutter and indexed fractional `sampleTimes`,
+including source state, effect and history cuts. Compilation accepts at most
+2,000 source frames and 2,000 reachable samples; exceeding either bound returns
+`comp-adapter-limit` rather than dropping shutter samples. See
+[story exposure and passage compilation](#story-exposure-and-passage-compilation-ce4a-continuation)
+for provider source clocks and passage integration.
 
 Attached connectors use `story.path@1.1.0` and `story.flow@1.1.0`. Their payloads store
 integer-frame endpoint pairs and the authored bend. A shared geometry primitive
@@ -1872,8 +1948,9 @@ as required by its source schema.
 CE4b is complete under the approved milestone split, including evaluated-state,
 assigned pixel-tier, seeking and portable export parity. CE6-P retains the unchanged
 1.25× render/readback timing target and the recorded GPU timing failures, deferred
-to a future version under the approved performance split. Existing commerce commands retain their family renderer.
-Use `comp export-json` followed by `comp render --backend canvas2d` or
+to a future version under the approved performance split. Commerce commands and
+Lab previews now compile through the shared composition renderer, as do the story,
+cinematic, legacy illustrated and depth families. Use `comp export-json` followed by `comp render --backend canvas2d` or
 `comp render --backend webgl2` for explicit composition rendering.
 
 ```ts
@@ -1987,13 +2064,16 @@ themselves.
 ## Assets
 
 All assets share one id namespace and are pinned by SHA-256. Paths are relative to the
-composition file.
+composition file. Native source bytes and metadata are checked before preparation;
+see [media assets and authoring](./composition-media.md#author-and-preview-native-media).
 
-| `type`                       | Fields                                                                 |
-| ---------------------------- | ---------------------------------------------------------------------- |
-| `image`                      | `path`, `sha256`, `width`, `height` (natural pixel size)               |
-| `font`                       | `path`, `sha256`, `weight` (`"100"`–`"900"`), `style`, `variable` axes |
-| `video`, `sequence`, `audio` | `path`, `sha256`, `size` — arrive in CE13                              |
+| `type`     | Fields                                                                                                                           |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `image`    | `path`, `sha256`, `width`, `height` (natural pixel size)                                                                         |
+| `font`     | `path`, `sha256`, `weight` (`"100"`–`"900"`), `style`, `variable` axes                                                           |
+| `video`    | `path`, `sha256`, `width`, `height`, `frameCount`, rational `frameRate`, SDR `color`.                                            |
+| `sequence` | Video fields plus `manifestPath` and `firstFrame`; `path` is a numbered PNG pattern and `sha256` pins the ordered hash manifest. |
+| `audio`    | `path`, `sha256`, `sampleRate: 48000`, decoded `sampleCount`, `channels: 1 \| 2`.                                                |
 
 ## Markers
 
@@ -2093,23 +2173,27 @@ actual time-dependent values stay in range; reduce the deltas or separate their 
 
 ### Layer types
 
-| `type`                       | Fields                                                                                                                                                                                                                                                                                                                                                                                                                     | Available |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| `solid`                      | `size` `[w, h]`; `color` (animatable).                                                                                                                                                                                                                                                                                                                                                                                     | CE1       |
-| `image`                      | `size`; `fit` (`contain` default, `cover`, `stretch`); `sources` (`{ asset, crop?, pose?, registration?, anchors? }[]`); `state` (discrete index into `sources`); `stateFrom` + `stateMix` (crossfade); `rasterize` (`draw` default, `natural-size`).                                                                                                                                                                      | CE1       |
-| `text`                       | `text`; `states` + `state`; paired `stateFrom`/`stateMix` (crossfade); `fontSize`; `size` (the `textBox` wrap box); `color` (animatable); `weight`, `font`, `fontAsset`, `style`, `align`, `textRole`, `textLayout`, `textBox`, `revealMode`, `reveal` (animatable 0–1) and the story typography fields (`spans`, `locale`, `anchor`, `wrap`, `orphanFraction`, `decorations`, `transition(s)`, `feather`, `lineOverlap`). | CE1       |
-| `provider`                   | Versioned `provider` id; bounded `params`; declared `assets`; optional `bounds`, `usesSystemFonts`, `state`, and paired `stateFrom`/`stateMix`. Content state bounds are checked by the provider. See [content providers](#content-providers-ce4a).                                                                                                                                                                        | CE4a      |
-| `null`                       | No content; a transform for parenting.                                                                                                                                                                                                                                                                                                                                                                                     | CE1       |
-| `group`                      | `size`; `clip`. Children (layers parented to it) multiply its opacity and, with `clip`, are clipped to its bounds. Opacity applies per child, unlike a precomp. Produced by family adapters (parity note 1).                                                                                                                                                                                                               | CE1       |
-| `precomp`                    | `comp` (precomp id); `collapseTransforms`; `timeRemap` (animatable precomp frame).                                                                                                                                                                                                                                                                                                                                         | CE1       |
-| `adjustment`                 | `size` (default: composition size). Applies its effects to the layers below.                                                                                                                                                                                                                                                                                                                                               | CE1       |
-| `shape`                      | `contents`.                                                                                                                                                                                                                                                                                                                                                                                                                | CE5       |
-| `camera`                     | `model`, `pointOfInterest`, `zoom` or `focalLength`, `filmSize`, clips and focus controls; see native camera below.                                                                                                                                                                                                                                                                                                        | CE8       |
-| `light`                      | `lightType`, colour/intensity, point/spot distance and spot cones; see bounded lighting below.                                                                                                                                                                                                                                                                                                                             | CE8-L     |
-| `video`, `sequence`, `audio` | `asset`; `timeRemap`.                                                                                                                                                                                                                                                                                                                                                                                                      | CE13      |
+| `type`              | Fields                                                                                                                                                                                                                                                                                                                                                                                                                     | Available |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| `solid`             | `size` `[w, h]`; `color` (animatable).                                                                                                                                                                                                                                                                                                                                                                                     | CE1       |
+| `image`             | `size`; `fit` (`contain` default, `cover`, `stretch`); `sources` (`{ asset, crop?, pose?, registration?, anchors? }[]`); `state` (discrete index into `sources`); `stateFrom` + `stateMix` (crossfade); `rasterize` (`draw` default, `natural-size`).                                                                                                                                                                      | CE1       |
+| `depth-image`       | `size`, `sourceAsset`, prepared `depth` asset/encoding/dimensions, `overscan`, optional `framing`, `edgeDamping`, `alphaMode`, local `motion`. WebGL2 required; transforms/effects/masks use the common graph.                                                                                                                                                                                                             | CE4d      |
+| `text`              | `text`; `states` + `state`; paired `stateFrom`/`stateMix` (crossfade); `fontSize`; `size` (the `textBox` wrap box); `color` (animatable); `weight`, `font`, `fontAsset`, `style`, `align`, `textRole`, `textLayout`, `textBox`, `revealMode`, `reveal` (animatable 0–1) and the story typography fields (`spans`, `locale`, `anchor`, `wrap`, `orphanFraction`, `decorations`, `transition(s)`, `feather`, `lineOverlap`). | CE1       |
+| `provider`          | Versioned `provider` id; bounded `params`; declared `assets`; optional `bounds`, `usesSystemFonts`, `state`, and paired `stateFrom`/`stateMix`. Content state bounds are checked by the provider. See [content providers](#content-providers-ce4a).                                                                                                                                                                        | CE4a      |
+| `null`              | No content; a transform for parenting.                                                                                                                                                                                                                                                                                                                                                                                     | CE1       |
+| `group`             | `size`; `clip`. Children (layers parented to it) multiply its opacity and, with `clip`, are clipped to its bounds. Opacity applies per child, unlike a precomp. Produced by family adapters (parity note 1).                                                                                                                                                                                                               | CE1       |
+| `precomp`           | `comp` (precomp id); `collapseTransforms`; `timeRemap` (animatable precomp frame).                                                                                                                                                                                                                                                                                                                                         | CE1       |
+| `adjustment`        | `size` (default: composition size). Applies its effects to the layers below.                                                                                                                                                                                                                                                                                                                                               | CE1       |
+| `shape`             | `contents`.                                                                                                                                                                                                                                                                                                                                                                                                                | CE5       |
+| `camera`            | `model`, `pointOfInterest`, `zoom` or `focalLength`, `filmSize`, clips and focus controls; see native camera below.                                                                                                                                                                                                                                                                                                        | CE8       |
+| `light`             | `lightType`, colour/intensity, point/spot distance and spot cones; see bounded lighting below.                                                                                                                                                                                                                                                                                                                             | CE8-L     |
+| `video`, `sequence` | `asset`; `size?`, `fit`, `sourceInFrame` / `sourceOutFrame`, `timeRemap` in source seconds, `frameBlending` (`hold` or `linear`).                                                                                                                                                                                                                                                                                          | CE13      |
+| `audio`             | `asset`; `role` (`narration`, `bgm`, `sfx`), `gainDb`, `pan`, `timeRemap` in source seconds, source sample trim and sample-count fades. No picture geometry.                                                                                                                                                                                                                                                               | CE13      |
 
-Layers of an unavailable type validate structurally and then fail with
-`comp-feature-unavailable`, so agents learn which milestone provides them.
+All layer types listed above are implemented. Backend and feature constraints
+still apply: true perspective, depth displacement and flat lighting require
+WebGL2; unsupported Canvas scenes fail explicitly. Native media prepares verified
+sources before preview/export, and audio layers do not paint.
 
 ### Native camera and xyz planes (CE8)
 
@@ -2594,17 +2678,28 @@ diagnostic code.
 
 ## Feature availability
 
-Native shapes/follow-path constraints, the effect catalogue and opt-in
-linear-light compositing are implemented. Unknown or undeclared properties have
-path diagnostics; completed milestones are not promised as future availability.
+Core CE0–CE16 features are implemented, including all contract layer types, native
+shapes/follow-path, masks/mattes, expressions, cameras, bounded lighting, effects,
+linear-light compositing, inspection and quality linting. Unknown or undeclared
+properties retain path diagnostics; unknown effects report
+`comp-feature-unavailable`.
 
-Features that are in the contract but not yet implemented fail with
-`comp-feature-unavailable`; the message names the milestone.
+| Capability                                                                           | How to use it                                                                                                                                                                                                            |
+| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Native video, numbered PNG sequences and audio (CE13)                                | [Media source descriptors, source clocks, preview and export](./composition-media.md#author-and-preview-native-media).                                                                                                   |
+| Bezier mesh warp and puppet pins (CE14)                                              | [Native puppet authoring](./story-acting.md#native-composition-puppet-acting), including starch, overlap and constrained prop following; [complete acting examples](../examples/composition/12-puppet-acting/README.md). |
+| Alpha and delivery profiles, static caching and 1–4 workers (CE15)                   | [Output formats and parallel rendering](#output-formats-and-parallel-rendering-ce15).                                                                                                                                    |
+| Programmable soundtrack projects (CE16)                                              | [Soundtrack setup, CLI operations and passage integration](./soundtrack-project.md).                                                                                                                                     |
+| Existing story, commerce, cinematic, legacy illustrated and depth inputs (CE4a–CE4d) | Family adapters compile to the common composition graph; use `comp export-json --scene` for inspectable JSON.                                                                                                            |
 
-| Feature                                           | Milestone |
-| ------------------------------------------------- | --------- |
-| Video, image-sequence and audio layers and assets | CE13      |
-| Light layers                                      | CE8-L     |
+True perspective, depth displacement and flat-surface lighting require WebGL2;
+Canvas supports its documented affine subset. Lighting uses bounded ambient,
+point and spot lights; production cast shadows and advanced surface shading remain
+follow-ups. WebGL 1.25× family timing and native 2× performance acceptance remain
+[owner-deferred CE6-P](./verification.md#deferred-webgl-performance). Technical
+soundtrack/media completion does not establish human listening or real-project
+visual acceptance. The separate mechanism-production and named character-action
+follow-ups are not part of the delivered core contract.
 
 ## Limits
 
@@ -2647,7 +2742,7 @@ curves retain their existing 2–100 key limit and nonnegative frame convention.
 remains free-form JSON subject to its byte and nesting-depth limits. Expression ASTs,
 effect parameter objects and shape contents share a byte limit; ASTs use their
 expression-specific JSON-depth bound and effects/shapes retain depth 64. Bounds are
-checked before recursive parsing even while those features are unavailable. Cyclic values
+checked before recursive parsing, before feature-specific preparation. Cyclic values
 are rejected as invalid JSON. Legacy story and commerce contracts
 retain their original bounds.
 
@@ -2734,7 +2829,7 @@ retain their original bounds.
 | `comp-path-property`               | A path names no property of its layer (including unknown mask and effect ids).                                                                             |
 | `comp-path-type`                   | A driver or periodic motion targets a non-scalar property.                                                                                                 |
 | `comp-path-readonly`               | A read-only path (`comp.camera.*`) is used as a target.                                                                                                    |
-| `comp-feature-unavailable`         | A contract feature whose milestone has not landed; see [availability](#feature-availability).                                                              |
+| `comp-feature-unavailable`         | An unknown or unavailable effect/contract feature; see [availability](#feature-availability).                                                              |
 | `comp-provider-bounds`             | Provider bounds have non-positive width or height.                                                                                                         |
 | `comp-provider-unavailable`        | Provider preparation cannot find the exact versioned id.                                                                                                   |
 | `comp-provider-duplicate`          | The renderer registry contains the same versioned id twice.                                                                                                |
@@ -2872,7 +2967,7 @@ light sweep. Opacity wrappers retain each root's camera depth. Path flows share
 their path's treatment and matte, including flows on a path with zero opacity;
 screen-space grain is independent of the story camera. Shared-effect opt-in,
 root-target validation and component annotation ownership rules still apply.
-Motion blur is handled by the separate CE7 dependency.
+Motion blur uses the delivered shared shutter and indexed source-clock compilation.
 
 ### Cinematic scenes as native compositions
 
@@ -2984,8 +3079,9 @@ setting to descendants; an explicit child setting overrides inheritance. Ordinar
 parenting carries transforms without inheriting the blur switch. Opted-out layers
 hold their complete evaluated pose, including ancestor transforms and opacity.
 
-The backend averages complete opaque sample frames in display sRGB, preserving
-moving overlaps and transparency. Canvas uses one reusable Float32 accumulation
+The backend averages complete sample frames in the selected composition color
+space and output alpha policy, preserving moving overlaps and transparency.
+Canvas uses one reusable Float32 accumulation
 buffer and rounds once after the fixed-order sum. It retains no rendered history.
 Integer output frames remain authoritative; exposure evaluates the existing native
 curves at fractional times. A stationary scene averages to the same pixels.
@@ -3041,7 +3137,7 @@ budget. Rendering uses the same prepared glyph path as ordinary integer playback
 ### Optional GPU composition preview
 
 `createCompositionPreview(canvas, composition, resources, { backend: "webgl2" })`
-selects `composition-webgl2-0.2.0`; omitting the option retains Canvas 2D. Both
+selects `composition-webgl2-0.68.7`; omitting the option retains Canvas 2D. Both
 previews expose `backend`, `rendererVersion`, and `readPixels()` in top-row-first
 unpremultiplied RGBA. Scene wrappers include the selected renderer version in
 their identity.
@@ -3159,8 +3255,10 @@ pnpm composition:lint-corpus --output new-corpus-report.json
 
 The corpus report covers every CE0 render item with retained frame hashes; check
 those hashes against fresh renders with `pnpm test:browser:composition-baselines`.
-Where a family adapter is unavailable (CE4a coverage, CE4c/CE4d), the report records
-pixel-only coverage and the reason. It never treats unsupported state rules as passed.
+Historical corpus reports may retain pixel-only coverage for family inputs that
+were not compiled when the report was produced. All core family adapters are now
+delivered; regenerate evidence to assess current state-rule coverage. A report
+never treats unsupported or unmeasured rules as passed.
 The acceptance command measures the existing v013 review MP4 and a fresh continuous
 prototype export; other craft findings remain in its report.
 
@@ -3171,7 +3269,7 @@ bounded `sampleTimes` clock on every layer. Transform, paint and connector value
 sample fractional source time. Flow providers retain the authored source frame
 count and source time, independently of their sample-table index. More than 2,000
 reachable samples returns `comp-adapter-limit`; samples are never truncated.
-This is CE4a's required CE7 exposure slice, not completion of all CE7 controls.
+This is the delivered story-adapter path to the shared CE7 exposure controls.
 
 `renderStoryPassage` accepts `renderer: "composition"` and an optional `backend`
 (`"canvas2d"` by default, or `"webgl2"`). It compiles each resolved story beat to
@@ -3245,8 +3343,9 @@ The paired plugin contexts expose owned input snapshots through `layers`.
 
 ## CE16 soundtrack project
 
-Soundtracks use a separate opt-in `soundtrack-project-1` authority; they do not
-introduce CE13 composition audio layers early. The
+Soundtracks use a separate opt-in `soundtrack-project-1` authority for tracks,
+routing and DSP. Native CE13 audio layers supply composition-local playback and
+can join passage soundtrack mixing; they use a separate native PCM pipeline. The
 [contract/worker reference](./soundtrack-project.md#contract-and-audio-semantics)
 explains integer sample intervals, clip-relative linear/hold automation, clip pan,
 linear/equal-power fades,
@@ -3255,6 +3354,10 @@ linear/equal-power fades,
 BGM targets, threshold/reduction, window, attack/release/hold and lookahead.
 [Shared operations/diagnostics](./soundtrack-project.md#shared-edits-and-recovery)
 cover atomic revision saves, undo/redo, bounds, routing, asset and runtime failures.
-Cue/event references remain attached to resolved sample positions; explicit retiming
+The optional soundtrack DSP runtime is installed separately; native composition
+audio requires FFmpeg and does not require that runtime. See the
+[command-only setup](./soundtrack-project.md#command-only-setup-and-lifecycle) and
+[verification limits](./soundtrack-project.md#verification-and-licensing) before
+using either path. Cue/event references remain attached to resolved sample positions; explicit retiming
 recomputes them without changing source intervals. No arbitrary plugin/expression
 execution or composition media-schema migration is added.

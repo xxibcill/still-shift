@@ -1,6 +1,6 @@
 {
   "name": "still-shift",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "description": "Deterministic still-image animation engine spike",
   "type": "module",

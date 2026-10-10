@@ -2,6 +2,11 @@
 
 ## npm release
 
+A `0.1.1` documentation patch candidate is being prepared with complete feature
+guides, both authoring/discovery skills and valid installed-package links. It
+requires fresh release verification before publication; `0.1.0` remains the
+published checkpoint. See the [patch plan](./docs/npm-patch-0.1.1-plan.md).
+
 [still-shift@0.1.0](https://www.npmjs.com/package/still-shift) is published with the CLI and composition APIs,
 licensed under GPL-3.0-only. The root package is public; the six internal workspace
 modules remain private. Build and test
@@ -36,9 +41,13 @@ GitHub Actions remain disabled.
 ## Start here
 
 Read the **[user guide and feature map](./docs/user-guide.md)** to choose a workflow,
-find the right Lab screen, see required inputs and try an export. It covers image
-animation, cinematic scenes, storytelling, commerce, shared components and batch
-processing, with clear availability and limits.
+find the right Lab screen, see required inputs and try an export. Its
+[implemented feature map](./docs/user-guide.md#implemented-feature-map) covers
+compositions, typography, shapes/effects, cameras/depth/lighting, media/audio,
+puppet animation, soundtrack projects, recipes, passages, commerce, shared
+components, export profiles, caching, parallel rendering and batch processing.
+Start with [npm or checkout setup](./docs/user-guide.md#install-or-use-a-checkout)
+and the commands appropriate to your selected runtime.
 
 For AI-assisted guidance, use the **[ask-still-shift skill](./skills/ask-still-shift/SKILL.md)**:
 `Use $ask-still-shift to explain which features fit what I want to make.`
@@ -71,6 +80,29 @@ records the completed implementation, verification and supported limits.
 Existing scenes serve as regression fixtures; episode production is tracked separately.
 
 ## Current implementation
+
+**Programmable compositions:** Author JSON or TypeScript with pinned image/font
+assets, native shapes and text, keyframes, signals, constraints, expressions,
+procedural motion, precomps, masks/mattes, blend/adjustment layers, effects and
+shutter motion blur. Preview/watch, validate, lint, normalize, bake or export JSON
+with `still-shift comp`; tune keys and curves in the composition inspector.
+See [composition authoring](./docs/user-guide.md#evaluate-and-render-programmable-compositions).
+
+**Camera, media and deformation:** Native xyz planes and one/two-node cameras
+provide 2.5D perspective/focus; WebGL2 adds prepared depth displacement and bounded
+flat ambient/point/spot lights. Supplied video, PNG sequences and native audio
+render with checked preparation, trim/remapping and waveforms. Mesh warp and
+puppet pins bend supplied artwork with stiffness/overlap regions. These are
+implemented building blocks; solid 3D and mechanism-production roadmap work remain
+planned. See the [complete feature map](./docs/user-guide.md#implemented-feature-map).
+
+**Delivery and soundtracks:** Composition exports include H.264, HEVC10,
+ProRes422HQ, ProRes4444, VP9 alpha and PNG8/PNG16 sequences, plus optional static
+caching and one–four render workers. Saved soundtrack projects provide editable
+tracks/clips/buses, gain/pan/fades, automation, filters, ducking, limiting, stems,
+range renders and portable packages, using a separately installed runtime. Native
+composition audio remains separate. See [export options](./docs/user-guide.md#composition-export-formats-and-rendering-options)
+and [saved soundtracks](./docs/user-guide.md#saved-soundtrack-layers).
 
 **Illustrated sequences:** Three reusable templates turn still artwork into a
 detail reveal, an action with an exact state change, and a consequence shot.
@@ -130,8 +162,9 @@ include a paired gallery, energy plots and phone captures. The remaining library
 and passage roll-out awaits the plan’s required owner review.
 
 **Cinematic Parallax** is one layered-camera family with anchored sweep, push-in,
-lateral track, foreground reveal, Rising Vista, Curved Approach, Detail to World and Focus Handoff variations. Use the lab's variation/scene,
-strength and duration controls to explore it. New variations start with one short
+lateral track, foreground reveal, Rising Vista, Curved Approach, Detail to World,
+Focus Handoff and Dolly-Zoom Tension. Use the lab's variation/scene, strength and duration
+controls to explore it. New variations start with one short
 preview using the existing renderer:
 
 ```sh
@@ -148,11 +181,12 @@ rise and a bowed forward path, with one four-second preview each.
 pullback from the vessel to its wider chamber.
 [Focus Handoff](./docs/focus-handoff-implementation.md) transfers sharpness from
 foreground masonry to the courtyard figure.
+[Dolly-Zoom Tension](./docs/dolly-zoom-implementation.md) couples camera distance
+and field of view to keep the subject's scale while changing its surroundings.
 
-Still Shift is a local, deterministic still-image animation engine spike. The v0.1
-foundation and fake animation path are merged. The v0.2 depth worker prepares and caches
-normalized images and validated depth assets. v0.3 adds a browser preview of one
-conservative depth-based `slow_push` animation.
+The original image-animation foundation remains supported. The depth worker
+prepares/caches normalized images and validated depth assets; the image preview
+and CLI provide conservative depth-based motion alongside flat editorial presets.
 
 The v0.1 fake animation path remains available with `--adapter noop` for compatibility
 checks; it writes an explicitly labeled `.noop.json` artifact.

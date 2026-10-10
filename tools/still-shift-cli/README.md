@@ -1,4 +1,125 @@
-# Single-image animation CLI
+# Still Shift CLI
+
+The CLI handles native compositions, image animation, prepared story/cinematic/
+commerce scenes, image batches, narration timing and soundtrack projects. This
+reference covers the current checkout; the published `0.1.0` archive keeps its
+original documentation until a new version is verified and published.
+
+Examples below use `pnpm [--silent] still-shift` from a repository checkout. For an
+installed npm project use `npx still-shift` with your own inputs. Repository-only
+commands such as `pnpm story:passage`, fixture maintenance scripts and `pnpm lab`
+need the checkout and its assets. The installed program preview is available through
+`npx still-shift comp preview`.
+
+Use the [full user guide](../../docs/user-guide.md) to choose a workflow and find
+the local Lab workbenches. The [ask-still-shift skill](../../skills/ask-still-shift/SKILL.md)
+provides feature discovery; [compose-with-still-shift](../../skills/compose-with-still-shift/SKILL.md)
+provides composition authoring instructions.
+
+| Route                                       | Commands                                                                                | Inputs                                              |
+| ------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| Custom compositions                         | `comp validate`, `preview`, `render`, `lint`, `export-json`, `normalize`, `bake`        | `composition-1` JSON or `.ts`/`.mts`/`.cts` program |
+| One image                                   | `animate`                                                                               | A supplied still and chosen preset                  |
+| Prepared illustration/story/cinematic scene | `animate-scene`                                                                         | Verified scene, layers and assets                   |
+| Commerce                                    | `prepare-commerce`, `animate-scene`                                                     | Brief, product imagery, copy and sources            |
+| Multiple independent images                 | `batch`                                                                                 | JSONL manifest                                      |
+| Passage timing and portrait checks          | `passage import-narration`, `passage lint`                                              | Passage plan and measured word/SRT timing           |
+| Saved audio project                         | `soundtrack validate`, `inspect`, `edit`, `render`, `retime`, `package`, `from-passage` | `soundtrack-project-1`, optional passage/narration  |
+| Optional provider SFX                       | `sfx generate`                                                                          | Prompt and configured ElevenLabs key                |
+| Installed optional runtimes                 | `setup browser`, `setup depth`, `setup soundtrack`                                      | npm package, `uv` for Python runtimes               |
+
+The pinned toolchain is in [toolchain.json](../../toolchain.json). Install the
+checkout with the [repository setup](../../README.md#install). In an npm project:
+
+```sh
+npm install still-shift
+npx still-shift setup browser
+npx still-shift --help
+```
+
+Video rendering requires FFmpeg/ffprobe on `PATH`; depth and soundtrack Python
+runtimes are explicit opt-ins. Installation does not infer or install missing
+models, generate art or obtain project assets.
+
+## Native compositions
+
+Use native compositions for a mixed scene: still/depth artwork, solids, vector
+shapes, shaped text, groups/precomps, video, image sequences, audio, puppet meshes,
+cameras and flat lights. Native features also include keyed/procedural motion,
+drivers and constraints, masks/mattes, blend modes, pixel effects, motion blur,
+holds/loops/remapping, reusable instances and timeline/text presets. The
+[composition reference](../../docs/composition-reference.md) describes the bounded
+contracts, backend support and property paths; the
+[media guide](../../docs/composition-media.md) describes video/sequence/audio assets.
+
+Builder motion presets are `settle`, `press`, `recoil`, `handoff`, `breathe`,
+`drawOn` and `land`; text presets are `reveal`, `emphasize`, `correct`, `qualify`,
+`retype`, `count`, `redact` and `release`. Use the
+[small programs](../../examples/composition/) for timeline placement, instances,
+compositing, masks/effects, pinned text, expressions, cameras, shapes and lighting.
+
+```sh
+pnpm --silent still-shift comp validate --input program.ts
+pnpm --silent still-shift comp preview --input program.ts --watch
+pnpm --silent still-shift comp export-json --input program.ts --output composition.json
+pnpm --silent still-shift comp export-json --scene prepared-story.json --output native.json
+pnpm --silent still-shift comp normalize --input composition.json --output normalized.json
+pnpm --silent still-shift comp bake --input composition.json --output baked.json
+pnpm --silent still-shift comp render --input composition.json --output clip.mp4 --backend webgl2
+```
+
+`export-json --scene` accepts supported story, commerce, cinematic and legacy
+illustrated inputs. It prepares family content and rebases the saved asset paths.
+`normalize` retains expression source and adds canonical AST data while preserving
+authored behaviours; `bake` replaces expressions/drivers
+with sampled keys. Files and pinned assets are checked before rendering. Watch
+preview keeps the last valid state when compilation fails. The preview inspector
+supports layer/key inspection, eligible property edits, undo/redo, JSON save and
+draft export; edits to the live preview do not overwrite the original program.
+
+For perspective cameras, native depth-image displacement and ambient/point/spot
+flat lighting, choose `--backend webgl2`. Canvas supports the documented 2D/affine
+subset. Cameras project authored xyz planes; lights shade flat surfaces. Supply
+your own model/rendered sequences when a scene needs volumetric geometry.
+
+Puppet deformation is available on native images and solids. Supply fixed artwork
+and authored pin tracks, then add starch regions to keep parts stiff and overlap
+regions for ordering. Start with the self-contained
+[puppet acting example](../../examples/composition/12-puppet-acting/README.md);
+its separate prop-follow example shows solved constraints driving a hand pin.
+Pose/action libraries, walk/knock/offer/receive/react passage actions and caption/
+speech/thought containers are documented in [acting](../../docs/story-acting.md).
+
+### Output formats and rendering controls
+
+```sh
+pnpm --silent still-shift comp render --input composition.json --output alpha.mov --backend webgl2 --format prores4444 --workers 4 --cache-static true --transport raw_rgba
+```
+
+| `--format`      | Delivery                          |
+| --------------- | --------------------------------- |
+| `h264`          | 8-bit MP4; default video delivery |
+| `hevc10`        | 10-bit HEVC MP4                   |
+| `prores422hq`   | ProRes 422 HQ MOV                 |
+| `prores4444`    | ProRes 4444 MOV with alpha        |
+| `vp9alpha`      | VP9 WebM with alpha               |
+| `png8`, `png16` | Numbered PNG sequence with alpha  |
+
+Composition dimensions and FPS are authored in the source. Use a suffix matching
+the delivery container; PNG delivery requires a filename pattern such as
+`frames/frame.%06d.png` and publishes its ordered checksum manifest. H.264 and HEVC require
+even dimensions. Higher-depth delivery converts the rendered 8-bit samples; it
+does not invent missing source precision. Transparent output requires an
+alpha-capable format and a transparent composition background.
+
+`--workers 1|2|3|4` controls bounded parallel frame workers. `--cache-static true|false`
+controls eligible static prefix/subtree reuse. Explicit delivery profiles require
+lossless `--transport png_pipe|raw_rgba`; the legacy MP4 path also supports the
+recorded JPEG evaluation transport. Output/profile/cache/source identities and
+checksums are retained in the result and scene metadata. New paths are required;
+exports preserve existing files.
+
+## Single-image animation
 
 Run one existing explainer still through the full local pipeline:
 
@@ -43,6 +164,12 @@ resolved crop and focal source are recorded in the scene manifest.
 
 ## Prepared illustrated scenes
 
+`animate-scene` renders four prepared families: frozen legacy
+`illustrated-scene-1`, cinematic `illustrated-scene-2`, `story-scene-1` and
+`commerce-scene-1`. Use their actual schema/recipe rather than passing a family
+recipe name to the single-image `--preset` option. Their adapters can also compile
+to `composition-1` with `comp export-json --scene`.
+
 Story recipes use `story-scene-1` with integer `frameCount`, explicit cue frames
 and the same `animate-scene` command. They return `story-result-1` and support
 fractional derived milliseconds, including 646 frames at 24 fps. See the
@@ -77,8 +204,9 @@ Passage exports include `metrics.renderEnvironment` in `render-report.json` for 
 fresh renders and cache hits, recording the pinned browser profile, Chromium version,
 WebGL renderer, raster fingerprint, platform and CPU architecture.
 
-This command writes the MP4, `.mp4.scene.json`, and `.mp4.result.json`; stdout
-contains an `illustrated-result-1` result. Output files must not already exist.
+This command writes the MP4, `.mp4.scene.json`, and `.mp4.result.json`; the legacy
+illustrated family returns `illustrated-result-1`. Story, cinematic and commerce
+inputs return their corresponding result schemas. Output files must not already exist.
 Prepared input is separate from `animate --input` and the existing image batch
 format. See the [six preset guide](../../docs/history-offstage-motion-implementation.md)
 for the lab, reusable examples, and review reel. `pnpm illustrated:render
@@ -112,6 +240,22 @@ foreground alpha before rendering. It clears the subject and holds the ending.
 Run `pnpm reveal:render --output-dir <new-directory>`; see the
 [Foreground Reveal guide](../../docs/foreground-reveal-implementation.md).
 
+The complete cinematic recipe set also includes `rising_vista`, `curved_approach`,
+`detail_to_world`, `focus_handoff` and `dolly_zoom_tension`. These respectively rise
+past cover, approach on a curved path, pull back into context, transfer focus and
+combine forward travel with a compensating focal change. All nine choices use
+prepared planes and the shared coverage/source-resolution checks. See the
+[cinematic gallery route](../../docs/user-guide.md#cinematic-scenes),
+[fixture catalog](../../benchmarks/fixtures/cinematic-illustrated/catalog.json)
+and [Dolly Zoom guide](../../docs/dolly-zoom-implementation.md).
+
+Story's seven narrative recipes are `unequal_margins`, `access_constraint`,
+`relationship_build`, `evidence_boundary`, `dated_system_break`, `category_swap`
+and `motif_resolve`. Linked passage authoring, continuous motion and supplied
+character poses/actions add coordination across beats; see
+[continuous storytelling](../../docs/story-motion-continuous-implementation.md)
+and [character acting](../../docs/story-acting.md).
+
 ## Commerce briefs
 
 Use **prepare-commerce --brief <brief.json> --output <scene.json>** to resolve a
@@ -134,6 +278,23 @@ Text fitting is checked with the loaded font during preview/export.
 
 The browser source ZIP contains a prepared scene.json, brief and exact dependencies:
 unzip and render its scene directly. See the [Commerce guide](../../docs/ecommerce-motion-implementation.md).
+
+H03/H01/H04/A01 remain **Experimental** complete treatments; unimplemented catalog
+formats stay **Reference only**. A01 supports an intact cutout floating above a
+stationary palm photograph. The reusable atomic components are available, including
+product entrance/float, draw-on annotations, counters, detail windows, masks,
+light/blur effects and authored spatial paths. See
+[atomic components](../../docs/ecommerce-atomic-components-implementation.md),
+[effects](../../docs/ecommerce-motion-effects-implementation.md) and
+[spatial components](../../docs/ecommerce-spatial-components-implementation.md).
+
+Story and commerce share [reusable components](../../docs/reusable-components.md)
+for values, state cuts, path travel, visibility, sequences, pins, fitted text and
+alpha masks. [Typography](../../docs/typography-engine.md) adds pinned variable/
+OpenType styles, grapheme-safe spans, wrapping, glyph/word/line selectors,
+decoration, text transitions and semantic text presets. These are authored scene
+features; the CLI renders or compiles their data, while Lab provides galleries and
+selected controls.
 
 ## Unattended batch
 
@@ -179,3 +340,76 @@ export Chromium and the continuous-motion grayscale-energy gate; it also measure
 text bounds. The report distinguishes unmeasured pixels and incomplete text framing.
 Use the [composition reference](../../docs/composition-reference.md#motion-linting-ce12)
 for configurable thresholds, reading roles, cuts, shot partitions and severity overrides.
+
+## Narration timing and passages
+
+```sh
+pnpm still-shift passage import-narration --plan passage.json --narration narration.wav --timing words.json --mode match --output timed-passage.json
+pnpm still-shift passage lint --plan timed-passage.json --format vertical
+```
+
+`import-narration` accepts measured word JSON or SRT. `--mode match` retimes existing
+unique phrases; `--mode add` creates unbound transcript cues. Linked animation,
+poses, actions and sound anchors follow their cue IDs. The importer validates real
+audio and cue/event ranges, writes a fresh plan and returns timing changes. Supply
+aligned timing from your narration workflow; this command does not transcribe or
+generate speech. See [narration import](../../docs/narration-timing.md).
+
+Full passage preparation/export uses checkout scripts and the Passage workbench:
+
+```sh
+pnpm story:passage --plan timed-passage.json --narration narration.wav --output-dir passage-output
+pnpm story:passage --plan timed-passage.json --silent --renderer composition --backend webgl2 --output-dir native-passage
+pnpm story:package --plan timed-passage.json --narration narration.wav --output-dir portable-passage
+```
+
+Choose exactly one audio mode: `--narration`, `--soundtrack`, `--sound-only`,
+`--silent` or `--prepare-only`. `--renderer composition` compiles family beats or
+uses authored native composition picture files, sharing the evaluator/renderer
+with program preview. `--composition-beats <map.json>` loads a map of beat IDs to
+authored native composition picture files;
+`--backend webgl2` requires the composition renderer. Range renders use
+`--start-frame`/`--end-frame`, or select `--beat`; `--resume` uses verified caches.
+Saved output contains the picture, render report and linked source metadata.
+The [passage guide](../../docs/user-guide.md#build-a-passage) covers linked events,
+revision history, portability, review packages and native beat authoring.
+
+## Soundtrack projects and optional SFX
+
+Use a saved `soundtrack-project-1` for tracks/buses, precise clips, gain/pan/fades,
+automation, filters, ducking and optional master limiting. Native composition
+audio and legacy passage audio remain separate supported routes.
+
+In the checkout, use `pnpm soundtrack:setup`; in an npm project, install `uv` and run
+`npx still-shift setup soundtrack`. Set `STILL_SHIFT_SOUNDTRACK_PYTHON` to the printed
+Python path for rendering. `STILL_SHIFT_SOUNDTRACK_ENV` selects another environment
+at setup. Audio runtime binaries are installed separately.
+
+```sh
+pnpm still-shift soundtrack validate --project soundtrack.json
+pnpm still-shift soundtrack inspect --project soundtrack.json --json
+pnpm still-shift soundtrack edit --project soundtrack.json --revision 0 --operations edits.json
+pnpm still-shift soundtrack render --project soundtrack.json --output-dir audio-render --stems
+pnpm still-shift soundtrack render --project soundtrack.json --output-dir audio-range --range 24000:96000
+pnpm still-shift soundtrack retime --project soundtrack.json --revision 1 --passage timed-passage.json
+pnpm still-shift soundtrack package --project soundtrack.json --output-dir portable-audio
+pnpm still-shift soundtrack from-passage --passage timed-passage.json --narration narration.wav --output new-soundtrack.json
+```
+
+Edits and retimes require the project's actual revision. Edit operations can also
+come from stdin using `--operations -`; updates preserve bounded undo/redo history.
+Range positions are 48 kHz sample indices with an exclusive end. Render directories
+and package destinations must be fresh. Packaging verifies and includes the original
+source bytes; the optional `--stems` export supports later editing. See the
+[soundtrack project guide](../../docs/soundtrack-project.md) for the complete schema,
+DSP bounds, headroom, memory and package semantics.
+
+```sh
+pnpm still-shift sfx generate --provider elevenlabs --id door-knock --prompt "A short wooden door knock" --duration 1 --output-dir new-sfx
+```
+
+The provider generator requires `ELEVENLABS_API_KEY` in the server environment and
+consumes paid account credits. It accepts 0.5–30 seconds, optional
+`--prompt-influence 0..1` and `--loop true|false`, and writes the asset plus provenance.
+Each request needs a fresh directory; paid failures are never automatically retried.
+Use the generated local asset in a passage or saved soundtrack.

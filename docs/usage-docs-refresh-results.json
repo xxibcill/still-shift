@@ -1,0 +1,159 @@
+{
+  "date": "2026-10-10",
+  "status": "documentation-refresh-verified",
+  "branch": "codex/roadmap-reconciliation",
+  "baseCommit": "e6eb7b06",
+  "scope": "Refresh usage/discovery for all implemented features; preserve unrelated edits and fixed published release.",
+  "coverage": {
+    "coreDeliverables": [
+      "CE0",
+      "CE1",
+      "CE2",
+      "CE3",
+      "CE4a",
+      "CE4b",
+      "CE4c",
+      "CE4d",
+      "CE5",
+      "CE6",
+      "CE7",
+      "CE8",
+      "CE8-L",
+      "CE9",
+      "CE10",
+      "CE11",
+      "CE12",
+      "CE13",
+      "CE14",
+      "CE15",
+      "CE16"
+    ],
+    "discovery": "docs/user-guide.md#implemented-feature-map",
+    "workflows": [
+      "npm/checkout install and public API selection",
+      "single image/depth/flat presets",
+      "nine cinematic recipes and adapters",
+      "seven story recipes and legacy studies",
+      "commerce treatments/capabilities/components",
+      "shared reusable components",
+      "passage planning/editing/continuity/native beats/retiming/acting/packaging",
+      "vertical output and image batch",
+      "JSON/TypeScript layers/evaluation/compositing",
+      "curves/constraints/signals/drivers/clocks/blur",
+      "native shapes/typography/expressions/behaviours",
+      "2.5D camera/depth/light",
+      "effect registry/custom hosts",
+      "native video/sequences/audio/waveforms",
+      "mesh warp/puppet pins/regions/prop following",
+      "inspector/watch/lint/specimens",
+      "seven output profiles/alpha/transport/cache/parallel workers",
+      "saved soundtrack tracks/buses/ducking/filters/limiter/stems/ranges/recovery/relocation",
+      "optional ElevenLabs SFX generation"
+    ],
+    "independentReview": "All 21 completed core entries represented; local links/anchors resolve. Dolly Zoom, native story blur and passage map/audio modes reconciled."
+  },
+  "skills": {
+    "ask": "skills/ask-still-shift/SKILL.md",
+    "compose": "skills/compose-with-still-shift/SKILL.md",
+    "validation": "Both skill validators pass; old-release forward test found no false feature claims and successfully used installed README/source fallback.",
+    "forwardTest": "Published 0.1.0 archive independently inspected in /private/tmp/still-shift-skill-test.KrgBP0; use-case combined puppet/camera/word animation/native voice+music/alpha. No runtime installation, render or provider call."
+  },
+  "packaging": {
+    "change": "Ship Markdown/text guidance, both skills, small examples and two release records; rebase installed README links. Historical measurement JSON and rendered review media stay in the checkout.",
+    "publishedReleaseChanged": false,
+    "newReleasePublished": false,
+    "releaseTagMoved": false
+  },
+  "verification": {
+    "firstFast": {
+      "command": "pnpm check:fast",
+      "status": "failed",
+      "passed": ["schema", "boundaries", "format", "lint", "TypeScript build"],
+      "unitPassed": 3663,
+      "unitFailed": 3,
+      "failures": [
+        "composition-media-cache-cleanup: two cases blocked by sandbox ps access",
+        "composition-gradient-table-metadata: one test exceeded unchanged 5000ms timeout"
+      ]
+    },
+    "focusedRerun": {
+      "status": "passed",
+      "testFiles": 2,
+      "tests": 12,
+      "workers": 1,
+      "thresholdsChanged": false,
+      "environment": "Process inspection permitted; pinned Node/Python"
+    },
+    "finalFast": {
+      "status": "passed",
+      "command": "pnpm check:fast",
+      "testFiles": 346,
+      "unitTests": 3666,
+      "log": "benchmarks/results/usage-docs-refresh-20261010/check-fast-final.log",
+      "logSha256": "ed265d105a11a97197dc012ca1b5328bf23393fa08d8f978b4a47962e1a560f7",
+      "thresholdsChanged": false,
+      "note": "Refreshed after slimming documentation packaging."
+    },
+    "installedPackage": {
+      "status": "passed",
+      "checks": 26,
+      "isolation": "Fresh /private/tmp source snapshot; original 0.1.0 archive preserved",
+      "history": [
+        "Initial snapshot compile failed because workspace dependency links were absent; retained report/log.",
+        "Default offline-store setup failed; recovered from the actual existing pinned pnpm store with zero downloads.",
+        "Larger candidate passed 26 offline installed checks but was rejected for 30.9 MB compressed footprint caused by historical measurement dumps.",
+        "Slim filter regression passes 4 tests; final full fast gate passes again; fresh slim candidate passes all 26 offline installed checks."
+      ],
+      "earlierPassedReport": "benchmarks/results/usage-docs-refresh-20261010/package-verification.json",
+      "report": "benchmarks/results/usage-docs-refresh-20261010/slim/package-verification.json",
+      "log": "benchmarks/results/usage-docs-refresh-20261010/slim/package-check.log",
+      "snapshot": "benchmarks/results/usage-docs-refresh-20261010/slim/snapshot-verification.json",
+      "inventory": "benchmarks/results/usage-docs-refresh-20261010/slim/documentation-inventory.json",
+      "archive": "benchmarks/results/usage-docs-refresh-20261010/slim/documentation-candidate.tgz",
+      "archiveSha256": "0e308c052015eaa711c03ea478a3b44c7c3207210fb29d10098c7b46b2a950e7",
+      "compressedBytes": 3810619,
+      "includedGuidance": {
+        "markdownDocs": 119,
+        "textDocs": 1,
+        "smallReleaseRecords": 2,
+        "skillFiles": 3,
+        "exampleFiles": 19,
+        "historicalMeasurementJsonIncluded": false,
+        "historicalReviewMediaIncluded": false
+      },
+      "publishedArchivePreserved": true,
+      "publishedArchiveSha256BeforeAndAfter": "48c3988e09048e414d132ca5b286cdc2adb6de6f90eb7b0de582602ea9b34a8c",
+      "snapshotNote": "Candidate matches source captured for verification. Final dev-log and refresh evidence reconciliation occurs afterward; this candidate is development evidence, not an approved new release archive.",
+      "onlineAudit": "Skipped in offline installed check; no new dependency/audit claim."
+    },
+    "sampleValidation": {
+      "status": "passed",
+      "examples": [
+        "examples/composition/10-native-camera.ts",
+        "examples/composition/12-puppet-acting/composition.json"
+      ],
+      "initialFailure": "pnpm tsx launcher IPC listen was denied in sandbox",
+      "successfulRoute": "Pinned Node --import tsx tools/still-shift-cli/src/cli.ts comp validate"
+    },
+    "documentationLinks": {
+      "status": "passed",
+      "files": 11,
+      "localTargetsAndAnchors": 389
+    },
+    "earlierFastRerun": {
+      "status": "passed",
+      "command": "pnpm check:fast",
+      "testFiles": 346,
+      "unitTests": 3666,
+      "log": "benchmarks/results/usage-docs-refresh-20261010/check-fast-rerun.log",
+      "thresholdsChanged": false,
+      "logSha256": "c26701e57a9239a6abefec96eb820d09860c9fb03bd751ba4b645a3c4d7702b0"
+    }
+  },
+  "limits": [
+    "No full pnpm release:check or publication requested/performed.",
+    "Published 0.1.0 lacks full docs/skills/examples; refreshed guidance handles this.",
+    "Technical support does not establish human visual/listening acceptance.",
+    "Solid native 3D, Three.js production bridge and scoped follow-ups stay planned; CE6-P performance remains deferred."
+  ]
+}
