@@ -1511,6 +1511,395 @@
       "unitTests": 3915,
       "unitWallSeconds": 48.81,
       "scope": "Schema/appearance closure, package boundaries, TypeScript formatting, lint, no-emit build and all3915 units pass. Current actual two-frame final-package relocation regression is recorded separately. Full77/176/current installed and original portable acceptance remain pending."
+    },
+    {
+      "id": "native-e01-preview-proof-5",
+      "status": "passed",
+      "sourceCommit": "83a5d8c09d32148fc3f0d7f2c569431d77f01587",
+      "rootTerminalExitCode": 0,
+      "run": {
+        "path": "/private/tmp/still-shift-ms1n-e01-preview-proof-5/run.json",
+        "bytes": 238070,
+        "sha256": "sha256:d43cbe6aa14484cd9dbe304084e817c77425b218e2391bb3cf645812a8d0f27a"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-e01-preview-proof-5.log",
+        "bytes": 1343174,
+        "sha256": "sha256:18271b64abd2ed1ef6ce39ba74b70e72d63270144336834b1b38c3c091572ba4"
+      },
+      "sourceSnapshot": {
+        "path": "/private/tmp/still-shift-ms1n-e01-preview-proof-5/source-snapshot.json",
+        "bytes": 73436,
+        "sha256": "sha256:653a7541674e076659f165ff36b47d5142618f8d083f2da4c820136b138c2a95"
+      },
+      "sourceInventoryBeforeAndAfter": {
+        "path": "/private/tmp/still-shift-ms1n-implementation-inputs-9.json",
+        "bytes": 396838,
+        "sha256": "sha256:dfea12b34e8621ab97c69be55170bfaa0bcc46553093e2602e18617da701ab88"
+      },
+      "selectedSourceInputsUnchanged": true,
+      "harness": {
+        "path": "/private/tmp/mechanism-ms1n-e01-preview-smoke.mjs",
+        "bytes": 26229,
+        "sha256": "sha256:79835eedf5b12cfc0e96f1d830ce89ad047170db3cba21358147f17070e54c69"
+      },
+      "startedAt": "2026-10-10T08:23:26.943Z",
+      "finishedAt": "2026-10-10T08:27:52.172Z",
+      "actualPreviewPasses": 8,
+      "locatedNegativeCases": 5,
+      "lastPositiveRecipeRestored": true,
+      "moduleTimeoutMs": 30000,
+      "actionTimeoutMs": 300000,
+      "steps": [
+        {
+          "name": "baseline-frame0",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:23:28.968Z",
+          "finishedAt": "2026-10-10T08:24:02.204Z"
+        },
+        {
+          "name": "baseline-label88",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:24:02.206Z",
+          "finishedAt": "2026-10-10T08:24:29.067Z"
+        },
+        {
+          "name": "saved-camera88",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:24:29.071Z",
+          "finishedAt": "2026-10-10T08:24:57.365Z"
+        },
+        {
+          "name": "saved-blade-part0",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:24:57.369Z",
+          "finishedAt": "2026-10-10T08:25:26.089Z"
+        },
+        {
+          "name": "saved-steel-material0",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:25:26.098Z",
+          "finishedAt": "2026-10-10T08:25:54.225Z"
+        },
+        {
+          "name": "saved-label88",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:25:54.235Z",
+          "finishedAt": "2026-10-10T08:26:24.177Z"
+        },
+        {
+          "name": "fractional-native-source0",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:26:24.190Z",
+          "finishedAt": "2026-10-10T08:26:57.720Z"
+        },
+        {
+          "name": "valid-reverse-native-source12",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:26:57.730Z",
+          "finishedAt": "2026-10-10T08:27:30.337Z"
+        },
+        {
+          "name": "explicit-canvas-rejected",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:27:30.348Z",
+          "finishedAt": "2026-10-10T08:27:30.569Z"
+        },
+        {
+          "name": "fractional-output-rejected",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:27:30.577Z",
+          "finishedAt": "2026-10-10T08:27:30.765Z"
+        },
+        {
+          "name": "ordinary-threeD-scope-rejected",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:27:30.771Z",
+          "finishedAt": "2026-10-10T08:27:30.998Z"
+        },
+        {
+          "name": "controller-placement-rejected",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:27:31.006Z",
+          "finishedAt": "2026-10-10T08:27:31.965Z"
+        },
+        {
+          "name": "negative-source-clock-rejected",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:27:31.973Z",
+          "finishedAt": "2026-10-10T08:27:32.988Z"
+        },
+        {
+          "name": "restore-last-positive-recipe",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:27:32.997Z",
+          "finishedAt": "2026-10-10T08:27:52.141Z"
+        }
+      ],
+      "diagnostics": {
+        "DEBUG": "vite:hmr,vite:transform,vite:time",
+        "noHeavyCpuOrGpuWorkInParallel": true,
+        "sourceAndHeadHeld": true,
+        "scope": "Completion-side transform/response/HMR logs only; no pending-request inventory or browser-reload proof"
+      },
+      "scope": "Isolated unchanged helper completes all eight actual preview variants, five located negatives and final legal recipe restore. Preview4 and earlier timeout failures remain retained, with cause unproven; this pass does not identify or prove a startup fix. No timeout, appearance or production rendering change; full696 and human acceptance remain separately attributed.",
+      "implementationEvidenceKey": "currentNativePreviewProof"
+    },
+    {
+      "id": "native-portable-package-proof-2",
+      "status": "failed-startup-before-package-call",
+      "sourceCommit": "83a5d8c09d32148fc3f0d7f2c569431d77f01587",
+      "rootTerminalExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-package-proof-2.log",
+        "bytes": 585,
+        "sha256": "sha256:5d91b55a45315dde8bd3a1c4b0d99fdb65d7dd807267eaa62c44e6b20613af7d"
+      },
+      "failure": "Root omitted checkout cwd; default TypeScript alias resolution from original checkout caused MECHANISM_LIMITS import failure before any public package call or output-directory creation.",
+      "scope": "Retained harness invocation failure, distinct from package1 product path-confinement failure. Same helper relaunched as portable3 with managed checkout cwd; no product/options change."
+    },
+    {
+      "id": "native-portable-package-proof-3",
+      "status": "cancelled-private-writer-time-budget",
+      "sourceCommit": "83a5d8c09d32148fc3f0d7f2c569431d77f01587",
+      "rootTerminalExitCode": 1,
+      "run": {
+        "path": "/private/tmp/still-shift-ms1n-native-package-proof-3/run.json",
+        "bytes": 1603,
+        "sha256": "sha256:95127e29db5a47854b61812ff688cbf5e09fe7a2c21692fabf96561c5d46b4d7"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-package-proof-3.log",
+        "bytes": 1070,
+        "sha256": "sha256:c9c775825fbeb7dbb45d284adda07da9e64f62ef3f1f8e9f3ac889aaf6e88dfe"
+      },
+      "retainedDirectory": "/private/tmp/still-shift-ms1n-native-package-proof-3/original-package",
+      "failure": {
+        "path": "/private/tmp/still-shift-ms1n-native-package-proof-3/original-package/failure.json",
+        "bytes": 142,
+        "sha256": "sha256:aaf70c7c3b04f04be2be1eace743ee057acdb3596a65b6529db1636f01834fab"
+      },
+      "retainedManifest": {
+        "path": "/private/tmp/still-shift-ms1n-native-package-proof-3/original-package/package.manifest.json",
+        "bytes": 4452,
+        "sha256": "sha256:faee397fd02b223b4ffc2af78c604392ad97f65930948473c30b9a32a832a528"
+      },
+      "writerTimeoutMs": 300000,
+      "actualFailure": "The operation was aborted due to timeout",
+      "scope": "Writer performs original full check and three delivery verifications; private five-minute cap expired during post-publication verification. Published tree and cancellation/failure evidence retained, no successful package result or assertion acceptance. Production code/thresholds unchanged. A timed fresh privatev2 gives only writer a finite900s allowance; separate verifiers retain300s and full observation/assertion requirements."
+    },
+    {
+      "id": "native-portable-package-proof-4",
+      "status": "passed",
+      "sourceCommit": "83a5d8c09d32148fc3f0d7f2c569431d77f01587",
+      "originalExecutionSourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+      "rootTerminalExitCode": 0,
+      "run": {
+        "path": "/private/tmp/still-shift-ms1n-native-package-proof-4/run.json",
+        "bytes": 2824,
+        "sha256": "sha256:b5748bf7165b0841395dbff4a85f82fbce033bb2dc6f5f42100f332126081c98"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-package-proof-4.log",
+        "bytes": 2511,
+        "sha256": "sha256:81386bd0b5c59281e64ff63e71826e18a604bfb17f105d998cc6d10eac0fc4b9"
+      },
+      "harness": {
+        "path": "/private/tmp/mechanism-ms1n-native-package-proof-v2.mjs",
+        "bytes": 5432,
+        "sha256": "sha256:e875b94a09a47db96bcaa01eafe52aed8d523c220593f940b541414bd210ce0d"
+      },
+      "startedAt": "2026-10-10T08:37:49.258Z",
+      "finishedAt": "2026-10-10T08:46:42.795Z",
+      "operations": [
+        {
+          "name": "package-finalized-696",
+          "timeoutMs": 900000,
+          "startedAt": "2026-10-10T08:37:49.260Z",
+          "status": "passed",
+          "finishedAt": "2026-10-10T08:43:25.258Z",
+          "wallSeconds": 335.99889275
+        },
+        {
+          "name": "verify-original-package",
+          "timeoutMs": 300000,
+          "startedAt": "2026-10-10T08:43:25.259Z",
+          "status": "passed",
+          "finishedAt": "2026-10-10T08:45:11.938Z",
+          "wallSeconds": 106.67854145800003
+        },
+        {
+          "name": "verify-moved-package",
+          "timeoutMs": 300000,
+          "startedAt": "2026-10-10T08:45:11.946Z",
+          "status": "passed",
+          "finishedAt": "2026-10-10T08:46:42.792Z",
+          "wallSeconds": 90.846135709
+        }
+      ],
+      "movedPackage": "/private/tmp/still-shift-ms1n-native-package-proof-4/moved-package",
+      "manifest": {
+        "path": "/private/tmp/still-shift-ms1n-native-package-proof-4/moved-package/package.manifest.json",
+        "bytes": 4452,
+        "sha256": "sha256:faee397fd02b223b4ffc2af78c604392ad97f65930948473c30b9a32a832a528"
+      },
+      "actualExecutionVerified": true,
+      "originalAppearanceIdentityPreserved": true,
+      "relocation": {
+        "originalCompositionSourceSha256": "sha256:39ed3f7339fca01b50074e2f4ce54c3b717a23bd0db6d606868c0e9c717ac339",
+        "relocatedCompositionSourceSha256": "sha256:8559fb20976d804071c99c08643bd386e98643cdff7751e61b5a4d6c87f1806e",
+        "compositionSha256": "sha256:d1496dd65aba3f23c15d000346dd1e040d077bb8d2437ea3d03a9958bdb32fa2",
+        "renderResultPath": "evidence/render.result.json",
+        "sceneManifestPath": "evidence/render.scene.json",
+        "observationManifestPath": "evidence/episode.mp4.native-observations.json"
+      },
+      "sourceInventoryBeforeAndAfter": {
+        "path": "/private/tmp/still-shift-ms1n-implementation-inputs-9.json",
+        "bytes": 396838,
+        "sha256": "sha256:dfea12b34e8621ab97c69be55170bfaa0bcc46553093e2602e18617da701ab88"
+      },
+      "selectedSourceInputsUnchanged": true,
+      "writerBudgetAudit": {
+        "json": {
+          "path": "/private/tmp/mechanism-ms1n-native-package-writer-budget-audit.json",
+          "bytes": 8651,
+          "sha256": "sha256:167e649739b9fb1aedaca8bce85b735a7146be15c3a55a7e14401d1d60aa4185"
+        },
+        "markdown": {
+          "path": "/private/tmp/mechanism-ms1n-native-package-writer-budget-audit.md",
+          "bytes": 3372,
+          "sha256": "sha256:02f2bd28038eae1a0527ceb5fb5002631c4428bd6fb192fa855728bbabb74d7c"
+        },
+        "integrity": {
+          "path": "/private/tmp/mechanism-ms1n-native-package-writer-budget-audit.integrity.json",
+          "bytes": 3324,
+          "sha256": "sha256:af30b89e2f39654f1a335a3b924a69f71d1a2376120b28bf174d350fd8841695"
+        }
+      },
+      "scope": "Public original696 final package and original/moved verifiers all pass; exact manifest unchanged after move, original finalized execution and explicit locator relocation preserved. Private writer336s exceeds prior300s collector cap; prior startup/cancelled/product attempts stay retained. Finite900s writer-only allowance and300s verifiers leave production/assertion/render thresholds unchanged. No fresh installed code or human acceptance inferred.",
+      "implementationEvidenceKey": "nativePortablePackageProof"
+    },
+    {
+      "id": "test-package-1",
+      "status": "failed-clean-consumer-declarations",
+      "sourceCommit": "83a5d8c09d32148fc3f0d7f2c569431d77f01587",
+      "rootTerminalExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-test-package-1.log",
+        "bytes": 1591,
+        "sha256": "sha256:a72a4da6f4a94b972895533230bcb60cff8431d24fa9cdaca78ff1967e893ffb"
+      },
+      "archive": {
+        "path": "/private/tmp/still-shift-ms1n-package-attempt-1-retained/still-shift-0.1.0.tgz",
+        "bytes": 3149076,
+        "sha256": "sha256:f570f80dc5c727d2a7d1761d02ea77b731c6b25e7ff130bcaf89f921273a3e3c"
+      },
+      "packResult": {
+        "path": "/private/tmp/still-shift-ms1n-package-attempt-1-retained/pack-result.json",
+        "bytes": 239378,
+        "sha256": "sha256:e938fdb049f440a20437ffe6db73d178ff3303b6c8245e9d9598b5b4271233b7"
+      },
+      "packageVerification": {
+        "path": "/private/tmp/still-shift-ms1n-package-attempt-1-retained/package-verification.json",
+        "bytes": 6245,
+        "sha256": "sha256:09485ecc30e1565ba7583028db88d99564886ae50746c9978a9d7ec97bd3f09e"
+      },
+      "retention": {
+        "path": "/private/tmp/still-shift-ms1n-package-attempt-1-retained/retention.json",
+        "bytes": 576,
+        "sha256": "sha256:20fb04e275f33f3ea68cf0d59b121aba553355dbed11631edaf8c6ed6381c9bc"
+      },
+      "completedChecks": [
+        "install archive outside repository (pnpm offline)",
+        "installed command help",
+        "installed command version"
+      ],
+      "completedChecksCount": 3,
+      "failure": "Strict clean consumer declaration check TS7016: native three-textures.d.ts imports Three Texture but pinned @types/three only a repository development dependency.",
+      "scope": "Actual offline archive install/help/version complete; declaration check failed, later consumer/render/rebuild groups not run. Exact failed archive and reports retained before any rebuild; minimal manifest/lock fix and public declaration regression pending, no runtime appearance change."
+    },
+    {
+      "id": "archive-source-audit-1",
+      "status": "failed-private-root-lock-expectation",
+      "sourceCommit": "83a5d8c09d32148fc3f0d7f2c569431d77f01587",
+      "rootTerminalExitCode": 1,
+      "summary": {
+        "path": "/private/tmp/still-shift-ms1n-archive-source-audit-1/summary.json",
+        "bytes": 1001,
+        "sha256": "sha256:5ed3aa80fd050aaecb45922ddc2e6b20a656355a426dc8e9c90862e052351a21"
+      },
+      "rows": {
+        "path": "/private/tmp/still-shift-ms1n-archive-source-audit-1/members.json",
+        "bytes": 1050027,
+        "sha256": "sha256:c1c841588a273ef26b3c980083281f9d9cce76ba7de766fce7e4e879fd8d8f15"
+      },
+      "failure": "Archive omitted explicitly whitelisted root: pnpm-lock.yaml",
+      "scope": "Private audit expected npm-excluded root pnpm-lock.yaml. package/source/pnpm-lock.yaml is present; exactsource lock/source membership still require corrected full audit. Originalhelper/failedreceipt retained; no successful archive-source qualification from this partial attempt."
+    },
+    {
+      "id": "native-types-lock-refresh-1",
+      "status": "failed-offline-metadata-cache-miss",
+      "sourceCommit": "83a5d8c09d32148fc3f0d7f2c569431d77f01587",
+      "rootTerminalExitCode": 1,
+      "report": {
+        "path": "/private/tmp/still-shift-ms1n-type-lock-refresh-1/run.json",
+        "bytes": 1215,
+        "sha256": "sha256:915d7825524e4429102e82c4ef63c0db9c7b2515bbf929b99cd23f4d13e583d0"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-type-lock-refresh-1.log",
+        "bytes": 1398,
+        "sha256": "sha256:60c63d8e5b06517fa696af0e8e7771a452f8d7835c9b15118934c9321e129bf1"
+      },
+      "scope": "Private seeded npm metadata-only offline install failed ENOTCACHED for pinned @types/three metadata. No generated lock copied to repository and no package acceptance; retained before fresh prefer-offline attempt."
+    },
+    {
+      "id": "native-types-lock-refresh-2",
+      "status": "passed",
+      "rootTerminalExitCode": 0,
+      "report": {
+        "path": "/private/tmp/still-shift-ms1n-type-lock-refresh-2/run.json",
+        "bytes": 1215,
+        "sha256": "sha256:25d37fe41517758c14f00484e16b6a84b651ad83ef3896e7413ee7011a1f78fb"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-type-lock-refresh-2.log",
+        "bytes": 961,
+        "sha256": "sha256:820a84506aee279a3a9b7068968809a917b59247b00230bb50e3662d0328c2e7"
+      },
+      "harness": {
+        "path": "/private/tmp/mechanism-ms1n-type-lock-refresh.mts",
+        "bytes": 3847,
+        "sha256": "sha256:77a7357893fceccdf0fc7778b1d34db4d17af252133fb32da0e50ca685028181"
+      },
+      "mode": "seeded existing release shrinkwrap, ordinary npm metadata-only install --prefer-offline and shrinkwrap; six temporary pins match existing workspace lock",
+      "existingCompleteDependencyRecordsUnchanged": 103,
+      "addedPinnedPackages": [
+        "node_modules/@dimforge/rapier3d-compat",
+        "node_modules/@tweenjs/tween.js",
+        "node_modules/@types/stats.js",
+        "node_modules/@types/three",
+        "node_modules/@types/webxr",
+        "node_modules/fflate",
+        "node_modules/meshoptimizer"
+      ],
+      "scope": "Root independently compared every existing complete nonroot package record deep-equal to83. Exactly7 pinned type/dependency records added; root dependency map gains only@types/three0.186.0. Native rendering sources and existing runtime graph unchanged; declaration/installed archive acceptance pending."
+    },
+    {
+      "id": "check-fast-11",
+      "status": "passed",
+      "node": "22.23.1",
+      "rootTerminalExitCode": 0,
+      "sourceState": "uncommitted four-file native typing package repair after83",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-check-fast-11.log",
+        "bytes": 32264,
+        "sha256": "sha256:0d77d72ccd361cfe89b1caee2e41cc4a554ef759fdaf34b2f127f006429a9670"
+      },
+      "unitTestFiles": 381,
+      "unitTests": 3915,
+      "unitWallSeconds": 51.74,
+      "scope": "Schema/appearance closure, package boundaries, TypeScript formatting, lint, noemit build and all3915 units pass. Cleanconsumer strict declaration/archive proof and full77/176/installed native gate remain pending."
     }
   ],
   "implementationEvidence": {
@@ -3876,15 +4265,9 @@
       "next": "Recapture this explicit selection after the test-only oracle correction and use it before/after remaining actual proofs and aggregate checks."
     },
     "currentCompleteSourceInputInventory": {
-      "path": "/private/tmp/still-shift-ms1n-implementation-inputs-8.json",
-      "bytes": 396837,
-      "sha256": "sha256:ce149b60c41e5bc5d59d00fdfd17000728a78d142e65bb8f3f925aa6b93acfc9",
-      "version": "ms1n-source-input-inventory-2",
-      "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
-      "files": 2327,
-      "inputBytes": 117491328,
-      "independentAllFileHashAndMembershipVerification": true,
-      "executionInputsAfterCompletion": "unchanged"
+      "path": "/private/tmp/still-shift-ms1n-implementation-inputs-9.json",
+      "bytes": 396838,
+      "sha256": "sha256:dfea12b34e8621ab97c69be55170bfaa0bcc46553093e2602e18617da701ab88"
     },
     "nativeMotionQARepair": {
       "status": "implemented-reviewed-focused54-fast3915-short-native2frame-pass",
@@ -4610,6 +4993,330 @@
       "scope": "Two fresh actual same-recipe native captures at frame138 on pinned SwiftShader and actual Metal/AppleM5Pro. Actual state/matrices/anchor projections pass at delta0. Cross-driver one-step pixel diagnostic FAILS maximum135/RMS2.22633089140858; this is explicitly diagnostic, not mandatory same-profile parity. No human hardware appearance/readability/listening/performance/full-episode acceptance; same-profile full3 nine max0 parity remains separate."
     },
     "currentNativePreviewProof": {
+      "id": "native-e01-preview-proof-5",
+      "status": "passed",
+      "sourceCommit": "83a5d8c09d32148fc3f0d7f2c569431d77f01587",
+      "rootTerminalExitCode": 0,
+      "run": {
+        "path": "/private/tmp/still-shift-ms1n-e01-preview-proof-5/run.json",
+        "bytes": 238070,
+        "sha256": "sha256:d43cbe6aa14484cd9dbe304084e817c77425b218e2391bb3cf645812a8d0f27a"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-e01-preview-proof-5.log",
+        "bytes": 1343174,
+        "sha256": "sha256:18271b64abd2ed1ef6ce39ba74b70e72d63270144336834b1b38c3c091572ba4"
+      },
+      "sourceSnapshot": {
+        "path": "/private/tmp/still-shift-ms1n-e01-preview-proof-5/source-snapshot.json",
+        "bytes": 73436,
+        "sha256": "sha256:653a7541674e076659f165ff36b47d5142618f8d083f2da4c820136b138c2a95"
+      },
+      "sourceInventoryBeforeAndAfter": {
+        "path": "/private/tmp/still-shift-ms1n-implementation-inputs-9.json",
+        "bytes": 396838,
+        "sha256": "sha256:dfea12b34e8621ab97c69be55170bfaa0bcc46553093e2602e18617da701ab88"
+      },
+      "selectedSourceInputsUnchanged": true,
+      "harness": {
+        "path": "/private/tmp/mechanism-ms1n-e01-preview-smoke.mjs",
+        "bytes": 26229,
+        "sha256": "sha256:79835eedf5b12cfc0e96f1d830ce89ad047170db3cba21358147f17070e54c69"
+      },
+      "startedAt": "2026-10-10T08:23:26.943Z",
+      "finishedAt": "2026-10-10T08:27:52.172Z",
+      "actualPreviewPasses": 8,
+      "locatedNegativeCases": 5,
+      "lastPositiveRecipeRestored": true,
+      "moduleTimeoutMs": 30000,
+      "actionTimeoutMs": 300000,
+      "steps": [
+        {
+          "name": "baseline-frame0",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:23:28.968Z",
+          "finishedAt": "2026-10-10T08:24:02.204Z"
+        },
+        {
+          "name": "baseline-label88",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:24:02.206Z",
+          "finishedAt": "2026-10-10T08:24:29.067Z"
+        },
+        {
+          "name": "saved-camera88",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:24:29.071Z",
+          "finishedAt": "2026-10-10T08:24:57.365Z"
+        },
+        {
+          "name": "saved-blade-part0",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:24:57.369Z",
+          "finishedAt": "2026-10-10T08:25:26.089Z"
+        },
+        {
+          "name": "saved-steel-material0",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:25:26.098Z",
+          "finishedAt": "2026-10-10T08:25:54.225Z"
+        },
+        {
+          "name": "saved-label88",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:25:54.235Z",
+          "finishedAt": "2026-10-10T08:26:24.177Z"
+        },
+        {
+          "name": "fractional-native-source0",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:26:24.190Z",
+          "finishedAt": "2026-10-10T08:26:57.720Z"
+        },
+        {
+          "name": "valid-reverse-native-source12",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:26:57.730Z",
+          "finishedAt": "2026-10-10T08:27:30.337Z"
+        },
+        {
+          "name": "explicit-canvas-rejected",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:27:30.348Z",
+          "finishedAt": "2026-10-10T08:27:30.569Z"
+        },
+        {
+          "name": "fractional-output-rejected",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:27:30.577Z",
+          "finishedAt": "2026-10-10T08:27:30.765Z"
+        },
+        {
+          "name": "ordinary-threeD-scope-rejected",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:27:30.771Z",
+          "finishedAt": "2026-10-10T08:27:30.998Z"
+        },
+        {
+          "name": "controller-placement-rejected",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:27:31.006Z",
+          "finishedAt": "2026-10-10T08:27:31.965Z"
+        },
+        {
+          "name": "negative-source-clock-rejected",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:27:31.973Z",
+          "finishedAt": "2026-10-10T08:27:32.988Z"
+        },
+        {
+          "name": "restore-last-positive-recipe",
+          "status": "passed",
+          "startedAt": "2026-10-10T08:27:32.997Z",
+          "finishedAt": "2026-10-10T08:27:52.141Z"
+        }
+      ],
+      "diagnostics": {
+        "DEBUG": "vite:hmr,vite:transform,vite:time",
+        "noHeavyCpuOrGpuWorkInParallel": true,
+        "sourceAndHeadHeld": true,
+        "scope": "Completion-side transform/response/HMR logs only; no pending-request inventory or browser-reload proof"
+      },
+      "scope": "Isolated unchanged helper completes all eight actual preview variants, five located negatives and final legal recipe restore. Preview4 and earlier timeout failures remain retained, with cause unproven; this pass does not identify or prove a startup fix. No timeout, appearance or production rendering change; full696 and human acceptance remain separately attributed.",
+      "independentAudit": {
+        "json": {
+          "path": "/private/tmp/mechanism-ms1n-preview5-independent-audit.json",
+          "bytes": 30150,
+          "sha256": "sha256:6aeba89a881bc2edfd1305afd55b0294fa2f03be75b821da507b0684927a5e49"
+        },
+        "markdown": {
+          "path": "/private/tmp/mechanism-ms1n-preview5-independent-audit.md",
+          "bytes": 3808,
+          "sha256": "sha256:da66dbb895d182cd99b10c061a1de6dd407a4aa593d5f61940a14657dda90f89"
+        },
+        "integrity": {
+          "path": "/private/tmp/mechanism-ms1n-preview5-independent-audit.integrity.json",
+          "bytes": 3222,
+          "sha256": "sha256:6a27e6474c7d157ca9dabe2300593bc12fa43b66ebd9e9e5997dd43681c6ede5"
+        },
+        "scope": "Independent CPU read/hash/parse/decode of retained eight actual PNGs/13 outcomes/legal restore and source closure. No new browser/render or proven timeout cause."
+      }
+    },
+    "nativePortablePackageProof": {
+      "id": "native-portable-package-proof-4",
+      "status": "passed",
+      "sourceCommit": "83a5d8c09d32148fc3f0d7f2c569431d77f01587",
+      "originalExecutionSourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+      "rootTerminalExitCode": 0,
+      "run": {
+        "path": "/private/tmp/still-shift-ms1n-native-package-proof-4/run.json",
+        "bytes": 2824,
+        "sha256": "sha256:b5748bf7165b0841395dbff4a85f82fbce033bb2dc6f5f42100f332126081c98"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-package-proof-4.log",
+        "bytes": 2511,
+        "sha256": "sha256:81386bd0b5c59281e64ff63e71826e18a604bfb17f105d998cc6d10eac0fc4b9"
+      },
+      "harness": {
+        "path": "/private/tmp/mechanism-ms1n-native-package-proof-v2.mjs",
+        "bytes": 5432,
+        "sha256": "sha256:e875b94a09a47db96bcaa01eafe52aed8d523c220593f940b541414bd210ce0d"
+      },
+      "startedAt": "2026-10-10T08:37:49.258Z",
+      "finishedAt": "2026-10-10T08:46:42.795Z",
+      "operations": [
+        {
+          "name": "package-finalized-696",
+          "timeoutMs": 900000,
+          "startedAt": "2026-10-10T08:37:49.260Z",
+          "status": "passed",
+          "finishedAt": "2026-10-10T08:43:25.258Z",
+          "wallSeconds": 335.99889275
+        },
+        {
+          "name": "verify-original-package",
+          "timeoutMs": 300000,
+          "startedAt": "2026-10-10T08:43:25.259Z",
+          "status": "passed",
+          "finishedAt": "2026-10-10T08:45:11.938Z",
+          "wallSeconds": 106.67854145800003
+        },
+        {
+          "name": "verify-moved-package",
+          "timeoutMs": 300000,
+          "startedAt": "2026-10-10T08:45:11.946Z",
+          "status": "passed",
+          "finishedAt": "2026-10-10T08:46:42.792Z",
+          "wallSeconds": 90.846135709
+        }
+      ],
+      "movedPackage": "/private/tmp/still-shift-ms1n-native-package-proof-4/moved-package",
+      "manifest": {
+        "path": "/private/tmp/still-shift-ms1n-native-package-proof-4/moved-package/package.manifest.json",
+        "bytes": 4452,
+        "sha256": "sha256:faee397fd02b223b4ffc2af78c604392ad97f65930948473c30b9a32a832a528"
+      },
+      "actualExecutionVerified": true,
+      "originalAppearanceIdentityPreserved": true,
+      "relocation": {
+        "originalCompositionSourceSha256": "sha256:39ed3f7339fca01b50074e2f4ce54c3b717a23bd0db6d606868c0e9c717ac339",
+        "relocatedCompositionSourceSha256": "sha256:8559fb20976d804071c99c08643bd386e98643cdff7751e61b5a4d6c87f1806e",
+        "compositionSha256": "sha256:d1496dd65aba3f23c15d000346dd1e040d077bb8d2437ea3d03a9958bdb32fa2",
+        "renderResultPath": "evidence/render.result.json",
+        "sceneManifestPath": "evidence/render.scene.json",
+        "observationManifestPath": "evidence/episode.mp4.native-observations.json"
+      },
+      "sourceInventoryBeforeAndAfter": {
+        "path": "/private/tmp/still-shift-ms1n-implementation-inputs-9.json",
+        "bytes": 396838,
+        "sha256": "sha256:dfea12b34e8621ab97c69be55170bfaa0bcc46553093e2602e18617da701ab88"
+      },
+      "selectedSourceInputsUnchanged": true,
+      "writerBudgetAudit": {
+        "json": {
+          "path": "/private/tmp/mechanism-ms1n-native-package-writer-budget-audit.json",
+          "bytes": 8651,
+          "sha256": "sha256:167e649739b9fb1aedaca8bce85b735a7146be15c3a55a7e14401d1d60aa4185"
+        },
+        "markdown": {
+          "path": "/private/tmp/mechanism-ms1n-native-package-writer-budget-audit.md",
+          "bytes": 3372,
+          "sha256": "sha256:02f2bd28038eae1a0527ceb5fb5002631c4428bd6fb192fa855728bbabb74d7c"
+        },
+        "integrity": {
+          "path": "/private/tmp/mechanism-ms1n-native-package-writer-budget-audit.integrity.json",
+          "bytes": 3324,
+          "sha256": "sha256:af30b89e2f39654f1a335a3b924a69f71d1a2376120b28bf174d350fd8841695"
+        }
+      },
+      "scope": "Public original696 final package and original/moved verifiers all pass; exact manifest unchanged after move, original finalized execution and explicit locator relocation preserved. Private writer336s exceeds prior300s collector cap; prior startup/cancelled/product attempts stay retained. Finite900s writer-only allowance and300s verifiers leave production/assertion/render thresholds unchanged. No fresh installed code or human acceptance inferred."
+    },
+    "nativePackageConfinementRepair": {
+      "status": "committed-actual-two-frame-regression-and-fast-verified",
+      "baseHead": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+      "sourceState": "committed two-file package confinement repair at83a5d8c0; original render proof342 provenance unchanged",
+      "retainedStartupFailure": {
+        "id": "native-package-confinement-integration-1",
+        "status": "failed-startup-before-tests",
+        "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-package-confinement-integration-1.log",
+          "bytes": 1827,
+          "sha256": "sha256:c9b0f17ba8d90a8cb9915f24ca612b303fc54bca2a45b0306f352c235fbd3dff"
+        },
+        "failure": "Root command referenced nonexistent vitest.integration.config.ts; configuration failed before any test/browser execution.",
+        "scope": "Command startup failure distinct from actual product package1/preview4 failures. Retained unchanged; corrected existing-config integration2 later passes both tests."
+      },
+      "currentIntegration": {
+        "id": "native-package-confinement-integration-2",
+        "status": "passed",
+        "baseHead": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+        "sourceState": "uncommitted two-file package repair after342",
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-package-confinement-integration-2.log",
+          "bytes": 568,
+          "sha256": "sha256:752a1c3d8c1dc02552e94404314e639466c2cd42f974fba1a115ec385007bd87"
+        },
+        "rootTerminalExitCode": 0,
+        "testFiles": 1,
+        "tests": 2,
+        "startBangkok": "2026-10-10 15:10:40",
+        "testWallMs": 24965,
+        "runWallSeconds": 27.88,
+        "firstTestWallMs": 23564,
+        "scope": "Root-owned correct existing Vitest config/default-flags run passes both actual64x64/two-frame saved-camera/current-recipe render/nonoverwrite cases, including final-package/move/throwing-unknown-options-getters regression. No original696/current archive/installed/full gate acceptance."
+      },
+      "sourceDelta": {
+        "path": "/private/tmp/still-shift-ms1n-package-repair-source-delta-1.json",
+        "bytes": 1385,
+        "sha256": "sha256:2a69b213b91cce519f23437b1df0dc39e90e2c9f83ac9bd3a051f588eda6b1fe"
+      },
+      "workingSourceInventory": {
+        "path": "/private/tmp/still-shift-ms1n-package-repair-working-inputs-1.json",
+        "bytes": 396838,
+        "sha256": "sha256:c4af71984e2b3c6023b4bed4975922275aae1e9097fbdefe1f66b1aa47a3f02b"
+      },
+      "deltaSummary": {
+        "membershipExact": true,
+        "sourceMembers": 2327,
+        "changedMembers": 2,
+        "unchangedMembers": 2325,
+        "newSourceInputBytes": 117494865,
+        "changedFiles": [
+          {
+            "path": "packages/animation-engine/src/mechanism/native-package.ts",
+            "bytes": 23340,
+            "sha256": "sha256:11ffac4aca5c775965aef09c00b9deed187968d7233d502d19703dac3add6ee8"
+          },
+          {
+            "path": "tests/integration/mechanism-native-saved-edit-render.test.ts",
+            "bytes": 10244,
+            "sha256": "sha256:6aa244057342ed368f04bf64a3c45c7c2ed9063944f7a3817dddb579d4bb187b"
+          }
+        ]
+      },
+      "freshPortableAndInstalledProof": "pending",
+      "fastGate": {
+        "id": "check-fast-10",
+        "status": "passed",
+        "node": "22.23.1",
+        "rootTerminalExitCode": 0,
+        "sourceState": "two-file package confinement repair after342, before slice commit",
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-check-fast-10.log",
+          "bytes": 31999,
+          "sha256": "sha256:3727aecf991a4e8832b2eaa572e3d6df3c02ffb6d4a099c5544b8bc89a64126d"
+        },
+        "unitTestFiles": 381,
+        "unitTests": 3915,
+        "unitWallSeconds": 48.81,
+        "scope": "Schema/appearance closure, package boundaries, TypeScript formatting, lint, no-emit build and all3915 units pass. Current actual two-frame final-package relocation regression is recorded separately. Full77/176/current installed and original portable acceptance remain pending."
+      },
+      "sliceCommit": "83a5d8c09d32148fc3f0d7f2c569431d77f01587",
+      "originalRenderProofAttribution": "342d09c58e27b5708ef7cc86f19d40559a85394f"
+    },
+    "priorNativePreviewProof4": {
       "id": "native-e01-preview-proof-4",
       "status": "failed",
       "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
@@ -4713,7 +5420,50 @@
       },
       "scope": "First baseline0/baseline88/saved-camera88 actual previews pass. Fourth saved-blade-part0 fails unchanged30s module readiness before composition/resources/frame JSON submission, with events0/bytes0. Exact recipe passed preview3 and failed preview2; cause unproven. Cold module-only bootstrap passed but does not reproduce sequential lifecycle. No automatic retry/timeouts change; isolated unchanged preview5 planned with supplemental bounded private Vite logs, not yet run."
     },
-    "nativePortablePackageProof": {
+    "nativePortablePackageStartupFailure2": {
+      "id": "native-portable-package-proof-2",
+      "status": "failed-startup-before-package-call",
+      "sourceCommit": "83a5d8c09d32148fc3f0d7f2c569431d77f01587",
+      "rootTerminalExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-package-proof-2.log",
+        "bytes": 585,
+        "sha256": "sha256:5d91b55a45315dde8bd3a1c4b0d99fdb65d7dd807267eaa62c44e6b20613af7d"
+      },
+      "failure": "Root omitted checkout cwd; default TypeScript alias resolution from original checkout caused MECHANISM_LIMITS import failure before any public package call or output-directory creation.",
+      "scope": "Retained harness invocation failure, distinct from package1 product path-confinement failure. Same helper relaunched as portable3 with managed checkout cwd; no product/options change."
+    },
+    "nativePortablePackageCancelledAttempt3": {
+      "id": "native-portable-package-proof-3",
+      "status": "cancelled-private-writer-time-budget",
+      "sourceCommit": "83a5d8c09d32148fc3f0d7f2c569431d77f01587",
+      "rootTerminalExitCode": 1,
+      "run": {
+        "path": "/private/tmp/still-shift-ms1n-native-package-proof-3/run.json",
+        "bytes": 1603,
+        "sha256": "sha256:95127e29db5a47854b61812ff688cbf5e09fe7a2c21692fabf96561c5d46b4d7"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-package-proof-3.log",
+        "bytes": 1070,
+        "sha256": "sha256:c9c775825fbeb7dbb45d284adda07da9e64f62ef3f1f8e9f3ac889aaf6e88dfe"
+      },
+      "retainedDirectory": "/private/tmp/still-shift-ms1n-native-package-proof-3/original-package",
+      "failure": {
+        "path": "/private/tmp/still-shift-ms1n-native-package-proof-3/original-package/failure.json",
+        "bytes": 142,
+        "sha256": "sha256:aaf70c7c3b04f04be2be1eace743ee057acdb3596a65b6529db1636f01834fab"
+      },
+      "retainedManifest": {
+        "path": "/private/tmp/still-shift-ms1n-native-package-proof-3/original-package/package.manifest.json",
+        "bytes": 4452,
+        "sha256": "sha256:faee397fd02b223b4ffc2af78c604392ad97f65930948473c30b9a32a832a528"
+      },
+      "writerTimeoutMs": 300000,
+      "actualFailure": "The operation was aborted due to timeout",
+      "scope": "Writer performs original full check and three delivery verifications; private five-minute cap expired during post-publication verification. Published tree and cancellation/failure evidence retained, no successful package result or assertion acceptance. Production code/thresholds unchanged. A timed fresh privatev2 gives only writer a finite900s allowance; separate verifiers retain300s and full observation/assertion requirements."
+    },
+    "priorNativePortablePackageProof1": {
       "id": "native-portable-package-proof-1",
       "status": "failed",
       "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
@@ -4788,91 +5538,113 @@
         }
       },
       "cause": "Writer forwarded runtime options containing original preparedDirectory/finalOutput into package verifier; broad options spread overwrote package-owned staged paths. Strict relocation/saved-recipe guard correctly rejected original recipe against relocated association. B read-only audit confirms unrecognized runtime options propagation; no exploit, geometry/pixel fault or source-byte alteration is claimed.",
-      "repair": "B confines accepted signal/route controls and package-owned paths, adds actual bounded final relocation regression; root integration2 passes both maintained cases. Source/test repair stationary, formatted and uncommitted after342. Fast gate/commit, fresh package proof and installed/portable acceptance remain pending.",
+      "repair": "Options confinement repair committed83; actual two-frame relocation/unknown-getter regression and all3915 units pass. Original696 private portable2 startup and portable3 writer-budget cancellation remain retained. Fresh timed portable4 running; archive/installed/full77 pending.",
       "scope": "Original finalized native execution bytes retained; no successful portable package/relocation/installed proof or new render acceptance. Failed attempt/log retained."
     },
-    "nativePackageConfinementRepair": {
-      "status": "actual-two-frame-regression-and-fast-verified",
-      "baseHead": "342d09c58e27b5708ef7cc86f19d40559a85394f",
-      "sourceState": "uncommitted source/test repair after342; original proof provenance unchanged",
-      "retainedStartupFailure": {
-        "id": "native-package-confinement-integration-1",
-        "status": "failed-startup-before-tests",
-        "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
-        "log": {
-          "path": "/private/tmp/still-shift-ms1n-package-confinement-integration-1.log",
-          "bytes": 1827,
-          "sha256": "sha256:c9b0f17ba8d90a8cb9915f24ca612b303fc54bca2a45b0306f352c235fbd3dff"
-        },
-        "failure": "Root command referenced nonexistent vitest.integration.config.ts; configuration failed before any test/browser execution.",
-        "scope": "Command startup failure distinct from actual product package1/preview4 failures. Retained unchanged; corrected existing-config integration2 later passes both tests."
+    "nativeArchiveFailedAttempt1": {
+      "id": "test-package-1",
+      "status": "failed-clean-consumer-declarations",
+      "sourceCommit": "83a5d8c09d32148fc3f0d7f2c569431d77f01587",
+      "rootTerminalExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-test-package-1.log",
+        "bytes": 1591,
+        "sha256": "sha256:a72a4da6f4a94b972895533230bcb60cff8431d24fa9cdaca78ff1967e893ffb"
       },
-      "currentIntegration": {
-        "id": "native-package-confinement-integration-2",
-        "status": "passed",
-        "baseHead": "342d09c58e27b5708ef7cc86f19d40559a85394f",
-        "sourceState": "uncommitted two-file package repair after342",
-        "log": {
-          "path": "/private/tmp/still-shift-ms1n-package-confinement-integration-2.log",
-          "bytes": 568,
-          "sha256": "sha256:752a1c3d8c1dc02552e94404314e639466c2cd42f974fba1a115ec385007bd87"
+      "archive": {
+        "path": "/private/tmp/still-shift-ms1n-package-attempt-1-retained/still-shift-0.1.0.tgz",
+        "bytes": 3149076,
+        "sha256": "sha256:f570f80dc5c727d2a7d1761d02ea77b731c6b25e7ff130bcaf89f921273a3e3c"
+      },
+      "packResult": {
+        "path": "/private/tmp/still-shift-ms1n-package-attempt-1-retained/pack-result.json",
+        "bytes": 239378,
+        "sha256": "sha256:e938fdb049f440a20437ffe6db73d178ff3303b6c8245e9d9598b5b4271233b7"
+      },
+      "packageVerification": {
+        "path": "/private/tmp/still-shift-ms1n-package-attempt-1-retained/package-verification.json",
+        "bytes": 6245,
+        "sha256": "sha256:09485ecc30e1565ba7583028db88d99564886ae50746c9978a9d7ec97bd3f09e"
+      },
+      "retention": {
+        "path": "/private/tmp/still-shift-ms1n-package-attempt-1-retained/retention.json",
+        "bytes": 576,
+        "sha256": "sha256:20fb04e275f33f3ea68cf0d59b121aba553355dbed11631edaf8c6ed6381c9bc"
+      },
+      "completedChecks": [
+        "install archive outside repository (pnpm offline)",
+        "installed command help",
+        "installed command version"
+      ],
+      "completedChecksCount": 3,
+      "failure": "Strict clean consumer declaration check TS7016: native three-textures.d.ts imports Three Texture but pinned @types/three only a repository development dependency.",
+      "scope": "Actual offline archive install/help/version complete; declaration check failed, later consumer/render/rebuild groups not run. Exact failed archive and reports retained before any rebuild; minimal manifest/lock fix and public declaration regression pending, no runtime appearance change."
+    },
+    "nativeArchiveSourceAuditFailedAttempt1": {
+      "id": "archive-source-audit-1",
+      "status": "failed-private-root-lock-expectation",
+      "sourceCommit": "83a5d8c09d32148fc3f0d7f2c569431d77f01587",
+      "rootTerminalExitCode": 1,
+      "summary": {
+        "path": "/private/tmp/still-shift-ms1n-archive-source-audit-1/summary.json",
+        "bytes": 1001,
+        "sha256": "sha256:5ed3aa80fd050aaecb45922ddc2e6b20a656355a426dc8e9c90862e052351a21"
+      },
+      "rows": {
+        "path": "/private/tmp/still-shift-ms1n-archive-source-audit-1/members.json",
+        "bytes": 1050027,
+        "sha256": "sha256:c1c841588a273ef26b3c980083281f9d9cce76ba7de766fce7e4e879fd8d8f15"
+      },
+      "failure": "Archive omitted explicitly whitelisted root: pnpm-lock.yaml",
+      "scope": "Private audit expected npm-excluded root pnpm-lock.yaml. package/source/pnpm-lock.yaml is present; exactsource lock/source membership still require corrected full audit. Originalhelper/failedreceipt retained; no successful archive-source qualification from this partial attempt."
+    },
+    "nativeThreeTypesPackageRepair": {
+      "status": "fast-verified-uncommitted",
+      "baseHead": "83a5d8c09d32148fc3f0d7f2c569431d77f01587",
+      "repairAudit": {
+        "json": {
+          "path": "/private/tmp/mechanism-ms1n-three-types-package-repair.json",
+          "bytes": 4716,
+          "sha256": "sha256:8294ce8a01379abef79ba8bb457fca5d3fc275b229842804f37149bc565a4ae4"
         },
-        "rootTerminalExitCode": 0,
-        "testFiles": 1,
-        "tests": 2,
-        "startBangkok": "2026-10-10 15:10:40",
-        "testWallMs": 24965,
-        "runWallSeconds": 27.88,
-        "firstTestWallMs": 23564,
-        "scope": "Root-owned correct existing Vitest config/default-flags run passes both actual64x64/two-frame saved-camera/current-recipe render/nonoverwrite cases, including final-package/move/throwing-unknown-options-getters regression. No original696/current archive/installed/full gate acceptance."
+        "markdown": {
+          "path": "/private/tmp/mechanism-ms1n-three-types-package-repair.md",
+          "bytes": 1800,
+          "sha256": "sha256:e8106aa03831f8171e46b0a40196eb1dcace545fe86c17a85ec9c54d33f88b21"
+        }
       },
       "sourceDelta": {
-        "path": "/private/tmp/still-shift-ms1n-package-repair-source-delta-1.json",
-        "bytes": 1385,
-        "sha256": "sha256:2a69b213b91cce519f23437b1df0dc39e90e2c9f83ac9bd3a051f588eda6b1fe"
+        "path": "/private/tmp/still-shift-ms1n-type-package-source-delta-1.json",
+        "bytes": 1617,
+        "sha256": "sha256:c3e1b2902436a542426366eb1c074e3408974e64c8de3fa76716304254ba0da9"
       },
       "workingSourceInventory": {
-        "path": "/private/tmp/still-shift-ms1n-package-repair-working-inputs-1.json",
+        "path": "/private/tmp/still-shift-ms1n-type-repair-working-inputs-1.json",
         "bytes": 396838,
-        "sha256": "sha256:c4af71984e2b3c6023b4bed4975922275aae1e9097fbdefe1f66b1aa47a3f02b"
+        "sha256": "sha256:70f6b03027de8ab17044dfed1e123e08a3bdd15991cf0b20af1c86eaf278eda5"
       },
-      "deltaSummary": {
-        "membershipExact": true,
-        "sourceMembers": 2327,
-        "changedMembers": 2,
-        "unchangedMembers": 2325,
-        "newSourceInputBytes": 117494865,
-        "changedFiles": [
-          {
-            "path": "packages/animation-engine/src/mechanism/native-package.ts",
-            "bytes": 23340,
-            "sha256": "sha256:11ffac4aca5c775965aef09c00b9deed187968d7233d502d19703dac3add6ee8"
-          },
-          {
-            "path": "tests/integration/mechanism-native-saved-edit-render.test.ts",
-            "bytes": 10244,
-            "sha256": "sha256:6aa244057342ed368f04bf64a3c45c7c2ed9063944f7a3817dddb579d4bb187b"
-          }
-        ]
-      },
-      "freshPortableAndInstalledProof": "pending",
+      "changedSelectedInputs": 4,
+      "unchangedSelectedInputs": 2323,
+      "existingReleaseDependencyRecordsUnchanged": 103,
+      "pinnedNewTypePackages": 7,
       "fastGate": {
-        "id": "check-fast-10",
+        "id": "check-fast-11",
         "status": "passed",
         "node": "22.23.1",
         "rootTerminalExitCode": 0,
-        "sourceState": "two-file package confinement repair after342, before slice commit",
+        "sourceState": "uncommitted four-file native typing package repair after83",
         "log": {
-          "path": "/private/tmp/still-shift-ms1n-check-fast-10.log",
-          "bytes": 31999,
-          "sha256": "sha256:3727aecf991a4e8832b2eaa572e3d6df3c02ffb6d4a099c5544b8bc89a64126d"
+          "path": "/private/tmp/still-shift-ms1n-check-fast-11.log",
+          "bytes": 32264,
+          "sha256": "sha256:0d77d72ccd361cfe89b1caee2e41cc4a554ef759fdaf34b2f127f006429a9670"
         },
         "unitTestFiles": 381,
         "unitTests": 3915,
-        "unitWallSeconds": 48.81,
-        "scope": "Schema/appearance closure, package boundaries, TypeScript formatting, lint, no-emit build and all3915 units pass. Current actual two-frame final-package relocation regression is recorded separately. Full77/176/current installed and original portable acceptance remain pending."
+        "unitWallSeconds": 51.74,
+        "scope": "Schema/appearance closure, package boundaries, TypeScript formatting, lint, noemit build and all3915 units pass. Cleanconsumer strict declaration/archive proof and full77/176/installed native gate remain pending."
       },
-      "sliceCommit": "pending"
+      "actualArchiveProof": "pending",
+      "scope": "Declare pinned Three typings in renderer-core dependency importer and generated release lock; existing NodeNext/Bundler consumer fixture now exercises public native factory/font/texture/geometry declaration closure. No any/skipLibCheck or consumer-only direct typing installation. No native appearance/runtime source change."
     }
   },
   "humanContinuousPlaybackListeningAndCreativeAcceptance": "pending",

@@ -53,13 +53,21 @@ still hold before relying on them.
   max135/RMS2.226 and human hardware appearance remains pending.
   Full1/full2 and all earlier failed attempts stay retained. Preview4 passes three
   states then fails fourth browser.module initialization at30s; the exact recipe
-  passed preview3, so cause remains unproven. Isolated unchanged preview5 is next.
+  passed preview3, so cause remains unproven. Isolated preview5 passes all8 actual
+  variants/5 located negatives/legal restore at unchanged83 inputs and30s timeout.
   Package1 exposes caller options overriding delivery-owned paths. The narrow
   package repair passes actual two-frame final-package/move/unknown-option tests
   and fast10/all3,915 units, schemas, boundaries, formatting, lint and build.
   Its exact two-file delta leaves2,325 other selected inputs unchanged; completed
-  render proofs keep342 provenance. Slice commit, fresh full-E01 portable package,
-  archive/installed execution and all77 groups/176 unchanged baselines remain.
+  render proofs keep342 provenance. Package repair is committed at `83a5d8c0`; portable2 startup failed from wrong
+  cwd before execution; portable3 hits private300s writer cap after publication.
+  Timed portable4 passes writer336s/original107s/moved91s with unchanged manifest
+  and native execution. Archive1 fails strict cleanconsumer declarations: missing
+  runtime Three typings; four-file metadata/lock/public-consumer repair passes
+  fast11/all3,915 units. Seeded lock preserves all103 prior records and adds7
+  pinned type packages; offline metadata-cache miss retained. Source audit1 wrongly
+  requires npm-excluded rootlock; archivedsource lock is present, corrected audit
+  pending. Fresh archive/installed and all77 groups/176 baselines remain.
   Human encoded readability, playback/listening and redistribution remain separate.
   [Design](./mechanism-shorts-ms1n-design.md),
   [results](./mechanism-shorts-ms1n-results.json).
@@ -190,9 +198,25 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-10-10 — Native delivery closure and clean-consumer typing repair
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, from `83a5d8c0`.
+- **Done:** isolated preview5 passes8 actual variants/5 located negatives/legal restore;
+  portable4 verifies the original696 final package before/after moving it.
+- **Results:** package writer336s/original107s/moved91s; exact manifest retained.
+  Four packaging files declare pinned Three typings and strengthen public consumer
+  checks; fast11 passes all3,915 units. Seeded lock keeps103 existing records exact.
+- **Rejected / do not repeat:** portable2 wrong cwd, portable3 private300s cap,
+  archive1 missing cleanconsumer typings, rootlock audit assumption and offline
+  metadata-cache miss stay retained. Preview4 timeout cause remains unproven.
+- **Open / next:** commit repair, rebuild/archive source audit, OS-denied installed
+  exports, full77/176 gate and MS1N PR; then MS2/MS3 on separate branches.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json),
+  [production plan](./mechanism-shorts-production-plan.md#ms1n-native-3d-composition).
+
 ### 2026-10-10 — Confine native delivery verification to its owned paths
 
-- **Agent / branch:** Codex on `codex/mechanism-ms1n`, package repair after `342d09c5`.
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, package repair `83a5d8c0` after `342d09c5`.
 - **Done:** native packaging forwards only signal/route controls; original caller
   prepared/movie paths cannot replace delivery paths during relocation checks.
 - **Results:** actual two-frame saved-camera export/package/move and unread unknown
@@ -200,7 +224,7 @@ still hold before relying on them.
   schemas, boundaries, formatting, lint and build. Source delta changes exactly
   two files; all 2,325 other selected inputs remain byte-identical to342.
 - **Retained / next:** package1 and preview4 failures remain explicit. Keep completed
-  render proofs attributed to342; commit this repair, then run isolated preview5,
+  render proofs attributed to342; run isolated preview5,
   fresh full-E01 packaging/relocation, archive/installed and full77/176 gates.
 - **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
 

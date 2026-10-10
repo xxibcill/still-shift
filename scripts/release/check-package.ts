@@ -120,9 +120,21 @@ try {
     (await run("installed command version", bin, ["--version"])).trim(),
     metadata.version,
   );
+  const installedManifest = JSON.parse(
+    await readFile(
+      resolve(project, "node_modules/still-shift/package.json"),
+      "utf8",
+    ),
+  ) as { dependencies: Record<string, string> };
+  assert.equal(installedManifest.dependencies["@types/three"], "0.186.0");
   const program = `import { comp, solid } from "still-shift";
 import type { CompositionLintReport } from "still-shift/engine";
 import type { CompositionSemanticAssociation } from "still-shift/renderer";
+import type { createNativeThreeWorld, createNativeThreeGeometry, NativeTextureFont } from "still-shift/renderer/native3d-browser";
+export const nativeTextureFont: NativeTextureFont = { family: "Package fixture", weight: "600" };
+export function nativeCameraFov(world: ReturnType<typeof createNativeThreeWorld>): number { return world.camera.fov; }
+export function nativeEnvironmentColorSpace(world: ReturnType<typeof createNativeThreeWorld>): string | undefined { return world.world.environment?.colorSpace; }
+export function nativeGeometryPositionCount(geometry: ReturnType<typeof createNativeThreeGeometry>): number { return geometry.geometries.get("fixture")?.getAttribute("position").count ?? 0; }
 export const declaredContext: CompositionSemanticAssociation = { id: "amount", purpose: "Read the amount with units", kind: "quantity", start: 0, end: 4, members: [{ layer: "value", text: "12", kind: "value" }, { layer: "unit", text: "mm", kind: "unit" }] };
 export function semanticStatus(report: CompositionLintReport) { return report.semantic.status; }
 export default comp({ id: "package-test", width: 320, height: 192, fps: 24, frames: 4, background: "#fff4df" }, (scene) => {
