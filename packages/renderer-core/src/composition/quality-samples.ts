@@ -287,6 +287,14 @@ export function compositionQualityFrame(
   options: EvaluationOptions = {},
 ): CompositionQualityFrame {
   const tree = evaluateComp(comp, frame, options);
+  return compositionQualityTree(comp, tree);
+}
+
+/** Inspect the settled exposure tree without resampling center-held overlays. */
+export function compositionQualityTree(
+  comp: Composition,
+  tree: EvaluatedLayerTree,
+): CompositionQualityFrame {
   const layers = new Map<string, CompositionQualitySample>();
   const diagnostics = [...tree.diagnostics];
   const backgrounds: unknown[] = [tree.background];

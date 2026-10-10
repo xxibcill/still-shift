@@ -57,6 +57,16 @@ import {
 } from "../evaluate/spatial-geometry.ts";
 import { spatialStackOrder } from "./spatial-order.ts";
 import { prepareFlatLighting, type FlatLighting } from "./flat-lighting.ts";
+import {
+  IDENTITY_MATRIX,
+  matrixFromTransform,
+  multiplyMatrices,
+} from "../../mechanism/matrix.ts";
+import type {
+  NativeFrameSnapshot,
+  Native3DSourceKey,
+} from "@still-shift/scene-contract";
+import type { Matrix4 } from "../evaluate/spatial-geometry.ts";
 
 export type EffectWindow = {
   left: number;
@@ -288,7 +298,36 @@ export type ProjectOp = {
   blend: CompositionBlendMode;
   clips: ClipRect[];
 };
-export type RenderOp = DrawOp | IsolateOp | AdjustOp | ProjectOp;
+export type NativeWorldGraphicArtwork = {
+  layer: string;
+  surface: SurfaceNode;
+  localBounds: Bounds;
+  rasterOriginPixels: [number, number];
+  artworkMatrix: Matrix;
+  originPixels: [number, number];
+  pixelsPerUnit: number;
+  worldMatrix: Matrix4;
+  side: "front" | "double";
+  opacity: number;
+  alphaMode: "opaque" | "mask";
+  alphaCutoff: number;
+};
+export type NativeDepthOp = {
+  kind: "native-depth";
+  layer: string;
+  sourceKey: Native3DSourceKey;
+  frame: NativeFrameSnapshot;
+  sampleFrame: number;
+  width: number;
+  height: number;
+  graphics: NativeWorldGraphicArtwork[];
+};
+export type RenderOp =
+  | DrawOp
+  | IsolateOp
+  | AdjustOp
+  | ProjectOp
+  | NativeDepthOp;
 
 /** One composition scope rendered into its own surface. */
 export type SurfaceNode = {
@@ -305,11 +344,53 @@ export type RenderGraph = {
   /** Layer keys skipped because their bounds miss the surface they draw into. */
   culled: string[];
   spatial?: true;
+  /** Association discovery omits local rasters and can never be executed. */
+  nativePassDiscovery?: true;
 };
 export type RenderGraphOptions = EvaluationOptions & {
   /** Preparation must discover offscreen glyph samples before final bounds exist. */
   cull?: boolean;
+  /** Actual prepared glyph bounds, including every positively drawn copy/correction. */
+  nativeArtworkBounds?: (content: TextContent) => Bounds | undefined;
+  /** Text discovery alone may use measured state bounds before glyph frames exist. */
+  nativeArtworkPreparation?: boolean;
+  /** Internal association inventory; executeGraph rejects its incomplete artwork graph. */
+  nativePassDiscovery?: boolean;
 };
+
+/** Native pass pixels cannot be retained as a substitute for a required actual draw. */
+export function hasNativeDepth(ops: readonly RenderOp[]): boolean {
+  const active = new Set<readonly RenderOp[]>();
+  const visit = (operations: readonly RenderOp[]): boolean => {
+    if (active.has(operations)) return true; // Malformed cycles are never cache eligible.
+    active.add(operations);
+    try {
+      for (const op of operations) {
+        if (op.kind === "native-depth") return true;
+        if (op.kind === "draw") {
+          if (op.content.type === "surface" && visit(op.content.surface.ops))
+            return true;
+          continue;
+        }
+        if (op.kind === "project" && visit(op.surface.ops)) return true;
+        if (op.kind === "isolate" && visit(op.ops)) return true;
+        if (
+          op.kind === "adjust" &&
+          op.history?.some((sample) => visit(sample.ops))
+        )
+          return true;
+        for (const effect of op.effects)
+          for (const input of Object.values(effect.layerInputs ?? {}))
+            if (visit(input)) return true;
+        if (op.matte && visit(op.matte.ops)) return true;
+      }
+      return false;
+    } finally {
+      active.delete(operations);
+    }
+  };
+  return visit(ops);
+}
 
 type Frame = {
   effectWindow?: EffectWindow | undefined;
@@ -441,6 +522,19 @@ class GraphBuilder {
         : undefined,
     );
     const coverageLayers = new Set(ids);
+    for (const state of selected) {
+      for (
+        let ancestor: EvaluatedLayer | undefined = state;
+        ancestor;
+        ancestor = ancestor.layer.parent
+          ? scope.byId.get(ancestor.layer.parent)
+          : undefined
+      ) {
+        const dependency =
+          ancestor.layer.native3D?.sceneLayer ?? ancestor.layer.overlayAfter;
+        if (dependency) coverageLayers.add(dependency);
+      }
+    }
     for (const state of selected) {
       if (state.layer.type === "group")
         for (const candidate of tree.layers)
@@ -724,10 +818,40 @@ class GraphBuilder {
           ),
         )
       : scope.tree.layers;
-    // layers[0] is the top layer, so paint from the end of the list.
-    for (let i = layers.length - 1; i >= 0; i--) {
+    // Native annotation ordering is explicit; ordinary painter order is untouched.
+    const painting = [...layers].reverse();
+    const ordered: EvaluatedLayer[] = [],
+      scheduled = new Set<string>(),
+      active = new Set<string>();
+    const schedule = (state: EvaluatedLayer): void => {
+      if (scheduled.has(state.id)) return;
+      if (active.has(state.id))
+        passageError(
+          "comp-native3d-cycle",
+          "Native annotation ordering cycle",
+          {
+            node: state.id,
+            path: frame.prefix + state.id + ".overlayAfter",
+            frame: this.time,
+          },
+        );
+      active.add(state.id);
+      let dependency = state.layer.overlayAfter;
+      for (
+        let parent = state.layer.parent;
+        !dependency && parent;
+        parent = scope.byId.get(parent)!.layer.parent
+      )
+        dependency = scope.byId.get(parent)!.layer.overlayAfter;
+      if (dependency) schedule(scope.byId.get(dependency)!);
+      active.delete(state.id);
+      scheduled.add(state.id);
+      ordered.push(state);
+    };
+    for (const state of painting) schedule(state);
+    for (const state of ordered) {
       if (this.reachedHistoryTarget) break;
-      const state = layers[i]!;
+      if (state.layer.native3D?.role === "world-graphic") continue;
       if (
         frame.coverageLayers &&
         !frame.captureSource &&
@@ -747,9 +871,160 @@ class GraphBuilder {
           scope.containers.has(state.id) &&
           !scope.matteSources.has(state.id))
       )
-        ops.push(...this.layerOps(scope, state, frame));
+        ops.push(
+          ...(state.layer.type === "native3d"
+            ? this.nativeDepth(scope, state, frame)
+            : this.layerOps(scope, state, frame)),
+        );
     }
     return ops;
+  }
+
+  private nativeDepth(
+    scope: Scope,
+    state: EvaluatedLayer,
+    frame: Frame,
+  ): NativeDepthOp[] {
+    const snapshot = state.nativeFrame;
+    if (!snapshot || !state.drawable) return [];
+    const graphicStates = scope.tree.layers.filter(
+      (candidate) =>
+        candidate.drawable &&
+        candidate.layer.native3D?.role === "world-graphic" &&
+        candidate.layer.native3D.sceneLayer === state.id,
+    );
+    if (graphicStates.length > 64)
+      passageError(
+        "comp-native3d-limit",
+        "Native pass exceeds 64 world graphic leaves",
+        { node: state.id, path: frame.prefix + state.id, frame: this.time },
+      );
+    const graphics = this.options.nativePassDiscovery
+      ? []
+      : [...graphicStates]
+          .reverse()
+          .map((graphic) =>
+            this.nativeArtwork(scope, graphic, frame, snapshot),
+          );
+    return [
+      {
+        kind: "native-depth",
+        layer: frame.prefix + state.id,
+        sourceKey: snapshot.sourceKey,
+        frame: snapshot,
+        sampleFrame: this.time,
+        width: snapshot.viewport.width,
+        height: snapshot.viewport.height,
+        graphics,
+      },
+    ];
+  }
+
+  private nativeArtwork(
+    scope: Scope,
+    state: EvaluatedLayer,
+    frame: Frame,
+    snapshot: NativeFrameSnapshot,
+  ): NativeWorldGraphicArtwork {
+    const binding = state.layer.native3D;
+    if (binding?.role !== "world-graphic")
+      throw Error("Expected admitted native world artwork");
+    const key = frame.prefix + state.id,
+      content = this.content(scope, state, frame);
+    if (!content || !["solid", "shape", "text"].includes(content.type))
+      passageError(
+        "comp-native3d-graphic",
+        "Unsupported native world content",
+        { node: key, path: key + ".native3D", frame: this.time },
+      );
+    let bounds =
+      content.type === "text"
+        ? this.options.nativeArtworkBounds?.(content)
+        : localBounds(this.comp, scope.def, state, this.options);
+    if (!bounds && this.options.nativeArtworkPreparation)
+      bounds = localBounds(this.comp, scope.def, state, this.options);
+    if (!bounds)
+      passageError(
+        "comp-native3d-not-ready",
+        "Native artwork requires actual local prepared content bounds",
+        { node: key, path: key + ".native3D", frame: this.time },
+      );
+    const raster = localSurfaceBounds(bounds, key),
+      matrix: Matrix = [1, 0, 0, 1, -raster.origin[0], -raster.origin[1]],
+      transforms = [matrix];
+    if (
+      binding.alphaMode === "opaque" &&
+      (content.type !== "solid" ||
+        !Number.isInteger(content.width) ||
+        !Number.isInteger(content.height) ||
+        bounds.left !== 0 ||
+        bounds.top !== 0 ||
+        raster.width !== content.width ||
+        raster.height !== content.height)
+    )
+      passageError(
+        "comp-native3d-graphic",
+        "Opaque world rectangles cannot contain transparent crop guard pixels",
+        { node: key, path: key + ".native3D.alphaMode", frame: this.time },
+      );
+    const draw: DrawOp = {
+      kind: "draw",
+      layer: key,
+      content,
+      matrix,
+      transforms,
+      opacity: 1,
+      blend: "normal",
+      clips: [],
+    };
+    const masks = this.masks(state, matrix, transforms);
+    const ops: RenderOp[] = masks.length
+      ? [
+          {
+            kind: "isolate",
+            layer: key,
+            ops: [draw],
+            effects: [],
+            masks,
+            matte: null,
+            opacity: 1,
+            blend: "normal",
+            clips: [],
+          },
+        ]
+      : [draw];
+    const part =
+      binding.part === undefined
+        ? IDENTITY_MATRIX
+        : snapshot.frame.parts[binding.part]?.worldMatrix;
+    if (!part)
+      passageError(
+        "comp-native3d-binding",
+        `Unknown world graphic part ${binding.part}`,
+        { node: key, path: key + ".native3D.part", frame: this.time },
+      );
+    return {
+      layer: key,
+      surface: {
+        id: key + "/native-artwork",
+        width: raster.width,
+        height: raster.height,
+        background: null,
+        ops,
+      },
+      localBounds: { ...bounds },
+      rasterOriginPixels: raster.origin,
+      artworkMatrix: state.localMatrix,
+      originPixels: binding.originPixels ?? [0, 0],
+      pixelsPerUnit: binding.pixelsPerUnit,
+      worldMatrix: [
+        ...multiplyMatrices(part, matrixFromTransform(binding.transform)),
+      ],
+      side: binding.side ?? "double",
+      opacity: state.opacity,
+      alphaMode: binding.alphaMode,
+      alphaCutoff: binding.alphaCutoff ?? 0.5,
+    };
   }
 
   private exposureScope(scope: Scope, state: EvaluatedLayer): Scope {
@@ -1984,11 +2259,18 @@ export function buildRenderGraph(
   tree: EvaluatedLayerTree,
   options: RenderGraphOptions = {},
 ): RenderGraph {
-  const builder = new GraphBuilder(comp, tree.time, options);
+  const builder = new GraphBuilder(
+    comp,
+    tree.sampleFrame ?? tree.time,
+    options,
+  );
   const root = builder.surface(tree, comp, "");
   return {
     root,
     culled: builder.culled,
+    ...(options.nativePassDiscovery
+      ? { nativePassDiscovery: true as const }
+      : {}),
     ...(builder.spatial ? { spatial: true as const } : {}),
   };
 }
@@ -2014,11 +2296,18 @@ export function buildLayersRenderGraph(
   prefix: string,
   options: RenderGraphOptions = {},
 ): RenderGraph {
-  const builder = new GraphBuilder(comp, tree.time, options);
+  const builder = new GraphBuilder(
+    comp,
+    tree.sampleFrame ?? tree.time,
+    options,
+  );
   const root = builder.coverageSurface(tree, scope, ids, prefix);
   return {
     root,
     culled: builder.culled,
+    ...(options.nativePassDiscovery
+      ? { nativePassDiscovery: true as const }
+      : {}),
     ...(builder.spatial ? { spatial: true as const } : {}),
   };
 }

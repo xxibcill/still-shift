@@ -62,7 +62,14 @@ const summary = (ops: RenderOp[]): unknown[] =>
         ? { adjust: op.layer, blend: op.blend }
         : op.kind === "project"
           ? { project: op.layer, ops: summary(op.surface.ops) }
-          : { draw: op.layer, content: op.content.type },
+          : op.kind === "native-depth"
+            ? {
+                nativeDepth: op.layer,
+                graphics: op.graphics.map((graphic) =>
+                  summary(graphic.surface.ops),
+                ),
+              }
+            : { draw: op.layer, content: op.content.type },
   );
 
 describe("render graph", () => {

@@ -66,6 +66,17 @@ import {
   type ExportBrowserWorker,
 } from "./export-browser-worker.ts";
 import type { BrowserExportResult } from "./export-page.ts";
+import {
+  NativeObservationSink,
+  admitNativeObservationCapacity,
+  admitNativeObservationManifest,
+  nativeObservationOwner,
+  verifyNativeObservationClosure,
+  type NativeObservationClosure,
+  type NativeObservationExecutionBinding,
+  type NativeObservationExpectedPass,
+} from "./native-observation-sink.ts";
+export * from "./native-observation-sink.ts";
 export type { CompositionOutputFormat } from "./composition-output.ts";
 export {
   COMPOSITION_OUTPUT_FORMATS,
@@ -94,6 +105,11 @@ export type ExportAudioInput = {
 };
 
 export type ExportRequest = {
+  nativeObservation?: {
+    execution: NativeObservationExecutionBinding;
+    maximumPacketBytes: number;
+    expectedPasses(frame: number): readonly NativeObservationExpectedPass[];
+  };
   runtime?: BrowserRuntimeOptions;
   scene: ExportableScene;
   signal?: AbortSignal | undefined;
@@ -129,6 +145,7 @@ export type ExportRequest = {
 };
 
 export type ExportMetrics = {
+  nativeObservations?: NativeObservationClosure;
   version:
     | typeof EXPORT_WORKER_VERSION
     | typeof COMPOSITION_EXPORT_WORKER_VERSION
@@ -414,7 +431,11 @@ const readBodyToEncoder = async (
   stdin: Writable,
   expectedBytes: number | null,
   maxFrameBytes: number,
-): Promise<void> => {
+  observe = false,
+): Promise<
+  { byteLength: number; transportBytesSha256: string } | undefined
+> => {
+  const identity = observe ? createHash("sha256") : undefined;
   const contentLength = Number(request.headers["content-length"]);
   if (
     !Number.isSafeInteger(contentLength) ||
@@ -427,6 +448,7 @@ const readBodyToEncoder = async (
   for await (const part of request) {
     const chunk = Buffer.isBuffer(part) ? part : Buffer.from(part);
     bytes += chunk.length;
+    identity?.update(chunk);
     if (bytes > contentLength)
       throw new Error("Frame upload exceeded the expected byte count");
     for (let offset = 0; offset < chunk.length; offset += 65536)
@@ -438,6 +460,12 @@ const readBodyToEncoder = async (
   }
   if (bytes !== contentLength)
     throw new Error("Frame upload ended before the expected byte count");
+  return identity
+    ? {
+        byteLength: bytes,
+        transportBytesSha256: `sha256:${identity.digest("hex")}`,
+      }
+    : undefined;
 };
 
 const sendAsset = async (
@@ -448,16 +476,18 @@ const sendAsset = async (
   response.statusCode = 200;
   response.setHeader(
     "Content-Type",
-    extname(path).toLowerCase() === ".otf"
-      ? "font/otf"
-      : extname(path).toLowerCase() === ".ttf"
-        ? "font/ttf"
-        : extname(path).toLowerCase() === ".svg"
-          ? "image/svg+xml"
-          : extname(path).toLowerCase() === ".jpg" ||
-              extname(path).toLowerCase() === ".jpeg"
-            ? "image/jpeg"
-            : "image/png",
+    extname(path).toLowerCase() === ".json"
+      ? "application/json"
+      : extname(path).toLowerCase() === ".otf"
+        ? "font/otf"
+        : extname(path).toLowerCase() === ".ttf"
+          ? "font/ttf"
+          : extname(path).toLowerCase() === ".svg"
+            ? "image/svg+xml"
+            : extname(path).toLowerCase() === ".jpg" ||
+                extname(path).toLowerCase() === ".jpeg"
+              ? "image/jpeg"
+              : "image/png",
   );
   response.setHeader("Content-Length", file.size);
   createReadStream(path).pipe(response);
@@ -474,12 +504,102 @@ const assetPlugin = (
     credentials: string[];
     cacheBroker(): CompositionSurfaceBroker | undefined;
   },
+  native?: {
+    sink: NativeObservationSink;
+    exportId: string;
+    credential: string;
+    fail(reason: unknown): void;
+    reserve(bytes: number): { release(): void };
+    track(request: IncomingMessage, operation: Promise<unknown>): void;
+  },
 ): Plugin => ({
   name: "still-shift-export-assets",
   configureServer(server) {
     server.middlewares.use((incoming, response, next) => {
       const pathname = new URL(incoming.url ?? "/", "http://localhost")
         .pathname;
+      if (
+        native &&
+        (pathname === "/_export/native-observation" ||
+          pathname === "/_export/frame")
+      ) {
+        if (
+          !nativeObservationOwner(
+            incoming.headers,
+            native.exportId,
+            native.credential,
+          )
+        ) {
+          response.statusCode = 403;
+          response.end("Unknown native export worker");
+          return;
+        }
+        const host = incoming.headers.host ?? "",
+          origin = incoming.headers.origin;
+        if (
+          !/^(127\.0\.0\.1|localhost|\[::1\])(?::\d+)?$/.test(host) ||
+          (origin && origin !== `http://${host}`)
+        ) {
+          native.fail(
+            Error("Native export request differs from its local origin"),
+          );
+          response.statusCode = 403;
+          response.end("Native export requires its local origin");
+          return;
+        }
+        if (pathname === "/_export/native-observation") {
+          const operation = (async () => {
+            let reservation: { release(): void } | undefined;
+            try {
+              const length = Number(incoming.headers["content-length"]);
+              const index = incoming.headers["x-frame-index"];
+              if (
+                incoming.method !== "POST" ||
+                frameState.pending ||
+                frameState.error ||
+                index !== String(frameState.nextIndex) ||
+                !Number.isSafeInteger(length) ||
+                length < 1 ||
+                length > request.nativeObservation!.maximumPacketBytes
+              )
+                passageError(
+                  "comp-native3d-protocol",
+                  "Native observation request differs from its assigned frame",
+                  { path: "nativeObservations" },
+                );
+              frameState.pending = true;
+              reservation = native.reserve(length + 256);
+              const bytes = Buffer.alloc(length);
+              let received = 0;
+              for await (const part of incoming) {
+                const chunk = Buffer.isBuffer(part) ? part : Buffer.from(part);
+                if (received + chunk.length > length)
+                  throw Error("Observation upload exceeded its byte count");
+                bytes.set(chunk, received);
+                received += chunk.length;
+              }
+              if (received !== length)
+                throw Error("Observation upload ended before its byte count");
+              native.sink.acceptPacket(0, bytes);
+              frameState.pending = false;
+              response.statusCode = 204;
+              response.end();
+            } catch (error) {
+              frameState.error ??=
+                error instanceof Error ? error : Error(String(error));
+              native.fail(error);
+              if (!response.destroyed) {
+                response.statusCode = 409;
+                response.end(frameState.error.message);
+              }
+            } finally {
+              reservation?.release();
+            }
+          })();
+          native.track(incoming, operation);
+          return;
+        }
+      }
       if (work && pathname.startsWith("/_export/surface/")) {
         const broker = work.cacheBroker();
         if (!broker) {
@@ -531,6 +651,7 @@ const assetPlugin = (
       }
       if (pathname !== "/_export/frame") return next();
       if (incoming.method !== "POST") {
+        if (native) native.fail(Error("Native pixel request requires POST"));
         response.statusCode = 405;
         response.end("POST required");
         return;
@@ -555,8 +676,17 @@ const assetPlugin = (
           response.end("Unknown composition frame worker");
           return;
         }
-        void work.frames
-          .accept(worker, index, incoming)
+        try {
+          native?.sink.requirePacket(worker, index);
+        } catch (error) {
+          native?.fail(error);
+          response.statusCode = 409;
+          response.end(String(error));
+          return;
+        }
+        const operation = work.frames.accept(worker, index, incoming);
+        native?.track(incoming, operation);
+        void operation
           .then(() => {
             response.statusCode = 204;
             response.end();
@@ -580,16 +710,29 @@ const assetPlugin = (
         index !== frameState.nextIndex
       ) {
         response.statusCode = 409;
+        if (native) native.fail(Error("Native pixel frame order mismatch"));
         response.end("Frame order mismatch");
         return;
       }
       frameState.pending = true;
-      void readBodyToEncoder(
-        incoming,
-        encoderInput,
-        expectedBytes,
-        maxFrameBytes,
-      )
+      const operation = (async () => {
+        native?.sink.requirePacket(0, index);
+        const pixel = await readBodyToEncoder(
+          incoming,
+          encoderInput,
+          expectedBytes,
+          maxFrameBytes,
+          !!native,
+        );
+        await request.verifyFrame?.(index, 0);
+        if (native)
+          await native.sink.commitPixel(0, index, {
+            transport: request.transport ?? "png_pipe",
+            ...pixel!,
+          });
+      })();
+      native?.track(incoming, operation);
+      void operation
         .then(() => {
           frameState.nextIndex += 1;
           frameState.pending = false;
@@ -599,6 +742,7 @@ const assetPlugin = (
         .catch((error: unknown) => {
           frameState.error ??=
             error instanceof Error ? error : new Error(String(error));
+          native?.fail(error);
           response.statusCode = 500;
           response.end(frameState.error.message);
         });
@@ -675,6 +819,31 @@ export const exportScene = async (
   const projectRoot = request.runtime?.projectRoot ?? defaultBrowserProjectRoot;
   const start = performance.now();
   const { scene } = request;
+  const nativeScene =
+    "composition" in scene &&
+    scene.composition.assets.some((asset) => asset.type === "native3d");
+  if (nativeScene && (!request.nativeObservation || scene.backend !== "webgl2"))
+    passageError(
+      "comp-native3d-protocol",
+      "Native export requires WebGL2 and an authenticated observation binding",
+      { path: "nativeObservations" },
+    );
+  if (request.nativeObservation) {
+    if (!nativeScene || (request.workers ?? 1) !== 1)
+      passageError(
+        "comp-native3d-protocol",
+        "Native observation delivery requires one assigned composition worker",
+        { path: "nativeObservations" },
+      );
+    admitNativeObservationCapacity(
+      scene.timeline.frameCount,
+      request.nativeObservation.maximumPacketBytes,
+    );
+    admitNativeObservationManifest(
+      request.nativeObservation.execution,
+      resolve(request.outputPath),
+    );
+  }
   const workOptions =
     request.workers === undefined && request.cacheStatic === undefined
       ? undefined
@@ -722,11 +891,11 @@ export const exportScene = async (
     );
   }
   const capturedSourceChecksum =
-    profile || workOptions
+    profile || workOptions || request.nativeObservation
       ? await fileChecksum(request.sourcePath, request.signal)
       : undefined;
   if (
-    (profile || workOptions) &&
+    (profile || workOptions || request.nativeObservation) &&
     request.expectedSourceChecksum &&
     capturedSourceChecksum !== request.expectedSourceChecksum
   )
@@ -830,6 +999,11 @@ export const exportScene = async (
     ...(request.resultManifestContents
       ? [[resultPath, "Result manifest"]]
       : []),
+    ...(request.nativeObservation
+      ? NativeObservationSink.destinationPaths(outputPath).map(
+          (path) => [path, "Native observation artifact"] as const,
+        )
+      : []),
   ] as const) {
     try {
       await stat(path);
@@ -922,8 +1096,30 @@ export const exportScene = async (
     "schemaVersion" in scene && scene.schemaVersion === "composition-scene-1"
       ? new CompositionResultBudget(scene.timeline.frameCount)
       : undefined;
+  const nativeSink = request.nativeObservation
+    ? new NativeObservationSink({
+        outputPath,
+        exportId,
+        frameCount: scene.timeline.frameCount,
+        ...request.nativeObservation,
+        reserve: (bytes) => resultBudget!.reserveTransient(bytes),
+      })
+    : undefined;
+  let nativeObservations: NativeObservationClosure | undefined;
+  const nativeRequests = new Set<IncomingMessage>();
+  const nativeTransfers = new Set<Promise<unknown>>();
+  const stopNativeRequests = (reason: unknown) => {
+    for (const incoming of nativeRequests)
+      incoming.destroy(
+        reason instanceof Error ? reason : Error(String(reason)),
+      );
+  };
   let viteCacheDirectory: string | undefined;
   const abort = () => {
+    nativeSink?.fail(request.signal?.reason ?? Error("Native export stopped"));
+    stopNativeRequests(
+      request.signal?.reason ?? Error("Native export stopped"),
+    );
     encoderProcess.kill();
     void outputInput?.dispose().catch(() => undefined);
     void browser?.close().catch(() => undefined);
@@ -945,9 +1141,12 @@ export const exportScene = async (
   const failWork = (reason: unknown) => {
     if (!workFailure) workFailure = { reason };
     orderedFrames?.fail(workFailure.reason);
+    nativeSink?.fail(workFailure.reason);
+    stopNativeRequests(workFailure.reason);
     encoderProcess.kill();
     for (const workerBrowser of browsers)
       void workerBrowser.close().catch(() => undefined);
+    void browser?.close().catch(() => undefined);
     void surfaceStore
       ?.dispose(reason instanceof Error ? reason : Error(String(reason)))
       .catch(() => undefined);
@@ -956,7 +1155,7 @@ export const exportScene = async (
     if (workFailure) throw workFailure.reason;
   };
   encoderClosed.catch((reason: unknown) => {
-    if (workOptions) failWork(reason);
+    if (workOptions || nativeSink) failWork(reason);
   });
   request.signal?.addEventListener("abort", abort, { once: true });
   let encodePathStart = 0;
@@ -994,21 +1193,31 @@ export const exportScene = async (
         scene.canvas.height +
         1048576
       : 50_000_000;
-    const credentials = workOptions
-      ? Array.from({ length: workOptions.workers }, () => randomUUID())
-      : [];
+    const credentials =
+      workOptions || nativeSink
+        ? Array.from({ length: workOptions?.workers ?? 1 }, () => randomUUID())
+        : [];
     if (workOptions)
       orderedFrames = new CompositionOrderedFrames(
         scene.timeline.frameCount,
         workOptions.workers,
         async (source, frame, worker) => {
-          await readBodyToEncoder(
+          nativeSink?.requirePacket(worker, frame);
+          const pixel = await readBodyToEncoder(
             source as IncomingMessage,
             outputInput?.input ?? encoder.stdin!,
             expectedBytes,
             maxFrameBytes,
+            !!nativeSink,
           );
           await request.verifyFrame?.(frame, worker);
+          if (nativeSink) {
+            await nativeSink.commitPixel(worker, frame, {
+              transport,
+              ...pixel!,
+            });
+            frameState.nextIndex = frame + 1;
+          }
         },
         executionPolicy!.distribution,
       );
@@ -1029,6 +1238,26 @@ export const exportScene = async (
                 frames: orderedFrames,
                 credentials,
                 cacheBroker: () => cacheBroker,
+              }
+            : undefined,
+          nativeSink
+            ? {
+                sink: nativeSink,
+                exportId,
+                credential: credentials[0]!,
+                fail: failWork,
+                reserve: (bytes) => resultBudget!.reserveTransient(bytes),
+                track: (incoming, operation) => {
+                  nativeRequests.add(incoming);
+                  nativeTransfers.add(operation);
+                  if (workFailure) incoming.destroy();
+                  void operation
+                    .finally(() => {
+                      nativeRequests.delete(incoming);
+                      nativeTransfers.delete(operation);
+                    })
+                    .catch(() => undefined);
+                },
               }
             : undefined,
         ),
@@ -1155,7 +1384,19 @@ export const exportScene = async (
                 transport,
                 output: {
                   preserveAlpha: profile?.alpha ?? false,
-                  canonicalCapture: profile !== undefined,
+                  canonicalCapture: profile !== undefined || !!nativeSink,
+                  ...(nativeSink
+                    ? {
+                        nativeObservation: {
+                          exportId,
+                          worker: 0 as const,
+                          credential: credentials[0]!,
+                          executionSha256: nativeSink.executionSha256,
+                          maximumPacketBytes:
+                            request.nativeObservation!.maximumPacketBytes,
+                        },
+                      }
+                    : {}),
                   work: {
                     worker: index,
                     workers: workOptions.workers,
@@ -1239,8 +1480,25 @@ export const exportScene = async (
         scene,
         hasDepth: request.depthPath !== null,
         transport,
-        ...(profile
-          ? { output: { preserveAlpha: profile.alpha, canonicalCapture: true } }
+        ...(profile || nativeSink
+          ? {
+              output: {
+                preserveAlpha: profile?.alpha ?? false,
+                canonicalCapture: true,
+                ...(nativeSink
+                  ? {
+                      nativeObservation: {
+                        exportId,
+                        worker: 0 as const,
+                        credential: credentials[0]!,
+                        executionSha256: nativeSink.executionSha256,
+                        maximumPacketBytes:
+                          request.nativeObservation!.maximumPacketBytes,
+                      },
+                    }
+                  : {}),
+              },
+            }
           : {}),
       });
     }
@@ -1346,11 +1604,32 @@ export const exportScene = async (
           outputChecksum: await fileChecksum(temporaryPath, request.signal),
         };
     const { outputBytes, outputChecksum } = summary;
+    if (nativeSink) {
+      if (!browserResult.nativeObservationStatistics)
+        passageError(
+          "comp-native3d-protocol",
+          "Native browser omitted observation closure counters",
+          { path: "nativeObservations" },
+        );
+      nativeObservations = await nativeSink.finalize(
+        browserResult.nativeObservationStatistics,
+        {
+          sha256: outputChecksum,
+          frameCount: scene.timeline.frameCount,
+          width: scene.canvas.width,
+          height: scene.canvas.height,
+          transport,
+        },
+      );
+    }
     const sourceChecksum = await fileChecksum(
       request.sourcePath,
       request.signal,
     );
-    if ((profile || workOptions) && sourceChecksum !== capturedSourceChecksum)
+    if (
+      (profile || workOptions || nativeSink) &&
+      sourceChecksum !== capturedSourceChecksum
+    )
       throw Error("Composition source changed during output rendering");
     const depthChecksum = request.depthPath
       ? await fileChecksum(request.depthPath, request.signal)
@@ -1367,6 +1646,7 @@ export const exportScene = async (
     const sceneChecksum = contentChecksum(serializedScene);
     await writeFile(temporaryScenePath, serializedScene, { flag: "wx" });
     const metrics: ExportMetrics = {
+      ...(nativeObservations ? { nativeObservations } : {}),
       version: workOptions
         ? COMPOSITION_PARALLEL_EXPORT_WORKER_VERSION
         : profile
@@ -1514,7 +1794,7 @@ export const exportScene = async (
     await server.close();
     server = undefined;
     request.signal?.throwIfAborted();
-    if (profile || workOptions) {
+    if (profile || workOptions || nativeSink) {
       await request.validateSources?.();
       if (
         (await fileChecksum(request.sourcePath, request.signal)) !==
@@ -1522,8 +1802,42 @@ export const exportScene = async (
       )
         throw Error("Composition source changed before output publication");
     }
+    if (nativeSink && nativeObservations) {
+      const staged = new Map(
+        nativeSink.publications.map((entry) => [
+          basename(entry.destination),
+          entry.staged,
+        ]),
+      );
+      await verifyNativeObservationClosure({
+        closure: {
+          ...nativeObservations,
+          manifestPath: staged.get(basename(nativeObservations.manifestPath))!,
+        },
+        execution: request.nativeObservation!.execution,
+        expectedPasses: request.nativeObservation!.expectedPasses,
+        output: {
+          sha256: outputChecksum,
+          frameCount: scene.timeline.frameCount,
+          width: scene.canvas.width,
+          height: scene.canvas.height,
+          transport,
+        },
+        signal: request.signal,
+        reserve: (bytes) => resultBudget!.reserveTransient(bytes),
+        resolveArtifactPath: (path) => {
+          const artifact = staged.get(path);
+          if (!artifact)
+            throw Error(
+              "Observation shard is outside this export's staged ownership",
+            );
+          return artifact;
+        },
+      });
+    }
     const metadata = [
       { staged: temporaryScenePath, destination: sceneManifestPath },
+      ...(nativeSink ? nativeSink.publications : []),
       ...(request.resultManifestContents
         ? [{ staged: temporaryResultPath, destination: resultPath }]
         : []),
@@ -1543,7 +1857,6 @@ export const exportScene = async (
     if (orderedFrames?.hasFailed) throw orderedFrames.failureReason;
     throw error;
   } finally {
-    resultBudget?.dispose();
     request.signal?.removeEventListener("abort", abort);
     clearInterval(memoryMonitor);
     // The writer must exit before removing files it might still create.
@@ -1554,11 +1867,16 @@ export const exportScene = async (
       process.stderr.write(`Export encoder reaping failed: ${String(error)}\n`);
     }
     const cleanup = await Promise.allSettled([
+      (async () => {
+        stopNativeRequests(Error("Native export transfers retired"));
+        await Promise.allSettled([...nativeTransfers]);
+      })(),
       published ? null : memorySample,
       ...browsers.map((workerBrowser) => workerBrowser.close()),
       surfaceStore?.dispose(),
       outputInput?.dispose(),
       outputArtifacts?.dispose(),
+      nativeSink?.dispose(),
       (async () => {
         try {
           await server?.close();
@@ -1574,6 +1892,7 @@ export const exportScene = async (
     const cleanupErrors = cleanup.flatMap((result) =>
       result.status === "rejected" ? [result.reason] : [],
     );
+    resultBudget?.dispose();
     if (cleanupErrors.length > 0) {
       for (const error of cleanupErrors) {
         process.stderr.write(`Export cleanup failed: ${String(error)}\n`);

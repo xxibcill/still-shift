@@ -2,7 +2,7 @@
   "schemaVersion": "mechanism-shorts-ms1n-results-1",
   "milestone": "MS1N",
   "date": "2026-10-10",
-  "status": "in-progress-interface-frozen",
+  "status": "in-progress-native-implementation",
   "branch": "codex/mechanism-ms1n",
   "baseMain": "e6eb7b06e3b5a042be2c1e2568a1a84cf9c041ad",
   "prerequisites": [
@@ -42,13 +42,384 @@
       },
       "tests": 6,
       "scope": "Strict bounded observation/source-closure contracts; fractional clocks, malformed matrices, stale references/cycles, pass association, runtime identity. No native render/transport/pixel acceptance claimed."
+    },
+    {
+      "id": "pure-contract-evaluator-1",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-pure-contract-evaluator-1.log",
+        "bytes": 427,
+        "sha256": "sha256:6a76cd53c1c1f64274cc5d7fcac34047cba5c2ca381986627c4fd5461dbc1f3b"
+      },
+      "scope": "Three pure preparation/evaluation contract files.",
+      "tests": 18
+    },
+    {
+      "id": "install-1",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-install-1.log",
+        "bytes": 137,
+        "sha256": "sha256:eb511837e3e77a9f7d4e5df1644535d5f0a3786702a497cd2476bd84c6413d07"
+      },
+      "scope": "Offline locked dependencies; scripts disabled."
+    },
+    {
+      "id": "build-1",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-build-1.log",
+        "bytes": 7824,
+        "sha256": "sha256:49a37de96c87ae98b956c9e940808c7b3736a275df4b373231a53cb2e6ed2d60"
+      },
+      "scope": "Initial native API integration type errors; preserved and repaired in stages."
+    },
+    {
+      "id": "focused-1",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-focused-1.log",
+        "bytes": 22676,
+        "sha256": "sha256:aed109035cc67490198dd39a696eb8ceb1c119a42c9f5c9027b00802cb62e4f5"
+      },
+      "scope": "55 passed, 4 failed guard fixtures with invalid IDs/source clock; contract unchanged.",
+      "tests": 59
+    },
+    {
+      "id": "build-2",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-build-2.log",
+        "bytes": 1295,
+        "sha256": "sha256:6b8e66ae02288c1a5be10905196f6f4263a2fc30fe5abfecef3d5cb45ba5fba9"
+      },
+      "scope": "Missing native preview implementation and integration union/camera types."
+    },
+    {
+      "id": "text-crop-1",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-text-crop-1.log",
+        "bytes": 6479,
+        "sha256": "sha256:5b65d8dc291a302b20bb7030014dc40feb7c37bb259e0390269f9c87199761d2"
+      },
+      "scope": "All five fixtures lacked required measured glyph-run style; implementation unchanged.",
+      "tests": 5
+    },
+    {
+      "id": "crop-edit-rerun-1",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-crop-edit-rerun-1.log",
+        "bytes": 5782,
+        "sha256": "sha256:14fa2ba8b2bf80a6e320aa11de7d191fb4e16df7ad143b37c95ec0f8dba11052"
+      },
+      "scope": "Five crop tests passed; four guard fixtures lacked required overlay ordering.",
+      "tests": 9
+    },
+    {
+      "id": "compiler-1",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-compiler-1.log",
+        "bytes": 581,
+        "sha256": "sha256:9742faa2f2f5c4db77f4998b6ce94359fe299b8eaacca61915470f0923fe3a63"
+      },
+      "scope": "Nine controller cuts, fractional native sampling, settled endpoint edits and recipe identity.",
+      "tests": 3
+    },
+    {
+      "id": "install-2",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-install-2.log",
+        "bytes": 343,
+        "sha256": "sha256:f989b1838bd2f6f50aa5b6bc8becb65ef1e70d73c242e8e713d748f95214e6f0"
+      },
+      "scope": "Offline direct zod runtime dependency; locked versions unchanged."
+    },
+    {
+      "id": "build-3",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-build-3.log",
+        "bytes": 688,
+        "sha256": "sha256:160db5aa6071e36cf4a564354a5d00eac372c6bf32ef53c699d9cfcbcf2bea23"
+      },
+      "scope": "Preview browser callback type depth and incomplete camera fixture up vector."
+    },
+    {
+      "id": "native-depth-proof-1",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-depth-proof-1.log",
+        "bytes": 2784,
+        "sha256": "sha256:13485f80a0a0a3898fc8bc92d93def653fab6e1b34429f47dc0b0c4146568068"
+      },
+      "scope": "Test Vite server missing scene-contract source alias; no optical controls ran. Retained /private/tmp/still-shift-ms1n-native-depth-IBkwHq."
+    },
+    {
+      "id": "native-depth-proof-2",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-depth-proof-2.log",
+        "bytes": 177,
+        "sha256": "sha256:39a882477662f212de42b117fa028083b07c73ff07e98bf200b5b84e053050e4"
+      },
+      "scope": "Independent actual pixel controls. Source cleanup admission subsequently strengthened; fresh gate still required.",
+      "tests": 14
+    },
+    {
+      "id": "focused-2",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-focused-2.log",
+        "bytes": 6880,
+        "sha256": "sha256:47bbf51ada4ba80cff924739b93436d8db02bb9a8580a5290276287d8e6875ce"
+      },
+      "scope": "69 units passed; 3 package tests failed on realpath alias inventory and long unit preflight timeout. Original fixture/production limits retained.",
+      "tests": 72
+    },
+    {
+      "id": "build-4",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-build-4.log",
+        "bytes": 4101,
+        "sha256": "sha256:1a060eaba1171d7c48eeb1391b28dee3c607b155e7759b304ef898fa70c9319a"
+      },
+      "scope": "Graph override fixtures omitted full admitted transform fields."
+    },
+    {
+      "id": "schema-generate-1",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-schema-generate-1.log",
+        "bytes": 653,
+        "sha256": "sha256:c024c62f90e33dfa22d985b3a7c669f7d79c8d7436c6d136d5f60391474c0fe7"
+      },
+      "scope": "Composition native schema/reference and optional episode route generated."
+    },
+    {
+      "id": "build-5",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-build-5.log",
+        "bytes": 98,
+        "sha256": "sha256:d692138239ef8ac30d14f7300b94fb74af1142431e00e32c5d200573877c2902"
+      },
+      "scope": "Pinned TypeScript noEmit across native implementation and consumers."
+    },
+    {
+      "id": "focused-3",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-focused-3.log",
+        "bytes": 37961,
+        "sha256": "sha256:f7134e77d6b8d759233a84c993bc22edfbd488350e9490a3afebfa14026aac86"
+      },
+      "scope": "93 passed; three shortened package fixtures still referenced original shot events. Production validators unchanged.",
+      "tests": 96
+    },
+    {
+      "id": "bridge-factor-1",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-bridge-factor-1.log",
+        "bytes": 778,
+        "sha256": "sha256:26730ee43bc6c3b2ac7b1b8b0e08b8a1ddabdb7c6a281d2a699662583273dff8"
+      },
+      "scope": "First fresh raw browser PNG omitted the existing production sRGB tag and differed as a container only. All 2073600 decoded RGBA pixels were exact. Harness corrected, no production or baseline change; failed output retained.",
+      "tests": 1
+    },
+    {
+      "id": "boundaries-1",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-boundaries-1.log",
+        "bytes": 186,
+        "sha256": "sha256:09f15936a44eb6e4b877cb67f89b730f54980cddc01c28b97239ddc4a5274c45"
+      },
+      "scope": "Package dependency boundaries unchanged and passing."
+    },
+    {
+      "id": "lint-1",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-lint-1.log",
+        "bytes": 2816,
+        "sha256": "sha256:504c86bef1531a51dcccc746f194a953b6891420e31267bc30b973eb0de5d84e"
+      },
+      "scope": "13 unused/import-restriction/expression errors; removed unused values and admitted only three exact pure native helpers."
+    },
+    {
+      "id": "bridge-factor-2",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-bridge-factor-2.log",
+        "bytes": 183,
+        "sha256": "sha256:5073a493cc18f5919f11397f95a36b0b4234422e1199e92c6806961e90a2c5de"
+      },
+      "scope": "Five fresh original-size states match exact retained MS1 PNG hashes after same production sRGB tag. First raw-PNG mismatch retained; all first-frame RGBA pixels were already exact.",
+      "tests": 5
+    },
+    {
+      "id": "package-rerun-4",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-package-rerun-4.log",
+        "bytes": 35871,
+        "sha256": "sha256:951baffe1651f46546d5e4ad56bd9e6a4b94ce9a567df554f3cdcb933d7788af"
+      },
+      "scope": "Root reran before queued short-fixture repair applied; same three invalid original event references. No production or test change preceded this rerun.",
+      "tests": 3
+    },
+    {
+      "id": "artifact-admission-1",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-artifact-admission-1.log",
+        "bytes": 3198,
+        "sha256": "sha256:16f360ecaa1f8be31177ad318c11a72f005fbc63b3d37c83a920aca2b79c59e1"
+      },
+      "scope": "7 passed; 2 helper fixtures failed on existing project directory and noncanonical mocked abort destination. Production helpers unchanged.",
+      "tests": 9
+    },
+    {
+      "id": "native-depth-proof-3",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-depth-proof-3.log",
+        "bytes": 177,
+        "sha256": "sha256:ce5a884fc7df30cec2dad943acac9cce7ac6880324fa5781ed9a0a7a91f248d2"
+      },
+      "scope": "Refreshed actual gate after constructor admission cleanup; exact actual native RGBA also verified under foreign sampler and dither state.",
+      "tests": 14
+    },
+    {
+      "id": "artifact-package-rerun-2",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-artifact-package-rerun-2.log",
+        "bytes": 1548,
+        "sha256": "sha256:5c715d9cb9237bdd6f293be9a2a9d4ef838fd500efc0a3d66b1761716e6251ab"
+      },
+      "scope": "6 package, 7 streamed-source/paired-publication and 2 renderer admission checks; repaired fixtures and current supported edit guards.",
+      "tests": 15
+    },
+    {
+      "id": "identity-generate-1",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-identity-generate-1.log",
+        "bytes": 260,
+        "sha256": "sha256:e7536c8777c1e35feea0dc30d2e7b8e790936bfd871b03f60b4f1935ee312369"
+      },
+      "scope": "Generated 332 first-party modules and 79 actual pinned zod/earcut/clipper runtime files including package metadata; Three remains independently hashed."
+    },
+    {
+      "id": "check-fast-1",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-check-fast-1.log",
+        "bytes": 41650,
+        "sha256": "sha256:6d47275fda3d48d961531936c0f0347e277fb1c6f792b3f6c1e12a784f0d862d"
+      },
+      "scope": "All schema/identity/boundary/format/lint/build preludes pass. 3859 units pass; native field inventory fixture absent and full E01 27-sample case exceeded implicit 5s framework deadline under four workers. Original rendering baselines and performance gates unchanged.",
+      "tests": 3861
+    },
+    {
+      "id": "runtime-identity-package-1",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-runtime-identity-package-1.log",
+        "bytes": 1507,
+        "sha256": "sha256:340c3db14e45cedd8af2d53e65aa39b9aed33cff2b8098cde503469e4d42ee08"
+      },
+      "scope": "Refreshed current full identity: 12 CLI, 6 portable/current-edit package and 7 source/publication artifact tests pass.",
+      "tests": 25
+    },
+    {
+      "id": "check-fast-2",
+      "status": "passed",
+      "command": "pnpm check:fast",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-check-fast-2.log",
+        "bytes": 29629,
+        "sha256": "sha256:dae5a6fdb60edddba8723625a9bcbfd9b3af9d313b87c77adcc750bac2f80aa6"
+      },
+      "tests": 3861,
+      "testFiles": 375,
+      "scope": "Fresh generated schema/appearance closure, boundary, format, lint, TypeScript and all unit gates. Native inventory fixture added and full 27-sample E01 correctness case receives an explicit 15s framework timeout; rendering baselines and performance limits unchanged. Earlier failed run retained."
     }
   ],
-  "implementationEvidence": "pending",
+  "implementationEvidence": {
+    "sourceCheckpoint": "first implementation checkpoint recorded by accompanying commit; exact commit linked in next evidence slice",
+    "priorContractCheckpoint": "3fa54099",
+    "nativeIndependentDepthGate": {
+      "status": "passed",
+      "cases": 14,
+      "directory": "/private/tmp/still-shift-ms1n-native-depth-bD6jcz",
+      "reportSha256": "sha256:1f6e1a2e20b7f6ab0f29c508f22674ec73d66b8ce89cba3ddf59c67144924856",
+      "scope": "Refreshed independent 14-case actual HDR/depth/color/alpha/winding/state control gate. Exact native pixels under foreign samplers/dither. No E01 or installed execution acceptance."
+    },
+    "bridgeFactoring": {
+      "status": "five-fresh-states-passed",
+      "directory": "/private/tmp/still-shift-ms1n-bridge-factor-M1TdQ8",
+      "scope": "All five newly rendered original-size states match MS1 PNG bytes with existing production sRGB tagging. Full696 fresh bridge closure remains pending. First failed harness output and CPU container explanation retained.",
+      "reportSha256": "sha256:c037a746d06d1f9a0a9f7ea4af4c52fe8a3a2b84beb3538269fb0268f4538ae5",
+      "firstFailureExplanation": {
+        "path": "/private/tmp/ms1n-bridge-factor-container-explanation.json",
+        "decodedRgbaChangedPixels": 0,
+        "decodedRgbaSha256": "sha256:7b44b6a591003a631a369b202a5e961410793be7fd44c8e33e8297f60704b997",
+        "productionRepair": false
+      },
+      "firstFailureExpectedPngSha256": "sha256:a0b69fd206f2bba5fa5829563f4d53ab056c8c3fd01b23ce107c12026429b4f3",
+      "firstFailureActualUntaggedPngSha256": "sha256:61be7839212f22eece79d1ead281a68f09337d0935790a675b2cf1ea8aef937e"
+    },
+    "nativeEpisodeExecution": "pending",
+    "portableInstalledExecution": "pending",
+    "fullLocalGateAnd176Baselines": "pending",
+    "sourceInputInventory": {
+      "path": "/private/tmp/still-shift-ms1n-implementation-inputs-1.json",
+      "inputs": 2126,
+      "sha256": "sha256:15640575372e2c80b47f921654eb0610f779bab651f839d3ecdd598c2b9ff82e",
+      "scope": "All inventoried source/test/build bytes unchanged through the passing development gate. Parent 3fa54099; excludes changing milestone reports."
+    }
+  },
   "humanContinuousPlaybackListeningAndCreativeAcceptance": "pending",
   "publication": "not-requested",
   "limits": [
-    "No native implementation or acceptance is claimed by this interface checkpoint.",
+    "Native implementation is in progress; E01, exact unchanged bridge factoring, complete local gate and installed execution remain required.",
     "Exact MS1 scene/geometry/rig/font/audio source identities must be preserved; static overrides receive separate effective identities.",
     "One native world per qualified scope, opaque/hard-mask only, actual four-sample HDR/depth support, initial export one worker.",
     "Customer source media remains outside Git; public redistribution remains unestablished.",

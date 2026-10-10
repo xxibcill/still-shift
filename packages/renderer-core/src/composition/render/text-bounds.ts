@@ -90,7 +90,10 @@ function layoutBounds(raster: TextRaster): Bounds {
   return union(boxes);
 }
 
-function posedGlyphBounds(cluster: GlyphCluster, pose: TextPose): Bounds {
+export function posedGlyphBounds(
+  cluster: GlyphCluster,
+  pose: TextPose,
+): Bounds {
   const ink = cluster.ink ?? {
     x: cluster.x,
     y: cluster.baseline - cluster.ascent,

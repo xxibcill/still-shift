@@ -109,8 +109,11 @@ type NativeFrameSnapshot = {
   sourceSha256: string; effectiveSceneSha256: string;
   geometrySha256: string; frameKey: string;
   frame: MechanismFrameResult | SolidFrameResult;
+  localVisibility: Readonly<Record<string, boolean>>;
   anchors: Readonly<Record<string, NativeScreenAnchor>>;
 };
+// localVisibility includes exactly the physical part inventory, from authored
+// visibility and controller hiddenParts; inherited visibility stays in frame.parts.
 type NativeScreenBinding = {
   role: "screen-anchor"; sceneLayer: string; anchor: string;
   visibilityPolicy: "hide-occluded" | "offscreen-indicator";

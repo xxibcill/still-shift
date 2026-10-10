@@ -20,6 +20,10 @@ export function prepareGraphSources(
     active.add(ops);
     try {
       for (const op of ops) {
+        if (op.kind === "native-depth") {
+          for (const graphic of op.graphics) visit(graphic.surface.ops);
+          continue;
+        }
         if (op.kind === "draw") {
           if (op.content.type === "text") text(op.content);
           else if (op.content.type === "provider") provider(op.content);

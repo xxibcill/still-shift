@@ -25,7 +25,10 @@ export async function analyzeRenderedCompositionQuality(
   const counts: number[] = [];
   let previous: Uint8Array | undefined;
   const native = comp.assets.some(
-    (asset) => asset.type === "video" || asset.type === "sequence",
+    (asset) =>
+      asset.type === "video" ||
+      asset.type === "sequence" ||
+      asset.type === "native3d",
   );
   for (let frame = 0; frame < comp.frameCount; frame++) {
     options.signal?.throwIfAborted();
@@ -55,7 +58,11 @@ export async function analyzeRenderedCompositionQuality(
     ...analyzeCompositionQuality(comp, {
       ...policy,
       pixelChangedCounts: counts,
-      evaluation: { ...policy.evaluation, textBounds: preview.textBounds },
+      evaluation: {
+        ...policy.evaluation,
+        ...preview.evaluationOptions,
+        textBounds: preview.textBounds,
+      },
     }),
     backend: preview.backend,
     rendererVersion: preview.rendererVersion,

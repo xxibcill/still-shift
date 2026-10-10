@@ -33,7 +33,9 @@ import type {
   SolidContent,
   ShapeContent,
   IsolateOp,
+  NativeDepthOp,
 } from "./graph.ts";
+import { passageError } from "../../passage-diagnostics.ts";
 
 export type SolidDraw = DrawOp & { content: SolidContent };
 export type VectorDraw = DrawOp & {
@@ -61,6 +63,13 @@ export type SurfacePixels = {
  */
 export interface RenderBackend<S extends Surface = Surface> {
   readonly version: string;
+  /** Joint physical meshes/actual local artwork with one shared owned depth target. */
+  renderNativeDepth?(
+    op: NativeDepthOp,
+    target: S,
+    renderArtwork: (node: SurfaceNode) => S,
+  ): void;
+  validateNativeDepth?(op: NativeDepthOp): void;
   statistics?: CompositionRenderStatistics;
   applyLighting?(surface: S, lighting: FlatLighting): void;
   /** Optional retained-frame lifecycle; effects and exposure may request a full repaint. */
@@ -205,6 +214,75 @@ export interface RenderBackend<S extends Surface = Surface> {
 const IDENTITY: Matrix = [1, 0, 0, 1, 0, 0];
 const WHITE: Rgba = [1, 1, 1, 1];
 
+/** Check every contributing native closure before a caller may mutate the output. */
+export function validateRenderGraphNativeDepth<S extends Surface>(
+  backend: RenderBackend<S>,
+  graph: RenderGraph,
+): void {
+  if (graph.nativePassDiscovery)
+    passageError(
+      "comp-native3d-not-ready",
+      "Native pass association discovery is not an executable artwork graph",
+      { path: graph.root.id },
+    );
+  const preflight = (
+    ops: readonly RenderOp[],
+    width: number,
+    height: number,
+  ): void => {
+    for (const op of ops) {
+      if (op.kind === "native-depth") {
+        if (!backend.renderNativeDepth || !backend.validateNativeDepth)
+          passageError(
+            "comp-native3d-backend",
+            "Native depth requires WebGL2 preparation and depth capability validation",
+            { node: op.layer, path: op.layer, frame: op.sampleFrame },
+          );
+        if (
+          op.sourceKey !== op.frame.sourceKey ||
+          op.width !== op.frame.viewport.width ||
+          op.height !== op.frame.viewport.height ||
+          op.width !== width ||
+          op.height !== height
+        )
+          passageError(
+            "comp-native3d-scope",
+            "Native graph catalogue/viewport differs from its frame and owning surface",
+            { node: op.layer, path: op.layer, frame: op.sampleFrame },
+          );
+        backend.validateNativeDepth(op);
+        for (const graphic of op.graphics)
+          preflight(
+            graphic.surface.ops,
+            graphic.surface.width,
+            graphic.surface.height,
+          );
+        continue;
+      }
+      if (op.kind === "draw") {
+        if (op.content.type === "surface")
+          preflight(
+            op.content.surface.ops,
+            op.content.surface.width,
+            op.content.surface.height,
+          );
+        continue;
+      }
+      if (op.kind === "project")
+        preflight(op.surface.ops, op.surface.width, op.surface.height);
+      if (op.kind === "isolate") preflight(op.ops, width, height);
+      if (op.kind === "adjust")
+        for (const history of op.history ?? [])
+          preflight(history.ops, width, height);
+      for (const effect of op.effects)
+        for (const inputs of Object.values(effect.layerInputs ?? {}))
+          preflight(inputs, width, height);
+      if (op.matte) preflight(op.matte.ops, width, height);
+    }
+  };
+  preflight(graph.root.ops, graph.root.width, graph.root.height);
+}
+
 /** Run a render graph on any backend, drawing the root scope into `target`. */
 export function executeGraph<S extends Surface>(
   backend: RenderBackend<S>,
@@ -216,6 +294,7 @@ export function executeGraph<S extends Surface>(
     statisticsPhase?: string;
   } = {},
 ): void {
+  validateRenderGraphNativeDepth(backend, graph);
   const surface = (node: SurfaceNode, into?: S): S => {
     if (!into && backend.renderSurface)
       return backend.renderSurface(node, () => paintSurface(node));
@@ -300,6 +379,40 @@ export function executeGraph<S extends Surface>(
       return;
     }
     switch (op.kind) {
+      case "native-depth": {
+        if (!backend.renderNativeDepth)
+          passageError(
+            "comp-native3d-backend",
+            "Native depth requires a capable WebGL2 backend",
+            { node: op.layer, path: op.layer, frame: op.sampleFrame },
+          );
+        if (
+          op.width !== op.frame.viewport.width ||
+          op.height !== op.frame.viewport.height ||
+          op.width !== dst.width ||
+          op.height !== dst.height
+        )
+          passageError(
+            "comp-native3d-scope",
+            "Native pass viewport differs from its owning target",
+            { node: op.layer, path: op.layer, frame: op.sampleFrame },
+          );
+        const tmp = backend.createSurface(op.width, op.height),
+          artwork: S[] = [];
+        try {
+          backend.clear(tmp, null);
+          backend.renderNativeDepth(op, tmp, (node) => {
+            const rendered = surface(node);
+            artwork.push(rendered);
+            return rendered;
+          });
+          backend.composite(tmp, dst, "normal", 1, IDENTITY, []);
+        } finally {
+          for (const rendered of artwork) backend.releaseSurface(rendered);
+          backend.releaseSurface(tmp);
+        }
+        return;
+      }
       case "draw": {
         const {
           content: c,

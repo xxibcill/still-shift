@@ -23,6 +23,11 @@ import {
   readCompositionSource,
   type CompositionSource,
 } from "./composition-source.ts";
+import { assertNativeAppearanceCodeIdentity } from "./native3d-appearance-identity.ts";
+import {
+  createNativeObservationRequest,
+  type NativeMechanismExecution,
+} from "./native-observation.ts";
 
 const hash = (bytes: Uint8Array | string) =>
   `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
@@ -32,16 +37,31 @@ export type LoadedComposition = CompositionSource & { scene: CompositionScene };
 /** Prepare an inspected composition source for a selected renderer backend. */
 export async function loadComposition(
   compositionPath: string,
-  backend: CompositionBackend = "canvas2d",
+  backend?: CompositionBackend,
   options: CompositionMediaPreparationOptions = {},
 ): Promise<LoadedComposition> {
-  const source = await readCompositionSource(compositionPath, options);
+  const source = await readCompositionSource(compositionPath, {
+    ...options,
+    ...(backend === undefined ? {} : { backend }),
+  });
   return {
     ...source,
     scene: {
-      ...compositionScene(source.composition, backend),
+      ...compositionScene(
+        source.composition,
+        backend ?? (source.preparedNative3D ? "webgl2" : "canvas2d"),
+      ),
       ...(source.preparedMedia ? { preparedMedia: source.preparedMedia } : {}),
       ...(source.preparedAudio ? { preparedAudio: source.preparedAudio } : {}),
+      ...(source.preparedNative3D
+        ? { preparedNative3D: source.preparedNative3D }
+        : {}),
+      ...(source.nativeAppearanceCodeIdentity
+        ? {
+            nativeAppearanceCodeIdentity: source.nativeAppearanceCodeIdentity,
+            nativeAppearanceCodeSha256: source.nativeAppearanceCodeSha256!,
+          }
+        : {}),
     },
   };
 }
@@ -77,6 +97,7 @@ export async function renderComposition(request: {
   format?: ExportRequest["format"];
   workers?: ExportRequest["workers"];
   cacheStatic?: boolean;
+  nativeMechanism?: NativeMechanismExecution;
 }): Promise<CompositionRenderResult> {
   request.signal?.throwIfAborted();
   if (
@@ -102,6 +123,11 @@ export async function renderComposition(request: {
     },
   );
   const { width, height } = loaded.scene.canvas;
+  const nativeObservation = await createNativeObservationRequest(
+    loaded,
+    request.nativeMechanism,
+    { signal: request.signal },
+  );
   if (request.format === undefined && (width % 2 !== 0 || height % 2 !== 0))
     throw new AnimationEngineError(
       "SCENE_INVALID",
@@ -148,6 +174,7 @@ export async function renderComposition(request: {
   )}\n`;
   let result!: CompositionRenderResult;
   await exportScene({
+    ...(nativeObservation ? { nativeObservation } : {}),
     scene: loaded.scene,
     signal: request.signal,
     sourcePath: loaded.sourcePath,
@@ -170,7 +197,8 @@ export async function renderComposition(request: {
     ...(request.cacheStatic === undefined
       ? {}
       : { cacheStatic: request.cacheStatic }),
-    ...(request.format ||
+    ...(loaded.preparedNative3D ||
+    request.format ||
     request.workers !== undefined ||
     request.cacheStatic !== undefined
       ? {
@@ -189,6 +217,18 @@ export async function renderComposition(request: {
             if (verified.sourceChecksum !== loaded.sourceChecksum)
               throw Error(
                 "Composition source changed before output publication",
+              );
+            if (loaded.nativeAppearanceCodeIdentity)
+              await assertNativeAppearanceCodeIdentity(
+                loaded.nativeAppearanceCodeIdentity,
+              );
+            if (
+              loaded.preparedNative3D &&
+              JSON.stringify(verified.preparedNative3D) !==
+                JSON.stringify(loaded.preparedNative3D)
+            )
+              throw Error(
+                "Native source transport changed before output publication",
               );
           },
         }

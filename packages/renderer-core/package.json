@@ -6,13 +6,15 @@
   "exports": {
     ".": "./src/index.ts",
     "./passage-compositions": "./src/passage-compositions.ts",
-    "./soundtrack": "./src/soundtrack-edits.ts"
+    "./soundtrack": "./src/soundtrack-edits.ts",
+    "./native3d-browser": "./src/native3d/browser.ts"
   },
   "dependencies": {
     "@still-shift/scene-contract": "workspace:*",
     "clipper2-ts": "2.0.1-18",
     "earcut": "3.0.2",
-    "zod": "4.1.5"
+    "zod": "4.1.5",
+    "three": "0.186.0"
   },
   "devDependencies": {
     "@types/earcut": "3.0.0"

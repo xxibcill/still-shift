@@ -98,3 +98,6 @@ export class WebglVisualKey {
     releaseRenderMetadata(this.state);
   }
 }
+
+/** Shared traversal includes surfaces, projections, history, effects and mattes. */
+export { hasNativeDepth as containsNativeDepth } from "./graph.ts";

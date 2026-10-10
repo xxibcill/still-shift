@@ -12,7 +12,9 @@ import {
   type RenderGraphOptions,
   type RenderOp,
   type SurfaceNode,
+  type NativeDepthOp,
 } from "./graph.ts";
+import type { EvaluationOptions } from "../evaluate/types.ts";
 
 /** One authority for exposure, nested history, matte and effect-input expansion. */
 export function* compositionRenderGraphs(
@@ -46,6 +48,10 @@ export function compositionMediaFrameDependencies(
     if (visited.has(operations)) return;
     visited.add(operations);
     for (const op of operations) {
+      if (op.kind === "native-depth") {
+        for (const graphic of op.graphics) surface(graphic.surface);
+        continue;
+      }
       if (op.kind === "draw") {
         if (op.content.type === "surface") surface(op.content.surface);
         if (op.content.type === "image" && op.content.media) {
@@ -67,14 +73,55 @@ export function compositionMediaFrameDependencies(
       }
     }
   };
-  for (const { graph } of compositionRenderGraphs(comp, frame, options))
+  for (const { graph } of compositionRenderGraphs(comp, frame, {
+    ...options,
+    nativePassDiscovery: true,
+  }))
     surface(graph.root);
   if (hasRequiredCompositionCoverage(comp))
-    for (const { graph } of compositionRequiredCoverageGraphs(
-      comp,
-      frame,
-      options,
-    ))
+    for (const { graph } of compositionRequiredCoverageGraphs(comp, frame, {
+      ...options,
+      nativePassDiscovery: true,
+    }))
       surface(graph.root);
   return assets;
+}
+
+export type NativePassReference = Pick<
+  NativeDepthOp,
+  "layer" | "sourceKey" | "frame" | "sampleFrame" | "width" | "height"
+>;
+
+/** Exact native pass invocation order, without allocating glyph/artwork or GPU resources. */
+export function* compositionNativePasses(
+  comp: Composition,
+  outputFrame: number,
+  options: EvaluationOptions = {},
+): Generator<NativePassReference> {
+  function* visit(ops: readonly RenderOp[]): Generator<NativePassReference> {
+    for (const op of ops) {
+      if (op.kind === "native-depth") {
+        const { layer, sourceKey, frame, sampleFrame, width, height } = op;
+        yield { layer, sourceKey, frame, sampleFrame, width, height };
+        continue;
+      }
+      if (op.kind === "draw") {
+        if (op.content.type === "surface") yield* visit(op.content.surface.ops);
+        continue;
+      }
+      if (op.kind === "project") yield* visit(op.surface.ops);
+      if (op.kind === "isolate") yield* visit(op.ops);
+      if (op.kind === "adjust")
+        for (const history of op.history ?? []) yield* visit(history.ops);
+      for (const effect of op.effects)
+        for (const inputs of Object.values(effect.layerInputs ?? {}))
+          yield* visit(inputs);
+      if (op.matte) yield* visit(op.matte.ops);
+    }
+  }
+  for (const { graph } of compositionRenderGraphs(comp, outputFrame, {
+    ...options,
+    nativePassDiscovery: true,
+  }))
+    yield* visit(graph.root.ops);
 }

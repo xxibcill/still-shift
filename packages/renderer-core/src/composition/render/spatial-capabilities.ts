@@ -43,6 +43,15 @@ export function requireSpatialCapabilities(
   };
   const visit = (ops: readonly RenderOp[], width: number, height: number) => {
     for (const op of ops) {
+      if (op.kind === "native-depth") {
+        for (const graphic of op.graphics)
+          visit(
+            graphic.surface.ops,
+            graphic.surface.width,
+            graphic.surface.height,
+          );
+        continue;
+      }
       for (const clip of op.clips)
         if (clip.projection) check(clip.projection, op.layer);
       if (op.kind === "project") {

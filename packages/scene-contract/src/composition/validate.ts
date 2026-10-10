@@ -24,6 +24,7 @@ import {
   spatialLayer,
 } from "./validate-spatial.ts";
 import { checkTextAnimatorAxes } from "./text-axes.ts";
+import { checkNative3DScope } from "./validate-native3d.ts";
 import {
   checkMediaAssets,
   checkMediaLayer,
@@ -1041,6 +1042,7 @@ export function validateCompositionSemantics(
   let layerCount = 0;
   for (const scope of scopes) {
     const base = scopeBase(comp, scope);
+    checkNative3DScope(comp, scope, base, assets, fail);
     if (scope.layers.filter((layer) => layer.type === "light").length > 8)
       fail(
         "comp-light-limit",

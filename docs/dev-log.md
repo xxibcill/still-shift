@@ -43,17 +43,17 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS1N native composition started (2026-10-10):** separate
-  `codex/mechanism-ms1n` starts from fresh `main` at `e6eb7b06` and carries exact
-  MS1 `13b62b84` ([PR #52](https://github.com/xxibcill/still-shift/pull/52), open).
-  Native interfaces, source/variant identities, clocks/bindings, joint HDR/depth,
-  actual-observation transport and route/package boundaries are frozen.
-  Implementation begins with shared contracts/evaluation/graph, Three/WebGL and
-  lifecycle/authoring in parallel; runtime/browser/GPU checks remain serialized.
-  The first six strict observation/source-closure unit checks pass; contracts,
-  evaluation/graph, browser rendering and consumer transport remain in progress.
-  Independent mixed mesh/graphic depth is the first pixel gate. Native software
-  and human acceptance are pending. [Design](./mechanism-shorts-ms1n-design.md),
+- **MS1N implementation checkpoint (2026-10-10):** separate
+  `codex/mechanism-ms1n` carries exact MS1 `13b62b84` (PR #52, open).
+  Native contracts, frozen variants, joint HDR/depth rendering, live bindings,
+  authenticated pixel-paired observations, saved recipe refresh, CLI and portable
+  package paths are implemented. Fresh `check:fast` passes 3,861 units and every
+  prelude; 25 focused runtime/CLI/package cases and independent 14-case GPU
+  controls pass. Five fresh bridge PNGs match exactly; the first harness mismatch
+  was a missing production sRGB tag, with zero changed decoded pixels.
+  Earlier build/test/fixture failures remain retained. Actual native E01, full696
+  fresh bridge, installed execution, complete local gate/176 baselines and human
+  acceptance remain pending. [Design](./mechanism-shorts-ms1n-design.md),
   [results](./mechanism-shorts-ms1n-results.json).
 
 - **MS1 software complete in stages (2026-10-10):** `codex/mechanism-ms1` carries
@@ -181,6 +181,38 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — MS1N native implementation checkpoint
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, after `3fa54099`.
+- **Done:** native composition/evaluation/rendering, actual observation protocol,
+  source/code closure, saved authoring refresh and portable/CLI lifecycle.
+- **Results:** fresh development gate passes 3,861 units; focused runtime25,
+  independent actual GPU14 and five exact newly rendered bridge states pass.
+- **Rejected / retained:** failed integration/fixture runs and first raw PNG
+  container mismatch; production sRGB tagging explains it without pixel changes.
+- **Open / next:** actual E01/native696, full bridge696, installed source and
+  complete local gate/176 baselines; human visual/listening acceptance pending.
+- **Records:** [native results](./mechanism-shorts-ms1n-results.json).
+
+### 2026-10-10 — MS1N implementation and independent depth gate
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, from `3fa54099`.
+- **Scope:** native solid/mechanism contracts, exact clocks and live bindings,
+  shared Three factory with HDR/depth composition pass, bounded actual browser
+  observation transport and cleanup, route-aware lifecycle and portable package.
+  Actual annotation checking consumes each contributing pass and current text;
+  missing measured layout remains explicitly unassessed.
+- **Verification:** independent 14-case browser gate passed after a retained Vite
+  alias failure. TypeScript build5 passes; focused3 is 93 passed / 3 failed invalid
+  short package fixtures. Earlier build, fixture and package failures are recorded.
+  Fresh unchanged-bridge first-frame PNG comparison failed and remains retained.
+- **In flight / next:** repair exact bridge factor, package fixtures and finalize
+  lifecycle source/publication checks; commit slice, then native E01, repeat,
+  relocation/installed package, memory evidence and complete local gate before PR.
+  Human playback/listening acceptance and public source redistribution are pending.
+- **Records:** [native results](./mechanism-shorts-ms1n-results.json),
+  [design](./mechanism-shorts-ms1n-design.md).
 
 ### 2026-10-10 — MS1N bounded observation contracts
 

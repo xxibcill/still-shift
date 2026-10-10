@@ -8,6 +8,8 @@ import {
   type CompositionDiagnostic,
   type CompositionPreparedMedia,
   type CompositionPreparedAudio,
+  type CompositionPreparedNative3D,
+  type NativeAppearanceCodeIdentity,
 } from "@still-shift/scene-contract";
 import {
   prepareCompositionMedia,
@@ -16,6 +18,11 @@ import {
 } from "./composition-media.ts";
 import { validatePreparedAssets } from "./prepared-animation-engine.ts";
 import { prepareCompositionAudio } from "./composition-audio-mix.ts";
+import {
+  prepareCompositionNative3D,
+  type CompositionNative3DPreparation,
+} from "./composition-native3d.ts";
+import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 const hash = (bytes: Uint8Array) =>
   `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
 
@@ -48,6 +55,10 @@ export type CompositionSource = {
   assetPaths: Record<string, string>;
   preparedMedia?: CompositionPreparedMedia;
   preparedAudio?: CompositionPreparedAudio;
+  preparedNative3D?: CompositionPreparedNative3D;
+  native3D?: CompositionNative3DPreparation["native3D"];
+  nativeAppearanceCodeIdentity?: NativeAppearanceCodeIdentity;
+  nativeAppearanceCodeSha256?: string;
   mediaSourcePaths?: CompositionMediaPreparation["sourceAssetPaths"];
   sourcePath: string;
   sourceChecksum: string;
@@ -56,7 +67,9 @@ export type CompositionSource = {
 /** Read, validate and resolve a `composition-1` file and its pinned assets. */
 export async function readCompositionSource(
   compositionPath: string,
-  options: CompositionMediaPreparationOptions = {},
+  options: CompositionMediaPreparationOptions & {
+    backend?: "canvas2d" | "webgl2";
+  } = {},
 ): Promise<CompositionSource> {
   options.signal?.throwIfAborted();
   const sourcePath = resolve(compositionPath);
@@ -87,6 +100,20 @@ export async function readCompositionSource(
       { diagnosticsJson: JSON.stringify(result.diagnostics) },
     );
   const composition = result.composition;
+  if (
+    options.backend === "canvas2d" &&
+    composition.assets.some((asset) => asset.type === "native3d")
+  )
+    passageError(
+      "comp-native3d-backend",
+      "Native composition requires WebGL2",
+      { path: "backend" },
+    );
+  const native = await prepareCompositionNative3D(
+    composition,
+    dirname(sourcePath),
+    options,
+  );
   const assetPaths = await validatePreparedAssets(
     {
       assets: composition.assets.flatMap((a) =>
@@ -110,7 +137,20 @@ export async function readCompositionSource(
     composition,
     warnings: result.diagnostics,
     systemFontLayers: systemFontLayers(composition),
-    assetPaths: { ...assetPaths, ...media?.assetPaths, ...audio?.assetPaths },
+    assetPaths: {
+      ...assetPaths,
+      ...native?.assetPaths,
+      ...media?.assetPaths,
+      ...audio?.assetPaths,
+    },
+    ...(native
+      ? {
+          preparedNative3D: native.preparedNative3D,
+          native3D: native.native3D,
+          nativeAppearanceCodeIdentity: native.nativeAppearanceCodeIdentity,
+          nativeAppearanceCodeSha256: native.nativeAppearanceCodeSha256,
+        }
+      : {}),
     ...(media
       ? {
           preparedMedia: media.preparedMedia,

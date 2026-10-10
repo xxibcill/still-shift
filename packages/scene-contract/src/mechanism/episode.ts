@@ -24,6 +24,18 @@ export const MECHANISM_LABEL_ROLES = [
   "OUTSIDE",
   "SLIDES",
 ] as const;
+export const MechanismRouteSchema = z.enum(["bridge", "native3d"]);
+export const MechanismRouteSelectionSchema = z
+  .object({
+    sourceRoute: MechanismRouteSchema.nullable(),
+    effectiveRoute: MechanismRouteSchema,
+    selectionOrigin: z.enum(["source", "cli-override", "default"]),
+  })
+  .strict();
+export type MechanismRoute = z.infer<typeof MechanismRouteSchema>;
+export type MechanismRouteSelection = z.infer<
+  typeof MechanismRouteSelectionSchema
+>;
 const dependencyFields = {
   id: MechanismIdSchema,
   path: z.string().min(1).max(1024),
@@ -109,6 +121,7 @@ export const MechanismShotSchema = z
 export const MechanismEpisodeSchema = z
   .object({
     schemaVersion: z.literal("mechanism-episode-1"),
+    route: MechanismRouteSchema.optional(),
     id: MechanismIdSchema,
     revision: z.number().int().min(0).max(2_147_483_647),
     scene: MechanismIdSchema,

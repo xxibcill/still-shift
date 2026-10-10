@@ -1,8 +1,9 @@
 # Mechanism episode interface
 
-MS1 delivers the Three.js plate route. The authoritative source is the versioned
-scene and episode JSON; plates, sidecars and native compositions are derived
-artifacts. Native 3D composition is the next milestone, MS1N.
+The episode interface supports the MS1 Three.js plate route and the MS1N native
+3D composition route. The authoritative source is the versioned scene and episode
+JSON; prepared compositions, capture evidence and final outputs are derived
+artifacts. Software verification and human production review remain separate.
 
 Use the versions in [toolchain.json](../toolchain.json), locked dependencies and
 installed Chromium/FFmpeg. Repository commands use `pnpm still-shift episode`.
@@ -43,6 +44,47 @@ checks the final artifact. Choose fresh render/package/report destinations;
 existing outputs are preserved. Preparation publication is serialized by an
 artifact lock. Interrupted capture attempts retain failure receipts and produced
 plates for diagnosis; incomplete attempts never become cache hits.
+
+## Native 3D route
+
+Use `--route native3d` for live physical controllers in the composition renderer:
+
+```sh
+pnpm still-shift episode prepare --input /tmp/e01-project/episode.json \
+  --route native3d --output-dir /tmp/e01-native-prepared
+pnpm still-shift episode preview --input /tmp/e01-project/episode.json \
+  --route native3d --frame 138 --output-dir /tmp/e01-native-preview
+pnpm still-shift episode render --input /tmp/e01-project/episode.json \
+  --route native3d --backend webgl2 --output-dir /tmp/e01-native-render
+pnpm still-shift episode check --input /tmp/e01-project/episode.json \
+  --prepared-dir /tmp/e01-native-render/prepared \
+  --final-output /tmp/e01-native-render/episode.mp4 --route native3d
+```
+
+Selection follows the CLI override, then optional authored `episode.route`, then
+the bridge default. An absent authored route stays absent when the project is
+saved. Prepared checks and packages follow the recorded selection; `--route`
+asserts that selection. An explicit native route with `--backend canvas2d` fails
+before creating output or cache files. Native export uses WebGL2, the
+`native-three-aces-hdr-msaa4-1` appearance profile and one worker.
+
+Native preparation verifies source bytes and prepares at most 64 distinct source
+variants across all assets. Supported camera, part, material and label edits need
+a preparation refresh; physical controller/source and anchor-binding identities
+remain protected. Native preview retains the selected frame's actual observations.
+Native final export pairs accepted observation packets with accepted pixel bodies,
+then publishes bounded, hashed NDJSON shards and their manifest with the movie.
+Final checking verifies retained actual execution against the current recipe.
+Packets are at most 1 MiB with 64 passes, 128 parts and 64 anchors per pass; shards
+are at most 32 MiB, with at most 16 shards and 512 MiB total observation bytes.
+
+Native packages can include source only, a current prepared recipe, or verified
+final evidence. Source-only packages report scoped validation without actual
+execution acceptance. Prepared packages rebase declared file locators while
+preserving recipe/source identities. Final packages retain original render,
+observation manifest and shard bytes with an explicit relocation association.
+Generic native compositions and E01 tape-hook mechanics are supported; this does
+not establish other mechanism families or human visual/listening acceptance.
 
 ## Scoped repair and resume
 
@@ -171,6 +213,12 @@ geometry, scene, episode, frame, sidecar, patch and receipt. `episode schema
 validation also checks cross-references, exact partitions, mesh normals/bounds,
 rig ownership and numeric resource budgets; JSON Schema alone cannot establish
 those relationships. `pnpm schema:check` checks all seven snapshots for drift.
+
+`episode discover` also lists native capabilities, bounds and schema kinds.
+Use `episode schema --kind native-source|solid-scene|solid-geometry|native-binding|
+native-observed-frame|native-observed-output-frame|native-prepared-receipt` with one
+kind at a time. These schemas use the existing strict runtime contracts; generated
+JSON Schema still needs runtime cross-reference and budget validation.
 
 Every command emits `mechanism-command-result-1` JSON. Receipts are at most 32 KiB
 and 100 combined rows/artifacts. Use `--offset`, `--limit` (1–100), and the complete

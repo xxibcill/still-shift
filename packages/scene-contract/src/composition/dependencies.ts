@@ -60,6 +60,14 @@ function addScopeDependencies(
 ) {
   const layers = new Set(scope.layers.map((layer) => layer.id));
   scope.layers.forEach((layer, i) => {
+    const nativeDependency = layer.native3D?.sceneLayer ?? layer.overlayAfter;
+    if (nativeDependency && layers.has(nativeDependency))
+      addDependency(
+        graph,
+        `${prefix}${layer.id}`,
+        `${prefix}${nativeDependency}`,
+        [...base, "layers", i, layer.native3D ? "native3D" : "overlayAfter"],
+      );
     if (layer.parent && layers.has(layer.parent))
       addDependency(graph, `${prefix}${layer.id}`, `${prefix}${layer.parent}`, [
         ...base,
@@ -216,7 +224,15 @@ function reportCycles(graph: Graph, fail: IssueReporter) {
           cycleDependencies.findLast((edge) => edge.path[0] === "drivers") ??
           dependency;
         fail(
-          expression ? "comp-expression-cycle" : "comp-motion-cycle",
+          cycleDependencies.some(
+            (edge) =>
+              edge.path.includes("native3D") ||
+              edge.path.includes("overlayAfter"),
+          )
+            ? "comp-native3d-cycle"
+            : expression
+              ? "comp-expression-cycle"
+              : "comp-motion-cycle",
           reportedDependency.path,
           `${expression ? "expression" : "motion"} dependencies form a cycle: ${[...active.slice(cycleStart), dependency.source].join(" → ")}`,
         );

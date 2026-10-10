@@ -107,7 +107,12 @@ export class WebglDamage {
   }
 
   private bounds(op: RenderOp): Bounds | undefined {
-    if (op.kind === "adjust" || op.kind === "project") return undefined;
+    if (
+      op.kind === "adjust" ||
+      op.kind === "project" ||
+      op.kind === "native-depth"
+    )
+      return undefined;
     if (op.kind === "isolate") {
       if (op.effects.length || op.blend !== "normal") return undefined;
       let bounds: Bounds | undefined;

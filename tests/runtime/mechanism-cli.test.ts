@@ -60,7 +60,11 @@ describe("episode CLI authoring protocol", () => {
   it("discovers commands and emits schema artifacts with bounded receipts", async () => {
     const discovery = await run(["discover"]);
     expect(discovery.code).toBe(0);
-    expect(discovery.receipt.items).toHaveLength(15);
+    expect(
+      discovery.receipt.items.filter(
+        (item) => typeof item.command === "string",
+      ),
+    ).toHaveLength(15);
     expect(
       discovery.receipt.items.some((item) => item.command === "patch"),
     ).toBe(true);
@@ -70,6 +74,57 @@ describe("episode CLI authoring protocol", () => {
     expect(
       JSON.parse(await readFile(path, "utf8")).properties.schemaVersion.const,
     ).toBe("mechanism-episode-1");
+  });
+  it("discovers native limits and emits strict native schemas without claiming source execution", async () => {
+    const discovery = await run(["discover"]);
+    expect(discovery.receipt.summary.defaultRoute).toBe("bridge");
+    expect(discovery.receipt.summary.nativePreparedVersion).toBe(
+      "mechanism-prepared-native-episode-1",
+    );
+    expect(
+      discovery.receipt.items.find((item) => item.kind === "native-route"),
+    ).toMatchObject({
+      backend: "webgl2",
+      workers: 1,
+      canvasAllowed: false,
+      profile: "native-three-aces-hdr-msaa4-1",
+    });
+    expect(
+      discovery.receipt.items.find(
+        (item) => item.kind === "native-observation-limits",
+      ),
+    ).toMatchObject({
+      packetBytes: 1048576,
+      passes: 64,
+      shardBytes: 33554432,
+      shards: 16,
+      totalBytes: 536870912,
+    });
+    expect(Buffer.byteLength(discovery.output)).toBeLessThanOrEqual(32768);
+    for (const kind of [
+      "native-source",
+      "solid-scene",
+      "solid-geometry",
+      "native-binding",
+      "native-observed-frame",
+      "native-observed-output-frame",
+      "native-prepared-receipt",
+    ] as const) {
+      const path = join(directory, `${kind}.schema.json`);
+      const result = await run(["schema", "--kind", kind, "--output", path]);
+      expect(result.code).toBe(0);
+      expect(result.receipt.summary.kind).toBe(kind);
+      expect(Buffer.byteLength(result.output)).toBeLessThanOrEqual(32768);
+      const document = JSON.parse(await readFile(path, "utf8"));
+      if (kind !== "native-source" && kind !== "native-binding")
+        expect(document.additionalProperties).toBe(false);
+    }
+    const inspected = await run(["inspect", "--input", project]);
+    expect(inspected.receipt.summary).toMatchObject({
+      "route.sourceRoute": null,
+      "route.effectiveRoute": "bridge",
+      "route.selectionOrigin": "default",
+    });
   });
   it("inspects current hashes and flattened labels without emitting raw geometry", async () => {
     const result = await run(["inspect", "--input", project]);

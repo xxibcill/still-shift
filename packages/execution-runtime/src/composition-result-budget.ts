@@ -50,6 +50,11 @@ export class CompositionResultBudget {
   reserveText(characters: number) {
     return this.memory.reserve("metadata", characters * 4 + 256);
   }
+  reserveTransient(bytes: number) {
+    if (!Number.isSafeInteger(bytes) || bytes < 1)
+      throw Error("Composition transient metadata capacity is invalid");
+    return this.memory.reserve("metadata", bytes);
+  }
   get statistics() {
     return {
       ...this.memory.statistics,

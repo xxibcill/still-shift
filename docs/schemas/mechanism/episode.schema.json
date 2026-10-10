@@ -3,6 +3,7 @@
   "type": "object",
   "properties": {
     "schemaVersion": { "type": "string", "const": "mechanism-episode-1" },
+    "route": { "type": "string", "enum": ["bridge", "native3d"] },
     "id": {
       "type": "string",
       "maxLength": 128,

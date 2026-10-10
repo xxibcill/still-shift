@@ -29,6 +29,8 @@ import {
   type Signal,
 } from "@still-shift/scene-contract";
 import { multiplyMatrix } from "../../node-transform.ts";
+import { sampleNativeFrame } from "../../native3d/evaluate.ts";
+import { applyNativeScreenBinding } from "../../native3d/bindings.ts";
 import { passageError } from "../../passage-diagnostics.ts";
 import {
   blendValue,
@@ -275,6 +277,25 @@ function selectSoloLayers(scope: CompositionScope): Set<string> | null {
       continue;
     selected.add(layer.id);
     for (const group of groups) selected.add(group.id);
+  }
+  // Native annotations retain the physical controller as an explicit dependency.
+  for (const id of [...selected]) {
+    for (
+      let layer = layers.get(id);
+      layer;
+      layer = layer.parent ? layers.get(layer.parent) : undefined
+    ) {
+      const controller = layer.native3D?.sceneLayer ?? layer.overlayAfter;
+      if (controller) {
+        selected.add(controller);
+        for (
+          let parent = layers.get(controller)?.parent;
+          parent;
+          parent = layers.get(parent)?.parent
+        )
+          if (layers.get(parent)?.type === "group") selected.add(parent);
+      }
+    }
   }
   return selected;
 }
@@ -1572,6 +1593,11 @@ class Evaluation {
     const stage =
       ctx.stages.get(layer.id) ?? (yield* this.stageTask(ctx, layer));
     const state = stage.state;
+    const binding = layer.native3D;
+    const controller = binding?.sceneLayer ?? layer.overlayAfter;
+    const nativeController = controller
+      ? yield* this.layerState(ctx, this.layer(ctx, controller))
+      : undefined;
     if (this.compiled.expressions.size)
       for (const binding of this.compiled.expressions.get(
         this.bindings(ctx, layer.id),
@@ -1592,7 +1618,7 @@ class Evaluation {
         state.time,
         ctx.fps,
       );
-    if (state.contents)
+    if (state.contents && binding?.role !== "screen-anchor")
       state.shapes = compileShapes(
         state.contents,
         state.time / ctx.fps,
@@ -1705,6 +1731,62 @@ class Evaluation {
         ? this.camera(root.cameraDepth ?? 1)
         : identity();
     state.screenMatrix = multiplyMatrix(camera, state.worldMatrix);
+    if (binding?.role === "screen-anchor") {
+      if (!nativeController?.visible || !nativeController.nativeFrame)
+        state.visible = false;
+      else {
+        applyNativeScreenBinding(
+          state,
+          nativeController.nativeFrame,
+          binding,
+          multiplyMatrix(camera, parentMatrix),
+        );
+        if (binding.target.kind === "position") {
+          state.localMatrix = transformMatrix(state.transform);
+          state.worldMatrix = multiplyMatrix(parentMatrix, state.localMatrix);
+          state.screenMatrix = multiplyMatrix(camera, state.worldMatrix);
+        }
+      }
+      if (state.contents)
+        state.shapes = compileShapes(
+          state.contents,
+          state.time / ctx.fps,
+          this.shapeBudget(ctx, layer),
+        );
+    }
+    if (binding?.role === "world-graphic") {
+      state.visible &&= nativeController?.visible === true;
+      if (nativeController?.nativeFrame)
+        state.nativeFrame = nativeController.nativeFrame;
+      const determinant =
+        state.localMatrix[0] * state.localMatrix[3] -
+        state.localMatrix[1] * state.localMatrix[2];
+      if (!Number.isFinite(determinant) || Math.abs(determinant) < 1e-12)
+        passageError(
+          "comp-native3d-graphic",
+          "World artwork requires a nonsingular local pixel transform",
+          {
+            node: layer.id,
+            path: this.bindings(ctx, layer.id) + ".transform",
+            frame: this.time,
+          },
+        );
+      if (
+        binding.alphaMode === "opaque" &&
+        (state.opacity !== 1 ||
+          state.transform.opacity !== 1 ||
+          state.color?.[3] !== 1)
+      )
+        passageError(
+          "comp-native3d-graphic",
+          "Opaque world graphics require fully opaque unmodified solid paint",
+          {
+            node: layer.id,
+            path: this.bindings(ctx, layer.id) + ".native3D.alphaMode",
+            frame: this.time,
+          },
+        );
+    }
     const local = localBounds(
       this.compiled.comp,
       ctx.scope,
@@ -1735,6 +1817,80 @@ class Evaluation {
       : true;
     ctx.groupVisible.set(layer.id, groupVisible);
     state.visible &&= groupVisible;
+    if (layer.overlayAfter && nativeController?.visible !== true)
+      state.visible = false;
+    if (layer.type === "native3d" && state.visible) {
+      const matrices = [
+        state.localMatrix,
+        state.worldMatrix,
+        state.screenMatrix,
+      ];
+      for (
+        let ancestor = parent;
+        ancestor;
+        ancestor = ancestor.layer.parent
+          ? ctx.states.get(ancestor.layer.parent)
+          : undefined
+      )
+        matrices.push(
+          ancestor.localMatrix,
+          ancestor.worldMatrix,
+          ancestor.screenMatrix,
+        );
+      const expected = identity();
+      if (
+        matrices.some((matrix) =>
+          matrix.some(
+            (value, index) =>
+              !Number.isFinite(value) ||
+              Math.abs(value - expected[index]!) > 1e-12,
+          ),
+        ) ||
+        state.spatialWorld ||
+        state.worldMatrix3d
+      )
+        passageError(
+          "comp-native3d-controller-transform",
+          "Native controller and its effective ancestors/camera must have identity placement",
+          {
+            node: layer.id,
+            path:
+              this.compiled.comp.camera2d && ctx.scope === this.compiled.comp
+                ? "camera2d"
+                : this.bindings(ctx, layer.id) + ".transform",
+            frame: this.time,
+          },
+        );
+      if (state.opacity !== 1)
+        passageError(
+          "comp-native3d-controller-style",
+          "Native joint pass requires controller and organizing-group opacity 1",
+          {
+            node: layer.id,
+            path: this.bindings(ctx, layer.id) + ".transform.opacity",
+            frame: this.time,
+          },
+        );
+      const prepared = this.options.preparedNative3D;
+      if (!prepared || !Object.hasOwn(prepared, layer.asset))
+        passageError(
+          "comp-native3d-not-ready",
+          "Prepare native sources before composition evaluation",
+          {
+            node: layer.id,
+            path: this.bindings(ctx, layer.id) + ".asset",
+            frame: this.time,
+          },
+        );
+      state.nativeFrame = sampleNativeFrame(prepared[layer.asset]!, layer, {
+        scope: ctx.route.length ? ctx.route.join("/") : ctx.scope.id,
+        scopeFrame: ctx.time,
+        owningScopeFps: ctx.fps,
+        layerTime: state.time,
+        width: ctx.scope.width,
+        height: ctx.scope.height,
+      });
+    }
     state.drawable =
       state.visible &&
       !["null", "group", "camera", "light", "audio"].includes(layer.type) &&

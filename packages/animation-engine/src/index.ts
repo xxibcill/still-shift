@@ -69,3 +69,20 @@ export * from "./mechanism/lifecycle.ts";
 export * from "./mechanism/capture.ts";
 export * from "./mechanism/overlays.ts";
 export * from "./mechanism/protocol.ts";
+
+export * from "./composition-native3d.ts";
+export * from "./native3d-appearance-identity.ts";
+export * from "./mechanism/route.ts";
+
+export * from "./native-observation.ts";
+
+export * from "./mechanism/native-lifecycle.ts";
+export {
+  checkNativeMechanismFrames,
+  type NativeMechanismEvidenceFrame,
+} from "./mechanism/assertions.ts";
+
+export * from "./mechanism/native-preview.ts";
+export * from "./mechanism/native-package.ts";
+
+export * from "./mechanism/native-overlays.ts";

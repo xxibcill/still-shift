@@ -33,9 +33,9 @@ const modules = z
 export const NativeAppearanceCodeIdentitySchema = z
   .object({
     runtimeFormat: z.enum(["source-ts", "installed-js"]),
-    modules,
+    modules: modules.readonly(),
     threeRuntime: z
-      .object({ version: z.literal("0.186.0"), sources: modules })
+      .object({ version: z.literal("0.186.0"), sources: modules.readonly() })
       .strict(),
   })
   .strict();

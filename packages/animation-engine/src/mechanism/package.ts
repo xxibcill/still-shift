@@ -25,7 +25,12 @@ import {
   MechanismSidecarSchema,
   MECHANISM_LIMITS,
 } from "@still-shift/scene-contract";
-import type { Composition } from "@still-shift/scene-contract";
+import type {
+  Composition,
+  MechanismRoute,
+  MechanismRouteSelection,
+} from "@still-shift/scene-contract";
+import { followPreparedMechanismRoute, selectMechanismRoute } from "./route.ts";
 import {
   evaluateMechanismFrame,
   prepareMechanismScene,
@@ -104,13 +109,26 @@ async function bytesHash(path: string) {
 /** Verify copied bytes and relative references without launching a renderer. */
 export async function verifyMechanismPackageArtifacts(
   directory: string,
-  { signal }: { signal?: AbortSignal } = {},
+  options: { signal?: AbortSignal; route?: MechanismRoute } = {},
 ) {
+  const { signal } = options;
   signal?.throwIfAborted();
   const root = resolve(directory),
-    manifest = (await readMechanismJson(
+    manifestValue = await readMechanismJson(
       join(root, "package.manifest.json"),
-    )) as PackageManifest;
+    );
+  if (
+    manifestValue &&
+    typeof manifestValue === "object" &&
+    "schemaVersion" in manifestValue &&
+    manifestValue.schemaVersion === "mechanism-native-project-package-1"
+  ) {
+    const { verifyNativeMechanismPackageArtifacts } = await import(
+      "./native-package.ts"
+    );
+    return verifyNativeMechanismPackageArtifacts(root, options);
+  }
+  const manifest = manifestValue as PackageManifest;
   if (
     manifest.schemaVersion !== "mechanism-project-package-1" ||
     !Array.isArray(manifest.files) ||
@@ -343,8 +361,37 @@ export async function packageMechanismEpisode(
     preparedDirectory?: string;
     finalOutput?: string;
     signal?: AbortSignal;
+    route?: MechanismRoute;
   },
 ) {
+  options.signal?.throwIfAborted();
+  const loaded = await readMechanismEpisode(path);
+  let selection = selectMechanismRoute(loaded.episode, options.route);
+  if (options.preparedDirectory) {
+    const receipt = (await readMechanismJson(
+      join(resolve(options.preparedDirectory), "prepared.receipt.json"),
+    )) as { schemaVersion?: string; routeSelection?: MechanismRouteSelection };
+    if (
+      receipt.schemaVersion === "mechanism-prepared-native-episode-1" &&
+      !receipt.routeSelection
+    )
+      fail(
+        "mechanism-stale-preparation",
+        "Native preparation omits its selected route",
+        options.preparedDirectory,
+      );
+    selection = followPreparedMechanismRoute(
+      loaded.episode,
+      receipt.routeSelection,
+      options.route,
+    );
+  }
+  if (selection.effectiveRoute === "native3d") {
+    const { packageNativeMechanismEpisode } = await import(
+      "./native-package.ts"
+    );
+    return packageNativeMechanismEpisode(loaded, selection, options);
+  }
   const destination = resolve(options.outputDirectory),
     parent = dirname(destination);
   let release: (() => Promise<void>) | undefined;
@@ -361,7 +408,6 @@ export async function packageMechanismEpisode(
     );
     attemptDirectory = stage;
     await absent(destination);
-    const loaded = await readMechanismEpisode(path);
     async function register(relativePath: string, role: string) {
       options.signal?.throwIfAborted();
       const target = inside(stage, relativePath);

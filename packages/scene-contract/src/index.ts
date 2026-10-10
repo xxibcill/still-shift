@@ -73,3 +73,5 @@ export {
 export * from "./soundtrack-project.ts";
 
 export * from "./mechanism/index.ts";
+
+export * from "./native3d/index.ts";

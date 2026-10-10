@@ -46,6 +46,8 @@ export type MechanismOverlayOptions = { audio?: AudioAsset };
 type SidecarFrame = MechanismSidecar["frames"][number];
 type SidecarInput = Pick<MechanismPlateCapture, "shotId" | "sidecar">;
 type LabelKind =
+  | "annotation"
+  | "scene"
   | "label"
   | "qualification"
   | "leader"
@@ -222,15 +224,17 @@ function fontAssetId(id: string) {
 function labelTextLayer(
   label: MechanismLabel,
   shot: MechanismEpisode["shots"][number],
-  sidecar: MechanismSidecar,
+  sidecar: MechanismSidecar | undefined,
   defaultFont: string,
   qualification = false,
 ): CompositionLayer {
   const kind = qualification ? "qualification" : "label";
-  const opacity = discreteKeys(
-    sidecar.frames.map((frame) => Number(displayState(label, frame).shown)),
-    `labels.${label.id}.visibilityPolicy`,
-  );
+  const opacity = sidecar
+    ? discreteKeys(
+        sidecar.frames.map((frame) => Number(displayState(label, frame).shown)),
+        `labels.${label.id}.visibilityPolicy`,
+      )
+    : 1;
   return {
     id: mechanismOverlayLayerId(kind, label.id),
     type: "text",
@@ -258,7 +262,7 @@ function labelTextLayer(
 function labelPanel(
   label: MechanismLabel,
   shot: MechanismEpisode["shots"][number],
-  sidecar: MechanismSidecar,
+  sidecar: MechanismSidecar | undefined,
 ): CompositionLayer {
   const estimatedWidth = (text: string, size: number) =>
     [...new Intl.Segmenter("en", { granularity: "grapheme" }).segment(text)]
@@ -285,10 +289,14 @@ function labelPanel(
         label.position[0],
         label.position[1] + height / 2 - label.fontSize * 0.2,
       ],
-      opacity: discreteKeys(
-        sidecar.frames.map((frame) => Number(displayState(label, frame).shown)),
-        `labels.${label.id}.visibilityPolicy`,
-      ),
+      opacity: sidecar
+        ? discreteKeys(
+            sidecar.frames.map((frame) =>
+              Number(displayState(label, frame).shown),
+            ),
+            `labels.${label.id}.visibilityPolicy`,
+          )
+        : 1,
     },
     contents: [
       {
@@ -686,6 +694,273 @@ export function compileMechanismOverlays(
   return validation.composition;
 }
 export const compileMechanismComposition = compileMechanismOverlays;
+
+/** Native worlds and current anchor bindings; no captured plates or invented sidecars. */
+export function compileNativeMechanismComposition(
+  source: MechanismOverlaySource,
+  options: MechanismOverlayOptions = {},
+): Composition {
+  const { episode } = source;
+  const sceneDependency = episode.dependencies.find(
+    (dependency) =>
+      dependency.id === episode.scene && dependency.type === "scene",
+  )!;
+  const sceneAsset = mechanismOverlayLayerId("scene", episode.scene);
+  const assets: Composition["assets"] = episode.dependencies
+    .filter((dependency) => dependency.type === "font")
+    .map((dependency) => {
+      if (
+        !dependency.weight ||
+        dependency.style === "oblique" ||
+        !source.dependencyPaths[dependency.id]
+      )
+        fail(
+          "mechanism-overlay-font",
+          "Native fonts require pinned paths, weights and supported style",
+          `dependencies.${episode.dependencies.indexOf(dependency)}`,
+        );
+      const variable = source.fontAxes?.[dependency.id];
+      if (dependency.axes && !variable)
+        fail(
+          "mechanism-overlay-font",
+          "Declared font axes require verified ranges",
+          `dependencies.${episode.dependencies.indexOf(dependency)}.axes`,
+        );
+      return {
+        id: fontAssetId(dependency.id),
+        type: "font" as const,
+        path: source.dependencyPaths[dependency.id]!,
+        sha256: dependency.sha256,
+        weight: dependency.weight,
+        ...(dependency.style ? { style: dependency.style } : {}),
+        ...(variable && Object.keys(variable).length ? { variable } : {}),
+      };
+    });
+  assets.push({
+    id: sceneAsset,
+    type: "native3d",
+    path: source.dependencyPaths[episode.scene]!,
+    sha256: sceneDependency.sha256,
+    format: "mechanism-scene-1",
+    textureFont: fontAssetId(episode.font),
+  });
+  const worlds: CompositionLayer[] = [],
+    overlays: CompositionLayer[] = [];
+  for (const shot of episode.shots) {
+    const controller = mechanismOverlayLayerId("plate", shot.id);
+    worlds.push({
+      id: controller,
+      type: "native3d",
+      asset: sceneAsset,
+      inPoint: shot.startFrame,
+      outPoint: shot.endFrameExclusive,
+      startFrame: shot.startFrame,
+      sourceStartFrame: shot.startFrame,
+      sourceFps: episode.output.fps,
+      ...(shot.camera ? { camera: shot.camera } : {}),
+      ...(shot.cameraKeys ? { cameraKeys: shot.cameraKeys } : {}),
+      controls: shot.controls,
+      hiddenParts: shot.hiddenParts,
+      metadata: {
+        mechanismShot: shot.id,
+        nativeSource: sceneDependency.sha256,
+        originalGeometry: source.scene.geometrySha256,
+      },
+    });
+    for (const label of shot.labels) {
+      const group = mechanismOverlayLayerId("annotation", label.id);
+      const common = {
+        inPoint: label.readingInterval.startFrame,
+        outPoint: label.readingInterval.endFrameExclusive,
+        startFrame: shot.startFrame,
+      };
+      const binding = {
+        role: "screen-anchor" as const,
+        sceneLayer: controller,
+        anchor: label.anchor,
+        visibilityPolicy: label.visibilityPolicy,
+        insetPixels: 12,
+      };
+      overlays.push({
+        ...common,
+        id: group,
+        type: "group",
+        size: [episode.output.width, episode.output.height],
+        transform: { anchor: [0, 0] },
+        overlayAfter: controller,
+        native3D: { ...binding, target: { kind: "visibility" } },
+        metadata: {
+          mechanismLabel: label.id,
+          binding: "current-native-anchor",
+        },
+      });
+      const start: [number, number] = [
+        label.position[0],
+        label.position[1] + label.fontSize * (label.qualification ? 2.3 : 1.3),
+      ];
+      overlays.push({
+        ...common,
+        id: mechanismOverlayLayerId("leader", label.id),
+        type: "shape",
+        parent: group,
+        native3D: {
+          ...binding,
+          target: {
+            kind: "path-endpoint",
+            contentId: "path",
+            endpoint: "last",
+          },
+        },
+        contents: [
+          {
+            id: "path",
+            type: "path",
+            path: { closed: false, vertices: [start, start] },
+          },
+          {
+            id: "stroke",
+            type: "stroke",
+            color: "#e2e6ed",
+            width: 2,
+            cap: "round",
+          },
+        ],
+        metadata: {
+          mechanismLabel: label.id,
+          anchor: label.anchor,
+          binding: "current-native-anchor",
+          occlusionPolicy: label.visibilityPolicy,
+        },
+      });
+      for (const child of [
+        labelPanel(label, shot, undefined),
+        labelTextLayer(label, shot, undefined, episode.font),
+        ...(label.qualification
+          ? [labelTextLayer(label, shot, undefined, episode.font, true)]
+          : []),
+      ])
+        overlays.push({ ...child, parent: group });
+      if (label.visibilityPolicy === "offscreen-indicator")
+        overlays.push({
+          ...common,
+          id: mechanismOverlayLayerId("indicator", label.id),
+          type: "shape",
+          parent: group,
+          native3D: {
+            ...binding,
+            visibleWhen: "indicator",
+            target: { kind: "position" },
+          },
+          contents: [
+            {
+              id: "path",
+              type: "path",
+              path: {
+                closed: true,
+                vertices: [
+                  [0, -7],
+                  [7, 7],
+                  [-7, 7],
+                ],
+              },
+            },
+            { id: "fill", type: "fill", color: "#e2e6ed" },
+          ],
+          metadata: {
+            mechanismLabel: label.id,
+            meaning: "offscreen-target-indicator",
+          },
+        });
+    }
+  }
+  overlays.push(
+    ...episode.captions.flatMap((caption) => [
+      captionPanel(episode, caption),
+      captionLayer(episode, caption),
+    ]),
+  );
+  const audioDependency = episode.dependencies.find(
+    (dependency) =>
+      dependency.id === episode.audio && dependency.type === "audio",
+  );
+  const audio =
+    options.audio ??
+    (source.audioMetadata && audioDependency
+      ? {
+          id: audioDependency.id,
+          type: "audio" as const,
+          path: source.dependencyPaths[audioDependency.id]!,
+          sha256: audioDependency.sha256,
+          ...source.audioMetadata,
+        }
+      : undefined);
+  if (episode.audio && !audio)
+    fail(
+      "mechanism-overlay-audio",
+      "Native narration requires actual decoded PCM metadata",
+      "audio",
+    );
+  if (audio) {
+    if (audio.id !== episode.audio || audio.sha256 !== audioDependency?.sha256)
+      fail(
+        "mechanism-overlay-audio",
+        "Native narration differs from its pinned dependency",
+        "audio",
+      );
+    assets.push(audio);
+    overlays.push({
+      id: "mechanism-narration",
+      type: "audio",
+      asset: audio.id,
+      role: "narration",
+      inPoint: 0,
+      outPoint: episode.output.frameCount,
+      sourceStartSample: 0,
+      sourceEndSample: audio.sampleCount,
+    });
+  }
+  const readingPolicy = mechanismOverlayQualityPolicy(episode);
+  delete readingPolicy.physicalProofHolds;
+  const validation = validateComposition({
+    schemaVersion: "composition-1",
+    id: mechanismOverlayLayerId("plate", episode.id),
+    ...episode.output,
+    background: "#0b1020",
+    assets,
+    layers: [...overlays.reverse(), ...worlds],
+    textStyles: Object.fromEntries(
+      episode.dependencies
+        .filter((dependency) => dependency.type === "font")
+        .map((dependency) => [
+          fontAssetId(dependency.id),
+          {
+            fontAsset: fontAssetId(dependency.id),
+            ...(dependency.axes ? { axes: dependency.axes } : {}),
+          },
+        ]),
+    ),
+    markers: episode.shots.slice(1).map((shot) => ({
+      id: mechanismOverlayLayerId("plate", shot.id),
+      frame: shot.startFrame,
+      label: "cut",
+    })),
+    metadata: {
+      mechanismEpisode: episode.id,
+      revision: episode.revision,
+      overlayVersion: "mechanism-native-overlays-1",
+      readingPolicy,
+      nativePhysicalProofRequests: episode.shots.map((shot) => ({
+        id: shot.id,
+        purpose: shot.purpose,
+        layer: mechanismOverlayLayerId("plate", shot.id),
+        start: shot.startFrame,
+        end: shot.endFrameExclusive,
+      })),
+    },
+  });
+  if (!validation.ok) throw new PassageError(validation.diagnostics);
+  return validation.composition;
+}
 
 function physicalProofHold(episode: MechanismEpisode, capture: SidecarInput) {
   const shot = episode.shots.find((shot) => shot.id === capture.shotId);

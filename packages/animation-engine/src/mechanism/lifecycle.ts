@@ -5,6 +5,8 @@ import {
   MechanismSidecarSchema,
   type MechanismShot,
   type MechanismSidecar,
+  type MechanismRoute,
+  type MechanismRouteSelection,
 } from "@still-shift/scene-contract";
 import {
   evaluateMechanismFrame,
@@ -39,10 +41,26 @@ import {
   type MechanismFinalAudioReport,
 } from "./audio-verification.ts";
 
+import {
+  selectMechanismRoute,
+  followPreparedMechanismRoute,
+  mechanismRouteBackend,
+  recordedMechanismRoute,
+} from "./route.ts";
+import {
+  prepareNativeMechanismEpisode,
+  renderNativeMechanismEpisode,
+  checkNativeMechanismEpisode,
+  type NativePreparedMechanismEpisode,
+} from "./native-lifecycle.ts";
+import { previewNativeMechanismEpisode } from "./native-preview.ts";
+
 export type MechanismPreparationOptions = {
   outputDirectory: string;
   signal?: AbortSignal;
   cacheDirectory?: string;
+  route?: MechanismRoute;
+  backend?: "canvas2d" | "webgl2";
 };
 function located(code: string, message: string, path: string): never {
   throw new AnimationEngineError("SCENE_INVALID", message, {
@@ -83,12 +101,16 @@ export async function previewMechanismEpisode(
   path: string,
   options: MechanismPreparationOptions & { frame: number },
 ) {
-  const loaded = await readMechanismEpisode(path),
-    shot = loaded.episode.shots.find(
-      (item) =>
-        options.frame >= item.startFrame &&
-        options.frame < item.endFrameExclusive,
-    );
+  const loaded = await readMechanismEpisode(path);
+  const selection = selectMechanismRoute(loaded.episode, options.route);
+  mechanismRouteBackend(selection, options.backend);
+  if (selection.effectiveRoute === "native3d")
+    return previewNativeMechanismEpisode(loaded, options, selection);
+  const shot = loaded.episode.shots.find(
+    (item) =>
+      options.frame >= item.startFrame &&
+      options.frame < item.endFrameExclusive,
+  );
   if (!shot || !Number.isInteger(options.frame))
     located(
       "mechanism-frame-range",
@@ -132,12 +154,21 @@ export type PreparedMechanismEpisode = {
   new3dRenders: number;
   wallSeconds: number;
   receiptPath: string;
+  routeSelection?: MechanismRouteSelection;
 };
+export type MechanismPreparationResult =
+  | PreparedMechanismEpisode
+  | NativePreparedMechanismEpisode;
 /** Clean plates are keyed only by physical inputs. Native copy/layout lives downstream. */
 export async function prepareMechanismEpisode(
   path: string,
   options: MechanismPreparationOptions,
-): Promise<PreparedMechanismEpisode> {
+): Promise<MechanismPreparationResult> {
+  const loaded = await readMechanismEpisode(path);
+  const selection = selectMechanismRoute(loaded.episode, options.route);
+  mechanismRouteBackend(selection, options.backend);
+  if (selection.effectiveRoute === "native3d")
+    return prepareNativeMechanismEpisode(loaded, options, selection);
   const outputDirectory = resolve(options.outputDirectory);
   await mkdir(outputDirectory, { recursive: true });
   const release = await acquireArtifactLock(
@@ -233,6 +264,9 @@ async function prepareMechanismEpisodeLocked(
       new3dRenders: captures.reduce((sum, item) => sum + item.new3dRenders, 0),
       wallSeconds: (performance.now() - started) / 1000,
       receiptPath,
+      ...recordedMechanismRoute(
+        selectMechanismRoute(loaded.episode, options.route),
+      ),
     };
   await writeMechanismJson(receiptPath, result, { replace: true });
   return result;
@@ -244,12 +278,30 @@ export async function checkMechanismEpisode(
     preparedDirectory?: string;
     finalOutput?: string;
     signal?: AbortSignal;
+    route?: MechanismRoute;
   } = {},
 ) {
   options.signal?.throwIfAborted();
   const started = performance.now();
-  const loaded = await readMechanismEpisode(path),
-    prepared = prepareMechanismScene(loaded.scene),
+  const loaded = await readMechanismEpisode(path);
+  const recorded = options.preparedDirectory
+    ? ((await readMechanismJson(
+        join(options.preparedDirectory, "prepared.receipt.json"),
+      )) as {
+        routeSelection?: MechanismRouteSelection;
+        schemaVersion?: string;
+      })
+    : undefined;
+  const selection = recorded
+    ? followPreparedMechanismRoute(
+        loaded.episode,
+        recorded.routeSelection,
+        options.route,
+      )
+    : selectMechanismRoute(loaded.episode, options.route);
+  if (selection.effectiveRoute === "native3d")
+    return checkNativeMechanismEpisode(loaded, options);
+  const prepared = prepareMechanismScene(loaded.scene),
     findings: MechanismFinding[] = [];
   const rows = loaded.episode.shots.flatMap((shot) =>
     Array.from(
@@ -489,17 +541,28 @@ export async function renderMechanismEpisode(
   options: MechanismPreparationOptions & { backend?: "canvas2d" | "webgl2" },
 ) {
   const started = performance.now();
+  const loadedForRoute = await readMechanismEpisode(path);
+  const selection = selectMechanismRoute(loadedForRoute.episode, options.route);
+  const backend = mechanismRouteBackend(selection, options.backend);
+  if (selection.effectiveRoute === "native3d")
+    return renderNativeMechanismEpisode(loadedForRoute, options, selection);
   const outputDirectory = resolve(options.outputDirectory);
   await mkdir(outputDirectory, { recursive: false });
   const prepared = await prepareMechanismEpisode(path, {
     ...options,
     outputDirectory: join(outputDirectory, "prepared"),
   });
+  if (prepared.schemaVersion !== "mechanism-prepared-episode-1")
+    located(
+      "mechanism-route",
+      "Bridge preparation changed its selected route",
+      path,
+    );
   const preparedAt = performance.now();
   const render = await renderComposition({
     compositionPath: prepared.compositionPath,
     outputPath: join(outputDirectory, "episode.mp4"),
-    backend: options.backend ?? "canvas2d",
+    backend,
     ...(options.signal ? { signal: options.signal } : {}),
     ...(options.cacheDirectory
       ? { cacheDirectory: options.cacheDirectory }
@@ -535,6 +598,12 @@ export async function renderMechanismEpisode(
     join(outputDirectory, "episode.result.json"),
     result,
   );
+  if (check.schemaVersion !== "mechanism-check-result-1")
+    located(
+      "mechanism-route",
+      "Bridge final check changed its selected route",
+      path,
+    );
   const loaded = await readMechanismEpisode(path);
   const openFindings = [
     ...check.findings,

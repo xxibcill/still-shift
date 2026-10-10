@@ -9,6 +9,8 @@ import {
   type Composition,
   type CompositionPreparedMedia,
   type CompositionPreparedAudio,
+  type CompositionPreparedNative3D,
+  type NativeAppearanceCodeIdentity,
 } from "../../../packages/scene-contract/src/index.ts";
 import {
   createCompositionPreview,
@@ -332,7 +334,7 @@ async function load(
   } = {},
 ): Promise<boolean> {
   ++generation;
-  const backend = backendSelect.value as CompositionBackend;
+  let backend = backendSelect.value as CompositionBackend;
   const retainedFrame =
     edit.frame ?? (programMode || edit.preserveHistory ? session.frame : 0);
   lintAbort?.abort();
@@ -379,6 +381,21 @@ async function load(
           .map((d) => `${d.code} ${d.path}: ${d.message}`)
           .join("\n"),
       );
+    if (
+      result.composition.assets.some((asset) => asset.type === "native3d") &&
+      !new URLSearchParams(location.search).has("backend") &&
+      !backendSelect.dataset.explicit
+    ) {
+      backend = "webgl2";
+      backendSelect.value = "webgl2";
+    }
+    if (
+      backend === "canvas2d" &&
+      result.composition.assets.some((asset) => asset.type === "native3d")
+    )
+      throw Error(
+        "comp-native3d-backend backend: Native composition requires WebGL2",
+      );
     const nextHistory =
       edit.preserveHistory && documentHistory
         ? documentHistory
@@ -388,6 +405,9 @@ async function load(
     let capture: {
       preparedMedia?: CompositionPreparedMedia;
       preparedAudio?: CompositionPreparedAudio;
+      preparedNative3D?: CompositionPreparedNative3D;
+      nativeAppearanceCodeIdentity?: NativeAppearanceCodeIdentity;
+      nativeAppearanceCodeSha256?: string;
       assets: Record<string, string>;
     } = {
       ...(program?.preparedAudio
@@ -396,9 +416,20 @@ async function load(
       ...(program?.preparedMedia
         ? { preparedMedia: program.preparedMedia }
         : {}),
+      ...(program?.preparedNative3D
+        ? { preparedNative3D: program.preparedNative3D }
+        : {}),
+      ...(program?.nativeAppearanceCodeIdentity
+        ? {
+            nativeAppearanceCodeIdentity: program.nativeAppearanceCodeIdentity,
+            nativeAppearanceCodeSha256: program.nativeAppearanceCodeSha256,
+          }
+        : {}),
       assets: program?.assets ?? {},
     };
     if (
+      (result.composition.assets.some((asset) => asset.type === "native3d") &&
+        (!capture.preparedNative3D || edit.document)) ||
       (result.composition.assets.some((asset) => asset.type === "audio") &&
         (!capture.preparedAudio || edit.document)) ||
       (result.composition.assets.some(
@@ -477,6 +508,12 @@ async function load(
         ...(capture.preparedMedia
           ? { preparedMedia: capture.preparedMedia }
           : {}),
+        ...(capture.preparedNative3D
+          ? { preparedNative3D: capture.preparedNative3D }
+          : {}),
+        ...(capture.nativeAppearanceCodeIdentity
+          ? { appearanceCodeIdentity: capture.nativeAppearanceCodeIdentity }
+          : {}),
         signal: ownership.signal,
       },
     );
@@ -512,7 +549,7 @@ async function load(
     };
     ownership.renderer(
       {
-        ...(resources.media
+        ...(resources.media || resources.native3D
           ? { prepareFrame: (frame: number) => renderer.prepareFrame(frame) }
           : {}),
         renderFrame(frame: number) {
@@ -639,7 +676,11 @@ saveButton.onclick = async () => {
               .join("\n") || "Save failed",
           );
         const savedProgram = await retainProgramSnapshot(payload.snapshot);
-        if (savedProgram.preparedMedia || savedProgram.preparedAudio) {
+        if (
+          savedProgram.preparedMedia ||
+          savedProgram.preparedAudio ||
+          savedProgram.preparedNative3D
+        ) {
           if (
             !(await load("program", {
               program: savedProgram,
@@ -720,6 +761,7 @@ if (programMode) {
   );
   select.disabled = true;
   backendSelect.onchange = () => {
+    backendSelect.dataset.explicit = "true";
     void load(
       "program",
       documentHistory
@@ -783,6 +825,7 @@ if (programMode) {
     void load(select.value);
   };
   backendSelect.onchange = () => {
+    backendSelect.dataset.explicit = "true";
     void load(
       select.value,
       documentHistory

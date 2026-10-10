@@ -16,6 +16,8 @@ export const publicEntries: Record<string, string> = {
   "./motion/node": "packages/motion-builder/src/node.ts",
   "./engine": "packages/animation-engine/src/index.ts",
   "./renderer": "packages/renderer-core/src/index.ts",
+  "./renderer/native3d-browser":
+    "packages/renderer-core/src/native3d/browser.ts",
   "./schema": "packages/scene-contract/src/index.ts",
   "./runtime": "packages/execution-runtime/src/index.ts",
 };
