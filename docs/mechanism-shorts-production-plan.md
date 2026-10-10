@@ -1,6 +1,6 @@
 # Mechanism Shorts production plan
 
-**Created:** 2026-10-07. **Status:** active; MS0 complete; MS1 software verified in stages, human review pending (2026-10-10).
+**Created:** 2026-10-07. **Status:** active; MS0 complete; MS1 software verified in stages; MS1N implementation in progress; human review pending (2026-10-10).
 **Updated:** 2026-10-10 — MS1 software verification completed in stages; the
 2026-10-08 bridge/native order and all nine feedback amendments remain incorporated.
 **Start:** after the current [composition engine plan](./composition-engine-plan.md)
@@ -439,16 +439,16 @@ MS0 audit is complete under the owner's implementation request on 2026-10-09. MS
 MS1. MS4B remains conditional for explanation views and further native extensions,
 with its decision recorded after the pilot. Audit/code completion and product review remain separate evidence.
 
-| ID   | Deliverable                                              | Depends on                                    | Status                                            | Completion record                                   |
-| ---- | -------------------------------------------------------- | --------------------------------------------- | ------------------------------------------------- | --------------------------------------------------- |
-| MS0  | Completed-composition audit and E01 baseline             | Composition completion gate                   | `[x]`                                             | [MS0 evidence](./mechanism-shorts-ms0-results.json) |
-| MS1  | Supported bridge and portable E01                        | MS0                                           | Software verified in stages; human review pending | [Completion](./mechanism-shorts-ms1-completion.md)  |
-| MS1N | Native 3D composition using shared scene and assets      | MS1                                           | `[ ]`                                             | Pending                                             |
-| MS2  | Reusable packs, rigs, shots, labels and cue-driven edits | MS1N                                          | `[ ]`                                             | Pending                                             |
-| MS3  | Episode lifecycle and ten-episode pilot                  | MS2                                           | `[ ]`                                             | Pending                                             |
-| MS4A | Queue stress and recovery at 300 jobs                    | MS3                                           | `[ ]`                                             | Pending                                             |
-| MS4B | Required explanation views and native extensions         | MS3 and a recorded coverage need              | `[ ]` conditional                                 | Pending                                             |
-| MS4C | Diverse 30-episode cohort and capacity decision          | MS4A; MS4B when required by selected episodes | `[ ]`                                             | Pending                                             |
+| ID   | Deliverable                                              | Depends on                                    | Status                                            | Completion record                                                                            |
+| ---- | -------------------------------------------------------- | --------------------------------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| MS0  | Completed-composition audit and E01 baseline             | Composition completion gate                   | `[x]`                                             | [MS0 evidence](./mechanism-shorts-ms0-results.json)                                          |
+| MS1  | Supported bridge and portable E01                        | MS0                                           | Software verified in stages; human review pending | [Completion](./mechanism-shorts-ms1-completion.md)                                           |
+| MS1N | Native 3D composition using shared scene and assets      | MS1                                           | In progress; interfaces frozen                    | [Design](./mechanism-shorts-ms1n-design.md), [results](./mechanism-shorts-ms1n-results.json) |
+| MS2  | Reusable packs, rigs, shots, labels and cue-driven edits | MS1N                                          | `[ ]`                                             | Pending                                                                                      |
+| MS3  | Episode lifecycle and ten-episode pilot                  | MS2                                           | `[ ]`                                             | Pending                                                                                      |
+| MS4A | Queue stress and recovery at 300 jobs                    | MS3                                           | `[ ]`                                             | Pending                                                                                      |
+| MS4B | Required explanation views and native extensions         | MS3 and a recorded coverage need              | `[ ]` conditional                                 | Pending                                                                                      |
+| MS4C | Diverse 30-episode cohort and capacity decision          | MS4A; MS4B when required by selected episodes | `[ ]`                                             | Pending                                                                                      |
 
 ### MS0 Baseline and dependency audit
 

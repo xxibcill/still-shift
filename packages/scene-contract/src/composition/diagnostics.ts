@@ -7,6 +7,40 @@ import { compositionWarnings } from "./validate.ts";
  * ones, never rename. docs/composition-reference.md documents each one.
  */
 export const COMPOSITION_DIAGNOSTICS = {
+  "comp-native3d-source":
+    "A native source is invalid or disagrees with its declared format.",
+  "comp-native3d-checksum":
+    "Native source or prepared effective bytes differ from their pinned identity.",
+  "comp-native3d-not-ready":
+    "Prepare the complete immutable native catalogue before drawing or evaluation.",
+  "comp-native3d-topology":
+    "A native edit changes protected geometry, hierarchy or controller topology.",
+  "comp-native3d-limit":
+    "Native variants, graphics, dimensions or observations exceed bounded limits.",
+  "comp-native3d-controller-transform":
+    "A native controller or organizing ancestor has nonidentity spatial placement.",
+  "comp-native3d-controller-style":
+    "A native controller or organizing ancestor has unsupported opacity, blend or effects.",
+  "comp-native3d-binding":
+    "A native binding has an invalid controller, physical anchor or target.",
+  "comp-native3d-scope":
+    "A native binding crosses an owning composition scope.",
+  "comp-native3d-overlap":
+    "More than one native world is active in one scope sample.",
+  "comp-native3d-cycle": "Native dependencies or bindings form a cycle.",
+  "comp-native3d-clock":
+    "A native dependency samples an incompatible physical clock.",
+  "comp-native3d-material":
+    "A native material exceeds the admitted opaque or hard-mask subset.",
+  "comp-native3d-graphic":
+    "A native graphic exceeds the admitted local artwork subset.",
+  "comp-native3d-backend": "Native 3D requires the WebGL2 backend.",
+  "comp-native3d-profile":
+    "The device cannot satisfy the pinned native HDR, depth and MSAA profile.",
+  "comp-native3d-observation":
+    "Native render observations are incomplete or inconsistent with their execution.",
+  "comp-native3d-protocol":
+    "Native observation and assigned pixel transport do not agree.",
   "comp-media-format":
     "A native source has unsupported streams or file structure.",
   "comp-media-vfr":

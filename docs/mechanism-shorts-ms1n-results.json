@@ -29,7 +29,21 @@
     "lifecycleAuthoringTransport": "consumer agent",
     "resourcesObservationIdentityPackagesVerification": "root"
   },
-  "verification": [],
+  "verification": [
+    {
+      "id": "native-observation-contract-1",
+      "status": "passed",
+      "command": "pnpm exec vitest run tests/unit/native3d-observation.test.ts --maxWorkers=1",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-observation-contract-1.log",
+        "bytes": 308,
+        "sha256": "sha256:8aa93bc0b3841148f1572bed2efa0300142c1d5e506954b010814c4a57c8ff9a"
+      },
+      "tests": 6,
+      "scope": "Strict bounded observation/source-closure contracts; fractional clocks, malformed matrices, stale references/cycles, pass association, runtime identity. No native render/transport/pixel acceptance claimed."
+    }
+  ],
   "implementationEvidence": "pending",
   "humanContinuousPlaybackListeningAndCreativeAcceptance": "pending",
   "publication": "not-requested",

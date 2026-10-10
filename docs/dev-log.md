@@ -50,6 +50,8 @@ still hold before relying on them.
   actual-observation transport and route/package boundaries are frozen.
   Implementation begins with shared contracts/evaluation/graph, Three/WebGL and
   lifecycle/authoring in parallel; runtime/browser/GPU checks remain serialized.
+  The first six strict observation/source-closure unit checks pass; contracts,
+  evaluation/graph, browser rendering and consumer transport remain in progress.
   Independent mixed mesh/graphic depth is the first pixel gate. Native software
   and human acceptance are pending. [Design](./mechanism-shorts-ms1n-design.md),
   [results](./mechanism-shorts-ms1n-results.json).
@@ -179,6 +181,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — MS1N bounded observation contracts
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, prerequisite `13b62b84`.
+- **Scope:** strict actual-observation transport and appearance identity contracts.
+- **Done:** finite 16-element matrices, 128-part/64-anchor and 64-pass bounds,
+  current parent/anchor references, ordered pass association and source/installed
+  identity format; 18 located native diagnostic codes. Other native files remain
+  in progress and uncommitted until their integrated slice is reviewed.
+- **Results:** six focused units pass on pinned Node 22.23.1 (183ms runner).
+  No native pixels, browser, full software gate or human acceptance claimed.
+- **Open / next:** integrate immutable preparation and renderer readiness;
+  mixed graphic/mesh depth remains the first pixel gate.
+- **Records:** [native results](./mechanism-shorts-ms1n-results.json),
+  [frozen design](./mechanism-shorts-ms1n-design.md).
 
 ### 2026-10-10 — MS1N separate branch and native interface freeze
 
