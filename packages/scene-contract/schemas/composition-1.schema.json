@@ -230,7 +230,11 @@
               "sha256": { "$ref": "#/$defs/__schema194" },
               "format": {
                 "type": "string",
-                "enum": ["mechanism-scene-1", "solid-scene-1"]
+                "enum": [
+                  "mechanism-scene-1",
+                  "solid-scene-1",
+                  "mechanism-scene-2"
+                ]
               },
               "textureFont": { "$ref": "#/$defs/__schema0" }
             },
@@ -3309,8 +3313,14 @@
                 "maximum": 2147483647
               },
               "partOverrides": {
+                "propertyNames": {
+                  "type": "string",
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z][\\w.-]*$"
+                },
+                "maxProperties": 128,
                 "type": "object",
-                "propertyNames": { "$ref": "#/$defs/__schema9" },
+                "properties": {},
                 "additionalProperties": {
                   "type": "object",
                   "properties": {
@@ -3321,8 +3331,14 @@
                 }
               },
               "materialOverrides": {
+                "propertyNames": {
+                  "type": "string",
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z][\\w.-]*$"
+                },
+                "maxProperties": 32,
                 "type": "object",
-                "propertyNames": { "$ref": "#/$defs/__schema9" },
+                "properties": {},
                 "additionalProperties": {
                   "type": "object",
                   "properties": {

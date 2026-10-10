@@ -40,14 +40,14 @@ export const CompositionPreparedNative3DSchema = z
       ),
   })
   .strict();
-const partOverride = z
+export const NativePartOverrideSchema = z
   .object({
     transform: MechanismTransformSchema.optional(),
     visible: z.boolean().optional(),
   })
   .strict();
 const material = MechanismMaterialSchema.shape;
-const materialOverride = z
+export const NativeMaterialOverrideSchema = z
   .object({
     color: material.color.optional(),
     roughness: material.roughness.optional(),
@@ -66,14 +66,14 @@ const materialOverride = z
 export const Native3DSourceOverridesSchema = z
   .object({
     partOverrides: z
-      .record(MechanismIdSchema, partOverride)
+      .record(MechanismIdSchema, NativePartOverrideSchema)
       .refine(
         (entries) => Object.keys(entries).length <= MECHANISM_LIMITS.parts,
         "Part override budget exceeded",
       )
       .optional(),
     materialOverrides: z
-      .record(MechanismIdSchema, materialOverride)
+      .record(MechanismIdSchema, NativeMaterialOverrideSchema)
       .refine(
         (entries) => Object.keys(entries).length <= MECHANISM_LIMITS.materials,
         "Material override budget exceeded",

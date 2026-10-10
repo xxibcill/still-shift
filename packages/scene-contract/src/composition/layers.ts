@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Native3DSourceOverridesV2Schema } from "./native3d-v2.ts";
 import { MechanismRigControlsV2Schema } from "../mechanism/rigs.ts";
 import { SoundtrackFadeCurveSchema } from "../soundtrack-project.ts";
 import { PoseAnchorSchema } from "../character-actions.ts";
@@ -507,6 +508,10 @@ export const Native3DLayerSchema = z
       });
   });
 export type Native3DLayer = z.infer<typeof Native3DLayerSchema>;
+export const Native3DLayerVersionsSchema = Native3DLayerSchema.safeExtend(
+  Native3DSourceOverridesV2Schema.shape,
+);
+export type Native3DLayerVersions = z.infer<typeof Native3DLayerVersionsSchema>;
 
 export const CompositionLayerSchema: z.ZodDiscriminatedUnion<
   [
@@ -525,7 +530,7 @@ export const CompositionLayerSchema: z.ZodDiscriminatedUnion<
     typeof VideoLayerSchema,
     typeof SequenceLayerSchema,
     typeof AudioLayerSchema,
-    typeof Native3DLayerSchema,
+    typeof Native3DLayerVersionsSchema,
   ],
   "type"
 > = z.discriminatedUnion("type", [
@@ -544,7 +549,7 @@ export const CompositionLayerSchema: z.ZodDiscriminatedUnion<
   VideoLayerSchema,
   SequenceLayerSchema,
   AudioLayerSchema,
-  Native3DLayerSchema,
+  Native3DLayerVersionsSchema,
 ]);
 
 export type CompositionLayer = z.infer<typeof CompositionLayerSchema>;

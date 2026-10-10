@@ -38,5 +38,6 @@ export {
 } from "./validate-media.ts";
 
 export * from "./native3d.ts";
+export * from "./native3d-v2.ts";
 
 export * from "./native3d-edit.ts";

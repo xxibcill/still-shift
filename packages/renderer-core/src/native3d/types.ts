@@ -21,6 +21,8 @@ export type PreparedSolidScene = {
 };
 export type Native3DPreparationOptions = {
   readonly variants?: readonly Native3DSourceOverrides[];
+  /** Remaining admission in a shared catalogue; never exceeds the fixed 64 cap. */
+  readonly variantLimit?: number;
 };
 export type PreparedNative3DVariant = {
   readonly version: "prepared-native3d-variant-1";

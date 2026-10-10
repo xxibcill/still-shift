@@ -5,7 +5,11 @@ import type {
   NativeShapeAssociation,
 } from "@still-shift/scene-contract";
 import type { PreparedMechanismSceneV2 } from "../mechanism/types-v2.ts";
-import type { DeepReadonly } from "./types.ts";
+import type {
+  DeepReadonly,
+  PreparedNative3DScene,
+  PreparedNative3DVariant,
+} from "./types.ts";
 
 export interface PreparedNative3DVariantV2 {
   readonly version: "prepared-native3d-variant-2";
@@ -41,3 +45,10 @@ export type Native3DVariantReferenceV2 = Pick<
   | "controller"
   | "scope"
 >;
+
+export type PreparedNative3DSceneVersions =
+  | PreparedNative3DScene
+  | PreparedNative3DSceneV2;
+export type PreparedNative3DVariantVersions =
+  | PreparedNative3DVariant
+  | PreparedNative3DVariantV2;

@@ -762,12 +762,48 @@ export const native3DAppearanceModules: readonly {
     url: new URL("../mechanism/evaluate.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/mechanism/matrix-v2.ts",
+    url: new URL("../mechanism/matrix-v2.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/mechanism/matrix.ts",
     url: new URL("../mechanism/matrix.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/mechanism/prepare-v2.ts",
+    url: new URL("../mechanism/prepare-v2.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/mechanism/projection.ts",
     url: new URL("../mechanism/projection.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/mechanism/rig-tracks-v2.ts",
+    url: new URL("../mechanism/rig-tracks-v2.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/mechanism/shape-math.ts",
+    url: new URL("../mechanism/shape-math.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/mechanism/teaching-pawl.ts",
+    url: new URL("../mechanism/teaching-pawl.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/mechanism/teaching-shapes.ts",
+    url: new URL("../mechanism/teaching-shapes.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/mechanism/teaching-spring.ts",
+    url: new URL("../mechanism/teaching-spring.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/mechanism/teaching-topology.ts",
+    url: new URL("../mechanism/teaching-topology.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/mechanism/types-v2.ts",
+    url: new URL("../mechanism/types-v2.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/mechanism/types.ts",
@@ -818,8 +854,20 @@ export const native3DAppearanceModules: readonly {
     url: new URL("./observations.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/native3d/override-keys.ts",
+    url: new URL("./override-keys.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/native3d/physical-visibility.ts",
     url: new URL("./physical-visibility.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/preparation-limits.ts",
+    url: new URL("./preparation-limits.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/prepare-v2.ts",
+    url: new URL("./prepare-v2.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/native3d/prepare.ts",
@@ -1299,6 +1347,13 @@ export const native3DAppearanceModules: readonly {
     name: "scene-contract/src/composition/native3d-edit.ts",
     url: new URL(
       "../../../scene-contract/src/composition/native3d-edit.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/composition/native3d-v2.ts",
+    url: new URL(
+      "../../../scene-contract/src/composition/native3d-v2.ts",
       import.meta.url,
     ),
   },

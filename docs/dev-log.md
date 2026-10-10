@@ -45,15 +45,15 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** isolated branch `codex/mechanism-ms2`
   carries current `main` plus the native prerequisite from
-  [PR #56](https://github.com/xxibcill/still-shift/pull/56). Eight implementation
-  slices now include full observed-frame2: actual used Float32 landmarks, fresh
-  synchronous camera/pose/projection/visibility sealing and independent Node replay.
-  Final fast2 passes4,014 units / 391 files; maintained five owned-world frames,
-  six used-stream controls/eleven negatives and six full-frame controls/four
-  negatives pass. All failures, truncated-exit qualification and own-key repair
-  remain retained. Versioned composition/export transport, three reusable packs,
-  import/camera/label/cue, scoped typography and the full milestone gate remain.
-  Pilot support is zero; no MS2 PR or MS3 implementation yet.
+  [PR #56](https://github.com/xxibcill/still-shift/pull/56). Nine implementation
+  slices now include full observed-frame2 and explicit versioned core catalogues:
+  mixed sources, source-clock rig-track validation, static edits and shared64
+  variant admission. Original v1 API/serialization checks remain exact.
+  Final fast2 passes4,026 units / 392 files; maintained scene2 world/stream/full
+  frame suites and original native14/integration5/cancellation pass. All failures
+  and repairs remain retained. Normal loading/render/export and authenticated
+  observation2 transport, three packs, import/camera/label/cue, scoped typography
+  and the full milestone gate remain. Pilot support is zero; no MS2 PR/MS3 yet.
   [MS2 results](./mechanism-shorts-ms2-results.json),
   [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
@@ -213,6 +213,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — Commit explicit native2 composition catalogue preparation
+
+- **Branch / source:** `codex/mechanism-ms2`, observed-frame checkpoint `a10d640a`;
+  held inventory6:2,400 inputs / 118,226,650B stays unchanged through final checks.
+- **Done:** explicit asset/transport2 declarations, shared mixed-source preparation,
+  declared-source version selection, full rig-track compilation with located first
+  illegal intervals, static constructor overrides and aggregate64 variant admission.
+  Original typed v1 catalogue API and serialized source/frame identities stay exact.
+- **Results:** focused31/3; final fast2 passes4,026/392 (43.87s), maintained scene2
+  world5/stream6/full-frame6 and original native14/integration5/cancellation pass.
+- **Failures / repairs:** two expanded fixture compile errors, overlapping default
+  fixture intervals and unused extracted-key type import repaired; all actual
+  failed checks retained and the overlap rule unchanged.
+- **Next / limits:** normal asset loading/render/export and authenticated observation2
+  integration; whole MS2 families/authoring acceptance still open. Core fixture
+  preparation does not count as an export, pack, pilot or human acceptance.
+  [Results](./mechanism-shorts-ms2-results.json). No MS2 PR/MS3 yet.
 
 ### 2026-10-11 — Commit full native2 observed-frame sealing and replay
 

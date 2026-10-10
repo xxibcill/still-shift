@@ -5,6 +5,7 @@ export * from "./visibility.ts";
 export * from "./bindings.ts";
 export * from "./types-v2.ts";
 export * from "./prepare-v2.ts";
+export { native3DOverridesKeyV2 } from "./override-keys.ts";
 export * from "./evaluate-v2.ts";
 export * from "./visibility-v2.ts";
 export * from "./observed-validation-v2.ts";

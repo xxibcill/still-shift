@@ -8,6 +8,7 @@ export type PassageDiagnostic = {
   node?: string;
   event?: string;
   frame?: number;
+  interval?: { startFrame: number; endFrameExclusive: number };
   path?: string;
   /** Source file containing the field addressed by path. */
   sourcePath?: string;

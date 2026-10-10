@@ -2,7 +2,7 @@ import { z } from "zod";
 import { NumericMotionPropertySchema } from "../motion-craft.ts";
 import { OutputFormatSchema } from "../output-format.ts";
 import { CompositionLayerSchema } from "./layers.ts";
-import { CompositionNative3DAssetSchema } from "./native3d.ts";
+import { CompositionNative3DAssetVersionsSchema } from "./native3d-v2.ts";
 import {
   Camera2dSchema,
   CompositionConstraintSchema,
@@ -80,7 +80,7 @@ export const CompositionAssetSchema = z.discriminatedUnion("type", [
   CompositionVideoAssetSchema,
   CompositionSequenceAssetSchema,
   CompositionAudioAssetSchema,
-  CompositionNative3DAssetSchema,
+  CompositionNative3DAssetVersionsSchema,
 ]);
 
 export const CompositionMarkerSchema = z

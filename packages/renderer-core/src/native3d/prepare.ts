@@ -4,14 +4,23 @@ import {
   MechanismHashSchema,
   NATIVE3D_VARIANT_LIMIT,
   CompositionPreparedNative3DSchema,
+  CompositionPreparedNative3DVersionsSchema,
 } from "@still-shift/scene-contract";
 import type {
   Native3DSource,
-  Native3DSourceOverrides,
   Composition,
   CompositionPreparedNative3D,
+  CompositionPreparedNative3DVersions,
 } from "@still-shift/scene-contract";
-import { canonicalMechanismJson } from "../mechanism/canonical.ts";
+import {
+  native3DOverridesKey,
+  native3DOverridesKeyV2,
+} from "./override-keys.ts";
+import { nativePreparationVariantLimit } from "./preparation-limits.ts";
+import { prepareNative3DSceneV2 } from "./prepare-v2.ts";
+import type { PreparedNative3DSceneVersions } from "./types-v2.ts";
+import { prepareMechanismRigTracksV2 } from "../mechanism/rig-tracks-v2.ts";
+import { MechanismEvaluationErrorV2 } from "../mechanism/types-v2.ts";
 import { hashNativeData as hashData } from "./canonical-hash.ts";
 import { matrixFromTransform } from "../mechanism/matrix.ts";
 import { passageError, PassageError } from "../passage-diagnostics.ts";
@@ -38,20 +47,7 @@ export function freezeNativeData<T>(root: T): T {
 }
 
 /** Canonical static requests; frame camera/seed/control state is deliberately absent. */
-export function native3DOverridesKey(
-  input: Native3DSourceOverrides = {},
-): string {
-  const parsed = Native3DSourceOverridesSchema.parse(input);
-  const normalized: Native3DSourceOverrides = {};
-  for (const field of ["partOverrides", "materialOverrides"] as const) {
-    const entries = Object.entries(parsed[field] ?? {})
-      .filter(([, value]) => Object.keys(value).length > 0)
-      .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0));
-    if (entries.length)
-      Object.assign(normalized, { [field]: Object.fromEntries(entries) });
-  }
-  return canonicalMechanismJson(normalized);
-}
+export { native3DOverridesKey } from "./override-keys.ts";
 
 function prepareValidated(source: Native3DSource) {
   const parts = new Map(source.parts.map((part) => [part.id, part]));
@@ -91,6 +87,7 @@ export async function prepareNative3DScene(
   options: Native3DPreparationOptions = {},
 ): Promise<PreparedNative3DScene> {
   MechanismHashSchema.parse(sourceSha256);
+  const variantLimit = nativePreparationVariantLimit(options.variantLimit);
   const source = Native3DSourceSchema.parse(input);
   const originalGeometrySha256 = await hashData(source.geometry);
   if (originalGeometrySha256 !== source.geometrySha256)
@@ -142,7 +139,7 @@ export async function prepareNative3DScene(
     const sourceKey = `native3d-source-1:${sourceSha256.slice(7)}:${effectiveSceneSha256.slice(7)}`;
     variantKeysByOverrides[requestKey] = sourceKey;
     if (Object.hasOwn(variants, sourceKey)) continue;
-    if (Object.keys(variants).length >= NATIVE3D_VARIANT_LIMIT)
+    if (Object.keys(variants).length >= variantLimit)
       passageError(
         "comp-native3d-limit",
         "Prepared native variants exceed 64 including the base",
@@ -225,7 +222,54 @@ export async function prepareCompositionNative3D(
   composition: Composition,
   input: CompositionPreparedNative3D,
 ): Promise<Readonly<Record<string, PreparedNative3DScene>>> {
-  const transport = CompositionPreparedNative3DSchema.parse(input);
+  const catalogue = await prepareNativeCatalogue(
+    composition,
+    CompositionPreparedNative3DSchema.parse(input),
+  );
+  const legacy: Record<string, PreparedNative3DScene> = Object.create(null);
+  for (const [id, prepared] of Object.entries(catalogue)) {
+    if (prepared.version !== "prepared-native3d-scene-1")
+      passageError(
+        "comp-native3d-source",
+        "Original catalogue cannot prepare a version 2 source",
+        { path: `assets.${id}` },
+      );
+    legacy[id] = prepared;
+  }
+  return freezeNativeData(legacy);
+}
+
+/** Declared assets select the transport protocol even when their layers draw no passes. */
+export async function prepareCompositionNative3DVersions(
+  composition: Composition,
+  input: unknown,
+): Promise<Readonly<Record<string, PreparedNative3DSceneVersions>>> {
+  const parsed = CompositionPreparedNative3DVersionsSchema.safeParse(input);
+  if (!parsed.success)
+    passageError(
+      "comp-native3d-source",
+      "Invalid versioned native preparation transport",
+      { path: "preparedNative3D" },
+    );
+  const required = composition.assets.some(
+    (asset) =>
+      asset.type === "native3d" && asset.format === "mechanism-scene-2",
+  )
+    ? "composition-prepared-native3d-2"
+    : "composition-prepared-native3d-1";
+  if (parsed.data.version !== required)
+    passageError(
+      "comp-native3d-source",
+      "Prepared transport version differs from the declared source protocols",
+      { path: "preparedNative3D.version" },
+    );
+  return prepareNativeCatalogue(composition, parsed.data);
+}
+
+async function prepareNativeCatalogue(
+  composition: Composition,
+  transport: CompositionPreparedNative3DVersions,
+): Promise<Readonly<Record<string, PreparedNative3DSceneVersions>>> {
   const assets = composition.assets.filter(
     (asset) => asset.type === "native3d",
   );
@@ -236,7 +280,8 @@ export async function prepareCompositionNative3D(
         `Undeclared native transport asset ${id}`,
         { path: `preparedNative3D.assets.${id}` },
       );
-  const result: Record<string, PreparedNative3DScene> = Object.create(null);
+  const result: Record<string, PreparedNative3DSceneVersions> =
+    Object.create(null);
   let count = 0;
   for (const asset of assets) {
     const assetPath = `assets.${composition.assets.indexOf(asset)}`;
@@ -303,7 +348,30 @@ export async function prepareCompositionNative3D(
       scope.layers.forEach((layer, index) => {
         const path = `${prefix}layers.${index}`;
         if (layer.type === "native3d" && layer.asset === asset.id) {
-          if (layer.rigControls !== undefined)
+          if (data.source.schemaVersion === "mechanism-scene-2") {
+            if (layer.controls !== undefined)
+              passageError(
+                "comp-native3d-source",
+                "Version 2 sources require rigControls",
+                { node: layer.id, path: path + ".controls" },
+              );
+            try {
+              prepareMechanismRigTracksV2(data.source, layer.rigControls);
+            } catch (error) {
+              if (error instanceof MechanismEvaluationErrorV2)
+                passageError(error.location.code, error.message, {
+                  node: layer.id,
+                  path: `${path}.${error.location.path.join(".")}`,
+                  ...(error.location.frame === undefined
+                    ? {}
+                    : { frame: error.location.frame }),
+                  ...(error.location.interval === undefined
+                    ? {}
+                    : { interval: { ...error.location.interval } }),
+                });
+              throw error;
+            }
+          } else if (layer.rigControls !== undefined)
             passageError(
               "comp-native3d-source",
               "Version 1 sources cannot use rigControls",
@@ -359,11 +427,30 @@ export async function prepareCompositionNative3D(
           );
       });
     }
-    let prepared: PreparedNative3DScene;
+    if (count >= NATIVE3D_VARIANT_LIMIT)
+      passageError(
+        "comp-native3d-limit",
+        "Composition-wide native variant budget exceeds 64 including asset bases",
+        { path: assetPath },
+      );
+    const overridesKey =
+      data.source.schemaVersion === "mechanism-scene-2"
+        ? native3DOverridesKeyV2
+        : native3DOverridesKey;
+    let prepared: PreparedNative3DSceneVersions;
     try {
-      prepared = await prepareNative3DScene(data.source, data.sourceSha256, {
+      const options = {
         variants: requests.map((request) => request.overrides),
-      });
+        variantLimit: NATIVE3D_VARIANT_LIMIT - count,
+      };
+      prepared =
+        data.source.schemaVersion === "mechanism-scene-2"
+          ? await prepareNative3DSceneV2(
+              data.source,
+              data.sourceSha256,
+              options,
+            )
+          : await prepareNative3DScene(data.source, data.sourceSha256, options);
     } catch (error) {
       if (error instanceof PassageError) {
         const introducing = requests.find((request) =>
@@ -400,9 +487,7 @@ export async function prepareCompositionNative3D(
       );
     for (const request of requests) {
       const key =
-        prepared.variantKeysByOverrides[
-          native3DOverridesKey(request.overrides)
-        ]!;
+        prepared.variantKeysByOverrides[overridesKey(request.overrides)]!;
       if (seen.has(key)) continue;
       seen.add(key);
       if (++count > NATIVE3D_VARIANT_LIMIT)

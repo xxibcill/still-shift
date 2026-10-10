@@ -1,6 +1,6 @@
 import {
   MechanismHashSchema,
-  Native3DSourceOverridesSchema,
+  Native3DSourceOverridesV2Schema,
   Native3DSourceV2Schema,
   NATIVE3D_VARIANT_LIMIT,
 } from "@still-shift/scene-contract";
@@ -13,7 +13,9 @@ import { mechanismTeachingTopologyDocument } from "../mechanism/teaching-topolog
 import { passageError } from "../passage-diagnostics.ts";
 import { hashNativeData } from "./canonical-hash.ts";
 import { prepareNativeShapeAssociations } from "./shape-associations.ts";
-import { freezeNativeData, native3DOverridesKey } from "./prepare.ts";
+import { freezeNativeData } from "./prepare.ts";
+import { native3DOverridesKeyV2 } from "./override-keys.ts";
+import { nativePreparationVariantLimit } from "./preparation-limits.ts";
 import type { Native3DPreparationOptions } from "./types.ts";
 import type {
   Native3DVariantReferenceV2,
@@ -28,6 +30,7 @@ export async function prepareNative3DSceneV2(
   options: Native3DPreparationOptions = {},
 ): Promise<PreparedNative3DSceneV2> {
   MechanismHashSchema.parse(sourceSha256);
+  const variantLimit = nativePreparationVariantLimit(options.variantLimit);
   const source = Native3DSourceV2Schema.parse(input);
   const originalGeometrySha256 = await hashNativeData(source.geometry);
   if (originalGeometrySha256 !== source.geometrySha256)
@@ -43,7 +46,7 @@ export async function prepareNative3DSceneV2(
     meshes: source.geometry.meshes,
   });
   const requestKeys = [
-    ...new Set(["{}", ...(options.variants ?? []).map(native3DOverridesKey)]),
+    ...new Set(["{}", ...(options.variants ?? []).map(native3DOverridesKeyV2)]),
   ].sort();
   if (requestKeys.length > NATIVE3D_VARIANT_LIMIT)
     passageError(
@@ -57,7 +60,7 @@ export async function prepareNative3DSceneV2(
     Object.create(null);
   const variantKeysByOverrides: Record<string, string> = Object.create(null);
   for (const requestKey of requestKeys) {
-    const overrides = Native3DSourceOverridesSchema.parse(
+    const overrides = Native3DSourceOverridesV2Schema.parse(
       JSON.parse(requestKey),
     );
     validateOverrideIds(source, overrides);
@@ -81,6 +84,12 @@ export async function prepareNative3DSceneV2(
     const sourceKey = `native3d-source-1:${sourceSha256.slice(7)}:${effectiveSceneSha256.slice(7)}`;
     variantKeysByOverrides[requestKey] = sourceKey;
     if (Object.hasOwn(variants, sourceKey)) continue;
+    if (Object.keys(variants).length >= variantLimit)
+      passageError(
+        "comp-native3d-limit",
+        "Prepared native variants exceed their admitted budget including the base",
+        { path: `variants.${requestKeys.indexOf(requestKey)}` },
+      );
     // Static edits must still match the declared neutral shape and rigid seats.
     const evaluation = prepareMechanismSceneV2(derived);
     variants[sourceKey] = freezeNativeData({

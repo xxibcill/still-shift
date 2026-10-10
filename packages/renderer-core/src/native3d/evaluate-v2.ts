@@ -1,5 +1,5 @@
 import {
-  Native3DLayerSchema,
+  Native3DLayerVersionsSchema,
   NativeFrameSnapshotV2Schema,
 } from "@still-shift/scene-contract";
 import type {
@@ -9,7 +9,8 @@ import type {
 import { canonicalMechanismJson } from "../mechanism/canonical.ts";
 import { evaluateMechanismFrameV2 } from "../mechanism/evaluate-v2.ts";
 import { passageError } from "../passage-diagnostics.ts";
-import { freezeNativeData, native3DOverridesKey } from "./prepare.ts";
+import { freezeNativeData } from "./prepare.ts";
+import { native3DOverridesKeyV2 } from "./override-keys.ts";
 import { nativeSourceFrame } from "./sampling.ts";
 import { nativeScreenAnchorsV2 } from "./visibility-v2.ts";
 import type { NativeScopeSample } from "./types.ts";
@@ -21,7 +22,7 @@ export function sampleNativeFrameV2(
   input: Native3DLayer,
   sample: NativeScopeSample,
 ): NativeFrameSnapshotV2 {
-  const controller = Native3DLayerSchema.parse(input);
+  const controller = Native3DLayerVersionsSchema.parse(input);
   const location = {
     node: controller.id,
     path: `${sample.scope}/${controller.id}`,
@@ -37,7 +38,7 @@ export function sampleNativeFrameV2(
       },
     );
   const sourceFrame = nativeSourceFrame(controller, sample);
-  const requestKey = native3DOverridesKey({
+  const requestKey = native3DOverridesKeyV2({
     ...(controller.partOverrides
       ? { partOverrides: controller.partOverrides }
       : {}),
