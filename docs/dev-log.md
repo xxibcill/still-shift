@@ -51,9 +51,13 @@ still hold before relying on them.
   prelude; 25 focused runtime/CLI/package cases and independent 14-case GPU
   controls pass. Five fresh bridge PNGs match exactly; the first harness mismatch
   was a missing production sRGB tag, with zero changed decoded pixels.
-  Earlier build/test/fixture failures remain retained. Actual native E01, full696
-  fresh bridge, installed execution, complete local gate/176 baselines and human
-  acceptance remain pending. [Design](./mechanism-shorts-ms1n-design.md),
+  Implementation is committed at `cfcb020e`; the first actual E01 PNG/receipt
+  exists but its external harness failed on an unconsumed generator. That harness
+  is repaired; source-publication, historical descriptor self-hash and native raw
+  row-order fixes now pass actual focused regressions and fresh fast3/3,861 units.
+  Earlier failures remain retained. Full E01/edit proof, full696 fresh bridge,
+  installed execution, complete local gate/176 baselines and human acceptance
+  remain pending. [Design](./mechanism-shorts-ms1n-design.md),
   [results](./mechanism-shorts-ms1n-results.json).
 
 - **MS1 software complete in stages (2026-10-10):** `codex/mechanism-ms1` carries
@@ -181,6 +185,19 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — MS1N publication and provenance repairs
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, after `cfcb020e`.
+- **Done:** always bind historical code descriptors to their own hash; revalidate
+  authored episode/source/code after full closure traversal before publication;
+  preserve canonical native raw row order. Register independent depth in full gate.
+- **Results:** source/package8, actual MP4 row-order1 and fresh fast3/3,861 pass.
+- **Retained:** first actual E01 preview produced PNG/one-pass receipt, but the
+  external verifier failed on an unconsumed generator; private harness repaired.
+- **Open / next:** fresh actual previews/edits, native and bridge696, native hardware,
+  portable/installed execution and all77 required groups/176 unchanged baselines.
+- **Records:** [native results](./mechanism-shorts-ms1n-results.json).
 
 ### 2026-10-10 — MS1N native implementation checkpoint
 

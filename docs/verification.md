@@ -79,6 +79,14 @@ four and a half minutes on an Apple M5 Pro. See the
 - `pnpm composition:baselines --compare-hardware` measures how far a hardware-GPU
   preview drifts from export and writes a report beside the baseline.
 
+`pnpm test:browser:native3d-depth` runs independent native mesh/world-graphic
+joint depth, HDR resolve, color/alpha/UV, winding, visibility and foreign WebGL
+state controls under the pinned software renderer. It is included in `pnpm test`
+and therefore `pnpm check`/`pnpm check:all`; run it serially with other browser
+and export groups. It retains source identities, actual pixels and failed
+artifacts. Native E01, saved edits/installed lifecycle, representative timing,
+memory and human playback/listening remain separate acceptance requirements.
+
 ## Verification policy
 
 ### Deferred WebGL performance

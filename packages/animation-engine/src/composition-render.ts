@@ -98,6 +98,8 @@ export async function renderComposition(request: {
   workers?: ExportRequest["workers"];
   cacheStatic?: boolean;
   nativeMechanism?: NativeMechanismExecution;
+  /** Recheck the owning episode's source edges before native output publication. */
+  validateNativeSourceEdges?: () => Promise<void>;
 }): Promise<CompositionRenderResult> {
   request.signal?.throwIfAborted();
   if (
@@ -128,6 +130,11 @@ export async function renderComposition(request: {
     request.nativeMechanism,
     { signal: request.signal },
   );
+  if (request.validateNativeSourceEdges && !nativeObservation)
+    throw new AnimationEngineError(
+      "SCENE_INVALID",
+      "Native source-edge validation requires prepared native sources",
+    );
   if (request.format === undefined && (width % 2 !== 0 || height % 2 !== 0))
     throw new AnimationEngineError(
       "SCENE_INVALID",
@@ -230,6 +237,7 @@ export async function renderComposition(request: {
               throw Error(
                 "Native source transport changed before output publication",
               );
+            await request.validateNativeSourceEdges?.();
           },
         }
       : {}),

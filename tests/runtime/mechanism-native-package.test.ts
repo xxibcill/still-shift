@@ -141,6 +141,52 @@ describe("portable native package without rendered-evidence invention", () => {
       verifyNativeMechanismPackageArtifacts(outputDirectory),
     ).rejects.toThrow(/bytes differ/);
   });
+  it("rejects a portable captured descriptor that differs from its own hash", async () => {
+    const { root, episode, loaded } = await project();
+    const originalEpisode = await readFile(episode);
+    const prepared = await prepareNativeMechanismEpisode(
+      loaded,
+      { outputDirectory: join(root, "prepared") },
+      selectMechanismRoute(loaded.episode, "native3d"),
+    );
+    const outputDirectory = join(root, "portable");
+    await packageMechanismEpisode(episode, {
+      outputDirectory,
+      preparedDirectory: prepared.outputDirectory,
+    });
+    await expect(
+      verifyNativeMechanismPackageArtifacts(outputDirectory),
+    ).resolves.toMatchObject({
+      preparedChecked: true,
+      actualExecutionVerified: false,
+    });
+    const receiptPath = join(
+      outputDirectory,
+      "prepared",
+      "prepared.receipt.json",
+    );
+    const receipt = JSON.parse(await readFile(receiptPath, "utf8"));
+    receipt.appearanceCodeIdentity.modules[0].sha256 = mechanismHash(
+      Buffer.from("another captured module"),
+    );
+    const receiptBytes = Buffer.from(`${JSON.stringify(receipt, null, 2)}\n`);
+    await writeFile(receiptPath, receiptBytes);
+    const manifestPath = join(outputDirectory, "package.manifest.json");
+    const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
+    manifest.files.find(
+      (file: { path: string }) =>
+        file.path === "prepared/prepared.receipt.json",
+    ).sha256 = mechanismHash(receiptBytes);
+    await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+    // Every packaged file checksum now matches. Historical verification still
+    // has to bind the captured descriptor to its own recorded appearance SHA.
+    await expect(
+      verifyNativeMechanismPackageArtifacts(outputDirectory),
+    ).rejects.toThrow(
+      /appearance descriptor differs from its recorded checksum/,
+    );
+    expect(await readFile(episode)).toEqual(originalEpisode);
+  });
   it("requires a preparation refresh for saved camera edits and preserves the refreshed recipe", async () => {
     const { root, loaded } = await project();
     const options = { outputDirectory: join(root, "prepared") };

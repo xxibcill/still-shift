@@ -46,7 +46,10 @@ import {
   nativePreparedSha256,
   createNativeObservationRequest,
 } from "../native-observation.ts";
-import { assertNativeAppearanceCodeIdentity } from "../native3d-appearance-identity.ts";
+import {
+  assertNativeAppearanceCodeIdentity,
+  hashNativeAppearanceCodeIdentity,
+} from "../native3d-appearance-identity.ts";
 import {
   compileNativeMechanismComposition,
   mechanismOverlayLayerId,
@@ -681,6 +684,14 @@ export async function verifyNativePreparedEpisode(
       "Native preparation belongs to a different episode, rig or selected route",
       root,
     );
+  if (
+    hashNativeAppearanceCodeIdentity(receipt.appearanceCodeIdentity) !==
+    receipt.appearanceCodeSha256
+  )
+    fail(
+      "Captured native appearance descriptor differs from its recorded checksum",
+      root,
+    );
   const loadedComposition = await loadComposition(
     resolve(root, receipt.compositionPath),
     "webgl2",
@@ -1132,6 +1143,8 @@ export async function renderNativeMechanismEpisode(
     outputPath: join(outputDirectory, "episode.mp4"),
     backend: "webgl2",
     nativeMechanism: nativeMechanismExecution(loaded, selection),
+    validateNativeSourceEdges: () =>
+      assertNativeMechanismSourceEdges(loaded, options.signal),
     ...(options.signal ? { signal: options.signal } : {}),
     ...(options.cacheDirectory
       ? { cacheDirectory: options.cacheDirectory }

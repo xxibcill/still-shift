@@ -289,6 +289,7 @@ const codecArguments = (encoder: "libx264" | "h264_videotoolbox") => [
 const frameTransportArguments = (
   scene: ExportableScene,
   transport: FrameTransport,
+  pixelRows: "top-first" | "bottom-first",
 ): { input: string[]; filter: string[] } => {
   switch (transport) {
     case "raw_rgba":
@@ -301,7 +302,7 @@ const frameTransportArguments = (
           "-video_size",
           `${scene.canvas.width}x${scene.canvas.height}`,
         ],
-        filter: ["-vf", "vflip"],
+        filter: pixelRows === "bottom-first" ? ["-vf", "vflip"] : [],
       };
     case "png_pipe":
       return {
@@ -325,8 +326,13 @@ export const ffmpegArguments = (
   encoder: "libx264" | "h264_videotoolbox",
   transport: FrameTransport,
   audioInput?: ExportAudioInput,
+  pixelRows: "top-first" | "bottom-first" = "bottom-first",
 ) => {
-  const transportArguments = frameTransportArguments(scene, transport);
+  const transportArguments = frameTransportArguments(
+    scene,
+    transport,
+    pixelRows,
+  );
   return [
     "-hide_banner",
     "-loglevel",
@@ -1042,6 +1048,7 @@ export const exportScene = async (
           encoderName,
           transport,
           audioInput,
+          request.nativeObservation ? "top-first" : "bottom-first",
         ),
     workOptions !== undefined,
   );
@@ -1794,14 +1801,6 @@ export const exportScene = async (
     await server.close();
     server = undefined;
     request.signal?.throwIfAborted();
-    if (profile || workOptions || nativeSink) {
-      await request.validateSources?.();
-      if (
-        (await fileChecksum(request.sourcePath, request.signal)) !==
-        capturedSourceChecksum
-      )
-        throw Error("Composition source changed before output publication");
-    }
     if (nativeSink && nativeObservations) {
       const staged = new Map(
         nativeSink.publications.map((entry) => [
@@ -1834,6 +1833,16 @@ export const exportScene = async (
           return artifact;
         },
       });
+    }
+    // Closure verification may traverse the full timeline. Recheck current
+    // authored sources and executable identity after it, before publication.
+    if (profile || workOptions || nativeSink) {
+      await request.validateSources?.();
+      if (
+        (await fileChecksum(request.sourcePath, request.signal)) !==
+        capturedSourceChecksum
+      )
+        throw Error("Composition source changed before output publication");
     }
     const metadata = [
       { staged: temporaryScenePath, destination: sceneManifestPath },

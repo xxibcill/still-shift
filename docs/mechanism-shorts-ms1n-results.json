@@ -380,10 +380,62 @@
       "tests": 3861,
       "testFiles": 375,
       "scope": "Fresh generated schema/appearance closure, boundary, format, lint, TypeScript and all unit gates. Native inventory fixture added and full 27-sample E01 correctness case receives an explicit 15s framework timeout; rendering baselines and performance limits unchanged. Earlier failed run retained."
+    },
+    {
+      "id": "e01-preview-proof-1",
+      "status": "failed",
+      "command": "pnpm exec tsx /private/tmp/mechanism-ms1n-e01-preview-smoke.mjs --repo managed-worktree --output /private/tmp/still-shift-ms1n-e01-preview-proof-1 --first-only",
+      "sourceCommit": "cfcb020eec97d7fc84f18d726a813f0aaf1266a5",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-e01-preview-proof-1.log",
+        "bytes": 486,
+        "sha256": "sha256:cbb85802316162ef93d9a7b108bfa252f62c141333e4e59c8672ad94f1c27e5a"
+      },
+      "directory": "/private/tmp/still-shift-ms1n-e01-preview-proof-1",
+      "scope": "Actual frame0 native PNG and validated one-pass observation receipt published. External smoke verifier stored compositionNativePasses generator without materializing it, then compared undefined length. Failed harness retained; original harness SHA and diagnosis saved separately. No passed E01 proof claimed."
+    },
+    {
+      "id": "native-row-order-1",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-row-order-1.log",
+        "bytes": 319,
+        "sha256": "sha256:5ee696432f2d7fad880b60437f990174e851ccf7d1c38e5b794888ca800baaf3"
+      },
+      "tests": 1,
+      "scope": "Actual asymmetric two-frame MP4 encode/decode confirms canonical top-first native raw input and legacy bottom-first input produce identical decoded pixels in correct vertical order."
+    },
+    {
+      "id": "source-publication-package-1",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-source-publication-package-1.log",
+        "bytes": 1466,
+        "sha256": "sha256:8dbab86ee8b7e611ddbb683e840b2859ebddf66492470806d83bf5d66b51d8c5"
+      },
+      "tests": 8,
+      "scope": "Seven package/self-hash controls plus actual 64x64 two-frame native export rejects an episode edit after encoding without publishing movie, sidecars or observations. Source/code revalidation moved after staged closure traversal."
+    },
+    {
+      "id": "check-fast-3",
+      "status": "passed",
+      "command": "pnpm check:fast",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-check-fast-3.log",
+        "bytes": 29796,
+        "sha256": "sha256:419a03b3f8d73c87dbb34caa2b9f33d66e45368a56efd74a8bc8831bdac23cd3"
+      },
+      "tests": 3861,
+      "testFiles": 375,
+      "scope": "Fresh complete development gate after source-publication, descriptor self-hash and raw/default row-order repairs; all generated identity/boundary/format/lint/type/unit stages pass."
     }
   ],
   "implementationEvidence": {
-    "sourceCheckpoint": "first implementation checkpoint recorded by accompanying commit; exact commit linked in next evidence slice",
+    "sourceCheckpoint": "cfcb020eec97d7fc84f18d726a813f0aaf1266a5",
     "priorContractCheckpoint": "3fa54099",
     "nativeIndependentDepthGate": {
       "status": "passed",
@@ -406,14 +458,35 @@
       "firstFailureExpectedPngSha256": "sha256:a0b69fd206f2bba5fa5829563f4d53ab056c8c3fd01b23ce107c12026429b4f3",
       "firstFailureActualUntaggedPngSha256": "sha256:61be7839212f22eece79d1ead281a68f09337d0935790a675b2cf1ea8aef937e"
     },
-    "nativeEpisodeExecution": "pending",
+    "nativeEpisodeExecution": {
+      "status": "first-actual-preview-produced-unverified-by-failed-harness",
+      "directory": "/private/tmp/still-shift-ms1n-e01-preview-proof-1",
+      "nativeSourceRepairPending": [],
+      "humanAcceptance": "pending",
+      "repairs": "Captured descriptor self-hash, authored source-edge validation immediately before publication, and canonical top-first raw/default encoder row order implemented. Fresh source checkpoint/proofs pending."
+    },
     "portableInstalledExecution": "pending",
-    "fullLocalGateAnd176Baselines": "pending",
+    "fullLocalGateAnd176Baselines": {
+      "status": "pending",
+      "unchangedOriginalRequiredGroups": 76,
+      "currentRequiredGroups": 77,
+      "newMaintainedGroup": "test:browser:native3d-depth",
+      "baselineItems": 176,
+      "baselineFrames": 36061,
+      "baselineSha256": "sha256:e5e7a38842f1248ab830ccc2b1130444816d388ab658916ab652c91e7fe75864",
+      "baselineChangeFromMs1": false
+    },
     "sourceInputInventory": {
       "path": "/private/tmp/still-shift-ms1n-implementation-inputs-1.json",
       "inputs": 2126,
       "sha256": "sha256:15640575372e2c80b47f921654eb0610f779bab651f839d3ecdd598c2b9ff82e",
       "scope": "All inventoried source/test/build bytes unchanged through the passing development gate. Parent 3fa54099; excludes changing milestone reports."
+    },
+    "sourceRepairInventory": {
+      "path": "/private/tmp/still-shift-ms1n-implementation-inputs-2.json",
+      "inputs": 2128,
+      "sha256": "sha256:5787be7101e9240d39dad809503523c67ca20a90eca5c2f46b592ba3555aacff",
+      "scope": "Exact source/test/build bytes unchanged through fresh check-fast3; parent cfcb020e. Accompanying commit records repair checkpoint."
     }
   },
   "humanContinuousPlaybackListeningAndCreativeAcceptance": "pending",
