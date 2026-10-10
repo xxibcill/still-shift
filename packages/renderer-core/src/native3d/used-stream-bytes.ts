@@ -66,3 +66,42 @@ export async function hashNativeUsedBytes(
     lease?.release();
   }
 }
+
+function utf8Length(value: string): number {
+  let length = 0;
+  for (let index = 0; index < value.length; index++) {
+    const code = value.charCodeAt(index);
+    if (code < 128) length++;
+    else if (code < 2048) length += 2;
+    else if (
+      code >= 0xd800 &&
+      code <= 0xdbff &&
+      value.charCodeAt(index + 1) >= 0xdc00 &&
+      value.charCodeAt(index + 1) <= 0xdfff
+    ) {
+      length += 4;
+      index++;
+    } else length += 3;
+  }
+  return length;
+}
+
+export function packNativeObservedFrameKey(value: string) {
+  const memory = renderMemory(),
+    bytes = allocateRenderPixels(
+      utf8Length(value),
+      () => new Uint8Array(utf8Length(value)),
+      true,
+    );
+  new TextEncoder().encodeInto(value, bytes);
+  let disposed = false;
+  return {
+    bytes,
+    dispose() {
+      if (!disposed) {
+        disposed = true;
+        memory?.release(bytes.buffer);
+      }
+    },
+  };
+}

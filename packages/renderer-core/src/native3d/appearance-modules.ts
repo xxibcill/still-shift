@@ -838,6 +838,10 @@ export const native3DAppearanceModules: readonly {
     url: new URL("./shape-associations.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/native3d/three-frame-seal-v2.ts",
+    url: new URL("./three-frame-seal-v2.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/native3d/three-graphics.ts",
     url: new URL("./three-graphics.ts", import.meta.url),
   },
@@ -876,6 +880,10 @@ export const native3DAppearanceModules: readonly {
   {
     name: "renderer-core/src/native3d/used-indexed-streams.ts",
     url: new URL("./used-indexed-streams.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/used-landmarks.ts",
+    url: new URL("./used-landmarks.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/native3d/used-stream-bytes.ts",
@@ -1622,6 +1630,13 @@ export const native3DAppearanceModules: readonly {
     name: "scene-contract/src/native3d/index.ts",
     url: new URL(
       "../../../scene-contract/src/native3d/index.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/native3d/observation-v2.ts",
+    url: new URL(
+      "../../../scene-contract/src/native3d/observation-v2.ts",
       import.meta.url,
     ),
   },

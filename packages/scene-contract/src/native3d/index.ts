@@ -5,4 +5,5 @@ export * from "./frame-v2.ts";
 export * from "./frame.ts";
 export * from "./observation.ts";
 export * from "./shape-observation.ts";
+export * from "./observation-v2.ts";
 export * from "./appearance.ts";

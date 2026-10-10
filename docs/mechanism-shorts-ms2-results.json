@@ -1356,11 +1356,322 @@
         "external": 79
       },
       "sourceInvariant": "2387 inputs / 118124080 bytes unchanged"
+    },
+    {
+      "id": "native2-full-frame-route-red-1",
+      "status": "failed-missing-public-route",
+      "sourceCheckpoint": "b23c9412e1ffa12689b70d90365d21da59f6fff2",
+      "sourceState": "working-native2-full-observed-frame-slice",
+      "actualRootSession": 36484,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-frame2-red-inputs-1.json",
+        "bytes": 407411,
+        "sha256": "sha256:9b780ccf97ac5ab37e1067d015f44d23efce7d01ef92f84583846bc77f3ec6f1",
+        "files": 2388,
+        "inputBytes": 118124369,
+        "sourceCommit": "b23c9412e1ffa12689b70d90365d21da59f6fff2"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-frame2-red-1.log",
+          "bytes": 1218,
+          "sha256": "sha256:31d27394241b02826990e509a901310693deae957125d6e36944ff2014c92ee2"
+        }
+      ],
+      "qualification": "Actual focused red test expected a full-frame browser owner and found undefined; one test failed."
+    },
+    {
+      "id": "native2-full-frame-build-1",
+      "status": "failed-types",
+      "sourceCheckpoint": "b23c9412e1ffa12689b70d90365d21da59f6fff2",
+      "sourceState": "working-native2-full-observed-frame-slice",
+      "actualRootSession": 50299,
+      "actualExitCode": 2,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-frame2-working-inputs-1.json",
+        "bytes": 408303,
+        "sha256": "sha256:a8668c812699f3840ef39163a36c1e3d28d843f1653be826de955d7ee7832889",
+        "files": 2393,
+        "inputBytes": 118163083,
+        "sourceCommit": "b23c9412e1ffa12689b70d90365d21da59f6fff2"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-frame2-build-1.log",
+          "bytes": 8538,
+          "sha256": "sha256:b0eff2f73007f4d2495a0a5e2a628507f2086c5eecf968bed14883cbda77c44d"
+        }
+      ],
+      "qualification": "Actual compiler failure: explicit never-return error function needed for narrowing, readonly source/camera/tuple cloning, and closure landmark narrowing. No product tests started."
+    },
+    {
+      "id": "native2-full-frame-build-2",
+      "status": "passed-compile-only",
+      "sourceCheckpoint": "b23c9412e1ffa12689b70d90365d21da59f6fff2",
+      "sourceState": "working-native2-full-observed-frame-slice",
+      "actualRootSession": 66900,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-frame2-working-inputs-2.json",
+        "bytes": 408303,
+        "sha256": "sha256:803752b99800a0ecf343e7bc0c8668bab1d2a9507d8f10eddb971650df32b97d",
+        "files": 2393,
+        "inputBytes": 118163338,
+        "sourceCommit": "b23c9412e1ffa12689b70d90365d21da59f6fff2"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-frame2-build-2.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        }
+      ],
+      "qualification": "Type repair retains strict validation and thresholds; this run only compiles."
+    },
+    {
+      "id": "native2-full-frame-focused-1",
+      "status": "failed-fixture-reference",
+      "sourceCheckpoint": "b23c9412e1ffa12689b70d90365d21da59f6fff2",
+      "sourceState": "working-native2-full-observed-frame-slice",
+      "actualRootSession": 24205,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-frame2-working-inputs-3.json",
+        "bytes": 408476,
+        "sha256": "sha256:11d44adcad96cae22cf7369a51ebddb9de25738759495c2d746e274ddf18fe25",
+        "files": 2394,
+        "inputBytes": 118180020,
+        "sourceCommit": "b23c9412e1ffa12689b70d90365d21da59f6fff2"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-frame2-build-3.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame2-focused-1.log",
+          "bytes": 4134,
+          "sha256": "sha256:c351bcc2cff8586f1326f250952d10ea0a4fdc14575f39d7c84b65da40900146"
+        }
+      ],
+      "qualification": "Child-stage exits inferred from required shell &&; one actual aggregate terminal receipt, no separate child session handles. Build3 completed. Focused tests passed22/failed1 over two files: valid constructor-ID fixture left ratchet.pawlShape pointing at its prior name. Source validation correctly rejected it; fixture reference repaired, validation not weakened.",
+      "unitTestsPassed": 22,
+      "unitTestsFailed": 1,
+      "unitFiles": 2,
+      "unitReportedSeconds": 0.804
+    },
+    {
+      "id": "native2-full-frame-build-focused-browser-4-qualified",
+      "status": "passed-observed-logs-qualified-root-exit",
+      "sourceCheckpoint": "b23c9412e1ffa12689b70d90365d21da59f6fff2",
+      "sourceState": "working-native2-full-observed-frame-slice",
+      "actualRootSession": null,
+      "actualExitCode": null,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-frame2-working-inputs-4.json",
+        "bytes": 408811,
+        "sha256": "sha256:0e27a3a879f911b38543318e9619ada22b7c5ed4a6ff63f45daee2b5a8f3b405",
+        "files": 2396,
+        "inputBytes": 118199199,
+        "sourceCommit": "b23c9412e1ffa12689b70d90365d21da59f6fff2"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-frame2-identity-generate-1.log",
+          "bytes": 260,
+          "sha256": "sha256:7e93e544a3ac3c9cca16981dfba909736293ebf1b2cd8f9ee6ea2df2518f2bc5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame2-build-4.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame2-focused-2.log",
+          "bytes": 394,
+          "sha256": "sha256:63a7c55025ca500d9e0e7f32360d51bdaab0fc0183e694a9656698d3da8857c1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame2-browser-1.log",
+          "bytes": 155,
+          "sha256": "sha256:a353ae9e45693ecec7300425d54bbe24b9ccdf135de1595c3e4919e9a944f182"
+        }
+      ],
+      "qualification": "Tool output truncation lost the actual root session/terminal receipt. Recovered unchanged logs show closure355/79, build,23 focused tests/two files and six full-frame browser controls/four negatives. The original aggregate exit is unknown; later new maintained gates supply their own terminal receipts.",
+      "unitTests": 23,
+      "unitFiles": 2,
+      "unitReportedSeconds": 0.854,
+      "browserReceipts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-4pzC5E/run.json",
+          "bytes": 5622,
+          "sha256": "sha256:43b7ebb019239141772926b5dedcf8debd0904c80cfc4c9ad93b3414558275fa"
+        }
+      ]
+    },
+    {
+      "id": "native2-full-frame-final-gate-1",
+      "status": "passed-before-inherited-key-hardening",
+      "sourceCheckpoint": "b23c9412e1ffa12689b70d90365d21da59f6fff2",
+      "sourceState": "working-native2-full-observed-frame-slice",
+      "actualRootSession": 84225,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-frame2-working-inputs-4.json",
+        "bytes": 408811,
+        "sha256": "sha256:0e27a3a879f911b38543318e9619ada22b7c5ed4a6ff63f45daee2b5a8f3b405",
+        "files": 2396,
+        "inputBytes": 118199199,
+        "sourceCommit": "b23c9412e1ffa12689b70d90365d21da59f6fff2"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-frame2-fast-1.log",
+          "bytes": 31616,
+          "sha256": "sha256:ca130c5a894441fc974a8fc207560b948495de771ce2bcc8831cb362a822aff4"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame2-maintained-browser-1.log",
+          "bytes": 731,
+          "sha256": "sha256:f714754602311131a13700e9d365faa9753f9d5222ff52b4a9a030f65a19bdd1"
+        }
+      ],
+      "qualification": "Child-stage exits inferred from required shell &&; one actual aggregate terminal receipt, no separate child session handles. Fast1 and all three maintained browser commands pass on unchanged inputs. A subsequent independently reproduced malformed-packet lookup error requires refreshed verification after repair.",
+      "terminalObservedAtUTC": "2026-10-10 20:02:45 UTC",
+      "unitTests": 4013,
+      "unitFiles": 391,
+      "unitReportedSeconds": 43.44,
+      "browserReceipts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-86KBhg/run.json",
+          "bytes": 2976,
+          "sha256": "sha256:ed65460b40ca9770d4a24c34c5ddc709a2ac125dbb610e4ae9ce3f42ccf1e13d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-JNerT5/run.json",
+          "bytes": 7870,
+          "sha256": "sha256:112bbd6c3f8ed75b80b3630f4d0b6cbc301030debc6ff0127ef2b2df85174969"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-Y0CLiQ/run.json",
+          "bytes": 5622,
+          "sha256": "sha256:43b7ebb019239141772926b5dedcf8debd0904c80cfc4c9ad93b3414558275fa"
+        }
+      ]
+    },
+    {
+      "id": "native2-full-frame-inherited-name-red-1",
+      "status": "failed-unlocated-schema-exception",
+      "sourceCheckpoint": "b23c9412e1ffa12689b70d90365d21da59f6fff2",
+      "sourceState": "working-native2-full-observed-frame-slice",
+      "actualRootSession": null,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-frame2-working-inputs-4.json",
+        "bytes": 408811,
+        "sha256": "sha256:0e27a3a879f911b38543318e9619ada22b7c5ed4a6ff63f45daee2b5a8f3b405",
+        "files": 2396,
+        "inputBytes": 118199199,
+        "sourceCommit": "b23c9412e1ffa12689b70d90365d21da59f6fff2"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-frame2-inherited-name-probe-1.log",
+          "bytes": 1070,
+          "sha256": "sha256:9b6d64b8c3de01ffa35d08666e8d131ff697b02f58283323cc6597e4f0d90295"
+        }
+      ],
+      "qualification": "Actual direct process terminal exit1 (chunk4209f8): a missing shape named constructor throws TypeError reading ownerPart instead of returning a located contract rejection. A valid declared constructor ID remains allowed.",
+      "actualTerminalChunk": "4209f8"
+    },
+    {
+      "id": "native2-full-frame-final-gate-2",
+      "status": "passed-final-held-source",
+      "sourceCheckpoint": "b23c9412e1ffa12689b70d90365d21da59f6fff2",
+      "sourceState": "working-native2-full-observed-frame-slice",
+      "actualRootSession": 13936,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-frame2-working-inputs-5.json",
+        "bytes": 408811,
+        "sha256": "sha256:c358cb37a38e189f1c708aba2afc96d98cd2aebd1a3bcc4ba47a4b673ec2fd02",
+        "files": 2396,
+        "inputBytes": 118200095,
+        "sourceCommit": "b23c9412e1ffa12689b70d90365d21da59f6fff2"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-frame2-identity-generate-2.log",
+          "bytes": 260,
+          "sha256": "sha256:7e93e544a3ac3c9cca16981dfba909736293ebf1b2cd8f9ee6ea2df2518f2bc5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame2-focused-3.log",
+          "bytes": 326,
+          "sha256": "sha256:c9d86a54db3ce0d4e0b1a72841f99b38c4f5654d60e17388d8f6cfc38c10ebf6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame2-fast-2.log",
+          "bytes": 31886,
+          "sha256": "sha256:b8620ce3315a13da4c71bb515b2377841e38eeffed9ad3da9567f34b6303ef87"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame2-maintained-browser-2.log",
+          "bytes": 731,
+          "sha256": "sha256:62f09a0b52fb6e578df68cf4b4b602cee7981c59ca1bff6013f169ce8b8825b9"
+        }
+      ],
+      "qualification": "Child-stage exits inferred from required shell &&; one actual aggregate terminal receipt, no separate child session handles. Own-key lookup repaired;12 focused tests and full fast2 pass. All three maintained browser gates pass; six full-frame records are independently checked against fresh Node source sampling. Matrix1e-8 and pixel0.5px tolerances remain unchanged. GPU Float32 quantization uses a separate derived bound. Inputs are unchanged after checks.",
+      "terminalObservedAtUTC": "2026-10-10 20:05:09 UTC",
+      "unitTests": 4014,
+      "unitFiles": 391,
+      "unitReportedSeconds": 44.35,
+      "focusedTests": 12,
+      "browserReceipts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-DdodWg/run.json",
+          "bytes": 2976,
+          "sha256": "sha256:ed65460b40ca9770d4a24c34c5ddc709a2ac125dbb610e4ae9ce3f42ccf1e13d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-TDFqZR/run.json",
+          "bytes": 7870,
+          "sha256": "sha256:112bbd6c3f8ed75b80b3630f4d0b6cbc301030debc6ff0127ef2b2df85174969"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-mgW8GO/run.json",
+          "bytes": 5622,
+          "sha256": "sha256:3bdb2b3b2a63574192e66156741a3c3521875c6b1e8eac5b65748aabee933841"
+        }
+      ],
+      "appearanceClosure": {
+        "firstParty": 355,
+        "external": 79
+      },
+      "independentNodeChecks": {
+        "fullFrames": 6,
+        "positionedAnchors": 42,
+        "notDrawnAnchors": 6,
+        "matrices": "unchanged-1e-8",
+        "pixels": "unchanged-0.5px",
+        "landmarks": "exact-independent-packed-float32-means"
+      },
+      "browserFrames": {
+        "ownedWorld": 5,
+        "usedColorStreams": 6,
+        "fullObservedFrame": 6
+      },
+      "browserNegatives": {
+        "usedColorStreams": 11,
+        "fullObservedFrame": 4
+      }
     }
   ],
   "implementation": {
     "firstSlice": "Completed standalone reusable rig/teaching-shape contracts. All 11 focused negatives/admission checks and fresh complete fast3 gate (3928 units/383 files) pass; earlier closure and optional-type failures retained.",
-    "runtimeSupport": "standalone-native2-used-color-streams-verified-composition-export-not-integrated",
+    "runtimeSupport": "standalone-native2-full-observed-frames-verified-composition-export-not-integrated",
     "supportedPacks": [],
     "pilotSupportedEpisodes": 0,
     "secondSlice": "Completed strict scene2/frame2 declarations, dependency/ownership and generated-landmark checks, aggregate changing geometry budgets and pack references. Focused12, TypeScript build and fresh fast2 pass (3940 units/385 files); failed formatting attempt retained. Pure evaluation and integration remain required.",
@@ -1376,7 +1687,45 @@
     "fifthSlice": "Completed native2 data adapter: explicit source/versioned snapshot, async topology SHA validation, neutral variant association, rigControls exclusivity, fractional owning/source clocks and expected posed visibility. Focused24/build1 and fresh fast2 pass (3978 units/388 files); missing-route red and exhaustive fixture failure retained. Browser composition dispatch and used-GPU observation remain pending.",
     "sixthSlice": "Completed owned native2 browser world: private fixed-topology clones, shared live mesh/vertex/triangle caps, atomic state admission, absolute Float32 pos/normal updates and versions/bounds before render list creation, alias/seek isolation and managed lifecycle. Focused27/build1; after retained receipt-type/lint/v1-type regressions and repairs, complete fast2 passes3990/389. Five real browser frames reproduce exact seeks/aliases, and existing native14 + integration5 + cancellation controls pass. Independent GPU stream observation and composition/export integration remain next.",
     "seventhSlice": "Completed scoped actual nonzero indexed color-draw recording, packed used-GPU position/normal/index readback, static sealed associations/groups/material inputs, GPU landmark means and interval-scoped not-drawn allowances. Final fast3 passes4002/390; maintained five owned-world frames plus six observed controls/eleven failure seeds pass, with24 fresh independent Node digests/24 landmarks. Stale uploads, wrong normals/indices, zero/missing groups, changed linear material, hidden proof, abort, observer/world disposal fail before successful receipt. All failed builds/startup/seed/lint and actual lifecycle red retained. Whole observed-frame2 and composition/export transport remain next.",
-    "installationQualification": "Two guarded mutation scripts stopped at exact text-match assertions (repeated type name; formatted multiline zero-seed text). Only their intended milestone files had been written; separate guarded resumes completed those edits. Neither stop was a product verification or automatic approval rejection."
+    "installationQualification": "Two guarded mutation scripts stopped at exact text-match assertions (repeated type name; formatted multiline zero-seed text). Only their intended milestone files had been written; separate guarded resumes completed those edits. Neither stop was a product verification or automatic approval rejection.",
+    "eighthSlice": {
+      "status": "implemented-and-verified-standalone-full-observed-frame2",
+      "contracts": [
+        "strict native3d-observed-frame-2 and mixed output-frame2 contract; original v1 schemas unchanged",
+        "explicit source kind and position/visibility methods; not-drawn shape anchors omit world/pixel/depth",
+        "sealed shape association, group/layout/readback inventory checks retained inside full frame"
+      ],
+      "runtime": [
+        "one fixed browser owner shares actual indexed draw capture and lifecycle guards",
+        "exact used-position ring means and fresh Three camera/part/projection/physical visibility sealed synchronously before successful asynchronous hashes",
+        "CPU changing position/index equality to actual GPU bytes is required before Three physical ray queries",
+        "managed scratch/readback/receipt ownership, fractional source clocks and appearance-code binding"
+      ],
+      "independentChecks": [
+        "fresh source-selected camera/lens/hierarchy/pose, exact packed stream digests and Float32 ring means",
+        "actual physical occlusion against independently quantized geometry; original matrix1e-8/pixel0.5px thresholds",
+        "separate analytically derived world-space Float32 error bound; no tolerance substitution",
+        "missing inherited dictionary IDs produce located rejection while valid constructor IDs stay supported"
+      ],
+      "browserEvidence": [
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-DdodWg/run.json",
+          "bytes": 2976,
+          "sha256": "sha256:ed65460b40ca9770d4a24c34c5ddc709a2ac125dbb610e4ae9ce3f42ccf1e13d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-TDFqZR/run.json",
+          "bytes": 7870,
+          "sha256": "sha256:112bbd6c3f8ed75b80b3630f4d0b6cbc301030debc6ff0127ef2b2df85174969"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-mgW8GO/run.json",
+          "bytes": 5622,
+          "sha256": "sha256:3bdb2b3b2a63574192e66156741a3c3521875c6b1e8eac5b65748aabee933841"
+        }
+      ],
+      "remaining": "Source2 composition asset/transport/runtime/preflight/preview/export/sink/row replay integration and all remaining MS2 family/authoring/full-gate requirements. Example packet execution/sample ordinals are only contract examples, not authenticated export assignment."
+    }
   },
   "limits": [
     "Native2 preparation/expected snapshots and standalone owned browser worlds are verified. Independent changing GPU observations, scene2 composition/export dispatch, product packs, import/camera/label/cue and scoped typography remain required.",

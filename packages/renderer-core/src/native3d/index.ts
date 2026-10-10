@@ -7,3 +7,5 @@ export * from "./types-v2.ts";
 export * from "./prepare-v2.ts";
 export * from "./evaluate-v2.ts";
 export * from "./visibility-v2.ts";
+export * from "./observed-validation-v2.ts";
+export * from "./observed-precision-v2.ts";

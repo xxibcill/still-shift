@@ -18,9 +18,13 @@ export type {
 export { observeNativeThreeWorld } from "./three-observation.ts";
 export {
   createNativeThreeShapeObservation,
+  createNativeThreeFrameObservationV2,
   NativeUsedStreamMismatchError,
 } from "./three-shape-observation.ts";
-export type { NativeThreeShapeObservationResult } from "./three-shape-observation.ts";
+export type {
+  NativeThreeShapeObservationResult,
+  NativeThreeFrameObservationResultV2,
+} from "./three-shape-observation.ts";
 export {
   createNativeThreeGraphic,
   nativeArtworkCorners,

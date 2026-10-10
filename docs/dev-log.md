@@ -45,16 +45,15 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** isolated branch `codex/mechanism-ms2`
   carries current `main` plus the native prerequisite from
-  [PR #56](https://github.com/xxibcill/still-shift/pull/56). Seven implementation
-  slices now cover strict reusable rig/shape contracts, deterministic posed
-  evaluation, native2 preparation/snapshots, bounded private Three geometry and
-  actual used indexed color streams. Final fast3 passes4,002 units / 390 files;
-  maintained five owned-world frames and six observed controls/eleven failure
-  seeds pass, with24 fresh independent Node digests/24 GPU landmarks. All failed
-  checks and the reproduced/repaired world-disposal race are retained.
-  Whole observed-frame2, versioned composition/export transport, three reusable
-  packs, import/camera/label/cue, scoped typography and the full milestone gate
-  remain required. Pilot support is zero; no MS2 PR or MS3 implementation yet.
+  [PR #56](https://github.com/xxibcill/still-shift/pull/56). Eight implementation
+  slices now include full observed-frame2: actual used Float32 landmarks, fresh
+  synchronous camera/pose/projection/visibility sealing and independent Node replay.
+  Final fast2 passes4,014 units / 391 files; maintained five owned-world frames,
+  six used-stream controls/eleven negatives and six full-frame controls/four
+  negatives pass. All failures, truncated-exit qualification and own-key repair
+  remain retained. Versioned composition/export transport, three reusable packs,
+  import/camera/label/cue, scoped typography and the full milestone gate remain.
+  Pilot support is zero; no MS2 PR or MS3 implementation yet.
   [MS2 results](./mechanism-shorts-ms2-results.json),
   [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
@@ -214,6 +213,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — Commit full native2 observed-frame sealing and replay
+
+- **Branch / source:** `codex/mechanism-ms2`, used-stream checkpoint `b23c9412`;
+  final held inventory5 records the exact checked source inputs.
+- **Done:** strict full-frame2/mixed packet contracts, GPU ring means and fresh
+  camera/part/projection/physical visibility sealed before asynchronous hashes;
+  independent source-selected pose/digest/landmark/occlusion checks retain original
+  matrix1e-8/pixel0.5px tolerances and a separate Float32 quantization bound.
+- **Results:** final fast2 passes4,014/391; maintained world5, stream6/eleven
+  negatives and full-frame6/four negatives pass. Fresh Node validates42 positioned
+  and six not-drawn anchors; later CPU pose changes cannot alter sealed A evidence.
+- **Failures / repairs:** compiler types and a stale renamed fixture reference
+  repaired; missing inherited shape ID exception reproduced/repaired. Original
+  build4/focused2/browser1 logs lack their root terminal receipt; fresh gates pass.
+- **Next / limits:** versioned composition/export integration and whole MS2
+  acceptance remain. Contract example is not authenticated export; no family,
+  pilot, human acceptance or MS2 PR yet. [Results](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-11 — Commit independent used native2 color-stream evidence
 

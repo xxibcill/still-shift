@@ -1,6 +1,9 @@
-import { Matrix4, Vector3 } from "three";
 import type { WebGLRenderer } from "three";
 import {
+  MechanismHashSchema,
+  NativeObservedFrameV2Schema,
+  NATIVE3D_FRAME_FINALIZER_VERSION,
+  NATIVE3D_SHAPE_PRECISION_POLICY,
   MechanismMatrixSchema,
   NativeShapeAssociationSchema,
   NativeFrameSnapshotV2Schema,
@@ -10,6 +13,7 @@ import type {
   NativeFrameSnapshotV2,
   NativeObservedShape,
   NativeObservedShapePass,
+  NativeObservedFrameV2,
 } from "@still-shift/scene-contract";
 import {
   allocateRenderPixels,
@@ -26,6 +30,8 @@ import {
   packNativeExpectedStream,
 } from "./used-stream-bytes.ts";
 import { freezeNativeData } from "./prepare.ts";
+import { nativeLandmarksFromUsedPositions } from "./used-landmarks.ts";
+import { sealNativeThreeFrameV2 } from "./three-frame-seal-v2.ts";
 
 export class NativeUsedStreamMismatchError extends Error {
   readonly mismatch: Readonly<{
@@ -48,6 +54,16 @@ export interface NativeThreeShapeObservationResult {
   readonly receipt: DeepReadonly<NativeObservedShapePass>;
   dispose(): void;
 }
+export interface NativeThreeFrameObservationResultV2 {
+  readonly receipt: DeepReadonly<NativeObservedFrameV2>;
+  dispose(): void;
+}
+interface NativeThreeObservationResult {
+  readonly receipt: DeepReadonly<
+    NativeObservedShapePass | NativeObservedFrameV2
+  >;
+  dispose(): void;
+}
 function utf8Length(value: string): number {
   let length = 0;
   for (let index = 0; index < value.length; index++) {
@@ -68,11 +84,14 @@ function utf8Length(value: string): number {
 }
 
 /** Observe a standalone scene2 color pass. Whole-frame/export acceptance is a separate versioned boundary. */
-export function createNativeThreeShapeObservation(
+function createNativeThreeObservationOwner(
   renderer: WebGLRenderer,
   world: NativeThreeWorldV2,
   variant: PreparedNative3DVariantV2,
+  appearanceCodeSha256?: string,
 ) {
+  if (appearanceCodeSha256 !== undefined)
+    MechanismHashSchema.parse(appearanceCodeSha256);
   let disposed = false,
     busy = false,
     generation = 0;
@@ -89,7 +108,7 @@ export function createNativeThreeShapeObservation(
     async capture(
       input: DeepReadonly<NativeFrameSnapshotV2>,
       options: { signal?: AbortSignal } = {},
-    ): Promise<NativeThreeShapeObservationResult> {
+    ): Promise<NativeThreeObservationResult> {
       const context = renderer.getContext();
       if (disposed || busy || activeContexts.has(context))
         throw Error(
@@ -106,7 +125,7 @@ export function createNativeThreeShapeObservation(
         | undefined;
       let primaryFailure = false,
         failureReason: unknown;
-      let resultOwner: NativeThreeShapeObservationResult | undefined;
+      let resultOwner: NativeThreeObservationResult | undefined;
       let publishedRelease: (() => void) | undefined;
       const expectedOwners: ReturnType<typeof packNativeExpectedStream>[] = [];
       const assertLive = () => {
@@ -131,11 +150,23 @@ export function createNativeThreeShapeObservation(
           (sum, shape) => sum + shape.vertexCount,
           0,
         );
+        const frameScratch =
+          appearanceCodeSha256 === undefined
+            ? 0
+            : variant.source.anchors.length * 2048 +
+              variant.source.geometry.meshes.reduce(
+                (sum, mesh) =>
+                  sum +
+                  (mesh.indices.length / 3) * 768 +
+                  (mesh.positions.length / 3) * 96,
+                0,
+              );
         metadata = memory?.reserve(
           "metadata",
           131072 +
             vertices * 96 +
             input.frameKey.length * 4 +
+            frameScratch +
             variant.source.parts.length * 1024 +
             Object.values(variant.shapeAssociations).reduce(
               (sum, shape) => sum + shape.groups.length * 4096,
@@ -217,6 +248,31 @@ export function createNativeThreeShapeObservation(
                 submissions: entry.submissions.length,
               });
         }
+        const sealedLandmarks = Object.fromEntries(
+          draws.shapes.map((entry) => [
+            entry.association.shape,
+            nativeLandmarksFromUsedPositions(
+              entry,
+              variant.source.teachingShapes.find(
+                (shape) => shape.id === entry.association.shape,
+              )!,
+            ),
+          ]),
+        );
+        const sealedFrame =
+          appearanceCodeSha256 === undefined
+            ? undefined
+            : sealNativeThreeFrameV2(
+                world,
+                variant,
+                snapshot,
+                draws.shapes,
+                sealedLandmarks,
+                {
+                  calls: renderer.info.render.calls,
+                  triangles: renderer.info.render.triangles,
+                },
+              );
         const shapes: Record<string, NativeObservedShape> = Object.create(null);
         for (const entry of draws.shapes) {
           assertLive();
@@ -241,40 +297,7 @@ export function createNativeThreeShapeObservation(
               );
             assertLive();
           }
-          const landmarks: Extract<
-            NativeObservedShape,
-            { status: "drawn" }
-          >["landmarks"] = Object.create(null);
-          const shape = variant.source.teachingShapes.find(
-            (shape) => shape.id === entry.association.shape,
-          )!;
-          const used = new DataView(
-            streams.position.buffer,
-            streams.position.byteOffset,
-            streams.position.byteLength,
-          );
-          const ownerMatrix = new Matrix4().fromArray(entry.ownerWorldMatrix);
-          for (const landmark of shape.landmarks) {
-            const local = new Vector3();
-            for (const vertex of landmark.vertexIndices)
-              local.add(
-                new Vector3(
-                  used.getFloat32(vertex * 12, true),
-                  used.getFloat32(vertex * 12 + 4, true),
-                  used.getFloat32(vertex * 12 + 8, true),
-                ),
-              );
-            local.divideScalar(landmark.vertexIndices.length);
-            landmarks[landmark.id] = {
-              local: local.toArray() as [number, number, number],
-              world: local.clone().applyMatrix4(ownerMatrix).toArray() as [
-                number,
-                number,
-                number,
-              ],
-              positionMethod: "used-position-landmark-1",
-            };
-          }
+          const landmarks = sealedLandmarks[entry.association.shape]!;
           const { buffer: _positionBuffer, ...positionLayout } =
             streams.positionLayout;
           const { buffer: _normalBuffer, ...normalLayout } =
@@ -314,7 +337,7 @@ export function createNativeThreeShapeObservation(
           frameKeyBytes,
           assertLive,
         );
-        const result = NativeObservedShapePassSchema.parse({
+        const shapeReceipt = NativeObservedShapePassSchema.parse({
           version: "native3d-observed-shape-pass-1",
           usedStreamVersion: "native3d-used-indexed-streams-1",
           digestPacking: "float32-uint16-little-endian-1",
@@ -329,6 +352,18 @@ export function createNativeThreeShapeObservation(
           scopeFrame: snapshot.scopeFrame,
           shapes,
         });
+        const result =
+          appearanceCodeSha256 === undefined
+            ? shapeReceipt
+            : NativeObservedFrameV2Schema.parse({
+                ...shapeReceipt,
+                version: "native3d-observed-frame-2",
+                finalizerVersion: NATIVE3D_FRAME_FINALIZER_VERSION,
+                precisionPolicy: NATIVE3D_SHAPE_PRECISION_POLICY,
+                geometrySha256: variant.geometrySha256,
+                appearanceCodeSha256,
+                ...sealedFrame,
+              });
         assertLive();
         const receipt = freezeNativeData(result),
           receiptLease = metadata;
@@ -386,6 +421,70 @@ export function createNativeThreeShapeObservation(
         throw failureReason;
       }
       return resultOwner!;
+    },
+  };
+}
+
+/** Original standalone used-stream receipt owner. */
+export function createNativeThreeShapeObservation(
+  renderer: WebGLRenderer,
+  world: NativeThreeWorldV2,
+  variant: PreparedNative3DVariantV2,
+) {
+  const owner = createNativeThreeObservationOwner(renderer, world, variant);
+  return {
+    dispose: owner.dispose,
+    async capture(
+      input: DeepReadonly<NativeFrameSnapshotV2>,
+      options: { signal?: AbortSignal } = {},
+    ): Promise<NativeThreeShapeObservationResult> {
+      const result = await owner.capture(input, options);
+      return {
+        get receipt() {
+          const receipt = result.receipt;
+          if (receipt.version !== "native3d-observed-shape-pass-1")
+            throw Error(
+              "comp-native3d-observation: wrong observation owner kind",
+            );
+          return receipt;
+        },
+        dispose: result.dispose,
+      };
+    },
+  };
+}
+
+/** Fixed finalizer: numeric Three/GPU state is sealed before asynchronous hashing. */
+export function createNativeThreeFrameObservationV2(
+  renderer: WebGLRenderer,
+  world: NativeThreeWorldV2,
+  variant: PreparedNative3DVariantV2,
+  appearanceCodeSha256: string,
+) {
+  const owner = createNativeThreeObservationOwner(
+    renderer,
+    world,
+    variant,
+    appearanceCodeSha256,
+  );
+  return {
+    dispose: owner.dispose,
+    async capture(
+      input: DeepReadonly<NativeFrameSnapshotV2>,
+      options: { signal?: AbortSignal } = {},
+    ): Promise<NativeThreeFrameObservationResultV2> {
+      const result = await owner.capture(input, options);
+      return {
+        get receipt() {
+          const receipt = result.receipt;
+          if (receipt.version !== "native3d-observed-frame-2")
+            throw Error(
+              "comp-native3d-observation: wrong observation owner kind",
+            );
+          return receipt;
+        },
+        dispose: result.dispose,
+      };
     },
   };
 }

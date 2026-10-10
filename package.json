@@ -168,7 +168,7 @@
     "native3d:identity:generate": "node --import tsx scripts/native3d/generate-appearance.ts --generate",
     "native3d:identity:check": "node --import tsx scripts/native3d/generate-appearance.ts --check",
     "test:browser:native3d-depth": "node --import tsx tests/browser/native3d-depth-proof.ts",
-    "test:browser:native3d-shapes": "node --import tsx tests/browser/native3d-shape-world.ts && node --import tsx tests/browser/native3d-used-streams.ts"
+    "test:browser:native3d-shapes": "node --import tsx tests/browser/native3d-shape-world.ts && node --import tsx tests/browser/native3d-used-streams.ts && node --import tsx tests/browser/native3d-frame-observation.ts"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

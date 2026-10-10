@@ -193,6 +193,43 @@ export const NativeObservedShapeSchema = z.discriminatedUnion("status", [
     })
     .strict(),
 ]);
+export const NativeObservedShapesSchema = mechanismIdRecordV2(
+  NativeObservedShapeSchema,
+  MECHANISM_TEACHING_SHAPE_LIMITS.meshes,
+).superRefine((inventory, context) => {
+  const shapes = Object.entries(inventory);
+  if (shapes.some(([id, shape]) => id !== shape.association.shape))
+    context.addIssue({
+      code: "custom",
+      message: "Shape dictionary key must match association",
+    });
+  if (
+    shapes.reduce((sum, [, shape]) => sum + shape.association.vertexCount, 0) >
+      MECHANISM_TEACHING_SHAPE_LIMITS.vertices ||
+    shapes.reduce(
+      (sum, [, shape]) => sum + shape.association.indexCount / 3,
+      0,
+    ) > MECHANISM_TEACHING_SHAPE_LIMITS.triangles
+  )
+    context.addIssue({
+      code: "custom",
+      message: "Observed shapes exceed aggregate geometry budgets",
+    });
+  const ordinals = shapes
+    .flatMap(([, shape]) => (shape.status === "drawn" ? shape.submissions : []))
+    .sort((a, b) => a.readbackOrdinal - b.readbackOrdinal);
+  if (
+    ordinals.some(
+      (draw, index) =>
+        draw.drawOrdinal !== index || draw.readbackOrdinal !== index,
+    )
+  )
+    context.addIssue({
+      code: "custom",
+      message:
+        "Used draws/readbacks retain contiguous owned color invocation order",
+    });
+});
 export const NativeObservedShapePassSchema = z
   .object({
     version: z.literal("native3d-observed-shape-pass-1"),
@@ -207,50 +244,9 @@ export const NativeObservedShapePassSchema = z
     scope: z.string().min(1).max(2048),
     sourceFrame: z.number().finite().min(0).max(MECHANISM_LIMITS.frames),
     scopeFrame: z.number().finite(),
-    shapes: mechanismIdRecordV2(
-      NativeObservedShapeSchema,
-      MECHANISM_TEACHING_SHAPE_LIMITS.meshes,
-    ),
+    shapes: NativeObservedShapesSchema,
   })
-  .strict()
-  .superRefine((pass, context) => {
-    const shapes = Object.entries(pass.shapes);
-    if (shapes.some(([id, shape]) => id !== shape.association.shape))
-      context.addIssue({
-        code: "custom",
-        message: "Shape dictionary key must match association",
-      });
-    if (
-      shapes.reduce(
-        (sum, [, shape]) => sum + shape.association.vertexCount,
-        0,
-      ) > MECHANISM_TEACHING_SHAPE_LIMITS.vertices ||
-      shapes.reduce(
-        (sum, [, shape]) => sum + shape.association.indexCount / 3,
-        0,
-      ) > MECHANISM_TEACHING_SHAPE_LIMITS.triangles
-    )
-      context.addIssue({
-        code: "custom",
-        message: "Observed shapes exceed aggregate geometry budgets",
-      });
-    const ordinals = shapes
-      .flatMap(([, shape]) =>
-        shape.status === "drawn" ? shape.submissions : [],
-      )
-      .sort((a, b) => a.readbackOrdinal - b.readbackOrdinal);
-    if (
-      ordinals.some(
-        (draw, index) =>
-          draw.drawOrdinal !== index || draw.readbackOrdinal !== index,
-      )
-    )
-      context.addIssue({
-        code: "custom",
-        message:
-          "Used draws/readbacks retain contiguous owned color invocation order",
-      });
-  });
+  .strict();
 export type NativeShapeAssociation = z.infer<
   typeof NativeShapeAssociationSchema
 >;
