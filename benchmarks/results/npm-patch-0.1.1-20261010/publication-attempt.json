@@ -1,0 +1,18 @@
+{
+  "authorized": true,
+  "date": "2026-10-10",
+  "archiveSha256": "5cf82c0379f3a78e5b91b96200b5f9b5816cbf8975f860a3deda40fe96fa8ac5",
+  "exitCode": 1,
+  "npmCode": "E404",
+  "response": "404 Not Found - PUT https://registry.npmjs.org/still-shift",
+  "registryAfterAttempt": {
+    "dist-tags": {
+      "latest": "0.1.0"
+    },
+    "versions": [
+      "0.0.0-stage",
+      "0.1.0"
+    ]
+  },
+  "record": "benchmarks/results/npm-patch-0.1.1-20261010/publication-attempt.json"
+}
