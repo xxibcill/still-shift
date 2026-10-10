@@ -46,8 +46,10 @@ still hold before relying on them.
 - **Documentation patch 0.1.1 (2026-10-10):** preparing on `codex/docs-patch-0-1-1`
   from `main` `e6eb7b06`. All implemented-feature guidance, both skills and package
   inclusion are isolated from unrelated roadmap/research edits. Public version and
-  lock metadata are prepared without dependency changes; full release verification
-  and an exact committed source checkpoint are pending.
+  lock metadata are prepared without dependency changes. The first full run on
+  `a437d980` passed 3,666 units and 85 runtime tests, then failed 38 integration
+  cases because the separate audio runtime was missing. That locked runtime and
+  explicit fresh-checkout instructions are now prepared; full rerun is pending.
   Published `0.1.0`, `production` and `v0.1.0` remain fixed; publication is not yet
   authorized. [Usage refresh evidence](./usage-docs-refresh-results.json).
 
@@ -160,7 +162,10 @@ still hold before relying on them.
 - **Prior evidence:** development fast gate passes 3,666 units and the isolated
   documentation candidate passes 26 offline package checks after retained reruns.
 - **Prepared:** public version/lock metadata is `0.1.1`; dependency pins are unchanged.
-- **In progress:** full local release verification and the source checkpoint.
+- **Retain:** full run on `a437d980` passed 3,666 units and 85 runtime tests, then
+  failed 38 integration cases with the missing optional audio runtime; 280 passed.
+- **Repair / next:** prepare the hash-locked audio runtime, document fresh-checkout
+  prerequisites and rerun the full gate on the revised committed candidate.
 - **Limits:** no publication or human visual/listening acceptance is inferred.
 - **Records:** [refresh evidence](./usage-docs-refresh-results.json),
   [release procedure](./npm-release-plan.md).
