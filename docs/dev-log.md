@@ -43,6 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
+- **Documentation patch 0.1.1 (2026-10-10):** preparing on `codex/docs-patch-0-1-1`
+  from `main` `e6eb7b06`. All implemented-feature guidance, both skills and package
+  inclusion are isolated from unrelated roadmap/research edits. Public version and
+  lock metadata are prepared without dependency changes. The first full run on
+  `a437d980` passed 3,666 units and 85 runtime tests, then failed 38 integration
+  cases because the separate audio runtime was missing. That locked runtime and
+  explicit fresh-checkout instructions are now prepared; full rerun is pending.
+  Published `0.1.0`, `production` and `v0.1.0` remain fixed; publication is not yet
+  authorized. [Usage refresh evidence](./usage-docs-refresh-results.json).
+
 - **Development/release branches established (2026-10-09):** `production` and
   annotated `v0.1.0` are pushed at `db28a938`, containing the source for the
   published release. `main` remains the default development branch and receives
@@ -141,6 +151,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Prepare documentation patch 0.1.1
+
+- **Agent / branch:** Codex on `codex/docs-patch-0-1-1` from `main` `e6eb7b06`.
+- **Scope:** patch package guides, capability discovery and both skills for every
+  implemented feature; include guides/skills/examples with installed links.
+- **Isolation:** copy only usage-refresh changes. Preserve unrelated working-tree
+  roadmap/research changes and the fixed published archive/tag.
+- **Prior evidence:** development fast gate passes 3,666 units and the isolated
+  documentation candidate passes 26 offline package checks after retained reruns.
+- **Prepared:** public version/lock metadata is `0.1.1`; dependency pins are unchanged.
+- **Retain:** full run on `a437d980` passed 3,666 units and 85 runtime tests, then
+  failed 38 integration cases with the missing optional audio runtime; 280 passed.
+- **Repair / next:** prepare the hash-locked audio runtime, document fresh-checkout
+  prerequisites and rerun the full gate on the revised committed candidate.
+- **Limits:** no publication or human visual/listening acceptance is inferred.
+- **Records:** [refresh evidence](./usage-docs-refresh-results.json),
+  [release procedure](./npm-release-plan.md).
 
 ### 2026-10-09 — Adopt release branches and contribution rules
 
