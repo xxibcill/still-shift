@@ -43,18 +43,18 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS2 in progress (2026-10-11):** isolated branch `codex/mechanism-ms2`
-  carries current `main` plus the native prerequisite from
-  [PR #56](https://github.com/xxibcill/still-shift/pull/56). Ten slices now include
-  normal verified scene2 file IO, explicit graph sampling, queued used-stream
-  proof and async core composition preview with bounded output admission.
-  Final fast4 passes4,036 units / 393 files; maintained world/stream/full-frame/
-  composition suites and original native14/integration5/cancellation pass.
-  All failed builds, fixture, lint and original-diagnostic repair remain retained.
-  Next: authenticated execution/export2 and Lab integration, whole-world preflight,
-  three packs, import/camera/label/cue, scoped typography and the full milestone
-  gate. Core packet examples do not count as exports. Pilot support is zero;
-  no MS2 PR/MS3 yet. [MS2 results](./mechanism-shorts-ms2-results.json),
+- **MS2 in progress (2026-10-11):** isolated `codex/mechanism-ms2` carries
+  current `main` and exact native prerequisite [PR #56](https://github.com/xxibcill/still-shift/pull/56).
+  Eleven slices now include normal source2 IO/graph/async preview and a shared
+  durable journal with strict async execution2/row2/manifest2/closure2 admission
+  and fresh independent replay. Final refreshed gate3 passes 4,050 units /
+  395 files, four maintained browsers, real preview journal6/36 with18 faults
+  and original native14/integration5/cancellation. Failed builds/probes/lint,
+  measured Math.sin key mismatch, wrong negative target and abort repair retained.
+  Next: normal authenticated movie export/upload2 and Lab integration, full
+  preflight, three packs/import/cameras/labels/cues/scoped typography/board and
+  whole milestone gate. Preview journals do not count as final exports; supported
+  packs/pilot remain0. No MS2 PR/MS3 yet. [MS2 results](./mechanism-shorts-ms2-results.json),
   [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
@@ -213,6 +213,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — Commit shared native journal and strict async journal2
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2` from `44ab4b2c`.
+- **Done:** Shared durable journal preserves the original synchronous sink and
+  serialization; explicit2 binds sources/appearance/shapes, awaits strict Node
+  proof before pixels, replays bounded retained rows and retires aborted leases.
+- **Results:** Refreshed gate3 passes 4,050 tests / 395 files, all four maintained browser
+  suites, preview-only raw journal6/36 with18 faults and original14/integration5/
+  cancellation. Current code inventory unchanged through checks.
+- **Rejected / retained:** All failed builds/probes/lint remain. Actual host sine
+  differed in the last bit; deterministic scene2 lift preserves exact keys and
+  packed-byte proof. Corrected legacy-target negative; actual post-admission
+  abort RED now GREEN. First build terminal lost, so its log remains qualified.
+- **Next:** Normal authenticated movie/export/upload2 and Lab, full preflight,
+  three packs and all owning MS2 gates before its PR; supported packs/pilot0.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json),
+  [production plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
 ### 2026-10-11 — Commit normal native2 source routing and async core preview
 

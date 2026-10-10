@@ -177,3 +177,47 @@ export async function nativeCompositionV2Proof(
     scope: "normal-composition-preview2",
   };
 }
+
+/** Real contiguous output captures for the Node journal probe; no frame relabelling. */
+export async function nativeCompositionJournalV2Frames(
+  composition: Composition,
+  preparedNative3D: CompositionPreparedNative3DVersions,
+  appearanceCodeIdentity: NativeAppearanceCodeIdentity,
+) {
+  const resources = await loadCompositionResources(
+    composition,
+    () => {
+      throw Error("Unexpected file fetch after verified preparation");
+    },
+    { preparedNative3D, appearanceCodeIdentity },
+  );
+  const preview = createCompositionPreview(
+    document.createElement("canvas"),
+    composition,
+    resources,
+    {
+      backend: "webgl2",
+      collectNativeObservations: true,
+    },
+  );
+  const captures = [];
+  try {
+    for (let frame = 0; frame < composition.frameCount; frame++) {
+      await preview.prepareFrame(frame);
+      const report = await renderCompositionFrameAsync(preview, frame);
+      const pixels = preview.readPixels();
+      try {
+        captures.push({
+          frame,
+          passes: report.nativeObservationsV2!,
+          rgba: [...pixels],
+        });
+      } finally {
+        releaseRenderPixels(pixels);
+      }
+    }
+    return captures;
+  } finally {
+    preview.dispose();
+  }
+}

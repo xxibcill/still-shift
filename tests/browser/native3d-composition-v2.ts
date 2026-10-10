@@ -21,6 +21,7 @@ import { nativeCompositionObservationCapacityV2 } from "../../packages/renderer-
 import { mechanismV2Fixture } from "../helpers/mechanism-v2-fixture.ts";
 import { nativeSolidFixture } from "../helpers/native3d-fixture.ts";
 import type * as Proof from "../helpers/native3d-composition-v2-proof.ts";
+import { verifyNativeJournalV2Proof } from "../helpers/native3d-journal-v2-proof.ts";
 const hash = (bytes: Uint8Array | string) =>
   `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
 
@@ -161,6 +162,7 @@ export async function runNativeCompositionV2Proof() {
   const paths = [
     "tests/browser/native3d-composition-v2.ts",
     "tests/helpers/native3d-composition-v2-proof.ts",
+    "tests/helpers/native3d-journal-v2-proof.ts",
   ];
   const producers = await Promise.all(
     paths.map(async (path) => ({
@@ -326,6 +328,26 @@ export async function runNativeCompositionV2Proof() {
         .find((item) => item.id === "native-finalizer-failure")
         ?.message.includes("injected-first-native-finalization-failure"),
     );
+    const journalFrames = await page.evaluate(
+      async (serializedInput) => {
+        const path = "/tests/helpers/native3d-composition-v2-proof.ts";
+        const proof = (await import(path)) as typeof Proof;
+        const input = JSON.parse(serializedInput) as Parameters<
+          typeof proof.nativeCompositionJournalV2Frames
+        >;
+        return await proof.nativeCompositionJournalV2Frames(...input);
+      },
+      JSON.stringify([
+        loaded.composition,
+        loaded.preparedNative3D!,
+        loaded.nativeAppearanceCodeIdentity!,
+      ]),
+    );
+    const journal = await verifyNativeJournalV2Proof(
+      loaded,
+      journalFrames,
+      directory,
+    );
     for (const item of producers)
       assert.equal(hash(await readFile(join(root, item.path))), item.sha256);
     await assertNativeAppearanceCodeIdentity(
@@ -341,6 +363,7 @@ export async function runNativeCompositionV2Proof() {
           producers,
           appearanceCodeIdentity: loaded.nativeAppearanceCodeIdentity,
           captures,
+          journal,
           defaultPreviewWithoutCollection:
             "same-pixels-after-mandatory-native-finalization",
           negatives: result.negatives,

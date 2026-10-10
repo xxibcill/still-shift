@@ -9,6 +9,7 @@ import type {
   MechanismSceneV2,
 } from "@still-shift/scene-contract";
 import type { DeepReadonly } from "./types.ts";
+import { ratchetLiftV2 } from "./ratchet-lift-v2.ts";
 import { MechanismEvaluationErrorV2 } from "./types-v2.ts";
 import type { PreparedMechanismRigTracksV2 } from "./types-v2.ts";
 
@@ -355,7 +356,7 @@ export function evaluateMechanismRigTracksV2(
           ? 1
           : seated
             ? 0
-            : Math.sin(Math.PI * (tooth - Math.floor(tooth))),
+            : ratchetLiftV2(tooth - Math.floor(tooth)),
       };
     }
   }

@@ -786,6 +786,10 @@ export const native3DAppearanceModules: readonly {
     url: new URL("../mechanism/projection.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/mechanism/ratchet-lift-v2.ts",
+    url: new URL("../mechanism/ratchet-lift-v2.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/mechanism/rig-tracks-v2.ts",
     url: new URL("../mechanism/rig-tracks-v2.ts", import.meta.url),
   },

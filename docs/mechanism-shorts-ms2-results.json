@@ -2477,11 +2477,712 @@
         "firstParty": 375,
         "external": 79
       }
+    },
+    {
+      "id": "native2-journal-red-1",
+      "status": "expected-contract-red-with-one-vacuous-negative",
+      "sourceCheckpoint": "44ab4b2cef4c0059cdf5ace411888a67495ab31e",
+      "sourceState": "working-shared-journal-and-explicit-low-level-journal2-slice",
+      "actualRootSession": 95562,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-journal2-red-inputs-1.json",
+        "bytes": 410688,
+        "sha256": "sha256:df5e30d0c27ff2809afe2d20f370cdc98d5fd06f3f192b26b6ba893811d8184e",
+        "files": 2407,
+        "inputBytes": 118295310,
+        "sourceCommit": "44ab4b2cef4c0059cdf5ace411888a67495ab31e"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-red-format-1.log",
+          "bytes": 46,
+          "sha256": "sha256:0df8112f4b80085344abb3dd0e5511c987f7675552a2b9840088f0ac5f31356b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-red-1.log",
+          "bytes": 2361,
+          "sha256": "sha256:11293236a3dc1450c67fbd1a302ebb29628b43918121c7727c586d5bb8ab1f63"
+        }
+      ],
+      "qualification": "Missing version2 facade fails two cases. Third rejection wrongly counted the missing constructor as the expected execution rejection; corrected before red2.",
+      "failedTests": 2,
+      "passedTests": 1,
+      "unitTests": 3,
+      "unitFiles": 1,
+      "unitReportedSeconds": 0.813
+    },
+    {
+      "id": "native2-journal-red-2",
+      "status": "expected-contract-red",
+      "sourceCheckpoint": "44ab4b2cef4c0059cdf5ace411888a67495ab31e",
+      "sourceState": "working-shared-journal-and-explicit-low-level-journal2-slice",
+      "actualRootSession": 60333,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-journal2-red-inputs-2.json",
+        "bytes": 410688,
+        "sha256": "sha256:d408a4e4d07c545ed69005269877256a78b3223d45c560460a14976c64a71d71",
+        "files": 2407,
+        "inputBytes": 118295407,
+        "sourceCommit": "44ab4b2cef4c0059cdf5ace411888a67495ab31e"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-red-format-2.log",
+          "bytes": 46,
+          "sha256": "sha256:c23cfaa9f92bc74d0edb61d755cd6134fb700b57b19b9a2607a2fc44c272d374"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-red-2.log",
+          "bytes": 3110,
+          "sha256": "sha256:3f216cefffc3526d8ad307be7492d551d66095620b355bc4681ae6eac69b41a5"
+        }
+      ],
+      "qualification": "Constructor availability asserted outside the rejection case; all three functional boundary cases now fail for the missing adapter.",
+      "failedTests": 3,
+      "unitTests": 3,
+      "unitFiles": 1,
+      "unitReportedSeconds": 0.835
+    },
+    {
+      "id": "native2-journal-build-1",
+      "status": "failed-build-log-terminal-unavailable",
+      "sourceCheckpoint": "44ab4b2cef4c0059cdf5ace411888a67495ab31e",
+      "sourceState": "working-shared-journal-and-explicit-low-level-journal2-slice",
+      "actualRootSession": 29840,
+      "actualExitCode": null,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-journal2-inputs-1.json",
+        "bytes": 411045,
+        "sha256": "sha256:4d11990615f7a1da38436adb8dcbcdce288487bb79ead5adc7579d088bbf5ba0",
+        "files": 2409,
+        "inputBytes": 118311528,
+        "sourceCommit": "44ab4b2cef4c0059cdf5ace411888a67495ab31e"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-format-1.log",
+          "bytes": 255,
+          "sha256": "sha256:e39d1cf33a7bcd9fc2811f5265f2d87bae689b0c367d4f075fb1efceb3d5481a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-identity-1.log",
+          "bytes": 260,
+          "sha256": "sha256:84192be86d48c5aa7e85001a554945576cb51014b5b3c4bf477bc88dc0822f62"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-build-1.log",
+          "bytes": 316,
+          "sha256": "sha256:d0519dd70a28b580e584c7443781f1a383c3e560f48b184a74942ab9d6f02d74"
+        }
+      ],
+      "qualification": "Build log reports stale NativeObservationSink name after extraction and command exit2; original terminal receipt was lost across compaction and handle was unavailable on recovery. No focused log exists; do not infer an actual aggregate terminal exit.",
+      "loggedBuildExitCode": 2,
+      "terminalRecovery": "Unknown process id 29840"
+    },
+    {
+      "id": "native2-journal-build-2",
+      "status": "failed-build",
+      "sourceCheckpoint": "44ab4b2cef4c0059cdf5ace411888a67495ab31e",
+      "sourceState": "working-shared-journal-and-explicit-low-level-journal2-slice",
+      "actualRootSession": 33578,
+      "actualExitCode": 2,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-journal2-inputs-2.json",
+        "bytes": 411046,
+        "sha256": "sha256:303ce65fc3b6dcd3c0c9d1c63f8b6450ea63b831776e15fa72d890ad1bcf3819",
+        "files": 2409,
+        "inputBytes": 118314493,
+        "sourceCommit": "44ab4b2cef4c0059cdf5ace411888a67495ab31e"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-format-2.log",
+          "bytes": 139,
+          "sha256": "sha256:7c2504afa7ec9fbeb3d5cd3335a6351d4adddff6b93202df62a50c92a9640740"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-identity-2.log",
+          "bytes": 260,
+          "sha256": "sha256:84192be86d48c5aa7e85001a554945576cb51014b5b3c4bf477bc88dc0822f62"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-build-2.log",
+          "bytes": 935,
+          "sha256": "sha256:658b99e95a3141aca9f064f46e2a37ffdb81fbc7bce35bd362575f4fcdfe6243"
+        }
+      ],
+      "qualification": "Source identity field is schemaVersion rather than version. Focused cases were not reached."
+    },
+    {
+      "id": "native2-journal-focused-3",
+      "status": "failed-lifecycle-tests",
+      "sourceCheckpoint": "44ab4b2cef4c0059cdf5ace411888a67495ab31e",
+      "sourceState": "working-shared-journal-and-explicit-low-level-journal2-slice",
+      "actualRootSession": 62425,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-journal2-inputs-3.json",
+        "bytes": 411046,
+        "sha256": "sha256:8d71ff9442e55ac4c1833522c7d94483384cad9e77d0e34690e0664b37c5f627",
+        "files": 2409,
+        "inputBytes": 118316379,
+        "sourceCommit": "44ab4b2cef4c0059cdf5ace411888a67495ab31e"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-format-3.log",
+          "bytes": 119,
+          "sha256": "sha256:69c73831d7c5ebecae02d566c67d3ce7de47d14ec529bf173597213a53ec12e4"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-identity-3.log",
+          "bytes": 260,
+          "sha256": "sha256:84192be86d48c5aa7e85001a554945576cb51014b5b3c4bf477bc88dc0822f62"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-build-3.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-focused-3.log",
+          "bytes": 3623,
+          "sha256": "sha256:67eee7165ede96b91691e7e89b35f29ce3bb88c730636839213e89e542f823cb"
+        }
+      ],
+      "qualification": "Build passes; 15/19 units pass. Three race negatives hit the deliberately closed publications getter; the empty async proof missed an abort at the final admission boundary. Both addressed separately; no browser run.",
+      "failedTests": 4,
+      "passedTests": 15,
+      "unitTests": 19,
+      "unitFiles": 3,
+      "unitReportedSeconds": 0.884
+    },
+    {
+      "id": "native2-journal-build-4",
+      "status": "failed-probe-types",
+      "sourceCheckpoint": "44ab4b2cef4c0059cdf5ace411888a67495ab31e",
+      "sourceState": "working-shared-journal-and-explicit-low-level-journal2-slice",
+      "actualRootSession": 97552,
+      "actualExitCode": 2,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-journal2-inputs-4.json",
+        "bytes": 411210,
+        "sha256": "sha256:231d66fa50c4aa340c830a65c2f454862d3bed74678d611463a86115cf15a478",
+        "files": 2410,
+        "inputBytes": 118331866,
+        "sourceCommit": "44ab4b2cef4c0059cdf5ace411888a67495ab31e"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-format-4.log",
+          "bytes": 353,
+          "sha256": "sha256:82fcc3f463def3f1bff939bc8d30d6ff15981a82c63e26b77413ac0ee105ea9c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-identity-4.log",
+          "bytes": 260,
+          "sha256": "sha256:84192be86d48c5aa7e85001a554945576cb51014b5b3c4bf477bc88dc0822f62"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-build-4.log",
+          "bytes": 445,
+          "sha256": "sha256:db92a981a9ae8ca368a04003258e550cb01553be2275500bb0bcd5488af8d652"
+        }
+      ],
+      "qualification": "Browser static URL import was incorrectly resolved by tsc; mutation attempted to write a readonly matrix element. No focused or browser execution."
+    },
+    {
+      "id": "native2-journal-build-5",
+      "status": "failed-probe-types",
+      "sourceCheckpoint": "44ab4b2cef4c0059cdf5ace411888a67495ab31e",
+      "sourceState": "working-shared-journal-and-explicit-low-level-journal2-slice",
+      "actualRootSession": 55740,
+      "actualExitCode": 2,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-journal2-inputs-5.json",
+        "bytes": 411210,
+        "sha256": "sha256:61e21890c4e5d3a59af227fb164eefabf2cea6df7845ab832b7af995f80ef850",
+        "files": 2410,
+        "inputBytes": 118332112,
+        "sourceCommit": "44ab4b2cef4c0059cdf5ace411888a67495ab31e"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-format-5.log",
+          "bytes": 106,
+          "sha256": "sha256:a485e5545e9cbb557991b7a9fef278e970f1a6421e0940412b41bc14f3787e40"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-identity-5.log",
+          "bytes": 260,
+          "sha256": "sha256:84192be86d48c5aa7e85001a554945576cb51014b5b3c4bf477bc88dc0822f62"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-build-5.log",
+          "bytes": 595,
+          "sha256": "sha256:14bd52f2d9d8009cc244c09cf846c38ee9a3db626d48904a2799a846bdfafccc"
+        }
+      ],
+      "qualification": "Mapped number[] cannot be asserted as a fixed readonly matrix tuple; replaced with a new explicit 16-element tuple. No focused/browser execution."
+    },
+    {
+      "id": "native2-journal-browser-3",
+      "status": "failed-real-changing-driver-identity",
+      "sourceCheckpoint": "44ab4b2cef4c0059cdf5ace411888a67495ab31e",
+      "sourceState": "working-shared-journal-and-explicit-low-level-journal2-slice",
+      "actualRootSession": 38404,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-journal2-inputs-6.json",
+        "bytes": 411210,
+        "sha256": "sha256:1c2a4e0048f2b8d0c50e3f4e484946a2e79f78d33c5250af85f75f73d5b618de",
+        "files": 2410,
+        "inputBytes": 118332718,
+        "sourceCommit": "44ab4b2cef4c0059cdf5ace411888a67495ab31e"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-format-6.log",
+          "bytes": 121,
+          "sha256": "sha256:4590463cd3ba41bcf6f19d4e911356e4cd31915410ef34bc34d54c088a63af6b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-identity-6.log",
+          "bytes": 260,
+          "sha256": "sha256:84192be86d48c5aa7e85001a554945576cb51014b5b3c4bf477bc88dc0822f62"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-build-6.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-focused-6.log",
+          "bytes": 444,
+          "sha256": "sha256:2c71cade7d54f5edb7575af29aed2b66457b278ae55017eb337331228ead8833"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-browser-3.log",
+          "bytes": 1975,
+          "sha256": "sha256:eda158272bd77126f96e688b885583a689409e55dd7381cc34653c1925758737"
+        }
+      ],
+      "qualification": "Build and 19/3 focused units pass. Normal seek preview succeeds, but consecutive journal proof fails a strict shape driver key at sourceFrame2.25. Failed directory retained; no journal completion or original regressions claimed.",
+      "passedTests": 19,
+      "unitFiles": 3,
+      "unitReportedSeconds": 0.89,
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-I7Dw7c/failure.json",
+          "bytes": 1746,
+          "sha256": "sha256:b680c05178ecc1bd415b53fb2ec8efce8e0814c2c8117e337c9bf4cd67434480"
+        }
+      ]
+    },
+    {
+      "id": "native2-journal-browser-4",
+      "status": "failed-real-changing-driver-identity-traced",
+      "sourceCheckpoint": "44ab4b2cef4c0059cdf5ace411888a67495ab31e",
+      "sourceState": "working-shared-journal-and-explicit-low-level-journal2-slice",
+      "actualRootSession": 70339,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-journal2-inputs-7.json",
+        "bytes": 411210,
+        "sha256": "sha256:0f89bac634e3cdce0b5009582f6bce10715d45bf3bc16533f39c035e7c9a818f",
+        "files": 2410,
+        "inputBytes": 118334049,
+        "sourceCommit": "44ab4b2cef4c0059cdf5ace411888a67495ab31e"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-format-7.log",
+          "bytes": 48,
+          "sha256": "sha256:2fc38dfd241bb6e72c92637b2c6dbc931a452ef4c3ef6b90bfc9e7dbd1c11608"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-browser-4.log",
+          "bytes": 1975,
+          "sha256": "sha256:60e73dc0fd7aeb13f9c774ef10fecfe475284b6416f5ed841aac95b7ffbfc74d"
+        }
+      ],
+      "qualification": "Saved actual packets/RGBA and fresh expected keys locate Math.sin last-bit difference: Chromium0.773010453362737 vs Node0.7730104533627369; associations/clocks agree. No tolerances relaxed; scene2 ratchet lift replaced with deterministic degree21 basic arithmetic.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-CgvUUm/failure.json",
+          "bytes": 1746,
+          "sha256": "sha256:1d07e332a9efc19474b30affaf2d37a30ac2a577a89e03d53a0d1c0decc3e4ff"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-CgvUUm/journal-frame-2.json",
+          "bytes": 89394,
+          "sha256": "sha256:261a0c58d9c7cc09c3ee884c61362758a12e691f5e3e25db951137810cf1cfa0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-CgvUUm/journal-frame-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:62512c6e87ded0509ff6fb8847465d524b2229c3bffbb6cb0366448f0602a096"
+        }
+      ]
+    },
+    {
+      "id": "native2-journal-browser-5",
+      "status": "failed-negative-target-fixture-after-positive-journal",
+      "sourceCheckpoint": "44ab4b2cef4c0059cdf5ace411888a67495ab31e",
+      "sourceState": "working-shared-journal-and-explicit-low-level-journal2-slice",
+      "actualRootSession": 30040,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-journal2-inputs-8.json",
+        "bytes": 411541,
+        "sha256": "sha256:802ab40ce0db8fb28e36cf202040f972c77628e9318af00983016d7b0a9b9670",
+        "files": 2412,
+        "inputBytes": 118336581,
+        "sourceCommit": "44ab4b2cef4c0059cdf5ace411888a67495ab31e"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-format-8.log",
+          "bytes": 171,
+          "sha256": "sha256:b7fcecb9fdbb1acd8d54a55a94e2d0a1be9532f3152557c54efa6ddc5965657d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-identity-8.log",
+          "bytes": 260,
+          "sha256": "sha256:b3e3093479c9889e31ef585ad0a8abb1dcb767486c536101f4cf1d432168bb8c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-build-7.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-focused-7.log",
+          "bytes": 565,
+          "sha256": "sha256:f30035d6903def9a541e394e3cace7527edf86501ddac2433ab85baccef65de0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-browser-5.log",
+          "bytes": 836,
+          "sha256": "sha256:783ec7852c0e02f652ed4f0b404d3b7297cfc4eb4b8b261407f79090c27270c8"
+        }
+      ],
+      "qualification": "Build and 37/5 focused units pass, including10,001-point lift bounds/symmetry/monotonicity and sine comparison1e-15. Six real contiguous frames/36 passes admit and independently replay with exact RGBA hashes. Numeric-camera negative targeted an original inset frame1; changed to explicitly choose frame2. Original validation was preserved. This is an incomplete probe with no final accepted run.",
+      "passedTests": 37,
+      "unitFiles": 5,
+      "unitReportedSeconds": 0.894,
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-WywLHs/failure.json",
+          "bytes": 740,
+          "sha256": "sha256:408201aa69ee67141f8efac0bd53e79b011dccdf1b9a8700323d12526afc6b8d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-WywLHs/journal-preview.rgba.native-observations.json",
+          "bytes": 87177,
+          "sha256": "sha256:f8fa480f2a82a98384225d29c19d24760971ef6fdcd6c1a030ae27a120b40dae"
+        }
+      ]
+    },
+    {
+      "id": "native2-journal-fast-1",
+      "status": "failed-lint",
+      "sourceCheckpoint": "44ab4b2cef4c0059cdf5ace411888a67495ab31e",
+      "sourceState": "working-shared-journal-and-explicit-low-level-journal2-slice",
+      "actualRootSession": 47534,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-journal2-inputs-9.json",
+        "bytes": 411541,
+        "sha256": "sha256:6dcf814bcaab3e04bb9700cc718aefc6ebc341edbe2bb4095df65c1958cfb7d0",
+        "files": 2412,
+        "inputBytes": 118337726,
+        "sourceCommit": "44ab4b2cef4c0059cdf5ace411888a67495ab31e"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-format-9.log",
+          "bytes": 108,
+          "sha256": "sha256:a7582912deec816d4724c76aa6296969fc3c2db0dda17597de797655d6493984"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-identity-9.log",
+          "bytes": 260,
+          "sha256": "sha256:b3e3093479c9889e31ef585ad0a8abb1dcb767486c536101f4cf1d432168bb8c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-fast-1.log",
+          "bytes": 1761,
+          "sha256": "sha256:01f17b6564c2fa42547191a5a971431e04b4e33eb2d5614d75dd174a8141faa6"
+        }
+      ],
+      "qualification": "Schema/appearance376+79, boundaries and global formatting pass. Type-only source-reader import lint fails; build/units/browsers/original regressions not reached."
+    },
+    {
+      "id": "native2-journal-abort-probe-harness-1",
+      "status": "failed-private-probe-launch",
+      "sourceCheckpoint": "44ab4b2cef4c0059cdf5ace411888a67495ab31e",
+      "sourceState": "working-shared-journal-and-explicit-low-level-journal2-slice",
+      "actualRootSession": null,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-journal2-inputs-10.json",
+        "bytes": 411541,
+        "sha256": "sha256:5b5e01acc7a0e4968d8b51fd168992efa9721ad0eadac1fd7f8be7ac59c2749d",
+        "files": 2412,
+        "inputBytes": 118337731,
+        "sourceCommit": "44ab4b2cef4c0059cdf5ace411888a67495ab31e"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-abort-red-1.log",
+          "bytes": 1641,
+          "sha256": "sha256:d8f98a512a1601de2ac8a7fb93520b9c94265b7f05c0c877d992316f71c6b4b7"
+        }
+      ],
+      "qualification": "Private .ts entry point inferred CJS and failed before any contract assertion; .mts rerun retains actual semantic RED separately.",
+      "actualRootChunk": "66cb42",
+      "artifacts": [
+        {
+          "path": "/private/tmp/mechanism-ms2-journal-abort-red.ts",
+          "bytes": 1342,
+          "sha256": "sha256:a33e84aaf155d5e3d30dd476c8310567a2fb38abaeec78dde8c5f040d3a6aa64"
+        }
+      ]
+    },
+    {
+      "id": "native2-journal-abort-after-admission-red",
+      "status": "expected-post-admission-abort-red",
+      "sourceCheckpoint": "44ab4b2cef4c0059cdf5ace411888a67495ab31e",
+      "sourceState": "working-shared-journal-and-explicit-low-level-journal2-slice",
+      "actualRootSession": null,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-journal2-inputs-10.json",
+        "bytes": 411541,
+        "sha256": "sha256:5b5e01acc7a0e4968d8b51fd168992efa9721ad0eadac1fd7f8be7ac59c2749d",
+        "files": 2412,
+        "inputBytes": 118337731,
+        "sourceCommit": "44ab4b2cef4c0059cdf5ace411888a67495ab31e"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-abort-red-2.log",
+          "bytes": 383,
+          "sha256": "sha256:1c930ae7340fcfe9e6aca426b25fa35aff2271c8d0fa22d7cffc2506d3399ae8"
+        }
+      ],
+      "qualification": "Contract-only private owner probe actually executes and shows requirePacket still usable after abort of an already admitted packet. Cleanup retires the lease. No GPU/movie/human pass; source inventory10 remains unchanged during the concurrent required gate.",
+      "actualRootChunk": "a64f8c",
+      "artifacts": [
+        {
+          "path": "/private/tmp/mechanism-ms2-journal-abort-red.mts",
+          "bytes": 1342,
+          "sha256": "sha256:a33e84aaf155d5e3d30dd476c8310567a2fb38abaeec78dde8c5f040d3a6aa64"
+        }
+      ]
+    },
+    {
+      "id": "native2-journal-gate-2",
+      "status": "passed-pre-post-admission-abort-repair",
+      "sourceCheckpoint": "44ab4b2cef4c0059cdf5ace411888a67495ab31e",
+      "sourceState": "working-shared-journal-and-explicit-low-level-journal2-slice",
+      "actualRootSession": 63798,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-journal2-inputs-10.json",
+        "bytes": 411541,
+        "sha256": "sha256:5b5e01acc7a0e4968d8b51fd168992efa9721ad0eadac1fd7f8be7ac59c2749d",
+        "files": 2412,
+        "inputBytes": 118337731,
+        "sourceCommit": "44ab4b2cef4c0059cdf5ace411888a67495ab31e"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-format-10.log",
+          "bytes": 60,
+          "sha256": "sha256:6ef1bd72ac0b0bb67b754148b256c4b525a2e8602802d341a6dec0286022745c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-fast-2.log",
+          "bytes": 31438,
+          "sha256": "sha256:7e0ea7c1c8a0f0eb8e1b886bd57c41b54b2ec644e633c04dc757e8ece68e0c86"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-shapes-browser-7.log",
+          "bytes": 906,
+          "sha256": "sha256:021f164faaf9627ac4337258f560ebcaf665392e3a29ad3be4e2424705706dce"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-original-depth-2.log",
+          "bytes": 538,
+          "sha256": "sha256:5571cb9131b7c3fb4560444800d30015d19a8e5acb53fd04b65f023234dfdab0"
+        }
+      ],
+      "qualification": "All required child commands complete by shell &&; actual aggregate exits0 and inventory10 remains unchanged. 4,049/395 units, four maintained browser suites, real preview journal6/36 with18 faults, original14/integration5/cancellation pass. Separate semantic RED shows abort after admission remains a bug; source was then changed and verification refreshed. Not the final current-source gate.",
+      "unitTests": 4049,
+      "unitFiles": 395,
+      "unitReportedSeconds": 42.02,
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-ak3ug5/journal-run.json",
+          "bytes": 5085,
+          "sha256": "sha256:e951b10bf2aa6448f333e1f19d41305473452feccb45d7f2b78b3b103f4e470d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms1n-native-depth-rxuvnx/required-native-proof-reports.json",
+          "bytes": 164,
+          "sha256": "sha256:99cc369f5671e1c5a15ad3dddb22883ebd289ac912ef1321b2b7922165bf4f36"
+        },
+        {
+          "path": "/private/tmp/still-shift-native-export-cancel-XtlCuj/report.json",
+          "bytes": 4956,
+          "sha256": "sha256:da2d8872a94bacb817746261a735dae27dde55edcb450bec6a5de7068d0fede8"
+        }
+      ]
+    },
+    {
+      "id": "native2-journal-final-gate-3",
+      "status": "passed-refreshed-shared-journal-and-preview-journal2",
+      "sourceCheckpoint": "44ab4b2cef4c0059cdf5ace411888a67495ab31e",
+      "sourceState": "working-shared-journal-and-explicit-low-level-journal2-slice",
+      "actualRootSession": 39894,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-journal2-inputs-11.json",
+        "bytes": 411541,
+        "sha256": "sha256:c9dc56f477c9718c995aebebfc90987f3f36a8f81ea54256edb56010758480f5",
+        "files": 2412,
+        "inputBytes": 118339050,
+        "sourceCommit": "44ab4b2cef4c0059cdf5ace411888a67495ab31e"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-format-11.log",
+          "bytes": 124,
+          "sha256": "sha256:0c9a00d0c7bb7fc0ea4886a6ad8c35051d3c60639d44f59b04453e8a45b215e8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-abort-green-1.log",
+          "bytes": 0,
+          "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-focused-8.log",
+          "bytes": 378,
+          "sha256": "sha256:a6c29accffae5532ff62bd4afc53edb9c33ef1759825a9c0e3ed83dd8d97c9d0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-fast-3.log",
+          "bytes": 31614,
+          "sha256": "sha256:0a096b1233d597a33f7aa54943e45c7193736341da51b5c74f8f3b0aad37dc35"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-shapes-browser-8.log",
+          "bytes": 906,
+          "sha256": "sha256:33539756e25c742bef1f5c3d84b1b8f7e02009521cde6758f47ad52088c4c400"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-journal2-original-depth-3.log",
+          "bytes": 538,
+          "sha256": "sha256:38a529885576c5160352776779f887f01191138ccea04be871debe1a06f63dc7"
+        }
+      ],
+      "qualification": "Actual aggregate terminal exits0. Required shell && stages imply child success without individual terminal receipts. Private semantic abort GREEN and18/2 focused units pass; fresh full fast, all four maintained browsers and original14/integration5/cancellation pass on unchanged inventory11. Low-level journal2 uses actual contiguous preview RGBA and independent Node proof/replay; the normal authenticated movie producer/export/upload integration remains closed and required. No supported product, installed archive, pilot or human acceptance claimed.",
+      "terminalObservedAtUTC": "2026-10-10T21:57:25Z",
+      "unitTests": 4050,
+      "unitFiles": 395,
+      "unitReportedSeconds": 42.25,
+      "focusedTests": 18,
+      "focusedFiles": 2,
+      "browserReceipts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-EJAaED/run.json",
+          "bytes": 2976,
+          "sha256": "sha256:a3713fd624626a56abe9518e89ca38fd644960902eb75652df8b22f7b2877309"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-4mKyCy/run.json",
+          "bytes": 7870,
+          "sha256": "sha256:a5f78e4c79c0392e3566591ff2d7b1261d7962595def1d995b7a43436b23ffc6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-g9QbBC/run.json",
+          "bytes": 6282,
+          "sha256": "sha256:3870095e80b727b9313e7706b105c4ed04b7a75bb9333d3c83167fa08c7381d9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-4eqrd0/run.json",
+          "bytes": 90508,
+          "sha256": "sha256:e69fbb42d0ec1c3e0be6de73dd1cd636da55be7e256712cf1180c2c6342c9ff0"
+        }
+      ],
+      "journalReceipts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-4eqrd0/journal-run.json",
+          "bytes": 5085,
+          "sha256": "sha256:af1770b5b3885aaeca80a9a7b59122888b17d2dc7be318125f53865d27130c5b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-4eqrd0/journal-preview.rgba.native-observations.json",
+          "bytes": 87177,
+          "sha256": "sha256:7dfe9ed98c0e0d08ca596232bce40584b702ae47141a259e58017d2f2f9c0cd1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-4eqrd0/journal-preview.rgba.native-observations.000.ndjson",
+          "bytes": 172423,
+          "sha256": "sha256:3cb26fe3fea9fda87874baa61055eba1eefb7532f6021e4278e39ba9264398bb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-4eqrd0/journal-preview.rgba",
+          "bytes": 1382400,
+          "sha256": "sha256:5402ee0f108a5a76f0aed8055461779206fdc1f2a445c278cf141e91773fb0c3"
+        }
+      ],
+      "originalReceipts": [
+        {
+          "path": "/private/tmp/still-shift-ms1n-native-depth-3nnvct/report.json",
+          "bytes": 56712,
+          "sha256": "sha256:8b21de56445b2b9906cf9fbe7b03c65e4b7d9d4e6c3fe1e2e8cd1e1e26889dda"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms1n-native-depth-3nnvct/composition-integration-report.json",
+          "bytes": 419656,
+          "sha256": "sha256:183aa2a5c9db5dfa0a2f632b49474bb20e3788d56d867f1365fd0ad53661c9fc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms1n-native-depth-3nnvct/required-native-proof-reports.json",
+          "bytes": 164,
+          "sha256": "sha256:cf9b14e2c63fea8a6c1296607c2a656523d06211e3508281446c1ca4e1b91ffb"
+        },
+        {
+          "path": "/private/tmp/still-shift-native-export-cancel-3SkthA/report.json",
+          "bytes": 4955,
+          "sha256": "sha256:5407cd0c773c656249f3d9c72e9ff7b943e57988b470cd4b76410c744cc0a530"
+        }
+      ],
+      "journalOutputFrames": 6,
+      "journalContributingPasses": 36,
+      "journalFrame2Passes": 12,
+      "journalFrame1Passes": 24,
+      "journalNegatives": 18,
+      "journalPeakMetadataBytes": 9952688,
+      "journalRetainedMetadataBytes": 0,
+      "originalNativeCases": 14,
+      "originalCompositionIntegrationCases": 5,
+      "originalCancellation": "passed",
+      "appearanceClosure": {
+        "firstParty": 376,
+        "external": 79
+      },
+      "terminalTimeQualification": "UTC clock sampled immediately after the actual aggregate terminal receipt; not a child-stage timestamp."
     }
   ],
   "implementation": {
     "firstSlice": "Completed standalone reusable rig/teaching-shape contracts. All 11 focused negatives/admission checks and fresh complete fast3 gate (3928 units/383 files) pass; earlier closure and optional-type failures retained.",
-    "runtimeSupport": "normal-native2-core-composition-preview-verified-authenticated-export2-and-lab-integration-pending",
+    "runtimeSupport": "normal-native2-core-preview-and-low-level-journal2-verified-authenticated-normal-export-and-lab-pending",
     "supportedPacks": [],
     "pilotSupportedEpisodes": 0,
     "secondSlice": "Completed strict scene2/frame2 declarations, dependency/ownership and generated-landmark checks, aggregate changing geometry budgets and pack references. Focused12, TypeScript build and fresh fast2 pass (3940 units/385 files); failed formatting attempt retained. Pure evaluation and integration remain required.",
@@ -2596,10 +3297,40 @@
         "originalCancellation": "passed"
       },
       "remaining": "Core preview API verified. Lab playback/inspector and generic export-page consumers still require version2 integration. Execution/envelope/sink/manifest/row closure2 authentication, whole-world admission before PMREM/GPU allocations, three product packs, import/camera/label/cue/typography/board and full MS2 acceptance remain. Output packet files are contract examples, not export ledger records; no product/pilot/human pass."
+    },
+    "eleventhSlice": {
+      "status": "implemented-and-verified-shared-journal-with-explicit-low-level-protocol2",
+      "interfaces": [
+        "one shared bounded journal retains original sink synchronous acceptance/API, original row/manifest/closure literals and serializer data order; version2 facade parses strict execution2 and uses async admission/replay",
+        "execution2 declares explicit source protocols, exact raw/effective/geometry/mesh identities, immutable parsed metadata, appearance identity hash and teaching-shape associations; expected sources/frame versions bind independently before admission",
+        "worker0, contiguous frames, exact invocation/sample clocks, contributing coverage, packet/shard/manifest caps and actual paired pixel identity remain enforced; version1 downgrades reject at strict version2 boundaries",
+        "version2 pixels cannot authorize before awaited independent fixed-tolerance numeric/packed-stream proof; disposal, concurrent validation, pending or post-admission abort retire owner leases and prevent publication",
+        "six real contiguous normal preview frames produce36 actual passes12frame2+24frame1; journal writes and streaming replay pair actual RGBA SHA with output closure; this is a preview-only low-level probe",
+        "scene2 ratchet lift uses deterministic degree21 sine arithmetic after measured host last-bit divergence; endpoints/peak/bounds/monotonicity/symmetry and10,001-point comparison1e-15 pass, packed-byte proof and original1e-8/0.5px checks remain strict"
+      ],
+      "verification": {
+        "unitTests": 4050,
+        "unitFiles": 395,
+        "appearanceClosure": {
+          "firstParty": 376,
+          "external": 79
+        },
+        "journalFrames": 6,
+        "journalContributingPasses": 36,
+        "journalFrame2Passes": 12,
+        "journalFrame1Passes": 24,
+        "journalNegatives": 18,
+        "journalPeakMetadataBytes": 9952688,
+        "journalRetainedMetadataBytes": 0,
+        "originalNativeCases": 14,
+        "originalCompositionIntegrationCases": 5,
+        "originalCancellation": "passed"
+      },
+      "remaining": "Normal Node request producer/execution envelope, HTTP uploader/export-page/worker async dispatch, authenticated final movie closure and replay2, Lab, complete preflight before GPU/PMREM and expected graph allocation, packs/import/camera/labels/cues/typography/board and all owning MS2 gates remain. Preview raw-pixel journals do not count as normal authenticated final exports or supported family/pilot acceptance."
     }
   },
   "limits": [
-    "Normal native2 file IO, explicit graph sampling, prospective output admission and async core composition preview are verified. Version2 Lab playback, authenticated export execution/ledger/closure, whole-world preflight and product packs/import/camera/label/cue/scoped typography remain required.",
+    "Normal native2 IO/graph/async preview and low-level shared durable journal2 are verified; normal authenticated movie export/upload/execution2 and Lab integration, full world/expected allocation admission and all product/import/camera/label/cue/scoped typography gates remain required.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

@@ -77,6 +77,7 @@ import {
   type NativeObservationExpectedPass,
 } from "./native-observation-sink.ts";
 export * from "./native-observation-sink.ts";
+export * from "./native-observation-v2.ts";
 export type { CompositionOutputFormat } from "./composition-output.ts";
 export {
   COMPOSITION_OUTPUT_FORMATS,
