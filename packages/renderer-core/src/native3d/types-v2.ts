@@ -2,6 +2,7 @@ import type {
   Native3DSourceKey,
   Native3DSourceV2,
   NativeFrameSnapshotV2,
+  NativeShapeAssociation,
 } from "@still-shift/scene-contract";
 import type { PreparedMechanismSceneV2 } from "../mechanism/types-v2.ts";
 import type { DeepReadonly } from "./types.ts";
@@ -16,6 +17,9 @@ export interface PreparedNative3DVariantV2 {
   readonly meshDataSha256: string;
   readonly source: DeepReadonly<Native3DSourceV2>;
   readonly evaluation: PreparedMechanismSceneV2;
+  readonly shapeAssociations: Readonly<
+    Record<string, DeepReadonly<NativeShapeAssociation>>
+  >;
 }
 export interface PreparedNative3DSceneV2 {
   readonly version: "prepared-native3d-scene-2";

@@ -43,26 +43,19 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` starts from current
-  `main` `3fab0162` and carries exact native prerequisite `bf30a253` from
-  [PR #56](https://github.com/xxibcill/still-shift/pull/56). The prerequisite merge
-  preserves published 0.1.1 records and both development histories. The completed
-  standalone rig/teaching-shape contracts pass 11 focused checks and a fresh fast
-  gate (3,928 units / 383 files). Earlier stale generated closure and optional-type
-  build failures are retained with their repairs. Scene2/frame2 declarations pass
-  12 focused checks, build and fresh fast2 (3,940 units / 385 files), after a retained
-  formatter failure. Pure rig tracks pass 12 focused checks, build and fast1
-  (3,952 units / 386 files). Posed parts/closed shapes now pass36 focused checks,
-  build2 and fast1 (3,966 units / 387 files). Valid-ID, readonly cloning and IPC
-  setup failures are retained with actual repairs/reruns. Native2 preparation and
-  expected snapshots pass24 focused checks, build and fast2 (3,978 units / 388 files),
-  after a retained exhaustive-fixture failure. Owned changing geometry now passes
-  focused27 and the repaired full fast2 (3,990 units / 389 files), five real browser
-  frames and existing native14/integration5/cancellation controls. Receipt-type,
-  import-lint and widened v1 method-type failures are retained with repairs. Actual
-  used-GPU streams/landmarks and composition/export dispatch are next; three packs,
-  import/camera/label/cue, scoped typography and the full milestone gate remain required. Pilot support remains
-  zero; MS3 has not started. [MS2 results](./mechanism-shorts-ms2-results.json),
+- **MS2 in progress (2026-10-11):** isolated branch `codex/mechanism-ms2`
+  carries current `main` plus the native prerequisite from
+  [PR #56](https://github.com/xxibcill/still-shift/pull/56). Seven implementation
+  slices now cover strict reusable rig/shape contracts, deterministic posed
+  evaluation, native2 preparation/snapshots, bounded private Three geometry and
+  actual used indexed color streams. Final fast3 passes4,002 units / 390 files;
+  maintained five owned-world frames and six observed controls/eleven failure
+  seeds pass, with24 fresh independent Node digests/24 GPU landmarks. All failed
+  checks and the reproduced/repaired world-disposal race are retained.
+  Whole observed-frame2, versioned composition/export transport, three reusable
+  packs, import/camera/label/cue, scoped typography and the full milestone gate
+  remain required. Pilot support is zero; no MS2 PR or MS3 implementation yet.
+  [MS2 results](./mechanism-shorts-ms2-results.json),
   [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
@@ -221,6 +214,26 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — Commit independent used native2 color-stream evidence
+
+- **Branch / source:** `codex/mechanism-ms2`, prior world checkpoint `2846e0a3`;
+  final held inventory9:2,387 inputs / 118,124,080B.
+- **Done:** scoped nonzero indexed draws, actual used-buffer/layout reads, sealed
+  shape/topology/template/material groups, exact intended packed-LE comparison
+  and GPU landmark means; explicit proof intervals and verified not-drawn states.
+  Managed receipt/readback owners and abort/observer/world disposal are bounded.
+- **Results:** final fast3 passes4,002 units / 390 files; maintained five world
+  frames and six GPU controls/eleven negatives pass. Fresh Node replay checks24
+  used digests/24 landmarks; stale A/CPU B and wrong A normals fail on actual draws.
+- **Failures / repairs:** type admission, refined-schema startup, zero-seed
+  diagnostic and cleanup-lint failures retained. Separate real-browser red
+  reproduced successful finalization after world disposal; repaired and verified.
+  Original missing-route red log has no retained process terminal receipt.
+- **Next / limits:** whole observed-frame2 and versioned composition/export
+  integration. Generic fixtures do not count as reusable families, pilot support
+  or human visual/listening acceptance; MS2 PR remains pending the whole milestone.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-11 — Commit bounded owned native2 browser worlds
 

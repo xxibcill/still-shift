@@ -974,11 +974,393 @@
       },
       "auditQualification": "Initial read-only native receipt lookup guessed run.json and failed; maintained report.json and integration/cancellation reports were then located and hashed. No product check or source mutation in that lookup.",
       "scope": "Owned changing geometry, exact v1 method types, complete fast gate, actual new browser factory pixels and existing native depth/integration/cancellation controls. No independent used-GPU streams/landmarks, new scene2 composition/export publication, full family exports, pilot support or human acceptance."
+    },
+    {
+      "id": "native2-used-stream-route-red-1",
+      "status": "failed-observed-log-qualified-root-exit",
+      "sourceCheckpoint": "2846e0a332f56e4e157913fa7b0203cae6f6fa51",
+      "sourceState": "working-native2-used-stream-slice",
+      "actualRootSession": null,
+      "actualExitCode": null,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-gpu-red-inputs-1.json",
+        "bytes": 405659,
+        "sha256": "sha256:1310b1e5c3ae668270525ae1238dd7a5dbfee99ef7450bda652e1083df83235a",
+        "files": 2378,
+        "inputBytes": 118031702,
+        "sourceCommit": "2846e0a332f56e4e157913fa7b0203cae6f6fa51"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-gpu-red-1.log",
+          "bytes": 1158,
+          "sha256": "sha256:017273f9feac32695a00b4c4e85c744a2d47052a6d39d4de9e75ccc978397884"
+        }
+      ],
+      "qualification": "Original call output/handle was truncated. Root recovered the unchanged real Vitest log showing one missing exported route (undefined); the original process terminal exit is unavailable and is not inferred. No rerun/relabel of that historical red test."
+    },
+    {
+      "id": "native2-used-stream-build-1",
+      "status": "failed-types",
+      "sourceCheckpoint": "2846e0a332f56e4e157913fa7b0203cae6f6fa51",
+      "sourceState": "working-native2-used-stream-slice",
+      "actualRootSession": 86951,
+      "actualExitCode": 2,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-gpu-working-inputs-1.json",
+        "bytes": 406915,
+        "sha256": "sha256:acf84919d92c03b77b9ce00b320aac38d6f4eeee261dd4c5cc65a908404c3281",
+        "files": 2385,
+        "inputBytes": 118083470,
+        "sourceCommit": "2846e0a332f56e4e157913fa7b0203cae6f6fa51"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-gpu-build-1.log",
+          "bytes": 3020,
+          "sha256": "sha256:519d06b3c30c57b204b25826af21122d26a9c2328d1e682e0482984177cfc36d"
+        }
+      ],
+      "qualification": "Actual compile failed: pinned Three group callback typing, optional defines, readonly association and matrix tuple construction. Strict runtime checks retained during repairs."
+    },
+    {
+      "id": "native2-used-stream-build-2",
+      "status": "failed-browser-context-types",
+      "sourceCheckpoint": "2846e0a332f56e4e157913fa7b0203cae6f6fa51",
+      "sourceState": "working-native2-used-stream-slice",
+      "actualRootSession": 30062,
+      "actualExitCode": 2,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-gpu-working-inputs-2.json",
+        "bytes": 407241,
+        "sha256": "sha256:a9ec93742a054491d8c899f6859cb495a5858e140e8eacfca720fe42d61d5278",
+        "files": 2387,
+        "inputBytes": 118115111,
+        "sourceCommit": "2846e0a332f56e4e157913fa7b0203cae6f6fa51"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-gpu-build-2.log",
+          "bytes": 1171,
+          "sha256": "sha256:7b90e0332c0aa8864b1f5b3673194f34ebe7fbc0529b7664b741898d61344e87"
+        }
+      ],
+      "qualification": "Compile failed on WebGL1|2 context union in the new proof. Focused1/browser1 were not started because build failed."
+    },
+    {
+      "id": "native2-used-stream-build-3",
+      "status": "failed-proof-admission-types",
+      "sourceCheckpoint": "2846e0a332f56e4e157913fa7b0203cae6f6fa51",
+      "sourceState": "working-native2-used-stream-slice",
+      "actualRootSession": 6402,
+      "actualExitCode": 2,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-gpu-working-inputs-3.json",
+        "bytes": 407241,
+        "sha256": "sha256:38ecb1ea0dc1f7a15edcee0d3f86eeeda76970516ee755faf333f166d7e2ec1c",
+        "files": 2387,
+        "inputBytes": 118116084,
+        "sourceCommit": "2846e0a332f56e4e157913fa7b0203cae6f6fa51"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-gpu-build-3.log",
+          "bytes": 679,
+          "sha256": "sha256:8172d769a451a9db273b45ed7e4046ae2519bc94353a6f551e8c33101514d075"
+        }
+      ],
+      "qualification": "Compile failed on fixture hash constant mistaken for a callable and closure context narrowing. Focused2/browser2 were not started."
+    },
+    {
+      "id": "native2-used-stream-focused-3",
+      "status": "failed-schema-refinement-startup",
+      "sourceCheckpoint": "2846e0a332f56e4e157913fa7b0203cae6f6fa51",
+      "sourceState": "working-native2-used-stream-slice",
+      "actualRootSession": 8095,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-gpu-working-inputs-4.json",
+        "bytes": 407241,
+        "sha256": "sha256:3eb07603bbc96c06230558c4bde2d6850ef208b8c18a9d315b60dfc95c1c058d",
+        "files": 2387,
+        "inputBytes": 118116168,
+        "sourceCommit": "2846e0a332f56e4e157913fa7b0203cae6f6fa51"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-gpu-build-4.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-gpu-focused-3.log",
+          "bytes": 1367,
+          "sha256": "sha256:968f85c99eee37732aa582c66697677e3bfea09b0d262cd7898500afbd28739f"
+        }
+      ],
+      "qualification": "Child-stage exits inferred from required shell &&; one actual aggregate terminal receipt, no separate child session handles. Build4 completed; three suites failed before collecting tests because refined Zod group objects used extend rather than safeExtend. Browser3 did not start.",
+      "unitTestsRun": 0
+    },
+    {
+      "id": "native2-used-stream-browser-4",
+      "status": "failed-negative-boundary-expectation",
+      "sourceCheckpoint": "2846e0a332f56e4e157913fa7b0203cae6f6fa51",
+      "sourceState": "working-native2-used-stream-slice",
+      "actualRootSession": 49821,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-gpu-working-inputs-5.json",
+        "bytes": 407241,
+        "sha256": "sha256:0b2974e86fc76438afbf2aaa9f52cb179855fa68ad40577f2eaa138e7f78b55f",
+        "files": 2387,
+        "inputBytes": 118116857,
+        "sourceCommit": "2846e0a332f56e4e157913fa7b0203cae6f6fa51"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-gpu-focused-4.log",
+          "bytes": 451,
+          "sha256": "sha256:91de1562ea4906f1369f1e1fca1b30be2db0f2f01369baf804c61c9dabc3e7b5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-gpu-browser-4.log",
+          "bytes": 876,
+          "sha256": "sha256:1733b26a3084a0f3ee674000817f489b0ecf6674a8174d06a0422516984132a9"
+        }
+      ],
+      "qualification": "Child-stage exits inferred from required shell &&; one actual aggregate terminal receipt, no separate child session handles. Focused4 passed36/3; real browser failed at zero-count expected diagnostic (actual sealed-group mismatch). Earlier partial browser work is not a completed control proof. Repaired zero-count diagnostic and separated missing-group seed.",
+      "unitTests": 36,
+      "unitFiles": 3,
+      "unitReportedSeconds": 1.46,
+      "failureArtifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-de9k4P/failure.json",
+          "bytes": 3285,
+          "sha256": "sha256:eab1630f2ae77622d842a6bc6d6241b5833f8be5e137075ae4083e7b8b71e4a4"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-de9k4P/source.json",
+          "bytes": 102757,
+          "sha256": "sha256:5c14c7f965b52fa25b66e93a4e4f086e76aceb5f26046f798dbe37a564bb2cdb"
+        }
+      ]
+    },
+    {
+      "id": "native2-used-stream-browser-5",
+      "status": "passed-standalone-stream-controls",
+      "sourceCheckpoint": "2846e0a332f56e4e157913fa7b0203cae6f6fa51",
+      "sourceState": "working-native2-used-stream-slice",
+      "actualRootSession": 1810,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-gpu-working-inputs-6.json",
+        "bytes": 407242,
+        "sha256": "sha256:f3dbe3028cacb2b4b8ce5a4972c77efad23a680c1838085f78fd2fcd5ef721cf",
+        "files": 2387,
+        "inputBytes": 118117431,
+        "sourceCommit": "2846e0a332f56e4e157913fa7b0203cae6f6fa51"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-gpu-build-5.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-gpu-browser-5.log",
+          "bytes": 154,
+          "sha256": "sha256:5f3d644074313489eb5302c7e090c61475076065909083091a63afa5aba21c45"
+        }
+      ],
+      "qualification": "Child-stage exits inferred from required shell &&; one actual aggregate terminal receipt, no separate child session handles. Six real frames and ten strict negatives pass; stale/normal mismatch hashes match A and intended B controls. This earlier producer has no added full independent Node landmark/digest replay or full fast gate.",
+      "browserReceipt": {
+        "path": "/private/tmp/still-shift-ms2-used-streams-qvzAKC/run.json",
+        "bytes": 7548,
+        "sha256": "sha256:752ddbea2451d60d9a36a9cbd4ada1870993338559e93c63917cde340e447197"
+      }
+    },
+    {
+      "id": "native2-used-stream-fast-1",
+      "status": "failed-unsafe-finally-lint",
+      "sourceCheckpoint": "2846e0a332f56e4e157913fa7b0203cae6f6fa51",
+      "sourceState": "working-native2-used-stream-slice",
+      "actualRootSession": 66128,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-gpu-working-inputs-7.json",
+        "bytes": 407243,
+        "sha256": "sha256:2c03a3756a833e83e89c0ec4029d325cc9ee9120fc31cb7661d0dd09f6c99ef7",
+        "files": 2387,
+        "inputBytes": 118122931,
+        "sourceCommit": "2846e0a332f56e4e157913fa7b0203cae6f6fa51"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-gpu-identity-generate-1.log",
+          "bytes": 260,
+          "sha256": "sha256:95b7fec59884349e4b7bd972ccd279e566773356096954d67055c2d774e61f3a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-gpu-fast-1.log",
+          "bytes": 1646,
+          "sha256": "sha256:a05611b5295fc5486962281314dddbab5bf5ef60d0b3c6f4b7cc14f789769d4d"
+        }
+      ],
+      "qualification": "Child-stage exits inferred from required shell &&; one actual aggregate terminal receipt, no separate child session handles. Identity generation completed352/79 and schema/boundaries/format passed; lint rejected ThrowStatement in finally. Units/browser6 did not start. Cleanup was rewritten into explicit first-failure control flow.",
+      "appearanceClosure": {
+        "firstParty": 352,
+        "external": 79
+      }
+    },
+    {
+      "id": "native2-used-stream-final-gate-2",
+      "status": "passed-before-world-disposal-regression",
+      "sourceCheckpoint": "2846e0a332f56e4e157913fa7b0203cae6f6fa51",
+      "sourceState": "working-native2-used-stream-slice",
+      "actualRootSession": 94091,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-gpu-working-inputs-8.json",
+        "bytes": 407243,
+        "sha256": "sha256:856e67f66329ecc38afdd0739b2e02a6113d7cfe3f66cddc0a4fd07a9c4d0867",
+        "files": 2387,
+        "inputBytes": 118122942,
+        "sourceCommit": "2846e0a332f56e4e157913fa7b0203cae6f6fa51"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-gpu-fast-2.log",
+          "bytes": 31820,
+          "sha256": "sha256:8f7f9865ba60ce5e80678a84a4a7651c2453fe8e39da06ca72c01cb19085716a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-gpu-browser-7.log",
+          "bytes": 511,
+          "sha256": "sha256:06c648b4b98731fd14a7d731b8a685d4fe5c63549c1b8286c1b23bacac482f90"
+        }
+      ],
+      "qualification": "Child-stage exits inferred from required shell &&; one actual aggregate terminal receipt, no separate child session handles. Actual source inventory unchanged after complete fast2 and both maintained browser gates. Source precedes the later reproduced world-disposal race and repair; it is not the final implementation producer.",
+      "unitTests": 4002,
+      "unitFiles": 390,
+      "unitReportedSeconds": 46.2,
+      "browserReceipts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-q0A23Q/run.json",
+          "bytes": 2976,
+          "sha256": "sha256:ed65460b40ca9770d4a24c34c5ddc709a2ac125dbb610e4ae9ce3f42ccf1e13d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-RhRbqf/run.json",
+          "bytes": 7703,
+          "sha256": "sha256:9aec0011abee0f7d5adfdc2ffe581b83e1cfcee34a52a2f9adbfcfbe100a07eb"
+        }
+      ],
+      "independentNodeChecks": {
+        "byteDigests": 24,
+        "landmarks": 24
+      }
+    },
+    {
+      "id": "native2-used-stream-world-disposal-red-1",
+      "status": "failed-reproduced-world-disposal-acceptance",
+      "sourceCheckpoint": "2846e0a332f56e4e157913fa7b0203cae6f6fa51",
+      "sourceState": "working-native2-used-stream-slice",
+      "actualRootSession": 98855,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-gpu-world-disposal-red-inputs-1.json",
+        "bytes": 407243,
+        "sha256": "sha256:daf24f581e244d21e4b3d6c70316cacd495d8ca17c3cf4c13cff8594285ea06a",
+        "files": 2387,
+        "inputBytes": 118123898,
+        "sourceCommit": "2846e0a332f56e4e157913fa7b0203cae6f6fa51"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-gpu-world-disposal-red-1.log",
+          "bytes": 743,
+          "sha256": "sha256:861bf096776b21c48ad598548086ef0f7573cc0165d9752fe264231ce254ec35"
+        }
+      ],
+      "qualification": "Actual real-browser regression reproduced a pending observation returning successfully after its Three world was disposed. Original red failure retained; no completed control/frame proof is claimed for this run.",
+      "terminalObservedAtUTC": "2026-10-10T19:25:54Z",
+      "failureArtifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-iZ2T13/failure.json",
+          "bytes": 3152,
+          "sha256": "sha256:0cb77f576e6d9a71b1122d1759e8d73aeca4844091104cf93f64604917c8b337"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-iZ2T13/source.json",
+          "bytes": 103050,
+          "sha256": "sha256:720ef4e89db95d9b5669d0f556fd87f1db75c3a53f4d3aeef61209353c400b0c"
+        }
+      ]
+    },
+    {
+      "id": "native2-used-stream-final-gate-3",
+      "status": "passed-final-held-source",
+      "sourceCheckpoint": "2846e0a332f56e4e157913fa7b0203cae6f6fa51",
+      "sourceState": "working-native2-used-stream-slice",
+      "actualRootSession": 96481,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-gpu-working-inputs-9.json",
+        "bytes": 407243,
+        "sha256": "sha256:fdaa99ff4074ca2a985d9c8e27cdd21bf95afca43a9c7edb0d77ca3656c42999",
+        "files": 2387,
+        "inputBytes": 118124080,
+        "sourceCommit": "2846e0a332f56e4e157913fa7b0203cae6f6fa51"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-gpu-fast-3.log",
+          "bytes": 32432,
+          "sha256": "sha256:3a216db911714938badf6188d343be241f1bdb52e64f00766af9fd1c768bad7b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-gpu-browser-8.log",
+          "bytes": 511,
+          "sha256": "sha256:88e3a406b0a4081e4b324ccfc3c5b453dba93f58bd89e7c50302899d49308148"
+        }
+      ],
+      "qualification": "Child-stage exits inferred from required shell &&; one actual aggregate terminal receipt, no separate child session handles. Final complete fast3 and both maintained real-browser gates pass. All source inputs unchanged after checks. Eleven strict negatives now include disposal of the actual Three world during finalization. No scene2 composition/export, reusable pack/pilot, shader-output, physical simulation or human acceptance is claimed.",
+      "terminalObservedAtUTC": "2026-10-10T19:30:00.522925+00:00",
+      "unitTests": 4002,
+      "unitFiles": 390,
+      "unitReportedSeconds": 49.88,
+      "browserReceipts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-cYvDrQ/run.json",
+          "bytes": 2976,
+          "sha256": "sha256:ed65460b40ca9770d4a24c34c5ddc709a2ac125dbb610e4ae9ce3f42ccf1e13d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-O6790h/run.json",
+          "bytes": 7870,
+          "sha256": "sha256:44eb8c8bc3e631671d6432b6e03fcd43368bbaa58e5759af87f62a6f63d0a555"
+        }
+      ],
+      "independentNodeChecks": {
+        "byteDigests": 24,
+        "landmarks": 24,
+        "method": "fresh-pure-source-sampling-and-independent-packed-LE-checker"
+      },
+      "browserFrames": {
+        "ownedWorld": 5,
+        "usedColorStreams": 6
+      },
+      "browserNegatives": 11,
+      "appearanceClosure": {
+        "firstParty": 352,
+        "external": 79
+      },
+      "sourceInvariant": "2387 inputs / 118124080 bytes unchanged"
     }
   ],
   "implementation": {
     "firstSlice": "Completed standalone reusable rig/teaching-shape contracts. All 11 focused negatives/admission checks and fresh complete fast3 gate (3928 units/383 files) pass; earlier closure and optional-type failures retained.",
-    "runtimeSupport": "standalone-native2-world-verified-composition-export-not-integrated",
+    "runtimeSupport": "standalone-native2-used-color-streams-verified-composition-export-not-integrated",
     "supportedPacks": [],
     "pilotSupportedEpisodes": 0,
     "secondSlice": "Completed strict scene2/frame2 declarations, dependency/ownership and generated-landmark checks, aggregate changing geometry budgets and pack references. Focused12, TypeScript build and fresh fast2 pass (3940 units/385 files); failed formatting attempt retained. Pure evaluation and integration remain required.",
@@ -992,7 +1374,9 @@
       "expected relationship residuals"
     ],
     "fifthSlice": "Completed native2 data adapter: explicit source/versioned snapshot, async topology SHA validation, neutral variant association, rigControls exclusivity, fractional owning/source clocks and expected posed visibility. Focused24/build1 and fresh fast2 pass (3978 units/388 files); missing-route red and exhaustive fixture failure retained. Browser composition dispatch and used-GPU observation remain pending.",
-    "sixthSlice": "Completed owned native2 browser world: private fixed-topology clones, shared live mesh/vertex/triangle caps, atomic state admission, absolute Float32 pos/normal updates and versions/bounds before render list creation, alias/seek isolation and managed lifecycle. Focused27/build1; after retained receipt-type/lint/v1-type regressions and repairs, complete fast2 passes3990/389. Five real browser frames reproduce exact seeks/aliases, and existing native14 + integration5 + cancellation controls pass. Independent GPU stream observation and composition/export integration remain next."
+    "sixthSlice": "Completed owned native2 browser world: private fixed-topology clones, shared live mesh/vertex/triangle caps, atomic state admission, absolute Float32 pos/normal updates and versions/bounds before render list creation, alias/seek isolation and managed lifecycle. Focused27/build1; after retained receipt-type/lint/v1-type regressions and repairs, complete fast2 passes3990/389. Five real browser frames reproduce exact seeks/aliases, and existing native14 + integration5 + cancellation controls pass. Independent GPU stream observation and composition/export integration remain next.",
+    "seventhSlice": "Completed scoped actual nonzero indexed color-draw recording, packed used-GPU position/normal/index readback, static sealed associations/groups/material inputs, GPU landmark means and interval-scoped not-drawn allowances. Final fast3 passes4002/390; maintained five owned-world frames plus six observed controls/eleven failure seeds pass, with24 fresh independent Node digests/24 landmarks. Stale uploads, wrong normals/indices, zero/missing groups, changed linear material, hidden proof, abort, observer/world disposal fail before successful receipt. All failed builds/startup/seed/lint and actual lifecycle red retained. Whole observed-frame2 and composition/export transport remain next.",
+    "installationQualification": "Two guarded mutation scripts stopped at exact text-match assertions (repeated type name; formatted multiline zero-seed text). Only their intended milestone files had been written; separate guarded resumes completed those edits. Neither stop was a product verification or automatic approval rejection."
   },
   "limits": [
     "Native2 preparation/expected snapshots and standalone owned browser worlds are verified. Independent changing GPU observations, scene2 composition/export dispatch, product packs, import/camera/label/cue and scoped typography remain required.",

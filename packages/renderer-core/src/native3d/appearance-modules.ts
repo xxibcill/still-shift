@@ -834,6 +834,10 @@ export const native3DAppearanceModules: readonly {
     url: new URL("./sampling.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/native3d/shape-associations.ts",
+    url: new URL("./shape-associations.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/native3d/three-graphics.ts",
     url: new URL("./three-graphics.ts", import.meta.url),
   },
@@ -846,6 +850,18 @@ export const native3DAppearanceModules: readonly {
     url: new URL("./three-observation.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/native3d/three-shape-draws.ts",
+    url: new URL("./three-shape-draws.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/three-shape-material.ts",
+    url: new URL("./three-shape-material.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/three-shape-observation.ts",
+    url: new URL("./three-shape-observation.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/native3d/three-shapes.ts",
     url: new URL("./three-shapes.ts", import.meta.url),
   },
@@ -856,6 +872,14 @@ export const native3DAppearanceModules: readonly {
   {
     name: "renderer-core/src/native3d/three-world.ts",
     url: new URL("./three-world.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/used-indexed-streams.ts",
+    url: new URL("./used-indexed-streams.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/used-stream-bytes.ts",
+    url: new URL("./used-stream-bytes.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/native3d/visibility.ts",
@@ -1619,6 +1643,13 @@ export const native3DAppearanceModules: readonly {
     name: "scene-contract/src/native3d/scene.ts",
     url: new URL(
       "../../../scene-contract/src/native3d/scene.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/native3d/shape-observation.ts",
+    url: new URL(
+      "../../../scene-contract/src/native3d/shape-observation.ts",
       import.meta.url,
     ),
   },

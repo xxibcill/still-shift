@@ -1,6 +1,7 @@
 import { z } from "zod";
 import {
   MechanismHashSchema,
+  MECHANISM_LIMITS,
   MechanismIdSchema,
   MechanismVectorSchema,
   mechanismIssue,
@@ -43,12 +44,66 @@ export const MechanismShapeLandmarkSchema = z
       );
   });
 
+/** Source-clock proof intervals are half-open. An omitted policy requires every draw. */
+export const MechanismShapeDrawEvidenceSchema = z
+  .object({
+    version: z.literal("mechanism-shape-draw-evidence-1"),
+    requiredIntervals: z
+      .array(
+        z
+          .object({
+            startFrame: z.number().finite().min(0).max(MECHANISM_LIMITS.frames),
+            endFrameExclusive: z
+              .number()
+              .finite()
+              .positive()
+              .max(MECHANISM_LIMITS.frames),
+          })
+          .strict()
+          .refine(
+            (interval) => interval.endFrameExclusive > interval.startFrame,
+            "Draw proof intervals must be nonempty",
+          ),
+      )
+      .min(1)
+      .max(32),
+    allowedOutsideProof: z
+      .array(z.enum(["authored-hidden", "outside-frustum"]))
+      .max(2)
+      .default([]),
+  })
+  .strict()
+  .superRefine((policy, context) => {
+    let end = 0;
+    for (const [index, interval] of policy.requiredIntervals.entries()) {
+      if (interval.startFrame < end)
+        mechanismIssue(
+          context,
+          "mechanism-shape-draw-evidence",
+          "Draw proof intervals must be sorted and nonoverlapping",
+          ["requiredIntervals", index],
+        );
+      end = interval.endFrameExclusive;
+    }
+    if (
+      new Set(policy.allowedOutsideProof).size !==
+      policy.allowedOutsideProof.length
+    )
+      mechanismIssue(
+        context,
+        "mechanism-shape-draw-evidence",
+        "Outside-proof allowances must be unique",
+        ["allowedOutsideProof"],
+      );
+  });
+
 const identity = {
   id: MechanismIdSchema,
   mesh: MechanismIdSchema,
   ownerPart: MechanismIdSchema,
   topologySha256: MechanismHashSchema,
   landmarks: z.array(MechanismShapeLandmarkSchema).min(2).max(4),
+  drawEvidence: MechanismShapeDrawEvidenceSchema.optional(),
 };
 const dimension = z.number().finite().positive().max(1000);
 const pawl = z

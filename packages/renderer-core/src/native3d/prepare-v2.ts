@@ -12,6 +12,7 @@ import { prepareMechanismSceneV2 } from "../mechanism/prepare-v2.ts";
 import { mechanismTeachingTopologyDocument } from "../mechanism/teaching-topology.ts";
 import { passageError } from "../passage-diagnostics.ts";
 import { hashNativeData } from "./canonical-hash.ts";
+import { prepareNativeShapeAssociations } from "./shape-associations.ts";
 import { freezeNativeData, native3DOverridesKey } from "./prepare.ts";
 import type { Native3DPreparationOptions } from "./types.ts";
 import type {
@@ -92,6 +93,7 @@ export async function prepareNative3DSceneV2(
       meshDataSha256,
       source: derived,
       evaluation,
+      shapeAssociations: await prepareNativeShapeAssociations(derived),
     });
   }
   return freezeNativeData({

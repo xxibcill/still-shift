@@ -17,6 +17,11 @@ export type {
 } from "./runtime.ts";
 export { observeNativeThreeWorld } from "./three-observation.ts";
 export {
+  createNativeThreeShapeObservation,
+  NativeUsedStreamMismatchError,
+} from "./three-shape-observation.ts";
+export type { NativeThreeShapeObservationResult } from "./three-shape-observation.ts";
+export {
   createNativeThreeGraphic,
   nativeArtworkCorners,
 } from "./three-graphics.ts";
