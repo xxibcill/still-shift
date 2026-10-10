@@ -252,7 +252,7 @@ export function createNativeMechanismOverlayChecker(
         evaluation,
       )) {
         contributingTrees++;
-        const quality = compositionQualityTree(composition, tree);
+        const quality = compositionQualityTree(composition, tree, evaluation);
         const controllers = tree.layers.filter(
           (state) =>
             state.layer.type === "native3d" &&

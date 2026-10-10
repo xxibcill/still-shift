@@ -855,6 +855,416 @@
         "sha256": "sha256:d692138239ef8ac30d14f7300b94fb74af1142431e00e32c5d200573877c2902"
       },
       "scope": "Stationary final test-only repair: independent finite-quad camera ray, exact actual mesh/artwork controls, observed reference mode colors and one-pixel full plateau neighborhood. No production or acceptance threshold change; actual graph rerun pending."
+    },
+    {
+      "id": "native-depth-graph-5",
+      "status": "passed",
+      "command": "pnpm test:browser:native3d-depth",
+      "sourceCommit": "3ac7d29fa9c6e3a6feb8517a8ddcba7da4edbbcf",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-depth-proof-5.log",
+        "bytes": 538,
+        "sha256": "sha256:5d902476a5951377406b0f6ce6834a5abe5750e2d701215cebfeb22be49c8987"
+      },
+      "directory": "/private/tmp/still-shift-ms1n-native-depth-nLVczS",
+      "directDepthCases": 14,
+      "compositionIntegrationFamilies": 5,
+      "report": {
+        "path": "/private/tmp/still-shift-ms1n-native-depth-nLVczS/composition-integration-report.json",
+        "bytes": 419656,
+        "sha256": "sha256:416616d94e8466ca4ad3a61fcbdc9075ee21b62d7198bff1b83665a7ada52ba6"
+      },
+      "aggregateReport": {
+        "path": "/private/tmp/still-shift-ms1n-native-depth-nLVczS/required-native-proof-reports.json",
+        "bytes": 164,
+        "sha256": "sha256:e486f64c15b576efc79f6408c2af7cd0a746fc13c47604a9093ad2e9aa505725"
+      },
+      "cancellationReport": {
+        "path": "/private/tmp/still-shift-native-export-cancel-O9ryNf/report.json",
+        "bytes": 4957,
+        "sha256": "sha256:d81ba01e6626827a7ff3ab143f88a2e463180cfeda32aaadeab7bc5e5520d847"
+      },
+      "scope": "Actual compiled native graph and cancellation required group completes; all28 actual integrationRGBA artifacts/1,835,008bytes, authored source hashes and executed helper/callsite hashes independently audited. Earlier graph4 oracle failure retained; no production or threshold relaxation. Current2321 selected source/build inputs unchanged after run."
+    },
+    {
+      "id": "native-e01-full-proof-1",
+      "status": "failed",
+      "sourceCommit": "3ac7d29fa9c6e3a6feb8517a8ddcba7da4edbbcf",
+      "node": "22.23.1",
+      "sourceInputInventory": {
+        "path": "/private/tmp/still-shift-ms1n-implementation-inputs-7.json",
+        "bytes": 395813,
+        "sha256": "sha256:289a6ea9a935c499ea65909f61dffef2d8be51b77e4cd91ddb822bda9cbbc72a"
+      },
+      "stationarySourceVerification": "inventory7 verified unchanged after failed terminal exit and immediately before repair edits",
+      "run": {
+        "path": "/private/tmp/still-shift-ms1n-e01-full-proof-1/run.json",
+        "bytes": 12805,
+        "sha256": "sha256:13f1c6f18e9e05c9aa349619a7b83c3902bc54de814478145b60475fe8ae7bf8"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-e01-full-proof-1.log",
+        "bytes": 20385,
+        "sha256": "sha256:b4d6f882ed05f0ba91d659a8b0d780feb9d76fb3e5cc355f89998b0284cacf1c"
+      },
+      "actualWrapper": {
+        "path": "/private/tmp/still-shift-ms1n-e01-full-proof-1/stages/02-fresh-full-native-696-export-and-qa/actual-native-render-result.json",
+        "bytes": 217562,
+        "sha256": "sha256:361e1342883f04f336b5581e12a0c867d4dc2752fb8cedf56df68de67e757bc3"
+      },
+      "actualExportReceipt": {
+        "path": "/private/tmp/still-shift-ms1n-e01-full-proof-1/first/episode.mp4.result.json",
+        "bytes": 67584,
+        "sha256": "sha256:d300f9e2c5606ba6b3b1da0e769fe25cf33dd13b3deb63c20c6f7055e750dc00"
+      },
+      "actualMovie": {
+        "path": "/private/tmp/still-shift-ms1n-e01-full-proof-1/first/episode.mp4",
+        "bytes": 3647073,
+        "sha256": "sha256:82554962620125c69f85f37ec1addb4438793a8b3640b7cb450c5cc85708d110"
+      },
+      "stageWallSeconds": 2068.037714791,
+      "actualCheckWallSeconds": 1175.9311034169998,
+      "orientation": "passed",
+      "frameCount": 696,
+      "actualExecutionVerified": true,
+      "mechanicalFindings": [],
+      "overlayFindings": [],
+      "audioFindings": [],
+      "fatalMotionFindings": [
+        {
+          "frames": [1, 34],
+          "measured": 34,
+          "code": "frozen-run",
+          "severity": "error",
+          "nodes": [],
+          "shot": "V8-01",
+          "path": "layers",
+          "message": "34 unchanged evaluated-state comparisons exceed the 6-frame limit.",
+          "readingPurposes": []
+        },
+        {
+          "frames": [37, 69],
+          "measured": 33,
+          "code": "frozen-run",
+          "severity": "error",
+          "nodes": [],
+          "shot": "V8-01",
+          "path": "layers",
+          "message": "33 unchanged evaluated-state comparisons exceed the 6-frame limit.",
+          "readingPurposes": []
+        },
+        {
+          "frames": [71, 77],
+          "measured": 7,
+          "code": "frozen-run",
+          "severity": "error",
+          "nodes": [],
+          "shot": "V8-01",
+          "path": "layers",
+          "message": "7 unchanged evaluated-state comparisons exceed the 6-frame limit.",
+          "readingPurposes": []
+        },
+        {
+          "frames": [80, 87],
+          "measured": 8,
+          "code": "frozen-run",
+          "severity": "error",
+          "nodes": [],
+          "shot": "V8-02",
+          "path": "layers",
+          "message": "8 unchanged evaluated-state comparisons exceed the 6-frame limit.",
+          "readingPurposes": []
+        },
+        {
+          "frames": [164, 172],
+          "measured": 9,
+          "code": "frozen-pixels",
+          "severity": "error",
+          "nodes": [],
+          "shot": "V8-03",
+          "path": "layers",
+          "message": "9 unchanged pixel comparisons exceed the 6-frame limit.",
+          "readingPurposes": []
+        },
+        {
+          "frames": [164, 172],
+          "measured": 9,
+          "code": "frozen-run",
+          "severity": "error",
+          "nodes": [],
+          "shot": "V8-03",
+          "path": "layers",
+          "message": "9 unchanged evaluated-state comparisons exceed the 6-frame limit.",
+          "readingPurposes": []
+        },
+        {
+          "frames": [249, 256],
+          "measured": 8,
+          "code": "frozen-run",
+          "severity": "error",
+          "nodes": [],
+          "shot": "V8-04",
+          "path": "layers",
+          "message": "8 unchanged evaluated-state comparisons exceed the 6-frame limit.",
+          "readingPurposes": []
+        },
+        {
+          "frames": [337, 345],
+          "measured": 9,
+          "code": "frozen-run",
+          "severity": "error",
+          "nodes": [],
+          "shot": "V8-05",
+          "path": "layers",
+          "message": "9 unchanged evaluated-state comparisons exceed the 6-frame limit.",
+          "readingPurposes": []
+        },
+        {
+          "frames": [419, 427],
+          "measured": 9,
+          "code": "frozen-pixels",
+          "severity": "error",
+          "nodes": [],
+          "shot": "V8-06",
+          "path": "layers",
+          "message": "9 unchanged pixel comparisons exceed the 6-frame limit.",
+          "readingPurposes": []
+        },
+        {
+          "frames": [419, 427],
+          "measured": 9,
+          "code": "frozen-run",
+          "severity": "error",
+          "nodes": [],
+          "shot": "V8-06",
+          "path": "layers",
+          "message": "9 unchanged evaluated-state comparisons exceed the 6-frame limit.",
+          "readingPurposes": []
+        },
+        {
+          "frames": [473, 479],
+          "measured": 7,
+          "code": "frozen-pixels",
+          "severity": "error",
+          "nodes": [],
+          "shot": "V8-07",
+          "path": "layers",
+          "message": "7 unchanged pixel comparisons exceed the 6-frame limit.",
+          "readingPurposes": []
+        },
+        {
+          "frames": [473, 479],
+          "measured": 7,
+          "code": "frozen-run",
+          "severity": "error",
+          "nodes": [],
+          "shot": "V8-07",
+          "path": "layers",
+          "message": "7 unchanged evaluated-state comparisons exceed the 6-frame limit.",
+          "readingPurposes": []
+        },
+        {
+          "frames": [528, 535],
+          "measured": 8,
+          "code": "frozen-run",
+          "severity": "error",
+          "nodes": [],
+          "shot": "V8-08",
+          "path": "layers",
+          "message": "8 unchanged evaluated-state comparisons exceed the 6-frame limit.",
+          "readingPurposes": []
+        },
+        {
+          "frames": [605, 642],
+          "measured": 38,
+          "code": "frozen-run",
+          "severity": "error",
+          "nodes": [],
+          "shot": "V8-09",
+          "path": "layers",
+          "message": "38 unchanged evaluated-state comparisons exceed the 6-frame limit.",
+          "readingPurposes": []
+        },
+        {
+          "frames": [644, 692],
+          "measured": 49,
+          "code": "frozen-run",
+          "severity": "error",
+          "nodes": [],
+          "shot": "V8-09",
+          "path": "layers",
+          "message": "49 unchanged evaluated-state comparisons exceed the 6-frame limit.",
+          "readingPurposes": []
+        }
+      ],
+      "diagnosis": "Native evaluated paint signature omitted native camera/physical state. Retained actual packets show changing camera/accepted bytes during false frozen-run spans; genuine pre-label stationary shot proofs lack native closure-bound classification despite original nativePhysicalProofRequests. No quality threshold, source episode, narration or timeline changed.",
+      "followup": "Repair native paint fingerprint and classify only verified actual stationary state/accepted body intervals within original shot requests; repeat fresh proof, parity/hardware/installed/full gate still required. Source audit also identified repeated world-vertex transforms and missing closure row macrotask yield; bounded fixes pending verification.",
+      "scope": "Original fresh full native export and all696 closure/mechanics/overlay/audio checks completed; current measured motion QA failed. Repeat export, nine parity frames and later stages were not reached."
+    },
+    {
+      "id": "native-proof-tests-1",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-proof-tests-1.log",
+        "bytes": 8766,
+        "sha256": "sha256:96c6372d05d4c6ced10c9af57c2a7c33f325afbf262ec5b4b2b82bccf4c7fe18"
+      },
+      "scope": "7 fixture failures: missing required sourceStartFrame/sourceFps; source contract preserved"
+    },
+    {
+      "id": "native-proof-tests-2",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-proof-tests-2.log",
+        "bytes": 315,
+        "sha256": "sha256:1bcf0ca9f9c143ff48f3701ac192a0ddbd666bb517c349c7c59af2058e7b072b"
+      },
+      "scope": "7 initial classifier cases; later expanded expected whole-frame guard supersedes scope"
+    },
+    {
+      "id": "native-checker-tests-1",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-checker-tests-1.log",
+        "bytes": 1369,
+        "sha256": "sha256:703996dbb8c94b4d06bf9fb2305286428a26c658422ef783845341b203f668a6"
+      },
+      "scope": "sink9 passes; new visibility suite copied two wrong relative test imports"
+    },
+    {
+      "id": "native-qa-repair-tests-1",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-qa-repair-tests-1.log",
+        "bytes": 7833,
+        "sha256": "sha256:637716a5511a4750cd982482a151d50cafaeda891ddd9fa60f2838eeea25a315"
+      },
+      "scope": "21 pass/7 fail: missing pinned font weights in root test fixtures"
+    },
+    {
+      "id": "native-qa-repair-tests-2",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-qa-repair-tests-2.log",
+        "bytes": 4006,
+        "sha256": "sha256:b3087f334c22ae5c50e662b6e64654af9df0a8abf3950c74cfcd2a513aec80c5"
+      },
+      "scope": "53 pass/1 fail: ordinary test fixture omitted required assets array"
+    },
+    {
+      "id": "native-qa-repair-tests-3",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-qa-repair-tests-3.log",
+        "bytes": 1444,
+        "sha256": "sha256:97446d0777ac6a1797b0a6027910beb3725cc5fd121222166398b3b8068c24b9"
+      },
+      "scope": "54 focused cases; subsequent hidden world-art fingerprint correction and wholecurrent guard retained"
+    },
+    {
+      "id": "native-qa-repair-tests-4",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-qa-repair-tests-4.log",
+        "bytes": 1444,
+        "sha256": "sha256:21d5013e9891991c71794e951a69d6dd77291b1075cfcb29096320764befa248"
+      },
+      "scope": "54 focused cases including exact visibility comparison, rowyield/abort, native paint, current expected caption motion, immutable QA and stalecheckidentity"
+    },
+    {
+      "id": "native-qa-repair-lint-1",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-qa-repair-lint-1.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "scope": "Scoped source/test lint"
+    },
+    {
+      "id": "native-qa-repair-lint-2",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-qa-repair-lint-2.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "scope": "Scoped source/test lint after hidden world-art correction"
+    },
+    {
+      "id": "build-6",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-build-6.log",
+        "bytes": 2654,
+        "sha256": "sha256:8990231d8c21003b273cc239c9258e4ab9e52f2cd683b00751b64c7629649b71"
+      },
+      "scope": "Test fixture readonly matrix typing/missing evaluation arg/excess receipt bookkeeping and paint tuple cast"
+    },
+    {
+      "id": "build-7",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-build-7.log",
+        "bytes": 281,
+        "sha256": "sha256:f371ec4f530a9305f35c3c9dc7904abaed5434d5e7f87688c7e531e5f2ae657d"
+      },
+      "scope": "Optional proofchecker narrowing at source callsite"
+    },
+    {
+      "id": "build-8",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-build-8.log",
+        "bytes": 98,
+        "sha256": "sha256:d692138239ef8ac30d14f7300b94fb74af1142431e00e32c5d200573877c2902"
+      },
+      "scope": "All project TypeScript after exact tuple/narrowing repairs"
+    },
+    {
+      "id": "check-fast-8",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-check-fast-8.log",
+        "bytes": 1414,
+        "sha256": "sha256:3a206adf186456e713be756f83ecc75d18467cff6f2bd405c862d4bf7df844b1"
+      },
+      "scope": "Schema/native332+79 closure and package boundaries pass; updated results JSON formatting warning stops before lint/build/unit"
+    },
+    {
+      "id": "check-fast-9",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-check-fast-9.log",
+        "bytes": 33055,
+        "sha256": "sha256:5b9cef563dfb6550fb03447af1f92f36d5e51276334f5810fce51e3f5dc99337"
+      },
+      "scope": "Full fast gate: schema/native332first-party+79external appearance closure/boundaries/format/lint/type and all3915units/381files pass; source unchanged through terminal completion."
+    },
+    {
+      "id": "saved-edit-render-2",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-saved-edit-render-2.log",
+        "bytes": 568,
+        "sha256": "sha256:d3e5201fbb3f13374e45c269b86f908959701fd96ff52cb2536eabe6e27080b1"
+      },
+      "scope": "Both maintained actual native saved-camera/nonoverwrite integration cases pass after QA repairs: actual64x64/2frame export with currentFOV40/source closure and protected final outputs. Not original696/fullnative acceptance."
     }
   ],
   "implementationEvidence": {
@@ -891,25 +1301,11 @@
       }
     },
     "nativeEpisodeExecution": {
-      "status": "first-actual-preview-produced-unverified-by-failed-harness",
-      "directory": "/private/tmp/still-shift-ms1n-e01-preview-proof-1",
-      "nativeSourceRepairPending": [],
-      "humanAcceptance": "pending",
-      "repairs": "Captured descriptor self-hash, authored source-edge validation immediately before publication, and canonical top-first raw/default encoder row order implemented. Fresh source checkpoint/proofs pending.",
-      "dependencyResolutionRepair": "Actual renderer-owned descriptor context resolves pinned dependencies without NODE_PATH/global fallback; bare Node17 focused checks pass at fd88faa3. Full native preview/edit rerun in progress; full bridge harness2 failed before GPU on signed-zero JSON comparison and is repaired separately.",
-      "existingPreparedRenderAdmission": "Fresh root or sole real associated preparation admitted; prior finals/unrelated/file/symlink roots reject without modifying them. Public actual two-frame saved-camera render passed; full696 installed proof pending.",
-      "bootstrapDiagnostics": "Actual isolated module bootstrap passed471 requests/0 loading failures; earlier30s timeout remains unexplained. Added bounded actual failure diagnostics with unchanged timeout/profile/success schema. Complete native edit rerun still required.",
-      "previewEditSequence": {
-        "status": "passed-all-eight-previews-five-negatives-and-restore",
-        "sourceCommit": "552929dd",
-        "report": {
-          "path": "/private/tmp/still-shift-ms1n-e01-preview-proof-3/run.json",
-          "bytes": 238070,
-          "sha256": "sha256:3f8f42a665a1d62eeebcd1c705f2993635a8f2f8f933ba489aa0a3c5047a88dc"
-        },
-        "finalRecipe": "valid-reverse-native-source12",
-        "fullBaselineRequiresFreshAuthoredPreparation": true
-      }
+      "status": "failed-full-proof-1-repair-in-progress",
+      "sourceCommit": "3ac7d29fa9c6e3a6feb8517a8ddcba7da4edbbcf",
+      "recordId": "native-e01-full-proof-1",
+      "actualFinalExecution": "verified-all696; mechanics/overlay/audio clean; fatal motion QA15 findings",
+      "repeatParityHardwareInstalled": "pending-not-reached"
     },
     "portableInstalledExecution": "pending",
     "fullLocalGateAnd176Baselines": {
@@ -963,12 +1359,43 @@
       "independentReview": "No concrete CLI blockers; maintained Lab fixture corrected to include public builder identity transform without weakening exact JSON comparison."
     },
     "actualGraphAcceptance": {
-      "status": "test-color-oracle-repaired-independent-review-and-build-passed-rerun-pending",
+      "status": "passed-five-actual-composition-families-and-real-abort",
       "families": 5,
       "currentDirectDepthCasesPreserved": 14,
       "actualAbortProof": "passed-at-b9bb7849",
       "independentReview": "Retained actual ACES colors establish prior test oracle defect. Final narrow finite-quad ray/control repair derives actual reference mode colors, excludes partial-coverage boundaries with exact3x3 plateaus, retains four crossing floors8 and outside-visible floor8. Other four graph families reviewed without concrete blockers; actual execution pending.",
-      "gates": "Existingnative-depthrequiredgroup, no baseline changes/newgroups."
+      "gates": "Existingnative-depthrequiredgroup, no baseline changes/newgroups.",
+      "sourceCommit": "3ac7d29fa9c6e3a6feb8517a8ddcba7da4edbbcf",
+      "reportSha256": "sha256:416616d94e8466ca4ad3a61fcbdc9075ee21b62d7198bff1b83665a7ada52ba6",
+      "actualRgbaArtifacts": 28,
+      "actualRgbaBytes": 1835008,
+      "independentAudit": {
+        "crossingCounts": {
+          "frontText": 168,
+          "behindText": 97,
+          "frontShape": 42,
+          "behindShape": 30,
+          "outsideText": 92,
+          "outsideShape": 0
+        },
+        "layerOrderPixelDelta": 0,
+        "exactSelectedControlPixelMismatches": 0,
+        "farPositiveRedPixels": 576,
+        "allClippingControlMaxDelta": 0,
+        "scaledVsBakedNormalsMaxDelta": 0,
+        "wrongNormalsMaxDelta": 76,
+        "wrongNormalsChangedChannels": 4632,
+        "fractionalSeekRecords": 8,
+        "nestedViewport": [96, 96],
+        "rootShutterFrames": [3.8333333333333335, 4, 4.166666666666667],
+        "nested24fpsScopeFrames": [3.066666666666667, 3.2, 3.3333333333333335],
+        "actualVsIndependentShutterAverageMaxDelta": 0,
+        "shutterFirstVsLastMaxDelta": 228,
+        "shutterFirstVsLastChangedChannels": 396,
+        "cancelledOwnedProcessRoles": 6,
+        "cancelledOutputPublished": false,
+        "humanAcceptance": "pending"
+      }
     },
     "sourceInventoryMethodCorrection": {
       "status": "supersedes-earlier-selected-inventory-coverage-claims",
@@ -985,6 +1412,29 @@
         "selection": "All Git tracked and nonignored source/build/test/runtime/assets/catalogue roots, all regular root files and package prose; other milestone/evidence prose excluded. Original E01 dependencies are inventoried separately."
       },
       "next": "Recapture this explicit selection after the test-only oracle correction and use it before/after remaining actual proofs and aggregate checks."
+    },
+    "currentCompleteSourceInputInventory": {
+      "path": "/private/tmp/still-shift-ms1n-implementation-inputs-7.json",
+      "bytes": 395813,
+      "sha256": "sha256:289a6ea9a935c499ea65909f61dffef2d8be51b77e4cd91ddb822bda9cbbc72a",
+      "version": "ms1n-source-input-inventory-2",
+      "files": 2321,
+      "inputBytes": 117428962,
+      "sourceCommit": "3ac7d29fa9c6e3a6feb8517a8ddcba7da4edbbcf",
+      "afterGraph5": "all-selected-inputs-unchanged"
+    },
+    "nativeMotionQARepair": {
+      "status": "implemented-reviewed-focused54-fast3915-short-native2frame-pass",
+      "files": [
+        "packages/renderer-core/src/composition/quality-samples.ts",
+        "packages/animation-engine/src/mechanism/native-proof-quality.ts",
+        "packages/animation-engine/src/mechanism/native-quality-identity.ts",
+        "packages/animation-engine/src/mechanism/native-lifecycle.ts"
+      ],
+      "behavior": "Native physical paint evidence excludes clocks; closure-bound holds require stationary expected whole-frame paint AND actual physical draw/body identities, retain raw finding/human review; immutable authored QA and final initial/current identity guards. Frame-local unique vertex reuse and explicit closure-row yields preserve exact algorithms/thresholds.",
+      "originalFullFailureRetained": "native-e01-full-proof-1",
+      "freshFullAcceptance": "pending",
+      "independentReview": "A audits exact vertex/closureyield math; B audits paint/currentgroup-hiddenworldart semantics; C finds and verifies repaired expected-caption/policy/stale-current guards. Source revisions/thresholds unchanged; full native2 remains pending."
     }
   },
   "humanContinuousPlaybackListeningAndCreativeAcceptance": "pending",

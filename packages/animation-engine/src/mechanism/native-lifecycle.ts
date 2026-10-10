@@ -41,7 +41,10 @@ import {
   renderComposition,
   type CompositionRenderResult,
 } from "../composition-render.ts";
-import { lintCompositionFile } from "../composition-lint.ts";
+import {
+  lintCompositionFile,
+  type CompositionLintReport,
+} from "../composition-lint.ts";
 import {
   nativeCompositionSha256,
   nativePreparedSha256,
@@ -80,6 +83,15 @@ import {
   type NativeMechanismOverlayReport,
 } from "./native-overlays.ts";
 import { createMechanismCommandReceipt } from "./protocol.ts";
+import {
+  createNativePhysicalProofChecker,
+  type NativePhysicalProofHold,
+} from "./native-proof-quality.ts";
+
+import {
+  assertNativeMechanismQualityPolicy,
+  assertNativePreparedCheckIdentity,
+} from "./native-quality-identity.ts";
 
 export const NATIVE_MECHANISM_PROFILE =
   "native-three-aces-hdr-msaa4-1" as const;
@@ -436,6 +448,7 @@ function validateNativeEpisodeTimeline(
   loaded: LoadedMechanismEpisode,
   composition: Composition,
 ) {
+  assertNativeMechanismQualityPolicy(loaded.episode, composition);
   if (
     composition.width !== loaded.episode.output.width ||
     composition.height !== loaded.episode.output.height ||
@@ -780,7 +793,11 @@ export async function checkNativeMechanismEpisode(
     loaded.episode,
     loadedComposition.composition,
   );
-  const qualityReport =
+  let qualityReport:
+    | (CompositionLintReport & {
+        nativePhysicalProofHolds?: NativePhysicalProofHold[];
+      })
+    | undefined =
     options.pixels === false
       ? undefined
       : await lintCompositionFile(loadedComposition.sourcePath, readingPolicy, {
@@ -858,6 +875,18 @@ export async function checkNativeMechanismEpisode(
         ? { textBounds: qualityReport.textBounds }
         : {},
     );
+    const physicalProofChecker = qualityReport
+      ? createNativePhysicalProofChecker(
+          loaded.episode,
+          loadedComposition.composition,
+          {
+            preparedNative3D: loadedComposition.native3D!,
+            ...(qualityReport?.textBounds
+              ? { textBounds: qualityReport.textBounds }
+              : {}),
+          },
+        )
+      : undefined;
     closureReport = await verifyNativeObservationClosure({
       closure: {
         ...render.metrics.nativeObservations,
@@ -878,7 +907,8 @@ export async function checkNativeMechanismEpisode(
         transport: render.metrics.frameTransport,
       },
       ...(options.signal ? { signal: options.signal } : {}),
-      onFrame: (packet) => {
+      onFrame: (packet, pixel) => {
+        physicalProofChecker?.onFrame(packet, pixel);
         overlayChecker.onFrame(packet);
         const passes = [
           ...compositionNativePasses(
@@ -1011,6 +1041,16 @@ export async function checkNativeMechanismEpisode(
         }
       },
     });
+    if (
+      qualityReport &&
+      physicalProofChecker &&
+      mechanicalRows.size === 0 &&
+      projectionRows.size === 0
+    )
+      qualityReport = physicalProofChecker.finish(
+        render.metrics.nativeObservations.manifestSha256,
+        qualityReport,
+      );
     overlayReport = overlayChecker.finish();
     findings.push(
       ...overlayReport.findings.map((finding) => ({
@@ -1080,7 +1120,12 @@ export async function checkNativeMechanismEpisode(
         "Actual native mechanism differs from independently reconstructed authored motion",
     })),
   );
-  await verifyNativePreparedEpisode(loaded, options.preparedDirectory, options);
+  const current = await verifyNativePreparedEpisode(
+    loaded,
+    options.preparedDirectory,
+    options,
+  );
+  assertNativePreparedCheckIdentity(receipt, current.receipt);
   options.signal?.throwIfAborted();
   return {
     schemaVersion: "mechanism-native-check-result-1" as const,

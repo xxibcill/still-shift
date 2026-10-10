@@ -61,6 +61,12 @@ export function nativeScreenAnchors(
   const materials = new Map(
     source.geometry.materials.map((material) => [material.id, material]),
   );
+  // A call owns one bounded pose. Shared indices and other anchors reuse the
+  // exact double-precision transform; no data survives a frame or source edit.
+  const worldVertices = new Map<
+    (typeof source.geometry.meshes)[number],
+    (MechanismVector | undefined)[]
+  >();
   return Object.fromEntries(
     Object.entries(frame.anchors).map(([id, anchor]) => {
       let visibility: NativeScreenAnchor["visibility"] =
@@ -85,12 +91,23 @@ export function nativeScreenAnchors(
               ? source.geometry.materials[group.materialIndex]!
               : materials.get(mesh.materialId)!;
             if (!materialSurvives(material)) continue;
+            let transformed = worldVertices.get(mesh);
+            if (!transformed) {
+              transformed = new Array(mesh.positions.length / 3);
+              worldVertices.set(mesh, transformed);
+            }
+            const meshVertices = transformed;
             const vertices = [0, 1, 2].map((index) => {
-              const vertex = mesh.indices[offset + index]! * 3;
-              return transformPoint(
+              const vertexIndex = mesh.indices[offset + index]!;
+              const existing = meshVertices[vertexIndex];
+              if (existing) return existing;
+              const vertex = vertexIndex * 3;
+              const point = transformPoint(
                 part.worldMatrix,
                 mesh.positions.slice(vertex, vertex + 3),
               );
+              meshVertices[vertexIndex] = point;
+              return point;
             });
             const hit = triangleDistance(
               camera.position,

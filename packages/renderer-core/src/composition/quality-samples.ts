@@ -36,6 +36,7 @@ import {
   resolveDisplayedText,
 } from "../typography-transition.ts";
 import { typographyClock } from "./render/text-clock.ts";
+import { resolveNative3DVariant } from "../native3d/prepare.ts";
 
 export type CompositionQualitySample = {
   id: string;
@@ -280,6 +281,64 @@ function inheritScaleSigns(signs: [number, number], scale: readonly number[]) {
   signs[1] *= Math.sign(scale[1]!);
 }
 
+/** Physical paint state, without clocks, anchor bookkeeping or frame identities. */
+function nativePaintState(
+  state: EvaluatedLayer,
+  options: EvaluationOptions,
+): unknown[] | undefined {
+  const snapshot = state.nativeFrame,
+    binding = state.layer.native3D;
+  if (
+    !snapshot ||
+    (state.layer.type !== "native3d" && binding?.role !== "world-graphic")
+  )
+    return undefined;
+  const variant = resolveNative3DVariant(options.preparedNative3D, snapshot);
+  const materials = new Map(
+    variant.source.geometry.materials.map((material) => [
+      material.id,
+      material,
+    ]),
+  );
+  const meshParts = [
+    ...new Set(
+      variant.source.geometry.meshes
+        .filter((mesh) => {
+          const drawnMaterials = mesh.groups?.length
+            ? mesh.groups
+                .filter((group) => group.count > 0)
+                .map(
+                  (group) =>
+                    variant.source.geometry.materials[group.materialIndex]!,
+                )
+            : [materials.get(mesh.materialId)!];
+          return drawnMaterials.some(
+            (material) =>
+              material.alphaMode !== "mask" ||
+              material.opacity >= material.alphaCutoff,
+          );
+        })
+        .map((mesh) => mesh.partId),
+    ),
+  ].sort();
+  return [
+    "native-paint-1",
+    snapshot.effectiveSceneSha256,
+    snapshot.geometrySha256,
+    snapshot.viewport,
+    snapshot.frame.camera,
+    meshParts
+      .filter((id) => snapshot.frame.parts[id]!.visible)
+      .map((id) => [id, snapshot.frame.parts[id]!.worldMatrix]),
+    ...(binding?.role === "world-graphic"
+      ? [
+          binding,
+          binding.part ? snapshot.frame.parts[binding.part]!.worldMatrix : null,
+        ]
+      : []),
+  ];
+}
+
 /** Pure samples exclude clock bookkeeping and invisible dependency motion. Pixels remain separate evidence. */
 export function compositionQualityFrame(
   comp: Composition,
@@ -287,13 +346,14 @@ export function compositionQualityFrame(
   options: EvaluationOptions = {},
 ): CompositionQualityFrame {
   const tree = evaluateComp(comp, frame, options);
-  return compositionQualityTree(comp, tree);
+  return compositionQualityTree(comp, tree, options);
 }
 
 /** Inspect the settled exposure tree without resampling center-held overlays. */
 export function compositionQualityTree(
   comp: Composition,
   tree: EvaluatedLayerTree,
+  options: EvaluationOptions = {},
 ): CompositionQualityFrame {
   const layers = new Map<string, CompositionQualitySample>();
   const diagnostics = [...tree.diagnostics];
@@ -430,6 +490,7 @@ export function compositionQualityTree(
             )(state.time)
           : undefined;
       const effects = state.effects.filter((effect) => effect.enabled);
+      const nativePaint = nativePaintState(state, options);
       const sample: CompositionQualitySample = {
         id,
         path: `${sourcePath ? sourcePath + "." : ""}layers.${index}`,
@@ -523,6 +584,7 @@ export function compositionQualityTree(
           ...(homography
             ? [normalizedHomography(homography), state.focusBlur ?? 0]
             : []),
+          ...(nativePaint ? [nativePaint] : []),
         ]),
       };
       layers.set(id, sample);

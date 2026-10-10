@@ -2,6 +2,7 @@ import { createHash, type Hash } from "node:crypto";
 import { createReadStream } from "node:fs";
 import { open, rm, writeFile, type FileHandle } from "node:fs/promises";
 import { basename, dirname, join, resolve } from "node:path";
+import { setImmediate as yieldEventLoop } from "node:timers/promises";
 import { z } from "zod";
 import type { IncomingHttpHeaders } from "node:http";
 import {
@@ -617,6 +618,7 @@ export async function verifyNativeObservationClosure(options: {
   byteLength: number;
   artifacts: readonly NativeObservationArtifact[];
 }> {
+  options.signal?.throwIfAborted();
   const memory = options.reserve
     ? undefined
     : new ManagedMemory({ pixels: 1, metadata: 16 * 1024 ** 2 });
@@ -705,6 +707,7 @@ export async function verifyNativeObservationClosure(options: {
         identity.update(bytes);
         let start = 0;
         while (start < bytes.length) {
+          options.signal?.throwIfAborted();
           const newline = bytes.indexOf(10, start);
           const end = newline < 0 ? bytes.length : newline;
           if (lineBytes + end - start > line.length)
@@ -745,11 +748,17 @@ export async function verifyNativeObservationClosure(options: {
               "Observation pixel body differs from the output transport",
               outputFrames,
             );
+          options.signal?.throwIfAborted();
           await options.onFrame?.(row.data.packet, row.data.pixel);
+          options.signal?.throwIfAborted();
           outputFrames++;
           shardFrames++;
           passCount += row.data.packet.passes.length;
           lineBytes = 0;
+          // A buffered shard may hold many complete rows. Awaiting a synchronous
+          // onFrame only yields microtasks; release timers/abort between rows.
+          await yieldEventLoop();
+          options.signal?.throwIfAborted();
         }
       }
       if (
@@ -772,12 +781,17 @@ export async function verifyNativeObservationClosure(options: {
       byteLength !== manifest.byteLength
     )
       protocol("Observation artifacts lack exact final coverage");
+    options.signal?.throwIfAborted();
     return {
       outputFrames,
       passCount,
       byteLength,
       artifacts: manifest.artifacts,
     };
+  } catch (error) {
+    // Node streams wrap cancellation; preserve the caller's original reason.
+    options.signal?.throwIfAborted();
+    throw error;
   } finally {
     capacity.release();
     memory?.dispose();

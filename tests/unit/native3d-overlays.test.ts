@@ -455,7 +455,10 @@ describe("streamed actual native overlay holds", () => {
       preparedNative3D: f.table,
       nativeObservationRequired: true,
     })) {
-      const actual = compositionQualityTree(f.composition, tree);
+      const actual = compositionQualityTree(f.composition, tree, {
+        preparedNative3D: f.table,
+        nativeObservationRequired: true,
+      });
       expect(actual.layers.get("center-copy")!.state.time).toBe(
         center.layers.get("center-copy")!.state.time,
       );

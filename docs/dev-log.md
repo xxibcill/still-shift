@@ -56,8 +56,17 @@ still hold before relying on them.
   is off-canvas due to fixture group anchoring, now explicitly corrected with
   retained region checks. Lab2 now passes all7 actual edit/save/reload captures.
   Real native abort1 passes actualupload,6process exits/port refusal/nonpublication.
-  Graph4 keeps14 direct cases passing but fails a hardcoded ACES-color oracle;
-  retained pixels establish the test defect, with exact control/ray repair ready for rerun.
+  Graph4 retains14 direct passes and its ACES-color oracle failure. Test-only
+  repair3ac7d29f then passes graph5:14direct/5actualcompiled families/real abort,
+  independently audited28RGBA captures and exact controls. Full native E01 proof1
+  fails motion QA after2068s: all696 actual closure/mechanics/overlay/audio pass,
+  but15 frozen findings remain. Native paint fingerprint omitted physical state;
+  genuine pre-label holds also lack closure-bound native classification. Bounded
+  fingerprint/actual-proof-hold/vertex-reuse/cooperative-abort repairs now pass
+  independent review,54focused/fast3915 units and actual2frame saved-camera
+  integration. Current expected caption paint/authored QA/stale-current guards
+  close review findings. Original source/audio/timelines and thresholds stay fixed;
+  fresh full2 native acceptance remains pending.
   Earlier selected input inventories missed newly committed paths; explicit complete
   source/build/test selection6 now supersedes their coverage claim.
   Full696/native repeat/hardware/installed proofs and
@@ -190,6 +199,50 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Native motion-QA and current-recipe guards verified
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n` from `3ac7d29f`.
+- **Done:** current physical paint fingerprints; closure-bound stationary proof
+  holds require expected whole-frame paint plus actual physical/body identity.
+  Raw findings/human review remain. Authored QA and final current identity are
+  pinned; unique vertex reuse/row yields preserve math and abort reasons.
+- **Results:** independent review,54focused cases, fast9/all3,915 units/381files
+  and actual2frame saved-camera/nonoverwrite integration pass. All earlier
+  fixture/type/format failures and full1's15 motion errors remain retained.
+- **Next:** commit this slice and hold exact source for fresh full696/repeat/parity,
+  hardware/portable-installed/all77 and176 baseline checks; no native PR yet.
+- **Records:** [native design](./mechanism-shorts-ms1n-design.md),
+  [results](./mechanism-shorts-ms1n-results.json).
+
+### 2026-10-10 — First full native E01 motion-QA failure retained
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n` from `3ac7d29f`.
+- **Results:** native orientation passes; fresh696 export and actual closure,
+  mechanics, measured overlays and PCM checks complete with no findings. The
+  full wrapper fails15 frozen-run/pixel findings after2068s; repeat/parity was not reached.
+- **Diagnosis / repair:** native motion fingerprint omitted camera/part paint;
+  original pre-label stationary proof requests also lack actual native classification.
+  Bounded fixes retain raw errors, exact physical/body evidence and human review.
+  Source audit additionally found repeated vertex transforms/no closure-row yield.
+- **Rejected / next:** no threshold/timing/source/narration relaxation; retain
+  failed full1 and fixture-only proof-test1 missing required clock fields. Verify
+  repairs, then run fresh full proof/hardware/installed/all77 and176 baselines.
+- **Records:** [native results](./mechanism-shorts-ms1n-results.json).
+
+### 2026-10-10 — Actual native composed graph and cancellation gate passes
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n` at `3ac7d29f`.
+- **Results:** Graph5 passes14 direct depth cases,5 compiled graph families and
+  actual cancellation. Independent audit verifies28RGBA artifacts and exact
+  front/behind/outside controls; normal, clip, fractional and nested-shutter controls pass.
+- **Inputs:** Explicit inventory7 covers2,321 files/117,428,962 bytes, unchanged
+  after execution. The earlier test oracle failure/inventory qualifications remain.
+- **Documentation:** The CE8-L-F owning plan now maps bounded native material,
+  environment/fog/physical-shadow reuse while retaining its deferral and CE6-P limits.
+- **Next:** Full native E01 proof1 is running; first PNG/raw orientation passes.
+  Hardware, installed consumer, full77groups and176 baselines remain pending.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
 
 ### 2026-10-10 — Native composed graph oracle diagnosis and inventory correction
 

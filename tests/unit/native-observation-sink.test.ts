@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { mkdtemp, readdir, rm, appendFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { basename, join } from "node:path";
+import { setImmediate } from "node:timers";
 import { afterEach, describe, expect, it } from "vitest";
 import {
   NativeObservationSink,
@@ -158,7 +159,154 @@ async function fixture(frames = 2) {
   });
   return { sink, directory, retained: () => retained };
 }
+async function closureFixture(frames = 4) {
+  const { sink } = await fixture(frames);
+  for (let frame = 0; frame < frames; frame++) {
+    sink.acceptPacket(0, encode(packet(sink, frame)));
+    const pixels = Buffer.alloc(16 * 16 * 4, frame);
+    await sink.commitPixel(0, frame, {
+      transport: "raw_rgba",
+      byteLength: pixels.length,
+      transportBytesSha256: `sha256:${createHash("sha256").update(pixels).digest("hex")}`,
+    });
+  }
+  const output = {
+    sha256: sha,
+    frameCount: frames,
+    width: 16,
+    height: 16,
+    transport: "raw_rgba" as const,
+  };
+  const closure = await sink.finalize(
+    { outputFrames: frames, passCount: frames },
+    output,
+  );
+  const staged = new Map(
+    sink.publications.map((entry) => [
+      basename(entry.destination),
+      entry.staged,
+    ]),
+  );
+  return {
+    sink,
+    options: {
+      closure: {
+        ...closure,
+        manifestPath: staged.get(basename(closure.manifestPath))!,
+      },
+      execution,
+      expectedPasses: expected,
+      output,
+      resolveArtifactPath: (name: string) => staged.get(name)!,
+    },
+  };
+}
 describe("accepted native pixel/observation closure", () => {
+  it("runs a real macrotask between complete rows in one buffered shard", async () => {
+    const { sink, options } = await closureFixture();
+    const turns: number[] = [];
+    try {
+      const result = await verifyNativeObservationClosure({
+        ...options,
+        onFrame: (frame) => {
+          expect(turns).toEqual(
+            Array.from({ length: frame.outputFrame }, (_, index) => index),
+          );
+          setImmediate(() => turns.push(frame.outputFrame));
+        },
+      });
+      expect(result.artifacts).toHaveLength(1);
+      expect(result.artifacts[0]!.byteLength).toBeLessThan(65536);
+      expect(result.outputFrames).toBe(4);
+      expect(turns).toEqual([0, 1, 2, 3]);
+    } finally {
+      await sink.dispose();
+    }
+  });
+  it("preserves a macrotask-delivered abort and releases replay capacity once", async () => {
+    const { sink, options } = await closureFixture();
+    const controller = new AbortController(),
+      reason = new Error("original replay abort"),
+      frames: number[] = [];
+    let retained = 0,
+      reservations = 0,
+      releases = 0;
+    try {
+      await expect(
+        verifyNativeObservationClosure({
+          ...options,
+          signal: controller.signal,
+          reserve: (bytes) => {
+            reservations++;
+            retained += bytes;
+            return {
+              release() {
+                releases++;
+                retained -= bytes;
+              },
+            };
+          },
+          onFrame: (frame) => {
+            frames.push(frame.outputFrame);
+            if (frame.outputFrame === 0)
+              setImmediate(() => controller.abort(reason));
+          },
+        }),
+      ).rejects.toBe(reason);
+      expect(frames).toEqual([0]);
+      expect(reservations).toBe(1);
+      expect(releases).toBe(1);
+      expect(retained).toBe(0);
+    } finally {
+      await sink.dispose();
+    }
+  });
+  it("stops before onFrame when expected-pass validation aborts", async () => {
+    const { sink, options } = await closureFixture();
+    const controller = new AbortController(),
+      reason = { code: "caller-owned-abort-reason" };
+    let callbacks = 0;
+    try {
+      await expect(
+        verifyNativeObservationClosure({
+          ...options,
+          signal: controller.signal,
+          expectedPasses: (frame) => {
+            controller.abort(reason);
+            return expected(frame);
+          },
+          onFrame: () => {
+            callbacks++;
+          },
+        }),
+      ).rejects.toBe(reason);
+      expect(callbacks).toBe(0);
+    } finally {
+      await sink.dispose();
+    }
+  });
+  it("rejects an already aborted replay before allocating capacity", async () => {
+    const { sink, options } = await closureFixture();
+    const controller = new AbortController(),
+      reason = new Error("abort before replay admission");
+    controller.abort(reason);
+    let reservations = 0;
+    try {
+      await expect(
+        verifyNativeObservationClosure({
+          ...options,
+          signal: controller.signal,
+          reserve: () => {
+            reservations++;
+            return { release() {} };
+          },
+        }),
+      ).rejects.toBe(reason);
+      expect(reservations).toBe(0);
+    } finally {
+      await sink.dispose();
+    }
+  });
   it("pairs complete accepted bodies, streams exact coverage, and preserves measured matrices", async () => {
     const { sink, retained } = await fixture();
     for (let frame = 0; frame < 2; frame++) {

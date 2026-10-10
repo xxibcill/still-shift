@@ -4481,6 +4481,17 @@ and Spec audits have no remaining findings. Owner review/merge remain.
 
 ### CE8-L-F — Deferred advanced lighting
 
+- **Mechanism MS1N overlap (2026-10-10):** the bounded native solid-scene route
+  reuses the bridge's indexed geometry, MeshStandardMaterial, procedural
+  environment, declared fog and physical light/cast/receive settings through
+  the shared Three world factory. World graphics remain unlit depth surfaces;
+  screen annotations retain ordinary sRGB behavior. This is the existing
+  mechanism profile subset, not a general depicted-surface relighting or
+  inter-layer shadow contract. Native execution, normals, appearance deltas
+  and their exact evidence scopes are recorded in the
+  [MS1N design](./mechanism-shorts-ms1n-design.md) and
+  [MS1N results](./mechanism-shorts-ms1n-results.json). Reuse does not complete
+  or resume CE8-L-F, and does not close deferred CE6-P performance acceptance.
 - **Status:** `[d]`, owner approved 2026-10-05. Cast shadows and realistic surface
   shading are deferred to an unscheduled future version, with no completion deadline.
 - **Deferred scope:** inter-layer cast shadows and soft-shadow quality; normal maps
