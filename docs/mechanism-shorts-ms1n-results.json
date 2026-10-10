@@ -562,6 +562,113 @@
       "tests": 3869,
       "testFiles": 376,
       "scope": "Fresh full development gate for native Lab controls/context; all schema/identity/boundary/format/lint/type/unit stages pass. The eight new Lab units are included in3869."
+    },
+    {
+      "id": "native-preview-bootstrap-repro-1",
+      "status": "passed",
+      "sourceCommit": "9479119499e12f941d8640c04dcb75f57a6d7a6b",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-preview-bootstrap-repro-1.log",
+        "bytes": 527,
+        "sha256": "sha256:ad5e6a76d1033b357fd9c2275303349ea94e9208583155cfebe0540deead1a0a"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms1n-preview-bootstrap-repro-1/report.json",
+        "bytes": 5923,
+        "sha256": "sha256:3b8f3837296e649281ee91c0e3e2de46bba54eb6d2b83f9ce8f870a15a2826ad"
+      },
+      "requests": 471,
+      "responses": 471,
+      "requestFailed": 0,
+      "httpErrors": 0,
+      "pageErrors": 0,
+      "scope": "Exact production module bootstrap only with unchanged30s deadline; module-ready476.349ms. No composition, resources, pixels or native pass submitted. Prior preview2 timeout cause remains unexplained; failure diagnostics added without retry/timeout change."
+    },
+    {
+      "id": "bridge-factor-full-3",
+      "status": "passed",
+      "sourceCommit": "9479119499e12f941d8640c04dcb75f57a6d7a6b",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-bridge-factor-full-3.log",
+        "bytes": 1500,
+        "sha256": "sha256:927cf22761188e11bfa8bb1c3de3f7fc25c1c68cd445f15a62e38b4ae9d56291"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms1n-bridge-factor-full-0lfCAH/report.json",
+        "bytes": 1357542,
+        "sha256": "sha256:1ac155b2d94d33f96174b8a2fe68cd72557a44d5be0aa33e3f834166e08326b0"
+      },
+      "shots": 9,
+      "new3dRenders": 696,
+      "exactOriginalPngs": 696,
+      "cacheHits": 0,
+      "scope": "All696 original-size bridge plates freshly rendered; exact original tagged PNG hashes and source/scene/rig/font/Three/code identities before/after. Canonical finite persisted-state comparison fixes harness signed-zero issue; no tolerance/baseline changes."
+    },
+    {
+      "id": "native-lab-build-1",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-lab-build-1.log",
+        "bytes": 98,
+        "sha256": "sha256:d692138239ef8ac30d14f7300b94fb74af1142431e00e32c5d200573877c2902"
+      },
+      "scope": "Full project TypeScript after maintained native Lab browser helper and bounded module diagnostics."
+    },
+    {
+      "id": "native-lab-lint-1",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-lab-lint-1.log",
+        "bytes": 230,
+        "sha256": "sha256:1a0756b2f0de48e1d3681093394f801a801fe166e7240d98e43ac367bb90a084"
+      },
+      "scope": "One unused test-only Composition type import; removed without changing proof."
+    },
+    {
+      "id": "native-lab-lint-2",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-lab-lint-2.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "scope": "Focused lint for maintained native Lab helper/callsite and bounded module failure diagnostics."
+    },
+    {
+      "id": "native-inspection-tests-1",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-inspection-tests-1.log",
+        "bytes": 497,
+        "sha256": "sha256:21b5897ecdd2004bfa0b49a3ed89e7cf6bdd9c4e71ed37aa9cdab5e20cf170d1"
+      },
+      "tests": 21,
+      "testFiles": 2,
+      "scope": "Six new metadata units and all15 actual CLI runtime cases, preserving original cases. Explicit source/declared-ID selectors, located filters, fallback semantics and bounded discovery/pagination."
+    },
+    {
+      "id": "check-fast-7",
+      "status": "passed",
+      "command": "pnpm check:fast",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-check-fast-7.log",
+        "bytes": 30039,
+        "sha256": "sha256:d1de1930be907ba4fd27fa6cc47251698ef578d8a52a3704f621a6373783ea4b"
+      },
+      "tests": 3875,
+      "testFiles": 377,
+      "sourceInputs": {
+        "path": "/private/tmp/still-shift-ms1n-implementation-inputs-4.json",
+        "bytes": 364182,
+        "sha256": "sha256:1a80fbc6629d7bc76320175e483e84f9dec1655a76752aa939e5fe45354b569c"
+      },
+      "inputFiles": 2133,
+      "scope": "Fresh complete development gate, including all new CLI metadata units; stationary2133 source/build/test inputs rehashed afterward. CLI guide prose was added after format stage and separately formatted before commit."
     }
   ],
   "implementationEvidence": {
@@ -575,9 +682,9 @@
       "scope": "Refreshed independent 14-case actual HDR/depth/color/alpha/winding/state control gate. Exact native pixels under foreign samplers/dither. No E01 or installed execution acceptance."
     },
     "bridgeFactoring": {
-      "status": "five-fresh-states-passed",
+      "status": "all696-fresh-bridge-plates-passed",
       "directory": "/private/tmp/still-shift-ms1n-bridge-factor-M1TdQ8",
-      "scope": "All five newly rendered original-size states match MS1 PNG bytes with existing production sRGB tagging. Full696 fresh bridge closure remains pending. First failed harness output and CPU container explanation retained.",
+      "scope": "Five samples then all696 fresh plates match MS1 PNG bytes exactly; prior container-tag, dependency-context and signed-zero harness failures remain retained.",
       "reportSha256": "sha256:c037a746d06d1f9a0a9f7ea4af4c52fe8a3a2b84beb3538269fb0268f4538ae5",
       "firstFailureExplanation": {
         "path": "/private/tmp/ms1n-bridge-factor-container-explanation.json",
@@ -586,7 +693,16 @@
         "productionRepair": false
       },
       "firstFailureExpectedPngSha256": "sha256:a0b69fd206f2bba5fa5829563f4d53ab056c8c3fd01b23ce107c12026429b4f3",
-      "firstFailureActualUntaggedPngSha256": "sha256:61be7839212f22eece79d1ead281a68f09337d0935790a675b2cf1ea8aef937e"
+      "firstFailureActualUntaggedPngSha256": "sha256:61be7839212f22eece79d1ead281a68f09337d0935790a675b2cf1ea8aef937e",
+      "full696": {
+        "directory": "/private/tmp/still-shift-ms1n-bridge-factor-full-0lfCAH",
+        "reportSha256": "sha256:1ac155b2d94d33f96174b8a2fe68cd72557a44d5be0aa33e3f834166e08326b0",
+        "sourceCommit": "9479119499e12f941d8640c04dcb75f57a6d7a6b",
+        "new3dRenders": 696,
+        "cacheHits": 0,
+        "exactOriginalPngs": 696,
+        "scope": "All nine original half-open shot sequences, fresh renderer per shot with production reuse within each shot. Original appearance preserved byte for byte; native profile remains independently evaluated."
+      }
     },
     "nativeEpisodeExecution": {
       "status": "first-actual-preview-produced-unverified-by-failed-harness",
@@ -595,7 +711,8 @@
       "humanAcceptance": "pending",
       "repairs": "Captured descriptor self-hash, authored source-edge validation immediately before publication, and canonical top-first raw/default encoder row order implemented. Fresh source checkpoint/proofs pending.",
       "dependencyResolutionRepair": "Actual renderer-owned descriptor context resolves pinned dependencies without NODE_PATH/global fallback; bare Node17 focused checks pass at fd88faa3. Full native preview/edit rerun in progress; full bridge harness2 failed before GPU on signed-zero JSON comparison and is repaired separately.",
-      "existingPreparedRenderAdmission": "Fresh root or sole real associated preparation admitted; prior finals/unrelated/file/symlink roots reject without modifying them. Public actual two-frame saved-camera render passed; full696 installed proof pending."
+      "existingPreparedRenderAdmission": "Fresh root or sole real associated preparation admitted; prior finals/unrelated/file/symlink roots reject without modifying them. Public actual two-frame saved-camera render passed; full696 installed proof pending.",
+      "bootstrapDiagnostics": "Actual isolated module bootstrap passed471 requests/0 loading failures; earlier30s timeout remains unexplained. Added bounded actual failure diagnostics with unchanged timeout/profile/success schema. Complete native edit rerun still required."
     },
     "portableInstalledExecution": "pending",
     "fullLocalGateAnd176Baselines": {
@@ -630,7 +747,20 @@
     "runtimeRepairCheckpoint": "fd88faa3583ea268b7b847f0d61f4357dba9f5c7",
     "labNativeAuthoring": {
       "status": "implemented-fast-gate-passed-browser-proof-pending",
-      "scope": "Transient accepted native evaluation context for QA/overlay/inspector; declared physical IDs and sampled pure evaluation; exact camera-key/base FOV, part translation, metalness/roughness and visible label-state edits through existing revision/session/save flow. Pure evaluation is not GPU observation. Bounded actual UI save/reload proof pending."
+      "scope": "Transient accepted native evaluation context for QA/overlay/inspector; declared physical IDs and sampled pure evaluation; exact camera-key/base FOV, part translation, metalness/roughness and visible label-state edits through existing revision/session/save flow. Pure evaluation is not GPU observation. Bounded actual UI save/reload proof pending.",
+      "sourceCheckpoint": "9479119499e12f941d8640c04dcb75f57a6d7a6b"
+    },
+    "nativeInspection": {
+      "status": "implemented-development-gate-passed",
+      "selectionVersion": "mechanism-native-inspection-1",
+      "scope": "Original-scene metadata and episode-shot settings with source fallbacks; saved recipe and native execution unassessed. Existing receipt limits retained.",
+      "tests": {
+        "units": 6,
+        "cliRuntimeTotal": 15
+      },
+      "actualLabBrowserProof": "pending",
+      "boundedModuleDiagnostics": "Actual bootstrap failure events capped32/16KiB with sanitized512-character strings; unchanged30000ms deadline, no retry.",
+      "independentReview": "No concrete CLI blockers; maintained Lab fixture corrected to include public builder identity transform without weakening exact JSON comparison."
     }
   },
   "humanContinuousPlaybackListeningAndCreativeAcceptance": "pending",

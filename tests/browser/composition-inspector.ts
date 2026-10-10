@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { verifyCompositionInspectorFocus } from "./composition-inspector-focus.ts";
 import { verifyCompositionInspectorScopes } from "./composition-inspector-scopes.ts";
+import { verifyNativeCompositionInspector } from "./composition-native-inspector.ts";
 import { verifyCompositionInspectorRetention } from "./composition-inspector-retention.ts";
 import { createHash } from "node:crypto";
 import { execFile } from "node:child_process";
@@ -654,3 +655,4 @@ try {
 await verifyCompositionInspectorRetention();
 await verifyCompositionInspectorFocus();
 await verifyCompositionInspectorScopes();
+await verifyNativeCompositionInspector();

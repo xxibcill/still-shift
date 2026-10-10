@@ -62,6 +62,14 @@ import type {
   MechanismReceiptRow,
 } from "../../../packages/animation-engine/src/mechanism/protocol.ts";
 
+import {
+  EPISODE_NATIVE_INSPECTION_VERSION,
+  EPISODE_NATIVE_INSPECTION_SELECTORS,
+  EpisodeNativeInspectionSelectionSchema,
+  inspectEpisodeNativeMetadata,
+  parseEpisodeNativeInspectionSelection,
+} from "./episode-native-inspection.ts";
+
 export interface EpisodeCliIo {
   stdout: (value: string) => void;
   stderr: (value: string) => void;
@@ -71,7 +79,7 @@ const commonFlags = ["json", "report", "offset", "limit"];
 const commandFlags: Record<MechanismCommand, readonly string[]> = {
   discover: [],
   schema: ["kind", "output"],
-  inspect: ["input", "shot"],
+  inspect: ["input", "shot", "native", "part", "anchor", "material", "rig"],
   validate: ["input"],
   deps: ["input"],
   save: ["input", "output", "base-revision", "base-hash"],
@@ -103,6 +111,7 @@ const episodeSchemas = {
   "native-prepared-transport": CompositionPreparedNative3DSchema,
   "native-appearance-identity": NativeAppearanceCodeIdentitySchema,
   "route-selection": MechanismRouteSelectionSchema,
+  "native-inspection-selection": EpisodeNativeInspectionSelectionSchema,
 };
 function parseFlags(
   command: MechanismCommand,
@@ -456,6 +465,7 @@ async function discover(): Promise<MechanismReceiptInput> {
       nativeSourceVersions: "mechanism-scene-1 solid-scene-1",
       nativeGeometryVersion: "solid-geometry-1",
       nativeObservationVersion: "native3d-observed-output-frame-1",
+      nativeInspectionVersion: EPISODE_NATIVE_INSPECTION_VERSION,
       schemaKinds: Object.keys(episodeSchemas).join(" "),
     },
     items: [
@@ -472,6 +482,18 @@ async function discover(): Promise<MechanismReceiptInput> {
         canvasAllowed: false,
         support:
           "Generic native compositions and E01 tape-hook mechanics; source-only packages have scoped validation and no actual execution acceptance",
+      },
+      {
+        kind: "native-inspection",
+        version: EPISODE_NATIVE_INSPECTION_VERSION,
+        selectors: EPISODE_NATIVE_INSPECTION_SELECTORS.join(" "),
+        filters:
+          "--part (parts), --anchor (anchors), --material (materials), --rig (controls); all accepts every ID filter; --shot selects cameras/controls/all",
+        scope:
+          "Original scene catalogues plus episode-shot camera/control settings with source defaults; saved composition recipes and actual execution are unassessed",
+        schema: "native-inspection-selection",
+        keyRows:
+          "One authored camera/control key per bounded pageable row; frames are absolute source frames",
       },
       {
         kind: "native-observation-limits",
@@ -548,12 +570,22 @@ async function execute(
     command === "summary" ||
     command === "validate"
   ) {
+    const selection =
+      command === "inspect"
+        ? parseEpisodeNativeInspectionSelection(flags)
+        : undefined;
     const loaded = await readMechanismEpisode(input),
       summary = summarizeLoaded(loaded);
+    const native =
+      selection === undefined
+        ? undefined
+        : inspectEpisodeNativeMetadata(loaded, selection);
+    if (native) Object.assign(summary, native.summary);
     const items =
-      command !== "validate"
+      native?.items ??
+      (command !== "validate"
         ? inspectItems(loaded, flags.get("shot"))
-        : loaded.fontDiagnostics.map(row);
+        : loaded.fontDiagnostics.map(row));
     return {
       command,
       summary,

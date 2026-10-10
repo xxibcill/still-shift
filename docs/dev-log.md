@@ -44,17 +44,18 @@ still hold before relying on them.
 ## Current state
 
 - **MS1N implementation (2026-10-10):** `codex/mechanism-ms1n` carries exact
-  MS1 `13b62b84` (PR #52 open). Native rendering, authenticated pixel-paired
-  observations, saved refresh, CLI and portable paths are committed at `cfcb020e`,
-  with publication/row-order/provenance repairs at `ae76e3a1` and renderer-owned
-  dependency resolution/saved-render admission at `fd88faa3`. Native Lab controls
-  now pass eight focused regressions and fresh fast6/all3,869 units. Actual native
-  baselines0/88 and camera88 pass; part0 stopped before submission on browser
-  module readiness timeout. Full bridge2 stopped before rendering on a private
-  signed-zero/JSON comparison; harness corrected. All earlier failures remain.
-  Actual Lab/edit/full696/native repeat/hardware/installed proofs and all77 groups/
-  176 unchanged baselines remain pending; human playback/listening is separate.
-  [Design](./mechanism-shorts-ms1n-design.md), [results](./mechanism-shorts-ms1n-results.json).
+  MS1 `13b62b84` (PR #52 open). Native rendering and authenticated pixel-paired
+  observations are committed at `cfcb020e`, with provenance/row-order repairs at
+  `ae76e3a1`, resolver/saved-render repairs at `fd88faa3`, and Lab controls/context
+  at `94791194`. Full bridge3 passes all696 freshly rendered original plates
+  exactly; earlier signed-zero harness failures remain retained. Native inspection
+  now passes six new units/all15 CLI cases and fast7/all3,875 units. Preview2's
+  fourth stage stopped before submission on module readiness; exact cold bootstrap
+  passes476ms, cause unknown, bounded failure diagnostics added without retry or
+  deadline change. Actual Lab/full696/native repeat/hardware/installed proofs and
+  all77 groups/176 unchanged baselines remain pending; human playback/listening
+  is separate. [Design](./mechanism-shorts-ms1n-design.md),
+  [results](./mechanism-shorts-ms1n-results.json).
 
 - **MS1 software complete in stages (2026-10-10):** `codex/mechanism-ms1` carries
   exact MS0 prerequisite `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51)
@@ -181,6 +182,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Native inspection and actual bridge completion
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, from `94791194`.
+- **Done:** bounded original-source native CLI metadata/schema, maintained actual
+  Lab browser helper and unchanged-deadline bootstrap failure diagnostics.
+- **Results:** CLI21 cases and fresh fast7/all3,875 units pass; independent review
+  found no CLI blockers. Full bridge3 passes696 original tagged PNGs exactly.
+- **Retained:** bridge2 signed-zero harness failure; preview2 module timeout before
+  part submission; bootstrap-only476ms pass does not explain the timeout. Earlier
+  unused browser-helper import lint failure repaired; builder fixture normalized.
+- **Next:** actual Lab edit/save/reload, complete native previews and696-frame
+  repeat/hardware/installed/full77 gates. Human playback/listening remains pending.
+- **Records:** [native results](./mechanism-shorts-ms1n-results.json),
+  [CLI guide](./mechanism-episode-cli.md), [design](./mechanism-shorts-ms1n-design.md).
 
 ### 2026-10-10 — MS1N native Lab controls and current checks
 

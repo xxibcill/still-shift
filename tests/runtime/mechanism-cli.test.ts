@@ -126,6 +126,147 @@ describe("episode CLI authoring protocol", () => {
       "route.selectionOrigin": "default",
     });
   });
+  it("discovers versioned native metadata selectors in the existing strict receipt", async () => {
+    const discovered = await run(["discover"]);
+    expect(discovered.receipt.schemaVersion).toBe("mechanism-command-result-1");
+    expect(discovered.receipt.summary.nativeInspectionVersion).toBe(
+      "mechanism-native-inspection-1",
+    );
+    expect(
+      discovered.receipt.items.find(
+        (item) => item.kind === "native-inspection",
+      ),
+    ).toMatchObject({
+      version: "mechanism-native-inspection-1",
+      selectors: "source parts anchors materials cameras controls all",
+      schema: "native-inspection-selection",
+    });
+    const path = join(directory, "native-inspection-selection.schema.json");
+    const schema = await run([
+      "schema",
+      "--kind",
+      "native-inspection-selection",
+      "--output",
+      path,
+    ]);
+    expect(schema.code).toBe(0);
+    const document = JSON.parse(await readFile(path, "utf8"));
+    expect(document.additionalProperties).toBe(false);
+    expect(document.properties.version.const).toBe(
+      "mechanism-native-inspection-1",
+    );
+    expect(document.properties.native.enum).toEqual([
+      "source",
+      "parts",
+      "anchors",
+      "materials",
+      "cameras",
+      "controls",
+      "all",
+    ]);
+  });
+  it("selects original physical IDs and episode camera metadata without claiming saved recipe or rendered state", async () => {
+    const loaded = await readMechanismEpisode(project),
+      before = await readFile(project, "utf8");
+    const part = await run([
+      "inspect",
+      "--input",
+      project,
+      "--native",
+      "parts",
+      "--part",
+      "hook",
+    ]);
+    expect(part.code).toBe(0);
+    expect(part.receipt.items).toHaveLength(1);
+    expect(part.receipt.items[0]).toMatchObject({
+      kind: "native-part",
+      id: "hook",
+      parent: "model",
+      scope: "original-scene",
+      scaleX: 1,
+    });
+    expect(part.receipt.summary).toMatchObject({
+      nativeSourceSha256: loaded.episode.dependencies.find(
+        (dependency) => dependency.id === loaded.episode.scene,
+      )!.sha256,
+      nativeUnits: loaded.scene.units.kind,
+      savedRecipeScope: "unassessed",
+      nativeExecution: "unassessed",
+    });
+    const shot = loaded.episode.shots[0]!;
+    const camera = await run([
+      "inspect",
+      "--input",
+      project,
+      "--native",
+      "cameras",
+      "--shot",
+      shot.id,
+    ]);
+    expect(camera.code).toBe(0);
+    expect(
+      camera.receipt.items.find((item) => item.kind === "native-shot-camera"),
+    ).toMatchObject({
+      shot: shot.id,
+      fovDegrees: (shot.camera ?? loaded.scene.camera).fovDegrees,
+      origin: "episode-shot-camera",
+    });
+    expect(
+      camera.receipt.items.filter((item) => item.kind === "native-camera-key"),
+    ).toHaveLength(shot.cameraKeys!.length);
+    expect(
+      camera.receipt.items.every(
+        (item) => item.shot === shot.id || item.id === shot.id,
+      ),
+    ).toBe(true);
+    expect(camera.output).not.toContain('"positions"');
+    expect(camera.output).not.toContain('"indices"');
+    expect(await readFile(project, "utf8")).toBe(before);
+    const legacy = await run([
+      "inspect",
+      "--input",
+      project,
+      "--shot",
+      shot.id,
+    ]);
+    expect(legacy.receipt.summary.nativeInspectionVersion).toBeUndefined();
+    expect(
+      legacy.receipt.items.some((item) => item.kind === "dependency"),
+    ).toBe(true);
+    expect(
+      legacy.receipt.items.some((item) =>
+        String(item.kind).startsWith("native-"),
+      ),
+    ).toBe(false);
+  });
+  it("locates invalid native categories, incompatible filters and missing declared IDs", async () => {
+    for (const [options, code, path] of [
+      [["--native", "renderer"], "mechanism-inspect-selection", "--native"],
+      [["--part", "hook"], "mechanism-inspect-selection", "--part"],
+      [
+        ["--native", "materials", "--part", "hook"],
+        "mechanism-inspect-selection",
+        "--part",
+      ],
+      [
+        ["--native", "parts", "--part", "missing"],
+        "mechanism-inspect-reference",
+        "--part",
+      ],
+      [
+        ["--native", "cameras", "--shot", "missing"],
+        "mechanism-shot-reference",
+        "--shot",
+      ],
+    ] as const) {
+      const result = await run(["inspect", "--input", project, ...options]);
+      expect(result.code).toBe(2);
+      expect(result.receipt.status).toBe("failed");
+      expect(result.receipt.summary).toMatchObject({ code, path });
+      expect(Buffer.byteLength(result.output)).toBeLessThanOrEqual(32769);
+    }
+  });
   it("inspects current hashes and flattened labels without emitting raw geometry", async () => {
     const result = await run(["inspect", "--input", project]);
     expect(result.code).toBe(0);

@@ -86,6 +86,40 @@ observation manifest and shard bytes with an explicit relocation association.
 Generic native compositions and E01 tape-hook mechanics are supported; this does
 not establish other mechanism families or human visual/listening acceptance.
 
+## Inspect physical source metadata
+
+Use an explicit native selection to list declared physical IDs and authored shot
+settings. These commands read the original scene and episode; saved composition
+edits and actual renderer observations remain `unassessed` in the receipt.
+
+```sh
+pnpm still-shift episode inspect --input /tmp/e01-project/episode.json \
+  --native parts --part hook
+pnpm still-shift episode inspect --input /tmp/e01-project/episode.json \
+  --native anchors --anchor hook.innerFace
+pnpm still-shift episode inspect --input /tmp/e01-project/episode.json \
+  --native cameras --shot V8-02
+pnpm still-shift episode inspect --input /tmp/e01-project/episode.json \
+  --native controls --rig slider --shot V8-02
+pnpm still-shift episode inspect --input /tmp/e01-project/episode.json \
+  --native all --limit 20 --report /tmp/e01-native-inspection.json
+```
+
+Selections are `source`, `parts`, `anchors`, `materials`, `cameras`, `controls` and
+`all`. Filters use declared IDs; `--material` selects a material. Camera and
+control rows show whether values or keys come from the shot or source defaults,
+with absolute source frame keys. Each key has its own bounded row. Existing
+pagination and complete report retention apply; no mesh or texture arrays are
+returned. `episode schema --kind native-inspection-selection` exposes the strict
+`mechanism-native-inspection-1` selection contract. Plain `inspect` retains its
+existing output.
+
+The Lab native inspector uses the accepted preparation to select physical parts,
+materials and anchors, and edits camera FOV, part translation, PBR settings and
+the current label text state through the existing prepare/save flow. Its sampled
+metadata is labelled as pure evaluation; the final export checker validates
+actual pixel-paired observations.
+
 ## Scoped repair and resume
 
 `summary` emits revision, semantic project/geometry hashes, dependencies, shot

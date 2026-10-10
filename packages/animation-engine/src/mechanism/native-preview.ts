@@ -12,10 +12,11 @@ import { dirname, extname, join, resolve } from "node:path";
 import { randomUUID } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { createServer, type Plugin, type ViteDevServer } from "vite";
-import type { Browser } from "playwright";
+import type { Browser, Page, Request, Response } from "playwright";
 import {
   AnimationEngineError,
   NativeObservedOutputFrameSchema,
+  sanitizeDiagnosticText,
   type Composition,
   type MechanismRouteSelection,
   type NativeObservedOutputFrame,
@@ -92,6 +93,95 @@ function fail(
     diagnosticCode: code,
     path,
   });
+}
+
+const PREVIEW_MODULE_DIAGNOSTIC_LIMITS = {
+  events: 32,
+  stringCharacters: 512,
+  bytes: 16 * 1024,
+} as const;
+type PreviewModuleDiagnostic = {
+  kind: "pageerror" | "requestfailed" | "http-error";
+  url?: string;
+  message?: string;
+  status?: number;
+};
+function previewModuleUrl(value: string): string {
+  try {
+    const url = new URL(value.slice(0, 8192));
+    url.search = "";
+    url.hash = "";
+    url.username = "";
+    url.password = "";
+    return sanitizeDiagnosticText(url.href).slice(
+      0,
+      PREVIEW_MODULE_DIAGNOSTIC_LIMITS.stringCharacters,
+    );
+  } catch {
+    return sanitizeDiagnosticText(
+      value.slice(0, 8192).split(/[?#]/, 1)[0]!,
+    ).slice(0, PREVIEW_MODULE_DIAGNOSTIC_LIMITS.stringCharacters);
+  }
+}
+function previewModuleText(value: string): string {
+  return sanitizeDiagnosticText(
+    value
+      .slice(0, 8192)
+      .replace(/(?:https?|file):\/\/[^\s"'<>]+/g, previewModuleUrl),
+  ).slice(0, PREVIEW_MODULE_DIAGNOSTIC_LIMITS.stringCharacters);
+}
+/** Retain only bounded actual bootstrap failures, never response bodies or query strings. */
+function collectPreviewModuleDiagnostics(page: Page) {
+  const events: PreviewModuleDiagnostic[] = [];
+  let eventBytes = 0,
+    omittedEvents = 0;
+  const record = (event: PreviewModuleDiagnostic) => {
+    const bytes = Buffer.byteLength(JSON.stringify(event), "utf8") + 1;
+    // Leave room for the bounded snapshot envelope and omitted count.
+    if (
+      events.length >= PREVIEW_MODULE_DIAGNOSTIC_LIMITS.events ||
+      eventBytes + bytes > PREVIEW_MODULE_DIAGNOSTIC_LIMITS.bytes - 1024
+    ) {
+      omittedEvents++;
+      return;
+    }
+    eventBytes += bytes;
+    events.push(event);
+  };
+  const pageError = (error: Error) =>
+    record({ kind: "pageerror", message: previewModuleText(error.message) });
+  const requestFailed = (request: Request) =>
+    record({
+      kind: "requestfailed",
+      url: previewModuleUrl(request.url()),
+      message: previewModuleText(
+        request.failure()?.errorText ?? "Request failed",
+      ),
+    });
+  const httpError = (response: Response) => {
+    if (response.status() >= 400)
+      record({
+        kind: "http-error",
+        url: previewModuleUrl(response.url()),
+        status: response.status(),
+      });
+  };
+  page.on("pageerror", pageError);
+  page.on("requestfailed", requestFailed);
+  page.on("response", httpError);
+  return {
+    snapshot: () => ({
+      events,
+      omittedEvents,
+      eventBytes,
+      limits: PREVIEW_MODULE_DIAGNOSTIC_LIMITS,
+    }),
+    dispose() {
+      page.off("pageerror", pageError);
+      page.off("requestfailed", requestFailed);
+      page.off("response", httpError);
+    },
+  };
 }
 
 /** One current native composition frame and actual same-invocation observations; not a movie/closure proof. */
@@ -241,23 +331,47 @@ export async function previewNativeMechanismEpisode(
     browser = await launchRenderBrowser();
     options.signal?.throwIfAborted();
     const page = await browser.newPage();
-    await page.goto(server.resolvedUrls!.local[0]!);
-    await page.addScriptTag({
-      type: "module",
-      content: `import * as renderer from ${JSON.stringify(`/@fs/${rendererModule}`)}; globalThis.__nativeMechanismPreviewRenderer = renderer;`,
-    });
-    await page.waitForFunction(
-      () =>
-        Boolean(
-          (
-            globalThis as typeof globalThis & {
-              __nativeMechanismPreviewRenderer?: typeof Renderer;
-            }
-          ).__nativeMechanismPreviewRenderer,
-        ),
-      undefined,
-      { timeout: 30_000 },
-    );
+    const moduleDiagnostics = collectPreviewModuleDiagnostics(page);
+    try {
+      await page.goto(server.resolvedUrls!.local[0]!);
+      try {
+        await page.addScriptTag({
+          type: "module",
+          content: `import * as renderer from ${JSON.stringify(`/@fs/${rendererModule}`)}; globalThis.__nativeMechanismPreviewRenderer = renderer;`,
+        });
+        await page.waitForFunction(
+          () =>
+            Boolean(
+              (
+                globalThis as typeof globalThis & {
+                  __nativeMechanismPreviewRenderer?: typeof Renderer;
+                }
+              ).__nativeMechanismPreviewRenderer,
+            ),
+          undefined,
+          { timeout: 30_000 },
+        );
+      } catch (cause) {
+        throw new AnimationEngineError(
+          "SCENE_INVALID",
+          "Native preview browser module did not initialize",
+          {
+            stage: "mechanism-native-preview",
+            diagnosticCode: "comp-native3d-not-ready",
+            path: "browser.module",
+            causeMessage: previewModuleText(
+              cause instanceof Error ? cause.message : String(cause),
+            ),
+            browserDiagnosticsJson: JSON.stringify(
+              moduleDiagnostics.snapshot(),
+            ),
+          },
+          { cause },
+        );
+      }
+    } finally {
+      moduleDiagnostics.dispose();
+    }
     options.signal?.throwIfAborted();
     const captured = await page.evaluate(
       async ({ json, resourcesJson, frame }) => {
