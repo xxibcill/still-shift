@@ -34,6 +34,8 @@ import {
   verifyMechanismPackageArtifacts,
 } from "../../packages/animation-engine/src/mechanism/package.ts";
 import { checkMechanismEpisode } from "../../packages/animation-engine/src/mechanism/lifecycle.ts";
+import { packageNativeMechanismEpisode } from "../../packages/animation-engine/src/mechanism/native-package.ts";
+import { selectMechanismRoute } from "../../packages/animation-engine/src/mechanism/route.ts";
 import { createMechanismCommandReceipt } from "../../packages/animation-engine/src/mechanism/protocol.ts";
 import {
   mediaRgbaPng,
@@ -362,9 +364,15 @@ describe("atomic portable mechanism package", () => {
       true,
     );
   });
-  it.each(["pre-aborted", "during-copy", "before-publication"])(
-    "retains %s cancellation without publication, releases the lock and supports a fresh retry",
-    async (stage) => {
+  it.each(
+    (["bridge", "native3d", "native-direct"] as const).flatMap((route) =>
+      ["pre-aborted", "during-copy", "before-publication"].map(
+        (stage) => [route, stage] as const,
+      ),
+    ),
+  )(
+    "retains %s %s cancellation without publication, releases the lock and supports a fresh retry",
+    async (route, stage) => {
       const source = await fixture(),
         destination = join(source.root, stage),
         controller = new AbortController();
@@ -376,12 +384,22 @@ describe("atomic portable mechanism package", () => {
         injection.afterLink = (path) => {
           if (path.endsWith("package.manifest.json")) abort();
         };
+      const writePackage = (signal?: AbortSignal) => {
+        const options = {
+          outputDirectory: destination,
+          ...(signal ? { signal } : {}),
+        };
+        return route === "native-direct"
+          ? packageNativeMechanismEpisode(
+              source.loaded,
+              selectMechanismRoute(source.loaded.episode, "native3d"),
+              options,
+            )
+          : packageMechanismEpisode(source.episodePath, { ...options, route });
+      };
       let error: unknown;
       try {
-        await packageMechanismEpisode(source.episodePath, {
-          outputDirectory: destination,
-          signal: controller.signal,
-        });
+        await writePackage(controller.signal);
       } catch (cause) {
         error = cause;
       }
@@ -390,6 +408,14 @@ describe("atomic portable mechanism package", () => {
       expect(failure.context?.diagnosticCode).toBe(
         "mechanism-package-cancelled",
       );
+      expect(failure.cause).toMatchObject({ code: "ABORT_ERR" });
+      let originalCause: unknown = failure;
+      while (
+        originalCause instanceof Error &&
+        originalCause.cause !== undefined
+      )
+        originalCause = originalCause.cause;
+      expect(originalCause).toBe(controller.signal.reason);
       await expect(
         readFile(join(destination, "package.manifest.json")),
       ).rejects.toMatchObject({ code: "ENOENT" });
@@ -408,13 +434,9 @@ describe("atomic portable mechanism package", () => {
       }
       injection.afterCopy = undefined;
       injection.afterLink = undefined;
-      expect(
-        (
-          await packageMechanismEpisode(source.episodePath, {
-            outputDirectory: destination,
-          })
-        ).projectHash,
-      ).toBe(source.loaded.projectHash);
+      expect((await writePackage()).projectHash).toBe(
+        source.loaded.projectHash,
+      );
     },
   );
   it("closes live render and nested handoff evidence with portable verified hashes", async () => {

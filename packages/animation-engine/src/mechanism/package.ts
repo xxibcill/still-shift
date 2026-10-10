@@ -31,6 +31,7 @@ import type {
   MechanismRouteSelection,
 } from "@still-shift/scene-contract";
 import { followPreparedMechanismRoute, selectMechanismRoute } from "./route.ts";
+import { throwMechanismPackageError } from "./package-cancellation.ts";
 import {
   evaluateMechanismFrame,
   prepareMechanismScene,
@@ -363,6 +364,17 @@ export async function packageMechanismEpisode(
     signal?: AbortSignal;
     route?: MechanismRoute;
   },
+) {
+  try {
+    return await packageMechanismEpisodeRoute(path, options);
+  } catch (cause) {
+    throwMechanismPackageError(cause, options);
+  }
+}
+
+async function packageMechanismEpisodeRoute(
+  path: string,
+  options: Parameters<typeof packageMechanismEpisode>[1],
 ) {
   options.signal?.throwIfAborted();
   const loaded = await readMechanismEpisode(path);

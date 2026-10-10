@@ -42,6 +42,7 @@ import {
   checkNativeMechanismEpisode,
   verifyNativePreparedEpisode,
 } from "./native-lifecycle.ts";
+import { throwMechanismPackageError } from "./package-cancellation.ts";
 
 const portablePath = z
   .string()
@@ -350,6 +351,18 @@ export async function verifyNativeMechanismPackageArtifacts(
 
 /** Native source-only packages and prepared/final packages share one atomic directory publication. */
 export async function packageNativeMechanismEpisode(
+  loaded: LoadedMechanismEpisode,
+  selection: MechanismRouteSelection,
+  options: NativeMechanismPackageOptions,
+) {
+  try {
+    return await writeNativeMechanismPackage(loaded, selection, options);
+  } catch (cause) {
+    throwMechanismPackageError(cause, options);
+  }
+}
+
+async function writeNativeMechanismPackage(
   loaded: LoadedMechanismEpisode,
   selection: MechanismRouteSelection,
   options: NativeMechanismPackageOptions,

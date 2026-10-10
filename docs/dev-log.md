@@ -46,20 +46,29 @@ still hold before relying on them.
 - **MS1N implementation (2026-10-10):** `codex/mechanism-ms1n` carries exact
   MS1 `13b62b84` ([PR #52](https://github.com/xxibcill/still-shift/pull/52) open).
   Held342 full3 passes two actual 696-frame exports/current QA and nine accepted-body
-  parity checks; bridge4 freshly preserves all 696 original PNG bytes. Hardware
-  state agrees; cross-driver pixels and human appearance remain separately limited.
-  Preview5 passes 8 variants/5 negatives/restore at83; earlier timeout cause is unproven.
-  Portable4 verifies original/moved finalized native delivery at83. Current
-  `81a8e344` typing repair passes fast11/all 3,915 units and fresh package2/all 26
-  checks. Archive `f41679b1` (3,150,449B) passes source audit2: 669 exact Git81
-  source files plus 1,135 current-dist files/1,804 total. Inventory10 binds
-  2,327 inputs/117,498,320B. Archive1/audit1 stay retained.
-  OS-denied consumer1 completes denial/installed-byte/runtime preconditions then
-  fails audio loading: old PATH lacks FFprobe (ENOENT); same-profile exact-audio
-  probe passes with Homebrew FFprobe admitted. Nested triage1 failure stays retained.
-  Corrected consumer2 setup passes; its full native installed proof and the
-  all 77-group/176-baseline gate remain pending. Human readability, continuous
-  playback/listening and redistribution remain separate.
+  parity checks; bridge4 preserves all 696 original PNG bytes. Hardware state agrees;
+  cross-driver pixels and human appearance remain separately limited. Preview5
+  passes 8 variants/5 negatives/restore at83; earlier timeout cause is unproven.
+  Historical source `81a8e344` package2 passes all26 checks; archive `f41679b1` (3,150,449B)
+  and all1,804 source/runtime members pass audit2. OS-denied installed consumer2
+  now passes all18 stages, two696-frame exports/current actual checks and both
+  moved16-file packages. Saved first-shot +1FOV changes78 actual cameras/body
+  hashes; the other618 stay exact. Independent render audit2 confirms closure;
+  its raw-versus-normalized auditor1 error and consumer1/triage1 failures stay retained.
+  Docs-only `1949ae2f` inventory11 preserves all2,327 inputs/117,498,320B from81.
+  Root's ordinary fullgate1 exits1 after all3,915 units pass and runtime169/170;
+  only one of77 groups completes, and75 suffix groups/benchmark/176 baselines are
+  not reached. Early route dispatch outside the bridge catch caused raw cancellation.
+  Initial two-file focused2/fast12 evidence stays separate. Expanded four-file
+  public route/direct-native writer/private helper/tests repair passes pinnedNode22
+  focused3 all30 tests/2 files and fast13 all3,915 units/381 files. Working inventory2
+  binds2,328 inputs/117,501,326B; source is uncommitted after1949. Historical
+  inventory11 and initial inventory1 do not represent these expanded bytes.
+  Reviewed repair commit/new archive/current affected installed checks, full77/176
+  and milestone/MS1N PR remain pending.
+  Parent RSS/managed memory are
+  separate; fresh installed tree RSS is unavailable. Encoded readability, human
+  continuous playback/listening and customer redistribution remain separate.
   [Design](./mechanism-shorts-ms1n-design.md),
   [results](./mechanism-shorts-ms1n-results.json).
 
@@ -188,6 +197,66 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Expanded public package cancellation repair passes focused and fast gates
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, four-file working repair after1949.
+- **Done:** private normalization helper wraps public route and direct-native package
+  APIs; writer internals/evidence remain intact. Three entry paths × three abort
+  stages retain original reason/ABORT_ERR, cleanup, partial evidence and fresh retry.
+- **Results:** pinned focused3 passes30 tests/2 files in32.32s; fast13 passes all3,915
+  units/381 files. Working inventory2 binds2,328 inputs/117,501,326B, not Git1949.
+- **Retained:** initial Node24 focused1 and pinned focused2/fast12 keep their exact
+  two-file snapshot. Fullgate1's runtime failure and consumer2/source81 pass remain.
+- **Open / next:** reviewed commit/final inventory, fresh archive/current affected
+  installed checks and all77/176 remain pending. Milestone/PR and human review
+  remain incomplete; no cross-code pixel or latest-archive claim is inferred.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
+
+### 2026-10-10 — Initial cancellation repair verified; public native writer added to scope
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, initial dirty repair after1949.
+- **Cause:** early route dispatch bypassed the bridge catch and exposed raw abort.
+- **Results:** initial pinnedNode22 focused2 passes27 tests/2 files in26.38s;
+  Node24 focused1/22.30s stays method-qualified. Fast12 passes3,915 units/381 files.
+  Its initial inventory binds2,327 inputs/117,500,075B and exactly2 changed files.
+- **Expanded scope:** directly exported native writer also needs normalization;
+  B/root add shared helper/wrapper and direct-native three-stage tests. Initial
+  focused2/fast12 and inventories11/1 do not accept the expanded working bytes.
+- **Open / next:** expanded focused3/fast13/current inventory, reviewed repair
+  commit, new archive/affected installed checks and full77/176 remain pending.
+  Consumer2's18 stages and fullgate1's failure stay retained. Human review is separate.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
+
+### 2026-10-10 — First full native gate stops at portable cancellation assertion
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, held `1949ae2f`.
+- **Results:** ordinary fullgate1 exits1; preludes/build and381 files/3,915 units pass.
+  Runtime passes169/170 tests, then `mechanism-package.test.ts:388` expects
+  `AnimationEngineError` but receives `Error: Synthetic package cancellation`.
+- **Retained:** exact collector exit/run/log identities, one completed required
+  group, failed runtime group and75 not-run suffix groups. Source/HEAD stay exact
+  through this run; benchmark and176 unchanged baselines were not reached.
+- **Open / next:** root/B investigate the cancellation error-type cause; none is
+  assigned yet. Consumer2's all18 installed stages remain passed. Full77/176,
+  milestone closure, MS1N PR and human acceptance remain pending.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
+
+### 2026-10-10 — OS-denied installed native proof passes; full local gate running
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, docs checkpoint `1949ae2f`.
+- **Done:** exact archive `f41679b1`/source81 consumer2 exits0 after all18 stages:
+  two696-frame exports/current actual QA and both moved16-file packages pass.
+  A saved +1FOV edit changes78 actual cameras/body hashes;618 remain exact.
+- **Results:** independent CPU render audit2 binds actual receipts/rows/material
+  code identity. Inventory11 preserves all2,327 selected inputs/117,498,320B from81.
+  Fresh tree RSS is unavailable; measured parent RSS and managed bytes stay separate.
+- **Rejected / do not repeat:** consumer1 FFprobe PATH failure, nested triage1 and
+  auditor1 raw-versus-normalized recipe assertion remain retained; no unrelated
+  browser-timeout cause or cross-code pixel parity is inferred.
+- **Open / next:** ordinary fullgate1 is running at1949; all77 groups/176 unchanged
+  baselines, milestone closure and MS1N PR await its result. Human review is separate.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
 
 ### 2026-10-10 — Exact native archive verified; installed launch failure retained
 

@@ -2181,6 +2181,1234 @@
       "prepared": true,
       "launchCorrection": "Admit installed FFprobe/FFmpeg directory in launch PATH; additionally deny failed consumer1. Same archive/source/harness/required denials.",
       "scope": "Fresh consumer2 setup completed with the same exact archive/source/harness and original required denials, corrected launch PATH, and failed consumer1 additionally denied. Actual full OS-denied native preview/export/check/relocated-package proof is still pending; setup alone is not acceptance."
+    },
+    {
+      "id": "native-installed-consumer-2",
+      "status": "passed",
+      "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+      "rootTerminalExitCode": 0,
+      "report": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/consumer-all.json",
+        "bytes": 55389,
+        "sha256": "sha256:df6eea8e4ec7d40d7842f8f72a1020486fa63f1a6c8e8d54381c97fbfc7a5309"
+      },
+      "consumerProfile": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/consumer.sb",
+        "bytes": 1249,
+        "sha256": "sha256:70a867a5e10631a86791425a8eb4696a333bbf87d6d370848c4f9b954580780d"
+      },
+      "config": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/harness-config.json",
+        "bytes": 5047,
+        "sha256": "sha256:8ff74ec17787fb9c72ea8eeb08acaf57131ea737df3e0aeabc986d74282048f0"
+      },
+      "stderr": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/consumer-all.stderr.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/consumer-all.stdout.log",
+        "bytes": 209,
+        "sha256": "sha256:9a83faaf54661a4672379b178a48443ce3c1d2dc62d660577b02967cdc1ac552"
+      },
+      "runtimeProof": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/runtime-proof.json",
+        "bytes": 1081,
+        "sha256": "sha256:390f5e186b913dbc80d8f7e08deb5a832feccbed85a43b136cb19d73f20067c0"
+      },
+      "installedArchiveInventory": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/archive-files.json",
+        "bytes": 107344,
+        "sha256": "sha256:90ff685c59394b9677a05919c8812ced7ae9a997baea4fba5e2ba856a745f6f2"
+      },
+      "archiveSha256": "sha256:f41679b1f7c327d2966c992ab27c6173be4fa0acc9fee3fbee2ed47c993dfb64",
+      "installedAppearanceCodeSha256": "sha256:3689af2aec4fb9462bdc1362d6f0c9fda270544351c2b8492c2495c3d3627fc3",
+      "runtimeFormat": "installed-js",
+      "completedStagesCount": 18,
+      "completedStages": [
+        "OS-denial",
+        "archive-installed-byte-identity",
+        "consumer-process-runtime",
+        "fresh-installed-appearance-identity",
+        "installed-discovery",
+        "installed-native-source-schema",
+        "installed-deps",
+        "installed-validate",
+        "installed-summary",
+        "installed-source-save",
+        "preserved-original-native-final-package",
+        "installed-native-preview-actual-frame",
+        "installed-current-camera-edit-and-refresh",
+        "installed-native-full-baseline-export",
+        "installed-native-full-saved-camera-export",
+        "installed-baseline-vs-saved-camera-actual-comparison",
+        "installed-native-portable-final-package",
+        "installed-edited-native-portable-final-package"
+      ],
+      "installedFiles": 1804,
+      "osDenialVerified": true,
+      "deniedRootsCount": 11,
+      "profileSha256": "sha256:70a867a5e10631a86791425a8eb4696a333bbf87d6d370848c4f9b954580780d",
+      "consumerProcessRuntimeException": "consumer-only exact lstart query backed by live Darwin libproc; installed package is unchanged",
+      "packageHelperUnchanged": true,
+      "appearanceIdentity": {
+        "name": "fresh-installed-appearance-identity",
+        "runtimeFormat": "installed-js",
+        "appearanceCodeSha256": "sha256:3689af2aec4fb9462bdc1362d6f0c9fda270544351c2b8492c2495c3d3627fc3",
+        "moduleCount": 411,
+        "threeVersion": "0.186.0",
+        "projectHash": "sha256:13d106940123a17baa755722bd4bb34161d3f28ece6b21d3a9f400fd563f38c2",
+        "originalEpisodeSha256": "sha256:062153fa114e63629bde2546d5e75294ffa6974921e2091323cbc0522dc2c8f2"
+      },
+      "originalInputsByteUnchanged": true,
+      "originalPortableEvidenceByteUnchanged": true,
+      "preservedOriginalPackage": {
+        "name": "preserved-original-native-final-package",
+        "valid": true,
+        "actualExecutionVerified": true,
+        "originalAppearanceCodeSha256": "sha256:5495803fec93eda66680dcf9641444caf6bf1e7021e1b747dfaf3175361bb0d8",
+        "installedAppearanceCodeSha256": "sha256:3689af2aec4fb9462bdc1362d6f0c9fda270544351c2b8492c2495c3d3627fc3",
+        "appearanceIdentitiesDiffer": true,
+        "relocation": {
+          "originalCompositionSourceSha256": "sha256:39ed3f7339fca01b50074e2f4ce54c3b717a23bd0db6d606868c0e9c717ac339",
+          "relocatedCompositionSourceSha256": "sha256:8559fb20976d804071c99c08643bd386e98643cdff7751e61b5a4d6c87f1806e",
+          "compositionSha256": "sha256:d1496dd65aba3f23c15d000346dd1e040d077bb8d2437ea3d03a9958bdb32fa2",
+          "renderResultPath": "evidence/render.result.json",
+          "sceneManifestPath": "evidence/render.scene.json",
+          "observationManifestPath": "evidence/episode.mp4.native-observations.json"
+        },
+        "bytesPreserved": true,
+        "scope": "Original execution closure and portable mapping verified; no fresh render or shader parity claim"
+      },
+      "actualPreview": {
+        "name": "installed-native-preview-actual-frame",
+        "frame": 138,
+        "pngPath": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-preview/preview-000138-67e99f7d6239.png",
+        "pngSha256": "sha256:93208dfdb8288cef52e1a14603efbe53859a7ef2c6974dfd2580893f7f446868",
+        "pixelSha256": "sha256:063a9af6cfa86ede8d82f014e2e2b3d4ecaeaa84f85d9aea9b0a4de94d871fa3",
+        "appearanceCodeSha256": "sha256:3689af2aec4fb9462bdc1362d6f0c9fda270544351c2b8492c2495c3d3627fc3",
+        "observedPasses": 1,
+        "controller": "mechanism-plate-V8-02-23ee53a44523c1e4",
+        "scope": "Selected actual native frame; no full movie closure acceptance",
+        "png": {
+          "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-preview/preview-000138-67e99f7d6239.png",
+          "bytes": 1500767,
+          "sha256": "sha256:93208dfdb8288cef52e1a14603efbe53859a7ef2c6974dfd2580893f7f446868"
+        }
+      },
+      "cameraEdit": {
+        "name": "installed-current-camera-edit-and-refresh",
+        "schemaVersion": "ms1n-installed-saved-camera-edit-1",
+        "preparedDirectory": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render-edited/prepared",
+        "currentCompositionPath": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render-edited/prepared/composition-r0-13d106940123.json",
+        "controller": "mechanism-plate-V8-01-3736f43c644a2e1a",
+        "affectedRange": [0, 78],
+        "fovDelta": 1,
+        "oldRecipeSha256": "sha256:d1496dd65aba3f23c15d000346dd1e040d077bb8d2437ea3d03a9958bdb32fa2",
+        "refreshedRecipeSha256": "sha256:4f3881d17a457326b718863e9a37f2d548f848b5912e15c838fa9b47bb42765d",
+        "refreshedCompositionSourceSha256": "sha256:76157b4405f45350b23fbb5020091277abe9a863684ce99a79da4efeb1780b24",
+        "preparedNativeSha256": "sha256:f4e34ade26bcbadba8409e70de07be1cb50aa58ebff583d1d212ababbfa821e0",
+        "appearanceCodeSha256": "sha256:3689af2aec4fb9462bdc1362d6f0c9fda270544351c2b8492c2495c3d3627fc3",
+        "originalCamera": {
+          "position": [-4.6, 6.4, 7.1],
+          "target": [1.1, 1.3, 0],
+          "up": [0, 1, 0],
+          "fovDegrees": 35,
+          "near": 0.03,
+          "far": 100
+        },
+        "editedCamera": {
+          "position": [-4.6, 6.4, 7.1],
+          "target": [1.1, 1.3, 0],
+          "up": [0, 1, 0],
+          "fovDegrees": 36,
+          "near": 0.03,
+          "far": 100
+        },
+        "staleReceiptRejected": true,
+        "editedCameraPreserved": true,
+        "sourceEpisodeUnchanged": true,
+        "scope": "Same prepared subdirectory retained for the separate full edited wrapper render"
+      },
+      "fullActualExports": [
+        {
+          "name": "native-baseline",
+          "actualFinalCheck": true,
+          "qualityStatus": "passed",
+          "mechanicalFindings": 0,
+          "overlayFindings": 0,
+          "audioFindings": 0,
+          "physicalProofRecords": 9,
+          "readingHolds": 7,
+          "diagnostics": {
+            "frozen-pixels": 10,
+            "frozen-run": 10,
+            "outside-safe-area": 20,
+            "reading-time": 11
+          },
+          "semantic": {
+            "status": "unassessed",
+            "profile": "legacy",
+            "factualTruth": "unassessed",
+            "renderedGlyphReadability": "requires-encoded-review"
+          },
+          "audio": {
+            "sourceClock": {
+              "sampleRate": 48000,
+              "sampleCount": 1113600,
+              "channels": 2,
+              "authoredSampleCount": 1113600
+            },
+            "decodedClock": {
+              "codec": "aac",
+              "sampleRate": 48000,
+              "channels": 2,
+              "sampleCount": 1114112,
+              "paddingSamples": 512,
+              "paddingAllowanceSamples": 1023,
+              "sourceSha256": "sha256:1f474e3889efe32b5a5ece5bf4f6ba9edfa11eeaa07a2c773fe325bc213a9518",
+              "decodedSha256": "sha256:6b934bc37a1115ceef5bd5597bc324e393c4394e596e679c4592c2179dc32cf1"
+            },
+            "correlation": 0.99939897716988,
+            "maxLagSamples": 0,
+            "tailPreserved": true
+          },
+          "movie": {
+            "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render/episode.mp4",
+            "bytes": 3647073,
+            "sha256": "sha256:82554962620125c69f85f37ec1addb4438793a8b3640b7cb450c5cc85708d110"
+          },
+          "manifest": {
+            "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render/episode.mp4.native-observations.json",
+            "bytes": 76886,
+            "sha256": "sha256:625114e5027715406597ae9f74c199d57d89e0371225dda2b5b1c7e233457b6e"
+          },
+          "ndjson": {
+            "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render/episode.mp4.native-observations.000.ndjson",
+            "bytes": 4751107,
+            "sha256": "sha256:34b3ef12bf80152de294f9c5c3be389aed5a4d87effd1abfe5c7d5252794493f"
+          },
+          "executionSha256": "sha256:4498d32e619aaac81a3a0c8f27bbea8b7961f8d4b37c9a8db6488ecc6604b109",
+          "recipeSourceSha256": "sha256:fdb24fbdf370a021c1e96b9027ebe4d3f0a3886a7ed2e58baf3356f537cbf344",
+          "recipeSha256": "sha256:d1496dd65aba3f23c15d000346dd1e040d077bb8d2437ea3d03a9958bdb32fa2",
+          "preparedNativeSha256": "sha256:f4e34ade26bcbadba8409e70de07be1cb50aa58ebff583d1d212ababbfa821e0",
+          "timings": {
+            "scope": "monotonic-wall-clock-through-final-check",
+            "prepareWallSeconds": 26.396094542000036,
+            "exportWallSeconds": 252.127541083,
+            "checkWallSeconds": 332.061294459,
+            "throughCheckWallSeconds": 610.584959
+          },
+          "exporterTiming": {
+            "scope": "exporter monotonic wall-clock and synchronous frame submission",
+            "totalWallMs": 211537.94525000005,
+            "encodePathWallMs": 209930.19799999997,
+            "validationWallMs": 227.61270800000057,
+            "frameRenderAverageMs": 295.83362068749705,
+            "frameRenderP95Ms": 428.60000002384186,
+            "frameUploadAverageMs": 3.7295977026224136,
+            "frameUploadP95Ms": 10.300000071525574
+          },
+          "memory": {
+            "process": {
+              "scope": "exporter parent RSS and sampled process-tree RSS; separate from declared managed bytes",
+              "peakParentRssBytes": 511885312,
+              "peakSampledProcessTreeRssBytes": null
+            },
+            "managed": {
+              "scope": "declared-worker-application-bytes",
+              "applicationLimitBytes": 8589934592,
+              "concurrentWorkers": 1,
+              "peakConcurrentWorkerBytes": 561521298
+            }
+          },
+          "humanReview": {
+            "continuousMotion": "pending-human-review",
+            "listening": "pending-human-review"
+          }
+        },
+        {
+          "name": "native-edited",
+          "actualFinalCheck": true,
+          "qualityStatus": "passed",
+          "mechanicalFindings": 0,
+          "overlayFindings": 0,
+          "audioFindings": 0,
+          "physicalProofRecords": 9,
+          "readingHolds": 7,
+          "diagnostics": {
+            "frozen-pixels": 10,
+            "frozen-run": 10,
+            "outside-safe-area": 20,
+            "reading-time": 11
+          },
+          "semantic": {
+            "status": "unassessed",
+            "profile": "legacy",
+            "factualTruth": "unassessed",
+            "renderedGlyphReadability": "requires-encoded-review"
+          },
+          "audio": {
+            "sourceClock": {
+              "sampleRate": 48000,
+              "sampleCount": 1113600,
+              "channels": 2,
+              "authoredSampleCount": 1113600
+            },
+            "decodedClock": {
+              "codec": "aac",
+              "sampleRate": 48000,
+              "channels": 2,
+              "sampleCount": 1114112,
+              "paddingSamples": 512,
+              "paddingAllowanceSamples": 1023,
+              "sourceSha256": "sha256:1f474e3889efe32b5a5ece5bf4f6ba9edfa11eeaa07a2c773fe325bc213a9518",
+              "decodedSha256": "sha256:6b934bc37a1115ceef5bd5597bc324e393c4394e596e679c4592c2179dc32cf1"
+            },
+            "correlation": 0.99939897716988,
+            "maxLagSamples": 0,
+            "tailPreserved": true
+          },
+          "movie": {
+            "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render-edited/episode.mp4",
+            "bytes": 3637661,
+            "sha256": "sha256:985cb0f6e2e2684196d92c13930a66ce055746fc0ae891708231181c5d59dde3"
+          },
+          "manifest": {
+            "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render-edited/episode.mp4.native-observations.json",
+            "bytes": 76886,
+            "sha256": "sha256:9aafb5361d4394d4f68e812501bbc132308e2a149ef07c4676b7d5afc5616ba3"
+          },
+          "ndjson": {
+            "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render-edited/episode.mp4.native-observations.000.ndjson",
+            "bytes": 4751183,
+            "sha256": "sha256:2d22bf3d79eb1600392c8ce7fbc156c4c317c561df1b204066f13547b07490b6"
+          },
+          "executionSha256": "sha256:a570bc7384da0b92dd2cd0219b16049da45509c88950e7e0986d5f42a6a19c07",
+          "recipeSourceSha256": "sha256:76157b4405f45350b23fbb5020091277abe9a863684ce99a79da4efeb1780b24",
+          "recipeSha256": "sha256:4f3881d17a457326b718863e9a37f2d548f848b5912e15c838fa9b47bb42765d",
+          "preparedNativeSha256": "sha256:f4e34ade26bcbadba8409e70de07be1cb50aa58ebff583d1d212ababbfa821e0",
+          "timings": {
+            "scope": "monotonic-wall-clock-through-final-check",
+            "prepareWallSeconds": 18.27311629200005,
+            "exportWallSeconds": 220.13516858299997,
+            "checkWallSeconds": 313.858112041,
+            "throughCheckWallSeconds": 552.266413542
+          },
+          "exporterTiming": {
+            "scope": "exporter monotonic wall-clock and synchronous frame submission",
+            "totalWallMs": 183650.35312500014,
+            "encodePathWallMs": 182777.43320800003,
+            "validationWallMs": 211.96020800014958,
+            "frameRenderAverageMs": 258.81652298758087,
+            "frameRenderP95Ms": 284.6999999284744,
+            "frameUploadAverageMs": 2.0416666687219993,
+            "frameUploadP95Ms": 3
+          },
+          "memory": {
+            "process": {
+              "scope": "exporter parent RSS and sampled process-tree RSS; separate from declared managed bytes",
+              "peakParentRssBytes": 566394880,
+              "peakSampledProcessTreeRssBytes": null
+            },
+            "managed": {
+              "scope": "declared-worker-application-bytes",
+              "applicationLimitBytes": 8589934592,
+              "concurrentWorkers": 1,
+              "peakConcurrentWorkerBytes": 561521298
+            }
+          },
+          "humanReview": {
+            "continuousMotion": "pending-human-review",
+            "listening": "pending-human-review"
+          }
+        }
+      ],
+      "cameraComparison": {
+        "name": "installed-baseline-vs-saved-camera-actual-comparison",
+        "comparisonPath": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-camera-edit.comparison.json",
+        "comparisonSha256": "sha256:bcde03fc498696555f4054c6c3f5403254460c7760ab42c40af1d30c3de6e086",
+        "counts": {
+          "affectedFrames": 78,
+          "affectedCameraChanges": 78,
+          "affectedPixelBodyChanges": 78,
+          "otherFrames": 618,
+          "otherCameraChanges": 0,
+          "otherPixelBodyChanges": 0
+        },
+        "artifacts": {
+          "baseline": {
+            "outputSha256": "sha256:82554962620125c69f85f37ec1addb4438793a8b3640b7cb450c5cc85708d110",
+            "sceneSha256": "sha256:5dbf0f4d909dd3d6bed668e462e4252fb74c3de825e560f8d0f5cbe0d9aef5d4",
+            "closure": {
+              "version": "native-observation-closure-1",
+              "manifestPath": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render/episode.mp4.native-observations.json",
+              "manifestSha256": "sha256:625114e5027715406597ae9f74c199d57d89e0371225dda2b5b1c7e233457b6e",
+              "executionSha256": "sha256:4498d32e619aaac81a3a0c8f27bbea8b7961f8d4b37c9a8db6488ecc6604b109",
+              "outputFrames": 696,
+              "passCount": 696,
+              "outputSha256": "sha256:82554962620125c69f85f37ec1addb4438793a8b3640b7cb450c5cc85708d110"
+            }
+          },
+          "edited": {
+            "outputSha256": "sha256:985cb0f6e2e2684196d92c13930a66ce055746fc0ae891708231181c5d59dde3",
+            "sceneSha256": "sha256:025d1286d9ee23cd7e432d6f43e92d03ec943e657bce34e658f3285714de5bbc",
+            "closure": {
+              "version": "native-observation-closure-1",
+              "manifestPath": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render-edited/episode.mp4.native-observations.json",
+              "manifestSha256": "sha256:9aafb5361d4394d4f68e812501bbc132308e2a149ef07c4676b7d5afc5616ba3",
+              "executionSha256": "sha256:a570bc7384da0b92dd2cd0219b16049da45509c88950e7e0986d5f42a6a19c07",
+              "outputFrames": 696,
+              "passCount": 696,
+              "outputSha256": "sha256:985cb0f6e2e2684196d92c13930a66ce055746fc0ae891708231181c5d59dde3"
+            }
+          }
+        },
+        "boundedRetention": {
+          "outputFrames": 696,
+          "admittedScalarInventoryBytes": 1048576,
+          "actualScalarInventoryBytes": 244297,
+          "retainedFullCameraSamples": 2
+        },
+        "comparisonWallSeconds": 68.3110171670001,
+        "scope": "Same installed appearance identity; actual camera and accepted pixel-body effects, not cross-code shader parity",
+        "artifact": {
+          "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-camera-edit.comparison.json",
+          "bytes": 5464,
+          "sha256": "sha256:bcde03fc498696555f4054c6c3f5403254460c7760ab42c40af1d30c3de6e086"
+        }
+      },
+      "movedPackages": [
+        {
+          "name": "installed-native-portable-final-package",
+          "schemaVersion": "mechanism-native-package-result-1",
+          "valid": true,
+          "actualExecutionVerified": true,
+          "movedDirectory": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-delivery-moved",
+          "manifestSha256": "sha256:42d04c9a842e8df5bba6309925149575de36c08cf658c19a76de2848e366a960",
+          "originalObservationBytesPreserved": true,
+          "files": 16,
+          "relocation": {
+            "originalCompositionSourceSha256": "sha256:fdb24fbdf370a021c1e96b9027ebe4d3f0a3886a7ed2e58baf3356f537cbf344",
+            "relocatedCompositionSourceSha256": "sha256:8559fb20976d804071c99c08643bd386e98643cdff7751e61b5a4d6c87f1806e",
+            "compositionSha256": "sha256:d1496dd65aba3f23c15d000346dd1e040d077bb8d2437ea3d03a9958bdb32fa2",
+            "renderResultPath": "evidence/render.result.json",
+            "sceneManifestPath": "evidence/render.scene.json",
+            "observationManifestPath": "evidence/episode.mp4.native-observations.json"
+          },
+          "manifest": {
+            "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-delivery-moved/package.manifest.json",
+            "bytes": 4452,
+            "sha256": "sha256:42d04c9a842e8df5bba6309925149575de36c08cf658c19a76de2848e366a960"
+          }
+        },
+        {
+          "name": "installed-edited-native-portable-final-package",
+          "schemaVersion": "mechanism-native-package-result-1",
+          "valid": true,
+          "actualExecutionVerified": true,
+          "movedDirectory": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-edited-delivery-moved",
+          "currentRecipeSha256": "sha256:4f3881d17a457326b718863e9a37f2d548f848b5912e15c838fa9b47bb42765d",
+          "appearanceCodeSha256": "sha256:3689af2aec4fb9462bdc1362d6f0c9fda270544351c2b8492c2495c3d3627fc3",
+          "manifestSha256": "sha256:9e2d8b583525227f7b7e3bd38f99998959a4c3835aa44a2d59f3f73d96fe32c3",
+          "originalObservationBytesPreserved": true,
+          "files": 16,
+          "relocation": {
+            "originalCompositionSourceSha256": "sha256:76157b4405f45350b23fbb5020091277abe9a863684ce99a79da4efeb1780b24",
+            "relocatedCompositionSourceSha256": "sha256:c89a517f1ef75c4d93bf682988e596780927e6811b06e58aedfb71145f5dddf2",
+            "compositionSha256": "sha256:4f3881d17a457326b718863e9a37f2d548f848b5912e15c838fa9b47bb42765d",
+            "renderResultPath": "evidence/render.result.json",
+            "sceneManifestPath": "evidence/render.scene.json",
+            "observationManifestPath": "evidence/episode.mp4.native-observations.json"
+          },
+          "manifest": {
+            "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-edited-delivery-moved/package.manifest.json",
+            "bytes": 4452,
+            "sha256": "sha256:9e2d8b583525227f7b7e3bd38f99998959a4c3835aa44a2d59f3f73d96fe32c3"
+          }
+        }
+      ],
+      "priorFailedAttemptRecord": "native-installed-consumer-1",
+      "priorLaunchTriageRecords": [
+        "native-audio-path-triage-1",
+        "native-audio-path-triage-2"
+      ],
+      "humanAcceptance": "pending",
+      "noCrossCodeShaderOrPixelParityClaim": true,
+      "scope": "Actual OS-denied installed-js archive execution completes all18 stages: six original source inputs and historical portable evidence remain exact, preview138 has a real observed pass, fresh baseline and saved-camera movies each close all696 frames/current measured quality, and both16-file final packages pass after moving with original observations retained. This closes installed-native software acceptance only; full77/176, encoded glyph review, continuous human playback/listening, milestone/PR and redistribution acceptance remain separate. Parent RSS and declared managed bytes are separately reported; process-tree RSS is unavailable."
+    },
+    {
+      "id": "installed-consumer2-render-audit-1",
+      "status": "failed-private-auditor-method",
+      "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+      "report": {
+        "path": "/private/tmp/mechanism-ms1n-installed-consumer2-render-audit.json",
+        "bytes": 3012,
+        "sha256": "sha256:92187edfc0c5c7c059166452d975b542195c031143115a9d295d834940c84724"
+      },
+      "error": {
+        "name": "AssertionError",
+        "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'sha256:ecb4facf6a45c8a669dbc5ad46cce133aaace2f7484e7adc0493a299180177ce'\n- 'sha256:d1496dd65aba3f23c15d000346dd1e040d077bb8d2437ea3d03a9958bdb32fa2'\n",
+        "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'sha256:ecb4facf6a45c8a669dbc5ad46cce133aaace2f7484e7adc0493a299180177ce'\n- 'sha256:d1496dd65aba3f23c15d000346dd1e040d077bb8d2437ea3d03a9958bdb32fa2'\n\n    at file:///Users/jjae/Documents/playground/still-shift/[eval1]:26:177"
+      },
+      "cause": "Auditor incorrectly equated canonical raw saved JSON with schema-normalized composition SHA; no artifact failure established.",
+      "correction": "Raw source bytes rehashed independently; normalized recipe identities remain exact across receipts/result/execution. Exact saved document comparison independently proves only the one FOV value changes; no public schema parser invoked.",
+      "scope": "Retained auditor assertion incorrectly equated canonical raw JSON with schema-normalized recipe identity; no product or artifact failure was established. Corrected audit2 keeps raw-byte hashing and recorded normalized identities distinct."
+    },
+    {
+      "id": "installed-consumer2-render-audit-2",
+      "status": "passed-scoped-artifact-audit",
+      "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+      "report": {
+        "path": "/private/tmp/mechanism-ms1n-installed-consumer2-render-audit-2.json",
+        "bytes": 19180,
+        "sha256": "sha256:5d6aee48d02d4aae9b0119a17c20972971599169f94e4f31df8b6d477661da11"
+      },
+      "markdown": {
+        "path": "/private/tmp/mechanism-ms1n-installed-consumer2-render-audit-2.md",
+        "bytes": 2850,
+        "sha256": "sha256:ca1e9e95ae89ed41fc824e2f38b194f89d75b0cbf7d39a1c179b4c32fefd6219"
+      },
+      "integrity": {
+        "path": "/private/tmp/mechanism-ms1n-installed-consumer2-render-audit-2.integrity.json",
+        "bytes": 7728,
+        "sha256": "sha256:ff9c2f28a7b81e03a0196f11f61c6eb7debb5dfc800ebdd75647785cf3ac646c"
+      },
+      "archiveSha256": "sha256:f41679b1f7c327d2966c992ab27c6173be4fa0acc9fee3fbee2ed47c993dfb64",
+      "appearance": {
+        "runtimeFormat": "installed-js",
+        "sha256": "sha256:3689af2aec4fb9462bdc1362d6f0c9fda270544351c2b8492c2495c3d3627fc3",
+        "firstPartyModules": 332,
+        "externalModules": 79,
+        "threeRuntimeFiles": 4,
+        "actualInstalledFilesRehashed": 415,
+        "actualInstalledBytesRehashed": 5534733
+      },
+      "coverage": {
+        "outputs": 2,
+        "rowsPerOutput": 696,
+        "passesPerOutput": 696,
+        "firstFrame": 0,
+        "lastFrame": 695,
+        "controllers": [
+          {
+            "controller": "mechanism-plate-V8-01-3736f43c644a2e1a",
+            "frames": 78
+          },
+          {
+            "controller": "mechanism-plate-V8-02-23ee53a44523c1e4",
+            "frames": 85
+          },
+          {
+            "controller": "mechanism-plate-V8-03-365e5185a5821217",
+            "frames": 84
+          },
+          {
+            "controller": "mechanism-plate-V8-04-a5f517ea339d6c0c",
+            "frames": 89
+          },
+          {
+            "controller": "mechanism-plate-V8-05-140e631f296c3b52",
+            "frames": 82
+          },
+          {
+            "controller": "mechanism-plate-V8-06-662f4f0ee05dd8ae",
+            "frames": 54
+          },
+          {
+            "controller": "mechanism-plate-V8-07-a1fbfacb389ef192",
+            "frames": 54
+          },
+          {
+            "controller": "mechanism-plate-V8-08-5d61ab33e4ab18fd",
+            "frames": 77
+          },
+          {
+            "controller": "mechanism-plate-V8-09-9fa19f1a89583e1b",
+            "frames": 93
+          }
+        ],
+        "rowByteLimit": 1048576,
+        "maxActualRowBytes": 7175,
+        "scalarInventoryLimit": 1048576,
+        "scalarInventoryBytes": 207455,
+        "scalarInventorySha256": "sha256:d1fea959b9daf930ad661fa72bd3cbd48afeff943223c2b3a61d422c6c5bf9b1",
+        "rawSourceFilesUnchanged": 6
+      },
+      "edit": {
+        "controller": "mechanism-plate-V8-01-3736f43c644a2e1a",
+        "affectedRange": [0, 78],
+        "fovDelta": 1,
+        "counts": {
+          "affectedFrames": 78,
+          "affectedCameraChanges": 78,
+          "affectedPixelBodyChanges": 78,
+          "otherFrames": 618,
+          "otherCameraChanges": 0,
+          "otherPixelBodyChanges": 0
+        },
+        "currentSavedRecipeSha256": "sha256:4f3881d17a457326b718863e9a37f2d548f848b5912e15c838fa9b47bb42765d",
+        "currentSavedSourceSha256": "sha256:76157b4405f45350b23fbb5020091277abe9a863684ce99a79da4efeb1780b24",
+        "recipeRawBytesMatchReceipt": true,
+        "onlySavedDocumentValueChange": "/layers/66/camera/fovDegrees: 35 to 36",
+        "normalizedRecipeIdentitiesAssociatedAcrossReceiptsResultsAndExecution": true,
+        "partsExactAcrossAll696Frames": true,
+        "affectedCameraPoseNearFarAspectAndOtherProjectionEntriesExact": true,
+        "analyticProjectionMaxDeltaInformational": 8.881784197001252e-16,
+        "moviesDiffer": true,
+        "comparisonWallSeconds": 68.3110171670001,
+        "comparisonRssEndpoints": {
+          "scope": "Comparison process RSS endpoints; not a sampled peak",
+          "before": 404996096,
+          "after": 380141568
+        }
+      },
+      "runs": [
+        {
+          "name": "native-baseline",
+          "actualFinalCheck": true,
+          "qualityStatus": "passed",
+          "mechanicalFindings": 0,
+          "overlayFindings": 0,
+          "audioFindings": 0,
+          "physicalProofRecords": 9,
+          "readingHolds": 7,
+          "diagnostics": {
+            "frozen-pixels": 10,
+            "frozen-run": 10,
+            "outside-safe-area": 20,
+            "reading-time": 11
+          },
+          "semantic": {
+            "status": "unassessed",
+            "profile": "legacy",
+            "factualTruth": "unassessed",
+            "renderedGlyphReadability": "requires-encoded-review"
+          },
+          "audio": {
+            "sourceClock": {
+              "sampleRate": 48000,
+              "sampleCount": 1113600,
+              "channels": 2,
+              "authoredSampleCount": 1113600
+            },
+            "decodedClock": {
+              "codec": "aac",
+              "sampleRate": 48000,
+              "channels": 2,
+              "sampleCount": 1114112,
+              "paddingSamples": 512,
+              "paddingAllowanceSamples": 1023,
+              "sourceSha256": "sha256:1f474e3889efe32b5a5ece5bf4f6ba9edfa11eeaa07a2c773fe325bc213a9518",
+              "decodedSha256": "sha256:6b934bc37a1115ceef5bd5597bc324e393c4394e596e679c4592c2179dc32cf1"
+            },
+            "correlation": 0.99939897716988,
+            "maxLagSamples": 0,
+            "tailPreserved": true
+          },
+          "movie": {
+            "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render/episode.mp4",
+            "bytes": 3647073,
+            "sha256": "sha256:82554962620125c69f85f37ec1addb4438793a8b3640b7cb450c5cc85708d110"
+          },
+          "manifest": {
+            "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render/episode.mp4.native-observations.json",
+            "bytes": 76886,
+            "sha256": "sha256:625114e5027715406597ae9f74c199d57d89e0371225dda2b5b1c7e233457b6e"
+          },
+          "ndjson": {
+            "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render/episode.mp4.native-observations.000.ndjson",
+            "bytes": 4751107,
+            "sha256": "sha256:34b3ef12bf80152de294f9c5c3be389aed5a4d87effd1abfe5c7d5252794493f"
+          },
+          "executionSha256": "sha256:4498d32e619aaac81a3a0c8f27bbea8b7961f8d4b37c9a8db6488ecc6604b109",
+          "recipeSourceSha256": "sha256:fdb24fbdf370a021c1e96b9027ebe4d3f0a3886a7ed2e58baf3356f537cbf344",
+          "recipeSha256": "sha256:d1496dd65aba3f23c15d000346dd1e040d077bb8d2437ea3d03a9958bdb32fa2",
+          "preparedNativeSha256": "sha256:f4e34ade26bcbadba8409e70de07be1cb50aa58ebff583d1d212ababbfa821e0",
+          "timings": {
+            "scope": "monotonic-wall-clock-through-final-check",
+            "prepareWallSeconds": 26.396094542000036,
+            "exportWallSeconds": 252.127541083,
+            "checkWallSeconds": 332.061294459,
+            "throughCheckWallSeconds": 610.584959
+          },
+          "exporterTiming": {
+            "scope": "exporter monotonic wall-clock and synchronous frame submission",
+            "totalWallMs": 211537.94525000005,
+            "encodePathWallMs": 209930.19799999997,
+            "validationWallMs": 227.61270800000057,
+            "frameRenderAverageMs": 295.83362068749705,
+            "frameRenderP95Ms": 428.60000002384186,
+            "frameUploadAverageMs": 3.7295977026224136,
+            "frameUploadP95Ms": 10.300000071525574
+          },
+          "memory": {
+            "process": {
+              "scope": "exporter parent RSS and sampled process-tree RSS; separate from declared managed bytes",
+              "peakParentRssBytes": 511885312,
+              "peakSampledProcessTreeRssBytes": null
+            },
+            "managed": {
+              "scope": "declared-worker-application-bytes",
+              "applicationLimitBytes": 8589934592,
+              "concurrentWorkers": 1,
+              "peakConcurrentWorkerBytes": 561521298
+            }
+          },
+          "humanReview": {
+            "continuousMotion": "pending-human-review",
+            "listening": "pending-human-review"
+          }
+        },
+        {
+          "name": "native-edited",
+          "actualFinalCheck": true,
+          "qualityStatus": "passed",
+          "mechanicalFindings": 0,
+          "overlayFindings": 0,
+          "audioFindings": 0,
+          "physicalProofRecords": 9,
+          "readingHolds": 7,
+          "diagnostics": {
+            "frozen-pixels": 10,
+            "frozen-run": 10,
+            "outside-safe-area": 20,
+            "reading-time": 11
+          },
+          "semantic": {
+            "status": "unassessed",
+            "profile": "legacy",
+            "factualTruth": "unassessed",
+            "renderedGlyphReadability": "requires-encoded-review"
+          },
+          "audio": {
+            "sourceClock": {
+              "sampleRate": 48000,
+              "sampleCount": 1113600,
+              "channels": 2,
+              "authoredSampleCount": 1113600
+            },
+            "decodedClock": {
+              "codec": "aac",
+              "sampleRate": 48000,
+              "channels": 2,
+              "sampleCount": 1114112,
+              "paddingSamples": 512,
+              "paddingAllowanceSamples": 1023,
+              "sourceSha256": "sha256:1f474e3889efe32b5a5ece5bf4f6ba9edfa11eeaa07a2c773fe325bc213a9518",
+              "decodedSha256": "sha256:6b934bc37a1115ceef5bd5597bc324e393c4394e596e679c4592c2179dc32cf1"
+            },
+            "correlation": 0.99939897716988,
+            "maxLagSamples": 0,
+            "tailPreserved": true
+          },
+          "movie": {
+            "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render-edited/episode.mp4",
+            "bytes": 3637661,
+            "sha256": "sha256:985cb0f6e2e2684196d92c13930a66ce055746fc0ae891708231181c5d59dde3"
+          },
+          "manifest": {
+            "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render-edited/episode.mp4.native-observations.json",
+            "bytes": 76886,
+            "sha256": "sha256:9aafb5361d4394d4f68e812501bbc132308e2a149ef07c4676b7d5afc5616ba3"
+          },
+          "ndjson": {
+            "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render-edited/episode.mp4.native-observations.000.ndjson",
+            "bytes": 4751183,
+            "sha256": "sha256:2d22bf3d79eb1600392c8ce7fbc156c4c317c561df1b204066f13547b07490b6"
+          },
+          "executionSha256": "sha256:a570bc7384da0b92dd2cd0219b16049da45509c88950e7e0986d5f42a6a19c07",
+          "recipeSourceSha256": "sha256:76157b4405f45350b23fbb5020091277abe9a863684ce99a79da4efeb1780b24",
+          "recipeSha256": "sha256:4f3881d17a457326b718863e9a37f2d548f848b5912e15c838fa9b47bb42765d",
+          "preparedNativeSha256": "sha256:f4e34ade26bcbadba8409e70de07be1cb50aa58ebff583d1d212ababbfa821e0",
+          "timings": {
+            "scope": "monotonic-wall-clock-through-final-check",
+            "prepareWallSeconds": 18.27311629200005,
+            "exportWallSeconds": 220.13516858299997,
+            "checkWallSeconds": 313.858112041,
+            "throughCheckWallSeconds": 552.266413542
+          },
+          "exporterTiming": {
+            "scope": "exporter monotonic wall-clock and synchronous frame submission",
+            "totalWallMs": 183650.35312500014,
+            "encodePathWallMs": 182777.43320800003,
+            "validationWallMs": 211.96020800014958,
+            "frameRenderAverageMs": 258.81652298758087,
+            "frameRenderP95Ms": 284.6999999284744,
+            "frameUploadAverageMs": 2.0416666687219993,
+            "frameUploadP95Ms": 3
+          },
+          "memory": {
+            "process": {
+              "scope": "exporter parent RSS and sampled process-tree RSS; separate from declared managed bytes",
+              "peakParentRssBytes": 566394880,
+              "peakSampledProcessTreeRssBytes": null
+            },
+            "managed": {
+              "scope": "declared-worker-application-bytes",
+              "applicationLimitBytes": 8589934592,
+              "concurrentWorkers": 1,
+              "peakConcurrentWorkerBytes": 561521298
+            }
+          },
+          "humanReview": {
+            "continuousMotion": "pending-human-review",
+            "listening": "pending-human-review"
+          }
+        }
+      ],
+      "priorAuditorFailureRecord": "installed-consumer2-render-audit-1",
+      "actualAuditInputRehashes": 29,
+      "limits": [
+        "Counts and rehashes retained authenticated observation/body-hash evidence; no public mechanical replay or independent movie/PNG decoding.",
+        "Installed identity and same-installed edit effects only; no source-TypeScript versus installed shader/pixel parity claim.",
+        "Raw composition byte SHA is independently rehashed; normalized recipe SHA is associated through recorded receipts/results/execution, not independently parsed through public schemas.",
+        "Declared managed bytes differ from actual parent RSS; process-tree RSS unavailable and comparison RSS endpoints are not peaks.",
+        "Package phases/full milestone gates remain outside this review; no all-consumer/milestone pass.",
+        "Human continuous playback/listening and encoded glyph/material appearance remain pending; E01 legacy semantic/factual assessment remains unassessed."
+      ],
+      "scope": "Independent standard-library-only artifact reads, bounded streaming and hashes. No public APIs, rendering, build/test/install, repository writes or active package-stage reads."
+    },
+    {
+      "id": "full-local-gate-1",
+      "status": "failed-runtime",
+      "sourceCommit": "1949ae2f194edc9b936818836ac13778db75324a",
+      "observedAt": "2026-10-10T10:03:02.142145+00:00",
+      "command": {
+        "executable": "/Users/jjae/.nvm/versions/node/v24.16.0/bin/pnpm",
+        "args": ["check:all"],
+        "cwd": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift",
+        "environment": "inherited without additions or removals",
+        "shell": false
+      },
+      "input": {
+        "path": "/private/tmp/still-shift-ms1n-full-gate-1/input.json",
+        "bytes": 30160,
+        "sha256": "sha256:2146b04229b83f5bf0e9434fa524f11935eb3a2eff94d6b3acf55b16a10a394c"
+      },
+      "collector": {
+        "path": "/private/tmp/mechanism-ms1n-full-gate-collector.mjs",
+        "bytes": 19897,
+        "sha256": "sha256:c3c051112070f6b45acc44e4ab904eaa7b73c481a976ba96b1c1c3b52e2ecaac"
+      },
+      "sourceInventory": {
+        "path": "/private/tmp/still-shift-ms1n-implementation-inputs-11.json",
+        "bytes": 396838,
+        "sha256": "sha256:5caeb8ec55a4da4fa09b0972bced0fc7dff37b472b6d1566e07f494fcd37e7bf",
+        "version": "ms1n-source-input-inventory-2",
+        "sourceCommit": "1949ae2f194edc9b936818836ac13778db75324a",
+        "files": 2327,
+        "inputBytes": 117498320,
+        "inputRecordsByteIdentity": "All selected input records deep-equal inventory10 at81; inventory11 sourceCommit reflects docs-only1949.",
+        "priorInventoryRecord": "priorCompleteSourceInputInventory10"
+      },
+      "expectedRequiredGroups": 77,
+      "expectedOriginalRequiredGroups": 76,
+      "expectedUnchangedBaselines": 176,
+      "outputDirectory": "/private/tmp/still-shift-ms1n-full-gate-1",
+      "rootSession": 57561,
+      "rootTerminalExitCode": 1,
+      "scope": "One ordinary check:all actually exits1 at runtime after passed preludes and381 files/3915 units. Runtime passes169 of170 tests; package cancellation error-type assertion fails at mechanism-package.test.ts388. One of77 required groups completes; failed runtime group and75 not-run suffix groups remain explicit, and benchmark/176 baselines were not reached. No cause is inferred from the assertion; installed consumer2 all18 stages stays passed. This is no full-gate or staged-completion claim.",
+      "initialRunningSnapshot": {
+        "status": "running",
+        "observedAt": "2026-10-10T10:03:02.142145+00:00",
+        "rootTerminalExitCode": null,
+        "scope": "Root-owned ordinary check:all is actually running. Input/preflight metadata is bound; live logs/headers are not given final identities, completed counts or pass claims. Terminal exit,77 ordered group coverage and176 unchanged baseline evidence remain pending."
+      },
+      "startedAt": "2026-10-10T09:59:06.558Z",
+      "finishedAt": "2026-10-10T10:02:18.901Z",
+      "wrapperWallSeconds": 193.279776625,
+      "run": {
+        "path": "/private/tmp/still-shift-ms1n-full-gate-1/run.json",
+        "bytes": 38098,
+        "sha256": "sha256:63498bf666270deb9b6fe682d3e2276966d1a05205c9823cdca6496b5991110a"
+      },
+      "exit": {
+        "path": "/private/tmp/still-shift-ms1n-full-gate-1/exit.json",
+        "bytes": 9874,
+        "sha256": "sha256:6dc502585ba203d0dec5a286f1ffc742b24211122d0a134d3c161b757a1e9faa"
+      },
+      "logs": {
+        "stdout": {
+          "path": "/private/tmp/still-shift-ms1n-full-gate-1/stdout.log",
+          "bytes": 45298,
+          "sha256": "sha256:848bf160bdd80865bc8ceeed5d5d339b08fc6a31e2b88217f91bc7bb45cc12f5"
+        },
+        "stderr": {
+          "path": "/private/tmp/still-shift-ms1n-full-gate-1/stderr.log",
+          "bytes": 755,
+          "sha256": "sha256:e90254994ee4b26f3bb7b76b60aa43c07ef5b48fd06cb42a652ee33e49bb0019"
+        },
+        "combined": {
+          "path": "/private/tmp/still-shift-ms1n-full-gate-1/combined.log",
+          "bytes": 46053,
+          "sha256": "sha256:a574e9ff2887576c01b5240499e32c8f312c71354c922e69371b96cc261f5d11"
+        },
+        "headers": {
+          "path": "/private/tmp/still-shift-ms1n-full-gate-1/headers.jsonl",
+          "bytes": 6679,
+          "sha256": "sha256:bc55a44d2da01ecb3a6a6161889db5d11d05814a77a7aed207413fa44a81de14"
+        }
+      },
+      "combinedLogLines": 592,
+      "sourceBefore": {
+        "path": "/private/tmp/still-shift-ms1n-full-gate-1/source-before.json",
+        "bytes": 396838,
+        "sha256": "sha256:5caeb8ec55a4da4fa09b0972bced0fc7dff37b472b6d1566e07f494fcd37e7bf"
+      },
+      "sourceAfter": {
+        "path": "/private/tmp/still-shift-ms1n-full-gate-1/source-after.json",
+        "bytes": 396838,
+        "sha256": "sha256:5caeb8ec55a4da4fa09b0972bced0fc7dff37b472b6d1566e07f494fcd37e7bf"
+      },
+      "binding": {
+        "sourceBound": true,
+        "changedInputs": [],
+        "headUnchanged": true,
+        "logsComplete": true,
+        "orderValid": true,
+        "expectedHeaders": 89,
+        "pairedHeaders": 13,
+        "anomalies": []
+      },
+      "coverage": {
+        "requiredGroups": 77,
+        "completedPrefix": [
+          {
+            "group": "test:unit",
+            "start": {
+              "script": "test:unit",
+              "line": 56,
+              "observedAt": "2026-10-10T10:00:11.629Z",
+              "elapsedSeconds": 65.587079541,
+              "commandLine": 57,
+              "command": "vitest run tests/unit --maxWorkers=4",
+              "planIndex": 11,
+              "ancestors": ["check:all", "check", "test"]
+            },
+            "evidence": {
+              "method": "next-required-group-in-unchanged-sequential-&&-chain",
+              "event": {
+                "script": "test:runtime",
+                "line": 482,
+                "observedAt": "2026-10-10T10:00:59.862Z",
+                "elapsedSeconds": 113.81968275,
+                "commandLine": 483,
+                "command": "vitest run tests/runtime --maxWorkers=2 --no-file-parallelism",
+                "planIndex": 12,
+                "ancestors": ["check:all", "check", "test"]
+              }
+            }
+          }
+        ],
+        "currentGroup": "test:runtime",
+        "notRunSuffix": [
+          "test:integration",
+          "test:depth",
+          "test:browser:soundtrack",
+          "test:browser:composition-media",
+          "test:browser:composition-alpha",
+          "test:browser:composition-output",
+          "test:browser:composition-surfaces",
+          "test:browser:composition-parallel",
+          "test:browser:composition-tint-capacity",
+          "test:browser:composition-export-memory",
+          "test:browser:composition-cache-dependencies",
+          "test:browser:composition-fps-audio",
+          "test:browser:composition-area",
+          "test:browser:depth",
+          "test:browser:vertical-image",
+          "test:browser:export",
+          "test:golden",
+          "test:browser:cli",
+          "test:browser:batch",
+          "test:browser:illustrated",
+          "test:browser:illustrated:vertical",
+          "test:browser:cinematic",
+          "test:browser:cinematic:vertical",
+          "test:browser:threshold",
+          "test:browser:dolly",
+          "test:browser:lateral",
+          "test:browser:reveal",
+          "test:browser:story",
+          "test:browser:story:activity",
+          "test:browser:story:continuous",
+          "test:browser:passage:authoring",
+          "test:browser:lab-session",
+          "test:browser:composition-session",
+          "test:browser:commerce",
+          "test:browser:commerce-components",
+          "test:browser:commerce-effects",
+          "test:browser:commerce-spatial",
+          "test:browser:reusable-components",
+          "test:browser:reusable-package",
+          "test:browser:reusable-behavior-package",
+          "test:browser:reusable-timing-package",
+          "test:browser:typography",
+          "test:browser:typography:fixtures",
+          "test:browser:composition-evaluator",
+          "test:browser:composition-expressions",
+          "test:browser:composition-quality",
+          "test:browser:composition",
+          "test:browser:composition-webgl",
+          "test:browser:composition-camera",
+          "test:browser:composition-lighting",
+          "test:browser:composition-shapes",
+          "test:browser:composition-webgl-export",
+          "test:browser:composition-exposure",
+          "test:browser:composition-effects",
+          "test:browser:composition-mesh",
+          "test:browser:composition-story-adapter",
+          "test:browser:composition-native-passage",
+          "test:browser:composition-native-passage:webgl",
+          "test:browser:composition-passage",
+          "test:browser:composition-story-fixtures",
+          "test:browser:composition-commerce-adapter",
+          "test:browser:composition-cinematic-adapter",
+          "test:browser:composition-typography-adapter",
+          "test:browser:composition-provider-typography",
+          "test:browser:composition-program",
+          "test:browser:composition-inspector",
+          "test:browser:composition-builder",
+          "test:browser:composition-depth",
+          "test:browser:native3d-depth",
+          "test:browser:composition-legacy-adapter",
+          "test:browser:composition-family-timeline",
+          "test:browser:composition-family-defaults",
+          "test:browser:mechanism-typography",
+          "test:browser:mechanism-portrait",
+          "test:browser:composition-baselines"
+        ],
+        "benchmark": {
+          "started": false,
+          "passed": false,
+          "completionMethod": "actual final pnpm check:all exit; no separate benchmark retry"
+        },
+        "baseline": {
+          "verified": false,
+          "rows": [],
+          "footers": [],
+          "requiredItems": 176,
+          "requiredFrames": 36061
+        },
+        "qualification": "Group completion is inferred only from actual matched next-group headers in the held sequential && chain. No individual child exit codes are invented. A failed/interrupted aggregate retains its prefix/current group/not-run suffix; it is never a pass or staged completion."
+      },
+      "completedRequiredGroups": 1,
+      "failedRequiredGroup": "test:runtime",
+      "notRunRequiredGroups": 75,
+      "preludes": {
+        "status": "passed-through-build",
+        "scripts": [
+          "toolchain:check",
+          "schema:check",
+          "native3d:identity:check",
+          "check:boundaries",
+          "format:check",
+          "lint",
+          "soundtrack:lint",
+          "build"
+        ],
+        "method": "Actual paired headers in unchanged sequential && chain reach unit and runtime groups."
+      },
+      "unit": {
+        "testFiles": 381,
+        "tests": 3915,
+        "status": "passed",
+        "wallSeconds": 47.76
+      },
+      "runtime": {
+        "testFiles": 26,
+        "passedFiles": 25,
+        "failedFiles": 1,
+        "tests": 170,
+        "passedTests": 169,
+        "failedTests": 1,
+        "wallSeconds": 78.64,
+        "status": "failed"
+      },
+      "failure": {
+        "file": "tests/runtime/mechanism-package.test.ts",
+        "line": 388,
+        "case": "retains pre-aborted cancellation without publication, releases the lock and supports a fresh retry",
+        "actualError": "Error: Synthetic package cancellation",
+        "expectedErrorType": "AnimationEngineError",
+        "underlyingCause": "confirmed-route-dispatch-outside-bridge-catch",
+        "initialUnderlyingCauseStatus": "under-review-unassigned",
+        "confirmedCause": "Initial MS1N route dispatch and pre-aborted signal check execute outside the previous bridge-only error-normalizing catch, so a raw AbortSignal reason escapes the public package API.",
+        "repairRecord": "nativePackageCancellationRepair"
+      },
+      "ordinaryAggregatePass": false
+    },
+    {
+      "id": "package-cancellation-repair-focused-1",
+      "status": "passed-method-qualified-unpinned",
+      "rootTerminalExitCode": 0,
+      "baseHead": "1949ae2f194edc9b936818836ac13778db75324a",
+      "sourceState": "historical initial uncommitted two-file snapshot; expanded public-entrypoint repair is pending",
+      "node": "24-shell-default",
+      "acceptedPinnedToolchainEvidence": false,
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-package-cancellation-repair-1.log",
+        "bytes": 3658,
+        "sha256": "sha256:95b0f502583df69c160129e1cf0d7279300a33686111528672b9c07e6e5ca5fc"
+      },
+      "testFiles": 2,
+      "tests": 27,
+      "wallSeconds": 22.3,
+      "coverage": {
+        "routes": ["bridge", "native3d"],
+        "stages": ["pre-aborted", "during-copy", "before-publication"],
+        "guards": [
+          "public AnimationEngineError with located mechanism-package-cancelled",
+          "ABORT_ERR cause chain retains original signal reason",
+          "no published destination/no remaining lock",
+          "mid-copy/pre-publication retained cancellation evidence",
+          "fresh retry succeeds"
+        ]
+      },
+      "scope": "Actual root-run focused runtime cases. First run uses shell-default Node24 and remains method-qualified; second pinnedNode22 run supplies acceptance. No archive/current installed/full77/176 closure is claimed."
+    },
+    {
+      "id": "package-cancellation-repair-focused-2",
+      "status": "passed",
+      "rootTerminalExitCode": 0,
+      "baseHead": "1949ae2f194edc9b936818836ac13778db75324a",
+      "sourceState": "historical initial uncommitted two-file snapshot; expanded public-entrypoint repair is pending",
+      "node": "22.23.1",
+      "acceptedPinnedToolchainEvidence": true,
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-package-cancellation-repair-2.log",
+        "bytes": 3809,
+        "sha256": "sha256:f04585b5060d7d9ca6e89ba5648a1812cae2a22ababf5bba200a6ce67141845e"
+      },
+      "testFiles": 2,
+      "tests": 27,
+      "wallSeconds": 26.38,
+      "coverage": {
+        "routes": ["bridge", "native3d"],
+        "stages": ["pre-aborted", "during-copy", "before-publication"],
+        "guards": [
+          "public AnimationEngineError with located mechanism-package-cancelled",
+          "ABORT_ERR cause chain retains original signal reason",
+          "no published destination/no remaining lock",
+          "mid-copy/pre-publication retained cancellation evidence",
+          "fresh retry succeeds"
+        ]
+      },
+      "scope": "Actual root-run focused runtime cases. First run uses shell-default Node24 and remains method-qualified; second pinnedNode22 run supplies acceptance. No archive/current installed/full77/176 closure is claimed."
+    },
+    {
+      "id": "check-fast-12",
+      "status": "passed",
+      "node": "22.23.1",
+      "rootTerminalExitCode": 0,
+      "baseHead": "1949ae2f194edc9b936818836ac13778db75324a",
+      "sourceState": "historical initial uncommitted two-file snapshot; expanded public-entrypoint repair is pending",
+      "command": "pnpm check:fast",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-check-fast-12.log",
+        "bytes": 31213,
+        "sha256": "sha256:0ac48806b98b188d4f0b8bde207ed5269b6fb4590d7d18ad32c425add095d3ea"
+      },
+      "unitTestFiles": 381,
+      "unitTests": 3915,
+      "unitWallSeconds": 45.63,
+      "scope": "Root-run pinned development gate passes actual schema/appearance identity, boundaries, maintained formatting/lint, noemit build and all3915 units on uncommitted repair. Fullgate1 failure stays retained; commit/new archive/affected installed and full77/176 proof refresh remain pending."
+    },
+    {
+      "id": "package-cancellation-repair-focused-3",
+      "status": "passed",
+      "rootTerminalExitCode": 0,
+      "node": "22.23.1",
+      "baseHead": "1949ae2f194edc9b936818836ac13778db75324a",
+      "sourceState": "uncommitted expanded four-file public cancellation repair",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-package-cancellation-repair-3.log",
+        "bytes": 4462,
+        "sha256": "sha256:551303339878d2b227be23af25cfbbd6fbe1458683b1da05aedbbd339cdcd5a5"
+      },
+      "testFiles": 2,
+      "tests": 30,
+      "wallSeconds": 32.32,
+      "workingInventory": {
+        "path": "/private/tmp/still-shift-ms1n-cancellation-repair-working-inputs-2.json",
+        "bytes": 397022,
+        "sha256": "sha256:b93155339a0d103fda6d7e51dc384df327ad43bca483d0c5723e7ba9984ab1a2"
+      },
+      "coverage": {
+        "publicEntryPaths": [
+          "packageMechanismEpisode bridge",
+          "packageMechanismEpisode native3d",
+          "packageNativeMechanismEpisode direct"
+        ],
+        "stages": ["pre-aborted", "during-copy", "before-publication"],
+        "cancellationCases": 9,
+        "guards": [
+          "located AnimationEngineError mechanism-package-cancelled",
+          "ABORT_ERR retains exact original signal reason",
+          "no published output/no remaining lock",
+          "retained evidence after partial work",
+          "fresh retry succeeds"
+        ]
+      },
+      "scope": "Actual root pinnedNode22 focused run verifies all three public entry paths across three cancellation stages. Private normalization helper has no public barrel export. New archive/current installed/full77 closure remains pending."
+    },
+    {
+      "id": "check-fast-13",
+      "status": "passed",
+      "rootTerminalExitCode": 0,
+      "node": "22.23.1",
+      "baseHead": "1949ae2f194edc9b936818836ac13778db75324a",
+      "sourceState": "uncommitted expanded four-file public cancellation repair",
+      "command": "pnpm check:fast",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-check-fast-13.log",
+        "bytes": 31458,
+        "sha256": "sha256:a55f40f64a5ff5adc442aab07280f2f578b717652db7078540f2ad9ad2f72d45"
+      },
+      "unitTestFiles": 381,
+      "unitTests": 3915,
+      "unitWallSeconds": 50.0,
+      "workingInventory": {
+        "path": "/private/tmp/still-shift-ms1n-cancellation-repair-working-inputs-2.json",
+        "bytes": 397022,
+        "sha256": "sha256:b93155339a0d103fda6d7e51dc384df327ad43bca483d0c5723e7ba9984ab1a2"
+      },
+      "scope": "Actual root-run pinned development gate passes schema/appearance closure, package boundaries, maintained formatting/lint, noemit build and all3915 units on expanded source. Initial focused1/2 and fast12 retain their own exact two-file state; failed fullgate1 stays retained. Commit/fresh archive/affected installed/full77 verification remains pending."
+    },
+    {
+      "id": "package-cancellation-impact-1",
+      "status": "passed-scoped-independent-source-impact-review",
+      "report": {
+        "path": "/private/tmp/mechanism-ms1n-package-cancellation-impact-1.json",
+        "bytes": 8406,
+        "sha256": "sha256:b1a0e688aa334694f99b46c45ce70fb143bea75f488cb37642950261a47475ce"
+      },
+      "markdown": {
+        "path": "/private/tmp/mechanism-ms1n-package-cancellation-impact-1.md",
+        "bytes": 2540,
+        "sha256": "sha256:2c4abd9c188f92c67501289b2a5ffbaa6e0d17d90070a5aad6321b1a6717b80a"
+      },
+      "integrity": {
+        "path": "/private/tmp/mechanism-ms1n-package-cancellation-impact-1.integrity.json",
+        "bytes": 1711,
+        "sha256": "sha256:ea058c699aaf8c6105856e4097bc4e1b138857f55a8e2b503e82e9c026e47c5d"
+      },
+      "workingInventory": {
+        "path": "/private/tmp/still-shift-ms1n-cancellation-repair-working-inputs-2.json",
+        "bytes": 397022,
+        "sha256": "sha256:b93155339a0d103fda6d7e51dc384df327ad43bca483d0c5723e7ba9984ab1a2"
+      },
+      "changedInputPaths": [
+        "packages/animation-engine/src/mechanism/package.ts",
+        "packages/animation-engine/src/mechanism/native-package.ts",
+        "packages/animation-engine/src/mechanism/package-cancellation.ts",
+        "tests/runtime/mechanism-package.test.ts"
+      ],
+      "unchangedExistingInputs": 2324,
+      "appearanceModulesUnchanged": 415,
+      "scope": "Read/hash-only review qualifies the four-file cancellation boundary repair; both original successful writer bodies, 415 source appearance files and six original E01 inputs remain exact. Old342/source81 runs keep their actual execution identities. Refresh the archive and clean installed cancellation/successful portable package+move+closure, then full77/176. This packaging-only change does not itself require repeating 696 unchanged GPU frames. No tests/build/browser/GPU or repository edits by auditor."
     }
   ],
   "implementationEvidence": {
@@ -4440,23 +5668,47 @@
       }
     },
     "portableInstalledExecution": {
-      "status": "pending-full-native-consumer2",
+      "status": "passed-installed-native-consumer2",
       "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
       "consumer": "/private/tmp/still-shift-ms1n-installed-consumer-2",
       "archiveSha256": "sha256:f41679b1f7c327d2966c992ab27c6173be4fa0acc9fee3fbee2ed47c993dfb64",
-      "setupRecord": "native-installed-setup-2",
+      "installedAppearanceCodeSha256": "sha256:3689af2aec4fb9462bdc1362d6f0c9fda270544351c2b8492c2495c3d3627fc3",
+      "verificationRecord": "native-installed-consumer-2",
+      "independentAuditRecord": "installed-consumer2-render-audit-2",
+      "completedStages": 18,
       "priorFailedAttemptRecord": "native-installed-consumer-1",
-      "scope": "Ordinary package26 and source audit pass; actual OS-denied full native E01 consumer2 proof remains pending. Portable4 retains its own83/original342 provenance."
+      "scope": "Installed-native software proof closed under actual required OS denials with two696-frame current checks and original/edited moved16-file packages. Portable4 retains83/original342 provenance; no cross-code pixel parity or human/milestone acceptance is inferred."
     },
     "fullLocalGateAnd176Baselines": {
-      "status": "pending",
+      "status": "failed-runtime-incomplete",
       "unchangedOriginalRequiredGroups": 76,
       "currentRequiredGroups": 77,
       "newMaintainedGroup": "test:browser:native3d-depth",
       "baselineItems": 176,
       "baselineFrames": 36061,
       "baselineSha256": "sha256:e5e7a38842f1248ab830ccc2b1130444816d388ab658916ab652c91e7fe75864",
-      "baselineChangeFromMs1": false
+      "baselineChangeFromMs1": false,
+      "sourceCommit": "1949ae2f194edc9b936818836ac13778db75324a",
+      "runRecord": "full-local-gate-1",
+      "outputDirectory": "/private/tmp/still-shift-ms1n-full-gate-1",
+      "sourceInventory": {
+        "path": "/private/tmp/still-shift-ms1n-implementation-inputs-11.json",
+        "bytes": 396838,
+        "sha256": "sha256:5caeb8ec55a4da4fa09b0972bced0fc7dff37b472b6d1566e07f494fcd37e7bf",
+        "version": "ms1n-source-input-inventory-2",
+        "sourceCommit": "1949ae2f194edc9b936818836ac13778db75324a",
+        "files": 2327,
+        "inputBytes": 117498320,
+        "inputRecordsByteIdentity": "All selected input records deep-equal inventory10 at81; inventory11 sourceCommit reflects docs-only1949.",
+        "priorInventoryRecord": "priorCompleteSourceInputInventory10"
+      },
+      "rootTerminalExitCode": 1,
+      "completedRequiredGroups": 1,
+      "failedRequiredGroup": "test:runtime",
+      "notRunRequiredGroups": 75,
+      "baselineRunReached": false,
+      "benchmarkRunReached": false,
+      "failureRecord": "full-local-gate-1"
     },
     "sourceInputInventory": {
       "path": "/private/tmp/still-shift-ms1n-implementation-inputs-1.json",
@@ -4554,13 +5806,18 @@
       "next": "Recapture this explicit selection after the test-only oracle correction and use it before/after remaining actual proofs and aggregate checks."
     },
     "currentCompleteSourceInputInventory": {
-      "path": "/private/tmp/still-shift-ms1n-implementation-inputs-10.json",
-      "bytes": 396838,
-      "sha256": "sha256:1fa1a352fbb19446a97d0d29bf5d762b10be524aca5647b9a6fb4936b8a74eb1",
+      "path": "/private/tmp/still-shift-ms1n-cancellation-repair-working-inputs-2.json",
+      "bytes": 397022,
+      "sha256": "sha256:b93155339a0d103fda6d7e51dc384df327ad43bca483d0c5723e7ba9984ab1a2",
       "version": "ms1n-source-input-inventory-2",
-      "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
-      "files": 2327,
-      "inputBytes": 117498320
+      "sourceCommit": "1949ae2f194edc9b936818836ac13778db75324a",
+      "sourceCommitMeaning": "Base HEAD only; all four uncommitted source/test file identities are represented by selected byte hashes.",
+      "sourceState": "uncommitted-expanded-four-file-package-cancellation-repair",
+      "files": 2328,
+      "inputBytes": 117501326,
+      "changedOrAddedSelectedInputs": 4,
+      "unchangedSelectedInputs": 2324,
+      "priorInventoryRecord": "priorCompleteSourceInputInventory11"
     },
     "nativeMotionQARepair": {
       "status": "implemented-reviewed-focused54-fast3915-short-native2frame-pass",
@@ -6244,12 +7501,1159 @@
       "prepared": true,
       "launchCorrection": "Admit installed FFprobe/FFmpeg directory in launch PATH; additionally deny failed consumer1. Same archive/source/harness/required denials.",
       "scope": "Fresh consumer2 setup completed with the same exact archive/source/harness and original required denials, corrected launch PATH, and failed consumer1 additionally denied. Actual full OS-denied native preview/export/check/relocated-package proof is still pending; setup alone is not acceptance."
+    },
+    "priorCompleteSourceInputInventory10": {
+      "path": "/private/tmp/still-shift-ms1n-implementation-inputs-10.json",
+      "bytes": 396838,
+      "sha256": "sha256:1fa1a352fbb19446a97d0d29bf5d762b10be524aca5647b9a6fb4936b8a74eb1",
+      "version": "ms1n-source-input-inventory-2",
+      "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+      "files": 2327,
+      "inputBytes": 117498320
+    },
+    "nativeInstalledConsumerProof2": {
+      "id": "native-installed-consumer-2",
+      "status": "passed",
+      "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+      "rootTerminalExitCode": 0,
+      "report": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/consumer-all.json",
+        "bytes": 55389,
+        "sha256": "sha256:df6eea8e4ec7d40d7842f8f72a1020486fa63f1a6c8e8d54381c97fbfc7a5309"
+      },
+      "consumerProfile": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/consumer.sb",
+        "bytes": 1249,
+        "sha256": "sha256:70a867a5e10631a86791425a8eb4696a333bbf87d6d370848c4f9b954580780d"
+      },
+      "config": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/harness-config.json",
+        "bytes": 5047,
+        "sha256": "sha256:8ff74ec17787fb9c72ea8eeb08acaf57131ea737df3e0aeabc986d74282048f0"
+      },
+      "stderr": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/consumer-all.stderr.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/consumer-all.stdout.log",
+        "bytes": 209,
+        "sha256": "sha256:9a83faaf54661a4672379b178a48443ce3c1d2dc62d660577b02967cdc1ac552"
+      },
+      "runtimeProof": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/runtime-proof.json",
+        "bytes": 1081,
+        "sha256": "sha256:390f5e186b913dbc80d8f7e08deb5a832feccbed85a43b136cb19d73f20067c0"
+      },
+      "installedArchiveInventory": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/archive-files.json",
+        "bytes": 107344,
+        "sha256": "sha256:90ff685c59394b9677a05919c8812ced7ae9a997baea4fba5e2ba856a745f6f2"
+      },
+      "archiveSha256": "sha256:f41679b1f7c327d2966c992ab27c6173be4fa0acc9fee3fbee2ed47c993dfb64",
+      "installedAppearanceCodeSha256": "sha256:3689af2aec4fb9462bdc1362d6f0c9fda270544351c2b8492c2495c3d3627fc3",
+      "runtimeFormat": "installed-js",
+      "completedStagesCount": 18,
+      "completedStages": [
+        "OS-denial",
+        "archive-installed-byte-identity",
+        "consumer-process-runtime",
+        "fresh-installed-appearance-identity",
+        "installed-discovery",
+        "installed-native-source-schema",
+        "installed-deps",
+        "installed-validate",
+        "installed-summary",
+        "installed-source-save",
+        "preserved-original-native-final-package",
+        "installed-native-preview-actual-frame",
+        "installed-current-camera-edit-and-refresh",
+        "installed-native-full-baseline-export",
+        "installed-native-full-saved-camera-export",
+        "installed-baseline-vs-saved-camera-actual-comparison",
+        "installed-native-portable-final-package",
+        "installed-edited-native-portable-final-package"
+      ],
+      "installedFiles": 1804,
+      "osDenialVerified": true,
+      "deniedRootsCount": 11,
+      "profileSha256": "sha256:70a867a5e10631a86791425a8eb4696a333bbf87d6d370848c4f9b954580780d",
+      "consumerProcessRuntimeException": "consumer-only exact lstart query backed by live Darwin libproc; installed package is unchanged",
+      "packageHelperUnchanged": true,
+      "appearanceIdentity": {
+        "name": "fresh-installed-appearance-identity",
+        "runtimeFormat": "installed-js",
+        "appearanceCodeSha256": "sha256:3689af2aec4fb9462bdc1362d6f0c9fda270544351c2b8492c2495c3d3627fc3",
+        "moduleCount": 411,
+        "threeVersion": "0.186.0",
+        "projectHash": "sha256:13d106940123a17baa755722bd4bb34161d3f28ece6b21d3a9f400fd563f38c2",
+        "originalEpisodeSha256": "sha256:062153fa114e63629bde2546d5e75294ffa6974921e2091323cbc0522dc2c8f2"
+      },
+      "originalInputsByteUnchanged": true,
+      "originalPortableEvidenceByteUnchanged": true,
+      "preservedOriginalPackage": {
+        "name": "preserved-original-native-final-package",
+        "valid": true,
+        "actualExecutionVerified": true,
+        "originalAppearanceCodeSha256": "sha256:5495803fec93eda66680dcf9641444caf6bf1e7021e1b747dfaf3175361bb0d8",
+        "installedAppearanceCodeSha256": "sha256:3689af2aec4fb9462bdc1362d6f0c9fda270544351c2b8492c2495c3d3627fc3",
+        "appearanceIdentitiesDiffer": true,
+        "relocation": {
+          "originalCompositionSourceSha256": "sha256:39ed3f7339fca01b50074e2f4ce54c3b717a23bd0db6d606868c0e9c717ac339",
+          "relocatedCompositionSourceSha256": "sha256:8559fb20976d804071c99c08643bd386e98643cdff7751e61b5a4d6c87f1806e",
+          "compositionSha256": "sha256:d1496dd65aba3f23c15d000346dd1e040d077bb8d2437ea3d03a9958bdb32fa2",
+          "renderResultPath": "evidence/render.result.json",
+          "sceneManifestPath": "evidence/render.scene.json",
+          "observationManifestPath": "evidence/episode.mp4.native-observations.json"
+        },
+        "bytesPreserved": true,
+        "scope": "Original execution closure and portable mapping verified; no fresh render or shader parity claim"
+      },
+      "actualPreview": {
+        "name": "installed-native-preview-actual-frame",
+        "frame": 138,
+        "pngPath": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-preview/preview-000138-67e99f7d6239.png",
+        "pngSha256": "sha256:93208dfdb8288cef52e1a14603efbe53859a7ef2c6974dfd2580893f7f446868",
+        "pixelSha256": "sha256:063a9af6cfa86ede8d82f014e2e2b3d4ecaeaa84f85d9aea9b0a4de94d871fa3",
+        "appearanceCodeSha256": "sha256:3689af2aec4fb9462bdc1362d6f0c9fda270544351c2b8492c2495c3d3627fc3",
+        "observedPasses": 1,
+        "controller": "mechanism-plate-V8-02-23ee53a44523c1e4",
+        "scope": "Selected actual native frame; no full movie closure acceptance",
+        "png": {
+          "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-preview/preview-000138-67e99f7d6239.png",
+          "bytes": 1500767,
+          "sha256": "sha256:93208dfdb8288cef52e1a14603efbe53859a7ef2c6974dfd2580893f7f446868"
+        }
+      },
+      "cameraEdit": {
+        "name": "installed-current-camera-edit-and-refresh",
+        "schemaVersion": "ms1n-installed-saved-camera-edit-1",
+        "preparedDirectory": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render-edited/prepared",
+        "currentCompositionPath": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render-edited/prepared/composition-r0-13d106940123.json",
+        "controller": "mechanism-plate-V8-01-3736f43c644a2e1a",
+        "affectedRange": [0, 78],
+        "fovDelta": 1,
+        "oldRecipeSha256": "sha256:d1496dd65aba3f23c15d000346dd1e040d077bb8d2437ea3d03a9958bdb32fa2",
+        "refreshedRecipeSha256": "sha256:4f3881d17a457326b718863e9a37f2d548f848b5912e15c838fa9b47bb42765d",
+        "refreshedCompositionSourceSha256": "sha256:76157b4405f45350b23fbb5020091277abe9a863684ce99a79da4efeb1780b24",
+        "preparedNativeSha256": "sha256:f4e34ade26bcbadba8409e70de07be1cb50aa58ebff583d1d212ababbfa821e0",
+        "appearanceCodeSha256": "sha256:3689af2aec4fb9462bdc1362d6f0c9fda270544351c2b8492c2495c3d3627fc3",
+        "originalCamera": {
+          "position": [-4.6, 6.4, 7.1],
+          "target": [1.1, 1.3, 0],
+          "up": [0, 1, 0],
+          "fovDegrees": 35,
+          "near": 0.03,
+          "far": 100
+        },
+        "editedCamera": {
+          "position": [-4.6, 6.4, 7.1],
+          "target": [1.1, 1.3, 0],
+          "up": [0, 1, 0],
+          "fovDegrees": 36,
+          "near": 0.03,
+          "far": 100
+        },
+        "staleReceiptRejected": true,
+        "editedCameraPreserved": true,
+        "sourceEpisodeUnchanged": true,
+        "scope": "Same prepared subdirectory retained for the separate full edited wrapper render"
+      },
+      "fullActualExports": [
+        {
+          "name": "native-baseline",
+          "actualFinalCheck": true,
+          "qualityStatus": "passed",
+          "mechanicalFindings": 0,
+          "overlayFindings": 0,
+          "audioFindings": 0,
+          "physicalProofRecords": 9,
+          "readingHolds": 7,
+          "diagnostics": {
+            "frozen-pixels": 10,
+            "frozen-run": 10,
+            "outside-safe-area": 20,
+            "reading-time": 11
+          },
+          "semantic": {
+            "status": "unassessed",
+            "profile": "legacy",
+            "factualTruth": "unassessed",
+            "renderedGlyphReadability": "requires-encoded-review"
+          },
+          "audio": {
+            "sourceClock": {
+              "sampleRate": 48000,
+              "sampleCount": 1113600,
+              "channels": 2,
+              "authoredSampleCount": 1113600
+            },
+            "decodedClock": {
+              "codec": "aac",
+              "sampleRate": 48000,
+              "channels": 2,
+              "sampleCount": 1114112,
+              "paddingSamples": 512,
+              "paddingAllowanceSamples": 1023,
+              "sourceSha256": "sha256:1f474e3889efe32b5a5ece5bf4f6ba9edfa11eeaa07a2c773fe325bc213a9518",
+              "decodedSha256": "sha256:6b934bc37a1115ceef5bd5597bc324e393c4394e596e679c4592c2179dc32cf1"
+            },
+            "correlation": 0.99939897716988,
+            "maxLagSamples": 0,
+            "tailPreserved": true
+          },
+          "movie": {
+            "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render/episode.mp4",
+            "bytes": 3647073,
+            "sha256": "sha256:82554962620125c69f85f37ec1addb4438793a8b3640b7cb450c5cc85708d110"
+          },
+          "manifest": {
+            "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render/episode.mp4.native-observations.json",
+            "bytes": 76886,
+            "sha256": "sha256:625114e5027715406597ae9f74c199d57d89e0371225dda2b5b1c7e233457b6e"
+          },
+          "ndjson": {
+            "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render/episode.mp4.native-observations.000.ndjson",
+            "bytes": 4751107,
+            "sha256": "sha256:34b3ef12bf80152de294f9c5c3be389aed5a4d87effd1abfe5c7d5252794493f"
+          },
+          "executionSha256": "sha256:4498d32e619aaac81a3a0c8f27bbea8b7961f8d4b37c9a8db6488ecc6604b109",
+          "recipeSourceSha256": "sha256:fdb24fbdf370a021c1e96b9027ebe4d3f0a3886a7ed2e58baf3356f537cbf344",
+          "recipeSha256": "sha256:d1496dd65aba3f23c15d000346dd1e040d077bb8d2437ea3d03a9958bdb32fa2",
+          "preparedNativeSha256": "sha256:f4e34ade26bcbadba8409e70de07be1cb50aa58ebff583d1d212ababbfa821e0",
+          "timings": {
+            "scope": "monotonic-wall-clock-through-final-check",
+            "prepareWallSeconds": 26.396094542000036,
+            "exportWallSeconds": 252.127541083,
+            "checkWallSeconds": 332.061294459,
+            "throughCheckWallSeconds": 610.584959
+          },
+          "exporterTiming": {
+            "scope": "exporter monotonic wall-clock and synchronous frame submission",
+            "totalWallMs": 211537.94525000005,
+            "encodePathWallMs": 209930.19799999997,
+            "validationWallMs": 227.61270800000057,
+            "frameRenderAverageMs": 295.83362068749705,
+            "frameRenderP95Ms": 428.60000002384186,
+            "frameUploadAverageMs": 3.7295977026224136,
+            "frameUploadP95Ms": 10.300000071525574
+          },
+          "memory": {
+            "process": {
+              "scope": "exporter parent RSS and sampled process-tree RSS; separate from declared managed bytes",
+              "peakParentRssBytes": 511885312,
+              "peakSampledProcessTreeRssBytes": null
+            },
+            "managed": {
+              "scope": "declared-worker-application-bytes",
+              "applicationLimitBytes": 8589934592,
+              "concurrentWorkers": 1,
+              "peakConcurrentWorkerBytes": 561521298
+            }
+          },
+          "humanReview": {
+            "continuousMotion": "pending-human-review",
+            "listening": "pending-human-review"
+          }
+        },
+        {
+          "name": "native-edited",
+          "actualFinalCheck": true,
+          "qualityStatus": "passed",
+          "mechanicalFindings": 0,
+          "overlayFindings": 0,
+          "audioFindings": 0,
+          "physicalProofRecords": 9,
+          "readingHolds": 7,
+          "diagnostics": {
+            "frozen-pixels": 10,
+            "frozen-run": 10,
+            "outside-safe-area": 20,
+            "reading-time": 11
+          },
+          "semantic": {
+            "status": "unassessed",
+            "profile": "legacy",
+            "factualTruth": "unassessed",
+            "renderedGlyphReadability": "requires-encoded-review"
+          },
+          "audio": {
+            "sourceClock": {
+              "sampleRate": 48000,
+              "sampleCount": 1113600,
+              "channels": 2,
+              "authoredSampleCount": 1113600
+            },
+            "decodedClock": {
+              "codec": "aac",
+              "sampleRate": 48000,
+              "channels": 2,
+              "sampleCount": 1114112,
+              "paddingSamples": 512,
+              "paddingAllowanceSamples": 1023,
+              "sourceSha256": "sha256:1f474e3889efe32b5a5ece5bf4f6ba9edfa11eeaa07a2c773fe325bc213a9518",
+              "decodedSha256": "sha256:6b934bc37a1115ceef5bd5597bc324e393c4394e596e679c4592c2179dc32cf1"
+            },
+            "correlation": 0.99939897716988,
+            "maxLagSamples": 0,
+            "tailPreserved": true
+          },
+          "movie": {
+            "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render-edited/episode.mp4",
+            "bytes": 3637661,
+            "sha256": "sha256:985cb0f6e2e2684196d92c13930a66ce055746fc0ae891708231181c5d59dde3"
+          },
+          "manifest": {
+            "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render-edited/episode.mp4.native-observations.json",
+            "bytes": 76886,
+            "sha256": "sha256:9aafb5361d4394d4f68e812501bbc132308e2a149ef07c4676b7d5afc5616ba3"
+          },
+          "ndjson": {
+            "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render-edited/episode.mp4.native-observations.000.ndjson",
+            "bytes": 4751183,
+            "sha256": "sha256:2d22bf3d79eb1600392c8ce7fbc156c4c317c561df1b204066f13547b07490b6"
+          },
+          "executionSha256": "sha256:a570bc7384da0b92dd2cd0219b16049da45509c88950e7e0986d5f42a6a19c07",
+          "recipeSourceSha256": "sha256:76157b4405f45350b23fbb5020091277abe9a863684ce99a79da4efeb1780b24",
+          "recipeSha256": "sha256:4f3881d17a457326b718863e9a37f2d548f848b5912e15c838fa9b47bb42765d",
+          "preparedNativeSha256": "sha256:f4e34ade26bcbadba8409e70de07be1cb50aa58ebff583d1d212ababbfa821e0",
+          "timings": {
+            "scope": "monotonic-wall-clock-through-final-check",
+            "prepareWallSeconds": 18.27311629200005,
+            "exportWallSeconds": 220.13516858299997,
+            "checkWallSeconds": 313.858112041,
+            "throughCheckWallSeconds": 552.266413542
+          },
+          "exporterTiming": {
+            "scope": "exporter monotonic wall-clock and synchronous frame submission",
+            "totalWallMs": 183650.35312500014,
+            "encodePathWallMs": 182777.43320800003,
+            "validationWallMs": 211.96020800014958,
+            "frameRenderAverageMs": 258.81652298758087,
+            "frameRenderP95Ms": 284.6999999284744,
+            "frameUploadAverageMs": 2.0416666687219993,
+            "frameUploadP95Ms": 3
+          },
+          "memory": {
+            "process": {
+              "scope": "exporter parent RSS and sampled process-tree RSS; separate from declared managed bytes",
+              "peakParentRssBytes": 566394880,
+              "peakSampledProcessTreeRssBytes": null
+            },
+            "managed": {
+              "scope": "declared-worker-application-bytes",
+              "applicationLimitBytes": 8589934592,
+              "concurrentWorkers": 1,
+              "peakConcurrentWorkerBytes": 561521298
+            }
+          },
+          "humanReview": {
+            "continuousMotion": "pending-human-review",
+            "listening": "pending-human-review"
+          }
+        }
+      ],
+      "cameraComparison": {
+        "name": "installed-baseline-vs-saved-camera-actual-comparison",
+        "comparisonPath": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-camera-edit.comparison.json",
+        "comparisonSha256": "sha256:bcde03fc498696555f4054c6c3f5403254460c7760ab42c40af1d30c3de6e086",
+        "counts": {
+          "affectedFrames": 78,
+          "affectedCameraChanges": 78,
+          "affectedPixelBodyChanges": 78,
+          "otherFrames": 618,
+          "otherCameraChanges": 0,
+          "otherPixelBodyChanges": 0
+        },
+        "artifacts": {
+          "baseline": {
+            "outputSha256": "sha256:82554962620125c69f85f37ec1addb4438793a8b3640b7cb450c5cc85708d110",
+            "sceneSha256": "sha256:5dbf0f4d909dd3d6bed668e462e4252fb74c3de825e560f8d0f5cbe0d9aef5d4",
+            "closure": {
+              "version": "native-observation-closure-1",
+              "manifestPath": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render/episode.mp4.native-observations.json",
+              "manifestSha256": "sha256:625114e5027715406597ae9f74c199d57d89e0371225dda2b5b1c7e233457b6e",
+              "executionSha256": "sha256:4498d32e619aaac81a3a0c8f27bbea8b7961f8d4b37c9a8db6488ecc6604b109",
+              "outputFrames": 696,
+              "passCount": 696,
+              "outputSha256": "sha256:82554962620125c69f85f37ec1addb4438793a8b3640b7cb450c5cc85708d110"
+            }
+          },
+          "edited": {
+            "outputSha256": "sha256:985cb0f6e2e2684196d92c13930a66ce055746fc0ae891708231181c5d59dde3",
+            "sceneSha256": "sha256:025d1286d9ee23cd7e432d6f43e92d03ec943e657bce34e658f3285714de5bbc",
+            "closure": {
+              "version": "native-observation-closure-1",
+              "manifestPath": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render-edited/episode.mp4.native-observations.json",
+              "manifestSha256": "sha256:9aafb5361d4394d4f68e812501bbc132308e2a149ef07c4676b7d5afc5616ba3",
+              "executionSha256": "sha256:a570bc7384da0b92dd2cd0219b16049da45509c88950e7e0986d5f42a6a19c07",
+              "outputFrames": 696,
+              "passCount": 696,
+              "outputSha256": "sha256:985cb0f6e2e2684196d92c13930a66ce055746fc0ae891708231181c5d59dde3"
+            }
+          }
+        },
+        "boundedRetention": {
+          "outputFrames": 696,
+          "admittedScalarInventoryBytes": 1048576,
+          "actualScalarInventoryBytes": 244297,
+          "retainedFullCameraSamples": 2
+        },
+        "comparisonWallSeconds": 68.3110171670001,
+        "scope": "Same installed appearance identity; actual camera and accepted pixel-body effects, not cross-code shader parity",
+        "artifact": {
+          "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-camera-edit.comparison.json",
+          "bytes": 5464,
+          "sha256": "sha256:bcde03fc498696555f4054c6c3f5403254460c7760ab42c40af1d30c3de6e086"
+        }
+      },
+      "movedPackages": [
+        {
+          "name": "installed-native-portable-final-package",
+          "schemaVersion": "mechanism-native-package-result-1",
+          "valid": true,
+          "actualExecutionVerified": true,
+          "movedDirectory": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-delivery-moved",
+          "manifestSha256": "sha256:42d04c9a842e8df5bba6309925149575de36c08cf658c19a76de2848e366a960",
+          "originalObservationBytesPreserved": true,
+          "files": 16,
+          "relocation": {
+            "originalCompositionSourceSha256": "sha256:fdb24fbdf370a021c1e96b9027ebe4d3f0a3886a7ed2e58baf3356f537cbf344",
+            "relocatedCompositionSourceSha256": "sha256:8559fb20976d804071c99c08643bd386e98643cdff7751e61b5a4d6c87f1806e",
+            "compositionSha256": "sha256:d1496dd65aba3f23c15d000346dd1e040d077bb8d2437ea3d03a9958bdb32fa2",
+            "renderResultPath": "evidence/render.result.json",
+            "sceneManifestPath": "evidence/render.scene.json",
+            "observationManifestPath": "evidence/episode.mp4.native-observations.json"
+          },
+          "manifest": {
+            "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-delivery-moved/package.manifest.json",
+            "bytes": 4452,
+            "sha256": "sha256:42d04c9a842e8df5bba6309925149575de36c08cf658c19a76de2848e366a960"
+          }
+        },
+        {
+          "name": "installed-edited-native-portable-final-package",
+          "schemaVersion": "mechanism-native-package-result-1",
+          "valid": true,
+          "actualExecutionVerified": true,
+          "movedDirectory": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-edited-delivery-moved",
+          "currentRecipeSha256": "sha256:4f3881d17a457326b718863e9a37f2d548f848b5912e15c838fa9b47bb42765d",
+          "appearanceCodeSha256": "sha256:3689af2aec4fb9462bdc1362d6f0c9fda270544351c2b8492c2495c3d3627fc3",
+          "manifestSha256": "sha256:9e2d8b583525227f7b7e3bd38f99998959a4c3835aa44a2d59f3f73d96fe32c3",
+          "originalObservationBytesPreserved": true,
+          "files": 16,
+          "relocation": {
+            "originalCompositionSourceSha256": "sha256:76157b4405f45350b23fbb5020091277abe9a863684ce99a79da4efeb1780b24",
+            "relocatedCompositionSourceSha256": "sha256:c89a517f1ef75c4d93bf682988e596780927e6811b06e58aedfb71145f5dddf2",
+            "compositionSha256": "sha256:4f3881d17a457326b718863e9a37f2d548f848b5912e15c838fa9b47bb42765d",
+            "renderResultPath": "evidence/render.result.json",
+            "sceneManifestPath": "evidence/render.scene.json",
+            "observationManifestPath": "evidence/episode.mp4.native-observations.json"
+          },
+          "manifest": {
+            "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-edited-delivery-moved/package.manifest.json",
+            "bytes": 4452,
+            "sha256": "sha256:9e2d8b583525227f7b7e3bd38f99998959a4c3835aa44a2d59f3f73d96fe32c3"
+          }
+        }
+      ],
+      "priorFailedAttemptRecord": "native-installed-consumer-1",
+      "priorLaunchTriageRecords": [
+        "native-audio-path-triage-1",
+        "native-audio-path-triage-2"
+      ],
+      "humanAcceptance": "pending",
+      "noCrossCodeShaderOrPixelParityClaim": true,
+      "scope": "Actual OS-denied installed-js archive execution completes all18 stages: six original source inputs and historical portable evidence remain exact, preview138 has a real observed pass, fresh baseline and saved-camera movies each close all696 frames/current measured quality, and both16-file final packages pass after moving with original observations retained. This closes installed-native software acceptance only; full77/176, encoded glyph review, continuous human playback/listening, milestone/PR and redistribution acceptance remain separate. Parent RSS and declared managed bytes are separately reported; process-tree RSS is unavailable."
+    },
+    "nativeInstalledConsumerRenderAudit": {
+      "failedMethodAttempt1": {
+        "id": "installed-consumer2-render-audit-1",
+        "status": "failed-private-auditor-method",
+        "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+        "report": {
+          "path": "/private/tmp/mechanism-ms1n-installed-consumer2-render-audit.json",
+          "bytes": 3012,
+          "sha256": "sha256:92187edfc0c5c7c059166452d975b542195c031143115a9d295d834940c84724"
+        },
+        "error": {
+          "name": "AssertionError",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'sha256:ecb4facf6a45c8a669dbc5ad46cce133aaace2f7484e7adc0493a299180177ce'\n- 'sha256:d1496dd65aba3f23c15d000346dd1e040d077bb8d2437ea3d03a9958bdb32fa2'\n",
+          "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'sha256:ecb4facf6a45c8a669dbc5ad46cce133aaace2f7484e7adc0493a299180177ce'\n- 'sha256:d1496dd65aba3f23c15d000346dd1e040d077bb8d2437ea3d03a9958bdb32fa2'\n\n    at file:///Users/jjae/Documents/playground/still-shift/[eval1]:26:177"
+        },
+        "cause": "Auditor incorrectly equated canonical raw saved JSON with schema-normalized composition SHA; no artifact failure established.",
+        "correction": "Raw source bytes rehashed independently; normalized recipe identities remain exact across receipts/result/execution. Exact saved document comparison independently proves only the one FOV value changes; no public schema parser invoked.",
+        "scope": "Retained auditor assertion incorrectly equated canonical raw JSON with schema-normalized recipe identity; no product or artifact failure was established. Corrected audit2 keeps raw-byte hashing and recorded normalized identities distinct."
+      },
+      "correctedArtifactAudit2": {
+        "id": "installed-consumer2-render-audit-2",
+        "status": "passed-scoped-artifact-audit",
+        "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+        "report": {
+          "path": "/private/tmp/mechanism-ms1n-installed-consumer2-render-audit-2.json",
+          "bytes": 19180,
+          "sha256": "sha256:5d6aee48d02d4aae9b0119a17c20972971599169f94e4f31df8b6d477661da11"
+        },
+        "markdown": {
+          "path": "/private/tmp/mechanism-ms1n-installed-consumer2-render-audit-2.md",
+          "bytes": 2850,
+          "sha256": "sha256:ca1e9e95ae89ed41fc824e2f38b194f89d75b0cbf7d39a1c179b4c32fefd6219"
+        },
+        "integrity": {
+          "path": "/private/tmp/mechanism-ms1n-installed-consumer2-render-audit-2.integrity.json",
+          "bytes": 7728,
+          "sha256": "sha256:ff9c2f28a7b81e03a0196f11f61c6eb7debb5dfc800ebdd75647785cf3ac646c"
+        },
+        "archiveSha256": "sha256:f41679b1f7c327d2966c992ab27c6173be4fa0acc9fee3fbee2ed47c993dfb64",
+        "appearance": {
+          "runtimeFormat": "installed-js",
+          "sha256": "sha256:3689af2aec4fb9462bdc1362d6f0c9fda270544351c2b8492c2495c3d3627fc3",
+          "firstPartyModules": 332,
+          "externalModules": 79,
+          "threeRuntimeFiles": 4,
+          "actualInstalledFilesRehashed": 415,
+          "actualInstalledBytesRehashed": 5534733
+        },
+        "coverage": {
+          "outputs": 2,
+          "rowsPerOutput": 696,
+          "passesPerOutput": 696,
+          "firstFrame": 0,
+          "lastFrame": 695,
+          "controllers": [
+            {
+              "controller": "mechanism-plate-V8-01-3736f43c644a2e1a",
+              "frames": 78
+            },
+            {
+              "controller": "mechanism-plate-V8-02-23ee53a44523c1e4",
+              "frames": 85
+            },
+            {
+              "controller": "mechanism-plate-V8-03-365e5185a5821217",
+              "frames": 84
+            },
+            {
+              "controller": "mechanism-plate-V8-04-a5f517ea339d6c0c",
+              "frames": 89
+            },
+            {
+              "controller": "mechanism-plate-V8-05-140e631f296c3b52",
+              "frames": 82
+            },
+            {
+              "controller": "mechanism-plate-V8-06-662f4f0ee05dd8ae",
+              "frames": 54
+            },
+            {
+              "controller": "mechanism-plate-V8-07-a1fbfacb389ef192",
+              "frames": 54
+            },
+            {
+              "controller": "mechanism-plate-V8-08-5d61ab33e4ab18fd",
+              "frames": 77
+            },
+            {
+              "controller": "mechanism-plate-V8-09-9fa19f1a89583e1b",
+              "frames": 93
+            }
+          ],
+          "rowByteLimit": 1048576,
+          "maxActualRowBytes": 7175,
+          "scalarInventoryLimit": 1048576,
+          "scalarInventoryBytes": 207455,
+          "scalarInventorySha256": "sha256:d1fea959b9daf930ad661fa72bd3cbd48afeff943223c2b3a61d422c6c5bf9b1",
+          "rawSourceFilesUnchanged": 6
+        },
+        "edit": {
+          "controller": "mechanism-plate-V8-01-3736f43c644a2e1a",
+          "affectedRange": [0, 78],
+          "fovDelta": 1,
+          "counts": {
+            "affectedFrames": 78,
+            "affectedCameraChanges": 78,
+            "affectedPixelBodyChanges": 78,
+            "otherFrames": 618,
+            "otherCameraChanges": 0,
+            "otherPixelBodyChanges": 0
+          },
+          "currentSavedRecipeSha256": "sha256:4f3881d17a457326b718863e9a37f2d548f848b5912e15c838fa9b47bb42765d",
+          "currentSavedSourceSha256": "sha256:76157b4405f45350b23fbb5020091277abe9a863684ce99a79da4efeb1780b24",
+          "recipeRawBytesMatchReceipt": true,
+          "onlySavedDocumentValueChange": "/layers/66/camera/fovDegrees: 35 to 36",
+          "normalizedRecipeIdentitiesAssociatedAcrossReceiptsResultsAndExecution": true,
+          "partsExactAcrossAll696Frames": true,
+          "affectedCameraPoseNearFarAspectAndOtherProjectionEntriesExact": true,
+          "analyticProjectionMaxDeltaInformational": 8.881784197001252e-16,
+          "moviesDiffer": true,
+          "comparisonWallSeconds": 68.3110171670001,
+          "comparisonRssEndpoints": {
+            "scope": "Comparison process RSS endpoints; not a sampled peak",
+            "before": 404996096,
+            "after": 380141568
+          }
+        },
+        "runs": [
+          {
+            "name": "native-baseline",
+            "actualFinalCheck": true,
+            "qualityStatus": "passed",
+            "mechanicalFindings": 0,
+            "overlayFindings": 0,
+            "audioFindings": 0,
+            "physicalProofRecords": 9,
+            "readingHolds": 7,
+            "diagnostics": {
+              "frozen-pixels": 10,
+              "frozen-run": 10,
+              "outside-safe-area": 20,
+              "reading-time": 11
+            },
+            "semantic": {
+              "status": "unassessed",
+              "profile": "legacy",
+              "factualTruth": "unassessed",
+              "renderedGlyphReadability": "requires-encoded-review"
+            },
+            "audio": {
+              "sourceClock": {
+                "sampleRate": 48000,
+                "sampleCount": 1113600,
+                "channels": 2,
+                "authoredSampleCount": 1113600
+              },
+              "decodedClock": {
+                "codec": "aac",
+                "sampleRate": 48000,
+                "channels": 2,
+                "sampleCount": 1114112,
+                "paddingSamples": 512,
+                "paddingAllowanceSamples": 1023,
+                "sourceSha256": "sha256:1f474e3889efe32b5a5ece5bf4f6ba9edfa11eeaa07a2c773fe325bc213a9518",
+                "decodedSha256": "sha256:6b934bc37a1115ceef5bd5597bc324e393c4394e596e679c4592c2179dc32cf1"
+              },
+              "correlation": 0.99939897716988,
+              "maxLagSamples": 0,
+              "tailPreserved": true
+            },
+            "movie": {
+              "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render/episode.mp4",
+              "bytes": 3647073,
+              "sha256": "sha256:82554962620125c69f85f37ec1addb4438793a8b3640b7cb450c5cc85708d110"
+            },
+            "manifest": {
+              "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render/episode.mp4.native-observations.json",
+              "bytes": 76886,
+              "sha256": "sha256:625114e5027715406597ae9f74c199d57d89e0371225dda2b5b1c7e233457b6e"
+            },
+            "ndjson": {
+              "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render/episode.mp4.native-observations.000.ndjson",
+              "bytes": 4751107,
+              "sha256": "sha256:34b3ef12bf80152de294f9c5c3be389aed5a4d87effd1abfe5c7d5252794493f"
+            },
+            "executionSha256": "sha256:4498d32e619aaac81a3a0c8f27bbea8b7961f8d4b37c9a8db6488ecc6604b109",
+            "recipeSourceSha256": "sha256:fdb24fbdf370a021c1e96b9027ebe4d3f0a3886a7ed2e58baf3356f537cbf344",
+            "recipeSha256": "sha256:d1496dd65aba3f23c15d000346dd1e040d077bb8d2437ea3d03a9958bdb32fa2",
+            "preparedNativeSha256": "sha256:f4e34ade26bcbadba8409e70de07be1cb50aa58ebff583d1d212ababbfa821e0",
+            "timings": {
+              "scope": "monotonic-wall-clock-through-final-check",
+              "prepareWallSeconds": 26.396094542000036,
+              "exportWallSeconds": 252.127541083,
+              "checkWallSeconds": 332.061294459,
+              "throughCheckWallSeconds": 610.584959
+            },
+            "exporterTiming": {
+              "scope": "exporter monotonic wall-clock and synchronous frame submission",
+              "totalWallMs": 211537.94525000005,
+              "encodePathWallMs": 209930.19799999997,
+              "validationWallMs": 227.61270800000057,
+              "frameRenderAverageMs": 295.83362068749705,
+              "frameRenderP95Ms": 428.60000002384186,
+              "frameUploadAverageMs": 3.7295977026224136,
+              "frameUploadP95Ms": 10.300000071525574
+            },
+            "memory": {
+              "process": {
+                "scope": "exporter parent RSS and sampled process-tree RSS; separate from declared managed bytes",
+                "peakParentRssBytes": 511885312,
+                "peakSampledProcessTreeRssBytes": null
+              },
+              "managed": {
+                "scope": "declared-worker-application-bytes",
+                "applicationLimitBytes": 8589934592,
+                "concurrentWorkers": 1,
+                "peakConcurrentWorkerBytes": 561521298
+              }
+            },
+            "humanReview": {
+              "continuousMotion": "pending-human-review",
+              "listening": "pending-human-review"
+            }
+          },
+          {
+            "name": "native-edited",
+            "actualFinalCheck": true,
+            "qualityStatus": "passed",
+            "mechanicalFindings": 0,
+            "overlayFindings": 0,
+            "audioFindings": 0,
+            "physicalProofRecords": 9,
+            "readingHolds": 7,
+            "diagnostics": {
+              "frozen-pixels": 10,
+              "frozen-run": 10,
+              "outside-safe-area": 20,
+              "reading-time": 11
+            },
+            "semantic": {
+              "status": "unassessed",
+              "profile": "legacy",
+              "factualTruth": "unassessed",
+              "renderedGlyphReadability": "requires-encoded-review"
+            },
+            "audio": {
+              "sourceClock": {
+                "sampleRate": 48000,
+                "sampleCount": 1113600,
+                "channels": 2,
+                "authoredSampleCount": 1113600
+              },
+              "decodedClock": {
+                "codec": "aac",
+                "sampleRate": 48000,
+                "channels": 2,
+                "sampleCount": 1114112,
+                "paddingSamples": 512,
+                "paddingAllowanceSamples": 1023,
+                "sourceSha256": "sha256:1f474e3889efe32b5a5ece5bf4f6ba9edfa11eeaa07a2c773fe325bc213a9518",
+                "decodedSha256": "sha256:6b934bc37a1115ceef5bd5597bc324e393c4394e596e679c4592c2179dc32cf1"
+              },
+              "correlation": 0.99939897716988,
+              "maxLagSamples": 0,
+              "tailPreserved": true
+            },
+            "movie": {
+              "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render-edited/episode.mp4",
+              "bytes": 3637661,
+              "sha256": "sha256:985cb0f6e2e2684196d92c13930a66ce055746fc0ae891708231181c5d59dde3"
+            },
+            "manifest": {
+              "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render-edited/episode.mp4.native-observations.json",
+              "bytes": 76886,
+              "sha256": "sha256:9aafb5361d4394d4f68e812501bbc132308e2a149ef07c4676b7d5afc5616ba3"
+            },
+            "ndjson": {
+              "path": "/private/tmp/still-shift-ms1n-installed-consumer-2/native-render-edited/episode.mp4.native-observations.000.ndjson",
+              "bytes": 4751183,
+              "sha256": "sha256:2d22bf3d79eb1600392c8ce7fbc156c4c317c561df1b204066f13547b07490b6"
+            },
+            "executionSha256": "sha256:a570bc7384da0b92dd2cd0219b16049da45509c88950e7e0986d5f42a6a19c07",
+            "recipeSourceSha256": "sha256:76157b4405f45350b23fbb5020091277abe9a863684ce99a79da4efeb1780b24",
+            "recipeSha256": "sha256:4f3881d17a457326b718863e9a37f2d548f848b5912e15c838fa9b47bb42765d",
+            "preparedNativeSha256": "sha256:f4e34ade26bcbadba8409e70de07be1cb50aa58ebff583d1d212ababbfa821e0",
+            "timings": {
+              "scope": "monotonic-wall-clock-through-final-check",
+              "prepareWallSeconds": 18.27311629200005,
+              "exportWallSeconds": 220.13516858299997,
+              "checkWallSeconds": 313.858112041,
+              "throughCheckWallSeconds": 552.266413542
+            },
+            "exporterTiming": {
+              "scope": "exporter monotonic wall-clock and synchronous frame submission",
+              "totalWallMs": 183650.35312500014,
+              "encodePathWallMs": 182777.43320800003,
+              "validationWallMs": 211.96020800014958,
+              "frameRenderAverageMs": 258.81652298758087,
+              "frameRenderP95Ms": 284.6999999284744,
+              "frameUploadAverageMs": 2.0416666687219993,
+              "frameUploadP95Ms": 3
+            },
+            "memory": {
+              "process": {
+                "scope": "exporter parent RSS and sampled process-tree RSS; separate from declared managed bytes",
+                "peakParentRssBytes": 566394880,
+                "peakSampledProcessTreeRssBytes": null
+              },
+              "managed": {
+                "scope": "declared-worker-application-bytes",
+                "applicationLimitBytes": 8589934592,
+                "concurrentWorkers": 1,
+                "peakConcurrentWorkerBytes": 561521298
+              }
+            },
+            "humanReview": {
+              "continuousMotion": "pending-human-review",
+              "listening": "pending-human-review"
+            }
+          }
+        ],
+        "priorAuditorFailureRecord": "installed-consumer2-render-audit-1",
+        "actualAuditInputRehashes": 29,
+        "limits": [
+          "Counts and rehashes retained authenticated observation/body-hash evidence; no public mechanical replay or independent movie/PNG decoding.",
+          "Installed identity and same-installed edit effects only; no source-TypeScript versus installed shader/pixel parity claim.",
+          "Raw composition byte SHA is independently rehashed; normalized recipe SHA is associated through recorded receipts/results/execution, not independently parsed through public schemas.",
+          "Declared managed bytes differ from actual parent RSS; process-tree RSS unavailable and comparison RSS endpoints are not peaks.",
+          "Package phases/full milestone gates remain outside this review; no all-consumer/milestone pass.",
+          "Human continuous playback/listening and encoded glyph/material appearance remain pending; E01 legacy semantic/factual assessment remains unassessed."
+        ],
+        "scope": "Independent standard-library-only artifact reads, bounded streaming and hashes. No public APIs, rendering, build/test/install, repository writes or active package-stage reads."
+      }
+    },
+    "priorPortableInstalledExecutionBeforeConsumer2": {
+      "status": "pending-full-native-consumer2",
+      "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+      "consumer": "/private/tmp/still-shift-ms1n-installed-consumer-2",
+      "archiveSha256": "sha256:f41679b1f7c327d2966c992ab27c6173be4fa0acc9fee3fbee2ed47c993dfb64",
+      "setupRecord": "native-installed-setup-2",
+      "priorFailedAttemptRecord": "native-installed-consumer-1",
+      "scope": "Ordinary package26 and source audit pass; actual OS-denied full native E01 consumer2 proof remains pending. Portable4 retains its own83/original342 provenance."
+    },
+    "currentWorkingSourceInventory": {
+      "path": "/private/tmp/still-shift-ms1n-cancellation-repair-working-inputs-2.json",
+      "bytes": 397022,
+      "sha256": "sha256:b93155339a0d103fda6d7e51dc384df327ad43bca483d0c5723e7ba9984ab1a2",
+      "version": "ms1n-source-input-inventory-2",
+      "sourceCommit": "1949ae2f194edc9b936818836ac13778db75324a",
+      "sourceCommitMeaning": "Base HEAD only; all four uncommitted source/test file identities are represented by selected byte hashes.",
+      "sourceState": "uncommitted-expanded-four-file-package-cancellation-repair",
+      "files": 2328,
+      "inputBytes": 117501326,
+      "changedOrAddedSelectedInputs": 4,
+      "unchangedSelectedInputs": 2324,
+      "priorInventoryRecord": "priorCompleteSourceInputInventory11"
+    },
+    "nativePackageCancellationRepair": {
+      "status": "expanded-focused-and-fast-verified-uncommitted",
+      "baseHead": "1949ae2f194edc9b936818836ac13778db75324a",
+      "initialSourceInventory": {
+        "path": "/private/tmp/still-shift-ms1n-cancellation-repair-working-inputs-1.json",
+        "bytes": 396838,
+        "sha256": "sha256:ca3b40e887fc9520e47f8efc4ce1a118c12a1ac752651950ba183cbe7530ca43",
+        "version": "ms1n-source-input-inventory-2",
+        "sourceCommit": "1949ae2f194edc9b936818836ac13778db75324a",
+        "sourceCommitMeaning": "Base HEAD only; initial two-file uncommitted state is represented by selected input byte hashes.",
+        "sourceState": "historical-initial-two-file-cancellation-repair-snapshot",
+        "files": 2327,
+        "inputBytes": 117500075,
+        "changedSelectedInputs": 2,
+        "unchangedSelectedInputs": 2325,
+        "priorInventoryRecord": "currentCompleteSourceInputInventory",
+        "supersededCurrentState": "Expanded direct-native public-entrypoint repair has pending final inventory/verification."
+      },
+      "initialSourceDelta": [
+        {
+          "path": "packages/animation-engine/src/mechanism/package.ts",
+          "before": {
+            "bytes": 41677,
+            "sha256": "c803cf0ed9828b9babb163fb86072ee38d5d7236dac58ddc71c687ef6eeb4f1f"
+          },
+          "working": {
+            "bytes": 42933,
+            "sha256": "73acda444d04485b4e7b2c2e44d73136fb7ea4d89f8a02596a04b371628db20b"
+          }
+        },
+        {
+          "path": "tests/runtime/mechanism-package.test.ts",
+          "before": {
+            "bytes": 25270,
+            "sha256": "a8751681df7c87b9d42d16f8f5298aed9f358abc13aa88f391ac846ef40160f9"
+          },
+          "working": {
+            "bytes": 25769,
+            "sha256": "67f035cf0203a766ded05d5f34ee08fb3eee3318f044eb45980e0ad0430498a9"
+          }
+        }
+      ],
+      "initialInputByteDelta": 1755,
+      "confirmedCause": "Initial MS1N route dispatch and pre-aborted signal check execute outside the previous bridge-only error-normalizing catch, so a raw AbortSignal reason escapes the public package API.",
+      "initialImplementation": "Public abort-normalizing packageMechanismEpisode wrapper covers both route implementations; private route implementation is preserved. Existing located cancellation errors retain evidence, and initial cancellation normalization preserves original cause through ABORT_ERR.",
+      "initialFocusedRuns": [
+        {
+          "id": "package-cancellation-repair-focused-1",
+          "status": "passed-method-qualified-unpinned",
+          "rootTerminalExitCode": 0,
+          "baseHead": "1949ae2f194edc9b936818836ac13778db75324a",
+          "sourceState": "historical initial uncommitted two-file snapshot; expanded public-entrypoint repair is pending",
+          "node": "24-shell-default",
+          "acceptedPinnedToolchainEvidence": false,
+          "log": {
+            "path": "/private/tmp/still-shift-ms1n-package-cancellation-repair-1.log",
+            "bytes": 3658,
+            "sha256": "sha256:95b0f502583df69c160129e1cf0d7279300a33686111528672b9c07e6e5ca5fc"
+          },
+          "testFiles": 2,
+          "tests": 27,
+          "wallSeconds": 22.3,
+          "coverage": {
+            "routes": ["bridge", "native3d"],
+            "stages": ["pre-aborted", "during-copy", "before-publication"],
+            "guards": [
+              "public AnimationEngineError with located mechanism-package-cancelled",
+              "ABORT_ERR cause chain retains original signal reason",
+              "no published destination/no remaining lock",
+              "mid-copy/pre-publication retained cancellation evidence",
+              "fresh retry succeeds"
+            ]
+          },
+          "scope": "Actual root-run focused runtime cases. First run uses shell-default Node24 and remains method-qualified; second pinnedNode22 run supplies acceptance. No archive/current installed/full77/176 closure is claimed."
+        },
+        {
+          "id": "package-cancellation-repair-focused-2",
+          "status": "passed",
+          "rootTerminalExitCode": 0,
+          "baseHead": "1949ae2f194edc9b936818836ac13778db75324a",
+          "sourceState": "historical initial uncommitted two-file snapshot; expanded public-entrypoint repair is pending",
+          "node": "22.23.1",
+          "acceptedPinnedToolchainEvidence": true,
+          "log": {
+            "path": "/private/tmp/still-shift-ms1n-package-cancellation-repair-2.log",
+            "bytes": 3809,
+            "sha256": "sha256:f04585b5060d7d9ca6e89ba5648a1812cae2a22ababf5bba200a6ce67141845e"
+          },
+          "testFiles": 2,
+          "tests": 27,
+          "wallSeconds": 26.38,
+          "coverage": {
+            "routes": ["bridge", "native3d"],
+            "stages": ["pre-aborted", "during-copy", "before-publication"],
+            "guards": [
+              "public AnimationEngineError with located mechanism-package-cancelled",
+              "ABORT_ERR cause chain retains original signal reason",
+              "no published destination/no remaining lock",
+              "mid-copy/pre-publication retained cancellation evidence",
+              "fresh retry succeeds"
+            ]
+          },
+          "scope": "Actual root-run focused runtime cases. First run uses shell-default Node24 and remains method-qualified; second pinnedNode22 run supplies acceptance. No archive/current installed/full77/176 closure is claimed."
+        }
+      ],
+      "initialFastGate": {
+        "id": "check-fast-12",
+        "status": "passed",
+        "node": "22.23.1",
+        "rootTerminalExitCode": 0,
+        "baseHead": "1949ae2f194edc9b936818836ac13778db75324a",
+        "sourceState": "historical initial uncommitted two-file snapshot; expanded public-entrypoint repair is pending",
+        "command": "pnpm check:fast",
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-check-fast-12.log",
+          "bytes": 31213,
+          "sha256": "sha256:0ac48806b98b188d4f0b8bde207ed5269b6fb4590d7d18ad32c425add095d3ea"
+        },
+        "unitTestFiles": 381,
+        "unitTests": 3915,
+        "unitWallSeconds": 45.63,
+        "scope": "Root-run pinned development gate passes actual schema/appearance identity, boundaries, maintained formatting/lint, noemit build and all3915 units on uncommitted repair. Fullgate1 failure stays retained; commit/new archive/affected installed and full77/176 proof refresh remain pending."
+      },
+      "expandedRepair": {
+        "status": "focused-and-fast-verified-uncommitted",
+        "sourceInventory": {
+          "path": "/private/tmp/still-shift-ms1n-cancellation-repair-working-inputs-2.json",
+          "bytes": 397022,
+          "sha256": "sha256:b93155339a0d103fda6d7e51dc384df327ad43bca483d0c5723e7ba9984ab1a2",
+          "version": "ms1n-source-input-inventory-2",
+          "sourceCommit": "1949ae2f194edc9b936818836ac13778db75324a",
+          "sourceCommitMeaning": "Base HEAD only; all four uncommitted source/test file identities are represented by selected byte hashes.",
+          "sourceState": "uncommitted-expanded-four-file-package-cancellation-repair",
+          "files": 2328,
+          "inputBytes": 117501326,
+          "changedOrAddedSelectedInputs": 4,
+          "unchangedSelectedInputs": 2324,
+          "priorInventoryRecord": "priorCompleteSourceInputInventory11"
+        },
+        "sourceDelta": [
+          {
+            "path": "packages/animation-engine/src/mechanism/native-package.ts",
+            "before": {
+              "bytes": 23340,
+              "sha256": "11ffac4aca5c775965aef09c00b9deed187968d7233d502d19703dac3add6ee8"
+            },
+            "working": {
+              "bytes": 23731,
+              "sha256": "b966772d0c4a6e3b886ef760ccc9119d0deeead183ce08fec7234d2c860d21a2"
+            }
+          },
+          {
+            "path": "packages/animation-engine/src/mechanism/package-cancellation.ts",
+            "before": null,
+            "working": {
+              "bytes": 1312,
+              "sha256": "4e814af21e5c9e9824f6ceda990be0aa02ce4b5272187e6bfb605a85b3f5dfa9"
+            }
+          },
+          {
+            "path": "packages/animation-engine/src/mechanism/package.ts",
+            "before": {
+              "bytes": 41677,
+              "sha256": "c803cf0ed9828b9babb163fb86072ee38d5d7236dac58ddc71c687ef6eeb4f1f"
+            },
+            "working": {
+              "bytes": 42017,
+              "sha256": "3fe5f6ec7b2d56de229aa465fc42f77a4bd2f2130dba00f693265ccbe909dd0f"
+            }
+          },
+          {
+            "path": "tests/runtime/mechanism-package.test.ts",
+            "before": {
+              "bytes": 25270,
+              "sha256": "a8751681df7c87b9d42d16f8f5298aed9f358abc13aa88f391ac846ef40160f9"
+            },
+            "working": {
+              "bytes": 26233,
+              "sha256": "23ae67a61c864c2cf7592fd518d862eeae4e1b715761e1452923a5f2703aa681"
+            }
+          }
+        ],
+        "inputByteDeltaFromInventory11": 3006,
+        "newPrivateHelper": "packages/animation-engine/src/mechanism/package-cancellation.ts",
+        "helperPublicBarrelExport": false,
+        "implementation": "Shared private abort-normalization helper wraps both packageMechanismEpisode and directly exported packageNativeMechanismEpisode. Private route/native writers remain intact; already located cancellation diagnostics and retained attempts are preserved.",
+        "focusedRun": {
+          "id": "package-cancellation-repair-focused-3",
+          "status": "passed",
+          "rootTerminalExitCode": 0,
+          "node": "22.23.1",
+          "baseHead": "1949ae2f194edc9b936818836ac13778db75324a",
+          "sourceState": "uncommitted expanded four-file public cancellation repair",
+          "log": {
+            "path": "/private/tmp/still-shift-ms1n-package-cancellation-repair-3.log",
+            "bytes": 4462,
+            "sha256": "sha256:551303339878d2b227be23af25cfbbd6fbe1458683b1da05aedbbd339cdcd5a5"
+          },
+          "testFiles": 2,
+          "tests": 30,
+          "wallSeconds": 32.32,
+          "workingInventory": {
+            "path": "/private/tmp/still-shift-ms1n-cancellation-repair-working-inputs-2.json",
+            "bytes": 397022,
+            "sha256": "sha256:b93155339a0d103fda6d7e51dc384df327ad43bca483d0c5723e7ba9984ab1a2"
+          },
+          "coverage": {
+            "publicEntryPaths": [
+              "packageMechanismEpisode bridge",
+              "packageMechanismEpisode native3d",
+              "packageNativeMechanismEpisode direct"
+            ],
+            "stages": ["pre-aborted", "during-copy", "before-publication"],
+            "cancellationCases": 9,
+            "guards": [
+              "located AnimationEngineError mechanism-package-cancelled",
+              "ABORT_ERR retains exact original signal reason",
+              "no published output/no remaining lock",
+              "retained evidence after partial work",
+              "fresh retry succeeds"
+            ]
+          },
+          "scope": "Actual root pinnedNode22 focused run verifies all three public entry paths across three cancellation stages. Private normalization helper has no public barrel export. New archive/current installed/full77 closure remains pending."
+        },
+        "fastGate": {
+          "id": "check-fast-13",
+          "status": "passed",
+          "rootTerminalExitCode": 0,
+          "node": "22.23.1",
+          "baseHead": "1949ae2f194edc9b936818836ac13778db75324a",
+          "sourceState": "uncommitted expanded four-file public cancellation repair",
+          "command": "pnpm check:fast",
+          "log": {
+            "path": "/private/tmp/still-shift-ms1n-check-fast-13.log",
+            "bytes": 31458,
+            "sha256": "sha256:a55f40f64a5ff5adc442aab07280f2f578b717652db7078540f2ad9ad2f72d45"
+          },
+          "unitTestFiles": 381,
+          "unitTests": 3915,
+          "unitWallSeconds": 50.0,
+          "workingInventory": {
+            "path": "/private/tmp/still-shift-ms1n-cancellation-repair-working-inputs-2.json",
+            "bytes": 397022,
+            "sha256": "sha256:b93155339a0d103fda6d7e51dc384df327ad43bca483d0c5723e7ba9984ab1a2"
+          },
+          "scope": "Actual root-run pinned development gate passes schema/appearance closure, package boundaries, maintained formatting/lint, noemit build and all3915 units on expanded source. Initial focused1/2 and fast12 retain their own exact two-file state; failed fullgate1 stays retained. Commit/fresh archive/affected installed/full77 verification remains pending."
+        },
+        "coverage": "All three public entry paths by three cancellation stages; exact reason/ABORT_ERR, retained/no-output/no-lock/fresh retry guards.",
+        "remaining": [
+          "reviewed repair commit and final committed source inventory",
+          "new archive/current affected installed checks",
+          "ordinary full77/176 gate"
+        ]
+      },
+      "remaining": [
+        "reviewed repair commit and final committed source inventory",
+        "new archive/current affected installed checks",
+        "ordinary full77/176 gate"
+      ],
+      "scope": "Expanded four-file public cancellation contract repair verified on explicit uncommitted snapshot only. Initial two-file focus/fast evidence and source81 archive/consumer2/source1949 fullgate1 records remain exact historical identities; current archive/installed/full77 acceptance awaits corresponding refresh.",
+      "priorExpandedRepairPendingRecord": {
+        "status": "pending-source-stabilization-and-verification",
+        "requirement": "Directly exported native package writer needs the same public abort contract; shared private helper/writer wrapper and direct-native three-stage regression coverage are being added.",
+        "owners": "B owns native writer/private helper; root owns public route wrapper/tests.",
+        "requiredNextEvidence": [
+          "pinned focused3",
+          "fast13",
+          "final expanded-source inventory"
+        ],
+        "scope": "Initial focused2/fast12 do not establish expanded-source acceptance."
+      },
+      "currentArchiveAcceptance": {
+        "status": "pending-for-expanded-repaired-source",
+        "historicalArchiveRecord": "test-package-2",
+        "historicalArchiveSourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+        "historicalInstalledRecord": "native-installed-consumer-2",
+        "scope": "Archivef416/consumer2 are verified source81 evidence, not the current four-file repaired archive."
+      }
+    },
+    "priorCompleteSourceInputInventory11": {
+      "path": "/private/tmp/still-shift-ms1n-implementation-inputs-11.json",
+      "bytes": 396838,
+      "sha256": "sha256:5caeb8ec55a4da4fa09b0972bced0fc7dff37b472b6d1566e07f494fcd37e7bf",
+      "version": "ms1n-source-input-inventory-2",
+      "sourceCommit": "1949ae2f194edc9b936818836ac13778db75324a",
+      "files": 2327,
+      "inputBytes": 117498320,
+      "inputRecordsByteIdentity": "All selected input records deep-equal inventory10 at81; inventory11 sourceCommit reflects docs-only1949.",
+      "priorInventoryRecord": "priorCompleteSourceInputInventory10",
+      "status": "historical-before-cancellation-repair",
+      "qualification": "Inventory11 binds the held fullgate1 inputs, not current uncommitted cancellation repair bytes."
+    },
+    "packageCancellationBoundaryImpact": {
+      "id": "package-cancellation-impact-1",
+      "status": "passed-scoped-independent-source-impact-review",
+      "report": {
+        "path": "/private/tmp/mechanism-ms1n-package-cancellation-impact-1.json",
+        "bytes": 8406,
+        "sha256": "sha256:b1a0e688aa334694f99b46c45ce70fb143bea75f488cb37642950261a47475ce"
+      },
+      "markdown": {
+        "path": "/private/tmp/mechanism-ms1n-package-cancellation-impact-1.md",
+        "bytes": 2540,
+        "sha256": "sha256:2c4abd9c188f92c67501289b2a5ffbaa6e0d17d90070a5aad6321b1a6717b80a"
+      },
+      "integrity": {
+        "path": "/private/tmp/mechanism-ms1n-package-cancellation-impact-1.integrity.json",
+        "bytes": 1711,
+        "sha256": "sha256:ea058c699aaf8c6105856e4097bc4e1b138857f55a8e2b503e82e9c026e47c5d"
+      },
+      "workingInventory": {
+        "path": "/private/tmp/still-shift-ms1n-cancellation-repair-working-inputs-2.json",
+        "bytes": 397022,
+        "sha256": "sha256:b93155339a0d103fda6d7e51dc384df327ad43bca483d0c5723e7ba9984ab1a2"
+      },
+      "changedInputPaths": [
+        "packages/animation-engine/src/mechanism/package.ts",
+        "packages/animation-engine/src/mechanism/native-package.ts",
+        "packages/animation-engine/src/mechanism/package-cancellation.ts",
+        "tests/runtime/mechanism-package.test.ts"
+      ],
+      "unchangedExistingInputs": 2324,
+      "appearanceModulesUnchanged": 415,
+      "scope": "Read/hash-only review qualifies the four-file cancellation boundary repair; both original successful writer bodies, 415 source appearance files and six original E01 inputs remain exact. Old342/source81 runs keep their actual execution identities. Refresh the archive and clean installed cancellation/successful portable package+move+closure, then full77/176. This packaging-only change does not itself require repeating 696 unchanged GPU frames. No tests/build/browser/GPU or repository edits by auditor."
     }
   },
   "humanContinuousPlaybackListeningAndCreativeAcceptance": "pending",
   "publication": "not-requested",
   "limits": [
-    "MS1N remains in progress. Held342 full3 original native E01 execution/QA, two 696-frame closures, nine parity checks and bridge4 fresh 696 exact preservation pass. Hardware state agrees; cross-driver pixels/human appearance remain separate. Preview5 passes at83 without explaining retained readiness failures. Current81 packaging repair passes 26 ordinary installed checks and exact 1,804-member source audit; archive1/audit1/consumer1 failures stay retained. Consumer1 PATH lacked FFprobe; same-profile exact-audio triage passes after Homebrew admission. Consumer2 setup passes, but full installed native proof and all 77 groups/176 unchanged baselines remain pending. Encoded/human/owner/publication acceptance remains separate.",
+    "MS1N remains in progress. Held342 full3 original native E01 execution/QA, two696-frame closures, nine parity checks and bridge4 fresh696 exact preservation pass. Hardware state agrees; cross-driver pixels/human appearance remain separate. Preview5 passes at83 without explaining retained readiness failures. Current81 packaging repair passes26 ordinary installed checks and exact1,804-member source audit; actual consumer2 passes all18 OS-denied installed-native stages, both696-frame current checks and both moved16-file packages. Its saved+1FOV changes exactly78 actual cameras/body hashes while618 stay exact. Archive1/audit1/consumer1/triage1 and independent auditor1 method failure remain retained. Docs-only1949 inventory11 exactly preserves inventory10 selected inputs. Root ordinary all77/176 gate exits1 at runtime: all3915 units pass, runtime169/170 passes, one required group completes and75 suffix groups/benchmark/176 baselines are not reached. Early route dispatch outside bridge catch is confirmed. Initial two-file snapshot passes pinned27 focused cases and fast12/all3915 units (inventory2,327/117,500,075B); expanded four-file public route/direct-native writer/private helper/tests repair passes pinnedfocused3 all30 cases and fast13 all3915 units on inventory2 (2,328 inputs/117,501,326B), still uncommitted. Initial inventory1 and historical11 do not represent expanded bytes. Commit/new archive/full77 verification remain pending; milestone/PR, encoded/human/owner/publication acceptance remains pending and separate. Fresh installed process-tree RSS is unavailable; parent RSS and declared managed memory are distinct.",
     "Exact MS1 scene/geometry/rig/font/audio source identities must be preserved; static overrides receive separate effective identities.",
     "One native world per qualified scope, opaque/hard-mask only, actual four-sample HDR/depth support, initial export one worker.",
     "Customer source media remains outside Git; public redistribution remains unestablished.",
