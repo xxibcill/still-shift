@@ -4,3 +4,8 @@ export type { MechanismMatrix } from "./matrix.ts";
 export * from "./types.ts";
 export { canonicalMechanismJson } from "./canonical.ts";
 export { MechanismFrameResultSchema } from "@still-shift/scene-contract";
+export * from "./types-v2.ts";
+export {
+  prepareMechanismRigTracksV2,
+  evaluateMechanismRigTracksV2,
+} from "./rig-tracks-v2.ts";

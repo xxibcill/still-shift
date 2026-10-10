@@ -51,7 +51,8 @@ still hold before relying on them.
   gate (3,928 units / 383 files). Earlier stale generated closure and optional-type
   build failures are retained with their repairs. Scene2/frame2 declarations pass
   12 focused checks, build and fresh fast2 (3,940 units / 385 files), after a retained
-  formatter failure. Deterministic pure rig/shape evaluation is next; dynamic observations, three packs, import/camera/label/cue, scoped
+  formatter failure. Pure rig tracks pass 12 focused checks, build and fast1
+  (3,952 units / 386 files). Part poses and closed shape evaluation are next; dynamic observations, three packs, import/camera/label/cue, scoped
   typography and the full milestone gate remain required. Pilot support remains
   zero; MS3 has not started. [MS2 results](./mechanism-shorts-ms2-results.json),
   [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
@@ -212,6 +213,18 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — Commit deterministic reusable rig tracks
+
+- **Branch / source:** `codex/mechanism-ms2`, scene/frame checkpoint `f7659740`.
+- **Done:** full-track hard stops, writer conflicts, return stops/continuity,
+  illegal ratchet reverse intervals and immutable history-independent sampling.
+- **Results:** 12 focused checks, build and full fast1 pass (3,952 tests / 386 files,
+  42.36s units); held source inventory is unchanged. No track assertion was weakened.
+- **Next / limits:** apply scalars to part poses, sample closed shapes and validate
+  their fixed topology; native draw/visibility/observation integration follows.
+  Three packs and all remaining MS2 acceptance remain required before its PR.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-11 — Commit scene2 and frame2 contracts
 

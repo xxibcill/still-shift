@@ -2,7 +2,7 @@
   "schemaVersion": "mechanism-shorts-ms2-results-1",
   "milestone": "MS2",
   "date": "2026-10-11",
-  "status": "in-progress-rig-evaluation",
+  "status": "in-progress-posed-shape-evaluation",
   "branch": "codex/mechanism-ms2",
   "baseMain": "3fab0162c51ca3b29fcefc2ecdbda0e475f985c9",
   "nativePrerequisite": {
@@ -244,6 +244,91 @@
         "sha256": "sha256:1cff775245bbe984d1e0579956dbebdd0eb2f890d1bb7ae2f11a6272108fb133"
       },
       "scope": "Actual complete fast gate on unchanged working inputs after formatter repair. Earlier failed fast1 and independent focused12/build pass retained. Scene/frame declarations only; no evaluator/native draw/pack/export acceptance."
+    },
+    {
+      "id": "rig-track-identity-generate-1",
+      "status": "passed-unchanged-membership",
+      "actualRootSession": 59240,
+      "actualExitCode": 0,
+      "command": "pnpm native3d:identity:generate",
+      "firstPartyModules": 338,
+      "externalRuntimeModules": 79,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-rig-track-identity-generate-1.log",
+        "bytes": 260,
+        "sha256": "sha256:9182224367102e056275abb1bc36502715798c6a1df24f44e7c5d11d5c1d2141"
+      },
+      "scope": "New standalone pure rig modules are not yet reachable from the native browser path. Normal generation leaves current descriptor membership unchanged; integration is still required."
+    },
+    {
+      "id": "rig-track-focused-1",
+      "status": "passed",
+      "actualRootSession": 70210,
+      "actualExitCode": 0,
+      "sourceCheckpoint": "f7659740611415ea88b78f4f123721bb5ef83cd4",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-rig-track-inputs-1.json",
+        "bytes": 401079,
+        "sha256": "sha256:b7e5f9928d3769c207aa0edc48c49c95d759d5e498a797ee8f8d0ca169dd2d5e"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "command": "pnpm exec vitest run tests/unit/mechanism-v2-rig-tracks.test.ts --maxWorkers=2",
+      "tests": 12,
+      "files": 1,
+      "reportedSeconds": 0.57,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-rig-track-focused-1.log",
+        "bytes": 318,
+        "sha256": "sha256:5c0b43333a8e7206cfef93fbfe0c52a06fc75ce6ff18853f52603974eaeca2bf"
+      },
+      "scope": "Pure scalar limits/writer/transition/return-stop/continuity/reverse-interval and immutable fractional/reverse/random seek checks. No part poses, shape generation, GPU observation or render acceptance."
+    },
+    {
+      "id": "rig-track-build-1",
+      "status": "passed",
+      "actualRootSession": 77083,
+      "actualExitCode": 0,
+      "sourceCheckpoint": "f7659740611415ea88b78f4f123721bb5ef83cd4",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-rig-track-inputs-1.json",
+        "bytes": 401079,
+        "sha256": "sha256:b7e5f9928d3769c207aa0edc48c49c95d759d5e498a797ee8f8d0ca169dd2d5e"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "command": "pnpm build",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-rig-track-build-1.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      },
+      "scope": "Actual pinned TypeScript build on unchanged pure rig-track working inputs; full fast next."
+    },
+    {
+      "id": "rig-track-fast-1",
+      "status": "passed",
+      "actualRootSession": 56581,
+      "actualExitCode": 0,
+      "terminalObservedAtUTC": "2026-10-10T17:38:45Z",
+      "sourceCheckpoint": "f7659740611415ea88b78f4f123721bb5ef83cd4",
+      "sourceState": "working-pure-rig-track-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-rig-track-inputs-1.json",
+        "bytes": 401079,
+        "sha256": "sha256:b7e5f9928d3769c207aa0edc48c49c95d759d5e498a797ee8f8d0ca169dd2d5e"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "command": "pnpm check:fast",
+      "node": "22.23.1",
+      "pnpm": "10.29.3",
+      "unitTests": 3952,
+      "unitFiles": 386,
+      "unitReportedSeconds": 42.36,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-rig-track-fast-1.log",
+        "bytes": 31432,
+        "sha256": "sha256:169b18b62815e255ed65d5b9b40d597c992c7e7e23d2f8834f592c1b9eef1f58"
+      },
+      "scope": "Actual complete fast gate on unchanged pure scalar-track inputs. No part poses, shape generation, GPU observations, reusable pack, export or pilot acceptance."
     }
   ],
   "implementation": {
@@ -251,7 +336,8 @@
     "runtimeSupport": "not-implemented",
     "supportedPacks": [],
     "pilotSupportedEpisodes": 0,
-    "secondSlice": "Completed strict scene2/frame2 declarations, dependency/ownership and generated-landmark checks, aggregate changing geometry budgets and pack references. Focused12, TypeScript build and fresh fast2 pass (3940 units/385 files); failed formatting attempt retained. Pure evaluation and integration remain required."
+    "secondSlice": "Completed strict scene2/frame2 declarations, dependency/ownership and generated-landmark checks, aggregate changing geometry budgets and pack references. Focused12, TypeScript build and fresh fast2 pass (3940 units/385 files); failed formatting attempt retained. Pure evaluation and integration remain required.",
+    "thirdSlice": "Completed pure whole-track validation and deterministic scalar sampling. Focused12, build and fresh fast1 pass (3952 units/386 files); range/writer/return-stop/continuity, illegal ratchet reverse intervals and random seeks verified. Part poses, closed shape generation and native integration remain next."
   },
   "limits": [
     "No scene2/frame2/evaluator, dynamic GPU observations, pack/import/camera/label/cue or expanded typography support is claimed by standalone contracts.",
