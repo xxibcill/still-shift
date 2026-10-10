@@ -17,19 +17,36 @@ export type LoadedFont = {
   style?: string;
   bytes?: ArrayBuffer;
   metrics?: FontMetrics;
+  identity?: FontIdentity;
+  fontDiagnostics?: FontValidationDiagnostic[];
 };
 import { readFontMetrics, type FontMetrics } from "./font-metrics.ts";
 import { resolvedTextStyle, styleFontKey } from "./typography-style.ts";
 import type { TextStyle } from "../../scene-contract/src/typography.ts";
+import {
+  inspectFontText,
+  readFontIdentity,
+  type FontIdentity,
+  type FontDeclaration,
+  type FontValidationDiagnostic,
+  type FontValidationOptions,
+} from "./font-identity.ts";
+import { collectFontTextRuns, type FontCopyScene } from "./font-copy.ts";
+import { PassageError, passageDiagnostics } from "./passage-diagnostics.ts";
 
 export async function loadPreparedFonts(
   scene: Pick<PreparedScene, "fonts"> &
-    Partial<Pick<PreparedScene, "nodes">> & {
+    Partial<Pick<PreparedScene, "nodes">> &
+    FontCopyScene & {
       typography?: "type-1" | undefined;
       textStyles?: Record<string, TextStyle> | undefined;
     },
   assetUrl: (id: string) => string,
+  validation?: FontValidationOptions,
 ): Promise<Map<string, LoadedFont>> {
+  const textRuns = validation
+    ? (validation.textRuns ?? collectFontTextRuns(scene))
+    : [];
   return prepareRenderResources(async () => {
     const entries = await mapRenderResources(
       scene.fonts ?? [],
@@ -40,6 +57,14 @@ export async function loadPreparedFonts(
         const checksum = await sha256Hex(bytes);
         if (`sha256:${checksum}` !== font.sha256)
           throw new Error(`Font checksum differs: ${font.id}`);
+        const inspection = validation
+          ? inspectPreparedFont(
+              bytes,
+              { ...font, path: `fonts.${scene.fonts?.indexOf(font)}` },
+              textRuns.filter((run) => run.fontAsset === font.id),
+              validation,
+            )
+          : undefined;
         const metrics = scene.typography ? readFontMetrics(bytes) : undefined;
         if (
           font.variable &&
@@ -80,6 +105,7 @@ export async function loadPreparedFonts(
             style: font.style ?? "normal",
             bytes,
             ...(metrics ? { metrics } : {}),
+            ...(inspection ?? {}),
           },
         ] as const;
       },
@@ -181,4 +207,30 @@ export async function loadTextStyleFont(
     );
   });
   fonts.set(key, { ...source, family });
+}
+
+function inspectPreparedFont(
+  bytes: ArrayBuffer,
+  declaration: FontDeclaration,
+  runs: Parameters<typeof inspectFontText>[2],
+  validation: FontValidationOptions,
+): { identity?: FontIdentity; fontDiagnostics: FontValidationDiagnostic[] } {
+  let identity: FontIdentity | undefined;
+  let fontDiagnostics: FontValidationDiagnostic[];
+  try {
+    identity = readFontIdentity(bytes);
+    fontDiagnostics = inspectFontText(identity, declaration, runs, validation);
+  } catch (error) {
+    fontDiagnostics = passageDiagnostics(error).map((diagnostic) => ({
+      ...diagnostic,
+      severity: validation.profile === "strict" ? "error" : "warning",
+      path: declaration.path ?? declaration.id,
+      fontId: declaration.id,
+      fontSha256: declaration.sha256,
+    }));
+  }
+  validation.onDiagnostics?.(fontDiagnostics);
+  if (validation.profile === "strict" && fontDiagnostics.length)
+    throw new PassageError(fontDiagnostics);
+  return { ...(identity ? { identity } : {}), fontDiagnostics };
 }

@@ -1,4 +1,7 @@
-import type { CompositionQualityFrame } from "./composition/quality-samples.ts";
+import type {
+  CompositionQualityFrame,
+  CompositionQualitySample,
+} from "./composition/quality-samples.ts";
 import type {
   ResolvedCompositionQualityPolicy,
   MotionLintDiagnostic,
@@ -535,13 +538,279 @@ export function analyzePassageTypography(scenes: StoryScene[]) {
   return diagnostics;
 }
 
+const COMPOSITION_READING_DEFAULTS = {
+  heading: { wordsPerSecond: 3, minimumSeconds: 1 },
+  label: { wordsPerSecond: 3, minimumSeconds: 0.5 },
+  qualification: { wordsPerSecond: 2.5, minimumSeconds: 2 },
+  body: { wordsPerSecond: 3, minimumSeconds: 1 },
+};
+function readingSpeed(
+  sample: CompositionQualitySample,
+  before: CompositionQualitySample | undefined,
+  fps: number,
+) {
+  if (!before) return 0;
+  return (
+    Math.max(
+      ...[
+        [0, 0],
+        [100, 0],
+        [0, 100],
+        [100, 100],
+      ].map(([x, y]) =>
+        Math.hypot(
+          (sample.matrix[0] - before.matrix[0]) * x! +
+            (sample.matrix[2] - before.matrix[2]) * y! +
+            sample.matrix[4] -
+            before.matrix[4],
+          (sample.matrix[1] - before.matrix[1]) * x! +
+            (sample.matrix[3] - before.matrix[3]) * y! +
+            sample.matrix[5] -
+            before.matrix[5],
+        ),
+      ),
+    ) * fps
+  );
+}
+export type DeclaredCompositionReadingWindow = {
+  id: string;
+  purpose: string;
+  members: string[];
+  start: number;
+  end: number;
+  requiredFrames: number;
+  longestReadableFrames: number;
+  eligible: boolean;
+  readableIntervals: { start: number; end: number }[];
+};
+/** Associations are opt-in. All members must show exact intact copy concurrently with measured bounds. */
+export function analyzeDeclaredCompositionReading(
+  frames: readonly CompositionQualityFrame[],
+  fps: number,
+  policy: ResolvedCompositionQualityPolicy,
+) {
+  const windows: DeclaredCompositionReadingWindow[] = [];
+  const diagnostics: MotionLintDiagnostic[] = [];
+  (policy.readingDeclarations ?? []).forEach((declaration, index) => {
+    let consecutive = 0,
+      longest = 0,
+      required = 0;
+    const intervals: { start: number; end: number }[] = [];
+    let intervalStart = -1;
+    const finishInterval = (end: number) => {
+      if (intervalStart >= 0) intervals.push({ start: intervalStart, end });
+      intervalStart = -1;
+    };
+    for (const member of declaration.members) {
+      const role =
+        frames
+          .slice(declaration.start, declaration.end)
+          .map((frame) => frame.layers.get(member.layer)?.role)
+          .find(Boolean) ??
+        (member.kind === "qualification" ? "qualification" : "label");
+      const settings =
+        policy.reading?.[role] ?? COMPOSITION_READING_DEFAULTS[role];
+      const words = [
+        ...new Intl.Segmenter(member.locale ?? "en", {
+          granularity: "word",
+        }).segment(member.text),
+      ].filter((word) => word.isWordLike).length;
+      required = Math.max(
+        required,
+        Math.ceil(
+          Math.max(settings.minimumSeconds, words / settings.wordsPerSecond) *
+            fps,
+        ),
+      );
+    }
+    for (let frame = declaration.start; frame < declaration.end; frame++) {
+      if (frame > declaration.start && policy.cuts.has(frame)) {
+        finishInterval(frame);
+        consecutive = 0;
+      }
+      const samples = declaration.members.map((member) =>
+        frames[frame]!.layers.get(member.layer),
+      );
+      const intact = samples.every((sample, memberIndex) => {
+        if (
+          !sample ||
+          sample.text !== declaration.members[memberIndex]!.text ||
+          !sample.onScreen ||
+          !sample.fullyOnScreen ||
+          !sample.bounds ||
+          !sample.clippedBounds
+        )
+          return false;
+        const before = frame
+          ? frames[frame - 1]!.layers.get(sample.id)
+          : undefined;
+        const fullBounds = sample.bounds;
+        const clipped = sample.clippedBounds;
+        return (
+          sample.opacity >= policy.readingOpacity &&
+          sample.reveal >= policy.readingReveal &&
+          (sample.state.stateMix ?? 1) >= 0.95 &&
+          readingSpeed(sample, before, fps) <= policy.readingVelocity &&
+          (!before ||
+            (sample.readingClock === before.readingClock &&
+              sample.readingPose === before.readingPose)) &&
+          fullBounds.left === clipped.left &&
+          fullBounds.right === clipped.right &&
+          fullBounds.top === clipped.top &&
+          fullBounds.bottom === clipped.bottom
+        );
+      });
+      const noOverlap = samples.every(
+        (sample, memberIndex) =>
+          !sample?.bounds ||
+          samples
+            .slice(memberIndex + 1)
+            .every(
+              (other) =>
+                !other?.bounds ||
+                Math.min(sample.bounds!.right, other.bounds.right) <=
+                  Math.max(sample.bounds!.left, other.bounds.left) ||
+                Math.min(sample.bounds!.bottom, other.bounds.bottom) <=
+                  Math.max(sample.bounds!.top, other.bounds.top),
+            ),
+      );
+      if (intact && noOverlap) {
+        if (intervalStart < 0) intervalStart = frame;
+      } else finishInterval(frame);
+      consecutive = intact && noOverlap ? consecutive + 1 : 0;
+      longest = Math.max(longest, consecutive);
+    }
+    finishInterval(declaration.end);
+    const eligible = longest >= required;
+    windows.push({
+      id: declaration.id,
+      purpose: declaration.purpose,
+      members: declaration.members.map((member) => member.layer),
+      start: declaration.start,
+      end: declaration.end,
+      requiredFrames: required,
+      longestReadableFrames: longest,
+      eligible,
+      readableIntervals: intervals.filter(
+        (interval) => interval.end - interval.start >= required,
+      ),
+    });
+    if (!eligible)
+      diagnostics.push({
+        code: "reading-time",
+        severity: policy.severities?.["reading-time"] ?? "error",
+        nodes: declaration.members.map((member) => member.layer),
+        path: `readingDeclarations.${index}`,
+        frames: [declaration.start, declaration.end - 1],
+        measured: longest / fps,
+        message: `${declaration.purpose}: associated intact copy has ${(longest / fps).toFixed(2)} s of consecutive readable time; needs ${(required / fps).toFixed(2)} s. Missing measured bounds cannot establish a readable declaration.`,
+      });
+  });
+  return { windows, diagnostics };
+}
+
+export function analyzeCompositionSpeechCaptions(
+  frames: readonly CompositionQualityFrame[],
+  fps: number,
+  policy: ResolvedCompositionQualityPolicy,
+) {
+  const diagnostics: MotionLintDiagnostic[] = [];
+  const windows = (policy.speechCaptions ?? []).map((cue, index) => {
+    let intactFrames = 0;
+    for (let frame = cue.start; frame < cue.end; frame++) {
+      const sample = frames[frame]!.layers.get(cue.layer);
+      const before =
+        frame > cue.start
+          ? frames[frame - 1]!.layers.get(cue.layer)
+          : undefined;
+      if (
+        sample &&
+        sample.text === cue.text &&
+        sample.onScreen &&
+        sample.fullyOnScreen &&
+        sample.bounds &&
+        sample.clippedBounds &&
+        sample.opacity >= policy.readingOpacity &&
+        sample.reveal >= policy.readingReveal &&
+        (sample.state.stateMix ?? 1) >= 0.95 &&
+        readingSpeed(sample, before, fps) <= policy.readingVelocity &&
+        (!before ||
+          (sample.readingClock === before.readingClock &&
+            sample.readingPose === before.readingPose))
+      )
+        intactFrames++;
+    }
+    const frameCount = cue.end - cue.start;
+    const words = [
+      ...new Intl.Segmenter(cue.locale ?? "en", {
+        granularity: "word",
+      }).segment(cue.text),
+    ].filter((word) => word.isWordLike).length;
+    const settings = policy.reading?.body ?? COMPOSITION_READING_DEFAULTS.body;
+    const rawRequiredFrames = Math.ceil(
+      Math.max(settings.minimumSeconds, words / settings.wordsPerSecond) * fps,
+    );
+    const wordsPerSecond = (words * fps) / frameCount;
+    const eligible = intactFrames === frameCount;
+    if (!eligible || frameCount < rawRequiredFrames)
+      diagnostics.push({
+        code: "reading-time",
+        severity: eligible
+          ? "warning"
+          : (policy.severities?.["reading-time"] ?? "error"),
+        nodes: [cue.layer],
+        node: cue.layer,
+        path: `speechCaptions.${index}`,
+        frames: [cue.start, cue.end - 1],
+        measured: intactFrames / fps,
+        message: eligible
+          ? `Supplied speech cue stays intact for ${(frameCount / fps).toFixed(2)} s across cuts; independent body reading needs ${(rawRequiredFrames / fps).toFixed(2)} s. Speech rate ${wordsPerSecond.toFixed(2)} words/s requires visual/listening review.`
+          : `Speech caption must retain exact intact visible copy throughout the supplied cue; ${intactFrames}/${frameCount} frames qualify.`,
+        ...(eligible
+          ? {
+              classification: "speech-following-caption" as const,
+              rawSeverity: policy.severities?.["reading-time"] ?? "error",
+              speechCaption: {
+                cueId: cue.cueId,
+                sourceSha256: cue.sourceSha256,
+                audioLayer: cue.audioLayer,
+                wordsPerSecond,
+              },
+            }
+          : {}),
+      });
+    return {
+      id: cue.id,
+      cueId: cue.cueId,
+      purpose: cue.purpose,
+      sourceSha256: cue.sourceSha256,
+      audioLayer: cue.audioLayer,
+      start: cue.start,
+      end: cue.end,
+      words,
+      wordsPerSecond,
+      intactFrames,
+      frameCount,
+      rawRequiredFrames,
+      eligible,
+      continuity: "supplied-speech-cue" as const,
+      humanReview: "required" as const,
+    };
+  });
+  return { windows, diagnostics };
+}
 /** Composition text uses the same settled-window principle, with word budgets per semantic role. */
 export function analyzeCompositionTypography(
   frames: readonly CompositionQualityFrame[],
   fps: number,
   policy: ResolvedCompositionQualityPolicy,
 ) {
-  const diagnostics: MotionLintDiagnostic[] = [];
+  const declared = analyzeDeclaredCompositionReading(frames, fps, policy);
+  const speech = analyzeCompositionSpeechCaptions(frames, fps, policy);
+  const diagnostics: MotionLintDiagnostic[] = [
+    ...declared.diagnostics,
+    ...speech.diagnostics,
+  ];
   const defaults = {
     heading: { wordsPerSecond: 3, minimumSeconds: 1 },
     label: { wordsPerSecond: 3, minimumSeconds: 0.5 },
@@ -600,7 +869,21 @@ export function analyzeCompositionTypography(
           finish(id);
       }
       for (const sample of current.layers.values()) {
-        if (!sample.onScreen || !sample.text) continue;
+        if (
+          !sample.onScreen ||
+          !sample.text ||
+          policy.speechCaptions?.some(
+            (cue) =>
+              frame >= cue.start && frame < cue.end && cue.layer === sample.id,
+          ) ||
+          policy.readingDeclarations?.some(
+            (declaration) =>
+              frame >= declaration.start &&
+              frame < declaration.end &&
+              declaration.members.some((member) => member.layer === sample.id),
+          )
+        )
+          continue;
         const before =
           frame > shot.start
             ? frames[frame - 1]!.layers.get(sample.id)

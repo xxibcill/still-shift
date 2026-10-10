@@ -126,8 +126,14 @@ export { requiresCompositionTextLayout } from "./composition/adapters/layout.ts"
 export {
   analyzeCompositionQuality,
   CompositionQualityPolicySchema,
+  CompositionSemanticAssociationSchema,
+  CompositionReadingMemberSchema,
   MOTION_LINT_CODES,
   type CompositionQualityPolicy,
+  type CompositionQualityReport,
+  type CompositionSemanticAssociation,
+  type SemanticAssociationAssessment,
+  type SemanticViolationInterval,
   type MotionLintDiagnostic,
   type MotionLintCode,
 } from "./story-quality.ts";
@@ -169,3 +175,7 @@ export {
   resizeRenderStorage,
   withManagedMemory,
 } from "./managed-memory-context.ts";
+
+export * from "./mechanism/index.ts";
+export * from "./font-identity.ts";
+export { collectFontTextRuns } from "./font-copy.ts";

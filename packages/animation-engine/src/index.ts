@@ -32,7 +32,10 @@ export { generateSfx, type GeneratedSfx } from "./sfx-generation.ts";
 export { SfxGenerationError } from "./elevenlabs-sfx.ts";
 export { importNarrationFile } from "./narration-import.ts";
 
-export { lintCompositionFile } from "./composition-lint.ts";
+export {
+  lintCompositionFile,
+  type CompositionLintReport,
+} from "./composition-lint.ts";
 
 export {
   loadPassageCompositions,
@@ -59,3 +62,10 @@ export * from "./composition-media.ts";
 export * from "./composition-media-audio.ts";
 
 export * from "./composition-audio-mix.ts";
+
+export * from "./mechanism/io.ts";
+export * from "./mechanism/tape-hook.ts";
+export * from "./mechanism/lifecycle.ts";
+export * from "./mechanism/capture.ts";
+export * from "./mechanism/overlays.ts";
+export * from "./mechanism/protocol.ts";

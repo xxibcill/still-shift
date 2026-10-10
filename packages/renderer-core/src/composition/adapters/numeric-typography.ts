@@ -45,6 +45,7 @@ import type {
 } from "../render/providers.ts";
 import { preparedProvider } from "../render/providers.ts";
 import { preparedTextBounds } from "../render/text-bounds.ts";
+import { typographySourceFrame } from "../typography-source-frame.ts";
 import { typographyClock } from "../render/text-clock.ts";
 import {
   AppearanceSchema,
@@ -219,12 +220,7 @@ function typographyProvider(id: string): CanvasContentProvider {
         data.signals,
       );
       const frameAt = (time: number, sourceTime?: number) =>
-        Math.max(
-          0,
-          sourceTime === undefined
-            ? Math.min(data.frameCount - 1, Math.floor(time))
-            : Math.floor(time),
-        );
+        typographySourceFrame(time, data.frameCount, sourceTime);
       const textAt = (frame: number) =>
         data.numeric
           ? data.numeric.samples[

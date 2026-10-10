@@ -2,11 +2,13 @@
 
 **Updated:** 2026-10-09
 
-**Current engineering:** core composition milestones are merged through CE14/CE15
-on `main` `bd0197cd`; local production release preparation is recorded.
+**Current engineering:** all 21 core composition deliverables are merged on
+`main` `e6eb7b06`. Published `0.1.0` source is preserved by `production` and
+`v0.1.0` at `db28a938`.
 
-**Next product proof:** a portable mechanism Short after its missing authoritative
-plan and source inputs are restored. The retired corpus is no longer a release requirement.
+**Current work:** MS0 has recovered and audited the original E01 inputs. Next is
+the supported MS1 Three.js bridge and portable mechanism Short, followed by
+required MS1N native 3D, MS2 reusable mechanisms and MS3 pilot.
 
 ## Product outcome
 
@@ -43,14 +45,14 @@ activity; a completed milestone branch does not by itself establish delivery on
 
 | Area                                                     | Recorded state                                                                                                                                           | Source                                                                                                                                       |
 | -------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Composition foundation, adapters and CE13 media          | Core implementation and milestone verification are complete and merged; the release candidate is main bd0197cd.                                          | [Composition tracker](./docs/composition-engine-plan.md#milestone-tracker)                                                                   |
+| Composition foundation, adapters and CE13 media          | Core implementation and milestone verification are complete and merged; published release source is db28a938.                                            | [Composition tracker](./docs/composition-engine-plan.md#milestone-tracker)                                                                   |
 | CE15 output, caching and parallel rendering              | Complete and merged in PR #49; review repairs are integrated on main. The recorded production benchmark reaches 3.408× with identical output.            | [CE15 delivery plan](./docs/composition-ce15-plan.md)                                                                                        |
 | CE14 mesh warp and puppet pins                           | Complete and merged in PR #50 with stack, scale, collapse and diagnostic review repairs.                                                                 | [CE14 scope](./docs/composition-engine-plan.md#ce14--mesh-warp-and-puppet-pins)                                                              |
 | CE16 soundtrack                                          | Technically complete and merged in PR #33; local opt-in runtime prepared. Human listening and public backend distribution are separate decisions.        | [CE13 completion](./docs/composition-engine-plan.md#ce13-completion-record-2026-10-07)                                                       |
 | Story tooling, reusable components and vertical delivery | Implemented foundations available for production proofs.                                                                                                 | [Story tooling](./docs/story-engine-tooling.md), [components](./docs/reusable-components.md), [vertical plan](./docs/vertical-video-plan.md) |
 | Existing cinematic, story and commerce studies           | Retained capabilities and regression evidence. Technical fixtures do not establish product or creative acceptance; commerce formats remain Experimental. | [Archived study status](./docs/archive/roadmap-phase-0-2026-10-08.md)                                                                        |
 
-## Now — prepare the npm composition release
+## Completed — npm composition release
 
 CE15 and CE14 completed the approved main implementation lane. The
 [npm release plan](./docs/npm-release-plan.md) records the current target: one
@@ -80,28 +82,27 @@ and [npm release procedure](./docs/npm-release-plan.md#local-release-procedure).
 
 ## Next — prove one supported production workflow
 
-The next planned application is explanatory mechanism Shorts, starting with the
-customer's tape-hook E01. Its named detailed production plan is absent from this
-checkout. Restore that authority and its project inputs before claiming the
-workflow is ready or starting its production proof. The stage descriptions below
-are retained roadmap scope, not a replacement approved implementation plan.
-See the [missing-records audit](./docs/production-release-preparation.md#missing-production-proof-records).
+The owner activated **MS0 → MS1 Three.js bridge → MS1N native 3D → MS2 reusable
+mechanisms → MS3 pilot** on 2026-10-09, with a separate branch and PR for each.
+The authoritative [production plan](./docs/mechanism-shorts-production-plan.md)
+and [feedback audit](./docs/mechanism-shorts-feedback-coverage-audit-2026-10-07.md)
+are restored. The [MS0 audit](./docs/mechanism-shorts-ms0-results.json) recovers the
+original E01 inputs and records current APIs, fonts, reference timing, rubric,
+measurement protocol and remaining limits. Implementation and artifact-specific
+human visual/listening acceptance remain separate.
 
-| Stage   | Product proof                                                                                                                                                   | Detailed scope                                                                       |
-| ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| MS0–MS1 | Resolve original inputs and deliver one portable E01 project that can be loaded, edited, saved, reopened, rendered and reviewed through the supported workflow. | Baseline audit (source record unavailable), portable E01 (source record unavailable) |
-| MS2     | Transfer packs, rigs, camera/annotation recipes and narration-linked timing across three distinct mechanism families.                                           | Reusable authoring (source record unavailable)                                       |
-| MS3     | Run the ten-episode pilot and measure authoring effort, repair burden, technical completion and reviewed output quality.                                        | Production pilot (source record unavailable)                                         |
+| Stage | Product proof                                                                       | Detailed scope                                                                                                  |
+| ----- | ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| MS0   | Audit integrated composition baseline and original E01 inputs.                      | [Audit evidence](./docs/mechanism-shorts-ms0-baseline.md)                                                       |
+| MS1   | Supported Three.js bridge, native overlays and portable E01 lifecycle.              | [Bridge/E01](./docs/mechanism-shorts-production-plan.md#ms1-supported-bridge-and-portable-e01)                  |
+| MS1N  | Required native solid meshes sharing scene/rig/camera contracts and graphics depth. | [Native 3D](./docs/mechanism-shorts-production-plan.md#ms1n-native-3d-composition)                              |
+| MS2   | Three reusable mechanism families, cameras, labels and cue-driven edits.            | [Reusable mechanisms](./docs/mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring) |
+| MS3   | Ten distinct episodes, lifecycle/QA/repair and measured production effort.          | [Pilot](./docs/mechanism-shorts-production-plan.md#ms3-production-lifecycle-and-ten-episode-pilot)              |
 
-Use the supported Three.js preparation bridge for the first solid-object proof,
-feeding the existing composition media pipeline. Reuse typography, audio and
-export machinery. Native mesh composition requires a demonstrated limitation in
-shared depth, transparent interleaving or camera interaction.
-
-The 300-job stress test, explanation-view/native-mesh decision and 30-episode
-cohort remain later planned stages behind their existing prerequisites. Evaluate
-the pilot before scheduling expansion. Their acceptance checks remain in the
-mechanism tracker (source record unavailable).
+Both 3D routes reuse typography, audio and export machinery. Initial native 3D is
+required after MS1; advanced explanation views and native extensions remain
+conditional MS4B work. MS4A's 300-job stress test and MS4C's 30-episode cohort are
+outside the current five-milestone goal. Preserve deferred composition requirements.
 
 ## One bounded authoring experiment
 
@@ -125,12 +126,12 @@ shown by the trial, using existing lifecycle tooling and its implementation gate
 These ideas have no assigned start date. Schedule a bounded addition only when a
 named production proof exposes a need and existing capabilities are inadequate.
 
-| Candidate                                                | Evidence needed before scheduling                                                                                                                                 | Scope reference                                                                                            |
-| -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| Native solid geometry and advanced materials/shadows     | A required explanation cannot be represented adequately by the bridge or authored assets. Consolidate overlapping 3D proposals under one recorded scope decision. | Conditional mesh decision (source record unavailable)                                                      |
-| Procedural deformation beyond CE14                       | A named shot needs controlled bending that existing poses, paths, rigs or pins cannot provide adequately.                                                         | [Deformation proposal](./docs/composition-engine-plan.md#procedural-deformation)                           |
-| Additional recipes, visual templates or commerce formats | Existing treatments cannot express a required explanation; a short proof and materially different reuse justify expansion.                                        | Visual-template study (source record unavailable), [commerce proof](./docs/commerce-real-product-proof.md) |
-| Shape refinements and further renderer performance work  | Located production defects or measured bottlenecks justify a scoped task and its cost; recorded owner decisions govern activation.                                | [Composition tracker](./docs/composition-engine-plan.md#milestone-tracker)                                 |
+| Candidate                                                | Evidence needed before scheduling                                                                                                  | Scope reference                                                                                                         |
+| -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Native extensions and advanced materials/shadows         | A required explanation exceeds the required MS1N native subset. Select further extensions from demonstrated pilot needs.           | [Conditional extensions](./docs/mechanism-shorts-production-plan.md#ms4b-explanation-views-and-native-mesh-composition) |
+| Procedural deformation beyond CE14                       | A named shot needs controlled bending that existing poses, paths, rigs or pins cannot provide adequately.                          | [Deformation proposal](./docs/composition-engine-plan.md)                                                               |
+| Additional recipes, visual templates or commerce formats | Existing treatments cannot express a required explanation; a short proof and materially different reuse justify expansion.         | Visual-template study (source record unavailable), [commerce proof](./docs/commerce-real-product-proof.md)              |
+| Shape refinements and further renderer performance work  | Located production defects or measured bottlenecks justify a scoped task and its cost; recorded owner decisions govern activation. | [Composition tracker](./docs/composition-engine-plan.md#milestone-tracker)                                              |
 
 ## Measures of success
 

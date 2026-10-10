@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "mechanism-ms1-staged-exit-receipt-1",
+  "observedAt": "2026-10-10T01:56:50.131599+00:00",
+  "executionSession": 22389,
+  "exitCode": 0,
+  "exitObservedDirectlyByRootTool": true,
+  "log": {
+    "path": "/tmp/still-shift-ms1-remaining-required-groups-1.log",
+    "bytes": 217251,
+    "sha256": "5b86ab547312491a5b7c44adb37724576dc923608d97de43fd5e9b5f7092d1de",
+    "lines": 1282
+  },
+  "sourceTestCheckpoint": "09ce824b86e03b3e95616c9fb91b549b9c88845c",
+  "documentationHead": "bbba4472bfbb0fd62bf166dd90530d17f0631c44",
+  "completedSuffixGroups": [
+    "test:browser:composition-story-fixtures",
+    "test:browser:composition-commerce-adapter",
+    "test:browser:composition-cinematic-adapter",
+    "test:browser:composition-typography-adapter",
+    "test:browser:composition-provider-typography",
+    "test:browser:composition-program",
+    "test:browser:composition-inspector",
+    "test:browser:composition-builder",
+    "test:browser:composition-depth",
+    "test:browser:composition-legacy-adapter",
+    "test:browser:composition-family-timeline",
+    "test:browser:composition-family-defaults",
+    "test:browser:mechanism-typography",
+    "test:browser:mechanism-portrait",
+    "test:browser:composition-baselines"
+  ],
+  "completedRequiredGroupCount": 76,
+  "method": "complete-required-groups-in-stages",
+  "uninterruptedPnpmCheckPass": false,
+  "baseline": {
+    "items": 176,
+    "frames": 36061,
+    "seconds": 267.68
+  },
+  "notes": "Actual exec session22389 completed with exit0. Failed aggregate attempts1–3 remain failed; original command list and source/tests/thresholds unchanged."
+}

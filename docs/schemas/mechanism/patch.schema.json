@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "mechanism-patch-1" },
+    "baseRevision": { "type": "integer", "minimum": 0, "maximum": 2147483647 },
+    "baseHash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "operations": {
+      "minItems": 1,
+      "maxItems": 32,
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "shot": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "label": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "property": { "type": "string", "const": "text" },
+              "value": { "type": "string", "minLength": 1, "maxLength": 400 }
+            },
+            "required": ["shot", "label", "property", "value"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "shot": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "label": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "property": { "type": "string", "const": "position" },
+              "value": {
+                "type": "array",
+                "prefixItems": [{ "type": "number" }, { "type": "number" }]
+              }
+            },
+            "required": ["shot", "label", "property", "value"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "shot": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "label": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "property": { "type": "string", "const": "fontSize" },
+              "value": { "type": "number", "minimum": 16, "maximum": 400 }
+            },
+            "required": ["shot", "label", "property", "value"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "shot": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "label": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "property": { "type": "string", "const": "qualification" },
+              "value": { "type": "string", "minLength": 1, "maxLength": 400 }
+            },
+            "required": ["shot", "label", "property", "value"],
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "required": ["schemaVersion", "baseRevision", "baseHash", "operations"],
+  "additionalProperties": false
+}
