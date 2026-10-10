@@ -1,0 +1,37 @@
+{
+  "authorized": true,
+  "date": "2026-10-10",
+  "archiveSha256": "5cf82c0379f3a78e5b91b96200b5f9b5816cbf8975f860a3deda40fe96fa8ac5",
+  "exitCode": 0,
+  "response": "+ still-shift@0.1.1",
+  "authentication": "Owner completed npm browser publishing authentication.",
+  "publishedAt": "2026-10-10T10:13:27.912Z",
+  "publicVerification": {
+    "checkedAt": "2026-10-10T10:15:32.024577+00:00",
+    "version": "0.1.1",
+    "latest": "0.1.1",
+    "downloadedArchiveSha256": "5cf82c0379f3a78e5b91b96200b5f9b5816cbf8975f860a3deda40fe96fa8ac5",
+    "downloadedArchiveBytes": 3751111,
+    "byteForByteMatch": true,
+    "integrityMatches": true,
+    "shasumMatches": true
+  },
+  "initialRegistryReads": [
+    {
+      "time": "2026-10-10T10:12:05Z",
+      "code": "E404",
+      "command": "npm view still-shift@0.1.1"
+    },
+    {
+      "time": "2026-10-10T10:12:06Z",
+      "code": "ETARGET",
+      "command": "npm pack still-shift@0.1.1"
+    },
+    {
+      "time": "2026-10-10T10:14:34Z",
+      "code": "ETARGET",
+      "command": "npm pack still-shift@0.1.1; fresh prefer-online retry passed"
+    }
+  ],
+  "record": "benchmarks/results/npm-patch-0.1.1-20261010/publication-success.json"
+}

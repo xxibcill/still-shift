@@ -1,0 +1,176 @@
+{
+  "version": "0.1.1",
+  "sourceCommit": "73c01fa7c0b3bb47066d32e857d7901220abb8a4",
+  "startedAt": "2026-10-10T06:29:09.977121+00:00",
+  "status": "passed",
+  "sourceStatusBefore": "",
+  "priorEvidence": "full-gate-rerun.json",
+  "commands": [
+    "test:browser:composition-lighting",
+    "test:browser:composition-shapes",
+    "test:browser:composition-webgl-export",
+    "test:browser:composition-exposure",
+    "test:browser:composition-effects",
+    "test:browser:composition-mesh",
+    "test:browser:composition-story-adapter",
+    "test:browser:composition-native-passage",
+    "test:browser:composition-native-passage:webgl",
+    "test:browser:composition-passage",
+    "test:browser:composition-story-fixtures",
+    "test:browser:composition-commerce-adapter",
+    "test:browser:composition-cinematic-adapter",
+    "test:browser:composition-typography-adapter",
+    "test:browser:composition-provider-typography",
+    "test:browser:composition-program",
+    "test:browser:composition-inspector",
+    "test:browser:composition-builder",
+    "test:browser:composition-depth",
+    "test:browser:composition-legacy-adapter",
+    "test:browser:composition-family-timeline",
+    "test:browser:composition-family-defaults",
+    "test:browser:composition-baselines",
+    "benchmark",
+    "test:package"
+  ],
+  "completedCommands": [
+    {
+      "command": "test:browser:composition-lighting",
+      "exitCode": 0,
+      "seconds": 127.464
+    },
+    {
+      "command": "test:browser:composition-shapes",
+      "exitCode": 0,
+      "seconds": 17.009
+    },
+    {
+      "command": "test:browser:composition-webgl-export",
+      "exitCode": 0,
+      "seconds": 32.603
+    },
+    {
+      "command": "test:browser:composition-exposure",
+      "exitCode": 0,
+      "seconds": 22.354
+    },
+    {
+      "command": "test:browser:composition-effects",
+      "exitCode": 0,
+      "seconds": 145.961
+    },
+    {
+      "command": "test:browser:composition-mesh",
+      "exitCode": 0,
+      "seconds": 128.602
+    },
+    {
+      "command": "test:browser:composition-story-adapter",
+      "exitCode": 0,
+      "seconds": 13.733
+    },
+    {
+      "command": "test:browser:composition-native-passage",
+      "exitCode": 0,
+      "seconds": 61.391
+    },
+    {
+      "command": "test:browser:composition-native-passage:webgl",
+      "exitCode": 0,
+      "seconds": 140.099
+    },
+    {
+      "command": "test:browser:composition-passage",
+      "exitCode": 0,
+      "seconds": 74.113
+    },
+    {
+      "command": "test:browser:composition-story-fixtures",
+      "exitCode": 0,
+      "seconds": 592.434
+    },
+    {
+      "command": "test:browser:composition-commerce-adapter",
+      "exitCode": 0,
+      "seconds": 2916.332
+    },
+    {
+      "command": "test:browser:composition-cinematic-adapter",
+      "exitCode": 0,
+      "seconds": 4059.079
+    },
+    {
+      "command": "test:browser:composition-typography-adapter",
+      "exitCode": 0,
+      "seconds": 186.744
+    },
+    {
+      "command": "test:browser:composition-provider-typography",
+      "exitCode": 0,
+      "seconds": 9.761
+    },
+    {
+      "command": "test:browser:composition-program",
+      "exitCode": 0,
+      "seconds": 10.917
+    },
+    {
+      "command": "test:browser:composition-inspector",
+      "exitCode": 0,
+      "seconds": 15.053
+    },
+    {
+      "command": "test:browser:composition-builder",
+      "exitCode": 0,
+      "seconds": 24.389
+    },
+    {
+      "command": "test:browser:composition-depth",
+      "exitCode": 0,
+      "seconds": 540.511
+    },
+    {
+      "command": "test:browser:composition-legacy-adapter",
+      "exitCode": 0,
+      "seconds": 1707.626
+    },
+    {
+      "command": "test:browser:composition-family-timeline",
+      "exitCode": 0,
+      "seconds": 16.241
+    },
+    {
+      "command": "test:browser:composition-family-defaults",
+      "exitCode": 0,
+      "seconds": 1384.32
+    },
+    {
+      "command": "test:browser:composition-baselines",
+      "exitCode": 0,
+      "seconds": 295.117
+    },
+    {
+      "command": "benchmark",
+      "exitCode": 0,
+      "seconds": 2.753
+    },
+    {
+      "command": "test:package",
+      "exitCode": 0,
+      "seconds": 172.038
+    }
+  ],
+  "log": "/Users/jjae/.codex/worktrees/docs-patch-0-1-1/still-shift/benchmarks/results/npm-patch-0.1.1-20261010/continuation.log",
+  "publicationAuthorized": true,
+  "thresholdsChanged": false,
+  "baselineRegenerated": false,
+  "pid": 27655,
+  "currentCommand": "test:package",
+  "exitCode": 0,
+  "elapsedSeconds": 12696.679,
+  "finishedAt": "2026-10-10T10:00:46.690288+00:00",
+  "logSha256": "3815fc88ed328fbb35d1a7e0efcd2969517a1f24d85a954e38c2585fcfefa511",
+  "sourceStatusAfter": "",
+  "archive": "/Users/jjae/.codex/worktrees/docs-patch-0-1-1/still-shift/dist/releases/still-shift-0.1.1.tgz",
+  "archiveSha256": "5cf82c0379f3a78e5b91b96200b5f9b5816cbf8975f860a3deda40fe96fa8ac5",
+  "compressedBytes": 3751111
+}

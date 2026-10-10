@@ -43,15 +43,21 @@ still hold before relying on them.
 
 ## Current state
 
-- **Documentation patch 0.1.1 (2026-10-10):** preparing on `codex/docs-patch-0-1-1`
-  from `main` `e6eb7b06`. All implemented-feature guidance, both skills and package
-  inclusion are isolated from unrelated roadmap/research edits. Public version and
-  lock metadata are prepared without dependency changes. The first full run on
-  `a437d980` passed 3,666 units and 85 runtime tests, then failed 38 integration
-  cases because the separate audio runtime was missing. That locked runtime and
-  explicit fresh-checkout instructions are now prepared; full rerun is pending.
-  Published `0.1.0`, `production` and `v0.1.0` remain fixed; publication is not yet
-  authorized. [Usage refresh evidence](./usage-docs-refresh-results.json).
+- **Documentation patch 0.1.1 published (2026-10-10):** npm `latest` is `0.1.1`.
+  The public archive matches the verified archive byte for byte (SHA-256
+  `5cf82c0379f3a78e5b91b96200b5f9b5816cbf8975f860a3deda40fe96fa8ac5`).
+  All 733 shipped source files match `73c01fa7`; `production` and fixed annotated
+  `v0.1.1` now point there. PR #53 integrated the candidate into `main`; release
+  promotion #54 preserved ancestry by fast-forward. Local release verification
+  passed in stages: 3,666 units, 85 runtime, 318 integration, 14 depth, all 69
+  browser commands, 176 frozen baselines / 36,061 frames, and 27 online package
+  checks; production audit reports zero known vulnerabilities. Initial setup
+  failure, interrupted rerun, authentication failure and stale registry reads are
+  retained. Owner completed npm browser publication authentication. Existing
+  WebGL timing deferrals, no-op benchmark limits and separate human visual/listening
+  acceptance remain unchanged. Unrelated checkout edits are preserved.
+  [Release records](./npm-release-results.json),
+  [promotion #54](https://github.com/xxibcill/still-shift/pull/54).
 
 - **Development/release branches established (2026-10-09):** `production` and
   annotated `v0.1.0` are pushed at `db28a938`, containing the source for the
@@ -151,6 +157,25 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Publish and verify documentation patch 0.1.1
+
+- **Done:** owner completed npm browser publishing authentication; exact verified
+  archive published as `still-shift@0.1.1` and tagged npm `latest`. Downloaded
+  registry bytes match the tested SHA-256, SHA-512 integrity and SHA-1 checksum.
+- **Checkpoint:** source `73c01fa7`; PR #53 merged into `main`, promotion #54
+  fast-forwarded `production`, and fixed annotated `v0.1.1` points to that exact
+  source. Publication records follow separately without changing the release.
+- **Verification:** full gate completed in stages; 3,666 units, 85 runtime,
+  318 integration, 14 depth, 69 browser commands, 176 frozen baselines / 36,061
+  frames and 27 online installed-package checks pass. Zero known production
+  audit vulnerabilities; 733 packaged source files match the release commit.
+- **Retain:** setup failure, interrupted rerun, first npm E404/E401 attempt and
+  initial stale registry reads. Existing WebGL timing deferrals, no-op benchmark
+  limits and separate human visual/listening acceptance remain unchanged.
+- **Records:** [release results](./npm-release-results.json),
+  [patch plan](./npm-patch-0.1.1-plan.md),
+  [publication evidence](../benchmarks/results/npm-patch-0.1.1-20261010/publication-success.json).
 
 ### 2026-10-10 — Prepare documentation patch 0.1.1
 
