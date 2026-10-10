@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { MechanismRigControlsV2Schema } from "../mechanism/rigs.ts";
 import { SoundtrackFadeCurveSchema } from "../soundtrack-project.ts";
 import { PoseAnchorSchema } from "../character-actions.ts";
 import { TextContainerSchema } from "../story-acting.ts";
@@ -482,6 +483,7 @@ export const Native3DLayerSchema = z
     sourceStartFrame: finite.min(0).max(MECHANISM_LIMITS.frames),
     sourceFps: finite.positive().max(240),
     controls: MechanismControlsSchema.optional(),
+    rigControls: MechanismRigControlsV2Schema.optional(),
     camera: MechanismCameraSchema.optional(),
     cameraKeys: MechanismCameraKeysSchema.optional(),
     hiddenParts: z
@@ -491,7 +493,19 @@ export const Native3DLayerSchema = z
     seed: finite.int().min(0).max(2_147_483_647).optional(),
     ...Native3DSourceOverridesSchema.shape,
   })
-  .strict();
+  .strict()
+  .superRefine((controller, context) => {
+    if (
+      controller.controls !== undefined &&
+      controller.rigControls !== undefined
+    )
+      context.addIssue({
+        code: "custom",
+        message:
+          "Native controllers must select exactly one rig writer protocol",
+        path: ["rigControls"],
+      });
+  });
 export type Native3DLayer = z.infer<typeof Native3DLayerSchema>;
 
 export const CompositionLayerSchema: z.ZodDiscriminatedUnion<

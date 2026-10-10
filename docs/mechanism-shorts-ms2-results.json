@@ -516,6 +516,153 @@
         "sha256": "sha256:d77ba56cbe9c3e06827781792ef77cc4346dab206f0bfe4f7266eaa87795907d"
       },
       "scope": "Actual complete local fast gate on unchanged pure posed/shape inputs. Earlier red valid-ID, posed admission/build and IPC setup failures retained. No topology SHA verification, GPU draw/observations, packs, family exports or pilot acceptance."
+    },
+    {
+      "id": "native2-route-red-1",
+      "status": "failed-as-expected-missing-api",
+      "actualRootSession": 19023,
+      "actualExitCode": 1,
+      "command": "pnpm exec vitest run tests/unit/native3d-v2-adapter.test.ts --maxWorkers=1",
+      "testsFailed": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-native2-red-inputs-1.json",
+        "bytes": 403293,
+        "sha256": "sha256:2d8d774a85e4b6737988fb02e392a38bfd740505a1c32ac95b1952f49aebd65f"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-native2-red-1.log",
+        "bytes": 1101,
+        "sha256": "sha256:e2376ca7848cedf86d1222b016eafcd57d57b26190df91a1f8f87b711d9bfea6"
+      },
+      "scope": "Actual assertion observes missing native version2 preparation route. No subsequent implementation assertions ran in this red probe.",
+      "sourceCheckpoint": "ef7d2ea8a77390307d8e2e8ea6c50987406a111a",
+      "sourceState": "working-native2-data-adapter"
+    },
+    {
+      "id": "native2-focused-1",
+      "status": "passed",
+      "actualRootSession": 29469,
+      "actualExitCode": 0,
+      "command": "pnpm exec vitest run tests/unit/native3d-v2-adapter.test.ts tests/unit/native3d-evaluator.test.ts tests/unit/native3d-contract.test.ts --maxWorkers=2",
+      "tests": 24,
+      "files": 3,
+      "reportedSeconds": 0.819,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-native2-inputs-1.json",
+        "bytes": 404833,
+        "sha256": "sha256:7c4382881e9a105841177d0bb2725687d0ca22cc4959c7323cf01363c9d158fc"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-native2-focused-1.log",
+        "bytes": 430,
+        "sha256": "sha256:f18fe336d8cabd002fa9d8c72c1022e107367db5865548a61ee8d9b03d66b3e1"
+      },
+      "scope": "Canonical geometry/topology hashes, cryptographically consistent topology substitution negative, neutral seat association, style variants, clocks/seeks, expected posed visibility, writer exclusivity and existing v1 behavior.",
+      "sourceCheckpoint": "ef7d2ea8a77390307d8e2e8ea6c50987406a111a",
+      "sourceState": "working-native2-data-adapter"
+    },
+    {
+      "id": "native2-build-1",
+      "status": "passed",
+      "actualRootSession": 50460,
+      "actualExitCode": 0,
+      "command": "pnpm build",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-native2-inputs-1.json",
+        "bytes": 404833,
+        "sha256": "sha256:7c4382881e9a105841177d0bb2725687d0ca22cc4959c7323cf01363c9d158fc"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-native2-build-1.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      },
+      "sourceCheckpoint": "ef7d2ea8a77390307d8e2e8ea6c50987406a111a",
+      "sourceState": "working-native2-data-adapter"
+    },
+    {
+      "id": "native2-schema-identity-generate-1",
+      "status": "completed-before-next-stage",
+      "actualRootSession": 51039,
+      "aggregateActualExitCode": 1,
+      "individualExitReceipt": "inferred-zero-from-required-next-and-stage",
+      "command": "pnpm schema:generate && pnpm native3d:identity:generate",
+      "firstPartyModules": 344,
+      "externalRuntimeModules": 79,
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-native2-schema-generate-1.log",
+          "bytes": 653,
+          "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-native2-identity-generate-1.log",
+          "bytes": 260,
+          "sha256": "sha256:2dd9c2ae47aac9f51100268a336e67decb773c8d10c7ef5f71d56b30484b5966"
+        }
+      ],
+      "scope": "Generated composition schema/reference and appearance membership. Following fast gate starts under shell &&. No historical render/archive identity refresh.",
+      "sourceCheckpoint": "ef7d2ea8a77390307d8e2e8ea6c50987406a111a",
+      "sourceState": "working-native2-data-adapter"
+    },
+    {
+      "id": "native2-fast-1",
+      "status": "failed-exhaustive-composition-fixture",
+      "actualRootSession": 51039,
+      "actualExitCode": 1,
+      "terminalObservedAtUTC": "2026-10-10T18:26:52Z",
+      "command": "pnpm check:fast",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-native2-inputs-2.json",
+        "bytes": 404833,
+        "sha256": "sha256:dc9eb1b21f30bc2f5e47f0fbcce09f9e5dd9d1bb65735ce13ec3684391c491b1"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "passedStages": ["schema", "boundaries", "format", "lint", "build"],
+      "unitTestsPassed": 3977,
+      "unitTestsFailed": 1,
+      "unitFilesPassed": 387,
+      "unitFilesFailed": 1,
+      "unitReportedSeconds": 46.09,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-native2-fast-1.log",
+        "bytes": 42120,
+        "sha256": "sha256:1f6cebd83014b62be127cb4209c492a0176fd55f6403aa2ea004650e5ace8727"
+      },
+      "failure": "Every-field test expects every available field to appear but native fixture lacks new mutually-exclusive rigControls.",
+      "repair": "Add a separately parsed v2 writer controller to exhaustive layer admission coverage; retain all field assertions and v1 render fixtures.",
+      "sourceCheckpoint": "ef7d2ea8a77390307d8e2e8ea6c50987406a111a",
+      "sourceState": "working-native2-data-adapter"
+    },
+    {
+      "id": "native2-fast-2",
+      "status": "passed",
+      "actualRootSession": 50859,
+      "actualExitCode": 0,
+      "terminalObservedAtUTC": "2026-10-10T18:30:28Z",
+      "sourceCheckpoint": "ef7d2ea8a77390307d8e2e8ea6c50987406a111a",
+      "sourceState": "working-native2-data-adapter",
+      "command": "pnpm check:fast",
+      "node": "22.23.1",
+      "pnpm": "10.29.3",
+      "unitTests": 3978,
+      "unitFiles": 388,
+      "unitReportedSeconds": 52.8,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-native2-inputs-3.json",
+        "bytes": 404833,
+        "sha256": "sha256:c3f097ac53f99e2c96cb58ca42b949db811e5ecc0e6a5cb910252c45335da3f8"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-native2-fast-2.log",
+        "bytes": 32526,
+        "sha256": "sha256:e3875e565265b339570cb1fd2c33a1439cd58a2274a2018b2fa231e892d4809e"
+      },
+      "scope": "Complete actual local fast gate passes after adding exclusive v2 controller coverage to the exhaustive test. All field assertions and original v1 render fixtures preserved. Expected-state data adapter only; no browser scene2 composition/export or GPU acceptance."
     }
   ],
   "implementation": {
@@ -532,10 +679,11 @@
       "fixed-root-pawl-curve-1",
       "seated-torsion-spring-1",
       "expected relationship residuals"
-    ]
+    ],
+    "fifthSlice": "Completed native2 data adapter: explicit source/versioned snapshot, async topology SHA validation, neutral variant association, rigControls exclusivity, fractional owning/source clocks and expected posed visibility. Focused24/build1 and fresh fast2 pass (3978 units/388 files); missing-route red and exhaustive fixture failure retained. Browser composition dispatch and used-GPU observation remain pending."
   },
   "limits": [
-    "No scene2/frame2/evaluator, dynamic GPU observations, pack/import/camera/label/cue or expanded typography support is claimed by standalone contracts.",
+    "Native2 preparation/sampling and expected posed visibility are verified. No scene2 composition/export dispatch, independent dynamic GPU observations, product packs, import/camera/label/cue or scoped typography support is claimed yet.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

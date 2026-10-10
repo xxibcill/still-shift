@@ -806,6 +806,10 @@ export const native3DAppearanceModules: readonly {
     url: new URL("./browser.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/native3d/canonical-hash.ts",
+    url: new URL("./canonical-hash.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/native3d/evaluate.ts",
     url: new URL("./evaluate.ts", import.meta.url),
   },
@@ -814,12 +818,20 @@ export const native3DAppearanceModules: readonly {
     url: new URL("./observations.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/native3d/physical-visibility.ts",
+    url: new URL("./physical-visibility.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/native3d/prepare.ts",
     url: new URL("./prepare.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/native3d/resolve.ts",
     url: new URL("./resolve.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/sampling.ts",
+    url: new URL("./sampling.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/native3d/three-graphics.ts",
@@ -1558,6 +1570,13 @@ export const native3DAppearanceModules: readonly {
     ),
   },
   {
+    name: "scene-contract/src/native3d/frame-v2.ts",
+    url: new URL(
+      "../../../scene-contract/src/native3d/frame-v2.ts",
+      import.meta.url,
+    ),
+  },
+  {
     name: "scene-contract/src/native3d/frame.ts",
     url: new URL(
       "../../../scene-contract/src/native3d/frame.ts",
@@ -1582,6 +1601,13 @@ export const native3DAppearanceModules: readonly {
     name: "scene-contract/src/native3d/observation.ts",
     url: new URL(
       "../../../scene-contract/src/native3d/observation.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/native3d/scene-v2.ts",
+    url: new URL(
+      "../../../scene-contract/src/native3d/scene-v2.ts",
       import.meta.url,
     ),
   },

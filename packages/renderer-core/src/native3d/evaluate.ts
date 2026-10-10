@@ -18,6 +18,7 @@ import { canonicalMechanismJson } from "../mechanism/canonical.ts";
 import { passageError } from "../passage-diagnostics.ts";
 import { native3DOverridesKey, freezeNativeData } from "./prepare.ts";
 import { nativeScreenAnchors } from "./visibility.ts";
+import { nativeSourceFrame } from "./sampling.ts";
 import type {
   NativeScopeSample,
   PreparedNative3DScene,
@@ -75,6 +76,16 @@ export function evaluateSolidFrame(
   width: number,
   height: number,
 ): SolidFrameResult {
+  if (controller.rigControls !== undefined)
+    passageError(
+      "comp-native3d-source",
+      "Version 1 sources cannot use rigControls",
+      {
+        node: controller.id,
+        path: `${controller.id}.rigControls`,
+        frame: sourceFrame,
+      },
+    );
   if (Object.keys(controller.controls ?? {}).length)
     passageError(
       "comp-native3d-source",
@@ -152,40 +163,16 @@ export function sampleNativeFrame(
     path: `${sample.scope}/${controller.id}`,
     frame: sample.scopeFrame,
   };
-  if (
-    ![sample.scopeFrame, sample.layerTime, sample.owningScopeFps].every(
-      Number.isFinite,
-    ) ||
-    sample.owningScopeFps <= 0
-  )
+  if (controller.rigControls !== undefined)
     passageError(
-      "comp-native3d-clock",
-      "Native sampling requires a finite resolved owning clock",
-      location,
+      "comp-native3d-source",
+      "Version 1 sources cannot use rigControls",
+      {
+        ...location,
+        path: location.path + ".rigControls",
+      },
     );
-  const sourceFrame =
-    controller.sourceStartFrame +
-    (sample.layerTime * controller.sourceFps) / sample.owningScopeFps;
-  if (!Number.isFinite(sourceFrame) || sourceFrame < 0 || sourceFrame > 108_000)
-    passageError(
-      "comp-native3d-clock",
-      "Native source time is outside its bounded source interval",
-      { ...location, path: location.path + ".sourceStartFrame" },
-    );
-  if (
-    !Number.isInteger(sample.width) ||
-    !Number.isInteger(sample.height) ||
-    sample.width < 16 ||
-    sample.height < 16 ||
-    sample.width > 8192 ||
-    sample.height > 8192 ||
-    sample.width * sample.height > 8_388_608
-  )
-    passageError(
-      "comp-native3d-limit",
-      "Native viewport exceeds the admitted pixel/axis bounds",
-      location,
-    );
+  const sourceFrame = nativeSourceFrame(controller, sample);
   const requestKey = native3DOverridesKey({
     ...(controller.partOverrides
       ? { partOverrides: controller.partOverrides }

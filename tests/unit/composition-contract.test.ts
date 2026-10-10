@@ -717,6 +717,23 @@ describe("composition-1 fixtures", () => {
       nativeMedia,
       nativeContract,
     ].flatMap((s) => s.layers);
+    // V2 writers are exclusive with v1 controls; cover the layer contract separately.
+    const nativeV2Controller = layers.Native3DLayerSchema.parse({
+      id: "native-v2-writer",
+      type: "native3d",
+      asset: "physical-scene-v2",
+      sourceStartFrame: 0,
+      sourceFps: 30,
+      rigControls: { hinge: { type: "hinge", value: 0.25 } },
+    });
+    expect(nativeV2Controller.controls).toBeUndefined();
+    expect(
+      layers.Native3DLayerSchema.safeParse({
+        ...nativeV2Controller,
+        controls: {},
+      }).success,
+    ).toBe(false);
+    allLayers.push(nativeV2Controller);
     // CE4 providers have their own fixture; keep the CE1 acceptance file unchanged.
     const providers = JSON.parse(
       readFileSync(

@@ -54,8 +54,11 @@ still hold before relying on them.
   formatter failure. Pure rig tracks pass 12 focused checks, build and fast1
   (3,952 units / 386 files). Posed parts/closed shapes now pass36 focused checks,
   build2 and fast1 (3,966 units / 387 files). Valid-ID, readonly cloning and IPC
-  setup failures are retained with actual repairs/reruns. Native2 integration is next; dynamic observations, three packs, import/camera/label/cue, scoped
-  typography and the full milestone gate remain required. Pilot support remains
+  setup failures are retained with actual repairs/reruns. Native2 preparation and
+  expected snapshots pass24 focused checks, build and fast2 (3,978 units / 388 files),
+  after a retained exhaustive-fixture failure. Owned changing geometry, browser
+  composition dispatch and GPU observations are next; three packs, import/camera/
+  label/cue, scoped typography and the full milestone gate remain required. Pilot support remains
   zero; MS3 has not started. [MS2 results](./mechanism-shorts-ms2-results.json),
   [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
@@ -215,6 +218,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — Commit native2 preparation and expected snapshots
+
+- **Branch / source:** `codex/mechanism-ms2`, posed checkpoint `ef7d2ea8`.
+- **Done:** additive source/frame versions; async geometry/topology SHA checks;
+  immutable style variants and neutral seat association; exclusive `rigControls`;
+  fractional source clocks, random seeks and expected visibility on posed vertices.
+- **Results:** focused24, build1 and full fast2 pass (3,978 tests / 388 files,
+  52.80s units). Inputs remain unchanged. Normal schema/identity generation records
+  344 first-party / 79 external modules; prior producer identities stay fixed.
+- **Failures / repairs:** missing native2 route is reproduced before implementation.
+  Fast1 passes3,977/fails1 exhaustive field fixture; a separate v2 writer admission
+  case fixes coverage without dropping assertions or changing v1 render fixtures.
+- **Next / limits:** bounded owned changing geometry, actual GPU streams/landmarks,
+  versioned composition/export transport and remaining MS2 families/authoring checks.
+  This data adapter does not claim independent rendered or pilot acceptance.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-11 — Commit posed parts and closed teaching generators
 

@@ -3,3 +3,7 @@ export * from "./prepare.ts";
 export * from "./evaluate.ts";
 export * from "./visibility.ts";
 export * from "./bindings.ts";
+export * from "./types-v2.ts";
+export * from "./prepare-v2.ts";
+export * from "./evaluate-v2.ts";
+export * from "./visibility-v2.ts";

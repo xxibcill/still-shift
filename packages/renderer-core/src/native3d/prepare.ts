@@ -12,6 +12,7 @@ import type {
   CompositionPreparedNative3D,
 } from "@still-shift/scene-contract";
 import { canonicalMechanismJson } from "../mechanism/canonical.ts";
+import { hashNativeData as hashData } from "./canonical-hash.ts";
 import { matrixFromTransform } from "../mechanism/matrix.ts";
 import { passageError, PassageError } from "../passage-diagnostics.ts";
 import type {
@@ -50,12 +51,6 @@ export function native3DOverridesKey(
       Object.assign(normalized, { [field]: Object.fromEntries(entries) });
   }
   return canonicalMechanismJson(normalized);
-}
-
-async function hashData(value: unknown): Promise<string> {
-  const bytes = new TextEncoder().encode(canonicalMechanismJson(value));
-  const digest = await globalThis.crypto.subtle.digest("SHA-256", bytes);
-  return `sha256:${Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("")}`;
 }
 
 function prepareValidated(source: Native3DSource) {
@@ -308,6 +303,15 @@ export async function prepareCompositionNative3D(
       scope.layers.forEach((layer, index) => {
         const path = `${prefix}layers.${index}`;
         if (layer.type === "native3d" && layer.asset === asset.id) {
+          if (layer.rigControls !== undefined)
+            passageError(
+              "comp-native3d-source",
+              "Version 1 sources cannot use rigControls",
+              {
+                node: layer.id,
+                path: path + ".rigControls",
+              },
+            );
           for (const id of layer.hiddenParts ?? [])
             if (!data.source.parts.some((part) => part.id === id))
               passageError(
