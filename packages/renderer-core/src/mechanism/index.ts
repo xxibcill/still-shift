@@ -9,3 +9,22 @@ export {
   prepareMechanismRigTracksV2,
   evaluateMechanismRigTracksV2,
 } from "./rig-tracks-v2.ts";
+export { prepareMechanismSceneV2 } from "./prepare-v2.ts";
+export { evaluateMechanismFrameV2 } from "./evaluate-v2.ts";
+export {
+  prepareTeachingShape,
+  evaluateTeachingShape,
+  createMechanismTeachingMesh,
+} from "./teaching-shapes.ts";
+export type {
+  PreparedTeachingShape,
+  TeachingShapeInputs,
+} from "./teaching-shapes.ts";
+export {
+  createMechanismTeachingTopology,
+  mechanismTeachingTopologyDocument,
+} from "./teaching-topology.ts";
+export type {
+  MechanismTeachingTopology,
+  MechanismTeachingRecipe,
+} from "./teaching-topology.ts";

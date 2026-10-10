@@ -52,7 +52,9 @@ still hold before relying on them.
   build failures are retained with their repairs. Scene2/frame2 declarations pass
   12 focused checks, build and fresh fast2 (3,940 units / 385 files), after a retained
   formatter failure. Pure rig tracks pass 12 focused checks, build and fast1
-  (3,952 units / 386 files). Part poses and closed shape evaluation are next; dynamic observations, three packs, import/camera/label/cue, scoped
+  (3,952 units / 386 files). Posed parts/closed shapes now pass36 focused checks,
+  build2 and fast1 (3,966 units / 387 files). Valid-ID, readonly cloning and IPC
+  setup failures are retained with actual repairs/reruns. Native2 integration is next; dynamic observations, three packs, import/camera/label/cue, scoped
   typography and the full milestone gate remain required. Pilot support remains
   zero; MS3 has not started. [MS2 results](./mechanism-shorts-ms2-results.json),
   [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
@@ -213,6 +215,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — Commit posed parts and closed teaching generators
+
+- **Branch / source:** `codex/mechanism-ms2`, rig-track checkpoint `1d8ae025`.
+- **Done:** reference-frame slider/hinge poses; fixed-root pawl and seated coil/legs;
+  posed seat-local tangents, fixed topology/neutral association, immutable streams,
+  channel/pitch limits and pure expected relationship residuals.
+- **Results:** 36 focused checks, build2, bounded ID/schema probe and full fast1
+  pass (3,966 tests / 387 files, 46.89s units). Held inputs are unchanged.
+- **Failures / repairs:** prior valid-ID false writer conflict is reproduced, then
+  repaired; first posed run passes25/fails1 Zod record admission, and build1 fails
+  readonly source cloning. Both are repaired. IPC setup failure runs no assertions;
+  the same schema probe passes through the Node loader. Raw evidence is retained.
+- **Next / limits:** async native topology SHA binding, versioned transport and
+  actual GPU streams/landmarks before frame publication; then three packs and
+  remaining MS2 acceptance. No render, pilot or human acceptance is claimed here.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-11 — Commit deterministic reusable rig tracks
 

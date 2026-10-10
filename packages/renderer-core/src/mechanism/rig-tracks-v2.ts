@@ -81,7 +81,7 @@ export function prepareMechanismRigTracksV2(
           "Return target must be a declared slider or hinge",
           ["rigs", rig.id, "targetRig"],
         );
-      if (controls[rig.targetRig])
+      if (Object.hasOwn(controls, rig.targetRig))
         fail(
           "mechanism-control-owner",
           "Return and direct controls cannot write the same scalar",

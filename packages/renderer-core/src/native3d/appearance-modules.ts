@@ -1474,6 +1474,13 @@ export const native3DAppearanceModules: readonly {
     ),
   },
   {
+    name: "scene-contract/src/mechanism/records-v2.ts",
+    url: new URL(
+      "../../../scene-contract/src/mechanism/records-v2.ts",
+      import.meta.url,
+    ),
+  },
+  {
     name: "scene-contract/src/mechanism/rigs.ts",
     url: new URL(
       "../../../scene-contract/src/mechanism/rigs.ts",

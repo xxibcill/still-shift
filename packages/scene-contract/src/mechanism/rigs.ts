@@ -1,3 +1,4 @@
+import { mechanismIdRecordV2 } from "./records-v2.ts";
 import { z } from "zod";
 import {
   MECHANISM_LIMITS,
@@ -261,12 +262,10 @@ export const MechanismRigControlV2Schema = z
     if (control.type === "slider" || control.type === "hinge")
       checkScalarWriter(control, context);
   });
-export const MechanismRigControlsV2Schema = z
-  .record(MechanismIdSchema, MechanismRigControlV2Schema)
-  .refine(
-    (controls) => Object.keys(controls).length <= MECHANISM_LIMITS.rigs,
-    "Rig control writer budget exceeded",
-  );
+export const MechanismRigControlsV2Schema = mechanismIdRecordV2(
+  MechanismRigControlV2Schema,
+  MECHANISM_LIMITS.rigs,
+);
 
 export type MechanismScalarKeysV2 = z.infer<typeof MechanismScalarKeysV2Schema>;
 export type MechanismRigV2 = z.infer<typeof MechanismRigV2Schema>;

@@ -1,3 +1,4 @@
+import { mechanismIdRecordV2 } from "./records-v2.ts";
 import { z } from "zod";
 import {
   MECHANISM_LIMITS,
@@ -9,7 +10,7 @@ import {
 } from "./primitives.ts";
 import { MechanismCameraKeysSchema, MechanismCameraSchema } from "./scene.ts";
 import {
-  MechanismPartFramesSchema,
+  MechanismPartFrameSchema,
   MechanismProjectionVisibilitySchema,
 } from "./frame.ts";
 import { MechanismRigControlsV2Schema } from "./rigs.ts";
@@ -177,32 +178,20 @@ export const MechanismFrameResultV2Schema = z
     frame,
     seed: z.number().int().min(0).max(2_147_483_647),
     camera: MechanismCameraSchema,
-    parts: MechanismPartFramesSchema,
-    rigs: z
-      .record(MechanismIdSchema, MechanismRigFrameV2Schema)
-      .refine(
-        (rigs) => Object.keys(rigs).length <= MECHANISM_LIMITS.rigs,
-        "Rig frame budget exceeded",
-      ),
-    shapeStates: z
-      .record(MechanismIdSchema, MechanismShapeFrameSchema)
-      .refine(
-        (shapes) =>
-          Object.keys(shapes).length <= MECHANISM_TEACHING_SHAPE_LIMITS.meshes,
-        "Changing mesh budget exceeded",
-      ),
-    anchors: z
-      .record(MechanismIdSchema, MechanismProjectedAnchorV2Schema)
-      .refine(
-        (anchors) => Object.keys(anchors).length <= MECHANISM_LIMITS.anchors,
-        "Anchor frame budget exceeded",
-      ),
-    relationships: z
-      .record(MechanismIdSchema, MechanismRelationshipFrameV2Schema)
-      .refine(
-        (relationships) => Object.keys(relationships).length <= 128,
-        "Relationship frame budget exceeded",
-      ),
+    parts: mechanismIdRecordV2(
+      MechanismPartFrameSchema,
+      MECHANISM_LIMITS.parts,
+    ),
+    rigs: mechanismIdRecordV2(MechanismRigFrameV2Schema, MECHANISM_LIMITS.rigs),
+    shapeStates: mechanismIdRecordV2(
+      MechanismShapeFrameSchema,
+      MECHANISM_TEACHING_SHAPE_LIMITS.meshes,
+    ),
+    anchors: mechanismIdRecordV2(
+      MechanismProjectedAnchorV2Schema,
+      MECHANISM_LIMITS.anchors,
+    ),
+    relationships: mechanismIdRecordV2(MechanismRelationshipFrameV2Schema, 128),
   })
   .strict()
   .superRefine((result, context) => {

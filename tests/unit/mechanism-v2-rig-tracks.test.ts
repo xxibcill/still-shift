@@ -441,3 +441,22 @@ describe("history-independent reusable rig tracks", () => {
       );
   });
 });
+
+it("permits a constructor target ID without inventing an inherited writer", () => {
+  const source = scene();
+  source.rigs = source.rigs.map((rig) =>
+    rig.id === "slide"
+      ? { ...rig, id: "constructor" }
+      : rig.type === "spring-return"
+        ? { ...rig, targetRig: "constructor" }
+        : rig,
+  );
+  const prepared = prepareMechanismRigTracksV2(source, {
+    return: { type: "spring-return", states: returnStates },
+  });
+  expect(evaluateMechanismRigTracksV2(prepared, 10).constructor).toMatchObject({
+    id: "constructor",
+    type: "slider",
+    position: 5,
+  });
+});

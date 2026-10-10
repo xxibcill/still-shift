@@ -2,7 +2,7 @@
   "schemaVersion": "mechanism-shorts-ms2-results-1",
   "milestone": "MS2",
   "date": "2026-10-11",
-  "status": "in-progress-posed-shape-evaluation",
+  "status": "in-progress-native-v2-integration",
   "branch": "codex/mechanism-ms2",
   "baseMain": "3fab0162c51ca3b29fcefc2ecdbda0e475f985c9",
   "nativePrerequisite": {
@@ -329,6 +329,193 @@
         "sha256": "sha256:169b18b62815e255ed65d5b9b40d597c992c7e7e23d2f8834f592c1b9eef1f58"
       },
       "scope": "Actual complete fast gate on unchanged pure scalar-track inputs. No part poses, shape generation, GPU observations, reusable pack, export or pilot acceptance."
+    },
+    {
+      "id": "rig-id-red-1",
+      "status": "failed-reproduced-valid-id-lookup",
+      "actualRootSession": 86623,
+      "actualExitCode": 1,
+      "sourceCheckpoint": "1d8ae0258556e18a10e083caba11ac23a2985b7b",
+      "sourceState": "prior-rig-source-plus-new-valid-id-regression",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-rig-id-red-inputs-1.json",
+        "bytes": 401079,
+        "sha256": "sha256:f1cffe8ca057adca475c7e128baf9c7c5eeeff5a5f9a5569d56a0526372ce82e"
+      },
+      "command": "pnpm exec vitest run tests/unit/mechanism-v2-rig-tracks.test.ts --maxWorkers=2 -t \"permits a constructor\"",
+      "failedTests": 1,
+      "skippedTests": 12,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-rig-id-red-1.log",
+        "bytes": 2753,
+        "sha256": "sha256:d26d3ce1173807c8e58fea1cf67f2855f7180a80d937a575f4a855a74de21fc3"
+      },
+      "failure": "Inherited Object.prototype.constructor is mistaken for an authored direct writer on a valid target rig ID.",
+      "repair": "Use explicit own-property membership for writer and part/rig lookups. Actual green rerun remains required."
+    },
+    {
+      "id": "posed-shape-focused-1",
+      "status": "failed-valid-id-record-admission",
+      "actualRootSession": 8911,
+      "actualExitCode": 1,
+      "sourceCheckpoint": "1d8ae0258556e18a10e083caba11ac23a2985b7b",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-posed-shape-inputs-1.json",
+        "bytes": 402964,
+        "sha256": "sha256:cd64b4167f4760a1f996b7ee7505a46b279b0debdc93d10cd17258d7653aa444"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "command": "pnpm exec vitest run tests/unit/mechanism-v2-rig-tracks.test.ts tests/unit/mechanism-v2-posed-shapes.test.ts --maxWorkers=2",
+      "passedTests": 25,
+      "failedTests": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-posed-shape-focused-1.log",
+        "bytes": 3122,
+        "sha256": "sha256:df9f430336bb594335147d875ea6eab139641cf168f47a969f0ca4776c903f23"
+      },
+      "failure": "All geometry/reference/seek and rig-ID repair checks pass, but a constructor part ID makes pinned Zod record isPlainObject reject the complete parts frame.",
+      "repair": "Use a bounded typed catchall object for new v2 ID dictionaries with identical validated ID keys/value schemas and generated propertyNames/maxProperties metadata. Legacy v1 schemas remain unchanged."
+    },
+    {
+      "id": "posed-shape-build-1",
+      "status": "failed-readonly-anchor-source-type",
+      "actualRootSession": 60169,
+      "actualExitCode": 2,
+      "sourceCheckpoint": "1d8ae0258556e18a10e083caba11ac23a2985b7b",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-posed-shape-inputs-1.json",
+        "bytes": 402964,
+        "sha256": "sha256:cd64b4167f4760a1f996b7ee7505a46b279b0debdc93d10cd17258d7653aa444"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "command": "pnpm build",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-posed-shape-build-1.log",
+        "bytes": 1294,
+        "sha256": "sha256:615874e253399811494c1582b80634f5b9d3bcea5923dbe66f8618255a975463"
+      },
+      "failure": "structuredClone preserves the TypeScript readonly tuple annotation when assigning anchor source to the output DTO.",
+      "repair": "Parse the anchor source through its strict schema to produce a typed mutable clone before freezing the frame; no runtime tolerance change."
+    },
+    {
+      "id": "posed-shape-identity-generate-1",
+      "status": "passed",
+      "actualRootSession": 50141,
+      "actualExitCode": 0,
+      "command": "pnpm native3d:identity:generate",
+      "firstPartyModules": 339,
+      "externalRuntimeModules": 79,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-posed-shape-identity-generate-1.log",
+        "bytes": 260,
+        "sha256": "sha256:44a45d835babdb4727fc61a047ee210bed1ce05bc1c7e2f7d56bf1542d32f220"
+      },
+      "scope": "Generated descriptor adds only new records-v2.ts membership. Pure pose/shape modules remain outside the native browser path until integration; historical render identities remain unchanged."
+    },
+    {
+      "id": "posed-shape-focused-2",
+      "status": "passed",
+      "actualRootSession": 36529,
+      "actualExitCode": 0,
+      "sourceCheckpoint": "1d8ae0258556e18a10e083caba11ac23a2985b7b",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-posed-shape-inputs-2.json",
+        "bytes": 403135,
+        "sha256": "sha256:bdb718905de21bf37b6ee36d55669a4866bea9ce324fb4b53e748a912443f43c"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "command": "pnpm exec vitest run tests/unit/mechanism-v2-rig-tracks.test.ts tests/unit/mechanism-v2-posed-shapes.test.ts tests/unit/mechanism-v2-frame-contract.test.ts tests/unit/mechanism-v2-rig-contract.test.ts --maxWorkers=2",
+      "tests": 36,
+      "files": 4,
+      "reportedSeconds": 1.13,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-posed-shape-focused-2.log",
+        "bytes": 517,
+        "sha256": "sha256:b0ba50f73146c903d1a62952c576518448913d2205c891bacc1fe38fdab69b52"
+      },
+      "scope": "Actual pure generated topology/neutral association, fixed roots, posed seats/tangents, normals/bounds, reference axes, scalar cap/pitch, valid-ID repairs and fractional/reverse/random seeks. No raw topology SHA verification or GPU observations."
+    },
+    {
+      "id": "posed-shape-build-2",
+      "status": "passed",
+      "actualRootSession": 83768,
+      "actualExitCode": 0,
+      "sourceCheckpoint": "1d8ae0258556e18a10e083caba11ac23a2985b7b",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-posed-shape-inputs-2.json",
+        "bytes": 403135,
+        "sha256": "sha256:bdb718905de21bf37b6ee36d55669a4866bea9ce324fb4b53e748a912443f43c"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "command": "pnpm build",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-posed-shape-build-2.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      },
+      "scope": "Actual pinned TypeScript build after retained readonly clone/record repairs."
+    },
+    {
+      "id": "id-record-schema-check-1",
+      "status": "failed-environment-cli-ipc",
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-id-record-schema-check-1.log",
+        "bytes": 1007,
+        "sha256": "sha256:c0d9b6bfb6cf0ca2be10bb0b6a2b71cddf1782fa770774d41e381c8b413471de"
+      },
+      "assertionsRun": 0,
+      "failure": "tsx CLI setup cannot listen on its temporary IPC pipe under sandbox (EPERM). No product assertion ran; Node import-loader rerun is separate."
+    },
+    {
+      "id": "id-record-schema-check-2",
+      "status": "passed",
+      "actualExitCode": 0,
+      "sourceCheckpoint": "1d8ae0258556e18a10e083caba11ac23a2985b7b",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-posed-shape-inputs-2.json",
+        "bytes": 403135,
+        "sha256": "sha256:bdb718905de21bf37b6ee36d55669a4866bea9ce324fb4b53e748a912443f43c"
+      },
+      "command": "node --import tsx /private/tmp/mechanism-ms2-id-record-schema-check.mjs",
+      "collector": {
+        "path": "/private/tmp/mechanism-ms2-id-record-schema-check.mjs",
+        "bytes": 1035,
+        "sha256": "sha256:bd808bc9ecadb3b788a44f82db2c4107acd4050a469ced6e43b5ba94d31cba7b"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-id-record-schema-check-2.log",
+        "bytes": 106,
+        "sha256": "sha256:6cfc59eb352d89cc45f25b19f0a17bf2ba217c599d5a3ec284937db4a8b39c93"
+      },
+      "scope": "Actual constructor admission, invalid-key and max-eight rejection; generated JSON Schema preserves propertyNames pattern/maxLength and maxProperties. Same product checks after CLI-only IPC setup failure."
+    },
+    {
+      "id": "posed-shape-fast-1",
+      "status": "passed",
+      "actualRootSession": 39744,
+      "actualExitCode": 0,
+      "terminalObservedAtUTC": "2026-10-10T18:10:25Z",
+      "sourceCheckpoint": "1d8ae0258556e18a10e083caba11ac23a2985b7b",
+      "sourceState": "working-pure-posed-shape-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-posed-shape-inputs-2.json",
+        "bytes": 403135,
+        "sha256": "sha256:bdb718905de21bf37b6ee36d55669a4866bea9ce324fb4b53e748a912443f43c"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "command": "pnpm check:fast",
+      "node": "22.23.1",
+      "pnpm": "10.29.3",
+      "unitTests": 3966,
+      "unitFiles": 387,
+      "unitReportedSeconds": 46.89,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-posed-shape-fast-1.log",
+        "bytes": 31606,
+        "sha256": "sha256:d77ba56cbe9c3e06827781792ef77cc4346dab206f0bfe4f7266eaa87795907d"
+      },
+      "scope": "Actual complete local fast gate on unchanged pure posed/shape inputs. Earlier red valid-ID, posed admission/build and IPC setup failures retained. No topology SHA verification, GPU draw/observations, packs, family exports or pilot acceptance."
     }
   ],
   "implementation": {
@@ -337,7 +524,15 @@
     "supportedPacks": [],
     "pilotSupportedEpisodes": 0,
     "secondSlice": "Completed strict scene2/frame2 declarations, dependency/ownership and generated-landmark checks, aggregate changing geometry budgets and pack references. Focused12, TypeScript build and fresh fast2 pass (3940 units/385 files); failed formatting attempt retained. Pure evaluation and integration remain required.",
-    "thirdSlice": "Completed pure whole-track validation and deterministic scalar sampling. Focused12, build and fresh fast1 pass (3952 units/386 files); range/writer/return-stop/continuity, illegal ratchet reverse intervals and random seeks verified. Part poses, closed shape generation and native integration remain next."
+    "thirdSlice": "Completed pure whole-track validation and deterministic scalar sampling. Focused12, build and fresh fast1 pass (3952 units/386 files); range/writer/return-stop/continuity, illegal ratchet reverse intervals and random seeks verified. Part poses, closed shape generation and native integration remain next.",
+    "fourthSlice": "Completed pure posed scene2/frame2 and two closed teaching generators. Focused36, build2, ID/schema probe and fresh fast1 pass (3966 units/387 files). Fixed topology/neutral association, root/seat/tangent/normal/bounds, reference axes, channel/pitch limits and seeks verified. All failed probes and repairs retained.",
+    "pureEvaluation": [
+      "whole-track scalar legality",
+      "reference-frame part poses",
+      "fixed-root-pawl-curve-1",
+      "seated-torsion-spring-1",
+      "expected relationship residuals"
+    ]
   },
   "limits": [
     "No scene2/frame2/evaluator, dynamic GPU observations, pack/import/camera/label/cue or expanded typography support is claimed by standalone contracts.",

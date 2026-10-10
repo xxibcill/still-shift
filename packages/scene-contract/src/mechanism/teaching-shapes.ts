@@ -89,6 +89,7 @@ const spring = z
           .int()
           .min(3)
           .max(MECHANISM_TEACHING_SHAPE_LIMITS.tubeSides),
+        /** Unit directions in the corresponding rigid seat-part coordinates. */
         terminalTangents: z.tuple([
           MechanismUnitAxisV2Schema,
           MechanismUnitAxisV2Schema,
