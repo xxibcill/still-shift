@@ -232,6 +232,9 @@ export async function verifyNativeCompositionInspector(
         id: "annotation",
         type: "group",
         size: [150, 35],
+        // This visibility-only group retains ordinary placement. Its explicit
+        // origin keeps child coordinates in owning-scope output pixels.
+        transform: { anchor: [0, 0], position: [0, 0] },
         overlayAfter: "world",
         native3D: {
           role: "screen-anchor",
@@ -257,7 +260,7 @@ export async function verifyNativeCompositionInspector(
         fontSize: 22,
         color: "#ffffff",
         align: "left",
-        transform: { position: [12, 140] },
+        transform: { anchor: [0, 0], position: [12, 140] },
       },
       {
         id: "leader",
@@ -452,23 +455,40 @@ export async function verifyNativeCompositionInspector(
         (value.height - y - 1) * stride,
         (value.height - y) * stride,
       );
-    assert(
-      pngPixels(png, value.width, value.height).equals(rgba),
-      "Independent PNG scanline reconstruction equals actual GL output after explicit row order conversion",
+    // Preserve the actual bytes before any pixel acceptance assertion. A failed
+    // edit must retain its own frame rather than only the preceding good state.
+    await writeFile(join(directory, name + ".png"), png, { flag: "wx" });
+    await writeFile(join(directory, name + ".rgba"), rgba, { flag: "wx" });
+    const pngDecodedExactly = pngPixels(png, value.width, value.height).equals(
+      rgba,
     );
     pixelBytes += rgba.length + png.length;
     assert(pixelBytes <= 4194304);
-    const sha256 = checksum(rgba);
-    if (previous)
-      assert.notEqual(sha256, previous, `${name} must alter actual Lab pixels`);
-    await writeFile(join(directory, name + ".png"), png, { flag: "wx" });
-    await writeFile(join(directory, name + ".rgba"), rgba, { flag: "wx" });
+    const sha256 = checksum(rgba),
+      labelRegion = { left: 12, top: 140, right: 110, bottom: 170 },
+      labelPixels: number[] = [];
+    let labelInkPixels = 0;
+    for (let y = labelRegion.top; y < labelRegion.bottom; y++)
+      for (let x = labelRegion.left; x < labelRegion.right; x++) {
+        const at = (y * value.width + x) * 4;
+        labelPixels.push(...rgba.subarray(at, at + 4));
+        if (
+          rgba[at]! >= 230 &&
+          rgba[at + 1]! >= 230 &&
+          rgba[at + 2]! >= 230 &&
+          rgba[at + 3]! >= 230
+        )
+          labelInkPixels++;
+      }
     const record = {
       name,
       pixelSha256: sha256,
       pngSha256: checksum(png),
       bytes: rgba.length,
-      pngDecodedExactly: true,
+      pngDecodedExactly,
+      labelRegion,
+      labelRegionSha256: checksum(Uint8Array.from(labelPixels)),
+      labelInkPixels,
       pixelEncoding: "rgba8-straight-top-first",
       time: value.time,
       revision: value.revision,
@@ -477,6 +497,15 @@ export async function verifyNativeCompositionInspector(
     };
     records.push(record);
     await retain();
+    assert(
+      pngDecodedExactly,
+      "Independent PNG scanline reconstruction equals actual GL output after explicit row order conversion",
+    );
+    // This small region contains the declared white label. The one-pixel leader
+    // alone cannot satisfy the ink bound; a culled label cannot pass silently.
+    assert(labelInkPixels >= 64, `${name} must retain visible label ink`);
+    if (previous)
+      assert.notEqual(sha256, previous, `${name} must alter actual Lab pixels`);
     process.stdout.write(
       JSON.stringify({
         event: "native-Lab-state",
@@ -688,6 +717,7 @@ export async function verifyNativeCompositionInspector(
     assert.equal(material.metalness, 0.8);
     assert.equal(material.roughness, 0.15);
     previous = await capture("material", previous.pixelSha256);
+    const materialLabelRegionSha256 = previous.labelRegionSha256;
     await page.locator('[data-layer="label"] > button').first().click();
     const copy = await inspect();
     assert.equal(copy.textSamples[0]!.state, 1);
@@ -707,6 +737,11 @@ export async function verifyNativeCompositionInspector(
     assert.deepEqual((await inspect()).label!.states, [" ", "PULL!"]);
     assert.equal((await inspect()).label!.text, "BASE COPY");
     previous = await capture("label", previous.pixelSha256);
+    assert.notEqual(
+      previous.labelRegionSha256,
+      materialLabelRegionSha256,
+      "The selected visible text-state edit must change actual label-region pixels",
+    );
     const saveResponse = page.waitForResponse(
       (response) =>
         new URL(response.url()).pathname === "/composition/program-save",

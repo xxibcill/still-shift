@@ -51,8 +51,10 @@ still hold before relying on them.
   exactly; earlier signed-zero harness failures remain retained. Native inspection
   now passes six new units/all15 CLI cases and fast7/all3,875 units. Preview2's
   fourth stage stopped before submission on module readiness; exact cold bootstrap
-  passes476ms, cause unknown, bounded failure diagnostics added without retry or
-  deadline change. Actual Lab/full696/native repeat/hardware/installed proofs and
+  passes476ms, cause unknown. Fresh preview3 passes all8 actual previews,5
+  negatives and legal-reverse restoration. Lab1 camera/part/material passes; label
+  is off-canvas due to fixture group anchoring, now explicitly corrected with
+  retained region checks. Actual Lab/full696/native repeat/hardware/installed proofs and
   all77 groups/176 unchanged baselines remain pending; human playback/listening
   is separate. [Design](./mechanism-shorts-ms1n-design.md),
   [results](./mechanism-shorts-ms1n-results.json).
@@ -182,6 +184,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Native preview sequence and Lab fixture correction
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, from `552929dd`.
+- **Results:** preview3 passes8 actual native previews,5 located invalid preflights
+  and legal reverse-recipe restoration; earlier failed attempts remain retained.
+- **Retained:** Lab1 accepted camera/part/material edits change pixels; label1 does
+  not because the default group center anchor places glyphs off-canvas. Explicit
+  fixture anchors correct placement; independent pinned-font review supports its
+  bounded white-ink region. Captures now persist before acceptance assertions.
+- **Checks:** focused helper lint passes; first new integration build fails2
+  typed-array SHA declarations, second passes after type-only correction.
+- **Next:** real Lab Save/reload rerun, graph depth/clipping/normal/clock fixtures
+  and real export abort, then full native696/repeat/hardware/installed/local gates.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
 
 ### 2026-10-10 — Native inspection and actual bridge completion
 

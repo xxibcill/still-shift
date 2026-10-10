@@ -669,6 +669,74 @@
       },
       "inputFiles": 2133,
       "scope": "Fresh complete development gate, including all new CLI metadata units; stationary2133 source/build/test inputs rehashed afterward. CLI guide prose was added after format stage and separately formatted before commit."
+    },
+    {
+      "id": "native-lab-browser-1",
+      "status": "failed",
+      "sourceCommit": "552929dd",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-lab-proof-1.log",
+        "bytes": 1581,
+        "sha256": "sha256:104ff76426c3613b0da7acf483aff81da5ca5c9be6f7a87aed1dca3d94b19e1d"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms1n-native-lab-proof-1/evidence.json",
+        "bytes": 25158,
+        "sha256": "sha256:3d33eb4d50a93b7424d96fdb1612f07f5dd05f821bc8ae22053abeefd2b4370d"
+      },
+      "scope": "Actual public builder/CLI and Lab camera, part and material edits each change pixels. Accepted visible-label state edit leaves identical pixels; screenshot reports label culled outside frame. Save/reload not reached; retained actual responses, helper bytes, three changed states and full UI. No human or complete UI acceptance claimed. Fixture/source diagnosis in progress."
+    },
+    {
+      "id": "native-preview-e01-3",
+      "status": "passed",
+      "sourceCommit": "552929dd",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-e01-preview-proof-3.log",
+        "bytes": 4811,
+        "sha256": "sha256:61d705b59af3d3c221bd9bc24d72f93f104fe9d602a65372b64b72599d903543"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms1n-e01-preview-proof-3/run.json",
+        "bytes": 238070,
+        "sha256": "sha256:3f8f42a665a1d62eeebcd1c705f2993635a8f2f8f933ba489aa0a3c5047a88dc"
+      },
+      "positiveActualPreviews": 8,
+      "negativePreflightChecks": 5,
+      "restoreChecks": 1,
+      "scope": "All actual baseline0/label88, saved camera/part/material/label, fractional and reverse-clock previews, authenticated same-invocation packets/independentPNG readback, five located negative preflights and restored legal reverse recipe. Rendering/appearance/source held; test-only integration drafts do not change executed closure. Original preview1/private-generator and preview2/browser-module failures retained. Not fullmovie/reading/human acceptance."
+    },
+    {
+      "id": "native-integration-lint-1",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-integration-lint-1.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "scope": "Focused new graph/cancellation helper, existing depth callsite and repaired Lab helper lint; no browser execution."
+    },
+    {
+      "id": "native-integration-build-1",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-integration-build-1.log",
+        "bytes": 2850,
+        "sha256": "sha256:40507655fe71d10b19c01bf69def6f1ff30fab0e59b6bfb2423bf963fc5f16e9"
+      },
+      "scope": "Two test-helper SHA input type errors for Uint8ClampedArray; existing Uint8Array.from conversion unchanged; accepted input type broadened."
+    },
+    {
+      "id": "native-integration-build-2",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-integration-build-2.log",
+        "bytes": 98,
+        "sha256": "sha256:d692138239ef8ac30d14f7300b94fb74af1142431e00e32c5d200573877c2902"
+      },
+      "scope": "Full TypeScript after test-only SHA input widening; later radians/far-clipping fixture review corrections require final focused verification before graph execution."
     }
   ],
   "implementationEvidence": {
@@ -712,7 +780,18 @@
       "repairs": "Captured descriptor self-hash, authored source-edge validation immediately before publication, and canonical top-first raw/default encoder row order implemented. Fresh source checkpoint/proofs pending.",
       "dependencyResolutionRepair": "Actual renderer-owned descriptor context resolves pinned dependencies without NODE_PATH/global fallback; bare Node17 focused checks pass at fd88faa3. Full native preview/edit rerun in progress; full bridge harness2 failed before GPU on signed-zero JSON comparison and is repaired separately.",
       "existingPreparedRenderAdmission": "Fresh root or sole real associated preparation admitted; prior finals/unrelated/file/symlink roots reject without modifying them. Public actual two-frame saved-camera render passed; full696 installed proof pending.",
-      "bootstrapDiagnostics": "Actual isolated module bootstrap passed471 requests/0 loading failures; earlier30s timeout remains unexplained. Added bounded actual failure diagnostics with unchanged timeout/profile/success schema. Complete native edit rerun still required."
+      "bootstrapDiagnostics": "Actual isolated module bootstrap passed471 requests/0 loading failures; earlier30s timeout remains unexplained. Added bounded actual failure diagnostics with unchanged timeout/profile/success schema. Complete native edit rerun still required.",
+      "previewEditSequence": {
+        "status": "passed-all-eight-previews-five-negatives-and-restore",
+        "sourceCommit": "552929dd",
+        "report": {
+          "path": "/private/tmp/still-shift-ms1n-e01-preview-proof-3/run.json",
+          "bytes": 238070,
+          "sha256": "sha256:3f8f42a665a1d62eeebcd1c705f2993635a8f2f8f933ba489aa0a3c5047a88dc"
+        },
+        "finalRecipe": "valid-reverse-native-source12",
+        "fullBaselineRequiresFreshAuthoredPreparation": true
+      }
     },
     "portableInstalledExecution": "pending",
     "fullLocalGateAnd176Baselines": {
@@ -758,7 +837,7 @@
         "units": 6,
         "cliRuntimeTotal": 15
       },
-      "actualLabBrowserProof": "pending",
+      "actualLabBrowserProof": "first-run-failed-off-canvas-fixture; explicit-anchor-and-visible-region-repair-committed-before-rerun",
       "boundedModuleDiagnostics": "Actual bootstrap failure events capped32/16KiB with sanitized512-character strings; unchanged30000ms deadline, no retry.",
       "independentReview": "No concrete CLI blockers; maintained Lab fixture corrected to include public builder identity transform without weakening exact JSON comparison."
     }
