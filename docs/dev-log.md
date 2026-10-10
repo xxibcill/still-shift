@@ -56,6 +56,10 @@ still hold before relying on them.
   is off-canvas due to fixture group anchoring, now explicitly corrected with
   retained region checks. Lab2 now passes all7 actual edit/save/reload captures.
   Real native abort1 passes actualupload,6process exits/port refusal/nonpublication.
+  Graph4 keeps14 direct cases passing but fails a hardcoded ACES-color oracle;
+  retained pixels establish the test defect, with exact control/ray repair ready for rerun.
+  Earlier selected input inventories missed newly committed paths; explicit complete
+  source/build/test selection6 now supersedes their coverage claim.
   Full696/native repeat/hardware/installed proofs and
   all77 groups/176 unchanged baselines remain pending; human playback/listening
   is separate. [Design](./mechanism-shorts-ms1n-design.md),
@@ -186,6 +190,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Native composed graph oracle diagnosis and inventory correction
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n` (from `3e686a8b`).
+- **Results:** Graph4 retains all14 direct depth passes, then rejects actual
+  ACES mesh green using a hardcoded color. Independent CPU artifact audits confirm
+  211 behind-text pixels are the real physical color; later families were not reached.
+- **Repair:** Exact mesh-only/artwork-only controls and finite camera-ray coverage
+  replace the color assumption, with observed plateau/interior guards. Independent
+  review, lint4 and build5 pass; actual rerun remains pending. Production is held.
+- **Correction:** Inventories1–5 are selected subsets, since newly committed paths
+  and assets were omitted. All bytes/runs remain retained; explicit selection6
+  covers2,321 files/117,425,034 bytes and is the basis for remaining proofs.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
 
 ### 2026-10-10 — Composed native graph proof checkpoint and real abort pass
 

@@ -792,6 +792,69 @@
         "sha256": "sha256:d692138239ef8ac30d14f7300b94fb74af1142431e00e32c5d200573877c2902"
       },
       "scope": "Fresh full TypeScript after every integration fixture correction; actual graph execution pending."
+    },
+    {
+      "id": "native-depth-graph-4",
+      "status": "failed",
+      "command": "pnpm test:browser:native3d-depth",
+      "sourceCommit": "3e686a8be0de0b17c12483becbdeb59ea5db1f8b",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-depth-proof-4.log",
+        "bytes": 1222,
+        "sha256": "sha256:dce7bb5e086bbc5acc409d65f6a3988cb7ef66967101fede015ecd844e2722c3"
+      },
+      "directory": "/private/tmp/still-shift-ms1n-native-depth-XUu66P",
+      "preservedDirectDepthCasesPassed": 14,
+      "scope": "First compiled crossing family failed a hardcoded green-color oracle. Independent retained-pixel audit finds actual pinned ACES physical RGBA [147,228,89,255] at all211 rejected behind-text samples; old yellow selector identifies zero of183 actual solid yellow samples. This proves a test oracle defect, not a production depth failure. Later graph families and combined cancellation were not reached. Actual artifacts retained.",
+      "diagnosis": {
+        "path": "/private/tmp/mechanism-ms1n-graph4-oracle-diagnosis.json",
+        "bytes": 2665,
+        "sha256": "sha256:91136c289960f0eae3d59a1628087173e94e10a309cc26c8e0f9c261773acfc4"
+      }
+    },
+    {
+      "id": "native-integration-lint-3",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-integration-lint-3.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "scope": "Focused test-only finite-ray/control repair; before further independent bright-ink plateau guard."
+    },
+    {
+      "id": "native-integration-build-4",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-integration-build-4.log",
+        "bytes": 98,
+        "sha256": "sha256:d692138239ef8ac30d14f7300b94fb74af1142431e00e32c5d200573877c2902"
+      },
+      "scope": "Full TypeScript passes the first exact-control test repair; later reference plateau selection still requires refresh."
+    },
+    {
+      "id": "native-integration-lint-4",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-integration-lint-4.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "scope": "Stationary final test-only repair: independent finite-quad camera ray, exact actual mesh/artwork controls, observed reference mode colors and one-pixel full plateau neighborhood. No production or acceptance threshold change; actual graph rerun pending."
+    },
+    {
+      "id": "native-integration-build-5",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-integration-build-5.log",
+        "bytes": 98,
+        "sha256": "sha256:d692138239ef8ac30d14f7300b94fb74af1142431e00e32c5d200573877c2902"
+      },
+      "scope": "Stationary final test-only repair: independent finite-quad camera ray, exact actual mesh/artwork controls, observed reference mode colors and one-pixel full plateau neighborhood. No production or acceptance threshold change; actual graph rerun pending."
     }
   ],
   "implementationEvidence": {
@@ -863,20 +926,23 @@
       "path": "/private/tmp/still-shift-ms1n-implementation-inputs-1.json",
       "inputs": 2126,
       "sha256": "sha256:15640575372e2c80b47f921654eb0610f779bab651f839d3ecdd598c2b9ff82e",
-      "scope": "All inventoried source/test/build bytes unchanged through the passing development gate. Parent 3fa54099; excludes changing milestone reports."
+      "scope": "All inventoried source/test/build bytes unchanged through the passing development gate. Parent 3fa54099; excludes changing milestone reports.",
+      "coverageQualification": "Retained selected subset only; see sourceInventoryMethodCorrection."
     },
     "sourceRepairInventory": {
       "path": "/private/tmp/still-shift-ms1n-implementation-inputs-2.json",
       "inputs": 2128,
       "sha256": "sha256:5787be7101e9240d39dad809503523c67ca20a90eca5c2f46b592ba3555aacff",
-      "scope": "Exact source/test/build bytes unchanged through fresh check-fast3; parent cfcb020e. Accompanying commit records repair checkpoint."
+      "scope": "Exact source/test/build bytes unchanged through fresh check-fast3; parent cfcb020e. Accompanying commit records repair checkpoint.",
+      "coverageQualification": "Retained selected subset only; see sourceInventoryMethodCorrection."
     },
     "sourceRepairCheckpoint": "ae76e3a1f0aa8d72a91e8b6b41c4c2f2d32507c2",
     "runtimeRepairInventory": {
       "path": "/private/tmp/still-shift-ms1n-implementation-inputs-3.json",
       "inputs": 2130,
       "sha256": "sha256:123ca24297da0def3a0f9b58513d3724365272a0e20f368d2d2f35f6f623582c",
-      "scope": "Current source/test/build bytes unchanged through focused real export/identity and passing fast4; parent ae76e3a1. Accompanying commit records exact repair checkpoint."
+      "scope": "Current source/test/build bytes unchanged through focused real export/identity and passing fast4; parent ae76e3a1. Accompanying commit records exact repair checkpoint.",
+      "coverageQualification": "Retained selected subset only; see sourceInventoryMethodCorrection."
     },
     "runtimeRepairCheckpoint": "fd88faa3583ea268b7b847f0d61f4357dba9f5c7",
     "labNativeAuthoring": {
@@ -897,12 +963,28 @@
       "independentReview": "No concrete CLI blockers; maintained Lab fixture corrected to include public builder identity transform without weakening exact JSON comparison."
     },
     "actualGraphAcceptance": {
-      "status": "maintained-fixtures-committed-before-execution",
+      "status": "test-color-oracle-repaired-independent-review-and-build-passed-rerun-pending",
       "families": 5,
       "currentDirectDepthCasesPreserved": 14,
       "actualAbortProof": "passed-at-b9bb7849",
-      "independentReview": "Radiansunitcorrected;farplaneisolatedhiddenphysicalchildwithvisiblegraphicownerandactualpositivecontrol;nootherconcreteblocker.",
+      "independentReview": "Retained actual ACES colors establish prior test oracle defect. Final narrow finite-quad ray/control repair derives actual reference mode colors, excludes partial-coverage boundaries with exact3x3 plateaus, retains four crossing floors8 and outside-visible floor8. Other four graph families reviewed without concrete blockers; actual execution pending.",
       "gates": "Existingnative-depthrequiredgroup, no baseline changes/newgroups."
+    },
+    "sourceInventoryMethodCorrection": {
+      "status": "supersedes-earlier-selected-inventory-coverage-claims",
+      "priorInventories": [1, 2, 3, 4, 5],
+      "explanation": "Earlier snapshots merged prior selected paths with newly untracked files and therefore omitted files newly committed between snapshots, assets and uv.lock. Their captured-byte comparisons remain valid for their selected subsets, but do not establish complete source/build-input coverage. Original snapshots and all executions are retained.",
+      "currentInventory": {
+        "path": "/private/tmp/still-shift-ms1n-implementation-inputs-6.json",
+        "bytes": 395813,
+        "sha256": "sha256:5c27cb91b9276b0e8b427117769aa35cfd4ffb84174f764889c5c3358b3e6934",
+        "version": "ms1n-source-input-inventory-2",
+        "sourceCommit": "3e686a8be0de0b17c12483becbdeb59ea5db1f8b",
+        "files": 2321,
+        "inputBytes": 117425034,
+        "selection": "All Git tracked and nonignored source/build/test/runtime/assets/catalogue roots, all regular root files and package prose; other milestone/evidence prose excluded. Original E01 dependencies are inventoried separately."
+      },
+      "next": "Recapture this explicit selection after the test-only oracle correction and use it before/after remaining actual proofs and aggregate checks."
     }
   },
   "humanContinuousPlaybackListeningAndCreativeAcceptance": "pending",

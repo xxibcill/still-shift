@@ -70,10 +70,13 @@ function color(pixels: Uint8ClampedArray, x: number, y: number) {
 }
 const red = (rgba: readonly number[]) =>
   rgba[0]! > 180 && rgba[1]! < 100 && rgba[2]! < 100 && rgba[3] === 255;
+// These only select fully painted reference ink after the common ACES transfer.
+// Acceptance below compares exact actual control RGBA, not assumed pure primaries.
 const yellow = (rgba: readonly number[]) =>
-  rgba[0]! > 180 && rgba[1]! > 180 && rgba[2]! < 100 && rgba[3] === 255;
-const green = (rgba: readonly number[]) =>
-  rgba[1]! > 180 && rgba[0]! < 100 && rgba[2]! < 100 && rgba[3] === 255;
+  rgba[0]! > 180 &&
+  rgba[1]! > 180 &&
+  rgba[2]! < Math.min(rgba[0]!, rgba[1]!) * 0.7 &&
+  rgba[3] === 255;
 /** Independent perspective for the authored camera [0,0,10], target origin. */
 function project(point: readonly number[], fov = 60) {
   const focal = SIZE / (2 * Math.tan((fov * Math.PI) / 360));
@@ -295,10 +298,10 @@ export async function checkNativeCompositionIntegration(
     input,
     (scene) => {
       const mesh = scene.geometry.meshes[0]!;
-      mesh.positions = [-4, -4, 0, 4, -4, 0, 4, 4, 0, -4, 4, 0];
+      mesh.positions = [-2, -2, 0, 2, -2, 0, 2, 2, 0, -2, 2, 0];
       mesh.normals = [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1];
       mesh.indices = [0, 1, 2, 0, 2, 3];
-      mesh.bounds = { min: [-4, -4, 0], max: [4, 4, 0] };
+      mesh.bounds = { min: [-2, -2, 0], max: [2, 2, 0] };
       scene.camera = { ...scene.camera, near: 1, far: 12 };
       scene.profile = {
         ...scene.profile,
@@ -358,6 +361,13 @@ export async function checkNativeCompositionIntegration(
       },
     ],
   };
+  const meshOnly = await renderOnce(
+    input,
+    source,
+    makeComposition(input, source, [world()]),
+    retain,
+    "graph-crossing-mesh-only",
+  );
   const forward = await renderOnce(
     input,
     source,
@@ -415,32 +425,122 @@ export async function checkNativeCompositionIntegration(
       "bounded compiled draw operations must own real artwork surfaces",
     );
   }
-  const counts = { frontText: 0, behindText: 0, frontShape: 0, behindShape: 0 };
+  const dominantPlateau = (select: (rgba: readonly number[]) => boolean) => {
+    const colors = new Map<string, { rgba: number[]; count: number }>();
+    for (let at = 0; at < artworkOnly.rgba.length; at += 4) {
+      const rgba = Array.from(artworkOnly.rgba.subarray(at, at + 4));
+      if (!select(rgba)) continue;
+      const key = rgba.join(",");
+      const value = colors.get(key);
+      if (value) value.count++;
+      else colors.set(key, { rgba, count: 1 });
+    }
+    const ranked = [...colors.entries()].sort(
+      (a, b) =>
+        b[1].count - a[1].count || (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0),
+    );
+    const plateau = ranked[0]?.[1];
+    requireFact(
+      plateau && plateau.count >= 8,
+      "actual reference ink plateau must have at least eight pixels",
+    );
+    return plateau;
+  };
+  const referencePlateaus = {
+    text: dominantPlateau(red),
+    shape: dominantPlateau(yellow),
+  };
+  await retain({
+    id: "graph-crossing-reference-plateaus",
+    facts: {
+      referencePlateaus,
+      method:
+        "most common actual nonbackground red/yellow RGBA; exact 3x3 plateau neighborhood selects interior ink",
+    },
+  });
+  const samePlateau = (rgba: readonly number[], plateau: readonly number[]) =>
+    plateau.every((value, channel) => rgba[channel] === value);
+  const interiorInk = (x: number, y: number, plateau: readonly number[]) => {
+    for (let dy = -1; dy <= 1; dy++)
+      for (let dx = -1; dx <= 1; dx++)
+        if (!samePlateau(color(artworkOnly.rgba, x + dx, y + dy), plateau))
+          return false;
+    return true;
+  };
+  const counts = {
+    frontText: 0,
+    behindText: 0,
+    frontShape: 0,
+    behindShape: 0,
+    outsideText: 0,
+    outsideShape: 0,
+  };
+  const focal = SIZE / (2 * Math.tan(Math.PI / 6));
+  const physicalHalfExtent = 2;
+  // One output pixel on either side of the finite-quad edge is excluded from
+  // strict coverage comparisons; genuine MSAA edge samples have partial coverage.
+  const meshBoundaryGuard = 10 / focal;
   for (let y = 15; y < 110; y++)
     for (let x = 32; x < 96; x++) {
       if (Math.abs(x + 0.5 - SIZE / 2) < 3) continue;
       const reference = color(artworkOnly.rgba, x, y);
-      const kind = red(reference) ? "Text" : yellow(reference) ? "Shape" : null;
-      if (!kind) continue;
-      // For rotation Y45, worldZ=-worldX. The independent camera ray crosses
-      // the physical z0 mesh before the positive-X (right-hand) graphic half.
-      if (x < SIZE / 2) {
+      const kind = samePlateau(reference, referencePlateaus.text.rgba)
+        ? "Text"
+        : samePlateau(reference, referencePlateaus.shape.rgba)
+          ? "Shape"
+          : null;
+      if (
+        !kind ||
+        !interiorInk(
+          x,
+          y,
+          kind === "Text"
+            ? referencePlateaus.text.rgba
+            : referencePlateaus.shape.rgba,
+        )
+      )
+        continue;
+      // Independent camera ray: O=[0,0,10], D=[rayX,rayY,-1].
+      // Its z=0 hit has t=10; Y(pi/4) graphics satisfy z=-x, hence
+      // tGraphic=10/(1-rayX), independent of their authored Y translation.
+      const rayX = (x + 0.5 - SIZE / 2) / focal;
+      const rayY = (SIZE / 2 - y - 0.5) / focal;
+      const finiteExtent = Math.max(Math.abs(rayX * 10), Math.abs(rayY * 10));
+      const inside = finiteExtent < physicalHalfExtent - meshBoundaryGuard;
+      const outside = finiteExtent > physicalHalfExtent + meshBoundaryGuard;
+      if (!inside && !outside) continue;
+      const actual = color(forward.rgba, x, y);
+      const graphicDepth = 10 / (1 - rayX);
+      if (outside || graphicDepth < 10) {
         requireFact(
-          (kind === "Text" ? red : yellow)(color(forward.rgba, x, y)),
-          "front graphic ink must survive physical mesh depth",
+          reference.every((value, channel) => actual[channel] === value),
+          outside
+            ? "graphic ink outside the finite physical quad must equal actual artwork-only pixels"
+            : "front graphic ink must exactly equal actual artwork-only pixels",
         );
-        counts[kind === "Text" ? "frontText" : "frontShape"]++;
+        if (outside) counts[kind === "Text" ? "outsideText" : "outsideShape"]++;
+        else counts[kind === "Text" ? "frontText" : "frontShape"]++;
       } else {
+        const physical = color(meshOnly.rgba, x, y);
         requireFact(
-          green(color(forward.rgba, x, y)),
-          "behind graphic ink must be occluded by the physical mesh in the same frame",
+          physical.every((value, channel) => actual[channel] === value),
+          "behind graphic ink must exactly equal actual opaque mesh-only pixels in the same frame",
         );
         counts[kind === "Text" ? "behindText" : "behindShape"]++;
       }
     }
   requireFact(
-    Object.values(counts).every((value) => value >= 8),
+    [
+      counts.frontText,
+      counts.behindText,
+      counts.frontShape,
+      counts.behindShape,
+    ].every((value) => value >= 8),
     "both real glyph/shape halves must provide independently measured crossing ink",
+  );
+  requireFact(
+    counts.outsideText + counts.outsideShape >= 8,
+    "the finite-quad oracle must also retain real outside-visible graphic ink",
   );
   const maskMissing = project([0, -2 - 12 / 32, 0]);
   requireFact(
@@ -449,7 +549,21 @@ export async function checkNativeCompositionIntegration(
   );
   await finish("compiled-cropped-text-shape-joint-depth", {
     counts,
+    referencePlateaus,
+    referenceInkGuardPixels: 1,
     exactBothLayerOrders: true,
+    independentGeometry: {
+      physicalHalfExtent,
+      focal,
+      meshBoundaryGuard,
+      camera: [0, 0, 10],
+      graphicPlane: "z=-x",
+      physicalPlane: "z=0",
+    },
+    exactControls: {
+      meshOnlyPixelSha256: await hash(meshOnly.rgba),
+      artworkOnlyPixelSha256: await hash(artworkOnly.rgba),
+    },
     hardMaskExcludedPixel: maskMissing,
     crop,
   });
