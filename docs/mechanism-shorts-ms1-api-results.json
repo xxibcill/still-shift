@@ -172,7 +172,18 @@
     "rebasing": "Prepared/capture paths become package-relative. Native font/audio references matched by actual resolved dependency path/hash/type rather than hashed font ID; report paths map both original and realpath aliases.",
     "manifest": "All copied/generated files have hashes except the self-referential package.manifest.json; file budget covers108000 frames plus500 dependencies and shot metadata.",
     "verification": "After original source/prepared roots removed, copied source loads with identical semantic project hash, native font references resolve, authored state reevaluation agrees with sidecar projection/camera/parts/rigs/assertions, and all file hashes remain exact. This verifier never launches a renderer and does not independently re-prove raycast occlusion.",
-    "testFixtureLimitation": "3frame64px synthetic plate/sidecar metadata and explicit dummy final byte fixture; no browser render or final-media decode is inferred from packaging tests. Optional final report alias extension added after latest package runtime pass and awaits parent gate."
+    "testFixtureLimitation": "3frame64px synthetic plate/sidecar metadata and explicit dummy final byte fixture; no browser render or final-media decode is inferred from packaging tests. Optional final report alias extension added after latest package runtime pass and awaits parent gate.",
+    "laterFixtureClosure": {
+      "status": "passed-in-later-pinned-runtime-and-installed-proof",
+      "file": "tests/runtime/mechanism-package.test.ts",
+      "tests": 17,
+      "testMilliseconds": 10804,
+      "log": "/tmp/still-shift-ms1-full-check-3.log",
+      "logLine": 445,
+      "record": "./mechanism-shorts-ms1-full-gate-results.json",
+      "installedRecord": "./mechanism-shorts-ms1-installed-e01-results.json",
+      "scope": "The initial synthetic fixture limitation remains historical. Later pinned package tests include the declared report-alias/live-receipt closure, stale/swapped final and cancellation controls; the separate actual 737-file installed delivery closes relocation and final-media evidence."
+    }
   },
   "narrowSourceChanges": {
     "ioTemps": "randomUUID exclusive temp names for writeMechanismJson and patch scratch files;32 simultaneous writes under mocked Date.now0 yield exactly1 successful exclusive publication.",
@@ -221,7 +232,19 @@
       "aligned192kbps AAC with codec padding and complete tail",
       "mono reference duplication in stereo final"
     ],
-    "pendingFixture": "Exact PCM no-padding/hash-equivalence test added after initial7test pass; parent sequenced runtime gate pending."
+    "pendingFixture": "Exact PCM no-padding/hash-equivalence test added after initial7test pass; parent sequenced runtime gate pending.",
+    "pendingFixtureClosure": {
+      "status": "passed-in-later-pinned-runtime",
+      "initialCheckpointField": "pendingFixture",
+      "file": "tests/runtime/mechanism-audio.test.ts",
+      "tests": 8,
+      "testMilliseconds": 1215,
+      "log": "/tmp/still-shift-ms1-full-check-3.log",
+      "logSha256": "sha256:cb701bafcf558de17513fbbe1f2c30a0ef699717b750bc179bf504aaaf4e832f",
+      "logLine": 487,
+      "record": "./mechanism-shorts-ms1-full-gate-results.json",
+      "scope": "The later eighth exact PCM no-padding/hash-equivalence case is included in the eight passing pinned runtime tests. The original seven-test log and unpinned caveat remain historical."
+    }
   },
   "installedPackageReview": {
     "readOnly": true,
@@ -250,9 +273,28 @@
       "issue": "toolchain.json is read from Vite-discovered defaultBrowserProjectRoot, which can point to an unrelated consumer workspace during installed execution.",
       "suggestedFix": "Package-owned fileURLToPath(new URL(../../../../toolchain.json,import.meta.url)); separate package identity from Vite workspace serving root.",
       "reportedToParent": true,
-      "verification": "Source-based finding only; no installed gate executed by this agent."
+      "verification": "Source-based finding only; no installed gate executed by this agent.",
+      "laterClosure": {
+        "status": "repaired-and-installed-verified",
+        "implementation": "Capture reads package-owned toolchain.json through fileURLToPath(new URL(\"../../../../toolchain.json\", import.meta.url)); consumer Vite serving root no longer supplies package identity.",
+        "sourceCommit": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
+        "record": "./mechanism-shorts-ms1-installed-e01-results.json",
+        "scope": "The original source-only finding and its original verification statement are retained; the later OS-denied installed lifecycle provides current evidence."
+      }
     },
-    "actualInstalledGate": "Parent owns actual clean installed-package build/consumer gate; not claimed complete."
+    "actualInstalledGate": "Parent owns actual clean installed-package build/consumer gate; not claimed complete.",
+    "laterGateClosure": {
+      "status": "passed-separately",
+      "sourceCommit": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
+      "archiveSha256": "sha256:78fb7016080e371955e4c5b39266a8c1a71e4a4c3b78298aa9b6e4a7b5735309",
+      "archiveBytes": 2926256,
+      "offlineChecks": 26,
+      "conditionalOnlineDependencyAudit": "not-run-in-offline-mode",
+      "packageRecord": "./mechanism-shorts-ms1-package-gate-results.json",
+      "installedRecord": "./mechanism-shorts-ms1-installed-e01-results.json",
+      "installedStatus": "installed-baseline-and-text-only-lifecycle-software-passed",
+      "scope": "OS-denied installed baseline and text-only E01 exports pass final software checks. All 696 verified plates are reused with zero new 3D captures; overlays/audio are rerendered. The consumer-only live Darwin-libproc process-inspection exception remains explicit, and installed package/helper bytes remain unchanged. E01 stays legacy/semantically unassessed; human review remains pending."
+    }
   },
   "verification": {
     "logs": [
@@ -329,6 +371,60 @@
       "Latest eighth PCM and optional report-alias package regression",
       "Actual installed consumer mechanism CLI/preview/package gate",
       "Human continuous-motion and listening acceptance remain separate"
-    ]
+    ],
+    "currentClosure": {
+      "status": "completed-in-stages",
+      "record": "./mechanism-shorts-ms1-full-gate-results.json",
+      "completionRecord": "./mechanism-shorts-ms1-completion.md",
+      "codeCheckpoint": "09ce824b86e03b3e95616c9fb91b549b9c88845c",
+      "pinnedRuntime": {
+        "node": "22.23.1",
+        "pnpm": "10.29.3",
+        "runtimeTests": 148,
+        "audioTests": 8,
+        "packageTests": 17,
+        "cliTests": 11
+      },
+      "build": "passed in the attempt-3 prefix",
+      "installedLifecycle": "./mechanism-shorts-ms1-installed-e01-results.json",
+      "pending": [
+        "Human continuous playback, listening and creative acceptance remain separate."
+      ],
+      "scope": "Original logs, runtimeCaveat, inFlight and pending fields are the initial checkpoint. Their later software requirements are closed by the pinned prefix, separate installed proof and completed staged suffix; no failed aggregate is converted into a pass."
+    }
+  },
+  "status": "software-verified-in-stages-human-review-pending",
+  "initialCheckpointScope": "Source identities, owned-file hashes, original pending narratives and verification logs describe the initial checkpoint at createdAt. Their original failed/unpinned outcomes are retained; currentCompletion and the later closure annotations record subsequent pinned evidence.",
+  "currentCompletion": {
+    "recordedAt": "2026-10-10T02:00:57.231Z",
+    "status": "software-verified-in-stages-human-review-pending",
+    "codeCheckpoint": "09ce824b86e03b3e95616c9fb91b549b9c88845c",
+    "packageSourceCommit": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
+    "record": "./mechanism-shorts-ms1-full-gate-results.json",
+    "completionRecord": "./mechanism-shorts-ms1-completion.md",
+    "requiredGroups": 76,
+    "method": "staged-unchanged-source",
+    "stagedExitCode": 0,
+    "observedStagedExitAt": "2026-10-10T01:56:50.131599+00:00",
+    "stagedLog": {
+      "path": "/tmp/still-shift-ms1-remaining-required-groups-1.log",
+      "bytes": 217251,
+      "sha256": "5b86ab547312491a5b7c44adb37724576dc923608d97de43fd5e9b5f7092d1de"
+    },
+    "aggregateAttemptsRemainFailed": [1, 2, 3],
+    "uninterruptedPnpmCheckPass": false,
+    "scope": "All required local groups completed on unchanged source/tests/thresholds. This does not establish human continuous playback, listening or creative acceptance.",
+    "archiveAndInstalledLifecycle": {
+      "status": "passed-separately",
+      "sourceCommit": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
+      "archiveSha256": "sha256:78fb7016080e371955e4c5b39266a8c1a71e4a4c3b78298aa9b6e4a7b5735309",
+      "archiveBytes": 2926256,
+      "offlineChecks": 26,
+      "conditionalOnlineDependencyAudit": "not-run-in-offline-mode",
+      "packageRecord": "./mechanism-shorts-ms1-package-gate-results.json",
+      "installedRecord": "./mechanism-shorts-ms1-installed-e01-results.json",
+      "installedStatus": "installed-baseline-and-text-only-lifecycle-software-passed",
+      "scope": "OS-denied installed baseline and text-only E01 exports pass final software checks. All 696 verified plates are reused with zero new 3D captures; overlays/audio are rerendered. The consumer-only live Darwin-libproc process-inspection exception remains explicit, and installed package/helper bytes remain unchanged. E01 stays legacy/semantically unassessed; human review remains pending."
+    }
   }
 }

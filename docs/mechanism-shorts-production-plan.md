@@ -1,8 +1,8 @@
 # Mechanism Shorts production plan
 
-**Created:** 2026-10-07. **Status:** active; MS0 audit complete; MS1 bridge implementation active (2026-10-09).
-**Updated:** 2026-10-08 — supported Three.js integration, then native 3D composition;
-all nine feedback audit amendments incorporated into planned tasks and acceptance.
+**Created:** 2026-10-07. **Status:** active; MS0 complete; MS1 software verified in stages, human review pending (2026-10-10).
+**Updated:** 2026-10-10 — MS1 software verification completed in stages; the
+2026-10-08 bridge/native order and all nine feedback amendments remain incorporated.
 **Start:** after the current [composition engine plan](./composition-engine-plan.md)
 is complete under its approved scope and acceptance rules.
 **Implementation owner and branch:** Codex, `codex/mechanism-ms1` from `main`
@@ -13,8 +13,8 @@ amendment diffs and the final recorded gate correction. The core composition
 scope is now merged and `0.1.0` is published; see the [current baseline](../ROADMAP.md#current-baseline)
 and [release evidence](./npm-release-results.json). The completion-gate checklist
 below retains its planning-time context and records what MS0 must carry into its
-baseline audit. MS0 has recovered and audited the original inputs. Bridge/native implementation
-and human production acceptance remain pending. The recovered plan and coverage audit preserve prior decisions; the MS0 record
+baseline audit. MS0 has recovered and audited the original inputs. The MS1 bridge has completed implementation and required software verification in
+stages; native implementation and human production acceptance remain pending. The recovered plan and coverage audit preserve prior decisions; the MS0 record
 will bind new findings to the integrated source and original inputs.
 
 Build a reusable production system for explanatory Shorts about familiar objects.
@@ -211,8 +211,9 @@ owner. A minimum slice does not close the entire request.
 
 The nine findings in the [feedback coverage audit](./mechanism-shorts-feedback-coverage-audit-2026-10-07.md)
 are addressed in this plan as of 2026-10-08. Each has an explicit task and required
-acceptance evidence below. Implementation and verification remain pending; this
-planning update does not close any milestone or change the composition start gate.
+acceptance evidence below. That dated planning update did not close any milestone or change the composition
+start gate. Current MS1 software completion is recorded below; later stages and
+human production acceptance remain pending.
 
 | Finding                                    | Delivery and acceptance owner            | Required proof                                                                                                        |
 | ------------------------------------------ | ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
@@ -436,16 +437,16 @@ MS0 audit is complete under the owner's implementation request on 2026-10-09. MS
 MS1. MS4B remains conditional for explanation views and further native extensions,
 with its decision recorded after the pilot. Audit/code completion and product review remain separate evidence.
 
-| ID   | Deliverable                                              | Depends on                                    | Status            | Completion record                                   |
-| ---- | -------------------------------------------------------- | --------------------------------------------- | ----------------- | --------------------------------------------------- |
-| MS0  | Completed-composition audit and E01 baseline             | Composition completion gate                   | `[x]`             | [MS0 evidence](./mechanism-shorts-ms0-results.json) |
-| MS1  | Supported bridge and portable E01                        | MS0                                           | In progress       | MS1 contract/one-frame slice                        |
-| MS1N | Native 3D composition using shared scene and assets      | MS1                                           | `[ ]`             | Pending                                             |
-| MS2  | Reusable packs, rigs, shots, labels and cue-driven edits | MS1N                                          | `[ ]`             | Pending                                             |
-| MS3  | Episode lifecycle and ten-episode pilot                  | MS2                                           | `[ ]`             | Pending                                             |
-| MS4A | Queue stress and recovery at 300 jobs                    | MS3                                           | `[ ]`             | Pending                                             |
-| MS4B | Required explanation views and native extensions         | MS3 and a recorded coverage need              | `[ ]` conditional | Pending                                             |
-| MS4C | Diverse 30-episode cohort and capacity decision          | MS4A; MS4B when required by selected episodes | `[ ]`             | Pending                                             |
+| ID   | Deliverable                                              | Depends on                                    | Status                                            | Completion record                                   |
+| ---- | -------------------------------------------------------- | --------------------------------------------- | ------------------------------------------------- | --------------------------------------------------- |
+| MS0  | Completed-composition audit and E01 baseline             | Composition completion gate                   | `[x]`                                             | [MS0 evidence](./mechanism-shorts-ms0-results.json) |
+| MS1  | Supported bridge and portable E01                        | MS0                                           | Software verified in stages; human review pending | [Completion](./mechanism-shorts-ms1-completion.md)  |
+| MS1N | Native 3D composition using shared scene and assets      | MS1                                           | `[ ]`                                             | Pending                                             |
+| MS2  | Reusable packs, rigs, shots, labels and cue-driven edits | MS1N                                          | `[ ]`                                             | Pending                                             |
+| MS3  | Episode lifecycle and ten-episode pilot                  | MS2                                           | `[ ]`                                             | Pending                                             |
+| MS4A | Queue stress and recovery at 300 jobs                    | MS3                                           | `[ ]`                                             | Pending                                             |
+| MS4B | Required explanation views and native extensions         | MS3 and a recorded coverage need              | `[ ]` conditional                                 | Pending                                             |
+| MS4C | Diverse 30-episode cohort and capacity decision          | MS4A; MS4B when required by selected episodes | `[ ]`                                             | Pending                                             |
 
 ### MS0 Baseline and dependency audit
 
@@ -488,7 +489,7 @@ not unrelated contract or synthetic-fixture work.
 [input inventory](./mechanism-shorts-ms0-inputs.json),
 [API audit](./mechanism-shorts-ms0-api-audit.json),
 [typography audit](./mechanism-shorts-ms0-typography-audit.json) and
-[baseline protocol](./mechanism-shorts-ms0-baseline.md). Audit acceptance and documentation verification are complete; MS0 PR is next.
+[baseline protocol](./mechanism-shorts-ms0-baseline.md). Audit acceptance and documentation verification are complete; [MS0 PR #51](https://github.com/xxibcill/still-shift/pull/51) is open and unmerged.
 Historical Arial/GPU identity, public media redistribution and human playback/
 listening acceptance remain explicitly limited; no MS1 completion is inferred.
 
@@ -505,46 +506,53 @@ evaluation and anchor IDs independent of plate capture so MS1N can consume them.
 Plate files and sidecars are bridge delivery artifacts, not the authoritative 3D
 scene. Preserve exact scene/asset identities when switching delivery paths.
 
-- [ ] Implement the first-party Three.js preparation module and shared runtime
+- [x] Implement the first-party Three.js preparation module and shared runtime
       integration. Remove episode-owned HTTP servers, screenshot loops, SVG label
       code and FFmpeg assembly from the authored episode.
-- [ ] Reconstruct solid hook/flange geometry with through-slots, curved blade,
+- [x] Reconstruct solid hook/flange geometry with through-slots, curved blade,
       stationary blade-mounted rivets, recognizable housing and contact surfaces.
       Preserve the distinction between geometry, material styling and mechanism state.
-- [ ] Prove PBR materials, environment reflections, bevel highlights, contact
+- [x] Prove PBR materials, environment reflections, bevel highlights, contact
       shadows, color/alpha handling and the supported export profile on a short
       representative shot before paying for full renders.
-- [ ] Emit clean frames and named anchor/visibility metadata. Compile all seven
+- [x] Emit clean frames and named anchor/visibility metadata. Compile all seven
       roles—PULL, PUSH, THICKNESS, TRAVEL, INSIDE, OUTSIDE and SLIDES—through native
       typography/shapes, with the actual meaning resolved in MS0. Preserve separate
       captions, no persistent brand/sentence headers, and enlarged-view qualifiers.
-- [ ] Add shared exact-copy coverage/cut validation for native overlays, with
+- [x] Add shared exact-copy coverage/cut validation for native overlays, with
       explicit fallback/strict-profile behavior and legacy compatibility. Preserve
       the Plex-only Thai negative and Noto control. Reuse existing font preparation.
-- [ ] Declare complete value/unit/qualification groups, intact phrase treatments
+- [x] Declare complete value/unit/qualification groups, intact phrase treatments
       and purposeful reading intervals in the portable authoring/review contract.
       Extend existing CE12 policy without suppressing real opacity/velocity faults
       or changing unannotated defaults. Test faint qualifications and color-only
       emphasis; do not pad or slow narration or add filler motion to pass lint.
-- [ ] Reproduce base-36/inline-96 masks before proposing a renderer repair. Add a
+- [x] Reproduce base-36/inline-96 masks before proposing a renderer repair. Add a
       lost-label/leader portrait negative and corrected control to the existing
       anchor tests; verify actual semantic target, transformed endpoint and clearance.
-- [ ] Implement load/validate/compile/render/check/save/reload/patch/package using
+- [x] Implement load/validate/compile/render/check/save/reload/patch/package using
       supported CLI/API paths and supplied audio. Include compact JSON receipts and
       sanitized cause chains from the first vertical slice.
-- [ ] Publish the minimum episode/component JSON Schemas and version discovery.
+- [x] Publish the minimum episode/component JSON Schemas and version discovery.
       Enforce documented item/byte response limits, located unsupported-version
       errors and access to complete reports under the episode interface contract.
-- [ ] Deliver the manifest, dependency dry run, runtime installation instructions
+- [x] Deliver the manifest, dependency dry run, runtime installation instructions
       and sanitized error contract defined under portable projects and diagnostics.
-- [ ] Deliver a bridge callout-overlap fixture and the supported detection, scoped
+- [x] Deliver a bridge callout-overlap fixture and the supported detection, scoped
       patch, affected-output render and final-file recheck path. Include a compact
       project summary sufficient for a fresh agent session to complete the repair.
-- [ ] Detect invalid anchor, stale sidecar, wrong travel, moving rivet and contact
+- [x] Detect invalid anchor, stale sidecar, wrong travel, moving rivet and contact
       gap with part/property and first failing interval. Provide an independent
       analytic expectation rather than comparing the evaluator to itself.
-- [ ] Instrument stage times, render work and cache receipts immediately so later
+- [x] Instrument stage times, render work and cache receipts immediately so later
       savings claims have a baseline.
+
+**Software completion (2026-10-10):** these 13 rows record completed implementation
+and software verification. All 76 required local groups completed in stages on
+unchanged source; aggregate attempts 1–3 remain failed. Human continuous playback,
+listening and creative acceptance remain pending. See the [13-row completion
+note](./mechanism-shorts-ms1-completion.md), [gate history](./mechanism-shorts-ms1-full-gate-results.json)
+and [current installed proof](./mechanism-shorts-ms1-installed-e01-results.json).
 
 **Acceptance:** export all 696 frames with supplied audio at 1080×1920/30 fps from
 a saved project in the isolated clean environment defined above, without GUI
@@ -1035,5 +1043,7 @@ portable project.
 **Implementation order:** MS0 → MS1 bridge → MS1N native 3D → MS2 → MS3, then
 conditional explanation extensions and capacity stages under the tracker.
 
-**Current next action (2026-10-09):** open the verified MS0 PR, then build MS1's shared-contract/one-frame and one-contact-shot proof
-before complete portable E01 and scoped label-repair acceptance.
+**Current next action (2026-10-10):** open the MS1 PR targeting `main`, then create
+`codex/mechanism-ms1n` from fresh `main` carrying the exact MS1 prerequisite and
+commit the native interface freeze before implementation. Human MS1 playback and
+listening acceptance remain separate from this software-complete checkpoint.

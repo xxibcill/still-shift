@@ -1,7 +1,7 @@
 {
   "schemaVersion": "mechanism-ms1-semantic-display-results-1",
   "date": "2026-10-10",
-  "status": "focused-verified-encoded-and-isolated-proof-pending",
+  "status": "software-verified-in-stages-human-review-pending",
   "reproducedGap": "The prior complete-context sampler retained authored count endpoint 12 while encoded frame90 displayed24. Attempt3 encoded evidence is retained without a rendered-count-copy acceptance claim.",
   "changes": [
     "Use the existing renderer display resolver at layer-local source time for pinned native count/cut/settled text and supported rich typography providers.",
@@ -65,8 +65,65 @@
     "listening": "pending"
   },
   "next": [
+    "Human continuous playback, listening and creative acceptance remain pending separately.",
+    "Preserve legacy/unassessed E01 and factual/glyph-readability limits; finer Thai independent-unit probing belongs to MS2.",
+    "MS1N implementation remains gated on the MS1 PR and interface freeze; no native implementation or publication is inferred from staged software completion."
+  ],
+  "initialStatus": "focused-verified-encoded-and-isolated-proof-pending",
+  "initialNextActions": [
     "Complete actual historical and hermetic encoded packet.",
     "Refresh immutable installed archive and OS-denied E01 proof.",
     "Rerun complete local pnpm check; retain prior timeout/focused recorder repair."
-  ]
+  ],
+  "currentCompletion": {
+    "recordedAt": "2026-10-10T02:00:57.231Z",
+    "status": "software-verified-in-stages-human-review-pending",
+    "codeCheckpoint": "09ce824b86e03b3e95616c9fb91b549b9c88845c",
+    "packageSourceCommit": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
+    "record": "./mechanism-shorts-ms1-full-gate-results.json",
+    "completionRecord": "./mechanism-shorts-ms1-completion.md",
+    "requiredGroups": 76,
+    "method": "staged-unchanged-source",
+    "stagedExitCode": 0,
+    "observedStagedExitAt": "2026-10-10T01:56:50.131599+00:00",
+    "stagedLog": {
+      "path": "/tmp/still-shift-ms1-remaining-required-groups-1.log",
+      "bytes": 217251,
+      "sha256": "5b86ab547312491a5b7c44adb37724576dc923608d97de43fd5e9b5f7092d1de"
+    },
+    "aggregateAttemptsRemainFailed": [1, 2, 3],
+    "uninterruptedPnpmCheckPass": false,
+    "scope": "All required local groups completed on unchanged source/tests/thresholds. This does not establish human continuous playback, listening or creative acceptance.",
+    "encodedProof": {
+      "status": "passed-expected-controls-and-negatives",
+      "record": "./mechanism-shorts-ms1-semantic-typography-results.json",
+      "historicalAndHermeticCaseCountEach": 24,
+      "historicalAndHermeticFramesEach": 2832,
+      "freshRequiredGatePacket": {
+        "report": {
+          "path": "/private/tmp/still-shift-ms1-semantic-typography-OFcEyi/result.json",
+          "sha256": "2a6aeb96b635739418c66cf33f736a8f11d23af2924820491614c4b604951454",
+          "bytes": 2174209
+        },
+        "caseCount": 24,
+        "encodedExports": 24,
+        "encodedFrames": 2832,
+        "sampledNativeFrames": 158,
+        "sampledReducedFrames": 158
+      },
+      "scope": "Complete endpoints and opaque color-only controls pass overall quality; intact phrases establish eligible holds and scoped ink retention while full-composition entry/blank/frozen failures remain. Located counted, partial-copy, unit and faint-context negatives remain. Factual truth/general glyph readability and subthreshold Thai mark detail are not inferred."
+    },
+    "archiveAndInstalledLifecycle": {
+      "status": "passed-separately",
+      "sourceCommit": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
+      "archiveSha256": "sha256:78fb7016080e371955e4c5b39266a8c1a71e4a4c3b78298aa9b6e4a7b5735309",
+      "archiveBytes": 2926256,
+      "offlineChecks": 26,
+      "conditionalOnlineDependencyAudit": "not-run-in-offline-mode",
+      "packageRecord": "./mechanism-shorts-ms1-package-gate-results.json",
+      "installedRecord": "./mechanism-shorts-ms1-installed-e01-results.json",
+      "installedStatus": "installed-baseline-and-text-only-lifecycle-software-passed",
+      "scope": "OS-denied installed baseline and text-only E01 exports pass final software checks. All 696 verified plates are reused with zero new 3D captures; overlays/audio are rerendered. The consumer-only live Darwin-libproc process-inspection exception remains explicit, and installed package/helper bytes remain unchanged. E01 stays legacy/semantically unassessed; human review remains pending."
+    }
+  }
 }

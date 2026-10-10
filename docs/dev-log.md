@@ -43,25 +43,21 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS1 bridge verification (2026-10-10):** `codex/mechanism-ms1` carries exact
-  MS0 prerequisite `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51)
-  remains open/unmerged. The `b4f0119d` archive passes 26 offline package checks
-  and both OS-denied installed E01 exports, reusing all 696 exact clean 3D frames
-  with zero new 3D captures. Separate 24-case historical/hermetic typography
-  packets pass expected outcomes; E01 legacy semantic context remains unassessed.
-  Full `pnpm check` attempt 3 passes 3,771 units, 148 runtime, 318 integrations,
-  14 Python tests and 61 required groups, then stops at Canvas story-visibility
-  timing 1.351 against 1.25 with exact pixels. Unchanged focused rerun passes
-  1.144; cause remains unproven. Staged recovery now covers 75 of 76 groups,
-  including the strict Story/Commerce matrices, all 176 family defaults (36,061
-  frames), the fresh final 24-case encoded typography packet and portrait proof.
-  Packet source hashes match all 17 recorded files. Final 176-item baseline check
-  remains active; completion requires its actual successful exit and final log.
-  Attempts 1–3, setup recoveries, consumer libproc exception and 29 intentional
-  mask-baseline frame changes remain retained. Human playback/listening and MS1
-  PR are pending; MS1N implementation waits for that PR. Original checkout edits
-  are preserved. [Results](./mechanism-shorts-ms1-results.json),
-  [gate history](./mechanism-shorts-ms1-full-gate-results.json).
+- **MS1 software complete in stages (2026-10-10):** `codex/mechanism-ms1` carries
+  exact MS0 prerequisite `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51)
+  remains open/unmerged. All 76 original required groups completed on unchanged
+  `09ce824b` production/test inputs: attempt 3 passes initial checks and 61 groups,
+  then fails required Canvas timing 1.351 > 1.25 with exact pixels; the unchanged
+  strict matrix and 15-command suffix actually exit 0. Final 176 baselines/36,061
+  frames pass in 267.68s. Earlier failed aggregates, focused reruns, unproven timing
+  cause and 29 intentional mask-baseline changes remain retained. The b4f0119d
+  archive passes 26 offline checks and both OS-denied installed696-frame E01
+  exports, each reusing all plates with 0 new 3D captures. Fresh 24-case typography
+  controls/negatives pass; E01 remains legacy/semantically unassessed. Consumer
+  libproc exception, customer-media redistribution and human review limits remain.
+  MS1 PR is next; native implementation waits for that PR/interface freeze.
+  Original checkout edits are preserved. [Completion](./mechanism-shorts-ms1-completion.md),
+  [results](./mechanism-shorts-ms1-results.json), [gate history](./mechanism-shorts-ms1-full-gate-results.json).
 
 - **MS0 audit complete (2026-10-09):** `codex/mechanism-ms0` audit is committed
   at `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51) is open.
@@ -171,6 +167,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — MS1 required software verification completed in stages
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1`; production/test checkpoint
+  remains `09ce824b`, current package source remains `b4f0119d`.
+- **Results:** actual sequential suffix exit 0 closes all 76 required groups.
+  Final 176 baseline items/36,061 frames pass in 267.68s. All 13 implementation/
+  software acceptance rows have concrete evidence; current installed archive
+  and both 696-frame finals remain exact. No uninterrupted full pass is claimed.
+- **Retained:** failed aggregate attempts 1–3, required Canvas timing failure and
+  unchanged recovery, 29 intentional mask-baseline changes and consumer exception.
+- **Next:** open MS1 PR, then native branch/interface freeze. Human continuous
+  playback/listening/creative review remains pending; E01 semantic status unassessed.
+- **Records:** [completion](./mechanism-shorts-ms1-completion.md),
+  [gate history](./mechanism-shorts-ms1-full-gate-results.json),
+  [group coverage](./mechanism-shorts-ms1-required-groups-coverage.json).
 
 ### 2026-10-10 — MS1 fresh final typography packet and 75-group coverage
 

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "mechanism-ms1-full-gate-results-1",
-  "status": "remaining-required-groups-running",
+  "status": "required-groups-complete-in-stages",
   "codeCheckpoint": "09ce824b86e03b3e95616c9fb91b549b9c88845c",
   "productionArchiveSource": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
   "attempts": [
@@ -253,7 +253,7 @@
   "humanReview": "continuous visual/listening pending",
   "publication": "not-requested",
   "requiredGroupCompletion": {
-    "status": "in-progress",
+    "status": "complete-in-stages",
     "method": "staged-unchanged-source",
     "codeCheckpoint": "09ce824b86e03b3e95616c9fb91b549b9c88845c",
     "totalRequiredGroups": 76,
@@ -276,9 +276,9 @@
       "test:browser:composition-baselines"
     ],
     "log": "/tmp/still-shift-ms1-remaining-required-groups-1.log",
-    "notes": "The failed aggregate remains failed. Full story matrix and all14 downstream groups run sequentially without production/test changes. Only actual successful exits can close staged required-group coverage.",
-    "completedRequiredGroupsSoFar": 75,
-    "activeGroup": "test:browser:composition-baselines",
+    "notes": "All 76 original required groups completed in stages on unchanged production/test inputs. The15-command sequential continuation actually exited0; aggregate attempts 1–3 remain failed. No timing region, threshold or source/test change follows attempt 3.",
+    "completedRequiredGroupsSoFar": 76,
+    "activeGroup": null,
     "completedSuffixGroups": [
       "test:browser:composition-story-fixtures",
       "test:browser:composition-commerce-adapter",
@@ -293,7 +293,8 @@
       "test:browser:composition-family-timeline",
       "test:browser:composition-family-defaults",
       "test:browser:mechanism-typography",
-      "test:browser:mechanism-portrait"
+      "test:browser:mechanism-portrait",
+      "test:browser:composition-baselines"
     ],
     "completedSuffixEvidence": {
       "story": {
@@ -338,8 +339,36 @@
         "framesEach": 61,
         "expectedControlsAndNegatives": "passed; subsequent baseline header confirms successful exit",
         "maximumEndpointErrorPixels": 2.3437142008433856e-13
+      },
+      "finalBaselines": {
+        "items": 176,
+        "frames": 36061,
+        "seconds": 267.68
+      },
+      "legacy": {
+        "fixtures": 7,
+        "frames": 3552,
+        "pixelsAndRepeatedExports": "passed; required preview checks complete before next group header",
+        "deferredWebGLTiming": {
+          "fixture": "legacy/crisis-fracture",
+          "ratio": 1.5663961345470339,
+          "requirement": "existing CE6-P timing deferral; pixel and export checks passed"
+        }
       }
     },
-    "progressEvidence": "Actual sequential headers establish all14 suffix groups before the final baseline command exited successfully. Session22389 remains active at baseline group76; no terminal successful exit or final log digest is claimed."
+    "progressEvidence": "Direct root tool observed session22389 exit 0; all15 original suffix headers match package scripts, with176 final baseline completion rows and exact terminal summary.",
+    "completedAt": "2026-10-10T01:59:15.878798+00:00",
+    "exitCode": 0,
+    "exitObservedDirectlyByRootTool": true,
+    "finalLog": {
+      "path": "/tmp/still-shift-ms1-remaining-required-groups-1.log",
+      "bytes": 217251,
+      "sha256": "5b86ab547312491a5b7c44adb37724576dc923608d97de43fd5e9b5f7092d1de",
+      "lines": 1282
+    },
+    "completionMethod": "complete-required-groups-in-stages",
+    "uninterruptedPnpmCheckPass": false,
+    "coverageAudit": "./mechanism-shorts-ms1-required-groups-coverage.json",
+    "exitReceipt": "./mechanism-shorts-ms1-staged-exit-receipt.json"
   }
 }

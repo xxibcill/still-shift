@@ -2,7 +2,7 @@
   "schemaVersion": "mechanism-milestone-results-1",
   "milestone": "MS1",
   "date": "2026-10-10",
-  "status": "in-progress",
+  "status": "software-verified-in-stages-human-review-pending",
   "owner": "Codex",
   "branch": "codex/mechanism-ms1",
   "base": "e6eb7b06e3b5a042be2c1e2568a1a84cf9c041ad",
@@ -425,6 +425,29 @@
       },
       "details": "./mechanism-shorts-ms1-full-gate-results.json",
       "notes": "Final baseline command is running; aggregate attempts1–3 remain failed and no uninterrupted pnpm check pass is claimed."
+    },
+    {
+      "command": "Complete original required groups via unchanged-source15-command sequential continuation",
+      "status": "passed-in-stages",
+      "codeCheckpoint": "09ce824b86e03b3e95616c9fb91b549b9c88845c",
+      "exitCode": 0,
+      "completedRequiredGroups": 76,
+      "prefixGroupsFromFailedAggregate": 61,
+      "successfulSuffixGroups": 15,
+      "finalBaselines": {
+        "items": 176,
+        "frames": 36061,
+        "seconds": 267.68
+      },
+      "log": {
+        "path": "/tmp/still-shift-ms1-remaining-required-groups-1.log",
+        "bytes": 217251,
+        "sha256": "5b86ab547312491a5b7c44adb37724576dc923608d97de43fd5e9b5f7092d1de",
+        "lines": 1282
+      },
+      "details": "./mechanism-shorts-ms1-full-gate-results.json",
+      "coverageAudit": "./mechanism-shorts-ms1-required-groups-coverage.json",
+      "notes": "Initial toolchain/schema/boundaries/format/lint/build plus 3,771 units/148 runtime/318 integrations/14 Python tests pass in attempt 3; strict Story and all downstream groups pass unchanged continuation. Earlier aggregate failures remain retained."
     }
   ],
   "renderEvidence": [
@@ -592,7 +615,7 @@
     "humanCreativeAcceptance": "not-reviewed"
   },
   "limits": [
-    "Required software-group completion remains in progress after attempt3 Canvas timing failure; completed encoded typography/current installed archive proofs are retained.",
+    "All 76 required local groups completed in stages on unchanged source. Aggregate attempts 1–3 remain failed; no uninterrupted pnpm check pass is claimed. Canvas timing cause remains unproven.",
     "E01 semantic profile remains legacy/unassessed; strict-context acceptance is a separate authored fixture packet.",
     "Isolated consumer uses the documented live-libproc process-inspection runtime exception; installed package bytes remain unchanged.",
     "Customer source media remains outside Git; public redistribution is not established.",
@@ -684,5 +707,21 @@
     "verification": "Actual CLI relocation/deps/validate/summary/save/reload and all737 declared hashes pass. Current b4f0119d archive also passes OS-denied installed E01/edit lifecycle; consumer process-inspection runtime exception remains explicit.",
     "evidence": "/tmp/still-shift-ms1-v6-package-handoff.md",
     "installedEvidence": "./mechanism-shorts-ms1-installed-e01-results.json"
+  },
+  "currentCompletion": {
+    "recordedAt": "2026-10-10T01:59:15.878798+00:00",
+    "status": "software-verified-in-stages-human-review-pending",
+    "completionNote": "./mechanism-shorts-ms1-completion.md",
+    "requiredGate": "./mechanism-shorts-ms1-full-gate-results.json",
+    "requiredGroupCoverage": "./mechanism-shorts-ms1-required-groups-coverage.json",
+    "sourceTestCheckpoint": "09ce824b86e03b3e95616c9fb91b549b9c88845c",
+    "packageSource": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
+    "packageArchiveSha256": "sha256:78fb7016080e371955e4c5b39266a8c1a71e4a4c3b78298aa9b6e4a7b5735309",
+    "packageChecks": 26,
+    "installedE01": "./mechanism-shorts-ms1-installed-e01-results.json",
+    "semanticProfileE01": "legacy-unassessed",
+    "humanContinuousPlaybackListeningAndCreativeAcceptance": "pending",
+    "pr": "pending-creation",
+    "historicalCheckpoints": "Earlier in-progress/pending fields describe their dated checkpoint. Current completion is here; they are not retroactively converted into uninterrupted passes."
   }
 }
