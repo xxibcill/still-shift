@@ -1,0 +1,335 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "partId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "materialId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "kind": { "type": "string", "const": "rounded-box" },
+        "size": {
+          "type": "array",
+          "prefixItems": [
+            { "type": "number", "minimum": 0.001, "maximum": 1000 },
+            { "type": "number", "minimum": 0.001, "maximum": 1000 },
+            { "type": "number", "minimum": 0.001, "maximum": 1000 }
+          ]
+        },
+        "radius": { "type": "number", "minimum": 0, "maximum": 500 },
+        "segments": {
+          "default": 3,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        }
+      },
+      "required": [
+        "id",
+        "partId",
+        "materialId",
+        "kind",
+        "size",
+        "radius",
+        "segments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "partId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "materialId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "kind": { "type": "string", "const": "cylinder" },
+        "radiusTop": { "type": "number", "minimum": 0, "maximum": 1000 },
+        "radiusBottom": { "type": "number", "minimum": 0, "maximum": 1000 },
+        "height": { "type": "number", "minimum": 0.001, "maximum": 1000 },
+        "radialSegments": {
+          "default": 24,
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 96
+        },
+        "heightSegments": {
+          "default": 1,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        }
+      },
+      "required": [
+        "id",
+        "partId",
+        "materialId",
+        "kind",
+        "radiusTop",
+        "radiusBottom",
+        "height",
+        "radialSegments",
+        "heightSegments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "partId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "materialId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "kind": { "type": "string", "const": "torus" },
+        "radius": { "type": "number", "minimum": 0.001, "maximum": 1000 },
+        "tubeRadius": { "type": "number", "minimum": 0.001, "maximum": 1000 },
+        "radialSegments": {
+          "default": 12,
+          "type": "integer",
+          "minimum": 6,
+          "maximum": 32
+        },
+        "tubularSegments": {
+          "default": 48,
+          "type": "integer",
+          "minimum": 12,
+          "maximum": 128
+        }
+      },
+      "required": [
+        "id",
+        "partId",
+        "materialId",
+        "kind",
+        "radius",
+        "tubeRadius",
+        "radialSegments",
+        "tubularSegments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "partId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "materialId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "kind": { "type": "string", "const": "extruded-profile" },
+        "points": {
+          "minItems": 3,
+          "maxItems": 64,
+          "type": "array",
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              { "type": "number", "minimum": -1000, "maximum": 1000 },
+              { "type": "number", "minimum": -1000, "maximum": 1000 }
+            ]
+          }
+        },
+        "holes": {
+          "default": [],
+          "maxItems": 8,
+          "type": "array",
+          "items": {
+            "minItems": 3,
+            "maxItems": 32,
+            "type": "array",
+            "items": {
+              "type": "array",
+              "prefixItems": [
+                { "type": "number", "minimum": -1000, "maximum": 1000 },
+                { "type": "number", "minimum": -1000, "maximum": 1000 }
+              ]
+            }
+          }
+        },
+        "depth": { "type": "number", "minimum": 0.001, "maximum": 1000 },
+        "steps": {
+          "default": 1,
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        },
+        "bevel": {
+          "type": "object",
+          "properties": {
+            "size": { "type": "number", "minimum": 0.001, "maximum": 1000 },
+            "thickness": {
+              "type": "number",
+              "minimum": 0.001,
+              "maximum": 1000
+            },
+            "segments": {
+              "default": 1,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4
+            }
+          },
+          "required": ["size", "thickness", "segments"],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "id",
+        "partId",
+        "materialId",
+        "kind",
+        "points",
+        "holes",
+        "depth",
+        "steps"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "partId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "materialId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "kind": { "type": "string", "const": "swept-ribbon" },
+        "points": {
+          "minItems": 2,
+          "maxItems": 16,
+          "type": "array",
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              { "type": "number", "minimum": -1000, "maximum": 1000 },
+              { "type": "number", "minimum": -1000, "maximum": 1000 },
+              { "type": "number", "minimum": -1000, "maximum": 1000 }
+            ]
+          }
+        },
+        "width": { "type": "number", "minimum": 0.001, "maximum": 1000 },
+        "thickness": { "type": "number", "minimum": 0.001, "maximum": 1000 },
+        "segments": {
+          "default": 64,
+          "type": "integer",
+          "minimum": 8,
+          "maximum": 128
+        }
+      },
+      "required": [
+        "id",
+        "partId",
+        "materialId",
+        "kind",
+        "points",
+        "width",
+        "thickness",
+        "segments"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "partId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "materialId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "kind": { "type": "string", "const": "coil" },
+        "radius": { "type": "number", "minimum": 0.001, "maximum": 1000 },
+        "wireRadius": { "type": "number", "minimum": 0.001, "maximum": 1000 },
+        "pitch": { "type": "number", "minimum": 0.001, "maximum": 1000 },
+        "turns": { "type": "number", "minimum": 0.5, "maximum": 12 },
+        "radialSegments": {
+          "default": 12,
+          "type": "integer",
+          "minimum": 6,
+          "maximum": 32
+        },
+        "tubularSegments": {
+          "default": 128,
+          "type": "integer",
+          "minimum": 16,
+          "maximum": 256
+        }
+      },
+      "required": [
+        "id",
+        "partId",
+        "materialId",
+        "kind",
+        "radius",
+        "wireRadius",
+        "pitch",
+        "turns",
+        "radialSegments",
+        "tubularSegments"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

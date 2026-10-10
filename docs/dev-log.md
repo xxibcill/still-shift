@@ -45,19 +45,20 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** isolated `codex/mechanism-ms2` carries
   `main` and exact native prerequisite [PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Fourteen slices include a versioned tape-hook candidate plus native2 Lab and
-  authenticated final export. Tape2 dimensions pass18 preview captures and four
-  normal9/9 final exports, exact repeated seeks/movies and independent replay
-  with zero retained reservations. Refreshed fast 4,066/398 and six maintained
-  native browser groups pass. The clean prior Lab commit also passes complete
-  runtime177/27, integration321/56, depth and Lab smoke; later pack checks are staged.
-  All failed types, font routes, invalid authored clock and16MiB replay guard
-  retained. Default camera clips larger housing and push wall hides hook face.
-  Next: bounded primitives/other packs/import, full preflight, six actual camera
-  recipes, labels/cues/scoped typography/300-board and full milestone/installed
-  gate. Tape remains candidate; supported packs/pilot0. No MS2 PR/MS3 yet.
-  Human visual/listening review remains separate. [MS2 results](./mechanism-shorts-ms2-results.json),
-  [pack API](./mechanism-pack-api.md),
+  Fifteen slices include tape candidate/native2 Lab/final export and shared
+  bounded rounded boxes, cylinders/cones, toruses, profiles/holes/bevels, ribbons
+  and capped coils. Catalogue topology/16MiB geometry admission precedes meshes.
+  Final held source5 fast4,079/399, seven native examples/14 exact repeat captures
+  and refreshed tape2 dimensions/18 previews/four9/9 final exports pass.
+  Initial schema import failure, two no-write guards and actual empty-hole RED
+  retained; repaired cardinality checks preserve located schema diagnostics.
+  Inspected hole/coil/ribbon images match final pixels. Prior clean Lab runtime
+  is historical, not a new full pass. Tape camera crop/push-face occlusion remains.
+  Next: cable-tie/clothespeg, metadata definition/references/import, whole-world/
+  expected preflight, six camera recipes, labels/cues/typography/300-board and
+  full/installed gates. Tape candidate, packs/pilot0; no MS2 PR/MS3/human acceptance.
+  [MS2 results](./mechanism-shorts-ms2-results.json),
+  [primitive API](./mechanism-primitives.md), [pack API](./mechanism-pack-api.md),
   [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
@@ -216,6 +217,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — Commit bounded shared mechanism primitives
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2` from `9e1bd1ce`.
+- **Done:** Shared closed primitives with strict generated schemas, semantic
+  control/profile checks and cumulative topology/16MiB geometry admission.
+  Dirty cardinalities retain located schema errors before semantic traversal.
+- **Results:** Focused22/2 (new13/original9), final held5 fast4,079/399, seven
+  actual native examples/14 repeat captures and tape18/four9/9 MP4s pass.
+  Source inventory unchanged. Inspected hole/coil/ribbon match final pixels.
+- **Retained:** Initial schema import failure, two failed guards before writes,
+  and genuine empty-hole RED (1 failed/12 passed). Final changed source passes
+  fresh complete fast/primitive/tape checks; earlier green stage stays separate.
+- **Next:** Cable-tie/clothespeg, metadata/import/preflight and camera/label/cue/
+  typography/300-board/full/installed acceptance precede MS2 PR/MS3. Packs/pilot0;
+  primitive software proof does not infer family or human acceptance.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json),
+  [primitive API](./mechanism-primitives.md), [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
 ### 2026-10-11 — Commit first reusable tape-hook candidate
 

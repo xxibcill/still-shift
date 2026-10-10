@@ -88,3 +88,5 @@ export * from "./mechanism/native-package.ts";
 export * from "./mechanism/native-overlays.ts";
 
 export * from "./mechanism/tape-hook-pack.ts";
+
+export * from "./mechanism/primitive-mesh.ts";

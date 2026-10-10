@@ -5877,6 +5877,1359 @@
           "sha256": "sha256:96bb059ce42e5a23ae57d21c7e04bd8613a13ccd5478348e3a95b189013bc6fc"
         }
       ]
+    },
+    {
+      "id": "shared-primitives-schema-1",
+      "status": "failed-schema-import-wiring",
+      "sourceCheckpoint": "9e1bd1cee7463c78d30a44cc1ac6ea796ac849c7",
+      "sourceState": "working-bounded-shared-primitive-library-slice",
+      "actualRootSession": 97347,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-primitives-inputs-1.json",
+        "bytes": 414431,
+        "sha256": "sha256:84c38ae874d73cccbb9defef12ef6c9658cb73a2adc7fbfb6ac1f0635f3ac714",
+        "files": 2429,
+        "inputBytes": 118475303,
+        "sourceCommit": "9e1bd1cee7463c78d30a44cc1ac6ea796ac849c7"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-format-1.log",
+          "bytes": 333,
+          "sha256": "sha256:11d440ab743994faafd0b2890ca09dd111e9744a8d09e5f0ddfff78865ab670a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-schema-1.log",
+          "bytes": 1344,
+          "sha256": "sha256:37474e759d46211e8f37f163c9fc2badf34b120aee9d53f51b868c0f416fc8bb"
+        }
+      ],
+      "qualification": "Actual corpus generation prefix succeeded, then mechanism schema generation failed because the primitive schemas were mistakenly added to the existing protocol import. No build1/focused1 or pre-run inventory was reached. Inventory1 was captured after the actual terminal failure, before source repair; it records that formatted failure state rather than pretending to be a pre-run freeze.",
+      "inventoryCapture": "after-observed-terminal-before-repair"
+    },
+    {
+      "id": "shared-primitives-focused-2",
+      "status": "passed-schema-build-and-focused-topology-admission",
+      "sourceCheckpoint": "9e1bd1cee7463c78d30a44cc1ac6ea796ac849c7",
+      "sourceState": "working-bounded-shared-primitive-library-slice",
+      "actualRootSession": 38074,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-primitives-inputs-2.json",
+        "bytes": 414431,
+        "sha256": "sha256:42ff0cbf9d85eca400bd6b34d4426ca51275e228958b0f1c939776da59bced52",
+        "files": 2429,
+        "inputBytes": 118475387,
+        "sourceCommit": "9e1bd1cee7463c78d30a44cc1ac6ea796ac849c7"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-format-2.log",
+          "bytes": 42,
+          "sha256": "sha256:033a51e1d6eccdd99f87c5bfbfb324bff88f4d923dda162d24f4e1c089621f5d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-schema-2.log",
+          "bytes": 653,
+          "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-build-2.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-unit-2.log",
+          "bytes": 516,
+          "sha256": "sha256:b2d546c1b0e9dceac228f490a5dd8f9d7ff02e430faf4f7665d87181b8e35356"
+        }
+      ],
+      "qualification": "Actual repaired schema/build and focused22/2 aggregate exited0, then verified unchanged held source. Thirteen new tests cover deterministic closed geometric edges/outward nondegenerate triangles/UVs/admission, holes through both caps and bevels, cone/capped coil, invalid profiles/clearance/path controls, material-only stable meshes, and aggregate/single budget rejection; nine original tape geometry checks also pass. Quantized edge checks use fixed1e-5 positional membership on these authored examples, not a general manufacturing/collision certificate.",
+      "tests": 22,
+      "files": 2,
+      "newPrimitiveTests": 13
+    },
+    {
+      "id": "shared-primitives-native-1",
+      "status": "passed-seven-actual-native-primitive-examples",
+      "sourceCheckpoint": "9e1bd1cee7463c78d30a44cc1ac6ea796ac849c7",
+      "sourceState": "working-bounded-shared-primitive-library-slice",
+      "actualRootSession": 35424,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-primitives-inputs-3.json",
+        "bytes": 414754,
+        "sha256": "sha256:632f04c0d219f2e81ca1dd07951ebd9a9a1f3bf8d25fea57917a9594d0111bf7",
+        "files": 2431,
+        "inputBytes": 118485390,
+        "sourceCommit": "9e1bd1cee7463c78d30a44cc1ac6ea796ac849c7"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-format-3.log",
+          "bytes": 122,
+          "sha256": "sha256:0bd93d35861316002fa650fed4f2f314a248fd0b7374f4a06d65f9713deeb112"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-build-3.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-browser-1.log",
+          "bytes": 286,
+          "sha256": "sha256:f6599ef0d252044046501791f8b026b1ad96690e123da640b00bf1f66fae5d03"
+        }
+      ],
+      "qualification": "Actual standard solid-scene-1 preparation and native GPU renderer draw seven static examples twice. Strict independent original-protocol observation packet checks and exact repeat RGBA hashes pass; held source unchanged. No fake mechanism rig was attached to static shapes. This verifies primitive rendering, not Source2 family/camera/cue/pilot or final export acceptance.",
+      "terminalObservedAtUTC": "2026-10-10 23:40:13 UTC",
+      "examples": 7,
+      "captures": 14,
+      "counts": [
+        {
+          "id": "box",
+          "vertices": 1764,
+          "triangles": 588
+        },
+        {
+          "id": "cylinder",
+          "vertices": 148,
+          "triangles": 96
+        },
+        {
+          "id": "torus",
+          "vertices": 637,
+          "triangles": 1152
+        },
+        {
+          "id": "profile",
+          "vertices": 96,
+          "triangles": 32
+        },
+        {
+          "id": "bevel",
+          "vertices": 288,
+          "triangles": 96
+        },
+        {
+          "id": "ribbon",
+          "vertices": 780,
+          "triangles": 260
+        },
+        {
+          "id": "coil",
+          "vertices": 1705,
+          "triangles": 3096
+        }
+      ],
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/bevel-0.png",
+          "bytes": 8926,
+          "sha256": "sha256:8b461d8272ad5020ee8b6831793345bcbd6799863b2c0d64c78e16da6d24995d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/bevel-0.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:e08929ed1a0006acae7b451187d64c40101e544f04b7fdfe12d783c951f93fdd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/bevel-1.png",
+          "bytes": 8926,
+          "sha256": "sha256:8b461d8272ad5020ee8b6831793345bcbd6799863b2c0d64c78e16da6d24995d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/bevel-1.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:e08929ed1a0006acae7b451187d64c40101e544f04b7fdfe12d783c951f93fdd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/bevel.composition.json",
+          "bytes": 563,
+          "sha256": "sha256:ac854be1f1d6c0afaa4fffd5e174f16174e584bd0fe0abec0c538a1b6e520a74"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/bevel.json",
+          "bytes": 64158,
+          "sha256": "sha256:d77340425d805ba8376d8e8d711911465a665c2f9449b9f0444ba114f674cb68"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/box-0.png",
+          "bytes": 13218,
+          "sha256": "sha256:5175ec1d21a7be0a44b1cca89a73e128809b8584eb2992e86f2f3a1de37c76bc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/box-0.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:098e883e5b900f03ee0c06d846c1193a6a86f824f20b5d191e409433486d72cd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/box-1.png",
+          "bytes": 13218,
+          "sha256": "sha256:5175ec1d21a7be0a44b1cca89a73e128809b8584eb2992e86f2f3a1de37c76bc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/box-1.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:098e883e5b900f03ee0c06d846c1193a6a86f824f20b5d191e409433486d72cd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/box.composition.json",
+          "bytes": 559,
+          "sha256": "sha256:8dbbd4d1c008fb2da9dac9fac1e6ed37bcdd83dc10bb9b108e33d6df423f4d77"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/box.json",
+          "bytes": 447732,
+          "sha256": "sha256:25373f681d0eb5233a56ae6e9a4f1252f5aa6028836d47613a34f3b3b4400ef9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/coil-0.png",
+          "bytes": 21067,
+          "sha256": "sha256:d26ddb0e99f595fa28e68aac94d95af431b9624f9b287edd96fe9a61236eddcc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/coil-0.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:58d3ab7ccc8d55b31205f14e23a791fe58aa536a3e6ba902110c3f4a025aa1f9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/coil-1.png",
+          "bytes": 21067,
+          "sha256": "sha256:d26ddb0e99f595fa28e68aac94d95af431b9624f9b287edd96fe9a61236eddcc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/coil-1.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:58d3ab7ccc8d55b31205f14e23a791fe58aa536a3e6ba902110c3f4a025aa1f9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/coil.composition.json",
+          "bytes": 561,
+          "sha256": "sha256:58a673dbed1df769c5e292fecd98ac1ca3893a9c7c5c952a1b71a6e394b91712"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/coil.json",
+          "bytes": 535264,
+          "sha256": "sha256:6b6ce652101c74ef5739aacd82b5fe5942fab4036effecb2951d2831c8f520e5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/cylinder-0.png",
+          "bytes": 7916,
+          "sha256": "sha256:d90cc89b7bc24e2087483e7a3a052e209db161c1777a25af52e96ba990b22f37"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/cylinder-0.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:d016ba005467f81b930ffc4b32e6a57916fd7a5516a3c02c369337b8c7a85d2a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/cylinder-1.png",
+          "bytes": 7916,
+          "sha256": "sha256:d90cc89b7bc24e2087483e7a3a052e209db161c1777a25af52e96ba990b22f37"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/cylinder-1.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:d016ba005467f81b930ffc4b32e6a57916fd7a5516a3c02c369337b8c7a85d2a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/cylinder.composition.json",
+          "bytes": 569,
+          "sha256": "sha256:38a0bd8f8f45ca7efc50eba8d74b998b1ace84fac212507a05332c7b15885780"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/cylinder.json",
+          "bytes": 32219,
+          "sha256": "sha256:a6e796be7093d63a0cf541c48d2a817eb8f2bcd63e8bf757ef891e23f1c1826f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/profile-0.png",
+          "bytes": 7374,
+          "sha256": "sha256:30f25cfa9ec4ca43426fe900ec1192ca5f718d46f1eb039438334d6c3a5f2c76"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/profile-0.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:879fe33e26665e9f3ea29dbf1280c79f4ac61b3dabf397fef384a8f283f4c728"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/profile-1.png",
+          "bytes": 7374,
+          "sha256": "sha256:30f25cfa9ec4ca43426fe900ec1192ca5f718d46f1eb039438334d6c3a5f2c76"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/profile-1.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:879fe33e26665e9f3ea29dbf1280c79f4ac61b3dabf397fef384a8f283f4c728"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/profile.composition.json",
+          "bytes": 567,
+          "sha256": "sha256:f4ebe306f87d88a3b854177e84e5294810b9c4af7811301af7e7e94e3ae5995c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/profile.json",
+          "bytes": 18146,
+          "sha256": "sha256:8fef4aa0735646af5b5aaacf75a8cf07b815403aba23fc3e9d550d7690a18c2a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/ribbon-0.png",
+          "bytes": 5057,
+          "sha256": "sha256:aea469e60d0a7e749983de18e743e7421351b321c3a3e92cff1313bc78adc93f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/ribbon-0.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:1f99fbb0ae62f0171f204b4faa2c9e02f8624c39b76a325f9f886cac63e60c9e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/ribbon-1.png",
+          "bytes": 5057,
+          "sha256": "sha256:aea469e60d0a7e749983de18e743e7421351b321c3a3e92cff1313bc78adc93f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/ribbon-1.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:1f99fbb0ae62f0171f204b4faa2c9e02f8624c39b76a325f9f886cac63e60c9e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/ribbon.composition.json",
+          "bytes": 565,
+          "sha256": "sha256:3b33cf968464e73158b1c63d7ed8a0bd8f8aa8bc77f0179464279fdaee6cd1c7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/ribbon.json",
+          "bytes": 207212,
+          "sha256": "sha256:c0cd2517a0928e6642a11d0d54d7811797cb747dcbdb0054fadbfc71dec2a78b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/run.json",
+          "bytes": 79408,
+          "sha256": "sha256:1ba6de8d854e7d026ede57eee5e5af99fe1240b8611bd58a941090346521e016"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/torus-0.png",
+          "bytes": 15773,
+          "sha256": "sha256:ebdb348a283b4bcff1e492da8b029f62ce78af0aaa3dc0dcac864b68b981e5c2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/torus-0.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:74df53dcc25f195e308a2fd7609289e4e7568059198a885b74f02bb01dd9f7f8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/torus-1.png",
+          "bytes": 15773,
+          "sha256": "sha256:ebdb348a283b4bcff1e492da8b029f62ce78af0aaa3dc0dcac864b68b981e5c2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/torus-1.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:74df53dcc25f195e308a2fd7609289e4e7568059198a885b74f02bb01dd9f7f8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/torus.composition.json",
+          "bytes": 563,
+          "sha256": "sha256:726b59755fbcd22402d79d255393acfb0e30ea41d6cf8c7cc78b713c6a936b45"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/torus.json",
+          "bytes": 191729,
+          "sha256": "sha256:1e7468e910bd0da968e32f1af8d17ee36eeaaef959404a1f05f154123e9b3439"
+        }
+      ]
+    },
+    {
+      "id": "shared-primitives-regression-gate-1",
+      "status": "passed-refreshed-fast-and-existing-tape-final-export-regression",
+      "sourceCheckpoint": "9e1bd1cee7463c78d30a44cc1ac6ea796ac849c7",
+      "sourceState": "working-bounded-shared-primitive-library-slice",
+      "actualRootSession": 17757,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-primitives-inputs-3.json",
+        "bytes": 414754,
+        "sha256": "sha256:632f04c0d219f2e81ca1dd07951ebd9a9a1f3bf8d25fea57917a9594d0111bf7",
+        "files": 2431,
+        "inputBytes": 118485390,
+        "sourceCommit": "9e1bd1cee7463c78d30a44cc1ac6ea796ac849c7"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-fast-1.log",
+          "bytes": 32398,
+          "sha256": "sha256:417c48ffc8c4e2a9f66f4a3e3e80af06e160888847079a3eeaa30a4aef3797fc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-tape-regression-1.log",
+          "bytes": 296,
+          "sha256": "sha256:cbdb195b4914e7926dfd246d53ef4b010b90686a904a3fcc11fe3d60d76a3b0d"
+        }
+      ],
+      "qualification": "Actual sequential check:fast plus existing two-dimension tape candidate preview/four normal final exports exited0 with unchanged held input3. Fast covers current schema/appearance/boundaries/global formatting/lint/TypeScript/4079 units399 files. Tape retains strict actual Source2 observed proof, local clock and repeat seeks, independent streamed replay, exact repeated movie bytes and zero retained memory reservations. Earlier primitive browser1 is a separate pass on the same source. Ordinary geometry feature tier; no worker/export/Lab production implementation changed. Prior clean runtime pass is historical and no new whole MS2/full/installed or human acceptance is inferred.",
+      "terminalObservedAtUTC": "2026-10-10 23:44:27 UTC",
+      "unitTests": 4079,
+      "unitFiles": 399,
+      "unitSeconds": 43.05,
+      "tapePreviewCaptures": 18,
+      "tapeFinalExports": 4,
+      "eachTapeFrames": 9,
+      "eachTapePasses": 9,
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-a.mp4",
+          "bytes": 8570,
+          "sha256": "sha256:a730088ee5898538680227aa20923a43147bfdb665da87b40b845fe124e806c9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-a.mp4.native-observations.000.ndjson",
+          "bytes": 89495,
+          "sha256": "sha256:272184dc062df1a2a0192d1a6fc75252b2b8b1b83789acd2cb6e5461e5e09314"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-a.mp4.native-observations.json",
+          "bytes": 87041,
+          "sha256": "sha256:a51798c6791ac51f83183012278018ca5d2c9469fedc6eb86fc4b36af29488fb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-a.mp4.result.json",
+          "bytes": 8427,
+          "sha256": "sha256:bf77783351a3ea9a5cee2620fb58f76195d6502c080d5ba5ccb59a21cee2edb0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-a.mp4.scene.json",
+          "bytes": 8257716,
+          "sha256": "sha256:c341ce7bf398687fbced28ad4a90af3c3b4c7e0a16104ac0836c4bbf74f8c755"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-b.mp4",
+          "bytes": 8570,
+          "sha256": "sha256:a730088ee5898538680227aa20923a43147bfdb665da87b40b845fe124e806c9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-b.mp4.native-observations.000.ndjson",
+          "bytes": 89495,
+          "sha256": "sha256:272184dc062df1a2a0192d1a6fc75252b2b8b1b83789acd2cb6e5461e5e09314"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-b.mp4.native-observations.json",
+          "bytes": 87041,
+          "sha256": "sha256:9bbcfbceb2ac87fea580f540429293474d5d74f8411bf8002afe7cd9764d98d0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-b.mp4.result.json",
+          "bytes": 8377,
+          "sha256": "sha256:0163390606dc284b74e452d933e11343a56e3230f1029394de0932e3ed75458e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-b.mp4.scene.json",
+          "bytes": 8257716,
+          "sha256": "sha256:c341ce7bf398687fbced28ad4a90af3c3b4c7e0a16104ac0836c4bbf74f8c755"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-preview-0.png",
+          "bytes": 42553,
+          "sha256": "sha256:876b2ad73efb46817d09aa5737a3401e768c90e0dc9d21a1e79ff246935b1c30"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-preview-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0cea23b31350a870669418f78fb2eb7840d9879dd8ab768d0bced619afdb7f1a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-preview-1.png",
+          "bytes": 42553,
+          "sha256": "sha256:876b2ad73efb46817d09aa5737a3401e768c90e0dc9d21a1e79ff246935b1c30"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-preview-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0cea23b31350a870669418f78fb2eb7840d9879dd8ab768d0bced619afdb7f1a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-preview-2.png",
+          "bytes": 23746,
+          "sha256": "sha256:06d33bf85abc0a5c0c8dc63a9c559ca2470fa2e185406a2413fdd74f1283f0b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-preview-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:904ae6c34b5d1810978740d8992dd83e84d1e84c3005b54113a3d4da2700b22e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-preview-3.png",
+          "bytes": 23355,
+          "sha256": "sha256:c0c93a3c8f26967cf9561eef004d1b7c126950cf3c7a14841ef532def618d67b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-preview-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0ba7680c610d8c3efa0df401474d1837f6528b8c977d83150480f3d6af3dc873"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-preview-4.png",
+          "bytes": 23220,
+          "sha256": "sha256:63dd5d3d8fd485ca4c3e569950a71510629927228a6d390a0f25d2a8d89e0d16"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-preview-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:50890b6ceee80ca47b97f4789da368681035b06233f654531bfb637f238cfd83"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-preview-5.png",
+          "bytes": 20442,
+          "sha256": "sha256:33283e47b43123edbf0e37993a370ae71b8da6cfcb6021ebb4d9374d0baedb02"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-preview-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:8ffc124f438ac55b9e6f45e04647d705fca30f097527584880cd97023aa6de9d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-preview-6.png",
+          "bytes": 20442,
+          "sha256": "sha256:33283e47b43123edbf0e37993a370ae71b8da6cfcb6021ebb4d9374d0baedb02"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-preview-6.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:8ffc124f438ac55b9e6f45e04647d705fca30f097527584880cd97023aa6de9d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-preview-7.png",
+          "bytes": 42553,
+          "sha256": "sha256:876b2ad73efb46817d09aa5737a3401e768c90e0dc9d21a1e79ff246935b1c30"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-preview-7.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0cea23b31350a870669418f78fb2eb7840d9879dd8ab768d0bced619afdb7f1a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-preview-8.png",
+          "bytes": 23355,
+          "sha256": "sha256:c0c93a3c8f26967cf9561eef004d1b7c126950cf3c7a14841ef532def618d67b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0-preview-8.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0ba7680c610d8c3efa0df401474d1837f6528b8c977d83150480f3d6af3dc873"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0.composition.json",
+          "bytes": 2197,
+          "sha256": "sha256:eeb1b4c75fe96cdf245ff1b6901e753a4eedc8c2b00382ef56842acf8f120afb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-0.json",
+          "bytes": 5815114,
+          "sha256": "sha256:3f6f8ad3ada9f827ad96cdc079163d7b54844e2c0e3b3e5c7c1014138981f2ae"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-a.mp4",
+          "bytes": 8321,
+          "sha256": "sha256:2ce8f1e1e2deddacc9f9e874b4626f785a8708096f12e6de9749319e57f9b596"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-a.mp4.native-observations.000.ndjson",
+          "bytes": 89397,
+          "sha256": "sha256:59c42e5dd66ad0e7b2a9d8262b195d0cf1ffcaf2aa96fab2078fe9259506a607"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-a.mp4.native-observations.json",
+          "bytes": 87041,
+          "sha256": "sha256:777b7ccc952d6141d3bc49ff1fe9d9ceff45c2f4d819307161157d30ccf07194"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-a.mp4.result.json",
+          "bytes": 8374,
+          "sha256": "sha256:d9c61a8d58b69a48d7c0b50b8250c7e10db7503a2e4e3931d1025a767df82989"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-a.mp4.scene.json",
+          "bytes": 8256106,
+          "sha256": "sha256:c4fe82776c351a3cf8650f717895685b9d00584ab8560af47718cd0540adc723"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-b.mp4",
+          "bytes": 8321,
+          "sha256": "sha256:2ce8f1e1e2deddacc9f9e874b4626f785a8708096f12e6de9749319e57f9b596"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-b.mp4.native-observations.000.ndjson",
+          "bytes": 89397,
+          "sha256": "sha256:59c42e5dd66ad0e7b2a9d8262b195d0cf1ffcaf2aa96fab2078fe9259506a607"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-b.mp4.native-observations.json",
+          "bytes": 87041,
+          "sha256": "sha256:a044bc16ae482187a909d23820bef4b49fd5d5302badbd42fa0a9585f4aa2031"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-b.mp4.result.json",
+          "bytes": 8413,
+          "sha256": "sha256:81dffe67ca2f80e302c91e898548d786a33c930de494fd69c5602c057e095b1f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-b.mp4.scene.json",
+          "bytes": 8256106,
+          "sha256": "sha256:c4fe82776c351a3cf8650f717895685b9d00584ab8560af47718cd0540adc723"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-preview-0.png",
+          "bytes": 40812,
+          "sha256": "sha256:7e00f39c305b5fb426ee1c4afbf594c084c03c247d4b21f3bf26723bcef958a3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-preview-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:e8d00529e71433c342eb6e711115e9613b0f2b8655621700bb23abb5d05d22b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-preview-1.png",
+          "bytes": 40812,
+          "sha256": "sha256:7e00f39c305b5fb426ee1c4afbf594c084c03c247d4b21f3bf26723bcef958a3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-preview-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:e8d00529e71433c342eb6e711115e9613b0f2b8655621700bb23abb5d05d22b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-preview-2.png",
+          "bytes": 22805,
+          "sha256": "sha256:3f170ce67c31b09c683a70756f0ddf57e944af69e9ce46d1e1cdd76904cee5b8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-preview-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:3ff28d91aae71d825c903f65c42308056bf1dddd8d7da246567d8945701c6865"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-preview-3.png",
+          "bytes": 22528,
+          "sha256": "sha256:7bec537ba25319c344cfecc3899b04bb3b39cda80a9a85d1307fed76b109b103"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-preview-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:cbb5353c9afe98fd75405272bc9bfdcb7777fe85f8fd0bfc1fdeb012dadf123e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-preview-4.png",
+          "bytes": 22453,
+          "sha256": "sha256:d59a4c51e2aec108896e6a455f5957722c98b562957a66b9bc7f6830f41a8ea1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-preview-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:a319373c871cfabefd6eb7694b90d089d403e092d16c120a36dbd7a5a8cf3889"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-preview-5.png",
+          "bytes": 19150,
+          "sha256": "sha256:93910a12304365baa8816cb15c4b7b70fc865e7a27e5c21bc2e637c4afb2af12"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-preview-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:983f35eabfe9a014450f503be05d9246be37f7462e279164c1786408e78786ec"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-preview-6.png",
+          "bytes": 19150,
+          "sha256": "sha256:93910a12304365baa8816cb15c4b7b70fc865e7a27e5c21bc2e637c4afb2af12"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-preview-6.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:983f35eabfe9a014450f503be05d9246be37f7462e279164c1786408e78786ec"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-preview-7.png",
+          "bytes": 40812,
+          "sha256": "sha256:7e00f39c305b5fb426ee1c4afbf594c084c03c247d4b21f3bf26723bcef958a3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-preview-7.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:e8d00529e71433c342eb6e711115e9613b0f2b8655621700bb23abb5d05d22b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-preview-8.png",
+          "bytes": 22528,
+          "sha256": "sha256:7bec537ba25319c344cfecc3899b04bb3b39cda80a9a85d1307fed76b109b103"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1-preview-8.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:cbb5353c9afe98fd75405272bc9bfdcb7777fe85f8fd0bfc1fdeb012dadf123e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1.composition.json",
+          "bytes": 2197,
+          "sha256": "sha256:068b7ae15ad56e561f36b0cbdb0c9572d885acd7ed3b3c858439cbfc5a500de8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/dimension-1.json",
+          "bytes": 5814944,
+          "sha256": "sha256:d60e3b9a366c60df112e424fde9cb6481b92c0ede84e7c8130da5e5d911364de"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/metadata.json",
+          "bytes": 27715,
+          "sha256": "sha256:c06bdecba0d9c36bf12b98b5919670c3b2698cd5956b1c596d12eee5514a45c0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GsM3fv/run.json",
+          "bytes": 646828,
+          "sha256": "sha256:24128105a8a82c99f87d68301d0f92a0200ddee8dea446d3c3d42dc8042c1fe7"
+        }
+      ]
+    },
+    {
+      "id": "shared-primitives-empty-hole-edit-guard-1",
+      "status": "failed-guard-before-writes",
+      "sourceCheckpoint": "9e1bd1cee7463c78d30a44cc1ac6ea796ac849c7",
+      "sourceState": "working-shared-primitive-parser-cardinality-repair",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-primitives-inputs-3.json",
+        "bytes": 414754,
+        "sha256": "sha256:632f04c0d219f2e81ca1dd07951ebd9a9a1f3bf8d25fea57917a9594d0111bf7",
+        "files": 2431,
+        "inputBytes": 118485390,
+        "sourceCommit": "9e1bd1cee7463c78d30a44cc1ac6ea796ac849c7"
+      },
+      "logs": [],
+      "qualification": "The guarded test insertion expected an unformatted object prefix after the array opener; formatted source differed. Actual call38bb68 exited1 with AssertionError before writes. set-e prevented every dependent formatting/inventory/test stage. Corrected insertion used the observed unique array opener in a separate successful call.",
+      "actualRootCallReceipt": "38bb68",
+      "actualExitCode": 1
+    },
+    {
+      "id": "shared-primitives-empty-hole-red-1",
+      "status": "failed-reproduced-unlocated-public-parser-cardinality-exception",
+      "sourceCheckpoint": "9e1bd1cee7463c78d30a44cc1ac6ea796ac849c7",
+      "sourceState": "working-shared-primitive-parser-cardinality-repair",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-primitives-inputs-4.json",
+        "bytes": 414754,
+        "sha256": "sha256:6ced7ae24e03981388d4e129784a23f5076377f019a052abc7973395f637c535",
+        "files": 2431,
+        "inputBytes": 118485422,
+        "sourceCommit": "9e1bd1cee7463c78d30a44cc1ac6ea796ac849c7"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-format-4.log",
+          "bytes": 57,
+          "sha256": "sha256:cfde57a8eb5ee1f18feefb6662f789b5f902bb2e52bf75b7ddce10d2f7e1c8a4"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-red-1.log",
+          "bytes": 3412,
+          "sha256": "sha256:37f94eb54ff5122250c88713fcf99ac3d72d82647f8d37f2bf4f0a85cae3fa11"
+        }
+      ],
+      "qualification": "Actual new empty-hole case reproduces one failed/12 passed in the public safeParse test. Dirty array cardinality allowed semantic access to a missing hole first point, throwing TypeError rather than returning located validation issues. This justified a source repair after the previous green source3 gate. No valid geometry or thresholds changed.",
+      "actualRootSession": 18375,
+      "actualExitCode": 1,
+      "testsFailed": 1,
+      "testsPassed": 12
+    },
+    {
+      "id": "shared-primitives-cardinality-edit-guard-1",
+      "status": "failed-guard-before-writes",
+      "sourceCheckpoint": "9e1bd1cee7463c78d30a44cc1ac6ea796ac849c7",
+      "sourceState": "working-shared-primitive-parser-cardinality-repair",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-primitives-inputs-4.json",
+        "bytes": 414754,
+        "sha256": "sha256:6ced7ae24e03981388d4e129784a23f5076377f019a052abc7973395f637c535",
+        "files": 2431,
+        "inputBytes": 118485422,
+        "sourceCommit": "9e1bd1cee7463c78d30a44cc1ac6ea796ac849c7"
+      },
+      "logs": [],
+      "qualification": "The first guarded repair expected fewer spaces before the formatted ribbon loop. Actual callcfeb53 exited1 with AssertionError at its first replacement, before writes. set-e prevented dependent stages. The successful repair checked every exact replacement before writing either file.",
+      "actualRootCallReceipt": "cfeb53",
+      "actualExitCode": 1
+    },
+    {
+      "id": "shared-primitives-regression-gate-2",
+      "status": "passed-refreshed-cardinality-repair-fast-primitives-and-tape-export",
+      "sourceCheckpoint": "9e1bd1cee7463c78d30a44cc1ac6ea796ac849c7",
+      "sourceState": "working-shared-primitive-parser-cardinality-repair",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-primitives-inputs-5.json",
+        "bytes": 414754,
+        "sha256": "sha256:652c7a774b612fc93f999a7f1e941ff9a70b54bd13f377510df7235f0aba797e",
+        "files": 2431,
+        "inputBytes": 118486188,
+        "sourceCommit": "9e1bd1cee7463c78d30a44cc1ac6ea796ac849c7"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-format-5.log",
+          "bytes": 124,
+          "sha256": "sha256:707c366fcc1dd8a62268b644a02c00428b356666e2147ee82346823b5c90ed49"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-fast-2.log",
+          "bytes": 32429,
+          "sha256": "sha256:fd80eb03a34dc7b775075b7212f33eb03f1eed8496b9f90141cf9eac01c2e107"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-browser-2.log",
+          "bytes": 286,
+          "sha256": "sha256:e24bf7e971b0c94ce27951e0a786bdbe330c93cec84b2d78a1f73a17500362ce"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-tape-regression-2.log",
+          "bytes": 296,
+          "sha256": "sha256:fee1c2695a19fb4ffa28be4b603bbda53e139d8f200a8e5f4b1245d385acdc0d"
+        }
+      ],
+      "qualification": "Actual sequential final check:fast, seven real native primitive examples/14 repeat captures and existing tape2 dimensions/18 captures/four9-frame final exports exited0 with unchanged held source5. Invalid profile/path/catalogue cardinalities retain already-located schema failures and skip semantic work. Strict observed packets, exact primitive pixels/repeated movies and independent tape retained-row replay/memory release remain. Inspected source3 hole/coil/ribbon images have exactly equal source5 RGBA hashes. Staged completion; this refresh does not erase the prior schema failure, guards or RED, and does not infer full MS2/installed/family/human acceptance.",
+      "actualRootSession": 56440,
+      "actualExitCode": 0,
+      "terminalObservedAtUTC": "2026-10-10 23:54:16 UTC",
+      "unitTests": 4079,
+      "unitFiles": 399,
+      "unitSeconds": 43.23,
+      "actualNativeExamples": 7,
+      "actualNativeCaptures": 14,
+      "tapePreviewCaptures": 18,
+      "tapeFinalExports": 4,
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/bevel-0.png",
+          "bytes": 8926,
+          "sha256": "sha256:8b461d8272ad5020ee8b6831793345bcbd6799863b2c0d64c78e16da6d24995d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/bevel-0.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:e08929ed1a0006acae7b451187d64c40101e544f04b7fdfe12d783c951f93fdd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/bevel-1.png",
+          "bytes": 8926,
+          "sha256": "sha256:8b461d8272ad5020ee8b6831793345bcbd6799863b2c0d64c78e16da6d24995d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/bevel-1.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:e08929ed1a0006acae7b451187d64c40101e544f04b7fdfe12d783c951f93fdd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/bevel.composition.json",
+          "bytes": 563,
+          "sha256": "sha256:ac854be1f1d6c0afaa4fffd5e174f16174e584bd0fe0abec0c538a1b6e520a74"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/bevel.json",
+          "bytes": 64158,
+          "sha256": "sha256:d77340425d805ba8376d8e8d711911465a665c2f9449b9f0444ba114f674cb68"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/box-0.png",
+          "bytes": 13218,
+          "sha256": "sha256:5175ec1d21a7be0a44b1cca89a73e128809b8584eb2992e86f2f3a1de37c76bc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/box-0.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:098e883e5b900f03ee0c06d846c1193a6a86f824f20b5d191e409433486d72cd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/box-1.png",
+          "bytes": 13218,
+          "sha256": "sha256:5175ec1d21a7be0a44b1cca89a73e128809b8584eb2992e86f2f3a1de37c76bc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/box-1.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:098e883e5b900f03ee0c06d846c1193a6a86f824f20b5d191e409433486d72cd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/box.composition.json",
+          "bytes": 559,
+          "sha256": "sha256:8dbbd4d1c008fb2da9dac9fac1e6ed37bcdd83dc10bb9b108e33d6df423f4d77"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/box.json",
+          "bytes": 447732,
+          "sha256": "sha256:25373f681d0eb5233a56ae6e9a4f1252f5aa6028836d47613a34f3b3b4400ef9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/coil-0.png",
+          "bytes": 21067,
+          "sha256": "sha256:d26ddb0e99f595fa28e68aac94d95af431b9624f9b287edd96fe9a61236eddcc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/coil-0.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:58d3ab7ccc8d55b31205f14e23a791fe58aa536a3e6ba902110c3f4a025aa1f9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/coil-1.png",
+          "bytes": 21067,
+          "sha256": "sha256:d26ddb0e99f595fa28e68aac94d95af431b9624f9b287edd96fe9a61236eddcc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/coil-1.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:58d3ab7ccc8d55b31205f14e23a791fe58aa536a3e6ba902110c3f4a025aa1f9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/coil.composition.json",
+          "bytes": 561,
+          "sha256": "sha256:58a673dbed1df769c5e292fecd98ac1ca3893a9c7c5c952a1b71a6e394b91712"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/coil.json",
+          "bytes": 535264,
+          "sha256": "sha256:6b6ce652101c74ef5739aacd82b5fe5942fab4036effecb2951d2831c8f520e5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/cylinder-0.png",
+          "bytes": 7916,
+          "sha256": "sha256:d90cc89b7bc24e2087483e7a3a052e209db161c1777a25af52e96ba990b22f37"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/cylinder-0.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:d016ba005467f81b930ffc4b32e6a57916fd7a5516a3c02c369337b8c7a85d2a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/cylinder-1.png",
+          "bytes": 7916,
+          "sha256": "sha256:d90cc89b7bc24e2087483e7a3a052e209db161c1777a25af52e96ba990b22f37"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/cylinder-1.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:d016ba005467f81b930ffc4b32e6a57916fd7a5516a3c02c369337b8c7a85d2a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/cylinder.composition.json",
+          "bytes": 569,
+          "sha256": "sha256:38a0bd8f8f45ca7efc50eba8d74b998b1ace84fac212507a05332c7b15885780"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/cylinder.json",
+          "bytes": 32219,
+          "sha256": "sha256:a6e796be7093d63a0cf541c48d2a817eb8f2bcd63e8bf757ef891e23f1c1826f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/profile-0.png",
+          "bytes": 7374,
+          "sha256": "sha256:30f25cfa9ec4ca43426fe900ec1192ca5f718d46f1eb039438334d6c3a5f2c76"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/profile-0.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:879fe33e26665e9f3ea29dbf1280c79f4ac61b3dabf397fef384a8f283f4c728"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/profile-1.png",
+          "bytes": 7374,
+          "sha256": "sha256:30f25cfa9ec4ca43426fe900ec1192ca5f718d46f1eb039438334d6c3a5f2c76"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/profile-1.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:879fe33e26665e9f3ea29dbf1280c79f4ac61b3dabf397fef384a8f283f4c728"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/profile.composition.json",
+          "bytes": 567,
+          "sha256": "sha256:f4ebe306f87d88a3b854177e84e5294810b9c4af7811301af7e7e94e3ae5995c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/profile.json",
+          "bytes": 18146,
+          "sha256": "sha256:8fef4aa0735646af5b5aaacf75a8cf07b815403aba23fc3e9d550d7690a18c2a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/ribbon-0.png",
+          "bytes": 5057,
+          "sha256": "sha256:aea469e60d0a7e749983de18e743e7421351b321c3a3e92cff1313bc78adc93f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/ribbon-0.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:1f99fbb0ae62f0171f204b4faa2c9e02f8624c39b76a325f9f886cac63e60c9e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/ribbon-1.png",
+          "bytes": 5057,
+          "sha256": "sha256:aea469e60d0a7e749983de18e743e7421351b321c3a3e92cff1313bc78adc93f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/ribbon-1.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:1f99fbb0ae62f0171f204b4faa2c9e02f8624c39b76a325f9f886cac63e60c9e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/ribbon.composition.json",
+          "bytes": 565,
+          "sha256": "sha256:3b33cf968464e73158b1c63d7ed8a0bd8f8aa8bc77f0179464279fdaee6cd1c7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/ribbon.json",
+          "bytes": 207212,
+          "sha256": "sha256:c0cd2517a0928e6642a11d0d54d7811797cb747dcbdb0054fadbfc71dec2a78b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/run.json",
+          "bytes": 79408,
+          "sha256": "sha256:1ba6de8d854e7d026ede57eee5e5af99fe1240b8611bd58a941090346521e016"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/torus-0.png",
+          "bytes": 15773,
+          "sha256": "sha256:ebdb348a283b4bcff1e492da8b029f62ce78af0aaa3dc0dcac864b68b981e5c2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/torus-0.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:74df53dcc25f195e308a2fd7609289e4e7568059198a885b74f02bb01dd9f7f8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/torus-1.png",
+          "bytes": 15773,
+          "sha256": "sha256:ebdb348a283b4bcff1e492da8b029f62ce78af0aaa3dc0dcac864b68b981e5c2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/torus-1.rgba",
+          "bytes": 307200,
+          "sha256": "sha256:74df53dcc25f195e308a2fd7609289e4e7568059198a885b74f02bb01dd9f7f8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/torus.composition.json",
+          "bytes": 563,
+          "sha256": "sha256:726b59755fbcd22402d79d255393acfb0e30ea41d6cf8c7cc78b713c6a936b45"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-primitives-native-pk644i/torus.json",
+          "bytes": 191729,
+          "sha256": "sha256:1e7468e910bd0da968e32f1af8d17ee36eeaaef959404a1f05f154123e9b3439"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-a.mp4",
+          "bytes": 8570,
+          "sha256": "sha256:a730088ee5898538680227aa20923a43147bfdb665da87b40b845fe124e806c9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-a.mp4.native-observations.000.ndjson",
+          "bytes": 89495,
+          "sha256": "sha256:272184dc062df1a2a0192d1a6fc75252b2b8b1b83789acd2cb6e5461e5e09314"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-a.mp4.native-observations.json",
+          "bytes": 87041,
+          "sha256": "sha256:a51798c6791ac51f83183012278018ca5d2c9469fedc6eb86fc4b36af29488fb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-a.mp4.result.json",
+          "bytes": 8401,
+          "sha256": "sha256:f372ad55065ffaab7061df7759424a42e6cc4e05ba3a62b4c2890713721dc845"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-a.mp4.scene.json",
+          "bytes": 8257716,
+          "sha256": "sha256:d2594c1a9c07bf22b7e68a4efadb7280e0d88c1798f87e00d9c4b97b539a5f90"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-b.mp4",
+          "bytes": 8570,
+          "sha256": "sha256:a730088ee5898538680227aa20923a43147bfdb665da87b40b845fe124e806c9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-b.mp4.native-observations.000.ndjson",
+          "bytes": 89495,
+          "sha256": "sha256:272184dc062df1a2a0192d1a6fc75252b2b8b1b83789acd2cb6e5461e5e09314"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-b.mp4.native-observations.json",
+          "bytes": 87041,
+          "sha256": "sha256:9bbcfbceb2ac87fea580f540429293474d5d74f8411bf8002afe7cd9764d98d0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-b.mp4.result.json",
+          "bytes": 8429,
+          "sha256": "sha256:7d40f1c22bf92d84ba78137eb1c43093ce3248809721cae296a1edc53b0a1061"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-b.mp4.scene.json",
+          "bytes": 8257716,
+          "sha256": "sha256:d2594c1a9c07bf22b7e68a4efadb7280e0d88c1798f87e00d9c4b97b539a5f90"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-preview-0.png",
+          "bytes": 42553,
+          "sha256": "sha256:876b2ad73efb46817d09aa5737a3401e768c90e0dc9d21a1e79ff246935b1c30"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-preview-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0cea23b31350a870669418f78fb2eb7840d9879dd8ab768d0bced619afdb7f1a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-preview-1.png",
+          "bytes": 42553,
+          "sha256": "sha256:876b2ad73efb46817d09aa5737a3401e768c90e0dc9d21a1e79ff246935b1c30"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-preview-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0cea23b31350a870669418f78fb2eb7840d9879dd8ab768d0bced619afdb7f1a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-preview-2.png",
+          "bytes": 23746,
+          "sha256": "sha256:06d33bf85abc0a5c0c8dc63a9c559ca2470fa2e185406a2413fdd74f1283f0b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-preview-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:904ae6c34b5d1810978740d8992dd83e84d1e84c3005b54113a3d4da2700b22e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-preview-3.png",
+          "bytes": 23355,
+          "sha256": "sha256:c0c93a3c8f26967cf9561eef004d1b7c126950cf3c7a14841ef532def618d67b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-preview-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0ba7680c610d8c3efa0df401474d1837f6528b8c977d83150480f3d6af3dc873"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-preview-4.png",
+          "bytes": 23220,
+          "sha256": "sha256:63dd5d3d8fd485ca4c3e569950a71510629927228a6d390a0f25d2a8d89e0d16"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-preview-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:50890b6ceee80ca47b97f4789da368681035b06233f654531bfb637f238cfd83"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-preview-5.png",
+          "bytes": 20442,
+          "sha256": "sha256:33283e47b43123edbf0e37993a370ae71b8da6cfcb6021ebb4d9374d0baedb02"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-preview-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:8ffc124f438ac55b9e6f45e04647d705fca30f097527584880cd97023aa6de9d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-preview-6.png",
+          "bytes": 20442,
+          "sha256": "sha256:33283e47b43123edbf0e37993a370ae71b8da6cfcb6021ebb4d9374d0baedb02"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-preview-6.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:8ffc124f438ac55b9e6f45e04647d705fca30f097527584880cd97023aa6de9d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-preview-7.png",
+          "bytes": 42553,
+          "sha256": "sha256:876b2ad73efb46817d09aa5737a3401e768c90e0dc9d21a1e79ff246935b1c30"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-preview-7.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0cea23b31350a870669418f78fb2eb7840d9879dd8ab768d0bced619afdb7f1a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-preview-8.png",
+          "bytes": 23355,
+          "sha256": "sha256:c0c93a3c8f26967cf9561eef004d1b7c126950cf3c7a14841ef532def618d67b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0-preview-8.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0ba7680c610d8c3efa0df401474d1837f6528b8c977d83150480f3d6af3dc873"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0.composition.json",
+          "bytes": 2197,
+          "sha256": "sha256:eeb1b4c75fe96cdf245ff1b6901e753a4eedc8c2b00382ef56842acf8f120afb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-0.json",
+          "bytes": 5815114,
+          "sha256": "sha256:3f6f8ad3ada9f827ad96cdc079163d7b54844e2c0e3b3e5c7c1014138981f2ae"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-a.mp4",
+          "bytes": 8321,
+          "sha256": "sha256:2ce8f1e1e2deddacc9f9e874b4626f785a8708096f12e6de9749319e57f9b596"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-a.mp4.native-observations.000.ndjson",
+          "bytes": 89397,
+          "sha256": "sha256:59c42e5dd66ad0e7b2a9d8262b195d0cf1ffcaf2aa96fab2078fe9259506a607"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-a.mp4.native-observations.json",
+          "bytes": 87041,
+          "sha256": "sha256:777b7ccc952d6141d3bc49ff1fe9d9ceff45c2f4d819307161157d30ccf07194"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-a.mp4.result.json",
+          "bytes": 8400,
+          "sha256": "sha256:e6d878127c479ef70105d96f131809b7a4a8671f8516e842ea8d9726bb9fcae6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-a.mp4.scene.json",
+          "bytes": 8256106,
+          "sha256": "sha256:31cb54997b59ba1487a99e771821bb4a14afe2b2be38fcc635383262a6316c4f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-b.mp4",
+          "bytes": 8321,
+          "sha256": "sha256:2ce8f1e1e2deddacc9f9e874b4626f785a8708096f12e6de9749319e57f9b596"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-b.mp4.native-observations.000.ndjson",
+          "bytes": 89397,
+          "sha256": "sha256:59c42e5dd66ad0e7b2a9d8262b195d0cf1ffcaf2aa96fab2078fe9259506a607"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-b.mp4.native-observations.json",
+          "bytes": 87041,
+          "sha256": "sha256:a044bc16ae482187a909d23820bef4b49fd5d5302badbd42fa0a9585f4aa2031"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-b.mp4.result.json",
+          "bytes": 8413,
+          "sha256": "sha256:574906ead8c564d09ac9643d6b13f0e376ef122c8aeb4cc6d76243b4c493f99f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-b.mp4.scene.json",
+          "bytes": 8256106,
+          "sha256": "sha256:31cb54997b59ba1487a99e771821bb4a14afe2b2be38fcc635383262a6316c4f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-preview-0.png",
+          "bytes": 40812,
+          "sha256": "sha256:7e00f39c305b5fb426ee1c4afbf594c084c03c247d4b21f3bf26723bcef958a3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-preview-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:e8d00529e71433c342eb6e711115e9613b0f2b8655621700bb23abb5d05d22b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-preview-1.png",
+          "bytes": 40812,
+          "sha256": "sha256:7e00f39c305b5fb426ee1c4afbf594c084c03c247d4b21f3bf26723bcef958a3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-preview-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:e8d00529e71433c342eb6e711115e9613b0f2b8655621700bb23abb5d05d22b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-preview-2.png",
+          "bytes": 22805,
+          "sha256": "sha256:3f170ce67c31b09c683a70756f0ddf57e944af69e9ce46d1e1cdd76904cee5b8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-preview-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:3ff28d91aae71d825c903f65c42308056bf1dddd8d7da246567d8945701c6865"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-preview-3.png",
+          "bytes": 22528,
+          "sha256": "sha256:7bec537ba25319c344cfecc3899b04bb3b39cda80a9a85d1307fed76b109b103"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-preview-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:cbb5353c9afe98fd75405272bc9bfdcb7777fe85f8fd0bfc1fdeb012dadf123e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-preview-4.png",
+          "bytes": 22453,
+          "sha256": "sha256:d59a4c51e2aec108896e6a455f5957722c98b562957a66b9bc7f6830f41a8ea1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-preview-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:a319373c871cfabefd6eb7694b90d089d403e092d16c120a36dbd7a5a8cf3889"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-preview-5.png",
+          "bytes": 19150,
+          "sha256": "sha256:93910a12304365baa8816cb15c4b7b70fc865e7a27e5c21bc2e637c4afb2af12"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-preview-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:983f35eabfe9a014450f503be05d9246be37f7462e279164c1786408e78786ec"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-preview-6.png",
+          "bytes": 19150,
+          "sha256": "sha256:93910a12304365baa8816cb15c4b7b70fc865e7a27e5c21bc2e637c4afb2af12"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-preview-6.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:983f35eabfe9a014450f503be05d9246be37f7462e279164c1786408e78786ec"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-preview-7.png",
+          "bytes": 40812,
+          "sha256": "sha256:7e00f39c305b5fb426ee1c4afbf594c084c03c247d4b21f3bf26723bcef958a3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-preview-7.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:e8d00529e71433c342eb6e711115e9613b0f2b8655621700bb23abb5d05d22b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-preview-8.png",
+          "bytes": 22528,
+          "sha256": "sha256:7bec537ba25319c344cfecc3899b04bb3b39cda80a9a85d1307fed76b109b103"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1-preview-8.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:cbb5353c9afe98fd75405272bc9bfdcb7777fe85f8fd0bfc1fdeb012dadf123e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1.composition.json",
+          "bytes": 2197,
+          "sha256": "sha256:068b7ae15ad56e561f36b0cbdb0c9572d885acd7ed3b3c858439cbfc5a500de8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/dimension-1.json",
+          "bytes": 5814944,
+          "sha256": "sha256:d60e3b9a366c60df112e424fde9cb6481b92c0ede84e7c8130da5e5d911364de"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/metadata.json",
+          "bytes": 27715,
+          "sha256": "sha256:c06bdecba0d9c36bf12b98b5919670c3b2698cd5956b1c596d12eee5514a45c0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-mt6Iou/run.json",
+          "bytes": 646880,
+          "sha256": "sha256:5f02adc1b8528b102394e41a9ab0bc68aaf5ad8f8449309526b3fef0609ab8e9"
+        }
+      ]
     }
   ],
   "implementation": {
@@ -6138,10 +7491,102 @@
         "findings": "Default outside pull view shows blade-attached rivets/hook/board contact. Existing camera clips the larger housing and push wall obscures the decisive hook face. Six adaptive camera recipes and decisive-surface entry/mid/exit checks must resolve this before family support."
       },
       "remaining": "First candidate only: six target declarations and a thumbnail recipe are not executed camera/thumbnail acceptance. Shared bounded primitive library, cable tie/clothespeg, glTF/GLB/PBR importer, complete metadata shape/rig cross-reference admission, whole-world/expected preflight, adaptive cameras/labels/narration cues/scoped typography, 300-topic board and full milestone/installed gate remain. No MS2 PR/MS3 and supportedPacks/pilot0. Pure frame checks do not infer GPU, continuous-motion, collision or human visual/listening acceptance."
+    },
+    "fifteenthSlice": {
+      "status": "implemented-and-verified-shared-bounded-primitive-library",
+      "interfaces": [
+        "Public strict MechanismPrimitiveInputSchema and catalogue input schema cover rounded boxes, capped cylinders/cones, toruses, extruded profiles with holes/simple bevels, closed swept ribbons and capped rigid coils; generated primitive/catalogue schemas are registered with existing mechanism schema generation.",
+        "admitMechanismPrimitive validates dimensions, control/topology limits, simple non-crossing/nonnested internal holes, bevel corner/boundary clearance, ribbon span/reversal and coil bore/pitch/per-turn resolution before geometry construction.",
+        "Prospective nonindexed triangle/vertex and conservative geometry number storage admission is bounded by100000 vertices/200000 triangles/16MiB. createMechanismPrimitiveGeometry adds all admissions and checks IDs/material references before constructing its first mesh; whole world/GPU/PMREM/expected graph preflight remains separate.",
+        "createMechanismPrimitiveMesh and createMechanismPrimitiveGeometry use the existing strict mesh/solid geometry contract with real positions, unit normals, UVs, exact bounds and indices. Material-only edits preserve actual mesh arrays. Existing original tape generator remains unchanged.",
+        "Actual native static solid-source rendering checks seven example treatments twice, including real pixels and independent original-protocol physical observations. Existing Source2 tape candidate final exports are refreshed separately.",
+        "Public semantic validation skips dirty min/max cardinalities already rejected by strict schemas, preserving located empty/oversized profile, ribbon and catalogue failures rather than traversing invalid arrays. Actual empty-hole TypeError was reproduced before repair."
+      ],
+      "verification": {
+        "unitTests": 4079,
+        "unitFiles": 399,
+        "newPrimitiveTests": 13,
+        "focusedTests": 22,
+        "focusedFiles": 2,
+        "actualNativeExamples": 7,
+        "actualNativeCaptures": 14,
+        "actualMeshCounts": [
+          {
+            "id": "box",
+            "vertices": 1764,
+            "triangles": 588
+          },
+          {
+            "id": "cylinder",
+            "vertices": 148,
+            "triangles": 96
+          },
+          {
+            "id": "torus",
+            "vertices": 637,
+            "triangles": 1152
+          },
+          {
+            "id": "profile",
+            "vertices": 96,
+            "triangles": 32
+          },
+          {
+            "id": "bevel",
+            "vertices": 288,
+            "triangles": 96
+          },
+          {
+            "id": "ribbon",
+            "vertices": 780,
+            "triangles": 260
+          },
+          {
+            "id": "coil",
+            "vertices": 1705,
+            "triangles": 3096
+          }
+        ],
+        "refreshedTapePreviews": 18,
+        "refreshedTapeFinalExports": 4,
+        "finalHeldInputs": {
+          "path": "/private/tmp/still-shift-ms2-primitives-inputs-5.json",
+          "bytes": 414754,
+          "sha256": "sha256:652c7a774b612fc93f999a7f1e941ff9a70b54bd13f377510df7235f0aba797e",
+          "files": 2431,
+          "inputBytes": 118486188,
+          "sourceCommit": "9e1bd1cee7463c78d30a44cc1ac6ea796ac849c7"
+        },
+        "finalGate": "shared-primitives-regression-gate-2",
+        "stages": "Original source3 pass, actual malformed-hole RED and final changed source5 refresh retained separately."
+      },
+      "actualVisualInspection": {
+        "status": "engineering-observation-not-human-family-acceptance",
+        "images": [
+          {
+            "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/bevel-0.png",
+            "bytes": 8926,
+            "sha256": "sha256:8b461d8272ad5020ee8b6831793345bcbd6799863b2c0d64c78e16da6d24995d"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/coil-0.png",
+            "bytes": 21067,
+            "sha256": "sha256:d26ddb0e99f595fa28e68aac94d95af431b9624f9b287edd96fe9a61236eddcc"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-primitives-native-gYRrE2/ribbon-0.png",
+            "bytes": 5057,
+            "sha256": "sha256:aea469e60d0a7e749983de18e743e7421351b321c3a3e92cff1313bc78adc93f"
+          }
+        ],
+        "findings": "Real beveled cap opening remains visible; capped helix and curved ribbon surfaces render intact. Static primitive evidence does not validate seated/deflected spring behavior; existing teaching-shape rigs own that behavior.",
+        "qualification": "Earlier source3 images were actually inspected; final held source5 real RGBA captures for all seven examples are independently checked equal to those inspected captures."
+      },
+      "remaining": "Cable-tie/clothespeg packs and acceptance, complete metadata definition identity and shape/rig cross references, rigid glTF/GLB/PBR import, full-world/expected allocation preflight, actual cameras/labels/cues/scoped typography, 300-topic board and full/installed milestone gates remain. Tape candidate, packs/pilot0; no MS2 PR/MS3 or inferred human acceptance."
     }
   },
   "limits": [
-    "Normal native2 Lab and authenticated final export are verified; the first tape candidate now has actual two-dimension previews and repeated exports. Whole-world/expected preflight, complete family/import/camera/label/cue/typography/board and full milestone/installed checks remain. Default replay16MiB guard remains; actual tape independent checker uses the existing128MiB exporter partition with recorded peak and release.",
+    "Native2 Lab/final export and two-dimension tape candidate rendering are verified. Shared primitives now have explicit prospective aggregate topology/16MiB geometry storage admission and seven actual static native examples. This does not close whole-world/GPU/PMREM/expected graph allocation or supported family/import/camera/label/cue/typography/board/full/installed acceptance. Existing tape replay default16MiB/worker128MiB quotas remain unchanged.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

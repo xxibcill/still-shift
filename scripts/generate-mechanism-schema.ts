@@ -19,6 +19,10 @@ import {
   MechanismPatchRequestSchema,
   MechanismCommandReceiptSchema,
 } from "../packages/animation-engine/src/mechanism/protocol.ts";
+import {
+  MechanismPrimitiveInputSchema,
+  MechanismPrimitiveGeometryInputSchema,
+} from "../packages/animation-engine/src/mechanism/primitive-contract.ts";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const schemas = {
   geometry: MechanismGeometrySchema,
@@ -29,6 +33,8 @@ const schemas = {
   patch: MechanismPatchRequestSchema,
   receipt: MechanismCommandReceiptSchema,
   pack: MechanismPackDocumentSchema,
+  primitive: MechanismPrimitiveInputSchema,
+  "primitive-catalogue": MechanismPrimitiveGeometryInputSchema,
   "scene-2": MechanismSceneV2Schema,
   "frame-2": MechanismFrameResultV2Schema,
   "rig-2": MechanismRigV2Schema,
