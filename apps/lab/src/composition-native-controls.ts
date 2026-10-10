@@ -219,6 +219,7 @@ export function nativeInspectorControls(area: HTMLElement, options: Options) {
             state.layer.type === "native3d"
           )
             snapshots.push({
+              version: state.nativeFrame.version,
               scope: state.nativeFrame.scope,
               sourceFrame: state.nativeFrame.sourceFrame,
               viewport: state.nativeFrame.viewport,
@@ -259,6 +260,7 @@ export function nativeInspectorControls(area: HTMLElement, options: Options) {
           asset: current.controller.asset,
           sourceKey: current.variant.sourceKey,
           sourceSha256: current.variant.sourceSha256,
+          sourceVersion: current.variant.source.schemaVersion,
           geometrySha256: current.variant.geometrySha256,
           sourceUnits: current.variant.source.units,
           part: current.variant.source.parts.find(

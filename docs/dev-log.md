@@ -45,16 +45,16 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** isolated `codex/mechanism-ms2` carries
   `main` and exact native prerequisite [PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Twelve slices now include normal authenticated source2 final export: explicit
-  request/envelope2, async browser completion, awaited Node proof before pixels,
-  bounded journal and independent retained-row replay/final movie SHA.
-  Final gate2 passes 4,053 units / 396 files, five maintained native suites,
-  two normal mixed movies plus captured-worker export, seven actual HTTP faults
-  with zero pixels/publication, unused declared2 final1/0 and original14/integration5/
-  cancellation. Failed build and ineffective Origin-header control retained.
-  Next: Lab, full world/expected allocation preflight, three packs/import/cameras/
-  labels/cues/scoped typography/board and full milestone/installed gate. Generic
-  exports do not count as supported packs or human acceptance; packs/pilot0.
+  Thirteen slices now include native2 Lab playback/physical inspection, awaited
+  preview completion and normal authenticated final export. Refreshed fast gate
+  passes 4,060 units / 397 files, six maintained native groups, shared session,
+  original14/integration5/cancellation; separate original Lab UI also passes.
+  Actual Source2 UI20 records cover13 seek repeats, rapid seeks, camera/part/PBR
+  edits, Save/reload, all-frame rendered QA, playback and saved final6/36 export.
+  Failed types and invalid timing/overlap test fixtures are retained explicitly.
+  Next: full world/expected allocation preflight, three packs/import/cameras/
+  labels/cues/scoped typography/board and full milestone/installed gate. Packs/
+  pilot0; generic software does not infer human visual/listening acceptance.
   No MS2 PR/MS3 yet. [MS2 results](./mechanism-shorts-ms2-results.json),
   [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
@@ -214,6 +214,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — Commit native2 Lab playback and physical controls
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2` from `9419b798`.
+- **Done:** Await Source2 completion in Lab and rendered QA. Shared session gates
+  acceptance/presentation/export and serializes async drawing; original sync and
+  concurrent media preparation remain. Native controls accept exact mixed variants.
+- **Results:** Refreshed fast 4,060/397, six native browser groups, shared
+  session and original14/integration5/cancellation pass. Actual Lab2 UI20 records
+  cover seeks, edits, Save/reload, playback, QA and saved6/36 MP4; separate original
+  physical UI passes. Held source inventory stays unchanged.
+- **Retained:** Four session RED failures/unhandled rejection; three RED inspector
+  seeds had missing timing, not an inspector proof. Three TS errors and subsequent
+  timing/overlap fixture failures remain; browser RED timed out before readiness.
+- **Next:** Full preflight, three packs/import/camera/label/cue/typography/board and
+  full milestone/installed gates before MS2 PR. Packs/pilot0; human review separate.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json),
+  [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
 ### 2026-10-11 — Commit normal authenticated native2 final exports
 

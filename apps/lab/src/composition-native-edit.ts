@@ -8,7 +8,7 @@ import {
 } from "../../../packages/scene-contract/src/index.ts";
 import type { EvaluationOptions } from "../../../packages/renderer-core/src/composition/evaluate/index.ts";
 import { native3DOverridesKey } from "../../../packages/renderer-core/src/native3d/prepare.ts";
-import type { PreparedNative3DVariant } from "../../../packages/renderer-core/src/native3d/types.ts";
+import type { PreparedNative3DVariantVersions } from "../../../packages/renderer-core/src/native3d/types-v2.ts";
 import {
   CompositionEditError,
   readJsonPath,
@@ -20,7 +20,7 @@ export type NativeInspectorContext = {
   controller: Native3DLayer;
   controllerPath: JsonPath;
   scope: string | null;
-  variant: PreparedNative3DVariant;
+  variant: PreparedNative3DVariantVersions;
 };
 function fail(code: string, path: JsonPath, message: string): never {
   throw new CompositionEditError([
@@ -73,11 +73,14 @@ export function nativeInspectorContext(
       controllerPath,
       "Physical inspection requires the accepted preview's prepared native catalogue",
     );
-  if (prepared.version !== "prepared-native3d-scene-1")
+  if (
+    prepared.version !== "prepared-native3d-scene-1" &&
+    prepared.version !== "prepared-native3d-scene-2"
+  )
     fail(
       "comp-native3d-protocol",
       controllerPath,
-      "Physical inspector requires the original native source protocol",
+      "Physical inspector requires a supported prepared native source protocol",
     );
   const overrides = {
       ...(controller.partOverrides
@@ -89,7 +92,11 @@ export function nativeInspectorContext(
     },
     key = prepared.variantKeysByOverrides[native3DOverridesKey(overrides)],
     variant = key ? prepared.variants[key] : undefined;
-  if (!variant)
+  if (
+    !variant ||
+    (prepared.version === "prepared-native3d-scene-2") !==
+      (variant.version === "prepared-native3d-variant-2")
+  )
     fail(
       "comp-native3d-not-ready",
       controllerPath,

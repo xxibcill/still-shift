@@ -14,6 +14,7 @@ import {
 } from "../../../packages/scene-contract/src/index.ts";
 import {
   createCompositionPreview,
+  renderCompositionFrameAsync,
   loadCompositionResources,
   type CompositionBackend,
   type CompositionPreview,
@@ -546,12 +547,22 @@ async function load(
         (d) => `${d.code} ${d.path}: ${d.message}`,
       ),
     };
+    const source2 =
+      capture.preparedNative3D?.version === "composition-prepared-native3d-2";
     ownership.renderer(
       {
-        ...(resources.media || resources.native3D
+        ...(!source2 && (resources.media || resources.native3D)
           ? { prepareFrame: (frame: number) => renderer.prepareFrame(frame) }
           : {}),
         renderFrame(frame: number) {
+          if (source2)
+            return (async () => {
+              await renderer.prepareFrame(frame);
+              snapshot.report = await renderCompositionFrameAsync(
+                renderer,
+                frame,
+              );
+            })();
           return (snapshot.report = renderer.renderFrame(frame));
         },
         dispose() {

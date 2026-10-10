@@ -48,6 +48,7 @@ function previewResources() {
   const urls: string[] = [];
   const releases: (() => void)[] = [];
   let audio: PreviewAudio | undefined;
+  let completion: Promise<void> | undefined;
   const surfaces: {
     renderer: PreviewRenderer;
     present: () => void;
@@ -123,10 +124,34 @@ function previewResources() {
         }
       return pending.length ? Promise.all(pending).then(() => {}) : undefined;
     },
-    render(frame: number, validateAll = false) {
-      for (const surface of surfaces)
-        if (validateAll || surface.visible())
-          surface.renderer.renderFrame(frame);
+    render(frame: number, validateAll = false, current = () => true) {
+      const draw = () => {
+        if (disposed || !current()) return;
+        const pending: Promise<unknown>[] = [];
+        for (const surface of surfaces)
+          if (validateAll || surface.visible()) {
+            const report = surface.renderer.renderFrame(frame);
+            if (report instanceof Promise) pending.push(report);
+          }
+        return pending.length ? Promise.all(pending).then(() => {}) : undefined;
+      };
+      // Only asynchronous drawing queues; original synchronous presentation stays immediate.
+      const result = completion ? completion.then(draw, draw) : draw();
+      if (!result) return;
+      const retained = result.then(
+        () => {
+          if (completion === retained) completion = undefined;
+        },
+        (error: unknown) => {
+          if (completion === retained) completion = undefined;
+          throw error;
+        },
+      );
+      completion = retained;
+      return retained;
+    },
+    settle() {
+      return completion;
     },
     present() {
       for (const surface of surfaces) if (surface.visible()) surface.present();
@@ -211,9 +236,9 @@ export function createPreviewSession<T extends PreviewSnapshot>(
       0,
       Math.min(Math.round(index), scene.frameCount - 1),
     );
+    const current = () => selected === active && run === frameGeneration;
     const present = () => {
-      if (selected !== active || run !== frameGeneration) return;
-      selected.resources.render(requested);
+      if (!current()) return;
       frame = requested;
       selected.resources.present();
       syncPosition();
@@ -225,10 +250,17 @@ export function createPreviewSession<T extends PreviewSnapshot>(
       syncPosition();
       failed(error);
     };
+    const draw = () => {
+      if (!current()) return;
+      const completion = selected.resources.render(requested, false, current);
+      if (completion) return completion.then(present);
+      present();
+    };
     try {
       const readiness = selected.resources.prepare(requested);
-      if (readiness) return readiness.then(present).catch(rejected);
-      present();
+      if (readiness) return readiness.then(draw).catch(rejected);
+      const completion = draw();
+      if (completion) return completion.catch(rejected);
     } catch (error) {
       rejected(error);
     }
@@ -279,7 +311,9 @@ export function createPreviewSession<T extends PreviewSnapshot>(
       const readiness = resources.prepare(initialFrame, true);
       if (readiness) await readiness;
       if (run !== generation) return false;
-      resources.render(initialFrame, true);
+      const completion = resources.render(initialFrame, true);
+      if (completion) await completion;
+      if (run !== generation) return false;
       const previous = active;
       active = { snapshot: candidate.snapshot, resources };
       committed = true;
@@ -320,12 +354,16 @@ export function createPreviewSession<T extends PreviewSnapshot>(
   }
   async function exportSnapshot(render: (snapshot: T) => Promise<string>) {
     if (!active || dirty || exporting) return;
-    const snapshot = active.snapshot;
+    const selected = active;
+    const snapshot = selected.snapshot;
     const run = generation;
     exporting = true;
     if (options.disableWhileExporting) pause();
     syncControls();
     try {
+      const completion = selected.resources.settle();
+      if (completion) await completion;
+      if (run !== generation || selected !== active) return;
       const message = await render(snapshot);
       if (run === generation) options.status(message);
     } catch (error) {

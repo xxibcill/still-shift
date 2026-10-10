@@ -144,3 +144,119 @@ it("releases every capture even when audio or a renderer throws during disposal"
   expect(last).toHaveBeenCalledOnce();
   expect(nextRenderer).toHaveBeenCalledOnce();
 });
+
+function deferred() {
+  let resolve!: () => void;
+  const promise = new Promise<void>((accept) => {
+    resolve = accept;
+  });
+  return { promise, resolve };
+}
+it("awaits asynchronous first-frame completion before accepting a candidate", async () => {
+  const { session, snapshot } = fixture(),
+    gate = deferred(),
+    present = vi.fn(),
+    render = vi.fn(() => gate.promise);
+  const pending = session.load(async (ownership) => {
+    ownership.renderer({ renderFrame: render, dispose() {} }, present);
+    return { snapshot: snapshot("awaited"), initialFrame: 0 };
+  });
+  try {
+    await vi.waitFor(() => expect(render).toHaveBeenCalledOnce());
+    expect(session.snapshot).toBeUndefined();
+    expect(present).not.toHaveBeenCalled();
+  } finally {
+    gate.resolve();
+    await pending;
+  }
+  expect(session.snapshot?.id).toBe("awaited");
+  expect(present).toHaveBeenCalledOnce();
+  session.clear();
+});
+it("retains the accepted preview when asynchronous candidate drawing rejects", async () => {
+  const { session, snapshot } = fixture(),
+    release = vi.fn(),
+    present = vi.fn();
+  await session.load(async () => ({
+    snapshot: snapshot("accepted"),
+    initialFrame: 0,
+  }));
+  expect(
+    await session.load(async (ownership) => {
+      ownership.renderer(
+        {
+          async renderFrame() {
+            throw Error("Completion proof failed");
+          },
+          dispose: release,
+        },
+        present,
+      );
+      return { snapshot: snapshot("invalid"), initialFrame: 0 };
+    }),
+  ).toBe(false);
+  expect(session.snapshot?.id).toBe("accepted");
+  expect(present).not.toHaveBeenCalled();
+  expect(release).toHaveBeenCalledOnce();
+  session.clear();
+});
+it("serializes asynchronous draws and drops superseded queued seeks", async () => {
+  const { session, snapshot } = fixture(),
+    gate = deferred(),
+    drawn: number[] = [],
+    present = vi.fn();
+  await session.load(async (ownership) => {
+    ownership.renderer(
+      {
+        renderFrame(frame) {
+          drawn.push(frame);
+          return frame === 1 ? gate.promise : Promise.resolve();
+        },
+        dispose() {},
+      },
+      present,
+    );
+    return { snapshot: snapshot("active"), initialFrame: 0 };
+  });
+  const pending = session.show(1),
+    stale = session.show(0),
+    latest = session.show(2);
+  try {
+    expect(drawn).toEqual([0, 1]);
+    expect(session.frame).toBe(0);
+  } finally {
+    gate.resolve();
+    await Promise.all([pending, stale, latest]);
+  }
+  expect(drawn).toEqual([0, 1, 2]);
+  expect(session.frame).toBe(2);
+  expect(present).toHaveBeenCalledTimes(2);
+  session.clear();
+});
+it("waits for in-flight drawing before using a preview for export or rendered QA", async () => {
+  const { session, snapshot } = fixture(),
+    gate = deferred(),
+    exportWork = vi.fn(async () => "Complete");
+  await session.load(async (ownership) => {
+    ownership.renderer(
+      {
+        renderFrame(frame) {
+          return frame === 1 ? gate.promise : undefined;
+        },
+        dispose() {},
+      },
+      () => {},
+    );
+    return { snapshot: snapshot("active"), initialFrame: 0 };
+  });
+  const draw = session.show(1),
+    exported = session.export(exportWork);
+  try {
+    expect(exportWork).not.toHaveBeenCalled();
+  } finally {
+    gate.resolve();
+    await Promise.all([draw, exported]);
+  }
+  expect(exportWork).toHaveBeenCalledOnce();
+  session.clear();
+});

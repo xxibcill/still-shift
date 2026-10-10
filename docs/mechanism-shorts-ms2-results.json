@@ -3655,11 +3655,513 @@
       "originalNativeCases": 14,
       "originalCompositionIntegrationCases": 5,
       "originalCancellation": "passed"
+    },
+    {
+      "id": "native2-lab-red-unit-1",
+      "status": "failed-before-async-session-repair",
+      "sourceCheckpoint": "9419b798b4cd8f14e4069de3330bfb2bd3edbf8b",
+      "sourceState": "working-native2-lab-session-and-inspector-slice",
+      "actualRootSession": 5634,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-lab2-red-inputs-1.json",
+        "bytes": 412907,
+        "sha256": "sha256:55cf4136f1feff2679c680e8ecaaf0a6df4d486c5b19c459908e1374af3dca77",
+        "files": 2420,
+        "inputBytes": 118390995,
+        "sourceCommit": "9419b798b4cd8f14e4069de3330bfb2bd3edbf8b"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-red-format-1.log",
+          "bytes": 158,
+          "sha256": "sha256:cd40c109a6a06c1a2b14224da6cabce95daf1536714db279adcedb04fc06595d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-red-unit-1.log",
+          "bytes": 11429,
+          "sha256": "sha256:ed4076f689613a96ae51fb76dc23898ffea1f5cf0e47cd642e3b2a57f4b21199"
+        }
+      ],
+      "qualification": "Actual unit RED exits1:7 failed/4 passed and1 unhandled async rejection. Four session assertions expose early accept/unhandled rejection/unserialized draw/export; three inspector cases are invalid seed fixtures missing required native timing fields, so they do not independently prove inspector rejection.",
+      "failedTests": 7,
+      "passedTests": 4,
+      "unhandledErrors": 1
+    },
+    {
+      "id": "native2-lab-red-browser-1",
+      "status": "failed-before-source2-lab-ready",
+      "sourceCheckpoint": "9419b798b4cd8f14e4069de3330bfb2bd3edbf8b",
+      "sourceState": "working-native2-lab-session-and-inspector-slice",
+      "actualRootSession": 23655,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-lab2-red-inputs-1.json",
+        "bytes": 412907,
+        "sha256": "sha256:55cf4136f1feff2679c680e8ecaaf0a6df4d486c5b19c459908e1374af3dca77",
+        "files": 2420,
+        "inputBytes": 118390995,
+        "sourceCommit": "9419b798b4cd8f14e4069de3330bfb2bd3edbf8b"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-red-browser-1.log",
+          "bytes": 518,
+          "sha256": "sha256:9120c205810d1601952af789d82263f5bfc469f39900ebd23beb80684a7b73c8"
+        }
+      ],
+      "qualification": "Actual Source2 Lab UI control exits1 after15s readiness timeout with zero accepted/captured records. Product synchronous/strict1 guards are identified by source inspection; this receipt does not retain the DOM error text.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-uybhF2/failure.json",
+          "bytes": 453,
+          "sha256": "sha256:7f465f3dd96bee7fafd6ad561732ffbd3dfdf6366423eeaf85f4f3875f79865c"
+        }
+      ]
+    },
+    {
+      "id": "native2-lab-build-1",
+      "status": "failed-lab2-types",
+      "sourceCheckpoint": "9419b798b4cd8f14e4069de3330bfb2bd3edbf8b",
+      "sourceState": "working-native2-lab-session-and-inspector-slice",
+      "actualRootSession": 37106,
+      "actualExitCode": 2,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-lab2-inputs-1.json",
+        "bytes": 412907,
+        "sha256": "sha256:6c99bc0668be3ec4b85f96b17f7e6877dbafcd19ad5b6329cf9aab1dd9a344e7",
+        "files": 2420,
+        "inputBytes": 118393333,
+        "sourceCommit": "9419b798b4cd8f14e4069de3330bfb2bd3edbf8b"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-format-1.log",
+          "bytes": 277,
+          "sha256": "sha256:e76ea131a25bb894e132716173dc9d6db075fb7fd82e68744379a319b3ce66b5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-build-1.log",
+          "bytes": 1531,
+          "sha256": "sha256:74b468ff95d27ca742b04d170a4f6c8dffe20fd03a0f401f7d42b0f072961a74"
+        }
+      ],
+      "qualification": "Three compiler diagnostics: prepareFrame is void-or-Promise and two copied readonly physical tuples cannot become mutable authored camera/transform. Repaired with await and schema-parsed mutable recipe values. Focused/browser suffix not reached.",
+      "diagnostics": 3
+    },
+    {
+      "id": "native2-lab-focused-2",
+      "status": "failed-native-fixture-timing",
+      "sourceCheckpoint": "9419b798b4cd8f14e4069de3330bfb2bd3edbf8b",
+      "sourceState": "working-native2-lab-session-and-inspector-slice",
+      "actualRootSession": 71483,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-lab2-inputs-2.json",
+        "bytes": 412907,
+        "sha256": "sha256:e5b083680830b00a10c009c0278fee019fe1ed76111f5771f09ae8104f4b325d",
+        "files": 2420,
+        "inputBytes": 118393496,
+        "sourceCommit": "9419b798b4cd8f14e4069de3330bfb2bd3edbf8b"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-format-2.log",
+          "bytes": 87,
+          "sha256": "sha256:abb9dcdb9e54bd638032c0755a605a0119d7e0d8730f3ca1108b6b2ebbda05e4"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-build-2.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-unit-2.log",
+          "bytes": 6596,
+          "sha256": "sha256:600a1c4cf6037a0d5487f47d511b28d769a2c1387628e52979aa7543ef9cbb37"
+        }
+      ],
+      "qualification": "Build passes. Focused16 pass/3 inspector failures because new unit fixtures omit sourceFps/sourceStartFrame. Actual browser suffix not reached. Corrected required fields without schema changes.",
+      "passedTests": 16,
+      "failedTests": 3
+    },
+    {
+      "id": "native2-lab-focused-3",
+      "status": "failed-native-fixture-overlap",
+      "sourceCheckpoint": "9419b798b4cd8f14e4069de3330bfb2bd3edbf8b",
+      "sourceState": "working-native2-lab-session-and-inspector-slice",
+      "actualRootSession": 98363,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-lab2-inputs-3.json",
+        "bytes": 412907,
+        "sha256": "sha256:25bbad84eaa5ea4e5420e2ad89d87e447f25de2f1e742c71f8e13d02a5e1bba9",
+        "files": 2420,
+        "inputBytes": 118393602,
+        "sourceCommit": "9419b798b4cd8f14e4069de3330bfb2bd3edbf8b"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-format-3.log",
+          "bytes": 56,
+          "sha256": "sha256:65e7f167224654aab930b8fb167cfa7335bf07b433c0a5e8c9224ffcc5e76dee"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-unit-3.log",
+          "bytes": 4730,
+          "sha256": "sha256:44bfbc9508404b56d018985b1324ce97f78e4fc50f8da9dff1f8852e531a98a0"
+        }
+      ],
+      "qualification": "Focused16 pass/3 failures: seeded source1/source2 controllers illegally overlap in one scope. Fixed disjoint intervals; original overlap rejection unchanged. Browser suffix not reached.",
+      "passedTests": 16,
+      "failedTests": 3
+    },
+    {
+      "id": "native2-lab-first-ui-4",
+      "status": "passed-real-source2-lab-ui-and-saved-export",
+      "sourceCheckpoint": "9419b798b4cd8f14e4069de3330bfb2bd3edbf8b",
+      "sourceState": "working-native2-lab-session-and-inspector-slice",
+      "actualRootSession": 77371,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-lab2-inputs-4.json",
+        "bytes": 412907,
+        "sha256": "sha256:e257891e86c0119c4c970271957289f87deb005c1d667f6717e0d7a23494bf99",
+        "files": 2420,
+        "inputBytes": 118393643,
+        "sourceCommit": "9419b798b4cd8f14e4069de3330bfb2bd3edbf8b"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-format-4.log",
+          "bytes": 68,
+          "sha256": "sha256:5886d226023a40f2adab37d9235c610e28f7931acb8840caef2cf910dc1751fa"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-unit-4.log",
+          "bytes": 458,
+          "sha256": "sha256:689c0b5b1e18d0c3f88ce13fa34d7e87902e472ec0c14a54b34573051b3d870f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-browser-4.log",
+          "bytes": 88,
+          "sha256": "sha256:5cbb7a95cf8cda0b233519e77b729ac2a7b55efc55c1ef92f663043543d57072"
+        }
+      ],
+      "qualification": "Actual && aggregate exits0:19 focused units/3 files and real normal Lab UI proof20 records. Thirteen forward/reverse/random exact canvas repeats plus rapid latest seek, original1 selection, camera/part/material edits, actual UI Save/reload, playback, six-frame rendered QA and normal saved6/36 final export. Generic fixture; no family, human or installed archive claim.",
+      "unitTests": 19,
+      "unitFiles": 3,
+      "unitReportedSeconds": 0.941,
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-yUmmjA/run.json",
+          "bytes": 26369,
+          "sha256": "sha256:b56b93ff50a236b75f2714cab7a147f743f1cd8a7b69b6369c81ab087d48444e"
+        }
+      ]
+    },
+    {
+      "id": "native2-lab-full-gate-1",
+      "status": "passed-complete-lab2-and-native-session-regressions",
+      "sourceCheckpoint": "9419b798b4cd8f14e4069de3330bfb2bd3edbf8b",
+      "sourceState": "working-native2-lab-session-and-inspector-slice",
+      "actualRootSession": 26037,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-lab2-inputs-4.json",
+        "bytes": 412907,
+        "sha256": "sha256:e257891e86c0119c4c970271957289f87deb005c1d667f6717e0d7a23494bf99",
+        "files": 2420,
+        "inputBytes": 118393643,
+        "sourceCommit": "9419b798b4cd8f14e4069de3330bfb2bd3edbf8b"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-fast-1.log",
+          "bytes": 31754,
+          "sha256": "sha256:c704d61a1fdb2fa71d1fab23dbb72aeefec1f957ffaaf3bf9a728b23be382546"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-shapes-browser-5.log",
+          "bytes": 1218,
+          "sha256": "sha256:7b81f3060bf80e44a6a893bfc7d074f3c4cd5345dbb698fc99a69a0f5e8c6b2d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-session-browser-1.log",
+          "bytes": 866,
+          "sha256": "sha256:a3511a3130c0bd6bf868014458c547fa203a232578aa1dab898cbee7dbfdf7f4"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-original-depth-1.log",
+          "bytes": 538,
+          "sha256": "sha256:ead99475bcfc7c94c1f747f76589109d7df1560443c1f2417f9dceb3e789f366"
+        }
+      ],
+      "qualification": "Actual complete && aggregate exits0 on held inventory4; required child stages imply success without individual terminal handles. Full fast, six maintained native2 browser groups, original shared preview-session browser, original native14/integration5/cancellation pass. A separate original physical Lab inspector receipt below completes its actual UI regression. Original original1 sync presentation and original concurrent media preparation remain; only asynchronous drawing queues and completion gates presentation/accept/export.",
+      "terminalObservedAtUTC": "2026-10-10 22:49:45 UTC",
+      "unitTests": 4060,
+      "unitFiles": 397,
+      "unitReportedSeconds": 42.36,
+      "browserReceipts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-sBd8JQ/run.json",
+          "bytes": 2976,
+          "sha256": "sha256:a3713fd624626a56abe9518e89ca38fd644960902eb75652df8b22f7b2877309"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-FeidxO/run.json",
+          "bytes": 7870,
+          "sha256": "sha256:a5f78e4c79c0392e3566591ff2d7b1261d7962595def1d995b7a43436b23ffc6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-0ULhMn/run.json",
+          "bytes": 6282,
+          "sha256": "sha256:3870095e80b727b9313e7706b105c4ed04b7a75bb9333d3c83167fa08c7381d9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-K2FhOh/run.json",
+          "bytes": 90508,
+          "sha256": "sha256:dcb1e1e53b723b16248f669705fb215e338d240b4588e7f9783a68e03b131502"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-j2Yb4W/run.json",
+          "bytes": 43806,
+          "sha256": "sha256:be9a30174467e4ee408d768f9fbfb1fbc07489db2c734818f336d1aa60e16f9f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/run.json",
+          "bytes": 26348,
+          "sha256": "sha256:1b916e743ca81a1437ae1dd044f28d3e2f2a2c83730eda940bb350c2f44275d8"
+        }
+      ],
+      "labReceipts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/camera.png",
+          "bytes": 8790,
+          "sha256": "sha256:29ab63a102d450bd37aa30e01673e3249b0f563d8d5c5deb0bbdb3a0f3a5d821"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/composition.json",
+          "bytes": 3536,
+          "sha256": "sha256:715ce21485d8fcf760650540612989ebbc1c29547429f015e70bf9dd550ecc50"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/final-ui.png",
+          "bytes": 340388,
+          "sha256": "sha256:1e7a26d0fce9781fa7a1b7f8c7cb449fa50e3e7cf9d8d45370b2b7443678995e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/initial.png",
+          "bytes": 10897,
+          "sha256": "sha256:3247fdec4965986107a5690b92e6faaa45c31d9834c9950eaae1ea279d1d3a4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/material.png",
+          "bytes": 9035,
+          "sha256": "sha256:61c9324826629f3670bf531b7f2c5b715e9df3fb2fceda563251be8951bc7299"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/mechanism.json",
+          "bytes": 102515,
+          "sha256": "sha256:b73155b23ec051008855631337938c2c23c18788c56f118cd6a676c3025f6b75"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/part.png",
+          "bytes": 8846,
+          "sha256": "sha256:6f36a41f92e6a9c8071ea16150f7c8b391dc58ec0c4072b19628b58c7ad5c94e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/rapid-latest.png",
+          "bytes": 11409,
+          "sha256": "sha256:f59c3418a5e4237f00531d87a0980a9cb8632519dec24ee3c0878bc77b0a41fd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/reloaded.png",
+          "bytes": 9035,
+          "sha256": "sha256:61c9324826629f3670bf531b7f2c5b715e9df3fb2fceda563251be8951bc7299"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/run.json",
+          "bytes": 26348,
+          "sha256": "sha256:1b916e743ca81a1437ae1dd044f28d3e2f2a2c83730eda940bb350c2f44275d8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/saved.png",
+          "bytes": 9035,
+          "sha256": "sha256:61c9324826629f3670bf531b7f2c5b715e9df3fb2fceda563251be8951bc7299"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/saved2.mp4",
+          "bytes": 3587,
+          "sha256": "sha256:d46cd1c7b9d4f428f70dc3efc28a54df35bb17bd036bda147caf33de1de82364"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/saved2.mp4.native-observations.000.ndjson",
+          "bytes": 172744,
+          "sha256": "sha256:5ee33b8436a40313e7e1defa7a097a9b0c428dc1192b5849250d2eb6ace37e0a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/saved2.mp4.native-observations.json",
+          "bytes": 89942,
+          "sha256": "sha256:b4df5cbc20624ec0398733d3ef72c6829bbe8c97bc0d1db54c4e2358c2b07761"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/saved2.mp4.result.json",
+          "bytes": 9195,
+          "sha256": "sha256:ded70eed4597d29f963c93ce98dc73319a1e1d10cea493a4cb5bcb535076af15"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/saved2.mp4.scene.json",
+          "bytes": 243995,
+          "sha256": "sha256:5682481a42a0e09e916ce636adce06793e30ac9ea642d4997451f96180b3ecc2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/seek-0.png",
+          "bytes": 10897,
+          "sha256": "sha256:3247fdec4965986107a5690b92e6faaa45c31d9834c9950eaae1ea279d1d3a4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/seek-1.png",
+          "bytes": 11129,
+          "sha256": "sha256:3e2a4b0a0397aa9c6918c6c40d24fee6ce7a19313b6bc78c00320cc62923c4a6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/seek-10.png",
+          "bytes": 11409,
+          "sha256": "sha256:f59c3418a5e4237f00531d87a0980a9cb8632519dec24ee3c0878bc77b0a41fd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/seek-11.png",
+          "bytes": 10897,
+          "sha256": "sha256:3247fdec4965986107a5690b92e6faaa45c31d9834c9950eaae1ea279d1d3a4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/seek-12.png",
+          "bytes": 11751,
+          "sha256": "sha256:4c9409f39a3d35bce41bae96e317dbc950559bf7a77203206532c8e4b03fa7ed"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/seek-2.png",
+          "bytes": 11409,
+          "sha256": "sha256:f59c3418a5e4237f00531d87a0980a9cb8632519dec24ee3c0878bc77b0a41fd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/seek-3.png",
+          "bytes": 11751,
+          "sha256": "sha256:4c9409f39a3d35bce41bae96e317dbc950559bf7a77203206532c8e4b03fa7ed"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/seek-4.png",
+          "bytes": 5084,
+          "sha256": "sha256:229e4bdf0bd04a988c1469aa6d94edec779ce57586b3bc8f6b3a079b3cb64f1c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/seek-5.png",
+          "bytes": 5084,
+          "sha256": "sha256:229e4bdf0bd04a988c1469aa6d94edec779ce57586b3bc8f6b3a079b3cb64f1c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/seek-6.png",
+          "bytes": 11751,
+          "sha256": "sha256:4c9409f39a3d35bce41bae96e317dbc950559bf7a77203206532c8e4b03fa7ed"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/seek-7.png",
+          "bytes": 11409,
+          "sha256": "sha256:f59c3418a5e4237f00531d87a0980a9cb8632519dec24ee3c0878bc77b0a41fd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/seek-8.png",
+          "bytes": 11129,
+          "sha256": "sha256:3e2a4b0a0397aa9c6918c6c40d24fee6ce7a19313b6bc78c00320cc62923c4a6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/seek-9.png",
+          "bytes": 10897,
+          "sha256": "sha256:3247fdec4965986107a5690b92e6faaa45c31d9834c9950eaae1ea279d1d3a4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-kFOwW9/solid.json",
+          "bytes": 3011,
+          "sha256": "sha256:96bb059ce42e5a23ae57d21c7e04bd8613a13ccd5478348e3a95b189013bc6fc"
+        }
+      ],
+      "normalSource2Exports": 2,
+      "source2HTTPFaults": 7,
+      "source2LabRecords": 20,
+      "source2SeekCases": 13,
+      "source2SavedFinalExportFrames": 6,
+      "source2SavedFinalExportPasses": 36,
+      "source2RenderedQAFrames": 6,
+      "originalSessionBrowser": "passed",
+      "originalNativeCases": 14,
+      "originalCompositionIntegrationCases": 5,
+      "originalCancellation": "passed",
+      "originalReceipts": [
+        {
+          "path": "/private/tmp/still-shift-ms1n-native-depth-sgUXB5/report.json",
+          "bytes": 56712,
+          "sha256": "sha256:8b21de56445b2b9906cf9fbe7b03c65e4b7d9d4e6c3fe1e2e8cd1e1e26889dda"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms1n-native-depth-sgUXB5/composition-integration-report.json",
+          "bytes": 419656,
+          "sha256": "sha256:183aa2a5c9db5dfa0a2f632b49474bb20e3788d56d867f1365fd0ad53661c9fc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms1n-native-depth-sgUXB5/required-native-proof-reports.json",
+          "bytes": 164,
+          "sha256": "sha256:d9752db3641d5424d7b805fe4295e2133488ea4f9c95a46b882b810925537f1f"
+        },
+        {
+          "path": "/private/tmp/still-shift-native-export-cancel-HHa6c9/report.json",
+          "bytes": 4956,
+          "sha256": "sha256:7e4fc493ce5a0fa1318baea302e63f4adce2f405209f6a7a8840d8300731a017"
+        }
+      ]
+    },
+    {
+      "id": "native2-lab-original-ui-1",
+      "status": "passed-original-physical-lab-inspector",
+      "sourceCheckpoint": "9419b798b4cd8f14e4069de3330bfb2bd3edbf8b",
+      "sourceState": "working-native2-lab-session-and-inspector-slice",
+      "actualRootSession": 70132,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-lab2-inputs-4.json",
+        "bytes": 412907,
+        "sha256": "sha256:e257891e86c0119c4c970271957289f87deb005c1d667f6717e0d7a23494bf99",
+        "files": 2420,
+        "inputBytes": 118393643,
+        "sourceCommit": "9419b798b4cd8f14e4069de3330bfb2bd3edbf8b"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-original-inspector-1.log",
+          "bytes": 1664,
+          "sha256": "sha256:8ec935ae3661e429de7b42bc920a186e44b343bec7b20eec09f7ded39830038a"
+        }
+      ],
+      "qualification": "Actual original source1 UI inspector helper and await-cleanup exits0 separately after the full aggregate. Camera/part/material/label edits, actual PNG/readback evidence, UI Save/reload and original prepared1 transport retain their existing assertions. Staged completion; no single uninterrupted full run or human pass is implied.",
+      "terminalObservedAtUTC": "2026-10-10 22:50:13 UTC",
+      "actualCanvasStates": 7,
+      "artifacts": [
+        {
+          "path": "/private/tmp/composition-native-inspector-CY7fUV/evidence.json",
+          "bytes": 44411,
+          "sha256": "sha256:e1f653083513955e60105cb4d1df0d2f008dbe86884915dd6b450bfcb82934d2"
+        },
+        {
+          "path": "/private/tmp/composition-native-inspector-CY7fUV/final-ui.png",
+          "bytes": 522478,
+          "sha256": "sha256:7af8245961ae7ba6567f092a9219c0a56da335389885c52ac67fc49f0daa593f"
+        }
+      ]
     }
   ],
   "implementation": {
     "firstSlice": "Completed standalone reusable rig/teaching-shape contracts. All 11 focused negatives/admission checks and fresh complete fast3 gate (3928 units/383 files) pass; earlier closure and optional-type failures retained.",
-    "runtimeSupport": "normal-native2-core-preview-and-authenticated-final-export-verified-lab-full-preflight-and-reusable-packs-pending",
+    "runtimeSupport": "normal-native2-async-lab-preview-inspector-and-authenticated-final-export-verified-full-preflight-and-reusable-packs-pending",
     "supportedPacks": [],
     "pilotSupportedEpisodes": 0,
     "secondSlice": "Completed strict scene2/frame2 declarations, dependency/ownership and generated-landmark checks, aggregate changing geometry budgets and pack references. Focused12, TypeScript build and fresh fast2 pass (3940 units/385 files); failed formatting attempt retained. Pure evaluation and integration remain required.",
@@ -3837,10 +4339,41 @@
         "originalCancellation": "passed"
       },
       "remaining": "Normal source2 final export software path is verified on the generic mixed fixture, not on product packs or an installed archive. Lab playback/inspector, admission before complete GPU/PMREM and expected graph allocation, three supported packs, geometry/import/camera/label/cue/scoped typography/300-board/frozen pilot selection and all full MS2 checks remain. Human visual/listening acceptance is separate. No MS2 PR/MS3 or supported family/pilot claim."
+    },
+    "thirteenthSlice": {
+      "status": "implemented-and-verified-native2-lab-session-and-physical-inspector",
+      "interfaces": [
+        "Lab explicitly selects mandatory async Source2 preparation/frame completion; original1 renderer remains synchronous",
+        "shared preview session awaits asynchronous drawing before first-frame acceptance/presentation and export/QA; serializes async draws, drops superseded queued requests and preserves original synchronous presentation/concurrent media preparation",
+        "failed asynchronous staged replacement retains accepted preview and releases failed candidate once; stale completion cannot replace latest frame or accepted generation",
+        "physical inspector accepts only exact prepared1/variant1 or prepared2/variant2 and the current owning scope/overrides; no silent base fallback and no prepared bytes persisted into recipe",
+        "existing declared-ID camera/part/PBR controls work for Source2, show source/frame protocol and current evaluator metadata, and require refreshed effective variants after physical edits",
+        "rendered composition quality uses actual awaited frame completion before reading pixels on both protocols"
+      ],
+      "verification": {
+        "unitTests": 4060,
+        "unitFiles": 397,
+        "maintainedNativeBrowserSuites": 6,
+        "source2LabRecords": 20,
+        "source2SeekCases": 13,
+        "rapidLatestSeek": "passed",
+        "source2PhysicalEdits": ["camera", "part", "PBR material"],
+        "source2UISaveReload": "passed",
+        "source2Playback": "passed",
+        "source2RenderedQAFrames": 6,
+        "source2SavedFinalExportFrames": 6,
+        "source2SavedFinalExportPasses": 36,
+        "originalSharedSessionBrowser": "passed",
+        "originalPhysicalInspectorCanvasStates": 7,
+        "originalNativeCases": 14,
+        "originalCompositionIntegrationCases": 5,
+        "originalCancellation": "passed"
+      },
+      "remaining": "Generic Source2 Lab/software path only. Full GPU/PMREM/world clone/expected metadata preflight, three supported product packs, glTF/GLB/PBR import, camera/label/cue/typography/300-board and all full MS2/installed checks remain. Expanded authoring and family acceptance must be exercised on actual packs. Human visual/listening acceptance remains separate; packs/pilot0 and no MS2 PR/MS3."
     }
   },
   "limits": [
-    "Normal native2 IO/graph/async preview/shared journal and authenticated final movie export with real HTTP before-pixel proof are verified on generic fixtures. Lab, whole-world and expected allocation preflight, all three product/import/camera/label/cue/typography/board and full milestone/installed checks remain required.",
+    "Normal native2 IO/graph/async Lab preview/physical inspection/shared journal and authenticated final movie export with real HTTP before-pixel proof are verified on generic fixtures. Whole-world and expected allocation preflight, all three product/import/camera/label/cue/typography/board and full milestone/installed checks remain required.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]
