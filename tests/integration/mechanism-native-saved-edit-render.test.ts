@@ -104,7 +104,12 @@ it("renders the refreshed saved camera at the same prepared subdirectory without
     verified.loadedComposition,
     nativeMechanismExecution(loaded, result.routeSelection),
   );
-  if (!request || !result.render.metrics.nativeObservations)
+  if (
+    !request ||
+    !result.render.metrics.nativeObservations ||
+    result.render.metrics.nativeObservations.version !==
+      "native-observation-closure-1"
+  )
     throw Error("Expected actual native closure");
   const fovs: number[] = [];
   await verifyNativeObservationClosure({

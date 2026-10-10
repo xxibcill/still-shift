@@ -69,15 +69,19 @@ import type { BrowserExportResult } from "./export-page.ts";
 import {
   NativeObservationSink,
   admitNativeObservationCapacity,
-  admitNativeObservationManifest,
   nativeObservationOwner,
-  verifyNativeObservationClosure,
-  type NativeObservationClosure,
-  type NativeObservationExecutionBinding,
-  type NativeObservationExpectedPass,
 } from "./native-observation-sink.ts";
 export * from "./native-observation-sink.ts";
 export * from "./native-observation-v2.ts";
+export * from "./native-observation-dispatch.ts";
+import {
+  admitNativeObservationRequestVersions,
+  createNativeObservationSinkVersions,
+  isNativeObservationRequestV2,
+  verifyNativeObservationClosureVersions,
+  type NativeObservationRequestVersions,
+  type NativeObservationClosureVersions,
+} from "./native-observation-dispatch.ts";
 export type { CompositionOutputFormat } from "./composition-output.ts";
 export {
   COMPOSITION_OUTPUT_FORMATS,
@@ -106,11 +110,7 @@ export type ExportAudioInput = {
 };
 
 export type ExportRequest = {
-  nativeObservation?: {
-    execution: NativeObservationExecutionBinding;
-    maximumPacketBytes: number;
-    expectedPasses(frame: number): readonly NativeObservationExpectedPass[];
-  };
+  nativeObservation?: NativeObservationRequestVersions;
   runtime?: BrowserRuntimeOptions;
   scene: ExportableScene;
   signal?: AbortSignal | undefined;
@@ -146,7 +146,7 @@ export type ExportRequest = {
 };
 
 export type ExportMetrics = {
-  nativeObservations?: NativeObservationClosure;
+  nativeObservations?: NativeObservationClosureVersions;
   version:
     | typeof EXPORT_WORKER_VERSION
     | typeof COMPOSITION_EXPORT_WORKER_VERSION
@@ -512,7 +512,7 @@ const assetPlugin = (
     cacheBroker(): CompositionSurfaceBroker | undefined;
   },
   native?: {
-    sink: NativeObservationSink;
+    sink: ReturnType<typeof createNativeObservationSinkVersions>;
     exportId: string;
     credential: string;
     fail(reason: unknown): void;
@@ -587,7 +587,7 @@ const assetPlugin = (
               }
               if (received !== length)
                 throw Error("Observation upload ended before its byte count");
-              native.sink.acceptPacket(0, bytes);
+              await native.sink.acceptPacket(0, bytes);
               frameState.pending = false;
               response.statusCode = 204;
               response.end();
@@ -846,9 +846,10 @@ export const exportScene = async (
       scene.timeline.frameCount,
       request.nativeObservation.maximumPacketBytes,
     );
-    admitNativeObservationManifest(
-      request.nativeObservation.execution,
+    admitNativeObservationRequestVersions(
+      request.nativeObservation,
       resolve(request.outputPath),
+      "preparedNative3D" in scene ? scene.preparedNative3D?.version : undefined,
     );
   }
   const workOptions =
@@ -1105,15 +1106,15 @@ export const exportScene = async (
       ? new CompositionResultBudget(scene.timeline.frameCount)
       : undefined;
   const nativeSink = request.nativeObservation
-    ? new NativeObservationSink({
+    ? createNativeObservationSinkVersions(request.nativeObservation, {
         outputPath,
         exportId,
         frameCount: scene.timeline.frameCount,
-        ...request.nativeObservation,
+        signal: request.signal,
         reserve: (bytes) => resultBudget!.reserveTransient(bytes),
       })
     : undefined;
-  let nativeObservations: NativeObservationClosure | undefined;
+  let nativeObservations: NativeObservationClosureVersions | undefined;
   const nativeRequests = new Set<IncomingMessage>();
   const nativeTransfers = new Set<Promise<unknown>>();
   const stopNativeRequests = (reason: unknown) => {
@@ -1400,6 +1401,14 @@ export const exportScene = async (
                           worker: 0 as const,
                           credential: credentials[0]!,
                           executionSha256: nativeSink.executionSha256,
+                          ...(isNativeObservationRequestV2(
+                            request.nativeObservation!,
+                          )
+                            ? {
+                                packetVersion:
+                                  "native3d-observed-output-frame-2" as const,
+                              }
+                            : {}),
                           maximumPacketBytes:
                             request.nativeObservation!.maximumPacketBytes,
                         },
@@ -1500,6 +1509,14 @@ export const exportScene = async (
                         worker: 0 as const,
                         credential: credentials[0]!,
                         executionSha256: nativeSink.executionSha256,
+                        ...(isNativeObservationRequestV2(
+                          request.nativeObservation!,
+                        )
+                          ? {
+                              packetVersion:
+                                "native3d-observed-output-frame-2" as const,
+                            }
+                          : {}),
                         maximumPacketBytes:
                           request.nativeObservation!.maximumPacketBytes,
                       },
@@ -1809,13 +1826,12 @@ export const exportScene = async (
           entry.staged,
         ]),
       );
-      await verifyNativeObservationClosure({
+      await verifyNativeObservationClosureVersions({
         closure: {
           ...nativeObservations,
           manifestPath: staged.get(basename(nativeObservations.manifestPath))!,
         },
-        execution: request.nativeObservation!.execution,
-        expectedPasses: request.nativeObservation!.expectedPasses,
+        binding: request.nativeObservation!,
         output: {
           sha256: outputChecksum,
           frameCount: scene.timeline.frameCount,

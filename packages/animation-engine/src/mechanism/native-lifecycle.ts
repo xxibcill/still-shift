@@ -850,7 +850,9 @@ export async function checkNativeMechanismEpisode(
       render.checksums.source !== capturedSource ||
       render.checksums.output !== actualOutput ||
       render.checksums.scene !== actualScene ||
-      !render.metrics.nativeObservations
+      !render.metrics.nativeObservations ||
+      render.metrics.nativeObservations.version !==
+        "native-observation-closure-1"
     )
       fail(
         "Final native movie/render evidence is not associated with the current prepared recipe",

@@ -1,18 +1,21 @@
-import { createHash } from "node:crypto";
-import { setImmediate as yieldEventLoop } from "node:timers/promises";
 import {
-  NATIVE3D_OBSERVATION_LIMITS,
-  type Composition,
-  type CompositionPreparedNative3DVersions,
-} from "@still-shift/scene-contract";
-import { canonicalMechanismJson } from "../../renderer-core/src/mechanism/canonical.ts";
+  nativeCompositionSha256,
+  nativePreparedSha256,
+} from "./native-observation-identity.ts";
+export {
+  nativeCompositionSha256,
+  nativePreparedSha256,
+} from "./native-observation-identity.ts";
+import { createNativeObservationRequestV2 } from "./native-observation-v2.ts";
+import { setImmediate as yieldEventLoop } from "node:timers/promises";
+import { NATIVE3D_OBSERVATION_LIMITS } from "@still-shift/scene-contract";
 import { compositionNativePasses } from "../../renderer-core/src/composition/render/graphs.ts";
 import { resolveNative3DVariant } from "../../renderer-core/src/native3d/prepare.ts";
 import { requireLegacyNative3DCatalogue } from "../../renderer-core/src/native3d/catalogue-versions.ts";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 import {
   admitNativeObservationCapacity,
-  type ExportRequest,
+  type NativeObservationRequestOriginal,
   type NativeObservationExecutionBinding,
   type NativeObservationExpectedPass,
 } from "@still-shift/execution-runtime/export";
@@ -21,35 +24,13 @@ import type { LoadedComposition } from "./composition-render.ts";
 export type NativeMechanismExecution = NonNullable<
   NativeObservationExecutionBinding["mechanism"]
 >;
-const sha256 = (value: unknown) =>
-  `sha256:${createHash("sha256").update(canonicalMechanismJson(value)).digest("hex")}`;
 const lexical = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
-
-/** Only declared file locators are omitted; authored recipe and metadata stay bound. */
-export function nativeCompositionSha256(composition: Composition): string {
-  return sha256({
-    ...composition,
-    assets: composition.assets.map((asset) =>
-      Object.fromEntries(
-        Object.entries(asset).filter(
-          ([key]) => key !== "path" && key !== "manifestPath",
-        ),
-      ),
-    ),
-  });
-}
-export function nativePreparedSha256(
-  transport: CompositionPreparedNative3DVersions,
-): string {
-  return sha256(transport);
-}
-
 /** Trusted graph associations; no expected matrices substitute for actual observations. */
 export async function createNativeObservationRequest(
   loaded: LoadedComposition,
   mechanism?: NativeMechanismExecution,
   options: { signal?: AbortSignal | undefined } = {},
-): Promise<ExportRequest["nativeObservation"]> {
+): Promise<NativeObservationRequestOriginal | undefined> {
   options.signal?.throwIfAborted();
   if (!loaded.preparedNative3D) return undefined;
   if (loaded.preparedNative3D.version !== "composition-prepared-native3d-1")
@@ -278,4 +259,13 @@ export async function createNativeObservationRequest(
   );
   options.signal?.throwIfAborted();
   return { execution, expectedPasses, maximumPacketBytes };
+}
+
+/** Explicit transport dispatch for the normal renderer; original API remains strict1. */
+export async function createNativeObservationRequestVersions(
+  ...args: Parameters<typeof createNativeObservationRequest>
+) {
+  return args[0].preparedNative3D?.version === "composition-prepared-native3d-2"
+    ? await createNativeObservationRequestV2(...args)
+    : await createNativeObservationRequest(...args);
 }

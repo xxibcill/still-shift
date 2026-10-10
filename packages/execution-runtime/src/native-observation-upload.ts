@@ -1,6 +1,8 @@
 import {
   NATIVE3D_OBSERVATION_LIMITS,
   NativeObservedOutputFrameSchema,
+  NativeObservedOutputFrameV2Schema,
+  type NativeObservedSampleV2,
   type NativeObservedSample,
 } from "@still-shift/scene-contract";
 import {
@@ -10,31 +12,60 @@ import {
   type ManagedMetadataText,
 } from "../../renderer-core/src/managed-metadata.ts";
 
-/** Keep all packet representations owned until the server acknowledges them. */
+type UploadInput = {
+  outputFrame: number;
+  executionSha256: string;
+  passes: readonly NativeObservedSampleV2[];
+  maximumPacketBytes: number;
+};
+type PacketVersion =
+  | "native3d-observed-output-frame-1"
+  | "native3d-observed-output-frame-2";
+/** Original typed facade and strict serializer stay unchanged. */
 export async function uploadNativeObservationPacket(
-  input: {
-    outputFrame: number;
-    executionSha256: string;
+  input: Omit<UploadInput, "passes"> & {
     passes: readonly NativeObservedSample[];
-    maximumPacketBytes: number;
   },
   send: (bytes: Uint8Array<ArrayBuffer>) => Promise<void>,
 ): Promise<void> {
+  return await uploadNativeObservationPacketVersions(
+    input,
+    "native3d-observed-output-frame-1",
+    send,
+  );
+}
+/** Keep every representation owned until the selected protocol's server acknowledgement. */
+export async function uploadNativeObservationPacketVersions(
+  input: UploadInput,
+  version: PacketVersion,
+  send: (bytes: Uint8Array<ArrayBuffer>) => Promise<void>,
+): Promise<void> {
+  if (
+    version !== "native3d-observed-output-frame-1" &&
+    version !== "native3d-observed-output-frame-2"
+  )
+    throw Error("Unsupported native observation upload protocol");
   if (
     !Number.isSafeInteger(input.maximumPacketBytes) ||
     input.maximumPacketBytes < 1 ||
     input.maximumPacketBytes > NATIVE3D_OBSERVATION_LIMITS.packetBytes
   )
     throw Error("Invalid native observation packet capacity");
+  const protocol2 = version === "native3d-observed-output-frame-2";
   const packet = allocateRenderMetadata(
-    input.maximumPacketBytes * 4 + 262144,
-    () =>
-      NativeObservedOutputFrameSchema.parse({
-        version: "native3d-observed-output-frame-1",
+    input.maximumPacketBytes * (protocol2 ? 8 : 4) +
+      (protocol2 ? 524288 : 262144),
+    () => {
+      const value = {
+        version,
         outputFrame: input.outputFrame,
         executionSha256: input.executionSha256,
         passes: input.passes,
-      }),
+      };
+      return protocol2
+        ? NativeObservedOutputFrameV2Schema.parse(value)
+        : NativeObservedOutputFrameSchema.parse(value);
+    },
   );
   let text: ManagedMetadataText | undefined;
   let encoded: { bytes: Uint8Array<ArrayBuffer> } | undefined;

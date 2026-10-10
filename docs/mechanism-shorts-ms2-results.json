@@ -3178,11 +3178,488 @@
         "external": 79
       },
       "terminalTimeQualification": "UTC clock sampled immediately after the actual aggregate terminal receipt; not a child-stage timestamp."
+    },
+    {
+      "id": "native2-normal-export-contract-red-1",
+      "status": "expected-normal-export-red",
+      "sourceCheckpoint": "d52d4952192381b2ffe3d4c83afcfa3ca0a35074",
+      "sourceState": "working-normal-authenticated-source2-export-slice",
+      "actualRootSession": 52799,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-export2-red-inputs-1.json",
+        "bytes": 411697,
+        "sha256": "sha256:62123f378b30f65de6bdabb0d7a4fcfe2f4ccd1925ed03019dae2b07c74e3433",
+        "files": 2413,
+        "inputBytes": 118341722,
+        "sourceCommit": "d52d4952192381b2ffe3d4c83afcfa3ca0a35074"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-export2-red-format-1.log",
+          "bytes": 115,
+          "sha256": "sha256:592348dad2cf427398cd70a9f67f7affdef114c2c596f0adbbc716ec1e76cadc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-export2-red-1.log",
+          "bytes": 1017,
+          "sha256": "sha256:0e3e8b5ddb3692493c7c61169620288977a416613da654db4c7210d5331a4a5a"
+        }
+      ],
+      "qualification": "Actual normal renderComposition rejects declared source2 at the original execution ledger guard before browser/export. Zero outputs; generic fixture only.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-0lWjsQ/failure.json",
+          "bytes": 757,
+          "sha256": "sha256:8594633806c39edc020f61d34ba1b9e279c0abf9a214750d3d12d20e5697751e"
+        }
+      ]
+    },
+    {
+      "id": "native2-normal-export-build-1",
+      "status": "failed-partial-dispatch-build",
+      "sourceCheckpoint": "d52d4952192381b2ffe3d4c83afcfa3ca0a35074",
+      "sourceState": "working-normal-authenticated-source2-export-slice",
+      "actualRootSession": 11795,
+      "actualExitCode": 2,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-export2-inputs-1.json",
+        "bytes": 412234,
+        "sha256": "sha256:87cd34b0d07fc5c27c1811ff501fbeb34df94509f040a223099dee7a405af67e",
+        "files": 2416,
+        "inputBytes": 118353765,
+        "sourceCommit": "d52d4952192381b2ffe3d4c83afcfa3ca0a35074"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-export2-format-1.log",
+          "bytes": 569,
+          "sha256": "sha256:fc617b810d8ade0e54b77f5573313388addbf6a12bc0c43856ada022997fc89c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-export2-identity-1.log",
+          "bytes": 260,
+          "sha256": "sha256:b3e3093479c9889e31ef585ad0a8abb1dcb767486c536101f4cf1d432168bb8c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-export2-build-1.log",
+          "bytes": 5721,
+          "sha256": "sha256:a31f13bcceef42722902b116fa9d25eb3d758b0a25ece04d31bc46be664a8bc5"
+        }
+      ],
+      "qualification": "Node dispatch installed; guarded browser installer failed before writes on two matching render callbacks. The next shell line still ran build. Seven diagnostics: widened original closure consumers, typed mixed association sort, replay onFrame covariance, unsupported smoke encoder option. Focused/browser stages not reached. Corrected with explicit original1 guards and typed mixed variants."
+    },
+    {
+      "id": "native2-normal-export-first-normal-movies-2",
+      "status": "passed-first-two-normal-source2-final-movies",
+      "sourceCheckpoint": "d52d4952192381b2ffe3d4c83afcfa3ca0a35074",
+      "sourceState": "working-normal-authenticated-source2-export-slice",
+      "actualRootSession": 12301,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-export2-inputs-2.json",
+        "bytes": 412234,
+        "sha256": "sha256:199fe2c8bf37b80d6bf58ad6f1f20003d23c3e297cb975798454c2b6b465eda8",
+        "files": 2416,
+        "inputBytes": 118356188,
+        "sourceCommit": "d52d4952192381b2ffe3d4c83afcfa3ca0a35074"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-export2-format-2.log",
+          "bytes": 566,
+          "sha256": "sha256:fcd94ece8060255b41f0630f160700bab1cd2c5a10eac23737454b80c97f4fd3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-export2-identity-2.log",
+          "bytes": 260,
+          "sha256": "sha256:b3e3093479c9889e31ef585ad0a8abb1dcb767486c536101f4cf1d432168bb8c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-export2-build-2.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-export2-focused-2.log",
+          "bytes": 444,
+          "sha256": "sha256:228a999b0bd18c680ab63f5841c73c04e8f4bb2c96a25395c4ebb09f7ac6544a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-export2-browser-2.log",
+          "bytes": 97,
+          "sha256": "sha256:5182373762f2524d60d3e1e9f16b255760484e4c8847dd911189465e3200c8fc"
+        }
+      ],
+      "qualification": "Actual required && aggregate exits0: build,20/3 focused units and two complete normal renderComposition MP4 exports. Each closure2 covers6 output frames/36 actual mixed passes and matches final movie SHA. Later source changes add independent captured HTTP bodies/fault controls; no family, pilot, installed archive or human pass.",
+      "focusedTests": 20,
+      "focusedFiles": 3,
+      "focusedReportedSeconds": 0.971,
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-uNSuOk/run.json",
+          "bytes": 21907,
+          "sha256": "sha256:45c6bcdaafc26f7cf776e49b972f9f0e334119fdd6ac6443e276d8e0f8460540"
+        }
+      ]
+    },
+    {
+      "id": "native2-normal-export-http-proof-3",
+      "status": "passed-captured-http-and-independent-replay",
+      "sourceCheckpoint": "d52d4952192381b2ffe3d4c83afcfa3ca0a35074",
+      "sourceState": "working-normal-authenticated-source2-export-slice",
+      "actualRootSession": 10950,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-export2-inputs-3.json",
+        "bytes": 412566,
+        "sha256": "sha256:34c3452f440b0c59c7b3bbc27cf27d6621f07bceadbc80f7d1d0166375e5a904",
+        "files": 2418,
+        "inputBytes": 118368762,
+        "sourceCommit": "d52d4952192381b2ffe3d4c83afcfa3ca0a35074"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-export2-format-3.log",
+          "bytes": 202,
+          "sha256": "sha256:7a471d75b48aa23dcc7e9747e53d421adea808eca488e999e5a6fd20ec3128d2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-export2-build-3.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-export2-focused-3.log",
+          "bytes": 516,
+          "sha256": "sha256:a26d514cc2b5489602bc52049962c0c473b4ffb71e3c0b64d03b7461e0d3097d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-export2-browser-3.log",
+          "bytes": 97,
+          "sha256": "sha256:717f7cfccb37b4fbda9437646b6a164de3f1ad57feee7be298caa3c4544f880b"
+        }
+      ],
+      "qualification": "Actual aggregate exits0: build,23/4 focused units, two normal complete MP4s plus an instrumented direct normal worker export with6 actual observation/RGBA bodies independently matched to retained rows and final output SHA. Four authenticated packet faults fail before any pixels or output publication. Later source extends owner/origin/unused controls; this is a generic route proof.",
+      "focusedTests": 23,
+      "focusedFiles": 4,
+      "focusedReportedSeconds": 2.09,
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-qtxX2K/run.json",
+          "bytes": 33004,
+          "sha256": "sha256:7d670cd726a5822652dea64795b748f08f6f31145aa4106270397bcbe2deeae9"
+        }
+      ]
+    },
+    {
+      "id": "native2-normal-export-gate-1",
+      "status": "failed-foreign-origin-control-transport",
+      "sourceCheckpoint": "d52d4952192381b2ffe3d4c83afcfa3ca0a35074",
+      "sourceState": "working-normal-authenticated-source2-export-slice",
+      "actualRootSession": 45389,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-export2-inputs-4.json",
+        "bytes": 412566,
+        "sha256": "sha256:cbeef8b4e49e69e9ead18dee1124fe9fa426ea383e404f499e2dfbf98fc858cf",
+        "files": 2418,
+        "inputBytes": 118370024,
+        "sourceCommit": "d52d4952192381b2ffe3d4c83afcfa3ca0a35074"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-export2-format-4.log",
+          "bytes": 136,
+          "sha256": "sha256:2b15928f2697817b0265f4d4f73fa8bfe478d288051108bd2b0f65c8310cc347"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-export2-fast-1.log",
+          "bytes": 31656,
+          "sha256": "sha256:54ff9a2fb9395f1607f99bade129e4131236b6683a57c45d1f864f5191999ba2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-export2-shapes-browser-4.log",
+          "bytes": 1688,
+          "sha256": "sha256:67d31856f7c31ffa850484cc33246803b3fe7ba8add7543a8e8c7a93843842ff"
+        }
+      ],
+      "qualification": "Fast4053/396 passes43.96s; four maintained world/stream/full-frame/composition suites pass. Normal two MP4s, unused declared2 empty final output, actual captured-body export and six packet/owner faults complete. Chromium overwrote the continued forged Origin header, so that control did not send a foreign-origin request and correctly fails after observing6 pixels/publication. Fixed harness uses actual route.fetch with explicit header and requires403. Original native regression suffix not reached.",
+      "unitTests": 4053,
+      "unitFiles": 396,
+      "unitReportedSeconds": 43.96,
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-mlBtEG/failure.json",
+          "bytes": 22222,
+          "sha256": "sha256:b3712171b44592b70fadd6354c434946ee9821f045c462472060edcfc105daf1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-mlBtEG/foreign-origin.mp4.native-observations.json",
+          "bytes": 87175,
+          "sha256": "sha256:abb1cb6bb588944de45fc38eb96d467bdb19a5ce53394fe1dbb2a55f9ad4a366"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-mlBtEG/unused2.mp4.result.json",
+          "bytes": 6886,
+          "sha256": "sha256:39c717bf7c44454c179e5a8c8df53fabcfafd08874a0dc4997a6a4148e2df745"
+        }
+      ]
+    },
+    {
+      "id": "native2-normal-export-final-gate-2",
+      "status": "passed-complete-normal-authenticated-export2-and-original-regressions",
+      "sourceCheckpoint": "d52d4952192381b2ffe3d4c83afcfa3ca0a35074",
+      "sourceState": "working-normal-authenticated-source2-export-slice",
+      "actualRootSession": 9738,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-export2-inputs-5.json",
+        "bytes": 412566,
+        "sha256": "sha256:e43ad1c98d97eff38081851ed9e2e8100565f2fab13c2e39e398023ac0da4fa4",
+        "files": 2418,
+        "inputBytes": 118370727,
+        "sourceCommit": "d52d4952192381b2ffe3d4c83afcfa3ca0a35074"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-export2-format-5.log",
+          "bytes": 123,
+          "sha256": "sha256:60e7c1245937d43ed8d80ca024f79b5d381d539921e9a295924be9937258beac"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-export2-identity-5.log",
+          "bytes": 260,
+          "sha256": "sha256:b3e3093479c9889e31ef585ad0a8abb1dcb767486c536101f4cf1d432168bb8c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-export2-fast-2.log",
+          "bytes": 31980,
+          "sha256": "sha256:a4a89f57109e78182a4523ce38da3405b5545fd3d481701ddcd721cded55d376"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-export2-shapes-browser-5.log",
+          "bytes": 1060,
+          "sha256": "sha256:df6773248b777ac9671cb92a024ad4ce263fc162d17792943551c1d4a8e44a36"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-export2-original-depth-2.log",
+          "bytes": 538,
+          "sha256": "sha256:e4efdff5777434c96c7f3775730a2cb2445547144b4800afe4bc77196d33f85d"
+        }
+      ],
+      "qualification": "Actual aggregate terminal exits0; required && child stages imply success without individual terminal handles. Current source inventory5 remains unchanged. Full fast, five maintained actual native browser suites, normal final MP4s, independent captured-body replay, seven actual HTTP faults before pixels/publication, unused declared2 final closure and original14/integration5/cancellation all pass. Original request/upload/sink/schema/serialization remain strict1; original lifecycle/package consumers explicitly require closure1. ExportMetrics extends with tagged closure2. Full world/expected allocation admission, family/import/camera/label/cue/typography/board and complete MS2 gates remain.",
+      "terminalObservedAtUTC": "2026-10-10 22:36:22 UTC",
+      "terminalTimeQualification": "UTC clock sampled immediately after actual aggregate terminal receipt.",
+      "unitTests": 4053,
+      "unitFiles": 396,
+      "unitReportedSeconds": 42.66,
+      "browserReceipts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-NVH2ku/run.json",
+          "bytes": 2976,
+          "sha256": "sha256:a3713fd624626a56abe9518e89ca38fd644960902eb75652df8b22f7b2877309"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-M43i8x/run.json",
+          "bytes": 7870,
+          "sha256": "sha256:a5f78e4c79c0392e3566591ff2d7b1261d7962595def1d995b7a43436b23ffc6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-66WN5X/run.json",
+          "bytes": 6282,
+          "sha256": "sha256:3870095e80b727b9313e7706b105c4ed04b7a75bb9333d3c83167fa08c7381d9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-ZwD0ne/run.json",
+          "bytes": 90508,
+          "sha256": "sha256:457addb2593427026b5f001a61307ae97c1ce387847f4c990345dee275500cc3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/run.json",
+          "bytes": 43886,
+          "sha256": "sha256:fc4e794b0ffa15199b95ed725bc067dd66d4e0439ddc954fc72feee92ef4ea0e"
+        }
+      ],
+      "normalExportReceipts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/run.json",
+          "bytes": 43886,
+          "sha256": "sha256:fc4e794b0ffa15199b95ed725bc067dd66d4e0439ddc954fc72feee92ef4ea0e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/normal2-a.mp4",
+          "bytes": 4023,
+          "sha256": "sha256:3e839c201f2bcc25f466fc84db62f4d722112e4bcd5a493df0efa12f8a41508d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/normal2-a.mp4.native-observations.json",
+          "bytes": 87170,
+          "sha256": "sha256:6679e12d96c72f3385c02d6a9fbaa4cb3e8f9a8bcca900c40a81217d5e5ac503"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/normal2-a.mp4.native-observations.000.ndjson",
+          "bytes": 172423,
+          "sha256": "sha256:3cb26fe3fea9fda87874baa61055eba1eefb7532f6021e4278e39ba9264398bb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/normal2-b.mp4",
+          "bytes": 4023,
+          "sha256": "sha256:3e839c201f2bcc25f466fc84db62f4d722112e4bcd5a493df0efa12f8a41508d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/normal2-b.mp4.native-observations.json",
+          "bytes": 87170,
+          "sha256": "sha256:1948940b9b8854df7cbcd5574606080682a7f89548ff88650f62a25981e05d42"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/normal2-b.mp4.native-observations.000.ndjson",
+          "bytes": 172423,
+          "sha256": "sha256:3cb26fe3fea9fda87874baa61055eba1eefb7532f6021e4278e39ba9264398bb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/instrumented.mp4",
+          "bytes": 4023,
+          "sha256": "sha256:3e839c201f2bcc25f466fc84db62f4d722112e4bcd5a493df0efa12f8a41508d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/instrumented.mp4.native-observations.json",
+          "bytes": 87173,
+          "sha256": "sha256:004f597d15fd4920cc3bfa5dd170dd18a0ad0eb2f5112c163d8ab0c7da5d15e6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/instrumented.mp4.native-observations.000.ndjson",
+          "bytes": 172423,
+          "sha256": "sha256:3cb26fe3fea9fda87874baa61055eba1eefb7532f6021e4278e39ba9264398bb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/unused2.mp4",
+          "bytes": 1576,
+          "sha256": "sha256:e9a57ef76dd9e9e0fe0adaecbb64edae088cefc0c4e92a2cb50ff37caaad2ef7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/unused2.mp4.native-observations.json",
+          "bytes": 87161,
+          "sha256": "sha256:d5273e615a02184777a9d17f6bfbefae269104ffc3d7a397a94e8a14556a6d20"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/unused2.mp4.native-observations.000.ndjson",
+          "bytes": 367,
+          "sha256": "sha256:432872ea961d5f40c82ad9330afe7e31719723275bf0fdbc2ca785b1c19d1734"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/unused2.mp4.result.json",
+          "bytes": 6918,
+          "sha256": "sha256:40204060d21b25565f47e8f13a2a7d17fc1dd25c763a97ad487b3b4e6b73a4f9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/http-frame-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:7e81ce13fe49f417d6feae3dbe612c698e61780a4e96577cee46e8af8a36ad4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/http-frame-0.json",
+          "bytes": 36295,
+          "sha256": "sha256:5a531616b7c48c032c1ed5ed168614a68ff8ae827224cdd9dfcd6cb039517fee"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/http-frame-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:3057ce618159d91a6d5321f0ca22d6f70dbb9aa0b817b9497d18d22ac89843d2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/http-frame-1.json",
+          "bytes": 36244,
+          "sha256": "sha256:c27fc6582d9971cea263dfbcc4bf405e65cdb2d9ccd10a33fd21e9d2031c3b81"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/http-frame-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:62512c6e87ded0509ff6fb8847465d524b2229c3bffbb6cb0366448f0602a096"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/http-frame-2.json",
+          "bytes": 36166,
+          "sha256": "sha256:18db0fc011511332e4d7c0de9d6e8ec7773a83b764472439969d2a3a36414428"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/http-frame-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:d80448ba9418a1f4de79656fc8f812168a81838462a5da03480cedc1876b3747"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/http-frame-3.json",
+          "bytes": 36154,
+          "sha256": "sha256:e3cb6ff515f9ced9740ca4c94dc1ecaeae433afdff9f213d0e0e43242b2a0c93"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/http-frame-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:c7a1c4a741af722bcbe00e3c447535a9aee63b378a45cec69309176f44744d00"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/http-frame-4.json",
+          "bytes": 13179,
+          "sha256": "sha256:3e53b2a34e5e5dd466b622a13b57bc27e9e2cb5c2ca531fd90049d203d974b6a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/http-frame-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:c7a1c4a741af722bcbe00e3c447535a9aee63b378a45cec69309176f44744d00"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-EZ6JOU/http-frame-5.json",
+          "bytes": 13179,
+          "sha256": "sha256:177d2bfb2e90a4bf555174e81055a7cf0f70fab4efd1a8467e02460742c862fb"
+        }
+      ],
+      "originalReceipts": [
+        {
+          "path": "/private/tmp/still-shift-ms1n-native-depth-GFIU0K/report.json",
+          "bytes": 56712,
+          "sha256": "sha256:8b21de56445b2b9906cf9fbe7b03c65e4b7d9d4e6c3fe1e2e8cd1e1e26889dda"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms1n-native-depth-GFIU0K/composition-integration-report.json",
+          "bytes": 419656,
+          "sha256": "sha256:183aa2a5c9db5dfa0a2f632b49474bb20e3788d56d867f1365fd0ad53661c9fc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms1n-native-depth-GFIU0K/required-native-proof-reports.json",
+          "bytes": 164,
+          "sha256": "sha256:05c22f3f0ada1e606fda9b5804553a341d6b1f3cbfec67e8bd906ca8acce2324"
+        },
+        {
+          "path": "/private/tmp/still-shift-native-export-cancel-VWgXit/report.json",
+          "bytes": 4955,
+          "sha256": "sha256:9e826102ee1c6f87b1c821b071b29ea9d2bdfedded074b79158636f9569c222b"
+        }
+      ],
+      "normalPublicCompositionExports": 2,
+      "instrumentedNormalWorkerExports": 1,
+      "eachMixedOutputFrames": 6,
+      "eachMixedContributingPasses": 36,
+      "eachMixedFrame2Passes": 12,
+      "eachMixedFrame1Passes": 24,
+      "actualCapturedPixelBodies": 6,
+      "actualCapturedObservationBodies": 6,
+      "authenticatedHTTPFaults": 7,
+      "faultPixelBodies": 0,
+      "faultOutputPublished": false,
+      "unusedDeclared2": {
+        "finalOutputFrames": 1,
+        "passCount": 0,
+        "execution": "native-observation-execution-2",
+        "closure": "native-observation-closure-2"
+      },
+      "originalNativeCases": 14,
+      "originalCompositionIntegrationCases": 5,
+      "originalCancellation": "passed"
     }
   ],
   "implementation": {
     "firstSlice": "Completed standalone reusable rig/teaching-shape contracts. All 11 focused negatives/admission checks and fresh complete fast3 gate (3928 units/383 files) pass; earlier closure and optional-type failures retained.",
-    "runtimeSupport": "normal-native2-core-preview-and-low-level-journal2-verified-authenticated-normal-export-and-lab-pending",
+    "runtimeSupport": "normal-native2-core-preview-and-authenticated-final-export-verified-lab-full-preflight-and-reusable-packs-pending",
     "supportedPacks": [],
     "pilotSupportedEpisodes": 0,
     "secondSlice": "Completed strict scene2/frame2 declarations, dependency/ownership and generated-landmark checks, aggregate changing geometry budgets and pack references. Focused12, TypeScript build and fresh fast2 pass (3940 units/385 files); failed formatting attempt retained. Pure evaluation and integration remain required.",
@@ -3327,10 +3804,43 @@
         "originalCancellation": "passed"
       },
       "remaining": "Normal Node request producer/execution envelope, HTTP uploader/export-page/worker async dispatch, authenticated final movie closure and replay2, Lab, complete preflight before GPU/PMREM and expected graph allocation, packs/import/camera/labels/cues/typography/board and all owning MS2 gates remain. Preview raw-pixel journals do not count as normal authenticated final exports or supported family/pilot acceptance."
+    },
+    "twelfthSlice": {
+      "status": "implemented-and-verified-normal-authenticated-source2-final-export",
+      "interfaces": [
+        "normal renderComposition explicitly selects request2 for declared prepared2; original request1 API remains strict1 and unchanged for original sources",
+        "source2 execution binds raw/prepared/recipe/appearance hashes, explicit mixed source versions and exact teaching-shape associations; prospective64-pass/1MiB packet and full journal admission before normal browser launch",
+        "normal Node endpoint awaits selected async journal2 validation before204; single assigned worker/credential/export ID/local origin/contiguous order are checked before observation or pixel pairing",
+        "browser2 envelope agrees with declared prepared2 before resources; mandatory renderCompositionFrameAsync completion returns actual mixed invocation-ordered observations and bounded strict packet2 upload before pixel capture/delivery",
+        "normal publisher streams independent selected-version retained-row replay, verifies final movie SHA/paired actual transport bodies and rechecks original authored assets and executable identity before atomic publication",
+        "original upload1 async signature/serializer/capacity, request1, sink1, strict schemas and row/manifest/closure1 remain; original E01 lifecycle/package/saved edit consumers explicitly reject closure2 rather than adapt it"
+      ],
+      "verification": {
+        "unitTests": 4053,
+        "unitFiles": 396,
+        "maintainedNativeBrowserSuites": 5,
+        "normalPublicCompositionExports": 2,
+        "instrumentedNormalWorkerExports": 1,
+        "eachMixedFrames": 6,
+        "eachMixedPasses": 36,
+        "eachMixedFrame2": 12,
+        "eachMixedFrame1": 24,
+        "actualCapturedPixelBodies": 6,
+        "actualCapturedObservationBodies": 6,
+        "actualAuthenticatedHTTPFaults": 7,
+        "faultPixels": 0,
+        "faultOutputsPublished": false,
+        "unusedDeclared2Frames": 1,
+        "unusedDeclared2Passes": 0,
+        "originalNativeCases": 14,
+        "originalCompositionIntegrationCases": 5,
+        "originalCancellation": "passed"
+      },
+      "remaining": "Normal source2 final export software path is verified on the generic mixed fixture, not on product packs or an installed archive. Lab playback/inspector, admission before complete GPU/PMREM and expected graph allocation, three supported packs, geometry/import/camera/label/cue/scoped typography/300-board/frozen pilot selection and all full MS2 checks remain. Human visual/listening acceptance is separate. No MS2 PR/MS3 or supported family/pilot claim."
     }
   },
   "limits": [
-    "Normal native2 IO/graph/async preview and low-level shared durable journal2 are verified; normal authenticated movie export/upload/execution2 and Lab integration, full world/expected allocation admission and all product/import/camera/label/cue/scoped typography gates remain required.",
+    "Normal native2 IO/graph/async preview/shared journal and authenticated final movie export with real HTTP before-pixel proof are verified on generic fixtures. Lab, whole-world and expected allocation preflight, all three product/import/camera/label/cue/typography/board and full milestone/installed checks remain required.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

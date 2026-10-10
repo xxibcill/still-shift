@@ -25,11 +25,11 @@ import { verifyNativeJournalV2Proof } from "../helpers/native3d-journal-v2-proof
 const hash = (bytes: Uint8Array | string) =>
   `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
 
-export async function runNativeCompositionV2Proof() {
+export async function createNativeCompositionV2ProofFixture(
+  prefix = "/private/tmp/still-shift-ms2-composition-v2-",
+) {
   const root = resolve(import.meta.dirname, "../..");
-  const directory = await mkdtemp(
-    "/private/tmp/still-shift-ms2-composition-v2-",
-  );
+  const directory = await mkdtemp(prefix);
   const source2 = mechanismV2Fixture();
   source2.camera = {
     ...source2.camera,
@@ -159,6 +159,12 @@ export async function runNativeCompositionV2Proof() {
     loaded.preparedNative3D?.version,
     "composition-prepared-native3d-2",
   );
+  return { root, directory, loaded };
+}
+
+export async function runNativeCompositionV2Proof() {
+  const { root, directory, loaded } =
+    await createNativeCompositionV2ProofFixture();
   const paths = [
     "tests/browser/native3d-composition-v2.ts",
     "tests/helpers/native3d-composition-v2-proof.ts",

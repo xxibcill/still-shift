@@ -20,6 +20,7 @@ import type {
 import type { PreparedNative3DVariantV2 } from "../../renderer-core/src/native3d/types-v2.ts";
 import {
   NativeObservationSinkCore,
+  admitNativeObservationManifestCore,
   validateNativeObservationPacket,
   verifyNativeObservationClosureCore,
   type NativeObservationClosure,
@@ -368,5 +369,16 @@ export function verifyNativeObservationClosureV2(options: Verification) {
   return verifyNativeObservationClosureCore(
     { ...options, execution },
     protocolV2(execution, options.signal),
+  );
+}
+
+export function admitNativeObservationManifestV2(
+  execution: NativeObservationExecutionBindingV2,
+  outputPath: string,
+) {
+  admitNativeObservationManifestCore(
+    NativeObservationExecutionV2Schema.parse(execution),
+    outputPath,
+    "native-observation-manifest-2",
   );
 }

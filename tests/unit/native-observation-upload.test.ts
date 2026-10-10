@@ -64,3 +64,49 @@ it("releases uploads rejected by transport, schema or encoded-byte admission", a
   });
   memory.dispose();
 });
+
+it("owns selected protocol2 serialization until acknowledgement and retires rejected bodies", async () => {
+  const { uploadNativeObservationPacketVersions } = await import(
+    "../../packages/execution-runtime/src/native-observation-upload.ts"
+  );
+  const memory = new ManagedMemory({ pixels: 1, metadata: 1048576 });
+  try {
+    await withManagedMemory(memory, async () => {
+      let acknowledge = () => {};
+      const pending = uploadNativeObservationPacketVersions(
+        input,
+        "native3d-observed-output-frame-2",
+        async (bytes) => {
+          expect(JSON.parse(new TextDecoder().decode(bytes))).toMatchObject({
+            version: "native3d-observed-output-frame-2",
+            passes: [],
+          });
+          await new Promise<void>((resolve) => {
+            acknowledge = resolve;
+          });
+        },
+      );
+      expect(memory.statistics.current.metadata).toBeGreaterThan(0);
+      acknowledge();
+      await pending;
+      expect(memory.statistics.reservations).toBe(0);
+      await expect(
+        uploadNativeObservationPacketVersions(
+          {
+            ...input,
+            passes: JSON.parse(
+              '[{"sampleIndex":0,"sampleFrame":0,"observed":{"version":"native3d-observed-frame-2"}}]',
+            ),
+          },
+          "native3d-observed-output-frame-2",
+          async () => {
+            throw Error("Invalid body must not send");
+          },
+        ),
+      ).rejects.toThrow();
+      expect(memory.statistics.reservations).toBe(0);
+    });
+  } finally {
+    memory.dispose();
+  }
+});

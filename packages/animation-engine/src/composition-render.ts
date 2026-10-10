@@ -25,7 +25,7 @@ import {
 } from "./composition-source.ts";
 import { assertNativeAppearanceCodeIdentity } from "./native3d-appearance-identity.ts";
 import {
-  createNativeObservationRequest,
+  createNativeObservationRequestVersions,
   type NativeMechanismExecution,
 } from "./native-observation.ts";
 
@@ -125,7 +125,7 @@ export async function renderComposition(request: {
     },
   );
   const { width, height } = loaded.scene.canvas;
-  const nativeObservation = await createNativeObservationRequest(
+  const nativeObservation = await createNativeObservationRequestVersions(
     loaded,
     request.nativeMechanism,
     { signal: request.signal },

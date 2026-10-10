@@ -44,17 +44,18 @@ still hold before relying on them.
 ## Current state
 
 - **MS2 in progress (2026-10-11):** isolated `codex/mechanism-ms2` carries
-  current `main` and exact native prerequisite [PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Eleven slices now include normal source2 IO/graph/async preview and a shared
-  durable journal with strict async execution2/row2/manifest2/closure2 admission
-  and fresh independent replay. Final refreshed gate3 passes 4,050 units /
-  395 files, four maintained browsers, real preview journal6/36 with18 faults
-  and original native14/integration5/cancellation. Failed builds/probes/lint,
-  measured Math.sin key mismatch, wrong negative target and abort repair retained.
-  Next: normal authenticated movie export/upload2 and Lab integration, full
-  preflight, three packs/import/cameras/labels/cues/scoped typography/board and
-  whole milestone gate. Preview journals do not count as final exports; supported
-  packs/pilot remain0. No MS2 PR/MS3 yet. [MS2 results](./mechanism-shorts-ms2-results.json),
+  `main` and exact native prerequisite [PR #56](https://github.com/xxibcill/still-shift/pull/56).
+  Twelve slices now include normal authenticated source2 final export: explicit
+  request/envelope2, async browser completion, awaited Node proof before pixels,
+  bounded journal and independent retained-row replay/final movie SHA.
+  Final gate2 passes 4,053 units / 396 files, five maintained native suites,
+  two normal mixed movies plus captured-worker export, seven actual HTTP faults
+  with zero pixels/publication, unused declared2 final1/0 and original14/integration5/
+  cancellation. Failed build and ineffective Origin-header control retained.
+  Next: Lab, full world/expected allocation preflight, three packs/import/cameras/
+  labels/cues/scoped typography/board and full milestone/installed gate. Generic
+  exports do not count as supported packs or human acceptance; packs/pilot0.
+  No MS2 PR/MS3 yet. [MS2 results](./mechanism-shorts-ms2-results.json),
   [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
@@ -213,6 +214,25 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — Commit normal authenticated native2 final exports
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2` from `d52d4952`.
+- **Done:** Normal renderer selects request/envelope2, awaits actual browser
+  completion and strict Node proof before pixels, and independently replays the
+  retained journal with final movie SHA before publication. Original1 APIs and
+  serialization stay strict1; legacy lifecycle/package consumers require closure1.
+- **Results:** Final refreshed gate2 passes 4,053 units / 396 files, five
+  maintained native suites, two normal mixed MP4s plus captured-worker export,
+  seven real HTTP faults with zero pixels/publication and unused declared2 final1/0.
+  Original14/integration5/cancellation pass; held source inventory stays unchanged.
+- **Retained:** Actual RED and seven build diagnostics. Chromium overwrote the
+  attempted forged Origin; corrected transport requires actual server403.
+- **Next:** Lab, full preflight, three packs/import/camera/label/cue/typography/
+  board and full milestone/installed gates before MS2 PR. Supported packs/pilot0;
+  generic movie exports do not infer human visual/listening acceptance.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json),
+  [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
 ### 2026-10-11 — Commit shared native journal and strict async journal2
 
