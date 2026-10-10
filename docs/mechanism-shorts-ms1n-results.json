@@ -1265,6 +1265,252 @@
         "sha256": "sha256:d3e5201fbb3f13374e45c269b86f908959701fd96ff52cb2536eabe6e27080b1"
       },
       "scope": "Both maintained actual native saved-camera/nonoverwrite integration cases pass after QA repairs: actual64x64/2frame export with currentFOV40/source closure and protected final outputs. Not original696/fullnative acceptance."
+    },
+    {
+      "id": "fetch-capture-smoke-1",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-fetch-capture-smoke-1.log",
+        "bytes": 2341,
+        "sha256": "sha256:75782bd3973413c0cc4201aa6d0a1c6c26e2b342b26b9b01f56f08698be5655e"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms1n-fetch-capture-smoke-1/report.json",
+        "bytes": 2341,
+        "sha256": "sha256:75782bd3973413c0cc4201aa6d0a1c6c26e2b342b26b9b01f56f08698be5655e"
+      },
+      "scope": "Private four-frame diagnostic fails before browser because root selected nonexistent src/export.ts; original artifact/log retained."
+    },
+    {
+      "id": "fetch-capture-smoke-2",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-fetch-capture-smoke-2.log",
+        "bytes": 2972,
+        "sha256": "sha256:3d388d387b74b4e8d7c04b6cb7bfaf5c9e08fb503ace37f87811e9d19935ab99"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms1n-fetch-capture-smoke-2/report.json",
+        "bytes": 2972,
+        "sha256": "sha256:3d388d387b74b4e8d7c04b6cb7bfaf5c9e08fb503ace37f87811e9d19935ab99"
+      },
+      "scope": "Four actual native frames, all four same immutable PNG Blob copies after real204 match authenticated sink byte lengths/SHA; one awaited copy; bounded private encoding memory distinct from exporter metrics. Not696/repeat/parity acceptance."
+    },
+    {
+      "id": "native-e01-full-proof-2",
+      "status": "failed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-e01-full-proof-2.log",
+        "bytes": 17891,
+        "sha256": "sha256:3716ec78500afc0fe278cc3c7ae25bfac9f9a84ac9ad7209ab7e2819e9d5352b"
+      },
+      "run": {
+        "path": "/private/tmp/still-shift-ms1n-e01-full-proof-2/run.json",
+        "bytes": 107562,
+        "sha256": "sha256:1dd7e53442bb90a320e8a077e17784abba5b0345b63af45f0dddb6c0e4129442"
+      },
+      "scope": "Default raw/PNG orientation and first696/currentactualQA pass on held342; repeat body capture private harness fails after actual696export. No repeat QA/parity/hardware/portable/installed/fullmilestone acceptance. Failed1/2 retained."
+    },
+    {
+      "id": "native-e01-full-proof-3",
+      "status": "software-proof-completed",
+      "node": "22.23.1",
+      "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3.log",
+        "bytes": 25680,
+        "sha256": "sha256:d2ecff889a5098445a0d08875e20cd2c5890743e7d433e76f241e690e50028a5"
+      },
+      "run": {
+        "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/run.json",
+        "bytes": 567868,
+        "sha256": "sha256:3fd7a7ac090c1f6510ebb0f72dab88bc7a51dc9003219688f740cea0faf9ba0d"
+      },
+      "stagesPassed": 13,
+      "actualFullExports": 2,
+      "actualFramesPerExport": 696,
+      "actualPassesPerExport": 696,
+      "selectedAcceptedBodyParities": 9,
+      "maximumRgba8CodeDelta": 0,
+      "independentArtifactAudit": {
+        "path": "/private/tmp/mechanism-ms1n-full3-accepted-body-artifact-audit-r2.json",
+        "bytes": 203851,
+        "sha256": "sha256:c62215f9119b08849af8bf917fef9c4cdff9a07cabf06d91d59cd913e3c0ea87"
+      },
+      "scope": "Full3 native original E01 software execution/QA/repeat/pre-encoder parity complete at held342. Original full1/full2 remain failed, retained and separately scoped. This is not MS1N full milestone, hardware/portable/package/installed, semantic factual-truth, encoded readability, continuous human playback/listening or redistribution acceptance."
+    },
+    {
+      "id": "native-bridge-appearance-comparison-1",
+      "status": "failed",
+      "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+      "run": {
+        "path": "/private/tmp/still-shift-ms1n-appearance-comparison-1/run.json",
+        "bytes": 162362,
+        "sha256": "sha256:bc029d29559fe94f60e7c16d9a10a13dbe20a33915fcb0f5eb7d892704ab82fe"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-appearance-comparison-1.log",
+        "bytes": 141,
+        "sha256": "sha256:0f6cffb7d177ed12050a71dbc7e6b561ebd27ef1f5500033f54730f69906e4c6"
+      },
+      "executedHarness": {
+        "path": "/private/tmp/still-shift-ms1n-appearance-comparison-1/executed-harness.mjs",
+        "bytes": 38902,
+        "sha256": "sha256:f8f38c3ff79e8d463db819cde1ec632249066c10952771f2c84e9490512e91be"
+      },
+      "startedAt": "2026-10-10T07:40:22.968Z",
+      "finishedAt": "2026-10-10T07:40:58.842Z",
+      "casesCompleted": 0,
+      "pixelComparisonReached": false,
+      "failure": "Pure evaluator input SHA assertion at executed harness328:70; entire renderer-returned observed state was compared to descriptor.inputFrameSha256.",
+      "actualRendererReturnedStateSha256": "sha256:4bc2a1275e29004704ece8fae62a55172937612d3b25fde27cfe5a66658d188f",
+      "pureEvaluatorInputSha256": "sha256:1cd42f9729dfde436cf4eb6b0dab514e0fec6c7f6120a2d7f2be02b13d81683d",
+      "diagnosis": "Returned bridge state extends pure renderer input with anchors/counters. The private checker must separately project/verify pure input and retain renderer-returned measurements; no production/source/profile/threshold changes.",
+      "followup": "Private checker repair pending; original failed run/harness/log retained. No bridge/native pixel appearance result or acceptance reached."
+    },
+    {
+      "id": "native-bridge-factor-full-4",
+      "status": "passed",
+      "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+      "node": "22.23.1",
+      "directory": "/private/tmp/still-shift-ms1n-bridge-factor-full-qn2GCJ",
+      "report": {
+        "path": "/private/tmp/still-shift-ms1n-bridge-factor-full-qn2GCJ/report.json",
+        "bytes": 1357542,
+        "sha256": "sha256:e3ef147f6d85b79af09cc58f9b3128a7bdb18633e3ef726604678cd4ba722876"
+      },
+      "plateCount": 696,
+      "exactOriginalPngs": 696,
+      "new3dRenders": 696,
+      "cacheHits": 0,
+      "shots": 9,
+      "currentAppearanceCodeSha256": "sha256:5495803fec93eda66680dcf9641444caf6bf1e7021e1b747dfaf3175361bb0d8",
+      "humanPlaybackAcceptance": "pending",
+      "scope": "Fresh current342 source/code all nine original shot sequences at original size; all696 new clean PNG bytes match verified MS1 originals exactly. Source/appearance profile preserved; cache0. Original failed signed-zero/container/dependency-context attempts retained; human playback acceptance pending."
+    },
+    {
+      "id": "native-bridge-appearance-comparison-2",
+      "status": "comparison-completed",
+      "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+      "run": {
+        "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2/run.json",
+        "bytes": 282586,
+        "sha256": "sha256:229e6b5dfd1fb5948a6625e54de9f19ebd5b8c333688563810192a19dbb12e1b"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2.log",
+        "bytes": 1312,
+        "sha256": "sha256:47dd7cf142f9f32ba5b43ddd31aa25a8a7f8e8d3fcaa8a9629d01b26942bb7ef"
+      },
+      "startedAt": "2026-10-10T07:58:06.838Z",
+      "finishedAt": "2026-10-10T07:59:13.326Z",
+      "scope": "Nine actual retained bridge/native accepted-body artifact pairs compared at held342/current identical code identity; physical-state/projection tolerances pass. Pixel/metal/nonmetal/reflection/shadow/fog region statistics are informational, with no bridge-native pixel threshold or causal/human appearance/readability acceptance. Appearance1 failed before pixel comparison and remains retained.",
+      "implementationEvidenceKey": "bridgeNativeAppearanceComparison"
+    },
+    {
+      "id": "native-hardware-preview-proof-1",
+      "status": "passed-bounded-native-hardware-execution-and-state",
+      "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+      "run": {
+        "path": "/private/tmp/still-shift-ms1n-native-hardware-preview-proof-1/run.json",
+        "bytes": 7955,
+        "sha256": "sha256:e26ade439beac91961167ac4ca361e586148037f57a6fe2de4e7deb83a782f7c"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-hardware-preview-proof-1.log",
+        "bytes": 786,
+        "sha256": "sha256:fd6c15424ec2569402bfcefba1dba5d7c9ca9bd88fde925da5652ae62cffe64e"
+      },
+      "startedAt": "2026-10-10T08:00:22.823Z",
+      "finishedAt": "2026-10-10T08:00:31.689Z",
+      "scope": "Two fresh actual same-recipe native captures at frame138 on pinned SwiftShader and actual Metal/AppleM5Pro. Actual state/matrices/anchor projections pass at delta0. Cross-driver one-step pixel diagnostic FAILS maximum135/RMS2.22633089140858; this is explicitly diagnostic, not mandatory same-profile parity. No human hardware appearance/readability/listening/performance/full-episode acceptance; same-profile full3 nine max0 parity remains separate.",
+      "implementationEvidenceKey": "nativeHardwarePreview"
+    },
+    {
+      "id": "native-e01-preview-proof-4",
+      "status": "failed",
+      "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+      "run": {
+        "path": "/private/tmp/still-shift-ms1n-e01-preview-proof-4/run.json",
+        "bytes": 90959,
+        "sha256": "sha256:251a9b1641cb041f0aa441b4fc9dc74e55e319ccf68f4f76909d4848d882a09b"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-e01-preview-proof-4.log",
+        "bytes": 1391,
+        "sha256": "sha256:7e4822b56912f7e94f6ac008cfe89ec4a89d15eef92747785f7f05a093e81c52"
+      },
+      "startedAt": "2026-10-10T07:53:43.369Z",
+      "finishedAt": "2026-10-10T07:55:49.841Z",
+      "scope": "First baseline0/baseline88/saved-camera88 actual previews pass. Fourth saved-blade-part0 fails unchanged30s module readiness before composition/resources/frame JSON submission, with events0/bytes0. Exact recipe passed preview3 and failed preview2; cause unproven. Cold module-only bootstrap passed but does not reproduce sequential lifecycle. No automatic retry/timeouts change; isolated unchanged preview5 planned with supplemental bounded private Vite logs, not yet run.",
+      "implementationEvidenceKey": "currentNativePreviewProof"
+    },
+    {
+      "id": "native-portable-package-proof-1",
+      "status": "failed",
+      "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+      "run": {
+        "path": "/private/tmp/still-shift-ms1n-native-package-proof-1/run.json",
+        "bytes": 1634,
+        "sha256": "sha256:6829d12d5a37eb3324f56877030b46cc9979650c6b6308a74a6c3a8041abb1c9"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-package-proof-1.log",
+        "bytes": 1813,
+        "sha256": "sha256:f524986ec18b1cf7000abb79eead79eeacafce2220fec86f2467c5542c400a0f"
+      },
+      "scope": "Original finalized native execution bytes retained; no successful portable package/relocation/installed proof or new render acceptance. Failed attempt/log retained.",
+      "implementationEvidenceKey": "nativePortablePackageProof"
+    },
+    {
+      "id": "native-package-confinement-integration-1",
+      "status": "failed-startup-before-tests",
+      "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-package-confinement-integration-1.log",
+        "bytes": 1827,
+        "sha256": "sha256:c9b0f17ba8d90a8cb9915f24ca612b303fc54bca2a45b0306f352c235fbd3dff"
+      },
+      "failure": "Root command referenced nonexistent vitest.integration.config.ts; configuration failed before any test/browser execution.",
+      "scope": "Command startup failure distinct from actual product package1/preview4 failures. Retained unchanged; corrected existing-config integration2 later passes both tests.",
+      "implementationEvidenceKey": "nativePackageConfinementRepair.retainedStartupFailure"
+    },
+    {
+      "id": "native-package-confinement-integration-2",
+      "status": "passed",
+      "baseHead": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+      "sourceState": "uncommitted two-file package repair after342",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-package-confinement-integration-2.log",
+        "bytes": 568,
+        "sha256": "sha256:752a1c3d8c1dc02552e94404314e639466c2cd42f974fba1a115ec385007bd87"
+      },
+      "rootTerminalExitCode": 0,
+      "testFiles": 1,
+      "tests": 2,
+      "testWallMs": 24965,
+      "runWallSeconds": 27.88,
+      "scope": "Root-owned correct existing Vitest config/default-flags run passes both actual64x64/two-frame saved-camera/current-recipe render/nonoverwrite cases, including final-package/move/throwing-unknown-options-getters regression. No original696/current archive/installed/full gate acceptance.",
+      "implementationEvidenceKey": "nativePackageConfinementRepair.currentIntegration"
+    },
+    {
+      "id": "check-fast-10",
+      "status": "passed",
+      "node": "22.23.1",
+      "rootTerminalExitCode": 0,
+      "sourceState": "two-file package confinement repair after342, before slice commit",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-check-fast-10.log",
+        "bytes": 31999,
+        "sha256": "sha256:3727aecf991a4e8832b2eaa572e3d6df3c02ffb6d4a099c5544b8bc89a64126d"
+      },
+      "unitTestFiles": 381,
+      "unitTests": 3915,
+      "unitWallSeconds": 48.81,
+      "scope": "Schema/appearance closure, package boundaries, TypeScript formatting, lint, no-emit build and all3915 units pass. Current actual two-frame final-package relocation regression is recorded separately. Full77/176/current installed and original portable acceptance remain pending."
     }
   ],
   "implementationEvidence": {
@@ -1298,14 +1544,2230 @@
         "cacheHits": 0,
         "exactOriginalPngs": 696,
         "scope": "All nine original half-open shot sequences, fresh renderer per shot with production reuse within each shot. Original appearance preserved byte for byte; native profile remains independently evaluated."
+      },
+      "currentFull696": {
+        "id": "native-bridge-factor-full-4",
+        "status": "passed",
+        "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+        "node": "22.23.1",
+        "directory": "/private/tmp/still-shift-ms1n-bridge-factor-full-qn2GCJ",
+        "report": {
+          "path": "/private/tmp/still-shift-ms1n-bridge-factor-full-qn2GCJ/report.json",
+          "bytes": 1357542,
+          "sha256": "sha256:e3ef147f6d85b79af09cc58f9b3128a7bdb18633e3ef726604678cd4ba722876"
+        },
+        "plateCount": 696,
+        "exactOriginalPngs": 696,
+        "new3dRenders": 696,
+        "cacheHits": 0,
+        "shots": 9,
+        "currentAppearanceCodeSha256": "sha256:5495803fec93eda66680dcf9641444caf6bf1e7021e1b747dfaf3175361bb0d8",
+        "humanPlaybackAcceptance": "pending",
+        "scope": "Fresh current342 source/code all nine original shot sequences at original size; all696 new clean PNG bytes match verified MS1 originals exactly. Source/appearance profile preserved; cache0. Original failed signed-zero/container/dependency-context attempts retained; human playback acceptance pending."
       }
     },
     "nativeEpisodeExecution": {
-      "status": "failed-full-proof-1-repair-in-progress",
-      "sourceCommit": "3ac7d29fa9c6e3a6feb8517a8ddcba7da4edbbcf",
-      "recordId": "native-e01-full-proof-1",
-      "actualFinalExecution": "verified-all696; mechanics/overlay/audio clean; fatal motion QA15 findings",
-      "repeatParityHardwareInstalled": "pending-not-reached"
+      "status": "software-proof-completed-full3-two696-actual-closures-nine-parity",
+      "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+      "originalFull1Failure": {
+        "status": "failed-full-proof-1-repair-in-progress",
+        "sourceCommit": "3ac7d29fa9c6e3a6feb8517a8ddcba7da4edbbcf",
+        "recordId": "native-e01-full-proof-1",
+        "actualFinalExecution": "verified-all696; mechanics/overlay/audio clean; fatal motion QA15 findings",
+        "repeatParityHardwareInstalled": "pending-not-reached"
+      },
+      "firstFull2Stage": {
+        "status": "passed-first696-stage-within-failed-full-proof-2",
+        "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+        "run": {
+          "path": "/private/tmp/still-shift-ms1n-e01-full-proof-2/run.json",
+          "bytes": 107562,
+          "sha256": "sha256:1dd7e53442bb90a320e8a077e17784abba5b0345b63af45f0dddb6c0e4129442"
+        },
+        "actualResult": {
+          "path": "/private/tmp/still-shift-ms1n-e01-full-proof-2/stages/02-fresh-full-native-696-export-and-qa/actual-native-render-result.json",
+          "bytes": 221586,
+          "sha256": "sha256:56b98c0496515eda76510fda2906abcbe784ef51af689b349ad422338a94274b"
+        },
+        "timings": {
+          "scope": "monotonic-wall-clock-through-final-check",
+          "prepareWallSeconds": 20.792319292,
+          "exportWallSeconds": 274.533608708,
+          "checkWallSeconds": 412.509664834,
+          "throughCheckWallSeconds": 707.835886084
+        },
+        "stageWallSeconds": 763.329666,
+        "actualFrames": 696,
+        "actualPasses": 696,
+        "qualityStatus": "passed",
+        "nativePhysicalProofRecords": 9,
+        "stationarySpans": 19,
+        "rawErrorMotionWarnings": 20,
+        "safeAreaWarnings": 20,
+        "speechCaptionWarnings": 11,
+        "independentAudit": {
+          "path": "/private/tmp/mechanism-ms1n-first-export-audit-342d09c5.json",
+          "bytes": 44023,
+          "sha256": "sha256:f67b212953b3b922f3048df17e89f27bbfdeff1a7be938e4a168dea45e41529d"
+        },
+        "semanticFactualTruth": "unassessed",
+        "continuousMotionAndListening": "pending-human-review"
+      },
+      "repeatFull2Failure": {
+        "stage": "repeat-identical-696-export-with-accepted-body-capture",
+        "wallSeconds": 318.94291008299996,
+        "failure": "Public Playwright retains actual POST body; absence is a harness access failure",
+        "captureAccounting": {
+          "path": "/private/tmp/still-shift-ms1n-e01-full-proof-2/accepted-bodies/capture-accounting.json",
+          "bytes": 2017,
+          "sha256": "sha256:7ea867e6a78b2c8db97b7b4176fbcf4f615cb548178151e413e9deec97b61108"
+        },
+        "actualExport": "all696verifyFrame callbacks completed and actual movie/receipt written; no selected body captured, repeat QA/parity not reached",
+        "causeScope": "private Playwright requestfinished/postDataBuffer does not supply streamed Blob bodies; no production change or threshold relaxation"
+      },
+      "freshFull3": {
+        "status": "software-proof-completed",
+        "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+        "directory": "/private/tmp/still-shift-ms1n-e01-full-proof-3",
+        "startedAt": "2026-10-10T07:14:53.173Z",
+        "finishedAt": "2026-10-10T07:39:29.831Z",
+        "finalization": "completed-with-explicit-pending-human-and-encoded-review",
+        "run": {
+          "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/run.json",
+          "bytes": 567868,
+          "sha256": "sha256:3fd7a7ac090c1f6510ebb0f72dab88bc7a51dc9003219688f740cea0faf9ba0d"
+        },
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3.log",
+          "bytes": 25680,
+          "sha256": "sha256:d2ecff889a5098445a0d08875e20cd2c5890743e7d433e76f241e690e50028a5"
+        },
+        "sourceSnapshot": {
+          "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/source-snapshot.json",
+          "bytes": 73876,
+          "sha256": "sha256:23a07dc98c304cf969f3fafc62a80f2e7c6b38f79a3eaa141024048e80b727cb"
+        },
+        "executedHarness": {
+          "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/executed-harness.mjs",
+          "bytes": 45804,
+          "sha256": "sha256:dd4e85e80a8832e8b6c600a87db96d1a2cc272f508c26c453bf6fa68a50c4e84"
+        },
+        "executedCaptureHelper": {
+          "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/executed-capture-helper.mjs",
+          "bytes": 7407,
+          "sha256": "sha256:fa4e58bc1f71d4bba444b6b4762b7e18690f36ecdc9e803d2d20fe6be0e0d257"
+        },
+        "originalInputs": {
+          "episodePath": "/private/tmp/still-shift-ms1-e01-proof-v6/episode.json",
+          "episodeSourceSha256": "sha256:062153fa114e63629bde2546d5e75294ffa6974921e2091323cbc0522dc2c8f2",
+          "episodeSha256": "sha256:13d106940123a17baa755722bd4bb34161d3f28ece6b21d3a9f400fd563f38c2",
+          "projectHash": "sha256:13d106940123a17baa755722bd4bb34161d3f28ece6b21d3a9f400fd563f38c2",
+          "dependencies": [
+            {
+              "id": "scene",
+              "path": "/private/tmp/still-shift-ms1-e01-proof-v6/scene.json",
+              "byteLength": 5812411,
+              "sha256": "sha256:e8af858550aef54b97990e9c197194dd80ffb7fb1420bd4a69f754ccef64d661"
+            },
+            {
+              "id": "plex",
+              "path": "/private/tmp/still-shift-ms1-e01-proof-v6/assets/plex-sans-semibold.ttf",
+              "byteLength": 202632,
+              "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1"
+            },
+            {
+              "id": "font-license",
+              "path": "/private/tmp/still-shift-ms1-e01-proof-v6/assets/plex-LICENSE.txt",
+              "byteLength": 4362,
+              "sha256": "sha256:d741e57d5f865e294df801f96b7b5161a88b211df65887e4358d271c9fc5fb4f"
+            },
+            {
+              "id": "narration",
+              "path": "/private/tmp/still-shift-ms1-e01-proof-v6/assets/mix-v001.wav",
+              "byteLength": 6681702,
+              "sha256": "sha256:93cf722caec63d04eb7388a7da2c315a747175d63a39d3f413c3b254da922eb7"
+            },
+            {
+              "id": "captions",
+              "path": "/private/tmp/still-shift-ms1-e01-proof-v6/assets/captions.json",
+              "byteLength": 2986,
+              "sha256": "sha256:ab67257b0908174f4ca2bde5d0bdbc598c593ed136295f4db73a08eaae15af03"
+            }
+          ],
+          "sceneSourceSha256": "sha256:e8af858550aef54b97990e9c197194dd80ffb7fb1420bd4a69f754ccef64d661",
+          "geometrySha256": "sha256:f7d4434f523dc4677304980ba782fe9daef724a05d7c41cbebc34e55768adcee",
+          "rigSha256": "sha256:58fb68af48665c0a05e05cef5cacaa69f6f88052c1917f5e24524c958e321bec",
+          "meshDataSha256": "sha256:4653599301a620c9075fe7f88e44ef3d37e3bf3b8dbe12b699bed2b2848507fd",
+          "preserved": "Original absent-route 696-frame/1080x1920/30fps E01 episode, scene, geometry/rig, Plex, license, captions and original narration bytes match. No fresh speech or source-time/QA-threshold alteration."
+        },
+        "currentSourceInventory": {
+          "path": "/private/tmp/still-shift-ms1n-implementation-inputs-8.json",
+          "bytes": 396837,
+          "sha256": "sha256:ce149b60c41e5bc5d59d00fdfd17000728a78d142e65bb8f3f925aa6b93acfc9",
+          "version": "ms1n-source-input-inventory-2",
+          "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+          "files": 2327,
+          "inputBytes": 117491328,
+          "independentAllFileHashAndMembershipVerification": true,
+          "executionInputsAfterCompletion": "unchanged"
+        },
+        "appearance": {
+          "appearanceCodeSha256": "sha256:5495803fec93eda66680dcf9641444caf6bf1e7021e1b747dfaf3175361bb0d8",
+          "runtimeFormat": "source-ts",
+          "firstPartyModules": 332,
+          "externalModules": 79,
+          "totalModules": 411,
+          "threeVersion": "0.186.0",
+          "threeFiles": 4,
+          "descriptorSelfHashAndCurrentActualFileBytesIndependentlyVerified": true
+        },
+        "routeSelection": {
+          "sourceRoute": null,
+          "effectiveRoute": "native3d",
+          "selectionOrigin": "cli-override"
+        },
+        "backend": "webgl2",
+        "profile": "native-three-aces-hdr-msaa4-1",
+        "stages": [
+          {
+            "index": 1,
+            "name": "default-raw-png-orientation",
+            "status": "passed",
+            "wallSeconds": 4.725861291999999,
+            "stage": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/stages/01-default-raw-png-orientation/stage.json",
+              "bytes": 2450,
+              "sha256": "sha256:fee75366bd38a850e5621f1adb8d240daf889f4b0fab34a93a33f1165dc0de26"
+            }
+          },
+          {
+            "index": 2,
+            "name": "fresh-full-native-696-export-and-qa",
+            "status": "passed",
+            "wallSeconds": 630.135246917,
+            "stage": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/stages/02-fresh-full-native-696-export-and-qa/stage.json",
+              "bytes": 81758,
+              "sha256": "sha256:6bc8b83863938144e95eca78a2723fca13486b1390942b55507c1278d754d04b"
+            }
+          },
+          {
+            "index": 3,
+            "name": "repeat-identical-696-export-with-accepted-body-capture",
+            "status": "passed",
+            "wallSeconds": 258.09318745900003,
+            "stage": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/stages/03-repeat-identical-696-export-with-accepted-body-capture/stage.json",
+              "bytes": 150869,
+              "sha256": "sha256:112c7094fffc10763bcb6f186c80b6aa5df219746fee19d243ab63287b278b6c"
+            }
+          },
+          {
+            "index": 4,
+            "name": "repeat-current-actual-frame-layout-and-pcm-qa",
+            "status": "passed",
+            "wallSeconds": 348.13609195800007,
+            "stage": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/stages/04-repeat-current-actual-frame-layout-and-pcm-qa/stage.json",
+              "bytes": 10903,
+              "sha256": "sha256:51d35e98ebf3d0f4165fb3b9428474013cbcbc69e760bacd126438511100614a"
+            }
+          },
+          {
+            "index": 5,
+            "name": "preview-export-parity-000000",
+            "status": "passed",
+            "wallSeconds": 24.796810667000013,
+            "stage": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/stages/05-preview-export-parity-000000/stage.json",
+              "bytes": 15446,
+              "sha256": "sha256:a29923a5f8b492a13f7a4633d03a8edbf20136cff6ef0fa11c5eb21ce25f13ce"
+            }
+          },
+          {
+            "index": 6,
+            "name": "preview-export-parity-000088",
+            "status": "passed",
+            "wallSeconds": 26.456172917000018,
+            "stage": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/stages/06-preview-export-parity-000088/stage.json",
+              "bytes": 51375,
+              "sha256": "sha256:56569d2b033e4f9876ece871ef41ca3f1e716098badc28ef25651bb3809615bb"
+            }
+          },
+          {
+            "index": 7,
+            "name": "preview-export-parity-000173",
+            "status": "passed",
+            "wallSeconds": 22.794951957999963,
+            "stage": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/stages/07-preview-export-parity-000173/stage.json",
+              "bytes": 15520,
+              "sha256": "sha256:8595243dfe87f66597f1fd62764d56bcac4125305ddba6eade7489cae0963373"
+            }
+          },
+          {
+            "index": 8,
+            "name": "preview-export-parity-000257",
+            "status": "passed",
+            "wallSeconds": 23.697279749999986,
+            "stage": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/stages/08-preview-export-parity-000257/stage.json",
+              "bytes": 16095,
+              "sha256": "sha256:bbda0ca8ad3fefd8d0d6efcd69ee9b495760e3d787bbebdf498dc9b3269ec4d3"
+            }
+          },
+          {
+            "index": 9,
+            "name": "preview-export-parity-000346",
+            "status": "passed",
+            "wallSeconds": 24.74577791599999,
+            "stage": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/stages/09-preview-export-parity-000346/stage.json",
+              "bytes": 15662,
+              "sha256": "sha256:88c73b064b16df9d5d81d6da63fbe9e30ca98a4d35bcaa680b1aaf3df41a9340"
+            }
+          },
+          {
+            "index": 10,
+            "name": "preview-export-parity-000428",
+            "status": "passed",
+            "wallSeconds": 25.118283166000154,
+            "stage": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/stages/10-preview-export-parity-000428/stage.json",
+              "bytes": 52312,
+              "sha256": "sha256:e4913cb72828ea1944aad8d767b6dc04d656c21b24befa12c0d8ddc298d3b04b"
+            }
+          },
+          {
+            "index": 11,
+            "name": "preview-export-parity-000482",
+            "status": "passed",
+            "wallSeconds": 29.00457416599989,
+            "stage": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/stages/11-preview-export-parity-000482/stage.json",
+              "bytes": 12928,
+              "sha256": "sha256:2777c17954b6a8e1f769d17e4cfa27ddcc92bc9aa55fee5f1d33bd0315babb9d"
+            }
+          },
+          {
+            "index": 12,
+            "name": "preview-export-parity-000536",
+            "status": "passed",
+            "wallSeconds": 27.220818708000007,
+            "stage": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/stages/12-preview-export-parity-000536/stage.json",
+              "bytes": 14440,
+              "sha256": "sha256:a3c5f34501b227cf82a098bc8ad021279daaf0b547c189ebecee0c2e217eee75"
+            }
+          },
+          {
+            "index": 13,
+            "name": "preview-export-parity-000695",
+            "status": "passed",
+            "wallSeconds": 30.28866812499985,
+            "stage": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/stages/13-preview-export-parity-000695/stage.json",
+              "bytes": 25815,
+              "sha256": "sha256:0cccc7c3d4f26b194225678251b7859604c634ff3dd5edb0f7c4a7df030c78dc"
+            }
+          }
+        ],
+        "firstTimings": {
+          "scope": "monotonic-wall-clock-through-final-check",
+          "prepareWallSeconds": 19.503732167,
+          "exportWallSeconds": 235.77189862499998,
+          "checkWallSeconds": 326.0750907909999,
+          "throughCheckWallSeconds": 581.351109375
+        },
+        "exports": [
+          {
+            "output": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/first/episode.mp4",
+              "bytes": 3647073,
+              "sha256": "sha256:82554962620125c69f85f37ec1addb4438793a8b3640b7cb450c5cc85708d110"
+            },
+            "result": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/first/episode.mp4.result.json",
+              "bytes": 67612,
+              "sha256": "sha256:4fc21e294acd2b15f81d185b98d0dde34ddda79ae307bdf7f0d24d3b1fb440bc"
+            },
+            "sceneManifest": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/first/episode.mp4.scene.json",
+              "bytes": 8462410,
+              "sha256": "sha256:05bb7042bb15e9d108ddab7ae0dd6b0db0e56b2368b33947d9920fa9f46b0628"
+            },
+            "preparedReceipt": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/first/prepared/prepared.receipt.json",
+              "bytes": 72409,
+              "sha256": "sha256:61c6744793421c1ff785efc16170004580a9bb8eb0599a223929303df98725b3"
+            },
+            "nativeManifest": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/first/episode.mp4.native-observations.json",
+              "bytes": 76883,
+              "sha256": "sha256:3de268b141486e324a8efc4f895a6f73a89c29ca8b6e6d67f025da638e2fc81a"
+            },
+            "nativeShard": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/first/episode.mp4.native-observations.000.ndjson",
+              "bytes": 4751107,
+              "sha256": "sha256:1eed467eb974524b02486ec88909e219a15e886a0cd8e75466fcd81b360c24ca"
+            },
+            "executionSha256": "sha256:c008a419afa2037e0fc94c51fc735fb08976d8e281080b27b5fb135d74397bfc",
+            "outputFrames": 696,
+            "passCount": 696,
+            "observationBytes": 4751107,
+            "actualRowsFingerprintSha256": "sha256:4b7ba2ade4f9d277f47a851ef4363714c62011d707beb42d39a12fdbd88f565e",
+            "metrics": {
+              "frameCount": 696,
+              "width": 1080,
+              "height": 1920,
+              "durationMs": 23200,
+              "outputBytes": 3647073,
+              "outputChecksum": "sha256:82554962620125c69f85f37ec1addb4438793a8b3640b7cb450c5cc85708d110",
+              "frameTransport": "png_pipe",
+              "frameRenderAverageMs": 279.77959770066985,
+              "frameRenderP95Ms": 343.6999999284744,
+              "frameUploadAverageMs": 2.636350574849666,
+              "frameUploadP95Ms": 4.5,
+              "ffmpegCpuMs": 15765,
+              "ffmpegCpuScope": "ffmpeg-transcode-user-plus-system",
+              "encodePathWallMs": 197614.597125,
+              "validationWallMs": 202.30762499998673,
+              "totalWallMs": 198316.636459,
+              "browserVersion": "151.0.7922.34",
+              "gpuRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver) composition-webgl2-0.68.7",
+              "renderEnvironment": {
+                "profile": "chromium-software-2",
+                "browserVersion": "151.0.7922.34",
+                "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+                "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+                "platform": "darwin",
+                "arch": "arm64"
+              }
+            },
+            "compositionStatistics": {
+              "version": "composition-export-statistics-1",
+              "scope": "synchronous-submission-wall-time",
+              "frameCount": 696,
+              "totalSubmissionWallMs": 4676.600000858307,
+              "byLayerType": [
+                {
+                  "phase": "frame",
+                  "type": "graph-overhead",
+                  "calls": 696,
+                  "submissionWallMs": 150.6000028848648,
+                  "submissionWallMsPerOutputFrame": 0.2163793144897483
+                },
+                {
+                  "phase": "frame",
+                  "type": "native-depth",
+                  "calls": 696,
+                  "submissionWallMs": 3773.0999995470047,
+                  "submissionWallMsPerOutputFrame": 5.421120689004317
+                },
+                {
+                  "phase": "frame",
+                  "type": "mixed",
+                  "calls": 663,
+                  "submissionWallMs": 705.2999974489212,
+                  "submissionWallMsPerOutputFrame": 1.0133620653001743
+                },
+                {
+                  "phase": "frame",
+                  "type": "shape",
+                  "calls": 240,
+                  "submissionWallMs": 28.100001096725464,
+                  "submissionWallMsPerOutputFrame": 0.040373564794145785
+                },
+                {
+                  "phase": "frame",
+                  "type": "text",
+                  "calls": 27,
+                  "submissionWallMs": 19.49999988079071,
+                  "submissionWallMsPerOutputFrame": 0.02801724120803263
+                }
+              ],
+              "cacheEnabled": false,
+              "cacheHits": 0,
+              "cacheHitScope": "source-restores-and-reuses/root-copies/surface-restores-and-reuses"
+            },
+            "exporterMemory": {
+              "scope": "Actual sampled exporter RSS and declared managed application memory; independent of private selected-body/decoder copies.",
+              "peakParentRssBytes": 1086799872,
+              "peakSampledProcessTreeRssBytes": 2394439680,
+              "compositionMemory": {
+                "scope": "declared-worker-application-bytes",
+                "applicationLimitBytes": 8589934592,
+                "reservedNodeBudgetBytes": 536870912,
+                "concurrentWorkers": 1,
+                "peakConcurrentWorkerBytes": 561521298,
+                "sumOfWorkerPeakBytes": 561521298,
+                "workers": [
+                  {
+                    "beforeAcknowledgement": {
+                      "scope": "declared-application-owned-bytes",
+                      "limits": {
+                        "pixels": 7918845952,
+                        "metadata": 134217728
+                      },
+                      "current": {
+                        "pixels": 8902296,
+                        "metadata": 743520
+                      },
+                      "peak": {
+                        "pixels": 535501424,
+                        "metadata": 26019874
+                      },
+                      "reservations": 9
+                    },
+                    "afterAcknowledgement": {
+                      "scope": "declared-application-owned-bytes",
+                      "limits": {
+                        "pixels": 7918845952,
+                        "metadata": 134217728
+                      },
+                      "current": {
+                        "pixels": 0,
+                        "metadata": 0
+                      },
+                      "peak": {
+                        "pixels": 535501424,
+                        "metadata": 26019874
+                      },
+                      "reservations": 0
+                    }
+                  }
+                ],
+                "nodeResults": {
+                  "scope": "export-result-rpc-and-summary-capacity",
+                  "limits": {
+                    "pixels": 1,
+                    "metadata": 536870911
+                  },
+                  "current": {
+                    "pixels": 0,
+                    "metadata": 6012034
+                  },
+                  "peak": {
+                    "pixels": 0,
+                    "metadata": 6012034
+                  },
+                  "reservations": 3,
+                  "limitBytes": 536870912
+                }
+              }
+            }
+          },
+          {
+            "output": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/repeat/episode.mp4",
+              "bytes": 3647073,
+              "sha256": "sha256:82554962620125c69f85f37ec1addb4438793a8b3640b7cb450c5cc85708d110"
+            },
+            "result": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/repeat/episode.mp4.result.json",
+              "bytes": 67473,
+              "sha256": "sha256:1d6c529522b153469fd55bc3ee4848519b25f45e0b7055d6ce2fe8bbd9e8a5f7"
+            },
+            "sceneManifest": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/repeat/episode.mp4.scene.json",
+              "bytes": 8462411,
+              "sha256": "sha256:d03b2493136b7ac297946c217a401fbacc67e870ba39f58bf5508bb91ee13f88"
+            },
+            "preparedReceipt": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/repeat/prepared/prepared.receipt.json",
+              "bytes": 72417,
+              "sha256": "sha256:0bbf69360cb3914cfb76935c9bdb02e8f2c6c4d1e3418fcfbdd9209d8fdd92c6"
+            },
+            "nativeManifest": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/repeat/episode.mp4.native-observations.json",
+              "bytes": 76883,
+              "sha256": "sha256:3de268b141486e324a8efc4f895a6f73a89c29ca8b6e6d67f025da638e2fc81a"
+            },
+            "nativeShard": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/repeat/episode.mp4.native-observations.000.ndjson",
+              "bytes": 4751107,
+              "sha256": "sha256:1eed467eb974524b02486ec88909e219a15e886a0cd8e75466fcd81b360c24ca"
+            },
+            "executionSha256": "sha256:c008a419afa2037e0fc94c51fc735fb08976d8e281080b27b5fb135d74397bfc",
+            "outputFrames": 696,
+            "passCount": 696,
+            "observationBytes": 4751107,
+            "actualRowsFingerprintSha256": "sha256:4b7ba2ade4f9d277f47a851ef4363714c62011d707beb42d39a12fdbd88f565e",
+            "metrics": {
+              "frameCount": 696,
+              "width": 1080,
+              "height": 1920,
+              "durationMs": 23200,
+              "outputBytes": 3647073,
+              "outputChecksum": "sha256:82554962620125c69f85f37ec1addb4438793a8b3640b7cb450c5cc85708d110",
+              "frameTransport": "png_pipe",
+              "frameRenderAverageMs": 272.4637931032085,
+              "frameRenderP95Ms": 316.7000000476837,
+              "frameUploadAverageMs": 2.7066091956763434,
+              "frameUploadP95Ms": 4.100000023841858,
+              "ffmpegCpuMs": 13739,
+              "ffmpegCpuScope": "ffmpeg-transcode-user-plus-system",
+              "encodePathWallMs": 192655.973291,
+              "validationWallMs": 231.0394999999553,
+              "totalWallMs": 193537.54370799998,
+              "browserVersion": "151.0.7922.34",
+              "gpuRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver) composition-webgl2-0.68.7",
+              "renderEnvironment": {
+                "profile": "chromium-software-2",
+                "browserVersion": "151.0.7922.34",
+                "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+                "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+                "platform": "darwin",
+                "arch": "arm64"
+              }
+            },
+            "compositionStatistics": {
+              "version": "composition-export-statistics-1",
+              "scope": "synchronous-submission-wall-time",
+              "frameCount": 696,
+              "totalSubmissionWallMs": 4553.599999666214,
+              "byLayerType": [
+                {
+                  "phase": "frame",
+                  "type": "graph-overhead",
+                  "calls": 696,
+                  "submissionWallMs": 152.89999949932098,
+                  "submissionWallMsPerOutputFrame": 0.2196839073266106
+                },
+                {
+                  "phase": "frame",
+                  "type": "native-depth",
+                  "calls": 696,
+                  "submissionWallMs": 3686.9000000953674,
+                  "submissionWallMsPerOutputFrame": 5.2972701150795505
+                },
+                {
+                  "phase": "frame",
+                  "type": "mixed",
+                  "calls": 663,
+                  "submissionWallMs": 667.5999997854233,
+                  "submissionWallMsPerOutputFrame": 0.9591954019905506
+                },
+                {
+                  "phase": "frame",
+                  "type": "shape",
+                  "calls": 240,
+                  "submissionWallMs": 28.200000286102295,
+                  "submissionWallMsPerOutputFrame": 0.040517241790376864
+                },
+                {
+                  "phase": "frame",
+                  "type": "text",
+                  "calls": 27,
+                  "submissionWallMs": 18,
+                  "submissionWallMsPerOutputFrame": 0.02586206896551724
+                }
+              ],
+              "cacheEnabled": false,
+              "cacheHits": 0,
+              "cacheHitScope": "source-restores-and-reuses/root-copies/surface-restores-and-reuses"
+            },
+            "exporterMemory": {
+              "scope": "Actual sampled exporter RSS and declared managed application memory; independent of private selected-body/decoder copies.",
+              "peakParentRssBytes": 627212288,
+              "peakSampledProcessTreeRssBytes": 2728067072,
+              "compositionMemory": {
+                "scope": "declared-worker-application-bytes",
+                "applicationLimitBytes": 8589934592,
+                "reservedNodeBudgetBytes": 536870912,
+                "concurrentWorkers": 1,
+                "peakConcurrentWorkerBytes": 561521298,
+                "sumOfWorkerPeakBytes": 561521298,
+                "workers": [
+                  {
+                    "beforeAcknowledgement": {
+                      "scope": "declared-application-owned-bytes",
+                      "limits": {
+                        "pixels": 7918845952,
+                        "metadata": 134217728
+                      },
+                      "current": {
+                        "pixels": 8902296,
+                        "metadata": 743254
+                      },
+                      "peak": {
+                        "pixels": 535501424,
+                        "metadata": 26019874
+                      },
+                      "reservations": 9
+                    },
+                    "afterAcknowledgement": {
+                      "scope": "declared-application-owned-bytes",
+                      "limits": {
+                        "pixels": 7918845952,
+                        "metadata": 134217728
+                      },
+                      "current": {
+                        "pixels": 0,
+                        "metadata": 0
+                      },
+                      "peak": {
+                        "pixels": 535501424,
+                        "metadata": 26019874
+                      },
+                      "reservations": 0
+                    }
+                  }
+                ],
+                "nodeResults": {
+                  "scope": "export-result-rpc-and-summary-capacity",
+                  "limits": {
+                    "pixels": 1,
+                    "metadata": 536870911
+                  },
+                  "current": {
+                    "pixels": 0,
+                    "metadata": 6012082
+                  },
+                  "peak": {
+                    "pixels": 0,
+                    "metadata": 6012082
+                  },
+                  "reservations": 3,
+                  "limitBytes": 536870912
+                }
+              }
+            }
+          }
+        ],
+        "repeatIdentity": {
+          "exactOutputBytes": true,
+          "outputSha256": "sha256:82554962620125c69f85f37ec1addb4438793a8b3640b7cb450c5cc85708d110",
+          "outputBytes": 3647073,
+          "exactManifestBytes": true,
+          "exactNdjsonBytes": true,
+          "exactActualRows": true,
+          "executionSha256": "sha256:c008a419afa2037e0fc94c51fc735fb08976d8e281080b27b5fb135d74397bfc",
+          "actualRowsFingerprintSha256": "sha256:4b7ba2ade4f9d277f47a851ef4363714c62011d707beb42d39a12fdbd88f565e",
+          "sameRouteAndNativeProfile": true,
+          "sameActualRenderEnvironment": true,
+          "sceneManifestRawBytesDifferBecauseFirstRepeatSourcePathLocators": true
+        },
+        "firstActualQA": {
+          "scope": "actual-final-execution",
+          "valid": true,
+          "actualExecutionVerified": true,
+          "checkedFrames": 696,
+          "findings": [],
+          "checkWallSeconds": 326.0750907909999,
+          "mechanicalValid": true,
+          "mechanicalReport": {
+            "valid": true,
+            "checkedFrames": 696,
+            "findings": []
+          },
+          "closureReport": {
+            "outputFrames": 696,
+            "passCount": 696,
+            "byteLength": 4751107,
+            "artifacts": [
+              {
+                "path": "episode.mp4.native-observations.000.ndjson",
+                "sha256": "sha256:1eed467eb974524b02486ec88909e219a15e886a0cd8e75466fcd81b360c24ca",
+                "byteLength": 4751107,
+                "firstOutputFrame": 0,
+                "lastOutputFrame": 695,
+                "frames": 696
+              }
+            ]
+          },
+          "qualityStatus": "passed",
+          "measured": {
+            "evaluatedState": true,
+            "pixels": true,
+            "pixelMethod": "grayscale-energy",
+            "textBounds": true
+          },
+          "diagnosticCounts": [
+            {
+              "severity": "warning",
+              "code": "frozen-pixels",
+              "count": 10
+            },
+            {
+              "severity": "warning",
+              "code": "frozen-run",
+              "count": 10
+            },
+            {
+              "severity": "warning",
+              "code": "outside-safe-area",
+              "count": 20
+            },
+            {
+              "severity": "warning",
+              "code": "reading-time",
+              "count": 11
+            }
+          ],
+          "rawErrorWarningsRetained": 31,
+          "rawErrorMotionWarningsRetained": 20,
+          "nativePhysicalProofRecords": 9,
+          "stationarySpans": 19,
+          "nativePhysicalProofHolds": [
+            {
+              "id": "V8-01",
+              "purpose": "recognize",
+              "layer": "mechanism-plate-V8-01-3736f43c644a2e1a",
+              "start": 0,
+              "end": 78,
+              "measuredFrames": 78,
+              "stationaryIntervals": [],
+              "evidenceSha256": "sha256:93efbc09f90c896d1229dd84681f226f904ea14f16c4559fb7758be18ed466a5",
+              "method": "verified-actual-native-state-and-accepted-pixel-body",
+              "humanReview": "required"
+            },
+            {
+              "id": "V8-02",
+              "purpose": "pull-contact",
+              "layer": "mechanism-plate-V8-02-23ee53a44523c1e4",
+              "start": 78,
+              "end": 163,
+              "measuredFrames": 85,
+              "stationaryIntervals": [],
+              "evidenceSha256": "sha256:ea3694c96c92dd32020dba278d4d419858a53c058c65e29bb0f243a92d0b2a54",
+              "method": "verified-actual-native-state-and-accepted-pixel-body",
+              "humanReview": "required"
+            },
+            {
+              "id": "V8-03",
+              "purpose": "push-contact",
+              "layer": "mechanism-plate-V8-03-365e5185a5821217",
+              "start": 163,
+              "end": 247,
+              "measuredFrames": 84,
+              "stationaryIntervals": [
+                {
+                  "start": 163,
+                  "end": 173
+                },
+                {
+                  "start": 173,
+                  "end": 196
+                },
+                {
+                  "start": 228,
+                  "end": 237
+                },
+                {
+                  "start": 237,
+                  "end": 244
+                },
+                {
+                  "start": 244,
+                  "end": 247
+                }
+              ],
+              "evidenceSha256": "sha256:7f5cb88151fb01661b8c784a5d95310adc65a2eb5c90abc10176ae2af4386692",
+              "method": "verified-actual-native-state-and-accepted-pixel-body",
+              "humanReview": "required"
+            },
+            {
+              "id": "V8-04",
+              "purpose": "thickness-proof",
+              "layer": "mechanism-plate-V8-04-a5f517ea339d6c0c",
+              "start": 247,
+              "end": 336,
+              "measuredFrames": 89,
+              "stationaryIntervals": [],
+              "evidenceSha256": "sha256:a6de0af2cef6b9ba792d9f73ecdd924581b9224ed3c9d9f8e4e2b9b82c4b3cdd",
+              "method": "verified-actual-native-state-and-accepted-pixel-body",
+              "humanReview": "required"
+            },
+            {
+              "id": "V8-05",
+              "purpose": "travel-proof",
+              "layer": "mechanism-plate-V8-05-140e631f296c3b52",
+              "start": 336,
+              "end": 418,
+              "measuredFrames": 82,
+              "stationaryIntervals": [
+                {
+                  "start": 336,
+                  "end": 341
+                },
+                {
+                  "start": 362,
+                  "end": 367
+                },
+                {
+                  "start": 367,
+                  "end": 383
+                },
+                {
+                  "start": 402,
+                  "end": 415
+                },
+                {
+                  "start": 416,
+                  "end": 418
+                }
+              ],
+              "evidenceSha256": "sha256:a7dbd02fa819379b411b397fd73d37326e51ec24c98689fa30ea30328ecea0af",
+              "method": "verified-actual-native-state-and-accepted-pixel-body",
+              "humanReview": "required"
+            },
+            {
+              "id": "V8-06",
+              "purpose": "aligned-inner-face",
+              "layer": "mechanism-plate-V8-06-662f4f0ee05dd8ae",
+              "start": 418,
+              "end": 472,
+              "measuredFrames": 54,
+              "stationaryIntervals": [
+                {
+                  "start": 418,
+                  "end": 428
+                },
+                {
+                  "start": 428,
+                  "end": 447
+                },
+                {
+                  "start": 447,
+                  "end": 469
+                },
+                {
+                  "start": 469,
+                  "end": 472
+                }
+              ],
+              "evidenceSha256": "sha256:5e93f5ec551a81929395e90b90caf10427fbca2883f5c682e1ad97c869f1a213",
+              "method": "verified-actual-native-state-and-accepted-pixel-body",
+              "humanReview": "required"
+            },
+            {
+              "id": "V8-07",
+              "purpose": "aligned-outer-face",
+              "layer": "mechanism-plate-V8-07-a1fbfacb389ef192",
+              "start": 472,
+              "end": 526,
+              "measuredFrames": 54,
+              "stationaryIntervals": [
+                {
+                  "start": 472,
+                  "end": 480
+                },
+                {
+                  "start": 480,
+                  "end": 482
+                },
+                {
+                  "start": 482,
+                  "end": 516
+                },
+                {
+                  "start": 516,
+                  "end": 523
+                },
+                {
+                  "start": 523,
+                  "end": 526
+                }
+              ],
+              "evidenceSha256": "sha256:a17b8dc8db9299edb31b22391d84d4581493bf328fda759f7db3ddddcb6334ac",
+              "method": "verified-actual-native-state-and-accepted-pixel-body",
+              "humanReview": "required"
+            },
+            {
+              "id": "V8-08",
+              "purpose": "fixed-rivets-slot-slide",
+              "layer": "mechanism-plate-V8-08-5d61ab33e4ab18fd",
+              "start": 526,
+              "end": 603,
+              "measuredFrames": 77,
+              "stationaryIntervals": [],
+              "evidenceSha256": "sha256:2a5b2cd8de6f6febd4211aca3a9e1514681d1820be3069a62271bc22831ea2de",
+              "method": "verified-actual-native-state-and-accepted-pixel-body",
+              "humanReview": "required"
+            },
+            {
+              "id": "V8-09",
+              "purpose": "return-context",
+              "layer": "mechanism-plate-V8-09-9fa19f1a89583e1b",
+              "start": 603,
+              "end": 696,
+              "measuredFrames": 93,
+              "stationaryIntervals": [],
+              "evidenceSha256": "sha256:582e7b30e9e7e281eae661f6532143ab1818c320c19bf60f37e4db28049be53d",
+              "method": "verified-actual-native-state-and-accepted-pixel-body",
+              "humanReview": "required"
+            }
+          ],
+          "readingDeclarations": [
+            {
+              "id": "label-pull",
+              "purpose": "pull-contact",
+              "members": ["mechanism-label-label-pull-541c64ea48d8eca4"],
+              "start": 88,
+              "end": 160,
+              "requiredFrames": 15,
+              "longestReadableFrames": 72,
+              "eligible": true,
+              "readableIntervals": [
+                {
+                  "start": 88,
+                  "end": 160
+                }
+              ]
+            },
+            {
+              "id": "label-push",
+              "purpose": "push-contact",
+              "members": ["mechanism-label-label-push-5bd3dd8d7759908b"],
+              "start": 173,
+              "end": 244,
+              "requiredFrames": 15,
+              "longestReadableFrames": 71,
+              "eligible": true,
+              "readableIntervals": [
+                {
+                  "start": 173,
+                  "end": 244
+                }
+              ]
+            },
+            {
+              "id": "label-thickness",
+              "purpose": "thickness-proof",
+              "members": [
+                "mechanism-label-label-thickness-34327fa509b768b6",
+                "mechanism-qualification-label-thickness-34327fa509b768b6"
+              ],
+              "start": 257,
+              "end": 333,
+              "requiredFrames": 60,
+              "longestReadableFrames": 76,
+              "eligible": true,
+              "readableIntervals": [
+                {
+                  "start": 257,
+                  "end": 333
+                }
+              ]
+            },
+            {
+              "id": "label-travel",
+              "purpose": "travel-proof",
+              "members": [
+                "mechanism-label-label-travel-522ae94dd21312fe",
+                "mechanism-qualification-label-travel-522ae94dd21312fe"
+              ],
+              "start": 346,
+              "end": 415,
+              "requiredFrames": 60,
+              "longestReadableFrames": 69,
+              "eligible": true,
+              "readableIntervals": [
+                {
+                  "start": 346,
+                  "end": 415
+                }
+              ]
+            },
+            {
+              "id": "label-inside",
+              "purpose": "aligned-inner-face",
+              "members": ["mechanism-label-label-inside-2a546aa652cc80c0"],
+              "start": 428,
+              "end": 469,
+              "requiredFrames": 15,
+              "longestReadableFrames": 41,
+              "eligible": true,
+              "readableIntervals": [
+                {
+                  "start": 428,
+                  "end": 469
+                }
+              ]
+            },
+            {
+              "id": "label-outside",
+              "purpose": "aligned-outer-face",
+              "members": ["mechanism-label-label-outside-7cf2cb5f589430e0"],
+              "start": 482,
+              "end": 523,
+              "requiredFrames": 15,
+              "longestReadableFrames": 41,
+              "eligible": true,
+              "readableIntervals": [
+                {
+                  "start": 482,
+                  "end": 523
+                }
+              ]
+            },
+            {
+              "id": "label-slides",
+              "purpose": "fixed-rivets-slot-slide",
+              "members": [
+                "mechanism-label-label-slides-bc071218faa42fdf",
+                "mechanism-qualification-label-slides-bc071218faa42fdf"
+              ],
+              "start": 536,
+              "end": 600,
+              "requiredFrames": 60,
+              "longestReadableFrames": 64,
+              "eligible": true,
+              "readableIntervals": [
+                {
+                  "start": 536,
+                  "end": 600
+                }
+              ]
+            }
+          ],
+          "overlayReport": {
+            "method": "actual-native-anchor-and-settled-composition",
+            "checkedOutputFrames": 696,
+            "checkedPasses": 696,
+            "physicalHoldsValid": true,
+            "layoutMeasurement": "measured",
+            "layoutAccepted": true,
+            "renderedGlyphReadability": "requires-encoded-review",
+            "findings": [],
+            "holds": [
+              {
+                "shot": "V8-02",
+                "label": "label-pull",
+                "longestAnchoredFrames": 72,
+                "longestReadableFrames": 72,
+                "requiredFrames": 30,
+                "anchoredInterval": [88, 159],
+                "readableInterval": [88, 159]
+              },
+              {
+                "shot": "V8-03",
+                "label": "label-push",
+                "longestAnchoredFrames": 71,
+                "longestReadableFrames": 71,
+                "requiredFrames": 30,
+                "anchoredInterval": [173, 243],
+                "readableInterval": [173, 243]
+              },
+              {
+                "shot": "V8-04",
+                "label": "label-thickness",
+                "longestAnchoredFrames": 76,
+                "longestReadableFrames": 76,
+                "requiredFrames": 30,
+                "anchoredInterval": [257, 332],
+                "readableInterval": [257, 332]
+              },
+              {
+                "shot": "V8-05",
+                "label": "label-travel",
+                "longestAnchoredFrames": 69,
+                "longestReadableFrames": 69,
+                "requiredFrames": 30,
+                "anchoredInterval": [346, 414],
+                "readableInterval": [346, 414]
+              },
+              {
+                "shot": "V8-06",
+                "label": "label-inside",
+                "longestAnchoredFrames": 41,
+                "longestReadableFrames": 41,
+                "requiredFrames": 30,
+                "anchoredInterval": [428, 468],
+                "readableInterval": [428, 468]
+              },
+              {
+                "shot": "V8-07",
+                "label": "label-outside",
+                "longestAnchoredFrames": 41,
+                "longestReadableFrames": 41,
+                "requiredFrames": 30,
+                "anchoredInterval": [482, 522],
+                "readableInterval": [482, 522]
+              },
+              {
+                "shot": "V8-08",
+                "label": "label-slides",
+                "longestAnchoredFrames": 64,
+                "longestReadableFrames": 64,
+                "requiredFrames": 30,
+                "anchoredInterval": [536, 599],
+                "readableInterval": [536, 599]
+              }
+            ]
+          },
+          "audioReport": {
+            "schemaVersion": "mechanism-final-audio-check-1",
+            "valid": true,
+            "sourceClock": {
+              "sampleRate": 48000,
+              "sampleCount": 1113600,
+              "channels": 2,
+              "authoredSampleCount": 1113600
+            },
+            "findings": [],
+            "decodedClock": {
+              "codec": "aac",
+              "sampleRate": 48000,
+              "channels": 2,
+              "sampleCount": 1114112,
+              "paddingSamples": 512,
+              "paddingAllowanceSamples": 1023,
+              "sourceSha256": "sha256:1f474e3889efe32b5a5ece5bf4f6ba9edfa11eeaa07a2c773fe325bc213a9518",
+              "decodedSha256": "sha256:6b934bc37a1115ceef5bd5597bc324e393c4394e596e679c4592c2179dc32cf1"
+            },
+            "alignment": {
+              "correlation": 0.99939897716988,
+              "gain": 0.9936183770630255,
+              "normalizedError": 0.03514398619837603,
+              "sourceRms": 0.10424712835404523,
+              "decodedRms": 0.10358186248862733,
+              "windows": [
+                {
+                  "correlation": 0.9991018377725046,
+                  "gain": 0.9936525861183872,
+                  "normalizedError": 0.04272250113796264,
+                  "sourceRms": 0.22504104331982855,
+                  "decodedRms": 0.22361261467752766,
+                  "startSample": 303104,
+                  "sampleCount": 8192,
+                  "lagSamples": 0
+                },
+                {
+                  "correlation": 0.9995994003443933,
+                  "gain": 0.9970531013439682,
+                  "normalizedError": 0.028416939841065598,
+                  "sourceRms": 0.24601689142030655,
+                  "decodedRms": 0.24529190457361894,
+                  "startSample": 450560,
+                  "sampleCount": 8192,
+                  "lagSamples": 0
+                },
+                {
+                  "correlation": 0.9997798489063653,
+                  "gain": 0.9934986526875499,
+                  "normalizedError": 0.021902217856538675,
+                  "sourceRms": 0.1810039132730421,
+                  "decodedRms": 0.17982714396794147,
+                  "startSample": 1015808,
+                  "sampleCount": 8192,
+                  "lagSamples": 0
+                }
+              ],
+              "toleranceSamples": 64,
+              "maxLagSamples": 0
+            },
+            "tail": {
+              "correlation": 0.9996462325129299,
+              "gain": 0.9986940588084534,
+              "normalizedError": 0.026614215326493832,
+              "sourceRms": 0.0006902706585095873,
+              "decodedRms": 0.0006893692056233237,
+              "startSample": 1097728,
+              "sampleCount": 8192,
+              "lagSamples": 0,
+              "lastActiveSampleExclusive": 1105046,
+              "preserved": true
+            }
+          },
+          "semanticFactualTruth": "unassessed",
+          "semanticProfile": "legacy",
+          "encodedGlyphReadability": "requires-encoded-review",
+          "review": {
+            "continuousMotion": "pending-human-review",
+            "listening": "pending-human-review"
+          },
+          "measurementScope": "Actual closure-bound mechanical/projection and current measured recipe/layout/PCM checks. Existing warnings, raw severities, authored declarations and human limitations remain; no thresholds or original source altered."
+        },
+        "repeatActualQA": {
+          "scope": "actual-final-execution",
+          "valid": true,
+          "actualExecutionVerified": true,
+          "checkedFrames": 696,
+          "findings": [],
+          "checkWallSeconds": 312.908133625,
+          "mechanicalValid": true,
+          "mechanicalReport": {
+            "valid": true,
+            "checkedFrames": 696,
+            "findings": []
+          },
+          "closureReport": {
+            "outputFrames": 696,
+            "passCount": 696,
+            "byteLength": 4751107,
+            "artifacts": [
+              {
+                "path": "episode.mp4.native-observations.000.ndjson",
+                "sha256": "sha256:1eed467eb974524b02486ec88909e219a15e886a0cd8e75466fcd81b360c24ca",
+                "byteLength": 4751107,
+                "firstOutputFrame": 0,
+                "lastOutputFrame": 695,
+                "frames": 696
+              }
+            ]
+          },
+          "qualityStatus": "passed",
+          "measured": {
+            "evaluatedState": true,
+            "pixels": true,
+            "pixelMethod": "grayscale-energy",
+            "textBounds": true
+          },
+          "diagnosticCounts": [
+            {
+              "severity": "warning",
+              "code": "frozen-pixels",
+              "count": 10
+            },
+            {
+              "severity": "warning",
+              "code": "frozen-run",
+              "count": 10
+            },
+            {
+              "severity": "warning",
+              "code": "outside-safe-area",
+              "count": 20
+            },
+            {
+              "severity": "warning",
+              "code": "reading-time",
+              "count": 11
+            }
+          ],
+          "rawErrorWarningsRetained": 31,
+          "rawErrorMotionWarningsRetained": 20,
+          "nativePhysicalProofRecords": 9,
+          "stationarySpans": 19,
+          "nativePhysicalProofHolds": [
+            {
+              "id": "V8-01",
+              "purpose": "recognize",
+              "layer": "mechanism-plate-V8-01-3736f43c644a2e1a",
+              "start": 0,
+              "end": 78,
+              "measuredFrames": 78,
+              "stationaryIntervals": [],
+              "evidenceSha256": "sha256:93efbc09f90c896d1229dd84681f226f904ea14f16c4559fb7758be18ed466a5",
+              "method": "verified-actual-native-state-and-accepted-pixel-body",
+              "humanReview": "required"
+            },
+            {
+              "id": "V8-02",
+              "purpose": "pull-contact",
+              "layer": "mechanism-plate-V8-02-23ee53a44523c1e4",
+              "start": 78,
+              "end": 163,
+              "measuredFrames": 85,
+              "stationaryIntervals": [],
+              "evidenceSha256": "sha256:ea3694c96c92dd32020dba278d4d419858a53c058c65e29bb0f243a92d0b2a54",
+              "method": "verified-actual-native-state-and-accepted-pixel-body",
+              "humanReview": "required"
+            },
+            {
+              "id": "V8-03",
+              "purpose": "push-contact",
+              "layer": "mechanism-plate-V8-03-365e5185a5821217",
+              "start": 163,
+              "end": 247,
+              "measuredFrames": 84,
+              "stationaryIntervals": [
+                {
+                  "start": 163,
+                  "end": 173
+                },
+                {
+                  "start": 173,
+                  "end": 196
+                },
+                {
+                  "start": 228,
+                  "end": 237
+                },
+                {
+                  "start": 237,
+                  "end": 244
+                },
+                {
+                  "start": 244,
+                  "end": 247
+                }
+              ],
+              "evidenceSha256": "sha256:7f5cb88151fb01661b8c784a5d95310adc65a2eb5c90abc10176ae2af4386692",
+              "method": "verified-actual-native-state-and-accepted-pixel-body",
+              "humanReview": "required"
+            },
+            {
+              "id": "V8-04",
+              "purpose": "thickness-proof",
+              "layer": "mechanism-plate-V8-04-a5f517ea339d6c0c",
+              "start": 247,
+              "end": 336,
+              "measuredFrames": 89,
+              "stationaryIntervals": [],
+              "evidenceSha256": "sha256:a6de0af2cef6b9ba792d9f73ecdd924581b9224ed3c9d9f8e4e2b9b82c4b3cdd",
+              "method": "verified-actual-native-state-and-accepted-pixel-body",
+              "humanReview": "required"
+            },
+            {
+              "id": "V8-05",
+              "purpose": "travel-proof",
+              "layer": "mechanism-plate-V8-05-140e631f296c3b52",
+              "start": 336,
+              "end": 418,
+              "measuredFrames": 82,
+              "stationaryIntervals": [
+                {
+                  "start": 336,
+                  "end": 341
+                },
+                {
+                  "start": 362,
+                  "end": 367
+                },
+                {
+                  "start": 367,
+                  "end": 383
+                },
+                {
+                  "start": 402,
+                  "end": 415
+                },
+                {
+                  "start": 416,
+                  "end": 418
+                }
+              ],
+              "evidenceSha256": "sha256:a7dbd02fa819379b411b397fd73d37326e51ec24c98689fa30ea30328ecea0af",
+              "method": "verified-actual-native-state-and-accepted-pixel-body",
+              "humanReview": "required"
+            },
+            {
+              "id": "V8-06",
+              "purpose": "aligned-inner-face",
+              "layer": "mechanism-plate-V8-06-662f4f0ee05dd8ae",
+              "start": 418,
+              "end": 472,
+              "measuredFrames": 54,
+              "stationaryIntervals": [
+                {
+                  "start": 418,
+                  "end": 428
+                },
+                {
+                  "start": 428,
+                  "end": 447
+                },
+                {
+                  "start": 447,
+                  "end": 469
+                },
+                {
+                  "start": 469,
+                  "end": 472
+                }
+              ],
+              "evidenceSha256": "sha256:5e93f5ec551a81929395e90b90caf10427fbca2883f5c682e1ad97c869f1a213",
+              "method": "verified-actual-native-state-and-accepted-pixel-body",
+              "humanReview": "required"
+            },
+            {
+              "id": "V8-07",
+              "purpose": "aligned-outer-face",
+              "layer": "mechanism-plate-V8-07-a1fbfacb389ef192",
+              "start": 472,
+              "end": 526,
+              "measuredFrames": 54,
+              "stationaryIntervals": [
+                {
+                  "start": 472,
+                  "end": 480
+                },
+                {
+                  "start": 480,
+                  "end": 482
+                },
+                {
+                  "start": 482,
+                  "end": 516
+                },
+                {
+                  "start": 516,
+                  "end": 523
+                },
+                {
+                  "start": 523,
+                  "end": 526
+                }
+              ],
+              "evidenceSha256": "sha256:a17b8dc8db9299edb31b22391d84d4581493bf328fda759f7db3ddddcb6334ac",
+              "method": "verified-actual-native-state-and-accepted-pixel-body",
+              "humanReview": "required"
+            },
+            {
+              "id": "V8-08",
+              "purpose": "fixed-rivets-slot-slide",
+              "layer": "mechanism-plate-V8-08-5d61ab33e4ab18fd",
+              "start": 526,
+              "end": 603,
+              "measuredFrames": 77,
+              "stationaryIntervals": [],
+              "evidenceSha256": "sha256:2a5b2cd8de6f6febd4211aca3a9e1514681d1820be3069a62271bc22831ea2de",
+              "method": "verified-actual-native-state-and-accepted-pixel-body",
+              "humanReview": "required"
+            },
+            {
+              "id": "V8-09",
+              "purpose": "return-context",
+              "layer": "mechanism-plate-V8-09-9fa19f1a89583e1b",
+              "start": 603,
+              "end": 696,
+              "measuredFrames": 93,
+              "stationaryIntervals": [],
+              "evidenceSha256": "sha256:582e7b30e9e7e281eae661f6532143ab1818c320c19bf60f37e4db28049be53d",
+              "method": "verified-actual-native-state-and-accepted-pixel-body",
+              "humanReview": "required"
+            }
+          ],
+          "readingDeclarations": [
+            {
+              "id": "label-pull",
+              "purpose": "pull-contact",
+              "members": ["mechanism-label-label-pull-541c64ea48d8eca4"],
+              "start": 88,
+              "end": 160,
+              "requiredFrames": 15,
+              "longestReadableFrames": 72,
+              "eligible": true,
+              "readableIntervals": [
+                {
+                  "start": 88,
+                  "end": 160
+                }
+              ]
+            },
+            {
+              "id": "label-push",
+              "purpose": "push-contact",
+              "members": ["mechanism-label-label-push-5bd3dd8d7759908b"],
+              "start": 173,
+              "end": 244,
+              "requiredFrames": 15,
+              "longestReadableFrames": 71,
+              "eligible": true,
+              "readableIntervals": [
+                {
+                  "start": 173,
+                  "end": 244
+                }
+              ]
+            },
+            {
+              "id": "label-thickness",
+              "purpose": "thickness-proof",
+              "members": [
+                "mechanism-label-label-thickness-34327fa509b768b6",
+                "mechanism-qualification-label-thickness-34327fa509b768b6"
+              ],
+              "start": 257,
+              "end": 333,
+              "requiredFrames": 60,
+              "longestReadableFrames": 76,
+              "eligible": true,
+              "readableIntervals": [
+                {
+                  "start": 257,
+                  "end": 333
+                }
+              ]
+            },
+            {
+              "id": "label-travel",
+              "purpose": "travel-proof",
+              "members": [
+                "mechanism-label-label-travel-522ae94dd21312fe",
+                "mechanism-qualification-label-travel-522ae94dd21312fe"
+              ],
+              "start": 346,
+              "end": 415,
+              "requiredFrames": 60,
+              "longestReadableFrames": 69,
+              "eligible": true,
+              "readableIntervals": [
+                {
+                  "start": 346,
+                  "end": 415
+                }
+              ]
+            },
+            {
+              "id": "label-inside",
+              "purpose": "aligned-inner-face",
+              "members": ["mechanism-label-label-inside-2a546aa652cc80c0"],
+              "start": 428,
+              "end": 469,
+              "requiredFrames": 15,
+              "longestReadableFrames": 41,
+              "eligible": true,
+              "readableIntervals": [
+                {
+                  "start": 428,
+                  "end": 469
+                }
+              ]
+            },
+            {
+              "id": "label-outside",
+              "purpose": "aligned-outer-face",
+              "members": ["mechanism-label-label-outside-7cf2cb5f589430e0"],
+              "start": 482,
+              "end": 523,
+              "requiredFrames": 15,
+              "longestReadableFrames": 41,
+              "eligible": true,
+              "readableIntervals": [
+                {
+                  "start": 482,
+                  "end": 523
+                }
+              ]
+            },
+            {
+              "id": "label-slides",
+              "purpose": "fixed-rivets-slot-slide",
+              "members": [
+                "mechanism-label-label-slides-bc071218faa42fdf",
+                "mechanism-qualification-label-slides-bc071218faa42fdf"
+              ],
+              "start": 536,
+              "end": 600,
+              "requiredFrames": 60,
+              "longestReadableFrames": 64,
+              "eligible": true,
+              "readableIntervals": [
+                {
+                  "start": 536,
+                  "end": 600
+                }
+              ]
+            }
+          ],
+          "overlayReport": {
+            "method": "actual-native-anchor-and-settled-composition",
+            "checkedOutputFrames": 696,
+            "checkedPasses": 696,
+            "physicalHoldsValid": true,
+            "layoutMeasurement": "measured",
+            "layoutAccepted": true,
+            "renderedGlyphReadability": "requires-encoded-review",
+            "findings": [],
+            "holds": [
+              {
+                "shot": "V8-02",
+                "label": "label-pull",
+                "longestAnchoredFrames": 72,
+                "longestReadableFrames": 72,
+                "requiredFrames": 30,
+                "anchoredInterval": [88, 159],
+                "readableInterval": [88, 159]
+              },
+              {
+                "shot": "V8-03",
+                "label": "label-push",
+                "longestAnchoredFrames": 71,
+                "longestReadableFrames": 71,
+                "requiredFrames": 30,
+                "anchoredInterval": [173, 243],
+                "readableInterval": [173, 243]
+              },
+              {
+                "shot": "V8-04",
+                "label": "label-thickness",
+                "longestAnchoredFrames": 76,
+                "longestReadableFrames": 76,
+                "requiredFrames": 30,
+                "anchoredInterval": [257, 332],
+                "readableInterval": [257, 332]
+              },
+              {
+                "shot": "V8-05",
+                "label": "label-travel",
+                "longestAnchoredFrames": 69,
+                "longestReadableFrames": 69,
+                "requiredFrames": 30,
+                "anchoredInterval": [346, 414],
+                "readableInterval": [346, 414]
+              },
+              {
+                "shot": "V8-06",
+                "label": "label-inside",
+                "longestAnchoredFrames": 41,
+                "longestReadableFrames": 41,
+                "requiredFrames": 30,
+                "anchoredInterval": [428, 468],
+                "readableInterval": [428, 468]
+              },
+              {
+                "shot": "V8-07",
+                "label": "label-outside",
+                "longestAnchoredFrames": 41,
+                "longestReadableFrames": 41,
+                "requiredFrames": 30,
+                "anchoredInterval": [482, 522],
+                "readableInterval": [482, 522]
+              },
+              {
+                "shot": "V8-08",
+                "label": "label-slides",
+                "longestAnchoredFrames": 64,
+                "longestReadableFrames": 64,
+                "requiredFrames": 30,
+                "anchoredInterval": [536, 599],
+                "readableInterval": [536, 599]
+              }
+            ]
+          },
+          "audioReport": {
+            "schemaVersion": "mechanism-final-audio-check-1",
+            "valid": true,
+            "sourceClock": {
+              "sampleRate": 48000,
+              "sampleCount": 1113600,
+              "channels": 2,
+              "authoredSampleCount": 1113600
+            },
+            "findings": [],
+            "decodedClock": {
+              "codec": "aac",
+              "sampleRate": 48000,
+              "channels": 2,
+              "sampleCount": 1114112,
+              "paddingSamples": 512,
+              "paddingAllowanceSamples": 1023,
+              "sourceSha256": "sha256:1f474e3889efe32b5a5ece5bf4f6ba9edfa11eeaa07a2c773fe325bc213a9518",
+              "decodedSha256": "sha256:6b934bc37a1115ceef5bd5597bc324e393c4394e596e679c4592c2179dc32cf1"
+            },
+            "alignment": {
+              "correlation": 0.99939897716988,
+              "gain": 0.9936183770630255,
+              "normalizedError": 0.03514398619837603,
+              "sourceRms": 0.10424712835404523,
+              "decodedRms": 0.10358186248862733,
+              "windows": [
+                {
+                  "correlation": 0.9991018377725046,
+                  "gain": 0.9936525861183872,
+                  "normalizedError": 0.04272250113796264,
+                  "sourceRms": 0.22504104331982855,
+                  "decodedRms": 0.22361261467752766,
+                  "startSample": 303104,
+                  "sampleCount": 8192,
+                  "lagSamples": 0
+                },
+                {
+                  "correlation": 0.9995994003443933,
+                  "gain": 0.9970531013439682,
+                  "normalizedError": 0.028416939841065598,
+                  "sourceRms": 0.24601689142030655,
+                  "decodedRms": 0.24529190457361894,
+                  "startSample": 450560,
+                  "sampleCount": 8192,
+                  "lagSamples": 0
+                },
+                {
+                  "correlation": 0.9997798489063653,
+                  "gain": 0.9934986526875499,
+                  "normalizedError": 0.021902217856538675,
+                  "sourceRms": 0.1810039132730421,
+                  "decodedRms": 0.17982714396794147,
+                  "startSample": 1015808,
+                  "sampleCount": 8192,
+                  "lagSamples": 0
+                }
+              ],
+              "toleranceSamples": 64,
+              "maxLagSamples": 0
+            },
+            "tail": {
+              "correlation": 0.9996462325129299,
+              "gain": 0.9986940588084534,
+              "normalizedError": 0.026614215326493832,
+              "sourceRms": 0.0006902706585095873,
+              "decodedRms": 0.0006893692056233237,
+              "startSample": 1097728,
+              "sampleCount": 8192,
+              "lagSamples": 0,
+              "lastActiveSampleExclusive": 1105046,
+              "preserved": true
+            }
+          },
+          "semanticFactualTruth": "unassessed",
+          "semanticProfile": "legacy",
+          "encodedGlyphReadability": "requires-encoded-review",
+          "review": {
+            "continuousMotion": "pending-human-review",
+            "listening": "pending-human-review"
+          },
+          "measurementScope": "Actual closure-bound mechanical/projection and current measured recipe/layout/PCM checks. Existing warnings, raw severities, authored declarations and human limitations remain; no thresholds or original source altered."
+        },
+        "nineAcceptedBodyParities": [
+          {
+            "frame": 0,
+            "acknowledgementStatus": 204,
+            "byteLength": 338168,
+            "transportBytesSha256": "sha256:c5f7183feedcadba8bfc334c5c316480d66d372fd619724eccf7d87cc91a6905",
+            "actualPng": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/accepted-bodies/frame-000000.accepted-transport.png",
+              "bytes": 338168,
+              "sha256": "sha256:c5f7183feedcadba8bfc334c5c316480d66d372fd619724eccf7d87cc91a6905"
+            },
+            "metadata": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/accepted-bodies/frame-000000.accepted-transport.png.json",
+              "bytes": 370,
+              "sha256": "sha256:1fc3e24b0618ac7c0c9d1e371e9b2d22ed3dd061c169cdb492603bbefc22acf5"
+            },
+            "acceptedPixelRowMatchesActualFile": true,
+            "pngContainer": {
+              "width": 1080,
+              "height": 1920,
+              "bitDepth": 8,
+              "colorType": 2,
+              "compression": 0,
+              "filter": 0,
+              "interlace": 0,
+              "chunkCount": 86,
+              "chunkTypes": {
+                "IHDR": 1,
+                "IDAT": 84,
+                "IEND": 1
+              },
+              "idatBytes": 337115,
+              "crcAndFramingVerified": true,
+              "pixelsDecoded": false
+            },
+            "reportedMaximumRgba8CodeDelta": 0,
+            "comparedCodeValues": 8294400,
+            "actualPhysicalObservationExact": true,
+            "parityStage": 5,
+            "parityStatus": "passed"
+          },
+          {
+            "frame": 88,
+            "acknowledgementStatus": 204,
+            "byteLength": 1275090,
+            "transportBytesSha256": "sha256:e28916724c9c3a8d6e506c6db9596a940ec7a92846ed3ab41371a83268af60a6",
+            "actualPng": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/accepted-bodies/frame-000088.accepted-transport.png",
+              "bytes": 1275090,
+              "sha256": "sha256:e28916724c9c3a8d6e506c6db9596a940ec7a92846ed3ab41371a83268af60a6"
+            },
+            "metadata": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/accepted-bodies/frame-000088.accepted-transport.png.json",
+              "bytes": 372,
+              "sha256": "sha256:fce0495846ba84c273ba096f9e705f732011dcffe773b09eff6bffb69983ae10"
+            },
+            "acceptedPixelRowMatchesActualFile": true,
+            "pngContainer": {
+              "width": 1080,
+              "height": 1920,
+              "bitDepth": 8,
+              "colorType": 2,
+              "compression": 0,
+              "filter": 0,
+              "interlace": 0,
+              "chunkCount": 314,
+              "chunkTypes": {
+                "IHDR": 1,
+                "IDAT": 312,
+                "IEND": 1
+              },
+              "idatBytes": 1271301,
+              "crcAndFramingVerified": true,
+              "pixelsDecoded": false
+            },
+            "reportedMaximumRgba8CodeDelta": 0,
+            "comparedCodeValues": 8294400,
+            "actualPhysicalObservationExact": true,
+            "parityStage": 6,
+            "parityStatus": "passed"
+          },
+          {
+            "frame": 173,
+            "acknowledgementStatus": 204,
+            "byteLength": 339318,
+            "transportBytesSha256": "sha256:1881cf4185562608d142b3aa003e0f45f9f042ebacb3858b0445682ca574c3a7",
+            "actualPng": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/accepted-bodies/frame-000173.accepted-transport.png",
+              "bytes": 339318,
+              "sha256": "sha256:1881cf4185562608d142b3aa003e0f45f9f042ebacb3858b0445682ca574c3a7"
+            },
+            "metadata": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/accepted-bodies/frame-000173.accepted-transport.png.json",
+              "bytes": 372,
+              "sha256": "sha256:c71aad06743a6ff49b85ac013f9ae4f98dd6c57a5e0e03f7ca997b125ab2e8b0"
+            },
+            "acceptedPixelRowMatchesActualFile": true,
+            "pngContainer": {
+              "width": 1080,
+              "height": 1920,
+              "bitDepth": 8,
+              "colorType": 2,
+              "compression": 0,
+              "filter": 0,
+              "interlace": 0,
+              "chunkCount": 86,
+              "chunkTypes": {
+                "IHDR": 1,
+                "IDAT": 84,
+                "IEND": 1
+              },
+              "idatBytes": 338265,
+              "crcAndFramingVerified": true,
+              "pixelsDecoded": false
+            },
+            "reportedMaximumRgba8CodeDelta": 0,
+            "comparedCodeValues": 8294400,
+            "actualPhysicalObservationExact": true,
+            "parityStage": 7,
+            "parityStatus": "passed"
+          },
+          {
+            "frame": 257,
+            "acknowledgementStatus": 204,
+            "byteLength": 354897,
+            "transportBytesSha256": "sha256:4401f736bbbe08621e617a2fa25df49ad9087a24e775927bb775330860683db4",
+            "actualPng": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/accepted-bodies/frame-000257.accepted-transport.png",
+              "bytes": 354897,
+              "sha256": "sha256:4401f736bbbe08621e617a2fa25df49ad9087a24e775927bb775330860683db4"
+            },
+            "metadata": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/accepted-bodies/frame-000257.accepted-transport.png.json",
+              "bytes": 372,
+              "sha256": "sha256:dc29648ff91320e24d0c752d6438eef948fdc8e35bd812156a9006a12ef13844"
+            },
+            "acceptedPixelRowMatchesActualFile": true,
+            "pngContainer": {
+              "width": 1080,
+              "height": 1920,
+              "bitDepth": 8,
+              "colorType": 2,
+              "compression": 0,
+              "filter": 0,
+              "interlace": 0,
+              "chunkCount": 90,
+              "chunkTypes": {
+                "IHDR": 1,
+                "IDAT": 88,
+                "IEND": 1
+              },
+              "idatBytes": 353796,
+              "crcAndFramingVerified": true,
+              "pixelsDecoded": false
+            },
+            "reportedMaximumRgba8CodeDelta": 0,
+            "comparedCodeValues": 8294400,
+            "actualPhysicalObservationExact": true,
+            "parityStage": 8,
+            "parityStatus": "passed"
+          },
+          {
+            "frame": 346,
+            "acknowledgementStatus": 204,
+            "byteLength": 345765,
+            "transportBytesSha256": "sha256:dd4137adf4aab0de8ff5573f2696eb5bb0a18883bc4ba57704b44f75130156e0",
+            "actualPng": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/accepted-bodies/frame-000346.accepted-transport.png",
+              "bytes": 345765,
+              "sha256": "sha256:dd4137adf4aab0de8ff5573f2696eb5bb0a18883bc4ba57704b44f75130156e0"
+            },
+            "metadata": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/accepted-bodies/frame-000346.accepted-transport.png.json",
+              "bytes": 372,
+              "sha256": "sha256:6b701d8db08fa2ea18d65231f9b904738480bd6af9a4debe22480ea90d13f6a7"
+            },
+            "acceptedPixelRowMatchesActualFile": true,
+            "pngContainer": {
+              "width": 1080,
+              "height": 1920,
+              "bitDepth": 8,
+              "colorType": 2,
+              "compression": 0,
+              "filter": 0,
+              "interlace": 0,
+              "chunkCount": 88,
+              "chunkTypes": {
+                "IHDR": 1,
+                "IDAT": 86,
+                "IEND": 1
+              },
+              "idatBytes": 344688,
+              "crcAndFramingVerified": true,
+              "pixelsDecoded": false
+            },
+            "reportedMaximumRgba8CodeDelta": 0,
+            "comparedCodeValues": 8294400,
+            "actualPhysicalObservationExact": true,
+            "parityStage": 9,
+            "parityStatus": "passed"
+          },
+          {
+            "frame": 428,
+            "acknowledgementStatus": 204,
+            "byteLength": 1306952,
+            "transportBytesSha256": "sha256:f1a48f55cf8faa3c2a543c22013daae2162402d7a77d09829a1fbf00ec2679fb",
+            "actualPng": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/accepted-bodies/frame-000428.accepted-transport.png",
+              "bytes": 1306952,
+              "sha256": "sha256:f1a48f55cf8faa3c2a543c22013daae2162402d7a77d09829a1fbf00ec2679fb"
+            },
+            "metadata": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/accepted-bodies/frame-000428.accepted-transport.png.json",
+              "bytes": 373,
+              "sha256": "sha256:293407b9deaf39f52b6de5ed97154b4ef57aa452dfd8a94a9f821402267395c3"
+            },
+            "acceptedPixelRowMatchesActualFile": true,
+            "pngContainer": {
+              "width": 1080,
+              "height": 1920,
+              "bitDepth": 8,
+              "colorType": 2,
+              "compression": 0,
+              "filter": 0,
+              "interlace": 0,
+              "chunkCount": 322,
+              "chunkTypes": {
+                "IHDR": 1,
+                "IDAT": 320,
+                "IEND": 1
+              },
+              "idatBytes": 1303067,
+              "crcAndFramingVerified": true,
+              "pixelsDecoded": false
+            },
+            "reportedMaximumRgba8CodeDelta": 0,
+            "comparedCodeValues": 8294400,
+            "actualPhysicalObservationExact": true,
+            "parityStage": 10,
+            "parityStatus": "passed"
+          },
+          {
+            "frame": 482,
+            "acknowledgementStatus": 204,
+            "byteLength": 270978,
+            "transportBytesSha256": "sha256:6b2e8daba8b8456e6cc5d99fc8c4a5a0d5be3cef9c4b2a701ceecae285b46a29",
+            "actualPng": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/accepted-bodies/frame-000482.accepted-transport.png",
+              "bytes": 270978,
+              "sha256": "sha256:6b2e8daba8b8456e6cc5d99fc8c4a5a0d5be3cef9c4b2a701ceecae285b46a29"
+            },
+            "metadata": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/accepted-bodies/frame-000482.accepted-transport.png.json",
+              "bytes": 372,
+              "sha256": "sha256:931fdc22626d2dd0e1a65797afeb733ffa8b93d97787e19536320ebeb7f8ca12"
+            },
+            "acceptedPixelRowMatchesActualFile": true,
+            "pngContainer": {
+              "width": 1080,
+              "height": 1920,
+              "bitDepth": 8,
+              "colorType": 2,
+              "compression": 0,
+              "filter": 0,
+              "interlace": 0,
+              "chunkCount": 69,
+              "chunkTypes": {
+                "IHDR": 1,
+                "IDAT": 67,
+                "IEND": 1
+              },
+              "idatBytes": 270129,
+              "crcAndFramingVerified": true,
+              "pixelsDecoded": false
+            },
+            "reportedMaximumRgba8CodeDelta": 0,
+            "comparedCodeValues": 8294400,
+            "actualPhysicalObservationExact": true,
+            "parityStage": 11,
+            "parityStatus": "passed"
+          },
+          {
+            "frame": 536,
+            "acknowledgementStatus": 204,
+            "byteLength": 312915,
+            "transportBytesSha256": "sha256:14db503d112ea6886ac67bf60ff9de64f9e816a5f9c8776767467c1efa497648",
+            "actualPng": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/accepted-bodies/frame-000536.accepted-transport.png",
+              "bytes": 312915,
+              "sha256": "sha256:14db503d112ea6886ac67bf60ff9de64f9e816a5f9c8776767467c1efa497648"
+            },
+            "metadata": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/accepted-bodies/frame-000536.accepted-transport.png.json",
+              "bytes": 372,
+              "sha256": "sha256:5a70ce077a0059a9cecc298211294698c7a8f34696c5650e271ef2dab55cec63"
+            },
+            "acceptedPixelRowMatchesActualFile": true,
+            "pngContainer": {
+              "width": 1080,
+              "height": 1920,
+              "bitDepth": 8,
+              "colorType": 2,
+              "compression": 0,
+              "filter": 0,
+              "interlace": 0,
+              "chunkCount": 80,
+              "chunkTypes": {
+                "IHDR": 1,
+                "IDAT": 78,
+                "IEND": 1
+              },
+              "idatBytes": 311934,
+              "crcAndFramingVerified": true,
+              "pixelsDecoded": false
+            },
+            "reportedMaximumRgba8CodeDelta": 0,
+            "comparedCodeValues": 8294400,
+            "actualPhysicalObservationExact": true,
+            "parityStage": 12,
+            "parityStatus": "passed"
+          },
+          {
+            "frame": 695,
+            "acknowledgementStatus": 204,
+            "byteLength": 600106,
+            "transportBytesSha256": "sha256:30e4c0ebe890867a1a9980ec92facbdcc388a4af8448778ef0240100c739b0d4",
+            "actualPng": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/accepted-bodies/frame-000695.accepted-transport.png",
+              "bytes": 600106,
+              "sha256": "sha256:30e4c0ebe890867a1a9980ec92facbdcc388a4af8448778ef0240100c739b0d4"
+            },
+            "metadata": {
+              "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/accepted-bodies/frame-000695.accepted-transport.png.json",
+              "bytes": 372,
+              "sha256": "sha256:5dbd884b159a15b0320fbe1ce5672101e3ac528169c8527c230ff4a6632b2f43"
+            },
+            "acceptedPixelRowMatchesActualFile": true,
+            "pngContainer": {
+              "width": 1080,
+              "height": 1920,
+              "bitDepth": 8,
+              "colorType": 2,
+              "compression": 0,
+              "filter": 0,
+              "interlace": 0,
+              "chunkCount": 150,
+              "chunkTypes": {
+                "IHDR": 1,
+                "IDAT": 148,
+                "IEND": 1
+              },
+              "idatBytes": 598285,
+              "crcAndFramingVerified": true,
+              "pixelsDecoded": false
+            },
+            "reportedMaximumRgba8CodeDelta": 0,
+            "comparedCodeValues": 8294400,
+            "actualPhysicalObservationExact": true,
+            "parityStage": 13,
+            "parityStatus": "passed"
+          }
+        ],
+        "preEncoderParityScope": "All nine actual acknowledged PNG bodies against independently decoded still-preview PNGs; each max RGBA8 code delta0 within original max1. H264 decoded clock/orientation/determinism is separate and not the pre-encoder one-step oracle.",
+        "privateHelperMemory": {
+          "captureAccounting": {
+            "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/accepted-bodies/capture-accounting.json",
+            "bytes": 927,
+            "sha256": "sha256:61deab2b7204911363b3f1ffea981428dd06a5103396079e3100021dafd058e9"
+          },
+          "capture": {
+            "selectedFrames": [0, 88, 173, 257, 346, 428, 482, 536, 695],
+            "requestedFrames": [0, 88, 173, 257, 346, 428, 482, 536, 695],
+            "capturedFrames": [0, 88, 173, 257, 346, 428, 482, 536, 695],
+            "status": "passed",
+            "errors": [],
+            "byteLimitPerBody": 9344896,
+            "maximumPendingTasks": 1,
+            "peakPendingTasks": 1,
+            "peakObservedBodyBytes": 1306952,
+            "base64CharacterLimit": 12459864,
+            "peakWireMessageBytes": 1742663,
+            "totalRetainedBodyBytes": 5144189,
+            "browserExtraBounds": {
+              "arrayBufferBytes": 9344896,
+              "binaryStringMaximumUtf16Bytes": 18689792,
+              "base64StringMaximumUtf16Bytes": 24919728
+            },
+            "memoryScope": "Private extra copy/message bounds, excluding the original managed Blob; wire/internal clone count is not measured. Not exporter managed-memory or sampled RSS evidence."
+          },
+          "parityDecoderPixelBytesPerFrame": 16588800,
+          "parityDecoderConservativeLogicalBoundBytesPerFrame": 70578304,
+          "scope": "Private additional copies/messages and PNG decoder logical buffers only; excludes original managed Blob, unmeasured internal/wire clones and V8 overhead. Not exporter managed-memory or sampled RSS evidence."
+        },
+        "retainedArtifactInventory": {
+          "files": 132,
+          "bytes": 48437725,
+          "independentlyRehashed": true
+        },
+        "independentArtifactAudit": {
+          "status": "passed-read-hash-parse",
+          "json": {
+            "path": "/private/tmp/mechanism-ms1n-full3-accepted-body-artifact-audit-r2.json",
+            "bytes": 203851,
+            "sha256": "sha256:c62215f9119b08849af8bf917fef9c4cdff9a07cabf06d91d59cd913e3c0ea87"
+          },
+          "markdown": {
+            "path": "/private/tmp/mechanism-ms1n-full3-accepted-body-artifact-audit-r2.md",
+            "bytes": 6181,
+            "sha256": "sha256:822682cde626aa31050658bff9c6c826514ceb8ae7a0bf1aba172d08ab70e9d0"
+          },
+          "integrity": {
+            "path": "/private/tmp/mechanism-ms1n-full3-accepted-body-artifact-audit-r2.integrity.json",
+            "bytes": 642516,
+            "sha256": "sha256:7012d4c89f0b9eae668fcba59b55708f5c9c1dbda9ea0b2b10906ba9e6770ab7"
+          },
+          "scope": "Independent read/hash/parse of all696 actual rows twice, exactnine accepted bytes/204 receipts, current source/code/inventory and all132 retained run artifacts. No decoder/browser/GPU/public renderer/project checker/test/build invoked by auditor.",
+          "retainedInspectorAssumptionCorrection": {
+            "priorDraft": {
+              "path": "/private/tmp/mechanism-ms1n-full3-accepted-body-artifact-audit.json",
+              "bytes": 204469,
+              "sha256": "sha256:15c55c64e290cc7b313a823d03bf29793f73785b852d88817bdfcd624651dc55"
+            },
+            "priorDraftIntegrity": {
+              "path": "/private/tmp/mechanism-ms1n-full3-accepted-body-artifact-audit.integrity.json",
+              "bytes": 643600,
+              "sha256": "sha256:f95211cea59b2f085577a5bca60246228fe15efe9f41809cf9c76cb56e6adb09"
+            },
+            "cause": "First private audit incorrectly required RGBA8 PNG containers. Actual Chromium PNGs are valid RGB8/colorType2. R2 explicitly supersedes that inspector assumption while retaining the draft unchanged; not a production export/source/protocol failure."
+          }
+        },
+        "claims": {
+          "softwareMechanicsAndAnchors": "passed-actual-696-output-frames-twice",
+          "softwareReadingHoldsAndLayout": "passed-actual-bound-anchors-and-current-measured-layout; encoded-glyph-readability-separate",
+          "encodedGlyphReadability": "requires-encoded-review",
+          "continuousMotion": "pending-human-review",
+          "listening": "pending-human-review",
+          "publicationAcceptance": "pending-owner-review"
+        },
+        "scope": "Full3 native original E01 software execution/QA/repeat/pre-encoder parity complete at held342. Original full1/full2 remain failed, retained and separately scoped. This is not MS1N full milestone, hardware/portable/package/installed, semantic factual-truth, encoded readability, continuous human playback/listening or redistribution acceptance."
+      },
+      "repeatParityHardwareInstalled": "repeat696-and-nineactualparity-passed; hardware-portable-package-installed-pending",
+      "remainingAcceptance": {
+        "freshCurrentSourceBridge696": "passed-bridge4-all696-fresh-exact-at342; earlier exact696 at947 retained",
+        "freshCurrentSourceNativePreview4": "pending",
+        "bridgeNativeAppearanceComparison": "privatechecker-repair-pending-after-attempt1-pure-input-hash-assertion; no pixelcomparison reached",
+        "hardwareProfile": "pending",
+        "portableFinalClosure": "pending",
+        "nativeProjectPackage": "pending",
+        "installedNativeConsumer": "pending",
+        "full77RequiredGroupsAnd176UnchangedBaselines": "pending",
+        "encodedGlyphReadability": "requires-encoded-review",
+        "continuousPlaybackAndListening": "pending-human-review",
+        "publicationOwnerAcceptance": "pending-owner-review",
+        "publicCustomerSourceRedistribution": "unestablished"
+      }
     },
     "portableInstalledExecution": "pending",
     "fullLocalGateAnd176Baselines": {
@@ -1414,14 +3876,15 @@
       "next": "Recapture this explicit selection after the test-only oracle correction and use it before/after remaining actual proofs and aggregate checks."
     },
     "currentCompleteSourceInputInventory": {
-      "path": "/private/tmp/still-shift-ms1n-implementation-inputs-7.json",
-      "bytes": 395813,
-      "sha256": "sha256:289a6ea9a935c499ea65909f61dffef2d8be51b77e4cd91ddb822bda9cbbc72a",
+      "path": "/private/tmp/still-shift-ms1n-implementation-inputs-8.json",
+      "bytes": 396837,
+      "sha256": "sha256:ce149b60c41e5bc5d59d00fdfd17000728a78d142e65bb8f3f925aa6b93acfc9",
       "version": "ms1n-source-input-inventory-2",
-      "files": 2321,
-      "inputBytes": 117428962,
-      "sourceCommit": "3ac7d29fa9c6e3a6feb8517a8ddcba7da4edbbcf",
-      "afterGraph5": "all-selected-inputs-unchanged"
+      "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+      "files": 2327,
+      "inputBytes": 117491328,
+      "independentAllFileHashAndMembershipVerification": true,
+      "executionInputsAfterCompletion": "unchanged"
     },
     "nativeMotionQARepair": {
       "status": "implemented-reviewed-focused54-fast3915-short-native2frame-pass",
@@ -1433,14 +3896,989 @@
       ],
       "behavior": "Native physical paint evidence excludes clocks; closure-bound holds require stationary expected whole-frame paint AND actual physical draw/body identities, retain raw finding/human review; immutable authored QA and final initial/current identity guards. Frame-local unique vertex reuse and explicit closure-row yields preserve exact algorithms/thresholds.",
       "originalFullFailureRetained": "native-e01-full-proof-1",
-      "freshFullAcceptance": "pending",
-      "independentReview": "A audits exact vertex/closureyield math; B audits paint/currentgroup-hiddenworldart semantics; C finds and verifies repaired expected-caption/policy/stale-current guards. Source revisions/thresholds unchanged; full native2 remains pending."
+      "freshFullAcceptance": "full3-software-proof-completed-two696-currentQA-nineactualparity-max0; originalfull1/2failedretained",
+      "independentReview": "A audits exact vertex/closureyield math; B audits paint/currentgroup-hiddenworldart semantics; C finds and verifies repaired expected-caption/policy/stale-current guards. Source revisions/thresholds unchanged; full native2 remains pending. Current342 first actual696 stage independently audits all rows/code hashes/physical holds; full2 remains failed at private repeat-body capture.",
+      "full3IndependentArtifactAudit": {
+        "path": "/private/tmp/mechanism-ms1n-full3-accepted-body-artifact-audit-r2.json",
+        "bytes": 203851,
+        "sha256": "sha256:c62215f9119b08849af8bf917fef9c4cdff9a07cabf06d91d59cd913e3c0ea87"
+      },
+      "currentEvidence": "Current342 source, expected whole-paint/currentrecipe/immutable authored QA and actual closure guards pass fresh696 twice. Retained51 warnings include20 raw-error motion warnings/20 safearea/11 speech-reading warnings; factualTruth/human/encoded limits preserved."
+    },
+    "privateAcceptedBodyCaptureRepair": {
+      "status": "reviewed-syntax-and-actual4frame-pass",
+      "productionInputsChanged": false,
+      "originalHarness": {
+        "path": "/private/tmp/mechanism-ms1n-e01-full-proof.mjs",
+        "bytes": 48465,
+        "sha256": "sha256:818c98a3dbb0ec928f433e2b7c5202cb513211e5e9cd0a88ccb5fe2ca6b0dac0"
+      },
+      "newHarness": {
+        "path": "/private/tmp/mechanism-ms1n-e01-full-proof-fetch-v3.mjs",
+        "bytes": 45804,
+        "sha256": "sha256:dd4e85e80a8832e8b6c600a87db96d1a2cc272f508c26c453bf6fa68a50c4e84"
+      },
+      "helper": {
+        "path": "/private/tmp/mechanism-ms1n-accepted-fetch-body-capture.mjs",
+        "bytes": 7407,
+        "sha256": "sha256:fa4e58bc1f71d4bba444b6b4762b7e18690f36ecdc9e803d2d20fe6be0e0d257"
+      },
+      "shortActualReport": {
+        "path": "/private/tmp/still-shift-ms1n-fetch-capture-smoke-2/report.json",
+        "bytes": 2972,
+        "sha256": "sha256:3d388d387b74b4e8d7c04b6cb7bfaf5c9e08fb503ace37f87811e9d19935ab99"
+      },
+      "behavior": "Use public already-prepared-page fetch/binding: unchanged immutable actual PNG Blob, real204 then awaited bounded copy; exact byte hash association with authenticated accepted pixel. All original full QA/threshold/repeat/parity assertions retained. No renderer/source change.",
+      "full3ActualAcceptance": {
+        "status": "passed-nineactual204-bodies-matching-finalized-repeat-row-byte-identities",
+        "productionInputsChanged": false,
+        "full3Record": "native-e01-full-proof-3",
+        "helper": {
+          "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/executed-capture-helper.mjs",
+          "bytes": 7407,
+          "sha256": "sha256:fa4e58bc1f71d4bba444b6b4762b7e18690f36ecdc9e803d2d20fe6be0e0d257"
+        },
+        "captureAccounting": {
+          "path": "/private/tmp/still-shift-ms1n-e01-full-proof-3/accepted-bodies/capture-accounting.json",
+          "bytes": 927,
+          "sha256": "sha256:61deab2b7204911363b3f1ffea981428dd06a5103396079e3100021dafd058e9"
+        },
+        "scope": "Private additional copies/messages and PNG decoder logical buffers only; excludes original managed Blob, unmeasured internal/wire clones and V8 overhead. Not exporter managed-memory or sampled RSS evidence."
+      }
+    },
+    "bridgeNativeAppearanceComparison": {
+      "id": "native-bridge-appearance-comparison-2",
+      "status": "comparison-completed",
+      "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+      "run": {
+        "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2/run.json",
+        "bytes": 282586,
+        "sha256": "sha256:229e6b5dfd1fb5948a6625e54de9f19ebd5b8c333688563810192a19dbb12e1b"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2.log",
+        "bytes": 1312,
+        "sha256": "sha256:47dd7cf142f9f32ba5b43ddd31aa25a8a7f8e8d3fcaa8a9629d01b26942bb7ef"
+      },
+      "executedHarness": {
+        "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2/executed-harness.mjs",
+        "bytes": 46441,
+        "sha256": "sha256:73daeebff7234d7ab691649de4bc33c6d007853e9218301bb5dfde4c341b0425"
+      },
+      "startedAt": "2026-10-10T07:58:06.838Z",
+      "finishedAt": "2026-10-10T07:59:13.326Z",
+      "frames": [0, 88, 173, 257, 346, 428, 482, 536, 695],
+      "casesCompleted": 9,
+      "physicalStatePassed": 9,
+      "pixelComparisonReached": true,
+      "currentCodePair": {
+        "bridgeSourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+        "nativeSourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+        "bridgeAppearanceCodeSha256": "sha256:5495803fec93eda66680dcf9641444caf6bf1e7021e1b747dfaf3175361bb0d8",
+        "nativeAppearanceCodeSha256": "sha256:5495803fec93eda66680dcf9641444caf6bf1e7021e1b747dfaf3175361bb0d8"
+      },
+      "comparisonPolicy": {
+        "physicalStateTolerance": 1e-8,
+        "anchorTolerancePixels": 0.5,
+        "bridgeNativePixelThreshold": null,
+        "pixelStatistics": "informational-only; no pass/fail threshold",
+        "pixelDomain": "straight top-first RGBA8; encoded sRGB RGB statistics, not linear radiance PSNR",
+        "profileDelta": "native HDR RGBA16F/depth24/MSAA4 and single explicit coverage/ACES/sRGB resolve versus original bridge default-target rendering; material/reflection/shadow/fog/alpha-edge/background/framing differences declared"
+      },
+      "bridgeStateProvenance": "Independently reconstructed pure mechanism evaluator render input from verified original scene and shot request; not actual Three/GPU observations",
+      "bridgeRendererReturnProvenance": "Retained browser return echoes pure fields and adds scene-raycast visibility/projection-error extensions and real renderer counters; not native actual matrix observations",
+      "nativeStateProvenance": "Authenticated actual completed Three passes from final pixel-paired native export closure",
+      "closure": {
+        "outputFrames": 696,
+        "passCount": 696,
+        "byteLength": 4751107,
+        "artifacts": [
+          {
+            "path": "episode.mp4.native-observations.000.ndjson",
+            "sha256": "sha256:1eed467eb974524b02486ec88909e219a15e886a0cd8e75466fcd81b360c24ca",
+            "byteLength": 4751107,
+            "firstOutputFrame": 0,
+            "lastOutputFrame": 695,
+            "frames": 696
+          }
+        ]
+      },
+      "cases": [
+        {
+          "frame": 0,
+          "status": "compared-informationally",
+          "physicalState": "passed",
+          "evidence": {
+            "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2/frame-000000.comparison.json",
+            "bytes": 63050,
+            "sha256": "sha256:b971acbc42e7dabde85ac4231dac02804be9c9c86c4ad1dd7c8e3cac2ab06b3f"
+          },
+          "selectedSampleEvidence": {
+            "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2/frame-000000.physical-feature-samples.json",
+            "bytes": 1793185,
+            "sha256": "sha256:93ceecc58447288aceea05bc5cae260993cf6d9022982572bc15b5ef778c97ee"
+          },
+          "regionKinds": [
+            "material:floor",
+            "physical-nonmetal-region",
+            "fog-distance-candidate-region",
+            "physical-floor-region",
+            "material:blade",
+            "physical-intermediate-metalness-region",
+            "material:steel",
+            "physical-metal-region",
+            "reflection-candidate-region",
+            "material:edges",
+            "shadow-candidate-floor-region"
+          ],
+          "wholeFrameOutsideOverlays": {
+            "status": "informational",
+            "comparedPixels": 1598400,
+            "meanAbsoluteRgbCodeDelta": 0.5597207624290957,
+            "rgbMse": 2.9526666249582916,
+            "encodedRgbPsnrDb": 43.42865945773531,
+            "maximumRgbaCodeDelta": 99,
+            "acceptanceThreshold": null
+          }
+        },
+        {
+          "frame": 88,
+          "status": "compared-informationally",
+          "physicalState": "passed",
+          "evidence": {
+            "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2/frame-000088.comparison.json",
+            "bytes": 96612,
+            "sha256": "sha256:f3a3d237e03ebd07c14d43b2a83e2a1b4942ecf655db893b33e6cd7322fa8f7b"
+          },
+          "selectedSampleEvidence": {
+            "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2/frame-000088.physical-feature-samples.json",
+            "bytes": 1277849,
+            "sha256": "sha256:72d01b9e3a9d4da5dfd5672372f333b50f30d723e40c379c64c033d23af12427"
+          },
+          "regionKinds": [
+            "material:floor",
+            "physical-nonmetal-region",
+            "fog-distance-candidate-region",
+            "physical-floor-region",
+            "material:steel",
+            "physical-metal-region",
+            "reflection-candidate-region",
+            "material:blade",
+            "physical-intermediate-metalness-region",
+            "material:wood",
+            "material:edges",
+            "shadow-candidate-floor-region"
+          ],
+          "wholeFrameOutsideOverlays": {
+            "status": "informational",
+            "comparedPixels": 1173752,
+            "meanAbsoluteRgbCodeDelta": 0.9976940046392537,
+            "rgbMse": 6.208029180496959,
+            "encodedRgbPsnrDb": 40.20126611235848,
+            "maximumRgbaCodeDelta": 88,
+            "acceptanceThreshold": null
+          }
+        },
+        {
+          "frame": 173,
+          "status": "compared-informationally",
+          "physicalState": "passed",
+          "evidence": {
+            "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2/frame-000173.comparison.json",
+            "bytes": 64747,
+            "sha256": "sha256:ba7105b088a2ffdee1225e8be77f659b3936563ca072a019f58d007316584328"
+          },
+          "selectedSampleEvidence": {
+            "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2/frame-000173.physical-feature-samples.json",
+            "bytes": 1262497,
+            "sha256": "sha256:4ab0ba2442a9611c4b844686e2b744dc2b9a28fd77d41f7bc53802eda7a678f2"
+          },
+          "regionKinds": [
+            "material:wall",
+            "physical-nonmetal-region",
+            "material:floor",
+            "fog-distance-candidate-region",
+            "physical-floor-region",
+            "material:steel",
+            "physical-metal-region",
+            "reflection-candidate-region",
+            "material:edges",
+            "material:blade",
+            "physical-intermediate-metalness-region",
+            "shadow-candidate-floor-region"
+          ],
+          "wholeFrameOutsideOverlays": {
+            "status": "informational",
+            "comparedPixels": 1144256,
+            "meanAbsoluteRgbCodeDelta": 0.24367099670003914,
+            "rgbMse": 1.440640322911423,
+            "encodedRgbPsnrDb": 46.54524794538828,
+            "maximumRgbaCodeDelta": 61,
+            "acceptanceThreshold": null
+          }
+        },
+        {
+          "frame": 257,
+          "status": "compared-informationally",
+          "physicalState": "passed",
+          "evidence": {
+            "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2/frame-000257.comparison.json",
+            "bytes": 64339,
+            "sha256": "sha256:0dfdd0b411cc935e07f69f628e2264a0518985541f3d960b32a88f8c46093e62"
+          },
+          "selectedSampleEvidence": {
+            "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2/frame-000257.physical-feature-samples.json",
+            "bytes": 1315992,
+            "sha256": "sha256:297331e2fc0e160dc7f566aa2abca0eaf43d33bc80cdff8c1f94522fe13104e3"
+          },
+          "regionKinds": [
+            "material:floor",
+            "physical-nonmetal-region",
+            "fog-distance-candidate-region",
+            "physical-floor-region",
+            "material:steel",
+            "physical-metal-region",
+            "reflection-candidate-region",
+            "material:edges",
+            "material:teal",
+            "physical-intermediate-metalness-region",
+            "shadow-candidate-floor-region"
+          ],
+          "wholeFrameOutsideOverlays": {
+            "status": "informational",
+            "comparedPixels": 1175373,
+            "meanAbsoluteRgbCodeDelta": 1.9486750163565099,
+            "rgbMse": 14.05172655829256,
+            "encodedRgbPsnrDb": 36.65350670885135,
+            "maximumRgbaCodeDelta": 63,
+            "acceptanceThreshold": null
+          }
+        },
+        {
+          "frame": 346,
+          "status": "compared-informationally",
+          "physicalState": "passed",
+          "evidence": {
+            "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2/frame-000346.comparison.json",
+            "bytes": 64508,
+            "sha256": "sha256:913ba573e6a6270731d73e6e3bf27271a6a7aded2a8fbfa4514f19379efc6d8a"
+          },
+          "selectedSampleEvidence": {
+            "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2/frame-000346.physical-feature-samples.json",
+            "bytes": 1229156,
+            "sha256": "sha256:097f715efecfe0caf3654acb2a7090aec02dbfaddc6beb85c6fbe765ea25f120"
+          },
+          "regionKinds": [
+            "material:floor",
+            "physical-nonmetal-region",
+            "physical-floor-region",
+            "material:steel",
+            "physical-metal-region",
+            "reflection-candidate-region",
+            "material:blade",
+            "physical-intermediate-metalness-region",
+            "material:teal",
+            "material:edges",
+            "shadow-candidate-floor-region"
+          ],
+          "wholeFrameOutsideOverlays": {
+            "status": "informational",
+            "comparedPixels": 1127920,
+            "meanAbsoluteRgbCodeDelta": 0.07161855450741188,
+            "rgbMse": 2.0560039719129017,
+            "encodedRgbPsnrDb": 45.00056411547498,
+            "maximumRgbaCodeDelta": 65,
+            "acceptanceThreshold": null
+          }
+        },
+        {
+          "frame": 428,
+          "status": "compared-informationally",
+          "physicalState": "passed",
+          "evidence": {
+            "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2/frame-000428.comparison.json",
+            "bytes": 97654,
+            "sha256": "sha256:9ddd9f2f88122bd6afe42f1e12ce5af09b4b819e57765e007fa084473b70823e"
+          },
+          "selectedSampleEvidence": {
+            "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2/frame-000428.physical-feature-samples.json",
+            "bytes": 1028188,
+            "sha256": "sha256:eb5085aacf98c2a23b92d8d30539d78fbf970a722941742664e5bae54c3049f1"
+          },
+          "regionKinds": [
+            "material:floor",
+            "physical-nonmetal-region",
+            "fog-distance-candidate-region",
+            "physical-floor-region",
+            "material:steel",
+            "physical-metal-region",
+            "reflection-candidate-region",
+            "material:wood"
+          ],
+          "wholeFrameOutsideOverlays": {
+            "status": "informational",
+            "comparedPixels": 1183680,
+            "meanAbsoluteRgbCodeDelta": 2.0648838086870325,
+            "rgbMse": 15.682546803190052,
+            "encodedRgbPsnrDb": 36.17663768542687,
+            "maximumRgbaCodeDelta": 69,
+            "acceptanceThreshold": null
+          }
+        },
+        {
+          "frame": 482,
+          "status": "compared-informationally",
+          "physicalState": "passed",
+          "evidence": {
+            "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2/frame-000482.comparison.json",
+            "bytes": 61187,
+            "sha256": "sha256:c527fab641dd1f29fe5ed42eba6672c207b7f46d9bb36053b4c429412aaea2e5"
+          },
+          "selectedSampleEvidence": {
+            "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2/frame-000482.physical-feature-samples.json",
+            "bytes": 1111122,
+            "sha256": "sha256:3c8e5237d6738d2bec4afe8a94fa976b3f1391c6fe911ac51d96e703f206d7f3"
+          },
+          "regionKinds": [
+            "material:wall",
+            "physical-nonmetal-region",
+            "material:floor",
+            "fog-distance-candidate-region",
+            "physical-floor-region",
+            "material:steel",
+            "physical-metal-region",
+            "reflection-candidate-region",
+            "shadow-candidate-floor-region",
+            "material:teal",
+            "physical-intermediate-metalness-region"
+          ],
+          "wholeFrameOutsideOverlays": {
+            "status": "informational",
+            "comparedPixels": 1183680,
+            "meanAbsoluteRgbCodeDelta": 1.6552654996845995,
+            "rgbMse": 12.574807943588358,
+            "encodedRgbPsnrDb": 37.13579000116227,
+            "maximumRgbaCodeDelta": 28,
+            "acceptanceThreshold": null
+          }
+        },
+        {
+          "frame": 536,
+          "status": "compared-informationally",
+          "physicalState": "passed",
+          "evidence": {
+            "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2/frame-000536.comparison.json",
+            "bytes": 61722,
+            "sha256": "sha256:63878b3537adc3e817080b6c18980d63e411410e6bf2ab47faa654441bd761d7"
+          },
+          "selectedSampleEvidence": {
+            "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2/frame-000536.physical-feature-samples.json",
+            "bytes": 1138062,
+            "sha256": "sha256:406dac6185f0406a6ad08ee936284db1f6f2da7fcb9c96b09e6fe5882bd757e5"
+          },
+          "regionKinds": [
+            "material:floor",
+            "physical-nonmetal-region",
+            "physical-floor-region",
+            "material:steel",
+            "physical-metal-region",
+            "reflection-candidate-region",
+            "material:blade",
+            "physical-intermediate-metalness-region",
+            "shadow-candidate-floor-region"
+          ],
+          "wholeFrameOutsideOverlays": {
+            "status": "informational",
+            "comparedPixels": 1034624,
+            "meanAbsoluteRgbCodeDelta": 0.061616265103715616,
+            "rgbMse": 1.7807657661140666,
+            "encodedRgbPsnrDb": 45.62473562782636,
+            "maximumRgbaCodeDelta": 70,
+            "acceptanceThreshold": null
+          }
+        },
+        {
+          "frame": 695,
+          "status": "compared-informationally",
+          "physicalState": "passed",
+          "evidence": {
+            "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2/frame-000695.comparison.json",
+            "bytes": 73807,
+            "sha256": "sha256:b82fc2afa908eca656ddae5ee53e2cb2388d9a2d836c0ccc5c1802edf5f1ff25"
+          },
+          "selectedSampleEvidence": {
+            "path": "/private/tmp/still-shift-ms1n-appearance-comparison-2/frame-000695.physical-feature-samples.json",
+            "bytes": 2382698,
+            "sha256": "sha256:d2bd8eb95703733ec94dafeddfbe43cce7ef954ff09d614e940d602398abd0a5"
+          },
+          "regionKinds": [
+            "material:floor",
+            "physical-nonmetal-region",
+            "fog-distance-candidate-region",
+            "physical-floor-region",
+            "material:rubber",
+            "material:yellow",
+            "shadow-candidate-floor-region",
+            "material:wood",
+            "material:blade",
+            "physical-intermediate-metalness-region",
+            "material:edges",
+            "physical-metal-region",
+            "reflection-candidate-region",
+            "material:steel"
+          ],
+          "wholeFrameOutsideOverlays": {
+            "status": "informational",
+            "comparedPixels": 2073600,
+            "meanAbsoluteRgbCodeDelta": 4.317832433127572,
+            "rgbMse": 48.19571244855967,
+            "encodedRgbPsnrDb": 31.300719562961675,
+            "maximumRgbaCodeDelta": 132,
+            "acceptanceThreshold": null
+          }
+        }
+      ],
+      "featureCoverage": {
+        "physical-metal-region": {
+          "sampleFrames": [0, 88, 173, 257, 346, 428, 482, 536, 695],
+          "conclusion": "informational region statistics; causal contribution/human acceptance unassessed"
+        },
+        "physical-nonmetal-region": {
+          "sampleFrames": [0, 88, 173, 257, 346, 428, 482, 536, 695],
+          "conclusion": "informational region statistics; causal contribution/human acceptance unassessed"
+        },
+        "reflection-candidate-region": {
+          "sampleFrames": [0, 88, 173, 257, 346, 428, 482, 536, 695],
+          "conclusion": "informational region statistics; causal contribution/human acceptance unassessed"
+        },
+        "shadow-candidate-floor-region": {
+          "sampleFrames": [0, 88, 173, 257, 346, 482, 536, 695],
+          "conclusion": "informational region statistics; causal contribution/human acceptance unassessed"
+        },
+        "fog-distance-candidate-region": {
+          "sampleFrames": [0, 88, 173, 257, 428, 482, 695],
+          "conclusion": "informational region statistics; causal contribution/human acceptance unassessed"
+        }
+      },
+      "privateCpuResources": {
+        "sampleStride": 24,
+        "maximumSelectedSamplesPerFrame": 3600,
+        "maximumFileBytes": 33554432,
+        "maximumOutputRawPixelBytes": 149299200,
+        "allocationScope": "Private decoder/CPU geometry and samples; parent RSS measured, V8 overhead not an allocation admission proof",
+        "parentRssBytes": 622247936
+      },
+      "correctionOf": {
+        "originalHelper": "/private/tmp/mechanism-ms1n-appearance-comparison.mjs",
+        "failedRun": "/private/tmp/still-shift-ms1n-appearance-comparison-1/run.json",
+        "reason": "Returned renderer metadata is extended and cannot be hashed as the pure input",
+        "originalHelperSha256": "sha256:f8f38c3ff79e8d463db819cde1ec632249066c10952771f2c84e9490512e91be",
+        "failedRunSha256": "sha256:bc029d29559fe94f60e7c16d9a10a13dbe20a33915fcb0f5eb7d892704ab82fe"
+      },
+      "appearanceAcceptance": "unassessed",
+      "overallReadability": "unassessed",
+      "causalReflectionShadowFogAssessment": "unassessed",
+      "humanVisualListeningAcceptance": "pending",
+      "scope": "Nine actual retained bridge/native accepted-body artifact pairs compared at held342/current identical code identity; physical-state/projection tolerances pass. Pixel/metal/nonmetal/reflection/shadow/fog region statistics are informational, with no bridge-native pixel threshold or causal/human appearance/readability acceptance. Appearance1 failed before pixel comparison and remains retained.",
+      "priorFailedAttempt": "native-bridge-appearance-comparison-1"
+    },
+    "priorCompleteSourceInputInventory7": {
+      "path": "/private/tmp/still-shift-ms1n-implementation-inputs-7.json",
+      "bytes": 395813,
+      "sha256": "sha256:289a6ea9a935c499ea65909f61dffef2d8be51b77e4cd91ddb822bda9cbbc72a",
+      "version": "ms1n-source-input-inventory-2",
+      "files": 2321,
+      "inputBytes": 117428962,
+      "sourceCommit": "3ac7d29fa9c6e3a6feb8517a8ddcba7da4edbbcf",
+      "afterGraph5": "all-selected-inputs-unchanged"
+    },
+    "priorBridgeNativeAppearanceComparison1": {
+      "id": "native-bridge-appearance-comparison-1",
+      "status": "failed",
+      "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+      "run": {
+        "path": "/private/tmp/still-shift-ms1n-appearance-comparison-1/run.json",
+        "bytes": 162362,
+        "sha256": "sha256:bc029d29559fe94f60e7c16d9a10a13dbe20a33915fcb0f5eb7d892704ab82fe"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-appearance-comparison-1.log",
+        "bytes": 141,
+        "sha256": "sha256:0f6cffb7d177ed12050a71dbc7e6b561ebd27ef1f5500033f54730f69906e4c6"
+      },
+      "executedHarness": {
+        "path": "/private/tmp/still-shift-ms1n-appearance-comparison-1/executed-harness.mjs",
+        "bytes": 38902,
+        "sha256": "sha256:f8f38c3ff79e8d463db819cde1ec632249066c10952771f2c84e9490512e91be"
+      },
+      "startedAt": "2026-10-10T07:40:22.968Z",
+      "finishedAt": "2026-10-10T07:40:58.842Z",
+      "casesCompleted": 0,
+      "pixelComparisonReached": false,
+      "failure": "Pure evaluator input SHA assertion at executed harness328:70; entire renderer-returned observed state was compared to descriptor.inputFrameSha256.",
+      "actualRendererReturnedStateSha256": "sha256:4bc2a1275e29004704ece8fae62a55172937612d3b25fde27cfe5a66658d188f",
+      "pureEvaluatorInputSha256": "sha256:1cd42f9729dfde436cf4eb6b0dab514e0fec6c7f6120a2d7f2be02b13d81683d",
+      "diagnosis": "Returned bridge state extends pure renderer input with anchors/counters. The private checker must separately project/verify pure input and retain renderer-returned measurements; no production/source/profile/threshold changes.",
+      "followup": "Private checker repair pending; original failed run/harness/log retained. No bridge/native pixel appearance result or acceptance reached."
+    },
+    "nativeHardwarePreview": {
+      "id": "native-hardware-preview-proof-1",
+      "status": "passed-bounded-native-hardware-execution-and-state",
+      "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+      "run": {
+        "path": "/private/tmp/still-shift-ms1n-native-hardware-preview-proof-1/run.json",
+        "bytes": 7955,
+        "sha256": "sha256:e26ade439beac91961167ac4ca361e586148037f57a6fe2de4e7deb83a782f7c"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-hardware-preview-proof-1.log",
+        "bytes": 786,
+        "sha256": "sha256:fd6c15424ec2569402bfcefba1dba5d7c9ca9bd88fde925da5652ae62cffe64e"
+      },
+      "harness": {
+        "path": "/private/tmp/still-shift-ms1n-native-hardware-preview-proof-1/harness.mjs",
+        "bytes": 29158,
+        "sha256": "sha256:002364eaa00017e034e22aeda928b2c727015e9bf1626b743da56dc39ce6b37c"
+      },
+      "sourceSnapshot": {
+        "path": "/private/tmp/still-shift-ms1n-native-hardware-preview-proof-1/source-snapshot.json",
+        "bytes": 78071,
+        "sha256": "sha256:039323e8533d226b6a37ccbfccd3455725b866f87cbccc8d15f6f8254c5f85f2"
+      },
+      "startedAt": "2026-10-10T08:00:22.823Z",
+      "finishedAt": "2026-10-10T08:00:31.689Z",
+      "outputFrame": 138,
+      "maximumCaptures": 2,
+      "threshold": {
+        "sameRouteAndProfilePreviewExportMaximumRgba8ChannelDelta": 1,
+        "crossProfileOneStepDiagnosticMaximumRgba8ChannelDelta": 1,
+        "crossProfileOneStepDiagnosticIsMandatoryAcceptance": false,
+        "physicalMatrixAndSceneUnits": 1e-8,
+        "projectedAnchorPixels": 0.5,
+        "policy": "MS0 freeze: one channel step applies to same route/profile; cross-driver hardware pixels are retained diagnostic evidence, with appearance review pending"
+      },
+      "observedAgreement": {
+        "status": "passed",
+        "findings": [],
+        "maximumMatrixOrSceneDelta": 0,
+        "maximumProjectedPixelDelta": 0,
+        "thresholds": {
+          "matrixAndSceneUnits": 1e-8,
+          "projectedAnchorPixels": 0.5
+        },
+        "actualObservationsExactDiagnostic": true,
+        "softwareSha256": "sha256:09ff14d3486dfb2a235d4fde83f66836bc04a038b84c9f7261db571d525d5ad8",
+        "hardwareSha256": "sha256:09ff14d3486dfb2a235d4fde83f66836bc04a038b84c9f7261db571d525d5ad8",
+        "scope": "Fresh actual Object3D/camera/raycast observations; independent frozen state/projection tolerances; cross-driver appearance remains separate"
+      },
+      "pixelComparison": {
+        "width": 1080,
+        "height": 1920,
+        "comparedPixels": 2073600,
+        "maximumDelta": 135,
+        "differingChannels": 1801206,
+        "channelsOverOne": 1204061,
+        "differingPixels": 862405,
+        "pixelsOverOne": 460345,
+        "firstOverOne": {
+          "pixel": [1076, 450],
+          "software": [220, 177, 125, 255],
+          "hardware": [223, 181, 129, 255]
+        },
+        "overOneBounds": [75, 450, 1080, 1730],
+        "rmsChannelDelta": 2.22633089140858,
+        "psnrInformationalOnly": 41.17900936078794,
+        "crossProfileOneStepDiagnosticStatus": "failed",
+        "diagnosticOnly": true,
+        "mandatoryHardwareAcceptance": false
+      },
+      "crossProfilePixelDiagnostic": "failed",
+      "hardwareAppearanceReview": "pending-human-review",
+      "softwareSameProfilePreviewExportOneStepAcceptance": "not-assessed-by-this-cross-profile-harness",
+      "hardwareCapabilityEvidence": "Actual native renderer admitted and completed its required RGBA16F/MSAA4/depth24 pass on recorded hardware; no fallback",
+      "finalSourceRevalidation": "passed",
+      "attempts": [
+        {
+          "profile": "pinned",
+          "status": "captured-and-validated",
+          "environment": {
+            "profile": "chromium-software-2",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+            "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+            "platform": "darwin",
+            "arch": "arm64"
+          },
+          "pageErrors": [],
+          "consoleErrors": [],
+          "caption": {
+            "layer": "mechanism-caption-caption-3-0534e241ccd35b3a",
+            "exactAuthoredCopy": "and it slides out.",
+            "rect": [86, 1670, 994, 1863],
+            "strongLightInkPixels": 4064,
+            "otherPixels": 171180,
+            "method": "Original white-caption region, RGBA channels each >=220, distinguish bright ink from nonuniform background; presence only, no readability claim"
+          },
+          "inheritedVisibleMaterialAssignments": [
+            "blade",
+            "edges",
+            "floor",
+            "rubber",
+            "steel",
+            "wood",
+            "yellow"
+          ],
+          "materialEvidenceScope": "Actual inherited-visible mesh assignments include admitted metallic/nonmetallic styles; does not independently identify each material's individual raster footprint",
+          "artifacts": {
+            "raw": {
+              "path": "pinned.rgba",
+              "bytes": 8294400,
+              "sha256": "sha256:063a9af6cfa86ede8d82f014e2e2b3d4ecaeaa84f85d9aea9b0a4de94d871fa3",
+              "encoding": "rgba8-straight-top-first"
+            },
+            "png": {
+              "path": "pinned.png",
+              "bytes": 1500767,
+              "sha256": "sha256:93208dfdb8288cef52e1a14603efbe53859a7ef2c6974dfd2580893f7f446868"
+            },
+            "rawPng": {
+              "path": "pinned.raw.png",
+              "bytes": 1500754,
+              "sha256": "sha256:e1db31ca42ee0b718941e5f218ab9eb463b4ae0bdb5f5f3a46b7ca2000d17926"
+            },
+            "observations": {
+              "path": "pinned-observations.json",
+              "sha256": "sha256:1a8f0dd14fae6a187e26c9028c4d6f31dc8c508e3d13617f579e88d29a317831"
+            }
+          }
+        },
+        {
+          "profile": "hardware",
+          "status": "captured-and-validated",
+          "environment": {
+            "profile": "hardware",
+            "browserVersion": "151.0.7922.34",
+            "webglRenderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)",
+            "rasterFingerprint": "sha256:1635aedc2b987dcd5c74dce4b4098aff37754174c33461d6f626c9dcad69e4a9",
+            "platform": "darwin",
+            "arch": "arm64"
+          },
+          "pageErrors": [],
+          "consoleErrors": [],
+          "caption": {
+            "layer": "mechanism-caption-caption-3-0534e241ccd35b3a",
+            "exactAuthoredCopy": "and it slides out.",
+            "rect": [86, 1670, 994, 1863],
+            "strongLightInkPixels": 4102,
+            "otherPixels": 171142,
+            "method": "Original white-caption region, RGBA channels each >=220, distinguish bright ink from nonuniform background; presence only, no readability claim"
+          },
+          "inheritedVisibleMaterialAssignments": [
+            "blade",
+            "edges",
+            "floor",
+            "rubber",
+            "steel",
+            "wood",
+            "yellow"
+          ],
+          "materialEvidenceScope": "Actual inherited-visible mesh assignments include admitted metallic/nonmetallic styles; does not independently identify each material's individual raster footprint",
+          "artifacts": {
+            "raw": {
+              "path": "hardware.rgba",
+              "bytes": 8294400,
+              "sha256": "sha256:5fcf1b7a1922b203269bbc30e09e49048ab7b1762cca22352ce5599bef3d5ca1",
+              "encoding": "rgba8-straight-top-first"
+            },
+            "png": {
+              "path": "hardware.png",
+              "bytes": 1473010,
+              "sha256": "sha256:d7d4c0c85027089497cb735dd11ab1379c81f7527e1dbfb7ea682781fbc8d325"
+            },
+            "rawPng": {
+              "path": "hardware.raw.png",
+              "bytes": 1472997,
+              "sha256": "sha256:53c9efc805ae79d0d5483c38596b5eb2c765a6683d7ed15c4d9fdd268b4f97b6"
+            },
+            "observations": {
+              "path": "hardware-observations.json",
+              "sha256": "sha256:1a8f0dd14fae6a187e26c9028c4d6f31dc8c508e3d13617f579e88d29a317831"
+            }
+          }
+        }
+      ],
+      "scope": "Two fresh actual same-recipe native captures at frame138 on pinned SwiftShader and actual Metal/AppleM5Pro. Actual state/matrices/anchor projections pass at delta0. Cross-driver one-step pixel diagnostic FAILS maximum135/RMS2.22633089140858; this is explicitly diagnostic, not mandatory same-profile parity. No human hardware appearance/readability/listening/performance/full-episode acceptance; same-profile full3 nine max0 parity remains separate."
+    },
+    "currentNativePreviewProof": {
+      "id": "native-e01-preview-proof-4",
+      "status": "failed",
+      "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+      "run": {
+        "path": "/private/tmp/still-shift-ms1n-e01-preview-proof-4/run.json",
+        "bytes": 90959,
+        "sha256": "sha256:251a9b1641cb041f0aa441b4fc9dc74e55e319ccf68f4f76909d4848d882a09b"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-e01-preview-proof-4.log",
+        "bytes": 1391,
+        "sha256": "sha256:7e4822b56912f7e94f6ac008cfe89ec4a89d15eef92747785f7f05a093e81c52"
+      },
+      "sourceSnapshot": {
+        "path": "/private/tmp/still-shift-ms1n-e01-preview-proof-4/source-snapshot.json",
+        "bytes": 73436,
+        "sha256": "sha256:c88c2daa2584ba50edb2b8eee8c1733ae1414882813a3cdde74da4f9befd92ce"
+      },
+      "harness": {
+        "path": "/private/tmp/mechanism-ms1n-e01-preview-smoke.mjs",
+        "bytes": 26229,
+        "sha256": "sha256:79835eedf5b12cfc0e96f1d830ce89ad047170db3cba21358147f17070e54c69"
+      },
+      "startedAt": "2026-10-10T07:53:43.369Z",
+      "finishedAt": "2026-10-10T07:55:49.841Z",
+      "timeoutMs": 300000,
+      "steps": [
+        {
+          "name": "baseline-frame0",
+          "status": "passed",
+          "startedAt": "2026-10-10T07:53:44.939Z",
+          "finishedAt": "2026-10-10T07:54:11.376Z"
+        },
+        {
+          "name": "baseline-label88",
+          "status": "passed",
+          "startedAt": "2026-10-10T07:54:11.378Z",
+          "finishedAt": "2026-10-10T07:54:36.094Z"
+        },
+        {
+          "name": "saved-camera88",
+          "status": "passed",
+          "startedAt": "2026-10-10T07:54:36.097Z",
+          "finishedAt": "2026-10-10T07:55:00.931Z"
+        },
+        {
+          "name": "saved-blade-part0",
+          "status": "failed",
+          "startedAt": "2026-10-10T07:55:00.937Z",
+          "finishedAt": "2026-10-10T07:55:49.830Z",
+          "error": {
+            "name": "AnimationEngineError",
+            "code": "SCENE_INVALID",
+            "message": "Native preview browser module did not initialize",
+            "context": {
+              "stage": "mechanism-native-preview",
+              "diagnosticCode": "comp-native3d-not-ready",
+              "path": "browser.module",
+              "causeMessage": "page.waitForFunction: Timeout 30000ms exceeded.",
+              "browserDiagnosticsJson": "{\"events\":[],\"omittedEvents\":0,\"eventBytes\":0,\"limits\":{\"events\":32,\"stringCharacters\":512,\"bytes\":16384}}"
+            },
+            "stack": "AnimationEngineError: Native preview browser module did not initialize\n    at previewNativeMechanismEpisode (/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/native-preview.ts:355:15)\n    at runNextTicks (node:internal/process/task_queues:64:5)\n    at process.processImmediate (node:internal/timers:452:9)\n    at process.callbackTrampoline (node:internal/async_hooks:130:17)\n    at async <anonymous> (/private/tmp/mechanism-ms1n-e01-preview-smoke.mjs:206:20)\n    at async step (/private/tmp/mechanism-ms1n-e01-preview-smoke.mjs:188:20)\n    at async <anonymous> (/private/tmp/mechanism-ms1n-e01-preview-smoke.mjs:331:5)"
+          }
+        }
+      ],
+      "actualPreviewPasses": 3,
+      "failurePath": "browser.module",
+      "moduleTimeoutMs": 30000,
+      "browserDiagnostics": {
+        "events": [],
+        "omittedEvents": 0,
+        "eventBytes": 0,
+        "limits": {
+          "events": 32,
+          "stringCharacters": 512,
+          "bytes": 16384
+        }
+      },
+      "sameSelectedRecipeAcrossFailed2Passed3Failed4": {
+        "bytes": 97703,
+        "sha256": "sha256:b2bddc1a43b69bbcca96b36e3a83c8a551aa9bbadde46cd0de17d5a78a517936",
+        "compositionSha256": "sha256:8c9287eb50a42c17936705e77e5b02e1e1ece26b88d6bf4f9d09ddbd2596e46e",
+        "preparedNativeSha256": "sha256:f4e34ade26bcbadba8409e70de07be1cb50aa58ebff583d1d212ababbfa821e0"
+      },
+      "readOnlyObservabilityPlan": {
+        "markdown": {
+          "path": "/private/tmp/mechanism-ms1n-preview-readiness-investigation.md",
+          "bytes": 5891,
+          "sha256": "sha256:0deef1aaffea505d96ca42519f70f130a956080970921da102cbc4bf37fe44ba"
+        },
+        "json": {
+          "path": "/private/tmp/mechanism-ms1n-preview-readiness-investigation.json",
+          "bytes": 14408,
+          "sha256": "sha256:f0850172d5e969da8665a2f012203eae5997da443b5b189d8f42cc483502025e"
+        },
+        "integrity": {
+          "path": "/private/tmp/mechanism-ms1n-preview-readiness-investigation.integrity.json",
+          "bytes": 5650,
+          "sha256": "sha256:21880570bc56140901f28d9fe46cfa9828272bc98c1229d304d7000ff483cfcb"
+        }
+      },
+      "scope": "First baseline0/baseline88/saved-camera88 actual previews pass. Fourth saved-blade-part0 fails unchanged30s module readiness before composition/resources/frame JSON submission, with events0/bytes0. Exact recipe passed preview3 and failed preview2; cause unproven. Cold module-only bootstrap passed but does not reproduce sequential lifecycle. No automatic retry/timeouts change; isolated unchanged preview5 planned with supplemental bounded private Vite logs, not yet run."
+    },
+    "nativePortablePackageProof": {
+      "id": "native-portable-package-proof-1",
+      "status": "failed",
+      "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+      "run": {
+        "path": "/private/tmp/still-shift-ms1n-native-package-proof-1/run.json",
+        "bytes": 1634,
+        "sha256": "sha256:6829d12d5a37eb3324f56877030b46cc9979650c6b6308a74a6c3a8041abb1c9"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-package-proof-1.log",
+        "bytes": 1813,
+        "sha256": "sha256:f524986ec18b1cf7000abb79eead79eeacafce2220fec86f2467c5542c400a0f"
+      },
+      "harness": {
+        "path": "/private/tmp/mechanism-ms1n-native-package-proof.mjs",
+        "bytes": 4262,
+        "sha256": "sha256:9e249ba731b901bb97c08c668c679f8a26adba6af40eff17eb23b6bba2ab163a"
+      },
+      "harnessSha256": "sha256:9e249ba731b901bb97c08c668c679f8a26adba6af40eff17eb23b6bba2ab163a",
+      "retainedAttemptDirectory": "/private/tmp/still-shift-ms1n-native-package-proof-1/.original-package.native-package-attempt-A9uwxO",
+      "retainedFailure": {
+        "path": "/private/tmp/still-shift-ms1n-native-package-proof-1/.original-package.native-package-attempt-A9uwxO/failure.json",
+        "bytes": 160,
+        "sha256": "sha256:2f936deded14b08b885031693bbb6af940b5692acf53dd42a1b9fbeb1ceaf4a7"
+      },
+      "actualFailure": "Relocation association does not bind the current saved recipe",
+      "error": {
+        "name": "AnimationEngineError",
+        "message": "Native package failed; retained attempt contains the original cause",
+        "context": {
+          "stage": "mechanism-package",
+          "diagnosticCode": "mechanism-native-package-failed",
+          "path": "/private/tmp/still-shift-ms1n-native-package-proof-1/original-package",
+          "attemptDirectory": "/private/tmp/still-shift-ms1n-native-package-proof-1/.original-package.native-package-attempt-A9uwxO"
+        },
+        "stack": "AnimationEngineError: Native package failed; retained attempt contains the original cause\n    at packageNativeMechanismEpisode (/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/native-package.ts:654:11)\n    at async <anonymous> (/private/tmp/mechanism-ms1n-native-package-proof.mjs:26:17)"
+      },
+      "originalSourceSha256": "sha256:062153fa114e63629bde2546d5e75294ffa6974921e2091323cbc0522dc2c8f2",
+      "canonicalEpisodeSha256": "sha256:13d106940123a17baa755722bd4bb34161d3f28ece6b21d3a9f400fd563f38c2",
+      "optionsConfinementAudit": {
+        "markdown": {
+          "path": "/private/tmp/mechanism-ms1n-native-package-options-confinement-audit.md",
+          "bytes": 4316,
+          "sha256": "sha256:7f259b3d6f94b90d00a23d40c9b2368e33180dcd2d2a79b6e94a18f196605ed4"
+        },
+        "json": {
+          "path": "/private/tmp/mechanism-ms1n-native-package-options-confinement-audit.json",
+          "bytes": 14083,
+          "sha256": "sha256:8b66cd6e913ad660117c3c41e865b85bb307c8f486b7b54ec66d29834f625e14"
+        },
+        "integrity": {
+          "path": "/private/tmp/mechanism-ms1n-native-package-options-confinement-audit.integrity.json",
+          "bytes": 3641,
+          "sha256": "sha256:079bdeaad9e8eaa457effb4e0eb2d7712ab0a23c48a473a07d3f4ced57b060e7"
+        }
+      },
+      "repairImpactAudit": {
+        "markdown": {
+          "path": "/private/tmp/mechanism-ms1n-native-package-repair-impact-342d09c5.md",
+          "bytes": 8384,
+          "sha256": "sha256:aed2c42ce764683722745a9212da317ae8d17b64412c20300831477ef9375159"
+        },
+        "json": {
+          "path": "/private/tmp/mechanism-ms1n-native-package-repair-impact-342d09c5.json",
+          "bytes": 226722,
+          "sha256": "sha256:e76df8ded8dec0460341727e3ce326eec9b145289a6678e5f5f5f5af4c3f0041"
+        },
+        "integrity": {
+          "path": "/private/tmp/mechanism-ms1n-native-package-repair-impact-342d09c5.integrity.json",
+          "bytes": 3092,
+          "sha256": "sha256:14d49f19b9870ab8dfffd77f4b755766faa678ff77e0ca8e245125cdaf664ba4"
+        }
+      },
+      "cause": "Writer forwarded runtime options containing original preparedDirectory/finalOutput into package verifier; broad options spread overwrote package-owned staged paths. Strict relocation/saved-recipe guard correctly rejected original recipe against relocated association. B read-only audit confirms unrecognized runtime options propagation; no exploit, geometry/pixel fault or source-byte alteration is claimed.",
+      "repair": "B confines accepted signal/route controls and package-owned paths, adds actual bounded final relocation regression; root integration2 passes both maintained cases. Source/test repair stationary, formatted and uncommitted after342. Fast gate/commit, fresh package proof and installed/portable acceptance remain pending.",
+      "scope": "Original finalized native execution bytes retained; no successful portable package/relocation/installed proof or new render acceptance. Failed attempt/log retained."
+    },
+    "nativePackageConfinementRepair": {
+      "status": "actual-two-frame-regression-and-fast-verified",
+      "baseHead": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+      "sourceState": "uncommitted source/test repair after342; original proof provenance unchanged",
+      "retainedStartupFailure": {
+        "id": "native-package-confinement-integration-1",
+        "status": "failed-startup-before-tests",
+        "sourceCommit": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-package-confinement-integration-1.log",
+          "bytes": 1827,
+          "sha256": "sha256:c9b0f17ba8d90a8cb9915f24ca612b303fc54bca2a45b0306f352c235fbd3dff"
+        },
+        "failure": "Root command referenced nonexistent vitest.integration.config.ts; configuration failed before any test/browser execution.",
+        "scope": "Command startup failure distinct from actual product package1/preview4 failures. Retained unchanged; corrected existing-config integration2 later passes both tests."
+      },
+      "currentIntegration": {
+        "id": "native-package-confinement-integration-2",
+        "status": "passed",
+        "baseHead": "342d09c58e27b5708ef7cc86f19d40559a85394f",
+        "sourceState": "uncommitted two-file package repair after342",
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-package-confinement-integration-2.log",
+          "bytes": 568,
+          "sha256": "sha256:752a1c3d8c1dc02552e94404314e639466c2cd42f974fba1a115ec385007bd87"
+        },
+        "rootTerminalExitCode": 0,
+        "testFiles": 1,
+        "tests": 2,
+        "startBangkok": "2026-10-10 15:10:40",
+        "testWallMs": 24965,
+        "runWallSeconds": 27.88,
+        "firstTestWallMs": 23564,
+        "scope": "Root-owned correct existing Vitest config/default-flags run passes both actual64x64/two-frame saved-camera/current-recipe render/nonoverwrite cases, including final-package/move/throwing-unknown-options-getters regression. No original696/current archive/installed/full gate acceptance."
+      },
+      "sourceDelta": {
+        "path": "/private/tmp/still-shift-ms1n-package-repair-source-delta-1.json",
+        "bytes": 1385,
+        "sha256": "sha256:2a69b213b91cce519f23437b1df0dc39e90e2c9f83ac9bd3a051f588eda6b1fe"
+      },
+      "workingSourceInventory": {
+        "path": "/private/tmp/still-shift-ms1n-package-repair-working-inputs-1.json",
+        "bytes": 396838,
+        "sha256": "sha256:c4af71984e2b3c6023b4bed4975922275aae1e9097fbdefe1f66b1aa47a3f02b"
+      },
+      "deltaSummary": {
+        "membershipExact": true,
+        "sourceMembers": 2327,
+        "changedMembers": 2,
+        "unchangedMembers": 2325,
+        "newSourceInputBytes": 117494865,
+        "changedFiles": [
+          {
+            "path": "packages/animation-engine/src/mechanism/native-package.ts",
+            "bytes": 23340,
+            "sha256": "sha256:11ffac4aca5c775965aef09c00b9deed187968d7233d502d19703dac3add6ee8"
+          },
+          {
+            "path": "tests/integration/mechanism-native-saved-edit-render.test.ts",
+            "bytes": 10244,
+            "sha256": "sha256:6aa244057342ed368f04bf64a3c45c7c2ed9063944f7a3817dddb579d4bb187b"
+          }
+        ]
+      },
+      "freshPortableAndInstalledProof": "pending",
+      "fastGate": {
+        "id": "check-fast-10",
+        "status": "passed",
+        "node": "22.23.1",
+        "rootTerminalExitCode": 0,
+        "sourceState": "two-file package confinement repair after342, before slice commit",
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-check-fast-10.log",
+          "bytes": 31999,
+          "sha256": "sha256:3727aecf991a4e8832b2eaa572e3d6df3c02ffb6d4a099c5544b8bc89a64126d"
+        },
+        "unitTestFiles": 381,
+        "unitTests": 3915,
+        "unitWallSeconds": 48.81,
+        "scope": "Schema/appearance closure, package boundaries, TypeScript formatting, lint, no-emit build and all3915 units pass. Current actual two-frame final-package relocation regression is recorded separately. Full77/176/current installed and original portable acceptance remain pending."
+      },
+      "sliceCommit": "pending"
     }
   },
   "humanContinuousPlaybackListeningAndCreativeAcceptance": "pending",
   "publication": "not-requested",
   "limits": [
-    "Native implementation is in progress; E01, exact unchanged bridge factoring, complete local gate and installed execution remain required.",
+    "MS1N remains in progress. Held342 full3 native original E01 software execution/QA/two696closures/nine parity and bridge4 fresh696 exact preservation pass. Appearance2 completes nine physical-state/actual-artifact comparisons with informational pixel statistics only; hardware1 actual state delta0 passes but cross-driver pixel diagnostic fails max135/RMS2.226 and human appearance remains pending. Preview4 fails fourth module readiness; package1 fails options-path override. Uncommitted two-file source/test package repair passes corrected integration2; fast-check/commit and refreshed portable/installed/full77 groups/176 unchanged baselines remain pending. Encoded/human/owner/publication acceptance remains separate.",
     "Exact MS1 scene/geometry/rig/font/audio source identities must be preserved; static overrides receive separate effective identities.",
     "One native world per qualified scope, opaque/hard-mask only, actual four-sample HDR/depth support, initial export one worker.",
     "Customer source media remains outside Git; public redistribution remains unestablished.",

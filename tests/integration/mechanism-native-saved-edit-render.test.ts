@@ -3,6 +3,7 @@ import {
   mkdtemp,
   readFile,
   readdir,
+  rename,
   rm,
   stat,
   symlink,
@@ -15,9 +16,12 @@ import {
   createNativeObservationRequest,
   createTapeHookProject,
   nativeMechanismExecution,
+  packageMechanismEpisode,
   prepareMechanismEpisode,
   readMechanismEpisode,
   renderMechanismEpisode,
+  verifyMechanismPackageArtifacts,
+  verifyNativeMechanismPackageArtifacts,
   verifyNativePreparedEpisode,
   writeMechanismJson,
 } from "@still-shift/animation-engine";
@@ -155,6 +159,97 @@ it("renders the refreshed saved camera at the same prepared subdirectory without
   expect(await readFile(result.prepared.receiptPath)).toEqual(receiptBytes);
   expect(await readdir(outputDirectory)).toEqual(entries);
   expect(await readFile(episodePath)).toEqual(sourceBytes);
+
+  // Passing the original prepared/movie paths must not override the package's
+  // own relocated paths when its writer verifies the actual final execution.
+  const packageDirectory = join(root, "package");
+  const packaged = await packageMechanismEpisode(episodePath, {
+    outputDirectory: packageDirectory,
+    preparedDirectory,
+    finalOutput: result.outputPath,
+    route: "native3d",
+  });
+  expect(packaged).toMatchObject({
+    schemaVersion: "mechanism-native-package-result-1",
+    preparedChecked: true,
+    actualExecutionVerified: true,
+  });
+  const movedDirectory = join(root, "delivery", "moved-package");
+  await mkdir(dirname(movedDirectory));
+  await rename(packageDirectory, movedDirectory);
+  await rename(join(root, "source"), join(root, "source-unavailable"));
+  await rename(outputDirectory, join(root, "render-unavailable"));
+  for (const path of [
+    episodePath,
+    preparedDirectory,
+    result.outputPath,
+    packageDirectory,
+  ])
+    await expect(stat(path)).rejects.toMatchObject({ code: "ENOENT" });
+
+  // Runtime callers can have extra enumerable properties even though the
+  // verifier's TypeScript controls admit only signal and route.
+  const unexpectedReads: string[] = [];
+  const verifierOptions = {
+    signal: new AbortController().signal,
+    route: "native3d" as const,
+  };
+  for (const key of [
+    "preparedDirectory",
+    "finalOutput",
+    "relocation",
+    "cache",
+    "cacheDirectory",
+    "verifyCode",
+    "pixels",
+  ])
+    Object.defineProperty(verifierOptions, key, {
+      enumerable: true,
+      get() {
+        unexpectedReads.push(key);
+        throw Error(`Unexpected package verifier field read: ${key}`);
+      },
+    });
+  const publicVerification = await verifyMechanismPackageArtifacts(
+    movedDirectory,
+    verifierOptions,
+  );
+  expect(publicVerification).toMatchObject({
+    schemaVersion: "mechanism-native-package-check-1",
+    valid: true,
+    preparedChecked: true,
+    actualExecutionVerified: true,
+  });
+  expect(
+    await verifyNativeMechanismPackageArtifacts(
+      movedDirectory,
+      verifierOptions,
+    ),
+  ).toEqual(publicVerification);
+  expect(unexpectedReads).toEqual([]);
+  const manifest = JSON.parse(
+    await readFile(join(movedDirectory, "package.manifest.json"), "utf8"),
+  );
+  expect(await readFile(join(movedDirectory, manifest.finalOutput))).toEqual(
+    finalBytes,
+  );
+  const observation = JSON.parse(
+    await readFile(
+      join(movedDirectory, manifest.relocation.observationManifestPath),
+      "utf8",
+    ),
+  );
+  expect(observation).toMatchObject({
+    version: "native-observation-manifest-1",
+    coverage: { firstOutputFrame: 0, lastOutputFrame: 1, frames: 2 },
+    passCount: 2,
+    output: {
+      sha256: result.render.checksums.output,
+      frameCount: 2,
+      width: 64,
+      height: 64,
+    },
+  });
 }, 60_000);
 
 it("rejects unrelated entries and symbolic or file output roots before refreshing any preparation", async () => {

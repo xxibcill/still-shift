@@ -86,6 +86,10 @@ const manifestSchema = z
   .strict();
 type NativePackageFile = z.infer<typeof fileSchema>;
 type NativePackageManifest = z.infer<typeof manifestSchema>;
+type NativePackageVerificationControls = {
+  signal?: AbortSignal;
+  route?: MechanismRoute;
+};
 export type NativeMechanismPackageOptions = {
   outputDirectory: string;
   preparedDirectory?: string;
@@ -158,12 +162,23 @@ async function absent(path: string) {
 }
 const lexical = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
 
+function packageVerificationControls(
+  options: NativePackageVerificationControls,
+): NativePackageVerificationControls {
+  const { signal, route } = options;
+  return {
+    ...(signal !== undefined ? { signal } : {}),
+    ...(route !== undefined ? { route } : {}),
+  };
+}
+
 /** Confined retained-byte verification; actual observations are streamed by the shared checker. */
 export async function verifyNativeMechanismPackageArtifacts(
   directory: string,
-  options: { signal?: AbortSignal; route?: MechanismRoute } = {},
+  options: NativePackageVerificationControls = {},
 ) {
-  options.signal?.throwIfAborted();
+  const controls = packageVerificationControls(options);
+  controls.signal?.throwIfAborted();
   const root = await realpath(resolve(directory)),
     manifest = manifestSchema.parse(
       await readMechanismJson(join(root, "package.manifest.json")),
@@ -172,7 +187,7 @@ export async function verifyNativeMechanismPackageArtifacts(
   for (const file of manifest.files) {
     if (files.has(file.path)) fail("Duplicate native package file", file.path);
     const path = await regularContained(root, file.path);
-    if ((await checksum(path, options.signal)) !== file.sha256)
+    if ((await checksum(path, controls.signal)) !== file.sha256)
       fail(
         "Native package bytes differ from their manifest",
         file.path,
@@ -188,7 +203,7 @@ export async function verifyNativeMechanismPackageArtifacts(
   const selection = followPreparedMechanismRoute(
     loaded.episode,
     manifest.routeSelection,
-    options.route,
+    controls.route,
   );
   if (
     selection.effectiveRoute !== "native3d" ||
@@ -217,7 +232,7 @@ export async function verifyNativeMechanismPackageArtifacts(
     const verified = await verifyNativePreparedEpisode(
       loaded,
       inside(root, manifest.prepared),
-      { ...options, verifyCode: false },
+      { ...controls, verifyCode: false },
     );
     const compositionPath = await regularContained(
       root,
@@ -296,7 +311,7 @@ export async function verifyNativeMechanismPackageArtifacts(
       const checked = await checkNativeMechanismEpisode(loaded, {
         preparedDirectory: inside(root, manifest.prepared),
         finalOutput: inside(root, manifest.finalOutput),
-        ...options,
+        ...controls,
         verifyCode: false,
         pixels: false,
         relocation: {
@@ -321,7 +336,7 @@ export async function verifyNativeMechanismPackageArtifacts(
     }
   } else if (manifest.finalOutput || manifest.relocation)
     fail("Native final evidence requires its current prepared recipe", root);
-  options.signal?.throwIfAborted();
+  controls.signal?.throwIfAborted();
   return {
     schemaVersion: "mechanism-native-package-check-1" as const,
     valid: true,
@@ -339,7 +354,8 @@ export async function packageNativeMechanismEpisode(
   selection: MechanismRouteSelection,
   options: NativeMechanismPackageOptions,
 ) {
-  options.signal?.throwIfAborted();
+  const controls = packageVerificationControls(options);
+  controls.signal?.throwIfAborted();
   if (selection.effectiveRoute !== "native3d")
     fail("Native package requires a native route selection", "route");
   if (options.finalOutput && !options.preparedDirectory)
@@ -349,7 +365,7 @@ export async function packageNativeMechanismEpisode(
     );
   const prepared = options.preparedDirectory
     ? await verifyNativePreparedEpisode(loaded, options.preparedDirectory, {
-        ...options,
+        ...controls,
         verifyCode: false,
       })
     : undefined;
@@ -357,11 +373,13 @@ export async function packageNativeMechanismEpisode(
     followPreparedMechanismRoute(
       loaded.episode,
       prepared.receipt.routeSelection,
-      options.route,
+      controls.route,
     );
   const finalCheck = options.finalOutput
     ? await checkNativeMechanismEpisode(loaded, {
-        ...options,
+        preparedDirectory: options.preparedDirectory!,
+        finalOutput: options.finalOutput,
+        ...controls,
         verifyCode: false,
         pixels: false,
       })
@@ -379,7 +397,7 @@ export async function packageNativeMechanismEpisode(
     await absent(destination);
     await mkdir(parent, { recursive: true });
     release = await acquireArtifactLock(`${destination}.package.lock`, parent);
-    options.signal?.throwIfAborted();
+    controls.signal?.throwIfAborted();
     await absent(destination);
     stage = await realpath(
       await mkdtemp(
@@ -395,7 +413,7 @@ export async function packageNativeMechanismEpisode(
       files.set(path, {
         path,
         role,
-        sha256: await checksum(actual, options.signal),
+        sha256: await checksum(actual, controls.signal),
       });
     };
     const copy = async (
@@ -404,10 +422,10 @@ export async function packageNativeMechanismEpisode(
       role: string,
       expected?: string,
     ) => {
-      options.signal?.throwIfAborted();
+      controls.signal?.throwIfAborted();
       if (!(await lstat(source)).isFile())
         fail("Native package source must be a regular file", source);
-      const before = await checksum(source, options.signal);
+      const before = await checksum(source, controls.signal);
       if (expected && before !== expected)
         fail(
           "Native source changed before copying",
@@ -610,7 +628,7 @@ export async function packageNativeMechanismEpisode(
     );
     const checked = await verifyNativeMechanismPackageArtifacts(
       attempt,
-      options,
+      controls,
     );
     await writeMechanismJson(
       join(attempt, "package.verification.json"),
@@ -625,14 +643,14 @@ export async function packageNativeMechanismEpisode(
       manifestSchema.parse(manifest),
       { replace: true },
     );
-    await verifyNativeMechanismPackageArtifacts(attempt, options);
-    options.signal?.throwIfAborted();
+    await verifyNativeMechanismPackageArtifacts(attempt, controls);
+    controls.signal?.throwIfAborted();
     await absent(destination);
     await rename(attempt, destination);
     stage = destination;
     const verification = await verifyNativeMechanismPackageArtifacts(
       destination,
-      options,
+      controls,
     );
     return {
       schemaVersion: "mechanism-native-package-result-1" as const,
@@ -648,7 +666,7 @@ export async function packageNativeMechanismEpisode(
     if (stage)
       await writeMechanismJson(join(stage, "failure.json"), {
         schemaVersion: "mechanism-native-package-failure-1",
-        status: options.signal?.aborted ? "cancelled" : "failed",
+        status: controls.signal?.aborted ? "cancelled" : "failed",
         message: cause instanceof Error ? cause.message : String(cause),
       }).catch(() => undefined);
     throw new AnimationEngineError(
