@@ -2,14 +2,14 @@ import { createHash } from "node:crypto";
 import { readFile, stat } from "node:fs/promises";
 import { resolve } from "node:path";
 import {
-  CompositionPreparedNative3DSchema,
-  Native3DSourceSchema,
+  CompositionPreparedNative3DVersionsSchema,
+  Native3DSourceVersionsSchema,
   type Composition,
-  type CompositionPreparedNative3D,
+  type CompositionPreparedNative3DVersions,
   type NativeAppearanceCodeIdentity,
 } from "@still-shift/scene-contract";
-import { prepareCompositionNative3D as prepareNativeCatalogue } from "../../renderer-core/src/native3d/prepare.ts";
-import type { PreparedNative3DScene } from "../../renderer-core/src/native3d/types.ts";
+import { prepareCompositionNative3DVersions as prepareNativeCatalogue } from "../../renderer-core/src/native3d/prepare.ts";
+import type { PreparedNative3DSceneVersions } from "../../renderer-core/src/native3d/types-v2.ts";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 import {
   loadNativeAppearanceCodeIdentity,
@@ -17,8 +17,8 @@ import {
 } from "./native3d-appearance-identity.ts";
 
 export type CompositionNative3DPreparation = {
-  preparedNative3D: CompositionPreparedNative3D;
-  native3D: Readonly<Record<string, PreparedNative3DScene>>;
+  preparedNative3D: CompositionPreparedNative3DVersions;
+  native3D: Readonly<Record<string, PreparedNative3DSceneVersions>>;
   assetPaths: Record<string, string>;
   nativeAppearanceCodeIdentity: NativeAppearanceCodeIdentity;
   nativeAppearanceCodeSha256: string;
@@ -34,8 +34,10 @@ export async function prepareCompositionNative3D(
     (asset) => asset.type === "native3d",
   );
   if (!assets.length) return undefined;
-  const transport: CompositionPreparedNative3D = {
-    version: "composition-prepared-native3d-1",
+  const transport: CompositionPreparedNative3DVersions = {
+    version: assets.some((asset) => asset.format === "mechanism-scene-2")
+      ? "composition-prepared-native3d-2"
+      : "composition-prepared-native3d-1",
     assets: Object.create(null),
   };
   const assetPaths: Record<string, string> = Object.create(null);
@@ -66,18 +68,28 @@ export async function prepareCompositionNative3D(
         path: `assets.${asset.id}`,
       });
     }
-    const parsed = Native3DSourceSchema.safeParse(value);
+    const parsed = Native3DSourceVersionsSchema.safeParse(value);
     if (!parsed.success || parsed.data.schemaVersion !== asset.format)
       passageError(
         "comp-native3d-source",
         "Native source does not match its declared format",
         { path: `assets.${asset.id}.format` },
       );
-    transport.assets[asset.id] = { sourceSha256, source: parsed.data };
+    const source = parsed.data;
+    if (transport.version === "composition-prepared-native3d-1") {
+      if (source.schemaVersion === "mechanism-scene-2")
+        passageError(
+          "comp-native3d-protocol",
+          "Version 2 source requires version 2 transport",
+          { path: `assets.${asset.id}.format` },
+        );
+      transport.assets[asset.id] = { sourceSha256, source };
+    } else transport.assets[asset.id] = { sourceSha256, source };
     assetPaths[asset.id] = path;
   }
   options.signal?.throwIfAborted();
-  const preparedNative3D = CompositionPreparedNative3DSchema.parse(transport);
+  const preparedNative3D =
+    CompositionPreparedNative3DVersionsSchema.parse(transport);
   const native3D = await prepareNativeCatalogue(composition, preparedNative3D);
   const nativeAppearanceCodeIdentity = await loadNativeAppearanceCodeIdentity();
   return {

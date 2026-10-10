@@ -45,16 +45,16 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** isolated branch `codex/mechanism-ms2`
   carries current `main` plus the native prerequisite from
-  [PR #56](https://github.com/xxibcill/still-shift/pull/56). Nine implementation
-  slices now include full observed-frame2 and explicit versioned core catalogues:
-  mixed sources, source-clock rig-track validation, static edits and shared64
-  variant admission. Original v1 API/serialization checks remain exact.
-  Final fast2 passes4,026 units / 392 files; maintained scene2 world/stream/full
-  frame suites and original native14/integration5/cancellation pass. All failures
-  and repairs remain retained. Normal loading/render/export and authenticated
-  observation2 transport, three packs, import/camera/label/cue, scoped typography
-  and the full milestone gate remain. Pilot support is zero; no MS2 PR/MS3 yet.
-  [MS2 results](./mechanism-shorts-ms2-results.json),
+  [PR #56](https://github.com/xxibcill/still-shift/pull/56). Ten slices now include
+  normal verified scene2 file IO, explicit graph sampling, queued used-stream
+  proof and async core composition preview with bounded output admission.
+  Final fast4 passes4,036 units / 393 files; maintained world/stream/full-frame/
+  composition suites and original native14/integration5/cancellation pass.
+  All failed builds, fixture, lint and original-diagnostic repair remain retained.
+  Next: authenticated execution/export2 and Lab integration, whole-world preflight,
+  three packs, import/camera/label/cue, scoped typography and the full milestone
+  gate. Core packet examples do not count as exports. Pilot support is zero;
+  no MS2 PR/MS3 yet. [MS2 results](./mechanism-shorts-ms2-results.json),
   [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
@@ -213,6 +213,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — Commit normal native2 source routing and async core preview
+
+- **Branch / source:** `codex/mechanism-ms2`, catalogue checkpoint `996f2f7c`;
+  held inventory10:2,406 inputs / 118,289,027B stays unchanged through final checks.
+- **Done:** verified raw source2 IO, explicit mixed graph dispatch, queued used-byte
+  numeric seals, async core frame completion and ordered mixed observations;
+  prospective64/1MiB admission and unreadable pending/failed/disposed output pixels.
+  Existing E01/export1/inspector adapters explicitly retain their original protocol.
+- **Results:** focused54/5 and final fast4 passes4,036/393; four maintained actual
+  browser suites include fractional composition exposure, exact seeks, mixed1/2
+  inset, preserved cuts and collection-free preview. Original native14/integration5/cancellation pass.
+- **Failures / repairs:** three failed builds, browser scalar/cut fixture expectations, pure
+  import allowlist and original missing-preparation diagnostic; all attempts retained.
+- **Next / limits:** authenticated export2 ledger/closure, Lab consumers and full
+  world preflight; whole MS2 families/authoring acceptance remain open. Core preview
+  and packet examples are not exports, supported packs, pilot or human acceptance.
+  [Results](./mechanism-shorts-ms2-results.json). No MS2 PR/MS3 yet.
 
 ### 2026-10-11 — Commit explicit native2 composition catalogue preparation
 

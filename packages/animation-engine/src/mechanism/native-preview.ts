@@ -24,6 +24,7 @@ import {
 import {
   compositionNativePasses,
   resolveNative3DVariant,
+  requireLegacyNative3DCatalogue,
   PassageError,
 } from "@still-shift/renderer-core";
 import type * as Renderer from "@still-shift/renderer-core";
@@ -242,14 +243,17 @@ export async function previewNativeMechanismEpisode(
     profile: NATIVE_MECHANISM_PROFILE,
   };
   const executionSha256 = mechanismContentHash(binding);
+  const native3D = requireLegacyNative3DCatalogue(loadedComposition.native3D)!;
   const expected: NativeObservationExpectedPass[] = [
     ...compositionNativePasses(loadedComposition.composition, options.frame, {
-      preparedNative3D: loadedComposition.native3D!,
+      preparedNative3D: native3D,
       nativeObservationRequired: true,
     }),
   ].map((pass) => {
-    const frame = pass.frame,
-      source = resolveNative3DVariant(loadedComposition.native3D, frame).source;
+    const frame = pass.frame;
+    if (frame.version !== "native3d-frame-1")
+      throw new Error("E01 preview requires native frame1");
+    const source = resolveNative3DVariant(native3D, frame).source;
     return {
       sampleFrame: pass.sampleFrame,
       frameKey: frame.frameKey,

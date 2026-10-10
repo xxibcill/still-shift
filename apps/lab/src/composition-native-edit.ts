@@ -73,6 +73,12 @@ export function nativeInspectorContext(
       controllerPath,
       "Physical inspection requires the accepted preview's prepared native catalogue",
     );
+  if (prepared.version !== "prepared-native3d-scene-1")
+    fail(
+      "comp-native3d-protocol",
+      controllerPath,
+      "Physical inspector requires the original native source protocol",
+    );
   const overrides = {
       ...(controller.partOverrides
         ? { partOverrides: controller.partOverrides }

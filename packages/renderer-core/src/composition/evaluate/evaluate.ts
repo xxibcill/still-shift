@@ -30,6 +30,7 @@ import {
 } from "@still-shift/scene-contract";
 import { multiplyMatrix } from "../../node-transform.ts";
 import { sampleNativeFrame } from "../../native3d/evaluate.ts";
+import { sampleNativeFrameV2 } from "../../native3d/evaluate-v2.ts";
 import { applyNativeScreenBinding } from "../../native3d/bindings.ts";
 import { passageError } from "../../passage-diagnostics.ts";
 import {
@@ -1882,14 +1883,19 @@ class Evaluation {
             frame: this.time,
           },
         );
-      state.nativeFrame = sampleNativeFrame(prepared[layer.asset]!, layer, {
+      const source = prepared[layer.asset]!;
+      const sample = {
         scope: ctx.route.length ? ctx.route.join("/") : ctx.scope.id,
         scopeFrame: ctx.time,
         owningScopeFps: ctx.fps,
         layerTime: state.time,
         width: ctx.scope.width,
         height: ctx.scope.height,
-      });
+      };
+      state.nativeFrame =
+        source.version === "prepared-native3d-scene-2"
+          ? sampleNativeFrameV2(source, layer, sample)
+          : sampleNativeFrame(source, layer, sample);
     }
     state.drawable =
       state.visible &&

@@ -30,6 +30,7 @@ import {
 import {
   compositionNativePasses,
   resolveNative3DVariant,
+  requireLegacyNative3DCatalogue,
   type MechanismFrameRequest,
 } from "@still-shift/renderer-core";
 import { verifyNativeObservationClosure } from "@still-shift/execution-runtime/export";
@@ -870,7 +871,7 @@ export async function checkNativeMechanismEpisode(
     const overlayChecker = createNativeMechanismOverlayChecker(
       loaded.episode,
       loadedComposition.composition,
-      loadedComposition.native3D!,
+      requireLegacyNative3DCatalogue(loadedComposition.native3D)!,
       qualityReport && "textBounds" in qualityReport && qualityReport.textBounds
         ? { textBounds: qualityReport.textBounds }
         : {},
@@ -946,8 +947,14 @@ export async function checkNativeMechanismEpisode(
               `frames.${packet.outputFrame}`,
               "comp-native3d-observation",
             );
+          if (pass.frame.version !== "native3d-frame-1")
+            fail(
+              "E01 validation requires native frame1",
+              controller.id,
+              "comp-native3d-protocol",
+            );
           const source = resolveNative3DVariant(
-            loadedComposition.native3D,
+            requireLegacyNative3DCatalogue(loadedComposition.native3D),
             pass.frame,
           ).source;
           if (source.schemaVersion !== "mechanism-scene-1")

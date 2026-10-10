@@ -1,5 +1,5 @@
 import type {
-  NativeFrameSnapshot,
+  NativeFrameSnapshotVersions,
   NativeScreenBinding,
 } from "@still-shift/scene-contract";
 import { inverseMatrix, transformPoint } from "../node-transform.ts";
@@ -9,7 +9,7 @@ import type { NativeScreenBindingResult } from "./types.ts";
 import type { EvaluatedLayer } from "../composition/evaluate/types.ts";
 
 export function resolveNativeScreenAnchor(
-  snapshot: NativeFrameSnapshot,
+  snapshot: NativeFrameSnapshotVersions,
   binding: NativeScreenBinding,
 ): NativeScreenBindingResult {
   const location = {
@@ -94,7 +94,7 @@ export function nativeBindingLocalPoint(
 /** Mutates sampled content before shape compilation; never changes authored layer data. */
 export function applyNativeScreenBinding(
   state: EvaluatedLayer,
-  snapshot: NativeFrameSnapshot,
+  snapshot: NativeFrameSnapshotVersions,
   binding: NativeScreenBinding,
   parentToScreen: Matrix,
 ): void {

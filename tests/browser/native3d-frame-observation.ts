@@ -134,7 +134,7 @@ export async function runNativeFrameObservationProofV2() {
       notDrawnAnchors: number;
     }[] = [];
     for (const capture of result.captures) {
-      const bend = capture.id === "bent-b",
+      const bend = capture.id === "bent-b" || capture.id === "queued-b",
         hidden = capture.id === "allowed-hidden",
         outside = capture.id === "allowed-outside",
         frame = hidden || outside ? 21 : bend ? 17.25 : 0.5;
@@ -222,7 +222,9 @@ export async function runNativeFrameObservationProofV2() {
     assert.equal(pixels("rest-a"), pixels("sealed-a-with-later-cpu-b"));
     assert.equal(pixels("rest-a"), pixels("rest-a-before-stale"));
     assert.notEqual(pixels("rest-a"), pixels("bent-b"));
-    assert.equal(frames.length, 6);
+    assert.equal(pixels("queued-a"), pixels("rest-a"));
+    assert.equal(pixels("queued-b"), pixels("bent-b"));
+    assert.equal(frames.length, 8);
     assert.equal(result.negatives.length, 4);
     const packet = NativeObservedOutputFrameV2Schema.parse({
       version: "native3d-observed-output-frame-2",
@@ -268,7 +270,7 @@ export async function runNativeFrameObservationProofV2() {
             landmarks: "exact-independent-packed-float32-means",
           },
           limits:
-            "Standalone full observed-frame2 and output packet contract example only. Example execution/sample ordinals are not an authenticated composition export assignment. No asset/transport/runtime/export dispatch, reusable families, pilot or human acceptance.",
+            "Standalone full observed-frame2 and output packet contract example only. Example execution/sample ordinals are not an authenticated composition export assignment. This standalone probe does not exercise normal composition IO, rendering or export, reusable families, pilot or human acceptance.",
         },
         null,
         2,

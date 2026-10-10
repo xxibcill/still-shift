@@ -754,8 +754,16 @@ export const native3DAppearanceModules: readonly {
     url: new URL("../managed-resources.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/mechanism/camera-v2.ts",
+    url: new URL("../mechanism/camera-v2.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/mechanism/canonical.ts",
     url: new URL("../mechanism/canonical.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/mechanism/evaluate-v2.ts",
+    url: new URL("../mechanism/evaluate-v2.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/mechanism/evaluate.ts",
@@ -846,8 +854,24 @@ export const native3DAppearanceModules: readonly {
     url: new URL("./canonical-hash.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/native3d/catalogue-versions.ts",
+    url: new URL("./catalogue-versions.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/evaluate-v2.ts",
+    url: new URL("./evaluate-v2.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/native3d/evaluate.ts",
     url: new URL("./evaluate.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/observation-capacity-v2.ts",
+    url: new URL("./observation-capacity-v2.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/observations-v2.ts",
+    url: new URL("./observations-v2.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/native3d/observations.ts",
@@ -936,6 +960,10 @@ export const native3DAppearanceModules: readonly {
   {
     name: "renderer-core/src/native3d/used-stream-bytes.ts",
     url: new URL("./used-stream-bytes.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/visibility-v2.ts",
+    url: new URL("./visibility-v2.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/native3d/visibility.ts",

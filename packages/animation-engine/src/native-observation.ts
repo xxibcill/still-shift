@@ -3,11 +3,12 @@ import { setImmediate as yieldEventLoop } from "node:timers/promises";
 import {
   NATIVE3D_OBSERVATION_LIMITS,
   type Composition,
-  type CompositionPreparedNative3D,
+  type CompositionPreparedNative3DVersions,
 } from "@still-shift/scene-contract";
 import { canonicalMechanismJson } from "../../renderer-core/src/mechanism/canonical.ts";
 import { compositionNativePasses } from "../../renderer-core/src/composition/render/graphs.ts";
 import { resolveNative3DVariant } from "../../renderer-core/src/native3d/prepare.ts";
+import { requireLegacyNative3DCatalogue } from "../../renderer-core/src/native3d/catalogue-versions.ts";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 import {
   admitNativeObservationCapacity,
@@ -38,7 +39,7 @@ export function nativeCompositionSha256(composition: Composition): string {
   });
 }
 export function nativePreparedSha256(
-  transport: CompositionPreparedNative3D,
+  transport: CompositionPreparedNative3DVersions,
 ): string {
   return sha256(transport);
 }
@@ -51,6 +52,12 @@ export async function createNativeObservationRequest(
 ): Promise<ExportRequest["nativeObservation"]> {
   options.signal?.throwIfAborted();
   if (!loaded.preparedNative3D) return undefined;
+  if (loaded.preparedNative3D.version !== "composition-prepared-native3d-1")
+    passageError(
+      "comp-native3d-protocol",
+      "Scene2 export requires its version2 execution ledger",
+      { path: "nativeObservations.execution" },
+    );
   if (
     !loaded.native3D ||
     !loaded.nativeAppearanceCodeSha256 ||
@@ -62,6 +69,7 @@ export async function createNativeObservationRequest(
       "Native observation requires its prepared sources and WebGL2 code identity",
       { path: "nativeObservations" },
     );
+  const native3D = requireLegacyNative3DCatalogue(loaded.native3D)!;
   const execution: NativeObservationExecutionBinding = {
     version: "native-observation-execution-1",
     compositionSourceSha256: loaded.sourceChecksum,
@@ -71,7 +79,7 @@ export async function createNativeObservationRequest(
     appearanceCodeIdentity: loaded.nativeAppearanceCodeIdentity,
     backend: "webgl2",
     profile: "native-three-aces-hdr-msaa4-1",
-    sources: Object.entries(loaded.native3D)
+    sources: Object.entries(native3D)
       .sort(([a], [b]) => lexical(a, b))
       .flatMap(([asset, source]) =>
         Object.values(source.variants)
@@ -109,7 +117,7 @@ export async function createNativeObservationRequest(
     for (const pass of compositionNativePasses(
       loaded.composition,
       outputFrame,
-      { preparedNative3D: loaded.native3D!, nativeObservationRequired: true },
+      { preparedNative3D: native3D, nativeObservationRequired: true },
     )) {
       options.signal?.throwIfAborted();
       if (passes.length >= NATIVE3D_OBSERVATION_LIMITS.passes)
@@ -119,7 +127,17 @@ export async function createNativeObservationRequest(
           { path: "nativeObservations", frame: outputFrame },
         );
       const frame = pass.frame;
-      const variant = resolveNative3DVariant(loaded.native3D, frame);
+      if (frame.version !== "native3d-frame-1")
+        passageError(
+          "comp-native3d-protocol",
+          "Original export ledger requires frame1",
+          {
+            frame: outputFrame,
+            node: frame.controller,
+            path: "nativeObservations",
+          },
+        );
+      const variant = resolveNative3DVariant(native3D, frame);
       let inventory = topology.get(variant.sourceKey);
       if (!inventory) {
         inventory = Object.freeze({
@@ -167,7 +185,7 @@ export async function createNativeObservationRequest(
   const large = -Number.MAX_VALUE,
     matrix = Array.from({ length: 16 }, () => large);
   const longestMeshId =
-    Object.values(loaded.native3D)
+    Object.values(native3D)
       .flatMap((source) => Object.values(source.variants))
       .flatMap((variant) =>
         variant.source.geometry.meshes.map((mesh) => mesh.id),

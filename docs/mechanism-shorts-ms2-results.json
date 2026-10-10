@@ -1954,11 +1954,534 @@
         "firstParty": 368,
         "external": 79
       }
+    },
+    {
+      "id": "native2-routing-routes-red-1",
+      "status": "failed-missing-normal-io-graph-and-queue",
+      "sourceCheckpoint": "996f2f7cc7531b5009dfb45685d3fc6004f39bff",
+      "sourceState": "working-normal-composition-preview2-slice",
+      "actualRootSession": 56636,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-routing-red-inputs-1.json",
+        "bytes": 409661,
+        "sha256": "sha256:18eefd521419bd4a4ac4298aba5fb248caacd58819a75ee63b817cc3fd743850",
+        "files": 2401,
+        "inputBytes": 118229944,
+        "sourceCommit": "996f2f7cc7531b5009dfb45685d3fc6004f39bff"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-red-1.log",
+          "bytes": 3615,
+          "sha256": "sha256:866af135ce92dfe8d821d47fc75d0585d071cd20d190b31cb0223889afa92717"
+        }
+      ],
+      "qualification": "Actual focused red fails3/1: normal file IO rejects source2, graph uses original evaluator and queued observer export is absent.",
+      "unitTestsFailed": 3,
+      "unitFiles": 1,
+      "unitReportedSeconds": 1.29
+    },
+    {
+      "id": "native2-routing-queued-focused-1",
+      "status": "passed-initial-normal-io-graph-and-standalone-queue",
+      "sourceCheckpoint": "996f2f7cc7531b5009dfb45685d3fc6004f39bff",
+      "sourceState": "working-normal-composition-preview2-slice",
+      "actualRootSession": 11396,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-routing-working-inputs-1.json",
+        "bytes": 410014,
+        "sha256": "sha256:242d9143e5643036156d03e4ab09ccb7252cd6601f6f55efeb0fcd4e3c1eecf7",
+        "files": 2403,
+        "inputBytes": 118242133,
+        "sourceCommit": "996f2f7cc7531b5009dfb45685d3fc6004f39bff"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-format-1.log",
+          "bytes": 879,
+          "sha256": "sha256:5bd485dbdca5459918a771af3058f203c4d7687a1cc3e3ed5af1da163539542f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-identity-generate-1.log",
+          "bytes": 260,
+          "sha256": "sha256:9f7fdb7020e38b2dc6a2d811eef7d1bf088db8138c877493f49f47517fa0ba04"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-focused-1.log",
+          "bytes": 315,
+          "sha256": "sha256:5ccd00a5e10c6809f2183b0440852c45bbe99d34f22c4e31b5a2eeb01a3ff124"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-queued-browser-1.log",
+          "bytes": 155,
+          "sha256": "sha256:e09d50c993a788cb878a81239b5a51a92fd75011c577bf2d4e673ebbf938fcc6"
+        }
+      ],
+      "qualification": "Child-stage exits inferred from required shell &&; one actual aggregate terminal receipt, no separate child session handles.  Focused3/1 and eight actual standalone queued/full-frame captures pass. This source state precedes compositor integration; no final source inventory verification was retained for this earlier run.",
+      "unitTests": 3,
+      "unitFiles": 1,
+      "unitReportedSeconds": 1.3,
+      "browserReceipts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-RtQG2D/run.json",
+          "bytes": 6242,
+          "sha256": "sha256:8b82bac81ca2f763cbd2d4ad704560c433ec8b9a949938ae619dbf96cd6215e0"
+        }
+      ],
+      "browserFrames": 8,
+      "browserNegatives": 4
+    },
+    {
+      "id": "native2-routing-build-1",
+      "status": "failed-legacy-consumer-types",
+      "sourceCheckpoint": "996f2f7cc7531b5009dfb45685d3fc6004f39bff",
+      "sourceState": "working-normal-composition-preview2-slice",
+      "actualRootSession": 85411,
+      "actualExitCode": 2,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-routing-inputs-2.json",
+        "bytes": 410014,
+        "sha256": "sha256:741b419675e6f474b95e6e7a968ead0070aa2158331224d24397fdf585cf581b",
+        "files": 2403,
+        "inputBytes": 118252617,
+        "sourceCommit": "996f2f7cc7531b5009dfb45685d3fc6004f39bff"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-format-2.log",
+          "bytes": 1346,
+          "sha256": "sha256:d46aa4edbd84fba402023c38b56d0bb2ed19047380a4948dc6f13e49771b1e35"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-build-1.log",
+          "bytes": 11308,
+          "sha256": "sha256:ea346eb364e069a2148600be94bd3443a7ab5fa6aefc7e7021037dc48811768a"
+        }
+      ],
+      "qualification": "Child-stage exits inferred from required shell &&; one actual aggregate terminal receipt, no separate child session handles.  TypeScript reports11 diagnostics in original E01/export/inspector consumers and preview transport types. No later focused/browser command ran. Repaired with explicit protocol guards and versioned preview resources."
+    },
+    {
+      "id": "native2-routing-build-2",
+      "status": "failed-capacity-literal-type",
+      "sourceCheckpoint": "996f2f7cc7531b5009dfb45685d3fc6004f39bff",
+      "sourceState": "working-normal-composition-preview2-slice",
+      "actualRootSession": 30978,
+      "actualExitCode": 2,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-routing-inputs-3.json",
+        "bytes": 410197,
+        "sha256": "sha256:bcb839525c1f72132c8bc6db9634952a4437b53de5e334dfd638deb376692e1e",
+        "files": 2404,
+        "inputBytes": 118262473,
+        "sourceCommit": "996f2f7cc7531b5009dfb45685d3fc6004f39bff"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-format-3.log",
+          "bytes": 703,
+          "sha256": "sha256:81bde163949efb2e48543b92bd7eebf124a98642268502e370448fd32361743b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-build-2.log",
+          "bytes": 305,
+          "sha256": "sha256:c2d628144ff6be7e08aa80489548a22513b8fd1c39cc914917c32aad9774c311"
+        }
+      ],
+      "qualification": "Child-stage exits inferred from required shell &&; one actual aggregate terminal receipt, no separate child session handles.  One diagnostic: collector default capacity inferred as the literal1048576 instead of number. No later tests ran; parameter and retained capacity now explicitly number."
+    },
+    {
+      "id": "native2-routing-build-3",
+      "status": "failed-browser-proof-types",
+      "sourceCheckpoint": "996f2f7cc7531b5009dfb45685d3fc6004f39bff",
+      "sourceState": "working-normal-composition-preview2-slice",
+      "actualRootSession": 28948,
+      "actualExitCode": 2,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-routing-inputs-4.json",
+        "bytes": 410526,
+        "sha256": "sha256:5abe50ecc1f8486093cdc7a276e1d04e5486048784826d985716ed959a8c205a",
+        "files": 2406,
+        "inputBytes": 118278779,
+        "sourceCommit": "996f2f7cc7531b5009dfb45685d3fc6004f39bff"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-format-4.log",
+          "bytes": 292,
+          "sha256": "sha256:fd9b571613e97787324da405e30876453a60046e39198670096f2b1d0119b6a6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-identity-2.log",
+          "bytes": 260,
+          "sha256": "sha256:84192be86d48c5aa7e85001a554945576cb51014b5b3c4bf477bc88dc0822f62"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-build-3.log",
+          "bytes": 1199,
+          "sha256": "sha256:db5aeaca8da1f2bec559c27da94eb392c8bedb37500ccb1a2b5f4ba40558b080"
+        }
+      ],
+      "qualification": "Child-stage exits inferred from required shell &&; one actual aggregate terminal receipt, no separate child session handles.  Six browser-fixture diagnostics: wrong three-argument factory and excessively deep Playwright serialization inference. Focused2 and browser1 did not run. Corrected original two-argument factory; explicit serialized test transport retains runtime packet parsing."
+    },
+    {
+      "id": "native2-routing-initial-browser-2",
+      "status": "failed-browser-fixture-control",
+      "sourceCheckpoint": "996f2f7cc7531b5009dfb45685d3fc6004f39bff",
+      "sourceState": "working-normal-composition-preview2-slice",
+      "actualRootSession": 50509,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-routing-inputs-5.json",
+        "bytes": 410527,
+        "sha256": "sha256:bc3c1b52cbbd00f5702d0820c404359ea05f92ffc63ff7e6cd2eadbb05be8e2e",
+        "files": 2406,
+        "inputBytes": 118283025,
+        "sourceCommit": "996f2f7cc7531b5009dfb45685d3fc6004f39bff"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-format-5.log",
+          "bytes": 155,
+          "sha256": "sha256:ab43027222acb44afdaf2fe32576c84a5b058ed035e045876b03d25602d5f973"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-build-4.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-focused-3.log",
+          "bytes": 500,
+          "sha256": "sha256:2be86593ea911b70b6a23604bfc760e6780190fa775ad30635061a6ff1cf4bd7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-composition-browser-2.log",
+          "bytes": 713,
+          "sha256": "sha256:a04649aec1b86a9d01055be3b5026ba266b155f383c43223746e41d649637de5"
+        }
+      ],
+      "qualification": "Child-stage exits inferred from required shell &&; one actual aggregate terminal receipt, no separate child session handles.  Build and focused34/4 pass; browser fixture schema fails because hinge value was an object rather than the declared scalar keys. Failure happens before browser creation; source files retained in ijyRgN, no successful run.json or PNG claim.",
+      "unitTests": 34,
+      "unitFiles": 4,
+      "unitReportedSeconds": 1.72,
+      "failureDirectory": "/private/tmp/still-shift-ms2-composition-v2-ijyRgN"
+    },
+    {
+      "id": "native2-routing-single-browser-3",
+      "status": "passed-normal-single-pass-preview",
+      "sourceCheckpoint": "996f2f7cc7531b5009dfb45685d3fc6004f39bff",
+      "sourceState": "working-normal-composition-preview2-slice",
+      "actualRootSession": 25045,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-routing-inputs-6.json",
+        "bytes": 410527,
+        "sha256": "sha256:e39687495ae68b7b65c37732618275554ffe21351efef2f9afff56b2eb57a363",
+        "files": 2406,
+        "inputBytes": 118282981,
+        "sourceCommit": "996f2f7cc7531b5009dfb45685d3fc6004f39bff"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-format-6.log",
+          "bytes": 58,
+          "sha256": "sha256:097affbe6826c34ff2685b73ef06024cbd83929cf60362fdd25a11ee457aab19"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-composition-browser-3.log",
+          "bytes": 113,
+          "sha256": "sha256:ee49ce63aeee8d7bc5ce3d36c8b9f9a405b94c91c88766c4752bb464bcc5b51a"
+        }
+      ],
+      "qualification": "Child-stage exits inferred from required shell &&; one actual aggregate terminal receipt, no separate child session handles.  Four actual single-pass composition captures, three fresh independent Node frame2 checks and15 strict negatives pass. Existing frame1 is checked against fresh original matrices. Expanded fractional exposure/default-preview verification remains a later run.",
+      "browserReceipts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-d2nL5A/run.json",
+          "bytes": 82799,
+          "sha256": "sha256:2df0583a4574e11e016e0ae2107f1f1030c530a9b41d6a0de52abe49b90ad611"
+        }
+      ],
+      "browserFrames": 4,
+      "browserNegatives": 15
+    },
+    {
+      "id": "native2-routing-fast-1",
+      "status": "failed-pure-import-allowlist",
+      "sourceCheckpoint": "996f2f7cc7531b5009dfb45685d3fc6004f39bff",
+      "sourceState": "working-normal-composition-preview2-slice",
+      "actualRootSession": 42280,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-routing-inputs-7.json",
+        "bytes": 410527,
+        "sha256": "sha256:0646a2b14921e3183b7d8ca5c5e1e29992f71e3e4fc7dc1147727de2ac81f03b",
+        "files": 2406,
+        "inputBytes": 118286337,
+        "sourceCommit": "996f2f7cc7531b5009dfb45685d3fc6004f39bff"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-format-7.log",
+          "bytes": 232,
+          "sha256": "sha256:1970df1605253f0f74ae86ab6212cc76f7a5838c1391b28ed51fc677c7ae175f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-identity-3.log",
+          "bytes": 260,
+          "sha256": "sha256:84192be86d48c5aa7e85001a554945576cb51014b5b3c4bf477bc88dc0822f62"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-focused-4.log",
+          "bytes": 648,
+          "sha256": "sha256:c66e67e36ad92e807300e91bc4a6b1f555aa76e95b99e07bec79d3837c287f17"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-fast-1.log",
+          "bytes": 2052,
+          "sha256": "sha256:00cb72aea42663da718df9150904effd6feaa2c407f3c30a50ddb41fdfb21474"
+        }
+      ],
+      "qualification": "Child-stage exits inferred from required shell &&; one actual aggregate terminal receipt, no separate child session handles.  Focused36/4 pass. Schema/closure375+79, package boundaries and formatting pass; lint rejects new pure evaluator/types imports. Added only the two exact pure helpers to the existing allowlist. Fast unit suite and all later browser stages did not run.",
+      "unitTests": 36,
+      "unitFiles": 4,
+      "unitReportedSeconds": 2.07
+    },
+    {
+      "id": "native2-routing-fast-2",
+      "status": "failed-original-diagnostic-regression",
+      "sourceCheckpoint": "996f2f7cc7531b5009dfb45685d3fc6004f39bff",
+      "sourceState": "working-normal-composition-preview2-slice",
+      "actualRootSession": 53046,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-routing-inputs-8.json",
+        "bytes": 410527,
+        "sha256": "sha256:92a831ad5faf44c31cda0938b66bca17dd5579354c49af3bbb9c28ea971fcd33",
+        "files": 2406,
+        "inputBytes": 118288055,
+        "sourceCommit": "996f2f7cc7531b5009dfb45685d3fc6004f39bff"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-format-8.log",
+          "bytes": 155,
+          "sha256": "sha256:8a8a75eb45b32015a56f8a55a9fb1443224787762f7f1c19fe1b81d6250bedf2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-identity-4.log",
+          "bytes": 260,
+          "sha256": "sha256:84192be86d48c5aa7e85001a554945576cb51014b5b3c4bf477bc88dc0822f62"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-focused-5.log",
+          "bytes": 501,
+          "sha256": "sha256:8b1ce3418814f05d01472afd0dde390d1f1dd0a9c20ae763c19e4d03fba636f2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-fast-2.log",
+          "bytes": 34408,
+          "sha256": "sha256:2a3e92650dfb27b4e335ca8141024f2dbf54e9ccf7a218bfa67823001243ee53"
+        }
+      ],
+      "qualification": "Child-stage exits inferred from required shell &&; one actual aggregate terminal receipt, no separate child session handles.  Focused37/4 pass. Fast reaches all4036 tests:4035 pass, original missing-preparation message regression fails1. Restored original undefined/missing-asset lookup diagnostics through original resolver. Later browser stages did not run.",
+      "unitTestsPassed": 4035,
+      "unitTestsFailed": 1,
+      "unitFilesPassed": 392,
+      "unitFilesFailed": 1,
+      "unitReportedSeconds": 43.42
+    },
+    {
+      "id": "native2-routing-browser-cut-fixture-3",
+      "status": "failed-mixed-cut-fixture-expectation",
+      "sourceCheckpoint": "996f2f7cc7531b5009dfb45685d3fc6004f39bff",
+      "sourceState": "working-normal-composition-preview2-slice",
+      "actualRootSession": 46468,
+      "actualExitCode": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-routing-inputs-9.json",
+        "bytes": 410527,
+        "sha256": "sha256:fddb5818fe2eff440f0e134ae38af922e3ea62bd7e544b7cac7e6aa77ddd5961",
+        "files": 2406,
+        "inputBytes": 118288251,
+        "sourceCommit": "996f2f7cc7531b5009dfb45685d3fc6004f39bff"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-format-9.log",
+          "bytes": 63,
+          "sha256": "sha256:a2f051ca11c2f7371a57c24cdcb1f85da838254bdd30102dc0dcdb85a39313c4"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-identity-5.log",
+          "bytes": 260,
+          "sha256": "sha256:84192be86d48c5aa7e85001a554945576cb51014b5b3c4bf477bc88dc0822f62"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-focused-6.log",
+          "bytes": 1651,
+          "sha256": "sha256:fcb33030789e47e0d29b778a4c1c1c01769e30d6ca4588877431e246a73833d3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-fast-3.log",
+          "bytes": 32047,
+          "sha256": "sha256:45616bcd0776d84091ba3342ae745fdce1c4e9ebbf41b9cd99ab6a22353441e7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-shapes-browser-3.log",
+          "bytes": 1478,
+          "sha256": "sha256:24b197dcd0d00637ba0eb65e67d5a7c27d9b92e705d3fb615d1968792f7bf05b"
+        }
+      ],
+      "qualification": "Child-stage exits inferred from required shell &&; one actual aggregate terminal receipt, no separate child session handles.  Focused54/5 and complete fast4036/393 pass. Maintained owned-world5, streams6/11 and standalone full-frame8/4 pass. Composition captures and Node checks complete before a fixture assertion incorrectly expects source2 across a clamped native cut. Preserved production cut clamping and moved same-output mixed-protocol proof into a separate inset precomp. Original depth/cancellation and inventory verification stage did not run.",
+      "unitTests": 4036,
+      "unitFiles": 393,
+      "unitReportedSeconds": 46.75,
+      "focusedTests": 54,
+      "focusedFiles": 5,
+      "browserReceipts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-Mo2STi/run.json",
+          "bytes": 2976,
+          "sha256": "sha256:a3713fd624626a56abe9518e89ca38fd644960902eb75652df8b22f7b2877309"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-194A8O/run.json",
+          "bytes": 7870,
+          "sha256": "sha256:a5f78e4c79c0392e3566591ff2d7b1261d7962595def1d995b7a43436b23ffc6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-5WnnKg/run.json",
+          "bytes": 6282,
+          "sha256": "sha256:96f675bfdaa52687b2d2bce00128827ff96a3a251a0c38c30652f8837defa506"
+        }
+      ],
+      "failureReceipt": {
+        "path": "/private/tmp/still-shift-ms2-composition-v2-bvcRCc/failure.json",
+        "bytes": 636,
+        "sha256": "sha256:783a6203664ad7cb45824db69c02f8cdb47279535662618b41becbb88dc31482"
+      }
+    },
+    {
+      "id": "native2-routing-final-gate-4",
+      "status": "passed-complete-fast-maintained-preview2-and-original-native",
+      "sourceCheckpoint": "996f2f7cc7531b5009dfb45685d3fc6004f39bff",
+      "sourceState": "working-normal-composition-preview2-slice",
+      "actualRootSession": 67583,
+      "actualExitCode": 0,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-routing-inputs-10.json",
+        "bytes": 410527,
+        "sha256": "sha256:5313229d2a9d305714588a7a553cc42cfcb999a067bd20f51e15c20e78a3cd08",
+        "files": 2406,
+        "inputBytes": 118289027,
+        "sourceCommit": "996f2f7cc7531b5009dfb45685d3fc6004f39bff"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-format-10.log",
+          "bytes": 46,
+          "sha256": "sha256:fd8d3eff448105102bc4e1769642320bdbda6e937dc89ca303eaf4f19fb1d008"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-fast-4.log",
+          "bytes": 31496,
+          "sha256": "sha256:b5725a508033b36e211786e9f39bc8ab329dc4eacd0463b48aeefc1dd92ea1c0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-shapes-browser-4.log",
+          "bytes": 906,
+          "sha256": "sha256:29a278948210424f9b4da67970da48c7022c3a01a0c73972e0fd5fda1531a98c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-routing-original-depth-4.log",
+          "bytes": 538,
+          "sha256": "sha256:f73717e7574e919d7ee61c62ef88037bff6966659c3377375776d37657601469"
+        }
+      ],
+      "qualification": "Child-stage exits inferred from required shell &&; one actual aggregate terminal receipt, no separate child session handles.  Final complete fast and all four maintained actual native2 browser suites pass. Prior focused54/5 is retained separately with source9. Source inventory remains unchanged after checks. Default collection-free preview still awaits mandatory source2 proof, fractional contribution order and mixed1/2 inset and preserved cut verify, failed/aborted output pixels remain unreadable. No authenticated export2, reusable family, pilot or human acceptance claimed.",
+      "terminalObservedAtUTC": "2026-10-10T21:15:54Z",
+      "unitTests": 4036,
+      "unitFiles": 393,
+      "unitReportedSeconds": 42.17,
+      "previousFocusedVerification": "native2-routing-browser-cut-fixture-3",
+      "browserReceipts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-E408Xd/run.json",
+          "bytes": 2976,
+          "sha256": "sha256:a3713fd624626a56abe9518e89ca38fd644960902eb75652df8b22f7b2877309"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-V1gv8l/run.json",
+          "bytes": 7870,
+          "sha256": "sha256:a5f78e4c79c0392e3566591ff2d7b1261d7962595def1d995b7a43436b23ffc6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-71zvV7/run.json",
+          "bytes": 6282,
+          "sha256": "sha256:96f675bfdaa52687b2d2bce00128827ff96a3a251a0c38c30652f8837defa506"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-3z0NrK/run.json",
+          "bytes": 84759,
+          "sha256": "sha256:4f05d1a715d6f19e47a48e16916eb55386b839efe1e46ddc2d2d99ed291ec17d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms1n-native-depth-FWrBTL/report.json",
+          "bytes": 56712,
+          "sha256": "sha256:8b21de56445b2b9906cf9fbe7b03c65e4b7d9d4e6c3fe1e2e8cd1e1e26889dda"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms1n-native-depth-FWrBTL/composition-integration-report.json",
+          "bytes": 419656,
+          "sha256": "sha256:4be563dc2e0dde3c6cd0795938eabe0d8fe562584e9ced91291d12b68f935382"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms1n-native-depth-FWrBTL/required-native-proof-reports.json",
+          "bytes": 164,
+          "sha256": "sha256:98ada04abc15b8b5e264b78b4a0d6baf194e57e90ff6ee8c45f593985437ad49"
+        },
+        {
+          "path": "/private/tmp/still-shift-native-export-cancel-6CXCVI/report.json",
+          "bytes": 4955,
+          "sha256": "sha256:a08ca5a71e059f27e0e7cd3b2382f9d810f2c61d135613c96fd33c2f320309d1"
+        }
+      ],
+      "browserFrames": {
+        "ownedWorld": 5,
+        "usedStreams": 6,
+        "standaloneFullFrame": 8,
+        "compositionOutputFrames": 4,
+        "compositionContributingPasses": 24,
+        "compositionFrame2Passes": 9,
+        "compositionFrame1Passes": 15
+      },
+      "browserNegatives": {
+        "usedStreams": 11,
+        "standaloneFullFrame": 4,
+        "composition": 15
+      },
+      "independentNodeChecks": {
+        "fullFrames": 8,
+        "positionedAnchors": 58,
+        "notDrawnAnchors": 6,
+        "matrices": "unchanged-1e-8",
+        "pixels": "unchanged-0.5px",
+        "landmarks": "exact-independent-packed-float32-means"
+      },
+      "originalNativeCases": 14,
+      "originalCompositionIntegrationCases": 5,
+      "originalCancellation": "passed",
+      "appearanceClosure": {
+        "firstParty": 375,
+        "external": 79
+      }
     }
   ],
   "implementation": {
     "firstSlice": "Completed standalone reusable rig/teaching-shape contracts. All 11 focused negatives/admission checks and fresh complete fast3 gate (3928 units/383 files) pass; earlier closure and optional-type failures retained.",
-    "runtimeSupport": "versioned-core-native2-catalogue-and-standalone-observation-verified-normal-render-export-not-integrated",
+    "runtimeSupport": "normal-native2-core-composition-preview-verified-authenticated-export2-and-lab-integration-pending",
     "supportedPacks": [],
     "pilotSupportedEpisodes": 0,
     "secondSlice": "Completed strict scene2/frame2 declarations, dependency/ownership and generated-landmark checks, aggregate changing geometry budgets and pack references. Focused12, TypeScript build and fresh fast2 pass (3940 units/385 files); failed formatting attempt retained. Pure evaluation and integration remain required.",
@@ -2041,10 +2564,42 @@
         "originalCancellation": "passed"
       },
       "remaining": "Normal Node source loading, composition sampling/render/preflight/preview/export dispatch and authenticated observation2 ledger/row replay remain unconnected. Fixture raw hashes stand for separately verified original-byte identity; the catalogue tests do not perform file IO or export. Three mechanism families and all remaining MS2 requirements stay open."
+    },
+    "tenthSlice": {
+      "status": "implemented-and-verified-normal-source-io-graph-and-async-core-preview",
+      "interfaces": [
+        "normal Node source reader checks original raw bytes/hash/format/32MiB before explicit mixed transport2 and catalogue preparation",
+        "normal graph samples explicit frame1/frame2 with owning fractional clocks",
+        "renderFrameAsync/renderCompositionFrameAsync complete actual used-byte and numeric-seal proof before returning; original synchronous renderFrame remains for source1",
+        "nativeObservationsV2 preserves invocation order across mixed actual frames; declared unused scene2 yields empty version2 sample array",
+        "default source2 preview finalizes mandatory proof even without output packet collection; readPixels rejects before/during/after failed or disposed completion",
+        "prospective graph/packet admission64 passes/1MiB before frame draw, bounded metadata templates/collector/queued runtime controls; abort/receipt/world lifecycle invalidates pending captures",
+        "native physical paint identity includes current Float32 changing positions/normals; original paint serialization and missing-preparation diagnostics retained",
+        "existing E01/inspector/export1 adapters explicitly require original source protocol; scene2 export rejects until its own authenticated execution ledger exists"
+      ],
+      "verification": {
+        "focusedTests": 54,
+        "unitTests": 4036,
+        "unitFiles": 393,
+        "appearanceClosure": {
+          "firstParty": 375,
+          "external": 79
+        },
+        "standaloneFrames": 8,
+        "compositionOutputFrames": 4,
+        "compositionContributingPasses": 24,
+        "compositionFrame2Passes": 9,
+        "compositionFrame1Passes": 15,
+        "strictCompositionNegatives": 15,
+        "originalNativeCases": 14,
+        "originalCompositionIntegrationCases": 5,
+        "originalCancellation": "passed"
+      },
+      "remaining": "Core preview API verified. Lab playback/inspector and generic export-page consumers still require version2 integration. Execution/envelope/sink/manifest/row closure2 authentication, whole-world admission before PMREM/GPU allocations, three product packs, import/camera/label/cue/typography/board and full MS2 acceptance remain. Output packet files are contract examples, not export ledger records; no product/pilot/human pass."
     }
   },
   "limits": [
-    "Native2 preparation/expected snapshots and standalone owned browser worlds are verified. Independent changing GPU observations, scene2 composition/export dispatch, product packs, import/camera/label/cue and scoped typography remain required.",
+    "Normal native2 file IO, explicit graph sampling, prospective output admission and async core composition preview are verified. Version2 Lab playback, authenticated export execution/ledger/closure, whole-world preflight and product packs/import/camera/label/cue/scoped typography remain required.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

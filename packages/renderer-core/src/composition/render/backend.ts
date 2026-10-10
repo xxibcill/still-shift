@@ -75,6 +75,8 @@ export interface RenderBackend<S extends Surface = Surface> {
   /** Optional retained-frame lifecycle; effects and exposure may request a full repaint. */
   beginFrame?(root: SurfaceNode): void;
   endFrame?(completed: boolean): void;
+  /** Complete owned native evidence before exposing a successful asynchronous frame. */
+  completeNativeFrame?(): Promise<void>;
   /** Optional canonical pixel identity for retained backend content. */
   frameKey?(root: SurfaceNode): string;
   /** An explicitly owned canonical key, retained only while its frame is cached. */

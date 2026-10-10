@@ -23,7 +23,7 @@ import type {
   CompositionDiagnostic,
   CompositionPreparedMedia,
   CompositionPreparedAudio,
-  CompositionPreparedNative3D,
+  CompositionPreparedNative3DVersions,
   NativeAppearanceCodeIdentity,
 } from "@still-shift/scene-contract";
 import { CompositionProgramError, programError } from "./errors.ts";
@@ -53,7 +53,7 @@ export type ProgramSnapshot = {
   assets: Record<string, string>;
   preparedMedia?: CompositionPreparedMedia;
   preparedAudio?: CompositionPreparedAudio;
-  preparedNative3D?: CompositionPreparedNative3D;
+  preparedNative3D?: CompositionPreparedNative3DVersions;
   nativeAppearanceCodeIdentity?: NativeAppearanceCodeIdentity;
   nativeAppearanceCodeSha256?: string;
   diagnostics: CompositionDiagnostic[];

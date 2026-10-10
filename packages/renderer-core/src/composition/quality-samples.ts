@@ -36,7 +36,7 @@ import {
   resolveDisplayedText,
 } from "../typography-transition.ts";
 import { typographyClock } from "./render/text-clock.ts";
-import { resolveNative3DVariant } from "../native3d/prepare.ts";
+import { resolveNative3DVariantVersions } from "../native3d/catalogue-versions.ts";
 
 export type CompositionQualitySample = {
   id: string;
@@ -293,7 +293,10 @@ function nativePaintState(
     (state.layer.type !== "native3d" && binding?.role !== "world-graphic")
   )
     return undefined;
-  const variant = resolveNative3DVariant(options.preparedNative3D, snapshot);
+  const variant = resolveNative3DVariantVersions(
+    options.preparedNative3D,
+    snapshot,
+  );
   const materials = new Map(
     variant.source.geometry.materials.map((material) => [
       material.id,
@@ -322,7 +325,21 @@ function nativePaintState(
     ),
   ].sort();
   return [
-    "native-paint-1",
+    snapshot.version === "native3d-frame-2"
+      ? "native-paint-2"
+      : "native-paint-1",
+    ...(snapshot.version === "native3d-frame-2"
+      ? [
+          Object.values(snapshot.frame.shapeStates)
+            .filter((shape) => snapshot.frame.parts[shape.ownerPart]!.visible)
+            .map((shape) => [
+              shape.shape,
+              shape.topologySha256,
+              shape.positions.map(Math.fround),
+              shape.normals.map(Math.fround),
+            ]),
+        ]
+      : []),
     snapshot.effectiveSceneSha256,
     snapshot.geometrySha256,
     snapshot.viewport,

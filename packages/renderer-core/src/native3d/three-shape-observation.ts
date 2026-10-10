@@ -89,6 +89,7 @@ function createNativeThreeObservationOwner(
   world: NativeThreeWorldV2,
   variant: PreparedNative3DVariantV2,
   appearanceCodeSha256?: string,
+  queued = false,
 ) {
   if (appearanceCodeSha256 !== undefined)
     MechanismHashSchema.parse(appearanceCodeSha256);
@@ -116,7 +117,15 @@ function createNativeThreeObservationOwner(
         );
       busy = true;
       activeContexts.add(context);
-      const invocation = ++generation,
+      let contextHeld = true;
+      const releaseContext = () => {
+        if (contextHeld) {
+          contextHeld = false;
+          busy = false;
+          activeContexts.delete(context);
+        }
+      };
+      const invocation = queued ? generation : ++generation,
         memory = renderMemory();
       let draws: ReturnType<typeof captureNativeShapeDraws> | undefined;
       let frameKeyBytes: Uint8Array<ArrayBuffer> | undefined;
@@ -273,6 +282,9 @@ function createNativeThreeObservationOwner(
                   triangles: renderer.info.render.triangles,
                 },
               );
+        // Queued compositing owns immutable used bytes/numeric state now. Subsequent
+        // synchronous draws may use GL while each invocation finalizes its own hashes.
+        if (queued) releaseContext();
         const shapes: Record<string, NativeObservedShape> = Object.create(null);
         for (const entry of draws.shapes) {
           assertLive();
@@ -410,8 +422,7 @@ function createNativeThreeObservationOwner(
           }
         }
       }
-      busy = false;
-      activeContexts.delete(context);
+      releaseContext();
       if (primaryFailure) {
         try {
           publishedRelease?.();
@@ -466,6 +477,42 @@ export function createNativeThreeFrameObservationV2(
     world,
     variant,
     appearanceCodeSha256,
+  );
+  return {
+    dispose: owner.dispose,
+    async capture(
+      input: DeepReadonly<NativeFrameSnapshotV2>,
+      options: { signal?: AbortSignal } = {},
+    ): Promise<NativeThreeFrameObservationResultV2> {
+      const result = await owner.capture(input, options);
+      return {
+        get receipt() {
+          const receipt = result.receipt;
+          if (receipt.version !== "native3d-observed-frame-2")
+            throw Error(
+              "comp-native3d-observation: wrong observation owner kind",
+            );
+          return receipt;
+        },
+        dispose: result.dispose,
+      };
+    },
+  };
+}
+
+/** Synchronous sealed draws with independently owned queued finalization. */
+export function createNativeThreeQueuedFrameObservationV2(
+  renderer: WebGLRenderer,
+  world: NativeThreeWorldV2,
+  variant: PreparedNative3DVariantV2,
+  appearanceCodeSha256: string,
+) {
+  const owner = createNativeThreeObservationOwner(
+    renderer,
+    world,
+    variant,
+    appearanceCodeSha256,
+    true,
   );
   return {
     dispose: owner.dispose,

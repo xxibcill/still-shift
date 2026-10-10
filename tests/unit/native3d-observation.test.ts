@@ -1,4 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { createNativeObservationCollectorV2 } from "../../packages/renderer-core/src/native3d/observations-v2.ts";
+import { ManagedMemory } from "../../packages/renderer-core/src/managed-memory.ts";
+import { withManagedMemory } from "../../packages/renderer-core/src/managed-memory-context.ts";
 import {
   NativeObservedFrameSchema,
   NativeObservedOutputFrameSchema,
@@ -211,5 +214,103 @@ describe("appearance source closure", () => {
         runtimeFormat: "source-ts-or-installed",
       }).success,
     ).toBe(false);
+  });
+});
+
+describe("mixed asynchronous output observation ownership", () => {
+  it("preserves invocation order when hashes finish in reverse order", async () => {
+    const first = NativeObservedFrameSchema.parse({
+      ...observation(),
+      frameKey: "first",
+    });
+    const second = NativeObservedFrameSchema.parse({
+      ...observation(),
+      frameKey: "second",
+    });
+    let resolveFirst!: (value: typeof first) => void;
+    const pending = new Promise<typeof first>((resolve) => {
+      resolveFirst = resolve;
+    });
+    const collector = createNativeObservationCollectorV2();
+    try {
+      collector.begin();
+      collector.observe(pending, 1.25);
+      collector.observe(second, 1.75);
+      const finished = collector.finish();
+      resolveFirst(first);
+      const passes = await finished;
+      expect(
+        passes.map((pass) => [
+          pass.sampleIndex,
+          pass.sampleFrame,
+          pass.observed.version === "native3d-observed-frame-1"
+            ? pass.observed.frameKey
+            : null,
+        ]),
+      ).toEqual([
+        [0, 1.25, "first"],
+        [1, 1.75, "second"],
+      ]);
+      expect(Object.isFrozen(passes)).toBe(true);
+    } finally {
+      collector.dispose();
+    }
+  });
+  it("keeps the earliest assigned failure and rejects completion after abort", async () => {
+    const collector = createNativeObservationCollectorV2();
+    try {
+      collector.begin();
+      collector.observe(Promise.reject(Error("first assigned")), 0);
+      collector.observe(Promise.reject(Error("second assigned")), 0.5);
+      await expect(collector.finish()).rejects.toThrow("first assigned");
+      collector.begin();
+      collector.observe(NativeObservedFrameSchema.parse(observation()), 0);
+      const pending = collector.finish();
+      collector.abort();
+      await expect(pending).rejects.toThrow("aborted or disposed");
+      await expect(collector.finish()).rejects.toThrow("No active");
+    } finally {
+      collector.dispose();
+    }
+    expect(() => collector.begin()).toThrow("disposed");
+  });
+  it("enforces the admitted byte and pass capacity", async () => {
+    const collector = createNativeObservationCollectorV2(),
+      value = NativeObservedFrameSchema.parse(observation());
+    try {
+      collector.begin(300);
+      collector.observe(value, 0);
+      await expect(collector.finish()).rejects.toThrow("admitted capacity");
+      collector.begin();
+      for (let at = 0; at < 64; at++) collector.observe(value, at);
+      expect(() => collector.observe(value, 64)).toThrow("pass");
+      collector.abort();
+      for (const limit of [0, NaN, Infinity, 1048577])
+        expect(() => collector.begin(limit)).toThrow("capacity");
+    } finally {
+      collector.dispose();
+    }
+  });
+  it("admits metadata before collection and retires it on disposal", async () => {
+    const memory = new ManagedMemory({ pixels: 1, metadata: 9000000 });
+    await withManagedMemory(memory, async () => {
+      const collector = createNativeObservationCollectorV2();
+      collector.begin();
+      expect(memory.statistics.current.metadata).toBeGreaterThan(1048576);
+      collector.observe(NativeObservedFrameSchema.parse(observation()), 0);
+      await collector.finish();
+      collector.dispose();
+      expect(memory.statistics.current.metadata).toBe(0);
+    });
+    memory.dispose();
+    const insufficient = new ManagedMemory({ pixels: 1, metadata: 200000 });
+    await withManagedMemory(insufficient, async () => {
+      const collector = createNativeObservationCollectorV2();
+      expect(() => collector.begin()).toThrow();
+      await expect(collector.finish()).rejects.toThrow("No active");
+      collector.dispose();
+      expect(insufficient.statistics.current.metadata).toBe(0);
+    });
+    insufficient.dispose();
   });
 });

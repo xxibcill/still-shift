@@ -9,7 +9,7 @@ import {
   type Composition,
   type CompositionPreparedMedia,
   type CompositionPreparedAudio,
-  type CompositionPreparedNative3D,
+  type CompositionPreparedNative3DVersions,
   type NativeAppearanceCodeIdentity,
 } from "../../../packages/scene-contract/src/index.ts";
 import {
@@ -404,7 +404,7 @@ async function load(
     let capture: {
       preparedMedia?: CompositionPreparedMedia;
       preparedAudio?: CompositionPreparedAudio;
-      preparedNative3D?: CompositionPreparedNative3D;
+      preparedNative3D?: CompositionPreparedNative3DVersions;
       nativeAppearanceCodeIdentity?: NativeAppearanceCodeIdentity;
       nativeAppearanceCodeSha256?: string;
       assets: Record<string, string>;

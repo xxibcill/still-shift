@@ -8,7 +8,7 @@ import {
   type CompositionDiagnostic,
   type CompositionPreparedMedia,
   type CompositionPreparedAudio,
-  type CompositionPreparedNative3D,
+  type CompositionPreparedNative3DVersions,
   type NativeAppearanceCodeIdentity,
 } from "@still-shift/scene-contract";
 import {
@@ -55,7 +55,7 @@ export type CompositionSource = {
   assetPaths: Record<string, string>;
   preparedMedia?: CompositionPreparedMedia;
   preparedAudio?: CompositionPreparedAudio;
-  preparedNative3D?: CompositionPreparedNative3D;
+  preparedNative3D?: CompositionPreparedNative3DVersions;
   native3D?: CompositionNative3DPreparation["native3D"];
   nativeAppearanceCodeIdentity?: NativeAppearanceCodeIdentity;
   nativeAppearanceCodeSha256?: string;

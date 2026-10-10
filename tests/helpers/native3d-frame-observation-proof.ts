@@ -8,7 +8,10 @@ import type {
 import { prepareNative3DSceneV2 } from "../../packages/renderer-core/src/native3d/prepare-v2.ts";
 import { sampleNativeFrameV2 } from "../../packages/renderer-core/src/native3d/evaluate-v2.ts";
 import { createNativeThreeWorldV2 } from "../../packages/renderer-core/src/native3d/three-world.ts";
-import { createNativeThreeFrameObservationV2 } from "../../packages/renderer-core/src/native3d/three-shape-observation.ts";
+import {
+  createNativeThreeFrameObservationV2,
+  createNativeThreeQueuedFrameObservationV2,
+} from "../../packages/renderer-core/src/native3d/three-shape-observation.ts";
 import { ManagedMemory } from "../../packages/renderer-core/src/managed-memory.ts";
 import { withManagedMemory } from "../../packages/renderer-core/src/managed-memory-context.ts";
 
@@ -223,6 +226,55 @@ export async function nativeFrameObservationProofV2(
         throw Error("Full-frame receipt did not retire");
     });
     memory.dispose();
+    const queued = createNativeThreeQueuedFrameObservationV2(
+      renderer,
+      world,
+      variant,
+      appearanceCodeSha256,
+    );
+    try {
+      const pending = [a, b].map((snapshot, index) => {
+        apply(snapshot);
+        const result = queued.capture(snapshot);
+        const rgba = new Uint8Array(320 * 180 * 4);
+        gl.readPixels(0, 0, 320, 180, gl.RGBA, gl.UNSIGNED_BYTE, rgba);
+        if (gl.getError() !== gl.NO_ERROR)
+          throw Error("Queued color read failed");
+        const pngBase64 = canvas.toDataURL("image/png").split(",")[1]!;
+        // Reserve error ownership immediately while the next synchronous pass draws.
+        void result.then(
+          () => {},
+          () => {},
+        );
+        return {
+          id: index === 0 ? "queued-a" : "queued-b",
+          result,
+          rgba,
+          pngBase64,
+        };
+      });
+      const settled = await Promise.allSettled(
+        pending.map((entry) => entry.result),
+      );
+      for (const [index, outcome] of settled.entries()) {
+        if (outcome.status === "rejected") throw outcome.reason;
+        const entry = pending[index]!;
+        try {
+          captures.push({
+            id: entry.id,
+            receipt: JSON.parse(
+              JSON.stringify(outcome.value.receipt),
+            ) as NativeObservedFrameV2,
+            rgba: Array.from(entry.rgba),
+            pngBase64: entry.pngBase64,
+          });
+        } finally {
+          outcome.value.dispose();
+        }
+      }
+    } finally {
+      queued.dispose();
+    }
     if (
       gl.drawElements !== originalDraw ||
       pawl.onAfterRender !== originalAfter
