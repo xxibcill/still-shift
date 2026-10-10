@@ -55,6 +55,7 @@ still hold before relying on them.
   negatives and legal-reverse restoration. Lab1 camera/part/material passes; label
   is off-canvas due to fixture group anchoring, now explicitly corrected with
   retained region checks. Lab2 now passes all7 actual edit/save/reload captures.
+  Real native abort1 passes actualupload,6process exits/port refusal/nonpublication.
   Full696/native repeat/hardware/installed proofs and
   all77 groups/176 unchanged baselines remain pending; human playback/listening
   is separate. [Design](./mechanism-shorts-ms1n-design.md),
@@ -185,6 +186,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Composed native graph proof checkpoint and real abort pass
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, from `b9bb7849`.
+- **Results:** real native cancellation1 passes after one actual accepted packet
+  and complete pixel upload; original abort reason,6 observed process exits,
+  refused port and no final/temporary publication verified. Scoped fixture receipt.
+- **Done:** maintained five-family graph fixture closes actual cropped artwork,
+  clipping, nonuniform normals, reused seeks and nested fractional exposure gaps.
+  Existing14 direct depth cases and77 required groups stay intact.
+- **Review / checks:** radians fixture corrected; far plane now has independent
+  visible positive/hidden-physical-mesh controls. Focused lint2/full build3 pass.
+- **Next:** execute graph fixtures, then full native696/repeat/hardware/installed
+  and required local gates. [Results](./mechanism-shorts-ms1n-results.json).
 
 ### 2026-10-10 — Actual native Lab edits and cancellation fixture checkpoint
 

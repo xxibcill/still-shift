@@ -754,6 +754,44 @@
       },
       "actualCanvasStates": 7,
       "scope": "Actual public builder/CLI authoring and real Lab controls. Camera, physical part, PBR and current visible text-state edits each change actual pixels; boundedlabel-region ink/hash, independent PNG/raw readback and exact source/font preservation pass. UI Save/reload retains exact persisted recipe and identicalfinalpixels. Original off-canvasfixture failure retained; pure sample metadata is not GPU evidence. Eight-framefixture does not establish30-frameholds/encodedreadability/humanreview."
+    },
+    {
+      "id": "native-cancellation-proof-1",
+      "status": "passed",
+      "sourceCommit": "b9bb7849",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-cancellation-proof-1.log",
+        "bytes": 3969,
+        "sha256": "sha256:4d7b7b9d2405ba547bfd945841d082ee89da53b94b93dcae5a5c1efaf3dd2db5"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-native-export-cancel-Bixk2v/report.json",
+        "bytes": 4623,
+        "sha256": "sha256:8c947b7f325e850d65e85666369a5547a349ed3d6fb8599c0161f9fe6e459e8d"
+      },
+      "scope": "One real32x32 indexed native frame: actual packet acceptedHTTP204/full4096-bytebody, explicit AbortController before sink commit; originalreason preserved,6 actualbrowser/encoder processes exit, exportport refuses, nofinal/temp/closure/results. Fixture-scopedcancelledreceipt, notproductcancelDTO orfullacceptance. Collector waited10.945ms; abort-to-settle17.186ms."
+    },
+    {
+      "id": "native-integration-lint-2",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-integration-lint-2.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "scope": "Stationary formatted graph helper/callsite after independent radians and far-plane isolated-positive fixture repairs."
+    },
+    {
+      "id": "native-integration-build-3",
+      "status": "passed",
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-integration-build-3.log",
+        "bytes": 98,
+        "sha256": "sha256:d692138239ef8ac30d14f7300b94fb74af1142431e00e32c5d200573877c2902"
+      },
+      "scope": "Fresh full TypeScript after every integration fixture correction; actual graph execution pending."
     }
   ],
   "implementationEvidence": {
@@ -857,6 +895,14 @@
       "actualLabBrowserProof": "passed-seven-actual-canvas-states-and-exact-save-reload-at-e0af6a8f",
       "boundedModuleDiagnostics": "Actual bootstrap failure events capped32/16KiB with sanitized512-character strings; unchanged30000ms deadline, no retry.",
       "independentReview": "No concrete CLI blockers; maintained Lab fixture corrected to include public builder identity transform without weakening exact JSON comparison."
+    },
+    "actualGraphAcceptance": {
+      "status": "maintained-fixtures-committed-before-execution",
+      "families": 5,
+      "currentDirectDepthCasesPreserved": 14,
+      "actualAbortProof": "passed-at-b9bb7849",
+      "independentReview": "Radiansunitcorrected;farplaneisolatedhiddenphysicalchildwithvisiblegraphicownerandactualpositivecontrol;nootherconcreteblocker.",
+      "gates": "Existingnative-depthrequiredgroup, no baseline changes/newgroups."
     }
   },
   "humanContinuousPlaybackListeningAndCreativeAcceptance": "pending",

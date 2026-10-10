@@ -13,6 +13,13 @@ import { canonicalMechanismJson } from "../../packages/renderer-core/src/mechani
 import { nativeSolidFixture } from "../helpers/native3d-fixture.ts";
 import type { NativeDepthArtifact } from "../helpers/native3d-depth-reference.ts";
 import type * as Reference from "../helpers/native3d-depth-reference.ts";
+import type * as Integration from "../helpers/native3d-composition-integration.ts";
+import {
+  loadNativeAppearanceCodeIdentity,
+  hashNativeAppearanceCodeIdentity,
+  assertNativeAppearanceCodeIdentity,
+} from "../../packages/animation-engine/src/native3d-appearance-identity.ts";
+import { runNativeExportCancellationProof } from "../helpers/native3d-export-cancellation.ts";
 
 const sha256 = (bytes: Uint8Array | string) =>
   createHash("sha256").update(bytes).digest("hex");
@@ -99,6 +106,17 @@ export async function runNativeDepthProof() {
   await server.listen();
   const browser = await launchRenderBrowser();
   const artifacts: unknown[] = [];
+  const integrationArtifacts: unknown[] = [];
+  let integrationBytes = 0;
+  let completed:
+    | {
+        directory: string;
+        report: Awaited<ReturnType<typeof Reference.checkNativeDepthReference>>;
+        integrationReport: Awaited<
+          ReturnType<typeof Integration.checkNativeCompositionIntegration>
+        >;
+      }
+    | undefined;
   try {
     const page = await browser.newPage();
     await page.addInitScript("window.__name=(fn)=>fn;");
@@ -128,6 +146,45 @@ export async function runNativeDepthProof() {
           JSON.stringify(receipt, null, 2) + "\n",
         );
         artifacts.push(receipt);
+      },
+    );
+    await page.exposeFunction(
+      "__retainNativeComposition",
+      async (artifact: NativeDepthArtifact) => {
+        const { rgba, ...facts } = artifact;
+        let pixelEvidence: unknown;
+        if (rgba) {
+          assert.equal(rgba.length, 128 * 128 * 4);
+          const bytes = new Uint8Array(rgba);
+          integrationBytes += bytes.length;
+          assert(integrationBytes <= 4 * 1024 * 1024);
+          await writeFile(
+            join(directory, "artifacts", artifact.id + ".rgba"),
+            bytes,
+            { flag: "wx" },
+          );
+          pixelEvidence = {
+            path: `artifacts/${artifact.id}.rgba`,
+            sha256: "sha256:" + sha256(bytes),
+            bytes: bytes.length,
+          };
+        }
+        const receipt = {
+          ...facts,
+          ...(pixelEvidence ? { pixels: pixelEvidence } : {}),
+        };
+        await writeFile(
+          join(directory, "artifacts", artifact.id + ".json"),
+          JSON.stringify(receipt, null, 2) + "\n",
+          { flag: "wx" },
+        );
+        integrationArtifacts.push(receipt);
+        if (pixelEvidence)
+          assert.equal(
+            (artifact.facts as { pixelSha256: string }).pixelSha256,
+            (pixelEvidence as { sha256: string }).sha256,
+            "Actual frame observation facts must pair with independently hashed retained readback bytes",
+          );
       },
     );
     await page.goto(server.resolvedUrls!.local[0]!);
@@ -172,7 +229,102 @@ export async function runNativeDepthProof() {
         reportSha256: sha256(await readFile(join(directory, "report.json"))),
       }),
     );
-    return { directory, report };
+    // Keep the original 14-case oracle packet intact. The graph integration
+    // packet records its own authored source/font/code identity and actual bytes.
+    const appearanceCodeIdentity = await loadNativeAppearanceCodeIdentity();
+    const fontPath = "assets/story-motion/fonts/plex-sans-semibold.ttf";
+    const integrationInput: Integration.NativeCompositionIntegrationInput = {
+      ...inputs[0]!,
+      appearanceCodeIdentity,
+      font: {
+        url: "/" + fontPath,
+        sha256: "sha256:" + sha256(await readFile(join(root, fontPath))),
+      },
+    };
+    const integrationSources = await Promise.all(
+      [
+        "tests/helpers/native3d-composition-integration.ts",
+        "tests/browser/native3d-depth-proof.ts",
+      ].map(async (path) => ({
+        path,
+        sha256: "sha256:" + sha256(await readFile(join(root, path))),
+      })),
+    );
+    await writeFile(
+      join(directory, "composition-integration-inputs.json"),
+      JSON.stringify(
+        {
+          input: integrationInput,
+          sources: integrationSources,
+          appearanceCodeSha256: hashNativeAppearanceCodeIdentity(
+            appearanceCodeIdentity,
+          ),
+          bounds: { width: 128, height: 128, pixelBytes: 4 * 1024 * 1024 },
+        },
+        null,
+        2,
+      ) + "\n",
+      { flag: "wx" },
+    );
+    await page.addScriptTag({
+      type: "module",
+      content:
+        'import * as proof from "/tests/helpers/native3d-composition-integration.ts";globalThis.__nativeCompositionProof=proof;',
+    });
+    await page.waitForFunction("Boolean(globalThis.__nativeCompositionProof)");
+    const integrationReport = await page.evaluate(async (serialized) => {
+      const host = globalThis as typeof globalThis & {
+        __nativeCompositionProof: typeof Integration;
+        __retainNativeComposition: (
+          artifact: NativeDepthArtifact,
+        ) => Promise<void>;
+      };
+      return host.__nativeCompositionProof.checkNativeCompositionIntegration(
+        JSON.parse(serialized) as Integration.NativeCompositionIntegrationInput,
+        host.__retainNativeComposition,
+      );
+    }, JSON.stringify(integrationInput));
+    assert.equal(integrationReport.cases.length, 5);
+    await assertNativeAppearanceCodeIdentity(appearanceCodeIdentity);
+    assert.equal(
+      "sha256:" + sha256(await readFile(join(root, fontPath))),
+      integrationInput.font.sha256,
+      "Pinned artwork font bytes must remain unchanged before publication",
+    );
+    for (const source of integrationSources)
+      assert.equal(
+        "sha256:" + sha256(await readFile(join(root, source.path))),
+        source.sha256,
+        "Executed graph fixture sources must remain unchanged before publication",
+      );
+    await writeFile(
+      join(directory, "composition-integration-report.json"),
+      JSON.stringify(
+        {
+          status: "passed",
+          ...integrationReport,
+          sources: integrationSources,
+          artifacts: integrationArtifacts,
+          pixelBytes: integrationBytes,
+        },
+        null,
+        2,
+      ) + "\n",
+      { flag: "wx" },
+    );
+    console.log(
+      JSON.stringify({
+        directory,
+        status: "passed",
+        compositionIntegrationCases: integrationReport.cases.length,
+        reportSha256: sha256(
+          await readFile(
+            join(directory, "composition-integration-report.json"),
+          ),
+        ),
+      }),
+    );
+    completed = { directory, report, integrationReport };
   } catch (error) {
     await writeFile(
       join(directory, "failed.json"),
@@ -182,6 +334,7 @@ export async function runNativeDepthProof() {
           message: error instanceof Error ? error.message : String(error),
           sources,
           artifacts,
+          integrationArtifacts,
         },
         null,
         2,
@@ -192,6 +345,41 @@ export async function runNativeDepthProof() {
   } finally {
     await browser.close();
     await server.close();
+  }
+  // Export cancellation starts only after the depth browser/server are closed.
+  // Its own real-worker report remains separate; a rejection fails this group.
+  try {
+    const cancellation = await runNativeExportCancellationProof();
+    assert(completed);
+    await writeFile(
+      join(directory, "required-native-proof-reports.json"),
+      JSON.stringify(
+        {
+          status: "passed",
+          depthCases: completed.report.cases.length,
+          compositionIntegrationCases: completed.integrationReport.cases.length,
+          cancellationDirectory: cancellation.directory,
+        },
+        null,
+        2,
+      ) + "\n",
+      { flag: "wx" },
+    );
+    return { ...completed, cancellation };
+  } catch (error) {
+    await writeFile(
+      join(directory, "cancellation-failed.json"),
+      JSON.stringify(
+        {
+          status: "failed",
+          message: error instanceof Error ? error.message : String(error),
+        },
+        null,
+        2,
+      ) + "\n",
+      { flag: "wx" },
+    );
+    throw error;
   }
 }
 if (
