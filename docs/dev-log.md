@@ -54,7 +54,8 @@ still hold before relying on them.
   passes476ms, cause unknown. Fresh preview3 passes all8 actual previews,5
   negatives and legal-reverse restoration. Lab1 camera/part/material passes; label
   is off-canvas due to fixture group anchoring, now explicitly corrected with
-  retained region checks. Actual Lab/full696/native repeat/hardware/installed proofs and
+  retained region checks. Lab2 now passes all7 actual edit/save/reload captures.
+  Full696/native repeat/hardware/installed proofs and
   all77 groups/176 unchanged baselines remain pending; human playback/listening
   is separate. [Design](./mechanism-shorts-ms1n-design.md),
   [results](./mechanism-shorts-ms1n-results.json).
@@ -184,6 +185,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Actual native Lab edits and cancellation fixture checkpoint
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, from `e0af6a8f`.
+- **Results:** real Lab2 passes7 captures; all4 edits change actual pixels and
+  Save/reload preserves exact recipe and final pixel identity. Original scene,
+  mesh and font remain unchanged; earlier off-canvas fixture failure retained.
+- **Done:** bounded real native export-abort fixture, independently reviewed and
+  lint/type checked; actual run remains pending. Collector awaits actual packet,
+  acknowledged response and body events before its abort assertions.
+- **Next:** real abort/cleanup and composed-graph proofs, then native696 repeat,
+  hardware, installed lifecycle and all77 local groups/176 unchanged baselines.
+- **Limits:** Lab fixture is8 frames; no encoded readability/full holds or human
+  visual/listening acceptance inferred. [Results](./mechanism-shorts-ms1n-results.json).
 
 ### 2026-10-10 — Native preview sequence and Lab fixture correction
 

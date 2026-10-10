@@ -737,6 +737,23 @@
         "sha256": "sha256:d692138239ef8ac30d14f7300b94fb74af1142431e00e32c5d200573877c2902"
       },
       "scope": "Full TypeScript after test-only SHA input widening; later radians/far-clipping fixture review corrections require final focused verification before graph execution."
+    },
+    {
+      "id": "native-lab-browser-2",
+      "status": "passed",
+      "sourceCommit": "e0af6a8f",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-native-lab-proof-2.log",
+        "bytes": 1664,
+        "sha256": "sha256:98fdafb158368e48cc55b5975678ce8ac6c3ec7e8e8008f70aed79c625a95256"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms1n-native-lab-proof-2/evidence.json",
+        "bytes": 43816,
+        "sha256": "sha256:e43eecde32ec5041401b79695ed309b0dd314fd7d5bf330b09498d39c0217b7b"
+      },
+      "actualCanvasStates": 7,
+      "scope": "Actual public builder/CLI authoring and real Lab controls. Camera, physical part, PBR and current visible text-state edits each change actual pixels; boundedlabel-region ink/hash, independent PNG/raw readback and exact source/font preservation pass. UI Save/reload retains exact persisted recipe and identicalfinalpixels. Original off-canvasfixture failure retained; pure sample metadata is not GPU evidence. Eight-framefixture does not establish30-frameholds/encodedreadability/humanreview."
     }
   ],
   "implementationEvidence": {
@@ -837,7 +854,7 @@
         "units": 6,
         "cliRuntimeTotal": 15
       },
-      "actualLabBrowserProof": "first-run-failed-off-canvas-fixture; explicit-anchor-and-visible-region-repair-committed-before-rerun",
+      "actualLabBrowserProof": "passed-seven-actual-canvas-states-and-exact-save-reload-at-e0af6a8f",
       "boundedModuleDiagnostics": "Actual bootstrap failure events capped32/16KiB with sanitized512-character strings; unchanged30000ms deadline, no retry.",
       "independentReview": "No concrete CLI blockers; maintained Lab fixture corrected to include public builder identity transform without weakening exact JSON comparison."
     }
