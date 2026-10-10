@@ -52,10 +52,11 @@ still hold before relying on them.
   Full `pnpm check` attempt 3 passes 3,771 units, 148 runtime, 318 integrations,
   14 Python tests and 61 required groups, then stops at Canvas story-visibility
   timing 1.351 against 1.25 with exact pixels. Unchanged focused rerun passes
-  1.144; cause remains unproven. Staged recovery now completes the whole strict
-  Story matrix (69 items/14,086 frames) and Commerce (127 items/28,200 frames plus
-  required repeated exports), covering 63 of 76 groups. The full cinematic matrix
-  is running; all remaining groups stay pending until actual successful exits.
+  1.144; cause remains unproven. Staged recovery now covers 75 of 76 groups,
+  including the strict Story/Commerce matrices, all 176 family defaults (36,061
+  frames), the fresh final 24-case encoded typography packet and portrait proof.
+  Packet source hashes match all 17 recorded files. Final 176-item baseline check
+  remains active; completion requires its actual successful exit and final log.
   Attempts 1–3, setup recoveries, consumer libproc exception and 29 intentional
   mask-baseline frame changes remain retained. Human playback/listening and MS1
   PR are pending; MS1N implementation waits for that PR. Original checkout edits
@@ -170,6 +171,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — MS1 fresh final typography packet and 75-group coverage
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1`; production/test inputs remain
+  `09ce824b`, with documentation-only follow-ups.
+- **Results:** sequential recovery completes all14 suffix groups through portrait.
+  All176 family defaults/36,061 frames pass their assigned tolerances. Fresh
+  hermetic24-case H.264 packet passes expected controls/negatives (2,832 frames,
+  158 native/reduced samples each); all17 actual source hashes match independently.
+- **Open / next:** group76 baseline check/session22389 remains active. Actual
+  terminal exit and final log digest are pending; earlier failed aggregate runs
+  remain failed. Human continuous playback/listening and MS1 PR remain pending.
+- **Records:** [gate history](./mechanism-shorts-ms1-full-gate-results.json),
+  [fresh typography packet](./mechanism-shorts-ms1-semantic-typography-results.json).
 
 ### 2026-10-10 — MS1 strict Story and Commerce recovery checkpoint
 

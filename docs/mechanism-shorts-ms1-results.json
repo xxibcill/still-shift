@@ -410,6 +410,21 @@
       "limit": 1.25,
       "details": "./mechanism-shorts-ms1-full-gate-results.json",
       "notes": "Prior timing cause remains unproven. Complete matrix plus14 downstream groups now run sequentially; staged completion will not be described as an uninterrupted pnpm check pass."
+    },
+    {
+      "command": "Unchanged required suffix through mechanism-portrait",
+      "status": "passed-in-stages-final-baseline-pending",
+      "codeCheckpoint": "09ce824b86e03b3e95616c9fb91b549b9c88845c",
+      "completedRequiredGroups": 75,
+      "familyDefaultItems": 176,
+      "familyDefaultFrames": 36061,
+      "freshSemanticPacket": {
+        "path": "/private/tmp/still-shift-ms1-semantic-typography-OFcEyi/result.json",
+        "sha256": "2a6aeb96b635739418c66cf33f736a8f11d23af2924820491614c4b604951454",
+        "bytes": 2174209
+      },
+      "details": "./mechanism-shorts-ms1-full-gate-results.json",
+      "notes": "Final baseline command is running; aggregate attempts1–3 remain failed and no uninterrupted pnpm check pass is claimed."
     }
   ],
   "renderEvidence": [
@@ -542,15 +557,15 @@
     {
       "command": "alpha independent edge negative",
       "reason": "Transparent MSAA PNG stored premultiplied RGB while declared straight alpha.",
-      "repair": "Use premultiplied context so canvas encoding restores straight alpha. Both native backend alpha oracles pass \u22641byte; source edge \u22641byte. Retained pre-fix artifacts."
+      "repair": "Use premultiplied context so canvas encoding restores straight alpha. Both native backend alpha oracles pass ≤1byte; source edge ≤1byte. Retained pre-fix artifacts."
     },
     {
       "command": "alpha PNG8 export oracle first run",
-      "reason": "Oracle omitted declared sRGB\u2192BT709 delivery transfer.",
+      "reason": "Oracle omitted declared sRGB→BT709 delivery transfer.",
       "repair": "Independent transfer oracle; both backend final PNG8 preview/export delta0 with tolerance1."
     },
     {
-      "command": "failure receipt test attempts1\u20133",
+      "command": "failure receipt test attempts1–3",
       "reason": "New tests assumed nonexistent diagnostic property/rows instead of documented summary and SCENE_INVALID exit2.",
       "repair": "Assert documented summary/fullreport and public exitcodes; four tests pass including discovered real top-level secret redaction regression."
     },

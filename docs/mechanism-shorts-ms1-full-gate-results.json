@@ -277,11 +277,23 @@
     ],
     "log": "/tmp/still-shift-ms1-remaining-required-groups-1.log",
     "notes": "The failed aggregate remains failed. Full story matrix and all14 downstream groups run sequentially without production/test changes. Only actual successful exits can close staged required-group coverage.",
-    "completedRequiredGroupsSoFar": 63,
-    "activeGroup": "test:browser:composition-cinematic-adapter",
+    "completedRequiredGroupsSoFar": 75,
+    "activeGroup": "test:browser:composition-baselines",
     "completedSuffixGroups": [
       "test:browser:composition-story-fixtures",
-      "test:browser:composition-commerce-adapter"
+      "test:browser:composition-commerce-adapter",
+      "test:browser:composition-cinematic-adapter",
+      "test:browser:composition-typography-adapter",
+      "test:browser:composition-provider-typography",
+      "test:browser:composition-program",
+      "test:browser:composition-inspector",
+      "test:browser:composition-builder",
+      "test:browser:composition-depth",
+      "test:browser:composition-legacy-adapter",
+      "test:browser:composition-family-timeline",
+      "test:browser:composition-family-defaults",
+      "test:browser:mechanism-typography",
+      "test:browser:mechanism-portrait"
     ],
     "completedSuffixEvidence": {
       "story": {
@@ -294,8 +306,40 @@
         "items": 127,
         "frames": 28200,
         "requiredRepeatExports": "passed; final export followed by next required group header"
+      },
+      "familyDefaults": {
+        "items": 176,
+        "frames": 36061,
+        "forwardFrozenReverse": "passed assigned tolerances; actual subsequent mechanism-typography header confirms successful exit"
+      },
+      "semanticTypography": {
+        "status": "passed-expected-controls-and-negatives",
+        "recordedAt": "2026-10-10T01:54:36.118980+00:00",
+        "sourceBasis": "hermetic-authored-contract",
+        "codeCheckpoint": "09ce824b86e03b3e95616c9fb91b549b9c88845c",
+        "reportSourceHead": "56de39f6d6594e091dc7998103d55d03f82f6121",
+        "report": {
+          "path": "/private/tmp/still-shift-ms1-semantic-typography-OFcEyi/result.json",
+          "sha256": "2a6aeb96b635739418c66cf33f736a8f11d23af2924820491614c4b604951454",
+          "bytes": 2174209
+        },
+        "caseCount": 24,
+        "encodedExports": 24,
+        "encodedFrames": 2832,
+        "sampledNativeFrames": 158,
+        "sampledReducedFrames": 158,
+        "sourceByteHashesIndependentlyVerified": 17,
+        "browserErrors": [],
+        "scope": "Declared copy and measured layer context plus actual H.264/native and 360-wide decoded states; no factual intermediate quantity assertion or human comprehension verdict",
+        "humanAcceptance": "pending",
+        "notes": "Fresh required-group run confirms the final tightened runner. Expected negative controls and legacy/unassessed cases retain their faults; packet success does not mean all compositions pass overall quality."
+      },
+      "portrait": {
+        "framesEach": 61,
+        "expectedControlsAndNegatives": "passed; subsequent baseline header confirms successful exit",
+        "maximumEndpointErrorPixels": 2.3437142008433856e-13
       }
     },
-    "progressEvidence": "Actual sequential next-group headers establish the first two suffix commands exited successfully. The remaining sequence/session22389 is still active; no final log digest or aggregate success is claimed."
+    "progressEvidence": "Actual sequential headers establish all14 suffix groups before the final baseline command exited successfully. Session22389 remains active at baseline group76; no terminal successful exit or final log digest is claimed."
   }
 }

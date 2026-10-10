@@ -13779,5 +13779,27 @@
     },
     "finerThaiSegmentation": "MS2 scoped independent-unit probe, not claimed by this packet",
     "factualQuantityTruth": "unassessed; no general automatic inference or fabricated E01 quantity values"
+  },
+  "requiredGatePacket": {
+    "status": "passed-expected-controls-and-negatives",
+    "recordedAt": "2026-10-10T01:54:36.118980+00:00",
+    "sourceBasis": "hermetic-authored-contract",
+    "codeCheckpoint": "09ce824b86e03b3e95616c9fb91b549b9c88845c",
+    "reportSourceHead": "56de39f6d6594e091dc7998103d55d03f82f6121",
+    "report": {
+      "path": "/private/tmp/still-shift-ms1-semantic-typography-OFcEyi/result.json",
+      "sha256": "2a6aeb96b635739418c66cf33f736a8f11d23af2924820491614c4b604951454",
+      "bytes": 2174209
+    },
+    "caseCount": 24,
+    "encodedExports": 24,
+    "encodedFrames": 2832,
+    "sampledNativeFrames": 158,
+    "sampledReducedFrames": 158,
+    "sourceByteHashesIndependentlyVerified": 17,
+    "browserErrors": [],
+    "scope": "Declared copy and measured layer context plus actual H.264/native and 360-wide decoded states; no factual intermediate quantity assertion or human comprehension verdict",
+    "humanAcceptance": "pending",
+    "notes": "Fresh required-group run confirms the final tightened runner. Expected negative controls and legacy/unassessed cases retain their faults; packet success does not mean all compositions pass overall quality."
   }
 }
