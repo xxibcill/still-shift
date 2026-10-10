@@ -21,9 +21,13 @@ import type { Object3D, WebGLRenderer } from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import type {
   Native3DSource,
+  Native3DSourceVersions,
+  MechanismFrameResultV2,
   NativeSceneFrame,
 } from "@still-shift/scene-contract";
 import type { DeepReadonly } from "./types.ts";
+import type { PreparedNative3DVariantV2 } from "./types-v2.ts";
+import { createNativeThreeShapeOwners } from "./three-shapes.ts";
 import { createNativeThreeMaterials } from "./three-materials.ts";
 import type { NativeTextureFont } from "./three-textures.ts";
 
@@ -33,7 +37,7 @@ export function inheritedThreeVisibility(object: Object3D): boolean {
   return true;
 }
 export function createNativeThreeGeometry(
-  source: DeepReadonly<Native3DSource>,
+  source: DeepReadonly<Native3DSourceVersions>,
 ) {
   const geometries = new Map<string, BufferGeometry>();
   try {
@@ -77,7 +81,7 @@ export type NativeThreeGeometry = ReturnType<typeof createNativeThreeGeometry>;
 /** Bind the actual uploaded typed attributes to the prepared physical catalogue once.
  * Float64 authored positions are explicitly quantized to GPU Float32 here. */
 export function verifyNativeThreeGeometry(
-  source: DeepReadonly<Native3DSource>,
+  source: DeepReadonly<Native3DSourceVersions>,
   geometry: NativeThreeGeometry,
 ): void {
   for (const definition of source.geometry.meshes) {
@@ -117,9 +121,9 @@ export function verifyNativeThreeGeometry(
 }
 
 /** Synchronous: the caller has already prepared the exact source and font. */
-export function createNativeThreeWorld(
+function createNativeThreeWorldForSource(
   renderer: WebGLRenderer,
-  source: DeepReadonly<Native3DSource>,
+  source: DeepReadonly<Native3DSourceVersions>,
   options: {
     textureFont?: NativeTextureFont;
     geometry?: NativeThreeGeometry;
@@ -221,7 +225,7 @@ export function createNativeThreeWorld(
       meshes.push(mesh);
     }
     function applyFrame(
-      frame: DeepReadonly<NativeSceneFrame>,
+      frame: DeepReadonly<NativeSceneFrame | MechanismFrameResultV2>,
       width: number,
       height: number,
       localVisibility?: Readonly<Record<string, boolean>>,
@@ -271,4 +275,90 @@ export function createNativeThreeWorld(
     throw error;
   }
 }
+export type NativeThreeWorldOptions = {
+  textureFont?: NativeTextureFont;
+  geometry?: NativeThreeGeometry;
+};
+
+/** Original v1 world contract and default appearance are retained. */
+export function createNativeThreeWorld(
+  renderer: WebGLRenderer,
+  source: DeepReadonly<Native3DSource>,
+  options: NativeThreeWorldOptions = {},
+) {
+  const world = createNativeThreeWorldForSource(renderer, source, options);
+  return {
+    ...world,
+    source,
+    applyFrame(
+      frame: DeepReadonly<NativeSceneFrame>,
+      width: number,
+      height: number,
+      localVisibility?: Readonly<Record<string, boolean>>,
+    ) {
+      world.applyFrame(frame, width, height, localVisibility);
+    },
+  };
+}
+
+/** Prepared scene2 worlds own changing clones separately from shared rest geometry. */
+export function createNativeThreeWorldV2(
+  renderer: WebGLRenderer,
+  variant: PreparedNative3DVariantV2,
+  options: NativeThreeWorldOptions = {},
+) {
+  const source = variant.source;
+  const world = createNativeThreeWorldForSource(renderer, source, options);
+  let owners: ReturnType<typeof createNativeThreeShapeOwners>;
+  try {
+    owners = createNativeThreeShapeOwners(variant, world.meshes, renderer);
+  } catch (error) {
+    try {
+      world.dispose();
+    } catch {
+      /* Preserve the owner setup failure. */
+    }
+    throw error;
+  }
+  let disposed = false;
+  return {
+    ...world,
+    source,
+    get changingMeshOwners() {
+      return owners.ownerCount;
+    },
+    applyFrame(
+      frame: DeepReadonly<MechanismFrameResultV2>,
+      width: number,
+      height: number,
+      localVisibility?: Readonly<Record<string, boolean>>,
+    ) {
+      // Three's upload/culling list precedes object before-hooks. Apply both here.
+      owners.applyFrame(frame);
+      world.applyFrame(frame, width, height, localVisibility);
+    },
+    dispose() {
+      if (disposed) return;
+      disposed = true;
+      let failed = false,
+        reason: unknown;
+      try {
+        owners.dispose();
+      } catch (error) {
+        failed = true;
+        reason = error;
+      }
+      try {
+        world.dispose();
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          reason = error;
+        }
+      }
+      if (failed) throw reason;
+    },
+  };
+}
 export type NativeThreeWorld = ReturnType<typeof createNativeThreeWorld>;
+export type NativeThreeWorldV2 = ReturnType<typeof createNativeThreeWorldV2>;

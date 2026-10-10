@@ -663,11 +663,322 @@
         "sha256": "sha256:e3875e565265b339570cb1fd2c33a1439cd58a2274a2018b2fa231e892d4809e"
       },
       "scope": "Complete actual local fast gate passes after adding exclusive v2 controller coverage to the exhaustive test. All field assertions and original v1 render fixtures preserved. Expected-state data adapter only; no browser scene2 composition/export or GPU acceptance."
+    },
+    {
+      "id": "shape-owner-route-red-1",
+      "status": "failed-as-expected-missing-api",
+      "actualRootSession": 41370,
+      "actualExitCode": 1,
+      "command": "pnpm exec vitest run tests/unit/native3d-v2-shape-owners.test.ts --maxWorkers=1",
+      "testsFailed": 1,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-shape-owner-red-inputs-1.json",
+        "bytes": 404996,
+        "sha256": "sha256:6a9900bae9c8eb9c9ba782c3b662f8b4629e37a0edccd10e60e6d7edd111a2ed"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-shape-owner-red-1.log",
+        "bytes": 1101,
+        "sha256": "sha256:34c5c6c5a2e9e7e8135c52684fa20ed3d15478ea1b1de8a852d8ded21554092f"
+      },
+      "scope": "Actual missing owned native2 world entry assertion before implementation; no implementation behavior assertion in this probe.",
+      "sourceCheckpoint": "a9760b0092415d9bca14b2544ac341108a7a16e9"
+    },
+    {
+      "id": "shape-owner-focused-1",
+      "status": "passed",
+      "actualRootSession": 59347,
+      "actualExitCode": 0,
+      "command": "pnpm exec vitest run tests/unit/native3d-v2-shape-owners.test.ts tests/unit/native3d-three-observer.test.ts tests/unit/native3d-v2-adapter.test.ts --maxWorkers=2",
+      "tests": 27,
+      "files": 3,
+      "reportedSeconds": 1.16,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-shape-owner-inputs-1.json",
+        "bytes": 405171,
+        "sha256": "sha256:97d949a11923924e3b8df4a70c396d30a2ef9b83d293137b2da81b93983386d2"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-shape-owner-focused-1.log",
+        "bytes": 445,
+        "sha256": "sha256:64614adc1bc0dd8f7d321bb1410a7bbdb84b3e27f5e2a0dea4fef9087c0134f0"
+      },
+      "scope": "Absolute Float32 pos/normal writes and upload versions/bounds; alias isolation, shared pool cap, empty-pool retirement, atomic validation, immutable topology/UV/groups, owner refs and actual managed failure/disposal. No GL draw/independent stream acceptance.",
+      "sourceCheckpoint": "a9760b0092415d9bca14b2544ac341108a7a16e9"
+    },
+    {
+      "id": "shape-owner-build-1",
+      "status": "passed",
+      "actualRootSession": 19664,
+      "actualExitCode": 0,
+      "command": "pnpm build",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-shape-owner-inputs-1.json",
+        "bytes": 405171,
+        "sha256": "sha256:97d949a11923924e3b8df4a70c396d30a2ef9b83d293137b2da81b93983386d2"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-shape-owner-build-1.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      },
+      "sourceCheckpoint": "a9760b0092415d9bca14b2544ac341108a7a16e9"
+    },
+    {
+      "id": "shape-owner-build-2",
+      "status": "failed-browser-harness-type",
+      "actualRootSession": 33152,
+      "actualExitCode": 2,
+      "terminalObservedAtUTC": "2026-10-10T18:40:50Z",
+      "command": "pnpm build",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-shape-owner-inputs-2.json",
+        "bytes": 405493,
+        "sha256": "sha256:f67b4418c6250af94c160e6cb631ce7bc15e4d30135bbede37c836849f9d0829"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-shape-owner-build-2.log",
+        "bytes": 420,
+        "sha256": "sha256:fef3e96afe9a48471d777683ca3c74174822a5ace8e732b0920c97a39e03a618"
+      },
+      "browserStageStarted": false,
+      "failure": "New browser receipt frames array has an implicit any type in a closure.",
+      "repair": "Declare the receipt frame element type from the actual returned captures, excluding raw image bodies and adding digest/length fields. No production behavior or assertion changes.",
+      "sourceCheckpoint": "a9760b0092415d9bca14b2544ac341108a7a16e9"
+    },
+    {
+      "id": "shape-owner-build3-browser2",
+      "status": "passed",
+      "actualRootSession": 1883,
+      "actualExitCode": 0,
+      "terminalObservedAtUTC": "2026-10-10T18:42:17Z",
+      "command": "pnpm build && pnpm test:browser:native3d-shapes",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-shape-owner-inputs-3.json",
+        "bytes": 405493,
+        "sha256": "sha256:825e1a3df4a11ca7468b2713b560c5764ac64977ab485a27e2b3335e7ef91d88"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-owner-build-3.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-owner-browser-2.log",
+          "bytes": 297,
+          "sha256": "sha256:f714de6ebdfd84e57bed3d4bbd8e5b39a355c1f18c0d5c974632e983cbd084dc"
+        }
+      ],
+      "run": {
+        "path": "/private/tmp/still-shift-ms2-shape-world-A6n3BK/run.json",
+        "bytes": 2976,
+        "sha256": "sha256:8824bf08bd9d190ab9933a5d7b3a1ce960915552d2740374f269a5505e2cc32d"
+      },
+      "frames": [
+        {
+          "id": "rest-a",
+          "rgbaSha256": "sha256:4987c025dde75754501f43dc4c4be85a743f0154b9516a2205cf707939bd3f7b",
+          "bytes": 230400,
+          "calls": 3,
+          "sourceFrame": 0
+        },
+        {
+          "id": "bent-a",
+          "rgbaSha256": "sha256:51a1acf005e0143d7b7b01cf069123a061fc9ef6302d44231838af178311d135",
+          "bytes": 230400,
+          "calls": 3,
+          "sourceFrame": 0.5
+        },
+        {
+          "id": "rest-b",
+          "rgbaSha256": "sha256:4987c025dde75754501f43dc4c4be85a743f0154b9516a2205cf707939bd3f7b",
+          "bytes": 230400,
+          "calls": 3,
+          "sourceFrame": 17.25
+        },
+        {
+          "id": "bent-a-repeat",
+          "rgbaSha256": "sha256:51a1acf005e0143d7b7b01cf069123a061fc9ef6302d44231838af178311d135",
+          "bytes": 230400,
+          "calls": 3,
+          "sourceFrame": 0.5
+        },
+        {
+          "id": "rest-a-reverse",
+          "rgbaSha256": "sha256:4987c025dde75754501f43dc4c4be85a743f0154b9516a2205cf707939bd3f7b",
+          "bytes": 230400,
+          "calls": 3,
+          "sourceFrame": 0
+        }
+      ],
+      "actualPixelArtifactsHashedAgainstReceipt": true,
+      "environment": {
+        "profile": "chromium-software-2",
+        "browserVersion": "151.0.7922.34",
+        "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+        "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "scope": "Actual shared browser factory produces five frames; rest aliases and reverse seek are byte-identical, bent repeat byte-identical and different from rest. Two independent mutable owner sets share unchanged rest geometry. Generic fixture only, no used-GPU ledger, family/export/pilot or human acceptance.",
+      "sourceCheckpoint": "a9760b0092415d9bca14b2544ac341108a7a16e9"
+    },
+    {
+      "id": "shape-owner-identity-generate-1",
+      "status": "completed-before-next-stage",
+      "actualRootSession": 56199,
+      "aggregateActualExitCode": 1,
+      "individualExitReceipt": "inferred-zero-from-required-next-and-stage",
+      "command": "pnpm native3d:identity:generate",
+      "firstPartyModules": 345,
+      "externalRuntimeModules": 79,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-shape-owner-identity-generate-1.log",
+        "bytes": 260,
+        "sha256": "sha256:6567a1c0f382cd25c0f13d003f51aea52bb6756c7d0a58746063c890faf773f0"
+      },
+      "scope": "Adds three-shapes value dependency; historical producers remain fixed.",
+      "sourceCheckpoint": "a9760b0092415d9bca14b2544ac341108a7a16e9"
+    },
+    {
+      "id": "shape-owner-fast-1",
+      "status": "failed-test-type-import-lint",
+      "actualRootSession": 56199,
+      "actualExitCode": 1,
+      "command": "pnpm check:fast",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-shape-owner-inputs-4.json",
+        "bytes": 405493,
+        "sha256": "sha256:60e7d38d334f4480934da4d494fa472ef91aae1eb6900da67fecce81e395de5d"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "passedStages": ["schema", "boundaries", "format"],
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-shape-owner-fast-1.log",
+        "bytes": 1736,
+        "sha256": "sha256:9f6281187d376e0813d60ed2807ba62b19c87eca952e434f0ab31e4f87207881"
+      },
+      "unitTestsRun": 0,
+      "failure": "Owned geometry test imports BufferAttribute as a value but uses it only for types.",
+      "repair": "Use import type; no production or assertion change. Public v1 frame type regression is tested separately before narrowing the shared factory adapter.",
+      "sourceCheckpoint": "a9760b0092415d9bca14b2544ac341108a7a16e9"
+    },
+    {
+      "id": "shape-owner-v1-method-type-red-1",
+      "status": "failed-as-expected-widened-v1-method-type",
+      "actualRootSession": 18954,
+      "actualExitCode": 2,
+      "terminalObservedAtUTC": "2026-10-10T18:45:33Z",
+      "sourceCheckpoint": "a9760b0092415d9bca14b2544ac341108a7a16e9",
+      "command": "pnpm build",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-world-type-red-inputs-1.json",
+        "bytes": 405493,
+        "sha256": "sha256:0d95118b416c23377fb3d04dbe07fd94a6ca504f3741239ef2d4b1218227b896"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-world-type-red-1.log",
+        "bytes": 1625,
+        "sha256": "sha256:7809cbad625971434aa52042e3b144a2d322466d2ad1983100768c9845303cd7"
+      },
+      "failure": "Compile-time exact method type regression proves shared internal v1/v2 frame union escaped into public v1 applyFrame.",
+      "repair": "Keep explicit v1 public wrapper signature and delegate internally. Preserve the new exact type regression and original source/serialized-frame contracts."
+    },
+    {
+      "id": "shape-owner-final-sequential-1",
+      "status": "passed",
+      "actualRootSession": 20278,
+      "actualExitCode": 0,
+      "terminalObservedAtUTC": "2026-10-10T18:48:58Z",
+      "sourceCheckpoint": "a9760b0092415d9bca14b2544ac341108a7a16e9",
+      "sourceState": "working-owned-native2-world-slice",
+      "command": "pnpm native3d:identity:generate && pnpm check:fast && pnpm test:browser:native3d-shapes && pnpm test:browser:native3d-depth",
+      "stageExitQualification": "One actual zero aggregate terminal for required sequential && stages; no separate child exit handles. Held final inputs are captured after normal identity generation.",
+      "firstPartyModules": 345,
+      "externalRuntimeModules": 79,
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-working-shape-owner-inputs-5.json",
+        "bytes": 405493,
+        "sha256": "sha256:81c052b78f6500a241d209438b32a518bed14f6b0b59ac289c715345669facd8"
+      },
+      "inputsVerifiedUnchangedAfterRun": true,
+      "unitTests": 3990,
+      "unitFiles": 389,
+      "unitReportedSeconds": 49.34,
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-owner-identity-generate-2.log",
+          "bytes": 260,
+          "sha256": "sha256:6567a1c0f382cd25c0f13d003f51aea52bb6756c7d0a58746063c890faf773f0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-owner-fast-2.log",
+          "bytes": 32335,
+          "sha256": "sha256:3b21ca2f118e0303dcf1a41cde16af488fea1b8a979ea1e5742e1cc43e0eb357"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-owner-browser-3.log",
+          "bytes": 297,
+          "sha256": "sha256:20a6c40d1549ae3d3d813b9c371d351a739d5a4a2e6808df26ea0d8d440352ed"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-owner-native-depth-1.log",
+          "bytes": 538,
+          "sha256": "sha256:320722b7597e94266995a52ce2011d0cc19893377f254c79a6575f27f1a97c17"
+        }
+      ],
+      "shapeWorld": {
+        "run": {
+          "path": "/private/tmp/still-shift-ms2-shape-world-z4GIyB/run.json",
+          "bytes": 2976,
+          "sha256": "sha256:51a45debb5087b5c9e24b50d58c34844d741c1f2109f006f110fa28ae0a43335"
+        },
+        "frames": 5,
+        "actualRGBAArtifactsHashedAgainstReceipt": true,
+        "restAliasAndReversePixelsExact": true,
+        "bentRepeatPixelsExact": true,
+        "restAndBentPixelsDiffer": true
+      },
+      "nativeV1": {
+        "depthCases": 14,
+        "compositionIntegrationCases": 5,
+        "reports": [
+          {
+            "path": "/private/tmp/still-shift-ms1n-native-depth-FO5aHk/report.json",
+            "bytes": 56712,
+            "sha256": "sha256:aa1b000c5f5eb72db9db88a44d7559901c263c41e268710a079122dffb213cf3"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms1n-native-depth-FO5aHk/composition-integration-report.json",
+            "bytes": 419656,
+            "sha256": "sha256:feea6a4d30ab88eab824bd10bbe2403ad658615532aafddd845559b54f7754dc"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms1n-native-depth-FO5aHk/required-native-proof-reports.json",
+            "bytes": 164,
+            "sha256": "sha256:64e55815bf97dad3e7070a633051acffc4f4b90585cdb0337f66d8357c10ad33"
+          }
+        ],
+        "cancellationReport": {
+          "path": "/private/tmp/still-shift-native-export-cancel-1hiqV2/report.json",
+          "bytes": 4956,
+          "sha256": "sha256:432d2607f8ddcde9b21e9af28362047c4cae1b2392fea55492413bf9b07e9440"
+        }
+      },
+      "auditQualification": "Initial read-only native receipt lookup guessed run.json and failed; maintained report.json and integration/cancellation reports were then located and hashed. No product check or source mutation in that lookup.",
+      "scope": "Owned changing geometry, exact v1 method types, complete fast gate, actual new browser factory pixels and existing native depth/integration/cancellation controls. No independent used-GPU streams/landmarks, new scene2 composition/export publication, full family exports, pilot support or human acceptance."
     }
   ],
   "implementation": {
     "firstSlice": "Completed standalone reusable rig/teaching-shape contracts. All 11 focused negatives/admission checks and fresh complete fast3 gate (3928 units/383 files) pass; earlier closure and optional-type failures retained.",
-    "runtimeSupport": "not-implemented",
+    "runtimeSupport": "standalone-native2-world-verified-composition-export-not-integrated",
     "supportedPacks": [],
     "pilotSupportedEpisodes": 0,
     "secondSlice": "Completed strict scene2/frame2 declarations, dependency/ownership and generated-landmark checks, aggregate changing geometry budgets and pack references. Focused12, TypeScript build and fresh fast2 pass (3940 units/385 files); failed formatting attempt retained. Pure evaluation and integration remain required.",
@@ -680,10 +991,11 @@
       "seated-torsion-spring-1",
       "expected relationship residuals"
     ],
-    "fifthSlice": "Completed native2 data adapter: explicit source/versioned snapshot, async topology SHA validation, neutral variant association, rigControls exclusivity, fractional owning/source clocks and expected posed visibility. Focused24/build1 and fresh fast2 pass (3978 units/388 files); missing-route red and exhaustive fixture failure retained. Browser composition dispatch and used-GPU observation remain pending."
+    "fifthSlice": "Completed native2 data adapter: explicit source/versioned snapshot, async topology SHA validation, neutral variant association, rigControls exclusivity, fractional owning/source clocks and expected posed visibility. Focused24/build1 and fresh fast2 pass (3978 units/388 files); missing-route red and exhaustive fixture failure retained. Browser composition dispatch and used-GPU observation remain pending.",
+    "sixthSlice": "Completed owned native2 browser world: private fixed-topology clones, shared live mesh/vertex/triangle caps, atomic state admission, absolute Float32 pos/normal updates and versions/bounds before render list creation, alias/seek isolation and managed lifecycle. Focused27/build1; after retained receipt-type/lint/v1-type regressions and repairs, complete fast2 passes3990/389. Five real browser frames reproduce exact seeks/aliases, and existing native14 + integration5 + cancellation controls pass. Independent GPU stream observation and composition/export integration remain next."
   },
   "limits": [
-    "Native2 preparation/sampling and expected posed visibility are verified. No scene2 composition/export dispatch, independent dynamic GPU observations, product packs, import/camera/label/cue or scoped typography support is claimed yet.",
+    "Native2 preparation/expected snapshots and standalone owned browser worlds are verified. Independent changing GPU observations, scene2 composition/export dispatch, product packs, import/camera/label/cue and scoped typography remain required.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

@@ -846,6 +846,10 @@ export const native3DAppearanceModules: readonly {
     url: new URL("./three-observation.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/native3d/three-shapes.ts",
+    url: new URL("./three-shapes.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/native3d/three-textures.ts",
     url: new URL("./three-textures.ts", import.meta.url),
   },

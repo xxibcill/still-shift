@@ -56,9 +56,12 @@ still hold before relying on them.
   build2 and fast1 (3,966 units / 387 files). Valid-ID, readonly cloning and IPC
   setup failures are retained with actual repairs/reruns. Native2 preparation and
   expected snapshots pass24 focused checks, build and fast2 (3,978 units / 388 files),
-  after a retained exhaustive-fixture failure. Owned changing geometry, browser
-  composition dispatch and GPU observations are next; three packs, import/camera/
-  label/cue, scoped typography and the full milestone gate remain required. Pilot support remains
+  after a retained exhaustive-fixture failure. Owned changing geometry now passes
+  focused27 and the repaired full fast2 (3,990 units / 389 files), five real browser
+  frames and existing native14/integration5/cancellation controls. Receipt-type,
+  import-lint and widened v1 method-type failures are retained with repairs. Actual
+  used-GPU streams/landmarks and composition/export dispatch are next; three packs,
+  import/camera/label/cue, scoped typography and the full milestone gate remain required. Pilot support remains
   zero; MS3 has not started. [MS2 results](./mechanism-shorts-ms2-results.json),
   [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
@@ -218,6 +221,25 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — Commit bounded owned native2 browser worlds
+
+- **Branch / source:** `codex/mechanism-ms2`, data adapter checkpoint `a9760b00`.
+- **Done:** isolated changing clones; shared live mesh/stream/vertex/triangle caps;
+  atomic shape/topology admission, absolute Float32 positions/normals and upload
+  versions/bounds before rendering; seek/alias isolation and managed cleanup.
+  Original v1 public frame method type stays exact; new browser gate is maintained.
+- **Results:** focused27/build1; final sequential fast2 passes3,990 units / 389 files
+  (49.34s), five real scene2 factory frames and existing native14/integration5/
+  cancellation controls. Held source stays unchanged; identity closure345/79.
+- **Failures / repairs:** missing owned-world route is reproduced; receipt typing
+  fails build2 before browser work, and type-only test import fails fast1 lint.
+  A separate compile regression reproduces widened v1 method typing; all are
+  repaired with strict assertions retained. Earlier actual runs remain recorded.
+- **Next / limits:** independent used-GPU bytes/draw groups/landmarks and versioned
+  composition/export transport before MS2 packs and authoring/family acceptance.
+  Factory pixels are a generic fixture; no pilot, full family or human pass.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-11 — Commit native2 preparation and expected snapshots
 

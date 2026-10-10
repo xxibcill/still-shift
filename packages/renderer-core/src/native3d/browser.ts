@@ -1,6 +1,7 @@
 /** Explicit browser entry; pure renderer imports never reach Three. */
 export {
   createNativeThreeWorld,
+  createNativeThreeWorldV2,
   createNativeThreeGeometry,
 } from "./three-world.ts";
 export { createNativeDepthRuntime } from "../composition/render/webgl-native-depth.ts";
@@ -20,4 +21,8 @@ export {
   nativeArtworkCorners,
 } from "./three-graphics.ts";
 export { NATIVE_DEPTH_RENDERER_VERSION } from "./resolve.ts";
-export type { NativeThreeWorld, NativeThreeGeometry } from "./three-world.ts";
+export type {
+  NativeThreeWorld,
+  NativeThreeWorldV2,
+  NativeThreeGeometry,
+} from "./three-world.ts";
