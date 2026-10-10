@@ -5,8 +5,10 @@
 2026-10-08 bridge/native order and all nine feedback amendments remain incorporated.
 **Start:** after the current [composition engine plan](./composition-engine-plan.md)
 is complete under its approved scope and acceptance rules.
-**Implementation owner and branch:** Codex, `codex/mechanism-ms1` from `main`
-`e6eb7b06`, carrying exact MS0 prerequisite `d55908fa` ([PR #51](https://github.com/xxibcill/still-shift/pull/51)).
+**Implementation owner and branch:** Codex, `codex/mechanism-ms1n` from fresh
+`main` at `e6eb7b06`, carrying exact MS1 prerequisite `13b62b84`
+([PR #52](https://github.com/xxibcill/still-shift/pull/52)) and MS0
+([PR #51](https://github.com/xxibcill/still-shift/pull/51)).
 
 **Restored and reconciled:** 2026-10-09 from the historical plan backup, checked
 amendment diffs and the final recorded gate correction. The core composition
@@ -1043,7 +1045,9 @@ portable project.
 **Implementation order:** MS0 → MS1 bridge → MS1N native 3D → MS2 → MS3, then
 conditional explanation extensions and capacity stages under the tracker.
 
-**Current next action (2026-10-10):** [MS1 PR #52](https://github.com/xxibcill/still-shift/pull/52) is open targeting `main`; create
-`codex/mechanism-ms1n` from fresh `main` carrying the exact MS1 prerequisite and
-commit the native interface freeze before implementation. Human MS1 playback and
-listening acceptance remain separate from this software-complete checkpoint.
+**Current next action (2026-10-10):** MS1 [PR #52](https://github.com/xxibcill/still-shift/pull/52)
+is open. The separate `codex/mechanism-ms1n` branch carries exact MS1 `13b62b84`
+from fresh `main`; the [native interface freeze](./mechanism-shorts-ms1n-design.md)
+now gates the joint contract, evaluation, graph, WebGL and lifecycle implementation.
+Prove independent mesh/graphic depth before full native E01. Human MS1 playback and
+listening acceptance remain separately pending.

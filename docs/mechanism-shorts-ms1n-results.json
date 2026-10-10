@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "mechanism-shorts-ms1n-results-1",
+  "milestone": "MS1N",
+  "date": "2026-10-10",
+  "status": "in-progress-interface-frozen",
+  "branch": "codex/mechanism-ms1n",
+  "baseMain": "e6eb7b06e3b5a042be2c1e2568a1a84cf9c041ad",
+  "prerequisites": [
+    {
+      "milestone": "MS0",
+      "pr": "https://github.com/xxibcill/still-shift/pull/51",
+      "state": "open-unmerged",
+      "commit": "d55908fa"
+    },
+    {
+      "milestone": "MS1",
+      "pr": "https://github.com/xxibcill/still-shift/pull/52",
+      "state": "open-unmerged",
+      "commit": "13b62b842c6d5a14ad9c1ed4ab045e568860be2c",
+      "requiredSoftwareVerification": "complete-in-stages",
+      "evidence": "./mechanism-shorts-ms1-completion.md"
+    }
+  ],
+  "interfaceFreeze": "./mechanism-shorts-ms1n-design.md",
+  "profile": "native-three-aces-hdr-msaa4-1",
+  "ownership": {
+    "contractEvaluationGraph": "ms1n_seams",
+    "threeWebGL": "ms1_review",
+    "lifecycleAuthoringTransport": "consumer agent",
+    "resourcesObservationIdentityPackagesVerification": "root"
+  },
+  "verification": [],
+  "implementationEvidence": "pending",
+  "humanContinuousPlaybackListeningAndCreativeAcceptance": "pending",
+  "publication": "not-requested",
+  "limits": [
+    "No native implementation or acceptance is claimed by this interface checkpoint.",
+    "Exact MS1 scene/geometry/rig/font/audio source identities must be preserved; static overrides receive separate effective identities.",
+    "One native world per qualified scope, opaque/hard-mask only, actual four-sample HDR/depth support, initial export one worker.",
+    "Customer source media remains outside Git; public redistribution remains unestablished.",
+    "All runtime/browser/GPU verification must be serialized; failed runs and existing performance deferrals remain retained."
+  ]
+}

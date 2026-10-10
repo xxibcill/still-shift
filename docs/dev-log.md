@@ -43,6 +43,17 @@ still hold before relying on them.
 
 ## Current state
 
+- **MS1N native composition started (2026-10-10):** separate
+  `codex/mechanism-ms1n` starts from fresh `main` at `e6eb7b06` and carries exact
+  MS1 `13b62b84` ([PR #52](https://github.com/xxibcill/still-shift/pull/52), open).
+  Native interfaces, source/variant identities, clocks/bindings, joint HDR/depth,
+  actual-observation transport and route/package boundaries are frozen.
+  Implementation begins with shared contracts/evaluation/graph, Three/WebGL and
+  lifecycle/authoring in parallel; runtime/browser/GPU checks remain serialized.
+  Independent mixed mesh/graphic depth is the first pixel gate. Native software
+  and human acceptance are pending. [Design](./mechanism-shorts-ms1n-design.md),
+  [results](./mechanism-shorts-ms1n-results.json).
+
 - **MS1 software complete in stages (2026-10-10):** `codex/mechanism-ms1` carries
   exact MS0 prerequisite `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51)
   remains open/unmerged. All 76 original required groups completed on unchanged
@@ -56,7 +67,7 @@ still hold before relying on them.
   controls/negatives pass; E01 remains legacy/semantically unassessed. Consumer
   libproc exception, customer-media redistribution and human review limits remain.
   [MS1 PR #52](https://github.com/xxibcill/still-shift/pull/52) is open against
-  `main`; native branch/interface freeze is next.
+  `main`; native work has started on its separate branch with interfaces frozen.
   Original checkout edits are preserved. [Completion](./mechanism-shorts-ms1-completion.md),
   [results](./mechanism-shorts-ms1-results.json), [gate history](./mechanism-shorts-ms1-full-gate-results.json).
 
@@ -168,6 +179,19 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — MS1N separate branch and native interface freeze
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, fresh `main` `e6eb7b06`
+  fast-forwarded to exact MS1 prerequisite `13b62b84` after PR #52 opened.
+- **Done:** frozen native subset/interfaces and independent depth/observation
+  acceptance; ownership separates pure contract/graph, GPU and consumer lifecycle.
+- **Next:** implement the shared native spine and first one-frame joint-depth
+  oracle, preserve exact MS1 bridge/source identities, then complete native E01.
+  Native verification and human acceptance remain pending; no merged/public release.
+- **Records:** [native design](./mechanism-shorts-ms1n-design.md),
+  [native results](./mechanism-shorts-ms1n-results.json),
+  [MS1 PR #52](https://github.com/xxibcill/still-shift/pull/52).
 
 ### 2026-10-10 — MS1 PR opened; native milestone next
 
