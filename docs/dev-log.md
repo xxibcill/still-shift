@@ -45,30 +45,21 @@ still hold before relying on them.
 
 - **MS1N implementation (2026-10-10):** `codex/mechanism-ms1n` carries exact
   MS1 `13b62b84` ([PR #52](https://github.com/xxibcill/still-shift/pull/52) open).
-  Native source/QA at `342d09c5` passes full3: two actual696 exports/current QA,
-  nine accepted-body/preview comparisons max0 and identical final movies/rows.
-  Bridge4 freshly renders all696 original plates byte-exact; appearance2 passes
-  nine physical-state comparisons with informational image metrics. Hardware1
-  records actual software/Metal state delta0; cross-driver pixel diagnostic fails
-  max135/RMS2.226 and human hardware appearance remains pending.
-  Full1/full2 and all earlier failed attempts stay retained. Preview4 passes three
-  states then fails fourth browser.module initialization at30s; the exact recipe
-  passed preview3, so cause remains unproven. Isolated preview5 passes all8 actual
-  variants/5 located negatives/legal restore at unchanged83 inputs and30s timeout.
-  Package1 exposes caller options overriding delivery-owned paths. The narrow
-  package repair passes actual two-frame final-package/move/unknown-option tests
-  and fast10/all3,915 units, schemas, boundaries, formatting, lint and build.
-  Its exact two-file delta leaves2,325 other selected inputs unchanged; completed
-  render proofs keep342 provenance. Package repair is committed at `83a5d8c0`; portable2 startup failed from wrong
-  cwd before execution; portable3 hits private300s writer cap after publication.
-  Timed portable4 passes writer336s/original107s/moved91s with unchanged manifest
-  and native execution. Archive1 fails strict cleanconsumer declarations: missing
-  runtime Three typings; four-file metadata/lock/public-consumer repair passes
-  fast11/all3,915 units. Seeded lock preserves all103 prior records and adds7
-  pinned type packages; offline metadata-cache miss retained. Source audit1 wrongly
-  requires npm-excluded rootlock; archivedsource lock is present, corrected audit
-  pending. Fresh archive/installed and all77 groups/176 baselines remain.
-  Human encoded readability, playback/listening and redistribution remain separate.
+  Held342 full3 passes two actual 696-frame exports/current QA and nine accepted-body
+  parity checks; bridge4 freshly preserves all 696 original PNG bytes. Hardware
+  state agrees; cross-driver pixels and human appearance remain separately limited.
+  Preview5 passes 8 variants/5 negatives/restore at83; earlier timeout cause is unproven.
+  Portable4 verifies original/moved finalized native delivery at83. Current
+  `81a8e344` typing repair passes fast11/all 3,915 units and fresh package2/all 26
+  checks. Archive `f41679b1` (3,150,449B) passes source audit2: 669 exact Git81
+  source files plus 1,135 current-dist files/1,804 total. Inventory10 binds
+  2,327 inputs/117,498,320B. Archive1/audit1 stay retained.
+  OS-denied consumer1 completes denial/installed-byte/runtime preconditions then
+  fails audio loading: old PATH lacks FFprobe (ENOENT); same-profile exact-audio
+  probe passes with Homebrew FFprobe admitted. Nested triage1 failure stays retained.
+  Corrected consumer2 setup passes; its full native installed proof and the
+  all 77-group/176-baseline gate remain pending. Human readability, continuous
+  playback/listening and redistribution remain separate.
   [Design](./mechanism-shorts-ms1n-design.md),
   [results](./mechanism-shorts-ms1n-results.json).
 
@@ -197,6 +188,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-10 — Exact native archive verified; installed launch failure retained
+
+- **Agent / branch:** Codex on `codex/mechanism-ms1n`, source `81a8e344`.
+- **Done:** package2 passes 26 checks; retained archive `f41679b1` is 3,150,449B.
+  Additive CE8 follow-up and native completion mapping retain final checks pending.
+  Audit2 verifies all 1,804 members, including 669 exact Git81 source files;
+  inventory10 binds 2,327 selected inputs/117,498,320B.
+- **Rejected / do not repeat:** archive1/audit1 remain historical failures.
+  Consumer1 passes denial/byte/runtime preconditions, then old-PATH FFprobe
+  ENOENT stops audio loading; same-profile probe passes after Homebrew admission.
+  The first nested sandbox triage failure also remains retained.
+- **Open / next:** consumer2 setup passed; actual full installed native proof,
+  full 77/176 gate and MS1N PR remain pending. Human acceptance is separate.
+- **Records:** [MS1N results](./mechanism-shorts-ms1n-results.json).
 
 ### 2026-10-10 — Native delivery closure and clean-consumer typing repair
 

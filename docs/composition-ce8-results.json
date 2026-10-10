@@ -2762,5 +2762,236 @@
     "base": "codex/composition-ce6-completion",
     "pullRequest": "https://github.com/xxibcill/still-shift/pull/43",
     "next": "CE8-L, CE4c, CE4d, CE13, CE15 and CE14 on separate branches"
+  },
+  "nativeSolidGeometryFollowup": {
+    "milestone": "MS1N",
+    "status": "implemented-final-software-verification-pending",
+    "scope": "Additive bounded native-solid follow-up to completed CE8 camera record; original CE8 status/slices/fullGateAttempts/fullVerification/versions/delivery remain historical and unchanged.",
+    "source": "./mechanism-shorts-ms1n-results.json",
+    "design": "./mechanism-shorts-ms1n-design.md",
+    "owningPlan": "./mechanism-shorts-production-plan.md#ms1n-native-3d-composition",
+    "requiredRows": [
+      {
+        "id": "MS1N-1",
+        "title": "Bounded source, topology and preparation",
+        "authoritativeChecklist": {
+          "file": "./mechanism-shorts-production-plan.md",
+          "heading": "MS1N Native 3D composition",
+          "line": 615,
+          "text": "Audit the bridge contracts and define the supported native subset: bounded primitives and/or indexed meshes, normals, material slots, rigid hierarchy, units, pivots, transforms, asset hashes and topology/resource limits. Use a documented import subset where needed; reject unsupported data explicitly."
+        },
+        "preciseScope": "Admits hash-pinned mechanism-scene-1 and solid-scene-1 indexed meshes with normals/material groups, rigid hierarchy, units, pivots and bounded source/effective identities. Static part/material overrides cannot replace protected topology, parent/id inventory or mesh buffers. Located admission rejects unsupported or stale data. This records the implemented indexed subset; it adds no general glTF/CAD importer or reusable mechanism generators.",
+        "evidence": [
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/interfaceFreeze"
+          },
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/implementationEvidence/sourceCheckpoint"
+          },
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/implementationEvidence/nativePackageConfinementRepair"
+          }
+        ],
+        "status": "implemented-with-scoped-evidence-final-software-gates-pending"
+      },
+      {
+        "id": "MS1N-2",
+        "title": "Shared evaluation, graph and native depth",
+        "authoritativeChecklist": {
+          "file": "./mechanism-shorts-production-plan.md",
+          "heading": "MS1N Native 3D composition",
+          "line": 619,
+          "text": "Extend `composition-1`, pure evaluation, the shared graph and WebGL2 together. Reuse camera and rig evaluation across bridge/native paths. Define how a projected label stays screen-pinned and how an authored 3D graphic shares mesh depth; never infer those roles from draw order alone."
+        },
+        "preciseScope": "composition-1 native3d controllers use the shared mechanism/solid evaluator, exact source/owning-scope clocks and prepared variants. The shared graph sends physical meshes and explicit world-graphic solid/shape/text surfaces through one native depth pass. Screen-anchor annotations keep separate physical visibility and explicit ordering/binding semantics. Isolated precomps keep isolated depth; no ordinary threeD stack is silently mixed.",
+        "evidence": [
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/implementationEvidence/actualGraphAcceptance"
+          },
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/implementationEvidence/nativeEpisodeExecution/freshFull3"
+          },
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/implementationEvidence/bridgeFactoring/currentFull696"
+          }
+        ],
+        "status": "implemented-with-scoped-evidence-final-software-gates-pending"
+      },
+      {
+        "id": "MS1N-3",
+        "title": "Declared depth, alpha, clipping, normals and clocks",
+        "authoritativeChecklist": {
+          "file": "./mechanism-shorts-production-plan.md",
+          "heading": "MS1N Native 3D composition",
+          "line": 623,
+          "text": "Specify opaque depth testing, alpha/cutout and the supported transparency subset, camera clipping, normal transforms, color/alpha and motion-blur clocks. Verify only declared mixed-layer combinations; unsupported backends and transparency cases fail with located diagnostics rather than flattened output."
+        },
+        "preciseScope": "The pinned native profile requires actual RGBA16F, four MSAA samples and depth24, then the declared coverage/ACES/sRGB resolve. Opaque and hard-mask survivors write depth; root transparency is supported, while translucent/transmissive materials and sorted transparent world surfaces are rejected. Retained controls cover local artwork UV/crop, color/alpha, front/double sides, near/far clipping, exact inverse-transpose normal agreement and incompatible/sampled clocks. Unsupported Canvas/profile/scope cases fail before destination/cache mutation.",
+        "evidence": [
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/implementationEvidence/nativeIndependentDepthGate"
+          },
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/implementationEvidence/actualGraphAcceptance"
+          },
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/implementationEvidence/currentNativePreviewProof"
+          }
+        ],
+        "status": "implemented-with-scoped-evidence-final-software-gates-pending"
+      },
+      {
+        "id": "MS1N-4",
+        "title": "Shared material subset and honest appearance scope",
+        "authoritativeChecklist": {
+          "file": "./mechanism-shorts-production-plan.md",
+          "heading": "MS1N Native 3D composition",
+          "line": 627,
+          "text": "Reuse the established bridge material/profile subset needed by the native proof, with explicit capability and appearance checks. Map overlap with solid geometry and CE8-L-F in the owning plan. A bridge reflection or shadow does not establish full native shading acceptance or complete CE8-L-F."
+        },
+        "preciseScope": "The shared Three factory reuses existing MeshStandardMaterial styles, pinned font/procedural tape and wood textures, environment, declared lights/fog and cast/receive fields. Bridge4 preserves all 696 original plate PNG bytes. Appearance2 compares nine actual bridge/native artifact pairs at matching source/code identity; physical state/projections pass, while pixel/metal/nonmetal/reflection/shadow/fog statistics remain informational and causal contributions/human appearance unassessed. The subset does not complete or resume CE8-L-F or CE6-P.",
+        "evidence": [
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/implementationEvidence/bridgeFactoring/currentFull696"
+          },
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/implementationEvidence/bridgeNativeAppearanceComparison"
+          },
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/implementationEvidence/nativeHardwarePreview"
+          }
+        ],
+        "status": "implemented-with-scoped-evidence-final-software-gates-pending"
+      },
+      {
+        "id": "MS1N-5",
+        "title": "Public authoring, saved edits and portable ownership",
+        "authoritativeChecklist": {
+          "file": "./mechanism-shorts-production-plan.md",
+          "heading": "MS1N Native 3D composition",
+          "line": 631,
+          "text": "Expose native mesh authoring, camera/material controls and inspection through the builder, CLI and Lab. Preserve saved projects, assets, narration, fonts, cache identity, scoped edits and clean-location delivery."
+        },
+        "preciseScope": "Existing public comp/layer builder accepts the native controller and pinned assets; CLI exports/validates the recipe and exposes bounded original-scene metadata selectors. Lab edits camera keys/base optics, part translation, admitted PBR style and current visible text state through accepted revision/save/reload. Seven real Lab canvas states and exact saved recipe/pixels pass; preview5 covers eight actual baseline/edited/fractional/reverse states and five located negatives. Package verification owns its confined prepared/final/relocation paths and ignores unknown option getters. Public declaration closure and the isolated installed delivery have separately recorded archive/installed verification; their final receipts remain part of milestone closure.",
+        "evidence": [
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/implementationEvidence/nativeInspection"
+          },
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/verification"
+          },
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/implementationEvidence/currentNativePreviewProof"
+          },
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/implementationEvidence/nativePackageConfinementRepair"
+          },
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/implementationEvidence/portableInstalledExecution"
+          }
+        ],
+        "status": "implemented-with-scoped-evidence-final-software-gates-pending"
+      },
+      {
+        "id": "MS1N-6",
+        "title": "Native E01 plus independent mixed-depth proof",
+        "authoritativeChecklist": {
+          "file": "./mechanism-shorts-production-plan.md",
+          "heading": "MS1N Native 3D composition",
+          "line": 634,
+          "text": "Deliver a native version of the E01 mechanism proof plus an independent mixed mesh/graphic occlusion fixture. Record the supported bridge/native comparison policy before implementation. Compare geometry, clocks, anchors and material appearance independently; retain differences and unsupported features."
+        },
+        "preciseScope": "Full3 at 342d09c5 has two actual 696-frame E01 exports, complete pixel-paired observation closures, independent mechanics/projection/layout/PCM checks and nine independent preview versus immutable accepted PNG-body comparisons at channel delta 0; final movie and observation rows repeat exactly. Nine physical proof records retain their raw scoped motion-QA findings and human review requirements. E01 keeps original scene/rig/font/audio/labels and legacy semantic status. The mixed-depth fixture independently proves front/behind text and shapes against physical depth with retained actual controls; no aggregate appearance metric substitutes for it.",
+        "evidence": [
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/implementationEvidence/nativeEpisodeExecution/freshFull3"
+          },
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/implementationEvidence/actualGraphAcceptance"
+          },
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/implementationEvidence/bridgeNativeAppearanceComparison"
+          }
+        ],
+        "status": "implemented-with-scoped-evidence-final-software-gates-pending"
+      },
+      {
+        "id": "MS1N-7",
+        "title": "Measured cost, managed memory and unchanged acceptance policy",
+        "authoritativeChecklist": {
+          "file": "./mechanism-shorts-production-plan.md",
+          "heading": "MS1N Native 3D composition",
+          "line": 638,
+          "text": "Profile representative native scenes under the supported software renderer before broad expansion. Record actual timings, memory, source edits and cache invalidation; preserve all existing composition baselines."
+        },
+        "preciseScope": "Actual first/repeat native E01 software exports retain wrapper preparation/export/check/through-check timings, worker render/readback/upload p95, actual FFmpeg CPU, sampled parent/process-tree RSS and separately declared managed allocation. First wrapper timings are 19.503732167 / 235.771898625 / 326.075090791 / 581.351109375 seconds; exporter frame render average 279.779597701 ms and p95 343.699999928 ms. First sampled process-tree RSS is 2,394,439,680 bytes, versus declared one-worker peak 561,521,298 bytes under the 8 GiB application admission; these scopes must not be conflated. Static source/effective identity changes and saved label versus physical-state differences are retained. Final baseline/benchmark/memory gates remain required; no realtime, broad throughput, causal speedup or deferred CE6-P claim follows.",
+        "evidence": [
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/implementationEvidence/nativeEpisodeExecution/freshFull3/firstTimings"
+          },
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/implementationEvidence/nativeEpisodeExecution/freshFull3/exports"
+          },
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/implementationEvidence/currentNativePreviewProof"
+          },
+          {
+            "file": "./mechanism-shorts-ms1n-results.json",
+            "jsonPointer": "/implementationEvidence/fullLocalGateAnd176Baselines"
+          }
+        ],
+        "status": "implemented-with-scoped-evidence-final-software-gates-pending"
+      }
+    ],
+    "humanAcceptance": {
+      "continuousPlaybackListeningAndCreativeAcceptance": "pending",
+      "encodedGlyphReadability": "requires-encoded-review",
+      "hardwareAppearance": "pending-human-review",
+      "legacyE01SemanticAssessment": "unassessed",
+      "customerSourceRedistribution": "unestablished"
+    },
+    "preservedDeferrals": ["CE6-P", "CE8-L-F"],
+    "excludes": [
+      "general glTF/GLB or CAD import expansion",
+      "MS2 teaching generators or reusable family completion",
+      "flexible-body/physical simulation",
+      "arbitrary textures/translucent world surfaces",
+      "arbitrary sectioning or cross-precomp depth",
+      "general CE8-L-F relighting/shadow completion"
+    ],
+    "updated": "2026-10-10",
+    "finalVerification": {
+      "status": "pending",
+      "record": "./mechanism-shorts-ms1n-results.json",
+      "requiredClosure": [
+        "Exact final source and verified archive with all maintained clean installed-package checks.",
+        "Actual isolated installed native lifecycle, saved edit, final package and moved closure under retained original-source byte denials.",
+        "All 77 required local groups, unchanged 176 baselines / 36,061 frames, original pixel/timing limits and benchmark/memory acceptance."
+      ],
+      "provenance": "Retain failed attempts, source/appearance identities and precise measured scopes. Record staged completion as staged; do not infer an uninterrupted full gate or human acceptance from earlier focused proofs."
+    }
   }
 }

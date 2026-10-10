@@ -4312,6 +4312,42 @@ PR #43, which integrates `main` after #42 merged. Owner review/merge remain; CE6
 stays separate and GitHub Actions disabled.
 [Repair evidence](./pr-43-followup-fix-results.json).
 
+### MS1N bounded native solid geometry follow-up (2026-10-10)
+
+**Status: implemented; final software verification pending.** The bounded native
+solid route extends the shared composition graph with hash-pinned indexed meshes
+and explicit world graphics in a common depth pass. It reuses the mechanism/solid
+camera and rigid-rig evaluator and shared Three world factory. This follows CE8's
+delivered projective-plane and ordinary `threeD` scope; isolated precomps retain
+isolated depth and unsupported mixed scopes fail with located diagnostics.
+
+The declared native profile requires RGBA16F, four MSAA samples and depth24 with
+its specified coverage/ACES/sRGB resolve. Opaque and hard-mask artwork share mesh
+depth; screen annotations retain explicit physical visibility and overlay ordering.
+Public builder, CLI and Lab evidence covers bounded authored controls, saved edits,
+inspection and recipe/source identity. The supported feature matrix, actual E01
+and independent depth proofs, material comparison, timings and managed-memory
+scopes are recorded in the [MS1N results](./mechanism-shorts-ms1n-results.json)
+and [frozen design](./mechanism-shorts-ms1n-design.md). The seven exact production
+requirements are cross-referenced by the additive native-solid follow-up in
+[CE8 results](./composition-ce8-results.json) and remain pending final software
+closure in the [production plan](./mechanism-shorts-production-plan.md#ms1n-native-3d-composition).
+
+Final closure requires the exact archive and clean installed-package checks,
+isolated installed lifecycle and moved final package, all 77 required local groups,
+unchanged 176 baselines / 36,061 frames, and the original pixel/timing and
+benchmark/memory policy. Retain earlier failures and state whether verification
+was uninterrupted or completed in recorded stages. Continuous human
+playback/listening, encoded glyph and material appearance, hardware appearance
+and owner acceptance remain separate. Cross-driver pixel comparisons are
+informational and preserve their actual failed diagnostic; same-profile acceptance
+retains its original policy. Legacy E01 semantic assessment remains unassessed.
+
+This is the implemented indexed subset, with no general glTF/CAD import or MS2
+family/generator completion. Existing material reuse does not complete or resume
+CE8-L-F, and does not close deferred CE6-P performance acceptance. Historical CE8
+completion and its retained evidence remain unchanged.
+
 ---
 
 ### CE8-L-F cast-shadow preparation (2026-10-06)

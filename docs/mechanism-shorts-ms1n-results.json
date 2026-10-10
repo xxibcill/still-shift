@@ -1900,6 +1900,287 @@
       "unitTests": 3915,
       "unitWallSeconds": 51.74,
       "scope": "Schema/appearance closure, package boundaries, TypeScript formatting, lint, noemit build and all3915 units pass. Cleanconsumer strict declaration/archive proof and full77/176/installed native gate remain pending."
+    },
+    {
+      "id": "test-package-2",
+      "status": "passed",
+      "command": "pnpm test:package",
+      "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+      "rootTerminalExitCode": 0,
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-test-package-2.log",
+        "bytes": 1014,
+        "sha256": "sha256:48b786e5b9c3285aa5331f24c67519894ba23c53b99653977232d1a2ca3cb51e"
+      },
+      "archive": {
+        "path": "/private/tmp/still-shift-ms1n-package-attempt-2-retained/still-shift-0.1.0.tgz",
+        "bytes": 3150449,
+        "sha256": "sha256:f41679b1f7c327d2966c992ab27c6173be4fa0acc9fee3fbee2ed47c993dfb64"
+      },
+      "packResult": {
+        "path": "/private/tmp/still-shift-ms1n-package-attempt-2-retained/pack-result.json",
+        "bytes": 239378,
+        "sha256": "sha256:aa27aa46e3b750b703edcf1dd4153a579d2206cc9cbd94e5554e450758631500"
+      },
+      "packageVerification": {
+        "path": "/private/tmp/still-shift-ms1n-package-attempt-2-retained/package-verification.json",
+        "bytes": 36057,
+        "sha256": "sha256:d27aa9191c70758f04eb5d963f2a3604a17db568320cfe8df359b2c679143d36"
+      },
+      "retention": {
+        "path": "/private/tmp/still-shift-ms1n-package-attempt-2-retained/retention.json",
+        "bytes": 615,
+        "sha256": "sha256:3b1f14ac3c7b0d80c8c6877ad46750a75fd2a1dd92b4eac3e7d3d8e2f932d7b5"
+      },
+      "completedChecksCount": 26,
+      "completedChecks": [
+        "install archive outside repository (pnpm offline)",
+        "installed command help",
+        "installed command version",
+        "consumer TypeScript declarations",
+        "consumer bundler declarations",
+        "TypeScript program validation",
+        "installed browser pixel-quality analysis",
+        "legacy motion import in installed program",
+        "JSON program validation",
+        "installed API imports",
+        "opt-in browser runtime setup",
+        "opt-in depth runtime setup",
+        "installed depth worker command",
+        "installed canvas2d export",
+        "canvas2d frame count",
+        "canvas2d source comparison",
+        "installed webgl2 export",
+        "webgl2 frame count",
+        "webgl2 source comparison",
+        "installed preview page and seeking",
+        "opt-in soundtrack runtime setup",
+        "soundtrack fixture",
+        "installed soundtrack worker and API",
+        "installed soundtrack CLI",
+        "corresponding source dependencies",
+        "corresponding source rebuild"
+      ],
+      "archiveMembers": 1804,
+      "unpackedBytes": 22219376,
+      "sourceInventory": {
+        "path": "/private/tmp/still-shift-ms1n-implementation-inputs-10.json",
+        "bytes": 396838,
+        "sha256": "sha256:1fa1a352fbb19446a97d0d29bf5d762b10be524aca5647b9a6fb4936b8a74eb1",
+        "version": "ms1n-source-input-inventory-2",
+        "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+        "files": 2327,
+        "inputBytes": 117498320
+      },
+      "scope": "Fresh offline clean-consumer archive install, strict NodeNext/Bundler public declarations, APIs, browser/depth/audio setup, both ordinary render backends/preview and corresponding-source rebuild pass all 26 checks. Actual OS-denied full native E01 consumer proof is separately pending; archive1/declaration failure stays retained."
+    },
+    {
+      "id": "archive-source-audit-2",
+      "status": "passed",
+      "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+      "rootTerminalExitCode": 0,
+      "summary": {
+        "path": "/private/tmp/still-shift-ms1n-archive-source-audit-2/summary.json",
+        "bytes": 6675,
+        "sha256": "sha256:28c65af48a7add7cb64d478b14738deca39b8b588a461f04caf52de985c9a280"
+      },
+      "rows": {
+        "path": "/private/tmp/still-shift-ms1n-archive-source-audit-2/members.json",
+        "bytes": 1050027,
+        "sha256": "sha256:a3f728b7e5c4d06db26fe486799ec0ecec37185bf5d2f41ffb232e543023951b"
+      },
+      "helper": {
+        "path": "/private/tmp/mechanism-ms1n-archive-source-audit-v2.py",
+        "bytes": 42493,
+        "sha256": "sha256:8371e7143b10f8a31b8b17bee9fd87a114ce8a6f6069a2b8a4573d6ce23014e8"
+      },
+      "archive": {
+        "path": "/private/tmp/still-shift-ms1n-package-attempt-2-retained/still-shift-0.1.0.tgz",
+        "bytes": 3150449,
+        "sha256": "sha256:f41679b1f7c327d2966c992ab27c6173be4fa0acc9fee3fbee2ed47c993dfb64"
+      },
+      "regularMembers": 1804,
+      "payloadBytes": 22219376,
+      "correspondingSource": {
+        "allArchiveGitWorktreeDistBytesExact": true,
+        "bytes": 6108529,
+        "completeReviewedCopySet": true,
+        "files": 669
+      },
+      "emittedRuntime": {
+        "allArchivedBytesEqualCurrentDist": true,
+        "bytes": 16110847,
+        "compilerReproduction": "unassessed",
+        "files": 1135,
+        "installedPackageVerification": "unassessed"
+      },
+      "documentedNpmRootOmissions": [
+        {
+          "archived": false,
+          "bytes": 84143,
+          "distNpmSha256": "sha256:d37d4ae8b181d013ab1761b8d607033f9fd72b598b4dab10b68b47c59b402ffc",
+          "gitBlobId": "9827c35d2e77313be281c5e5dcd38b5d23878b03",
+          "gitBlobSha256": "sha256:d37d4ae8b181d013ab1761b8d607033f9fd72b598b4dab10b68b47c59b402ffc",
+          "path": "pnpm-lock.yaml",
+          "reason": "npm-packlist root-scoped strict /pnpm-lock.yaml exclusion",
+          "requiredArchivedSourcePath": "source/pnpm-lock.yaml",
+          "sourceArchiveGitWorktreeDistExact": true
+        }
+      ],
+      "scope": "All 1,804 archived regular files verified: 669 corresponding-source files are exact Git81/current-worktree/dist source bytes; 1,135 emitted/runtime files match current dist/npm separately. npm root pnpm-lock omission is explicit and its source lock remains exact. Tar metadata is ignored; compiled output is not claimed as Git blobs. Original helper/audit1 failure remains unchanged; installed/render/human acceptance is separate."
+    },
+    {
+      "id": "native-installed-consumer-1",
+      "status": "failed-private-launch-audio-path",
+      "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+      "archiveSha256": "sha256:f41679b1f7c327d2966c992ab27c6173be4fa0acc9fee3fbee2ed47c993dfb64",
+      "report": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-1/consumer-all.json",
+        "bytes": 31504,
+        "sha256": "sha256:615d2c51ded07d3a0aca6b80a960968b2673093bdd82731975cd4a9b4f8daff3"
+      },
+      "stderr": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-1/consumer-all.stderr.log",
+        "bytes": 1376,
+        "sha256": "sha256:153058b403350b76cc6b6f4008001ee764acd6120b68b1e63d228e0677899b7c"
+      },
+      "stdout": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-1/consumer-all.stdout.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "consumerProfile": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-1/consumer.sb",
+        "bytes": 1127,
+        "sha256": "sha256:6a334631119c900b2bda74a3170f12cce102d8db91aad6363de4450258bae39a"
+      },
+      "config": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-1/harness-config.json",
+        "bytes": 4667,
+        "sha256": "sha256:88e87aabe9e55815fa778e91cbf243b52eafd63b9af090385683c14508aa165c"
+      },
+      "runtimeProof": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-1/runtime-proof.json",
+        "bytes": 1078,
+        "sha256": "sha256:385de402e81ce7c1aeb92a66f013a31c6203873c89651f7b89e6081c46825b9c"
+      },
+      "installedArchiveInventory": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-1/archive-files.json",
+        "bytes": 107344,
+        "sha256": "sha256:90ff685c59394b9677a05919c8812ced7ae9a997baea4fba5e2ba856a745f6f2"
+      },
+      "completedPreconditions": [
+        {
+          "name": "OS-denial",
+          "verified": true,
+          "profileSha256": "sha256:6a334631119c900b2bda74a3170f12cce102d8db91aad6363de4450258bae39a"
+        },
+        {
+          "name": "archive-installed-byte-identity",
+          "archiveSha256": "sha256:f41679b1f7c327d2966c992ab27c6173be4fa0acc9fee3fbee2ed47c993dfb64",
+          "sourceCommitSupplied": "81a8e344443702d13ac3ab0d8072352345e457be",
+          "installedFileCount": 1804
+        },
+        {
+          "name": "consumer-process-runtime",
+          "proofPath": "/private/tmp/still-shift-ms1n-installed-consumer-1/runtime-proof.json",
+          "proofSha256": "sha256:385de402e81ce7c1aeb92a66f013a31c6203873c89651f7b89e6081c46825b9c",
+          "exception": "consumer-only exact lstart query backed by live Darwin libproc; installed package is unchanged"
+        }
+      ],
+      "completedPreconditionsCount": 3,
+      "installedFileCount": 1804,
+      "failure": {
+        "code": "SCENE_INVALID",
+        "message": "Cannot inspect supplied audio capability",
+        "locatedDiagnostic": "mechanism-audio-unreadable"
+      },
+      "scope": "Actual OS-denial, 1,804 installed-file byte identity and live process-runtime proof complete before supplied-audio loading failed. Native preview/export/QA and full installed-consumer acceptance were not reached. Consumer-only libproc lstart helper exception remains explicit; package helper is unchanged. PATH diagnosis is separately bound."
+    },
+    {
+      "id": "native-audio-path-triage-1",
+      "status": "failed-nested-sandbox-application",
+      "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+      "report": {
+        "path": "/private/tmp/still-shift-ms1n-audio-path-triage-1.json",
+        "bytes": 678,
+        "sha256": "sha256:b66b04ed38d7a656b40b424c2b08bc45a374e1860444f7e59d0ad5bc6b99b935"
+      },
+      "missing": {
+        "status": null,
+        "errorCode": "ENOENT"
+      },
+      "admitted": {
+        "status": 71,
+        "stderr": "sandbox-exec: sandbox_apply: Operation not permitted\n"
+      },
+      "scope": "Old-PATH ENOENT retained. First admitted FFprobe triage could not apply nested sandbox (status 71, sandbox_apply Operation not permitted); it establishes no successful audio capability probe."
+    },
+    {
+      "id": "native-audio-path-triage-2",
+      "status": "passed-private-launch-path-diagnosis",
+      "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+      "report": {
+        "path": "/private/tmp/still-shift-ms1n-audio-path-triage-2.json",
+        "bytes": 939,
+        "sha256": "sha256:d8146e6e4c6e656a307d148b5fef61a025b3fd44adb690dd5fb8491e477601d5"
+      },
+      "probeHelper": {
+        "path": "/private/tmp/mechanism-ms1n-audio-path-probe-v2.mjs",
+        "bytes": 1600,
+        "sha256": "sha256:79a19f804b7325af780f026f3ecd9740e48f65f94b07a9970a74fd853e3302c2"
+      },
+      "consumerProfile": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-1/consumer.sb",
+        "bytes": 1127,
+        "sha256": "sha256:6a334631119c900b2bda74a3170f12cce102d8db91aad6363de4450258bae39a"
+      },
+      "profileSha256": "sha256:6a334631119c900b2bda74a3170f12cce102d8db91aad6363de4450258bae39a",
+      "originalAudio": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-1/source/assets/mix-v001.wav",
+        "bytes": 6681702,
+        "sha256": "sha256:93cf722caec63d04eb7388a7da2c315a747175d63a39d3f413c3b254da922eb7"
+      },
+      "oldPath": "/Users/jjae/.nvm/versions/node/v22.23.1/bin:/Users/jjae/.nvm/versions/node/v24.16.0/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+      "addedPath": "/opt/homebrew/bin",
+      "missing": {
+        "status": null,
+        "errorCode": "ENOENT"
+      },
+      "admittedProbeExitCode": 0,
+      "stream": {
+        "codec_name": "pcm_s24le",
+        "sample_rate": "48000",
+        "channels": 2,
+        "time_base": "1/48000",
+        "duration_ts": 1113600
+      },
+      "ffprobeVersion": "ffprobe version 8.0.1 Copyright (c) 2007-2025 the FFmpeg developers",
+      "scope": "Exact copied original-audio probe under the same consumer1 profile succeeds with Homebrew FFprobe admitted; old launch PATH returns ENOENT. This locates consumer1 audio failure to launch environment without changing product/package/source bytes or denials. Nested triage1 failure is retained. No native execution or browser-readiness cause is inferred."
+    },
+    {
+      "id": "native-installed-setup-2",
+      "status": "passed-setup-only",
+      "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-installed-setup-2.log",
+        "bytes": 635,
+        "sha256": "sha256:28876f29f3659817692a1acf029b7830ae78b9a476444dcc556a1f6863232e8d"
+      },
+      "argv": {
+        "path": "/private/tmp/still-shift-ms1n-installed-setup-2.argv.json",
+        "bytes": 4908,
+        "sha256": "sha256:68e380e23b850e51abedbf662bb9ab514b9aafee0c8d12456b3a17bdd5ca96d0"
+      },
+      "archiveSha256": "sha256:f41679b1f7c327d2966c992ab27c6173be4fa0acc9fee3fbee2ed47c993dfb64",
+      "consumer": "/private/tmp/still-shift-ms1n-installed-consumer-2",
+      "offlineInstall": true,
+      "originalInputsCopiedByteIdentically": 6,
+      "executedConsumer": false,
+      "prepared": true,
+      "launchCorrection": "Admit installed FFprobe/FFmpeg directory in launch PATH; additionally deny failed consumer1. Same archive/source/harness/required denials.",
+      "scope": "Fresh consumer2 setup completed with the same exact archive/source/harness and original required denials, corrected launch PATH, and failed consumer1 additionally denied. Actual full OS-denied native preview/export/check/relocated-package proof is still pending; setup alone is not acceptance."
     }
   ],
   "implementationEvidence": {
@@ -4158,7 +4439,15 @@
         "publicCustomerSourceRedistribution": "unestablished"
       }
     },
-    "portableInstalledExecution": "pending",
+    "portableInstalledExecution": {
+      "status": "pending-full-native-consumer2",
+      "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+      "consumer": "/private/tmp/still-shift-ms1n-installed-consumer-2",
+      "archiveSha256": "sha256:f41679b1f7c327d2966c992ab27c6173be4fa0acc9fee3fbee2ed47c993dfb64",
+      "setupRecord": "native-installed-setup-2",
+      "priorFailedAttemptRecord": "native-installed-consumer-1",
+      "scope": "Ordinary package26 and source audit pass; actual OS-denied full native E01 consumer2 proof remains pending. Portable4 retains its own83/original342 provenance."
+    },
     "fullLocalGateAnd176Baselines": {
       "status": "pending",
       "unchangedOriginalRequiredGroups": 76,
@@ -4265,9 +4554,13 @@
       "next": "Recapture this explicit selection after the test-only oracle correction and use it before/after remaining actual proofs and aggregate checks."
     },
     "currentCompleteSourceInputInventory": {
-      "path": "/private/tmp/still-shift-ms1n-implementation-inputs-9.json",
+      "path": "/private/tmp/still-shift-ms1n-implementation-inputs-10.json",
       "bytes": 396838,
-      "sha256": "sha256:dfea12b34e8621ab97c69be55170bfaa0bcc46553093e2602e18617da701ab88"
+      "sha256": "sha256:1fa1a352fbb19446a97d0d29bf5d762b10be524aca5647b9a6fb4936b8a74eb1",
+      "version": "ms1n-source-input-inventory-2",
+      "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+      "files": 2327,
+      "inputBytes": 117498320
     },
     "nativeMotionQARepair": {
       "status": "implemented-reviewed-focused54-fast3915-short-native2frame-pass",
@@ -5644,13 +5937,319 @@
         "scope": "Schema/appearance closure, package boundaries, TypeScript formatting, lint, noemit build and all3915 units pass. Cleanconsumer strict declaration/archive proof and full77/176/installed native gate remain pending."
       },
       "actualArchiveProof": "pending",
-      "scope": "Declare pinned Three typings in renderer-core dependency importer and generated release lock; existing NodeNext/Bundler consumer fixture now exercises public native factory/font/texture/geometry declaration closure. No any/skipLibCheck or consumer-only direct typing installation. No native appearance/runtime source change."
+      "scope": "Declare pinned Three typings in renderer-core dependency importer and generated release lock; existing NodeNext/Bundler consumer fixture now exercises public native factory/font/texture/geometry declaration closure. No any/skipLibCheck or consumer-only direct typing installation. No native appearance/runtime source change.",
+      "historicalRecord": true,
+      "historicalScope": "Existing status/fast-gate fields describe the precommit packaging repair after83 and remain retained. The current committed archive association follows.",
+      "currentCommitAssociation": {
+        "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+        "status": "committed-package-and-source-audit-passed",
+        "sourceInventory": {
+          "path": "/private/tmp/still-shift-ms1n-implementation-inputs-10.json",
+          "bytes": 396838,
+          "sha256": "sha256:1fa1a352fbb19446a97d0d29bf5d762b10be524aca5647b9a6fb4936b8a74eb1",
+          "version": "ms1n-source-input-inventory-2",
+          "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+          "files": 2327,
+          "inputBytes": 117498320
+        },
+        "packageProofRecord": "test-package-2",
+        "archiveSourceAuditRecord": "archive-source-audit-2",
+        "archiveSha256": "sha256:f41679b1f7c327d2966c992ab27c6173be4fa0acc9fee3fbee2ed47c993dfb64"
+      }
+    },
+    "priorCompleteSourceInputInventory9": {
+      "path": "/private/tmp/still-shift-ms1n-implementation-inputs-9.json",
+      "bytes": 396838,
+      "sha256": "sha256:dfea12b34e8621ab97c69be55170bfaa0bcc46553093e2602e18617da701ab88"
+    },
+    "nativeArchiveProof": {
+      "id": "test-package-2",
+      "status": "passed",
+      "command": "pnpm test:package",
+      "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+      "rootTerminalExitCode": 0,
+      "node": "22.23.1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-test-package-2.log",
+        "bytes": 1014,
+        "sha256": "sha256:48b786e5b9c3285aa5331f24c67519894ba23c53b99653977232d1a2ca3cb51e"
+      },
+      "archive": {
+        "path": "/private/tmp/still-shift-ms1n-package-attempt-2-retained/still-shift-0.1.0.tgz",
+        "bytes": 3150449,
+        "sha256": "sha256:f41679b1f7c327d2966c992ab27c6173be4fa0acc9fee3fbee2ed47c993dfb64"
+      },
+      "packResult": {
+        "path": "/private/tmp/still-shift-ms1n-package-attempt-2-retained/pack-result.json",
+        "bytes": 239378,
+        "sha256": "sha256:aa27aa46e3b750b703edcf1dd4153a579d2206cc9cbd94e5554e450758631500"
+      },
+      "packageVerification": {
+        "path": "/private/tmp/still-shift-ms1n-package-attempt-2-retained/package-verification.json",
+        "bytes": 36057,
+        "sha256": "sha256:d27aa9191c70758f04eb5d963f2a3604a17db568320cfe8df359b2c679143d36"
+      },
+      "retention": {
+        "path": "/private/tmp/still-shift-ms1n-package-attempt-2-retained/retention.json",
+        "bytes": 615,
+        "sha256": "sha256:3b1f14ac3c7b0d80c8c6877ad46750a75fd2a1dd92b4eac3e7d3d8e2f932d7b5"
+      },
+      "completedChecksCount": 26,
+      "completedChecks": [
+        "install archive outside repository (pnpm offline)",
+        "installed command help",
+        "installed command version",
+        "consumer TypeScript declarations",
+        "consumer bundler declarations",
+        "TypeScript program validation",
+        "installed browser pixel-quality analysis",
+        "legacy motion import in installed program",
+        "JSON program validation",
+        "installed API imports",
+        "opt-in browser runtime setup",
+        "opt-in depth runtime setup",
+        "installed depth worker command",
+        "installed canvas2d export",
+        "canvas2d frame count",
+        "canvas2d source comparison",
+        "installed webgl2 export",
+        "webgl2 frame count",
+        "webgl2 source comparison",
+        "installed preview page and seeking",
+        "opt-in soundtrack runtime setup",
+        "soundtrack fixture",
+        "installed soundtrack worker and API",
+        "installed soundtrack CLI",
+        "corresponding source dependencies",
+        "corresponding source rebuild"
+      ],
+      "archiveMembers": 1804,
+      "unpackedBytes": 22219376,
+      "sourceInventory": {
+        "path": "/private/tmp/still-shift-ms1n-implementation-inputs-10.json",
+        "bytes": 396838,
+        "sha256": "sha256:1fa1a352fbb19446a97d0d29bf5d762b10be524aca5647b9a6fb4936b8a74eb1",
+        "version": "ms1n-source-input-inventory-2",
+        "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+        "files": 2327,
+        "inputBytes": 117498320
+      },
+      "scope": "Fresh offline clean-consumer archive install, strict NodeNext/Bundler public declarations, APIs, browser/depth/audio setup, both ordinary render backends/preview and corresponding-source rebuild pass all 26 checks. Actual OS-denied full native E01 consumer proof is separately pending; archive1/declaration failure stays retained."
+    },
+    "nativeArchiveSourceAudit": {
+      "id": "archive-source-audit-2",
+      "status": "passed",
+      "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+      "rootTerminalExitCode": 0,
+      "summary": {
+        "path": "/private/tmp/still-shift-ms1n-archive-source-audit-2/summary.json",
+        "bytes": 6675,
+        "sha256": "sha256:28c65af48a7add7cb64d478b14738deca39b8b588a461f04caf52de985c9a280"
+      },
+      "rows": {
+        "path": "/private/tmp/still-shift-ms1n-archive-source-audit-2/members.json",
+        "bytes": 1050027,
+        "sha256": "sha256:a3f728b7e5c4d06db26fe486799ec0ecec37185bf5d2f41ffb232e543023951b"
+      },
+      "helper": {
+        "path": "/private/tmp/mechanism-ms1n-archive-source-audit-v2.py",
+        "bytes": 42493,
+        "sha256": "sha256:8371e7143b10f8a31b8b17bee9fd87a114ce8a6f6069a2b8a4573d6ce23014e8"
+      },
+      "archive": {
+        "path": "/private/tmp/still-shift-ms1n-package-attempt-2-retained/still-shift-0.1.0.tgz",
+        "bytes": 3150449,
+        "sha256": "sha256:f41679b1f7c327d2966c992ab27c6173be4fa0acc9fee3fbee2ed47c993dfb64"
+      },
+      "regularMembers": 1804,
+      "payloadBytes": 22219376,
+      "correspondingSource": {
+        "allArchiveGitWorktreeDistBytesExact": true,
+        "bytes": 6108529,
+        "completeReviewedCopySet": true,
+        "files": 669
+      },
+      "emittedRuntime": {
+        "allArchivedBytesEqualCurrentDist": true,
+        "bytes": 16110847,
+        "compilerReproduction": "unassessed",
+        "files": 1135,
+        "installedPackageVerification": "unassessed"
+      },
+      "documentedNpmRootOmissions": [
+        {
+          "archived": false,
+          "bytes": 84143,
+          "distNpmSha256": "sha256:d37d4ae8b181d013ab1761b8d607033f9fd72b598b4dab10b68b47c59b402ffc",
+          "gitBlobId": "9827c35d2e77313be281c5e5dcd38b5d23878b03",
+          "gitBlobSha256": "sha256:d37d4ae8b181d013ab1761b8d607033f9fd72b598b4dab10b68b47c59b402ffc",
+          "path": "pnpm-lock.yaml",
+          "reason": "npm-packlist root-scoped strict /pnpm-lock.yaml exclusion",
+          "requiredArchivedSourcePath": "source/pnpm-lock.yaml",
+          "sourceArchiveGitWorktreeDistExact": true
+        }
+      ],
+      "scope": "All 1,804 archived regular files verified: 669 corresponding-source files are exact Git81/current-worktree/dist source bytes; 1,135 emitted/runtime files match current dist/npm separately. npm root pnpm-lock omission is explicit and its source lock remains exact. Tar metadata is ignored; compiled output is not claimed as Git blobs. Original helper/audit1 failure remains unchanged; installed/render/human acceptance is separate."
+    },
+    "nativeInstalledConsumerFailedAttempt1": {
+      "id": "native-installed-consumer-1",
+      "status": "failed-private-launch-audio-path",
+      "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+      "archiveSha256": "sha256:f41679b1f7c327d2966c992ab27c6173be4fa0acc9fee3fbee2ed47c993dfb64",
+      "report": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-1/consumer-all.json",
+        "bytes": 31504,
+        "sha256": "sha256:615d2c51ded07d3a0aca6b80a960968b2673093bdd82731975cd4a9b4f8daff3"
+      },
+      "stderr": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-1/consumer-all.stderr.log",
+        "bytes": 1376,
+        "sha256": "sha256:153058b403350b76cc6b6f4008001ee764acd6120b68b1e63d228e0677899b7c"
+      },
+      "stdout": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-1/consumer-all.stdout.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "consumerProfile": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-1/consumer.sb",
+        "bytes": 1127,
+        "sha256": "sha256:6a334631119c900b2bda74a3170f12cce102d8db91aad6363de4450258bae39a"
+      },
+      "config": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-1/harness-config.json",
+        "bytes": 4667,
+        "sha256": "sha256:88e87aabe9e55815fa778e91cbf243b52eafd63b9af090385683c14508aa165c"
+      },
+      "runtimeProof": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-1/runtime-proof.json",
+        "bytes": 1078,
+        "sha256": "sha256:385de402e81ce7c1aeb92a66f013a31c6203873c89651f7b89e6081c46825b9c"
+      },
+      "installedArchiveInventory": {
+        "path": "/private/tmp/still-shift-ms1n-installed-consumer-1/archive-files.json",
+        "bytes": 107344,
+        "sha256": "sha256:90ff685c59394b9677a05919c8812ced7ae9a997baea4fba5e2ba856a745f6f2"
+      },
+      "completedPreconditions": [
+        {
+          "name": "OS-denial",
+          "verified": true,
+          "profileSha256": "sha256:6a334631119c900b2bda74a3170f12cce102d8db91aad6363de4450258bae39a"
+        },
+        {
+          "name": "archive-installed-byte-identity",
+          "archiveSha256": "sha256:f41679b1f7c327d2966c992ab27c6173be4fa0acc9fee3fbee2ed47c993dfb64",
+          "sourceCommitSupplied": "81a8e344443702d13ac3ab0d8072352345e457be",
+          "installedFileCount": 1804
+        },
+        {
+          "name": "consumer-process-runtime",
+          "proofPath": "/private/tmp/still-shift-ms1n-installed-consumer-1/runtime-proof.json",
+          "proofSha256": "sha256:385de402e81ce7c1aeb92a66f013a31c6203873c89651f7b89e6081c46825b9c",
+          "exception": "consumer-only exact lstart query backed by live Darwin libproc; installed package is unchanged"
+        }
+      ],
+      "completedPreconditionsCount": 3,
+      "installedFileCount": 1804,
+      "failure": {
+        "code": "SCENE_INVALID",
+        "message": "Cannot inspect supplied audio capability",
+        "locatedDiagnostic": "mechanism-audio-unreadable"
+      },
+      "scope": "Actual OS-denial, 1,804 installed-file byte identity and live process-runtime proof complete before supplied-audio loading failed. Native preview/export/QA and full installed-consumer acceptance were not reached. Consumer-only libproc lstart helper exception remains explicit; package helper is unchanged. PATH diagnosis is separately bound."
+    },
+    "nativeInstalledAudioPathTriage": {
+      "originalNestedFailure": {
+        "id": "native-audio-path-triage-1",
+        "status": "failed-nested-sandbox-application",
+        "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+        "report": {
+          "path": "/private/tmp/still-shift-ms1n-audio-path-triage-1.json",
+          "bytes": 678,
+          "sha256": "sha256:b66b04ed38d7a656b40b424c2b08bc45a374e1860444f7e59d0ad5bc6b99b935"
+        },
+        "missing": {
+          "status": null,
+          "errorCode": "ENOENT"
+        },
+        "admitted": {
+          "status": 71,
+          "stderr": "sandbox-exec: sandbox_apply: Operation not permitted\n"
+        },
+        "scope": "Old-PATH ENOENT retained. First admitted FFprobe triage could not apply nested sandbox (status 71, sandbox_apply Operation not permitted); it establishes no successful audio capability probe."
+      },
+      "successfulSameProfileDiagnosis": {
+        "id": "native-audio-path-triage-2",
+        "status": "passed-private-launch-path-diagnosis",
+        "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+        "report": {
+          "path": "/private/tmp/still-shift-ms1n-audio-path-triage-2.json",
+          "bytes": 939,
+          "sha256": "sha256:d8146e6e4c6e656a307d148b5fef61a025b3fd44adb690dd5fb8491e477601d5"
+        },
+        "probeHelper": {
+          "path": "/private/tmp/mechanism-ms1n-audio-path-probe-v2.mjs",
+          "bytes": 1600,
+          "sha256": "sha256:79a19f804b7325af780f026f3ecd9740e48f65f94b07a9970a74fd853e3302c2"
+        },
+        "consumerProfile": {
+          "path": "/private/tmp/still-shift-ms1n-installed-consumer-1/consumer.sb",
+          "bytes": 1127,
+          "sha256": "sha256:6a334631119c900b2bda74a3170f12cce102d8db91aad6363de4450258bae39a"
+        },
+        "profileSha256": "sha256:6a334631119c900b2bda74a3170f12cce102d8db91aad6363de4450258bae39a",
+        "originalAudio": {
+          "path": "/private/tmp/still-shift-ms1n-installed-consumer-1/source/assets/mix-v001.wav",
+          "bytes": 6681702,
+          "sha256": "sha256:93cf722caec63d04eb7388a7da2c315a747175d63a39d3f413c3b254da922eb7"
+        },
+        "oldPath": "/Users/jjae/.nvm/versions/node/v22.23.1/bin:/Users/jjae/.nvm/versions/node/v24.16.0/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+        "addedPath": "/opt/homebrew/bin",
+        "missing": {
+          "status": null,
+          "errorCode": "ENOENT"
+        },
+        "admittedProbeExitCode": 0,
+        "stream": {
+          "codec_name": "pcm_s24le",
+          "sample_rate": "48000",
+          "channels": 2,
+          "time_base": "1/48000",
+          "duration_ts": 1113600
+        },
+        "ffprobeVersion": "ffprobe version 8.0.1 Copyright (c) 2007-2025 the FFmpeg developers",
+        "scope": "Exact copied original-audio probe under the same consumer1 profile succeeds with Homebrew FFprobe admitted; old launch PATH returns ENOENT. This locates consumer1 audio failure to launch environment without changing product/package/source bytes or denials. Nested triage1 failure is retained. No native execution or browser-readiness cause is inferred."
+      }
+    },
+    "nativeInstalledConsumerSetup2": {
+      "id": "native-installed-setup-2",
+      "status": "passed-setup-only",
+      "sourceCommit": "81a8e344443702d13ac3ab0d8072352345e457be",
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-installed-setup-2.log",
+        "bytes": 635,
+        "sha256": "sha256:28876f29f3659817692a1acf029b7830ae78b9a476444dcc556a1f6863232e8d"
+      },
+      "argv": {
+        "path": "/private/tmp/still-shift-ms1n-installed-setup-2.argv.json",
+        "bytes": 4908,
+        "sha256": "sha256:68e380e23b850e51abedbf662bb9ab514b9aafee0c8d12456b3a17bdd5ca96d0"
+      },
+      "archiveSha256": "sha256:f41679b1f7c327d2966c992ab27c6173be4fa0acc9fee3fbee2ed47c993dfb64",
+      "consumer": "/private/tmp/still-shift-ms1n-installed-consumer-2",
+      "offlineInstall": true,
+      "originalInputsCopiedByteIdentically": 6,
+      "executedConsumer": false,
+      "prepared": true,
+      "launchCorrection": "Admit installed FFprobe/FFmpeg directory in launch PATH; additionally deny failed consumer1. Same archive/source/harness/required denials.",
+      "scope": "Fresh consumer2 setup completed with the same exact archive/source/harness and original required denials, corrected launch PATH, and failed consumer1 additionally denied. Actual full OS-denied native preview/export/check/relocated-package proof is still pending; setup alone is not acceptance."
     }
   },
   "humanContinuousPlaybackListeningAndCreativeAcceptance": "pending",
   "publication": "not-requested",
   "limits": [
-    "MS1N remains in progress. Held342 full3 native original E01 software execution/QA/two696closures/nine parity and bridge4 fresh696 exact preservation pass. Appearance2 completes nine physical-state/actual-artifact comparisons with informational pixel statistics only; hardware1 actual state delta0 passes but cross-driver pixel diagnostic fails max135/RMS2.226 and human appearance remains pending. Preview4 fails fourth module readiness; package1 fails options-path override. Uncommitted two-file source/test package repair passes corrected integration2; fast-check/commit and refreshed portable/installed/full77 groups/176 unchanged baselines remain pending. Encoded/human/owner/publication acceptance remains separate.",
+    "MS1N remains in progress. Held342 full3 original native E01 execution/QA, two 696-frame closures, nine parity checks and bridge4 fresh 696 exact preservation pass. Hardware state agrees; cross-driver pixels/human appearance remain separate. Preview5 passes at83 without explaining retained readiness failures. Current81 packaging repair passes 26 ordinary installed checks and exact 1,804-member source audit; archive1/audit1/consumer1 failures stay retained. Consumer1 PATH lacked FFprobe; same-profile exact-audio triage passes after Homebrew admission. Consumer2 setup passes, but full installed native proof and all 77 groups/176 unchanged baselines remain pending. Encoded/human/owner/publication acceptance remains separate.",
     "Exact MS1 scene/geometry/rig/font/audio source identities must be preserved; static overrides receive separate effective identities.",
     "One native world per qualified scope, opaque/hard-mask only, actual four-sample HDR/depth support, initial export one worker.",
     "Customer source media remains outside Git; public redistribution remains unestablished.",
