@@ -1,3 +1,4 @@
+import { sampleNativeFrameV3 } from "../../native3d/evaluate-v3.ts";
 import { ShapeGeometryBudget } from "../shapes/budget.ts";
 import { sampleShapes, clampShapes, cloneShapes } from "../shapes/sample.ts";
 import {
@@ -1893,9 +1894,11 @@ class Evaluation {
         height: ctx.scope.height,
       };
       state.nativeFrame =
-        source.version === "prepared-native3d-scene-2"
-          ? sampleNativeFrameV2(source, layer, sample)
-          : sampleNativeFrame(source, layer, sample);
+        source.version === "prepared-native3d-scene-3"
+          ? sampleNativeFrameV3(source, layer, sample)
+          : source.version === "prepared-native3d-scene-2"
+            ? sampleNativeFrameV2(source, layer, sample)
+            : sampleNativeFrame(source, layer, sample);
     }
     state.drawable =
       state.visible &&

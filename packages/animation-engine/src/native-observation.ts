@@ -265,6 +265,12 @@ export async function createNativeObservationRequest(
 export async function createNativeObservationRequestVersions(
   ...args: Parameters<typeof createNativeObservationRequest>
 ) {
+  if (args[0].preparedNative3D?.version === "composition-prepared-native3d-3")
+    passageError(
+      "comp-native3d-protocol",
+      "source3 export requires its independent observation protocol",
+      { path: "nativeObservations.execution" },
+    );
   return args[0].preparedNative3D?.version === "composition-prepared-native3d-2"
     ? await createNativeObservationRequestV2(...args)
     : await createNativeObservationRequest(...args);

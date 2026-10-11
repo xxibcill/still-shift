@@ -112,6 +112,15 @@ export async function prepareNativePbrResources(
   });
   return prepared;
 }
+/** Release private binary preparation when its composition owner closes. Existing worlds own copies. */
+export function releasePreparedNativePbrResources(
+  prepared: PreparedNativePbrResources,
+): void {
+  const owned = ownedInputs.get(prepared);
+  if (!owned) return;
+  owned.pixels.clear();
+  ownedInputs.delete(prepared);
+}
 const filters = {
   9728: NearestFilter,
   9729: LinearFilter,

@@ -1,3 +1,4 @@
+import { resolveNative3DVariantV3 } from "./prepare-v3.ts";
 import type { NativeFrameSnapshotVersions } from "@still-shift/scene-contract";
 import { passageError } from "../passage-diagnostics.ts";
 import { freezeNativeData, resolveNative3DVariant } from "./prepare.ts";
@@ -31,6 +32,15 @@ export function resolveNative3DVariantVersions(
       location,
     );
   const prepared = catalogue[reference.asset]!;
+  if (reference.version === "native3d-frame-3") {
+    if (prepared.version !== "prepared-native3d-scene-3")
+      passageError(
+        "comp-native3d-source",
+        "Native frame/source protocols differ",
+        location,
+      );
+    return resolveNative3DVariantV3({ [reference.asset]: prepared }, reference);
+  }
   if (reference.version === "native3d-frame-2") {
     if (prepared.version !== "prepared-native3d-scene-2")
       passageError(

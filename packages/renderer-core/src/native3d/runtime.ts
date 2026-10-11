@@ -14,9 +14,12 @@ import type { DeepReadonly } from "./types.ts";
 import type { PreparedNative3DSceneVersions } from "./types-v2.ts";
 import type { NativeTextureFont } from "./three-textures.ts";
 
+import type { PreparedNativePbrResources } from "./pbr-resources.ts";
+
 /** Type-only browser injection: importing the pure renderer never imports Three. */
 export type NativeDepthRuntimeOptions = {
   native3D?: Readonly<Record<string, PreparedNative3DSceneVersions>>;
+  nativePbrResources?: Readonly<Record<string, PreparedNativePbrResources>>;
   nativeTextureFont?: (asset: string) => NativeTextureFont | undefined;
   nativeAppearanceCodeSha256?: string;
   observeNativeFrameV2?: (

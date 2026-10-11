@@ -700,8 +700,10 @@ mechanism families establish whether the architecture transfers.
       validation and exact encoded PBR roles with current software evidence.
       Nineteenth slice adds pinned PNG/JPEG RGBA preparation, explicit native PBR/
       tangent resource ownership, shared pre-decode allocation admission and actual
-      indexed-draw/mip0 GPU component proof. Composition source/binary admission,
-      mip-data verification and imported preview/export proof remain pending;
+      indexed-draw/mip0 GPU component proof. Twentieth slice adds rigid source3
+      shared-world execution; twenty-first adds composition source/binary HTTP,
+      frame3, preview and static PBR styles. Independent observations, mip-data,
+      authenticated export, installed and whole-world proof remain pending;
       this criterion stays unchecked. See the [import API](./rigid-gltf-import.md) and
       [retained results](./mechanism-shorts-ms2-results.json).
 - [ ] Implement slider hard stops, hinge/lever, deterministic spring return and

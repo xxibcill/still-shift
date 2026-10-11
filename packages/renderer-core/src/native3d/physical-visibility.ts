@@ -4,6 +4,8 @@ import type {
   NativeScreenAnchor,
   MechanismVector,
   MechanismMaterial,
+  NativePbrMaterial,
+  SolidGeometryV2,
 } from "@still-shift/scene-contract";
 import type { DeepReadonly } from "./types.ts";
 import { transformPoint } from "../mechanism/matrix.ts";
@@ -46,12 +48,16 @@ function triangleDistance(
   const distance = dot(edge2, q) * inverse;
   return distance >= 0 && Number.isFinite(distance) ? distance : null;
 }
-const materialSurvives = (material: DeepReadonly<MechanismMaterial>) =>
-  material.alphaMode !== "mask" || material.opacity >= material.alphaCutoff;
+const materialSurvives = (
+  material: DeepReadonly<MechanismMaterial | NativePbrMaterial>,
+) =>
+  "schemaVersion" in material ||
+  material.alphaMode !== "mask" ||
+  material.opacity >= material.alphaCutoff;
 
 /** Physical catalogue only: floors and anchor-owning parts participate, graphics do not. */
 export function nativeAnchorVisibilities(
-  geometry: DeepReadonly<Native3DSource["geometry"]>,
+  geometry: DeepReadonly<Native3DSource["geometry"] | SolidGeometryV2>,
   frame: Pick<NativeSceneFrame, "camera" | "parts" | "anchors">,
   positionsByMesh: Readonly<Record<string, readonly number[]>> = {},
 ): Record<string, Pick<NativeScreenAnchor, "visibility" | "occluderMesh">> {
@@ -119,7 +125,11 @@ export function nativeAnchorVisibilities(
               vertices[0]!,
               vertices[1]!,
               vertices[2]!,
-              material.side,
+              "schemaVersion" in material
+                ? material.doubleSided
+                  ? "double"
+                  : "front"
+                : material.side,
             );
             if (hit === null || hit >= closest) continue;
             const hitDepth = hit * dot(direction, forward);

@@ -4,10 +4,13 @@ import {
   COMPOSITION_LIMITS,
   type Composition,
   type CompositionLayer,
-  type Native3DLayer,
+  type Native3DLayerVersions,
 } from "../../../packages/scene-contract/src/index.ts";
 import type { EvaluationOptions } from "../../../packages/renderer-core/src/composition/evaluate/index.ts";
-import { native3DOverridesKey } from "../../../packages/renderer-core/src/native3d/prepare.ts";
+import {
+  native3DOverridesKey,
+  native3DOverridesKeyV3,
+} from "../../../packages/renderer-core/src/native3d/override-keys.ts";
 import type { PreparedNative3DVariantVersions } from "../../../packages/renderer-core/src/native3d/types-v2.ts";
 import {
   CompositionEditError,
@@ -17,7 +20,7 @@ import {
 
 export type NativeInspectorContext = {
   selected: CompositionLayer;
-  controller: Native3DLayer;
+  controller: Native3DLayerVersions;
   controllerPath: JsonPath;
   scope: string | null;
   variant: PreparedNative3DVariantVersions;
@@ -41,7 +44,7 @@ export function nativeInspectorContext(
     };
   let owner: CompositionLayer | undefined = selected;
   const seen = new Set<string>();
-  let controller: Native3DLayer | undefined;
+  let controller: Native3DLayerVersions | undefined;
   while (owner && !seen.has(owner.id)) {
     seen.add(owner.id);
     if (owner.type === "native3d") {
@@ -75,7 +78,8 @@ export function nativeInspectorContext(
     );
   if (
     prepared.version !== "prepared-native3d-scene-1" &&
-    prepared.version !== "prepared-native3d-scene-2"
+    prepared.version !== "prepared-native3d-scene-2" &&
+    prepared.version !== "prepared-native3d-scene-3"
   )
     fail(
       "comp-native3d-protocol",
@@ -86,16 +90,23 @@ export function nativeInspectorContext(
       ...(controller.partOverrides
         ? { partOverrides: controller.partOverrides }
         : {}),
+      ...(controller.pbrMaterialOverrides
+        ? { pbrMaterialOverrides: controller.pbrMaterialOverrides }
+        : {}),
       ...(controller.materialOverrides
         ? { materialOverrides: controller.materialOverrides }
         : {}),
     },
-    key = prepared.variantKeysByOverrides[native3DOverridesKey(overrides)],
+    key =
+      prepared.variantKeysByOverrides[
+        prepared.version === "prepared-native3d-scene-3"
+          ? native3DOverridesKeyV3(overrides)
+          : native3DOverridesKey(overrides)
+      ],
     variant = key ? prepared.variants[key] : undefined;
   if (
     !variant ||
-    (prepared.version === "prepared-native3d-scene-2") !==
-      (variant.version === "prepared-native3d-variant-2")
+    prepared.version.replace("scene", "variant") !== variant.version
   )
     fail(
       "comp-native3d-not-ready",
@@ -190,7 +201,12 @@ export function editNativeInspector(
     transform.position = [...edit.position];
     controller.partOverrides[edit.part] = { ...override, transform };
   } else if (edit.kind === "material-pbr") {
-    const field = [...controllerPath, "materialOverrides", edit.material];
+    const pbr = variant.version === "prepared-native3d-variant-3",
+      field = [
+        ...controllerPath,
+        pbr ? "pbrMaterialOverrides" : "materialOverrides",
+        edit.material,
+      ];
     if (
       !variant.source.geometry.materials.some(
         (value) => value.id === edit.material,
@@ -208,12 +224,21 @@ export function editNativeInspector(
           [...field, name],
           "PBR values must be finite and between zero and one",
         );
-    controller.materialOverrides ??= {};
-    controller.materialOverrides[edit.material] = {
-      ...controller.materialOverrides[edit.material],
-      metalness: edit.metalness,
-      roughness: edit.roughness,
-    };
+    if (pbr) {
+      controller.pbrMaterialOverrides ??= {};
+      controller.pbrMaterialOverrides[edit.material] = {
+        ...controller.pbrMaterialOverrides[edit.material],
+        metallicFactor: edit.metalness,
+        roughnessFactor: edit.roughness,
+      };
+    } else {
+      controller.materialOverrides ??= {};
+      controller.materialOverrides[edit.material] = {
+        ...controller.materialOverrides[edit.material],
+        metalness: edit.metalness,
+        roughness: edit.roughness,
+      };
+    }
   } else {
     if (selected.type !== "text")
       fail(

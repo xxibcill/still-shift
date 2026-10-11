@@ -1,8 +1,12 @@
 import {
   Native3DSourceOverridesSchema,
   Native3DSourceOverridesV2Schema,
+  Native3DSourceOverridesV3Schema,
 } from "@still-shift/scene-contract";
-import type { Native3DSourceOverrides } from "@still-shift/scene-contract";
+import type {
+  Native3DSourceOverrides,
+  Native3DSourceOverridesV3,
+} from "@still-shift/scene-contract";
 import { canonicalMechanismJson } from "../mechanism/canonical.ts";
 
 function normalizedOverridesKey(parsed: Native3DSourceOverrides): string {
@@ -25,4 +29,18 @@ export function native3DOverridesKeyV2(
   input: Native3DSourceOverrides = {},
 ): string {
   return normalizedOverridesKey(Native3DSourceOverridesV2Schema.parse(input));
+}
+
+export function native3DOverridesKeyV3(
+  input: Native3DSourceOverridesV3 = {},
+): string {
+  const parsed = Native3DSourceOverridesV3Schema.parse(input),
+    normalized: Record<string, unknown> = {};
+  for (const field of ["partOverrides", "pbrMaterialOverrides"] as const) {
+    const entries = Object.entries(parsed[field] ?? {})
+      .filter(([, value]) => Object.keys(value).length > 0)
+      .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0));
+    if (entries.length) normalized[field] = Object.fromEntries(entries);
+  }
+  return canonicalMechanismJson(normalized);
 }

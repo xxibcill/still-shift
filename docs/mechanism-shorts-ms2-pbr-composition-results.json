@@ -1,0 +1,894 @@
+{
+  "schemaVersion": "mechanism-shorts-ms2-pbr-composition-results-1",
+  "date": "2026-10-11",
+  "status": "source3-preview-verified-strict-aggregate-timeouts-pending",
+  "branch": "codex/mechanism-ms2",
+  "baseSourceCommit": "4db6795fceb65ac94ddb703137982e86caaf5e85",
+  "currentInputInventory": {
+    "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-21.json",
+    "bytes": 425055,
+    "sha256": "sha256:8440c8cffee7f59f9b0d13338b44f6c800a2fe94cc2328543beed15fac1b5cce"
+  },
+  "currentSelectedInputFiles": 2492,
+  "stages": [
+    {
+      "stage": 1,
+      "actualRootSession": 25476,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "75a45c",
+      "qualification": "Red: asset format3 not admitted",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-format-1.log",
+          "bytes": 47,
+          "sha256": "sha256:c9ddd8a1e544f509a74ba2c6cc8095a6b68ddd16541833177e1f9d1cba4fbcd2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-1.json",
+          "bytes": 423008,
+          "sha256": "sha256:42ceffdad15461c60212a68f4e6f1e9ed1a1c2a1a89de5bf7b00ae2baa7e5d5f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inventory-1.log",
+          "bytes": 242,
+          "sha256": "sha256:53f32278c50db8bca0f14c4031bf9d69e849c75d3ee5b08a99aeb45ff9c16422"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-red-1.log",
+          "bytes": 2275,
+          "sha256": "sha256:2274f0f559cd7f7337471f96703330b944514da8def3762503768929a08ff66c"
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "actualRootSession": 73638,
+      "actualExitCode": null,
+      "terminalToolReceipt": null,
+      "qualification": "Build log reports errors; terminal receipt lost. Recovery eb153c finds no running gate; exit not inferred.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-build-2.log",
+          "bytes": 25975,
+          "sha256": "sha256:cc2e07d793c54f4438c583dcaab0749e8ee1115b21c1eb60197a915acbab6148"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-2.json",
+          "bytes": 423693,
+          "sha256": "sha256:e991e339118d292691f409f3f7056978fd23594dbb069851caaa6abd52889d76"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inventory-2.log",
+          "bytes": 242,
+          "sha256": "sha256:d2884c3ad37232551a22ef7f7a5c06e283e707a6e10381afd8918c39a9ff7956"
+        }
+      ]
+    },
+    {
+      "stage": 3,
+      "actualRootSession": 5569,
+      "actualExitCode": 2,
+      "terminalToolReceipt": "1136e8",
+      "qualification": "Build fails on missing pure override-key export; post-run inventory3 captures unchanged selected inputs.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-build-3.log",
+          "bytes": 361,
+          "sha256": "sha256:97e97f74b6c6ad064971ace1e3e83a55263937716c2a0aa0f21d1cad7214a634"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-format-3.log",
+          "bytes": 7801,
+          "sha256": "sha256:415c114aebed6ccf760c61dacc6f22cbef423c48d440e45571d94a02645091c1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-3.json",
+          "bytes": 423884,
+          "sha256": "sha256:5f5d17f0c237346b54794023859d92225427788dc97862802e81f0ea8ca4cfdb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inventory-3.log",
+          "bytes": 242,
+          "sha256": "sha256:45b2e43119a9a3d363adffaa1435e8847f96e2e503d6671f1d9db0f21f469a42"
+        }
+      ]
+    },
+    {
+      "stage": 4,
+      "actualRootSession": 65293,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "2ba88e",
+      "qualification": "Build passes; new composition test uses invalid inFrame/outFrame fields.15/16 tests pass.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-build-4.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-focused-4.log",
+          "bytes": 1744,
+          "sha256": "sha256:ce25f5a09e2cb229246968fbeb0fa3fab59c8f90d0365562f48341d63ac7bec6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-format-4.log",
+          "bytes": 248,
+          "sha256": "sha256:c114f834f0438a906f2f9eaa205ef93f6472cbe288367e7b0cc0bdcb024af90f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-4.json",
+          "bytes": 423884,
+          "sha256": "sha256:c196471af2aad11eeab7a0f55025198c8b6ec013f5a4a88993ae01b387bb4711"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inventory-4.log",
+          "bytes": 242,
+          "sha256": "sha256:c09c6cd44988e82d2590e50bd9db5c9820c7d66f7be7901a5f69e80f7b5de01c"
+        }
+      ]
+    },
+    {
+      "stage": 5,
+      "actualRootSession": 11969,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "4f2e76",
+      "qualification": "19 focused tests pass; browser harness fails before binary admission because of Vite fallback.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-browser-5.log",
+          "bytes": 1531,
+          "sha256": "sha256:cc04c24a5891c667cbde77091d886eed6f1f6601eb44aadc964ed581247ed74a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-focused-5.log",
+          "bytes": 376,
+          "sha256": "sha256:7f96810417234e313c3cfcd4e545f018e6822828654ef5003be0063b6d9da6d1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-format-5.log",
+          "bytes": 324,
+          "sha256": "sha256:cc12001554701d61ee434af8864c846afb841715a8af396b08d6fdca5ebf0892"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-identity-5.log",
+          "bytes": 260,
+          "sha256": "sha256:0fbcd727d4b09f71c98975d4790bfd36df23bf84698f7a8240d0b773c77c5194"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-5.json",
+          "bytes": 424210,
+          "sha256": "sha256:7a4c454ae70243de1131b2c090bd5f8247b39189a46ed591550563e63706df38"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inventory-5.log",
+          "bytes": 242,
+          "sha256": "sha256:35eb49e13e4088006fa71554a331fe2a2240c9d503e5f5dad1483c1d668a5315"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-schema-5.log",
+          "bytes": 653,
+          "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+        }
+      ]
+    },
+    {
+      "stage": 6,
+      "actualRootSession": 50795,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "bd3c61",
+      "qualification": "Browser harness correct request still404; retained failure4yRsQl confirms no binary request reached the route.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-browser-6.log",
+          "bytes": 1624,
+          "sha256": "sha256:06d104e4876f20573f175d64726fe8c1620b8dd8ad1ec5b0d6c19f55eaa5a3d3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-format-6.log",
+          "bytes": 224,
+          "sha256": "sha256:bcd4bbd2008780ecd1eea96421430b9d100497a82abf684c7cfa5469b7615f4b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-identity-6.log",
+          "bytes": 260,
+          "sha256": "sha256:0fbcd727d4b09f71c98975d4790bfd36df23bf84698f7a8240d0b773c77c5194"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-6.json",
+          "bytes": 424210,
+          "sha256": "sha256:6d8ef818e6fe54e2fd536f7e9d78a83bbf13aabceb3470a3508224efad3f73db"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inventory-6.log",
+          "bytes": 242,
+          "sha256": "sha256:e0e514164eabe139319e4d0ebcb87f0ca13647f93da29afe8f3177fda18519bc"
+        }
+      ]
+    },
+    {
+      "stage": 7,
+      "actualRootSession": 43672,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "6a7ef2",
+      "qualification": "Actual separate HTTP binary,6 preview captures,5 body/checksum faults and source3 collection/export rejection.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-browser-7.log",
+          "bytes": 602,
+          "sha256": "sha256:ffb36fb2011b9f9d8250f5e0a1589219100449489068a9f4052519334b406b3d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-format-7.log",
+          "bytes": 46,
+          "sha256": "sha256:77737bbe881d095d289bf5ea167d456eb8b70bb56e9401398cde155abaa7ed25"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-7.json",
+          "bytes": 424211,
+          "sha256": "sha256:75c9042c2ad27bf35fd7981e484998b52f16dd4e002c7d4928401dac595c9ae4"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inventory-7.log",
+          "bytes": 242,
+          "sha256": "sha256:2f35bcc499872e31a75e294a5b468470d288df5a01dab87d8a6b5332a20b5bc9"
+        }
+      ]
+    },
+    {
+      "stage": 8,
+      "actualRootSession": 14884,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "5dd4f7",
+      "qualification": "Fast gate stops at unformatted evaluator; Node suffix not run.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-fast-8.log",
+          "bytes": 1434,
+          "sha256": "sha256:d9009bdcd24c353078c4294714fb252133fa22c3642a12c907f7c12d99189e17"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-format-8.log",
+          "bytes": 172,
+          "sha256": "sha256:e77bc5a16341216d822b407152330c0955adc6abc8d3c7246a89fd8f70d16c31"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-8.json",
+          "bytes": 424729,
+          "sha256": "sha256:1056461823e79edb1fa0eb28c29d7309835b7c926fc402f9acb535e38ea0ae8f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inventory-8.log",
+          "bytes": 242,
+          "sha256": "sha256:aba5de4caf4068e6902353b13ca957b382ad0c5bec18a0708f17c5c83f6a07f0"
+        }
+      ]
+    },
+    {
+      "stage": 9,
+      "actualRootSession": 52559,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "5f4f44",
+      "qualification": "Node/Lab fixture omits required source clock fields;5/7 tests pass; fast suffix not run.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-format-9.log",
+          "bytes": 134,
+          "sha256": "sha256:d1862f8879c9eff25b6725931288b6a8062f17620c842d9b3aa1bee763f493cb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-identity-9.log",
+          "bytes": 260,
+          "sha256": "sha256:0fbcd727d4b09f71c98975d4790bfd36df23bf84698f7a8240d0b773c77c5194"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-9.json",
+          "bytes": 424729,
+          "sha256": "sha256:a5ad3d9efef45e0d0c7e1432a09929b0ea5b4692fbb10fec9191d62350ddc55a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inventory-9.log",
+          "bytes": 242,
+          "sha256": "sha256:ac56b8cbdc61e6a835e2380d539b17291fc4e902da13e0da2cb8cf603f6a4eb6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-node-9.log",
+          "bytes": 3757,
+          "sha256": "sha256:ae1c4c0fcf0f3c8541ca6eaf35a470a97ef8aef3abf82561df22018e7deb72c4"
+        }
+      ]
+    },
+    {
+      "stage": 10,
+      "actualRootSession": 42009,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "606c5a",
+      "qualification": "Node6 pass; Lab fixture sends unsupported backend field400; fast suffix not run.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-format-10.log",
+          "bytes": 60,
+          "sha256": "sha256:31971df32a97b2fff1cb28a67990bfda91dcbd9965571c98270c6f73aa33bbda"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-10.json",
+          "bytes": 424729,
+          "sha256": "sha256:75eabae335718afe9f64ce4df2036068a5be6fb287c1c9e79d52c838c789710f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inventory-10.log",
+          "bytes": 243,
+          "sha256": "sha256:b9901b1257ff0ca5053f3735e503f54a4bcbe79d76223630882c0689207b5fcf"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-node-10.log",
+          "bytes": 1440,
+          "sha256": "sha256:ead6a483a5a53cac5d8f078a64bfe24c8d09d36f06f8e83b3885e076c8d1061e"
+        }
+      ]
+    },
+    {
+      "stage": 11,
+      "actualRootSession": 64116,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "f2b9c4",
+      "qualification": "Attempted fixture replacement missed the formatted backend field; unchanged request400, fast suffix not run.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-format-11.log",
+          "bytes": 69,
+          "sha256": "sha256:0233c0f333aac70e618346d97b3c2d00faf496672e38e5d9adfc98dd9e7ee62c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-11.json",
+          "bytes": 424729,
+          "sha256": "sha256:ee717d6f260cc7b79d4fca67349c3b5ce3892eb37602273134cd1962cb92746c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inventory-11.log",
+          "bytes": 243,
+          "sha256": "sha256:fff6123a6629091bc7d24099a62f1588335c977aed2fd5d10fde8e0b167ebd75"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-node-11.log",
+          "bytes": 1531,
+          "sha256": "sha256:472cf83b54cddcc2ef6a14c28a2072e6a9490121f6234aa69498d7680f73c7ad"
+        }
+      ]
+    },
+    {
+      "stage": 12,
+      "actualRootSession": 47473,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "e8d2c6",
+      "qualification": "Node/Lab7 pass; full formatting passes, then lint rejects missing pure3 allowlist and unsafe-finally assertion; suffix not run.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-fast-12.log",
+          "bytes": 1927,
+          "sha256": "sha256:b06330222b34d360a5ed4a8be1a5c8ae93fb132aa2cafe72d10abe9e3c9d2406"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-format-12.log",
+          "bytes": 68,
+          "sha256": "sha256:e6db4e46a81fa2c5b5172692bf35d04ef6a45841b7ba2daf1f42371a7894ea64"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-12.json",
+          "bytes": 424729,
+          "sha256": "sha256:38626d991520adddf8aae1dcfe018a11aa826d11ee53d3abc92f45b42024e11c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inventory-12.log",
+          "bytes": 243,
+          "sha256": "sha256:0464d75506f5d344be52c30dc2a0233aec8c518ebd643cf7ec426db7ba48cd4e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-node-12.log",
+          "bytes": 565,
+          "sha256": "sha256:621b611763164624a9819eaacd880da50dd729ab31ca88411a1eab84ad923a5a"
+        }
+      ]
+    },
+    {
+      "stage": 13,
+      "actualRootSession": 70965,
+      "actualExitCode": 143,
+      "terminalToolReceipt": "c33670",
+      "qualification": "Intentionally stopped owned verification tree17d14c after identifying eager Three import in pure renderer. No gate pass claimed.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-fast-13.log",
+          "bytes": 1183,
+          "sha256": "sha256:3a785b46bc43caabe7e2d355507d09faaaf8531b293c836ff2b95c9592936a30"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-format-13.log",
+          "bytes": 207,
+          "sha256": "sha256:24e9e289cb998bd993ff0e9dbd8d078600acf9f91176387191bc73bb3ab33362"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-identity-13.log",
+          "bytes": 260,
+          "sha256": "sha256:0fbcd727d4b09f71c98975d4790bfd36df23bf84698f7a8240d0b773c77c5194"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-13.json",
+          "bytes": 424729,
+          "sha256": "sha256:e7daf19680403e4cf6d9a57669f27479eb6ed238e4748167d0a3d27826159a09"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inventory-13.log",
+          "bytes": 243,
+          "sha256": "sha256:90d6d5e035a30182c377f50c4682f12996466e15715fecce1b1de35cf0e227bd"
+        }
+      ]
+    },
+    {
+      "stage": 14,
+      "actualRootSession": 29162,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "6618ce",
+      "qualification": "Fresh Node pure import/Lab/source admission3 pass; full fast6 failed files,7 failures:4 stale version3/field coverage expectations and3 unchanged five-second timeouts. Runtime/integration/browser suffix not run.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-fast-14.log",
+          "bytes": 69248,
+          "sha256": "sha256:1318a1cc43b13170e07917c874ea6af7401ce179a4b9a394a5bc3126cb65c0b6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-format-14.log",
+          "bytes": 185,
+          "sha256": "sha256:2ad98b2ea421efc287720c06518bf0c9801bc121b89c3f6d1f4a36e653276886"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-identity-14.log",
+          "bytes": 260,
+          "sha256": "sha256:0fbcd727d4b09f71c98975d4790bfd36df23bf84698f7a8240d0b773c77c5194"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-14.json",
+          "bytes": 425054,
+          "sha256": "sha256:8b74adc5826ed1e6fda2fa5beb4aa716b27ace2c1c50734ddfe4ca7ec6c5c2b0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inventory-14.log",
+          "bytes": 243,
+          "sha256": "sha256:abd7dad6b0dc13526889cd0593d135484d4a3b4b93ca11d1f6c05a27f63c10cc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-node-14.log",
+          "bytes": 649,
+          "sha256": "sha256:72ecccfc1c48fbbab67b0d5059c43fa0409c8f70d0fb0ac61b184f4a41051bed"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-timeouts-14.log",
+          "bytes": 1996,
+          "sha256": "sha256:05ebc4e7f5023641c0abe58168ff5630ed4a023bc8018aa42a0fd4b3d1c1f30f"
+        }
+      ]
+    },
+    {
+      "stage": 15,
+      "actualRootSession": 38424,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "d7dcb7",
+      "qualification": "Focused150 and normal four-worker fast4169/406 pass; runtime199/200 passes then ordinary Node config fails because the binary loader imports the full renderer. Suffix not run.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-fast-15.log",
+          "bytes": 34551,
+          "sha256": "sha256:4f59ba0a6bd91a82c0d90f55fd5b6f354d50f13f4fbb6e515374dced609106c1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-focused-15.log",
+          "bytes": 596,
+          "sha256": "sha256:0453b267c86bfae1f53aa6927cba9a59a757bfb9c1283a7373e70ad98311466d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-format-15.log",
+          "bytes": 235,
+          "sha256": "sha256:be024b503c641f67a8f484796370274b8bb0d91336133efb36fe7d81dcae1b27"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-15.json",
+          "bytes": 425055,
+          "sha256": "sha256:cba7f95142e541581b8933e41170e02ca35ae7763151f5af806c5df82809a4eb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inventory-15.log",
+          "bytes": 243,
+          "sha256": "sha256:9a55a2e87ff1c7f092fdef0cecfdb750553242eeea75e52c75b9d28cc54e39d6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-runtime-15.log",
+          "bytes": 15205,
+          "sha256": "sha256:e05cd39f70f89226cce8d7028ca3bded8e70fa095d970f2f3e9d0f87ce3c38e2"
+        }
+      ]
+    },
+    {
+      "stage": 16,
+      "actualRootSession": 78630,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "312de7",
+      "qualification": "Node strip-only/pure/source checks3 pass. Fresh full fast static prefix passes, but one original five-second gradient-table timeout fails;4168/4169 units pass. No suffix.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-fast-16.log",
+          "bytes": 41051,
+          "sha256": "sha256:6239a0dc70c79b8fb1563d3608880d1735795202f6226203af4d628b7cd6de93"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-format-16.log",
+          "bytes": 77,
+          "sha256": "sha256:676e18690fa7d43f990fef886b9b45dcb5c5d582af03167b49e888beaab309ad"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-16.json",
+          "bytes": 425055,
+          "sha256": "sha256:8440c8cffee7f59f9b0d13338b44f6c800a2fe94cc2328543beed15fac1b5cce"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inventory-16.log",
+          "bytes": 243,
+          "sha256": "sha256:446a4a48169ea5cf3db752faa9b489a69c598416f02934d6a4fcd9838073eae5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-node-16.log",
+          "bytes": 631,
+          "sha256": "sha256:bf548a94021935b54796a8c6ce481b8d2dc4952eb6311cf81ae3985f1e5a2b7c"
+        }
+      ]
+    },
+    {
+      "stage": 17,
+      "actualRootSession": 49431,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "14462c",
+      "qualification": "Identical selected inputs16/17; full one-worker units still time out the same original gradient test at5000ms.4168/4169 pass, suffix not run.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-17.json",
+          "bytes": 425055,
+          "sha256": "sha256:8440c8cffee7f59f9b0d13338b44f6c800a2fe94cc2328543beed15fac1b5cce"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inventory-17.log",
+          "bytes": 243,
+          "sha256": "sha256:3e22b38c39dfd274bd94a0f438c22cafccfe86f63059afaa51ec89a37221bf38"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-unchanged-17.log",
+          "bytes": 195,
+          "sha256": "sha256:3ca917fae9d6f7948a4b3a3b464834f67a9cde97f3b083a986b6a0a61c29dd96"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-units-17.log",
+          "bytes": 42883,
+          "sha256": "sha256:87a0fbfbb5c67c798d5e2d9838080caba86395e6b477f474df0c980b8fef4b09"
+        }
+      ]
+    },
+    {
+      "stage": 18,
+      "actualRootSession": 31275,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "8ad4ac",
+      "qualification": "Identical selected inputs17/18; focused gradient rerun also times out its original5000ms case,9/10 pass; suffix not run.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-gradient-18.log",
+          "bytes": 2809,
+          "sha256": "sha256:49785daa554b03960c656f0fc1ba03f6d0f797cb06c8258b78119893c91e756a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-18.json",
+          "bytes": 425055,
+          "sha256": "sha256:8440c8cffee7f59f9b0d13338b44f6c800a2fe94cc2328543beed15fac1b5cce"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inventory-18.log",
+          "bytes": 243,
+          "sha256": "sha256:e7f7004b2a459a78d3ab11c91ee9b606b63cba06af76098f008886520d2a4a72"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-unchanged-18.log",
+          "bytes": 195,
+          "sha256": "sha256:a88259ff5599eaba55777d746e0f169d7d5d17b5117d20bbfe2a36f4345ebbec"
+        }
+      ]
+    },
+    {
+      "stage": 19,
+      "actualRootSession": 52141,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "ab1444",
+      "qualification": "Identical selected inputs18/19. Runtime198/200 passes; two existing package cases exceed original5000ms limits. Node import fix passes. Integration/browser suffix not run.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-19.json",
+          "bytes": 425055,
+          "sha256": "sha256:8440c8cffee7f59f9b0d13338b44f6c800a2fe94cc2328543beed15fac1b5cce"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inventory-19.log",
+          "bytes": 243,
+          "sha256": "sha256:c1cb5715a76bd650ad9349d6498975492982ed094af4bd02d1ccc5f1c27ed7ce"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-runtime-19.log",
+          "bytes": 15431,
+          "sha256": "sha256:b886b08ce65fd6ec3593463f7c499bd6ae37ac91804a847262ad0a3fea610dd5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-unchanged-19.log",
+          "bytes": 195,
+          "sha256": "sha256:b0efbe88cef577a8ac71c3ea3fb55b8f5810d6bdc4843279703bc0b8349ae40d"
+        }
+      ]
+    },
+    {
+      "stage": 20,
+      "actualRootSession": null,
+      "actualExitCode": null,
+      "terminalToolReceipt": null,
+      "qualification": "Initial execution result and session handle lost; root PID31504 was recovered892c8d and remained live1557fb/68aef0. Package file reports5/7 with the same two original5000ms timeouts. Integration log reports failures; aggregate terminal exit is unavailable and not inferred. Browser suffix behind failed integration was not run. Final recovery38efdd finds no live root; log summary321/322 retains one original30000ms capture-retention timeout and lifecycle reports1. Original root terminal remains unavailable.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-20.json",
+          "bytes": 425055,
+          "sha256": "sha256:8440c8cffee7f59f9b0d13338b44f6c800a2fe94cc2328543beed15fac1b5cce"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-integration-20.log",
+          "bytes": 26056,
+          "sha256": "sha256:844c2ff48d4b88517f0067ada0fd845b6a70acdad9b008885636e8ca0fa28eea"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inventory-20.log",
+          "bytes": 243,
+          "sha256": "sha256:91f2e4d33edc51d557debf57a3cf14a9c1debf047481a35f6114b162eebf8e50"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-package-20.log",
+          "bytes": 3422,
+          "sha256": "sha256:4cefc9506875676c04b89687073c4cb148b47171130d20991721158f44744c26"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-process-recovery-20.json",
+          "bytes": 538,
+          "sha256": "sha256:b2406e907a08ba4a1b3b558bc20afc76b216c4898b9e2a3885590730aa21ec87"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-unchanged-20.log",
+          "bytes": 195,
+          "sha256": "sha256:e5c47a4b43ed26c0795d949d74dd89bdc9b48137e4d6d54f3d61560f571836f2"
+        }
+      ]
+    },
+    {
+      "stage": 21,
+      "actualRootSession": 22423,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "bef5f8",
+      "qualification": "Current selected bytes unchanged from source20. Standalone serial browser suffix only: production PBR composition, PBR resources, PBR world and all six native2 shape groups. Full fast/runtime/integration remain failed as separately recorded; no aggregate completion claim.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-browser-21.log",
+          "bytes": 807,
+          "sha256": "sha256:cd3aa23db11f358faf86086368dec33c02a0af02f69cfb5688ee09b7a353f8ab"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-component-21.log",
+          "bytes": 277,
+          "sha256": "sha256:0b3b0a75e56cf4c39db17ac8de82ce740d7c00180b6b5190154dc407fc5490ec"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-21.json",
+          "bytes": 425055,
+          "sha256": "sha256:8440c8cffee7f59f9b0d13338b44f6c800a2fe94cc2328543beed15fac1b5cce"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inventory-21.log",
+          "bytes": 243,
+          "sha256": "sha256:a1af3f2388193db626a40d835db6be18886aeadf864f89058134f9b25c091518"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-native2-21.log",
+          "bytes": 1218,
+          "sha256": "sha256:69e44c15bf627f7fa9674bb4ff8adb91f7c5cfd96b141e4ae84ad38b5b6f3960"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-unchanged-21.log",
+          "bytes": 195,
+          "sha256": "sha256:85c03b7692ffcb2464a03e8cd9fb14b39e67f5d4f54bc5dd3775e55205470d3f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-world-21.log",
+          "bytes": 265,
+          "sha256": "sha256:98df3236cb974211c73f6fe5949ecc88071d27f310fc7adf9695518688b467b1"
+        }
+      ]
+    }
+  ],
+  "unchangedTimeoutRerun14": {
+    "actualRootSession": 90277,
+    "actualExitCode": 0,
+    "terminalToolReceipt": "550d07",
+    "tests": 24,
+    "files": 3,
+    "timeoutLimits": "original5000ms; no relaxation",
+    "log": {
+      "path": "/private/tmp/still-shift-ms2-pbr-comp-timeouts-14.log",
+      "bytes": 1996,
+      "sha256": "sha256:05ebc4e7f5023641c0abe58168ff5630ed4a023bc8018aa42a0fd4b3d1c1f30f"
+    }
+  },
+  "verificationQualification": "Source16 schema/boundary/format/lint/build prefix passes. Default, identical single-worker17 and focused18 unit runs retain one original5000ms gradient-table timeout;4168/4169 unique cases pass. Runtime19 passes198/200; owning-file20 retains the two original5000ms package timeouts. Integration20 retains its reported failures. Serial browser21 passes on identical selected bytes. Substantial unrelated rendering CPU was observed8b9004; causation is unproven. Preceding source15 complete fast pass is separately scoped before the Node import-seam fix. No final aggregate fast/runtime/integration pass is claimed; strict limits remain unchanged.",
+  "currentSummaries": {
+    "unitsAggregate17": [
+      "Test Files  1 failed | 405 passed (406)",
+      "Tests  1 failed | 4168 passed (4169)"
+    ],
+    "unitFocused18": [
+      "Test Files  1 failed (1)",
+      "Tests  1 failed | 9 passed (10)"
+    ],
+    "runtimeAggregate19": [
+      "Test Files  1 failed | 31 passed (32)",
+      "Tests  2 failed | 198 passed (200)"
+    ],
+    "runtimeOwningFile20": [
+      "Test Files  1 failed (1)",
+      "Tests  2 failed | 5 passed (7)"
+    ],
+    "integrationAggregate20": [
+      "Test Files  1 failed | 56 passed (57)",
+      "Tests  1 failed | 321 passed (322)"
+    ]
+  },
+  "actualCompositionPreview": {
+    "record": {
+      "path": "/private/tmp/still-shift-ms2-pbr-composition-NZNT3t/run.json",
+      "bytes": 146660,
+      "sha256": "sha256:641b6fc17a7ea338092e99317a5d0cf861dff2e093e0898b66d358580cc3ceed"
+    },
+    "captures": 6,
+    "binaryFaults": 5,
+    "protocolFaults": 2,
+    "styleVariants": 1,
+    "pixelHashes": [
+      "sha256:62aa6b08f8a631394bca1a2a0cdeec37e56613a46638bb13a9fddf74f4fafb25",
+      "sha256:c093c7ef9eed5d4c740ed59d43624cbcc659fca4a64dfd46d4e21a5df857ab6f",
+      "sha256:aecdefdf867d7eb6ae51c3b12626d69476127612e9c8b58076a1982155148f69",
+      "sha256:62aa6b08f8a631394bca1a2a0cdeec37e56613a46638bb13a9fddf74f4fafb25",
+      "sha256:aecdefdf867d7eb6ae51c3b12626d69476127612e9c8b58076a1982155148f69",
+      "sha256:c093c7ef9eed5d4c740ed59d43624cbcc659fca4a64dfd46d4e21a5df857ab6f"
+    ],
+    "stylePixelSha256": "sha256:eac66422fc266fad65457950f971c21fa2f1d4f43cb567e4cfb3bbf726844f12",
+    "peakDeclaredManagedBytes": {
+      "pixels": 143207392,
+      "metadata": 1424006
+    },
+    "afterDispose": {
+      "scope": "declared-application-owned-bytes",
+      "limits": {
+        "pixels": 536870912,
+        "metadata": 67108864
+      },
+      "current": {
+        "pixels": 0,
+        "metadata": 0
+      },
+      "peak": {
+        "pixels": 143207392,
+        "metadata": 1424006
+      },
+      "reservations": 0
+    },
+    "scope": "Imported diagnostic indexed lever through actual file/transport/catalogue/frame3/binary HTTP/resources/shared HDR-depth-resolve composition preview. Independent source3 GPU observation/export not claimed."
+  },
+  "artifacts": [
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-composition-NZNT3t/capture-0.png",
+      "bytes": 3167,
+      "sha256": "sha256:62ae7489ac2e1a8228a196cd3c267bc290754a4e1bc621d3b15fff994d9aaeb6"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-composition-NZNT3t/capture-1.png",
+      "bytes": 4136,
+      "sha256": "sha256:11fba25ea8f59686797aca4d3da73e36843dfcbbfa23d56f30e4022c391cd6a8"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-composition-NZNT3t/capture-2.png",
+      "bytes": 4035,
+      "sha256": "sha256:e7cbcccae444357d33d1829c8ecc1de21ddab5744818f85c8984624f67307879"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-composition-NZNT3t/capture-3.png",
+      "bytes": 3167,
+      "sha256": "sha256:62ae7489ac2e1a8228a196cd3c267bc290754a4e1bc621d3b15fff994d9aaeb6"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-composition-NZNT3t/capture-4.png",
+      "bytes": 4035,
+      "sha256": "sha256:e7cbcccae444357d33d1829c8ecc1de21ddab5744818f85c8984624f67307879"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-composition-NZNT3t/capture-5.png",
+      "bytes": 4136,
+      "sha256": "sha256:11fba25ea8f59686797aca4d3da73e36843dfcbbfa23d56f30e4022c391cd6a8"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-composition-NZNT3t/composition.json",
+      "bytes": 549,
+      "sha256": "sha256:0a0096364913f77f3e1c5aad6f6364a7a57354f312a5a041dece6cc32a590a39"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-composition-NZNT3t/run.json",
+      "bytes": 146660,
+      "sha256": "sha256:641b6fc17a7ea338092e99317a5d0cf861dff2e093e0898b66d358580cc3ceed"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-composition-NZNT3t/source3.json",
+      "bytes": 2801,
+      "sha256": "sha256:e8c9987d3345bb6be8508647500d59fafb2f40485211c93baf501c4643421a0f"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-composition-NZNT3t/style.png",
+      "bytes": 3337,
+      "sha256": "sha256:cfa0f46e5796ef906c34fb47210b20383d392138564f360e67de423eb8e5338f"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-composition-NZNT3t/surface.rgba",
+      "bytes": 16,
+      "sha256": "sha256:fdfd272c41edbdc5c4e1a45c40d97e9be487f3a20d3eddaa873549a2b3f53990"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-composition-4yRsQl/failed.json",
+      "bytes": 9938,
+      "sha256": "sha256:4f305b12eefa6e5a785c7e294af8c05f6c680012540a7956d8f5f01c8aef36d4"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-composition-Id8Y6S/run.json",
+      "bytes": 146348,
+      "sha256": "sha256:2aa8206f94a50700b421e4db8e34b122cd299da3e6ffe24e15dcce0fd5c9648d"
+    }
+  ],
+  "currentOtherBrowserLogs": [
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-comp-component-21.log",
+      "bytes": 277,
+      "sha256": "sha256:0b3b0a75e56cf4c39db17ac8de82ce740d7c00180b6b5190154dc407fc5490ec"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-comp-world-21.log",
+      "bytes": 265,
+      "sha256": "sha256:98df3236cb974211c73f6fe5949ecc88071d27f310fc7adf9695518688b467b1"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-comp-native2-21.log",
+      "bytes": 1218,
+      "sha256": "sha256:69e44c15bf627f7fa9674bb4ff8adb91f7c5cfd96b141e4ae84ad38b5b6f3960"
+    }
+  ],
+  "generatedSchemas": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/native-frame-3.schema.json",
+      "bytes": 24842,
+      "sha256": "sha256:1192e690792e12263cb9080302b4d5b3e479ded6273b54c7c0164aa445a8ce16"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/prepared-native3d-3.schema.json",
+      "bytes": 249742,
+      "sha256": "sha256:ed2258578452ef1a8d38bd6bf04038e4c1db265559c5a0a66ec1cc43359e9600"
+    }
+  ],
+  "remaining": [
+    "Refresh the required strict fast/runtime/integration tiers before milestone readiness. Original gradient/package/capture timeouts remain unresolved; no assertion, worker budget or time limit was relaxed.",
+    "Independent source3 draw/world/anchor/PBR/mip observation protocol, authenticated repeated export and installed consumer proof. Source3 collection/export explicitly rejects pending protocol; original1/2 evidence remains strict.",
+    "Complete whole-world/PMREM/metadata/packet/replay budgeting and bounded source JSON admission. Current managed preview billing is scoped declared application-owned storage, not physical driver/RSS or all caller-held data.",
+    "Whole MS2 generator/registry/event/label/cue/typography/300-board/full/installed requirements before its PR and MS3; supportedPacks[] and pilotSupportedEpisodes0.",
+    "Human appearance/listening acceptance remains separate. No milestone merge, package release or publication."
+  ]
+}

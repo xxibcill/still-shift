@@ -1,4 +1,8 @@
 import type {
+  PreparedNative3DSceneV3,
+  PreparedNative3DVariantV3,
+} from "./types-v3.ts";
+import type {
   Native3DSourceKey,
   Native3DSourceV2,
   NativeFrameSnapshotV2,
@@ -48,7 +52,9 @@ export type Native3DVariantReferenceV2 = Pick<
 
 export type PreparedNative3DSceneVersions =
   | PreparedNative3DScene
-  | PreparedNative3DSceneV2;
+  | PreparedNative3DSceneV2
+  | PreparedNative3DSceneV3;
 export type PreparedNative3DVariantVersions =
   | PreparedNative3DVariant
-  | PreparedNative3DVariantV2;
+  | PreparedNative3DVariantV2
+  | PreparedNative3DVariantV3;

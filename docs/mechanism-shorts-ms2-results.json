@@ -15304,6 +15304,20 @@
         "Source13 differs from source11 only in the source3 browser driver and unit tests. Source11 PBR-component and all six native2 proofs retain unchanged production/owning-test inputs. Source13 current checks are distinct from snapshot10 full runtime/family/camera checks. Their input/producer records remain retained; they were not rerun after the final source13 schema/file/harness refinements.",
         "Supported packs remain empty and pilotSupportedEpisodes0. Whole MS2 generator/registry/event/label/cue/typography/300-board and full/installed gates remain before its PR and MS3."
       ]
+    },
+    {
+      "id": "pbr-composition-source3-slice21",
+      "status": "source3-preview-verified-strict-aggregate-timeouts-pending",
+      "actualRootSession": 22423,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "bef5f8",
+      "detailRecord": "docs/mechanism-shorts-ms2-pbr-composition-results.json",
+      "sourceInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-21.json",
+        "bytes": 425055,
+        "sha256": "sha256:8440c8cffee7f59f9b0d13338b44f6c800a2fe94cc2328543beed15fac1b5cce"
+      },
+      "qualification": "Source16 schema/boundary/format/lint/build prefix passes. Default, identical single-worker17 and focused18 unit runs retain one original5000ms gradient-table timeout;4168/4169 unique cases pass. Runtime19 passes198/200; owning-file20 retains the two original5000ms package timeouts. Integration20 retains its reported failures. Serial browser21 passes on identical selected bytes. Substantial unrelated rendering CPU was observed8b9004; causation is unproven. Preceding source15 complete fast pass is separately scoped before the Node import-seam fix. No final aggregate fast/runtime/integration pass is claimed; strict limits remain unchanged."
     }
   ],
   "implementation": {
@@ -16033,10 +16047,62 @@
         "Source13 differs from source11 only in the source3 browser driver and unit tests. Source11 PBR-component and all six native2 proofs retain unchanged production/owning-test inputs. Source13 current checks are distinct from snapshot10 full runtime/family/camera checks. Their input/producer records remain retained; they were not rerun after the final source13 schema/file/harness refinements.",
         "Supported packs remain empty and pilotSupportedEpisodes0. Whole MS2 generator/registry/event/label/cue/typography/300-board and full/installed gates remain before its PR and MS3."
       ]
+    },
+    "twentyFirstSlice": {
+      "status": "source3-preview-verified-strict-aggregate-timeouts-pending",
+      "scope": [
+        "Explicit source3 composition assets, mixed transport3, frame3 sampling and immutable linear PBR style variants without mesh changes.",
+        "Canonical Node binary verification and separate opaque hashed routes; bounded exact HTTP bodies, checksum validation, located diagnostics and managed preparation ownership.",
+        "Shared Three world and existing HDR/depth/resolve composition path; Lab capture route and physical material inspector dispatch.",
+        "Node strip-only configuration and guarded pure renderer import with independent positive control. Source3 observation/export explicitly rejects pending protocol."
+      ],
+      "currentSummaries": {
+        "unitsAggregate17": [
+          "Test Files  1 failed | 405 passed (406)",
+          "Tests  1 failed | 4168 passed (4169)"
+        ],
+        "unitFocused18": [
+          "Test Files  1 failed (1)",
+          "Tests  1 failed | 9 passed (10)"
+        ],
+        "runtimeAggregate19": [
+          "Test Files  1 failed | 31 passed (32)",
+          "Tests  2 failed | 198 passed (200)"
+        ],
+        "runtimeOwningFile20": [
+          "Test Files  1 failed (1)",
+          "Tests  2 failed | 5 passed (7)"
+        ],
+        "integrationAggregate20": [
+          "Test Files  1 failed | 56 passed (57)",
+          "Tests  1 failed | 321 passed (322)"
+        ]
+      },
+      "counts": {
+        "compositionFrames": 6,
+        "binaryFaults": 5,
+        "protocolFaults": 2,
+        "styleVariants": 1,
+        "native2Groups": 6,
+        "pbrComponentFrames": 3,
+        "pbrComponentFaults": 4,
+        "standaloneWorldFrames": 6,
+        "standalonePoseFaults": 1,
+        "source3Exports": 0,
+        "newInstalledArchives": 0
+      },
+      "records": ["docs/mechanism-shorts-ms2-pbr-composition-results.json"],
+      "remaining": [
+        "Refresh the required strict fast/runtime/integration tiers before milestone readiness. Original gradient/package/capture timeouts remain unresolved; no assertion, worker budget or time limit was relaxed.",
+        "Independent source3 draw/world/anchor/PBR/mip observation protocol, authenticated repeated export and installed consumer proof. Source3 collection/export explicitly rejects pending protocol; original1/2 evidence remains strict.",
+        "Complete whole-world/PMREM/metadata/packet/replay budgeting and bounded source JSON admission. Current managed preview billing is scoped declared application-owned storage, not physical driver/RSS or all caller-held data.",
+        "Whole MS2 generator/registry/event/label/cue/typography/300-board/full/installed requirements before its PR and MS3; supportedPacks[] and pilotSupportedEpisodes0.",
+        "Human appearance/listening acceptance remains separate. No milestone merge, package release or publication."
+      ]
     }
   },
   "limits": [
-    "Twenty MS2 slices include a standalone rigid PBR source3 with verified binary files and imported hinge execution through the shared world. Three native2 candidates remain candidates; supported packs/pilot0. Complete composition/binary/frame3/mip/preview/export admission and owning MS2 authoring/registry/world/event/label/cue/typography/300-board/full/installed gates remain.",
+    "Twenty-one slices include actual source3 file/transport/catalogue/frame3/binary HTTP/PBR/shared-world composition preview and static styles. Strict aggregate timeouts, source3 observations/export/mips/installed and whole MS2 authoring/registry/world/events/labels/cues/typography/300-board/full gates remain. Three native2 candidates; supported packs/pilot0.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

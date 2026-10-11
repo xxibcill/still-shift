@@ -383,6 +383,13 @@ export const native3DAppearanceModules: readonly {
     url: new URL("../composition/render/mesh-effects.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/composition/render/native-pbr-resources.ts",
+    url: new URL(
+      "../composition/render/native-pbr-resources.ts",
+      import.meta.url,
+    ),
+  },
+  {
     name: "renderer-core/src/composition/render/native-text-bounds.ts",
     url: new URL(
       "../composition/render/native-text-bounds.ts",
@@ -866,6 +873,10 @@ export const native3DAppearanceModules: readonly {
     url: new URL("./evaluate-v2.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/native3d/evaluate-v3.ts",
+    url: new URL("./evaluate-v3.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/native3d/evaluate.ts",
     url: new URL("./evaluate.ts", import.meta.url),
   },
@@ -912,6 +923,10 @@ export const native3DAppearanceModules: readonly {
   {
     name: "renderer-core/src/native3d/prepare-v2.ts",
     url: new URL("./prepare-v2.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/prepare-v3.ts",
+    url: new URL("./prepare-v3.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/native3d/prepare.ts",
@@ -1406,6 +1421,13 @@ export const native3DAppearanceModules: readonly {
     ),
   },
   {
+    name: "scene-contract/src/composition/native3d-v3.ts",
+    url: new URL(
+      "../../../scene-contract/src/composition/native3d-v3.ts",
+      import.meta.url,
+    ),
+  },
+  {
     name: "scene-contract/src/composition/native3d.ts",
     url: new URL(
       "../../../scene-contract/src/composition/native3d.ts",
@@ -1716,9 +1738,23 @@ export const native3DAppearanceModules: readonly {
     ),
   },
   {
+    name: "scene-contract/src/native3d/frame-rig.ts",
+    url: new URL(
+      "../../../scene-contract/src/native3d/frame-rig.ts",
+      import.meta.url,
+    ),
+  },
+  {
     name: "scene-contract/src/native3d/frame-v2.ts",
     url: new URL(
       "../../../scene-contract/src/native3d/frame-v2.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/native3d/frame-v3.ts",
+    url: new URL(
+      "../../../scene-contract/src/native3d/frame-v3.ts",
       import.meta.url,
     ),
   },

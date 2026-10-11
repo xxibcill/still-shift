@@ -1,3 +1,4 @@
+import { Native3DSourceOverridesV3Schema } from "./native3d-v3.ts";
 import { z } from "zod";
 import { Native3DSourceOverridesV2Schema } from "./native3d-v2.ts";
 import { MechanismRigControlsV2Schema } from "../mechanism/rigs.ts";
@@ -508,9 +509,11 @@ export const Native3DLayerSchema = z
       });
   });
 export type Native3DLayer = z.infer<typeof Native3DLayerSchema>;
-export const Native3DLayerVersionsSchema = Native3DLayerSchema.safeExtend(
-  Native3DSourceOverridesV2Schema.shape,
-);
+export const Native3DLayerVersionsSchema = Native3DLayerSchema.safeExtend({
+  ...Native3DSourceOverridesV2Schema.shape,
+  pbrMaterialOverrides:
+    Native3DSourceOverridesV3Schema.shape.pbrMaterialOverrides,
+});
 export type Native3DLayerVersions = z.infer<typeof Native3DLayerVersionsSchema>;
 
 export const CompositionLayerSchema: z.ZodDiscriminatedUnion<

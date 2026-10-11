@@ -189,9 +189,43 @@ rejects a seeded incorrect world pose. Literal pivot/anchor references and repea
 pixel hashes constrain this diagnostic. It is not a human appearance review.
 Detailed staged receipts are in [source3 world results](./mechanism-shorts-ms2-pbr-world-results.json).
 
-Source3 remains a standalone preparation/world API. Composition asset admission,
-worker/HTTP binary transport, frame3 observation, shared graph preview/export,
-mip pixel validation and complete world/PMREM accounting are pending. The tiny
-fixture's browser numeric-array handoff is test-only. It does not permit image
-arrays in production JSON packets or relax existing packet/replay budgets. The
-whole importer acceptance criterion stays unchecked.
+## Source3 composition preview
+
+`CompositionSchema` admits explicit `mechanism-scene-3` native assets. Node
+`readCompositionSource` verifies canonical binary dependencies and issues
+`composition-prepared-native3d-3`. Source entries carry `binaryResources` with an
+image ID, opaque `native-pbr/<hash>` route, exact byte count and pixel SHA-256.
+Mixed source1/source2/source3 metadata is bounded to 64 assets and 32 MiB of binary
+references. Individual source/transport/frame1 and2 parsers remain strict.
+
+Source3 controllers use `rigControls` and `pbrMaterialOverrides`: linear
+`baseColorFactor`, `metallicFactor`, `roughnessFactor` and `doubleSided`.
+Static styles preserve submitted meshes and mesh-data identity while updating
+effective source/geometry identities. `native3d-frame-3` samples the existing
+rigid evaluator in absolute source time, including reverse/random seeks and
+physical anchor projection. Generated [frame3](./schemas/mechanism/native-frame-3.schema.json)
+and [transport3](./schemas/mechanism/prepared-native3d-3.schema.json) schemas accompany
+semantic validators.
+
+Browser `loadCompositionResources` fetches separate binary routes with exact
+`Content-Length`. Short, oversized, missing or checksum-mismatched bodies fail
+before publication. Private pixel copies and world storage are admitted by managed
+contexts before allocation; failed phases release their owners. Resource maps
+remain runtime-only. Three loads dynamically; importing the pure renderer does
+not resolve Three. The Lab serves verified opaque routes and supports PBR
+material/part inspection.
+
+Create a WebGL2 preview, await `preview.prepareFrame(frame)` and call
+`renderCompositionFrameAsync(preview, frame)`. Source3 uses the existing shared
+HDR/MSAA/depth/world-artwork/ACES resolve path. Run
+`pnpm test:browser:native3d-pbr-composition` serially. Current proof covers six
+lever frames, repeated/reverse pixel equality, one style, five actual HTTP stream
+and checksum faults, and zero retained managed owners after disposal. Pixel arrays
+never enter production transport JSON.
+
+Independent source3 GPU/world/anchor/PBR/mip observations remain pending.
+`collectNativeObservations: true` and source3 export-request creation reject the
+unfinished protocol. Authenticated repeated exports, installed proof, whole-world
+accounting and bounded source JSON admission remain required. The importer
+criterion stays unchecked. [Staged results](./mechanism-shorts-ms2-pbr-composition-results.json)
+retain every failed run, lost terminal receipt and strict aggregate timeout.

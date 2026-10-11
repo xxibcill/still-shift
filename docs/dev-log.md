@@ -45,18 +45,17 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Twenty slices now include standalone rigid PBR source3, canonical binary reads,
-  shared generic pose evaluation and imported hinge execution in the shared Three
-  world. Final source13 fast4,165/405, world6/1 fault and21 affected Node tests pass.
-  Source11 PBR component3/4 and all six native2 groups retain identical production
-  and owning-test inputs. Broader source10 runtime195/30, integration321/56,
-  Python14, smoke and family8/camera12 exports remain separate. Reds/failures and
-  lost source5 terminal receipt are retained.
-  Next: composition source/binary/frame3/mip/preview/export admission and complete
-  generator/registry/world/events/labels/cues/typography/300-board/full/installed
-  gates. Candidates3, supported packs/pilot0; no MS2 PR/MS3 or human acceptance.
+  Twenty-one slices include source3 composition/binary HTTP/frame3/shared-world
+  PBR preview and immutable styles. Serial browser stage21 passes six preview
+  frames/five binary faults, component3/4, world6/1 and all six native2 groups.
+  Current static fast prefix passes; strict units retain one gradient timeout,
+  runtime two package timeouts and integration one capture-retention timeout. These aggregate gates remain incomplete;
+  preceding passes and lost receipts stay separate, with limits unchanged.
+  Next: source3 independent observations/mips/export/installed, complete world
+  budgeting and remaining authoring/registry/events/labels/cues/typography/300-board/
+  full gates. Supported packs/pilot0; no MS2 PR/MS3 or human acceptance.
   [MS2 results](./mechanism-shorts-ms2-results.json),
-  [source3 proof](./mechanism-shorts-ms2-pbr-world-results.json),
+  [preview results](./mechanism-shorts-ms2-pbr-composition-results.json),
   [PBR API](./native-pbr-resources.md), [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
@@ -215,6 +214,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 source3 composition preview
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `4db6795f`.
+- **Done:** transport/frame3, immutable linear PBR styles, bounded separate HTTP
+  binaries, managed ownership, shared composition render path and Lab routes.
+- **Results:** browser21 preview6/5 faults, component3/4, world6/1 and all six native2
+  groups pass. Node strip-only/pure imports pass; source3 export remains closed.
+- **Retained:** schema/fixture/Vite/lint/purity/Node repairs, intentional143 stop,
+  lost build2/run20 terminals and unresolved original strict gradient/package/
+  capture-retention timeouts. Final fast/runtime/integration aggregates incomplete.
+- **Next:** independent source3 observations/mips/export/installed and whole MS2
+  gates before its PR; supported packs/pilot0. No human review inferred.
+- **Records:** [preview evidence](./mechanism-shorts-ms2-pbr-composition-results.json),
+  [API](./native-pbr-resources.md), [MS2 results](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-11 — MS2 rigid PBR source3 in the shared native world
 

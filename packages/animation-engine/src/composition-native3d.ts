@@ -1,6 +1,8 @@
 import { createHash } from "node:crypto";
 import { readFile, stat } from "node:fs/promises";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
+import { loadNativePbrSourceResources } from "./mechanism/native-pbr-files.ts";
+import { gltfJsonHash } from "./mechanism/gltf-identity.ts";
 import {
   CompositionPreparedNative3DVersionsSchema,
   Native3DSourceVersionsSchema,
@@ -34,12 +36,14 @@ export async function prepareCompositionNative3D(
     (asset) => asset.type === "native3d",
   );
   if (!assets.length) return undefined;
-  const transport: CompositionPreparedNative3DVersions = {
-    version: assets.some((asset) => asset.format === "mechanism-scene-2")
+  const transportVersion = assets.some(
+    (asset) => asset.format === "mechanism-scene-3",
+  )
+    ? "composition-prepared-native3d-3"
+    : assets.some((asset) => asset.format === "mechanism-scene-2")
       ? "composition-prepared-native3d-2"
-      : "composition-prepared-native3d-1",
-    assets: Object.create(null),
-  };
+      : "composition-prepared-native3d-1";
+  const entries: Record<string, unknown> = Object.create(null);
   const assetPaths: Record<string, string> = Object.create(null);
   for (const asset of assets) {
     options.signal?.throwIfAborted();
@@ -76,20 +80,40 @@ export async function prepareCompositionNative3D(
         { path: `assets.${asset.id}.format` },
       );
     const source = parsed.data;
-    if (transport.version === "composition-prepared-native3d-1") {
-      if (source.schemaVersion === "mechanism-scene-2")
-        passageError(
-          "comp-native3d-protocol",
-          "Version 2 source requires version 2 transport",
-          { path: `assets.${asset.id}.format` },
-        );
-      transport.assets[asset.id] = { sourceSha256, source };
-    } else transport.assets[asset.id] = { sourceSha256, source };
+    if (source.schemaVersion === "mechanism-scene-3") {
+      const verified = await loadNativePbrSourceResources(
+        source,
+        dirname(path),
+        {
+          ...(options.signal ? { signal: options.signal } : {}),
+        },
+      );
+      const binaryResources = source.resources.map((reference) => {
+        const route = `native-pbr/${gltfJsonHash({ asset: asset.id, image: reference.image, sha256: reference.sha256 }).slice(7)}`;
+        assetPaths[route] = verified.paths[reference.image]!;
+        return {
+          image: reference.image,
+          asset: route,
+          bytes: reference.bytes,
+          sha256: reference.sha256,
+        };
+      });
+      entries[asset.id] = { sourceSha256, source, binaryResources };
+    } else
+      entries[asset.id] = {
+        sourceSha256,
+        source,
+        ...(transportVersion === "composition-prepared-native3d-3"
+          ? { binaryResources: [] }
+          : {}),
+      };
     assetPaths[asset.id] = path;
   }
   options.signal?.throwIfAborted();
-  const preparedNative3D =
-    CompositionPreparedNative3DVersionsSchema.parse(transport);
+  const preparedNative3D = CompositionPreparedNative3DVersionsSchema.parse({
+    version: transportVersion,
+    assets: entries,
+  });
   const native3D = await prepareNativeCatalogue(composition, preparedNative3D);
   const nativeAppearanceCodeIdentity = await loadNativeAppearanceCodeIdentity();
   return {

@@ -317,6 +317,7 @@ function nativePaintState(
             : [materials.get(mesh.materialId)!];
           return drawnMaterials.some(
             (material) =>
+              "schemaVersion" in material ||
               material.alphaMode !== "mask" ||
               material.opacity >= material.alphaCutoff,
           );

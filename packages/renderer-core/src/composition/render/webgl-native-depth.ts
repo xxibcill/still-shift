@@ -38,6 +38,8 @@ import {
   createNativeThreeGeometry,
   createNativeThreeWorld,
   createNativeThreeWorldV2,
+  createNativeThreeWorldV3,
+  type NativeThreeWorldV3,
   type NativeThreeWorldV2,
   type NativeThreeGeometry,
   type NativeThreeWorld,
@@ -54,6 +56,7 @@ import type { PreparedNative3DVariantVersions } from "../../native3d/types-v2.ts
 
 type GeometryOwner = { value: NativeThreeGeometry | undefined };
 type WorldEntry =
+  | { kind: "mechanism3"; world: NativeThreeWorldV3 }
   | { kind: "legacy"; world: NativeThreeWorld }
   | {
       kind: "mechanism2";
@@ -182,16 +185,20 @@ function worldBytes(variant: PreparedNative3DVariantVersions) {
       (n, light) => n + (light.castShadow ? light.shadowMapSize ** 2 * 16 : 0),
       0,
     ) +
-    variant.source.geometry.materials.reduce(
-      (n, material) =>
-        n +
-        (material.texture
-          ? (material.texture.kind === "tape-graduations"
-              ? 4096 * 512
-              : 1024 * 512) * 10
-          : 0),
-      0,
-    )
+    (variant.version === "prepared-native3d-variant-3"
+      ? variant.allocation.vertexBytes * 2 +
+        variant.allocation.textureCpuBytes +
+        variant.allocation.textureBytes
+      : variant.source.geometry.materials.reduce(
+          (n, material) =>
+            n +
+            (material.texture
+              ? (material.texture.kind === "tape-graduations"
+                  ? 4096 * 512
+                  : 1024 * 512) * 10
+              : 0),
+          0,
+        ))
   );
 }
 /** Browser-only Three implementation, supplied explicitly to the pure compositor. */
@@ -334,7 +341,7 @@ export function createNativeDepthRuntime(
         { node: asset },
       );
     let geometry = geometries.get(variant.meshDataSha256);
-    if (!geometry) {
+    if (!geometry && variant.version !== "prepared-native3d-variant-3") {
       geometry = createAccountedStorage<GeometryOwner>(
         4096 + variant.source.geometry.meshes.length * 2048,
         geometryBytes(variant),
@@ -360,10 +367,22 @@ export function createNativeDepthRuntime(
       (owner) => {
         const three = getRenderer(),
           worldOptions = {
-            geometry: geometry!.value!,
+            ...(geometry ? { geometry: geometry.value! } : {}),
             ...(textureFont ? { textureFont } : {}),
           };
-        if (variant.version === "prepared-native3d-variant-2") {
+        if (variant.version === "prepared-native3d-variant-3") {
+          const prepared = options.nativePbrResources?.[variant.sourceKey];
+          if (!prepared)
+            passageError(
+              "comp-native3d-not-ready",
+              "Source3 requires its verified binary resources",
+              { node: asset },
+            );
+          owner.value = {
+            kind: "mechanism3",
+            world: createNativeThreeWorldV3(three, variant, prepared),
+          };
+        } else if (variant.version === "prepared-native3d-variant-2") {
           const world = createNativeThreeWorldV2(three, variant, worldOptions);
           try {
             owner.value = {
@@ -526,6 +545,18 @@ export function createNativeDepthRuntime(
         { node: op.layer },
       );
     const variant = resolveNative3DVariantVersions(options.native3D, op.frame);
+    if (
+      variant.version === "prepared-native3d-variant-3" &&
+      (options.observeNativeFrame || options.observeNativeFrameV2)
+    )
+      passageError(
+        "comp-native3d-protocol",
+        "Source3 independent observations are not ready",
+        {
+          node: op.layer,
+          path: `${op.frame.scope}/${op.frame.controller}.nativeObservations`,
+        },
+      );
     if (!/^sha256:[a-f0-9]{64}$/.test(options.nativeAppearanceCodeSha256 ?? ""))
       passageError(
         "comp-native3d-not-ready",
@@ -546,7 +577,9 @@ export function createNativeDepthRuntime(
     const font = options.nativeTextureFont?.(op.frame.asset);
     if (
       variant.source.geometry.materials.some(
-        (material) => material.texture?.kind === "tape-graduations",
+        (material) =>
+          "texture" in material &&
+          material.texture?.kind === "tape-graduations",
       ) &&
       (!font || !/^sha256:[a-f0-9]{64}$/.test(font.sha256 ?? ""))
     )
@@ -611,7 +644,11 @@ export function createNativeDepthRuntime(
       const graphics: GraphicOwner[] = [],
         textures: FramebufferTexture[] = [];
 
-      let shared: NativeThreeWorld | NativeThreeWorldV2 | undefined;
+      let shared:
+        | NativeThreeWorld
+        | NativeThreeWorldV2
+        | NativeThreeWorldV3
+        | undefined;
       let background: NativeThreeWorld["world"]["background"] | undefined;
       let failed = false,
         first: unknown;
@@ -671,7 +708,20 @@ export function createNativeDepthRuntime(
         three.resetState();
         const entry = getWorld(variant, op.frame.asset);
         shared = entry.world;
-        if (op.frame.version === "native3d-frame-2") {
+        if (op.frame.version === "native3d-frame-3") {
+          if (entry.kind !== "mechanism3")
+            passageError(
+              "comp-native3d-source",
+              "Native world/frame protocols differ",
+              { node: op.layer },
+            );
+          entry.world.applyFrame(
+            op.frame.frame,
+            op.width,
+            op.height,
+            op.frame.localVisibility,
+          );
+        } else if (op.frame.version === "native3d-frame-2") {
           if (entry.kind !== "mechanism2")
             passageError(
               "comp-native3d-source",

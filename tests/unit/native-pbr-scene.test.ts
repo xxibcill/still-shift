@@ -4,7 +4,11 @@ import {
   MechanismSceneV3Schema,
   NativePbrResourceReferenceSchema,
 } from "../../packages/scene-contract/src/native3d/scene-v3.ts";
-import { Native3DSourceVersionsSchema } from "@still-shift/scene-contract";
+import {
+  Native3DSourceVersionsSchema,
+  Native3DSourceSchema,
+  Native3DSourceV2Schema,
+} from "@still-shift/scene-contract";
 import { prepareNative3DSceneV3 } from "../../packages/renderer-core/src/native3d/prepare-v3.ts";
 import { evaluateMechanismFrameV2 } from "../../packages/renderer-core/src/mechanism/evaluate-v2.ts";
 import { gltfJsonHash } from "../../packages/animation-engine/src/mechanism/gltf-identity.ts";
@@ -22,7 +26,9 @@ describe("explicit rigid PBR source3", () => {
         materials: [{ baseColorFactor: [0.2, 0.4, 0.6, 1] }],
       },
     });
-    expect(Native3DSourceVersionsSchema.safeParse(input).success).toBe(false);
+    expect(Native3DSourceVersionsSchema.safeParse(input).success).toBe(true);
+    expect(Native3DSourceSchema.safeParse(input).success).toBe(false);
+    expect(Native3DSourceV2Schema.safeParse(input).success).toBe(false);
     expect(
       MechanismSceneV3Schema.safeParse({
         ...input,

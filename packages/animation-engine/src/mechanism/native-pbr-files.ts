@@ -2,7 +2,7 @@ import { open, realpath, stat } from "node:fs/promises";
 import { constants } from "node:fs";
 import { isAbsolute, relative, resolve } from "node:path";
 import { MechanismSceneV3Schema } from "@still-shift/scene-contract";
-import { preflightNativePbrResources } from "@still-shift/renderer-core";
+import { preflightNativePbrResources } from "../../../renderer-core/src/native3d/pbr-allocations.ts";
 import { gltfBytesHash } from "./gltf-resources.ts";
 import { gltfJsonHash, freezeGltfAsset } from "./gltf-identity.ts";
 import type { NativePbrPixelInput } from "./gltf-pbr.ts";

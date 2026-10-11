@@ -1,3 +1,5 @@
+import type { PreparedNativePbrResources } from "../../native3d/pbr-resources.ts";
+import { loadCompositionPbrResources } from "./native-pbr-resources.ts";
 import {
   createRenderBlob,
   decodeRenderImage,
@@ -214,6 +216,7 @@ export type CompositionResources = {
   preparedNative3D?: CompositionPreparedNative3DVersions;
   native3D?: Readonly<Record<string, PreparedNative3DSceneVersions>>;
   nativeDepthFactory?: NativeDepthRuntimeFactory;
+  nativePbrResources?: Readonly<Record<string, PreparedNativePbrResources>>;
   nativeAppearanceCodeIdentity?: NativeAppearanceCodeIdentity;
   nativeAppearanceCodeSha256?: string;
   /** PNG signatures verified from asset bytes, independent of filenames and URLs. */
@@ -263,6 +266,14 @@ export async function loadCompositionResources(
       ? await prepareCompositionNative3DVersions(
           composition,
           options.preparedNative3D!,
+        )
+      : undefined;
+    const nativePbrResources = native3D
+      ? await loadCompositionPbrResources(
+          options.preparedNative3D!,
+          native3D,
+          assetUrl,
+          options.signal,
         )
       : undefined;
     const appearanceCodeIdentity = hasNative
@@ -326,6 +337,7 @@ export async function loadCompositionResources(
       ...(native3D
         ? {
             native3D,
+            nativePbrResources: nativePbrResources!,
             preparedNative3D: options.preparedNative3D!,
             nativeDepthFactory: nativeDepthFactory!,
             nativeAppearanceCodeIdentity: appearanceCodeIdentity!,
@@ -468,6 +480,16 @@ function prepareCompositionPreviewOnCanvas(
     (asset) =>
       asset.type === "native3d" && asset.format === "mechanism-scene-2",
   );
+  const hasScene3 = composition.assets.some(
+    (asset) =>
+      asset.type === "native3d" && asset.format === "mechanism-scene-3",
+  );
+  if (hasScene3 && options.collectNativeObservations)
+    passageError(
+      "comp-native3d-protocol",
+      "Source3 independent observations are not ready",
+      { path: "collectNativeObservations" },
+    );
   if (hasNative && kind !== "webgl2")
     passageError("comp-native3d-backend", "Native 3D requires WebGL2", {
       path: "backend",
@@ -647,6 +669,9 @@ function prepareCompositionPreviewOnCanvas(
     ...(resources.native3D
       ? {
           native3D: resources.native3D,
+          ...(resources.nativePbrResources
+            ? { nativePbrResources: resources.nativePbrResources }
+            : {}),
           nativeDepthFactory: resources.nativeDepthFactory!,
           nativeAppearanceCodeSha256: resources.nativeAppearanceCodeSha256!,
           nativeTextureFont: (id: string) => {
@@ -819,13 +844,14 @@ function prepareCompositionPreviewOnCanvas(
           frame >= composition.frameCount
         )
           throw Error("Frame index outside composition timeline");
-        const capacity = hasScene2
-          ? nativeCompositionObservationCapacityV2(
-              composition,
-              frame,
-              evaluationOptions,
-            )
-          : undefined;
+        const capacity =
+          hasScene2 && !hasScene3
+            ? nativeCompositionObservationCapacityV2(
+                composition,
+                frame,
+                evaluationOptions,
+              )
+            : undefined;
         frameCompleted = false;
         observations?.begin();
         if (capacity !== undefined) observationsV2?.begin(capacity);
@@ -883,7 +909,7 @@ function prepareCompositionPreviewOnCanvas(
           )
             throw Error("Frame index outside composition timeline");
           if (!resources.media && !surfaceCache && !hasNative) return;
-          if (hasScene2)
+          if (hasScene2 && !hasScene3)
             nativeCompositionObservationCapacityV2(
               composition,
               frame,
@@ -909,7 +935,7 @@ function prepareCompositionPreviewOnCanvas(
               );
               const prepare = async (at: number) => {
                 await backend.completeNativeFrame?.();
-                if (hasScene2)
+                if (hasScene2 && !hasScene3)
                   nativeCompositionObservationCapacityV2(
                     composition,
                     at,

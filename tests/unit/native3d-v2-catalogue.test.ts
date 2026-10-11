@@ -98,7 +98,7 @@ describe("versioned native composition catalogues", () => {
     expect(
       CompositionAssetSchema.safeParse({
         ...asset,
-        format: "mechanism-scene-3",
+        format: "mechanism-scene-4",
       }).success,
     ).toBe(false);
   });
@@ -445,7 +445,7 @@ describe("versioned native composition catalogues", () => {
   it("retains strict versioned transport dictionaries and rejects unknown versions or fields", async () => {
     const f = fixture();
     for (const patch of [
-      { version: "composition-prepared-native3d-3" },
+      { version: "composition-prepared-native3d-4" },
       { trusted: true },
     ]) {
       expect(

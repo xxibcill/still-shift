@@ -1,6 +1,9 @@
 import { DoubleSide, FrontSide, MeshStandardMaterial } from "three";
 import type { CanvasTexture } from "three";
-import type { Native3DSourceVersions } from "@still-shift/scene-contract";
+import type {
+  Native3DSource,
+  Native3DSourceV2,
+} from "@still-shift/scene-contract";
 import type { DeepReadonly } from "./types.ts";
 import {
   tapeTexture,
@@ -9,7 +12,7 @@ import {
 } from "./three-textures.ts";
 
 export function createNativeThreeMaterials(
-  source: DeepReadonly<Native3DSourceVersions>,
+  source: DeepReadonly<Native3DSource | Native3DSourceV2>,
   textureFont?: NativeTextureFont,
 ) {
   const textures: CanvasTexture[] = [];

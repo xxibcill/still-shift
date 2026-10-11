@@ -1,3 +1,4 @@
+import { prepareNative3DSceneV3 } from "./prepare-v3.ts";
 import {
   Native3DSourceSchema,
   Native3DSourceOverridesSchema,
@@ -15,6 +16,7 @@ import type {
 import {
   native3DOverridesKey,
   native3DOverridesKeyV2,
+  native3DOverridesKeyV3,
 } from "./override-keys.ts";
 import { nativePreparationVariantLimit } from "./preparation-limits.ts";
 import { prepareNative3DSceneV2 } from "./prepare-v2.ts";
@@ -251,12 +253,16 @@ export async function prepareCompositionNative3DVersions(
       "Invalid versioned native preparation transport",
       { path: "preparedNative3D" },
     );
-  const required = composition.assets.some(
-    (asset) =>
-      asset.type === "native3d" && asset.format === "mechanism-scene-2",
+  const nativeAssets = composition.assets.filter(
+    (asset) => asset.type === "native3d",
+  );
+  const required = nativeAssets.some(
+    (asset) => asset.format === "mechanism-scene-3",
   )
-    ? "composition-prepared-native3d-2"
-    : "composition-prepared-native3d-1";
+    ? "composition-prepared-native3d-3"
+    : nativeAssets.some((asset) => asset.format === "mechanism-scene-2")
+      ? "composition-prepared-native3d-2"
+      : "composition-prepared-native3d-1";
   if (parsed.data.version !== required)
     passageError(
       "comp-native3d-source",
@@ -306,7 +312,9 @@ async function prepareNativeCatalogue(
       );
     if (
       data.source.geometry.materials.some(
-        (material) => material.texture?.kind === "tape-graduations",
+        (material) =>
+          "texture" in material &&
+          material.texture?.kind === "tape-graduations",
       ) &&
       composition.assets.find((font) => font.id === asset.textureFont)?.type !==
         "font"
@@ -330,6 +338,9 @@ async function prepareNativeCatalogue(
                 ...(layer.partOverrides
                   ? { partOverrides: layer.partOverrides }
                   : {}),
+                ...(layer.pbrMaterialOverrides
+                  ? { pbrMaterialOverrides: layer.pbrMaterialOverrides }
+                  : {}),
                 ...(layer.materialOverrides
                   ? { materialOverrides: layer.materialOverrides }
                   : {}),
@@ -348,7 +359,28 @@ async function prepareNativeCatalogue(
       scope.layers.forEach((layer, index) => {
         const path = `${prefix}layers.${index}`;
         if (layer.type === "native3d" && layer.asset === asset.id) {
-          if (data.source.schemaVersion === "mechanism-scene-2") {
+          if (
+            data.source.schemaVersion !== "mechanism-scene-3" &&
+            layer.pbrMaterialOverrides !== undefined
+          )
+            passageError(
+              "comp-native3d-source",
+              "PBR overrides require a source3 asset",
+              { node: layer.id, path: path + ".pbrMaterialOverrides" },
+            );
+          if (
+            data.source.schemaVersion === "mechanism-scene-3" &&
+            layer.materialOverrides !== undefined
+          )
+            passageError(
+              "comp-native3d-source",
+              "Source3 styling requires explicit linear pbrMaterialOverrides",
+              { node: layer.id, path: path + ".materialOverrides" },
+            );
+          if (
+            data.source.schemaVersion === "mechanism-scene-2" ||
+            data.source.schemaVersion === "mechanism-scene-3"
+          ) {
             if (layer.controls !== undefined)
               passageError(
                 "comp-native3d-source",
@@ -434,9 +466,11 @@ async function prepareNativeCatalogue(
         { path: assetPath },
       );
     const overridesKey =
-      data.source.schemaVersion === "mechanism-scene-2"
-        ? native3DOverridesKeyV2
-        : native3DOverridesKey;
+      data.source.schemaVersion === "mechanism-scene-3"
+        ? native3DOverridesKeyV3
+        : data.source.schemaVersion === "mechanism-scene-2"
+          ? native3DOverridesKeyV2
+          : native3DOverridesKey;
     let prepared: PreparedNative3DSceneVersions;
     try {
       const options = {
@@ -444,13 +478,23 @@ async function prepareNativeCatalogue(
         variantLimit: NATIVE3D_VARIANT_LIMIT - count,
       };
       prepared =
-        data.source.schemaVersion === "mechanism-scene-2"
-          ? await prepareNative3DSceneV2(
+        data.source.schemaVersion === "mechanism-scene-3"
+          ? await prepareNative3DSceneV3(
               data.source,
               data.sourceSha256,
               options,
             )
-          : await prepareNative3DScene(data.source, data.sourceSha256, options);
+          : data.source.schemaVersion === "mechanism-scene-2"
+            ? await prepareNative3DSceneV2(
+                data.source,
+                data.sourceSha256,
+                options,
+              )
+            : await prepareNative3DScene(
+                data.source,
+                data.sourceSha256,
+                options,
+              );
     } catch (error) {
       if (error instanceof PassageError) {
         const introducing = requests.find((request) =>
@@ -465,7 +509,12 @@ async function prepareNativeCatalogue(
                     request.overrides.materialOverrides ?? {},
                     diagnostic.path.split(".")[1]!,
                   )
-                : false,
+                : diagnostic.path?.startsWith("pbrMaterialOverrides.")
+                  ? Object.hasOwn(
+                      request.overrides.pbrMaterialOverrides ?? {},
+                      diagnostic.path.split(".")[1]!,
+                    )
+                  : false,
           ),
         );
         throw new PassageError(

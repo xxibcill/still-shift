@@ -5,6 +5,8 @@ import { format } from "prettier";
 import { z } from "zod";
 import {
   SolidGeometryV2Schema,
+  NativeFrameSnapshotV3Schema,
+  CompositionPreparedNative3DV3Schema,
   MechanismGeometrySchema,
   MechanismSceneSchema,
   MechanismEpisodeSchema,
@@ -28,6 +30,8 @@ import {
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const schemas = {
   "solid-geometry-2": SolidGeometryV2Schema,
+  "native-frame-3": NativeFrameSnapshotV3Schema,
+  "prepared-native3d-3": CompositionPreparedNative3DV3Schema,
   geometry: MechanismGeometrySchema,
   scene: MechanismSceneSchema,
   episode: MechanismEpisodeSchema,

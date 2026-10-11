@@ -1,5 +1,7 @@
 import { z } from "zod";
-import { Native3DSourceVersionsSchema } from "../native3d/scene-v2.ts";
+import { Native3DSourceV2Schema } from "../native3d/scene-v2.ts";
+import { Native3DSourceSchema } from "../native3d/scene.ts";
+import { CompositionPreparedNative3DV3Schema } from "./native3d-v3.ts";
 import { mechanismIdRecordV2 } from "../mechanism/records-v2.ts";
 import {
   MECHANISM_LIMITS,
@@ -17,12 +19,17 @@ import {
 /** A composition declares the source protocol before its bytes are loaded. */
 export const CompositionNative3DAssetVersionsSchema =
   CompositionNative3DAssetSchema.extend({
-    format: z.enum(["mechanism-scene-1", "solid-scene-1", "mechanism-scene-2"]),
+    format: z.enum([
+      "mechanism-scene-1",
+      "solid-scene-1",
+      "mechanism-scene-2",
+      "mechanism-scene-3",
+    ]),
   });
 const entry = z
   .object({
     sourceSha256: MechanismHashSchema,
-    source: Native3DSourceVersionsSchema,
+    source: z.union([Native3DSourceSchema, Native3DSourceV2Schema]),
   })
   .strict();
 const propertyNames = z.toJSONSchema(compositionId);
@@ -53,6 +60,7 @@ export const CompositionPreparedNative3DV2Schema = z
 export const CompositionPreparedNative3DVersionsSchema = z.union([
   CompositionPreparedNative3DSchema,
   CompositionPreparedNative3DV2Schema,
+  CompositionPreparedNative3DV3Schema,
 ]);
 /** New overrides support every declared ID without changing the original v1 parser. */
 export const Native3DSourceOverridesV2Schema = z

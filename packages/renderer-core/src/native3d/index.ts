@@ -18,3 +18,5 @@ export { preflightNativePbrResources } from "./pbr-allocations.ts";
 
 export * from "./types-v3.ts";
 export * from "./prepare-v3.ts";
+
+export * from "./evaluate-v3.ts";

@@ -547,8 +547,10 @@ async function load(
         (d) => `${d.code} ${d.path}: ${d.message}`,
       ),
     };
-    const source2 =
-      capture.preparedNative3D?.version === "composition-prepared-native3d-2";
+    const source2 = result.composition.assets.some(
+      (asset) =>
+        asset.type === "native3d" && asset.format === "mechanism-scene-2",
+    );
     ownership.renderer(
       {
         ...(!source2 && (resources.media || resources.native3D)

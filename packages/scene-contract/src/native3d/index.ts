@@ -10,3 +10,5 @@ export * from "./appearance.ts";
 export * from "./pbr-geometry.ts";
 
 export * from "./scene-v3.ts";
+
+export * from "./frame-v3.ts";

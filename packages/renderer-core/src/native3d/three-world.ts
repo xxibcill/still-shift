@@ -33,7 +33,10 @@ import type {
   NativePbrResources,
   PreparedNativePbrResources,
 } from "./pbr-resources.ts";
-import type { PreparedNative3DSceneV3 } from "./types-v3.ts";
+import type {
+  PreparedNative3DSceneV3,
+  PreparedNative3DVariantV3,
+} from "./types-v3.ts";
 import { createNativeThreeShapeOwners } from "./three-shapes.ts";
 import { createNativeThreeMaterials } from "./three-materials.ts";
 import type { NativeTextureFont } from "./three-textures.ts";
@@ -390,7 +393,7 @@ export type NativeThreeWorldV2 = ReturnType<typeof createNativeThreeWorldV2>;
 /** Uses the shared world/profile/light/camera path with explicit owned PBR resources. */
 export function createNativeThreeWorldV3(
   renderer: WebGLRenderer,
-  prepared: PreparedNative3DSceneV3,
+  prepared: PreparedNative3DSceneV3 | PreparedNative3DVariantV3,
   resources: PreparedNativePbrResources,
 ) {
   if (resources.geometrySha256 !== prepared.geometrySha256)

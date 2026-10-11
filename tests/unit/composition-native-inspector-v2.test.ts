@@ -139,7 +139,7 @@ describe("Lab native2 inspector on the accepted mixed catalogue", () => {
       }),
     ).toThrow(/declared physical part/);
     const unknown = JSON.parse(JSON.stringify(prepared));
-    unknown.version = "prepared-native3d-scene-3";
+    unknown.version = "prepared-native3d-scene-4";
     expect(() =>
       nativeInspectorContext(comp, ["layers", 0], {
         preparedNative3D: { mechanism: unknown },
