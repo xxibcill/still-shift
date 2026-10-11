@@ -476,3 +476,21 @@ harness/auditor failures are retained in [installed evidence](./mechanism-shorts
 This archive remains tied to `b4fc65ed`, before these evidence-guide edits. Whole
 source/world/body/replay accounting, final archive refresh, remaining MS2 criteria
 and full milestone gates remain open. No release or human acceptance follows.
+
+## Shared world construction and retirement
+
+The shared world owns its room scene before PMREM generator construction. A
+completed environment transfers only after room/generator retirement. Failure
+preserves the first cause, including `null`, and retires a completed environment
+that could not transfer. Fog, hemisphere and later scene setup are inside the
+world failure boundary. Normal close and failed construction retire remaining
+materials, shadows, environment and graph owners even if a destructor throws;
+borrowed rest geometry remains with its separate owner.
+
+Six focused controls use actual Three room/resource objects with injected
+constructor/destructor failures. Live source3 and original native2/depth groups
+verify rendering separately. Two normal source3 MP4s and all six mixed raw HTTP
+frames match the preceding production renders byte for byte. Admission limits
+are unchanged. Driver-internal failed allocations/RSS, nested PBR retirement,
+aggregate accounting, full milestone and final installed refresh remain separate.
+See [ownership evidence](./mechanism-shorts-ms2-world-ownership-results.json).

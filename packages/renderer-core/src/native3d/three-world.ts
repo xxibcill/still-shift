@@ -132,6 +132,55 @@ export function verifyNativeThreeGeometry(
 }
 
 /** Synchronous: the caller has already prepared the exact source and font. */
+function disposeNativeOwners(owners: readonly (() => void)[]): void {
+  let failed = false;
+  let reason: unknown;
+  for (const dispose of owners) {
+    try {
+      dispose();
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        reason = error;
+      }
+    }
+  }
+  if (failed) throw reason;
+}
+
+/** Transfer the completed environment only after all temporary owners close. */
+function createNativeEnvironment(renderer: WebGLRenderer) {
+  const room = new RoomEnvironment();
+  let generator: PMREMGenerator | undefined;
+  let environment: ReturnType<PMREMGenerator["fromScene"]> | undefined;
+  let failed = false;
+  let reason: unknown;
+  try {
+    generator = new PMREMGenerator(renderer);
+    environment = generator.fromScene(room, 0.04);
+  } catch (error) {
+    failed = true;
+    reason = error;
+  }
+  try {
+    disposeNativeOwners([() => room.dispose(), () => generator?.dispose()]);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      reason = error;
+    }
+  }
+  if (failed) {
+    try {
+      environment?.dispose();
+    } catch {
+      /* The setup or temporary-owner failure is authoritative. */
+    }
+    throw reason;
+  }
+  return environment!;
+}
+
 function createNativeThreeWorldForSource(
   renderer: WebGLRenderer,
   source: DeepReadonly<Native3DSourceVersions | MechanismSceneV3>,
@@ -154,24 +203,6 @@ function createNativeThreeWorldForSource(
   world.background = source.profile.transparent
     ? null
     : new Color(source.profile.background);
-  const room = new RoomEnvironment();
-  const pmrem = new PMREMGenerator(renderer);
-  let environment: ReturnType<PMREMGenerator["fromScene"]>;
-  try {
-    environment = pmrem.fromScene(room, 0.04);
-  } finally {
-    room.dispose();
-    pmrem.dispose();
-  }
-  if (source.profile.fog)
-    world.fog = new Fog(
-      source.profile.fog.color,
-      source.profile.fog.near,
-      source.profile.fog.far,
-    );
-  world.environment = environment.texture;
-  world.environmentIntensity = source.profile.environmentIntensity;
-  world.add(new HemisphereLight("#e8f6ff", "#63716e", 1.15));
   const lights: (SpotLight | DirectionalLight)[] = [];
   let materialSet:
     | Pick<
@@ -180,9 +211,20 @@ function createNativeThreeWorldForSource(
       >
     | undefined;
   let geometry: NativeThreeGeometry | undefined;
+  let environment: ReturnType<typeof createNativeEnvironment> | undefined;
   const ownsGeometry =
     options.geometry === undefined && options.pbrResources === undefined;
   try {
+    environment = createNativeEnvironment(renderer);
+    if (source.profile.fog)
+      world.fog = new Fog(
+        source.profile.fog.color,
+        source.profile.fog.near,
+        source.profile.fog.far,
+      );
+    world.environment = environment.texture;
+    world.environmentIntensity = source.profile.environmentIntensity;
+    world.add(new HemisphereLight("#e8f6ff", "#63716e", 1.15));
     for (const definition of source.lights) {
       const light =
         definition.type === "spot" ? new SpotLight() : new DirectionalLight();
@@ -285,20 +327,35 @@ function createNativeThreeWorldForSource(
       dispose() {
         if (disposed) return;
         disposed = true;
-        if (ownsGeometry) geometry!.dispose();
-        materialSet!.dispose();
-        for (const light of lights) light.shadow.dispose();
-        environment.dispose();
-        world.clear();
-        parts.clear();
-        meshes.length = 0;
+        disposeNativeOwners([
+          () => {
+            if (ownsGeometry) geometry!.dispose();
+          },
+          () => materialSet!.dispose(),
+          ...lights.map((light) => () => light.shadow.dispose()),
+          () => environment!.dispose(),
+          () => world.clear(),
+          () => parts.clear(),
+          () => {
+            meshes.length = 0;
+          },
+        ]);
       },
     };
   } catch (error) {
-    if (ownsGeometry) geometry?.dispose();
-    materialSet?.dispose();
-    for (const light of lights) light.shadow.dispose();
-    environment.dispose();
+    try {
+      disposeNativeOwners([
+        () => {
+          if (ownsGeometry) geometry?.dispose();
+        },
+        () => materialSet?.dispose(),
+        ...lights.map((light) => () => light.shadow.dispose()),
+        () => environment?.dispose(),
+        () => world.clear(),
+      ]);
+    } catch {
+      /* Preserve the original construction failure, including null. */
+    }
     throw error;
   }
 }

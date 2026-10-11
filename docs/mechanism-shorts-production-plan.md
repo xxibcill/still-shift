@@ -753,7 +753,14 @@ mechanism families establish whether the architecture transfers.
       Exact audit matches928 copied Git source and2,275 total members. [Installed
       evidence](./mechanism-shorts-ms2-installed-source3-results.json) retains harness/
       auditor failures and pins execution to that pre-documentation source. Whole
-      quotas, remaining MS2 criteria/full gates and final archive refresh remain;
+      quotas, remaining MS2 criteria/full gates and final archive refresh remain.
+      Thirty-third slice repairs shared world constructor/temporary/destructor
+      ownership without changing admission or render math. Six focused failure
+      controls, fast4 with4,204 units and live source3/normal/mixed/native2/depth
+      groups pass on held inputs. Two normal MP4s and six mixed raw HTTP bodies
+      exactly preserve the preceding renders. [Ownership evidence](./mechanism-shorts-ms2-world-ownership-results.json)
+      separates application-visible retirement from unproven driver internals and
+      keeps aggregate/nested PBR/full/installed refresh requirements open;
       this criterion stays unchecked. See the [import API](./rigid-gltf-import.md) and
       [retained results](./mechanism-shorts-ms2-results.json).
 - [ ] Implement slider hard stops, hinge/lever, deterministic spring return and

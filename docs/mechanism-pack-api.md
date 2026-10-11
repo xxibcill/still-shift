@@ -261,5 +261,7 @@ are separate from generic import/material admission and human acceptance.
 `importRigidGltf`, `decodeRigidGltf` and `inspectRigidGltf` preserve named rigid
 hierarchy, transform bases, baked mesh attributes, encoded PBR image bytes and
 texture color-space roles in `rigid-gltf-asset-1`. The native image/material/tangent
-consumer and GPU proof remain pending. See the [import API and bounded profile](./rigid-gltf-import.md)
+consumer now has source3 standalone/composition observation, normal/mixed export
+and scoped installed proof; aggregate admission and final milestone support remain
+open. See the [import API and bounded profile](./rigid-gltf-import.md)
 for dependency roots, supported encodings, identities, limits and located errors.

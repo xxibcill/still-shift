@@ -45,20 +45,19 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Thirty-two slices include bounded source admission and fresh installed source3/
-  mixed proof at `b4fc65ed`. Maintained package2 passes28 checks; consumer5 passes
-  four exports/34 frames/130 actual passes with checkout/source access denied,
-  independent receipt replay and seven scoped negatives. Archive12 matches all928
-  copied source members and2,275 total members; local SHA starts7764436e.
-  Harness/auditor failures are retained; archive execution remains atb4fc65ed,
-  before this evidence-documentation change. Prior fast12 passes4,198 units,
-  Node13 passes21 tests; source3/mixed/native2 regressions pass on held inputs.
-  Next: aggregate parsed-source/world/body/replay and constructor cleanup, remaining
-  MS2 packs/contracts/full gates, then final archive refresh and MS2 PR/MS3.
-  Broad full runtime/integration/benchmark remain historical; supported packs/pilot0;
+  Thirty-three slices include shared-world application-visible failure cleanup:
+  room/PMREM/environment transfer, first-cause preservation and complete remaining
+  owner retirement despite destructor failures. Fast4 passes4,204 units/411 files;
+  six focused failures and live source3/world/composition/normal/mixed/native2/depth
+  checks pass on held inputs4. Both normal MP4s and six mixed raw HTTP frame bodies
+  remain byte-identical to slice31. Installed archive32 remains exactb4fc65ed;
+  no new installed execution is claimed for changed shared-world code.
+  Next: aggregate source/world/body/replay and nested PBR failure retirement,
+  remaining MS2 packs/contracts/full gates, final archive refresh then MS2 PR/MS3.
+  Broad runtime/integration/benchmark remain historical; supported packs/pilot0;
   no human acceptance, merge/publication or paid ElevenLabs action.
-  [Installed evidence](./mechanism-shorts-ms2-installed-source3-results.json),
-  [admission evidence](./mechanism-shorts-ms2-source-admission-results.json),
+  [World ownership evidence](./mechanism-shorts-ms2-world-ownership-results.json),
+  [installed evidence](./mechanism-shorts-ms2-installed-source3-results.json),
   [MS2 results](./mechanism-shorts-ms2-results.json), [PBR API](./native-pbr-resources.md).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
@@ -217,6 +216,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 shared-world constructor and destructor ownership
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `3dc9ddc6`.
+- **Done:** room owner covers PMREM constructor failure, completed environment
+  transfers after temporary cleanup, all scene setup is inside the failure boundary,
+  and world retirement continues after destructor failure while preserving its cause.
+- **Results:** six focused real-object fault controls and fast4 pass4,204 units;
+  source3 world/composition/normal/mixed, all six native2 and depth groups pass on
+  held inputs4. Two normal MP4s/six mixed raw HTTP bodies exactly preserve slice31.
+- **Limits:** no driver-internal failed allocation/RSS claim; quotas stay fixed.
+  Prior installed proof remains atb4fc65ed. Aggregate/nested resource admission,
+  remaining MS2 criteria/full gates and final installed refresh stay open.
+- **Records:** [world ownership](./mechanism-shorts-ms2-world-ownership-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-11 — MS2 installed source3/mixed execution with checkout access denied
 

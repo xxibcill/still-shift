@@ -15830,6 +15830,41 @@
       },
       "record": "docs/mechanism-shorts-ms2-installed-source3-results.json",
       "qualification": "Archive and actual package/consumer execution belong to exact b4fc65ed source, before this evidence-documentation commit. Archive SHA7764436e... is local verification evidence, not a published release. Normal package2 passes28 maintained checks; consumer4 fails only a wrong harness runtime-format literal before export, corrected consumer5 passes. Old auditor6 rejects current source-copy grammar; adapted auditor8 rejects transformed README; auditor10 finds trailing-slash discrepancy in the independent Python transform; final self11/audit12 pass. Failed helpers and artifacts retained. Replay pixel rows are retained manifest associations rather than independent raw capture in this installed consumer; actual raw HTTP pixel capture is separate slice30/31 evidence. Read-only audit does not recompile; actual maintained package2 supplies corresponding-source rebuild separately. Current production/test selected inputs remain held; documentation copied into future archives changes with this evidence commit, so this archive is not relabeled as the future tip. Full milestone/runtime/integration/baseline/benchmark and whole world/source/body/replay quotas remain separate."
+    },
+    {
+      "id": "world-ownership-slice-33",
+      "status": "shared-world-application-owner-retirement-verified",
+      "workingInputs": {
+        "manifest": {
+          "path": "/private/tmp/still-shift-ms2-world-ownership33-inputs4.json",
+          "bytes": 430207,
+          "sha256": "sha256:5b0cf04e2932402b60a668b13d48e9c1d4117bf714628d9ae451c7d347bbd38d"
+        },
+        "files": 2522,
+        "inputBytes": 119163948,
+        "selection": {
+          "roots": [
+            "apps/",
+            "packages/",
+            "scripts/",
+            "tests/",
+            "tools/",
+            "services/",
+            "benchmarks/",
+            "examples/",
+            "assets/",
+            "catalogs/"
+          ],
+          "rootFiles": "all Git-tracked or nonignored regular root files",
+          "packageProse": [
+            "docs/npm-package-readme.md",
+            "docs/npm-third-party-notices.md"
+          ],
+          "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+        }
+      },
+      "record": "docs/mechanism-shorts-ms2-world-ownership-results.json",
+      "qualification": "Current fast4 passes4204 units/411 files; focused6 constructor/destructor controls pass. Live source3 world/composition, normal and actual mixed HTTP exports, all six original native2 groups and depth10 pass on held inputs4. Both normal source3 MP4 bytes and all six actual mixed raw HTTP frame bodies match the preceding slice31 production render. This repair concerns application-visible owners: no physical driver RSS/internal PMREM failed-allocation bound is inferred from mocked failure controls. Existing world admission remains unchanged, with scope-specific current/peak/cleanup receipts. Prior installed archive remains exact b4fc65ed; new shared-world code is not relabeled as that archive. Aggregate parsed-source/world/body/replay admission, remaining MS2 criteria/full gates and final installed refresh remain."
     }
   ],
   "implementation": {
@@ -16980,10 +17015,38 @@
         "Aggregate parsed-source/world/body/replay admission and constructor-failure resource ownership.",
         "Remaining MS2 supported pack/rig/event/label/cue/discovery/coverage/typography criteria and full software/benchmark gates before its PR, then MS3; final archive refresh after final source/documentation."
       ]
+    },
+    "thirtyThirdSlice": {
+      "status": "shared-world-application-owner-retirement-verified",
+      "scope": [
+        "Shared environment setup owns the real room scene before PMREM construction and transfers its completed environment only after both temporary owners retire. Constructor/generation/cleanup failure preserves its first cause, including null.",
+        "Fog/hemisphere and later light/material/geometry setup are within the same world failure boundary. Failure and normal close retire all remaining world owners even when a destructor throws; borrowed rest geometry stays separately owned.",
+        "Six focused real Three object/control tests inject generator and scene construction failures without a GPU; actual world/composition/export/native2/depth groups separately verify live GPU execution. No public schema, appearance, quota or renderer math change."
+      ],
+      "counts": {
+        "unitTests": 4204,
+        "unitFiles": 411,
+        "focusedFailureTests": 6,
+        "focusedFailureFiles": 1,
+        "source3WorldCaptures": 6,
+        "source3CompositionCaptures": 6,
+        "artworkCases": 2,
+        "source3Exports": 2,
+        "mixedHTTPRuns": 8,
+        "mixedRawFrames": 6,
+        "native2BrowserGroups": 6,
+        "depthCases": 14,
+        "supportedPacks": 0,
+        "pilotSupportedEpisodes": 0
+      },
+      "remaining": [
+        "Aggregate parsed-source/world/body/replay admission and remaining nested PBR resource retirement under failure.",
+        "Remaining MS2 packs/rigs/events/labels/cues/help/coverage/typography and complete software/benchmark gates before its PR, then MS3; final archive refresh."
+      ]
     }
   },
   "limits": [
-    "Twenty-three slices include source3 PBR composition preview, all used-mip components and standalone strict frame3 GPU/world/anchor observation with independent validation. Composition/output3 capacity, authenticated source3 export/installed, full world budgets and whole MS2 packs/generators/registry/events/labels/cues/typography/300-board/full gates remain. Current unit/Node timeout gates remain unresolved. Supported packs/pilot0.",
+    "Thirty-three slices include source3 import/preparation/observation, normal/mixed authenticated export, scoped installed proof atb4fc65ed and shared-world application-visible failure cleanup. Aggregate source/world/body/replay admission, nested resource retirement, remaining MS2 criteria and current full milestone gates remain. Current fast4204 and scoped GPU regressions pass; earlier timeout/full-gate failures remain retained. Supported packs/pilot0.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]
