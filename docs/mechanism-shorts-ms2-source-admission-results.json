@@ -1,0 +1,353 @@
+{
+  "version": "mechanism-ms2-source-admission-results-1",
+  "date": "2026-10-11",
+  "branch": "codex/mechanism-ms2",
+  "baseSourceCommit": "368136310f445a47dbcc7ff33dfddaf8a9bb2f7e",
+  "status": "bounded-source-descriptor-and-streamed-node-verification-checked",
+  "scope": [
+    "Native source JSON opens a canonical regular descriptor, rejects above the original32MiB ceiling before backing-store allocation, reads in64KiB chunks within exact stat size plus one growth sentinel, checks stable final descriptor metadata and closes on cancellation/failure.",
+    "Node source3 resource admission hashes actual separate RGBA binaries through at most64KiB scratch and returns verified paths; the original retaining loader still returns exact decoded bodies for preparation callers.",
+    "Actual filesystem sparse/growth/cancellation/FIFO controls and256KiB multi-chunk checksum/retaining compatibility tests; current source1/source2/source3 preparation and export regressions."
+  ],
+  "workingInputs": {
+    "manifest": {
+      "path": "/private/tmp/still-shift-ms2-source-admission31-inputs12.json",
+      "bytes": 430043,
+      "sha256": "sha256:e984d74629cef412bbe8a0aa609a6d682a860e84ac995d59fe1c6005ef1fb001"
+    },
+    "files": 2521,
+    "inputBytes": 119153775,
+    "selection": {
+      "roots": [
+        "apps/",
+        "packages/",
+        "scripts/",
+        "tests/",
+        "tools/",
+        "services/",
+        "benchmarks/",
+        "examples/",
+        "assets/",
+        "catalogs/"
+      ],
+      "rootFiles": "all Git-tracked or nonignored regular root files",
+      "packageProse": [
+        "docs/npm-package-readme.md",
+        "docs/npm-third-party-notices.md"
+      ],
+      "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+    }
+  },
+  "qualification": "Final selected inputs12 held through normal fast12, six owning Node files13, normal source3 export14, actual mixed HTTP/replay15 and all six original native2 browser groups16. Initial build2 failed a new test indexed assignment; original terminal handle unavailable after truncated tool output, with compiler failure independently observed and no runtime3 log. Fast6 failed two lint rules; owning/export suffix did not run. Both failures retained. Final checks are staged evidence, not an uninterrupted initial pass. This slice bounds raw descriptor reads and removes full RGBA retention from verification-only Node preparation; aggregate parsed-source/world/body/replay admission, installed consumer, complete MS2 gates/packs and MS3 remain separate.",
+  "verification": [
+    {
+      "id": "format1",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-source-admission31-format1.log",
+        "bytes": 181,
+        "sha256": "sha256:4931e9e69476f1ec1ccb5861928092af8ce7b09ce4186e828eef40e62e00881a"
+      }
+    },
+    {
+      "id": "build1",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-source-admission31-build1.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "format2",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-source-admission31-format2.log",
+        "bytes": 90,
+        "sha256": "sha256:d01e2a8de8828e24226ae77d6ccaf1fced1510287210a2e135cb186b38213cc0"
+      }
+    },
+    {
+      "id": "build2",
+      "exitCode": null,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-source-admission31-build2.log",
+        "bytes": 241,
+        "sha256": "sha256:f156c23863794982e3220e94c4e05e0696148311429ddadb860db39e12f6f296"
+      }
+    },
+    {
+      "id": "format4",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-source-admission31-format4.log",
+        "bytes": 114,
+        "sha256": "sha256:a3e8bb1eef02b8a123ce5df4f6712141162ab72b040a6e3993c773fd074d1f16"
+      }
+    },
+    {
+      "id": "build4",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-source-admission31-build4.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "runtime5",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-source-admission31-runtime5.log",
+        "bytes": 569,
+        "sha256": "sha256:29f3c34a8054bbf09104a00e6e2c3b846eb0c3213c65d9f06c50df6907b958ab"
+      }
+    },
+    {
+      "id": "fast6",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-source-admission31-fast6.log",
+        "bytes": 1874,
+        "sha256": "sha256:de40c2b09491d6bfaf1b4c1a7bfca251df496d35969dd38c6f357718df943210"
+      }
+    },
+    {
+      "id": "format11",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-source-admission31-format11.log",
+        "bytes": 135,
+        "sha256": "sha256:f7144de3bfafdd88d45c7194374a8fb4723a2beca5c878fe2fc38cf626c5f5eb"
+      }
+    },
+    {
+      "id": "fast12",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-source-admission31-fast12.log",
+        "bytes": 36904,
+        "sha256": "sha256:d8faa59148827b94dfa2f62343966a23095e886d60d92fe3a69849ebeaa7c29d"
+      }
+    },
+    {
+      "id": "node13",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-source-admission31-node13.log",
+        "bytes": 1937,
+        "sha256": "sha256:42f05c5666f2bd7344cd170e7832f92a1a69b197f0f8ac8f078cd36b089f0885"
+      }
+    },
+    {
+      "id": "export14",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-source-admission31-export14.log",
+        "bytes": 262,
+        "sha256": "sha256:d8a1ada3923e24ae6547a1e930fdb945b97f36c0ef7e8575741489a2e32d39d7"
+      }
+    },
+    {
+      "id": "mixed15",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-source-admission31-mixed15.log",
+        "bytes": 270,
+        "sha256": "sha256:840faeddd9b304f74f39f5ff5a267aa6163986649bab6553340284d45047815d"
+      }
+    },
+    {
+      "id": "native2-16",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-source-admission31-native2-16.log",
+        "bytes": 1218,
+        "sha256": "sha256:e9b01eac2fed992516073467932d97b9364e2c96767ba21b6bd1b1f89a3fd18a"
+      }
+    },
+    {
+      "id": "hold16",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-source-admission31-hold16.log",
+        "bytes": 204,
+        "sha256": "sha256:e6ae2c5c9b2dc036de1507e88ab1f026f1ecb9590fe23594481e3c2fdb28cefb"
+      }
+    }
+  ],
+  "actualRootSessions": [
+    {
+      "session": 21358,
+      "exitCode": 0,
+      "commands": ["format1", "build1"]
+    },
+    {
+      "session": 39075,
+      "exitCode": 0,
+      "commands": ["format4", "build4", "runtime5"]
+    },
+    {
+      "session": 95296,
+      "exitCode": 1,
+      "commands": ["inputs6", "fast6"]
+    },
+    {
+      "session": 6926,
+      "exitCode": 0,
+      "commands": [
+        "format11",
+        "inputs12",
+        "fast12",
+        "node13",
+        "export14",
+        "mixed15",
+        "native2-16",
+        "hold16"
+      ]
+    }
+  ],
+  "failedRuns": [
+    {
+      "id": "build2",
+      "reason": "New test indexed assignment was possibly undefined; corrected assignment with explicit checked element. Compiler failure logged; truncated tool output lost original terminal, so no terminal exit inferred."
+    },
+    {
+      "id": "fast6",
+      "reason": "Unused destructured images and forbidden inline import type in the new filesystem mock. Fixed explicit result fields and type-only module import; later suffix unrun."
+    }
+  ],
+  "counts": {
+    "unitTests": 4198,
+    "unitFiles": 410,
+    "owningNodeTests": 21,
+    "owningNodeFiles": 6,
+    "focusedFilesystemTests": 12,
+    "focusedFilesystemFiles": 3,
+    "normalSource3Exports": 2,
+    "framesPerSource3Export": 11,
+    "mixedFrames": 6,
+    "mixedPasses": 54,
+    "authenticatedFaults": 7,
+    "native2BrowserGroups": 6,
+    "newInstalledArchives": 0,
+    "supportedPacks": 0,
+    "pilotSupportedEpisodes": 0
+  },
+  "remaining": [
+    "Aggregate parsed-source, whole-world/body/replay accounting and constructor-failure resource ownership.",
+    "Fresh installed source3/mixed verification and remaining MS2 packs/rigs/events/labels/cues/help/typography/coverage board and full gates before MS2 PR, then MS3."
+  ],
+  "actualProofs": [
+    {
+      "command": "export14",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-normal-export3-PzCCyd",
+        "status": "passed",
+        "exports": 2
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-normal-export3-PzCCyd/run.json",
+        "bytes": 25061,
+        "sha256": "sha256:df14a705969362550e012370f7e390870064a57f6bc914d7ccb4dff05299bbb4"
+      }
+    },
+    {
+      "command": "mixed15",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-mixed-export3-gK8Bqi",
+        "status": "passed",
+        "runs": 8
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-mixed-export3-gK8Bqi/run.json",
+        "bytes": 15985,
+        "sha256": "sha256:e83d3295d031e4b064afdae9c3e23782f880651f5b3886617b2410505ceeecb5"
+      }
+    },
+    {
+      "command": "native2-16",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-shape-world-JiCn4b",
+        "status": "passed",
+        "frames": 5,
+        "scope": "browser-world-and-pixels-only"
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-shape-world-JiCn4b/run.json",
+        "bytes": 2976,
+        "sha256": "sha256:8b488ab3d868b32a73b3c9191733fe936f6d8674bc8c865ce6fd3f12ebc70c4f"
+      }
+    },
+    {
+      "command": "native2-16",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-used-streams-TqTXFC",
+        "status": "passed",
+        "frames": 6,
+        "negatives": 11,
+        "scope": "standalone-used-color-streams-only"
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-used-streams-TqTXFC/run.json",
+        "bytes": 7870,
+        "sha256": "sha256:2ae665c6735070e3432e21e99457964c75f4d523655eed6d61c2dec288f54711"
+      }
+    },
+    {
+      "command": "native2-16",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-frame-observation-PIiupR",
+        "status": "passed",
+        "frames": 8,
+        "negatives": 4,
+        "scope": "standalone-full-observed-frame2"
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-frame-observation-PIiupR/run.json",
+        "bytes": 6282,
+        "sha256": "sha256:81c899cc6e0249faf04199d4bbf920f72120a434492bc7b4a3c8c6b11fcfc644"
+      }
+    },
+    {
+      "command": "native2-16",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-composition-v2-wHOEQv",
+        "status": "passed",
+        "captures": 4,
+        "negatives": 15
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-composition-v2-wHOEQv/run.json",
+        "bytes": 95250,
+        "sha256": "sha256:9f66a5a1455705c66525630aec02f651e23b5f1f57699a56720ee2c5a96c52ba"
+      }
+    },
+    {
+      "command": "native2-16",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-normal-export2-2w67Z4",
+        "status": "passed",
+        "exports": 2
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-normal-export2-2w67Z4/run.json",
+        "bytes": 43865,
+        "sha256": "sha256:21910a782ff15c8d3f7169819b33444e8897efceb7ec8aa8d0553febc6e9277b"
+      }
+    },
+    {
+      "command": "native2-16",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-lab2-wdxjNa",
+        "status": "passed",
+        "records": 20
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-lab2-wdxjNa/run.json",
+        "bytes": 26378,
+        "sha256": "sha256:c036ceb1f8d008cbce3f708667377d327beec632d78b7eef9588a3e00fb62b5f"
+      }
+    }
+  ]
+}

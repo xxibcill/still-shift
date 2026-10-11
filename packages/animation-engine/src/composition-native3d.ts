@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
-import { readFile, stat } from "node:fs/promises";
+import { readNativeSourceBytes } from "./native-source-read.ts";
 import { dirname, resolve } from "node:path";
-import { loadNativePbrSourceResources } from "./mechanism/native-pbr-files.ts";
+import { verifyNativePbrSourceResources } from "./mechanism/native-pbr-files.ts";
 import { gltfJsonHash } from "./mechanism/gltf-identity.ts";
 import {
   CompositionPreparedNative3DVersionsSchema,
@@ -48,15 +48,11 @@ export async function prepareCompositionNative3D(
   for (const asset of assets) {
     options.signal?.throwIfAborted();
     const path = resolve(sourceDirectory, asset.path);
-    if ((await stat(path)).size > 32 * 1024 ** 2)
-      passageError("comp-native3d-limit", "Native source exceeds 32 MiB", {
-        path: `assets.${asset.id}`,
-      });
-    const bytes = await readFile(path);
-    if (bytes.length > 32 * 1024 ** 2)
-      passageError("comp-native3d-limit", "Native source exceeds 32 MiB", {
-        path: `assets.${asset.id}`,
-      });
+    const bytes = await readNativeSourceBytes(
+      path,
+      `assets.${asset.id}`,
+      options.signal,
+    );
     const sourceSha256 = `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
     if (sourceSha256 !== asset.sha256)
       passageError(
@@ -81,7 +77,7 @@ export async function prepareCompositionNative3D(
       );
     const source = parsed.data;
     if (source.schemaVersion === "mechanism-scene-3") {
-      const verified = await loadNativePbrSourceResources(
+      const verified = await verifyNativePbrSourceResources(
         source,
         dirname(path),
         {

@@ -45,19 +45,18 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Thirty slices include normal source3 exports and mixed source1/source2/source3
-  authenticated HTTP proof. Fast5 passes 4,198 units/410 files; browser6 covers six
-  fractional-exposure frames/54 actual passes, six packet/pixel bodies and independent
-  retained-row replay. Seven forged first observations reject without pixel upload
-  or output publication. Initial overlapping-controller fixture failure is retained;
-  source3 uses its own precomposition and the original overlap rule stays fixed.
-  Production inputs are unchanged from29; new test/command inputs5 remain held.
-  Next: installed source3/mixed, whole world/source/body/replay budgets and remaining
-  MS2 criteria/full gates. Broad Node/native2/full/runtime/integration/installed
-  remain prior scoped evidence; supported packs/pilot0; no MS2 PR/MS3/human acceptance.
-  ElevenLabs spending needs explicit owner approval for the identified batch.
-  [Mixed evidence](./mechanism-shorts-ms2-output3-mixed-results.json),
-  [normal export evidence](./mechanism-shorts-ms2-output3-export-results.json),
+  Thirty-one slices include normal/mixed source3 authenticated export and bounded
+  source admission: original32MiB ceiling, exact descriptor backing store plus
+  growth sentinel, streamed Node RGBA verification with at most64KiB scratch.
+  Fast12 passes4,198 units/410 files; Node13 passes21 tests/six files; normal source3,
+  actual mixed54-pass HTTP/replay and all six native2 browser groups pass on held
+  inputs12. New build/lint failures are retained; checks complete in stages.
+  Next: aggregate parsed-source/world/body/replay admission and constructor cleanup,
+  installed source3/mixed and remaining MS2/full gates. Broad runtime/integration/
+  benchmark/installed remain historical; supported packs/pilot0; no MS2 PR/MS3 or
+  human acceptance. ElevenLabs requires explicit identified-batch spending approval.
+  [Source admission evidence](./mechanism-shorts-ms2-source-admission-results.json),
+  [mixed evidence](./mechanism-shorts-ms2-output3-mixed-results.json),
   [MS2 results](./mechanism-shorts-ms2-results.json), [PBR API](./native-pbr-resources.md).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
@@ -216,6 +215,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 bounded source descriptor and streamed Node resource checks
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `36813631`.
+- **Done:** preserve32MiB admission with one regular descriptor, bounded reads,
+  growth/final-stat checks and cancellation cleanup; verify Node PBR binaries using
+  64KiB scratch while preserving the original loader's retained RGBA API.
+- **Results:** fast12 passes4,198 units; Node13 passes21 tests/six files, including
+  sparse/growth/FIFO/cancel and256KiB body/checksum controls. Normal source3/mixed
+  exports and all six native2 groups pass on held inputs12.
+- **Retained:** new indexed-assignment build failure with lost original terminal;
+  two new lint violations; corrected gates pass in stages, with no skipped suffix.
+- **Next:** aggregate source/world/body/replay and constructor cleanup, installed
+  proof, remaining MS2 contracts/packs/full gates; no paid ElevenLabs performed.
+- **Records:** [source admission evidence](./mechanism-shorts-ms2-source-admission-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-11 — MS2 actual mixed source3 HTTP export and rejection controls
 

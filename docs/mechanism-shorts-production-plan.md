@@ -740,7 +740,14 @@ mechanism families establish whether the architecture transfers.
       rejection controls. Normal fast and owning mixed proof pass on held test
       inputs with unchanged production. [Mixed evidence](./mechanism-shorts-ms2-output3-mixed-results.json)
       retains the invalid overlapping fixture and correction preserving the rule.
-      Installed and whole-world proof remain pending;
+      Thirty-first slice bounds raw source admission at the original32MiB ceiling
+      using a regular descriptor, exact backing store plus growth sentinel and
+      cancellation/final-stat cleanup. Node PBR verification hashes actual binary
+      bodies through64KiB scratch; the original retaining API stays compatible.
+      Current fast/Node and normal/mixed source3/native2 export groups pass on held
+      inputs. [Admission evidence](./mechanism-shorts-ms2-source-admission-results.json)
+      retains new build/lint failures. Aggregate parsed-source/world/body/replay
+      and installed proof remain pending;
       this criterion stays unchecked. See the [import API](./rigid-gltf-import.md) and
       [retained results](./mechanism-shorts-ms2-results.json).
 - [ ] Implement slider hard stops, hinge/lever, deterministic spring return and

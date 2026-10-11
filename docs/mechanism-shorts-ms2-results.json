@@ -15750,6 +15750,41 @@
       },
       "record": "docs/mechanism-shorts-ms2-output3-mixed-results.json",
       "qualification": "Current normal fast5 and owning mixed browser6 pass on unchanged selected inputs5. Production inputs remain unchanged from slice29; this slice adds a mixed fixture and an explicit source3 HTTP/replay proof. Retain the initial invalid same-scope overlapping controller fixture; corrected to a separate precomposition without relaxing the original overlap rule. Actual mixed fractional exposure covers frame1/frame2/frame3 in output3, six output frames/54 passes, authenticated packets and actual raw pixels with independent durable row replay. Seven forged first observations fail before pixel upload and publication. This is generic fixture software evidence, not installed consumer proof or whole world/source/body/replay accounting. No fresh broad Node/native2/full runtime/integration/benchmark/installed suite, human appearance/listening acceptance, supported pack/pilot, MS2 PR, merge/publication or paid ElevenLabs action."
+    },
+    {
+      "id": "source-admission-slice-31",
+      "status": "bounded-source-descriptor-and-streamed-node-verification-checked",
+      "workingInputs": {
+        "manifest": {
+          "path": "/private/tmp/still-shift-ms2-source-admission31-inputs12.json",
+          "bytes": 430043,
+          "sha256": "sha256:e984d74629cef412bbe8a0aa609a6d682a860e84ac995d59fe1c6005ef1fb001"
+        },
+        "files": 2521,
+        "inputBytes": 119153775,
+        "selection": {
+          "roots": [
+            "apps/",
+            "packages/",
+            "scripts/",
+            "tests/",
+            "tools/",
+            "services/",
+            "benchmarks/",
+            "examples/",
+            "assets/",
+            "catalogs/"
+          ],
+          "rootFiles": "all Git-tracked or nonignored regular root files",
+          "packageProse": [
+            "docs/npm-package-readme.md",
+            "docs/npm-third-party-notices.md"
+          ],
+          "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+        }
+      },
+      "record": "docs/mechanism-shorts-ms2-source-admission-results.json",
+      "qualification": "Final selected inputs12 held through normal fast12, six owning Node files13, normal source3 export14, actual mixed HTTP/replay15 and all six original native2 browser groups16. Initial build2 failed a new test indexed assignment; original terminal handle unavailable after truncated tool output, with compiler failure independently observed and no runtime3 log. Fast6 failed two lint rules; owning/export suffix did not run. Both failures retained. Final checks are staged evidence, not an uninterrupted initial pass. This slice bounds raw descriptor reads and removes full RGBA retention from verification-only Node preparation; aggregate parsed-source/world/body/replay admission, installed consumer, complete MS2 gates/packs and MS3 remain separate."
     }
   ],
   "implementation": {
@@ -16842,6 +16877,35 @@
       "remaining": [
         "Installed source3/mixed export verification and whole world/source/body/replay bounded admission.",
         "Remaining MS2 packs/rigs/events/labels/cues/typography/board and full milestone/benchmark gates before its PR, then MS3."
+      ]
+    },
+    "thirtyFirstSlice": {
+      "status": "bounded-source-descriptor-and-streamed-node-verification-checked",
+      "scope": [
+        "Native source JSON opens a canonical regular descriptor, rejects above the original32MiB ceiling before backing-store allocation, reads in64KiB chunks within exact stat size plus one growth sentinel, checks stable final descriptor metadata and closes on cancellation/failure.",
+        "Node source3 resource admission hashes actual separate RGBA binaries through at most64KiB scratch and returns verified paths; the original retaining loader still returns exact decoded bodies for preparation callers.",
+        "Actual filesystem sparse/growth/cancellation/FIFO controls and256KiB multi-chunk checksum/retaining compatibility tests; current source1/source2/source3 preparation and export regressions."
+      ],
+      "counts": {
+        "unitTests": 4198,
+        "unitFiles": 410,
+        "owningNodeTests": 21,
+        "owningNodeFiles": 6,
+        "focusedFilesystemTests": 12,
+        "focusedFilesystemFiles": 3,
+        "normalSource3Exports": 2,
+        "framesPerSource3Export": 11,
+        "mixedFrames": 6,
+        "mixedPasses": 54,
+        "authenticatedFaults": 7,
+        "native2BrowserGroups": 6,
+        "newInstalledArchives": 0,
+        "supportedPacks": 0,
+        "pilotSupportedEpisodes": 0
+      },
+      "remaining": [
+        "Aggregate parsed-source, whole-world/body/replay accounting and constructor-failure resource ownership.",
+        "Fresh installed source3/mixed verification and remaining MS2 packs/rigs/events/labels/cues/help/typography/coverage board and full gates before MS2 PR, then MS3."
       ]
     }
   },

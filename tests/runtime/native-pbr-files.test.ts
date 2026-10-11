@@ -11,7 +11,10 @@ import {
 } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { loadNativePbrSourceResources } from "../../packages/animation-engine/src/mechanism/native-pbr-files.ts";
+import {
+  loadNativePbrSourceResources,
+  verifyNativePbrSourceResources,
+} from "../../packages/animation-engine/src/mechanism/native-pbr-files.ts";
 import { gltfJsonHash } from "../../packages/animation-engine/src/mechanism/gltf-identity.ts";
 import { gltfBytesHash } from "../../packages/animation-engine/src/mechanism/gltf-resources.ts";
 import { nativePbrSceneFixture } from "../helpers/native-pbr-scene-fixture.ts";
@@ -140,4 +143,41 @@ describe("source3 regular-file boundary", () => {
         loadNativePbrSourceResources(source, join(root, "images/surface.rgba")),
       ).rejects.toMatchObject({ location: { path: ["resources"] } });
     }));
+});
+
+it("verifies a multi-chunk actual body without retaining decoded RGBA and preserves the original retaining API", async () => {
+  const root = await mkdtemp(join(tmpdir(), "native-pbr-stream-"));
+  try {
+    await mkdir(join(root, "images"));
+    const pixels = Uint8Array.from(
+        { length: 256 * 256 * 4 },
+        (_, index) => index % 251,
+      ),
+      sha = gltfBytesHash(pixels),
+      base = fixtureSource(pixels);
+    const geometry = {
+      ...base.geometry,
+      images: [{ ...base.geometry.images[0]!, width: 256, height: 256 }],
+    };
+    const source = {
+      ...base,
+      geometry,
+      geometrySha256: gltfJsonHash(geometry),
+      resources: [{ ...base.resources[0]!, bytes: pixels.length, sha256: sha }],
+    };
+    const path = join(root, "images/surface.rgba");
+    await writeFile(path, pixels);
+    const verified = await verifyNativePbrSourceResources(source, root);
+    expect(verified).not.toHaveProperty("images");
+    expect(verified.paths["image.0"]).toBe(await realpath(path));
+    const retained = await loadNativePbrSourceResources(source, root);
+    expect(retained.images[0]!.rgba).toEqual(pixels);
+    pixels[pixels.length - 1] = pixels[pixels.length - 1]! ^ 1;
+    await writeFile(path, pixels);
+    await expect(
+      verifyNativePbrSourceResources(source, root),
+    ).rejects.toMatchObject({ location: { path: ["resources", 0, "sha256"] } });
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
 });

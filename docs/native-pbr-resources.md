@@ -440,3 +440,18 @@ retain the initial invalid overlapping fixture, current checks and held inputs.
 Production source is unchanged from the normal export slice. Installed consumer
 proof, complete world/source/body/replay accounting and remaining MS2 criteria
 remain pending; no human appearance/listening acceptance follows from these checks.
+
+## Bounded local source and verification-only resource reads
+
+Node composition preparation opens each native source through a canonical regular
+file descriptor. The existing32MiB ceiling is checked before allocating its exact
+size plus one growth sentinel. Reads use64KiB chunks; growth, size or descriptor
+metadata changes reject, and cancellation closes the descriptor.
+
+`verifyNativePbrSourceResources` verifies separate RGBA files with at most64KiB
+scratch and returns source, canonical paths and allocation receipt without decoded
+body retention. Composition preparation uses this path. The original
+`loadNativePbrSourceResources` retains exact RGBA for callers that prepare resources.
+Both enforce containment, declared size/checksum, regular-file type, stable final
+metadata and cancellation. Aggregate parsed-source/world/body/replay quotas and
+installed portability remain separate requirements.

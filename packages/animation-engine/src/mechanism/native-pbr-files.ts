@@ -3,7 +3,7 @@ import { constants } from "node:fs";
 import { isAbsolute, relative, resolve } from "node:path";
 import { MechanismSceneV3Schema } from "@still-shift/scene-contract";
 import { preflightNativePbrResources } from "../../../renderer-core/src/native3d/pbr-allocations.ts";
-import { gltfBytesHash } from "./gltf-resources.ts";
+import { createHash } from "node:crypto";
 import { gltfJsonHash, freezeGltfAsset } from "./gltf-identity.ts";
 import type { NativePbrPixelInput } from "./gltf-pbr.ts";
 export class NativePbrResourceError extends Error {
@@ -18,10 +18,11 @@ const fail = (message: string, path: (string | number)[]): never => {
   throw new NativePbrResourceError(message, path);
 };
 /** Verified separate binary resources; no encoded/decoded image arrays enter source JSON transport. */
-export async function loadNativePbrSourceResources(
+async function readNativePbrSourceResources(
   input: unknown,
   sourceDirectory: string,
   options: { signal?: AbortSignal } = {},
+  retainPixels = true,
 ) {
   options.signal?.throwIfAborted();
   const source = MechanismSceneV3Schema.parse(input);
@@ -65,17 +66,26 @@ export async function loadNativePbrSourceResources(
           index,
           "bytes",
         ]);
-      const bytes = new Uint8Array(reference.bytes + 1);
+      // Verification-only callers never allocate a complete RGBA body. Each
+      // read owns at most64KiB, including a sentinel for unexpected growth.
+      const rgba = retainPixels ? new Uint8Array(reference.bytes) : undefined;
+      const chunk = new Uint8Array(Math.min(65536, reference.bytes + 1));
+      const identity = createHash("sha256");
       let offset = 0;
-      while (offset < bytes.length) {
+      while (offset <= reference.bytes) {
         options.signal?.throwIfAborted();
         const { bytesRead } = await handle.read(
-          bytes,
-          offset,
-          bytes.length - offset,
+          chunk,
+          0,
+          Math.min(chunk.length, reference.bytes + 1 - offset),
           offset,
         );
         if (!bytesRead) break;
+        if (offset + bytesRead > reference.bytes)
+          fail("Binary resource changed during bounded read", location);
+        const part = chunk.subarray(0, bytesRead);
+        identity.update(part);
+        rgba?.set(part, offset);
         offset += bytesRead;
       }
       const after = await handle.stat();
@@ -87,14 +97,13 @@ export async function loadNativePbrSourceResources(
         after.ctimeMs !== before.ctimeMs
       )
         fail("Binary resource changed during bounded read", location);
-      const rgba = bytes.subarray(0, reference.bytes);
-      if (gltfBytesHash(rgba) !== reference.sha256)
+      if (`sha256:${identity.digest("hex")}` !== reference.sha256)
         fail("Binary resource checksum differs", [
           "resources",
           index,
           "sha256",
         ]);
-      images.push({ image: reference.image, rgba });
+      if (rgba) images.push({ image: reference.image, rgba });
       paths[reference.image] = path;
     } finally {
       await handle.close();
@@ -106,5 +115,32 @@ export async function loadNativePbrSourceResources(
     images,
     paths: Object.freeze(paths),
     allocation,
+  };
+}
+
+/** Retain decoded bodies for callers that actually prepare browser resources. */
+export async function loadNativePbrSourceResources(
+  input: unknown,
+  sourceDirectory: string,
+  options: { signal?: AbortSignal } = {},
+) {
+  return await readNativePbrSourceResources(input, sourceDirectory, options);
+}
+/** Node composition preparation needs only verified paths and identities. */
+export async function verifyNativePbrSourceResources(
+  input: unknown,
+  sourceDirectory: string,
+  options: { signal?: AbortSignal } = {},
+) {
+  const verified = await readNativePbrSourceResources(
+    input,
+    sourceDirectory,
+    options,
+    false,
+  );
+  return {
+    source: verified.source,
+    paths: verified.paths,
+    allocation: verified.allocation,
   };
 }
