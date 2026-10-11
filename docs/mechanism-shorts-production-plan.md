@@ -707,6 +707,10 @@ mechanism families establish whether the architecture transfers.
       sampler/LOD controls, foreign-state restoration and bounded scratch. Twenty-third
       adds standalone strict frame3 observations: actual rigid draw coverage, GPU
       matrices/bytes/mips, measured Three world/anchors and independent validation.
+      Twenty-fourth slice repairs current strict gates without changing original
+      budgets or frozen gradient oracles: fast42 passes 4,177 units, Node44 passes
+      ten owning checks, and fresh source3/native2 browser groups pass. Earlier
+      failures remain in the [strict-gate history](./mechanism-shorts-ms2-strict-gates-results.json).
       Composition/output3 capacity, authenticated source3 export, installed and
       whole-world proof remain pending;
       this criterion stays unchecked. See the [import API](./rigid-gltf-import.md) and

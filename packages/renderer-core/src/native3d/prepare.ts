@@ -120,23 +120,30 @@ export async function prepareNative3DScene(
           `Unknown material override ${id}`,
           { path: `materialOverrides.${id}` },
         );
-    const derived = Native3DSourceSchema.parse({
-      ...source,
-      parts: source.parts.map((part) => ({
-        ...part,
-        ...(overrides.partOverrides?.[part.id] ?? {}),
-      })),
-      geometry: {
-        ...source.geometry,
-        materials: source.geometry.materials.map((material) => ({
-          ...material,
-          ...(overrides.materialOverrides?.[material.id] ?? {}),
-        })),
-      },
-    });
-    // Validation already inspected the full derived data; mesh topology is immutable.
-    derived.geometry.meshes = source.geometry.meshes;
-    derived.geometrySha256 = await hashData(derived.geometry);
+    // The private base was fully parsed and its geometry checksum verified above.
+    // An empty request changes nothing; edited requests still revalidate in full.
+    const derived =
+      requestKey === "{}"
+        ? source
+        : Native3DSourceSchema.parse({
+            ...source,
+            parts: source.parts.map((part) => ({
+              ...part,
+              ...(overrides.partOverrides?.[part.id] ?? {}),
+            })),
+            geometry: {
+              ...source.geometry,
+              materials: source.geometry.materials.map((material) => ({
+                ...material,
+                ...(overrides.materialOverrides?.[material.id] ?? {}),
+              })),
+            },
+          });
+    if (derived !== source) {
+      // Validation inspected the full edited scene; static topology stays shared.
+      derived.geometry.meshes = source.geometry.meshes;
+      derived.geometrySha256 = await hashData(derived.geometry);
+    }
     const effectiveSceneSha256 = await hashData(derived);
     const sourceKey = `native3d-source-1:${sourceSha256.slice(7)}:${effectiveSceneSha256.slice(7)}`;
     variantKeysByOverrides[requestKey] = sourceKey;

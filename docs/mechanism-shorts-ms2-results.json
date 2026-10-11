@@ -15380,6 +15380,54 @@
       },
       "record": "docs/mechanism-shorts-ms2-pbr-observation-results.json",
       "qualification": "Staged checks; retain failed fast10 and owning11 timeouts separately. Independent browser groups and final held-source verification recorded with individual exit codes; orchestration exit0 alone is not an aggregate test pass. Source3 observation remains successful stage10. Repeated strict gradient timeout and three current Node package timeouts stay unresolved. No current uninterrupted fast, full runtime/integration/full or installed archive pass is claimed."
+    },
+    {
+      "id": "strict-gates-slice-24",
+      "status": "current-fast-owning-node-affected-browser-pass-ms2-incomplete",
+      "actualRootSessions": [
+        {
+          "session": 7838,
+          "exitCode": 0,
+          "commands": ["fast42", "node43"],
+          "qualification": "Node43 is only a seven-test package subset."
+        },
+        {
+          "session": 83967,
+          "exitCode": 0,
+          "commands": ["node44", "observation45", "shapes46", "hold46"]
+        }
+      ],
+      "workingInputs": {
+        "manifest": {
+          "path": "/private/tmp/still-shift-ms2-resume-inputs42.json",
+          "bytes": 426986,
+          "sha256": "sha256:c998acee57caf4e71d7ec19c34b0f9dedd8e00328dbd088de3b0767d76c2e73c"
+        },
+        "files": 2503,
+        "inputBytes": 119039010,
+        "selection": {
+          "roots": [
+            "apps/",
+            "packages/",
+            "scripts/",
+            "tests/",
+            "tools/",
+            "services/",
+            "benchmarks/",
+            "examples/",
+            "assets/",
+            "catalogs/"
+          ],
+          "rootFiles": "all Git-tracked or nonignored regular root files",
+          "packageProse": [
+            "docs/npm-package-readme.md",
+            "docs/npm-third-party-notices.md"
+          ],
+          "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+        }
+      },
+      "record": "docs/mechanism-shorts-ms2-strict-gates-results.json",
+      "qualification": "Staged repair with failed runs and rejected experiments retained. Early frozen-oracle helper regex stopped before writing and corrected helper succeeded. Guarded edit28 failed before writing; later tests ran unchanged. No changed acceptance thresholds, frozen fixtures or production gradient implementation. No sole-cause timing claim. Broader runtime/integration/full/benchmark and installed-package verification were not refreshed for this slice; supportedPacks and pilot remain zero. Source3 composition/output3/export remains rejected; no human visual/listening acceptance, MS2 PR, merge or publication."
     }
   ],
   "implementation": {
@@ -16258,6 +16306,32 @@
         "Human visual/listening acceptance remains separate; no PR merge, publication, tag or production promotion."
       ],
       "records": ["docs/mechanism-shorts-ms2-pbr-observation-results.json"]
+    },
+    "twentyFourthSlice": {
+      "status": "current-fast-owning-node-affected-browser-pass-ms2-incomplete",
+      "scope": [
+        "Canonical scalar/dense numeric arrays avoid temporary allocations and recursive dispatch while preserving native finite number spelling, own-index sparse rejection, plain-object/cycle/depth limits.",
+        "Source1 empty override reuses the private fully parsed and checksum-verified base; edited requests still perform full validation. No source2/source3 preparation policy changed.",
+        "Gradient TEST observer captures every actual getter ID, counts all IDs, and packs only empirically verified repetitions during hash replay. Original fixture literal, assertions, cache eight-entry limit, null/fault lifecycle and five-second budget are unchanged; production gradient code matches pre-slice HEAD."
+      ],
+      "counts": {
+        "unitTests": 4177,
+        "unitFiles": 407,
+        "owningNodeTests": 10,
+        "owningNodeFiles": 4,
+        "source3Frames": 8,
+        "source3Faults": 21,
+        "native2BrowserGroups": 6,
+        "source3CompositionExports": 0,
+        "newInstalledArchives": 0,
+        "supportedPacks": 0,
+        "pilotSupportedEpisodes": 0
+      },
+      "remaining": [
+        "Explicit output3 collector/capacity and authenticated producer/sink/upload/journal/export/installed proof.",
+        "Whole world/source/body/replay budgets; retain fixed 64 passes, 1MiB packet, 32MiB shard,16 shards,512MiB total.",
+        "Remaining packs/generators/registry/rigs/events/labels/cues/typography/board criteria and full required milestone gates."
+      ]
     }
   },
   "limits": [

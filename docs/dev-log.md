@@ -45,18 +45,19 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Twenty-three slices include source3 preview, complete used mips and standalone
-  strict frame3 GPU/world/anchor observation with independent validation.
-  Fast10 passes through build; units 4,173 pass/2 timeouts. Strict owning11 rerun
-  13 pass/1 timeout resolves native mechanical; gradient metadata remains pending.
-  Node12 has 7 pass/3 package timeouts. Acceptance limits remain unchanged.
-  Observation10 passes 8 frames/3 queued/21 faults with zero observation owners;
-  browser13 resource/world/composition and all six native2 groups pass.
-  Next: strict unit/Node gates, composition collector/output3 capacity, authenticated
-  source3 export/installed, whole world/source budgets and remaining MS2 criteria.
-  Supported packs/pilot0; no MS2 PR/MS3 or human acceptance. Failed runs are retained;
-  broader runtime/integration remain historical slice22 records.
+  Twenty-four slices include strict standalone source3 GPU/world/anchor observation
+  and current strict-gate repair. Held inputs42: 2,503 files/119,039,010B.
+  Normal fast42 passes all prefix checks and 4,177 units/407 files; complete Node44
+  passes 10 tests/four files at original budgets. Observation45 passes eight
+  frames/21 faults; shapes46 passes all six native2 browser groups. Exact held
+  input bytes match after these staged runs. Historical failures, rejected trace
+  experiments and wrong-file Node43 subset remain recorded; no uninterrupted
+  milestone pass is claimed. Broader runtime/integration/full/installed stay historical.
+  Next: composition collector/output3 capacity, authenticated source3 export/installed,
+  whole world/source budgets and remaining MS2 criteria. Supported packs/pilot0;
+  no MS2 PR/MS3 or human acceptance.
   [MS2 results](./mechanism-shorts-ms2-results.json),
+  [strict-gate history](./mechanism-shorts-ms2-strict-gates-results.json),
   [observation results](./mechanism-shorts-ms2-pbr-observation-results.json),
   [PBR API](./native-pbr-resources.md), [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
@@ -216,6 +217,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 strict-gate repair with unchanged acceptance limits
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `11eda2d7`.
+- **Done:** reduce canonical numeric-array overhead, reuse validated source1 base
+  for empty overrides, and capture/replay every gradient getter with lower observer
+  overhead. Independent hashes/input-isolation/rejection tests added; frozen
+  gradient oracles and production gradient bytes remain unchanged.
+- **Results:** fast42 passes 4,177 units/407 files and all prefix gates; Node44
+  passes 10/four files, observation45 eight frames/21 faults, shapes46 six browser
+  groups. Inputs42 unchanged afterward; original five-second budgets retained.
+- **Retained:** prior timeouts, rejected observer/loop experiments, guarded edit
+  failure and Node43 wrong-name seven-test subset; no full/installed refresh.
+- **Next:** output3 collector/capacity, authenticated export/installed and remaining
+  MS2 criteria. Supported packs/pilot0; no milestone PR or human acceptance.
+- **Records:** [strict-gate history](./mechanism-shorts-ms2-strict-gates-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-11 — MS2 standalone source3 observed frames and chat handoff
 

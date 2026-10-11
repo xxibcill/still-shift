@@ -8,7 +8,7 @@ export function canonicalMechanismJson(value: unknown): string {
     if (typeof input === "string" || typeof input === "boolean")
       return JSON.stringify(input);
     if (typeof input === "number" && Number.isFinite(input))
-      return JSON.stringify(input);
+      return String(input);
     if (typeof input !== "object")
       throw new TypeError("Mechanism canonical JSON requires finite JSON data");
     if (ancestors.has(input))
@@ -19,28 +19,37 @@ export function canonicalMechanismJson(value: unknown): string {
       Object.getPrototypeOf(input) !== null
     )
       throw new TypeError("Mechanism canonical JSON requires plain objects");
-    if (
-      Array.isArray(input) &&
-      Array.from({ length: input.length }, (_, index) =>
-        Object.hasOwn(input, index),
-      ).some((present) => !present)
-    )
-      throw new TypeError(
-        "Mechanism canonical JSON cannot contain sparse arrays",
-      );
+    if (Array.isArray(input)) {
+      for (let index = 0; index < input.length; index++)
+        if (!Object.hasOwn(input, index))
+          throw new TypeError(
+            "Mechanism canonical JSON cannot contain sparse arrays",
+          );
+    }
     ancestors.add(input);
-    const encoded = Array.isArray(input)
-      ? `[${input.map((item) => encode(item, depth + 1)).join(",")}]`
-      : `{${Object.keys(input)
-          .sort()
-          .filter(
-            (key) => (input as Record<string, unknown>)[key] !== undefined,
-          )
-          .map(
-            (key) =>
-              `${JSON.stringify(key)}:${encode((input as Record<string, unknown>)[key], depth + 1)}`,
-          )
-          .join(",")}}`;
+    let encoded: string;
+    if (Array.isArray(input)) {
+      const items = new Array<string>(input.length);
+      for (let index = 0; index < input.length; index++) {
+        const item: unknown = input[index];
+        // Geometry's dense numeric arrays need no recursive object dispatch.
+        // Preserve the scalar depth guard and native JSON number spelling.
+        items[index] =
+          depth < 64 && typeof item === "number" && Number.isFinite(item)
+            ? String(item)
+            : encode(item, depth + 1);
+      }
+      encoded = `[${items.join(",")}]`;
+    } else {
+      encoded = `{${Object.keys(input)
+        .sort()
+        .filter((key) => (input as Record<string, unknown>)[key] !== undefined)
+        .map(
+          (key) =>
+            `${JSON.stringify(key)}:${encode((input as Record<string, unknown>)[key], depth + 1)}`,
+        )
+        .join(",")}}`;
+    }
     ancestors.delete(input);
     return encoded;
   }
