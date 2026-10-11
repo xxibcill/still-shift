@@ -6,8 +6,9 @@ and decoded-pixel identities. Existing native source1/source2 parsers remain
 strict. Explicit source3 preparation, binary admission and shared-world composition
 preview consume this component. Every used mip now has component storage/transfer
 validation. A standalone strict frame3 owner now measures actual GPU draws and
-Three state with independent validation. Composition observation/output3 capacity,
-authenticated source3 exports and installed proof remain pending.
+Three state with independent validation. Explicit asynchronous composition
+observation/output3 capacity now consume it. Authenticated source3 exports and
+installed proof remain pending.
 
 ## Node preparation
 
@@ -247,8 +248,8 @@ never enter production transport JSON.
 The preview slice did not prove independent source3 frame/world/anchor/draw
 observations. Later standalone evidence is documented below; used-mip component
 validation remains a separate proof boundary.
-`collectNativeObservations: true` and source3 export-request creation reject the
-unfinished protocol. Authenticated repeated exports, installed proof, whole-world
+`collectNativeObservations: true` now uses the explicit output3 integration below.
+Source3 export-request creation still rejects the unfinished authenticated protocol. Authenticated repeated exports, installed proof, whole-world
 accounting and bounded source JSON admission remain required. The importer
 criterion stays unchecked. [Staged results](./mechanism-shorts-ms2-pbr-composition-results.json)
 retain every failed run, lost terminal receipt and strict aggregate timeout.
@@ -278,10 +279,10 @@ coverage and anchor projection/physical visibility. Existing matrix1e-8,
 pixel0.5 and mip-transfer0.0001 profiles remain fixed. Receipt owners must be
 disposed after use; owner disposal and aborts invalidate pending finalization.
 
-This API is a standalone source3 observation boundary. Composition collector
-integration, authenticated exports,
-journals and installed consumer proof remain pending; existing source3 composition observation/export requests
-still reject. Original frame1/frame2/output2 parsers retain their strict behavior.
+This API began as a standalone source3 observation boundary. The composition
+collector now consumes it through the explicit output3 integration below.
+Authenticated exports, journals and installed consumer proof remain pending;
+source3 export requests still reject. Original frame1/frame2/output2 parsers retain their strict behavior.
 The scoped allocator proof covers observation copies, metadata and hashing;
 world/PMREM/source JSON/body and aggregate multi-pass admission are still separate.
 
@@ -308,10 +309,10 @@ the independent expected-source checker remains required. Parsed object fields
 are private, while validated matrix arrays retain their existing borrowed ownership
 and are frozen. Metadata ownership lasts until the next begin, abort or disposal.
 
-This collector is not yet wired into composition rendering or authenticated
-transport. Source3 composition collection/export still rejects until capacity
-sizing is wired into asynchronous renderer hooks and the transport/export/installed
-proof is complete. [Collector results](./mechanism-shorts-ms2-output3-collector-results.json)
+The collector is now wired into composition rendering through conservative
+capacity admission and explicit asynchronous runtime hooks described below.
+Authenticated transport/export/installed proof remains pending; source3 export
+requests still reject. [Collector results](./mechanism-shorts-ms2-output3-collector-results.json)
 retain mixed completion, byte/pass admission, original protocol rejection and
 lifecycle tests, staged failures and existing native2 composition/export checks.
 
@@ -331,6 +332,40 @@ produce 2,512–10,133B output3 packets inside 28,165B capacity, with zero colle
 owners after disposal. These diagnostic envelopes do not prove authenticated
 execution identity or composition rendering. [Capacity results](./mechanism-shorts-ms2-output3-capacity-results.json)
 retain invalid new fixtures, type failures, the original strict aggregate timeout
-and the unchanged default-worker unit/Node/browser continuation. Renderer collector
-integration, compositor-owned world-artwork admission, authenticated transport/
-export/installed proof and whole world/source/body/replay budgets remain pending.
+and the unchanged default-worker unit/Node/browser continuation. Later composition
+integration and compositor-owned world-artwork admission are documented below.
+Authenticated transport/export/installed proof and whole world/source/body/replay
+budgets remain pending.
+
+## Explicit asynchronous output3 composition collection
+
+For prepared source3, create the WebGL2 preview with
+`collectNativeObservations: true` and complete frames using
+`renderCompositionFrameAsync(preview, frame)`. The report exposes only
+`nativeObservationsV3`, which accepts strict frame1/frame2/frame3 passes for mixed
+compositions. Original source1/source2 reports retain their respective fields.
+Source3 requires asynchronous frame completion even without collection; synchronous
+render, concurrent frame submission and premature pixel reads reject. Conservative
+output3 capacity is checked before graph execution, and collected frames bypass
+frame caching. Queued GL captures complete their numeric/GPU queries synchronously,
+then independent expected-source validation awaits hashes before report completion.
+Receipt and pending-control owners release at that boundary; collector storage
+releases at next begin, abort or disposal.
+
+Source3 physical captures remain closed to foreign meshes. Compositor-owned world
+artwork has a separate admitted Scene and draws afterward onto the same HDR/depth
+target without clearing. It receives physical occlusion and stays outside the
+physical receipt inventory. Both collected and uncollected source3 rendering use
+this artwork path. Actual front/behind controls verify differing depth occlusion
+and exact collected/uncollected pixels. The allocator covers the added Scene,
+artwork resources, observation copies and collector metadata; complete world,
+source/body and replay budgets remain separate unfinished requirements.
+
+[Composition results](./mechanism-shorts-ms2-output3-composition-results.json)
+retain six repeated/reverse frames, two artwork controls, five HTTP binary faults,
+four async API faults, zero owners after disposal, legacy/native2 regressions,
+held inputs and earlier type failures/qualified lost terminal receipts. Diagnostic
+output3 envelopes use the actual appearance digest in the execution field; they
+are not authenticated export ledgers. Source3 request/export/installed proof and
+remaining MS2 criteria remain pending. No human visual/listening acceptance follows
+from these software checks.

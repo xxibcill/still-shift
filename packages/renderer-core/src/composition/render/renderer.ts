@@ -35,6 +35,7 @@ import {
   type NativeAppearanceCodeIdentity,
   type NativeObservedSample,
   type NativeObservedSampleV2,
+  type NativeObservedSampleV3,
 } from "@still-shift/scene-contract";
 import { sha256Hex } from "../../browser-checksum.ts";
 import type { CanvasPixelSource } from "../../canvas-pixel-source.ts";
@@ -54,6 +55,8 @@ import { canonicalMechanismJson } from "../../mechanism/canonical.ts";
 import { createNativeObservationCollector } from "../../native3d/observations.ts";
 import { createNativeObservationCollectorV2 } from "../../native3d/observations-v2.ts";
 import { nativeCompositionObservationCapacityV2 } from "../../native3d/observation-capacity-v2.ts";
+import { nativeCompositionObservationCapacityV3 } from "../../native3d/observation-capacity-v3.ts";
+import { createNativeObservationCollectorV3 } from "../../native3d/observations-v3.ts";
 import { createCanvas2dBackend, requiresSoftwareFilters } from "./canvas2d.ts";
 import {
   renderCompositionExposure,
@@ -376,6 +379,8 @@ export type CompositionFrameReport = {
   nativeObservations?: readonly NativeObservedSample[];
   /** Mixed protocol passes sealed by the asynchronous frame completion boundary. */
   nativeObservationsV2?: readonly NativeObservedSampleV2[];
+  /** Explicit output3 passes; original reports retain their own protocol fields. */
+  nativeObservationsV3?: readonly NativeObservedSampleV3[];
 };
 
 export type CompositionPreview = {
@@ -484,12 +489,7 @@ function prepareCompositionPreviewOnCanvas(
     (asset) =>
       asset.type === "native3d" && asset.format === "mechanism-scene-3",
   );
-  if (hasScene3 && options.collectNativeObservations)
-    passageError(
-      "comp-native3d-protocol",
-      "Source3 independent observations are not ready",
-      { path: "collectNativeObservations" },
-    );
+  const requiresAsyncNative = hasScene2 || hasScene3;
   if (hasNative && kind !== "webgl2")
     passageError("comp-native3d-backend", "Native 3D requires WebGL2", {
       path: "backend",
@@ -712,18 +712,28 @@ function prepareCompositionPreviewOnCanvas(
       ? new CompositionRenderStatistics()
       : undefined;
     const observations =
-      options.collectNativeObservations && hasNative && !hasScene2
+      options.collectNativeObservations && hasNative && !requiresAsyncNative
         ? createNativeObservationCollector()
         : undefined;
     const observationsV2 =
-      options.collectNativeObservations && hasScene2
+      options.collectNativeObservations && hasScene2 && !hasScene3
         ? createNativeObservationCollectorV2()
         : undefined;
+    const observationsV3 =
+      options.collectNativeObservations && hasScene3
+        ? createNativeObservationCollectorV3()
+        : undefined;
+    const nativeCapacity = hasScene3
+      ? nativeCompositionObservationCapacityV3
+      : nativeCompositionObservationCapacityV2;
     const previewOptions = {
       ...backendOptions,
       ...(observations ? { observeNativeFrame: observations.observe } : {}),
       ...(observationsV2
         ? { observeNativeFrameV2: observationsV2.observe }
+        : {}),
+      ...(observationsV3
+        ? { observeNativeFrameV3: observationsV3.observe }
         : {}),
       ...(statistics ? { statistics } : {}),
     };
@@ -778,7 +788,7 @@ function prepareCompositionPreviewOnCanvas(
       let surfaceCache: CompositionSurfaceCache<S> | undefined;
       let rootCache: CompositionRootCache<S> | undefined;
       try {
-        if (kind === "webgl2" && !observations && !hasScene2)
+        if (kind === "webgl2" && !observations && !requiresAsyncNative)
           cache = createCompositionFrameCache();
         if (options.surfaceCache && !hasNative) {
           surfaceCache = new CompositionSurfaceCache(
@@ -844,17 +854,15 @@ function prepareCompositionPreviewOnCanvas(
           frame >= composition.frameCount
         )
           throw Error("Frame index outside composition timeline");
-        const capacity =
-          hasScene2 && !hasScene3
-            ? nativeCompositionObservationCapacityV2(
-                composition,
-                frame,
-                evaluationOptions,
-              )
-            : undefined;
+        const capacity = requiresAsyncNative
+          ? nativeCapacity(composition, frame, evaluationOptions)
+          : undefined;
         frameCompleted = false;
         observations?.begin();
-        if (capacity !== undefined) observationsV2?.begin(capacity);
+        if (capacity !== undefined) {
+          observationsV2?.begin(capacity);
+          observationsV3?.begin(capacity);
+        }
         try {
           const report = renderCompositionExposure(
             backend,
@@ -876,6 +884,7 @@ function prepareCompositionPreviewOnCanvas(
         } catch (error) {
           observations?.abort();
           observationsV2?.abort();
+          observationsV3?.abort();
           throw error;
         }
       };
@@ -883,7 +892,10 @@ function prepareCompositionPreviewOnCanvas(
         backend: kind,
         rendererVersion: backend.version,
         readPixels() {
-          if (disposed || (hasScene2 && (frameBusy || !frameCompleted)))
+          if (
+            disposed ||
+            (requiresAsyncNative && (frameBusy || !frameCompleted))
+          )
             throw Error(
               "Complete a live composition frame before reading pixels",
             );
@@ -909,12 +921,8 @@ function prepareCompositionPreviewOnCanvas(
           )
             throw Error("Frame index outside composition timeline");
           if (!resources.media && !surfaceCache && !hasNative) return;
-          if (hasScene2 && !hasScene3)
-            nativeCompositionObservationCapacityV2(
-              composition,
-              frame,
-              evaluationOptions,
-            );
+          if (requiresAsyncNative)
+            nativeCapacity(composition, frame, evaluationOptions);
           if (!initialization)
             initialization = (async () => {
               const required = hasRequiredCompositionCoverage(
@@ -935,12 +943,8 @@ function prepareCompositionPreviewOnCanvas(
               );
               const prepare = async (at: number) => {
                 await backend.completeNativeFrame?.();
-                if (hasScene2 && !hasScene3)
-                  nativeCompositionObservationCapacityV2(
-                    composition,
-                    at,
-                    evaluationOptions,
-                  );
+                if (requiresAsyncNative)
+                  nativeCapacity(composition, at, evaluationOptions);
                 await resources.media?.prepareFrame(at, {
                   ...evaluationOptions,
                   textBounds: text.bounds,
@@ -1044,10 +1048,10 @@ function prepareCompositionPreviewOnCanvas(
         },
         renderFrame(frame) {
           assertLive();
-          if (hasScene2)
+          if (requiresAsyncNative)
             passageError(
               "comp-native3d-protocol",
-              "Scene2 frames require asynchronous completion",
+              "Source2/source3 frames require asynchronous completion",
               { frame, path: "renderFrameAsync" },
             );
           return renderCurrentFrame(frame);
@@ -1063,6 +1067,7 @@ function prepareCompositionPreviewOnCanvas(
                 "Composition preview was disposed during frame completion",
               );
             const nativeObservationsV2 = await observationsV2?.finish();
+            const nativeObservationsV3 = await observationsV3?.finish();
             if (disposed)
               throw Error(
                 "Composition preview was disposed during frame completion",
@@ -1071,10 +1076,12 @@ function prepareCompositionPreviewOnCanvas(
             return {
               ...report,
               ...(nativeObservationsV2 ? { nativeObservationsV2 } : {}),
+              ...(nativeObservationsV3 ? { nativeObservationsV3 } : {}),
             };
           } catch (error) {
             observations?.abort();
             observationsV2?.abort();
+            observationsV3?.abort();
             try {
               await backend.completeNativeFrame?.();
             } catch {
@@ -1090,6 +1097,7 @@ function prepareCompositionPreviewOnCanvas(
           disposed = true;
           observations?.dispose();
           observationsV2?.dispose();
+          observationsV3?.dispose();
           if (cache) releaseCompositionFrameCache(cache);
           rootCache?.dispose();
           surfaceCache?.dispose();

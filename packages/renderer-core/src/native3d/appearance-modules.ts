@@ -885,6 +885,10 @@ export const native3DAppearanceModules: readonly {
     url: new URL("./observation-capacity-v2.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/native3d/observation-capacity-v3.ts",
+    url: new URL("./observation-capacity-v3.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/native3d/observation-capacity-versions.ts",
     url: new URL("./observation-capacity-versions.ts", import.meta.url),
   },
@@ -897,12 +901,20 @@ export const native3DAppearanceModules: readonly {
     url: new URL("./observations-v2.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/native3d/observations-v3.ts",
+    url: new URL("./observations-v3.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/native3d/observations.ts",
     url: new URL("./observations.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/native3d/observed-precision-v2.ts",
     url: new URL("./observed-precision-v2.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/observed-validation-v3.ts",
+    url: new URL("./observed-validation-v3.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/native3d/override-keys.ts",

@@ -236,11 +236,32 @@ try {
       captures[first!]!.pixelSha256,
       captures[repeated!]!.pixelSha256,
     );
+  const worldArtwork = [];
+  for (const artwork of result.worldArtwork) {
+    const pixels = Buffer.from(artwork.rgba),
+      png = join(directory, `artwork-${artwork.id}.png`);
+    await writeFile(png, Buffer.from(artwork.pngBase64, "base64"));
+    assert.equal(artwork.packet.passes.length, 1);
+    const receipt = artwork.packet.passes[0]!.observed;
+    assert.equal(receipt.version, "native3d-observed-frame-3");
+    if (receipt.version !== "native3d-observed-frame-3")
+      throw Error("Artwork fixture protocol");
+    assert.ok(!Object.hasOwn(receipt.meshes, "yellow-marker"));
+    worldArtwork.push({
+      ...artwork,
+      rgba: undefined,
+      pngBase64: undefined,
+      png,
+      pixelSha256: hash(pixels),
+    });
+  }
+  assert.equal(worldArtwork.length, 2);
+  assert.notEqual(worldArtwork[0]!.pixelSha256, worldArtwork[1]!.pixelSha256);
   const stylePixelSha256 = hash(Buffer.from(result.style.rgba));
   assert.notEqual(stylePixelSha256, captures[0]!.pixelSha256);
   const stylePng = join(directory, "style.png");
   await writeFile(stylePng, Buffer.from(result.style.pngBase64, "base64"));
-  assert.equal(result.negatives.length, 6);
+  assert.equal(result.negatives.length, 9);
   assert.ok(
     result.negatives
       .find((item) => item.id === "binary-oversize")!
@@ -260,16 +281,25 @@ try {
       .find((item) => item.id === "binary-checksum")!
       .message.includes("checksum"),
   );
-  assert.ok(
-    result.negatives
-      .find((item) => item.id === "source3-observation-admission")!
-      .message.includes("independent observations"),
-  );
+  for (const capture of result.captures) {
+    assert.equal(capture.packet.version, "native3d-observed-output-frame-3");
+    assert.equal(capture.packet.passes.length, 1);
+    assert.equal(
+      capture.packet.passes[0]!.observed.version,
+      "native3d-observed-frame-3",
+    );
+  }
+  for (const id of [
+    "source3-read-before-completion",
+    "source3-busy-frame",
+    "source3-sync-frame",
+  ])
+    assert.ok(result.negatives.some((negative) => negative.id === id));
   const record = {
     version: "native-pbr-composition-proof-1",
     status: "passed",
     scope:
-      "actual production composition preview with separate HTTP binaries; source3 observations/export remain rejected",
+      "actual production composition preview with separate HTTP binaries and explicit output3 collection/pixel parity; authenticated source3 export remains rejected",
     environment,
     inputs: {
       composition: loaded.composition,
@@ -278,6 +308,7 @@ try {
     },
     requests,
     captures,
+    worldArtwork,
     style: {
       frame: result.style.frame,
       pixelSha256: stylePixelSha256,
@@ -297,7 +328,10 @@ try {
       directory,
       captures: captures.length,
       binaryFaults: 5,
-      protocolFaults: 2,
+      protocolFaults: result.negatives.filter(
+        (negative) => !negative.id.startsWith("binary-"),
+      ).length,
+      worldArtworkCases: worldArtwork.length,
       stylePixelSha256,
       memory: result.memory,
       cleanup: result.cleanup,

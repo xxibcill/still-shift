@@ -1,0 +1,881 @@
+{
+  "version": "mechanism-ms2-output3-composition-results-1",
+  "date": "2026-10-11",
+  "branch": "codex/mechanism-ms2",
+  "baseSourceCommit": "ae057bf99c44bff216665f582dd315f5cc5244dc",
+  "status": "output3-composition-verified-authenticated-export-pending",
+  "scope": [
+    "Production source3 preview now uses an explicit asynchronous output3 collector and conservative pregraph capacity; source1/source2 APIs and fields retain their protocols.",
+    "Queued source3 GPU captures seal synchronous GL evidence, independently validate the actual receipt, preserve invocation order and release receipt/control owners at completion.",
+    "Compositor-owned world artwork uses a separately admitted Scene sharing the current HDR/depth target without clearing. Physical source3 observations remain closed to foreign meshes.",
+    "Six forward/reverse/repeated source3 frames and front/behind artwork controls retain exact collected/uncollected pixels; separate HTTP binary faults and async API rejection controls remain active."
+  ],
+  "workingInputs": {
+    "manifest": {
+      "path": "/private/tmp/still-shift-ms2-composition3-inputs9.json",
+      "bytes": 428223,
+      "sha256": "sha256:5a5d06d39893f48611041fdc04f694280f498b0611c86526c60fa42a12081adc"
+    },
+    "files": 2510,
+    "inputBytes": 119086567,
+    "selection": {
+      "roots": [
+        "apps/",
+        "packages/",
+        "scripts/",
+        "tests/",
+        "tools/",
+        "services/",
+        "benchmarks/",
+        "examples/",
+        "assets/",
+        "catalogs/"
+      ],
+      "rootFiles": "all Git-tracked or nonignored regular root files",
+      "packageProse": [
+        "docs/npm-package-readme.md",
+        "docs/npm-third-party-notices.md"
+      ],
+      "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+    }
+  },
+  "actualRootSessions": [
+    {
+      "session": 44630,
+      "exitCode": 2,
+      "commands": ["format2", "build2"]
+    },
+    {
+      "session": 57320,
+      "exitCode": 2,
+      "commands": ["format3", "identity3", "build3"],
+      "unrun": ["browser4"]
+    },
+    {
+      "session": 36498,
+      "exitCode": 0,
+      "commands": ["format5", "build5", "browser6"]
+    },
+    {
+      "session": 41939,
+      "exitCode": 0,
+      "commands": ["inputs9", "fast9"]
+    },
+    {
+      "session": 12201,
+      "exitCode": 0,
+      "commands": [
+        "node10",
+        "observation11",
+        "composition12",
+        "shapes13",
+        "depth14",
+        "hold14"
+      ]
+    }
+  ],
+  "qualifiedReceipts": [
+    {
+      "commands": ["format7", "build7", "browser8"],
+      "terminal": "lost during context truncation; logs and artifact retained, no invented terminal code"
+    },
+    {
+      "commands": ["format1"],
+      "terminal": "not recovered; later format checks pass"
+    }
+  ],
+  "verification": [
+    {
+      "id": "format1",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-composition3-format1.log",
+        "bytes": 116,
+        "sha256": "sha256:2febbc9508cff3de58ec5bfb9c4eaed4d2bd8b71dfe637eb9be458dc618be978"
+      },
+      "exitCode": null
+    },
+    {
+      "id": "format2",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-composition3-format2.log",
+        "bytes": 74,
+        "sha256": "sha256:12594738f708bbc69f4c27278584d1e3b62a5f167e21a60c8a669e29aee9a63e"
+      },
+      "exitCode": 0
+    },
+    {
+      "id": "build2",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-composition3-build2.log",
+        "bytes": 4402,
+        "sha256": "sha256:832b24b5f3d5c2ceb78e344a8da45fa7b4edb393a910a4c3b93f68845c5eedae"
+      },
+      "exitCode": 2
+    },
+    {
+      "id": "format3",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-composition3-format3.log",
+        "bytes": 182,
+        "sha256": "sha256:f49c4f41b325ddce023b534a0e0d4c419846a7477143163cfa9283c6933c444e"
+      },
+      "exitCode": 0
+    },
+    {
+      "id": "identity3",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-composition3-identity3.log",
+        "bytes": 260,
+        "sha256": "sha256:e1588685c737f2ea8cfb7ede62f7879eea8d49a23816b935634ee84c02869a30"
+      },
+      "exitCode": 0
+    },
+    {
+      "id": "build3",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-composition3-build3.log",
+        "bytes": 272,
+        "sha256": "sha256:d5806fed43b4a266daa4aa6564e5f726aa7539d29eec05bfe0e1192e9470d037"
+      },
+      "exitCode": 2
+    },
+    {
+      "id": "format5",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-composition3-format5.log",
+        "bytes": 109,
+        "sha256": "sha256:5e87016cbae52c4990268c86885337c0cc4fe815a1c8f7f3013f21f673246980"
+      },
+      "exitCode": 0
+    },
+    {
+      "id": "build5",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-composition3-build5.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      },
+      "exitCode": 0
+    },
+    {
+      "id": "browser6",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-composition3-browser6.log",
+        "bytes": 811,
+        "sha256": "sha256:143e99ac2a0925b3a8a9ab95d573d397c1b651dcd9bbc9bd42c38368e0bc5214"
+      },
+      "exitCode": 0
+    },
+    {
+      "id": "format7",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-composition3-format7.log",
+        "bytes": 97,
+        "sha256": "sha256:40d20e33f76f059e4fced7987084f6b14795f86c6e4934d5a2c6edaca47c53d9"
+      },
+      "exitCode": null
+    },
+    {
+      "id": "build7",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-composition3-build7.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      },
+      "exitCode": null
+    },
+    {
+      "id": "browser8",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-composition3-browser8.log",
+        "bytes": 833,
+        "sha256": "sha256:8debb1dffb8117d9a367d8161333ba225f6e8abfe021aca1ce0671f016263a4a"
+      },
+      "exitCode": null
+    },
+    {
+      "id": "fast9",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-composition3-fast9.log",
+        "bytes": 39274,
+        "sha256": "sha256:6a9a6857282aafab614a60fcafc760c54de1adfdd2114b826dc1de413e9de297"
+      },
+      "exitCode": 0
+    },
+    {
+      "id": "node10",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-composition3-node10.log",
+        "bytes": 1816,
+        "sha256": "sha256:05480f4fcb62d4ca83f30ab5a6032ea136199c524f19091d13ccfcc2f787f38c"
+      },
+      "exitCode": 0
+    },
+    {
+      "id": "observation11",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-composition3-observation11.log",
+        "bytes": 284,
+        "sha256": "sha256:d5597faf6a75e6d25d9779fc40cc4e511fff3e7c01f178c7ffd860078dd677fc"
+      },
+      "exitCode": 0
+    },
+    {
+      "id": "composition12",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-composition3-composition12.log",
+        "bytes": 833,
+        "sha256": "sha256:59d3ee6ef739e32d4214df3f6891353d7e5c050c32d99d1f2105343ac6b436e0"
+      },
+      "exitCode": 0
+    },
+    {
+      "id": "shapes13",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-composition3-shapes13.log",
+        "bytes": 1218,
+        "sha256": "sha256:332318f748e22a6355a04e779732b8bd8ac56ddf5c8bcad7958cdb9c59cf3694"
+      },
+      "exitCode": 0
+    },
+    {
+      "id": "depth14",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-composition3-depth14.log",
+        "bytes": 538,
+        "sha256": "sha256:0a07f5f8d4de9f2735cbb8ce2ab663ae393d0fab7ada96371d526c06a2c27def"
+      },
+      "exitCode": 0
+    },
+    {
+      "id": "hold14",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-composition3-hold14.log",
+        "bytes": 197,
+        "sha256": "sha256:179f80686cfcd3dbf24d2b0ce13351e3bf550573fd5eb117cae01eb83f323f75"
+      },
+      "exitCode": 0
+    },
+    {
+      "id": "shapes13-proof",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-shape-world-32zEe3",
+        "status": "passed",
+        "frames": 5,
+        "scope": "browser-world-and-pixels-only"
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-shape-world-32zEe3/run.json",
+        "bytes": 2976,
+        "sha256": "sha256:8b488ab3d868b32a73b3c9191733fe936f6d8674bc8c865ce6fd3f12ebc70c4f"
+      }
+    },
+    {
+      "id": "shapes13-proof",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-used-streams-Xz27N9",
+        "status": "passed",
+        "frames": 6,
+        "negatives": 11,
+        "scope": "standalone-used-color-streams-only"
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-used-streams-Xz27N9/run.json",
+        "bytes": 7870,
+        "sha256": "sha256:2ae665c6735070e3432e21e99457964c75f4d523655eed6d61c2dec288f54711"
+      }
+    },
+    {
+      "id": "shapes13-proof",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-frame-observation-P8tTPW",
+        "status": "passed",
+        "frames": 8,
+        "negatives": 4,
+        "scope": "standalone-full-observed-frame2"
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-frame-observation-P8tTPW/run.json",
+        "bytes": 6282,
+        "sha256": "sha256:81c899cc6e0249faf04199d4bbf920f72120a434492bc7b4a3c8c6b11fcfc644"
+      }
+    },
+    {
+      "id": "shapes13-proof",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-composition-v2-ukQrGT",
+        "status": "passed",
+        "captures": 4,
+        "negatives": 15
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-composition-v2-ukQrGT/run.json",
+        "bytes": 95250,
+        "sha256": "sha256:a3d6a7cbf32a093d3d4048ac9957d4e27cf72a6628fde19385ad510c648beb49"
+      }
+    },
+    {
+      "id": "shapes13-proof",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-normal-export2-9NxXUq",
+        "status": "passed",
+        "exports": 2
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-normal-export2-9NxXUq/run.json",
+        "bytes": 43838,
+        "sha256": "sha256:5fcdd6e72497d649109f44a4d4d1aad2d73deaa182467542c9a8e79b0e16b395"
+      }
+    },
+    {
+      "id": "shapes13-proof",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-lab2-mDnA1M",
+        "status": "passed",
+        "records": 20
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-lab2-mDnA1M/run.json",
+        "bytes": 26392,
+        "sha256": "sha256:8ec7200eaaa60788d238d267976544b60a0f39ae8fa0a648c630a990cff3a859"
+      }
+    },
+    {
+      "id": "depth14-proof",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms1n-native-depth-kIADSF",
+        "status": "passed",
+        "cases": 14,
+        "reportSha256": "7dc07a7778c0f52176d61a119146e1aa5c043d9cd0f5ce4f2dd866468f037ab0"
+      },
+      "proof": null
+    },
+    {
+      "id": "depth14-proof",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms1n-native-depth-kIADSF",
+        "status": "passed",
+        "compositionIntegrationCases": 5,
+        "reportSha256": "3bd657c01cae50449fe6a2fbad1a50fba6a15632d57801006c3603f00dc996fe"
+      },
+      "proof": null
+    }
+  ],
+  "counts": {
+    "unitTests": 4186,
+    "unitFiles": 409,
+    "owningNodeTests": 10,
+    "owningNodeFiles": 4,
+    "source3StandaloneFrames": 8,
+    "source3StandaloneFaults": 21,
+    "source3CompositionFrames": 6,
+    "worldArtworkCases": 2,
+    "source3BinaryFaults": 5,
+    "source3AsyncFaults": 4,
+    "native2BrowserGroups": 6,
+    "source3AuthenticatedExports": 0,
+    "newInstalledArchives": 0,
+    "supportedPacks": 0,
+    "pilotSupportedEpisodes": 0
+  },
+  "compositionProof": {
+    "path": "/private/tmp/still-shift-ms2-pbr-composition-XkpWVF/run.json",
+    "bytes": 347160,
+    "sha256": "sha256:9248aa0978be4d8d567b3ac58a554209f4a11cb9126f596596ec04792ecfdc9e"
+  },
+  "observationProof": {
+    "path": "/private/tmp/still-shift-ms2-pbr-observation-Po846k/run.json",
+    "bytes": 168668,
+    "sha256": "sha256:55797c4e91f4b58f845d398968f56488cea5e29fa1808dc32a1f08fee953688f"
+  },
+  "worldArtwork": [
+    {
+      "id": "front",
+      "z": 0.4,
+      "packet": {
+        "version": "native3d-observed-output-frame-3",
+        "outputFrame": 0,
+        "executionSha256": "sha256:ad6b9dc92bc72a3bddec97addc5fad98b4731c9b7615f51adba6996ab8f63ca0",
+        "passes": [
+          {
+            "sampleIndex": 0,
+            "sampleFrame": 0,
+            "observed": {
+              "version": "native3d-observed-frame-3",
+              "sourceVersion": "mechanism-scene-3",
+              "finalizerVersion": "native3d-used-pbr-frame-finalizer-3",
+              "precisionPolicy": "native3d-rigid-pbr-float32-1",
+              "sourceKey": "native3d-source-3:e8c9987d3345bb6be8508647500d59fafb2f40485211c93baf501c4643421a0f:89287550c0b04e0365c600721008a4239db5e71a735079a6bbefa67579d892d8",
+              "frameKeySha256": "sha256:5ef2907d429cfa99c75d3703e7a52530af3a121328c5ac317dad173e4ae0e927",
+              "controller": "lever-world",
+              "scope": "imported-pbr-composition",
+              "sourceFrame": 0,
+              "scopeFrame": 0,
+              "sourceSha256": "sha256:e8c9987d3345bb6be8508647500d59fafb2f40485211c93baf501c4643421a0f",
+              "effectiveSceneSha256": "sha256:89287550c0b04e0365c600721008a4239db5e71a735079a6bbefa67579d892d8",
+              "geometrySha256": "sha256:211377f6e57d68eb9d2cd1f7fca95633ac2bb6a0e34e52e442cc2e17e5522b42",
+              "appearanceCodeSha256": "sha256:ad6b9dc92bc72a3bddec97addc5fad98b4731c9b7615f51adba6996ab8f63ca0",
+              "viewport": [0, 0, 320, 180],
+              "camera": {
+                "worldMatrix": [
+                  1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 4.5, 3, 8, 1
+                ],
+                "viewMatrix": [
+                  1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -4.5, -3, -8, 1
+                ],
+                "projectionMatrix": [
+                  1.784022076329307, 0, 0, 0, 0, 3.1715948023632126, 0, 0, 0, 0,
+                  -1.0002000200020003, -1, 0, 0, -0.020002000200020003, 0
+                ],
+                "near": 0.01,
+                "far": 100,
+                "aspect": 1.7777777777777777,
+                "fovDegrees": 35
+              },
+              "parts": {
+                "node.1": {
+                  "parent": "node.0",
+                  "localMatrix": [
+                    1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 2.0000000000000004,
+                    0, 1
+                  ],
+                  "worldMatrix": [
+                    1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 5, 2.0000000000000004,
+                    0, 1
+                  ],
+                  "localVisible": true,
+                  "inheritedVisible": true
+                },
+                "node.0": {
+                  "parent": "model",
+                  "localMatrix": [
+                    1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 5, 0, 0, 1
+                  ],
+                  "worldMatrix": [
+                    1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 5, 0, 0, 1
+                  ],
+                  "localVisible": true,
+                  "inheritedVisible": true
+                },
+                "model": {
+                  "localMatrix": [
+                    1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+                  ],
+                  "worldMatrix": [
+                    1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+                  ],
+                  "localVisible": true,
+                  "inheritedVisible": true
+                }
+              },
+              "anchors": {
+                "lever.tip": {
+                  "part": "node.1",
+                  "world": [5, 4, 0],
+                  "pixel": [177.84022076329308, 54.319558473413856],
+                  "depth": 8,
+                  "visibility": "visible",
+                  "visibilityMethod": "three-physical-used-pbr-mesh-segment-3"
+                }
+              },
+              "meshes": {
+                "mesh.1.0": {
+                  "part": "node.1",
+                  "ownerWorldMatrix": [
+                    1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 5, 2.0000000000000004,
+                    0, 1
+                  ],
+                  "status": "drawn",
+                  "submissions": [
+                    {
+                      "groupIndex": 0,
+                      "drawOrdinal": 0,
+                      "start": 0,
+                      "count": 3,
+                      "material": "material.0",
+                      "materialSha256": "sha256:efcea8516338a734b0fb0902c0788f68bf8bed0d8a39a61b1151d4f8759f9915",
+                      "mode": 4,
+                      "type": 5123,
+                      "byteOffset": 0,
+                      "modelViewMatrix": [
+                        1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0.5, -1, -8, 1
+                      ],
+                      "projectionMatrix": [
+                        1.7840220928192139, 0, 0, 0, 0, 3.1715948581695557, 0,
+                        0, 0, 0, -1.0002000331878662, -1, 0, 0,
+                        -0.020002000033855438, 0
+                      ],
+                      "normalMatrix": [1, 0, 0, 0, 1, 0, 0, 0, 1],
+                      "vertexHashes": {
+                        "position": "sha256:db53aa7f9be9372935acf7daf271946f30a6f00a95c6f78feed1521b4fbbf2c4",
+                        "normal": "sha256:93ffbfc491203a5042ce8729e8bde71460b23b81ce1c3b71292976bcdb6a42bd",
+                        "indices": "sha256:90c2698921ca9fd02950be353f721888760e33ab5095a21e50f1e4360b6de1a0",
+                        "uv": "sha256:d0f09bc446b744fcefa2f8b8cf1b1bfc316b89e16993d956fd18d196f0d53384",
+                        "tangent": "sha256:fa1a587dd19f3beab5b055a5e641080ca93466c32a7019779d267e199759beba"
+                      },
+                      "shaderSha256": "sha256:6f93d7165bada12dba5066f1672061febd3bc6a9095608253472d1b72d47b1b5",
+                      "textures": [
+                        {
+                          "image": "image.0",
+                          "pixelSha256": "sha256:fdfd272c41edbdc5c4e1a45c40d97e9be487f3a20d3eddaa873549a2b3f53990",
+                          "colorSpace": "srgb",
+                          "samples": 20,
+                          "maxError": 5.706326896698366e-6,
+                          "reference": "native-pbr-current-environment-mips-1",
+                          "levels": [
+                            {
+                              "level": 0,
+                              "width": 2,
+                              "height": 2,
+                              "storage": "srgb8-alpha8",
+                              "texels": 4,
+                              "samples": 16,
+                              "maxError": 5.706326896698366e-6
+                            },
+                            {
+                              "level": 1,
+                              "width": 1,
+                              "height": 1,
+                              "storage": "srgb8-alpha8",
+                              "texels": 1,
+                              "samples": 4,
+                              "maxError": 5.597406436796959e-6
+                            }
+                          ]
+                        },
+                        {
+                          "image": "image.0",
+                          "pixelSha256": "sha256:fdfd272c41edbdc5c4e1a45c40d97e9be487f3a20d3eddaa873549a2b3f53990",
+                          "colorSpace": "linear",
+                          "samples": 20,
+                          "maxError": 3.7165249100468145e-8,
+                          "reference": "native-pbr-current-environment-mips-1",
+                          "levels": [
+                            {
+                              "level": 0,
+                              "width": 2,
+                              "height": 2,
+                              "storage": "rgba8",
+                              "texels": 4,
+                              "samples": 16,
+                              "maxError": 2.9685450542160652e-8
+                            },
+                            {
+                              "level": 1,
+                              "width": 1,
+                              "height": 1,
+                              "storage": "rgba8",
+                              "texels": 1,
+                              "samples": 4,
+                              "maxError": 3.7165249100468145e-8
+                            }
+                          ]
+                        },
+                        {
+                          "image": "image.0",
+                          "pixelSha256": "sha256:fdfd272c41edbdc5c4e1a45c40d97e9be487f3a20d3eddaa873549a2b3f53990",
+                          "colorSpace": "linear",
+                          "samples": 20,
+                          "maxError": 3.7165249100468145e-8,
+                          "reference": "native-pbr-current-environment-mips-1",
+                          "levels": [
+                            {
+                              "level": 0,
+                              "width": 2,
+                              "height": 2,
+                              "storage": "rgba8",
+                              "texels": 4,
+                              "samples": 16,
+                              "maxError": 2.9685450542160652e-8
+                            },
+                            {
+                              "level": 1,
+                              "width": 1,
+                              "height": 1,
+                              "storage": "rgba8",
+                              "texels": 1,
+                              "samples": 4,
+                              "maxError": 3.7165249100468145e-8
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              "pass": {
+                "completed": true,
+                "calls": 1,
+                "triangles": 1
+              }
+            }
+          }
+        ]
+      },
+      "capacity": 15707,
+      "png": "/private/tmp/still-shift-ms2-pbr-composition-XkpWVF/artwork-front.png",
+      "pixelSha256": "sha256:48723f06d7acb3a9b90e3da18e7ca9eee936adb8ff82deb489ba3bfee9690601"
+    },
+    {
+      "id": "behind",
+      "z": -0.4,
+      "packet": {
+        "version": "native3d-observed-output-frame-3",
+        "outputFrame": 0,
+        "executionSha256": "sha256:ad6b9dc92bc72a3bddec97addc5fad98b4731c9b7615f51adba6996ab8f63ca0",
+        "passes": [
+          {
+            "sampleIndex": 0,
+            "sampleFrame": 0,
+            "observed": {
+              "version": "native3d-observed-frame-3",
+              "sourceVersion": "mechanism-scene-3",
+              "finalizerVersion": "native3d-used-pbr-frame-finalizer-3",
+              "precisionPolicy": "native3d-rigid-pbr-float32-1",
+              "sourceKey": "native3d-source-3:e8c9987d3345bb6be8508647500d59fafb2f40485211c93baf501c4643421a0f:89287550c0b04e0365c600721008a4239db5e71a735079a6bbefa67579d892d8",
+              "frameKeySha256": "sha256:5ef2907d429cfa99c75d3703e7a52530af3a121328c5ac317dad173e4ae0e927",
+              "controller": "lever-world",
+              "scope": "imported-pbr-composition",
+              "sourceFrame": 0,
+              "scopeFrame": 0,
+              "sourceSha256": "sha256:e8c9987d3345bb6be8508647500d59fafb2f40485211c93baf501c4643421a0f",
+              "effectiveSceneSha256": "sha256:89287550c0b04e0365c600721008a4239db5e71a735079a6bbefa67579d892d8",
+              "geometrySha256": "sha256:211377f6e57d68eb9d2cd1f7fca95633ac2bb6a0e34e52e442cc2e17e5522b42",
+              "appearanceCodeSha256": "sha256:ad6b9dc92bc72a3bddec97addc5fad98b4731c9b7615f51adba6996ab8f63ca0",
+              "viewport": [0, 0, 320, 180],
+              "camera": {
+                "worldMatrix": [
+                  1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 4.5, 3, 8, 1
+                ],
+                "viewMatrix": [
+                  1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -4.5, -3, -8, 1
+                ],
+                "projectionMatrix": [
+                  1.784022076329307, 0, 0, 0, 0, 3.1715948023632126, 0, 0, 0, 0,
+                  -1.0002000200020003, -1, 0, 0, -0.020002000200020003, 0
+                ],
+                "near": 0.01,
+                "far": 100,
+                "aspect": 1.7777777777777777,
+                "fovDegrees": 35
+              },
+              "parts": {
+                "node.1": {
+                  "parent": "node.0",
+                  "localMatrix": [
+                    1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 2.0000000000000004,
+                    0, 1
+                  ],
+                  "worldMatrix": [
+                    1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 5, 2.0000000000000004,
+                    0, 1
+                  ],
+                  "localVisible": true,
+                  "inheritedVisible": true
+                },
+                "node.0": {
+                  "parent": "model",
+                  "localMatrix": [
+                    1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 5, 0, 0, 1
+                  ],
+                  "worldMatrix": [
+                    1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 5, 0, 0, 1
+                  ],
+                  "localVisible": true,
+                  "inheritedVisible": true
+                },
+                "model": {
+                  "localMatrix": [
+                    1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+                  ],
+                  "worldMatrix": [
+                    1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1
+                  ],
+                  "localVisible": true,
+                  "inheritedVisible": true
+                }
+              },
+              "anchors": {
+                "lever.tip": {
+                  "part": "node.1",
+                  "world": [5, 4, 0],
+                  "pixel": [177.84022076329308, 54.319558473413856],
+                  "depth": 8,
+                  "visibility": "visible",
+                  "visibilityMethod": "three-physical-used-pbr-mesh-segment-3"
+                }
+              },
+              "meshes": {
+                "mesh.1.0": {
+                  "part": "node.1",
+                  "ownerWorldMatrix": [
+                    1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 5, 2.0000000000000004,
+                    0, 1
+                  ],
+                  "status": "drawn",
+                  "submissions": [
+                    {
+                      "groupIndex": 0,
+                      "drawOrdinal": 0,
+                      "start": 0,
+                      "count": 3,
+                      "material": "material.0",
+                      "materialSha256": "sha256:efcea8516338a734b0fb0902c0788f68bf8bed0d8a39a61b1151d4f8759f9915",
+                      "mode": 4,
+                      "type": 5123,
+                      "byteOffset": 0,
+                      "modelViewMatrix": [
+                        1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0.5, -1, -8, 1
+                      ],
+                      "projectionMatrix": [
+                        1.7840220928192139, 0, 0, 0, 0, 3.1715948581695557, 0,
+                        0, 0, 0, -1.0002000331878662, -1, 0, 0,
+                        -0.020002000033855438, 0
+                      ],
+                      "normalMatrix": [1, 0, 0, 0, 1, 0, 0, 0, 1],
+                      "vertexHashes": {
+                        "position": "sha256:db53aa7f9be9372935acf7daf271946f30a6f00a95c6f78feed1521b4fbbf2c4",
+                        "normal": "sha256:93ffbfc491203a5042ce8729e8bde71460b23b81ce1c3b71292976bcdb6a42bd",
+                        "indices": "sha256:90c2698921ca9fd02950be353f721888760e33ab5095a21e50f1e4360b6de1a0",
+                        "uv": "sha256:d0f09bc446b744fcefa2f8b8cf1b1bfc316b89e16993d956fd18d196f0d53384",
+                        "tangent": "sha256:fa1a587dd19f3beab5b055a5e641080ca93466c32a7019779d267e199759beba"
+                      },
+                      "shaderSha256": "sha256:6f93d7165bada12dba5066f1672061febd3bc6a9095608253472d1b72d47b1b5",
+                      "textures": [
+                        {
+                          "image": "image.0",
+                          "pixelSha256": "sha256:fdfd272c41edbdc5c4e1a45c40d97e9be487f3a20d3eddaa873549a2b3f53990",
+                          "colorSpace": "srgb",
+                          "samples": 20,
+                          "maxError": 5.706326896698366e-6,
+                          "reference": "native-pbr-current-environment-mips-1",
+                          "levels": [
+                            {
+                              "level": 0,
+                              "width": 2,
+                              "height": 2,
+                              "storage": "srgb8-alpha8",
+                              "texels": 4,
+                              "samples": 16,
+                              "maxError": 5.706326896698366e-6
+                            },
+                            {
+                              "level": 1,
+                              "width": 1,
+                              "height": 1,
+                              "storage": "srgb8-alpha8",
+                              "texels": 1,
+                              "samples": 4,
+                              "maxError": 5.597406436796959e-6
+                            }
+                          ]
+                        },
+                        {
+                          "image": "image.0",
+                          "pixelSha256": "sha256:fdfd272c41edbdc5c4e1a45c40d97e9be487f3a20d3eddaa873549a2b3f53990",
+                          "colorSpace": "linear",
+                          "samples": 20,
+                          "maxError": 3.7165249100468145e-8,
+                          "reference": "native-pbr-current-environment-mips-1",
+                          "levels": [
+                            {
+                              "level": 0,
+                              "width": 2,
+                              "height": 2,
+                              "storage": "rgba8",
+                              "texels": 4,
+                              "samples": 16,
+                              "maxError": 2.9685450542160652e-8
+                            },
+                            {
+                              "level": 1,
+                              "width": 1,
+                              "height": 1,
+                              "storage": "rgba8",
+                              "texels": 1,
+                              "samples": 4,
+                              "maxError": 3.7165249100468145e-8
+                            }
+                          ]
+                        },
+                        {
+                          "image": "image.0",
+                          "pixelSha256": "sha256:fdfd272c41edbdc5c4e1a45c40d97e9be487f3a20d3eddaa873549a2b3f53990",
+                          "colorSpace": "linear",
+                          "samples": 20,
+                          "maxError": 3.7165249100468145e-8,
+                          "reference": "native-pbr-current-environment-mips-1",
+                          "levels": [
+                            {
+                              "level": 0,
+                              "width": 2,
+                              "height": 2,
+                              "storage": "rgba8",
+                              "texels": 4,
+                              "samples": 16,
+                              "maxError": 2.9685450542160652e-8
+                            },
+                            {
+                              "level": 1,
+                              "width": 1,
+                              "height": 1,
+                              "storage": "rgba8",
+                              "texels": 1,
+                              "samples": 4,
+                              "maxError": 3.7165249100468145e-8
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              },
+              "pass": {
+                "completed": true,
+                "calls": 1,
+                "triangles": 1
+              }
+            }
+          }
+        ]
+      },
+      "capacity": 15707,
+      "png": "/private/tmp/still-shift-ms2-pbr-composition-XkpWVF/artwork-behind.png",
+      "pixelSha256": "sha256:66ac461d6cf49b30396ca020460e22325a816d5e6120bacd50fe0128c9478bc3"
+    }
+  ],
+  "cleanup": {
+    "scope": "declared-application-owned-bytes",
+    "limits": {
+      "pixels": 536870912,
+      "metadata": 67108864
+    },
+    "current": {
+      "pixels": 0,
+      "metadata": 0
+    },
+    "peak": {
+      "pixels": 286768822,
+      "metadata": 20833492
+    },
+    "reservations": 0
+  },
+  "failedRuns": [
+    {
+      "id": "build2",
+      "reason": "Generic queuePass inference widened frame2/frame3 and rejected a narrower capture callback; fixed explicit type arguments and typed pending receipt assignment."
+    },
+    {
+      "id": "build3",
+      "reason": "Browser helper called optional renderFrameAsync directly; switched to the public renderCompositionFrameAsync helper. Browser4 did not run."
+    }
+  ],
+  "qualification": "Current fast9 and the sequential Node/GPU suffix pass on unchanged selected inputs. Earlier build2 generic inference and build3 optional async method errors are retained. Build7/browser8 logs and artifacts show success, but their originating terminal receipt was lost during context truncation; composition12 supplies a fresh actual exit-zero run. Browser6 stdout had a stale protocolFaults2 count while its run.json held nine total negatives; corrected final stdout counts four protocol faults. Diagnostic output3 envelopes use the actual appearance digest in the execution field and do not establish an authenticated export identity. Authenticated source3 request/sink/upload/journal/export/installed, whole world/source/body/replay budgets, remaining packs and full milestone gates stay pending. No new full/runtime/integration/installed suite, human visual/listening acceptance, MS2 PR, merge, publication or paid ElevenLabs action.",
+  "remaining": [
+    "Authenticated source3 execution manifest/request, producer/sink/upload/journal/export and installed package proof.",
+    "Whole world/source/body/replay budgets, aggregate pass admission and remaining MS2 authoring/pack/quality gates.",
+    "Full local milestone software/benchmark and installed gates before MS2 PR; then MS3. Human acceptance remains separate."
+  ]
+}

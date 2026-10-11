@@ -719,8 +719,13 @@ mechanism families establish whether the architecture transfers.
       actual GPU receipt-to-collector bounds. All eight packets fit 28,165B admission;
       current units/Node/browser checks finish in stages with the original failed
       timeout retained in [capacity evidence](./mechanism-shorts-ms2-output3-capacity-results.json).
-      Output3 composition integration, authenticated source3 export, installed and
-      whole-world proof remain pending;
+      Twenty-seventh slice integrates asynchronous output3 composition collection
+      with independent GPU receipt validation and separately admitted world artwork
+      sharing physical depth. Current normal fast/Node, eight standalone controls,
+      six source3 seeks/two artwork controls and all six native2 groups pass on held
+      inputs; [composition evidence](./mechanism-shorts-ms2-output3-composition-results.json)
+      retains type failures and qualified lost receipts. Authenticated source3
+      export, installed and whole-world proof remain pending;
       this criterion stays unchecked. See the [import API](./rigid-gltf-import.md) and
       [retained results](./mechanism-shorts-ms2-results.json).
 - [ ] Implement slider hard stops, hinge/lever, deterministic spring return and

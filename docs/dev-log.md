@@ -45,25 +45,22 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Twenty-six slices include strict standalone source3 observations, output3
-  contract/collector and incremental conservative capacity. Inputs10: 2,510 files/
-  119,073,803B. Fast10 prefix passes; units 4,185 pass/one strict gradient timeout.
-  Unchanged default units15 pass 4,186/409 files; Node16 ten tests/four files. Fresh
-  observation17 passes eight actual receipts/21 faults: 2,512–10,133B packets fit
-  28,165B capacity with zero collector owners. Native2 composition18/export19 pass
-  four captures/15 negatives and two exports. Held selected bytes match afterward.
-  Staged failures and test fixture/type repairs remain retained; no uninterrupted
-  fast/full pass. Full/runtime/integration/installed stay historical.
-  Next: output3 async renderer/collector integration with explicit world-artwork
-  ownership, authenticated source3 export/installed, whole world/source/body/replay
-  budgets and remaining MS2 criteria. Source3 collection/export still rejected;
-  supported packs/pilot0; no MS2 PR/MS3 or human acceptance. ElevenLabs spending
-  requires the owner's explicit approval for the identified estimated batch.
-  [MS2 results](./mechanism-shorts-ms2-results.json),
-  [capacity evidence](./mechanism-shorts-ms2-output3-capacity-results.json),
-  [collector evidence](./mechanism-shorts-ms2-output3-collector-results.json),
-  [strict-gate history](./mechanism-shorts-ms2-strict-gates-results.json),
-  [PBR API](./native-pbr-resources.md), [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
+  Twenty-seven slices now include explicit async source3 composition collection
+  and conservative output3 admission. Fast9 passes all prefix checks and4,186
+  units/409 files; Node10 ten/four files. Standalone observation11 preserves eight
+  actual receipts/21 faults. Composition12 passes six repeated/reverse frames,
+  exact collected/uncollected pixels, two world-artwork depth controls, five binary
+  and four async faults. Artwork has an admitted separate Scene and shares physical
+  depth without entering the closed receipt inventory. All six native2 groups13
+  and legacy native depth14 pass. Inputs9:2,510 files/119,086,567B held unchanged.
+  Earlier type failures and lost terminal receipts remain qualified. Full/runtime/
+  integration/installed stay historical. Next: authenticated source3 export/installed,
+  whole world/source/body/replay budgets and remaining MS2 criteria. Supported
+  packs/pilot0; no MS2 PR/MS3 or human acceptance. ElevenLabs spending requires
+  explicit owner approval for the identified estimated batch.
+  [Composition evidence](./mechanism-shorts-ms2-output3-composition-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json), [PBR API](./native-pbr-resources.md),
+  [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
   inventory15:2,329 inputs/117,503,155B. Original full6 retains a qualified19-group
@@ -221,6 +218,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 source3 async composition receipts and shared artwork depth
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `ae057bf9`.
+- **Done:** output3 collector/capacity wired into production async preview; actual
+  GPU receipts independently checked. Admitted compositor artwork renders in a
+  separate Scene sharing physical depth; foreign physical mesh rejection remains.
+- **Results:** normal fast9 passes4,186 units/409 files and all prefix checks;
+  Node10 ten/four files; observation11 eight/21; composition12 six seeks plus two
+  artwork controls, exact pixel parity and zero disposed owners. Native2 groups13
+  and legacy depth14 pass; selected inputs9 held unchanged.
+- **Retained:** two TypeScript failures; early build7/browser8 lost terminal receipt
+  qualified, fresh browser12 supplies exit0; browser6 stale stdout count corrected.
+- **Next:** authenticated source3 export/installed, world/source/body/replay budgets,
+  remaining packs/authoring/full gates. Supported packs/pilot0; no MS2 PR yet.
+- **Records:** [composition evidence](./mechanism-shorts-ms2-output3-composition-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json). No paid narration performed.
 
 ### 2026-10-11 — MS2 incremental output3 capacity and fresh GPU packet bounds
 

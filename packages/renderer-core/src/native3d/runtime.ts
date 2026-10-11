@@ -1,6 +1,7 @@
 import type {
   NativeObservedFrame,
   NativeObservedFrameVersions,
+  NativeObservedFrameVersionsV3,
 } from "@still-shift/scene-contract";
 import type {
   NativeDepthOp,
@@ -22,6 +23,12 @@ export type NativeDepthRuntimeOptions = {
   nativePbrResources?: Readonly<Record<string, PreparedNativePbrResources>>;
   nativeTextureFont?: (asset: string) => NativeTextureFont | undefined;
   nativeAppearanceCodeSha256?: string;
+  observeNativeFrameV3?: (
+    observed:
+      | DeepReadonly<NativeObservedFrameVersionsV3>
+      | Promise<DeepReadonly<NativeObservedFrameVersionsV3>>,
+    sampleFrame: number,
+  ) => void;
   observeNativeFrameV2?: (
     observed:
       | DeepReadonly<NativeObservedFrameVersions>

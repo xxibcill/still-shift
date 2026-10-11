@@ -1,3 +1,9 @@
+import {
+  CompositionSchema,
+  NativeObservedOutputFrameV3Schema,
+  type NativeObservedOutputFrameV3,
+} from "@still-shift/scene-contract";
+import { nativeCompositionObservationCapacityV3 } from "../../packages/renderer-core/src/native3d/observation-capacity-v3.ts";
 import type {
   Composition,
   CompositionPreparedNative3DVersions,
@@ -101,21 +107,69 @@ export async function nativePbrCompositionProof(
     const preview = createCompositionPreview(canvas, composition, resources, {
       backend: "webgl2",
     });
+    const observedCanvas = document.createElement("canvas");
+    document.body.append(observedCanvas);
+    const observedPreview = createCompositionPreview(
+      observedCanvas,
+      composition,
+      resources,
+      { backend: "webgl2", collectNativeObservations: true },
+    );
     const captures = [];
     try {
-      await failure("source3-observation-admission", () =>
-        createCompositionPreview(
-          document.createElement("canvas"),
-          composition,
-          resources,
-          { backend: "webgl2", collectNativeObservations: true },
-        ),
-      );
       for (const frame of [0, 5, 10, 0, 10, 5]) {
         await preview.prepareFrame(frame);
         const report = await renderCompositionFrameAsync(preview, frame);
-        if (report.nativeObservations || report.nativeObservationsV2)
-          throw Error("Source3 preview must not claim legacy observations");
+        if (
+          report.nativeObservations ||
+          report.nativeObservationsV2 ||
+          report.nativeObservationsV3
+        )
+          throw Error(
+            "Uncollected source3 preview must not claim observations",
+          );
+        await observedPreview.prepareFrame(frame);
+        const pending = renderCompositionFrameAsync(observedPreview, frame);
+        if (captures.length === 0) {
+          await failure("source3-read-before-completion", () =>
+            observedPreview.readPixels(),
+          );
+          await failure("source3-busy-frame", () =>
+            renderCompositionFrameAsync(observedPreview, frame),
+          );
+          await failure("source3-sync-frame", () =>
+            observedPreview.renderFrame(frame),
+          );
+        }
+        const observedReport = await pending;
+        if (captures.length === 0)
+          await failure("source3-sync-after-completion", () =>
+            observedPreview.renderFrame(frame),
+          );
+        if (
+          observedReport.nativeObservations ||
+          observedReport.nativeObservationsV2 ||
+          !observedReport.nativeObservationsV3
+        )
+          throw Error(
+            "Collected source3 frame must expose only explicit output3 observations",
+          );
+        const packet = NativeObservedOutputFrameV3Schema.parse({
+          version: "native3d-observed-output-frame-3",
+          outputFrame: frame,
+          executionSha256:
+            observedReport.nativeObservationsV3[0]!.observed
+              .appearanceCodeSha256,
+          passes: observedReport.nativeObservationsV3,
+        });
+        const capacity = nativeCompositionObservationCapacityV3(
+          composition,
+          frame,
+          observedPreview.evaluationOptions!,
+        );
+        if (new TextEncoder().encode(JSON.stringify(packet)).length > capacity)
+          throw Error("Actual composed output3 packet exceeds admission");
+        const observedPixels = observedPreview.readPixels();
         const passes = [
             ...compositionNativePasses(
               composition,
@@ -124,15 +178,133 @@ export async function nativePbrCompositionProof(
             ),
           ],
           pixels = preview.readPixels();
+        if (pixels.some((value, index) => value !== observedPixels[index]))
+          throw Error(
+            "Collected source3 frame differs from uncollected pixels",
+          );
+        releaseRenderPixels(observedPixels);
         captures.push({
           frame,
           report,
+          observedReport,
+          packet,
+          capacity,
           frames: passes.map((pass) => pass.frame),
           rgba: Array.from(pixels),
           pngBase64: canvas.toDataURL("image/png").split(",")[1]!,
         });
         releaseRenderPixels(pixels);
       }
+      const worldArtwork: {
+        id: string;
+        z: number;
+        rgba: number[];
+        packet: NativeObservedOutputFrameV3;
+        capacity: number;
+        pngBase64: string;
+      }[] = [];
+      for (const [id, z] of [
+        ["front", 0.4],
+        ["behind", -0.4],
+      ] as const) {
+        const artworkComposition = CompositionSchema.parse({
+          ...composition,
+          layers: [
+            ...composition.layers,
+            {
+              id: "yellow-marker",
+              type: "solid",
+              size: [64, 64],
+              color: "#ffdb00",
+              native3D: {
+                role: "world-graphic",
+                sceneLayer: composition.layers.find(
+                  (layer) => layer.type === "native3d",
+                )!.id,
+                transform: { position: [4.5, 3, z] },
+                originPixels: [32, 32],
+                pixelsPerUnit: 64,
+                alphaMode: "opaque",
+                side: "double",
+              },
+            },
+          ],
+        });
+        const plainCanvas = document.createElement("canvas"),
+          collectedCanvas = document.createElement("canvas");
+        const plain = createCompositionPreview(
+          plainCanvas,
+          artworkComposition,
+          resources,
+          { backend: "webgl2" },
+        );
+        const collected = createCompositionPreview(
+          collectedCanvas,
+          artworkComposition,
+          resources,
+          { backend: "webgl2", collectNativeObservations: true },
+        );
+        let plainPixels: ReturnType<typeof plain.readPixels> | undefined;
+        let collectedPixels:
+          | ReturnType<typeof collected.readPixels>
+          | undefined;
+        try {
+          await plain.prepareFrame(0);
+          await renderCompositionFrameAsync(plain, 0);
+          await collected.prepareFrame(0);
+          const report = await renderCompositionFrameAsync(collected, 0);
+          plainPixels = plain.readPixels();
+          collectedPixels = collected.readPixels();
+          if (
+            plainPixels.some(
+              (value, index) => value !== collectedPixels![index],
+            )
+          )
+            throw Error(
+              "Collected world-artwork differs from uncollected pixels",
+            );
+          const packet = NativeObservedOutputFrameV3Schema.parse({
+            version: "native3d-observed-output-frame-3",
+            outputFrame: 0,
+            executionSha256:
+              report.nativeObservationsV3![0]!.observed.appearanceCodeSha256,
+            passes: report.nativeObservationsV3,
+          });
+          const capacity = nativeCompositionObservationCapacityV3(
+            artworkComposition,
+            0,
+            collected.evaluationOptions!,
+          );
+          if (
+            new TextEncoder().encode(JSON.stringify(packet)).length > capacity
+          )
+            throw Error("World-artwork output3 packet exceeds admission");
+          worldArtwork.push({
+            id,
+            z,
+            rgba: Array.from(collectedPixels),
+            packet,
+            capacity,
+            pngBase64: collectedCanvas.toDataURL("image/png").split(",")[1]!,
+          });
+        } finally {
+          if (plainPixels) releaseRenderPixels(plainPixels);
+          if (collectedPixels) releaseRenderPixels(collectedPixels);
+          try {
+            collected.dispose();
+          } finally {
+            plain.dispose();
+          }
+        }
+      }
+      if (
+        !worldArtwork[0]!.rgba.some(
+          (value, index) => value !== worldArtwork[1]!.rgba[index],
+        )
+      )
+        throw Error(
+          "Front/behind artwork did not exercise shared physical depth",
+        );
       // A new style is admitted through the production catalogue and resource loader.
       const styled = structuredClone(composition),
         controller = styled.layers.find((layer) => layer.type === "native3d")!;
@@ -182,9 +354,19 @@ export async function nativePbrCompositionProof(
         styledPreview.dispose();
         releaseCompositionPbrResources(styledResources.nativePbrResources!);
       }
-      return { captures, style, negatives, memory: memory.statistics };
+      return {
+        captures,
+        worldArtwork,
+        style,
+        negatives,
+        memory: memory.statistics,
+      };
     } finally {
-      preview.dispose();
+      try {
+        observedPreview.dispose();
+      } finally {
+        preview.dispose();
+      }
       releaseCompositionPbrResources(resources.nativePbrResources!);
       memory.dispose();
     }

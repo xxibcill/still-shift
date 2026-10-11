@@ -15575,6 +15575,76 @@
       },
       "record": "docs/mechanism-shorts-ms2-output3-capacity-results.json",
       "qualification": "Staged final verification: fast10 prefix passes then fails one original strict unit timeout; unchanged default-worker units15, owning Node16 and browser suffix all exit0. Never describe this as an uninterrupted fast/full pass or infer the timeout cause. Actual GPU frames have independently checked physical draws, matrices, bytes and mip receipts; standalone diagnostic packets use their appearance digest as the envelope digest and do not prove authenticated execution identity or composed output. Source3 composition collection/export remains rejected. Complete world/source/body/replay budgets and renderer artwork ownership remain pending. Full runtime/integration/full/benchmark and installed verification were not refreshed; no human visual/listening acceptance, milestone PR, merge/publication or ElevenLabs spending."
+    },
+    {
+      "id": "output3-composition-slice-27",
+      "status": "output3-composition-verified-authenticated-export-pending",
+      "actualRootSessions": [
+        {
+          "session": 44630,
+          "exitCode": 2,
+          "commands": ["format2", "build2"]
+        },
+        {
+          "session": 57320,
+          "exitCode": 2,
+          "commands": ["format3", "identity3", "build3"],
+          "unrun": ["browser4"]
+        },
+        {
+          "session": 36498,
+          "exitCode": 0,
+          "commands": ["format5", "build5", "browser6"]
+        },
+        {
+          "session": 41939,
+          "exitCode": 0,
+          "commands": ["inputs9", "fast9"]
+        },
+        {
+          "session": 12201,
+          "exitCode": 0,
+          "commands": [
+            "node10",
+            "observation11",
+            "composition12",
+            "shapes13",
+            "depth14",
+            "hold14"
+          ]
+        }
+      ],
+      "workingInputs": {
+        "manifest": {
+          "path": "/private/tmp/still-shift-ms2-composition3-inputs9.json",
+          "bytes": 428223,
+          "sha256": "sha256:5a5d06d39893f48611041fdc04f694280f498b0611c86526c60fa42a12081adc"
+        },
+        "files": 2510,
+        "inputBytes": 119086567,
+        "selection": {
+          "roots": [
+            "apps/",
+            "packages/",
+            "scripts/",
+            "tests/",
+            "tools/",
+            "services/",
+            "benchmarks/",
+            "examples/",
+            "assets/",
+            "catalogs/"
+          ],
+          "rootFiles": "all Git-tracked or nonignored regular root files",
+          "packageProse": [
+            "docs/npm-package-readme.md",
+            "docs/npm-third-party-notices.md"
+          ],
+          "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+        }
+      },
+      "record": "docs/mechanism-shorts-ms2-output3-composition-results.json",
+      "qualification": "Current fast9 and the sequential Node/GPU suffix pass on unchanged selected inputs. Earlier build2 generic inference and build3 optional async method errors are retained. Build7/browser8 logs and artifacts show success, but their originating terminal receipt was lost during context truncation; composition12 supplies a fresh actual exit-zero run. Browser6 stdout had a stale protocolFaults2 count while its run.json held nine total negatives; corrected final stdout counts four protocol faults. Diagnostic output3 envelopes use the actual appearance digest in the execution field and do not establish an authenticated export identity. Authenticated source3 request/sink/upload/journal/export/installed, whole world/source/body/replay budgets, remaining packs and full milestone gates stay pending. No new full/runtime/integration/installed suite, human visual/listening acceptance, MS2 PR, merge, publication or paid ElevenLabs action."
     }
   ],
   "implementation": {
@@ -16551,6 +16621,37 @@
         "Authenticated source3 request/producer/sink/upload/journal/export/installed proof.",
         "Whole world/source/body/replay budgets retaining32MiB shard/16 shards/512MiB total and fixed packet/pass limits.",
         "Remaining MS2 packs/authoring/quality/full milestone gates before its PR, then MS3; human review stays separate."
+      ]
+    },
+    "twentySeventhSlice": {
+      "status": "output3-composition-verified-authenticated-export-pending",
+      "scope": [
+        "Production source3 preview now uses an explicit asynchronous output3 collector and conservative pregraph capacity; source1/source2 APIs and fields retain their protocols.",
+        "Queued source3 GPU captures seal synchronous GL evidence, independently validate the actual receipt, preserve invocation order and release receipt/control owners at completion.",
+        "Compositor-owned world artwork uses a separately admitted Scene sharing the current HDR/depth target without clearing. Physical source3 observations remain closed to foreign meshes.",
+        "Six forward/reverse/repeated source3 frames and front/behind artwork controls retain exact collected/uncollected pixels; separate HTTP binary faults and async API rejection controls remain active."
+      ],
+      "counts": {
+        "unitTests": 4186,
+        "unitFiles": 409,
+        "owningNodeTests": 10,
+        "owningNodeFiles": 4,
+        "source3StandaloneFrames": 8,
+        "source3StandaloneFaults": 21,
+        "source3CompositionFrames": 6,
+        "worldArtworkCases": 2,
+        "source3BinaryFaults": 5,
+        "source3AsyncFaults": 4,
+        "native2BrowserGroups": 6,
+        "source3AuthenticatedExports": 0,
+        "newInstalledArchives": 0,
+        "supportedPacks": 0,
+        "pilotSupportedEpisodes": 0
+      },
+      "remaining": [
+        "Authenticated source3 execution manifest/request, producer/sink/upload/journal/export and installed package proof.",
+        "Whole world/source/body/replay budgets, aggregate pass admission and remaining MS2 authoring/pack/quality gates.",
+        "Full local milestone software/benchmark and installed gates before MS2 PR; then MS3. Human acceptance remains separate."
       ]
     }
   },
