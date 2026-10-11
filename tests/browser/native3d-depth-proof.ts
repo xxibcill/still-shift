@@ -108,6 +108,7 @@ export async function runNativeDepthProof() {
   const artifacts: unknown[] = [];
   const integrationArtifacts: unknown[] = [];
   let integrationBytes = 0;
+  let annotationBytes = 0;
   let completed:
     | {
         directory: string;
@@ -156,8 +157,14 @@ export async function runNativeDepthProof() {
         if (rgba) {
           assert.equal(rgba.length, 128 * 128 * 4);
           const bytes = new Uint8Array(rgba);
-          integrationBytes += bytes.length;
-          assert(integrationBytes <= 4 * 1024 * 1024);
+          if (/^annotation-(dynamic|control)-/.test(artifact.id)) {
+            annotationBytes += bytes.length;
+            // Twelve independent controls plus thirty forward/reverse/random draws.
+            assert(annotationBytes <= 42 * 128 * 128 * 4);
+          } else {
+            integrationBytes += bytes.length;
+            assert(integrationBytes <= 4 * 1024 * 1024);
+          }
           await writeFile(
             join(directory, "artifacts", artifact.id + ".rgba"),
             bytes,
@@ -259,7 +266,12 @@ export async function runNativeDepthProof() {
           appearanceCodeSha256: hashNativeAppearanceCodeIdentity(
             appearanceCodeIdentity,
           ),
-          bounds: { width: 128, height: 128, pixelBytes: 4 * 1024 * 1024 },
+          bounds: {
+            width: 128,
+            height: 128,
+            pixelBytes: 4 * 1024 * 1024,
+            annotationPixelBytes: 42 * 128 * 128 * 4,
+          },
         },
         null,
         2,
@@ -284,7 +296,17 @@ export async function runNativeDepthProof() {
         host.__retainNativeComposition,
       );
     }, JSON.stringify(integrationInput));
-    assert.equal(integrationReport.cases.length, 5);
+    assert.deepEqual(
+      integrationReport.cases.map((entry) => entry.id).sort(),
+      [
+        "compiled-cropped-text-shape-joint-depth",
+        "mixed-camera-near-far-clipping",
+        "nonuniform-positive-scale-normal-transform",
+        "reused-world-fractional-random-reverse-cut-seeks",
+        "nested-fractional-shutter-observation-pixel-pairing",
+        "screen-annotation-bracket-arrow-geometry",
+      ].sort(),
+    );
     await assertNativeAppearanceCodeIdentity(appearanceCodeIdentity);
     assert.equal(
       "sha256:" + sha256(await readFile(join(root, fontPath))),
@@ -306,6 +328,7 @@ export async function runNativeDepthProof() {
           sources: integrationSources,
           artifacts: integrationArtifacts,
           pixelBytes: integrationBytes,
+          annotationPixelBytes: annotationBytes,
         },
         null,
         2,

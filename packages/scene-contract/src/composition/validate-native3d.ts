@@ -281,6 +281,65 @@ export function checkNative3DScope(
           "Leader requires one top-level open two-vertex straight path, paint only, with no keyed path or handles",
         );
     }
+    if (
+      binding.target.kind === "path-vertices" ||
+      binding.target.kind === "path-arrow"
+    ) {
+      const target = binding.target;
+      const contents = layer.type === "shape" ? layer.contents : [];
+      const validPath = (id: string, closed?: boolean, count?: number) => {
+        const content = contents.find((entry) => entry.id === id);
+        return (
+          content?.type === "path" &&
+          !("keys" in content.path) &&
+          (closed === undefined || content.path.closed === closed) &&
+          (count === undefined || content.path.vertices.length === count) &&
+          content.path.vertices.length <= 256 &&
+          !content.path.inTangents?.some((point) =>
+            point.some((value) => value !== 0),
+          ) &&
+          !content.path.outTangents?.some((point) =>
+            point.some((value) => value !== 0),
+          )
+        );
+      };
+      const paintOnly = contents.every((entry) =>
+        ["path", "fill", "stroke", "gradient-fill", "gradient-stroke"].includes(
+          entry.type,
+        ),
+      );
+      const pathCount = contents.filter(
+        (entry) => entry.type === "path",
+      ).length;
+      if (
+        !paintOnly ||
+        !validPath(target.contentId) ||
+        (target.kind === "path-vertices" && pathCount !== 1) ||
+        (target.kind === "path-arrow" &&
+          (pathCount !== 2 ||
+            !validPath(target.contentId, false, 2) ||
+            !validPath(target.headContentId, true, 3)))
+      )
+        fail(
+          "comp-native3d-binding",
+          [...path, "native3D", "target"],
+          "Native annotation paths require static top-level straight geometry and paint only; arrows require one open line and one closed triangle",
+        );
+      if (target.kind === "path-vertices") {
+        const content = contents.find((entry) => entry.id === target.contentId);
+        if (content?.type === "path" && !("keys" in content.path)) {
+          const vertexCount = content.path.vertices.length;
+          target.vertices.forEach((point, index) => {
+            if (point.index >= vertexCount)
+              fail(
+                "comp-native3d-binding",
+                [...path, "native3D", "target", "vertices", index, "index"],
+                "Bound vertex index is outside the authored path",
+              );
+          });
+        }
+      }
+    }
     if (binding.target.kind !== "visibility") {
       scope.constraints?.forEach((constraint, index) => {
         if (
@@ -295,7 +354,7 @@ export function checkNative3DScope(
         if (
           "path" in constraint &&
           constraint.path === layer.id &&
-          binding.target.kind === "path-endpoint"
+          binding.target.kind !== "position"
         )
           fail(
             "comp-native3d-binding",
@@ -306,11 +365,16 @@ export function checkNative3DScope(
       for (const writer of writers) {
         const resolved = resolvePropertyPath(comp, writer);
         if (!isResolvedProperty(resolved) || resolved.layer !== layer) continue;
-        const field =
+        const fields =
           binding.target.kind === "position"
-            ? ".transform.position"
-            : `.contents[${binding.target.contentId}].path`;
-        if (resolved.path.includes(field))
+            ? [".transform.position"]
+            : [
+                binding.target.contentId,
+                ...(binding.target.kind === "path-arrow"
+                  ? [binding.target.headContentId]
+                  : []),
+              ].map((id) => `.contents[${id}].path`);
+        if (fields.some((field) => resolved.path.includes(field)))
           fail(
             "comp-native3d-binding",
             [...path, "native3D", "target"],

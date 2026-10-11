@@ -151,6 +151,33 @@ The new controller inherits layerBase but admits only effective local/world/scre
 
 Pure physical-anchor visibility uses all visible physical catalogue meshes including floor/datum/rivets/anchor-owning parts, excluding world graphics and screen overlays. Projection reasons are resolved first. Test the world camera-to-anchor segment; a surviving hit before `distance - 0.0001` occludes, using scene units after world transforms. Honor inherited visibility, triangle-group material side and uniform mask opacity/cutoff; admitted procedural alpha is opaque. Filter candidate hits by camera-axis near/far depth, not off-axis ray distance. Three Raycaster does not observe shader texture alpha. The original bridge query remains unchanged; native mask/near-plane policy is a declared delta. Expected triangle visibility and actual Three observation remain separate from depth-buffer measurement.
 
+## Extended screen annotation geometry (MS2 slice53)
+
+`screen-anchor.target` additionally admits `path-vertices` and `path-arrow`.
+They use the settled composition transform and ordinary shape compiler; authored
+geometry remains immutable. These primitives do not complete the cue annotation
+recipes or world/surface authoring acceptance.
+
+- `path-vertices`: `contentId` names one static top-level straight path with at
+  most 256 vertices. `vertices` binds 1–32 distinct indices, each with an explicit
+  physical `anchor` and optional `offsetPixels`. The primary anchor and every
+  bound anchor must be shown under the declared policy; otherwise the entire
+  annotation hides. Each offset is added in owning-scope pixels before explicit
+  offscreen clamping, then inverted through the settled artwork matrix. Missing
+  secondary references fail during preparation even outside the visible interval.
+- `path-arrow`: `contentId` names an open two-vertex line; `headContentId` names
+  a distinct closed three-vertex path. `headLengthPixels` and `headWidthPixels`
+  are positive and at most 256. The first line point stays authored; the final
+  point follows the physical anchor. The head points follow the actual screen
+  tangent despite parent rotation/nonuniform scale. Length is capped at 45% of
+  the segment and half-width at 25%; a zero-length segment collapses to finite
+  coincident points. Paint order remains authored.
+
+Both routes reject keyed/curved/nested/modifier geometry, competing path writers
+and derived-path readers. Existing leader, position and visibility routes retain
+their limits. Evaluator version58 invalidates sampled composition cache identity.
+All-frame diagnostic GPU controls and broader encoded/human review are separate.
+
 ## Local artwork mapping and render graph
 
 L is native untransformed local pixels (right/down), A is L after the settled ordinary local 2D transform, and P is a right-handed world plane (right/up/Z0). Bind P through partWorld times binding TRS; no viewport-to-world stretch or screen homography participates.

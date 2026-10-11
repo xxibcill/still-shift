@@ -3482,6 +3482,60 @@
                   },
                   "required": ["kind", "contentId", "endpoint"],
                   "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": { "type": "string", "const": "path-vertices" },
+                    "contentId": { "$ref": "#/$defs/__schema0" },
+                    "vertices": {
+                      "minItems": 1,
+                      "maxItems": 32,
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "index": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 255
+                          },
+                          "anchor": { "$ref": "#/$defs/__schema9" },
+                          "offsetPixels": { "$ref": "#/$defs/__schema13" }
+                        },
+                        "required": ["index", "anchor"],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": ["kind", "contentId", "vertices"],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "kind": { "type": "string", "const": "path-arrow" },
+                    "contentId": { "$ref": "#/$defs/__schema0" },
+                    "headContentId": { "$ref": "#/$defs/__schema0" },
+                    "headLengthPixels": {
+                      "type": "number",
+                      "exclusiveMinimum": 0,
+                      "maximum": 256
+                    },
+                    "headWidthPixels": {
+                      "type": "number",
+                      "exclusiveMinimum": 0,
+                      "maximum": 256
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "contentId",
+                    "headContentId",
+                    "headLengthPixels",
+                    "headWidthPixels"
+                  ],
+                  "additionalProperties": false
                 }
               ]
             }

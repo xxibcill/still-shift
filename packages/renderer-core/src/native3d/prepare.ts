@@ -455,6 +455,23 @@ async function prepareNativeCatalogue(
             { node: layer.id, path: path + ".native3D.anchor" },
           );
         if (
+          binding.role === "screen-anchor" &&
+          binding.target.kind === "path-vertices"
+        )
+          binding.target.vertices.forEach((point, index) => {
+            if (
+              !data.source.anchors.some((anchor) => anchor.id === point.anchor)
+            )
+              passageError(
+                "comp-native3d-binding",
+                `Unknown physical anchor ${point.anchor}`,
+                {
+                  node: layer.id,
+                  path: `${path}.native3D.target.vertices.${index}.anchor`,
+                },
+              );
+          });
+        if (
           binding.role === "world-graphic" &&
           binding.part !== undefined &&
           !data.source.parts.some((part) => part.id === binding.part)

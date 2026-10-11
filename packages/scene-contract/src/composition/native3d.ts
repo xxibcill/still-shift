@@ -113,6 +113,43 @@ export const NativeScreenBindingSchema = z
           endpoint: z.literal("last"),
         })
         .strict(),
+      z
+        .object({
+          kind: z.literal("path-vertices"),
+          contentId: compositionId,
+          vertices: z
+            .array(
+              z
+                .object({
+                  index: z.number().int().min(0).max(255),
+                  anchor: MechanismIdSchema,
+                  offsetPixels: MechanismPixelSchema.optional(),
+                })
+                .strict(),
+            )
+            .min(1)
+            .max(32)
+            .refine(
+              (vertices) =>
+                new Set(vertices.map((point) => point.index)).size ===
+                vertices.length,
+              "Native vertex bindings require distinct indices",
+            ),
+        })
+        .strict(),
+      z
+        .object({
+          kind: z.literal("path-arrow"),
+          contentId: compositionId,
+          headContentId: compositionId,
+          headLengthPixels: finite.positive().max(256),
+          headWidthPixels: finite.positive().max(256),
+        })
+        .strict()
+        .refine(
+          (target) => target.contentId !== target.headContentId,
+          "Arrow line and head require distinct path IDs",
+        ),
     ]),
   })
   .strict();

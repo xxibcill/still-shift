@@ -45,20 +45,27 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Fifty-two slices include the frozen ten-question board, expanded Thai review and
+  Fifty-three slices include the frozen ten-question board, expanded Thai review and
   recovered existing spoken inputs for all three families. Four audio hashes and
   thirteen supplied word-range/shot associations match. The shorter tape-hook take
   uses revised copy; the failed identical-script assumption is retained. No new
   decoding, synthesis or genuine-speech native rendering has been performed.
   Thai review covers all 114 distinct cells at frames 8/18 and three sizes;
   located prefix/contrast/wrap negatives keep finer motion unadopted.
-  Full51-1 `pnpm check:all` remains live (session 79726) on held `5e7f49e5` inputs,
-  2,567 files/119,595,348B; there is no final receipt. Continue its owner on silence.
+  Full51-1 was deliberately stopped with exit130 to implement the missing
+  annotation routes before the final gate. Its 38-group prefix, interrupted 39th
+  group and unchanged 2,567-file input audit remain retained; it is not a full pass.
+  Slice53 adds bounded composition-native bracket/arrow geometry. Final fast4
+  passes 4,303 units/422 files; native-depth4 passes 14 depth/six composition cases
+  and cancellation. All 42 annotation readbacks/30 exact control pairs independently
+  audit; held 2,568 inputs/119,629,177B unchanged. Failed attempts remain retained.
   Coverage stays 0/10 validated; packs are candidates; accepted pilot episodes 0.
-  Next: actual full-gate receipt; bound fresh speech/sample clocks and cue exports;
+  Next: finish annotation recipes, then refresh the full gate; bound fresh speech/sample clocks and cue exports;
   complete annotation styles/world/surface routes and label-only plate reuse,
   whole resources/final installed/pack admission and MS2 PR. MS3 not started.
   No human acceptance, merge/publication or paid generation.
+  [Annotation evidence](./mechanism-shorts-ms2-annotation-results.json),
+  [Full gate history](./mechanism-shorts-ms2-full-gate-results.json),
   [Spoken inputs](./mechanism-shorts-ms2-spoken-input-results.json),
   [Thai review](./mechanism-shorts-ms2-thai-review-results.json), [MS2 results](./mechanism-shorts-ms2-results.json).
 
@@ -218,6 +225,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — MS2 shared bracket/arrow geometry and retained full-gate stop
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2` (from `19a13252`).
+- **Done:** Slice53 adds bounded multi-anchor paths and screen-tangent arrowheads,
+  early reference admission, all-anchor visibility and located writer/viewport guards.
+- **Results:** Final fast4 passes 4,303 units/422 files; native-depth4 passes14 depth,
+  six composition cases and real cancellation. Independent audit hashes 70 readbacks,
+  including 42 annotation draws and30 exact dynamic/control comparisons. Final 2,568
+  inputs/119,629,177B unchanged. Staged passes and fixture/type/budget failures retained.
+- **Full gate:** Full51 deliberately stopped for missing-feature work, actual exit130;
+  38 completed groups/interrupted39th preserved. Final complete gate remains required.
+- **Next:** Cue styles/world/surface authoring, plate reuse, genuine speech clocks,
+  resources/full/final installed/pack admission/MS2 PR. Packs/pilot0; MS3 not started.
+- **Records:** [Annotation evidence](./mechanism-shorts-ms2-annotation-results.json),
+  [full gate history](./mechanism-shorts-ms2-full-gate-results.json), [plan](./mechanism-shorts-production-plan.md).
 
 ### 2026-10-12 — MS2 slice52: recover existing three-family spoken inputs
 

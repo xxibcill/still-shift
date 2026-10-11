@@ -843,6 +843,12 @@ mechanism families establish whether the architecture transfers.
 - [ ] Add tabs, open callouts, brackets, arrows and restrained highlights with
       explicit hidden/offscreen behavior and authored locks. A true surface marking
       is part of the 3D plate and invalidates it; ordinary label edits do not.
+      Slice53 adds shared composition-native multi-anchor straight paths and
+      screen-tangent arrowheads with all-anchor visibility and early reference
+      admission. Its diagnostic controls are recorded separately from cue recipes,
+      real surface/world authoring, plate reuse and encoded/human acceptance in
+      [annotation evidence](./mechanism-shorts-ms2-annotation-results.json).
+      This criterion remains unchecked.
 - [ ] Compile semantic contact/release/return events from supplied narration cues
       into all picture, annotation, caption and sound tracks. Reject overfull shots,
       out-of-recording cues and insufficient reading/action time. Do not stretch

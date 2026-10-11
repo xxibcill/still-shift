@@ -17831,7 +17831,7 @@
       ]
     },
     "fiftyFirstSlice": {
-      "status": "expanded-thai-sampled-review-complete-full-gate-running",
+      "status": "expanded-thai-sampled-review-complete-full-gate-later-stopped",
       "scope": "Review-only evidence on held fifty-slice software/authoring inputs; no rendering/default change.",
       "evidence": "docs/mechanism-shorts-ms2-thai-review-results.json",
       "review": {
@@ -17842,9 +17842,9 @@
         "frames": [8, 18],
         "sizes": ["native-contact", "320", "360"],
         "locatedNegatives": [
-          "Leading-vowel prefix before เมื่อ during retyping",
+          "Leading-vowel prefix before \u0e40\u0e21\u0e37\u0e48\u0e2d during retyping",
           "USB-C split at enlarged mixed-run boundary",
-          "499/บาท line split under opt-in optical tracking",
+          "499/\u0e1a\u0e32\u0e17 line split under opt-in optical tracking",
           "Partial or low-contrast active quantities/qualifiers"
         ]
       },
@@ -17854,7 +17854,7 @@
         "matchedRawSourceCompositionPairs": 114,
         "matchedReviewPngHashes": 684,
         "full51Attempt1": {
-          "status": "running",
+          "status": "deliberately-stopped-later-for-missing-feature-work",
           "command": "pnpm check:all",
           "sourceCommit": "5e7f49e5",
           "owningSession": 79726,
@@ -17862,12 +17862,17 @@
           "heldInventory": "/private/tmp/still-shift-ms2-full51-inputs1.json",
           "heldFiles": 2567,
           "heldBytes": 119595348,
-          "terminalReceipt": "not-yet-observed"
+          "terminalReceipt": {
+            "session": 79726,
+            "exitCode": 130
+          },
+          "statusAtOriginalSlice": "running",
+          "laterDispositionEvidence": "docs/mechanism-shorts-ms2-full-gate-results.json"
         }
       },
       "remaining": [
         "Expanded review covers two frames, not every active cell/frame. General finer Thai motion and complete active-message reading remain unqualified.",
-        "Full software gate is running; broader resource/lifetime, labels/continuous/readability, genuine spoken input, final archive/installed and pack admission/MS2 PR gates remain separate.",
+        "Full51 was later deliberately stopped at slice53 for missing-feature implementation; a refreshed complete gate remains required alongside broader resource/lifetime, labels/continuous/readability, genuine spoken input, final archive/installed and pack admission/MS2 PR gates.",
         "Supported packs0; accepted pilot episodes0; MS3 not started."
       ]
     },
@@ -17888,15 +17893,20 @@
       "verification": {
         "inputAudit": "passed-after-retained-identical-script-assumption-failure",
         "full51Attempt1": {
-          "status": "running",
+          "status": "deliberately-stopped-later-for-missing-feature-work",
           "owningSession": 79726,
           "heldSourceCommit": "5e7f49e5",
           "log": "/private/tmp/still-shift-ms2-full51-1.log",
           "testGroupsInAggregate": 94,
           "groupsStartedAtObservation": 28,
           "latestStartedGroupAtObservation": "test:browser:lateral",
-          "terminalReceipt": "not-yet-observed",
-          "newExternalInputScope": "Recovered customer inputs are not consumed by the current software aggregate or covered by its held-source inventory."
+          "terminalReceipt": {
+            "session": 79726,
+            "exitCode": 130
+          },
+          "newExternalInputScope": "Recovered customer inputs are not consumed by the current software aggregate or covered by its held-source inventory.",
+          "statusAtOriginalSlice": "running",
+          "laterDispositionEvidence": "docs/mechanism-shorts-ms2-full-gate-results.json"
         }
       },
       "remaining": [
@@ -17904,11 +17914,52 @@
         "Complete broader annotation styles/world-text/surface routes and label-only plate reuse. The current supplied-cue schema only authors screen-pinned text/backing/single-anchor leaders. Existing generic native world-graphic and bracket components are building blocks, not proof that the MS2 authoring routes exist.",
         "Retain full-cell Thai fine-motion limits, whole-resource/lifetime, final archive/installed/pack admission and MS2 PR gates. Supported packs0; accepted pilot episodes0; MS3 not started."
       ]
+    },
+    "fiftyThirdSlice": {
+      "status": "composition-annotation-geometry-software-slice-complete",
+      "scope": "Shared screen-native multi-anchor bracket paths and screen-tangent arrowheads; supplied cue recipes/world/surface/cache acceptance remains open.",
+      "evidence": "docs/mechanism-shorts-ms2-annotation-results.json",
+      "targets": ["path-vertices", "path-arrow"],
+      "verification": {
+        "fast4": {
+          "exitCode": 0,
+          "unitTests": 4303,
+          "unitFiles": 422
+        },
+        "nativeDepth4": {
+          "exitCode": 0,
+          "depthCases": 14,
+          "compositionCases": 6,
+          "annotationReadbacks": 42,
+          "controlFrames": 12,
+          "dynamicDraws": 30,
+          "exactPixelComparisons": 30,
+          "independentAudit": "passed"
+        },
+        "heldInputs": {
+          "files": 2568,
+          "bytes": 119629177,
+          "unchanged": true
+        },
+        "full51": {
+          "terminalExitCode": 130,
+          "deliberatelyStopped": true,
+          "completedTestGroups": 38,
+          "interruptedGroup": "test:browser:commerce-spatial",
+          "evidence": "docs/mechanism-shorts-ms2-full-gate-results.json"
+        }
+      },
+      "remaining": [
+        "Wire all five screen annotation cue recipes, explicit world text and real surface marking routes, label-only plate reuse.",
+        "Fresh recovered-speech clocks and semantic native exports, whole resources/lifetime/replay, full gate/final archive/installed/pack admission/MS2 PR.",
+        "Supported packs0; accepted pilot episodes0; MS3 not started."
+      ]
     }
   },
   "limits": [
-    "Slice52 recovers three existing unpaced spoken recordings and supplied timed transcripts for the candidate families, with four current audio hashes and thirteen cue associations verified. A shorter tape-hook take uses revised copy; the initial identical-script assumption failed and is retained. New external media are not covered by live full51 software verification; actual decode/sample-clock, genuine cue/native exports, broader annotation/world/surface/plate reuse, resources/final installed/pack admission remain open. No audio was changed or generated; packs/pilot0.",
-    "Slice51 expands Thai review to all114 distinct cells at frames8/18 and three sizes (42 overviews/684 shown samples), binding raw inputs and artifact hashes. Sampled resolved copy/marks remain; leading-vowel prefixes and semantic wrap/contrast negatives are located. Finer Thai motion is unadopted and complete-message holds remain separately checked. Full51 attempt1 is running on held5e7f49e5 inputs with no terminal receipt; pack/pilot0 and broader MS2 gates stay open.",
+    "Slice53 implements bounded shared composition bracket/arrow geometry with immutable sampled paths, all-anchor visibility, early secondary-reference checks and located writer/viewport failures. Final fast4 passes 4,303 units/422 files; native-depth4 passes14 depth/six composition cases/cancellation, including42 new readbacks and30 independently audited exact dynamic/control pairs. Inventory4 unchanged2,568 files/119,629,177B. Failures and staged passes retained. Full51 was deliberately stopped with actual exit130 before this feature work; final full94-group/176-item/36,061-frame/benchmark gate remains required. Cue recipes/world/surface/plate reuse and broader MS2/PR/pack/pilot acceptance stay open.",
+    "Slice52 recovers three existing unpaced spoken recordings and supplied timed transcripts for the candidate families, with four current audio hashes and thirteen cue associations verified. A shorter tape-hook take uses revised copy; the initial identical-script assumption failed and is retained. New external media are not covered by the stopped full51 software prefix; actual decode/sample-clock, genuine cue/native exports, broader annotation/world/surface/plate reuse, resources/final installed/pack admission remain open. No audio was changed or generated; packs/pilot0.",
+    "Slice51 expands Thai review to all114 distinct cells at frames8/18 and three sizes (42 overviews/684 shown samples), binding raw inputs and artifact hashes. Sampled resolved copy/marks remain; leading-vowel prefixes and semantic wrap/contrast negatives are located. Finer Thai motion is unadopted and complete-message holds remain separately checked. Full51 attempt1 was later deliberately stopped with actual exit130 on unchanged held5e7f49e5 inputs; pack/pilot0 and broader MS2 gates stay open.",
     "Slice50 creates the frozen ten-question coverage board before MS3: 5 existing targets, 3 new-asset/existing-rig candidates, 2 behavior extensions; 5 episodes need new assets and 2 need behavior. Actual candidate references and all 2,564 prior inputs are unchanged. Coverage remains 0/10 validated, packs/accepted pilot 0. Fast1 passes 4,293 units/421 files; seven focused tests and independent cohort/hash/accounting audit pass after retaining an initial negative-test fixture failure. Only board creation is complete; full MS2 and support admission remain open.",
     "Slice49 adds complete native export/decode/seek evidence for all 128 Thai cases: 142 streams/3,408 frames, 3,072 decoded frames/9,216 PNGs/426 sheets, 9,216 native seeks and 70 exact lossless settled comparisons independently verified. Default/explicit-zero identities hold; encoded differences prompted lossless diagnosis. Final fast2 passes 4,286 units/420 files on held inputs. Seventeen sampled visual artifacts cover every text but do not certify all cells; remaining Thai support/mark/gap review and broader MS2/full/final/owner gates stay open. Packs/pilot 0.",
     "Slice48 verifies exact Thai authoring/strict font coverage/loaded browser shaping and pose preflight only: six stress strings plus hashed production copy, 128 saved native compositions/3,072 pose frames and seven wrong-font controls independently audited. Sequential fast3 passes 4,286 units/420 files. Two failed authoring attempts retained; production rendering is unchanged. Native encoded/reduced inspection and Thai risk acceptance remain open, alongside broader MS2/full/final/owner gates; supported packs/pilot 0.",
