@@ -12,3 +12,5 @@ export * from "./frame-v2.ts";
 export * from "./pack-document.ts";
 
 export * from "./timeline.ts";
+
+export * from "./narrated-cycle.ts";

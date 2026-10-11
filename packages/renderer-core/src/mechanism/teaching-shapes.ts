@@ -196,7 +196,17 @@ export function evaluateTeachingShape(
   const stateKey =
     inputs.generator === "fixed-root-pawl-curve-1"
       ? `pawl:${inputs.deflection}`
-      : `spring:${[...inputs.seats.flat(), ...inputs.terminalTangents.flat()].map((value) => (Object.is(value, -0) ? 0 : value)).join(",")}`;
+      : // Driver association uses the GPU's declared Float32 precision. Independent
+        // observation still hashes every used position/normal byte; sampling stays Float64.
+        `spring-f32:${[
+          ...inputs.seats.flat(),
+          ...inputs.terminalTangents.flat(),
+        ]
+          .map((value) => {
+            const packed = Math.fround(value);
+            return Object.is(packed, -0) ? 0 : packed;
+          })
+          .join(",")}`;
   return freezeDeep(
     MechanismShapeFrameSchema.parse({
       shape: shape.id,

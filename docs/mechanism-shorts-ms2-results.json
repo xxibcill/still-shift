@@ -16016,6 +16016,17 @@
         "sha256": "sha256:adac16cfe6f63d881f4c6b9a39f89323749aa256b0e101ba86562206dd0e76b3"
       },
       "qualification": "Pure expected-state timeline evidence. Discrete compilation does not prove all continuous time; arbitrary fractional seeks evaluate requirements when requested. Authored state graphs do not automatically derive physical release phases or narration tracks. GPU observations retain existing independent validation. Supported pack promotion, unified QA, narration cue compilation, whole-resource/lifetime requirements, remaining MS2/full gates and final installed refresh remain open. No human acceptance, paid generation, merge or publication."
+    },
+    {
+      "id": "narrated-cycle-slice-39",
+      "status": "supplied-cue-track-compiler-verified-in-stages",
+      "record": "docs/mechanism-shorts-ms2-narrated-cycle-results.json",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-cues39-inputs15.json",
+        "bytes": 433288,
+        "sha256": "sha256:661d2f479674a1e278c690223443643050d7f9a4fdbc31deee508bc215936d25"
+      },
+      "qualification": "The live fixtures use synthetic local PCM, not spoken production narration. They verify compiler/timing/export behavior, all final native observations and independent bounded replay; no pilot or human listening/visual acceptance is inferred. Source cues retain exact PCM facts; visual/effect/motion placement follows the documented integer frame quantization with reported onset delay. The final frame quantum is distinct from source duration. Full label layout/readability, genuine spoken cue semantics, supported pack promotion, registry/coverage/typography, semantic report/other producer/whole-resource/lifetime accounting, remaining MS2 full gates and final installed refresh remain open."
     }
   ],
   "implementation": {
@@ -17340,10 +17351,38 @@
         "Integrate supplied narration cues across picture/annotation/caption/sound tracks with reading/action/recording constraints.",
         "Finish pack support promotion and remaining MS2 authoring/coverage/typography, whole-resource/lifetime/full/installed gates before MS2 PR and MS3."
       ]
+    },
+    "thirtyNinthSlice": {
+      "status": "supplied-cue-track-compiler-verified-in-stages",
+      "scope": [
+        "Versioned supplied-PCM narration cue contract, generated schema and public compiler. All three candidate families reuse relative cue references and original rig/relationship validators.",
+        "Compile native picture/control/camera, live anchor annotation/leader, caption, supplied effect and unchanged narration tracks through one cue map. Recompile a shorter take without a nine-shot duration.",
+        "Reject source/cue/motion/sample bounds, overlapping cues, conflicting writers, insufficient source and visible reading/action windows, invalid state order, camera hold/clip-plane changes, conflicting assets and sound tails. Hash track identities separately to keep IDs bounded.",
+        "Expose deterministic first-output-frame-at-or-after-cue timing and integer PCM onset delay; retain original narration source sample count/hash and compare actual decoded sources/repeated video and audio.",
+        "Dark caption/annotation backings repair the sampled contrast failure. Float32 spring driver-key precision repairs cross-runtime identity while preserving sampled geometry and exact GPU-byte checks."
+      ],
+      "counts": {
+        "unitTests": 4243,
+        "unitFiles": 416,
+        "newUnitTests": 13,
+        "focusedTests": 33,
+        "focusedFiles": 3,
+        "liveFamilies": 3,
+        "takesPerFamily": 2,
+        "compiledOutputFrames": 450,
+        "observedOutputFrames": 900,
+        "finalExports": 12,
+        "supportedPacks": 0,
+        "pilotAcceptedEpisodes": 0
+      },
+      "remaining": [
+        "Complete rendered label layout/readability, registry/discovery/editing and coverage/typography acceptance.",
+        "Complete genuine spoken-input/owner-review gates, supported pack promotion, whole resources/lifetime, required full software/benchmark and final installed verification before MS2 PR and MS3."
+      ]
     }
   },
   "limits": [
-    "Thirty-eight slices now include bounded root/source/results and authored state/event timelines. Pure state/relationship compilation and fractional seek checks are implemented, with current 4,230 unit and live family cycle checks. Semantic validation/report and other producer storage, whole world/body/replay/lifetime, narration track compilation, remaining MS2 authoring/full gates and final installed refresh remain. Supported packs/pilot 0.",
+    "Thirty-nine slices include bounded root/source/results, authored state/event timelines and cue-driven picture/annotation/caption/sound/narration compilation. Current fast15 passes 4,243 units; three-family synthetic PCM shorter-take exports/900 native frames/repeated video/audio pass. Genuine spoken semantics, full label QA, supported packs, discovery/coverage/typography, whole resources/lifetime/producer storage, remaining MS2/full/final-installed gates remain open. Supported packs/pilot 0.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

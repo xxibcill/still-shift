@@ -45,19 +45,19 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Thirty-eight slices include shared Node root/source/result admission and an
-  authored state/event timeline contract. Compile legal transitions, required
-  relationships and narrowed contact gaps; check every output frame/event boundary
-  and arbitrary fractional seeks without playback history. Seven new controls
-  pass across all three candidates; current fast7 passes 4,230 units. Live family
-  checks compile four dimension variants/96 frames with 40 previews/eight repeated
-  exports. Evidence remains expected state plus separately validated GPU receipts.
-  Misplaced guard build failure and stale identity failure remain retained.
-  Next: narration cue/track compilation, remaining authoring/coverage/typography,
-  semantic report/other producers, aggregate/lifetime/full/installed criteria.
+  Thirty-nine slices include shared Node admission, authored state timelines and
+  supplied-cue picture/control/camera, annotation, caption, sound/narration tracks.
+  Source samples remain unchanged; integer frame placement reports its onset delay.
+  Reading/action checks cover source and visible durations, including quantization.
+  Fast15 passes 4,243 units; focused 33 checks and all-three-family/two-take actual
+  synthetic PCM checks pass: 12 exports/900 native frames and repeated video/audio.
+  Four type failures, texture-font/driver-key live failures, the rejected contrast
+  frame and interrupted fast8 prefix remain retained.
+  Next: full label QA, registry/editing/coverage/typography, genuine spoken inputs,
+  supported-pack promotion, remaining producer/aggregate/lifetime/full/installed.
   Supported packs/pilot 0; no merge/publication, human acceptance or paid generation.
-  [Timeline evidence](./mechanism-shorts-ms2-pack-timeline-results.json),
-  [Timeline API](./mechanism-pack-timelines.md), [MS2 results](./mechanism-shorts-ms2-results.json).
+  [Cue compiler evidence](./mechanism-shorts-ms2-narrated-cycle-results.json),
+  [Cue API](./mechanism-narrated-cycles.md), [MS2 results](./mechanism-shorts-ms2-results.json).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
   inventory15:2,329 inputs/117,503,155B. Original full6 retains a qualified19-group
@@ -215,6 +215,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 supplied narration cue tracks
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `e0a07dad`.
+- **Done:** versioned PCM cue compiler for picture/control/camera, live annotation,
+  caption, sound and unchanged narration; bounded track IDs and located failures.
+  Source and visible reading/action time checks include integer frame quantization.
+- **Results:** 13 new units; focused14 passes 33 checks and fast15 passes 4,243 units.
+  Three families/two synthetic takes produce 12 repeated exports/900 native frames,
+  independent receipt replay and matching complete decoded video/audio per repeat.
+- **Retained:** four type failures, texture-font/driver-key live failures and sampled
+  caption contrast loss; exact GPU byte validation remains unchanged.
+  fast8 intentionally
+  SIGTERM-interrupted before browser9/hold9 to repair the visible action-window edge.
+- **Next:** full label QA/discovery/editing/coverage/typography, genuine spoken inputs,
+  supported packs and remaining whole-resource/full/installed criteria before PR/MS3.
+- **Records:** [Cue API](./mechanism-narrated-cycles.md),
+  [Cue evidence](./mechanism-shorts-ms2-narrated-cycle-results.json).
 
 ### 2026-10-11 — MS2 authored mechanism state timelines
 

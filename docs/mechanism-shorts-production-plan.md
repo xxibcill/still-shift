@@ -837,6 +837,15 @@ mechanism families establish whether the architecture transfers.
       into all picture, annotation, caption and sound tracks. Reject overfull shots,
       out-of-recording cues and insufficient reading/action time. Do not stretch
       speech or insert filler silence to satisfy a rigid shot template.
+      Slice39 adds the versioned supplied-PCM cue compiler for all five tracks,
+      relative motion references and unchanged narration sample count/clock. Source
+      and visible reading/action holds, including frame quantization, fail with
+      located diagnostics. All three candidates/two synthetic takes verify 12
+      repeated actual exports/900 final native frames with independent replay and
+      complete decoded video/audio comparison. [Cue evidence](./mechanism-shorts-ms2-narrated-cycle-results.json)
+      retains type/font/driver failures and intentionally stopped fast8; [API](./mechanism-narrated-cycles.md)
+      records quantization and separates engineering PCM from genuine spoken-input/
+      human acceptance. Full rendered readability and pilot acceptance remain open.
 - [ ] Expose registry-derived discovery, per-component schema/parameter help,
       small examples, asset metadata and stable revision-aware editing. Publish
       versioned JSON Schemas for the expanded contracts and retain MS1 response

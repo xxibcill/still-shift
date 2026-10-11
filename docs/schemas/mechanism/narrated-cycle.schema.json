@@ -1,0 +1,776 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "mechanism-narrated-cycle-1"
+    },
+    "id": {
+      "type": "string",
+      "maxLength": 128,
+      "pattern": "^[a-zA-Z][\\w-]*$"
+    },
+    "revision": { "type": "integer", "minimum": 0, "maximum": 2147483647 },
+    "output": {
+      "type": "object",
+      "properties": {
+        "width": { "type": "integer", "minimum": 16, "maximum": 8192 },
+        "height": { "type": "integer", "minimum": 16, "maximum": 8192 },
+        "fps": { "type": "integer", "minimum": 1, "maximum": 60 }
+      },
+      "required": ["width", "height", "fps"],
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z][\\w-]*$"
+        },
+        "type": { "type": "string", "const": "native3d" },
+        "path": { "type": "string", "minLength": 1, "maxLength": 1024 },
+        "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "format": { "type": "string", "const": "mechanism-scene-2" },
+        "textureFont": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z][\\w-]*$"
+        }
+      },
+      "required": ["id", "type", "path", "sha256", "format"],
+      "additionalProperties": false
+    },
+    "font": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z][\\w-]*$"
+        },
+        "type": { "type": "string", "const": "font" },
+        "path": { "type": "string", "minLength": 1, "maxLength": 1024 },
+        "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "weight": { "type": "string", "pattern": "^(?:[1-8]\\d{2}|900)$" },
+        "style": { "type": "string", "enum": ["normal", "italic"] },
+        "variable": {
+          "type": "object",
+          "propertyNames": { "type": "string", "pattern": "^[A-Za-z0-9]{4}$" },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "min": {
+                "type": "number",
+                "minimum": -1000000,
+                "maximum": 1000000
+              },
+              "default": {
+                "type": "number",
+                "minimum": -1000000,
+                "maximum": 1000000
+              },
+              "max": {
+                "type": "number",
+                "minimum": -1000000,
+                "maximum": 1000000
+              }
+            },
+            "required": ["min", "default", "max"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["id", "type", "path", "sha256", "weight"],
+      "additionalProperties": false
+    },
+    "narration": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z][\\w-]*$"
+        },
+        "path": { "type": "string", "minLength": 1, "maxLength": 1024 },
+        "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "type": { "type": "string", "const": "audio" },
+        "sampleRate": { "type": "number", "const": 48000 },
+        "sampleCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 172800000
+        },
+        "channels": {
+          "anyOf": [
+            { "type": "number", "const": 1 },
+            { "type": "number", "const": 2 }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "path",
+        "sha256",
+        "type",
+        "sampleRate",
+        "sampleCount",
+        "channels"
+      ],
+      "additionalProperties": false
+    },
+    "locale": { "default": "en", "type": "string", "enum": ["en", "th"] },
+    "maxGraphemesPerSecond": {
+      "default": 18,
+      "type": "number",
+      "minimum": 1,
+      "maximum": 40
+    },
+    "initialState": {
+      "type": "string",
+      "maxLength": 128,
+      "pattern": "^[A-Za-z][\\w.-]*$"
+    },
+    "states": {
+      "minItems": 1,
+      "maxItems": 64,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[A-Za-z][\\w.-]*$"
+          },
+          "requirements": {
+            "minItems": 1,
+            "maxItems": 128,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "rig": {
+                  "type": "string",
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z][\\w.-]*$"
+                },
+                "relationship": {
+                  "type": "string",
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z][\\w.-]*$"
+                },
+                "signedGap": {
+                  "type": "array",
+                  "prefixItems": [
+                    {
+                      "type": "number",
+                      "minimum": -1000000,
+                      "maximum": 1000000
+                    },
+                    {
+                      "type": "number",
+                      "minimum": -1000000,
+                      "maximum": 1000000
+                    }
+                  ]
+                }
+              },
+              "required": ["rig", "relationship"],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": ["id", "requirements"],
+        "additionalProperties": false
+      }
+    },
+    "transitions": {
+      "maxItems": 128,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[A-Za-z][\\w.-]*$"
+          },
+          "to": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[A-Za-z][\\w.-]*$"
+          },
+          "event": {
+            "type": "string",
+            "enum": ["contact", "release", "return", "reset"]
+          }
+        },
+        "required": ["from", "to", "event"],
+        "additionalProperties": false
+      }
+    },
+    "controls": {
+      "maxItems": 8,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "rig": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[A-Za-z][\\w.-]*$"
+          },
+          "control": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string", "const": "slider" },
+                  "value": {
+                    "type": "number",
+                    "minimum": -1000000,
+                    "maximum": 1000000
+                  },
+                  "keys": {
+                    "minItems": 1,
+                    "maxItems": 2000,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "at": {
+                          "type": "object",
+                          "properties": {
+                            "cue": {
+                              "type": "string",
+                              "maxLength": 128,
+                              "pattern": "^[a-zA-Z][\\w-]*$"
+                            },
+                            "edge": {
+                              "default": "start",
+                              "type": "string",
+                              "enum": ["start", "end"]
+                            },
+                            "offsetSamples": {
+                              "default": 0,
+                              "type": "integer",
+                              "minimum": -172800000,
+                              "maximum": 172800000
+                            }
+                          },
+                          "required": ["cue", "edge", "offsetSamples"],
+                          "additionalProperties": false
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": -1000000,
+                          "maximum": 1000000
+                        },
+                        "easing": {
+                          "default": "linear",
+                          "type": "string",
+                          "enum": ["linear", "smoothstep", "hold"]
+                        }
+                      },
+                      "required": ["at", "value", "easing"],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": ["type"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string", "const": "hinge" },
+                  "value": {
+                    "type": "number",
+                    "minimum": -1000000,
+                    "maximum": 1000000
+                  },
+                  "keys": {
+                    "minItems": 1,
+                    "maxItems": 2000,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "at": {
+                          "type": "object",
+                          "properties": {
+                            "cue": {
+                              "type": "string",
+                              "maxLength": 128,
+                              "pattern": "^[a-zA-Z][\\w-]*$"
+                            },
+                            "edge": {
+                              "default": "start",
+                              "type": "string",
+                              "enum": ["start", "end"]
+                            },
+                            "offsetSamples": {
+                              "default": 0,
+                              "type": "integer",
+                              "minimum": -172800000,
+                              "maximum": 172800000
+                            }
+                          },
+                          "required": ["cue", "edge", "offsetSamples"],
+                          "additionalProperties": false
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": -1000000,
+                          "maximum": 1000000
+                        },
+                        "easing": {
+                          "default": "linear",
+                          "type": "string",
+                          "enum": ["linear", "smoothstep", "hold"]
+                        }
+                      },
+                      "required": ["at", "value", "easing"],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": ["type"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string", "const": "spring-return" },
+                  "states": {
+                    "minItems": 1,
+                    "maxItems": 2000,
+                    "type": "array",
+                    "items": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "at": {
+                              "type": "object",
+                              "properties": {
+                                "cue": {
+                                  "type": "string",
+                                  "maxLength": 128,
+                                  "pattern": "^[a-zA-Z][\\w-]*$"
+                                },
+                                "edge": {
+                                  "default": "start",
+                                  "type": "string",
+                                  "enum": ["start", "end"]
+                                },
+                                "offsetSamples": {
+                                  "default": 0,
+                                  "type": "integer",
+                                  "minimum": -172800000,
+                                  "maximum": 172800000
+                                }
+                              },
+                              "required": ["cue", "edge", "offsetSamples"],
+                              "additionalProperties": false
+                            },
+                            "phase": { "type": "string", "const": "held" },
+                            "value": {
+                              "type": "number",
+                              "minimum": -1000000,
+                              "maximum": 1000000
+                            }
+                          },
+                          "required": ["at", "phase", "value"],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "at": {
+                              "type": "object",
+                              "properties": {
+                                "cue": {
+                                  "type": "string",
+                                  "maxLength": 128,
+                                  "pattern": "^[a-zA-Z][\\w-]*$"
+                                },
+                                "edge": {
+                                  "default": "start",
+                                  "type": "string",
+                                  "enum": ["start", "end"]
+                                },
+                                "offsetSamples": {
+                                  "default": 0,
+                                  "type": "integer",
+                                  "minimum": -172800000,
+                                  "maximum": 172800000
+                                }
+                              },
+                              "required": ["cue", "edge", "offsetSamples"],
+                              "additionalProperties": false
+                            },
+                            "phase": { "type": "string", "const": "released" },
+                            "value": {
+                              "type": "number",
+                              "minimum": -1000000,
+                              "maximum": 1000000
+                            },
+                            "stopValue": {
+                              "type": "number",
+                              "minimum": -1000000,
+                              "maximum": 1000000
+                            }
+                          },
+                          "required": ["at", "phase", "value", "stopValue"],
+                          "additionalProperties": false
+                        }
+                      ]
+                    }
+                  }
+                },
+                "required": ["type", "states"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string", "const": "ratchet" },
+                  "position": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      },
+                      "keys": {
+                        "minItems": 1,
+                        "maxItems": 2000,
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "at": {
+                              "type": "object",
+                              "properties": {
+                                "cue": {
+                                  "type": "string",
+                                  "maxLength": 128,
+                                  "pattern": "^[a-zA-Z][\\w-]*$"
+                                },
+                                "edge": {
+                                  "default": "start",
+                                  "type": "string",
+                                  "enum": ["start", "end"]
+                                },
+                                "offsetSamples": {
+                                  "default": 0,
+                                  "type": "integer",
+                                  "minimum": -172800000,
+                                  "maximum": 172800000
+                                }
+                              },
+                              "required": ["cue", "edge", "offsetSamples"],
+                              "additionalProperties": false
+                            },
+                            "value": {
+                              "type": "number",
+                              "minimum": -1000000,
+                              "maximum": 1000000
+                            },
+                            "easing": {
+                              "default": "linear",
+                              "type": "string",
+                              "enum": ["linear", "smoothstep", "hold"]
+                            }
+                          },
+                          "required": ["at", "value", "easing"],
+                          "additionalProperties": false
+                        }
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "latchKeys": {
+                    "minItems": 1,
+                    "maxItems": 2000,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "at": {
+                          "type": "object",
+                          "properties": {
+                            "cue": {
+                              "type": "string",
+                              "maxLength": 128,
+                              "pattern": "^[a-zA-Z][\\w-]*$"
+                            },
+                            "edge": {
+                              "default": "start",
+                              "type": "string",
+                              "enum": ["start", "end"]
+                            },
+                            "offsetSamples": {
+                              "default": 0,
+                              "type": "integer",
+                              "minimum": -172800000,
+                              "maximum": 172800000
+                            }
+                          },
+                          "required": ["cue", "edge", "offsetSamples"],
+                          "additionalProperties": false
+                        },
+                        "state": {
+                          "type": "string",
+                          "enum": ["engaged", "released"]
+                        }
+                      },
+                      "required": ["at", "state"],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": ["type", "position", "latchKeys"],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "required": ["rig", "control"],
+        "additionalProperties": false
+      }
+    },
+    "cues": {
+      "minItems": 1,
+      "maxItems": 64,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[a-zA-Z][\\w-]*$"
+          },
+          "startSample": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 172800000
+          },
+          "endSampleExclusive": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 172800000
+          },
+          "kind": {
+            "type": "string",
+            "enum": ["initial", "contact", "release", "return", "reset"]
+          },
+          "state": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[A-Za-z][\\w.-]*$"
+          },
+          "text": { "type": "string", "minLength": 1, "maxLength": 4000 },
+          "minimumActionSamples": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 172800000
+          },
+          "camera": {
+            "type": "object",
+            "properties": {
+              "position": {
+                "type": "array",
+                "prefixItems": [
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+                ]
+              },
+              "target": {
+                "type": "array",
+                "prefixItems": [
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+                ]
+              },
+              "up": {
+                "default": [0, 1, 0],
+                "type": "array",
+                "prefixItems": [
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+                ]
+              },
+              "fovDegrees": { "type": "number", "minimum": 1, "maximum": 179 },
+              "near": {
+                "type": "number",
+                "minimum": 0.001,
+                "maximum": 1000000
+              },
+              "far": { "type": "number", "minimum": 0.002, "maximum": 10000000 }
+            },
+            "required": [
+              "position",
+              "target",
+              "up",
+              "fovDegrees",
+              "near",
+              "far"
+            ],
+            "additionalProperties": false
+          },
+          "editing": {
+            "default": "hold",
+            "type": "string",
+            "enum": ["cut", "hold", "transition"]
+          },
+          "annotations": {
+            "default": [],
+            "maxItems": 8,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "maxLength": 128,
+                  "pattern": "^[a-zA-Z][\\w-]*$"
+                },
+                "text": { "type": "string", "minLength": 1, "maxLength": 4000 },
+                "anchor": {
+                  "type": "string",
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z][\\w.-]*$"
+                },
+                "position": {
+                  "type": "array",
+                  "prefixItems": [
+                    { "type": "number", "minimum": 0, "maximum": 8192 },
+                    { "type": "number", "minimum": 0, "maximum": 8192 }
+                  ]
+                }
+              },
+              "required": ["id", "text", "anchor", "position"],
+              "additionalProperties": false
+            }
+          },
+          "sounds": {
+            "default": [],
+            "maxItems": 8,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "maxLength": 128,
+                  "pattern": "^[a-zA-Z][\\w-]*$"
+                },
+                "asset": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "maxLength": 128,
+                      "pattern": "^[a-zA-Z][\\w-]*$"
+                    },
+                    "path": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1024
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^sha256:[a-f0-9]{64}$"
+                    },
+                    "type": { "type": "string", "const": "audio" },
+                    "sampleRate": { "type": "number", "const": 48000 },
+                    "sampleCount": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 172800000
+                    },
+                    "channels": {
+                      "anyOf": [
+                        { "type": "number", "const": 1 },
+                        { "type": "number", "const": 2 }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "path",
+                    "sha256",
+                    "type",
+                    "sampleRate",
+                    "sampleCount",
+                    "channels"
+                  ],
+                  "additionalProperties": false
+                },
+                "sourceStartSample": {
+                  "default": 0,
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 172800000
+                },
+                "sourceEndSample": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 172800000
+                },
+                "gainDb": {
+                  "default": 0,
+                  "type": "number",
+                  "minimum": -120,
+                  "maximum": 12
+                }
+              },
+              "required": ["id", "asset", "sourceStartSample", "gainDb"],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "startSample",
+          "endSampleExclusive",
+          "kind",
+          "state",
+          "text",
+          "minimumActionSamples",
+          "editing",
+          "annotations",
+          "sounds"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "revision",
+    "output",
+    "source",
+    "font",
+    "narration",
+    "locale",
+    "maxGraphemesPerSecond",
+    "initialState",
+    "states",
+    "transitions",
+    "controls",
+    "cues"
+  ],
+  "additionalProperties": false
+}

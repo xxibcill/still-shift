@@ -1681,6 +1681,13 @@ export const native3DAppearanceModules: readonly {
     ),
   },
   {
+    name: "scene-contract/src/mechanism/narrated-cycle.ts",
+    url: new URL(
+      "../../../scene-contract/src/mechanism/narrated-cycle.ts",
+      import.meta.url,
+    ),
+  },
+  {
     name: "scene-contract/src/mechanism/pack-document.ts",
     url: new URL(
       "../../../scene-contract/src/mechanism/pack-document.ts",

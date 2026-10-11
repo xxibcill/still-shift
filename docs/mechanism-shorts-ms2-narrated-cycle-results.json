@@ -1,0 +1,766 @@
+{
+  "version": "mechanism-ms2-narrated-cycle-results-1",
+  "date": "2026-10-11",
+  "baseSourceCommit": "e0a07dad946df15ecd20a6a0153a20bbbe794dbc",
+  "branch": "codex/mechanism-ms2",
+  "status": "supplied-cue-track-compiler-verified-in-stages",
+  "scope": [
+    "Versioned supplied-PCM narration cue contract, generated schema and public compiler. All three candidate families reuse relative cue references and original rig/relationship validators.",
+    "Compile native picture/control/camera, live anchor annotation/leader, caption, supplied effect and unchanged narration tracks through one cue map. Recompile a shorter take without a nine-shot duration.",
+    "Reject source/cue/motion/sample bounds, overlapping cues, conflicting writers, insufficient source and visible reading/action windows, invalid state order, camera hold/clip-plane changes, conflicting assets and sound tails. Hash track identities separately to keep IDs bounded.",
+    "Expose deterministic first-output-frame-at-or-after-cue timing and integer PCM onset delay; retain original narration source sample count/hash and compare actual decoded sources/repeated video and audio.",
+    "Dark caption/annotation backings repair the sampled contrast failure. Float32 spring driver-key precision repairs cross-runtime identity while preserving sampled geometry and exact GPU-byte checks."
+  ],
+  "qualification": "The live fixtures use synthetic local PCM, not spoken production narration. They verify compiler/timing/export behavior, all final native observations and independent bounded replay; no pilot or human listening/visual acceptance is inferred. Source cues retain exact PCM facts; visual/effect/motion placement follows the documented integer frame quantization with reported onset delay. The final frame quantum is distinct from source duration. Full label layout/readability, genuine spoken cue semantics, supported pack promotion, registry/coverage/typography, semantic report/other producer/whole-resource/lifetime accounting, remaining MS2 full gates and final installed refresh remain open.",
+  "workingInputs": {
+    "path": "/private/tmp/still-shift-ms2-cues39-inputs15.json",
+    "bytes": 433288,
+    "sha256": "sha256:661d2f479674a1e278c690223443643050d7f9a4fdbc31deee508bc215936d25"
+  },
+  "counts": {
+    "unitTests": 4243,
+    "unitFiles": 416,
+    "newUnitTests": 13,
+    "focusedTests": 33,
+    "focusedFiles": 3,
+    "liveFamilies": 3,
+    "takesPerFamily": 2,
+    "compiledOutputFrames": 450,
+    "observedOutputFrames": 900,
+    "finalExports": 12,
+    "supportedPacks": 0,
+    "pilotAcceptedEpisodes": 0
+  },
+  "actualRootSessions": [
+    {
+      "session": 77473,
+      "exitCode": 2,
+      "commands": ["format1", "schema1", "build1"]
+    },
+    {
+      "session": 32061,
+      "exitCode": 2,
+      "commands": ["format2", "build2"],
+      "unrun": ["focused2"]
+    },
+    {
+      "session": 4722,
+      "exitCode": 2,
+      "commands": ["format3", "build3"],
+      "unrun": ["focused3"]
+    },
+    {
+      "session": 89232,
+      "exitCode": 2,
+      "commands": ["format4", "build4"],
+      "unrun": ["focused4"]
+    },
+    {
+      "session": 4725,
+      "exitCode": 0,
+      "commands": ["format5", "build5", "focused5"]
+    },
+    {
+      "session": 88513,
+      "exitCode": 0,
+      "commands": ["format7", "build7", "focused7"]
+    },
+    {
+      "session": 32371,
+      "exitCode": 143,
+      "commands": ["docs8", "identity8", "inputs8", "fast8"],
+      "unrun": ["browser9", "hold9"],
+      "qualification": "Own aggregate shell30342 and inspected descendants explicitly received SIGTERM. Fast8 schema/boundary/format/lint/build prefix completed; unit run was partial. Actual root terminal143 is an intentional interruption, not a test pass or natural failure."
+    },
+    {
+      "session": 30892,
+      "exitCode": 1,
+      "commands": [
+        "format10",
+        "build10",
+        "focused10",
+        "identity10",
+        "inputs10",
+        "fast10",
+        "browser11"
+      ],
+      "unrun": ["hold11"]
+    },
+    {
+      "session": 88728,
+      "exitCode": 1,
+      "commands": [
+        "format12",
+        "build12",
+        "focused12",
+        "identity12",
+        "inputs12",
+        "fast12",
+        "browser13"
+      ],
+      "unrun": ["hold13"],
+      "qualification": "Natural clothespeg frame22 driver-key failure after four completed fixtures/eight exports; a later stop attempt found the root gone and sent no signal."
+    },
+    {
+      "session": 53733,
+      "exitCode": 0,
+      "commands": ["driver-probe"]
+    },
+    {
+      "session": 87689,
+      "exitCode": 0,
+      "commands": ["format14", "build14", "focused14"]
+    },
+    {
+      "session": 91413,
+      "exitCode": 0,
+      "commands": [
+        "driver-probe-after",
+        "docs15",
+        "identity15",
+        "inputs15",
+        "fast15",
+        "browser16",
+        "native2-17",
+        "hold17"
+      ]
+    }
+  ],
+  "failedRuns": [
+    {
+      "id": "browser13",
+      "reason": "Natural clothespeg frame22 driver-key mismatch after four fixtures/eight exports; hold13 unrun. Later attempted stop sent no signal. Direct Node/Chromium probe found identical rig values, positions/normal Float32 streams, and differing Float64 input strings. Spring association now explicitly uses Float32 input precision; sampled Float64 geometry and strict used GPU byte-digest checks are unchanged. Sampled old tape frame also exposed white-caption contrast loss; added dark backings and retain the original image."
+    },
+    {
+      "id": "browser11",
+      "reason": "Final fast10 passed4,241 units, then actual tape preparation rejected missing pinned artwork texture-font binding before any completed export. hold11 unrun. Compiler now binds required texture artwork to the document font and rejects unresolved alternate font references."
+    },
+    {
+      "id": "build1",
+      "reason": "Production optional-property/narrowing annotations and unsupported visibility enum failed TypeScript; corrected to actual supported contract and explicit terminal branches."
+    },
+    {
+      "id": "build2",
+      "reason": "New unit inspected unavailable native clock properties and inferred a union of control arrays with incompatible push signatures. Used property-presence checks and schema-parsed fixture types; focused2 unrun."
+    },
+    {
+      "id": "build3-build4",
+      "reason": "Fixture test omitted the parser-defaulted easing field. First repair failed to match formatted single-line source and left the same build error in build4; focused3/4 unrun. Applied guarded actual-source replacement."
+    },
+    {
+      "id": "fast8",
+      "reason": "Intentionally stopped after identifying source-only action minimum admission could accept a visible hold shortened by frame quantization. Actual root terminal143; browser9/hold9 unrun. Added visible action minimum check plus regression and camera controls; fresh held final batch is separate."
+    }
+  ],
+  "failedBrowserProof": {
+    "path": "/private/tmp/still-shift-ms2-narrated-cycles-3ciZPh/failure.json",
+    "bytes": 1236,
+    "sha256": "sha256:dca7815627e9280b458cdb76726eb292b2c8ac80507d736a5438c0504a1fc419"
+  },
+  "secondFailedBrowserProof": {
+    "path": "/private/tmp/still-shift-ms2-narrated-cycles-yXhP6X/failure.json",
+    "bytes": 189580,
+    "sha256": "sha256:45938abd2a3a70e05a07c77578ea9363155b38f0f917014823235c220b537cd7"
+  },
+  "driverProbeBefore": {
+    "path": "/private/tmp/still-shift-ms2-cues39-driver-probe.json",
+    "bytes": 1899,
+    "sha256": "sha256:c4bf4c88be4cb1e74d3d1d7151cf3f0a36325e4d8e6dcbf3c1b31efae613b525"
+  },
+  "driverProbeAfter": {
+    "path": "/private/tmp/still-shift-ms2-cues39-driver-probe-after.json",
+    "bytes": 1969,
+    "sha256": "sha256:9352dbe89ff1672719d5407c8d81e699a2c5df0d31d915c88d2f1cde22807019"
+  },
+  "rejectedCaptionFrame": {
+    "path": "/private/tmp/still-shift-ms2-cues39-contact23.png",
+    "bytes": 18722,
+    "sha256": "sha256:1801f6179bab88f8ff936fba321e46e37799b59092e43e76b5d79820080b4bd3"
+  },
+  "verification": [
+    {
+      "id": "format1",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-format1.log",
+        "bytes": 295,
+        "sha256": "sha256:21b57d33206b533f5241db21dbbdf9200cbf2eeabfb65b90dcda0f44d4a6746e"
+      }
+    },
+    {
+      "id": "schema1",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-schema1.log",
+        "bytes": 653,
+        "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+      }
+    },
+    {
+      "id": "build1",
+      "exitCode": 2,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-build1.log",
+        "bytes": 2799,
+        "sha256": "sha256:14b7eb43cb417bb9014132aec82228b58f1497864d4b974748392967539049c5"
+      }
+    },
+    {
+      "id": "format2",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-format2.log",
+        "bytes": 158,
+        "sha256": "sha256:4ee3f84c6665a222f38a32a4d7f4ea39caacbd88cc813a832610a5ef732fbd53"
+      }
+    },
+    {
+      "id": "build2",
+      "exitCode": 2,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-build2.log",
+        "bytes": 3703,
+        "sha256": "sha256:3d7135afdd715fc4ee3f2cd4b5d751f38584b8fe4e79625d4c9608d22182cb4f"
+      }
+    },
+    {
+      "id": "format3",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-format3.log",
+        "bytes": 108,
+        "sha256": "sha256:c9a2dcb8c6fc26c7396ecbf8397dc85194e1816c11e2dd42ce1da65d1c402cb0"
+      }
+    },
+    {
+      "id": "build3",
+      "exitCode": 2,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-build3.log",
+        "bytes": 485,
+        "sha256": "sha256:057a7c7c85b3deb34f40c905d2e3ac4c595f6b1d6ccbc491630db281bad20661"
+      }
+    },
+    {
+      "id": "format4",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-format4.log",
+        "bytes": 124,
+        "sha256": "sha256:dd96bf4ab3728184ba4ceec25dc474152ab1787eb372fb55d8b15a36200a9cbb"
+      }
+    },
+    {
+      "id": "build4",
+      "exitCode": 2,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-build4.log",
+        "bytes": 485,
+        "sha256": "sha256:057a7c7c85b3deb34f40c905d2e3ac4c595f6b1d6ccbc491630db281bad20661"
+      }
+    },
+    {
+      "id": "format5",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-format5.log",
+        "bytes": 49,
+        "sha256": "sha256:737ea0a41d0e6f4b38983ad5db20903440f4033bb9d112c20f311e8a1813b67f"
+      }
+    },
+    {
+      "id": "build5",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-build5.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "focused5",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-focused5.log",
+        "bytes": 720,
+        "sha256": "sha256:962b26af4fe1e0d04d9ecb2d4261f4e993ecc5c5dd41140f144883d2fae4b74b"
+      }
+    },
+    {
+      "id": "format6",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-format6.log",
+        "bytes": 78,
+        "sha256": "sha256:7ac17ccd0ce8c7f2f8db1226b6cdb7beac29e1e98fcff7e341445fe591823561"
+      }
+    },
+    {
+      "id": "format7",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-format7.log",
+        "bytes": 112,
+        "sha256": "sha256:4e511e575c711a9aa1688c3dec31fc73704071e5ff319c8b18dc629f8769bcb7"
+      }
+    },
+    {
+      "id": "build7",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-build7.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "focused7",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-focused7.log",
+        "bytes": 797,
+        "sha256": "sha256:1105a9964ca3b66052100f6ad7ff19e2f71cbc1ecd9dd59c145e3a43753d7a67"
+      }
+    },
+    {
+      "id": "docs8",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-docs8.log",
+        "bytes": 51,
+        "sha256": "sha256:d5f53b88ede682ad76fc39ba75a918dc3a89e16862e0e8ffcccafd47337ae1fc"
+      }
+    },
+    {
+      "id": "identity8",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-identity8.log",
+        "bytes": 260,
+        "sha256": "sha256:aa2b4bcea22a8e919d3d2b5ab083fdf6b0f126245f04d389e0f340cbee2cee8a"
+      }
+    },
+    {
+      "id": "fast8",
+      "exitCode": 143,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-fast8.log",
+        "bytes": 29535,
+        "sha256": "sha256:7ee4b8da3706a5c43577dae3dc348c5895176b2bc376f80f7c3d9cf50fbc2c5b"
+      }
+    },
+    {
+      "id": "format10",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-format10.log",
+        "bytes": 163,
+        "sha256": "sha256:51a5bf26219d4a1872f296a9b9a1220c32650526e20edc19096c673d6bd2d026"
+      }
+    },
+    {
+      "id": "build10",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-build10.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "focused10",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-focused10.log",
+        "bytes": 798,
+        "sha256": "sha256:f81e4138c77fc79f58514ce244df77cdcf51266e108d926627d8542d7bc73773"
+      }
+    },
+    {
+      "id": "identity10",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-identity10.log",
+        "bytes": 260,
+        "sha256": "sha256:aa2b4bcea22a8e919d3d2b5ab083fdf6b0f126245f04d389e0f340cbee2cee8a"
+      }
+    },
+    {
+      "id": "fast10",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-fast10.log",
+        "bytes": 36456,
+        "sha256": "sha256:ccce9b58b8bee8e66afe63427d05ee0a0149b48683a4396f8f7d21df2ab66830"
+      }
+    },
+    {
+      "id": "browser11",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-browser11.log",
+        "bytes": 1722,
+        "sha256": "sha256:7597786d8af637bc3a644aa399ee3cceecd74dc8717cb2b0f29c53045f1dbf12"
+      }
+    },
+    {
+      "id": "format12",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-format12.log",
+        "bytes": 163,
+        "sha256": "sha256:38a4ee394b7bf418d9dd8d628fcb13337306b82bb8e365542e761b5a7c221d8f"
+      }
+    },
+    {
+      "id": "build12",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-build12.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "focused12",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-focused12.log",
+        "bytes": 798,
+        "sha256": "sha256:3dbf792b9fe5b79b38cfc330bb58f8483a2d391777ee0d6abeedd97cfcc00c7e"
+      }
+    },
+    {
+      "id": "identity12",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-identity12.log",
+        "bytes": 260,
+        "sha256": "sha256:aa2b4bcea22a8e919d3d2b5ab083fdf6b0f126245f04d389e0f340cbee2cee8a"
+      }
+    },
+    {
+      "id": "fast12",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-fast12.log",
+        "bytes": 36845,
+        "sha256": "sha256:c658dee52d509a2c2ee217eb8a1afcf35ab4aac5863f733c9361dcf3fe4bac0d"
+      }
+    },
+    {
+      "id": "browser13",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-browser13.log",
+        "bytes": 2052,
+        "sha256": "sha256:38f52b4e695dd91ceb6c3482e60241c0ca0d5ef9a730661b1184ce34a128f787"
+      }
+    },
+    {
+      "id": "driver-probe",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-driver-probe.log",
+        "bytes": 1451,
+        "sha256": "sha256:6bcece36647eee5e6c4c3780da6330f64d0f0fd5766a59c4524c452f59973853"
+      }
+    },
+    {
+      "id": "format14",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-format14.log",
+        "bytes": 173,
+        "sha256": "sha256:8ed3dfea0fbd34f81e0a7013f755bf1715431d9732e4adb0b88f0b8ff406529f"
+      }
+    },
+    {
+      "id": "build14",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-build14.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "focused14",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-focused14.log",
+        "bytes": 864,
+        "sha256": "sha256:d1baf98d9af8e8754a0f26e4e35e176a6b4a8c6210a39be175fa540613f09cf2"
+      }
+    },
+    {
+      "id": "driver-probe-after",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-driver-probe-after.log",
+        "bytes": 1521,
+        "sha256": "sha256:e38d6c2737784052a6cde4b26e1263b15920d6a139fdb9b93f93f3fea0b3c0d1"
+      }
+    },
+    {
+      "id": "docs15",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-docs15.log",
+        "bytes": 51,
+        "sha256": "sha256:8947764f10c9332d59402fc2fd4a2cedafde4817464c61a571d550e72f6ddc2c"
+      }
+    },
+    {
+      "id": "identity15",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-identity15.log",
+        "bytes": 260,
+        "sha256": "sha256:aa2b4bcea22a8e919d3d2b5ab083fdf6b0f126245f04d389e0f340cbee2cee8a"
+      }
+    },
+    {
+      "id": "fast15",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-fast15.log",
+        "bytes": 35339,
+        "sha256": "sha256:43ca5f4a644cd18d4fb00884cd6f942191dced99fc6e8567633a6e35b7f767ba"
+      }
+    },
+    {
+      "id": "browser16",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-browser16.log",
+        "bytes": 386,
+        "sha256": "sha256:d5ef8c13c33c92277f6cdd49534ac181b6c7ebd28439e1837a55d4bdd3b04e7c"
+      }
+    },
+    {
+      "id": "native2-17",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-native2-17.log",
+        "bytes": 1218,
+        "sha256": "sha256:47bb64c12288ff5846a4a70e9741989777437275b2f6c1b2d734f775a614c282"
+      }
+    },
+    {
+      "id": "hold17",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cues39-hold17.log",
+        "bytes": 192,
+        "sha256": "sha256:bf64932f2f621c7e3e76ff03b40af86dbf1ece07c7d76af1592febf7fa4b9c36"
+      }
+    }
+  ],
+  "browserResult": {
+    "directory": "/private/tmp/still-shift-ms2-narrated-cycles-6GQ7JT",
+    "status": "passed",
+    "families": 3,
+    "takesPerFamily": 2,
+    "exports": 12,
+    "observedOutputFrames": 900,
+    "compiledOutputFrames": 450,
+    "syntheticAudio": true
+  },
+  "browserRun": {
+    "path": "/private/tmp/still-shift-ms2-narrated-cycles-6GQ7JT/run.json",
+    "bytes": 333747,
+    "sha256": "sha256:bbbf84a0c3a7e486677ddca50a2d805a3f3d866b23437bfb3907a240b1cdf631"
+  },
+  "compiledReceipts": [
+    {
+      "family": "tape-hook",
+      "name": "tape-hook-144000",
+      "sampleCount": 144000,
+      "frameCount": 90,
+      "compiled": {
+        "path": "/private/tmp/still-shift-ms2-narrated-cycles-6GQ7JT/tape-hook-144000.compiled.json",
+        "bytes": 29169,
+        "sha256": "sha256:5b8ab446b980a42223d85b7d83c6b56fb5dc13af22945d4bfd36943b7e8ac892"
+      },
+      "outputChecksums": [
+        "sha256:ea3585546529903e79fc090080809be54843173ecb8cccfbd1cba06086737717",
+        "sha256:ea3585546529903e79fc090080809be54843173ecb8cccfbd1cba06086737717"
+      ],
+      "sourceAudioSha256": "sha256:3e7d9e9c93659f0c6ce83510eef7931947715d5e3b76c77f17654783b82a373c"
+    },
+    {
+      "family": "tape-hook",
+      "name": "tape-hook-96000",
+      "sampleCount": 96000,
+      "frameCount": 60,
+      "compiled": {
+        "path": "/private/tmp/still-shift-ms2-narrated-cycles-6GQ7JT/tape-hook-96000.compiled.json",
+        "bytes": 29148,
+        "sha256": "sha256:191a1760ed48bfb8a545a4f05ab12ce71a280f79917689005af14b61da35d1f6"
+      },
+      "outputChecksums": [
+        "sha256:202ab98c4a16d2fd8e223b363426de8d34585554e07dc6d4bed6e5ecc470eaff",
+        "sha256:202ab98c4a16d2fd8e223b363426de8d34585554e07dc6d4bed6e5ecc470eaff"
+      ],
+      "sourceAudioSha256": "sha256:13d9deff4b6de542ec38cb686cf38df11c07223e8ccc71d7a990bd1f9504c30e"
+    },
+    {
+      "family": "cable-tie",
+      "name": "cable-tie-144000",
+      "sampleCount": 144000,
+      "frameCount": 90,
+      "compiled": {
+        "path": "/private/tmp/still-shift-ms2-narrated-cycles-6GQ7JT/cable-tie-144000.compiled.json",
+        "bytes": 29206,
+        "sha256": "sha256:d7ef4f9f1a02290dea6bba7dc3e93095dba1149dc007ad5876d7b184c35d7f58"
+      },
+      "outputChecksums": [
+        "sha256:205018dcd4ccb6688cfcf542a869d33490d41215ec227d5329ee728042b90753",
+        "sha256:205018dcd4ccb6688cfcf542a869d33490d41215ec227d5329ee728042b90753"
+      ],
+      "sourceAudioSha256": "sha256:3e7d9e9c93659f0c6ce83510eef7931947715d5e3b76c77f17654783b82a373c"
+    },
+    {
+      "family": "cable-tie",
+      "name": "cable-tie-96000",
+      "sampleCount": 96000,
+      "frameCount": 60,
+      "compiled": {
+        "path": "/private/tmp/still-shift-ms2-narrated-cycles-6GQ7JT/cable-tie-96000.compiled.json",
+        "bytes": 29185,
+        "sha256": "sha256:e3145a4a5355756cd2113730b6735a8a7f57d93dbab89ac75e4b1cd7dc0792d7"
+      },
+      "outputChecksums": [
+        "sha256:7aef2c73fb5004a9bebaab45388356cb8f87046be1945cefe9baf88814c47caf",
+        "sha256:7aef2c73fb5004a9bebaab45388356cb8f87046be1945cefe9baf88814c47caf"
+      ],
+      "sourceAudioSha256": "sha256:13d9deff4b6de542ec38cb686cf38df11c07223e8ccc71d7a990bd1f9504c30e"
+    },
+    {
+      "family": "clothespeg",
+      "name": "clothespeg-144000",
+      "sampleCount": 144000,
+      "frameCount": 90,
+      "compiled": {
+        "path": "/private/tmp/still-shift-ms2-narrated-cycles-6GQ7JT/clothespeg-144000.compiled.json",
+        "bytes": 30202,
+        "sha256": "sha256:d73e1e3dba82425e7dc67c247d6a379d21450ba149ef43831e318434a1039305"
+      },
+      "outputChecksums": [
+        "sha256:652c35831d6dc0fb06e724b1be7bde285ba53c1d0a20ae2b6e0ad2b5ad8ab2a3",
+        "sha256:652c35831d6dc0fb06e724b1be7bde285ba53c1d0a20ae2b6e0ad2b5ad8ab2a3"
+      ],
+      "sourceAudioSha256": "sha256:3e7d9e9c93659f0c6ce83510eef7931947715d5e3b76c77f17654783b82a373c"
+    },
+    {
+      "family": "clothespeg",
+      "name": "clothespeg-96000",
+      "sampleCount": 96000,
+      "frameCount": 60,
+      "compiled": {
+        "path": "/private/tmp/still-shift-ms2-narrated-cycles-6GQ7JT/clothespeg-96000.compiled.json",
+        "bytes": 30181,
+        "sha256": "sha256:68acebdcd147d3f61c8a1ec362e5ba5e53d88194e0dabf96ae6047d10d59ffc5"
+      },
+      "outputChecksums": [
+        "sha256:51a360ac277e18118ddafa51b1ffc80592056a33230e5b7e5bc5e05c92955b87",
+        "sha256:51a360ac277e18118ddafa51b1ffc80592056a33230e5b7e5bc5e05c92955b87"
+      ],
+      "sourceAudioSha256": "sha256:13d9deff4b6de542ec38cb686cf38df11c07223e8ccc71d7a990bd1f9504c30e"
+    }
+  ],
+  "remaining": [
+    "Complete rendered label layout/readability, registry/discovery/editing and coverage/typography acceptance.",
+    "Complete genuine spoken-input/owner-review gates, supported pack promotion, whole resources/lifetime, required full software/benchmark and final installed verification before MS2 PR and MS3."
+  ],
+  "native2Regressions": [
+    {
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-shape-world-XpmhzS",
+        "status": "passed",
+        "frames": 5,
+        "scope": "browser-world-and-pixels-only"
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-shape-world-XpmhzS/run.json",
+        "bytes": 2976,
+        "sha256": "sha256:610053bb8d20caaf4928ca1f0e40b3a77d9e9c1235e47b0a3c3f66c61f5a0231"
+      }
+    },
+    {
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-used-streams-OVV3Kh",
+        "status": "passed",
+        "frames": 6,
+        "negatives": 11,
+        "scope": "standalone-used-color-streams-only"
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-used-streams-OVV3Kh/run.json",
+        "bytes": 7870,
+        "sha256": "sha256:375b8382c79e7bd74e79b85232334a4aad278b477980561064ee64757cf31daa"
+      }
+    },
+    {
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-frame-observation-HJl9jZ",
+        "status": "passed",
+        "frames": 8,
+        "negatives": 4,
+        "scope": "standalone-full-observed-frame2"
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-frame-observation-HJl9jZ/run.json",
+        "bytes": 6282,
+        "sha256": "sha256:36188fe3401b13f34608b49d9991adb2012082f6e321e3ef7c0eeef55f4ddf45"
+      }
+    },
+    {
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-composition-v2-FHyOMR",
+        "status": "passed",
+        "captures": 4,
+        "negatives": 15
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-composition-v2-FHyOMR/run.json",
+        "bytes": 95594,
+        "sha256": "sha256:f2c9d08f2f737653ce08e7cf9ecd790db6cfc4dcb500730cbc4d3e78da486d48"
+      }
+    },
+    {
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-normal-export2-Q8QIr1",
+        "status": "passed",
+        "exports": 2
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-normal-export2-Q8QIr1/run.json",
+        "bytes": 43909,
+        "sha256": "sha256:2ed3b27e169ff6956313acc0ac1f6f8370280bd46b5c074f05dc25bef965c2ce"
+      }
+    },
+    {
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-lab2-RKJjyh",
+        "status": "passed",
+        "records": 20
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-lab2-RKJjyh/run.json",
+        "bytes": 26376,
+        "sha256": "sha256:299bc351ef106e88c953b6ccb8d9b5ca6eb0bfcba86c6e7e474d8a74f77f6cac"
+      }
+    }
+  ],
+  "captionContrastAfter": {
+    "frame": {
+      "path": "/private/tmp/still-shift-ms2-cues39-contact23-after.png",
+      "bytes": 18947,
+      "sha256": "sha256:b5513af595e2f4df60b2c1b7104996e2602ce873065f7ed9805b5a1a9cca2e8c"
+    },
+    "qualification": "Agent inspected one repaired tape-hook contact frame. The dark caption backing is visible; this is not complete rendered label QA or human acceptance."
+  },
+  "driverIdentityQualification": "Spring key uses declared Float32 input precision; Float64 sampling remains unchanged. Reproduced Node/Chromium inputs differ by at most5e-16, while every packed position/normal is identical. Current actual exports still validate exact used GPU position/normal/index digests. No observation tolerance or byte check was weakened."
+}

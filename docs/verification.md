@@ -87,6 +87,13 @@ and export groups. It retains source identities, actual pixels and failed
 artifacts. Native E01, saved edits/installed lifecycle, representative timing,
 memory and human playback/listening remain separate acceptance requirements.
 
+`pnpm test:browser:mechanism-narrated-cycles` checks the supplied-cue compiler
+against all three candidate families and two synthetic local PCM recording lengths.
+It renders repeated complete cycles with native observation closure replay and
+compares encoded output, every decoded video frame and decoded audio. It is included
+in `pnpm test`; run it serially with other browser/export groups. Synthetic timing
+fixtures do not establish spoken narration, supported packs or pilot acceptance.
+
 ## Verification policy
 
 ### Deferred WebGL performance
