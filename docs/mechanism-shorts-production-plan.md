@@ -781,6 +781,13 @@ mechanism families establish whether the architecture transfers.
       [Node owner evidence](./mechanism-shorts-ms2-node-owner-results.json) retains
       failures and pre-publication telemetry limits. Root I/O/text/serialization,
       remaining producers, whole world/body/replay/full/installed acceptance stay open;
+      thirty-seventh slice admits root descriptor/body/text/parser and scene JSON/
+      UTF-8 encoding under the shared Node allowance, with scoped rollback and
+      actual backing cleanup. Fast20 with 4,223 units, Node21 with 30 checks and
+      current PBR/native2 groups pass on held inputs20, preserving prior video/pixels.
+      [Root I/O evidence](./mechanism-shorts-ms2-root-io-results.json) retains actual
+      lint/unit failures. Semantic validation/report and remaining producers,
+      lifetime/whole world/body/replay/full/installed requirements stay open;
       this criterion stays unchecked. See the [import API](./rigid-gltf-import.md) and
       [retained results](./mechanism-shorts-ms2-results.json).
 - [ ] Implement slider hard stops, hinge/lever, deterministic spring return and

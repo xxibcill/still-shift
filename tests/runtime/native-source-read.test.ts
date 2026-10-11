@@ -10,7 +10,9 @@ import {
 } from "../../packages/animation-engine/src/native-source-read.ts";
 const monitor = vi.hoisted(() => ({
   buffers: [] as number[],
+  backings: [] as ArrayBufferLike[],
   closed: 0,
+  closeFault: undefined as undefined | { reason: unknown },
   afterRead: undefined as undefined | (() => Promise<void>),
 }));
 vi.mock("node:fs/promises", async (importOriginal) => {
@@ -22,8 +24,10 @@ vi.mock("node:fs/promises", async (importOriginal) => {
         read = handle.read.bind(handle),
         close = handle.close.bind(handle);
       vi.spyOn(handle, "read").mockImplementation(async (...args) => {
-        if (ArrayBuffer.isView(args[0]))
+        if (ArrayBuffer.isView(args[0])) {
           monitor.buffers.push(args[0].byteLength);
+          monitor.backings.push(args[0].buffer);
+        }
         const result = await read(...args);
         const after = monitor.afterRead;
         monitor.afterRead = undefined;
@@ -33,6 +37,7 @@ vi.mock("node:fs/promises", async (importOriginal) => {
       vi.spyOn(handle, "close").mockImplementation(async () => {
         monitor.closed++;
         await close();
+        if (monitor.closeFault) throw monitor.closeFault.reason;
       });
       return handle;
     },
@@ -41,7 +46,9 @@ vi.mock("node:fs/promises", async (importOriginal) => {
 const roots: string[] = [];
 afterEach(async () => {
   monitor.buffers = [];
+  monitor.backings = [];
   monitor.closed = 0;
+  monitor.closeFault = undefined;
   monitor.afterRead = undefined;
   for (const root of roots.splice(0))
     await rm(root, { recursive: true, force: true });
@@ -89,6 +96,9 @@ it("rejects actual growth during a read within the originally admitted backing s
     /changed during bounded read/,
   );
   expect(Math.max(...monitor.buffers)).toBe(bytes.length + 1);
+  expect(monitor.backings.every((backing) => backing.byteLength === 0)).toBe(
+    true,
+  );
   expect(monitor.closed).toBe(1);
 });
 it("preserves cancellation during a real read and closes its descriptor", async () => {
@@ -101,6 +111,9 @@ it("preserves cancellation during a real read and closes its descriptor", async 
   await expect(
     readNativeSourceBytes(path, "assets.cancelled", controller.signal),
   ).rejects.toBe(reason);
+  expect(monitor.backings.every((backing) => backing.byteLength === 0)).toBe(
+    true,
+  );
   expect(monitor.closed).toBe(1);
 });
 it.skipIf(process.platform === "win32")(
@@ -137,4 +150,21 @@ it("checks actual descriptor capacity before allocating or reading and closes on
   expect(calls).toEqual([bytes.length + 1]);
   expect(monitor.buffers).toEqual([]);
   expect(monitor.closed).toBe(1);
+});
+
+it("preserves a null read failure through secondary close failure and retires the actual backing", async () => {
+  const dir = await root(),
+    path = join(dir, "close-failure.json");
+  await writeFile(path, '{"source":true}');
+  monitor.afterRead = async () => {
+    throw null;
+  };
+  monitor.closeFault = { reason: Error("secondary close") };
+  await expect(readNativeSourceBytes(path, "assets.failure")).rejects.toBe(
+    null,
+  );
+  expect(monitor.closed).toBe(1);
+  expect(monitor.backings.every((backing) => backing.byteLength === 0)).toBe(
+    true,
+  );
 });

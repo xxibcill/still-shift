@@ -1,3 +1,4 @@
+export { serializeCompositionNodeJson } from "./composition-node-json.ts";
 import type { CompositionNodeMemory } from "./composition-node-memory.ts";
 export { CompositionNodeMemory } from "./composition-node-memory.ts";
 import { compositionPcmBoundary } from "@still-shift/scene-contract";
@@ -1683,7 +1684,13 @@ export const exportScene = async (
       depthChecksum,
       scene,
     };
+    const admittedScene = resultBudget
+      ? request.sceneManifestContents === undefined
+        ? resultBudget.serializeJson(sceneManifest, 2, "\n")
+        : resultBudget.retainText(request.sceneManifestContents)
+      : undefined;
     const serializedScene =
+      admittedScene?.text ??
       request.sceneManifestContents ??
       `${JSON.stringify(sceneManifest, null, 2)}\n`;
     const sceneChecksum = contentChecksum(serializedScene);

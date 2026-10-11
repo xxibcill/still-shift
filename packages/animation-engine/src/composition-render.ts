@@ -16,6 +16,7 @@ import {
 import {
   exportScene,
   CompositionNodeMemory,
+  serializeCompositionNodeJson,
   type ExportMetrics,
   type ExportRequest,
   COMPOSITION_OUTPUT_VERSION,
@@ -163,7 +164,8 @@ export async function renderComposition(request: {
         if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
       }
     // The renderer and evaluator versions participate in cache identity.
-    const manifestBytes = `${JSON.stringify(
+    const manifest = serializeCompositionNodeJson(
+      nodeMemory,
       {
         schemaVersion: "composition-render-1",
         rendererVersion: loaded.scene.rendererVersion,
@@ -182,9 +184,10 @@ export async function renderComposition(request: {
             }
           : {}),
       },
-      null,
       2,
-    )}\n`;
+      "\n",
+    );
+    const manifestBytes = manifest.text;
     let result!: CompositionRenderResult;
     await exportScene({
       nodeMemory,

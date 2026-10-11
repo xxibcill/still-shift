@@ -558,7 +558,26 @@ Result transients drop their control records when released.
 
 Actual source/result contention and hashing cancellation controls pass. Current
 normal exports report `composition-node-source-and-result-capacity`; their metrics
-are snapshots before final publication validation. Root composition I/O/text/
-serialization, other media/code-identity producers, whole world/body/replay,
+are snapshots before final publication validation. Root I/O and scene serialization admission are described below. Semantic
+validation/report and other media/code-identity producers, whole world/body/replay,
 physical RSS, full milestone and final installed verification remain separate.
 See [Node owner evidence](./mechanism-shorts-ms2-node-owner-results.json).
+
+## Root I/O and scene JSON admission
+
+Root composition reads use a verified regular descriptor, exact backing plus
+sentinel, final stat and cancellation cleanup. Their ceiling follows remaining
+Node body/text capacity; the native source ceiling remains fixed at 32 MiB.
+Root body/UTF-16 decode and parser trees contend with existing source/results.
+Child producer scopes roll back only their own root/native reservations on error;
+completed products transfer to the render owner. Failed descriptor reads detach
+private backing and preserve the first cause through a secondary close failure.
+
+Plain-data scene serialization counts actual JSON characters and UTF-8 bytes,
+including escapes, surrogate pairs/lone surrogates, array holes and pretty spacing.
+It rejects accessors/hooks, inherited array hooks, non-plain data and cycles before
+the serializer runs. Render manifests and default composition scene manifests
+admit text plus write encoding first; supplied strings admit write encoding.
+Semantic validation/diagnostic report storage, other producers, final lifecycle/
+RSS, aggregate world/body/replay, full milestone and installed refresh remain open.
+See [Root I/O evidence](./mechanism-shorts-ms2-root-io-results.json).

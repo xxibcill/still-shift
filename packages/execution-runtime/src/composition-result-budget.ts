@@ -1,3 +1,4 @@
+import { serializeCompositionNodeJson } from "./composition-node-json.ts";
 import type { MemoryLease } from "../../renderer-core/src/managed-memory.ts";
 import { CompositionNodeMemory } from "./composition-node-memory.ts";
 import type { CompositionResultSize } from "./composition-result-size.ts";
@@ -46,6 +47,19 @@ export class CompositionResultBudget {
       },
     };
   }
+  serializeJson(value: unknown, space = 0, suffix = "") {
+    const result = serializeCompositionNodeJson(
+      this.memory,
+      value,
+      space,
+      suffix,
+    );
+    this.track(result.lease);
+    return result;
+  }
+  retainText(text: string) {
+    return { text, lease: this.reserve(Buffer.byteLength(text) + 256) };
+  }
   reserveText(characters: number) {
     return this.reserve(characters * 4 + 256);
   }
@@ -56,6 +70,10 @@ export class CompositionResultBudget {
   }
   private reserve(bytes: number) {
     const lease = this.memory.reserve(bytes);
+    this.track(lease);
+    return lease;
+  }
+  private track(lease: MemoryLease) {
     this.owned.add(lease);
     const release = lease.release;
     lease.release = () => {
@@ -65,7 +83,6 @@ export class CompositionResultBudget {
         this.owned.delete(lease);
       }
     };
-    return lease;
   }
   get statistics() {
     return {

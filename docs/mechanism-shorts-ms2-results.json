@@ -15970,6 +15970,41 @@
         }
       },
       "qualification": "Current fast15/Node16 and actual PBR composition/normal/mixed plus all six native2 groups pass on unchanged inputs15. The render Node metrics are shared-ledger snapshots (before final publication validation), not complete lifetime/process-RSS measurements. Root composition file/text/serialization, other media/code-identity producers, aggregate world/body/replay, final full milestone gates and installed refresh remain separate. Direct producers that do not pass a shared owner retain their original result-only scope; standalone preparation snapshots cover its producer before caller handoff. No quota increase, rendered-math change, whole-Node completion, human acceptance or publication is claimed."
+    },
+    {
+      "id": "root-io-slice-37",
+      "status": "bounded-root-io-and-scene-serialization-verified-in-stages",
+      "record": "docs/mechanism-shorts-ms2-root-io-results.json",
+      "workingInputs": {
+        "manifest": {
+          "path": "/private/tmp/still-shift-ms2-root-io37-inputs20.json",
+          "bytes": 431932,
+          "sha256": "sha256:319100253b17c19edf428d62e353d7cc90290eebbda591ef973b58ea9759a64b"
+        },
+        "files": 2532,
+        "inputBytes": 119224091,
+        "selection": {
+          "roots": [
+            "apps/",
+            "packages/",
+            "scripts/",
+            "tests/",
+            "tools/",
+            "services/",
+            "benchmarks/",
+            "examples/",
+            "assets/",
+            "catalogs/"
+          ],
+          "rootFiles": "all Git-tracked or nonignored regular root files",
+          "packageProse": [
+            "docs/npm-package-readme.md",
+            "docs/npm-third-party-notices.md"
+          ],
+          "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+        }
+      },
+      "qualification": "Current held fast20/Node21 and actual PBR composition/normal/mixed plus all six native2 groups pass. Root read and scene serialization capacities are declared producer storage; semantic validation/diagnostic report allocations, other media/code-identity producers, final lifecycle/RSS and aggregate world/body/replay remain separate. Direct legacy non-composition exports keep their prior serialization route. Result callback/report producers retain earlier bounded protocol and still require the broader audit. No complete whole-Node/MS2 gate, final installed refresh, human acceptance or publication is claimed."
     }
   ],
   "implementation": {
@@ -17238,10 +17273,39 @@
         "Admit root composition I/O and text/serialization plus remaining Node/media/code-identity producers into the same allowance; refresh lifetime/cleanup evidence and whole world/body/replay requirements.",
         "Finish remaining MS2 packs/rigs/events/labels/cues/help/coverage/typography, required full gates and final installed verification before MS2 PR and MS3."
       ]
+    },
+    "thirtySeventhSlice": {
+      "status": "bounded-root-io-and-scene-serialization-verified-in-stages",
+      "scope": [
+        "Root composition body/text and parser-tree capacities now use the render Node owner. A verified regular descriptor admits exact backing plus sentinel and UTF-16 decoding before allocation; remaining Node capacity controls root file admission while native files retain their fixed 32 MiB ceiling.",
+        "Producer child scopes share the same counter and roll back only their own reservations on failure. Completed root/native products transfer to the render owner. Later failed binary verification preserves unrelated owners; closed child scopes reject new allocations.",
+        "Exact plain-data JSON/UTF-8 sizing includes escaping, surrogate pairs/lone surrogates, finite numbers, omitted properties, array holes and pretty whitespace. Reject accessors/hooks/inherited array hooks/cycles before serialization. Root render and default composition scene manifests admit text and write encoding first; supplied text admits its write encoding.",
+        "Descriptor errors/cancellation retire actual private backing and preserve the original cause, including null, through secondary close failure. Native growth/cancel cases now also verify backing detachment."
+      ],
+      "counts": {
+        "unitTests": 4223,
+        "unitFiles": 414,
+        "newControls": 8,
+        "newUnitControls": 4,
+        "newFilesystemControls": 4,
+        "strengthenedBackingControls": 2,
+        "owningNodeTests": 30,
+        "owningNodeFiles": 7,
+        "normalExports": 2,
+        "mixedRuns": 8,
+        "pbrCompositionFrames": 6,
+        "native2BrowserGroups": 6,
+        "supportedPacks": 0,
+        "pilotSupportedEpisodes": 0
+      },
+      "remaining": [
+        "Admit semantic validation/diagnostic reports, other media/code-identity producers and final lifetime evidence into the Node allowance; finish aggregate world/body/replay requirements.",
+        "Finish remaining MS2 packs/rigs/events/labels/cues/help/coverage/typography, required full gates and final installed verification before MS2 PR, then MS3."
+      ]
     }
   },
   "limits": [
-    "Thirty-six slices include shared native ingestion/catalogue/result ownership with unchanged 512 MiB allowance, source3 normal/mixed export and previous installed proof at b4fc65ed. Root composition I/O/serialization and remaining producers, whole world/body/replay, remaining MS2/full gates and final installed refresh remain. Current fast with 4,219 and scoped Node/PBR/native2 groups pass; failures remain retained. Supported packs/pilot 0.",
+    "Thirty-seven slices include shared Node source/catalogue/results, bounded root descriptor/text/parser storage and admitted scene JSON/UTF8 encoding. Semantic validation/report and other producers, whole world/body/replay, remaining MS2/full gates and final installed refresh remain. Current fast 4,223 and scoped Node/PBR/native2 groups pass; earlier failures remain. Supported packs/pilot 0.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

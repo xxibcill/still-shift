@@ -45,17 +45,18 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Thirty-six slices now share one fixed 512 MiB Node owner across native ingestion,
-  admitted catalogue/variants, export results/RPC and source revalidation. Existing
-  admission grows without a release gap; failed/cancelled preparation retires local
-  reservations and preserves other owners. Result transient records retire on release.
-  Fast15 passes 4,219 units; 26 Node checks and live PBR composition/normal/mixed/
-  six native2 groups pass on held inputs15. Two MP4s/six raw bodies preserve slice35.
-  The render metrics show the shared scope but are pre-publication snapshots.
-  Next: root composition I/O/text/serialization and remaining producers, whole
-  world/body/replay, remaining MS2 authoring/full gates and final installed refresh.
+  Thirty-seven slices now admit root descriptor/body/text/parser storage and scene
+  JSON/UTF-8 encoding under the fixed shared Node allowance. Child producer scopes
+  roll back root/native reservations without closing unrelated owners; completed
+  products transfer. Descriptor failure retires actual backing and preserves first
+  cause through close failure. Native source 32 MiB remains fixed.
+  Fast20 passes 4,223 units; 30 Node checks and current PBR/normal/mixed/six native2
+  groups pass on held inputs20. Two MP4s/six raw bodies preserve slice36 bytes.
+  Lint and actual inherited-hook unit failures remain retained; attempted process
+  stops sent no signal. Next: semantic validation/report and remaining producers,
+  lifetime/whole world/body/replay, remaining MS2 authoring/full/installed criteria.
   Supported packs/pilot 0; no merge/publication, human acceptance or paid generation.
-  [Node owner evidence](./mechanism-shorts-ms2-node-owner-results.json),
+  [Root I/O evidence](./mechanism-shorts-ms2-root-io-results.json),
   [MS2 results](./mechanism-shorts-ms2-results.json), [PBR API](./native-pbr-resources.md).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
@@ -214,6 +215,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 root I/O and scene serialization admission
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `073be810`.
+- **Done:** regular descriptor admission before root allocation, bounded body/text/
+  parser capacity, scoped source rollback/transfer and exact JSON/UTF-8 admission.
+  Native 32 MiB remains fixed; read failures detach backing and preserve first cause.
+- **Results:** four unit/four new filesystem controls and two stronger backing
+  controls; fast20 passes 4,223 units, Node21 passes 30 checks and PBR/native2 groups
+  pass on held inputs20. Prior MP4/raw pixel bytes remain exact.
+- **Retained:** lint and inherited-array-hook unit failures; both stop attempts
+  sent no signal, so the second aggregate is an actual failure, not an interruption.
+- **Next:** semantic validation/reports and remaining producers; aggregate/lifetime,
+  remaining MS2 authoring/full gates and final installed refresh before PR/MS3.
+- **Records:** [Root I/O evidence](./mechanism-shorts-ms2-root-io-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-11 — MS2 shared native catalogue and Node result owner
 
