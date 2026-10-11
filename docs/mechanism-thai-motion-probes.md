@@ -33,3 +33,31 @@ resolved states, attached marks, overlap, gaps and complete meaning at master an
 declared 320/360 LANCZOS bitmap reductions. Retyping particularly requires active
 transition inspection beyond the saved normal text poses. No default tracking or
 rendering behavior has changed, and no human acceptance is inferred.
+
+## Native encoded and lossless evidence
+
+The saved matrix is rendered with `node --import tsx
+tests/browser/mechanism-thai-motion-render.ts`; its lossless/seek companion is
+`node --import tsx tests/browser/mechanism-thai-motion-preview.ts`. Both consume
+and verify the exact retained preflight root in its evidence record.
+
+[Slice49 native evidence](./mechanism-shorts-ms2-thai-native-results.json) records
+142 actual streams/3,408 encoded frames, 3,072 fully decoded frames, 9,216
+native/320/360 PNGs and 426 inspection sheets. Every case retains frames 2–19
+consecutively at all three sizes. Native contact sheets declare their crop and
+resize; original 1,920×1,080 PNGs remain intact. The reduced full masters are
+320×180 and 360×203 LANCZOS bitmap proxies.
+
+All 128 native previews pass forward, reverse and shuffled draws. Seventy settled
+pose/alias cases match intact controls exactly in lossless native pixels, verified
+independently from saved PNGs. Separate MP4s have different decoded pixel values;
+lossless equality prevents treating these as settled shaping faults. Default tracking and
+explicit zero overrides preserve full preview, MP4 and decoded output identity.
+
+Seventeen sampled visual artifacts cover every text and selected motion/boundary
+states. They retain marks and resolved copy in the inspected samples. Active
+retyping produces incomplete prices/units/qualifications; early opacity can leave
+quantity suffixes at low contrast. Those active states cannot certify complete
+messages. This sampled review does not certify all matrix cells or general finer
+Thai motion. Remaining mark/overlap/gap disposition and cell review are explicit
+pending work; the combined count-fit/Thai acceptance checkbox stays open.

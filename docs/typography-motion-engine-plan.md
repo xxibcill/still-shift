@@ -706,3 +706,16 @@ span authoring attempts remain retained. Alias font boundaries use identical Not
 bytes; only X2 controls use the distinct Plex face. These are preflight findings.
 Consecutive native encoded/320/360 inspection, active retype, marks/overlap/gaps,
 complete meaning and supported-unit findings remain pending for both Thai rows.
+
+### Thai native packet (2026-10-12)
+
+[Slice49](./mechanism-shorts-ms2-thai-native-results.json) renders all 128 saved
+cases, probes all 142 streams and fully decodes 3,072 frames. Every active frame
+2–19 is retained in native and declared 320/360 bitmap sheets. Native seek proof
+covers all 24 frames forward/reverse/shuffled; 70 settled pose/alias comparisons
+and 256 saved lossless samples independently match exactly. Encoded differences
+remain recorded as diagnostic metrics rather than a shaping-failure claim.
+Seventeen sampled visual artifacts cover all seven texts and selected routes.
+Remaining full-cell mark/overlap/gap review and supported-unit findings still gate
+broader finer-Thai adoption. Partial retype/low-opacity quantity states cannot
+certify complete messages. No renderer or ordinary tracking behavior changed.

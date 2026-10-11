@@ -45,18 +45,19 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Forty-eight slices now include all six Thai strings plus hashed production-copy
-  preflight: 128 source/composition/layout receipts, 3,072 pose frames, seven strict
-  wrong-font negatives and default/explicit-zero pairs independently audited.
-  Fast3 passes 4,286 units/420 files after sequential preflight; held 2,562 inputs/
-  119,528,865B remain fixed. Two failed authoring controls retained and corrected.
-  Native encoded consecutive windows, marks/overlap/gaps, 320/360 reductions and
-  supported-unit findings remain pending; Thai risk acceptance is still open.
-  Count-fit and explicit weight/native scopes retain their separate saved proof.
-  Next: encoded Thai inspection, coverage, broader labels/continuous readability,
-  genuine speech and remaining resource/full/final gates. Supported packs/pilot 0;
+  Forty-nine slices now render the exact 128-case Thai matrix: 142 streams/
+  3,408 encoded frames, 3,072 decoded frames, 9,216 PNGs and 426 sheets audited.
+  All 128 native previews pass 9,216 seek draws; 70 settled pose/alias comparisons
+  and 256 lossless PNG samples independently match. Separate encoded differences
+  prompted the lossless diagnostic; default/explicit-zero output identity holds.
+  Final fast2: 4,286 units/420 files; 2,564 held inputs/119,541,904B fixed.
+  Seventeen sampled visual artifacts cover every text but do not certify all cells;
+  full finer-Thai mark/overlap/gap disposition remains pending. Active partial/low-
+  contrast quantities are diagnostic negatives, not certified complete messages.
+  Next: remaining Thai cell review/support findings, coverage, broader labels/
+  continuous readability, genuine speech and resource/full/final gates. Packs/pilot 0;
   no merge/publication, human acceptance or paid generation.
-  [Thai preflight evidence](./mechanism-shorts-ms2-thai-preflight-results.json),
+  [Thai native evidence](./mechanism-shorts-ms2-thai-native-results.json),
   [probe scope](./mechanism-thai-motion-probes.md), [MS2 results](./mechanism-shorts-ms2-results.json).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
@@ -215,6 +216,25 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — MS2 slice49: full native Thai exports and lossless seek proof
+
+- Exact saved 128-case matrix recompiles identically before 142 actual streams/
+  3,408 frames. Fourteen repeated controls and zero/default/explicit-zero identities
+  pass. Recovered the interrupted owning native1/fast1 session to actual exit 0.
+- Independent audit probes all streams and decodes 3,072 frames, saving 9,216
+  native/320/360 PNGs and 426 consecutive/overview sheets. Seventeen sampled visual
+  artifacts cover every text; full matrix visual acceptance is not inferred.
+- Encoded settled comparisons differ by up to 61 RGB levels. Added actual lossless
+  previews: all 128 cases/9,216 seek draws pass; 70 settled comparisons are exact.
+  Independent 256-PNG/pixel audit confirms the result without a renderer repair.
+- Final fast2 passes 4,286 units/420 files. Native1 inputs remain unchanged; only
+  preview harness was added before final held 2,564-input graph. Both staged gates,
+  interruption recovery and premature sheet observations retained; no rerender restart.
+- Partial retype/low-contrast quantity states remain diagnostic negatives. Remaining
+  mark/overlap/gap cell review, broader MS2/full/final/owner gates and packs/pilot 0 stay open.
+- [Evidence](./mechanism-shorts-ms2-thai-native-results.json),
+  [scope](./mechanism-thai-motion-probes.md), [plan](./mechanism-shorts-production-plan.md).
 
 ### 2026-10-12 — MS2 slice48: exact Thai motion/tracking preflight matrix
 

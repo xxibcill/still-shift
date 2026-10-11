@@ -926,6 +926,12 @@ mechanism families establish whether the architecture transfers.
       strict font coverage, loaded layouts, 3,072 pose frames and compatible default/
       explicit-zero controls. Native consecutive encoded/reduced inspection and
       supported-unit findings remain required; this checkbox remains open.
+      [Slice49 native packet](./mechanism-shorts-ms2-thai-native-results.json) adds
+      all 128 cases/142 streams, complete first-clip decode, native/320/360
+      consecutive sheets and all-frame native seek proof. Seventy lossless settled
+      comparisons match exactly; seventeen sampled visual artifacts do not certify
+      all matrix cells. Remaining mark/overlap/gap disposition and supported-unit
+      findings keep this item open; active partial quantity states are not certified.
 
 The cable-tie fixture may use an explicitly authored exposed teaching variant to
 show the pawl. It must identify that variant; generic section-plane/cap support

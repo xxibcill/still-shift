@@ -17691,9 +17691,35 @@
         "Native consecutive encoded inspection, active retype, mark/overlap/gap review, declared 320/360 reductions and supported-unit findings.",
         "All broader coverage, label/continuous readability, genuine speech, resource/full/final and owner acceptance gates."
       ]
+    },
+    "fortyNinthSlice": {
+      "status": "native-exports-full-decode-lossless-seek-and-sampled-visual-evidence-verified-in-stages",
+      "evidence": "docs/mechanism-shorts-ms2-thai-native-results.json",
+      "counts": {
+        "nativeCases": 128,
+        "streams": 142,
+        "encodedFrames": 3408,
+        "decodedFrames": 3072,
+        "decodedPngs": 9216,
+        "inspectionSheets": 426,
+        "uniquePreviewFrames": 3072,
+        "seekDraws": 9216,
+        "exactLosslessSettledComparisons": 70,
+        "independentLosslessPngSamples": 256,
+        "sampledVisualArtifacts": 17,
+        "unitTests": 4286,
+        "unitFiles": 420,
+        "supportedPacks": 0,
+        "pilotAcceptedEpisodes": 0
+      },
+      "remaining": [
+        "Remaining Thai matrix cell mark/overlap/gap review and supported-unit disposition before broader adoption/checkbox closure.",
+        "Coverage, broader labels/continuous readability, genuine speech, resource/full/final and owner acceptance gates before MS2 PR/MS3."
+      ]
     }
   },
   "limits": [
+    "Slice49 adds complete native export/decode/seek evidence for all 128 Thai cases: 142 streams/3,408 frames, 3,072 decoded frames/9,216 PNGs/426 sheets, 9,216 native seeks and 70 exact lossless settled comparisons independently verified. Default/explicit-zero identities hold; encoded differences prompted lossless diagnosis. Final fast2 passes 4,286 units/420 files on held inputs. Seventeen sampled visual artifacts cover every text but do not certify all cells; remaining Thai support/mark/gap review and broader MS2/full/final/owner gates stay open. Packs/pilot 0.",
     "Slice48 verifies exact Thai authoring/strict font coverage/loaded browser shaping and pose preflight only: six stress strings plus hashed production copy, 128 saved native compositions/3,072 pose frames and seven wrong-font controls independently audited. Sequential fast3 passes 4,286 units/420 files. Two failed authoring attempts retained; production rendering is unchanged. Native encoded/reduced inspection and Thai risk acceptance remain open, alongside broader MS2/full/final/owner gates; supported packs/pilot 0.",
     "Slice47 reproduces and repairs generated-count shared fitting: narrow 96 -> 38 px fits all 63 reachable strings; wide/no-fit controls unchanged. Fast7 passes 4,286 units/420 files; three native cases/six exports/366 frames and 549 seek draws pass; independent audit probes all streams and decodes 183 frames. Existing four fit variants/727 frames pass on each backend. Failures and staged passes retained. Thai risks and broader MS2/full/final/owner gates remain open; supported packs/pilot 0.",
     "Slice46 closes explicit genuine-weight/outline treatment software/native rendering acceptance on exact MS1 font bytes. Fast12 passes 4,284 units/420 files; two backends/17 cases each pass 48 exports/2,880 frames, 2,040 independently decoded frames, 6,120 forward/reverse/shuffled draws and 544 sampled English-gap checks. Independent artifact audit validates 34 receipts/compiled units, all 48 streams, legacy full-output parity and mixed positive headroom/clamping. Earlier type/fixture/lint failures and intermediate successful runs retained. Remaining typography risks and broader MS2/full/final/owner gates stay open; supported packs/pilot 0.",
