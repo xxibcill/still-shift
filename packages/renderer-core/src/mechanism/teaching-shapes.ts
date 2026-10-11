@@ -20,6 +20,7 @@ import {
   matrixFromTransform,
   multiplyMatrices,
   transformPoint,
+  IDENTITY_MATRIX,
 } from "./matrix.ts";
 import type { MechanismMatrix } from "./matrix.ts";
 import {
@@ -239,7 +240,6 @@ export function teachingShapeInputsForPartsV2(
       "ownerPart",
       "mechanism-shape-owner",
     );
-  const ownerInverse = inverseMechanismMatrixV2(owner.worldMatrix);
   const poses = shape.seats.map((id) => {
     const anchor = scene.anchors.find((anchor) => anchor.id === id);
     if (!anchor || anchor.source.kind !== "part-local")
@@ -252,7 +252,12 @@ export function teachingShapeInputsForPartsV2(
     const part = parts[anchor.source.part];
     if (!part)
       fail("Unknown spring seat part", shape, "seats", "mechanism-spring-seat");
-    const matrix = multiplyMatrices(ownerInverse, part.worldMatrix);
+    const matrix = relativeSeatMatrix(
+      shape.ownerPart,
+      anchor.source.part,
+      scene,
+      parts,
+    );
     return { position: transformPoint(matrix, anchor.source.position), matrix };
   });
   return {
@@ -273,6 +278,49 @@ export function teachingShapeInputsForPartsV2(
       ),
     ],
   };
+}
+
+/** Cancel the shared hierarchy before multiplying; a mount must not perturb local neutral geometry. */
+function relativeSeatMatrix(
+  owner: string,
+  seat: string,
+  scene: Scene,
+  parts: Readonly<Record<string, MechanismPartFrame>>,
+): MechanismMatrix {
+  const definitions = new Map(scene.parts.map((part) => [part.id, part]));
+  const ownerAncestors = new Set<string>();
+  for (
+    let id: string | undefined = owner;
+    id !== undefined;
+    id = definitions.get(id)?.parent
+  )
+    ownerAncestors.add(id);
+  let common: string | undefined = seat;
+  while (common !== undefined && !ownerAncestors.has(common))
+    common = definitions.get(common)?.parent;
+  if (common === undefined)
+    return multiplyMatrices(
+      inverseMechanismMatrixV2(parts[owner]!.worldMatrix),
+      parts[seat]!.worldMatrix,
+    );
+  function belowCommon(id: string): MechanismMatrix {
+    const path: string[] = [];
+    while (id !== common) {
+      path.push(id);
+      id = definitions.get(id)!.parent!;
+    }
+    let matrix = IDENTITY_MATRIX;
+    for (const part of path.reverse())
+      matrix = multiplyMatrices(matrix, parts[part]!.localMatrix);
+    return matrix;
+  }
+  const seatMatrix = belowCommon(seat);
+  return owner === common
+    ? seatMatrix
+    : multiplyMatrices(
+        inverseMechanismMatrixV2(belowCommon(owner)),
+        seatMatrix,
+      );
 }
 
 function prepareDefinition(input: Shape): PreparedTeachingShape {

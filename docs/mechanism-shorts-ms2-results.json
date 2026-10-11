@@ -7230,6 +7230,2736 @@
           "sha256": "sha256:5f02adc1b8528b102394e41a9ab0bc68aaf5ad8f8449309526b3fef0609ab8e9"
         }
       ]
+    },
+    {
+      "id": "family-packs-build-1",
+      "status": "failed-distributive-union-and-optional-request-typing",
+      "sourceCheckpoint": "f946e80cb2f3bab5f3bb9fc95240e2262833bed8",
+      "sourceState": "working-two-family-candidates-and-bound-pack-metadata",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-family-inputs-1.json",
+        "bytes": 415289,
+        "sha256": "sha256:7b93e6a75307f9a0ba6d8e531adb9cc7d2987519a47d8085e2ccf081fe4273d4",
+        "files": 2434,
+        "inputBytes": 118528209,
+        "sourceCommit": "f946e80cb2f3bab5f3bb9fc95240e2262833bed8"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-family-format-1.log",
+          "bytes": 543,
+          "sha256": "sha256:962b1560d7df627ef19c602fa88458ff54fb095d2576fc31e20758dd5f570916"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-build-1.log",
+          "bytes": 1249,
+          "sha256": "sha256:fc8cfc4bc265d85bad1e59c224d72a948e5a72ad575c452e6ea679b764a64164"
+        }
+      ],
+      "qualification": "First build rejected Omit over the teaching declaration union (driver/seats absent) and the optional request rigControls access. No units/native gate reached.",
+      "actualRootSession": 44624,
+      "actualExitCode": 2
+    },
+    {
+      "id": "family-packs-build-and-unit-1",
+      "status": "failed-two-of-29-focused-tests",
+      "sourceCheckpoint": "f946e80cb2f3bab5f3bb9fc95240e2262833bed8",
+      "sourceState": "working-two-family-candidates-and-bound-pack-metadata",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-family-inputs-2.json",
+        "bytes": 415452,
+        "sha256": "sha256:7b3d15a887f118647a9537b73798f6d084566c763a2b3aa6fb8730a57ef385de",
+        "files": 2435,
+        "inputBytes": 118544457,
+        "sourceCommit": "f946e80cb2f3bab5f3bb9fc95240e2262833bed8"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-family-format-2.log",
+          "bytes": 183,
+          "sha256": "sha256:66110d29c434cd8e4d57133462b43f121cc4543456350da0d8ae2388f5ce4051"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-build-2.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-unit-1.log",
+          "bytes": 4575,
+          "sha256": "sha256:8a07a646954b45d49ce6e45e5ecd63816f8434ddb80c7da3e69c1c9e3551b0bf"
+        }
+      ],
+      "qualification": "Build passed. Focused units:27 passed/two failed. A case-sensitive error-message assertion was wrong; the production spring neutral validator also rejected moved/nonuniform mount roundoff from full-world inversion. The strict neutral-buffer identity was retained and the shared hierarchy was canceled before sampling.",
+      "actualRootSession": 76997,
+      "actualExitCode": 1
+    },
+    {
+      "id": "family-packs-build-and-unit-2",
+      "status": "passed-focused-neutral-mount-repair",
+      "sourceCheckpoint": "f946e80cb2f3bab5f3bb9fc95240e2262833bed8",
+      "sourceState": "working-two-family-candidates-and-bound-pack-metadata",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-family-inputs-3.json",
+        "bytes": 415452,
+        "sha256": "sha256:e657391cb22a5133d20b37ccbdcabbdd66f85961f807f3acce5e4e6e14ddae47",
+        "files": 2435,
+        "inputBytes": 118545817,
+        "sourceCommit": "f946e80cb2f3bab5f3bb9fc95240e2262833bed8"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-family-format-3.log",
+          "bytes": 120,
+          "sha256": "sha256:d5f508c02e66fdd4179ee7c76f11c91151efc6334e4cbfc77e5a85823642a0e2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-build-3.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-unit-2.log",
+          "bytes": 1313,
+          "sha256": "sha256:e49d88ca0bb986e72d91d7c55f72ed23b2bed5dc3316f9ce5ea0aeb7f01a8117"
+        }
+      ],
+      "qualification": "Actual build and29 tests/three files passed after the relative-seat repair. This staged source predates browser fixtures, the non-release compiler capability and final metadata refinements.",
+      "unitTests": 29,
+      "unitFiles": 3,
+      "unitSeconds": 3.29,
+      "actualRootSession": 44694,
+      "actualExitCode": 0
+    },
+    {
+      "id": "family-packs-native-and-complete-export-1",
+      "status": "passed-first-two-family-two-dimension-native-cycles",
+      "sourceCheckpoint": "f946e80cb2f3bab5f3bb9fc95240e2262833bed8",
+      "sourceState": "working-two-family-candidates-and-bound-pack-metadata",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-family-inputs-4.json",
+        "bytes": 415780,
+        "sha256": "sha256:d56fae18e3184ba3c713b3433929e7186f490c94a7db39d2a6cc6e2a65dfdef8",
+        "files": 2437,
+        "inputBytes": 118560295,
+        "sourceCommit": "f946e80cb2f3bab5f3bb9fc95240e2262833bed8"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-family-format-4.log",
+          "bytes": 200,
+          "sha256": "sha256:1caf99f3309c933d25a883e32305d9163314f9bc5a5080d449952a607fdbc6a8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-build-4.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-browser-1.log",
+          "bytes": 331,
+          "sha256": "sha256:40464bdacd45be57c301358ea5f18f89bbde6d1fa466de23b531ec03dc6077c4"
+        }
+      ],
+      "qualification": "Actual40 native previews (ten per variant) and eight24-frame complete-cycle normal exports passed; repeat RGBA/movie identities and independent retained-row replay/memory release checked. This is historical before material/seat/metadata/compiler refinements. Source4 remained unchanged when inspected at00:20:39 UTC; two actual images were inspected.",
+      "terminalObservedAtUTC": "2026-10-11 00:20:39 UTC",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-a.mp4",
+          "bytes": 3527,
+          "sha256": "sha256:c2647b3d0a7bf12a61c17679fa39e0da41a779c10a9df7073c28ee864c5d200d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-a.mp4.native-observations.000.ndjson",
+          "bytes": 159898,
+          "sha256": "sha256:6cea6f74cd32b026c81ecfbb72c1498c809b9e5e700b78d3b060720dd1515abc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-a.mp4.native-observations.json",
+          "bytes": 85623,
+          "sha256": "sha256:cb2d0162743eabd0171d59470dbfa25f02a1ba9d15df4765ca3333ab2091d4b1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-a.mp4.result.json",
+          "bytes": 7614,
+          "sha256": "sha256:9ccde9c6111cfdbc2d4decdc3aba4a429d31ba7605cc3a8ecfe2389238119ab6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-a.mp4.scene.json",
+          "bytes": 1407974,
+          "sha256": "sha256:9019759548e159be058378186817909bf538b7633d7bc252c93c2eb1d0d78695"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-b.mp4",
+          "bytes": 3527,
+          "sha256": "sha256:c2647b3d0a7bf12a61c17679fa39e0da41a779c10a9df7073c28ee864c5d200d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-b.mp4.native-observations.000.ndjson",
+          "bytes": 159898,
+          "sha256": "sha256:6cea6f74cd32b026c81ecfbb72c1498c809b9e5e700b78d3b060720dd1515abc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-b.mp4.native-observations.json",
+          "bytes": 85623,
+          "sha256": "sha256:e5efa3ca32d8a54ea19b561f3261d932a6cd4887facb4780d001f4a572dca361"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-b.mp4.result.json",
+          "bytes": 7618,
+          "sha256": "sha256:483a75223dbed206f6a3fd199686fa844937fe08d8294c07a64bc1bcad6cb788"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-b.mp4.scene.json",
+          "bytes": 1407974,
+          "sha256": "sha256:9019759548e159be058378186817909bf538b7633d7bc252c93c2eb1d0d78695"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-preview-0.png",
+          "bytes": 4007,
+          "sha256": "sha256:d54b54eef9afd773330de7e304c79c5be6a4c851b1d1c48418bec15dfd2692ba"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-preview-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0f9238b27f5269f3154b5f651b81a22e815625e31aa1e1189a522f8aa5df4b5f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-preview-1.png",
+          "bytes": 4202,
+          "sha256": "sha256:40ecddfcb8fe2f027f66c1e0ffe818bc3cbc75ed5c166104497ff23644fd99d1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-preview-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:3b9c0157a88c883e3fbfe582c73e31fc6573203fb021892af49a606a4a0e4773"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-preview-2.png",
+          "bytes": 4001,
+          "sha256": "sha256:ebba5be683e2c5ef222e638758b61f669e641bd9a9f159a7ba745dd955cf4677"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-preview-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:be179a0ee8318d4dba35c454cf856ac15cd7b2c7ea448a9cdc7a9ca376ed70a1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-preview-3.png",
+          "bytes": 4141,
+          "sha256": "sha256:f3ae0e3cbb8872d2b118fd843ae19306907c846a9d3d0c2d79986a09c136ccfb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-preview-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:ef2e16a19f46cd86930b1580b58771ed2b8b7225971f7f2909b96ef34507332a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-preview-4.png",
+          "bytes": 3972,
+          "sha256": "sha256:c48b7cb9c0e61f5e910bf164deae63af9611bc7ab5cb6d17508895cfae092ff4"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-preview-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:b8e855848f4e6b27b2716c04877b78c6dd1712488127f7c01bff51b950e1733b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-preview-5.png",
+          "bytes": 3905,
+          "sha256": "sha256:3a48e7497df0206b766729737ddef4bbc93dc8d657dae4f396473f128c76c180"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-preview-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:d5a423ff805c27edc368285c0c401952b07b244e9acf4d5d721d18abffc68579"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-preview-6.png",
+          "bytes": 3905,
+          "sha256": "sha256:3a48e7497df0206b766729737ddef4bbc93dc8d657dae4f396473f128c76c180"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-preview-6.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:d5a423ff805c27edc368285c0c401952b07b244e9acf4d5d721d18abffc68579"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-preview-7.png",
+          "bytes": 3905,
+          "sha256": "sha256:3a48e7497df0206b766729737ddef4bbc93dc8d657dae4f396473f128c76c180"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-preview-7.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:d5a423ff805c27edc368285c0c401952b07b244e9acf4d5d721d18abffc68579"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-preview-8.png",
+          "bytes": 4007,
+          "sha256": "sha256:d54b54eef9afd773330de7e304c79c5be6a4c851b1d1c48418bec15dfd2692ba"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-preview-8.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0f9238b27f5269f3154b5f651b81a22e815625e31aa1e1189a522f8aa5df4b5f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-preview-9.png",
+          "bytes": 3972,
+          "sha256": "sha256:c48b7cb9c0e61f5e910bf164deae63af9611bc7ab5cb6d17508895cfae092ff4"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0-preview-9.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:b8e855848f4e6b27b2716c04877b78c6dd1712488127f7c01bff51b950e1733b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0.composition.json",
+          "bytes": 1522,
+          "sha256": "sha256:cdb088e4d5d08bc2027ed8aa70877f1d81ce70ccfaea3d4d470e24a451af2924"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-0.json",
+          "bytes": 966587,
+          "sha256": "sha256:0ca71a313154a752b795a385145ca2723ec4e67c943bc691d7400917743e568f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-a.mp4",
+          "bytes": 2968,
+          "sha256": "sha256:4413327eba633d18cb7e04c4ac1108354eb29dfa8e7e950aa04dd69201f47929"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-a.mp4.native-observations.000.ndjson",
+          "bytes": 159963,
+          "sha256": "sha256:ced9bdb95d4a352114c775ab53f1eed86eac8af27c17d15b8d9f5c8fbb9cb529"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-a.mp4.native-observations.json",
+          "bytes": 85623,
+          "sha256": "sha256:ec20251d3557342e2f732625d1197f8000016a290cf9c02d4505ac6d27e779f7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-a.mp4.result.json",
+          "bytes": 7580,
+          "sha256": "sha256:41f4a975b12106542c8cd16fbf1dba7fc413df67ca8a5880952605fee9c47486"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-a.mp4.scene.json",
+          "bytes": 1443222,
+          "sha256": "sha256:53f972bd325341653647e5571cc9f92aa0876a880dff903854ead55f3f21196b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-b.mp4",
+          "bytes": 2968,
+          "sha256": "sha256:4413327eba633d18cb7e04c4ac1108354eb29dfa8e7e950aa04dd69201f47929"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-b.mp4.native-observations.000.ndjson",
+          "bytes": 159963,
+          "sha256": "sha256:ced9bdb95d4a352114c775ab53f1eed86eac8af27c17d15b8d9f5c8fbb9cb529"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-b.mp4.native-observations.json",
+          "bytes": 85623,
+          "sha256": "sha256:9904a562f5fe8a232db8be2475eaad608e4cbfe4dbcde4a9206ac76a7cc79e06"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-b.mp4.result.json",
+          "bytes": 7609,
+          "sha256": "sha256:380684733e87b6d4243f9a113c05d71f8e7840992bf20e2987505a52f6a90798"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-b.mp4.scene.json",
+          "bytes": 1443222,
+          "sha256": "sha256:53f972bd325341653647e5571cc9f92aa0876a880dff903854ead55f3f21196b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-preview-0.png",
+          "bytes": 3644,
+          "sha256": "sha256:67b46ac2c3bc66769d4b39e2fdfe53078e6dfaa9bd636ddabcb5b5a347128025"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-preview-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:72265f4c3ece4e60e0fc51af9f3a6c8bed9f236fc0fdf994b45ab7d133acb372"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-preview-1.png",
+          "bytes": 3731,
+          "sha256": "sha256:decc316bc0b877bcfb158f6713b322fda1c3959b91170bb2dbe3755ff58b4bd5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-preview-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:5b26ca20966a5cfa91313c36328dba1850c109e48cbac00ed34fca9aa23bbf74"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-preview-2.png",
+          "bytes": 3674,
+          "sha256": "sha256:100004310832b4a0cfbc82621470924b2a6eb76cf4be760c0db1beb2f968e588"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-preview-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:c1d54411de45645da49361f7e6b85beb4ad47c5d74605e3c6f9d64c631aab245"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-preview-3.png",
+          "bytes": 3748,
+          "sha256": "sha256:bd4b527b58bc7988e445af9f193e6620e54020a068f0d2e8b80d95bcb1e3f4e2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-preview-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:b8b45f6a01d1923c18e64f61f817daf78c2efbb3d2f94342c12244318862c3fa"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-preview-4.png",
+          "bytes": 3701,
+          "sha256": "sha256:108d7976f385ff2b50f21ba6526249236c8655bd2af6cb31410c6c34e39f868f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-preview-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:762e32ebac97556e876b2f8470955b9190ec111d85c935659acaf7c59a335c48"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-preview-5.png",
+          "bytes": 3712,
+          "sha256": "sha256:260e3e7db6a912ee791fb3992a6c74ad610513d5d20a7406504e16a4deaa6144"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-preview-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:9849f63716e4e5bcc4d2117d274371e67a43d4aaadd02dd74962fec3111c98f5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-preview-6.png",
+          "bytes": 3712,
+          "sha256": "sha256:260e3e7db6a912ee791fb3992a6c74ad610513d5d20a7406504e16a4deaa6144"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-preview-6.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:9849f63716e4e5bcc4d2117d274371e67a43d4aaadd02dd74962fec3111c98f5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-preview-7.png",
+          "bytes": 3712,
+          "sha256": "sha256:260e3e7db6a912ee791fb3992a6c74ad610513d5d20a7406504e16a4deaa6144"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-preview-7.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:9849f63716e4e5bcc4d2117d274371e67a43d4aaadd02dd74962fec3111c98f5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-preview-8.png",
+          "bytes": 3644,
+          "sha256": "sha256:67b46ac2c3bc66769d4b39e2fdfe53078e6dfaa9bd636ddabcb5b5a347128025"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-preview-8.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:72265f4c3ece4e60e0fc51af9f3a6c8bed9f236fc0fdf994b45ab7d133acb372"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-preview-9.png",
+          "bytes": 3701,
+          "sha256": "sha256:108d7976f385ff2b50f21ba6526249236c8655bd2af6cb31410c6c34e39f868f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1-preview-9.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:762e32ebac97556e876b2f8470955b9190ec111d85c935659acaf7c59a335c48"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1.composition.json",
+          "bytes": 1554,
+          "sha256": "sha256:12db0c0faaee60bf38681ec81685906a7e38a9ce238de5dcae0864199cac1164"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/cable-tie-dimension-1.json",
+          "bytes": 992163,
+          "sha256": "sha256:d51e51355152fb490b9f52994dd36e9dfb526f77ad32a13e2300871f9093871b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-a.mp4",
+          "bytes": 11092,
+          "sha256": "sha256:c2920c7283e55609d5ad7d3580202c08ca8d0090e79fafd677028cb052579a7f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-a.mp4.native-observations.000.ndjson",
+          "bytes": 222210,
+          "sha256": "sha256:471ef72897f0584270ba0a72ede2559f6503afe9c7a132ee775814747e6c868f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-a.mp4.native-observations.json",
+          "bytes": 85627,
+          "sha256": "sha256:6ae0b22de84dca974c0ed8751517252940c6834ae10537607a170d766280ab36"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-a.mp4.result.json",
+          "bytes": 7602,
+          "sha256": "sha256:3276bc672012c90a01679e51c731dba0eff940e862dfaf34060f42c75fc23337"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-a.mp4.scene.json",
+          "bytes": 742739,
+          "sha256": "sha256:a04232973dad435e94466127dbe6533f882a809d79b8ecc520d636d20a105458"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-b.mp4",
+          "bytes": 11092,
+          "sha256": "sha256:c2920c7283e55609d5ad7d3580202c08ca8d0090e79fafd677028cb052579a7f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-b.mp4.native-observations.000.ndjson",
+          "bytes": 222210,
+          "sha256": "sha256:471ef72897f0584270ba0a72ede2559f6503afe9c7a132ee775814747e6c868f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-b.mp4.native-observations.json",
+          "bytes": 85627,
+          "sha256": "sha256:6a05bf8f077812602f5d5e44f79dc3fd40040a1ccd122ede423ed878a55595fb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-b.mp4.result.json",
+          "bytes": 7631,
+          "sha256": "sha256:9a2d8b11a0fd638a84cab5927f98567ce0a23e1a1216403013275a44e05b1763"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-b.mp4.scene.json",
+          "bytes": 742739,
+          "sha256": "sha256:a04232973dad435e94466127dbe6533f882a809d79b8ecc520d636d20a105458"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-preview-0.png",
+          "bytes": 11320,
+          "sha256": "sha256:8e11adb8031012a3218a6c29bf10518667d5b05540fb1a6f143171f70fb76a15"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-preview-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:95d577942df97c6aa8017c3ded6b9f7625faa3689586805568d56a8c08f7dfe2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-preview-1.png",
+          "bytes": 12129,
+          "sha256": "sha256:d7083c8796cad76964c51b614c50c1b033572882348c831b9020d39d5b5234ac"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-preview-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:f99bf102c3066bc3356934e86051003e4db6a7a663c0fa58cbcb3499a82cea93"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-preview-2.png",
+          "bytes": 12631,
+          "sha256": "sha256:ccae71bcdd2fd35b49153b0c3b68013b7f0a7df68f927a61e1ef362ea3174cd1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-preview-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:2cc1560f312a05d7fe47e25689198181f8a4ed33be07fb19cee4bfddb98db78f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-preview-3.png",
+          "bytes": 12631,
+          "sha256": "sha256:ccae71bcdd2fd35b49153b0c3b68013b7f0a7df68f927a61e1ef362ea3174cd1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-preview-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:2cc1560f312a05d7fe47e25689198181f8a4ed33be07fb19cee4bfddb98db78f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-preview-4.png",
+          "bytes": 12696,
+          "sha256": "sha256:efe30952b723efbceea641ae629e533a2c896b319e668101f9cfd3dd755943f9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-preview-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:5cb65cfd42ffdf30396d04e2d7d21489724f308711852494f9369d5e477b3bdf"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-preview-5.png",
+          "bytes": 11403,
+          "sha256": "sha256:baaa3792a8472910a54cc5c48c4d0bd705dae922834b7298ae7f32319220a96d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-preview-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:2f6e540cfe77fc01c71ccb5d9f0fbdfb33521a7addfe337c3de2e6179c4bcf1c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-preview-6.png",
+          "bytes": 11320,
+          "sha256": "sha256:8e11adb8031012a3218a6c29bf10518667d5b05540fb1a6f143171f70fb76a15"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-preview-6.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:95d577942df97c6aa8017c3ded6b9f7625faa3689586805568d56a8c08f7dfe2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-preview-7.png",
+          "bytes": 11320,
+          "sha256": "sha256:8e11adb8031012a3218a6c29bf10518667d5b05540fb1a6f143171f70fb76a15"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-preview-7.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:95d577942df97c6aa8017c3ded6b9f7625faa3689586805568d56a8c08f7dfe2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-preview-8.png",
+          "bytes": 11320,
+          "sha256": "sha256:8e11adb8031012a3218a6c29bf10518667d5b05540fb1a6f143171f70fb76a15"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-preview-8.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:95d577942df97c6aa8017c3ded6b9f7625faa3689586805568d56a8c08f7dfe2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-preview-9.png",
+          "bytes": 12696,
+          "sha256": "sha256:efe30952b723efbceea641ae629e533a2c896b319e668101f9cfd3dd755943f9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0-preview-9.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:5cb65cfd42ffdf30396d04e2d7d21489724f308711852494f9369d5e477b3bdf"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0.composition.json",
+          "bytes": 1595,
+          "sha256": "sha256:a5a3a84e1e51e9e70c85f2c849215d351409a948e1124cbdb6537831a36d4c93"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-0.json",
+          "bytes": 468491,
+          "sha256": "sha256:194baf882ec9906de8f500645a3f40413d70890f58a8535a70d90b7b8d5ccff7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-a.mp4",
+          "bytes": 12772,
+          "sha256": "sha256:cd10266e6369d0175621c77d84a7f2d41fedc6be3f703162bdf7429fd1fb48be"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-a.mp4.native-observations.000.ndjson",
+          "bytes": 225198,
+          "sha256": "sha256:c45a7f6d3feb80fde8912803772c9c5b1df6b05b70523759efa45a1209afd035"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-a.mp4.native-observations.json",
+          "bytes": 85627,
+          "sha256": "sha256:3bbed35f923aaaa5bf500fb568b01497f73dafb998e41422b84f70fd1ad49085"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-a.mp4.result.json",
+          "bytes": 7616,
+          "sha256": "sha256:05d3ca385707fe74e41c4b38ae138d6bace5eb62321a6bb4a958250ae3f49dca"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-a.mp4.scene.json",
+          "bytes": 738981,
+          "sha256": "sha256:5e34609efe0f1c7a0db9c29c90bf06bf78a28bfe31ab4ebac7012bf719a9c067"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-b.mp4",
+          "bytes": 12772,
+          "sha256": "sha256:cd10266e6369d0175621c77d84a7f2d41fedc6be3f703162bdf7429fd1fb48be"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-b.mp4.native-observations.000.ndjson",
+          "bytes": 225198,
+          "sha256": "sha256:c45a7f6d3feb80fde8912803772c9c5b1df6b05b70523759efa45a1209afd035"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-b.mp4.native-observations.json",
+          "bytes": 85627,
+          "sha256": "sha256:66eb5ee9c3fc66fafaf3a4b47fb2ba94a6ba06b56f38423fddd6abe75b8764ee"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-b.mp4.result.json",
+          "bytes": 7612,
+          "sha256": "sha256:4c1c69c09140e6018b999eadd34149929e6645fa49c97c2e69d2f9e7d2b02b92"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-b.mp4.scene.json",
+          "bytes": 738981,
+          "sha256": "sha256:5e34609efe0f1c7a0db9c29c90bf06bf78a28bfe31ab4ebac7012bf719a9c067"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-preview-0.png",
+          "bytes": 14176,
+          "sha256": "sha256:31005dad4e4a43e123b4ad79d869d71124db7c592ec6faa4d704ddffd0d608d6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-preview-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:6aa455bb267b4d8ec76ad8a9ce1c5deffb77b9b60459c74a1ee345af30f9c394"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-preview-1.png",
+          "bytes": 15353,
+          "sha256": "sha256:80086f6d8f931aca73c26adee6c52078678ca02c89310c683984941cb71df8d7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-preview-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:067876100d1ec1a87bb6237378a9a506040927e352675d7af48f83bae5738352"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-preview-2.png",
+          "bytes": 15328,
+          "sha256": "sha256:30cf56f4876ed9b6f9a6a0e5178b9caf9d517b10a1b4d951a2a251784db4c0f0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-preview-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:853def03d6150ce9e607d47f41f103855702c16143db541232e694a00513e9a0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-preview-3.png",
+          "bytes": 15328,
+          "sha256": "sha256:30cf56f4876ed9b6f9a6a0e5178b9caf9d517b10a1b4d951a2a251784db4c0f0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-preview-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:853def03d6150ce9e607d47f41f103855702c16143db541232e694a00513e9a0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-preview-4.png",
+          "bytes": 15156,
+          "sha256": "sha256:f287dcbcac75004610267f5d67fe3862ab9abc0bb574a467b8c2f598e607c518"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-preview-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:a7f1b98f6614f808416cea3ada56bd8ee476518e8309303b2f8af2e2848e3c53"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-preview-5.png",
+          "bytes": 14176,
+          "sha256": "sha256:31005dad4e4a43e123b4ad79d869d71124db7c592ec6faa4d704ddffd0d608d6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-preview-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:6aa455bb267b4d8ec76ad8a9ce1c5deffb77b9b60459c74a1ee345af30f9c394"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-preview-6.png",
+          "bytes": 14176,
+          "sha256": "sha256:31005dad4e4a43e123b4ad79d869d71124db7c592ec6faa4d704ddffd0d608d6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-preview-6.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:6aa455bb267b4d8ec76ad8a9ce1c5deffb77b9b60459c74a1ee345af30f9c394"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-preview-7.png",
+          "bytes": 14176,
+          "sha256": "sha256:31005dad4e4a43e123b4ad79d869d71124db7c592ec6faa4d704ddffd0d608d6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-preview-7.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:6aa455bb267b4d8ec76ad8a9ce1c5deffb77b9b60459c74a1ee345af30f9c394"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-preview-8.png",
+          "bytes": 14176,
+          "sha256": "sha256:31005dad4e4a43e123b4ad79d869d71124db7c592ec6faa4d704ddffd0d608d6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-preview-8.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:6aa455bb267b4d8ec76ad8a9ce1c5deffb77b9b60459c74a1ee345af30f9c394"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-preview-9.png",
+          "bytes": 15156,
+          "sha256": "sha256:f287dcbcac75004610267f5d67fe3862ab9abc0bb574a467b8c2f598e607c518"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1-preview-9.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:a7f1b98f6614f808416cea3ada56bd8ee476518e8309303b2f8af2e2848e3c53"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1.composition.json",
+          "bytes": 1595,
+          "sha256": "sha256:4959c17f4cc9e32870a25183b3853ae93f5bdafc00cc9a10728c28d180ecfaec"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/clothespeg-dimension-1.json",
+          "bytes": 464733,
+          "sha256": "sha256:2e46c31d044d3c4bc07531b6e9b29410394403b105cb03e6b9fc99db5deae19d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/metadata.json",
+          "bytes": 33831,
+          "sha256": "sha256:5818c1412f25687ac7c5bfc793295be68c24b9084002d65fd042e8bb3a110b23"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-HGkt8n/run.json",
+          "bytes": 977508,
+          "sha256": "sha256:4302ca3ea51e2d941f38eccaf89dfc3ca96653d5798873320d9c32f06b099d35"
+        }
+      ],
+      "actualRootSession": 88158,
+      "actualExitCode": 0
+    },
+    {
+      "id": "family-packs-schema-command-1",
+      "status": "failed-unrecognized-command-before-gate",
+      "sourceCheckpoint": "f946e80cb2f3bab5f3bb9fc95240e2262833bed8",
+      "sourceState": "working-two-family-candidates-and-bound-pack-metadata",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-family-inputs-5.json",
+        "bytes": 415957,
+        "sha256": "sha256:ed0a56cc9c9c8b4054a8ef0d3a70eafd9c5d2fd4ca9e462f357d3f53fa34d742",
+        "files": 2438,
+        "inputBytes": 118562722,
+        "sourceCommit": "f946e80cb2f3bab5f3bb9fc95240e2262833bed8"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-family-format-5.log",
+          "bytes": 480,
+          "sha256": "sha256:ab1cf93ee3f12fa61a6b187af3af444eb54f12ce801bd5b78581975802558d7a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-schema-1.log",
+          "bytes": 126,
+          "sha256": "sha256:60b5fd1ac6a5be9e09f112a46e3ab67fac6479fd3203c27a1c470a5a2353a5bd"
+        }
+      ],
+      "qualification": "pnpm schemas:generate was mistyped; pnpm schema:generate is correct. It exited254 before schema generation, inventory step, fast/native/export gate. Inventory5 was captured after this terminal receipt and before the corrected command; it is not represented as a pre-run capture.",
+      "actualRootCallReceipt": "699d67",
+      "actualExitCode": 254
+    },
+    {
+      "id": "family-packs-fast-gate-1",
+      "status": "failed-eslint-two-unused-symbols",
+      "sourceCheckpoint": "f946e80cb2f3bab5f3bb9fc95240e2262833bed8",
+      "sourceState": "working-two-family-candidates-and-bound-pack-metadata",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-family-inputs-6.json",
+        "bytes": 415957,
+        "sha256": "sha256:ed0a56cc9c9c8b4054a8ef0d3a70eafd9c5d2fd4ca9e462f357d3f53fa34d742",
+        "files": 2438,
+        "inputBytes": 118562722,
+        "sourceCommit": "f946e80cb2f3bab5f3bb9fc95240e2262833bed8"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-family-schema-2.log",
+          "bytes": 653,
+          "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-fast-1.log",
+          "bytes": 1869,
+          "sha256": "sha256:62a70cd74d2483d6771d4fa1215d14ae4b27fcb9a24f5e296b57e2dce61fb0bd"
+        }
+      ],
+      "qualification": "Correct schema generation, schema/appearance/boundaries/format passed. ESLint rejected the error-module extraction leftover type and unused test destructuring symbol. Build/unit/native/exports did not run. Input6 equals5 selected source; generated schema outputs are separately retained.",
+      "actualRootSession": 36596,
+      "actualExitCode": 1
+    },
+    {
+      "id": "family-packs-fast-gate-2",
+      "status": "failed-typed-release-diagnostic-argument",
+      "sourceCheckpoint": "f946e80cb2f3bab5f3bb9fc95240e2262833bed8",
+      "sourceState": "working-two-family-candidates-and-bound-pack-metadata",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-family-inputs-7.json",
+        "bytes": 415957,
+        "sha256": "sha256:c5852a0464b6df13630514f44ffa0ee17f15fe2a83d57c48532b881553dcff6c",
+        "files": 2438,
+        "inputBytes": 118564268,
+        "sourceCommit": "f946e80cb2f3bab5f3bb9fc95240e2262833bed8"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-family-format-6.log",
+          "bytes": 306,
+          "sha256": "sha256:8c26694701ff7c1adce3faff314f6bebdf33e1d264eaa6980f8ac614a45ccf2e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-schema-3.log",
+          "bytes": 653,
+          "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-fast-2.log",
+          "bytes": 1674,
+          "sha256": "sha256:dddc75295ad3fd87e638d253d339e2236ff20cfb3b3b3ee71b92ea530d09ba36"
+        }
+      ],
+      "qualification": "Schema/appearance/boundaries/format/lint passed. Build rejected a tuple passed as the diagnostic frame argument; the existing API requires frame and an interval object. Unit/native/export stages were not reached.",
+      "actualRootSession": 32595,
+      "actualExitCode": 2
+    },
+    {
+      "id": "family-packs-final-fast-native-export-gate-3",
+      "status": "passed-current-three-candidates-and-native-regressions",
+      "sourceCheckpoint": "f946e80cb2f3bab5f3bb9fc95240e2262833bed8",
+      "sourceState": "working-two-family-candidates-and-bound-pack-metadata",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-family-inputs-8.json",
+        "bytes": 415957,
+        "sha256": "sha256:38a8f211d7142667cae8490ca7a97258df47251f22bc6c010e9f36996ac3b6ff",
+        "files": 2438,
+        "inputBytes": 118564413,
+        "sourceCommit": "f946e80cb2f3bab5f3bb9fc95240e2262833bed8"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-family-format-7.log",
+          "bytes": 106,
+          "sha256": "sha256:cec36ca1ceb183473670fe1ece83607b58e528a0e0745e30e5cf52000e903ed4"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-fast-3.log",
+          "bytes": 32625,
+          "sha256": "sha256:3c6481940e6c686eee78bc8f335be152c10790c14101769e3014e75c93f2c511"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-native-regression-3.log",
+          "bytes": 1218,
+          "sha256": "sha256:cfa5dc0c496303c53e7085d4f4287a72b0922cfd85a7a8796fe632e0f4058b92"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-browser-4.log",
+          "bytes": 331,
+          "sha256": "sha256:5a085c83f95bfbcab5dff71a36b4ff5c3f9518c0a31d10e56da72e2c1ba18cfb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-tape-regression-3.log",
+          "bytes": 296,
+          "sha256": "sha256:9ad962f4e99975f11acd599293a6b99bf708550638a6f8bf5c40c4dde616b181"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-unchanged-8.log",
+          "bytes": 192,
+          "sha256": "sha256:3a5768e2f3171cf9c7d9a53316fa2877a22e91aab61f9667f14d23ce219a4183"
+        }
+      ],
+      "qualification": "Actual held source8 passed fast4091/400, six native2/world/used-stream/frame/composition/export/Lab groups, both new families/two dimensions/40 previews/eight24/24 complete-cycle final exports, and tape2 dimensions/18 previews/four9/9 final exports. Strict expected-to-observed validation, exact repeat pixels/movies, independent retained-row replay and memory release checked. Staged completion; earlier failures remain. Actual inspected tie remains faint in its default wide view; contrast/macro framing and tape crop/push-face visibility remain camera-slice work. No supported-family/pilot/full/installed/human acceptance.",
+      "terminalObservedAtUTC": "2026-10-11 00:31:01 UTC",
+      "unitTests": 4091,
+      "unitFiles": 400,
+      "unitSeconds": 43.95,
+      "nativeRegressionGroups": 6,
+      "newFamilyCaptures": 40,
+      "newFamilyFinalExports": 8,
+      "newFamilyFramesPerExport": 24,
+      "tapeCaptures": 18,
+      "tapeFinalExports": 4,
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-a.mp4",
+          "bytes": 3932,
+          "sha256": "sha256:91e52987e091e8bba01298971daea1c529a38c5b00610d7e8b2fa0f61894047a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-a.mp4.native-observations.000.ndjson",
+          "bytes": 159898,
+          "sha256": "sha256:bd69ae6a0296f35c1fe25fafdd17781187adcb28e17aa890ac8610c92805f7ff"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-a.mp4.native-observations.json",
+          "bytes": 85623,
+          "sha256": "sha256:e0a7d7f94776f9acfb6bfce4e39b92740da735e5f9d4af3dda15ad00f050179b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-a.mp4.result.json",
+          "bytes": 7610,
+          "sha256": "sha256:9c0f9850906f4b81bb6686b31631c1ef2e43842fa2053db58da1dc93d33a9802"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-a.mp4.scene.json",
+          "bytes": 1408025,
+          "sha256": "sha256:6ac1f4e6873a9edaa2936bf9dbc710a02d1ef3a1841dd5fc320cb13de4b821c6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-b.mp4",
+          "bytes": 3932,
+          "sha256": "sha256:91e52987e091e8bba01298971daea1c529a38c5b00610d7e8b2fa0f61894047a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-b.mp4.native-observations.000.ndjson",
+          "bytes": 159898,
+          "sha256": "sha256:bd69ae6a0296f35c1fe25fafdd17781187adcb28e17aa890ac8610c92805f7ff"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-b.mp4.native-observations.json",
+          "bytes": 85623,
+          "sha256": "sha256:32304427ef55669e95ed787eda9880eea57ca9d9d5eda2954aafefed32012f94"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-b.mp4.result.json",
+          "bytes": 7619,
+          "sha256": "sha256:950d823e81c18745bf3f0ca7408d7144a8841730d06180271c7c1e9a76ad956b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-b.mp4.scene.json",
+          "bytes": 1408025,
+          "sha256": "sha256:6ac1f4e6873a9edaa2936bf9dbc710a02d1ef3a1841dd5fc320cb13de4b821c6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-preview-0.png",
+          "bytes": 4236,
+          "sha256": "sha256:1eedfa85ca00f8f93431b9b15abbabe93888d0e0dcef2a25ff5f4708ab37180e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-preview-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:944612ebbbb030db7520ec3123978a6179c98714851b392047cadce5e1b2ce61"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-preview-1.png",
+          "bytes": 4439,
+          "sha256": "sha256:708c1bc80169c99b7b4580479c66f3f876630dbe8a51f7f6cf33d1943537bc2b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-preview-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:034ee7182a0ed72bc3d84c65fbc64c927666302c27073f85e4bdff0d4c2f237a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-preview-2.png",
+          "bytes": 4211,
+          "sha256": "sha256:ba77f433870292948a44a72c4ca5cb7cce623e741fe286bf03765b293e700565"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-preview-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:ed1c4911d16a728ed9e41358b97b1dd56e1ff31ebe3e0dd46bc5797707b1d182"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-preview-3.png",
+          "bytes": 4377,
+          "sha256": "sha256:a7f99d0c4d10998f7cd894a6aa0c9ef7a8f813251dee492904ecc66979c3ff4d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-preview-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:f658c3b7ace4c37307b0cbab08511e99d1352513b1523cdc2674fd94a58d5917"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-preview-4.png",
+          "bytes": 4233,
+          "sha256": "sha256:893cb9cd5f5e099a2d500d2f54f996e35b315f3d9aebbf9f8da81a1c36532459"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-preview-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:f3ea079854bc158aa4dd31ebb919e0787b140be8f765da22b3b96de73b51dad1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-preview-5.png",
+          "bytes": 4200,
+          "sha256": "sha256:86ca726da9e2d39085010e9da0df888807a837240a159c7df61e3f66b4ebf810"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-preview-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:77c56c422a871c392466fba15d623da4008913ab565a37adf92023ad0c48e221"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-preview-6.png",
+          "bytes": 4200,
+          "sha256": "sha256:86ca726da9e2d39085010e9da0df888807a837240a159c7df61e3f66b4ebf810"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-preview-6.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:77c56c422a871c392466fba15d623da4008913ab565a37adf92023ad0c48e221"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-preview-7.png",
+          "bytes": 4200,
+          "sha256": "sha256:86ca726da9e2d39085010e9da0df888807a837240a159c7df61e3f66b4ebf810"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-preview-7.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:77c56c422a871c392466fba15d623da4008913ab565a37adf92023ad0c48e221"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-preview-8.png",
+          "bytes": 4236,
+          "sha256": "sha256:1eedfa85ca00f8f93431b9b15abbabe93888d0e0dcef2a25ff5f4708ab37180e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-preview-8.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:944612ebbbb030db7520ec3123978a6179c98714851b392047cadce5e1b2ce61"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-preview-9.png",
+          "bytes": 4233,
+          "sha256": "sha256:893cb9cd5f5e099a2d500d2f54f996e35b315f3d9aebbf9f8da81a1c36532459"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0-preview-9.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:f3ea079854bc158aa4dd31ebb919e0787b140be8f765da22b3b96de73b51dad1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0.composition.json",
+          "bytes": 1522,
+          "sha256": "sha256:272737b4f3e1d2b345b9c4588b21c119766c8ed19a859d5c15fcda8b195a8c29"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-0.json",
+          "bytes": 966628,
+          "sha256": "sha256:ac3d4c22aa5c4af4ec94c2c2ea1166d758918d403727dfad1f8507e6fecff46b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-a.mp4",
+          "bytes": 3286,
+          "sha256": "sha256:9b4db4ecfd34c3d2b4f5600212308f8520bfa431b95451ddb3797bd516bc5dd0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-a.mp4.native-observations.000.ndjson",
+          "bytes": 159963,
+          "sha256": "sha256:975a347ab23ddc7e3a65d4be8ee22fc154bfe68de413aefb6c72ab92950add61"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-a.mp4.native-observations.json",
+          "bytes": 85623,
+          "sha256": "sha256:11103bf54352b7852c5046790496644863c1353db062ff7608a69165e7aefeea"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-a.mp4.result.json",
+          "bytes": 7523,
+          "sha256": "sha256:30f957e12a81c4f25a85396e191535674177ba4eb2826ea899c0e9dea656f1f1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-a.mp4.scene.json",
+          "bytes": 1443273,
+          "sha256": "sha256:238d49b0fd35e0ec933bd948f4b989173aa433308e036948bb90c3cab3b98e53"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-b.mp4",
+          "bytes": 3286,
+          "sha256": "sha256:9b4db4ecfd34c3d2b4f5600212308f8520bfa431b95451ddb3797bd516bc5dd0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-b.mp4.native-observations.000.ndjson",
+          "bytes": 159963,
+          "sha256": "sha256:975a347ab23ddc7e3a65d4be8ee22fc154bfe68de413aefb6c72ab92950add61"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-b.mp4.native-observations.json",
+          "bytes": 85623,
+          "sha256": "sha256:d290e115687bc923c7616942946e355560755cbf0463058e156fd283165085d5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-b.mp4.result.json",
+          "bytes": 7619,
+          "sha256": "sha256:b6063ad4c2aa8b75f3d1286fc6622c146caa455b287b8db5b803f95bd8931047"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-b.mp4.scene.json",
+          "bytes": 1443273,
+          "sha256": "sha256:238d49b0fd35e0ec933bd948f4b989173aa433308e036948bb90c3cab3b98e53"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-preview-0.png",
+          "bytes": 3788,
+          "sha256": "sha256:82611f86b0efae9e5be50c01c748f65c5ba6d4f3533e80f18d1ef04181881ceb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-preview-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:94dd230c83ff0b9a151753efa38b97471611d1d0507d7017beab5fe42c9942d0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-preview-1.png",
+          "bytes": 3803,
+          "sha256": "sha256:4bf71732f40d936ea0ec99700ffcb04dce46260e551e04383244d6f72dc32a1e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-preview-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:4d56692c980681af1ee2854325833fe6f5370aeae6bce51074cf73efdecb74b8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-preview-2.png",
+          "bytes": 3770,
+          "sha256": "sha256:efc25f7e853ca85ce8addcb80607b5ab4d21434ef0958c6b1ed0cc9aa6ed861e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-preview-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:28ade37f98fda957ebd88b0bfe8cc0985959ac3395bcb3ce989bfe11c1def7fe"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-preview-3.png",
+          "bytes": 3792,
+          "sha256": "sha256:ce5eb37aea0a2977477c54c932006cbd869f80e7133b7d25d0b7c1be27835ab6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-preview-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:c32ab51ac6892b6453e7ab3f644fcc00e1da031579de9b9fb65ea83da65db7c4"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-preview-4.png",
+          "bytes": 3745,
+          "sha256": "sha256:45115ad5ea676b12e31712383fc9e6292128165b9ca8d7c98e12d99e99509b65"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-preview-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:1458960dd1dedc98071553ae57e0def13000d37f3c9432b3fb7da23b9eda2af3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-preview-5.png",
+          "bytes": 3668,
+          "sha256": "sha256:9d03462dbf40d53fcd3c22e4392dce4a5b15d3f9354c1160c9acb93b327da14c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-preview-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:da30e5c6c7e1a9188a54e967fbeba4dd78e79f961e0ab596c069fcd2abf2c13d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-preview-6.png",
+          "bytes": 3668,
+          "sha256": "sha256:9d03462dbf40d53fcd3c22e4392dce4a5b15d3f9354c1160c9acb93b327da14c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-preview-6.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:da30e5c6c7e1a9188a54e967fbeba4dd78e79f961e0ab596c069fcd2abf2c13d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-preview-7.png",
+          "bytes": 3668,
+          "sha256": "sha256:9d03462dbf40d53fcd3c22e4392dce4a5b15d3f9354c1160c9acb93b327da14c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-preview-7.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:da30e5c6c7e1a9188a54e967fbeba4dd78e79f961e0ab596c069fcd2abf2c13d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-preview-8.png",
+          "bytes": 3788,
+          "sha256": "sha256:82611f86b0efae9e5be50c01c748f65c5ba6d4f3533e80f18d1ef04181881ceb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-preview-8.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:94dd230c83ff0b9a151753efa38b97471611d1d0507d7017beab5fe42c9942d0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-preview-9.png",
+          "bytes": 3745,
+          "sha256": "sha256:45115ad5ea676b12e31712383fc9e6292128165b9ca8d7c98e12d99e99509b65"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1-preview-9.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:1458960dd1dedc98071553ae57e0def13000d37f3c9432b3fb7da23b9eda2af3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1.composition.json",
+          "bytes": 1554,
+          "sha256": "sha256:fde86cb34d4ca47e6a694bdd15438505e3143a4153c9a39a9fc40c9577fd4556"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/cable-tie-dimension-1.json",
+          "bytes": 992204,
+          "sha256": "sha256:1a2f830c408cc6ceeeb70c3fe763ad5b8f9f1d6eabd329a94136f3431ec306b4"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-a.mp4",
+          "bytes": 10977,
+          "sha256": "sha256:4de08b32d7e0dfcaf242bbae738de9c75cfc071c86c099b8917714538187838d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-a.mp4.native-observations.000.ndjson",
+          "bytes": 222243,
+          "sha256": "sha256:80c03e3d19bd4ecf13230c35d10b6c324c0b6e6e3db388b0621441ed33c5e43a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-a.mp4.native-observations.json",
+          "bytes": 85627,
+          "sha256": "sha256:245dc3a1e367527eb7998aa6d64c0a2cd69b2b83fa0a22ab58f15c5656984fa6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-a.mp4.result.json",
+          "bytes": 7590,
+          "sha256": "sha256:00109eab5025639fcaa129389c170eaa0545adabeab7930ad6bb1ed9d8dcbfda"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-a.mp4.scene.json",
+          "bytes": 742748,
+          "sha256": "sha256:962fd81c20ee8693d258addddb3a433c25290af163cf57ca4aa85e95bac08232"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-b.mp4",
+          "bytes": 10977,
+          "sha256": "sha256:4de08b32d7e0dfcaf242bbae738de9c75cfc071c86c099b8917714538187838d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-b.mp4.native-observations.000.ndjson",
+          "bytes": 222243,
+          "sha256": "sha256:80c03e3d19bd4ecf13230c35d10b6c324c0b6e6e3db388b0621441ed33c5e43a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-b.mp4.native-observations.json",
+          "bytes": 85627,
+          "sha256": "sha256:581fb39a4154bea973c91d45407cce45e56616fa0144dd4c263dea72d2caf851"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-b.mp4.result.json",
+          "bytes": 7600,
+          "sha256": "sha256:19e283283d65f7f0533a32c85803399561c94190661955de04435c608e117e1b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-b.mp4.scene.json",
+          "bytes": 742748,
+          "sha256": "sha256:962fd81c20ee8693d258addddb3a433c25290af163cf57ca4aa85e95bac08232"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-preview-0.png",
+          "bytes": 11312,
+          "sha256": "sha256:2389235ec6a7b0b8b5fb00d6ab0416fe2de4260d0bf8d9c44cb920447b662d59"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-preview-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:cf612f7836f2e82df90630686fd0c0763326c264e0f711af5b57bfac32eda0a0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-preview-1.png",
+          "bytes": 12145,
+          "sha256": "sha256:c4b2a9dc8418ebbb904c712b7ad665d0923d8b75618edac1b640b749241a0eb9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-preview-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0fdd87ec24c947760ebb08707d01a5348993030217d1447975c1a8c57ce5fb07"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-preview-2.png",
+          "bytes": 12647,
+          "sha256": "sha256:1bf7958bfbc7d53c0a11f9188e8f90544937422f2da42cb5e099989b8ea38e20"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-preview-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:19b79469a1339b9047dbc1895a69d4d6eccf7ee874058faf814a135d1c2abd96"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-preview-3.png",
+          "bytes": 12647,
+          "sha256": "sha256:1bf7958bfbc7d53c0a11f9188e8f90544937422f2da42cb5e099989b8ea38e20"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-preview-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:19b79469a1339b9047dbc1895a69d4d6eccf7ee874058faf814a135d1c2abd96"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-preview-4.png",
+          "bytes": 12694,
+          "sha256": "sha256:c9922f354a54553bf1e9d9b1c67591cc21877c90566f8eba7acbf5a8b73f056b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-preview-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:15e488f1cde031c708af6675f15f32cdba97927d8f862ed64943e63d2ba3b0ec"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-preview-5.png",
+          "bytes": 11413,
+          "sha256": "sha256:1f9e4d37a547096677dbc5ea24ee731bedd1b786f248e2618142aeda391dff8e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-preview-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:6d3113e90e235e0690eb18ad37b1f09bf65f3bed0c27d147ca2ad5d848c69bb2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-preview-6.png",
+          "bytes": 11312,
+          "sha256": "sha256:2389235ec6a7b0b8b5fb00d6ab0416fe2de4260d0bf8d9c44cb920447b662d59"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-preview-6.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:cf612f7836f2e82df90630686fd0c0763326c264e0f711af5b57bfac32eda0a0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-preview-7.png",
+          "bytes": 11312,
+          "sha256": "sha256:2389235ec6a7b0b8b5fb00d6ab0416fe2de4260d0bf8d9c44cb920447b662d59"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-preview-7.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:cf612f7836f2e82df90630686fd0c0763326c264e0f711af5b57bfac32eda0a0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-preview-8.png",
+          "bytes": 11312,
+          "sha256": "sha256:2389235ec6a7b0b8b5fb00d6ab0416fe2de4260d0bf8d9c44cb920447b662d59"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-preview-8.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:cf612f7836f2e82df90630686fd0c0763326c264e0f711af5b57bfac32eda0a0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-preview-9.png",
+          "bytes": 12694,
+          "sha256": "sha256:c9922f354a54553bf1e9d9b1c67591cc21877c90566f8eba7acbf5a8b73f056b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0-preview-9.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:15e488f1cde031c708af6675f15f32cdba97927d8f862ed64943e63d2ba3b0ec"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0.composition.json",
+          "bytes": 1595,
+          "sha256": "sha256:64d95073cf2588c85c3f31a3d50d899cc258139947f3b67df4b451c1014adab5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-0.json",
+          "bytes": 468500,
+          "sha256": "sha256:a2ba3dea00f31d8c8ee8ca62a03fd3a23ab52eca4a6b56e6136eb556afb3a886"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-a.mp4",
+          "bytes": 12899,
+          "sha256": "sha256:44cc0ea52bef68c1b6d2ebf3e048b7fe2871dcfe20c78804b700b202ad096078"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-a.mp4.native-observations.000.ndjson",
+          "bytes": 225252,
+          "sha256": "sha256:0ad129622b8275318ed33e47a0f2c055ddd7be4de3fa9968cb27737d71717f03"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-a.mp4.native-observations.json",
+          "bytes": 85627,
+          "sha256": "sha256:a413a1faa712933c6fe6780fdb18e369123f46db22de19a3c4dcc403d501866c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-a.mp4.result.json",
+          "bytes": 7578,
+          "sha256": "sha256:09bf729068e5cbb503d09e0db5e1a15be2faa8bff2167f62fe9027cdc738e8b6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-a.mp4.scene.json",
+          "bytes": 738862,
+          "sha256": "sha256:427c955b82e5af5a5c53980e2da0d08ab08ef069d3ad7b46a44fa259e0d0757e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-b.mp4",
+          "bytes": 12899,
+          "sha256": "sha256:44cc0ea52bef68c1b6d2ebf3e048b7fe2871dcfe20c78804b700b202ad096078"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-b.mp4.native-observations.000.ndjson",
+          "bytes": 225252,
+          "sha256": "sha256:0ad129622b8275318ed33e47a0f2c055ddd7be4de3fa9968cb27737d71717f03"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-b.mp4.native-observations.json",
+          "bytes": 85627,
+          "sha256": "sha256:eb4163533e24b951205862cdf611bd555a9098e5843763b625616245c619078f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-b.mp4.result.json",
+          "bytes": 7621,
+          "sha256": "sha256:c3f9e182cd8dbd927237404d6766d7c2bd09070addda828a1432ca2879d26eae"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-b.mp4.scene.json",
+          "bytes": 738862,
+          "sha256": "sha256:427c955b82e5af5a5c53980e2da0d08ab08ef069d3ad7b46a44fa259e0d0757e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-preview-0.png",
+          "bytes": 14180,
+          "sha256": "sha256:5bb70b8fe91e868d54e1503aedac0bed23f28a85b959a48079dd861397ab673b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-preview-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:f5361d38a08c3d76e353f9873d221f6960c9fb433593ef9820e10557cae2205f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-preview-1.png",
+          "bytes": 15261,
+          "sha256": "sha256:4a282cae01301dd2142d55944eb32942652279938833aaee4962066dd41537e7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-preview-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:51613bef94d2a4a2c749037e820eb148f0a14544731e46fc835f56028c421518"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-preview-2.png",
+          "bytes": 15342,
+          "sha256": "sha256:809d33db08d6dbcc9dac5f59063274e5a20b43304e24f7f764e06350136f750d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-preview-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:43e733b9b06da9c446faafeebd15efb17754f61da7a8089bcfae44279dcb28b1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-preview-3.png",
+          "bytes": 15342,
+          "sha256": "sha256:809d33db08d6dbcc9dac5f59063274e5a20b43304e24f7f764e06350136f750d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-preview-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:43e733b9b06da9c446faafeebd15efb17754f61da7a8089bcfae44279dcb28b1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-preview-4.png",
+          "bytes": 15217,
+          "sha256": "sha256:7dd24ba15235e7fa462ea9679c87352cd9cb4b61162aea2449d1d62ce6d904aa"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-preview-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:19da83d72e4ca69b5f56e04a0406fa4b33da3e559a10f799d358dcdde4a4e979"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-preview-5.png",
+          "bytes": 14180,
+          "sha256": "sha256:5bb70b8fe91e868d54e1503aedac0bed23f28a85b959a48079dd861397ab673b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-preview-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:f5361d38a08c3d76e353f9873d221f6960c9fb433593ef9820e10557cae2205f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-preview-6.png",
+          "bytes": 14180,
+          "sha256": "sha256:5bb70b8fe91e868d54e1503aedac0bed23f28a85b959a48079dd861397ab673b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-preview-6.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:f5361d38a08c3d76e353f9873d221f6960c9fb433593ef9820e10557cae2205f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-preview-7.png",
+          "bytes": 14180,
+          "sha256": "sha256:5bb70b8fe91e868d54e1503aedac0bed23f28a85b959a48079dd861397ab673b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-preview-7.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:f5361d38a08c3d76e353f9873d221f6960c9fb433593ef9820e10557cae2205f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-preview-8.png",
+          "bytes": 14180,
+          "sha256": "sha256:5bb70b8fe91e868d54e1503aedac0bed23f28a85b959a48079dd861397ab673b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-preview-8.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:f5361d38a08c3d76e353f9873d221f6960c9fb433593ef9820e10557cae2205f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-preview-9.png",
+          "bytes": 15217,
+          "sha256": "sha256:7dd24ba15235e7fa462ea9679c87352cd9cb4b61162aea2449d1d62ce6d904aa"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1-preview-9.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:19da83d72e4ca69b5f56e04a0406fa4b33da3e559a10f799d358dcdde4a4e979"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1.composition.json",
+          "bytes": 1595,
+          "sha256": "sha256:d8dd33b73112ed7bbc63d0ac631a81a5316bcc62e6d0ee7f6e41264198f9e170"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/clothespeg-dimension-1.json",
+          "bytes": 464614,
+          "sha256": "sha256:f964b93e0d3d3081fdd92b3cb00bf733423569adef54dc4f87c92e5e905a437a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/metadata.json",
+          "bytes": 33873,
+          "sha256": "sha256:6ecb3db9c85c9229ec88c94d9e74700d763df6d544854c6127b9631265e8cad2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-packs-WRtNqh/run.json",
+          "bytes": 977432,
+          "sha256": "sha256:75fcb714c12c9e822573e076593e031b1b5e120d3a848376873c3717b98c374e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-a.mp4",
+          "bytes": 8570,
+          "sha256": "sha256:a730088ee5898538680227aa20923a43147bfdb665da87b40b845fe124e806c9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-a.mp4.native-observations.000.ndjson",
+          "bytes": 89495,
+          "sha256": "sha256:cbf5a41e3549540c7d4d156c04af5ac3f90872a6969e1be9e3bbb1d424dc37d4"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-a.mp4.native-observations.json",
+          "bytes": 87041,
+          "sha256": "sha256:57d47e5fc0cb44aaa08edd521ad06ea7c7f3e541f700da853e23fdaa599df8a0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-a.mp4.result.json",
+          "bytes": 8389,
+          "sha256": "sha256:895d59853e6cbaddef6450d807157c55aeadf3078e70deabb48491e3b30408d4"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-a.mp4.scene.json",
+          "bytes": 8257716,
+          "sha256": "sha256:a57b2fa9fe166a24bdaa4b0a2b13066fd834d233755b214bf61b66c0d8344c3b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-b.mp4",
+          "bytes": 8570,
+          "sha256": "sha256:a730088ee5898538680227aa20923a43147bfdb665da87b40b845fe124e806c9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-b.mp4.native-observations.000.ndjson",
+          "bytes": 89495,
+          "sha256": "sha256:cbf5a41e3549540c7d4d156c04af5ac3f90872a6969e1be9e3bbb1d424dc37d4"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-b.mp4.native-observations.json",
+          "bytes": 87041,
+          "sha256": "sha256:33506cc103a5c1f46b2a0b10e9ab120d9cdd9a2d3bd0a690565c35b3bf637b0b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-b.mp4.result.json",
+          "bytes": 8390,
+          "sha256": "sha256:202bfb343a2af6805cc74d5dabf6047902519d9a0aceab3bf7b3c5476b1a04d6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-b.mp4.scene.json",
+          "bytes": 8257716,
+          "sha256": "sha256:a57b2fa9fe166a24bdaa4b0a2b13066fd834d233755b214bf61b66c0d8344c3b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-preview-0.png",
+          "bytes": 42553,
+          "sha256": "sha256:876b2ad73efb46817d09aa5737a3401e768c90e0dc9d21a1e79ff246935b1c30"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-preview-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0cea23b31350a870669418f78fb2eb7840d9879dd8ab768d0bced619afdb7f1a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-preview-1.png",
+          "bytes": 42553,
+          "sha256": "sha256:876b2ad73efb46817d09aa5737a3401e768c90e0dc9d21a1e79ff246935b1c30"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-preview-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0cea23b31350a870669418f78fb2eb7840d9879dd8ab768d0bced619afdb7f1a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-preview-2.png",
+          "bytes": 23746,
+          "sha256": "sha256:06d33bf85abc0a5c0c8dc63a9c559ca2470fa2e185406a2413fdd74f1283f0b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-preview-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:904ae6c34b5d1810978740d8992dd83e84d1e84c3005b54113a3d4da2700b22e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-preview-3.png",
+          "bytes": 23355,
+          "sha256": "sha256:c0c93a3c8f26967cf9561eef004d1b7c126950cf3c7a14841ef532def618d67b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-preview-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0ba7680c610d8c3efa0df401474d1837f6528b8c977d83150480f3d6af3dc873"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-preview-4.png",
+          "bytes": 23220,
+          "sha256": "sha256:63dd5d3d8fd485ca4c3e569950a71510629927228a6d390a0f25d2a8d89e0d16"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-preview-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:50890b6ceee80ca47b97f4789da368681035b06233f654531bfb637f238cfd83"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-preview-5.png",
+          "bytes": 20442,
+          "sha256": "sha256:33283e47b43123edbf0e37993a370ae71b8da6cfcb6021ebb4d9374d0baedb02"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-preview-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:8ffc124f438ac55b9e6f45e04647d705fca30f097527584880cd97023aa6de9d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-preview-6.png",
+          "bytes": 20442,
+          "sha256": "sha256:33283e47b43123edbf0e37993a370ae71b8da6cfcb6021ebb4d9374d0baedb02"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-preview-6.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:8ffc124f438ac55b9e6f45e04647d705fca30f097527584880cd97023aa6de9d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-preview-7.png",
+          "bytes": 42553,
+          "sha256": "sha256:876b2ad73efb46817d09aa5737a3401e768c90e0dc9d21a1e79ff246935b1c30"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-preview-7.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0cea23b31350a870669418f78fb2eb7840d9879dd8ab768d0bced619afdb7f1a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-preview-8.png",
+          "bytes": 23355,
+          "sha256": "sha256:c0c93a3c8f26967cf9561eef004d1b7c126950cf3c7a14841ef532def618d67b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0-preview-8.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:0ba7680c610d8c3efa0df401474d1837f6528b8c977d83150480f3d6af3dc873"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0.composition.json",
+          "bytes": 2197,
+          "sha256": "sha256:537906c91aea67df3faee5200ea1314fced7e2051c7e5689bd32372a027023ec"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-0.json",
+          "bytes": 5815114,
+          "sha256": "sha256:bf568880f970e79e0a339d8ed6c0fd45ab0fdb88be0e20a3fc6a64d53df3fdd6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-a.mp4",
+          "bytes": 8321,
+          "sha256": "sha256:2ce8f1e1e2deddacc9f9e874b4626f785a8708096f12e6de9749319e57f9b596"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-a.mp4.native-observations.000.ndjson",
+          "bytes": 89397,
+          "sha256": "sha256:47018fadc34e13967d02efacfe13bbe6803481b30a47546c1e8cee0dd0fe6af2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-a.mp4.native-observations.json",
+          "bytes": 87041,
+          "sha256": "sha256:6b504d7b3a742b3cde924a48b379c7d9b1f61ca6422fc9a4092166fe07b6ae8a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-a.mp4.result.json",
+          "bytes": 8406,
+          "sha256": "sha256:ef3bbec2bc3cf42d8afe0475d2fe8d395a56869a665e35dbc211cd010c6b061b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-a.mp4.scene.json",
+          "bytes": 8256106,
+          "sha256": "sha256:e9adfcbc66e311346b16ba54edbed62351f81df40793a53f25b8eb958bcade2d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-b.mp4",
+          "bytes": 8321,
+          "sha256": "sha256:2ce8f1e1e2deddacc9f9e874b4626f785a8708096f12e6de9749319e57f9b596"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-b.mp4.native-observations.000.ndjson",
+          "bytes": 89397,
+          "sha256": "sha256:47018fadc34e13967d02efacfe13bbe6803481b30a47546c1e8cee0dd0fe6af2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-b.mp4.native-observations.json",
+          "bytes": 87041,
+          "sha256": "sha256:6994ebd1e662222ec1aceed1e9b09b10c50fe4623430ed458ec72611e515ae7e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-b.mp4.result.json",
+          "bytes": 8418,
+          "sha256": "sha256:0d39b4477b835b405ba0354a30d64d63a5611edb428dd529f52777f216053760"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-b.mp4.scene.json",
+          "bytes": 8256106,
+          "sha256": "sha256:e9adfcbc66e311346b16ba54edbed62351f81df40793a53f25b8eb958bcade2d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-preview-0.png",
+          "bytes": 40812,
+          "sha256": "sha256:7e00f39c305b5fb426ee1c4afbf594c084c03c247d4b21f3bf26723bcef958a3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-preview-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:e8d00529e71433c342eb6e711115e9613b0f2b8655621700bb23abb5d05d22b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-preview-1.png",
+          "bytes": 40812,
+          "sha256": "sha256:7e00f39c305b5fb426ee1c4afbf594c084c03c247d4b21f3bf26723bcef958a3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-preview-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:e8d00529e71433c342eb6e711115e9613b0f2b8655621700bb23abb5d05d22b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-preview-2.png",
+          "bytes": 22805,
+          "sha256": "sha256:3f170ce67c31b09c683a70756f0ddf57e944af69e9ce46d1e1cdd76904cee5b8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-preview-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:3ff28d91aae71d825c903f65c42308056bf1dddd8d7da246567d8945701c6865"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-preview-3.png",
+          "bytes": 22528,
+          "sha256": "sha256:7bec537ba25319c344cfecc3899b04bb3b39cda80a9a85d1307fed76b109b103"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-preview-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:cbb5353c9afe98fd75405272bc9bfdcb7777fe85f8fd0bfc1fdeb012dadf123e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-preview-4.png",
+          "bytes": 22453,
+          "sha256": "sha256:d59a4c51e2aec108896e6a455f5957722c98b562957a66b9bc7f6830f41a8ea1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-preview-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:a319373c871cfabefd6eb7694b90d089d403e092d16c120a36dbd7a5a8cf3889"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-preview-5.png",
+          "bytes": 19150,
+          "sha256": "sha256:93910a12304365baa8816cb15c4b7b70fc865e7a27e5c21bc2e637c4afb2af12"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-preview-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:983f35eabfe9a014450f503be05d9246be37f7462e279164c1786408e78786ec"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-preview-6.png",
+          "bytes": 19150,
+          "sha256": "sha256:93910a12304365baa8816cb15c4b7b70fc865e7a27e5c21bc2e637c4afb2af12"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-preview-6.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:983f35eabfe9a014450f503be05d9246be37f7462e279164c1786408e78786ec"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-preview-7.png",
+          "bytes": 40812,
+          "sha256": "sha256:7e00f39c305b5fb426ee1c4afbf594c084c03c247d4b21f3bf26723bcef958a3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-preview-7.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:e8d00529e71433c342eb6e711115e9613b0f2b8655621700bb23abb5d05d22b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-preview-8.png",
+          "bytes": 22528,
+          "sha256": "sha256:7bec537ba25319c344cfecc3899b04bb3b39cda80a9a85d1307fed76b109b103"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1-preview-8.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:cbb5353c9afe98fd75405272bc9bfdcb7777fe85f8fd0bfc1fdeb012dadf123e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1.composition.json",
+          "bytes": 2197,
+          "sha256": "sha256:fad3c94fcb126b34497be9766f11bb859dd856fdadb61ced2e883c9e6d2fd33d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/dimension-1.json",
+          "bytes": 5814944,
+          "sha256": "sha256:faedeeadbcbdd1e632c00eac45ce00f6319e0f69dafe9bf8e04a0ea77fcf0dae"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/metadata.json",
+          "bytes": 32163,
+          "sha256": "sha256:a88428b6612228972215457f08b8c06535c66ec06e8a2ea73586760d6096d09f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-tape-pack-GBDPQz/run.json",
+          "bytes": 646840,
+          "sha256": "sha256:4bdc2ebdea93427366aacf40a760f3c3af8245c8b014007f7e5d578de541a49c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-8XgRAE/bent-a-repeat.png",
+          "bytes": 10623,
+          "sha256": "sha256:06de084b4d47f2b67cdb960d126a12ec04a9ed34e4129fccb9d0b5f4070e6b50"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-8XgRAE/bent-a-repeat.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:51a1acf005e0143d7b7b01cf069123a061fc9ef6302d44231838af178311d135"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-8XgRAE/bent-a.png",
+          "bytes": 10623,
+          "sha256": "sha256:06de084b4d47f2b67cdb960d126a12ec04a9ed34e4129fccb9d0b5f4070e6b50"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-8XgRAE/bent-a.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:51a1acf005e0143d7b7b01cf069123a061fc9ef6302d44231838af178311d135"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-8XgRAE/rest-a-reverse.png",
+          "bytes": 10289,
+          "sha256": "sha256:7ad1c1810b5a5541e3b7707118073b2ed8db25a1586cafead817129b570d6291"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-8XgRAE/rest-a-reverse.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:4987c025dde75754501f43dc4c4be85a743f0154b9516a2205cf707939bd3f7b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-8XgRAE/rest-a.png",
+          "bytes": 10289,
+          "sha256": "sha256:7ad1c1810b5a5541e3b7707118073b2ed8db25a1586cafead817129b570d6291"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-8XgRAE/rest-a.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:4987c025dde75754501f43dc4c4be85a743f0154b9516a2205cf707939bd3f7b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-8XgRAE/rest-b.png",
+          "bytes": 10289,
+          "sha256": "sha256:7ad1c1810b5a5541e3b7707118073b2ed8db25a1586cafead817129b570d6291"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-8XgRAE/rest-b.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:4987c025dde75754501f43dc4c4be85a743f0154b9516a2205cf707939bd3f7b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-8XgRAE/run.json",
+          "bytes": 2976,
+          "sha256": "sha256:2d9c0c7cb0181fa2d1f42c496531dfc92ad58222100266b8f126d17df06baa63"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-8XgRAE/source.json",
+          "bytes": 101956,
+          "sha256": "sha256:b1f62c8a95e3493a796c75ec1606337a767cd6bd8ad3bf3805f3c9c5d0233348"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-yXnru7/allowed-hidden.png",
+          "bytes": 1953,
+          "sha256": "sha256:5675e57cad9d4adaf3b2740f318deb63e948a810f5d2ef8fdb5b63d1feebb162"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-yXnru7/allowed-hidden.receipt.json",
+          "bytes": 3101,
+          "sha256": "sha256:1c402190150b20a3377b2b8d4e6594874300527e8e098e0da6ce1d4502b0ea3f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-yXnru7/allowed-hidden.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:10985f60a4114b86e01287b907f57d3e1cf406a4be573e9af59e73cb89c74184"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-yXnru7/allowed-outside.png",
+          "bytes": 1953,
+          "sha256": "sha256:5675e57cad9d4adaf3b2740f318deb63e948a810f5d2ef8fdb5b63d1feebb162"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-yXnru7/allowed-outside.receipt.json",
+          "bytes": 3101,
+          "sha256": "sha256:b0134ee66f65416a0addc37447c9c27447ed4fd083d51c0e531e26470c2e275e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-yXnru7/allowed-outside.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:10985f60a4114b86e01287b907f57d3e1cf406a4be573e9af59e73cb89c74184"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-yXnru7/bent-b-repeat.png",
+          "bytes": 10623,
+          "sha256": "sha256:06de084b4d47f2b67cdb960d126a12ec04a9ed34e4129fccb9d0b5f4070e6b50"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-yXnru7/bent-b-repeat.receipt.json",
+          "bytes": 8206,
+          "sha256": "sha256:923dbbab7b155a66ae80aa154e40dc92dd907036a9a686a06129d6d5ecfd6d35"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-yXnru7/bent-b-repeat.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:51a1acf005e0143d7b7b01cf069123a061fc9ef6302d44231838af178311d135"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-yXnru7/bent-b.png",
+          "bytes": 10623,
+          "sha256": "sha256:06de084b4d47f2b67cdb960d126a12ec04a9ed34e4129fccb9d0b5f4070e6b50"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-yXnru7/bent-b.receipt.json",
+          "bytes": 8206,
+          "sha256": "sha256:923dbbab7b155a66ae80aa154e40dc92dd907036a9a686a06129d6d5ecfd6d35"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-yXnru7/bent-b.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:51a1acf005e0143d7b7b01cf069123a061fc9ef6302d44231838af178311d135"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-yXnru7/rest-a-reverse.png",
+          "bytes": 10289,
+          "sha256": "sha256:7ad1c1810b5a5541e3b7707118073b2ed8db25a1586cafead817129b570d6291"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-yXnru7/rest-a-reverse.receipt.json",
+          "bytes": 8041,
+          "sha256": "sha256:7db48dcc223b2e19b1726434cffa4be57a1729e58848aadac77fcab56a995c10"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-yXnru7/rest-a-reverse.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:4987c025dde75754501f43dc4c4be85a743f0154b9516a2205cf707939bd3f7b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-yXnru7/rest-a.png",
+          "bytes": 10289,
+          "sha256": "sha256:7ad1c1810b5a5541e3b7707118073b2ed8db25a1586cafead817129b570d6291"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-yXnru7/rest-a.receipt.json",
+          "bytes": 8041,
+          "sha256": "sha256:7db48dcc223b2e19b1726434cffa4be57a1729e58848aadac77fcab56a995c10"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-yXnru7/rest-a.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:4987c025dde75754501f43dc4c4be85a743f0154b9516a2205cf707939bd3f7b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-yXnru7/run.json",
+          "bytes": 7870,
+          "sha256": "sha256:fd61277ca32fbf789cd953b54b43ac0263af5260eeb59c5ccf3b435b8484d0d1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-yXnru7/source.json",
+          "bytes": 103127,
+          "sha256": "sha256:141b8425e476a8d5858b29ce4844657031e99bfbe4fce6fc26ea3305bed8a01b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/allowed-hidden.png",
+          "bytes": 1953,
+          "sha256": "sha256:5675e57cad9d4adaf3b2740f318deb63e948a810f5d2ef8fdb5b63d1feebb162"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/allowed-hidden.receipt.json",
+          "bytes": 9903,
+          "sha256": "sha256:f2215e7b6b59036afc2fdb3b61d2f1e843474aa006d47077c7852c6035f4990a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/allowed-hidden.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:10985f60a4114b86e01287b907f57d3e1cf406a4be573e9af59e73cb89c74184"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/allowed-outside.png",
+          "bytes": 1953,
+          "sha256": "sha256:5675e57cad9d4adaf3b2740f318deb63e948a810f5d2ef8fdb5b63d1feebb162"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/allowed-outside.receipt.json",
+          "bytes": 9407,
+          "sha256": "sha256:08326d10e761ad1304b2a6d63f4714b0e84f45591df19c5a664a3f5a8e301d61"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/allowed-outside.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:10985f60a4114b86e01287b907f57d3e1cf406a4be573e9af59e73cb89c74184"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/appearance-code-identity.json",
+          "bytes": 75037,
+          "sha256": "sha256:f109fd33cb7d1b5da9a731f540b757446e04dd14cbacb9a01b72b61385a295fe"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/bent-b.png",
+          "bytes": 11648,
+          "sha256": "sha256:c76016175bff3ace4a8f0d01ce5921d640485baa9a89af803e65bc2e8124accc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/bent-b.receipt.json",
+          "bytes": 15868,
+          "sha256": "sha256:4e270f876766fcc09c81795d0e2c96accd12ee685255d08ebf41a66a26859987"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/bent-b.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:a3a5ae5799c95ec8c04cf69dae732f9fe0b429f2089e78ce46be45fe13960392"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/packet.contract-example.json",
+          "bytes": 145480,
+          "sha256": "sha256:23f13c000589fe534fbdf7e391e0f4233b5e02fe64a41b721a938a831a3633bb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/queued-a.png",
+          "bytes": 10289,
+          "sha256": "sha256:7ad1c1810b5a5541e3b7707118073b2ed8db25a1586cafead817129b570d6291"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/queued-a.receipt.json",
+          "bytes": 15590,
+          "sha256": "sha256:a6409d3a88cc312dbc886e841d645aec39ab0e7e09e75f013927a127e825b00d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/queued-a.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:4987c025dde75754501f43dc4c4be85a743f0154b9516a2205cf707939bd3f7b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/queued-b.png",
+          "bytes": 11648,
+          "sha256": "sha256:c76016175bff3ace4a8f0d01ce5921d640485baa9a89af803e65bc2e8124accc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/queued-b.receipt.json",
+          "bytes": 15868,
+          "sha256": "sha256:4e270f876766fcc09c81795d0e2c96accd12ee685255d08ebf41a66a26859987"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/queued-b.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:a3a5ae5799c95ec8c04cf69dae732f9fe0b429f2089e78ce46be45fe13960392"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/rest-a-before-stale.png",
+          "bytes": 10289,
+          "sha256": "sha256:7ad1c1810b5a5541e3b7707118073b2ed8db25a1586cafead817129b570d6291"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/rest-a-before-stale.receipt.json",
+          "bytes": 15590,
+          "sha256": "sha256:a6409d3a88cc312dbc886e841d645aec39ab0e7e09e75f013927a127e825b00d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/rest-a-before-stale.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:4987c025dde75754501f43dc4c4be85a743f0154b9516a2205cf707939bd3f7b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/rest-a.png",
+          "bytes": 10289,
+          "sha256": "sha256:7ad1c1810b5a5541e3b7707118073b2ed8db25a1586cafead817129b570d6291"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/rest-a.receipt.json",
+          "bytes": 15590,
+          "sha256": "sha256:a6409d3a88cc312dbc886e841d645aec39ab0e7e09e75f013927a127e825b00d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/rest-a.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:4987c025dde75754501f43dc4c4be85a743f0154b9516a2205cf707939bd3f7b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/run.json",
+          "bytes": 6282,
+          "sha256": "sha256:57628166e3e07bdde5c0e4e5f472ab4fae3901159f7f878b088ab15d46aa9a79"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/sealed-a-with-later-cpu-b.png",
+          "bytes": 10289,
+          "sha256": "sha256:7ad1c1810b5a5541e3b7707118073b2ed8db25a1586cafead817129b570d6291"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/sealed-a-with-later-cpu-b.receipt.json",
+          "bytes": 15590,
+          "sha256": "sha256:a6409d3a88cc312dbc886e841d645aec39ab0e7e09e75f013927a127e825b00d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/sealed-a-with-later-cpu-b.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:4987c025dde75754501f43dc4c4be85a743f0154b9516a2205cf707939bd3f7b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-x5aQkR/source.json",
+          "bytes": 102592,
+          "sha256": "sha256:41412d40f65f1267468006a3846eab9eb88f06f1fea7f16815f45c776f54d834"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/0-frame-0.json",
+          "bytes": 76671,
+          "sha256": "sha256:1b28ce9e24de3a78d42b4fed946474b29d162a892f85076a8e3ac389110b7303"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/0-frame-0.png",
+          "bytes": 10897,
+          "sha256": "sha256:3247fdec4965986107a5690b92e6faaa45c31d9834c9950eaae1ea279d1d3a4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/0-frame-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:7e81ce13fe49f417d6feae3dbe612c698e61780a4e96577cee46e8af8a36ad4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/1-frame-3.json",
+          "bytes": 76390,
+          "sha256": "sha256:a96a1afaade88e9b4dfac3dab1967467a744c09d261dffa790c61790e65499de"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/1-frame-3.png",
+          "bytes": 11751,
+          "sha256": "sha256:4c9409f39a3d35bce41bae96e317dbc950559bf7a77203206532c8e4b03fa7ed"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/1-frame-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:d80448ba9418a1f4de79656fc8f812168a81838462a5da03480cedc1876b3747"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/2-frame-0.json",
+          "bytes": 76671,
+          "sha256": "sha256:1b28ce9e24de3a78d42b4fed946474b29d162a892f85076a8e3ac389110b7303"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/2-frame-0.png",
+          "bytes": 10897,
+          "sha256": "sha256:3247fdec4965986107a5690b92e6faaa45c31d9834c9950eaae1ea279d1d3a4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/2-frame-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:7e81ce13fe49f417d6feae3dbe612c698e61780a4e96577cee46e8af8a36ad4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/3-frame-4.json",
+          "bytes": 30474,
+          "sha256": "sha256:cfb89bffe9db766c364fe41867c6127c31a41bedf3c9878f407b42be88ee21f9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/3-frame-4.png",
+          "bytes": 5084,
+          "sha256": "sha256:229e4bdf0bd04a988c1469aa6d94edec779ce57586b3bc8f6b3a079b3cb64f1c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/3-frame-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:c7a1c4a741af722bcbe00e3c447535a9aee63b378a45cec69309176f44744d00"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/composition.json",
+          "bytes": 2657,
+          "sha256": "sha256:ee8ebefd8c1dc92694d927658c6a04b3354c1c800b07a20600c65c2bd38cd89e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/default-preview.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:7e81ce13fe49f417d6feae3dbe612c698e61780a4e96577cee46e8af8a36ad4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/journal-frame-0.json",
+          "bytes": 89627,
+          "sha256": "sha256:fc1aa31a6d078bed30081e5ebbcae44669631bf19297ffb7c1cfe7b41ae4f9b4"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/journal-frame-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:7e81ce13fe49f417d6feae3dbe612c698e61780a4e96577cee46e8af8a36ad4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/journal-frame-1.json",
+          "bytes": 89507,
+          "sha256": "sha256:3ef8581cecd3f0cb3c9a3b43333967b61d8067e2cf7b49adb067892b8ff7a61e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/journal-frame-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:3057ce618159d91a6d5321f0ca22d6f70dbb9aa0b817b9497d18d22ac89843d2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/journal-frame-2.json",
+          "bytes": 89395,
+          "sha256": "sha256:fad1f991b07a1ead8902d92434b38f4a3a1e5e3e8f889a2757508e0735e4de47"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/journal-frame-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:62512c6e87ded0509ff6fb8847465d524b2229c3bffbb6cb0366448f0602a096"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/journal-frame-3.json",
+          "bytes": 89368,
+          "sha256": "sha256:9236745880ab7c32114a6997d68a5209128e5a55ba15239946f3358c6b4b2bd5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/journal-frame-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:d80448ba9418a1f4de79656fc8f812168a81838462a5da03480cedc1876b3747"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/journal-frame-4.json",
+          "bytes": 33608,
+          "sha256": "sha256:9a69e2127bbc1c59d9b3b1e9656d64517770b7d15421a01060dad66b266e05e1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/journal-frame-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:c7a1c4a741af722bcbe00e3c447535a9aee63b378a45cec69309176f44744d00"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/journal-frame-5.json",
+          "bytes": 33608,
+          "sha256": "sha256:9587f869d91fac7af483f3ea6ec89bd977cab1163f1dcd4b4e57644b7bbcdc67"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/journal-frame-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:c7a1c4a741af722bcbe00e3c447535a9aee63b378a45cec69309176f44744d00"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/journal-preview.rgba",
+          "bytes": 1382400,
+          "sha256": "sha256:5402ee0f108a5a76f0aed8055461779206fdc1f2a445c278cf141e91773fb0c3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/journal-preview.rgba.native-observations.000.ndjson",
+          "bytes": 172423,
+          "sha256": "sha256:ef1758c49f2276e08185bcb41d22ea3bdf5a23b859c7aee20e8eb36d719771b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/journal-preview.rgba.native-observations.json",
+          "bytes": 87359,
+          "sha256": "sha256:73e62930e584988578806f378f8bd535149af00969a2423b48d0e870a6d4ef8c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/journal-run.json",
+          "bytes": 5085,
+          "sha256": "sha256:37414aa195fa316b33e9b92506c262b843f2a221ce987bf0970b27b6e76b479b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/mechanism.json",
+          "bytes": 102592,
+          "sha256": "sha256:41412d40f65f1267468006a3846eab9eb88f06f1fea7f16815f45c776f54d834"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/run.json",
+          "bytes": 90682,
+          "sha256": "sha256:ec1f735c71ca8565133c4c9dea6807b9849186665e63a6cd99aacc9985414504"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-LkPeXK/solid.json",
+          "bytes": 3011,
+          "sha256": "sha256:96bb059ce42e5a23ae57d21c7e04bd8613a13ccd5478348e3a95b189013bc6fc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/composition.json",
+          "bytes": 2657,
+          "sha256": "sha256:ee8ebefd8c1dc92694d927658c6a04b3354c1c800b07a20600c65c2bd38cd89e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/http-frame-0.json",
+          "bytes": 36295,
+          "sha256": "sha256:0778bee933a3c11e73d474d7645c623edfea7567d145d39e4b649d5494f422cd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/http-frame-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:7e81ce13fe49f417d6feae3dbe612c698e61780a4e96577cee46e8af8a36ad4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/http-frame-1.json",
+          "bytes": 36244,
+          "sha256": "sha256:5c4887e79957fa3494d292007fb7a4cbddb3ac3807543dfcd2a00c6f28f58a17"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/http-frame-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:3057ce618159d91a6d5321f0ca22d6f70dbb9aa0b817b9497d18d22ac89843d2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/http-frame-2.json",
+          "bytes": 36166,
+          "sha256": "sha256:4ca7410d1a874e834d39bf5916efc9d4c3995969e2979b0c2c399ceb3633af64"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/http-frame-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:62512c6e87ded0509ff6fb8847465d524b2229c3bffbb6cb0366448f0602a096"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/http-frame-3.json",
+          "bytes": 36154,
+          "sha256": "sha256:afd62de8f0251f8f825fd42ecf7e324c02c4e44a5d88622004bbb16f64dc99fe"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/http-frame-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:d80448ba9418a1f4de79656fc8f812168a81838462a5da03480cedc1876b3747"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/http-frame-4.json",
+          "bytes": 13179,
+          "sha256": "sha256:41d5dc34e47e9b8265a140d345bdb28118e6799005b1ca4c947fc43812b3b42e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/http-frame-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:c7a1c4a741af722bcbe00e3c447535a9aee63b378a45cec69309176f44744d00"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/http-frame-5.json",
+          "bytes": 13179,
+          "sha256": "sha256:9f0e1b3e739e41f8178ff2b6b5a509678d46a9669b70cefdbdbf2469ad1e0caf"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/http-frame-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:c7a1c4a741af722bcbe00e3c447535a9aee63b378a45cec69309176f44744d00"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/instrumented.mp4",
+          "bytes": 4023,
+          "sha256": "sha256:3e839c201f2bcc25f466fc84db62f4d722112e4bcd5a493df0efa12f8a41508d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/instrumented.mp4.native-observations.000.ndjson",
+          "bytes": 172423,
+          "sha256": "sha256:ef1758c49f2276e08185bcb41d22ea3bdf5a23b859c7aee20e8eb36d719771b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/instrumented.mp4.native-observations.json",
+          "bytes": 87355,
+          "sha256": "sha256:bad7dbba75755d59f68b999613c187573c9d79ad81f6f1e8bc95173ece2f89b3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/instrumented.mp4.scene.json",
+          "bytes": 242826,
+          "sha256": "sha256:b7179023349cbe11862f969b61ff073a2607d88894c238ea06c84def84cb053d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/mechanism.json",
+          "bytes": 102592,
+          "sha256": "sha256:41412d40f65f1267468006a3846eab9eb88f06f1fea7f16815f45c776f54d834"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/normal2-a.mp4",
+          "bytes": 4023,
+          "sha256": "sha256:3e839c201f2bcc25f466fc84db62f4d722112e4bcd5a493df0efa12f8a41508d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/normal2-a.mp4.native-observations.000.ndjson",
+          "bytes": 172423,
+          "sha256": "sha256:ef1758c49f2276e08185bcb41d22ea3bdf5a23b859c7aee20e8eb36d719771b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/normal2-a.mp4.native-observations.json",
+          "bytes": 87352,
+          "sha256": "sha256:0f9f0f276956580eb77f623ecb3b50b83737a3cd4f9e273c4eaf8f73223b3eb3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/normal2-a.mp4.result.json",
+          "bytes": 9260,
+          "sha256": "sha256:746e9b86704c86db28af08c2f4353af32b0926f0b89bdf8e0238922903b215ee"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/normal2-a.mp4.scene.json",
+          "bytes": 243217,
+          "sha256": "sha256:f6c515e0a2165ea3c6f77740bb33dc4e5e57f441fdf857d6dd72126ca726a768"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/normal2-b.mp4",
+          "bytes": 4023,
+          "sha256": "sha256:3e839c201f2bcc25f466fc84db62f4d722112e4bcd5a493df0efa12f8a41508d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/normal2-b.mp4.native-observations.000.ndjson",
+          "bytes": 172423,
+          "sha256": "sha256:ef1758c49f2276e08185bcb41d22ea3bdf5a23b859c7aee20e8eb36d719771b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/normal2-b.mp4.native-observations.json",
+          "bytes": 87352,
+          "sha256": "sha256:576132ddd4ee574eac0448ec959627f6713ab3ea1910eeacffb36ab5de9d9d2b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/normal2-b.mp4.result.json",
+          "bytes": 9239,
+          "sha256": "sha256:ac48ec0a84774c100659f47bb0a1cd05b55b55c55fd40834e8695279f9163f9e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/normal2-b.mp4.scene.json",
+          "bytes": 243217,
+          "sha256": "sha256:f6c515e0a2165ea3c6f77740bb33dc4e5e57f441fdf857d6dd72126ca726a768"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/run.json",
+          "bytes": 43852,
+          "sha256": "sha256:a8da02faa71d8395bdf3dec1edacbae5a0f5a313b0e160f38197f4c8700b9458"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/solid.json",
+          "bytes": 3011,
+          "sha256": "sha256:96bb059ce42e5a23ae57d21c7e04bd8613a13ccd5478348e3a95b189013bc6fc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/unused.json",
+          "bytes": 744,
+          "sha256": "sha256:69ac117c64e4897c1aa769a7917f967a81cfdf026f877b8d30dbf01c5166321a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/unused2.mp4",
+          "bytes": 1576,
+          "sha256": "sha256:e9a57ef76dd9e9e0fe0adaecbb64edae088cefc0c4e92a2cb50ff37caaad2ef7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/unused2.mp4.native-observations.000.ndjson",
+          "bytes": 367,
+          "sha256": "sha256:c40b5f71fc60e4db9af34be645eaab7b0d603fcb0742d1032a2c7b637c7de391"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/unused2.mp4.native-observations.json",
+          "bytes": 87343,
+          "sha256": "sha256:57c5a6bafc8a35c6b274e0f4f8d70aaad587a42e4779d24ee8a04ab5e8819b18"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/unused2.mp4.result.json",
+          "bytes": 6917,
+          "sha256": "sha256:69a93ae14ea949c69dd4106c7749b81fdfb1cbeb49c279a092040bd81fd5dfc0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-IgEtpN/unused2.mp4.scene.json",
+          "bytes": 241312,
+          "sha256": "sha256:e56fbfac9210c59fa169645f002f5f00cd7cc6b43de40ae25f12937e1de4f5cd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/camera.png",
+          "bytes": 8790,
+          "sha256": "sha256:29ab63a102d450bd37aa30e01673e3249b0f563d8d5c5deb0bbdb3a0f3a5d821"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/composition.json",
+          "bytes": 3536,
+          "sha256": "sha256:d24cb7ef69ef4f509abaa8920b309ea9e689876ca024d6e88eff2edf1e0a6754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/final-ui.png",
+          "bytes": 339813,
+          "sha256": "sha256:259875856cb74927c2a1e8ce150477aa9061f53c1146e044d2e6f659c4c12b18"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/initial.png",
+          "bytes": 10897,
+          "sha256": "sha256:3247fdec4965986107a5690b92e6faaa45c31d9834c9950eaae1ea279d1d3a4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/material.png",
+          "bytes": 9035,
+          "sha256": "sha256:61c9324826629f3670bf531b7f2c5b715e9df3fb2fceda563251be8951bc7299"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/mechanism.json",
+          "bytes": 102592,
+          "sha256": "sha256:41412d40f65f1267468006a3846eab9eb88f06f1fea7f16815f45c776f54d834"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/part.png",
+          "bytes": 8846,
+          "sha256": "sha256:6f36a41f92e6a9c8071ea16150f7c8b391dc58ec0c4072b19628b58c7ad5c94e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/rapid-latest.png",
+          "bytes": 11409,
+          "sha256": "sha256:f59c3418a5e4237f00531d87a0980a9cb8632519dec24ee3c0878bc77b0a41fd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/reloaded.png",
+          "bytes": 9035,
+          "sha256": "sha256:61c9324826629f3670bf531b7f2c5b715e9df3fb2fceda563251be8951bc7299"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/run.json",
+          "bytes": 26383,
+          "sha256": "sha256:33bf04632cc14cd740b7921064ac5f682bb30b3e2ae87a4d18376e8bb582d7e4"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/saved.png",
+          "bytes": 9035,
+          "sha256": "sha256:61c9324826629f3670bf531b7f2c5b715e9df3fb2fceda563251be8951bc7299"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/saved2.mp4",
+          "bytes": 3587,
+          "sha256": "sha256:d46cd1c7b9d4f428f70dc3efc28a54df35bb17bd036bda147caf33de1de82364"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/saved2.mp4.native-observations.000.ndjson",
+          "bytes": 172744,
+          "sha256": "sha256:19642f0f63d1be5d854d292db9384b89fb24ea9a587f1d59ea00f327fb37c351"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/saved2.mp4.native-observations.json",
+          "bytes": 90124,
+          "sha256": "sha256:19404148ffa37b636010d2eaccbc95fd3a3ad905405ed45273a109b80f230b6c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/saved2.mp4.result.json",
+          "bytes": 9230,
+          "sha256": "sha256:b8960fc53eaa7e56915883836bf8abadf9ccbb43c306f796ed705346737e61bf"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/saved2.mp4.scene.json",
+          "bytes": 244274,
+          "sha256": "sha256:e3e5438e278ad62dc26738fb16a4c4054566af3213acd75705da4415c878d44d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/seek-0.png",
+          "bytes": 10897,
+          "sha256": "sha256:3247fdec4965986107a5690b92e6faaa45c31d9834c9950eaae1ea279d1d3a4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/seek-1.png",
+          "bytes": 11129,
+          "sha256": "sha256:3e2a4b0a0397aa9c6918c6c40d24fee6ce7a19313b6bc78c00320cc62923c4a6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/seek-10.png",
+          "bytes": 11409,
+          "sha256": "sha256:f59c3418a5e4237f00531d87a0980a9cb8632519dec24ee3c0878bc77b0a41fd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/seek-11.png",
+          "bytes": 10897,
+          "sha256": "sha256:3247fdec4965986107a5690b92e6faaa45c31d9834c9950eaae1ea279d1d3a4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/seek-12.png",
+          "bytes": 11751,
+          "sha256": "sha256:4c9409f39a3d35bce41bae96e317dbc950559bf7a77203206532c8e4b03fa7ed"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/seek-2.png",
+          "bytes": 11409,
+          "sha256": "sha256:f59c3418a5e4237f00531d87a0980a9cb8632519dec24ee3c0878bc77b0a41fd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/seek-3.png",
+          "bytes": 11751,
+          "sha256": "sha256:4c9409f39a3d35bce41bae96e317dbc950559bf7a77203206532c8e4b03fa7ed"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/seek-4.png",
+          "bytes": 5084,
+          "sha256": "sha256:229e4bdf0bd04a988c1469aa6d94edec779ce57586b3bc8f6b3a079b3cb64f1c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/seek-5.png",
+          "bytes": 5084,
+          "sha256": "sha256:229e4bdf0bd04a988c1469aa6d94edec779ce57586b3bc8f6b3a079b3cb64f1c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/seek-6.png",
+          "bytes": 11751,
+          "sha256": "sha256:4c9409f39a3d35bce41bae96e317dbc950559bf7a77203206532c8e4b03fa7ed"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/seek-7.png",
+          "bytes": 11409,
+          "sha256": "sha256:f59c3418a5e4237f00531d87a0980a9cb8632519dec24ee3c0878bc77b0a41fd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/seek-8.png",
+          "bytes": 11129,
+          "sha256": "sha256:3e2a4b0a0397aa9c6918c6c40d24fee6ce7a19313b6bc78c00320cc62923c4a6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/seek-9.png",
+          "bytes": 10897,
+          "sha256": "sha256:3247fdec4965986107a5690b92e6faaa45c31d9834c9950eaae1ea279d1d3a4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-Ki8Hjn/solid.json",
+          "bytes": 3011,
+          "sha256": "sha256:96bb059ce42e5a23ae57d21c7e04bd8613a13ccd5478348e3a95b189013bc6fc"
+        }
+      ],
+      "actualRootSession": 3526,
+      "actualExitCode": 0
+    },
+    {
+      "id": "family-packs-current-runtime-gate-1",
+      "status": "passed-current-held-source-runtime-integration-depth-smoke",
+      "sourceCheckpoint": "f946e80cb2f3bab5f3bb9fc95240e2262833bed8",
+      "sourceState": "working-two-family-candidates-and-bound-pack-metadata",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-family-inputs-8.json",
+        "bytes": 415957,
+        "sha256": "sha256:38a8f211d7142667cae8490ca7a97258df47251f22bc6c010e9f36996ac3b6ff",
+        "files": 2438,
+        "inputBytes": 118564413,
+        "sourceCommit": "f946e80cb2f3bab5f3bb9fc95240e2262833bed8"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-family-runtime-held-8.log",
+          "bytes": 192,
+          "sha256": "sha256:3a5768e2f3171cf9c7d9a53316fa2877a22e91aab61f9667f14d23ce219a4183"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-runtime-1.log",
+          "bytes": 37193,
+          "sha256": "sha256:9a3e32445b0f5b425edae347b1e835b6e6aac1ed33cc453408439b1f2b2ec1b7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-family-runtime-unchanged-8.log",
+          "bytes": 192,
+          "sha256": "sha256:3a5768e2f3171cf9c7d9a53316fa2877a22e91aab61f9667f14d23ce219a4183"
+        }
+      ],
+      "qualification": "Actual check:runtime passed the pinned toolchain, runtime, command integration, Python depth and Lab smoke groups on unchanged held source8. This refresh follows the repaired fast/native stages and does not erase prior failed attempts or close whole MS2/installed/human acceptance.",
+      "terminalObservedAtUTC": "2026-10-11 00:39:00 UTC",
+      "actualRootSession": 92459,
+      "actualExitCode": 0
     }
   ],
   "implementation": {
@@ -7583,10 +10313,82 @@
         "qualification": "Earlier source3 images were actually inspected; final held source5 real RGBA captures for all seven examples are independently checked equal to those inspected captures."
       },
       "remaining": "Cable-tie/clothespeg packs and acceptance, complete metadata definition identity and shape/rig cross references, rigid glTF/GLB/PBR import, full-world/expected allocation preflight, actual cameras/labels/cues/scoped typography, 300-topic board and full/installed milestone gates remain. Tape candidate, packs/pilot0; no MS2 PR/MS3 or inferred human acceptance."
+    },
+    "sixteenthSlice": {
+      "status": "implemented-and-verified-two-additional-pack-candidates-and-bound-metadata",
+      "candidateFamilies": ["tape-hook", "cable-tie", "clothespeg"],
+      "interfaces": [
+        "Public inspect/create/evaluate APIs for outside-serrated integral-pawl exposed-head/straight-tail cable tie and conventional wood-arm central-spring cloth-contact peg; shared bounded primitives and actual closed teaching meshes, no generic fixture product model or invented peg hinge pin.",
+        "Pack metadata binds the default canonical scene, parameter schema, each mesh and teaching declaration; summaries include bounded landmark counts/rig/seat/relationship references, exact physical neutral inventory and pose ranges without geometry/texture buffers. Default-source binding does not claim exhaustive generator-algorithm identity for nondefault branches; versioned source/installed archive closure remains required.",
+        "Source2 engagement explicitly declares all-frames or ratchet-seated requirement. Frame2 retains measured gap/residual even when not required; no invented passed observation or enlarged tolerance. Original1 contracts remain.",
+        "Source2 ratchet releasePolicy defaults to teaching-release for existing declarations. The selected standard tie declares non-releasable; its native compiler rejects even future release intervals with rig/control/first interval location. Engaged reverse travel is still rejected by existing guards.",
+        "Spring seat sampling cancels a shared hierarchy before multiplication, preserving exact neutral generator buffers under translated/rotated/nonuniform mounts. Peg return stops at cloth contact before the declared unloaded closing rest; bias is explanatory, not a force/stiffness claim."
+      ],
+      "softwareEvidence": {
+        "focusedTestsAdded": 12,
+        "currentUnitTests": 4091,
+        "currentUnitFiles": 400,
+        "newFamilyVariants": 4,
+        "newFamilyPreviewCaptures": 40,
+        "newFamilyFinalExports": 8,
+        "framesPerNewFamilyExport": 24,
+        "maximumIndependentReplayMetadataBytes": 11280448,
+        "allReplayMemoryReleased": true,
+        "currentNativeRegressionGroups": 6,
+        "refreshedTapePreviewCaptures": 18,
+        "refreshedTapeFinalExports": 4,
+        "runtimeGate": "passed-current-held-source-8",
+        "supportedPacks": 0,
+        "pilotEpisodes": 0
+      },
+      "factualAudit": {
+        "dimensionBasis": "illustrative",
+        "inspectedConventionalPegFigure": {
+          "path": "/private/tmp/mechanism-ms2-fact-audit-a-figures/clothespeg/eu003-page-3.png",
+          "bytes": 78552,
+          "sha256": "sha256:894677ace98ff471f00e11b206572d8104d952ad33b3a7774b58f1b980c36311"
+        },
+        "rejectedProposedReferences": [
+          {
+            "url": "https://patents.google.com/patent/US5033161A/en",
+            "reason": "Opened primary patent is a door hinge, not the selected clothespeg."
+          },
+          {
+            "url": "https://www.hellermanntyton.com/products/cable-ties-inside-serrated/t50r/111-05000",
+            "reason": "T50R is inside-serrated, not the selected outside-serrated variant."
+          }
+        ],
+        "selectedSources": [
+          {
+            "url": "https://www.hellermanntyton.com/products/cable-ties-outside-serrated/t50sos/118-00062",
+            "claim": "Opened primary product table: outside-serrated PA66, plastic pawl and no releasable closure."
+          },
+          {
+            "url": "https://www.hellermanntyton.com/competences/cable-ties-and-fixings",
+            "claim": "Opened primary explanation: pawl molded into the head of a one-piece plastic tie."
+          },
+          {
+            "url": "https://patentimages.storage.googleapis.com/b8/0c/a4/998ed323d4412d/US4063333.pdf",
+            "claim": "Actual retained Fig7 pixels inspected: conventional two-arm/coil spring, identified prior art. Improved retention embodiment excluded."
+          },
+          {
+            "url": "https://patents.google.com/patent/FR2676949A1/en",
+            "claim": "Primary assembly source describes central helical spring and arm grooves."
+          }
+        ]
+      },
+      "retainedFailures": [
+        "initial union/optional typing build failure",
+        "two focused failures: error assertion and moved-mount exact neutral mesh rejection",
+        "mistyped schema command",
+        "two ESLint unused symbols",
+        "incorrect typed diagnostic interval argument"
+      ],
+      "remaining": "Three software candidates; no whole MS2 PR or MS3. Complete generator/metadata/import/registry closure, full allocation preflight, six cameras with decisive-surface visibility and current tie contrast/tape crop repair, labels/cues/scoped typography/300 board and full/installed acceptance remain. Human visual/listening acceptance is separate."
     }
   },
   "limits": [
-    "Native2 Lab/final export and two-dimension tape candidate rendering are verified. Shared primitives now have explicit prospective aggregate topology/16MiB geometry storage admission and seven actual static native examples. This does not close whole-world/GPU/PMREM/expected graph allocation or supported family/import/camera/label/cue/typography/board/full/installed acceptance. Existing tape replay default16MiB/worker128MiB quotas remain unchanged.",
+    "Three native2 pack candidates now have actual repeated cycle exports and current fast/runtime/native regression evidence. Default/mesh/declaration metadata hashes and contact conditions are bound. This does not close full generator/import/registry admission, world/GPU/PMREM/expected preflight, six camera/decisive-surface/contrast, label/cue/typography/board/full/installed acceptance; supported packs/pilot remain0. Existing default16MiB/export-worker128MiB replay quotas are unchanged.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

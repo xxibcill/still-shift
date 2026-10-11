@@ -9,7 +9,11 @@ import {
 } from "./primitives.ts";
 import { MechanismPartSchema } from "./scene.ts";
 import { MechanismRigV2Schema } from "./rigs.ts";
-import { MechanismAnchorV2Schema } from "./scene-v2.ts";
+import {
+  MechanismAnchorV2Schema,
+  MechanismRelationshipV2Schema,
+} from "./scene-v2.ts";
+import { MECHANISM_TEACHING_SHAPE_LIMITS } from "./teaching-shapes.ts";
 export const MECHANISM_PACK_LIMITS = {
   documentBytes: 32768,
   parameters: 16,
@@ -70,6 +74,56 @@ const target = z
     ]),
   })
   .strict();
+/** The declaration digest binds parameters and landmark membership without returning buffers. */
+const shapeMetadata = z.discriminatedUnion("generator", [
+  z
+    .object({
+      id: MechanismIdSchema,
+      generator: z.literal("fixed-root-pawl-curve-1"),
+      mesh: MechanismIdSchema,
+      ownerPart: MechanismIdSchema,
+      topologySha256: MechanismHashSchema,
+      declarationSha256: MechanismHashSchema,
+      landmarks: z
+        .array(
+          z
+            .object({
+              id: z.enum(["root", "tip"]),
+              vertices: z.number().int().min(1).max(16),
+            })
+            .strict(),
+        )
+        .length(2),
+      driver: z
+        .object({
+          rig: MechanismIdSchema,
+          channel: z.literal("pawlDeflection"),
+        })
+        .strict(),
+    })
+    .strict(),
+  z
+    .object({
+      id: MechanismIdSchema,
+      generator: z.literal("seated-torsion-spring-1"),
+      mesh: MechanismIdSchema,
+      ownerPart: MechanismIdSchema,
+      topologySha256: MechanismHashSchema,
+      declarationSha256: MechanismHashSchema,
+      landmarks: z
+        .array(
+          z
+            .object({
+              id: z.enum(["seat-a", "seat-b", "coil-a", "coil-b"]),
+              vertices: z.number().int().min(1).max(16),
+            })
+            .strict(),
+        )
+        .length(4),
+      seats: z.tuple([MechanismIdSchema, MechanismIdSchema]),
+    })
+    .strict(),
+]);
 /** Metadata only. Mesh arrays and texture payloads have no supported field. */
 export const MechanismPackDocumentSchema = z
   .object({
@@ -82,7 +136,12 @@ export const MechanismPackDocumentSchema = z
     family: z.enum(["tape-hook", "cable-tie", "clothespeg"]),
     status: z.enum(["candidate", "verified"]),
     generator: z
-      .object({ id: MechanismIdSchema, version: z.literal("1") })
+      .object({
+        id: MechanismIdSchema,
+        version: z.literal("1"),
+        defaultSourceSha256: MechanismHashSchema,
+        parameterSchemaSha256: MechanismHashSchema,
+      })
       .strict(),
     factualVariant: z
       .object({
@@ -119,6 +178,7 @@ export const MechanismPackDocumentSchema = z
             id: MechanismIdSchema,
             part: MechanismIdSchema,
             material: MechanismIdSchema,
+            sha256: MechanismHashSchema,
             vertices: z
               .number()
               .int()
@@ -148,6 +208,10 @@ export const MechanismPackDocumentSchema = z
       .max(MECHANISM_LIMITS.materials),
     anchors: z.array(MechanismAnchorV2Schema).max(MECHANISM_LIMITS.anchors),
     rigs: z.array(MechanismRigV2Schema).min(1).max(MECHANISM_LIMITS.rigs),
+    teachingShapes: z
+      .array(shapeMetadata)
+      .max(MECHANISM_TEACHING_SHAPE_LIMITS.meshes),
+    relationships: z.array(MechanismRelationshipV2Schema).max(128),
     parameters: z.array(parameter).min(1).max(MECHANISM_PACK_LIMITS.parameters),
     cameraTargets: z.array(target).min(1).max(MECHANISM_PACK_LIMITS.targets),
     details: z
@@ -240,7 +304,9 @@ export const MechanismPackDocumentSchema = z
       rigs = ids(pack.rigs, "rigs"),
       cameras = ids(pack.cameraTargets, "cameraTargets"),
       details = ids(pack.details, "details");
-    ids(pack.meshes, "meshes");
+    const meshes = ids(pack.meshes, "meshes"),
+      shapes = ids(pack.teachingShapes, "teachingShapes");
+    ids(pack.relationships, "relationships");
     ids(pack.parameters, "parameters");
     ids(pack.variants, "variants");
     ids(pack.diagnosticViews, "diagnosticViews");
@@ -289,7 +355,202 @@ export const MechanismPackDocumentSchema = z
           "source",
           "part",
         ]);
+      else {
+        requireId(shapes, anchor.source.shape, [
+          "anchors",
+          index,
+          "source",
+          "shape",
+        ]);
+        const shape = pack.teachingShapes.find(
+          (shape) =>
+            anchor.source.kind === "shape-landmark" &&
+            shape.id === anchor.source.shape,
+        );
+        if (
+          shape &&
+          !shape.landmarks.some(
+            (landmark) =>
+              anchor.source.kind === "shape-landmark" &&
+              landmark.id === anchor.source.landmark,
+          )
+        )
+          mechanismIssue(
+            context,
+            "mechanism-pack-reference",
+            "Unknown shape landmark",
+            ["anchors", index, "source", "landmark"],
+          );
+      }
     });
+    const driven = new Set<string>(),
+      returns = new Set<string>();
+    pack.rigs.forEach((rig, index) => {
+      const path = ["rigs", index];
+      if (rig.type === "spring-return") {
+        requireId(rigs, rig.targetRig, [...path, "targetRig"]);
+        const target = pack.rigs.find(
+          (candidate) => candidate.id === rig.targetRig,
+        );
+        if (target && target.type !== "slider" && target.type !== "hinge")
+          mechanismIssue(
+            context,
+            "mechanism-pack-reference",
+            "Return requires a slider or hinge",
+            [...path, "targetRig"],
+          );
+        if (target?.type === "slider" || target?.type === "hinge") {
+          const range =
+            target.type === "slider" ? target.range : target.angleRange;
+          if (rig.restValue < range[0] || rig.restValue > range[1])
+            mechanismIssue(
+              context,
+              "mechanism-pack-pose",
+              "Return rest exceeds target limits",
+              [...path, "restValue"],
+            );
+        }
+        if (returns.has(rig.targetRig))
+          mechanismIssue(
+            context,
+            "mechanism-pack-reference",
+            "Duplicate return writer",
+            [...path, "targetRig"],
+          );
+        returns.add(rig.targetRig);
+      } else {
+        requireId(parts, rig.movingPart, [...path, "movingPart"]);
+        requireId(parts, rig.referencePart, [...path, "referencePart"]);
+        if (driven.has(rig.movingPart))
+          mechanismIssue(
+            context,
+            "mechanism-pack-reference",
+            "Duplicate physical writer",
+            [...path, "movingPart"],
+          );
+        driven.add(rig.movingPart);
+        if (rig.type === "ratchet") {
+          requireId(shapes, rig.pawlShape, [...path, "pawlShape"]);
+          requireId(anchors, rig.pawlTipAnchor, [...path, "pawlTipAnchor"]);
+          requireId(anchors, rig.toothDatumAnchor, [
+            ...path,
+            "toothDatumAnchor",
+          ]);
+          const shape = pack.teachingShapes.find(
+            (shape) => shape.id === rig.pawlShape,
+          );
+          if (
+            shape &&
+            (shape.generator !== "fixed-root-pawl-curve-1" ||
+              shape.driver.rig !== rig.id)
+          )
+            mechanismIssue(
+              context,
+              "mechanism-pack-reference",
+              "Ratchet requires its driven pawl",
+              [...path, "pawlShape"],
+            );
+        }
+      }
+    });
+    pack.teachingShapes.forEach((shape, index) => {
+      requireId(meshes, shape.mesh, ["teachingShapes", index, "mesh"]);
+      requireId(parts, shape.ownerPart, ["teachingShapes", index, "ownerPart"]);
+      const mesh = pack.meshes.find((mesh) => mesh.id === shape.mesh);
+      if (
+        mesh &&
+        (mesh.part !== shape.ownerPart ||
+          mesh.vertices > MECHANISM_TEACHING_SHAPE_LIMITS.vertices ||
+          mesh.triangles > MECHANISM_TEACHING_SHAPE_LIMITS.triangles)
+      )
+        mechanismIssue(
+          context,
+          "mechanism-pack-reference",
+          "Shape mesh owner or topology budget differs",
+          ["teachingShapes", index, "mesh"],
+        );
+      checkUniqueIds(shape.landmarks, context, [
+        "teachingShapes",
+        index,
+        "landmarks",
+      ]);
+      if (shape.generator === "fixed-root-pawl-curve-1") {
+        requireId(rigs, shape.driver.rig, [
+          "teachingShapes",
+          index,
+          "driver",
+          "rig",
+        ]);
+        const rig = pack.rigs.find((rig) => rig.id === shape.driver.rig);
+        if (rig && (rig.type !== "ratchet" || rig.pawlShape !== shape.id))
+          mechanismIssue(
+            context,
+            "mechanism-pack-reference",
+            "Pawl requires its owning ratchet",
+            ["teachingShapes", index, "driver", "rig"],
+          );
+      } else
+        shape.seats.forEach((seat, j) =>
+          requireId(anchors, seat, ["teachingShapes", index, "seats", j]),
+        );
+    });
+    pack.relationships.forEach((relationship, index) => {
+      const pair =
+        relationship.type === "engagement"
+          ? [relationship.pawlTip, relationship.toothDatum]
+          : relationship.anchors;
+      pair.forEach((anchor, j) =>
+        requireId(anchors, anchor, [
+          "relationships",
+          index,
+          relationship.type === "engagement"
+            ? j === 0
+              ? "pawlTip"
+              : "toothDatum"
+            : "anchors",
+          ...(relationship.type === "engagement" ? [] : [j]),
+        ]),
+      );
+      if (relationship.type === "engagement") {
+        requireId(rigs, relationship.rig, ["relationships", index, "rig"]);
+        if (
+          pack.rigs.find((rig) => rig.id === relationship.rig)?.type !==
+          "ratchet"
+        )
+          mechanismIssue(
+            context,
+            "mechanism-pack-reference",
+            "Engagement requires a ratchet",
+            ["relationships", index, "rig"],
+          );
+      } else if (relationship.type === "fixed-offset")
+        requireId(parts, relationship.referencePart, [
+          "relationships",
+          index,
+          "referencePart",
+        ]);
+      else if (relationship.type === "signed-gap")
+        requireId(parts, relationship.axisPart, [
+          "relationships",
+          index,
+          "axisPart",
+        ]);
+    });
+    const changingMeshes = pack.teachingShapes.map((shape) =>
+      pack.meshes.find((mesh) => mesh.id === shape.mesh),
+    );
+    if (
+      changingMeshes.reduce((n, mesh) => n + (mesh?.vertices ?? 0), 0) >
+        MECHANISM_TEACHING_SHAPE_LIMITS.vertices ||
+      changingMeshes.reduce((n, mesh) => n + (mesh?.triangles ?? 0), 0) >
+        MECHANISM_TEACHING_SHAPE_LIMITS.triangles
+    )
+      mechanismIssue(
+        context,
+        "mechanism-pack-budget",
+        "Aggregate changing mesh topology exceeds its fixed budget",
+        ["teachingShapes"],
+      );
     pack.cameraTargets.forEach((camera, index) =>
       requireId(
         camera.target.kind === "part" ? parts : anchors,
@@ -302,9 +563,68 @@ export const MechanismPackDocumentSchema = z
         requireId(details, detail, ["variants", index, "details", j]),
       ),
     );
-    pack.neutralPose.forEach((pose, index) =>
-      requireId(rigs, pose.rig, ["neutralPose", index, "rig"]),
-    );
+    const validatePose = (
+      pose: { rig: string; value: number },
+      path: (string | number)[],
+    ) => {
+      requireId(rigs, pose.rig, [...path, "rig"]);
+      const rig = pack.rigs.find((rig) => rig.id === pose.rig);
+      if (!rig) return;
+      if (rig.type === "spring-return") {
+        mechanismIssue(
+          context,
+          "mechanism-pack-pose",
+          "Use the physical target rig for a pose",
+          [...path, "rig"],
+        );
+        return;
+      }
+      const range = rig.type === "hinge" ? rig.angleRange : rig.range;
+      if (pose.value < range[0] || pose.value > range[1])
+        mechanismIssue(
+          context,
+          "mechanism-pack-pose",
+          "Pose exceeds physical rig limits",
+          [...path, "value"],
+        );
+    };
+    const neutralIds = new Set<string>();
+    pack.neutralPose.forEach((pose, index) => {
+      validatePose(pose, ["neutralPose", index]);
+      if (neutralIds.has(pose.rig))
+        mechanismIssue(
+          context,
+          "mechanism-pack-pose",
+          "Duplicate neutral rig value",
+          ["neutralPose", index, "rig"],
+        );
+      neutralIds.add(pose.rig);
+      const rig = pack.rigs.find((rig) => rig.id === pose.rig);
+      if (rig && rig.type !== "spring-return") {
+        const neutral =
+          rig.type === "hinge"
+            ? rig.neutralAngle
+            : rig.type === "slider"
+              ? rig.neutral
+              : rig.range[0] + rig.neutralTooth * rig.pitch;
+        if (pose.value !== neutral)
+          mechanismIssue(
+            context,
+            "mechanism-pack-pose",
+            "Neutral pose must equal the source rig's default",
+            ["neutralPose", index, "value"],
+          );
+      }
+    });
+    pack.rigs.forEach((rig, index) => {
+      if (rig.type !== "spring-return" && !neutralIds.has(rig.id))
+        mechanismIssue(
+          context,
+          "mechanism-pack-pose",
+          "Neutral pose must include every physical rig",
+          ["rigs", index, "id"],
+        );
+    });
     requireId(cameras, pack.thumbnail.cameraTarget, [
       "thumbnail",
       "cameraTarget",
@@ -316,13 +636,7 @@ export const MechanismPackDocumentSchema = z
         "cameraTarget",
       ]);
       view.rigValues.forEach((pose, j) =>
-        requireId(rigs, pose.rig, [
-          "diagnosticViews",
-          index,
-          "rigValues",
-          j,
-          "rig",
-        ]),
+        validatePose(pose, ["diagnosticViews", index, "rigValues", j]),
       );
     });
     if (

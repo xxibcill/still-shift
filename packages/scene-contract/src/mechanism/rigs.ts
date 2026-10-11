@@ -94,6 +94,9 @@ const ratchetRig = z
     pitch: z.number().finite().positive().max(1000),
     toothCount: z.number().int().min(2).max(4096),
     neutralTooth: z.number().int().min(0).max(4095),
+    releasePolicy: z
+      .enum(["teaching-release", "non-releasable"])
+      .default("teaching-release"),
     pawlShape: MechanismIdSchema,
     pawlTipAnchor: MechanismIdSchema,
     toothDatumAnchor: MechanismIdSchema,

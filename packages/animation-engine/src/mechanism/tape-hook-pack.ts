@@ -10,14 +10,15 @@ import {
   type MechanismSceneV2,
   type MechanismPackMetadataReceipt,
   type MechanismFrameResultV2,
-  type MechanismPackReference,
   type MechanismFrameRequestV2,
 } from "@still-shift/scene-contract";
 import { canonicalMechanismJson } from "../../../renderer-core/src/mechanism/canonical.ts";
 import { MechanismEvaluationErrorV2 } from "../../../renderer-core/src/mechanism/types-v2.ts";
 import { prepareMechanismSceneV2 } from "../../../renderer-core/src/mechanism/prepare-v2.ts";
 import { evaluateMechanismFrameV2 } from "../../../renderer-core/src/mechanism/evaluate-v2.ts";
-import type { MechanismEvaluationLocationV2 } from "../../../renderer-core/src/mechanism/types-v2.ts";
+import { MechanismPackInvariantError } from "./pack-invariant.ts";
+export { MechanismPackInvariantError } from "./pack-invariant.ts";
+export type { MechanismPackInvariantLocation } from "./pack-invariant.ts";
 import { createTapeHookScene } from "./tape-hook.ts";
 import {
   createTapeHookMaterials,
@@ -249,7 +250,12 @@ export function inspectTapeHookPack(): MechanismPackMetadataReceipt {
     version: "1.0.0",
     family: "tape-hook",
     status: "candidate",
-    generator: { id: "tape-hook-solid", version: "1" },
+    generator: {
+      id: "tape-hook-solid",
+      version: "1",
+      defaultSourceSha256: hash(scene),
+      parameterSchemaSha256: hash(z.toJSONSchema(TapeHookPackParametersSchema)),
+    },
     factualVariant: {
       id: "floating-hook",
       description:
@@ -272,6 +278,7 @@ export function inspectTapeHookPack(): MechanismPackMetadataReceipt {
       id: mesh.id,
       part: mesh.partId,
       material: mesh.materialId,
+      sha256: hash(mesh),
       vertices: mesh.positions.length / 3,
       triangles: mesh.indices.length / 3,
       bounds: mesh.bounds,
@@ -283,6 +290,8 @@ export function inspectTapeHookPack(): MechanismPackMetadataReceipt {
     })),
     anchors: scene.anchors,
     rigs: scene.rigs,
+    teachingShapes: [],
+    relationships: scene.relationships,
     parameters: [
       {
         id: "hookThickness",
@@ -507,19 +516,6 @@ function assertTapeHookPackFrame(
   };
 }
 
-export type MechanismPackInvariantLocation = MechanismEvaluationLocationV2 & {
-  pack: MechanismPackReference;
-  rig?: string;
-  parts?: readonly string[];
-  relationship?: string;
-};
-export class MechanismPackInvariantError extends MechanismEvaluationErrorV2 {
-  declare readonly location: MechanismPackInvariantLocation;
-  constructor(message: string, location: MechanismPackInvariantLocation) {
-    super(message, location);
-    this.name = "MechanismPackInvariantError";
-  }
-}
 /** Fresh expected-state evaluation; this result does not assert actual GPU or continuous-motion acceptance. */
 export function evaluateTapeHookPackFrame(
   instance: TapeHookPackInstance,

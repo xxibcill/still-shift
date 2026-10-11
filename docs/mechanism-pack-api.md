@@ -1,8 +1,8 @@
 # Reusable mechanism pack API
 
-MS2 currently provides a **tape-hook candidate**. It has software evidence for
-geometry, posed relationships and native rendering; it is not yet a supported
-family or an accepted production episode. See the
+MS2 provides **tape-hook, cable-tie and clothespeg candidates**. They have software
+evidence for geometry, posed relationships and repeated native cycle exports;
+they do not yet count as supported families or accepted production episodes. See the
 [MS2 results](./mechanism-shorts-ms2-results.json) for retained failures and
 [owning acceptance criteria](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring)
 for the remaining work.
@@ -91,6 +91,77 @@ its SHA-256 and weight. The repository example uses
 The browser and normal renderer verify and decode these bytes; no system-font
 substitution is used. Installed-package font delivery remains to be verified.
 
+## Cable-tie and clothespeg candidates
+
+The public `inspectCableTiePack`, `createCableTiePack`,
+`evaluateCableTiePackFrame`, `inspectClothespegPack`, `createClothespegPack` and
+`evaluateClothespegPackFrame` APIs use the same metadata/instance/native2 routes.
+
+| Family     | Parameters (default)                                       | Physical owners                                           | Teaching shape                                        |
+| ---------- | ---------------------------------------------------------- | --------------------------------------------------------- | ----------------------------------------------------- |
+| Cable tie  | `pitch` (0.5), `strapWidth` (1), `toothCount` (8)          | Strap moves relative to model; pawl root remains on head  | Closed fixed-root pawl driven by ratchet lift         |
+| Clothespeg | `armLength` (6), `armWidth` (0.8), `clothThickness` (0.16) | Two opposing hinges relative to model; cloth shares mount | Closed central spring with ends seated on moving arms |
+
+Both accept `mount`, `style: { color, roughness }` and `expectedPack`. A style
+change preserves mesh streams/topology; parameter changes regenerate declared
+geometry. Invalid dimensions retain parameter paths. Every declaration remains
+illustrative, including spring bias and tooth lift; no force/stiffness simulation
+or manufacturer dimension is asserted.
+
+The tie is an exposed head cutaway with a straight toothed tail. Its front head
+wall and roof are omitted, rather than arbitrary section-plane support. The
+selected outside-serrated plastic-pawl variant follows the
+[OS-series product declaration](https://www.hellermanntyton.com/products/cable-ties-outside-serrated/t50sos/118-00062)
+and the [manufacturer's integral-pawl explanation](https://www.hellermanntyton.com/competences/cable-ties-and-fixings).
+It has no release closure. The native ratchet compiler rejects a `released`
+latch key even if that key is after the requested frame, locating the first
+invalid interval. Existing generic ratchets default to `teaching-release`.
+Engaged reverse motion remains illegal.
+
+An engagement relationship can explicitly declare `requiredAt: "ratchet-seated"`.
+Its Frame2 result always retains `measured`, `residual`, `tolerance` and `required`;
+advancing/released generic teaching poses retain their gap measurements while
+that seated contact is inactive. Omitted policy retains `all-frames`. This
+condition does not invent an observed pass flag or enlarge contact tolerance.
+The tie also requires its fixed pawl root at every frame.
+
+The peg follows the conventional construction in
+[US4063333 Figure 7](https://patentimages.storage.googleapis.com/b8/0c/a4/998ed323d4412d/US4063333.pdf)
+and the [central-spring assembly description](https://patents.google.com/patent/FR2676949A1/en).
+The improved retention pin/apertures are excluded; the model has no manufactured
+hinge pin. Its explanatory rotation axis follows the coil. `upper.hinge` opens
+with a negative angle and `lower.hinge` with a positive angle. Their respective
+`upper.return`/`lower.return` controls return toward unloaded closing rest, with
+`stopValue: 0` for contact on the selected cloth. The contact state is before
+unloaded rest, preserving declared closing bias without a load calculation.
+Required gap relationships reject a sampled pose through the cloth with frame,
+parts and relationship location. Continuous collision/event-order validation is
+still part of the remaining milestone work.
+
+Shared spring sampling cancels the common part hierarchy before multiplying seat
+coordinates. A translated, rotated or nonuniformly scaled mount therefore does
+not perturb the exact neutral mesh buffers. Forward, reverse and random seeks
+sample the same local shape/rig state.
+
+All three metadata documents now include `generator.defaultSourceSha256` and
+`parameterSchemaSha256`, per-mesh digests, bounded teaching-shape summaries and
+relationship declarations. Summaries expose landmark counts and rig/seat links,
+never vertex membership or mesh/texture payloads. Unknown references, duplicate
+landmarks, changing topology budgets, incomplete/default-mismatched neutral poses
+and out-of-range diagnostic poses are rejected. The default scene digest binds
+its actual mesh buffers even when counts/bounds remain the same. It is a digest
+of the default definition and parameter schema, **not an exhaustive digest of
+all generator code branches**; versioned source/archive and full registry/import
+closure remain required.
+
+`pnpm test:browser:mechanism-family-packs` instantiates two dimensions per new
+family, captures ten actual native preview states per variant, and makes two
+independent 24-frame complete-cycle normal exports per variant. Strict observed
+packets, exact repeat pixels/movie hashes and independent retained-journal replay
+are checked. Replay uses the existing exporter metadata quota; its measured peak
+is 11,280,448 bytes and all reservations are released. This is proof-replay
+storage, not a whole-world/GPU memory claim.
+
 ## Retained software evidence and limits
 
 `pnpm test:browser:mechanism-packs` runs the actual native renderer for both
@@ -105,7 +176,10 @@ that smaller caller quota rejected the candidate and the failed run is retained.
 Actual image inspection found that the existing camera crops the larger housing
 and that the push wall obscures the decisive hook face. The candidate does not
 count toward supported-family or pilot coverage until camera recipes and the
-remaining MS2 checks are implemented. Cable-tie/clothespeg packs, shared bounded
-primitives, rigid glTF/GLB import, complete metadata cross-reference admission,
-full world allocation preflight, labels/cues, scoped typography, the 300-topic
-coverage board and full/installed milestone gates remain open.
+remaining MS2 checks are implemented. Actual image inspection also finds the tie
+faint in its default wide view; contrast and macro framing still need work. Rigid
+glTF/GLB import, complete generator/registry admission, full world allocation
+preflight, six executed camera recipes, labels/cues, scoped typography, the
+300-topic coverage board and full/installed milestone gates remain open. The
+shared bounded primitive library and the three candidate generators are now
+implemented; supported-family/pilot counts remain zero.

@@ -167,6 +167,7 @@ export const MechanismRelationshipFrameV2Schema = z
     id: MechanismIdSchema,
     type: z.enum(["coincident", "signed-gap", "fixed-offset", "engagement"]),
     measured: z.array(scalar).min(1).max(3),
+    required: z.boolean().default(true),
     residual: z.number().finite().min(0).max(10_000_000),
     tolerance: z.number().finite().min(0).max(0.001),
   })

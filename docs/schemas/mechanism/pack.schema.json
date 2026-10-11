@@ -26,9 +26,22 @@
           "maxLength": 128,
           "pattern": "^[A-Za-z][\\w.-]*$"
         },
-        "version": { "type": "string", "const": "1" }
+        "version": { "type": "string", "const": "1" },
+        "defaultSourceSha256": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "parameterSchemaSha256": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
       },
-      "required": ["id", "version"],
+      "required": [
+        "id",
+        "version",
+        "defaultSourceSha256",
+        "parameterSchemaSha256"
+      ],
       "additionalProperties": false
     },
     "factualVariant": {
@@ -201,6 +214,7 @@
             "maxLength": 128,
             "pattern": "^[A-Za-z][\\w.-]*$"
           },
+          "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
           "vertices": {
             "type": "integer",
             "exclusiveMinimum": 0,
@@ -239,6 +253,7 @@
           "id",
           "part",
           "material",
+          "sha256",
           "vertices",
           "triangles",
           "bounds"
@@ -547,6 +562,11 @@
                 "minimum": 0,
                 "maximum": 4095
               },
+              "releasePolicy": {
+                "default": "teaching-release",
+                "type": "string",
+                "enum": ["teaching-release", "non-releasable"]
+              },
               "pawlShape": {
                 "type": "string",
                 "maxLength": 128,
@@ -573,9 +593,364 @@
               "pitch",
               "toothCount",
               "neutralTooth",
+              "releasePolicy",
               "pawlShape",
               "pawlTipAnchor",
               "toothDatumAnchor"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "teachingShapes": {
+      "maxItems": 4,
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "generator": {
+                "type": "string",
+                "const": "fixed-root-pawl-curve-1"
+              },
+              "mesh": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "ownerPart": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "topologySha256": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              },
+              "declarationSha256": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              },
+              "landmarks": {
+                "minItems": 2,
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string", "enum": ["root", "tip"] },
+                    "vertices": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 16
+                    }
+                  },
+                  "required": ["id", "vertices"],
+                  "additionalProperties": false
+                }
+              },
+              "driver": {
+                "type": "object",
+                "properties": {
+                  "rig": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  },
+                  "channel": { "type": "string", "const": "pawlDeflection" }
+                },
+                "required": ["rig", "channel"],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "id",
+              "generator",
+              "mesh",
+              "ownerPart",
+              "topologySha256",
+              "declarationSha256",
+              "landmarks",
+              "driver"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "generator": {
+                "type": "string",
+                "const": "seated-torsion-spring-1"
+              },
+              "mesh": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "ownerPart": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "topologySha256": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              },
+              "declarationSha256": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              },
+              "landmarks": {
+                "minItems": 4,
+                "maxItems": 4,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "enum": ["seat-a", "seat-b", "coil-a", "coil-b"]
+                    },
+                    "vertices": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 16
+                    }
+                  },
+                  "required": ["id", "vertices"],
+                  "additionalProperties": false
+                }
+              },
+              "seats": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  },
+                  {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "generator",
+              "mesh",
+              "ownerPart",
+              "topologySha256",
+              "declarationSha256",
+              "landmarks",
+              "seats"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "relationships": {
+      "maxItems": 128,
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "type": { "type": "string", "const": "coincident" },
+              "anchors": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  },
+                  {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  }
+                ]
+              },
+              "tolerance": { "type": "number", "minimum": 0, "maximum": 0.001 }
+            },
+            "required": ["id", "type", "anchors", "tolerance"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "type": { "type": "string", "const": "signed-gap" },
+              "anchors": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  },
+                  {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  }
+                ]
+              },
+              "axisPart": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "axis": {
+                "type": "array",
+                "prefixItems": [
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+                ]
+              },
+              "range": {
+                "type": "array",
+                "prefixItems": [
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+                ]
+              },
+              "tolerance": { "type": "number", "minimum": 0, "maximum": 0.001 }
+            },
+            "required": [
+              "id",
+              "type",
+              "anchors",
+              "axisPart",
+              "axis",
+              "range",
+              "tolerance"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "type": { "type": "string", "const": "fixed-offset" },
+              "anchors": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  },
+                  {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  }
+                ]
+              },
+              "referencePart": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "offset": {
+                "type": "array",
+                "prefixItems": [
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+                ]
+              },
+              "tolerance": { "type": "number", "minimum": 0, "maximum": 0.001 }
+            },
+            "required": [
+              "id",
+              "type",
+              "anchors",
+              "referencePart",
+              "offset",
+              "tolerance"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "type": { "type": "string", "const": "engagement" },
+              "rig": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "pawlTip": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "toothDatum": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "clearance": {
+                "type": "array",
+                "prefixItems": [
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+                ]
+              },
+              "requiredAt": {
+                "default": "all-frames",
+                "type": "string",
+                "enum": ["all-frames", "ratchet-seated"]
+              },
+              "tolerance": { "type": "number", "minimum": 0, "maximum": 0.001 }
+            },
+            "required": [
+              "id",
+              "type",
+              "rig",
+              "pawlTip",
+              "toothDatum",
+              "clearance",
+              "requiredAt",
+              "tolerance"
             ],
             "additionalProperties": false
           }
@@ -826,6 +1201,8 @@
     "materialSlots",
     "anchors",
     "rigs",
+    "teachingShapes",
+    "relationships",
     "parameters",
     "cameraTargets",
     "details",

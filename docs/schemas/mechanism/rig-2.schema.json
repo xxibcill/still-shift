@@ -181,6 +181,11 @@
         "pitch": { "type": "number", "exclusiveMinimum": 0, "maximum": 1000 },
         "toothCount": { "type": "integer", "minimum": 2, "maximum": 4096 },
         "neutralTooth": { "type": "integer", "minimum": 0, "maximum": 4095 },
+        "releasePolicy": {
+          "default": "teaching-release",
+          "type": "string",
+          "enum": ["teaching-release", "non-releasable"]
+        },
         "pawlShape": {
           "type": "string",
           "maxLength": 128,
@@ -207,6 +212,7 @@
         "pitch",
         "toothCount",
         "neutralTooth",
+        "releasePolicy",
         "pawlShape",
         "pawlTipAnchor",
         "toothDatumAnchor"

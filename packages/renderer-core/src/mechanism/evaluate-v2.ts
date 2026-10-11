@@ -187,6 +187,7 @@ function evaluateRelationship(
       : relationship.anchors;
   const delta = subtract(anchors[pair[1]!]!.world, anchors[pair[0]!]!.world);
   let measured: number[], residual: number;
+  let required = true;
   if (relationship.type === "coincident") {
     measured = delta;
     residual = Math.hypot(...delta);
@@ -216,6 +217,8 @@ function evaluateRelationship(
           path: ["relationships", relationship.id, "rig"],
         },
       );
+    required =
+      relationship.requiredAt === "all-frames" || state.phase === "seated";
     const local = transformMechanismDirectionV2(
       inverseMechanismMatrixV2(parts[rig.referencePart]!.worldMatrix),
       delta,
@@ -232,6 +235,7 @@ function evaluateRelationship(
     id: relationship.id,
     type: relationship.type,
     measured,
+    required,
     residual,
     tolerance: relationship.tolerance,
   };

@@ -91,6 +91,23 @@ export function prepareMechanismRigTracksV2(
       validateReturn(rig, control, limits(target), path);
     } else if (rig.type === "ratchet" && control.type === "ratchet") {
       validateScalar(control.position, rig.range, [...path, "position"]);
+      if (rig.releasePolicy === "non-releasable") {
+        const index = control.latchKeys.findIndex(
+          (key) => key.state === "released",
+        );
+        if (index >= 0)
+          fail(
+            "mechanism-ratchet-release",
+            "The declared ratchet variant has no release closure",
+            [...path, "latchKeys", index, "state"],
+            control.latchKeys[index]!.frame,
+            {
+              startFrame: control.latchKeys[index]!.frame,
+              endFrameExclusive:
+                control.latchKeys[index + 1]?.frame ?? MECHANISM_LIMITS.frames,
+            },
+          );
+      }
       validateRatchetIntervals(control, path);
     } else if (
       (rig.type === "slider" && control.type === "slider") ||

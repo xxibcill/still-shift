@@ -45,18 +45,19 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** isolated `codex/mechanism-ms2` carries
   `main` and exact native prerequisite [PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Fifteen slices include tape candidate/native2 Lab/final export and shared
-  bounded rounded boxes, cylinders/cones, toruses, profiles/holes/bevels, ribbons
-  and capped coils. Catalogue topology/16MiB geometry admission precedes meshes.
-  Final held source5 fast4,079/399, seven native examples/14 exact repeat captures
-  and refreshed tape2 dimensions/18 previews/four9/9 final exports pass.
-  Initial schema import failure, two no-write guards and actual empty-hole RED
-  retained; repaired cardinality checks preserve located schema diagnostics.
-  Inspected hole/coil/ribbon images match final pixels. Prior clean Lab runtime
-  is historical, not a new full pass. Tape camera crop/push-face occlusion remains.
-  Next: cable-tie/clothespeg, metadata definition/references/import, whole-world/
-  expected preflight, six camera recipes, labels/cues/typography/300-board and
-  full/installed gates. Tape candidate, packs/pilot0; no MS2 PR/MS3/human acceptance.
+  Sixteen slices include native2 Lab/final export, bounded primitives and three
+  pack candidates. Cable tie has an integral fixed-root pawl, seated contact
+  condition and native compiler non-release policy; peg has opposing hinges,
+  seated spring and cloth stop before unloaded rest. Metadata pins default
+  scenes/parameter schemas/meshes/declarations without buffers. Shared hierarchy
+  cancellation fixes the actual moved-mount neutral-buffer rejection.
+  Current held source8 fast4,091/400, six native groups, new families/two dimensions/
+  40 previews/eight24-frame exports and tape18 previews/four9-frame exports pass,
+  with refreshed runtime/integration/depth/smoke. All five failed stages retained.
+  Tie stays faint in default wide view; tape crop/push-face occlusion remains.
+  Next: six cameras/decisive-surface framing, full generator/import/registry
+  admission and world/expected preflight, labels/cues/typography/300-board and
+  full/installed gates. Candidates3, supported packs/pilot0; no MS2 PR/MS3/human acceptance.
   [MS2 results](./mechanism-shorts-ms2-results.json),
   [primitive API](./mechanism-primitives.md), [pack API](./mechanism-pack-api.md),
   [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
@@ -217,6 +218,25 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 cable-tie/clothespeg candidates and bound pack metadata
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2` (from `f946e80c`).
+- **Done:** two actual primitive/teaching-shape factories; all-three default/mesh/
+  declaration metadata hashes; seated-only engagement and native non-release
+  capability; stable spring seats under a moved nonuniform mount.
+- **Results:** held source8 fast4,091/400; six native groups; two dimensions per new
+  family/40 previews/eight repeated24-frame exports; tape18 previews/four9-frame
+  exports; current runtime/integration/depth/smoke. Independent replay peaks11.3MB
+  for new families and releases all reservations. Inspected actual images.
+- **Rejected:** build union/access typing, assertion/mount-neutral failures,
+  mistyped schema command, unused-symbol lint and typed interval argument; all
+  retained. T50R inside serrations and door-hinge US5033161 are wrong references.
+- **Next:** cameras/contrast/decisive surfaces, full generator/import/registry/
+  allocation closure, labels/cues/typography/board/full/installed gates.
+  Three candidates, supported/pilot0; no whole MS2 PR or human acceptance.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json),
+  [pack API](./mechanism-pack-api.md).
 
 ### 2026-10-11 — Commit bounded shared mechanism primitives
 

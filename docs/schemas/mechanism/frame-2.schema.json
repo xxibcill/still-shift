@@ -474,10 +474,18 @@
               "maximum": 1000000
             }
           },
+          "required": { "default": true, "type": "boolean" },
           "residual": { "type": "number", "minimum": 0, "maximum": 10000000 },
           "tolerance": { "type": "number", "minimum": 0, "maximum": 0.001 }
         },
-        "required": ["id", "type", "measured", "residual", "tolerance"],
+        "required": [
+          "id",
+          "type",
+          "measured",
+          "required",
+          "residual",
+          "tolerance"
+        ],
         "additionalProperties": false
       }
     }

@@ -533,6 +533,11 @@
                 "minimum": 0,
                 "maximum": 4095
               },
+              "releasePolicy": {
+                "default": "teaching-release",
+                "type": "string",
+                "enum": ["teaching-release", "non-releasable"]
+              },
               "pawlShape": {
                 "type": "string",
                 "maxLength": 128,
@@ -559,6 +564,7 @@
               "pitch",
               "toothCount",
               "neutralTooth",
+              "releasePolicy",
               "pawlShape",
               "pawlTipAnchor",
               "toothDatumAnchor"
@@ -1267,6 +1273,11 @@
                   { "type": "number", "minimum": -1000000, "maximum": 1000000 }
                 ]
               },
+              "requiredAt": {
+                "default": "all-frames",
+                "type": "string",
+                "enum": ["all-frames", "ratchet-seated"]
+              },
               "tolerance": { "type": "number", "minimum": 0, "maximum": 0.001 }
             },
             "required": [
@@ -1276,6 +1287,7 @@
               "pawlTip",
               "toothDatum",
               "clearance",
+              "requiredAt",
               "tolerance"
             ],
             "additionalProperties": false

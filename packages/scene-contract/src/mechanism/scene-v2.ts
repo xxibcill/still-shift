@@ -94,6 +94,9 @@ export const MechanismRelationshipV2Schema = z
         pawlTip: MechanismIdSchema,
         toothDatum: MechanismIdSchema,
         clearance: range,
+        requiredAt: z
+          .enum(["all-frames", "ratchet-seated"])
+          .default("all-frames"),
         tolerance,
       })
       .strict(),
