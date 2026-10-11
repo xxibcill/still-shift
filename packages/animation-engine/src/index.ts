@@ -109,3 +109,5 @@ export * from "./mechanism/native-pbr-files.ts";
 export * from "./mechanism/pack-timeline.ts";
 
 export * from "./mechanism/narrated-cycle.ts";
+
+export * from "./mechanism/family-registry.ts";

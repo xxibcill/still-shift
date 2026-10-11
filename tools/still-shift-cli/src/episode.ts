@@ -1,3 +1,8 @@
+import {
+  inspectMechanismFamilyRegistry,
+  mechanismFamilySchemas,
+  MECHANISM_FAMILY_REGISTRY_VERSION,
+} from "../../../packages/animation-engine/src/mechanism/family-registry.ts";
 import { readFile, stat } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { z } from "zod";
@@ -77,7 +82,7 @@ export interface EpisodeCliIo {
 }
 const commonFlags = ["json", "report", "offset", "limit"];
 const commandFlags: Record<MechanismCommand, readonly string[]> = {
-  discover: [],
+  discover: ["family"],
   schema: ["kind", "output"],
   inspect: ["input", "shot", "native", "part", "anchor", "material", "rig"],
   validate: ["input"],
@@ -94,6 +99,7 @@ const commandFlags: Record<MechanismCommand, readonly string[]> = {
   summary: ["input"],
 };
 const episodeSchemas = {
+  ...mechanismFamilySchemas,
   geometry: MechanismGeometrySchema,
   episode: MechanismEpisodeSchema,
   scene: MechanismSceneSchema,
@@ -440,7 +446,58 @@ async function readPatchRequest(path: string, io: EpisodeCliIo) {
     );
   return MechanismPatchRequestSchema.parse(value);
 }
-async function discover(): Promise<MechanismReceiptInput> {
+async function discover(
+  flags: Map<string, string>,
+): Promise<MechanismReceiptInput> {
+  const requested = flags.get("family");
+  const registry = inspectMechanismFamilyRegistry({
+    schemaVersion: MECHANISM_FAMILY_REGISTRY_VERSION,
+    family: requested ?? "all",
+  });
+  if (requested !== undefined)
+    return {
+      command: "discover",
+      summary: {
+        registryVersion: registry.schemaVersion,
+        families: registry.entries.length,
+        supportedPacks: registry.entries.filter(
+          (entry) => entry.status === "verified",
+        ).length,
+      },
+      items: registry.entries.flatMap((entry) => [
+        {
+          kind: "family",
+          family: entry.id,
+          status: entry.status,
+          packVersion: entry.reference.version,
+          packSha256: entry.reference.sha256,
+          variant: entry.reference.variant,
+          detail: entry.reference.detail,
+          inputSchema: entry.inputSchema,
+          parameterSchema: entry.parameterSchema,
+          parameterSchemaSha256: entry.parameterSchemaSha256,
+        },
+        ...entry.parameters.map((parameter) => ({
+          kind: "parameter",
+          family: entry.id,
+          ...parameter,
+        })),
+        ...entry.controls.map((control) => ({
+          kind: "control",
+          family: entry.id,
+          ...control,
+        })),
+        ...entry.examples.map((example) => ({
+          kind: "example",
+          family: entry.id,
+          id: example.id,
+          input: JSON.stringify(example.input),
+        })),
+      ]),
+      fullResult: registry,
+      nextAction:
+        "Export the family input schema with episode schema --kind <family>-input; use the complete report for immutable asset metadata.",
+    };
   return {
     command: "discover",
     summary: {
@@ -469,6 +526,15 @@ async function discover(): Promise<MechanismReceiptInput> {
       schemaKinds: Object.keys(episodeSchemas).join(" "),
     },
     items: [
+      ...registry.entries.map((entry) => ({
+        kind: "family",
+        family: entry.id,
+        status: entry.status,
+        packVersion: entry.reference.version,
+        packSha256: entry.reference.sha256,
+        inputSchema: entry.inputSchema,
+        parameterSchema: entry.parameterSchema,
+      })),
       ...MECHANISM_COMMANDS.map((command) => ({
         command,
         options: commandFlags[command].map((flag) => `--${flag}`).join(" "),
@@ -545,7 +611,7 @@ async function execute(
   io: EpisodeCliIo,
   signal: AbortSignal,
 ): Promise<MechanismReceiptInput> {
-  if (command === "discover") return discover();
+  if (command === "discover") return discover(flags);
   if (command === "schema") return schema(flags);
   if (command === "init-tape-hook")
     return resultView(
@@ -746,7 +812,8 @@ export async function runEpisodeCli(
     controller.signal.throwIfAborted();
     const receipt = await createMechanismCommandReceipt(result, {
       ...options,
-      ...([
+      ...((command === "discover" && flags.has("family")) ||
+      [
         "schema",
         "prepare",
         "compile",

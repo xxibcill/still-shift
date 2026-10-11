@@ -45,19 +45,17 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Thirty-nine slices include shared Node admission, authored state timelines and
-  supplied-cue picture/control/camera, annotation, caption, sound/narration tracks.
-  Source samples remain unchanged; integer frame placement reports its onset delay.
-  Reading/action checks cover source and visible durations, including quantization.
-  Fast15 passes 4,243 units; focused 33 checks and all-three-family/two-take actual
-  synthetic PCM checks pass: 12 exports/900 native frames and repeated video/audio.
-  Four type failures, texture-font/driver-key live failures, the rejected contrast
-  frame and interrupted fast8 prefix remain retained.
-  Next: full label QA, registry/editing/coverage/typography, genuine spoken inputs,
-  supported-pack promotion, remaining producer/aggregate/lifetime/full/installed.
-  Supported packs/pilot 0; no merge/publication, human acceptance or paid generation.
-  [Cue compiler evidence](./mechanism-shorts-ms2-narrated-cycle-results.json),
-  [Cue API](./mechanism-narrated-cycles.md), [MS2 results](./mechanism-shorts-ms2-results.json).
+  Forty slices include Node admission, authored state/cue tracks and generator-derived
+  family discovery, parameter help/examples, immutable metadata and schema exports.
+  Fast4 passes 4,249 units; 19 CLI regressions plus actual persisted three-family,
+  pagination/schema reports pass on held inputs. The new example-test union type
+  failure is retained; previous cue/driver/font/contrast failures remain in slice39.
+  Next: revision-aware saved family/cue editing, full label QA, coverage/typography,
+  genuine spoken inputs, supported packs, remaining producer/resource/lifetime/full/
+  final-installed criteria. Supported packs/pilot 0; no merge/publication, human
+  acceptance or paid generation.
+  [Registry evidence](./mechanism-shorts-ms2-family-registry-results.json),
+  [Registry API](./mechanism-family-registry.md), [MS2 results](./mechanism-shorts-ms2-results.json).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
   inventory15:2,329 inputs/117,503,155B. Original full6 retains a qualified19-group
@@ -215,6 +213,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 family registry discovery and schema expansion
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `111f3d5c`.
+- **Done:** generator-derived family input/parameter schemas, help, examples,
+  immutable metadata and controls; CLI selection/pagination/full-report access.
+  Seven new published JSON Schemas and shared expanded CLI schema registry.
+- **Results:** six new units/four new runtime checks; fast4 passes 4,249 units,
+  19 CLI regressions, persisted actual discovery/pagination/six schema exports.
+- **Retained:** build2 test union type failure; shell root0 followed the failed
+  build with passing unit2, so the failure is recorded separately. Fresh build3/
+  held fast4/runtime4 pass; no rendering or support promotion is inferred.
+- **Next:** saved revision-aware family/cue editing and remaining MS2 acceptance.
+- **Records:** [Registry API](./mechanism-family-registry.md),
+  [Evidence](./mechanism-shorts-ms2-family-registry-results.json).
 
 ### 2026-10-11 — MS2 supplied narration cue tracks
 

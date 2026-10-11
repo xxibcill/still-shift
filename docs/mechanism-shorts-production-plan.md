@@ -850,6 +850,14 @@ mechanism families establish whether the architecture transfers.
       small examples, asset metadata and stable revision-aware editing. Publish
       versioned JSON Schemas for the expanded contracts and retain MS1 response
       budgets, complete-report access and unsupported-version diagnostics.
+      Slice40 derives family discovery, help/examples and immutable asset metadata
+      from the actual three generator schemas; shared expanded CLI and published
+      schemas keep existing response limits and full-report pagination access.
+      Fast4 passes 4,249 units and 19 CLI regressions on held inputs; actual persisted
+      three-family/pagination/six schema exports pass. [Registry evidence](./mechanism-shorts-ms2-family-registry-results.json)
+      retains the test type failure and [API](./mechanism-family-registry.md) describes
+      the contract. This item remains unchecked pending saved revision-aware
+      family/cue editing and complete expanded acceptance.
 - [ ] Create the topic-to-family coverage board during family selection under the
       coverage contract above. Classify all proposed pilot candidates and record
       support criteria, selected distinct-episode denominator and new-asset/new-rig

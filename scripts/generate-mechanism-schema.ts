@@ -4,38 +4,20 @@ import { fileURLToPath } from "node:url";
 import { format } from "prettier";
 import { z } from "zod";
 import {
-  MechanismNarratedCycleSchema,
-  MechanismPackTimelineSchema,
-  SolidGeometryV2Schema,
-  NativeFrameSnapshotV3Schema,
-  CompositionPreparedNative3DV3Schema,
   MechanismGeometrySchema,
   MechanismSceneSchema,
   MechanismEpisodeSchema,
   MechanismFrameResultSchema,
   MechanismSidecarSchema,
-  MechanismPackDocumentSchema,
-  MechanismSceneV2Schema,
-  MechanismSceneV3Schema,
-  MechanismFrameResultV2Schema,
-  MechanismRigV2Schema,
-  MechanismTeachingShapeSchema,
 } from "@still-shift/scene-contract";
 import {
   MechanismPatchRequestSchema,
   MechanismCommandReceiptSchema,
 } from "../packages/animation-engine/src/mechanism/protocol.ts";
-import {
-  MechanismPrimitiveInputSchema,
-  MechanismPrimitiveGeometryInputSchema,
-} from "../packages/animation-engine/src/mechanism/primitive-contract.ts";
+import { mechanismFamilySchemas } from "../packages/animation-engine/src/mechanism/family-registry.ts";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const schemas = {
-  "narrated-cycle": MechanismNarratedCycleSchema,
-  "pack-timeline": MechanismPackTimelineSchema,
-  "solid-geometry-2": SolidGeometryV2Schema,
-  "native-frame-3": NativeFrameSnapshotV3Schema,
-  "prepared-native3d-3": CompositionPreparedNative3DV3Schema,
+  ...mechanismFamilySchemas,
   geometry: MechanismGeometrySchema,
   scene: MechanismSceneSchema,
   episode: MechanismEpisodeSchema,
@@ -43,14 +25,6 @@ const schemas = {
   sidecar: MechanismSidecarSchema,
   patch: MechanismPatchRequestSchema,
   receipt: MechanismCommandReceiptSchema,
-  pack: MechanismPackDocumentSchema,
-  primitive: MechanismPrimitiveInputSchema,
-  "primitive-catalogue": MechanismPrimitiveGeometryInputSchema,
-  "scene-2": MechanismSceneV2Schema,
-  "scene-3": MechanismSceneV3Schema,
-  "frame-2": MechanismFrameResultV2Schema,
-  "rig-2": MechanismRigV2Schema,
-  "teaching-shape": MechanismTeachingShapeSchema,
 };
 const stale: string[] = [];
 for (const [kind, schema] of Object.entries(schemas)) {

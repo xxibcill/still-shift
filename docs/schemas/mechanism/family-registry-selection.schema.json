@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "mechanism-family-registry-1"
+    },
+    "family": {
+      "default": "all",
+      "anyOf": [
+        { "type": "string", "enum": ["tape-hook", "cable-tie", "clothespeg"] },
+        { "type": "string", "const": "all" }
+      ]
+    }
+  },
+  "required": ["schemaVersion", "family"],
+  "additionalProperties": false
+}

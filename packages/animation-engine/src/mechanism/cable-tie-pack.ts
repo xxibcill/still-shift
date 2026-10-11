@@ -26,7 +26,7 @@ export const CableTiePackParametersSchema = z
     toothCount: z.number().int().min(6).max(12).default(8),
   })
   .strict();
-const inputSchema = z
+export const CableTiePackInputSchema = z
   .object({
     ...mechanismPackOptions,
     parameters: CableTiePackParametersSchema.default({
@@ -39,7 +39,9 @@ const inputSchema = z
 export type CableTiePackParameters = z.infer<
   typeof CableTiePackParametersSchema
 >;
-function cableScene(options: z.infer<typeof inputSchema>): MechanismSceneV2 {
+function cableScene(
+  options: z.infer<typeof CableTiePackInputSchema>,
+): MechanismSceneV2 {
   const { pitch, strapWidth, toothCount } = options.parameters,
     length = 1.25,
     thickness = 0.1,
@@ -231,7 +233,7 @@ function cableScene(options: z.infer<typeof inputSchema>): MechanismSceneV2 {
 let metadata: MechanismPackMetadataReceipt | undefined;
 export function inspectCableTiePack() {
   if (metadata) return metadata;
-  const scene = cableScene(inputSchema.parse({}));
+  const scene = cableScene(CableTiePackInputSchema.parse({}));
   metadata = createPackMetadata(
     scene,
     {
@@ -306,8 +308,10 @@ export function inspectCableTiePack() {
   );
   return metadata;
 }
-export function createCableTiePack(input: z.input<typeof inputSchema> = {}) {
-  const options = inputSchema.parse(input);
+export function createCableTiePack(
+  input: z.input<typeof CableTiePackInputSchema> = {},
+) {
+  const options = CableTiePackInputSchema.parse(input);
   return createPackInstance(
     cableScene(options),
     inspectCableTiePack(),

@@ -35,7 +35,7 @@ export const TapeHookPackParametersSchema = z
     bladeWidth: z.number().finite().min(1).max(3).default(2),
   })
   .strict();
-const inputSchema = z
+export const TapeHookPackInputSchema = z
   .object({
     parameters: TapeHookPackParametersSchema.default({
       hookThickness: 0.18,
@@ -72,7 +72,7 @@ function freeze<T>(value: T): T {
 function tapeScene(
   parameters: TapeHookPackParameters,
   mount?: z.infer<typeof MechanismTransformSchema>,
-  style?: z.infer<typeof inputSchema>["style"],
+  style?: z.infer<typeof TapeHookPackInputSchema>["style"],
 ) {
   const legacy = createTapeHookScene(parameters),
     geometry = {
@@ -403,8 +403,10 @@ export function inspectTapeHookPack(): MechanismPackMetadataReceipt {
   );
   return metadata;
 }
-export function createTapeHookPack(input: z.input<typeof inputSchema> = {}) {
-  const options = inputSchema.parse(input),
+export function createTapeHookPack(
+  input: z.input<typeof TapeHookPackInputSchema> = {},
+) {
+  const options = TapeHookPackInputSchema.parse(input),
     receipt = inspectTapeHookPack();
   const reference = {
     id: receipt.pack.id,

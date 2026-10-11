@@ -25,7 +25,7 @@ export const ClothespegPackParametersSchema = z
     clothThickness: z.number().finite().min(0.1).max(0.3).default(0.16),
   })
   .strict();
-const inputSchema = z
+export const ClothespegPackInputSchema = z
   .object({
     ...mechanismPackOptions,
     parameters: ClothespegPackParametersSchema.default({
@@ -38,7 +38,9 @@ const inputSchema = z
 export type ClothespegPackParameters = z.infer<
   typeof ClothespegPackParametersSchema
 >;
-function pegScene(options: z.infer<typeof inputSchema>): MechanismSceneV2 {
+function pegScene(
+  options: z.infer<typeof ClothespegPackInputSchema>,
+): MechanismSceneV2 {
   const { armLength, armWidth, clothThickness } = options.parameters,
     scale = armLength / 6,
     halfGap = clothThickness / 2,
@@ -297,7 +299,7 @@ function pegScene(options: z.infer<typeof inputSchema>): MechanismSceneV2 {
 let metadata: MechanismPackMetadataReceipt | undefined;
 export function inspectClothespegPack() {
   if (metadata) return metadata;
-  const scene = pegScene(inputSchema.parse({}));
+  const scene = pegScene(ClothespegPackInputSchema.parse({}));
   metadata = createPackMetadata(
     scene,
     {
@@ -377,8 +379,10 @@ export function inspectClothespegPack() {
   );
   return metadata;
 }
-export function createClothespegPack(input: z.input<typeof inputSchema> = {}) {
-  const options = inputSchema.parse(input);
+export function createClothespegPack(
+  input: z.input<typeof ClothespegPackInputSchema> = {},
+) {
+  const options = ClothespegPackInputSchema.parse(input);
   return createPackInstance(
     pegScene(options),
     inspectClothespegPack(),

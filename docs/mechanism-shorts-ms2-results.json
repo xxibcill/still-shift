@@ -16027,6 +16027,17 @@
         "sha256": "sha256:661d2f479674a1e278c690223443643050d7f9a4fdbc31deee508bc215936d25"
       },
       "qualification": "The live fixtures use synthetic local PCM, not spoken production narration. They verify compiler/timing/export behavior, all final native observations and independent bounded replay; no pilot or human listening/visual acceptance is inferred. Source cues retain exact PCM facts; visual/effect/motion placement follows the documented integer frame quantization with reported onset delay. The final frame quantum is distinct from source duration. Full label layout/readability, genuine spoken cue semantics, supported pack promotion, registry/coverage/typography, semantic report/other producer/whole-resource/lifetime accounting, remaining MS2 full gates and final installed refresh remain open."
+    },
+    {
+      "id": "family-registry-slice-40",
+      "status": "registry-derived-discovery-schema-verified-in-stages",
+      "record": "docs/mechanism-shorts-ms2-family-registry-results.json",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-registry40-inputs4.json",
+        "bytes": 433734,
+        "sha256": "sha256:12a9bbed00130ad98fdcce22eaf06dc835b738ca0e03c17cc1c964bd3acc4a82"
+      },
+      "qualification": "Discovery and expanded schema authoring only. Candidate status is retained; this does not prove saved revision-aware family/cue editing, rendered label/typography QA, complete resource/lifetime accounting, genuine spoken inputs, supported packs, full software/benchmark/final installed verification or MS2/MS3 acceptance. No paid generation, merge or publication."
     }
   ],
   "implementation": {
@@ -17379,10 +17390,35 @@
         "Complete rendered label layout/readability, registry/discovery/editing and coverage/typography acceptance.",
         "Complete genuine spoken-input/owner-review gates, supported pack promotion, whole resources/lifetime, required full software/benchmark and final installed verification before MS2 PR and MS3."
       ]
+    },
+    "fortiethSlice": {
+      "status": "registry-derived-discovery-schema-verified-in-stages",
+      "scope": [
+        "One generator-derived family registry shares exact input/parameter schemas, immutable metadata and minimal examples with public inspection, CLI discovery and generated schema export.",
+        "Discover all three candidates without support promotion; validate parameter-schema digest and expose parameter help, controls and strict pack references.",
+        "Family-selected CLI retains complete metadata reports under unchanged 32 KiB/100 response limits; deterministic pagination and located unsupported selectors.",
+        "Seven new generated schemas plus existing expanded contracts exposed through shared CLI/schema generator registry."
+      ],
+      "counts": {
+        "unitTests": 4249,
+        "unitFiles": 417,
+        "newUnitTests": 6,
+        "runtimeTests": 19,
+        "runtimeFiles": 2,
+        "newRuntimeTests": 4,
+        "families": 3,
+        "newSchemaFiles": 7,
+        "supportedPacks": 0,
+        "pilotAcceptedEpisodes": 0
+      },
+      "remaining": [
+        "Stable revision-aware saved family/cue editing and rejection/atomicity/resume evidence.",
+        "Full label, coverage and typography criteria, supported-pack promotion, genuine spoken inputs, whole resource/lifetime/full/final-installed gates before MS2 PR/MS3."
+      ]
     }
   },
   "limits": [
-    "Thirty-nine slices include bounded root/source/results, authored state/event timelines and cue-driven picture/annotation/caption/sound/narration compilation. Current fast15 passes 4,243 units; three-family synthetic PCM shorter-take exports/900 native frames/repeated video/audio pass. Genuine spoken semantics, full label QA, supported packs, discovery/coverage/typography, whole resources/lifetime/producer storage, remaining MS2/full/final-installed gates remain open. Supported packs/pilot 0.",
+    "Forty slices now include cue tracks plus generator-derived family discovery, immutable metadata/help/examples and expanded schema exports under existing response limits. Fast4 passes 4,249 units; 19 CLI regressions and actual persisted family/pagination/schema reports pass on held inputs. Revision-aware saved editing, rendered label QA, coverage/typography, supported packs/genuine spoken inputs, whole resources/lifetime, full/final installed and remaining MS2/MS3 acceptance stay open. Supported packs/pilot 0.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]
