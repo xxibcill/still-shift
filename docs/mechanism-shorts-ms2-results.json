@@ -16005,6 +16005,17 @@
         }
       },
       "qualification": "Current held fast20/Node21 and actual PBR composition/normal/mixed plus all six native2 groups pass. Root read and scene serialization capacities are declared producer storage; semantic validation/diagnostic report allocations, other media/code-identity producers, final lifecycle/RSS and aggregate world/body/replay remain separate. Direct legacy non-composition exports keep their prior serialization route. Result callback/report producers retain earlier bounded protocol and still require the broader audit. No complete whole-Node/MS2 gate, final installed refresh, human acceptance or publication is claimed."
+    },
+    {
+      "id": "pack-timeline-slice-38",
+      "status": "authored-pack-timeline-verified-in-stages",
+      "record": "docs/mechanism-shorts-ms2-pack-timeline-results.json",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-timeline38-inputs7.json",
+        "bytes": 432443,
+        "sha256": "sha256:adac16cfe6f63d881f4c6b9a39f89323749aa256b0e101ba86562206dd0e76b3"
+      },
+      "qualification": "Pure expected-state timeline evidence. Discrete compilation does not prove all continuous time; arbitrary fractional seeks evaluate requirements when requested. Authored state graphs do not automatically derive physical release phases or narration tracks. GPU observations retain existing independent validation. Supported pack promotion, unified QA, narration cue compilation, whole-resource/lifetime requirements, remaining MS2/full gates and final installed refresh remain open. No human acceptance, paid generation, merge or publication."
     }
   ],
   "implementation": {
@@ -17302,10 +17313,37 @@
         "Admit semantic validation/diagnostic reports, other media/code-identity producers and final lifetime evidence into the Node allowance; finish aggregate world/body/replay requirements.",
         "Finish remaining MS2 packs/rigs/events/labels/cues/help/coverage/typography, required full gates and final installed verification before MS2 PR, then MS3."
       ]
+    },
+    "thirtyEighthSlice": {
+      "status": "authored-pack-timeline-verified-in-stages",
+      "scope": [
+        "Versioned bounded authored state/transition/event contract and generated JSON Schema; all three existing candidate packs reuse the interface without E01 topology coupling.",
+        "Required relationships, optional narrowed signed-gap contact, legal contact/release/return/reset transitions, whole-interval rig validation and first failing located interval. Scene-wide required invariants remain mandatory.",
+        "Compile every discrete output frame and exact fractional event boundaries using a merged iterator without retaining all frame bodies. Frozen declaration/source identities and deterministic fractional/reverse random seek evaluation.",
+        "Four live family dimension fixtures compile actual 24-frame controls, check sampled state requirements and reuse those controls through independent native observations and repeated actual MP4 exports."
+      ],
+      "counts": {
+        "unitTests": 4230,
+        "unitFiles": 415,
+        "newUnitTests": 7,
+        "focusedTests": 32,
+        "focusedFiles": 3,
+        "liveFamilies": 2,
+        "dimensionsPerFamily": 2,
+        "compiledOutputFrames": 96,
+        "previewCaptures": 40,
+        "finalExports": 8,
+        "supportedPacks": 0,
+        "pilotSupportedEpisodes": 0
+      },
+      "remaining": [
+        "Integrate supplied narration cues across picture/annotation/caption/sound tracks with reading/action/recording constraints.",
+        "Finish pack support promotion and remaining MS2 authoring/coverage/typography, whole-resource/lifetime/full/installed gates before MS2 PR and MS3."
+      ]
     }
   },
   "limits": [
-    "Thirty-seven slices include shared Node source/catalogue/results, bounded root descriptor/text/parser storage and admitted scene JSON/UTF8 encoding. Semantic validation/report and other producers, whole world/body/replay, remaining MS2/full gates and final installed refresh remain. Current fast 4,223 and scoped Node/PBR/native2 groups pass; earlier failures remain. Supported packs/pilot 0.",
+    "Thirty-eight slices now include bounded root/source/results and authored state/event timelines. Pure state/relationship compilation and fractional seek checks are implemented, with current 4,230 unit and live family cycle checks. Semantic validation/report and other producer storage, whole world/body/replay/lifetime, narration track compilation, remaining MS2 authoring/full gates and final installed refresh remain. Supported packs/pilot 0.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

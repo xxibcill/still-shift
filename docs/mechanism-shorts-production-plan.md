@@ -801,6 +801,15 @@ mechanism families establish whether the architecture transfers.
       failures to the rig, parts, relationship and first failing interval. Evaluate
       valid states without dependence on playback history; MS3 integrates these
       results into unified QA.
+      Slice38 adds a versioned authored state/transition/event contract, required
+      relationship and narrowed signed-gap contact checks with located first failure.
+      All output/event samples and requested fractional seeks use pure evaluation;
+      seven new controls cover all three candidates. Four live family dimension
+      cycles compile 96 frames and reuse controls through 40 previews/eight exports.
+      [Timeline evidence](./mechanism-shorts-ms2-pack-timeline-results.json) retains
+      build/identity failures; [API](./mechanism-pack-timelines.md) separates discrete
+      state checks from continuous-time and unified production QA. This criterion
+      remains unchecked pending the complete family/production acceptance.
 - [x] Add recognition, contact approach, macro, aligned comparison, controlled orbit
       and return recipes. Frame actual target bounds using lens/view direction and
       reserved overlay regions. Check near planes and camera intersections; retain

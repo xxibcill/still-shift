@@ -8,6 +8,8 @@ import {
   NativeObservedOutputFrameV2Schema,
 } from "@still-shift/scene-contract";
 import {
+  compileMechanismPackTimeline,
+  sampleMechanismPackTimeline,
   createCableTiePack,
   inspectCableTiePack,
   createClothespegPack,
@@ -133,6 +135,43 @@ try {
               ],
             },
           };
+    const required =
+      family === "cable-tie"
+        ? { rig: "ratchet", relationship: "pawl.root.fixed" }
+        : { rig: "upper.return", relationship: "spring.upper.seated" };
+    const contact =
+      family === "cable-tie"
+        ? { rig: "ratchet", relationship: "pawl.tooth.seated" }
+        : {
+            rig: "upper.return",
+            relationship: "upper.cloth.gap",
+            signedGap: [0, 0],
+          };
+    const timeline = compileMechanismPackTimeline(instance, {
+      schemaVersion: "mechanism-pack-timeline-1",
+      frameCount: 24,
+      initialState: "active",
+      rigControls,
+      states: [
+        { id: "active", requirements: [required] },
+        { id: "contact", requirements: [required, contact] },
+      ],
+      transitions: [{ from: "active", to: "contact", event: "contact" }],
+      events: [
+        { id: "start", frame: 0, kind: "initial", state: "active" },
+        {
+          id: "contact",
+          frame: family === "cable-tie" ? 18 : 21,
+          kind: "contact",
+          state: "contact",
+        },
+      ],
+    });
+    await writeFile(
+      join(directory, name + ".timeline.json"),
+      JSON.stringify(timeline, null, 2) + "\n",
+      { flag: "wx" },
+    );
     const composition = CompositionSchema.parse({
       schemaVersion: "composition-1",
       id: `family-pack-${index}`,
@@ -193,6 +232,20 @@ try {
       captures = [];
     const seen = new Map<number, string>();
     for (const [i, capture] of proof.captures.entries()) {
+      const sample = sampleMechanismPackTimeline(
+        instance,
+        timeline,
+        capture.frame,
+        { width: 320, height: 180 },
+      );
+      assert.equal(
+        canonicalMechanismJson(sample.request.rigControls),
+        canonicalMechanismJson(
+          composition.layers[0]!.type === "native3d"
+            ? composition.layers[0]!.rigControls
+            : {},
+        ),
+      );
       const bytes = Buffer.from(capture.rgba),
         sha256 = hash(bytes);
       assert.equal(bytes.length, 320 * 180 * 4);

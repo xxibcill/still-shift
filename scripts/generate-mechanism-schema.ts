@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { format } from "prettier";
 import { z } from "zod";
 import {
+  MechanismPackTimelineSchema,
   SolidGeometryV2Schema,
   NativeFrameSnapshotV3Schema,
   CompositionPreparedNative3DV3Schema,
@@ -29,6 +30,7 @@ import {
 } from "../packages/animation-engine/src/mechanism/primitive-contract.ts";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const schemas = {
+  "pack-timeline": MechanismPackTimelineSchema,
   "solid-geometry-2": SolidGeometryV2Schema,
   "native-frame-3": NativeFrameSnapshotV3Schema,
   "prepared-native3d-3": CompositionPreparedNative3DV3Schema,

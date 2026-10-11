@@ -45,19 +45,19 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Thirty-seven slices now admit root descriptor/body/text/parser storage and scene
-  JSON/UTF-8 encoding under the fixed shared Node allowance. Child producer scopes
-  roll back root/native reservations without closing unrelated owners; completed
-  products transfer. Descriptor failure retires actual backing and preserves first
-  cause through close failure. Native source 32 MiB remains fixed.
-  Fast20 passes 4,223 units; 30 Node checks and current PBR/normal/mixed/six native2
-  groups pass on held inputs20. Two MP4s/six raw bodies preserve slice36 bytes.
-  Lint and actual inherited-hook unit failures remain retained; attempted process
-  stops sent no signal. Next: semantic validation/report and remaining producers,
-  lifetime/whole world/body/replay, remaining MS2 authoring/full/installed criteria.
+  Thirty-eight slices include shared Node root/source/result admission and an
+  authored state/event timeline contract. Compile legal transitions, required
+  relationships and narrowed contact gaps; check every output frame/event boundary
+  and arbitrary fractional seeks without playback history. Seven new controls
+  pass across all three candidates; current fast7 passes 4,230 units. Live family
+  checks compile four dimension variants/96 frames with 40 previews/eight repeated
+  exports. Evidence remains expected state plus separately validated GPU receipts.
+  Misplaced guard build failure and stale identity failure remain retained.
+  Next: narration cue/track compilation, remaining authoring/coverage/typography,
+  semantic report/other producers, aggregate/lifetime/full/installed criteria.
   Supported packs/pilot 0; no merge/publication, human acceptance or paid generation.
-  [Root I/O evidence](./mechanism-shorts-ms2-root-io-results.json),
-  [MS2 results](./mechanism-shorts-ms2-results.json), [PBR API](./native-pbr-resources.md).
+  [Timeline evidence](./mechanism-shorts-ms2-pack-timeline-results.json),
+  [Timeline API](./mechanism-pack-timelines.md), [MS2 results](./mechanism-shorts-ms2-results.json).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
   inventory15:2,329 inputs/117,503,155B. Original full6 retains a qualified19-group
@@ -215,6 +215,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 authored mechanism state timelines
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `3e99ca1f`.
+- **Done:** versioned state/event/transition contract, generated schema, located
+  relationship/contact checks, bounded compile iterator and pure random seeking.
+  All three candidates reuse the API; native family fixtures reuse compiled controls.
+- **Results:** seven new tests; focused4 passes 32 tests, fast7 passes 4,230 units;
+  actual four dimension cycles compile 96 frames, with 40 previews/eight exports.
+- **Retained:** misplaced guard build failure (focused suffix unrun); stale native
+  source closure failure (browser suffix unrun), then regenerated identity/rerun.
+- **Next:** narration cues/all tracks and remaining MS2 criteria/full/installed;
+  no continuous-time, whole-quota, supported-pack or human acceptance claim.
+- **Records:** [Timeline API](./mechanism-pack-timelines.md),
+  [Timeline evidence](./mechanism-shorts-ms2-pack-timeline-results.json).
 
 ### 2026-10-11 — MS2 root I/O and scene serialization admission
 

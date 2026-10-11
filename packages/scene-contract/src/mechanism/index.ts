@@ -10,3 +10,5 @@ export * from "./packs.ts";
 export * from "./scene-v2.ts";
 export * from "./frame-v2.ts";
 export * from "./pack-document.ts";
+
+export * from "./timeline.ts";

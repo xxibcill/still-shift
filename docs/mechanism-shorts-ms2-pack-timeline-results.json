@@ -1,0 +1,315 @@
+{
+  "version": "mechanism-ms2-pack-timeline-results-1",
+  "date": "2026-10-11",
+  "baseSourceCommit": "3e99ca1fd03bdb0ff339973433784137a195c001",
+  "branch": "codex/mechanism-ms2",
+  "status": "authored-pack-timeline-verified-in-stages",
+  "scope": [
+    "Versioned bounded authored state/transition/event contract and generated JSON Schema; all three existing candidate packs reuse the interface without E01 topology coupling.",
+    "Required relationships, optional narrowed signed-gap contact, legal contact/release/return/reset transitions, whole-interval rig validation and first failing located interval. Scene-wide required invariants remain mandatory.",
+    "Compile every discrete output frame and exact fractional event boundaries using a merged iterator without retaining all frame bodies. Frozen declaration/source identities and deterministic fractional/reverse random seek evaluation.",
+    "Four live family dimension fixtures compile actual 24-frame controls, check sampled state requirements and reuse those controls through independent native observations and repeated actual MP4 exports."
+  ],
+  "qualification": "Pure expected-state timeline evidence. Discrete compilation does not prove all continuous time; arbitrary fractional seeks evaluate requirements when requested. Authored state graphs do not automatically derive physical release phases or narration tracks. GPU observations retain existing independent validation. Supported pack promotion, unified QA, narration cue compilation, whole-resource/lifetime requirements, remaining MS2/full gates and final installed refresh remain open. No human acceptance, paid generation, merge or publication.",
+  "workingInputs": {
+    "path": "/private/tmp/still-shift-ms2-timeline38-inputs7.json",
+    "bytes": 432443,
+    "sha256": "sha256:adac16cfe6f63d881f4c6b9a39f89323749aa256b0e101ba86562206dd0e76b3"
+  },
+  "counts": {
+    "unitTests": 4230,
+    "unitFiles": 415,
+    "newUnitTests": 7,
+    "focusedTests": 32,
+    "focusedFiles": 3,
+    "liveFamilies": 2,
+    "dimensionsPerFamily": 2,
+    "compiledOutputFrames": 96,
+    "previewCaptures": 40,
+    "finalExports": 8,
+    "supportedPacks": 0,
+    "pilotSupportedEpisodes": 0
+  },
+  "actualRootSessions": [
+    {
+      "session": 81984,
+      "exitCode": 0,
+      "commands": ["format1", "schema1", "build1"]
+    },
+    {
+      "session": 72720,
+      "exitCode": 0,
+      "commands": ["format2", "build2", "focused2"]
+    },
+    {
+      "session": 27666,
+      "exitCode": 2,
+      "commands": ["format3", "build3"],
+      "unrun": ["focused3"]
+    },
+    {
+      "session": 83378,
+      "exitCode": 0,
+      "commands": ["format4", "build4", "focused4"]
+    },
+    {
+      "session": 88529,
+      "exitCode": 1,
+      "commands": ["format5", "inputs5", "fast5"],
+      "unrun": ["browser6", "hold6"]
+    },
+    {
+      "session": 76342,
+      "exitCode": 0,
+      "commands": [
+        "identity7",
+        "format7",
+        "inputs7",
+        "fast7",
+        "browser8",
+        "hold8"
+      ]
+    }
+  ],
+  "failedRuns": [
+    {
+      "id": "build3",
+      "reason": "Guard insertion matched both the state declaration loop and evaluation loop. TypeScript rejected the misplaced block before focused3. Removed only the misplaced block; retained required relationship enforcement in evaluation."
+    },
+    {
+      "id": "fast5",
+      "reason": "New public contract changed native appearance source closure. Schema stage failed before later fast stages/browser6/hold6. Regenerated through pnpm native3d:identity:generate; final held rerun uses the updated closure."
+    }
+  ],
+  "verification": [
+    {
+      "id": "format1",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-timeline38-format1.log",
+        "bytes": 288,
+        "sha256": "sha256:75410cac26c46d549e463a048cc3d054430fa195b05f0e7b459207b37fcf77d6"
+      }
+    },
+    {
+      "id": "schema1",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-timeline38-schema1.log",
+        "bytes": 653,
+        "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+      }
+    },
+    {
+      "id": "build1",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-timeline38-build1.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "format2",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-timeline38-format2.log",
+        "bytes": 110,
+        "sha256": "sha256:79b60c99aafa306c911a772f3a04dc5cb73a7b5a75a2bc5a111f35cc3c3a4c4e"
+      }
+    },
+    {
+      "id": "build2",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-timeline38-build2.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "focused2",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-timeline38-focused2.log",
+        "bytes": 456,
+        "sha256": "sha256:eb8a04005069250d90437eab4cc5c23d5730f708b7773e57e49b75a5d3170f90"
+      }
+    },
+    {
+      "id": "format3",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-timeline38-format3.log",
+        "bytes": 110,
+        "sha256": "sha256:b5063c5e3b33e8e0198597149efa027d8590b642ba92f24c09273a1a066a02a9"
+      }
+    },
+    {
+      "id": "build3",
+      "exitCode": 2,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-timeline38-build3.log",
+        "bytes": 1667,
+        "sha256": "sha256:4704ff568db4d16d57a523c502b2377b88e27a0f6dfbba24889286343115bc52"
+      }
+    },
+    {
+      "id": "format4",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-timeline38-format4.log",
+        "bytes": 62,
+        "sha256": "sha256:493161d722033ffc401b363039f22991221730e90047293a50d57f5de517c36f"
+      }
+    },
+    {
+      "id": "build4",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-timeline38-build4.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "focused4",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-timeline38-focused4.log",
+        "bytes": 995,
+        "sha256": "sha256:d5cd4d6091407aa76499d243a7d76d7c6f35a38b5a48bd07d82fe1d36d93cb57"
+      }
+    },
+    {
+      "id": "format5",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-timeline38-format5.log",
+        "bytes": 46,
+        "sha256": "sha256:ff59a5b11ac709c333964a165614fec184aaa733f3dbf6d61feb0428502040fb"
+      }
+    },
+    {
+      "id": "fast5",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-timeline38-fast5.log",
+        "bytes": 1252,
+        "sha256": "sha256:7473fd270d5217d36218349ab5ebb996ff8aaf4b70a2baa57b524879ae1fd080"
+      }
+    },
+    {
+      "id": "identity7",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-timeline38-identity7.log",
+        "bytes": 260,
+        "sha256": "sha256:b7689f3cd60c9cf901e6b3e2f3ab6161f8573929f58e42480c8cf004704a91fe"
+      }
+    },
+    {
+      "id": "format7",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-timeline38-format7.log",
+        "bytes": 50,
+        "sha256": "sha256:eb60c203183cbc78daaead6c6bac6e3050840192e25b0896536f9b5feaa8843c"
+      }
+    },
+    {
+      "id": "fast7",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-timeline38-fast7.log",
+        "bytes": 35025,
+        "sha256": "sha256:3b061a4d38e6c1f77cff8fd9058f95aeb79b93a378be4c4d337ae7b947bd0dd3"
+      }
+    },
+    {
+      "id": "browser8",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-timeline38-browser8.log",
+        "bytes": 331,
+        "sha256": "sha256:28a908d24a6f116a2567b194ef03c9348032de135238dd56ba6eacfc4140980e"
+      }
+    },
+    {
+      "id": "hold8",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-timeline38-hold8.log",
+        "bytes": 195,
+        "sha256": "sha256:52436015dd602dcacdbbf02c4850d130c7cd0aedb0a84f38951333aee02cf31a"
+      }
+    }
+  ],
+  "browserResult": {
+    "directory": "/private/tmp/still-shift-ms2-family-packs-Sn9K1w",
+    "status": "passed",
+    "families": 2,
+    "dimensionsPerFamily": 2,
+    "previewCaptures": 40,
+    "finalExports": 8
+  },
+  "browserRun": {
+    "path": "/private/tmp/still-shift-ms2-family-packs-Sn9K1w/run.json",
+    "bytes": 977577,
+    "sha256": "sha256:7d0088354183e81cf5b2fa627c4b2fd2c9ab131815473967947c6aeb50bef573"
+  },
+  "compiledTimelineReceipts": [
+    {
+      "name": "cable-tie-dimension-0",
+      "family": "cable-tie",
+      "compiled": {
+        "path": "/private/tmp/still-shift-ms2-family-packs-Sn9K1w/cable-tie-dimension-0.timeline.json",
+        "bytes": 2148,
+        "sha256": "sha256:f8eb7938228dcf6fe89b6d7af9bac8aed8f6d2f4ba6fff12660c9d014fce280f"
+      },
+      "checkedOutputFrames": 24,
+      "checkedEventFrames": 2,
+      "timelineSha256": "sha256:ad1f296eb0f941a670dab8e3f8c8a76e19e81a025529407601bc4187c0e97807"
+    },
+    {
+      "name": "cable-tie-dimension-1",
+      "family": "cable-tie",
+      "compiled": {
+        "path": "/private/tmp/still-shift-ms2-family-packs-Sn9K1w/cable-tie-dimension-1.timeline.json",
+        "bytes": 2180,
+        "sha256": "sha256:1fcc68537dc3a34f7a707cf23039f8d097ffcb0e231b7c7ddc2880220daf1e04"
+      },
+      "checkedOutputFrames": 24,
+      "checkedEventFrames": 2,
+      "timelineSha256": "sha256:6852dfd94625e8f1502648de281a5171f45e95e757558e2185ec43c7aabc8e9f"
+    },
+    {
+      "name": "clothespeg-dimension-0",
+      "family": "clothespeg",
+      "compiled": {
+        "path": "/private/tmp/still-shift-ms2-family-packs-Sn9K1w/clothespeg-dimension-0.timeline.json",
+        "bytes": 2308,
+        "sha256": "sha256:b6c824e5ae008e4131641d517005a69468b7ddbd481ddb30b00b89904058aa2d"
+      },
+      "checkedOutputFrames": 24,
+      "checkedEventFrames": 2,
+      "timelineSha256": "sha256:7acc307732a4e417b1b1984fd870476f44ae8355f72c9e98928ea39d3f80be4d"
+    },
+    {
+      "name": "clothespeg-dimension-1",
+      "family": "clothespeg",
+      "compiled": {
+        "path": "/private/tmp/still-shift-ms2-family-packs-Sn9K1w/clothespeg-dimension-1.timeline.json",
+        "bytes": 2308,
+        "sha256": "sha256:62777763b1f13555c28a43936444a69394aaa2b6c0aa8e586670ae8e921c6286"
+      },
+      "checkedOutputFrames": 24,
+      "checkedEventFrames": 2,
+      "timelineSha256": "sha256:7acc307732a4e417b1b1984fd870476f44ae8355f72c9e98928ea39d3f80be4d"
+    }
+  ],
+  "remaining": [
+    "Integrate supplied narration cues across picture/annotation/caption/sound tracks with reading/action/recording constraints.",
+    "Finish pack support promotion and remaining MS2 authoring/coverage/typography, whole-resource/lifetime/full/installed gates before MS2 PR and MS3."
+  ]
+}

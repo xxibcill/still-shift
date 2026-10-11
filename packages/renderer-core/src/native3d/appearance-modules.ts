@@ -1751,6 +1751,13 @@ export const native3DAppearanceModules: readonly {
     ),
   },
   {
+    name: "scene-contract/src/mechanism/timeline.ts",
+    url: new URL(
+      "../../../scene-contract/src/mechanism/timeline.ts",
+      import.meta.url,
+    ),
+  },
+  {
     name: "scene-contract/src/motion-craft-validation.ts",
     url: new URL(
       "../../../scene-contract/src/motion-craft-validation.ts",
