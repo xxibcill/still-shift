@@ -1,3 +1,7 @@
+import {
+  inspectTextWeightTreatments,
+  TextEventError,
+} from "../../packages/scene-contract/src/typography-events.ts";
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
@@ -970,5 +974,314 @@ it("loads text event errors with native Node TypeScript stripping", () => {
     message: "invalid text event",
     eventIndex: 3,
     preservedCause: true,
+  });
+});
+
+describe("explicit text weight treatment receipts", () => {
+  it.each(["genuine-weight", "outline"] as const)(
+    "releases %s without seek history",
+    (treatment) => {
+      const scene = StorySceneSchema.parse({
+        ...input(),
+        fonts: [
+          {
+            ...input().fonts[0],
+            variable: { wght: { min: 100, default: 400, max: 900 } },
+          },
+        ],
+        textEvents: [
+          {
+            node: "claim",
+            span: "room",
+            verb: "emphasize",
+            manner: "weight",
+            weightTreatment: treatment,
+            at: 0,
+            duration: 20,
+          },
+          {
+            node: "claim",
+            span: "room",
+            verb: "release",
+            at: 80,
+            duration: 20,
+          },
+        ],
+      });
+      const compiled = compileStoryScene(scene),
+        node = textNode(compiled, "claim"),
+        layout = mockLayout(node);
+      const value = (frame: number) =>
+        evaluateTextPoses(
+          node,
+          layout,
+          compiled.textAnimators!,
+          frame,
+          compiled,
+        ).at(-1)!;
+      const held = value(79),
+        release = value(80),
+        middle = value(90),
+        settled = value(100);
+      if (treatment === "genuine-weight") {
+        expect(held.axes?.wght).toBe(150);
+        expect(release.axes?.wght).toBe(150);
+        expect(middle.axes?.wght).toBeGreaterThan(0);
+        expect(middle.axes?.wght).toBeLessThan(150);
+        expect(settled.axes?.wght ?? 0).toBe(0);
+      } else {
+        expect(held.strokeWidth).toBe(1.12);
+        expect(release.strokeWidth).toBe(1.12);
+        expect(middle.strokeWidth).toBeGreaterThan(0);
+        expect(middle.strokeWidth).toBeLessThan(1.12);
+        expect(settled.strokeWidth).toBe(0);
+      }
+      const frames = [0, 10, 79, 80, 90, 100];
+      const forward = new Map(frames.map((frame) => [frame, value(frame)]));
+      for (const frame of [...frames].reverse())
+        expect(value(frame)).toEqual(forward.get(frame));
+    },
+  );
+  it("propagates explicit treatment through text intent presets", () => {
+    const scene = StorySceneSchema.parse({
+      ...input(),
+      intentPresets: {
+        schemaVersion: "story-motion-presets-1",
+        motions: [
+          {
+            preset: "text-emphasize",
+            node: "claim",
+            span: "room",
+            manner: "weight",
+            weightTreatment: "outline",
+            amount: 2,
+            window: { start: 10, end: 30 },
+          },
+        ],
+      },
+    });
+    expect(inspectTextWeightTreatments(scene).receipts[0]).toMatchObject({
+      requestedTreatment: "outline",
+      units: "stroke-pixels",
+      resolvedAmount: 2,
+    });
+    expect(compileStoryScene(scene).textAnimators![0]!.to).toEqual({
+      stroke: "#222222",
+      strokeWidth: 2,
+    });
+  });
+
+  const fixture = (
+    weightTreatment?: "auto" | "genuine-weight" | "outline",
+    amount?: number,
+  ) =>
+    StorySceneSchema.parse({
+      ...input(),
+      fonts: [
+        {
+          ...input().fonts[0],
+          variable: { wght: { min: 100, default: 400, max: 900 } },
+        },
+      ],
+      textEvents: [
+        {
+          id: "weight",
+          node: "claim",
+          span: "room",
+          verb: "emphasize",
+          manner: "weight",
+          at: 10,
+          duration: 20,
+          ...(weightTreatment ? { weightTreatment } : {}),
+          ...(amount === undefined ? {} : { amount }),
+        },
+      ],
+    });
+  it("reports axis units and pinned font metadata without mutating authoring", () => {
+    const scene = fixture("genuine-weight", 200),
+      before = JSON.stringify(scene);
+    const receipt = inspectTextWeightTreatments(scene).receipts[0]!;
+    expect(receipt).toMatchObject({
+      eventIndex: 0,
+      eventId: "weight",
+      span: "room",
+      start: 10,
+      end: 30,
+      requestedTreatment: "genuine-weight",
+      resolvedTreatment: "genuine-weight",
+      status: "resolved",
+      units: "wght-axis-delta",
+      requestedAmount: 200,
+      resolvedAmount: 200,
+      availableHeadroom: 500,
+      targetScope: "painted-style-runs",
+      fonts: [
+        {
+          fontAsset: "font",
+          declaredWeight: "400",
+          axisInstance: 400,
+          headroom: 500,
+        },
+      ],
+    });
+    expect(compileStoryScene(scene).textAnimators![0]!.to).toEqual({
+      axes: { wght: 200 },
+    });
+    expect(JSON.stringify(scene)).toBe(before);
+  });
+  it("uses explicit outline pixels even when an axis is available", () => {
+    const scene = fixture("outline", 2);
+    expect(inspectTextWeightTreatments(scene).receipts[0]).toMatchObject({
+      units: "stroke-pixels",
+      resolvedAmount: 2,
+      reason: "explicit-outline",
+    });
+    expect(compileStoryScene(scene).textAnimators![0]!.to).toEqual({
+      stroke: "#222222",
+      strokeWidth: 2,
+    });
+  });
+  it.each(["static", "maximum", "insufficient"])(
+    "rejects unavailable genuine weight: %s",
+    (kind) => {
+      const scene = fixture(
+        "genuine-weight",
+        kind === "insufficient" ? 501 : 150,
+      );
+      if (kind === "static") delete scene.fonts![0]!.variable;
+      if (kind === "maximum") {
+        scene.textStyles = {
+          ...scene.textStyles,
+          maximum: { fontAsset: "font", axes: { wght: 900 } },
+        };
+        (scene.nodes[0] as TextNode).style = "maximum";
+      }
+      const receipt = inspectTextWeightTreatments(scene).receipts[0]!;
+      expect(receipt).toMatchObject({
+        status: "unavailable",
+        resolvedTreatment: null,
+        resolvedAmount: null,
+        units: "wght-axis-delta",
+      });
+      try {
+        compileStoryScene(scene);
+        throw Error("unexpected successful compilation");
+      } catch (error) {
+        expect(error).toBeInstanceOf(TextEventError);
+        expect((error as TextEventError).eventIndex).toBe(0);
+        expect((error as Error).message).toContain("text-weight-unavailable");
+      }
+    },
+  );
+  it("preserves omitted and explicit auto defaults and clamping", () => {
+    const omitted = fixture(),
+      explicit = fixture("auto");
+    expect(compileStoryScene(omitted).textAnimators).toEqual(
+      compileStoryScene(explicit).textAnimators,
+    );
+    expect(inspectTextWeightTreatments(omitted).receipts[0]).toMatchObject({
+      targetScope: "legacy-base-and-spans",
+      resolvedAmount: 150,
+    });
+    const clamped = fixture(undefined, 700);
+    expect(compileStoryScene(clamped).textAnimators![0]!.to).toEqual({
+      axes: { wght: 500 },
+    });
+    delete omitted.fonts![0]!.variable;
+    expect(compileStoryScene(omitted).textAnimators![0]!.to).toEqual({
+      stroke: "#222222",
+      strokeWidth: 1.12,
+    });
+  });
+  it("checks every painted run but excludes an unused static base for explicit treatments", () => {
+    const scene = fixture("genuine-weight");
+    scene.fonts!.push({ ...input().fonts[0]!, id: "static" });
+    scene.textStyles = {
+      ...scene.textStyles,
+      variable: { fontAsset: "font" },
+      static: { fontAsset: "static" },
+    };
+    const node = textNode(scene as Compiled, "claim");
+    node.fontAsset = "static";
+    node.spans = [{ id: "all", start: 0, end: 9, style: "variable" }];
+    delete scene.textEvents![0]!.span;
+    expect(inspectTextWeightTreatments(scene).receipts[0]).toMatchObject({
+      status: "resolved",
+      fonts: [{ span: "all", fontAsset: "font" }],
+    });
+    expect(compileStoryScene(scene).textAnimators![0]!.to).toEqual({
+      axes: { wght: 150 },
+    });
+    node.spans = [
+      { id: "variable", start: 0, end: 5, style: "variable" },
+      { id: "static", start: 5, end: 9, style: "static" },
+    ];
+    expect(inspectTextWeightTreatments(scene).receipts[0]).toMatchObject({
+      status: "unavailable",
+      availableHeadroom: 0,
+    });
+    expect(() => compileStoryScene(scene)).toThrow("text-weight-unavailable");
+  });
+  it("keeps a painted base when spans cover shorter states but not the initial text", () => {
+    const scene = fixture("genuine-weight");
+    scene.fonts!.push({ ...input().fonts[0]!, id: "static" });
+    scene.textStyles = { ...scene.textStyles, variable: { fontAsset: "font" } };
+    const node = textNode(scene as Compiled, "claim");
+    node.fontAsset = "static";
+    node.states = ["Less"];
+    node.spans = [{ id: "short", start: 0, end: 4, style: "variable" }];
+    delete scene.textEvents![0]!.span;
+    const validated = StorySceneSchema.parse(scene);
+    expect(inspectTextWeightTreatments(validated).receipts[0]).toMatchObject({
+      status: "unavailable",
+      fonts: [
+        { span: null, fontAsset: "static" },
+        { span: "short", fontAsset: "font" },
+      ],
+    });
+    expect(() => compileStoryScene(validated)).toThrow(
+      "text-weight-unavailable",
+    );
+  });
+  it("retains the base for generated counts beyond authored endpoints", () => {
+    const scene = fixture("genuine-weight");
+    scene.fonts!.push({ ...input().fonts[0]!, id: "static" });
+    scene.textStyles = {
+      ...scene.textStyles,
+      base: { fontAsset: "static", figures: "tabular" },
+      variable: { fontAsset: "font" },
+    };
+    const node = textNode(scene as Compiled, "claim");
+    node.text = "1";
+    node.states = ["1", "2"];
+    node.style = "base";
+    node.spans = [{ id: "all", start: 0, end: 1, style: "variable" }];
+    delete scene.textEvents![0]!.span;
+    scene.textEvents!.push({
+      node: "claim",
+      verb: "count",
+      at: 60,
+      duration: 20,
+    });
+    const validated = StorySceneSchema.parse(scene);
+    expect(inspectTextWeightTreatments(validated).receipts[0]).toMatchObject({
+      status: "unavailable",
+      fonts: [
+        { span: null, fontAsset: "static" },
+        { span: "all", fontAsset: "font" },
+      ],
+    });
+    expect(() => compileStoryScene(validated)).toThrow(
+      "text-weight-unavailable",
+    );
+  });
+  it("rejects treatment on unrelated event verbs", () => {
+    const scene = fixture("outline");
+    expect(() =>
+      StorySceneSchema.parse({
+        ...scene,
+        textEvents: [{ ...scene.textEvents![0], manner: "color" }],
+      }),
+    ).toThrow();
   });
 });

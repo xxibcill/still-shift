@@ -45,17 +45,16 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Forty-four slices include deterministic cue-wide crowded labels with locks,
-  priority/backtracking, safe/caption/contact exclusions and actual visibility checks.
-  Fast10: 4,270 units; 38 runtime checks. Three families/two stages: 360 measured
-  visible frames/1,080 forward/reverse/shuffled draws; 12 exports/720 independent
-  final native frames. Six exact receipt/snapshot pairs and unchanged cable geometry.
-  Initial hidden-label proof was deliberately stopped; type/fixture failures retained.
-  Next: broader label/continuous/encoded readability, coverage/typography, genuine
-  speech, supported packs and remaining resource/lifetime/full/final-installed gates.
+  Forty-five slices now include explicit genuine-weight/outline authoring and pure
+  resolved-route/unit/headroom/font receipts. Fast10: 4,283 units/420 files;
+  runtime10: 30 saved-project/CLI checks/5 files; held 2,559 inputs/119,471,782B.
+  Maximum-axis fixture failure retained and corrected. Slice44's visible crowded
+  layout proof remains documented. Next: actual pinned-font/encoded weight and
+  natural English spacing proof, scoped count+fit/Thai risks, coverage, broader
+  labels/continuous readability, genuine speech and remaining full/final gates.
   Supported packs/pilot 0; no merge/publication, human acceptance or paid generation.
-  [Layout evidence](./mechanism-shorts-ms2-cue-layout-results.json),
-  [API](./mechanism-cue-layout.md), [MS2 results](./mechanism-shorts-ms2-results.json).
+  [Weight evidence](./mechanism-shorts-ms2-text-weight-results.json),
+  [API](./mechanism-text-weight-treatments.md), [MS2 results](./mechanism-shorts-ms2-results.json).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
   inventory15:2,329 inputs/117,503,155B. Original full6 retains a qualified19-group
@@ -213,6 +212,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 slice45: explicit weight and outline treatment API
+
+- Added explicit genuine/outline/automatic weight treatments to events and intents.
+  Genuine requests require complete headroom; outlines use pixels. Pure companion
+  receipts report units, font declarations, resolved route and located unavailability.
+- Automatic numeric defaults/clamping remain compatible. Explicit whole-node targets
+  inspect painted runs, including mixed fonts and fully covered unused base styles.
+- Final fast10 passed 4,283 units/420 files; runtime10 passed 30 saved-project/CLI checks/5
+  files. Thirteen new tests cover unavailable routes, receipts, intents and both
+  release/end/backward pose paths. Held 2,559 inputs/119,471,782B remained fixed. Final review refreshed gates
+  after initial-text and conservative generated-count targeting fixes.
+- Retained unit2 failure: maximum-axis fixture used a node field instead of a text
+  style. Corrected fixture passes; no rendering defect inferred from that failure.
+- Actual pinned-font raster/encoded treatment and English spacing checks remain
+  pending, alongside typography risks and broader MS2/full/final/owner acceptance.
+- [Evidence](./mechanism-shorts-ms2-text-weight-results.json),
+  [API](./mechanism-text-weight-treatments.md), [plan](./mechanism-shorts-production-plan.md).
 
 ### 2026-10-11 — MS2 slice44: deterministic visible crowded cue layout
 

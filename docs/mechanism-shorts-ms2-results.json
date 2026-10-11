@@ -17584,9 +17584,36 @@
         "Full broader label/world/surface routes and annotation primitives, required continuous/contact/readability QA and impossible/jitter production fault suite.",
         "Coverage board, explicit weight/outline and typography risk reproductions, genuine spoken input, supported-pack promotion, remaining whole resource/lifetime/full/final-installed acceptance before MS2 PR/MS3."
       ]
+    },
+    "fortyFifthSlice": {
+      "status": "explicit-treatment-api-and-local-software-verified-in-stages",
+      "scope": [
+        "Explicit auto/genuine-weight/outline treatment on weight events and intent presets.",
+        "Pure companion receipts expose axis delta versus stroke pixels, declared font identities/ranges/instances, resolved route and located unavailable requests.",
+        "Genuine weight requires complete positive headroom on all targeted painted runs; explicit outline always emits stroke pixels; legacy automatic defaults and clamping remain.",
+        "Focused tests cover static/maximum/insufficient/mixed runs, unused fully covered base, preset propagation, both release routes and backward poses.",
+        "Final review includes initial text as well as authored states in span coverage, and conservatively retains the base font for generated counts; two additional regression tests pass."
+      ],
+      "counts": {
+        "unitTests": 4283,
+        "unitFiles": 420,
+        "newUnitTests": 13,
+        "focusedTests": 35,
+        "focusedFiles": 1,
+        "runtimeTests": 30,
+        "runtimeFiles": 5,
+        "supportedPacks": 0,
+        "pilotAcceptedEpisodes": 0
+      },
+      "remaining": [
+        "Pinned MS1 font-byte/cut/axis proof, actual genuine/outline/legacy raster and encoded comparisons, natural English gaps, full release/end/backward/random rendered states.",
+        "Scoped count+fit and all six Thai risk reproductions before adopting finer motion.",
+        "Coverage board, broader label/continuous/readability and genuine spoken inputs, whole resource/lifetime/full/final installed gates before MS2 PR and MS3."
+      ]
     }
   },
   "limits": [
+    "Slice45 exposes explicit weight/outline treatments and pure resolved-unit/headroom/font receipts. Final fast10 passes 4,283 units/420 files; runtime10 passes 30 checks/5 files on held 2,559 inputs/119,471,782B. A misplaced maximum-axis fixture failed and was corrected; final review added initial-text and generated-count conservative targeting controls, with refreshed staged gates. Actual pinned-font rendering, encoded spacing/weight proof and full typography/MS2 acceptance remain open.",
     "Forty-four slices include cue-wide deterministic crowded-label placement with explicit locks, priority/stable IDs, bounded backtracking and streamed integer-frame protected-contact exclusions. Fast10 passes 4,270 units; 38 filesystem/CLI tests; three families/two edited stages verify 360 actual-font/visible frames and 1,080 forward/reverse/shuffled preview draws plus 12 exports/720 independent final native frames. Six receipt/snapshot pairs match exactly; cable surface anchor leaves geometry unchanged. Initial hidden-label proof was intentionally rejected/stopped; failures retained. Full broader labels/continuous/encoded readability, coverage/typography, supported packs/genuine speech, resource/lifetime/full/final installed and remaining MS2/MS3 acceptance stay open. Supported packs/pilot 0.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."

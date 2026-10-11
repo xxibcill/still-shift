@@ -1,3 +1,4 @@
+import { TextWeightTreatmentReportSchema } from "@still-shift/scene-contract";
 import { MechanismCueCompilationSchema } from "./cue-lifecycle.ts";
 import { MechanismCuePatchSchema } from "./cue-authoring.ts";
 import {
@@ -73,6 +74,7 @@ export const MechanismFamilyRegistrySelectionSchema = z
   .strict();
 /** Used by both generated schema files and CLI schema export. */
 export const mechanismFamilySchemas = {
+  "text-weight-treatments": TextWeightTreatmentReportSchema,
   "cue-compilation": MechanismCueCompilationSchema,
   "cue-patch": MechanismCuePatchSchema,
   "family-authoring": MechanismFamilyAuthoringSchema,

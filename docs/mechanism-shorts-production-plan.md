@@ -900,7 +900,13 @@ mechanism families establish whether the architecture transfers.
 - [ ] Expose explicit genuine-weight versus outline treatment and units, retaining
       legacy automatic behavior with resolved-route diagnostics. Reuse MS1 font
       identity; generalize quantity/phrase helpers only where repeated authoring
-      friction warrants it.
+      friction warrants it. Slice45 adds explicit authoring treatments and pure
+      axis-delta/stroke-pixel receipts with located unavailable genuine requests;
+      legacy automatic numeric defaults/clamping are covered by local tests.
+      [API](./mechanism-text-weight-treatments.md) and
+      [evidence](./mechanism-shorts-ms2-text-weight-results.json). Actual pinned-font
+      raster/encoded routes and natural English spacing remain pending; this
+      criterion stays open.
 - [ ] Before adopting count+fit or finer Thai motion, run the scoped reproductions
       in the [typography risk table](./typography-motion-engine-plan.md#scoped-validation-of-source-audited-risks):
       generated two-decimal count values, all six Thai stress strings, independent

@@ -1,6 +1,12 @@
 import { z } from "zod";
 import { CurveEasingSchema } from "./motion-easing.ts";
 
+export const TextWeightTreatmentSchema = z.enum([
+  "auto",
+  "genuine-weight",
+  "outline",
+]);
+
 const finite = z.number().finite();
 const frame = finite.int().nonnegative();
 const unit = finite.min(0).max(1);
@@ -269,6 +275,7 @@ export const IntentPresetSchema = z
             node: id,
             property: NumericMotionPropertySchema.optional(),
             amount: finite.optional(),
+            weightTreatment: TextWeightTreatmentSchema.optional(),
             span: id.optional(),
             target: id.optional(),
             replacement: z.string().min(1).optional(),
@@ -305,7 +312,13 @@ export const IntentPresetSchema = z
                 "Intent window must have positive duration",
               ),
           })
-          .strict(),
+          .strict()
+          .refine(
+            (m) =>
+              !m.weightTreatment ||
+              (m.preset === "text-emphasize" && m.manner === "weight"),
+            "Weight treatment requires text-emphasize with manner weight",
+          ),
       )
       .max(100),
   })

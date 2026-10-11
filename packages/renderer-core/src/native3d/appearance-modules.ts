@@ -2018,6 +2018,13 @@ export const native3DAppearanceModules: readonly {
     ),
   },
   {
+    name: "scene-contract/src/typography-weight.ts",
+    url: new URL(
+      "../../../scene-contract/src/typography-weight.ts",
+      import.meta.url,
+    ),
+  },
+  {
     name: "scene-contract/src/typography.ts",
     url: new URL("../../../scene-contract/src/typography.ts", import.meta.url),
   },

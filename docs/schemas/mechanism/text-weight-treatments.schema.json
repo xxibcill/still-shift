@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "text-weight-treatments-1" },
+    "receipts": {
+      "maxItems": 200,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "eventIndex": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "eventId": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
+          "node": { "type": "string" },
+          "span": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
+          "start": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "end": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "requestedTreatment": {
+            "type": "string",
+            "enum": ["auto", "genuine-weight", "outline"]
+          },
+          "resolvedTreatment": {
+            "anyOf": [
+              { "type": "string", "enum": ["genuine-weight", "outline"] },
+              { "type": "null" }
+            ]
+          },
+          "status": { "type": "string", "enum": ["resolved", "unavailable"] },
+          "units": {
+            "type": "string",
+            "enum": ["wght-axis-delta", "stroke-pixels"]
+          },
+          "requestedAmount": { "type": "number", "exclusiveMinimum": 0 },
+          "resolvedAmount": {
+            "anyOf": [
+              { "type": "number", "exclusiveMinimum": 0 },
+              { "type": "null" }
+            ]
+          },
+          "availableHeadroom": { "type": "number" },
+          "targetScope": {
+            "type": "string",
+            "enum": ["legacy-base-and-spans", "painted-style-runs"]
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "static-or-max-weight-target",
+                  "insufficient-wght-headroom",
+                  "explicit-outline"
+                ]
+              },
+              { "type": "null" }
+            ]
+          },
+          "fonts": {
+            "maxItems": 129,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "span": { "anyOf": [{ "type": "string" }, { "type": "null" }] },
+                "fontAsset": {
+                  "anyOf": [{ "type": "string" }, { "type": "null" }]
+                },
+                "sha256": {
+                  "anyOf": [{ "type": "string" }, { "type": "null" }]
+                },
+                "declaredWeight": {
+                  "anyOf": [{ "type": "string" }, { "type": "null" }]
+                },
+                "axisInstance": {
+                  "anyOf": [{ "type": "number" }, { "type": "null" }]
+                },
+                "axisRange": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "min": { "type": "number" },
+                        "default": { "type": "number" },
+                        "max": { "type": "number" }
+                      },
+                      "required": ["min", "default", "max"],
+                      "additionalProperties": false
+                    },
+                    { "type": "null" }
+                  ]
+                },
+                "headroom": { "type": "number" }
+              },
+              "required": [
+                "span",
+                "fontAsset",
+                "sha256",
+                "declaredWeight",
+                "axisInstance",
+                "axisRange",
+                "headroom"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "eventIndex",
+          "eventId",
+          "node",
+          "span",
+          "start",
+          "end",
+          "requestedTreatment",
+          "resolvedTreatment",
+          "status",
+          "units",
+          "requestedAmount",
+          "resolvedAmount",
+          "availableHeadroom",
+          "targetScope",
+          "reason",
+          "fonts"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["schemaVersion", "receipts"],
+  "additionalProperties": false
+}
