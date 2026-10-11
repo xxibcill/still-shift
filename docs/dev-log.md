@@ -45,17 +45,16 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Forty-one slices include cue tracks, shared registry and pinned family authoring
-  with scoped parameter/mount/style edits, saved revision/hash CAS and atomic writes.
-  Fast5 passes 4,256 units; 26 filesystem/CLI regressions and actual three-family
-  saved edits/stale rejection/resume/source byte identities pass on held inputs.
-  Build3 fixture union failure and its unrun focused groups remain retained.
-  Next: cue editing/dependency-aware render/check, full label/coverage/typography,
-  genuine spoken inputs, supported packs, remaining producer/resource/lifetime/full/
-  final-installed acceptance. Supported packs/pilot 0; no merge/publication, human
-  acceptance or paid generation.
-  [Authoring evidence](./mechanism-shorts-ms2-family-authoring-results.json),
-  [Authoring API](./mechanism-family-authoring.md), [MS2 results](./mechanism-shorts-ms2-results.json).
+  Forty-two slices include source-pinned cue CAS and scoped editing beside saved
+  family inputs/registry. Edits recompile semantics and preserve media/clock identity.
+  Fast7 passes 4,263 units; 33 filesystem/CLI checks and actual three-family caption
+  before/after repeats pass: 12 exports/720 independently replayed native frames,
+  changed decoded video and identical source/decoded audio. Two build failures retained.
+  Next: dependency-aware render/check, full label/coverage/typography, genuine spoken
+  inputs, supported packs and remaining producer/resource/lifetime/full/final-installed.
+  Supported packs/pilot 0; no merge/publication, human acceptance or paid generation.
+  [Cue editing evidence](./mechanism-shorts-ms2-cue-authoring-results.json),
+  [API](./mechanism-cue-authoring.md), [MS2 results](./mechanism-shorts-ms2-results.json).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
   inventory15:2,329 inputs/117,503,155B. Original full6 retains a qualified19-group
@@ -213,6 +212,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 source-pinned saved cue edits and actual exports
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `15e9fb4f`.
+- **Done:** scoped cue/annotation/sound/rig edits, semantic recompile, saved source
+  raw/parsed identity checks, media/clock invariants, lock/CAS/atomic writes and CLI.
+- **Results:** seven new units/seven runtime checks; fast7 passes 4,263 units and
+  33 filesystem/CLI checks. Three-family actual caption revisions export before/after
+  repeats: 12 MP4s/720 independent native frames, changed decoded video and identical
+  complete decoded audio/source recording. Local synthetic PCM, not spoken narration.
+- **Retained:** build2 wrong receipt-level accessor and build4 missing truncate
+  import; runtime4 unrun. Fresh held final gates pass without contract relaxation.
+- **Next:** dependent render/check, full label/coverage/typography and MS2 acceptance.
+- **Records:** [Cue edit API](./mechanism-cue-authoring.md),
+  [Evidence](./mechanism-shorts-ms2-cue-authoring-results.json).
 
 ### 2026-10-11 — MS2 saved family revisions and scoped edits
 

@@ -94,6 +94,14 @@ compares encoded output, every decoded video frame and decoded audio. It is incl
 in `pnpm test`; run it serially with other browser/export groups. Synthetic timing
 fixtures do not establish spoken narration, supported packs or pilot acceptance.
 
+`pnpm test:browser:mechanism-cue-edits` saves source-pinned cue documents for all
+three candidate families, applies a caption patch, rejects the old base and renders
+both revisions with repeats. It independently replays every final native observation,
+checks that decoded video changes and complete decoded audio/source recording stay
+identical, and compares complete repeated encoded/video/audio outputs. It is included
+in `pnpm test`; run it serially with other browser/export groups. These synthetic
+fixtures do not establish genuine spoken narration, full label QA or pilot acceptance.
+
 ## Verification policy
 
 ### Deferred WebGL performance

@@ -1,3 +1,4 @@
+import { MechanismCuePatchSchema } from "./cue-authoring.ts";
 import {
   MechanismFamilyAuthoringSchema,
   MechanismFamilyPatchSchema,
@@ -71,6 +72,7 @@ export const MechanismFamilyRegistrySelectionSchema = z
   .strict();
 /** Used by both generated schema files and CLI schema export. */
 export const mechanismFamilySchemas = {
+  "cue-patch": MechanismCuePatchSchema,
   "family-authoring": MechanismFamilyAuthoringSchema,
   "family-patch": MechanismFamilyPatchSchema,
   "family-registry-selection": MechanismFamilyRegistrySelectionSchema,

@@ -866,6 +866,15 @@ mechanism families establish whether the architecture transfers.
       retains the fixture type failure; [API](./mechanism-family-authoring.md)
       declares dependent regeneration rather than claiming it occurred. Cue editing,
       dependency-aware render/check and complete expanded acceptance remain open.
+      Slice42 adds source-pinned saved cue editing with stable targets, revision/hash
+      CAS, media/clock invariants and full semantic recompile before atomic writes.
+      Fast7 passes 4,263 units and 33 filesystem/CLI checks; three-family actual
+      caption revisions verify 12 repeated exports/720 independently replayed native
+      frames, changed decoded video and preserved complete decoded/source audio.
+      [Cue edit evidence](./mechanism-shorts-ms2-cue-authoring-results.json) retains
+      two build failures; [API](./mechanism-cue-authoring.md) separates required cache
+      refresh from completed rerender. Dependency-aware rendering/check and complete
+      expanded acceptance remain open.
 - [ ] Create the topic-to-family coverage board during family selection under the
       coverage contract above. Classify all proposed pilot candidates and record
       support criteria, selected distinct-episode denominator and new-asset/new-rig

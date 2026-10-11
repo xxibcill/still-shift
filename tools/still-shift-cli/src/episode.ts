@@ -1,4 +1,9 @@
 import {
+  readMechanismCueAuthoring,
+  saveMechanismCueAuthoring,
+  patchMechanismCueAuthoring,
+} from "../../../packages/animation-engine/src/mechanism/cue-authoring.ts";
+import {
   readMechanismFamilyAuthoring,
   saveMechanismFamilyAuthoring,
   patchMechanismFamilyAuthoring,
@@ -98,11 +103,19 @@ const commandFlags: Record<MechanismCommand, readonly string[]> = {
     "material",
     "rig",
     "authoring",
+    "family-input",
   ],
-  validate: ["input", "authoring"],
+  validate: ["input", "authoring", "family-input"],
   deps: ["input"],
-  save: ["input", "output", "base-revision", "base-hash", "authoring"],
-  patch: ["input", "request", "authoring"],
+  save: [
+    "input",
+    "output",
+    "base-revision",
+    "base-hash",
+    "authoring",
+    "family-input",
+  ],
+  patch: ["input", "request", "authoring", "family-input"],
   prepare: ["input", "output-dir", "cache-dir", "route"],
   compile: ["input", "output-dir", "cache-dir", "route"],
   preview: ["input", "output-dir", "cache-dir", "frame", "route"],
@@ -110,7 +123,7 @@ const commandFlags: Record<MechanismCommand, readonly string[]> = {
   check: ["input", "prepared-dir", "final-output", "route"],
   package: ["input", "output-dir", "prepared-dir", "final-output", "route"],
   "init-tape-hook": ["output-dir", "font", "font-license", "audio", "captions"],
-  summary: ["input", "authoring"],
+  summary: ["input", "authoring", "family-input"],
 };
 const episodeSchemas = {
   ...mechanismFamilySchemas,
@@ -648,10 +661,89 @@ async function execute(
       }),
     );
   const input = required(flags, "input");
+  if (flags.get("authoring") === "cue") {
+    const family = await readMechanismFamilyAuthoring(
+      required(flags, "family-input"),
+    );
+    if (command === "patch")
+      return resultView(
+        command,
+        await patchMechanismCueAuthoring(
+          family.instance,
+          input,
+          await readPatchJson(required(flags, "request"), io),
+        ),
+      );
+    const loaded = await readMechanismCueAuthoring(family.instance, input);
+    if (command === "save") {
+      const output = required(flags, "output");
+      if (dirname(resolve(input)) !== dirname(resolve(output)))
+        throw cliError(
+          "Cue save requires the same project directory; media paths must retain their base",
+          "mechanism-save-relocation",
+        );
+      if (flags.has("base-revision") !== flags.has("base-hash"))
+        throw cliError("Save requires both --base-revision and --base-hash");
+      const base = flags.has("base-revision")
+        ? {
+            revision: integer(
+              required(flags, "base-revision"),
+              "base-revision",
+            ),
+            hash: required(flags, "base-hash"),
+          }
+        : undefined;
+      return resultView(
+        command,
+        await saveMechanismCueAuthoring(
+          family.instance,
+          loaded.document,
+          output,
+          base,
+        ),
+      );
+    }
+    for (const flag of flags.keys())
+      if (
+        ![...commonFlags, "input", "authoring", "family-input"].includes(flag)
+      )
+        throw cliError(
+          `Cue inspection does not accept --${flag}`,
+          "mechanism-authoring-option",
+          `--${flag}`,
+        );
+    return {
+      command,
+      summary: {
+        schemaVersion: loaded.document.schemaVersion,
+        id: loaded.document.id,
+        revision: loaded.document.revision,
+        projectHash: loaded.projectHash,
+        packSha256: family.document.pack.sha256,
+        sourceSha256: loaded.document.source.sha256,
+        sourceSamples: loaded.document.narration.sampleCount,
+        frameCount: loaded.compiled.recording.frameCount,
+      },
+      items: loaded.compiled.cueMap.map((item) => row(item)),
+      fullResult: {
+        document: loaded.document,
+        projectHash: loaded.projectHash,
+        compiled: loaded.compiled,
+      },
+      nextAction:
+        "Apply a cue patch with the current revision/hash, render the recompiled composition and check the final output.",
+    };
+  }
+  if (flags.has("family-input") && flags.get("authoring") !== "cue")
+    throw cliError(
+      "--family-input requires --authoring cue",
+      "mechanism-authoring-option",
+      "--family-input",
+    );
   if (flags.has("authoring")) {
     if (flags.get("authoring") !== "family")
       throw cliError(
-        "--authoring requires family",
+        "--authoring requires family or cue",
         "mechanism-authoring-kind",
         "--authoring",
       );

@@ -67,7 +67,8 @@ bytes while changing the generated scene. Dependent native plates and overlay
 layout require refresh; the narration recording stays unchanged. The patch does
 not silently rewrite any generated scene file, cue document, cached plate or
 render. Regenerate the scene asset from the inspected instance, pin its actual file
-hash in dependent compositions/cues, then compile/render/check them. Revision-aware
-cue editing and dependency-aware affected-shot rendering remain subsequent work;
+hash in dependent compositions/cues, then compile/render/check them. Saved cue
+editing uses the [cue authoring API](./mechanism-cue-authoring.md). Dependency-aware
+affected-shot rendering remains subsequent work;
 these transactions do not establish complete resource/lifetime accounting,
 rendered label QA, supported packs, spoken narration or production acceptance.

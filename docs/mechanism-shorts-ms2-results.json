@@ -16049,6 +16049,17 @@
         "sha256": "sha256:7301f2967f12ac9641a33930a7c174116c782c2409ae3a3104613150ab0da1b2"
       },
       "qualification": "Stable saved family generator-input editing only. Cue-document editing and dependency-aware affected-shot rendering remain open. Actual regenerated source JSON/CAS/resume/mesh identities do not prove rendered pixels, complete resources/lifetime, supported packs, genuine spoken inputs, full software/benchmark/final installed verification or human/pilot acceptance. No paid generation, merge or publication."
+    },
+    {
+      "id": "cue-authoring-slice-42",
+      "status": "source-pinned-cue-cas-and-caption-exports-verified-in-stages",
+      "record": "docs/mechanism-shorts-ms2-cue-authoring-results.json",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-cueedit42-inputs7.json",
+        "bytes": 434914,
+        "sha256": "sha256:1a0cbc1b810a03862e9c75bdfe5a8903b8cb1d78908570159ec2fb6708afb37d"
+      },
+      "qualification": "Saved cue editing and actual caption before/after exports with synthetic local PCM only. Every final native frame independently replays and repeats; decoded video changes while source and decoded audio remain identical. This is not complete rendered label QA, genuine spoken narration, supported packs, whole resource/lifetime accounting, full software/benchmark/final installed acceptance or dependency-aware affected-shot rerender implementation. No human/pilot acceptance, paid generation, merge or publication."
     }
   ],
   "implementation": {
@@ -17456,10 +17467,42 @@
         "Revision-aware cue editing, source dependency pin/recompile and affected-shot render/check integration.",
         "Complete rendered label QA, coverage/typography, supported-pack/genuine spoken inputs, whole resources/lifetime/full/final-installed requirements before MS2 PR and MS3."
       ]
+    },
+    "fortySecondSlice": {
+      "status": "source-pinned-cue-cas-and-caption-exports-verified-in-stages",
+      "scope": [
+        "Scoped stable cue/annotation/sound/rig targets, bounded 32-operation/16 KiB request, canonical revision/hash CAS and located contract/timing/reading/state/rig/source diagnostics.",
+        "Full semantic recompile before saved publication; immutable media/clock/project identity for replacements; existing lock/atomic publication/no-clobber/resume behavior.",
+        "Actual native source raw file hash and parsed family-instance identity, reusing bounded regular-descriptor/32 MiB source and original 512 MiB JSON expansion admission before parse; retirement of private backing and leases.",
+        "CLI authoring cue routes with current family authoring input, bounded receipts, complete compiled reports and generated cue-patch schema.",
+        "Live three-family saved caption edits, stale-base rejections, ordinary composition loading/decoding, all final native observations with independent bounded replay, repeated full encoded/video/audio checks and unchanged source/decoded audio across edits."
+      ],
+      "counts": {
+        "unitTests": 4263,
+        "unitFiles": 419,
+        "newUnitTests": 7,
+        "focusedTests": 20,
+        "focusedFiles": 2,
+        "runtimeTests": 33,
+        "runtimeFiles": 4,
+        "newRuntimeTests": 7,
+        "families": 3,
+        "liveStages": 6,
+        "liveExports": 12,
+        "compiledOutputFrames": 360,
+        "observedOutputFrames": 720,
+        "newSchemas": 1,
+        "supportedPacks": 0,
+        "pilotAcceptedEpisodes": 0
+      },
+      "remaining": [
+        "Dependency-aware compile/render/check and affected-shot refresh integration; full rendered label/layout QA.",
+        "Coverage/typography, supported-pack promotion, genuine spoken inputs, whole resources/lifetime/full/final installed requirements before MS2 PR/MS3."
+      ]
     }
   },
   "limits": [
-    "Forty-one slices add pinned revision-aware family authoring, scoped parameter/mount/style edits and atomic saved CAS to cue tracks and shared discovery/schema exports. Fast5 passes 4,256 units; 26 filesystem/CLI checks and actual all-three-family saved edits/stale rejection/resume/source-byte identity pass on held inputs. Cue editing/dependent rendering, full label/coverage/typography, supported packs/genuine spoken inputs, whole resources/lifetime/full/final-installed and remaining MS2/MS3 acceptance remain open. Supported packs/pilot 0.",
+    "Forty-two slices now include source-pinned cue CAS/scoped editing and actual caption before/after exports beside saved family authoring and shared registry. Fast7 passes 4,263 units; 33 filesystem/CLI checks and 12 actual three-family exports/720 final native frames independently replay/repeat, change decoded video and preserve source/decoded audio. Dependency-aware rerender/check, full label/coverage/typography, supported packs/genuine spoken inputs, whole resources/lifetime/full/final installed and remaining MS2/MS3 acceptance stay open. Supported packs/pilot 0.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

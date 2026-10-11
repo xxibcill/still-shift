@@ -113,3 +113,5 @@ export * from "./mechanism/narrated-cycle.ts";
 export * from "./mechanism/family-registry.ts";
 
 export * from "./mechanism/family-authoring.ts";
+
+export * from "./mechanism/cue-authoring.ts";
