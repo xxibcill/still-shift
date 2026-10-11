@@ -151,24 +151,77 @@ export function createNativePbrResources(
     materials: MeshStandardMaterial[] = [];
   const ownedGeometries: BufferGeometry[] = [],
     ownedTextures: DataTexture[] = [],
-    ownedMaterials: MeshStandardMaterial[] = [];
+    ownedMaterials: MeshStandardMaterial[] = [],
+    ownedBuffers: ArrayBuffer[] = [];
+  let resourceIdentity: NativePbrResources | undefined;
   let disposed = false;
   function dispose() {
     if (disposed) return;
     disposed = true;
-    for (const geometry of ownedGeometries) geometry.dispose();
-    for (const material of ownedMaterials) material.dispose();
-    for (const texture of ownedTextures) {
-      texture.dispose();
-      texture.image.data = new Uint8Array();
+    let failed = false;
+    let reason: unknown;
+    const retire = (work: () => void) => {
+      try {
+        work();
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          reason = error;
+        }
+      }
+    };
+    for (const geometry of ownedGeometries) {
+      retire(() => geometry.dispose());
+      retire(() => {
+        for (const name of Object.keys(geometry.attributes))
+          geometry.deleteAttribute(name);
+        geometry.setIndex(null);
+        geometry.clearGroups();
+      });
     }
+    for (const material of ownedMaterials) {
+      retire(() => material.dispose());
+      retire(() => {
+        material.map =
+          material.roughnessMap =
+          material.metalnessMap =
+          material.normalMap =
+            null;
+      });
+    }
+    for (const texture of ownedTextures) {
+      retire(() => texture.dispose());
+      retire(() => {
+        texture.image.data = new Uint8Array();
+      });
+    }
+    // Capture only allocations made by this producer. Public attributes may
+    // have been replaced with caller-owned views after construction.
+    for (const buffer of ownedBuffers)
+      retire(() => {
+        if (buffer.byteLength)
+          (
+            buffer as ArrayBuffer & { transfer(bytes: number): ArrayBuffer }
+          ).transfer(0);
+      });
     geometries.clear();
     textures.clear();
+    materials.length = 0;
+    ownedGeometries.length =
+      ownedTextures.length =
+      ownedMaterials.length =
+      ownedBuffers.length =
+        0;
+    if (resourceIdentity) resourceTextures.delete(resourceIdentity);
+    resourceIdentity = undefined;
+    if (failed) throw reason;
   }
   try {
     for (const definition of input.textures) {
+      const pixels = Uint8Array.from(input.pixels.get(definition.image.id)!);
+      ownedBuffers.push(pixels.buffer);
       const texture = new DataTexture(
-        Uint8Array.from(input.pixels.get(definition.image.id)!),
+        pixels,
         definition.image.width,
         definition.image.height,
         RGBAFormat,
@@ -245,18 +298,25 @@ export function createNativePbrResources(
         ["uv", definition.uvs, 2],
         ["tangent", definition.tangents, 4],
       ] as const)
-        if (values)
-          geometry.setAttribute(name, new Float32BufferAttribute(values, size));
-      geometry.setIndex(
-        definition.indices.some((index) => index >= 65535)
-          ? new Uint32BufferAttribute(definition.indices, 1)
-          : new Uint16BufferAttribute(definition.indices, 1),
-      );
+        if (values) {
+          const attribute = new Float32BufferAttribute(values, size);
+          ownedBuffers.push(attribute.array.buffer as ArrayBuffer);
+          geometry.setAttribute(name, attribute);
+        }
+      const index = definition.indices.some((value) => value >= 65535)
+        ? new Uint32BufferAttribute(definition.indices, 1)
+        : new Uint16BufferAttribute(definition.indices, 1);
+      ownedBuffers.push(index.array.buffer as ArrayBuffer);
+      geometry.setIndex(index);
       for (const group of definition.groups ?? [])
         geometry.addGroup(group.start, group.count, group.materialIndex);
     }
   } catch (error) {
-    dispose();
+    try {
+      dispose();
+    } catch {
+      /* Preserve the original setup failure, including null. */
+    }
     throw error;
   }
   const resources = {
@@ -267,6 +327,7 @@ export function createNativePbrResources(
     textures,
     dispose,
   };
+  resourceIdentity = resources;
   resourceTextures.set(resources, new Map(textures));
   return resources;
 }

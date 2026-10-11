@@ -15865,6 +15865,41 @@
       },
       "record": "docs/mechanism-shorts-ms2-world-ownership-results.json",
       "qualification": "Current fast4 passes4204 units/411 files; focused6 constructor/destructor controls pass. Live source3 world/composition, normal and actual mixed HTTP exports, all six original native2 groups and depth10 pass on held inputs4. Both normal source3 MP4 bytes and all six actual mixed raw HTTP frame bodies match the preceding slice31 production render. This repair concerns application-visible owners: no physical driver RSS/internal PMREM failed-allocation bound is inferred from mocked failure controls. Existing world admission remains unchanged, with scope-specific current/peak/cleanup receipts. Prior installed archive remains exact b4fc65ed; new shared-world code is not relabeled as that archive. Aggregate parsed-source/world/body/replay admission, remaining MS2 criteria/full gates and final installed refresh remain."
+    },
+    {
+      "id": "pbr-ownership-slice-34",
+      "status": "nested-pbr-resource-and-buffer-retirement-verified-in-stages",
+      "workingInputs": {
+        "manifest": {
+          "path": "/private/tmp/still-shift-ms2-pbr-ownership34-inputs16.json",
+          "bytes": 430209,
+          "sha256": "sha256:ec11da8e70b08f8d14ab0be32ecee88204bc2b2d04a4345d1aab9ac60ce82b70"
+        },
+        "files": 2522,
+        "inputBytes": 119173825,
+        "selection": {
+          "roots": [
+            "apps/",
+            "packages/",
+            "scripts/",
+            "tests/",
+            "tools/",
+            "services/",
+            "benchmarks/",
+            "examples/",
+            "assets/",
+            "catalogs/"
+          ],
+          "rootFiles": "all Git-tracked or nonignored regular root files",
+          "packageProse": [
+            "docs/npm-package-readme.md",
+            "docs/npm-third-party-notices.md"
+          ],
+          "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+        }
+      },
+      "record": "docs/mechanism-shorts-ms2-pbr-ownership-results.json",
+      "qualification": "Current fast16 passes 4,208 units/411 files on held inputs16; focused unit7 passes 16 real-object controls across two files. All six current PBR browser groups pass: components/mips, shared world, standalone observation, composition/journal/artwork, normal export and actual mixed authenticated HTTP/replay. Source3 normal MP4s and six mixed raw HTTP bodies preserve preceding slice33 bytes. Initial fast8 failed prefer-const on a private identity that also needed retirement; clear that lookup slot on disposal, then rerun. Original browser suffix behind failure was unrun. Existing quotas/source schemas/render math unchanged. No new native2/depth/Node broad/installed/full gate claim; prior native2/depth source33 and installed b4fc65ed remain separately pinned. Application-visible owned backings retire; driver internals/process RSS and aggregate source/world/body/replay admission remain separate."
     }
   ],
   "implementation": {
@@ -17043,10 +17078,42 @@
         "Aggregate parsed-source/world/body/replay admission and remaining nested PBR resource retirement under failure.",
         "Remaining MS2 packs/rigs/events/labels/cues/help/coverage/typography and complete software/benchmark gates before its PR, then MS3; final archive refresh."
       ]
+    },
+    "thirtyFourthSlice": {
+      "status": "nested-pbr-resource-and-buffer-retirement-verified-in-stages",
+      "scope": [
+        "PBR resources capture each created pixel/attribute/index backing independently of mutable public collections. Close retires all geometry/material/texture owners, clears graph/texture references and private lookup, detaches only captured private buffers and clears closure collections.",
+        "Constructor failure and source3 world wrapper preserve the original cause, including null, despite nested cleanup errors. Separate immutable preparation remains reusable; caller-substituted vertex/texture buffers and original supplied pixels retain their separate ownership.",
+        "Four new actual-object controls cover normal retirement, all destructor faults/public collection mutation, partial attribute-construction failure and source3 wrapper failure. Sixteen focused tests and owning live PBR GPU/composition/export groups verify closure and rendering."
+      ],
+      "counts": {
+        "unitTests": 4208,
+        "unitFiles": 411,
+        "focusedTests": 16,
+        "focusedFiles": 2,
+        "newControls": 4,
+        "pbrBrowserGroups": 6,
+        "componentFrames": 3,
+        "componentFaults": 10,
+        "additionalMipCases": 5,
+        "worldFrames": 6,
+        "observedFrames": 8,
+        "observationFaults": 21,
+        "compositionFrames": 6,
+        "normalExports": 2,
+        "mixedRuns": 8,
+        "mixedRawFrames": 6,
+        "supportedPacks": 0,
+        "pilotSupportedEpisodes": 0
+      },
+      "remaining": [
+        "Native source/preparation admission must join the existing 512 MiB Node allowance and whole world/body/replay accounting; do not invent a larger budget.",
+        "Remaining MS2 packs/rigs/events/labels/cues/help/coverage/typography/full software/benchmark and final installed refresh before its PR, then MS3."
+      ]
     }
   },
   "limits": [
-    "Thirty-three slices include source3 import/preparation/observation, normal/mixed authenticated export, scoped installed proof atb4fc65ed and shared-world application-visible failure cleanup. Aggregate source/world/body/replay admission, nested resource retirement, remaining MS2 criteria and current full milestone gates remain. Current fast4204 and scoped GPU regressions pass; earlier timeout/full-gate failures remain retained. Supported packs/pilot0.",
+    "Thirty-four slices include source3 import/preparation/observation, normal/mixed export, installed proof at b4fc65ed, shared-world and nested PBR failure/owned-buffer retirement. Aggregate Node-source/world/body/replay admission and remaining MS2/full criteria remain. Current fast 4,208 and scoped GPU groups pass; earlier failures stay retained. Supported packs/pilot 0.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

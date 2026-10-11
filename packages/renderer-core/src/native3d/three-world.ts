@@ -467,7 +467,11 @@ export function createNativeThreeWorldV3(
       pbrResources,
     };
   } catch (error) {
-    pbrResources.dispose();
+    try {
+      pbrResources.dispose();
+    } catch {
+      /* Preserve the shared-world setup failure. */
+    }
     throw error;
   }
 }

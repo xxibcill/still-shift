@@ -747,7 +747,7 @@ mechanism families establish whether the architecture transfers.
       Current fast/Node and normal/mixed source3/native2 export groups pass on held
       inputs. [Admission evidence](./mechanism-shorts-ms2-source-admission-results.json)
       retains new build/lint failures. Aggregate parsed-source/world/body/replay
-      remain pending. Thirty-second slice verifies a fresh local archive atb4fc65ed:
+      remain pending. Thirty-second slice verifies a fresh local archive at b4fc65ed:
       maintained28 checks, four installed public exports/34 frames/130 passes with
       checkout/source access denied, independent receipt replay and scoped negatives.
       Exact audit matches928 copied Git source and2,275 total members. [Installed
@@ -760,7 +760,14 @@ mechanism families establish whether the architecture transfers.
       groups pass on held inputs. Two normal MP4s and six mixed raw HTTP bodies
       exactly preserve the preceding renders. [Ownership evidence](./mechanism-shorts-ms2-world-ownership-results.json)
       separates application-visible retirement from unproven driver internals and
-      keeps aggregate/nested PBR/full/installed refresh requirements open;
+      keeps aggregate/full/installed refresh requirements open. Thirty-fourth
+      slice retires nested PBR owners/private typed backings and preserves source3
+      setup failure through cleanup, without changing source schemas/render math.
+      Focused 16 controls, fast16 with 4,208 units and six owning PBR GPU/export groups
+      pass on held inputs; normal MP4/mixed HTTP pixels exactly preserve slice33.
+      [Nested evidence](./mechanism-shorts-ms2-pbr-ownership-results.json) retains lint
+      failure. Source/preparation admission against 512 MiB Node allowance and whole
+      world/body/replay/full/final-installed acceptance remain open;
       this criterion stays unchecked. See the [import API](./rigid-gltf-import.md) and
       [retained results](./mechanism-shorts-ms2-results.json).
 - [ ] Implement slider hard stops, hinge/lever, deterministic spring return and

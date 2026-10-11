@@ -1,5 +1,5 @@
-import type { DataTexture } from "three";
-import { describe, expect, it } from "vitest";
+import { BufferAttribute, BufferGeometry, DataTexture } from "three";
+import { describe, expect, it, vi } from "vitest";
 import {
   SolidGeometrySchema,
   SolidGeometryV2Schema,
@@ -10,6 +10,7 @@ import {
   nativePbrBytesHash,
   copyNativePbrPixels,
   releasePreparedNativePbrResources,
+  nativePbrOwnedTexture,
 } from "../../packages/renderer-core/src/native3d/pbr-resources.ts";
 import { decodeRigidGltf } from "../../packages/animation-engine/src/mechanism/gltf-import.ts";
 import { gltfJsonHash } from "../../packages/animation-engine/src/mechanism/gltf-identity.ts";
@@ -189,5 +190,164 @@ describe("versioned native PBR resource owner", () => {
     owner.dispose();
     owner.dispose();
     expect(disposals).toBe(1);
+  });
+  it("detaches only privately created buffers and clears retained references after normal close", async () => {
+    const { geometry, rgba } = await fixture(),
+      prepared = await prepareNativePbrResources(geometry, [
+        { image: "image.0", rgba },
+      ]),
+      owner = createNativePbrResources(prepared);
+    const meshes = [...owner.geometries.values()],
+      textures = [...owner.textures.values()],
+      materials = [...owner.materials];
+    const originalViews = meshes.flatMap((mesh) => [
+      ...Object.values(mesh.attributes).map((attribute) => attribute.array),
+      mesh.index!.array,
+    ]);
+    const textureViews = textures.map((texture) => texture.image.data!);
+    const borrowed = new Float32Array(9),
+      borrowedPixels = new Uint8Array(4);
+    meshes[0]!.setAttribute("position", new BufferAttribute(borrowed, 3));
+    textures[0]!.image.data = borrowedPixels;
+    owner.dispose();
+    expect(originalViews.every((view) => view.byteLength === 0)).toBe(true);
+    expect(textureViews.every((view) => view.byteLength === 0)).toBe(true);
+    expect(borrowed.byteLength).toBe(36);
+    expect(borrowedPixels.byteLength).toBe(4);
+    expect(rgba.byteLength).toBe(4);
+    for (const mesh of meshes) {
+      expect(mesh.attributes).toEqual({});
+      expect(mesh.index).toBeNull();
+      expect(mesh.groups).toHaveLength(0);
+    }
+    for (const material of materials) {
+      expect(material.map).toBeNull();
+      expect(material.normalMap).toBeNull();
+      expect(material.roughnessMap).toBeNull();
+      expect(material.metalnessMap).toBeNull();
+    }
+    expect(owner.materials).toHaveLength(0);
+    expect(() =>
+      nativePbrOwnedTexture(owner, geometry.materials[0]!.baseColorTexture!),
+    ).toThrow(/absent/);
+    // Preparation is a separate immutable owner and still makes a fresh world.
+    const next = createNativePbrResources(prepared);
+    expect(next.textures.size).toBe(2);
+    next.dispose();
+    releasePreparedNativePbrResources(prepared);
+  });
+  it("preserves the first null destructor failure while retiring every private collection and backing", async () => {
+    const { geometry, rgba } = await fixture(),
+      prepared = await prepareNativePbrResources(geometry, [
+        { image: "image.0", rgba },
+      ]),
+      owner = createNativePbrResources(prepared);
+    const meshes = [...owner.geometries.values()],
+      textures = [...owner.textures.values()],
+      materials = [...owner.materials];
+    const views = [
+      ...meshes.flatMap((mesh) => [
+        ...Object.values(mesh.attributes).map((attribute) => attribute.array),
+        mesh.index!.array,
+      ]),
+      ...textures.map((texture) => texture.image.data!),
+    ];
+    const calls = { geometry: 0, material: 0, texture: 0 };
+    for (const mesh of meshes)
+      mesh.addEventListener("dispose", () => {
+        calls.geometry++;
+        throw null;
+      });
+    for (const material of materials)
+      material.addEventListener("dispose", () => {
+        calls.material++;
+        throw Error("secondary material cleanup");
+      });
+    for (const texture of textures)
+      texture.addEventListener("dispose", () => {
+        calls.texture++;
+        throw Error("secondary texture cleanup");
+      });
+    owner.geometries.clear();
+    owner.textures.clear();
+    owner.materials.length = 0;
+    let caught = false;
+    try {
+      owner.dispose();
+    } catch (error) {
+      caught = true;
+      expect(error).toBeNull();
+    }
+    expect(caught).toBe(true);
+    expect(calls).toEqual({
+      geometry: meshes.length,
+      material: materials.length,
+      texture: textures.length,
+    });
+    expect(views.every((view) => view.byteLength === 0)).toBe(true);
+    expect(
+      textures.every((texture) => texture.image.data!.byteLength === 0),
+    ).toBe(true);
+    expect(
+      meshes.every(
+        (mesh) =>
+          Object.keys(mesh.attributes).length === 0 && mesh.index === null,
+      ),
+    ).toBe(true);
+    expect(owner.geometries.size).toBe(0);
+    expect(owner.textures.size).toBe(0);
+    expect(owner.materials).toHaveLength(0);
+    expect(() => owner.dispose()).not.toThrow();
+    releasePreparedNativePbrResources(prepared);
+  });
+  it("preserves actual attribute-construction failure through secondary cleanup failures and detaches its partial owners", async () => {
+    const { geometry, rgba } = await fixture(),
+      prepared = await prepareNativePbrResources(geometry, [
+        { image: "image.0", rgba },
+      ]);
+    const textures: DataTexture[] = [],
+      views: ArrayBufferView[] = [];
+    const originalTextureDispose = DataTexture.prototype.dispose,
+      originalGeometryDispose = BufferGeometry.prototype.dispose;
+    const textureSpy = vi
+      .spyOn(DataTexture.prototype, "dispose")
+      .mockImplementation(function (this: DataTexture) {
+        textures.push(this);
+        views.push(this.image.data!);
+        originalTextureDispose.call(this);
+        throw Error("secondary texture cleanup");
+      });
+    const geometrySpy = vi
+      .spyOn(BufferGeometry.prototype, "dispose")
+      .mockImplementation(function (this: BufferGeometry) {
+        originalGeometryDispose.call(this);
+        throw Error("secondary geometry cleanup");
+      });
+    const attributeSpy = vi
+      .spyOn(BufferGeometry.prototype, "setAttribute")
+      .mockImplementation(function (_name, attribute) {
+        if (attribute instanceof BufferAttribute) views.push(attribute.array);
+        throw null;
+      });
+    try {
+      let caught = false;
+      try {
+        createNativePbrResources(prepared);
+      } catch (error) {
+        caught = true;
+        expect(error).toBeNull();
+      }
+      expect(caught).toBe(true);
+      expect(geometrySpy).toHaveBeenCalledOnce();
+      expect(textures).toHaveLength(2);
+      expect(views.length).toBe(3);
+      expect(views.every((view) => view.byteLength === 0)).toBe(true);
+      expect(rgba.byteLength).toBe(4);
+    } finally {
+      attributeSpy.mockRestore();
+      geometrySpy.mockRestore();
+      textureSpy.mockRestore();
+      releasePreparedNativePbrResources(prepared);
+    }
   });
 });

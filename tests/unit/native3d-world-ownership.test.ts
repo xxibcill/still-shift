@@ -6,8 +6,13 @@ import { SolidSceneSchema } from "@still-shift/scene-contract";
 import {
   createNativeThreeGeometry,
   createNativeThreeWorld,
+  createNativeThreeWorldV3,
 } from "../../packages/renderer-core/src/native3d/three-world.ts";
 import { nativeSolidFixture } from "../helpers/native3d-fixture.ts";
+import { nativePbrSceneFixture } from "../helpers/native-pbr-scene-fixture.ts";
+import { prepareNative3DSceneV3 } from "../../packages/renderer-core/src/native3d/prepare-v3.ts";
+import * as pbr from "../../packages/renderer-core/src/native3d/pbr-resources.ts";
+
 const controls = vi.hoisted(() => ({
   constructorFailure: undefined as undefined | { value: unknown },
   fromSceneFailure: undefined as undefined | { value: unknown },
@@ -225,5 +230,46 @@ describe("shared native world construction and owner retirement", () => {
     geometry.dispose();
     expect(retired).toHaveBeenCalledOnce();
     roomClosed();
+  });
+  it("preserves a source3 world constructor failure through its nested PBR retirement failure", async () => {
+    const prepared = await prepareNative3DSceneV3(
+      nativePbrSceneFixture(),
+      "sha256:" + "a".repeat(64),
+    );
+    const resources = await pbr.prepareNativePbrResources(
+        prepared.source.geometry,
+        [],
+      ),
+      create = pbr.createNativePbrResources;
+    const reason = Error("source3 generator constructor");
+    controls.constructorFailure = { value: reason };
+    const views: ArrayBufferView[] = [];
+    const spy = vi
+      .spyOn(pbr, "createNativePbrResources")
+      .mockImplementation((input) => {
+        const owner = create(input),
+          dispose = owner.dispose;
+        for (const geometry of owner.geometries.values()) {
+          for (const attribute of Object.values(geometry.attributes))
+            views.push(attribute.array);
+          views.push(geometry.index!.array);
+        }
+        owner.dispose = () => {
+          dispose();
+          throw Error("secondary nested PBR cleanup");
+        };
+        return owner;
+      });
+    try {
+      expect(
+        thrown(() => createNativeThreeWorldV3(renderer(), prepared, resources)),
+      ).toEqual({ caught: true, error: reason });
+      expect(views.length).toBeGreaterThan(0);
+      expect(views.every((view) => view.byteLength === 0)).toBe(true);
+      roomClosed();
+    } finally {
+      spy.mockRestore();
+      pbr.releasePreparedNativePbrResources(resources);
+    }
   });
 });

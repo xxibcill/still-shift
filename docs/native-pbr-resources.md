@@ -494,3 +494,22 @@ frames match the preceding production renders byte for byte. Admission limits
 are unchanged. Driver-internal failed allocations/RSS, nested PBR retirement,
 aggregate accounting, full milestone and final installed refresh remain separate.
 See [ownership evidence](./mechanism-shorts-ms2-world-ownership-results.json).
+
+## Nested private PBR retirement
+
+PBR construction captures its own pixel, attribute and index buffers before
+assigning them into public resource objects. Close attempts every geometry,
+material and texture destructor, clears retained attributes/index/groups and
+texture references, drops the private texture lookup and closure collections,
+and detaches those producer-owned buffers. Caller-substituted vertex/texture
+buffers and original supplied pixels keep their separate ownership. Immutable
+preparation can still create a fresh world after an earlier world closes.
+
+Partial construction and the source3 wrapper preserve the original failure,
+including `null`, through secondary cleanup errors. Four new actual-object
+controls and all owning PBR GPU/composition/export groups verify this behavior;
+normal MP4s and mixed raw HTTP pixels preserve the preceding renders. See
+[nested ownership evidence](./mechanism-shorts-ms2-pbr-ownership-results.json).
+The pinned Node/Chromium runtimes provide native ArrayBuffer detachment.
+Source/preparation admission against the existing 512 MiB Node allowance, whole
+world/body/replay accounting, full milestone and installed refresh remain open.

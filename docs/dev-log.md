@@ -45,19 +45,19 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Thirty-three slices include shared-world application-visible failure cleanup:
-  room/PMREM/environment transfer, first-cause preservation and complete remaining
-  owner retirement despite destructor failures. Fast4 passes4,204 units/411 files;
-  six focused failures and live source3/world/composition/normal/mixed/native2/depth
-  checks pass on held inputs4. Both normal MP4s and six mixed raw HTTP frame bodies
-  remain byte-identical to slice31. Installed archive32 remains exactb4fc65ed;
-  no new installed execution is claimed for changed shared-world code.
-  Next: aggregate source/world/body/replay and nested PBR failure retirement,
-  remaining MS2 packs/contracts/full gates, final archive refresh then MS2 PR/MS3.
-  Broad runtime/integration/benchmark remain historical; supported packs/pilot0;
-  no human acceptance, merge/publication or paid ElevenLabs action.
-  [World ownership evidence](./mechanism-shorts-ms2-world-ownership-results.json),
-  [installed evidence](./mechanism-shorts-ms2-installed-source3-results.json),
+  Thirty-four slices include shared-world and nested PBR retirement across failure:
+  capture/retire private pixel/attribute/index buffers, clear retained references,
+  preserve first cause and keep caller-substituted/preparation owners separate.
+  Fast16 passes 4,208 units/411 files; focused 16 tests/two files and all six PBR GPU/
+  composition/export groups pass on held inputs16. Two normal MP4s/six mixed raw
+  HTTP bodies preserve slice33 bytes. Initial lint failure is retained; prior
+  native2/depth evidence remains at source33 and installed archive at b4fc65ed.
+  Next: source/preparation admission against the existing 512 MiB Node allowance,
+  whole world/body/replay accounting, remaining MS2/full gates and final archive
+  refresh before MS2 PR/MS3. Supported packs/pilot 0; no human acceptance,
+  merge/publication or paid ElevenLabs action.
+  [Nested PBR evidence](./mechanism-shorts-ms2-pbr-ownership-results.json),
+  [shared-world evidence](./mechanism-shorts-ms2-world-ownership-results.json),
   [MS2 results](./mechanism-shorts-ms2-results.json), [PBR API](./native-pbr-resources.md).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
@@ -217,6 +217,22 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-10-11 — MS2 nested PBR owner and private backing retirement
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `21520637`.
+- **Done:** capture private pixel/attribute/index allocations, retire all resources
+  despite destructor errors, clear private/reference collections and detach owned
+  backings. Caller substitutions and immutable preparation keep separate ownership;
+  source3 wrapper preserves its original setup failure through nested cleanup.
+- **Results:** focused 16 tests/two files and fast16 pass 4,208 units; all six PBR
+  browser groups pass on held inputs16. Two normal MP4s/six mixed raw HTTP bodies
+  exactly preserve slice33. Initial lint failure and unrun suffix retained.
+- **Next:** join native source/preparation to the existing 512 MiB Node allowance,
+  aggregate world/body/replay, remaining MS2/full gates and final archive refresh.
+  Original native2/depth and installed evidence keep their earlier source identities.
+- **Records:** [nested PBR ownership](./mechanism-shorts-ms2-pbr-ownership-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json).
+
 ### 2026-10-11 — MS2 shared-world constructor and destructor ownership
 
 - **Agent / branch:** Codex on `codex/mechanism-ms2`, from `3dc9ddc6`.
@@ -227,7 +243,7 @@ still hold before relying on them.
   source3 world/composition/normal/mixed, all six native2 and depth groups pass on
   held inputs4. Two normal MP4s/six mixed raw HTTP bodies exactly preserve slice31.
 - **Limits:** no driver-internal failed allocation/RSS claim; quotas stay fixed.
-  Prior installed proof remains atb4fc65ed. Aggregate/nested resource admission,
+  Prior installed proof remains at b4fc65ed. Aggregate/nested resource admission,
   remaining MS2 criteria/full gates and final installed refresh stay open.
 - **Records:** [world ownership](./mechanism-shorts-ms2-world-ownership-results.json),
   [MS2 results](./mechanism-shorts-ms2-results.json).
@@ -242,7 +258,7 @@ still hold before relying on them.
 - **Retained:** harness used wrong compiled format literal; original auditor rejects
   current guide-copy roots, then README rewriting and trailing-slash handling.
   Corrected consumer5 and self11/audit12 pass in stages; failed artifacts retained.
-- **Limits:** archive is verified atb4fc65ed before this copied-guide documentation
+- **Limits:** archive is verified at b4fc65ed before this copied-guide documentation
   change. Pixel-row replay is association evidence; actual raw HTTP captures are
   separate. Whole quotas/constructor cleanup, full gates and final refresh remain.
 - **Next:** remaining MS2 contracts/packs/full evidence before its PR and MS3.
@@ -327,7 +343,7 @@ still hold before relying on them.
 - **Retained:** two TypeScript failures; early build7/browser8 lost terminal receipt
   qualified, fresh browser12 supplies exit0; browser6 stale stdout count corrected.
 - **Next:** authenticated source3 export/installed, world/source/body/replay budgets,
-  remaining packs/authoring/full gates. Supported packs/pilot0; no MS2 PR yet.
+  remaining packs/authoring/full gates. Supported packs/pilot 0; no MS2 PR yet.
 - **Records:** [composition evidence](./mechanism-shorts-ms2-output3-composition-results.json),
   [MS2 results](./mechanism-shorts-ms2-results.json). No paid narration performed.
 
@@ -345,7 +361,7 @@ still hold before relying on them.
   changed between final prefix/failure, unit rerun and browser suffix; inputs10 match.
 - **Next:** output3 renderer/collector integration and explicit world-artwork ownership,
   authenticated export/installed and whole world/source/body/replay admission.
-  Source3 composition collection/export still rejected; supported packs/pilot0.
+  Source3 composition collection/export still rejected; supported packs/pilot 0.
 - **Records:** [capacity evidence](./mechanism-shorts-ms2-output3-capacity-results.json),
   [MS2 results](./mechanism-shorts-ms2-results.json). No paid narration performed.
 
@@ -362,7 +378,7 @@ still hold before relying on them.
   Object.defineProperty probe preserves the runtime rejection check.
 - **Next:** output3 capacity/renderer integration, authenticated transport/export,
   world/source/body/replay admission and remaining MS2 criteria. Collection/export3
-  still rejected; supported packs/pilot0; no full/installed refresh or milestone PR.
+  still rejected; supported packs/pilot 0; no full/installed refresh or milestone PR.
 - **Records:** [collector evidence](./mechanism-shorts-ms2-output3-collector-results.json),
   [MS2 results](./mechanism-shorts-ms2-results.json).
 
@@ -379,7 +395,7 @@ still hold before relying on them.
 - **Retained:** prior timeouts, rejected observer/loop experiments, guarded edit
   failure and Node43 wrong-name seven-test subset; no full/installed refresh.
 - **Next:** output3 collector/capacity, authenticated export/installed and remaining
-  MS2 criteria. Supported packs/pilot0; no milestone PR or human acceptance.
+  MS2 criteria. Supported packs/pilot 0; no milestone PR or human acceptance.
 - **Records:** [strict-gate history](./mechanism-shorts-ms2-strict-gates-results.json),
   [MS2 results](./mechanism-shorts-ms2-results.json).
 
@@ -395,7 +411,7 @@ still hold before relying on them.
   remain unresolved. Earlier type/recorder/harness/lint failures remain recorded.
 - **Next / handoff:** continue the same Goal in a fresh chat: resolve strict gates,
   implement composition/output3, authenticated export/installed and remaining MS2
-  criteria before its PR, then MS3. Supported packs/pilot0; no human acceptance.
+  criteria before its PR, then MS3. Supported packs/pilot 0; no human acceptance.
 - **Records:** [observation evidence](./mechanism-shorts-ms2-pbr-observation-results.json),
   [API](./native-pbr-resources.md), [MS2 results](./mechanism-shorts-ms2-results.json).
 
@@ -411,7 +427,7 @@ still hold before relying on them.
 - **Retained:** failed harness typing and duplicated catch-handler formatting; the
   existing profile remains0.0001 and no budget or original timeout was relaxed.
 - **Next:** formal source3 observations/export/installed and whole MS2 gates before
-  its PR. Supported packs/pilot0; no full-world or human acceptance inferred.
+  its PR. Supported packs/pilot 0; no full-world or human acceptance inferred.
 - **Records:** [mip evidence](./mechanism-shorts-ms2-pbr-mip-results.json),
   [API](./native-pbr-resources.md), [MS2 results](./mechanism-shorts-ms2-results.json).
 
@@ -427,7 +443,7 @@ still hold before relying on them.
   lost build2/run20 terminals and failed aggregates. Load had subsided before22;
   timeout causation remains unproven. No uninterrupted aggregate pass claimed.
 - **Next:** source3 observations/mips/export/installed and whole MS2 gates before
-  its PR; source3 export stays closed. Supported packs/pilot0; no human review.
+  its PR; source3 export stays closed. Supported packs/pilot 0; no human review.
 - **Records:** [preview evidence](./mechanism-shorts-ms2-pbr-composition-results.json),
   [API](./native-pbr-resources.md), [MS2 results](./mechanism-shorts-ms2-results.json).
 
@@ -444,7 +460,7 @@ still hold before relying on them.
   pnpm command and unavailable source5 root terminal; no uninterrupted-pass claim.
 - **Next:** source3 composition/binary/frame3/mip/preview/export admission and owning
   authoring/registry/world/label/event/cue/typography/coverage/full/installed gates.
-  Supported packs/pilot0; no MS2 PR/MS3 or human appearance/listening acceptance.
+  Supported packs/pilot 0; no MS2 PR/MS3 or human appearance/listening acceptance.
 - **Records:** [source3 evidence](./mechanism-shorts-ms2-pbr-world-results.json),
   [API](./native-pbr-resources.md), [MS2 results](./mechanism-shorts-ms2-results.json).
 
@@ -459,7 +475,7 @@ still hold before relying on them.
 - **Rejected / retained:** Expected reds, build/lint failures and valid-stride
   browser rejection remain; that browser's lost terminal is not invented as exit0.
 - **Open / next:** Source/binary composition admission, mip-data and imported
-  preview/export proof; remaining whole MS2 acceptance. Supported packs/pilot0.
+  preview/export proof; remaining whole MS2 acceptance. Supported packs/pilot 0.
 - **Records:** [PBR API](./native-pbr-resources.md), [import API](./rigid-gltf-import.md),
   [retained results](./mechanism-shorts-ms2-results.json). No MS2 PR/MS3 or human acceptance.
 
@@ -545,7 +561,7 @@ still hold before relying on them.
   rejection. Fixed fixture uses existing128MiB worker quota; no limits relaxed.
 - **Next:** Actual images reveal large-housing crop/push-face occlusion. Camera
   recipes and all remaining MS2 family/authoring/import/full/installed acceptance
-  precede its PR/MS3. Candidate only; supported packs/pilot0, human review separate.
+  precede its PR/MS3. Candidate only; supported packs/pilot 0, human review separate.
 - **Records:** [MS2 results](./mechanism-shorts-ms2-results.json),
   [pack API](./mechanism-pack-api.md), [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
@@ -581,7 +597,7 @@ still hold before relying on them.
 - **Retained:** Actual RED and seven build diagnostics. Chromium overwrote the
   attempted forged Origin; corrected transport requires actual server403.
 - **Next:** Lab, full preflight, three packs/import/camera/label/cue/typography/
-  board and full milestone/installed gates before MS2 PR. Supported packs/pilot0;
+  board and full milestone/installed gates before MS2 PR. Supported packs/pilot 0;
   generic movie exports do not infer human visual/listening acceptance.
 - **Records:** [MS2 results](./mechanism-shorts-ms2-results.json),
   [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
@@ -600,7 +616,7 @@ still hold before relying on them.
   packed-byte proof. Corrected legacy-target negative; actual post-admission
   abort RED now GREEN. First build terminal lost, so its log remains qualified.
 - **Next:** Normal authenticated movie/export/upload2 and Lab, full preflight,
-  three packs and all owning MS2 gates before its PR; supported packs/pilot0.
+  three packs and all owning MS2 gates before its PR; supported packs/pilot 0.
 - **Records:** [MS2 results](./mechanism-shorts-ms2-results.json),
   [production plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
@@ -1051,7 +1067,7 @@ still hold before relying on them.
 
 - **Agent / branch:** Codex on `codex/mechanism-ms1n`, held `1949ae2f`.
 - **Results:** ordinary fullgate1 exits1; preludes/build and381 files/3,915 units pass.
-  Runtime passes169/170 tests, then `mechanism-package.test.ts:388` expects
+  Runtime passes 169/170 tests, then `mechanism-package.test.ts:388` expects
   `AnimationEngineError` but receives `Error: Synthetic package cancellation`.
 - **Retained:** exact collector exit/run/log identities, one completed required
   group, failed runtime group and75 not-run suffix groups. Source/HEAD stay exact
