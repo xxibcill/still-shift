@@ -1,0 +1,181 @@
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { join, resolve } from "node:path";
+import { createServer } from "vite";
+import {
+  launchRenderBrowser,
+  probeRenderEnvironment,
+  assertPinnedRenderEnvironment,
+} from "@still-shift/execution-runtime";
+import { decodeRigidGltf } from "../../packages/animation-engine/src/mechanism/gltf-import.ts";
+import { prepareRigidGltfPbr } from "../../packages/animation-engine/src/mechanism/gltf-pbr.ts";
+import {
+  texturedGltfFixture,
+  glbBytes,
+} from "../helpers/rigid-gltf-fixture.ts";
+import { rgbaPngFixture } from "../helpers/rgba-png-fixture.ts";
+import type * as Proof from "../helpers/native-pbr-proof.ts";
+const hash = (bytes: Uint8Array | string) =>
+  "sha256:" + createHash("sha256").update(bytes).digest("hex");
+const root = resolve(import.meta.dirname, "../.."),
+  directory = await mkdtemp("/private/tmp/still-shift-ms2-pbr-resources-");
+const { document, binary } = texturedGltfFixture(),
+  rgba = new Uint8Array([
+    128, 64, 255, 0, 255, 128, 64, 64, 32, 64, 128, 128, 128, 128, 255, 255,
+  ]),
+  png = rgbaPngFixture(2, 2, rgba);
+const source = {
+  ...document,
+  materials: document.materials.map((material) => ({
+    ...material,
+    pbrMetallicRoughness: {
+      ...material.pbrMetallicRoughness,
+      baseColorFactor: [0.2, 0.4, 0.6, 0.25],
+    },
+  })),
+};
+const bytes = glbBytes(source, binary),
+  asset = decodeRigidGltf(bytes, {
+    format: "glb",
+    dependencies: new Map([["maps/surface.png", png]]),
+  }),
+  prepared = await prepareRigidGltfPbr(asset);
+const input = {
+  geometry: prepared.geometry,
+  parts: prepared.parts,
+  images: prepared.images.map((image) => ({
+    image: image.image,
+    rgba: Array.from(image.rgba),
+  })),
+};
+await writeFile(join(directory, "source.glb"), bytes, { flag: "wx" });
+await writeFile(join(directory, "surface.png"), png, { flag: "wx" });
+await writeFile(join(directory, "prepared.json"), JSON.stringify(input), {
+  flag: "wx",
+});
+const producerPaths = [
+  "packages/scene-contract/src/native3d/pbr-geometry.ts",
+  "packages/renderer-core/src/native3d/pbr-resources.ts",
+  "packages/renderer-core/src/native3d/pbr-allocations.ts",
+  "packages/renderer-core/src/native3d/pbr-gpu-draw.ts",
+  "packages/renderer-core/src/native3d/pbr-gpu-texture.ts",
+  "packages/animation-engine/src/mechanism/gltf-pbr.ts",
+  "packages/animation-engine/src/mechanism/gltf-pixels.ts",
+  "packages/animation-engine/src/mechanism/gltf-png.ts",
+  "tests/helpers/native-pbr-proof.ts",
+  "tests/browser/native-pbr-resources.ts",
+];
+const producers = await Promise.all(
+  producerPaths.map(async (path) => ({
+    path,
+    sha256: hash(await readFile(join(root, path))),
+  })),
+);
+const server = await createServer({
+  root,
+  configFile: false,
+  logLevel: "error",
+  resolve: {
+    alias: [
+      {
+        find: /^@still-shift\/scene-contract$/,
+        replacement: join(root, "packages/scene-contract/src/index.ts"),
+      },
+    ],
+  },
+  server: { host: "127.0.0.1", port: 0 },
+});
+server.middlewares.use((req, res, next) => {
+  if (req.url !== "/pbr-proof") {
+    next();
+    return;
+  }
+  res.setHeader("Content-Type", "text/html");
+  res.end("<!doctype html><html><body></body></html>");
+});
+let browser: Awaited<ReturnType<typeof launchRenderBrowser>> | undefined;
+try {
+  await server.listen();
+  browser = await launchRenderBrowser();
+  const page = await browser.newPage();
+  await page.addInitScript("window.__name=(fn)=>fn;");
+  await page.goto(server.resolvedUrls!.local[0] + "pbr-proof");
+  const environment = await probeRenderEnvironment(page);
+  assertPinnedRenderEnvironment(environment);
+  const result = await page.evaluate(async (input) => {
+    const path = "/tests/helpers/native-pbr-proof.ts";
+    const proof = (await import(path)) as typeof Proof;
+    return proof.nativePbrProof(input);
+  }, input);
+  const frames = [];
+  for (const capture of result.captures) {
+    const rgba = Uint8Array.from(capture.rgba);
+    await writeFile(join(directory, capture.id + ".rgba"), rgba, {
+      flag: "wx",
+    });
+    await writeFile(
+      join(directory, capture.id + ".png"),
+      Buffer.from(capture.pngBase64, "base64"),
+      { flag: "wx" },
+    );
+    frames.push({
+      id: capture.id,
+      bytes: rgba.length,
+      rgbaSha256: hash(rgba),
+      draws: capture.draws,
+    });
+  }
+  assert.equal(frames.length, 3);
+  assert.equal(frames[0]!.rgbaSha256, frames[1]!.rgbaSha256);
+  assert.equal(frames[0]!.rgbaSha256, frames[2]!.rgbaSha256);
+  assert.equal(result.faults.length, 4);
+  await writeFile(
+    join(directory, "run.json"),
+    JSON.stringify(
+      {
+        version: "native-pbr-resources-proof-1",
+        status: "passed",
+        assetSha256: asset.assetSha256,
+        geometrySha256: prepared.geometrySha256,
+        sourceSha256: hash(bytes),
+        environment,
+        producers,
+        frames,
+        faults: result.faults,
+        allocation: result.allocation,
+        scope: result.scope,
+      },
+      null,
+      2,
+    ) + "\n",
+    { flag: "wx" },
+  );
+  process.stdout.write(
+    JSON.stringify({
+      directory,
+      status: "passed",
+      frames: frames.length,
+      faults: result.faults.length,
+    }) + "\n",
+  );
+} catch (error) {
+  await writeFile(
+    join(directory, "failure.json"),
+    JSON.stringify(
+      {
+        version: "native-pbr-resources-failure-1",
+        producers,
+        message: error instanceof Error ? error.stack : String(error),
+      },
+      null,
+      2,
+    ) + "\n",
+    { flag: "wx" },
+  );
+  process.stderr.write(JSON.stringify({ directory, status: "failed" }) + "\n");
+  throw error;
+} finally {
+  await browser?.close();
+  await server.close();
+}

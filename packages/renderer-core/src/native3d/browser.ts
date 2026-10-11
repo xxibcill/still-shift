@@ -36,3 +36,15 @@ export type {
   NativeThreeWorldV2,
   NativeThreeGeometry,
 } from "./three-world.ts";
+export {
+  prepareNativePbrResources,
+  createNativePbrResources,
+} from "./pbr-resources.ts";
+export type {
+  PreparedNativePbrResources,
+  NativePbrResources,
+} from "./pbr-resources.ts";
+export {
+  captureNativePbrGpuDraw,
+  sealNativePbrGpuDraw,
+} from "./pbr-gpu-draw.ts";

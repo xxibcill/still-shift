@@ -102,3 +102,4 @@ export {
   RigidGltfImportError,
   RIGID_GLTF_LIMITS,
 } from "./mechanism/gltf-document.ts";
+export * from "./mechanism/gltf-pbr.ts";

@@ -14749,6 +14749,514 @@
       "terminalToolReceipt": "fc641c",
       "terminalObservedAtUTC": "2026-10-11 02:23:57 UTC",
       "qualification": "Current full fast 4145 unit tests/403 files and 7 importer filesystem tests pass. Input snapshot 8 only adds positive safe-integer image-header dimension rejection and its negative unit fixture after Input snapshot 7 software/metadata closure. Input snapshot 6 broader runtime evidence and Input snapshot 7 checks remain retained on exact inputs. PNG payload integrity/pixel decode and native PBR admission remain pending; no new imported-PBR captures/exports or installed archive."
+    },
+    {
+      "id": "native-pbr-red-1",
+      "status": "failed-expected-red",
+      "sourceCheckpoint": "6097df379d4720274a8ffedf858f81359f294e44",
+      "sourceState": "working-nineteenth-native-pbr-resource-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-inputs-1.json",
+        "bytes": 419680,
+        "sha256": "sha256:23360e993f01ffacc6ae3ab463565ed9846def34b0adf6d136844ec4e1626382",
+        "files": 2460,
+        "inputBytes": 118734787,
+        "sourceCommit": "6097df379d4720274a8ffedf858f81359f294e44"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-red-1.log",
+          "bytes": 1262,
+          "sha256": "sha256:1db9558cdea95c0d2b52ed2ffa21d9965f018b415589902686354c854b637a28"
+        }
+      ],
+      "recordedAtUTC": "2026-10-11T03:13:52.942926+00:00",
+      "actualRootSession": 98113,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "db5bb5",
+      "qualification": "One focused runtime test fails at the unimplemented PBR preparation seam."
+    },
+    {
+      "id": "native-pbr-decode-2",
+      "status": "passed-build-and-exact-png-runtime",
+      "sourceCheckpoint": "6097df379d4720274a8ffedf858f81359f294e44",
+      "sourceState": "working-nineteenth-native-pbr-resource-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-inputs-2.json",
+        "bytes": 420201,
+        "sha256": "sha256:f1fe722557b7fadb21579afa4f5104879abee20d3185bdfff576c69deb8123a4",
+        "files": 2463,
+        "inputBytes": 118751999,
+        "sourceCommit": "6097df379d4720274a8ffedf858f81359f294e44"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-format-2.log",
+          "bytes": 425,
+          "sha256": "sha256:7c4d6e0f8af7c0cf4e08c6533452f99154cbc9626d6277678bfff3d0b465903d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-build-2.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-runtime-2.log",
+          "bytes": 308,
+          "sha256": "sha256:52ea6bd8ca0ed7150005732da4929847701af587f033729697705bced4adee64"
+        }
+      ],
+      "recordedAtUTC": "2026-10-11T03:13:52.944452+00:00",
+      "actualRootSession": 49297,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "5e5677",
+      "qualification": "Build and one real PNG decode test pass, including straight RGB beneath zero alpha. No GPU proof yet."
+    },
+    {
+      "id": "native-pbr-build-3",
+      "status": "failed-build",
+      "sourceCheckpoint": "6097df379d4720274a8ffedf858f81359f294e44",
+      "sourceState": "working-nineteenth-native-pbr-resource-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-inputs-3.json",
+        "bytes": 420535,
+        "sha256": "sha256:f5b4b3ebd2a6b60a0f57cd476d0aaa2c1a53a212fc5097884215c6c1c2dbb7b3",
+        "files": 2465,
+        "inputBytes": 118767073,
+        "sourceCommit": "6097df379d4720274a8ffedf858f81359f294e44"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-format-3.log",
+          "bytes": 153,
+          "sha256": "sha256:41edf2d36fbc36abe7bee062ab5729d163f69587a44e1c75658ec131d810abde"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-build-3.log",
+          "bytes": 3824,
+          "sha256": "sha256:c74c37ed2de6248ebcdcf8afdb893f4fc61aaacc563eb0d1fe9b845e613826ab"
+        }
+      ],
+      "recordedAtUTC": "2026-10-11T03:13:52.945731+00:00",
+      "actualRootSession": 5459,
+      "actualExitCode": 2,
+      "terminalToolReceipt": "20d240",
+      "qualification": "Texture-binding union, magnification-filter and DataTexture image typing fail. The chained focused suffix did not run and has no log."
+    },
+    {
+      "id": "native-pbr-focused-4",
+      "status": "passed-build-and-focused",
+      "sourceCheckpoint": "6097df379d4720274a8ffedf858f81359f294e44",
+      "sourceState": "working-nineteenth-native-pbr-resource-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-inputs-4.json",
+        "bytes": 420535,
+        "sha256": "sha256:0b5508f4ce26637edf546c1db5b6e6e37fe20cb4b75e73538222401f17e5e502",
+        "files": 2465,
+        "inputBytes": 118767246,
+        "sourceCommit": "6097df379d4720274a8ffedf858f81359f294e44"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-format-4.log",
+          "bytes": 114,
+          "sha256": "sha256:23928e692f93d145aac5a7b59a5fc0f1b74c0f70061cf4035d74f70cd3b6fe9c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-build-4.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-focused-4.log",
+          "bytes": 367,
+          "sha256": "sha256:816b6b86820daf1525e9ddde41e0db93f16f716526cc56b25a1b4d4fa646cb72"
+        }
+      ],
+      "recordedAtUTC": "2026-10-11T03:13:52.947037+00:00",
+      "actualRootSession": 75031,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "4df6dc",
+      "qualification": "Three tests across two files pass after the typing repair. No GPU proof yet."
+    },
+    {
+      "id": "native-pbr-build-5",
+      "status": "failed-build",
+      "sourceCheckpoint": "6097df379d4720274a8ffedf858f81359f294e44",
+      "sourceState": "working-nineteenth-native-pbr-resource-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-inputs-5.json",
+        "bytes": 420882,
+        "sha256": "sha256:5b7a42fc6017da2f6bc79b4b506ec918ceb33268d572a7a6f5b527823784790a",
+        "files": 2467,
+        "inputBytes": 118783701,
+        "sourceCommit": "6097df379d4720274a8ffedf858f81359f294e44"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-format-5.log",
+          "bytes": 308,
+          "sha256": "sha256:46954b54494ef180710404bf7e2819cad00cebcc0e7ca84d678baa6f55fdcffb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-build-5.log",
+          "bytes": 3774,
+          "sha256": "sha256:879791bbc3f5697f371d5f490a3b2cc402063c7053f8fb502dd47af57ec3f752"
+        }
+      ],
+      "recordedAtUTC": "2026-10-11T03:13:52.948258+00:00",
+      "actualRootSession": 58597,
+      "actualExitCode": 2,
+      "terminalToolReceipt": "1eebff",
+      "qualification": "The renderer context union lacks WebGL2 buffer-readback APIs; explicit WebGL2 narrowing is required."
+    },
+    {
+      "id": "native-pbr-build-6",
+      "status": "passed-build",
+      "sourceCheckpoint": "6097df379d4720274a8ffedf858f81359f294e44",
+      "sourceState": "working-nineteenth-native-pbr-resource-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-inputs-6.json",
+        "bytes": 420882,
+        "sha256": "sha256:735204c7b2a616760fd0e67d6f9ec322bffb6df1c5bd5a2c565933499eb0e383",
+        "files": 2467,
+        "inputBytes": 118784905,
+        "sourceCommit": "6097df379d4720274a8ffedf858f81359f294e44"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-format-6.log",
+          "bytes": 226,
+          "sha256": "sha256:1ff759ffbbf15056c95b76fb7888f2a5d40053f5b07abc0cc3b19e5026590ab9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-build-6.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        }
+      ],
+      "recordedAtUTC": "2026-10-11T03:13:52.949507+00:00",
+      "actualRootSession": 89192,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "4fe0f9",
+      "qualification": "Build passes with synchronous before-draw capture and hashing of copied vertex/shader bytes. Browser proof has not run on this snapshot."
+    },
+    {
+      "id": "native-pbr-browser-7",
+      "status": "failed-artifact-terminal-unavailable",
+      "sourceCheckpoint": "6097df379d4720274a8ffedf858f81359f294e44",
+      "sourceState": "working-nineteenth-native-pbr-resource-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-inputs-7.json",
+        "bytes": 421194,
+        "sha256": "sha256:b6caf63a716d619f87b322403b10834168c9387f6e5d3413e18e2a3c08a62b7a",
+        "files": 2469,
+        "inputBytes": 118797279,
+        "sourceCommit": "6097df379d4720274a8ffedf858f81359f294e44"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-format-7.log",
+          "bytes": 82,
+          "sha256": "sha256:a0d12fed587cf9e2e540a7bdd16bca730448ed8dcc0f51c5cd5a29c60e20fe17"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-build-7.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-browser-7.log",
+          "bytes": 1476,
+          "sha256": "sha256:9b8ca5bc1fb89991a830ae057d9cd8799b4f4ee5258c4780f2a8aafeb98c9db5"
+        }
+      ],
+      "recordedAtUTC": "2026-10-11T03:13:52.950764+00:00",
+      "actualRootSession": 59730,
+      "actualExitCode": null,
+      "terminalToolReceipt": null,
+      "qualification": "Browser failure.json and log reject the valid explicit Three attribute stride. The original tool output was fully truncated; actual process exit and terminal receipt remain unavailable. Recovery of the same session reports unknown process; escalated ps finds no live matching writer/gate. Do not reconstruct the compiler prefix or aggregate as a terminal pass.",
+      "failureArtifact": {
+        "path": "/private/tmp/still-shift-ms2-pbr-resources-Zj4iXa/failure.json",
+        "bytes": 2910,
+        "sha256": "sha256:0f8f14d2fdf09b6affd12a5819db4a9d6b8fabcd6b7155762951c6c64f3475a6"
+      },
+      "livenessRecoveryToolReceipt": "e7ef23",
+      "recoveryQualification": "An initial default-sandbox ps was denied; that is a recovery permission limitation, not a product regression. The subsequent escalated ps exits0 and has no matching live gate."
+    },
+    {
+      "id": "native-pbr-browser-8",
+      "status": "passed-build-and-gpu-component",
+      "sourceCheckpoint": "6097df379d4720274a8ffedf858f81359f294e44",
+      "sourceState": "working-nineteenth-native-pbr-resource-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-inputs-8.json",
+        "bytes": 421195,
+        "sha256": "sha256:565a080a596353e223b35eed1097d24a44d03a52957e16bfde8096a9c0899db2",
+        "files": 2469,
+        "inputBytes": 118800711,
+        "sourceCommit": "6097df379d4720274a8ffedf858f81359f294e44"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-format-8.log",
+          "bytes": 302,
+          "sha256": "sha256:66b420d8ff110b61a85a9fc87db06a4c0e064440f175fe22d68acb8911b6fbc8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-build-8.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-browser-8.log",
+          "bytes": 106,
+          "sha256": "sha256:e35784a3b512712baf1bc1500d8a68b576edaa9e81b8b75803568662c5209790"
+        }
+      ],
+      "recordedAtUTC": "2026-10-11T03:13:52.952138+00:00",
+      "actualRootSession": 85866,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "4651af",
+      "qualification": "Three identical component frames and four actual GPU/uniform faults pass after accepting equivalent tightly packed stride. This is not composition or export proof.",
+      "gpuComponentProof": {
+        "path": "/private/tmp/still-shift-ms2-pbr-resources-RygYbp/run.json",
+        "bytes": 10129,
+        "sha256": "sha256:ed2d90b943d17abf8a3acdee45e497c8f251091650f74c93ff6766e4b94a20f4"
+      }
+    },
+    {
+      "id": "native-pbr-fast-9",
+      "status": "failed-lint-after-focused-pass",
+      "sourceCheckpoint": "6097df379d4720274a8ffedf858f81359f294e44",
+      "sourceState": "working-nineteenth-native-pbr-resource-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-inputs-9.json",
+        "bytes": 421195,
+        "sha256": "sha256:5830e2e1ac25518f4e470377d6af073a06a49fdda107de7d0c2594315580ce52",
+        "files": 2469,
+        "inputBytes": 118808714,
+        "sourceCommit": "6097df379d4720274a8ffedf858f81359f294e44"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-format-9.log",
+          "bytes": 287,
+          "sha256": "sha256:bfca80e0d8ad1fc259d4e973c058e3636657c86638c10f22c9d70ff68db6aa50"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-schema-9.log",
+          "bytes": 653,
+          "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-identity-9.log",
+          "bytes": 260,
+          "sha256": "sha256:1965d57c7b6e848801c323fbf7766102f86dfa7731c0ad8156ccaf9d2e4a1ff5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-build-9.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-focused-9.log",
+          "bytes": 373,
+          "sha256": "sha256:24f0b28ee29f6d36b35d09fea85378bc5d719c1ce17cfa964cd5f1008653c93e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-fast-9.log",
+          "bytes": 2180,
+          "sha256": "sha256:39cea9cff8070354d69c2cc172c277e1dd2b1a9080b81ba243bb44d2a41269c5"
+        }
+      ],
+      "recordedAtUTC": "2026-10-11T03:13:52.953829+00:00",
+      "actualRootSession": 44139,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "a5c00e",
+      "qualification": "Build and 10 focused tests pass first (session10822, terminal2159a1, exit0); full fast stops on four lint errors. Browser/native/runtime suffixes did not run.",
+      "earlierFocusedProcess": {
+        "actualRootSession": 10822,
+        "actualExitCode": 0,
+        "terminalToolReceipt": "2159a1"
+      }
+    },
+    {
+      "id": "native-pbr-broad-10",
+      "status": "passed-fast-native-and-runtime-tier",
+      "sourceCheckpoint": "6097df379d4720274a8ffedf858f81359f294e44",
+      "sourceState": "working-nineteenth-native-pbr-resource-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-inputs-10.json",
+        "bytes": 421369,
+        "sha256": "sha256:ad2edba83675c90893d727426a8323f1350e9d219697b2b1465cacd1a93a97b8",
+        "files": 2470,
+        "inputBytes": 118810507,
+        "sourceCommit": "6097df379d4720274a8ffedf858f81359f294e44"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-format-10.log",
+          "bytes": 456,
+          "sha256": "sha256:d9b302a6a543def23b587ece13e29c04da31ec0d5cc09ee85af2a357c4e88c05"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-identity-10.log",
+          "bytes": 260,
+          "sha256": "sha256:4878fd7ebffe2f3529d43c468c5a53f91b89131cbe45c808be16667ed267cf2f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-fast-10.log",
+          "bytes": 33336,
+          "sha256": "sha256:e598b19a2a7a33bb63d2b57eff7215720fb7cb9697b7ed99a99e6f378d539062"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-browser-10.log",
+          "bytes": 277,
+          "sha256": "sha256:2fbe183c6637408ab0ff582b0d209d8204fd1abe19161d386e8d66f00d51ed26"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-native-10.log",
+          "bytes": 1218,
+          "sha256": "sha256:4babc9163a3ba7496effd17468cdaba887d30aba0f2edca6e7c7deb61f6b3074"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-runtime-10.log",
+          "bytes": 37330,
+          "sha256": "sha256:1166da5d4deafcdac0ded75b388a41dac9d4161ec84d664e928773b12e5c2373"
+        }
+      ],
+      "recordedAtUTC": "2026-10-11T03:13:52.955400+00:00",
+      "actualRootSession": 99925,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "83ac24",
+      "qualification": "Full fast4150/404, PBR component3 frames/4 faults, all six existing native2 groups, runtime190/29, integration321/56, Python14 and smoke pass. Later snapshot12 changes only Node image-header/PNG guards and their runtime tests; these broad results retain snapshot10 identity.",
+      "gpuComponentProof": {
+        "path": "/private/tmp/still-shift-ms2-pbr-resources-sumWgB/run.json",
+        "bytes": 10304,
+        "sha256": "sha256:4040bad876d5cdc51ffd18a3090854c0c14be880a38089a9edc9a5038825e8f0"
+      },
+      "terminalObservedAtUTC": "2026-10-11 03:08:26 UTC",
+      "native2Proofs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-shape-world-IhePps/run.json",
+          "bytes": 2976,
+          "sha256": "sha256:2d9c0c7cb0181fa2d1f42c496531dfc92ad58222100266b8f126d17df06baa63"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-used-streams-MGGetk/run.json",
+          "bytes": 7870,
+          "sha256": "sha256:fd61277ca32fbf789cd953b54b43ac0263af5260eeb59c5ccf3b435b8484d0d1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-frame-observation-kfOv6J/run.json",
+          "bytes": 6282,
+          "sha256": "sha256:012450e26ea42a64c68cc902b0044b9cf51611396b36f74ef2cf32800837d0ae"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-composition-v2-fedhzG/run.json",
+          "bytes": 91545,
+          "sha256": "sha256:3f2ccad5f1ffdfef81749a5a0b658a5f58dacce587115f4685aff3bc77a42148"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-normal-export2-ay6Xeq/run.json",
+          "bytes": 43816,
+          "sha256": "sha256:67b72a01698608e7c05ef207f99991e96efb93735991855f4a25b217f7efc59c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-lab2-zjRjWQ/run.json",
+          "bytes": 26342,
+          "sha256": "sha256:559c87e00bff58d0eb951214768a6684ea8c43d2974f0d77a1540a8d735300d6"
+        }
+      ]
+    },
+    {
+      "id": "native-pbr-red-11",
+      "status": "failed-expected-integrity-red",
+      "sourceCheckpoint": "6097df379d4720274a8ffedf858f81359f294e44",
+      "sourceState": "working-nineteenth-native-pbr-resource-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-inputs-11.json",
+        "bytes": 421369,
+        "sha256": "sha256:bbac6b4cc0d878afa462c3a6a22af128ffcf8c71c54d20f02409003a3162c235",
+        "files": 2470,
+        "inputBytes": 118812290,
+        "sourceCommit": "6097df379d4720274a8ffedf858f81359f294e44"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-format-11.log",
+          "bytes": 42,
+          "sha256": "sha256:86e05737063f03dc43dc987821027f1c707ee2bdb84fbce94b3aba864feec470"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-red-11.log",
+          "bytes": 9656,
+          "sha256": "sha256:e7651c0300d957f5b58cda83dafeb579d3aec60246f10d8bfeba5b398ef32026"
+        }
+      ],
+      "recordedAtUTC": "2026-10-11T03:13:52.957740+00:00",
+      "actualRootSession": 44482,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "c23e33",
+      "qualification": "Focused runtime8 has six passes and two expected failures: same-area forged dimensions and forbidden tRNS on an explicit-alpha PNG are accepted. The palette/zero-alpha positive control succeeds."
+    },
+    {
+      "id": "native-pbr-current-12",
+      "status": "passed-current-fast-affected-runtime-and-gpu-component",
+      "sourceCheckpoint": "6097df379d4720274a8ffedf858f81359f294e44",
+      "sourceState": "working-nineteenth-native-pbr-resource-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-inputs-12.json",
+        "bytes": 421369,
+        "sha256": "sha256:9931c852ad19f5ac150c9a99b2363d57b149c05aedd6f3172ddf1e7f70a20649",
+        "files": 2470,
+        "inputBytes": 118813866,
+        "sourceCommit": "6097df379d4720274a8ffedf858f81359f294e44"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-format-12.log",
+          "bytes": 113,
+          "sha256": "sha256:0477e56023da2ea1fcb7b27002eddcf40fd4402f25304ffb8c7de844168fad8a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-fast-12.log",
+          "bytes": 33156,
+          "sha256": "sha256:b3efd41364f60e185d34057a07c1e3161798fe8a3daf7f03430c0d66bfd602f6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-runtime-file-12.log",
+          "bytes": 311,
+          "sha256": "sha256:f80c8c99c0d5943ba0ad5a0516af16a69c5c249b8e666695a25544dab1557cbc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-browser-12.log",
+          "bytes": 277,
+          "sha256": "sha256:c0962dd5db40c920a48c0dec51523bc7546dc91d28c1f8ed38c0ad34fdab4682"
+        }
+      ],
+      "recordedAtUTC": "2026-10-11T03:13:52.958635+00:00",
+      "actualRootSession": 56150,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "2dda5f",
+      "qualification": "Final fast4150/404, eight affected real decode/integrity tests and PBR component3 frames/4 faults pass. GPU component pixels match snapshots8/10. Snapshot10 broader native/runtime evidence is retained separately; no source3/composition/PBR export or installed archive is claimed.",
+      "gpuComponentProof": {
+        "path": "/private/tmp/still-shift-ms2-pbr-resources-PEjzwU/run.json",
+        "bytes": 10304,
+        "sha256": "sha256:65adc7373dac7e46a29818ed75357ddf9e3b116dd523282986a44aa1e9429c0f"
+      },
+      "terminalObservedAtUTC": "2026-10-11 03:11:24 UTC",
+      "heldInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-held-12.log",
+        "bytes": 190,
+        "sha256": "sha256:51b2c21adbb4cff64fa9e3274490dcef01c040284327c05e27eb1f39f72d86e2"
+      },
+      "generatedSchema": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/solid-geometry-2.schema.json",
+        "bytes": 12563,
+        "sha256": "sha256:476ec8de5c6b38ddcbd2029afac3038eb1e88f5aaedf3b037271d7b29b8f23df"
+      }
     }
   ],
   "implementation": {
@@ -15341,10 +15849,107 @@
         "initialCloseTerminalToolReceipt": "405817",
         "qualification": "The source7 evidence/docs close actually exited0 before the final zero-dimension guard. This follow-up records source8 and preserves all earlier runs."
       }
+    },
+    "nineteenthSlice": {
+      "status": "versioned-native-pbr-resource-component-software-proof-composition-source3-and-mips-pending",
+      "interfaces": [
+        "prepareRigidGltfPbr",
+        "prepared-rigid-gltf-pbr-1",
+        "SolidGeometryV2Schema",
+        "native-pbr-material-1",
+        "preflightNativePbrResources",
+        "prepareNativePbrResources",
+        "createNativePbrResources",
+        "captureNativePbrGpuDraw",
+        "sealNativePbrGpuDraw"
+      ],
+      "behavior": [
+        "Pinned FFmpeg8.0.1 decodes bounded PNG/JPEG to straight top-left RGBA8; exact PNG bytes beneath zero alpha and JPEG EXIF orientation controls pass. PNG CRC/chunk bounds, palette/transparency structure and encoded dimensions/MIME are rechecked. Color/aspect/animation metadata are ignored as required by glTF. Pixel/source/canonical geometry identities remain separate.",
+        "Explicit solid-geometry-2 preserves supplied tangent XYZW, opaque linear factors and sRGB/linear texture roles/samplers. Existing geometry/source1/source2 parsers remain strict. This resource version is not yet a renderable composition source.",
+        "The shared pure admission calculator rejects the counted 64MiB component payload before Node pixel decoding or Three resource allocation. It bills source Number arrays, typed CPU/GPU attributes, private pixels, per-binding CPU texture copies and complete GPU mip allocation. Pooling separates sRGB from linear and shares identical packed/normal bindings. Disposal owns original resources despite public collection changes.",
+        "Actual bound indexed draws verify GPU vertex/index bytes, attribute pointers/ranges, factor/transform/normal-scale uniforms, opaque/culling state, texture handles and filter/wrap parameters. Tiled RGBA8 readback checks all base-level pixels against owned bytes; an independent float shader checks every base-level transfer sample with new profile tolerance0.0001. Hashing uses copies captured synchronously before the draw."
+      ],
+      "softwareEvidence": {
+        "currentInputs": {
+          "path": "/private/tmp/still-shift-ms2-pbr-inputs-12.json",
+          "bytes": 421369,
+          "sha256": "sha256:9931c852ad19f5ac150c9a99b2363d57b149c05aedd6f3172ddf1e7f70a20649",
+          "files": 2470,
+          "inputBytes": 118813866,
+          "sourceCommit": "6097df379d4720274a8ffedf858f81359f294e44"
+        },
+        "verificationRows": [
+          "native-pbr-red-1",
+          "native-pbr-decode-2",
+          "native-pbr-build-3",
+          "native-pbr-focused-4",
+          "native-pbr-build-5",
+          "native-pbr-build-6",
+          "native-pbr-browser-7",
+          "native-pbr-browser-8",
+          "native-pbr-fast-9",
+          "native-pbr-broad-10",
+          "native-pbr-red-11",
+          "native-pbr-current-12"
+        ],
+        "currentFast": {
+          "unitTests": 4150,
+          "unitFiles": 404
+        },
+        "currentAffectedRuntimeTests": 8,
+        "currentUnitResourceTests": 5,
+        "gpuComponentProof": {
+          "path": "/private/tmp/still-shift-ms2-pbr-resources-PEjzwU/run.json",
+          "bytes": 10304,
+          "sha256": "sha256:65adc7373dac7e46a29818ed75357ddf9e3b116dd523282986a44aa1e9429c0f"
+        },
+        "gpuFrames": 3,
+        "gpuFaults": 4,
+        "rgbaSha256": "sha256:9278cef0396ef833f529a1d8e3e9e572c73ca242277722c67a2fe92a39af01ff",
+        "allocation": {
+          "vertexBytes": 150,
+          "sourceAttributeBytes": 312,
+          "textureCpuBytes": 32,
+          "pixelBytes": 16,
+          "textureBytes": 40,
+          "textures": 2,
+          "totalBytes": 700
+        },
+        "broaderSnapshot10": {
+          "runtimeTests": 190,
+          "runtimeFiles": 29,
+          "integrationTests": 321,
+          "integrationFiles": 56,
+          "pythonTests": 14,
+          "native2Groups": 6,
+          "native2RepeatedExports": 2,
+          "labSmokeWorkflows": 3,
+          "reusableSmokeFixtures": 21
+        },
+        "nativePbrCompositionCaptures": 0,
+        "nativePbrCompositionExports": 0,
+        "newInstalledArchives": 0
+      },
+      "retainedFailures": [
+        "native-pbr-red-1",
+        "native-pbr-build-3",
+        "native-pbr-build-5",
+        "native-pbr-browser-7",
+        "native-pbr-fast-9",
+        "native-pbr-red-11"
+      ],
+      "scopeLimits": [
+        "GPU receipt scope is the supplied mesh/material indexed draw and complete mip0 storage/transfer. Caller association, whole-frame camera/world graphics and composition observation are not independently certified by this component receipt. Mip allocation and filter flags are checked; mip pixel values are not.",
+        "Binary pixel inputs are copied and hashed outside the resource metadata. No source3 preparation, composition worker/HTTP binary handoff, shared graph preview/export, complete imported mechanism or installed archive is implemented by this slice.",
+        "The 64MiB bill counts the listed resident component payloads, not caller-owned input copies, decoder/verification scratch, JavaScript object overhead, process RSS or whole-world/GPU/PMREM admission. Existing packet, replay and world budgets and tolerances are unchanged.",
+        "Snapshot12 refreshes final fast, eight affected Node parser/decode tests and actual PBR GPU proof. Snapshot10 is the exact retained full runtime/native2 input; its broader run is not reported as re-executed after the final Node-only guards. Its renderer, native appearance and non-PBR render inputs are unchanged.",
+        "Three existing mechanism candidates remain candidates. supportedPacks stays empty; pilotSupportedEpisodes stays0. Human visual/listening/hardware/material acceptance, owning full MS2 gate and PR/MS3 remain pending."
+      ],
+      "remaining": "Implement explicit composition source/transport/observation admission with binary resources and mip-data proof, then complete owning MS2 generator/registry/world preflight, events/labels/cues/typography/300-board and full/installed gates before its milestone PR and MS3."
     }
   },
   "limits": [
-    "Three native2 pack candidates have bounded executed camera recipes with actual all-frame native proof and repeated exports at default/larger sizes. Current producer refresh is staged with identical plans/appearance/execution and strict actual-packet/export replay. Full generator/import/registry/world preflight, labels/cues/typography/300-board/full/installed acceptance remain; supported packs/pilot0. Existing replay quotas unchanged; human acceptance separate.",
+    "Nineteen MS2 slices now include named rigid glTF IR and a separately verified decoded native PBR resource component. Three native2 pack candidates and their scoped camera/family evidence remain retained; supported packs/pilot0. Complete imported-source composition/binary transport/mip proof, generator/registry/world preflight, labels/cues/typography/300-board/full/installed acceptance remain. Existing replay quotas and human acceptance remain separate.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

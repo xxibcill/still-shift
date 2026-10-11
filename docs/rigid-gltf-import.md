@@ -5,11 +5,12 @@ MS2 exports `importRigidGltf`, `decodeRigidGltf` and `inspectRigidGltf` from
 intermediate representation with named parts, baked geometry, original transform
 bases, PBR texture roles, encoded images and exact dependency identities.
 
-The result is **not yet admitted to the native renderer**. Images receive header,
-MIME, byte and dimension checks; their pixels have not been decoded or verified.
-The versioned native material/tangent consumer, image decoding and independent
-GPU/preview/export proof remain MS2 work. Passing importer tests does not complete
-the owning glTF/PBR acceptance criterion.
+The IR is **not yet a renderable native composition source**. The new
+`prepareRigidGltfPbr` stage decodes and hashes PNG/JPEG pixels and prepares explicit
+`solid-geometry-2` material/tangent resources. The browser owner consumes those
+resources with actual GPU component proof. Composition admission, binary handoff,
+mip-data proof and imported-model preview/export remain MS2 work; the owning
+acceptance criterion stays unchecked. See [PBR resource preparation](./native-pbr-resources.md).
 
 ```ts
 import {
@@ -84,8 +85,12 @@ PNG/JPEG headers are supported; PNG headers must declare eight-bit channels.
 Images may use local/data URIs or separate buffer views. Declared MIME and data
 URI MIME must match the header. Encoded image bytes are retained unchanged as
 base64 and SHA-256. A header match does not establish a valid compressed payload,
-pixel color conversion or native texture compatibility. Those checks belong to
-the pending pixel-decoding and renderer admission stage.
+pixel color conversion or native texture compatibility. `prepareRigidGltfPbr`
+now performs bounded pixel preparation; complete native composition admission
+remains pending. It requires pinned FFmpeg8.0.1, checks encoded header dimensions
+and MIME again, validates supported PNG structure/CRC, ignores image metadata
+and returns straight top-left RGBA8 plus source/pixel hashes. Compressed payload
+failures and cancellation settle after the decoder closes its pipes.
 
 ## Budgets, identities and inspection
 

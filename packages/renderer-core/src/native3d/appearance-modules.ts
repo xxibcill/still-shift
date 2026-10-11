@@ -886,6 +886,22 @@ export const native3DAppearanceModules: readonly {
     url: new URL("./override-keys.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/native3d/pbr-allocations.ts",
+    url: new URL("./pbr-allocations.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/pbr-gpu-draw.ts",
+    url: new URL("./pbr-gpu-draw.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/pbr-gpu-texture.ts",
+    url: new URL("./pbr-gpu-texture.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/pbr-resources.ts",
+    url: new URL("./pbr-resources.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/native3d/physical-visibility.ts",
     url: new URL("./physical-visibility.ts", import.meta.url),
   },
@@ -1738,6 +1754,13 @@ export const native3DAppearanceModules: readonly {
     name: "scene-contract/src/native3d/observation.ts",
     url: new URL(
       "../../../scene-contract/src/native3d/observation.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/native3d/pbr-geometry.ts",
+    url: new URL(
+      "../../../scene-contract/src/native3d/pbr-geometry.ts",
       import.meta.url,
     ),
   },

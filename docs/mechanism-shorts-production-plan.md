@@ -698,9 +698,11 @@ mechanism families establish whether the architecture transfers.
       with tests; never silently flatten a model's required mechanism behavior.
       Eighteenth slice adds the named/baked rigid import IR, local dependency
       validation and exact encoded PBR roles with current software evidence.
-      Pixel decoding and the versioned native material/tangent consumer plus
-      independent GPU/preview/export proof remain pending; this criterion stays
-      unchecked. See the [import API](./rigid-gltf-import.md) and
+      Nineteenth slice adds pinned PNG/JPEG RGBA preparation, explicit native PBR/
+      tangent resource ownership, shared pre-decode allocation admission and actual
+      indexed-draw/mip0 GPU component proof. Composition source/binary admission,
+      mip-data verification and imported preview/export proof remain pending;
+      this criterion stays unchecked. See the [import API](./rigid-gltf-import.md) and
       [retained results](./mechanism-shorts-ms2-results.json).
 - [ ] Implement slider hard stops, hinge/lever, deterministic spring return and
       ratchet/pawl controls. These are explanatory animation rigs, not a general

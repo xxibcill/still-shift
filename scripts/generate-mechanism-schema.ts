@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { format } from "prettier";
 import { z } from "zod";
 import {
+  SolidGeometryV2Schema,
   MechanismGeometrySchema,
   MechanismSceneSchema,
   MechanismEpisodeSchema,
@@ -25,6 +26,7 @@ import {
 } from "../packages/animation-engine/src/mechanism/primitive-contract.ts";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const schemas = {
+  "solid-geometry-2": SolidGeometryV2Schema,
   geometry: MechanismGeometrySchema,
   scene: MechanismSceneSchema,
   episode: MechanismEpisodeSchema,
