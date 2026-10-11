@@ -1,3 +1,13 @@
+import {
+  CompositionSchema,
+  NativeObservedOutputFrameV3Schema,
+  NativeObservedOutputFrameV2Schema,
+} from "@still-shift/scene-contract";
+import { prepareNative3DSceneV3 } from "../../packages/renderer-core/src/native3d/prepare-v3.ts";
+import { nativeCompositionObservationCapacityV3 } from "../../packages/renderer-core/src/native3d/observation-capacity-v3.ts";
+import { createNativeObservationCollectorV3 } from "../../packages/renderer-core/src/native3d/observations-v3.ts";
+import { ManagedMemory } from "../../packages/renderer-core/src/managed-memory.ts";
+import { withManagedMemory } from "../../packages/renderer-core/src/managed-memory-context.ts";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { mkdtemp, readFile, writeFile } from "node:fs/promises";
@@ -123,6 +133,12 @@ const producerPaths = [
   "packages/renderer-core/src/native3d/pbr-gpu-reference.ts",
   "tests/helpers/native-pbr-scene-fixture.ts",
   "tests/browser/native-pbr-observation.ts",
+  "packages/scene-contract/src/native3d/output-v3.ts",
+  "packages/renderer-core/src/native3d/observations-async.ts",
+  "packages/renderer-core/src/native3d/observations-v3.ts",
+  "packages/renderer-core/src/native3d/observation-capacity-v2.ts",
+  "packages/renderer-core/src/native3d/observation-capacity-v3.ts",
+  "packages/renderer-core/src/native3d/observation-capacity-versions.ts",
 ];
 const producers = await Promise.all(
   producerPaths.map(async (path) => ({
@@ -167,6 +183,94 @@ try {
     return proof.nativePbrObservationProof(input);
   }, input);
   const frames = [];
+  const capacitySource = await prepareNative3DSceneV3(
+    input.source,
+    input.sourceSha256,
+  );
+  const capacityMemory = new ManagedMemory({
+    pixels: 1,
+    metadata: 64 * 1024 ** 2,
+  });
+  const output3Capacity: {
+    id: string;
+    sourceFrame: number;
+    capacity: number;
+    packetBytes: number;
+    passes: number;
+  }[] = [];
+  try {
+    await withManagedMemory(capacityMemory, async () => {
+      for (const capture of result.captures) {
+        // Count the same trusted source inventory at the captured source clock.
+        // This is standalone receipt-to-collector proof, not composition GPU rendering.
+        const composition = CompositionSchema.parse({
+          schemaVersion: "composition-1",
+          id: "root",
+          width: 320,
+          height: 180,
+          fps: 30,
+          frameCount: 1,
+          assets: [
+            {
+              id: "lever",
+              type: "native3d",
+              format: "mechanism-scene-3",
+              path: "source3.json",
+              sha256: input.sourceSha256,
+            },
+          ],
+          layers: [
+            {
+              id: capture.receipt.controller,
+              type: "native3d",
+              asset: "lever",
+              sourceStartFrame: capture.sourceFrame,
+              sourceFps: 30,
+            },
+          ],
+        });
+        const capacity = nativeCompositionObservationCapacityV3(
+          composition,
+          0,
+          { preparedNative3D: { lever: capacitySource } },
+        );
+        const collector = createNativeObservationCollectorV3();
+        try {
+          collector.begin(capacity);
+          collector.observe(capture.receipt, 0);
+          const passes = await collector.finish();
+          const packet = NativeObservedOutputFrameV3Schema.parse({
+            version: "native3d-observed-output-frame-3",
+            outputFrame: 0,
+            executionSha256: capture.receipt.appearanceCodeSha256,
+            passes,
+          });
+          const packetBytes = Buffer.byteLength(JSON.stringify(packet));
+          assert.ok(packetBytes <= capacity);
+          assert.equal(
+            NativeObservedOutputFrameV2Schema.safeParse({
+              ...packet,
+              version: "native3d-observed-output-frame-2",
+            }).success,
+            false,
+          );
+          output3Capacity.push({
+            id: capture.id,
+            sourceFrame: capture.sourceFrame,
+            capacity,
+            packetBytes,
+            passes: packet.passes.length,
+          });
+        } finally {
+          collector.dispose();
+        }
+        assert.equal(capacityMemory.statistics.reservations, 0);
+        assert.equal(capacityMemory.statistics.current.metadata, 0);
+      }
+    });
+  } finally {
+    capacityMemory.dispose();
+  }
   for (const capture of result.captures) {
     const rgba = Uint8Array.from(capture.rgba);
     await writeFile(join(directory, capture.id + ".rgba"), rgba, {
@@ -217,6 +321,12 @@ try {
         environment,
         producers,
         frames,
+        output3Capacity: {
+          scope:
+            "standalone actual GPU receipts to bounded output3 collector; composition/authenticated export integration pending",
+          frames: output3Capacity,
+          statistics: capacityMemory.statistics,
+        },
         faults: result.faults,
         cleanup: result.cleanup,
         statistics: result.statistics,

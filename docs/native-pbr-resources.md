@@ -279,7 +279,7 @@ pixel0.5 and mip-transfer0.0001 profiles remain fixed. Receipt owners must be
 disposed after use; owner disposal and aborts invalidate pending finalization.
 
 This API is a standalone source3 observation boundary. Composition collector
-integration, conservative output-frame3 capacity sizing, authenticated exports,
+integration, authenticated exports,
 journals and installed consumer proof remain pending; existing source3 composition observation/export requests
 still reject. Original frame1/frame2/output2 parsers retain their strict behavior.
 The scoped allocator proof covers observation copies, metadata and hashing;
@@ -309,8 +309,28 @@ are private, while validated matrix arrays retain their existing borrowed owners
 and are frozen. Metadata ownership lasts until the next begin, abort or disposal.
 
 This collector is not yet wired into composition rendering or authenticated
-transport. Source3 composition collection/export still rejects until conservative
-capacity sizing, asynchronous renderer hooks and the transport/export/installed
-proof are complete. [Collector results](./mechanism-shorts-ms2-output3-collector-results.json)
+transport. Source3 composition collection/export still rejects until capacity
+sizing is wired into asynchronous renderer hooks and the transport/export/installed
+proof is complete. [Collector results](./mechanism-shorts-ms2-output3-collector-results.json)
 retain mixed completion, byte/pass admission, original protocol rejection and
 lifecycle tests, staged failures and existing native2 composition/export checks.
+
+## Conservative standalone output3 capacity
+
+`nativeCompositionObservationCapacityV3(composition, outputFrame, options)` sizes
+all discovered source1/source2/source3 passes before collector/GPU admission. It
+retains the original 64-pass/1MiB packet ceiling and reserves sizing scratch before
+graph evaluation. Source3 counts the bounded common/part/anchor record and then
+individual mesh/group/material/vertex/shader/texture-mip receipts. It rejects byte
+overflow incrementally without building a complete large pass template. The quoted
+finite-number upper bound is a sizing device and never measured evidence.
+`nativeCompositionObservationCapacityV2` still rejects source3.
+
+Fresh standalone actual GPU receipts, including hidden/outside-frustum cases,
+produce 2,512–10,133B output3 packets inside 28,165B capacity, with zero collector
+owners after disposal. These diagnostic envelopes do not prove authenticated
+execution identity or composition rendering. [Capacity results](./mechanism-shorts-ms2-output3-capacity-results.json)
+retain invalid new fixtures, type failures, the original strict aggregate timeout
+and the unchanged default-worker unit/Node/browser continuation. Renderer collector
+integration, compositor-owned world-artwork admission, authenticated transport/
+export/installed proof and whole world/source/body/replay budgets remain pending.

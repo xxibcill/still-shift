@@ -885,6 +885,10 @@ export const native3DAppearanceModules: readonly {
     url: new URL("./observation-capacity-v2.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/native3d/observation-capacity-versions.ts",
+    url: new URL("./observation-capacity-versions.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/native3d/observations-async.ts",
     url: new URL("./observations-async.ts", import.meta.url),
   },

@@ -24,3 +24,5 @@ export * from "./evaluate-v3.ts";
 export * from "./observed-validation-v3.ts";
 
 export * from "./observations-v3.ts";
+
+export * from "./observation-capacity-v3.ts";

@@ -45,20 +45,23 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Twenty-five slices include strict standalone source3 GPU/world/anchor observation,
-  restored strict gates, and the explicit output3 contract/async collector. Held
-  collector inputs4: 2,507 files/119,052,599B. Normal fast4 passes all prefix checks
-  and 4,182 units/408 files; Node5 passes ten owning tests/four files. Fresh
-  composition6/export7 pass four captures/15 negatives and two normal native2 exports.
-  Source3 standalone and six native2 browser groups last passed in slice24.
-  Final selected bytes match; staged failures, rejected experiments and test
-  ownership/type repair remain recorded. Full/runtime/integration/installed stay historical.
-  Next: output3 capacity sizing and async renderer hooks, authenticated source3
-  export/installed, whole world/source/body/replay budgets and remaining MS2 criteria.
-  Source3 collection/export still rejected; supported packs/pilot0;
-  no MS2 PR/MS3 or human acceptance.
+  Twenty-six slices include strict standalone source3 observations, output3
+  contract/collector and incremental conservative capacity. Inputs10: 2,510 files/
+  119,073,803B. Fast10 prefix passes; units 4,185 pass/one strict gradient timeout.
+  Unchanged default units15 pass 4,186/409 files; Node16 ten tests/four files. Fresh
+  observation17 passes eight actual receipts/21 faults: 2,512–10,133B packets fit
+  28,165B capacity with zero collector owners. Native2 composition18/export19 pass
+  four captures/15 negatives and two exports. Held selected bytes match afterward.
+  Staged failures and test fixture/type repairs remain retained; no uninterrupted
+  fast/full pass. Full/runtime/integration/installed stay historical.
+  Next: output3 async renderer/collector integration with explicit world-artwork
+  ownership, authenticated source3 export/installed, whole world/source/body/replay
+  budgets and remaining MS2 criteria. Source3 collection/export still rejected;
+  supported packs/pilot0; no MS2 PR/MS3 or human acceptance. ElevenLabs spending
+  requires the owner's explicit approval for the identified estimated batch.
   [MS2 results](./mechanism-shorts-ms2-results.json),
-  [output3 collector evidence](./mechanism-shorts-ms2-output3-collector-results.json),
+  [capacity evidence](./mechanism-shorts-ms2-output3-capacity-results.json),
+  [collector evidence](./mechanism-shorts-ms2-output3-collector-results.json),
   [strict-gate history](./mechanism-shorts-ms2-strict-gates-results.json),
   [PBR API](./native-pbr-resources.md), [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
@@ -219,13 +222,31 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-10-11 — MS2 incremental output3 capacity and fresh GPU packet bounds
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `1210459f`.
+- **Done:** conservative output3 common/mesh/group/mip sizing with bounded scratch
+  and incremental byte rejection; original output2 protocol remains strict.
+- **Results:** fast10 prefix passes then retains one gradient 5,622ms/5,000ms timeout;
+  unchanged default units15 pass 4,186/409 files. Node16 ten tests/four files; actual GPU
+  observation17 eight frames/21 faults, all standalone packets 2,512–10,133B within
+  28,165B admission with zero owners. Composition18/export19 preserve native2 proof.
+- **Retained:** invalid overlapping controller fixtures, mistaken UV/oversize assumptions,
+  callback/result-array type failures and strict timeout. No limit relaxed or source
+  changed between final prefix/failure, unit rerun and browser suffix; inputs10 match.
+- **Next:** output3 renderer/collector integration and explicit world-artwork ownership,
+  authenticated export/installed and whole world/source/body/replay admission.
+  Source3 composition collection/export still rejected; supported packs/pilot0.
+- **Records:** [capacity evidence](./mechanism-shorts-ms2-output3-capacity-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json). No paid narration performed.
+
 ### 2026-10-11 — MS2 explicit output3 contract and ordered async collector
 
 - **Agent / branch:** Codex on `codex/mechanism-ms2`, from `10b50765`.
 - **Done:** strict output3/sample3 contract, shared internal async collector and
   pure V3 wrapper. Original output2 parser/rejection and ownership semantics preserved.
 - **Results:** fast4 passes 4,182 units/408 files and all prefix gates; Node5
-  ten/four files; composition6 four captures/15 negatives, export7 two actual native2
+  ten tests/four files; composition6 four captures/15 negatives, export7 two actual native2
   exports. Inputs4 unchanged after final commands; original limits retained.
 - **Retained:** initial matrix-cloning assumption fails; explicit frozen borrowed-array
   assertion passes. Deliberate readonly tuple assignment fails type checking;

@@ -15486,6 +15486,95 @@
       },
       "record": "docs/mechanism-shorts-ms2-output3-collector-results.json",
       "qualification": "All local final commands exit0 on unchanged inputs4 in a staged sequence. Synthetic empty-mesh test fixtures prove protocol/lifecycle only, never GPU drawing. Receipt matrices retain the existing validated shared-array ownership, frozen by collection; parsed object fields are private. Original thresholds and fixtures unchanged. Slice24 failed histories remain retained separately. Full runtime/integration/full/benchmark/installed were not refreshed. Source3 whole-world budget, collector capacity/renderer integration and authenticated export remain pending; no human acceptance or milestone PR."
+    },
+    {
+      "id": "output3-capacity-slice-26",
+      "status": "staged-output3-capacity-verified-renderer-export-integration-pending",
+      "actualRootSessions": [
+        {
+          "session": 85961,
+          "exitCode": 0,
+          "commands": ["format1", "build1"]
+        },
+        {
+          "session": 31397,
+          "exitCode": 1,
+          "commands": ["format2", "unit2"],
+          "unrun": ["build2"]
+        },
+        {
+          "session": 23038,
+          "exitCode": 1,
+          "commands": ["format3", "unit3"],
+          "unrun": ["build3"]
+        },
+        {
+          "session": 55097,
+          "exitCode": 2,
+          "commands": ["format4", "unit4", "build4"]
+        },
+        {
+          "session": 17585,
+          "exitCode": 2,
+          "commands": ["format5", "identity5", "inputs5", "fast5"],
+          "unrun": ["node6", "observation7", "composition8", "export9", "hold9"]
+        },
+        {
+          "session": 46965,
+          "exitCode": 1,
+          "commands": ["hold5", "format10", "build10", "inputs10", "fast10"],
+          "unrun": [
+            "node11",
+            "observation12",
+            "composition13",
+            "export14",
+            "hold14"
+          ]
+        },
+        {
+          "session": 94397,
+          "exitCode": 0,
+          "commands": [
+            "units15",
+            "node16",
+            "observation17",
+            "composition18",
+            "export19",
+            "hold19"
+          ]
+        }
+      ],
+      "workingInputs": {
+        "manifest": {
+          "path": "/private/tmp/still-shift-ms2-capacity3-inputs10.json",
+          "bytes": 428222,
+          "sha256": "sha256:6938b6f41cbe8fd18ca565b29702e597d26a5e5edc7a6134d956468eff487daa"
+        },
+        "files": 2510,
+        "inputBytes": 119073803,
+        "selection": {
+          "roots": [
+            "apps/",
+            "packages/",
+            "scripts/",
+            "tests/",
+            "tools/",
+            "services/",
+            "benchmarks/",
+            "examples/",
+            "assets/",
+            "catalogs/"
+          ],
+          "rootFiles": "all Git-tracked or nonignored regular root files",
+          "packageProse": [
+            "docs/npm-package-readme.md",
+            "docs/npm-third-party-notices.md"
+          ],
+          "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+        }
+      },
+      "record": "docs/mechanism-shorts-ms2-output3-capacity-results.json",
+      "qualification": "Staged final verification: fast10 prefix passes then fails one original strict unit timeout; unchanged default-worker units15, owning Node16 and browser suffix all exit0. Never describe this as an uninterrupted fast/full pass or infer the timeout cause. Actual GPU frames have independently checked physical draws, matrices, bytes and mip receipts; standalone diagnostic packets use their appearance digest as the envelope digest and do not prove authenticated execution identity or composed output. Source3 composition collection/export remains rejected. Complete world/source/body/replay budgets and renderer artwork ownership remain pending. Full runtime/integration/full/benchmark and installed verification were not refreshed; no human visual/listening acceptance, milestone PR, merge/publication or ElevenLabs spending."
     }
   ],
   "implementation": {
@@ -16422,6 +16511,46 @@
         "Explicit source3 async render hooks and mixed output3 collector composition proof.",
         "Authenticated request/producer/sink/upload/journal/export/installed integration and whole source/world/body/replay admission.",
         "Remaining MS2 family/authoring/quality/full-gate criteria before milestone PR."
+      ]
+    },
+    "twentySixthSlice": {
+      "status": "staged-output3-capacity-verified-renderer-export-integration-pending",
+      "scope": [
+        "Explicit conservative output3 capacity API; original output2 API still rejects source3. Shared internal legacy templates retain original sizing.",
+        "Source3 counts bounded common/anchor records, then individual mesh/group submissions with all declared texture roles and complete mip inventories. Oversize passes reject incrementally without building a full large receipt template.",
+        "Fixed quoted finite-number upper bounds, 64 passes,1MiB total packet and sizing scratch admission before graph evaluation; scratch released after both success and rejection.",
+        "Fresh independently validated actual GPU receipts pass the standalone output3 collector and envelope with complete packet bytes below capacity. This does not enable source3 composition collection or authenticated export."
+      ],
+      "counts": {
+        "unitTests": 4186,
+        "unitFiles": 409,
+        "fast10Passes": 4185,
+        "fast10Failures": 1,
+        "unchangedUnitRerunPasses": 4186,
+        "unchangedUnitRerunFailures": 0,
+        "unitRerunSeconds": 140.49,
+        "focusedTests": 13,
+        "focusedFiles": 3,
+        "newCapacityTests": 4,
+        "owningNodeTests": 10,
+        "owningNodeFiles": 4,
+        "source3Frames": 8,
+        "source3Faults": 21,
+        "actualSource3CollectorPackets": 8,
+        "capacityPerFrame": 28165,
+        "minimumActualPacketBytes": 2512,
+        "maximumActualPacketBytes": 10133,
+        "source3ComposedOutputPackets": 0,
+        "source3Exports": 0,
+        "newInstalledArchives": 0,
+        "supportedPacks": 0,
+        "pilotSupportedEpisodes": 0
+      },
+      "remaining": [
+        "Integrate explicit source3 async runtime hooks and output3 composition collector; preserve foreign-mesh rejection with explicit compositor-owned artwork admission.",
+        "Authenticated source3 request/producer/sink/upload/journal/export/installed proof.",
+        "Whole world/source/body/replay budgets retaining32MiB shard/16 shards/512MiB total and fixed packet/pass limits.",
+        "Remaining MS2 packs/authoring/quality/full milestone gates before its PR, then MS3; human review stays separate."
       ]
     }
   },

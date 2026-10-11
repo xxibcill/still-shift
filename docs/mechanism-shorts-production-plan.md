@@ -715,7 +715,11 @@ mechanism families establish whether the architecture transfers.
       beside the original output2 parser. Current fast/owning Node and native2
       composition/export checks pass; [collector evidence](./mechanism-shorts-ms2-output3-collector-results.json)
       retains test-ownership/type failures. Source3 collection/export stays rejected.
-      Composition/output3 capacity, authenticated source3 export, installed and
+      Twenty-sixth slice adds incremental conservative output3 capacity and fresh
+      actual GPU receipt-to-collector bounds. All eight packets fit 28,165B admission;
+      current units/Node/browser checks finish in stages with the original failed
+      timeout retained in [capacity evidence](./mechanism-shorts-ms2-output3-capacity-results.json).
+      Output3 composition integration, authenticated source3 export, installed and
       whole-world proof remain pending;
       this criterion stays unchecked. See the [import API](./rigid-gltf-import.md) and
       [retained results](./mechanism-shorts-ms2-results.json).
