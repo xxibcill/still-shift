@@ -1,3 +1,4 @@
+import { describeMechanismPackCameras } from "./camera-descriptions.ts";
 import { createHash } from "node:crypto";
 import { z } from "zod";
 import { Matrix4, Vector3 } from "three";
@@ -280,6 +281,10 @@ export function createPackInstance<P>(
     sourceSha256: mechanismPackHash(source),
     meshDataSha256: mechanismPackHash({ meshes: source.geometry.meshes }),
     bounds: mechanismPackBounds(source),
+    cameraTargets: describeMechanismPackCameras(source, receipt.pack.family),
+    cameraTargetsSha256: mechanismPackHash(
+      describeMechanismPackCameras(source, receipt.pack.family),
+    ),
   });
 }
 export interface MechanismPackInstanceSource {
@@ -356,33 +361,4 @@ export function offsetPackMesh(
       ],
     },
   };
-}
-export function packCameraTargets(
-  contact: string,
-  detail: string,
-): MechanismPackDocument["cameraTargets"] {
-  return [
-    {
-      id: "recognition",
-      intent: "recognition",
-      target: { kind: "part", id: "model" },
-    },
-    {
-      id: "approach",
-      intent: "contact-approach",
-      target: { kind: "anchor", id: contact },
-    },
-    { id: "macro", intent: "macro", target: { kind: "anchor", id: detail } },
-    {
-      id: "comparison",
-      intent: "aligned-comparison",
-      target: { kind: "anchor", id: contact },
-    },
-    {
-      id: "orbit",
-      intent: "controlled-orbit",
-      target: { kind: "part", id: "model" },
-    },
-    { id: "return", intent: "return", target: { kind: "anchor", id: contact } },
-  ];
 }

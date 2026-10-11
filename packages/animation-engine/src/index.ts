@@ -92,3 +92,4 @@ export * from "./mechanism/tape-hook-pack.ts";
 export * from "./mechanism/primitive-mesh.ts";
 export * from "./mechanism/cable-tie-pack.ts";
 export * from "./mechanism/clothespeg-pack.ts";
+export * from "./mechanism/camera-recipes.ts";

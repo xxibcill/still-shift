@@ -46,9 +46,11 @@ inspection to derive truthful topology counts and bounds; only metadata is
 returned. Inspection is not a claim that no geometry allocation occurred.
 
 The six named targets are `recognition`, `approach`, `macro`, `comparison`,
-`orbit` and `return`. They currently declare intent and a part/anchor target.
-The thumbnail is a native preview recipe. Adaptive camera execution, a
-packaged thumbnail and decisive-surface framing checks remain required.
+`orbit` and `return`. Each declares actual part/mesh framing, bounded lens and
+view candidates, relationship IDs, motion intent and mesh proof surfaces near
+semantic anchors. Metadata includes these descriptions; each instance also binds
+its camera descriptions with a canonical SHA-256. The thumbnail remains a
+preview recipe; a packaged thumbnail is still required.
 
 `createTapeHookPack()` returns a frozen `mechanism-pack-instance-1` with a
 `mechanism-scene-2` source, its canonical source hash, mesh data hash, current
@@ -173,13 +175,83 @@ partition (128 MiB), records its approximately 31.4 MB peak and asserts every
 reservation is released. The standalone verifier retains its 16 MiB default;
 that smaller caller quota rejected the candidate and the failed run is retained.
 
-Actual image inspection found that the existing camera crops the larger housing
-and that the push wall obscures the decisive hook face. The candidate does not
-count toward supported-family or pilot coverage until camera recipes and the
-remaining MS2 checks are implemented. Actual image inspection also finds the tie
-faint in its default wide view; contrast and macro framing still need work. Rigid
-glTF/GLB import, complete generator/registry admission, full world allocation
-preflight, six executed camera recipes, labels/cues, scoped typography, the
-300-topic coverage board and full/installed milestone gates remain open. The
-shared bounded primitive library and the three candidate generators are now
-implemented; supported-family/pilot counts remain zero.
+The seventeenth slice adds executed camera recipes for all three candidates and
+both tested dimensions. Tape reference props now end at an exposed contact edge;
+the original scene1 generator is unchanged. Tie nylon is darker for contrast.
+Clothespeg front and rear comparison views show the two spring seat exits. The
+contact landmarks still measure the seated ends; visibility probes bind to
+actual posed mesh triangles, rather than using buried wire centroids as visible
+surface evidence. Current software/native receipts and retained failures are in
+[the MS2 results](./mechanism-shorts-ms2-results.json).
+
+Rigid glTF/GLB import, complete generator/registry admission, full world allocation
+preflight, labels/cues, scoped typography, the 300-topic coverage board and
+full/installed milestone gates remain open. Supported-family/pilot counts stay
+zero. Human visual/listening acceptance remains separate.
+
+## Execute camera recipes
+
+The public Node APIs `createMechanismCameraRecipeFrame()` and
+`compileMechanismCameraRecipeClip()` accept an existing pack instance. They
+validate source/camera identity, fresh posed bounds, declared required
+relationships, safe insets and reserved pixel rectangles. Directions are tried
+in declaration order. An explicit authored camera is preserved and checked; an
+invalid override returns a located error. A clip chooses one direction for all
+its samples, preventing per-frame fallback jumps.
+
+```ts
+import {
+  createCableTiePack,
+  compileMechanismCameraRecipeClip,
+} from "@still-shift/animation-engine";
+
+const instance = createCableTiePack();
+const clip = compileMechanismCameraRecipeClip(instance, {
+  target: "macro",
+  width: 640,
+  height: 360,
+  sourceFrames: [0, 1, 2, 3],
+  editing: "hold",
+  reservedRegions: [
+    { id: "caption", rect: { left: 12, top: 282, right: 628, bottom: 348 } },
+  ],
+});
+// Use clip.camera and clip.cameraKeys on a native3d composition controller.
+```
+
+Cut, hold and transition are explicit editing decisions independent of camera
+intent. A transition requires `fromCamera`; a controlled orbit can supply
+`orbitDegrees: [-8, 8]`. Every clip returns `endCamera`. Supplying it as the next
+hold's `fromCamera` preserves that camera and rejects a target that no longer fits;
+use an explicit cut or transition to change it. A cut ignores a preceding camera's
+up direction; each new track still has one constant up direction. A standalone clip without a
+preceding camera does not certify its join. Authored cameras and generated orbits
+cannot be combined silently. Motion uses elapsed source frames, so unevenly spaced
+samples retain their timing. Camera tracks retain one up direction and common
+near/far planes, matching what native camera keys actually serialize. Changing
+up during a track fails instead of silently losing that property.
+
+A hold fits the union of the supplied posed envelope bounds. The available
+region is the largest empty rectangle after safe insets and reservations,
+with fixed area/center/top/left tie-breaking and padding. Failure includes the
+camera target, frame, failed surface/mesh or region IDs. Physical closed pack
+meshes participate in camera-inside and actual near-plane segment checks; masked
+fragments below cutoff do not. There is no history, hysteresis or cached camera
+choice, so random seeks produce the same result.
+
+Proof bindings contain a triangle index and barycentric coordinates on each
+freshly posed physical mesh. They may change triangle as a spring bends; the
+semantic surface ID remains fixed. Expected-state projection and front-side
+physical rays must pass at every supplied sample. The API checks up to 64 source
+samples, eight rectangles and eight proof surfaces, with an 8 MiB world-position
+storage limit and 32 KiB clip receipt. It does not certify unsupplied times or
+arbitrary imported/open meshes. Supply the actual output source frames for
+short clips; longer clips require bounded sampling and additional frame QA.
+
+`pnpm test:browser:mechanism-cameras` executes six four-frame shots for each
+family at both sizes, plus repeat seeks and two complete 24-frame exports per
+variant. Browser proof rays independently use Float32 positions, observed part
+matrices and the observed Three camera. Strict native2 validation binds those
+streams to the buffers actually submitted to the GPU before the proof results
+are accepted. These fixture proofs cover the opaque candidate materials; they
+are separate from generic import/material admission and human acceptance.

@@ -1,3 +1,6 @@
+import { describeMechanismPackCameras } from "./camera-descriptions.ts";
+import { createMechanismPrimitiveMesh } from "./primitive-mesh.ts";
+import { offsetPackMesh } from "./pack-support.ts";
 import { z } from "zod";
 import { createHash } from "node:crypto";
 import { Matrix4, Vector3 } from "three";
@@ -74,7 +77,24 @@ function tapeScene(
   const legacy = createTapeHookScene(parameters),
     geometry = {
       schemaVersion: "solid-geometry-1",
-      meshes: legacy.geometry.meshes,
+      meshes: legacy.geometry.meshes.map((mesh) => {
+        if (mesh.id !== "contact-board" && mesh.id !== "contact-wall")
+          return mesh;
+        const front = parameters.bladeWidth / 4;
+        const isBoard = mesh.id === "contact-board";
+        const back = isBoard ? -1.6 : -3.5;
+        return offsetPackMesh(
+          createMechanismPrimitiveMesh({
+            id: mesh.id,
+            partId: mesh.partId,
+            materialId: mesh.materialId,
+            kind: "rounded-box",
+            size: [isBoard ? 9 : 2, isBoard ? 2.2 : 7, front - back],
+            radius: 0,
+          }),
+          [isBoard ? 4.5 : -1, isBoard ? 0.71 : 2, (front + back) / 2],
+        );
+      }),
       materials: createTapeHookMaterials({
         ...(style?.steelColor !== undefined
           ? { steelColor: style.steelColor }
@@ -97,19 +117,30 @@ function tapeScene(
     source: {
       kind: "part-local",
       part: anchor.part,
-      position: anchor.position,
+      position:
+        anchor.id === "hook.innerFace" || anchor.id === "hook.outerFace"
+          ? [anchor.position[0], anchor.position[1], parameters.bladeWidth / 4]
+          : anchor.position,
     },
   }));
   anchors.push(
     {
       id: "board.contact",
       role: "contact",
-      source: { kind: "part-local", part: "board", position: [0, 1.25, 0.92] },
+      source: {
+        kind: "part-local",
+        part: "board",
+        position: [0, 1.25, parameters.bladeWidth / 4],
+      },
     },
     {
       id: "wall.contact",
       role: "contact",
-      source: { kind: "part-local", part: "wall", position: [0, 1.25, 0.92] },
+      source: {
+        kind: "part-local",
+        part: "wall",
+        position: [0, 1.25, parameters.bladeWidth / 4],
+      },
     },
     {
       id: "model.origin",
@@ -259,7 +290,7 @@ export function inspectTapeHookPack(): MechanismPackMetadataReceipt {
     factualVariant: {
       id: "floating-hook",
       description:
-        "Illustrative sliding hook with two securing rivets, selected pull/inside-face and push/outside-face contact. Dimensions are authored model values; no manufacturer dimension or simulation claim.",
+        "Illustrative sliding hook with two securing rivets, selected pull/inside-face and push/outside-face contact. Reference props end at an exposed contact edge. Dimensions are authored model values; no manufacturer dimension or simulation claim.",
       dimensionBasis: "illustrative",
       sources: [
         {
@@ -318,34 +349,7 @@ export function inspectTapeHookPack(): MechanismPackMetadataReceipt {
         default: 2,
       },
     ],
-    cameraTargets: [
-      {
-        id: "recognition",
-        intent: "recognition",
-        target: { kind: "part", id: "model" },
-      },
-      {
-        id: "approach",
-        intent: "contact-approach",
-        target: { kind: "anchor", id: "hook.innerFace" },
-      },
-      {
-        id: "macro",
-        intent: "macro",
-        target: { kind: "anchor", id: "hook.thickness" },
-      },
-      {
-        id: "comparison",
-        intent: "aligned-comparison",
-        target: { kind: "anchor", id: "hook.outerFace" },
-      },
-      {
-        id: "orbit",
-        intent: "controlled-orbit",
-        target: { kind: "part", id: "model" },
-      },
-      { id: "return", intent: "return", target: { kind: "part", id: "model" } },
-    ],
+    cameraTargets: describeMechanismPackCameras(scene, "tape-hook"),
     details: [
       {
         id: "teaching",
@@ -430,6 +434,8 @@ export function createTapeHookPack(input: z.input<typeof inputSchema> = {}) {
     sourceSha256: hash(scene),
     meshDataSha256: hash({ meshes: scene.geometry.meshes }),
     bounds: bounds(scene),
+    cameraTargets: describeMechanismPackCameras(scene, "tape-hook"),
+    cameraTargetsSha256: hash(describeMechanismPackCameras(scene, "tape-hook")),
   });
 }
 export type TapeHookPackInstance = ReturnType<typeof createTapeHookPack>;

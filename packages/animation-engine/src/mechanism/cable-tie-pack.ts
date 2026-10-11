@@ -1,3 +1,4 @@
+import { describeMechanismPackCameras } from "./camera-descriptions.ts";
 import { z } from "zod";
 import {
   type MechanismSceneV2,
@@ -16,7 +17,6 @@ import {
   evaluatePackFrame,
   mechanismPackOptions,
   offsetPackMesh,
-  packCameraTargets,
 } from "./pack-support.ts";
 import { MechanismPackInvariantError } from "./pack-invariant.ts";
 export const CableTiePackParametersSchema = z
@@ -108,7 +108,7 @@ function cableScene(options: z.infer<typeof inputSchema>): MechanismSceneV2 {
     materials: [
       {
         id: "nylon",
-        color: options.style?.color ?? "#bdb69f",
+        color: options.style?.color ?? "#4f493d",
         roughness: options.style?.roughness ?? 0.54,
         metalness: 0,
       },
@@ -231,8 +231,9 @@ function cableScene(options: z.infer<typeof inputSchema>): MechanismSceneV2 {
 let metadata: MechanismPackMetadataReceipt | undefined;
 export function inspectCableTiePack() {
   if (metadata) return metadata;
+  const scene = cableScene(inputSchema.parse({}));
   metadata = createPackMetadata(
-    cableScene(inputSchema.parse({})),
+    scene,
     {
       id: "cable-tie",
       family: "cable-tie",
@@ -281,7 +282,7 @@ export function inspectCableTiePack() {
           default: 8,
         },
       ],
-      cameraTargets: packCameraTargets("pawl.tip", "pawl.root"),
+      cameraTargets: describeMechanismPackCameras(scene, "cable-tie"),
       neutralPose: [{ rig: "ratchet", value: 0 }],
       diagnosticViews: [
         {

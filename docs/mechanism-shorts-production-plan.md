@@ -707,13 +707,18 @@ mechanism families establish whether the architecture transfers.
       failures to the rig, parts, relationship and first failing interval. Evaluate
       valid states without dependence on playback history; MS3 integrates these
       results into unified QA.
-- [ ] Add recognition, contact approach, macro, aligned comparison, controlled orbit
+- [x] Add recognition, contact approach, macro, aligned comparison, controlled orbit
       and return recipes. Frame actual target bounds using lens/view direction and
       reserved overlay regions. Check near planes and camera intersections; retain
       authored overrides when automatic framing obscures the decisive surface.
       Declare the target relationship and motion intent. Keep cut/hold/transition
       choices independent of the camera recipe; verify endpoints and intermediate
       framing, and distinguish intentional cuts from unintended camera jumps.
+      Software scope: slice17 verifies all six recipes/three candidates/default and
+      larger sizes, every frame of the24-frame native fixtures and repeated exports.
+      Current producer refresh retains staged source12 capture/source13 replay
+      evidence; longer timelines/import/human acceptance remain separate. See
+      [MS2 results](./mechanism-shorts-ms2-results.json).
 - [ ] Support screen-pinned labels with moving leaders, world text and surface
       markings through explicit supported routes. Use deterministic layout candidates
       and tie-breaking, label-to-label exclusions, protected contact regions,

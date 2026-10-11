@@ -990,7 +990,7 @@
       }
     },
     "cameraTargets": {
-      "minItems": 1,
+      "minItems": 6,
       "maxItems": 16,
       "type": "array",
       "items": {
@@ -1011,6 +1011,129 @@
               "controlled-orbit",
               "return"
             ]
+          },
+          "motionIntent": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "relationships": {
+            "maxItems": 8,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "maxLength": 128,
+              "pattern": "^[A-Za-z][\\w.-]*$"
+            }
+          },
+          "framing": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": { "type": "string", "const": "parts" },
+                  "ids": {
+                    "minItems": 1,
+                    "maxItems": 128,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "maxLength": 128,
+                      "pattern": "^[A-Za-z][\\w.-]*$"
+                    }
+                  }
+                },
+                "required": ["kind", "ids"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "kind": { "type": "string", "const": "meshes" },
+                  "ids": {
+                    "minItems": 1,
+                    "maxItems": 128,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "maxLength": 128,
+                      "pattern": "^[A-Za-z][\\w.-]*$"
+                    }
+                  }
+                },
+                "required": ["kind", "ids"],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "fovDegrees": { "type": "number", "minimum": 14, "maximum": 65 },
+          "viewDirections": {
+            "minItems": 1,
+            "maxItems": 8,
+            "type": "array",
+            "items": {
+              "type": "array",
+              "prefixItems": [
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+              ]
+            }
+          },
+          "proofSurfaces": {
+            "maxItems": 8,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z][\\w.-]*$"
+                },
+                "mesh": {
+                  "type": "string",
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z][\\w.-]*$"
+                },
+                "nearAnchor": {
+                  "type": "string",
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z][\\w.-]*$"
+                },
+                "normal": {
+                  "type": "array",
+                  "prefixItems": [
+                    {
+                      "type": "number",
+                      "minimum": -1000000,
+                      "maximum": 1000000
+                    },
+                    {
+                      "type": "number",
+                      "minimum": -1000000,
+                      "maximum": 1000000
+                    },
+                    {
+                      "type": "number",
+                      "minimum": -1000000,
+                      "maximum": 1000000
+                    }
+                  ]
+                },
+                "offsetRatio": {
+                  "default": [0, 0, 0],
+                  "type": "array",
+                  "prefixItems": [
+                    { "type": "number", "minimum": -2, "maximum": 2 },
+                    { "type": "number", "minimum": -2, "maximum": 2 },
+                    { "type": "number", "minimum": -2, "maximum": 2 }
+                  ]
+                }
+              },
+              "required": ["id", "mesh", "nearAnchor", "normal", "offsetRatio"],
+              "additionalProperties": false
+            }
           },
           "target": {
             "anyOf": [
@@ -1043,7 +1166,17 @@
             ]
           }
         },
-        "required": ["id", "intent", "target"],
+        "required": [
+          "id",
+          "intent",
+          "motionIntent",
+          "relationships",
+          "framing",
+          "fovDegrees",
+          "viewDirections",
+          "proofSurfaces",
+          "target"
+        ],
         "additionalProperties": false
       }
     },

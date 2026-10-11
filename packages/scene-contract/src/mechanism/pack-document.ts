@@ -8,7 +8,7 @@ import {
   mechanismIssue,
 } from "./primitives.ts";
 import { MechanismPartSchema } from "./scene.ts";
-import { MechanismRigV2Schema } from "./rigs.ts";
+import { MechanismRigV2Schema, MechanismUnitAxisV2Schema } from "./rigs.ts";
 import {
   MechanismAnchorV2Schema,
   MechanismRelationshipV2Schema,
@@ -57,7 +57,7 @@ const parameter = z
         ["default"],
       );
   });
-const target = z
+export const MechanismPackCameraTargetSchema = z
   .object({
     id: MechanismIdSchema,
     intent: z.enum([
@@ -68,6 +68,43 @@ const target = z
       "controlled-orbit",
       "return",
     ]),
+    motionIntent: z.string().min(1).max(128),
+    relationships: z.array(MechanismIdSchema).max(8),
+    framing: z.discriminatedUnion("kind", [
+      z
+        .object({
+          kind: z.literal("parts"),
+          ids: z.array(MechanismIdSchema).min(1).max(MECHANISM_LIMITS.parts),
+        })
+        .strict(),
+      z
+        .object({
+          kind: z.literal("meshes"),
+          ids: z.array(MechanismIdSchema).min(1).max(MECHANISM_LIMITS.parts),
+        })
+        .strict(),
+    ]),
+    fovDegrees: z.number().finite().min(14).max(65),
+    viewDirections: z.array(MechanismUnitAxisV2Schema).min(1).max(8),
+    proofSurfaces: z
+      .array(
+        z
+          .object({
+            id: MechanismIdSchema,
+            mesh: MechanismIdSchema,
+            nearAnchor: MechanismIdSchema,
+            normal: MechanismUnitAxisV2Schema,
+            offsetRatio: z
+              .tuple([
+                z.number().finite().min(-2).max(2),
+                z.number().finite().min(-2).max(2),
+                z.number().finite().min(-2).max(2),
+              ])
+              .default([0, 0, 0]),
+          })
+          .strict(),
+      )
+      .max(8),
     target: z.discriminatedUnion("kind", [
       z.object({ kind: z.literal("part"), id: MechanismIdSchema }).strict(),
       z.object({ kind: z.literal("anchor"), id: MechanismIdSchema }).strict(),
@@ -213,7 +250,10 @@ export const MechanismPackDocumentSchema = z
       .max(MECHANISM_TEACHING_SHAPE_LIMITS.meshes),
     relationships: z.array(MechanismRelationshipV2Schema).max(128),
     parameters: z.array(parameter).min(1).max(MECHANISM_PACK_LIMITS.parameters),
-    cameraTargets: z.array(target).min(1).max(MECHANISM_PACK_LIMITS.targets),
+    cameraTargets: z
+      .array(MechanismPackCameraTargetSchema)
+      .min(6)
+      .max(MECHANISM_PACK_LIMITS.targets),
     details: z
       .array(
         z
@@ -551,13 +591,70 @@ export const MechanismPackDocumentSchema = z
         "Aggregate changing mesh topology exceeds its fixed budget",
         ["teachingShapes"],
       );
-    pack.cameraTargets.forEach((camera, index) =>
+    const relationshipIds = new Set(
+      pack.relationships.map((relationship) => relationship.id),
+    );
+    pack.cameraTargets.forEach((camera, index) => {
       requireId(
         camera.target.kind === "part" ? parts : anchors,
         camera.target.id,
         ["cameraTargets", index, "target", "id"],
-      ),
-    );
+      );
+      camera.framing.ids.forEach((id, j) =>
+        requireId(camera.framing.kind === "parts" ? parts : meshes, id, [
+          "cameraTargets",
+          index,
+          "framing",
+          "ids",
+          j,
+        ]),
+      );
+      camera.relationships.forEach((id, j) =>
+        requireId(relationshipIds, id, [
+          "cameraTargets",
+          index,
+          "relationships",
+          j,
+        ]),
+      );
+      checkUniqueIds(camera.proofSurfaces, context, [
+        "cameraTargets",
+        index,
+        "proofSurfaces",
+      ]);
+      camera.proofSurfaces.forEach((surface, j) => {
+        requireId(meshes, surface.mesh, [
+          "cameraTargets",
+          index,
+          "proofSurfaces",
+          j,
+          "mesh",
+        ]);
+        requireId(anchors, surface.nearAnchor, [
+          "cameraTargets",
+          index,
+          "proofSurfaces",
+          j,
+          "nearAnchor",
+        ]);
+      });
+    });
+    for (const intent of [
+      "recognition",
+      "contact-approach",
+      "macro",
+      "aligned-comparison",
+      "controlled-orbit",
+      "return",
+    ]) {
+      if (!pack.cameraTargets.some((camera) => camera.intent === intent))
+        mechanismIssue(
+          context,
+          "mechanism-pack-camera",
+          "Pack must declare all six camera intents",
+          ["cameraTargets"],
+        );
+    }
     pack.variants.forEach((variant, index) =>
       variant.details.forEach((detail, j) =>
         requireId(details, detail, ["variants", index, "details", j]),

@@ -1,3 +1,4 @@
+import { describeMechanismPackCameras } from "./camera-descriptions.ts";
 import { z } from "zod";
 import {
   type MechanismSceneV2,
@@ -16,7 +17,6 @@ import {
   evaluatePackFrame,
   mechanismPackOptions,
   offsetPackMesh,
-  packCameraTargets,
 } from "./pack-support.ts";
 export const ClothespegPackParametersSchema = z
   .object({
@@ -214,7 +214,7 @@ function pegScene(options: z.infer<typeof inputSchema>): MechanismSceneV2 {
       {
         id: "spring.coil",
         role: "camera-target",
-        source: { kind: "shape-landmark", shape: "spring", landmark: "coil-a" },
+        source: { kind: "shape-landmark", shape: "spring", landmark: "coil-b" },
       },
       {
         id: "upper.tip",
@@ -297,8 +297,9 @@ function pegScene(options: z.infer<typeof inputSchema>): MechanismSceneV2 {
 let metadata: MechanismPackMetadataReceipt | undefined;
 export function inspectClothespegPack() {
   if (metadata) return metadata;
+  const scene = pegScene(inputSchema.parse({}));
   metadata = createPackMetadata(
-    pegScene(inputSchema.parse({})),
+    scene,
     {
       id: "clothespeg",
       family: "clothespeg",
@@ -348,7 +349,7 @@ export function inspectClothespegPack() {
           default: 0.16,
         },
       ],
-      cameraTargets: packCameraTargets("upper.tip", "spring.coil"),
+      cameraTargets: describeMechanismPackCameras(scene, "clothespeg"),
       neutralPose: [
         { rig: "upper.hinge", value: 0 },
         { rig: "lower.hinge", value: 0 },
