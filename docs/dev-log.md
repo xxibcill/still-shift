@@ -45,22 +45,20 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Fifty slices now include the [frozen ten-question coverage board](./mechanism-topic-family-coverage.md):
-  five existing targets, three new-asset/existing-rig routes, two behavior routes;
-  five episodes need assets and two need behavior. Validated coverage remains
-  0/10; all packs are candidates and accepted pilot episodes remain 0.
-  Read-only audit binds actual pack hashes, questions/answers, overlap and selection;
-  independent accounting/hash audit matches. Seven focused tests pass after the
-  retained fixture failure. Fast1 passes 4,293 units/421 files; 2,567 inputs/
-  119,595,348B held, including board; all 2,564 prior inputs unchanged.
-  Slice49 retains 142 Thai streams/3,408 frames and 9,216 lossless seeks, with
-  70 exact settled comparisons. Seventeen sampled visual artifacts do not certify
-  the full matrix; finer Thai mark/overlap/gap disposition remains pending.
-  Next: Thai cell/support findings, broader labels/continuous/readability, genuine
-  speech, resource/full/final/installed/pack admission and MS2 PR gates. MS3 not
-  started; no human acceptance, merge/publication or paid generation.
-  [Coverage evidence](./mechanism-shorts-ms2-coverage-results.json),
-  [Thai evidence](./mechanism-shorts-ms2-thai-native-results.json), [MS2 results](./mechanism-shorts-ms2-results.json).
+  Fifty-one slices include the frozen ten-question board and expanded Thai review:
+  all114 distinct cells at frames8/18 and three sizes,42 overviews/684 samples.
+  Settled marks/copy remain in the samples; retype leading-vowel prefixes,
+  low-contrast qualifiers and USB-C/499–บาท wraps prevent blanket fine-motion
+  adoption. Initial evidence hash-convention failure and corrected audit retained.
+  `pnpm check:all` full51-1 is running on held `5e7f49e5` inputs (session79726),
+  2,567 files/119,595,348B; no final receipt yet. Unit4,293/runtime238/integration322
+  pass, and browser/export groups continue. Do not restart the live owner on silence.
+  Coverage remains0/10 validated; packs are candidates; accepted pilot episodes0.
+  Next: full gate receipt, full-cell Thai disposition, broader labels/continuous/
+  readability, genuine speech, whole resources/final installed and pack/MS2 PR gates.
+  MS3 not started; no human acceptance, merge/publication or paid generation.
+  [Review evidence](./mechanism-shorts-ms2-thai-review-results.json),
+  [Coverage board](./mechanism-topic-family-coverage.md), [MS2 results](./mechanism-shorts-ms2-results.json).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
   inventory15:2,329 inputs/117,503,155B. Original full6 retains a qualified19-group
@@ -218,6 +216,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — MS2 slice51: expanded Thai review; full gate running
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `5e7f49e5`.
+- **Done:** Reviewed42 retained overview sheets, all114 distinct cells at frames8/18
+  and native-contact/320/360 sizes; recorded hashes and precise active/wrap findings.
+- **Results:** Independent audit binds114 raw source/composition pairs and684 PNGs.
+  Initial raw/compact JSON hash-convention failure retained; corrected audit passes.
+  Full51-1 `pnpm check:all` is running on2,567 held inputs/119,595,348B, session79726;
+  unit4,293/runtime238/integration322 pass but there is no complete-gate result yet.
+- **Open / next:** Continue the same owner to an actual receipt. Finer Thai motion
+  unadopted; full-cell review, whole resources, genuine speech, final/installed,
+  pack admission and MS2 PR remain open. Packs/pilot0; MS3 not started.
+- **Records:** [Thai review](./mechanism-shorts-ms2-thai-review-results.json),
+  [MS2 plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
 ### 2026-10-12 — MS2 slice50: frozen topic-to-family candidate coverage board
 

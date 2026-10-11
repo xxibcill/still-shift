@@ -1,0 +1,3177 @@
+{
+  "version": 1,
+  "date": "2026-10-12",
+  "branch": "codex/mechanism-ms2",
+  "baseCommit": "5e7f49e5",
+  "status": "sampled-all-distinct-cells-with-located-negative-findings",
+  "scope": "Agent static-image inspection of retained active frame8 and resolved frame18 at three sizes; no new render, continuous/full-frame Thai certification or human acceptance.",
+  "priorEvidence": "docs/mechanism-shorts-ms2-thai-native-results.json",
+  "independentRetainedAudit": {
+    "path": "/private/tmp/still-shift-ms2-thai49-audit1.json",
+    "bytes": 3445226,
+    "sha256": "cfdbdb637d06d61dd95b9c3f46af942ec59ad44c535b18fa28d2baf5560a62d9"
+  },
+  "renderRoot": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy",
+  "review": {
+    "method": "Agent viewed all 42 overview images with original image detail. Native sheets crop the master, whereas 320/360 sheets reduce the full master.",
+    "overviewSheets": 42,
+    "distinctCases": 114,
+    "uniqueCaseFrameSamples": 228,
+    "caseFrameSizeSamples": 684,
+    "frames": [8, 18],
+    "sizes": ["native", "320", "360"],
+    "nativeContactCrop": [64, 128, 1920, 896],
+    "reductionMethod": "Pillow LANCZOS full master to 320x180 and 360x203, declared bitmap proxies; no device test.",
+    "excludedDirectCaseReview": [
+      "Seven default-tracking and seven explicit-zero-override intact cases are deduplicated from this review; prior slice49 proved all24-frame exact output parity. No direct review of those fourteen controls is claimed here."
+    ],
+    "sheets": [
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy1-zero-overview-native.png",
+        "bytes": 260976,
+        "sha256": "bee3ba447174a0196157aa5d6c7c0d2b9a4fd8436faa9cb982b00ad4a2cb3417",
+        "dimensions": [1600, 2904],
+        "copyNumber": 1,
+        "tracking": "zero",
+        "size": "native",
+        "caseIds": [
+          "copy1-color-boundary-zero",
+          "copy1-font-alias-boundary-zero",
+          "copy1-intact-zero",
+          "copy1-opacity-zero",
+          "copy1-retype-zero",
+          "copy1-rotate-zero",
+          "copy1-size-boundary-zero",
+          "copy1-translate-zero"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy1-zero-overview-320.png",
+        "bytes": 93479,
+        "sha256": "f07ec2924f023b5a7603caa49c9addda4f47f3512b4ff6e2b41fffab9c430492",
+        "dimensions": [640, 1696],
+        "copyNumber": 1,
+        "tracking": "zero",
+        "size": "320",
+        "caseIds": [
+          "copy1-color-boundary-zero",
+          "copy1-font-alias-boundary-zero",
+          "copy1-intact-zero",
+          "copy1-opacity-zero",
+          "copy1-retype-zero",
+          "copy1-rotate-zero",
+          "copy1-size-boundary-zero",
+          "copy1-translate-zero"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy1-zero-overview-360.png",
+        "bytes": 106162,
+        "sha256": "37dd543a8e6ef3107f44a335f447730cc14165114759a1acbf55b6a8cbd47088",
+        "dimensions": [720, 1880],
+        "copyNumber": 1,
+        "tracking": "zero",
+        "size": "360",
+        "caseIds": [
+          "copy1-color-boundary-zero",
+          "copy1-font-alias-boundary-zero",
+          "copy1-intact-zero",
+          "copy1-opacity-zero",
+          "copy1-retype-zero",
+          "copy1-rotate-zero",
+          "copy1-size-boundary-zero",
+          "copy1-translate-zero"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy1-optical-overview-native.png",
+        "bytes": 259892,
+        "sha256": "a4c2dd911d14366be33b7a9316943eb90038d3bb851926b441663d4c99a0b023",
+        "dimensions": [1600, 2904],
+        "copyNumber": 1,
+        "tracking": "optical",
+        "size": "native",
+        "caseIds": [
+          "copy1-color-boundary-optical",
+          "copy1-font-alias-boundary-optical",
+          "copy1-intact-optical",
+          "copy1-opacity-optical",
+          "copy1-retype-optical",
+          "copy1-rotate-optical",
+          "copy1-size-boundary-optical",
+          "copy1-translate-optical"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy1-optical-overview-320.png",
+        "bytes": 93084,
+        "sha256": "4d852f55a6d67b34d845438122cf481a7a5ba6dcebf3508614eec957766d95d7",
+        "dimensions": [640, 1696],
+        "copyNumber": 1,
+        "tracking": "optical",
+        "size": "320",
+        "caseIds": [
+          "copy1-color-boundary-optical",
+          "copy1-font-alias-boundary-optical",
+          "copy1-intact-optical",
+          "copy1-opacity-optical",
+          "copy1-retype-optical",
+          "copy1-rotate-optical",
+          "copy1-size-boundary-optical",
+          "copy1-translate-optical"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy1-optical-overview-360.png",
+        "bytes": 105075,
+        "sha256": "7c6e6045942cb8e015a84c009973b5b0d4d06f066eece9f85470ba484a2ef0db",
+        "dimensions": [720, 1880],
+        "copyNumber": 1,
+        "tracking": "optical",
+        "size": "360",
+        "caseIds": [
+          "copy1-color-boundary-optical",
+          "copy1-font-alias-boundary-optical",
+          "copy1-intact-optical",
+          "copy1-opacity-optical",
+          "copy1-retype-optical",
+          "copy1-rotate-optical",
+          "copy1-size-boundary-optical",
+          "copy1-translate-optical"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy2-zero-overview-native.png",
+        "bytes": 408401,
+        "sha256": "f8c4bc4f082cf8c16f5512fb3bf825fbd0fe42d8786dd9ad7fe23a335e5c001a",
+        "dimensions": [1600, 3263],
+        "copyNumber": 2,
+        "tracking": "zero",
+        "size": "native",
+        "caseIds": [
+          "copy2-color-boundary-zero",
+          "copy2-font-alias-boundary-zero",
+          "copy2-intact-zero",
+          "copy2-latin-font-boundary-zero",
+          "copy2-opacity-zero",
+          "copy2-retype-zero",
+          "copy2-rotate-zero",
+          "copy2-size-boundary-zero",
+          "copy2-translate-zero"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy2-zero-overview-320.png",
+        "bytes": 140493,
+        "sha256": "207ec0a90711fa591cfa7462819bd84efdb2ff7321324331706af67c34b85e23",
+        "dimensions": [640, 1904],
+        "copyNumber": 2,
+        "tracking": "zero",
+        "size": "320",
+        "caseIds": [
+          "copy2-color-boundary-zero",
+          "copy2-font-alias-boundary-zero",
+          "copy2-intact-zero",
+          "copy2-latin-font-boundary-zero",
+          "copy2-opacity-zero",
+          "copy2-retype-zero",
+          "copy2-rotate-zero",
+          "copy2-size-boundary-zero",
+          "copy2-translate-zero"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy2-zero-overview-360.png",
+        "bytes": 158507,
+        "sha256": "3da60e71fe3830937a0f733ea7f3346c3dadb6ffe1ae7b0926b0cd2bef690871",
+        "dimensions": [720, 2111],
+        "copyNumber": 2,
+        "tracking": "zero",
+        "size": "360",
+        "caseIds": [
+          "copy2-color-boundary-zero",
+          "copy2-font-alias-boundary-zero",
+          "copy2-intact-zero",
+          "copy2-latin-font-boundary-zero",
+          "copy2-opacity-zero",
+          "copy2-retype-zero",
+          "copy2-rotate-zero",
+          "copy2-size-boundary-zero",
+          "copy2-translate-zero"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy2-optical-overview-native.png",
+        "bytes": 404584,
+        "sha256": "deff18d33bc21ea96f09799ed0df1d533fc4ea56d7b9f770358a08d4c439ce91",
+        "dimensions": [1600, 3263],
+        "copyNumber": 2,
+        "tracking": "optical",
+        "size": "native",
+        "caseIds": [
+          "copy2-color-boundary-optical",
+          "copy2-font-alias-boundary-optical",
+          "copy2-intact-optical",
+          "copy2-latin-font-boundary-optical",
+          "copy2-opacity-optical",
+          "copy2-retype-optical",
+          "copy2-rotate-optical",
+          "copy2-size-boundary-optical",
+          "copy2-translate-optical"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy2-optical-overview-320.png",
+        "bytes": 138899,
+        "sha256": "049da95b9f67beca0e190d7ac89b051e280318c2127d30f8fd9f2c3090acc32c",
+        "dimensions": [640, 1904],
+        "copyNumber": 2,
+        "tracking": "optical",
+        "size": "320",
+        "caseIds": [
+          "copy2-color-boundary-optical",
+          "copy2-font-alias-boundary-optical",
+          "copy2-intact-optical",
+          "copy2-latin-font-boundary-optical",
+          "copy2-opacity-optical",
+          "copy2-retype-optical",
+          "copy2-rotate-optical",
+          "copy2-size-boundary-optical",
+          "copy2-translate-optical"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy2-optical-overview-360.png",
+        "bytes": 157831,
+        "sha256": "01df89df556968bb8e4633c9e52ebcbbddfc788b215f750b526849e1913acfde",
+        "dimensions": [720, 2111],
+        "copyNumber": 2,
+        "tracking": "optical",
+        "size": "360",
+        "caseIds": [
+          "copy2-color-boundary-optical",
+          "copy2-font-alias-boundary-optical",
+          "copy2-intact-optical",
+          "copy2-latin-font-boundary-optical",
+          "copy2-opacity-optical",
+          "copy2-retype-optical",
+          "copy2-rotate-optical",
+          "copy2-size-boundary-optical",
+          "copy2-translate-optical"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy3-zero-overview-native.png",
+        "bytes": 229925,
+        "sha256": "0dd35efd2daa4a4de7bc4a1beb0df0932a6b709c1fccacc159d8814ed9e55cbe",
+        "dimensions": [1600, 2904],
+        "copyNumber": 3,
+        "tracking": "zero",
+        "size": "native",
+        "caseIds": [
+          "copy3-color-boundary-zero",
+          "copy3-font-alias-boundary-zero",
+          "copy3-intact-zero",
+          "copy3-opacity-zero",
+          "copy3-retype-zero",
+          "copy3-rotate-zero",
+          "copy3-size-boundary-zero",
+          "copy3-translate-zero"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy3-zero-overview-320.png",
+        "bytes": 83743,
+        "sha256": "190470a8b7b0110f2384a2e64319aa7630eceef9d1e7ed667b98eaa1bf0326ef",
+        "dimensions": [640, 1696],
+        "copyNumber": 3,
+        "tracking": "zero",
+        "size": "320",
+        "caseIds": [
+          "copy3-color-boundary-zero",
+          "copy3-font-alias-boundary-zero",
+          "copy3-intact-zero",
+          "copy3-opacity-zero",
+          "copy3-retype-zero",
+          "copy3-rotate-zero",
+          "copy3-size-boundary-zero",
+          "copy3-translate-zero"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy3-zero-overview-360.png",
+        "bytes": 95893,
+        "sha256": "56f30655114d43566c2db31c06c09d67f80f572bfa186c802ed31150c31036f7",
+        "dimensions": [720, 1880],
+        "copyNumber": 3,
+        "tracking": "zero",
+        "size": "360",
+        "caseIds": [
+          "copy3-color-boundary-zero",
+          "copy3-font-alias-boundary-zero",
+          "copy3-intact-zero",
+          "copy3-opacity-zero",
+          "copy3-retype-zero",
+          "copy3-rotate-zero",
+          "copy3-size-boundary-zero",
+          "copy3-translate-zero"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy3-optical-overview-native.png",
+        "bytes": 229025,
+        "sha256": "5226fcf4d02f6a0c76cce81ec5086ad51b93165e54e9ea785f4c827e3f958dfa",
+        "dimensions": [1600, 2904],
+        "copyNumber": 3,
+        "tracking": "optical",
+        "size": "native",
+        "caseIds": [
+          "copy3-color-boundary-optical",
+          "copy3-font-alias-boundary-optical",
+          "copy3-intact-optical",
+          "copy3-opacity-optical",
+          "copy3-retype-optical",
+          "copy3-rotate-optical",
+          "copy3-size-boundary-optical",
+          "copy3-translate-optical"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy3-optical-overview-320.png",
+        "bytes": 83439,
+        "sha256": "8c8a42684035eb985ad14564d65b68ae1c2bde7e96bde694e6d42e442b426fe4",
+        "dimensions": [640, 1696],
+        "copyNumber": 3,
+        "tracking": "optical",
+        "size": "320",
+        "caseIds": [
+          "copy3-color-boundary-optical",
+          "copy3-font-alias-boundary-optical",
+          "copy3-intact-optical",
+          "copy3-opacity-optical",
+          "copy3-retype-optical",
+          "copy3-rotate-optical",
+          "copy3-size-boundary-optical",
+          "copy3-translate-optical"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy3-optical-overview-360.png",
+        "bytes": 94440,
+        "sha256": "f464149ef04b45f0d8b6c1cf8b1d84570d4c78ff09b12980569ab91546654af3",
+        "dimensions": [720, 1880],
+        "copyNumber": 3,
+        "tracking": "optical",
+        "size": "360",
+        "caseIds": [
+          "copy3-color-boundary-optical",
+          "copy3-font-alias-boundary-optical",
+          "copy3-intact-optical",
+          "copy3-opacity-optical",
+          "copy3-retype-optical",
+          "copy3-rotate-optical",
+          "copy3-size-boundary-optical",
+          "copy3-translate-optical"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy4-zero-overview-native.png",
+        "bytes": 482924,
+        "sha256": "c468800b02f9d311d8175bdfed7c8f5dd6e1611fe7652be9d8c2045dc26da65e",
+        "dimensions": [1600, 2904],
+        "copyNumber": 4,
+        "tracking": "zero",
+        "size": "native",
+        "caseIds": [
+          "copy4-color-boundary-zero",
+          "copy4-font-alias-boundary-zero",
+          "copy4-intact-zero",
+          "copy4-opacity-zero",
+          "copy4-retype-zero",
+          "copy4-rotate-zero",
+          "copy4-size-boundary-zero",
+          "copy4-translate-zero"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy4-zero-overview-320.png",
+        "bytes": 159936,
+        "sha256": "50a5517b7593481602f81f2eba3bb664ea1eb06ad40eed325db241f096e859be",
+        "dimensions": [640, 1696],
+        "copyNumber": 4,
+        "tracking": "zero",
+        "size": "320",
+        "caseIds": [
+          "copy4-color-boundary-zero",
+          "copy4-font-alias-boundary-zero",
+          "copy4-intact-zero",
+          "copy4-opacity-zero",
+          "copy4-retype-zero",
+          "copy4-rotate-zero",
+          "copy4-size-boundary-zero",
+          "copy4-translate-zero"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy4-zero-overview-360.png",
+        "bytes": 184206,
+        "sha256": "e5b704956b7fb1d92875c6d3edc767b12a52ecce82d9714ef276437f2c9f6975",
+        "dimensions": [720, 1880],
+        "copyNumber": 4,
+        "tracking": "zero",
+        "size": "360",
+        "caseIds": [
+          "copy4-color-boundary-zero",
+          "copy4-font-alias-boundary-zero",
+          "copy4-intact-zero",
+          "copy4-opacity-zero",
+          "copy4-retype-zero",
+          "copy4-rotate-zero",
+          "copy4-size-boundary-zero",
+          "copy4-translate-zero"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy4-optical-overview-native.png",
+        "bytes": 476734,
+        "sha256": "bab050c0eb5a5926e711f534e7efe8fbb4535ae366521e63605084f5a10cc438",
+        "dimensions": [1600, 2904],
+        "copyNumber": 4,
+        "tracking": "optical",
+        "size": "native",
+        "caseIds": [
+          "copy4-color-boundary-optical",
+          "copy4-font-alias-boundary-optical",
+          "copy4-intact-optical",
+          "copy4-opacity-optical",
+          "copy4-retype-optical",
+          "copy4-rotate-optical",
+          "copy4-size-boundary-optical",
+          "copy4-translate-optical"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy4-optical-overview-320.png",
+        "bytes": 158347,
+        "sha256": "8277f2236d565d3b30ed4e1bac951229fe9126f3e72f6276b45efa472fd16e55",
+        "dimensions": [640, 1696],
+        "copyNumber": 4,
+        "tracking": "optical",
+        "size": "320",
+        "caseIds": [
+          "copy4-color-boundary-optical",
+          "copy4-font-alias-boundary-optical",
+          "copy4-intact-optical",
+          "copy4-opacity-optical",
+          "copy4-retype-optical",
+          "copy4-rotate-optical",
+          "copy4-size-boundary-optical",
+          "copy4-translate-optical"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy4-optical-overview-360.png",
+        "bytes": 182147,
+        "sha256": "b01bb22d3b67245bb54dbd62bbf7b9bd755c68ce3b8b44c5a819e3c04178cf90",
+        "dimensions": [720, 1880],
+        "copyNumber": 4,
+        "tracking": "optical",
+        "size": "360",
+        "caseIds": [
+          "copy4-color-boundary-optical",
+          "copy4-font-alias-boundary-optical",
+          "copy4-intact-optical",
+          "copy4-opacity-optical",
+          "copy4-retype-optical",
+          "copy4-rotate-optical",
+          "copy4-size-boundary-optical",
+          "copy4-translate-optical"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy5-zero-overview-native.png",
+        "bytes": 250398,
+        "sha256": "30ba2d1ea04ea1ec8db39b7fc7236146d2716b2c9d5c7129f56203f0b60e0eae",
+        "dimensions": [1600, 2904],
+        "copyNumber": 5,
+        "tracking": "zero",
+        "size": "native",
+        "caseIds": [
+          "copy5-color-boundary-zero",
+          "copy5-font-alias-boundary-zero",
+          "copy5-intact-zero",
+          "copy5-opacity-zero",
+          "copy5-retype-zero",
+          "copy5-rotate-zero",
+          "copy5-size-boundary-zero",
+          "copy5-translate-zero"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy5-zero-overview-320.png",
+        "bytes": 87353,
+        "sha256": "202915525af99a43e6ac1a6559dbf3e6c58cc84c1e29554c080fa814fe12cb57",
+        "dimensions": [640, 1696],
+        "copyNumber": 5,
+        "tracking": "zero",
+        "size": "320",
+        "caseIds": [
+          "copy5-color-boundary-zero",
+          "copy5-font-alias-boundary-zero",
+          "copy5-intact-zero",
+          "copy5-opacity-zero",
+          "copy5-retype-zero",
+          "copy5-rotate-zero",
+          "copy5-size-boundary-zero",
+          "copy5-translate-zero"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy5-zero-overview-360.png",
+        "bytes": 99272,
+        "sha256": "c26524b57c058b7074e9b3c9b39520ca067e7cd9a26f0836b43d668cdc2d54ee",
+        "dimensions": [720, 1880],
+        "copyNumber": 5,
+        "tracking": "zero",
+        "size": "360",
+        "caseIds": [
+          "copy5-color-boundary-zero",
+          "copy5-font-alias-boundary-zero",
+          "copy5-intact-zero",
+          "copy5-opacity-zero",
+          "copy5-retype-zero",
+          "copy5-rotate-zero",
+          "copy5-size-boundary-zero",
+          "copy5-translate-zero"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy5-optical-overview-native.png",
+        "bytes": 249499,
+        "sha256": "1dd163e18e2fc093f3cfb3ca15812fc5f311275c962156ba2ea47aaddb2b2b2b",
+        "dimensions": [1600, 2904],
+        "copyNumber": 5,
+        "tracking": "optical",
+        "size": "native",
+        "caseIds": [
+          "copy5-color-boundary-optical",
+          "copy5-font-alias-boundary-optical",
+          "copy5-intact-optical",
+          "copy5-opacity-optical",
+          "copy5-retype-optical",
+          "copy5-rotate-optical",
+          "copy5-size-boundary-optical",
+          "copy5-translate-optical"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy5-optical-overview-320.png",
+        "bytes": 86726,
+        "sha256": "50d3616f36efb3219d0b688f49b7299864a897ac8427fa5584bf514ff5ca9602",
+        "dimensions": [640, 1696],
+        "copyNumber": 5,
+        "tracking": "optical",
+        "size": "320",
+        "caseIds": [
+          "copy5-color-boundary-optical",
+          "copy5-font-alias-boundary-optical",
+          "copy5-intact-optical",
+          "copy5-opacity-optical",
+          "copy5-retype-optical",
+          "copy5-rotate-optical",
+          "copy5-size-boundary-optical",
+          "copy5-translate-optical"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy5-optical-overview-360.png",
+        "bytes": 98530,
+        "sha256": "c6c1c75c1fa1b6e2d170a1ac10226bde7a4eef6224f0d510306d92b12b0d3af0",
+        "dimensions": [720, 1880],
+        "copyNumber": 5,
+        "tracking": "optical",
+        "size": "360",
+        "caseIds": [
+          "copy5-color-boundary-optical",
+          "copy5-font-alias-boundary-optical",
+          "copy5-intact-optical",
+          "copy5-opacity-optical",
+          "copy5-retype-optical",
+          "copy5-rotate-optical",
+          "copy5-size-boundary-optical",
+          "copy5-translate-optical"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy6-zero-overview-native.png",
+        "bytes": 492998,
+        "sha256": "1724259dd583ed71c99a72a7892cfb03516705e7ca50f05c8142b544024d4bcb",
+        "dimensions": [1600, 2904],
+        "copyNumber": 6,
+        "tracking": "zero",
+        "size": "native",
+        "caseIds": [
+          "copy6-color-boundary-zero",
+          "copy6-font-alias-boundary-zero",
+          "copy6-intact-zero",
+          "copy6-opacity-zero",
+          "copy6-retype-zero",
+          "copy6-rotate-zero",
+          "copy6-size-boundary-zero",
+          "copy6-translate-zero"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy6-zero-overview-320.png",
+        "bytes": 161253,
+        "sha256": "20f0ffa0df152407aedeafc0d98b2e5eb6772f7f6a11fbb3793c5cb6079f28a0",
+        "dimensions": [640, 1696],
+        "copyNumber": 6,
+        "tracking": "zero",
+        "size": "320",
+        "caseIds": [
+          "copy6-color-boundary-zero",
+          "copy6-font-alias-boundary-zero",
+          "copy6-intact-zero",
+          "copy6-opacity-zero",
+          "copy6-retype-zero",
+          "copy6-rotate-zero",
+          "copy6-size-boundary-zero",
+          "copy6-translate-zero"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy6-zero-overview-360.png",
+        "bytes": 185677,
+        "sha256": "1c4255d64831ebb1b2a5b218f371c06d3624ccd9f59753d62e6766cace6ba3cf",
+        "dimensions": [720, 1880],
+        "copyNumber": 6,
+        "tracking": "zero",
+        "size": "360",
+        "caseIds": [
+          "copy6-color-boundary-zero",
+          "copy6-font-alias-boundary-zero",
+          "copy6-intact-zero",
+          "copy6-opacity-zero",
+          "copy6-retype-zero",
+          "copy6-rotate-zero",
+          "copy6-size-boundary-zero",
+          "copy6-translate-zero"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy6-optical-overview-native.png",
+        "bytes": 490650,
+        "sha256": "40099e50828d873525558e9917b44d8d157741e825641d4dd31c55ef22a814e7",
+        "dimensions": [1600, 2904],
+        "copyNumber": 6,
+        "tracking": "optical",
+        "size": "native",
+        "caseIds": [
+          "copy6-color-boundary-optical",
+          "copy6-font-alias-boundary-optical",
+          "copy6-intact-optical",
+          "copy6-opacity-optical",
+          "copy6-retype-optical",
+          "copy6-rotate-optical",
+          "copy6-size-boundary-optical",
+          "copy6-translate-optical"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy6-optical-overview-320.png",
+        "bytes": 159060,
+        "sha256": "ffdc33f7a21fbda91263b61f41ba3beeeb021cd6a1c5ca0c086280a4c9ce37af",
+        "dimensions": [640, 1696],
+        "copyNumber": 6,
+        "tracking": "optical",
+        "size": "320",
+        "caseIds": [
+          "copy6-color-boundary-optical",
+          "copy6-font-alias-boundary-optical",
+          "copy6-intact-optical",
+          "copy6-opacity-optical",
+          "copy6-retype-optical",
+          "copy6-rotate-optical",
+          "copy6-size-boundary-optical",
+          "copy6-translate-optical"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy6-optical-overview-360.png",
+        "bytes": 183806,
+        "sha256": "5636c01c2d9a99921d77f5a8ca204f3f2666bc69aac6c67365e151cdd19aa76a",
+        "dimensions": [720, 1880],
+        "copyNumber": 6,
+        "tracking": "optical",
+        "size": "360",
+        "caseIds": [
+          "copy6-color-boundary-optical",
+          "copy6-font-alias-boundary-optical",
+          "copy6-intact-optical",
+          "copy6-opacity-optical",
+          "copy6-retype-optical",
+          "copy6-rotate-optical",
+          "copy6-size-boundary-optical",
+          "copy6-translate-optical"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy7-zero-overview-native.png",
+        "bytes": 312597,
+        "sha256": "203550c98d7b7d85456d8425728e61bbd8d544164b25da8d6032274f013cd01d",
+        "dimensions": [1600, 2904],
+        "copyNumber": 7,
+        "tracking": "zero",
+        "size": "native",
+        "caseIds": [
+          "copy7-color-boundary-zero",
+          "copy7-font-alias-boundary-zero",
+          "copy7-intact-zero",
+          "copy7-opacity-zero",
+          "copy7-retype-zero",
+          "copy7-rotate-zero",
+          "copy7-size-boundary-zero",
+          "copy7-translate-zero"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy7-zero-overview-320.png",
+        "bytes": 108067,
+        "sha256": "739c01e26f0f06acf19d3ccc9c5608d73197c0f39ffc82e2e509c9edd36c5eff",
+        "dimensions": [640, 1696],
+        "copyNumber": 7,
+        "tracking": "zero",
+        "size": "320",
+        "caseIds": [
+          "copy7-color-boundary-zero",
+          "copy7-font-alias-boundary-zero",
+          "copy7-intact-zero",
+          "copy7-opacity-zero",
+          "copy7-retype-zero",
+          "copy7-rotate-zero",
+          "copy7-size-boundary-zero",
+          "copy7-translate-zero"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy7-zero-overview-360.png",
+        "bytes": 124094,
+        "sha256": "1a477b29406e8dde7993bb7a0bc4f8def03fa6eb9d7b44f0396602e8fc845bc8",
+        "dimensions": [720, 1880],
+        "copyNumber": 7,
+        "tracking": "zero",
+        "size": "360",
+        "caseIds": [
+          "copy7-color-boundary-zero",
+          "copy7-font-alias-boundary-zero",
+          "copy7-intact-zero",
+          "copy7-opacity-zero",
+          "copy7-retype-zero",
+          "copy7-rotate-zero",
+          "copy7-size-boundary-zero",
+          "copy7-translate-zero"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy7-optical-overview-native.png",
+        "bytes": 309831,
+        "sha256": "53d93668154f98fd0a1ffe6df32e88178a1edcebae13b64f846bc1558e496c30",
+        "dimensions": [1600, 2904],
+        "copyNumber": 7,
+        "tracking": "optical",
+        "size": "native",
+        "caseIds": [
+          "copy7-color-boundary-optical",
+          "copy7-font-alias-boundary-optical",
+          "copy7-intact-optical",
+          "copy7-opacity-optical",
+          "copy7-retype-optical",
+          "copy7-rotate-optical",
+          "copy7-size-boundary-optical",
+          "copy7-translate-optical"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy7-optical-overview-320.png",
+        "bytes": 107106,
+        "sha256": "a27c0d670921d4619c6e4059ccc31a52730856f52bbf5cc3e929862c9496baf4",
+        "dimensions": [640, 1696],
+        "copyNumber": 7,
+        "tracking": "optical",
+        "size": "320",
+        "caseIds": [
+          "copy7-color-boundary-optical",
+          "copy7-font-alias-boundary-optical",
+          "copy7-intact-optical",
+          "copy7-opacity-optical",
+          "copy7-retype-optical",
+          "copy7-rotate-optical",
+          "copy7-size-boundary-optical",
+          "copy7-translate-optical"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      },
+      {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai49-yzHdPy/copy7-optical-overview-360.png",
+        "bytes": 122744,
+        "sha256": "6f831501c283c4673901bd08137bef9337a7d385487c6ee44b089e4e8038fb4b",
+        "dimensions": [720, 1880],
+        "copyNumber": 7,
+        "tracking": "optical",
+        "size": "360",
+        "caseIds": [
+          "copy7-color-boundary-optical",
+          "copy7-font-alias-boundary-optical",
+          "copy7-intact-optical",
+          "copy7-opacity-optical",
+          "copy7-retype-optical",
+          "copy7-rotate-optical",
+          "copy7-size-boundary-optical",
+          "copy7-translate-optical"
+        ],
+        "frames": [8, 18],
+        "method": "agent-static-image-inspection",
+        "result": "Complete resolved copy and visible upper/lower Thai marks in inspected frame18. Active retype prefixes and opacity qualifiers do not certify a complete readable message; see located findings."
+      }
+    ],
+    "cases": [
+      {
+        "id": "copy1-intact-zero",
+        "copyNumber": 1,
+        "route": "intact",
+        "tracking": "zero",
+        "text": "เกี๊ยะ น้ำ ผู้ซื้อ กุ้ง ญี่ปุ่น",
+        "sourceFileSha256": "c579fa64741c1f2481781ed178a816c2e4b39c87efe4bd7582e9a33a1c1b22f9",
+        "compositionFileSha256": "41ccaac8bc6ff9d070db9acb94710f048f4732f81f0c210e66c3f21b06301c16",
+        "sourceCompactJsonSha256": "0ac2c2313c023867158d4734cde8aedf9510f75444d144b95f3b3b0c0464d974",
+        "compositionCompactJsonSha256": "9b85b5b6b30317ccf967dc34fbf78f9c71923c65d10b40f133edeec752a1d8bc",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy1-intact-zero/preflight.json",
+          "bytes": 218049,
+          "sha256": "a0838c1bd7f4a2c39f91f930993ccdde5360c785bbd9e599fd127473a954022f"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy1-intact-optical",
+        "copyNumber": 1,
+        "route": "intact",
+        "tracking": "optical",
+        "text": "เกี๊ยะ น้ำ ผู้ซื้อ กุ้ง ญี่ปุ่น",
+        "sourceFileSha256": "ad12da1131cea6c2abf62603d1c862860a5a142ea3973adf13136fd01f01816f",
+        "compositionFileSha256": "87ee25a21d78a6150780f54ddab094e15cc7d24bbf29537e93605ed0d0b9e2df",
+        "sourceCompactJsonSha256": "9e49e5ae2c2e5edb7fbdbb439f1f1a8827532bcc0d4b3bc0e62b916216ceb151",
+        "compositionCompactJsonSha256": "2d1dd0fb64eba65b21907637a78a008db5eae4996667fd278650535bd5445349",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy1-intact-optical/preflight.json",
+          "bytes": 218135,
+          "sha256": "7ba958bacd4cb40c3c320aa5c50e7205a251ef8e63d1e301edf38e211c18c608"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy1-translate-zero",
+        "copyNumber": 1,
+        "route": "translate",
+        "tracking": "zero",
+        "text": "เกี๊ยะ น้ำ ผู้ซื้อ กุ้ง ญี่ปุ่น",
+        "sourceFileSha256": "3011d558abc693dea8b99aee8f874ce92a7a6a39e87cdd13636ca193f6141f9c",
+        "compositionFileSha256": "4aa7f01ca1c64429eea43d3d6a2e6355bc3c48328b9497b29b4a3d0da9982894",
+        "sourceCompactJsonSha256": "b85258d511ada538f064603eeb9138482f99451161fe4fc4953e17317932d46e",
+        "compositionCompactJsonSha256": "e31783816b0425d492c426c85ae67476ffa8a792a2123c44e7cb903b1b608d4d",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy1-translate-zero/preflight.json",
+          "bytes": 219420,
+          "sha256": "7372b64a4555a30d241377b8f5849a251d45cf9d7a040cc77e04943b1f1946b2"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy1-translate-optical",
+        "copyNumber": 1,
+        "route": "translate",
+        "tracking": "optical",
+        "text": "เกี๊ยะ น้ำ ผู้ซื้อ กุ้ง ญี่ปุ่น",
+        "sourceFileSha256": "417de51496953a6fd94ed593c6cdcafc313ca259b9dfc8e4f9ac9f9cba29de61",
+        "compositionFileSha256": "155b1d6daaa01fbb22342a0d0e589e491c981033848e1fda12ee0cdd4b2978fd",
+        "sourceCompactJsonSha256": "48d3b4de2d2112671e157be792d0f1fcf8ce0a8ad654581c01b8ee8126e42627",
+        "compositionCompactJsonSha256": "57ed70383dcea53adbdcd666a0d995cf17c03c95f53c5fbea40bbff3719a431c",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy1-translate-optical/preflight.json",
+          "bytes": 219580,
+          "sha256": "dca4796c39db793bda69443f67a32358878e6bfdc3344c2940d22ca3f3a43946"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy1-rotate-zero",
+        "copyNumber": 1,
+        "route": "rotate",
+        "tracking": "zero",
+        "text": "เกี๊ยะ น้ำ ผู้ซื้อ กุ้ง ญี่ปุ่น",
+        "sourceFileSha256": "91b7d34246a3b0a86185b2cbdee5a893de53f8df992c2f90762cdff17d7e1bc7",
+        "compositionFileSha256": "36d0aad1481e8d6ae7dc4ad267a7d0b1f8a49c2ff4c84128cb37484d6cf8a497",
+        "sourceCompactJsonSha256": "3ab633304cfaa9ab88115e8d8e7dba245bc1e3cb7b826b77b03830e9ffa17d6f",
+        "compositionCompactJsonSha256": "cab1af5966172021b4909675a7f0beb7e6bf8a20541d57ee1a99fa088f1dcbff",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy1-rotate-zero/preflight.json",
+          "bytes": 217311,
+          "sha256": "f01e2551222dda87510913ffef00973a065d6e6da5392a050e0ec76cb868e240"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy1-rotate-optical",
+        "copyNumber": 1,
+        "route": "rotate",
+        "tracking": "optical",
+        "text": "เกี๊ยะ น้ำ ผู้ซื้อ กุ้ง ญี่ปุ่น",
+        "sourceFileSha256": "89b26ed0c6f24930a589e72a4d404f31a9c69be46d06f758702533e6d719bf4e",
+        "compositionFileSha256": "b6281fb3aff3cf527295d333d9a070a826ce785f7fd4ff8a226edb224d7de4ee",
+        "sourceCompactJsonSha256": "52860a3bfb7f05c6b386d581fb308b127116b083b7e8c2d733670fb7e729d98d",
+        "compositionCompactJsonSha256": "83689b813434fd787b0b78c1b9adb5f002d20c23cf796a397d150e041bf3c439",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy1-rotate-optical/preflight.json",
+          "bytes": 217471,
+          "sha256": "2bbbeda359fcb71cc63c7fa2363ae7a540eccfebdbafe51b62a8dd3cc0362b49"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy1-opacity-zero",
+        "copyNumber": 1,
+        "route": "opacity",
+        "tracking": "zero",
+        "text": "เกี๊ยะ น้ำ ผู้ซื้อ กุ้ง ญี่ปุ่น",
+        "sourceFileSha256": "3067260443faf125a9390033e7e97b45a06f995619e3fe1eb385f1cf71f764a9",
+        "compositionFileSha256": "04267c7cf44d0fedbe22bad892829fdfe76b032675b9d7b76bfb8cbbe273929b",
+        "sourceCompactJsonSha256": "4749e984a1ec8800c66cf08b0fde562e53ba4cbcd4022d460f0cabd0a7fb9943",
+        "compositionCompactJsonSha256": "209947466a0a140029b88b79c6c83ed60c569a37eda47e4ff064a2ba6c23db76",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy1-opacity-zero/preflight.json",
+          "bytes": 218159,
+          "sha256": "1b690051bd6dfa00d082cfb460e776f6b78d347347b757481fde71cb6e5e13d7"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy1-opacity-optical",
+        "copyNumber": 1,
+        "route": "opacity",
+        "tracking": "optical",
+        "text": "เกี๊ยะ น้ำ ผู้ซื้อ กุ้ง ญี่ปุ่น",
+        "sourceFileSha256": "a02e10cd6a777d65e9daf049704a29ee6cddaa09c66fdcdf7bd04897f9613103",
+        "compositionFileSha256": "50e43a6fe7a8ed3adb3e019be6a1c726685beb3528bb362b86fcf68f97fc61c1",
+        "sourceCompactJsonSha256": "5edbb48a31cac060d195aaf639595f67ed18579ff57a7851cc6fdf6dff79097c",
+        "compositionCompactJsonSha256": "388527d2e79ca58ea15500df11cabb48a34fb87939a46f2c11d537bb694e055e",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy1-opacity-optical/preflight.json",
+          "bytes": 218319,
+          "sha256": "160a20c4fe64909cac7818d2d2523e57ae11cce671467b4d2eaca23c8c71edad"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy1-retype-zero",
+        "copyNumber": 1,
+        "route": "retype",
+        "tracking": "zero",
+        "text": "เกี๊ยะ น้ำ ผู้ซื้อ กุ้ง ญี่ปุ่น",
+        "sourceFileSha256": "b44dabbbfd75b9514a1842e8b8c258ce1c8a7b3e611303fdfb9e734f60484e42",
+        "compositionFileSha256": "c0a7a51877f00dba60aea2ab213e5e944681a1922619654288f3f5b9e685bf31",
+        "sourceCompactJsonSha256": "2b7078aa7594670d690e154391b1b220fea07656de2b1b45d36eff4637da8b8f",
+        "compositionCompactJsonSha256": "ca5e88c8936eb404557d69c0f8b6fe6cd2076b890a27807049d04fa2eccaff91",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy1-retype-zero/preflight.json",
+          "bytes": 214970,
+          "sha256": "65e468ac8cf1202002db86ce856ce20cc7b41b4bfb25e73e075436c93c83ebfc"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy1-retype-optical",
+        "copyNumber": 1,
+        "route": "retype",
+        "tracking": "optical",
+        "text": "เกี๊ยะ น้ำ ผู้ซื้อ กุ้ง ญี่ปุ่น",
+        "sourceFileSha256": "ab126f9ed0720e874d3a4f10d8fbbf85037ab8a0748dbf9054a0b185f8e8ed85",
+        "compositionFileSha256": "ebbcd4775df81d546728854b9d07715165310020a7df6965b3c7f17f41fc7563",
+        "sourceCompactJsonSha256": "51c413b0387b08053c96384eb096f2ca1a27e6cbae52cea72cfc6649f736fd4b",
+        "compositionCompactJsonSha256": "de0adffff338d1b0c1598d590b891e841fde99f70e91fed7a73b9a7c55cf669f",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy1-retype-optical/preflight.json",
+          "bytes": 215130,
+          "sha256": "23b1b5f6a830f64a19bf5262e903cad8c327d8dc430e91f8a008cb8d555bf763"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy1-color-boundary-zero",
+        "copyNumber": 1,
+        "route": "color-boundary",
+        "tracking": "zero",
+        "text": "เกี๊ยะ น้ำ ผู้ซื้อ กุ้ง ญี่ปุ่น",
+        "sourceFileSha256": "59dc3cef45a59829e8548253500d707389070a467412d02dbdc951e0d1e24362",
+        "compositionFileSha256": "21aad5713098cd373fccc265129cd2bd3c1b7c460c6b589f635433dc92521694",
+        "sourceCompactJsonSha256": "658e29a631a3cd8eac0b28192b809b9d069cf8fe1685df7197fb80959e32804b",
+        "compositionCompactJsonSha256": "2ea185c794fa1ed18a5ba36d61082a526b1521e18b13b7174538c71a9b7dbc16",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy1-color-boundary-zero/preflight.json",
+          "bytes": 215114,
+          "sha256": "c6e49770508c3f88333d751da88cbb72302fb1c0980939bdc6b385454f33f1ef"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy1-color-boundary-optical",
+        "copyNumber": 1,
+        "route": "color-boundary",
+        "tracking": "optical",
+        "text": "เกี๊ยะ น้ำ ผู้ซื้อ กุ้ง ญี่ปุ่น",
+        "sourceFileSha256": "baa5253b051e2b312a1fc73d2d559bb3178920036f4c979fe52fbb469465cdac",
+        "compositionFileSha256": "957740a0847fe547fcb49c86d444ae7e885da9433eb86e2786587111b45fc004",
+        "sourceCompactJsonSha256": "21e054246a2aa1cfd8bbfb69c77c64ddcd6a99611898cc613724eae51a905470",
+        "compositionCompactJsonSha256": "ef0ca5e7f1a6296c49fd967bb3e6d01298c6a83f8a0d7fa33e8d3e1705e22c05",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy1-color-boundary-optical/preflight.json",
+          "bytes": 215274,
+          "sha256": "9897e43623e4b7b322ae19fb95ae06706c892ceca1bd047df6974f85d1aac99e"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy1-size-boundary-zero",
+        "copyNumber": 1,
+        "route": "size-boundary",
+        "tracking": "zero",
+        "text": "เกี๊ยะ น้ำ ผู้ซื้อ กุ้ง ญี่ปุ่น",
+        "sourceFileSha256": "c88b864e4ab13d8abb9abd7b9dd87f5623a79d41cbfcf183b9c09bb902c589c6",
+        "compositionFileSha256": "47cd2d89a399f4b250754c8af27298496c5e99aa8aac5a63b552df23b2550e24",
+        "sourceCompactJsonSha256": "44aa53befd0e0e978a5777e2d539f91fe0e14c4d022313607e277d122907f951",
+        "compositionCompactJsonSha256": "ef92a82e23dec3c4cdae118e3f62efab5256eec0f1462db606d0ce2641cfc8f0",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy1-size-boundary-zero/preflight.json",
+          "bytes": 215343,
+          "sha256": "9cc75145a870b576fbbdc4ca5f7ad7caa2441cd8b35585a19d4519c1baed0621"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy1-size-boundary-optical",
+        "copyNumber": 1,
+        "route": "size-boundary",
+        "tracking": "optical",
+        "text": "เกี๊ยะ น้ำ ผู้ซื้อ กุ้ง ญี่ปุ่น",
+        "sourceFileSha256": "c031e173c3c6a9444f5ee757e921e54a0acde1024469f612b1ebefc1a944bb30",
+        "compositionFileSha256": "27dccbc0d680bec1caa06e5a38aa6139bfa95448939f69cb47476a29edc321c6",
+        "sourceCompactJsonSha256": "9565075042b402e5f0e6c1d361624a77f75033d91e789bdb4132195e4f177ead",
+        "compositionCompactJsonSha256": "48ba616d4a8e3e04230e6393122db147104d9c64aa4c40e01d791ef485bf42af",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy1-size-boundary-optical/preflight.json",
+          "bytes": 215338,
+          "sha256": "cf0361e38a01cd9e8ec451cf8fab5e5c7bd5237b974cee1886232873cb810656"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy1-font-alias-boundary-zero",
+        "copyNumber": 1,
+        "route": "font-alias-boundary",
+        "tracking": "zero",
+        "text": "เกี๊ยะ น้ำ ผู้ซื้อ กุ้ง ญี่ปุ่น",
+        "sourceFileSha256": "b70ff7ac9092c0c9b1e126eedba0f8855253f40ca6b9c118096d617e86d69e29",
+        "compositionFileSha256": "59a83b777b3b0b87465e14f9cb7e504375971d724a2cca92cb197f82847c7df8",
+        "sourceCompactJsonSha256": "0e6d781a1db8eb7880ae00259f103e07b18f37780f8f0b6fd4278794b9062393",
+        "compositionCompactJsonSha256": "4146361c6f68dcf1a9046dc41800a6a4ab91441babc87f8dff5b2c1c791247c1",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy1-font-alias-boundary-zero/preflight.json",
+          "bytes": 215517,
+          "sha256": "a5d503cbe43f5122c5142b5995045850bcfca01876c1d52f03d183d4ed1cb169"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy1-font-alias-boundary-optical",
+        "copyNumber": 1,
+        "route": "font-alias-boundary",
+        "tracking": "optical",
+        "text": "เกี๊ยะ น้ำ ผู้ซื้อ กุ้ง ญี่ปุ่น",
+        "sourceFileSha256": "b304be55b9b6f0c5003f1ade510fa77376c4c03d9977bb7da39fa6d914d90bd5",
+        "compositionFileSha256": "cba475adbb6aee9d77e118a55d9927026403f08e67aceeb5e9a794c3c926bc3d",
+        "sourceCompactJsonSha256": "69982430feee3621a5af08ee5fd7519e87fe2cd92e098aeedaad04984aa1913d",
+        "compositionCompactJsonSha256": "ee48484a4b69715f0c03761c5c2728c7bcbe1aaffaa4d5e92e3e39e3f48770f6",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy1-font-alias-boundary-optical/preflight.json",
+          "bytes": 215750,
+          "sha256": "2b5c141c63c8ef6a2d4e350f1a7644a44da1b19d9566b79a0fdc648bd1ce51ad"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy2-intact-zero",
+        "copyNumber": 2,
+        "route": "intact",
+        "tracking": "zero",
+        "text": "รุ่น X2 รองรับ Wi-Fi 6E และ USB-C 30W",
+        "sourceFileSha256": "11bfd1bdedb1b0523eb08e09324ad8e06a16fca076700602759db04fa4980180",
+        "compositionFileSha256": "3945dee749d59992d90a8e748c0aef0c9a7302ad91237b4a92037b5c88ec07f7",
+        "sourceCompactJsonSha256": "abdda746ba65e669e00cdf0dddb6495351e762d75be32a9ab8ad738c9b9fe165",
+        "compositionCompactJsonSha256": "1239588e9e1c23c7903f3e117dad8b2f2a567d81d4a26357de2d0fc27d441a9b",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy2-intact-zero/preflight.json",
+          "bytes": 432719,
+          "sha256": "f4801ed01f212fc385102f06fad923a23e7be520299d5fc7a4b002ea1e034877"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy2-intact-optical",
+        "copyNumber": 2,
+        "route": "intact",
+        "tracking": "optical",
+        "text": "รุ่น X2 รองรับ Wi-Fi 6E และ USB-C 30W",
+        "sourceFileSha256": "e8fe2d37d62e42a7af81a855537d82252b208256e19585d8d5aadaf911e71658",
+        "compositionFileSha256": "bfefe751c51797c27a26faef30b04d398f4eb3ecbdbf6007b70d796cad618cfa",
+        "sourceCompactJsonSha256": "a03b5dbf232b9c6ea187639f51dae75b09b40d26d0897aca2bb84d687e888533",
+        "compositionCompactJsonSha256": "6ae7f6631597aa51c1d7b780fe69c870001f0e652d88e3f0d48091a64fdebfdc",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy2-intact-optical/preflight.json",
+          "bytes": 432796,
+          "sha256": "a22f5af22ef1fb29e64108124585085588e9db26f68963cfcb6da6606dfa9eb8"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy2-translate-zero",
+        "copyNumber": 2,
+        "route": "translate",
+        "tracking": "zero",
+        "text": "รุ่น X2 รองรับ Wi-Fi 6E และ USB-C 30W",
+        "sourceFileSha256": "4814c10fb00c8355bd57b91de8734781ede0201d50ff9784f6aef23aac0e0eab",
+        "compositionFileSha256": "355ec5556291fc49ed607bd707a80f349ff6f1f0e9d16b24ca3cc97156c51ddb",
+        "sourceCompactJsonSha256": "e97ec1589f2dcd37e297bd1a23a3bc49d65f228eec34f4348f384c3f73590745",
+        "compositionCompactJsonSha256": "13e06439fdef4c102ee3e5c93a2df0f8362363a7adf93fd712765c101aeab02a",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy2-translate-zero/preflight.json",
+          "bytes": 446244,
+          "sha256": "50cec52370796dd1a671f0a8ddfacec4a0c25f0c40ad1a15575a26b86e1cd0cb"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy2-translate-optical",
+        "copyNumber": 2,
+        "route": "translate",
+        "tracking": "optical",
+        "text": "รุ่น X2 รองรับ Wi-Fi 6E และ USB-C 30W",
+        "sourceFileSha256": "049645c4a11249434dfa0ea708fc8942121c3fd1d39cf1c170c1868a60b16036",
+        "compositionFileSha256": "b07db6ea2ada94445a1607a317ea658d5dba86c282dfccb2817f122d73c36664",
+        "sourceCompactJsonSha256": "082405357c29fc081ddee4f7adba8b810bd352f063a209dcac764cf8b75d4c0b",
+        "compositionCompactJsonSha256": "387f7f4bf90efc0ce4a6588b315d497f948942a4b14b89655df4a9144c13c750",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy2-translate-optical/preflight.json",
+          "bytes": 446149,
+          "sha256": "284d351e04e6579bded130c26b41174fdce305ab114f8b70faa37ceb7b77bbd4"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy2-rotate-zero",
+        "copyNumber": 2,
+        "route": "rotate",
+        "tracking": "zero",
+        "text": "รุ่น X2 รองรับ Wi-Fi 6E และ USB-C 30W",
+        "sourceFileSha256": "c52ada1a178c5d6d95702d302981fff125e59ff1abe2275d93b51eaef4f6b2e9",
+        "compositionFileSha256": "6c223ae9b854e5fe935ec99a8fce710ed3e3cd3a9b6cef1df7c68fb2724763ed",
+        "sourceCompactJsonSha256": "be016ac5ee088289ab27cbc516dbe3fd8c235ab15f4fffcb934ae4ff0fd16a82",
+        "compositionCompactJsonSha256": "13d12ada365f881edb10ee8437cc319cd78ff99089109e37384bb4efa91e4445",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy2-rotate-zero/preflight.json",
+          "bytes": 436534,
+          "sha256": "a783c27346cacf73a0e36305ffecc08d6f890388fd62d36997642f9cd6b22ad5"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy2-rotate-optical",
+        "copyNumber": 2,
+        "route": "rotate",
+        "tracking": "optical",
+        "text": "รุ่น X2 รองรับ Wi-Fi 6E และ USB-C 30W",
+        "sourceFileSha256": "e04d4ec77f257ddc71d71c5134d96a4c4df331b7883cfad23c8d84b89882fcb7",
+        "compositionFileSha256": "f0ea2df7cde207b9407b3525d2ab12a9cd8c5e0792a6e519e0333ae5a0de83d5",
+        "sourceCompactJsonSha256": "92303c9de92cf49c89c8067172b151d01950392714402fa543a15e0e77f9b550",
+        "compositionCompactJsonSha256": "3cc5733eac3cd3ba782fc1633edb980121f221d9b62fc751d83c7c3757efa12b",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy2-rotate-optical/preflight.json",
+          "bytes": 436439,
+          "sha256": "31dcf7f37a5db17a75a0c02c93ba2cc0db994c85e23db672f5ce6cacf61eb002"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy2-opacity-zero",
+        "copyNumber": 2,
+        "route": "opacity",
+        "tracking": "zero",
+        "text": "รุ่น X2 รองรับ Wi-Fi 6E และ USB-C 30W",
+        "sourceFileSha256": "47eb8f94a3aeb551c372999d64eb3d7707386bc7c0b1abf749be18cf39f7ecdf",
+        "compositionFileSha256": "b04eacb0f6379579c7377470b9bac0c09a19b29825e436828f14c3fbc7c8089f",
+        "sourceCompactJsonSha256": "fc25a1f0923a015602ae972b570ebdf84f87879f77001bb0ab0a3f3fcbff120e",
+        "compositionCompactJsonSha256": "20f0dcec21682a46a36b98ca383caaa2d34fbe299121d526c97c877481fd8487",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy2-opacity-zero/preflight.json",
+          "bytes": 436809,
+          "sha256": "cc5aa0d4b448ea1c1baf3b0b39779911eab947583b1ccf8f6571e88392dbd3ff"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy2-opacity-optical",
+        "copyNumber": 2,
+        "route": "opacity",
+        "tracking": "optical",
+        "text": "รุ่น X2 รองรับ Wi-Fi 6E และ USB-C 30W",
+        "sourceFileSha256": "0ebddff1aec1fb5feb14776dd8bf3d56703f6caae14ccf92d570fde3efdd7480",
+        "compositionFileSha256": "1530602398b2b669d53b9f69b71479e85fd50455d3956f90e8c98ca3fc839c5e",
+        "sourceCompactJsonSha256": "0b1328a78976c9321ec3ec47c6c2e56b390f418d3e9ad0936b341cb7aab4e691",
+        "compositionCompactJsonSha256": "b31912536786e16b685ba2333e00808a877d1ee05090deb2ab3e3e1312486b43",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy2-opacity-optical/preflight.json",
+          "bytes": 436714,
+          "sha256": "77e70d960dab7ceab55faebb6deeaa626c74cc30e3bdfbc1da8ff82932b0e53c"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy2-retype-zero",
+        "copyNumber": 2,
+        "route": "retype",
+        "tracking": "zero",
+        "text": "รุ่น X2 รองรับ Wi-Fi 6E และ USB-C 30W",
+        "sourceFileSha256": "6e46e22a5a75d0ee22621c5df6dcffa96b57ba06d89e1cc8ff08ac36b2162a06",
+        "compositionFileSha256": "828bd08742ddd4322e9dee4efdb09632675cde95c0331a98af92c218ece80dcb",
+        "sourceCompactJsonSha256": "31312ef2ff12b0bdf52581e6c5fa41eb8d162027a2b27dcbcb4fd3d8e0d05eec",
+        "compositionCompactJsonSha256": "2d07cfff7429711ef0b27690e4017cfff923452dbfdebc864b6416bba4baf394",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy2-retype-zero/preflight.json",
+          "bytes": 426633,
+          "sha256": "4b73e9a225332376a9c2aa93e5a49d8095630b540f4e65a088d290b0f785a2c6"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy2-retype-optical",
+        "copyNumber": 2,
+        "route": "retype",
+        "tracking": "optical",
+        "text": "รุ่น X2 รองรับ Wi-Fi 6E และ USB-C 30W",
+        "sourceFileSha256": "8c03a2e5698a4a1f947584d7c54ea38c71d260c860f4cef457cefe98733041dc",
+        "compositionFileSha256": "6f47400b5fa2d369684f671f0d52494a76664f75866e55d1b2c7d4df6e60017c",
+        "sourceCompactJsonSha256": "e957590e17be3a6f3bd7bfa7a3e6adf027a1a56c24fe80b4ddb4d53a7bdab88b",
+        "compositionCompactJsonSha256": "1deb8d9d4a26c7a981ecd53a18fdc8574066ded86e2d69a79aab519ade831ac6",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy2-retype-optical/preflight.json",
+          "bytes": 426783,
+          "sha256": "161f6461252ce4de4642060d1cbad35887595bfe2048dc0f9970aa5cbc04c8e8"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy2-color-boundary-zero",
+        "copyNumber": 2,
+        "route": "color-boundary",
+        "tracking": "zero",
+        "text": "รุ่น X2 รองรับ Wi-Fi 6E และ USB-C 30W",
+        "sourceFileSha256": "43d747a1e45e2bebbce05bb5b2d0ab1478547d26f46531e02d0ebc01faa74994",
+        "compositionFileSha256": "9102d294d1a9ae5357e2760603837656af9b748bfebf96a87716b6e92493bccd",
+        "sourceCompactJsonSha256": "234ec1121310c954ce0d5a20013747b760cbbf6af5d5ab8854d52ef9798d6c6c",
+        "compositionCompactJsonSha256": "ff6d01a11ced5fc755a8a427d0a420c003cd9b0f851388a8e26f8ce99e463c8e",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy2-color-boundary-zero/preflight.json",
+          "bytes": 426760,
+          "sha256": "ba72b6cbfa2a8aef660fc5faa7efdb73ccda03c9ea088a4745ba39adb0d1da05"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy2-color-boundary-optical",
+        "copyNumber": 2,
+        "route": "color-boundary",
+        "tracking": "optical",
+        "text": "รุ่น X2 รองรับ Wi-Fi 6E และ USB-C 30W",
+        "sourceFileSha256": "929e31bc55cd1154d1e9cb3dfa55321962a1b1e9a8a63648be0fbca115b5b71c",
+        "compositionFileSha256": "a2c9ddd8a6649750cf3db27c14d3aa3b6e5c31951888aebbf4f3e1e30b38498a",
+        "sourceCompactJsonSha256": "c446c90a10d47a52f967c7d45da50e1699e330690cf9682598b524629763928f",
+        "compositionCompactJsonSha256": "8c8e67e88704e18f351936f3c83078c89128391e7481d448deb13e98d56536b7",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy2-color-boundary-optical/preflight.json",
+          "bytes": 426910,
+          "sha256": "d6c1e6e2bc232f4a71670a7542c7ae8d69e9603fb640d0729a111a4cb7ff258a"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy2-size-boundary-zero",
+        "copyNumber": 2,
+        "route": "size-boundary",
+        "tracking": "zero",
+        "text": "รุ่น X2 รองรับ Wi-Fi 6E และ USB-C 30W",
+        "sourceFileSha256": "ce42fe21131567475f61ec0a2673dc5fa1dca8d8486ab85809fd71d0c451b08e",
+        "compositionFileSha256": "9b9fc96b351e6df45b32968e8d33a1255081a25f21f232073517c115ca5d595f",
+        "sourceCompactJsonSha256": "6070d3d6ab165c0d8c874076fd1ad4bdca45d5289c48235cd110931947aef192",
+        "compositionCompactJsonSha256": "26a58a5c8f4d3e2ace28fdeb1f9cf722e33c60ab9d0ee6f28867d2cc0814952c",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy2-size-boundary-zero/preflight.json",
+          "bytes": 427357,
+          "sha256": "361cf55ea88d47d45f72f9799aaefdb194d2067d2f5362d33146c1081100cdbe"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy2-size-boundary-optical",
+        "copyNumber": 2,
+        "route": "size-boundary",
+        "tracking": "optical",
+        "text": "รุ่น X2 รองรับ Wi-Fi 6E และ USB-C 30W",
+        "sourceFileSha256": "1903c3dfd4f9c98dd4bf85b5d29b52f0a53383a074a552904481db51d73db7c2",
+        "compositionFileSha256": "f0b5f6fc9ef88272cccf69725bbfb1c6435923c1946306d15dca16d432c6e4ca",
+        "sourceCompactJsonSha256": "49e9a2abc3b51336c513dea3e838cd3ab97927cf8a50968c37ce5877e4a96bb8",
+        "compositionCompactJsonSha256": "a573cbe75db9d21b41ae332a7194dcbe97eea77a161899b8125fdc02926ed83d",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy2-size-boundary-optical/preflight.json",
+          "bytes": 415184,
+          "sha256": "2340cfc4140c117612f7cb4550ac71a3ee3966f78096c741c388e501ac1f4d5c"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy2-font-alias-boundary-zero",
+        "copyNumber": 2,
+        "route": "font-alias-boundary",
+        "tracking": "zero",
+        "text": "รุ่น X2 รองรับ Wi-Fi 6E และ USB-C 30W",
+        "sourceFileSha256": "f575dac434f92af6d11f2634775ccd088f6a0d9f3be7ce77c95019321deeef13",
+        "compositionFileSha256": "dbd2d5dd2a4c4dab47bdf0552050ac781c9483ee2946168cb47aff4de5972631",
+        "sourceCompactJsonSha256": "72f0c5456a462fea625d34bac9ab764e7646aa913607ae18f1b8b41d4dc02a6c",
+        "compositionCompactJsonSha256": "b99c5a13f0d4f10d8894ed2ab6316b5b551abca6d97be9f5e4901706e0ca4a3a",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy2-font-alias-boundary-zero/preflight.json",
+          "bytes": 427195,
+          "sha256": "abd961616c3e35d5324f080aa7bbd3204475958a8e5bf4553936fe1c4cc77767"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy2-font-alias-boundary-optical",
+        "copyNumber": 2,
+        "route": "font-alias-boundary",
+        "tracking": "optical",
+        "text": "รุ่น X2 รองรับ Wi-Fi 6E และ USB-C 30W",
+        "sourceFileSha256": "38fa293086ed10536ac6ec498c12a71bea517679114066d155135fbf56a923c1",
+        "compositionFileSha256": "42192003bc545891198d771ec2b1d2dbddb46e63e3c7895f3f1423bbbf056908",
+        "sourceCompactJsonSha256": "df272840970b545e0f6f18b53742c2c1a27c522e52f2f0a216f6c4c4a0a91f38",
+        "compositionCompactJsonSha256": "40915a841bfc0863c1d52c54b1bef72858a4f568e7fe50f7248569e3ffd7a36e",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy2-font-alias-boundary-optical/preflight.json",
+          "bytes": 427404,
+          "sha256": "31c3ed65a3aff2310e9e1426c1535252b63315cffe55d90bae74a3e2e0b73d2d"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy2-latin-font-boundary-zero",
+        "copyNumber": 2,
+        "route": "latin-font-boundary",
+        "tracking": "zero",
+        "text": "รุ่น X2 รองรับ Wi-Fi 6E และ USB-C 30W",
+        "sourceFileSha256": "b76797ecb690abc5e013d1a51521f4fdcc9cf10fafdd0a2a5ea411b7aad73d61",
+        "compositionFileSha256": "f6471d27ddc45837f6410a79f97315bc5dd6624dc7b8614e77fbf6ff30b2424d",
+        "sourceCompactJsonSha256": "16ae2ef26d6eee225d4a07c021f73c546e6281c96d291b569dc437f199252bd5",
+        "compositionCompactJsonSha256": "fe3f5fe39cfddb77be1e9556c5ff225cc79b2d1362ee1278f4f4ca63272d06c8",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy2-latin-font-boundary-zero/preflight.json",
+          "bytes": 427688,
+          "sha256": "a225faef744d9b0beb4dc4ec0d9592337a693f63048f3230915fa19e1fec4016"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy2-latin-font-boundary-optical",
+        "copyNumber": 2,
+        "route": "latin-font-boundary",
+        "tracking": "optical",
+        "text": "รุ่น X2 รองรับ Wi-Fi 6E และ USB-C 30W",
+        "sourceFileSha256": "5953d3ad30a43bd63c677472a9eff8f02bc74f69fa022f0e1cf6751224693e6c",
+        "compositionFileSha256": "5565024ae11065c1f6cf0e07450f8d3badba6c3056c6f5bc368104df5793db94",
+        "sourceCompactJsonSha256": "1e4f41fd7a796ec2e1279821589d27e35ecfbe6cab405702491adc4b8f30bb62",
+        "compositionCompactJsonSha256": "4b3511c0080063bce91faa45bca6fd14cd24c12da180f8fb6febc4bd004c3fdd",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy2-latin-font-boundary-optical/preflight.json",
+          "bytes": 427711,
+          "sha256": "258dd790214754dfdc26c0b29db685c85948121b4f4dbd1bfec0f27b72d267eb"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy3-intact-zero",
+        "copyNumber": 3,
+        "route": "intact",
+        "tracking": "zero",
+        "text": "฿299 • 500 มล. • 2 ชิ้น",
+        "sourceFileSha256": "d15cf73332f0d1c0685baa7c0361e577f03ddec2df4392f061e5d6097e20df5b",
+        "compositionFileSha256": "b6ec49fa84c91aa9f11119301dccc2748c5c1153977ad435f39f9e2d4983dc75",
+        "sourceCompactJsonSha256": "3971c628ef358829b48b93d9106edf0ca6b793b366f41452275d42255e6de2bd",
+        "compositionCompactJsonSha256": "fc76023bbcdfce5e236f57f245617573931a686ce2d85d00f8341a3e4bdeb5e6",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy3-intact-zero/preflight.json",
+          "bytes": 268319,
+          "sha256": "6512148e1677170e54f8f7c19f5b87d9eef648a3cdf96026df9469b79c05571d"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy3-intact-optical",
+        "copyNumber": 3,
+        "route": "intact",
+        "tracking": "optical",
+        "text": "฿299 • 500 มล. • 2 ชิ้น",
+        "sourceFileSha256": "ff74b985fc2288ebdf761498f41512d74494f6d936f0d8e0a8439d9d826f4aa9",
+        "compositionFileSha256": "1a06d691424b636998817d98155cb2c6524ec72b8ebbfce3345c3571bda01f05",
+        "sourceCompactJsonSha256": "5a5b5c704040d510b9d2ab001794f92f63ab8c5b281f3236e4e245858e55d1f7",
+        "compositionCompactJsonSha256": "26fdc43de746a988c6e38fb14c90a543de43fa14d6df43a0b77f4be8303f6565",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy3-intact-optical/preflight.json",
+          "bytes": 268405,
+          "sha256": "5fff458ca448361184c86f88a3773fed8cd9d38e7b5e0168c4d58f12fb0d67a1"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy3-translate-zero",
+        "copyNumber": 3,
+        "route": "translate",
+        "tracking": "zero",
+        "text": "฿299 • 500 มล. • 2 ชิ้น",
+        "sourceFileSha256": "3fb1d9e425fdc8d2b8e1ff852db6c276e599b979a5013fe88ad6ba880e6d5462",
+        "compositionFileSha256": "8cda6e415119419982eeb6c1f229b1993139042f8948e95b8a67760fe9fda99b",
+        "sourceCompactJsonSha256": "b51685ce3715bd9e847cddfe4f1429026563030a5276007263c8006768efa094",
+        "compositionCompactJsonSha256": "2fe66ebfae0d7848b1a1a554b147d7adc9cb8e0fda1718ce25c5782eec059481",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy3-translate-zero/preflight.json",
+          "bytes": 273496,
+          "sha256": "cfc25b01bdbb20efef43c52e25a1ffd1c4b0863a2fc04a3783ddd31ec5a63946"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy3-translate-optical",
+        "copyNumber": 3,
+        "route": "translate",
+        "tracking": "optical",
+        "text": "฿299 • 500 มล. • 2 ชิ้น",
+        "sourceFileSha256": "7f4c8d6bf6f77955d88da7404abb3a6f216501f4cc43ab765c4be62107e54125",
+        "compositionFileSha256": "880600765385a5fc9fc04820507af3e544c74e668d5b614f4467180be744fcc0",
+        "sourceCompactJsonSha256": "0a6760ba7ceafcf63957f71217ceb4f06005a9bfd5005fdc184db6514da597d1",
+        "compositionCompactJsonSha256": "9e16728aeb8ce8082b61e5026ec1d6961f8efdaec7dcf0cdad380db528282752",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy3-translate-optical/preflight.json",
+          "bytes": 273708,
+          "sha256": "3b67bc19756f882228ae329e246f812a4196c1087c3d718926d039b48014affc"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy3-rotate-zero",
+        "copyNumber": 3,
+        "route": "rotate",
+        "tracking": "zero",
+        "text": "฿299 • 500 มล. • 2 ชิ้น",
+        "sourceFileSha256": "62fbaf8f0e1670456d78a6db421319612f983bb432762c1846e46d5c579a58b8",
+        "compositionFileSha256": "c85d76a2c9e39ae1b1c22057976be158bf89544870c3101a6d9285c56595b7cd",
+        "sourceCompactJsonSha256": "365c517aac6532ca89aad3b6186364c32518f797812a280e073fa8ecddd712ee",
+        "compositionCompactJsonSha256": "67e496010370f383ab5a9b796e74a66c597ca53f8c8c8178ea323ce5cb784443",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy3-rotate-zero/preflight.json",
+          "bytes": 269010,
+          "sha256": "8ce591dd4a27039126c667e163e477581db6525f0ac69538ac6755b9733adfa4"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy3-rotate-optical",
+        "copyNumber": 3,
+        "route": "rotate",
+        "tracking": "optical",
+        "text": "฿299 • 500 มล. • 2 ชิ้น",
+        "sourceFileSha256": "221abb337f8f95739560d4d8bbe9d94462e773f4523a1dd7f3dcb14ca8c4ecf1",
+        "compositionFileSha256": "46284fd79def0508b11ccfa7a052a07859bc0288c26ca8b0514670e269206900",
+        "sourceCompactJsonSha256": "e5e37bea33c76aa018848b601540c906c97bfd0a5acf20700cd57210f73afe99",
+        "compositionCompactJsonSha256": "d8cc0b7e8f2efe3ab303fc475bf120d98c647ff63c5941319d9dd69af788fcfb",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy3-rotate-optical/preflight.json",
+          "bytes": 269222,
+          "sha256": "6f38cb004572739556a2b762ca09dff29f49a23bac04a647e40031fe4e8f915a"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy3-opacity-zero",
+        "copyNumber": 3,
+        "route": "opacity",
+        "tracking": "zero",
+        "text": "฿299 • 500 มล. • 2 ชิ้น",
+        "sourceFileSha256": "263306b3dde24cb9774d0452e31139975bd4049a708ba2aae4bc851f073e157a",
+        "compositionFileSha256": "563b38dc9edcac2cde50b657c14fffdbbd917eeae4f9bf4bf84cfd4201d940ad",
+        "sourceCompactJsonSha256": "b5f6dacc02f020bd13b2118a80955b79b674e4790654b549524cd32b19ddfb70",
+        "compositionCompactJsonSha256": "23422cf8dc7049bc9b8859c32586cd3d6d3cdbaa00f18d7f198f924dbea21a35",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy3-opacity-zero/preflight.json",
+          "bytes": 268395,
+          "sha256": "0da7c82c037ed6e2496440c0cd3b88843e08fa6b0994ec9181282debda1133f6"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy3-opacity-optical",
+        "copyNumber": 3,
+        "route": "opacity",
+        "tracking": "optical",
+        "text": "฿299 • 500 มล. • 2 ชิ้น",
+        "sourceFileSha256": "f6a1bb098d55cb387f22bbaf484c75116802fb8895073a238d5a54d4862fd48f",
+        "compositionFileSha256": "9e2e036c2e47d2e7fa8e9e802c9398ab3f1ade9790d0c50dcfc1f6d69b47996f",
+        "sourceCompactJsonSha256": "09133f2cdac3447cd62a1e45f82414a5a5ceed97e1d562e9712f8344cac746da",
+        "compositionCompactJsonSha256": "bf0d4f1efe966fe90769e79b4aea0e0313f7cbd8e36549b1d36568b03981f176",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy3-opacity-optical/preflight.json",
+          "bytes": 268607,
+          "sha256": "15c8a43caf944fc326f42336b3c61f10bbd72a26dd749077327e7ec6d7de9e11"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy3-retype-zero",
+        "copyNumber": 3,
+        "route": "retype",
+        "tracking": "zero",
+        "text": "฿299 • 500 มล. • 2 ชิ้น",
+        "sourceFileSha256": "3beffa5adda3f59fc8ffe84dab190fda9e12d992b566d2c4fc0cada144dcdece",
+        "compositionFileSha256": "f8e87ea834cc75d132a80660993aebc51003716ab7e39059e5d5ca22efb3ef71",
+        "sourceCompactJsonSha256": "844117291f7d65ff67f89c53b639fc82c42df3ee0eace540f6e6f6a3538a84f2",
+        "compositionCompactJsonSha256": "ef13fe08a63272d68e6d5ae94b6ed4efb1312e9633142e5e3505b56c5823dd7f",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy3-retype-zero/preflight.json",
+          "bytes": 264398,
+          "sha256": "a682a7f469eb70aea564e66d316e0fbbdc56dc090538a82cae6700009c3f361c"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy3-retype-optical",
+        "copyNumber": 3,
+        "route": "retype",
+        "tracking": "optical",
+        "text": "฿299 • 500 มล. • 2 ชิ้น",
+        "sourceFileSha256": "82885abcd81d6205f5d2167570f9c81c22b71b7e690ec37e23e52a56495b63e2",
+        "compositionFileSha256": "82350f92c18ba7c9d7dd713e8e7372d7130031c2002a61849a49ab83a54957a7",
+        "sourceCompactJsonSha256": "127385671cbf35040e91429ac3a58580ae2472a17c6ca592755d4e82d14338cd",
+        "compositionCompactJsonSha256": "0261b7086159bbd26a31adf334519bde8f348549a6905c9d3083dbb70554de5b",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy3-retype-optical/preflight.json",
+          "bytes": 264611,
+          "sha256": "dde0900b859831e51b90c0a761c42f35b0fc0dae28dd2035652db009aa4528e8"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy3-color-boundary-zero",
+        "copyNumber": 3,
+        "route": "color-boundary",
+        "tracking": "zero",
+        "text": "฿299 • 500 มล. • 2 ชิ้น",
+        "sourceFileSha256": "2c361b998ba2757efcee10808535347dfa3fdfcaeed2d5e156fafd64e87a9739",
+        "compositionFileSha256": "fedc9e3cd3774397cf34f3b22ba03a1a3d575aa5ffbf7d78cf56974193581421",
+        "sourceCompactJsonSha256": "ec01342d7c1ca9cde3943a98276d653dd6a2ee758087f4dd6e0a2d2073006625",
+        "compositionCompactJsonSha256": "4ee1f28fd5303f04642c7218ba8baef4922b57907d9441ef84d20844fa406ef7",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy3-color-boundary-zero/preflight.json",
+          "bytes": 264557,
+          "sha256": "da305576dda9f9ce849b775b42233d9eb9b02ea2573f37f3e5579affd8f8c477"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy3-color-boundary-optical",
+        "copyNumber": 3,
+        "route": "color-boundary",
+        "tracking": "optical",
+        "text": "฿299 • 500 มล. • 2 ชิ้น",
+        "sourceFileSha256": "2f5732298c3859a01d7fe7570a471e4f3496a742486d32b00335fd16b2bd960f",
+        "compositionFileSha256": "2fce928398525d39da577d81cf8e414f64c71bab91824a92e8b2f2fa2ca87e75",
+        "sourceCompactJsonSha256": "da5e5328575303293539419d4bae88cb6bab10cbe20be9a14794d633dd5184ba",
+        "compositionCompactJsonSha256": "5ae4c9c4b9e6fb71cde7ebb24ce7ad36b6492ad09a0798d79ce9dbef85e7b8aa",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy3-color-boundary-optical/preflight.json",
+          "bytes": 264770,
+          "sha256": "8b3984950bf0073e9e172cd2540e8f4bd504146ef685d3ec9538f7489466d8ee"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy3-size-boundary-zero",
+        "copyNumber": 3,
+        "route": "size-boundary",
+        "tracking": "zero",
+        "text": "฿299 • 500 มล. • 2 ชิ้น",
+        "sourceFileSha256": "701444a540180bbab07d1d5e848804225cb2536d9703f6c6272839625fd13e5b",
+        "compositionFileSha256": "8b6050285082f0dcedafff6ee2adfd13d75d9b8b58c66afca5c0ab8288eae505",
+        "sourceCompactJsonSha256": "3497e8515fa791ead3f256160430425834a8b6a023f671b611c5c6fed73fd045",
+        "compositionCompactJsonSha256": "e1462ecd79468a21568f6c423843a2e89c8803b177e5bd42271d0e2907c10ba9",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy3-size-boundary-zero/preflight.json",
+          "bytes": 264862,
+          "sha256": "f645f32d4955aebb2b0c9870c4b28bf5d17dba717eaed7a01b45640a18e4d013"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy3-size-boundary-optical",
+        "copyNumber": 3,
+        "route": "size-boundary",
+        "tracking": "optical",
+        "text": "฿299 • 500 มล. • 2 ชิ้น",
+        "sourceFileSha256": "00b7468d88728051f95774f05540d69e4f1a2941f00dd99fba5a85d77b42cf40",
+        "compositionFileSha256": "a1fba36c9fae7884acee8f3a2e755817d28e4fa556452bfce1ff6b6de0e99722",
+        "sourceCompactJsonSha256": "71b61e0ec06317447fdb5884b0c20c396aaf61c01d1b2e14c53b16e67d4a4cac",
+        "compositionCompactJsonSha256": "6eb7e722f3e4adf5b4cd8f7ec2dba6662ba86e36dd99e47d65c7b27ac731b03f",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy3-size-boundary-optical/preflight.json",
+          "bytes": 265123,
+          "sha256": "4432194993de0ebf7c9b89058b8dd109a8de729161ee706f2c13c70f8fe0d5af"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy3-font-alias-boundary-zero",
+        "copyNumber": 3,
+        "route": "font-alias-boundary",
+        "tracking": "zero",
+        "text": "฿299 • 500 มล. • 2 ชิ้น",
+        "sourceFileSha256": "dd12be0d2248e63e18f9204fe5a6a9a62c214eb0bfa05e11f0d98c7249877cd5",
+        "compositionFileSha256": "0c706416f2b176a8a5ce1467b7ffc6c93dac0314c2da595e500ad7a7eb9c1403",
+        "sourceCompactJsonSha256": "94491ecc82ce7d0c0039e72478f5014a984e3e3ca61f56c97a32aab3f902296e",
+        "compositionCompactJsonSha256": "aeb6f2776acc7b1e1ae41c4dba410701723781532b557162061dcc80716eb5c5",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy3-font-alias-boundary-zero/preflight.json",
+          "bytes": 264877,
+          "sha256": "092dc14c0d1d2a7c4898c1cbba9c5e9a83ee2ec3cec73541f7a73541f4723436"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy3-font-alias-boundary-optical",
+        "copyNumber": 3,
+        "route": "font-alias-boundary",
+        "tracking": "optical",
+        "text": "฿299 • 500 มล. • 2 ชิ้น",
+        "sourceFileSha256": "bf781af1e7727284ca7683690a3294ae65d1f03ad058328f6dc0a2996b533e00",
+        "compositionFileSha256": "55b7b561c572b52d5710bfebd6f3727d4932e4285e5efc897f37f2e4e0c225d7",
+        "sourceCompactJsonSha256": "ef506ff434f46937b02bc38fd6fce4a6aa45a084da8624669429710c737368b7",
+        "compositionCompactJsonSha256": "6cfb3f9c42313e0022dc7e50b48ebc0fc20e4091e04bc04a68f35bbd24753354",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy3-font-alias-boundary-optical/preflight.json",
+          "bytes": 265216,
+          "sha256": "be03f760c4382cffca81517dd50087cc2a63274358c61d10960dc48391cac7df"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy4-intact-zero",
+        "copyNumber": 4,
+        "route": "intact",
+        "tracking": "zero",
+        "text": "โปรดี ๆ สำหรับลูกค้าใหม่เท่านั้น ซื้อครบ 499 บาท ส่งฟรี",
+        "sourceFileSha256": "7847a8f4c3b296fda781eb7110fdc9c10ac9842a2d5724d6e179fa960a4c4823",
+        "compositionFileSha256": "25f4171657370cb458322f9d4a7be8f09bb9423a3d65ad823e1114b02e04380f",
+        "sourceCompactJsonSha256": "f0cea7ab5e735fa607790578e379d2a47e9ae99be1aacd0083d04f8d64fa8c07",
+        "compositionCompactJsonSha256": "7aab951ea1995dc031c91038bd40ce64f51cf315c12a597a48e2da1ed6432e7e",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy4-intact-zero/preflight.json",
+          "bytes": 534543,
+          "sha256": "8170223fbf82030b7c6746c4924ae3a308c352bf14acc9774ac077c557a54bd7"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy4-intact-optical",
+        "copyNumber": 4,
+        "route": "intact",
+        "tracking": "optical",
+        "text": "โปรดี ๆ สำหรับลูกค้าใหม่เท่านั้น ซื้อครบ 499 บาท ส่งฟรี",
+        "sourceFileSha256": "412a745b8acc552a47edbc621f04ceb7ad5c9f528df3c020d6e5f493fb0e572d",
+        "compositionFileSha256": "4b3c38c86099176417877a7b00c55d318cd3124a8fbf0dd7507b872e4d89614a",
+        "sourceCompactJsonSha256": "7cdf749a685a8fb792fe9db5ee39cce50091b15e5002a18c93176c88c98eb6d1",
+        "compositionCompactJsonSha256": "10afb9c429982b79f98ee6d455e7764c683ea195c857bf8a0856ab1f10494488",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy4-intact-optical/preflight.json",
+          "bytes": 534649,
+          "sha256": "b1143156c0c297c085914f68fd85e36881faf13ba2d7e725a1c3cf86d4f80471"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy4-translate-zero",
+        "copyNumber": 4,
+        "route": "translate",
+        "tracking": "zero",
+        "text": "โปรดี ๆ สำหรับลูกค้าใหม่เท่านั้น ซื้อครบ 499 บาท ส่งฟรี",
+        "sourceFileSha256": "52f632b8abe4b4f70470f1293100a1cbd5230cbd26f81e1c8d9fd8e5a42b1c47",
+        "compositionFileSha256": "743ad984f907b684fac98350f2d227645bdf13888aa74ded8ddd1b2c0614f17c",
+        "sourceCompactJsonSha256": "808d1d19b3f68fcd69c55a0b6d6c05f637764e8347eaa0f8ba72f86c3dbac73d",
+        "compositionCompactJsonSha256": "ae75dcd9dab4605417d75344892fe203eec45ebf6c4e5804523c3339ba2edf69",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy4-translate-zero/preflight.json",
+          "bytes": 537591,
+          "sha256": "97974c4168aee3ce30082484d0f0c44821896b796b486a61996214649e9b6238"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy4-translate-optical",
+        "copyNumber": 4,
+        "route": "translate",
+        "tracking": "optical",
+        "text": "โปรดี ๆ สำหรับลูกค้าใหม่เท่านั้น ซื้อครบ 499 บาท ส่งฟรี",
+        "sourceFileSha256": "e71a7b036d8a0f1db3feb0f0cb996f28e3a0db0f52de39486e3009da6f0a1cc1",
+        "compositionFileSha256": "0a0191ec94485daa5d2454f44f3685884238328ea48082b7337a9a2dd6f8eb01",
+        "sourceCompactJsonSha256": "ae74020651aeabb9c8d151934fb55fe98cd47f340d910ea34cb97bbcbb2f5821",
+        "compositionCompactJsonSha256": "a7962ead36a5c7c32762c6c78ece8844314757da90af903a88dc22ca57d6f725",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy4-translate-optical/preflight.json",
+          "bytes": 536634,
+          "sha256": "4a680d5753caad8cbfd60263f3e7ffb35699dc9158cf98882717de3bce62c61c"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy4-rotate-zero",
+        "copyNumber": 4,
+        "route": "rotate",
+        "tracking": "zero",
+        "text": "โปรดี ๆ สำหรับลูกค้าใหม่เท่านั้น ซื้อครบ 499 บาท ส่งฟรี",
+        "sourceFileSha256": "ed8e0301f1bb60ca3d890b6ee8414f7c3d17b763daa6aac09b284a389331f2ff",
+        "compositionFileSha256": "fb574443ad54cbca0af55cf7badb61529bf0f09606ebc95928bf3cc8d6406947",
+        "sourceCompactJsonSha256": "c016fe6b05108dbb8e0be2326f766af14c25bfb6bbbfba674c4fde4507811506",
+        "compositionCompactJsonSha256": "88cbb36648f1d7ca60a15002ab96b888fa29f4003c2d248c6100465e1c4ad34f",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy4-rotate-zero/preflight.json",
+          "bytes": 528229,
+          "sha256": "c3edf9253519217e54c16d19769b46cbf68a810d81205ebd3444d9bb9bf5d276"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy4-rotate-optical",
+        "copyNumber": 4,
+        "route": "rotate",
+        "tracking": "optical",
+        "text": "โปรดี ๆ สำหรับลูกค้าใหม่เท่านั้น ซื้อครบ 499 บาท ส่งฟรี",
+        "sourceFileSha256": "98bc2bb623a1dc47fa71569cf6168207ba949c6d2f4ae143dd4e0cf5ad1f5f66",
+        "compositionFileSha256": "3c3ca9b109b9d19ebf4c0faad422048310792badca90befad05c6cf9c2289b7e",
+        "sourceCompactJsonSha256": "d354762f061d0735692325b28df786245b2a356cbeee1f4c074240a11c05854b",
+        "compositionCompactJsonSha256": "168ee30ca553bd3523e1510e34ba7a50e7680c4fa6874609d246e0bed55cd72a",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy4-rotate-optical/preflight.json",
+          "bytes": 527272,
+          "sha256": "6bd2fd52b7be3484ce94062438faf445988671ab8b2b60932fcf2a255f5d798d"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy4-opacity-zero",
+        "copyNumber": 4,
+        "route": "opacity",
+        "tracking": "zero",
+        "text": "โปรดี ๆ สำหรับลูกค้าใหม่เท่านั้น ซื้อครบ 499 บาท ส่งฟรี",
+        "sourceFileSha256": "7a99610503a84fc6d70da7af22cb78bbe9142cb71a42a7339b757d5c43c323b8",
+        "compositionFileSha256": "e89ece1c53a091dd36c99abc602d85a37a44128013b62267e24b3ccab776bf3f",
+        "sourceCompactJsonSha256": "a2fd8a0c950fbd9b90e82d86094abbc23d494eabc977d59227fb63e98e6dfd46",
+        "compositionCompactJsonSha256": "5486150b35636edf1c1b1440230576a2636c8487d6993f3eb25723caf464d1fa",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy4-opacity-zero/preflight.json",
+          "bytes": 527250,
+          "sha256": "c90b554a97e147ff911b2dbdb31e338fe3dae9de91d7292a6597cb76b19b507a"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy4-opacity-optical",
+        "copyNumber": 4,
+        "route": "opacity",
+        "tracking": "optical",
+        "text": "โปรดี ๆ สำหรับลูกค้าใหม่เท่านั้น ซื้อครบ 499 บาท ส่งฟรี",
+        "sourceFileSha256": "edba091ba6532adb20b46b5c61309af252a90ac96793c58bd2f5f5edede62ffe",
+        "compositionFileSha256": "34459e0bcf7a880cd55af0123bcabeb0f98d0c9170b35f17c042a8da38b145ff",
+        "sourceCompactJsonSha256": "9897c96824c2644a281422afa349aa4a626833c1870085070ee1936e6a3fe800",
+        "compositionCompactJsonSha256": "0bce4a2659d3b81daaafc6504d0db161e7c6a83b0d28be262c10a9c92f29f731",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy4-opacity-optical/preflight.json",
+          "bytes": 526293,
+          "sha256": "08acd0582dc2fa9120beb3a33df0fa6b44b0a9a8b966edb601433e3f8876a551"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy4-retype-zero",
+        "copyNumber": 4,
+        "route": "retype",
+        "tracking": "zero",
+        "text": "โปรดี ๆ สำหรับลูกค้าใหม่เท่านั้น ซื้อครบ 499 บาท ส่งฟรี",
+        "sourceFileSha256": "6068769a1924ab3dff9c277c1a7bdb190d659904654081352d94660380cba176",
+        "compositionFileSha256": "be21d627f5772c780a3d607958d81ae725583589f73e3d746410511516f07609",
+        "sourceCompactJsonSha256": "3c22a70d2f8dd1f4063f1c9ca49642ca9e77b5a48e15752bc588e2b7ce071f5b",
+        "compositionCompactJsonSha256": "996c6221af8cbe0d424f4a55085962183d6f653832ce3e7bc741a467a9df4156",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy4-retype-zero/preflight.json",
+          "bytes": 518710,
+          "sha256": "c3eb8b9095beae3bba57f87c1ba3b6fdb7093a7ec908217b8cdbb6e21b2e9f15"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy4-retype-optical",
+        "copyNumber": 4,
+        "route": "retype",
+        "tracking": "optical",
+        "text": "โปรดี ๆ สำหรับลูกค้าใหม่เท่านั้น ซื้อครบ 499 บาท ส่งฟรี",
+        "sourceFileSha256": "0b35878e14b50a60e37311696e0915d0a8602f6f3f636d38199222e5da57f6f4",
+        "compositionFileSha256": "01eded671d553ef46697fbb875e7ed6c33dcf46a5baa0d5f93864244d5787179",
+        "sourceCompactJsonSha256": "2493cde47390930f6d98e3ddc74b0e1dfc99b30cff7c2cd1d215ce06fd81e0d7",
+        "compositionCompactJsonSha256": "93da60f3fe0162afb90923f3f091e7f7c0d7bc021f8f5647d3e9a8dcae5a2271",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy4-retype-optical/preflight.json",
+          "bytes": 517679,
+          "sha256": "afe486577a8dad1a041c7fec967d424430e78b598eec50349dd355583da97fab"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy4-color-boundary-zero",
+        "copyNumber": 4,
+        "route": "color-boundary",
+        "tracking": "zero",
+        "text": "โปรดี ๆ สำหรับลูกค้าใหม่เท่านั้น ซื้อครบ 499 บาท ส่งฟรี",
+        "sourceFileSha256": "f209e414ec926480c96a662c0a393bbb713dec9d8a295df5221c12b418514654",
+        "compositionFileSha256": "6dc598d8a7ce810bbf52b09c3ab48320836aed42069a62e87c83e450d5904931",
+        "sourceCompactJsonSha256": "66a3adbe7d9e91e48093dab341343b5e0bdff762cefb4eac50d956e1fd11ff0c",
+        "compositionCompactJsonSha256": "33ea65cb3bb16333cf507697672d7b1f5d212ab33857198629df70d141965ad1",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy4-color-boundary-zero/preflight.json",
+          "bytes": 518832,
+          "sha256": "a85113e99e9b38e3b79d69cef17a96cc5c3d0ee52c532e473d1c5fa1d879ba7d"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy4-color-boundary-optical",
+        "copyNumber": 4,
+        "route": "color-boundary",
+        "tracking": "optical",
+        "text": "โปรดี ๆ สำหรับลูกค้าใหม่เท่านั้น ซื้อครบ 499 บาท ส่งฟรี",
+        "sourceFileSha256": "8c19796448d730b816848f254f93d928804fd384de60c7a36705dd769c04676d",
+        "compositionFileSha256": "a929242a469b5a6ef4227f094141a8337568aa9204a62d204409c501ffa658fa",
+        "sourceCompactJsonSha256": "fe6389b7d856f2aa8dbee1046798ee2e1e062a50779d0f3bb95f0d07c2e44bc5",
+        "compositionCompactJsonSha256": "e4fb0402f7c9c79e27be8f4cbd1084ae2d97ad9d45917d631ec02c7763e4284f",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy4-color-boundary-optical/preflight.json",
+          "bytes": 517801,
+          "sha256": "953909a732a0dd9c5f33b50198ff90cc5f081c6f01ef6703f2527f4c7ff721aa"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy4-size-boundary-zero",
+        "copyNumber": 4,
+        "route": "size-boundary",
+        "tracking": "zero",
+        "text": "โปรดี ๆ สำหรับลูกค้าใหม่เท่านั้น ซื้อครบ 499 บาท ส่งฟรี",
+        "sourceFileSha256": "f5d75ceb24ee7e363122b7923f657d84445062db13953e79d4931687a6fc9433",
+        "compositionFileSha256": "a80c090c38d2c73f502afc2ce249da7721fd8dcb327207e5664f54a2b3daa388",
+        "sourceCompactJsonSha256": "2fd6bf89f85c1e05b4bfd3f6e7a3d90c84edcc21e70f50fed4b0dbf61eae964e",
+        "compositionCompactJsonSha256": "a8ad7f52a1c711a20e2ffca62f5bac82b55d3f82139fc00c3ebd30f6bcb6b296",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy4-size-boundary-zero/preflight.json",
+          "bytes": 527700,
+          "sha256": "343b886fa2c4be26ab664d7fbb3db87d81d409669cce987ce3862021eb16fcf0"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy4-size-boundary-optical",
+        "copyNumber": 4,
+        "route": "size-boundary",
+        "tracking": "optical",
+        "text": "โปรดี ๆ สำหรับลูกค้าใหม่เท่านั้น ซื้อครบ 499 บาท ส่งฟรี",
+        "sourceFileSha256": "5b62c80afb7cfcfbe08f91a2135190bcded416613c827c4c7e478d00632c0b1d",
+        "compositionFileSha256": "d4950c3742d4db682722bcfc1819bee50d75a789745cf9692257487cbd0d855c",
+        "sourceCompactJsonSha256": "ae9b237ea4df314ceabdc6aa27d59a94a342e9113fdeb04d9dfd4e49cf061abb",
+        "compositionCompactJsonSha256": "41ee15405caec8e421d0bd49e60668c02f9b071c83f3a3c3f2f17c190db94e90",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy4-size-boundary-optical/preflight.json",
+          "bytes": 527872,
+          "sha256": "5d2e339066d027f5dc52bba036ca1897a1acc1c6f8437b26bab531facf21ebc1"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy4-font-alias-boundary-zero",
+        "copyNumber": 4,
+        "route": "font-alias-boundary",
+        "tracking": "zero",
+        "text": "โปรดี ๆ สำหรับลูกค้าใหม่เท่านั้น ซื้อครบ 499 บาท ส่งฟรี",
+        "sourceFileSha256": "6bb62ac6791d1e74aabdceef57b78023a5711949564985807ead7e8d9f251145",
+        "compositionFileSha256": "294909890cfb2f4163be87aa67f3063a12a5e3f41c9b026d923bda106c3bb584",
+        "sourceCompactJsonSha256": "b89bda1ee17e36b84d82ed89f3b2362b54f078bd4b66f4feebe9fd5fc877684e",
+        "compositionCompactJsonSha256": "67ead061be7d22e5e90b1b411ecde31ec278c4499a89afdf649b4aa6a4853c79",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy4-font-alias-boundary-zero/preflight.json",
+          "bytes": 519209,
+          "sha256": "9ccf5d3cac460a15f92316a698ee8901f4b42b737af0e8c08c012e5d36a3fdd4"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy4-font-alias-boundary-optical",
+        "copyNumber": 4,
+        "route": "font-alias-boundary",
+        "tracking": "optical",
+        "text": "โปรดี ๆ สำหรับลูกค้าใหม่เท่านั้น ซื้อครบ 499 บาท ส่งฟรี",
+        "sourceFileSha256": "c8f49852cd450e0bafe08ea23537f2c37d54d2f3147e6830f2cd36566068548e",
+        "compositionFileSha256": "f08983f9c3f43db239234be788f09efc8803e53bf5e2ed95c80761a699ba4ca6",
+        "sourceCompactJsonSha256": "ab2a0c019e15b5a263d69a7f1e1eade99d1afc4d118826bd99640ab337e218d3",
+        "compositionCompactJsonSha256": "a8ba23ef2e139aaa6679a7d7aed39a8d189930a7f654b7c3cd28a68222015841",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy4-font-alias-boundary-optical/preflight.json",
+          "bytes": 518405,
+          "sha256": "1bd844507f25739a2370f79551fc74c897d26d77d784cb15880b9482ac97242b"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy5-intact-zero",
+        "copyNumber": 5,
+        "route": "intact",
+        "tracking": "zero",
+        "text": "คำสั่งซื้อแรก ลด 20%",
+        "sourceFileSha256": "e2e999959a2d5777ffb6ddb3d9911c7724e7148958a1d44857f1f19c606ecde0",
+        "compositionFileSha256": "7742a4cc34548b9d87a7cf3bb93f0497d879db0b091a7e6375e0956960861955",
+        "sourceCompactJsonSha256": "8c9209fc24a0a0da402e799d2bb711045847753e6c50a05e3b937c25628fbd40",
+        "compositionCompactJsonSha256": "9f49c46f09201b1cf46dbd0e186e23714ad9444b0b99d12754215c88dfa8fc42",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy5-intact-zero/preflight.json",
+          "bytes": 192670,
+          "sha256": "2b82041c27946b0fafdb23da830382412ec7efd29bee1beee6e16c2a47b22bc0"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy5-intact-optical",
+        "copyNumber": 5,
+        "route": "intact",
+        "tracking": "optical",
+        "text": "คำสั่งซื้อแรก ลด 20%",
+        "sourceFileSha256": "9c64dd1dcc17ac25d123ca61450c9c5241dbb1569fc8268297a4251445e8e952",
+        "compositionFileSha256": "2ace29ee43dccd66f83516f5a26a83ecc13884da170a30348d8e918e493c8200",
+        "sourceCompactJsonSha256": "aeb08a0898054df548f32b116f3933330e57aa9fe6cfd007e300523eed9df82d",
+        "compositionCompactJsonSha256": "10310ca3f734bbe170e9e296a8c95206bf9897c95c3a80fc5fc52a48a5e2f6d3",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy5-intact-optical/preflight.json",
+          "bytes": 192731,
+          "sha256": "a8f8ba8f71d2f97cecad7be4c823c56cb3f534c2eeb4f55aa59bd593f79eb173"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy5-translate-zero",
+        "copyNumber": 5,
+        "route": "translate",
+        "tracking": "zero",
+        "text": "คำสั่งซื้อแรก ลด 20%",
+        "sourceFileSha256": "0112a0ec9718cfdedc4a2516d3e892d5fb8922f31265e375f201877a77db4ccc",
+        "compositionFileSha256": "41c5cc58b501f196791baab26e143fe56ef4509805f6700e7eaf83210373ed63",
+        "sourceCompactJsonSha256": "105368961c9a30af3d4ec3570f69627974536f10e4f1b84beee0e7de611377db",
+        "compositionCompactJsonSha256": "8ff70020d44e27f7947b05a6c6a426bef563bca519177723ac8e8bd19eaac4b4",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy5-translate-zero/preflight.json",
+          "bytes": 197597,
+          "sha256": "9d29212183097e60e8db49fab310c049a9c255396c6b57355a8276f647ae8ffa"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy5-translate-optical",
+        "copyNumber": 5,
+        "route": "translate",
+        "tracking": "optical",
+        "text": "คำสั่งซื้อแรก ลด 20%",
+        "sourceFileSha256": "06e48f269d96b6814742e75b444fda2d313655a5a0682a4cf9007a49468a0287",
+        "compositionFileSha256": "b639b7de4745d0f157d7d050928c961e3f5e745b328cb8397311f00244b9cc53",
+        "sourceCompactJsonSha256": "31754ebaf021c14e2cf754b2b3cf9d9b4307f0c8d47a573d557d0c2d4fd8e383",
+        "compositionCompactJsonSha256": "ecd87e8c9b64241037b4f4f8a1a64395337ba24de219bcee035aa5d1d4123e7d",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy5-translate-optical/preflight.json",
+          "bytes": 197634,
+          "sha256": "b3406e250903ceeef8b6191978bea3e58cdc540e9de42972922933eeeb3b7ce8"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy5-rotate-zero",
+        "copyNumber": 5,
+        "route": "rotate",
+        "tracking": "zero",
+        "text": "คำสั่งซื้อแรก ลด 20%",
+        "sourceFileSha256": "a4bbfa2c852f08d987dc538d30ec5704d32491b8edc159ac647fd25fd63b1a03",
+        "compositionFileSha256": "b2db03efb758af2fe80830b21ec60bac55ffe0db95670b2032fc8b55102501fc",
+        "sourceCompactJsonSha256": "8d804b7d868b1698a9a3cada4db9ce9ca8055b92ec40811c827aa973a87f0c43",
+        "compositionCompactJsonSha256": "0b3eb5bedcda04586f0e42054a2d528ea4cebb113abf8f664d6a55c5955aa54a",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy5-rotate-zero/preflight.json",
+          "bytes": 193764,
+          "sha256": "c3d1ec564e11475b6a5c280a5a716bbae83fa8e7392b33eeba3ec40ef71c80e6"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy5-rotate-optical",
+        "copyNumber": 5,
+        "route": "rotate",
+        "tracking": "optical",
+        "text": "คำสั่งซื้อแรก ลด 20%",
+        "sourceFileSha256": "a0d6a9aa50c0443bd1816ef53572400339ce4cb30fe8e48581eea66b9b1386da",
+        "compositionFileSha256": "35143df187e234e5a78d10870167931bdd674c9b355e343139107c59e292a4ed",
+        "sourceCompactJsonSha256": "4018d2538533ab9c30dafffbfe0c6094d7eb3b39bb034e615f68459a395d7c8e",
+        "compositionCompactJsonSha256": "d066dfd673bf5ab56852b45e98a77c8fc2358bb9a66c64a4feb5fa9f8990bc4a",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy5-rotate-optical/preflight.json",
+          "bytes": 193801,
+          "sha256": "8f244854d7394f181de08f9405dbac37da186fc0a4ac525ad9e863796ecd5fd9"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy5-opacity-zero",
+        "copyNumber": 5,
+        "route": "opacity",
+        "tracking": "zero",
+        "text": "คำสั่งซื้อแรก ลด 20%",
+        "sourceFileSha256": "d2e194716572f927b6b1bef01f8427e4c626e430488e1fba33d73a61fd4e22a3",
+        "compositionFileSha256": "78e3dff0e3a68a9216ae8b34ff66cfb2f53f18b900abb9290570193e8c963c3c",
+        "sourceCompactJsonSha256": "046ec157afd560fb4700bc9edc51d7179211e517e0de4109ab0d9ff2f86bddfc",
+        "compositionCompactJsonSha256": "326dbecb381211a94157a6b4de76e27a793fb5ff7e955f1f61bd6179dfa101f3",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy5-opacity-zero/preflight.json",
+          "bytes": 193921,
+          "sha256": "dc9f6f872480c01b5a533231ba8e1438124ce73ab78398717d2a62d64eb630f5"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy5-opacity-optical",
+        "copyNumber": 5,
+        "route": "opacity",
+        "tracking": "optical",
+        "text": "คำสั่งซื้อแรก ลด 20%",
+        "sourceFileSha256": "e113f9d10ea230f20d092357f9d84d87e669f11250911c77ee88660f450580d3",
+        "compositionFileSha256": "b1eb563ee6eb7e144aea8fcbf708d230dcb39f6ff18616fbc0fe73efe15825b1",
+        "sourceCompactJsonSha256": "5bdf786ef6cd4bf64f467f8b09fc065846737183fb6752d659fcabe5ace033ff",
+        "compositionCompactJsonSha256": "0b04c5ce5a3e515654464ac4b9908733d17c2d2821dc539d7eed294b6368197a",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy5-opacity-optical/preflight.json",
+          "bytes": 193958,
+          "sha256": "94a9ef00858aaa7fc0669013d684342d1a9d4277482513643bc65390d421062f"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy5-retype-zero",
+        "copyNumber": 5,
+        "route": "retype",
+        "tracking": "zero",
+        "text": "คำสั่งซื้อแรก ลด 20%",
+        "sourceFileSha256": "10b86305232e76f2e4b9fa2a9a6eb807404cfd1ab0d602e86e9a6b4c98f31e8f",
+        "compositionFileSha256": "2aa58b0e026c751b46804bcb20fcbc23fe955db073aee392c451b1548bd2d944",
+        "sourceCompactJsonSha256": "b02cd22f8658abe13fb4605cf4dc25c588d6599122883dd0ac7a0359e44184d3",
+        "compositionCompactJsonSha256": "c5de389409b69328cb59932b115bfabf418b3b5de249ace166d823dbc0aeffc2",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy5-retype-zero/preflight.json",
+          "bytes": 189984,
+          "sha256": "ab6e61b4bb0cf36f1aab19997749eace937397b177935ba49bee3ebdab16b8c7"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy5-retype-optical",
+        "copyNumber": 5,
+        "route": "retype",
+        "tracking": "optical",
+        "text": "คำสั่งซื้อแรก ลด 20%",
+        "sourceFileSha256": "dee9575432989393b130cd471b2591a52d5b5e1c4610147df0733ef42ca07ce3",
+        "compositionFileSha256": "a30167e365463c3c9e98dfcbb1222006257caa56ceb97e8594a5e9841e115b05",
+        "sourceCompactJsonSha256": "f5de3fe929436c7e93c3849a4342458c1eb27ca5d9eb8c056eba424c41b5fe14",
+        "compositionCompactJsonSha256": "79b0332066dbb550425c6c2df0b192a7cec362e04a46f51cccf5e99cc14e9a33",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy5-retype-optical/preflight.json",
+          "bytes": 190045,
+          "sha256": "d7c9ddd2fc715e27e0e4c1f9203b2acfdb764e5164e095d2da761fb633b68850"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy5-color-boundary-zero",
+        "copyNumber": 5,
+        "route": "color-boundary",
+        "tracking": "zero",
+        "text": "คำสั่งซื้อแรก ลด 20%",
+        "sourceFileSha256": "d1f76e80a2c74dd1fe9e8f2b2c919b23e1a5a658f80108c303e1b31a44e3dc82",
+        "compositionFileSha256": "8ebae1cb6589dc18852f3b1daec76571ce38dca36b56b2f9f8931ae893315d38",
+        "sourceCompactJsonSha256": "5151f1e0a8bce3ebe05eeb40d451713a0073ec107f72be760ac52b876a37f94c",
+        "compositionCompactJsonSha256": "1f56564d6a3c9ed6f696c3bfcb1f16e0d3534fbbf858859c2797e61b3db249ff",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy5-color-boundary-zero/preflight.json",
+          "bytes": 190130,
+          "sha256": "ab18deb11857280dd41977d1a4baa16459daa925e9ad08542058d037960c1138"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy5-color-boundary-optical",
+        "copyNumber": 5,
+        "route": "color-boundary",
+        "tracking": "optical",
+        "text": "คำสั่งซื้อแรก ลด 20%",
+        "sourceFileSha256": "08b6772d43bbb4df7037596233aba8ada18f28b74e6d533cd37dc8124d12a2dc",
+        "compositionFileSha256": "efac89207fefd2b64bc5918d9a7a3550c1065eb70ae403e48287b9359018bb58",
+        "sourceCompactJsonSha256": "daa74338e4e488f8abbd91103ae69048a555110ed8102fc676185a890c7e4651",
+        "compositionCompactJsonSha256": "35f5cc0450fdaa82e690444e8cf2954e872e219af7b41c576926ff4d77d5310d",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy5-color-boundary-optical/preflight.json",
+          "bytes": 190191,
+          "sha256": "0a68f23401cea0a7ea0c44ecf746bac3815c90659418cf439a0359b2f946e711"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy5-size-boundary-zero",
+        "copyNumber": 5,
+        "route": "size-boundary",
+        "tracking": "zero",
+        "text": "คำสั่งซื้อแรก ลด 20%",
+        "sourceFileSha256": "dd60e23c3af94d050049e6d941c9de63f1115642c3f390404ab00d21ecf0fdf4",
+        "compositionFileSha256": "dc563badd264ac18e3b373d2449e88d9df8f4f792633708b38f98bed4b6683f5",
+        "sourceCompactJsonSha256": "3ae4beb556562004ff03bbab8a4a30b416e8439a8b7556d43495243862ef80cc",
+        "compositionCompactJsonSha256": "495745e09ffb945e7abee19a95604cba6b23d34d158a5fc3f83078192193b6cb",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy5-size-boundary-zero/preflight.json",
+          "bytes": 190303,
+          "sha256": "273bf0113f28a8c4d92fd48dbf43310f4c7ec60632ab6741f2f7bc60875b7f63"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy5-size-boundary-optical",
+        "copyNumber": 5,
+        "route": "size-boundary",
+        "tracking": "optical",
+        "text": "คำสั่งซื้อแรก ลด 20%",
+        "sourceFileSha256": "4e86d91ea1625753349ab874c57543d31851750d7a2f7186fa1fe38b1127ff48",
+        "compositionFileSha256": "f528a94368fb5a198d7e6d5f8169a7ecce5e26cb53ea458bad1b06af31414977",
+        "sourceCompactJsonSha256": "b6c120c72bed6860219b21187dee590b5c3aaafbf15359eaa634376e689916c3",
+        "compositionCompactJsonSha256": "2be94b3d0efa2990da78bf5399485885ca99ed8d5abdf9d46b93b084773df855",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy5-size-boundary-optical/preflight.json",
+          "bytes": 190406,
+          "sha256": "a92192e1df9faec4b2ddc5cec06e30fc4c88d10b1a7334d0d54d8a6d1b95c982"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy5-font-alias-boundary-zero",
+        "copyNumber": 5,
+        "route": "font-alias-boundary",
+        "tracking": "zero",
+        "text": "คำสั่งซื้อแรก ลด 20%",
+        "sourceFileSha256": "5d128ab1a51a30f7a3bd6f7b08b3dffcae306a4788693bf5ebc1e66260703e17",
+        "compositionFileSha256": "48eb56b2295517a46f3c0ef49381b48060eb9b92e97280b20d8a80688c77b773",
+        "sourceCompactJsonSha256": "158530540e421d33c473c302e0cc73028474e5a8184ea28e488a85d61e6bd77d",
+        "compositionCompactJsonSha256": "f8758e6e90fa1e294bf092bc7be52ab8461fbe05ac119ed417f26cb5259ba99c",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy5-font-alias-boundary-zero/preflight.json",
+          "bytes": 190539,
+          "sha256": "060ee9363f4946bea2c27095d85eaed6df7fed890506c90566a11080c5141401"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy5-font-alias-boundary-optical",
+        "copyNumber": 5,
+        "route": "font-alias-boundary",
+        "tracking": "optical",
+        "text": "คำสั่งซื้อแรก ลด 20%",
+        "sourceFileSha256": "afda0563b0e189b51b51e5fe9af6f8aa3aa132b8f6de7a53938d33c83d36b270",
+        "compositionFileSha256": "d9ad7738c260c2e9ec41d9e3a4e3f9d78bfa385b98566964b32113a84bfc85ff",
+        "sourceCompactJsonSha256": "38bfed05bf21a2ecfdc9c7f03fd42e440fcdb622d7a6e29d1e6de57efe0a15e4",
+        "compositionCompactJsonSha256": "862576f576f943b2ceff9cf905e461638a286a39076c3ef0691f4bd69eeef126",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy5-font-alias-boundary-optical/preflight.json",
+          "bytes": 190712,
+          "sha256": "0e85764b46237d926f42c9c5680bbaabad2f3e44ffeff6afa70958d005c5135a"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy6-intact-zero",
+        "copyNumber": 6,
+        "route": "intact",
+        "tracking": "zero",
+        "text": "เฉพาะคำสั่งซื้อแรก เมื่อซื้อครบ 499 บาท ไม่รวมค่าจัดส่ง",
+        "sourceFileSha256": "b5b76489fd155dfbfeebaa4baf80f1eef2c0ca7c192ebfbc5f5097c8978f69f3",
+        "compositionFileSha256": "b081fbb1c4efa15ad5e370cce3b5831b404a3a82fa84140c53cb0787f840725a",
+        "sourceCompactJsonSha256": "a82bb966cd6551c54d76cb27795a802f4aae6b6e028a199d3b07bf444a1ba6c0",
+        "compositionCompactJsonSha256": "a88f136e2ff94c59e8b306b6c2dbdc921ecd6876deeca15ab6fbed270d945e1d",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy6-intact-zero/preflight.json",
+          "bytes": 547566,
+          "sha256": "a0e0c325b813358d65494e266ea00c417ae4946ccba3d0021ed36acd119d72e3"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy6-intact-optical",
+        "copyNumber": 6,
+        "route": "intact",
+        "tracking": "optical",
+        "text": "เฉพาะคำสั่งซื้อแรก เมื่อซื้อครบ 499 บาท ไม่รวมค่าจัดส่ง",
+        "sourceFileSha256": "41171f6869bef8e9c0eeed5c2b827efef59afc8d43bf6104ede4b3d9f9857b52",
+        "compositionFileSha256": "58b7a66ec5256f1268f5775c6a01d8812440ba282f4db0b3d3d072221ecdf945",
+        "sourceCompactJsonSha256": "006be0787ba93cdacb63f6b6416e1722e2306920892c67a75fe790092ee90d3c",
+        "compositionCompactJsonSha256": "4f8719d68f0ec70dcce1c1644482d1c76ab5ccf024385fa79baaba0b6c2d10fc",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy6-intact-optical/preflight.json",
+          "bytes": 545599,
+          "sha256": "937ce54b5a080e1e1eb2f854123a140a2e93115fb8560fdc05b7623f371d7cae"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy6-translate-zero",
+        "copyNumber": 6,
+        "route": "translate",
+        "tracking": "zero",
+        "text": "เฉพาะคำสั่งซื้อแรก เมื่อซื้อครบ 499 บาท ไม่รวมค่าจัดส่ง",
+        "sourceFileSha256": "8a28ecee4ec6383a4b32058268ab0a8fb74db53acf0c7f136a2d69661552db0b",
+        "compositionFileSha256": "4d80622ef44ef9ad71d6e30fc800a9157271bf510dbc0ad7266baea7af4f77e5",
+        "sourceCompactJsonSha256": "2ac6720434ef21f4e3372741bc068b35e61cbff8a5305c332c0d56a515e186a6",
+        "compositionCompactJsonSha256": "cb0d65fd1ef16646b68f44b602a4628d9c8576c6c94d126c71541edace4be358",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy6-translate-zero/preflight.json",
+          "bytes": 555901,
+          "sha256": "8cbd67f885f892bb38b66c0983101a155b8b5df9ff46a0fdd30b673724d30de6"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy6-translate-optical",
+        "copyNumber": 6,
+        "route": "translate",
+        "tracking": "optical",
+        "text": "เฉพาะคำสั่งซื้อแรก เมื่อซื้อครบ 499 บาท ไม่รวมค่าจัดส่ง",
+        "sourceFileSha256": "1ff3ac83ac5102bb609832d3fc68e1249c1486061a6f52af983eba1c75afb41f",
+        "compositionFileSha256": "16e09e9e83ac2f4e96837cb635cddbe76596137bbee1ca22821fef04b7b5b8e2",
+        "sourceCompactJsonSha256": "bf25fb1c6fddf16c28b23a58eee0a7c9c8635681468bb78209a7073acf92eb70",
+        "compositionCompactJsonSha256": "45653b9d87483e95da7524e73524d000ede840c907b1e23ad93111af7bb7a2e7",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy6-translate-optical/preflight.json",
+          "bytes": 556051,
+          "sha256": "a7014abc33d9c9dc414695fd2d2d8f683c2d8a0276f69249e295d357568f0554"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy6-rotate-zero",
+        "copyNumber": 6,
+        "route": "rotate",
+        "tracking": "zero",
+        "text": "เฉพาะคำสั่งซื้อแรก เมื่อซื้อครบ 499 บาท ไม่รวมค่าจัดส่ง",
+        "sourceFileSha256": "c39692099f8894fd17353e898eb9ca626d1b24d4dbd85b902354bad6d8285ded",
+        "compositionFileSha256": "a47456ab7c641d8752dd893c66d28a5579972e9a36dcbcca2a297490df4a2654",
+        "sourceCompactJsonSha256": "5984dbf1b1b769fefb3a0be02cc2170568ca9c2a12a3d2ed300e14eb2cc8ce18",
+        "compositionCompactJsonSha256": "36efa8d5ff206f630318f54545c3a1b913fc22e098331713fb9e8fadbb0a55be",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy6-rotate-zero/preflight.json",
+          "bytes": 543169,
+          "sha256": "a3905d19d93126ce9cab64a02a3fccca8ec78a5eed90c933bf9fd045378aac91"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy6-rotate-optical",
+        "copyNumber": 6,
+        "route": "rotate",
+        "tracking": "optical",
+        "text": "เฉพาะคำสั่งซื้อแรก เมื่อซื้อครบ 499 บาท ไม่รวมค่าจัดส่ง",
+        "sourceFileSha256": "8194f729d612ff5481452fb9433917a1ddcd4e910a7e1cab89fe727b513fc663",
+        "compositionFileSha256": "00b9cbfc48e4693643f2b38429bbb3c712c8d7b6db575cb4372de18ae655e70e",
+        "sourceCompactJsonSha256": "53c78278b866431d0c1e30455f4cec8dc9067e3f1bfd29729975536f5aafaa86",
+        "compositionCompactJsonSha256": "738c385ccf8faab5dcd15d6e640fa66ecf3d3fcc8fae27b54e9631af39899cf9",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy6-rotate-optical/preflight.json",
+          "bytes": 543319,
+          "sha256": "59be7b0037fd3b340d1f71d549211b988023e26549715e9851c6095e9aef4765"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy6-opacity-zero",
+        "copyNumber": 6,
+        "route": "opacity",
+        "tracking": "zero",
+        "text": "เฉพาะคำสั่งซื้อแรก เมื่อซื้อครบ 499 บาท ไม่รวมค่าจัดส่ง",
+        "sourceFileSha256": "712a30043e318fef3c0a450950aca4ba9d9aad57d78ec53f4d352a47cdea06d1",
+        "compositionFileSha256": "83d5086ce52ca91137e85a9939f8771f40385e693c7e24faa860ed80e7a690cb",
+        "sourceCompactJsonSha256": "0088d0ea2557f7ce6c5d5ac5849423e6dfc624289cc3796b2bdc90a5fbeb1318",
+        "compositionCompactJsonSha256": "af52df4457362b1e00a73f0c82c5fc13525c36e1e6d0ee9bc94262fb89fa4c71",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy6-opacity-zero/preflight.json",
+          "bytes": 543411,
+          "sha256": "8904ca3b094c8f7e21fde06e08948d46d41fd9004225c2b524971d8069f7fbc6"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy6-opacity-optical",
+        "copyNumber": 6,
+        "route": "opacity",
+        "tracking": "optical",
+        "text": "เฉพาะคำสั่งซื้อแรก เมื่อซื้อครบ 499 บาท ไม่รวมค่าจัดส่ง",
+        "sourceFileSha256": "f0fb3424df67ab4f81dc33f5a3d37b361f8b2fa554a930dd2df0bb0216b96923",
+        "compositionFileSha256": "c0d44c35340a68e09b940bf3d9441794c55e8f213e357e140eabf9e7b4125543",
+        "sourceCompactJsonSha256": "5c77ffbaa76556dfdcbaba3dcba1bad86a2e0a49ffffbc8386b69bb1d7762143",
+        "compositionCompactJsonSha256": "3deb87bf66fe0a49b851f6ddfd64a7f14816a2fc35b596e726cc4ec293dbaee7",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy6-opacity-optical/preflight.json",
+          "bytes": 543561,
+          "sha256": "2cac5bb2224b12eab2dc50af2a1dc80b2d54904804b0eb92ee93feb11987f115"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy6-retype-zero",
+        "copyNumber": 6,
+        "route": "retype",
+        "tracking": "zero",
+        "text": "เฉพาะคำสั่งซื้อแรก เมื่อซื้อครบ 499 บาท ไม่รวมค่าจัดส่ง",
+        "sourceFileSha256": "cc2f9ec2f7b16f3552917fd47b275680b73e80903db39ec12b2992bf6c2db04a",
+        "compositionFileSha256": "1e6cc5d5dfd7c37d08c4a62dd55a503215a1375e96827052448a761475f7c602",
+        "sourceCompactJsonSha256": "5411de79461466e18b7cd21cd363db3faa1254abcf852ab5319f54dd13eb161a",
+        "compositionCompactJsonSha256": "e3c3ebd86cc693de8920f86e3a3049e24dac9afc1d47ce5dde3e839b044ab386",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy6-retype-zero/preflight.json",
+          "bytes": 530335,
+          "sha256": "95b8e619d4e4bcc0ae53ad95f60566e5732152139070c8b86b9e45e5fe4b1a25"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy6-retype-optical",
+        "copyNumber": 6,
+        "route": "retype",
+        "tracking": "optical",
+        "text": "เฉพาะคำสั่งซื้อแรก เมื่อซื้อครบ 499 บาท ไม่รวมค่าจัดส่ง",
+        "sourceFileSha256": "d530b4f275334acf55099e9b180344c576a303f39109f3ecfdfd698f0826d592",
+        "compositionFileSha256": "9b5ecdc33f5a914a8d0acd8d6daa3371b35e9c251bed68cf0fa832c12f736a1c",
+        "sourceCompactJsonSha256": "390cac802ef0d88df86a521ed4a01b8504b1cccfd2e00c7633c8685bde923d99",
+        "compositionCompactJsonSha256": "5376c70c8185675bd91dd0aea4538ae918147c99b437dfd9f5391a4febfbe00c",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy6-retype-optical/preflight.json",
+          "bytes": 530483,
+          "sha256": "42d1ecf68b0efe9b5b7d7e8bdee85afb01cae15fced36c2d7a8d134813f3a00d"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy6-color-boundary-zero",
+        "copyNumber": 6,
+        "route": "color-boundary",
+        "tracking": "zero",
+        "text": "เฉพาะคำสั่งซื้อแรก เมื่อซื้อครบ 499 บาท ไม่รวมค่าจัดส่ง",
+        "sourceFileSha256": "a031acd8c7ef6b6a0d9d91007791e6b8c696e9b555d9efd3ad18b4b3f1735688",
+        "compositionFileSha256": "c2df02d7bd4684fbec37cf53212d4202717eb6ae1d40e5f16dc69109e4709145",
+        "sourceCompactJsonSha256": "e36b40a46c2ace79c66b079a2be619476dc9be779aad6a99ff6593753915af48",
+        "compositionCompactJsonSha256": "41794e57a555ed8cccec417d915c38cbb76e1f0b6751a5bf0296ccabef0cb46f",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy6-color-boundary-zero/preflight.json",
+          "bytes": 530459,
+          "sha256": "a87a6540bc3621315207f66ba98c2370ac623f5c4b27f2a3e19749e371eae17c"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy6-color-boundary-optical",
+        "copyNumber": 6,
+        "route": "color-boundary",
+        "tracking": "optical",
+        "text": "เฉพาะคำสั่งซื้อแรก เมื่อซื้อครบ 499 บาท ไม่รวมค่าจัดส่ง",
+        "sourceFileSha256": "4040646022d8724971a50a283f07a1753054fde5a2873a34bb51f8770debde2f",
+        "compositionFileSha256": "2c7f9a320d6cadf4ee0887febd202165d7f8a9ac2890d47d69aac5f73da2b302",
+        "sourceCompactJsonSha256": "d2c4d5e23eda02d63f9f8da35777708daa0a1b57ed334f3714bff255887302ff",
+        "compositionCompactJsonSha256": "9c83c9e447393577c5de8c062c31ad716e629b7977128f9ddf8f46b0f6fe4e82",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy6-color-boundary-optical/preflight.json",
+          "bytes": 530607,
+          "sha256": "309cda97f2bac7fe2ca0bdb65022df836dd1e5429748dcfd6fe5c204bfe44553"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy6-size-boundary-zero",
+        "copyNumber": 6,
+        "route": "size-boundary",
+        "tracking": "zero",
+        "text": "เฉพาะคำสั่งซื้อแรก เมื่อซื้อครบ 499 บาท ไม่รวมค่าจัดส่ง",
+        "sourceFileSha256": "e7f9d6aa684ddbb5558ce97966cdbcfe0d4de40b00ccd8a24379cac4010efcdd",
+        "compositionFileSha256": "43d55d52dc45e416fc16005aa2105a88aeb364e810b945479582e69c9e85e64a",
+        "sourceCompactJsonSha256": "77a672f3b625992ee843cc8dd12a239a72c2a1fedfd6069be71775e8bb28ac55",
+        "compositionCompactJsonSha256": "a0261fa00fbeea8e920318389a44a274cefe04f2e200f6c6ebe91ee3550924a9",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy6-size-boundary-zero/preflight.json",
+          "bytes": 515191,
+          "sha256": "d3799a9774b53843e750dc6624d272fadddd8ca3ac08d06b3766f7f49ec45b37"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy6-size-boundary-optical",
+        "copyNumber": 6,
+        "route": "size-boundary",
+        "tracking": "optical",
+        "text": "เฉพาะคำสั่งซื้อแรก เมื่อซื้อครบ 499 บาท ไม่รวมค่าจัดส่ง",
+        "sourceFileSha256": "8d7cc7423ee978972ba67e2988db5a5a8bf0a77d483ea0e685874c5af7a5b814",
+        "compositionFileSha256": "983472c7dabc339152a79885f7145a737d40be1d7a8d35d5f8ab43d5f466ba87",
+        "sourceCompactJsonSha256": "c3f3e457b859a83e9b52a8db93a8f6a430ea08e18994267d2f5cf6014fc6d026",
+        "compositionCompactJsonSha256": "910ec1e0f25bff3a179af41622d1c2860a3b98dce763f4ffd37df461ebf5b8b1",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy6-size-boundary-optical/preflight.json",
+          "bytes": 515523,
+          "sha256": "41b5721b90a3cf9f21574d0c24743f1644f75e6d0a1b4190d3cf6fc1d18ffbba"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy6-font-alias-boundary-zero",
+        "copyNumber": 6,
+        "route": "font-alias-boundary",
+        "tracking": "zero",
+        "text": "เฉพาะคำสั่งซื้อแรก เมื่อซื้อครบ 499 บาท ไม่รวมค่าจัดส่ง",
+        "sourceFileSha256": "fc87a78949d3a6e7bd6300299ec903e6deeaead01c69407011fc07b925736ab9",
+        "compositionFileSha256": "286e9dea3537dc898f4e94213e4f21e165753a59ac340e58386df782a345f1b2",
+        "sourceCompactJsonSha256": "3596ea397fc82282a166094fcb56e73d5910711655747c8ed219178a46433696",
+        "compositionCompactJsonSha256": "f02f164cb0fa1844a8505772254fb313c9f96411089e47180ec720919fbca041",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy6-font-alias-boundary-zero/preflight.json",
+          "bytes": 530830,
+          "sha256": "cd6d670f9554dcb7d6bf06d12b6dc62aa69fc11f832d5d5344584cb3f14431e6"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy6-font-alias-boundary-optical",
+        "copyNumber": 6,
+        "route": "font-alias-boundary",
+        "tracking": "optical",
+        "text": "เฉพาะคำสั่งซื้อแรก เมื่อซื้อครบ 499 บาท ไม่รวมค่าจัดส่ง",
+        "sourceFileSha256": "a6f1de889fed4f39bf23f58f536ad106a2eec8ec8ebe1c76a0f0f0ec04a86ad5",
+        "compositionFileSha256": "d0e433437b97799951a41619189550835877a12136523820add0a74e536e8261",
+        "sourceCompactJsonSha256": "cc9425874e738cd146b6898ab012fc90b765b09e71fdee59dad57806ca962951",
+        "compositionCompactJsonSha256": "c7bae2b1f3547e5fe199f01e9cbaedf00193b92ec2480f2ce3c1229dfe936bea",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy6-font-alias-boundary-optical/preflight.json",
+          "bytes": 530985,
+          "sha256": "a29447a5d86a1e8c3fc93c6257499944e1c1959aea4d8a3ebd8ead6cf634da78"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy7-intact-zero",
+        "copyNumber": 7,
+        "route": "intact",
+        "tracking": "zero",
+        "text": "ทำให้การเปลี่ยนแปลง\nมองเห็นได้",
+        "sourceFileSha256": "28f01270697bf0b999f6043aacb8f20b2e1293da6767ab08d0c570c6e90a5f5c",
+        "compositionFileSha256": "56d6db2bccfd09a551ab457b7ccfa63d51926ed413bb1f4fdbf22a9df13be47f",
+        "sourceCompactJsonSha256": "9374cbd4cce26e1b6610fd78cce7d87a9a639c15696e7353d0b5708793f5006e",
+        "compositionCompactJsonSha256": "04c6e5f77fb90c0092d202360a71b338d4fc5150e45cf2e48117202ffab0d22a",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy7-intact-zero/preflight.json",
+          "bytes": 302130,
+          "sha256": "b88c1449496d13f50b2bea59d57ce4cf4594647f3130afc9431d268dfd3b2a5e"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy7-intact-optical",
+        "copyNumber": 7,
+        "route": "intact",
+        "tracking": "optical",
+        "text": "ทำให้การเปลี่ยนแปลง\nมองเห็นได้",
+        "sourceFileSha256": "b9855718d94b53e2639491da8b3c08a2ea2df82150627d1b252be511c80ffa26",
+        "compositionFileSha256": "b8fea97002094872ca1db7cfdbc92bc54387648c1958a896a29312534926f0f7",
+        "sourceCompactJsonSha256": "bbbf471f78e20ecbccbd0ddf24cfe9df92c24cd6c08aaab3d78913cf75e4b597",
+        "compositionCompactJsonSha256": "36add94f2eba4068060f318f107a204f560eac61872e1c6f74e8302891de7dda",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy7-intact-optical/preflight.json",
+          "bytes": 301664,
+          "sha256": "ddf2b806018a9fd78683f5136864e843f8597b438fd01943a76b2cb58811fc6a"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy7-translate-zero",
+        "copyNumber": 7,
+        "route": "translate",
+        "tracking": "zero",
+        "text": "ทำให้การเปลี่ยนแปลง\nมองเห็นได้",
+        "sourceFileSha256": "e4e78503cd9320de15e083293290d59fbd9eae376761a2e51a01792d805c0d2a",
+        "compositionFileSha256": "630b18ed70b3953edd2a410a51965ffc7b780a7fd758d16c95e9a26aae56b025",
+        "sourceCompactJsonSha256": "c514f25f3df6e371198ce3710bf157a105be751da24d0053b07ab8c62560f901",
+        "compositionCompactJsonSha256": "c52372366352218ef6a14a964d0d70c47218361df52d8f53de3ef12414740647",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy7-translate-zero/preflight.json",
+          "bytes": 305910,
+          "sha256": "8aa0c7584832153b4ce7316141be6ffdecb35c7ac74f36663813be3da826936f"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy7-translate-optical",
+        "copyNumber": 7,
+        "route": "translate",
+        "tracking": "optical",
+        "text": "ทำให้การเปลี่ยนแปลง\nมองเห็นได้",
+        "sourceFileSha256": "b001bea9943136f73ffeab0397509630703d080f0699ee0b00830f2c06d1ede4",
+        "compositionFileSha256": "e11ea58548a38dc98bfb404bcb66219f64024673e1c55fd07af733847ae3470b",
+        "sourceCompactJsonSha256": "9f97cc1365e145922f559a9a26023005223894b3904891116f1ef685d1b58a33",
+        "compositionCompactJsonSha256": "2a0b42bc5f212a3d3a1b8dcf9c28fe15d3a70a6789cdc63019eed0c98ba16f75",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy7-translate-optical/preflight.json",
+          "bytes": 305994,
+          "sha256": "bcb7a35be86195bd30d14f0658e1605993e1af462d937adcb2ad75fe85e72021"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy7-rotate-zero",
+        "copyNumber": 7,
+        "route": "rotate",
+        "tracking": "zero",
+        "text": "ทำให้การเปลี่ยนแปลง\nมองเห็นได้",
+        "sourceFileSha256": "bd7e129be389bca2b133a88a5f7cc0c59d09eaea1c561d4caf3a632e1b3c30fb",
+        "compositionFileSha256": "f9146ffb18f92beabd78ed2fd1005548de3dc6bd5dd826f96666804e4e767e00",
+        "sourceCompactJsonSha256": "3b7c236e21edf1be0219607cb2cddb326020caa63613cb705f82638da374bf69",
+        "compositionCompactJsonSha256": "ff6e2f60041f44d726a7a6cd495c3811ae836d57babacd592a23f139fefea238",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy7-rotate-zero/preflight.json",
+          "bytes": 299477,
+          "sha256": "96f37c05e8c8b52dd4304682dfe8dcb1110c4e2b7e3bc5cfef0ea2fa7b8a502e"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy7-rotate-optical",
+        "copyNumber": 7,
+        "route": "rotate",
+        "tracking": "optical",
+        "text": "ทำให้การเปลี่ยนแปลง\nมองเห็นได้",
+        "sourceFileSha256": "12f08d44dfc54e24b9d15c401303ed6645dbd50be54b4b3c62af5a89b2cc4a36",
+        "compositionFileSha256": "2da9223f0258228ad91f982a464ab548fe886acbcda45c0dea40798ffbbed5e7",
+        "sourceCompactJsonSha256": "b2f774c867e5953212e93780202a0d06181e000bd7dc0ff1439965d4b95299fe",
+        "compositionCompactJsonSha256": "4fa50c3c873588ca49c7144e35bda175c3d008eaf677b8aa756a984c93504ba4",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy7-rotate-optical/preflight.json",
+          "bytes": 299561,
+          "sha256": "b44b2e601754a918569a56baf21beaebe020983e057734dbb21de8c4dd3ca218"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy7-opacity-zero",
+        "copyNumber": 7,
+        "route": "opacity",
+        "tracking": "zero",
+        "text": "ทำให้การเปลี่ยนแปลง\nมองเห็นได้",
+        "sourceFileSha256": "11b8609e114b58d4c9553c7ba8d7f33b3dae7946f1950b9032dcff615d59de07",
+        "compositionFileSha256": "beac23cbdcd9545cf95d6637f2f6e3d72cfbe5b808656640cce11ba957a05f4d",
+        "sourceCompactJsonSha256": "1a122f2a18b820ff4ae9cc3b80beb61ff3af9b598923a5b4d1b36d0354e2df95",
+        "compositionCompactJsonSha256": "a70024c39c559d140bbe61c856359a3205a93685b55f52b631afec09265205ee",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy7-opacity-zero/preflight.json",
+          "bytes": 299647,
+          "sha256": "eaa097174001793f2e21254fba1e1e0a15d4b052c6536cab27ae4cc3a2b56035"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy7-opacity-optical",
+        "copyNumber": 7,
+        "route": "opacity",
+        "tracking": "optical",
+        "text": "ทำให้การเปลี่ยนแปลง\nมองเห็นได้",
+        "sourceFileSha256": "4fa4423cd890d53ada307d075a558d8989cab58d34a37e4d834181a5cc3af088",
+        "compositionFileSha256": "73033285e188c5831e2b77938f4726331f61b47e85f17927d92fdd3a4d741e97",
+        "sourceCompactJsonSha256": "1bc6b5821b9a377172019c51d921263c9dbc09e2506ab5b0a88e2043b1617890",
+        "compositionCompactJsonSha256": "6176837b797fc2d02db547f9025c1ecea1d9fccb0a7fd43c50a69c46e563c617",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy7-opacity-optical/preflight.json",
+          "bytes": 299731,
+          "sha256": "f3c8154fe205fd25104d2a15177f80dd0f0a9304ce52bcaf136270614e64efa9"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy7-retype-zero",
+        "copyNumber": 7,
+        "route": "retype",
+        "tracking": "zero",
+        "text": "ทำให้การเปลี่ยนแปลง\nมองเห็นได้",
+        "sourceFileSha256": "eda964c74e1d10262937be621d91af44cd0616034d408ff857516dd5d9ddb2d1",
+        "compositionFileSha256": "ca2be3127ce3d0c05cd98e8c6ab5fad2303327b685c7e58e338f73a7ea2ee4a0",
+        "sourceCompactJsonSha256": "d671772a925f37cd92a0c6da911cc901ae01c183594bb3394404c3d3b6395338",
+        "compositionCompactJsonSha256": "4531914e03d9053c6822b8bdb83e801925f24bb1e64fb61e5ab235f15437dfe6",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy7-retype-zero/preflight.json",
+          "bytes": 293027,
+          "sha256": "41071279aac8d8e45a766e837a55cc2100221e37f099602dfa538c4afffed7a2"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy7-retype-optical",
+        "copyNumber": 7,
+        "route": "retype",
+        "tracking": "optical",
+        "text": "ทำให้การเปลี่ยนแปลง\nมองเห็นได้",
+        "sourceFileSha256": "40e6c2c20dfdb8b536163419ff14cf877edb1933585f4e05aa888ddffc6f228b",
+        "compositionFileSha256": "6933fcd677ea656cda2d86199780137398fc88d39a75ed538062bf533a66c00c",
+        "sourceCompactJsonSha256": "1bd5b89fcf1db88a17b2ce6d5ce026bd64e794cf110db1b59aaa6494c3408f19",
+        "compositionCompactJsonSha256": "921177cbf58f42a72dddd207d1c2adf5ebfdab0e871ab0d39d6038caf1a626e8",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy7-retype-optical/preflight.json",
+          "bytes": 293011,
+          "sha256": "1198989f90b8940a2f7d7fdede204d399173df51bdb85f33f31968f5fb0cc252"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy7-color-boundary-zero",
+        "copyNumber": 7,
+        "route": "color-boundary",
+        "tracking": "zero",
+        "text": "ทำให้การเปลี่ยนแปลง\nมองเห็นได้",
+        "sourceFileSha256": "8f763ff08420b0617c014733bdad8fe0e9f4415b833dad9b912f06bef7f79605",
+        "compositionFileSha256": "e9236724e4b1c99fb00d39662701a6c0ebad2939ee5c4dd849b98cd6fc5cbbf4",
+        "sourceCompactJsonSha256": "498446028ceb9788b535bbdceff3da507b8c6c63a568d8bba362aefb0df4ac8c",
+        "compositionCompactJsonSha256": "825b301a973f1d8dfd9b1848cb28cc3272c34a2a531dc3667eadb96e1df09fe9",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy7-color-boundary-zero/preflight.json",
+          "bytes": 293166,
+          "sha256": "5aa8271a4d97aabb89b9f911400de3f288377604ca88cb1dfd4c329b2d29b36c"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy7-color-boundary-optical",
+        "copyNumber": 7,
+        "route": "color-boundary",
+        "tracking": "optical",
+        "text": "ทำให้การเปลี่ยนแปลง\nมองเห็นได้",
+        "sourceFileSha256": "a7842724af8386ccdad0fde8a384b06614c7f4bd7150a5b4eac0a1fd9c3e988e",
+        "compositionFileSha256": "2c4a13938e25e2fc2e01831fce137297f44904c377b59ff0a3945c20ca47edc7",
+        "sourceCompactJsonSha256": "a25d6ebb29b0dc742aa992413b70a866822792e0d3cba9194e3d50717e75beb0",
+        "compositionCompactJsonSha256": "f2061fe32b8cf68469d7ba59765ceab84f61bf847218ec39050e50655a60a1d7",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy7-color-boundary-optical/preflight.json",
+          "bytes": 293150,
+          "sha256": "ed171de792b2920b4b56eb34faa8be950eef3fe1281e7be0f0a3a1ab8dd0d1cc"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy7-size-boundary-zero",
+        "copyNumber": 7,
+        "route": "size-boundary",
+        "tracking": "zero",
+        "text": "ทำให้การเปลี่ยนแปลง\nมองเห็นได้",
+        "sourceFileSha256": "4f9dae0c0193edd4a809e598114d9bbeaf199385e835f30fb9f7bc9e05beb4e7",
+        "compositionFileSha256": "6b5fa737e67fbd6496934206bb0ee37d36e976f8d94f965c6533c3d45284bd6c",
+        "sourceCompactJsonSha256": "e06365f073bcff3d56424cb1a027b558d76cdf58731d9c0c886cf509e3187878",
+        "compositionCompactJsonSha256": "c1f973c8bf1715e20e6244637928adb4bddf282607f653df9c3349f968f3e8f1",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy7-size-boundary-zero/preflight.json",
+          "bytes": 290837,
+          "sha256": "05e50ef1207b4001e935d25a6ac2e730b5a451c6406df5797843b8bf3ee77598"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy7-size-boundary-optical",
+        "copyNumber": 7,
+        "route": "size-boundary",
+        "tracking": "optical",
+        "text": "ทำให้การเปลี่ยนแปลง\nมองเห็นได้",
+        "sourceFileSha256": "fb0326991a2bbdacfe477f24d60ed0bb503b11a8c92562cd765fed6310f2d3f1",
+        "compositionFileSha256": "de856d74eed16b88571e178325eddd9aa66553f413c5128d4e622e55c037973c",
+        "sourceCompactJsonSha256": "fe5301fdcffee883d41a52ce3c753354115769f9249d1260971eea0745e32e07",
+        "compositionCompactJsonSha256": "0f0636add286ccf39fe5f88a4ef2a5f65bcb0caa7c682f2257365bdbe464e9cb",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy7-size-boundary-optical/preflight.json",
+          "bytes": 291042,
+          "sha256": "c1e7ee35588950da26894f65c3c0aedf376da2421dcb5ae1d8f19a8eb68e04b5"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy7-font-alias-boundary-zero",
+        "copyNumber": 7,
+        "route": "font-alias-boundary",
+        "tracking": "zero",
+        "text": "ทำให้การเปลี่ยนแปลง\nมองเห็นได้",
+        "sourceFileSha256": "39eac478862057afa0819c88386fa76060e746c9e7c4db9fcf3b2fb81d00dfa2",
+        "compositionFileSha256": "2e650468449fab2fd2e3df395a2c65ed4824c21fdf6da96fdb511e2bee5effc4",
+        "sourceCompactJsonSha256": "3b6458934be3deca935cbbb759b05cea10043e3da23b73159d35b050bef13fb6",
+        "compositionCompactJsonSha256": "fc6c29f19824d4ac3425dd07617a3185f7c4f441a839d6e79c79b5b73cb403bb",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy7-font-alias-boundary-zero/preflight.json",
+          "bytes": 293576,
+          "sha256": "6944758fae49666294c4bd66351c08db3fec8b53bda710a5284607ef7ac83758"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      },
+      {
+        "id": "copy7-font-alias-boundary-optical",
+        "copyNumber": 7,
+        "route": "font-alias-boundary",
+        "tracking": "optical",
+        "text": "ทำให้การเปลี่ยนแปลง\nมองเห็นได้",
+        "sourceFileSha256": "9e5487d9fb647e13bc37a191646ee74dd31ca99bd78348662eac179311af852e",
+        "compositionFileSha256": "a20bd08bba1e500b43d9beac460385ef3b1bf31054ef6fb208eb2f99f5053521",
+        "sourceCompactJsonSha256": "924f8f1335bdb652c214f19f70f01eeeccd23b005e3f49814c5b598bfc688f34",
+        "compositionCompactJsonSha256": "d75c6d76f20429a6d1dd377d2adcc86e47511cb19a42ab1457b74adea1df7525",
+        "preflight": {
+          "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy7-font-alias-boundary-optical/preflight.json",
+          "bytes": 293576,
+          "sha256": "f1e85ae1dd3621f9c066717d54cccafd3d29d736648e5582cd058424e04b19ff"
+        },
+        "frames": [8, 18],
+        "sizes": ["native", "320", "360"]
+      }
+    ]
+  },
+  "locatedFindings": [
+    {
+      "id": "resolved-copy-and-marks",
+      "classification": "sampled-positive",
+      "cases": "All 114 distinct cases, frame18, at all three review sizes.",
+      "finding": "Full copy and visible upper/lower marks remain present in the inspected settled samples. This is a sampled appearance result, not every-frame or arbitrary-copy safety."
+    },
+    {
+      "id": "active-quantity-and-qualification",
+      "classification": "sampled-negative-for-complete-message",
+      "cases": "Retype and opacity routes across all seven texts and both tracking modes, frame8.",
+      "finding": "Retyping produces incomplete prefixes; opacity leaves suffixes, quantities or qualifiers at low contrast. Do not count these active states as a complete reading hold."
+    },
+    {
+      "id": "thai-leading-vowel-prefix",
+      "classification": "located-negative-for-complete-thai-word",
+      "caseId": "copy6-retype-zero",
+      "frame": 8,
+      "observedPrefix": "เฉพาะคำสั่งซื้อแรก เ",
+      "preflight": {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy6-retype-zero/preflight.json",
+        "bytes": 530335,
+        "sha256": "95b8e619d4e4bcc0ae53ad95f60566e5732152139070c8b86b9e45e5fe4b1a25"
+      },
+      "independentClusterAccounting": {
+        "targetClusters": 42,
+        "sourceSpaceClusters": 1,
+        "commonPrefixClusters": 0,
+        "linearProgress": 0.375,
+        "totalDeleteAddSteps": 43,
+        "step": 16,
+        "visibleTargetClusters": 15,
+        "lastVisibleCluster": {
+          "text": "เ",
+          "sourceIndex": 14,
+          "spanIndex": -1,
+          "wordIndex": 5,
+          "lineIndex": 0,
+          "x": 747.6395263671875,
+          "advance": 31.071060180664062,
+          "baseline": 101.85600000000001,
+          "ascent": 101.85600000000001,
+          "descent": 43.2,
+          "runIndex": 0,
+          "ink": {
+            "x": 756.1970262527466,
+            "y": 49.2480021057129,
+            "width": 20.4870023727417,
+            "height": 53.56800079345703
+          }
+        },
+        "nextCluster": {
+          "text": "มื่",
+          "sourceIndex": 15,
+          "spanIndex": -1,
+          "wordIndex": 5,
+          "lineIndex": 0,
+          "x": 778.7105865478516,
+          "advance": 60.85777282714844,
+          "baseline": 101.85600000000001,
+          "ascent": 101.85600000000001,
+          "descent": 43.2,
+          "runIndex": 0,
+          "ink": {
+            "x": 786.6560864448547,
+            "y": 3.3179979858398525,
+            "width": 46.15362501144409,
+            "height": 99.49800109863281
+          }
+        }
+      },
+      "implementation": "packages/renderer-core/src/typography-transition.ts retypedClusters plus typography-renderer.ts draw-plan opacity masking",
+      "finding": "A shaped-cluster prefix can stop at the Thai leading vowel เ before เมื่อ. Grapheme/run identity does not promise a complete word. The saved preflight poses are raw animator poses and do not contain the retype draw-plan opacity masking; the prefix is observed in decoded images and corroborated by the existing transition rule."
+    },
+    {
+      "id": "semantic-token-line-breaks",
+      "classification": "located-layout-boundary",
+      "layouts": [
+        {
+          "caseId": "copy2-size-boundary-zero",
+          "preflight": {
+            "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy2-size-boundary-zero/preflight.json",
+            "bytes": 427357,
+            "sha256": "361cf55ea88d47d45f72f9799aaefdb194d2067d2f5362d33146c1081100cdbe"
+          },
+          "lines": ["รุ่น X2 รองรับ Wi-Fi 6E และ USB-", "C 30W"]
+        },
+        {
+          "caseId": "copy2-size-boundary-optical",
+          "preflight": {
+            "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy2-size-boundary-optical/preflight.json",
+            "bytes": 415184,
+            "sha256": "2340cfc4140c117612f7cb4550ac71a3ee3966f78096c741c388e501ac1f4d5c"
+          },
+          "lines": ["รุ่น X2 รองรับ Wi-Fi 6E และ USB-C", "30W"]
+        },
+        {
+          "caseId": "copy4-intact-zero",
+          "preflight": {
+            "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy4-intact-zero/preflight.json",
+            "bytes": 534543,
+            "sha256": "8170223fbf82030b7c6746c4924ae3a308c352bf14acc9774ac077c557a54bd7"
+          },
+          "lines": [
+            "โปรดี ๆ สำหรับลูกค้าใหม่เท่านั้น ซื้อครบ",
+            "499 บาท ส่งฟรี"
+          ]
+        },
+        {
+          "caseId": "copy4-intact-optical",
+          "preflight": {
+            "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-thai48-czHjkB/copy4-intact-optical/preflight.json",
+            "bytes": 534649,
+            "sha256": "b1143156c0c297c085914f68fd85e36881faf13ba2d7e725a1c3cf86d4f80471"
+          },
+          "lines": [
+            "โปรดี ๆ สำหรับลูกค้าใหม่เท่านั้น ซื้อครบ 499",
+            "บาท ส่งฟรี"
+          ]
+        }
+      ],
+      "finding": "The enlarged mixed Latin suffix can wrap inside USB-C at zero tracking. Opt-in optical tracking moves 499 onto the first promotional line while บาท stays on the second. Characters remain present; semantic token or number/unit keep-together is not guaranteed."
+    },
+    {
+      "id": "font-boundary-scope",
+      "classification": "scope-limit",
+      "finding": "Noto alias boundaries use identical Thai font bytes. Plex mixed controls style X2 only. These samples do not qualify a distinct Thai face or arbitrary cross-face boundary."
+    }
+  ],
+  "productionDisposition": {
+    "intactMotion": "Keep complete required copy together through existing intact full-selection/all-text-anchor/no-stagger routes, with font coverage and actual final layout/reading holds checked for each production copy. The sampled matrix does not grant general pack or production acceptance.",
+    "finerThaiMotion": "Not adopted for required complete words, prices, units or qualifications on the basis of this packet. Translation/rotation samples retain marks but every-intermediate-frame shaping, overlap and gap guarantees remain unqualified.",
+    "retypingAndOpacity": "Active transitions are not certified complete reading holds. Provide a verified intact resolved hold if these optional transitions are used.",
+    "tracking": "Opt-in only; zero/default compatibility remains preserved. Inspect final wraps, protected tokens and number/unit grouping before adopting optical tracking for a production text.",
+    "repairs": "No typography source/default repair is introduced by this review. These are located constraints and evidence for future explicitly scoped changes."
+  },
+  "verification": {
+    "reviewArtifactAndCaseAudit": "passed",
+    "sourceAndCompositionRawFileHashesMatchedPriorEvidence": 114,
+    "retainedAuditAttempts": [
+      {
+        "attempt": 1,
+        "status": "failed-hash-convention",
+        "cause": "Compared formatted JSON raw bytes with preflight compact JSON hashes. No artifact mutation. Corrected to compare raw hashes with prior render-run file receipts; both conventions explicitly named."
+      },
+      {
+        "attempt": 2,
+        "status": "passed"
+      }
+    ],
+    "reviewPngHashesMatchedRetainedAudit": 684,
+    "overviewHashesRecorded": 42,
+    "softwareInputs": "Held by the owning full51 gate; review evidence documentation is excluded from that inventory.",
+    "fullSoftwareGate": "Separate live attempt full51-1; this record does not assert its result."
+  },
+  "limits": [
+    "Only frames8 and18 were reviewed for all distinct cells in this expansion. Prior seventeen artifacts include selected consecutive sequences but do not close every active cell/frame.",
+    "Native overviews are cropped/resized contact images; full1920x1080 originals and all consecutive active frames2-19 remain retained for deeper review.",
+    "320/360 reductions are LANCZOS bitmap proxies, not an actual phone, compression ladder or human reading/listening acceptance.",
+    "No new rendering, paid generation, owner acceptance, supported pack or accepted pilot episode is claimed.",
+    "Combined count-fit/Thai criterion remains open for full-cell fine-motion disposition; known complete-message negatives prevent adoption now."
+  ]
+}

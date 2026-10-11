@@ -941,6 +941,13 @@ mechanism families establish whether the architecture transfers.
       comparisons match exactly; seventeen sampled visual artifacts do not certify
       all matrix cells. Remaining mark/overlap/gap disposition and supported-unit
       findings keep this item open; active partial quantity states are not certified.
+      [Slice51 sampled review](./mechanism-shorts-ms2-thai-review-results.json)
+      inspects all114 distinct cells at frames8/18 and three sizes (42 overviews,
+      684 displayed samples). Settled copy/marks remain present in those samples.
+      Located negatives include a lone leading-vowel retype prefix, a USB-C split
+      under a size boundary, and a499/บาท split under optical tracking. Active
+      retype/opacity are not complete reading holds; finer Thai motion remains
+      unadopted pending full-cell intermediate mark/overlap/gap disposition.
 
 The cable-tie fixture may use an explicitly authored exposed teaching variant to
 show the pawl. It must identify that variant; generic section-plane/cap support

@@ -61,3 +61,45 @@ quantity suffixes at low contrast. Those active states cannot certify complete
 messages. This sampled review does not certify all matrix cells or general finer
 Thai motion. Remaining mark/overlap/gap disposition and cell review are explicit
 pending work; the combined count-fit/Thai acceptance checkbox stays open.
+
+## Expanded sampled review and current adoption limits
+
+[Slice51 review](./mechanism-shorts-ms2-thai-review-results.json) binds all 42
+retained overview sheets to artifact hashes. The agent inspected active frame8
+and settled frame18 for all 114 distinct zero/optical cells at native-contact,
+320 and 360 sizes: 228 distinct case/frame samples, shown at three sizes (684).
+The fourteen default/explicit-zero controls are deduplicated using the earlier
+all24-frame exact parity evidence; no additional direct review of them is claimed.
+
+The inspected settled samples retain complete copy and visible upper/lower Thai
+marks. Active retyping still shows prefixes and opacity can leave quantity or
+qualification suffixes at low contrast. In `copy6-retype-zero`, frame8 ends with
+`เฉพาะคำสั่งซื้อแรก เ`: the leading vowel precedes the rest of `เมื่อ`. The existing
+transition deletes one source-space cluster and adds 42 target clusters. At
+progress 6/16 its floor-based step is16, leaving15 target clusters. This agrees
+with the decoded sample. Raw preflight animator poses omit retype draw-plan
+opacity masking and alone cannot establish the visible prefix.
+
+Two located wrap changes further limit adoption:
+
+| Case                        | First line ends with | Next line starts with |
+| --------------------------- | -------------------- | --------------------- |
+| copy2-size-boundary-zero    | `USB-`               | `C 30W`               |
+| copy2-size-boundary-optical | `USB-C`              | `30W`                 |
+| copy4-intact-zero           | `ซื้อครบ`            | `499 บาท ส่งฟรี`      |
+| copy4-intact-optical        | `ซื้อครบ 499`        | `บาท ส่งฟรี`          |
+
+The font-size boundary and opt-in tracking preserve characters but do not promise
+semantic-token or number/unit keep-together. The alias cases still use identical
+Noto bytes; the Plex controls style only `X2` and do not qualify another Thai face.
+
+Keep required complete words, quantities and qualifications together through the
+existing intact full-selection/all-text-anchor route, with actual final layout
+and sufficient resolved reading holds checked for each production text. Active
+retype/opacity states are not certified complete reading holds. Finer Thai motion
+is not adopted from this packet: the expanded review samples two frames per cell,
+and every-intermediate-frame mark/overlap/gap disposition remains unqualified.
+Optical tracking stays opt-in; inspect final wraps before using it for production.
+No renderer/default change or human acceptance is inferred. The combined Thai
+criterion remains open. The review audit retains its initial raw-versus-compact
+JSON hash comparison failure and the corrected raw-file receipt comparison.

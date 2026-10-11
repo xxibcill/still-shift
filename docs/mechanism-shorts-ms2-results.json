@@ -17829,9 +17829,51 @@
         "E01 reuses the historical MS1/MS1N topic, disclosed in its row. Later MS4C must disclose cohort overlap; no 300-episode coverage inference is made.",
         "Only coverage-board creation is completed. Remaining exact Thai cell/support disposition, broader labels/continuous/readability, genuine speech, resource/full/final/installed, pack admission and MS2 PR gates remain open. Supported packs 0; accepted pilot episodes 0; MS3 not started."
       ]
+    },
+    "fiftyFirstSlice": {
+      "status": "expanded-thai-sampled-review-complete-full-gate-running",
+      "scope": "Review-only evidence on held fifty-slice software/authoring inputs; no rendering/default change.",
+      "evidence": "docs/mechanism-shorts-ms2-thai-review-results.json",
+      "review": {
+        "overviewSheets": 42,
+        "distinctCells": 114,
+        "uniqueCaseFrameSamples": 228,
+        "displayedCaseFrameSizeSamples": 684,
+        "frames": [8, 18],
+        "sizes": ["native-contact", "320", "360"],
+        "locatedNegatives": [
+          "Leading-vowel prefix before เมื่อ during retyping",
+          "USB-C split at enlarged mixed-run boundary",
+          "499/บาท line split under opt-in optical tracking",
+          "Partial or low-contrast active quantities/qualifiers"
+        ]
+      },
+      "verification": {
+        "artifactAudit": "passed-after-retained-hash-convention-failure",
+        "overviewHashes": 42,
+        "matchedRawSourceCompositionPairs": 114,
+        "matchedReviewPngHashes": 684,
+        "full51Attempt1": {
+          "status": "running",
+          "command": "pnpm check:all",
+          "sourceCommit": "5e7f49e5",
+          "owningSession": 79726,
+          "log": "/private/tmp/still-shift-ms2-full51-1.log",
+          "heldInventory": "/private/tmp/still-shift-ms2-full51-inputs1.json",
+          "heldFiles": 2567,
+          "heldBytes": 119595348,
+          "terminalReceipt": "not-yet-observed"
+        }
+      },
+      "remaining": [
+        "Expanded review covers two frames, not every active cell/frame. General finer Thai motion and complete active-message reading remain unqualified.",
+        "Full software gate is running; broader resource/lifetime, labels/continuous/readability, genuine spoken input, final archive/installed and pack admission/MS2 PR gates remain separate.",
+        "Supported packs0; accepted pilot episodes0; MS3 not started."
+      ]
     }
   },
   "limits": [
+    "Slice51 expands Thai review to all114 distinct cells at frames8/18 and three sizes (42 overviews/684 shown samples), binding raw inputs and artifact hashes. Sampled resolved copy/marks remain; leading-vowel prefixes and semantic wrap/contrast negatives are located. Finer Thai motion is unadopted and complete-message holds remain separately checked. Full51 attempt1 is running on held5e7f49e5 inputs with no terminal receipt; pack/pilot0 and broader MS2 gates stay open.",
     "Slice50 creates the frozen ten-question coverage board before MS3: 5 existing targets, 3 new-asset/existing-rig candidates, 2 behavior extensions; 5 episodes need new assets and 2 need behavior. Actual candidate references and all 2,564 prior inputs are unchanged. Coverage remains 0/10 validated, packs/accepted pilot 0. Fast1 passes 4,293 units/421 files; seven focused tests and independent cohort/hash/accounting audit pass after retaining an initial negative-test fixture failure. Only board creation is complete; full MS2 and support admission remain open.",
     "Slice49 adds complete native export/decode/seek evidence for all 128 Thai cases: 142 streams/3,408 frames, 3,072 decoded frames/9,216 PNGs/426 sheets, 9,216 native seeks and 70 exact lossless settled comparisons independently verified. Default/explicit-zero identities hold; encoded differences prompted lossless diagnosis. Final fast2 passes 4,286 units/420 files on held inputs. Seventeen sampled visual artifacts cover every text but do not certify all cells; remaining Thai support/mark/gap review and broader MS2/full/final/owner gates stay open. Packs/pilot 0.",
     "Slice48 verifies exact Thai authoring/strict font coverage/loaded browser shaping and pose preflight only: six stress strings plus hashed production copy, 128 saved native compositions/3,072 pose frames and seven wrong-font controls independently audited. Sequential fast3 passes 4,286 units/420 files. Two failed authoring attempts retained; production rendering is unchanged. Native encoded/reduced inspection and Thai risk acceptance remain open, alongside broader MS2/full/final/owner gates; supported packs/pilot 0.",
