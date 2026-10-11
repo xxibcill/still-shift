@@ -921,6 +921,11 @@ mechanism families establish whether the architecture transfers.
       with unchanged wide/no-fit controls, stable bounds, real native exports and
       preserved 10,000-string/numeric-binding guards. Count-fit software scope is
       closed; this combined item remains open for all Thai/production-copy probes.
+      [Slice48 preflight](./mechanism-shorts-ms2-thai-preflight-results.json) saves
+      all six strings plus production copy in 128 valid native compositions, with
+      strict font coverage, loaded layouts, 3,072 pose frames and compatible default/
+      explicit-zero controls. Native consecutive encoded/reduced inspection and
+      supported-unit findings remain required; this checkbox remains open.
 
 The cable-tie fixture may use an explicitly authored exposed teaching variant to
 show the pawl. It must identify that variant; generic section-plane/cap support

@@ -694,3 +694,15 @@ exports, all-frame seek checks, independently decoded streams and existing fit
 variants on both backends pass in stages. No new native auto-fitter is introduced.
 This resolves the count-fit row at scoped software/native level. The Thai rows,
 production-copy probes, human review and whole MS2 acceptance remain open.
+
+### Thai risk preflight (2026-10-12)
+
+[Slice48](./mechanism-shorts-ms2-thai-preflight-results.json) saves all six exact
+stress strings plus hashed SS02 production copy in 128 valid authoring/native
+compositions. Strict pinned-font coverage, loaded browser layouts, raster
+preparation and all 24 frames of poses pass; default and explicit-zero override
+geometry remain equal to zero tracking. Failed default-space and invalid UTF-16
+span authoring attempts remain retained. Alias font boundaries use identical Noto
+bytes; only X2 controls use the distinct Plex face. These are preflight findings.
+Consecutive native encoded/320/360 inspection, active retype, marks/overlap/gaps,
+complete meaning and supported-unit findings remain pending for both Thai rows.

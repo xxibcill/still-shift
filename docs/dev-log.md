@@ -45,18 +45,19 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Forty-seven slices now include the reproduced generated-count/shared-fit repair:
-  narrow 96 → 38 px; all 63 reachable strings fit. Fast7 passes 4,286 units/420 files;
-  three native cases/six exports/366 frames, 183 decoded frames and 549 seek-order draws.
-  Existing four fit variants/727 frames pass on each backend. Held 2,561 inputs/
-  119,513,406B remain fixed; failures and intermediate passes retained.
-  Prior explicit weight/native acceptance remains scoped to its saved evidence.
-  Next: all six Thai/production-copy risks, coverage, broader label/continuous
-  readability, genuine speech and remaining resource/full/final gates.
-  Supported packs/pilot 0; no merge/publication, human acceptance or paid generation.
-  [Count-fit evidence](./mechanism-shorts-ms2-count-fit-results.json),
-  [shared-fit behavior](./mechanism-generated-count-fit.md),
-  [MS2 results](./mechanism-shorts-ms2-results.json).
+  Forty-eight slices now include all six Thai strings plus hashed production-copy
+  preflight: 128 source/composition/layout receipts, 3,072 pose frames, seven strict
+  wrong-font negatives and default/explicit-zero pairs independently audited.
+  Fast3 passes 4,286 units/420 files after sequential preflight; held 2,562 inputs/
+  119,528,865B remain fixed. Two failed authoring controls retained and corrected.
+  Native encoded consecutive windows, marks/overlap/gaps, 320/360 reductions and
+  supported-unit findings remain pending; Thai risk acceptance is still open.
+  Count-fit and explicit weight/native scopes retain their separate saved proof.
+  Next: encoded Thai inspection, coverage, broader labels/continuous readability,
+  genuine speech and remaining resource/full/final gates. Supported packs/pilot 0;
+  no merge/publication, human acceptance or paid generation.
+  [Thai preflight evidence](./mechanism-shorts-ms2-thai-preflight-results.json),
+  [probe scope](./mechanism-thai-motion-probes.md), [MS2 results](./mechanism-shorts-ms2-results.json).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
   inventory15:2,329 inputs/117,503,155B. Original full6 retains a qualified19-group
@@ -214,6 +215,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — MS2 slice48: exact Thai motion/tracking preflight matrix
+
+- Six exact stress strings plus hashed SS02 production copy produce 128 saved
+  authoring/native compositions. Real pinned Noto coverage/axes, loaded shaping,
+  raster preparation and 3,072 pose frames pass. Seven Plex-only Thai negatives
+  retain coverage diagnostics; default/explicit-zero controls preserve geometry.
+- Independently audited every source/composition/layout/pose receipt. Alias font
+  boundaries use the same bytes; only X2 Latin controls use a distinct Plex face.
+- Build/lint and sequential final fast3 pass: 4,286 units/420 files on held inputs.
+  Initial intact assertion exposed default space exclusion; UTF-16-authored spans
+  then failed the existing grapheme-index contract. Both failures retained;
+  full selection and valid grapheme spans corrected without renderer changes.
+- Native consecutive encoded windows, active retype, marks/overlap/gaps, reduced
+  samples and supported-unit findings remain pending. Thai/MS2 acceptance stays
+  open; broader coverage/resource/full/final/owner gates and packs/pilot 0 remain.
+- [Evidence](./mechanism-shorts-ms2-thai-preflight-results.json),
+  [probe scope](./mechanism-thai-motion-probes.md), [plan](./mechanism-shorts-production-plan.md).
 
 ### 2026-10-12 — MS2 slice47: generated decimal count shared-fit repair
 
