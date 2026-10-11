@@ -1,4 +1,9 @@
 import {
+  readMechanismFamilyAuthoring,
+  saveMechanismFamilyAuthoring,
+  patchMechanismFamilyAuthoring,
+} from "../../../packages/animation-engine/src/mechanism/family-authoring.ts";
+import {
   inspectMechanismFamilyRegistry,
   mechanismFamilySchemas,
   MECHANISM_FAMILY_REGISTRY_VERSION,
@@ -84,11 +89,20 @@ const commonFlags = ["json", "report", "offset", "limit"];
 const commandFlags: Record<MechanismCommand, readonly string[]> = {
   discover: ["family"],
   schema: ["kind", "output"],
-  inspect: ["input", "shot", "native", "part", "anchor", "material", "rig"],
-  validate: ["input"],
+  inspect: [
+    "input",
+    "shot",
+    "native",
+    "part",
+    "anchor",
+    "material",
+    "rig",
+    "authoring",
+  ],
+  validate: ["input", "authoring"],
   deps: ["input"],
-  save: ["input", "output", "base-revision", "base-hash"],
-  patch: ["input", "request"],
+  save: ["input", "output", "base-revision", "base-hash", "authoring"],
+  patch: ["input", "request", "authoring"],
   prepare: ["input", "output-dir", "cache-dir", "route"],
   compile: ["input", "output-dir", "cache-dir", "route"],
   preview: ["input", "output-dir", "cache-dir", "frame", "route"],
@@ -96,7 +110,7 @@ const commandFlags: Record<MechanismCommand, readonly string[]> = {
   check: ["input", "prepared-dir", "final-output", "route"],
   package: ["input", "output-dir", "prepared-dir", "final-output", "route"],
   "init-tape-hook": ["output-dir", "font", "font-license", "audio", "captions"],
-  summary: ["input"],
+  summary: ["input", "authoring"],
 };
 const episodeSchemas = {
   ...mechanismFamilySchemas,
@@ -301,6 +315,7 @@ function resultView(
           "fontDiagnostics",
           "changedPaths",
           "affectedShots",
+          "affectedComponents",
         ].includes(key)
       )
         items.push(...value.map((item) => ({ ...row(item), kind: key })));
@@ -405,7 +420,7 @@ function resultView(
       : {}),
   };
 }
-async function readPatchRequest(path: string, io: EpisodeCliIo) {
+async function readPatchJson(path: string, io: EpisodeCliIo) {
   let bytes: string;
   if (path === "-") {
     if (io.stdin) bytes = await io.stdin();
@@ -438,6 +453,10 @@ async function readPatchRequest(path: string, io: EpisodeCliIo) {
       path,
     );
   }
+  return value;
+}
+async function readPatchRequest(path: string, io: EpisodeCliIo) {
+  const value = await readPatchJson(path, io);
   if (isRecord(value) && value.schemaVersion !== "mechanism-patch-1")
     throw cliError(
       `Unsupported patch version ${String(value.schemaVersion).slice(0, 128)}; expected mechanism-patch-1`,
@@ -629,6 +648,75 @@ async function execute(
       }),
     );
   const input = required(flags, "input");
+  if (flags.has("authoring")) {
+    if (flags.get("authoring") !== "family")
+      throw cliError(
+        "--authoring requires family",
+        "mechanism-authoring-kind",
+        "--authoring",
+      );
+    if (command === "patch")
+      return resultView(
+        command,
+        await patchMechanismFamilyAuthoring(
+          input,
+          await readPatchJson(required(flags, "request"), io),
+        ),
+      );
+    const loaded = await readMechanismFamilyAuthoring(input);
+    if (command === "save") {
+      if (flags.has("base-revision") !== flags.has("base-hash"))
+        throw cliError("Save requires both --base-revision and --base-hash");
+      const base = flags.has("base-revision")
+        ? {
+            revision: integer(
+              required(flags, "base-revision"),
+              "base-revision",
+            ),
+            hash: required(flags, "base-hash"),
+          }
+        : undefined;
+      return resultView(
+        command,
+        await saveMechanismFamilyAuthoring(
+          loaded.document,
+          required(flags, "output"),
+          base,
+        ),
+      );
+    }
+    for (const flag of flags.keys())
+      if (![...commonFlags, "input", "authoring"].includes(flag))
+        throw cliError(
+          `Family inspection does not accept --${flag}`,
+          "mechanism-authoring-option",
+          `--${flag}`,
+        );
+    return {
+      command,
+      summary: {
+        schemaVersion: loaded.document.schemaVersion,
+        family: loaded.document.family,
+        id: loaded.document.id,
+        revision: loaded.document.revision,
+        projectHash: loaded.projectHash,
+        sourceSha256: loaded.instance.sourceSha256,
+        packVersion: loaded.document.pack.version,
+        packSha256: loaded.document.pack.sha256,
+      },
+      items: Object.entries(loaded.document.input.parameters).map(
+        ([id, value]) => ({ kind: "parameter", id, value }),
+      ),
+      fullResult: {
+        document: loaded.document,
+        projectHash: loaded.projectHash,
+        sourceSha256: loaded.instance.sourceSha256,
+        meshDataSha256: loaded.instance.meshDataSha256,
+      },
+      nextAction:
+        "Apply episode patch --authoring family with the current revision/hash; regenerate the scene asset and recompile dependent cues after editing.",
+    };
+  }
   if (command === "deps")
     return resultView(command, await mechanismDependencyReport(input));
   if (
@@ -812,7 +900,8 @@ export async function runEpisodeCli(
     controller.signal.throwIfAborted();
     const receipt = await createMechanismCommandReceipt(result, {
       ...options,
-      ...((command === "discover" && flags.has("family")) ||
+      ...(flags.has("authoring") ||
+      (command === "discover" && flags.has("family")) ||
       [
         "schema",
         "prepare",

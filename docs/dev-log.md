@@ -45,17 +45,17 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Forty slices include Node admission, authored state/cue tracks and generator-derived
-  family discovery, parameter help/examples, immutable metadata and schema exports.
-  Fast4 passes 4,249 units; 19 CLI regressions plus actual persisted three-family,
-  pagination/schema reports pass on held inputs. The new example-test union type
-  failure is retained; previous cue/driver/font/contrast failures remain in slice39.
-  Next: revision-aware saved family/cue editing, full label QA, coverage/typography,
+  Forty-one slices include cue tracks, shared registry and pinned family authoring
+  with scoped parameter/mount/style edits, saved revision/hash CAS and atomic writes.
+  Fast5 passes 4,256 units; 26 filesystem/CLI regressions and actual three-family
+  saved edits/stale rejection/resume/source byte identities pass on held inputs.
+  Build3 fixture union failure and its unrun focused groups remain retained.
+  Next: cue editing/dependency-aware render/check, full label/coverage/typography,
   genuine spoken inputs, supported packs, remaining producer/resource/lifetime/full/
-  final-installed criteria. Supported packs/pilot 0; no merge/publication, human
+  final-installed acceptance. Supported packs/pilot 0; no merge/publication, human
   acceptance or paid generation.
-  [Registry evidence](./mechanism-shorts-ms2-family-registry-results.json),
-  [Registry API](./mechanism-family-registry.md), [MS2 results](./mechanism-shorts-ms2-results.json).
+  [Authoring evidence](./mechanism-shorts-ms2-family-authoring-results.json),
+  [Authoring API](./mechanism-family-authoring.md), [MS2 results](./mechanism-shorts-ms2-results.json).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
   inventory15:2,329 inputs/117,503,155B. Original full6 retains a qualified19-group
@@ -213,6 +213,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 saved family revisions and scoped edits
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `27444d1a`.
+- **Done:** pinned family authoring/patch schemas and public transactions;
+  stable parameter/mount/style targets, strict identity/version/bounds/conflicts,
+  saved lock/CAS/atomic publication and CLI authoring/full-report routes.
+- **Results:** seven new units/seven runtime checks; fast5 passes 4,256 units,
+  26 filesystem/CLI regressions. Actual three-family edits/resume commit six
+  revisions, reject three stale CLI writes and pin regenerated source JSON bytes.
+- **Retained:** build3 fixture union access failed; unit3/runtime3 unrun.
+  Guarded narrowing and fresh focused/held gates pass. No rendering is inferred.
+- **Next:** cue revisions/dependent render/check and remaining MS2 acceptance.
+- **Records:** [Authoring API](./mechanism-family-authoring.md),
+  [Evidence](./mechanism-shorts-ms2-family-authoring-results.json).
 
 ### 2026-10-11 — MS2 family registry discovery and schema expansion
 

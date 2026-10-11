@@ -16038,6 +16038,17 @@
         "sha256": "sha256:12a9bbed00130ad98fdcce22eaf06dc835b738ca0e03c17cc1c964bd3acc4a82"
       },
       "qualification": "Discovery and expanded schema authoring only. Candidate status is retained; this does not prove saved revision-aware family/cue editing, rendered label/typography QA, complete resource/lifetime accounting, genuine spoken inputs, supported packs, full software/benchmark/final installed verification or MS2/MS3 acceptance. No paid generation, merge or publication."
+    },
+    {
+      "id": "family-authoring-slice-41",
+      "status": "family-authoring-cas-transactions-verified-in-stages",
+      "record": "docs/mechanism-shorts-ms2-family-authoring-results.json",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-authoring41-inputs5.json",
+        "bytes": 434250,
+        "sha256": "sha256:7301f2967f12ac9641a33930a7c174116c782c2409ae3a3104613150ab0da1b2"
+      },
+      "qualification": "Stable saved family generator-input editing only. Cue-document editing and dependency-aware affected-shot rendering remain open. Actual regenerated source JSON/CAS/resume/mesh identities do not prove rendered pixels, complete resources/lifetime, supported packs, genuine spoken inputs, full software/benchmark/final installed verification or human/pilot acceptance. No paid generation, merge or publication."
     }
   ],
   "implementation": {
@@ -17415,10 +17426,40 @@
         "Stable revision-aware saved family/cue editing and rejection/atomicity/resume evidence.",
         "Full label, coverage and typography criteria, supported-pack promotion, genuine spoken inputs, whole resource/lifetime/full/final-installed gates before MS2 PR/MS3."
       ]
+    },
+    "fortyFirstSlice": {
+      "status": "family-authoring-cas-transactions-verified-in-stages",
+      "scope": [
+        "Versioned three-family authoring documents pin stable project ID, revision, immutable pack and actual generator inputs; public inspect/create/apply/read/save/patch APIs.",
+        "Scoped parameter/mount/style writers with located version/target/conflict/bounds/revision/identity errors; existing 32 operations/16 KiB patch limits.",
+        "Validate real generation before publication; saved CAS rereads the current file under the existing artifact lock, then uses atomic replacement or fresh no-clobber publication.",
+        "Existing CLI inspect/validate/summary/save/patch --authoring family retain 32 KiB/100-item responses and complete reports; source identities and conservative dependent-cache refresh declarations.",
+        "Two generated authoring/patch schemas included in the shared discovery/schema registry."
+      ],
+      "counts": {
+        "unitTests": 4256,
+        "unitFiles": 418,
+        "newUnitTests": 7,
+        "focusedTests": 13,
+        "focusedFiles": 2,
+        "runtimeTests": 26,
+        "runtimeFiles": 3,
+        "newRuntimeTests": 7,
+        "families": 3,
+        "actualSavedRevisions": 6,
+        "actualCLIStaleRejections": 3,
+        "newSchemaFiles": 2,
+        "supportedPacks": 0,
+        "pilotAcceptedEpisodes": 0
+      },
+      "remaining": [
+        "Revision-aware cue editing, source dependency pin/recompile and affected-shot render/check integration.",
+        "Complete rendered label QA, coverage/typography, supported-pack/genuine spoken inputs, whole resources/lifetime/full/final-installed requirements before MS2 PR and MS3."
+      ]
     }
   },
   "limits": [
-    "Forty slices now include cue tracks plus generator-derived family discovery, immutable metadata/help/examples and expanded schema exports under existing response limits. Fast4 passes 4,249 units; 19 CLI regressions and actual persisted family/pagination/schema reports pass on held inputs. Revision-aware saved editing, rendered label QA, coverage/typography, supported packs/genuine spoken inputs, whole resources/lifetime, full/final installed and remaining MS2/MS3 acceptance stay open. Supported packs/pilot 0.",
+    "Forty-one slices add pinned revision-aware family authoring, scoped parameter/mount/style edits and atomic saved CAS to cue tracks and shared discovery/schema exports. Fast5 passes 4,256 units; 26 filesystem/CLI checks and actual all-three-family saved edits/stale rejection/resume/source-byte identity pass on held inputs. Cue editing/dependent rendering, full label/coverage/typography, supported packs/genuine spoken inputs, whole resources/lifetime/full/final-installed and remaining MS2/MS3 acceptance remain open. Supported packs/pilot 0.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

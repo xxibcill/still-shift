@@ -46,5 +46,6 @@ Expanded schema kinds include the three family input and parameter schemas, pack
 metadata, timeline, narration cues, primitives, rigs, teaching shapes, scene2/3,
 frame2, solid geometry2, native frame3 and prepared-native3d3. Generated documents
 are in `docs/schemas/mechanism/`. This registry adds discovery/schema authoring;
-revision-aware saved family/cue editing, complete rendered label QA, supported-pack
-promotion and production acceptance remain separate work.
+saved family input editing is described in the [authoring API](./mechanism-family-authoring.md).
+Cue editing, complete rendered label QA, supported-pack promotion and production
+acceptance remain separate work.

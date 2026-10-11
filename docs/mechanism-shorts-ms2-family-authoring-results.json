@@ -1,0 +1,405 @@
+{
+  "version": "mechanism-ms2-family-authoring-results-1",
+  "date": "2026-10-11",
+  "baseSourceCommit": "27444d1a593f33d525c57378fd0a67bbe21bf6e6",
+  "branch": "codex/mechanism-ms2",
+  "status": "family-authoring-cas-transactions-verified-in-stages",
+  "scope": [
+    "Versioned three-family authoring documents pin stable project ID, revision, immutable pack and actual generator inputs; public inspect/create/apply/read/save/patch APIs.",
+    "Scoped parameter/mount/style writers with located version/target/conflict/bounds/revision/identity errors; existing 32 operations/16 KiB patch limits.",
+    "Validate real generation before publication; saved CAS rereads the current file under the existing artifact lock, then uses atomic replacement or fresh no-clobber publication.",
+    "Existing CLI inspect/validate/summary/save/patch --authoring family retain 32 KiB/100-item responses and complete reports; source identities and conservative dependent-cache refresh declarations.",
+    "Two generated authoring/patch schemas included in the shared discovery/schema registry."
+  ],
+  "qualification": "Stable saved family generator-input editing only. Cue-document editing and dependency-aware affected-shot rendering remain open. Actual regenerated source JSON/CAS/resume/mesh identities do not prove rendered pixels, complete resources/lifetime, supported packs, genuine spoken inputs, full software/benchmark/final installed verification or human/pilot acceptance. No paid generation, merge or publication.",
+  "counts": {
+    "unitTests": 4256,
+    "unitFiles": 418,
+    "newUnitTests": 7,
+    "focusedTests": 13,
+    "focusedFiles": 2,
+    "runtimeTests": 26,
+    "runtimeFiles": 3,
+    "newRuntimeTests": 7,
+    "families": 3,
+    "actualSavedRevisions": 6,
+    "actualCLIStaleRejections": 3,
+    "newSchemaFiles": 2,
+    "supportedPacks": 0,
+    "pilotAcceptedEpisodes": 0
+  },
+  "workingInputs": {
+    "path": "/private/tmp/still-shift-ms2-authoring41-inputs5.json",
+    "bytes": 434250,
+    "sha256": "sha256:7301f2967f12ac9641a33930a7c174116c782c2409ae3a3104613150ab0da1b2"
+  },
+  "actualRootSessions": [
+    {
+      "session": 82016,
+      "exitCode": 0,
+      "commands": ["format1", "schema1", "build1"]
+    },
+    {
+      "session": 10309,
+      "exitCode": 0,
+      "commands": ["format2", "build2"]
+    },
+    {
+      "session": 93742,
+      "exitCode": 2,
+      "commands": ["format3", "build3"],
+      "unrun": ["unit3", "runtime3"]
+    },
+    {
+      "session": 38677,
+      "exitCode": 0,
+      "commands": ["format4", "build4", "unit4", "runtime4"]
+    },
+    {
+      "session": 44087,
+      "exitCode": 0,
+      "commands": [
+        "format5",
+        "identity5",
+        "inputs5",
+        "fast5",
+        "runtime5",
+        "hold5"
+      ]
+    },
+    {
+      "session": 81682,
+      "exitCode": 0,
+      "commands": ["probe6", "hold6"]
+    }
+  ],
+  "failedRuns": [
+    {
+      "id": "build3",
+      "exitCode": 2,
+      "reason": "Concurrency-test reader returns a family union; bladeLength access needed a tape-hook family guard. Focused unit3/runtime3 did not run. Repaired the fixture narrowing and reran fresh build4/unit4/runtime4 and final held gates without weakening production contracts."
+    }
+  ],
+  "verification": [
+    {
+      "id": "format1",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-authoring41-format1.log",
+        "bytes": 183,
+        "sha256": "sha256:e6511309c283b2d52d0c643234fb62473c51fbcd1563400cb23ff60ffd9cc414"
+      }
+    },
+    {
+      "id": "schema1",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-authoring41-schema1.log",
+        "bytes": 653,
+        "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+      }
+    },
+    {
+      "id": "build1",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-authoring41-build1.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "format2",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-authoring41-format2.log",
+        "bytes": 182,
+        "sha256": "sha256:c436ec2dad25e6fe90409ee4c49f22f74f05d7e63b9e0d072dc01c536667da09"
+      }
+    },
+    {
+      "id": "build2",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-authoring41-build2.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "format3",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-authoring41-format3.log",
+        "bytes": 105,
+        "sha256": "sha256:4fa753935f937804bd67790abc55ed96d477cb494f1592c76830311537b5f80c"
+      }
+    },
+    {
+      "id": "build3",
+      "exitCode": 2,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-authoring41-build3.log",
+        "bytes": 575,
+        "sha256": "sha256:432760c850d0a63e5d22765820e7896771040440fe2fe385b8e1aee0189ddea6"
+      }
+    },
+    {
+      "id": "format4",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-authoring41-format4.log",
+        "bytes": 54,
+        "sha256": "sha256:6849a3258b814e0224b313e97841713f39fe7f2707b0fdff1e5409eabe1fdc0a"
+      }
+    },
+    {
+      "id": "build4",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-authoring41-build4.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "unit4",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-authoring41-unit4.log",
+        "bytes": 1168,
+        "sha256": "sha256:2405dae0599c9b43ed18fb8421459d6fff96f3fc297350082797b8dbc128be3d"
+      }
+    },
+    {
+      "id": "runtime4",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-authoring41-runtime4.log",
+        "bytes": 1495,
+        "sha256": "sha256:d05ff470b9b5c20ec9dd143acd5ad4a641713fc95f3e4b95a07039418cb2b102"
+      }
+    },
+    {
+      "id": "format5",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-authoring41-format5.log",
+        "bytes": 106,
+        "sha256": "sha256:d9bb4e4aca6e59f45eece69babab545a9487c3556d05556182662fd4f6b1c15d"
+      }
+    },
+    {
+      "id": "identity5",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-authoring41-identity5.log",
+        "bytes": 260,
+        "sha256": "sha256:aa2b4bcea22a8e919d3d2b5ab083fdf6b0f126245f04d389e0f340cbee2cee8a"
+      }
+    },
+    {
+      "id": "inputs5",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-authoring41-inputs5.log",
+        "bytes": 132,
+        "sha256": "sha256:289be5d572eff0405c68edc8f4d21f49fe646e226d5c8a9edeec7b7d3ba5dde7"
+      }
+    },
+    {
+      "id": "fast5",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-authoring41-fast5.log",
+        "bytes": 38606,
+        "sha256": "sha256:2e783e7297e21d68ae65c5e8851832e3c28bd43cd42755182ee66e54b9a0d6cc"
+      }
+    },
+    {
+      "id": "runtime5",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-authoring41-runtime5.log",
+        "bytes": 1534,
+        "sha256": "sha256:9648bb3e096f1420d5e00a8a18601436e471d586f3987860b2ceab56dab5d8a6"
+      }
+    },
+    {
+      "id": "hold5",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-authoring41-hold5.log",
+        "bytes": 133,
+        "sha256": "sha256:e69649468f6dbd6354b0079c6fb6a1eff49c56e681f0232e67c09e3d63fa1890"
+      }
+    },
+    {
+      "id": "probe6",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-authoring41-probe6.log",
+        "bytes": 180,
+        "sha256": "sha256:93dd1f12a76fe2e35e333b46de28d519705c10a1db12617d9eb498808d0af50f"
+      }
+    },
+    {
+      "id": "hold6",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-authoring41-hold6.log",
+        "bytes": 133,
+        "sha256": "sha256:e69649468f6dbd6354b0079c6fb6a1eff49c56e681f0232e67c09e3d63fa1890"
+      }
+    }
+  ],
+  "actualCLIResult": {
+    "directory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-authoring41-proof-KX8hfM",
+    "status": "passed",
+    "families": 3,
+    "committedRevisions": 6,
+    "staleRejections": 3
+  },
+  "actualCLIProof": {
+    "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-authoring41-proof-KX8hfM/run.json",
+    "bytes": 6844,
+    "sha256": "sha256:9dd78c52fea4eff75fb94745cc1328892422e4077cfc316e83e63320aa3474df"
+  },
+  "familyProofs": [
+    {
+      "family": "tape-hook",
+      "parameter": "hookThickness",
+      "value": 0.24,
+      "initialProjectHash": "sha256:cc17a10093379f7d51e10bca67149503a7e932045a5a54531f70179baeea6330",
+      "initialSourceSha256": "sha256:0a2db1877fe83eb7ee348b6c658b2396dd4a781b3a5c3ffaa413392e182245bc",
+      "dimensionSourceSha256": "sha256:7f859b0e87c2ec259a867367db17ce07f4448ffab7a48ea2d8b129dc84085df0",
+      "finalProjectHash": "sha256:57d683aa101b59281a758f9c1ec5fb4eff8cde767afb70bc4ec6cc1d513b18a3",
+      "finalSourceSha256": "sha256:98e732cf7dc4af255e7be9d5445df67b89ccf3568922c795b8d733ed420f6da0",
+      "finalRevision": 2,
+      "pack": {
+        "id": "tape-hook",
+        "version": "1.0.0",
+        "sha256": "sha256:5f7fa4100db1ecbb36eb62d2c036857b3740ded49e41856870aed2769e260dd5",
+        "variant": "floating-hook",
+        "detail": "teaching"
+      },
+      "sourcePath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-authoring41-proof-KX8hfM/tape-hook.regenerated-scene.json",
+      "sourceBytes": 3099521,
+      "documentPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-authoring41-proof-KX8hfM/tape-hook.json",
+      "reportPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-authoring41-proof-KX8hfM/tape-hook.patch-report.json",
+      "stalePreserved": true,
+      "mountPreservedMeshBytes": true
+    },
+    {
+      "family": "cable-tie",
+      "parameter": "pitch",
+      "value": 0.6,
+      "initialProjectHash": "sha256:700b51758c2dc7fce782cbab598098c313696ea494f3d705fdba3e281f4a7569",
+      "initialSourceSha256": "sha256:42fa407b3e23dae9231c4e7660ab6864e97f0f7c6c951bc1aef9ab4cabece8cd",
+      "dimensionSourceSha256": "sha256:36b5a72458ee27cb0eba71c966a338ca7341e2c240bb007a47749361f983e03a",
+      "finalProjectHash": "sha256:a6c85d20c3ae3ec85af9058b24ca29a0af2ba546ff45a3af51597a589852676c",
+      "finalSourceSha256": "sha256:3e5a6750712666924bedf8eb0e74ed95db277a6907ed885806fae107f4609028",
+      "finalRevision": 2,
+      "pack": {
+        "id": "cable-tie",
+        "version": "1.0.0",
+        "sha256": "sha256:ad450e45629ca2aa716968af1951f369191d808d7dfa9da3b7206f406aefd6f1",
+        "variant": "outside-serrated-integral-pawl-cutaway",
+        "detail": "teaching"
+      },
+      "sourcePath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-authoring41-proof-KX8hfM/cable-tie.regenerated-scene.json",
+      "sourceBytes": 579147,
+      "documentPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-authoring41-proof-KX8hfM/cable-tie.json",
+      "reportPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-authoring41-proof-KX8hfM/cable-tie.patch-report.json",
+      "stalePreserved": true,
+      "mountPreservedMeshBytes": true
+    },
+    {
+      "family": "clothespeg",
+      "parameter": "armLength",
+      "value": 7,
+      "initialProjectHash": "sha256:ad1c23ee17030e043cf44bc3d61602950233028f82305fb3e5899a42c07678be",
+      "initialSourceSha256": "sha256:f2d265adfc6d94480063abfb7a82a4cbec36111299025bd49156e1281143939e",
+      "dimensionSourceSha256": "sha256:e7eaa970349bab4ce04b9bf434685c0200f59c29c96038a7e56023d015a98edc",
+      "finalProjectHash": "sha256:0ba618aee3f556cf49ed354e9268ec8c5b88622ab920a68d2fd0f4e206bad244",
+      "finalSourceSha256": "sha256:99453f469a4a95ef17945f4864115849d9311eccd90dd1640f63376fce541833",
+      "finalRevision": 2,
+      "pack": {
+        "id": "clothespeg",
+        "version": "1.0.0",
+        "sha256": "sha256:1d6050d5ac18a16722e3766bf8da86a4f0c418012d50e3a15a6eeadd1b7ac281",
+        "variant": "wood-arms-central-spring-cloth",
+        "detail": "teaching"
+      },
+      "sourcePath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-authoring41-proof-KX8hfM/clothespeg.regenerated-scene.json",
+      "sourceBytes": 264323,
+      "documentPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-authoring41-proof-KX8hfM/clothespeg.json",
+      "reportPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-authoring41-proof-KX8hfM/clothespeg.patch-report.json",
+      "stalePreserved": true,
+      "mountPreservedMeshBytes": true
+    }
+  ],
+  "actualArtifacts": [
+    {
+      "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-authoring41-proof-KX8hfM/tape-hook.json",
+      "bytes": 714,
+      "sha256": "sha256:bdbbf9870f7279e11c6c3291fb1db159ae7852b8ae983d6140802a7bfb4fe6aa"
+    },
+    {
+      "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-authoring41-proof-KX8hfM/tape-hook.regenerated-scene.json",
+      "bytes": 3099521,
+      "sha256": "sha256:98e732cf7dc4af255e7be9d5445df67b89ccf3568922c795b8d733ed420f6da0"
+    },
+    {
+      "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-authoring41-proof-KX8hfM/tape-hook.patch-report.json",
+      "bytes": 1448,
+      "sha256": "sha256:7046ca9a0bc68e2e16783c85f3113975714acf8651ac05d4b93706975043adcb"
+    },
+    {
+      "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-authoring41-proof-KX8hfM/cable-tie.json",
+      "bytes": 728,
+      "sha256": "sha256:6e09fe00e10d32d9077e58daa14156f7b5fb8f60779bcbb3abb4310f475e361a"
+    },
+    {
+      "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-authoring41-proof-KX8hfM/cable-tie.regenerated-scene.json",
+      "bytes": 579147,
+      "sha256": "sha256:3e5a6750712666924bedf8eb0e74ed95db277a6907ed885806fae107f4609028"
+    },
+    {
+      "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-authoring41-proof-KX8hfM/cable-tie.patch-report.json",
+      "bytes": 1454,
+      "sha256": "sha256:795f75ff01147661828f80b82fbc841e1394e22c9d4704a60538f657e1fc497e"
+    },
+    {
+      "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-authoring41-proof-KX8hfM/clothespeg.json",
+      "bytes": 732,
+      "sha256": "sha256:98aa1857eab67ff1482b6c07e351f5c5d11169f3789b344eed5406d6155a36b5"
+    },
+    {
+      "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-authoring41-proof-KX8hfM/clothespeg.regenerated-scene.json",
+      "bytes": 264323,
+      "sha256": "sha256:99453f469a4a95ef17945f4864115849d9311eccd90dd1640f63376fce541833"
+    },
+    {
+      "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-authoring41-proof-KX8hfM/clothespeg.patch-report.json",
+      "bytes": 1464,
+      "sha256": "sha256:22be978a740ed0d5fc5c63522909bda133dfbae91df13d00928ca450160cc3ba"
+    }
+  ],
+  "schemas": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/family-authoring.schema.json",
+      "bytes": 20844,
+      "sha256": "sha256:a342fa5edb5df322a781bf0dff82f946a711183242a2c5ec34f3d5b7e4f9c3e6"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/family-patch.schema.json",
+      "bytes": 5147,
+      "sha256": "sha256:b64a89cd699faa5c3f2ef40cbd36bf10df6f15e5d75e1874a9d606e7bab3484a"
+    }
+  ],
+  "remaining": [
+    "Revision-aware cue editing, source dependency pin/recompile and affected-shot render/check integration.",
+    "Complete rendered label QA, coverage/typography, supported-pack/genuine spoken inputs, whole resources/lifetime/full/final-installed requirements before MS2 PR and MS3."
+  ]
+}

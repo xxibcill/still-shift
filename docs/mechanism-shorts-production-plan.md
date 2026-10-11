@@ -858,6 +858,14 @@ mechanism families establish whether the architecture transfers.
       retains the test type failure and [API](./mechanism-family-registry.md) describes
       the contract. This item remains unchecked pending saved revision-aware
       family/cue editing and complete expanded acceptance.
+      Slice41 adds saved family authoring with pinned pack/project identities,
+      scoped generator-input edits and atomic revision/hash CAS under the existing
+      artifact lock. Fast5 passes 4,256 units and 26 filesystem/CLI checks; actual
+      three-family CLI edits/resume retain exact source bytes and stale-write
+      preservation. [Authoring evidence](./mechanism-shorts-ms2-family-authoring-results.json)
+      retains the fixture type failure; [API](./mechanism-family-authoring.md)
+      declares dependent regeneration rather than claiming it occurred. Cue editing,
+      dependency-aware render/check and complete expanded acceptance remain open.
 - [ ] Create the topic-to-family coverage board during family selection under the
       coverage contract above. Classify all proposed pilot candidates and record
       support criteria, selected distinct-episode denominator and new-asset/new-rig

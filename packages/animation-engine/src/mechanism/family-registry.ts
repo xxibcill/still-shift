@@ -1,3 +1,7 @@
+import {
+  MechanismFamilyAuthoringSchema,
+  MechanismFamilyPatchSchema,
+} from "./family-authoring.ts";
 import { z } from "zod";
 import {
   MechanismPackDocumentSchema,
@@ -67,6 +71,8 @@ export const MechanismFamilyRegistrySelectionSchema = z
   .strict();
 /** Used by both generated schema files and CLI schema export. */
 export const mechanismFamilySchemas = {
+  "family-authoring": MechanismFamilyAuthoringSchema,
+  "family-patch": MechanismFamilyPatchSchema,
   "family-registry-selection": MechanismFamilyRegistrySelectionSchema,
   "tape-hook-input": TapeHookPackInputSchema,
   "tape-hook-parameters": TapeHookPackParametersSchema,
@@ -130,6 +136,8 @@ export function inspectMechanismFamilyRegistry(
         schema: "rig-2",
       })),
       contracts: [
+        "family-authoring",
+        "family-patch",
         "pack",
         "pack-timeline",
         "narrated-cycle",

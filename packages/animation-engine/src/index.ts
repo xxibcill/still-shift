@@ -111,3 +111,5 @@ export * from "./mechanism/pack-timeline.ts";
 export * from "./mechanism/narrated-cycle.ts";
 
 export * from "./mechanism/family-registry.ts";
+
+export * from "./mechanism/family-authoring.ts";
