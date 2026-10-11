@@ -885,6 +885,10 @@ export const native3DAppearanceModules: readonly {
     url: new URL("./observation-capacity-v2.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/native3d/observations-async.ts",
+    url: new URL("./observations-async.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/native3d/observations-v2.ts",
     url: new URL("./observations-v2.ts", import.meta.url),
   },
@@ -1825,6 +1829,13 @@ export const native3DAppearanceModules: readonly {
     name: "scene-contract/src/native3d/observation.ts",
     url: new URL(
       "../../../scene-contract/src/native3d/observation.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/native3d/output-v3.ts",
+    url: new URL(
+      "../../../scene-contract/src/native3d/output-v3.ts",
       import.meta.url,
     ),
   },

@@ -45,20 +45,21 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Twenty-four slices include strict standalone source3 GPU/world/anchor observation
-  and current strict-gate repair. Held inputs42: 2,503 files/119,039,010B.
-  Normal fast42 passes all prefix checks and 4,177 units/407 files; complete Node44
-  passes 10 tests/four files at original budgets. Observation45 passes eight
-  frames/21 faults; shapes46 passes all six native2 browser groups. Exact held
-  input bytes match after these staged runs. Historical failures, rejected trace
-  experiments and wrong-file Node43 subset remain recorded; no uninterrupted
-  milestone pass is claimed. Broader runtime/integration/full/installed stay historical.
-  Next: composition collector/output3 capacity, authenticated source3 export/installed,
-  whole world/source budgets and remaining MS2 criteria. Supported packs/pilot0;
+  Twenty-five slices include strict standalone source3 GPU/world/anchor observation,
+  restored strict gates, and the explicit output3 contract/async collector. Held
+  collector inputs4: 2,507 files/119,052,599B. Normal fast4 passes all prefix checks
+  and 4,182 units/408 files; Node5 passes ten owning tests/four files. Fresh
+  composition6/export7 pass four captures/15 negatives and two normal native2 exports.
+  Source3 standalone and six native2 browser groups last passed in slice24.
+  Final selected bytes match; staged failures, rejected experiments and test
+  ownership/type repair remain recorded. Full/runtime/integration/installed stay historical.
+  Next: output3 capacity sizing and async renderer hooks, authenticated source3
+  export/installed, whole world/source/body/replay budgets and remaining MS2 criteria.
+  Source3 collection/export still rejected; supported packs/pilot0;
   no MS2 PR/MS3 or human acceptance.
   [MS2 results](./mechanism-shorts-ms2-results.json),
+  [output3 collector evidence](./mechanism-shorts-ms2-output3-collector-results.json),
   [strict-gate history](./mechanism-shorts-ms2-strict-gates-results.json),
-  [observation results](./mechanism-shorts-ms2-pbr-observation-results.json),
   [PBR API](./native-pbr-resources.md), [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
@@ -217,6 +218,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 explicit output3 contract and ordered async collector
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `10b50765`.
+- **Done:** strict output3/sample3 contract, shared internal async collector and
+  pure V3 wrapper. Original output2 parser/rejection and ownership semantics preserved.
+- **Results:** fast4 passes 4,182 units/408 files and all prefix gates; Node5
+  ten/four files; composition6 four captures/15 negatives, export7 two actual native2
+  exports. Inputs4 unchanged after final commands; original limits retained.
+- **Retained:** initial matrix-cloning assumption fails; explicit frozen borrowed-array
+  assertion passes. Deliberate readonly tuple assignment fails type checking;
+  Object.defineProperty probe preserves the runtime rejection check.
+- **Next:** output3 capacity/renderer integration, authenticated transport/export,
+  world/source/body/replay admission and remaining MS2 criteria. Collection/export3
+  still rejected; supported packs/pilot0; no full/installed refresh or milestone PR.
+- **Records:** [collector evidence](./mechanism-shorts-ms2-output3-collector-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-11 — MS2 strict-gate repair with unchanged acceptance limits
 

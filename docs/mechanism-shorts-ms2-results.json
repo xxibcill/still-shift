@@ -15428,6 +15428,64 @@
       },
       "record": "docs/mechanism-shorts-ms2-strict-gates-results.json",
       "qualification": "Staged repair with failed runs and rejected experiments retained. Early frozen-oracle helper regex stopped before writing and corrected helper succeeded. Guarded edit28 failed before writing; later tests ran unchanged. No changed acceptance thresholds, frozen fixtures or production gradient implementation. No sole-cause timing claim. Broader runtime/integration/full/benchmark and installed-package verification were not refreshed for this slice; supportedPacks and pilot remain zero. Source3 composition/output3/export remains rejected; no human visual/listening acceptance, MS2 PR, merge or publication."
+    },
+    {
+      "id": "output3-collector-slice-25",
+      "status": "standalone-output3-contract-collector-verified-composition-export-pending",
+      "actualRootSessions": [
+        {
+          "session": 59505,
+          "exitCode": 0,
+          "commands": ["format1", "build1"]
+        },
+        {
+          "session": 60023,
+          "exitCode": 1,
+          "commands": ["format2", "unit2"],
+          "unrun": ["build2"]
+        },
+        {
+          "session": 75591,
+          "exitCode": 2,
+          "commands": ["format3", "identity3", "unit3", "build3"]
+        },
+        {
+          "session": 28740,
+          "exitCode": 0,
+          "commands": ["fast4", "node5", "composition6", "export7", "hold7"]
+        }
+      ],
+      "workingInputs": {
+        "manifest": {
+          "path": "/private/tmp/still-shift-ms2-output3-inputs4.json",
+          "bytes": 427679,
+          "sha256": "sha256:c2d2d9e8827fbf289deb190630c9354bdde510f2b0fdaf0f463383967872652f"
+        },
+        "files": 2507,
+        "inputBytes": 119052599,
+        "selection": {
+          "roots": [
+            "apps/",
+            "packages/",
+            "scripts/",
+            "tests/",
+            "tools/",
+            "services/",
+            "benchmarks/",
+            "examples/",
+            "assets/",
+            "catalogs/"
+          ],
+          "rootFiles": "all Git-tracked or nonignored regular root files",
+          "packageProse": [
+            "docs/npm-package-readme.md",
+            "docs/npm-third-party-notices.md"
+          ],
+          "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+        }
+      },
+      "record": "docs/mechanism-shorts-ms2-output3-collector-results.json",
+      "qualification": "All local final commands exit0 on unchanged inputs4 in a staged sequence. Synthetic empty-mesh test fixtures prove protocol/lifecycle only, never GPU drawing. Receipt matrices retain the existing validated shared-array ownership, frozen by collection; parsed object fields are private. Original thresholds and fixtures unchanged. Slice24 failed histories remain retained separately. Full runtime/integration/full/benchmark/installed were not refreshed. Source3 whole-world budget, collector capacity/renderer integration and authenticated export remain pending; no human acceptance or milestone PR."
     }
   ],
   "implementation": {
@@ -16331,6 +16389,39 @@
         "Explicit output3 collector/capacity and authenticated producer/sink/upload/journal/export/installed proof.",
         "Whole world/source/body/replay budgets; retain fixed 64 passes, 1MiB packet, 32MiB shard,16 shards,512MiB total.",
         "Remaining packs/generators/registry/rigs/events/labels/cues/typography/board criteria and full required milestone gates."
+      ]
+    },
+    "twentyFifthSlice": {
+      "status": "standalone-output3-contract-collector-verified-composition-export-pending",
+      "scope": [
+        "Explicit strict output3/sample3 envelopes admit original source1/source2 and source3 receipts; output1/output2 parsers are unchanged and still reject source3.",
+        "Internal ordered async collector shared by V2/V3 wrappers; original V2 parser and behavior retained. Invocation ordering, earliest assigned failures, stale completion invalidation, immutable parsing and metadata lease lifecycle remain identical.",
+        "Fixed 64-pass/1MiB ceiling, admitted serialized byte limit, pre-collection metadata reservation and abort/dispose release; whole source/body/world/replay admission remains separate.",
+        "Pure public collector3 API added without integrating composition or widening authenticated producer/sink/upload/journal/export APIs. Source3 collection/export rejection remains intentional."
+      ],
+      "counts": {
+        "unitTests": 4182,
+        "unitFiles": 408,
+        "focusedCollectorAndProtocolTests": 32,
+        "focusedFiles": 4,
+        "newCollectorTests": 5,
+        "owningNodeTests": 10,
+        "owningNodeFiles": 4,
+        "composition2Captures": 4,
+        "composition2Negatives": 15,
+        "normalExports2": 2,
+        "appearanceFirstPartyModules": 399,
+        "appearanceExternalModules": 79,
+        "source3CompositionCaptures": 0,
+        "source3Exports": 0,
+        "supportedPacks": 0,
+        "pilotSupportedEpisodes": 0
+      },
+      "remaining": [
+        "Conservative output3 composition capacity sizing including mesh groups/material/vertex hashes and all used mip receipts before producer/GPU allocation.",
+        "Explicit source3 async render hooks and mixed output3 collector composition proof.",
+        "Authenticated request/producer/sink/upload/journal/export/installed integration and whole source/world/body/replay admission.",
+        "Remaining MS2 family/authoring/quality/full-gate criteria before milestone PR."
       ]
     }
   },

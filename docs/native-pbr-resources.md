@@ -244,8 +244,9 @@ lever frames, repeated/reverse pixel equality, one style, five actual HTTP strea
 and checksum faults, and zero retained managed owners after disposal. Pixel arrays
 never enter production transport JSON.
 
-Independent source3 frame/world/anchor/draw observations remain pending; used-mip
-component validation is now separate current evidence.
+The preview slice did not prove independent source3 frame/world/anchor/draw
+observations. Later standalone evidence is documented below; used-mip component
+validation remains a separate proof boundary.
 `collectNativeObservations: true` and source3 export-request creation reject the
 unfinished protocol. Authenticated repeated exports, installed proof, whole-world
 accounting and bounded source JSON admission remain required. The importer
@@ -277,9 +278,9 @@ coverage and anchor projection/physical visibility. Existing matrix1e-8,
 pixel0.5 and mip-transfer0.0001 profiles remain fixed. Receipt owners must be
 disposed after use; owner disposal and aborts invalidate pending finalization.
 
-This API is a standalone source3 observation boundary. Composition collectors,
-output-frame3 admission, authenticated exports, journals and installed consumer
-proof remain pending; existing source3 composition observation/export requests
+This API is a standalone source3 observation boundary. Composition collector
+integration, conservative output-frame3 capacity sizing, authenticated exports,
+journals and installed consumer proof remain pending; existing source3 composition observation/export requests
 still reject. Original frame1/frame2/output2 parsers retain their strict behavior.
 The scoped allocator proof covers observation copies, metadata and hashing;
 world/PMREM/source JSON/body and aggregate multi-pass admission are still separate.
@@ -287,3 +288,29 @@ world/PMREM/source JSON/body and aggregate multi-pass admission are still separa
 The [retained observation results](./mechanism-shorts-ms2-pbr-observation-results.json)
 include actual repeated/reverse/hidden/outside frames, queued captures, corruption
 and lifecycle controls, failed runs and current source identities.
+
+## Explicit output3 contract and standalone collector
+
+`@still-shift/scene-contract` exposes `NativeObservedOutputFrameV3Schema`,
+`NativeObservedSampleV3Schema` and `NativeObservedFrameVersionsV3Schema`. The
+explicit `native3d-observed-output-frame-3` envelope accepts strict frame1/frame2/
+frame3 passes with contiguous invocation indices, a bounded output frame and an
+execution SHA. The original output1/output2 parsers still reject source3.
+
+The pure `@still-shift/renderer-core` export `createNativeObservationCollectorV3`
+provides `begin(maximumPacketBytes)`, `observe(receiptOrPromise, sampleFrame)`,
+`finish()`, `abort()` and `dispose()`. Assign invocations synchronously before
+awaiting capture hashes. Completion preserves that order and the earliest assigned
+failure; abort, restart and disposal invalidate an outstanding completion.
+Admission retains the fixed 64-pass/1MiB ceilings and owns metadata before
+collection. `finish()` validates receipt structure and returns frozen samples;
+the independent expected-source checker remains required. Parsed object fields
+are private, while validated matrix arrays retain their existing borrowed ownership
+and are frozen. Metadata ownership lasts until the next begin, abort or disposal.
+
+This collector is not yet wired into composition rendering or authenticated
+transport. Source3 composition collection/export still rejects until conservative
+capacity sizing, asynchronous renderer hooks and the transport/export/installed
+proof are complete. [Collector results](./mechanism-shorts-ms2-output3-collector-results.json)
+retain mixed completion, byte/pass admission, original protocol rejection and
+lifecycle tests, staged failures and existing native2 composition/export checks.

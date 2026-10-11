@@ -711,6 +711,10 @@ mechanism families establish whether the architecture transfers.
       budgets or frozen gradient oracles: fast42 passes 4,177 units, Node44 passes
       ten owning checks, and fresh source3/native2 browser groups pass. Earlier
       failures remain in the [strict-gate history](./mechanism-shorts-ms2-strict-gates-results.json).
+      Twenty-fifth slice adds the strict output3 envelope and ordered async collector
+      beside the original output2 parser. Current fast/owning Node and native2
+      composition/export checks pass; [collector evidence](./mechanism-shorts-ms2-output3-collector-results.json)
+      retains test-ownership/type failures. Source3 collection/export stays rejected.
       Composition/output3 capacity, authenticated source3 export, installed and
       whole-world proof remain pending;
       this criterion stays unchecked. See the [import API](./rigid-gltf-import.md) and
