@@ -1,0 +1,578 @@
+{
+  "schemaVersion": "mechanism-shorts-ms2-pbr-observation-results-1",
+  "date": "2026-10-11",
+  "status": "standalone-source3-observation-verified-regression-timeouts-composition-export-pending",
+  "branch": "codex/mechanism-ms2",
+  "baseSourceCommit": "71a067c8c1076c303a1cb9cd88913b3bd52497d9",
+  "currentInputInventory": {
+    "path": "/private/tmp/still-shift-ms2-pbr-observation-inputs-10.json",
+    "bytes": 426984,
+    "sha256": "sha256:157b97172311a11212139c31bdeef877b2ac3b52db39689a750a33fa7dd9d851"
+  },
+  "currentSelectedInputFiles": 2503,
+  "currentSelectedInputBytes": 119030932,
+  "stages": [
+    {
+      "stage": 1,
+      "actualRootSession": 1641,
+      "actualExitCode": 2,
+      "status": "failed-types",
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-build-1.log",
+          "bytes": 2412,
+          "sha256": "sha256:7a684f0f793f45c888e79f15efb66b0b7d7ddd3810a2f775f8d6a06433b626a2"
+        }
+      ],
+      "qualification": "Initial frame-state signature, group typing and readonly matrix errors; no exact source hold or browser run."
+    },
+    {
+      "stage": 2,
+      "actualRootSession": 7641,
+      "actualExitCode": 2,
+      "status": "failed-types",
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-build-2.log",
+          "bytes": 6549,
+          "sha256": "sha256:a41ceb051aa84d8117fedb5951d06d22a6ef28ec91b72f547d7675072ca6ac2d"
+        }
+      ],
+      "qualification": "Independent checker narrowing/readonly inputs and remaining tuple casts; no exact source hold or browser run."
+    },
+    {
+      "stage": 3,
+      "actualRootSession": 74546,
+      "actualExitCode": 2,
+      "status": "failed-harness-type",
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-identity-3.log",
+          "bytes": 260,
+          "sha256": "sha256:d9277abeaf2ceebe0e0141080e63fbda1885a8b0dc53deb7e62b73361e67169d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-build-3.log",
+          "bytes": 275,
+          "sha256": "sha256:31219524f92b438146a9b02059618dde2a774dae52e2ea7c157a739f047aa26b"
+        }
+      ],
+      "qualification": "Readonly corruption-control matrix mutation; no exact source hold or browser run."
+    },
+    {
+      "stage": 4,
+      "actualRootSessions": [
+        {
+          "session": 65848,
+          "exitCode": 0,
+          "scope": "build"
+        },
+        {
+          "session": 73899,
+          "exitCode": 1,
+          "scope": "owning units and browser"
+        }
+      ],
+      "status": "failed-browser-recorder",
+      "inputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-observation-inputs-4.json",
+        "bytes": 426806,
+        "sha256": "sha256:33898d8ab78e5161c6db0fcbd5b5d19c9f97b865ffc347f9e5eeb063abd4e2e9"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-build-4.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-units-4.log",
+          "bytes": 455,
+          "sha256": "sha256:b05bf2c02d4d1fad14b7a2f6eabd47c2ce704bae33c2533accf0d866f0ecb9d9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-browser-4.log",
+          "bytes": 1773,
+          "sha256": "sha256:e54d7f41629c548c16a92313eb0d38bc717c01f2e786074f8bcc5a16855b8508"
+        }
+      ],
+      "qualification": "Build and23 units/3files pass. Browser rejects its own texture-verifier nonindexed draws as mesh evidence; later groups did not run."
+    },
+    {
+      "stage": 5,
+      "actualRootSession": 18577,
+      "actualExitCode": 2,
+      "status": "failed-harness-type",
+      "inputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-observation-inputs-5.json",
+        "bytes": 426806,
+        "sha256": "sha256:5675f779f684bff3a156e48106379955a3ddf2eedebb9871db65a5a80eaa734b"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-identity-5.log",
+          "bytes": 260,
+          "sha256": "sha256:d9277abeaf2ceebe0e0141080e63fbda1885a8b0dc53deb7e62b73361e67169d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-build-5.log",
+          "bytes": 355,
+          "sha256": "sha256:e72e451b632bd5565f27bbc4c28d92f1c90b67f4325476243a4d2171b87ef004"
+        }
+      ],
+      "qualification": "GPU corruption control used length on an iterable. Browser did not run."
+    },
+    {
+      "stage": 6,
+      "actualRootSession": 56020,
+      "actualExitCode": 1,
+      "status": "failed-harness-diagnostic",
+      "inputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-observation-inputs-6.json",
+        "bytes": 426806,
+        "sha256": "sha256:22c7eb62a4944a2223d325cdc0c23f51c7f31f71428441265ab2b7597a671e9e"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-build-6.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-browser-6.log",
+          "bytes": 1093,
+          "sha256": "sha256:c729b8e986563ac2f1702eab46936af474e93e5f284b60a98cf7505d973878b0"
+        }
+      ],
+      "qualification": "Build passes. Actual forged frame key is rejected by structured PassageError; harness incorrectly searched only error text for diagnostic code."
+    },
+    {
+      "stage": 7,
+      "actualRootSession": 49491,
+      "actualExitCode": 0,
+      "status": "passed-before-material-profile",
+      "inputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-observation-inputs-7.json",
+        "bytes": 426806,
+        "sha256": "sha256:c33ec36cfc45b19e3d612c6552772ea92f1ef80ccf786ec7a026a1e1acd173ce"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-build-7.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-browser-7.log",
+          "bytes": 284,
+          "sha256": "sha256:87891598d9da542f9c67169c37d5fbb99d8776c2188cb3cc78b7c35a92f2d5b1"
+        }
+      ],
+      "qualification": "Held inputs unchanged. Two meshes/three groups,8 captured frames,3 queued invocations,19 faults/zero observation owners. Separate source preceding closed material profile."
+    },
+    {
+      "stage": 8,
+      "actualRootSession": 98201,
+      "actualExitCode": 1,
+      "status": "failed-fast-lint",
+      "inputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-observation-inputs-8.json",
+        "bytes": 426806,
+        "sha256": "sha256:db95e589fb70c1509491b18e3695620c4bacc5b05a1d670c07358cc9bb5d3cfd"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-fast-8.log",
+          "bytes": 1677,
+          "sha256": "sha256:3fb1bb0b1d181cc875dcbe72dd5c5151cb103659ab9f27d8b469379495c15d23"
+        }
+      ],
+      "qualification": "Schema/appearance/boundaries/format pass; ESLint unused observation-limit import fails. Build, units, Node and browser chain do not run."
+    },
+    {
+      "stage": 9,
+      "actualRootSession": 24976,
+      "actualExitCode": 2,
+      "status": "failed-fast-material-type",
+      "inputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-observation-inputs-9.json",
+        "bytes": 426984,
+        "sha256": "sha256:64596c856dc2dc4f77573c5f0f3aa6a4f0b2577667d093fa65b306f57ecc7582"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-identity-9.log",
+          "bytes": 260,
+          "sha256": "sha256:2fd0585ff7205465c5d16f982839388ca93df4c6e4a7e2ef5d8fdbe19271e653"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-fast-9.log",
+          "bytes": 2217,
+          "sha256": "sha256:e8b6f42327c06749d863f6b6360f2decc1551cd5464aeb4b080a1e563f3868ac"
+        }
+      ],
+      "qualification": "Schema/appearance/boundaries/format/lint pass. Build rejects optional Three material defines access; no unit/Node/browser groups ran."
+    },
+    {
+      "stage": 10,
+      "actualRootSession": 79570,
+      "actualExitCode": 1,
+      "status": "failed-fast-existing-unit-timeouts",
+      "inputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-observation-inputs-10.json",
+        "bytes": 426984,
+        "sha256": "sha256:157b97172311a11212139c31bdeef877b2ac3b52db39689a750a33fa7dd9d851"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-build-10.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-browser-10.log",
+          "bytes": 284,
+          "sha256": "sha256:627ad418e06fccd56743239f6e2fcb002ed11d576c54df27be856a9c3aafcf73"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-fast-10.log",
+          "bytes": 47281,
+          "sha256": "sha256:5281db68fac16417521acf2b8feb46a9f7d1f4af74e7bcc7419bafc062554f69"
+        }
+      ],
+      "qualification": "Build and source3 observation8frames/3queued/21faults pass. Fast schema/appearance397firstparty79external/boundaries/format/lint/build pass, then units4173pass/2fail in407files: unchanged five-second gradient-table-metadata and native3d-mechanical timeouts. The set-e Node and maintained browser suffix did not run. No uninterrupted fast pass is claimed."
+    },
+    {
+      "stage": 11,
+      "actualRootSession": 60647,
+      "actualExitCode": 1,
+      "status": "failed-strict-owning-unit-rerun",
+      "inputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-observation-inputs-10.json",
+        "bytes": 426984,
+        "sha256": "sha256:157b97172311a11212139c31bdeef877b2ac3b52db39689a750a33fa7dd9d851"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-units-11.log",
+          "bytes": 3501,
+          "sha256": "sha256:bda331dd25bde4648c65080682b35ed0daa0a26b31f804d98161175d921ff886"
+        }
+      ],
+      "qualification": "Unchanged source, original maxWorkers4 and original five-second timeouts. Owning two-file rerun13pass/1fail of14tests: native3d-mechanical passes, gradient-table-metadata times out again. The set-e Node/browser suffix did not run. Gradient timeout remains unresolved; no timing relaxation or causal attribution."
+    },
+    {
+      "stage": 12,
+      "actualRootSession": 75605,
+      "actualExitCode": 1,
+      "status": "failed-existing-node-package-timeouts",
+      "inputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-observation-inputs-10.json",
+        "bytes": 426984,
+        "sha256": "sha256:157b97172311a11212139c31bdeef877b2ac3b52db39689a750a33fa7dd9d851"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-node-12.log",
+          "bytes": 4903,
+          "sha256": "sha256:c5e99c366e16cefed0bb52714e7e69b75d224166bdd6f29502202c4d2435adce"
+        }
+      ],
+      "qualification": "Unchanged-source owning Node10tests/4files:7pass/3fail. All three failures are original five-second mechanism-native-package cases (source locator rebasing, altered descriptor rejection, saved-camera preparation refresh). Pure renderer/Node sink/source3 binary admission pass. The set-e browser suffix did not run; no timeout limits relaxed or causal explanation inferred."
+    },
+    {
+      "stage": 13,
+      "actualRootSession": 7214,
+      "actualExitCode": 0,
+      "status": "independent-regressions-recorded-unit-node-gates-pending",
+      "inputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-observation-inputs-10.json",
+        "bytes": 426984,
+        "sha256": "sha256:157b97172311a11212139c31bdeef877b2ac3b52db39689a750a33fa7dd9d851"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-resources-13.log",
+          "bytes": 346,
+          "sha256": "sha256:7bb9d2dd9203ef6e5780119edf47bd6c4088290d3f8aa2ef9f275bd84a71e91f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-world-13.log",
+          "bytes": 265,
+          "sha256": "sha256:bce0b5b24adb13a0cc0af07915158a108ee7062f45ecf3a36f9464153765bd0b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-composition-13.log",
+          "bytes": 807,
+          "sha256": "sha256:b838518b8b7a9a605927b2597e192c8404f507a403531374d11013f167275a89"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-native2-13.log",
+          "bytes": 1218,
+          "sha256": "sha256:e0728dec6a34ae1a257eacc6d176a8804b10fb5b5151b18c381299702e343f12"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-observation-inputs-13.log",
+          "bytes": 202,
+          "sha256": "sha256:891431d8b89db12a5dfb6fdee9e4b0dd2af37442fb80e48976bcfa3bbe6923b9"
+        }
+      ],
+      "groupExitRecords": [
+        {
+          "group": "resources",
+          "command": ["pnpm", "test:browser:native3d-pbr-resources"],
+          "exitCode": 0,
+          "log": "/private/tmp/still-shift-ms2-pbr-observation-resources-13.log"
+        },
+        {
+          "group": "world",
+          "command": ["pnpm", "test:browser:native3d-pbr-world"],
+          "exitCode": 0,
+          "log": "/private/tmp/still-shift-ms2-pbr-observation-world-13.log"
+        },
+        {
+          "group": "composition",
+          "command": ["pnpm", "test:browser:native3d-pbr-composition"],
+          "exitCode": 0,
+          "log": "/private/tmp/still-shift-ms2-pbr-observation-composition-13.log"
+        },
+        {
+          "group": "native2",
+          "command": ["pnpm", "test:browser:native3d-shapes"],
+          "exitCode": 0,
+          "log": "/private/tmp/still-shift-ms2-pbr-observation-native2-13.log"
+        },
+        {
+          "group": "inputs",
+          "command": [
+            "python3",
+            "/private/tmp/mechanism-ms1n-source-inventory.py",
+            "--repo",
+            ".",
+            "--verify",
+            "/private/tmp/still-shift-ms2-pbr-observation-inputs-10.json"
+          ],
+          "exitCode": 0,
+          "log": "/private/tmp/still-shift-ms2-pbr-observation-inputs-13.log"
+        }
+      ],
+      "qualification": "Independent browser groups and final held-source verification recorded with individual exit codes; orchestration exit0 alone is not an aggregate test pass. Source3 observation remains successful stage10. Repeated strict gradient timeout and three current Node package timeouts stay unresolved. No current uninterrupted fast, full runtime/integration/full or installed archive pass is claimed."
+    }
+  ],
+  "browserReceipts": [
+    {
+      "group": "browser",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-pbr-observation-GFcNnP",
+        "status": "passed",
+        "frames": 8,
+        "faults": 21
+      },
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms2-pbr-observation-GFcNnP/run.json",
+        "bytes": 165923,
+        "sha256": "sha256:5192ecc1599f0e6b13b564c2339e25f5831f271073c69aba70d43686c17dc905"
+      },
+      "importedBaseGeometrySha256": "sha256:211377f6e57d68eb9d2cd1f7fca95633ac2bb6a0e34e52e442cc2e17e5522b42",
+      "observedGeometrySha256": "sha256:c4f780e432a8fd0fdc9c9e372c149cf71fb5688bfc65a0fca83528f91e91ae6e",
+      "geometryFieldQualification": "The harness root geometrySha256 identifies the original imported IR; actual frame3 geometry is the explicit two-mesh/three-group source3 variant."
+    },
+    {
+      "group": "resources",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-pbr-resources-PUwbgg",
+        "status": "passed",
+        "frames": 3,
+        "faults": 10,
+        "additionalMipCases": 5,
+        "minFilters": [9984, 9985, 9986, 9987, 9728, 9729]
+      },
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms2-pbr-resources-PUwbgg/run.json",
+        "bytes": 112964,
+        "sha256": "sha256:d4cb886d965e48544ad951646b32466cca9f96ea2c5a1e525ca67ab8fc3f81be"
+      }
+    },
+    {
+      "group": "world",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-pbr-world-88lyrs",
+        "status": "passed",
+        "frames": 6,
+        "faults": 1
+      },
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms2-pbr-world-88lyrs/run.json",
+        "bytes": 35485,
+        "sha256": "sha256:a16753a9d0e1ffe32c6c734ae75700b75234a6a984043b0e6410ad864e3ebaa6"
+      }
+    },
+    {
+      "group": "composition",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-pbr-composition-F4sbEa",
+        "captures": 6,
+        "binaryFaults": 5,
+        "protocolFaults": 2,
+        "stylePixelSha256": "sha256:eac66422fc266fad65457950f971c21fa2f1d4f43cb567e4cfb3bbf726844f12",
+        "memory": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 536870912,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 71488324,
+            "metadata": 689358
+          },
+          "peak": {
+            "pixels": 143207392,
+            "metadata": 1424006
+          },
+          "reservations": 30
+        },
+        "cleanup": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 536870912,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 143207392,
+            "metadata": 1424006
+          },
+          "reservations": 0
+        }
+      },
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms2-pbr-composition-F4sbEa/run.json",
+        "bytes": 148142,
+        "sha256": "sha256:d1395e21772d238d064a58b3ae4fb75b44e4ebc52bff4751619ccdcded538496"
+      }
+    },
+    {
+      "group": "native2",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-shape-world-6I0ZuR",
+        "status": "passed",
+        "frames": 5,
+        "scope": "browser-world-and-pixels-only"
+      },
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms2-shape-world-6I0ZuR/run.json",
+        "bytes": 2976,
+        "sha256": "sha256:8b488ab3d868b32a73b3c9191733fe936f6d8674bc8c865ce6fd3f12ebc70c4f"
+      }
+    },
+    {
+      "group": "native2",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-used-streams-m1cVNc",
+        "status": "passed",
+        "frames": 6,
+        "negatives": 11,
+        "scope": "standalone-used-color-streams-only"
+      },
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms2-used-streams-m1cVNc/run.json",
+        "bytes": 7870,
+        "sha256": "sha256:2ae665c6735070e3432e21e99457964c75f4d523655eed6d61c2dec288f54711"
+      }
+    },
+    {
+      "group": "native2",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-frame-observation-lLhENx",
+        "status": "passed",
+        "frames": 8,
+        "negatives": 4,
+        "scope": "standalone-full-observed-frame2"
+      },
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms2-frame-observation-lLhENx/run.json",
+        "bytes": 6282,
+        "sha256": "sha256:74022adb127d44babdd8c695948dc7643a83734c2cc665f9bd6448d9594a3151"
+      }
+    },
+    {
+      "group": "native2",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-composition-v2-WCwqN0",
+        "status": "passed",
+        "captures": 4,
+        "negatives": 15
+      },
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms2-composition-v2-WCwqN0/run.json",
+        "bytes": 94170,
+        "sha256": "sha256:f645f9d33c9fa73a57916e9ed0d7f40a271c297d230dda95aac597ec7d9ec8dc"
+      }
+    },
+    {
+      "group": "native2",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-normal-export2-eclYFJ",
+        "status": "passed",
+        "exports": 2
+      },
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms2-normal-export2-eclYFJ/run.json",
+        "bytes": 43825,
+        "sha256": "sha256:8095f88ad3e6f639f2dc4649496888549bad904671a70c579925363c8f56d71c"
+      }
+    },
+    {
+      "group": "native2",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-lab2-mYAO3G",
+        "status": "passed",
+        "records": 20
+      },
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms2-lab2-mYAO3G/run.json",
+        "bytes": 26336,
+        "sha256": "sha256:7e39358528a32cfc5486f88b93b6617ee8324b999f41cac5152649c9ee7a8e48"
+      }
+    }
+  ],
+  "counts": {
+    "unitTestsInAggregate": 4175,
+    "unitFilesInAggregate": 407,
+    "aggregateUnitPasses": 4173,
+    "aggregateUnitFailures": 2,
+    "strictOwningRerunTests": 14,
+    "strictOwningRerunPasses": 13,
+    "strictOwningRerunFailures": 1,
+    "owningNodeTests": 10,
+    "owningNodeFiles": 4,
+    "owningNodePasses": 7,
+    "owningNodeFailures": 3,
+    "source3Meshes": 2,
+    "source3GroupSubmissionsPerDrawnFrame": 3,
+    "source3CapturedFrames": 8,
+    "source3QueuedInvocations": 3,
+    "source3Faults": 21,
+    "source3CompositionExports": 0,
+    "newInstalledArchives": 0,
+    "supportedPacks": 0,
+    "pilotSupportedEpisodes": 0
+  },
+  "scope": [
+    "Explicit strict native3d-observed-frame-3; original frame1/frame2/output2 parsers unchanged.",
+    "Owned actual color-draw mesh/material/group association and complete draw coverage, including independently verified hidden/outside-frustum allowances.",
+    "GPU Float32 attributes/index bytes, actual model/view/projection/normal uniforms and all used mip receipts; closed PBR material/shader profile and color/depth/discard-state controls.",
+    "Synchronously measured Three parts/camera/part-local anchors with physical occluders drawn from verified used meshes; immutable receipts and independently packed expected-source validation.",
+    "Scoped metadata/readback/shader/hash admission, cancellation/disposal/foreign-mesh/mutated-hook controls and zero retained observation reservations. World creation precedes this proof allocator."
+  ],
+  "remaining": [
+    "Retained strict gradient-table-metadata five-second timeout remains unresolved after two current-source failures. Native mechanical owning rerun passes. Three strict mechanism-native-package timeouts also remain unresolved (rebasing, descriptor corruption, saved-camera refresh). Complete current unit and Node gates without changing acceptance limits.",
+    "Composition collector/output-frame3 capacity and authenticated request/sink/upload/journal/installed integration. Source3 composition observation and export still reject; no portable export success inferred.",
+    "Whole world/PMREM/source JSON/body/replay and aggregate multi-pass budgets. Component admission is not full process/driver RSS or whole-world acceptance.",
+    "Whole MS2 packs/generators/registry/events/labels/cues/typography/300-board/full and installed verification before its milestone PR and MS3.",
+    "Human visual/listening acceptance remains separate; no PR merge, publication, tag or production promotion."
+  ]
+}

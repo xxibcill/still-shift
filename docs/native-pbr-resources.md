@@ -5,8 +5,9 @@ uses `solid-geometry-2` and `native-pbr-material-1`, with separate encoded-sourc
 and decoded-pixel identities. Existing native source1/source2 parsers remain
 strict. Explicit source3 preparation, binary admission and shared-world composition
 preview consume this component. Every used mip now has component storage/transfer
-validation; formal frame observations, authenticated exports and installed proof
-remain pending.
+validation. A standalone strict frame3 owner now measures actual GPU draws and
+Three state with independent validation. Composition observation/output3 capacity,
+authenticated source3 exports and installed proof remain pending.
 
 ## Node preparation
 
@@ -250,3 +251,39 @@ unfinished protocol. Authenticated repeated exports, installed proof, whole-worl
 accounting and bounded source JSON admission remain required. The importer
 criterion stays unchecked. [Staged results](./mechanism-shorts-ms2-pbr-composition-results.json)
 retain every failed run, lost terminal receipt and strict aggregate timeout.
+
+## Standalone source3 observations
+
+`@still-shift/renderer-core/native3d/browser` exports
+`createNativeThreeQueuedFrameObservationV3`. It requires the exact prepared
+variant and its owned Three world, live private PBR preparation and the verified
+appearance SHA. Apply the assigned snapshot and local visibility to that world
+before capture. Capture performs the actual color render; all GPU and numeric
+queries finish synchronously before its immutable hashes finalize.
+
+The strict `native3d-observed-frame-3` receipt records mesh/group coverage,
+GPU attribute/index digests, submitted model/view/projection/normal matrices,
+material identity and every used mip. Hidden and culled meshes require explicit,
+independently checked reasons. Custom material shaders, undeclared emissive/maps,
+foreign meshes, mutated hierarchy/geometry, unsupported write/discard/depth state
+and missing or duplicate draws reject the capture. Parts, camera and part-local
+anchors come from the current Three world; physical occluder witnesses require a
+verified drawn mesh.
+
+The pure renderer export `assertNativeObservedFrameV3` checks the receipt against
+the trusted prepared variant, assigned sampled frame and appearance identity. It
+packs expected Float32/index bytes independently and verifies mesh/material/mip
+coverage and anchor projection/physical visibility. Existing matrix1e-8,
+pixel0.5 and mip-transfer0.0001 profiles remain fixed. Receipt owners must be
+disposed after use; owner disposal and aborts invalidate pending finalization.
+
+This API is a standalone source3 observation boundary. Composition collectors,
+output-frame3 admission, authenticated exports, journals and installed consumer
+proof remain pending; existing source3 composition observation/export requests
+still reject. Original frame1/frame2/output2 parsers retain their strict behavior.
+The scoped allocator proof covers observation copies, metadata and hashing;
+world/PMREM/source JSON/body and aggregate multi-pass admission are still separate.
+
+The [retained observation results](./mechanism-shorts-ms2-pbr-observation-results.json)
+include actual repeated/reverse/hidden/outside frames, queued captures, corruption
+and lifecycle controls, failed runs and current source identities.

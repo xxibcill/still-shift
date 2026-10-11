@@ -704,9 +704,11 @@ mechanism families establish whether the architecture transfers.
       shared-world execution; twenty-first adds composition source/binary HTTP,
       frame3, preview and static PBR styles. Twenty-second verifies all used GPU
       mip storage/bytes/transfer with independent current-environment derivation,
-      sampler/LOD controls, foreign-state restoration and bounded scratch. Formal
-      source3 observations, authenticated export, installed and whole-world proof
-      remain pending;
+      sampler/LOD controls, foreign-state restoration and bounded scratch. Twenty-third
+      adds standalone strict frame3 observations: actual rigid draw coverage, GPU
+      matrices/bytes/mips, measured Three world/anchors and independent validation.
+      Composition/output3 capacity, authenticated source3 export, installed and
+      whole-world proof remain pending;
       this criterion stays unchecked. See the [import API](./rigid-gltf-import.md) and
       [retained results](./mechanism-shorts-ms2-results.json).
 - [ ] Implement slider hard stops, hinge/lever, deterministic spring return and

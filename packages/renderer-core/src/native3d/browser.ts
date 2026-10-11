@@ -50,3 +50,6 @@ export {
   captureNativePbrGpuDraw,
   sealNativePbrGpuDraw,
 } from "./pbr-gpu-draw.ts";
+
+export { createNativeThreeQueuedFrameObservationV3 } from "./three-pbr-observation.ts";
+export type { NativeThreeFrameObservationResultV3 } from "./three-pbr-observation.ts";

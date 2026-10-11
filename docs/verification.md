@@ -156,3 +156,9 @@ registered in `pnpm test`, checks real editor persistence, native decoding, play
 and passage mux delivery against independent audio renders under that exception. The
 [CE16 evidence](./composition-ce16-verification-results.json) separates technical
 checks from unperformed listening, audiovisual QA and GUI inspection.
+
+`pnpm test:browser:native3d-pbr-observation` verifies the standalone strict source3
+frame receipt using actual multi-mesh/group GPU draws, independent camera/pose and
+attribute/mip validation, queued captures, corruption controls and scoped allocator
+cleanup. It is included in `pnpm test`. It does not certify source3 composition
+observations/exports, whole-world budgets, installed portability or human acceptance.

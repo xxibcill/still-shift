@@ -15351,6 +15351,35 @@
       },
       "detailRecord": "docs/mechanism-shorts-ms2-pbr-mip-results.json",
       "qualification": "Final source8 fast4170/406,10 owning Node cases, GPU18/10, world6/1, composition6/5/2/style and all six native2 groups pass. Broader7 runtime200/32 and integration322/57 stay separate before final sampler/storage assertions. Earlier typing/format failures retained; no current full/installed/observation/export claim."
+    },
+    {
+      "id": "pbr-observation-slice-23",
+      "status": "standalone-source3-observation-verified-regression-timeouts-composition-export-pending",
+      "actualRootSessions": [
+        {
+          "session": 79570,
+          "exitCode": 1
+        },
+        {
+          "session": 60647,
+          "exitCode": 1
+        },
+        {
+          "session": 75605,
+          "exitCode": 1
+        },
+        {
+          "session": 7214,
+          "exitCode": 0
+        }
+      ],
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-observation-inputs-10.json",
+        "bytes": 426984,
+        "sha256": "sha256:157b97172311a11212139c31bdeef877b2ac3b52db39689a750a33fa7dd9d851"
+      },
+      "record": "docs/mechanism-shorts-ms2-pbr-observation-results.json",
+      "qualification": "Staged checks; retain failed fast10 and owning11 timeouts separately. Independent browser groups and final held-source verification recorded with individual exit codes; orchestration exit0 alone is not an aggregate test pass. Source3 observation remains successful stage10. Repeated strict gradient timeout and three current Node package timeouts stay unresolved. No current uninterrupted fast, full runtime/integration/full or installed archive pass is claimed."
     }
   ],
   "implementation": {
@@ -16189,10 +16218,50 @@
         "Whole MS2 packs/generators/registry/events/labels/cues/typography/300-board/full/installed gates before its PR and MS3. SupportedPacks[] and pilotSupportedEpisodes0.",
         "Human visual/listening acceptance remains separate; no publication, milestone PR merge or production promotion."
       ]
+    },
+    "twentyThirdSlice": {
+      "status": "standalone-source3-observation-verified-regression-timeouts-composition-export-pending",
+      "scope": [
+        "Explicit strict native3d-observed-frame-3; original frame1/frame2/output2 parsers unchanged.",
+        "Owned actual color-draw mesh/material/group association and complete draw coverage, including independently verified hidden/outside-frustum allowances.",
+        "GPU Float32 attributes/index bytes, actual model/view/projection/normal uniforms and all used mip receipts; closed PBR material/shader profile and color/depth/discard-state controls.",
+        "Synchronously measured Three parts/camera/part-local anchors with physical occluders drawn from verified used meshes; immutable receipts and independently packed expected-source validation.",
+        "Scoped metadata/readback/shader/hash admission, cancellation/disposal/foreign-mesh/mutated-hook controls and zero retained observation reservations. World creation precedes this proof allocator."
+      ],
+      "counts": {
+        "unitTestsInAggregate": 4175,
+        "unitFilesInAggregate": 407,
+        "aggregateUnitPasses": 4173,
+        "aggregateUnitFailures": 2,
+        "strictOwningRerunTests": 14,
+        "strictOwningRerunPasses": 13,
+        "strictOwningRerunFailures": 1,
+        "owningNodeTests": 10,
+        "owningNodeFiles": 4,
+        "owningNodePasses": 7,
+        "owningNodeFailures": 3,
+        "source3Meshes": 2,
+        "source3GroupSubmissionsPerDrawnFrame": 3,
+        "source3CapturedFrames": 8,
+        "source3QueuedInvocations": 3,
+        "source3Faults": 21,
+        "source3CompositionExports": 0,
+        "newInstalledArchives": 0,
+        "supportedPacks": 0,
+        "pilotSupportedEpisodes": 0
+      },
+      "remaining": [
+        "Retained strict gradient-table-metadata five-second timeout remains unresolved after two current-source failures. Native mechanical owning rerun passes. Three strict mechanism-native-package timeouts also remain unresolved (rebasing, descriptor corruption, saved-camera refresh). Complete current unit and Node gates without changing acceptance limits.",
+        "Composition collector/output-frame3 capacity and authenticated request/sink/upload/journal/installed integration. Source3 composition observation and export still reject; no portable export success inferred.",
+        "Whole world/PMREM/source JSON/body/replay and aggregate multi-pass budgets. Component admission is not full process/driver RSS or whole-world acceptance.",
+        "Whole MS2 packs/generators/registry/events/labels/cues/typography/300-board/full and installed verification before its milestone PR and MS3.",
+        "Human visual/listening acceptance remains separate; no PR merge, publication, tag or production promotion."
+      ],
+      "records": ["docs/mechanism-shorts-ms2-pbr-observation-results.json"]
     }
   },
   "limits": [
-    "Twenty-two slices include source3 PBR composition preview and complete used-mip component derivation/actual storage/transfer checks. Formal source3 observations/export/installed, full world budgets and whole MS2 packs/generators/registry/events/labels/cues/typography/300-board/full gates remain. Supported packs/pilot0.",
+    "Twenty-three slices include source3 PBR composition preview, all used-mip components and standalone strict frame3 GPU/world/anchor observation with independent validation. Composition/output3 capacity, authenticated source3 export/installed, full world budgets and whole MS2 packs/generators/registry/events/labels/cues/typography/300-board/full gates remain. Current unit/Node timeout gates remain unresolved. Supported packs/pilot0.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

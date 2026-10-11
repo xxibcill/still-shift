@@ -45,16 +45,19 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Twenty-two slices include source3 composition preview and all used-mip component
-  storage/transfer/derivation. Final source8 fast4,170/406, owning Node10/4,
-  GPU18/10 faults, world6/1, composition6/5/2/style and all six native2 groups pass.
-  Broader7 runtime200/32 and integration322/57 remain separately scoped before
-  final sampler/storage checks; typing/format failures are retained.
-  Next: formal source3 observations/export/installed, complete world/metadata/source
-  budgets and owning packs/generators/registry/events/labels/cues/typography/300-board/
-  full gates. Supported packs/pilot0; no MS2 PR/MS3 or human acceptance.
+  Twenty-three slices include source3 preview, complete used mips and standalone
+  strict frame3 GPU/world/anchor observation with independent validation.
+  Fast10 passes through build; units 4,173 pass/2 timeouts. Strict owning11 rerun
+  13 pass/1 timeout resolves native mechanical; gradient metadata remains pending.
+  Node12 has 7 pass/3 package timeouts. Acceptance limits remain unchanged.
+  Observation10 passes 8 frames/3 queued/21 faults with zero observation owners;
+  browser13 resource/world/composition and all six native2 groups pass.
+  Next: strict unit/Node gates, composition collector/output3 capacity, authenticated
+  source3 export/installed, whole world/source budgets and remaining MS2 criteria.
+  Supported packs/pilot0; no MS2 PR/MS3 or human acceptance. Failed runs are retained;
+  broader runtime/integration remain historical slice22 records.
   [MS2 results](./mechanism-shorts-ms2-results.json),
-  [mip results](./mechanism-shorts-ms2-pbr-mip-results.json),
+  [observation results](./mechanism-shorts-ms2-pbr-observation-results.json),
   [PBR API](./native-pbr-resources.md), [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
@@ -213,6 +216,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 standalone source3 observed frames and chat handoff
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `71a067c8`.
+- **Done:** strict frame3 DTO, owned GPU draw/matrix/byte/mip evidence, closed PBR
+  material profile, synchronous world/anchors and independently validated queued receipts.
+- **Results:** observation10 passes 8 frames/3 queued/21 faults; browser13 passes
+  resource/world/composition and six native2 groups. Held source inputs match.
+- **Retained:** fast10 has 4,173 passes/2 strict timeouts; owning11 has 13 passes/1
+  timeout, resolving native mechanical. Gradient and three Node12 package timeouts
+  remain unresolved. Earlier type/recorder/harness/lint failures remain recorded.
+- **Next / handoff:** continue the same Goal in a fresh chat: resolve strict gates,
+  implement composition/output3, authenticated export/installed and remaining MS2
+  criteria before its PR, then MS3. Supported packs/pilot0; no human acceptance.
+- **Records:** [observation evidence](./mechanism-shorts-ms2-pbr-observation-results.json),
+  [API](./native-pbr-resources.md), [MS2 results](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-11 — MS2 complete used-mip component validation
 

@@ -12,3 +12,5 @@ export * from "./pbr-geometry.ts";
 export * from "./scene-v3.ts";
 
 export * from "./frame-v3.ts";
+
+export * from "./observation-v3.ts";

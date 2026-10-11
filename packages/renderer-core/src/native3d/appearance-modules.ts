@@ -893,12 +893,20 @@ export const native3DAppearanceModules: readonly {
     url: new URL("./observations.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/native3d/observed-precision-v2.ts",
+    url: new URL("./observed-precision-v2.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/native3d/override-keys.ts",
     url: new URL("./override-keys.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/native3d/pbr-allocations.ts",
     url: new URL("./pbr-allocations.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/pbr-frame-matrices.ts",
+    url: new URL("./pbr-frame-matrices.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/native3d/pbr-gpu-draw.ts",
@@ -963,6 +971,22 @@ export const native3DAppearanceModules: readonly {
   {
     name: "renderer-core/src/native3d/three-observation.ts",
     url: new URL("./three-observation.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/three-pbr-draws.ts",
+    url: new URL("./three-pbr-draws.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/three-pbr-frame-state.ts",
+    url: new URL("./three-pbr-frame-state.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/three-pbr-material.ts",
+    url: new URL("./three-pbr-material.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/three-pbr-observation.ts",
+    url: new URL("./three-pbr-observation.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/native3d/three-shape-draws.ts",
@@ -1787,6 +1811,13 @@ export const native3DAppearanceModules: readonly {
     name: "scene-contract/src/native3d/observation-v2.ts",
     url: new URL(
       "../../../scene-contract/src/native3d/observation-v2.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/native3d/observation-v3.ts",
+    url: new URL(
+      "../../../scene-contract/src/native3d/observation-v3.ts",
       import.meta.url,
     ),
   },

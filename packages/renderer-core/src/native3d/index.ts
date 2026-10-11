@@ -20,3 +20,5 @@ export * from "./types-v3.ts";
 export * from "./prepare-v3.ts";
 
 export * from "./evaluate-v3.ts";
+
+export * from "./observed-validation-v3.ts";
