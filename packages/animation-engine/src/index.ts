@@ -103,3 +103,5 @@ export {
   RIGID_GLTF_LIMITS,
 } from "./mechanism/gltf-document.ts";
 export * from "./mechanism/gltf-pbr.ts";
+
+export * from "./mechanism/native-pbr-files.ts";

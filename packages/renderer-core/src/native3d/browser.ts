@@ -2,6 +2,7 @@
 export {
   createNativeThreeWorld,
   createNativeThreeWorldV2,
+  createNativeThreeWorldV3,
   createNativeThreeGeometry,
 } from "./three-world.ts";
 export { createNativeDepthRuntime } from "../composition/render/webgl-native-depth.ts";
@@ -34,6 +35,7 @@ export { NATIVE_DEPTH_RENDERER_VERSION } from "./resolve.ts";
 export type {
   NativeThreeWorld,
   NativeThreeWorldV2,
+  NativeThreeWorldV3,
   NativeThreeGeometry,
 } from "./three-world.ts";
 export {

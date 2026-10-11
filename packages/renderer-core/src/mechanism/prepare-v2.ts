@@ -1,6 +1,7 @@
 import {
   MechanismSceneV2Schema,
   MECHANISM_TEACHING_SHAPE_LIMITS,
+  type MechanismKinematicSceneV2,
 } from "@still-shift/scene-contract";
 import { matrixFromTransform } from "./matrix.ts";
 import { prepareTeachingShape } from "./teaching-shapes.ts";
@@ -11,6 +12,15 @@ export function prepareMechanismSceneV2(
   input: unknown,
 ): PreparedMechanismSceneV2 {
   const scene = MechanismSceneV2Schema.parse(input);
+  return freezeDeep({
+    version: "prepared-mechanism-scene-2" as const,
+    ...prepareMechanismPoseV2(scene),
+  });
+}
+/** Shared validated pose preparation; no material projection or fallback source parsing. */
+export function prepareMechanismPoseV2<S extends MechanismKinematicSceneV2>(
+  scene: S,
+) {
   const channels =
     scene.rigs.filter((rig) => rig.type !== "spring-return").length +
     scene.teachingShapes.filter(
@@ -52,7 +62,6 @@ export function prepareMechanismSceneV2(
   }
   for (const part of scene.parts) visit(part.id);
   return freezeDeep({
-    version: "prepared-mechanism-scene-2" as const,
     scene,
     orderedPartIds,
     partsById: Object.fromEntries(parts),

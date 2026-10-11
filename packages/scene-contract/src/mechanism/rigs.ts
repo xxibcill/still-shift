@@ -103,73 +103,85 @@ const ratchetRig = z
   })
   .strict();
 
-export const MechanismRigV2Schema = z
-  .discriminatedUnion("type", [sliderRig, hingeRig, returnRig, ratchetRig])
-  .superRefine((rig, context) => {
-    if (rig.type === "spring-return") {
-      if (rig.targetRig === rig.id)
-        mechanismIssue(
-          context,
-          "mechanism-rig-cycle",
-          "Return cannot drive itself",
-          ["targetRig"],
-        );
-      return;
-    }
-    if (rig.movingPart === rig.referencePart)
+const mechanismRigFieldsV2 = z.discriminatedUnion("type", [
+  sliderRig,
+  hingeRig,
+  returnRig,
+  ratchetRig,
+]);
+function validateMechanismRigV2(
+  rig: z.infer<typeof mechanismRigFieldsV2>,
+  context: z.RefinementCtx,
+) {
+  if (rig.type === "spring-return") {
+    if (rig.targetRig === rig.id)
       mechanismIssue(
         context,
-        "mechanism-rig-reference",
-        "Moving and reference parts must differ",
-        ["referencePart"],
+        "mechanism-rig-cycle",
+        "Return cannot drive itself",
+        ["targetRig"],
       );
-    const range = rig.type === "hinge" ? rig.angleRange : rig.range;
-    const path = rig.type === "hinge" ? "angleRange" : "range";
-    if (range[1] <= range[0])
+    return;
+  }
+  if (rig.movingPart === rig.referencePart)
+    mechanismIssue(
+      context,
+      "mechanism-rig-reference",
+      "Moving and reference parts must differ",
+      ["referencePart"],
+    );
+  const range = rig.type === "hinge" ? rig.angleRange : rig.range;
+  const path = rig.type === "hinge" ? "angleRange" : "range";
+  if (range[1] <= range[0])
+    mechanismIssue(
+      context,
+      "mechanism-rig-range",
+      "Rig range must be ordered and nonempty",
+      [path],
+    );
+  const neutral =
+    rig.type === "hinge"
+      ? rig.neutralAngle
+      : rig.type === "slider"
+        ? rig.neutral
+        : range[0] + rig.neutralTooth * rig.pitch;
+  if (neutral < range[0] || neutral > range[1])
+    mechanismIssue(
+      context,
+      "mechanism-rig-range",
+      "Neutral pose lies outside rig limits",
+      [
+        rig.type === "hinge"
+          ? "neutralAngle"
+          : rig.type === "slider"
+            ? "neutral"
+            : "neutralTooth",
+      ],
+    );
+  if (rig.type === "ratchet") {
+    if (rig.neutralTooth >= rig.toothCount)
       mechanismIssue(
         context,
-        "mechanism-rig-range",
-        "Rig range must be ordered and nonempty",
-        [path],
+        "mechanism-ratchet-tooth",
+        "Neutral tooth lies outside the declared inventory",
+        ["neutralTooth"],
       );
-    const neutral =
-      rig.type === "hinge"
-        ? rig.neutralAngle
-        : rig.type === "slider"
-          ? rig.neutral
-          : range[0] + rig.neutralTooth * rig.pitch;
-    if (neutral < range[0] || neutral > range[1])
+    if (Math.abs(range[1] - range[0] - (rig.toothCount - 1) * rig.pitch) > 1e-8)
       mechanismIssue(
         context,
-        "mechanism-rig-range",
-        "Neutral pose lies outside rig limits",
-        [
-          rig.type === "hinge"
-            ? "neutralAngle"
-            : rig.type === "slider"
-              ? "neutral"
-              : "neutralTooth",
-        ],
+        "mechanism-ratchet-pitch",
+        "Travel must equal the declared tooth intervals times pitch",
+        ["range"],
       );
-    if (rig.type === "ratchet") {
-      if (rig.neutralTooth >= rig.toothCount)
-        mechanismIssue(
-          context,
-          "mechanism-ratchet-tooth",
-          "Neutral tooth lies outside the declared inventory",
-          ["neutralTooth"],
-        );
-      if (
-        Math.abs(range[1] - range[0] - (rig.toothCount - 1) * rig.pitch) > 1e-8
-      )
-        mechanismIssue(
-          context,
-          "mechanism-ratchet-pitch",
-          "Travel must equal the declared tooth intervals times pitch",
-          ["range"],
-        );
-    }
-  });
+  }
+}
+export const MechanismRigV2Schema = mechanismRigFieldsV2.superRefine(
+  validateMechanismRigV2,
+);
+/** Rigid-only subset with the same limits, neutral-state and reference checks. */
+export const MechanismRigidRigV2Schema = z
+  .discriminatedUnion("type", [sliderRig, hingeRig, returnRig])
+  .superRefine(validateMechanismRigV2);
 
 const scalarFields = {
   value: MechanismNumberSchema.optional(),

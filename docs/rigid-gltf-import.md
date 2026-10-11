@@ -7,10 +7,12 @@ bases, PBR texture roles, encoded images and exact dependency identities.
 
 The IR is **not yet a renderable native composition source**. The new
 `prepareRigidGltfPbr` stage decodes and hashes PNG/JPEG pixels and prepares explicit
-`solid-geometry-2` material/tangent resources. The browser owner consumes those
-resources with actual GPU component proof. Composition admission, binary handoff,
-mip-data proof and imported-model preview/export remain MS2 work; the owning
-acceptance criterion stays unchecked. See [PBR resource preparation](./native-pbr-resources.md).
+`solid-geometry-2` material/tangent resources. Standalone rigid `mechanism-scene-3`
+preparation now verifies separate RGBA files and drives imported parts through
+existing rigs in the shared native Three world, with actual GPU resource and
+camera/pose proof. Composition admission, worker/HTTP binary handoff, mip-data
+proof and imported-model preview/export remain MS2 work; the owning acceptance
+criterion stays unchecked. See [PBR resource preparation](./native-pbr-resources.md).
 
 ```ts
 import {

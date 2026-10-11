@@ -32,11 +32,11 @@ import { sampleMechanismCameraV2 } from "./camera-v2.ts";
 import { projectMechanismAnchor } from "./projection.ts";
 import { dot, scale, subtract } from "./shape-math.ts";
 import { MechanismEvaluationErrorV2 } from "./types-v2.ts";
-import type { PreparedMechanismSceneV2 } from "./types-v2.ts";
+import type { PreparedMechanismPoseV2 } from "./types-v2.ts";
 import type { DeepReadonly } from "./types.ts";
 
 export function evaluateMechanismFrameV2(
-  prepared: PreparedMechanismSceneV2,
+  prepared: PreparedMechanismPoseV2,
   input: MechanismFrameRequestV2,
 ): MechanismFrameResultV2 {
   const request = MechanismFrameRequestV2Schema.parse(input);
@@ -111,7 +111,7 @@ export function evaluateMechanismFrameV2(
 }
 
 function evaluateParts(
-  prepared: PreparedMechanismSceneV2,
+  prepared: PreparedMechanismPoseV2,
   rigs: Readonly<Record<string, MechanismRigFrameV2>>,
   hidden: readonly string[],
 ) {
@@ -176,7 +176,7 @@ function outsideRange(value: number, range: readonly [number, number]) {
 }
 function evaluateRelationship(
   relationship: DeepReadonly<MechanismRelationshipV2>,
-  prepared: PreparedMechanismSceneV2,
+  prepared: PreparedMechanismPoseV2,
   parts: Readonly<Record<string, MechanismPartFrame>>,
   anchors: Readonly<Record<string, MechanismProjectedAnchorV2>>,
   rigs: Readonly<Record<string, MechanismRigFrameV2>>,

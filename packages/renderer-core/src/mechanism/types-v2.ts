@@ -3,6 +3,7 @@ import type { PreparedTeachingShape } from "./teaching-shapes.ts";
 import type {
   MechanismRigControlsV2,
   MechanismSceneV2,
+  MechanismKinematicSceneV2,
 } from "@still-shift/scene-contract";
 import { MechanismEvaluationError } from "./types.ts";
 import type { DeepReadonly, MechanismEvaluationLocation } from "./types.ts";
@@ -29,9 +30,8 @@ export interface PreparedMechanismRigTracksV2 {
   readonly controls: DeepReadonly<MechanismRigControlsV2>;
 }
 
-export interface PreparedMechanismSceneV2 {
-  readonly version: "prepared-mechanism-scene-2";
-  readonly scene: DeepReadonly<MechanismSceneV2>;
+export interface PreparedMechanismPoseV2 {
+  readonly scene: DeepReadonly<MechanismKinematicSceneV2>;
   readonly orderedPartIds: readonly string[];
   readonly partsById: Readonly<
     Record<string, DeepReadonly<MechanismSceneV2["parts"][number]>>
@@ -46,4 +46,9 @@ export interface PreparedMechanismSceneV2 {
   >;
   readonly baseLocalMatrices: Readonly<Record<string, MechanismMatrix>>;
   readonly teachingShapes: Readonly<Record<string, PreparedTeachingShape>>;
+}
+
+export interface PreparedMechanismSceneV2 extends PreparedMechanismPoseV2 {
+  readonly version: "prepared-mechanism-scene-2";
+  readonly scene: DeepReadonly<MechanismSceneV2>;
 }

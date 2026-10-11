@@ -15,3 +15,6 @@ export * from "./observed-validation-v2.ts";
 export * from "./observed-precision-v2.ts";
 
 export { preflightNativePbrResources } from "./pbr-allocations.ts";
+
+export * from "./types-v3.ts";
+export * from "./prepare-v3.ts";

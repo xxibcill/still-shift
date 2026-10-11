@@ -164,6 +164,11 @@ const sceneFieldsSchema = z
   .strict();
 
 export type MechanismSceneV2Fields = z.infer<typeof sceneFieldsSchema>;
+/** Geometry-independent kinematics shared by explicit native resource protocols. */
+export type MechanismKinematicSceneV2 = Omit<
+  MechanismSceneV2Fields,
+  "schemaVersion" | "geometry"
+> & { geometry: Pick<MechanismSceneV2Fields["geometry"], "meshes"> };
 export const MechanismSceneV2Schema = sceneFieldsSchema.superRefine(
   validateMechanismSceneV2,
 );

@@ -45,19 +45,19 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Nineteen slices include native2 candidates/cameras, rigid glTF IR and a decoded
-  PBR/tangent resource component. Final source12 fast 4,150/404, eight affected
-  runtime tests and actual GPU component3 frames/4 faults pass. Source10 broad
-  runtime190/29, integration321/56, Python14, smoke and all six existing native2
-  groups pass; final Node-only guards are verified separately. Expected reds,
-  build/lint/browser failures and one lost browser terminal receipt are retained.
-  Next: composition source/binary admission and mip-data/imported preview/export
-  proof, complete generator/registry/world preflight, events/labels/cues/typography,
-  300-board and full/installed gates. Candidates3, supported packs/pilot0; no MS2
-  PR/MS3 or human acceptance.
+  Twenty slices now include standalone rigid PBR source3, canonical binary reads,
+  shared generic pose evaluation and imported hinge execution in the shared Three
+  world. Final source13 fast4,165/405, world6/1 fault and21 affected Node tests pass.
+  Source11 PBR component3/4 and all six native2 groups retain identical production
+  and owning-test inputs. Broader source10 runtime195/30, integration321/56,
+  Python14, smoke and family8/camera12 exports remain separate. Reds/failures and
+  lost source5 terminal receipt are retained.
+  Next: composition source/binary/frame3/mip/preview/export admission and complete
+  generator/registry/world/events/labels/cues/typography/300-board/full/installed
+  gates. Candidates3, supported packs/pilot0; no MS2 PR/MS3 or human acceptance.
   [MS2 results](./mechanism-shorts-ms2-results.json),
-  [PBR resources](./native-pbr-resources.md), [import API](./rigid-gltf-import.md),
-  [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
+  [source3 proof](./mechanism-shorts-ms2-pbr-world-results.json),
+  [PBR API](./native-pbr-resources.md), [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
   inventory15:2,329 inputs/117,503,155B. Original full6 retains a qualified19-group
@@ -215,6 +215,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 rigid PBR source3 in the shared native world
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `2056656a`.
+- **Done:** explicit source3/schema, separate bounded hashed RGBA files, reused
+  slider/hinge/return kinematics and shared-world PBR ownership; no material projection.
+- **Results:** final source13 fast4,165/405, world6/1 pose fault, PBR component3/4,
+  all six native2 groups on unchanged production inputs11, and 21 current affected
+  Node runtime tests pass. Reverse part metadata is an added positive control. Actual GPU camera/pose matrices
+  are retained. Source10 full runtime/family8/camera12 exports are separate preceding evidence.
+- **Retained:** expected reds, schema/wrapper/profile/path/harness failures, wrong
+  pnpm command and unavailable source5 root terminal; no uninterrupted-pass claim.
+- **Next:** source3 composition/binary/frame3/mip/preview/export admission and owning
+  authoring/registry/world/label/event/cue/typography/coverage/full/installed gates.
+  Supported packs/pilot0; no MS2 PR/MS3 or human appearance/listening acceptance.
+- **Records:** [source3 evidence](./mechanism-shorts-ms2-pbr-world-results.json),
+  [API](./native-pbr-resources.md), [MS2 results](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-11 — MS2 native PBR resource component
 

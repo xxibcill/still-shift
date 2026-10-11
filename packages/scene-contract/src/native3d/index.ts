@@ -8,3 +8,5 @@ export * from "./shape-observation.ts";
 export * from "./observation-v2.ts";
 export * from "./appearance.ts";
 export * from "./pbr-geometry.ts";
+
+export * from "./scene-v3.ts";

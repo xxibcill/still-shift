@@ -22,11 +22,18 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import type {
   Native3DSource,
   Native3DSourceVersions,
+  MechanismSceneV3,
   MechanismFrameResultV2,
   NativeSceneFrame,
 } from "@still-shift/scene-contract";
 import type { DeepReadonly } from "./types.ts";
 import type { PreparedNative3DVariantV2 } from "./types-v2.ts";
+import { createNativePbrResources } from "./pbr-resources.ts";
+import type {
+  NativePbrResources,
+  PreparedNativePbrResources,
+} from "./pbr-resources.ts";
+import type { PreparedNative3DSceneV3 } from "./types-v3.ts";
 import { createNativeThreeShapeOwners } from "./three-shapes.ts";
 import { createNativeThreeMaterials } from "./three-materials.ts";
 import type { NativeTextureFont } from "./three-textures.ts";
@@ -81,7 +88,7 @@ export type NativeThreeGeometry = ReturnType<typeof createNativeThreeGeometry>;
 /** Bind the actual uploaded typed attributes to the prepared physical catalogue once.
  * Float64 authored positions are explicitly quantized to GPU Float32 here. */
 export function verifyNativeThreeGeometry(
-  source: DeepReadonly<Native3DSourceVersions>,
+  source: DeepReadonly<Native3DSourceVersions | MechanismSceneV3>,
   geometry: NativeThreeGeometry,
 ): void {
   for (const definition of source.geometry.meshes) {
@@ -94,6 +101,7 @@ export function verifyNativeThreeGeometry(
       ["position", definition.positions],
       ["normal", definition.normals],
       ["uv", definition.uvs],
+      ["tangent", "tangents" in definition ? definition.tangents : undefined],
     ] as const) {
       if (!expected) continue;
       const attribute = actual.getAttribute(name);
@@ -123,10 +131,11 @@ export function verifyNativeThreeGeometry(
 /** Synchronous: the caller has already prepared the exact source and font. */
 function createNativeThreeWorldForSource(
   renderer: WebGLRenderer,
-  source: DeepReadonly<Native3DSourceVersions>,
+  source: DeepReadonly<Native3DSourceVersions | MechanismSceneV3>,
   options: {
     textureFont?: NativeTextureFont;
     geometry?: NativeThreeGeometry;
+    pbrResources?: NativePbrResources;
   } = {},
 ) {
   renderer.setClearColor(
@@ -161,9 +170,15 @@ function createNativeThreeWorldForSource(
   world.environmentIntensity = source.profile.environmentIntensity;
   world.add(new HemisphereLight("#e8f6ff", "#63716e", 1.15));
   const lights: (SpotLight | DirectionalLight)[] = [];
-  let materialSet: ReturnType<typeof createNativeThreeMaterials> | undefined;
+  let materialSet:
+    | Pick<
+        ReturnType<typeof createNativeThreeMaterials>,
+        "materials" | "dispose"
+      >
+    | undefined;
   let geometry: NativeThreeGeometry | undefined;
-  const ownsGeometry = options.geometry === undefined;
+  const ownsGeometry =
+    options.geometry === undefined && options.pbrResources === undefined;
   try {
     for (const definition of source.lights) {
       const light =
@@ -197,7 +212,14 @@ function createNativeThreeWorldForSource(
       world.add(light, light.target);
     }
     const camera = new PerspectiveCamera();
-    materialSet = createNativeThreeMaterials(source, options.textureFont);
+    if (source.schemaVersion === "mechanism-scene-3") {
+      if (!options.pbrResources)
+        throw Error(
+          "comp-native3d-not-ready: source3 requires owned PBR resources",
+        );
+      materialSet = options.pbrResources;
+    } else
+      materialSet = createNativeThreeMaterials(source, options.textureFont);
     const materialIndex = new Map(
       source.geometry.materials.map((material, index) => [material.id, index]),
     );
@@ -208,7 +230,9 @@ function createNativeThreeWorldForSource(
       part.matrixAutoUpdate = false;
       (definition.parent ? parts.get(definition.parent)! : world).add(part);
     }
-    geometry = options.geometry ?? createNativeThreeGeometry(source);
+    if (source.schemaVersion === "mechanism-scene-3")
+      geometry = options.pbrResources!;
+    else geometry = options.geometry ?? createNativeThreeGeometry(source);
     verifyNativeThreeGeometry(source, geometry);
     const meshes: Mesh[] = [];
     for (const definition of source.geometry.meshes) {
@@ -362,3 +386,29 @@ export function createNativeThreeWorldV2(
 }
 export type NativeThreeWorld = ReturnType<typeof createNativeThreeWorld>;
 export type NativeThreeWorldV2 = ReturnType<typeof createNativeThreeWorldV2>;
+
+/** Uses the shared world/profile/light/camera path with explicit owned PBR resources. */
+export function createNativeThreeWorldV3(
+  renderer: WebGLRenderer,
+  prepared: PreparedNative3DSceneV3,
+  resources: PreparedNativePbrResources,
+) {
+  if (resources.geometrySha256 !== prepared.geometrySha256)
+    throw Error(
+      "comp-native3d-checksum: PBR resources differ from the prepared source3",
+    );
+  const pbrResources = createNativePbrResources(resources);
+  try {
+    return {
+      ...createNativeThreeWorldForSource(renderer, prepared.source, {
+        pbrResources,
+      }),
+      source: prepared.source,
+      pbrResources,
+    };
+  } catch (error) {
+    pbrResources.dispose();
+    throw error;
+  }
+}
+export type NativeThreeWorldV3 = ReturnType<typeof createNativeThreeWorldV3>;

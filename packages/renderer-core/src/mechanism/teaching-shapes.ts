@@ -10,7 +10,7 @@ import type {
   MechanismMesh,
   MechanismPartFrame,
   MechanismRigFrameV2,
-  MechanismSceneV2,
+  MechanismKinematicSceneV2,
   MechanismShapeFrame,
   MechanismTeachingShape,
 } from "@still-shift/scene-contract";
@@ -34,7 +34,7 @@ import { sampleFixedRootPawl } from "./teaching-pawl.ts";
 import { sampleSeatedTorsionSpring } from "./teaching-spring.ts";
 
 type Shape = DeepReadonly<MechanismTeachingShape>;
-type Scene = DeepReadonly<MechanismSceneV2>;
+type Scene = DeepReadonly<MechanismKinematicSceneV2>;
 const inputsSchema = z.discriminatedUnion("generator", [
   z
     .object({

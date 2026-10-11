@@ -15257,6 +15257,53 @@
         "bytes": 12563,
         "sha256": "sha256:476ec8de5c6b38ddcbd2029afac3038eb1e88f5aaedf3b037271d7b29b8f23df"
       }
+    },
+    {
+      "id": "native-pbr-world-foundation-13",
+      "status": "passed-current-scoped-with-retained-broader10",
+      "sourceCheckpoint": "2056656a3df7617022f90045532bef941a602ab3",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-world-inputs-13.json",
+        "bytes": 422846,
+        "sha256": "sha256:16f7ee16388dca223e51bb56d7af7bc4833d50f431384ab5d3fd645a6800d8a4",
+        "files": 2479,
+        "inputBytes": 118855331,
+        "sourceCommit": "2056656a3df7617022f90045532bef941a602ab3"
+      },
+      "stageRecord": "docs/mechanism-shorts-ms2-pbr-world-results.json",
+      "actualRootSession": 80264,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "ad293c",
+      "counts": {
+        "unitTests": 4165,
+        "unitFiles": 405,
+        "worldFrames": 6,
+        "worldPoseFaults": 1,
+        "pbrComponentFrames": 3,
+        "pbrComponentFaults": 4,
+        "native2Groups": 6,
+        "affectedNodeSummaries": [
+          "Test Files  3 passed (3)",
+          "Tests  21 passed (21)"
+        ],
+        "broaderRuntime10Summaries": [
+          "Test Files  30 passed (30)",
+          "Tests  195 passed (195)",
+          "Test Files  56 passed (56)",
+          "Tests  321 passed (321)"
+        ],
+        "broaderFamily10Exports": 8,
+        "broaderCamera10Exports": 12,
+        "nativePbrCompositionExports": 0,
+        "newInstalledArchives": 0
+      },
+      "qualification": [
+        "Standalone source3/shared-world API only; existing composition versions1/2 remain strict. Source3 composition asset/worker/HTTP binary admission, frame3 observation, graph preview/export and installed proof remain pending.",
+        "GPU proof is a single imported diagnostic lever/color draw with independent camera/pose matrices and PBR mip0 bytes/transfer. It does not certify complete imported mechanisms, other draw association, mip pixel values or human appearance.",
+        "Component64MiB payload bill excludes whole-world/PMREM/metadata/packet/replay accounting and caller/scratch/RSS; existing budgets/tolerances unchanged.",
+        "Source13 differs from source11 only in the source3 browser driver and unit tests. Source11 PBR-component and all six native2 proofs retain unchanged production/owning-test inputs. Source13 current checks are distinct from snapshot10 full runtime/family/camera checks. Their input/producer records remain retained; they were not rerun after the final source13 schema/file/harness refinements.",
+        "Supported packs remain empty and pilotSupportedEpisodes0. Whole MS2 generator/registry/event/label/cue/typography/300-board and full/installed gates remain before its PR and MS3."
+      ]
     }
   ],
   "implementation": {
@@ -15946,10 +15993,50 @@
         "Three existing mechanism candidates remain candidates. supportedPacks stays empty; pilotSupportedEpisodes stays0. Human visual/listening/hardware/material acceptance, owning full MS2 gate and PR/MS3 remain pending."
       ],
       "remaining": "Implement explicit composition source/transport/observation admission with binary resources and mip-data proof, then complete owning MS2 generator/registry/world preflight, events/labels/cues/typography/300-board and full/installed gates before its milestone PR and MS3."
+    },
+    "twentiethSlice": {
+      "status": "standalone-source3-shared-world-foundation",
+      "scope": [
+        "Explicit rigid PBR source3, separate hashed RGBA references and generated schema.",
+        "Shared slider/hinge/spring-return pose preparation without legacy material projection.",
+        "Canonical bounded resource loader, no-follow/nonblocking regular-file guard and cancellation.",
+        "Shared native Three world with owned PBR resources; independent submitted GPU camera/pose matrices and retained mip0 draw receipts."
+      ],
+      "counts": {
+        "unitTests": 4165,
+        "unitFiles": 405,
+        "worldFrames": 6,
+        "worldPoseFaults": 1,
+        "pbrComponentFrames": 3,
+        "pbrComponentFaults": 4,
+        "native2Groups": 6,
+        "affectedNodeSummaries": [
+          "Test Files  3 passed (3)",
+          "Tests  21 passed (21)"
+        ],
+        "broaderRuntime10Summaries": [
+          "Test Files  30 passed (30)",
+          "Tests  195 passed (195)",
+          "Test Files  56 passed (56)",
+          "Tests  321 passed (321)"
+        ],
+        "broaderFamily10Exports": 8,
+        "broaderCamera10Exports": 12,
+        "nativePbrCompositionExports": 0,
+        "newInstalledArchives": 0
+      },
+      "records": ["docs/mechanism-shorts-ms2-pbr-world-results.json"],
+      "remaining": [
+        "Standalone source3/shared-world API only; existing composition versions1/2 remain strict. Source3 composition asset/worker/HTTP binary admission, frame3 observation, graph preview/export and installed proof remain pending.",
+        "GPU proof is a single imported diagnostic lever/color draw with independent camera/pose matrices and PBR mip0 bytes/transfer. It does not certify complete imported mechanisms, other draw association, mip pixel values or human appearance.",
+        "Component64MiB payload bill excludes whole-world/PMREM/metadata/packet/replay accounting and caller/scratch/RSS; existing budgets/tolerances unchanged.",
+        "Source13 differs from source11 only in the source3 browser driver and unit tests. Source11 PBR-component and all six native2 proofs retain unchanged production/owning-test inputs. Source13 current checks are distinct from snapshot10 full runtime/family/camera checks. Their input/producer records remain retained; they were not rerun after the final source13 schema/file/harness refinements.",
+        "Supported packs remain empty and pilotSupportedEpisodes0. Whole MS2 generator/registry/event/label/cue/typography/300-board and full/installed gates remain before its PR and MS3."
+      ]
     }
   },
   "limits": [
-    "Nineteen MS2 slices now include named rigid glTF IR and a separately verified decoded native PBR resource component. Three native2 pack candidates and their scoped camera/family evidence remain retained; supported packs/pilot0. Complete imported-source composition/binary transport/mip proof, generator/registry/world preflight, labels/cues/typography/300-board/full/installed acceptance remain. Existing replay quotas and human acceptance remain separate.",
+    "Twenty MS2 slices include a standalone rigid PBR source3 with verified binary files and imported hinge execution through the shared world. Three native2 candidates remain candidates; supported packs/pilot0. Complete composition/binary/frame3/mip/preview/export admission and owning MS2 authoring/registry/world/event/label/cue/typography/300-board/full/installed gates remain.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

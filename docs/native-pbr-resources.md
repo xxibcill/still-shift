@@ -3,8 +3,9 @@
 MS2 provides a bounded resource component for imported rigid glTF geometry. It
 uses `solid-geometry-2` and `native-pbr-material-1`, with separate encoded-source
 and decoded-pixel identities. Existing native source1/source2 parsers remain
-strict. This component is not yet a renderable composition source; source/binary
-admission, shared graph preview/export and mip-data proof remain pending.
+strict. Explicit rigid source3 preparation and shared-world execution now consume
+this component. Composition binary admission, shared graph preview/export and
+mip-data proof remain pending.
 
 ## Node preparation
 
@@ -121,3 +122,76 @@ values, whole-frame camera/world graphics, composition observations, complete
 imported mechanisms, exports, installation or human appearance acceptance.
 The owning [MS2 importer criterion](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring)
 remains unchecked until those integration requirements are complete.
+
+## Explicit rigid source3 and shared world
+
+`MechanismSceneV3Schema` adds `mechanism-scene-3` for rigid PBR geometry. Its
+`solid-geometry-2` meshes retain imported parts, UVs, supplied tangents and linear
+PBR factors. Named anchors and the existing slider, hinge and spring-return
+kinematics use the imported part frames; embedded glTF animation does not become
+rig behavior. Changing teaching shapes and the deforming ratchet/pawl route are
+excluded. Source1/source2 parsers, materials and shape paths remain compatible.
+The generated [source3 field schema](./schemas/mechanism/scene-3.schema.json)
+accompanies authoritative semantic validation in the Zod contract.
+
+Each image has exactly one `resources` reference with image ID, local relative
+path, exact RGBA byte count and SHA-256 matching its pixel manifest. Pixels remain
+outside the source JSON. `loadNativePbrSourceResources(input, sourceDirectory,
+{ signal })` parses the contract, verifies canonical geometry and preflights the
+counted component payload before opening resources. It resolves a canonical local
+root, rejects escapes/URI/traversal paths, requires regular exact-sized files,
+uses no-follow/nonblocking opens and bounded reads, rechecks file state and hashes bytes.
+Failures identify the resource field; cancellation retains the caller's reason.
+The returned `paths` identify actual local dependencies for future integration.
+
+`prepareNative3DSceneV3(input, sourceSha256)` produces immutable source/pose
+preparation and a `native3d-source-3` identity binding verified raw source bytes
+and the canonical parsed scene. The caller must hash/verify the raw source file;
+this function cannot reconstruct original JSON bytes from a parsed object.
+`prepareNativePbrResources` accepts its readonly geometry with separate verified
+pixel inputs. `createNativeThreeWorldV3(renderer, preparedSource, preparedPixels)`
+requires matching geometry identities and owns the created PBR resources. It uses
+the existing shared hierarchy, camera, lights, environment and output profile.
+Part arrays may list children before parents: groups are created before parent
+links are attached. Disposal releases both world and resource ownership and is idempotent.
+
+```ts
+import {
+  prepareNative3DSceneV3,
+  evaluateMechanismFrameV2,
+} from "@still-shift/renderer-core";
+import {
+  prepareNativePbrResources,
+  createNativeThreeWorldV3,
+} from "@still-shift/renderer-core/native3d-browser";
+
+const source = await prepareNative3DSceneV3(sourceMetadata, rawSourceSha256);
+const pixels = await prepareNativePbrResources(
+  source.source.geometry,
+  pixelInputs,
+);
+const world = createNativeThreeWorldV3(renderer, source, pixels);
+try {
+  const frame = evaluateMechanismFrameV2(source.evaluation, frameRequest);
+  world.applyFrame(frame, width, height);
+  renderer.render(world.world, world.camera);
+} finally {
+  world.dispose();
+}
+```
+
+Run `pnpm test:browser:native3d-pbr-world` serially with other browser groups.
+The pinned imported lever fixture uses child-before-parent source metadata and
+performs neutral, midpoint, rotated, repeated,
+reverse and restored captures. It compares actual GPU model-view/projection
+uniforms against independent camera/pose math, checks the PBR draw resources and
+rejects a seeded incorrect world pose. Literal pivot/anchor references and repeated
+pixel hashes constrain this diagnostic. It is not a human appearance review.
+Detailed staged receipts are in [source3 world results](./mechanism-shorts-ms2-pbr-world-results.json).
+
+Source3 remains a standalone preparation/world API. Composition asset admission,
+worker/HTTP binary transport, frame3 observation, shared graph preview/export,
+mip pixel validation and complete world/PMREM accounting are pending. The tiny
+fixture's browser numeric-array handoff is test-only. It does not permit image
+arrays in production JSON packets or relax existing packet/replay budgets. The
+whole importer acceptance criterion stays unchecked.

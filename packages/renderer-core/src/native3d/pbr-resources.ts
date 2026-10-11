@@ -69,7 +69,7 @@ export async function nativePbrBytesHash(bytes: Uint8Array): Promise<string> {
 }
 /** Copy and hash every decoded input before any Three resource exists. Binary pixels stay outside metadata transport. */
 export async function prepareNativePbrResources(
-  input: SolidGeometryV2,
+  input: DeepReadonly<SolidGeometryV2>,
   pixelInputs: readonly NativePbrPixelInput[],
 ): Promise<PreparedNativePbrResources> {
   const geometry = SolidGeometryV2Schema.parse(input),

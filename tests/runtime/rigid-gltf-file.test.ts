@@ -7,6 +7,8 @@ import {
   writeFile,
   truncate,
 } from "node:fs/promises";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
@@ -128,3 +130,16 @@ describe("bounded local rigid glTF files", () => {
     );
   });
 });
+
+it.skipIf(process.platform === "win32")(
+  "rejects a glTF source FIFO without blocking before the regular-file check",
+  async () => {
+    const root = await directory(),
+      path = join(root, "source.glb");
+    await promisify(execFile)("mkfifo", [path]);
+    await expect(importRigidGltf(path)).rejects.toMatchObject({
+      location: { code: "gltf-import-budget", path: ["gltf", "source"] },
+    });
+  },
+  2000,
+);

@@ -4,10 +4,10 @@ import {
   MECHANISM_LIMITS,
   mechanismIssue,
 } from "./primitives.ts";
-import type { MechanismSceneV2Fields } from "./scene-v2.ts";
+import type { MechanismKinematicSceneV2 } from "./scene-v2.ts";
 import { MECHANISM_TEACHING_SHAPE_LIMITS } from "./teaching-shapes.ts";
 
-type Scene = MechanismSceneV2Fields;
+type Scene = MechanismKinematicSceneV2;
 type Path = (string | number)[];
 type Context = z.RefinementCtx;
 

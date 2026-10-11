@@ -1772,6 +1772,13 @@ export const native3DAppearanceModules: readonly {
     ),
   },
   {
+    name: "scene-contract/src/native3d/scene-v3.ts",
+    url: new URL(
+      "../../../scene-contract/src/native3d/scene-v3.ts",
+      import.meta.url,
+    ),
+  },
+  {
     name: "scene-contract/src/native3d/scene.ts",
     url: new URL(
       "../../../scene-contract/src/native3d/scene.ts",

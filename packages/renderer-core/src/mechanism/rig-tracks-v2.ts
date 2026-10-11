@@ -6,14 +6,14 @@ import type {
   MechanismRigControlV2,
   MechanismRigFrameV2,
   MechanismScalarKeysV2,
-  MechanismSceneV2,
+  MechanismKinematicSceneV2,
 } from "@still-shift/scene-contract";
 import type { DeepReadonly } from "./types.ts";
 import { ratchetLiftV2 } from "./ratchet-lift-v2.ts";
 import { MechanismEvaluationErrorV2 } from "./types-v2.ts";
 import type { PreparedMechanismRigTracksV2 } from "./types-v2.ts";
 
-type Scene = DeepReadonly<MechanismSceneV2>;
+type Scene = DeepReadonly<MechanismKinematicSceneV2>;
 type Rig = Scene["rigs"][number];
 type Control = DeepReadonly<MechanismRigControlV2>;
 type ReturnRig = Extract<Rig, { type: "spring-return" }>;

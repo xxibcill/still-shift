@@ -51,7 +51,12 @@ async function fileBytes(
 ) {
   let handle;
   try {
-    handle = await open(path, constants.O_RDONLY | constants.O_NOFOLLOW);
+    handle = await open(
+      path,
+      constants.O_RDONLY |
+        (constants.O_NOFOLLOW ?? 0) |
+        (constants.O_NONBLOCK ?? 0),
+    );
   } catch {
     gltfFail("dependency", "Cannot open regular local file", location);
   }
