@@ -44,10 +44,11 @@ All five tracks use the same resolved map:
 - **Picture:** one native world, cue-driven controls and camera keys. Cut/hold/
   transition choices remain authored; a held pose cannot silently change. Camera
   near/far planes remain the scene's planes and incompatible changes are rejected.
-- **Annotations:** text on a dark backing and live anchor-bound leaders appear
-  within the cue window.
-  Unknown anchors and starts outside the viewport are rejected. Hidden/occluded
-  anchors use the existing explicit hide route.
+- **Annotations:** screen labels and declared tabs, open callouts, brackets, arrows
+  or restrained outline highlights appear within the cue window. Omitted style
+  preserves the original filled tab and leader. Unknown anchors and starts outside
+  the viewport are rejected; explicit visibility policy controls hidden/offscreen
+  behavior. See the recipes below.
 - **Captions:** original text and locale use the pinned font and cue window, with
   a dark backing to preserve contrast against light mechanism scenes.
 - **Sound:** supplied effects start with their cue; declared source trims and tails
@@ -100,3 +101,68 @@ verification must be refreshed for the new producer.
 
 [Cue-wide crowded-label placement](./mechanism-cue-layout.md) adds locked/priority
 candidates and projected contact exclusions with actual rendered visibility proof.
+
+## Screen annotation recipes
+
+An annotation's optional `style` selects one recipe; its text, anchor, position,
+reading window and cue-wide layout locks/priority/candidates retain the existing
+contract. The same authoring fields are accepted by the revision-safe `annotation`
+patch operation. Omitted optional fields preserve existing authored values in that
+operation; explicitly select `tab` to restore the legacy presentation.
+
+| `style.kind`   | Result                                                                    | Bounded options                                                                                                  |
+| -------------- | ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `tab`          | Original text, filled backing and moving leader; exact legacy composition | No additional options                                                                                            |
+| `open-callout` | Open three-sided border with matching text/leader ink                     | `ink`: RGB hex, default `#101820`                                                                                |
+| `bracket`      | Four-point range path joining two physical anchors                        | `toAnchor` required; `offsetPixels` each ±512, default `[0,20]`; positive `tickPixels` ≤64, default 6; RGB `ink` |
+| `arrow`        | Moving tip and screen-tangent triangular head                             | Positive `headLengthPixels`/`headWidthPixels` ≤256, defaults 12/8; RGB `ink`                                     |
+| `highlight`    | Subtle anchored outline alongside the label/leader                        | `sizePixels` each 2–512 and smaller than the viewport; `opacity` 0.05–0.5, default 0.35; RGB `ink`               |
+
+Arrow, bracket and highlight ink defaults to `#101820`; tabs retain their original
+paint. Arrow shafts and heads use the same selected ink. Open callouts use the supplied ink for border, text and leader. Select ink
+that preserves contrast in the actual shot. A highlight has a 1.5px outline with
+no fill. Arrow heads shorten on small segments using the composition binding's
+45% length/25% half-width caps, and collapse safely on a zero-length segment.
+
+```json
+{
+  "id": "span",
+  "text": "Gap",
+  "anchor": "hook.outerFace",
+  "position": [18, 18],
+  "layout": { "locked": true },
+  "style": {
+    "kind": "bracket",
+    "toAnchor": "wall.contact",
+    "offsetPixels": [0, 20]
+  },
+  "visibility": { "policy": "hide-occluded" }
+}
+```
+
+`visibility` optionally declares `policy: hide-occluded | offscreen-indicator`,
+`visibleWhen: shown | indicator`, and `insetPixels` (0–4096, default 12).
+Omission preserves hide-occluded. Indicator-only presentation requires the
+indicator policy; hidden-part, occluded, behind-camera and clipped anchors hide
+both policies. Visible anchors use their actual pixels; offscreen arrow/bracket
+endpoints and highlights clamp to the owning viewport under the explicit indicator
+policy. Labels stay at their solved screen positions. An offscreen highlight's
+inset must enclose half its larger dimension plus 1px; an invalid request fails at
+`visibility.insetPixels`.
+
+A bracket's label, backing and path share an identity group bound to both anchors.
+Both must be shown; either hidden endpoint hides the complete annotation. The
+indicator state is true if either shown endpoint is outside-frame. The group uses
+explicit `[0,0]` anchor/position so layout coordinates remain owning-screen pixels.
+This is necessary because ordinary shape/null parenting carries transforms without
+inheriting visibility. The shared `composition-1` visibility target accepts up to 31
+additional unique anchors and validates all references before their visible interval.
+Evaluator version 59 records this extension; ordinary parenting remains unchanged.
+
+The renderer and graph own path binding, screen transforms, glyph measurement and
+paint. Recipes add no separate family renderer. The all-frame three-family style
+proof is `pnpm test:browser:mechanism-annotation-styles`, registered in the full
+local matrix. It uses synthetic PCM and retains actual preview/font/anchor facts,
+reverse/shuffled seeks, repeated native finals and independent closure replay.
+World text, actual surface markings, label-only plate reuse, genuine-speech renders,
+continuous-time/encoded readability and human acceptance retain separate MS2 gates.

@@ -263,6 +263,158 @@
                     },
                     "required": ["locked", "priority", "candidates"],
                     "additionalProperties": false
+                  },
+                  "style": {
+                    "anyOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": { "type": "string", "const": "tab" }
+                        },
+                        "required": ["kind"],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": { "type": "string", "const": "open-callout" },
+                          "ink": {
+                            "default": "#101820",
+                            "type": "string",
+                            "pattern": "^#[a-fA-F0-9]{6}$"
+                          }
+                        },
+                        "required": ["kind", "ink"],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": { "type": "string", "const": "bracket" },
+                          "ink": {
+                            "default": "#101820",
+                            "type": "string",
+                            "pattern": "^#[a-fA-F0-9]{6}$"
+                          },
+                          "toAnchor": {
+                            "type": "string",
+                            "maxLength": 128,
+                            "pattern": "^[A-Za-z][\\w.-]*$"
+                          },
+                          "offsetPixels": {
+                            "default": [0, 20],
+                            "type": "array",
+                            "prefixItems": [
+                              {
+                                "type": "number",
+                                "minimum": -512,
+                                "maximum": 512
+                              },
+                              {
+                                "type": "number",
+                                "minimum": -512,
+                                "maximum": 512
+                              }
+                            ]
+                          },
+                          "tickPixels": {
+                            "default": 6,
+                            "type": "number",
+                            "exclusiveMinimum": 0,
+                            "maximum": 64
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "ink",
+                          "toAnchor",
+                          "offsetPixels",
+                          "tickPixels"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": { "type": "string", "const": "arrow" },
+                          "ink": {
+                            "default": "#101820",
+                            "type": "string",
+                            "pattern": "^#[a-fA-F0-9]{6}$"
+                          },
+                          "headLengthPixels": {
+                            "default": 12,
+                            "type": "number",
+                            "exclusiveMinimum": 0,
+                            "maximum": 256
+                          },
+                          "headWidthPixels": {
+                            "default": 8,
+                            "type": "number",
+                            "exclusiveMinimum": 0,
+                            "maximum": 256
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "ink",
+                          "headLengthPixels",
+                          "headWidthPixels"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "kind": { "type": "string", "const": "highlight" },
+                          "ink": {
+                            "default": "#101820",
+                            "type": "string",
+                            "pattern": "^#[a-fA-F0-9]{6}$"
+                          },
+                          "sizePixels": {
+                            "type": "array",
+                            "prefixItems": [
+                              {
+                                "type": "number",
+                                "minimum": 2,
+                                "maximum": 512
+                              },
+                              { "type": "number", "minimum": 2, "maximum": 512 }
+                            ]
+                          },
+                          "opacity": {
+                            "default": 0.35,
+                            "type": "number",
+                            "minimum": 0.05,
+                            "maximum": 0.5
+                          }
+                        },
+                        "required": ["kind", "ink", "sizePixels", "opacity"],
+                        "additionalProperties": false
+                      }
+                    ]
+                  },
+                  "visibility": {
+                    "type": "object",
+                    "properties": {
+                      "policy": {
+                        "type": "string",
+                        "enum": ["hide-occluded", "offscreen-indicator"]
+                      },
+                      "visibleWhen": {
+                        "type": "string",
+                        "enum": ["shown", "indicator"]
+                      },
+                      "insetPixels": {
+                        "default": 12,
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 4096
+                      }
+                    },
+                    "required": ["policy", "insetPixels"],
+                    "additionalProperties": false
                   }
                 },
                 "required": ["text", "anchor", "position"],

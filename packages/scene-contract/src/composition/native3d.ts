@@ -104,7 +104,20 @@ export const NativeScreenBindingSchema = z
     insetPixels: finite.min(0).max(4096).optional(),
     offsetPixels: MechanismPixelSchema.optional(),
     target: z.discriminatedUnion("kind", [
-      z.object({ kind: z.literal("visibility") }).strict(),
+      z
+        .object({
+          kind: z.literal("visibility"),
+          anchors: z
+            .array(MechanismIdSchema)
+            .min(1)
+            .max(31)
+            .refine(
+              (anchors) => new Set(anchors).size === anchors.length,
+              "Visibility anchors must be distinct",
+            )
+            .optional(),
+        })
+        .strict(),
       z.object({ kind: z.literal("position") }).strict(),
       z
         .object({

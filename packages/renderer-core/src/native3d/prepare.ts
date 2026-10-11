@@ -472,6 +472,23 @@ async function prepareNativeCatalogue(
               );
           });
         if (
+          binding.role === "screen-anchor" &&
+          binding.target.kind === "visibility"
+        )
+          binding.target.anchors?.forEach((anchor, index) => {
+            if (
+              !data.source.anchors.some((candidate) => candidate.id === anchor)
+            )
+              passageError(
+                "comp-native3d-binding",
+                `Unknown physical anchor ${anchor}`,
+                {
+                  node: layer.id,
+                  path: `${path}.native3D.target.anchors.${index}`,
+                },
+              );
+          });
+        if (
           binding.role === "world-graphic" &&
           binding.part !== undefined &&
           !data.source.parts.some((part) => part.id === binding.part)

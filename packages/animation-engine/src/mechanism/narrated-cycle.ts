@@ -1,3 +1,4 @@
+import { compileCueAnnotation } from "./cue-annotations.ts";
 import { planMechanismCueLayout } from "./cue-layout.ts";
 import {
   MechanismNarratedCycleSchema,
@@ -144,6 +145,41 @@ export function compileMechanismNarratedCycle(
           annotationIndex,
           "anchor",
         ]);
+      if (annotation.style?.kind === "bracket") {
+        const secondary = annotation.style.toAnchor;
+        if (!instance.scene.anchors.some((anchor) => anchor.id === secondary))
+          fail("mechanism-cue-anchor", "Unknown secondary bracket anchor", [
+            ...path,
+            "annotations",
+            annotationIndex,
+            "style",
+            "toAnchor",
+          ]);
+      }
+      if (annotation.style?.kind === "highlight") {
+        const [w, h] = annotation.style.sizePixels;
+        if (w >= width || h >= height)
+          fail(
+            "mechanism-cue-layout",
+            "Highlight must fit the owning viewport",
+            [...path, "annotations", annotationIndex, "style", "sizePixels"],
+          );
+        if (
+          annotation.visibility?.policy === "offscreen-indicator" &&
+          annotation.visibility.insetPixels < Math.max(w, h) / 2 + 1
+        )
+          fail(
+            "mechanism-cue-layout",
+            "Offscreen highlight inset must enclose its outline",
+            [
+              ...path,
+              "annotations",
+              annotationIndex,
+              "visibility",
+              "insetPixels",
+            ],
+          );
+      }
       if (annotation.position[0] >= width || annotation.position[1] >= height)
         fail(
           "mechanism-cue-layout",
@@ -397,86 +433,28 @@ export function compileMechanismNarratedCycle(
       ),
       metadata: { cue: cue.id, track: "caption-panel" },
     });
-    for (const annotation of cue.annotations) {
-      const labelId = trackId("annotation", cue.id, annotation.id);
-      layers.push({
-        ...textLayer(
-          labelId,
-          annotation.text,
-          timing.startFrame,
-          timing.endFrameExclusive,
-          annotation.position,
-          [width * 0.32, height * 0.16],
-        ),
-        overlayAfter: controller,
-        native3D: {
-          role: "screen-anchor",
-          sceneLayer: controller,
-          anchor: annotation.anchor,
-          visibilityPolicy: "hide-occluded",
-          insetPixels: 12,
-          target: { kind: "visibility" },
-        },
-        metadata: {
+    for (const annotation of cue.annotations)
+      layers.push(
+        ...compileCueAnnotation(annotation, {
+          controller,
           cue: cue.id,
+          startFrame: timing.startFrame,
+          endFrameExclusive: timing.endFrameExclusive,
           sourceSamples: [cue.startSample, cue.endSampleExclusive],
-        },
-      });
-      layers.push({
-        ...panel(
-          trackId("annotation-panel", cue.id, annotation.id),
-          [
-            annotation.position[0] + width * 0.16,
-            annotation.position[1] + height * 0.08,
-          ],
-          [width * 0.34, height * 0.17],
-          timing.startFrame,
-          timing.endFrameExclusive,
-        ),
-        overlayAfter: controller,
-        native3D: {
-          role: "screen-anchor",
-          sceneLayer: controller,
-          anchor: annotation.anchor,
-          visibilityPolicy: "hide-occluded",
-          insetPixels: 12,
-          target: { kind: "visibility" },
-        },
-        metadata: { cue: cue.id, track: "annotation-panel" },
-      });
-      const start: [number, number] = [
-        annotation.position[0] + width * 0.16,
-        annotation.position[1] + fontSize * 1.3,
-      ];
-      layers.push({
-        id: trackId("leader", cue.id, annotation.id),
-        type: "shape",
-        inPoint: timing.startFrame,
-        outPoint: timing.endFrameExclusive,
-        overlayAfter: controller,
-        native3D: {
-          role: "screen-anchor",
-          sceneLayer: controller,
-          anchor: annotation.anchor,
-          visibilityPolicy: "hide-occluded",
-          insetPixels: 12,
-          target: {
-            kind: "path-endpoint",
-            contentId: "line",
-            endpoint: "last",
+          width,
+          height,
+          font: fontId,
+          fontSize,
+          locale: document.locale,
+          ids: {
+            label: trackId("annotation", cue.id, annotation.id),
+            backing: trackId("annotation-panel", cue.id, annotation.id),
+            leader: trackId("leader", cue.id, annotation.id),
+            highlight: trackId("annotation-highlight", cue.id, annotation.id),
+            visibility: trackId("annotation-visibility", cue.id, annotation.id),
           },
-        },
-        contents: [
-          {
-            id: "line",
-            type: "path",
-            path: { closed: false, vertices: [start, start] },
-          },
-          { id: "stroke", type: "stroke", color: "#eeeeee", width: 1.5 },
-        ],
-        metadata: { cue: cue.id },
-      });
-    }
+        }),
+      );
     const soundIds = new Set<string>();
     for (const [soundIndex, sound] of cue.sounds.entries()) {
       const path = ["cues", index, "sounds", soundIndex];
@@ -586,7 +564,13 @@ export function compileMechanismNarratedCycle(
             layer.transform.position[0]! + delta[0],
             layer.transform.position[1]! + delta[1],
           ];
-        if (kind === "leader" && layer.type === "shape") {
+        if (
+          kind === "leader" &&
+          layer.type === "shape" &&
+          layer.native3D?.role === "screen-anchor" &&
+          (layer.native3D.target.kind === "path-endpoint" ||
+            layer.native3D.target.kind === "path-arrow")
+        ) {
           const content = layer.contents.find(
             (content) => content.type === "path",
           );

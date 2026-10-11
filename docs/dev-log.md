@@ -45,10 +45,10 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Fifty-three slices include the frozen ten-question board, expanded Thai review and
+  Fifty-four slices include the frozen ten-question board, expanded Thai review and
   recovered existing spoken inputs for all three families. Four audio hashes and
   thirteen supplied word-range/shot associations match. The shorter tape-hook take
-  uses revised copy; the failed identical-script assumption is retained. No new
+  uses revised copy; the failed identical-script assumption is retained. No fresh supplied-speech
   decoding, synthesis or genuine-speech native rendering has been performed.
   Thai review covers all 114 distinct cells at frames 8/18 and three sizes;
   located prefix/contrast/wrap negatives keep finer motion unadopted.
@@ -59,12 +59,22 @@ still hold before relying on them.
   passes 4,303 units/422 files; native-depth4 passes 14 depth/six composition cases
   and cancellation. All 42 annotation readbacks/30 exact control pairs independently
   audit; held 2,568 inputs/119,629,177B unchanged. Failed attempts remain retained.
+  Slice54 adds all five screen cue recipes and bounded multi-anchor visibility
+  groups. Final fast2 passes 4,313 units/423 files; native1 passes 14 depth/six
+  composition cases/cancellation with 70 readbacks/30 exact controls audited.
+  Fresh browser4 passes three families/five styles, 180 previews/540 seeks/six
+  exports/360 final native frames. Independent dependency/PNG/body/decoded audio
+  and video audits pass; 2,603 inputs/120,347,181B unchanged through staged gates.
+  Centered-group coordinates, cable framing and mismatched arrow ink failures
+  remain retained. The new browser group expands the final full matrix to95;
+  historical stopped full51 remains its original94-group attempt.
   Coverage stays 0/10 validated; packs are candidates; accepted pilot episodes 0.
-  Next: finish annotation recipes, then refresh the full gate; bound fresh speech/sample clocks and cue exports;
-  complete annotation styles/world/surface routes and label-only plate reuse,
+  Next: explicit world-text/surface routes and label-only plate reuse; bound fresh
+  speech/sample clocks and cue exports; refresh the full gate,
   whole resources/final installed/pack admission and MS2 PR. MS3 not started.
   No human acceptance, merge/publication or paid generation.
-  [Annotation evidence](./mechanism-shorts-ms2-annotation-results.json),
+  [Screen style evidence](./mechanism-shorts-ms2-annotation-style-results.json),
+  [Annotation geometry](./mechanism-shorts-ms2-annotation-results.json),
   [Full gate history](./mechanism-shorts-ms2-full-gate-results.json),
   [Spoken inputs](./mechanism-shorts-ms2-spoken-input-results.json),
   [Thai review](./mechanism-shorts-ms2-thai-review-results.json), [MS2 results](./mechanism-shorts-ms2-results.json).
@@ -225,6 +235,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — MS2 slice54: screen cue styles and multi-anchor visibility
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2` from `9aa77e68`.
+- **Done:** Five bounded screen cue recipes, explicit visibility/locks, identity
+  groups and selected arrow ink; omitted/explicit tab keeps exact legacy output.
+- **Results:** Final fast2: 4,313 units/423 files. Native14/six composition and
+  cancellation pass. Browser4: three families, 180 previews/540 seeks/six exports,
+  360 final native frames; decoded video/audio, dependency, PNG and raw audits pass.
+  Held 2,603 inputs/120,347,181B unchanged; final full matrix now95 groups.
+- **Rejected / do not repeat:** Shape parenting does not inherit visibility;
+  centered group defaults shift labels. Cable needs a declared camera cut for two
+  visible bracket anchors. Arrow fill must match shaft ink. All failed attempts retained.
+- **Open / next:** World/surface authoring, label-only plate reuse, genuine speech,
+  full/final installed/resource/pack/owner/MS2 PR gates. Packs/pilot0; MS3 not started.
+- **Records:** [Style evidence](./mechanism-shorts-ms2-annotation-style-results.json),
+  [API](./mechanism-narrated-cycles.md), [full gate](./mechanism-shorts-ms2-full-gate-results.json).
 
 ### 2026-10-12 — MS2 shared bracket/arrow geometry and retained full-gate stop
 

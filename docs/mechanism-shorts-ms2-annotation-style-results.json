@@ -1,0 +1,739 @@
+{
+  "version": "mechanism-shorts-ms2-annotation-style-results-1",
+  "date": "2026-10-12",
+  "branch": "codex/mechanism-ms2",
+  "baseCommit": "9aa77e681b2a384068c0a61de1d993f1341e14f2",
+  "status": "screen-cue-recipes-software-slice-complete",
+  "implementation": {
+    "route": "Ordinary composition layers; no family renderer. Omitted style and explicit tab retain exact legacy composition. Optional bounded schema styles/visibility, two-anchor bracket group with identity transform, public cue compile/render/check, evaluator59.",
+    "styles": ["tab", "open-callout", "bracket", "arrow", "highlight"],
+    "multiAnchorVisibility": "Primary plus up to31 distinct secondary references admitted before visibility; all anchors shown AND, indicators OR then shown AND. Existing shape/null parent visibility semantics unchanged.",
+    "geometry": "Bracket vertices/arrow head use shared native binding, solved label layout and authored locks. Highlights are low-opacity bounded outlines at physical screen anchors. Arrow fill and shaft share selected ink.",
+    "sourceMedia": "All source scene, pinned font and synthetic 48000Hz/96000-sample mono float WAV dependency hashes match. No customer audio is included."
+  },
+  "attempts": [
+    {
+      "id": "red1",
+      "status": "expected-red",
+      "actualExitCode": 1,
+      "reason": "Five missing schema/recipe tests fail; one legacy test passes.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-styles54-red1.log",
+        "bytes": 5316,
+        "sha256": "sha256:9b8fb073e8f9477f865697db656339d7825cc6c9d95110b568374e241c8562bc"
+      }
+    },
+    {
+      "id": "focused1",
+      "status": "failed",
+      "actualExitCode": 1,
+      "reason": "A shape parent carries transforms but does not gate descendant visibility; the secondary-hidden bracket label survives. Repaired by an identity group and bounded multi-anchor visibility target.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-styles54-focused1.log",
+        "bytes": 2965,
+        "sha256": "sha256:198be1e32bf62d59ae95bef437081be460932274ec4058676044443a3b1f86d0"
+      }
+    },
+    {
+      "id": "focused2",
+      "status": "passed-intermediate",
+      "actualExitCode": 0,
+      "reason": "36 tests/four files after the visibility route.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-styles54-focused2.log",
+        "bytes": 1993,
+        "sha256": "sha256:754d3d18857e1ad3b412a86815bd2fecb3f951959ac7e101e7a0e20c979399eb"
+      }
+    },
+    {
+      "id": "focused3",
+      "status": "passed-intermediate",
+      "actualExitCode": 0,
+      "reason": "39 tests/four files with bounds/policy/reference controls.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-styles54-focused3.log",
+        "bytes": 2125,
+        "sha256": "sha256:e92360a769b219d9ff2efec6771951b5a8ac9b7686b07682bbe479220475fde1"
+      }
+    },
+    {
+      "id": "schema1",
+      "status": "passed",
+      "actualExitCode": 0,
+      "reason": "Generated narrated-cycle, cue-patch and composition schema updates.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-styles54-schema1.log",
+        "bytes": 653,
+        "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+      }
+    },
+    {
+      "id": "build1",
+      "status": "failed",
+      "actualExitCode": 2,
+      "reason": "Exact optional path received undefined; use the located fallback.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-styles54-build1.log",
+        "bytes": 1118,
+        "sha256": "sha256:92e4861954fe16e2fe8f52d7ea2a4d3c51ec86245a7e7e5952a47f523a261f66"
+      }
+    },
+    {
+      "id": "build2",
+      "status": "failed",
+      "actualExitCode": 2,
+      "reason": "The browser outputs array inferred any[]; annotate its public result types.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-styles54-build2.log",
+        "bytes": 437,
+        "sha256": "sha256:0eeffbb47a8a13a5d4bcb10c0b70ae6495feb4b0a6b4206372c28ead585fa474"
+      }
+    },
+    {
+      "id": "build3",
+      "status": "passed-intermediate",
+      "actualExitCode": 0,
+      "reason": "Type checks pass on the earlier source.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-styles54-build3.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "browser1",
+      "status": "failed",
+      "actualExitCode": 1,
+      "reason": "Default centered group anchor shifted label coordinates outside the viewport. Explicit identity transform and a child-position assertion repair it.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-styles54-browser1.log",
+        "bytes": 1019,
+        "sha256": "sha256:4c4ea098f10c1160cb362f6b4245732994c5c22eacc992ef98b20101974aa357"
+      }
+    },
+    {
+      "id": "focused4",
+      "status": "passed-intermediate",
+      "actualExitCode": 0,
+      "reason": "19 tests/two files after identity group fix.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-styles54-focused4.log",
+        "bytes": 1059,
+        "sha256": "sha256:4b1facb33cceb31e96064baede51934a8a31d4689ca547119edd31bae8ad62b5"
+      }
+    },
+    {
+      "id": "browser2",
+      "status": "failed",
+      "actualExitCode": 1,
+      "reason": "Tape fixture completes 60 preview frames/180 seeks/two native exports; default cable framing leaves no second visible bracket anchor. Explicit authored camera cut repairs the fixture without editing its physical pack.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-styles54-browser2.log",
+        "bytes": 851,
+        "sha256": "sha256:1521f09e511b44da466ee3f671361205dae1c0a1c7c9841f653d0eafc2e2a27e"
+      }
+    },
+    {
+      "id": "browser3",
+      "status": "passed-intermediate",
+      "actualExitCode": 0,
+      "reason": "All three families/five styles pass; subsequent visual/source review finds the white arrowhead fill, so this proof is superseded.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-styles54-browser3.log",
+        "bytes": 666,
+        "sha256": "sha256:81283475fa95c3f7e9654abb324afb5377cb7a95cb5ffb8549a972eb5aaa8686"
+      }
+    },
+    {
+      "id": "fast1",
+      "status": "passed-intermediate",
+      "actualExitCode": 0,
+      "reason": "4312 units/423 files; superseded by the arrowhead ink fix and its eighth recipe test.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-styles54-fast1.log",
+        "bytes": 36745,
+        "sha256": "sha256:c2587f048d40ec8fbb5abf793ea22a1192c7d82a863d5a619e3b8927194ba3f1"
+      }
+    },
+    {
+      "id": "ink-red1",
+      "status": "expected-red",
+      "actualExitCode": 1,
+      "reason": "One failing/seven passing tests: arrow shaft respects ink but head retains #eeeeee. Default/custom ink assertion catches it.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-styles54-ink-red1.log",
+        "bytes": 2423,
+        "sha256": "sha256:f7cf5376375a48cb5a1720cae1a7a3e5c65fc7f798a853ce8691197038ce0030"
+      }
+    },
+    {
+      "id": "fast2",
+      "status": "passed-final",
+      "actualExitCode": 0,
+      "reason": "4313 units/423 files on held input4; wrapper post-check inventory unchanged.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-styles54-fast2.log",
+        "bytes": 37121,
+        "sha256": "sha256:c1344a29ce8b15b8eb53367f116999de566a6ca869991fca97e6706edd05c9da"
+      }
+    },
+    {
+      "id": "native1",
+      "status": "passed-final",
+      "actualExitCode": 0,
+      "reason": "14 depth/six composition cases and worker cancellation. Independent 70-readback hash audit includes 30 exact bracket/arrow dynamic controls.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-styles54-native1.log",
+        "bytes": 538,
+        "sha256": "sha256:286d7e801e1ea309db0e1cc84d2b0d0734d07ecf8b86e2909414583ed3a9b7d1"
+      }
+    },
+    {
+      "id": "browser4",
+      "status": "passed-final",
+      "actualExitCode": 0,
+      "reason": "Fresh three-family proof after arrowhead fix; full decoded video/audio and retained PNG/journal audit independently pass.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-styles54-browser4.log",
+        "bytes": 666,
+        "sha256": "sha256:2d1f7020c408631c860ef32745984dccc2ff7ce7bd28318ad23a111e349e3ed7"
+      }
+    }
+  ],
+  "finalFast": {
+    "session": 95461,
+    "actualExitCode": 0,
+    "unitTests": 4313,
+    "unitFiles": 423,
+    "log": {
+      "path": "/private/tmp/still-shift-ms2-styles54-fast2.log",
+      "bytes": 37121,
+      "sha256": "sha256:c1344a29ce8b15b8eb53367f116999de566a6ca869991fca97e6706edd05c9da"
+    }
+  },
+  "finalInputInventory": {
+    "artifact": {
+      "path": "/private/tmp/still-shift-ms2-styles54-inputs4.json",
+      "bytes": 444018,
+      "sha256": "sha256:1cdd290c8a892c2ecb6b74382f16a1ee4d92c9ddf974353208b6bc47780908e5"
+    },
+    "files": 2603,
+    "bytes": 120347181,
+    "unchangedAfterFastNativeBrowser": true,
+    "selectionChange": "This slice adds public docs/schemas to the held package/API roots. Inputs1 used the earlier selection; inputs2 onward include32 public schema files. Old full51 history retains its original inventory scope."
+  },
+  "browser": {
+    "session": 13950,
+    "actualExitCode": 0,
+    "directory": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0",
+    "producer": {
+      "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/run.json",
+      "bytes": 242070,
+      "sha256": "sha256:cb40a034f313847925d1e9441f412657ce967a9496e90b0ac311ec9170711e92"
+    },
+    "counts": {
+      "families": 3,
+      "recipesPerFamily": 5,
+      "previewFrames": 180,
+      "seekDraws": 540,
+      "nativeExports": 6,
+      "finalNativeFrames": 360,
+      "sampledPngs": 12,
+      "repeatVideoAudioPairs": 3
+    },
+    "audit": {
+      "path": "/private/tmp/still-shift-ms2-styles54-audit4.json",
+      "bytes": 33668,
+      "sha256": "sha256:3b919ee0ef2399f1c43b010e69195600c4c7fbec849ea6eb27f5d7d2f983af47"
+    },
+    "auditScript": {
+      "path": "/private/tmp/still-shift-ms2-styles54-audit.py",
+      "bytes": 4711,
+      "sha256": "sha256:c9c3460f8e4b0cd59fd1b2d7aa1c537376de23f7af29ec98b646befef857b63d"
+    },
+    "families": [
+      {
+        "family": "tape-hook",
+        "primary": "hook.outerFace",
+        "secondary": "contact.datum",
+        "styles": ["tab", "open-callout", "bracket", "arrow", "highlight"],
+        "receipt": {
+          "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/tape-hook/compiled/cue-compilation.json",
+          "bytes": 775,
+          "sha256": "sha256:154f80758ebd162538a14540719dc20007d95fe60e63a3aec844922134c9bcdc"
+        },
+        "composition": {
+          "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/tape-hook/compiled/composition.json",
+          "bytes": 29273,
+          "sha256": "sha256:e9545f4bf8e78c2dca88356720beecdd014e9bc0bfd290d16f17eef1cb12913f"
+        },
+        "dependencies": [
+          {
+            "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/tape-hook/scene.json",
+            "bytes": 5587949,
+            "sha256": "sha256:24f21fb301a6fd42ad874ddf98f7d310a0138924a56ffaba3acbc1578d335e3e"
+          },
+          {
+            "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+            "bytes": 202632,
+            "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/tape-hook/narration.wav",
+            "bytes": 384044,
+            "sha256": "sha256:d862e89727134557fb17b5ea46f1629907ee96f6c08da8a1163d3ffe6e9764b1"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/tape-hook/tick.wav",
+            "bytes": 9644,
+            "sha256": "sha256:95bcc0fc375b386f7e77839142490abe6faf25219f332fd7e8bcf1c7c6408c2f"
+          }
+        ],
+        "preview": {
+          "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/tape-hook/preview.json",
+          "bytes": 50713,
+          "sha256": "sha256:c914ed294d0588d582e7fa6a6eb560f7431c8b71fbb533378d663f08d0d4d869"
+        },
+        "pngs": [
+          {
+            "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/tape-hook/frame-7.png",
+            "bytes": 23684,
+            "sha256": "sha256:50490eb354ac6526486ed20473cd188fbedd0a4e55fb82c581176b70d15709c5"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/tape-hook/frame-22.png",
+            "bytes": 22078,
+            "sha256": "sha256:c516be652c3952f5fc2588da5455d9ae41bdb09240a89729c624983db50aa739"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/tape-hook/frame-37.png",
+            "bytes": 22312,
+            "sha256": "sha256:613bc2d409a6e967a1d1f905c89effbc206271d10670d9c9c803abc347fb6184"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/tape-hook/frame-52.png",
+            "bytes": 23067,
+            "sha256": "sha256:d7c7e93968bcc27e2642ee9e29934300957042640acbf064d64542d898409bf5"
+          }
+        ],
+        "outputs": [
+          {
+            "body": {
+              "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/tape-hook/first/output.mp4",
+              "bytes": 34123,
+              "sha256": "sha256:bd3fa1753627ac50f4395c8f121857bb012720e6f75604ea6ea7b910ed51d9e0"
+            },
+            "scene": {
+              "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/tape-hook/first/output.mp4.scene.json",
+              "bytes": 8177885,
+              "sha256": "sha256:d244215ac75d9517afb055b6c640d7a65b22d4db39736348bf5f6f1c8ff6038d"
+            },
+            "nativeManifest": {
+              "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/tape-hook/first/output.mp4.native-observations.json",
+              "bytes": 89923,
+              "sha256": "sha256:ac085243f3276c86fc299062b507737b0121ff438c0569f97ebbf39703a754d8"
+            },
+            "nativeJournals": [
+              {
+                "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/tape-hook/first/output.mp4.native-observations.000.ndjson",
+                "bytes": 598793,
+                "sha256": "sha256:8107901480af83f8e6299ec70922aea649e76b10b7f70d223d8a01001fb89013"
+              }
+            ],
+            "nativeFrames": 60
+          },
+          {
+            "body": {
+              "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/tape-hook/repeat/output.mp4",
+              "bytes": 34123,
+              "sha256": "sha256:bd3fa1753627ac50f4395c8f121857bb012720e6f75604ea6ea7b910ed51d9e0"
+            },
+            "scene": {
+              "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/tape-hook/repeat/output.mp4.scene.json",
+              "bytes": 8177885,
+              "sha256": "sha256:d244215ac75d9517afb055b6c640d7a65b22d4db39736348bf5f6f1c8ff6038d"
+            },
+            "nativeManifest": {
+              "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/tape-hook/repeat/output.mp4.native-observations.json",
+              "bytes": 89923,
+              "sha256": "sha256:ac085243f3276c86fc299062b507737b0121ff438c0569f97ebbf39703a754d8"
+            },
+            "nativeJournals": [
+              {
+                "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/tape-hook/repeat/output.mp4.native-observations.000.ndjson",
+                "bytes": 598793,
+                "sha256": "sha256:8107901480af83f8e6299ec70922aea649e76b10b7f70d223d8a01001fb89013"
+              }
+            ],
+            "nativeFrames": 60
+          }
+        ],
+        "previewFrames": 60,
+        "seekDraws": 180,
+        "decodedFrames": 120,
+        "repeatVideoAudioProof": {
+          "encoded": [
+            "sha256:bd3fa1753627ac50f4395c8f121857bb012720e6f75604ea6ea7b910ed51d9e0"
+          ],
+          "decodedFrameHashes": 60,
+          "decodedAudio": "sha256:d95e7ff30b5b4bdfc067ad3f70c071e59a7ce1f01e496d6bf25c9dd074fd45f6",
+          "decodedAudioBytes": 770048
+        }
+      },
+      {
+        "family": "cable-tie",
+        "primary": "strap.outerSurface",
+        "secondary": "pawl.tip",
+        "styles": ["tab", "open-callout", "bracket", "arrow", "highlight"],
+        "receipt": {
+          "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/cable-tie/compiled/cue-compilation.json",
+          "bytes": 775,
+          "sha256": "sha256:3b39d0921e02dcd9a061143c8128f17a7fccf4bd7db4620e4db8e418223b5dee"
+        },
+        "composition": {
+          "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/cable-tie/compiled/composition.json",
+          "bytes": 29332,
+          "sha256": "sha256:2467e47995dae4c1b0154c267d1f8e56520fc4db844a3be317a1f2487d706d71"
+        },
+        "dependencies": [
+          {
+            "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/cable-tie/scene.json",
+            "bytes": 966861,
+            "sha256": "sha256:a42d91627ddce017a5fdcc1c14e5570be2589e2d875a2203e3ce5e2c3a7bea1f"
+          },
+          {
+            "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+            "bytes": 202632,
+            "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/cable-tie/narration.wav",
+            "bytes": 384044,
+            "sha256": "sha256:d862e89727134557fb17b5ea46f1629907ee96f6c08da8a1163d3ffe6e9764b1"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/cable-tie/tick.wav",
+            "bytes": 9644,
+            "sha256": "sha256:95bcc0fc375b386f7e77839142490abe6faf25219f332fd7e8bcf1c7c6408c2f"
+          }
+        ],
+        "preview": {
+          "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/cable-tie/preview.json",
+          "bytes": 50713,
+          "sha256": "sha256:6cb5c5cfac09caf12057a5e1a93238dccc536b13a211ca646edd5757ac555ef9"
+        },
+        "pngs": [
+          {
+            "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/cable-tie/frame-7.png",
+            "bytes": 9217,
+            "sha256": "sha256:c2396c61e9ece22eb9d1bdc9deea3e42e867a5e826cb4307a16ec7cdd9521ede"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/cable-tie/frame-22.png",
+            "bytes": 7865,
+            "sha256": "sha256:f1811581e6e37ca3a5c05c259a1bc685b2ab449e536ec5fd7ffface3cbd1b5eb"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/cable-tie/frame-37.png",
+            "bytes": 8166,
+            "sha256": "sha256:47fb533328a1b5f7b58124ae8d984ff96e9903d4593dc91190ff0960f6a6225c"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/cable-tie/frame-52.png",
+            "bytes": 8443,
+            "sha256": "sha256:36f178a808d018fb6dabd8f7f62d45eced66300a0a6b3ac49b8c8f6df693347e"
+          }
+        ],
+        "outputs": [
+          {
+            "body": {
+              "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/cable-tie/first/output.mp4",
+              "bytes": 31671,
+              "sha256": "sha256:4ad5651ab380afca1ee17be250ef643ffe50b229a66aaf957de70cff8196f425"
+            },
+            "scene": {
+              "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/cable-tie/first/output.mp4.scene.json",
+              "bytes": 1648354,
+              "sha256": "sha256:d82e4d7e062387a4da011c7bc1afa0e576c7314e826d0f54e8b3c443872a81f9"
+            },
+            "nativeManifest": {
+              "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/cable-tie/first/output.mp4.native-observations.json",
+              "bytes": 90909,
+              "sha256": "sha256:df14c8ef161fd5ba61dc8ea6ed2308535ec0bf311c9ce2f3bbc58482d0161989"
+            },
+            "nativeJournals": [
+              {
+                "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/cable-tie/first/output.mp4.native-observations.000.ndjson",
+                "bytes": 431520,
+                "sha256": "sha256:78c823510ad845a16e49f73132ff4aaa3112b78e94e3028f96fb492bfe6e9331"
+              }
+            ],
+            "nativeFrames": 60
+          },
+          {
+            "body": {
+              "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/cable-tie/repeat/output.mp4",
+              "bytes": 31671,
+              "sha256": "sha256:4ad5651ab380afca1ee17be250ef643ffe50b229a66aaf957de70cff8196f425"
+            },
+            "scene": {
+              "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/cable-tie/repeat/output.mp4.scene.json",
+              "bytes": 1648354,
+              "sha256": "sha256:d82e4d7e062387a4da011c7bc1afa0e576c7314e826d0f54e8b3c443872a81f9"
+            },
+            "nativeManifest": {
+              "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/cable-tie/repeat/output.mp4.native-observations.json",
+              "bytes": 90909,
+              "sha256": "sha256:df14c8ef161fd5ba61dc8ea6ed2308535ec0bf311c9ce2f3bbc58482d0161989"
+            },
+            "nativeJournals": [
+              {
+                "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/cable-tie/repeat/output.mp4.native-observations.000.ndjson",
+                "bytes": 431520,
+                "sha256": "sha256:78c823510ad845a16e49f73132ff4aaa3112b78e94e3028f96fb492bfe6e9331"
+              }
+            ],
+            "nativeFrames": 60
+          }
+        ],
+        "previewFrames": 60,
+        "seekDraws": 180,
+        "decodedFrames": 120,
+        "repeatVideoAudioProof": {
+          "encoded": [
+            "sha256:4ad5651ab380afca1ee17be250ef643ffe50b229a66aaf957de70cff8196f425"
+          ],
+          "decodedFrameHashes": 60,
+          "decodedAudio": "sha256:d95e7ff30b5b4bdfc067ad3f70c071e59a7ce1f01e496d6bf25c9dd074fd45f6",
+          "decodedAudioBytes": 770048
+        }
+      },
+      {
+        "family": "clothespeg",
+        "primary": "lower.seat",
+        "secondary": "spring.seat.b",
+        "styles": ["tab", "open-callout", "bracket", "arrow", "highlight"],
+        "receipt": {
+          "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/clothespeg/compiled/cue-compilation.json",
+          "bytes": 778,
+          "sha256": "sha256:bbe4847553c8b3de5cae2e912c3ef7d9570b835f3b96581098c1eb608016d040"
+        },
+        "composition": {
+          "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/clothespeg/compiled/composition.json",
+          "bytes": 29682,
+          "sha256": "sha256:93f90564589a4864cb75bba5090b728f20085fe94146f373e12bc2c065fb2848"
+        },
+        "dependencies": [
+          {
+            "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/clothespeg/scene.json",
+            "bytes": 468500,
+            "sha256": "sha256:a42f350d856ee6d05ae00bf3ba5deb87657d6812b17ca02ead3953fa09365464"
+          },
+          {
+            "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+            "bytes": 202632,
+            "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/clothespeg/narration.wav",
+            "bytes": 384044,
+            "sha256": "sha256:d862e89727134557fb17b5ea46f1629907ee96f6c08da8a1163d3ffe6e9764b1"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/clothespeg/tick.wav",
+            "bytes": 9644,
+            "sha256": "sha256:95bcc0fc375b386f7e77839142490abe6faf25219f332fd7e8bcf1c7c6408c2f"
+          }
+        ],
+        "preview": {
+          "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/clothespeg/preview.json",
+          "bytes": 50713,
+          "sha256": "sha256:4d3e945d1f53eb604d9555c4b89dd4f06fe9ac5e1b2d40ffab1047ec09bca635"
+        },
+        "pngs": [
+          {
+            "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/clothespeg/frame-7.png",
+            "bytes": 11312,
+            "sha256": "sha256:66bd318dfb43818a5c0289adc46338d7837d382706007137fad9807f3f7ee736"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/clothespeg/frame-22.png",
+            "bytes": 9623,
+            "sha256": "sha256:bb1593199d229493e888b0bbb101618a295ee83bd502b4234153a13198ab274b"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/clothespeg/frame-37.png",
+            "bytes": 9900,
+            "sha256": "sha256:8d1608b9aefa749b18aa26b147885d5d6ff0566be49c0d46d9476f26d2ec0b5f"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/clothespeg/frame-52.png",
+            "bytes": 9970,
+            "sha256": "sha256:3a50048983acaf608b8340fcca00825f5ff72328202fe44eb398580d1dc6b2c2"
+          }
+        ],
+        "outputs": [
+          {
+            "body": {
+              "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/clothespeg/first/output.mp4",
+              "bytes": 37986,
+              "sha256": "sha256:c01ad47e2d23c9606386084cfc1bdbf90725da897dffa4fd9979923d2b5677be"
+            },
+            "scene": {
+              "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/clothespeg/first/output.mp4.scene.json",
+              "bytes": 983051,
+              "sha256": "sha256:816d5ef26cea97d9e15d7324bce5fca78c9163775f17f33a63cf5fb8bede68e9"
+            },
+            "nativeManifest": {
+              "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/clothespeg/first/output.mp4.native-observations.json",
+              "bytes": 90912,
+              "sha256": "sha256:f67364eec07adbd198850e304b90e9d6949a266b18125aed5f6a718f6ba35195"
+            },
+            "nativeJournals": [
+              {
+                "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/clothespeg/first/output.mp4.native-observations.000.ndjson",
+                "bytes": 556717,
+                "sha256": "sha256:ee8b9612c89bd761230030d5246a914f35515056426aba69d3a1d70e4a3a762e"
+              }
+            ],
+            "nativeFrames": 60
+          },
+          {
+            "body": {
+              "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/clothespeg/repeat/output.mp4",
+              "bytes": 37986,
+              "sha256": "sha256:c01ad47e2d23c9606386084cfc1bdbf90725da897dffa4fd9979923d2b5677be"
+            },
+            "scene": {
+              "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/clothespeg/repeat/output.mp4.scene.json",
+              "bytes": 983051,
+              "sha256": "sha256:816d5ef26cea97d9e15d7324bce5fca78c9163775f17f33a63cf5fb8bede68e9"
+            },
+            "nativeManifest": {
+              "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/clothespeg/repeat/output.mp4.native-observations.json",
+              "bytes": 90912,
+              "sha256": "sha256:f67364eec07adbd198850e304b90e9d6949a266b18125aed5f6a718f6ba35195"
+            },
+            "nativeJournals": [
+              {
+                "path": "/private/tmp/still-shift-ms2-annotation-styles-kUjqD0/clothespeg/repeat/output.mp4.native-observations.000.ndjson",
+                "bytes": 556717,
+                "sha256": "sha256:ee8b9612c89bd761230030d5246a914f35515056426aba69d3a1d70e4a3a762e"
+              }
+            ],
+            "nativeFrames": 60
+          }
+        ],
+        "previewFrames": 60,
+        "seekDraws": 180,
+        "decodedFrames": 120,
+        "repeatVideoAudioProof": {
+          "encoded": [
+            "sha256:c01ad47e2d23c9606386084cfc1bdbf90725da897dffa4fd9979923d2b5677be"
+          ],
+          "decodedFrameHashes": 60,
+          "decodedAudio": "sha256:d95e7ff30b5b4bdfc067ad3f70c071e59a7ce1f01e496d6bf25c9dd074fd45f6",
+          "decodedAudioBytes": 770048
+        }
+      }
+    ],
+    "sampledVisualReview": "Agent inspected 12 PNGs before the ink fix and the three final arrow samples afterwards. Software/font/visible-anchor receipts and sampled views do not imply human appearance or encoded glyph acceptance."
+  },
+  "nativeRegression": {
+    "session": 59758,
+    "actualExitCode": 0,
+    "directory": "/private/tmp/still-shift-ms1n-native-depth-OUIDjE",
+    "audit": {
+      "path": "/private/tmp/still-shift-ms2-styles54-native-audit1.json",
+      "bytes": 11121,
+      "sha256": "sha256:167d40ec747911050fa0bc010a45d6e8c3134f2f44b08ab9218c4d70ce672ffd"
+    },
+    "depthCases": 14,
+    "compositionCases": 6,
+    "allRawReadbacksHashed": 70,
+    "annotationReadbacks": 42,
+    "exactDynamicControlPairs": 30,
+    "cancellation": "Required real worker cancellation remains enforced."
+  },
+  "retainedEarlier": {
+    "browser1": {
+      "directory": "/private/tmp/still-shift-ms2-annotation-styles-KIwrgI",
+      "failed": {
+        "path": "/private/tmp/still-shift-ms2-annotation-styles-KIwrgI/failed.json",
+        "bytes": 534,
+        "sha256": "sha256:0280e5dec30ab247252718e6eb0ade0bbe6faea9704c3ef18b54848f13b119ba"
+      },
+      "inputInventory": {
+        "path": "/private/tmp/still-shift-ms2-styles54-inputs1.json",
+        "bytes": 438550,
+        "sha256": "sha256:8d48555d426accd4c16901a4956df85854d350da0a3496c0c1b2a219846ca4f3"
+      }
+    },
+    "browser2": {
+      "directory": "/private/tmp/still-shift-ms2-annotation-styles-qWYwbT",
+      "failed": {
+        "path": "/private/tmp/still-shift-ms2-annotation-styles-qWYwbT/failed.json",
+        "bytes": 80525,
+        "sha256": "sha256:ba307fed21b7be95e48bb10b1b4b7a9b64f29aa75e4b173c9e2e45c1bbc4ffcd"
+      },
+      "inputInventory": {
+        "path": "/private/tmp/still-shift-ms2-styles54-inputs2.json",
+        "bytes": 444018,
+        "sha256": "sha256:69d239279c8478d75c188483716912ebf5eb7aaa4409fee2c23873bcacdbe605"
+      },
+      "qualifiedPrefix": {
+        "families": 1,
+        "previewFrames": 60,
+        "seekDraws": 180,
+        "nativeExports": 2,
+        "finalNativeFrames": 120
+      },
+      "heldInputsAfterTerminal": "Independently unchanged before camera fixture edit; wrapper set-e post-verification not reached."
+    },
+    "browser3": {
+      "directory": "/private/tmp/still-shift-ms2-annotation-styles-8A6EOY",
+      "producer": {
+        "path": "/private/tmp/still-shift-ms2-annotation-styles-8A6EOY/run.json",
+        "bytes": 242380,
+        "sha256": "sha256:79c084113c399cf08140491fe90299f2b45ecd0bf60d549823a275422290408e"
+      },
+      "audit": {
+        "path": "/private/tmp/still-shift-ms2-styles54-audit3.json",
+        "bytes": 33668,
+        "sha256": "sha256:90bc92acd899dac89557f00360770a69469ca27a49ae4dd891237ceb4ba9abd9"
+      },
+      "inputInventory": {
+        "path": "/private/tmp/still-shift-ms2-styles54-inputs3.json",
+        "bytes": 444018,
+        "sha256": "sha256:6dd0f60e1611cdf3324ac174d330e0463c921c5180e76f3e6d595f325ab5395c"
+      }
+    },
+    "cameraProbe": {
+      "firstDirectTs": "Temporary outside-package .ts probe fails top-level-await CJS compilation; .mts repair preserves this failed observation.",
+      "successfulProbe": {
+        "path": "/private/tmp/still-shift-ms2-styles54-camera-probe2.json",
+        "bytes": 1320,
+        "sha256": "sha256:685c9461a6d9da6dcbe2035e26dbebf3090a317a5088f144d76077dd66352e4a"
+      },
+      "scope": "Nine explicit authored camera positions; [8,5,2] exposes distinct cable physical anchors on bracket frames15..29. No changed pack or fake anchors."
+    },
+    "auditReaderFailure": {
+      "path": "/private/tmp/still-shift-ms2-styles54-audit-first-failure.json",
+      "bytes": 321,
+      "sha256": "sha256:929f41f8c1c8ce952cef1d62a3df4b022be795e17becabf041def2bb53a6d968"
+    },
+    "auditReaderRepair": "Python3.11 wave does not read float PCM format3. Independent RIFF fmt/data parser verifies actual bounded samples; FFmpeg verifies all final decoded bodies."
+  },
+  "fullGate": {
+    "currentRequiredGroups": 95,
+    "originalFull51Groups": 94,
+    "status": "Final fresh aggregate/176 frozen items/36061 frames/benchmark not run for this changed slice. Prior deliberately stopped exit130 prefix remains retained without a full-pass claim.",
+    "record": "docs/mechanism-shorts-ms2-full-gate-results.json"
+  },
+  "remaining": [
+    "Explicit world-text authoring and true rigid surface marking routes with physical depth and plate invalidation.",
+    "Label-only verified native-plate reuse with truthful 3D draw/work counters; current public cue lifecycle still rerenders whole cycle.",
+    "Genuine recovered speech clocks/cues/final exports, continuous-time and encoded/human readability/appearance/listening, whole resources/replay/lifetime, final full aggregate/archive/installed, pack admission and MS2 PR.",
+    "Supported packs0; accepted pilot episodes0; MS3 not started. No paid generation, publication or owner acceptance."
+  ]
+}

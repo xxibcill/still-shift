@@ -38,6 +38,78 @@ const cueLayout = z
       .default([]),
   })
   .strict();
+const annotationOffset = z.tuple([
+  z.number().finite().min(-512).max(512),
+  z.number().finite().min(-512).max(512),
+]);
+export const MechanismScreenAnnotationStyleSchema = z.discriminatedUnion(
+  "kind",
+  [
+    z.object({ kind: z.literal("tab") }).strict(),
+    z
+      .object({
+        kind: z.literal("open-callout"),
+        ink: z
+          .string()
+          .regex(/^#[a-fA-F0-9]{6}$/)
+          .default("#101820"),
+      })
+      .strict(),
+    z
+      .object({
+        kind: z.literal("bracket"),
+        ink: z
+          .string()
+          .regex(/^#[a-fA-F0-9]{6}$/)
+          .default("#101820"),
+        toAnchor: MechanismIdSchema,
+        offsetPixels: annotationOffset.default([0, 20]),
+        tickPixels: z.number().finite().positive().max(64).default(6),
+      })
+      .strict(),
+    z
+      .object({
+        kind: z.literal("arrow"),
+        ink: z
+          .string()
+          .regex(/^#[a-fA-F0-9]{6}$/)
+          .default("#101820"),
+        headLengthPixels: z.number().finite().positive().max(256).default(12),
+        headWidthPixels: z.number().finite().positive().max(256).default(8),
+      })
+      .strict(),
+    z
+      .object({
+        kind: z.literal("highlight"),
+        ink: z
+          .string()
+          .regex(/^#[a-fA-F0-9]{6}$/)
+          .default("#101820"),
+        sizePixels: z.tuple([
+          z.number().finite().min(2).max(512),
+          z.number().finite().min(2).max(512),
+        ]),
+        opacity: z.number().finite().min(0.05).max(0.5).default(0.35),
+      })
+      .strict(),
+  ],
+);
+const annotationVisibility = z
+  .object({
+    policy: z.enum(["hide-occluded", "offscreen-indicator"]),
+    visibleWhen: z.enum(["shown", "indicator"]).optional(),
+    insetPixels: z.number().finite().min(0).max(4096).default(12),
+  })
+  .strict()
+  .refine(
+    (value) =>
+      value.visibleWhen !== "indicator" ||
+      value.policy === "offscreen-indicator",
+    {
+      message: "Indicator-only annotations require offscreen-indicator policy",
+      path: ["visibleWhen"],
+    },
+  );
 const sample = z.number().int().min(0).max(172_800_000);
 const reference = z
   .object({
@@ -157,6 +229,8 @@ export const MechanismNarratedCycleSchema = z
                     anchor: MechanismIdSchema,
                     position: pixelPosition,
                     layout: annotationLayout.optional(),
+                    style: MechanismScreenAnnotationStyleSchema.optional(),
+                    visibility: annotationVisibility.optional(),
                   })
                   .strict(),
               )

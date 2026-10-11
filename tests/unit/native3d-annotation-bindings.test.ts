@@ -419,6 +419,72 @@ describe("native annotation geometry bindings", () => {
         }),
       );
   });
+  it("requires all visibility anchors while aggregating explicit offscreen indicators", async () => {
+    const comp = document(
+        { kind: "visibility", anchors: ["outside"] },
+        false,
+        false,
+      ),
+      table = await prepared();
+    const layer = comp.layers.find((entry) => entry.id === "annotation")!;
+    if (layer.native3D?.role !== "screen-anchor")
+      throw Error("Expected binding");
+    layer.native3D.visibilityPolicy = "offscreen-indicator";
+    layer.native3D.visibleWhen = "indicator";
+    expect(evaluated(CompositionSchema.parse(comp), 0, table)).toMatchObject({
+      visible: true,
+      nativeScreenBinding: { shown: true, indicator: true },
+    });
+    layer.native3D.target = {
+      kind: "visibility",
+      anchors: ["outside", "behind"],
+    };
+    expect(evaluated(CompositionSchema.parse(comp), 0, table)).toMatchObject({
+      visible: false,
+      nativeScreenBinding: {
+        shown: false,
+        indicator: false,
+        visibility: "occluded",
+      },
+    });
+    for (const anchors of [
+      ["face", "face"],
+      Array.from({ length: 32 }, (_, index) => `anchor-${index}`),
+    ])
+      expect(
+        NativeScreenBindingSchema.safeParse({
+          ...binding,
+          target: { kind: "visibility", anchors },
+        }).success,
+      ).toBe(false);
+  });
+  it("rejects missing secondary visibility references before their inactive interval", async () => {
+    const comp = document(
+      { kind: "visibility", anchors: ["missing"] },
+      false,
+      false,
+    );
+    comp.layers.find((layer) => layer.id === "annotation")!.inPoint = 40;
+    await expect(
+      prepareCompositionNative3DVersions(comp, {
+        version: "composition-prepared-native3d-1",
+        assets: {
+          solid: {
+            sourceSha256: nativeFixtureHash,
+            source: nativeSolidFixture(),
+          },
+        },
+      }),
+    ).rejects.toMatchObject({
+      diagnostics: [
+        {
+          code: "comp-native3d-binding",
+          node: "annotation",
+          path: "layers.0.native3D.target.anchors.0",
+        },
+      ],
+    });
+  });
   it("collapses a zero-length arrow safely and rejects a reused line/head ID", async () => {
     const comp = document(arrowTarget, true, false);
     const layer = comp.layers.find((entry) => entry.id === "annotation")!;

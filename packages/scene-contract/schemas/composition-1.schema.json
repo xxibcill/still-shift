@@ -3460,7 +3460,13 @@
                 {
                   "type": "object",
                   "properties": {
-                    "kind": { "type": "string", "const": "visibility" }
+                    "kind": { "type": "string", "const": "visibility" },
+                    "anchors": {
+                      "minItems": 1,
+                      "maxItems": 31,
+                      "type": "array",
+                      "items": { "$ref": "#/$defs/__schema9" }
+                    }
                   },
                   "required": ["kind"],
                   "additionalProperties": false

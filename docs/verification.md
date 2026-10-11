@@ -119,6 +119,15 @@ independently replay every final native frame. Run serially with other browser/e
 groups; it is included in `pnpm test`. Synthetic diagnostic frames are separate from
 full encoded readability, continuous motion and human production acceptance.
 
+`pnpm test:browser:mechanism-annotation-styles` exercises tab/open-callout/bracket/
+arrow/highlight recipes in each of three candidate families. It requires all-frame
+actual visible anchors and complete measured labels, including multi-anchor group
+inheritance, and exact forward/reverse/shuffled preview pixels. Repeated native
+finals independently replay every observed frame and compare complete encoded/video/
+audio output. It uses synthetic PCM; genuine speech, continuous/human readability,
+world/surface routes and plate reuse remain separate. Run serially with browser/
+export groups; it is registered in `pnpm test` and the full local gate.
+
 ## Verification policy
 
 ### Deferred WebGL performance

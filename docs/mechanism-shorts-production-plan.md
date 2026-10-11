@@ -848,7 +848,17 @@ mechanism families establish whether the architecture transfers.
       admission. Its diagnostic controls are recorded separately from cue recipes,
       real surface/world authoring, plate reuse and encoded/human acceptance in
       [annotation evidence](./mechanism-shorts-ms2-annotation-results.json).
-      This criterion remains unchecked.
+      Slice54 wires all five screen recipes with optional bounded style/visibility
+      schemas, authored locks and identity multi-anchor groups. Exact legacy tab
+      output remains preserved. Final fast2 passes 4,313 units/423 files; native
+      depth/composition/cancellation and fresh style browser4 pass on held inputs.
+      Three families/five styles verify 180 preview frames/540 seeks and six native
+      exports/360 independently replayed final frames, with decoded video/audio,
+      dependency and retained PNG audits. The
+      centered-group, cable framing and mismatched arrow ink failures are repaired
+      and retained in [style evidence](./mechanism-shorts-ms2-annotation-style-results.json).
+      The world/surface and plate-invalidation/reuse parts of this criterion remain
+      unchecked.
 - [ ] Compile semantic contact/release/return events from supplied narration cues
       into all picture, annotation, caption and sound tracks. Reject overfull shots,
       out-of-recording cues and insufficient reading/action time. Do not stretch

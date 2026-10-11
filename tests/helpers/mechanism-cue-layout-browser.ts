@@ -15,6 +15,7 @@ export async function cueLayoutBrowserProof(
   composition: Composition,
   preparedNative3D: CompositionPreparedNative3DVersions,
   appearanceCodeIdentity: NativeAppearanceCodeIdentity,
+  sampleFrames: readonly number[] = [],
 ) {
   const resources = await loadCompositionResources(
     composition,
@@ -28,6 +29,7 @@ export async function cueLayoutBrowserProof(
     });
   const frames: { frame: number; sha256: string; bounds: unknown[] }[] = [];
   let png = "";
+  const sampledPngs: { frame: number; png: string }[] = [];
   const capture = async (frame: number, record: boolean) => {
     await preview.prepareFrame(frame);
     const report = await renderCompositionFrameAsync(preview, frame);
@@ -60,23 +62,35 @@ export async function cueLayoutBrowserProof(
           b.bottom > composition.height
         )
           throw Error("Clipped text " + layer.id + JSON.stringify(b));
-        if (layer.native3D?.role === "screen-anchor") {
-          const anchor = layer.native3D.anchor;
+        const binding =
+          layer.native3D ??
+          composition.layers.find((candidate) => candidate.id === layer.parent)
+            ?.native3D;
+        if (binding?.role === "screen-anchor") {
+          const anchors = [
+            binding.anchor,
+            ...(binding.target.kind === "visibility"
+              ? (binding.target.anchors ?? [])
+              : []),
+          ];
           if (
-            !report.nativeObservationsV2?.some((pass) => {
-              const observed = pass.observed.anchors[anchor];
-              return (
-                observed &&
-                "visibility" in observed &&
-                observed.visibility === "visible"
-              );
-            })
+            anchors.some(
+              (anchor) =>
+                !report.nativeObservationsV2?.some((pass) => {
+                  const observed = pass.observed.anchors[anchor];
+                  return (
+                    observed &&
+                    "visibility" in observed &&
+                    observed.visibility === "visible"
+                  );
+                }),
+            )
           )
             throw Error(
               "Annotation anchor is not actually visible at " +
                 frame +
                 ": " +
-                anchor,
+                anchors.join(","),
             );
           if (
             !actual.visible ||
@@ -121,7 +135,10 @@ export async function cueLayoutBrowserProof(
         .join("");
       if (record) {
         frames.push({ frame, sha256, bounds });
-        if (frame === Math.floor(composition.frameCount / 3)) {
+        if (
+          frame === Math.floor(composition.frameCount / 3) ||
+          sampleFrames.includes(frame)
+        ) {
           const output = document.createElement("canvas");
           output.width = composition.width;
           output.height = composition.height;
@@ -136,7 +153,11 @@ export async function cueLayoutBrowserProof(
               0,
               0,
             );
-          png = output.toDataURL("image/png");
+          const capturedPng = output.toDataURL("image/png");
+          if (frame === Math.floor(composition.frameCount / 3))
+            png = capturedPng;
+          if (sampleFrames.includes(frame))
+            sampledPngs.push({ frame, png: capturedPng });
         }
       } else if (frames[frame]!.sha256 !== sha256)
         throw Error("Seek history changed pixels at " + frame);
@@ -154,6 +175,7 @@ export async function cueLayoutBrowserProof(
     return {
       frames,
       png,
+      sampledPngs,
       forwardReverseRandomStable: true,
       measuredFrames: composition.frameCount,
     };

@@ -178,6 +178,15 @@ and derived-path readers. Existing leader, position and visibility routes retain
 their limits. Evaluator version58 invalidates sampled composition cache identity.
 All-frame diagnostic GPU controls and broader encoded/human review are separate.
 
+MS2 slice54 extends `target: { kind: "visibility" }` with optional `anchors`
+(1–31 distinct additional physical references). All primary/additional references
+must be shown; indicator is the union of their outside-frame states while all are
+shown. This permits one visibility group for an entire multi-anchor annotation.
+Missing references are admitted early and errors locate `target.anchors[i]`.
+Existing single-anchor behavior remains unchanged; evaluator version59 records
+this extension. [Cue recipes](./mechanism-narrated-cycles.md#screen-annotation-recipes)
+compile these bindings into ordinary composition layers.
+
 ## Local artwork mapping and render graph
 
 L is native untransformed local pixels (right/down), A is L after the settled ordinary local 2D transform, and P is a right-handed world plane (right/up/Z0). Bind P through partWorld times binding TRS; no viewport-to-world stretch or screen homography participates.

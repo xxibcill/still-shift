@@ -65,12 +65,40 @@ export function resolveNativeScreenAnchor(
       ];
     }
   }
-  return {
+  const result: NativeScreenBindingResult = {
     pixel,
     shown: shown && pixel !== null,
     indicator: indicator && pixel !== null,
     visibility: anchor.visibility,
   };
+  if (binding.target.kind === "visibility")
+    binding.target.anchors?.forEach((secondary, index) => {
+      let point: NativeScreenBindingResult;
+      try {
+        point = resolveNativeScreenAnchor(snapshot, {
+          ...binding,
+          anchor: secondary,
+          target: { kind: "visibility" },
+        });
+      } catch (error) {
+        if (error instanceof PassageError)
+          throw new PassageError(
+            error.diagnostics.map((diagnostic) => ({
+              ...diagnostic,
+              path: (diagnostic.path ?? location.path).replace(
+                /\.anchor$/,
+                `.target.anchors.${index}`,
+              ),
+            })),
+          );
+        throw error;
+      }
+      if (!point.shown) result.visibility = point.visibility;
+      result.shown &&= point.shown;
+      result.indicator ||= point.indicator;
+    });
+  result.indicator &&= result.shown;
+  return result;
 }
 
 /** Settled parent/camera mapping is inverted exactly once for both position and leader endpoint. */

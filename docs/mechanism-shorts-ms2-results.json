@@ -17954,9 +17954,56 @@
         "Fresh recovered-speech clocks and semantic native exports, whole resources/lifetime/replay, full gate/final archive/installed/pack admission/MS2 PR.",
         "Supported packs0; accepted pilot episodes0; MS3 not started."
       ]
+    },
+    "fiftyFourthSlice": {
+      "status": "screen-cue-recipes-software-slice-complete",
+      "evidence": "docs/mechanism-shorts-ms2-annotation-style-results.json",
+      "styles": ["tab", "open-callout", "bracket", "arrow", "highlight"],
+      "verification": {
+        "fast2": {
+          "session": 95461,
+          "actualExitCode": 0,
+          "unitTests": 4313,
+          "unitFiles": 423,
+          "log": {
+            "path": "/private/tmp/still-shift-ms2-styles54-fast2.log",
+            "bytes": 37121,
+            "sha256": "sha256:c1344a29ce8b15b8eb53367f116999de566a6ca869991fca97e6706edd05c9da"
+          }
+        },
+        "nativeRegression": {
+          "actualExitCode": 0,
+          "depthCases": 14,
+          "compositionCases": 6,
+          "allRawReadbacksHashed": 70,
+          "exactDynamicControlPairs": 30
+        },
+        "browser": {
+          "families": 3,
+          "recipesPerFamily": 5,
+          "previewFrames": 180,
+          "seekDraws": 540,
+          "nativeExports": 6,
+          "finalNativeFrames": 360,
+          "sampledPngs": 12,
+          "repeatVideoAudioPairs": 3
+        },
+        "heldInputs": {
+          "files": 2603,
+          "bytes": 120347181,
+          "unchanged": true
+        }
+      },
+      "remaining": [
+        "Explicit world-text authoring and true rigid surface marking routes with physical depth and plate invalidation.",
+        "Label-only verified native-plate reuse with truthful 3D draw/work counters; current public cue lifecycle still rerenders whole cycle.",
+        "Genuine recovered speech clocks/cues/final exports, continuous-time and encoded/human readability/appearance/listening, whole resources/replay/lifetime, final full aggregate/archive/installed, pack admission and MS2 PR.",
+        "Supported packs0; accepted pilot episodes0; MS3 not started. No paid generation, publication or owner acceptance."
+      ]
     }
   },
   "limits": [
+    "Slice54 wires five screen cue recipes across three candidate families; final fast2 passes4313 units/423 files, native depth14/six composition/cancellation pass, and fresh180 previews/540 seeks/six exports360 native frames plus independent decoded/body/PNG audit pass on unchanged2603 inputs120347181B. Red, fixture, type, camera and arrow-ink failures remain retained. World/surface routes, plate reuse, genuine speech and remaining MS2/full95/final/pack/pilot/human/PR gates remain open.",
     "Slice53 implements bounded shared composition bracket/arrow geometry with immutable sampled paths, all-anchor visibility, early secondary-reference checks and located writer/viewport failures. Final fast4 passes 4,303 units/422 files; native-depth4 passes14 depth/six composition cases/cancellation, including42 new readbacks and30 independently audited exact dynamic/control pairs. Inventory4 unchanged2,568 files/119,629,177B. Failures and staged passes retained. Full51 was deliberately stopped with actual exit130 before this feature work; final full94-group/176-item/36,061-frame/benchmark gate remains required. Cue recipes/world/surface/plate reuse and broader MS2/PR/pack/pilot acceptance stay open.",
     "Slice52 recovers three existing unpaced spoken recordings and supplied timed transcripts for the candidate families, with four current audio hashes and thirteen cue associations verified. A shorter tape-hook take uses revised copy; the initial identical-script assumption failed and is retained. New external media are not covered by the stopped full51 software prefix; actual decode/sample-clock, genuine cue/native exports, broader annotation/world/surface/plate reuse, resources/final installed/pack admission remain open. No audio was changed or generated; packs/pilot0.",
     "Slice51 expands Thai review to all114 distinct cells at frames8/18 and three sizes (42 overviews/684 shown samples), binding raw inputs and artifact hashes. Sampled resolved copy/marks remain; leading-vowel prefixes and semantic wrap/contrast negatives are located. Finer Thai motion is unadopted and complete-message holds remain separately checked. Full51 attempt1 was later deliberately stopped with actual exit130 on unchanged held5e7f49e5 inputs; pack/pilot0 and broader MS2 gates stay open.",
