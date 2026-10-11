@@ -97,3 +97,6 @@ Float64; independent observation still verifies exact used position/normal/index
 byte digests and the current part/landmark relationships. This changes the opaque
 spring key prefix to `spring-f32:`; source/execution identity and final archive
 verification must be refreshed for the new producer.
+
+[Cue-wide crowded-label placement](./mechanism-cue-layout.md) adds locked/priority
+candidates and projected contact exclusions with actual rendered visibility proof.

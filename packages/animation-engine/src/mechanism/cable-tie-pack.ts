@@ -198,6 +198,15 @@ function cableScene(
         source: { kind: "shape-landmark", shape: "pawl", landmark: "tip" },
       },
       {
+        id: "strap.outerSurface",
+        role: "proof-target",
+        source: {
+          kind: "part-local",
+          part: "strap",
+          position: [-(toothCount - 1) * pitch, 0, strapWidth / 2],
+        },
+      },
+      {
         id: "strap.tooth.datum",
         role: "contact",
         source: { kind: "part-local", part: "strap", position: [0, tipY, 0] },

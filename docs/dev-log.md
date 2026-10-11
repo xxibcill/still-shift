@@ -45,16 +45,17 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Forty-three slices include revision-bound saved family/cue compile/render/check,
-  actual media loading and normal native export with independent output proof.
-  Fast8 passes 4,263 units; 38 filesystem/CLI tests and 12 three-family exports/720
-  native frames pass. Four actual CLI routes add one export/60 native frames.
-  Earlier import/build/boundary/timeout failures are retained; whole-cycle rerender only.
-  Next: selective shot reuse, full label/coverage/typography, genuine spoken inputs,
-  supported packs and remaining producer/resource/lifetime/full/final-installed.
+  Forty-four slices include deterministic cue-wide crowded labels with locks,
+  priority/backtracking, safe/caption/contact exclusions and actual visibility checks.
+  Fast10: 4,270 units; 38 runtime checks. Three families/two stages: 360 measured
+  visible frames/1,080 forward/reverse/shuffled draws; 12 exports/720 independent
+  final native frames. Six exact receipt/snapshot pairs and unchanged cable geometry.
+  Initial hidden-label proof was deliberately stopped; type/fixture failures retained.
+  Next: broader label/continuous/encoded readability, coverage/typography, genuine
+  speech, supported packs and remaining resource/lifetime/full/final-installed gates.
   Supported packs/pilot 0; no merge/publication, human acceptance or paid generation.
-  [Lifecycle evidence](./mechanism-shorts-ms2-cue-lifecycle-results.json),
-  [API](./mechanism-cue-lifecycle.md), [MS2 results](./mechanism-shorts-ms2-results.json).
+  [Layout evidence](./mechanism-shorts-ms2-cue-layout-results.json),
+  [API](./mechanism-cue-layout.md), [MS2 results](./mechanism-shorts-ms2-results.json).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
   inventory15:2,329 inputs/117,503,155B. Original full6 retains a qualified19-group
@@ -212,6 +213,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 slice44: deterministic visible crowded cue layout
+
+- Cue-wide placement now preserves locks, chooses priority/stable-ID preferences,
+  backtracks, and excludes safe/caption/label/projected contact regions. Text,
+  backing and leader start move together; positions are history-independent.
+- Fast10: 4,270 units/420 files; 38 runtime checks/5 files. Three-family before/after
+  label/camera edits pass 360 actual-font/visible frames, 1,080 forward/reverse/shuffled
+  draws and 12 repeated exports/720 independently replayed final native frames.
+- Six layout receipts match exact saved revision hashes and snapshot semantics.
+  Added cable exterior strap anchor; verified complete geometry unchanged.
+- Retained type and CAS fixture failures. Sampled image exposed hidden labels in
+  the initial proof: deliberately stopped exit130 and strengthened actual visibility.
+- Six encoded frame20 samples inspected; full encoded readability, broader routes,
+  continuous contact and remaining MS2/full/final-installed/owner gates stay open.
+- [Evidence](./mechanism-shorts-ms2-cue-layout-results.json),
+  [API](./mechanism-cue-layout.md), [plan](./mechanism-shorts-production-plan.md).
 
 ### 2026-10-11 — MS2 slice43: revision-bound cue lifecycle
 

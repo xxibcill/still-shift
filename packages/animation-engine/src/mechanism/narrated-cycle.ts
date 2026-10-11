@@ -1,3 +1,4 @@
+import { planMechanismCueLayout } from "./cue-layout.ts";
 import {
   MechanismNarratedCycleSchema,
   validateComposition,
@@ -553,6 +554,50 @@ export function compileMechanismNarratedCycle(
     rigControls: timeline.timeline.rigControls as MechanismRigControlsV2,
     cameraKeys,
   });
+  const labelLayout = planMechanismCueLayout(
+    instance,
+    document,
+    frames,
+    timeline.timeline.rigControls as MechanismRigControlsV2,
+    cameraKeys,
+  );
+  for (const [cueIndex, cue] of document.cues.entries())
+    for (const annotation of cue.annotations) {
+      const placed = labelLayout[cueIndex]!.placements.find(
+        (p) => p.annotation === annotation.id,
+      )!;
+      const delta: [number, number] = [
+        placed.position[0] - annotation.position[0],
+        placed.position[1] - annotation.position[1],
+      ];
+      for (const kind of [
+        "annotation",
+        "annotation-panel",
+        "leader",
+      ] as const) {
+        const layer = layers.find(
+          (layer) => layer.id === trackId(kind, cue.id, annotation.id),
+        )!;
+        if (
+          layer.transform?.position &&
+          Array.isArray(layer.transform.position)
+        )
+          layer.transform.position = [
+            layer.transform.position[0]! + delta[0],
+            layer.transform.position[1]! + delta[1],
+          ];
+        if (kind === "leader" && layer.type === "shape") {
+          const content = layer.contents.find(
+            (content) => content.type === "path",
+          );
+          if (content?.type === "path" && "vertices" in content.path)
+            content.path.vertices[0] = [
+              placed.position[0] + width * 0.16,
+              placed.position[1] + fontSize * 1.3,
+            ];
+        }
+      }
+    }
   const validation = validateComposition({
     schemaVersion: "composition-1",
     id: document.id,
@@ -587,6 +632,7 @@ export function compileMechanismNarratedCycle(
     timeline,
     composition: validation.composition!,
     cueMap: frames,
+    labelLayout,
     recording: {
       sourceSamples: document.narration.sampleCount,
       sourceSha256: document.narration.sha256,

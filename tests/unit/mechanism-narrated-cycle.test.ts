@@ -282,7 +282,7 @@ describe("supplied narration cue compiler", () => {
     const { instance, document } = narratedCycleFixture();
     document.cues[0]!.annotations = [
       { ...document.cues[0]!.annotations[0]!, id: "part" + "x".repeat(120) },
-      { ...document.cues[0]!.annotations[0]!, id: "a-b" },
+      { ...document.cues[0]!.annotations[0]!, id: "a-b", position: [190, 18] },
     ];
     const result = compileMechanismNarratedCycle(instance, document);
     expect(

@@ -10,6 +10,34 @@ import {
   MechanismIdSchema,
   MechanismNumberSchema,
 } from "./primitives.ts";
+const pixelPosition = z.tuple([
+  z.number().finite().min(0).max(8192),
+  z.number().finite().min(0).max(8192),
+]);
+const annotationLayout = z
+  .object({
+    locked: z.boolean().default(false),
+    priority: z.number().int().min(0).max(1000).default(0),
+    candidates: z.array(pixelPosition).max(8).default([]),
+  })
+  .strict();
+const cueLayout = z
+  .object({
+    safeInsetPixels: z.number().finite().min(0).max(4096).default(8),
+    gapPixels: z.number().finite().min(0).max(256).default(4),
+    protectedAnchors: z
+      .array(
+        z
+          .object({
+            anchor: MechanismIdSchema,
+            radiusPixels: z.number().finite().min(1).max(4096),
+          })
+          .strict(),
+      )
+      .max(8)
+      .default([]),
+  })
+  .strict();
 const sample = z.number().int().min(0).max(172_800_000);
 const reference = z
   .object({
@@ -119,6 +147,7 @@ export const MechanismNarratedCycleSchema = z
             minimumActionSamples: sample.refine((value) => value > 0),
             camera: MechanismCameraSchema.optional(),
             editing: z.enum(["cut", "hold", "transition"]).default("hold"),
+            layout: cueLayout.optional(),
             annotations: z
               .array(
                 z
@@ -126,10 +155,8 @@ export const MechanismNarratedCycleSchema = z
                     id: compositionId,
                     text: z.string().min(1).max(4000),
                     anchor: MechanismIdSchema,
-                    position: z.tuple([
-                      z.number().finite().min(0).max(8192),
-                      z.number().finite().min(0).max(8192),
-                    ]),
+                    position: pixelPosition,
+                    layout: annotationLayout.optional(),
                   })
                   .strict(),
               )

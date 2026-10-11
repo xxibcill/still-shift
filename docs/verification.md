@@ -110,6 +110,15 @@ old output under fresh compilation and altered encoded files. It is included in
 `pnpm test`; run it serially with browser/export groups. It conservatively rerenders
 whole cycles; synthetic fixtures do not establish spoken input or rendered label QA.
 
+`pnpm test:browser:mechanism-cue-layout` checks three candidate families with
+simultaneous annotations/caption/protected contact before and after label/camera
+CAS edits. It measures actual glyph bounds and requires actual GPU-observed visible
+anchors and complete painted copy on every frame; forward/reverse/shuffled preview
+pixels repeat. Repeated native finals compare all encoded/decoded video/audio and
+independently replay every final native frame. Run serially with other browser/export
+groups; it is included in `pnpm test`. Synthetic diagnostic frames are separate from
+full encoded readability, continuous motion and human production acceptance.
+
 ## Verification policy
 
 ### Deferred WebGL performance

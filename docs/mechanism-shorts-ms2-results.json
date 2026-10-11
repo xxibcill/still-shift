@@ -16071,6 +16071,17 @@
         "sha256": "sha256:42daf7ba0ad803a27dc8ccdfea8fdcc25d155d4c312f617261ae7ef29ed98364"
       },
       "qualification": "Synthetic local PCM engineering fixtures only. Whole-cycle rerender, normal encoded file/video facts and independent native observation proof; not encoded-pixel derivation from observation metadata, selective shot reuse, full label/listening QA, complete resource/lifetime accounting or full/final installed acceptance. Supported packs/pilot 0; no human acceptance, paid generation, merge or publication."
+    },
+    {
+      "id": "cue-layout-slice-44",
+      "status": "cue-wide-crowded-layout-and-visible-native-frames-verified-in-stages",
+      "record": "docs/mechanism-shorts-ms2-cue-layout-results.json",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-layout44-inputs10.json",
+        "bytes": 436240,
+        "sha256": "sha256:95b0a9f2ac7bca2263d2bd302c6b19d226a8595986c348022b5cd998b5fdd4e6"
+      },
+      "qualification": "Integer-frame cue-wide envelope and actual-visible engineering proof with synthetic local PCM and 240x136 diagnostic frames. Does not prove arbitrary fractional contact sweeps, all layouts/world/surface/annotation primitives, complete encoded glyph readability, genuine spoken input, whole resource/lifetime accounting or full/final installed acceptance. Supported packs/pilot 0; no human acceptance, paid generation, merge or publication."
     }
   ],
   "implementation": {
@@ -17539,10 +17550,44 @@
         "Selective affected-shot reuse, complete rendered label/layout/readability QA, coverage and typography acceptance.",
         "Genuine spoken input, supported-pack promotion, whole resource/lifetime audit, full software/benchmark and final installed-package verification before MS2 PR and MS3."
       ]
+    },
+    "fortyFourthSlice": {
+      "status": "cue-wide-crowded-layout-and-visible-native-frames-verified-in-stages",
+      "scope": [
+        "Cue-wide deterministic screen-pinned annotation envelopes, safe area/caption/contact/label exclusions, priority/stable-ID ordering, explicit locks and bounded backtracking.",
+        "Project declared contact regions at every integer output frame with current family pose and camera/rig tracks; retain candidate flags and one constant label position per cue without playback-history hysteresis.",
+        "Move text/backing/leader start together while retaining actual native visibility/leader endpoint binding and immutable source recording. Existing scoped CAS annotation/camera edits trigger recompile.",
+        "Add parameter-derived cable-tie strap.outerSurface anchor with exact unchanged geometry; source and metadata identities refresh as intended.",
+        "Three-family simultaneous actual-visible crowded label/caption/contact fixtures before and after copy/position/camera edits: complete actual-font bounds, all-frame forward/reverse/shuffled pixels, repeated final encoded/decoded video/audio and independent final native replay."
+      ],
+      "counts": {
+        "unitTests": 4270,
+        "unitFiles": 420,
+        "newUnitTests": 7,
+        "focusedTests": 27,
+        "focusedFiles": 3,
+        "runtimeTests": 38,
+        "runtimeFiles": 5,
+        "families": 3,
+        "stages": 6,
+        "measuredOutputFrames": 360,
+        "previewDrawsForwardReverseShuffled": 1080,
+        "finalExports": 12,
+        "finalNativeFrames": 720,
+        "visibleAnnotationsPerCue": 2,
+        "actualLayoutReceipts": 6,
+        "sampledEncodedFramesInspected": 6,
+        "supportedPacks": 0,
+        "pilotAcceptedEpisodes": 0
+      },
+      "remaining": [
+        "Full broader label/world/surface routes and annotation primitives, required continuous/contact/readability QA and impossible/jitter production fault suite.",
+        "Coverage board, explicit weight/outline and typography risk reproductions, genuine spoken input, supported-pack promotion, remaining whole resource/lifetime/full/final-installed acceptance before MS2 PR/MS3."
+      ]
     }
   },
   "limits": [
-    "Forty-three slices include current-revision saved family/cue compile/render/check with actual media loading, normal native export and independent output checking. Fast8 passes 4,263 units; 38 filesystem/CLI tests, 12 three-family exports/720 native frames and four actual CLI commands with one further export/60 native frames pass. Whole-cycle rerender only. Selective shot reuse, full label/coverage/typography, supported packs/genuine spoken inputs, whole resource/lifetime/full/final installed and remaining MS2/MS3 acceptance stay open. Supported packs/pilot 0.",
+    "Forty-four slices include cue-wide deterministic crowded-label placement with explicit locks, priority/stable IDs, bounded backtracking and streamed integer-frame protected-contact exclusions. Fast10 passes 4,270 units; 38 filesystem/CLI tests; three families/two edited stages verify 360 actual-font/visible frames and 1,080 forward/reverse/shuffled preview draws plus 12 exports/720 independent final native frames. Six receipt/snapshot pairs match exactly; cable surface anchor leaves geometry unchanged. Initial hidden-label proof was intentionally rejected/stopped; failures retained. Full broader labels/continuous/encoded readability, coverage/typography, supported packs/genuine speech, resource/lifetime/full/final installed and remaining MS2/MS3 acceptance stay open. Supported packs/pilot 0.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

@@ -830,6 +830,16 @@ mechanism families establish whether the architecture transfers.
       failure if no valid layout exists.
       Derive temporal stabilization from the timeline or a deterministic prepass so
       hysteresis never makes random seeking depend on prior playback.
+      Slice44 adds cue-wide constant screen-label placement, authored locks,
+      priority/stable IDs and bounded backtracking, with safe/caption/label exclusions
+      and streamed integer-frame contact projections. Three families/two edited
+      stages pass 360 actually visible/font-measured frames, 1,080 forward/reverse/
+      shuffled draws and 12 exports/720 independent final native frames. Fast10
+      passes 4,270 units and 38 runtime checks; six receipts match exact snapshots.
+      [Layout evidence](./mechanism-shorts-ms2-cue-layout-results.json) retains a
+      deliberately stopped hidden-label proof and failed checks; [API](./mechanism-cue-layout.md)
+      separates conservative envelopes from encoded/continuous/broader route QA.
+      This expanded criterion remains unchecked.
 - [ ] Add tabs, open callouts, brackets, arrows and restrained highlights with
       explicit hidden/offscreen behavior and authored locks. A true surface marking
       is part of the 3D plate and invalidates it; ordinary label edits do not.
