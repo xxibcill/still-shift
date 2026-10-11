@@ -1,0 +1,522 @@
+{
+  "version": "mechanism-ms2-output3-mixed-results-1",
+  "date": "2026-10-11",
+  "branch": "codex/mechanism-ms2",
+  "baseSourceCommit": "d1e157de57f229591bef2b996f90bf05027c0311",
+  "status": "mixed-source3-http-export-verified-installed-accounting-pending",
+  "scope": [
+    "Actual mixed source1/source2/source3 fixture preserves original source2 and legacy teaching/exposure fixtures and adds genuinely prepared glTF/PNG source3 in its own precomposition.",
+    "Trusted request3 samples fresh fractional expected passes and rejects cancellation/unbound appearance; actual output3 HTTP bodies and pixel transport hashes revalidate through independently retained row replay.",
+    "Seven real authenticated endpoint faults: downgrade to output2, forged frame3 key, sampled clock, missing pass, worker, credential and foreign origin. No first-rejected packet authorizes pixel upload or output publication."
+  ],
+  "workingInputs": {
+    "manifest": {
+      "path": "/private/tmp/still-shift-ms2-mixed3-inputs5.json",
+      "bytes": 429710,
+      "sha256": "sha256:fad6d91b63537bab5d7d9dbda19646e7b4c67c705896d23937b64fc56d1662de"
+    },
+    "files": 2519,
+    "inputBytes": 119144871,
+    "selection": {
+      "roots": [
+        "apps/",
+        "packages/",
+        "scripts/",
+        "tests/",
+        "tools/",
+        "services/",
+        "benchmarks/",
+        "examples/",
+        "assets/",
+        "catalogs/"
+      ],
+      "rootFiles": "all Git-tracked or nonignored regular root files",
+      "packageProse": [
+        "docs/npm-package-readme.md",
+        "docs/npm-third-party-notices.md"
+      ],
+      "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+    }
+  },
+  "actualRootSessions": [
+    {
+      "session": 15483,
+      "exitCode": 1,
+      "commands": ["format1", "build1", "browser2"]
+    },
+    {
+      "session": 31393,
+      "exitCode": 0,
+      "commands": ["format3", "build3", "browser4"]
+    },
+    {
+      "session": 55037,
+      "exitCode": 0,
+      "commands": ["inputs5", "fast5", "browser6", "hold6"]
+    }
+  ],
+  "verification": [
+    {
+      "id": "format1",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-mixed3-format1.log",
+        "bytes": 185,
+        "sha256": "sha256:ba80abe1374ab9c38175239dd632320833b7f6eebe955d91b1bf2c13771b0ee6"
+      }
+    },
+    {
+      "id": "build1",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-mixed3-build1.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "browser2",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-mixed3-browser2.log",
+        "bytes": 1283,
+        "sha256": "sha256:9bd3abc8526b52fa45ffaf5e39e482b0ea462ed1a0306e4ceffbd322f2384dc1"
+      }
+    },
+    {
+      "id": "format3",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-mixed3-format3.log",
+        "bytes": 47,
+        "sha256": "sha256:aa9966d5e7d85cfe5e1d3cfbed659fd0c7ecf775acf40d5b1f62eb12f8e432e5"
+      }
+    },
+    {
+      "id": "build3",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-mixed3-build3.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "browser4",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-mixed3-browser4.log",
+        "bytes": 270,
+        "sha256": "sha256:2807d56ca9667cbebddaf94fafbccb7c654cd71a35d145806302621898aab98c"
+      }
+    },
+    {
+      "id": "fast5",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-mixed3-fast5.log",
+        "bytes": 37414,
+        "sha256": "sha256:f92c6255447d017240fa5595267a3ccf576c00e32a1057dd650c9eb7d0e28edd"
+      }
+    },
+    {
+      "id": "browser6",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-mixed3-browser6.log",
+        "bytes": 270,
+        "sha256": "sha256:f02a66cbe052df665167c787caeca9a6ddea3dde499e7b7c9028edf73d45f9a5"
+      }
+    },
+    {
+      "id": "hold6",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-mixed3-hold6.log",
+        "bytes": 191,
+        "sha256": "sha256:bcd138259e38802e2ab4c1e24b3dca8ee2bc6c7edb0fa4c286cbb3e74eeb2e0f"
+      }
+    }
+  ],
+  "counts": {
+    "unitTests": 4198,
+    "unitFiles": 410,
+    "mixedOutputFrames": 6,
+    "mixedContributingPasses": 54,
+    "actualObservationBodies": 6,
+    "actualPixelBodies": 6,
+    "authenticatedFaults": 7,
+    "newInstalledArchives": 0,
+    "supportedPacks": 0,
+    "pilotSupportedEpisodes": 0
+  },
+  "proof": {
+    "path": "/private/tmp/still-shift-ms2-mixed-export3-0I5szx/run.json",
+    "bytes": 15997,
+    "sha256": "sha256:5234212325415ad763820bf1feea8c0fc568a478ebde3a95d8ccede7f46c77f3"
+  },
+  "http": [
+    {
+      "id": "actual-http-and-independent-replay",
+      "status": "passed",
+      "metrics": {
+        "nativeObservations": {
+          "version": "native-observation-closure-3",
+          "manifestPath": "/private/tmp/still-shift-ms2-mixed-export3-0I5szx/instrumented.mp4.native-observations.json",
+          "manifestSha256": "sha256:fbcfa8cc305679f02d2df27895ae1f8ef5f56f6fdf3583f7c98b56863dfcd659",
+          "executionSha256": "sha256:2d8b9b035fdacdf62a989d59f4912e5746ab8576609504c08a105e4b82c57b50",
+          "outputFrames": 6,
+          "passCount": 54,
+          "outputSha256": "sha256:3e839c201f2bcc25f466fc84db62f4d722112e4bcd5a493df0efa12f8a41508d"
+        },
+        "version": "chromium-ffmpeg-0.6.11",
+        "sceneManifestPath": "/private/tmp/still-shift-ms2-mixed-export3-0I5szx/instrumented.mp4.scene.json",
+        "sceneChecksum": "sha256:0ecc7751e6afb8ad16e62e7253c70acf5a19529271fedb9da429e66915e92025",
+        "sourceChecksum": "sha256:73e4003d8de742433b5fad71df8958b73b5fea91f0f857f2e95481db68659faa",
+        "depthChecksum": null,
+        "frameCount": 6,
+        "width": 320,
+        "height": 180,
+        "durationMs": 200,
+        "frameRenderAverageMs": 1356.1000000238419,
+        "frameRenderP95Ms": 5812.699999928474,
+        "frameUploadAverageMs": 24.916666626930237,
+        "frameUploadP95Ms": 29.200000047683716,
+        "ffmpegCpuMs": 13.999999999999998,
+        "ffmpegCpuScope": "ffmpeg-transcode-user-plus-system",
+        "encodePathWallMs": 8710.553208000001,
+        "validationWallMs": 54.13654099999985,
+        "totalWallMs": 10145.465,
+        "outputBytes": 4023,
+        "outputChecksum": "sha256:3e839c201f2bcc25f466fc84db62f4d722112e4bcd5a493df0efa12f8a41508d",
+        "peakParentRssBytes": 550060032,
+        "peakSampledProcessTreeRssBytes": 1236582400,
+        "cpuModel": "Apple M5 Pro",
+        "cpuLogicalCores": 15,
+        "browserVersion": "151.0.7922.34",
+        "browserExecutable": "/Users/jjae/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+        "gpuRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver) composition-webgl2-0.68.7",
+        "renderEnvironment": {
+          "profile": "chromium-software-2",
+          "browserVersion": "151.0.7922.34",
+          "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+          "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "ffmpegVersion": "ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers",
+        "ffmpegCodec": "-c:v libx264 -preset veryfast -crf 18 -pix_fmt yuv420p -color_range tv -color_primaries bt709 -color_trc bt709 -colorspace bt709 -bsf:v h264_metadata=colour_primaries=1:transfer_characteristics=1:matrix_coefficients=1 -movflags +faststart",
+        "frameTransport": "raw_rgba",
+        "compositionStatistics": {
+          "version": "composition-export-statistics-1",
+          "scope": "synchronous-submission-wall-time",
+          "frameCount": 6,
+          "totalSubmissionWallMs": 7610.900000214577,
+          "byLayerType": [
+            {
+              "phase": "frame",
+              "type": "graph-overhead",
+              "calls": 18,
+              "submissionWallMs": 6.200000166893005,
+              "submissionWallMsPerOutputFrame": 1.0333333611488342
+            },
+            {
+              "phase": "frame",
+              "type": "surface",
+              "calls": 36,
+              "submissionWallMs": 15.800000190734863,
+              "submissionWallMsPerOutputFrame": 2.633333365122477
+            },
+            {
+              "phase": "frame",
+              "type": "native-depth",
+              "calls": 54,
+              "submissionWallMs": 7588.899999856949,
+              "submissionWallMsPerOutputFrame": 1264.8166666428249
+            }
+          ],
+          "cacheEnabled": false,
+          "cacheHits": 0,
+          "cacheHitScope": "source-restores-and-reuses/root-copies/surface-restores-and-reuses",
+          "workers": [
+            {
+              "render": {
+                "version": "composition-submission-statistics-1",
+                "clock": "performance.now",
+                "scope": "synchronous-submission-wall-time",
+                "inclusiveMs": 22627.200000047684,
+                "exclusiveMs": 7610.900000214577,
+                "byLayerType": [
+                  {
+                    "phase": "frame",
+                    "type": "graph-overhead",
+                    "calls": 18,
+                    "submissionWallMs": 6.200000166893005
+                  },
+                  {
+                    "phase": "frame",
+                    "type": "surface",
+                    "calls": 36,
+                    "submissionWallMs": 15.800000190734863
+                  },
+                  {
+                    "phase": "frame",
+                    "type": "native-depth",
+                    "calls": 54,
+                    "submissionWallMs": 7588.899999856949
+                  }
+                ],
+                "spans": [
+                  {
+                    "phase": "frame",
+                    "stage": "graph",
+                    "members": [],
+                    "calls": 18,
+                    "failures": 0,
+                    "inclusiveMs": 7610.900000214577,
+                    "exclusiveMs": 6.200000166893005
+                  },
+                  {
+                    "phase": "frame",
+                    "stage": "operation",
+                    "members": [
+                      {
+                        "layer": "pbr-panel",
+                        "type": "surface"
+                      }
+                    ],
+                    "calls": 18,
+                    "failures": 0,
+                    "inclusiveMs": 7268.200000047684,
+                    "exclusiveMs": 12.200000047683716
+                  },
+                  {
+                    "phase": "frame",
+                    "stage": "operation",
+                    "members": [
+                      {
+                        "layer": "pbr-panel/world3",
+                        "type": "native-depth"
+                      }
+                    ],
+                    "calls": 18,
+                    "failures": 0,
+                    "inclusiveMs": 7256,
+                    "exclusiveMs": 7256
+                  },
+                  {
+                    "phase": "frame",
+                    "stage": "operation",
+                    "members": [
+                      {
+                        "layer": "inset",
+                        "type": "surface"
+                      }
+                    ],
+                    "calls": 18,
+                    "failures": 0,
+                    "inclusiveMs": 159.19999992847443,
+                    "exclusiveMs": 3.6000001430511475
+                  },
+                  {
+                    "phase": "frame",
+                    "stage": "operation",
+                    "members": [
+                      {
+                        "layer": "inset/inset-world1",
+                        "type": "native-depth"
+                      }
+                    ],
+                    "calls": 18,
+                    "failures": 0,
+                    "inclusiveMs": 155.59999978542328,
+                    "exclusiveMs": 155.59999978542328
+                  },
+                  {
+                    "phase": "frame",
+                    "stage": "operation",
+                    "members": [
+                      {
+                        "layer": "world2",
+                        "type": "native-depth"
+                      }
+                    ],
+                    "calls": 12,
+                    "failures": 0,
+                    "inclusiveMs": 155.70000004768372,
+                    "exclusiveMs": 155.70000004768372
+                  },
+                  {
+                    "phase": "frame",
+                    "stage": "operation",
+                    "members": [
+                      {
+                        "layer": "world1",
+                        "type": "native-depth"
+                      }
+                    ],
+                    "calls": 6,
+                    "failures": 0,
+                    "inclusiveMs": 21.600000023841858,
+                    "exclusiveMs": 21.600000023841858
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "compositionMemory": {
+          "scope": "declared-worker-application-bytes",
+          "applicationLimitBytes": 8589934592,
+          "reservedNodeBudgetBytes": 536870912,
+          "concurrentWorkers": 1,
+          "peakConcurrentWorkerBytes": 268422896,
+          "sumOfWorkerPeakBytes": 268422896,
+          "workers": [
+            {
+              "beforeAcknowledgement": {
+                "scope": "declared-application-owned-bytes",
+                "limits": {
+                  "pixels": 7918845952,
+                  "metadata": 134217728
+                },
+                "current": {
+                  "pixels": 230744,
+                  "metadata": 537016
+                },
+                "peak": {
+                  "pixels": 212040422,
+                  "metadata": 56382474
+                },
+                "reservations": 7
+              },
+              "afterAcknowledgement": {
+                "scope": "declared-application-owned-bytes",
+                "limits": {
+                  "pixels": 7918845952,
+                  "metadata": 134217728
+                },
+                "current": {
+                  "pixels": 0,
+                  "metadata": 0
+                },
+                "peak": {
+                  "pixels": 212040422,
+                  "metadata": 56382474
+                },
+                "reservations": 0
+              }
+            }
+          ],
+          "nodeResults": {
+            "scope": "export-result-rpc-and-summary-capacity",
+            "limits": {
+              "pixels": 1,
+              "metadata": 536870911
+            },
+            "current": {
+              "pixels": 0,
+              "metadata": 4205968
+            },
+            "peak": {
+              "pixels": 0,
+              "metadata": 6218566
+            },
+            "reservations": 2,
+            "limitBytes": 536870912
+          }
+        }
+      },
+      "verified": {
+        "outputFrames": 6,
+        "passCount": 54,
+        "byteLength": 260551,
+        "artifacts": [
+          {
+            "path": "instrumented.mp4.native-observations.000.ndjson",
+            "sha256": "sha256:bb14d2d40456e22cf910ba6ea67a074d2182012b419eda29ff4c04becc2a6fea",
+            "byteLength": 260551,
+            "firstOutputFrame": 0,
+            "lastOutputFrame": 5,
+            "frames": 6
+          }
+        ]
+      },
+      "actualPixelBodies": 6,
+      "actualObservationBodies": 6
+    },
+    {
+      "id": "packet-downgrade",
+      "status": "passed-rejection",
+      "error": "PassageError: Invalid native observation packet",
+      "actualObservationBodies": 1,
+      "actualPixelBodies": 0,
+      "outputPublished": false
+    },
+    {
+      "id": "frame3-key",
+      "status": "passed-rejection",
+      "error": "PassageError: PBR observed assigned frame key differs",
+      "actualObservationBodies": 1,
+      "actualPixelBodies": 0,
+      "outputPublished": false
+    },
+    {
+      "id": "sample-clock",
+      "status": "passed-rejection",
+      "error": "PassageError: Observation source/frame protocol or sample clock differs",
+      "actualObservationBodies": 1,
+      "actualPixelBodies": 0,
+      "outputPublished": false
+    },
+    {
+      "id": "missing-pass",
+      "status": "passed-rejection",
+      "error": "PassageError: Observation execution or contributing-pass coverage differs",
+      "actualObservationBodies": 1,
+      "actualPixelBodies": 0,
+      "outputPublished": false
+    },
+    {
+      "id": "wrong-worker",
+      "status": "passed-rejection",
+      "error": "Error: page.evaluateHandle: Error: Native observation 0 rejected: Unknown native export worker\n    at http://127.0.0.1:5174/@fs//Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/execution-runtime/src/export-page.ts:231:23\n    at async uploadNativeObservationPacketVersions (http://127.0.0.1:5174/packages/execution-runtime/src/native-observation-upload.ts:47:5)\n    at async http://127.0.0.1:5174/@fs//Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/execution-runtime/src/export-page.ts:210:11\n    at async withManagedFrame (http://127.0.0.1:5174/packages/execution-runtime/src/composition-frame-capture.ts:100:20)\n    at async renderFrames (http://127.0.0.1:5174/@fs//Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/execution-runtime/src/export-page.ts:204:7)\n    at async exportComposition (http://127.0.0.1:5174/@fs//Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/execution-runtime/src/export-page.ts:133:18)\n    at async withManagedMemory (http://127.0.0.1:5174/packages/renderer-core/src/managed-memory-context.ts:49:12)\n    at async CompositionExportMemory.run (http://127.0.0.1:5174/packages/execution-runtime/src/composition-export-memory.ts:38:21)\n    at async window.runStillShiftExport (http://127.0.0.1:5174/@fs//Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/execution-runtime/src/export-page.ts:47:20)\n    at async eval (eval at evaluate (:311:30), <anonymous>:1:69)",
+      "actualObservationBodies": 1,
+      "actualPixelBodies": 0,
+      "outputPublished": false
+    },
+    {
+      "id": "wrong-credential",
+      "status": "passed-rejection",
+      "error": "Error: page.evaluateHandle: Error: Native observation 0 rejected: Unknown native export worker\n    at http://127.0.0.1:5174/@fs//Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/execution-runtime/src/export-page.ts:231:23\n    at async uploadNativeObservationPacketVersions (http://127.0.0.1:5174/packages/execution-runtime/src/native-observation-upload.ts:47:5)\n    at async http://127.0.0.1:5174/@fs//Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/execution-runtime/src/export-page.ts:210:11\n    at async withManagedFrame (http://127.0.0.1:5174/packages/execution-runtime/src/composition-frame-capture.ts:100:20)\n    at async renderFrames (http://127.0.0.1:5174/@fs//Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/execution-runtime/src/export-page.ts:204:7)\n    at async exportComposition (http://127.0.0.1:5174/@fs//Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/execution-runtime/src/export-page.ts:133:18)\n    at async withManagedMemory (http://127.0.0.1:5174/packages/renderer-core/src/managed-memory-context.ts:49:12)\n    at async CompositionExportMemory.run (http://127.0.0.1:5174/packages/execution-runtime/src/composition-export-memory.ts:38:21)\n    at async window.runStillShiftExport (http://127.0.0.1:5174/@fs//Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/execution-runtime/src/export-page.ts:47:20)\n    at async eval (eval at evaluate (:311:30), <anonymous>:1:69)",
+      "actualObservationBodies": 1,
+      "actualPixelBodies": 0,
+      "outputPublished": false
+    },
+    {
+      "id": "foreign-origin",
+      "status": "passed-rejection",
+      "error": "Error: Native export request differs from its local origin",
+      "actualObservationBodies": 1,
+      "actualPixelBodies": 0,
+      "outputPublished": false
+    }
+  ],
+  "qualification": "Current normal fast5 and owning mixed browser6 pass on unchanged selected inputs5. Production inputs remain unchanged from slice29; this slice adds a mixed fixture and an explicit source3 HTTP/replay proof. Retain the initial invalid same-scope overlapping controller fixture; corrected to a separate precomposition without relaxing the original overlap rule. Actual mixed fractional exposure covers frame1/frame2/frame3 in output3, six output frames/54 passes, authenticated packets and actual raw pixels with independent durable row replay. Seven forged first observations fail before pixel upload and publication. This is generic fixture software evidence, not installed consumer proof or whole world/source/body/replay accounting. No fresh broad Node/native2/full runtime/integration/benchmark/installed suite, human appearance/listening acceptance, supported pack/pilot, MS2 PR, merge/publication or paid ElevenLabs action.",
+  "failedRuns": [
+    {
+      "id": "browser2",
+      "reason": "New source3 controller overlapped original root native intervals, violating the existing one-controller-per-scope rule. Moved it into an explicit precomposition; original rule unchanged."
+    }
+  ],
+  "remaining": [
+    "Installed source3/mixed export verification and whole world/source/body/replay bounded admission.",
+    "Remaining MS2 packs/rigs/events/labels/cues/typography/board and full milestone/benchmark gates before its PR, then MS3."
+  ],
+  "changedSinceSlice29": [
+    "package.json",
+    "tests/browser/native-pbr-mixed-export.ts",
+    "tests/helpers/native-pbr-export-http-proof.ts",
+    "tests/helpers/native-pbr-mixed-fixture.ts"
+  ]
+}

@@ -367,7 +367,7 @@ retain six repeated/reverse frames, two artwork controls, five HTTP binary fault
 four async API faults, zero owners after disposal, legacy/native2 regressions,
 held inputs and earlier type failures/qualified lost terminal receipts. Diagnostic
 output3 envelopes use the actual appearance digest in the execution field; they
-are not authenticated export ledgers. Installed/mixed export proof and remaining MS2 criteria remain pending. No human visual/listening acceptance follows
+are not authenticated export ledgers. Installed consumer proof and remaining MS2 criteria remain pending. No human visual/listening acceptance follows
 from these software checks.
 
 ## Strict standalone source3 execution and journal replay
@@ -398,7 +398,7 @@ ordinary Node loader compatibility and original native2 regressions. Admission
 scratch peaks863,592B and releases to0; full world/source/body/replay accounting
 remains pending. Earlier type/schema/source-key/quota/helper failures are retained.
 These are standalone journal artifacts. Normal source3 request/upload/page/worker dispatch now has the separate evidence
-below. Actual mixed exported frames and installed proof remain pending. These
+below. Actual mixed export proof is documented below; installed proof remains pending. These
 standalone journal controls do not themselves prove MP4s or human acceptance.
 
 ## Normal authenticated source3 exports
@@ -419,6 +419,24 @@ and matching final output checksums, plus an unused-source3 export that retains
 protocol3 with0 passes. The shared real glTF/PNG fixture prepares fresh verified
 binary resources. [Normal export results](./mechanism-shorts-ms2-output3-export-results.json)
 retain command/type failures, current scoped local checks and held source inputs.
-Actual mixed exposure/export/fault controls, installed source3 consumer proof,
+Actual mixed exposure/export/fault controls are documented below. Installed source3 consumer proof,
 whole world/source/body/replay accounting and remaining MS2 full/pack gates remain
 pending. Software checks do not establish human appearance/listening acceptance.
+
+## Actual mixed exposure and authenticated endpoint controls
+
+`pnpm test:browser:native3d-pbr-mixed-export` runs the actual source1/source2/source3
+fixture serially. Source3 has its own precomposition, preserving the existing
+one-native-controller-per-scope rule. The trusted producer assigns fresh fractional
+passes; a six-frame output3 export contains54 actual passes across all three frame
+protocols. Actual HTTP packet and raw pixel bodies are captured, then their hashes
+and complete packet rows are checked through independent durable replay.
+
+Seven actual authenticated first-observation faults downgrade the packet, forge
+its frame3 key/sample clock/pass coverage or alter worker/credential/origin. Each
+rejection occurs before any pixel request and leaves no published output or manifest.
+Producer cancellation and unbound appearance also reject. [Mixed results](./mechanism-shorts-ms2-output3-mixed-results.json)
+retain the initial invalid overlapping fixture, current checks and held inputs.
+Production source is unchanged from the normal export slice. Installed consumer
+proof, complete world/source/body/replay accounting and remaining MS2 criteria
+remain pending; no human appearance/listening acceptance follows from these checks.

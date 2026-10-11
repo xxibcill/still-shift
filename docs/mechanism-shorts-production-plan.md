@@ -734,8 +734,13 @@ mechanism families establish whether the architecture transfers.
       dispatch is now implemented in the twenty-ninth slice: two actual11-frame
       authenticated source3 MP4 exports and unused-source3 output pass with current
       fast/Node/native2/primitive regressions on held inputs. [Normal export evidence](./mechanism-shorts-ms2-output3-export-results.json)
-      retains command/type failures. Actual mixed/fault, installed and whole-world
-      proof remain pending;
+      retains command/type failures. Thirtieth slice adds actual mixed fractional
+      frame1/frame2/frame3 export: six output frames/54 actual passes, authenticated
+      packet/pixel bodies, independent retained-row replay and seven real endpoint
+      rejection controls. Normal fast and owning mixed proof pass on held test
+      inputs with unchanged production. [Mixed evidence](./mechanism-shorts-ms2-output3-mixed-results.json)
+      retains the invalid overlapping fixture and correction preserving the rule.
+      Installed and whole-world proof remain pending;
       this criterion stays unchecked. See the [import API](./rigid-gltf-import.md) and
       [retained results](./mechanism-shorts-ms2-results.json).
 - [ ] Implement slider hard stops, hinge/lever, deterministic spring return and

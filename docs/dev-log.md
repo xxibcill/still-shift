@@ -45,20 +45,19 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Twenty-nine slices include normal authenticated source3 exports. Trusted fresh
-  request3/capacity, upload3/page/worker dispatch and independent journal replay
-  precede publication. Fast8 passes 4,198 units/410 files; Node9 ten/four files.
-  Composition10 and export11 pass two actual 11-frame MP4s with 11 passes each, plus
-  one unused-source3 output with 0 passes. All six native2 groups12 and original
-  primitive13 pass. Inputs8: 2,516 files/119,131,512B held unchanged. Final helper
-  scope wording alone is updated; composition15 passes on separately held inputs14.
-  Earlier wrong command and caller narrowing failures remain retained. Next: actual mixed 1/2/3
-  exports/fault controls, installed source3, whole world/source/body/replay budgets
-  and remaining MS2 criteria/full gates. Full/runtime/integration/installed stay
-  historical; supported packs/pilot 0; no MS2 PR/MS3/human acceptance. ElevenLabs
-  spending needs explicit owner approval for the identified estimated batch.
-  [Normal export evidence](./mechanism-shorts-ms2-output3-export-results.json),
-  [journal evidence](./mechanism-shorts-ms2-output3-journal-results.json),
+  Thirty slices include normal source3 exports and mixed source1/source2/source3
+  authenticated HTTP proof. Fast5 passes 4,198 units/410 files; browser6 covers six
+  fractional-exposure frames/54 actual passes, six packet/pixel bodies and independent
+  retained-row replay. Seven forged first observations reject without pixel upload
+  or output publication. Initial overlapping-controller fixture failure is retained;
+  source3 uses its own precomposition and the original overlap rule stays fixed.
+  Production inputs are unchanged from29; new test/command inputs5 remain held.
+  Next: installed source3/mixed, whole world/source/body/replay budgets and remaining
+  MS2 criteria/full gates. Broad Node/native2/full/runtime/integration/installed
+  remain prior scoped evidence; supported packs/pilot0; no MS2 PR/MS3/human acceptance.
+  ElevenLabs spending needs explicit owner approval for the identified batch.
+  [Mixed evidence](./mechanism-shorts-ms2-output3-mixed-results.json),
+  [normal export evidence](./mechanism-shorts-ms2-output3-export-results.json),
   [MS2 results](./mechanism-shorts-ms2-results.json), [PBR API](./native-pbr-resources.md).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
@@ -217,6 +216,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 actual mixed source3 HTTP export and rejection controls
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `d1e157de`.
+- **Done:** actual mixed frame1/frame2/frame3 fractional exposure fixture, explicit
+  output3 authenticated body capture, independent retained-row/pixel replay and
+  seven actual endpoint rejection controls; full local matrix includes this proof.
+- **Results:** fast5 passes 4,198 units/410 files; mixed browser6 passes six output
+  frames/54 actual passes and seven faults. Rejected first observations never send
+  pixels or publish output. Test/command inputs5 remain held; production unchanged.
+- **Retained:** initial invalid overlapping controller fixture; source3 moved into
+  its own precomposition and the existing overlap rule remains strict.
+- **Next:** installed source3/mixed proof, whole world/source/body/replay admission
+  and remaining MS2 pack/full criteria before its PR. No paid narration performed.
+- **Records:** [mixed evidence](./mechanism-shorts-ms2-output3-mixed-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-11 — MS2 normal authenticated source3 export dispatch
 
