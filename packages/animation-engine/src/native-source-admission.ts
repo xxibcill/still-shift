@@ -1,8 +1,6 @@
 import { COMPOSITION_NODE_MEMORY_ALLOWANCE } from "@still-shift/scene-contract";
-import {
-  ManagedMemory,
-  type MemoryLease,
-} from "../../renderer-core/src/managed-memory.ts";
+import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
+import { type MemoryLease } from "../../renderer-core/src/managed-memory.ts";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 
 const SCANNER_BYTES = 65536;
@@ -99,16 +97,23 @@ export function nativeJsonTreeCapacity(
  * earlier asset entries. Preparation variants and export results are separate.
  */
 export class NativeSourceAdmission {
-  private readonly memory = new ManagedMemory({
-    pixels: 1,
-    metadata: COMPOSITION_NODE_MEMORY_ALLOWANCE - 1,
-  });
-  constructor() {
-    this.memory.reserve("metadata", SCANNER_BYTES);
+  private readonly memory: CompositionNodeMemory;
+  private readonly shared: boolean;
+  private readonly owned = new Set<MemoryLease>();
+  private readonly retained: MemoryLease[] = [];
+  private preparation: MemoryLease | undefined;
+  constructor(owner?: CompositionNodeMemory) {
+    if (owner !== undefined && !(owner instanceof CompositionNodeMemory))
+      throw Error("Invalid composition Node memory owner");
+    this.memory = owner ?? new CompositionNodeMemory();
+    this.shared = owner !== undefined;
+    this.reserve(SCANNER_BYTES, "preparedNative3D");
   }
   private reserve(bytes: number, location: string): MemoryLease {
     try {
-      return this.memory.reserve("metadata", bytes);
+      const lease = this.memory.reserve(bytes);
+      this.owned.add(lease);
+      return lease;
     } catch {
       passageError(
         "comp-native3d-limit",
@@ -129,8 +134,7 @@ export class NativeSourceAdmission {
       admitTree: (text: string) => {
         if (!body || tree)
           throw Error("Native source tree admission order is invalid");
-        const available =
-          this.memory.limits.metadata - this.memory.statistics.current.metadata;
+        const available = this.memory.availableBytes;
         const capacity = nativeJsonTreeCapacity(
           text,
           Math.floor(available / PARSE_COPIES),
@@ -142,6 +146,7 @@ export class NativeSourceAdmission {
         if (!tree || complete)
           throw Error("Native source completion requires an admitted tree");
         tree.resize((tree.bytes / PARSE_COPIES) * RETAINED_COPIES);
+        this.retained.push(tree);
         complete = true;
       },
       dispose: () => {
@@ -149,6 +154,41 @@ export class NativeSourceAdmission {
         if (!complete) tree?.release();
       },
     };
+  }
+  /** Grow the existing ingestion admission before any catalogue producer.
+   * Keep admission continuously; never release old capacity to test a new limit.
+   */
+  admitPreparation(bytes: number) {
+    if (!Number.isSafeInteger(bytes) || bytes < 1)
+      throw Error("Native preparation capacity is invalid");
+    const first = this.retained[0];
+    if (!first)
+      throw Error("Native preparation requires admitted source entries");
+    const prior = this.retained.reduce((sum, lease) => sum + lease.bytes, 0);
+    // Escaped source strings can make the lexical estimate larger than the
+    // decoded plan. Keep that already-admitted capacity instead of rejecting.
+    bytes = Math.max(bytes, prior);
+    try {
+      first.resize(first.bytes + bytes - prior);
+    } catch {
+      passageError(
+        "comp-native3d-limit",
+        "Prepared native catalogues exceed the shared Node allowance",
+        { path: "preparedNative3D" },
+      );
+    }
+    for (const lease of this.retained.slice(1)) {
+      lease.release();
+      this.owned.delete(lease);
+    }
+    first.resize(bytes);
+    this.retained.length = 0;
+    this.preparation = first;
+  }
+  transferPreparation() {
+    if (!this.preparation)
+      throw Error("Native preparation has no admitted owner");
+    if (this.shared) this.owned.delete(this.preparation);
   }
   get statistics() {
     return {
@@ -158,9 +198,16 @@ export class NativeSourceAdmission {
       parseCopies: PARSE_COPIES,
       retainedCopies: RETAINED_COPIES,
       maximumDepth: MAX_DEPTH,
+      sharedNodeOwner: this.shared,
     };
   }
+  get preparationStatistics() {
+    return this.memory.statistics;
+  }
   dispose() {
-    this.memory.dispose();
+    for (const lease of this.owned) lease.release();
+    this.owned.clear();
+    this.retained.length = 0;
+    if (!this.shared) this.memory.dispose();
   }
 }

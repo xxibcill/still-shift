@@ -491,8 +491,9 @@ Six focused controls use actual Three room/resource objects with injected
 constructor/destructor failures. Live source3 and original native2/depth groups
 verify rendering separately. Two normal source3 MP4s and all six mixed raw HTTP
 frames match the preceding production renders byte for byte. Admission limits
-are unchanged. Driver-internal failed allocations/RSS, nested PBR retirement,
-aggregate accounting, full milestone and final installed refresh remain separate.
+are unchanged. Nested PBR retirement uses the captured owners described below.
+Driver-internal failed allocations/RSS, aggregate accounting, full milestone and
+final installed refresh remain separate.
 See [ownership evidence](./mechanism-shorts-ms2-world-ownership-results.json).
 
 ## Nested private PBR retirement
@@ -511,8 +512,9 @@ controls and all owning PBR GPU/composition/export groups verify this behavior;
 normal MP4s and mixed raw HTTP pixels preserve the preceding renders. See
 [nested ownership evidence](./mechanism-shorts-ms2-pbr-ownership-results.json).
 The pinned Node/Chromium runtimes provide native ArrayBuffer detachment.
-Source/preparation admission against the existing 512 MiB Node allowance, whole
-world/body/replay accounting, full milestone and installed refresh remain open.
+Shared native source/catalogue/result admission is described below. Root Node
+I/O/serialization and remaining producers, whole world/body/replay accounting,
+full milestone and installed refresh remain open.
 
 ## Native JSON ingestion capacity
 
@@ -529,7 +531,34 @@ Original checksum, strict schema/version and bounded binary verification remain.
 Actual dense numeric input is rejected before the parser, an 8 MiB whitespace
 padding remains valid, and multiple large valid assets accumulate admission.
 The `sourceAdmission` receipt covers **ingestion only**, captured before the
-catalogue/variant boundary. The ingestion ledger then closes; retained preparation,
-source transport and result/RPC coexistence still need the same Node owner.
+catalogue/variant boundary. Its held capacity then grows into admitted catalogue
+storage; a shared Node owner retains that capacity beside export results/RPC, as
+described below. Standalone producers hand their products to the caller.
 Whole world/body/replay, RSS, full milestone and installed refresh remain separate.
 See [JSON ingestion evidence](./mechanism-shorts-ms2-json-source-admission-results.json).
+
+## Shared native catalogue and Node result admission
+
+`CompositionNodeMemory`, exported by the execution runtime, owns the fixed
+512 MiB Node allowance. `renderComposition` creates one before load and uses it
+for native ingestion, catalogue preparation, result/RPC/replay reservations and
+source revalidation; its `finally` closes the owner. Callers using the lower-level
+preparation APIs can pass this owner and keep it until they discard its products.
+Standalone preparation hands products to the caller after its producer scope;
+ordinary result-only exports preserve their earlier scope.
+
+Catalogue construction first grows existing source admission, without releasing
+it to test a new limit. Capacity walks validated data and counts distinct normalized
+static requests. Eight full source trees cover transport/schema/hash staging and
+four per-variant trees cover metadata/pose ownership; source1/3 share static meshes,
+while source2's parsed pose meshes are charged per variant. Escaped input keeps its
+larger lexical admission. Completed preparation transfers its lease; failed or
+cancelled construction releases local reservations without closing another owner.
+Result transients drop their control records when released.
+
+Actual source/result contention and hashing cancellation controls pass. Current
+normal exports report `composition-node-source-and-result-capacity`; their metrics
+are snapshots before final publication validation. Root composition I/O/text/
+serialization, other media/code-identity producers, whole world/body/replay,
+physical RSS, full milestone and final installed verification remain separate.
+See [Node owner evidence](./mechanism-shorts-ms2-node-owner-results.json).

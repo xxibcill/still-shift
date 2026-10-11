@@ -1,3 +1,5 @@
+import { nativePreparationCapacity } from "./native-preparation-capacity.ts";
+import type { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
 import { createHash } from "node:crypto";
 import { NativeSourceAdmission } from "./native-source-admission.ts";
 import { readNativeSourceBytes } from "./native-source-read.ts";
@@ -27,13 +29,17 @@ export type CompositionNative3DPreparation = {
   nativeAppearanceCodeIdentity: NativeAppearanceCodeIdentity;
   nativeAppearanceCodeSha256: string;
   sourceAdmission: NativeSourceAdmission["statistics"];
+  preparationAdmission: NativeSourceAdmission["preparationStatistics"];
 };
 
 /** Verify original bytes once, then prepare every authored static variant before publication. */
 export async function prepareCompositionNative3D(
   composition: Composition,
   sourceDirectory: string,
-  options: { signal?: AbortSignal | undefined } = {},
+  options: {
+    signal?: AbortSignal | undefined;
+    nodeMemory?: CompositionNodeMemory;
+  } = {},
 ): Promise<CompositionNative3DPreparation | undefined> {
   const assets = composition.assets.filter(
     (asset) => asset.type === "native3d",
@@ -48,7 +54,7 @@ export async function prepareCompositionNative3D(
       : "composition-prepared-native3d-1";
   const entries: Record<string, unknown> = Object.create(null);
   const assetPaths: Record<string, string> = Object.create(null);
-  const admission = new NativeSourceAdmission();
+  const admission = new NativeSourceAdmission(options.nodeMemory);
   try {
     for (const asset of assets) {
       options.signal?.throwIfAborted();
@@ -131,10 +137,14 @@ export async function prepareCompositionNative3D(
       assetPaths[asset.id] = path;
     }
     options.signal?.throwIfAborted();
-    // This receipt covers ingestion only. Catalogue/variant and export owners
-    // still require admission into the same Node allowance.
+    // Capture ingestion separately, then grow its held capacity before cloning.
     const sourceAdmission = admission.statistics;
-    admission.dispose();
+    admission.admitPreparation(
+      nativePreparationCapacity(
+        composition,
+        entries as Record<string, { source: Native3DSourceVersions }>,
+      ),
+    );
     const preparedNative3D = CompositionPreparedNative3DVersionsSchema.parse({
       version: transportVersion,
       assets: entries,
@@ -145,16 +155,20 @@ export async function prepareCompositionNative3D(
     );
     const nativeAppearanceCodeIdentity =
       await loadNativeAppearanceCodeIdentity();
-    return {
+    options.signal?.throwIfAborted();
+    const result = {
       preparedNative3D,
       native3D,
       assetPaths,
       nativeAppearanceCodeIdentity,
       sourceAdmission,
+      preparationAdmission: admission.preparationStatistics,
       nativeAppearanceCodeSha256: hashNativeAppearanceCodeIdentity(
         nativeAppearanceCodeIdentity,
       ),
     };
+    admission.transferPreparation();
+    return result;
   } finally {
     admission.dispose();
   }

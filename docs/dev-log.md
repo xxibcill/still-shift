@@ -45,19 +45,17 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Thirty-five slices now bound native JSON ingestion: actual descriptor admission
-  precedes body/decode, a constant-space scanner precedes JSON.parse, and preceding
-  native entries retain admission under the unchanged 512 MiB Node allowance.
-  Five unit and three new filesystem controls include actual dense rejection,
-  padded valid JSON and accumulated large valid assets. Fast24 passes 4,213 units;
-  scoped Node/PBR composition/normal/mixed and six native2 groups pass on held
-  inputs24. Prior MP4/raw pixel bytes remain exact. Initial failed commands/gates
-  remain recorded. Ingestion closes before catalogue/variant preparation; retained
-  source/result coexistence, aggregate world/body/replay and remaining MS2/full/
-  installed criteria are still open. Next: join those owners into the same Node
-  allowance. Supported packs/pilot 0; no merge/publication, human acceptance or
-  paid ElevenLabs action.
-  [JSON ingestion evidence](./mechanism-shorts-ms2-json-source-admission-results.json),
+  Thirty-six slices now share one fixed 512 MiB Node owner across native ingestion,
+  admitted catalogue/variants, export results/RPC and source revalidation. Existing
+  admission grows without a release gap; failed/cancelled preparation retires local
+  reservations and preserves other owners. Result transient records retire on release.
+  Fast15 passes 4,219 units; 26 Node checks and live PBR composition/normal/mixed/
+  six native2 groups pass on held inputs15. Two MP4s/six raw bodies preserve slice35.
+  The render metrics show the shared scope but are pre-publication snapshots.
+  Next: root composition I/O/text/serialization and remaining producers, whole
+  world/body/replay, remaining MS2 authoring/full gates and final installed refresh.
+  Supported packs/pilot 0; no merge/publication, human acceptance or paid generation.
+  [Node owner evidence](./mechanism-shorts-ms2-node-owner-results.json),
   [MS2 results](./mechanism-shorts-ms2-results.json), [PBR API](./native-pbr-resources.md).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
@@ -216,6 +214,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 shared native catalogue and Node result owner
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `b3e0169b`.
+- **Done:** one fixed Node allowance spans native ingestion/admitted catalogue,
+  result/RPC/replay reservations and concurrent source revalidation. Grow admission
+  without a release gap, transfer only on success and retire transient records.
+- **Results:** six new unit/two filesystem controls; fast15 passes 4,219 units,
+  Node16 passes 26 checks and current PBR/native2 groups pass on held inputs15.
+  Two normal MP4s/six mixed raw bodies preserve slice35 bytes. Shared-scope render
+  metrics are snapshots; full lifetime/RSS and root I/O/serialization remain open.
+- **Retained:** wrong test override field and type-only-import lint failures;
+  their original suffixes were unrun.
+- **Next:** remaining Node producers and aggregate/world/body/replay, remaining
+  MS2 authoring/full criteria and final installed refresh before MS2 PR/MS3.
+- **Records:** [Node owner evidence](./mechanism-shorts-ms2-node-owner-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-11 — MS2 bounded native JSON ingestion foundation
 

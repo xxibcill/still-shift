@@ -774,6 +774,13 @@ mechanism families establish whether the architecture transfers.
       Node/PBR/native2 groups pass on held inputs24. [JSON ingestion evidence](./mechanism-shorts-ms2-json-source-admission-results.json)
       retains failures and distinguishes this foundation from retained catalogue/
       variant, source/result coexistence and full aggregate acceptance;
+      thirty-sixth slice shares native ingestion/admitted catalogue, result/RPC and
+      concurrent revalidation under one unchanged Node allowance. Six new unit/two
+      filesystem controls, fast15 with 4,219 units and current Node/PBR/native2
+      groups pass on held inputs15, preserving prior MP4/raw pixel bytes.
+      [Node owner evidence](./mechanism-shorts-ms2-node-owner-results.json) retains
+      failures and pre-publication telemetry limits. Root I/O/text/serialization,
+      remaining producers, whole world/body/replay/full/installed acceptance stay open;
       this criterion stays unchecked. See the [import API](./rigid-gltf-import.md) and
       [retained results](./mechanism-shorts-ms2-results.json).
 - [ ] Implement slider hard stops, hinge/lever, deterministic spring return and

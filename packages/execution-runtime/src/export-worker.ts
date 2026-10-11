@@ -1,3 +1,5 @@
+import type { CompositionNodeMemory } from "./composition-node-memory.ts";
+export { CompositionNodeMemory } from "./composition-node-memory.ts";
 import { compositionPcmBoundary } from "@still-shift/scene-contract";
 import { CompositionResultBudget } from "./composition-result-budget.ts";
 import { compositionResultSize } from "./composition-result-size.ts";
@@ -119,6 +121,8 @@ export type ExportAudioInput = {
 };
 
 export type ExportRequest = {
+  /** Optional render-owned source/result capacity owner; its limit is fixed. */
+  nodeMemory?: CompositionNodeMemory;
   nativeObservation?: NativeObservationRequestVersions;
   runtime?: BrowserRuntimeOptions;
   scene: ExportableScene;
@@ -1112,7 +1116,10 @@ export const exportScene = async (
   let workMetrics: ExportMetrics["work"];
   const resultBudget =
     "schemaVersion" in scene && scene.schemaVersion === "composition-scene-1"
-      ? new CompositionResultBudget(scene.timeline.frameCount)
+      ? new CompositionResultBudget(
+          scene.timeline.frameCount,
+          request.nodeMemory,
+        )
       : undefined;
   const nativeSink = request.nativeObservation
     ? createNativeObservationSinkVersions(request.nativeObservation, {

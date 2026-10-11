@@ -15935,6 +15935,41 @@
       },
       "record": "docs/mechanism-shorts-ms2-json-source-admission-results.json",
       "qualification": "This is an ingestion-stage foundation, not complete aggregate source/preparation/export admission. The sourceAdmission receipt is captured before catalogue/variant preparation and handed to callers as evidence; the ingestion ledger closes at that boundary. It does not claim to admit retained prepared variants, whole source/result RPC coexistence, world/body/replay, driver internals or process RSS. Original file 32 MiB, binary 32 MiB, Node 512 MiB and replay quotas remain fixed. No complete MS2 gate, installed refresh or human acceptance is claimed."
+    },
+    {
+      "id": "node-owner-slice-36",
+      "status": "shared-native-source-catalogue-and-result-owner-verified-in-stages",
+      "record": "docs/mechanism-shorts-ms2-node-owner-results.json",
+      "workingInputs": {
+        "manifest": {
+          "path": "/private/tmp/still-shift-ms2-node-owner36-inputs15.json",
+          "bytes": 431070,
+          "sha256": "sha256:b983fa940622eef0d70dda2f0b8ab4e47e9410e7b1195cfa3baab609e775768a"
+        },
+        "files": 2527,
+        "inputBytes": 119205095,
+        "selection": {
+          "roots": [
+            "apps/",
+            "packages/",
+            "scripts/",
+            "tests/",
+            "tools/",
+            "services/",
+            "benchmarks/",
+            "examples/",
+            "assets/",
+            "catalogs/"
+          ],
+          "rootFiles": "all Git-tracked or nonignored regular root files",
+          "packageProse": [
+            "docs/npm-package-readme.md",
+            "docs/npm-third-party-notices.md"
+          ],
+          "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+        }
+      },
+      "qualification": "Current fast15/Node16 and actual PBR composition/normal/mixed plus all six native2 groups pass on unchanged inputs15. The render Node metrics are shared-ledger snapshots (before final publication validation), not complete lifetime/process-RSS measurements. Root composition file/text/serialization, other media/code-identity producers, aggregate world/body/replay, final full milestone gates and installed refresh remain separate. Direct producers that do not pass a shared owner retain their original result-only scope; standalone preparation snapshots cover its producer before caller handoff. No quota increase, rendered-math change, whole-Node completion, human acceptance or publication is claimed."
     }
   ],
   "implementation": {
@@ -17175,10 +17210,38 @@
         "Join retained source/catalogue variants, source transport and result/RPC/summary owners to the same fixed Node allowance with meaningful failure/cancel/cleanup evidence.",
         "Finish aggregate world/body/replay accounting and remaining MS2 packs/rigs/events/labels/cues/help/coverage/typography; run required full gates and refresh the final installed archive before MS2 PR, then MS3."
       ]
+    },
+    "thirtySixthSlice": {
+      "status": "shared-native-source-catalogue-and-result-owner-verified-in-stages",
+      "scope": [
+        "CompositionNodeMemory holds the fixed 512 MiB Node allowance. A render creates one owner before load and passes it through native ingestion/catalogue, export result/RPC/replay reservations and concurrent source revalidation. Finally closes that owner; standalone result-only callers preserve the old scope.",
+        "Native catalogue capacity is admitted before transport/catalogue/variant construction. Walk schema-validated source data without JSON/geometry copies; count unique normalized authored overrides, eight full source trees for transport/schema/hash staging and four per-variant metadata trees. Source1/3 share static mesh data; source2 fully parsed pose geometry is charged per variant.",
+        "Grow existing ingestion reservations without releasing their capacity first. Preserve larger conservative lexical admission for escaped sources. Only completed preparation transfers its reservation to a shared owner; failure/cancellation closes local reservations while preserving other owners.",
+        "Result transient release also drops its private control record. Six new unit controls include combined quota denial, uninterrupted admission, failure cleanup, shared mesh sizing, 9,000 transient retirements and escaped-source admission; two new filesystem controls exercise actual source3 coexistence/failed verification and cancellation during actual catalogue hashing."
+      ],
+      "counts": {
+        "unitTests": 4219,
+        "unitFiles": 413,
+        "newControls": 8,
+        "newUnitControls": 6,
+        "newFilesystemControls": 2,
+        "owningNodeTests": 26,
+        "owningNodeFiles": 6,
+        "pbrCompositionFrames": 6,
+        "normalExports": 2,
+        "mixedRuns": 8,
+        "native2BrowserGroups": 6,
+        "supportedPacks": 0,
+        "pilotSupportedEpisodes": 0
+      },
+      "remaining": [
+        "Admit root composition I/O and text/serialization plus remaining Node/media/code-identity producers into the same allowance; refresh lifetime/cleanup evidence and whole world/body/replay requirements.",
+        "Finish remaining MS2 packs/rigs/events/labels/cues/help/coverage/typography, required full gates and final installed verification before MS2 PR and MS3."
+      ]
     }
   },
   "limits": [
-    "Thirty-five slices include source3 import/preparation/observation, normal/mixed export, installed proof at b4fc65ed, shared-world/nested retirement and bounded JSON ingestion. Ingestion is distinct from retained preparation/result coexistence; aggregate Node/world/body/replay admission and remaining MS2/full criteria remain. Current fast4,213 and scoped Node/PBR/native2 checks pass; earlier failures stay retained. Supported packs/pilot 0.",
+    "Thirty-six slices include shared native ingestion/catalogue/result ownership with unchanged 512 MiB allowance, source3 normal/mixed export and previous installed proof at b4fc65ed. Root composition I/O/serialization and remaining producers, whole world/body/replay, remaining MS2/full gates and final installed refresh remain. Current fast with 4,219 and scoped Node/PBR/native2 groups pass; failures remain retained. Supported packs/pilot 0.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

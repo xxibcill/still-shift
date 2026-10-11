@@ -1,3 +1,4 @@
+import type { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
@@ -69,6 +70,7 @@ export async function readCompositionSource(
   compositionPath: string,
   options: CompositionMediaPreparationOptions & {
     backend?: "canvas2d" | "webgl2";
+    nodeMemory?: CompositionNodeMemory;
   } = {},
 ): Promise<CompositionSource> {
   options.signal?.throwIfAborted();

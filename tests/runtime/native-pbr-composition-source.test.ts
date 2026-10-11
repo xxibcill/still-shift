@@ -1,3 +1,5 @@
+import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
+import { CompositionResultBudget } from "../../packages/execution-runtime/src/composition-result-budget.ts";
 import { mkdtemp, writeFile, rm, realpath } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -177,3 +179,82 @@ it("admission accumulates across actual valid native assets before the next sour
     await rm(directory, { recursive: true, force: true });
   }
 }, 30000);
+
+it("retains actual source3 preparation beside result capacities and cleans up failed source verification", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "pbr-shared-node-owner-")),
+    fixture = binaryCompositionFixture(),
+    owner = new CompositionNodeMemory(),
+    foreign = owner.reserve(1024 ** 2);
+  try {
+    await writeFile(join(directory, "source3.json"), fixture.sourceBytes);
+    await writeFile(join(directory, "surface.rgba"), fixture.pixels);
+    const result = await prepareCompositionNative3D(
+      fixture.composition,
+      directory,
+      { nodeMemory: owner },
+    );
+    expect(result!.sourceAdmission.sharedNodeOwner).toBe(true);
+    expect(result!.preparationAdmission.scope).toBe(
+      "composition-node-source-and-result-capacity",
+    );
+    const held = owner.statistics.current.metadata;
+    expect(held).toBeGreaterThan(foreign.bytes);
+    const results = new CompositionResultBudget(11, owner);
+    expect(results.statistics.current.metadata).toBeGreaterThan(held);
+    expect(() => results.reserveTransient(512 * 1024 ** 2 - held)).toThrow(
+      /quota/,
+    );
+    results.dispose();
+    expect(owner.statistics.current.metadata).toBe(held);
+    await writeFile(join(directory, "surface.rgba"), new Uint8Array(4));
+    await expect(
+      prepareCompositionNative3D(fixture.composition, directory, {
+        nodeMemory: owner,
+      }),
+    ).rejects.toMatchObject({ location: { code: "comp-native3d-resource" } });
+    expect(owner.statistics.current.metadata).toBe(held);
+    owner.dispose();
+    expect(owner.statistics.current.metadata).toBe(0);
+    expect(owner.statistics.reservations).toBe(0);
+  } finally {
+    owner.dispose();
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+it("preserves cancellation during actual catalogue hashing and retires only its own admission", async () => {
+  const directory = await mkdtemp(join(tmpdir(), "pbr-cancel-node-owner-")),
+    fixture = binaryCompositionFixture(),
+    owner = new CompositionNodeMemory(),
+    foreign = owner.reserve(1024 ** 2),
+    controller = new AbortController(),
+    reason = Error("cancel prepared catalogue");
+  try {
+    await writeFile(join(directory, "source3.json"), fixture.sourceBytes);
+    await writeFile(join(directory, "surface.rgba"), fixture.pixels);
+    const digest = globalThis.crypto.subtle.digest.bind(
+        globalThis.crypto.subtle,
+      ),
+      spy = vi.spyOn(globalThis.crypto.subtle, "digest");
+    spy.mockImplementation(async (...args) => {
+      const value = await digest(...args);
+      controller.abort(reason);
+      return value;
+    });
+    try {
+      await expect(
+        prepareCompositionNative3D(fixture.composition, directory, {
+          nodeMemory: owner,
+          signal: controller.signal,
+        }),
+      ).rejects.toBe(reason);
+    } finally {
+      spy.mockRestore();
+    }
+    expect(owner.statistics.current.metadata).toBe(foreign.bytes);
+    expect(owner.statistics.reservations).toBe(1);
+  } finally {
+    owner.dispose();
+    await rm(directory, { recursive: true, force: true });
+  }
+});
