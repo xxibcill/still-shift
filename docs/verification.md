@@ -102,6 +102,14 @@ identical, and compares complete repeated encoded/video/audio outputs. It is inc
 in `pnpm test`; run it serially with other browser/export groups. These synthetic
 fixtures do not establish genuine spoken narration, full label QA or pilot acceptance.
 
+`pnpm test:browser:mechanism-cue-lifecycle` compiles saved family/cue projects,
+exports both caption revisions twice per family, checks actual encoded video facts
+and independently replays every final native frame through the public check API.
+It compares complete repeated encoded/decoded video/audio and rejects stale snapshots,
+old output under fresh compilation and altered encoded files. It is included in
+`pnpm test`; run it serially with browser/export groups. It conservatively rerenders
+whole cycles; synthetic fixtures do not establish spoken input or rendered label QA.
+
 ## Verification policy
 
 ### Deferred WebGL performance

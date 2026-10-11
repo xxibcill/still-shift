@@ -70,5 +70,7 @@ effect edits locate their cues; timing, semantics, camera or rig edits conservat
 mark the whole cycle. Native picture/source reuse is distinguished from overlay
 binding rechecks and supplied effect remix. Narration samples and clock are retained.
 These are invalidation declarations; no rerender is claimed by patch success.
-Dependency-aware affected-shot rendering, final rendered label QA, genuine spoken
-input, supported packs and production acceptance remain separate work.
+The [revision-bound lifecycle](./mechanism-cue-lifecycle.md) now compiles, renders
+and checks current saved dependencies through normal native export. It rerenders
+the whole cycle. Selective affected-shot reuse, final rendered label QA, genuine
+spoken input, supported packs and production acceptance remain separate work.

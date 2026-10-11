@@ -16060,6 +16060,17 @@
         "sha256": "sha256:1a0cbc1b810a03862e9c75bdfe5a8903b8cb1d78908570159ec2fb6708afb37d"
       },
       "qualification": "Saved cue editing and actual caption before/after exports with synthetic local PCM only. Every final native frame independently replays and repeats; decoded video changes while source and decoded audio remain identical. This is not complete rendered label QA, genuine spoken narration, supported packs, whole resource/lifetime accounting, full software/benchmark/final installed acceptance or dependency-aware affected-shot rerender implementation. No human/pilot acceptance, paid generation, merge or publication."
+    },
+    {
+      "id": "cue-lifecycle-slice-43",
+      "status": "revision-bound-cue-lifecycle-verified-in-stages",
+      "record": "docs/mechanism-shorts-ms2-cue-lifecycle-results.json",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-cuelife43-inputs8.json",
+        "bytes": 435580,
+        "sha256": "sha256:42daf7ba0ad803a27dc8ccdfea8fdcc25d155d4c312f617261ae7ef29ed98364"
+      },
+      "qualification": "Synthetic local PCM engineering fixtures only. Whole-cycle rerender, normal encoded file/video facts and independent native observation proof; not encoded-pixel derivation from observation metadata, selective shot reuse, full label/listening QA, complete resource/lifetime accounting or full/final installed acceptance. Supported packs/pilot 0; no human acceptance, paid generation, merge or publication."
     }
   ],
   "implementation": {
@@ -17499,10 +17510,39 @@
         "Dependency-aware compile/render/check and affected-shot refresh integration; full rendered label/layout QA.",
         "Coverage/typography, supported-pack promotion, genuine spoken inputs, whole resources/lifetime/full/final installed requirements before MS2 PR/MS3."
       ]
+    },
+    "fortyThirdSlice": {
+      "status": "revision-bound-cue-lifecycle-verified-in-stages",
+      "scope": [
+        "Revision/hash-bound cue compilation receipts rebase project-relative assets and verify actual native/font/audio before fresh snapshot publication.",
+        "Reject stale authoring revisions, exact-byte or semantic snapshot tampering and existing output directories; normal native export rechecks current dependencies before publication.",
+        "Output check verifies actual encoded SHA and video dimensions/frame count/fps, reloads actual media and independently replays all final native observations, then rechecks preparation/output identity.",
+        "CLI prepare/compile/render/check use saved family/cue documents, bounded receipts and complete reports; current public runtime memory partition preserves existing 128 MiB replay allowance.",
+        "All three candidate families before/after caption edits repeat complete encoded/video/audio; stale snapshots, old output under fresh compilation and altered encoded files reject. Whole-cycle rerender only."
+      ],
+      "counts": {
+        "unitTests": 4263,
+        "unitFiles": 419,
+        "runtimeTests": 38,
+        "runtimeFiles": 5,
+        "newRuntimeTests": 5,
+        "families": 3,
+        "finalExports": 12,
+        "observedOutputFrames": 720,
+        "actualCLICommands": 4,
+        "additionalCLIExports": 1,
+        "additionalCLINativeFrames": 60,
+        "supportedPacks": 0,
+        "pilotAcceptedEpisodes": 0
+      },
+      "remaining": [
+        "Selective affected-shot reuse, complete rendered label/layout/readability QA, coverage and typography acceptance.",
+        "Genuine spoken input, supported-pack promotion, whole resource/lifetime audit, full software/benchmark and final installed-package verification before MS2 PR and MS3."
+      ]
     }
   },
   "limits": [
-    "Forty-two slices now include source-pinned cue CAS/scoped editing and actual caption before/after exports beside saved family authoring and shared registry. Fast7 passes 4,263 units; 33 filesystem/CLI checks and 12 actual three-family exports/720 final native frames independently replay/repeat, change decoded video and preserve source/decoded audio. Dependency-aware rerender/check, full label/coverage/typography, supported packs/genuine spoken inputs, whole resources/lifetime/full/final installed and remaining MS2/MS3 acceptance stay open. Supported packs/pilot 0.",
+    "Forty-three slices include current-revision saved family/cue compile/render/check with actual media loading, normal native export and independent output checking. Fast8 passes 4,263 units; 38 filesystem/CLI tests, 12 three-family exports/720 native frames and four actual CLI commands with one further export/60 native frames pass. Whole-cycle rerender only. Selective shot reuse, full label/coverage/typography, supported packs/genuine spoken inputs, whole resource/lifetime/full/final installed and remaining MS2/MS3 acceptance stay open. Supported packs/pilot 0.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

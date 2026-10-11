@@ -1,3 +1,4 @@
+export { compositionWorkerMemoryLimits } from "./composition-export-memory.ts";
 export { serializeCompositionNodeJson } from "./composition-node-json.ts";
 import type { CompositionNodeMemory } from "./composition-node-memory.ts";
 export { CompositionNodeMemory } from "./composition-node-memory.ts";

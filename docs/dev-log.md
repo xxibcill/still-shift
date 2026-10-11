@@ -45,16 +45,16 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Forty-two slices include source-pinned cue CAS and scoped editing beside saved
-  family inputs/registry. Edits recompile semantics and preserve media/clock identity.
-  Fast7 passes 4,263 units; 33 filesystem/CLI checks and actual three-family caption
-  before/after repeats pass: 12 exports/720 independently replayed native frames,
-  changed decoded video and identical source/decoded audio. Two build failures retained.
-  Next: dependency-aware render/check, full label/coverage/typography, genuine spoken
-  inputs, supported packs and remaining producer/resource/lifetime/full/final-installed.
+  Forty-three slices include revision-bound saved family/cue compile/render/check,
+  actual media loading and normal native export with independent output proof.
+  Fast8 passes 4,263 units; 38 filesystem/CLI tests and 12 three-family exports/720
+  native frames pass. Four actual CLI routes add one export/60 native frames.
+  Earlier import/build/boundary/timeout failures are retained; whole-cycle rerender only.
+  Next: selective shot reuse, full label/coverage/typography, genuine spoken inputs,
+  supported packs and remaining producer/resource/lifetime/full/final-installed.
   Supported packs/pilot 0; no merge/publication, human acceptance or paid generation.
-  [Cue editing evidence](./mechanism-shorts-ms2-cue-authoring-results.json),
-  [API](./mechanism-cue-authoring.md), [MS2 results](./mechanism-shorts-ms2-results.json).
+  [Lifecycle evidence](./mechanism-shorts-ms2-cue-lifecycle-results.json),
+  [API](./mechanism-cue-lifecycle.md), [MS2 results](./mechanism-shorts-ms2-results.json).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
   inventory15:2,329 inputs/117,503,155B. Original full6 retains a qualified19-group
@@ -212,6 +212,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 slice43: revision-bound cue lifecycle
+
+- Saved family/cue revisions now compile actual assets into fresh pinned snapshots,
+  render through native composition export, and check current dependencies, encoded
+  video facts and every independently replayed native observation.
+- Fast8: 4,263 units/419 files; 38 filesystem/CLI tests/5 files. Actual three-family
+  caption before/after repeats: 12 exports/720 native frames. Four child CLI routes
+  pass, adding one export/60 frames. Held 2,554 inputs remain unchanged.
+- Retained schema import, two TypeScript, boundary and media-test timeout failures;
+  refreshed passing checks in stages. Whole-cycle rerender only; supported packs/pilot remain 0.
+- Selective shot reuse, full label/coverage/typography, genuine narration and remaining
+  resource/lifetime/full/final installed gates remain open before MS2 PR/MS3.
+- [Evidence](./mechanism-shorts-ms2-cue-lifecycle-results.json),
+  [API](./mechanism-cue-lifecycle.md), [plan](./mechanism-shorts-production-plan.md).
 
 ### 2026-10-11 — MS2 source-pinned saved cue edits and actual exports
 

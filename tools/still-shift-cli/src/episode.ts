@@ -1,4 +1,9 @@
 import {
+  compileMechanismCueProject,
+  renderMechanismCueProject,
+  checkMechanismCueOutput,
+} from "../../../packages/animation-engine/src/mechanism/cue-lifecycle.ts";
+import {
   readMechanismCueAuthoring,
   saveMechanismCueAuthoring,
   patchMechanismCueAuthoring,
@@ -116,11 +121,41 @@ const commandFlags: Record<MechanismCommand, readonly string[]> = {
     "family-input",
   ],
   patch: ["input", "request", "authoring", "family-input"],
-  prepare: ["input", "output-dir", "cache-dir", "route"],
-  compile: ["input", "output-dir", "cache-dir", "route"],
+  prepare: [
+    "input",
+    "output-dir",
+    "cache-dir",
+    "route",
+    "authoring",
+    "family-input",
+  ],
+  compile: [
+    "input",
+    "output-dir",
+    "cache-dir",
+    "route",
+    "authoring",
+    "family-input",
+  ],
   preview: ["input", "output-dir", "cache-dir", "frame", "route"],
-  render: ["input", "output-dir", "cache-dir", "backend", "route"],
-  check: ["input", "prepared-dir", "final-output", "route"],
+  render: [
+    "input",
+    "output-dir",
+    "cache-dir",
+    "backend",
+    "route",
+    "authoring",
+    "family-input",
+    "prepared-dir",
+  ],
+  check: [
+    "input",
+    "prepared-dir",
+    "final-output",
+    "route",
+    "authoring",
+    "family-input",
+  ],
   package: ["input", "output-dir", "prepared-dir", "final-output", "route"],
   "init-tape-hook": ["output-dir", "font", "font-license", "audio", "captions"],
   summary: ["input", "authoring", "family-input"],
@@ -662,6 +697,59 @@ async function execute(
     );
   const input = required(flags, "input");
   if (flags.get("authoring") === "cue") {
+    if (["prepare", "compile", "render", "check"].includes(command)) {
+      const familyPath = required(flags, "family-input");
+      if (flags.has("cache-dir"))
+        throw cliError(
+          "Cue lifecycle uses the normal composition media cache; --cache-dir is not supported on this route",
+          "mechanism-authoring-option",
+          "--cache-dir",
+        );
+      if (flags.has("route") && flags.get("route") !== "native3d")
+        throw cliError(
+          "Cue lifecycle requires the native3d route",
+          "mechanism-route",
+          "--route",
+        );
+      if (flags.has("backend") && flags.get("backend") !== "webgl2")
+        throw cliError(
+          "Cue lifecycle requires webgl2",
+          "mechanism-backend",
+          "--backend",
+        );
+      if (command === "prepare" || command === "compile")
+        return resultView(
+          command,
+          await compileMechanismCueProject(
+            familyPath,
+            input,
+            required(flags, "output-dir"),
+            { signal },
+          ),
+        );
+      if (command === "render")
+        return resultView(
+          command,
+          await renderMechanismCueProject(
+            familyPath,
+            input,
+            required(flags, "prepared-dir"),
+            required(flags, "output-dir"),
+            { signal },
+          ),
+        );
+      return resultView(
+        command,
+        await checkMechanismCueOutput(
+          familyPath,
+          input,
+          required(flags, "prepared-dir"),
+          required(flags, "final-output"),
+          { signal },
+        ),
+      );
+    }
+
     const family = await readMechanismFamilyAuthoring(
       required(flags, "family-input"),
     );

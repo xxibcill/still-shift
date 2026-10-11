@@ -115,3 +115,5 @@ export * from "./mechanism/family-registry.ts";
 export * from "./mechanism/family-authoring.ts";
 
 export * from "./mechanism/cue-authoring.ts";
+
+export * from "./mechanism/cue-lifecycle.ts";

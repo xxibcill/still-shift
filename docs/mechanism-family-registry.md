@@ -48,5 +48,7 @@ frame2, solid geometry2, native frame3 and prepared-native3d3. Generated documen
 are in `docs/schemas/mechanism/`. This registry adds discovery/schema authoring;
 saved family input editing is described in the [authoring API](./mechanism-family-authoring.md).
 Saved cue edits use the [cue authoring API](./mechanism-cue-authoring.md).
-Dependency-aware rendering/check, complete rendered label QA, supported-pack
-promotion and production acceptance remain separate work.
+Current saved dependencies drive the [cue lifecycle](./mechanism-cue-lifecycle.md)
+through whole-cycle native rendering and output checking. Selective shot reuse,
+complete rendered label QA, supported-pack promotion and production acceptance
+remain separate work.

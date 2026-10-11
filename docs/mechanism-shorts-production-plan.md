@@ -875,6 +875,14 @@ mechanism families establish whether the architecture transfers.
       two build failures; [API](./mechanism-cue-authoring.md) separates required cache
       refresh from completed rerender. Dependency-aware rendering/check and complete
       expanded acceptance remain open.
+      Slice43 adds revision-bound saved family/cue compilation, actual media loading,
+      normal native export and output checking with encoded identity/video facts and
+      independent native observation replay. Fast8 passes 4,263 units and 38 runtime
+      checks; 12 three-family exports/720 frames plus four actual CLI routes and one
+      further export/60 frames pass. [Lifecycle evidence](./mechanism-shorts-ms2-cue-lifecycle-results.json)
+      retains failed import/build/boundary runs; [API](./mechanism-cue-lifecycle.md)
+      declares whole-cycle rerender. Selective shot reuse and complete expanded
+      acceptance remain open.
 - [ ] Create the topic-to-family coverage board during family selection under the
       coverage contract above. Classify all proposed pilot candidates and record
       support criteria, selected distinct-episode denominator and new-asset/new-rig
