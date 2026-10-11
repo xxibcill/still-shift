@@ -14446,6 +14446,309 @@
           "sha256": "sha256:7c207b16c98ac56b4ac16b03a5442bf2758c5df446a78d10c2192ddd564069b6"
         }
       ]
+    },
+    {
+      "id": "rigid-gltf-red-1",
+      "status": "expected-red-tests-failed",
+      "sourceCheckpoint": "10dc4d4ebc7d945c1268649d046146ce1e4436f6",
+      "sourceState": "working-eighteenth-rigid-gltf-ir-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-gltf-inputs-1.json",
+        "bytes": 417289,
+        "sha256": "sha256:2f0859429bd9f929e990a821884fe6e859a022d1131342667a4feb4ee74fdf93",
+        "files": 2446,
+        "inputBytes": 118645057,
+        "sourceCommit": "10dc4d4ebc7d945c1268649d046146ce1e4436f6"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-gltf-red-1.log",
+          "bytes": 2215,
+          "sha256": "sha256:16f21f5b38ae096fc046660066dc7dcff07157e18f0e5e28b9826203a0cdaf4d"
+        }
+      ],
+      "recordedAtUTC": "2026-10-11T02:19:49.521266+00:00",
+      "actualRootSession": null,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "4bbcb8",
+      "terminalObservedAtUTC": null,
+      "qualification": "Two behavioral tests failed on the unimplemented decoder. Inventory captured immediately after terminal completion with no intervening source edit."
+    },
+    {
+      "id": "rigid-gltf-build-2",
+      "status": "failed-build",
+      "sourceCheckpoint": "10dc4d4ebc7d945c1268649d046146ce1e4436f6",
+      "sourceState": "working-eighteenth-rigid-gltf-ir-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-gltf-inputs-2.json",
+        "bytes": 418878,
+        "sha256": "sha256:c7dd730a910e7f86f967d16eec1d3ea21ccaaeb18951c2a6918732b3a7537e37",
+        "files": 2455,
+        "inputBytes": 118703971,
+        "sourceCommit": "10dc4d4ebc7d945c1268649d046146ce1e4436f6"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-gltf-build-2.log",
+          "bytes": 332,
+          "sha256": "sha256:7a35f043e07d540a0d20e74f2cca71b6a8ad0be2eb378454386a006fb3ae3208"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-gltf-format-2.log",
+          "bytes": 728,
+          "sha256": "sha256:302fc179c914634dd6985d012b11bac18733ec17ecf509ef2f48bf6800119ec4"
+        }
+      ],
+      "recordedAtUTC": "2026-10-11T02:19:49.521266+00:00",
+      "actualRootSession": 6173,
+      "actualExitCode": 2,
+      "terminalToolReceipt": "7fb9b3",
+      "terminalObservedAtUTC": null,
+      "qualification": "MechanismPart is not exported by scene-contract; use the existing MechanismSceneV 2 parts type. Post-terminal inventory captured before repair."
+    },
+    {
+      "id": "rigid-gltf-build-3",
+      "status": "failed-build",
+      "sourceCheckpoint": "10dc4d4ebc7d945c1268649d046146ce1e4436f6",
+      "sourceState": "working-eighteenth-rigid-gltf-ir-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-gltf-inputs-3.json",
+        "bytes": 419040,
+        "sha256": "sha256:c6cdb978ddf0bf0e3e5e09af1e97e303477cc135f4b6d10a36d9447d42516cd0",
+        "files": 2456,
+        "inputBytes": 118716922,
+        "sourceCommit": "10dc4d4ebc7d945c1268649d046146ce1e4436f6"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-gltf-build-3.log",
+          "bytes": 314,
+          "sha256": "sha256:f15b496778776a9890f596765be66d45a60e40a8c50e4515b38cad0e4d1fc46e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-gltf-format-3.log",
+          "bytes": 839,
+          "sha256": "sha256:630a8d57f79944091afc55e3c348c0d5ea41ec0afffcce69a5cb12c9529f7452"
+        }
+      ],
+      "recordedAtUTC": "2026-10-11T02:19:49.521266+00:00",
+      "actualRootSession": 51863,
+      "actualExitCode": 2,
+      "terminalToolReceipt": "5e149f",
+      "terminalObservedAtUTC": null,
+      "qualification": "The shared PNG fixture encoder expects width/height/softness/color rather than guessed size/opacity/spread/edge. Chained unit command did not run."
+    },
+    {
+      "id": "rigid-gltf-focused-4",
+      "status": "passed-build-and-focused-import-tests",
+      "sourceCheckpoint": "10dc4d4ebc7d945c1268649d046146ce1e4436f6",
+      "sourceState": "working-eighteenth-rigid-gltf-ir-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-gltf-inputs-4.json",
+        "bytes": 419198,
+        "sha256": "sha256:25a09b55ba9bb45f223f2068e73234b7a58bedd83856419e2d69a70605ceeaa1",
+        "files": 2457,
+        "inputBytes": 118722055,
+        "sourceCommit": "10dc4d4ebc7d945c1268649d046146ce1e4436f6"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-gltf-build-4.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-gltf-focused-4.log",
+          "bytes": 430,
+          "sha256": "sha256:67b0adec475e8083719f01784e53e3ee08416c1825e80a0db4a8a5aafcc22d68"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-gltf-format-4.log",
+          "bytes": 917,
+          "sha256": "sha256:472d2292b1af460b84f546cd826454c6ce174d74c36075f134eb32cb789ad45a"
+        }
+      ],
+      "recordedAtUTC": "2026-10-11T02:19:49.521266+00:00",
+      "actualRootSession": 46886,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "3a5af5",
+      "terminalObservedAtUTC": null,
+      "qualification": "Build and 40 tests/3 files passed:33 unit and 7 filesystem tests. Encoded image roles are verified; no native image decode or GPU PBR admission is claimed."
+    },
+    {
+      "id": "rigid-gltf-fast-5",
+      "status": "failed-type-import-lint-after-passing-prefix",
+      "sourceCheckpoint": "10dc4d4ebc7d945c1268649d046146ce1e4436f6",
+      "sourceState": "working-eighteenth-rigid-gltf-ir-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-gltf-inputs-5.json",
+        "bytes": 419198,
+        "sha256": "sha256:4efe6b0e9698e4103450ef47b7b2e78baf4c8a5e1baa30ba190394d24e7e753e",
+        "files": 2457,
+        "inputBytes": 118722425,
+        "sourceCommit": "10dc4d4ebc7d945c1268649d046146ce1e4436f6"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-gltf-fast-5.log",
+          "bytes": 1739,
+          "sha256": "sha256:720224cb22933e030fa4cd83a4ace9a35c0ef70477b199cc5b70f5a515e8e22e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-gltf-format-5.log",
+          "bytes": 700,
+          "sha256": "sha256:023b3df6c2863dfa940851c8f5c04ce2a0474fac4b7124a3a52a84dc9c681481"
+        }
+      ],
+      "recordedAtUTC": "2026-10-11T02:19:49.521266+00:00",
+      "actualRootSession": 69368,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "ab33e8",
+      "terminalObservedAtUTC": null,
+      "qualification": "Schema/appearance, boundaries and formatting passed; lint rejected a Matrix4 value import used only as a type. Build/unit suffix did not run."
+    },
+    {
+      "id": "rigid-gltf-fast-6",
+      "status": "passed-complete-fast-tier",
+      "sourceCheckpoint": "10dc4d4ebc7d945c1268649d046146ce1e4436f6",
+      "sourceState": "working-eighteenth-rigid-gltf-ir-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-gltf-inputs-6.json",
+        "bytes": 419198,
+        "sha256": "sha256:ee2d685d1526c84f0dcce7e2b6cd0bd7cbbab0a7857589c8639be5bfc0c58c12",
+        "files": 2457,
+        "inputBytes": 118727991,
+        "sourceCommit": "10dc4d4ebc7d945c1268649d046146ce1e4436f6"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-gltf-fast-6.log",
+          "bytes": 33234,
+          "sha256": "sha256:36c6fe1982eea9a22ff159427935bceaf4ca28ef06aadd0c93063be1ff7cc5c9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-gltf-format-6.log",
+          "bytes": 747,
+          "sha256": "sha256:68c97bcf539d04aa4421e390f929ac30777a2acb7cd33c500e2b3f36e3c6bfd4"
+        }
+      ],
+      "recordedAtUTC": "2026-10-11T02:19:49.521266+00:00",
+      "actualRootSession": 7099,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "07bb1b",
+      "terminalObservedAtUTC": "2026-10-11 02:09:59 UTC",
+      "qualification": "Schema/appearance 377 first-party/79 external modules, boundaries, formatting, lint, build and 4141 unit tests/403 files passed. This precedes final guards."
+    },
+    {
+      "id": "rigid-gltf-runtime-6",
+      "status": "passed-complete-runtime-tier-before-final-guards",
+      "sourceCheckpoint": "10dc4d4ebc7d945c1268649d046146ce1e4436f6",
+      "sourceState": "working-eighteenth-rigid-gltf-ir-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-gltf-inputs-6.json",
+        "bytes": 419198,
+        "sha256": "sha256:ee2d685d1526c84f0dcce7e2b6cd0bd7cbbab0a7857589c8639be5bfc0c58c12",
+        "files": 2457,
+        "inputBytes": 118727991,
+        "sourceCommit": "10dc4d4ebc7d945c1268649d046146ce1e4436f6"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-gltf-runtime-6.log",
+          "bytes": 37253,
+          "sha256": "sha256:29a8ffb502142f766951c0b6323335e811e52fa8b046b16dedd587f35a8536dc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-gltf-unchanged-before-runtime-6.log",
+          "bytes": 190,
+          "sha256": "sha256:d6cfdf9894dacc6ee1dffc41573e4e4b4f555ab1c122332cf8bb85d2a8517d1b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-gltf-unchanged-after-runtime-6.log",
+          "bytes": 190,
+          "sha256": "sha256:d6cfdf9894dacc6ee1dffc41573e4e4b4f555ab1c122332cf8bb85d2a8517d1b"
+        }
+      ],
+      "recordedAtUTC": "2026-10-11T02:19:49.521266+00:00",
+      "actualRootSession": 83642,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "1d98fc",
+      "terminalObservedAtUTC": "2026-10-11 02:17:11 UTC",
+      "qualification": "Pinned toolchain, 184 runtime tests/28 files, 321 integration tests/56 files, 14 Python depth tests and the smoke group passed (three Lab workflows plus retry/depth controls and 21 reusable component fixtures at 24/30fps) on immutable Input snapshot 6. Final Input snapshot 7 changes only importer guards, inspection metadata and unit fixtures; Input snapshot 7 fast and the affected 7 filesystem tests refresh those changes. Existing runtime/browser consumers of the unchanged native renderer remain Input snapshot 6 evidence; no imported PBR rendering claim."
+    },
+    {
+      "id": "rigid-gltf-current-7",
+      "status": "passed-current-fast-and-affected-filesystem-tests",
+      "sourceCheckpoint": "10dc4d4ebc7d945c1268649d046146ce1e4436f6",
+      "sourceState": "working-eighteenth-rigid-gltf-ir-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-gltf-inputs-7.json",
+        "bytes": 419198,
+        "sha256": "sha256:b924cc1cde4904e34dcae351028cd12d40e65363af80542c25ea4ca53132789e",
+        "files": 2457,
+        "inputBytes": 118731406,
+        "sourceCommit": "10dc4d4ebc7d945c1268649d046146ce1e4436f6"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-gltf-fast-7.log",
+          "bytes": 33094,
+          "sha256": "sha256:6c27981aa5042fdbedd189a30c13d25f718444d4d758e56fe21f3e694070e52a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-gltf-runtime-file-7.log",
+          "bytes": 310,
+          "sha256": "sha256:b82e7843efb49e1fd9b5ccb5c831ca609e6273030f311a9bda1d0797bec7e952"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-gltf-format-7.log",
+          "bytes": 734,
+          "sha256": "sha256:6f97d877e068d8a66c0698eef8d672fe9bb29c78306e3d542fcaf3ee9a9aa00c"
+        }
+      ],
+      "recordedAtUTC": "2026-10-11T02:19:49.521266+00:00",
+      "actualRootSession": 89126,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "b89bd8",
+      "terminalObservedAtUTC": "2026-10-11 02:19:23 UTC",
+      "qualification": "Current complete fast tier 4144 unit tests/403 files and all 7 importer filesystem tests passed after projective-matrix, portable path-separator, buffer-view-role and cutoff guards plus metadata transform clarity. No new native captures/exports or installed archive verification. Input snapshot 6 broader runtime evidence is retained with its exact qualification."
+    },
+    {
+      "id": "rigid-gltf-current-8",
+      "status": "passed-current-fast-and-affected-filesystem-tests",
+      "sourceCheckpoint": "10dc4d4ebc7d945c1268649d046146ce1e4436f6",
+      "sourceState": "working-eighteenth-rigid-gltf-ir-slice",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-gltf-inputs-8.json",
+        "bytes": 419198,
+        "sha256": "sha256:290620dadade22b8aee7d54abebea02937fd03f52ce13ed029e71ded4990736a",
+        "files": 2457,
+        "inputBytes": 118732110,
+        "sourceCommit": "10dc4d4ebc7d945c1268649d046146ce1e4436f6"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-gltf-fast-8.log",
+          "bytes": 33273,
+          "sha256": "sha256:aff68ef588c1baeda4d45d456c1c5fe04ea07dfe860f69d8c03146d7317f56c2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-gltf-runtime-file-8.log",
+          "bytes": 310,
+          "sha256": "sha256:aee7022161324b27aaef1690de2d24d7228568ec4ff6ff6cf5eb27ee115535fb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-gltf-format-8.log",
+          "bytes": 109,
+          "sha256": "sha256:b8bb7d26d8f9206141bbb5ddcfaaa7169531c51148d465c69c5a9d2f8e448913"
+        }
+      ],
+      "recordedAtUTC": "2026-10-11T02:24:24.976712+00:00",
+      "actualRootSession": 73400,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "fc641c",
+      "terminalObservedAtUTC": "2026-10-11 02:23:57 UTC",
+      "qualification": "Current full fast 4145 unit tests/403 files and 7 importer filesystem tests pass. Input snapshot 8 only adds positive safe-integer image-header dimension rejection and its negative unit fixture after Input snapshot 7 software/metadata closure. Input snapshot 6 broader runtime evidence and Input snapshot 7 checks remain retained on exact inputs. PNG payload integrity/pixel decode and native PBR admission remain pending; no new imported-PBR captures/exports or installed archive."
     }
   ],
   "implementation": {
@@ -14942,6 +15245,101 @@
           "sha256": "sha256:f7c74fcc97492930679a4ac7b826f31b049d467ba4c3ebc110fd46a2c1962789"
         },
         "repair": "Applied the actual Add recognition checklist heading separately. Do not rerun the non-idempotent helper; prior133 verification rows were rechecked against HEAD and remained identical."
+      }
+    },
+    "eighteenthSlice": {
+      "status": "rigid-gltf-encoded-image-intermediate-representation-software-foundation-native-consumer-pending",
+      "interfaces": [
+        "importRigidGltf",
+        "decodeRigidGltf",
+        "inspectRigidGltf",
+        "RigidGltfImportError",
+        "RIGID_GLTF_LIMITS",
+        "ImportedRigidGltf"
+      ],
+      "behavior": [
+        "Named selected hierarchy and original node origins survive in world-axis baked frames; source local/world matrices are retained for future rig-axis mapping. Source world shear is baked; projective/local shear, collapsed transforms, cyclic/multiple-parent graphs and unnamed/duplicate nodes fail.",
+        "Float positions/normals/tangents, float/normalized-byte-short UVs and unsigned indices are decoded with bounds/stride/alignment/finite/topology checks. Inverse-transpose normals, tangent handedness and reflected winding are tested. All active mesh instances count against budgets before attribute decoding or dependency resolution.",
+        "Opaque linear float PBR factors, exact absent-material default, base-color sRGB, packed G-roughness/B-metalness and normal linear texture roles/scale/samplers are retained. Encoded PNG/JPEG images retain exact bytes and hashes after header/MIME/dimension checks. Images are not decoded or native-admitted. Image-header dimensions must be positive safe integers before pixel-budget admission.",
+        "Canonical local source/dependency roots reject remote/absolute/query/fragment/backslash URIs and escaping symlinks; bounded file reads detect observed changes. Exact source/dependency/mesh/geometry/full-asset identities are immutable and relocation stable. Metadata is capped 32KiB without geometry arrays or encoded pixels.",
+        "Skins, morphs, animations, cameras, declared extensions/compression, sparse/extra attributes and unsupported material features are explicitly rejected; no flatten-to-static fallback or textured-to-untextured approximation is supplied."
+      ],
+      "softwareEvidence": {
+        "currentInputs": {
+          "path": "/private/tmp/still-shift-ms2-gltf-inputs-8.json",
+          "bytes": 419198,
+          "sha256": "sha256:290620dadade22b8aee7d54abebea02937fd03f52ce13ed029e71ded4990736a",
+          "files": 2457,
+          "inputBytes": 118732110,
+          "sourceCommit": "10dc4d4ebc7d945c1268649d046146ce1e4436f6"
+        },
+        "verificationRows": [
+          "rigid-gltf-red-1",
+          "rigid-gltf-build-2",
+          "rigid-gltf-build-3",
+          "rigid-gltf-focused-4",
+          "rigid-gltf-fast-5",
+          "rigid-gltf-fast-6",
+          "rigid-gltf-runtime-6",
+          "rigid-gltf-current-7",
+          "rigid-gltf-current-8"
+        ],
+        "unitTests": 4145,
+        "unitFiles": 403,
+        "currentImporterFilesystemTests": 7,
+        "broaderRuntimeSource6": {
+          "runtimeTests": 184,
+          "runtimeFiles": 28,
+          "integrationTests": 321,
+          "integrationFiles": 56,
+          "pythonTests": 14,
+          "labSmokeWorkflows": 3,
+          "reusableSmokeFixtures": 21
+        },
+        "nativeImportCaptures": 0,
+        "nativeImportExports": 0,
+        "newInstalledArchives": 0,
+        "currentImporterUnitTests": 43
+      },
+      "scopeLimits": [
+        "This versioned IR is not a renderable native source/geometry/material contract. Pixel decode, PNG/JPEG payload/normal-pixel checks, color conversion/orientation, native tangent/PBR material consumption and strict GPU used-stream/image/preview/export proof remain pending.",
+        "Baked native part axes are world aligned; original axes require mapping using retained source bases before rig authoring. Only supplied normals/tangents and opaque core metallic/roughness are supported. Omitted nodes are explicit; source scene selection does not flatten animations.",
+        "Importer budgets do not claim whole-world/GPU/PMREM, worker packet or render memory admission. Metadata can reject its 32KiB budget while the complete imported asset remains available.",
+        "Current Input snapshot 8 full fast/affected filesystem checks refresh final importer-only guards, metadata and header dimensions. The complete Input snapshot 6 runtime tier is retained separately; unchanged native renderer inputs are not described as newly rendered imported-PBR evidence. No human visual/listening acceptance."
+      ],
+      "retainedFailures": {
+        "expectedRed": "rigid-gltf-red-1",
+        "failedBuilds": ["rigid-gltf-build-2", "rigid-gltf-build-3"],
+        "lintFailure": "rigid-gltf-fast-5",
+        "sourcePreparation": {
+          "status": "original-write-terminal-unavailable-after-full-output-truncation",
+          "actualRootSession": null,
+          "actualExitCode": null,
+          "recoveryToolReceipt": "4202a9",
+          "qualification": "Resources/materials files were recovered on disk; ps confirmed no live writer and subsequent builds parsed the files. The lost original write receipt is not reconstructed as exit0."
+        }
+      },
+      "remaining": "Whole MS 2 remains in progress: versioned native glTF/PBR consumer and pixel/GPU proof, complete generator/registry/schema/discovery and whole-world preflight, legal cue/event integration, labels/markings, narration compiler, scoped typography, 300 topic classification/frozen 10 and full/installed gates. Candidates 3/supported packs 0/pilot 0. No whole-MS 2 PR or MS 3; human appearance/listening remains separate.",
+      "implementationHelper": {
+        "path": "/private/tmp/still-shift-ms2-gltf-final-guards.py",
+        "bytes": 4135,
+        "sha256": "sha256:3e3ef93ac2d69d2efe251d51ac512a6ccd8fac30252d21444f63bc96a1b7024b"
+      },
+      "evidenceClose": {
+        "initialCloseHelper": {
+          "path": "/private/tmp/still-shift-ms2-gltf-close.py",
+          "bytes": 13908,
+          "sha256": "sha256:980d723097e8818f0ece5ff7362c9e19060aec0bc96668727904eb4e6fe16a4c"
+        },
+        "initialCloseLog": {
+          "path": "/private/tmp/still-shift-ms2-gltf-evidence-close-7.log",
+          "bytes": 76,
+          "sha256": "sha256:bce244f564f86a00b3ca295de824cc19da6bfcfc58aea988b0032d81d888d584"
+        },
+        "initialCloseActualRootSession": 44349,
+        "initialCloseActualExitCode": 0,
+        "initialCloseTerminalToolReceipt": "405817",
+        "qualification": "The source7 evidence/docs close actually exited0 before the final zero-dimension guard. This follow-up records source8 and preserves all earlier runs."
       }
     }
   },

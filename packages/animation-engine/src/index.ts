@@ -93,3 +93,12 @@ export * from "./mechanism/primitive-mesh.ts";
 export * from "./mechanism/cable-tie-pack.ts";
 export * from "./mechanism/clothespeg-pack.ts";
 export * from "./mechanism/camera-recipes.ts";
+
+export * from "./mechanism/gltf-import.ts";
+export * from "./mechanism/gltf-file.ts";
+export * from "./mechanism/gltf-inspect.ts";
+export * from "./mechanism/gltf-types.ts";
+export {
+  RigidGltfImportError,
+  RIGID_GLTF_LIMITS,
+} from "./mechanism/gltf-document.ts";

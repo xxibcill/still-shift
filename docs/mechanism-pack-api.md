@@ -255,3 +255,11 @@ matrices and the observed Three camera. Strict native2 validation binds those
 streams to the buffers actually submitted to the GPU before the proof results
 are accepted. These fixture proofs cover the opaque candidate materials; they
 are separate from generic import/material admission and human acceptance.
+
+## Rigid glTF import foundation
+
+`importRigidGltf`, `decodeRigidGltf` and `inspectRigidGltf` preserve named rigid
+hierarchy, transform bases, baked mesh attributes, encoded PBR image bytes and
+texture color-space roles in `rigid-gltf-asset-1`. The native image/material/tangent
+consumer and GPU proof remain pending. See the [import API and bounded profile](./rigid-gltf-import.md)
+for dependency roots, supported encodings, identities, limits and located errors.

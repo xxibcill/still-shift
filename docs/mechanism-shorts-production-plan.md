@@ -696,6 +696,12 @@ mechanism families establish whether the architecture transfers.
       spaces. Validate extensions and local dependencies. Reject unsupported skins,
       morphs, animations, compression or material features unless explicitly added
       with tests; never silently flatten a model's required mechanism behavior.
+      Eighteenth slice adds the named/baked rigid import IR, local dependency
+      validation and exact encoded PBR roles with current software evidence.
+      Pixel decoding and the versioned native material/tangent consumer plus
+      independent GPU/preview/export proof remain pending; this criterion stays
+      unchecked. See the [import API](./rigid-gltf-import.md) and
+      [retained results](./mechanism-shorts-ms2-results.json).
 - [ ] Implement slider hard stops, hinge/lever, deterministic spring return and
       ratchet/pawl controls. These are explanatory animation rigs, not a general
       physics solver. Keep gears, cams and flexible-strip behaviors demand-driven.
