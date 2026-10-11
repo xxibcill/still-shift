@@ -45,20 +45,20 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Twenty-eight slices include explicit async composition collection and the strict
-  standalone source3 execution/journal/replay boundary. Fast16 passes4,197 units/
-  410 files and all prefix checks; Node17 ten/four files, including ordinary Node
-  sink3 imports. Composition18 passes six seeks/two artwork controls and two actual
-  repeated one-frame raw journals with five forgeries rejected. Admission scratch
-  peaks863,592B/returns0; replay retains default16MiB quota. All six native2 groups19
-  pass; inputs16:2,513 files/119,117,701B held unchanged. Earlier type/key/quota/helper
-  failures remain retained. Normal source3 export request creation still rejects;
-  next: producer/upload/page/worker dispatch, mixed exports/installed, whole world/
-  source/body/replay budgets and remaining MS2 gates. Full/runtime/integration/
-  installed stay historical; supported packs/pilot0; no MS2 PR/MS3/human acceptance.
-  ElevenLabs spending needs explicit owner approval for the identified batch.
-  [Journal evidence](./mechanism-shorts-ms2-output3-journal-results.json),
-  [composition evidence](./mechanism-shorts-ms2-output3-composition-results.json),
+  Twenty-nine slices include normal authenticated source3 exports. Trusted fresh
+  request3/capacity, upload3/page/worker dispatch and independent journal replay
+  precede publication. Fast8 passes 4,198 units/410 files; Node9 ten/four files.
+  Composition10 and export11 pass two actual 11-frame MP4s with 11 passes each, plus
+  one unused-source3 output with 0 passes. All six native2 groups12 and original
+  primitive13 pass. Inputs8: 2,516 files/119,131,512B held unchanged. Final helper
+  scope wording alone is updated; composition15 passes on separately held inputs14.
+  Earlier wrong command and caller narrowing failures remain retained. Next: actual mixed 1/2/3
+  exports/fault controls, installed source3, whole world/source/body/replay budgets
+  and remaining MS2 criteria/full gates. Full/runtime/integration/installed stay
+  historical; supported packs/pilot 0; no MS2 PR/MS3/human acceptance. ElevenLabs
+  spending needs explicit owner approval for the identified estimated batch.
+  [Normal export evidence](./mechanism-shorts-ms2-output3-export-results.json),
+  [journal evidence](./mechanism-shorts-ms2-output3-journal-results.json),
   [MS2 results](./mechanism-shorts-ms2-results.json), [PBR API](./native-pbr-resources.md).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
@@ -217,6 +217,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 normal authenticated source3 export dispatch
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `070b4d1c`.
+- **Done:** trusted fresh request3 producer, bounded upload3 acknowledgement and
+  page/worker/sink/replay dispatch; original protocols retain their own contracts.
+- **Results:** normal fast8 passes 4,198 units/410 files; Node9 ten/four files.
+  Source3 export11 produces two actual11-frame MP4s with11 independently verified
+  passes each; unused source3 retains protocol3 with0 passes. Composition10,
+  all six native2 groups12 and original primitive13 pass on held inputs8.
+- **Retained:** wrong generator command and two caller narrowing type failures.
+  Final helper scope-label edits alone have a fresh composition15/input14 receipt.
+- **Next:** actual mixed exposure/export/fault proof, installed source3, whole
+  world/source/body/replay admission and remaining MS2 gates before its PR.
+- **Records:** [normal export evidence](./mechanism-shorts-ms2-output3-export-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json). No paid narration performed.
 
 ### 2026-10-11 — MS2 strict source3 execution and actual journal replay
 

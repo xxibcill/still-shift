@@ -15680,6 +15680,41 @@
       },
       "record": "docs/mechanism-shorts-ms2-output3-journal-results.json",
       "qualification": "Normal fast16 and sequential Node17/composition18/native2 six-group19 suffix pass on held inputs16. All earlier builds and real-proof failures remain retained: unsupported schema API/core type lists, optional signal, readonly matrix mutation, source3 key prefix, duplicate maximum checker reservation exceeding the fixed replay quota, negative publication getter assertion and wrong statistics accessor. Two repeated one-frame raw journals use real composed GPU evidence, bind the actual trusted execution and replay independently; five forgeries reject before pixel authorization. This is a standalone source3 journal proof, not normal export dispatch or an MP4/installed-package proof. Normal source3 export request creation remains rejected. Mixed source1/source2/source3 actual export, upload/page/worker integration, whole world/source/body/replay budgets, full milestone/benchmark/installed, packs/pilot and human review remain pending. No MS2 PR, merge, publication, GitHub Actions or ElevenLabs spending."
+    },
+    {
+      "id": "output3-normal-export-slice-29",
+      "status": "normal-source3-export-verified-mixed-installed-accounting-pending",
+      "workingInputs": {
+        "manifest": {
+          "path": "/private/tmp/still-shift-ms2-export3-inputs8.json",
+          "bytes": 429221,
+          "sha256": "sha256:c139fd55580d03e00f7f152e43b3755b298f97dc5b3c824e773c8acecb22b738"
+        },
+        "files": 2516,
+        "inputBytes": 119131512,
+        "selection": {
+          "roots": [
+            "apps/",
+            "packages/",
+            "scripts/",
+            "tests/",
+            "tools/",
+            "services/",
+            "benchmarks/",
+            "examples/",
+            "assets/",
+            "catalogs/"
+          ],
+          "rootFiles": "all Git-tracked or nonignored regular root files",
+          "packageProse": [
+            "docs/npm-package-readme.md",
+            "docs/npm-third-party-notices.md"
+          ],
+          "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+        }
+      },
+      "record": "docs/mechanism-shorts-ms2-output3-export-results.json",
+      "qualification": "Current normal fast8 and sequential Node9/composition10/source3 export11/native2 six-group12/legacy primitive13 suffix pass on unchanged held inputs8. Wrong appearance command and request-union caller narrowing failures remain retained; affected browser suffixes did not run in those attempts. Normal source3 exports use trusted fresh execution3 requests, conservative timeline capacity, async report3, admitted upload3, awaited sink3 and independent durable replay before publication. Two actual11-frame exports and one unused-source3 output pass. This does not prove actual mixed1/2/3 export/fault coverage, installed-package source3 rendering, whole world/source/body/replay accounting, human appearance/listening acceptance or remaining MS2 pack/full gates. No MS2 PR, merge, release publication, GitHub Actions or ElevenLabs spending. After that held sequence, only the standalone journal helper comment and scope label changed from pending normal export to separate evidence; composition15 passes on inputs14 with the change explicitly isolated. The fast8 sequence was measured on inputs8."
     }
   ],
   "implementation": {
@@ -16719,6 +16754,35 @@
         "Wire trusted source3 request producer, upload/page/worker dispatch and authenticated normal exports.",
         "Actual mixed source1/source2/source3 export/lifecycle/replay and installed proof.",
         "Whole world/source/body/replay budgets and remaining MS2 authoring/pack/full software/benchmark gates before its PR, then MS3."
+      ]
+    },
+    "twentyNinthSlice": {
+      "status": "normal-source3-export-verified-mixed-installed-accounting-pending",
+      "scope": [
+        "Trusted source3 request producer binds exact loaded composition/source/preparation/appearance identities and samples fresh assigned frames; original source1/source2 producer contracts remain explicit.",
+        "Version dispatch covers admission, sink/closure replay, worker envelope, asynchronous page report and owned packet3 upload acknowledgement. Prepared/packet mismatches reject.",
+        "Normal production route renders two authenticated source3 MP4 exports, each11 frames/11 actual passes, plus one unused-source3 output with0 passes. A shared genuine glTF/PNG fixture prepares fresh verified binaries for preview and normal export.",
+        "Original primitive request narrowing and source1/source2 APIs remain strict; upload ownership/rejection controls now run for both modern packet2/packet3."
+      ],
+      "counts": {
+        "unitTests": 4198,
+        "unitFiles": 410,
+        "owningNodeTests": 10,
+        "owningNodeFiles": 4,
+        "normalSource3Exports": 2,
+        "framesPerSource3Export": 11,
+        "actualPassesPerSource3Export": 11,
+        "unusedSource3Outputs": 1,
+        "unusedSource3Passes": 0,
+        "native2BrowserGroups": 6,
+        "newInstalledArchives": 0,
+        "supportedPacks": 0,
+        "pilotSupportedEpisodes": 0
+      },
+      "remaining": [
+        "Actual mixed source1/source2/source3 exposure/export and authenticated HTTP/lifecycle/forgery controls.",
+        "Installed package source3 export and whole world/source/body/replay bounded admission.",
+        "Remaining MS2 packs/authoring/quality/full software/benchmark gates before its PR, then MS3."
       ]
     }
   },

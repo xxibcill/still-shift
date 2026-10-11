@@ -6,6 +6,7 @@ export {
   nativeCompositionSha256,
   nativePreparedSha256,
 } from "./native-observation-identity.ts";
+import { createNativeObservationRequestV3 } from "./native-observation-v3.ts";
 import { createNativeObservationRequestV2 } from "./native-observation-v2.ts";
 import { setImmediate as yieldEventLoop } from "node:timers/promises";
 import { NATIVE3D_OBSERVATION_LIMITS } from "@still-shift/scene-contract";
@@ -266,11 +267,7 @@ export async function createNativeObservationRequestVersions(
   ...args: Parameters<typeof createNativeObservationRequest>
 ) {
   if (args[0].preparedNative3D?.version === "composition-prepared-native3d-3")
-    passageError(
-      "comp-native3d-protocol",
-      "source3 export requires its independent observation protocol",
-      { path: "nativeObservations.execution" },
-    );
+    return await createNativeObservationRequestV3(...args);
   return args[0].preparedNative3D?.version === "composition-prepared-native3d-2"
     ? await createNativeObservationRequestV2(...args)
     : await createNativeObservationRequest(...args);

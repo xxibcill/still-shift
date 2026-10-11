@@ -1,7 +1,7 @@
 import { allocateRenderMetadata } from "../../renderer-core/src/managed-metadata.ts";
 import {
   NATIVE3D_OBSERVATION_LIMITS,
-  type NativeObservedSampleV2,
+  type NativeObservedSampleV3,
 } from "@still-shift/scene-contract";
 import { uploadNativeObservationPacketVersions } from "./native-observation-upload.ts";
 import { assertCompositionEffectVersions } from "@still-shift/renderer-core";
@@ -82,7 +82,9 @@ export type BrowserCompositionOutput = {
     worker: 0;
     credential: string;
     executionSha256: string;
-    packetVersion?: "native3d-observed-output-frame-2";
+    packetVersion?:
+      | "native3d-observed-output-frame-2"
+      | "native3d-observed-output-frame-3";
     maximumPacketBytes: number;
   };
 };
@@ -213,12 +215,21 @@ const exportComposition = async (
     throw Error("Composition browser frame assignment is invalid");
   const source2 =
     scene.preparedNative3D?.version === "composition-prepared-native3d-2";
+  const source3 =
+    scene.preparedNative3D?.version === "composition-prepared-native3d-3";
+  const asyncNative = source2 || source3;
+  const expectedPacketVersion = source3
+    ? "native3d-observed-output-frame-3"
+    : source2
+      ? "native3d-observed-output-frame-2"
+      : undefined;
   const packetVersion = output?.nativeObservation?.packetVersion;
   if (
     (packetVersion !== undefined &&
-      packetVersion !== "native3d-observed-output-frame-2") ||
-    ((source2 || output?.nativeObservation) &&
-      source2 !== (packetVersion === "native3d-observed-output-frame-2"))
+      packetVersion !== "native3d-observed-output-frame-2" &&
+      packetVersion !== "native3d-observed-output-frame-3") ||
+    ((asyncNative || output?.nativeObservation) &&
+      expectedPacketVersion !== packetVersion)
   )
     throw Error("Native browser envelope and prepared source protocol differ");
   assertCompositionEffectVersions(scene);
@@ -283,10 +294,13 @@ const exportComposition = async (
       output?.work?.surfaceCache
       ? async (frame) => {
           await preview.prepareFrame(frame);
-          return source2
+          return source3
             ? (await renderCompositionFrameAsync(preview, frame))
-                .nativeObservationsV2
-            : preview.renderFrame(frame).nativeObservations;
+                .nativeObservationsV3
+            : source2
+              ? (await renderCompositionFrameAsync(preview, frame))
+                  .nativeObservationsV2
+              : preview.renderFrame(frame).nativeObservations;
         }
       : (frame) => {
           return preview.renderFrame(frame).nativeObservations;
@@ -333,8 +347,8 @@ const renderFrames = async (
     frame: number,
   ) =>
     | void
-    | readonly NativeObservedSampleV2[]
-    | Promise<void | readonly NativeObservedSampleV2[]>,
+    | readonly NativeObservedSampleV3[]
+    | Promise<void | readonly NativeObservedSampleV3[]>,
   dispose: () => void,
   canvas: HTMLCanvasElement,
   gl: WebGL2RenderingContext | null,

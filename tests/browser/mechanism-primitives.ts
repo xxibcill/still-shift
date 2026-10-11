@@ -19,7 +19,10 @@ import {
   assertPinnedRenderEnvironment,
 } from "@still-shift/execution-runtime";
 import { createNativeObservationRequestVersions } from "../../packages/animation-engine/src/native-observation.ts";
-import { isNativeObservationRequestV2 } from "@still-shift/execution-runtime/export";
+import {
+  isNativeObservationRequestV2,
+  isNativeObservationRequestV3,
+} from "@still-shift/execution-runtime/export";
 import { validateNativeObservationPacket } from "../../packages/execution-runtime/src/native-observation-journal.ts";
 import { canonicalMechanismJson } from "../../packages/renderer-core/src/mechanism/canonical.ts";
 import { mechanismPrimitiveExamples } from "../helpers/mechanism-primitive-fixtures.ts";
@@ -138,7 +141,11 @@ try {
     );
     const loaded = await loadComposition(compositionPath, "webgl2"),
       binding = await createNativeObservationRequestVersions(loaded);
-    assert(binding && !isNativeObservationRequestV2(binding));
+    assert(
+      binding &&
+        !isNativeObservationRequestV2(binding) &&
+        !isNativeObservationRequestV3(binding),
+    );
     const serialized = await page.evaluate(
       async (text) => {
         const modulePath = "/tests/helpers/mechanism-primitive-preview.ts",

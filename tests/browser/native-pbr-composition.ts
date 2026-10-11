@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { createServer } from "vite";
 import {
@@ -8,103 +8,17 @@ import {
   probeRenderEnvironment,
   assertPinnedRenderEnvironment,
 } from "@still-shift/execution-runtime";
-import { decodeRigidGltf } from "../../packages/animation-engine/src/mechanism/gltf-import.ts";
-import { prepareRigidGltfPbr } from "../../packages/animation-engine/src/mechanism/gltf-pbr.ts";
-import {
-  texturedGltfFixture,
-  glbBytes,
-} from "../helpers/rigid-gltf-fixture.ts";
-import { rgbaPngFixture } from "../helpers/rgba-png-fixture.ts";
 import type * as Proof from "../helpers/native-pbr-composition-proof.ts";
-import { CompositionSchema } from "@still-shift/scene-contract";
 import { loadComposition } from "../../packages/animation-engine/src/composition-render.ts";
 import { createNativeObservationRequestVersions } from "../../packages/animation-engine/src/native-observation.ts";
+import { isNativeObservationRequestV3 } from "../../packages/execution-runtime/src/native-observation-dispatch.ts";
 import { nativePbrJournalProof } from "../helpers/native-pbr-journal-proof.ts";
-import { nativePbrSceneFixture } from "../helpers/native-pbr-scene-fixture.ts";
+import { createNativePbrCompositionFixture } from "../helpers/native-pbr-composition-fixture.ts";
 
 const hash = (bytes: Uint8Array | string) =>
   "sha256:" + createHash("sha256").update(bytes).digest("hex");
-const root = resolve(import.meta.dirname, "../.."),
-  directory = await mkdtemp("/private/tmp/still-shift-ms2-pbr-composition-");
-const { document, binary } = texturedGltfFixture(),
-  rgba = new Uint8Array([
-    128, 64, 255, 0, 255, 128, 64, 64, 32, 64, 128, 128, 128, 128, 255, 255,
-  ]),
-  png = rgbaPngFixture(2, 2, rgba);
-const source = {
-  ...document,
-  materials: document.materials.map((material) => ({
-    ...material,
-    pbrMetallicRoughness: {
-      ...material.pbrMetallicRoughness,
-      baseColorFactor: [0.2, 0.4, 0.6, 0.25],
-    },
-  })),
-};
-const bytes = glbBytes(source, binary),
-  asset = decodeRigidGltf(bytes, {
-    format: "glb",
-    dependencies: new Map([["maps/surface.png", png]]),
-  }),
-  prepared = await prepareRigidGltfPbr(asset);
-const nativeSource = {
-  ...nativePbrSceneFixture(),
-  geometry: prepared.geometry,
-  geometrySha256: prepared.geometrySha256,
-  parts: [...prepared.parts].reverse(),
-  resources: prepared.geometry.images.map((image) => ({
-    image: image.id,
-    path: "surface.rgba",
-    bytes: image.width * image.height * 4,
-    sha256: image.pixelSha256,
-  })),
-};
-await writeFile(join(directory, "surface.rgba"), prepared.images[0]!.rgba, {
-  flag: "wx",
-});
-const nativeSourceBytes = Buffer.from(JSON.stringify(nativeSource));
-await writeFile(join(directory, "source3.json"), nativeSourceBytes, {
-  flag: "wx",
-});
-const composition = CompositionSchema.parse({
-  schemaVersion: "composition-1",
-  id: "imported-pbr-composition",
-  width: 320,
-  height: 180,
-  fps: 30,
-  frameCount: 11,
-  assets: [
-    {
-      id: "lever",
-      type: "native3d",
-      format: "mechanism-scene-3",
-      path: "source3.json",
-      sha256: hash(nativeSourceBytes),
-    },
-  ],
-  layers: [
-    {
-      id: "lever-world",
-      type: "native3d",
-      asset: "lever",
-      sourceStartFrame: 0,
-      sourceFps: 30,
-      rigControls: {
-        "lever.hinge": {
-          type: "hinge",
-          keys: [
-            { frame: 0, value: 0 },
-            { frame: 10, value: Math.PI / 2 },
-          ],
-        },
-      },
-    },
-  ],
-});
-await writeFile(
-  join(directory, "composition.json"),
-  JSON.stringify(composition),
-);
+const root = resolve(import.meta.dirname, "../..");
+const { directory } = await createNativePbrCompositionFixture();
 const loaded = await loadComposition(
   join(directory, "composition.json"),
   "webgl2",
@@ -114,10 +28,10 @@ assert.equal(
   "composition-prepared-native3d-3",
 );
 assert.ok(!JSON.stringify(loaded.preparedNative3D).includes('"rgba"'));
-await assert.rejects(
-  () => createNativeObservationRequestVersions(loaded),
-  /source3 export requires/,
-);
+const request3 = await createNativeObservationRequestVersions(loaded);
+assert.ok(request3 && isNativeObservationRequestV3(request3));
+assert.equal(request3.execution.version, "native-observation-execution-3");
+assert.equal(request3?.expectedPasses(0)[0]?.version, "native3d-frame-3");
 const requests: { id: string; fault: string | null; bytes: number }[] = [];
 const server = await createServer({
   root,
@@ -306,7 +220,7 @@ try {
     version: "native-pbr-composition-proof-1",
     status: "passed",
     scope:
-      "actual production composition preview with separate HTTP binaries and explicit output3 collection/pixel parity; authenticated source3 export remains rejected",
+      "actual production composition preview with separate HTTP binaries and explicit output3 collection/pixel parity; normal source3 export has separate evidence",
     environment,
     inputs: {
       composition: loaded.composition,
@@ -325,7 +239,8 @@ try {
     negatives: result.negatives,
     memory: result.memory,
     cleanup: result.cleanup,
-    source3ExportAdmission: "rejected as expected",
+    source3ExportAdmission:
+      "explicit execution3 request admitted; normal export separately verified",
   };
   await writeFile(
     join(directory, "run.json"),

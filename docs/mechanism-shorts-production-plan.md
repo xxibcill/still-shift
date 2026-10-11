@@ -731,7 +731,11 @@ mechanism families establish whether the architecture transfers.
       unchanged default replay quota; normal fast/Node/native2 groups pass on held
       inputs. [Journal evidence](./mechanism-shorts-ms2-output3-journal-results.json)
       retains type/key/quota/helper failures. Normal source3 producer/export
-      dispatch, installed and whole-world proof remain pending;
+      dispatch is now implemented in the twenty-ninth slice: two actual11-frame
+      authenticated source3 MP4 exports and unused-source3 output pass with current
+      fast/Node/native2/primitive regressions on held inputs. [Normal export evidence](./mechanism-shorts-ms2-output3-export-results.json)
+      retains command/type failures. Actual mixed/fault, installed and whole-world
+      proof remain pending;
       this criterion stays unchecked. See the [import API](./rigid-gltf-import.md) and
       [retained results](./mechanism-shorts-ms2-results.json).
 - [ ] Implement slider hard stops, hinge/lever, deterministic spring return and

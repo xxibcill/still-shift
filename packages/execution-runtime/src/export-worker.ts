@@ -86,7 +86,7 @@ export * from "./native-observation-dispatch.ts";
 import {
   admitNativeObservationRequestVersions,
   createNativeObservationSinkVersions,
-  isNativeObservationRequestV2,
+  nativeObservationPacketVersion,
   verifyNativeObservationClosureVersions,
   type NativeObservationRequestVersions,
   type NativeObservationClosureVersions,
@@ -1410,12 +1410,13 @@ export const exportScene = async (
                           worker: 0 as const,
                           credential: credentials[0]!,
                           executionSha256: nativeSink.executionSha256,
-                          ...(isNativeObservationRequestV2(
+                          ...(nativeObservationPacketVersion(
                             request.nativeObservation!,
                           )
                             ? {
-                                packetVersion:
-                                  "native3d-observed-output-frame-2" as const,
+                                packetVersion: nativeObservationPacketVersion(
+                                  request.nativeObservation!,
+                                )!,
                               }
                             : {}),
                           maximumPacketBytes:
@@ -1518,12 +1519,13 @@ export const exportScene = async (
                         worker: 0 as const,
                         credential: credentials[0]!,
                         executionSha256: nativeSink.executionSha256,
-                        ...(isNativeObservationRequestV2(
+                        ...(nativeObservationPacketVersion(
                           request.nativeObservation!,
                         )
                           ? {
-                              packetVersion:
-                                "native3d-observed-output-frame-2" as const,
+                              packetVersion: nativeObservationPacketVersion(
+                                request.nativeObservation!,
+                              )!,
                             }
                           : {}),
                         maximumPacketBytes:

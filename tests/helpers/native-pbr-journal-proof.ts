@@ -20,7 +20,7 @@ import { ManagedMemory } from "../../packages/renderer-core/src/managed-memory.t
 import type { NativeObservedOutputFrameV3 } from "@still-shift/scene-contract";
 const hash = (value: string | Uint8Array) =>
   `sha256:${createHash("sha256").update(value).digest("hex")}`;
-/** Real receipt/one-frame raw journal proof; normal export dispatch is still separate. */
+/** Real receipt/one-frame raw journal proof; normal export dispatch has separate evidence. */
 export async function nativePbrJournalProof(
   loaded: LoadedComposition,
   diagnostic: NativeObservedOutputFrameV3,
@@ -238,7 +238,7 @@ export async function nativePbrJournalProof(
   );
   return {
     scope:
-      "standalone actual source3 one-frame raw journal and replay; normal export dispatch pending",
+      "standalone actual source3 one-frame raw journal and replay; normal export dispatch has separate evidence",
     execution,
     maximumPacketBytes,
     positives,

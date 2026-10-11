@@ -7,8 +7,8 @@ strict. Explicit source3 preparation, binary admission and shared-world composit
 preview consume this component. Every used mip now has component storage/transfer
 validation. A standalone strict frame3 owner now measures actual GPU draws and
 Three state with independent validation. Explicit asynchronous composition
-observation/output3 capacity now consume it. Authenticated source3 exports and
-installed proof remain pending.
+observation/output3 capacity now consume it. Normal authenticated source3 exports now consume it. Installed and complete
+world/source/body/replay proof remain pending.
 
 ## Node preparation
 
@@ -249,7 +249,8 @@ The preview slice did not prove independent source3 frame/world/anchor/draw
 observations. Later standalone evidence is documented below; used-mip component
 validation remains a separate proof boundary.
 `collectNativeObservations: true` now uses the explicit output3 integration below.
-Source3 export-request creation still rejects the unfinished authenticated protocol. Authenticated repeated exports, installed proof, whole-world
+Explicit source3 export requests now use execution3 and normal dispatch below.
+Installed proof, whole-world
 accounting and bounded source JSON admission remain required. The importer
 criterion stays unchecked. [Staged results](./mechanism-shorts-ms2-pbr-composition-results.json)
 retain every failed run, lost terminal receipt and strict aggregate timeout.
@@ -281,8 +282,8 @@ disposed after use; owner disposal and aborts invalidate pending finalization.
 
 This API began as a standalone source3 observation boundary. The composition
 collector now consumes it through the explicit output3 integration below.
-Authenticated exports, journals and installed consumer proof remain pending;
-source3 export requests still reject. Original frame1/frame2/output2 parsers retain their strict behavior.
+Authenticated normal exports and standalone journals now have explicit proof
+below; installed consumer proof remains pending. Original frame1/frame2/output2 parsers retain their strict behavior.
 The scoped allocator proof covers observation copies, metadata and hashing;
 world/PMREM/source JSON/body and aggregate multi-pass admission are still separate.
 
@@ -311,8 +312,8 @@ and are frozen. Metadata ownership lasts until the next begin, abort or disposal
 
 The collector is now wired into composition rendering through conservative
 capacity admission and explicit asynchronous runtime hooks described below.
-Authenticated transport/export/installed proof remains pending; source3 export
-requests still reject. [Collector results](./mechanism-shorts-ms2-output3-collector-results.json)
+Authenticated transport/export now uses explicit protocol3 below; installed
+proof remains pending. [Collector results](./mechanism-shorts-ms2-output3-collector-results.json)
 retain mixed completion, byte/pass admission, original protocol rejection and
 lifecycle tests, staged failures and existing native2 composition/export checks.
 
@@ -366,8 +367,7 @@ retain six repeated/reverse frames, two artwork controls, five HTTP binary fault
 four async API faults, zero owners after disposal, legacy/native2 regressions,
 held inputs and earlier type failures/qualified lost terminal receipts. Diagnostic
 output3 envelopes use the actual appearance digest in the execution field; they
-are not authenticated export ledgers. Source3 request/export/installed proof and
-remaining MS2 criteria remain pending. No human visual/listening acceptance follows
+are not authenticated export ledgers. Installed/mixed export proof and remaining MS2 criteria remain pending. No human visual/listening acceptance follows
 from these software checks.
 
 ## Strict standalone source3 execution and journal replay
@@ -397,7 +397,28 @@ receipts rejected before pixel authorization, lifecycle/admission controls,
 ordinary Node loader compatibility and original native2 regressions. Admission
 scratch peaks863,592B and releases to0; full world/source/body/replay accounting
 remains pending. Earlier type/schema/source-key/quota/helper failures are retained.
-These are standalone journal artifacts. Normal source3 request producer, upload,
-page/worker export dispatch, mixed exported frames and installed proof remain
-pending; normal source3 export requests still reject. No MP4 export or human
-appearance/listening acceptance is inferred from this proof.
+These are standalone journal artifacts. Normal source3 request/upload/page/worker dispatch now has the separate evidence
+below. Actual mixed exported frames and installed proof remain pending. These
+standalone journal controls do not themselves prove MP4s or human acceptance.
+
+## Normal authenticated source3 exports
+
+The standard `renderComposition` route now creates explicit trusted execution3
+requests for prepared source3. It binds the exact loaded composition/source,
+preparation and verified appearance identity, samples fresh expected frame1/frame2/
+frame3 passes and admits conservative capacity over the complete output timeline.
+Version dispatch keeps prepared source, browser envelope, report, upload, journal
+and closure consistent. Page rendering awaits `nativeObservationsV3`; upload owns
+all packet representations through authenticated acknowledgement, and the sink
+checks independently before authorizing pixels. Durable replay revalidates staged
+artifacts before normal output publication. Original APIs retain strict versions1/2.
+
+Run `pnpm test:browser:native3d-pbr-export` serially. Current software proof produces
+two normal11-frame MP4s, each with11 actual independently validated source3 passes
+and matching final output checksums, plus an unused-source3 export that retains
+protocol3 with0 passes. The shared real glTF/PNG fixture prepares fresh verified
+binary resources. [Normal export results](./mechanism-shorts-ms2-output3-export-results.json)
+retain command/type failures, current scoped local checks and held source inputs.
+Actual mixed exposure/export/fault controls, installed source3 consumer proof,
+whole world/source/body/replay accounting and remaining MS2 full/pack gates remain
+pending. Software checks do not establish human appearance/listening acceptance.

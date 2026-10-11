@@ -2,7 +2,8 @@ import {
   NATIVE3D_OBSERVATION_LIMITS,
   NativeObservedOutputFrameSchema,
   NativeObservedOutputFrameV2Schema,
-  type NativeObservedSampleV2,
+  NativeObservedOutputFrameV3Schema,
+  type NativeObservedSampleV3,
   type NativeObservedSample,
 } from "@still-shift/scene-contract";
 import {
@@ -15,12 +16,13 @@ import {
 type UploadInput = {
   outputFrame: number;
   executionSha256: string;
-  passes: readonly NativeObservedSampleV2[];
+  passes: readonly NativeObservedSampleV3[];
   maximumPacketBytes: number;
 };
 type PacketVersion =
   | "native3d-observed-output-frame-1"
-  | "native3d-observed-output-frame-2";
+  | "native3d-observed-output-frame-2"
+  | "native3d-observed-output-frame-3";
 /** Original typed facade and strict serializer stay unchanged. */
 export async function uploadNativeObservationPacket(
   input: Omit<UploadInput, "passes"> & {
@@ -42,7 +44,8 @@ export async function uploadNativeObservationPacketVersions(
 ): Promise<void> {
   if (
     version !== "native3d-observed-output-frame-1" &&
-    version !== "native3d-observed-output-frame-2"
+    version !== "native3d-observed-output-frame-2" &&
+    version !== "native3d-observed-output-frame-3"
   )
     throw Error("Unsupported native observation upload protocol");
   if (
@@ -51,10 +54,9 @@ export async function uploadNativeObservationPacketVersions(
     input.maximumPacketBytes > NATIVE3D_OBSERVATION_LIMITS.packetBytes
   )
     throw Error("Invalid native observation packet capacity");
-  const protocol2 = version === "native3d-observed-output-frame-2";
+  const modern = version !== "native3d-observed-output-frame-1";
   const packet = allocateRenderMetadata(
-    input.maximumPacketBytes * (protocol2 ? 8 : 4) +
-      (protocol2 ? 524288 : 262144),
+    input.maximumPacketBytes * (modern ? 8 : 4) + (modern ? 524288 : 262144),
     () => {
       const value = {
         version,
@@ -62,9 +64,11 @@ export async function uploadNativeObservationPacketVersions(
         executionSha256: input.executionSha256,
         passes: input.passes,
       };
-      return protocol2
-        ? NativeObservedOutputFrameV2Schema.parse(value)
-        : NativeObservedOutputFrameSchema.parse(value);
+      return version === "native3d-observed-output-frame-3"
+        ? NativeObservedOutputFrameV3Schema.parse(value)
+        : modern
+          ? NativeObservedOutputFrameV2Schema.parse(value)
+          : NativeObservedOutputFrameSchema.parse(value);
     },
   );
   let text: ManagedMetadataText | undefined;
