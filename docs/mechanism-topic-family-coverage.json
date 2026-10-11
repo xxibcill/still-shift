@@ -1,0 +1,776 @@
+{
+  "schemaVersion": "mechanism-coverage-board-1",
+  "revision": 1,
+  "date": "2026-10-12",
+  "milestone": "MS2",
+  "sourceCheckpoint": "dcae3055827f382c426ed95c4ea7fec87a2a205a",
+  "selectionCriteria": [
+    "Ten distinct causal explanations across the three first families; all proposed candidates are retained, including harder asset/behavior routes.",
+    "A different answer requires a different causal relationship or constraint. Recolors, captions, camera swaps and dimensions alone do not add an episode.",
+    "Keep reuse, source/design limitations and overlap explicit. Existing E01 topic reuse is disclosed; no completed pilot or owner acceptance is inferred.",
+    "Freeze this cohort before coverage measurement. MS3/MS4C must disclose any changed selected IDs, explanations, criteria, sources or pack identities with a new revision."
+  ],
+  "supportCriteria": [
+    "Only a current verified immutable pack/asset and all required validated capabilities can support an episode. Candidate metadata and named rigs do not count.",
+    "Required factual variant, geometry/contact/rig constraints, explanation views and readable continuous native output require evidence bound to their exact inputs.",
+    "Software correctness, seek/export/resource/installed checks do not substitute for explicit factual, encoded visual or genuine speech/listening acceptance.",
+    "This baseline audit cannot admit supported rows; positive admission needs a versioned evidence/review contract. Empty selected denominator is unavailable."
+  ],
+  "sources": [
+    {
+      "id": "stanley-compensation",
+      "title": "STANLEY: moving tape-rule hook",
+      "url": "https://support.stanleytools.com/hc/en-us/articles/360012682938-Why-does-the-hook-on-the-end-of-the-Stanley-tape-rule-move",
+      "claim": "Hook travel compensates for hook thickness in inside and outside measurements.",
+      "scope": "Manufacturer explanation only; authored dimensions are illustrative.",
+      "checkedDate": "2026-10-12",
+      "access": "primary-content-read"
+    },
+    {
+      "id": "tape-slots",
+      "title": "US4930227A: coilable tape rule end hook",
+      "url": "https://patents.google.com/patent/US4930227A",
+      "claim": "Rivets pass through elongated hook slots and circular tape apertures.",
+      "scope": "Described patent variant has three rivets; the proposed detailed asset must declare that variant rather than silently reuse the two-rivet illustrative pack.",
+      "checkedDate": "2026-10-12",
+      "access": "primary-content-read"
+    },
+    {
+      "id": "tie-os",
+      "title": "HellermannTyton T50SOS 118-00062",
+      "url": "https://www.hellermanntyton.com/products/cable-ties-outside-serrated/t50sos/118-00062",
+      "claim": "Outside-serrated PA66 tie uses a plastic pawl and is non-releasable.",
+      "scope": "Product facts only; no product dimensional accuracy or simulated force is claimed.",
+      "checkedDate": "2026-10-12",
+      "access": "primary-content-read"
+    },
+    {
+      "id": "tie-release",
+      "title": "HellermannTyton RELK2R 115-02202",
+      "url": "https://www.hellermanntyton.com/products/cable-ties-releasable/relk2r/115-02202",
+      "claim": "Releasable inside-serrated tie has an extended release trigger and plastic pawl closure.",
+      "scope": "Different factual variant from T50SOS. Trigger geometry and released path still need an authored asset and review.",
+      "checkedDate": "2026-10-12",
+      "access": "primary-content-read"
+    },
+    {
+      "id": "tie-load",
+      "title": "US3872547A: one-piece cable tie",
+      "url": "https://patents.google.com/patent/US3872547A/ca",
+      "claim": "The described hinged pawl grips the strap against the frame under tension; stop members limit pawl shifting under ultimate load.",
+      "scope": "Primary patent search excerpt read; full-page opens failed. Recover the complete figures/description before factual approval or implementing this different load-responsive variant.",
+      "checkedDate": "2026-10-12",
+      "access": "primary-search-excerpt"
+    },
+    {
+      "id": "peg-basic",
+      "title": "US2590881A: clothespin, conventional construction paragraphs",
+      "url": "https://patents.google.com/patent/US2590881A/en",
+      "claim": "Conventional arms rock about the coiled torsion spring; spring ends bias jaws together, handles open jaws, and facing jaw notches grip a line.",
+      "scope": "Use the conventional construction only. Patent-specific restraint slot/tongue improvement is excluded; no stiffness or holding-force numbers.",
+      "checkedDate": "2026-10-12",
+      "access": "primary-content-read"
+    },
+    {
+      "id": "lever-statics",
+      "title": "OpenStax: simple machines",
+      "url": "https://openstax.org/books/college-physics-ap-courses/pages/9-5-simple-machines",
+      "claim": "For a stationary ideal lever, opposing torques balance about the pivot.",
+      "scope": "Apply only to an explicitly idealized moment model. A real clothespeg adds spring torque, contact geometry and losses; whole-arm scaling is not a measured mechanical-advantage result.",
+      "checkedDate": "2026-10-12",
+      "access": "primary-content-read"
+    }
+  ],
+  "episodes": [
+    {
+      "id": "E01",
+      "family": "tape-hook",
+      "question": "Why does a tape measure hook move?",
+      "explanationKey": "hook-thickness-compensation",
+      "answer": "Equal hook travel and hook thickness align the selected inside and outside measuring contacts.",
+      "causalRelationship": {
+        "cause": "Hook changes between pull and push stops.",
+        "effect": "The active contact face compensates for the hook thickness.",
+        "counterfactual": "Fix the hook at one stop: the opposite contact gains a thickness offset."
+      },
+      "factualVariant": {
+        "id": "floating-hook",
+        "description": "Equal hook travel and hook thickness align the selected inside and outside measuring contacts. Authored model; no manufacturer dimensions or force simulation.",
+        "dimensionBasis": "illustrative",
+        "sources": ["stanley-compensation"]
+      },
+      "requiredPack": {
+        "base": {
+          "id": "tape-hook",
+          "version": "1.0.0",
+          "sha256": "sha256:5f7fa4100db1ecbb36eb62d2c036857b3740ded49e41856870aed2769e260dd5",
+          "variant": "floating-hook",
+          "detail": "teaching"
+        },
+        "plannedAssetId": null
+      },
+      "reusedRigIds": ["slider"],
+      "explanationViews": [
+        "aligned inside/outside comparison at exposed contact edges",
+        "macro thickness and travel witnesses"
+      ],
+      "requiredCapabilities": [
+        "Thickness/travel equality and active contact-plane witness",
+        "Readable aligned comparison throughout contact hold"
+      ],
+      "assetWork": [],
+      "behaviorWork": [],
+      "plannedBehaviorId": null,
+      "route": "existing-pack-rig",
+      "overlap": {
+        "relatedEpisodes": ["E02"],
+        "questionAnswer": "Both show the moving hook; E01 explains measurement zero rather than retention.",
+        "scenePatterns": [
+          "recognition → contact approach → aligned comparison → return"
+        ],
+        "distinction": "The explanation requires two contact faces and zero compensation, not a new camera on a rivet."
+      },
+      "sharedEarlierEpisodes": [
+        {
+          "milestone": "MS1/MS1N",
+          "id": "E01",
+          "scope": "Same tape-hook compensation topic; original bridge/native E01 artifacts remain separate from this future pilot item and human acceptance remains pending."
+        }
+      ],
+      "existingEvidence": [
+        {
+          "path": "docs/mechanism-shorts-ms2-results.json",
+          "scope": "Scoped family software evidence; not episode capability admission or pilot acceptance."
+        }
+      ],
+      "support": {
+        "state": "not-validated",
+        "missingGates": [
+          "Current immutable pack and required capability acceptance, including continuous native motion, seek/export parity and remaining MS2 resource/full/installed gates.",
+          "Exact episode source and output hashes with factual, readable encoded visual and genuine speech/listening review; none exists for this proposed episode."
+        ]
+      }
+    },
+    {
+      "id": "E02",
+      "family": "tape-hook",
+      "question": "How can a loose tape hook slide without falling off?",
+      "explanationKey": "rivet-slot-retention",
+      "answer": "Rivet heads retain the hook while elongated slots permit bounded longitudinal travel.",
+      "causalRelationship": {
+        "cause": "Fixed rivets pass through elongated hook slots.",
+        "effect": "Slot ends bound motion and rivet heads retain the hook across the blade.",
+        "counterfactual": "Removing the heads or opening a slot end removes the corresponding retention constraint."
+      },
+      "factualVariant": {
+        "id": "three-rivet-slotted-hook",
+        "description": "Rivet heads retain the hook while elongated slots permit bounded longitudinal travel. Authored model; no manufacturer dimensions or force simulation.",
+        "dimensionBasis": "illustrative",
+        "sources": ["tape-slots"]
+      },
+      "requiredPack": {
+        "base": {
+          "id": "tape-hook",
+          "version": "1.0.0",
+          "sha256": "sha256:5f7fa4100db1ecbb36eb62d2c036857b3740ded49e41856870aed2769e260dd5",
+          "variant": "floating-hook",
+          "detail": "teaching"
+        },
+        "plannedAssetId": "tape-slotted-retention"
+      },
+      "reusedRigIds": ["slider"],
+      "explanationViews": [
+        "authored top/side slot section with visible heads and slot ends",
+        "bounded travel close-up"
+      ],
+      "requiredCapabilities": [
+        "Closed authored slot geometry and rivet-head overlap throughout travel",
+        "Slider hard-stop and retention witnesses"
+      ],
+      "assetWork": [
+        "Author a three-rivet, explicitly slotted hook asset matched to the cited design; current two-rivet pack does not certify this detailed slot section.",
+        "Declare retained head clearance, slot ends and compatible slider anchors; no automatic mesh section or physical separation simulation."
+      ],
+      "behaviorWork": [],
+      "plannedBehaviorId": null,
+      "route": "new-asset-existing-rig",
+      "overlap": {
+        "relatedEpisodes": ["E01"],
+        "questionAnswer": "Shared sliding-hook scene; no second thickness-compensation answer.",
+        "scenePatterns": [
+          "recognition → macro constraint → endpoint witnesses → return"
+        ],
+        "distinction": "Show retention and bounded travel, not inside/outside measurement zero."
+      },
+      "sharedEarlierEpisodes": [],
+      "existingEvidence": [
+        {
+          "path": "docs/mechanism-shorts-ms2-results.json",
+          "scope": "Scoped family software evidence; not episode capability admission or pilot acceptance."
+        }
+      ],
+      "support": {
+        "state": "not-validated",
+        "missingGates": [
+          "Current immutable pack and required capability acceptance, including continuous native motion, seek/export parity and remaining MS2 resource/full/installed gates.",
+          "Exact episode source and output hashes with factual, readable encoded visual and genuine speech/listening review; none exists for this proposed episode.",
+          "New factual asset, immutable metadata, rig compatibility and native acceptance."
+        ]
+      }
+    },
+    {
+      "id": "E03",
+      "family": "cable-tie",
+      "question": "Why does this cable tie tighten but resist pulling back?",
+      "explanationKey": "pawl-one-way-lock",
+      "answer": "Tooth ramps lift the integral pawl during forward feed; engagement obstructs reverse feed in this non-releasable variant.",
+      "causalRelationship": {
+        "cause": "A serrated strap advances past the integral pawl.",
+        "effect": "Forward feed can reseat, while the engaged latch holds the modeled reverse request.",
+        "counterfactual": "An explicitly released different variant removes the blocking engagement."
+      },
+      "factualVariant": {
+        "id": "outside-serrated-integral-pawl-cutaway",
+        "description": "Tooth ramps lift the integral pawl during forward feed; engagement obstructs reverse feed in this non-releasable variant. Authored model; no manufacturer dimensions or force simulation.",
+        "dimensionBasis": "illustrative",
+        "sources": ["tie-os"]
+      },
+      "requiredPack": {
+        "base": {
+          "id": "cable-tie",
+          "version": "1.0.0",
+          "sha256": "sha256:c4243b4d3f4ae14561f955eff5874d1954adabf944d4daf96ca27d48b22b7a7c",
+          "variant": "outside-serrated-integral-pawl-cutaway",
+          "detail": "teaching"
+        },
+        "plannedAssetId": null
+      },
+      "reusedRigIds": ["ratchet"],
+      "explanationViews": [
+        "declared authored head cutaway showing strap/pawl overlap",
+        "forward feed and held reverse-request comparison"
+      ],
+      "requiredCapabilities": [
+        "No-release family guard and seated tooth/pawl witnesses",
+        "Visible contact throughout forward tooth crossing and held state"
+      ],
+      "assetWork": [],
+      "behaviorWork": [],
+      "plannedBehaviorId": null,
+      "route": "existing-pack-rig",
+      "overlap": {
+        "relatedEpisodes": ["E04", "E05", "E06"],
+        "questionAnswer": "Same ratchet scene as E04; answer is directional locking, not discrete resolution, release or load response.",
+        "scenePatterns": [
+          "recognition → authored cutaway → forward crossing → held reverse request"
+        ],
+        "distinction": "The reverse request is a constrained teaching state, not a measured pull-out force."
+      },
+      "sharedEarlierEpisodes": [],
+      "existingEvidence": [
+        {
+          "path": "docs/mechanism-shorts-ms2-results.json",
+          "scope": "Scoped family software evidence; not episode capability admission or pilot acceptance."
+        }
+      ],
+      "support": {
+        "state": "not-validated",
+        "missingGates": [
+          "Current immutable pack and required capability acceptance, including continuous native motion, seek/export parity and remaining MS2 resource/full/installed gates.",
+          "Exact episode source and output hashes with factual, readable encoded visual and genuine speech/listening review; none exists for this proposed episode."
+        ]
+      }
+    },
+    {
+      "id": "E04",
+      "family": "cable-tie",
+      "question": "Why does the modeled tie latch in steps rather than at any position?",
+      "explanationKey": "tooth-pitch-resolution",
+      "answer": "Repeated tooth spacing sets the separation between neighboring seated positions in the illustrative ratchet.",
+      "causalRelationship": {
+        "cause": "The pawl moves from one tooth seat to the next.",
+        "effect": "Successive seat positions differ by the declared tooth pitch.",
+        "counterfactual": "A different declared pitch changes the seat interval, without implying a different material strength."
+      },
+      "factualVariant": {
+        "id": "outside-serrated-integral-pawl-cutaway",
+        "description": "Repeated tooth spacing sets the separation between neighboring seated positions in the illustrative ratchet. Authored model; no manufacturer dimensions or force simulation.",
+        "dimensionBasis": "illustrative",
+        "sources": ["tie-os"]
+      },
+      "requiredPack": {
+        "base": {
+          "id": "cable-tie",
+          "version": "1.0.0",
+          "sha256": "sha256:c4243b4d3f4ae14561f955eff5874d1954adabf944d4daf96ca27d48b22b7a7c",
+          "variant": "outside-serrated-integral-pawl-cutaway",
+          "detail": "teaching"
+        },
+        "plannedAssetId": null
+      },
+      "reusedRigIds": ["ratchet"],
+      "explanationViews": [
+        "macro successive tooth seats with dimension witness",
+        "aligned pitch comparison with fixed world scale"
+      ],
+      "requiredCapabilities": [
+        "Analytic pitch-to-seat displacement across multiple teeth and parameter variants",
+        "Readable interval witness with genuine unit qualification"
+      ],
+      "assetWork": [],
+      "behaviorWork": [],
+      "plannedBehaviorId": null,
+      "route": "existing-pack-rig",
+      "overlap": {
+        "relatedEpisodes": ["E03"],
+        "questionAnswer": "Shares feed/reseat motion with E03. This is a geometric inference from the authored tooth/rig contract, not a manufacturer minimum-adjustment specification.",
+        "scenePatterns": [
+          "macro → neighboring seat comparison → pitch witness"
+        ],
+        "distinction": "The explanatory variable is seat spacing; rewording the one-way lock or recoloring teeth would not qualify."
+      },
+      "sharedEarlierEpisodes": [],
+      "existingEvidence": [
+        {
+          "path": "docs/mechanism-shorts-ms2-results.json",
+          "scope": "Scoped family software evidence; not episode capability admission or pilot acceptance."
+        }
+      ],
+      "support": {
+        "state": "not-validated",
+        "missingGates": [
+          "Current immutable pack and required capability acceptance, including continuous native motion, seek/export parity and remaining MS2 resource/full/installed gates.",
+          "Exact episode source and output hashes with factual, readable encoded visual and genuine speech/listening review; none exists for this proposed episode."
+        ]
+      }
+    },
+    {
+      "id": "E05",
+      "family": "cable-tie",
+      "question": "Why can a releasable cable tie back out when its trigger is pressed?",
+      "explanationKey": "trigger-pawl-release",
+      "answer": "The release trigger lifts the pawl clear so the strap can withdraw before engagement is restored.",
+      "causalRelationship": {
+        "cause": "A declared release trigger changes the pawl latch state.",
+        "effect": "The strap can move backward while tooth engagement is cleared.",
+        "counterfactual": "The standard non-releasable T50SOS pack rejects the released transition."
+      },
+      "factualVariant": {
+        "id": "inside-serrated-trigger-release",
+        "description": "The release trigger lifts the pawl clear so the strap can withdraw before engagement is restored. Authored model; no manufacturer dimensions or force simulation.",
+        "dimensionBasis": "illustrative",
+        "sources": ["tie-release", "tie-os"]
+      },
+      "requiredPack": {
+        "base": {
+          "id": "cable-tie",
+          "version": "1.0.0",
+          "sha256": "sha256:c4243b4d3f4ae14561f955eff5874d1954adabf944d4daf96ca27d48b22b7a7c",
+          "variant": "outside-serrated-integral-pawl-cutaway",
+          "detail": "teaching"
+        },
+        "plannedAssetId": "tie-trigger-release"
+      },
+      "reusedRigIds": ["ratchet"],
+      "explanationViews": [
+        "authored release-trigger cutaway",
+        "engaged/released/back-out/reengaged cycle"
+      ],
+      "requiredCapabilities": [
+        "New release asset conforms to existing generic ratchet teaching-release contract",
+        "Trigger motion, pawl clearance and reverse path match the factual variant"
+      ],
+      "assetWork": [
+        "Build an inside-serrated trigger/pawl asset with matching tooth orientation, release linkage and clearances.",
+        "Register a separate immutable factual asset; do not lift the non-releasable cable-tie family guard or claim that its pawl is a release lever."
+      ],
+      "behaviorWork": [],
+      "plannedBehaviorId": null,
+      "route": "new-asset-existing-rig",
+      "overlap": {
+        "relatedEpisodes": ["E03"],
+        "questionAnswer": "Related latch question but adds a physical trigger and a different factual design.",
+        "scenePatterns": [
+          "recognition → macro → release → reverse feed → reengage"
+        ],
+        "distinction": "Reuse of the generic ratchet release state is provisional until the new trigger/clearance mapping proves that no new behavior is needed."
+      },
+      "sharedEarlierEpisodes": [],
+      "existingEvidence": [
+        {
+          "path": "docs/mechanism-shorts-ms2-results.json",
+          "scope": "Scoped family software evidence; not episode capability admission or pilot acceptance."
+        }
+      ],
+      "support": {
+        "state": "not-validated",
+        "missingGates": [
+          "Current immutable pack and required capability acceptance, including continuous native motion, seek/export parity and remaining MS2 resource/full/installed gates.",
+          "Exact episode source and output hashes with factual, readable encoded visual and genuine speech/listening review; none exists for this proposed episode.",
+          "New factual asset, immutable metadata, rig compatibility and native acceptance."
+        ]
+      }
+    },
+    {
+      "id": "E06",
+      "family": "cable-tie",
+      "question": "How can reverse tension seat a pawl more firmly against a tie head?",
+      "explanationKey": "load-responsive-pawl-stop",
+      "answer": "In the cited load-responsive design, reverse tension shifts the hinged pawl toward strap/frame gripping and stops bound further shifting.",
+      "causalRelationship": {
+        "cause": "Reverse strap tension acts on the hinged pawl.",
+        "effect": "The load path shifts the pawl toward the frame and eventually engages its stops.",
+        "counterfactual": "A prescribed scalar tooth-lift animation has no load-dependent gripping response."
+      },
+      "factualVariant": {
+        "id": "hinged-pawl-frame-stop",
+        "description": "In the cited load-responsive design, reverse tension shifts the hinged pawl toward strap/frame gripping and stops bound further shifting. Proposed extension; existing pack cannot establish this result.",
+        "dimensionBasis": "illustrative",
+        "sources": ["tie-load"]
+      },
+      "requiredPack": {
+        "base": {
+          "id": "cable-tie",
+          "version": "1.0.0",
+          "sha256": "sha256:c4243b4d3f4ae14561f955eff5874d1954adabf944d4daf96ca27d48b22b7a7c",
+          "variant": "outside-serrated-integral-pawl-cutaway",
+          "detail": "teaching"
+        },
+        "plannedAssetId": "tie-load-stop"
+      },
+      "reusedRigIds": ["ratchet"],
+      "explanationViews": [
+        "authored pawl/frame/stop cutaway",
+        "explicit qualitative load-path arrows and stop witness"
+      ],
+      "requiredCapabilities": [
+        "Variant-specific load-response or an explicitly declared analytic teaching model",
+        "Pawl/frame stop contact and source-supported limits with no unverified force numbers"
+      ],
+      "assetWork": [
+        "Recover full patent figures/description; author the different hinged pawl, frame walls and stop features."
+      ],
+      "behaviorWork": [
+        "Add and verify a load-dependent seating/stop behavior with an independent oracle; the existing scalar ratchet does not simulate it."
+      ],
+      "plannedBehaviorId": "load-dependent-pawl-seating",
+      "route": "new-behavior",
+      "overlap": {
+        "relatedEpisodes": ["E03"],
+        "questionAnswer": "Related reverse-locking scene, but directional latch rejection does not explain load-dependent seating.",
+        "scenePatterns": [
+          "authored cutaway → load direction → seating → stop hold"
+        ],
+        "distinction": "Requires a changed causal input (load) and a changed response (seating), not stronger arrows or a tighter camera."
+      },
+      "sharedEarlierEpisodes": [],
+      "existingEvidence": [
+        {
+          "path": "docs/mechanism-shorts-ms2-results.json",
+          "scope": "Scoped family software evidence; not episode capability admission or pilot acceptance."
+        }
+      ],
+      "support": {
+        "state": "not-validated",
+        "missingGates": [
+          "Current immutable pack and required capability acceptance, including continuous native motion, seek/export parity and remaining MS2 resource/full/installed gates.",
+          "Exact episode source and output hashes with factual, readable encoded visual and genuine speech/listening review; none exists for this proposed episode.",
+          "New factual asset, immutable metadata, rig compatibility and native acceptance.",
+          "New behavior contract, analytic oracle and continuous native evidence; authored poses alone do not prove this claim."
+        ]
+      }
+    },
+    {
+      "id": "E07",
+      "family": "clothespeg",
+      "question": "Why does squeezing a clothespeg handle open its jaws?",
+      "explanationKey": "opposed-arm-pivot",
+      "answer": "Handles and jaws lie on opposite sides of the shared pivot, so bringing handles together separates the jaws.",
+      "causalRelationship": {
+        "cause": "The two arms rotate about the central spring axis.",
+        "effect": "Handle closure corresponds to jaw opening.",
+        "counterfactual": "Pure translation without that pivot does not produce the same opposed motion."
+      },
+      "factualVariant": {
+        "id": "wood-arms-central-spring-cloth",
+        "description": "Handles and jaws lie on opposite sides of the shared pivot, so bringing handles together separates the jaws. Authored model; no manufacturer dimensions or force simulation.",
+        "dimensionBasis": "illustrative",
+        "sources": ["peg-basic"]
+      },
+      "requiredPack": {
+        "base": {
+          "id": "clothespeg",
+          "version": "1.0.0",
+          "sha256": "sha256:1d6050d5ac18a16722e3766bf8da86a4f0c418012d50e3a15a6eeadd1b7ac281",
+          "variant": "wood-arms-central-spring-cloth",
+          "detail": "teaching"
+        },
+        "plannedAssetId": null
+      },
+      "reusedRigIds": ["upper.hinge", "lower.hinge"],
+      "explanationViews": [
+        "side view with common pivot and both tips visible",
+        "handle/jaw displacement witnesses"
+      ],
+      "requiredCapabilities": [
+        "Common-axis two-arm kinematics and approach/hold/return continuity",
+        "Handle and jaw witnesses remain attached under camera changes"
+      ],
+      "assetWork": [],
+      "behaviorWork": [],
+      "plannedBehaviorId": null,
+      "route": "existing-pack-rig",
+      "overlap": {
+        "relatedEpisodes": ["E08", "E09", "E10"],
+        "questionAnswer": "Same clothespeg mechanism as E08, but this question asks about opposite motion rather than restoring bias.",
+        "scenePatterns": ["recognition → side pivot → squeeze/open → return"],
+        "distinction": "The explanatory evidence is the pivot and paired displacement, not a force-multiplier claim."
+      },
+      "sharedEarlierEpisodes": [],
+      "existingEvidence": [
+        {
+          "path": "docs/mechanism-shorts-ms2-results.json",
+          "scope": "Scoped family software evidence; not episode capability admission or pilot acceptance."
+        }
+      ],
+      "support": {
+        "state": "not-validated",
+        "missingGates": [
+          "Current immutable pack and required capability acceptance, including continuous native motion, seek/export parity and remaining MS2 resource/full/installed gates.",
+          "Exact episode source and output hashes with factual, readable encoded visual and genuine speech/listening review; none exists for this proposed episode."
+        ]
+      }
+    },
+    {
+      "id": "E08",
+      "family": "clothespeg",
+      "question": "Why does a clothespeg close again after the handles are released?",
+      "explanationKey": "spring-biased-return",
+      "answer": "The torsion spring biases the arms toward closure; the selected cloth stops the authored return before the unloaded closed pose.",
+      "causalRelationship": {
+        "cause": "Releasing the handle actuation allows the declared spring return.",
+        "effect": "The jaws return toward closure until the selected contact stop.",
+        "counterfactual": "Removing the restoring bias would leave hinge motion without an automatic return rule."
+      },
+      "factualVariant": {
+        "id": "wood-arms-central-spring-cloth",
+        "description": "The torsion spring biases the arms toward closure; the selected cloth stops the authored return before the unloaded closed pose. Authored model; no manufacturer dimensions or force simulation.",
+        "dimensionBasis": "illustrative",
+        "sources": ["peg-basic"]
+      },
+      "requiredPack": {
+        "base": {
+          "id": "clothespeg",
+          "version": "1.0.0",
+          "sha256": "sha256:1d6050d5ac18a16722e3766bf8da86a4f0c418012d50e3a15a6eeadd1b7ac281",
+          "variant": "wood-arms-central-spring-cloth",
+          "detail": "teaching"
+        },
+        "plannedAssetId": null
+      },
+      "reusedRigIds": [
+        "upper.hinge",
+        "lower.hinge",
+        "upper.return",
+        "lower.return"
+      ],
+      "explanationViews": [
+        "spring coil and leg-seat macro",
+        "continuous release/return/contact-stop side view"
+      ],
+      "requiredCapabilities": [
+        "Spring leg attachment and qualitative return direction",
+        "Held/released/contact-stop continuity without a stiffness or measured-force claim"
+      ],
+      "assetWork": [],
+      "behaviorWork": [],
+      "plannedBehaviorId": null,
+      "route": "existing-pack-rig",
+      "overlap": {
+        "relatedEpisodes": ["E07", "E09"],
+        "questionAnswer": "Shares squeeze/release cycle with E07; merely replaying that cycle without showing spring/leg causal evidence is insufficient.",
+        "scenePatterns": [
+          "spring seat macro → release → contact stop → return"
+        ],
+        "distinction": "Show the restoring spring and stop. No energy, stiffness, material elasticity or time-to-close measurement is inferred from an easing curve."
+      },
+      "sharedEarlierEpisodes": [],
+      "existingEvidence": [
+        {
+          "path": "docs/mechanism-shorts-ms2-results.json",
+          "scope": "Scoped family software evidence; not episode capability admission or pilot acceptance."
+        }
+      ],
+      "support": {
+        "state": "not-validated",
+        "missingGates": [
+          "Current immutable pack and required capability acceptance, including continuous native motion, seek/export parity and remaining MS2 resource/full/installed gates.",
+          "Exact episode source and output hashes with factual, readable encoded visual and genuine speech/listening review; none exists for this proposed episode."
+        ]
+      }
+    },
+    {
+      "id": "E09",
+      "family": "clothespeg",
+      "question": "What do the opposing jaw notches do when a clothespeg grips a line?",
+      "explanationKey": "jaw-notch-line-capture",
+      "answer": "Opposing jaw notches provide a shaped seat around the selected line while the spring biases the arms closed.",
+      "causalRelationship": {
+        "cause": "The line is positioned between the matched jaw notches.",
+        "effect": "The jaws approach a geometrically declared line-contact stop.",
+        "counterfactual": "Flat jaws do not have the same surrounding seat; no friction or pull-out force comparison is claimed."
+      },
+      "factualVariant": {
+        "id": "notched-jaws-line-contact",
+        "description": "Opposing jaw notches provide a shaped seat around the selected line while the spring biases the arms closed. Authored model; no manufacturer dimensions or force simulation.",
+        "dimensionBasis": "illustrative",
+        "sources": ["peg-basic"]
+      },
+      "requiredPack": {
+        "base": {
+          "id": "clothespeg",
+          "version": "1.0.0",
+          "sha256": "sha256:1d6050d5ac18a16722e3766bf8da86a4f0c418012d50e3a15a6eeadd1b7ac281",
+          "variant": "wood-arms-central-spring-cloth",
+          "detail": "teaching"
+        },
+        "plannedAssetId": "peg-line-seat"
+      },
+      "reusedRigIds": [
+        "upper.hinge",
+        "lower.hinge",
+        "upper.return",
+        "lower.return"
+      ],
+      "explanationViews": [
+        "authored jaw/line contact section",
+        "notch versus flat contact geometry comparison"
+      ],
+      "requiredCapabilities": [
+        "New notch/line geometry and compatible contact anchors",
+        "Declared closure stop and visible line seat; no friction simulation"
+      ],
+      "assetWork": [
+        "Author reviewed opposing notch profiles and a round-line prop, with explicit section geometry and nonpenetrating stop anchors.",
+        "The existing cloth-contact asset cannot certify line capture merely by renaming the cloth."
+      ],
+      "behaviorWork": [],
+      "plannedBehaviorId": null,
+      "route": "new-asset-existing-rig",
+      "overlap": {
+        "relatedEpisodes": ["E07", "E08"],
+        "questionAnswer": "Shares closure with E08 but introduces a different contact object and local constraint.",
+        "scenePatterns": ["local jaw section → approach → line seat → hold"],
+        "distinction": "The answer concerns contact shape and seating, not whether the spring closes or whether the peg has more grip strength."
+      },
+      "sharedEarlierEpisodes": [],
+      "existingEvidence": [
+        {
+          "path": "docs/mechanism-shorts-ms2-results.json",
+          "scope": "Scoped family software evidence; not episode capability admission or pilot acceptance."
+        }
+      ],
+      "support": {
+        "state": "not-validated",
+        "missingGates": [
+          "Current immutable pack and required capability acceptance, including continuous native motion, seek/export parity and remaining MS2 resource/full/installed gates.",
+          "Exact episode source and output hashes with factual, readable encoded visual and genuine speech/listening review; none exists for this proposed episode.",
+          "New factual asset, immutable metadata, rig compatibility and native acceptance."
+        ]
+      }
+    },
+    {
+      "id": "E10",
+      "family": "clothespeg",
+      "question": "How does pressing farther from the pivot change the force needed in an idealized clothespeg?",
+      "explanationKey": "lever-moment-balance",
+      "answer": "For a declared resisting torque, a greater perpendicular handle moment arm reduces the required ideal input force; a real peg also depends on spring/contact geometry.",
+      "causalRelationship": {
+        "cause": "The applied force line changes its perpendicular distance from the pivot.",
+        "effect": "The ideal torque balance changes required input force for the same resisting torque.",
+        "counterfactual": "Scaling the whole arm or drawing bigger arrows does not establish that torque balance."
+      },
+      "factualVariant": {
+        "id": "idealized-moment-arm-comparison",
+        "description": "For a declared resisting torque, a greater perpendicular handle moment arm reduces the required ideal input force; a real peg also depends on spring/contact geometry. Proposed extension; existing pack cannot establish this result.",
+        "dimensionBasis": "illustrative",
+        "sources": ["lever-statics", "peg-basic"]
+      },
+      "requiredPack": {
+        "base": {
+          "id": "clothespeg",
+          "version": "1.0.0",
+          "sha256": "sha256:1d6050d5ac18a16722e3766bf8da86a4f0c418012d50e3a15a6eeadd1b7ac281",
+          "variant": "wood-arms-central-spring-cloth",
+          "detail": "teaching"
+        },
+        "plannedAssetId": "peg-moment-arm"
+      },
+      "reusedRigIds": ["upper.hinge", "lower.hinge"],
+      "explanationViews": [
+        "side free-body diagram with force lines and perpendicular moment arms",
+        "aligned near/far press-point comparison at fixed resistance"
+      ],
+      "requiredCapabilities": [
+        "Explicit static moment model and independent dimensional oracle",
+        "Separate spring torque/contact assumptions and declared idealization"
+      ],
+      "assetWork": [
+        "Author fixed-pivot press-point/contact anchors and dimension witnesses; whole-arm scaling alone is insufficient."
+      ],
+      "behaviorWork": [
+        "Add a unit-aware ideal moment-balance explanation behavior, assumptions and bounded solver/oracle; existing hinge/spring-return pose controls expose no force model."
+      ],
+      "plannedBehaviorId": "lever-moment-balance",
+      "route": "new-behavior",
+      "overlap": {
+        "relatedEpisodes": ["E07"],
+        "questionAnswer": "Related pivot scene but E07 only establishes displacement direction.",
+        "scenePatterns": [
+          "side pivot → force-line diagram → fixed-resistance comparison"
+        ],
+        "distinction": "Change the moment arm with explicit ideal torque balance; no manufacturer grip force, friction, stiffness or measured mechanical advantage is claimed."
+      },
+      "sharedEarlierEpisodes": [],
+      "existingEvidence": [
+        {
+          "path": "docs/mechanism-shorts-ms2-results.json",
+          "scope": "Scoped family software evidence; not episode capability admission or pilot acceptance."
+        }
+      ],
+      "support": {
+        "state": "not-validated",
+        "missingGates": [
+          "Current immutable pack and required capability acceptance, including continuous native motion, seek/export parity and remaining MS2 resource/full/installed gates.",
+          "Exact episode source and output hashes with factual, readable encoded visual and genuine speech/listening review; none exists for this proposed episode.",
+          "New factual asset, immutable metadata, rig compatibility and native acceptance.",
+          "New behavior contract, analytic oracle and continuous native evidence; authored poses alone do not prove this claim."
+        ]
+      }
+    }
+  ],
+  "selection": {
+    "id": "ms3-pilot-2026-10-12-v1",
+    "selectedEpisodeIds": [
+      "E01",
+      "E02",
+      "E03",
+      "E04",
+      "E05",
+      "E06",
+      "E07",
+      "E08",
+      "E09",
+      "E10"
+    ],
+    "sha256": "sha256:0d68b0e03e6e4df482328af097c81b54aa8cdee1f7d1fbc028778760bdba7367"
+  },
+  "changes": [
+    {
+      "revision": 1,
+      "date": "2026-10-12",
+      "reason": "First candidate board and ten-question cohort frozen by the MS2 implementation owner before pilot production. No prior selected cohort exists.",
+      "previousSelectionSha256": null
+    }
+  ]
+}

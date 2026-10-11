@@ -45,20 +45,22 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Forty-nine slices now render the exact 128-case Thai matrix: 142 streams/
-  3,408 encoded frames, 3,072 decoded frames, 9,216 PNGs and 426 sheets audited.
-  All 128 native previews pass 9,216 seek draws; 70 settled pose/alias comparisons
-  and 256 lossless PNG samples independently match. Separate encoded differences
-  prompted the lossless diagnostic; default/explicit-zero output identity holds.
-  Final fast2: 4,286 units/420 files; 2,564 held inputs/119,541,904B fixed.
-  Seventeen sampled visual artifacts cover every text but do not certify all cells;
-  full finer-Thai mark/overlap/gap disposition remains pending. Active partial/low-
-  contrast quantities are diagnostic negatives, not certified complete messages.
-  Next: remaining Thai cell review/support findings, coverage, broader labels/
-  continuous readability, genuine speech and resource/full/final gates. Packs/pilot 0;
-  no merge/publication, human acceptance or paid generation.
-  [Thai native evidence](./mechanism-shorts-ms2-thai-native-results.json),
-  [probe scope](./mechanism-thai-motion-probes.md), [MS2 results](./mechanism-shorts-ms2-results.json).
+  Fifty slices now include the [frozen ten-question coverage board](./mechanism-topic-family-coverage.md):
+  five existing targets, three new-asset/existing-rig routes, two behavior routes;
+  five episodes need assets and two need behavior. Validated coverage remains
+  0/10; all packs are candidates and accepted pilot episodes remain 0.
+  Read-only audit binds actual pack hashes, questions/answers, overlap and selection;
+  independent accounting/hash audit matches. Seven focused tests pass after the
+  retained fixture failure. Fast1 passes 4,293 units/421 files; 2,567 inputs/
+  119,595,348B held, including board; all 2,564 prior inputs unchanged.
+  Slice49 retains 142 Thai streams/3,408 frames and 9,216 lossless seeks, with
+  70 exact settled comparisons. Seventeen sampled visual artifacts do not certify
+  the full matrix; finer Thai mark/overlap/gap disposition remains pending.
+  Next: Thai cell/support findings, broader labels/continuous/readability, genuine
+  speech, resource/full/final/installed/pack admission and MS2 PR gates. MS3 not
+  started; no human acceptance, merge/publication or paid generation.
+  [Coverage evidence](./mechanism-shorts-ms2-coverage-results.json),
+  [Thai evidence](./mechanism-shorts-ms2-thai-native-results.json), [MS2 results](./mechanism-shorts-ms2-results.json).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
   inventory15:2,329 inputs/117,503,155B. Original full6 retains a qualified19-group
@@ -216,6 +218,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — MS2 slice50: frozen topic-to-family candidate coverage board
+
+- Ten distinct causal questions across three families are frozen before MS3,
+  including disclosed historical E01 reuse and scene/question overlap. Every row
+  binds its base pack, variant, views, capabilities, unresolved work and sources.
+- Routing: 5 existing targets, 3 new assets/existing rigs, 2 new behaviors. Five
+  episodes need assets; two proposed behavior types remain unimplemented. Actual
+  candidate statuses keep validated coverage at 0/10; accepted pilot episodes 0.
+- Read-only auditor and independent Python accounting/hash checks match the frozen
+  cohort. Version1 deliberately cannot admit support from names or scoped test receipts.
+- First duplicate fixture failed at an earlier missing-ID check; corrected fixture
+  passes all 7 tests. Fast1 actually exits 0: 4,293 units/421 files, 2,567 held
+  inputs/119,595,348B, including board; all 2,564 previous inputs unchanged.
+- Full load-pawl primary patent access failed; excerpt-only candidate remains
+  provisional. Thai cell review and broader MS2/PR/support/pilot gates remain open.
+- [Board](./mechanism-topic-family-coverage.md), [evidence](./mechanism-shorts-ms2-coverage-results.json),
+  [plan](./mechanism-shorts-production-plan.md). No media generation or spending.
 
 ### 2026-10-12 — MS2 slice49: full native Thai exports and lossless seek proof
 

@@ -17716,9 +17716,123 @@
         "Remaining Thai matrix cell mark/overlap/gap review and supported-unit disposition before broader adoption/checkbox closure.",
         "Coverage, broader labels/continuous readability, genuine speech, resource/full/final and owner acceptance gates before MS2 PR/MS3."
       ]
+    },
+    "fiftiethSlice": {
+      "status": "frozen-ten-question-candidate-coverage-board-audited",
+      "scope": "Coverage-board creation and unsupported baseline only; no new production rendering or pack support.",
+      "evidence": "docs/mechanism-shorts-ms2-coverage-results.json",
+      "board": "docs/mechanism-topic-family-coverage.json",
+      "readableBoard": "docs/mechanism-topic-family-coverage.md",
+      "counts": {
+        "schemaVersion": "mechanism-coverage-report-1",
+        "boardSha256": "sha256:f9d6422e45bd49fdf51338d51aec4bc5df210cf03f014d16d9e7d3e2aa4b762a",
+        "selection": {
+          "id": "ms3-pilot-2026-10-12-v1",
+          "selectedEpisodeIds": [
+            "E01",
+            "E02",
+            "E03",
+            "E04",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E09",
+            "E10"
+          ],
+          "sha256": "sha256:0d68b0e03e6e4df482328af097c81b54aa8cdee1f7d1fbc028778760bdba7367"
+        },
+        "proposedDistinctEpisodes": 10,
+        "selectedDistinctEpisodes": 10,
+        "supportedDistinctEpisodes": 0,
+        "coverage": 0,
+        "candidateRouting": {
+          "existing-pack-rig": 5,
+          "new-asset-existing-rig": 3,
+          "new-behavior": 2
+        },
+        "selectedRouting": {
+          "existing-pack-rig": 5,
+          "new-asset-existing-rig": 3,
+          "new-behavior": 2
+        },
+        "newAssetEpisodes": {
+          "count": 5,
+          "ids": ["E02", "E05", "E06", "E09", "E10"]
+        },
+        "newBehaviorEpisodes": {
+          "count": 2,
+          "ids": ["E06", "E10"]
+        },
+        "plannedBehaviorTypes": [
+          "load-dependent-pawl-seating",
+          "lever-moment-balance"
+        ],
+        "admittedNewAssets": 0,
+        "admittedNewRigTypes": 0,
+        "packStatuses": [
+          {
+            "id": "tape-hook",
+            "status": "candidate",
+            "reference": {
+              "id": "tape-hook",
+              "version": "1.0.0",
+              "sha256": "sha256:5f7fa4100db1ecbb36eb62d2c036857b3740ded49e41856870aed2769e260dd5",
+              "variant": "floating-hook",
+              "detail": "teaching"
+            }
+          },
+          {
+            "id": "cable-tie",
+            "status": "candidate",
+            "reference": {
+              "id": "cable-tie",
+              "version": "1.0.0",
+              "sha256": "sha256:c4243b4d3f4ae14561f955eff5874d1954adabf944d4daf96ca27d48b22b7a7c",
+              "variant": "outside-serrated-integral-pawl-cutaway",
+              "detail": "teaching"
+            }
+          },
+          {
+            "id": "clothespeg",
+            "status": "candidate",
+            "reference": {
+              "id": "clothespeg",
+              "version": "1.0.0",
+              "sha256": "sha256:1d6050d5ac18a16722e3766bf8da86a4f0c418012d50e3a15a6eeadd1b7ac281",
+              "variant": "wood-arms-central-spring-cloth",
+              "detail": "teaching"
+            }
+          }
+        ],
+        "scope": "Audited frozen candidate baseline. Distinctness keys and overlap disclosures require editorial judgment. No support, completed pilot, factual review, visual/listening acceptance or new asset/rig admission is inferred."
+      },
+      "verification": {
+        "fastTests": 4293,
+        "fastFiles": 421,
+        "heldInputs": 2567,
+        "heldBytes": 119595348,
+        "focusedTests": 7,
+        "priorCommonInputsChanged": 0
+      },
+      "remainingSupport": {
+        "supportedPacks": 0,
+        "pilotAcceptedEpisodes": 0,
+        "MS3": "not-started"
+      },
+      "remaining": [
+        "All three actual pack statuses remain candidate. The baseline format only permits not-validated support and deliberately stops if registry status becomes verified; a future versioned positive-admission evidence/review contract is required.",
+        "Selected ten-question denominator is frozen by the MS2 implementation owner, not owner factual/visual/listening approval. Exact unique keys/strings and disclosed overlaps aid but do not automate semantic distinctness judgment.",
+        "Five existing targets, three new-asset/existing-rig candidates, two new-behavior candidates. Five episodes need new assets because both behavior candidates also need assets. Two proposed extension types are not implemented or admitted.",
+        "Complete US3872547A page access failed; only its primary search excerpt supports the provisional load-pawl question. Full figures/description and factual acceptance are required before implementation.",
+        "The release-trigger asset/generic ratchet mapping remains a reuse hypothesis. The non-releasable cable-tie family guard is unchanged.",
+        "E01 reuses the historical MS1/MS1N topic, disclosed in its row. Later MS4C must disclose cohort overlap; no 300-episode coverage inference is made.",
+        "Only coverage-board creation is completed. Remaining exact Thai cell/support disposition, broader labels/continuous/readability, genuine speech, resource/full/final/installed, pack admission and MS2 PR gates remain open. Supported packs 0; accepted pilot episodes 0; MS3 not started."
+      ]
     }
   },
   "limits": [
+    "Slice50 creates the frozen ten-question coverage board before MS3: 5 existing targets, 3 new-asset/existing-rig candidates, 2 behavior extensions; 5 episodes need new assets and 2 need behavior. Actual candidate references and all 2,564 prior inputs are unchanged. Coverage remains 0/10 validated, packs/accepted pilot 0. Fast1 passes 4,293 units/421 files; seven focused tests and independent cohort/hash/accounting audit pass after retaining an initial negative-test fixture failure. Only board creation is complete; full MS2 and support admission remain open.",
     "Slice49 adds complete native export/decode/seek evidence for all 128 Thai cases: 142 streams/3,408 frames, 3,072 decoded frames/9,216 PNGs/426 sheets, 9,216 native seeks and 70 exact lossless settled comparisons independently verified. Default/explicit-zero identities hold; encoded differences prompted lossless diagnosis. Final fast2 passes 4,286 units/420 files on held inputs. Seventeen sampled visual artifacts cover every text but do not certify all cells; remaining Thai support/mark/gap review and broader MS2/full/final/owner gates stay open. Packs/pilot 0.",
     "Slice48 verifies exact Thai authoring/strict font coverage/loaded browser shaping and pose preflight only: six stress strings plus hashed production copy, 128 saved native compositions/3,072 pose frames and seven wrong-font controls independently audited. Sequential fast3 passes 4,286 units/420 files. Two failed authoring attempts retained; production rendering is unchanged. Native encoded/reduced inspection and Thai risk acceptance remain open, alongside broader MS2/full/final/owner gates; supported packs/pilot 0.",
     "Slice47 reproduces and repairs generated-count shared fitting: narrow 96 -> 38 px fits all 63 reachable strings; wide/no-fit controls unchanged. Fast7 passes 4,286 units/420 files; three native cases/six exports/366 frames and 549 seek draws pass; independent audit probes all streams and decodes 183 frames. Existing four fit variants/727 frames pass on each backend. Failures and staged passes retained. Thai risks and broader MS2/full/final/owner gates remain open; supported packs/pilot 0.",

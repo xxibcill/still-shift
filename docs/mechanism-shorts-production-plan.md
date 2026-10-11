@@ -893,10 +893,19 @@ mechanism families establish whether the architecture transfers.
       retains failed import/build/boundary runs; [API](./mechanism-cue-lifecycle.md)
       declares whole-cycle rerender. Selective shot reuse and complete expanded
       acceptance remain open.
-- [ ] Create the topic-to-family coverage board during family selection under the
+- [x] Create the topic-to-family coverage board during family selection under the
       coverage contract above. Classify all proposed pilot candidates and record
       support criteria, selected distinct-episode denominator and new-asset/new-rig
-      counts before handing the selection to MS3.
+      counts before handing the selection to MS3. Slice50 freezes ten causal
+      questions with immutable base references, views/capabilities, work and overlap:
+      five existing targets, three new-asset/existing-rig routes and two behavior
+      routes. Five episodes require assets and two require behavior extensions;
+      admitted new assets/rigs remain zero. Validated coverage is 0/10; all packs
+      are candidates. [Board](./mechanism-topic-family-coverage.md) and
+      [evidence](./mechanism-shorts-ms2-coverage-results.json) retain the failed
+      fixture/rerun, seven focused tests, independent hash/accounting audit and
+      fast1 4,293 units/421 files. Only board creation is complete; positive
+      support admission, pack validation and MS3 production remain open.
 - [x] Expose explicit genuine-weight versus outline treatment and units, retaining
       legacy automatic behavior with resolved-route diagnostics. Reuse MS1 font
       identity; generalize quantity/phrase helpers only where repeated authoring

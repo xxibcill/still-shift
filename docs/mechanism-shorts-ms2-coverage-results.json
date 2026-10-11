@@ -1,0 +1,233 @@
+{
+  "version": "mechanism-shorts-ms2-coverage-results-1",
+  "date": "2026-10-12",
+  "branch": "codex/mechanism-ms2",
+  "baseCommit": "dcae3055827f382c426ed95c4ea7fec87a2a205a",
+  "status": "frozen-candidate-board-audited-support-unavailable",
+  "scope": "First ten-question candidate cohort and read-only unsupported baseline audit. No production rendering, pack/rig admission, episode production, owner acceptance or spending.",
+  "board": {
+    "source": {
+      "path": "docs/mechanism-topic-family-coverage.json",
+      "bytes": 38362,
+      "sha256": "sha256:e6fbe4ca81771b482be89dc28d8cebe0f35df394b1913f12c8f876f8cf963dd5"
+    },
+    "report": {
+      "schemaVersion": "mechanism-coverage-report-1",
+      "boardSha256": "sha256:f9d6422e45bd49fdf51338d51aec4bc5df210cf03f014d16d9e7d3e2aa4b762a",
+      "selection": {
+        "id": "ms3-pilot-2026-10-12-v1",
+        "selectedEpisodeIds": [
+          "E01",
+          "E02",
+          "E03",
+          "E04",
+          "E05",
+          "E06",
+          "E07",
+          "E08",
+          "E09",
+          "E10"
+        ],
+        "sha256": "sha256:0d68b0e03e6e4df482328af097c81b54aa8cdee1f7d1fbc028778760bdba7367"
+      },
+      "proposedDistinctEpisodes": 10,
+      "selectedDistinctEpisodes": 10,
+      "supportedDistinctEpisodes": 0,
+      "coverage": 0,
+      "candidateRouting": {
+        "existing-pack-rig": 5,
+        "new-asset-existing-rig": 3,
+        "new-behavior": 2
+      },
+      "selectedRouting": {
+        "existing-pack-rig": 5,
+        "new-asset-existing-rig": 3,
+        "new-behavior": 2
+      },
+      "newAssetEpisodes": {
+        "count": 5,
+        "ids": ["E02", "E05", "E06", "E09", "E10"]
+      },
+      "newBehaviorEpisodes": {
+        "count": 2,
+        "ids": ["E06", "E10"]
+      },
+      "plannedBehaviorTypes": [
+        "load-dependent-pawl-seating",
+        "lever-moment-balance"
+      ],
+      "admittedNewAssets": 0,
+      "admittedNewRigTypes": 0,
+      "packStatuses": [
+        {
+          "id": "tape-hook",
+          "status": "candidate",
+          "reference": {
+            "id": "tape-hook",
+            "version": "1.0.0",
+            "sha256": "sha256:5f7fa4100db1ecbb36eb62d2c036857b3740ded49e41856870aed2769e260dd5",
+            "variant": "floating-hook",
+            "detail": "teaching"
+          }
+        },
+        {
+          "id": "cable-tie",
+          "status": "candidate",
+          "reference": {
+            "id": "cable-tie",
+            "version": "1.0.0",
+            "sha256": "sha256:c4243b4d3f4ae14561f955eff5874d1954adabf944d4daf96ca27d48b22b7a7c",
+            "variant": "outside-serrated-integral-pawl-cutaway",
+            "detail": "teaching"
+          }
+        },
+        {
+          "id": "clothespeg",
+          "status": "candidate",
+          "reference": {
+            "id": "clothespeg",
+            "version": "1.0.0",
+            "sha256": "sha256:1d6050d5ac18a16722e3766bf8da86a4f0c418012d50e3a15a6eeadd1b7ac281",
+            "variant": "wood-arms-central-spring-cloth",
+            "detail": "teaching"
+          }
+        }
+      ],
+      "scope": "Audited frozen candidate baseline. Distinctness keys and overlap disclosures require editorial judgment. No support, completed pilot, factual review, visual/listening acceptance or new asset/rig admission is inferred."
+    },
+    "readableBoard": "docs/mechanism-topic-family-coverage.md"
+  },
+  "verification": {
+    "focused1": {
+      "status": "failed-fixture",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-coverage50-unit1.log",
+        "bytes": 2251,
+        "sha256": "sha256:4224f5d32fb5a635fe882ec7457604241be665a12aa8c7b88e8d915a51b200a3"
+      },
+      "tests": 7,
+      "passed": 6,
+      "failed": 1,
+      "command": "pnpm exec vitest run tests/unit/mechanism-coverage-board.test.ts --maxWorkers=2",
+      "owningShellExitCode": 0,
+      "testExitReceipt": null,
+      "qualification": "The shell ended with cat and therefore returned 0, while the retained Vitest log explicitly failed. The duplicate-ID fixture also left E02 selected, causing Unknown selected episode before its expected duplicate check. Not a pass."
+    },
+    "focused2": {
+      "status": "passed",
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-coverage50-unit2.log",
+        "bytes": 462,
+        "sha256": "sha256:e4aa77369685a6822491a93c626a099672b3a7009adeaad5c1bab0553cea693f"
+      },
+      "tests": 7,
+      "files": 1,
+      "qualification": "Corrected fixture changes its selected ID as well. Admission logic and assertions are unchanged; actual test status propagated through the owning shell."
+    },
+    "fast1": {
+      "status": "passed",
+      "actualRootSession": 31306,
+      "actualExitCode": 0,
+      "command": "pnpm check:fast",
+      "node": "22.23.1",
+      "pnpm": "10.29.3",
+      "unitTests": 4293,
+      "unitFiles": 421,
+      "reportedUnitSeconds": 57.05,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-coverage50-fast1.log",
+        "bytes": 37741,
+        "sha256": "sha256:41c28f724c2964d2cf8d789e50c2dbf510f767f3660b8f0c58279810e6824b01"
+      }
+    },
+    "heldInputs": {
+      "status": "unchanged",
+      "inventory": {
+        "path": "/private/tmp/still-shift-ms2-coverage50-inputs1.json",
+        "bytes": 437869,
+        "sha256": "sha256:213864d34b66faa13e454e1cc65b82860783aad8cabb6b19726c331cc2679a09"
+      },
+      "files": 2567,
+      "inputBytes": 119595348,
+      "additionalAuthoringInput": "docs/mechanism-topic-family-coverage.json",
+      "comparisonWithSlice49": {
+        "common": 2564,
+        "changed": [],
+        "added": [
+          "docs/mechanism-topic-family-coverage.json",
+          "scripts/mechanism/coverage-board.ts",
+          "tests/unit/mechanism-coverage-board.test.ts"
+        ]
+      }
+    },
+    "boardAudit1": {
+      "status": "passed",
+      "actualExitCode": 0,
+      "command": "node --import tsx scripts/mechanism/coverage-board.ts docs/mechanism-topic-family-coverage.json",
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-coverage50-report1.json",
+        "bytes": 2394,
+        "sha256": "sha256:c31ce84a39a12cf5ca9a3ffbaaf1e5b11c41e1e1b17c556972cf9733496b8061"
+      },
+      "registryCapture": {
+        "path": "/private/tmp/still-shift-ms2-coverage50-registry1.json",
+        "bytes": 113476,
+        "sha256": "sha256:cafa60527388df098c8efa05c5f9ca4b25534e978881e63c6043e258762cf89d"
+      }
+    },
+    "independentAudit1": {
+      "status": "passed",
+      "actualExitCode": 0,
+      "script": {
+        "path": "/private/tmp/still-shift-ms2-coverage50-audit1.py",
+        "bytes": 3381,
+        "sha256": "sha256:18c41802087431a97933c5ef3e966fd1345f311c84ed3938baec75d61b294990"
+      },
+      "output": {
+        "path": "/private/tmp/still-shift-ms2-coverage50-audit1.json",
+        "bytes": 1032,
+        "sha256": "sha256:24576c34681fb8dd7b5be3827c444711cc3b6e0c5d49ac5a0e403ba611387870"
+      },
+      "result": {
+        "version": "ms2-coverage50-independent-audit-1",
+        "status": "passed",
+        "selected": 10,
+        "supported": 0,
+        "coverage": 0,
+        "selectionSha256": "sha256:0d68b0e03e6e4df482328af097c81b54aa8cdee1f7d1fbc028778760bdba7367",
+        "boardSha256": "sha256:f9d6422e45bd49fdf51338d51aec4bc5df210cf03f014d16d9e7d3e2aa4b762a",
+        "routing": {
+          "existing-pack-rig": 5,
+          "new-asset-existing-rig": 3,
+          "new-behavior": 2
+        },
+        "newAssetEpisodes": ["E02", "E05", "E06", "E09", "E10"],
+        "newBehaviorEpisodes": ["E06", "E10"],
+        "heldInputComparison": {
+          "common": 2564,
+          "changed": [],
+          "added": [
+            "docs/mechanism-topic-family-coverage.json",
+            "scripts/mechanism/coverage-board.ts",
+            "tests/unit/mechanism-coverage-board.test.ts"
+          ]
+        },
+        "limitations": [
+          "Distinctness is an explicit editorial decision; exact unique strings do not prove semantic novelty.",
+          "No media or support admission was reviewed; complete load-pawl primary patent remains unavailable."
+        ]
+      }
+    },
+    "ownership": "The single fast1 session actually exited 0; focused2 and independent audit actually exited 0. No live jobs remain."
+  },
+  "limits": [
+    "All three actual pack statuses remain candidate. The baseline format only permits not-validated support and deliberately stops if registry status becomes verified; a future versioned positive-admission evidence/review contract is required.",
+    "Selected ten-question denominator is frozen by the MS2 implementation owner, not owner factual/visual/listening approval. Exact unique keys/strings and disclosed overlaps aid but do not automate semantic distinctness judgment.",
+    "Five existing targets, three new-asset/existing-rig candidates, two new-behavior candidates. Five episodes need new assets because both behavior candidates also need assets. Two proposed extension types are not implemented or admitted.",
+    "Complete US3872547A page access failed; only its primary search excerpt supports the provisional load-pawl question. Full figures/description and factual acceptance are required before implementation.",
+    "The release-trigger asset/generic ratchet mapping remains a reuse hypothesis. The non-releasable cable-tie family guard is unchanged.",
+    "E01 reuses the historical MS1/MS1N topic, disclosed in its row. Later MS4C must disclose cohort overlap; no 300-episode coverage inference is made.",
+    "Only coverage-board creation is completed. Remaining exact Thai cell/support disposition, broader labels/continuous/readability, genuine speech, resource/full/final/installed, pack admission and MS2 PR gates remain open. Supported packs 0; accepted pilot episodes 0; MS3 not started."
+  ]
+}
