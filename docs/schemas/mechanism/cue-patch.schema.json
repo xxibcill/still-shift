@@ -432,6 +432,171 @@
                 "maxLength": 128,
                 "pattern": "^[a-zA-Z][\\w-]*$"
               },
+              "annotation": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[a-zA-Z][\\w-]*$"
+              },
+              "property": { "type": "string", "const": "world-annotation" },
+              "value": {
+                "type": "object",
+                "properties": {
+                  "kind": { "type": "string", "const": "world-text" },
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 4000
+                  },
+                  "part": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  },
+                  "transform": {
+                    "type": "object",
+                    "properties": {
+                      "position": {
+                        "default": [0, 0, 0],
+                        "type": "array",
+                        "prefixItems": [
+                          {
+                            "type": "number",
+                            "minimum": -1000000,
+                            "maximum": 1000000
+                          },
+                          {
+                            "type": "number",
+                            "minimum": -1000000,
+                            "maximum": 1000000
+                          },
+                          {
+                            "type": "number",
+                            "minimum": -1000000,
+                            "maximum": 1000000
+                          }
+                        ]
+                      },
+                      "rotation": {
+                        "default": [0, 0, 0],
+                        "type": "array",
+                        "prefixItems": [
+                          {
+                            "type": "number",
+                            "minimum": -1000000,
+                            "maximum": 1000000
+                          },
+                          {
+                            "type": "number",
+                            "minimum": -1000000,
+                            "maximum": 1000000
+                          },
+                          {
+                            "type": "number",
+                            "minimum": -1000000,
+                            "maximum": 1000000
+                          }
+                        ]
+                      },
+                      "scale": {
+                        "default": [1, 1, 1],
+                        "type": "array",
+                        "prefixItems": [
+                          {
+                            "type": "number",
+                            "exclusiveMinimum": 0,
+                            "maximum": 1000
+                          },
+                          {
+                            "type": "number",
+                            "exclusiveMinimum": 0,
+                            "maximum": 1000
+                          },
+                          {
+                            "type": "number",
+                            "exclusiveMinimum": 0,
+                            "maximum": 1000
+                          }
+                        ]
+                      },
+                      "pivot": {
+                        "default": [0, 0, 0],
+                        "type": "array",
+                        "prefixItems": [
+                          {
+                            "type": "number",
+                            "minimum": -1000000,
+                            "maximum": 1000000
+                          },
+                          {
+                            "type": "number",
+                            "minimum": -1000000,
+                            "maximum": 1000000
+                          },
+                          {
+                            "type": "number",
+                            "minimum": -1000000,
+                            "maximum": 1000000
+                          }
+                        ]
+                      }
+                    },
+                    "required": ["position", "rotation", "scale", "pivot"],
+                    "additionalProperties": false
+                  },
+                  "pixelsPerUnit": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 1000000
+                  },
+                  "sizePixels": {
+                    "type": "array",
+                    "prefixItems": [
+                      { "type": "integer", "minimum": 2, "maximum": 512 },
+                      { "type": "integer", "minimum": 2, "maximum": 512 }
+                    ]
+                  },
+                  "fontSizePixels": {
+                    "default": 18,
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 256
+                  },
+                  "ink": {
+                    "default": "#101820",
+                    "type": "string",
+                    "pattern": "^#[a-fA-F0-9]{6}$"
+                  },
+                  "side": {
+                    "default": "front",
+                    "type": "string",
+                    "enum": ["front", "double"]
+                  }
+                },
+                "required": [
+                  "kind",
+                  "text",
+                  "part",
+                  "transform",
+                  "pixelsPerUnit",
+                  "sizePixels",
+                  "fontSizePixels",
+                  "ink",
+                  "side"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": ["cue", "annotation", "property", "value"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "cue": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[a-zA-Z][\\w-]*$"
+              },
               "sound": {
                 "type": "string",
                 "maxLength": 128,

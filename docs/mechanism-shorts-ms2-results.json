@@ -18000,9 +18000,54 @@
         "Genuine recovered speech clocks/cues/final exports, continuous-time and encoded/human readability/appearance/listening, whole resources/replay/lifetime, final full aggregate/archive/installed, pack admission and MS2 PR.",
         "Supported packs0; accepted pilot episodes0; MS3 not started. No paid generation, publication or owner acceptance."
       ]
+    },
+    "fiftyFifthSlice": {
+      "status": "part-bound-world-text-software-slice-complete",
+      "evidence": "docs/mechanism-shorts-ms2-world-annotation-results.json",
+      "scope": "Explicit part-bound pinned-font world text, real physical part/ancestor visibility and stable CAS edits requiring native plate invalidation; legacy composition preserved.",
+      "verification": {
+        "fast6": {
+          "actualExitCode": 0,
+          "unitTests": 4320,
+          "unitFiles": 424
+        },
+        "nativeRegression": {
+          "actualExitCode": 0,
+          "depthCases": 14,
+          "compositionCases": 6,
+          "cancellation": "passed",
+          "rawReadbacks": 70,
+          "exactControlPairs": 30,
+          "qualification": "Native1 actually passed on input2. Only the new world-browser and its helper differ through final inputs5; independent source-delta5 verifies production and existing native owning tests unchanged. Native audit3 rechecks all70 raw readbacks/30 exact control pairs and current source hashes. No repeated native producer or fresh full aggregate is claimed."
+        },
+        "browser": {
+          "actualExitCode": 0,
+          "families": 3,
+          "previewFrames": 360,
+          "seekDraws": 1080,
+          "nativeExports": 6,
+          "finalNativeFrames": 360,
+          "hiddenOrOmittedControlDraws": 18,
+          "beforeAfterAudioIdenticalPairs": 3,
+          "beforeAfterDecodedVideoChangedPairs": 3
+        },
+        "independentAudit": "passed-all12-PNGs/360-matrix-pairs/360-decoded-frames/six-audio-bodies/source-WAV-clock/control-source-policies",
+        "heldInputs": {
+          "files": 2607,
+          "bytes": 120401922,
+          "unchanged": true
+        }
+      },
+      "remaining": [
+        "Surface placement is not authored or validated by world-text TRS. Screen layout excludes only screen labels; no world-plane automatic layout or continuous-time readability proof is claimed.",
+        "True surface marking with validated physical mesh placement/deformation exclusions and native invalidation.",
+        "Label-only plate reuse; genuine recovered speech clocks/cues/exports; full96/176 items36061 frames/benchmark; whole resources/replay/lifetime; final archive/installed/pack admission/MS2 PR.",
+        "Supported packs0; accepted pilot episodes0; MS3 not started. No paid generation, human acceptance or publication."
+      ]
     }
   },
   "limits": [
+    "Slice55 verifies explicit part-bound world text/CAS/native invalidation and physical hidden-part ancestry. Final fast6 passes4320 units/424 files; native1 owning source unchanged; browser3 passes360 previews1080 seeks/six exports360 native frames18 controls. Independent PNG/matrix/decode/source-clock/control audit passes; all12 PNGs agent-viewed. ACES color-filter, hidden required-shape, receipt-type and formatting failures remain retained. True surface marking, label plate reuse, genuine speech, whole resources/lifetime/replay/full96/final installed/pack admission/MS2 PR/human acceptance remain open. Packs/pilot0; MS3 not started.",
     "Slice54 wires five screen cue recipes across three candidate families; final fast2 passes4313 units/423 files, native depth14/six composition/cancellation pass, and fresh180 previews/540 seeks/six exports360 native frames plus independent decoded/body/PNG audit pass on unchanged2603 inputs120347181B. Red, fixture, type, camera and arrow-ink failures remain retained. World/surface routes, plate reuse, genuine speech and remaining MS2/full95/final/pack/pilot/human/PR gates remain open.",
     "Slice53 implements bounded shared composition bracket/arrow geometry with immutable sampled paths, all-anchor visibility, early secondary-reference checks and located writer/viewport failures. Final fast4 passes 4,303 units/422 files; native-depth4 passes14 depth/six composition cases/cancellation, including42 new readbacks and30 independently audited exact dynamic/control pairs. Inventory4 unchanged2,568 files/119,629,177B. Failures and staged passes retained. Full51 was deliberately stopped with actual exit130 before this feature work; final full94-group/176-item/36,061-frame/benchmark gate remains required. Cue recipes/world/surface/plate reuse and broader MS2/PR/pack/pilot acceptance stay open.",
     "Slice52 recovers three existing unpaced spoken recordings and supplied timed transcripts for the candidate families, with four current audio hashes and thirteen cue associations verified. A shorter tape-hook take uses revised copy; the initial identical-script assumption failed and is retained. New external media are not covered by the stopped full51 software prefix; actual decode/sample-clock, genuine cue/native exports, broader annotation/world/surface/plate reuse, resources/final installed/pack admission remain open. No audio was changed or generated; packs/pilot0.",

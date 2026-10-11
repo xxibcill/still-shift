@@ -1,3 +1,4 @@
+import { compileCueWorldText } from "./cue-world-annotations.ts";
 import { compileCueAnnotation } from "./cue-annotations.ts";
 import { planMechanismCueLayout } from "./cue-layout.ts";
 import {
@@ -192,6 +193,23 @@ export function compileMechanismNarratedCycle(
         annotationIndex,
         "text",
       ]);
+    }
+    for (const [annotationIndex, annotation] of (
+      cue.worldAnnotations ?? []
+    ).entries()) {
+      const annotationPath = [...path, "worldAnnotations", annotationIndex];
+      if (annotationIds.has(annotation.id))
+        fail("mechanism-cue-id", "Annotation IDs must be unique within a cue", [
+          ...annotationPath,
+          "id",
+        ]);
+      annotationIds.add(annotation.id);
+      if (!instance.scene.parts.some((part) => part.id === annotation.part))
+        fail("mechanism-cue-part", "Unknown world annotation part", [
+          ...annotationPath,
+          "part",
+        ]);
+      reading(annotation.text, [...annotationPath, "text"]);
     }
     return {
       cue: cue.id,
@@ -453,6 +471,19 @@ export function compileMechanismNarratedCycle(
             highlight: trackId("annotation-highlight", cue.id, annotation.id),
             visibility: trackId("annotation-visibility", cue.id, annotation.id),
           },
+        }),
+      );
+    for (const annotation of cue.worldAnnotations ?? [])
+      layers.push(
+        compileCueWorldText(annotation, {
+          controller,
+          cue: cue.id,
+          id: trackId("world-annotation", cue.id, annotation.id),
+          startFrame: timing.startFrame,
+          endFrameExclusive: timing.endFrameExclusive,
+          sourceSamples: [cue.startSample, cue.endSampleExclusive],
+          font: fontId,
+          locale: document.locale,
         }),
       );
     const soundIds = new Set<string>();

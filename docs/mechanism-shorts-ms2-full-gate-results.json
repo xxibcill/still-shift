@@ -218,12 +218,12 @@
     }
   ],
   "remaining": [
-    "Screen cue recipes and hidden/offscreen schema/locks are implemented at slice54. Complete explicit world-text/surface routes and label-only plate reuse, with exact physical depth/cache identities.",
+    "Screen cue recipes and hidden/offscreen schema/locks are implemented at slice54. Complete explicit surface routes and label-only plate reuse, with exact physical depth/cache identities.",
     "Complete genuine supplied speech/sample/cue/native checks and broader remaining MS2 criteria, then run the unchanged full aggregate and final installed verification on held final source.",
     "Do not reuse this partial attempt as a full pass or label mixed source/reruns as one uninterrupted run. No supported pack, accepted pilot, human review, merge or publication is claimed."
   ],
   "currentRequiredMatrix": {
-    "asOfSlice": 54,
+    "asOfSlice": 55,
     "aggregate": "pnpm check:all",
     "testGroups": [
       "test:unit",
@@ -320,12 +320,14 @@
       "test:browser:mechanism-text-weight",
       "test:browser:mechanism-cue-layout",
       "test:browser:mechanism-cameras",
-      "test:browser:mechanism-annotation-styles"
+      "test:browser:mechanism-annotation-styles",
+      "test:browser:mechanism-world-annotations"
     ],
-    "testGroupCount": 95,
+    "testGroupCount": 96,
     "frozenItems": 176,
     "frozenFrames": 36061,
     "benchmark": "Required after the complete software gate.",
-    "qualification": "Adds the owning screen annotation styles browser group. Historical full51 remains a94-group stopped attempt; it is not rewritten into a95-group run."
+    "qualification": "Adds screen-style and world-annotation owning browser groups. Historical full51 remains its94-group stopped attempt; it is not rewritten into a96-group run.",
+    "latestScopedWorldEvidence": "docs/mechanism-shorts-ms2-world-annotation-results.json"
   }
 }

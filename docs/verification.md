@@ -203,3 +203,11 @@ frame receipt using actual multi-mesh/group GPU draws, independent camera/pose a
 attribute/mip validation, queued captures, corruption controls and scoped allocator
 cleanup. It is included in `pnpm test`. It does not certify source3 composition
 observations/exports, whole-world budgets, installed portability or human acceptance.
+
+`pnpm test:browser:mechanism-world-annotations` owns the explicit cue world-text
+route: three families, actual font bounds and colored ink, independent scalar
+projection using observed physical part matrices, hidden/omitted controls,
+forward/reverse/shuffled preview, CAS/stale-render failures and before/after native
+final checks. It is registered in the full local matrix and runs serially with
+other browser groups. Synthetic PCM and authored text planes do not certify true
+surface markings, genuine speech, plate reuse, continuous-time or human acceptance.

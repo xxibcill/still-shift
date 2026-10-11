@@ -1,2 +1,2 @@
 /** Pure evaluator identity, safe for native Node loaders and export validation. */
-export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-59";
+export const COMPOSITION_EVALUATOR_VERSION = "composition-evaluator-60";

@@ -3,7 +3,11 @@ import { CompositionAssetSchema } from "../composition/composition.ts";
 import { CompositionAudioAssetSchema } from "../composition/media.ts";
 import { CompositionNative3DAssetVersionsSchema } from "../composition/native3d-v2.ts";
 import { compositionId } from "../composition/primitives.ts";
-import { MechanismCameraSchema, MechanismEasingSchema } from "./scene.ts";
+import {
+  MechanismCameraSchema,
+  MechanismEasingSchema,
+  MechanismTransformSchema,
+} from "./scene.ts";
 import { MechanismPackTimelineSchema } from "./timeline.ts";
 import {
   MECHANISM_LIMITS,
@@ -110,6 +114,26 @@ const annotationVisibility = z
       path: ["visibleWhen"],
     },
   );
+export const MechanismWorldTextAnnotationSchema = z
+  .object({
+    id: compositionId,
+    kind: z.literal("world-text"),
+    text: z.string().min(1).max(4000),
+    part: MechanismIdSchema,
+    transform: MechanismTransformSchema,
+    pixelsPerUnit: z.number().finite().positive().max(1_000_000),
+    sizePixels: z.tuple([
+      z.number().int().min(2).max(512),
+      z.number().int().min(2).max(512),
+    ]),
+    fontSizePixels: z.number().finite().min(1).max(256).default(18),
+    ink: z
+      .string()
+      .regex(/^#[a-fA-F0-9]{6}$/)
+      .default("#101820"),
+    side: z.enum(["front", "double"]).default("front"),
+  })
+  .strict();
 const sample = z.number().int().min(0).max(172_800_000);
 const reference = z
   .object({
@@ -236,6 +260,10 @@ export const MechanismNarratedCycleSchema = z
               )
               .max(8)
               .default([]),
+            worldAnnotations: z
+              .array(MechanismWorldTextAnnotationSchema)
+              .max(8)
+              .optional(),
             sounds: z
               .array(
                 z

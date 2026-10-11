@@ -187,6 +187,13 @@ Existing single-anchor behavior remains unchanged; evaluator version59 records
 this extension. [Cue recipes](./mechanism-narrated-cycles.md#screen-annotation-recipes)
 compile these bindings into ordinary composition layers.
 
+MS2 slice55 makes part-bound world graphics inherit the controller and actual
+physical part visibility, including hidden ancestors. Unbound world planes retain
+their prior behavior. Evaluator version60 invalidates prior evaluated cache
+identity. The explicit [cue world-text route](./mechanism-narrated-cycles.md#part-bound-world-text)
+uses ordinary pinned-font mask artwork and part-local TRS in the shared depth pass;
+a plane attachment does not validate placement on a physical mesh surface.
+
 ## Local artwork mapping and render graph
 
 L is native untransformed local pixels (right/down), A is L after the settled ordinary local 2D transform, and P is a right-handed world plane (right/up/Z0). Bind P through partWorld times binding TRS; no viewport-to-world stretch or screen homography participates.

@@ -74,6 +74,15 @@ export const MechanismCuePatchSchema = z
             .strict(),
           z
             .object({
+              ...annotationTarget,
+              property: z.literal("world-annotation"),
+              value: cue.shape.worldAnnotations
+                .unwrap()
+                .element.omit({ id: true }),
+            })
+            .strict(),
+          z
+            .object({
               ...cueTarget,
               sound: cue.shape.sounds.unwrap().element.shape.id,
               property: z.literal("sound-gain"),
@@ -211,6 +220,19 @@ export function applyMechanismCuePatch(
             path,
           );
         Object.assign(annotation, operation.value);
+      } else if (operation.property === "world-annotation") {
+        path = `cues.${target.id}.worldAnnotations.${operation.annotation}`;
+        const annotation = target.worldAnnotations?.find(
+          (annotation) => annotation.id === operation.annotation,
+        );
+        if (!annotation)
+          failure(
+            "mechanism-patch-target",
+            "Unknown stable world annotation target",
+            path,
+          );
+        Object.assign(annotation, operation.value);
+        native = true;
       } else if (operation.property === "sound-gain") {
         path = `cues.${target.id}.sounds.${operation.sound}.gainDb`;
         const sound = target.sounds.find(

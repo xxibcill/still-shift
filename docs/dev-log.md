@@ -45,7 +45,7 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Fifty-four slices include the frozen ten-question board, expanded Thai review and
+  Fifty-five slices include the frozen ten-question board, expanded Thai review and
   recovered existing spoken inputs for all three families. Four audio hashes and
   thirteen supplied word-range/shot associations match. The shorter tape-hook take
   uses revised copy; the failed identical-script assumption is retained. No fresh supplied-speech
@@ -68,11 +68,22 @@ still hold before relying on them.
   Centered-group coordinates, cable framing and mismatched arrow ink failures
   remain retained. The new browser group expands the final full matrix to95;
   historical stopped full51 remains its original94-group attempt.
+  Slice55 completes explicit part-bound world text, pinned-font overflow errors
+  and stable CAS edits requiring native invalidation. Evaluator60 inherits physical
+  part/ancestor visibility. Final fast6 passes4,320 units/424 files. Native1
+  depth14/six composition/cancellation retains70 audited readbacks/30 exact pairs;
+  owning production/tests unchanged through final helper repairs. Browser3 passes
+  three families/360 previews/1,080 seeks/six exports/360 native frames/18 controls.
+  Independent PNG/matrix/body/decode/source-clock/control-source audits pass; all12
+  sampled PNGs agent-viewed. Held2,607 inputs/120,401,922B unchanged. Failed ACES
+  color assumption, strict hidden-pawl control, receipt types and formatting remain
+  retained. Final full96/176 items/36,061 frames/benchmark remains required.
   Coverage stays 0/10 validated; packs are candidates; accepted pilot episodes 0.
-  Next: explicit world-text/surface routes and label-only plate reuse; bound fresh
+  Next: true rigid surface marking and label-only plate reuse; bound fresh
   speech/sample clocks and cue exports; refresh the full gate,
   whole resources/final installed/pack admission and MS2 PR. MS3 not started.
   No human acceptance, merge/publication or paid generation.
+  [World text evidence](./mechanism-shorts-ms2-world-annotation-results.json),
   [Screen style evidence](./mechanism-shorts-ms2-annotation-style-results.json),
   [Annotation geometry](./mechanism-shorts-ms2-annotation-results.json),
   [Full gate history](./mechanism-shorts-ms2-full-gate-results.json),
@@ -235,6 +246,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — MS2 slice55: part-bound world text and physical visibility
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `eacb0200`.
+- **Done:** explicit bounded world-text cues use pinned-font measured mask planes;
+  evaluator60 follows physical part/ancestor visibility; stable CAS world edits
+  require native invalidation. Legacy omitted/empty output stays exact.
+- **Results:** final fast6 passes4,320 units/424 files. Native owning regression
+  remains valid; fresh browser3 passes360 previews/1,080 seeks/six exports/360
+  native frames/18 controls. Independent audit passes; all12 PNGs agent-viewed.
+  Held2,607 source/schema/test inputs120,401,922B unchanged.
+- **Rejected / do not repeat:** untone-mapped green oracle; hidden required pawl
+  without a separate control-source policy; un-narrowed versioned receipt;
+  evidence formatting during the fast formatter. Failures retained.
+- **Open / next:** true surface marking, label plate reuse, genuine speech and
+  remaining MS2/full96/final/pack/PR gates. Packs/pilot0; MS3 not started.
+- **Records:** [World text evidence](./mechanism-shorts-ms2-world-annotation-results.json),
+  [API](./mechanism-narrated-cycles.md#part-bound-world-text), [MS2 plan](./mechanism-shorts-production-plan.md).
 
 ### 2026-10-12 — MS2 slice54: screen cue styles and multi-anchor visibility
 

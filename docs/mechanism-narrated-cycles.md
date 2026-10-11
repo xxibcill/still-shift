@@ -166,3 +166,55 @@ local matrix. It uses synthetic PCM and retains actual preview/font/anchor facts
 reverse/shuffled seeks, repeated native finals and independent closure replay.
 World text, actual surface markings, label-only plate reuse, genuine-speech renders,
 continuous-time/encoded readability and human acceptance retain separate MS2 gates.
+
+### Part-bound world text
+
+A cue can optionally add `worldAnnotations` (up to eight entries). Each currently
+supports `kind: world-text`, a stable `id`, `text`, a known physical `part`, an
+explicit part-local `transform`, positive `pixelsPerUnit` up to 1,000,000, and
+integer `sizePixels` dimensions of 2–512. `fontSizePixels` is 1–256 (default 18),
+`ink` is RGB hex (default `#101820`) and `side` is `front | double` (default `front`).
+Ink is source RGB entering the shared native HDR/ACES exposure and encoded-sRGB
+resolve. Its displayed RGB can differ from a screen overlay using the same hex.
+Coordinates use the source scene's declared units; scale/pivot and Euler XYZ
+rotation have the same contract as other physical transforms.
+
+```json
+{
+  "id": "face-text",
+  "kind": "world-text",
+  "text": "Hook",
+  "part": "hook",
+  "transform": { "position": [0, 1, 1], "rotation": [0, 0, 0] },
+  "pixelsPerUnit": 128,
+  "sizePixels": [128, 64],
+  "fontSizePixels": 32,
+  "ink": "#101820",
+  "side": "front"
+}
+```
+
+The compiler emits a normal pinned-font text layer as a mask plane in the joint
+native depth pass, centered on its pixel box. It uses the supplied cue window and
+reading-time guard. Screen and world annotations share the cue's stable-ID
+namespace. Actual font preparation rejects text that exceeds the authored box;
+it does not trim copy to make the plane fit. Perspective, clipping, occlusion and
+front-side orientation come from physical depth. The plane follows its part's
+world matrix and inherits hidden parts and ancestors. Evaluator version 60 records
+that visibility correction for all part-bound world graphics; unbound world
+planes retain their existing behavior.
+
+`worldAnnotations` does not enter the screen-label placement solver. Authors
+choose the physical transform and check the resulting shot. Omitted or empty
+world annotations preserve the exact legacy composition.
+
+A revision-safe patch can use `property: world-annotation`, the cue and stable
+`annotation` ID, and a full world-text value without `id`. It rejects unknown or
+stale targets and duplicate writers. World text changes the native plate and
+reports `invalidate-whole-native-clip`; the current lifecycle performs that work
+when rendered. The patch receipt is a work requirement, not proof of render reuse.
+
+A world-text plane does not validate contact with a mesh surface. True surface
+markings need their own supported placement route and invalidation proof. The
+world-text software/browser checks also leave genuine-speech, continuous-time,
+encoded readability and human appearance acceptance open.

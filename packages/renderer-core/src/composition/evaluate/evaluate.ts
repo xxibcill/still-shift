@@ -1758,8 +1758,23 @@ class Evaluation {
     }
     if (binding?.role === "world-graphic") {
       state.visible &&= nativeController?.visible === true;
-      if (nativeController?.nativeFrame)
+      if (nativeController?.nativeFrame) {
         state.nativeFrame = nativeController.nativeFrame;
+        if (binding.part !== undefined) {
+          const part = nativeController.nativeFrame.frame.parts[binding.part];
+          if (!part)
+            passageError(
+              "comp-native3d-binding",
+              `Unknown world graphic part ${binding.part}`,
+              {
+                node: layer.id,
+                path: this.bindings(ctx, layer.id) + ".native3D.part",
+                frame: this.time,
+              },
+            );
+          state.visible &&= part.visible;
+        }
+      }
       const determinant =
         state.localMatrix[0] * state.localMatrix[3] -
         state.localMatrix[1] * state.localMatrix[2];

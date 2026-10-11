@@ -839,6 +839,15 @@ mechanism families establish whether the architecture transfers.
       [Layout evidence](./mechanism-shorts-ms2-cue-layout-results.json) retains a
       deliberately stopped hidden-label proof and failed checks; [API](./mechanism-cue-layout.md)
       separates conservative envelopes from encoded/continuous/broader route QA.
+      Slice55 adds an explicit part-local world-text route with bounded pinned-font
+      boxes and actual glyph overflow failures. Shared evaluator60 inherits physical
+      part/ancestor visibility; stable-ID/CAS world edits require native invalidation.
+      Final fast6 passes4,320 units/424 files. Three families/two ink stages pass360
+      previews/1,080 seeks/six native exports/360 final frames and18 hidden/omitted
+      controls. Independent retained/decode/sample-clock/control-source audits pass;
+      all12 sampled PNGs are agent-viewed. Failed color, required-shape control, type
+      and format attempts remain in [world-text evidence](./mechanism-shorts-ms2-world-annotation-results.json).
+      A world plane does not validate a mesh surface or broader world layout.
       This expanded criterion remains unchecked.
 - [ ] Add tabs, open callouts, brackets, arrows and restrained highlights with
       explicit hidden/offscreen behavior and authored locks. A true surface marking
