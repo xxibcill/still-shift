@@ -916,6 +916,11 @@ mechanism families establish whether the architecture transfers.
       versus intact poses, run boundaries and opt-in tracking versus zero. Record
       negative and positive results before scoping repairs. Existing numeric-binding
       fit rejection and ordinary tracking defaults remain compatible.
+      [Slice47](./mechanism-shorts-ms2-count-fit-results.json) reproduces and repairs
+      the permitted shared-fit count route: narrow 96 → 38 px fits all 63 strings,
+      with unchanged wide/no-fit controls, stable bounds, real native exports and
+      preserved 10,000-string/numeric-binding guards. Count-fit software scope is
+      closed; this combined item remains open for all Thai/production-copy probes.
 
 The cable-tie fixture may use an explicitly authored exposed teaching variant to
 show the pawl. It must identify that variant; generic section-plane/cap support

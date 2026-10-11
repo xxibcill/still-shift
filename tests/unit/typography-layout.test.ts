@@ -1,3 +1,4 @@
+import { typographyTextValues } from "../../packages/renderer-core/src/typography-text-values.ts";
 import { describe, expect, it } from "vitest";
 import {
   shapeText,
@@ -130,6 +131,70 @@ describe("shaped typography", () => {
       measuredFonts,
     );
     expect(fitted.nodes[0]!.fontSize).toBe(16);
+  });
+  it("fits every generated decimal count at one stable size without mutating the input", () => {
+    const node = {
+      ...mixedSizeNode,
+      id: "count",
+      text: "1",
+      states: ["1", "2"],
+      spans: undefined,
+      fontSize: 96,
+      textLayout: {
+        width: 80,
+        height: 100,
+        lineHeight: 1.2,
+        overflow: "error",
+      },
+      transition: {
+        kind: "count",
+        decimals: 2,
+        window: { start: 0, end: 60 },
+        easing: "linear",
+      },
+    } as TextNode;
+    const scene = { typography: "type-1" as const, nodes: [node] },
+      before = JSON.stringify(scene);
+    const fitted = prepareTextFits(
+      scene,
+      [{ target: "count", minSize: 16, maxSize: 96 }],
+      measuredContext(),
+      measuredFonts,
+    );
+    const actual = fitted.nodes[0]! as TextNode;
+    expect(actual.fontSize).toBe(40);
+    const values = typographyTextValues({}, actual);
+    expect(values.size).toBe(63);
+    expect(values.has("1.00")).toBe(true);
+    expect(values.has("2.00")).toBe(true);
+    for (const text of values)
+      expect(
+        shapeText(measuredContext(), actual, text, measuredFonts).width,
+      ).toBeLessThanOrEqual(80);
+    expect(JSON.stringify(scene)).toBe(before);
+  });
+  it("keeps the shared 10000 generated-string budget before measuring a count fit", () => {
+    const node = {
+      ...mixedSizeNode,
+      id: "count",
+      text: "0",
+      states: ["0", "10000"],
+      spans: undefined,
+      transition: {
+        kind: "count",
+        decimals: 0,
+        window: { start: 0, end: 10000 },
+        easing: "linear",
+      },
+    } as TextNode;
+    expect(() =>
+      prepareTextFits(
+        { typography: "type-1", nodes: [node] },
+        [{ target: "count", minSize: 16, maxSize: 96 }],
+        measuredContext(),
+        measuredFonts,
+      ),
+    ).toThrow("text-layout-budget: more than 10000 states");
   });
   it("retries a legacy word overflow and rethrows unrelated layout errors", () => {
     const legacy = {

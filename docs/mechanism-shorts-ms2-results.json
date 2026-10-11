@@ -17648,9 +17648,34 @@
         "Coverage board, broader label/continuous/readability, genuine spoken inputs and supported-pack acceptance.",
         "Whole resource/lifetime/full software/benchmark and final archive/installed checks before MS2 PR and MS3."
       ]
+    },
+    "fortySeventhSlice": {
+      "status": "scoped-count-fit-reproduced-repaired-and-verified-in-stages",
+      "evidence": "docs/mechanism-shorts-ms2-count-fit-results.json",
+      "scope": "Type-1 prepareTextFits measures the shared typographyTextValues collection once per fitted node, including every reachable formatted count value. Legacy fitting is unchanged.",
+      "counts": {
+        "unitTests": 4286,
+        "unitFiles": 420,
+        "newUnitTests": 2,
+        "nativeCases": 3,
+        "exports": 6,
+        "encodedFrames": 366,
+        "decodedFrames": 183,
+        "previewDraws": 549,
+        "existingFitItemsPerBackend": 4,
+        "existingFitFramesPerBackend": 727,
+        "supportedPacks": 0,
+        "pilotAcceptedEpisodes": 0
+      },
+      "remaining": [
+        "All six Thai stress strings plus production copy, independent poses/run boundaries and zero/opt-in tracking.",
+        "Coverage, broader labels/continuous readability, genuine speech and supported-pack acceptance.",
+        "Resource/lifetime/full software/benchmark and final archive/installed gates before MS2 PR and MS3."
+      ]
     }
   },
   "limits": [
+    "Slice47 reproduces and repairs generated-count shared fitting: narrow 96 -> 38 px fits all 63 reachable strings; wide/no-fit controls unchanged. Fast7 passes 4,286 units/420 files; three native cases/six exports/366 frames and 549 seek draws pass; independent audit probes all streams and decodes 183 frames. Existing four fit variants/727 frames pass on each backend. Failures and staged passes retained. Thai risks and broader MS2/full/final/owner gates remain open; supported packs/pilot 0.",
     "Slice46 closes explicit genuine-weight/outline treatment software/native rendering acceptance on exact MS1 font bytes. Fast12 passes 4,284 units/420 files; two backends/17 cases each pass 48 exports/2,880 frames, 2,040 independently decoded frames, 6,120 forward/reverse/shuffled draws and 544 sampled English-gap checks. Independent artifact audit validates 34 receipts/compiled units, all 48 streams, legacy full-output parity and mixed positive headroom/clamping. Earlier type/fixture/lint failures and intermediate successful runs retained. Remaining typography risks and broader MS2/full/final/owner gates stay open; supported packs/pilot 0.",
     "Slice45 exposes explicit weight/outline treatments and pure resolved-unit/headroom/font receipts. Final fast10 passes 4,283 units/420 files; runtime10 passes 30 checks/5 files on held 2,559 inputs/119,471,782B. A misplaced maximum-axis fixture failed and was corrected; final review added initial-text and generated-count conservative targeting controls, with refreshed staged gates. Actual pinned-font rendering, encoded spacing/weight proof and full typography/MS2 acceptance remain open.",
     "Forty-four slices include cue-wide deterministic crowded-label placement with explicit locks, priority/stable IDs, bounded backtracking and streamed integer-frame protected-contact exclusions. Fast10 passes 4,270 units; 38 filesystem/CLI tests; three families/two edited stages verify 360 actual-font/visible frames and 1,080 forward/reverse/shuffled preview draws plus 12 exports/720 independent final native frames. Six receipt/snapshot pairs match exactly; cable surface anchor leaves geometry unchanged. Initial hidden-label proof was intentionally rejected/stopped; failures retained. Full broader labels/continuous/encoded readability, coverage/typography, supported packs/genuine speech, resource/lifetime/full/final installed and remaining MS2/MS3 acceptance stay open. Supported packs/pilot 0.",

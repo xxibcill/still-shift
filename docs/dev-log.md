@@ -45,17 +45,18 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Forty-six slices now close explicit genuine-weight/outline software/native
-  acceptance on exact MS1 fonts. Fast12: 4,284 units/420 files; two backends verify
-  34 cases/48 exports/2,880 frames, 2,040 decoded frames and 6,120 seek-order draws.
-  Independent audit validates 34 receipts/compiled/posed units, all streams,
-  historical/current/explicit parity, mixed 50-unit headroom and 544 English-gap checks.
-  Held 2,560 inputs/119,495,964B remain fixed; failures and intermediate passes retained.
-  Next: scoped count+fit/all six Thai/production-copy risks, coverage, broader
-  label/continuous readability, genuine speech and remaining resource/full/final gates.
+  Forty-seven slices now include the reproduced generated-count/shared-fit repair:
+  narrow 96 → 38 px; all 63 reachable strings fit. Fast7 passes 4,286 units/420 files;
+  three native cases/six exports/366 frames, 183 decoded frames and 549 seek-order draws.
+  Existing four fit variants/727 frames pass on each backend. Held 2,561 inputs/
+  119,513,406B remain fixed; failures and intermediate passes retained.
+  Prior explicit weight/native acceptance remains scoped to its saved evidence.
+  Next: all six Thai/production-copy risks, coverage, broader label/continuous
+  readability, genuine speech and remaining resource/full/final gates.
   Supported packs/pilot 0; no merge/publication, human acceptance or paid generation.
-  [Native weight evidence](./mechanism-shorts-ms2-text-weight-render-results.json),
-  [API](./mechanism-text-weight-treatments.md), [MS2 results](./mechanism-shorts-ms2-results.json).
+  [Count-fit evidence](./mechanism-shorts-ms2-count-fit-results.json),
+  [shared-fit behavior](./mechanism-generated-count-fit.md),
+  [MS2 results](./mechanism-shorts-ms2-results.json).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
   inventory15:2,329 inputs/117,503,155B. Original full6 retains a qualified19-group
@@ -213,6 +214,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — MS2 slice47: generated decimal count shared-fit repair
+
+- Valid old narrow fitting chose 96 px while 61 generated strings overflowed;
+  actual pinned-font raster preparation rejected the result. Shared Type-1 fitting
+  now measures the existing reachable-value collection once before trying sizes.
+- Final narrow size 38 px fits all 63 strings; wide/no-fit controls remain unchanged.
+  The 10,000-string cap, immutable input and numeric-binding+fit rejection survive.
+- Fast7 passes 4,286 units/420 files; three native cases/six repeatable exports/
+  366 frames and 549 seek-order draws pass. Independent audit verifies all six
+  streams and fully decodes 183 frames. Existing four fit variants/727 frames pass
+  on each backend. All final owning sessions exit 0 on held inputs.
+- Fixture, weak-type, strict authoring/renderer boundary and lint failures retained
+  beside intermediate passes; no uninterrupted-pass claim. Native encoded midpoint
+  inspected by agent. Thai risks and broader MS2/full/final/owner review stay open.
+- [Evidence](./mechanism-shorts-ms2-count-fit-results.json),
+  [behavior](./mechanism-generated-count-fit.md), [plan](./mechanism-shorts-production-plan.md).
 
 ### 2026-10-12 — MS2 slice46: actual-font native weight treatment acceptance
 
