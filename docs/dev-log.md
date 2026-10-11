@@ -45,19 +45,19 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Thirty-four slices include shared-world and nested PBR retirement across failure:
-  capture/retire private pixel/attribute/index buffers, clear retained references,
-  preserve first cause and keep caller-substituted/preparation owners separate.
-  Fast16 passes 4,208 units/411 files; focused 16 tests/two files and all six PBR GPU/
-  composition/export groups pass on held inputs16. Two normal MP4s/six mixed raw
-  HTTP bodies preserve slice33 bytes. Initial lint failure is retained; prior
-  native2/depth evidence remains at source33 and installed archive at b4fc65ed.
-  Next: source/preparation admission against the existing 512 MiB Node allowance,
-  whole world/body/replay accounting, remaining MS2/full gates and final archive
-  refresh before MS2 PR/MS3. Supported packs/pilot 0; no human acceptance,
-  merge/publication or paid ElevenLabs action.
-  [Nested PBR evidence](./mechanism-shorts-ms2-pbr-ownership-results.json),
-  [shared-world evidence](./mechanism-shorts-ms2-world-ownership-results.json),
+  Thirty-five slices now bound native JSON ingestion: actual descriptor admission
+  precedes body/decode, a constant-space scanner precedes JSON.parse, and preceding
+  native entries retain admission under the unchanged 512 MiB Node allowance.
+  Five unit and three new filesystem controls include actual dense rejection,
+  padded valid JSON and accumulated large valid assets. Fast24 passes 4,213 units;
+  scoped Node/PBR composition/normal/mixed and six native2 groups pass on held
+  inputs24. Prior MP4/raw pixel bytes remain exact. Initial failed commands/gates
+  remain recorded. Ingestion closes before catalogue/variant preparation; retained
+  source/result coexistence, aggregate world/body/replay and remaining MS2/full/
+  installed criteria are still open. Next: join those owners into the same Node
+  allowance. Supported packs/pilot 0; no merge/publication, human acceptance or
+  paid ElevenLabs action.
+  [JSON ingestion evidence](./mechanism-shorts-ms2-json-source-admission-results.json),
   [MS2 results](./mechanism-shorts-ms2-results.json), [PBR API](./native-pbr-resources.md).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
@@ -216,6 +216,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 bounded native JSON ingestion foundation
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `3f04bad3`.
+- **Done:** admit actual file backing/decode before allocation, count bounded tree
+  capacity before JSON.parse and accumulate preceding native entries under the
+  existing 512 MiB allowance, now shared through the public contract.
+- **Results:** five new unit/three filesystem controls pass; actual dense numeric
+  input never reaches JSON.parse, padded valid input loads and actual valid assets
+  accumulate admission. Fast24 passes 4,213 units; scoped Node/PBR/native2 groups
+  pass on held inputs24. Normal MP4s/six mixed raw bodies preserve prior bytes.
+- **Retained:** test type/config, private-boundary, wrong identity command and lint
+  failures; their unrun suffixes are explicit in the evidence.
+- **Next:** ingestion is a foundation. Catalogue/variants and result coexistence,
+  whole world/body/replay, remaining MS2/full gates and final installed refresh.
+- **Records:** [JSON ingestion evidence](./mechanism-shorts-ms2-json-source-admission-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-11 — MS2 nested PBR owner and private backing retirement
 

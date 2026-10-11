@@ -1,3 +1,5 @@
+import { COMPOSITION_NODE_MEMORY_ALLOWANCE } from "@still-shift/scene-contract";
+export { COMPOSITION_NODE_MEMORY_ALLOWANCE } from "@still-shift/scene-contract";
 import {
   allocateRenderMetadata,
   releaseRenderMetadata,
@@ -17,7 +19,6 @@ import { withManagedMemory } from "../../renderer-core/src/managed-memory-contex
 
 const GiB = 1024 ** 3;
 export const COMPOSITION_APPLICATION_MEMORY_LIMIT = 8 * GiB;
-export const COMPOSITION_NODE_MEMORY_ALLOWANCE = GiB / 2;
 
 /** Static partition before any browser producer. Native/driver RSS is measured separately. */
 export function compositionWorkerMemoryLimits(workers: number): MemoryLimits {

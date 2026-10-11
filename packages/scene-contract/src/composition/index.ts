@@ -1,5 +1,6 @@
 export {
   COMPOSITION_LIMITS,
+  COMPOSITION_NODE_MEMORY_ALLOWANCE,
   COMPOSITION_SCHEMA_VERSION,
 } from "./primitives.ts";
 export {

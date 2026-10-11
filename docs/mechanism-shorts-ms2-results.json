@@ -15900,6 +15900,41 @@
       },
       "record": "docs/mechanism-shorts-ms2-pbr-ownership-results.json",
       "qualification": "Current fast16 passes 4,208 units/411 files on held inputs16; focused unit7 passes 16 real-object controls across two files. All six current PBR browser groups pass: components/mips, shared world, standalone observation, composition/journal/artwork, normal export and actual mixed authenticated HTTP/replay. Source3 normal MP4s and six mixed raw HTTP bodies preserve preceding slice33 bytes. Initial fast8 failed prefer-const on a private identity that also needed retirement; clear that lookup slot on disposal, then rerun. Original browser suffix behind failure was unrun. Existing quotas/source schemas/render math unchanged. No new native2/depth/Node broad/installed/full gate claim; prior native2/depth source33 and installed b4fc65ed remain separately pinned. Application-visible owned backings retire; driver internals/process RSS and aggregate source/world/body/replay admission remain separate."
+    },
+    {
+      "id": "json-source-admission-slice-35",
+      "status": "bounded-json-ingestion-foundation-verified-in-stages",
+      "workingInputs": {
+        "manifest": {
+          "path": "/private/tmp/still-shift-ms2-source-admission35-inputs24.json",
+          "bytes": 430549,
+          "sha256": "sha256:c40d018e1531fd7cd82256c03f295a115cb63930142a4f0fcf38e9dcfe79874e"
+        },
+        "files": 2524,
+        "inputBytes": 119188902,
+        "selection": {
+          "roots": [
+            "apps/",
+            "packages/",
+            "scripts/",
+            "tests/",
+            "tools/",
+            "services/",
+            "benchmarks/",
+            "examples/",
+            "assets/",
+            "catalogs/"
+          ],
+          "rootFiles": "all Git-tracked or nonignored regular root files",
+          "packageProse": [
+            "docs/npm-package-readme.md",
+            "docs/npm-third-party-notices.md"
+          ],
+          "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+        }
+      },
+      "record": "docs/mechanism-shorts-ms2-json-source-admission-results.json",
+      "qualification": "This is an ingestion-stage foundation, not complete aggregate source/preparation/export admission. The sourceAdmission receipt is captured before catalogue/variant preparation and handed to callers as evidence; the ingestion ledger closes at that boundary. It does not claim to admit retained prepared variants, whole source/result RPC coexistence, world/body/replay, driver internals or process RSS. Original file 32 MiB, binary 32 MiB, Node 512 MiB and replay quotas remain fixed. No complete MS2 gate, installed refresh or human acceptance is claimed."
     }
   ],
   "implementation": {
@@ -17110,10 +17145,40 @@
         "Native source/preparation admission must join the existing 512 MiB Node allowance and whole world/body/replay accounting; do not invent a larger budget.",
         "Remaining MS2 packs/rigs/events/labels/cues/help/coverage/typography/full software/benchmark and final installed refresh before its PR, then MS3."
       ]
+    },
+    "thirtyFifthSlice": {
+      "status": "bounded-json-ingestion-foundation-verified-in-stages",
+      "scope": [
+        "Bound native file backing and UTF-16 decoding admission from the actual verified descriptor before Buffer.alloc, using the existing fixed 512 MiB Node allowance.",
+        "Preparse scan counts primitive slots, array/object storage, key storage and UTF-16 strings without token arrays/decoded keys; rejects excessive tree capacity or nesting before JSON.parse. Whitespace is charged to text storage but does not inflate the decoded tree estimate.",
+        "One ingestion ledger admits eight conservative tree copies while parsing and keeps four capacities for preceding native assets. Backings from completed descriptor reads retire by native detachment; failed input reservations release. All original checksum, version/schema, resource verification and descriptor rules remain.",
+        "The unchanged Node allowance now belongs to the shared scene contract, preserving the runtime re-export and worker partition. Original private cross-package import was rejected and fixed through the public contract."
+      ],
+      "counts": {
+        "unitTests": 4213,
+        "unitFiles": 412,
+        "newAdmissionUnitControls": 5,
+        "newFilesystemControls": 3,
+        "focusedFilesystemTests": 9,
+        "focusedFilesystemFiles": 2,
+        "pbrCompositionFrames": 6,
+        "pbrNormalExports": 2,
+        "pbrMixedRuns": 8,
+        "native2BrowserGroups": 6,
+        "supportedPacks": 0,
+        "pilotSupportedEpisodes": 0,
+        "owningNodeTests": 24,
+        "owningNodeFiles": 6,
+        "newControls": 8
+      },
+      "remaining": [
+        "Join retained source/catalogue variants, source transport and result/RPC/summary owners to the same fixed Node allowance with meaningful failure/cancel/cleanup evidence.",
+        "Finish aggregate world/body/replay accounting and remaining MS2 packs/rigs/events/labels/cues/help/coverage/typography; run required full gates and refresh the final installed archive before MS2 PR, then MS3."
+      ]
     }
   },
   "limits": [
-    "Thirty-four slices include source3 import/preparation/observation, normal/mixed export, installed proof at b4fc65ed, shared-world and nested PBR failure/owned-buffer retirement. Aggregate Node-source/world/body/replay admission and remaining MS2/full criteria remain. Current fast 4,208 and scoped GPU groups pass; earlier failures stay retained. Supported packs/pilot 0.",
+    "Thirty-five slices include source3 import/preparation/observation, normal/mixed export, installed proof at b4fc65ed, shared-world/nested retirement and bounded JSON ingestion. Ingestion is distinct from retained preparation/result coexistence; aggregate Node/world/body/replay admission and remaining MS2/full criteria remain. Current fast4,213 and scoped Node/PBR/native2 checks pass; earlier failures stay retained. Supported packs/pilot 0.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

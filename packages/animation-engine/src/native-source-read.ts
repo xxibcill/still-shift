@@ -7,6 +7,7 @@ export async function readNativeSourceBytes(
   path: string,
   location: string,
   signal?: AbortSignal,
+  admit?: (bytes: number) => void,
 ) {
   signal?.throwIfAborted();
   const canonical = await realpath(path);
@@ -29,6 +30,8 @@ export async function readNativeSourceBytes(
       passageError("comp-native3d-limit", "Native source exceeds 32 MiB", {
         path: location,
       });
+    admit?.(before.size + 1);
+    signal?.throwIfAborted();
     const bytes = Buffer.alloc(before.size + 1);
     let count = 0;
     while (count < bytes.length) {

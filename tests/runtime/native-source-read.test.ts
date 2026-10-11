@@ -120,3 +120,21 @@ it.skipIf(process.platform === "win32")(
   },
   2000,
 );
+
+it("checks actual descriptor capacity before allocating or reading and closes on rejection", async () => {
+  const dir = await root(),
+    path = join(dir, "admission.json");
+  const bytes = Buffer.from('{"source":true}');
+  await writeFile(path, bytes);
+  const calls: number[] = [],
+    reason = Error("admission denied");
+  await expect(
+    readNativeSourceBytes(path, "assets.denied", undefined, (capacity) => {
+      calls.push(capacity);
+      throw reason;
+    }),
+  ).rejects.toBe(reason);
+  expect(calls).toEqual([bytes.length + 1]);
+  expect(monitor.buffers).toEqual([]);
+  expect(monitor.closed).toBe(1);
+});

@@ -513,3 +513,23 @@ normal MP4s and mixed raw HTTP pixels preserve the preceding renders. See
 The pinned Node/Chromium runtimes provide native ArrayBuffer detachment.
 Source/preparation admission against the existing 512 MiB Node allowance, whole
 world/body/replay accounting, full milestone and installed refresh remain open.
+
+## Native JSON ingestion capacity
+
+Node composition ingestion uses the shared `COMPOSITION_NODE_MEMORY_ALLOWANCE`
+constant, unchanged at 512 MiB. The actual verified descriptor admits its exact
+backing store plus sentinel and worst-case UTF-16 decoding before allocation.
+A scan without token arrays or decoded keys counts primitive slots, container,
+key and string capacity before `JSON.parse`, with a maximum nesting of 128.
+Eight tree capacities cover parse/validation staging; four stay admitted for
+preceding native entries. Whitespace retains its raw/text cost but adds no tree
+nodes. Private backings from completed reads detach when parsing settles.
+
+Original checksum, strict schema/version and bounded binary verification remain.
+Actual dense numeric input is rejected before the parser, an 8 MiB whitespace
+padding remains valid, and multiple large valid assets accumulate admission.
+The `sourceAdmission` receipt covers **ingestion only**, captured before the
+catalogue/variant boundary. The ingestion ledger then closes; retained preparation,
+source transport and result/RPC coexistence still need the same Node owner.
+Whole world/body/replay, RSS, full milestone and installed refresh remain separate.
+See [JSON ingestion evidence](./mechanism-shorts-ms2-json-source-admission-results.json).

@@ -768,6 +768,12 @@ mechanism families establish whether the architecture transfers.
       [Nested evidence](./mechanism-shorts-ms2-pbr-ownership-results.json) retains lint
       failure. Source/preparation admission against 512 MiB Node allowance and whole
       world/body/replay/full/final-installed acceptance remain open;
+      thirty-fifth slice bounds JSON ingestion before body/decode and JSON.parse
+      under the unchanged 512 MiB allowance, with accumulated native entries and
+      actual dense/padded/large-valid controls. Fast24 with 4,213 units and scoped
+      Node/PBR/native2 groups pass on held inputs24. [JSON ingestion evidence](./mechanism-shorts-ms2-json-source-admission-results.json)
+      retains failures and distinguishes this foundation from retained catalogue/
+      variant, source/result coexistence and full aggregate acceptance;
       this criterion stays unchecked. See the [import API](./rigid-gltf-import.md) and
       [retained results](./mechanism-shorts-ms2-results.json).
 - [ ] Implement slider hard stops, hinge/lever, deterministic spring return and
