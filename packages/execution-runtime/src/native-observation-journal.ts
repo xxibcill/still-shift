@@ -8,6 +8,7 @@ import type { IncomingHttpHeaders } from "node:http";
 import {
   NATIVE3D_OBSERVATION_LIMITS,
   type NativeObservedOutputFrameV2,
+  type NativeObservedOutputFrameV3,
   type NativeObservedOutputFrame,
   type NativeObservedFrame,
   type NativeAppearanceCodeIdentity,
@@ -111,7 +112,10 @@ const artifactSchema = z
   })
   .strict();
 function manifestSchema(
-  version: "native-observation-manifest-1" | "native-observation-manifest-2",
+  version:
+    | "native-observation-manifest-1"
+    | "native-observation-manifest-2"
+    | "native-observation-manifest-3",
 ) {
   return z
     .object({
@@ -263,7 +267,8 @@ export function admitNativeObservationManifestCore(
   outputPath: string,
   manifestVersion:
     | "native-observation-manifest-1"
-    | "native-observation-manifest-2",
+    | "native-observation-manifest-2"
+    | "native-observation-manifest-3",
 ) {
   const bound = JSON.stringify(
     {
@@ -319,12 +324,16 @@ type Shard = {
 
 export type NativeObservationPacket =
   | NativeObservedOutputFrame
-  | NativeObservedOutputFrameV2;
+  | NativeObservedOutputFrameV2
+  | NativeObservedOutputFrameV3;
 export type NativeObservationClosureVersions = Omit<
   NativeObservationClosure,
   "version"
 > & {
-  version: "native-observation-closure-1" | "native-observation-closure-2";
+  version:
+    | "native-observation-closure-1"
+    | "native-observation-closure-2"
+    | "native-observation-closure-3";
 };
 export type NativeObservationProtocol<
   P extends NativeObservationPacket,
@@ -334,10 +343,14 @@ export type NativeObservationProtocol<
   packetSchema: z.ZodType<P>;
   packetAllocationBytes?(encodedBytes: number): number;
   assertActive?(): void;
-  rowVersion: "native3d-observation-row-1" | "native3d-observation-row-2";
+  rowVersion:
+    | "native3d-observation-row-1"
+    | "native3d-observation-row-2"
+    | "native3d-observation-row-3";
   manifestVersion:
     | "native-observation-manifest-1"
-    | "native-observation-manifest-2";
+    | "native-observation-manifest-2"
+    | "native-observation-manifest-3";
   closureVersion: C["version"];
   validatePacket(
     packet: P,

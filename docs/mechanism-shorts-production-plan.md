@@ -725,7 +725,13 @@ mechanism families establish whether the architecture transfers.
       six source3 seeks/two artwork controls and all six native2 groups pass on held
       inputs; [composition evidence](./mechanism-shorts-ms2-output3-composition-results.json)
       retains type failures and qualified lost receipts. Authenticated source3
-      export, installed and whole-world proof remain pending;
+      export, installed and whole-world proof remain pending. Twenty-eighth slice
+      adds strict execution3 and the awaited journal/replay boundary. Two repeated
+      actual one-frame raw journals replay with five forgeries rejected under the
+      unchanged default replay quota; normal fast/Node/native2 groups pass on held
+      inputs. [Journal evidence](./mechanism-shorts-ms2-output3-journal-results.json)
+      retains type/key/quota/helper failures. Normal source3 producer/export
+      dispatch, installed and whole-world proof remain pending;
       this criterion stays unchecked. See the [import API](./rigid-gltf-import.md) and
       [retained results](./mechanism-shorts-ms2-results.json).
 - [ ] Implement slider hard stops, hinge/lever, deterministic spring return and

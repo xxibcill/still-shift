@@ -15645,6 +15645,41 @@
       },
       "record": "docs/mechanism-shorts-ms2-output3-composition-results.json",
       "qualification": "Current fast9 and the sequential Node/GPU suffix pass on unchanged selected inputs. Earlier build2 generic inference and build3 optional async method errors are retained. Build7/browser8 logs and artifacts show success, but their originating terminal receipt was lost during context truncation; composition12 supplies a fresh actual exit-zero run. Browser6 stdout had a stale protocolFaults2 count while its run.json held nine total negatives; corrected final stdout counts four protocol faults. Diagnostic output3 envelopes use the actual appearance digest in the execution field and do not establish an authenticated export identity. Authenticated source3 request/sink/upload/journal/export/installed, whole world/source/body/replay budgets, remaining packs and full milestone gates stay pending. No new full/runtime/integration/installed suite, human visual/listening acceptance, MS2 PR, merge, publication or paid ElevenLabs action."
+    },
+    {
+      "id": "output3-journal-slice-28",
+      "status": "standalone-source3-journal-verified-normal-export-pending",
+      "workingInputs": {
+        "manifest": {
+          "path": "/private/tmp/still-shift-ms2-journal3-inputs16.json",
+          "bytes": 428724,
+          "sha256": "sha256:c0a2c6f5b48c1ca45744efdcbd150a66fcd8e09f1f62eba7d8f7a0773e5af283"
+        },
+        "files": 2513,
+        "inputBytes": 119117701,
+        "selection": {
+          "roots": [
+            "apps/",
+            "packages/",
+            "scripts/",
+            "tests/",
+            "tools/",
+            "services/",
+            "benchmarks/",
+            "examples/",
+            "assets/",
+            "catalogs/"
+          ],
+          "rootFiles": "all Git-tracked or nonignored regular root files",
+          "packageProse": [
+            "docs/npm-package-readme.md",
+            "docs/npm-third-party-notices.md"
+          ],
+          "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+        }
+      },
+      "record": "docs/mechanism-shorts-ms2-output3-journal-results.json",
+      "qualification": "Normal fast16 and sequential Node17/composition18/native2 six-group19 suffix pass on held inputs16. All earlier builds and real-proof failures remain retained: unsupported schema API/core type lists, optional signal, readonly matrix mutation, source3 key prefix, duplicate maximum checker reservation exceeding the fixed replay quota, negative publication getter assertion and wrong statistics accessor. Two repeated one-frame raw journals use real composed GPU evidence, bind the actual trusted execution and replay independently; five forgeries reject before pixel authorization. This is a standalone source3 journal proof, not normal export dispatch or an MP4/installed-package proof. Normal source3 export request creation remains rejected. Mixed source1/source2/source3 actual export, upload/page/worker integration, whole world/source/body/replay budgets, full milestone/benchmark/installed, packs/pilot and human review remain pending. No MS2 PR, merge, publication, GitHub Actions or ElevenLabs spending."
     }
   ],
   "implementation": {
@@ -16652,6 +16687,38 @@
         "Authenticated source3 execution manifest/request, producer/sink/upload/journal/export and installed package proof.",
         "Whole world/source/body/replay budgets, aggregate pass admission and remaining MS2 authoring/pack/quality gates.",
         "Full local milestone software/benchmark and installed gates before MS2 PR; then MS3. Human acceptance remains separate."
+      ]
+    },
+    "twentyEighthSlice": {
+      "status": "standalone-source3-journal-verified-normal-export-pending",
+      "scope": [
+        "Strict execution3/source3 key identity, source inventory and appearance descriptor hashing; original execution2 remains closed to source3.",
+        "Explicit awaited sink3/row3/manifest3/closure3 over the existing durable journal core. Source1/source2 actual pass checks delegate without changing their source protocols; source3 has its own trusted binding and independent receipt checker.",
+        "Checker reserves admitted receipt bytes plus bounded frame-key/geometry scratch. Fixed1MiB packets/64 passes/32MiB shards/16 shards/512MiB total and default16MiB replay metadata quota remain unchanged.",
+        "Two repeated actual composed source3 one-frame raw journals replay. Diagnostic digest/sample clock/material hash/submitted matrix/missing pass forgeries reject; zero admitted scratch after disposal. Normal export dispatcher remains pending."
+      ],
+      "counts": {
+        "unitTests": 4197,
+        "unitFiles": 410,
+        "focusedJournalTests": 29,
+        "focusedJournalFiles": 3,
+        "newJournalTests": 11,
+        "owningNodeTests": 10,
+        "owningNodeFiles": 4,
+        "actualSource3CompositionFrames": 6,
+        "worldArtworkCases": 2,
+        "actualSource3RawJournals": 2,
+        "journalForgeries": 5,
+        "normalSource3Exports": 0,
+        "native2BrowserGroups": 6,
+        "newInstalledArchives": 0,
+        "supportedPacks": 0,
+        "pilotSupportedEpisodes": 0
+      },
+      "remaining": [
+        "Wire trusted source3 request producer, upload/page/worker dispatch and authenticated normal exports.",
+        "Actual mixed source1/source2/source3 export/lifecycle/replay and installed proof.",
+        "Whole world/source/body/replay budgets and remaining MS2 authoring/pack/full software/benchmark gates before its PR, then MS3."
       ]
     }
   },

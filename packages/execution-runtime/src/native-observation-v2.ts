@@ -159,7 +159,10 @@ function fail(message: string, frame: number): never {
 }
 function assertExecutionPass(
   assigned: NativeObservationExpectedPassV2,
-  execution: NativeObservationExecutionBindingV2,
+  execution: Pick<
+    NativeObservationExecutionBindingV2,
+    "sources" | "appearanceCodeSha256"
+  >,
   outputFrame: number,
 ) {
   const variant = assigned.variant;
@@ -222,12 +225,15 @@ function assertExecutionPass(
     fail("Expected source/frame protocol differs", outputFrame);
 }
 /** Independently replay numeric poses/packed streams before a packet can authorize pixels. */
-async function validateNativeObservationPacketV2(
+export async function validateNativeObservationPacketV2(
   packet: NativeObservedOutputFrameV2,
   executionSha256: string,
   expected: readonly NativeObservationExpectedPassV2[],
   reserve: (bytes: number) => { release(): void },
-  execution: NativeObservationExecutionBindingV2,
+  execution: Pick<
+    NativeObservationExecutionBindingV2,
+    "sources" | "appearanceCodeSha256"
+  >,
   signal?: AbortSignal | undefined,
 ) {
   signal?.throwIfAborted();

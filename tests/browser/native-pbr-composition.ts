@@ -19,6 +19,7 @@ import type * as Proof from "../helpers/native-pbr-composition-proof.ts";
 import { CompositionSchema } from "@still-shift/scene-contract";
 import { loadComposition } from "../../packages/animation-engine/src/composition-render.ts";
 import { createNativeObservationRequestVersions } from "../../packages/animation-engine/src/native-observation.ts";
+import { nativePbrJournalProof } from "../helpers/native-pbr-journal-proof.ts";
 import { nativePbrSceneFixture } from "../helpers/native-pbr-scene-fixture.ts";
 
 const hash = (bytes: Uint8Array | string) =>
@@ -295,6 +296,12 @@ try {
     "source3-sync-frame",
   ])
     assert.ok(result.negatives.some((negative) => negative.id === id));
+  const journal3 = await nativePbrJournalProof(
+    loaded,
+    result.captures[0]!.packet,
+    Buffer.from(result.captures[0]!.rgba),
+    directory,
+  );
   const record = {
     version: "native-pbr-composition-proof-1",
     status: "passed",
@@ -309,6 +316,7 @@ try {
     requests,
     captures,
     worldArtwork,
+    journal3,
     style: {
       frame: result.style.frame,
       pixelSha256: stylePixelSha256,

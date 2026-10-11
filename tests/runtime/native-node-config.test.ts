@@ -17,8 +17,10 @@ test("loads the native sink and Lab configuration through Node's ordinary TypeSc
       "--eval",
       `import assert from "node:assert/strict";
        import { NativeObservationSink } from "./packages/execution-runtime/src/native-observation-sink.ts";
+       import { NativeObservationSinkV3 } from "./packages/execution-runtime/src/native-observation-v3.ts";
        import { createServer } from "vite";
        assert.equal(typeof NativeObservationSink, "function");
+       assert.equal(typeof NativeObservationSinkV3, "function");
        const server = await createServer({configFile: "apps/lab/vite.config.ts", server: {port: 0}});
        await server.close();
        console.log("Native sink and Lab configuration loaded without a TypeScript transformer");`,

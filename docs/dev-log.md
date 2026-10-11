@@ -45,22 +45,21 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Twenty-seven slices now include explicit async source3 composition collection
-  and conservative output3 admission. Fast9 passes all prefix checks and4,186
-  units/409 files; Node10 ten/four files. Standalone observation11 preserves eight
-  actual receipts/21 faults. Composition12 passes six repeated/reverse frames,
-  exact collected/uncollected pixels, two world-artwork depth controls, five binary
-  and four async faults. Artwork has an admitted separate Scene and shares physical
-  depth without entering the closed receipt inventory. All six native2 groups13
-  and legacy native depth14 pass. Inputs9:2,510 files/119,086,567B held unchanged.
-  Earlier type failures and lost terminal receipts remain qualified. Full/runtime/
-  integration/installed stay historical. Next: authenticated source3 export/installed,
-  whole world/source/body/replay budgets and remaining MS2 criteria. Supported
-  packs/pilot0; no MS2 PR/MS3 or human acceptance. ElevenLabs spending requires
-  explicit owner approval for the identified estimated batch.
-  [Composition evidence](./mechanism-shorts-ms2-output3-composition-results.json),
-  [MS2 results](./mechanism-shorts-ms2-results.json), [PBR API](./native-pbr-resources.md),
-  [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
+  Twenty-eight slices include explicit async composition collection and the strict
+  standalone source3 execution/journal/replay boundary. Fast16 passes4,197 units/
+  410 files and all prefix checks; Node17 ten/four files, including ordinary Node
+  sink3 imports. Composition18 passes six seeks/two artwork controls and two actual
+  repeated one-frame raw journals with five forgeries rejected. Admission scratch
+  peaks863,592B/returns0; replay retains default16MiB quota. All six native2 groups19
+  pass; inputs16:2,513 files/119,117,701B held unchanged. Earlier type/key/quota/helper
+  failures remain retained. Normal source3 export request creation still rejects;
+  next: producer/upload/page/worker dispatch, mixed exports/installed, whole world/
+  source/body/replay budgets and remaining MS2 gates. Full/runtime/integration/
+  installed stay historical; supported packs/pilot0; no MS2 PR/MS3/human acceptance.
+  ElevenLabs spending needs explicit owner approval for the identified batch.
+  [Journal evidence](./mechanism-shorts-ms2-output3-journal-results.json),
+  [composition evidence](./mechanism-shorts-ms2-output3-composition-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json), [PBR API](./native-pbr-resources.md).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
   inventory15:2,329 inputs/117,503,155B. Original full6 retains a qualified19-group
@@ -218,6 +217,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 strict source3 execution and actual journal replay
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `8676aa30`.
+- **Done:** explicit execution3/sink3/row3/manifest3/closure3 with source3 key and
+  appearance identities, awaited independent actual-receipt admission and replay.
+  Original source1/source2 serializers and declarations stay strict.
+- **Results:** fast16 passes4,197 units/410 files; Node17 ten/four files. Actual
+  composition18 includes two identical one-frame raw journals, successful replay,
+  five forgeries rejected and zero scratch. Default16MiB replay quota is unchanged;
+  all six native2 groups19 pass and selected inputs16 remain held.
+- **Retained:** schema/type/read-only failures, real source-key mismatch, maximum
+  scratch quota rejection, publication getter assertion and statistics accessor fix.
+- **Next:** normal source3 request/export dispatch, mixed exports/installed and
+  whole world/source/body/replay budgets; remaining MS2 criteria before its PR.
+- **Records:** [journal evidence](./mechanism-shorts-ms2-output3-journal-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json). No paid narration performed.
 
 ### 2026-10-11 — MS2 source3 async composition receipts and shared artwork depth
 

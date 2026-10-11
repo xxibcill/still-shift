@@ -72,7 +72,16 @@ import {
   nativeObservationOwner,
 } from "./native-observation-sink.ts";
 export * from "./native-observation-sink.ts";
-export * from "./native-observation-v2.ts";
+export {
+  NativeObservationSinkV2,
+  NativeObservationExecutionV2Schema,
+  admitNativeObservationManifestV2,
+  verifyNativeObservationClosureV2,
+  type NativeObservationExecutionBindingV2,
+  type NativeObservationExpectedPassV2,
+  type NativeObservationClosureV2,
+} from "./native-observation-v2.ts";
+export * from "./native-observation-v3.ts";
 export * from "./native-observation-dispatch.ts";
 import {
   admitNativeObservationRequestVersions,

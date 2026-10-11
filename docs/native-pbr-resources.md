@@ -369,3 +369,35 @@ output3 envelopes use the actual appearance digest in the execution field; they
 are not authenticated export ledgers. Source3 request/export/installed proof and
 remaining MS2 criteria remain pending. No human visual/listening acceptance follows
 from these software checks.
+
+## Strict standalone source3 execution and journal replay
+
+`@still-shift/execution-runtime/export` exposes
+`NativeObservationExecutionV3Schema`, `NativeObservationSinkV3`,
+`admitNativeObservationManifestV3` and `verifyNativeObservationClosureV3`.
+Execution3 requires at least one explicit source3, its source3 key, verified source/
+geometry/effective-scene/mesh-data identities and matching appearance descriptor
+hash. Mixed declarations retain original source1/source2 formats and shape
+associations. Extra fields, duplicate variants/shape associations, old source3 key
+prefixes and unbound appearance identities reject.
+
+Supply trusted freshly sampled expected passes and an admitted scratch allocator.
+Await sink acceptance before authorizing pixels. Source3 checks the declared source
+and sampled clock, then independently validates actual GPU receipt matrices,
+materials, draws, used bytes/mips and anchors. Original pass1/pass2 checks retain
+their protocols. Packet3 writes row3 shards, manifest3 and closure3 through the
+existing durable core; replay rechecks identities and receipt evidence. Original
+sinks still use their original strict packet schemas. All existing packet/pass/
+shard/total limits remain fixed. Checker admission sizes the admitted receipt plus
+bounded frame-key/geometry scratch; replay keeps its default16MiB metadata quota.
+
+[Journal results](./mechanism-shorts-ms2-output3-journal-results.json) cover two
+repeated real composed one-frame raw journals, successful replay, five forged
+receipts rejected before pixel authorization, lifecycle/admission controls,
+ordinary Node loader compatibility and original native2 regressions. Admission
+scratch peaks863,592B and releases to0; full world/source/body/replay accounting
+remains pending. Earlier type/schema/source-key/quota/helper failures are retained.
+These are standalone journal artifacts. Normal source3 request producer, upload,
+page/worker export dispatch, mixed exported frames and installed proof remain
+pending; normal source3 export requests still reject. No MP4 export or human
+appearance/listening acceptance is inferred from this proof.
