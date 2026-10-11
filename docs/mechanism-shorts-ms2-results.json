@@ -17870,9 +17870,44 @@
         "Full software gate is running; broader resource/lifetime, labels/continuous/readability, genuine spoken input, final archive/installed and pack admission/MS2 PR gates remain separate.",
         "Supported packs0; accepted pilot episodes0; MS3 not started."
       ]
+    },
+    "fiftySecondSlice": {
+      "status": "existing-spoken-input-identities-and-supplied-cues-recovered",
+      "scope": "Input recovery only; no software/authoring-source changes and no new decoding, synthesis or rendering.",
+      "evidence": "docs/mechanism-shorts-ms2-spoken-input-results.json",
+      "recovered": {
+        "families": ["tape-hook", "cable-tie", "clothespeg"],
+        "existingUnpacedV003Takes": 3,
+        "currentAudioHashesMatched": 4,
+        "transcriptAssociations": 3,
+        "suppliedWordRangeShotCues": 13,
+        "shorterTapeHookRecordedReductionSeconds": "3.482993",
+        "replacementCopy": "revised wording; captions and cues require regeneration",
+        "roundedTranscriptEndOverrunsSeconds": ["0.000322", "0.000202"]
+      },
+      "verification": {
+        "inputAudit": "passed-after-retained-identical-script-assumption-failure",
+        "full51Attempt1": {
+          "status": "running",
+          "owningSession": 79726,
+          "heldSourceCommit": "5e7f49e5",
+          "log": "/private/tmp/still-shift-ms2-full51-1.log",
+          "testGroupsInAggregate": 94,
+          "groupsStartedAtObservation": 28,
+          "latestStartedGroupAtObservation": "test:browser:lateral",
+          "terminalReceipt": "not-yet-observed",
+          "newExternalInputScope": "Recovered customer inputs are not consumed by the current software aggregate or covered by its held-source inventory."
+        }
+      },
+      "remaining": [
+        "Bound fresh decode/probe and authoritative sample counts, then author/check/render genuine three-family cue documents and valid shorter-take recompilation while preserving narration samples.",
+        "Complete broader annotation styles/world-text/surface routes and label-only plate reuse. The current supplied-cue schema only authors screen-pinned text/backing/single-anchor leaders. Existing generic native world-graphic and bracket components are building blocks, not proof that the MS2 authoring routes exist.",
+        "Retain full-cell Thai fine-motion limits, whole-resource/lifetime, final archive/installed/pack admission and MS2 PR gates. Supported packs0; accepted pilot episodes0; MS3 not started."
+      ]
     }
   },
   "limits": [
+    "Slice52 recovers three existing unpaced spoken recordings and supplied timed transcripts for the candidate families, with four current audio hashes and thirteen cue associations verified. A shorter tape-hook take uses revised copy; the initial identical-script assumption failed and is retained. New external media are not covered by live full51 software verification; actual decode/sample-clock, genuine cue/native exports, broader annotation/world/surface/plate reuse, resources/final installed/pack admission remain open. No audio was changed or generated; packs/pilot0.",
     "Slice51 expands Thai review to all114 distinct cells at frames8/18 and three sizes (42 overviews/684 shown samples), binding raw inputs and artifact hashes. Sampled resolved copy/marks remain; leading-vowel prefixes and semantic wrap/contrast negatives are located. Finer Thai motion is unadopted and complete-message holds remain separately checked. Full51 attempt1 is running on held5e7f49e5 inputs with no terminal receipt; pack/pilot0 and broader MS2 gates stay open.",
     "Slice50 creates the frozen ten-question coverage board before MS3: 5 existing targets, 3 new-asset/existing-rig candidates, 2 behavior extensions; 5 episodes need new assets and 2 need behavior. Actual candidate references and all 2,564 prior inputs are unchanged. Coverage remains 0/10 validated, packs/accepted pilot 0. Fast1 passes 4,293 units/421 files; seven focused tests and independent cohort/hash/accounting audit pass after retaining an initial negative-test fixture failure. Only board creation is complete; full MS2 and support admission remain open.",
     "Slice49 adds complete native export/decode/seek evidence for all 128 Thai cases: 142 streams/3,408 frames, 3,072 decoded frames/9,216 PNGs/426 sheets, 9,216 native seeks and 70 exact lossless settled comparisons independently verified. Default/explicit-zero identities hold; encoded differences prompted lossless diagnosis. Final fast2 passes 4,286 units/420 files on held inputs. Seventeen sampled visual artifacts cover every text but do not certify all cells; remaining Thai support/mark/gap review and broader MS2/full/final/owner gates stay open. Packs/pilot 0.",

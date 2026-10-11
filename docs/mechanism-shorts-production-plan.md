@@ -856,6 +856,14 @@ mechanism families establish whether the architecture transfers.
       retains type/font/driver failures and intentionally stopped fast8; [API](./mechanism-narrated-cycles.md)
       records quantization and separates engineering PCM from genuine spoken-input/
       human acceptance. Full rendered readability and pilot acceptance remain open.
+      [Slice52 recovered inputs](./mechanism-shorts-ms2-spoken-input-results.json)
+      pins existing unpaced spoken takes and supplied timed transcripts for all
+      three families: four audio hashes and thirteen word-range/shot associations
+      match retained receipts. A tape-hook replacement is recorded 3.482993s
+      shorter with revised copy; it requires fresh caption/cue compilation.
+      Two rounded transcript endpoints slightly overrun receipt durations; actual
+      decoded sample bounds must govern authoring. No new synthesis, spending,
+      successful genuine-speech render or owner acceptance is claimed.
 - [ ] Expose registry-derived discovery, per-component schema/parameter help,
       small examples, asset metadata and stable revision-aware editing. Publish
       versioned JSON Schemas for the expanded contracts and retain MS1 response

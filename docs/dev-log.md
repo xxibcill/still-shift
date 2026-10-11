@@ -45,20 +45,22 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Fifty-one slices include the frozen ten-question board and expanded Thai review:
-  all114 distinct cells at frames8/18 and three sizes,42 overviews/684 samples.
-  Settled marks/copy remain in the samples; retype leading-vowel prefixes,
-  low-contrast qualifiers and USB-C/499–บาท wraps prevent blanket fine-motion
-  adoption. Initial evidence hash-convention failure and corrected audit retained.
-  `pnpm check:all` full51-1 is running on held `5e7f49e5` inputs (session79726),
-  2,567 files/119,595,348B; no final receipt yet. Unit4,293/runtime238/integration322
-  pass, and browser/export groups continue. Do not restart the live owner on silence.
-  Coverage remains0/10 validated; packs are candidates; accepted pilot episodes0.
-  Next: full gate receipt, full-cell Thai disposition, broader labels/continuous/
-  readability, genuine speech, whole resources/final installed and pack/MS2 PR gates.
-  MS3 not started; no human acceptance, merge/publication or paid generation.
-  [Review evidence](./mechanism-shorts-ms2-thai-review-results.json),
-  [Coverage board](./mechanism-topic-family-coverage.md), [MS2 results](./mechanism-shorts-ms2-results.json).
+  Fifty-two slices include the frozen ten-question board, expanded Thai review and
+  recovered existing spoken inputs for all three families. Four audio hashes and
+  thirteen supplied word-range/shot associations match. The shorter tape-hook take
+  uses revised copy; the failed identical-script assumption is retained. No new
+  decoding, synthesis or genuine-speech native rendering has been performed.
+  Thai review covers all 114 distinct cells at frames 8/18 and three sizes;
+  located prefix/contrast/wrap negatives keep finer motion unadopted.
+  Full51-1 `pnpm check:all` remains live (session 79726) on held `5e7f49e5` inputs,
+  2,567 files/119,595,348B; there is no final receipt. Continue its owner on silence.
+  Coverage stays 0/10 validated; packs are candidates; accepted pilot episodes 0.
+  Next: actual full-gate receipt; bound fresh speech/sample clocks and cue exports;
+  complete annotation styles/world/surface routes and label-only plate reuse,
+  whole resources/final installed/pack admission and MS2 PR. MS3 not started.
+  No human acceptance, merge/publication or paid generation.
+  [Spoken inputs](./mechanism-shorts-ms2-spoken-input-results.json),
+  [Thai review](./mechanism-shorts-ms2-thai-review-results.json), [MS2 results](./mechanism-shorts-ms2-results.json).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
   inventory15:2,329 inputs/117,503,155B. Original full6 retains a qualified19-group
@@ -216,6 +218,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — MS2 slice52: recover existing three-family spoken inputs
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `24736d77`.
+- **Done:** Recovered existing unpaced v003 tape-hook/cable-tie/clothespeg audio,
+  supplied timed transcripts and thirteen shot cues. Four current audio hashes,
+  transcript associations and complete word-range/cue text associations pass.
+- **Results:** A tape-hook replacement is recorded 3.482993s shorter with revised
+  copy. Initial identical-script audit failure retained; corrected association
+  audit passes. Rounded end overruns of 0.000322/0.000202s need decoded-clock bounds.
+- **Open / next:** Full51-1 remains live, owner session 79726; held software inputs
+  unchanged. Fresh speech decode/compile/export, broader annotation/world/surface
+  routes, label-only plate reuse, whole resources/final installed/pack admission
+  and MS2 PR remain open. No synthesis/spending; packs/pilot 0; MS3 not started.
+- **Records:** [Spoken input evidence](./mechanism-shorts-ms2-spoken-input-results.json),
+  [MS2 plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
 ### 2026-10-12 — MS2 slice51: expanded Thai review; full gate running
 
