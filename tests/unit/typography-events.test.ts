@@ -1275,6 +1275,40 @@ describe("explicit text weight treatment receipts", () => {
       "text-weight-unavailable",
     );
   });
+  it("uses the tightest positive mixed-run headroom without clamping explicit genuine requests", () => {
+    const scene = fixture("genuine-weight", 50);
+    scene.textStyles = {
+      ...scene.textStyles,
+      limited: { fontAsset: "font", axes: { wght: 850 } },
+    };
+    const node = textNode(scene as Compiled, "claim");
+    node.spans![0]!.style = "limited";
+    delete scene.textEvents![0]!.span;
+    expect(inspectTextWeightTreatments(scene).receipts[0]).toMatchObject({
+      availableHeadroom: 50,
+      status: "resolved",
+      resolvedAmount: 50,
+      fonts: [
+        { axisInstance: 400, headroom: 500 },
+        { axisInstance: 850, headroom: 50 },
+      ],
+    });
+    expect(compileStoryScene(scene).textAnimators![0]!.to).toEqual({
+      axes: { wght: 50 },
+    });
+    scene.textEvents![0]!.amount = 51;
+    expect(inspectTextWeightTreatments(scene).receipts[0]).toMatchObject({
+      status: "unavailable",
+      availableHeadroom: 50,
+      resolvedAmount: null,
+    });
+    expect(() => compileStoryScene(scene)).toThrow("text-weight-unavailable");
+    scene.textEvents![0]!.weightTreatment = "auto";
+    delete scene.textEvents![0]!.amount;
+    expect(compileStoryScene(scene).textAnimators![0]!.to).toEqual({
+      axes: { wght: 50 },
+    });
+  });
   it("rejects treatment on unrelated event verbs", () => {
     const scene = fixture("outline");
     expect(() =>

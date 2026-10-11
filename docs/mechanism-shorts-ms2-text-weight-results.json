@@ -251,5 +251,6 @@
   "reviewFixes": [
     "Include initial text in whole-node span coverage, even when every listed shorter state is fully covered.",
     "Retain base font for count-generated strings until shared generated-string coverage can prove it unused; this does not adopt count+fit or change legacy counting."
-  ]
+  ],
+  "followUpRenderEvidence": "docs/mechanism-shorts-ms2-text-weight-render-results.json"
 }

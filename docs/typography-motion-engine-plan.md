@@ -483,10 +483,12 @@ without corresponding fingerprint/version and affected parity checks.
 
 ### Genuine weight versus outline emphasis
 
-**Current status: both routes implemented; semantic distinction not explicit enough.
-Classification: design-contract gap. Accept, P2, MS2 reusable authoring.**
+**Current status (2026-10-12): explicit treatments/units and resolved receipts
+implemented in MS2 slices45/46; scoped actual-font/native software acceptance verified.
+Original classification: design-contract gap, P2, MS2 reusable authoring.**
 [Event compilation](../packages/scene-contract/src/typography-events.ts) selects
-`wght` only if every targeted run has positive headroom; otherwise it outlines.
+`wght` for legacy automatic events only if every targeted run has positive headroom;
+otherwise it outlines.
 `amount` consequently switches between axis units and outline pixels. Existing
 unit/browser tests cover these implementations; they do not make the fallback a
 truthful genuine-weight recipe.
@@ -504,6 +506,15 @@ mixed-run headroom cases have explicit resolved receipts; test release/end bound
 and backward seeks. Retain actual compiled axis versus stroke values and encoded
 states, including natural English gaps. A changed raster alone is insufficient to
 prove genuine weight; legacy fallback behavior remains covered.
+
+[Slice46 evidence](./mechanism-shorts-ms2-text-weight-render-results.json) retains
+exact MS1 font facts, 34 native text cases across WebGL2/Canvas2D, five unavailable
+controls per backend and explicit 150-axis/2.52-pixel values. All 48 encoded streams,
+2,040 full decoded frames, release/end states, 6,120 forward/reverse/shuffled draws
+and 544 sampled English-gap checks pass. The real 600/850 mixed-instance control
+preserves legacy min-headroom clamping at 50 and rejects explicit 51. Cross-backend
+exactness is scoped to the tested driver. Failures/reruns and human/whole-milestone
+review boundaries remain retained; count+fit/Thai reproductions are still open.
 
 ### Continuous genuine font-size relayout
 

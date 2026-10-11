@@ -66,5 +66,22 @@ weight envelope; end states and backward evaluation pass the focused pose tests.
 The schema is available through `episode schema --kind text-weight-treatments`
 and [the generated JSON schema](./schemas/mechanism/text-weight-treatments.schema.json).
 [Slice45 evidence](./mechanism-shorts-ms2-text-weight-results.json) records the
-software checks. Pinned-font raster/encoded treatment comparisons, natural English
-spacing and complete MS2 typography acceptance remain pending.
+initial API checks. [Slice46 native rendering evidence](./mechanism-shorts-ms2-text-weight-render-results.json)
+now verifies both production WebGL2 and Canvas2D using native text layers and exact
+MS1 Noto/Plex bytes. Run `pnpm test:browser:mechanism-text-weight` for the retained
+historical/current/explicit corpus.
+
+The variable 600 instance receives a 150-unit delta (750 at peak). Mixed variable
+instances 600/850 have 50 units of shared headroom: legacy automatic 150 clamps to
+50, explicit genuine 50 renders identically, and explicit 51 is unavailable. Static,
+maximum and mixed static/variable faces retain legacy outlines. Their 180 px node
+size produces 2.52 authored stroke pixels, rasterized on the unchanged 0.25 px grid
+as 2.5. Explicit outline on a variable face is distinct from genuine axis weight.
+
+Seventeen cases per backend verify all-frame reverse/shuffled reproducibility,
+release/end raster restoration, complete encoded/decoded legacy parity and repeated
+exports. Eight decoded boundary samples per case retain positive natural English
+space advances and clear gap centers. The independent audit inspects every encoded
+stream and all saved compiled/posed axis-versus-stroke values. This closes the
+explicit treatment requirement; count+fit/Thai risk probes, complete MS2 acceptance
+and human production review remain separate.

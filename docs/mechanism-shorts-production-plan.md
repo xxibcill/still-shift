@@ -897,16 +897,19 @@ mechanism families establish whether the architecture transfers.
       coverage contract above. Classify all proposed pilot candidates and record
       support criteria, selected distinct-episode denominator and new-asset/new-rig
       counts before handing the selection to MS3.
-- [ ] Expose explicit genuine-weight versus outline treatment and units, retaining
+- [x] Expose explicit genuine-weight versus outline treatment and units, retaining
       legacy automatic behavior with resolved-route diagnostics. Reuse MS1 font
       identity; generalize quantity/phrase helpers only where repeated authoring
-      friction warrants it. Slice45 adds explicit authoring treatments and pure
-      axis-delta/stroke-pixel receipts with located unavailable genuine requests;
-      legacy automatic numeric defaults/clamping are covered by local tests.
-      [API](./mechanism-text-weight-treatments.md) and
-      [evidence](./mechanism-shorts-ms2-text-weight-results.json). Actual pinned-font
-      raster/encoded routes and natural English spacing remain pending; this
-      criterion stays open.
+      friction warrants it. Slices45/46 provide explicit treatments, pure receipts
+      and located unavailable genuine requests. Exact MS1 variable/static/max/mixed
+      font controls preserve complete historical/current/explicit output parity;
+      positive mixed headroom/clamping, actual compiled/posed units, release/end,
+      all-frame reverse/shuffled seeks and encoded natural English gaps pass on
+      WebGL2 and Canvas2D native text. [API](./mechanism-text-weight-treatments.md),
+      [initial API evidence](./mechanism-shorts-ms2-text-weight-results.json) and
+      [native render evidence](./mechanism-shorts-ms2-text-weight-render-results.json).
+      This is scoped software/native acceptance; production human review and the
+      separate count+fit/Thai risks remain required.
 - [ ] Before adopting count+fit or finer Thai motion, run the scoped reproductions
       in the [typography risk table](./typography-motion-engine-plan.md#scoped-validation-of-source-audited-risks):
       generated two-decimal count values, all six Thai stress strings, independent

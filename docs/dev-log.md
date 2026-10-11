@@ -43,17 +43,18 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
+- **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Forty-five slices now include explicit genuine-weight/outline authoring and pure
-  resolved-route/unit/headroom/font receipts. Fast10: 4,283 units/420 files;
-  runtime10: 30 saved-project/CLI checks/5 files; held 2,559 inputs/119,471,782B.
-  Maximum-axis fixture failure retained and corrected. Slice44's visible crowded
-  layout proof remains documented. Next: actual pinned-font/encoded weight and
-  natural English spacing proof, scoped count+fit/Thai risks, coverage, broader
-  labels/continuous readability, genuine speech and remaining full/final gates.
+  Forty-six slices now close explicit genuine-weight/outline software/native
+  acceptance on exact MS1 fonts. Fast12: 4,284 units/420 files; two backends verify
+  34 cases/48 exports/2,880 frames, 2,040 decoded frames and 6,120 seek-order draws.
+  Independent audit validates 34 receipts/compiled/posed units, all streams,
+  historical/current/explicit parity, mixed 50-unit headroom and 544 English-gap checks.
+  Held 2,560 inputs/119,495,964B remain fixed; failures and intermediate passes retained.
+  Next: scoped count+fit/all six Thai/production-copy risks, coverage, broader
+  label/continuous readability, genuine speech and remaining resource/full/final gates.
   Supported packs/pilot 0; no merge/publication, human acceptance or paid generation.
-  [Weight evidence](./mechanism-shorts-ms2-text-weight-results.json),
+  [Native weight evidence](./mechanism-shorts-ms2-text-weight-render-results.json),
   [API](./mechanism-text-weight-treatments.md), [MS2 results](./mechanism-shorts-ms2-results.json).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
@@ -212,6 +213,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — MS2 slice46: actual-font native weight treatment acceptance
+
+- Exact MS1 Noto/Plex font bytes and real cut/fvar facts feed native text through
+  the existing supported adapter; historical compiler body and unchanged draw code
+  provide the legacy control. No separate renderer or frozen vocabulary change.
+- Variable/static/max/mixed/covered-base controls retain actual axes versus stroke
+  receipts; real mixed 600/850 instances clamp legacy 150 to 50 and reject explicit 51.
+- Final fast12: 4,284 units/420 files. Two backends/34 cases: 48 exports/2,880 frames,
+  2,040 complete decoded frames, 6,120 forward/reverse/shuffled draws. Independent
+  audit validates all streams/34 receipts, complete legacy parity and 544 gap checks.
+- Type/fixture/lint failures and staged successes retained. Derived RGB is losslessly
+  compressed with original/decompression hashes; MP4s/snapshots/PNGs remain intact.
+- Four final native peak images inspected; explicit weight criterion closes at
+  software/native scope. Count+fit, six Thai/production-copy risks and broader
+  MS2/resource/full/final/owner review remain pending. Packs/pilot still 0.
+- [Evidence](./mechanism-shorts-ms2-text-weight-render-results.json),
+  [API](./mechanism-text-weight-treatments.md), [plan](./mechanism-shorts-production-plan.md).
 
 ### 2026-10-11 — MS2 slice45: explicit weight and outline treatment API
 
