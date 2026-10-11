@@ -3,9 +3,10 @@
 MS2 provides a bounded resource component for imported rigid glTF geometry. It
 uses `solid-geometry-2` and `native-pbr-material-1`, with separate encoded-source
 and decoded-pixel identities. Existing native source1/source2 parsers remain
-strict. Explicit rigid source3 preparation and shared-world execution now consume
-this component. Composition binary admission, shared graph preview/export and
-mip-data proof remain pending.
+strict. Explicit source3 preparation, binary admission and shared-world composition
+preview consume this component. Every used mip now has component storage/transfer
+validation; formal frame observations, authenticated exports and installed proof
+remain pending.
 
 ## Node preparation
 
@@ -103,22 +104,41 @@ factor/UV-transform/normal-scale uniforms, blend/cull enablement, owned texture
 handles and filter/wrap parameters. It retains copied vertex/shader bytes;
 `sealNativePbrGpuDraw` hashes those copies afterward.
 
-Tiled base-level RGBA8 readback matches every texel against private prepared
-pixels. A separate float shader checks every actual base-level transfer sample;
-its new profile tolerance is **0.0001**. Existing native tolerances are unchanged.
-The component requires WebGL2 and float color-buffer support. It restores GL
-state and disposes its verification resources after success or failure.
+Tiled RGBA8 readback matches every used mip texel against a separate WebGL
+reference derived from private prepared pixels. The reference uses the declared
+minification/magnification/wrap sampler and sized linear or sRGB storage in the
+same context. Every level queries actual component bit widths, normalized type
+and color encoding; a float shader checks its dimensions and every transfer sample;
+its existing transfer tolerance is **0.0001**. Existing native tolerances are unchanged.
+The component requires WebGL2 and float color-buffer support. Mip generation has
+implementation-dependent filtering ([GLES3 section 3.8.10.5](https://registry.khronos.org/OpenGL/specs/es/3.0/es_spec_3.0.pdf));
+this reference establishes current-environment derivation without imposing a CPU
+filter formula or cross-driver equality. `native-pbr-gpu-draw-2` returns bounded
+per-level dimensions, sized storage, sample counts and error maxima. Pixels do
+not enter its sealed receipt. Verification requires the live private prepared
+reference; releasing that reference fails closed rather than reading mutable
+Three texture data. Owned mip/LOD/compare defaults are checked and foreign sampler
+objects rejected.
+
+The verifier admits reference/output GPU textures and tiled byte/float backing
+before allocation, then restores GL pixel-store/PBO/sampler/program/VAO/framebuffer
+state and releases its owners on success or failure. This scoped bill does not
+certify complete world/metadata/vertex-receipt/driver accounting.
 
 Run `pnpm test:browser:native3d-pbr-resources` locally. The pinned Three/Chromium
-fixture retains three identical baseline/repeat/restored frames and rejects
-actual tangent-buffer, texture-byte, color-space and material-factor faults.
+fixture retains 18 frames across all six minification filters, both magnification
+modes, every wrap mode and a 300×257 tiled NPOT case. It rejects 10 actual corruption/
+quota faults and verifies 28 restorations with deliberately foreign PBO/pixel-store
+state. Failed quota admission creates zero reference textures. Each case retains
+zero verifier owners after disposal. [Mip results](./mechanism-shorts-ms2-pbr-mip-results.json)
+record the current pass and all preceding typing/format failures.
 [MS2 results](./mechanism-shorts-ms2-results.json) retain all staged inputs,
 expected reds, compiler/lint failures and the failed valid-stride browser run;
 that run's unavailable terminal receipt is not reconstructed.
 
 The caller owns draw-to-mesh/material association. This receipt certifies the
-supplied draw and complete mip0 storage/transfer. It does not certify mip pixel
-values, whole-frame camera/world graphics, composition observations, complete
+supplied draw and complete used-mip storage/transfer/derivation. It does not certify
+whole-frame camera/world graphics, composition observations, complete
 imported mechanisms, exports, installation or human appearance acceptance.
 The owning [MS2 importer criterion](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring)
 remains unchecked until those integration requirements are complete.
@@ -223,7 +243,8 @@ lever frames, repeated/reverse pixel equality, one style, five actual HTTP strea
 and checksum faults, and zero retained managed owners after disposal. Pixel arrays
 never enter production transport JSON.
 
-Independent source3 GPU/world/anchor/PBR/mip observations remain pending.
+Independent source3 frame/world/anchor/draw observations remain pending; used-mip
+component validation is now separate current evidence.
 `collectNativeObservations: true` and source3 export-request creation reject the
 unfinished protocol. Authenticated repeated exports, installed proof, whole-world
 accounting and bounded source JSON admission remain required. The importer

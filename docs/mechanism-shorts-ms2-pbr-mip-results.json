@@ -1,0 +1,623 @@
+{
+  "schemaVersion": "mechanism-shorts-ms2-pbr-mip-results-1",
+  "date": "2026-10-11",
+  "status": "used-mip-components-verified-source3-observation-export-pending",
+  "branch": "codex/mechanism-ms2",
+  "baseSourceCommit": "66559c6757997e9b361a985eec9ed75a224f3ee9",
+  "currentInputInventory": {
+    "path": "/private/tmp/still-shift-ms2-pbr-mip-inputs-8.json",
+    "bytes": 425236,
+    "sha256": "sha256:8b3d905e7094e886f048bec2758c5d754aa808a8db04f620f5ce65ef356860ab"
+  },
+  "currentSelectedInputFiles": 2493,
+  "stages": [
+    {
+      "stage": 1,
+      "actualRootSession": 56837,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "4ea33c",
+      "qualification": "Production build passes. Post-run inventory captures unchanged inputs; later review clamps mip float tiles to the fixed output-target height before any GPU proof.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-build-1.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-inputs-1.json",
+          "bytes": 425234,
+          "sha256": "sha256:f753b1aa3730fb4e4ef3d0abdc52eb19678cce9cf07f85e8cc6fc7b7792bfa3d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-inventory-1.log",
+          "bytes": 241,
+          "sha256": "sha256:22d3d3896307798d86640784d57b08802540f15bd2085c21af636b6088e53a13"
+        }
+      ]
+    },
+    {
+      "stage": 2,
+      "actualRootSession": 50762,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "f82903",
+      "qualification": "Appearance closure adds the reference module. Existing GPU fixture3 frames/4 faults passes with complete mip verification; explicit foreign-state/budget and expanded filter tests not yet present.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-browser-2.log",
+          "bytes": 277,
+          "sha256": "sha256:01aa829249ea0e9458326477fad2222c9f1b3661eda9967dd79e053d4e64bbe1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-format-2.log",
+          "bytes": 72,
+          "sha256": "sha256:68f030f7bd3ff94952fc056f33398441c86279f3b2b9395e114f285f579d08b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-identity-2.log",
+          "bytes": 260,
+          "sha256": "sha256:ff56ec53e4acb88505f034f11bdc9b03b8403c6a7ecce66b43bd5c7fab9f2db6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-inputs-2.json",
+          "bytes": 425234,
+          "sha256": "sha256:ff4092f010ecbad3fce15aef883f9dc70f9b2e065bd4c704addcc77b087a845c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-inventory-2.log",
+          "bytes": 241,
+          "sha256": "sha256:f33ec28b77bd6a20bdaf4bac6bb0b73e3726afa2d0a96486d6e03d29edf9a6ff"
+        }
+      ]
+    },
+    {
+      "stage": 3,
+      "actualRootSession": 28626,
+      "actualExitCode": 2,
+      "terminalToolReceipt": "687764",
+      "qualification": "Build rejects four harness typing errors: literal extent unions, nullable uniform location and nullable texture pixels. Unit/browser suffix not run.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-build-3.log",
+          "bytes": 717,
+          "sha256": "sha256:4127e7d89d7b5b0085fb0ee1e9f6f684c879f0640c7d8de53a1178a3bb589f49"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-format-3.log",
+          "bytes": 127,
+          "sha256": "sha256:ed789723f9b05b75554f8910037bba420fdb8edfe2e900bad407d3ce68e5731e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-inputs-3.json",
+          "bytes": 425236,
+          "sha256": "sha256:83fb63c3cf6e4527eaa42928e631813b0df90acbb4263e468c878416ef090381"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-inventory-3.log",
+          "bytes": 241,
+          "sha256": "sha256:9463fb60341cacefef86a9c3cecef87d62ab2321121edf228cf8958d93942a6a"
+        }
+      ]
+    },
+    {
+      "stage": 4,
+      "actualRootSession": 65085,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "b03743",
+      "qualification": "Build and6 unit tests pass. Six minification filters,18 frames,9 actual faults, default-state restoration and zero verification owners pass.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-browser-4.log",
+          "bytes": 345,
+          "sha256": "sha256:c6df767b6dafd23eb9742246befd4f551ec87e10ddf8d99436886b11e2af638c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-build-4.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-format-4.log",
+          "bytes": 139,
+          "sha256": "sha256:3feecb5311daa44b824927c288d24f81fbf566869bf902c210342acfe0cdca08"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-inputs-4.json",
+          "bytes": 425236,
+          "sha256": "sha256:3a89beb3dc16064c7a8310860be8612a36971f1d47b6a207d0f6b6155ca0251f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-inventory-4.log",
+          "bytes": 241,
+          "sha256": "sha256:9ab0715e15812ccf845a95e33182b21852558c8152c0cfe7216aa19d22607b6e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-unit-4.log",
+          "bytes": 312,
+          "sha256": "sha256:a926fb4b5d0936653ac3621490fada849103c199852ebb492620c842030c22d1"
+        }
+      ]
+    },
+    {
+      "stage": 5,
+      "actualRootSession": null,
+      "actualExitCode": 2,
+      "terminalToolReceipt": "cea3c4",
+      "qualification": "Formatting rejects accidentally duplicated existing catch handler. Build/unit/browser not run. Post-failure inventory captures unchanged failed-source bytes.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-format-5.log",
+          "bytes": 590,
+          "sha256": "sha256:07c5d1c0668d44838f2cc3df2cad5c545589564866d58d97b780a198bc6a8368"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-inputs-5.json",
+          "bytes": 425236,
+          "sha256": "sha256:56834643b22dd3f4bd43c33f8397d141e38d073e9eded3baf6d33c1d48531c62"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-inventory-5.log",
+          "bytes": 241,
+          "sha256": "sha256:9a800a9192699eaea19060393f01412ee81ab5a8b37e0a6b9e743595d478834f"
+        }
+      ]
+    },
+    {
+      "stage": 6,
+      "actualRootSession": 68565,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "00e462",
+      "qualification": "Build and six GPU filter cases pass18 frames/10 faults. Deliberately foreign PBO/pixel-store state is restored on success/failure; tiny quota rejects before any reference texture allocation.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-browser-6.log",
+          "bytes": 346,
+          "sha256": "sha256:9df7acd4b11343154607d6e73015e1de45655a5758fa56b45382edc91b5eed6f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-build-6.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-format-6.log",
+          "bytes": 94,
+          "sha256": "sha256:18ddf7364939139fbabadc759cb60f3cb8734ad0cf4fabf3998707c0f7445a2f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-inputs-6.json",
+          "bytes": 425236,
+          "sha256": "sha256:fc605715b654649bf0417e2a56d4ae3a62f25be9d04f12b1b41a1a361cd26e42"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-inventory-6.log",
+          "bytes": 241,
+          "sha256": "sha256:ee0f0b466beebcfb176f369f309505684760e77fc33648c02b299744db9307f4"
+        }
+      ]
+    },
+    {
+      "stage": 7,
+      "actualRootSession": 76200,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "b2d5c8",
+      "qualification": "Complete broader serial gate: fast4170/406, runtime200/32, integration322/57, GPU18/10, world6/1, composition6/5/2/style and six native2 groups pass. Later review matches all declared sampler fields and independently queries GPU storage. This broader gate is separately scoped before those final changes. All required group completions were inspected; root exit alone is not used as their proof.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-browser-7.log",
+          "bytes": 346,
+          "sha256": "sha256:085cdbdca61c237635edb2e98c516efcabf0559654a85830ec5630083349fd76"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-composition-7.log",
+          "bytes": 807,
+          "sha256": "sha256:0cbd2e5cf9da751700df32ba79ac508b3c691e3222fceebf5e63692918a2d416"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-fast-7.log",
+          "bytes": 34129,
+          "sha256": "sha256:ea74d6515f8c63173ebd10af6c2875155d04557579cbaa8a9cbec2a5fb41a58c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-final-unchanged-7.log",
+          "bytes": 193,
+          "sha256": "sha256:fa5d1158dbae1285a6a9e41e9a946b240e1248c47b97c22cb8e7be149c61e379"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-format-7.log",
+          "bytes": 51,
+          "sha256": "sha256:51fc1f96ae6864a879b67bf42a36946942c9c8327dba4dea29429dbee6bfd006"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-inputs-7.json",
+          "bytes": 425236,
+          "sha256": "sha256:80b25a51f4215599ad0de67eb350b0d64c8eaf730286c39c728ae67b83e3129f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-integration-7.log",
+          "bytes": 24199,
+          "sha256": "sha256:c92c02cdf7307b7287960ebc5e8fd6b316b9b4cca43c81ecb838d3165eb8991c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-inventory-7.log",
+          "bytes": 241,
+          "sha256": "sha256:501608d4085bcf8b4987e29d03a7ae79e0daa1e25bf7075723de3cf6d39ea8e7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-native2-7.log",
+          "bytes": 1218,
+          "sha256": "sha256:b4a031aac845049cbec668470d6966da4729ba4f2809f14ab48d100605a34fb7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-runtime-7.log",
+          "bytes": 10836,
+          "sha256": "sha256:6e78517d36b460ce51481263a7256b791403f87f64ece525a5fbfb05de27aca5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-world-7.log",
+          "bytes": 265,
+          "sha256": "sha256:fb946d45a2a98bc8b875f0a6a02368573eea31950902c3602d873c2dc5442d8a"
+        }
+      ]
+    },
+    {
+      "stage": 8,
+      "actualRootSession": 96113,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "540125",
+      "qualification": "Final source8 full fast,10 owning Node cases and all GPU/world/composition/native2 groups pass. Reference matches declared min/mag/wrap fields; each mip queries component bit widths, unsigned-normalized storage and linear/sRGB encoding. Both magnification modes and all wrap modes are exercised. Broader7 runtime/integration remains separately scoped.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-browser-8.log",
+          "bytes": 346,
+          "sha256": "sha256:8a3c52c949b236c46be7c22c3ca6378ea3e7db5b29164fed58db269ccd989af6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-composition-8.log",
+          "bytes": 807,
+          "sha256": "sha256:4bca0abdf7959b0756d675348d3b6c5d6fd43fd285d2b9051c75368ec5989b0f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-fast-8.log",
+          "bytes": 34150,
+          "sha256": "sha256:61f2dbf15c8a2d180cf7d428b4ab1bd8650a40bd2c2becfc5d92bc4dd9aacb4d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-final-unchanged-8.log",
+          "bytes": 193,
+          "sha256": "sha256:7cc5245384abb51571a3f14477153cd4a19757a230fa1a0813cc68e5091677fb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-format-8.log",
+          "bytes": 302,
+          "sha256": "sha256:3f7e89af3ce5e84108ce7542bf35d4a974f2178ffd4f4d6e8b1d607f9be6294c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-identity-8.log",
+          "bytes": 260,
+          "sha256": "sha256:ff56ec53e4acb88505f034f11bdc9b03b8403c6a7ecce66b43bd5c7fab9f2db6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-inputs-8.json",
+          "bytes": 425236,
+          "sha256": "sha256:8b3d905e7094e886f048bec2758c5d754aa808a8db04f620f5ce65ef356860ab"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-inventory-8.log",
+          "bytes": 241,
+          "sha256": "sha256:acac570cc756ffdc7ffa7316cfab246b8d94a7097a7907f4481062b6a08684bc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-native2-8.log",
+          "bytes": 1218,
+          "sha256": "sha256:82999caf2425760d03df55459dc98d55f5cc394055b58077d8c15a002dd269c7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-node-8.log",
+          "bytes": 1659,
+          "sha256": "sha256:6b9429e01913eda540a3418478dc8c7ac394c61d30bf6f9a21f1a458f0d52726"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-mip-world-8.log",
+          "bytes": 265,
+          "sha256": "sha256:163b95ac73b6a0b2848af8c99b3a8f22f334357e11a229de5198cf1b03c9d804"
+        }
+      ]
+    }
+  ],
+  "currentFastSummaries": [
+    "Test Files  406 passed (406)",
+    "Tests  4170 passed (4170)"
+  ],
+  "currentNodeSummaries": ["Test Files  4 passed (4)", "Tests  10 passed (10)"],
+  "broader7Summaries": {
+    "runtime": ["Test Files  32 passed (32)", "Tests  200 passed (200)"],
+    "integration": ["Test Files  57 passed (57)", "Tests  322 passed (322)"]
+  },
+  "gpuComponent": {
+    "record": {
+      "path": "/private/tmp/still-shift-ms2-pbr-resources-hIOUAr/run.json",
+      "bytes": 112964,
+      "sha256": "sha256:d4cb886d965e48544ad951646b32466cca9f96ea2c5a1e525ca67ab8fc3f81be"
+    },
+    "filterCases": 6,
+    "frames": 18,
+    "faults": 10,
+    "minFilters": [9984, 9985, 9986, 9987, 9728, 9729],
+    "magnificationModes": [9728, 9729],
+    "wrapModes": [33071, 33648, 10497],
+    "largestTiledCase": [300, 257],
+    "stateRestorations": 28,
+    "verificationScratchPeaks": [
+      {
+        "pixels": 180,
+        "metadata": 0
+      },
+      {
+        "pixels": 1058660,
+        "metadata": 0
+      },
+      {
+        "pixels": 1568,
+        "metadata": 0
+      },
+      {
+        "pixels": 424,
+        "metadata": 0
+      },
+      {
+        "pixels": 1540,
+        "metadata": 0
+      },
+      {
+        "pixels": 44,
+        "metadata": 0
+      }
+    ],
+    "quotaFault": {
+      "message": "Error: Composition managed pixels exceed their aggregate worker quota",
+      "newTextureAllocations": 0,
+      "memory": {
+        "scope": "declared-application-owned-bytes",
+        "limits": {
+          "pixels": 1,
+          "metadata": 4194304
+        },
+        "current": {
+          "pixels": 0,
+          "metadata": 0
+        },
+        "peak": {
+          "pixels": 0,
+          "metadata": 0
+        },
+        "reservations": 0
+      }
+    },
+    "scope": "Supplied indexed PBR draw2: complete used mip storage/bytes/size/transfer from an independent WebGL derivation of immutable private preparation under the current render environment. No CPU averaging formula or cross-driver equality is asserted. No formal source3 whole-frame observation/export certification.",
+    "specificationBasis": {
+      "url": "https://registry.khronos.org/OpenGL/specs/es/3.0/es_spec_3.0.pdf",
+      "section": "3.8.10.5",
+      "qualification": "Mip filtering is implementation-dependent. Reference uses independent resources with the same declared sampler and sized color format in the same context."
+    }
+  },
+  "currentWorld": {
+    "path": "/private/tmp/still-shift-ms2-pbr-world-ou9ULc/run.json",
+    "bytes": 35485,
+    "sha256": "sha256:a16753a9d0e1ffe32c6c734ae75700b75234a6a984043b0e6410ad864e3ebaa6"
+  },
+  "currentComposition": {
+    "path": "/private/tmp/still-shift-ms2-pbr-composition-Yaasxz/run.json",
+    "bytes": 146844,
+    "sha256": "sha256:1729063a24f2e6e2053959356bf86fb24d559bc3c55731e71f46b8c2e89f8d95"
+  },
+  "currentNative2Groups": [
+    {
+      "directory": "/private/tmp/still-shift-ms2-shape-world-HiDDoh",
+      "status": "passed",
+      "frames": 5,
+      "scope": "browser-world-and-pixels-only"
+    },
+    {
+      "directory": "/private/tmp/still-shift-ms2-used-streams-zvc3hL",
+      "status": "passed",
+      "frames": 6,
+      "negatives": 11,
+      "scope": "standalone-used-color-streams-only"
+    },
+    {
+      "directory": "/private/tmp/still-shift-ms2-frame-observation-kcIeWO",
+      "status": "passed",
+      "frames": 8,
+      "negatives": 4,
+      "scope": "standalone-full-observed-frame2"
+    },
+    {
+      "directory": "/private/tmp/still-shift-ms2-composition-v2-b5KxBe",
+      "status": "passed",
+      "captures": 4,
+      "negatives": 15
+    },
+    {
+      "directory": "/private/tmp/still-shift-ms2-normal-export2-N0Pzs6",
+      "status": "passed",
+      "exports": 2
+    },
+    {
+      "directory": "/private/tmp/still-shift-ms2-lab2-UIx2jN",
+      "status": "passed",
+      "records": 20
+    }
+  ],
+  "gpuArtifacts": [
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-resources-hIOUAr/baseline.png",
+      "bytes": 2231,
+      "sha256": "sha256:72d6c90e22eae4370e9f846514ef69ca095c446339074961a13b3e14f96ba607"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-resources-hIOUAr/baseline.rgba",
+      "bytes": 230400,
+      "sha256": "sha256:9278cef0396ef833f529a1d8e3e9e572c73ca242277722c67a2fe92a39af01ff"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-resources-hIOUAr/case-9728.glb",
+      "bytes": 1488,
+      "sha256": "sha256:7f2411bd82d3adfdafc5844cfbebc64dcff739a012bff97c73244a7de84ae405"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-resources-hIOUAr/case-9728.png",
+      "bytes": 213,
+      "sha256": "sha256:44ff62c689c39814a5af7ad01dc4a0626882e4c441c25fbf3a48f8c4d5532085"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-resources-hIOUAr/case-9729.glb",
+      "bytes": 1488,
+      "sha256": "sha256:12bb9acfc75eb040226a64102fb2f01fade51c450b9e713d5eae09b599a85980"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-resources-hIOUAr/case-9729.png",
+      "bytes": 70,
+      "sha256": "sha256:f01cab7994124442b9f87f9660ee386fbeb922b9ce79e611078a93b2ee9d7b57"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-resources-hIOUAr/case-9985.glb",
+      "bytes": 1488,
+      "sha256": "sha256:60d19dc21b66af5f66fcc39ac28c221e3e518ffaecac3e6fb37935f5f82cae53"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-resources-hIOUAr/case-9985.png",
+      "bytes": 3701,
+      "sha256": "sha256:432533037187200aee01ee57ffb3c43a6950d2db3dff7e327dc3c9081d60ab72"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-resources-hIOUAr/case-9986.glb",
+      "bytes": 1488,
+      "sha256": "sha256:7678af2854165dec1eab0b532dbe673930ee927a01384d0ce8815b3ac4d134ee"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-resources-hIOUAr/case-9986.png",
+      "bytes": 213,
+      "sha256": "sha256:44ff62c689c39814a5af7ad01dc4a0626882e4c441c25fbf3a48f8c4d5532085"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-resources-hIOUAr/case-9987.glb",
+      "bytes": 1488,
+      "sha256": "sha256:0f01c386ca40f71101ea5880336c070571e7d8995b021183835d5829de0f87c9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-resources-hIOUAr/case-9987.png",
+      "bytes": 109,
+      "sha256": "sha256:a9cad129bc786162ab2794d2c572d69f4f701e56ddca3cfd958f6d39ca43245a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-resources-hIOUAr/prepared.json",
+      "bytes": 1911,
+      "sha256": "sha256:900c8512a0ce497404520fe7326d43b8e4e4c3d4935bf723a96efe1cb8ebc8c4"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-resources-hIOUAr/repeat.png",
+      "bytes": 2231,
+      "sha256": "sha256:72d6c90e22eae4370e9f846514ef69ca095c446339074961a13b3e14f96ba607"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-resources-hIOUAr/repeat.rgba",
+      "bytes": 230400,
+      "sha256": "sha256:9278cef0396ef833f529a1d8e3e9e572c73ca242277722c67a2fe92a39af01ff"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-resources-hIOUAr/restored.png",
+      "bytes": 2231,
+      "sha256": "sha256:72d6c90e22eae4370e9f846514ef69ca095c446339074961a13b3e14f96ba607"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-resources-hIOUAr/restored.rgba",
+      "bytes": 230400,
+      "sha256": "sha256:9278cef0396ef833f529a1d8e3e9e572c73ca242277722c67a2fe92a39af01ff"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-resources-hIOUAr/run.json",
+      "bytes": 112964,
+      "sha256": "sha256:d4cb886d965e48544ad951646b32466cca9f96ea2c5a1e525ca67ab8fc3f81be"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-resources-hIOUAr/source.glb",
+      "bytes": 1488,
+      "sha256": "sha256:81c2ee6b2b0eb524dafaa9c8f07baa6f584dd59fd3fe4654fba03039035c943a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-pbr-resources-hIOUAr/surface.png",
+      "bytes": 83,
+      "sha256": "sha256:c6ea1b8cfcca71666ed595760512d4c46f34d3a9b7a3cf0ad1c72f76715c6ca5"
+    }
+  ],
+  "remaining": [
+    "Independent source3 frame/world/anchor/draw observation protocol with capacity admission, authenticated repeated export and installed consumer proof. Source3 collection/export still rejects; legacy1/2 remain strict.",
+    "Complete source JSON/body, world/PMREM/metadata/packet/replay budgeting. This slice bills verifier reference/output textures and tiled byte/float backing; shader/control overhead, copied vertex/shader receipts, caller data and physical driver/RSS remain separate.",
+    "Whole MS2 packs/generators/registry/events/labels/cues/typography/300-board/full/installed gates before its PR and MS3. SupportedPacks[] and pilotSupportedEpisodes0.",
+    "Human visual/listening acceptance remains separate; no publication, milestone PR merge or production promotion."
+  ],
+  "finalSourceDeltaFromBroader7": [
+    {
+      "path": "packages/renderer-core/src/native3d/pbr-gpu-draw.ts",
+      "before": {
+        "bytes": 10898,
+        "sha256": "8ce1e205f20d2b7aaba4f3b387dd372a5ac67d79c9b4214f0822a68dd05e02b2"
+      },
+      "after": {
+        "bytes": 10888,
+        "sha256": "e2e799de30a017a20abd0bc49bca56098506cbb3200ea94e5c141d102bf4b982"
+      }
+    },
+    {
+      "path": "packages/renderer-core/src/native3d/pbr-gpu-reference.ts",
+      "before": {
+        "bytes": 2817,
+        "sha256": "5a69b64b11d43306a566bfcd51a23f6547d75d95bde784c3fe1a27bf9bf50c58"
+      },
+      "after": {
+        "bytes": 2911,
+        "sha256": "768a98e8b7cbf4c4a4a91ed66ecbda2c3c80f2d5a35a7f0cd6fb110ab4b7c910"
+      }
+    },
+    {
+      "path": "packages/renderer-core/src/native3d/pbr-gpu-texture.ts",
+      "before": {
+        "bytes": 12362,
+        "sha256": "306dc3b03c05f367c416789d4b8e862e36dd92e58817f2dd3106cc9b285f073e"
+      },
+      "after": {
+        "bytes": 13822,
+        "sha256": "cfc8e114943e886b129f4589b805d999e87a2f911f0813b6b4c04af78549272f"
+      }
+    },
+    {
+      "path": "tests/browser/native-pbr-resources.ts",
+      "before": {
+        "bytes": 10417,
+        "sha256": "04bbc9b8a1b867003f14a64a80e32724e07310b7b1b420746c08bebcef37edc1"
+      },
+      "after": {
+        "bytes": 10859,
+        "sha256": "a968ca4f2c4fd82fa8e8e46d0acffb9fbc17fb9a94be1a8a248e36f587c460b0"
+      }
+    },
+    {
+      "path": "tests/helpers/native-pbr-world-proof.ts",
+      "before": {
+        "bytes": 6637,
+        "sha256": "0fa734d1c50e0a2831129d511c0c926002e314c0388a1c634156edd62a04e8e4"
+      },
+      "after": {
+        "bytes": 6662,
+        "sha256": "46b8963bbb32bb3e97f8545559138325cb66e1745597dd5c09af94a18e49b457"
+      }
+    }
+  ],
+  "evidenceEditingFailures": [
+    {
+      "terminalToolReceipt": "fba385",
+      "actualExitCode": 1,
+      "qualification": "Final evidence delta script treated the inventory input map as an array and stopped after a docs-only API header correction. Corrected to inspect its actual map schema; no production/test edits occurred."
+    }
+  ]
+}

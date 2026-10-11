@@ -60,6 +60,7 @@ const producerPaths = [
   "packages/renderer-core/src/native3d/pbr-allocations.ts",
   "packages/renderer-core/src/native3d/pbr-gpu-draw.ts",
   "packages/renderer-core/src/native3d/pbr-gpu-texture.ts",
+  "packages/renderer-core/src/native3d/pbr-gpu-reference.ts",
   "packages/animation-engine/src/mechanism/gltf-pbr.ts",
   "packages/animation-engine/src/mechanism/gltf-pixels.ts",
   "packages/animation-engine/src/mechanism/gltf-png.ts",
@@ -129,7 +130,146 @@ try {
   assert.equal(frames.length, 3);
   assert.equal(frames[0]!.rgbaSha256, frames[1]!.rgbaSha256);
   assert.equal(frames[0]!.rgbaSha256, frames[2]!.rgbaSha256);
-  assert.equal(result.faults.length, 4);
+  assert.equal(result.faults.length, 10);
+  assert.match(
+    result.faults.find((fault) => fault.id === "mip")!.message,
+    /mip 1 pixels differ/,
+  );
+  for (const id of ["mip-base", "mip-max", "mip-lod"])
+    assert.match(
+      result.faults.find((fault) => fault.id === id)!.message,
+      /mip selection/,
+    );
+  assert.match(
+    result.faults.find((fault) => fault.id === "sampler")!.message,
+    /foreign sampler/,
+  );
+  assert.equal(result.verificationScratchMemory.reservations, 0);
+  assert.deepEqual(result.verificationScratchMemory.current, {
+    pixels: 0,
+    metadata: 0,
+  });
+  assert.equal(result.stateRestorations, 13);
+  assert.equal(result.verificationBudgetFault!.newTextureAllocations, 0);
+  assert.deepEqual(result.verificationBudgetFault!.memory.current, {
+    pixels: 0,
+    metadata: 0,
+  });
+  const mipCases = [];
+  for (const [minFilter, width, height, magFilter, wrapS, wrapT] of [
+    [9985, 300, 257, 9729, 10497, 10497],
+    [9986, 7, 5, 9728, 33648, 33071],
+    [9987, 1, 9, 9729, 10497, 33648],
+    [9728, 7, 5, 9728, 33071, 33648],
+    [9729, 1, 1, 9729, 33648, 10497],
+  ] as const) {
+    const pixels = Uint8Array.from(
+      { length: width * height * 4 },
+      (_, index) => (index * 37 + Math.floor(index / 4) * 13) % 256,
+    );
+    const caseDocument = structuredClone(source);
+    Object.assign(caseDocument.samplers[0]!, {
+      minFilter,
+      magFilter,
+      wrapS,
+      wrapT,
+    });
+    const caseBytes = glbBytes(caseDocument, binary),
+      casePng = rgbaPngFixture(width, height, pixels),
+      caseAsset = decodeRigidGltf(caseBytes, {
+        format: "glb",
+        dependencies: new Map([["maps/surface.png", casePng]]),
+      }),
+      casePrepared = await prepareRigidGltfPbr(caseAsset);
+    const caseInput = {
+      geometry: casePrepared.geometry,
+      parts: casePrepared.parts,
+      images: casePrepared.images.map((image) => ({
+        image: image.image,
+        rgba: Array.from(image.rgba),
+      })),
+      runFaults: false,
+    };
+    const value = await page.evaluate(async (input) => {
+      const path = "/tests/helpers/native-pbr-proof.ts",
+        proof = (await import(path)) as typeof Proof;
+      return proof.nativePbrProof(input);
+    }, caseInput);
+    assert.equal(value.captures.length, 3);
+    assert.equal(value.faults.length, 0);
+    assert.equal(value.verificationScratchMemory.reservations, 0);
+    assert.deepEqual(value.verificationScratchMemory.current, {
+      pixels: 0,
+      metadata: 0,
+    });
+    assert.equal(value.stateRestorations, 3);
+    const expectedLevels: { level: number; width: number; height: number }[] = [
+      { level: 0, width, height },
+    ];
+    while (
+      minFilter >= 9984 &&
+      (expectedLevels.at(-1)!.width > 1 || expectedLevels.at(-1)!.height > 1)
+    ) {
+      const previous = expectedLevels.at(-1)!;
+      expectedLevels.push({
+        level: expectedLevels.length,
+        width: Math.max(1, Math.floor(previous.width / 2)),
+        height: Math.max(1, Math.floor(previous.height / 2)),
+      });
+    }
+    const hashes = value.captures.map((capture) =>
+      hash(Uint8Array.from(capture.rgba)),
+    );
+    assert.equal(hashes[0], hashes[1]);
+    assert.equal(hashes[0], hashes[2]);
+    for (const frame of value.captures)
+      for (const draw of frame.draws)
+        for (const texture of draw.textures) {
+          assert.equal(draw.version, "native-pbr-gpu-draw-2");
+          assert.deepEqual(
+            texture.levels.map(({ level, width, height }) => ({
+              level,
+              width,
+              height,
+            })),
+            expectedLevels,
+          );
+          assert.equal(
+            texture.samples,
+            expectedLevels.reduce(
+              (sum, mip) => sum + mip.width * mip.height * 4,
+              0,
+            ),
+          );
+          assert.ok(texture.levels.every((mip) => mip.maxError <= 0.0001));
+          assert.ok(
+            texture.levels.every(
+              (mip) =>
+                mip.storage ===
+                (texture.colorSpace === "srgb" ? "srgb8-alpha8" : "rgba8"),
+            ),
+          );
+        }
+    await writeFile(join(directory, `case-${minFilter}.glb`), caseBytes, {
+      flag: "wx",
+    });
+    await writeFile(join(directory, `case-${minFilter}.png`), casePng, {
+      flag: "wx",
+    });
+    mipCases.push({
+      minFilter,
+      width,
+      height,
+      sampler: caseDocument.samplers[0],
+      inputSha256: hash(caseBytes),
+      geometrySha256: casePrepared.geometrySha256,
+      levels: expectedLevels,
+      pixelHashes: hashes,
+      draws: value.captures.map((capture) => capture.draws),
+      verificationScratchMemory: value.verificationScratchMemory,
+      stateRestorations: value.stateRestorations,
+    });
+  }
   await writeFile(
     join(directory, "run.json"),
     JSON.stringify(
@@ -143,6 +283,10 @@ try {
         producers,
         frames,
         faults: result.faults,
+        mipCases,
+        verificationScratchMemory: result.verificationScratchMemory,
+        stateRestorations: result.stateRestorations,
+        verificationBudgetFault: result.verificationBudgetFault,
         allocation: result.allocation,
         scope: result.scope,
       },
@@ -157,6 +301,8 @@ try {
       status: "passed",
       frames: frames.length,
       faults: result.faults.length,
+      additionalMipCases: mipCases.length,
+      minFilters: [9984, ...mipCases.map((entry) => entry.minFilter)],
     }) + "\n",
   );
 } catch (error) {

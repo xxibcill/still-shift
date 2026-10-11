@@ -8,6 +8,8 @@ import {
   prepareNativePbrResources,
   createNativePbrResources,
   nativePbrBytesHash,
+  copyNativePbrPixels,
+  releasePreparedNativePbrResources,
 } from "../../packages/renderer-core/src/native3d/pbr-resources.ts";
 import { decodeRigidGltf } from "../../packages/animation-engine/src/mechanism/gltf-import.ts";
 import { gltfJsonHash } from "../../packages/animation-engine/src/mechanism/gltf-identity.ts";
@@ -101,6 +103,34 @@ describe("versioned native PBR resource owner", () => {
     }
     expect(owner.textures.size).toBe(0);
     expect(owner.geometries.size).toBe(0);
+  });
+  it("keeps reference pixels immutable after source, texture and scratch mutation", async () => {
+    const { geometry, rgba } = await fixture(),
+      prepared = await prepareNativePbrResources(geometry, [
+        { image: "image.0", rgba },
+      ]),
+      owner = createNativePbrResources(prepared),
+      scratch = new Uint8Array(4);
+    try {
+      rgba.fill(0);
+      for (const texture of owner.textures.values())
+        texture.image.data!.fill(0);
+      copyNativePbrPixels(owner, "image.0", scratch, 0);
+      expect([...scratch]).toEqual([128, 64, 255, 0]);
+      scratch.fill(0);
+      copyNativePbrPixels(owner, "image.0", scratch, 0);
+      expect([...scratch]).toEqual([128, 64, 255, 0]);
+      for (const offset of [-1, 1, NaN])
+        expect(() =>
+          copyNativePbrPixels(owner, "image.0", scratch, offset),
+        ).toThrow(/bounds/);
+      releasePreparedNativePbrResources(prepared);
+      expect(() => copyNativePbrPixels(owner, "image.0", scratch, 0)).toThrow(
+        /absent/,
+      );
+    } finally {
+      owner.dispose();
+    }
   });
   it("rejects missing or stale pixels and keeps the old geometry parser strict", async () => {
     const { geometry, rgba } = await fixture();

@@ -165,7 +165,7 @@ export async function nativePbrWorldProof(input: {
         allocation: prepared.allocation,
         sourceKey: prepared.sourceKey,
         scope:
-          "shared native world and generic hinge execution; actual color draw plus independent GPU camera/pose matrices and mip0 resources. Composition/transport/frame3 observation/export/mip data remain pending.",
+          "shared native world and generic hinge execution; actual color draw plus independent GPU camera/pose matrices and all used mip resources. Formal composition/frame3 observations, export and complete world budgets remain pending.",
       };
     } finally {
       gl.drawElements = original;

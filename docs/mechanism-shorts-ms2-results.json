@@ -15337,6 +15337,20 @@
           "method": "Unchanged selected inputs16 through22. Retain strict aggregate17/19/20 failures and cover their exact failed cases with owning reruns22. Capture22 skips16 cases already passing in integration20. Staged completion only."
         }
       }
+    },
+    {
+      "id": "pbr-used-mip-slice22-source8",
+      "status": "used-mip-components-verified-source3-observation-export-pending",
+      "actualRootSession": 96113,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "540125",
+      "sourceInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-mip-inputs-8.json",
+        "bytes": 425236,
+        "sha256": "sha256:8b3d905e7094e886f048bec2758c5d754aa808a8db04f620f5ce65ef356860ab"
+      },
+      "detailRecord": "docs/mechanism-shorts-ms2-pbr-mip-results.json",
+      "qualification": "Final source8 fast4170/406,10 owning Node cases, GPU18/10, world6/1, composition6/5/2/style and all six native2 groups pass. Broader7 runtime200/32 and integration322/57 stay separate before final sampler/storage assertions. Earlier typing/format failures retained; no current full/installed/observation/export claim."
     }
   ],
   "implementation": {
@@ -16138,10 +16152,47 @@
         "integrationFiles": 57,
         "method": "Unchanged selected inputs16 through22. Retain strict aggregate17/19/20 failures and cover their exact failed cases with owning reruns22. Capture22 skips16 cases already passing in integration20. Staged completion only."
       }
+    },
+    "twentySecondSlice": {
+      "status": "used-mip-components-verified-source3-observation-export-pending",
+      "scope": [
+        "Independent WebGL reference derives each used mip from private immutable preparation with the declared min/mag/wrap sampler.",
+        "Every mip independently verifies actual framebuffer storage bits/type/encoding, dimensions, complete RGBA bytes and sampled transfer at the unchanged0.0001 profile.",
+        "Actual sampler-object, mip/LOD/compare defaults are checked. Deliberately foreign PBO/pixel-store state restores on every success/failure.",
+        "Reference/output GPU texture and tiled byte/float backing are admitted before allocation and released; tiny quota fails with zero new reference textures.",
+        "All six minification filters, both magnification modes, all wrap modes and NPOT/one-axis/300x257 tiled cases render repeated/restored equality."
+      ],
+      "counts": {
+        "unitTests": 4170,
+        "unitFiles": 406,
+        "owningNodeTests": 10,
+        "owningNodeFiles": 4,
+        "gpuFilterCases": 6,
+        "gpuFrames": 18,
+        "gpuFaults": 10,
+        "stateRestorations": 28,
+        "worldFrames": 6,
+        "worldFaults": 1,
+        "compositionFrames": 6,
+        "binaryFaults": 5,
+        "protocolFaults": 2,
+        "native2Groups": 6,
+        "source3Exports": 0,
+        "newInstalledArchives": 0,
+        "broader7RuntimeTests": 200,
+        "broader7IntegrationTests": 322
+      },
+      "records": ["docs/mechanism-shorts-ms2-pbr-mip-results.json"],
+      "remaining": [
+        "Independent source3 frame/world/anchor/draw observation protocol with capacity admission, authenticated repeated export and installed consumer proof. Source3 collection/export still rejects; legacy1/2 remain strict.",
+        "Complete source JSON/body, world/PMREM/metadata/packet/replay budgeting. This slice bills verifier reference/output textures and tiled byte/float backing; shader/control overhead, copied vertex/shader receipts, caller data and physical driver/RSS remain separate.",
+        "Whole MS2 packs/generators/registry/events/labels/cues/typography/300-board/full/installed gates before its PR and MS3. SupportedPacks[] and pilotSupportedEpisodes0.",
+        "Human visual/listening acceptance remains separate; no publication, milestone PR merge or production promotion."
+      ]
     }
   },
   "limits": [
-    "Twenty-one slices include actual source3 file/transport/catalogue/frame3/binary HTTP/PBR/shared-world composition preview and static styles. Current fast/runtime/integration coverage completes in strict stages; failed aggregates remain retained. Source3 observations/export/mips/installed and whole MS2 authoring/registry/world/events/labels/cues/typography/300-board/full gates remain. Three native2 candidates; supported packs/pilot0.",
+    "Twenty-two slices include source3 PBR composition preview and complete used-mip component derivation/actual storage/transfer checks. Formal source3 observations/export/installed, full world budgets and whole MS2 packs/generators/registry/events/labels/cues/typography/300-board/full gates remain. Supported packs/pilot0.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

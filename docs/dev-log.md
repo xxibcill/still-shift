@@ -45,17 +45,16 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Twenty-one slices include source3 composition/binary HTTP/frame3/shared-world
-  PBR preview and immutable styles (`5a7c9328`). Browser21 passes six preview
-  frames/five binary faults, component3/4, world6/1 and all six native2 groups.
-  Identical-input strict rerun22 passes gradient10, package7 and capture1 at original
-  limits; staged unique coverage is units4,169/406, runtime200/32, integration322/57.
-  Earlier failed aggregates and lost receipts remain; no uninterrupted pass claimed.
-  Next: independent source3 observations/mips/export/installed, whole-world budgets
-  and remaining authoring/registry/events/labels/cues/typography/300-board/full gates.
-  Supported packs/pilot0; no MS2 PR/MS3 or human acceptance.
+  Twenty-two slices include source3 composition preview and all used-mip component
+  storage/transfer/derivation. Final source8 fast4,170/406, owning Node10/4,
+  GPU18/10 faults, world6/1, composition6/5/2/style and all six native2 groups pass.
+  Broader7 runtime200/32 and integration322/57 remain separately scoped before
+  final sampler/storage checks; typing/format failures are retained.
+  Next: formal source3 observations/export/installed, complete world/metadata/source
+  budgets and owning packs/generators/registry/events/labels/cues/typography/300-board/
+  full gates. Supported packs/pilot0; no MS2 PR/MS3 or human acceptance.
   [MS2 results](./mechanism-shorts-ms2-results.json),
-  [preview results](./mechanism-shorts-ms2-pbr-composition-results.json),
+  [mip results](./mechanism-shorts-ms2-pbr-mip-results.json),
   [PBR API](./native-pbr-resources.md), [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
@@ -214,6 +213,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 complete used-mip component validation
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `66559c67`.
+- **Done:** independent immutable-source mip derivation, actual storage/size/transfer
+  checks, declared sampler and LOD checks, managed scratch and GL-state restoration.
+- **Results:** final8 fast4,170/406 and owning Node10/4 pass; six filter cases render
+  18 frames with10 faults/28 restorations and zero retained verifier owners.
+  World6/1, composition6/5/2/style and six native2 groups pass. Broader7 runtime200/
+  integration322 remain separate before final sampler/storage assertions.
+- **Retained:** failed harness typing and duplicated catch-handler formatting; the
+  existing profile remains0.0001 and no budget or original timeout was relaxed.
+- **Next:** formal source3 observations/export/installed and whole MS2 gates before
+  its PR. Supported packs/pilot0; no full-world or human acceptance inferred.
+- **Records:** [mip evidence](./mechanism-shorts-ms2-pbr-mip-results.json),
+  [API](./native-pbr-resources.md), [MS2 results](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-11 — MS2 source3 composition preview
 

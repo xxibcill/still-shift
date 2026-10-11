@@ -905,6 +905,10 @@ export const native3DAppearanceModules: readonly {
     url: new URL("./pbr-gpu-draw.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/native3d/pbr-gpu-reference.ts",
+    url: new URL("./pbr-gpu-reference.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/native3d/pbr-gpu-texture.ts",
     url: new URL("./pbr-gpu-texture.ts", import.meta.url),
   },

@@ -305,3 +305,24 @@ export function nativePbrPixelsMatch(
     actual.every((value, index) => value === expected[offset + index])
   );
 }
+
+/** Copy immutable preparation pixels into caller-admitted scratch without exposing their backing. */
+export function copyNativePbrPixels(
+  resources: NativePbrResources,
+  image: string,
+  destination: Uint8Array,
+  offset: number,
+) {
+  const expected = ownedInputs.get(resources.prepared)?.pixels.get(image);
+  if (
+    !expected ||
+    !Number.isSafeInteger(offset) ||
+    offset < 0 ||
+    destination.byteLength === 0 ||
+    offset + destination.byteLength > expected.byteLength
+  )
+    throw Error(
+      "comp-native3d-texture: immutable pixel copy is absent or out of bounds",
+    );
+  destination.set(expected.subarray(offset, offset + destination.byteLength));
+}

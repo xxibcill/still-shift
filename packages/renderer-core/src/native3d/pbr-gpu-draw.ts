@@ -4,6 +4,7 @@ import {
   nativePbrBytesHash,
   nativePbrOwnedTexture,
   nativePbrPixelsMatch,
+  copyNativePbrPixels,
 } from "./pbr-resources.ts";
 import { verifyNativePbrGpuTexture } from "./pbr-gpu-texture.ts";
 function mismatch(message: string): never {
@@ -204,6 +205,8 @@ export function captureNativePbrGpuDraw(
               nativePbrOwnedTexture(resources, binding),
             ) as { __webglTexture?: WebGLTexture }
           ).__webglTexture;
+        if (gl.getParameter(gl.SAMPLER_BINDING) !== null)
+          mismatch(`Actual ${name} uses a foreign sampler object`);
         if (!handle || handle !== expected)
           mismatch(`Actual ${name} sampler uses a foreign texture`);
         if (actual && actual !== handle)
@@ -217,6 +220,17 @@ export function captureNativePbrGpuDraw(
         ] as const)
           if (gl.getTexParameter(gl.TEXTURE_2D, parameter) !== value)
             mismatch(`Actual ${name} filter/wrap differs`);
+        for (const [parameter, value] of [
+          [gl.TEXTURE_BASE_LEVEL, 0],
+          [gl.TEXTURE_MAX_LEVEL, 1000],
+          [gl.TEXTURE_MIN_LOD, -1000],
+          [gl.TEXTURE_MAX_LOD, 1000],
+          [gl.TEXTURE_COMPARE_MODE, gl.NONE],
+        ] as const)
+          if (gl.getTexParameter(gl.TEXTURE_2D, parameter) !== value)
+            mismatch(
+              `Actual ${name} mip selection differs from the owned texture`,
+            );
         uniform(gl, program, name + "Transform", [1, 0, 0, 0, 1, 0, 0, 0, 1]);
       }
       textures.push(
@@ -227,6 +241,9 @@ export function captureNativePbrGpuDraw(
           binding.colorSpace,
           (actual, offset) =>
             nativePbrPixelsMatch(resources, binding.image, actual, offset),
+          binding.sampler,
+          (destination, offset) =>
+            copyNativePbrPixels(resources, binding.image, destination, offset),
         ),
       );
     }
@@ -234,7 +251,7 @@ export function captureNativePbrGpuDraw(
     gl.activeTexture(active);
   }
   return {
-    version: "native-pbr-gpu-draw-1" as const,
+    version: "native-pbr-gpu-draw-2" as const,
     geometrySha256: resources.prepared.geometrySha256,
     mesh: meshId,
     material: materialId,
@@ -243,7 +260,7 @@ export function captureNativePbrGpuDraw(
     textures,
     shaderBytes: new TextEncoder().encode(shaderSources.join("\n")),
     scope:
-      "supplied indexed draw, complete base-level texture pixels/transfer and uniforms; mip values, camera/whole-frame and composition integration are not certified",
+      "supplied indexed draw, complete used mip pixels/transfer against an independent current-environment reference and uniforms; camera/whole-frame and composition observation are not certified",
   };
 }
 
