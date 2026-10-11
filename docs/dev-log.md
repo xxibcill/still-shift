@@ -45,18 +45,20 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Thirty-one slices include normal/mixed source3 authenticated export and bounded
-  source admission: original32MiB ceiling, exact descriptor backing store plus
-  growth sentinel, streamed Node RGBA verification with at most64KiB scratch.
-  Fast12 passes4,198 units/410 files; Node13 passes21 tests/six files; normal source3,
-  actual mixed54-pass HTTP/replay and all six native2 browser groups pass on held
-  inputs12. New build/lint failures are retained; checks complete in stages.
-  Next: aggregate parsed-source/world/body/replay admission and constructor cleanup,
-  installed source3/mixed and remaining MS2/full gates. Broad runtime/integration/
-  benchmark/installed remain historical; supported packs/pilot0; no MS2 PR/MS3 or
-  human acceptance. ElevenLabs requires explicit identified-batch spending approval.
-  [Source admission evidence](./mechanism-shorts-ms2-source-admission-results.json),
-  [mixed evidence](./mechanism-shorts-ms2-output3-mixed-results.json),
+  Thirty-two slices include bounded source admission and fresh installed source3/
+  mixed proof at `b4fc65ed`. Maintained package2 passes28 checks; consumer5 passes
+  four exports/34 frames/130 actual passes with checkout/source access denied,
+  independent receipt replay and seven scoped negatives. Archive12 matches all928
+  copied source members and2,275 total members; local SHA starts7764436e.
+  Harness/auditor failures are retained; archive execution remains atb4fc65ed,
+  before this evidence-documentation change. Prior fast12 passes4,198 units,
+  Node13 passes21 tests; source3/mixed/native2 regressions pass on held inputs.
+  Next: aggregate parsed-source/world/body/replay and constructor cleanup, remaining
+  MS2 packs/contracts/full gates, then final archive refresh and MS2 PR/MS3.
+  Broad full runtime/integration/benchmark remain historical; supported packs/pilot0;
+  no human acceptance, merge/publication or paid ElevenLabs action.
+  [Installed evidence](./mechanism-shorts-ms2-installed-source3-results.json),
+  [admission evidence](./mechanism-shorts-ms2-source-admission-results.json),
   [MS2 results](./mechanism-shorts-ms2-results.json), [PBR API](./native-pbr-resources.md).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
@@ -215,6 +217,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-11 — MS2 installed source3/mixed execution with checkout access denied
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `b4fc65ed`.
+- **Done:** maintained28-check package verification, exact local archive retention,
+  four public installed exports under OS checkout/source denial, repeated actual
+  packet equality, receipt replay and seven scoped negatives. Audit12 matches928
+  copied Git source and2,275 total members; archive SHA starts7764436e.
+- **Retained:** harness used wrong compiled format literal; original auditor rejects
+  current guide-copy roots, then README rewriting and trailing-slash handling.
+  Corrected consumer5 and self11/audit12 pass in stages; failed artifacts retained.
+- **Limits:** archive is verified atb4fc65ed before this copied-guide documentation
+  change. Pixel-row replay is association evidence; actual raw HTTP captures are
+  separate. Whole quotas/constructor cleanup, full gates and final refresh remain.
+- **Next:** remaining MS2 contracts/packs/full evidence before its PR and MS3.
+- **Records:** [installed evidence](./mechanism-shorts-ms2-installed-source3-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-11 — MS2 bounded source descriptor and streamed Node resource checks
 

@@ -455,3 +455,24 @@ body retention. Composition preparation uses this path. The original
 Both enforce containment, declared size/checksum, regular-file type, stable final
 metadata and cancellation. Aggregate parsed-source/world/body/replay quotas and
 installed portability remain separate requirements.
+
+## Installed source3 and mixed execution
+
+The fresh local archive at `b4fc65ed` passes28 maintained package checks. A separate
+consumer imports public `still-shift/engine`, `still-shift/runtime` and
+`still-shift/schema` using ordinary pinned Node22. macOS denies the original
+checkout, managed worktrees and original fixture directories. Actual denial
+witnesses pass before and after four authenticated exports: two11-frame source3
+and two6-frame/54-pass mixed outputs. Repeated receipt/pixel-row identities match,
+and fresh trusted execution independently replays each actual GPU receipt.
+
+Producer cancellation, unbound appearance, forged frame3 keys with recomputed
+artifact/manifest hashes, separate binary corruption and old output2 parsing
+reject. Changed RGBA fails before publishing output. Pixel rows here are retained
+manifest associations; the separate mixed HTTP proof captures actual raw pixels.
+The archive contains928 exact Git source members and2,275 total members. Earlier
+harness/auditor failures are retained in [installed evidence](./mechanism-shorts-ms2-installed-source3-results.json).
+
+This archive remains tied to `b4fc65ed`, before these evidence-guide edits. Whole
+source/world/body/replay accounting, final archive refresh, remaining MS2 criteria
+and full milestone gates remain open. No release or human acceptance follows.

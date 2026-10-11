@@ -15785,6 +15785,51 @@
       },
       "record": "docs/mechanism-shorts-ms2-source-admission-results.json",
       "qualification": "Final selected inputs12 held through normal fast12, six owning Node files13, normal source3 export14, actual mixed HTTP/replay15 and all six original native2 browser groups16. Initial build2 failed a new test indexed assignment; original terminal handle unavailable after truncated tool output, with compiler failure independently observed and no runtime3 log. Fast6 failed two lint rules; owning/export suffix did not run. Both failures retained. Final checks are staged evidence, not an uninterrupted initial pass. This slice bounds raw descriptor reads and removes full RGBA retention from verification-only Node preparation; aggregate parsed-source/world/body/replay admission, installed consumer, complete MS2 gates/packs and MS3 remain separate."
+    },
+    {
+      "id": "installed-source3-slice-32",
+      "status": "installed-source3-and-mixed-scoped-proof-complete-in-stages",
+      "workingInputs": {
+        "manifest": {
+          "path": "/private/tmp/still-shift-ms2-installed32-inputs1.json",
+          "bytes": 430043,
+          "sha256": "sha256:a6cc8016c9b3881f46fe34f4fc9975a35197fb0b7ede871d490cafc5da0ef868"
+        },
+        "files": 2521,
+        "inputBytes": 119153775,
+        "selection": {
+          "roots": [
+            "apps/",
+            "packages/",
+            "scripts/",
+            "tests/",
+            "tools/",
+            "services/",
+            "benchmarks/",
+            "examples/",
+            "assets/",
+            "catalogs/"
+          ],
+          "rootFiles": "all Git-tracked or nonignored regular root files",
+          "packageProse": [
+            "docs/npm-package-readme.md",
+            "docs/npm-third-party-notices.md"
+          ],
+          "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+        }
+      },
+      "archive": {
+        "bytes": 4681132,
+        "decompressedStreamBytes": 30423552,
+        "directories": 0,
+        "path": "/private/tmp/still-shift-ms2-installed32-package2/still-shift-0.1.1.tgz",
+        "payloadBytes": 28665022,
+        "regularFiles": 2275,
+        "sha256": "sha256:7764436e329b52e0247618149d0a981ab3ef0b9ed2474ff57170ef83c5353767",
+        "tarMetadataCompared": false
+      },
+      "record": "docs/mechanism-shorts-ms2-installed-source3-results.json",
+      "qualification": "Archive and actual package/consumer execution belong to exact b4fc65ed source, before this evidence-documentation commit. Archive SHA7764436e... is local verification evidence, not a published release. Normal package2 passes28 maintained checks; consumer4 fails only a wrong harness runtime-format literal before export, corrected consumer5 passes. Old auditor6 rejects current source-copy grammar; adapted auditor8 rejects transformed README; auditor10 finds trailing-slash discrepancy in the independent Python transform; final self11/audit12 pass. Failed helpers and artifacts retained. Replay pixel rows are retained manifest associations rather than independent raw capture in this installed consumer; actual raw HTTP pixel capture is separate slice30/31 evidence. Read-only audit does not recompile; actual maintained package2 supplies corresponding-source rebuild separately. Current production/test selected inputs remain held; documentation copied into future archives changes with this evidence commit, so this archive is not relabeled as the future tip. Full milestone/runtime/integration/baseline/benchmark and whole world/source/body/replay quotas remain separate."
     }
   ],
   "implementation": {
@@ -16906,6 +16951,34 @@
       "remaining": [
         "Aggregate parsed-source, whole-world/body/replay accounting and constructor-failure resource ownership.",
         "Fresh installed source3/mixed verification and remaining MS2 packs/rigs/events/labels/cues/help/typography/coverage board and full gates before MS2 PR, then MS3."
+      ]
+    },
+    "thirtySecondSlice": {
+      "status": "installed-source3-and-mixed-scoped-proof-complete-in-stages",
+      "scope": [
+        "Maintained npm package verification executes28 checks, including dependency audit, installed declarations/APIs/browser/depth/audio and corresponding-source rebuild; no publication.",
+        "Isolated ordinary Node22 public engine/runtime/schema imports resolve inside the installed consumer. macOS sandbox denies original checkout, managed worktrees and both original fixture directories with actual EPERM/EACCES witnesses before/after execution.",
+        "Four installed authenticated raw-RGBA MP4 exports: two11-frame/11-pass source3 and two6-frame/54-pass mixed source1/source2/source3. Repeated packet/pixel-row identities match, and independently reconstructed trusted execution replays actual GPU receipts.",
+        "Scoped installed producer cancellation/unbound appearance, forged frame3 key with recomputed artifact/manifest hashes and actual separate binary corruption reject; original output2 schema rejects output3. Binary corruption rejects before output publication.",
+        "Bounded read-only archive audit explicitly recognizes current guides/skills/examples and independently reproduces README relative-link normalization. All928 source members match exact committed Git/worktree/dist bytes; all2275 archive members match current build bytes."
+      ],
+      "counts": {
+        "maintainedPackageChecks": 28,
+        "installedExports": 4,
+        "source3Exports": 2,
+        "mixedExports": 2,
+        "outputFrames": 34,
+        "contributingPasses": 130,
+        "scopedNegativeControls": 7,
+        "archiveMembers": 2275,
+        "copiedSourceMembers": 928,
+        "emittedRuntimeMembers": 1347,
+        "supportedPacks": 0,
+        "pilotSupportedEpisodes": 0
+      },
+      "remaining": [
+        "Aggregate parsed-source/world/body/replay admission and constructor-failure resource ownership.",
+        "Remaining MS2 supported pack/rig/event/label/cue/discovery/coverage/typography criteria and full software/benchmark gates before its PR, then MS3; final archive refresh after final source/documentation."
       ]
     }
   },

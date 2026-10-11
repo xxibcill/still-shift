@@ -747,7 +747,13 @@ mechanism families establish whether the architecture transfers.
       Current fast/Node and normal/mixed source3/native2 export groups pass on held
       inputs. [Admission evidence](./mechanism-shorts-ms2-source-admission-results.json)
       retains new build/lint failures. Aggregate parsed-source/world/body/replay
-      and installed proof remain pending;
+      remain pending. Thirty-second slice verifies a fresh local archive atb4fc65ed:
+      maintained28 checks, four installed public exports/34 frames/130 passes with
+      checkout/source access denied, independent receipt replay and scoped negatives.
+      Exact audit matches928 copied Git source and2,275 total members. [Installed
+      evidence](./mechanism-shorts-ms2-installed-source3-results.json) retains harness/
+      auditor failures and pins execution to that pre-documentation source. Whole
+      quotas, remaining MS2 criteria/full gates and final archive refresh remain;
       this criterion stays unchecked. See the [import API](./rigid-gltf-import.md) and
       [retained results](./mechanism-shorts-ms2-results.json).
 - [ ] Implement slider hard stops, hinge/lever, deterministic spring return and
