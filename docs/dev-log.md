@@ -46,14 +46,14 @@ still hold before relying on them.
 - **MS2 in progress (2026-10-11):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
   Twenty-one slices include source3 composition/binary HTTP/frame3/shared-world
-  PBR preview and immutable styles. Serial browser stage21 passes six preview
+  PBR preview and immutable styles (`5a7c9328`). Browser21 passes six preview
   frames/five binary faults, component3/4, world6/1 and all six native2 groups.
-  Current static fast prefix passes; strict units retain one gradient timeout,
-  runtime two package timeouts and integration one capture-retention timeout. These aggregate gates remain incomplete;
-  preceding passes and lost receipts stay separate, with limits unchanged.
-  Next: source3 independent observations/mips/export/installed, complete world
-  budgeting and remaining authoring/registry/events/labels/cues/typography/300-board/
-  full gates. Supported packs/pilot0; no MS2 PR/MS3 or human acceptance.
+  Identical-input strict rerun22 passes gradient10, package7 and capture1 at original
+  limits; staged unique coverage is units4,169/406, runtime200/32, integration322/57.
+  Earlier failed aggregates and lost receipts remain; no uninterrupted pass claimed.
+  Next: independent source3 observations/mips/export/installed, whole-world budgets
+  and remaining authoring/registry/events/labels/cues/typography/300-board/full gates.
+  Supported packs/pilot0; no MS2 PR/MS3 or human acceptance.
   [MS2 results](./mechanism-shorts-ms2-results.json),
   [preview results](./mechanism-shorts-ms2-pbr-composition-results.json),
   [PBR API](./native-pbr-resources.md), [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
@@ -218,15 +218,16 @@ still hold before relying on them.
 ### 2026-10-11 — MS2 source3 composition preview
 
 - **Agent / branch:** Codex on `codex/mechanism-ms2`, from `4db6795f`.
-- **Done:** transport/frame3, immutable linear PBR styles, bounded separate HTTP
-  binaries, managed ownership, shared composition render path and Lab routes.
-- **Results:** browser21 preview6/5 faults, component3/4, world6/1 and all six native2
-  groups pass. Node strip-only/pure imports pass; source3 export remains closed.
+- **Done:** `5a7c9328` adds transport/frame3, immutable PBR styles, bounded separate
+  HTTP binaries, managed ownership, shared composition rendering and Lab routes.
+- **Results:** browser21 preview6/5 faults, component3/4, world6/1 and six native2
+  groups pass. Unchanged strict22 passes gradient10/package7/capture1 at original
+  limits; unique units4,169/runtime200/integration322 pass in stages.
 - **Retained:** schema/fixture/Vite/lint/purity/Node repairs, intentional143 stop,
-  lost build2/run20 terminals and unresolved original strict gradient/package/
-  capture-retention timeouts. Final fast/runtime/integration aggregates incomplete.
-- **Next:** independent source3 observations/mips/export/installed and whole MS2
-  gates before its PR; supported packs/pilot0. No human review inferred.
+  lost build2/run20 terminals and failed aggregates. Load had subsided before22;
+  timeout causation remains unproven. No uninterrupted aggregate pass claimed.
+- **Next:** source3 observations/mips/export/installed and whole MS2 gates before
+  its PR; source3 export stays closed. Supported packs/pilot0; no human review.
 - **Records:** [preview evidence](./mechanism-shorts-ms2-pbr-composition-results.json),
   [API](./native-pbr-resources.md), [MS2 results](./mechanism-shorts-ms2-results.json).
 

@@ -15307,7 +15307,7 @@
     },
     {
       "id": "pbr-composition-source3-slice21",
-      "status": "source3-preview-verified-strict-aggregate-timeouts-pending",
+      "status": "source3-preview-verified-software-coverage-complete-in-stages",
       "actualRootSession": 22423,
       "actualExitCode": 0,
       "terminalToolReceipt": "bef5f8",
@@ -15317,7 +15317,26 @@
         "bytes": 425055,
         "sha256": "sha256:8440c8cffee7f59f9b0d13338b44f6c800a2fe94cc2328543beed15fac1b5cce"
       },
-      "qualification": "Source16 schema/boundary/format/lint/build prefix passes. Default, identical single-worker17 and focused18 unit runs retain one original5000ms gradient-table timeout;4168/4169 unique cases pass. Runtime19 passes198/200; owning-file20 retains the two original5000ms package timeouts. Integration20 retains its reported failures. Serial browser21 passes on identical selected bytes. Substantial unrelated rendering CPU was observed8b9004; causation is unproven. Preceding source15 complete fast pass is separately scoped before the Node import-seam fix. No final aggregate fast/runtime/integration pass is claimed; strict limits remain unchanged."
+      "qualification": "Source16 schema/boundary/format/lint/build prefix passes. Identical input stages17/19/20 pass4168 units,198 runtime and321 integration cases but retain original gradient/package/capture timeouts. Unchanged committed input stage22 passes the exact owning gradient file10, package file7 and capture case1 (16 other capture-file cases skipped, already covered by integration20), all at original limits. Unique coverage4169 units/200 runtime/322 integration now passes in stages. Browser21 passes on the same selected bytes. Earlier reds, failed aggregates and lost terminals remain retained. Host rendering load had subsided before22; timeout causation remains unproven. No uninterrupted aggregate fast/runtime/integration pass is claimed.",
+      "strictRerun": {
+        "actualRootSession": 89320,
+        "actualExitCode": 0,
+        "terminalToolReceipt": "eb17da",
+        "sourceInputs": {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-22.json",
+          "bytes": 425055,
+          "sha256": "sha256:a7e6cbbac68dcc31c541303235183e6b1e838676fe9d923fa162f9f7daf42d67"
+        },
+        "coverage": {
+          "unitTests": 4169,
+          "unitFiles": 406,
+          "runtimeTests": 200,
+          "runtimeFiles": 32,
+          "integrationTests": 322,
+          "integrationFiles": 57,
+          "method": "Unchanged selected inputs16 through22. Retain strict aggregate17/19/20 failures and cover their exact failed cases with owning reruns22. Capture22 skips16 cases already passing in integration20. Staged completion only."
+        }
+      }
     }
   ],
   "implementation": {
@@ -16049,7 +16068,7 @@
       ]
     },
     "twentyFirstSlice": {
-      "status": "source3-preview-verified-strict-aggregate-timeouts-pending",
+      "status": "source3-preview-verified-software-coverage-complete-in-stages",
       "scope": [
         "Explicit source3 composition assets, mixed transport3, frame3 sampling and immutable linear PBR style variants without mesh changes.",
         "Canonical Node binary verification and separate opaque hashed routes; bounded exact HTTP bodies, checksum validation, located diagnostics and managed preparation ownership.",
@@ -16076,6 +16095,18 @@
         "integrationAggregate20": [
           "Test Files  1 failed | 56 passed (57)",
           "Tests  1 failed | 321 passed (322)"
+        ],
+        "unitOwningFile22": [
+          "Test Files  1 passed (1)",
+          "Tests  10 passed (10)"
+        ],
+        "runtimeOwningFile22": [
+          "Test Files  1 passed (1)",
+          "Tests  7 passed (7)"
+        ],
+        "integrationOwningCase22": [
+          "Test Files  1 passed (1)",
+          "Tests  1 passed | 16 skipped (17)"
         ]
       },
       "counts": {
@@ -16093,16 +16124,24 @@
       },
       "records": ["docs/mechanism-shorts-ms2-pbr-composition-results.json"],
       "remaining": [
-        "Refresh the required strict fast/runtime/integration tiers before milestone readiness. Original gradient/package/capture timeouts remain unresolved; no assertion, worker budget or time limit was relaxed.",
         "Independent source3 draw/world/anchor/PBR/mip observation protocol, authenticated repeated export and installed consumer proof. Source3 collection/export explicitly rejects pending protocol; original1/2 evidence remains strict.",
         "Complete whole-world/PMREM/metadata/packet/replay budgeting and bounded source JSON admission. Current managed preview billing is scoped declared application-owned storage, not physical driver/RSS or all caller-held data.",
         "Whole MS2 generator/registry/event/label/cue/typography/300-board/full/installed requirements before its PR and MS3; supportedPacks[] and pilotSupportedEpisodes0.",
         "Human appearance/listening acceptance remains separate. No milestone merge, package release or publication."
-      ]
+      ],
+      "coverage": {
+        "unitTests": 4169,
+        "unitFiles": 406,
+        "runtimeTests": 200,
+        "runtimeFiles": 32,
+        "integrationTests": 322,
+        "integrationFiles": 57,
+        "method": "Unchanged selected inputs16 through22. Retain strict aggregate17/19/20 failures and cover their exact failed cases with owning reruns22. Capture22 skips16 cases already passing in integration20. Staged completion only."
+      }
     }
   },
   "limits": [
-    "Twenty-one slices include actual source3 file/transport/catalogue/frame3/binary HTTP/PBR/shared-world composition preview and static styles. Strict aggregate timeouts, source3 observations/export/mips/installed and whole MS2 authoring/registry/world/events/labels/cues/typography/300-board/full gates remain. Three native2 candidates; supported packs/pilot0.",
+    "Twenty-one slices include actual source3 file/transport/catalogue/frame3/binary HTTP/PBR/shared-world composition preview and static styles. Current fast/runtime/integration coverage completes in strict stages; failed aggregates remain retained. Source3 observations/export/mips/installed and whole MS2 authoring/registry/world/events/labels/cues/typography/300-board/full gates remain. Three native2 candidates; supported packs/pilot0.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ]

@@ -1,13 +1,13 @@
 {
   "schemaVersion": "mechanism-shorts-ms2-pbr-composition-results-1",
   "date": "2026-10-11",
-  "status": "source3-preview-verified-strict-aggregate-timeouts-pending",
+  "status": "source3-preview-verified-software-coverage-complete-in-stages",
   "branch": "codex/mechanism-ms2",
   "baseSourceCommit": "4db6795fceb65ac94ddb703137982e86caaf5e85",
   "currentInputInventory": {
-    "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-21.json",
+    "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-22.json",
     "bytes": 425055,
-    "sha256": "sha256:8440c8cffee7f59f9b0d13338b44f6c800a2fe94cc2328543beed15fac1b5cce"
+    "sha256": "sha256:a7e6cbbac68dcc31c541303235183e6b1e838676fe9d923fa162f9f7daf42d67"
   },
   "currentSelectedInputFiles": 2492,
   "stages": [
@@ -709,6 +709,55 @@
           "sha256": "sha256:98df3236cb974211c73f6fe5949ecc88071d27f310fc7adf9695518688b467b1"
         }
       ]
+    },
+    {
+      "stage": 22,
+      "actualRootSession": 89320,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "eb17da",
+      "qualification": "Strict owning reruns after observed host load subsided: gradient10/10, package7/7 and capture1 with16 other cases skipped. Input bytes unchanged before/after. Original5000ms/30000ms limits, assertions, budgets and tolerances unchanged; earlier aggregate failures retained.",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-capture-22.log",
+          "bytes": 445,
+          "sha256": "sha256:e76adadb57ef0ac7ce1f7f623b02e9b423df28596c95f1849304f69da1750864"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-final-unchanged-22.log",
+          "bytes": 195,
+          "sha256": "sha256:5104d102637979c5c8da85789030e80c6bf3d77d1ee2f975d57314b0e3df57f7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-gradient-22.log",
+          "bytes": 1224,
+          "sha256": "sha256:6d6e1d000940252d01689461bf0ddcca83eb4c23514cb0da662f1499529a43fb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-host-load-22.json",
+          "bytes": 1416,
+          "sha256": "sha256:937c3f2f73aa593bf60c56bbc96277e72ed6dc4af6b950858751b34c959bea90"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inputs-22.json",
+          "bytes": 425055,
+          "sha256": "sha256:a7e6cbbac68dcc31c541303235183e6b1e838676fe9d923fa162f9f7daf42d67"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-inventory-22.log",
+          "bytes": 243,
+          "sha256": "sha256:0d37207d8e588b491b6c8a00343f05bb4155c8f4851e5e98919f667a8e4a56e3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-package-22.log",
+          "bytes": 1435,
+          "sha256": "sha256:b669c6378773c5ab8183b2fcd775e01b83206a7427fe758b816bd8bb66a8f059"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-comp-unchanged-22.log",
+          "bytes": 195,
+          "sha256": "sha256:e5eebcf1ba81a563ac325083e0c1e996019fff61969cc392d0df6aa5285d4394"
+        }
+      ]
     }
   ],
   "unchangedTimeoutRerun14": {
@@ -724,7 +773,7 @@
       "sha256": "sha256:05ebc4e7f5023641c0abe58168ff5630ed4a023bc8018aa42a0fd4b3d1c1f30f"
     }
   },
-  "verificationQualification": "Source16 schema/boundary/format/lint/build prefix passes. Default, identical single-worker17 and focused18 unit runs retain one original5000ms gradient-table timeout;4168/4169 unique cases pass. Runtime19 passes198/200; owning-file20 retains the two original5000ms package timeouts. Integration20 retains its reported failures. Serial browser21 passes on identical selected bytes. Substantial unrelated rendering CPU was observed8b9004; causation is unproven. Preceding source15 complete fast pass is separately scoped before the Node import-seam fix. No final aggregate fast/runtime/integration pass is claimed; strict limits remain unchanged.",
+  "verificationQualification": "Source16 schema/boundary/format/lint/build prefix passes. Identical input stages17/19/20 pass4168 units,198 runtime and321 integration cases but retain original gradient/package/capture timeouts. Unchanged committed input stage22 passes the exact owning gradient file10, package file7 and capture case1 (16 other capture-file cases skipped, already covered by integration20), all at original limits. Unique coverage4169 units/200 runtime/322 integration now passes in stages. Browser21 passes on the same selected bytes. Earlier reds, failed aggregates and lost terminals remain retained. Host rendering load had subsided before22; timeout causation remains unproven. No uninterrupted aggregate fast/runtime/integration pass is claimed.",
   "currentSummaries": {
     "unitsAggregate17": [
       "Test Files  1 failed | 405 passed (406)",
@@ -745,6 +794,12 @@
     "integrationAggregate20": [
       "Test Files  1 failed | 56 passed (57)",
       "Tests  1 failed | 321 passed (322)"
+    ],
+    "unitOwningFile22": ["Test Files  1 passed (1)", "Tests  10 passed (10)"],
+    "runtimeOwningFile22": ["Test Files  1 passed (1)", "Tests  7 passed (7)"],
+    "integrationOwningCase22": [
+      "Test Files  1 passed (1)",
+      "Tests  1 passed | 16 skipped (17)"
     ]
   },
   "actualCompositionPreview": {
@@ -885,10 +940,18 @@
     }
   ],
   "remaining": [
-    "Refresh the required strict fast/runtime/integration tiers before milestone readiness. Original gradient/package/capture timeouts remain unresolved; no assertion, worker budget or time limit was relaxed.",
     "Independent source3 draw/world/anchor/PBR/mip observation protocol, authenticated repeated export and installed consumer proof. Source3 collection/export explicitly rejects pending protocol; original1/2 evidence remains strict.",
     "Complete whole-world/PMREM/metadata/packet/replay budgeting and bounded source JSON admission. Current managed preview billing is scoped declared application-owned storage, not physical driver/RSS or all caller-held data.",
     "Whole MS2 generator/registry/event/label/cue/typography/300-board/full/installed requirements before its PR and MS3; supportedPacks[] and pilotSupportedEpisodes0.",
     "Human appearance/listening acceptance remains separate. No milestone merge, package release or publication."
-  ]
+  ],
+  "currentUniqueSoftwareCoverage": {
+    "unitTests": 4169,
+    "unitFiles": 406,
+    "runtimeTests": 200,
+    "runtimeFiles": 32,
+    "integrationTests": 322,
+    "integrationFiles": 57,
+    "method": "Unchanged selected inputs16 through22. Retain strict aggregate17/19/20 failures and cover their exact failed cases with owning reruns22. Capture22 skips16 cases already passing in integration20. Staged completion only."
+  }
 }
