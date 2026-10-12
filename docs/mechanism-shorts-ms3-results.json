@@ -396,5 +396,12 @@
     "Retain candidate/owner reviews and finer Thai limits; no ElevenLabs spend without explicit project/batch/model/voice/takes/credits approval."
   ],
   "qualification": "MS2 software checkpoint and its exact private archive remain historical prerequisites. New MS3 source is not qualified by relabelling MS2 full/installed gates. Structural model caps do not by themselves certify lifecycle I/O/managed-memory admission or review execution.",
-  "committedNativeSource": "efa5057440c1c95a7ac7aa263cc48f50d9a2c41b"
+  "committedNativeSource": "efa5057440c1c95a7ac7aa263cc48f50d9a2c41b",
+  "pullRequest": {
+    "url": "https://github.com/xxibcill/still-shift/pull/58",
+    "number": 58,
+    "state": "open-draft",
+    "base": "main",
+    "purpose": "MS3 in-progress review; original acceptance and pilot scope remains active"
+  }
 }

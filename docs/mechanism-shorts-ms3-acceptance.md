@@ -36,6 +36,8 @@ corrupt assets, cancellation, stale patches and relocation. Retain failure paths
 and affected-frame evidence. Code/encode success supplies no human acceptance.
 
 [MS3 results](./mechanism-shorts-ms3-results.json) retains scoped runs and failures.
-No MS3 full/package/installed/pilot pass is claimed yet. Existing genuine takes may
+[MS3 draft PR58](https://github.com/xxibcill/still-shift/pull/58) is open against main
+and attached; original remaining scope is unchanged. No MS3 final full/archive/
+installed/pilot pass is claimed yet. Existing genuine takes may
 be reused; any new ElevenLabs spending needs the explicit project/batch/model/
 voice/takes/estimated-credit approval from AGENTS.md.

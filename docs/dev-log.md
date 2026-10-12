@@ -44,7 +44,9 @@ still hold before relying on them.
 ## Current state
 
 - **MS3 in progress (2026-10-13):** codex/mechanism-ms3 carries exact MS2495fb2c0
-  after PR57 opened/attached. Report5 eec1954a now has actual three-family
+  after PR57 opened/attached. [MS3 draft PR58](https://github.com/xxibcill/still-shift/pull/58)
+  is open against main and attached; full original scope remains in progress.
+  Report5 eec1954a now has actual three-family
   native/API/CLI proof: four exports/240 decoded frames/0 fresh caption-edit3D;
   current reports verify three products. Default CLI emits3 episode+12 cohort
   rows in3611B; paged and default complete reports are byte-identical. Independent
@@ -57,7 +59,8 @@ still hold before relying on them.
   faults/relocation; scoped repair/automatic MS1 overlap; ten frozen questions/
   five assets/two behaviors and genuine inputs/reviews; broader capability
   reconciliation and final full103/archive/installed/MS3 PR. Coverage0/10,
-  targets unmeasured, Actions actually disabled; no spending/merge/publication.
+  targets unmeasured, Actions actually disabled; no spending/merge/npm or media
+  publication.
   [Tracker](./mechanism-shorts-ms3-acceptance.md),
   [report command](./mechanism-production-report-command.md),
   [report evidence](./mechanism-shorts-ms3-report-command-results.json),
@@ -252,7 +255,8 @@ still hold before relying on them.
 ### 2026-10-13 — MS3 durable episode/cohort report command and schema registry
 
 - **Agent / branch:** Codex on `codex/mechanism-ms3`, from1ce6d24c.
-- **Done:** Locked artifact-bound report reader and one bounded CLI invocation;
+- **Done:** MS3 draft [PR58](https://github.com/xxibcill/still-shift/pull/58) opened
+  against main and attached. Locked artifact-bound reader and one CLI invocation;
   original attempts/stale reviews/product references retained. Seven production
   schemas and capability reference derive from the actual shared registry.
 - **Results:**54 focused checks/build/lint/schemas/boundaries/public declarations

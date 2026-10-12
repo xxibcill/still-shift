@@ -510,5 +510,12 @@
     },
     "reviewedReady": 0,
     "scope": "Three synthetic engineering questions, not the original ten-question pilot. No target achievement or human acceptance."
+  },
+  "pullRequest": {
+    "url": "https://github.com/xxibcill/still-shift/pull/58",
+    "number": 58,
+    "state": "open-draft",
+    "base": "main",
+    "purpose": "MS3 in-progress review; original acceptance and pilot scope remains active"
   }
 }
