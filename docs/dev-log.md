@@ -43,92 +43,42 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
-  [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56)
-  (`bf30a253`). Sixty-nine slices are committed/prepared; MS2 has no PR yet.
-  Validated coverage0/10, supported packs0, accepted pilot0; MS3 has not started.
-  Frozen question selection remains fixed; E06 new asset/behavior and finer Thai
-  motion are provisional. Native/source3, five screen recipes, rigid world/surface
-  ink and authenticated cue plate capture/reuse have scoped software evidence.
-  Public cache API/CLI is available. Slice63's real upload-triggered source edits,
-  two cancels, recovery and shared Node owner pass:246 complete uploads/recovery60/
-  fresh native0/four quota controls; foreign leases and caller output are preserved.
-  Failed observers/diagnostics/abort/view-row attempts and independent audit2 remain
-  retained. Declared quotas, observed cleanup/RSS and whole physical limits differ.
-  Slice64 authors genuine cues for four unchanged whole48k recordings,247 selected
-  words/20 semantic windows. Only final tie/peg word ends clamp15/9 samples; peg's
-  visual end reaches actual N(+1 versus provisional). Concise explanatory captions
-  fit unchanged18 graphemes/s; original overfull final hook/tie paragraphs reject.
-  Native1 owns terminal0 for8 exports/5,136 independently checked native frames/
-  complete repeated encoded video, decoded frames and PCM. Revised-copy hook587
-  frames versus legacy692 uses its own words/all tracks; audio is3.483s shorter.
-  Audit1 owns0:60 fact checks/41,028 hierarchy pairs/5,136 cameras and decoded frames.
-  All44 viewed decoded-frame pixels match the full audit. Caption samples are clear;
-  tape inside-face/cable-root/peg labels hide under their occlusion policy, and
-  tape travel is subtle in the wide view. Closeups/comparisons, annotation visibility,
-  continuous motion, encoded glyph/readability/factual and human listening remain open.
-  Ordinary `pnpm check:fast` owns0:4,353 units/428 files, four-worker ceiling; held
-  2,637 inputs unchanged through each stage. After native terminal only the test's
-  unused import/equivalent report mask changes32B; production/authoring/media stay fixed.
-  Prototype bad cloth anchor, unverified prototype2 terminal, type/unused failures
-  remain recorded. Private opt-in speech gate does not enter the portable full102.
-  Full51 was intentionally stopped(exit130) at original94 groups; qualified38-group
-  prefix/interrupted39th remain. World61 producer terminal remains unverified.
-  Full102/frozen176/36,061-frame/benchmark/current archive/installed refresh is required.
-  Slice65 admits scoped E06 primary-source access: official USPTO22-page scan,
-  owned fetch0 and complete relevant page1/3/10/11/12/Fig8–11 visual reading.
-  Specific patent embodiment supports the question; prior full-page/extraction
-  failures remain. Frozen board/selection match slice50 hashes. No code/board change,
-  no general tie/load-magnitude claim or new behavior/pack/episode admission.
-  Slice66 implements named stationary cameras/exposed existing anchors on20 windows.
-  Peg held interpolation formerly opened during intro; actual native samples find
-  it, and CAS moves one-second opening to spoken frames107–137/release312 unchanged.
-  Preflight4 checks2568 frames/independent peg angles, original16 bodies exact;
-  80 native preview captures and first-hook19 encoded frames are agent-viewed.
-  Ordinary fast3 owns0 (4353/428) on held2638/120690519B; failed clipping/EEXIST/type/
-  formatter/type-import lint retained. Owned native1/session20684 recovered terminal0;
-  independent audit1/session54213 owns0:8 exports/5136 native-decoded frames/64 pins/
-  41028 hierarchy pairs/1286 peg angles/1064 hook matrices from compensation onset.
-  All79 final-first selected encoded frames are agent-viewed; previous19 hook pixels
-  match exactly. All2568 old/new pictures differ while complete AAC PCM stays exact.
-  Hold3 still matches2638 inputs/120690519B. Hidden cloth/first closed-jaw label and
-  natural-speed/force/human limits remain explicit. Next: finite MS2 acceptance
-  reconciliation, whole resource and current full/final archive/installed/pack/MS2
-  PR gates. Classified frozen board is complete; new assets/behaviors and positive
-  ten-episode coverage belong to MS3. Fresh full67-1/session25739 actually exits1
-  after4353 units and242 runtime passes/one ordinary Node/Lab import failure.
-  Node22 rejects a constructor parameter property; the minimal explicit-field repair
-  passes13 existing affected tests/session60538 and ordinary fast1/session18398
-  (4353 units/428 files). Repair sourcehold2638/120690590B stays exact.
-  Slice68 packages three declared recognition thumbnails with immutable pack/source/
-  recipe/image identities:6 actual native frames/2073600 decoded RGBA bytes, all3
-  PNGs viewed. First harness640x360 assumption rejects tape320x180 before drawing;
-  actual declared dimensions are preserved. Fresh full102/frozen176/36061/benchmark/
-  archive/installed and whole resource/pack admission remain. Slice69 adds browser
-  catalogue admission before schema clones; one-byte and later-resource rollback
-  regressions are reproduced and repaired. Final fast5 owns0:4363 units/429 files/
-  407+79 identity modules,26 owning cases, browser2/session4692 all six groups0.
-  Normal shared-parent5 exports/56frames/134passes retire local Node and worker
-  reservations; independent25-pin audit owns0. Held2644/120860793B stays exact.
-  Initial clock/identity/partial-edit/compiler failures and superseded stages remain;
-  quota peaks/RSS/opaque driver internals differ, with no physical RAM certification. Toolchain1 owns0; worktree caches are isolated and Actions enabled:false.
-  Slice69 is committed `963d3991`; fresh full70/session32036 runs the unchanged102
-  groups/frozen176/36061/benchmark on held2644 final inputs. Current archive/installed
-  and pack disposition precede MS2 PR; MS3 is not started. Verified live wait:
-  session32036 continues in the14th group(FPS/audio); unit4363/429, runtime243/40
-  and integration322/57 pass. Frozen baseline/benchmark and final terminal remain
-  pending; `/private/tmp/still-shift-ms2-final70-progress1.json` records the snapshot.
-  No paid generation, merge/publication, Actions or private media redistribution.
-  [Spoken presentation](./mechanism-shorts-ms2-spoken-presentation-results.json),
-  [E06 primary source](./mechanism-shorts-ms2-e06-primary-admission-results.json),
-  [Genuine cues](./mechanism-shorts-ms2-genuine-spoken-cue-results.json),
-  [Live cache/leases](./mechanism-shorts-ms2-cue-cache-lifetime-results.json),
-  [Public cache](./mechanism-shorts-ms2-public-cue-cache-results.json),
-  [World/surface cache](./mechanism-shorts-ms2-world-plate-export-results.json),
-  [Spoken clocks](./mechanism-shorts-ms2-spoken-sample-clock-results.json),
-  [Full gate history](./mechanism-shorts-ms2-full-gate-results.json),
-  [All slice evidence](./mechanism-shorts-ms2-results.json),
-  [Ordered plan](./mechanism-shorts-production-plan.md).
+- **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` uses the existing
+  managed worktree, carries exact MS1N `bf30a253`
+  ([PR #56](https://github.com/xxibcill/still-shift/pull/56)), and has no MS2 PR yet.
+  Sixty-nine slices are committed; latest implementation is `963d3991`.
+  Supported packs0, validated coverage0/10, accepted pilot0; MS3 has not started.
+  The frozen ten-question cohort is classified; its five assets/two behaviors
+  belong to MS3. Scoped E06 patent access is recovered; no new behavior admitted.
+  Genuine presentation66 is independently complete: four existing whole48k takes,
+  247 words/20 windows,8 repeated exports/5136 native-decoded frames/79 viewed
+  samples; full old/new AAC PCM stays exact. Peg opening now107–137/release312,
+  unchanged12-frame return; intentional cloth/first closed-jaw occlusion remains.
+  Three exact recipe-bound family thumbnails are packaged. Slice67 fixes ordinary
+  Node/Lab strip-only loading. Slice69 adds browser catalogue allocation admission
+  and resource-transaction rollback under unchanged quotas. Final fast5 passes
+  4363 units/429 files;26 owning controls/six current browser groups/five normal
+  shared-parent exports56frames134passes/independent25-pin audit pass in stages.
+  Held2644 inputs/120860793B remain exact; quotas/RSS/driver internals differ.
+  **Full70 is live:** owned session32036, `pnpm check:all`, source `963d3991`,
+  inventory `/private/tmp/still-shift-ms2-final70-inputs1.json`, log
+  `/private/tmp/still-shift-ms2-final70-full1.log`. Latest owned poll reaches group33
+  (passage authoring); unit4363/runtime243/integration322 pass. Required102 groups,
+  frozen176/36061 frames and benchmark remain unfinished. Do not restart a live job.
+  Full51 exit130 and full67 exit1 remain retained; world61's original producer
+  terminal remains unverified. Fresh current owning proof cannot invent that receipt.
+  Five isolated-consumer input projects/29 pins are staged under
+  `/private/tmp/still-shift-ms2-final-consumer-inputs71-f5qfdz02`; the consumer harness
+  passes syntax only. Final archive/source audit/installed execution and pack
+  disposition precede MS2 PR. Full encoded glyph/continuous/listening/material/
+  hardware/portrait/human acceptance remains unreviewed; finer Thai stays unadopted.
+  No paid generation, publication/merge, Actions or private-media redistribution.
+  [Acceptance](./mechanism-shorts-ms2-acceptance.md),
+  [full history](./mechanism-shorts-ms2-full-gate-results.json),
+  [catalogue closure](./mechanism-shorts-ms2-native-catalogue-admission-results.json),
+  [presentation](./mechanism-shorts-ms2-spoken-presentation-results.json),
+  [all evidence](./mechanism-shorts-ms2-results.json),
+  [ordered plan](./mechanism-shorts-production-plan.md).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
   inventory15:2,329 inputs/117,503,155B. Original full6 retains a qualified19-group
@@ -287,13 +237,13 @@ still hold before relying on them.
 
 ## Entries
 
-### 2026-10-12 — Native catalogue allocation admission in progress
+### 2026-10-12 — Native catalogue admission verified in stages
 
-- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `ec700fdb`; exact slice69 source remains uncommitted under inventory3.
-- **Done:** reproduced successful preparation under a one-byte payload budget; admission now precedes schema clones. Eight new quota/source/cleanup controls and owning catalogues24/3 pass; current fast3 passes4361 units/429 files with bounded327680B scanner and407+79 source closure.
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `ec700fdb`; final slice69 is committed as `963d3991` under inventory5.
+- **Done:** reproduced successful preparation under a one-byte payload budget; admission now precedes schema clones. Initial eight quota/source/cleanup controls and owning catalogues24/3 pass; superseded fast3 passes4361 units/429 files with bounded327680B scanner and407+79 source closure.
 - **Retained:** initial missing fixture clocks, genuine red quota failure, identity-stale fast1 and superseded64KiB scanner fast2. Worker128MiB metadata/8GiB application and Node512MiB policies remain fixed; payload admission is not RSS certification.
 - **Final results:** phase rollback initially retains11520 payload/577344 metadata instead of foreign1024; corrected transaction ownership passes26 cases. Partial formatted edit/undefined-retained failures are retained. Final fast5 owns0:4363/429; browser2/session4692 owns0 for six groups; parent probe1/session5759 owns0 for5 exports/56frames/134passes, audit25 pins owns0. Held2644/120860793B remains exact.
-- **Next:** committed `963d3991`; fresh full70/session32036 runs102 groups/frozen176/36061/benchmark on held2644 inputs. Current archive/installed and pack disposition precede MS2 PR; stage-specific evidence and physical/driver/human limits remain. Specific owned-session polling confirms it remains live in group14; runtime243 and integration322 pass. The goal continuation is a verified wait, with no aggregate completion inferred.
+- **Next:** committed `963d3991`; fresh full70/session32036 runs102 groups/frozen176/36061/benchmark on held2644 inputs. Current archive/installed and pack disposition precede MS2 PR; stage-specific evidence and physical/driver/human limits remain. Specific owned-session polling confirms it remains live at group33; runtime243 and integration322 pass. Five portable consumer projects/29 input pins are staged, harness syntax passes; execution waits for the full gate. No aggregate/installed completion is inferred.
 - **Records:** [Catalogue admission](./mechanism-shorts-ms2-native-catalogue-admission-results.json), [acceptance](./mechanism-shorts-ms2-acceptance.md).
 
 ### 2026-10-12 — Deliver declared family thumbnail assets
