@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import {
@@ -7,6 +8,7 @@ import {
   MechanismProductionReportBundleSchema,
   MechanismProductionEvidenceSchema,
   MechanismProductionHandoffSchema,
+  MechanismProductionQAFactsSchema,
   runMechanismProductionQueue,
   inspectMechanismProductionNativeItem,
   patchMechanismCueAuthoring,
@@ -51,11 +53,54 @@ try {
     );
     const actualFamily = await readMechanismFamilyAuthoring(fixture.familyPath);
     assert.equal(actualFamily.document.family, family);
+    const qaPath =
+      i === 1 ? join(directory, "inputs", family, "qa.json") : undefined;
+    if (qaPath)
+      await writeFile(
+        qaPath,
+        JSON.stringify(
+          {
+            schemaVersion: "mechanism-production-qa-plan-1",
+            measurements: [
+              {
+                measurement: "strap.travel",
+                kind: "part-origin-distance",
+                part: "strap",
+              },
+            ],
+            registrations: [
+              {
+                schemaVersion: "mechanism-semantic-registration-1",
+                id: "seeded-strap-limit",
+                description:
+                  "Deliberately too-small travel range to prove operational failure/recovery",
+                domain: "mechanical",
+                method: "sampled-numeric-range",
+                requireEveryOutputFrame: true,
+                rules: [
+                  {
+                    measurement: "strap.travel",
+                    range: [0, 0.001],
+                    unit: "scene-unit",
+                    rig: "ratchet",
+                    parts: ["strap"],
+                    relationship: null,
+                  },
+                ],
+              },
+            ],
+            warningBindings: [],
+          },
+          null,
+          2,
+        ) + "\n",
+      );
     projects.push({
       id: "S" + (i + 1),
       question: questions[i]!,
       familyPath: fixture.familyPath,
       cuePath: fixture.cuePath,
+      ...(qaPath ? { qaPath } : {}),
     });
   }
   const executor = await createMechanismProductionNativeExecutor();
@@ -64,7 +109,10 @@ try {
     projects,
     directory,
   );
-  assert(manifest.items.every((i) => i.inputs.length === 6));
+  assert.deepEqual(
+    manifest.items.map((i) => i.inputs.length),
+    [6, 7, 6],
+  );
   assert.deepEqual(
     manifest.items.map((i) => i.family),
     ["tape-hook", "cable-tie", "clothespeg"],
@@ -108,12 +156,81 @@ try {
       inspectMechanismProductionDisposition(product.report).reviewedReady,
       false,
     );
+    const qualityFile = product.artifacts.find((f) =>
+      f.path.endsWith("/qa-facts.json"),
+    )!;
+    const quality = MechanismProductionQAFactsSchema.parse(
+      JSON.parse(await readFile(join(output, qualityFile.path), "utf8")),
+    );
+    assert.equal(quality.timeline.checkedOutputFrames, 60);
+    assert.equal(quality.timeline.checkedEventFrames, 4);
+    assert.equal(quality.semantics.rawSamples.length, 60);
+    assert(
+      quality.semantics.assertions.find(
+        (a) => a.id === "production.stationary-mount",
+      )?.status === "passed",
+    );
     assert.equal(
-      product.report.qa.filter((q) => q.status === "unreviewed").length,
-      5,
+      product.report.unresolvedMechanicalFailures,
+      quality.failures.mechanical,
+    );
+    assert.equal(
+      product.report.qa.find((q) => q.dimension === "mechanical")!.status,
+      row.id === "S2" ? "failed" : "unreviewed",
+    );
+    assert.equal(
+      product.report.qa.find((q) => q.dimension === "sampled-visual")!.status,
+      quality.failures.sampledVisual ? "failed" : "unreviewed",
+    );
+    assert.equal(quality.collision.analytic, "not-evaluated");
+    assert.equal(quality.collision.continuous, "unreviewed");
+    assert(
+      product.report.qa
+        .filter((q) =>
+          ["continuous-motion", "listening", "factual"].includes(q.dimension),
+        )
+        .every((q) => q.status === "unreviewed"),
     );
     products.push(product);
   }
+  const seededProduct = products[1]!;
+  const seededFactsFile = seededProduct.artifacts.find((f) =>
+    f.path.endsWith("/qa-facts.json"),
+  )!;
+  const seededFactsPath = join(output, seededFactsFile.path),
+    seededFactsBytes = await readFile(seededFactsPath);
+  const forged = JSON.parse(seededFactsBytes.toString("utf8"));
+  forged.semantics.rawSamples[1].measurements["strap.travel"] = 42;
+  const forgedBytes = Buffer.from(JSON.stringify(forged, null, 2) + "\n");
+  await writeFile(seededFactsPath, forgedBytes);
+  try {
+    const product = structuredClone(seededProduct),
+      descriptor = product.artifacts.find(
+        (f) => f.path === seededFactsFile.path,
+      )!;
+    descriptor.bytes = forgedBytes.length;
+    descriptor.sha256 =
+      "sha256:" + createHash("sha256").update(forgedBytes).digest("hex");
+    await assert.rejects(
+      executor.verify(manifest.items[1]!, product, {
+        manifestDirectory: directory,
+        manifestPath,
+        outputRoot: output,
+        attemptDirectory: join(output, "items", "S2", "1"),
+        requestHash: first.rows[1]!.requestHash,
+        nodeMemory: parent,
+        progress: async () => {},
+      }),
+      /QA data differs/,
+    );
+  } finally {
+    await writeFile(seededFactsPath, seededFactsBytes);
+  }
+  await record({
+    name: "recomputed-qa-facts-negative",
+    outcome: "rejected",
+    restoredOriginalBytes: true,
+  });
   const repeated = await runMechanismProductionQueue(
     manifestPath,
     output,
@@ -265,6 +382,11 @@ try {
   assert.equal(handoff.sourceStatus, "current-verified");
   assert.equal(handoff.reviewedReady, false);
   assert.equal(handoff.qa.listening, "unreviewed");
+  assert(handoff.assets.qualityReport);
+  assert.equal(
+    handoff.assets.qualityReport.sha256,
+    bundle.episodes[0]!.qualityEvidence!.sha256,
+  );
   assert.equal(
     handoff.binding.outputSha256,
     changed.report.binding.outputSha256,
@@ -312,6 +434,81 @@ try {
     handoffReceipt,
     evidence: generatedEvidence,
   });
+  const qaPath = projects[1]!.qaPath!;
+  const beforeQA = JSON.parse(await readFile(qaPath, "utf8"));
+  beforeQA.registrations[0].rules[0].range = [0, 1];
+  await writeFile(qaPath, JSON.stringify(beforeQA, null, 2) + "\n");
+  await assert.rejects(
+    executor.verify(manifest.items[1]!, seededProduct, {
+      manifestDirectory: directory,
+      manifestPath,
+      outputRoot: output,
+      attemptDirectory: join(output, "items", "S2", "1"),
+      requestHash: first.rows[1]!.requestHash,
+      nodeMemory: parent,
+      progress: async () => {},
+    }),
+    /dependency snapshot changed/,
+  );
+  manifest.revision = 2;
+  manifest.baseHash = edited.manifestHash;
+  manifest.items[1] = await inspectMechanismProductionNativeItem(
+    projects[1]!,
+    directory,
+  );
+  await writeFile(manifestPath, JSON.stringify(manifest, null, 2) + "\n");
+  const qaRepaired = await runMechanismProductionQueue(
+    manifestPath,
+    output,
+    observed,
+    { nodeMemory: parent },
+  );
+  assert.equal(executions, 5);
+  assert(qaRepaired.rows.every((r) => r.status === "passed"));
+  const repairedProduct = JSON.parse(
+    await readFile(join(output, qaRepaired.rows[1]!.product!.path), "utf8"),
+  ) as MechanismProductionQueueProduct;
+  assert.equal(repairedProduct.work.freshNativeSubmissions, 0);
+  assert.equal(repairedProduct.work.reusedNativePlates, true);
+  assert.equal(
+    repairedProduct.report.binding.outputSha256,
+    seededProduct.report.binding.outputSha256,
+  );
+  assert.notEqual(
+    repairedProduct.report.binding.inputSha256,
+    seededProduct.report.binding.inputSha256,
+  );
+  assert.equal(repairedProduct.report.unresolvedMechanicalFailures, 0);
+  assert.equal(
+    repairedProduct.report.qa.find((q) => q.dimension === "mechanical")!.status,
+    "unreviewed",
+  );
+  assert(
+    qaRepaired.rows[1]!.priorProducts.some(
+      (f) => f.path === first.rows[1]!.product!.path,
+    ),
+  );
+  const repairedBundle = await readMechanismProductionReports(
+    manifestPath,
+    output,
+    executor,
+    { nodeMemory: parent },
+  );
+  assert(
+    repairedBundle.episodes.every(
+      (e) => e.validation.status === "verified" && e.qualityEvidence,
+    ),
+  );
+  assert.equal(repairedBundle.cohort.reviewCounts.mechanical.failed, 0);
+  assert.equal(repairedBundle.cohort.reviewedReady, 0);
+  await record({
+    name: "qa-only-revision-and-stale-plan-rejection",
+    state: qaRepaired,
+    repairedQualityEvidence: repairedBundle.episodes[1]!.qualityEvidence,
+    freshNativeSubmissions: 0,
+    preservedEncodedOutput: true,
+  });
+  assert(foreign.active);
   parent.dispose();
   assert.equal(parent.statistics.reservations, 0);
   await writeFile(
@@ -322,8 +519,8 @@ try {
         directory,
         stages,
         executions,
-        outputs: 4,
-        decodedFrames: 240,
+        outputs: 5,
+        decodedFrames: 300,
         source: "synthetic-engineering-PCM",
         qualification:
           "Real shared native/cached pipeline and full decode/zero-new-caption-native work; no genuine narration/factual/visual/listening/pilot/human acceptance.",
@@ -333,7 +530,7 @@ try {
     ) + "\n",
   );
   console.log(
-    JSON.stringify({ status: "passed", directory, executions, outputs: 4 }),
+    JSON.stringify({ status: "passed", directory, executions, outputs: 5 }),
   );
 } catch (error) {
   await writeFile(

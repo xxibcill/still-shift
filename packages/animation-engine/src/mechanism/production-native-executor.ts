@@ -1,4 +1,8 @@
 import {
+  evaluateMechanismProductionNativeQA,
+  mechanismProductionQAFailureReview,
+} from "./production-qa.ts";
+import {
   buildMechanismProductionEvidence,
   checkMechanismProductionEvidence,
 } from "./production-evidence.ts";
@@ -106,6 +110,9 @@ export async function createMechanismProductionNativeExecutor(): Promise<Mechani
           question: item.question,
           familyPath: resolve(context.manifestDirectory, item.familyPath),
           cuePath: resolve(context.manifestDirectory, item.cuePath),
+          ...(item.qaPath
+            ? { qaPath: resolve(context.manifestDirectory, item.qaPath) }
+            : {}),
         },
         context.manifestDirectory,
       );
@@ -276,6 +283,15 @@ export async function createMechanismProductionNativeExecutor(): Promise<Mechani
         codeSha256: identity.codeSha256,
         profileSha256: identity.profileSha256,
       };
+      await context.progress("operational-qa");
+      const quality = await evaluateMechanismProductionNativeQA({
+        item,
+        context,
+        binding,
+        platesDirectory: plates,
+        preparedDirectory: path.compiled,
+        video: output,
+      });
       await context.progress("review-evidence");
       const review = await buildMechanismProductionEvidence({
         familyPath: path.family,
@@ -288,6 +304,19 @@ export async function createMechanismProductionNativeExecutor(): Promise<Mechani
         directory: join(context.attemptDirectory, "review"),
         binding,
         decoded,
+        qualityReport: quality.artifact,
+        qaStatuses: {
+          technical: "passed",
+          mechanical: quality.facts.failures.mechanical
+            ? "failed"
+            : "unreviewed",
+          "sampled-visual": quality.facts.failures.sampledVisual
+            ? "failed"
+            : "unreviewed",
+          "continuous-motion": "unreviewed",
+          listening: "unreviewed",
+          factual: "unreviewed",
+        },
         nodeMemory: context.nodeMemory,
         signal: context.signal,
         ...(context.manifestPath ? { manifestPath: context.manifestPath } : {}),
@@ -316,7 +345,15 @@ export async function createMechanismProductionNativeExecutor(): Promise<Mechani
         explanation:
           "Current source/overlay/clock/submission/original capture and full RGBA/PCM decode passed; nontechnical QA remains unreviewed.",
       };
+      for (const finding of mechanismProductionQAFailureReview(
+        quality.facts,
+        quality.artifact,
+      ))
+        qa[qa.findIndex((q) => q.dimension === finding.dimension)] = finding;
       const artifacts = [
+        quality.artifact,
+        quality.raw,
+        quality.grouped,
         output,
         review.manifest,
         review.audio,
@@ -356,7 +393,7 @@ export async function createMechanismProductionNativeExecutor(): Promise<Mechani
           clock: item.clock,
           attempts: [],
           qa,
-          unresolvedMechanicalFailures: 0,
+          unresolvedMechanicalFailures: quality.facts.failures.mechanical,
           durations: {
             setupSeconds,
             routineSeconds: (performance.now() - renderStart) / 1000,
@@ -428,6 +465,9 @@ export async function createMechanismProductionNativeExecutor(): Promise<Mechani
             question: item.question,
             familyPath: path.family,
             cuePath: path.cue,
+            ...(item.qaPath
+              ? { qaPath: resolve(context.manifestDirectory, item.qaPath) }
+              : {}),
           },
           context.manifestDirectory,
         );
@@ -488,6 +528,52 @@ export async function createMechanismProductionNativeExecutor(): Promise<Mechani
               "Actual full decoded output differs from its retained proof",
               item.id,
             );
+          const quality = await evaluateMechanismProductionNativeQA({
+            item,
+            context,
+            binding: product.report.binding,
+            platesDirectory: check.value.plates,
+            preparedDirectory: path.compiled,
+            video: outputFile,
+            verify: true,
+          });
+          if (
+            !product.artifacts.some(
+              (f) =>
+                mechanismPackHash(f) === mechanismPackHash(quality.artifact),
+            ) ||
+            product.report.unresolvedMechanicalFailures !==
+              quality.facts.failures.mechanical
+          )
+            productionFailure(
+              "production-qa-binding",
+              "QA facts/counts differ from the sealed product",
+              item.id,
+            );
+          for (const finding of mechanismProductionQAFailureReview(
+            quality.facts,
+            quality.artifact,
+          )) {
+            const actual = product.report.qa.find(
+              (q) => q.dimension === finding.dimension,
+            );
+            if (
+              !actual ||
+              actual.status !== "failed" ||
+              mechanismPackHash(actual.binding) !==
+                mechanismPackHash(finding.binding) ||
+              !actual.evidence.some(
+                (e) =>
+                  e.path === quality.artifact.path &&
+                  e.sha256 === quality.artifact.sha256,
+              )
+            )
+              productionFailure(
+                "production-qa-failure-hidden",
+                "A current QA failure is absent from the report",
+                finding.dimension,
+              );
+          }
           const reviewFile = product.artifacts.find((f) =>
             f.path.endsWith("/review/evidence.json"),
           );
@@ -545,7 +631,11 @@ export async function createMechanismProductionNativeExecutor(): Promise<Mechani
               mechanismPackHash(handoff.value.compilation) !==
                 mechanismPackHash(review.compilation) ||
               mechanismPackHash(handoff.value.assets) !==
-                mechanismPackHash({ ...review.assets, evidence: reviewFile }) ||
+                mechanismPackHash({
+                  ...review.assets,
+                  evidence: reviewFile,
+                  qualityReport: quality.artifact,
+                }) ||
               mechanismPackHash(handoff.value.summary) !==
                 mechanismPackHash(review.summary) ||
               handoff.value.resume.familyPath !== path.family ||

@@ -31,6 +31,7 @@ export const MechanismProductionHandoffSchema = z
         audio: MechanismProductionOwnedFileSchema,
         evidence: MechanismProductionOwnedFileSchema,
         decodedReport: MechanismProductionOwnedFileSchema,
+        qualityReport: MechanismProductionOwnedFileSchema.optional(),
       })
       .strict(),
     summary: z

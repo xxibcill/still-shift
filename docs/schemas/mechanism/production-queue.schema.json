@@ -40,6 +40,7 @@
           },
           "familyPath": { "type": "string", "minLength": 1, "maxLength": 2048 },
           "cuePath": { "type": "string", "minLength": 1, "maxLength": 2048 },
+          "qaPath": { "type": "string", "minLength": 1, "maxLength": 2048 },
           "clock": {
             "type": "object",
             "properties": {

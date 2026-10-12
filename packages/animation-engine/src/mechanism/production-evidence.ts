@@ -281,6 +281,8 @@ export async function buildMechanismProductionEvidence(input: {
   familyPath: string;
   cuePath: string;
   manifestPath?: string;
+  qualityReport?: MechanismProductionEvidence["output"];
+  qaStatuses?: z.infer<typeof MechanismProductionHandoffSchema>["qa"];
   episode: {
     id: string;
     question: string;
@@ -677,6 +679,7 @@ export async function buildMechanismProductionEvidence(input: {
         audio: audioFile,
         evidence: manifest,
         decodedReport: evidence.decodedReport,
+        ...(input.qualityReport ? { qualityReport: input.qualityReport } : {}),
       },
       summary: {
         shots: plan.shots.length,
@@ -684,7 +687,7 @@ export async function buildMechanismProductionEvidence(input: {
         images: images.length,
         cropExceptions: exceptions.length,
       },
-      qa: {
+      qa: input.qaStatuses ?? {
         technical: "passed",
         mechanical: "unreviewed",
         "sampled-visual": "unreviewed",

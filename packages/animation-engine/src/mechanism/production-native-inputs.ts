@@ -1,3 +1,8 @@
+import {
+  MechanismProductionQAPlanSchema,
+  MECHANISM_PRODUCTION_QA_LIMITS,
+} from "./production-qa-contract.ts";
+import { readProductionJSON } from "./production-queue-files.ts";
 import { dirname, relative, resolve } from "node:path";
 import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
 import { readMechanismFamilyAuthoring } from "./family-authoring.ts";
@@ -14,6 +19,7 @@ export interface MechanismProductionProjectInput {
   question: string;
   familyPath: string;
   cuePath: string;
+  qaPath?: string;
 }
 export async function inspectMechanismProductionNativeItem(
   project: MechanismProductionProjectInput,
@@ -45,6 +51,20 @@ export async function inspectMechanismProductionNativeItem(
         );
       files.set(path, asset.sha256);
     }
+    if (project.qaPath) {
+      const qaPath = resolve(manifestDirectory, project.qaPath);
+      const qa = await readProductionJSON(
+        qaPath,
+        MechanismProductionQAPlanSchema,
+        owner,
+        MECHANISM_PRODUCTION_QA_LIMITS.planBytes,
+      );
+      try {
+        files.set(qaPath, qa.sha256);
+      } finally {
+        qa.release();
+      }
+    }
     const inputs = [];
     for (const [path, expected] of files) {
       const file = await cuePlateFile(
@@ -69,6 +89,16 @@ export async function inspectMechanismProductionNativeItem(
       cuePath: relative(resolve(manifestDirectory), cuePath)
         .split("\\")
         .join("/"),
+      ...(project.qaPath
+        ? {
+            qaPath: relative(
+              resolve(manifestDirectory),
+              resolve(manifestDirectory, project.qaPath),
+            )
+              .split("\\")
+              .join("/"),
+          }
+        : {}),
       clock: {
         outputFrames: cue.compiled.composition.frameCount,
         sourceSamples: cue.document.narration.sampleCount,

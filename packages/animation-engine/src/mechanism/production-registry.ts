@@ -6,6 +6,11 @@ import {
   MechanismProductionHandoffSchema,
   MECHANISM_PRODUCTION_HANDOFF_LIMITS,
 } from "./production-handoff.ts";
+import {
+  MechanismProductionQAPlanSchema,
+  MechanismProductionQAFactsSchema,
+  MECHANISM_PRODUCTION_QA_LIMITS,
+} from "./production-qa-contract.ts";
 import { z } from "zod";
 import {
   MechanismProductionQueueSchema,
@@ -28,6 +33,8 @@ import {
 import { MECHANISM_RESPONSE_LIMITS } from "./protocol.ts";
 import { freezeMechanismPack } from "./pack-support.ts";
 export const mechanismProductionSchemas = {
+  "production-qa-plan": MechanismProductionQAPlanSchema,
+  "production-qa-facts": MechanismProductionQAFactsSchema,
   "production-evidence": MechanismProductionEvidenceSchema,
   "production-handoff": MechanismProductionHandoffSchema,
   "production-report-bundle": MechanismProductionReportBundleSchema,
@@ -55,6 +62,7 @@ export function inspectMechanismProductionCapabilities() {
     handoff: MECHANISM_PRODUCTION_HANDOFF_LIMITS,
     response: MECHANISM_RESPONSE_LIMITS,
     semantics: MECHANISM_SEMANTIC_LIMITS,
+    operationalQA: MECHANISM_PRODUCTION_QA_LIMITS,
     nativeExecutor: {
       families: ["tape-hook", "cable-tie", "clothespeg"],
       packDisposition: "candidate",
@@ -93,5 +101,15 @@ export function mechanismProductionCapabilityMarkdown() {
 | Evidence manifest bytes / retained capacity | ${c.evidence.manifestBytes} / ${c.evidence.retainedCapacityBytes} |
 | Phone overview pixels | ${c.evidence.phoneWidth} × ${c.evidence.phoneHeight} |
 | Review PCM bytes | ${c.evidence.audioBytes} |
-| Compact handoff bytes | ${c.handoff.bytes} |\n| Semantic registrations / rules / samples / comparisons | ${c.semantics.registrations} / ${c.semantics.rules} / ${c.semantics.samples} / ${c.semantics.comparisons} |\n\nThe native production profile is ${c.nativeExecutor.profile.backend} with\n${c.nativeExecutor.profile.transport} transport. The three pack families remain\ncandidates. General imports and preview/export formats use existing episode\ndiscovery. Review declarations, missing token data and pilot admission remain\nseparate from technical completion.\n`;
+| Compact handoff bytes | ${c.handoff.bytes} |
+| QA plan / facts bytes | ${c.operationalQA.planBytes} / ${c.operationalQA.factsBytes} |
+| QA retained capacity / state-lint maximum capacity | ${c.operationalQA.retainedCapacityBytes} / ${c.operationalQA.qualityCapacityBytes} |
+| State-lint layer-frames / raw warning rows | ${c.operationalQA.qualityLayerFrames} / ${c.operationalQA.warningRows} |\n| Semantic registrations / rules / samples / comparisons | ${c.semantics.registrations} / ${c.semantics.rules} / ${c.semantics.samples} / ${c.semantics.comparisons} |\n\nThe native production profile is ${c.nativeExecutor.profile.backend} with\n${c.nativeExecutor.profile.transport} transport. The three pack families remain\ncandidates. Operational QA replays original output-frame scalars and current cue timeline checks,
+retains raw warnings and exact grouped peaks, and links immutable facts in reports and
+handoffs. A custom QA plan is a pinned declarative dependency. State-lint admission is
+2 MiB plus 4 KiB per generated layer-frame, capped by the published capacity and shared
+Node allowance. Individual successful sampled rules do not grant whole mechanical
+acceptance; current failures remain visible.
+
+General imports and preview/export formats use existing episode\ndiscovery. Review declarations, missing token data and pilot admission remain\nseparate from technical completion.\n`;
 }

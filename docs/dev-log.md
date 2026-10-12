@@ -45,24 +45,22 @@ still hold before relying on them.
 
 - **MS3 in progress (2026-10-13):** codex/mechanism-ms3, draft
   [PR58](https://github.com/xxibcill/still-shift/pull/58) open/attached to main.
-  Evidence6 source6615b02b passes actual native/report/separate CLI handoff:
-  four outputs/240 decoded frames/108 source-derived images. Independent audit
-  checks exact crops/phone pixels/native projections/PCM and188 pins; first audit
-  failed on YUV-before-RGBA resizing, corrected audit passes with strict equality.
-  Complete fast/runtime tiers pass on prose-onlyfab32e29 with all2683 inputs/
-  121225370B exactly matching6615. Scoped gate's lint failure is also retained.
-  Separate actual camera-cut proof passes60 frames/27 images, independently
-  checking frames14/15, authored positions and hashed native matrices/46 pins.
-  Semantic/warning operational integration is next. Native fault/relocation proofs,
-  scoped repair/MS1 overlap, all ten frozen questions/
-  five assets/two behaviors/genuine inputs/reviews, capability reconciliation and
-  final full103/archive/installed/MS3 PR completion remain. Coverage0/10; targets
-  unmeasured. No whole glyph/mechanical/continuous/listening/factual/human
-  acceptance, spending, Actions, merge or npm/media publication is claimed.
-  [Tracker](./mechanism-shorts-ms3-acceptance.md),
-  [evidence API](./mechanism-production-evidence.md),
-  [evidence record](./mechanism-shorts-ms3-evidence-results.json),
-  [results](./mechanism-shorts-ms3-results.json).
+  QA7 now pins declarative plans, replays original native scalar samples, retains
+  MS2 expected-state timeline results and immutable raw/grouped warning/facts
+  artifacts, propagates failures, and links current facts in reports/handoffs.
+  76 owning controls/build/lint/schemas/boundaries/declarations pass; two early
+  CLI type failures are retained. Actual native proof and complete fast/runtime
+  tiers are next; no current terminal native pass is claimed. Evidence6 source6615
+  separately retains4 outputs/240 frames/108 images/188 pins, exact local tiers and
+  the additional60-frame/27-image/46-pin camera-cut proof, with failed attempts.
+  Original scope remains: broader faults/analytic/continuous collision/reviews;
+  native faults/relocation; scoped repair/MS1 overlap; all ten frozen questions/
+  five assets/two behaviors/genuine inputs/reviews; capability reconciliation and
+  final full103/archive/installed/MS3 PR completion. Coverage0/10; targets unmeasured.
+  No whole mechanical/glyph/factual/continuous/listening/human acceptance, spending,
+  Actions, merge or publication is claimed.
+  [QA API](./mechanism-production-qa.md), [QA record](./mechanism-shorts-ms3-qa-results.json),
+  [tracker](./mechanism-shorts-ms3-acceptance.md), [results](./mechanism-shorts-ms3-results.json).
 
 - **MS2 software checkpoint delivered (2026-10-13):** `codex/mechanism-ms2`
   carries exact MS1N `bf30a253` ([PR #56](https://github.com/xxibcill/still-shift/pull/56));
@@ -249,6 +247,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — MS3 operational native QA and artifact-bound warnings
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from2e0dd3eb.
+- **Done:** pinned custom QA files, original native scalar sampling, MS2 timeline
+  evidence, immutable facts/raw/groups, failure propagation and report/handoff
+  links. Positive individual checks leave whole reviews unreviewed; collision
+  methods and unresolved composition ownership/units remain explicit.
+- **Results:**76 owning controls plus build/lint/schema/boundary/declarations pass.
+  Two early CLI type failures are retained: optional asset iteration and a nested
+  compact-row value. Both repaired without weakening source/evidence guards.
+- **Open / next:** current native seeded/tampered/stale/QA-only recovery proof and
+  complete local tiers; original broader faults/repairs and ten-question/five-asset/
+  two-behavior pilot/genuine inputs/reviews/final gates remain.
+- **Records:** [QA API](./mechanism-production-qa.md),
+  [QA evidence](./mechanism-shorts-ms3-qa-results.json). No spending/Actions/merge/publication.
 
 ### 2026-10-13 — MS3 native review evidence and held local gates
 

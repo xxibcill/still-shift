@@ -157,13 +157,18 @@ export async function runProductionCli(
               images: snapshot.value.summary.images,
               cropExceptions: snapshot.value.summary.cropExceptions,
             };
-            items = Object.entries(snapshot.value.assets).map(
-              ([kind, file]) => ({
-                kind,
-                path: file.path,
-                sha256: file.sha256,
-                bytes: file.bytes,
-              }),
+            items = Object.entries(snapshot.value.assets).flatMap(
+              ([kind, file]) =>
+                file
+                  ? [
+                      {
+                        kind,
+                        path: file.path,
+                        sha256: file.sha256,
+                        bytes: file.bytes,
+                      },
+                    ]
+                  : [],
             );
           } finally {
             snapshot.release();
@@ -219,6 +224,8 @@ export async function runProductionCli(
             setupSeconds: e.report.durations.setupSeconds,
             routineSeconds: e.report.durations.routineSeconds,
             renderSeconds: e.report.durations.renderSeconds,
+            qualityEvidencePath: e.qualityEvidence?.path ?? null,
+            qualityEvidenceSha256: e.qualityEvidence?.sha256 ?? null,
             ...e.disposition.statuses,
           })),
         ];

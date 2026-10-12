@@ -129,6 +129,33 @@
               { "type": "null" }
             ]
           },
+          "qualityEvidence": {
+            "default": null,
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 2048
+                  },
+                  "bytes": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 536870912
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^sha256:[a-f0-9]{64}$"
+                  }
+                },
+                "required": ["path", "bytes", "sha256"],
+                "additionalProperties": false
+              },
+              { "type": "null" }
+            ]
+          },
           "priorProducts": {
             "maxItems": 32,
             "type": "array",
@@ -787,6 +814,7 @@
           "queueStatus",
           "validation",
           "product",
+          "qualityEvidence",
           "priorProducts",
           "cacheFailures",
           "retainedQA",

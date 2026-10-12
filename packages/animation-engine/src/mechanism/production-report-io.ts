@@ -62,6 +62,7 @@ export interface MechanismProductionReportedEpisode {
     issue: FailureDiagnostic | null;
   };
   product: OwnedFile | null;
+  qualityEvidence: OwnedFile | null;
   priorProducts: OwnedFile[];
   cacheFailures: MechanismProductionQueueRow["cacheFailures"];
   retainedQA: MechanismProductionQA[];
@@ -140,6 +141,8 @@ export const MechanismProductionReportBundleSchema = z
               })
               .strict(),
             product: MechanismProductionOwnedFileSchema.nullable(),
+            qualityEvidence:
+              MechanismProductionOwnedFileSchema.nullable().default(null),
             priorProducts: z.array(MechanismProductionOwnedFileSchema).max(32),
             cacheFailures:
               MechanismProductionQueueStateSchema.shape.rows.element.shape
@@ -275,6 +278,7 @@ export async function readMechanismProductionReports(
       const row = state.rows.find((r) => r.id === item.id)!;
       const child = new CompositionNodeMemory(owner);
       let original: MechanismProductionEpisodeReport | undefined;
+      let qualityEvidence: OwnedFile | null = null;
       let outputSha256: string | null = null,
         issue: FailureDiagnostic | null = null;
       let validation: MechanismProductionReportedEpisode["validation"]["status"] =
@@ -369,6 +373,10 @@ export async function readMechanismProductionReports(
                     input.path,
                   );
               }
+              qualityEvidence =
+                product.artifacts.find((f) =>
+                  f.path.endsWith("/qa-facts.json"),
+                ) ?? null;
               validation = "verified";
             } else {
               validation = "stale";
@@ -436,6 +444,7 @@ export async function readMechanismProductionReports(
         queueStatus: row.status,
         validation: { status: validation, issue },
         product: row.product,
+        qualityEvidence: validation === "verified" ? qualityEvidence : null,
         priorProducts: row.priorProducts,
         cacheFailures: row.cacheFailures,
         retainedQA: original?.qa ?? [],

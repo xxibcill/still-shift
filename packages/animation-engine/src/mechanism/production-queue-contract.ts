@@ -54,6 +54,7 @@ export const MechanismProductionQueueItemSchema = z
     designVariant: z.string().min(1).max(256),
     familyPath: path,
     cuePath: path,
+    qaPath: path.optional(),
     clock: z
       .object({
         outputFrames: z.number().int().positive().max(108000),
@@ -68,7 +69,8 @@ export const MechanismProductionQueueItemSchema = z
     if (
       new Set(paths).size !== paths.length ||
       !paths.includes(item.familyPath) ||
-      !paths.includes(item.cuePath)
+      !paths.includes(item.cuePath) ||
+      (item.qaPath !== undefined && !paths.includes(item.qaPath))
     )
       ctx.addIssue({
         code: "custom",

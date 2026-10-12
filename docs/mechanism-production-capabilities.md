@@ -21,10 +21,20 @@ with complete report access.
 | Phone overview pixels                                  | 360 × 640                   |
 | Review PCM bytes                                       | 536870912                   |
 | Compact handoff bytes                                  | 32768                       |
+| QA plan / facts bytes                                  | 65536 / 8388608             |
+| QA retained capacity / state-lint maximum capacity     | 67108864 / 268435456        |
+| State-lint layer-frames / raw warning rows             | 100000 / 2048               |
 | Semantic registrations / rules / samples / comparisons | 32 / 16 / 10000 / 100000    |
 
 The native production profile is webgl2 with
 raw_rgba transport. The three pack families remain
-candidates. General imports and preview/export formats use existing episode
+candidates. Operational QA replays original output-frame scalars and current cue timeline checks,
+retains raw warnings and exact grouped peaks, and links immutable facts in reports and
+handoffs. A custom QA plan is a pinned declarative dependency. State-lint admission is
+2 MiB plus 4 KiB per generated layer-frame, capped by the published capacity and shared
+Node allowance. Individual successful sampled rules do not grant whole mechanical
+acceptance; current failures remain visible.
+
+General imports and preview/export formats use existing episode
 discovery. Review declarations, missing token data and pilot admission remain
 separate from technical completion.

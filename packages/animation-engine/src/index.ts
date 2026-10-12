@@ -154,3 +154,5 @@ export * from "./mechanism/production-registry.ts";
 
 export * from "./mechanism/production-evidence-contract.ts";
 export * from "./mechanism/production-handoff.ts";
+export * from "./mechanism/production-qa-contract.ts";
+export * from "./mechanism/production-qa-sampling.ts";

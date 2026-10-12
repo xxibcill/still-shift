@@ -56,6 +56,8 @@ describe("production discovery and schema CLI", () => {
       "semantic-registration",
       "production-evidence",
       "production-handoff",
+      "production-qa-plan",
+      "production-qa-facts",
     ]) {
       const path = join(dir, kind + ".json"),
         result = await run(["schema", "--kind", kind, "--output", path]);
