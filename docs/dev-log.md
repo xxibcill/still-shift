@@ -45,41 +45,46 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56)
-  (`bf30a253`). Sixty-three slices are committed/prepared; MS2 has no PR yet.
-  Families remain candidates: validated coverage0/10, supported packs0, accepted
-  pilot0. MS3 has not started. The frozen question board remains authoritative;
-  E06 primary-source admission and finer Thai motion remain provisional.
-  Native/source3 bridge, all five screen recipes, rigid world/surface ink and
-  authenticated current-cue plate capture/reuse now have scoped software evidence.
-  Slice62 exposes the versioned engine-root API/CLI with strict receipts/discovery:
-  owned capture60/four cached outputs, measured fresh native0 and current/stale
-  controls pass. Slice63 adds upload-triggered cue/audio/consumed-plate edits and
-  two live cancels, owned failure cleanup, shared Node quota/lease checks and recovery.
-  Final producer5/audit2/fast1 own terminal0:246 complete real uploads,3 source
-  rejections,2 cancels,one60-frame recovery/fresh native0 and four quota controls.
-  Original71 plate files remain exact; caller output survives EEXIST. Foreign
-  leases survive calls and retire on root disposal. Normal declared high water
-  285,155,818B stays under512MiB; sampled physical RSS is a separate measurement.
-  Cleanup waits are after API settlement under the existing2s descendant policy.
-  Audit2 checks90 fact pins/60 original PNG transport identities/660 hierarchy
-  pairs/60 cameras/60 recovery decoded frames/full PCM. One proper viewing PNG is
-  agent-viewed and matches the prior public-consumer preview everyRGBA byte.
-  Fast tier(one unit worker) passes4,348 units/427 files on2,632 held unchanged
-  inputs/120,640,533B. Ordinary fast/isolated timeouts, observer/diagnostic/partial
-  abort/view-row failures remain retained in their records; no limits raised.
-  Full51 was intentionally stopped(exit130) at its original94-group scope; its
-  38-group prefix/interrupted39th remain evidence. Slice61 six-case producer report
-  passed but its root terminal is lost/unverified. Current full matrix102 has no
-  full pass: owning full/frozen176/36,061-frame/benchmark refresh is required.
-  Four recovered spoken takes have exact48k clocks and thirteen associations;
-  the shorter hook uses revised copy. Endpoint corrections are proposed, not yet
-  authored. Genuine cues/native output/reading/action/factual/listening remain open.
-  Next: genuine supplied speech and shorter-copy output, whole application/source/
-  driver resource/replay admission, full102 and final archive/installed/pack/coverage/
-  MS2 PR before MS3. Human visual/listening and encoded readability stay separate.
-  No paid generation, milestone merge/publication, Actions or private media redistribution.
-  [Public cache](./mechanism-shorts-ms2-public-cue-cache-results.json),
+  (`bf30a253`). Sixty-four slices are committed/prepared; MS2 has no PR yet.
+  Validated coverage0/10, supported packs0, accepted pilot0; MS3 has not started.
+  Frozen question selection remains fixed; E06 new asset/behavior and finer Thai
+  motion are provisional. Native/source3, five screen recipes, rigid world/surface
+  ink and authenticated cue plate capture/reuse have scoped software evidence.
+  Public cache API/CLI is available. Slice63's real upload-triggered source edits,
+  two cancels, recovery and shared Node owner pass:246 complete uploads/recovery60/
+  fresh native0/four quota controls; foreign leases and caller output are preserved.
+  Failed observers/diagnostics/abort/view-row attempts and independent audit2 remain
+  retained. Declared quotas, observed cleanup/RSS and whole physical limits differ.
+  Slice64 authors genuine cues for four unchanged whole48k recordings,247 selected
+  words/20 semantic windows. Only final tie/peg word ends clamp15/9 samples; peg's
+  visual end reaches actual N(+1 versus provisional). Concise explanatory captions
+  fit unchanged18 graphemes/s; original overfull final hook/tie paragraphs reject.
+  Native1 owns terminal0 for8 exports/5,136 independently checked native frames/
+  complete repeated encoded video, decoded frames and PCM. Revised-copy hook587
+  frames versus legacy692 uses its own words/all tracks; audio is3.483s shorter.
+  Audit1 owns0:60 fact checks/41,028 hierarchy pairs/5,136 cameras and decoded frames.
+  All44 viewed decoded-frame pixels match the full audit. Caption samples are clear;
+  tape inside-face/cable-root/peg labels hide under their occlusion policy, and
+  tape travel is subtle in the wide view. Closeups/comparisons, annotation visibility,
+  continuous motion, encoded glyph/readability/factual and human listening remain open.
+  Ordinary `pnpm check:fast` owns0:4,353 units/428 files, four-worker ceiling; held
+  2,637 inputs unchanged through each stage. After native terminal only the test's
+  unused import/equivalent report mask changes32B; production/authoring/media stay fixed.
+  Prototype bad cloth anchor, unverified prototype2 terminal, type/unused failures
+  remain recorded. Private opt-in speech gate does not enter the portable full102.
+  Full51 was intentionally stopped(exit130) at original94 groups; qualified38-group
+  prefix/interrupted39th remain. World61 producer terminal remains unverified.
+  Full102/frozen176/36,061-frame/benchmark/current archive/installed refresh is required.
+  E06 official USPTO PDF supplement is ready privately after full-page web failures;
+  relevant complete pages/figures are read, supporting that specific embodiment.
+  This does not admit its new load-seating behavior or alter the frozen board.
+  Next: save that supplemental source evidence, improve genuine presentation,
+  whole application/source/world/result/replay/physical/driver admission, current
+  full/final archive/installed/pack/validated10-question coverage/MS2 PR before MS3.
+  No paid generation, merge/publication, Actions or private media redistribution.
+  [Genuine cues](./mechanism-shorts-ms2-genuine-spoken-cue-results.json),
   [Live cache/leases](./mechanism-shorts-ms2-cue-cache-lifetime-results.json),
+  [Public cache](./mechanism-shorts-ms2-public-cue-cache-results.json),
   [World/surface cache](./mechanism-shorts-ms2-world-plate-export-results.json),
   [Spoken clocks](./mechanism-shorts-ms2-spoken-sample-clock-results.json),
   [Full gate history](./mechanism-shorts-ms2-full-gate-results.json),
@@ -242,6 +247,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — MS2 genuine supplied speech and native cue outputs
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `7c797dd1`.
+- **Done:** Typed private opt-in gate authors all247 words/20 windows at exact source
+  clocks, concise captions and legal family poses; shorter hook uses its own cues.
+- **Results:** Native1/audit1/ordinary fast1 own0:8 repeat exports/5,136 native and
+  decoded frames/full PCM;60 pins/41,028 hierarchy pairs/5,136 cameras;4,353 units/
+  428 files. All44 viewed frame pixels match audit. Source audio remains exact.
+- **Rejected / do not repeat:** Bad cloth anchor, lost prototype2 terminal,
+  first type assumptions, unused names; overfull18-grapheme/s clauses, source/action
+  overrun, engaged reverse and product release reject. No thresholds raised.
+- **Open / next:** Hidden contact labels/subtle hook travel, continuous/encoded and
+  human QA; E06 source supplement; whole resources/full102/frozen/benchmark/final
+  archive/installed/pack/coverage/MS2 PR. Packs/pilot0; no paid generation or Actions.
+- **Records:** [Genuine cue evidence](./mechanism-shorts-ms2-genuine-spoken-cue-results.json).
 
 ### 2026-10-12 — MS2 real cached-output lifetime and shared Node owner
 

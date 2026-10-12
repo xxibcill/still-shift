@@ -94,6 +94,23 @@ compares encoded output, every decoded video frame and decoded audio. It is incl
 in `pnpm test`; run it serially with other browser/export groups. Synthetic timing
 fixtures do not establish spoken narration, supported packs or pilot acceptance.
 
+`pnpm test:browser:mechanism-spoken-inputs <private-manifest-path>` is an opt-in
+engineering gate for the four recovered MS2 spoken takes. It is deliberately
+excluded from portable `pnpm test`: no private media or timed transcripts are
+committed. The private `ms2-supplied-speech-inputs-1` manifest supplies pinned whole
+48k mono Float32 WAVs, pinned timed-word JSON and exact word-range associations.
+Only selected word fields are used; signed transcript URLs are never serialized.
+The gate checks complete word coverage, the explicit15/9 final-sample corrections,
+source/visible caption and action capacity, legal family poses, and repeated
+640x360 native exports through the public independent output check. Every decoded
+frame and complete PCM stream repeats using one retained decoder frame; the
+unchanged32MiB per-frame ceiling and60s decoder timeout stay fixed. Source recording
+identity is checked separately from lossy AAC repeat parity. Scoped decoded samples
+reveal hidden contact labels and subtle hook travel, so this is not portrait,
+all-frame encoded glyph, listening, supported-pack or pilot acceptance. Run serially
+with browser/export groups. [Genuine evidence](./mechanism-shorts-ms2-genuine-spoken-cue-results.json)
+retains failed and unverified stages and the ordinary fast-tier result.
+
 `pnpm test:browser:mechanism-cue-edits` saves source-pinned cue documents for all
 three candidate families, applies a caption patch, rejects the old base and renders
 both revisions with repeats. It independently replays every final native observation,

@@ -1,0 +1,1724 @@
+{
+  "version": "mechanism-shorts-ms2-genuine-spoken-cue-results-1",
+  "date": "2026-10-12",
+  "branch": "codex/mechanism-ms2",
+  "baseCommit": "7c797dd1184e3dc529a36321a9b9f680fc36ae81",
+  "status": "completed-scoped-genuine-cue-native-output-staged-verification",
+  "scope": "Four existing unpaced genuine spoken takes, each own supplied timed words and unchanged complete canonical48k mono source. Typed opt-in private-input gate; no private input dependency added to portable pnpm test. All20 semantic cue windows drive current native picture, captions, annotations, marker/event and local synthetic onset-marker sound tracks.640x360 at30fps engineering output is not the portrait pilot.",
+  "implementation": {
+    "files": [
+      "tests/helpers/mechanism-spoken-inputs.ts",
+      "tests/helpers/mechanism-spoken-authoring.ts",
+      "tests/helpers/composition-streaming-output-proof.ts",
+      "tests/browser/mechanism-spoken-inputs.ts",
+      "tests/unit/mechanism-spoken-inputs.test.ts"
+    ],
+    "publicCommand": "pnpm test:browser:mechanism-spoken-inputs <private-manifest-path>",
+    "inputVersion": "ms2-supplied-speech-inputs-1",
+    "unchangedPortableFullMatrixGroups": 102,
+    "privateFixtureMediaRedistributed": false,
+    "productionRenderOrAdmissionCodeChanged": false,
+    "oneDecodedFrameBytes": 921600,
+    "decoderTimeoutMs": 60000,
+    "boundedDecoderStderrTailCodeUnits": 65536,
+    "narrationPolicy": "Existing whole measured source reused; no synthesis, time-stretch, trim, loudness adjustment or source silence insertion. Routine output-frame ceiling is separate from the exact source interval.",
+    "captionPolicy": "Concise explanatory captions, not verbatim subtitles; unchanged18 graphemes/s checks both exact source and quantized visible windows. Original final EU-001/EU-002 paragraphs remain rejection controls.",
+    "endpointPolicy": "Only the measured final EU-002/EU-003 word overrun15/9 samples is clamped in selected authoring clocks. Interior words and any other overrun reject. Peg final visual end reaches actual1027623 samples, one above its provisional endpoint. Source WAVs stay byte-exact.",
+    "coverage": "247 selected words,13 original current-copy associations plus6 legacy associations. Split current hook association2 at its own Push word22/sample326016, producing20 semantic windows in total.",
+    "motionScope": "Legal authored output-frame teaching poses and sampled contact facts; full continuous visual motion/factual forces/physical material appearance/human listening acceptance are separate."
+  },
+  "attempts": [
+    {
+      "id": "prototype-author1",
+      "actualSession": 80460,
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-spoken64-author1.log",
+        "bytes": 1170,
+        "sha256": "sha256:43ce5dd142892df10bb6c501aab4720374e72f89eb3d56626e7ca2dc10ea4f10"
+      },
+      "root": "/private/tmp/still-shift-ms2-spoken-author64-7NrhGX",
+      "qualification": "First two projects compiled; peg cue3 used nonexistent cloth.top anchor and rejected. Actual cloth.upper fixes the authored anchor; failed root retained."
+    },
+    {
+      "id": "prototype-author2",
+      "actualSession": 67005,
+      "actualExitCode": null,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-spoken64-author2.log",
+        "bytes": 178,
+        "sha256": "sha256:0b1641f801435e40864db0d06ba6b6287de862b1e333e4292ee932cded94ed37"
+      },
+      "root": "/private/tmp/still-shift-ms2-spoken-author64-R8QYJ3",
+      "qualification": "All four projects report authored-and-compiled, but terminal was truncated/lost and cannot be recovered. No inferred0. Fresh owned native gate and independent16-body parity supersede the missing terminal, not erase it."
+    },
+    {
+      "id": "format-build1",
+      "actualSession": 61450,
+      "actualExitCode": 2,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-spoken64-build1.log",
+        "bytes": 4329,
+        "sha256": "sha256:e19dbe09f80436538d2807bd6e45ada6ebd8a133fb77cc696e4213d9e7b0fb46"
+      },
+      "qualification": "Optional positions, rig property and prepared PCM fact types were wrong in the test. Corrected using exact declared types; no production/threshold changes."
+    },
+    {
+      "id": "format-build-unit2",
+      "actualSession": 38336,
+      "actualExitCode": 0,
+      "buildLog": {
+        "path": "/private/tmp/still-shift-ms2-spoken64-build2.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      },
+      "unitLog": {
+        "path": "/private/tmp/still-shift-ms2-spoken64-unit1.log",
+        "bytes": 311,
+        "sha256": "sha256:bc2094a936e7dc884ef63b07030886d9a00295839245253173a55675751ee759"
+      },
+      "tests": 5,
+      "files": 1
+    },
+    {
+      "id": "lint1",
+      "actualSession": 51323,
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-spoken64-lint1.log",
+        "bytes": 533,
+        "sha256": "sha256:9c35b604037b8f632950b972c53679617b41ee08fc098edac4413f21002bddb4"
+      },
+      "qualification": "Four unused import/rest-sibling names. Held native run stays unchanged until terminal; later cleanup changes only unused import and equivalent report field filtering."
+    },
+    {
+      "id": "owned-native1",
+      "actualSession": 6963,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-spoken64-render1.log",
+        "bytes": 1238,
+        "sha256": "sha256:d7fd1e3f3a77286f0506800acbe212b828fb4c53ad4d13ea31f54283b527a764"
+      },
+      "run": {
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/run.json",
+        "bytes": 758537,
+        "sha256": "sha256:e4df9fdd9f9965f2f8a125fb0453d75d7fcbcfa856c7507f62c51f0c0dd0e16e"
+      },
+      "heldInputs": {
+        "path": "/private/tmp/still-shift-ms2-spoken64-inputs2.json",
+        "bytes": 449782,
+        "sha256": "sha256:522a51f11270a20346978b83f6be44418834a0ac464e7c074814b942d556cad6",
+        "files": 2637,
+        "inputBytes": 120678235
+      }
+    },
+    {
+      "id": "independent-two-take-prefix1",
+      "actualSession": 23582,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-spoken64-audit-prefix1.log",
+        "bytes": 198,
+        "sha256": "sha256:86fb49f55b207dc19e738fbe7c18ad8aecc3e3a464a72fbd2047931e2a27a4d8"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-spoken64-audit-prefix1.json",
+        "bytes": 16961,
+        "sha256": "sha256:650a2dc71af8f6bd842115ef7ec1975efb1954092cda8bae7ccaffa86efda2f3"
+      },
+      "qualification": "Only completed first two takes:2466 frames/native rows,19374 hierarchy pairs/2466 cameras/30 fact pin checks. Explicit prefix, not full batch."
+    },
+    {
+      "id": "separate-genuine-product-release-control1",
+      "actualSession": 83166,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-spoken64-release-control1.log",
+        "bytes": 61,
+        "sha256": "sha256:cb9901bf1d53987e2b2322716c7cc7b6a56ce723753eb3054ca7a605d9fe3807"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-spoken64-release-control1.json",
+        "bytes": 429,
+        "sha256": "sha256:e2589cd9ef6f4abdeb7fc71059c9f482dd926ffc5d21e5a841d93fda79dfe281"
+      },
+      "qualification": "Pure compiler copied real EU-002 document; non-releasable latch release rejects at located mechanism-ratchet-release. Saved cue body remains unchanged. No native export/generation claimed."
+    },
+    {
+      "id": "independent-complete-audit1",
+      "actualSession": 51456,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-spoken64-audit1.log",
+        "bytes": 191,
+        "sha256": "sha256:a53ec543cc6c9c819f10a414d06aa82e24f7f07a148f3a62eb672c43cd91ab6e"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-spoken64-audit1.json",
+        "bytes": 34512,
+        "sha256": "sha256:7f62cebe9b75171d17cebb3babdc11638e37abbb2675d6a474db5c291b2dc6cc"
+      }
+    },
+    {
+      "id": "ordinary-fast1",
+      "actualSession": 25268,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-spoken64-fast1.log",
+        "bytes": 41162,
+        "sha256": "sha256:50cc1d154a07dd94cc77f789e3e03873e7561f5039829693c6d6ec4fc939b246"
+      },
+      "command": "pnpm check:fast",
+      "unitTests": 4353,
+      "unitFiles": 428,
+      "unitWorkerCeiling": 4,
+      "heldInputs": {
+        "path": "/private/tmp/still-shift-ms2-spoken64-inputs3.json",
+        "bytes": 449782,
+        "sha256": "sha256:7b1d1c53ead81efa42f7892cce384753fc5d8e971eaa0014dab00d51346e1768",
+        "files": 2637,
+        "inputBytes": 120678267
+      },
+      "qualification": "Ordinary aggregate tier, not a one-worker variant. All held native-stage inputs remain identical except unused import/equivalent report field mask in the opt-in test. Sole file delta32B; author helper, production sources, private input/compiled bodies and rendering calls unchanged. No full102/frozen/benchmark claim."
+    }
+  ],
+  "final": {
+    "genuineExistingTakes": 4,
+    "families": 3,
+    "wordCount": 247,
+    "semanticCueWindows": 20,
+    "exports": 8,
+    "nativeFramesAndPasses": 5136,
+    "allDecodedVideoFrames": 5136,
+    "repeatedEncodedBodiesIdentical": true,
+    "allRepeatedDecodedFramesIdentical": true,
+    "completeRepeatedDecodedPcmIdentical": true,
+    "canonicalSourcePcmStillExact": true,
+    "frameCounts": [587, 646, 643, 692],
+    "shorterRevisedCopyHook": {
+      "sourceDifferenceSamples": 167184,
+      "sourceDifferenceSeconds": 3.483,
+      "outputDifferenceFrames": 105,
+      "outputDifferenceSeconds": 3.5,
+      "recompiledOwnWordsAndAllTracks": true,
+      "sameScriptClaim": false
+    },
+    "heldNativeInputs": {
+      "path": "/private/tmp/still-shift-ms2-spoken64-inputs2.json",
+      "bytes": 449782,
+      "sha256": "sha256:522a51f11270a20346978b83f6be44418834a0ac464e7c074814b942d556cad6",
+      "files": 2637,
+      "inputBytes": 120678235
+    },
+    "authoredBodyPrototypeParity": {
+      "path": "/private/tmp/still-shift-ms2-spoken64-prototype-parity1.json",
+      "bytes": 3453,
+      "sha256": "sha256:2cf8bcb4902b123c5dd030ebd216b019580578d53bc4a875e363da34654a835f"
+    },
+    "authoredBodyPrototypeMatches": 16,
+    "viewedFirstOutputFrames": 44,
+    "rows": [
+      {
+        "id": "EU-001",
+        "family": "tape-hook",
+        "sourceSampleCount": 938458,
+        "wordCount": 61,
+        "sourcePcmSha256": "sha256:82c8e2fc63d90fb3c178867cc1bf0915ac74b88a0d5d14300ce7ef1be00b7320",
+        "wordCoverage": [
+          {
+            "range": [1, 9],
+            "startSample": 0,
+            "endSampleExclusive": 158256
+          },
+          {
+            "range": [10, 21],
+            "startSample": 158256,
+            "endSampleExclusive": 326016
+          },
+          {
+            "range": [22, 33],
+            "startSample": 326016,
+            "endSampleExclusive": 503760
+          },
+          {
+            "range": [34, 43],
+            "startSample": 503760,
+            "endSampleExclusive": 656448
+          },
+          {
+            "range": [44, 61],
+            "startSample": 656448,
+            "endSampleExclusive": 938458
+          }
+        ],
+        "selectedCaptionStyle": "concise explanatory captions, not verbatim subtitles",
+        "markerScope": "Local synthetic low-gain engineering onset marker; narration source unchanged, no production soundtrack/listening acceptance",
+        "onsetProof": [
+          {
+            "id": "intro",
+            "startSample": 0,
+            "endSampleExclusive": 158256,
+            "startFrame": 0,
+            "endFrameExclusive": 99,
+            "wordRangeOneBasedInclusive": [1, 9],
+            "firstOutputFrameDelaySamples": 0
+          },
+          {
+            "id": "inside-face",
+            "startSample": 158256,
+            "endSampleExclusive": 326016,
+            "startFrame": 99,
+            "endFrameExclusive": 204,
+            "wordRangeOneBasedInclusive": [10, 21],
+            "firstOutputFrameDelaySamples": 144
+          },
+          {
+            "id": "outside-face",
+            "startSample": 326016,
+            "endSampleExclusive": 503760,
+            "startFrame": 204,
+            "endFrameExclusive": 315,
+            "wordRangeOneBasedInclusive": [22, 33],
+            "firstOutputFrameDelaySamples": 384
+          },
+          {
+            "id": "thickness",
+            "startSample": 503760,
+            "endSampleExclusive": 656448,
+            "startFrame": 315,
+            "endFrameExclusive": 411,
+            "wordRangeOneBasedInclusive": [34, 43],
+            "firstOutputFrameDelaySamples": 240
+          },
+          {
+            "id": "compensate",
+            "startSample": 656448,
+            "endSampleExclusive": 938458,
+            "startFrame": 411,
+            "endFrameExclusive": 587,
+            "wordRangeOneBasedInclusive": [44, 61],
+            "firstOutputFrameDelaySamples": 1152
+          }
+        ],
+        "negatives": [
+          {
+            "name": "overfull original final clause at unchanged18 graphemes/s",
+            "diagnostic": {
+              "code": "mechanism-cue-reading",
+              "path": ["cues", 4, "text"],
+              "pack": {
+                "id": "tape-hook",
+                "version": "1.0.0",
+                "sha256": "sha256:5f7fa4100db1ecbb36eb62d2c036857b3740ded49e41856870aed2769e260dd5",
+                "variant": "floating-hook",
+                "detail": "teaching"
+              },
+              "frame": 411
+            }
+          },
+          {
+            "name": "minimum action exceeds its supplied source interval",
+            "diagnostic": {
+              "code": "mechanism-cue-action",
+              "path": ["cues", 0, "minimumActionSamples"],
+              "pack": {
+                "id": "tape-hook",
+                "version": "1.0.0",
+                "sha256": "sha256:5f7fa4100db1ecbb36eb62d2c036857b3740ded49e41856870aed2769e260dd5",
+                "variant": "floating-hook",
+                "detail": "teaching"
+              },
+              "frame": 0
+            }
+          },
+          {
+            "name": "cue extends beyond the unchanged recording",
+            "diagnostic": {
+              "code": "mechanism-cue-recording",
+              "path": ["cues", 4],
+              "pack": {
+                "id": "tape-hook",
+                "version": "1.0.0",
+                "sha256": "sha256:5f7fa4100db1ecbb36eb62d2c036857b3740ded49e41856870aed2769e260dd5",
+                "variant": "floating-hook",
+                "detail": "teaching"
+              }
+            }
+          }
+        ],
+        "flexFrames": 0,
+        "outputBoundaryPaddingSamples": 742,
+        "compiled": {
+          "schemaVersion": "mechanism-cue-compile-result-1",
+          "status": "passed",
+          "compositionPath": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001/compiled/composition.json",
+          "receiptPath": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001/compiled/cue-compilation.json",
+          "receipt": {
+            "schemaVersion": "mechanism-cue-compilation-1",
+            "family": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001/family.json",
+              "revision": 0,
+              "projectHash": "sha256:5322779a9f16b5e605d1201c3b3ad63033f7988a76d3c12d0d869a947a0e3bfe"
+            },
+            "cue": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001/cues.json",
+              "revision": 0,
+              "projectHash": "sha256:f4f6fe390dac64b5899707413c89f1a02d99d3ced46a55f6e33fe749f34fcf36"
+            },
+            "composition": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001/compiled/composition.json",
+              "sha256": "sha256:d066a0071d4e35ba6508e721f829f1c62c9877ec693d3eecc0f54e7c6e818fcb"
+            },
+            "frameCount": 587,
+            "fps": 30,
+            "width": 640,
+            "height": 360
+          },
+          "scope": "current-revision-semantic-and-actual-media-compilation",
+          "nextAction": "Render this snapshot while the family/cue revision remains current."
+        },
+        "outputs": [
+          {
+            "suffix": "first",
+            "output": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001/first/output.mp4",
+              "bytes": 642280,
+              "sha256": "sha256:dda65c82f8f56439b347e94da10aef3230d1b1045dcdbf03e3ece02e94fc938d"
+            },
+            "renderResult": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001/first/output.mp4.result.json",
+              "bytes": 24413,
+              "sha256": "sha256:431e9a743d20e6cf0ec12d0b6b3ae12df115f367d466fe8dae0a039c3aa67f4b"
+            },
+            "publicNativeCheck": {
+              "schemaVersion": "mechanism-cue-check-result-1",
+              "status": "passed",
+              "scope": "current-revision-dependencies-encoded-video-facts-and-independent-native-observation-proof",
+              "outputPath": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001/first/output.mp4",
+              "outputSha256": "sha256:dda65c82f8f56439b347e94da10aef3230d1b1045dcdbf03e3ece02e94fc938d",
+              "familyRevision": 0,
+              "cueRevision": 0,
+              "nativeFrames": 587,
+              "nativePasses": 587,
+              "video": {
+                "width": 640,
+                "height": 360,
+                "nb_read_frames": "587",
+                "avg_frame_rate": "30/1"
+              },
+              "remainingQa": "Rendered label/layout/typography, listening and pilot acceptance are separate gates."
+            },
+            "decodedVideoFrames": 587,
+            "decodedAudioSha256": "sha256:c3273f99b00218e0e3b50be489d344c6a334fcf183e916102a05222e2f027c85",
+            "decodedAudioBytes": 7520256,
+            "retainedDecodedFrameBytes": 921600,
+            "sampledPeakParentRssBytes": 1379319808,
+            "sampledPeakProcessTreeRssBytes": 2801238016,
+            "declaredMemory": {
+              "scope": "declared-worker-application-bytes",
+              "applicationLimitBytes": 8589934592,
+              "reservedNodeBudgetBytes": 536870912,
+              "concurrentWorkers": 1,
+              "peakConcurrentWorkerBytes": 304098620,
+              "sumOfWorkerPeakBytes": 304098620,
+              "workers": [
+                {
+                  "beforeAcknowledgement": {
+                    "scope": "declared-application-owned-bytes",
+                    "limits": {
+                      "pixels": 7918845952,
+                      "metadata": 134217728
+                    },
+                    "current": {
+                      "pixels": 1529496,
+                      "metadata": 619300
+                    },
+                    "peak": {
+                      "pixels": 259807128,
+                      "metadata": 44291492
+                    },
+                    "reservations": 9
+                  },
+                  "afterAcknowledgement": {
+                    "scope": "declared-application-owned-bytes",
+                    "limits": {
+                      "pixels": 7918845952,
+                      "metadata": 134217728
+                    },
+                    "current": {
+                      "pixels": 0,
+                      "metadata": 0
+                    },
+                    "peak": {
+                      "pixels": 259807128,
+                      "metadata": 44291492
+                    },
+                    "reservations": 0
+                  }
+                }
+              ],
+              "nodeResults": {
+                "scope": "composition-node-source-and-result-capacity",
+                "limits": {
+                  "pixels": 1,
+                  "metadata": 536870911
+                },
+                "current": {
+                  "pixels": 0,
+                  "metadata": 84567230
+                },
+                "peak": {
+                  "pixels": 0,
+                  "metadata": 97669226
+                },
+                "reservations": 7,
+                "limitBytes": 536870912
+              }
+            }
+          },
+          {
+            "suffix": "repeat",
+            "output": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001/repeat/output.mp4",
+              "bytes": 642280,
+              "sha256": "sha256:dda65c82f8f56439b347e94da10aef3230d1b1045dcdbf03e3ece02e94fc938d"
+            },
+            "renderResult": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001/repeat/output.mp4.result.json",
+              "bytes": 24284,
+              "sha256": "sha256:e591082f5b30bf1899cd95ccce9f860e0fd557d72e7e3dd32fffb9dd7c17459f"
+            },
+            "publicNativeCheck": {
+              "schemaVersion": "mechanism-cue-check-result-1",
+              "status": "passed",
+              "scope": "current-revision-dependencies-encoded-video-facts-and-independent-native-observation-proof",
+              "outputPath": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001/repeat/output.mp4",
+              "outputSha256": "sha256:dda65c82f8f56439b347e94da10aef3230d1b1045dcdbf03e3ece02e94fc938d",
+              "familyRevision": 0,
+              "cueRevision": 0,
+              "nativeFrames": 587,
+              "nativePasses": 587,
+              "video": {
+                "width": 640,
+                "height": 360,
+                "nb_read_frames": "587",
+                "avg_frame_rate": "30/1"
+              },
+              "remainingQa": "Rendered label/layout/typography, listening and pilot acceptance are separate gates."
+            },
+            "decodedVideoFrames": 587,
+            "decodedAudioSha256": "sha256:c3273f99b00218e0e3b50be489d344c6a334fcf183e916102a05222e2f027c85",
+            "decodedAudioBytes": 7520256,
+            "retainedDecodedFrameBytes": 921600,
+            "sampledPeakParentRssBytes": 1566113792,
+            "sampledPeakProcessTreeRssBytes": 3184279552,
+            "declaredMemory": {
+              "scope": "declared-worker-application-bytes",
+              "applicationLimitBytes": 8589934592,
+              "reservedNodeBudgetBytes": 536870912,
+              "concurrentWorkers": 1,
+              "peakConcurrentWorkerBytes": 304098620,
+              "sumOfWorkerPeakBytes": 304098620,
+              "workers": [
+                {
+                  "beforeAcknowledgement": {
+                    "scope": "declared-application-owned-bytes",
+                    "limits": {
+                      "pixels": 7918845952,
+                      "metadata": 134217728
+                    },
+                    "current": {
+                      "pixels": 1529496,
+                      "metadata": 619056
+                    },
+                    "peak": {
+                      "pixels": 259807128,
+                      "metadata": 44291492
+                    },
+                    "reservations": 9
+                  },
+                  "afterAcknowledgement": {
+                    "scope": "declared-application-owned-bytes",
+                    "limits": {
+                      "pixels": 7918845952,
+                      "metadata": 134217728
+                    },
+                    "current": {
+                      "pixels": 0,
+                      "metadata": 0
+                    },
+                    "peak": {
+                      "pixels": 259807128,
+                      "metadata": 44291492
+                    },
+                    "reservations": 0
+                  }
+                }
+              ],
+              "nodeResults": {
+                "scope": "composition-node-source-and-result-capacity",
+                "limits": {
+                  "pixels": 1,
+                  "metadata": 536870911
+                },
+                "current": {
+                  "pixels": 0,
+                  "metadata": 84567278
+                },
+                "peak": {
+                  "pixels": 0,
+                  "metadata": 97669226
+                },
+                "reservations": 7,
+                "limitBytes": 536870912
+              }
+            }
+          }
+        ],
+        "agentViewedFirstContactSheet": {
+          "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001/first-preview-contact-sheet.png",
+          "bytes": 725775,
+          "sha256": "sha256:a6a759400b130bac52861aa549b9a7d4186bec0d8adce4402b10d76c280bde3b"
+        },
+        "firstOutputSampledFramesAgentViewed": 11
+      },
+      {
+        "id": "EU-002",
+        "family": "cable-tie",
+        "sourceSampleCount": 1032081,
+        "wordCount": 62,
+        "sourcePcmSha256": "sha256:11e144392856472d225de845b230e38139f6dc7bd2445327e2c0b10cb29aaa22",
+        "wordCoverage": [
+          {
+            "range": [1, 15],
+            "startSample": 0,
+            "endSampleExclusive": 257472
+          },
+          {
+            "range": [16, 27],
+            "startSample": 257472,
+            "endSampleExclusive": 472560
+          },
+          {
+            "range": [28, 42],
+            "startSample": 472560,
+            "endSampleExclusive": 737856
+          },
+          {
+            "range": [43, 62],
+            "startSample": 737856,
+            "endSampleExclusive": 1032081
+          }
+        ],
+        "selectedCaptionStyle": "concise explanatory captions, not verbatim subtitles",
+        "markerScope": "Local synthetic low-gain engineering onset marker; narration source unchanged, no production soundtrack/listening acceptance",
+        "onsetProof": [
+          {
+            "id": "intro",
+            "startSample": 0,
+            "endSampleExclusive": 257472,
+            "startFrame": 0,
+            "endFrameExclusive": 161,
+            "wordRangeOneBasedInclusive": [1, 15],
+            "firstOutputFrameDelaySamples": 0
+          },
+          {
+            "id": "tongue",
+            "startSample": 257472,
+            "endSampleExclusive": 472560,
+            "startFrame": 161,
+            "endFrameExclusive": 296,
+            "wordRangeOneBasedInclusive": [16, 27],
+            "firstOutputFrameDelaySamples": 128
+          },
+          {
+            "id": "forward-pass",
+            "startSample": 472560,
+            "endSampleExclusive": 737856,
+            "startFrame": 296,
+            "endFrameExclusive": 462,
+            "wordRangeOneBasedInclusive": [28, 42],
+            "firstOutputFrameDelaySamples": 1040
+          },
+          {
+            "id": "blocked-reverse",
+            "startSample": 737856,
+            "endSampleExclusive": 1032081,
+            "startFrame": 462,
+            "endFrameExclusive": 646,
+            "wordRangeOneBasedInclusive": [43, 62],
+            "firstOutputFrameDelaySamples": 1344
+          }
+        ],
+        "negatives": [
+          {
+            "name": "overfull original final clause at unchanged18 graphemes/s",
+            "diagnostic": {
+              "code": "mechanism-cue-reading",
+              "path": ["cues", 3, "text"],
+              "pack": {
+                "id": "cable-tie",
+                "version": "1.0.0",
+                "sha256": "sha256:c4243b4d3f4ae14561f955eff5874d1954adabf944d4daf96ca27d48b22b7a7c",
+                "variant": "outside-serrated-integral-pawl-cutaway",
+                "detail": "teaching"
+              },
+              "frame": 462
+            }
+          },
+          {
+            "name": "minimum action exceeds its supplied source interval",
+            "diagnostic": {
+              "code": "mechanism-cue-action",
+              "path": ["cues", 0, "minimumActionSamples"],
+              "pack": {
+                "id": "cable-tie",
+                "version": "1.0.0",
+                "sha256": "sha256:c4243b4d3f4ae14561f955eff5874d1954adabf944d4daf96ca27d48b22b7a7c",
+                "variant": "outside-serrated-integral-pawl-cutaway",
+                "detail": "teaching"
+              },
+              "frame": 0
+            }
+          },
+          {
+            "name": "cue extends beyond the unchanged recording",
+            "diagnostic": {
+              "code": "mechanism-cue-recording",
+              "path": ["cues", 3],
+              "pack": {
+                "id": "cable-tie",
+                "version": "1.0.0",
+                "sha256": "sha256:c4243b4d3f4ae14561f955eff5874d1954adabf944d4daf96ca27d48b22b7a7c",
+                "variant": "outside-serrated-integral-pawl-cutaway",
+                "detail": "teaching"
+              }
+            }
+          },
+          {
+            "name": "reverse travel while this non-releasable tie stays engaged",
+            "diagnostic": {
+              "code": "mechanism-ratchet-reverse",
+              "path": [
+                "rigControls",
+                "ratchet",
+                "position",
+                "keys",
+                4,
+                "value"
+              ],
+              "frame": 356,
+              "interval": {
+                "startFrame": 356,
+                "endFrameExclusive": 447
+              }
+            }
+          }
+        ],
+        "flexFrames": 208,
+        "outputBoundaryPaddingSamples": 1519,
+        "compiled": {
+          "schemaVersion": "mechanism-cue-compile-result-1",
+          "status": "passed",
+          "compositionPath": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-002/compiled/composition.json",
+          "receiptPath": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-002/compiled/cue-compilation.json",
+          "receipt": {
+            "schemaVersion": "mechanism-cue-compilation-1",
+            "family": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-002/family.json",
+              "revision": 0,
+              "projectHash": "sha256:b381816d77346ad17adf6ab8bfa63b7d44f24d275d7b0cf0b464753ae620a4d7"
+            },
+            "cue": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-002/cues.json",
+              "revision": 0,
+              "projectHash": "sha256:71c498ac410074439b59f04d5a6bb9749fc721c2f4fdd7b2b1dbe451a8c5e8a8"
+            },
+            "composition": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-002/compiled/composition.json",
+              "sha256": "sha256:dea440144c3861d1a498c2a8a7ad8e342e8c18d48587821ba55c022aae899388"
+            },
+            "frameCount": 646,
+            "fps": 30,
+            "width": 640,
+            "height": 360
+          },
+          "scope": "current-revision-semantic-and-actual-media-compilation",
+          "nextAction": "Render this snapshot while the family/cue revision remains current."
+        },
+        "outputs": [
+          {
+            "suffix": "first",
+            "output": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-002/first/output.mp4",
+              "bytes": 650104,
+              "sha256": "sha256:8d03e7269f37e7f69d4926b418b8ca31ba653827b7ea6149b544d8861e9607b7"
+            },
+            "renderResult": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-002/first/output.mp4.result.json",
+              "bytes": 20815,
+              "sha256": "sha256:1704d3868e3edeecbc4a61d67cd915afada78f8ac16695a12d03ca7b0fdad7a0"
+            },
+            "publicNativeCheck": {
+              "schemaVersion": "mechanism-cue-check-result-1",
+              "status": "passed",
+              "scope": "current-revision-dependencies-encoded-video-facts-and-independent-native-observation-proof",
+              "outputPath": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-002/first/output.mp4",
+              "outputSha256": "sha256:8d03e7269f37e7f69d4926b418b8ca31ba653827b7ea6149b544d8861e9607b7",
+              "familyRevision": 0,
+              "cueRevision": 0,
+              "nativeFrames": 646,
+              "nativePasses": 646,
+              "video": {
+                "width": 640,
+                "height": 360,
+                "nb_read_frames": "646",
+                "avg_frame_rate": "30/1"
+              },
+              "remainingQa": "Rendered label/layout/typography, listening and pilot acceptance are separate gates."
+            },
+            "decodedVideoFrames": 646,
+            "decodedAudioSha256": "sha256:07bdc373fde62ca2101544eb8c2e718be12d3a37f3881431c7ba6c7456240b0f",
+            "decodedAudioBytes": 8273920,
+            "retainedDecodedFrameBytes": 921600,
+            "sampledPeakParentRssBytes": 1739751424,
+            "sampledPeakProcessTreeRssBytes": 3345448960,
+            "declaredMemory": {
+              "scope": "declared-worker-application-bytes",
+              "applicationLimitBytes": 8589934592,
+              "reservedNodeBudgetBytes": 536870912,
+              "concurrentWorkers": 1,
+              "peakConcurrentWorkerBytes": 107135432,
+              "sumOfWorkerPeakBytes": 107135432,
+              "workers": [
+                {
+                  "beforeAcknowledgement": {
+                    "scope": "declared-application-owned-bytes",
+                    "limits": {
+                      "pixels": 7918845952,
+                      "metadata": 134217728
+                    },
+                    "current": {
+                      "pixels": 1529496,
+                      "metadata": 614328
+                    },
+                    "peak": {
+                      "pixels": 97146700,
+                      "metadata": 9988732
+                    },
+                    "reservations": 9
+                  },
+                  "afterAcknowledgement": {
+                    "scope": "declared-application-owned-bytes",
+                    "limits": {
+                      "pixels": 7918845952,
+                      "metadata": 134217728
+                    },
+                    "current": {
+                      "pixels": 0,
+                      "metadata": 0
+                    },
+                    "peak": {
+                      "pixels": 97146700,
+                      "metadata": 9988732
+                    },
+                    "reservations": 0
+                  }
+                }
+              ],
+              "nodeResults": {
+                "scope": "composition-node-source-and-result-capacity",
+                "limits": {
+                  "pixels": 1,
+                  "metadata": 536870911
+                },
+                "current": {
+                  "pixels": 0,
+                  "metadata": 20037668
+                },
+                "peak": {
+                  "pixels": 0,
+                  "metadata": 20567543
+                },
+                "reservations": 7,
+                "limitBytes": 536870912
+              }
+            }
+          },
+          {
+            "suffix": "repeat",
+            "output": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-002/repeat/output.mp4",
+              "bytes": 650104,
+              "sha256": "sha256:8d03e7269f37e7f69d4926b418b8ca31ba653827b7ea6149b544d8861e9607b7"
+            },
+            "renderResult": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-002/repeat/output.mp4.result.json",
+              "bytes": 20949,
+              "sha256": "sha256:c766210c0314755998efd3577ea29252cfef738b7fa7b466ab50efc70b357b79"
+            },
+            "publicNativeCheck": {
+              "schemaVersion": "mechanism-cue-check-result-1",
+              "status": "passed",
+              "scope": "current-revision-dependencies-encoded-video-facts-and-independent-native-observation-proof",
+              "outputPath": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-002/repeat/output.mp4",
+              "outputSha256": "sha256:8d03e7269f37e7f69d4926b418b8ca31ba653827b7ea6149b544d8861e9607b7",
+              "familyRevision": 0,
+              "cueRevision": 0,
+              "nativeFrames": 646,
+              "nativePasses": 646,
+              "video": {
+                "width": 640,
+                "height": 360,
+                "nb_read_frames": "646",
+                "avg_frame_rate": "30/1"
+              },
+              "remainingQa": "Rendered label/layout/typography, listening and pilot acceptance are separate gates."
+            },
+            "decodedVideoFrames": 646,
+            "decodedAudioSha256": "sha256:07bdc373fde62ca2101544eb8c2e718be12d3a37f3881431c7ba6c7456240b0f",
+            "decodedAudioBytes": 8273920,
+            "retainedDecodedFrameBytes": 921600,
+            "sampledPeakParentRssBytes": 1757462528,
+            "sampledPeakProcessTreeRssBytes": 3913465856,
+            "declaredMemory": {
+              "scope": "declared-worker-application-bytes",
+              "applicationLimitBytes": 8589934592,
+              "reservedNodeBudgetBytes": 536870912,
+              "concurrentWorkers": 1,
+              "peakConcurrentWorkerBytes": 107135432,
+              "sumOfWorkerPeakBytes": 107135432,
+              "workers": [
+                {
+                  "beforeAcknowledgement": {
+                    "scope": "declared-application-owned-bytes",
+                    "limits": {
+                      "pixels": 7918845952,
+                      "metadata": 134217728
+                    },
+                    "current": {
+                      "pixels": 1529496,
+                      "metadata": 614586
+                    },
+                    "peak": {
+                      "pixels": 97146700,
+                      "metadata": 9988732
+                    },
+                    "reservations": 9
+                  },
+                  "afterAcknowledgement": {
+                    "scope": "declared-application-owned-bytes",
+                    "limits": {
+                      "pixels": 7918845952,
+                      "metadata": 134217728
+                    },
+                    "current": {
+                      "pixels": 0,
+                      "metadata": 0
+                    },
+                    "peak": {
+                      "pixels": 97146700,
+                      "metadata": 9988732
+                    },
+                    "reservations": 0
+                  }
+                }
+              ],
+              "nodeResults": {
+                "scope": "composition-node-source-and-result-capacity",
+                "limits": {
+                  "pixels": 1,
+                  "metadata": 536870911
+                },
+                "current": {
+                  "pixels": 0,
+                  "metadata": 20037716
+                },
+                "peak": {
+                  "pixels": 0,
+                  "metadata": 20567543
+                },
+                "reservations": 7,
+                "limitBytes": 536870912
+              }
+            }
+          }
+        ],
+        "agentViewedFirstContactSheet": {
+          "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-002/first-preview-contact-sheet.png",
+          "bytes": 286120,
+          "sha256": "sha256:4c13cd658d0d64d1e33faf21553fc930f80a151863d6dac1ded2ee63d84dc722"
+        },
+        "firstOutputSampledFramesAgentViewed": 9
+      },
+      {
+        "id": "EU-003",
+        "family": "clothespeg",
+        "sourceSampleCount": 1027623,
+        "wordCount": 60,
+        "sourcePcmSha256": "sha256:d0d79016ccbf2d6fff606e2800da341d04e2e66b6b6692e5a6c7d9ce5f2ad3a1",
+        "wordCoverage": [
+          {
+            "range": [1, 9],
+            "startSample": 0,
+            "endSampleExclusive": 171072
+          },
+          {
+            "range": [10, 27],
+            "startSample": 171072,
+            "endSampleExclusive": 497664
+          },
+          {
+            "range": [28, 37],
+            "startSample": 497664,
+            "endSampleExclusive": 654240
+          },
+          {
+            "range": [38, 52],
+            "startSample": 654240,
+            "endSampleExclusive": 879936
+          },
+          {
+            "range": [53, 60],
+            "startSample": 879936,
+            "endSampleExclusive": 1027623
+          }
+        ],
+        "selectedCaptionStyle": "concise explanatory captions, not verbatim subtitles",
+        "markerScope": "Local synthetic low-gain engineering onset marker; narration source unchanged, no production soundtrack/listening acceptance",
+        "onsetProof": [
+          {
+            "id": "intro",
+            "startSample": 0,
+            "endSampleExclusive": 171072,
+            "startFrame": 0,
+            "endFrameExclusive": 107,
+            "wordRangeOneBasedInclusive": [1, 9],
+            "firstOutputFrameDelaySamples": 0
+          },
+          {
+            "id": "open",
+            "startSample": 171072,
+            "endSampleExclusive": 497664,
+            "startFrame": 107,
+            "endFrameExclusive": 312,
+            "wordRangeOneBasedInclusive": [10, 27],
+            "firstOutputFrameDelaySamples": 128
+          },
+          {
+            "id": "release",
+            "startSample": 497664,
+            "endSampleExclusive": 654240,
+            "startFrame": 312,
+            "endFrameExclusive": 409,
+            "wordRangeOneBasedInclusive": [28, 37],
+            "firstOutputFrameDelaySamples": 1536
+          },
+          {
+            "id": "fabric",
+            "startSample": 654240,
+            "endSampleExclusive": 879936,
+            "startFrame": 409,
+            "endFrameExclusive": 550,
+            "wordRangeOneBasedInclusive": [38, 52],
+            "firstOutputFrameDelaySamples": 160
+          },
+          {
+            "id": "bias",
+            "startSample": 879936,
+            "endSampleExclusive": 1027623,
+            "startFrame": 550,
+            "endFrameExclusive": 643,
+            "wordRangeOneBasedInclusive": [53, 60],
+            "firstOutputFrameDelaySamples": 64
+          }
+        ],
+        "negatives": [
+          {
+            "name": "minimum action exceeds its supplied source interval",
+            "diagnostic": {
+              "code": "mechanism-cue-action",
+              "path": ["cues", 0, "minimumActionSamples"],
+              "pack": {
+                "id": "clothespeg",
+                "version": "1.0.0",
+                "sha256": "sha256:1d6050d5ac18a16722e3766bf8da86a4f0c418012d50e3a15a6eeadd1b7ac281",
+                "variant": "wood-arms-central-spring-cloth",
+                "detail": "teaching"
+              },
+              "frame": 0
+            }
+          },
+          {
+            "name": "cue extends beyond the unchanged recording",
+            "diagnostic": {
+              "code": "mechanism-cue-recording",
+              "path": ["cues", 4],
+              "pack": {
+                "id": "clothespeg",
+                "version": "1.0.0",
+                "sha256": "sha256:1d6050d5ac18a16722e3766bf8da86a4f0c418012d50e3a15a6eeadd1b7ac281",
+                "variant": "wood-arms-central-spring-cloth",
+                "detail": "teaching"
+              }
+            }
+          }
+        ],
+        "flexFrames": 0,
+        "outputBoundaryPaddingSamples": 1177,
+        "compiled": {
+          "schemaVersion": "mechanism-cue-compile-result-1",
+          "status": "passed",
+          "compositionPath": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-003/compiled/composition.json",
+          "receiptPath": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-003/compiled/cue-compilation.json",
+          "receipt": {
+            "schemaVersion": "mechanism-cue-compilation-1",
+            "family": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-003/family.json",
+              "revision": 0,
+              "projectHash": "sha256:7206914eb3124a85717bd9ab8f2389bc30e20d2884310f1311c1f99a41e29fce"
+            },
+            "cue": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-003/cues.json",
+              "revision": 0,
+              "projectHash": "sha256:2ccc94e81c0462309b77136ab33108a5e36014dc278599fbecf9b6f2627eaecf"
+            },
+            "composition": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-003/compiled/composition.json",
+              "sha256": "sha256:37c7b16d2ff8dce4efea20deffd101db8188626b897eedfd0ee5faba49b3fd88"
+            },
+            "frameCount": 643,
+            "fps": 30,
+            "width": 640,
+            "height": 360
+          },
+          "scope": "current-revision-semantic-and-actual-media-compilation",
+          "nextAction": "Render this snapshot while the family/cue revision remains current."
+        },
+        "outputs": [
+          {
+            "suffix": "first",
+            "output": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-003/first/output.mp4",
+              "bytes": 650575,
+              "sha256": "sha256:59131aa75589d70c5c858004168480263f1e2b8d874628ee5ea4b86ef7da77dd"
+            },
+            "renderResult": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-003/first/output.mp4.result.json",
+              "bytes": 16804,
+              "sha256": "sha256:c0ee43c30f013064d46d57b039704488cc026aa29b7a7fabfa64efa3289a80a2"
+            },
+            "publicNativeCheck": {
+              "schemaVersion": "mechanism-cue-check-result-1",
+              "status": "passed",
+              "scope": "current-revision-dependencies-encoded-video-facts-and-independent-native-observation-proof",
+              "outputPath": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-003/first/output.mp4",
+              "outputSha256": "sha256:59131aa75589d70c5c858004168480263f1e2b8d874628ee5ea4b86ef7da77dd",
+              "familyRevision": 0,
+              "cueRevision": 0,
+              "nativeFrames": 643,
+              "nativePasses": 643,
+              "video": {
+                "width": 640,
+                "height": 360,
+                "nb_read_frames": "643",
+                "avg_frame_rate": "30/1"
+              },
+              "remainingQa": "Rendered label/layout/typography, listening and pilot acceptance are separate gates."
+            },
+            "decodedVideoFrames": 643,
+            "decodedAudioSha256": "sha256:2a713b171c8d32aee9489b16c77899162bf1de4cbde999f01716f22d69546790",
+            "decodedAudioBytes": 8232960,
+            "retainedDecodedFrameBytes": 921600,
+            "sampledPeakParentRssBytes": 1760854016,
+            "sampledPeakProcessTreeRssBytes": 2896412672,
+            "declaredMemory": {
+              "scope": "declared-worker-application-bytes",
+              "applicationLimitBytes": 8589934592,
+              "reservedNodeBudgetBytes": 536870912,
+              "concurrentWorkers": 1,
+              "peakConcurrentWorkerBytes": 108463736,
+              "sumOfWorkerPeakBytes": 108463736,
+              "workers": [
+                {
+                  "beforeAcknowledgement": {
+                    "scope": "declared-application-owned-bytes",
+                    "limits": {
+                      "pixels": 7918845952,
+                      "metadata": 134217728
+                    },
+                    "current": {
+                      "pixels": 1529496,
+                      "metadata": 603612
+                    },
+                    "peak": {
+                      "pixels": 98417068,
+                      "metadata": 10046668
+                    },
+                    "reservations": 9
+                  },
+                  "afterAcknowledgement": {
+                    "scope": "declared-application-owned-bytes",
+                    "limits": {
+                      "pixels": 7918845952,
+                      "metadata": 134217728
+                    },
+                    "current": {
+                      "pixels": 0,
+                      "metadata": 0
+                    },
+                    "peak": {
+                      "pixels": 98417068,
+                      "metadata": 10046668
+                    },
+                    "reservations": 0
+                  }
+                }
+              ],
+              "nodeResults": {
+                "scope": "composition-node-source-and-result-capacity",
+                "limits": {
+                  "pixels": 1,
+                  "metadata": 536870911
+                },
+                "current": {
+                  "pixels": 0,
+                  "metadata": 14306706
+                },
+                "peak": {
+                  "pixels": 0,
+                  "metadata": 15229990
+                },
+                "reservations": 7,
+                "limitBytes": 536870912
+              }
+            }
+          },
+          {
+            "suffix": "repeat",
+            "output": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-003/repeat/output.mp4",
+              "bytes": 650575,
+              "sha256": "sha256:59131aa75589d70c5c858004168480263f1e2b8d874628ee5ea4b86ef7da77dd"
+            },
+            "renderResult": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-003/repeat/output.mp4.result.json",
+              "bytes": 16878,
+              "sha256": "sha256:0b7d13128e9f9ec8b1822191139a89147f75d4d30d8cac533300728dfb01de80"
+            },
+            "publicNativeCheck": {
+              "schemaVersion": "mechanism-cue-check-result-1",
+              "status": "passed",
+              "scope": "current-revision-dependencies-encoded-video-facts-and-independent-native-observation-proof",
+              "outputPath": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-003/repeat/output.mp4",
+              "outputSha256": "sha256:59131aa75589d70c5c858004168480263f1e2b8d874628ee5ea4b86ef7da77dd",
+              "familyRevision": 0,
+              "cueRevision": 0,
+              "nativeFrames": 643,
+              "nativePasses": 643,
+              "video": {
+                "width": 640,
+                "height": 360,
+                "nb_read_frames": "643",
+                "avg_frame_rate": "30/1"
+              },
+              "remainingQa": "Rendered label/layout/typography, listening and pilot acceptance are separate gates."
+            },
+            "decodedVideoFrames": 643,
+            "decodedAudioSha256": "sha256:2a713b171c8d32aee9489b16c77899162bf1de4cbde999f01716f22d69546790",
+            "decodedAudioBytes": 8232960,
+            "retainedDecodedFrameBytes": 921600,
+            "sampledPeakParentRssBytes": 1542373376,
+            "sampledPeakProcessTreeRssBytes": 3263348736,
+            "declaredMemory": {
+              "scope": "declared-worker-application-bytes",
+              "applicationLimitBytes": 8589934592,
+              "reservedNodeBudgetBytes": 536870912,
+              "concurrentWorkers": 1,
+              "peakConcurrentWorkerBytes": 108463736,
+              "sumOfWorkerPeakBytes": 108463736,
+              "workers": [
+                {
+                  "beforeAcknowledgement": {
+                    "scope": "declared-application-owned-bytes",
+                    "limits": {
+                      "pixels": 7918845952,
+                      "metadata": 134217728
+                    },
+                    "current": {
+                      "pixels": 1529496,
+                      "metadata": 603760
+                    },
+                    "peak": {
+                      "pixels": 98417068,
+                      "metadata": 10046668
+                    },
+                    "reservations": 9
+                  },
+                  "afterAcknowledgement": {
+                    "scope": "declared-application-owned-bytes",
+                    "limits": {
+                      "pixels": 7918845952,
+                      "metadata": 134217728
+                    },
+                    "current": {
+                      "pixels": 0,
+                      "metadata": 0
+                    },
+                    "peak": {
+                      "pixels": 98417068,
+                      "metadata": 10046668
+                    },
+                    "reservations": 0
+                  }
+                }
+              ],
+              "nodeResults": {
+                "scope": "composition-node-source-and-result-capacity",
+                "limits": {
+                  "pixels": 1,
+                  "metadata": 536870911
+                },
+                "current": {
+                  "pixels": 0,
+                  "metadata": 14306754
+                },
+                "peak": {
+                  "pixels": 0,
+                  "metadata": 15229990
+                },
+                "reservations": 7,
+                "limitBytes": 536870912
+              }
+            }
+          }
+        ],
+        "agentViewedFirstContactSheet": {
+          "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-003/first-preview-contact-sheet.png",
+          "bytes": 412530,
+          "sha256": "sha256:e4752b50decefcf40fdd42ecac59216df2af38f2f952f2aea34699666b58767d"
+        },
+        "firstOutputSampledFramesAgentViewed": 11
+      },
+      {
+        "id": "EU-001-legacy",
+        "family": "tape-hook",
+        "sourceSampleCount": 1105642,
+        "wordCount": 64,
+        "sourcePcmSha256": "sha256:d14765728896aaa84f12c63a756ef4bfb57e810f6f2e037c1df6098b3e0db4eb",
+        "wordCoverage": [
+          {
+            "range": [1, 6],
+            "startSample": 0,
+            "endSampleExclusive": 126480
+          },
+          {
+            "range": [7, 15],
+            "startSample": 126480,
+            "endSampleExclusive": 261360
+          },
+          {
+            "range": [16, 24],
+            "startSample": 261360,
+            "endSampleExclusive": 397344
+          },
+          {
+            "range": [25, 31],
+            "startSample": 397344,
+            "endSampleExclusive": 537216
+          },
+          {
+            "range": [32, 49],
+            "startSample": 537216,
+            "endSampleExclusive": 843168
+          },
+          {
+            "range": [50, 64],
+            "startSample": 843168,
+            "endSampleExclusive": 1105642
+          }
+        ],
+        "selectedCaptionStyle": "concise explanatory captions, not verbatim subtitles",
+        "markerScope": "Local synthetic low-gain engineering onset marker; narration source unchanged, no production soundtrack/listening acceptance",
+        "onsetProof": [
+          {
+            "id": "intro",
+            "startSample": 0,
+            "endSampleExclusive": 126480,
+            "startFrame": 0,
+            "endFrameExclusive": 80,
+            "wordRangeOneBasedInclusive": [1, 6],
+            "firstOutputFrameDelaySamples": 0
+          },
+          {
+            "id": "inside-face",
+            "startSample": 126480,
+            "endSampleExclusive": 261360,
+            "startFrame": 80,
+            "endFrameExclusive": 164,
+            "wordRangeOneBasedInclusive": [7, 15],
+            "firstOutputFrameDelaySamples": 1520
+          },
+          {
+            "id": "outside-face",
+            "startSample": 261360,
+            "endSampleExclusive": 397344,
+            "startFrame": 164,
+            "endFrameExclusive": 249,
+            "wordRangeOneBasedInclusive": [16, 24],
+            "firstOutputFrameDelaySamples": 1040
+          },
+          {
+            "id": "thickness",
+            "startSample": 397344,
+            "endSampleExclusive": 537216,
+            "startFrame": 249,
+            "endFrameExclusive": 336,
+            "wordRangeOneBasedInclusive": [25, 31],
+            "firstOutputFrameDelaySamples": 1056
+          },
+          {
+            "id": "compensate",
+            "startSample": 537216,
+            "endSampleExclusive": 843168,
+            "startFrame": 336,
+            "endFrameExclusive": 527,
+            "wordRangeOneBasedInclusive": [32, 49],
+            "firstOutputFrameDelaySamples": 384
+          },
+          {
+            "id": "aligned",
+            "startSample": 843168,
+            "endSampleExclusive": 1105642,
+            "startFrame": 527,
+            "endFrameExclusive": 692,
+            "wordRangeOneBasedInclusive": [50, 64],
+            "firstOutputFrameDelaySamples": 32
+          }
+        ],
+        "negatives": [
+          {
+            "name": "minimum action exceeds its supplied source interval",
+            "diagnostic": {
+              "code": "mechanism-cue-action",
+              "path": ["cues", 0, "minimumActionSamples"],
+              "pack": {
+                "id": "tape-hook",
+                "version": "1.0.0",
+                "sha256": "sha256:5f7fa4100db1ecbb36eb62d2c036857b3740ded49e41856870aed2769e260dd5",
+                "variant": "floating-hook",
+                "detail": "teaching"
+              },
+              "frame": 0
+            }
+          },
+          {
+            "name": "cue extends beyond the unchanged recording",
+            "diagnostic": {
+              "code": "mechanism-cue-recording",
+              "path": ["cues", 5],
+              "pack": {
+                "id": "tape-hook",
+                "version": "1.0.0",
+                "sha256": "sha256:5f7fa4100db1ecbb36eb62d2c036857b3740ded49e41856870aed2769e260dd5",
+                "variant": "floating-hook",
+                "detail": "teaching"
+              }
+            }
+          }
+        ],
+        "flexFrames": 0,
+        "outputBoundaryPaddingSamples": 1558,
+        "compiled": {
+          "schemaVersion": "mechanism-cue-compile-result-1",
+          "status": "passed",
+          "compositionPath": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001-legacy/compiled/composition.json",
+          "receiptPath": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001-legacy/compiled/cue-compilation.json",
+          "receipt": {
+            "schemaVersion": "mechanism-cue-compilation-1",
+            "family": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001-legacy/family.json",
+              "revision": 0,
+              "projectHash": "sha256:6439155df4bc3a6eef922ea0093896891eaaf52255a4ebaf411f898022d61e61"
+            },
+            "cue": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001-legacy/cues.json",
+              "revision": 0,
+              "projectHash": "sha256:66ee6b94839969640c7971f527c76df1e56afce00b367774c05fef6484cf3cc3"
+            },
+            "composition": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001-legacy/compiled/composition.json",
+              "sha256": "sha256:fc0469ed4f84446f7bb6ba269cd5738d0e5298492cb8bd7a59d2b87376fb6ced"
+            },
+            "frameCount": 692,
+            "fps": 30,
+            "width": 640,
+            "height": 360
+          },
+          "scope": "current-revision-semantic-and-actual-media-compilation",
+          "nextAction": "Render this snapshot while the family/cue revision remains current."
+        },
+        "outputs": [
+          {
+            "suffix": "first",
+            "output": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001-legacy/first/output.mp4",
+              "bytes": 735898,
+              "sha256": "sha256:bfda8036607bdc4ac3cf3b6826b79382ef9d24addce863e8fc6c0d81d94d601a"
+            },
+            "renderResult": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001-legacy/first/output.mp4.result.json",
+              "bytes": 27771,
+              "sha256": "sha256:e4fee060be44f70dd03738bbb26df5e387e7bce1ff8da9eda0f52c26f2ad42ad"
+            },
+            "publicNativeCheck": {
+              "schemaVersion": "mechanism-cue-check-result-1",
+              "status": "passed",
+              "scope": "current-revision-dependencies-encoded-video-facts-and-independent-native-observation-proof",
+              "outputPath": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001-legacy/first/output.mp4",
+              "outputSha256": "sha256:bfda8036607bdc4ac3cf3b6826b79382ef9d24addce863e8fc6c0d81d94d601a",
+              "familyRevision": 0,
+              "cueRevision": 0,
+              "nativeFrames": 692,
+              "nativePasses": 692,
+              "video": {
+                "width": 640,
+                "height": 360,
+                "nb_read_frames": "692",
+                "avg_frame_rate": "30/1"
+              },
+              "remainingQa": "Rendered label/layout/typography, listening and pilot acceptance are separate gates."
+            },
+            "decodedVideoFrames": 692,
+            "decodedAudioSha256": "sha256:50989acaa4de3145a956e7bb801cf222ba175779ca04119a3cc212c31d1ae5bf",
+            "decodedAudioBytes": 8863744,
+            "retainedDecodedFrameBytes": 921600,
+            "sampledPeakParentRssBytes": 1839054848,
+            "sampledPeakProcessTreeRssBytes": 3426975744,
+            "declaredMemory": {
+              "scope": "declared-worker-application-bytes",
+              "applicationLimitBytes": 8589934592,
+              "reservedNodeBudgetBytes": 536870912,
+              "concurrentWorkers": 1,
+              "peakConcurrentWorkerBytes": 305009574,
+              "sumOfWorkerPeakBytes": 305009574,
+              "workers": [
+                {
+                  "beforeAcknowledgement": {
+                    "scope": "declared-application-owned-bytes",
+                    "limits": {
+                      "pixels": 7918845952,
+                      "metadata": 134217728
+                    },
+                    "current": {
+                      "pixels": 1529496,
+                      "metadata": 636848
+                    },
+                    "peak": {
+                      "pixels": 260685712,
+                      "metadata": 44323862
+                    },
+                    "reservations": 9
+                  },
+                  "afterAcknowledgement": {
+                    "scope": "declared-application-owned-bytes",
+                    "limits": {
+                      "pixels": 7918845952,
+                      "metadata": 134217728
+                    },
+                    "current": {
+                      "pixels": 0,
+                      "metadata": 0
+                    },
+                    "peak": {
+                      "pixels": 260685712,
+                      "metadata": 44323862
+                    },
+                    "reservations": 0
+                  }
+                }
+              ],
+              "nodeResults": {
+                "scope": "composition-node-source-and-result-capacity",
+                "limits": {
+                  "pixels": 1,
+                  "metadata": 536870911
+                },
+                "current": {
+                  "pixels": 0,
+                  "metadata": 84905796
+                },
+                "peak": {
+                  "pixels": 0,
+                  "metadata": 97906887
+                },
+                "reservations": 7,
+                "limitBytes": 536870912
+              }
+            }
+          },
+          {
+            "suffix": "repeat",
+            "output": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001-legacy/repeat/output.mp4",
+              "bytes": 735898,
+              "sha256": "sha256:bfda8036607bdc4ac3cf3b6826b79382ef9d24addce863e8fc6c0d81d94d601a"
+            },
+            "renderResult": {
+              "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001-legacy/repeat/output.mp4.result.json",
+              "bytes": 27832,
+              "sha256": "sha256:3f1ce4f256c4489ad45972d5b870bf643261c7e819a104a60ebee2f32295a787"
+            },
+            "publicNativeCheck": {
+              "schemaVersion": "mechanism-cue-check-result-1",
+              "status": "passed",
+              "scope": "current-revision-dependencies-encoded-video-facts-and-independent-native-observation-proof",
+              "outputPath": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001-legacy/repeat/output.mp4",
+              "outputSha256": "sha256:bfda8036607bdc4ac3cf3b6826b79382ef9d24addce863e8fc6c0d81d94d601a",
+              "familyRevision": 0,
+              "cueRevision": 0,
+              "nativeFrames": 692,
+              "nativePasses": 692,
+              "video": {
+                "width": 640,
+                "height": 360,
+                "nb_read_frames": "692",
+                "avg_frame_rate": "30/1"
+              },
+              "remainingQa": "Rendered label/layout/typography, listening and pilot acceptance are separate gates."
+            },
+            "decodedVideoFrames": 692,
+            "decodedAudioSha256": "sha256:50989acaa4de3145a956e7bb801cf222ba175779ca04119a3cc212c31d1ae5bf",
+            "decodedAudioBytes": 8863744,
+            "retainedDecodedFrameBytes": 921600,
+            "sampledPeakParentRssBytes": 1863778304,
+            "sampledPeakProcessTreeRssBytes": 3491823616,
+            "declaredMemory": {
+              "scope": "declared-worker-application-bytes",
+              "applicationLimitBytes": 8589934592,
+              "reservedNodeBudgetBytes": 536870912,
+              "concurrentWorkers": 1,
+              "peakConcurrentWorkerBytes": 305009574,
+              "sumOfWorkerPeakBytes": 305009574,
+              "workers": [
+                {
+                  "beforeAcknowledgement": {
+                    "scope": "declared-application-owned-bytes",
+                    "limits": {
+                      "pixels": 7918845952,
+                      "metadata": 134217728
+                    },
+                    "current": {
+                      "pixels": 1529496,
+                      "metadata": 636980
+                    },
+                    "peak": {
+                      "pixels": 260685712,
+                      "metadata": 44323862
+                    },
+                    "reservations": 9
+                  },
+                  "afterAcknowledgement": {
+                    "scope": "declared-application-owned-bytes",
+                    "limits": {
+                      "pixels": 7918845952,
+                      "metadata": 134217728
+                    },
+                    "current": {
+                      "pixels": 0,
+                      "metadata": 0
+                    },
+                    "peak": {
+                      "pixels": 260685712,
+                      "metadata": 44323862
+                    },
+                    "reservations": 0
+                  }
+                }
+              ],
+              "nodeResults": {
+                "scope": "composition-node-source-and-result-capacity",
+                "limits": {
+                  "pixels": 1,
+                  "metadata": 536870911
+                },
+                "current": {
+                  "pixels": 0,
+                  "metadata": 84905844
+                },
+                "peak": {
+                  "pixels": 0,
+                  "metadata": 97906887
+                },
+                "reservations": 7,
+                "limitBytes": 536870912
+              }
+            }
+          }
+        ],
+        "agentViewedFirstContactSheet": {
+          "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001-legacy/first-preview-contact-sheet.png",
+          "bytes": 860052,
+          "sha256": "sha256:cf36c6ed7051a3e1aef4b83cbbc50f0ab02918ee61d73af26bd5a964389c8e6c"
+        },
+        "firstOutputSampledFramesAgentViewed": 13
+      }
+    ],
+    "ordinaryFastTier": {
+      "passed": true,
+      "unitTests": 4353,
+      "unitFiles": 428,
+      "heldFiles": 2637,
+      "heldInputBytes": 120678267,
+      "sourceDeltaAfterNativeRun": ["tests/browser/mechanism-spoken-inputs.ts"],
+      "sourceDeltaQualification": "Unused import removal plus equivalent report rest-sibling omission;32B delta. The report mask preserves the same enumerable fields; no render or authoring invocation/semantic change."
+    },
+    "viewedFramesMatchFullAudit": {
+      "path": "/private/tmp/still-shift-ms2-spoken64-view-parity1.json",
+      "bytes": 599,
+      "sha256": "sha256:4743875942efa4568a25f09209997b072d4487f5abe1c4983eb18fc166c34cca"
+    }
+  },
+  "independentAudit": {
+    "report": {
+      "path": "/private/tmp/still-shift-ms2-spoken64-audit1.json",
+      "bytes": 34512,
+      "sha256": "sha256:7f62cebe9b75171d17cebb3babdc11638e37abbb2675d6a474db5c291b2dc6cc"
+    },
+    "log": {
+      "path": "/private/tmp/still-shift-ms2-spoken64-audit1.log",
+      "bytes": 191,
+      "sha256": "sha256:a53ec543cc6c9c819f10a414d06aa82e24f7f07a148f3a62eb672c43cd91ab6e"
+    },
+    "scope": "Independent original/canonical/transcript/body pins, exact selected word coverage/endpoints, authored/visible ASCII caption capacity/action windows, all final native journal clocks/source/geometry/hierarchy/static-camera matrices, actual encoded bodies/every decoded frame/complete repeated PCM. No independent rig replay here; public native output check replays every expected rig/source/GPU observation. Source audio remains exact; lossy AAC decoded PCM is compared between repeats, not asserted identical to source. No encoded glyph threshold or human/listening/pilot acceptance.",
+    "factPinChecks": 60,
+    "nativeRows": 5136,
+    "hierarchyPairs": 41028,
+    "cameraTriples": 5136,
+    "decodedVideoFrames": 5136,
+    "decoderStoredFrameBytes": 921600
+  },
+  "visualReview": {
+    "status": "scoped-sampled-agent-review-with-open-presentation-issues",
+    "firstOutputContactSheets": 4,
+    "agentViewedFrames": 44,
+    "findings": [
+      "Explanatory captions appear complete and readable in the44 sampled decoded frames; this is not an all-frame encoded glyph/OCR threshold pass.",
+      "Tape inside-face labels, cable root labels and peg contact labels are hidden under their authored hide-occluded policy. No all-label visibility or correct final presentation claim.",
+      "Tape travel is subtle under the wide default camera; both measurement contexts coexist in the engineering model. Purposeful closeups/comparisons and continuous motion require separate production visual work.",
+      "Peg opening/return/fabric stop is visible in samples; source spring bias is illustrative and no force or spring-stiffness magnitude is claimed."
+    ],
+    "humanListeningAccepted": false,
+    "portraitPilotAccepted": false
+  },
+  "remaining": [
+    "Whole application/source/world/result/replay and physical/driver resource/lifetime admission remains open. Normal declared worker/Node statistics and sampled RSS are recorded separately, not treated as one physical threshold.",
+    "Current full102/frozen176/36061-frame/benchmark and final source/archive/installed/pack/MS2 PR refresh before MS3 remain required. Historical stopped full51 and unverified world61 producer terminal remain retained.",
+    "Camera/contact-label/continuous-motion/encoded glyph/readability/factual explanation quality and human visual/listening acceptance remain separate. Genuine engineering exports do not validate all10 episodes or admit supported packs.",
+    "E06 official primary-source supplement is ready separately but its new factual asset/analytic behavior/continuous native proof is not admitted. Frozen selection remains unchanged. No paid generation, Actions, milestone merge, npm publication or private media/transcript redistribution."
+  ],
+  "supportedPacks": 0,
+  "coverageValidated": 0,
+  "pilotAcceptedEpisodes": 0
+}

@@ -979,6 +979,24 @@ mechanism families establish whether the architecture transfers.
       Two rounded transcript endpoints slightly overrun receipt durations; actual
       decoded sample bounds must govern authoring. No new synthesis, spending,
       successful genuine-speech render or owner acceptance is claimed.
+      That is the historical slice52 scope. Slice64 now authors all247 supplied
+      words/20 semantic windows for four whole48k takes, including the revised-copy
+      hook at587 frames versus legacy692. Only measured final-word15/9 sample clamps
+      and peg's visual-end+1 are applied to authoring; source audio stays byte-exact.
+      Concise explanatory captions fit unchanged18 graphemes/s; original overfull
+      final hook/tie clauses and source/action/engaged reverse/product release controls
+      reject. Owned native1 verifies8 repeated exports/5,136 native frames; complete
+      bodies/decoded frames/PCM repeat. Owned audit1 verifies60 pins/41,028 hierarchy
+      pairs/5,136 cameras/decoded frames;44 viewed frame pixels match it. Ordinary
+      fast1 passes4,353 units/428 files on held2,637 inputs. The post-native32B test
+      change only removes unused import/rest-sibling names; production/authoring/media
+      remain fixed. [Genuine cue evidence](./mechanism-shorts-ms2-genuine-spoken-cue-results.json)
+      retains prototype/type/lint failures and the lost prototype2 terminal. Contact
+      labels hide under current occlusion policy; wide hook travel is subtle. Actual
+      closeups/annotation/continuous/encoded/factual/listening/portrait/pack acceptance
+      and whole resources/current full/final gates remain open; no human acceptance
+      follows from this engineering proof. The private opt-in group does not make
+      the portable full102 depend on private media.
 - [ ] Expose registry-derived discovery, per-component schema/parameter help,
       small examples, asset metadata and stable revision-aware editing. Publish
       versioned JSON Schemas for the expanded contracts and retain MS1 response

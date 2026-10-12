@@ -16310,6 +16310,28 @@
       "fullMatrixGroups": 102,
       "fullMatrixPassed": false,
       "qualification": "Declared parent/source/result capacities and observed own descendants/artifacts only. Post-settlement cleanup waits match the existing2s policy; physical RSS is sampled without a new threshold. Whole application/driver admission, genuine speech/full102/final archive/installed/pack/human acceptance remain separate."
+    },
+    {
+      "id": "genuine-spoken-cues64",
+      "status": "passed-scoped-genuine-existing-audio-and-native-output-staged-verification",
+      "record": {
+        "path": "docs/mechanism-shorts-ms2-genuine-spoken-cue-results.json",
+        "bytes": 71316,
+        "sha256": "sha256:4b1e2e319c81c0a841a5a0a31f5013887e695134e8c85dffb1047e3d148e206b"
+      },
+      "actualNativeExitCode": 0,
+      "actualAuditExitCode": 0,
+      "actualOrdinaryFastExitCode": 0,
+      "exports": 8,
+      "nativeFrames": 5136,
+      "decodedFrames": 5136,
+      "words": 247,
+      "semanticWindows": 20,
+      "unitTests": 4353,
+      "unitFiles": 428,
+      "currentPortableFullMatrixGroups": 102,
+      "portableFullMatrixPassed": false,
+      "humanListeningAccepted": false
     }
   ],
   "implementation": {
@@ -18456,6 +18478,39 @@
         "Full102 including this registered serial group, frozen176/36061/benchmark and current source/archive/installed API/CLI/pack/validated10-question coverage/MS2 PR before MS3 remain required. Historical stopped full51 keeps its original94-group scope; slice61 producer terminal remains unverified until owning full rerun.",
         "Encoded glyph/copy/readability, broader continuous layout and human visual/listening/pilot acceptance remain separate. Supported packs0; validated coverage0/10; accepted pilot0. No paid generation, merge, npm publication, Actions or private media redistribution."
       ]
+    },
+    "sixtyFourthSlice": {
+      "record": {
+        "path": "docs/mechanism-shorts-ms2-genuine-spoken-cue-results.json",
+        "bytes": 71316,
+        "sha256": "sha256:4b1e2e319c81c0a841a5a0a31f5013887e695134e8c85dffb1047e3d148e206b"
+      },
+      "scope": "Four existing unpaced genuine spoken takes, each own supplied timed words and unchanged complete canonical48k mono source. Typed opt-in private-input gate; no private input dependency added to portable pnpm test. All20 semantic cue windows drive current native picture, captions, annotations, marker/event and local synthetic onset-marker sound tracks.640x360 at30fps engineering output is not the portrait pilot.",
+      "heldNativeInputs": {
+        "path": "/private/tmp/still-shift-ms2-spoken64-inputs2.json",
+        "bytes": 449782,
+        "sha256": "sha256:522a51f11270a20346978b83f6be44418834a0ac464e7c074814b942d556cad6",
+        "files": 2637,
+        "inputBytes": 120678235
+      },
+      "ordinaryFastTier": {
+        "passed": true,
+        "unitTests": 4353,
+        "unitFiles": 428,
+        "heldFiles": 2637,
+        "heldInputBytes": 120678267,
+        "sourceDeltaAfterNativeRun": [
+          "tests/browser/mechanism-spoken-inputs.ts"
+        ],
+        "sourceDeltaQualification": "Unused import removal plus equivalent report rest-sibling omission;32B delta. The report mask preserves the same enumerable fields; no render or authoring invocation/semantic change."
+      },
+      "failuresRetained": "Prototype bad cloth anchor; prototype2 terminal unverified; first typed build and four unused names. Owning native1/audit1/ordinary fast1 pass; lint-only32B report mask delta qualified.",
+      "remaining": [
+        "Whole application/source/world/result/replay and physical/driver resource/lifetime admission remains open. Normal declared worker/Node statistics and sampled RSS are recorded separately, not treated as one physical threshold.",
+        "Current full102/frozen176/36061-frame/benchmark and final source/archive/installed/pack/MS2 PR refresh before MS3 remain required. Historical stopped full51 and unverified world61 producer terminal remain retained.",
+        "Camera/contact-label/continuous-motion/encoded glyph/readability/factual explanation quality and human visual/listening acceptance remain separate. Genuine engineering exports do not validate all10 episodes or admit supported packs.",
+        "E06 official primary-source supplement is ready separately but its new factual asset/analytic behavior/continuous native proof is not admitted. Frozen selection remains unchanged. No paid generation, Actions, milestone merge, npm publication or private media/transcript redistribution."
+      ]
     }
   },
   "limits": [
@@ -18481,5 +18536,8 @@
     "Forty-four slices include cue-wide deterministic crowded-label placement with explicit locks, priority/stable IDs, bounded backtracking and streamed integer-frame protected-contact exclusions. Fast10 passes 4,270 units; 38 filesystem/CLI tests; three families/two edited stages verify 360 actual-font/visible frames and 1,080 forward/reverse/shuffled preview draws plus 12 exports/720 independent final native frames. Six receipt/snapshot pairs match exactly; cable surface anchor leaves geometry unchanged. Initial hidden-label proof was intentionally rejected/stopped; failures retained. Full broader labels/continuous/encoded readability, coverage/typography, supported packs/genuine speech, resource/lifetime/full/final installed and remaining MS2/MS3 acceptance stay open. Supported packs/pilot 0.",
     "All owning MS2 requirements and full milestone checks remain required before its PR and MS3.",
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
+  ],
+  "remaining": [
+    "Slice64 completes scoped genuine spoken cue/native output evidence for four existing takes:247 words/20 windows/eight repeated outputs/5136 native and decoded frames; audit60 pins/41028 hierarchy pairs/5136 cameras and ordinary fast4353 units428files pass. Exact endpoint corrections authored, shorter revised hook recompiled. Private opt-in gate keeps full102 portable. Contact labels hidden under current occlusion policy and subtle wide-view hook travel remain visual issues; no human/portrait/pack/coverage acceptance. Whole resources/full102/frozen/benchmark/final archive/installed/pack/MS2 PR remain open. E06 primary-read supplement is ready separately; frozen selection unchanged."
   ]
 }

@@ -192,7 +192,8 @@
     "test:browser:mechanism-cue-plate-export": "node --import tsx tests/browser/mechanism-cue-plate-export.ts",
     "test:browser:mechanism-world-plate-export": "node --import tsx tests/browser/mechanism-world-plate-export.ts",
     "test:browser:mechanism-cue-cache-cli": "node --import tsx tests/browser/mechanism-cue-cache-cli.ts",
-    "test:browser:mechanism-cue-cache-lifetime": "node --import tsx tests/browser/mechanism-cue-cache-lifetime.ts"
+    "test:browser:mechanism-cue-cache-lifetime": "node --import tsx tests/browser/mechanism-cue-cache-lifetime.ts",
+    "test:browser:mechanism-spoken-inputs": "node --import tsx tests/browser/mechanism-spoken-inputs.ts"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",
