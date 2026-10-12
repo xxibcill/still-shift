@@ -325,5 +325,20 @@
     "Actual native interruption/cancel/corrupt/relocation, scoped/affected repair and automatic MS1 overlap.",
     "Original ten questions/five assets/two behaviors/genuine inputs/factual/design/visual/listening review, broader capabilities and final full/archive/installed/MS3 PR completion."
   ],
-  "qualification": "Scoped evidence/code controls only at this checkpoint; integrated native/fresh-session proof and final MS3 acceptance remain unproven."
+  "qualification": "Scoped evidence/code controls only at this checkpoint; integrated native/fresh-session proof and final MS3 acceptance remain unproven.",
+  "committedSource": "6615b02b8b6646ae52d2a009c3dcf46f8bc72e06",
+  "runningVerification": {
+    "command": "pnpm test:browser:mechanism-production-native",
+    "session": 45359,
+    "pid": 3214,
+    "sourceCommit": "6615b02b8b6646ae52d2a009c3dcf46f8bc72e06",
+    "startedUtc": "2026-10-12T22:11:22.282178+00:00",
+    "receipt": "/private/tmp/still-shift-ms3-evidence6-browser1-receipt.json",
+    "log": "/private/tmp/still-shift-ms3-evidence6-browser1.log",
+    "inventory": "/private/tmp/still-shift-ms3-evidence6-browser1-inputs.json",
+    "root": "/private/tmp/still-shift-ms3-production-native-mmKpvN",
+    "heldInputFiles": 2683,
+    "heldInputBytes": 121225370,
+    "lastToolObservation": "Session45359 confirmed running; no terminal result yet. Re-poll the same handle rather than restarting from a timeout."
+  }
 }

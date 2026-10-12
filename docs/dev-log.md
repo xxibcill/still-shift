@@ -50,8 +50,10 @@ still hold before relying on them.
   eec outputs yield81 verified images across3 families;3 forged/stale controls
   reject, including altered phone pixels with recomputed declarations.57 focused
   checks/build/lint/schema/boundary/declarations pass after one type-import lint
-  repair; failed gate retained. Fresh current native/CLI handoff and held fast/
-  runtime tiers are next. Report5 eec1954a retains its separate complete4426-unit,
+  repair; failed gate retained. Source6615b02b is pushed to PR58. Fresh native/
+  CLI handoff proof is running (session45359, report prefix evidence6-browser1,
+  root mmKpvN), holding2683 inputs/121225370B. No terminal pass claimed; re-poll
+  this live handle. Complete fast/runtime tiers follow after it finishes. Report5 eec1954a retains its separate complete4426-unit,
   runtime247/integration322/depth14/smoke/240-frame/57-pin/default-CLI proof.
   Evidence derivation supplies no whole glyph/mechanical/continuous/listening/
   factual/human acceptance. Original scope remains: operational QA/warnings and
@@ -259,7 +261,9 @@ still hold before relying on them.
 - **Results:**81 retained-output images across3 families and3 tampering/stale
   controls pass;57 focused checks and build/lint/schema/boundary/declarations pass.
   Retained-output scope preserves original eec render identity; fresh integrated
-  source proof and complete local tiers are next.
+  source6615b02b is pushed; integrated browser session45359 is confirmed live
+  at `/private/tmp/still-shift-ms3-evidence6-browser1.log`. Re-poll it, then run
+  complete held fast/runtime tiers. No terminal integrated result claimed.
 - **Rejected:** Gate1 type-only import lint failed after57 tests/build passed.
   Corrected import only; separate gate2 actually passes. No weakened caps/guards.
 - **Open / next:** Current native/fresh-session proof, fast/runtime gates, then
