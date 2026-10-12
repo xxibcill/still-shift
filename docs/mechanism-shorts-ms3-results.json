@@ -156,7 +156,40 @@
         "Current intervals cannot exceed artifact clocks. Partial whole-artifact reviews and stale bindings remain unreviewed for readiness, retaining original raw evidence. Mechanical failure counts prevent readiness.",
         "Cohort summaries retain original attempt order, failure/repeated/cancelled/interrupted counts, individual rows and selected/attempted denominators. Normalized literal duplicate questions are rejected; semantic distinctness and frozen-selection validation still belong to pilot admission.",
         "p50/p95 use declared linear interpolation; missing timing/token data staysnull. Savings requires retained comparable paired evidence for every selected task. No fixture value is a pilot measurement."
-      ]
+      ],
+      "committedSource": "5b70cbd7b758519a949ffeb04800d3b88e088e04"
+    },
+    {
+      "id": "report-foundation1-fast",
+      "status": "passed",
+      "command": "pnpm check:fast",
+      "owningSession": 88224,
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "sourceCommit": "5b70cbd7b758519a949ffeb04800d3b88e088e04",
+      "unitTests": 4385,
+      "unitFiles": 430,
+      "unitDurationSeconds": 78.31,
+      "heldInputFiles": 2646,
+      "heldInputBytes": 120886395,
+      "pins": [
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-fast1-receipt.json",
+          "bytes": 360,
+          "sha256": "sha256:0c594d1762548543c8cc7912b04d4b00a860beed7c700edd9ec1dbde20301d46"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-fast1.log",
+          "bytes": 43865,
+          "sha256": "sha256:7282376d8fa2cae3d2e98cc1160700c338bfd06139ba25eb5e11c206c83c5b76"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-inputs1.json",
+          "bytes": 451326,
+          "sha256": "sha256:4e42c14ae430c882428e03ee4b4c8c75f90e10b01b82d298c7f3509f4a4aee29"
+        }
+      ],
+      "qualification": "Complete fast tier on the report-foundation checkpoint only. No MS3 full/final package/installed/durable runner/QA execution/pilot or human acceptance claim."
     }
   ],
   "targets": {

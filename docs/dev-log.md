@@ -47,7 +47,9 @@ still hold before relying on them.
   and merges exact MS2495fb2c0 at76dd8971 after [PR #57](https://github.com/xxibcill/still-shift/pull/57)
   opened/attached. Integration differs only in roadmap/log prose; owner MS0 merge
   remains. Report1 adds public artifact/clock-bound QA and pure cohort summaries;
-  final22 focused tests/compiler/lint/declaration build pass in stages. Added clock
+  final22 focused tests/compiler/lint/declaration build pass in stages. Complete
+  fast tier actual0 on5b70cbd7 passes4385 units/430 files in78.31s; all2646
+  inputs/120886395B remain held. Added clock
   guards exposed an incorrect listening test-fixture unit (8 failed/13 passed);
   fixture repaired, guard retained. No durable runner, actual QA, registered
   semantics, repairs/handoff/CLI or pilot completion yet. Coverage0/10; original
@@ -244,6 +246,18 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — MS3 report checkpoint fast tier completes
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; held source5b70cbd7.
+- **Results:** Complete `pnpm check:fast` actual0,4385 units/430 files in78.31s;
+  independent holder confirms2646 inputs/120886395B unchanged. Owning22 report
+  controls, compiler/lint and declarations remain separate passed stages.
+- **Next:** Durable queue/cache/cancellation/recovery/retries, followed by actual
+  QA/semantics/repairs/artifacts/capabilities/CLI and original ten questions with
+  five assets/two behaviors. No MS3 full/pilot/human review or spending claim.
+- **Records:** [MS3 results](./mechanism-shorts-ms3-results.json),
+  [finite tracker](./mechanism-shorts-ms3-acceptance.md).
 
 ### 2026-10-13 — MS3 artifact-bound report foundation
 
