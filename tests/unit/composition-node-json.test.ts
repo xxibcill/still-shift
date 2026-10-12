@@ -103,3 +103,36 @@ it("child producer failure and successful transfer preserve unrelated owners", (
   parent.dispose();
   expect(parent.statistics.reservations).toBe(0);
 });
+it("releases completed nested producers with their immediate checking owner", () => {
+  const root = new CompositionNodeMemory(),
+    foreign = root.reserve(1024);
+  const checking = new CompositionNodeMemory(root),
+    reading = new CompositionNodeMemory(checking);
+  const parsed = reading.reserve(8192);
+  reading.transfer();
+  reading.dispose();
+  expect(parsed.active).toBe(true);
+  expect(root.statistics.current.metadata).toBe(9216);
+  checking.dispose();
+  expect(parsed.active).toBe(false);
+  expect(foreign.active).toBe(true);
+  expect(root.statistics.current.metadata).toBe(1024);
+  root.dispose();
+});
+it("explicit nested transfer retains results through each parent until the final consumer ends", () => {
+  const root = new CompositionNodeMemory(),
+    render = new CompositionNodeMemory(root),
+    preparation = new CompositionNodeMemory(render),
+    document = new CompositionNodeMemory(preparation);
+  const parsed = document.reserve(4096);
+  document.transfer();
+  document.dispose();
+  preparation.transfer();
+  preparation.dispose();
+  expect(parsed.active).toBe(true);
+  expect(root.statistics.reservations).toBe(1);
+  render.dispose();
+  expect(parsed.active).toBe(false);
+  expect(root.statistics.reservations).toBe(0);
+  root.dispose();
+});

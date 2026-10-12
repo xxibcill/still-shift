@@ -893,8 +893,19 @@ mechanism families establish whether the architecture transfers.
       final fast1 passes4,344 units/427 files on unchanged2,620 inputs. Original
       capture observations are not relabelled as fresh reused draws.
       [Capture evidence](./mechanism-shorts-ms2-native-plate-capture-results.json)
-      retains failures. Cached overlay export/zero new3D draws, real world/surface
-      capture breadth and broader encoded/human acceptance keep this criterion unchecked.
+      retains failures. Slice59 adds actual current-cue overlays/audio onto original
+      verified plates, a separate reuse receipt and measured zero new native submissions.
+      Render3:3 families/five styles/6 stages;6 direct/12 cached exports/720 ordinary
+      image deliveries;360 preview pairs/maxRGB1 within fixed2/720 cached seeks.
+      Repeated encoded/decoded output and current audio match;3 gain edits change PCM.
+      All60 altered fact/counter controls/3 stale/3 pre-aborts reject. Audit3 matches
+      57 pins/180 original PNG+journal/900 decoded frames/1,260 hierarchy pairs/
+      180 camera triples. All30 original sampled PNGs agent-viewed. Nested Node
+      ownership is repaired; final fast2 passes4,346 units/427 files on2,624 unchanged
+      inputs. [Export evidence](./mechanism-shorts-ms2-native-plate-export-results.json)
+      retains failed attempts and lossy encoded diagnostics. Internal modules only;
+      public API/CLI, actual world/surface cache breadth, full99/resources/installed/
+      pack admission and broader encoded/human acceptance keep this criterion unchecked.
 - [ ] Compile semantic contact/release/return events from supplied narration cues
       into all picture, annotation, caption and sound tracks. Reject overfull shots,
       out-of-recording cues and insufficient reading/action time. Do not stretch

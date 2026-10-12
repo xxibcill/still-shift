@@ -10,7 +10,7 @@ export class CompositionNodeMemory {
   private readonly memory: ManagedMemory;
   private closed = false;
   private readonly scoped: Set<MemoryLease> | undefined;
-  constructor(parent?: CompositionNodeMemory) {
+  constructor(private readonly parent?: CompositionNodeMemory) {
     if (parent !== undefined && !(parent instanceof CompositionNodeMemory))
       throw Error("Invalid composition Node memory owner");
     this.memory = parent
@@ -21,13 +21,22 @@ export class CompositionNodeMemory {
         });
     this.scoped = parent ? new Set() : undefined;
   }
-  /** A successful child hands its reservations to the render owner. */
+  /** A successful child hands its reservations to its immediate consumer. */
   transfer() {
-    this.scoped?.clear();
+    if (this.closed) throw Error("Composition Node memory owner is disposed");
+    if (this.scoped && this.parent) {
+      for (const lease of this.scoped) this.parent.retain(lease);
+      this.scoped.clear();
+    }
   }
   reserve(bytes: number) {
     if (this.closed) throw Error("Composition Node memory owner is disposed");
     const lease = this.memory.reserve("metadata", bytes);
+    this.retain(lease);
+    return lease;
+  }
+  private retain(lease: MemoryLease) {
+    if (this.closed) throw Error("Composition Node memory owner is disposed");
     if (this.scoped) {
       this.scoped.add(lease);
       const release = lease.release;
@@ -39,7 +48,6 @@ export class CompositionNodeMemory {
         }
       };
     }
-    return lease;
   }
   get availableBytes() {
     return (

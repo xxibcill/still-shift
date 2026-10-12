@@ -16125,6 +16125,38 @@
       "independentSourceCameraTriples": 180,
       "actualLiveCancellationCleanupMs": 26.883832999999868,
       "qualification": "Internal native-only PNG capture and current compatibility/original closure checking. No cached overlay export, zero-new3D reuse claim, public root API/CLI, full98, genuine speech or human/pilot acceptance."
+    },
+    {
+      "id": "native-plate-export59",
+      "status": "passed-internal-cached-export-with-original-native-proof",
+      "sourceCheckpoint": "3d89e3e6",
+      "record": {
+        "path": "docs/mechanism-shorts-ms2-native-plate-export-results.json",
+        "bytes": 34704,
+        "sha256": "sha256:a01e19d40694241f229e12d41bd560d0f6aead567ece8d89f1838fed2ef32512"
+      },
+      "actualCachedExportSession": 9172,
+      "actualExitCode": 0,
+      "actualFastSession": 60666,
+      "unitTests": 4346,
+      "unitFiles": 427,
+      "heldInputFiles": 2624,
+      "heldInputBytes": 120570245,
+      "originalNativeCaptureFrames": 180,
+      "directExports": 6,
+      "cachedExports": 12,
+      "measuredCachedImageCalls": 720,
+      "measuredFreshNativeSubmissionCalls": 0,
+      "previewFramePairs": 360,
+      "cachedSeekFrames": 720,
+      "maximumPreviewRgbDifference": 1,
+      "fixedPreviewRgbTolerance": 2,
+      "artifactAndCounterControls": 60,
+      "staleOutputAndPreAbortControls": 6,
+      "independentFactFiles": 57,
+      "independentOriginalNativePngJournalFrames": 180,
+      "independentDecodedFrames": 900,
+      "qualification": "Separate current/original/final receipt; private modules only. Full99, public root/CLI, actual world/surface cache breadth, encoded glyph/copy/readability, genuine spoken exports, whole resource/lifetime/archive/installed/pack/MS2 PR and human/pilot acceptance remain open."
     }
   ],
   "implementation": {
@@ -18145,9 +18177,34 @@
         "Genuine recovered speech decode/sample clocks/cues/native exports; whole resources/lifetime/replay; final full97/frozen176/36061/benchmark/archive/installed/pack admission/MS2 PR.",
         "Broader world/surface layout, encoded glyph-copy/readability, continuous-time/all-driver and human acceptance remain separate. Supported packs0; accepted pilot0; MS3 not started. No paid generation or owner acceptance."
       ]
+    },
+    "fiftyNinthSlice": {
+      "record": {
+        "path": "docs/mechanism-shorts-ms2-native-plate-export-results.json",
+        "bytes": 34704,
+        "sha256": "sha256:a01e19d40694241f229e12d41bd560d0f6aead567ece8d89f1838fed2ef32512"
+      },
+      "scope": "Current integer-grid ordinary screen overlays/audio onto original native plates with actual measured zero new native submissions and independent current/final/original checks. Shared guarded publication and immediate-consumer nested Node lease transfer; no limit increase.",
+      "finalSourceInputs": {
+        "path": "/private/tmp/still-shift-ms2-plate59-inputs4.json",
+        "bytes": 447628,
+        "sha256": "sha256:fdf16ffaf8986ae2dfb53fda038cfbe725169e325f6ccf177f48a8f2e679ea4c",
+        "files": 2624,
+        "inputBytes": 120570245,
+        "unchangedThroughFinalRenderFastAndAudit": true
+      },
+      "failuresRetained": "Missing module, quota lifetime, helper types/inference/unused import, wrong runtime config, media allowlist, disabled/unapplied preview collection, anchor union and scratch PCM auditor typo. Owned final fast2/render3/audit3 pass.",
+      "remaining": [
+        "Actual world/surface plate capture/reuse, encoded glyph/copy/readability and broader/continuous layout QA; no full expanded annotation criterion claimed.",
+        "Public versioned root cache API/CLI/discovery, current/stale/archive/installed consumers and in-flight edit/cancellation/resource admission.",
+        "Fresh recovered speech/sample-clock evidence is locally measured separately; genuine cue/native exports, shorter revised-copy recompilation and source/picture/semantic review remain open.",
+        "Full99/frozen176/36061/benchmark, whole application and physical resource/lifetime/replay gates, source/archive/installed final admission, validated10-question coverage/pack admission/MS2 PR before MS3.",
+        "Supported packs0; validated coverage0/10; accepted pilot0. No human acceptance, paid generation, merge, npm publication or GitHub Actions."
+      ]
     }
   },
   "limits": [
+    "Slice59 verifies current synthetic integer-grid cached overlays across all five visible screen styles/three families with zero new native submissions, original proof replay and fixedRGB2 previews. Lossy direct/cache H264 deltas remain diagnostic; public API/CLI, actual world/surface cache breadth, full99/resources/final installed/pack/genuine spoken outputs and human acceptance remain open. Supported packs/pilot0.",
     "Slice58 completes internal native-only PNG16 capture/current-picture compatibility/original source/dependency/closure replay. Final capture2/audit3 verifies180 original native frames/passes/PNG/decoded/journal frames,1260 hierarchy pairs/180 source-camera triples; all180 PNG/decode bodies equal capture1. Caption/gain preserve plates;28 artifact/3 PNG/3 camera changes reject. Live source2 native-body/complete-PNG cancel removes owned directory/observed Chromium/FFmpeg descendants within26.9ms under existing2s policy. Final fast1 passes4344 units427files; real final file runtime2 tests pass; held2620 inputs120518027B unchanged. Failed red/build/type/immediate-cancel attempts and unverified build2 subterminal retained. Original observations stay original. Actual cached overlays/zero fresh3D export draws/public API/CLI, world/surface capture breadth, genuine speech, whole resources/lifetimes/replay/full98/archive/installed/pack/MS2 PR/human acceptance remain open. Packs/pilot0; MS3 not started.",
     "Slice57 completes internal native-picture partition and integer-held overlay lowering. Final fast1 passes4344 units427files, focused13 tests/two files/build3 pass; held2615 inputs120472825B unchanged. All five visible screen styles/three families match matrices/canonical path geometry/effective alpha in120 forward/reverse evaluations including offset and opacity groups. Hidden/clock/key-limit negatives and source/audio immutability pass. All failures retained. Actual authenticated plate capture, cached export and zero-fresh3D-draw proof/public lifecycle, invalidation/cancel/resource/full97/final archive/installed/pack/MS2 PR remain open. Packs/pilot0; MS3 not started.",
     "Slice56 completes the bounded rigid surface software route and deterministic shared depth ties. Final fast11 passes4331 units425files; native2/source audit9 passes70 readbacks30 exact pairs/cancellation. Surface9 and independent audit2 pass360 previews1080 seeks/six exports360 native frames18 controls/24 triangle-box quads; encoded ink minimum31 at unchangedRGB28/min3. Default world1/audit1 passes and preserves all360 preview/decoded frames/six audio/encoded bodies against slice55. All24 original surface/world PNGs agent-viewed; held2611 inputs120444661B unchanged through staged gates. Failed attempts retained. Label-only plate reuse, genuine speech, whole resources/lifetime/replay/full97/final archive/installed/pack/MS2 PR/owner acceptance remain open. Packs/pilot0; MS3 not started.",

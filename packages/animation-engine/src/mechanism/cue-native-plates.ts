@@ -402,10 +402,13 @@ export async function prepareMechanismCueNativePlates(
   cuePath: string,
   preparedDirectory: string,
   outputDirectory: string,
-  options: { signal?: AbortSignal | undefined } = {},
+  options: {
+    signal?: AbortSignal | undefined;
+    nodeMemory?: CompositionNodeMemory;
+  } = {},
 ) {
   options.signal?.throwIfAborted();
-  const owner = new CompositionNodeMemory(),
+  const owner = new CompositionNodeMemory(options.nodeMemory),
     directory = resolve(outputDirectory);
   let created = false,
     published = false;
@@ -541,11 +544,14 @@ export async function checkMechanismCueNativePlates(
   cuePath: string,
   preparedDirectory: string,
   platesDirectory: string,
-  options: { signal?: AbortSignal | undefined } = {},
+  options: {
+    signal?: AbortSignal | undefined;
+    nodeMemory?: CompositionNodeMemory;
+  } = {},
 ) {
   options.signal?.throwIfAborted();
   const directory = resolve(platesDirectory),
-    owner = new CompositionNodeMemory();
+    owner = new CompositionNodeMemory(options.nodeMemory);
   try {
     const receiptPath = join(directory, "native-plates.json"),
       receipt = MechanismCueNativePlatesSchema.parse(

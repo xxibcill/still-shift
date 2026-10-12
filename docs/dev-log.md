@@ -45,11 +45,11 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Fifty-six slices include the frozen ten-question board, expanded Thai review and
+  Fifty-nine slices include the frozen ten-question board, expanded Thai review and
   recovered existing spoken inputs for all three families. Four audio hashes and
   thirteen supplied word-range/shot associations match. The shorter tape-hook take
-  uses revised copy; the failed identical-script assumption is retained. No fresh supplied-speech
-  decoding, synthesis or genuine-speech native rendering has been performed.
+  uses revised copy; the failed identical-script assumption is retained. Fresh48k source clocks for four supplied takes have since been measured locally;
+  spoken cue/native export, synthesis and listening acceptance remain separate.
   Thai review covers all 114 distinct cells at frames 8/18 and three sizes;
   located prefix/contrast/wrap negatives keep finer motion unadopted.
   Full51-1 was deliberately stopped with exit130 to implement the missing
@@ -119,12 +119,28 @@ still hold before relying on them.
   whole application/RSS/lifetime admission remains a separate open gate.
   Cached overlays/zero fresh3D export draws, world/surface capture breadth and new
   public cache API/CLI are still required; this capture foundation claims none.
-  The full matrix is98; no full98 pass claimed.
+  Slice59 completes internal current-cue plate export with a separate receipt,
+  exact current/lowered/final/original source edges and actual zero fresh native
+  submission counters. Render3 passes three families/all five visible styles:
+  180 original capture frames,6 direct/12 cached exports,720 cached image deliveries,
+  360 preview pairs/maxRGB1 within fixed2 and720 cached seeks. Repeated encoded/
+  decoded bodies and current direct/cache audio match; gain edits change3 soundtracks.
+  All60 altered fact/counter controls,3 stale cues and3 pre-aborts reject. Audit3
+  matches57 files/180 original PNG+journal/900 decoded frames/1,260 hierarchy pairs/
+  180 source-camera triples. All30 original sampled PNGs agent-viewed. Final fast2
+  passes4,346 units/427 files; held2,624 inputs/120,570,245B unchanged.
+  Nested Node transfer ownership is repaired without increasing limits;12 focused
+  units/5 actual file/source runtime checks pass. Failed quota/helper/types/allowlist/
+  disabled-counter/independent audit attempts are retained. Lossy direct/cache H264
+  differences remain diagnostic; no full encoded glyph/readability acceptance.
+  Public root/CLI, actual world/surface cache breadth and whole resources remain open.
+  The full matrix is99; no full99 pass claimed.
   Coverage stays 0/10 validated; packs are candidates; accepted pilot episodes 0.
-  Next: label-only plate reuse; bound fresh
-  speech/sample clocks and cue exports; refresh the full gate,
+  Next: actual world/surface plate breadth/public cache API/CLI; record fresh
+  speech/sample clocks and genuine cue exports; refresh the full gate,
   whole resources/final installed/pack admission and MS2 PR. MS3 not started.
   No human acceptance, merge/publication or paid generation.
+  [Native plate export](./mechanism-shorts-ms2-native-plate-export-results.json),
   [Native plate capture](./mechanism-shorts-ms2-native-plate-capture-results.json),
   [Plate foundation](./mechanism-shorts-ms2-native-plate-reuse-results.json),
   [Surface evidence](./mechanism-shorts-ms2-surface-marking-results.json),
@@ -291,6 +307,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — MS2 slice59: current overlays on proven original native plates
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `3d89e3e6`.
+- **Done:** internal cached export/check and separate current/original/final receipt;
+  shared guarded publication and repaired nested Node reservation ownership.
+- **Results:** render3:3 families/five visible styles/6 stages;180 original frames,
+  6 direct/12 cached exports,720 measured image calls/zero new native calls;
+  360 preview pairs/maxRGB1 within fixed2/720 seeks. Repeated bodies/decodes/current
+  audio match;3 gain edits change PCM. All60 corruption/counter/3 stale/3 pre-abort
+  controls reject. Audit3:57 pins/180 original PNG+journal/900 decoded frames,
+  1,260 hierarchy pairs/180 camera triples. All30 sampled PNGs agent-viewed.
+  Fast2:4,346 units/427 files;12 focused units/5 actual runtime checks. Held2,624
+  inputs/120,570,245B unchanged. Failed attempts retained; lossy encoded deltas diagnostic.
+- **Open / next:** world/surface cache breadth/public API/CLI, genuine spoken cues,
+  full99/resources/archive/installed/pack/MS2 PR. Packs/pilot0; MS3 not started.
+- **Records:** [export](./mechanism-shorts-ms2-native-plate-export-results.json),
+  [plan](./mechanism-shorts-production-plan.md), [MS2](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-12 — MS2 slice58: original native plate capture and closed evidence
 

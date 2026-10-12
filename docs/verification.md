@@ -231,3 +231,14 @@ cancellation checks owned cleanup and observed descendant exit under the existin
 with other browser/export groups; it is registered in `pnpm test`. This internal
 capture/check foundation does not prove a cached overlay export or zero fresh3D
 draws, genuine speech, whole resource limits or human/pilot acceptance.
+
+`pnpm test:browser:mechanism-cue-plate-export` checks actual native capture and
+ordinary overlay/audio reuse across all three families and all five visible screen
+styles, before and after caption/sound-gain edits. It checks current source edges, original
+native closure evidence, measured zero new native submissions, actual glyph bounds,
+fixed RGB2 preview parity, complete forward/reverse/shuffled seeks, repeated encoded
+bodies and decoded audio. Altered fact files, stale cues, missing measurements and
+nonzero native counters must reject. It is included in `pnpm test`; run it serially
+with other browser/export groups. World/surface plate breadth, supplied speech,
+whole resource admission, public cache API/CLI and human acceptance remain separate
+gates. Test fixtures use local synthetic PCM and engineering dimensions.
