@@ -1,22 +1,61 @@
 # Still Shift user guide
 
-Turn still images, prepared illustration layers, text and graphics into repeatable
-MP4 animations. Start with the outcome you want below, preview an example in the
-local Lab, then adapt its inputs.
+Turn supplied images, illustration layers, text, graphics, video and audio into
+repeatable animations. Author a composition or choose a prepared recipe, preview
+it locally, then export a video or image sequence.
 
-This guide describes the implementation in this checkout, reviewed on **2026-09-27**.
+This guide describes the implementation in this checkout, reviewed on **2026-10-10**.
 **Available** means implemented; **Experimental** means you can try it but the
 complete treatment is not registered as Production; **Reference only** means a
 catalog idea has no renderer. Plans and research notes describe additional ideas,
 not necessarily features you can use today.
 
-**Jump to:** [choose a workflow](#choose-a-workflow) · [start the lab](#start-the-lab) ·
+**Jump to:** [install or use a checkout](#install-or-use-a-checkout) ·
+[choose a workflow](#choose-a-workflow) · [feature map](#implemented-feature-map) ·
+[start the lab](#start-the-lab) ·
 [image animation](#animate-one-image) · [cinematic scenes](#cinematic-scenes) ·
 [storytelling](#storytelling) · [vertical video](#vertical-video) · [commerce](#commerce) ·
 [reusable components](#reusable-components) · [batch](#batch-animation) ·
 [compositions](#evaluate-and-render-programmable-compositions) ·
+[native media](#video-image-sequences-and-native-audio) ·
+[puppet animation](#mesh-warp-and-puppet-animation) ·
+[soundtracks](#saved-soundtrack-layers) ·
 [outputs](#save-export-and-share) · [help](#when-something-does-not-work) ·
 [ask an AI](#ask-an-ai-about-still-shift)
+
+## Install or use a checkout
+
+For an npm consumer project, install an explicit release and prepare the browser:
+
+```sh
+npm install still-shift@0.1.0
+npx still-shift setup browser
+npx still-shift --help
+npx still-shift comp validate --input composition.ts
+npx still-shift comp preview --input composition.ts --watch
+npx still-shift comp render --input composition.ts --output clip.mp4
+```
+
+Use Node 22.23.1 or a newer Node 22 release, and FFmpeg/ffprobe 8.0.1 for rendering.
+See the [npm guide](./npm-package-readme.md) for public imports and optional
+`setup depth` / `setup soundtrack` runtimes. Native composition audio uses FFmpeg
+without the optional soundtrack Python backend. The verified release platform is
+macOS on Apple Silicon.
+
+Most commands and fixture paths below describe a **repository checkout**. Follow
+the [checkout setup](../README.md#install), run `pnpm` commands from its root and
+use `pnpm lab` for the galleries. Installed projects use `npx still-shift` for the
+public CLI and their own assets. Repository scripts such as `story:passage`,
+`story:package`, `cinematic:preview` and `story:type-specimen` require the checkout;
+they are not additional installed CLI subcommands. `comp preview` serves your
+composition directly and works in an installed project.
+
+Published `0.1.0` includes its npm README but omits this full guide and the skills.
+The updated package build includes discovery docs and skills for future candidates.
+Check your actual installation before following a packaged source path; a docs
+update does not change the already published archive. Prepared examples may need
+art, fonts, narration or external media from the checkout; supply those inputs
+instead of treating a contract-only fixture as a playable clip.
 
 ## Choose a workflow
 
@@ -30,11 +69,56 @@ not necessarily features you can use today.
 | Make a product hero, callouts or a short ad                  | Commerce treatments — Experimental | Product photo/cutout, copy and source information               | [Commerce workbench](http://127.0.0.1:4173/commerce.html)                        |
 | Explore product motion, light, blur or detail windows        | Commerce components and effects    | Supplied product assets; demos are included                     | [Commerce components](http://127.0.0.1:4173/commerce-components.html)            |
 | Add moving labels, counters, routes, masks or timed sections | Shared reusable components         | Start with a demo; custom compositions use scene/component data | [Shared gallery](http://127.0.0.1:4173/reusable-components.html)                 |
+| Build a custom animated diagram or mixed-media clip          | JSON or TypeScript composition     | Layer/timeline data and pinned image, font or media assets      | [Composition authoring](#author-a-composition-in-typescript)                     |
+| Animate words, figures or a changing claim                   | Native typography and text presets | Supplied copy, a pinned font and reading/cue timing             | [Typography](#animated-typography-and-text-presets)                              |
+| Move a camera through layered artwork                        | Native 2.5D camera and flat lights | Artwork planes, xyz layout and a camera path                    | [Native camera](#native-camera-and-25d-planes)                                   |
+| Bend an illustrated arm or distort a drawing                 | Puppet pins or mesh warp           | A supplied image, fixed rest pins or grid, and target keys      | [Puppet animation](#mesh-warp-and-puppet-animation)                              |
+| Combine supplied video, image sequences and sound            | Native composition media           | Checked media descriptors, source files and trim/timing         | [Native media](#video-image-sequences-and-native-audio)                          |
+| Mix narration, music, SFX and ambience                       | Saved soundtrack project           | Local audio, a track/clip plan and optional audio runtime       | [Soundtrack workflow](#saved-soundtrack-layers)                                  |
+| Deliver transparency or editing masters                      | Composition export profiles        | A valid composition and a fresh output path                     | [Formats and rendering](#composition-export-formats-and-rendering-options)       |
 | Animate many independent images                              | Image batch                        | A JSONL list of images and animation settings                   | [Batch command](#batch-animation)                                                |
 
 Still Shift currently supplies local authoring, preview and rendering tools. It
 does not automatically turn a script into a finished episode, generate new video
 with an AI model, cut out products, or invent missing illustration layers.
+
+## Implemented feature map
+
+Use this map to find the full implemented vocabulary. The linked reference lists
+exact fields, effect IDs, property paths, bounds and backend support; the gallery
+catalogs distinguish renderable examples from imported reference ideas.
+
+| Feature family                   | What you can use                                                                                                                                                                                                                               | Where to learn or start                                                                                                                                                      |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Composition and evaluation       | JSON/TypeScript authoring; solid, image, text, shape, null, group, precomp, adjustment, camera, light, depth-image, video, sequence, audio and registered content-provider layers; deterministic frame/property evaluation and reverse seeking | [Composition workflow](#evaluate-and-render-programmable-compositions), [reference](./composition-reference.md)                                                              |
+| Compositing                      | Ordered layers, parenting, blend modes, masks, alpha/luma track mattes, nested scopes, adjustment layers and encoded-sRGB or linear-sRGB blending                                                                                              | [Compositing example](../examples/composition/03-compositing.ts), [mask/effect example](../examples/composition/04-mask-effects.ts)                                          |
+| Curves, timing and relationships | Temporal easing, spatial Béziers, signals, property drivers, additive motion layers, constraints, precomp remapping/loops, stretch, hold, posterization and fixed/adaptive shutter blur                                                        | [Timing example](../examples/composition/01-timeline.ts), [instances](../examples/composition/02-instances.ts), [motion/time reference](./composition-reference.md)          |
+| Native shapes                    | Cubic paths, rectangles, ellipses, polystars, solid/gradient fills and strokes, ink/brush styles, trim, repeater, merge, offset, round, wiggle, zigzag, pucker/bloat and twist                                                                 | [Native shapes](#native-vector-shapes)                                                                                                                                       |
+| Typography                       | Pinned fonts, styles/spans, variable axes, word/glyph/line selectors, animated tracking/leading/fill/stroke, text states, captions/balloons/clouds, decorations and semantic text presets                                                      | [Typography](#animated-typography-and-text-presets), [text engine](./typography-engine.md)                                                                                   |
+| Native effects and plugins       | Blur, color correction, lighting effects, shadows, procedural fields, distortion, transition wipes/dissolves, echo and scoped map/history inputs; versioned custom host effects                                                                | [Effects](#native-effects-and-custom-plugins), [full effect reference](./composition-reference.md)                                                                           |
+| Cameras, depth and light         | Native xyz artwork planes, one/two-node cameras, perspective, focus/depth of field, prepared depth displacement and bounded ambient/point/spot lighting                                                                                        | [Camera](#native-camera-and-25d-planes), [depth](#prepared-depth-image-layers), [lighting](#flat-lighting-for-25d-artwork)                                                   |
+| Procedural motion                | Constrained expressions, seeded random motion, historical property reads, follow-through, bounce, squash/stretch, anticipation, auto-orient, constant speed, camera shake and stagger; normalize/bake tools                                    | [Expressions and behaviours](#expressions-and-behaviours)                                                                                                                    |
+| Native media                     | Supplied SDR video/PNG sequences, checked decoding/cache, source trims, remaps, hold/linear frame blending, native audio gain/pan, waveforms and mixed passage delivery                                                                        | [Media](#video-image-sequences-and-native-audio), [media reference](./composition-media.md)                                                                                  |
+| Deformation                      | Animated mesh grids and alpha-derived puppet meshes with rest/target pins, stiffness/overlap regions and prop-follow authoring                                                                                                                 | [Mesh and puppet](#mesh-warp-and-puppet-animation)                                                                                                                           |
+| Inspection and quality           | Watch preview, layer/property/instance inspection, authored/resolved graphs, ease/tangent editing, overlays, undo/redo, source save/reload, draft export, motion lint and typography specimens                                                 | [Inspector](#inspect-and-tune-a-composition-in-lab), [motion lint](#check-composition-motion-before-delivery), [type review](./typography-engine.md#review-and-verification) |
+| Delivery and throughput          | Seven explicit output profiles, alpha delivery, PNG/raw transport, optional static cache, one–four render workers, protected output writes, hashes and render manifests                                                                        | [Export options](#composition-export-formats-and-rendering-options)                                                                                                          |
+| Recipes and reusable authoring   | Single-image presets and batch; cinematic variants; seven story recipes; commerce briefs/components; counters, annotations, connectors, fitting and timing helpers; family-to-composition export                                               | [Image](#animate-one-image), [cinematic](#cinematic-scenes), [story](#storytelling), [commerce](#commerce), [shared](#reusable-components)                                   |
+| Passages and acting              | Beat plans/templates/styles, linked cue retiming, continuity/handoffs, word/SRT timing import, supplied pose states/actions/held props, sound cues, native beat pictures, selective render/resume and portable workspaces                      | [Passages](#build-a-passage), [native beats](#use-a-native-composition-as-a-passage-beats-picture), [acting](./story-acting.md)                                              |
+| Saved soundtrack                 | Revision-checked tracks/clips/buses, mute/solo, gain/pan, fades/automation, filters, narration-driven BGM ducking, limiter, stems/ranges, cue retiming, undo/redo, packaging and optional Lab editing                                          | [Soundtrack](#saved-soundtrack-layers), [project reference](./soundtrack-project.md)                                                                                         |
+
+### Availability and planned work
+
+The delivered composition features above are available; catalog production labels
+and whole-project creative acceptance are separate. Native 3D currently projects
+flat artwork planes. Solid 3D geometry and the planned Three.js mechanism bridge
+remain roadmap work. Advanced cast-shadow integration, additional shape/connector
+migrations and expression-builder convenience work retain their scoped follow-ups.
+See the [roadmap](../ROADMAP.md) and [feature tracker](./composition-engine-plan.md#milestone-tracker).
+
+WebGL2 correctness is delivered; deferred performance targets are not a promised
+speedup. Hardware preview can differ from the pinned software export. Choose the
+backend required by the feature and inspect the rendered output. Software checks
+do not establish human visual or listening acceptance of your project.
 
 ## Evaluate and render programmable compositions
 
@@ -48,7 +132,8 @@ See the [contribution rules](./composition-contributing.md).
 
 The `composition-1` format supports pure frame and property evaluation in Node
 and browsers through `evaluateComp` and `evaluateProperty` from
-`@still-shift/renderer-core`. Use it to inspect animated transforms, visibility,
+`@still-shift/renderer-core` in the checkout (`still-shift/renderer` in an installed
+project). Use it to inspect animated transforms, visibility,
 colours, native shape contents, masks, constraints and precomp timing before rendering. Fractional frame
 times and seeking backwards produce deterministic state.
 
@@ -110,8 +195,9 @@ Precomp `loop: "cycle"` or `"pingpong"` wraps its final source remap. Omit
 `loopCount` for signed unlimited loops, or set an integer count to hold the
 terminal frame after that many periods. Each reused instance has its own clock.
 Freeze keyed source content with a single hold key in `timeRemap`. Native
-video/sequence `frameBlending` is reserved for CE13 media decoding; it does not
-enable media rendering yet. See the [reference](./composition-reference.md) for
+video/sequence layers render supplied media and support `frameBlending: "hold"`
+or `"linear"`. Their remap uses source seconds; a precomp uses source frames.
+See [native media](#video-image-sequences-and-native-audio) and the [reference](./composition-reference.md) for
 units, bounds and the distinction between local and global procedural clocks.
 
 To render a composition to MP4:
@@ -125,8 +211,10 @@ checked. The command prints a result with the renderer and evaluator versions, t
 output checksum and timing metrics, and writes `out.mp4.scene.json` and
 `out.mp4.result.json` beside the video. Precomps, blend modes, track mattes, masks,
 adjustment layers and typography text render today, along with the delivered native
-effect catalogue and shutter motion blur. Native shapes are available; 3D layers arrive in later
-milestones. Transparent backgrounds show black in MP4.
+effect catalogue, shutter motion blur, native shapes, 2.5D camera/light layers,
+media and deformation. The default MP4 path flattens transparency to black;
+use an [alpha-capable profile](#composition-export-formats-and-rendering-options)
+to preserve it.
 
 To try the CE4a story adapter, compile
 the Access Constraint fixture and render the resulting composition:
@@ -144,7 +232,7 @@ from the recipe. Reusable story components also support measured and numeric tex
 text containers and state ramps, annotations, travel, pins, visibility and alpha masks.
 Each resolved component passage beat can compile through the same adapter. Unsupported features produce `comp-adapter-unsupported`; see
 [content providers](./composition-reference.md#content-providers-ce4a) for limits.
-CE4a is complete; existing story workflows keep their current renderer.
+Existing story inputs remain supported through their composition adapter.
 
 The CE4b commerce adapter uses the same commands:
 
@@ -218,6 +306,25 @@ need a particular pivot; their contents do not have one declared rectangular siz
 operator order, geometry limits and polygon-library licence are in the
 [generated reference](./composition-reference.md).
 
+### Native camera and 2.5D planes
+
+Set `threeD: true` on an artwork layer and place/rotate it in xyz coordinates.
+Add `camera(id, options)` for a one-node camera or a two-node camera aimed at an
+authored point of interest. Zoom or focal length/film size controls framing;
+focus distance and aperture enable bounded depth of field. Parenting and nested
+precomp cameras keep their own scope. Layer-depth runs preserve 2D stacking barriers.
+
+```sh
+pnpm --silent still-shift comp preview --input examples/composition/10-native-camera.ts --watch
+pnpm --silent still-shift comp render --input examples/composition/10-native-camera.ts --output camera.mp4 --backend webgl2
+```
+
+Select WebGL2 in preview for true perspective and focus. Canvas supports affine
+camera views and reports unsupported features. These are flat artwork planes;
+you must supply unseen surfaces yourself. Use `coverage: "required"` for a plate
+that must fill its camera; it checks actual alpha through every frame and shutter
+sample. See [camera fields and limits](./composition-reference.md#native-camera-and-xyz-planes-ce8).
+
 ### Flat lighting for 2.5D artwork
 
 Use [the flat lighting example](../examples/composition/11-flat-lighting.ts) for
@@ -246,6 +353,109 @@ These lights shade a single, two-sided flat surface in linear RGB and preserve i
 alpha. They do not infer depth or surface detail from artwork. Source masks and
 effects follow shading; camera depth of field follows projection. See the
 [composition reference](./composition-reference.md) for bounds and property paths.
+
+### Animated typography and text presets
+
+Use a native `text` layer with a real, checksummed font asset. Styles, grapheme
+spans, variable-font axes, wrapping, alignment and measured fitting are prepared
+before rendering. Text can animate by glyph, word or line with range selectors,
+tracking, leading, fill/stroke, offsets and reveal masks. Captions, speech balloons
+and thought clouds follow the measured text box.
+
+Builder `presets.text` supplies `reveal`, `emphasize`, `correct`, `qualify`,
+`retype`, `count`, `redact` and `release`. Supply the copy/states and target claim
+the chosen preset needs. Numeric counts require numeric states and tabular
+figures; correction needs replacement copy. Underlines, strikes, highlights and
+boxes follow spans and line breaks. Semantic events can follow supplied narration
+word timing; the engine does not transcribe or synthesize speech.
+
+Start with [pinned text](../examples/composition/05-pinned-text.ts), then read the
+[typography guide](./typography-engine.md) for selectors, state transitions,
+reading windows, text events and specimen/contrast checks. Native compositions
+use the same typography model. For recipe scenes, opt in with `typography:
+"type-1"` and the documented motion/authoring fields. Font feature/axis coverage
+must exist in the actual font; a system font or missing glyph is not a substitute
+for verified pinned input.
+
+### Native effects and custom plugins
+
+Add versioned `effects` to a drawable layer, group, precomp or adjustment layer,
+and animate their supported parameter paths with keys, drivers or expressions.
+The native registry covers color correction; Gaussian/directional/radial/zoom/lens
+blur; glow, grain, procedural fields, light sweeps and shadows; geometric and
+map-based distortion; wipes/dissolves; and temporal echo. Masks, mattes, camera
+projection and effect ordering matter to the resulting picture.
+
+Use the [mask/effect example](../examples/composition/04-mask-effects.ts) and the
+[generated effect parameter reference](./composition-reference.md) to choose exact
+IDs and bounds. A map-based effect uses a checked layer route in the same scope;
+scoped dependency rules prevent cycles. An imported commerce catalog entry alone
+does not establish that a native effect or treatment is implemented.
+
+Custom host effects use `defineCompositionEffect` and
+`registerCompositionEffect`; installed projects import them from
+`still-shift/schema` and `still-shift/renderer`. Register the implementation in
+each preview/export host. JSON stores the effect identity and parameters, not
+executable callbacks, and the stock CLI cannot load an arbitrary plugin from JSON.
+A plugin needs a Canvas callback to support Canvas; the GPU callback runs actual
+WebGL2 passes. See the [plugin guide](./composition-effect-plugins.md) for registration,
+surface ownership, input routing and version compatibility.
+
+### Video, image sequences and native audio
+
+Use native `video`, `sequence` and `audio` layers to combine supplied clips and
+sound with animated stills, graphics and text. Add asset descriptors with real
+hashes, dimensions/rational frame rate or decoded 48 kHz sample count/channels.
+For a sequence, supply the numbered PNG pattern and checksummed per-frame manifest.
+The [media guide](./composition-media.md) explains the descriptors and preparation;
+its placeholder contract fixture validates structure and needs real assets before
+it can render.
+
+```sh
+npx still-shift comp validate --input media.json
+npx still-shift comp preview --input media.json --watch
+npx still-shift comp render --input media.json --output media.mp4 --backend webgl2
+```
+
+Assets resolve relative to your file. FFmpeg verifies/probes originals, converts
+supported SDR inputs and prepares a checked cache before drawing. Picture trim
+bounds are source frames; media `timeRemap` uses absolute source seconds.
+`frameBlending: "hold"` selects a source frame and `"linear"` blends adjacent
+frames. This is supplied media decoding, not optical flow or AI video generation.
+
+Native audio provides gain/pan, source trim/remapping, source/processed waveforms
+and a deterministic 48 kHz stereo master for preview/export and native passage
+beats. Embedded video sound requires a separate declared audio asset/layer.
+Narration preserves its full authorized source interval and disallows time
+stretch, hold/loop and remap changes. Native mixing uses FFmpeg and does not need
+the optional soundtrack runtime; use a [saved soundtrack](#saved-soundtrack-layers)
+for the additional track/bus/filter/ducking workflow.
+
+### Mesh warp and puppet animation
+
+Choose `distort.mesh-warp` for a bounded animated grid, or `distort.puppet` for
+continuous bends in the alpha silhouette of a supplied image. Puppet authoring
+sets fixed material `rest` pins and animates equal-length target `pins` arrays;
+keys, expressions and drivers can move whole pins or their x/y components.
+Starch regions retain stiffness; overlap regions set local depth ordering.
+
+```sh
+pnpm --silent still-shift comp validate --input examples/composition/12-puppet-acting/composition.json
+pnpm --silent still-shift comp preview --input examples/composition/12-puppet-acting/composition.json
+pnpm --silent still-shift comp render --input examples/composition/12-puppet-acting/composition.json --output puppet.mp4 --backend webgl2
+```
+
+The [arm/house demo and prop-follow example](../examples/composition/12-puppet-acting/README.md)
+include original static art. Use a constrained helper and a driver when a hand
+pin must follow a prop's final constrained position; convert parent coordinates
+into the puppet layer's local space. Topology, triangle and working-size bounds
+produce diagnostics when a pose collapses or flips the delivered mesh.
+
+Both Canvas and WebGL2 are supported for the bounded deformation model. There is
+no automatic character rig, named-joint action library or BVH retargeter. Existing
+[pose/action authoring](./story-acting.md) handles large silhouette changes from
+supplied alternate images; [native puppet authoring](./story-acting.md#native-composition-puppet-acting)
+explains continuous deformation, regions and coordinate limits.
 
 ### Expressions and behaviours
 
@@ -294,8 +504,8 @@ expression's canonical AST, which `export-json --normalized true` also writes.
 For the Lab preview, run `pnpm lab` and open
 [`/composition.html`](http://127.0.0.1:4173/composition.html): play or scrub the
 fixtures in `benchmarks/fixtures/composition/` and read their warnings. On a normal
-browser with a graphics card the preview is labelled approximate; the exported MP4 is
-always exact. The fixture browser reports `comp-text-system-font` for unpinned text;
+browser with a graphics card the preview is labelled approximate; export uses the
+pinned renderer profile. The fixture browser reports `comp-text-system-font` for unpinned text;
 authored JSON and TypeScript CLI inputs require a real pinned font asset.
 
 See the [composition reference](./composition-reference.md#rendering-a-composition)
@@ -335,9 +545,10 @@ TypeScript program.
 
 ### Author a composition in TypeScript
 
-Import typed layers, properties and timelines from `@still-shift/motion`, and export
+Import typed layers, properties and timelines from `@still-shift/motion` in a
+checkout, or `still-shift` / `still-shift/motion` in an installed project, and export
 the composition as the program's default export. The CLI accepts `.ts`, `.mts`,
-`.cts` and native `.json` inputs. Start with the nine small programs in
+`.cts` and native `.json` inputs. Start with the small programs and puppet demo in
 [`examples/composition`](../examples/composition), or the
 [197-line Unequal Margins program](../examples/composition/unequal-margins/program.ts).
 
@@ -461,16 +672,17 @@ These moves use authored image planes, crops and subject geometry. Start from
 the [cinematic gallery](http://127.0.0.1:4173/illustrated.html?collection=cinematic)
 to choose a variation, strength and duration, then play or scrub.
 
-| Variation         | What it does                                                    |
-| ----------------- | --------------------------------------------------------------- |
-| Layered Parallax  | Sweeps across separated planes while keeping a subject anchored |
-| Threshold Push    | Moves forward through a foreground opening                      |
-| Lateral Track     | Travels sideways with visible subject drift                     |
-| Foreground Reveal | Clears an obstruction, then holds the revealed subject          |
-| Rising Vista      | Rises above foreground cover to expose the wider landscape      |
-| Curved Approach   | Follows a bowed forward path around foreground edges            |
-| Detail to World   | Pulls back from a detail into its surrounding space             |
-| Focus Handoff     | Transfers sharpness between foreground and subject              |
+| Variation          | What it does                                                                                                      |
+| ------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| Layered Parallax   | Sweeps across separated planes while keeping a subject anchored                                                   |
+| Threshold Push     | Moves forward through a foreground opening                                                                        |
+| Lateral Track      | Travels sideways with visible subject drift                                                                       |
+| Foreground Reveal  | Clears an obstruction, then holds the revealed subject                                                            |
+| Rising Vista       | Rises above foreground cover to expose the wider landscape                                                        |
+| Curved Approach    | Follows a bowed forward path around foreground edges                                                              |
+| Detail to World    | Pulls back from a detail into its surrounding space                                                               |
+| Focus Handoff      | Transfers sharpness between foreground and subject                                                                |
+| Dolly-Zoom Tension | Changes camera distance and field of view together to preserve subject scale while changing the surrounding space |
 
 Create a four-second preview from a supplied fixture:
 
@@ -492,6 +704,12 @@ and [source-image prompt pack](../prompt-packs/cinematic-illustrated-still-anima
 The [fixture catalog](../benchmarks/fixtures/cinematic-illustrated/catalog.json)
 lists the actual available scenes. These variations are prepared scenes, not
 additional names for `animate --preset`.
+
+[Dolly-Zoom Tension](./dolly-zoom-implementation.md) documents the authored
+distance/field-of-view relationship. To inspect any supported cinematic input as
+native planes and a camera, use `comp export-json --scene <scene.json> --output
+<new-composition.json>`, then preview/render that composition. See the
+[cinematic adapter](./composition-reference.md#cinematic-scenes-as-native-compositions).
 
 ## Storytelling
 
@@ -597,7 +815,10 @@ pnpm story:passage \
   --output-dir benchmarks/results/my-passage-render-v001 --silent
 ```
 
-Choose exactly one of `--prepare-only`, `--silent` or `--narration <file>`.
+Choose exactly one of `--prepare-only`, `--silent`, `--narration <file>`,
+`--sound-only` or `--soundtrack <project.json>`. The latter two use linked passage
+sound or a saved soundtrack project; see [passage audio](./passage-audio.md) and
+[saved soundtracks](#saved-soundtrack-layers).
 Narration must match the plan's checksum and cover its source interval. Rendering
 produces `passage.mp4`, a review page and reports. You can render `--beat <id>` or
 a half-open range such as `--start-frame 180 --end-frame 204`. Verified beat renders
@@ -614,6 +835,67 @@ storytelling rollout remains an opt-in engine/prototype; do not assume every
 recipe or episode has been converted. See [passage authoring](story-beat-planning.md),
 [engine/workbench details](story-engine-tooling.md) and the
 [continuous prototype status](story-motion-continuous-implementation.md).
+
+### Render and inspect passages through compositions
+
+Use `pnpm story:passage --plan <plan.json> --output-dir <fresh-directory> --silent
+--renderer composition` to compile each story beat to `composition-1` before export.
+Add `--backend webgl2` for the WebGL2 backend; Canvas 2D is the default. Narration,
+sound cues, frame ranges, cancellation/resume and passage handoffs use the existing
+passage pipeline. Choose a fresh output directory when changing renderer/backend.
+
+For the matching Lab preview, open `passage.html?renderer=composition` (or add
+`&backend=webgl2`). Beat seeking and editing retain their existing controls. The
+compiled beat composition is retained in the passage cache for inspection.
+WebGL passage preview shares two renderers across the beats, retaining separate
+picture canvases for transitions. Long passages and edits do not allocate one GPU
+context per beat; replaced previews release their contexts.
+
+### Use a native composition as a passage beat's picture
+
+Create a companion JSON map, for example `{ "reset": "native-beat.json" }`, then
+add `--composition-beats <map.json>` to `story:passage --renderer composition`.
+Paths are relative to the map. The map and its pictures are validated before any
+output is written, including with `--prepare-only`. The picture file must match the resolved beat's size,
+frame rate and final source duration. Write native camera/subject continuity into
+that file; implicit story carry at a native boundary is rejected. The story template
+continues to hold narrative and cue metadata, while the native file owns its visuals.
+Retain the companion map, picture files and their assets alongside the story workspace;
+the existing workspace packager exports the story plan/templates separately.
+
+For matching passage preview, use
+`passage.html?renderer=composition&composition-beats=<workspace-map-path>`.
+Native layers appear in the state inspector; edit their motion in the composition
+file or composition inspector. Saved Lab workspaces retain the loaded native data.
+The acceptance example is `benchmarks/fixtures/composition/ce4a/native-beats.json`.
+
+Map narrative authority explicitly in the native picture:
+
+```json
+{
+  "metadata": {
+    "passage": {
+      "cueMarkers": { "strain": "strain" },
+      "eventMarkers": { "shared-strain": "shared-strain" },
+      "subjectLayers": {
+        "house-a": "story-content/house-a",
+        "house-b": "story-content/house-b"
+      }
+    }
+  }
+}
+```
+
+Root markers must match the narration cue frames and linked event windows. A sound
+anchored to a beat event also needs that event in `eventMarkers`; native pictures
+never inherit template event timing for sound effects. Layer
+paths may point into an adapted story precomp; share its assets with the containing
+composition. The native beat fixture demonstrates this with a new blend overlay.
+Map focal and evidence nodes, every incoming handoff target and every outgoing
+handoff source. Native entering subjects must be invisible at frame zero; exiting
+subjects must be invisible at the outgoing beat's last passage frame, before its
+transition tail. These checks include precomp instance clocks and host visibility.
+Missing mappings and unsupported legacy acting tracks return a diagnostic.
 
 ## Vertical video
 
@@ -801,14 +1083,16 @@ flat vertical presets.
 
 ## Save, export and share
 
-| Output                     | What it preserves                                                                                    | Use it for                                                            |
-| -------------------------- | ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| MP4                        | Rendered video                                                                                       | Editing into a larger video or reviewing playback                     |
-| Scene/result JSON          | Resolved scene, checksums, warnings and render details; exact sidecars depend on the command         | Reproduction and diagnosis                                            |
-| Commerce/shared source ZIP | Prepared scene and exact dependencies; brief or gallery settings where applicable                    | Moving a renderable source example between checkouts                  |
-| Passage **Save plan**      | Current source plan with resolved local references                                                   | CLI preparation/rendering or packaging                                |
-| Passage **Save workspace** | Local editing JSON with loaded template definitions                                                  | Reopening edits on the same filesystem; assets/fonts are not embedded |
-| Portable passage package   | Plan, templates, images, fonts, sound assets and optional narration, plus `workspace.json` checksums | Moving a complete set of passage inputs                               |
+| Output                               | What it preserves                                                                                    | Use it for                                                            |
+| ------------------------------------ | ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| MP4                                  | Rendered video                                                                                       | Editing into a larger video or reviewing playback                     |
+| Composition MOV/WebM or PNG sequence | Rendered master or transparent frames; sequence manifest and optional audio WAV                      | Editing, compositing and alpha delivery                               |
+| Composition JSON/TypeScript          | Authored layers and motion; source assets remain separate                                            | Reusable code/data authoring and checked preview/export               |
+| Scene/result JSON                    | Resolved scene, checksums, warnings and render details; exact sidecars depend on the command         | Reproduction and diagnosis                                            |
+| Commerce/shared source ZIP           | Prepared scene and exact dependencies; brief or gallery settings where applicable                    | Moving a renderable source example between checkouts                  |
+| Passage **Save plan**                | Current source plan with resolved local references                                                   | CLI preparation/rendering or packaging                                |
+| Passage **Save workspace**           | Local editing JSON with loaded template definitions                                                  | Reopening edits on the same filesystem; assets/fonts are not embedded |
+| Portable passage package             | Plan, templates, images, fonts, sound assets and optional narration, plus `workspace.json` checksums | Moving a complete set of passage inputs                               |
 
 To package a passage into a new directory:
 
@@ -833,21 +1117,67 @@ each revision; passage `--resume` and verified batch retries are the explicit
 continuation paths. The `*:prepare` fixture-generation scripts can rewrite demo
 fixtures and are maintenance tools, not required startup steps.
 
+### Composition export formats and rendering options
+
+The native composition renderer offers seven explicit `--format` profiles:
+
+| Profile       | Output                            | Alpha | Use                                              |
+| ------------- | --------------------------------- | ----- | ------------------------------------------------ |
+| `h264`        | MP4, H.264                        | No    | General playback and delivery                    |
+| `hevc10`      | MP4, 10-bit HEVC                  | No    | Higher-bit-depth delivery container              |
+| `prores422hq` | MOV, ProRes 422 HQ                | No    | Editing master                                   |
+| `prores4444`  | MOV, ProRes 4444                  | Yes   | Editing/compositing master with transparency     |
+| `vp9alpha`    | WebM, VP9                         | Yes   | Alpha video where the receiving tool supports it |
+| `png8`        | Numbered RGBA PNG sequence        | Yes   | Lossless frames and separate audio               |
+| `png16`       | Numbered 16-bit RGBA PNG sequence | Yes   | Higher-bit-depth frames and separate audio       |
+
+```sh
+npx still-shift comp render --input composition.ts --output overlay.mov --format prores4444 --backend webgl2
+npx still-shift comp render --input composition.ts --output frames/frame_%06d.png --format png16 --backend webgl2
+npx still-shift comp render --input composition.ts --output parallel.mp4 --format h264 --workers 4 --cache-static true --transport raw_rgba
+```
+
+PNG output requires exactly one `%06d.png` filename pattern and publishes a
+checksummed sequence manifest; when audio exists it writes a separate WAV.
+Keep every frame, manifest, audio file and scene/result sidecar together. H.264
+and HEVC require even dimensions. An omitted profile retains the existing MP4
+path. Profile exports use lossless `png_pipe` or `raw_rgba` capture; higher output
+bit depth carries the current RGBA8 renderer's picture and does not add HDR or
+recover lost source precision.
+
+Explicit profiles convert rendered sRGB to BT.709 output. Delivery PNGs carry
+BT.709 color metadata; native sequence input requires sRGB PNGs. Normalize and
+re-pin exported frames before reusing them as native source media.
+
+`--workers 1|2|3|4` and `--cache-static true|false` opt into bounded production
+workers and verified reusable static surfaces. Defaults retain ordinary rendering.
+They preserve output within a backend; speed depends on the actual clip and
+machine. Workers/caching are distinct from image batch concurrency and passage
+beat caching. Do not use timing results from another backend as a speed guarantee.
+Unsupported feature/backend pairs fail explicitly. Use the [rendering reference](./composition-reference.md#rendering-a-composition)
+for programmatic options and diagnostics, and [native media](./composition-media.md)
+for prepared source cache limits.
+
 ## When something does not work
 
-| Symptom                                          | Next step                                                                                       |
-| ------------------------------------------------ | ----------------------------------------------------------------------------------------------- |
-| A Lab link will not open                         | Run `pnpm lab` and check the terminal; port 4173 must be available                              |
-| No real image corpus appears                     | Use the prepared galleries, or prepare an image and use **Load local pair**                     |
-| Export is disabled after an edit                 | Apply/update the preview and fix the reported validation error                                  |
-| A commerce selection is Reference only           | Choose H01, H03, H04 or A01, or use the implemented component gallery                           |
-| A cinematic name fails with `animate --preset`   | Use its prepared scene with `animate-scene` or `cinematic:preview`                              |
-| Text does not fit                                | Shorten supplied text, adjust declared layout, or use fitted text within its allowed size range |
-| Source/font checksum or dimensions do not match  | Reprepare the scene with the intended dependency bytes; copying a JSON alone is insufficient    |
-| A downloaded passage cannot find assets          | Use the correct import base directory or create a portable package                              |
-| A 2D result appeared instead of depth motion     | Inspect the result's warnings and fallback status; review the source/depth pair                 |
-| An output already exists                         | Choose a new output or use the documented matching-request resume/retry workflow                |
-| A required browser, encoder or worker is missing | Revisit [installation](../README.md#install) and run `pnpm toolchain:check`                     |
+| Symptom                                                   | Next step                                                                                                                           |
+| --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| A Lab link will not open                                  | Run `pnpm lab` and check the terminal; port 4173 must be available                                                                  |
+| No real image corpus appears                              | Use the prepared galleries, or prepare an image and use **Load local pair**                                                         |
+| Export is disabled after an edit                          | Apply/update the preview and fix the reported validation error                                                                      |
+| A commerce selection is Reference only                    | Choose H01, H03, H04 or A01, or use the implemented component gallery                                                               |
+| A cinematic name fails with `animate --preset`            | Use its prepared scene with `animate-scene` or `cinematic:preview`                                                                  |
+| Text does not fit                                         | Shorten supplied text, adjust declared layout, or use fitted text within its allowed size range                                     |
+| Source/font checksum or dimensions do not match           | Reprepare the scene with the intended dependency bytes; copying a JSON alone is insufficient                                        |
+| A downloaded passage cannot find assets                   | Use the correct import base directory or create a portable package                                                                  |
+| A 2D result appeared instead of depth motion              | Inspect the result's warnings and fallback status; review the source/depth pair                                                     |
+| An output already exists                                  | Choose a new output or use the documented matching-request resume/retry workflow                                                    |
+| A required browser, encoder or worker is missing          | Revisit [installation](../README.md#install) and run `pnpm toolchain:check`                                                         |
+| An npm example asks for `pnpm lab` or a repository script | Use a checkout for that gallery/script; use `npx still-shift comp preview` for your installed project                               |
+| A packaged guide/skill cannot be found                    | Published `0.1.0` omits those files; use its installed README/public CLI or matching release checkout                               |
+| Native media fails checksum/descriptor validation         | Verify original files, real dimensions/frame rate/sample count and sequence hashes; see [media preparation](./composition-media.md) |
+| A puppet pose collapses or a triangle flips               | Keep fixed rest topology, reduce the pin movement and check layer-local coordinates/mesh budgets                                    |
+| Transparent output appears black                          | Select an alpha-capable profile and confirm the receiving editor supports its alpha channel                                         |
 
 ## Ask an AI about Still Shift
 
@@ -862,6 +1192,10 @@ Use $ask-still-shift to show me the available features and where to try them.
 Use $ask-still-shift to choose a workflow for a 4:5 product clip with two callouts.
 Use $ask-still-shift to explain how to keep a label attached to a moving object.
 Use $ask-still-shift to help me edit cue timing and share a portable passage.
+Use $ask-still-shift to animate a character arm with puppet pins and export alpha.
+Use $ask-still-shift to combine supplied video, voice audio and animated words.
+Use $ask-still-shift to explain camera perspective, lights and current 3D limits.
+Use $ask-still-shift to add music ducking and package a saved soundtrack.
 ```
 
 To install the skill from another checkout, link its directory into your personal
@@ -875,76 +1209,46 @@ ln -s "$PWD/skills/ask-still-shift" "${CODEX_HOME:-$HOME/.codex}/skills/ask-stil
 Run this from the repository root. The link keeps the installed skill and guide
 aligned with this checkout. If you move the checkout, update the link.
 
+For a package candidate that includes skills, link the installed
+`node_modules/still-shift/source/skills/ask-still-shift` directory instead.
+Published `0.1.0` needs the checkout installation above. The skill verifies the
+selected installed runtime before using checkout references. For code authoring,
+the companion [compose-with-still-shift skill](../skills/compose-with-still-shift/SKILL.md)
+provides the builder vocabulary; ask-still-shift covers discovery across workflows.
+
 For contributors: when a user-visible feature changes, update this guide with
 its entry point, required inputs, availability and limits. Keep detailed contracts
 in the linked implementation references; check catalog counts against source.
 
-### Render and inspect passages through compositions
-
-Use `pnpm story:passage --plan <plan.json> --output-dir <fresh-directory> --silent
---renderer composition` to compile each story beat to `composition-1` before export.
-Add `--backend webgl2` for the WebGL2 backend; Canvas 2D is the default. Narration,
-sound cues, frame ranges, cancellation/resume and passage handoffs use the existing
-passage pipeline. Choose a fresh output directory when changing renderer/backend.
-
-For the matching Lab preview, open `passage.html?renderer=composition` (or add
-`&backend=webgl2`). Beat seeking and editing retain their existing controls. The
-compiled beat composition is retained in the passage cache for inspection.
-WebGL passage preview shares two renderers across the beats, retaining separate
-picture canvases for transitions. Long passages and edits do not allocate one GPU
-context per beat; replaced previews release their contexts.
-
-### Use a native composition as a passage beat's picture
-
-Create a companion JSON map, for example `{ "reset": "native-beat.json" }`, then
-add `--composition-beats <map.json>` to `story:passage --renderer composition`.
-Paths are relative to the map. The map and its pictures are validated before any
-output is written, including with `--prepare-only`. The picture file must match the resolved beat's size,
-frame rate and final source duration. Write native camera/subject continuity into
-that file; implicit story carry at a native boundary is rejected. The story template
-continues to hold narrative and cue metadata, while the native file owns its visuals.
-Retain the companion map, picture files and their assets alongside the story workspace;
-the existing workspace packager exports the story plan/templates separately.
-
-For matching passage preview, use
-`passage.html?renderer=composition&composition-beats=<workspace-map-path>`.
-Native layers appear in the state inspector; edit their motion in the composition
-file or composition inspector. Saved Lab workspaces retain the loaded native data.
-The acceptance example is `benchmarks/fixtures/composition/ce4a/native-beats.json`.
-
-Map narrative authority explicitly in the native picture:
-
-```json
-{
-  "metadata": {
-    "passage": {
-      "cueMarkers": { "strain": "strain" },
-      "eventMarkers": { "shared-strain": "shared-strain" },
-      "subjectLayers": {
-        "house-a": "story-content/house-a",
-        "house-b": "story-content/house-b"
-      }
-    }
-  }
-}
-```
-
-Root markers must match the narration cue frames and linked event windows. A sound
-anchored to a beat event also needs that event in `eventMarkers`; native pictures
-never inherit template event timing for sound effects. Layer
-paths may point into an adapted story precomp; share its assets with the containing
-composition. The native beat fixture demonstrates this with a new blend overlay.
-Map focal and evidence nodes, every incoming handoff target and every outgoing
-handoff source. Native entering subjects must be invisible at frame zero; exiting
-subjects must be invisible at the outgoing beat's last passage frame, before its
-transition tail. These checks include precomp instance clocks and host visibility.
-Missing mappings and unsupported legacy acting tracks return a diagnostic.
-
 ## Saved soundtrack layers
 
-CE16's optional [soundtrack guide](./soundtrack-project.md) adds named tracks,
-BGM ducking, filtering, automation and command-only save/render/relocation.
-Run `pnpm soundtrack:setup`, then use `pnpm still-shift soundtrack` commands.
+Use `soundtrack-project-1` for named narration, BGM, SFX and ambience tracks;
+clip placement/trim, gain/pan, mute/solo, linear/equal-power fades, automation,
+bus routing, built-in filters, narration-driven ducking and a master limiter.
+The [soundtrack guide](./soundtrack-project.md) describes the sample-based contract,
+revision checks and complete command lifecycle.
+
+Supply local audio with real path/hash/sample identities. Install the separate
+runtime explicitly with `npx still-shift setup soundtrack` in an npm project, or
+`pnpm soundtrack:setup` in the checkout; select the printed Python path when
+needed. This optional runtime is separate from native composition/passage mixing.
+The documented repository soundtrack fixture points to external episode media;
+replace missing media with your own checked inputs before rendering it.
+
+```sh
+npx still-shift soundtrack validate --project soundtrack.json
+npx still-shift soundtrack inspect --project soundtrack.json --json
+npx still-shift soundtrack render --project soundtrack.json --output-dir mix-v001 --stems
+npx still-shift soundtrack package --project soundtrack.json --output-dir portable-mix-v001
+```
+
+Use `soundtrack edit --project <file> --revision <number> --operations <edits.json>`
+for checked edits and undo/redo. `from-passage` builds a project from existing linked audio, `retime`
+updates cue-linked clip placement from a passage plan, and `render --range
+<startSample>:<endSample>` delivers a half-open excerpt. Stems and range outputs
+follow the same master processing rules. A portable package rewrites paths and
+retains source bytes/history; copy its whole directory, not just `project.json`.
+
 In the Lab, **Soundtrack layers** opens the shared saved project, numerical clip
 edits, fade shapes, cue placement and rendered waveforms. Edits write the project file with revision checks.
 **Render this revision** enables mix preview/download. In the passage workbench,

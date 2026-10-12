@@ -43,11 +43,37 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #51 conflicts resolved (2026-10-12):** merged `main` `3fab0162` into
+  MS0 head `d55908fa` in an isolated worktree. Retain the approved MS0 → MS1 →
+  required MS1N → MS2 → MS3 sequence and both the MS0 audit and 0.1.1 release
+  records. The roadmap now names the 0.1.1 checkpoint. Dated MS0 input/API/font
+  evidence remains unchanged; its source comparisons still refer to the original
+  `e6eb7b06` / `db28a938` audit, not a new release verification. Conflict resolution
+  changes documentation only relative to `main`; PR integration remains pending.
+  [PR #51](https://github.com/xxibcill/still-shift/pull/51),
+  [resolution record](#2026-10-12--resolve-ms0-pr-51-conflicts).
+
+- **Documentation patch 0.1.1 published (2026-10-10):** npm `latest` is `0.1.1`.
+  The public archive matches the verified archive byte for byte (SHA-256
+  `5cf82c0379f3a78e5b91b96200b5f9b5816cbf8975f860a3deda40fe96fa8ac5`).
+  All 733 shipped source files match `73c01fa7`; `production` and fixed annotated
+  `v0.1.1` now point there. PR #53 integrated the candidate into `main`; release
+  promotion #54 preserved ancestry by fast-forward. Local release verification
+  passed in stages: 3,666 units, 85 runtime, 318 integration, 14 depth, all 69
+  browser commands, 176 frozen baselines / 36,061 frames, and 27 online package
+  checks; production audit reports zero known vulnerabilities. Initial setup
+  failure, interrupted rerun, authentication failure and stale registry reads are
+  retained. Owner completed npm browser publication authentication. Existing
+  WebGL timing deferrals, no-op benchmark limits and separate human visual/listening
+  acceptance remain unchanged. Unrelated checkout edits are preserved.
+  [Release records](./npm-release-results.json),
+  [promotion #54](https://github.com/xxibcill/still-shift/pull/54).
+
 - **MS0 audit complete (2026-10-09):** Codex on `codex/mechanism-ms0` from
-  `main` `e6eb7b06`; separate milestone PR follows verification. Original E01
-  inputs are recovered: 27 dependencies, all 25 ZIP manifest identities and 13
+  `main` `e6eb7b06`; milestone [PR #51](https://github.com/xxibcill/still-shift/pull/51)
+  is open. Original E01 inputs are recovered: 27 dependencies, all 25 ZIP manifest identities and 13
   original-copy receipts match; actual Plex static cut/copy coverage passes.
-  Current composition source is unchanged from release, and five stored gate
+  At that audit, composition source was unchanged from release, and five stored gate
   artifacts match their recorded hashes. Rubric, protocol, boundaries and
   provisional budgets are frozen. Exact historical Arial/GPU identities, public
   customer-media redistribution and human review remain limited. Original local
@@ -154,6 +180,59 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — Resolve MS0 PR #51 conflicts
+
+- **Agent / branch:** Codex resolving `codex/mechanism-ms0` in an isolated worktree;
+  original checkout edits preserved.
+- **Done:** merge `main` `3fab0162` into MS0 `d55908fa`; resolve `ROADMAP.md` and
+  `docs/dev-log.md`, retaining the required MS1N stage and both dated histories.
+  Refresh current release references to 0.1.1; preserve all original MS0 audit JSON.
+- **Verification:** pinned Node 22.23.1 / pnpm 10.29.3; all 12 PR documents pass
+  Prettier and whitespace checks. No unresolved conflicts/markers; both complete
+  log histories, original MS0 JSON and release evidence are preserved. Initial
+  roadmap formatting warning repaired and the full document check rerun passed.
+- **Limits / next:** documentation-only diff against `main`; no new software,
+  release or render gate. PR integration and human acceptance remain separate.
+- **Records:** [PR #51](https://github.com/xxibcill/still-shift/pull/51),
+  [MS0 audit](./mechanism-shorts-ms0-results.json), [release record](./npm-release-results.json).
+
+### 2026-10-10 — Publish and verify documentation patch 0.1.1
+
+- **Done:** owner completed npm browser publishing authentication; exact verified
+  archive published as `still-shift@0.1.1` and tagged npm `latest`. Downloaded
+  registry bytes match the tested SHA-256, SHA-512 integrity and SHA-1 checksum.
+- **Checkpoint:** source `73c01fa7`; PR #53 merged into `main`, promotion #54
+  fast-forwarded `production`, and fixed annotated `v0.1.1` points to that exact
+  source. Publication records follow separately without changing the release.
+- **Verification:** full gate completed in stages; 3,666 units, 85 runtime,
+  318 integration, 14 depth, 69 browser commands, 176 frozen baselines / 36,061
+  frames and 27 online installed-package checks pass. Zero known production
+  audit vulnerabilities; 733 packaged source files match the release commit.
+- **Retain:** setup failure, interrupted rerun, first npm E404/E401 attempt and
+  initial stale registry reads. Existing WebGL timing deferrals, no-op benchmark
+  limits and separate human visual/listening acceptance remain unchanged.
+- **Records:** [release results](./npm-release-results.json),
+  [patch plan](./npm-patch-0.1.1-plan.md),
+  [publication evidence](../benchmarks/results/npm-patch-0.1.1-20261010/publication-success.json).
+
+### 2026-10-10 — Prepare documentation patch 0.1.1
+
+- **Agent / branch:** Codex on `codex/docs-patch-0-1-1` from `main` `e6eb7b06`.
+- **Scope:** patch package guides, capability discovery and both skills for every
+  implemented feature; include guides/skills/examples with installed links.
+- **Isolation:** copy only usage-refresh changes. Preserve unrelated working-tree
+  roadmap/research changes and the fixed published archive/tag.
+- **Prior evidence:** development fast gate passes 3,666 units and the isolated
+  documentation candidate passes 26 offline package checks after retained reruns.
+- **Prepared:** public version/lock metadata is `0.1.1`; dependency pins are unchanged.
+- **Retain:** full run on `a437d980` passed 3,666 units and 85 runtime tests, then
+  failed 38 integration cases with the missing optional audio runtime; 280 passed.
+- **Repair / next:** prepare the hash-locked audio runtime, document fresh-checkout
+  prerequisites and rerun the full gate on the revised committed candidate.
+- **Limits:** no publication or human visual/listening acceptance is inferred.
+- **Records:** [refresh evidence](./usage-docs-refresh-results.json),
+  [release procedure](./npm-release-plan.md).
 
 ### 2026-10-09 — Complete MS0 baseline and input audit
 

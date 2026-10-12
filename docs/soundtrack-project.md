@@ -5,6 +5,12 @@ shared revision-checked edits and an optional Lab layer view. Existing
 `passage-audio-1` files keep their original preview/export path. Loading or exporting
 an episode never migrates it.
 
+For an installed npm project, use `npx still-shift setup soundtrack` and
+`npx still-shift soundtrack ...`; the package prints the runtime Python path.
+The commands below use a repository checkout. See the [npm guide](./npm-package-readme.md)
+for installed runtime selection and the [user guide](./user-guide.md#saved-soundtrack-layers)
+for a compact lifecycle with your own media.
+
 ## Command-only setup and lifecycle
 
 Use the repository's Node 22.23.1 / pnpm 10.29.3 toolchain, UV 0.7.12 and
@@ -23,7 +29,8 @@ not delete or replace the environment. The default is the isolated ignored
 `benchmarks/results/composition-ce16/runtime`. Use `STILL_SHIFT_SOUNDTRACK_ENV` during
 setup for another location, then set `STILL_SHIFT_SOUNDTRACK_PYTHON` to its Python
 executable for rendering. No plugin, activation dialog, provider request or GUI is
-required. Distribution is a separate decision; see licensing below.
+required. The npm release includes support under GPL-3.0-only with that runtime
+installed separately; see the current release decision below.
 
 The 60-second example references existing local episode files by path and SHA-256.
 It contains natural narration, one music interval and two cues. Those media are
@@ -439,14 +446,10 @@ The backend is local and opt-in. DawDreamer 0.9.0 is GPLv3 and includes native
 component obligations; NumPy/SciPy carry BSD and bundled native-library notices.
 The pinned wheel/license audit is retained in the [backend proof](./composition-ce16-backend-proof.md)
 and evidence. No backend binaries are bundled into Still Shift or a media package.
-Owner decision (2026-10-05): the runtime stays local and opt-in; nothing is
-bundled or distributed. **Revisit before contributing, publishing or distributing
-Still Shift with the soundtrack feature.** Then choose between complying with
-GPLv3 for whatever is shipped, or replacing DawDreamer, which now runs only the
-built-in high/low-pass filters (all routing and mixing are NumPy). Replacing it
-would need a new DSP version and listening, because filter output would change.
-Subprocess separation is not asserted to exempt distribution from those
-obligations.
+The earlier 2026-10-05 local-only distribution decision was superseded by the
+2026-10-09 release decision below. DawDreamer runs the built-in high/low-pass
+filters; routing and mixing use NumPy. Replacing the backend would require a new
+DSP version and listening review because filter output would change.
 
 Owner update (2026-10-09): release the application under **GPL-3.0-only** and
 include soundtrack support with a **separately installed audio runtime**.

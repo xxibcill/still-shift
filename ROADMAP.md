@@ -1,10 +1,10 @@
 # Still Shift — Active roadmap
 
-**Updated:** 2026-10-09
+**Updated:** 2026-10-12
 
 **Current engineering:** all 21 core composition deliverables are merged on
-`main` `e6eb7b06`. Published `0.1.0` source is preserved by `production` and
-`v0.1.0` at `db28a938`.
+`main`, now at `3fab0162`. Published `0.1.1` source is preserved by `production`
+and `v0.1.1` at `73c01fa7`; fixed `v0.1.0` retains `db28a938`.
 
 **Current work:** MS0 has recovered and audited the original E01 inputs. Next is
 the supported MS1 Three.js bridge and portable mechanism Short, followed by
@@ -45,7 +45,7 @@ activity; a completed milestone branch does not by itself establish delivery on
 
 | Area                                                     | Recorded state                                                                                                                                           | Source                                                                                                                                       |
 | -------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Composition foundation, adapters and CE13 media          | Core implementation and milestone verification are complete and merged; published release source is db28a938.                                            | [Composition tracker](./docs/composition-engine-plan.md#milestone-tracker)                                                                   |
+| Composition foundation, adapters and CE13 media          | Core implementation and milestone verification are complete and merged; published 0.1.1 release source is 73c01fa7.                                      | [Composition tracker](./docs/composition-engine-plan.md#milestone-tracker)                                                                   |
 | CE15 output, caching and parallel rendering              | Complete and merged in PR #49; review repairs are integrated on main. The recorded production benchmark reaches 3.408× with identical output.            | [CE15 delivery plan](./docs/composition-ce15-plan.md)                                                                                        |
 | CE14 mesh warp and puppet pins                           | Complete and merged in PR #50 with stack, scale, collapse and diagnostic review repairs.                                                                 | [CE14 scope](./docs/composition-engine-plan.md#ce14--mesh-warp-and-puppet-pins)                                                              |
 | CE16 soundtrack                                          | Technically complete and merged in PR #33; local opt-in runtime prepared. Human listening and public backend distribution are separate decisions.        | [CE13 completion](./docs/composition-engine-plan.md#ce13-completion-record-2026-10-07)                                                       |
@@ -58,8 +58,8 @@ CE15 and CE14 completed the approved main implementation lane. The
 [npm release plan](./docs/npm-release-plan.md) records the current target: one
 `still-shift` package, GPL-3.0-only and a separately installed soundtrack runtime.
 The package is technically verified; the [release results](./docs/npm-release-results.json)
-record staged software completion, 26 passing final package checks and the
-resolved catalog ownership decision. `still-shift@0.1.0` is published as `latest`;
+record staged software completion, 27 passing final package checks for 0.1.1 and
+the resolved catalog ownership decision. `still-shift@0.1.1` is published as `latest`;
 the downloaded npm archive exactly matches the tested release.
 
 1. The owner discarded the retired corpus requirement on 2026-10-09.
