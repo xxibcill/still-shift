@@ -44,23 +44,23 @@ still hold before relying on them.
 ## Current state
 
 - **MS3 in progress (2026-10-13):** codex/mechanism-ms3 carries exact MS2495fb2c0
-  after PR57 opened/attached. Report/queue mechanics and native3 real adapter now
-  have scoped proof: three distinct families, four outputs/240 fully decoded
-  frames, completed-product reuse and caption revision with0 fresh native calls,
-  changed video/exact decoded audio. Independent audit checks54 pins. Current
-  package declarations/boundaries and42 owning tests pass with terminal receipts;
-  complete fast1 passes4404 units/432 files in68.04s on efa50574, with2659
-  inputs/120986008B unchanged. Original failed build/counter/browser1
-  fixture and missing49709 terminal observation remain retained. Shared parent
-  keeps foreign1024B and64MiB per returned state; dispose retires reservations.
-  Five nontechnical QA dimensions remain unreviewed. Native receipt relocation,
-  actual interruption/cancel/corrupt recovery, semantic QA/warnings, repair and
-  handoff, CLI and all ten original pilot questions remain. Coverage0/10; five
-  assets/two behaviors unadmitted, targets unmeasured. No ElevenLabs spending,
-  publication/merge, Actions or human acceptance.
-  [Tracker](./mechanism-shorts-ms3-acceptance.md),
+  after PR57 opened/attached. Native executor efa50574 passes complete fast1:
+  4404 units/432 files/68.04s,2659 inputs/120986008B exact. Actual three-family
+  queue proof retains four exports/240 decoded frames, caption video change with
+  exact audio and0 fresh3D; independent54-pin audit. Semantic4 now adds bounded
+  declarative registrations, located MS2 timeline results and inherited warning
+  groups with exact raw peaks/units/children/bad frames. Final scoped gate passes
+  21 tests/build/lint/boundaries/public declarations; real native capture reuse
+  checks180 mount samples and3 separately seeded measurement controls with every
+  current dependency/product pin checked. Final slice fast tier is next. Fixture
+  inheritance/schema failures, wrapper syntax and earlier staged proofs retained.
+  No whole mechanical/continuous collision or human review inferred. Remaining:
+  durable QA/warning/handoff integration, actual native faults/relocation, scoped
+  repair/automatic MS1 overlap, CLI/capabilities and all ten frozen questions with
+  five assets/two behaviors. Coverage0/10, targets unmeasured, no spending/Actions/
+  merge/publication. [Tracker](./mechanism-shorts-ms3-acceptance.md),
   [native evidence](./mechanism-shorts-ms3-native-executor-results.json),
-  [queue](./mechanism-production-queue.md),
+  [semantic evidence](./mechanism-shorts-ms3-semantic-results.json),
   [results](./mechanism-shorts-ms3-results.json).
 
 - **MS2 software checkpoint delivered (2026-10-13):** `codex/mechanism-ms2`
@@ -248,6 +248,25 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — MS3 bounded semantic programs and inherited warning evidence
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from f6eada10.
+- **Done:** Immutable declarative assertion registry with comparison/data/finding
+  bounds; located existing MS2 timeline result wrapper; grouped warning peak/raw/
+  child/part/bad-frame evidence. Sampling never becomes continuous collision proof.
+- **Results:**21 scoped tests and build/lint/boundaries/public declarations pass.
+  Current native checker reuses three actual engineering captures;180 sampled
+  mount checks pass and3 separately identified frame30 delta0.1 controls fail.
+  Every current dependency/product pin and unchanged runtime identity is checked.
+- **Rejected:** Actual opacity fixtures used null inheritance, then an invalid
+  nested group; corrected to the existing flat group/parent schema. Failed wrapper,
+  both failed gates and earlier separate proof/code bindings remain retained.
+- **Open / next:** Fast tier, durable QA/warnings/handoff integration, original
+  analytic/continuous/fault/repair/CLI and complete pilot extension/review scope.
+- **Records:** [Semantic evidence](./mechanism-shorts-ms3-semantic-results.json),
+  [API and limits](./mechanism-production-semantic.md),
+  [tracker](./mechanism-shorts-ms3-acceptance.md).
 
 ### 2026-10-13 — MS3 native queue executor and independent full-decode proof
 

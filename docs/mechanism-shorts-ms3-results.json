@@ -3,7 +3,7 @@
   "milestone": "MS3",
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
-  "status": "in-progress-native-executor-scoped-proof-verified",
+  "status": "in-progress-native-and-semantic-foundations-verified",
   "baseMain": "57967fa6497249d75e740ba837b8e2687cc81a98",
   "ms2Prerequisite": {
     "commit": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
@@ -295,6 +295,15 @@
         }
       ],
       "qualification": "Complete fast tier on efa50574; earlier browser2 has its own retained exact runtime/artifact bindings. Final MS3 full/archive/installed and pilot remain open."
+    },
+    {
+      "id": "semantic-warning4",
+      "status": "scoped-semantic-and-warning-foundation-verified",
+      "record": "docs/mechanism-shorts-ms3-semantic-results.json",
+      "focusedTests": 21,
+      "actualNativeSamples": 180,
+      "seededControls": 3,
+      "qualification": "Scoped QA engineering layer and actual sample evidence only. No whole mechanical, collision, human, factual, listening, pilot acceptance or newly achieved production target."
     }
   ],
   "targets": {
