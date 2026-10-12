@@ -44,141 +44,47 @@ still hold before relying on them.
 ## Current state
 
 - **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
-  [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Sixty-two slices include the frozen ten-question board, expanded Thai review and
-  recovered existing spoken inputs for all three families. Four audio hashes and
-  thirteen supplied word-range/shot associations match. The shorter tape-hook take
-  uses revised copy; the failed identical-script assumption is retained. Fresh48k source clocks for four supplied takes have since been measured locally;
-  spoken cue/native export, synthesis and listening acceptance remain separate.
-  Thai review covers all 114 distinct cells at frames 8/18 and three sizes;
-  located prefix/contrast/wrap negatives keep finer motion unadopted.
-  Full51-1 was deliberately stopped with exit130 to implement the missing
-  annotation routes before the final gate. Its 38-group prefix, interrupted 39th
-  group and unchanged 2,567-file input audit remain retained; it is not a full pass.
-  Slice53 adds bounded composition-native bracket/arrow geometry. Final fast4
-  passes 4,303 units/422 files; native-depth4 passes 14 depth/six composition cases
-  and cancellation. All 42 annotation readbacks/30 exact control pairs independently
-  audit; held 2,568 inputs/119,629,177B unchanged. Failed attempts remain retained.
-  Slice54 adds all five screen cue recipes and bounded multi-anchor visibility
-  groups. Final fast2 passes 4,313 units/423 files; native1 passes 14 depth/six
-  composition cases/cancellation with 70 readbacks/30 exact controls audited.
-  Fresh browser4 passes three families/five styles, 180 previews/540 seeks/six
-  exports/360 final native frames. Independent dependency/PNG/body/decoded audio
-  and video audits pass; 2,603 inputs/120,347,181B unchanged through staged gates.
-  Centered-group coordinates, cable framing and mismatched arrow ink failures
-  remain retained. The new browser group expands the final full matrix to95;
-  historical stopped full51 remains its original94-group attempt.
-  Slice55 completes explicit part-bound world text, pinned-font overflow errors
-  and stable CAS edits requiring native invalidation. Evaluator60 inherits physical
-  part/ancestor visibility. Final fast6 passes4,320 units/424 files. Native1
-  depth14/six composition/cancellation retains70 audited readbacks/30 exact pairs;
-  owning production/tests unchanged through final helper repairs. Browser3 passes
-  three families/360 previews/1,080 seeks/six exports/360 native frames/18 controls.
-  Independent PNG/matrix/body/decode/source-clock/control-source audits pass; all12
-  sampled PNGs agent-viewed. Held2,607 inputs/120,401,922B unchanged. Failed ACES
-  color assumption, strict hidden-pawl control, receipt types and formatting remain
-  retained. Final full96/176 items/36,061 frames/benchmark remains required.
-  Slice56 completes rigid indexed-triangle markings from actual Float32 geometry,
-  full-box/material/deformation/precision admission and full-variant CAS edits.
-  Actual pinned Three sorting reproduces cold/warm allocation depth ties; explicit
-  graphic renderOrder1 repairs exact seeks with depth tests/writes active.
-  Final fast11 passes4,331 units/425 files. Native2/current owning-source audit9
-  passesdepth14/six composition/cancellation/70 readbacks/30 exact pairs; only
-  four test files differ from the native2 producer. Surface9/audit2 passes360
-  previews/1,080 seeks/six exports/360 native frames/18 controls and24 triangle-box
-  quads; all encoded frames retain ink at unchangedRGB28/min3. Default world1/
-  audit1 preserves all360 preview/decoded frames/six audio/encoded bodies from
-  slice55. All24 original surface/world PNGs agent-viewed. Held2,611 inputs/
-  120,444,661B unchanged through staged gates. Failed720x408 encoded ink,16-ULP
-  loss/cold seek, test decoder ENOBUFS and actual font/safe-area cases are retained.
-  Actual96.31996155x83.2px shaping fits final104x84/font64; thresholds unchanged.
-  Build10 completion remains unverified after truncated tool output; owned
-  build11/12 and final fast11 confirm repairs. Next is actual label-only plate reuse.
-  Slice57 completes the internal native source partition and integer-held overlay
-  lowering. The physical graduation/world fonts remain pinned; screen/audio edits
-  preserve the native partition. All five visible styles in all three families
-  preserve120 forward/reverse matrices, canonical path geometry and effective
-  alpha, including offset/opacity groups and hidden/clock/key-limit controls.
-  Fast1 passes4,344 units/427 files; held2,615 inputs/120,472,825B unchanged.
-  Missing modules/fonts, invalid fixture/type/layout assumptions, tangent defaults,
-  hashed test IDs and the exhaustive tape test timeout are repaired and retained.
-  Original authenticated plate capture, revision-safe reuse/checks and zero fresh
-  3D draws remain required; no cache export or new public cache API is claimed.
-  Slice58 completes internal native-only PNG16 capture/original-proof checking.
-  Final capture2 passes180 original native frames/passes; caption/gain stages
-  preserve hashes,28 retained-artifact corruptions plus3 PNGs/3 camera changes
-  reject. Audit3 independently matches180 PNG/decoded/journal frames,1,260
-  hierarchy pairs/180 source-camera triples; all180 bodies/decodes match capture1.
-  Nine original sampled PNGs viewed and final samples are byte-identical. Actual
-  live native-body/complete-PNG cancellation removes the owned directory and all
-  observed Chromium/FFmpeg descendants within26.9ms under the existing2s policy.
-  Immediate-exit cancel1, allocation/type build1 and unverified build2 subterminal
-  remain retained. Final fast1 passes4,344 units/427 files; real file/FIFO/sparse/
-  copy/cancel/hash runtime2tests pass. Held2,620 inputs/120,518,027B unchanged.
-  Node capture preparation, parser/closure and export share one declared allowance;
-  whole application/RSS/lifetime admission remains a separate open gate.
-  Cached overlays/zero fresh3D export draws, world/surface capture breadth and new
-  public cache API/CLI are still required; this capture foundation claims none.
-  Slice59 completes internal current-cue plate export with a separate receipt,
-  exact current/lowered/final/original source edges and actual zero fresh native
-  submission counters. Render3 passes three families/all five visible styles:
-  180 original capture frames,6 direct/12 cached exports,720 cached image deliveries,
-  360 preview pairs/maxRGB1 within fixed2 and720 cached seeks. Repeated encoded/
-  decoded bodies and current direct/cache audio match; gain edits change3 soundtracks.
-  All60 altered fact/counter controls,3 stale cues and3 pre-aborts reject. Audit3
-  matches57 files/180 original PNG+journal/900 decoded frames/1,260 hierarchy pairs/
-  180 source-camera triples. All30 original sampled PNGs agent-viewed. Final fast2
-  passes4,346 units/427 files; held2,624 inputs/120,570,245B unchanged.
-  Nested Node transfer ownership is repaired without increasing limits;12 focused
-  units/5 actual file/source runtime checks pass. Failed quota/helper/types/allowlist/
-  disabled-counter/independent audit attempts are retained. Lossy direct/cache H264
-  differences remain diagnostic; no full encoded glyph/readability acceptance.
-  Public root/CLI, actual world/surface cache breadth and whole resources remain open.
-  Slice60 records fresh complete48k clocks for all four recovered spoken takes:
-  938,458/1,032,081/1,027,623/1,105,642 mono sample frames; all4 RIFF/source/PCM/
-  normalized re-decodes audit. Original44.1k inputs normalize without speed/trim/
-  filler changes. Supplied13 visual cue endpoints fit; rounded final word ends
-  need15/9 sample authoring clamps, and peg's final visual endpoint needs+1 sample.
-  Canonical clips remain outsideGit. The revised-copy hook is3.483s shorter;
-  no spoken cue compilation/native export or listening acceptance is inferred.
-  Slice61 completes six retained world/surface cache cases with unchanged preview
-  and encoded ink guards:360 original frames,6 direct/12 cached exports,360 preview
-  pairs/maxRGB1 and720 cached seeks. All12 ink-edit rejection checks pass;30 sampled
-  PNGs agent-viewed. Producer reports passed but lost root terminal is unverified.
-  Owned audit1 verifies114 fact pins,360 PNG16/native transport hashes,2,520 hierarchy
-  pairs/360 source-camera triples and720 MP4 decoded frames/18 complete PCM streams.
-  Ordinary fast1 and isolated style timeout are retained. Splitting one existing
-  three-family style test preserves every assertion and5s per-family; tape keeps30s.
-  One-worker full fast-tier2 passes4,348 units/427 files on held2,627 inputs/
-  120,587,636B; no production/browser change after the owning render/audit.
-  Slice62 exposes the versioned cue cache lifecycle at the existing engine root
-  and bounded CLI/discovery, with strict receipt schemas/types and a package guide.
-  Owned render1 verifies60 original captures/four API/CLI cached exports/240 image
-  calls and zero fresh native export submissions; label/gain edits preserve plates.
-  Current/stale/directory/pre-abort/flag controls pass. Independent audit1 checks
-  33 pins/60 PNG16 native transport identities/660 hierarchy pairs/60 camera triples/
-  240 decoded MP4 frames/four PCM streams; all10 sampled PNGs agent-viewed.
-  Fast-tier1 with one unit worker passes4,348 units/427 files; focused runtime22
-  tests/three files pass. Held2,631 inputs/120,619,011B unchanged. Root-red before
-  draws, unverified format2 and scratch hash-namespace audit failure are retained.
-  The full matrix is101; no full101 or installed consumer pass claimed.
-  Coverage stays 0/10 validated; packs are candidates; accepted pilot episodes 0.
-  Next: in-flight cache edits/cancellation and whole resources; record fresh
-  genuine spoken cue/native exports; refresh the full gate,
-  whole resources/final installed/pack admission and MS2 PR. MS3 not started.
-  No human acceptance, merge/publication or paid generation.
+  [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56)
+  (`bf30a253`). Sixty-three slices are committed/prepared; MS2 has no PR yet.
+  Families remain candidates: validated coverage0/10, supported packs0, accepted
+  pilot0. MS3 has not started. The frozen question board remains authoritative;
+  E06 primary-source admission and finer Thai motion remain provisional.
+  Native/source3 bridge, all five screen recipes, rigid world/surface ink and
+  authenticated current-cue plate capture/reuse now have scoped software evidence.
+  Slice62 exposes the versioned engine-root API/CLI with strict receipts/discovery:
+  owned capture60/four cached outputs, measured fresh native0 and current/stale
+  controls pass. Slice63 adds upload-triggered cue/audio/consumed-plate edits and
+  two live cancels, owned failure cleanup, shared Node quota/lease checks and recovery.
+  Final producer5/audit2/fast1 own terminal0:246 complete real uploads,3 source
+  rejections,2 cancels,one60-frame recovery/fresh native0 and four quota controls.
+  Original71 plate files remain exact; caller output survives EEXIST. Foreign
+  leases survive calls and retire on root disposal. Normal declared high water
+  285,155,818B stays under512MiB; sampled physical RSS is a separate measurement.
+  Cleanup waits are after API settlement under the existing2s descendant policy.
+  Audit2 checks90 fact pins/60 original PNG transport identities/660 hierarchy
+  pairs/60 cameras/60 recovery decoded frames/full PCM. One proper viewing PNG is
+  agent-viewed and matches the prior public-consumer preview everyRGBA byte.
+  Fast tier(one unit worker) passes4,348 units/427 files on2,632 held unchanged
+  inputs/120,640,533B. Ordinary fast/isolated timeouts, observer/diagnostic/partial
+  abort/view-row failures remain retained in their records; no limits raised.
+  Full51 was intentionally stopped(exit130) at its original94-group scope; its
+  38-group prefix/interrupted39th remain evidence. Slice61 six-case producer report
+  passed but its root terminal is lost/unverified. Current full matrix102 has no
+  full pass: owning full/frozen176/36,061-frame/benchmark refresh is required.
+  Four recovered spoken takes have exact48k clocks and thirteen associations;
+  the shorter hook uses revised copy. Endpoint corrections are proposed, not yet
+  authored. Genuine cues/native output/reading/action/factual/listening remain open.
+  Next: genuine supplied speech and shorter-copy output, whole application/source/
+  driver resource/replay admission, full102 and final archive/installed/pack/coverage/
+  MS2 PR before MS3. Human visual/listening and encoded readability stay separate.
+  No paid generation, milestone merge/publication, Actions or private media redistribution.
+  [Public cache](./mechanism-shorts-ms2-public-cue-cache-results.json),
+  [Live cache/leases](./mechanism-shorts-ms2-cue-cache-lifetime-results.json),
   [World/surface cache](./mechanism-shorts-ms2-world-plate-export-results.json),
-  [Native plate export](./mechanism-shorts-ms2-native-plate-export-results.json),
-  [Native plate capture](./mechanism-shorts-ms2-native-plate-capture-results.json),
-  [Plate foundation](./mechanism-shorts-ms2-native-plate-reuse-results.json),
-  [Surface evidence](./mechanism-shorts-ms2-surface-marking-results.json),
-  [World text evidence](./mechanism-shorts-ms2-world-annotation-results.json),
-  [Screen style evidence](./mechanism-shorts-ms2-annotation-style-results.json),
-  [Annotation geometry](./mechanism-shorts-ms2-annotation-results.json),
+  [Spoken clocks](./mechanism-shorts-ms2-spoken-sample-clock-results.json),
   [Full gate history](./mechanism-shorts-ms2-full-gate-results.json),
-  [Spoken sample clocks](./mechanism-shorts-ms2-spoken-sample-clock-results.json),
-  [Spoken inputs](./mechanism-shorts-ms2-spoken-input-results.json),
-  [Thai review](./mechanism-shorts-ms2-thai-review-results.json), [MS2 results](./mechanism-shorts-ms2-results.json).
+  [All slice evidence](./mechanism-shorts-ms2-results.json),
+  [Ordered plan](./mechanism-shorts-production-plan.md).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
   inventory15:2,329 inputs/117,503,155B. Original full6 retains a qualified19-group
@@ -336,6 +242,25 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — MS2 real cached-output lifetime and shared Node owner
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `63841c81`.
+- **Done:** Cached render/check share the existing Node parent; local leases retire
+  and caller leases survive. Real complete worker uploads trigger live controls.
+- **Results:** Final producer5 passes3 source edits/2 cancels/recovery/four quota
+  controls;246 complete uploads,60 recovery frames/measured fresh native0. Original71
+  plate files/caller output preserved. Independent audit2:90 pins/60 PNG identities/
+  660 hierarchy pairs/60 cameras/60 decoded recovery frames/full PCM. Proper viewing
+  PNG matches prior preview everyRGBA byte. Fast1(one unit worker) passes4,348/427;
+  held2,632 inputs unchanged. Post-settlement cleanup waits~28ms under existing2s.
+- **Rejected / do not repeat:** Active stream listener, assumed audio/sequence
+  diagnostic messages, requiring a full later upload after abort, bottom-first PNG
+  as top-first view; type/proof-argument and scratch quoting failures retained.
+- **Open / next:** Whole application/driver/source/replay resources, genuine speech,
+  full102/frozen/benchmark/archive/installed/pack/MS2 PR. Packs/pilot0; no acceptance.
+- **Records:** [Lifetime evidence](./mechanism-shorts-ms2-cue-cache-lifetime-results.json),
+  [API/CLI](./mechanism-cue-native-plates.md). No paid generation or Actions.
 
 ### 2026-10-12 — MS2 public native cue cache API and CLI
 

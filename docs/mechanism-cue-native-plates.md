@@ -42,7 +42,9 @@ Every destination must be fresh. Keep the capture directory intact: its receipt
 refers to retained source snapshots, copied dependencies, original native
 observations and the complete PNG16 sequence. The checker verifies their actual
 bytes and replays the original evidence. Changes to those files reject the cache.
-These methods accept an optional `{ signal }`; cancellation keeps the original
+These methods accept optional `{ signal, nodeMemory }`. A supplied
+`CompositionNodeMemory` shares the existing allowance with the caller; each call
+retires its local leases and preserves unrelated caller reservations. Cancellation keeps the original
 abort reason and removes failed owned output. Whole descendant/resource/lifetime
 acceptance remains a separate gate.
 

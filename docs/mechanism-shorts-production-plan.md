@@ -935,6 +935,22 @@ mechanism families establish whether the architecture transfers.
       retains the root-red and audit/format qualifications. Full101, final installed
       consumer, in-flight edits/cancellation and whole resource/lifetime gates remain
       required alongside genuine speech/encoded readability/pack/human acceptance.
+      Slice63 shares cached render/check with the existing caller Node owner and
+      verifies real complete worker-upload-triggered cue/audio/consumed-plate changes
+      plus two live cancels. Final producer5 owns exit0 for3 rejections/246 complete
+      uploads/one60-frame recovery with measured fresh native0/four quota controls.
+      Original71 plate files and caller output remain exact; local leases retire
+      while a foreign lease survives calls and retires on root disposal. Normal
+      declared high water285,155,818B stays under unchanged512MiB; separate sampled
+      physical RSS is not that allowance. Post-settlement observed descendant waits
+      ~28ms remain under existing2s. Owned audit2 verifies90 pins/60 native PNG transport
+      identities/660 hierarchy pairs/60 cameras/60 recovery decoded frames/full PCM;
+      the proper first-upload viewing PNG matches prior preview everyRGBA byte.
+      Fast-tier1(one worker) passes4,348 units/427 files on held2,632 unchanged inputs.
+      [Lifetime evidence](./mechanism-shorts-ms2-cue-cache-lifetime-results.json)
+      retains failed observers/diagnostic/abort/view-row attempts. Whole application/
+      source/driver resource/replay admission and full102/final installed/pack/genuine
+      speech/broader encoded/human acceptance keep this criterion unchecked.
 - [ ] Compile semantic contact/release/return events from supplied narration cues
       into all picture, annotation, caption and sound tracks. Reject overfull shots,
       out-of-recording cues and insufficient reading/action time. Do not stretch

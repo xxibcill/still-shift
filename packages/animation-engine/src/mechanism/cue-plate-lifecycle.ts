@@ -37,6 +37,7 @@ export const MECHANISM_CUE_PLATE_EXPORT_VERSION =
   "mechanism-cue-plate-export-1" as const;
 export interface MechanismCuePlateOptions {
   readonly signal?: AbortSignal | undefined;
+  readonly nodeMemory?: CompositionNodeMemory;
 }
 export const MechanismCuePlateExportSchema = z
   .object({
@@ -624,7 +625,7 @@ export async function renderMechanismCuePlateProject(
   outputDirectory: string,
   options: MechanismCuePlateOptions = {},
 ) {
-  const owner = new CompositionNodeMemory(),
+  const owner = new CompositionNodeMemory(options.nodeMemory),
     directory = resolve(outputDirectory);
   const context: Context = {
     familyPath,
@@ -713,7 +714,7 @@ export async function checkMechanismCuePlateOutput(
   outputPath: string,
   options: MechanismCuePlateOptions = {},
 ) {
-  const owner = new CompositionNodeMemory(),
+  const owner = new CompositionNodeMemory(options.nodeMemory),
     actualPath = resolve(outputPath);
   try {
     const receiptPath = actualPath + ".cue-plate-export.json";

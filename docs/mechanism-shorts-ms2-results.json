@@ -16267,6 +16267,49 @@
       "fullMatrixGroups": 101,
       "fullMatrixPassed": false,
       "qualification": "Actual workspace engine-root API and separate CLI process; final archive/installed consumer, in-flight edits/cancellation and whole resources remain separate gates."
+    },
+    {
+      "id": "cue-cache-lifetime63",
+      "status": "completed-scoped-live-cache-controls-and-shared-declared-node-owner-staged-verification",
+      "sourceCheckpoint": "63841c814960c58386374e81c74c558b350c88f4",
+      "record": {
+        "path": "docs/mechanism-shorts-ms2-cue-cache-lifetime-results.json",
+        "bytes": 39029,
+        "sha256": "sha256:d404313b6cd2704875efc7901c133f24c15e9cb1081d66e1a77e38ce8542c6d8"
+      },
+      "actualProducerSession": 98218,
+      "actualProducerExitCode": 0,
+      "actualAuditExitCode": 0,
+      "actualFastTierSession": 30713,
+      "actualFastTierExitCode": 0,
+      "fastTierVariant": "Same sequential schema/boundary/format/lint/build/unit stages with one unit worker within the4-worker ceiling.",
+      "unitTests": 4348,
+      "unitFiles": 427,
+      "heldInputFiles": 2632,
+      "heldInputBytes": 120640533,
+      "originalNativeCaptureFrames": 60,
+      "inFlightSourceChangeRejections": 3,
+      "liveCachedCancellationControls": 2,
+      "completeRealCachedWorkerUploads": 246,
+      "publishedRecoveryExports": 1,
+      "recoveryOutputFrames": 60,
+      "recoveryMeasuredImageCalls": 60,
+      "recoveryMeasuredFreshNativeSubmissionCalls": 0,
+      "sharedQuotaControls": 4,
+      "normalSharedDeclaredHighWaterBytes": 285155818,
+      "independentFactPinChecks": 90,
+      "independentOriginalPng16TransportHashMatches": 60,
+      "independentHierarchyPairs": 660,
+      "independentSourceCameraTriples": 60,
+      "independentRecoveryDecodedMp4Frames": 60,
+      "completeRecoveryDecodedPcmStreams": 1,
+      "callerOwnedOutputPreserved": true,
+      "original71PlateFilesUnchanged": true,
+      "sixFirstWorkerBodiesIdentical": true,
+      "viewingArtifactMatchesPriorPreviewEveryRgbaByte": true,
+      "fullMatrixGroups": 102,
+      "fullMatrixPassed": false,
+      "qualification": "Declared parent/source/result capacities and observed own descendants/artifacts only. Post-settlement cleanup waits match the existing2s policy; physical RSS is sampled without a new threshold. Whole application/driver admission, genuine speech/full102/final archive/installed/pack/human acceptance remain separate."
     }
   ],
   "implementation": {
@@ -18390,9 +18433,33 @@
         "Full101 including this registered consumer group, frozen176/36061/benchmark, source/archive/installed/pack/validated10-question coverage/MS2 PR before MS3 remain required. Historical stopped full51 retains its original94-group scope.",
         "Broader continuous layout and encoded glyph/copy/readability and human acceptance remain separate. Generic engineering captions do not establish a factual pilot. Supported packs0; validated coverage0/10; accepted pilot0. No paid generation, merge, npm publication, Actions or private media redistribution."
       ]
+    },
+    "sixtyThirdSlice": {
+      "record": {
+        "path": "docs/mechanism-shorts-ms2-cue-cache-lifetime-results.json",
+        "bytes": 39029,
+        "sha256": "sha256:d404313b6cd2704875efc7901c133f24c15e9cb1081d66e1a77e38ce8542c6d8"
+      },
+      "scope": "Compatible nodeMemory option on public cached render/check uses a child of the supplied CompositionNodeMemory, matching capture/original checking. All declared capacities share the unchanged512MiB allowance; local leases retire while unrelated caller leases survive. No source schemas, pixel/driver math, receipt wire versions or quotas change.",
+      "heldInputs": {
+        "path": "/private/tmp/still-shift-ms2-cachelife63-inputs5.json",
+        "bytes": 448959,
+        "sha256": "sha256:bab4152f8202ca907c384876a8582015b92494e1f418935be669fcacdaa83838",
+        "files": 2632,
+        "inputBytes": 120640533,
+        "unchangedThroughFinalProducerAuditFastAndPrecommit": true
+      },
+      "failuresRetained": "NoUncheckedIndexedAccess/proof argument and scratch quoting failures; active reader observer, audio/sequence diagnostic assumptions, repeated-abort partial later upload and bottom-first viewing diagnostic. All attempts retained; owned final producer5/audit2/fast1 pass.",
+      "remaining": [
+        "Final whole application/source/preparation/world/result/replay and physical-memory/resource/driver-internal lifetime admission remain required. This scoped tape native2 case proves declared shared lease retirement and actual observed process/artifact cleanup, not a global physical RAM threshold.",
+        "Genuine supplied speech cue documents/native exports and shorter revised-copy recompilation, exact source endpoints, reading/action and factual/listening review remain open. Four measured source clocks and13 associations are inputs, not production acceptance.",
+        "Full102 including this registered serial group, frozen176/36061/benchmark and current source/archive/installed API/CLI/pack/validated10-question coverage/MS2 PR before MS3 remain required. Historical stopped full51 keeps its original94-group scope; slice61 producer terminal remains unverified until owning full rerun.",
+        "Encoded glyph/copy/readability, broader continuous layout and human visual/listening/pilot acceptance remain separate. Supported packs0; validated coverage0/10; accepted pilot0. No paid generation, merge, npm publication, Actions or private media redistribution."
+      ]
     }
   },
   "limits": [
+    "Slice63 connects public cached render/check to the existing shared Node parent and verifies complete real upload-triggered cue/audio/consumed-plate edits plus two repeated live cancels. Producer5/audit2/fast1 own terminal0;3 edit rejections/246 complete uploads/one60-frame recovery export with measured fresh native0 and four quota controls pass on2,632 unchanged inputs. Original71 plate files remain exact, caller output survives EEXIST, foreign lease survives calls/root disposal retires it. Normal declared high water285,155,818B stays under unchanged512MiB; separate sampled physical RSS is not that allowance. Independent90 pins/60 PNG/660 hierarchy/60 camera/60 recovery decoded frames/complete PCM audit passes. Failed observers/diagnostic assumptions/partial cancel and row-order viewing are retained. Full102/whole application/driver/source/replay/installed/pack/genuine speech/human gates remain open; packs/pilot0.",
     "Slice62 exposes the existing native2/flat-controller cache lifecycle at the engine root and strict public receipt/schema/version contracts, with bounded CLI/discovery. Owned producer passes60 original captures/four cached exports/240 image calls and zero fresh native export submissions;120 preview pairs/max1 fixed2 and240 extra cached seeks. All10 sampled PNGs agent-viewed; independent33-pin/60 PNG/660 hierarchy/60 camera/240 decoded frames/four PCM audit and4,348-unit427-file fast tier pass on2,631 unchanged inputs. New3 and existing19 runtime controls pass. Full101, installed archive, in-flight edits/cancellation, whole resources, genuine speech, encoded readability/pack/human acceptance remain open; packs/pilot0.",
     "Slice61 verifies native world/surface cache breadth in six retained engineering cases with owned independent audit1 and one-worker fast-tier2, while the producer terminal remains explicitly unverified. Original360 PNG16 frames independently recover their native RGBA transport hashes;360 preview pairs/maxRGB1 and all fixed ink guards pass. Both12 cached receipts/counters and720 output frames retain zero new native calls. Failed ordinary/isolated timeouts remain; all assertions retain5s per-family/30s tape budgets. Full matrix is100 with no full100 pass. Public cache API/CLI, whole resources/installed/pack/genuine speech/encoded readability and human acceptance remain open; packs/pilot0.",
     "Slice60 establishes exact48k normalized sample clocks for four existing spoken MP3 takes, with unchanged original file bodies and exact normalized PCM re-decodes. Two rounded words need15/9 sample authoring clamps and peg final visual cue+1 sample; no correction/cue/native export or listening acceptance is claimed. The revised-copy hook is3.483s shorter; private media are outside Git and no credits were spent.",

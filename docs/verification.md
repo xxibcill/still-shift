@@ -268,3 +268,18 @@ pre-aborts and ignored/ambiguous flags before input reads. Run the browser group
 serially; it is included in `pnpm test`. Workspace consumer success does not prove
 final installed-package, live cancellation/in-flight edits, whole resource limits,
 genuine speech, encoded readability or human acceptance.
+
+`pnpm test:browser:mechanism-cue-cache-lifetime` observes the existing real HTTP
+frame reader without adding another stream reader or changing responses. The first
+complete cached worker upload triggers a cue edit, a loaded-audio change, a change
+to an already consumed original plate, or cancellation. It requires the actual
+browser and encoder to be live at each control. Source changes must reject before
+publication; canceled calls retain the exact abort reason. Failed owned output,
+observed descendants and export Vite caches must retire under the existing 2s
+policy. Recovery must reuse the original plates with measured zero fresh native
+export submissions. Supplied parent Node reservations share the fixed allowance;
+whole calls retire local leases, preserve unrelated leases and reject four API
+operations with insufficient remaining quota. Real caller-owned output survives
+an existing-directory rejection. Run this registered group serially. Its process
+RSS samples and declared lease checks do not establish a physical-memory threshold,
+driver-internal lifetime, encoded readability, genuine speech or human acceptance.
