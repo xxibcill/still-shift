@@ -1,3 +1,4 @@
+import { loadComposition } from "../composition-render.ts";
 import { z } from "zod";
 import { join, relative, resolve } from "node:path";
 import {
@@ -165,7 +166,15 @@ export async function evaluateMechanismProductionNativeQA(input: {
     const qualityLease = owner.reserve(qualityCapacity);
     let quality;
     try {
-      quality = analyzeCompositionQuality(composition.value, {
+      const loaded = await loadComposition(
+        join(input.preparedDirectory, "composition.json"),
+        "webgl2",
+        { nodeMemory: owner, signal: context.signal },
+      );
+      quality = analyzeCompositionQuality(loaded.composition, {
+        evaluation: {
+          ...(loaded.native3D ? { preparedNative3D: loaded.native3D } : {}),
+        },
         intentionalCuts: authored.document.cues
           .filter((c) => c.editing === "cut")
           .map((c) =>

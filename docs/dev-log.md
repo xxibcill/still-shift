@@ -51,9 +51,12 @@ still hold before relying on them.
   Immutable program snapshots preserve original definitions after plan edits.
   77 owning controls/build/lint/schemas/boundaries/declarations pass; two early
   CLI type failures are retained. Source6bcba8a4 passes complete4440-unit fast
-  with2691 inputs/121316579B exact. Actual native proof is running (session70833,
-  qa7-browser1 prefix, root iGZHNG); re-poll that live handle, no terminal pass
-  claimed. Complete runtime follows it. Earlierbc5b989b fast remains separate. Evidence6 source6615
+  with2691 inputs/121316579B exact. Native attempt1/session70833 actually exits1:
+  all3 items fail at state lint without prepared native sources; root iGZHNG and
+  exact source hold retained. Loader repair passes scoped actual180 samples/3
+  families and rederivation/foreign-lease cleanup. Gate4 passes77 owning checks,
+  build/lint/schema/boundaries/declarations. Fresh current complete tiers and
+  a fresh committed-source native run follow; earlier fast proofs stay separate. Evidence6 source6615
   separately retains4 outputs/240 frames/108 images/188 pins, exact local tiers and
   the additional60-frame/27-image/46-pin camera-cut proof, with failed attempts.
   Original scope remains: broader faults/analytic/continuous collision/reviews;
@@ -250,6 +253,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — Retain native QA preparation failure and repair its input resources
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from4a40b06d.
+- **Failure:** actual native attempt1/session70833 exits1 on exact6bc inputs;
+  all three items reach operational QA, then state lint rejects missing prepared
+  native sources. Root iGZHNG retains failed rows, renders/captures and receipts.
+- **Repair:** use the existing guarded composition loader and pass its actual
+  prepared native3D resources to state evaluation; no check/limit is weakened.
+- **Results:** separate retained-capture scope passes180 samples/3 families,
+  seeded cable failure, fresh rederivation and foreign-lease/parent cleanup.
+  Owning gate4 passes77 controls/build/lint/schema/boundaries/declarations;
+  fresh committed-source whole native and complete local
+  tiers remain required. No pilot/human acceptance or uninterrupted pass claimed.
+- **Records:** [QA evidence](./mechanism-shorts-ms3-qa-results.json). Original
+  broader faults/repairs, ten questions/five assets/two behaviors/genuine inputs/
+  reviews/final gates remain. No spending, Actions, merge or publication.
 
 ### 2026-10-13 — Preserve original production QA programs
 

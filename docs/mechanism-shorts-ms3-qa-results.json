@@ -5,7 +5,7 @@
   "branch": "codex/mechanism-ms3",
   "baseCommit": "2e0dd3eb20cdda4cc772d308a90d05e898320ef0",
   "pullRequest": "https://github.com/xxibcill/still-shift/pull/58",
-  "status": "scoped-operational-qa-code-verified-native-proof-and-complete-local-tiers-pending",
+  "status": "actual-native-first-attempt-failed-loader-repair-scoped-verified",
   "sourceSnapshot": [
     {
       "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-qa-contract.ts",
@@ -24,8 +24,8 @@
     },
     {
       "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-qa.ts",
-      "bytes": 12052,
-      "sha256": "sha256:ea34a94b4dace59689447319149e3ca20476470aa72f8462eec10ad2c8f76593"
+      "bytes": 12408,
+      "sha256": "sha256:b681a01475c99ac3a7c6e389d0f7053bddcffe25bf122acd644a6752bd09cd1d"
     },
     {
       "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-native-executor.ts",
@@ -98,12 +98,12 @@
   ],
   "scopedPreflight": {
     "status": "passed",
-    "startedUtc": "2026-10-12T23:10:01.475621+00:00",
+    "startedUtc": "2026-10-12T23:24:58.317466+00:00",
     "commands": [
       {
         "command": ["pnpm", "build"],
         "actualExitCode": 0,
-        "log": "/private/tmp/still-shift-ms3-qa7-gate3-0.log"
+        "log": "/private/tmp/still-shift-ms3-qa7-gate4-0.log"
       },
       {
         "command": [
@@ -121,7 +121,7 @@
           "tests/runtime/mechanism-production-report-cli.test.ts"
         ],
         "actualExitCode": 0,
-        "log": "/private/tmp/still-shift-ms3-qa7-gate3-1.log"
+        "log": "/private/tmp/still-shift-ms3-qa7-gate4-1.log"
       },
       {
         "command": [
@@ -146,31 +146,31 @@
           "tests/browser/mechanism-production-native.ts"
         ],
         "actualExitCode": 0,
-        "log": "/private/tmp/still-shift-ms3-qa7-gate3-2.log"
+        "log": "/private/tmp/still-shift-ms3-qa7-gate4-2.log"
       },
       {
         "command": ["pnpm", "schema:generate"],
         "actualExitCode": 0,
-        "log": "/private/tmp/still-shift-ms3-qa7-gate3-3.log"
+        "log": "/private/tmp/still-shift-ms3-qa7-gate4-3.log"
       },
       {
         "command": ["pnpm", "schema:check"],
         "actualExitCode": 0,
-        "log": "/private/tmp/still-shift-ms3-qa7-gate3-4.log"
+        "log": "/private/tmp/still-shift-ms3-qa7-gate4-4.log"
       },
       {
         "command": ["pnpm", "check:boundaries"],
         "actualExitCode": 0,
-        "log": "/private/tmp/still-shift-ms3-qa7-gate3-5.log"
+        "log": "/private/tmp/still-shift-ms3-qa7-gate4-5.log"
       },
       {
         "command": ["pnpm", "build:package"],
         "actualExitCode": 0,
-        "log": "/private/tmp/still-shift-ms3-qa7-gate3-6.log"
+        "log": "/private/tmp/still-shift-ms3-qa7-gate4-6.log"
       }
     ],
-    "endedUtc": "2026-10-12T23:10:38.347351+00:00",
-    "session": 66676,
+    "endedUtc": "2026-10-12T23:25:33.085344+00:00",
+    "session": 67391,
     "focusedTests": 77,
     "files": 8
   },
@@ -345,6 +345,46 @@
       "path": "/private/tmp/still-shift-ms3-qa7-fast2-inputs.json",
       "bytes": 459374,
       "sha256": "sha256:b075fe6ea15c5a7ad943c7cceb1e5ef28fe78cc253aa31bb002f34937b0d0f9d"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-gate4-0.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-gate4-1.log",
+      "bytes": 1870,
+      "sha256": "sha256:ec21b2102576218cbfdde4fc046f1e12916caa7df725ac1b284d1b98cf86b139"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-gate4-2.log",
+      "bytes": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-gate4-3.log",
+      "bytes": 653,
+      "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-gate4-4.log",
+      "bytes": 502,
+      "sha256": "sha256:904ab0505f30dcbfbc30b28c2b2da22c2d2cc49f3c99a0200defa634e56ec546"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-gate4-5.log",
+      "bytes": 186,
+      "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-gate4-6.log",
+      "bytes": 208,
+      "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-gate4-receipt.json",
+      "bytes": 2938,
+      "sha256": "sha256:d10e6fdf3f991e72c3a9260e49a145e2440657a64a4d5d4c401e49a9fe58445e"
     }
   ],
   "nativeOwningControls": [
@@ -360,7 +400,7 @@
     "Real native interruption/cancel/corrupt/relocation, scoped/affected repair and automatic MS1 overlap.",
     "Original ten frozen questions/five new assets/two behaviors/genuine inputs/factual/design/visual/listening evidence; broader capabilities and final full/archive/installed/MS3 PR completion."
   ],
-  "qualification": "Scoped operational code/preflight only. Native controls are implemented but not yet run on this committed source. Historical evidence6 local/native proofs have separate bindings. No pilot, whole mechanical/glyph/continuous/factual/listening/human acceptance, spending, Actions, merge or publication is claimed.",
+  "qualification": "Current native attempt on6bc failed at state lint preparation; failed rows/logs and the exact successful fast tier remain separate. Loader repair passes retained-capture scoped checks only. A fresh committed-source whole native run, complete current tiers and all original MS3/pilot acceptance remain required.",
   "priorScopedPreflight": {
     "status": "passed",
     "startedUtc": "2026-10-12T23:01:53.863104+00:00",
@@ -479,22 +519,156 @@
     "unitFiles": 437,
     "unitSeconds": 74.04,
     "heldInputFiles": 2691,
-    "heldInputBytes": 121316579
-  },
-  "runningVerification": {
-    "status": "running",
-    "command": "pnpm test:browser:mechanism-production-native",
-    "sourceCommit": "6bcba8a495e1f0f37d2547042ab85ec190cfcecd",
-    "startedUtc": "2026-10-12T23:17:03.521386+00:00",
-    "pid": 58477,
-    "inventory": "/private/tmp/still-shift-ms3-qa7-browser1-inputs.json",
-    "actualExitCode": null,
-    "session": 70833,
-    "root": "/private/tmp/still-shift-ms3-production-native-iGZHNG",
-    "receipt": "/private/tmp/still-shift-ms3-qa7-browser1-receipt.json",
-    "log": "/private/tmp/still-shift-ms3-qa7-browser1.log",
-    "heldInputFiles": 2691,
     "heldInputBytes": 121316579,
-    "lastToolObservation": "Session70833 confirmed live after launch. Re-poll the same handle; no terminal pass claimed."
+    "qualification": "Exact6bcba8a4 before the native-source preparation repair; refresh on the repaired source"
+  },
+  "nativeAttempts": [
+    {
+      "status": "failed",
+      "command": "pnpm test:browser:mechanism-production-native",
+      "sourceCommit": "6bcba8a495e1f0f37d2547042ab85ec190cfcecd",
+      "startedUtc": "2026-10-12T23:17:03.521386+00:00",
+      "pid": 58477,
+      "inventory": "/private/tmp/still-shift-ms3-qa7-browser1-inputs.json",
+      "actualExitCode": 1,
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-12T23:20:06.129263+00:00",
+      "session": 70833,
+      "root": "/private/tmp/still-shift-ms3-production-native-iGZHNG",
+      "reason": "All three items fail at operational-qa because state lint was called without prepared native sources. Retained renders/native captures remain diagnostic inputs, not passed products.",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-qa7-browser1.log",
+          "bytes": 1740,
+          "sha256": "sha256:17844390154cd1918eb39cb4916dd5681a4db5e9b60677233deff799d6d14e1b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-qa7-browser1-receipt.json",
+          "bytes": 394,
+          "sha256": "sha256:5a9cfa3a0eeea32f098e07667c82e5cfdfaea73d2a38a0410d391af143502c4a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-qa7-browser1-inputs.json",
+          "bytes": 459374,
+          "sha256": "sha256:b075fe6ea15c5a7ad943c7cceb1e5ef28fe78cc253aa31bb002f34937b0d0f9d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-production-native-iGZHNG/output/queue-state.json",
+          "bytes": 3008,
+          "sha256": "sha256:04c18754cb118412d79d6b485ac165168facae13bea1968feea7ec1c302549fa"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-production-native-iGZHNG/failure.json",
+          "bytes": 4128,
+          "sha256": "sha256:ca4a3927f732ff49945421520d9daeac3cc35edf8df84f506f73772f965765b3"
+        }
+      ]
+    }
+  ],
+  "loaderRepair": {
+    "method": "Existing guarded loadComposition prepares actual native3D evaluation resources before state lint; no fresh draws for QA",
+    "scopedProof": {
+      "session": 86154,
+      "actualExitCode": 0,
+      "families": 3,
+      "samples": 180,
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-qa7-loader-scope1.mts",
+          "bytes": 2880,
+          "sha256": "sha256:e56d8af07b024a9da14a2e6e854fc48f049302628795412d845d3b7964841781"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-qa7-loader-scope1.log",
+          "bytes": 47,
+          "sha256": "sha256:983781f4072133c803998b81e0e92171fa27ac766ede520f322f328568e94542"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-qa7-loader-scope1.json",
+          "bytes": 1908,
+          "sha256": "sha256:fe83158c29e9b02f46062c5ff484ad43be24af65d4a9150de6daaf637f276d1d"
+        }
+      ],
+      "qualification": "Current loader repair on retained failed-run renders/captures, plus actual rederivation and scoped memory cleanup. Separate original6bc render binding; no current whole executor, pilot or human acceptance."
+    },
+    "owningPreflight": "gate4 actual0:77 controls/build/lint/schema/boundaries/declarations pass; fresh committed-source whole native and complete tiers next"
+  },
+  "priorProgramPreflight": {
+    "status": "passed",
+    "startedUtc": "2026-10-12T23:10:01.475621+00:00",
+    "commands": [
+      {
+        "command": ["pnpm", "build"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-qa7-gate3-0.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/mechanism-production-qa.test.ts",
+          "tests/unit/mechanism-production-semantic.test.ts",
+          "tests/unit/mechanism-production-warnings.test.ts",
+          "tests/unit/mechanism-production-report.test.ts",
+          "tests/unit/mechanism-production-report-io.test.ts",
+          "tests/unit/mechanism-production-queue.test.ts",
+          "tests/unit/mechanism-production-evidence.test.ts",
+          "tests/runtime/mechanism-production-report-cli.test.ts"
+        ],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-qa7-gate3-1.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "eslint",
+          "packages/animation-engine/src/mechanism/production-qa-contract.ts",
+          "packages/animation-engine/src/mechanism/production-qa-sampling.ts",
+          "packages/animation-engine/src/mechanism/production-qa-warnings.ts",
+          "packages/animation-engine/src/mechanism/production-qa.ts",
+          "packages/animation-engine/src/mechanism/production-native-executor.ts",
+          "packages/animation-engine/src/mechanism/production-native-inputs.ts",
+          "packages/animation-engine/src/mechanism/production-queue-contract.ts",
+          "packages/animation-engine/src/mechanism/production-handoff.ts",
+          "packages/animation-engine/src/mechanism/production-evidence.ts",
+          "packages/animation-engine/src/mechanism/production-report-io.ts",
+          "packages/animation-engine/src/mechanism/production-registry.ts",
+          "packages/animation-engine/src/index.ts",
+          "tools/still-shift-cli/src/production.ts",
+          "tests/unit/mechanism-production-qa.test.ts",
+          "tests/runtime/mechanism-production-report-cli.test.ts",
+          "tests/browser/mechanism-production-native.ts"
+        ],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-qa7-gate3-2.log"
+      },
+      {
+        "command": ["pnpm", "schema:generate"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-qa7-gate3-3.log"
+      },
+      {
+        "command": ["pnpm", "schema:check"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-qa7-gate3-4.log"
+      },
+      {
+        "command": ["pnpm", "check:boundaries"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-qa7-gate3-5.log"
+      },
+      {
+        "command": ["pnpm", "build:package"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-qa7-gate3-6.log"
+      }
+    ],
+    "endedUtc": "2026-10-12T23:10:38.347351+00:00",
+    "session": 66676,
+    "focusedTests": 77,
+    "files": 8
   }
 }
