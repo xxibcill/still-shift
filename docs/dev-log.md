@@ -43,28 +43,25 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS3 in progress (2026-10-13):** `codex/mechanism-ms3` starts from main57967fa6
-  and merges exact MS2495fb2c0 at76dd8971 after [PR #57](https://github.com/xxibcill/still-shift/pull/57)
-  opened/attached. Integration differs only in roadmap/log prose; owner MS0 merge
-  remains. Report1 adds public artifact/clock-bound QA and pure cohort summaries;
-  final22 focused tests/compiler/lint/declaration build pass in stages. Complete
-  fast tier actual0 on5b70cbd7 passes4385 units/430 files in78.31s; all2646
-  inputs/120886395B remain held. Added clock
-  guards exposed an incorrect listening test-fixture unit (8 failed/13 passed);
-  fixture repaired, guard retained. Queue2 now passes39 owning tests (15 queue/23 report/1 actual SIGKILL filesystem
-  worker), compiler/lint/declarations in stages. Strict journals, sealed adoption,
-  bounded retries, independent failures, cancel/CAS/cache/input stability and
-  relative relocation are tested; no real native executor/render/QA/pilot yet.
-  Per-attempt owners retire;64MiB returned-state admission transfers to a supplied
-  parent under unchanged512MiB Node policy. Type-import lint and partial edit-script
-  failures are retained. Queue2 fast1 exits1 at package boundaries (two private
-  runtime-helper imports); repaired through the public export entry, fresh fast
-  still required. Coverage0/10; five assets/two behaviors remain unadmitted.
-  Next: real renderer/dependency adapter, then original QA/semantics/repairs/
-  artifacts/capabilities/CLI/pilot and final gates. No spending authority, human
-  acceptance, publication/merge or Actions.
+- **MS3 in progress (2026-10-13):** codex/mechanism-ms3 starts from main57967fa6
+  and carries exact MS2495fb2c0 via76dd8971 after PR57 opened/attached. Report1
+  artifact/clock-bound QA and queue2 durable controller are committed; latest
+  implementation468797da. Queue2 owns strict journals/products, bounded retries,
+  independent failures, cancel/restart/CAS/cache/hash guards;39 owning checks
+  include actual SIGKILL of a filesystem fixture. Complete fast2 actual0 passes
+  4401 units/431 files in69.09s with2653 inputs/120944490B exact; current public
+  declarations pass. Fast1 boundary failure, type-import lint and preparation
+  failures remain retained; public-entry repair keeps checker/limits intact.
+  64MiB result admission transfers to supplied parent; per-attempt scopes retire
+  under unchanged512MiB Node policy. Generic controller fixtures supply no real
+  native render, QA, registered semantics, repair/handoff, CLI or pilot evidence.
+  Coverage0/10; five assets/two behaviors unadmitted, targets unmeasured. Next:
+  real shared renderer/dependency/code-profile adapter, then every original MS3
+  workstream and final full/archive/installed/MS3 PR. Human reviews remain open;
+  no ElevenLabs spending authority, publication/merge or Actions.
   [Tracker](./mechanism-shorts-ms3-acceptance.md),
-  [report model](./mechanism-production-reports.md),
+  [queue](./mechanism-production-queue.md),
+  [queue evidence](./mechanism-shorts-ms3-queue-results.json),
   [results](./mechanism-shorts-ms3-results.json).
 
 - **MS2 software checkpoint delivered (2026-10-13):** `codex/mechanism-ms2`
@@ -252,6 +249,18 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — MS3 durable-controller fast gate passes after boundary repair
+
+- **Agent / branch:** Codex on codex/mechanism-ms3; held source468797da.
+- **Results:** Fresh fast2 actual0/4401 units431 files in69.09s;2653 inputs/
+  120944490B remain exact. Boundaries/current39 owning checks/compiler/public
+  declaration build pass in separate stages. Fast1 actual1 remains retained.
+- **Next:** Real renderer/dependency adapter and original QA/semantics/repair/
+  artifacts/capability/CLI/ten-question scope, including five assets/two behaviors.
+  No generic fixture is a native/video/pilot/human acceptance result.
+- **Records:** [Queue evidence](./mechanism-shorts-ms3-queue-results.json),
+  [finite tracker](./mechanism-shorts-ms3-acceptance.md).
 
 ### 2026-10-13 — MS3 queue boundary failure and public-entry repair
 

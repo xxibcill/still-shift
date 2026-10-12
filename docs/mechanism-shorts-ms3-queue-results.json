@@ -46,6 +46,58 @@
       "compilerExitCode": 0,
       "lintExitCode": 0,
       "declarationExitCode": 0
+    },
+    {
+      "id": "queue2-fast2",
+      "command": "pnpm check:fast",
+      "status": "passed",
+      "session": 46751,
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "sourceCommit": "468797dad1ccdf7ab3e3b871f4dc6da1d9b42fdc",
+      "units": 4401,
+      "files": 431,
+      "unitDurationSeconds": 69.09,
+      "heldInputFiles": 2653,
+      "heldInputBytes": 120944490,
+      "pins": [
+        {
+          "path": "/private/tmp/still-shift-ms3-queue2-fast2-receipt.json",
+          "bytes": 359,
+          "sha256": "sha256:daa0a8ab1989db3fd666be88b9c48237eb8217bf3b6fced81f67120b91c9f72d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-queue2-fast2.log",
+          "bytes": 41957,
+          "sha256": "sha256:2d31c1fdfe006f48b0e5eb311c38ff8e8a2151db3268585932daa98e0e5d9f3a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-queue2-inputs2.json",
+          "bytes": 452572,
+          "sha256": "sha256:811add767128bf891667651186a86a6fdf563718cb992059a11908eb53142542"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-queue2-owning4.log",
+          "bytes": 625,
+          "sha256": "sha256:e604e110b8d5dee80ad86df90d5b08b2bc7300492b7366376cf7ddd2b1aa5652"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-queue2-boundaries2.log",
+          "bytes": 186,
+          "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-queue2-build6.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-queue2-package-build3.log",
+          "bytes": 208,
+          "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+        }
+      ],
+      "qualification": "Complete fast tier and current public-entry declaration build on468797da; no actual native execution, QA, final full/archive/installed, pilot or human acceptance."
     }
   ],
   "sourceSnapshot": [
@@ -226,5 +278,7 @@
     "Original ten questions/five assets/two behaviors/genuine input and review evidence, with no substitutions.",
     "CLI/schema/capability/docs agreement; real timings/setup/routine/token availability; final gates/archive/installed and MS3 PR."
   ],
-  "qualification": "All packs candidate; admitted assets/behaviors0, coverage0/10/pilot0. No ElevenLabs spending, human review, publication, merge or Actions."
+  "qualification": "All packs candidate; admitted assets/behaviors0, coverage0/10/pilot0. No ElevenLabs spending, human review, publication, merge or Actions.",
+  "committedControllerSource": "da66f62046b67b0d2f5b2f5a093f109c4a7368d1",
+  "publicEntryRepairSource": "468797dad1ccdf7ab3e3b871f4dc6da1d9b42fdc"
 }
