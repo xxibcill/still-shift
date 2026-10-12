@@ -16478,7 +16478,22 @@
       "requiredGroups": 102,
       "frozenItems": 176,
       "frozenFrames": 36061,
-      "record": "docs/mechanism-shorts-ms2-full-gate-results.json"
+      "record": "docs/mechanism-shorts-ms2-full-gate-results.json",
+      "latestLiveSnapshot": {
+        "path": "/private/tmp/still-shift-ms2-final70-progress5.json",
+        "bytes": 5212,
+        "sha256": "sha256:a2bea0a188646319035b4de32feab470bc95475b17552ee914ab0dedf3c24676"
+      },
+      "qualifiedPrefixGroups": 69,
+      "currentSnapshotGroup": "test:browser:composition-depth",
+      "completedCinematic": {
+        "inventoryFixtures": 15,
+        "rows": 46,
+        "frames": 5520,
+        "reportedPixelFailures": 0,
+        "reportedErrors": 0,
+        "deferredWebglTimings": 18
+      }
     }
   ],
   "implementation": {
