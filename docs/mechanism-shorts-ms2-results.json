@@ -16480,12 +16480,12 @@
       "frozenFrames": 36061,
       "record": "docs/mechanism-shorts-ms2-full-gate-results.json",
       "latestLiveSnapshot": {
-        "path": "/private/tmp/still-shift-ms2-final70-progress11.json",
-        "bytes": 4573,
-        "sha256": "sha256:57380c440f675e887a288ce43e8064dc53d5af87f02f303004f3df5b6bfec440"
+        "path": "/private/tmp/still-shift-ms2-final70-progress12.json",
+        "bytes": 4709,
+        "sha256": "sha256:438f42ed826978a8283f28d8d04ebb7ab6fe277e0efe7607794c468d9d803176"
       },
-      "qualifiedPrefixGroups": 98,
-      "currentSnapshotGroup": "test:browser:mechanism-cue-plate-export",
+      "qualifiedPrefixGroups": 99,
+      "currentSnapshotGroup": "test:browser:mechanism-world-plate-export",
       "completedCinematic": {
         "inventoryFixtures": 15,
         "rows": 46,
@@ -16507,6 +16507,10 @@
         "frames": 36061,
         "seconds": 262.12,
         "matchedRows": 176
+      },
+      "completedCachedCueExport": {
+        "status": "passed",
+        "directory": "/private/tmp/still-shift-ms2-cue-plate-export-I4U7tt"
       }
     }
   ],

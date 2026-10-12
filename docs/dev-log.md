@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` uses the existing
+- **MS2 in progress (2026-10-13):** `codex/mechanism-ms2` uses the existing
   managed worktree, carries exact MS1N `bf30a253`
   ([PR #56](https://github.com/xxibcill/still-shift/pull/56)), and has no MS2 PR yet.
   Sixty-nine slices are committed; latest implementation is `963d3991`.
@@ -62,10 +62,11 @@ still hold before relying on them.
   Held2644 inputs/120860793B remain exact; quotas/RSS/driver internals differ.
   **Full70 is live:** owned session32036, `pnpm check:all`, source `963d3991`,
   inventory `/private/tmp/still-shift-ms2-final70-inputs1.json`, log
-  `/private/tmp/still-shift-ms2-final70-full1.log`. Owned snapshot reaches group99
-  (mechanism cue-plate export); unit4363/runtime243/integration322 pass. Required102 groups,
+  `/private/tmp/still-shift-ms2-final70-full1.log`. Owned snapshot reaches group100
+  (mechanism world-plate export); unit4363/runtime243/integration322 pass. Required102 groups,
   frozen176/36061 frames pass in262.12s with all176 ok rows independently reconciled;
-  remaining cached cue/world/CLI/lifetime suffix and benchmark stay unfinished.
+  cached cue-export script completes; remaining world/CLI/lifetime suffix and
+  benchmark stay unfinished.
   World and surface each3 families/360 previews/1080 seeks/6 exports/18 hidden
   controls pass; native plate capture/check passes3 families. Layout12
   exports/720 frames/all-frame bounds+seeks, cameras156 captures/12 exports, and
@@ -256,6 +257,15 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — Final MS2 cached-export gate in flight
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, existing managed worktree; implementation `963d3991`.
+- **Done:** full70 owns a qualified99-script prefix; cached cue-plate result and following world-plate header reconcile. All2644 held inputs/120860793B stay exact.
+- **Results:** unit4363/runtime243/integration322 and frozen176 items/36061 frames/262.12s pass; prior failures and explicit WebGL timing deferrals remain retained.
+- **Open / next:** specific session32036 remains live at world-plate exports; CLI/lifetime suffix, benchmark and current archive/source audit/installed consumer/pack disposition precede MS2 PR. MS3 stays pending that boundary.
+- **Limits:** historical world61 producer terminal remains unverified; fresh owning evidence cannot invent it. Human/factual/listening/whole glyph/physical-memory/material/hardware/portrait review stays separate; no paid generation, merge or publication.
+- **Records:** [full gate](./mechanism-shorts-ms2-full-gate-results.json), [acceptance](./mechanism-shorts-ms2-acceptance.md), [all evidence](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-12 — Native catalogue admission verified in stages
 
