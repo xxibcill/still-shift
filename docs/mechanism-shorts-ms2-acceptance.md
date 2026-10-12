@@ -68,7 +68,8 @@ continuous audiovisual/listening, factual/material/hardware and portrait/human
 review remain unreviewed. Finer Thai motion remains unadopted. These gates do not
 become passes through the completed engineering route.
 
-Create/attach the MS2 PR against `main` before a separate MS3 branch. MS3 owns the
+[MS2 PR #57](https://github.com/xxibcill/still-shift/pull/57) is open as a draft
+against `main` and attached before a separate MS3 branch. MS3 owns the
 queue, unified QA/semantic assertions, scoped repair/report workflow and the exact
 frozen ten questions, including five new assets and two behaviors. No merge,
 publication, paid generation or owner production acceptance is inferred.

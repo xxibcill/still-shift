@@ -52,7 +52,9 @@ factual/material/hardware and portrait/human review remain unreviewed; finer Tha
 motion remains unadopted. Quotas/owned-resource accounting do not certify physical
 RSS or opaque driver storage.
 
-The MS2 PR targets `main` before MS3 begins on a separate branch. MS3 retains its
+[MS2 PR #57](https://github.com/xxibcill/still-shift/pull/57) is open as a draft
+against `main` and attached to the task. MS3 begins on a separate branch carrying
+the exact MS2 prerequisite. MS3 retains its
 original queue/QA/report and ten-question pilot scope, including five assets and
 two behaviors. No milestone PR merge, npm publication, Actions or ElevenLabs
 spending is included.

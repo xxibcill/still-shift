@@ -18891,10 +18891,19 @@
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ],
   "remaining": [
-    "Create and attach MS2 PR against main before starting MS3.",
+    "MS2 PR57 is open/attached against main. Begin MS3 on a separate main-based branch carrying the exact MS2 prerequisite; no PR merge or owner acceptance is inferred.",
     "MS3 original frozen ten-question queue/QA/report/pilot scope remains: five assets/two behaviors and0/10 validated coverage.",
     "Candidate/human/factual/whole glyph/continuous audiovisual/listening/material/hardware/portrait and finer Thai review gates remain explicit. No merge, paid generation or publication."
   ],
   "packDisposition": "docs/mechanism-shorts-ms2-pack-disposition.json",
-  "completion": "docs/mechanism-shorts-ms2-completion.md"
+  "completion": "docs/mechanism-shorts-ms2-completion.md",
+  "pullRequest": {
+    "url": "https://github.com/xxibcill/still-shift/pull/57",
+    "number": 57,
+    "base": "main",
+    "head": "codex/mechanism-ms2",
+    "status": "open-draft",
+    "creationHeadCommit": "59119c7cbceadcde0011025ee796bde63517ac76",
+    "merge": false
+  }
 }

@@ -45,7 +45,8 @@ still hold before relying on them.
 
 - **MS2 software checkpoint delivered (2026-10-13):** `codex/mechanism-ms2`
   carries exact MS1N `bf30a253` ([PR #56](https://github.com/xxibcill/still-shift/pull/56));
-  MS2 PR is next, MS3 unstarted. Full70 actual0/all102 groups on963d3991,
+  [MS2 PR #57](https://github.com/xxibcill/still-shift/pull/57) is open as a draft
+  against main and attached; MS3 is next. Full70 actual0/all102 groups on963d3991,
   unit4363/runtime243/integration322/depth14 and frozen176/36061 in262.12s pass;
   no-op benchmark547 samples/mean0.9149ms. Erased declaration repair6e3ed5ca
   passes fast/declarations; three edited modules emit identical JavaScript and
@@ -226,6 +227,16 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — MS2 PR opened before MS3
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`; initial PR head59119c7c.
+- **Done:** [PR #57](https://github.com/xxibcill/still-shift/pull/57) open as a draft
+  against main and attached. Required software/package/installed proofs are recorded.
+- **Next:** Separate main-based MS3 branch carrying exact MS2; original queue/QA/
+  report/ten-question scope remains, with five assets and two behaviors.
+- **Open:** Candidate/factual/human review gates retained; no merge/publication,
+  Actions or paid generation. [MS2 completion](./mechanism-shorts-ms2-completion.md).
 
 ### 2026-10-13 — MS2 software checkpoint and candidate disposition
 
