@@ -8,8 +8,9 @@ candidate packs, or close outstanding review dimensions.
 
 The current fresh full gate is `final70-full1`, owning session32036, on2,644
 held source inputs/120,860,793 bytes at `963d3991`. It remains live; unit4,363,
-runtime243 and integration322 tests pass, and an owned snapshot reaches group63
-(commerce adapter). Full102,176 frozen items/36,061 frames and the benchmark
+runtime243 and integration322 tests pass, and an owned snapshot reaches group64
+(cinematic adapter), after commerce127 items/28,200 frames pass. Existing
+WebGL cinematic timing deferrals remain recorded separately. Full102,176 frozen items/36,061 frames and the benchmark
 remain unfinished. [Full-gate history](./mechanism-shorts-ms2-full-gate-results.json)
 retains full51's stopped exit130 and full67's actual runtime exit1. Slice67
 repairs that ordinary Node syntax defect; slice69's final fast5 and current
