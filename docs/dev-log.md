@@ -114,7 +114,10 @@ still hold before relying on them.
   quota peaks/RSS/opaque driver internals differ, with no physical RAM certification. Toolchain1 owns0; worktree caches are isolated and Actions enabled:false.
   Slice69 is committed `963d3991`; fresh full70/session32036 runs the unchanged102
   groups/frozen176/36061/benchmark on held2644 final inputs. Current archive/installed
-  and pack disposition precede MS2 PR; MS3 is not started.
+  and pack disposition precede MS2 PR; MS3 is not started. Verified live wait:
+  session32036 continues in the14th group(FPS/audio); unit4363/429, runtime243/40
+  and integration322/57 pass. Frozen baseline/benchmark and final terminal remain
+  pending; `/private/tmp/still-shift-ms2-final70-progress1.json` records the snapshot.
   No paid generation, merge/publication, Actions or private media redistribution.
   [Spoken presentation](./mechanism-shorts-ms2-spoken-presentation-results.json),
   [E06 primary source](./mechanism-shorts-ms2-e06-primary-admission-results.json),
@@ -290,7 +293,7 @@ still hold before relying on them.
 - **Done:** reproduced successful preparation under a one-byte payload budget; admission now precedes schema clones. Eight new quota/source/cleanup controls and owning catalogues24/3 pass; current fast3 passes4361 units/429 files with bounded327680B scanner and407+79 source closure.
 - **Retained:** initial missing fixture clocks, genuine red quota failure, identity-stale fast1 and superseded64KiB scanner fast2. Worker128MiB metadata/8GiB application and Node512MiB policies remain fixed; payload admission is not RSS certification.
 - **Final results:** phase rollback initially retains11520 payload/577344 metadata instead of foreign1024; corrected transaction ownership passes26 cases. Partial formatted edit/undefined-retained failures are retained. Final fast5 owns0:4363/429; browser2/session4692 owns0 for six groups; parent probe1/session5759 owns0 for5 exports/56frames/134passes, audit25 pins owns0. Held2644/120860793B remains exact.
-- **Next:** committed `963d3991`; fresh full70/session32036 runs102 groups/frozen176/36061/benchmark on held2644 inputs. Current archive/installed and pack disposition precede MS2 PR; stage-specific evidence and physical/driver/human limits remain.
+- **Next:** committed `963d3991`; fresh full70/session32036 runs102 groups/frozen176/36061/benchmark on held2644 inputs. Current archive/installed and pack disposition precede MS2 PR; stage-specific evidence and physical/driver/human limits remain. Specific owned-session polling confirms it remains live in group14; runtime243 and integration322 pass. The goal continuation is a verified wait, with no aggregate completion inferred.
 - **Records:** [Catalogue admission](./mechanism-shorts-ms2-native-catalogue-admission-results.json), [acceptance](./mechanism-shorts-ms2-acceptance.md).
 
 ### 2026-10-12 — Deliver declared family thumbnail assets
