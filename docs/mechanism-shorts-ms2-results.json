@@ -16553,6 +16553,17 @@
       "unchangedInputs": 2641,
       "runtimeIdenticalSourceFiles": 3,
       "qualification": "Per approved plan follow-up policy, retain full70 on its exact original checkpoint and qualify the type-only repair with actual fast/declaration checks, exact 2641 unchanged-input and three byte-identical emitted-JavaScript checks, then fresh package and installed verification. Broad runtime/frozen evidence is not invalidated; do not relabel full70 as a rerun on the repaired source."
+    },
+    {
+      "id": "final-installed76-in-flight",
+      "status": "package-and-archive-passed-final-installed-consumer-in-flight",
+      "record": "docs/mechanism-shorts-ms2-final-installed-results.json",
+      "packageSourceCommit": "6e3ed5ca524f39b9f5b67c4656bca6ff84e3228f",
+      "packageExitCode": 0,
+      "packageChecks": 28,
+      "archiveSha256": "sha256:1adb9bc4f88a3de7e6be8ac91ea77efbd4f6ec7ce964f8cca495fdfcfc27d86e",
+      "archiveMembers": 2367,
+      "installedOwningSession": 69359
     }
   ],
   "implementation": {
@@ -18874,7 +18885,7 @@
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ],
   "remaining": [
-    "Full70 actual0 and independent chain/source/frozen/benchmark audit pass on963d3991. Fresh package/source archive audit, isolated installed-consumer verification, pack disposition and MS2 PR remain.",
+    "Full70 completes on963d3991; erased type repair6e3ed5ca passes fast/declaration checks. Fresh package73 and exact2367-member archive audit pass on6e3ed5ca. Final consumer76/session69359, independent decoded audit, pack disposition and MS2 PR remain; failed73/74/75 consumers retained.",
     "Candidate packs remain unsupported pending factual/creative/human disposition. Whole encoded glyph, continuous audiovisual/listening, material/hardware and portrait review remain unreviewed; finer Thai remains unadopted.",
     "MS3 has not started; frozen ten-question coverage0/10, five new assets and two behaviors remain required. Prior failed/stopped attempts and counter correction remain retained."
   ]

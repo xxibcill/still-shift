@@ -81,17 +81,21 @@ still hold before relying on them.
   its correction in private progress3/4. Do not restart a live job.
   Full51 exit130 and full67 exit1 remain retained; world61's original producer
   terminal remains unverified. Fresh current owning proof cannot invent that receipt.
-  Five isolated-consumer input projects/29 pins are staged under
-  `/private/tmp/still-shift-ms2-final-consumer-inputs71-f5qfdz02`; the consumer harness
-  and bounded decoder auditor pass syntax only. Replay association/rejection controls
-  and caption-only decoded audio/picture checks are prepared in private consumer71
-  scripts. Public registry/CLI parameter help, schema digest/range checks, bounded
-  reports/pagination and located unsupported-family diagnostics are prepared; the
-  later OS denial also covers the consumer source-rebuild copy. The fresh package
-  wrapper is syntax-checked and preserves prior/new
-  receipts and exact verified archives. No installed execution is claimed. Final archive/source audit/installed execution and pack
-  disposition precede MS2 PR. Full encoded glyph/continuous/listening/material/
-  hardware/portrait/human acceptance remains unreviewed; finer Thai stays unadopted.
+  Declaration repair72 is committed at `6e3ed5ca`; build/package declarations and
+  fast4363/429 pass. Exactly2641 unaffected inputs stay exact; three erased type
+  changes emit identical JavaScript. Fresh package73 passes28 installed checks;
+  retained archive SHA `1adb9bc4f88a3de7e6be8ac91ea77efbd4f6ec7ce964f8cca495fdfcfc27d86e`
+  binds6e3ed5ca. Independent archive audit matches2367 members/970 source files.
+  Consumer73 wrong enum expectation,74 macOS setuid-ps restriction and75 stale
+  cable-tie fixture reference failures remain retained. Consumer-only live-libproc
+  identity adapter matches system ps; installed bytes and file denial stay fixed.
+  Current consumer76/session69359 is live with full70 fixtures:5 projects/29 pins,
+  ten denied roots, all-family saved-input preflight and public registry/schema/
+  thumbnail checks pass. Final native/cache outputs and independent decoder audit
+  precede finite pack disposition and MS2 PR. No installed aggregate is claimed.
+  Full encoded glyph/continuous/listening/material/hardware/portrait/human review
+  remains unreviewed; finer Thai stays unadopted. Archive source is6e3ed5ca,
+  distinct from later evidence-only commits.
   No paid generation, publication/merge, Actions or private-media redistribution.
   [Acceptance](./mechanism-shorts-ms2-acceptance.md),
   [full history](./mechanism-shorts-ms2-full-gate-results.json),
@@ -256,6 +260,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — MS2 package closure and installed retry history
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`; package source `6e3ed5ca`.
+- **Results:** Fresh package73 actual0/28 checks; archive audit2367 members/970
+  copied source files passes. Exact archive retained; full70 original binding stays.
+- **Retained failures:** Consumer73 wrong enum label,74 setuid-ps restriction,
+  75 stale cable-tie fixture. No product checks weakened; fixture pins refreshed
+  from full70 and the documented live-libproc adapter independently preflighted.
+- **In flight:** Consumer76/session69359,5 projects/29 pins/ten file-denied roots;
+  registry/schema/thumbnails and all-family saved-reference preflight pass.
+- **Next:** Actual final native/cache completion, independent decoded audit,
+  finite pack disposition and MS2 PR; MS3 not started and no human acceptance.
+- **Records:** [Final installed history](./mechanism-shorts-ms2-final-installed-results.json).
 
 ### 2026-10-13 — MS2 package declaration failure and scoped repair
 
