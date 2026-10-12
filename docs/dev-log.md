@@ -49,7 +49,8 @@ still hold before relying on them.
   frames, completed-product reuse and caption revision with0 fresh native calls,
   changed video/exact decoded audio. Independent audit checks54 pins. Current
   package declarations/boundaries and42 owning tests pass with terminal receipts;
-  full fast tier on this slice is next. Original failed build/counter/browser1
+  complete fast1 passes4404 units/432 files in68.04s on efa50574, with2659
+  inputs/120986008B unchanged. Original failed build/counter/browser1
   fixture and missing49709 terminal observation remain retained. Shared parent
   keeps foreign1024B and64MiB per returned state; dispose retires reservations.
   Five nontechnical QA dimensions remain unreviewed. Native receipt relocation,
@@ -256,6 +257,7 @@ still hold before relying on them.
 - **Results:** Three distinct families, four exports/240 decoded frames; caption
   edit changes picture with exact audio and0 new native calls. Independent54-pin
   audit passes; package/boundaries/42 owning tests have fresh terminal receipts.
+  Complete fast1 on efa50574 passes4404/432 with all2659 inputs held exact.
 - **Rejected:** Browser1 accidentally made three tape fixtures and rejected native
   statistics using a cached-only schema; corrected actual family/assertions and
   counter envelope, retaining cached zero-submit guard. Other staged failures and

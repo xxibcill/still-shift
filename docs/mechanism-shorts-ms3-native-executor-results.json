@@ -169,6 +169,42 @@
         }
       ],
       "endedUtc": "2026-10-12T20:25:49.801119+00:00"
+    },
+    "fast1": {
+      "status": "passed",
+      "command": "pnpm check:fast",
+      "sourceCommit": "efa5057440c1c95a7ac7aa263cc48f50d9a2c41b",
+      "startedUtc": "2026-10-12T20:27:45.981591+00:00",
+      "pid": 58655,
+      "inventory": "/private/tmp/still-shift-ms3-native3-inputs1.json",
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-12T20:29:59.513348+00:00",
+      "id": "native3-fast1",
+      "session": 51688,
+      "unitTests": 4404,
+      "unitFiles": 432,
+      "unitDurationSeconds": 68.04,
+      "heldInputFiles": 2659,
+      "heldInputBytes": 120986008,
+      "pins": [
+        {
+          "path": "/private/tmp/still-shift-ms3-native3-fast1.log",
+          "bytes": 41715,
+          "sha256": "sha256:c52594ecd7c274ae3630c9be5e1aa9e16d9a63347c4fce9bcf24a8bbb677fadd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-native3-fast1-receipt.json",
+          "bytes": 360,
+          "sha256": "sha256:b45c6a659f3e48b2736ea3efa8ca113329d5eb387d64f61af887272aa4376aba"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-native3-inputs1.json",
+          "bytes": 453669,
+          "sha256": "sha256:4b7bf4d88967f1536d6870eafccc4c8f2473a9dc5b3c8b2dc7d6c89860b4a19e"
+        }
+      ],
+      "qualification": "Complete fast tier on efa50574; earlier browser2 has its own retained exact runtime/artifact bindings. Final MS3 full/archive/installed and pilot remain open."
     }
   },
   "logs": [
@@ -294,5 +330,6 @@
     "All ten frozen questions, five assets/two behaviors, genuine inputs, factual/design/visual/listening review and real pilot measurements.",
     "Report CLI/capability agreement, full current 103-group gate, exact archive/isolated installed proof and MS3 PR."
   ],
-  "qualification": "Engineering adapter proof only. No genuine narration, whole glyph, mechanical, factual, continuous-motion, listening, human or pilot acceptance; no spending/publishing/merging/Actions."
+  "qualification": "Engineering adapter proof only. No genuine narration, whole glyph, mechanical, factual, continuous-motion, listening, human or pilot acceptance; no spending/publishing/merging/Actions.",
+  "committedNativeSource": "efa5057440c1c95a7ac7aa263cc48f50d9a2c41b"
 }
