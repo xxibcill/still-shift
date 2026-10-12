@@ -43,6 +43,10 @@ export const MECHANISM_CUE_NATIVE_PLATES_VERSION =
 export interface MechanismCueNativePlateOptions {
   readonly signal?: AbortSignal | undefined;
   readonly nodeMemory?: CompositionNodeMemory;
+  /** Rows are provisional until the entire original capture check returns successfully. */
+  readonly onFrame?: Parameters<
+    typeof verifyNativeObservationClosureVersions
+  >[0]["onFrame"];
 }
 export const MechanismCueNativePlatesSchema = z
   .object({
@@ -212,6 +216,7 @@ async function verifyReceipt(
   directory: string,
   owner: CompositionNodeMemory,
   signal?: AbortSignal,
+  onFrame?: MechanismCueNativePlateOptions["onFrame"],
 ) {
   owned(receipt, directory);
   for (const item of [
@@ -377,6 +382,7 @@ async function verifyReceipt(
     binding,
     signal,
     reserve: (bytes) => owner.reserve(bytes),
+    ...(onFrame ? { onFrame } : {}),
     output: {
       sha256: sequence.sha256,
       frameCount: source.frameCount,
@@ -522,7 +528,13 @@ export async function prepareMechanismCueNativePlates(
         color: rendered.metrics.output!.color,
       },
     });
-    await verifyReceipt(receipt, directory, owner, options.signal);
+    await verifyReceipt(
+      receipt,
+      directory,
+      owner,
+      options.signal,
+      options.onFrame,
+    );
     await assertCurrent();
     options.signal?.throwIfAborted();
     const receiptPath = join(directory, "native-plates.json");
@@ -577,6 +589,7 @@ export async function checkMechanismCueNativePlates(
       directory,
       owner,
       options.signal,
+      options.onFrame,
     );
     const final = await currentPicture(
       familyPath,

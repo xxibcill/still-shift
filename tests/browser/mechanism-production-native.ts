@@ -5,6 +5,8 @@ import {
   createMechanismProductionNativeExecutor,
   readMechanismProductionReports,
   MechanismProductionReportBundleSchema,
+  MechanismProductionEvidenceSchema,
+  MechanismProductionHandoffSchema,
   runMechanismProductionQueue,
   inspectMechanismProductionNativeItem,
   patchMechanismCueAuthoring,
@@ -232,6 +234,83 @@ try {
     completePath,
     cohort: complete.cohort,
     receipt,
+  });
+  const handoffPath = join(directory, "fresh-session-handoff.json");
+  const freshHandoff = await runProcess(
+    process.execPath,
+    [
+      "--import",
+      "tsx",
+      join(process.cwd(), "tools/still-shift-cli/src/cli.ts"),
+      "production",
+      "handoff",
+      "--manifest",
+      manifestPath,
+      "--output-dir",
+      output,
+      "--episode",
+      "S1",
+      "--report",
+      handoffPath,
+    ],
+    { maxBuffer: 65536 },
+  );
+  const handoffReceipt = MechanismCommandReceiptSchema.parse(
+    JSON.parse(freshHandoff.stdout),
+  );
+  assert.equal(handoffReceipt.summary.sourceStatus, "current-verified");
+  const handoff = MechanismProductionHandoffSchema.parse(
+    JSON.parse(await readFile(handoffPath, "utf8")),
+  );
+  assert.equal(handoff.sourceStatus, "current-verified");
+  assert.equal(handoff.reviewedReady, false);
+  assert.equal(handoff.qa.listening, "unreviewed");
+  assert.equal(
+    handoff.binding.outputSha256,
+    changed.report.binding.outputSha256,
+  );
+  const generatedEvidence: unknown[] = [];
+  for (const row of edited.rows) {
+    const product = JSON.parse(
+      await readFile(join(output, row.product!.path), "utf8"),
+    ) as MechanismProductionQueueProduct;
+    const reference = product.artifacts.find((f) =>
+      f.path.endsWith("/review/evidence.json"),
+    )!;
+    const evidence = MechanismProductionEvidenceSchema.parse(
+      JSON.parse(await readFile(join(output, reference.path), "utf8")),
+    );
+    assert(evidence.images.some((image) => image.kind === "phone"));
+    assert(evidence.images.some((image) => image.kind === "caption-crop"));
+    assert.equal(
+      evidence.audio.decodedSha256,
+      (
+        JSON.parse(
+          await readFile(
+            join(
+              output,
+              product.artifacts.find((f) =>
+                f.path.endsWith("/decoded-output.json"),
+              )!.path,
+            ),
+            "utf8",
+          ),
+        ) as { audio: { sha256: string } }
+      ).audio.sha256,
+    );
+    generatedEvidence.push({
+      id: row.id,
+      path: reference.path,
+      images: evidence.images.length,
+      samples: evidence.plan.samples.length,
+      cropExceptions: evidence.exceptions.length,
+    });
+  }
+  await record({
+    name: "review-images-audio-and-fresh-session-handoff",
+    handoffPath,
+    handoffReceipt,
+    evidence: generatedEvidence,
   });
   parent.dispose();
   assert.equal(parent.statistics.reservations, 0);

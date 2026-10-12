@@ -61,7 +61,8 @@ const DEFAULT_IO: CliIo = {
 const HELP = `Still Shift v${ENGINE_VERSION}
 
 Usage:
-  pnpm still-shift production discover|schema --kind <kind>
+  pnpm still-shift production discover
+  pnpm still-shift production schema --kind <kind>
   pnpm still-shift production report --manifest <queue.json> --output-dir <queue-output> [--report <fresh.json>]
   pnpm still-shift episode discover|schema
   pnpm still-shift episode inspect|validate|deps|summary --input <episode.json>
@@ -71,6 +72,7 @@ Usage:
   pnpm still-shift episode preview --input <episode.json> --frame <integer> --output-dir <fresh-dir>
   pnpm still-shift episode check --input <episode.json> [--prepared-dir <dir>] [--final-output <video.mp4>]
   pnpm still-shift episode package --input <episode.json> --output-dir <fresh-dir>
+  pnpm still-shift production handoff --manifest <queue.json> --output-dir <queue-output> --episode <id> [--report <fresh.json>]
   pnpm --silent still-shift animate --input <path> --output <path> [options]
   pnpm still-shift animate-scene --scene <prepared.json> --output <path> [--format landscape|vertical]
   pnpm still-shift soundtrack validate|inspect --project <project.json> [--json]

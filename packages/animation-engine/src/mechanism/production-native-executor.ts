@@ -1,3 +1,8 @@
+import {
+  buildMechanismProductionEvidence,
+  checkMechanismProductionEvidence,
+} from "./production-evidence.ts";
+import { MechanismProductionHandoffSchema } from "./production-handoff.ts";
 import { checkMechanismProductionDecodedOutput } from "./production-output-check.ts";
 import { z } from "zod";
 import { access, rename } from "node:fs/promises";
@@ -271,6 +276,28 @@ export async function createMechanismProductionNativeExecutor(): Promise<Mechani
         codeSha256: identity.codeSha256,
         profileSha256: identity.profileSha256,
       };
+      await context.progress("review-evidence");
+      const review = await buildMechanismProductionEvidence({
+        familyPath: path.family,
+        cuePath: path.cue,
+        compilation: compiled.receipt,
+        platesDirectory: plates,
+        outputPath: rendered.outputPath,
+        decodedPath,
+        outputRoot: context.outputRoot,
+        directory: join(context.attemptDirectory, "review"),
+        binding,
+        decoded,
+        nodeMemory: context.nodeMemory,
+        signal: context.signal,
+        ...(context.manifestPath ? { manifestPath: context.manifestPath } : {}),
+        episode: {
+          id: item.id,
+          question: item.question,
+          family: item.family,
+          designVariant: item.designVariant,
+        },
+      });
       const qa = createUnreviewedMechanismQA(binding);
       qa[0] = {
         ...qa[0]!,
@@ -291,6 +318,9 @@ export async function createMechanismProductionNativeExecutor(): Promise<Mechani
       };
       const artifacts = [
         output,
+        review.manifest,
+        review.audio,
+        review.handoff,
         checkFile,
         await productionFile(
           context.outputRoot,
@@ -329,7 +359,7 @@ export async function createMechanismProductionNativeExecutor(): Promise<Mechani
           unresolvedMechanicalFailures: 0,
           durations: {
             setupSeconds,
-            routineSeconds: renderSeconds,
+            routineSeconds: (performance.now() - renderStart) / 1000,
             renderSeconds,
           },
           authoring: {
@@ -458,6 +488,80 @@ export async function createMechanismProductionNativeExecutor(): Promise<Mechani
               "Actual full decoded output differs from its retained proof",
               item.id,
             );
+          const reviewFile = product.artifacts.find((f) =>
+            f.path.endsWith("/review/evidence.json"),
+          );
+          const handoffFile = product.artifacts.find((f) =>
+            f.path.endsWith("/review/handoff.json"),
+          );
+          if (!reviewFile || !handoffFile)
+            productionFailure(
+              "production-review-evidence",
+              "Native product lacks its current review evidence/handoff",
+              item.id,
+            );
+          const review = await checkMechanismProductionEvidence(
+            await productionOwnedPath(context.outputRoot, reviewFile.path),
+            context.outputRoot,
+            product.report.binding,
+            decoded,
+            context.nodeMemory,
+            context.signal,
+            {
+              familyPath: path.family,
+              cuePath: path.cue,
+              preparedDirectory: path.compiled,
+              platesDirectory: check.value.plates,
+            },
+          );
+          if (
+            mechanismPackHash(review.assets.video) !==
+              mechanismPackHash(outputFile) ||
+            mechanismPackHash(review.assets.decodedReport) !==
+              mechanismPackHash(decodedFile)
+          )
+            productionFailure(
+              "production-evidence-source-artifacts",
+              "Review output/decode pointers differ from verified product artifacts",
+              item.id,
+            );
+          const handoff = await readProductionJSON(
+            await productionOwnedPath(context.outputRoot, handoffFile.path),
+            MechanismProductionHandoffSchema,
+            context.nodeMemory,
+            32768,
+            context.signal,
+          );
+          try {
+            if (
+              mechanismPackHash(handoff.value.binding) !==
+                mechanismPackHash(product.report.binding) ||
+              handoff.value.id !== item.id ||
+              handoff.value.question !== item.question ||
+              handoff.value.family !== item.family ||
+              handoff.value.designVariant !== item.designVariant ||
+              handoff.value.assets.evidence.sha256 !== reviewFile.sha256 ||
+              handoff.value.assets.video.sha256 !== outputFile.sha256 ||
+              mechanismPackHash(handoff.value.compilation) !==
+                mechanismPackHash(review.compilation) ||
+              mechanismPackHash(handoff.value.assets) !==
+                mechanismPackHash({ ...review.assets, evidence: reviewFile }) ||
+              mechanismPackHash(handoff.value.summary) !==
+                mechanismPackHash(review.summary) ||
+              handoff.value.resume.familyPath !== path.family ||
+              handoff.value.resume.cuePath !== path.cue ||
+              handoff.value.resume.outputDirectory !== context.outputRoot ||
+              (context.manifestPath !== undefined &&
+                handoff.value.resume.manifestPath !== context.manifestPath)
+            )
+              productionFailure(
+                "production-handoff-binding",
+                "Handoff snapshot differs from its current product/source",
+                item.id,
+              );
+          } finally {
+            handoff.release();
+          }
         } finally {
           original.release();
         }

@@ -39,6 +39,7 @@ import {
 export class MechanismProductionTransientError extends Error {}
 export type MechanismProductionExecutionContext = {
   manifestDirectory: string;
+  manifestPath?: string;
   outputRoot: string;
   attemptDirectory: string;
   requestHash: string;
@@ -262,6 +263,7 @@ export async function runMechanismProductionQueue(
         memory = owner,
       ): MechanismProductionExecutionContext => ({
         manifestDirectory: dirname(resolve(manifestPath)),
+        manifestPath: resolve(manifestPath),
         outputRoot: root,
         attemptDirectory: join(root, "items", row.id, String(attempt.number)),
         requestHash: row.requestHash,

@@ -3,7 +3,7 @@
   "milestone": "MS3",
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
-  "status": "in-progress-actual-production-report-command-verified",
+  "status": "in-progress-review-evidence-scoped-verified",
   "baseMain": "57967fa6497249d75e740ba837b8e2687cc81a98",
   "ms2Prerequisite": {
     "commit": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
@@ -361,6 +361,14 @@
       "decodedFrames": 240,
       "defaultCLIResponseBytes": 3611,
       "qualification": "Actual three-family queue/native report/API/separate CLI proof, independent complete decode/report audit, and complete fast/runtime tiers on eec1954a with2676 inputs held exact. Final full/archive/installed and all original pilot extensions/genuine inputs/reviews remain open; no pilot/human acceptance or newly achieved target."
+    },
+    {
+      "id": "review-evidence6",
+      "status": "scoped-evidence-builder-and-source-transform-controls-verified-integrated-run-pending",
+      "record": "docs/mechanism-shorts-ms3-evidence-results.json",
+      "focusedTests": 57,
+      "scopedImages": 81,
+      "qualification": "Scoped evidence/code controls only at this checkpoint; integrated native/fresh-session proof and final MS3 acceptance remain unproven."
     }
   ],
   "targets": {

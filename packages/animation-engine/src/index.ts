@@ -151,3 +151,6 @@ export * from "./mechanism/production-warnings.ts";
 export * from "./mechanism/production-report-io.ts";
 
 export * from "./mechanism/production-registry.ts";
+
+export * from "./mechanism/production-evidence-contract.ts";
+export * from "./mechanism/production-handoff.ts";

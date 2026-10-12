@@ -337,6 +337,7 @@ export async function readMechanismProductionReports(
             if (runtimeCurrent) {
               await executor.verify(item, product, {
                 manifestDirectory: dirname(resolve(manifestPath)),
+                manifestPath: resolve(manifestPath),
                 outputRoot: root,
                 attemptDirectory: join(
                   root,

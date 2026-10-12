@@ -43,27 +43,25 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS3 in progress (2026-10-13):** codex/mechanism-ms3 carries exact MS2495fb2c0
-  after PR57 opened/attached. [MS3 draft PR58](https://github.com/xxibcill/still-shift/pull/58)
-  is open against main and attached; full original scope remains in progress.
-  Report5 eec1954a now has actual three-family
-  native/API/CLI proof: four exports/240 decoded frames/0 fresh caption-edit3D;
-  current reports verify three products. Default CLI emits3 episode+12 cohort
-  rows in3611B; paged and default complete reports are byte-identical. Independent
-  57-pin audit recomputes original attempts/percentiles/reviews and full decode.
-  Complete fast4426/435 and runtime247/42+integration322/57+depth14+browser smoke
-  actually pass, with2676 inputs/121137341B held exact. Public declarations and
-  54 focused checks pass separately. Fifteen nontechnical dimensions unreviewed,
-  tokensnull, no reviewed-ready or pilot claim. Original remaining scope:
-  semantic/warning/QA integration; phone/shot/contact/cut/crop/handoff; native
-  faults/relocation; scoped repair/automatic MS1 overlap; ten frozen questions/
-  five assets/two behaviors and genuine inputs/reviews; broader capability
-  reconciliation and final full103/archive/installed/MS3 PR. Coverage0/10,
-  targets unmeasured, Actions actually disabled; no spending/merge/npm or media
-  publication.
+- **MS3 in progress (2026-10-13):** codex/mechanism-ms3, draft
+  [PR58](https://github.com/xxibcill/still-shift/pull/58) open/attached to main.
+  Evidence6 now builds source-clock entry/mid/exit/event/cut samples, phone/caption/
+  actual-native-projection crops, exact final PCM and compact CAS handoffs. Retained
+  eec outputs yield81 verified images across3 families;3 forged/stale controls
+  reject, including altered phone pixels with recomputed declarations.57 focused
+  checks/build/lint/schema/boundary/declarations pass after one type-import lint
+  repair; failed gate retained. Fresh current native/CLI handoff and held fast/
+  runtime tiers are next. Report5 eec1954a retains its separate complete4426-unit,
+  runtime247/integration322/depth14/smoke/240-frame/57-pin/default-CLI proof.
+  Evidence derivation supplies no whole glyph/mechanical/continuous/listening/
+  factual/human acceptance. Original scope remains: operational QA/warnings and
+  full fault suite; native faults/relocation; scoped repair/MS1 overlap; all ten
+  frozen questions/five assets/two behaviors/genuine inputs/reviews; broader
+  capability reconciliation and final full103/archive/installed/PR completion.
+  Coverage0/10; targets unmeasured, no spending/Actions/merge/npm/media publication.
   [Tracker](./mechanism-shorts-ms3-acceptance.md),
-  [report command](./mechanism-production-report-command.md),
-  [report evidence](./mechanism-shorts-ms3-report-command-results.json),
+  [evidence API](./mechanism-production-evidence.md),
+  [evidence record](./mechanism-shorts-ms3-evidence-results.json),
   [results](./mechanism-shorts-ms3-results.json).
 
 - **MS2 software checkpoint delivered (2026-10-13):** `codex/mechanism-ms2`
@@ -251,6 +249,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — MS3 source-bound review images, exact audio and compact handoffs
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from5ceb8396.
+- **Done:** Frame-role sampler, final-file PNG/phone/caption/native-projection crops,
+  exact final float32 PCM and compact source-CAS handoff with fresh-session CLI.
+  Native queue publishes/checks nested evidence through existing shared ownership.
+- **Results:**81 retained-output images across3 families and3 tampering/stale
+  controls pass;57 focused checks and build/lint/schema/boundary/declarations pass.
+  Retained-output scope preserves original eec render identity; fresh integrated
+  source proof and complete local tiers are next.
+- **Rejected:** Gate1 type-only import lint failed after57 tests/build passed.
+  Corrected import only; separate gate2 actually passes. No weakened caps/guards.
+- **Open / next:** Current native/fresh-session proof, fast/runtime gates, then
+  every original remaining QA/fault/repair/extension/pilot/review requirement.
+- **Records:** [Evidence API](./mechanism-production-evidence.md),
+  [scope/controls](./mechanism-shorts-ms3-evidence-results.json),
+  [PR58](https://github.com/xxibcill/still-shift/pull/58).
 
 ### 2026-10-13 — MS3 durable episode/cohort report command and schema registry
 
