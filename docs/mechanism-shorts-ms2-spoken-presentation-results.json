@@ -3,7 +3,7 @@
   "date": "2026-10-12",
   "branch": "codex/mechanism-ms2",
   "baseCommit": "09e3ddff",
-  "status": "implemented-scoped-fast-preflight-native-full-validation-in-flight",
+  "status": "scoped-software-native-audit-and-sampled-review-complete",
   "scope": "Four existing genuine whole recordings,20 measured visual windows. Named camera framing and existing physical annotation anchors, plus the diagnosed peg opening moved into its spoken cue. No production renderer/admission change.640x360 engineering output is not the MS3 portrait pilot.",
   "direction": {
     "decision": "REVISE",
@@ -803,11 +803,73 @@
     {
       "id": "native-export1",
       "actualSession": 20684,
-      "actualExitCode": null,
-      "state": "running",
+      "actualExitCode": 0,
+      "state": "passed",
       "root": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ",
       "logPath": "/private/tmp/still-shift-ms2-presentation66-render1.log",
-      "scope": "Held3 current implementation. Four supplied takes x first/repeat planned8 exports/5136 frames. So far first hook pair has rendered/checked/decoded receipts and exact whole encoded/frame/PCM pair proof in live run snapshot. This is a qualified1174-frame prefix, not a full-batch terminal pass. Continue the owned session before final evidence."
+      "scope": "Held3 current implementation. All four supplied takes x first/repeat:8 exports/5136 observed native frames. Each pair has complete encoded, decoded-frame and decoded-PCM identity. Actual owning terminal0 recovered before handoff; no finished-session polling or inferred terminal result.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-render1.log",
+        "bytes": 1277,
+        "sha256": "faae0401d09e4013e0ea3c6283db6e4f745d1339a19edd549ec8a2f51eb3051a"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/run.json",
+        "bytes": 1261300,
+        "sha256": "9c27031841a9f44087f2ef2bc1ac387ee59c1768af1793147a6fa035c29dea63"
+      },
+      "terminalReceipt": {
+        "owningSession": 20684,
+        "exitCode": 0,
+        "recoveredInPreviousChatBeforeHandoff": true
+      }
+    },
+    {
+      "id": "independent-final-audit1",
+      "actualSession": 54213,
+      "actualExitCode": 0,
+      "script": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-audit.py",
+        "bytes": 17215,
+        "sha256": "e0583a673aec157046bef2dd018443a3f9369d0dfa1baf4927fd37576e2e687d"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-audit1.log",
+        "bytes": 197,
+        "sha256": "1bec5623ef41d35b005abf6bd522c668073bb70c3d9e3d150fd7a359af6f1822"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-audit1.json",
+        "bytes": 52798,
+        "sha256": "00537355728e8f7fc1e08fcb0b74dc368682e4c5776a102fca1df957c62662b5"
+      },
+      "scope": "Independent original/canonical/transcript/body pins, exact selected word coverage/endpoints, authored/visible ASCII caption capacity/action windows, all final native journal clocks/source/geometry/hierarchy/held-cut camera matrices, actual label visibility and independent peg angle/hook compensation matrix expectations, actual encoded bodies/every decoded frame/complete repeated PCM. No independent rig replay here; public native output check replays every expected rig/source/GPU observation. Source audio remains exact; full lossy AAC PCM is independently compared between repeats and against the immutable64 prior export, not asserted identical to source. No encoded glyph threshold or human/listening/pilot acceptance.",
+      "counts": {
+        "factPinChecks": 64,
+        "originalNativeFrames": 5136,
+        "partHierarchyPairs": 41028,
+        "sourceCameraTriples": 5136,
+        "analyticPegNativeFrames": 1286,
+        "analyticHookCompensationNativeFrames": 1064,
+        "nativeLabelVisibilityCounts": {
+          "visible": 4852,
+          "occluded": 284
+        },
+        "actualBeforeDecodedVideoFrames": 2568,
+        "actualDecodedVideoFrames": 5136
+      },
+      "hookFrameQualification": "1064 matrix expectations from compensation onset through end, including734 compensation-window frames plus330 subsequent legacy contact-window frames; the handoff expected734 only for the compensation windows. No assertion weakened.",
+      "constructionDiagnostic": "An extra comma SyntaxError in the private audit construction was repaired before prior syntax check and before this first actual execution.",
+      "sourceHoldAfterAudit": {
+        "files": 2638,
+        "bytes": 120690519,
+        "actualExitCode": 0,
+        "inventory": {
+          "path": "/private/tmp/still-shift-ms2-presentation66-inputs3.json",
+          "bytes": 449950,
+          "sha256": "8d54d34d437952c2e1dd698b56e9fecc68fdbd848d88405579c7aaa1f2711884"
+        }
+      }
     }
   ],
   "supportedPacks": 0,
@@ -820,10 +882,9 @@
   "paidGeneration": false,
   "privateMediaRedistributed": false,
   "remaining": [
-    "Finish owned native-export1 session20684; independently audit all current encoded/repeated output, held-cut camera matrices, source/old-new complete PCM and native angle/label proofs. Inspect actual selected final encoded frames for all takes.",
-    "Whole current required102/frozen/benchmark/final archive/installed gates",
-    "Pack/factual/validated10-question coverage/MS2 PR and MS3 pilot",
-    "Normal-speed audiovisual/human/portrait product acceptance"
+    "Finite MS2 acceptance reconciliation and whole current required102/frozen/benchmark/final archive/installed gates",
+    "Pack/factual admission and MS2 PR before MS3; the frozen ten-question board is already classified. New assets/behaviors and positive ten-episode coverage are MS3 pilot work, not invented substitute questions.",
+    "Normal-speed audiovisual/human/portrait product acceptance; no paid generation, merge or publication."
   ],
   "sourceHolds": [
     {
@@ -842,5 +903,689 @@
       "sha256": "8d54d34d437952c2e1dd698b56e9fecc68fdbd848d88405579c7aaa1f2711884"
     }
   ],
-  "sourceHoldsScope": "Hold1 precedes diagnosed peg timing repair. Hold2\u2192hold3 changes only helper type imports56B, no runtime/authoring function delta. Hold3 pins final source for ordinary fast3 and native-export1; source equality is scoped to each owning stage."
+  "sourceHoldsScope": "Hold1 precedes diagnosed peg timing repair. Hold2\u2192hold3 changes only helper type imports56B, no runtime/authoring function delta. Hold3 pins final source for ordinary fast3 and native-export1; source equality is scoped to each owning stage.",
+  "finalSampledReview": {
+    "status": "agent-viewed-all-selected-final-first-frames",
+    "sampleCount": 79,
+    "distinctCounts": {
+      "EU-001": 19,
+      "EU-002": 12,
+      "EU-003": 26,
+      "EU-001-legacy": 22
+    },
+    "sampleSelection": "60 cue entry/mid/exit,8 additional hook-compensation,5 opening and6 return peg frames; all79 distinct within take.",
+    "sheets": [
+      {
+        "path": "/private/tmp/still-shift-ms2-presentation66-review-EU-001-0.png",
+        "bytes": 242553,
+        "sha256": "d74c6faf686c8ec9d3d47958506db6af6f89119f039299a8d1b14c9d98199f6b"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-presentation66-review-EU-001-1.png",
+        "bytes": 268584,
+        "sha256": "7a55ee825d00b2562019a26c57bd10f71dd0f46660a80fdc99dd2cde833e04bb"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-presentation66-review-EU-001-2.png",
+        "bytes": 342665,
+        "sha256": "3293dd5fd2a05212400d07fbaba8322856162e2ab663533e6eca6df832fac061"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-presentation66-review-EU-001-3.png",
+        "bytes": 318133,
+        "sha256": "e778bed55eb3ea46831898a9f546505d8011b78b587de0a86fff1c4ec9ff19bb"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-presentation66-review-EU-001-4.png",
+        "bytes": 254945,
+        "sha256": "d6d031ae6a616e5ffd2b19eb8137070e67513c12808400fc0b0c471ffdb86a90"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-presentation66-review-EU-002-0.png",
+        "bytes": 187692,
+        "sha256": "3a3fa70be539b6703dd951a3804335f605bd0cf373efadf8b720da72213b15bc"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-presentation66-review-EU-002-1.png",
+        "bytes": 228735,
+        "sha256": "9e974a3083c5150a2768900eb6c6002ffea2084bda3c765fc5e4dabd859c1b5b"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-presentation66-review-EU-002-2.png",
+        "bytes": 205474,
+        "sha256": "d91870676a8313a48dfdaabbd67a244b438befad754d959cf23c94f4b07b892c"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-presentation66-review-EU-003-0.png",
+        "bytes": 128312,
+        "sha256": "ec0296673f9961e696f5cadc6e5e4d2a9549515142ada7f8427dfa8a02cc9f48"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-presentation66-review-EU-003-1.png",
+        "bytes": 173548,
+        "sha256": "753a1b654cc0354e501157d774f24dd0bb3ddcc8fb8c6a5b5a60d23190e4997b"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-presentation66-review-EU-003-2.png",
+        "bytes": 161111,
+        "sha256": "5b9a3cbfe41525a166086fca988cb9815fb9418621ac54c4aee7b4fe5b75e8d9"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-presentation66-review-EU-003-3.png",
+        "bytes": 178777,
+        "sha256": "e561e658980f148051030f0b41410d56173c6baa5b67d1da94ecd0165be08704"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-presentation66-review-EU-003-4.png",
+        "bytes": 131428,
+        "sha256": "1170a6f2692d39abf6f090f94f5159bfcc6143c7e9cd177dd718c58286b216ec"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-presentation66-review-EU-003-5.png",
+        "bytes": 159207,
+        "sha256": "3eef009bb3f0ebfa368e7861da80107aabb21adaa6c772df4188173c546d28dd"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-presentation66-review-EU-003-6.png",
+        "bytes": 70539,
+        "sha256": "004c6dd90b933e28843237a3d1f79f751b09c92f2544779f203ca76d7734ba7c"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-presentation66-review-EU-001-legacy-0.png",
+        "bytes": 243408,
+        "sha256": "a1d51d7f4215624c2fb1f41f9e7590fac52621d5bc9d01c2539dadbafc070865"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-presentation66-review-EU-001-legacy-1.png",
+        "bytes": 269429,
+        "sha256": "5bcf7c7f8639434eb8714d3bc941398052905ec718e7318e52a51620ae6f7a81"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-presentation66-review-EU-001-legacy-2.png",
+        "bytes": 343773,
+        "sha256": "978e2972ce7e3c483654d66486715f8fa445209f73f6acee546f27c7a5b65eaf"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-presentation66-review-EU-001-legacy-3.png",
+        "bytes": 326448,
+        "sha256": "a80c12c13f143569c716eb3a83c0ee63b55fd50ed948a6cb67a744b75ef738c8"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-presentation66-review-EU-001-legacy-4.png",
+        "bytes": 360238,
+        "sha256": "95c609a77ab44a7cbb39902101db09e3d49a0a303e44403719606648b38c2496"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-presentation66-review-EU-001-legacy-5.png",
+        "bytes": 118794,
+        "sha256": "fa0474d47ffb88d47100ffd5dfd4e45de5c1a098724cb6728da7edb8a5e62ae7"
+      }
+    ],
+    "samplePins": [
+      {
+        "frame": 0,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001/decoded-frame-0.png",
+        "bytes": 58007,
+        "sha256": "sha256:ec44cd4917f7dafeeb7476648d023820eef1a53d4d63fdf7cdecfa4379bbce7a",
+        "pixelSha256": "sha256:609f02154495a74e87a854be7ffbade5b45fb5d29711ccff964cfb8ab97d2419"
+      },
+      {
+        "frame": 49,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001/decoded-frame-49.png",
+        "bytes": 58628,
+        "sha256": "sha256:6beda1ee63c3b1f2f9e0df4f96676df2a0681c18cdc77f15b7f0caa3e24ed022",
+        "pixelSha256": "sha256:b97eba01fc618670c12f7ead169f76534f19d769b36b28e15be31689e477b888"
+      },
+      {
+        "frame": 98,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001/decoded-frame-98.png",
+        "bytes": 59074,
+        "sha256": "sha256:401824ad6bcb33b0fe2c5daa618caf470e258b3c514d2b4683cd93e1f760bcd0",
+        "pixelSha256": "sha256:f63756bd2e0dac08048da5153924f8b0a88e73d9cdc4df8c245fa175bde07a49"
+      },
+      {
+        "frame": 99,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001/decoded-frame-99.png",
+        "bytes": 119960,
+        "sha256": "sha256:7968399ae80e867dc3915ae30ec2f5159d3fa58d183e14c6f3710cf688d3ff9b",
+        "pixelSha256": "sha256:38f206659bafdc8df14fde78e9a5343f70d773b386b117a1ecb2fb9cf2a4c3fc"
+      },
+      {
+        "frame": 151,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001/decoded-frame-151.png",
+        "bytes": 120606,
+        "sha256": "sha256:77a9b86610c133ebf6116022748ce97b0aa9fdaec6f3a682a7f261109ff8ce6e",
+        "pixelSha256": "sha256:95e5c3f4f6b12d685a662b6251241bf2577282c162d22ddaab517c59e986294a"
+      },
+      {
+        "frame": 203,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001/decoded-frame-203.png",
+        "bytes": 120219,
+        "sha256": "sha256:650707a7be1d367ae375a760267e0c9397441b3df4fe8b1a1ce3b49055385caf",
+        "pixelSha256": "sha256:3a8e2e3b8a4701103cafd7579a8fee34434dfa3092ce8da6c6338e07496d5ea2"
+      },
+      {
+        "frame": 204,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001/decoded-frame-204.png",
+        "bytes": 109299,
+        "sha256": "sha256:c4934faab372d927447f7b464f12a602be888854fa9ea0a622702a7aa4f38a31",
+        "pixelSha256": "sha256:ca4885ff7ce9dd7110061d937208769ff91b903fbfe1efa44129c4539caf84f7"
+      },
+      {
+        "frame": 259,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001/decoded-frame-259.png",
+        "bytes": 109488,
+        "sha256": "sha256:f0c384fe34892b93f8ea0a58c170c6c3ad2e349cf7434d02cda0206802ea5f6e",
+        "pixelSha256": "sha256:8704a6ae4d29d2f1aed4b2c717538c98c5c532693e44d0d21183b3dc7574e4e8"
+      },
+      {
+        "frame": 314,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001/decoded-frame-314.png",
+        "bytes": 109507,
+        "sha256": "sha256:b63353e5785cd25605d88cb2e6a41f1c061e1125e01849738404c182443fc19b",
+        "pixelSha256": "sha256:6f4d81f759483c11215e117f7e29926b43d4df888fc045c9f34f9a41f374f38b"
+      },
+      {
+        "frame": 315,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001/decoded-frame-315.png",
+        "bytes": 118953,
+        "sha256": "sha256:dda361e065f1928560857d1171741dc744a38db5f0ec48de7e9481c5504dc8b9",
+        "pixelSha256": "sha256:ee28c77056523543fd8c103f5c7c801d919dbe89de9bf8938cf7efd270e3f0ae"
+      },
+      {
+        "frame": 362,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001/decoded-frame-362.png",
+        "bytes": 119625,
+        "sha256": "sha256:47b7184777ab87ce538ca03ac89cadd9af730521a96b55ae4f0dbef25649a347",
+        "pixelSha256": "sha256:26e4e2b1df3141404d37d8792ba9074263f950ba517338850bdbcd6ef4b426fd"
+      },
+      {
+        "frame": 410,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001/decoded-frame-410.png",
+        "bytes": 119722,
+        "sha256": "sha256:96bdb51c50d5a12704050ce52ff40c89f3b32b1c1883e8c0e4a24987a2748550",
+        "pixelSha256": "sha256:306f10a8cfcdd45449e8c73bcce2928dd1d42a31dc015c955d19af60baf9d39e"
+      },
+      {
+        "frame": 411,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001/decoded-frame-411.png",
+        "bytes": 125504,
+        "sha256": "sha256:9f016777cb9b788c08e2308c9c3c99903cb5cd93bd1a106b89c1e5730a1b9650",
+        "pixelSha256": "sha256:7f5f5948f0d508e2735188549ce8fbb8fade045cbd3701ceee71bb9ea627d2d0"
+      },
+      {
+        "frame": 426,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001/decoded-frame-426.png",
+        "bytes": 126337,
+        "sha256": "sha256:3b7b389db32e92e8d806e702b9790f0aeaf3049406bfd2734700dba7123fda2e",
+        "pixelSha256": "sha256:1beefd835ca60c869475c9cc92e5ca4d0a9777bd94a49f3321c4aac0eeb8fad3"
+      },
+      {
+        "frame": 441,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001/decoded-frame-441.png",
+        "bytes": 128881,
+        "sha256": "sha256:4d4f81460dce3fead889284bd6458ceaa3870e6a483b9ad4e7898466eae74c51",
+        "pixelSha256": "sha256:9434ebd77da7424787a387620b7f96271ef5e30dae91a4fab441408997ef502e"
+      },
+      {
+        "frame": 456,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001/decoded-frame-456.png",
+        "bytes": 126346,
+        "sha256": "sha256:111c1f6535b364629e6d519a78eae398f92c22d836dd057139b705ba053acabb",
+        "pixelSha256": "sha256:bdc248da94ecae40abb29aaa5a56f101159e704e4c66db88ca80d36b47a69fd9"
+      },
+      {
+        "frame": 471,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001/decoded-frame-471.png",
+        "bytes": 126333,
+        "sha256": "sha256:35f2175dac0340353bb9d6fd10d4d62f3045e3ee15c69e0e082974a6711233dc",
+        "pixelSha256": "sha256:c65a57a7fda59e7adda76fef96d37a7b409f7468ebf1678f226cadec2955554a"
+      },
+      {
+        "frame": 498,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001/decoded-frame-498.png",
+        "bytes": 126320,
+        "sha256": "sha256:3bc9e36916805ea404b78ec03a8d45eb322e358a1d0194ecbf3b990abebb19f3",
+        "pixelSha256": "sha256:524233aea4b8297aa3186a2d80abcf1cc5a4949a2d142f57c078221d48e7b138"
+      },
+      {
+        "frame": 586,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001/decoded-frame-586.png",
+        "bytes": 119283,
+        "sha256": "sha256:2d5cfacd907bb8fc9e326a8c910c07a26483abc6ed3226c16ef7e9ee33c10d90",
+        "pixelSha256": "sha256:7f9999e0ef73a582858f2e25284ab7f54bfc49ca15c1557b177e4043a868ae27"
+      },
+      {
+        "frame": 0,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-002/decoded-frame-0.png",
+        "bytes": 44318,
+        "sha256": "sha256:ffdbb8c1bb4ec4ae84bed78f02f3e75282fe565214d5c84f92c88c1e852fb4dc",
+        "pixelSha256": "sha256:e61e1e7ca3f747dbe7564ea32fa5d10419fd1db2fa437e316098971d923e47cf"
+      },
+      {
+        "frame": 80,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-002/decoded-frame-80.png",
+        "bytes": 47148,
+        "sha256": "sha256:7a7623f7a2918eb5a4741dc2dc3456e13dd2b7f4692349b798892b0f38fa08d7",
+        "pixelSha256": "sha256:7f0aa73a8fab2f265f0ae5ca32ace0c98600fbb593420fee9e6f2ce60f1b6378"
+      },
+      {
+        "frame": 160,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-002/decoded-frame-160.png",
+        "bytes": 47361,
+        "sha256": "sha256:5ac18f11675cf8222ce4cad61885eb0428c4fc6750ed4e4d3ac704e626c99dc6",
+        "pixelSha256": "sha256:3a7620328609b524cdc4c5526284f457c0a0ab83b7d8a99e9a55c081ccbf18a0"
+      },
+      {
+        "frame": 161,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-002/decoded-frame-161.png",
+        "bytes": 78628,
+        "sha256": "sha256:650e4620078cbb85fd81c84472f444997f9eaf2d298f320d6e7dd2537da65c88",
+        "pixelSha256": "sha256:214161d7ccdfafebef5bd9e418093842518fa0761670d4e03e7afd2737b90291"
+      },
+      {
+        "frame": 228,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-002/decoded-frame-228.png",
+        "bytes": 78840,
+        "sha256": "sha256:fb4b09673d931f849f86209ae24abd9522f922c09a5e1a0fd9641dd594625288",
+        "pixelSha256": "sha256:7664576e7305ec1c01316fb48956ac5f3b00313225dd19a43d988a84d44d52f7"
+      },
+      {
+        "frame": 295,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-002/decoded-frame-295.png",
+        "bytes": 78968,
+        "sha256": "sha256:95d40402a083f89c04a9a507ea3673ea8811ede599eab411654e374241c678bd",
+        "pixelSha256": "sha256:5a4496a2ee62fd0d62e42073d723760e7b9ae331960ad5479f0abfd5582a478e"
+      },
+      {
+        "frame": 296,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-002/decoded-frame-296.png",
+        "bytes": 81467,
+        "sha256": "sha256:1ff52ded07589d89c38d9fd094ee717d121149f564ebde931ced3d2275b96ebe",
+        "pixelSha256": "sha256:3dc9b3b27d186d68ef4373a52a232eef90053e3169977024b805b520ced919fc"
+      },
+      {
+        "frame": 378,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-002/decoded-frame-378.png",
+        "bytes": 88796,
+        "sha256": "sha256:bfd07c890f5606878c56b637e668536c798a1ede8378ce17c4f26c8f34caab99",
+        "pixelSha256": "sha256:bf4145202c1673ca96397cb9e546c1a858aa2968a366ab2364835252726b182c"
+      },
+      {
+        "frame": 461,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-002/decoded-frame-461.png",
+        "bytes": 83736,
+        "sha256": "sha256:6e55dc96c231ebe2ca95905e5dd9ae677ec88a65ea63a117307a97c49824e65f",
+        "pixelSha256": "sha256:6cefcab96f599db918826de9d25ec825e64fe30d95e4e958233a0984f3467a29"
+      },
+      {
+        "frame": 462,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-002/decoded-frame-462.png",
+        "bytes": 86238,
+        "sha256": "sha256:7f6ee74b789bb88dd25bd8532602e94635d67df97bd8ed9cea248f36125b0473",
+        "pixelSha256": "sha256:537bf2f0f96bcaf95687133a8536a76bcb8c62244dc37db76aab44386f600a6f"
+      },
+      {
+        "frame": 553,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-002/decoded-frame-553.png",
+        "bytes": 86238,
+        "sha256": "sha256:b506c8b01ecfc999a0c2bdca2bcfa9510c5e2070e7ec36dbeb025550cc04726f",
+        "pixelSha256": "sha256:886bbfc72f7ee8a73598bc23ddd2278da278181a0ea57f8279cec087d52709b2"
+      },
+      {
+        "frame": 645,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-002/decoded-frame-645.png",
+        "bytes": 86268,
+        "sha256": "sha256:1e874d1d11352ad14d43c0322b841725f7ea2710d32882f24e28b7c5d03ab2be",
+        "pixelSha256": "sha256:79f12e79f77878bb7b72431533ff68b41040469afb825d54e7958afcc1fe3736"
+      },
+      {
+        "frame": 0,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-0.png",
+        "bytes": 48927,
+        "sha256": "sha256:f2a3449b152ffeb27f0ce77290ac09fb88c6e322e8611317045c2e47e94ecc81",
+        "pixelSha256": "sha256:39bb7d5a69a8343a9535faf57ac45eaca940557638423368b1653d5bca092fc2"
+      },
+      {
+        "frame": 53,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-53.png",
+        "bytes": 49051,
+        "sha256": "sha256:d00b43e6a0d347378b30b4c3147270d7ecbc71044bdf431cd0c5786a47350c79",
+        "pixelSha256": "sha256:7b715484dcf735220020878a1dee59597d19cb2cffa01dc7ba52891696242989"
+      },
+      {
+        "frame": 106,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-106.png",
+        "bytes": 49529,
+        "sha256": "sha256:b71c49182cca63f292679c38c2d657f53d7be9c7732cb88d814db76375172d1f",
+        "pixelSha256": "sha256:c18ccd3ef1304ea9dba99f11f49a37a3998c6ba23fa5dbed400f6e451f128f2e"
+      },
+      {
+        "frame": 107,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-107.png",
+        "bytes": 43342,
+        "sha256": "sha256:60f8bb84dd3a192b428cb838f7893085f3a8c05a2470b53db2b7ae8614b2e52c",
+        "pixelSha256": "sha256:f277bb452bfcabe0c22a3a4b3832be07677ae10712e7c622e4a16a6afb3acff7"
+      },
+      {
+        "frame": 108,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-108.png",
+        "bytes": 52922,
+        "sha256": "sha256:7f0f2f69d44908f4fbdc2fde82ac13d0535d1c94df11abb15f9c24e4264fd026",
+        "pixelSha256": "sha256:75bda337d1ec9ad37dfd52de913690d8be46e107d122c7ecec004aa2451e2b50"
+      },
+      {
+        "frame": 113,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-113.png",
+        "bytes": 55410,
+        "sha256": "sha256:1825d1aed5a59259240e65a971a99d645866b10548f423615779d273b9fb8361",
+        "pixelSha256": "sha256:2ec6116e6f89bb44a16e2ee7993434e8c09d8a18add9335a9a9f35f24102fedc"
+      },
+      {
+        "frame": 122,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-122.png",
+        "bytes": 57258,
+        "sha256": "sha256:357663064f39d8be508beb3145e71d927d723aa07e66ad35d68261c60d218d50",
+        "pixelSha256": "sha256:f17b210a0a863071a98aea617f803c0d0670d049f47485477df85935167c4ed6"
+      },
+      {
+        "frame": 137,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-137.png",
+        "bytes": 61455,
+        "sha256": "sha256:3eca9a4583c1bd48095f73f7b2d23502498e606e07ded642ce4e9d83993d49fb",
+        "pixelSha256": "sha256:a2ec7efcc21621db001343fd854e998bfe5244b04757cb78915196bd1df7c169"
+      },
+      {
+        "frame": 138,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-138.png",
+        "bytes": 61633,
+        "sha256": "sha256:ac7f3ecb70f2ded2c6e9a6e9449e6241dc6f4176711b8a907cfb4301c6f8ca20",
+        "pixelSha256": "sha256:bec001f24fb8d3ecd6d0cf5386ef0c7cbaeb43e7e716bc43ac7e68b69a3d7713"
+      },
+      {
+        "frame": 209,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-209.png",
+        "bytes": 62091,
+        "sha256": "sha256:68d6d148ae5a492355adc01c1282654e392cb04832e308524f3737a2d04dc2e7",
+        "pixelSha256": "sha256:97e549fd81455475d556534f638a9eeb3b7850b6ba63c4bc15e62d4d0cf4af93"
+      },
+      {
+        "frame": 311,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-311.png",
+        "bytes": 55734,
+        "sha256": "sha256:cc2efe58ab9d5b154317150a2ce96037d51f279d89c207d8cc5f059af0d6e199",
+        "pixelSha256": "sha256:ba8a0dd3bc30564f8a8fa954162aef9e58bdce3eb01dc1a55b0c0255db4f7520"
+      },
+      {
+        "frame": 312,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-312.png",
+        "bytes": 63955,
+        "sha256": "sha256:3c906f82f5682b21151806e05920ff4c53cde8a878e81293920e4981b9b12fcd",
+        "pixelSha256": "sha256:a41ef1ac2574922296d249398ccc762b02f1ca782c5360f5f2f60a0d8919e417"
+      },
+      {
+        "frame": 315,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-315.png",
+        "bytes": 64083,
+        "sha256": "sha256:7c9d77ce2bba887527c88336cd60acc260bb4a58ad79e3ee60c20b5547499781",
+        "pixelSha256": "sha256:aed4ff5b6bc4658c7c6968cac26172f4cbd590d1e0031cded5daaaa2791668b5"
+      },
+      {
+        "frame": 318,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-318.png",
+        "bytes": 63506,
+        "sha256": "sha256:9fdc0ab4fdf0ab223e516d4ed858fc22191af8a1bcdeb1a83afdc92287574556",
+        "pixelSha256": "sha256:102b3e5277c606dd0907a61c25dab1874e5fb3ce0345d58fb5d061a0e9378949"
+      },
+      {
+        "frame": 321,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-321.png",
+        "bytes": 61787,
+        "sha256": "sha256:9a644df5495188744aad4e6b77c9d5f365e051211c2182542690c8c693a2bc7f",
+        "pixelSha256": "sha256:09c131dca2e2066d8069cb719f854d6fe7aa841f1d4f4a6f1dc570c0cd97f3f2"
+      },
+      {
+        "frame": 323,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-323.png",
+        "bytes": 61094,
+        "sha256": "sha256:c1185a7cdf994dbe1adc12b911345e0cbb302e24a6ed220be5732cefb84f2554",
+        "pixelSha256": "sha256:63cd6ef51afdc277179c581ffff8a47a1dae7d5383cd55b6dff1cf257315fa8d"
+      },
+      {
+        "frame": 324,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-324.png",
+        "bytes": 61087,
+        "sha256": "sha256:b4f83fee92023a19bc7f20f772cc27b1fd1e99e39719c3f93429ba75985333d0",
+        "pixelSha256": "sha256:03d1a9884eb4f9354b3edff7bf7f29feb88fc5354750184accf2a93e98807169"
+      },
+      {
+        "frame": 325,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-325.png",
+        "bytes": 61128,
+        "sha256": "sha256:6585f158dc745dc41516bed69bbfa338a8787b7c34e5a6f5b64e3cf70973127c",
+        "pixelSha256": "sha256:238c0c82bdf67d0c12d01500f4dcf92b4577178df47d732afb8bb7941d9bfac8"
+      },
+      {
+        "frame": 360,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-360.png",
+        "bytes": 61298,
+        "sha256": "sha256:97d7df1730d9cfd4a910a028269ef8677e439ededfb7384b636eb51ff36872fc",
+        "pixelSha256": "sha256:9ce9c2e0443e6d63b4b134b2556652d203837718bf0ae8a9d94534cc40eb38db"
+      },
+      {
+        "frame": 408,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-408.png",
+        "bytes": 61311,
+        "sha256": "sha256:e194eac87555a8717e6d854518e590c4be1fcbd513fb837caa00e1807b547564",
+        "pixelSha256": "sha256:99fc19a64e0b2b0cfc65ea3276cce464c3aed143d09e626c50ea06a1fe9e3c48"
+      },
+      {
+        "frame": 409,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-409.png",
+        "bytes": 49580,
+        "sha256": "sha256:193c424d0057d262fb81016ffaa85855c655c787f4794f98d093c3932e655ff9",
+        "pixelSha256": "sha256:5fe05a1cc84d77c18568292ddb626eefd1972d9268ef8c7b675bee0e1377d3ae"
+      },
+      {
+        "frame": 479,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-479.png",
+        "bytes": 49432,
+        "sha256": "sha256:4e3d4d5c8c8057cf9c03c8193cad3188e803a56206056d6830087842ee0dedfa",
+        "pixelSha256": "sha256:b1097b8b78c031853c9e2d13d4a02e8bae1f8d80792caf52efc0d712638e6114"
+      },
+      {
+        "frame": 549,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-549.png",
+        "bytes": 40632,
+        "sha256": "sha256:68eda08a9177f393b20e7c6ba801798f3c9a1f5719632e16bef1881efd4a6ec9",
+        "pixelSha256": "sha256:5eeb5f7e4ff407d379ce99c8b5c1073e777aa6c83722cc3787c027cc8df812f6"
+      },
+      {
+        "frame": 550,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-550.png",
+        "bytes": 65084,
+        "sha256": "sha256:75840b3d64307569897c9de2f6987613213c894d758b4752fa1beb3b33d8308b",
+        "pixelSha256": "sha256:a45923e246391879603111e10ef941828a19267e19ec54e9d0fe00807a1d8c0f"
+      },
+      {
+        "frame": 596,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-596.png",
+        "bytes": 65190,
+        "sha256": "sha256:4b2f738433f7a9a84c0bc3c66e5877a60088cf4ffbe40e336b40f94e848530a4",
+        "pixelSha256": "sha256:a325b13bcf6762f6b860e0d291eb762e695468b993bd7a32ce08103b8043889f"
+      },
+      {
+        "frame": 642,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-003/decoded-frame-642.png",
+        "bytes": 65188,
+        "sha256": "sha256:a776db3763129a94053c322bcfef1f30cf065fc2d08a6da71443b9d771e24210",
+        "pixelSha256": "sha256:e8be97972d082e7ee2da4adbd204c24400ead3d2db336a958593ca9419dbc73e"
+      },
+      {
+        "frame": 0,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001-legacy/decoded-frame-0.png",
+        "bytes": 58007,
+        "sha256": "sha256:ec44cd4917f7dafeeb7476648d023820eef1a53d4d63fdf7cdecfa4379bbce7a",
+        "pixelSha256": "sha256:609f02154495a74e87a854be7ffbade5b45fb5d29711ccff964cfb8ab97d2419"
+      },
+      {
+        "frame": 39,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001-legacy/decoded-frame-39.png",
+        "bytes": 58587,
+        "sha256": "sha256:0c7643d9f081731ba734eeaf01a5562d1198e46dac85fcf3ef3ac42a021f61d8",
+        "pixelSha256": "sha256:f558a5c140659b351ed764fd27fb45dc00b79f05c290adfba851ce159c394f5a"
+      },
+      {
+        "frame": 79,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001-legacy/decoded-frame-79.png",
+        "bytes": 58991,
+        "sha256": "sha256:0802402e1d04173e955648cd06a3a8f12312d9fe34b41243572ed6d519394f72",
+        "pixelSha256": "sha256:26933ce48055ee8bc693dda7d62ca477b8add7817bd44d00a09f3dbd2bb39a06"
+      },
+      {
+        "frame": 80,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001-legacy/decoded-frame-80.png",
+        "bytes": 119925,
+        "sha256": "sha256:4cdec30980c9baa810249d510315370052359ff76bd039f747286fff1056049a",
+        "pixelSha256": "sha256:46499595e0af5e7cd4cd318ec3c9282e0031e7d4a1097d19bfca30d13ce441cc"
+      },
+      {
+        "frame": 121,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001-legacy/decoded-frame-121.png",
+        "bytes": 120496,
+        "sha256": "sha256:ae497919248f2c13ec9a8325c29c8a54d35ffbd9937e83a40005af79d457ca2f",
+        "pixelSha256": "sha256:dc9a23efcb699c6c09727ec9fed852fc881af7830e5eb87eff227a353bde4a9a"
+      },
+      {
+        "frame": 163,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001-legacy/decoded-frame-163.png",
+        "bytes": 120741,
+        "sha256": "sha256:18350587adec89cd44ac5c142b2d326c5e6781b5d1a398e099f0f083f9c140a6",
+        "pixelSha256": "sha256:19b8c42dc0b11475a52f1481ca758a2d6a5582816082db34c037392b610af36e"
+      },
+      {
+        "frame": 164,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001-legacy/decoded-frame-164.png",
+        "bytes": 109201,
+        "sha256": "sha256:85de0c1af6b48db47bd087ef7d57d2a0d7a98b9e67d66f71b7bb7f6321743676",
+        "pixelSha256": "sha256:c7c4f10072ee3eebdc83a2bb8aba0260adbaf692d3d73a52753491fdcb17a88d"
+      },
+      {
+        "frame": 206,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001-legacy/decoded-frame-206.png",
+        "bytes": 109286,
+        "sha256": "sha256:bb0f3343eb51b054e9eeb96e4a4d008e6b477534b77f574fd984155c0b2b09f6",
+        "pixelSha256": "sha256:20e8406bd556821e29977976ddf191a5674d0b54aa4e42ddccffd7f98e49363b"
+      },
+      {
+        "frame": 248,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001-legacy/decoded-frame-248.png",
+        "bytes": 109347,
+        "sha256": "sha256:2138322787ba295318106a45412996dc1f380caef0a7139f4fd8e90ccb0c3a31",
+        "pixelSha256": "sha256:4faa706ca885b7ebfd8d640292ca9f276a4c8229ce49fd3c7495e6ead190291c"
+      },
+      {
+        "frame": 249,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001-legacy/decoded-frame-249.png",
+        "bytes": 118953,
+        "sha256": "sha256:dda361e065f1928560857d1171741dc744a38db5f0ec48de7e9481c5504dc8b9",
+        "pixelSha256": "sha256:ee28c77056523543fd8c103f5c7c801d919dbe89de9bf8938cf7efd270e3f0ae"
+      },
+      {
+        "frame": 292,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001-legacy/decoded-frame-292.png",
+        "bytes": 119625,
+        "sha256": "sha256:47b7184777ab87ce538ca03ac89cadd9af730521a96b55ae4f0dbef25649a347",
+        "pixelSha256": "sha256:26e4e2b1df3141404d37d8792ba9074263f950ba517338850bdbcd6ef4b426fd"
+      },
+      {
+        "frame": 335,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001-legacy/decoded-frame-335.png",
+        "bytes": 119649,
+        "sha256": "sha256:c1b5006b09d9acca1e89f17101f8aaa27824ec3bc490cfc882e8fbdb6b9f17a8",
+        "pixelSha256": "sha256:0867b8df2769ab477c1a1b7e76e8c0739daf7ab06593e95c70873dfa49f5258a"
+      },
+      {
+        "frame": 336,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001-legacy/decoded-frame-336.png",
+        "bytes": 125745,
+        "sha256": "sha256:c58b5ca354c800cca11d58db22494325abd6ab61741cb48059c3ff333318bf5a",
+        "pixelSha256": "sha256:094ce1356c6dcb5e2a05727c0a0ffb6b2bca216b84abfffa426cd5670abdc65d"
+      },
+      {
+        "frame": 351,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001-legacy/decoded-frame-351.png",
+        "bytes": 126347,
+        "sha256": "sha256:d88268fd97fac2033da8879d9f62a32ffa6436b040e57ca949ccea0d01dd13b7",
+        "pixelSha256": "sha256:12b332a409fafbcfeb39443eb7904211ed486a0d9dbecad668dea1887559cd23"
+      },
+      {
+        "frame": 366,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001-legacy/decoded-frame-366.png",
+        "bytes": 128824,
+        "sha256": "sha256:7281284f13d7fb920c64c937c228fe749bc8f819431ebd47142dab6a06bb8bcf",
+        "pixelSha256": "sha256:f45b53d974d108316012a7a6a107f976a1a4f2449f1422fd8f97778eb6b1c00b"
+      },
+      {
+        "frame": 381,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001-legacy/decoded-frame-381.png",
+        "bytes": 126334,
+        "sha256": "sha256:4aa559d3fccdf0ec7690946ef3e5a41cdf9b7375a0157c38930e70ed2a54ebb2",
+        "pixelSha256": "sha256:df37e7dd337a078364da7766b79931b38561886cd26f388489f97dd5e4fe1f8e"
+      },
+      {
+        "frame": 396,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001-legacy/decoded-frame-396.png",
+        "bytes": 126706,
+        "sha256": "sha256:029e0df29a917d22ea951dbe4e4be96ec3ef165f464a29d06eacd8d905f93903",
+        "pixelSha256": "sha256:6079ee70150a20f22b8aaa7c2c584840901f55e53891c7b7d67bccfbbb68ebbd"
+      },
+      {
+        "frame": 431,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001-legacy/decoded-frame-431.png",
+        "bytes": 126907,
+        "sha256": "sha256:18a175ac933d23970f4541ee646b1c731ac445a469f46b9bc5b74bbc8b190d3b",
+        "pixelSha256": "sha256:ba8a3e1857ca66fb1904ac97203301c7a2925e349fbf979d6f52b39a85b21c74"
+      },
+      {
+        "frame": 526,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001-legacy/decoded-frame-526.png",
+        "bytes": 120000,
+        "sha256": "sha256:04cd6bda2ef063b31239320e01a71a96a65142dc71c726cad7314ec7f08d3984",
+        "pixelSha256": "sha256:1cd103c9e190580056d616cbbc2542a9fe6a6c433608b4b26a9ac56253a72d8f"
+      },
+      {
+        "frame": 527,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001-legacy/decoded-frame-527.png",
+        "bytes": 112829,
+        "sha256": "sha256:124ed09153e30ca715866d7c0e474a7e7f597e4703b72847c41064bf5f3f4b3e",
+        "pixelSha256": "sha256:4c6396071e846154bb8fa3cb05779f9a07eb9605e68744baf65934d3491a1baa"
+      },
+      {
+        "frame": 609,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001-legacy/decoded-frame-609.png",
+        "bytes": 112902,
+        "sha256": "sha256:3182bf3ab58e04a11e69c45ff9e88ae8762dbc1005b48146602377e146102fbe",
+        "pixelSha256": "sha256:9b6e5341eaaa370c14ebd5bba4491c5d6f1b1072a410db668d51638cd4fa4847"
+      },
+      {
+        "frame": 691,
+        "path": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ/EU-001-legacy/decoded-frame-691.png",
+        "bytes": 112806,
+        "sha256": "sha256:cb29154a4465c0833e573b5be26725a09d0c366c7b0604104c3627563d34ce3c",
+        "pixelSha256": "sha256:7996ea2d9fbcfd7219c6c0d63f0401883b8faa8fe1ddffe97553f037ba2dd83e"
+      }
+    ],
+    "previousFirstHookReviewPixelParity": {
+      "frames": 19,
+      "completeRgbaExact": true
+    },
+    "findings": [
+      "All sampled English labels/captions are legible and contained; face views expose the actual hook faces and thickness, and the compensation sequence shows fixed rivets with hook movement. Native travel measures11.635003895514366px current/11.634081976828865px legacy and0.18 illustrative world units.",
+      "Cable teaching variant exposes its tongue/tooth relationship in the sampled macro sequence; frame378 shows flexion and blocked samples hold the final pose. No calibrated bending/force behavior is claimed.",
+      "Peg samples0/53/106 remain closed,107 starts the spoken opening with the occluded label hidden,108\u2013137 show opening.312 starts return;315\u2013325 show the unchanged12-frame smoothstep/clamp. Cloth contact409\u2013549 is physically occluded and the caption plus visible cloth carry the explanation.",
+      "All prior picture frames differ after the presentation revision:587/646/643/692 frames by take. Complete before/after AAC decoded PCM is exact; it is not asserted identical to lossless source WAV."
+    ],
+    "limits": "Sampled still-image agent review at640x360. No whole-clip glyph proof, normal-speed audiovisual playback/listening, human creative/material/hardware/portrait/physical calibration, supported pack or pilot acceptance."
+  }
 }

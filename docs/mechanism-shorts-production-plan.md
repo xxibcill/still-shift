@@ -1015,8 +1015,13 @@ mechanism families establish whether the architecture transfers.
       (2426 visible/142 intentional contact occlusions) and independent peg angles;
       native previews80 captures/encoded first-hook19 samples are agent-viewed.
       Ordinary fast3 passes4353 units/428 files on held2638 inputs. Owned native1
-      is still running: first-hook1174-frame exact repeat prefix is qualified,
-      not a full-batch pass. [Presentation evidence](./mechanism-shorts-ms2-spoken-presentation-results.json)
+      now exits0:8 exports/5136 native frames and complete repeated encoded/video/PCM
+      identity. Independent audit1 exits0:64 pins/41028 hierarchy pairs/5136 camera
+      and decoded frames/1286 peg angles/1064 hook matrices from compensation onset
+      (734 within compensation windows). All79 selected final-first frames are
+      agent-viewed; prior first-hook19 pixels match exactly. All2568 prior decoded
+      pictures change while complete old/new AAC PCM stays exact. Source hold3
+      remains unchanged. [Presentation evidence](./mechanism-shorts-ms2-spoken-presentation-results.json)
       preserves clipping/EEXIST/type/format/lint failures and the superseded timing.
       Hidden cloth/initial jaw contacts remain physically hidden; current full,
       final archive/installed/pack/coverage/human/portrait gates stay open.

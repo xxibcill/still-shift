@@ -16350,22 +16350,38 @@
     },
     {
       "id": "spoken-presentation66",
-      "status": "implemented-scoped-fast-preflight-native-full-validation-in-flight",
+      "status": "scoped-software-native-audit-and-sampled-review-complete",
       "record": {
         "path": "docs/mechanism-shorts-ms2-spoken-presentation-results.json",
-        "bytes": 60843,
-        "sha256": "sha256:7f84f443755ff348c75651b3a832e6bb62e0eab19ff38a81bb0d2f3f6d6ecfe3"
+        "bytes": 98201,
+        "sha256": "sha256:a802e7a743ad0b54e830bc4c0195f30d6768935cea971fc785b5b3cc98232840"
       },
       "scope": "Stationary named views/exposed existing anchors and diagnosed peg opening moved into own cue; whole audio/source geometry/captions/markers/word/windows preserved. No production renderer/admission change.",
       "ordinaryFast": "Actual terminal0/4353 units428files/held2638 inputs after retained format/lint failures",
-      "nativeInFlight": {
+      "remaining": "Whole resources/current full/final installed/pack admission and MS2 PR; human/portrait acceptance remains separate. Classified ten-question board unchanged; new assets/behaviors and positive pilot coverage belong to MS3.",
+      "nativeFinal": {
         "actualSession": 20684,
-        "root": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ",
-        "actualExitCode": null,
-        "qualifiedPrefixFrames": 1174,
-        "expectedBatchFrames": 5136
+        "actualExitCode": 0,
+        "exports": 8,
+        "nativeFrames": 5136,
+        "repeatedEncodedDecodedPcmExact": true
       },
-      "remaining": "Finish owned native batch/full independent audit/encoded inspection. All broader full/final resource/pack/coverage/owner gates remain."
+      "independentAudit": {
+        "actualSession": 54213,
+        "actualExitCode": 0,
+        "factPins": 64,
+        "nativeDecodedFrames": 5136,
+        "hierarchyPairs": 41028,
+        "cameras": 5136,
+        "pegFrames": 1286,
+        "hookFramesFromCompensationOnset": 1064,
+        "annotationCounts": {
+          "visible": 4852,
+          "occluded": 284
+        },
+        "unchangedPriorDecodedPcm": true
+      },
+      "agentSelectedFinalFrameReview": 79
     }
   ],
   "implementation": {
@@ -18561,22 +18577,38 @@
       "remaining": "Specific patent load-seating factual asset, new behavior contract/analytic oracle/continuous native evidence plus all unchanged broader MS2 gates remain required."
     },
     "sixtySixthSlice": {
-      "status": "implemented-scoped-fast-preflight-native-full-validation-in-flight",
+      "status": "scoped-software-native-audit-and-sampled-review-complete",
       "record": {
         "path": "docs/mechanism-shorts-ms2-spoken-presentation-results.json",
-        "bytes": 60843,
-        "sha256": "sha256:7f84f443755ff348c75651b3a832e6bb62e0eab19ff38a81bb0d2f3f6d6ecfe3"
+        "bytes": 98201,
+        "sha256": "sha256:a802e7a743ad0b54e830bc4c0195f30d6768935cea971fc785b5b3cc98232840"
       },
       "scope": "Stationary named views/exposed existing anchors and diagnosed peg opening moved into own cue; whole audio/source geometry/captions/markers/word/windows preserved. No production renderer/admission change.",
       "ordinaryFast": "Actual terminal0/4353 units428files/held2638 inputs after retained format/lint failures",
-      "nativeInFlight": {
+      "remaining": "Whole resources/current full/final installed/pack admission and MS2 PR; human/portrait acceptance remains separate. Classified ten-question board unchanged; new assets/behaviors and positive pilot coverage belong to MS3.",
+      "nativeFinal": {
         "actualSession": 20684,
-        "root": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ",
-        "actualExitCode": null,
-        "qualifiedPrefixFrames": 1174,
-        "expectedBatchFrames": 5136
+        "actualExitCode": 0,
+        "exports": 8,
+        "nativeFrames": 5136,
+        "repeatedEncodedDecodedPcmExact": true
       },
-      "remaining": "Finish owned native batch/full independent audit/encoded inspection. All broader full/final resource/pack/coverage/owner gates remain."
+      "independentAudit": {
+        "actualSession": 54213,
+        "actualExitCode": 0,
+        "factPins": 64,
+        "nativeDecodedFrames": 5136,
+        "hierarchyPairs": 41028,
+        "cameras": 5136,
+        "pegFrames": 1286,
+        "hookFramesFromCompensationOnset": 1064,
+        "annotationCounts": {
+          "visible": 4852,
+          "occluded": 284
+        },
+        "unchangedPriorDecodedPcm": true
+      },
+      "agentSelectedFinalFrameReview": 79
     }
   },
   "limits": [
@@ -18604,7 +18636,7 @@
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ],
   "remaining": [
-    "Slice66 presentation code/preflight/ordinary fast complete; owned native1/session20684 still running. Qualified first-hook1174-frame repeat prefix/first19 viewed encoded samples are not full-batch acceptance. Finish all8 exports/independent full audit/decoded review, then current full102/frozen/benchmark/final archive/installed/pack/MS2 PR; coverage0/10/pilot0 remain.",
+    "Slice66 scoped code/fast/native/audit/selected final-frame review complete:8 exports/5136 native-decoded frames/64 pins/79 viewed samples. Source held2638 inputs unchanged. Reconcile finite acceptance, current full102/frozen/benchmark/final archive/installed/pack admission/MS2 PR; no human/portrait/pilot acceptance.",
     "Slice64 completes scoped genuine spoken cue/native output evidence for four existing takes:247 words/20 windows/eight repeated outputs/5136 native and decoded frames; audit60 pins/41028 hierarchy pairs/5136 cameras and ordinary fast4353 units428files pass. Exact endpoint corrections authored, shorter revised hook recompiled. Private opt-in gate keeps full102 portable. Contact labels hidden under current occlusion policy and subtle wide-view hook travel remain visual issues; no human/portrait/pack/coverage acceptance. Whole resources/full102/frozen/benchmark/final archive/installed/pack/MS2 PR remain open. E06 primary-read supplement is ready separately; frozen selection unchanged."
   ]
 }

@@ -86,13 +86,16 @@ still hold before relying on them.
   Preflight4 checks2568 frames/independent peg angles, original16 bodies exact;
   80 native preview captures and first-hook19 encoded frames are agent-viewed.
   Ordinary fast3 owns0 (4353/428) on held2638/120690519B; failed clipping/EEXIST/type/
-  formatter/type-import lint retained. Owned native1/session20684 now has recovered terminal0 at
-  /private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ: all8 exports/5136 native and
-  decoded frames complete; independent audit/remaining encoded review are pending.
-  Hidden cloth/first closed-jaw label and natural-speed/force limits remain explicit.
-  Next: improve genuine camera/contact-label/continuous presentation,
-  whole application/source/world/result/replay/physical/driver admission, current
-  full/final archive/installed/pack/validated10-question coverage/MS2 PR before MS3.
+  formatter/type-import lint retained. Owned native1/session20684 recovered terminal0;
+  independent audit1/session54213 owns0:8 exports/5136 native-decoded frames/64 pins/
+  41028 hierarchy pairs/1286 peg angles/1064 hook matrices from compensation onset.
+  All79 final-first selected encoded frames are agent-viewed; previous19 hook pixels
+  match exactly. All2568 old/new pictures differ while complete AAC PCM stays exact.
+  Hold3 still matches2638 inputs/120690519B. Hidden cloth/first closed-jaw label and
+  natural-speed/force/human limits remain explicit. Next: finite MS2 acceptance
+  reconciliation, whole resource and current full/final archive/installed/pack/MS2
+  PR gates. Classified frozen board is complete; new assets/behaviors and positive
+  ten-episode coverage belong to MS3.
   No paid generation, merge/publication, Actions or private media redistribution.
   [Spoken presentation](./mechanism-shorts-ms2-spoken-presentation-results.json),
   [E06 primary source](./mechanism-shorts-ms2-e06-primary-admission-results.json),
@@ -261,6 +264,14 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — Finish independent spoken presentation evidence
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, continuing `46ffaa5c` in the existing managed worktree.
+- **Done:** independent audit1 owns terminal0 after native1's prior recovered0; all79 selected final-first decoded frames agent-viewed. Whole source audio/words and unchanged before/after AAC PCM remain exact.
+- **Results:**8 exports/5136 native and decoded frames;64 fact pins/41028 hierarchy pairs/5136 cameras/1286 peg frames.1064 hook matrices include734 compensation-window and330 later legacy frames. Held2638 source inputs remain exact.
+- **Limits / next:** sampled stills are not whole-clip glyph proof or normal-speed/listening/human acceptance. Reconcile finite MS2 requirements and complete full/final installed/pack gates before its PR; keep frozen pilot questions and their MS3 extensions.
+- **Records:** [Presentation](./mechanism-shorts-ms2-spoken-presentation-results.json), [MS2](./mechanism-shorts-ms2-results.json), [ordered plan](./mechanism-shorts-production-plan.md).
 
 ### 2026-10-12 — MS2 spoken presentation checkpoint and new-chat handoff
 
