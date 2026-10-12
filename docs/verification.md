@@ -219,3 +219,15 @@ policies and larger diagnostic1440x816 frames. Final exports, actual measured
 glyph/ink/part/projection/hidden controls, source clocks and before/after CAS
 checks remain owning gates; semantic surface geometry and retained-file/decode
 audits are recorded separately. Both groups run serially in the local full gate.
+
+`pnpm test:browser:mechanism-native-plates` captures native-only PNG16 sequences
+for all three candidate families through the shared exporter. It retains original
+compiled/native source and copied dependencies, replays the original native
+observation closure, verifies every PNG/decoded frame, preserves the plate hash
+after caption/gain edits and rejects camera changes, altered PNGs and every
+original source/receipt/dependency/closure artifact. Actual staged native-body/PNG
+cancellation checks owned cleanup and observed descendant exit under the existing
+2s policy. Run serially
+with other browser/export groups; it is registered in `pnpm test`. This internal
+capture/check foundation does not prove a cached overlay export or zero fresh3D
+draws, genuine speech, whole resource limits or human/pilot acceptance.

@@ -93,6 +93,8 @@ export type CompositionRenderResult = {
 /** Export through the pinned browser; explicit profiles support editor and social delivery. */
 export async function renderComposition(request: {
   compositionPath: string;
+  /** Optional parent so preparation and export contend within one Node allowance. */
+  nodeMemory?: CompositionNodeMemory;
   outputPath: string;
   signal?: AbortSignal | undefined;
   transport?: ExportRequest["transport"];
@@ -118,7 +120,7 @@ export async function renderComposition(request: {
       "SCENE_INVALID",
       "Composition workers must be 1..4 and cacheStatic must be boolean",
     );
-  const nodeMemory = new CompositionNodeMemory();
+  const nodeMemory = new CompositionNodeMemory(request.nodeMemory);
   try {
     const loaded = await loadComposition(
       request.compositionPath,

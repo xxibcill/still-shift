@@ -104,12 +104,28 @@ still hold before relying on them.
   hashed test IDs and the exhaustive tape test timeout are repaired and retained.
   Original authenticated plate capture, revision-safe reuse/checks and zero fresh
   3D draws remain required; no cache export or new public cache API is claimed.
-  The full matrix is97; no full97 pass claimed.
+  Slice58 completes internal native-only PNG16 capture/original-proof checking.
+  Final capture2 passes180 original native frames/passes; caption/gain stages
+  preserve hashes,28 retained-artifact corruptions plus3 PNGs/3 camera changes
+  reject. Audit3 independently matches180 PNG/decoded/journal frames,1,260
+  hierarchy pairs/180 source-camera triples; all180 bodies/decodes match capture1.
+  Nine original sampled PNGs viewed and final samples are byte-identical. Actual
+  live native-body/complete-PNG cancellation removes the owned directory and all
+  observed Chromium/FFmpeg descendants within26.9ms under the existing2s policy.
+  Immediate-exit cancel1, allocation/type build1 and unverified build2 subterminal
+  remain retained. Final fast1 passes4,344 units/427 files; real file/FIFO/sparse/
+  copy/cancel/hash runtime2tests pass. Held2,620 inputs/120,518,027B unchanged.
+  Node capture preparation, parser/closure and export share one declared allowance;
+  whole application/RSS/lifetime admission remains a separate open gate.
+  Cached overlays/zero fresh3D export draws, world/surface capture breadth and new
+  public cache API/CLI are still required; this capture foundation claims none.
+  The full matrix is98; no full98 pass claimed.
   Coverage stays 0/10 validated; packs are candidates; accepted pilot episodes 0.
   Next: label-only plate reuse; bound fresh
   speech/sample clocks and cue exports; refresh the full gate,
   whole resources/final installed/pack admission and MS2 PR. MS3 not started.
   No human acceptance, merge/publication or paid generation.
+  [Native plate capture](./mechanism-shorts-ms2-native-plate-capture-results.json),
   [Plate foundation](./mechanism-shorts-ms2-native-plate-reuse-results.json),
   [Surface evidence](./mechanism-shorts-ms2-surface-marking-results.json),
   [World text evidence](./mechanism-shorts-ms2-world-annotation-results.json),
@@ -275,6 +291,26 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — MS2 slice58: original native plate capture and closed evidence
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `98d99d97`.
+- **Done:** internal shared-exporter PNG16 plates with copied dependencies, source
+  lineage, original native closure replay and current-picture compatibility checks.
+- **Results:** capture2/audit3:180 original frames/passes,180 verified PNG/decoded
+  frames,1,260 hierarchy pairs/180 source-camera triples; every body/decoded frame
+  repeats capture1. Caption/gain preserve plates;28 artifact/3 PNG/3 camera
+  controls reject. Live cancellation leaves no owned directory/observed descendants
+  within26.9ms. Fast1:4,344 units/427 files; final runtime2 tests pass. Held2,620
+  inputs/120,518,027B unchanged. Nine prior sampled PNGs viewed; finals identical.
+- **Rejected / do not repeat:** missing-module red, scratch/transfer typing,
+  unverified combined build2 subterminal and immediate process-exit oracle.
+  Failures retained; bounded existing2s cancellation policy passes.
+- **Open / next:** actual cached overlays/zero new3D draws/public API/CLI, world/
+  surface breadth, genuine speech, full98/resources/installed/pack/MS2 PR.
+  Internal capture/check only; packs/pilot0 and MS3 not started.
+- **Records:** [capture](./mechanism-shorts-ms2-native-plate-capture-results.json),
+  [plan](./mechanism-shorts-production-plan.md), [MS2](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-12 — MS2 slice57: native picture partition and overlay lowering
 

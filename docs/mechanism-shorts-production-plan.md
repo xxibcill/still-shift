@@ -886,8 +886,15 @@ mechanism families establish whether the architecture transfers.
       Final fast1 passes4,344 units/427 files; held2,615 inputs unchanged. These
       are pure data tests; no authenticated plate or cached export is claimed.
       [Foundation evidence](./mechanism-shorts-ms2-native-plate-reuse-results.json)
-      retains all failed attempts. Label-only native-plate reuse and broader
-      encoded/human acceptance keep this criterion unchecked.
+      retains all failed attempts. Slice58 captures native-only PNG16 plates with
+      copied dependencies and original source/native closure replay. Caption/gain
+      preserve the180 frames;28 artifact/3 PNG/3 camera controls reject changes.
+      Independent hierarchy/camera/hash/decode and actual live cancellation pass;
+      final fast1 passes4,344 units/427 files on unchanged2,620 inputs. Original
+      capture observations are not relabelled as fresh reused draws.
+      [Capture evidence](./mechanism-shorts-ms2-native-plate-capture-results.json)
+      retains failures. Cached overlay export/zero new3D draws, real world/surface
+      capture breadth and broader encoded/human acceptance keep this criterion unchecked.
 - [ ] Compile semantic contact/release/return events from supplied narration cues
       into all picture, annotation, caption and sound tracks. Reject overfull shots,
       out-of-recording cues and insufficient reading/action time. Do not stretch

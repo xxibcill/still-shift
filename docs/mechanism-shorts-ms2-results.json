@@ -16099,6 +16099,32 @@
       "heldInputFiles": 2615,
       "heldInputBytes": 120472825,
       "qualification": "Internal source partition and integer-held2D lowering only; no GPU/native/cached export or zero-fresh3D-draw reuse proof/public cache API."
+    },
+    {
+      "id": "native-plate-capture58",
+      "status": "passed-internal-native-capture-and-original-proof-only",
+      "sourceCheckpoint": "98d99d97",
+      "record": {
+        "path": "docs/mechanism-shorts-ms2-native-plate-capture-results.json",
+        "bytes": 14238,
+        "sha256": "sha256:0541c164830f89473b28afb53f795ca98a86796b9261c7393e91e7cf57ea88ae"
+      },
+      "actualNativeCaptureSession": 69817,
+      "actualExitCode": 0,
+      "actualFastSession": 71722,
+      "unitTests": 4344,
+      "unitFiles": 427,
+      "heldInputFiles": 2620,
+      "heldInputBytes": 120518027,
+      "originalNativeFrames": 180,
+      "originalNativePasses": 180,
+      "originalArtifactCorruptionControls": 28,
+      "alteredPngControls": 3,
+      "cameraInvalidationControls": 3,
+      "independentPartHierarchyPairs": 1260,
+      "independentSourceCameraTriples": 180,
+      "actualLiveCancellationCleanupMs": 26.883832999999868,
+      "qualification": "Internal native-only PNG capture and current compatibility/original closure checking. No cached overlay export, zero-new3D reuse claim, public root API/CLI, full98, genuine speech or human/pilot acceptance."
     }
   ],
   "implementation": {
@@ -18122,6 +18148,7 @@
     }
   },
   "limits": [
+    "Slice58 completes internal native-only PNG16 capture/current-picture compatibility/original source/dependency/closure replay. Final capture2/audit3 verifies180 original native frames/passes/PNG/decoded/journal frames,1260 hierarchy pairs/180 source-camera triples; all180 PNG/decode bodies equal capture1. Caption/gain preserve plates;28 artifact/3 PNG/3 camera changes reject. Live source2 native-body/complete-PNG cancel removes owned directory/observed Chromium/FFmpeg descendants within26.9ms under existing2s policy. Final fast1 passes4344 units427files; real final file runtime2 tests pass; held2620 inputs120518027B unchanged. Failed red/build/type/immediate-cancel attempts and unverified build2 subterminal retained. Original observations stay original. Actual cached overlays/zero fresh3D export draws/public API/CLI, world/surface capture breadth, genuine speech, whole resources/lifetimes/replay/full98/archive/installed/pack/MS2 PR/human acceptance remain open. Packs/pilot0; MS3 not started.",
     "Slice57 completes internal native-picture partition and integer-held overlay lowering. Final fast1 passes4344 units427files, focused13 tests/two files/build3 pass; held2615 inputs120472825B unchanged. All five visible screen styles/three families match matrices/canonical path geometry/effective alpha in120 forward/reverse evaluations including offset and opacity groups. Hidden/clock/key-limit negatives and source/audio immutability pass. All failures retained. Actual authenticated plate capture, cached export and zero-fresh3D-draw proof/public lifecycle, invalidation/cancel/resource/full97/final archive/installed/pack/MS2 PR remain open. Packs/pilot0; MS3 not started.",
     "Slice56 completes the bounded rigid surface software route and deterministic shared depth ties. Final fast11 passes4331 units425files; native2/source audit9 passes70 readbacks30 exact pairs/cancellation. Surface9 and independent audit2 pass360 previews1080 seeks/six exports360 native frames18 controls/24 triangle-box quads; encoded ink minimum31 at unchangedRGB28/min3. Default world1/audit1 passes and preserves all360 preview/decoded frames/six audio/encoded bodies against slice55. All24 original surface/world PNGs agent-viewed; held2611 inputs120444661B unchanged through staged gates. Failed attempts retained. Label-only plate reuse, genuine speech, whole resources/lifetime/replay/full97/final archive/installed/pack/MS2 PR/owner acceptance remain open. Packs/pilot0; MS3 not started.",
     "Slice55 verifies explicit part-bound world text/CAS/native invalidation and physical hidden-part ancestry. Final fast6 passes4320 units/424 files; native1 owning source unchanged; browser3 passes360 previews1080 seeks/six exports360 native frames18 controls. Independent PNG/matrix/decode/source-clock/control audit passes; all12 PNGs agent-viewed. ACES color-filter, hidden required-shape, receipt-type and formatting failures remain retained. True surface marking, label plate reuse, genuine speech, whole resources/lifetime/replay/full96/final installed/pack admission/MS2 PR/human acceptance remain open. Packs/pilot0; MS3 not started.",
