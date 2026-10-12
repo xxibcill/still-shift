@@ -910,6 +910,13 @@ mechanism families establish whether the architecture transfers.
       into all picture, annotation, caption and sound tracks. Reject overfull shots,
       out-of-recording cues and insufficient reading/action time. Do not stretch
       speech or insert filler silence to satisfy a rigid shot template.
+      Slice60 separately measures four existing spoken takes at actual48k clocks
+      (938,458/1,032,081/1,027,623/1,105,642 mono frames) with complete source/RIFF/
+      PCM/normalized re-decode audits. Supplied13 visual cue endpoints fit; rounded
+      final words need15/9 sample authoring clamps and peg's final visual end+1 sample.
+      The revised-copy hook is3.483s shorter. Canonical clips stay outsideGit;
+      [sample-clock evidence](./mechanism-shorts-ms2-spoken-sample-clock-results.json)
+      does not infer genuine cue/native, listening, factual or pilot acceptance.
       Slice39 adds the versioned supplied-PCM cue compiler for all five tracks,
       relative motion references and unchanged narration sample count/clock. Source
       and visible reading/action holds, including frame quantization, fail with

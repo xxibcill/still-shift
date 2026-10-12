@@ -45,7 +45,7 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Fifty-nine slices include the frozen ten-question board, expanded Thai review and
+  Sixty slices include the frozen ten-question board, expanded Thai review and
   recovered existing spoken inputs for all three families. Four audio hashes and
   thirteen supplied word-range/shot associations match. The shorter tape-hook take
   uses revised copy; the failed identical-script assumption is retained. Fresh48k source clocks for four supplied takes have since been measured locally;
@@ -134,10 +134,17 @@ still hold before relying on them.
   disabled-counter/independent audit attempts are retained. Lossy direct/cache H264
   differences remain diagnostic; no full encoded glyph/readability acceptance.
   Public root/CLI, actual world/surface cache breadth and whole resources remain open.
+  Slice60 records fresh complete48k clocks for all four recovered spoken takes:
+  938,458/1,032,081/1,027,623/1,105,642 mono sample frames; all4 RIFF/source/PCM/
+  normalized re-decodes audit. Original44.1k inputs normalize without speed/trim/
+  filler changes. Supplied13 visual cue endpoints fit; rounded final word ends
+  need15/9 sample authoring clamps, and peg's final visual endpoint needs+1 sample.
+  Canonical clips remain outsideGit. The revised-copy hook is3.483s shorter;
+  no spoken cue compilation/native export or listening acceptance is inferred.
   The full matrix is99; no full99 pass claimed.
   Coverage stays 0/10 validated; packs are candidates; accepted pilot episodes 0.
   Next: actual world/surface plate breadth/public cache API/CLI; record fresh
-  speech/sample clocks and genuine cue exports; refresh the full gate,
+  genuine spoken cue/native exports; refresh the full gate,
   whole resources/final installed/pack admission and MS2 PR. MS3 not started.
   No human acceptance, merge/publication or paid generation.
   [Native plate export](./mechanism-shorts-ms2-native-plate-export-results.json),
@@ -148,6 +155,7 @@ still hold before relying on them.
   [Screen style evidence](./mechanism-shorts-ms2-annotation-style-results.json),
   [Annotation geometry](./mechanism-shorts-ms2-annotation-results.json),
   [Full gate history](./mechanism-shorts-ms2-full-gate-results.json),
+  [Spoken sample clocks](./mechanism-shorts-ms2-spoken-sample-clock-results.json),
   [Spoken inputs](./mechanism-shorts-ms2-spoken-input-results.json),
   [Thai review](./mechanism-shorts-ms2-thai-review-results.json), [MS2 results](./mechanism-shorts-ms2-results.json).
 
@@ -307,6 +315,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — MS2 slice60: fresh recovered speech sample clocks
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `8ee0e694`.
+- **Done:** bounded complete decode of four existing44.1k MP3 takes into48k mono
+  float32 WAV inputs; source/RIFF/PCM/probe and complete normalized re-decode audit.
+- **Results:** exact sample counts938,458/1,032,081/1,027,623/1,105,642;
+  4,103,804 total frames/16,415,216 PCM bytes. Supplied13 visual cue endpoints fit.
+  Two rounded word ends require15/9 sample clamps; peg final visual end needs+1
+  sample. These authoring corrections are measured proposals, not yet applied.
+  The revised-copy hook is3.483s shorter. All source bodies unchanged; customer
+  files remain outsideGit. No speed/trim/filler/loudness/synthesis change or spending.
+- **Open / next:** actual world/surface cache/public API/CLI and genuine cue/native
+  exports, full99/resources/archive/installed/pack/MS2 PR. No listening/pilot acceptance.
+- **Records:** [sample clocks](./mechanism-shorts-ms2-spoken-sample-clock-results.json),
+  [original metadata](./mechanism-shorts-ms2-spoken-input-results.json),
+  [plan](./mechanism-shorts-production-plan.md), [MS2](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-12 — MS2 slice59: current overlays on proven original native plates
 

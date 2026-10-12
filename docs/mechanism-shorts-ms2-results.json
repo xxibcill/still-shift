@@ -16157,6 +16157,27 @@
       "independentOriginalNativePngJournalFrames": 180,
       "independentDecodedFrames": 900,
       "qualification": "Separate current/original/final receipt; private modules only. Full99, public root/CLI, actual world/surface cache breadth, encoded glyph/copy/readability, genuine spoken exports, whole resource/lifetime/archive/installed/pack/MS2 PR and human/pilot acceptance remain open."
+    },
+    {
+      "id": "spoken-sample-clock60",
+      "status": "passed-complete-existing-input-normalization-and-actual-sample-clock-only",
+      "sourceCheckpoint": "8ee0e694",
+      "record": {
+        "path": "docs/mechanism-shorts-ms2-spoken-sample-clock-results.json",
+        "bytes": 18002,
+        "sha256": "sha256:6bfa205d1c1c546b96b913d97b92ad309d5693c8131a4b4d05de1082070e3141"
+      },
+      "actualDecodeSession": 69560,
+      "actualExitCode": 0,
+      "existingTakes": 4,
+      "sampleRate": 48000,
+      "sampleCounts": [938458, 1032081, 1027623, 1105642],
+      "completeSampleFrames": 4103804,
+      "completePcmBytes": 16415216,
+      "independentSourceRiffBodyAndCompleteNormalizedRedecodes": 4,
+      "roundedWordEndpointOverrunSamples": [15, 9],
+      "revisedCopyHookReductionSeconds": 3.483,
+      "qualification": "Data-only authoritative clocks; endpoint proposals not applied, no genuine spoken cue/native output, listening, factual or pilot acceptance. Customer audio/transcripts remain outside Git; no spending."
     }
   ],
   "implementation": {
@@ -18201,9 +18222,34 @@
         "Full99/frozen176/36061/benchmark, whole application and physical resource/lifetime/replay gates, source/archive/installed final admission, validated10-question coverage/pack admission/MS2 PR before MS3.",
         "Supported packs0; validated coverage0/10; accepted pilot0. No human acceptance, paid generation, merge, npm publication or GitHub Actions."
       ]
+    },
+    "sixtiethSlice": {
+      "record": {
+        "path": "docs/mechanism-shorts-ms2-spoken-sample-clock-results.json",
+        "bytes": 18002,
+        "sha256": "sha256:6bfa205d1c1c546b96b913d97b92ad309d5693c8131a4b4d05de1082070e3141"
+      },
+      "scope": "Four existing supplied MP3 takes, actual source hashes/probes, bounded complete codec decode to48000 mono float32 PCM WAV, actual RIFF/PCM and normalized re-decode verification. No new ElevenLabs action, cue/native export, listening or pilot acceptance. Customer audio and transcripts remain outside Git. No transcript text or signed URLs are copied.",
+      "normalization": {
+        "decoder": "ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers",
+        "originalSampleRates": [44100],
+        "targetSampleRate": 48000,
+        "channelsPreserved": [1],
+        "method": "Pinned FFmpeg decode and default sample-rate conversion; no speed, trim, filler silence, loudness filter or synthesis. WAV header declares the direct emitted float32 PCM body.",
+        "actualSampleCountIsAuthoritative": true,
+        "qualification": "Resampling44100 to48000 is an explicit input normalization, not a claim of raw MP3 sample identity. The normalized WAV re-decodes to exactly its retained emitted PCM bytes."
+      },
+      "sampleCount": 4103804,
+      "remaining": [
+        "Write genuine three-family supplied cue documents, apply the exact rounded-word/final visual endpoint corrections and derive all dependent captions/events from each selected take; do not reuse the old tape transcript or rigid timing template.",
+        "Verify genuine semantic order, reading/action capacity, actual whole-source sample clocks through native exports and shorter revised-copy recompilation. Audio normalization alone does not establish caption/layout/factual/listening acceptance.",
+        "Actual world/surface plate breadth, public cache API/CLI, encoded glyph/copy/readability, full99/frozen176/36061/benchmark/resources/lifetime/source/archive/installed/pack/MS2 PR remain required before MS3.",
+        "Packs0; validated coverage0/10; accepted pilot0. No paid generation, human acceptance, merge, publication, Actions or private media redistribution."
+      ]
     }
   },
   "limits": [
+    "Slice60 establishes exact48k normalized sample clocks for four existing spoken MP3 takes, with unchanged original file bodies and exact normalized PCM re-decodes. Two rounded words need15/9 sample authoring clamps and peg final visual cue+1 sample; no correction/cue/native export or listening acceptance is claimed. The revised-copy hook is3.483s shorter; private media are outside Git and no credits were spent.",
     "Slice59 verifies current synthetic integer-grid cached overlays across all five visible screen styles/three families with zero new native submissions, original proof replay and fixedRGB2 previews. Lossy direct/cache H264 deltas remain diagnostic; public API/CLI, actual world/surface cache breadth, full99/resources/final installed/pack/genuine spoken outputs and human acceptance remain open. Supported packs/pilot0.",
     "Slice58 completes internal native-only PNG16 capture/current-picture compatibility/original source/dependency/closure replay. Final capture2/audit3 verifies180 original native frames/passes/PNG/decoded/journal frames,1260 hierarchy pairs/180 source-camera triples; all180 PNG/decode bodies equal capture1. Caption/gain preserve plates;28 artifact/3 PNG/3 camera changes reject. Live source2 native-body/complete-PNG cancel removes owned directory/observed Chromium/FFmpeg descendants within26.9ms under existing2s policy. Final fast1 passes4344 units427files; real final file runtime2 tests pass; held2620 inputs120518027B unchanged. Failed red/build/type/immediate-cancel attempts and unverified build2 subterminal retained. Original observations stay original. Actual cached overlays/zero fresh3D export draws/public API/CLI, world/surface capture breadth, genuine speech, whole resources/lifetimes/replay/full98/archive/installed/pack/MS2 PR/human acceptance remain open. Packs/pilot0; MS3 not started.",
     "Slice57 completes internal native-picture partition and integer-held overlay lowering. Final fast1 passes4344 units427files, focused13 tests/two files/build3 pass; held2615 inputs120472825B unchanged. All five visible screen styles/three families match matrices/canonical path geometry/effective alpha in120 forward/reverse evaluations including offset and opacity groups. Hidden/clock/key-limit negatives and source/audio immutability pass. All failures retained. Actual authenticated plate capture, cached export and zero-fresh3D-draw proof/public lifecycle, invalidation/cancel/resource/full97/final archive/installed/pack/MS2 PR remain open. Packs/pilot0; MS3 not started.",

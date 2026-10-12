@@ -1,0 +1,394 @@
+{
+  "version": "mechanism-shorts-ms2-spoken-sample-clock-results-1",
+  "date": "2026-10-12",
+  "branch": "codex/mechanism-ms2",
+  "baseCommit": "8ee0e6945ccce9f5ce8167f6621e632df7d67dcc",
+  "status": "completed-fresh-existing-input-decode-and-authoritative-sample-clock-only",
+  "scope": "Four existing supplied MP3 takes, actual source hashes/probes, bounded complete codec decode to48000 mono float32 PCM WAV, actual RIFF/PCM and normalized re-decode verification. No new ElevenLabs action, cue/native export, listening or pilot acceptance. Customer audio and transcripts remain outside Git. No transcript text or signed URLs are copied.",
+  "normalization": {
+    "decoder": "ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers",
+    "originalSampleRates": [44100],
+    "targetSampleRate": 48000,
+    "channelsPreserved": [1],
+    "method": "Pinned FFmpeg decode and default sample-rate conversion; no speed, trim, filler silence, loudness filter or synthesis. WAV header declares the direct emitted float32 PCM body.",
+    "actualSampleCountIsAuthoritative": true,
+    "qualification": "Resampling44100 to48000 is an explicit input normalization, not a claim of raw MP3 sample identity. The normalized WAV re-decodes to exactly its retained emitted PCM bytes."
+  },
+  "attempts": [
+    {
+      "id": "decode1",
+      "actualSession": 69560,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-spoken60-decode1.log",
+        "bytes": 566,
+        "sha256": "sha256:1d678718b714b9f293c9d61506bce35d675d3b203b136f0e9add2baa8b4c51c9"
+      },
+      "producerScript": {
+        "path": "/private/tmp/still-shift-ms2-spoken60-decode.py",
+        "bytes": 5371,
+        "sha256": "sha256:c676dc1a4def2dcae436b2bf313cc648c3ab15f5419505c4c4c798c8bd08fc0e"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-spoken60-gq15jyon/sample-clocks.json",
+        "bytes": 10601,
+        "sha256": "sha256:5b03e2d01d1d63c1260939fdf31a34b61cb72806b0655709c7e2f8bb4680118f"
+      }
+    },
+    {
+      "id": "audit1",
+      "actualSession": null,
+      "actualExitCode": 0,
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-spoken60-audit1.json",
+        "bytes": 1330,
+        "sha256": "sha256:65453e2b8523c18d1080b4d95641c1542d33a46d5fe9f0898853f65eb66fbd29"
+      },
+      "scope": "Independent RIFF structure/body/PCM hash, source body and complete normalized-WAV re-decode audit. No cue authoring, native output or listening acceptance."
+    }
+  ],
+  "takes": [
+    {
+      "id": "EU-001",
+      "family": "tape-hook",
+      "source": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/First 10 Narration v003/audio/EU-001-narration-v003-take01.mp3",
+        "bytes": 331057,
+        "sha256": "sha256:c109f76f4bc758d929d2c21f255ca9c7e578bc4967a2b566fd94ac12a8e244b3"
+      },
+      "actualSourceProbe": {
+        "codec_name": "mp3",
+        "sample_rate": "44100",
+        "channels": 1,
+        "duration": "19.551202"
+      },
+      "normalized": {
+        "path": "/private/tmp/still-shift-ms2-spoken60-gq15jyon/EU-001-48k-f32.wav",
+        "bytes": 3753876,
+        "sha256": "sha256:bd8ced6dccae240b7c56f3bb25b143c82bc124dcbc668c8e0355207c7e5b5a11"
+      },
+      "normalization": "Pinned FFmpeg codec decode and sample-rate conversion to48000; channels preserved, no speed change, trim, padding, synthesis or loudness filter. WAV body is direct emitted float32 PCM.",
+      "sampleRate": 48000,
+      "channels": 1,
+      "sampleCount": 938458,
+      "seconds": 19.551208333333335,
+      "pcmSha256": "sha256:82c8e2fc63d90fb3c178867cc1bf0915ac74b88a0d5d14300ce7ef1be00b7320",
+      "decodedPcmBytes": 3753832,
+      "absolutePeak": 0.23314574360847473,
+      "rms": 0.015432637615731932,
+      "actualNormalizedProbe": {
+        "codec_name": "pcm_f32le",
+        "sample_rate": "48000",
+        "channels": 1,
+        "time_base": "1/48000",
+        "duration_ts": 938458
+      },
+      "provisionalCueClocks": [
+        {
+          "id": "EU-001-S01",
+          "startSample": 0,
+          "provisionalEndSample": 158256,
+          "provisionalEndOverrunSamples": 0,
+          "speechEndOverrunSamples": 0,
+          "wordRangeOneBasedInclusive": [1, 9],
+          "proposedCanonicalEndSampleExclusive": 158256,
+          "canonicalEndCorrectionSamples": 0,
+          "disposition": "Measured endpoint proposal only; no cue document has been written or compiled."
+        },
+        {
+          "id": "EU-001-S02",
+          "startSample": 158256,
+          "provisionalEndSample": 503760,
+          "provisionalEndOverrunSamples": 0,
+          "speechEndOverrunSamples": 0,
+          "wordRangeOneBasedInclusive": [10, 33],
+          "proposedCanonicalEndSampleExclusive": 503760,
+          "canonicalEndCorrectionSamples": 0,
+          "disposition": "Measured endpoint proposal only; no cue document has been written or compiled."
+        },
+        {
+          "id": "EU-001-S03",
+          "startSample": 503760,
+          "provisionalEndSample": 656448,
+          "provisionalEndOverrunSamples": 0,
+          "speechEndOverrunSamples": 0,
+          "wordRangeOneBasedInclusive": [34, 43],
+          "proposedCanonicalEndSampleExclusive": 656448,
+          "canonicalEndCorrectionSamples": 0,
+          "disposition": "Measured endpoint proposal only; no cue document has been written or compiled."
+        },
+        {
+          "id": "EU-001-S04",
+          "startSample": 656448,
+          "provisionalEndSample": 938458,
+          "provisionalEndOverrunSamples": 0,
+          "speechEndOverrunSamples": 0,
+          "wordRangeOneBasedInclusive": [44, 61],
+          "proposedCanonicalEndSampleExclusive": 938458,
+          "canonicalEndCorrectionSamples": 0,
+          "disposition": "Measured endpoint proposal only; no cue document has been written or compiled."
+        }
+      ],
+      "latestWordEndOverrunSamples": 0,
+      "sourceBodyStillMatchesRecoveredMetadata": true,
+      "normalizationFilesOutsideGit": true,
+      "normalizedSourceReDecodeMatchesEveryPcmByte": true
+    },
+    {
+      "id": "EU-002",
+      "family": "cable-tie",
+      "source": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/First 10 Narration v003/audio/EU-002-narration-v003-take01.mp3",
+        "bytes": 362404,
+        "sha256": "sha256:595f1d3e7ce79f162b9ca80ae712dbaccd3e9ac9a6c51c16b6cc343c2ac94f64"
+      },
+      "actualSourceProbe": {
+        "codec_name": "mp3",
+        "sample_rate": "44100",
+        "channels": 1,
+        "duration": "21.501678"
+      },
+      "normalized": {
+        "path": "/private/tmp/still-shift-ms2-spoken60-gq15jyon/EU-002-48k-f32.wav",
+        "bytes": 4128368,
+        "sha256": "sha256:4040bb9b169bc5f8424f4524170e99228d888ddc29a5ad190736a80ab18ad606"
+      },
+      "normalization": "Pinned FFmpeg codec decode and sample-rate conversion to48000; channels preserved, no speed change, trim, padding, synthesis or loudness filter. WAV body is direct emitted float32 PCM.",
+      "sampleRate": 48000,
+      "channels": 1,
+      "sampleCount": 1032081,
+      "seconds": 21.5016875,
+      "pcmSha256": "sha256:11e144392856472d225de845b230e38139f6dc7bd2445327e2c0b10cb29aaa22",
+      "decodedPcmBytes": 4128324,
+      "absolutePeak": 0.20421524345874786,
+      "rms": 0.015499874667106601,
+      "actualNormalizedProbe": {
+        "codec_name": "pcm_f32le",
+        "sample_rate": "48000",
+        "channels": 1,
+        "time_base": "1/48000",
+        "duration_ts": 1032081
+      },
+      "provisionalCueClocks": [
+        {
+          "id": "EU-002-S01",
+          "startSample": 0,
+          "provisionalEndSample": 257472,
+          "provisionalEndOverrunSamples": 0,
+          "speechEndOverrunSamples": 0,
+          "wordRangeOneBasedInclusive": [1, 15],
+          "proposedCanonicalEndSampleExclusive": 257472,
+          "canonicalEndCorrectionSamples": 0,
+          "disposition": "Measured endpoint proposal only; no cue document has been written or compiled."
+        },
+        {
+          "id": "EU-002-S02",
+          "startSample": 257472,
+          "provisionalEndSample": 472560,
+          "provisionalEndOverrunSamples": 0,
+          "speechEndOverrunSamples": 0,
+          "wordRangeOneBasedInclusive": [16, 27],
+          "proposedCanonicalEndSampleExclusive": 472560,
+          "canonicalEndCorrectionSamples": 0,
+          "disposition": "Measured endpoint proposal only; no cue document has been written or compiled."
+        },
+        {
+          "id": "EU-002-S03",
+          "startSample": 472560,
+          "provisionalEndSample": 737856,
+          "provisionalEndOverrunSamples": 0,
+          "speechEndOverrunSamples": 0,
+          "wordRangeOneBasedInclusive": [28, 42],
+          "proposedCanonicalEndSampleExclusive": 737856,
+          "canonicalEndCorrectionSamples": 0,
+          "disposition": "Measured endpoint proposal only; no cue document has been written or compiled."
+        },
+        {
+          "id": "EU-002-S04",
+          "startSample": 737856,
+          "provisionalEndSample": 1032081,
+          "provisionalEndOverrunSamples": 0,
+          "speechEndOverrunSamples": 15,
+          "wordRangeOneBasedInclusive": [43, 62],
+          "proposedCanonicalEndSampleExclusive": 1032081,
+          "canonicalEndCorrectionSamples": 0,
+          "disposition": "Measured endpoint proposal only; no cue document has been written or compiled."
+        }
+      ],
+      "latestWordEndOverrunSamples": 15,
+      "sourceBodyStillMatchesRecoveredMetadata": true,
+      "normalizationFilesOutsideGit": true,
+      "normalizedSourceReDecodeMatchesEveryPcmByte": true
+    },
+    {
+      "id": "EU-003",
+      "family": "clothespeg",
+      "source": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/First 10 Narration v003/audio/EU-003-narration-v003-take01.mp3",
+        "bytes": 360732,
+        "sha256": "sha256:ef81bdc574bc86457ae6d3ba75c76fd389c23b13f46f4bb8b393d69f6974d9f5"
+      },
+      "actualSourceProbe": {
+        "codec_name": "mp3",
+        "sample_rate": "44100",
+        "channels": 1,
+        "duration": "21.408798"
+      },
+      "normalized": {
+        "path": "/private/tmp/still-shift-ms2-spoken60-gq15jyon/EU-003-48k-f32.wav",
+        "bytes": 4110536,
+        "sha256": "sha256:a2ac73fdb6dedc3fc8ec2ee07d134fa50c77578b1e351ad7742e4256956033d7"
+      },
+      "normalization": "Pinned FFmpeg codec decode and sample-rate conversion to48000; channels preserved, no speed change, trim, padding, synthesis or loudness filter. WAV body is direct emitted float32 PCM.",
+      "sampleRate": 48000,
+      "channels": 1,
+      "sampleCount": 1027623,
+      "seconds": 21.4088125,
+      "pcmSha256": "sha256:d0d79016ccbf2d6fff606e2800da341d04e2e66b6b6692e5a6c7d9ce5f2ad3a1",
+      "decodedPcmBytes": 4110492,
+      "absolutePeak": 0.2133760154247284,
+      "rms": 0.015311933810105203,
+      "actualNormalizedProbe": {
+        "codec_name": "pcm_f32le",
+        "sample_rate": "48000",
+        "channels": 1,
+        "time_base": "1/48000",
+        "duration_ts": 1027623
+      },
+      "provisionalCueClocks": [
+        {
+          "id": "EU-003-S01",
+          "startSample": 0,
+          "provisionalEndSample": 171072,
+          "provisionalEndOverrunSamples": 0,
+          "speechEndOverrunSamples": 0,
+          "wordRangeOneBasedInclusive": [1, 9],
+          "proposedCanonicalEndSampleExclusive": 171072,
+          "canonicalEndCorrectionSamples": 0,
+          "disposition": "Measured endpoint proposal only; no cue document has been written or compiled."
+        },
+        {
+          "id": "EU-003-S02",
+          "startSample": 171072,
+          "provisionalEndSample": 497664,
+          "provisionalEndOverrunSamples": 0,
+          "speechEndOverrunSamples": 0,
+          "wordRangeOneBasedInclusive": [10, 27],
+          "proposedCanonicalEndSampleExclusive": 497664,
+          "canonicalEndCorrectionSamples": 0,
+          "disposition": "Measured endpoint proposal only; no cue document has been written or compiled."
+        },
+        {
+          "id": "EU-003-S03",
+          "startSample": 497664,
+          "provisionalEndSample": 654240,
+          "provisionalEndOverrunSamples": 0,
+          "speechEndOverrunSamples": 0,
+          "wordRangeOneBasedInclusive": [28, 37],
+          "proposedCanonicalEndSampleExclusive": 654240,
+          "canonicalEndCorrectionSamples": 0,
+          "disposition": "Measured endpoint proposal only; no cue document has been written or compiled."
+        },
+        {
+          "id": "EU-003-S04",
+          "startSample": 654240,
+          "provisionalEndSample": 879936,
+          "provisionalEndOverrunSamples": 0,
+          "speechEndOverrunSamples": 0,
+          "wordRangeOneBasedInclusive": [38, 52],
+          "proposedCanonicalEndSampleExclusive": 879936,
+          "canonicalEndCorrectionSamples": 0,
+          "disposition": "Measured endpoint proposal only; no cue document has been written or compiled."
+        },
+        {
+          "id": "EU-003-S05",
+          "startSample": 879936,
+          "provisionalEndSample": 1027622,
+          "provisionalEndOverrunSamples": 0,
+          "speechEndOverrunSamples": 9,
+          "wordRangeOneBasedInclusive": [53, 60],
+          "proposedCanonicalEndSampleExclusive": 1027623,
+          "canonicalEndCorrectionSamples": 1,
+          "disposition": "Measured endpoint proposal only; no cue document has been written or compiled."
+        }
+      ],
+      "latestWordEndOverrunSamples": 9,
+      "sourceBodyStillMatchesRecoveredMetadata": true,
+      "normalizationFilesOutsideGit": true,
+      "normalizedSourceReDecodeMatchesEveryPcmByte": true
+    },
+    {
+      "id": "EU-001-legacy",
+      "family": "tape-hook",
+      "source": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/assets/narration-take-2.mp3",
+        "bytes": 386645,
+        "sha256": "sha256:dfc4bb322f2c14a9966e72677e4ac433039ee70eed5af21c92f932e6160800dd"
+      },
+      "actualSourceProbe": {
+        "codec_name": "mp3",
+        "sample_rate": "44100",
+        "channels": 1,
+        "duration": "23.034195"
+      },
+      "normalized": {
+        "path": "/private/tmp/still-shift-ms2-spoken60-gq15jyon/EU-001-legacy-48k-f32.wav",
+        "bytes": 4422612,
+        "sha256": "sha256:7a704258273877dbc0ae928958672f78ccca61da78f98f459b897715e4b2d03f"
+      },
+      "normalization": "Pinned FFmpeg codec decode and sample-rate conversion to48000; channels preserved, no speed change, trim, padding, synthesis or loudness filter. WAV body is direct emitted float32 PCM.",
+      "sampleRate": 48000,
+      "channels": 1,
+      "sampleCount": 1105642,
+      "seconds": 23.034208333333332,
+      "pcmSha256": "sha256:d14765728896aaa84f12c63a756ef4bfb57e810f6f2e037c1df6098b3e0db4eb",
+      "decodedPcmBytes": 4422568,
+      "absolutePeak": 0.1876930594444275,
+      "rms": 0.015032576019859868,
+      "actualNormalizedProbe": {
+        "codec_name": "pcm_f32le",
+        "sample_rate": "48000",
+        "channels": 1,
+        "time_base": "1/48000",
+        "duration_ts": 1105642
+      },
+      "provisionalCueClocks": [],
+      "latestWordEndOverrunSamples": 0,
+      "sourceBodyStillMatchesRecoveredMetadata": true,
+      "normalizationFilesOutsideGit": true,
+      "normalizedSourceReDecodeMatchesEveryPcmByte": true
+    }
+  ],
+  "corrections": {
+    "EU-002": "Rounded last transcript word endpoint exceeds actual recording by15 samples (0.3125ms). Clamp only that authoring endpoint when binding the supplied transcript; visual cue endpoint already rounds to the actual source bound. No source audio change.",
+    "EU-003": "Rounded last transcript word endpoint exceeds actual recording by9 samples (0.1875ms). Its supplied final visual endpoint rounds one sample before the actual bound; set the authored final cue endpoint to the source sampleCount. No source audio change.",
+    "alreadyAppliedToCueDocuments": false,
+    "latestEndpointOverrunSamples": [0, 15, 9, 0]
+  },
+  "shorterTapeHook": {
+    "longerSampleCount": 1105642,
+    "replacementSampleCount": 938458,
+    "sampleRate": 48000,
+    "reductionSamples": 167184,
+    "reductionSeconds": 3.483,
+    "copyMatches": false,
+    "qualification": "The shorter recording uses its own revised61-word copy/transcript. The older64-word take is distinct; this does not establish successful recompilation or semantic/listening acceptance."
+  },
+  "verification": {
+    "completeNormalizedSampleFrames": 4103804,
+    "completeNormalizedPcmBytes": 16415216,
+    "actualSourceProbes": 4,
+    "actualNormalizedWavProbes": 4,
+    "independentRiffBodyAndCompleteWavRedecodes": 4,
+    "allSuppliedVisualCueEndpointProposalsInsideActualRecording": true,
+    "providedVisualCueRanges": 13,
+    "unchangedCodeSourceCheckpoint": "8ee0e694",
+    "softwareGateQualification": "Data/record-only slice. Prior slice59 current fast2/render3/audit3 remain their own exact source proof; no new software/whole full99 pass inferred."
+  },
+  "remaining": [
+    "Write genuine three-family supplied cue documents, apply the exact rounded-word/final visual endpoint corrections and derive all dependent captions/events from each selected take; do not reuse the old tape transcript or rigid timing template.",
+    "Verify genuine semantic order, reading/action capacity, actual whole-source sample clocks through native exports and shorter revised-copy recompilation. Audio normalization alone does not establish caption/layout/factual/listening acceptance.",
+    "Actual world/surface plate breadth, public cache API/CLI, encoded glyph/copy/readability, full99/frozen176/36061/benchmark/resources/lifetime/source/archive/installed/pack/MS2 PR remain required before MS3.",
+    "Packs0; validated coverage0/10; accepted pilot0. No paid generation, human acceptance, merge, publication, Actions or private media redistribution."
+  ]
+}
