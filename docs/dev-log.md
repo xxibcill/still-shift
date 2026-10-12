@@ -43,15 +43,21 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS3 bootstrap in progress (2026-10-13):** `codex/mechanism-ms3` starts from
-  current main57967fa6 and carries exact MS2 prerequisite495fb2c0, whose
-  [PR #57](https://github.com/xxibcill/still-shift/pull/57) is open/attached.
-  Incoming main contains the owner's MS0 merge; the sole dev-log conflict is
-  resolved preserving both histories. No runtime source conflict or new MS3
-  behavior/asset/pilot admission is claimed. Next: durable lifecycle/QA/report
-  contract using existing CE15 workers and publication, then the fixed ten-question
-  cohort including five assets/two behaviors. Human gates remain unreviewed;
-  authoring-token savings unavailable; no ElevenLabs spending authority.
+- **MS3 in progress (2026-10-13):** `codex/mechanism-ms3` starts from main57967fa6
+  and merges exact MS2495fb2c0 at76dd8971 after [PR #57](https://github.com/xxibcill/still-shift/pull/57)
+  opened/attached. Integration differs only in roadmap/log prose; owner MS0 merge
+  remains. Report1 adds public artifact/clock-bound QA and pure cohort summaries;
+  final22 focused tests/compiler/lint/declaration build pass in stages. Added clock
+  guards exposed an incorrect listening test-fixture unit (8 failed/13 passed);
+  fixture repaired, guard retained. No durable runner, actual QA, registered
+  semantics, repairs/handoff/CLI or pilot completion yet. Coverage0/10; original
+  five assets/two behaviors remain unadmitted. Tokens/timing targets unmeasured;
+  no new human review or ElevenLabs spending authority. Next: existing-worker
+  durable queue/receipt/cache/cancel/restart/retry with owning admission and tests,
+  then all original MS3 workstreams and final local gates/archive/installed/MS3 PR.
+  [Tracker](./mechanism-shorts-ms3-acceptance.md),
+  [report model](./mechanism-production-reports.md),
+  [results](./mechanism-shorts-ms3-results.json).
 
 - **MS2 software checkpoint delivered (2026-10-13):** `codex/mechanism-ms2`
   carries exact MS1N `bf30a253` ([PR #56](https://github.com/xxibcill/still-shift/pull/56));
@@ -238,6 +244,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — MS3 artifact-bound report foundation
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` from76dd8971.
+- **Done:** QA/hash/clock/review-scope contracts and pure episode/cohort summaries;
+  stale/partial reviews stay unreviewed, attempts/failures retained, duplicate
+  question IDs/normalized text rejected and unavailable measurements remainnull.
+- **Results:** Final22 owning tests/compiler/lint/declaration build pass. The
+  added interval guard exposed a listening fixture using frames; failed8/21
+  retained and fixture fixed to source samples without weakening the guard.
+- **Next:** Durable queue and actual QA/semantics/repairs/artifacts/ten-question
+  extensions/CLI/capabilities/final gates. No fixture is pilot or human evidence.
+- **Records:** [MS3 tracker](./mechanism-shorts-ms3-acceptance.md),
+  [reports](./mechanism-production-reports.md), [results](./mechanism-shorts-ms3-results.json).
 
 ### 2026-10-13 — MS3 separate branch and prerequisite integration
 

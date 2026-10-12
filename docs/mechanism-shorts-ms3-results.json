@@ -1,0 +1,195 @@
+{
+  "version": 1,
+  "milestone": "MS3",
+  "date": "2026-10-13",
+  "branch": "codex/mechanism-ms3",
+  "status": "in-progress-artifact-bound-report-foundation-verified",
+  "baseMain": "57967fa6497249d75e740ba837b8e2687cc81a98",
+  "ms2Prerequisite": {
+    "commit": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
+    "pullRequest": "https://github.com/xxibcill/still-shift/pull/57",
+    "state": "open-draft"
+  },
+  "prerequisiteMerge": "76dd8971f29a0a09afa6003318392642381ea001",
+  "integration": {
+    "changedRelativeToMS2": ["ROADMAP.md", "docs/dev-log.md"],
+    "runtimeSourceChanges": 0,
+    "ms0OwnerMerge": "57967fa6497249d75e740ba837b8e2687cc81a98",
+    "retainedOwnerLogEntry": "2026-10-12 \u2014 Resolve MS0 PR #51 conflicts",
+    "failedPREdit": "gh pr edit used deprecated projectCards GraphQL query; REST body PATCH actually succeeded."
+  },
+  "frozenSelection": {
+    "id": "ms3-pilot-2026-10-12-v1",
+    "selectedEpisodeIds": [
+      "E01",
+      "E02",
+      "E03",
+      "E04",
+      "E05",
+      "E06",
+      "E07",
+      "E08",
+      "E09",
+      "E10"
+    ],
+    "sha256": "sha256:0d68b0e03e6e4df482328af097c81b54aa8cdee1f7d1fbc028778760bdba7367"
+  },
+  "requiredNewAssets": {
+    "count": 5,
+    "ids": ["E02", "E05", "E06", "E09", "E10"]
+  },
+  "requiredNewBehaviors": {
+    "count": 2,
+    "ids": ["E06", "E10"]
+  },
+  "candidateRouting": {
+    "existing-pack-rig": 5,
+    "new-asset-existing-rig": 3,
+    "new-behavior": 2
+  },
+  "coverage": {
+    "validated": 0,
+    "denominator": 10,
+    "acceptedPilot": 0,
+    "admittedAssets": 0,
+    "admittedBehaviors": 0
+  },
+  "verification": [
+    {
+      "id": "report-foundation1",
+      "status": "scoped-passed-in-stages",
+      "baseCommit": "76dd8971f29a0a09afa6003318392642381ea001",
+      "owningSession": 89086,
+      "actualExitCode": 0,
+      "commands": [
+        "pnpm exec vitest run tests/unit/mechanism-production-report.test.ts",
+        "pnpm build",
+        "pnpm exec eslint owning report/test/index files",
+        "pnpm build:package"
+      ],
+      "focusedTests": 22,
+      "scope": "Data contracts/pure summaries only; no durable runner, QA execution, registered assertions, real episode renders, pilot metrics or production review claimed.",
+      "sourceSnapshot": [
+        {
+          "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-report.ts",
+          "bytes": 14957,
+          "sha256": "sha256:6c2a1bc963283b339f278c56454bfe0c72ddec67343e2c69a61ea996eaa249a2"
+        },
+        {
+          "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/index.ts",
+          "bytes": 3997,
+          "sha256": "sha256:4c76004f7d1e89582b8bd50dd0d2ebee354a5bf86ebe12441f25107cc3033aa6"
+        },
+        {
+          "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-production-report.test.ts",
+          "bytes": 8759,
+          "sha256": "sha256:78b796e5b965b2ec2346c2e4b77763f727ebf893bfcf4b142ac1bb0def57d8da"
+        }
+      ],
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-unit1.log",
+          "bytes": 320,
+          "sha256": "sha256:87c6b268349f8dd92f8bf574fbd62b4c21a54e315376fb6fe1203e07deec06d5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-unit2.log",
+          "bytes": 7476,
+          "sha256": "sha256:6ede3759170b7fae91f645b8b5198075bd73c52f4310edd36a62de3faa247750"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-unit3.log",
+          "bytes": 320,
+          "sha256": "sha256:69014e479a7b33b224a49d72d09b806b6f78206a16fc97ef31b3e2aba32f903a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-unit4.log",
+          "bytes": 322,
+          "sha256": "sha256:cd40e1cd750505f455a5af33246b346b8d6ed80f6a0301a25764e1acf6324a48"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-build1.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-build3.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-build4.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-package-build1.log",
+          "bytes": 208,
+          "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-package-build2.log",
+          "bytes": 208,
+          "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-lint1.log",
+          "bytes": 0,
+          "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-lint2.log",
+          "bytes": 0,
+          "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "retainedFailure": {
+        "attempt": "unit2",
+        "actualExitCode": 1,
+        "passed": 13,
+        "failed": 8,
+        "total": 21,
+        "reason": "After adding clock/partial-scope guards, the fixture incorrectly declared listening in output frames. Corrected the fixture to source-sample units; production guard remains. Unit3 passes21 and final normalized-question guard unit4 passes22. Build2 was not run because unit2 failed."
+      },
+      "delivered": [
+        "Six QA dimensions with method/interval/artifact/reviewer and input/output/code/profile binding. Unreviewed intervals/evidence remain absent. Automated checks cannot pass continuous playback/listening/factual review.",
+        "Current intervals cannot exceed artifact clocks. Partial whole-artifact reviews and stale bindings remain unreviewed for readiness, retaining original raw evidence. Mechanical failure counts prevent readiness.",
+        "Cohort summaries retain original attempt order, failure/repeated/cancelled/interrupted counts, individual rows and selected/attempted denominators. Normalized literal duplicate questions are rejected; semantic distinctness and frozen-selection validation still belong to pilot admission.",
+        "p50/p95 use declared linear interpolation; missing timing/token data staysnull. Savings requires retained comparable paired evidence for every selected task. No fixture value is a pilot measurement."
+      ]
+    }
+  ],
+  "targets": {
+    "routineMedianAuthoringTokenReduction": {
+      "target": 0.5,
+      "actual": null,
+      "status": "unverified-missing-comparable-telemetry"
+    },
+    "firstPassTechnical": {
+      "target": 0.9,
+      "actual": null,
+      "status": "unmeasured"
+    },
+    "perEpisodeServerCaptureCode": {
+      "target": 0,
+      "actual": null
+    },
+    "guiSetupRecovery": {
+      "target": 0,
+      "actual": null
+    },
+    "unresolvedMechanicalFailuresInReviewedReady": {
+      "target": 0,
+      "actual": null
+    }
+  },
+  "remaining": [
+    "Durable queue manifests/receipts/caches/cancellation/restart/bounded retries and independent item failures using CE15 workers/publication.",
+    "Execute artifact-bound technical/mechanical/sampled/continuous/listening QA and registered bounded semantic assertions, inherited warning groups, exact methods/intervals/evidence.",
+    "Phone/shot/contact/cut/crop/full-decode/audio/handoff artifacts; scoped/stale repairs/affected rerender and automatic MS1 overlap recovery preserving plates.",
+    "Original ten distinct question fixtures with actual factual/design/genuine speech/visual proof; five assets and two behaviors remain required and unadmitted.",
+    "Machine-readable capability/docs agreement and one episode/cohort report command, real setup/routine measurements and required final gates/installed archive/MS3 PR.",
+    "Retain candidate/owner reviews and finer Thai limits; no ElevenLabs spend without explicit project/batch/model/voice/takes/credits approval."
+  ],
+  "qualification": "MS2 software checkpoint and its exact private archive remain historical prerequisites. New MS3 source is not qualified by relabelling MS2 full/installed gates. Structural model caps do not by themselves certify lifecycle I/O/managed-memory admission or review execution."
+}
