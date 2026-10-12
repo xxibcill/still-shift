@@ -62,11 +62,13 @@ still hold before relying on them.
   Held2644 inputs/120860793B remain exact; quotas/RSS/driver internals differ.
   **Full70 is live:** owned session32036, `pnpm check:all`, source `963d3991`,
   inventory `/private/tmp/still-shift-ms2-final70-inputs1.json`, log
-  `/private/tmp/still-shift-ms2-final70-full1.log`. Owned snapshot reaches group70
-  (composition depth); unit4363/runtime243/integration322 pass. Required102 groups,
+  `/private/tmp/still-shift-ms2-final70-full1.log`. Owned snapshot reaches group79
+  (composition legacy adapter); unit4363/runtime243/integration322 pass. Required102 groups,
   frozen176/36061 frames and benchmark remain unfinished. Commerce127 items/28200
   frames pass; cinematic15 fixtures/46 rows/5520 frames qualify with zero pixel
-  failures/errors and18 existing WebGL timing deferrals. Earlier
+  failures/errors and18 existing WebGL timing deferrals. Composition/native depth,
+  PBR resource/world/observation/composition/normal/mixed export and six-part
+  native-shapes scripts complete; no physical-memory certification is inferred. Earlier
   partial173-row count included other groups, is invalidated, and is retained with
   its correction in private progress3/4. Do not restart a live job.
   Full51 exit130 and full67 exit1 remain retained; world61's original producer
@@ -253,7 +255,7 @@ still hold before relying on them.
 - **Done:** reproduced successful preparation under a one-byte payload budget; admission now precedes schema clones. Initial eight quota/source/cleanup controls and owning catalogues24/3 pass; superseded fast3 passes4361 units/429 files with bounded327680B scanner and407+79 source closure.
 - **Retained:** initial missing fixture clocks, genuine red quota failure, identity-stale fast1 and superseded64KiB scanner fast2. Worker128MiB metadata/8GiB application and Node512MiB policies remain fixed; payload admission is not RSS certification.
 - **Final results:** phase rollback initially retains11520 payload/577344 metadata instead of foreign1024; corrected transaction ownership passes26 cases. Partial formatted edit/undefined-retained failures are retained. Final fast5 owns0:4363/429; browser2/session4692 owns0 for six groups; parent probe1/session5759 owns0 for5 exports/56frames/134passes, audit25 pins owns0. Held2644/120860793B remains exact.
-- **Next:** committed `963d3991`; fresh full70/session32036 runs102 groups/frozen176/36061/benchmark on held2644 inputs. Current archive/installed and pack disposition precede MS2 PR; stage-specific evidence and physical/driver/human limits remain. The latest owned snapshot confirms it remains live at group70; runtime243 and integration322 pass. Five portable consumer projects/29 input pins are staged, public replay/rejection harness and independent full-decoded frame/PCM caption-edit auditor syntax pass; the package-retention wrapper is syntax-checked; execution waits for the full gate. Acceptance handoff now names the live attempt and completed Node repair. Installed registry/CLI help/schema/bounded-report controls and source-rebuild denial are prepared and syntax-checked; actual execution remains pending. Commerce127 items/28200 frames complete; cinematic15 fixtures/46 rows/5520 frames qualify with18 WebGL timing deferrals retained. Earlier partial173-row count is invalidated after anchoring actual group headers (original snapshot retained). No aggregate/installed completion is inferred.
+- **Next:** committed `963d3991`; fresh full70/session32036 runs102 groups/frozen176/36061/benchmark on held2644 inputs. Current archive/installed and pack disposition precede MS2 PR; stage-specific evidence and physical/driver/human limits remain. The latest owned snapshot confirms it remains live at group79; runtime243 and integration322 pass. Five portable consumer projects/29 input pins are staged, public replay/rejection harness and independent full-decoded frame/PCM caption-edit auditor syntax pass; the package-retention wrapper is syntax-checked; execution waits for the full gate. Acceptance handoff now names the live attempt and completed Node repair. Installed registry/CLI help/schema/bounded-report controls and source-rebuild denial are prepared and syntax-checked; actual execution remains pending. Commerce127 items/28200 frames complete; cinematic15 fixtures/46 rows/5520 frames qualify with18 WebGL timing deferrals retained. Earlier partial173-row count is invalidated after anchoring actual group headers (original snapshot retained). Composition/native depth, PBR resource/world/observation/composition/normal/mixed exports and native-shapes complete on held inputs. No aggregate/installed completion is inferred.
 - **Records:** [Catalogue admission](./mechanism-shorts-ms2-native-catalogue-admission-results.json), [acceptance](./mechanism-shorts-ms2-acceptance.md).
 
 ### 2026-10-12 — Deliver declared family thumbnail assets

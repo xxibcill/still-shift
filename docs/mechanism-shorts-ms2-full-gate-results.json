@@ -515,11 +515,18 @@
       ],
       "qualification": "Fresh complete gate after committed slices67\u201369. Fast/focused/native/normal-parent proofs are separate prerequisite stages; await actual outer terminal, exact chain reconciliation/frozen/benchmark measurements and final source hold.",
       "latestLiveSnapshot": {
-        "path": "/private/tmp/still-shift-ms2-final70-progress5.json",
-        "bytes": 5212,
-        "sha256": "sha256:a2bea0a188646319035b4de32feab470bc95475b17552ee914ab0dedf3c24676"
+        "path": "/private/tmp/still-shift-ms2-final70-progress6.json",
+        "bytes": 3707,
+        "sha256": "sha256:9afafb5b191c9eab43bc6aa36cfa8c4f86b238f4cdd109b076d16fa30536fd82"
       },
-      "latestSnapshotQualification": "Owned process remains live at composition-depth/group70; preceding69 sequential scripts exit0. Cinematic15 inventory fixtures/46 backend-variant rows/5520 frames reconcile with zero reported pixel failures/errors and18 existing timing deferrals. Partial only; no full/frozen/benchmark completion."
+      "latestSnapshotQualification": "Specific owned process remains live at legacy-adapter/group79. Preceding78 sequential scripts exit0, including composition/native depth, PBR resources/world/observation/composition/normal/mixed exports and six-part native-shapes. Held2644 inputs/120860793B stay exact. Partial only; no full/frozen/benchmark/installed completion.",
+      "priorLiveSnapshots": [
+        {
+          "path": "/private/tmp/still-shift-ms2-final70-progress5.json",
+          "bytes": 5212,
+          "sha256": "sha256:a2bea0a188646319035b4de32feab470bc95475b17552ee914ab0dedf3c24676"
+        }
+      ]
     }
   ],
   "remaining": [
