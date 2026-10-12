@@ -682,7 +682,11 @@ requirements to current scoped evidence and outstanding admissions. Fresh full67
 actually failed the ordinary Node/Lab-loading test after4353 units/242 runtime
 passes; slice67 repairs the strip-only constructor syntax and passes13 existing
 owning tests plus ordinary fast4353/428. The failed aggregate is retained;
-current full/final installed/pack and separate human gates remain open.
+current full/final installed/pack and separate human gates remain open. Slice68
+now delivers actual named recognition thumbnails at their declared neutral-frame
+sizes, with six independent native observations and exact repeat/decoded PNG
+proof; [thumbnail evidence](./mechanism-shorts-ms2-pack-thumbnail-results.json)
+keeps candidate status and the failed initial dimension assumption explicit.
 
 - [ ] Create tape-hook slider, cable-tie ratchet/pawl and clothespeg hinge/spring
       packs by extending the accepted MS1/MS1N contracts. Each declares immutable

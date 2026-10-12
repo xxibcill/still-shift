@@ -49,8 +49,16 @@ The six named targets are `recognition`, `approach`, `macro`, `comparison`,
 `orbit` and `return`. Each declares actual part/mesh framing, bounded lens and
 view candidates, relationship IDs, motion intent and mesh proof surfaces near
 semantic anchors. Metadata includes these descriptions; each instance also binds
-its camera descriptions with a canonical SHA-256. The thumbnail remains a
-preview recipe; a packaged thumbnail is still required.
+its camera descriptions with a canonical SHA-256. The thumbnail declares a
+recognition preview recipe at neutral source frame0. Actual candidate PNGs and their
+immutable pack/source/recipe/image identities are delivered in the
+[thumbnail manifest](../examples/mechanism/pack-thumbnails/manifest.json):
+[tape](../examples/mechanism/pack-thumbnails/tape-hook.png) at320×180,
+[tie](../examples/mechanism/pack-thumbnails/cable-tie.png) and
+[peg](../examples/mechanism/pack-thumbnails/clothespeg.png) at640×360.
+The normal package copy includes these under `source/examples/mechanism/pack-thumbnails/`;
+final current installed verification remains required. These images are candidate
+previews, with no factual, material, human or supported-family approval.
 
 `createTapeHookPack()` returns a frozen `mechanism-pack-instance-1` with a
 `mechanism-scene-2` source, its canonical source hash, mesh data hash, current
@@ -184,10 +192,11 @@ actual posed mesh triangles, rather than using buried wire centroids as visible
 surface evidence. Current software/native receipts and retained failures are in
 [the MS2 results](./mechanism-shorts-ms2-results.json).
 
-Rigid glTF/GLB import, complete generator/registry admission, full world allocation
-preflight, labels/cues, scoped typography, the 300-topic coverage board and
-full/installed milestone gates remain open. Supported-family/pilot counts stay
-zero. Human visual/listening acceptance remains separate.
+Current scoped glTF/GLB/PBR, labels/cues/cache, count-fit and classified ten-question
+board evidence is recorded in the [finite acceptance matrix](./mechanism-shorts-ms2-acceptance.md).
+Whole resource accounting, final full/archive/installed and pack disposition remain
+open. Finer Thai motion stays unadopted. Supported-family/pilot counts stay zero;
+human factual, visual and listening acceptance remains separate.
 
 ## Execute camera recipes
 

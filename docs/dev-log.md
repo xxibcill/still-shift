@@ -45,7 +45,7 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56)
-  (`bf30a253`). Sixty-seven slices are committed/prepared; MS2 has no PR yet.
+  (`bf30a253`). Sixty-eight slices are committed/prepared; MS2 has no PR yet.
   Validated coverage0/10, supported packs0, accepted pilot0; MS3 has not started.
   Frozen question selection remains fixed; E06 new asset/behavior and finer Thai
   motion are provisional. Native/source3, five screen recipes, rigid world/surface
@@ -100,8 +100,11 @@ still hold before relying on them.
   Node22 rejects a constructor parameter property; the minimal explicit-field repair
   passes13 existing affected tests/session60538 and ordinary fast1/session18398
   (4353 units/428 files). Repair sourcehold2638/120690590B stays exact.
-  Complete final inputs and a fresh full102/frozen176/36061/benchmark/archive/installed
-  admission. Toolchain1 owns0; worktree caches are isolated and Actions enabled:false.
+  Slice68 packages three declared recognition thumbnails with immutable pack/source/
+  recipe/image identities:6 actual native frames/2073600 decoded RGBA bytes, all3
+  PNGs viewed. First harness640x360 assumption rejects tape320x180 before drawing;
+  actual declared dimensions are preserved. Fresh full102/frozen176/36061/benchmark/
+  archive/installed and whole resource/pack admission remain. Toolchain1 owns0; worktree caches are isolated and Actions enabled:false.
   No paid generation, merge/publication, Actions or private media redistribution.
   [Spoken presentation](./mechanism-shorts-ms2-spoken-presentation-results.json),
   [E06 primary source](./mechanism-shorts-ms2-e06-primary-admission-results.json),
@@ -270,6 +273,15 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — Deliver declared family thumbnail assets
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `7be3a001`.
+- **Done:** package tape320×180, tie/peg640×360 recognition PNGs at default neutral frame0, with exact immutable pack/source/recipe/image references. Existing examples copying provides the installed path; current archive confirmation remains pending.
+- **Results:** producer2/session64920 owns0;6 actual native frame2 captures independently checked, complete repeat PNG/RGBA exact. Pillow audit compares2,073,600 full decoded RGBA bytes with captured pixels; all3 images agent-viewed.
+- **Rejected:** producer1/session45838 owns1 before any thumbnail draw because the harness assumed tape640×360. Preserve its declared320×180 recipe; no upscaling or pack/reference change.
+- **Next:** final full/archive/installed, whole resource closure and pack disposition/MS2 PR. Candidates/support/pilot counts stay0; no factual/material/human approval is inferred.
+- **Records:** [Thumbnail evidence](./mechanism-shorts-ms2-pack-thumbnail-results.json), [manifest](../examples/mechanism/pack-thumbnails/manifest.json), [acceptance](./mechanism-shorts-ms2-acceptance.md).
 
 ### 2026-10-12 — Repair ordinary Node loading exposed by the full gate
 

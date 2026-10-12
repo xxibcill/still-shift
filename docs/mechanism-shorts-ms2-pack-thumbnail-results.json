@@ -1,0 +1,87 @@
+{
+  "version": "mechanism-shorts-ms2-pack-thumbnail-results-1",
+  "date": "2026-10-12",
+  "branch": "codex/mechanism-ms2",
+  "baseCommit": "7be3a001",
+  "status": "packaged-candidate-thumbnails-native-and-pixel-proof-complete",
+  "scope": "Default neutral source frame0 through each current named recognition recipe. Actual native preview PNGs; no human/material/factual or supported-pack promotion. Reproduce under the pinned chromium-software-2 profile.",
+  "attempts": [
+    {
+      "id": "producer1",
+      "actualSession": 45838,
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-thumbnails68-producer1.log",
+        "bytes": 577,
+        "sha256": "sha256:8628a0bba51daa58135be8c8827025e4cc0ee833d92da6db68efb8a511229328"
+      },
+      "diagnostic": "Harness assumed every thumbnail640x360; actual tape metadata declares320x180. Fails before any native thumbnail draw. Recipe preserved; expected dimensions corrected to actual family declarations."
+    },
+    {
+      "id": "producer2",
+      "actualSession": 64920,
+      "actualExitCode": 0,
+      "script": {
+        "path": "/private/tmp/still-shift-ms2-thumbnail68-producer.mjs",
+        "bytes": 7357,
+        "sha256": "sha256:1434a25bd65aac9302ce29b2db94c04386191fe2c779e37bcf7a224d4d7d5735"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-thumbnails68-producer2.log",
+        "bytes": 442,
+        "sha256": "sha256:86f887fc06128857e3038eec872dfb6b04b196a3e402b952f9f62d6fc9013d39"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-thumbnails68-JjOdEC/run.json",
+        "bytes": 10873,
+        "sha256": "sha256:5f70ec459b73a9ac48eb3e9d50bc1a93ca6c545c97dab960a3e068df9114f6fe"
+      },
+      "nativeFrames": 6,
+      "families": 3,
+      "independentNativeValidation": "Each two actual GPU-observed frame2 captures checked against fresh trusted source/variant/appearance expectations by assertNativeObservedFrameV2; same frame0/neutral source/recognition camera recipe repeated.",
+      "completeRepeatPngRgbaExact": true
+    }
+  ],
+  "independentPngAudit": {
+    "actualExitCode": 0,
+    "method": "Pillow decodes each actual PNG to full RGBA and compares every byte with captured native readPixels backing; dimensions/PNG byte hashes/whole decoded RGBA hashes and every alpha255 checked.",
+    "decodedRgbaBytes": 2073600,
+    "agentViewed": 3,
+    "findings": "All three recognition images show their object/teaching shape without labels or clipping. Tape includes its unchanged reference scene; tie is the declared exposed teaching head; peg shows its spring and cloth. No material or factual approval inferred."
+  },
+  "delivery": {
+    "manifest": {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/examples/mechanism/pack-thumbnails/manifest.json",
+      "bytes": 8545,
+      "sha256": "sha256:bb5fb9f76433d94afbe8569b97012add52f7f35d309cff1dbe67eff3910f4635"
+    },
+    "pngs": [
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/examples/mechanism/pack-thumbnails/tape-hook.png",
+        "bytes": 28516,
+        "sha256": "sha256:24128707c8b1ab3c515048377752326e01816a598998ab7426864ce8ac1e0281"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/examples/mechanism/pack-thumbnails/cable-tie.png",
+        "bytes": 54273,
+        "sha256": "sha256:a636880cef6353bbfbd93b7678d431605f2187cfc92d4593902a560b0e6f52dd"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/examples/mechanism/pack-thumbnails/clothespeg.png",
+        "bytes": 62418,
+        "sha256": "sha256:d181a0e607b8d2388fbb81aae22eea254e38be7e07bc7ff2a92cd8852cee5391"
+      }
+    ],
+    "installedPath": "source/examples/mechanism/pack-thumbnails/",
+    "packageCopy": "Existing copyPackageGuides copies the complete examples directory; final current archive/installed confirmation remains required. No build allowlist change.",
+    "packReferencesUnchanged": true
+  },
+  "supportedPacks": 0,
+  "acceptedPilotEpisodes": 0,
+  "paidGeneration": false,
+  "privateMediaRedistributed": false,
+  "remaining": [
+    "Fresh full102/frozen176/36061/benchmark on final inputs, current archive/installed and whole resource/pack disposition before MS2 PR.",
+    "No owner appearance/factual/continuous/listening/pilot acceptance; frozen questions remain unchanged."
+  ]
+}
