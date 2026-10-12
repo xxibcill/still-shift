@@ -45,7 +45,7 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56)
-  (`bf30a253`). Sixty-six slices are committed/prepared; MS2 has no PR yet.
+  (`bf30a253`). Sixty-seven slices are committed/prepared; MS2 has no PR yet.
   Validated coverage0/10, supported packs0, accepted pilot0; MS3 has not started.
   Frozen question selection remains fixed; E06 new asset/behavior and finer Thai
   motion are provisional. Native/source3, five screen recipes, rigid world/surface
@@ -95,7 +95,13 @@ still hold before relying on them.
   natural-speed/force/human limits remain explicit. Next: finite MS2 acceptance
   reconciliation, whole resource and current full/final archive/installed/pack/MS2
   PR gates. Classified frozen board is complete; new assets/behaviors and positive
-  ten-episode coverage belong to MS3.
+  ten-episode coverage belong to MS3. Fresh full67-1/session25739 actually exits1
+  after4353 units and242 runtime passes/one ordinary Node/Lab import failure.
+  Node22 rejects a constructor parameter property; the minimal explicit-field repair
+  passes13 existing affected tests/session60538 and ordinary fast1/session18398
+  (4353 units/428 files). Repair sourcehold2638/120690590B stays exact.
+  Complete final inputs and a fresh full102/frozen176/36061/benchmark/archive/installed
+  admission. Toolchain1 owns0; worktree caches are isolated and Actions enabled:false.
   No paid generation, merge/publication, Actions or private media redistribution.
   [Spoken presentation](./mechanism-shorts-ms2-spoken-presentation-results.json),
   [E06 primary source](./mechanism-shorts-ms2-e06-primary-admission-results.json),
@@ -265,12 +271,20 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-10-12 — Repair ordinary Node loading exposed by the full gate
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `aa58eddf`.
+- **Failed:** fresh full67-1/session25739 exits1 after4353 units and242 runtime passes; one maintained raw Node/Lab import rejects a constructor parameter property.2638 held inputs stay exact; baseline/benchmark were not reached.
+- **Done:** declare the readonly parent field and assign it explicitly. Existing owning/ledger/transfer/cleanup tests13/3 pass(session60538); ordinary fast1 passes4353 units/428 files(session18398), four-worker ceiling. No loader bypass, assertion, quota or rendering change.
+- **Next:** finite14-row acceptance matrix identifies packaged family thumbnails, aggregate resource closure and final full/archive/installed/pack disposition before the MS2 PR. New assets/behaviors and positive frozen10-question coverage belong to MS3; human review remains separate.
+- **Records:** [Repair](./mechanism-shorts-ms2-node-strip-repair-results.json), [full history](./mechanism-shorts-ms2-full-gate-results.json), [acceptance matrix](./mechanism-shorts-ms2-acceptance.md).
+
 ### 2026-10-12 — Finish independent spoken presentation evidence
 
 - **Agent / branch:** Codex on `codex/mechanism-ms2`, continuing `46ffaa5c` in the existing managed worktree.
 - **Done:** independent audit1 owns terminal0 after native1's prior recovered0; all79 selected final-first decoded frames agent-viewed. Whole source audio/words and unchanged before/after AAC PCM remain exact.
 - **Results:**8 exports/5136 native and decoded frames;64 fact pins/41028 hierarchy pairs/5136 cameras/1286 peg frames.1064 hook matrices include734 compensation-window and330 later legacy frames. Held2638 source inputs remain exact.
-- **Limits / next:** sampled stills are not whole-clip glyph proof or normal-speed/listening/human acceptance. Reconcile finite MS2 requirements and complete full/final installed/pack gates before its PR; keep frozen pilot questions and their MS3 extensions.
+- **Limits / next:** sampled stills are not whole-clip glyph proof or normal-speed/listening/human acceptance. Fresh full67/session25739 runs the102-group full gate on held `aa58eddf`; final archive/installed/pack gates precede its PR. Keep frozen pilot questions and their MS3 extensions.
 - **Records:** [Presentation](./mechanism-shorts-ms2-spoken-presentation-results.json), [MS2](./mechanism-shorts-ms2-results.json), [ordered plan](./mechanism-shorts-production-plan.md).
 
 ### 2026-10-12 — MS2 spoken presentation checkpoint and new-chat handoff

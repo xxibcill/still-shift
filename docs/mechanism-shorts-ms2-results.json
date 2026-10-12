@@ -16382,6 +16382,41 @@
         "unchangedPriorDecodedPcm": true
       },
       "agentSelectedFinalFrameReview": 79
+    },
+    {
+      "id": "final67-full1",
+      "status": "failed",
+      "owningSession": 25739,
+      "actualExitCode": 1,
+      "sourceCommit": "aa58eddf204ec1380c2e98e0aaa69e3c8451e05d",
+      "requiredGroups": 102,
+      "frozenItems": 176,
+      "frozenFrames": 36061,
+      "record": "docs/mechanism-shorts-ms2-full-gate-results.json",
+      "unitTests": 4353,
+      "runtimePassedTests": 242,
+      "runtimeFailedTests": 1,
+      "sourceHoldUnchanged": true,
+      "failedTest": "native-node-config.test.ts"
+    },
+    {
+      "id": "node-strip-repair67",
+      "status": "scoped-repair-fast-and-owning-tests-complete",
+      "record": {
+        "path": "docs/mechanism-shorts-ms2-node-strip-repair-results.json",
+        "bytes": 2806,
+        "sha256": "sha256:887bfefd4dde276b5502dd1fb9c09d9b6e6006d317e5a11ae88a9bfa18e9e8f6"
+      },
+      "scope": "Replace the constructor parameter property with a declared readonly parent field and explicit assignment. Same optional argument, assignment/validation/ledger/lease/transfer/retirement behavior; no runtime loader flag, transform bypass, schema, quota or rendering change.71 additional source bytes.",
+      "owningTests": 13,
+      "ordinaryFastUnits": 4353,
+      "ordinaryFastFiles": 428,
+      "heldInputs": 2638,
+      "failedFullRetained": "final67-full1/actual1",
+      "remaining": [
+        "Deliver final family thumbnail inputs, then a fresh full102/frozen176/36061/benchmark and current archive/installed admission; no earlier aggregate is relabeled as pass.",
+        "Finite resource/pack disposition and MS2 PR before MS3. Human/factual/continuous/listening gates retain their actual unreviewed states."
+      ]
     }
   ],
   "implementation": {
@@ -18609,6 +18644,24 @@
         "unchangedPriorDecodedPcm": true
       },
       "agentSelectedFinalFrameReview": 79
+    },
+    "sixtySeventhSlice": {
+      "status": "scoped-repair-fast-and-owning-tests-complete",
+      "record": {
+        "path": "docs/mechanism-shorts-ms2-node-strip-repair-results.json",
+        "bytes": 2806,
+        "sha256": "sha256:887bfefd4dde276b5502dd1fb9c09d9b6e6006d317e5a11ae88a9bfa18e9e8f6"
+      },
+      "scope": "Replace the constructor parameter property with a declared readonly parent field and explicit assignment. Same optional argument, assignment/validation/ledger/lease/transfer/retirement behavior; no runtime loader flag, transform bypass, schema, quota or rendering change.71 additional source bytes.",
+      "owningTests": 13,
+      "ordinaryFastUnits": 4353,
+      "ordinaryFastFiles": 428,
+      "heldInputs": 2638,
+      "failedFullRetained": "final67-full1/actual1",
+      "remaining": [
+        "Deliver final family thumbnail inputs, then a fresh full102/frozen176/36061/benchmark and current archive/installed admission; no earlier aggregate is relabeled as pass.",
+        "Finite resource/pack disposition and MS2 PR before MS3. Human/factual/continuous/listening gates retain their actual unreviewed states."
+      ]
     }
   },
   "limits": [
@@ -18636,6 +18689,7 @@
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ],
   "remaining": [
+    "Fresh full67-1/session25739 actually exits1 after4353 units/242 runtime passes and1 ordinary Node/Lab loading failure. Sourcehold2638 remains exact. Minimal constructor repair passes13 existing affected tests; finish remaining final inputs and rerun required full102/frozen/benchmark/current archive/installed/admission/MS2 PR.",
     "Slice66 scoped code/fast/native/audit/selected final-frame review complete:8 exports/5136 native-decoded frames/64 pins/79 viewed samples. Source held2638 inputs unchanged. Reconcile finite acceptance, current full102/frozen/benchmark/final archive/installed/pack admission/MS2 PR; no human/portrait/pilot acceptance.",
     "Slice64 completes scoped genuine spoken cue/native output evidence for four existing takes:247 words/20 windows/eight repeated outputs/5136 native and decoded frames; audit60 pins/41028 hierarchy pairs/5136 cameras and ordinary fast4353 units428files pass. Exact endpoint corrections authored, shorter revised hook recompiled. Private opt-in gate keeps full102 portable. Contact labels hidden under current occlusion policy and subtle wide-view hook travel remain visual issues; no human/portrait/pack/coverage acceptance. Whole resources/full102/frozen/benchmark/final archive/installed/pack/MS2 PR remain open. E06 primary-read supplement is ready separately; frozen selection unchanged."
   ]

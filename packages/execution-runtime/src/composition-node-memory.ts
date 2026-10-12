@@ -10,7 +10,9 @@ export class CompositionNodeMemory {
   private readonly memory: ManagedMemory;
   private closed = false;
   private readonly scoped: Set<MemoryLease> | undefined;
-  constructor(private readonly parent?: CompositionNodeMemory) {
+  private readonly parent: CompositionNodeMemory | undefined;
+  constructor(parent?: CompositionNodeMemory) {
+    this.parent = parent;
     if (parent !== undefined && !(parent instanceof CompositionNodeMemory))
       throw Error("Invalid composition Node memory owner");
     this.memory = parent

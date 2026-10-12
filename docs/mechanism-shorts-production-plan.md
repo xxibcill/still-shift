@@ -677,6 +677,12 @@ CE6-P or CE8-L-F.
 
 **Outcome:** E01 becomes one consumer of reusable interfaces. Three distinct
 mechanism families establish whether the architecture transfers.
+The [finite14-row reconciliation](./mechanism-shorts-ms2-acceptance.md) maps these
+requirements to current scoped evidence and outstanding admissions. Fresh full67-1
+actually failed the ordinary Node/Lab-loading test after4353 units/242 runtime
+passes; slice67 repairs the strip-only constructor syntax and passes13 existing
+owning tests plus ordinary fast4353/428. The failed aggregate is retained;
+current full/final installed/pack and separate human gates remain open.
 
 - [ ] Create tape-hook slider, cable-tie ratchet/pawl and clothespeg hinge/spring
       packs by extending the accepted MS1/MS1N contracts. Each declares immutable
