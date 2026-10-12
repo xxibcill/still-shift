@@ -581,3 +581,35 @@ admit text plus write encoding first; supplied strings admit write encoding.
 Semantic validation/diagnostic report storage, other producers, final lifecycle/
 RSS, aggregate world/body/replay, full milestone and installed refresh remain open.
 See [Root I/O evidence](./mechanism-shorts-ms2-root-io-results.json).
+
+## Native catalogue preparation admission
+
+Both original and version-selected composition catalogue preparation now admit
+raw transport/schema/hash and retained source copies before their first schema
+parse when a managed worker is active. Numeric array slots use the worker's
+application-payload partition; objects, text and bounded scanner controls use
+metadata. The existing8GiB application,512MiB Node and128MiB worker-metadata
+policies remain unchanged. The bounded scanner reserves327680B for its maximum64
+levels/256 fields; source arrays retain the existing600000-index cardinality ceiling.
+It rejects accessors, cycles, non-JSON object/field forms and quota overflow before
+copying. Unmanaged standalone preparation preserves its existing route.
+
+The bill covers eight raw transport/schema/hash staging copies and four retained
+copies per conservatively counted static variant request. Source2 pose sources
+retain their full geometry; source1/3 share static meshes. Prepared catalogue
+owners remain in the active resource transaction: a later font/image failure
+retires them with that phase, while successful preparation commits them through
+subsequent frame scratch. Standalone managed callers retain their owners until
+allocator retirement. Source schemas, pixel math and driver behavior are unchanged.
+
+[Current scoped evidence](./mechanism-shorts-ms2-native-catalogue-admission-results.json)
+retains genuine quota and rollback regressions, incomplete-edit/identity failures
+and source-specific reruns. Final fast4363/429,26 owning cases and six actual
+native/PBR/family/cache groups pass. Five public normal exports demonstrate
+shared Node child retirement with a surviving foreign lease and zero worker
+reservations after acknowledgement; independent25-pin audit checks56 frames/134
+native pass associations. Declared normal peaks219564102B Node/826935510B worker
+and sampled process-tree RSS2193195008B are separate measurements. They do not
+certify all V8/native/driver physical allocations, arbitrary future inputs or
+human/material approval. Full/final installed and milestone pack disposition
+remain required.

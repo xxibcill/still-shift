@@ -687,6 +687,13 @@ now delivers actual named recognition thumbnails at their declared neutral-frame
 sizes, with six independent native observations and exact repeat/decoded PNG
 proof; [thumbnail evidence](./mechanism-shorts-ms2-pack-thumbnail-results.json)
 keeps candidate status and the failed initial dimension assumption explicit.
+Slice69 closes the located browser catalogue clone/transaction-lifetime gap before
+schema copies under unchanged worker budgets. Final4363-unit fast,26 owning
+cases/six native-PBR-family-cache groups and five public shared-parent exports
+pass in distinct stages; [admission evidence](./mechanism-shorts-ms2-native-catalogue-admission-results.json)
+retains all failures and independently pins56 frames/134 pass associations and
+Node/worker retirement. Declared peaks and measured RSS do not establish a
+physical/driver ceiling; final full/archive/installed and pack/human gates remain.
 
 - [ ] Create tape-hook slider, cable-tie ratchet/pawl and clothespeg hinge/spring
       packs by extending the accepted MS1/MS1N contracts. Each declares immutable

@@ -38,9 +38,14 @@ The private genuine-speech/presentation gates remain separate.
    manufactured from its audit; the current owning full route supplies fresh proof.
 2. Close or locate the remaining aggregate source/preparation/world/result/replay
    resource accounting against the existing512MiB Node/8GiB application policy.
-   Recorded quotas, actual owned-resource retirement, sampled process RSS and
-   unobservable driver internals remain different measurements. No new physical
-   threshold, quota increase or hardware certification is authorized here.
+   Slice69 closes the located browser-catalogue admission/transaction rollback
+   gap with10 new controls, current native/PBR/family/cache groups and five actual
+   shared-parent normal exports. An independent25-pin audit checks56 frames/134
+   native pass associations; child Node and worker acknowledgement retirement are
+   observed. [Evidence](./mechanism-shorts-ms2-native-catalogue-admission-results.json)
+   preserves earlier source revisions and failures. Recorded quotas, owned-resource
+   retirement, sampled RSS and opaque driver internals remain different measurements.
+   No new physical threshold, quota increase or hardware certification is authorized.
 3. Verify the delivered [family thumbnails](./mechanism-shorts-ms2-pack-thumbnail-results.json)
    in the current archive/installed
    public lifecycle, package/source audit and compatibility documentation. Bind

@@ -45,7 +45,7 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56)
-  (`bf30a253`). Sixty-eight slices are committed/prepared; MS2 has no PR yet.
+  (`bf30a253`). Sixty-nine slices are committed/prepared; MS2 has no PR yet.
   Validated coverage0/10, supported packs0, accepted pilot0; MS3 has not started.
   Frozen question selection remains fixed; E06 new asset/behavior and finer Thai
   motion are provisional. Native/source3, five screen recipes, rigid world/surface
@@ -104,7 +104,14 @@ still hold before relying on them.
   recipe/image identities:6 actual native frames/2073600 decoded RGBA bytes, all3
   PNGs viewed. First harness640x360 assumption rejects tape320x180 before drawing;
   actual declared dimensions are preserved. Fresh full102/frozen176/36061/benchmark/
-  archive/installed and whole resource/pack admission remain. Toolchain1 owns0; worktree caches are isolated and Actions enabled:false.
+  archive/installed and whole resource/pack admission remain. Slice69 adds browser
+  catalogue admission before schema clones; one-byte and later-resource rollback
+  regressions are reproduced and repaired. Final fast5 owns0:4363 units/429 files/
+  407+79 identity modules,26 owning cases, browser2/session4692 all six groups0.
+  Normal shared-parent5 exports/56frames/134passes retire local Node and worker
+  reservations; independent25-pin audit owns0. Held2644/120860793B stays exact.
+  Initial clock/identity/partial-edit/compiler failures and superseded stages remain;
+  quota peaks/RSS/opaque driver internals differ, with no physical RAM certification. Toolchain1 owns0; worktree caches are isolated and Actions enabled:false.
   No paid generation, merge/publication, Actions or private media redistribution.
   [Spoken presentation](./mechanism-shorts-ms2-spoken-presentation-results.json),
   [E06 primary source](./mechanism-shorts-ms2-e06-primary-admission-results.json),
@@ -273,6 +280,15 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — Native catalogue allocation admission in progress
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `ec700fdb`; exact slice69 source remains uncommitted under inventory3.
+- **Done:** reproduced successful preparation under a one-byte payload budget; admission now precedes schema clones. Eight new quota/source/cleanup controls and owning catalogues24/3 pass; current fast3 passes4361 units/429 files with bounded327680B scanner and407+79 source closure.
+- **Retained:** initial missing fixture clocks, genuine red quota failure, identity-stale fast1 and superseded64KiB scanner fast2. Worker128MiB metadata/8GiB application and Node512MiB policies remain fixed; payload admission is not RSS certification.
+- **Final results:** phase rollback initially retains11520 payload/577344 metadata instead of foreign1024; corrected transaction ownership passes26 cases. Partial formatted edit/undefined-retained failures are retained. Final fast5 owns0:4363/429; browser2/session4692 owns0 for six groups; parent probe1/session5759 owns0 for5 exports/56frames/134passes, audit25 pins owns0. Held2644/120860793B remains exact.
+- **Next:** fresh full102/frozen/benchmark/current archive/installed and pack disposition before MS2 PR. Source inventories and prior staged passes stay distinct; no physical/driver/human certification follows.
+- **Records:** [Catalogue admission](./mechanism-shorts-ms2-native-catalogue-admission-results.json), [acceptance](./mechanism-shorts-ms2-acceptance.md).
 
 ### 2026-10-12 — Deliver declared family thumbnail assets
 

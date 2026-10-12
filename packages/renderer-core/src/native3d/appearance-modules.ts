@@ -953,6 +953,10 @@ export const native3DAppearanceModules: readonly {
     url: new URL("./preparation-limits.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/native3d/preparation-storage.ts",
+    url: new URL("./preparation-storage.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/native3d/prepare-v2.ts",
     url: new URL("./prepare-v2.ts", import.meta.url),
   },

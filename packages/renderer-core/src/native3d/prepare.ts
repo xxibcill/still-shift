@@ -1,3 +1,4 @@
+import { prepareNativeCatalogueStorage } from "./preparation-storage.ts";
 import { prepareNative3DSceneV3 } from "./prepare-v3.ts";
 import {
   Native3DSourceSchema,
@@ -231,21 +232,23 @@ export async function prepareCompositionNative3D(
   composition: Composition,
   input: CompositionPreparedNative3D,
 ): Promise<Readonly<Record<string, PreparedNative3DScene>>> {
-  const catalogue = await prepareNativeCatalogue(
-    composition,
-    CompositionPreparedNative3DSchema.parse(input),
-  );
-  const legacy: Record<string, PreparedNative3DScene> = Object.create(null);
-  for (const [id, prepared] of Object.entries(catalogue)) {
-    if (prepared.version !== "prepared-native3d-scene-1")
-      passageError(
-        "comp-native3d-source",
-        "Original catalogue cannot prepare a version 2 source",
-        { path: `assets.${id}` },
-      );
-    legacy[id] = prepared;
-  }
-  return freezeNativeData(legacy);
+  return prepareNativeCatalogueStorage(composition, input, async () => {
+    const catalogue = await prepareNativeCatalogue(
+      composition,
+      CompositionPreparedNative3DSchema.parse(input),
+    );
+    const legacy: Record<string, PreparedNative3DScene> = Object.create(null);
+    for (const [id, prepared] of Object.entries(catalogue)) {
+      if (prepared.version !== "prepared-native3d-scene-1")
+        passageError(
+          "comp-native3d-source",
+          "Original catalogue cannot prepare a version 2 source",
+          { path: `assets.${id}` },
+        );
+      legacy[id] = prepared;
+    }
+    return freezeNativeData(legacy);
+  });
 }
 
 /** Declared assets select the transport protocol even when their layers draw no passes. */
@@ -253,30 +256,32 @@ export async function prepareCompositionNative3DVersions(
   composition: Composition,
   input: unknown,
 ): Promise<Readonly<Record<string, PreparedNative3DSceneVersions>>> {
-  const parsed = CompositionPreparedNative3DVersionsSchema.safeParse(input);
-  if (!parsed.success)
-    passageError(
-      "comp-native3d-source",
-      "Invalid versioned native preparation transport",
-      { path: "preparedNative3D" },
+  return prepareNativeCatalogueStorage(composition, input, async () => {
+    const parsed = CompositionPreparedNative3DVersionsSchema.safeParse(input);
+    if (!parsed.success)
+      passageError(
+        "comp-native3d-source",
+        "Invalid versioned native preparation transport",
+        { path: "preparedNative3D" },
+      );
+    const nativeAssets = composition.assets.filter(
+      (asset) => asset.type === "native3d",
     );
-  const nativeAssets = composition.assets.filter(
-    (asset) => asset.type === "native3d",
-  );
-  const required = nativeAssets.some(
-    (asset) => asset.format === "mechanism-scene-3",
-  )
-    ? "composition-prepared-native3d-3"
-    : nativeAssets.some((asset) => asset.format === "mechanism-scene-2")
-      ? "composition-prepared-native3d-2"
-      : "composition-prepared-native3d-1";
-  if (parsed.data.version !== required)
-    passageError(
-      "comp-native3d-source",
-      "Prepared transport version differs from the declared source protocols",
-      { path: "preparedNative3D.version" },
-    );
-  return prepareNativeCatalogue(composition, parsed.data);
+    const required = nativeAssets.some(
+      (asset) => asset.format === "mechanism-scene-3",
+    )
+      ? "composition-prepared-native3d-3"
+      : nativeAssets.some((asset) => asset.format === "mechanism-scene-2")
+        ? "composition-prepared-native3d-2"
+        : "composition-prepared-native3d-1";
+    if (parsed.data.version !== required)
+      passageError(
+        "comp-native3d-source",
+        "Prepared transport version differs from the declared source protocols",
+        { path: "preparedNative3D.version" },
+      );
+    return prepareNativeCatalogue(composition, parsed.data);
+  });
 }
 
 async function prepareNativeCatalogue(
