@@ -60,13 +60,12 @@ still hold before relying on them.
   4363 units/429 files;26 owning controls/six current browser groups/five normal
   shared-parent exports56frames134passes/independent25-pin audit pass in stages.
   Held2644 inputs/120860793B remain exact; quotas/RSS/driver internals differ.
-  **Full70 is live:** owned session32036, `pnpm check:all`, source `963d3991`,
-  inventory `/private/tmp/still-shift-ms2-final70-inputs1.json`, log
-  `/private/tmp/still-shift-ms2-final70-full1.log`. Owned snapshot reaches group100
-  (mechanism world-plate export); unit4363/runtime243/integration322 pass. Required102 groups,
-  frozen176/36061 frames pass in262.12s with all176 ok rows independently reconciled;
-  cached cue-export script completes; remaining world/CLI/lifetime suffix and
-  benchmark stay unfinished.
+  **Full70 passes:** `pnpm check:all` actually exits0 on `963d3991` at
+  2026-10-12T17:25:47Z. Independent audit reconciles all102 groups,
+  unit4363/runtime243/integration322/depth14, frozen176/36061 frames in262.12s,
+  benchmark547 samples/mean0.9149ms and exact2644 inputs/120860793B.
+  Current world-plate, public cache and cache-lifetime suffix completes.
+  Historical live snapshots, full51/full67 failures and timing deferrals remain.
   World and surface each3 families/360 previews/1080 seeks/6 exports/18 hidden
   controls pass; native plate capture/check passes3 families. Layout12
   exports/720 frames/all-frame bounds+seeks, cameras156 captures/12 exports, and
@@ -257,6 +256,19 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — Final MS2 full gate completes
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`; implementation `963d3991`.
+- **Results:** Actual full70 exit0; independent exact102-group audit passes,
+  unit4363/runtime243/integration322/depth14, frozen176/36061 in262.12s,
+  no-op benchmark547 samples/mean0.9149ms; held2644 inputs remain exact.
+- **Retained:** Failed/stopped runs, existing timing deferrals and missing world61
+  historical terminal. No human, supported-pack or pilot acceptance is inferred.
+- **Next:** Fresh package/archive audit and isolated installed execution, then pack
+  disposition and MS2 PR. MS3 remains unstarted; no spending/publication/merge.
+- **Records:** [Full gate](./mechanism-shorts-ms2-full-gate-results.json),
+  [acceptance](./mechanism-shorts-ms2-acceptance.md).
 
 ### 2026-10-13 — Final MS2 cached-export gate in flight
 

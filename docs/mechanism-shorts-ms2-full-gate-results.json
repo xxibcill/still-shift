@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "date": "2026-10-12",
+  "date": "2026-10-13",
   "branch": "codex/mechanism-ms2",
-  "status": "fresh-final70-full102-gate-in-flight-previous-failed-stopped-attempts-retained",
+  "status": "final70-full102-gate-passed-prior-failed-stopped-attempts-retained",
   "requiredAggregate": "pnpm check:all",
   "attempts": [
     {
@@ -394,12 +394,12 @@
     },
     {
       "id": "final70-full1",
-      "status": "in-flight",
+      "status": "passed",
       "command": "pnpm check:all",
       "heldSourceCommit": "963d3991e81f8dc03546471fafbef532d1d0aa1a",
       "startedUtc": "2026-10-12T11:50:31.865652+00:00",
       "owningSession": 32036,
-      "actualExitCode": null,
+      "actualExitCode": 0,
       "heldInputFiles": 2644,
       "heldInputBytes": 120860793,
       "heldInputInventory": {
@@ -513,13 +513,13 @@
         "test:browser:mechanism-cue-cache-cli",
         "test:browser:mechanism-cue-cache-lifetime"
       ],
-      "qualification": "Fresh complete gate after committed slices67\u201369. Fast/focused/native/normal-parent proofs are separate prerequisite stages; await actual outer terminal, exact chain reconciliation/frozen/benchmark measurements and final source hold.",
+      "qualification": "Full software/benchmark gate only. Earlier attempts and human/factual/listening/material/hardware/whole glyph review gates remain separate.",
       "latestLiveSnapshot": {
         "path": "/private/tmp/still-shift-ms2-final70-progress12.json",
         "bytes": 4709,
         "sha256": "sha256:438f42ed826978a8283f28d8d04ebb7ab6fe277e0efe7607794c468d9d803176"
       },
-      "latestSnapshotQualification": "2026-10-13 handoff: owned session live at world-plate-export/group100; preceding99 scripts exit0. Cached cue-export result and actual following header reconcile; held2644/120860793B remain exact. World/CLI/lifetime suffix, benchmark and installed acceptance remain unproven. Historical world61 producer terminal remains unverified.",
+      "latestSnapshotQualification": "Historical live snapshots retained. Actual outer terminal0 and independent audit now qualify the complete102-group chain, frozen176/36061, benchmark and held2644 inputs. This does not manufacture world61 historical terminal or human review.",
       "priorLiveSnapshots": [
         {
           "path": "/private/tmp/still-shift-ms2-final70-progress5.json",
@@ -562,13 +562,83 @@
         "frames": 36061,
         "seconds": 262.12,
         "matchedRows": 176
-      }
+      },
+      "endedUtc": "2026-10-12T17:25:47.884237+00:00",
+      "sourceHoldCheckExitCode": 0,
+      "independentAudit": {
+        "path": "/private/tmp/still-shift-ms2-final70-audit1.json",
+        "bytes": 8217,
+        "sha256": "sha256:8b01796698826263a0682db0797c7827d11c7b25674c5dba7b7689cab0af17f3"
+      },
+      "completedTestGroups": 102,
+      "suiteTests": {
+        "unit": 4363,
+        "runtime": 243,
+        "integration": 322
+      },
+      "suiteFiles": {
+        "unit": 429,
+        "runtime": 40,
+        "integration": 57
+      },
+      "suiteDurationSeconds": [59.47, 129.37, 336.18],
+      "depthTests": 14,
+      "benchmarkStatistics": {
+        "hz": 1093.0,
+        "minMs": 0.7321,
+        "maxMs": 2.2503,
+        "meanMs": 0.9149,
+        "p75Ms": 0.9566,
+        "p99Ms": 1.4606,
+        "p995Ms": 1.7769,
+        "p999Ms": 2.2503,
+        "rmePercent": 1.35,
+        "samples": 547
+      },
+      "reportedDeferralLines": [
+        "WebGL deferred paint fallback: { cases: 11, maxDelta: 0 }",
+        "CE6-P deferred WebGL timing only: cinematic/threshold-push 2.069663804697585",
+        "CE6-P deferred WebGL timing only: cinematic/threshold-push/effects-grain 2.101074084070682",
+        "CE6-P deferred WebGL timing only: cinematic/threshold-push/effects-glow 2.445113478594527",
+        "CE6-P deferred WebGL timing only: cinematic/threshold-push/effects-directional 2.2131976114200613",
+        "CE6-P deferred WebGL timing only: cinematic/threshold-push/effects-focus 2.3715382671723853",
+        "CE6-P deferred WebGL timing only: cinematic/threshold-push/effects-sweep 1.7164144704610944",
+        "CE6-P deferred WebGL timing only: cinematic/threshold-push/effects-active-stack 1.5570542283326987",
+        "CE6-P deferred WebGL timing only: cinematic/threshold-push-alternate 2.065285906388523",
+        "CE6-P deferred WebGL timing only: cinematic/lateral-track 2.0674256303338696",
+        "CE6-P deferred WebGL timing only: cinematic/lateral-track-alternate 2.1013831465034243",
+        "CE6-P deferred WebGL timing only: cinematic/rising-vista 1.7368683348088438",
+        "CE6-P deferred WebGL timing only: cinematic/detail-to-world 1.6220226491934213",
+        "CE6-P deferred WebGL timing only: cinematic/curved-approach 1.8772866714472414",
+        "CE6-P deferred WebGL timing only: cinematic/dolly-zoom-tension 1.3148337072940421",
+        "CE6-P deferred WebGL timing only: cinematic/dolly-zoom-tension-alternate 1.3211044992267498",
+        "CE6-P deferred WebGL timing only: cinematic/layered-parallax 2.1526028544572045",
+        "CE6-P deferred WebGL timing only: cinematic/layered-parallax-alternate 2.1272597284804284",
+        "CE6-P deferred WebGL timing only: cinematic/vertical-rising-vista 1.7485910791105614",
+        "CE6-P deferred WebGL timing only: legacy/crisis-fracture 1.563555391166336"
+      ],
+      "terminalPins": [
+        {
+          "path": "/private/tmp/still-shift-ms2-final70-full1-receipt.json",
+          "bytes": 418,
+          "sha256": "sha256:8856d0cb0d8523ea6b02fd8cca028d76e2aba6e2774ea0008a817215bec8c743"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-final70-full1.log",
+          "bytes": 3425856,
+          "sha256": "sha256:f1933788b45717935baa1749262af27b50de35fe4a8b164c59f8479df4fc1e0e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-final70-inputs1.json",
+          "bytes": 450977,
+          "sha256": "sha256:c51954ad2881163b0817599838c59afb65856c58bf416d9d42f5a889c24231dd"
+        }
+      ]
     }
   ],
   "remaining": [
-    "Await final70-full1/session32036 actual terminal and independently reconcile all102 groups/frozen176/36061/benchmark/source equality on963d3991. Current archive/installed and pack disposition precede MS2 PR.",
-    "Complete the finite acceptance reconciliation and current archive/installed/pack admission evidence before MS2 PR. Preserve scoped resource and human-review limits.",
-    "Keep full51 exit130 and every failure/rerun separate; no supported pack/accepted pilot/human review/merge/publication is inferred."
+    "Fresh archive/source audit, isolated installed execution and finite pack disposition before MS2 PR.",
+    "Preserve full51 exit130, full67 exit1, prior failures and existing timing deferrals; no supported-pack, pilot, human review, merge or publication inference."
   ],
   "currentRequiredMatrix": {
     "asOfSlice": 69,

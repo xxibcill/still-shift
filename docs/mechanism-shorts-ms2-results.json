@@ -1,7 +1,7 @@
 {
   "schemaVersion": "mechanism-shorts-ms2-results-1",
   "milestone": "MS2",
-  "date": "2026-10-12",
+  "date": "2026-10-13",
   "status": "in-progress-three-native-pack-candidates-and-camera-recipes",
   "branch": "codex/mechanism-ms2",
   "baseMain": "3fab0162c51ca3b29fcefc2ecdbda0e475f985c9",
@@ -16471,9 +16471,9 @@
     },
     {
       "id": "final70-full1",
-      "status": "in-flight",
+      "status": "passed",
       "owningSession": 32036,
-      "actualExitCode": null,
+      "actualExitCode": 0,
       "sourceCommit": "963d3991e81f8dc03546471fafbef532d1d0aa1a",
       "requiredGroups": 102,
       "frozenItems": 176,
@@ -16484,8 +16484,8 @@
         "bytes": 4709,
         "sha256": "sha256:438f42ed826978a8283f28d8d04ebb7ab6fe277e0efe7607794c468d9d803176"
       },
-      "qualifiedPrefixGroups": 99,
-      "currentSnapshotGroup": "test:browser:mechanism-world-plate-export",
+      "qualifiedPrefixGroups": 102,
+      "currentSnapshotGroup": null,
       "completedCinematic": {
         "inventoryFixtures": 15,
         "rows": 46,
@@ -16511,6 +16511,37 @@
       "completedCachedCueExport": {
         "status": "passed",
         "directory": "/private/tmp/still-shift-ms2-cue-plate-export-I4U7tt"
+      },
+      "completedGroups": 102,
+      "sourceHoldCheckExitCode": 0,
+      "independentAudit": {
+        "path": "/private/tmp/still-shift-ms2-final70-audit1.json",
+        "bytes": 8217,
+        "sha256": "sha256:8b01796698826263a0682db0797c7827d11c7b25674c5dba7b7689cab0af17f3"
+      },
+      "benchmarkStatistics": {
+        "hz": 1093.0,
+        "minMs": 0.7321,
+        "maxMs": 2.2503,
+        "meanMs": 0.9149,
+        "p75Ms": 0.9566,
+        "p99Ms": 1.4606,
+        "p995Ms": 1.7769,
+        "p999Ms": 2.2503,
+        "rmePercent": 1.35,
+        "samples": 547
+      },
+      "completedWorldPlateExport": {
+        "status": "passed",
+        "directory": "/private/tmp/still-shift-ms2-world-plate-export-wPprtU"
+      },
+      "completedPublicCache": {
+        "status": "passed",
+        "directory": "/private/tmp/still-shift-ms2-public-cue-cache-Yh5jWs"
+      },
+      "completedCacheLifetime": {
+        "status": "passed",
+        "directory": "/private/tmp/still-shift-ms2-cue-cache-lifetime-t36DAd"
       }
     }
   ],
@@ -18833,9 +18864,8 @@
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ],
   "remaining": [
-    "Fresh full70/session32036 runs pnpm check:all on committed963d3991/held2644 inputs. All102 groups/frozen176/36061/benchmark/current archive/installed/pack disposition and MS2 PR remain; prior failures/stopped attempts remain unchanged.",
-    "Slice69 scoped browser catalogue/source1/2/3 allocation and preparation transaction lifetime complete in stages:final fast4363 units429files/26 owning controls/six current browser groups/five normal shared-parent exports56frames134passes/independent25 pins. Held2644 inputs remain exact. Fresh full102/frozen/benchmark/current archive/installed/pack disposition/MS2 PR remain; driver/physical and human limits are explicit.",
-    "Slice66 scoped code/fast/native/audit/selected final-frame review complete:8 exports/5136 native-decoded frames/64 pins/79 viewed samples. Source held2638 inputs unchanged. Reconcile finite acceptance, current full102/frozen/benchmark/final archive/installed/pack admission/MS2 PR; no human/portrait/pilot acceptance.",
-    "Slice64 completes scoped genuine spoken cue/native output evidence for four existing takes:247 words/20 windows/eight repeated outputs/5136 native and decoded frames; audit60 pins/41028 hierarchy pairs/5136 cameras and ordinary fast4353 units428files pass. Exact endpoint corrections authored, shorter revised hook recompiled. Private opt-in gate keeps full102 portable. Contact labels hidden under current occlusion policy and subtle wide-view hook travel remain visual issues; no human/portrait/pack/coverage acceptance. Whole resources/full102/frozen/benchmark/final archive/installed/pack/MS2 PR remain open. E06 primary-read supplement is ready separately; frozen selection unchanged."
+    "Full70 actual0 and independent chain/source/frozen/benchmark audit pass on963d3991. Fresh package/source archive audit, isolated installed-consumer verification, pack disposition and MS2 PR remain.",
+    "Candidate packs remain unsupported pending factual/creative/human disposition. Whole encoded glyph, continuous audiovisual/listening, material/hardware and portrait review remain unreviewed; finer Thai remains unadopted.",
+    "MS3 has not started; frozen ten-question coverage0/10, five new assets and two behaviors remain required. Prior failed/stopped attempts and counter correction remain retained."
   ]
 }

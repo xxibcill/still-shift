@@ -6,18 +6,18 @@ originally read against `aa58eddf` and now refreshed against implementation
 `963d3991`. It does not replace the plan's requirements, certify
 candidate packs, or close outstanding review dimensions.
 
-The current fresh full gate is `final70-full1`, owning session32036, on2,644
-held source inputs/120,860,793 bytes at `963d3991`. It remains live; unit4,363,
-runtime243 and integration322 tests pass, and an owned snapshot reaches group100
-(world-plate export), after commerce127 items/28,200 frames pass. Existing
-Cinematic15 fixtures/46 backend-variant rows/5,520 frames also qualify, with
-zero pixel failures/errors and18 WebGL timing deferrals recorded separately. All176 frozen items/36,061 frames pass in262.12s, independently reconciled
-against176 actual ok rows and the following script header. Remaining full102
-mechanism suffix and benchmark stay unfinished. [Full-gate history](./mechanism-shorts-ms2-full-gate-results.json)
-retains full51's stopped exit130 and full67's actual runtime exit1. Slice67
-repairs that ordinary Node syntax defect; slice69's final fast5 and current
-owning runtime/native/parent stages pass under the unchanged quotas. The private
-genuine-speech/presentation gates and human review remain separate.
+The fresh `final70-full1` gate actually exits0 on2,644 held source inputs/
+120,860,793 bytes at `963d3991`. Its independent audit reconciles all102
+sequential groups: unit4,363/runtime243/integration322/depth14, all176 frozen
+items/36,061 frames in262.12s, and the no-op benchmark (547 samples, mean0.9149ms).
+All source inputs remain exact. Commerce127 items/28,200 frames and cinematic15
+fixtures/46 rows/5,520 frames qualify;18 cinematic and1 legacy WebGL timing
+deferrals remain recorded separately. The current world-plate, public cache and
+cache-lifetime scripts complete. [Full-gate history](./mechanism-shorts-ms2-full-gate-results.json)
+retains full51's stopped exit130, full67's runtime exit1 and all historical live
+snapshots. Slice67 repairs the Node syntax defect; slice69 closes the located
+catalogue admission/rollback gap under unchanged quotas. Fresh proof does not
+supply world61's missing historical terminal or human production review.
 
 | #   | Approved requirement                                                 | Delivered software and scoped evidence                                                                                                                                                                                                                                                                                                                               | Remaining acceptance                                                                                                                                                                                                                                          |
 | --- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -29,7 +29,7 @@ genuine-speech/presentation gates and human review remain separate.
 | 6   | Legal transitions, event order and located relationships             | Authored timeline, pure states, located transition/contact/event negatives and actual family cycles. [Timeline](./mechanism-pack-timelines.md), slice38.                                                                                                                                                                                                             | Current complete gate. MS3 owns unified production-report integration and continuous review dimensions.                                                                                                                                                       |
 | 7   | Six camera recipes, cuts/holds/transitions, larger substitution      | All three families/two sizes, native four-frame shots/six recipes and repeated cycles; source bound/lens/near-plane/proof rays and authored overrides. Slice17; genuine66 independently checks every final held-camera matrix.                                                                                                                                       | Existing plan checkbox is scoped software complete. Arbitrary unsupplied times/imports and human appearance remain explicitly outside that proof.                                                                                                             |
 | 8   | Deterministic competing labels, screen/world/surface routes          | Cue-wide locks/priority/backtracking, safe/caption/contact exclusions, impossible-layout diagnostics and reverse/shuffled seeks; physical world and guarded opaque rigid-surface routes. [Layout](./mechanism-cue-layout.md), slices44/54–56.                                                                                                                        | Current full/installed. Whole encoded glyph/readability and human review stay separate from measured native glyph/layout and scoped ink checks.                                                                                                               |
-| 9   | Five annotation styles, hidden/offscreen behavior and plate reuse    | Explicit tab/open-callout/bracket/arrow/highlight recipes, deterministic hidden policies; surface edits invalidate native picture. Public cache API/CLI keeps original authenticated plates through caption/audio edits with zero new native submissions; live edits/cancel/recovery. [Cache](./mechanism-cue-native-plates.md), slices53–63.                        | Current full/final installed and whole resource closure. World61 original producer terminal remains unverified despite its independent audit; a new completed owning run is required.                                                                         |
+| 9   | Five annotation styles, hidden/offscreen behavior and plate reuse    | Explicit tab/open-callout/bracket/arrow/highlight recipes, deterministic hidden policies; surface edits invalidate native picture. Public cache API/CLI keeps original authenticated plates through caption/audio edits with zero new native submissions; live edits/cancel/recovery. [Cache](./mechanism-cue-native-plates.md), slices53–63.                        | Current full/final installed and whole resource closure. Fresh full70 supplies current owning world/cache proof; world61 original producer terminal remains unverified.                                                                                       |
 | 10  | Genuine cue-driven picture/annotation/caption/sound and shorter take | Four whole48k supplied recordings,247 words/20 windows; strict source/read/action bounds and all five tracks; shorter changed-copy hook uses its own words. Eight repeated outputs/5,136 native-decoded frames; final66 audit64 pins/79 viewed samples and unchanged full AAC PCM versus64. [Presentation](./mechanism-shorts-ms2-spoken-presentation-results.json). | Current aggregate/installed. No speech stretch/filler/synthesis. Whole-clip glyph, continuous audiovisual/listening, factual and portrait pilot acceptance remain open.                                                                                       |
 | 11  | Registry discovery/schema/help and stable revision editing           | Shared family schemas/help/examples/metadata; bounded32KiB/100-item responses with complete reports,16KiB/32-op CAS, atomic saved publication, stale/conflict/unsupported negatives; revision-bound compile/render/check. Slices40–43/62 in [results](./mechanism-shorts-ms2-results.json).                                                                          | Current full/final installed capability refresh.                                                                                                                                                                                                              |
 | 12  | Classified topic/family board and fixed denominator                  | Frozen ten questions;5 existing routes/3 new-asset routes/2 new-behavior routes;5 total assets/2 behaviors still required. Exact board/selection hashes and independent accounting. [Board](./mechanism-topic-family-coverage.md), slice50; scoped E06 source access65.                                                                                              | Board creation is complete. Positive supported episode admission and the actual five assets/two behaviors belong to MS3. Coverage stays0/10 until actual episode requirements and review receipts validate; questions remain fixed.                           |
@@ -38,12 +38,9 @@ genuine-speech/presentation gates and human review remain separate.
 
 ## Finite next work
 
-1. Complete the live final70 gate and independently reconcile its exact102-group
-   chain, frozen matrix, actual benchmark measurements and unchanged source hold.
-   Slice67's located ordinary-Node failure is repaired; do not repeat that repair
-   or restart the live owning process. Preserve failed attempts and reruns
-   separately. World61's missing original terminal cannot be manufactured from
-   its audit; the current owning full route supplies fresh proof if it completes.
+1. Full70 and its independent audit complete on the held source. Preserve the
+   failed and stopped attempts, reported timing deferrals and benchmark scope.
+   Fresh final archive and installed execution remain required before the PR.
 2. Close or locate the remaining aggregate source/preparation/world/result/replay
    resource accounting against the existing512MiB Node/8GiB application policy.
    Slice69 closes the located browser-catalogue admission/transaction rollback
