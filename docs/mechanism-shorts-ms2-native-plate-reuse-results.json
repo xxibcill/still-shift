@@ -1,0 +1,197 @@
+{
+  "version": "mechanism-shorts-ms2-native-plate-reuse-results-1",
+  "date": "2026-10-12",
+  "branch": "codex/mechanism-ms2",
+  "baseCommit": "a4967b46",
+  "status": "completed-internal-partition-and-overlay-lowering-only",
+  "implementation": {
+    "sourcePartition": "Flat compiled cue source retains its one physical controller, all pinned world-text/surface layers, referenced native body/world fonts and native procedural graduation font. Screen labels/captions and audio edits are excluded; root dependencies/parents/effects outside this subset reject with a located diagnostic.",
+    "qualification": "Internal source partition and overlay data lowering only. No authenticated cache, cached export, zero-new3D-draw receipt, public cache API, preview pixel parity or production acceptance is claimed.",
+    "overlayLowering": "Retain normal flat layers, audio and group ancestry; replace the physical controller with an admitted matching sequence asset, bake every native screen binding into integer-held opacity/position/path keys, remove world text baked into plates and remove native bindings/overlayAfter. Uses existing2000-key bound and rejects changed local clocks. Native evaluation provides pure data only; absent sequence bytes in unit fixtures are intentionally placeholders."
+  },
+  "attempts": [
+    {
+      "id": "partition-red1",
+      "session": 42563,
+      "actualExitCode": 1,
+      "reason": "Missing internal source-partition module: one failed suite/no tests collected.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate57-partition-red1.log",
+        "bytes": 1567,
+        "sha256": "sha256:fbb84b80705b1c118f41464ac5c1cb3737746dd11e2859f3173b6928cbb0c53a"
+      }
+    },
+    {
+      "id": "partition-focused1",
+      "session": 61173,
+      "actualExitCode": 1,
+      "reason": "Two failed/21 passed across three files. Actual scene semantics rejects missing pinned graduation font for tape-hook even without world text; retain textureFont dependency.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate57-partition-focused1.log",
+        "bytes": 4897,
+        "sha256": "sha256:5c6b97857763f509fab1a0a966ed1f7487a55cd8eb8f31493bad2a62539234a1"
+      }
+    },
+    {
+      "id": "partition-focused2",
+      "session": 77377,
+      "actualExitCode": 0,
+      "reason": "Graduation font retained and independently changed/missing-font controls added;24 tests/three files pass. All three screen/audio edits preserve native partition; world/camera/dimension/asset/font changes alter it.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate57-partition-focused2.log",
+        "bytes": 1712,
+        "sha256": "sha256:188cbd64d27e7a2554fb4664ce3a30e8543837fd94116a185e0025e511c1635c"
+      }
+    },
+    {
+      "id": "build1",
+      "session": 1409,
+      "actualExitCode": 2,
+      "reason": "Invalid negative camera2d fixture used zoom instead of required keys; corrected fixture, retained failed build.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate57-build1.log",
+        "bytes": 1344,
+        "sha256": "sha256:3bfa42d5d2d4626e794a3fa0cb0ca0b8c23f3beef9bd7179e8172d95a97fa84b"
+      }
+    },
+    {
+      "id": "overlays-red1",
+      "session": 53090,
+      "actualExitCode": 1,
+      "reason": "Missing lowering module: one failed suite/no tests collected.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate57-overlays-red1.log",
+        "bytes": 1646,
+        "sha256": "sha256:91c4f1b794e3c819434fd499cb0edfe8cbab36116fe32ef6a8bd6c54eda805a0"
+      }
+    },
+    {
+      "id": "overlays-focused1",
+      "session": 52417,
+      "actualExitCode": 1,
+      "reason": "Three failed/eight passed: default physical anchors left every label hidden; retain visibility-positive oracle and select actual visible anchors.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate57-overlays-focused1.log",
+        "bytes": 2403,
+        "sha256": "sha256:d36e8904fcc3038a64c98f440f34f7825b8da27fb715f7b673da0d3eaebf6d6a"
+      }
+    },
+    {
+      "id": "overlays-focused2",
+      "session": 46270,
+      "actualExitCode": 1,
+      "reason": "Three failed/eight passed: five simultaneous diagnostic labels exceeded unchanged safe-area admission; use the established per-cue five-style arrangement.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate57-overlays-focused2.log",
+        "bytes": 3097,
+        "sha256": "sha256:8456762a161b2f356273b60429c0bd89e46e3daa0618843f8d7a361dfc138627"
+      }
+    },
+    {
+      "id": "overlays-focused3",
+      "session": 57892,
+      "actualExitCode": 1,
+      "reason": "Three failed/eight passed: keyed path evaluation materializes schema-defined zero tangents, while the native binding omits them. Compare exact vertices/tangents with the documented default.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate57-overlays-focused3.log",
+        "bytes": 3227,
+        "sha256": "sha256:1e070456217f86dd097ada1ca9329e32da4eddca8bc5ac8793f0c2eafcc5aacd"
+      }
+    },
+    {
+      "id": "overlays-focused4",
+      "session": 3487,
+      "actualExitCode": 1,
+      "reason": "Three failed/eight passed: test attempted style lookup in stable hashed IDs. Bind authored style references to their stable compiled IDs; visible oracle remains strict.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate57-overlays-focused4.log",
+        "bytes": 2723,
+        "sha256": "sha256:7a98912f2a79d05b989ea9714fc046239a804d58434099773d1815747f0263e1"
+      }
+    },
+    {
+      "id": "overlays-focused5",
+      "session": 86889,
+      "actualExitCode": 1,
+      "reason": "One failed/12 passed: tape-hook exhaustive120-frame traversal exceeded default5s. Explicit30s test budget retains all120 evaluations; cable/peg parity already passed.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate57-overlays-focused5.log",
+        "bytes": 2512,
+        "sha256": "sha256:22c93d1976b60969c5918028c377e04956bcc77896abcf81403606d8273e017b"
+      }
+    },
+    {
+      "id": "build2",
+      "session": 74036,
+      "actualExitCode": 2,
+      "reason": "Sequence asset type is inferred from existing Composition assets; nonexistent named export replaced with existing discriminated type, without public schema changes.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate57-build2.log",
+        "bytes": 570,
+        "sha256": "sha256:15b0c3623e74ed30b74da5e309e54832fd28f2062d08cd19732b53f5e83883ce"
+      }
+    },
+    {
+      "id": "overlays-focused6",
+      "session": 61941,
+      "actualExitCode": 0,
+      "reason": "13 tests/two files pass. All three families/all five visible styles/120 forward-reverse samples each match exact matrices, effective alpha and canonical path vertices/tangents. Bracket groups preserve nonzero parent offsets and inherited opacity including zero transitions. Hidden/default, clock and2000-key admission negatives pass.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate57-overlays-focused6.log",
+        "bytes": 1137,
+        "sha256": "sha256:5fb61b4f96df17ca76848b8a9a2e402bf120b434320ece4ce2411da2b951f598"
+      }
+    },
+    {
+      "id": "build3",
+      "session": 38715,
+      "actualExitCode": 0,
+      "reason": "Pinned TypeScript build passes after retaining both failed builds.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate57-build3.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "fast1",
+      "session": 68320,
+      "actualExitCode": 0,
+      "reason": "Final local fast gate:4344 units/427 files; generated schemas/identity, boundaries, formatting, lint and build all pass. No GPU/export or cache-execution claim.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate57-fast1.log",
+        "bytes": 39071,
+        "sha256": "sha256:12720bce54bd085475615a6fb42ec9dc140cffbb53e60f65a7a1d4f22278f34b"
+      }
+    }
+  ],
+  "remaining": [
+    "Actual shared native clean-plate export and retained original source/code/dependency/observation closure; authenticate sequence manifest and every frame before reuse.",
+    "Actual shared native clean-plate export/hashed immutable original receipts, public revision-safe cache lifecycle and zero-new3D-draw cached rendering/checking. Preserve full source/code/body provenance; do not relabel old observations as fresh.",
+    "Final native/direct/reused parity, cache invalidation/mutation/cancellation/resource gates, full97/archive/installed/pack/MS2 PR and remaining milestones. Packs/pilot0; MS3 not started. No paid generation or owner acceptance."
+  ],
+  "designNotes": {
+    "path": "/private/tmp/still-shift-ms2-cue-plate-reuse-design-notes1.json",
+    "bytes": 3595,
+    "sha256": "sha256:81d05c90409d09365bbacfb75e457f89db3f73250554676a890b161af9da863d"
+  },
+  "heldInputs": {
+    "path": "/private/tmp/still-shift-ms2-plate57-inputs1.json",
+    "bytes": 446129,
+    "sha256": "sha256:ccdad7ca736b98c276febefb7c2de94cdf8b2b8c72298894be857c11159657a4"
+  },
+  "heldInputCounts": {
+    "files": 2615,
+    "bytes": 120472825
+  },
+  "softwareProof": {
+    "visibleFamilies": 3,
+    "stylesPerFamily": 5,
+    "integerFramesPerFamily": 60,
+    "forwardReverseEvaluationsPerFamily": 120,
+    "qualifiedComparisons": "Exact screen matrices, exact canonical cubic path vertices/tangents, effective alpha to1e-12, source/audio-layer immutability and nonzero/zero inherited group opacity. Pure source/data proof; sequence placeholders are not retained/authenticated bytes.",
+    "freshNativeExports": 0,
+    "cachedExports": 0,
+    "zeroDrawReuseProved": false
+  }
+}

@@ -94,12 +94,23 @@ still hold before relying on them.
   Actual96.31996155x83.2px shaping fits final104x84/font64; thresholds unchanged.
   Build10 completion remains unverified after truncated tool output; owned
   build11/12 and final fast11 confirm repairs. Next is actual label-only plate reuse.
+  Slice57 completes the internal native source partition and integer-held overlay
+  lowering. The physical graduation/world fonts remain pinned; screen/audio edits
+  preserve the native partition. All five visible styles in all three families
+  preserve120 forward/reverse matrices, canonical path geometry and effective
+  alpha, including offset/opacity groups and hidden/clock/key-limit controls.
+  Fast1 passes4,344 units/427 files; held2,615 inputs/120,472,825B unchanged.
+  Missing modules/fonts, invalid fixture/type/layout assumptions, tangent defaults,
+  hashed test IDs and the exhaustive tape test timeout are repaired and retained.
+  Original authenticated plate capture, revision-safe reuse/checks and zero fresh
+  3D draws remain required; no cache export or new public cache API is claimed.
   The full matrix is97; no full97 pass claimed.
   Coverage stays 0/10 validated; packs are candidates; accepted pilot episodes 0.
   Next: label-only plate reuse; bound fresh
   speech/sample clocks and cue exports; refresh the full gate,
   whole resources/final installed/pack admission and MS2 PR. MS3 not started.
   No human acceptance, merge/publication or paid generation.
+  [Plate foundation](./mechanism-shorts-ms2-native-plate-reuse-results.json),
   [Surface evidence](./mechanism-shorts-ms2-surface-marking-results.json),
   [World text evidence](./mechanism-shorts-ms2-world-annotation-results.json),
   [Screen style evidence](./mechanism-shorts-ms2-annotation-style-results.json),
@@ -264,6 +275,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — MS2 slice57: native picture partition and overlay lowering
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `a4967b46`.
+- **Done:** internal source partition retains physical/world fonts and native motion;
+  sampled screen bindings lower to ordinary integer-held sequence overlays.
+- **Results:** fast1 passes4,344 units/427 files; focused13 tests/two files and
+  build3 pass. Five visible styles/three families preserve exact geometry/matrices
+  and effective opacity over120 forward/reverse samples, including groups/hidden
+  states and unchanged audio. Held2,615 inputs/120,472,825B unchanged.
+- **Rejected / do not repeat:** missing graduation font, all-hidden positive test,
+  crowded fixture, raw omitted-tangent equality, style lookup in hashed IDs, wrong
+  type exports and default5s exhaustive tape budget. Failed attempts retained.
+- **Open / next:** authenticated shared native plates, actual cached export and
+  zero fresh3D draw proof, invalidation/cancel/resource/full97/installed/pack/MS2 PR.
+  This slice has no public cache API or cached render. Packs/pilot0; MS3 not started.
+- **Records:** [plate foundation](./mechanism-shorts-ms2-native-plate-reuse-results.json),
+  [plan](./mechanism-shorts-production-plan.md), [MS2](./mechanism-shorts-ms2-results.json).
 
 ### 2026-10-12 — MS2 slice56: rigid surface marking and stable depth ties
 

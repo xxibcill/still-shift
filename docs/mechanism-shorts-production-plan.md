@@ -881,8 +881,13 @@ mechanism families establish whether the architecture transfers.
       centered-group, cable framing and mismatched arrow ink failures are repaired
       and retained in [style evidence](./mechanism-shorts-ms2-annotation-style-results.json).
       Slices55/56 cover bounded world/surface binding and actual invalidation.
-      Label-only native-plate reuse and broader encoded/human acceptance keep
-      this criterion unchecked.
+      Slice57 verifies the internal native-picture partition and integer-held
+      lowering of all five screen styles, including group/hidden semantics.
+      Final fast1 passes4,344 units/427 files; held2,615 inputs unchanged. These
+      are pure data tests; no authenticated plate or cached export is claimed.
+      [Foundation evidence](./mechanism-shorts-ms2-native-plate-reuse-results.json)
+      retains all failed attempts. Label-only native-plate reuse and broader
+      encoded/human acceptance keep this criterion unchecked.
 - [ ] Compile semantic contact/release/return events from supplied narration cues
       into all picture, annotation, caption and sound tracks. Reject overfull shots,
       out-of-recording cues and insufficient reading/action time. Do not stretch

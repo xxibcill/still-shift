@@ -16082,6 +16082,23 @@
         "sha256": "sha256:95b0a9f2ac7bca2263d2bd302c6b19d226a8595986c348022b5cd998b5fdd4e6"
       },
       "qualification": "Integer-frame cue-wide envelope and actual-visible engineering proof with synthetic local PCM and 240x136 diagnostic frames. Does not prove arbitrary fractional contact sweeps, all layouts/world/surface/annotation primitives, complete encoded glyph readability, genuine spoken input, whole resource/lifetime accounting or full/final installed acceptance. Supported packs/pilot 0; no human acceptance, paid generation, merge or publication."
+    },
+    {
+      "id": "native-plate-foundation57",
+      "status": "passed-internal-data-only",
+      "sourceCheckpoint": "a4967b46",
+      "record": {
+        "path": "docs/mechanism-shorts-ms2-native-plate-reuse-results.json",
+        "bytes": 9743,
+        "sha256": "sha256:35b7deb0c0cc0268b7150511674948f8afcbf58b0bb0ae1b4eb36d414d614cd8"
+      },
+      "actualFastSession": 68320,
+      "actualExitCode": 0,
+      "unitTests": 4344,
+      "unitFiles": 427,
+      "heldInputFiles": 2615,
+      "heldInputBytes": 120472825,
+      "qualification": "Internal source partition and integer-held2D lowering only; no GPU/native/cached export or zero-fresh3D-draw reuse proof/public cache API."
     }
   ],
   "implementation": {
@@ -18105,6 +18122,7 @@
     }
   },
   "limits": [
+    "Slice57 completes internal native-picture partition and integer-held overlay lowering. Final fast1 passes4344 units427files, focused13 tests/two files/build3 pass; held2615 inputs120472825B unchanged. All five visible screen styles/three families match matrices/canonical path geometry/effective alpha in120 forward/reverse evaluations including offset and opacity groups. Hidden/clock/key-limit negatives and source/audio immutability pass. All failures retained. Actual authenticated plate capture, cached export and zero-fresh3D-draw proof/public lifecycle, invalidation/cancel/resource/full97/final archive/installed/pack/MS2 PR remain open. Packs/pilot0; MS3 not started.",
     "Slice56 completes the bounded rigid surface software route and deterministic shared depth ties. Final fast11 passes4331 units425files; native2/source audit9 passes70 readbacks30 exact pairs/cancellation. Surface9 and independent audit2 pass360 previews1080 seeks/six exports360 native frames18 controls/24 triangle-box quads; encoded ink minimum31 at unchangedRGB28/min3. Default world1/audit1 passes and preserves all360 preview/decoded frames/six audio/encoded bodies against slice55. All24 original surface/world PNGs agent-viewed; held2611 inputs120444661B unchanged through staged gates. Failed attempts retained. Label-only plate reuse, genuine speech, whole resources/lifetime/replay/full97/final archive/installed/pack/MS2 PR/owner acceptance remain open. Packs/pilot0; MS3 not started.",
     "Slice55 verifies explicit part-bound world text/CAS/native invalidation and physical hidden-part ancestry. Final fast6 passes4320 units/424 files; native1 owning source unchanged; browser3 passes360 previews1080 seeks/six exports360 native frames18 controls. Independent PNG/matrix/decode/source-clock/control audit passes; all12 PNGs agent-viewed. ACES color-filter, hidden required-shape, receipt-type and formatting failures remain retained. True surface marking, label plate reuse, genuine speech, whole resources/lifetime/replay/full96/final installed/pack admission/MS2 PR/human acceptance remain open. Packs/pilot0; MS3 not started.",
     "Slice54 wires five screen cue recipes across three candidate families; final fast2 passes4313 units/423 files, native depth14/six composition/cancellation pass, and fresh180 previews/540 seeks/six exports360 native frames plus independent decoded/body/PNG audit pass on unchanged2603 inputs120347181B. Red, fixture, type, camera and arrow-ink failures remain retained. World/surface routes, plate reuse, genuine speech and remaining MS2/full95/final/pack/pilot/human/PR gates remain open.",
