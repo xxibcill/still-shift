@@ -515,11 +515,11 @@
       ],
       "qualification": "Fresh complete gate after committed slices67\u201369. Fast/focused/native/normal-parent proofs are separate prerequisite stages; await actual outer terminal, exact chain reconciliation/frozen/benchmark measurements and final source hold.",
       "latestLiveSnapshot": {
-        "path": "/private/tmp/still-shift-ms2-final70-progress9.json",
-        "bytes": 4301,
-        "sha256": "sha256:7fce5925db50a75c0cc793f7e4e6b2cbee200b9fe279438ac90723f01ff2c94e"
+        "path": "/private/tmp/still-shift-ms2-final70-progress10.json",
+        "bytes": 4417,
+        "sha256": "sha256:e87897c627d1e8c4d1d20865604eac64fe2bfb668cf1592f84eacd3e0c47a3bc"
       },
-      "latestSnapshotQualification": "Owned session live at cue-layout/group93; preceding92 sequential scripts exit0. Narrated cycles/cue edits/saved cue lifecycle, count-fit63-string cases and WebGL/Canvas weight matrices (24 exports each) complete. Frozen176/36061/262.12s remains verified;2644/120860793B inputs exact. Remaining full suffix/benchmark/installed acceptance unproven; engineering PCM does not replace genuine speech/human acceptance.",
+      "latestSnapshotQualification": "Owned session live at world-annotations/group96; preceding95 scripts exit0. Layout3 families/12 exports/720 frames/all-frame glyph bounds+seek pixels, cameras3 families/two dimensions/156 captures/12 exports, and annotation5 recipes per family/180 preview frames/540 seeks/6 exports/360 native frames complete. Held2644/120860793B exact; world/surface/cache suffix/benchmark/installed acceptance remains unproven. Human whole-clip glyph/physical acceptance remains separate.",
       "priorLiveSnapshots": [
         {
           "path": "/private/tmp/still-shift-ms2-final70-progress5.json",
@@ -540,6 +540,11 @@
           "path": "/private/tmp/still-shift-ms2-final70-progress8.json",
           "bytes": 4164,
           "sha256": "sha256:8c4e8955fef1ee2ad648d12a1f9f7a87c5ebfd5a5ada82143e71687e58a00683"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-final70-progress9.json",
+          "bytes": 4301,
+          "sha256": "sha256:7fce5925db50a75c0cc793f7e4e6b2cbee200b9fe279438ac90723f01ff2c94e"
         }
       ],
       "frozenCompletion": {
