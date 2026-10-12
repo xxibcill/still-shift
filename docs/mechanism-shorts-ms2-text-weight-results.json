@@ -1,0 +1,256 @@
+{
+  "version": "mechanism-ms2-text-weight-results-1",
+  "date": "2026-10-11",
+  "baseSourceCommit": "0022840c11b76c1cf1b1705d63c96a606020fa1f",
+  "branch": "codex/mechanism-ms2",
+  "status": "explicit-treatment-api-and-local-software-verified-in-stages",
+  "scope": [
+    "Explicit auto/genuine-weight/outline treatment on weight events and intent presets.",
+    "Pure companion receipts expose axis delta versus stroke pixels, declared font identities/ranges/instances, resolved route and located unavailable requests.",
+    "Genuine weight requires complete positive headroom on all targeted painted runs; explicit outline always emits stroke pixels; legacy automatic defaults and clamping remain.",
+    "Focused tests cover static/maximum/insufficient/mixed runs, unused fully covered base, preset propagation, both release routes and backward poses.",
+    "Final review includes initial text as well as authored states in span coverage, and conservatively retains the base font for generated counts; two additional regression tests pass."
+  ],
+  "counts": {
+    "unitTests": 4283,
+    "unitFiles": 420,
+    "newUnitTests": 13,
+    "focusedTests": 35,
+    "focusedFiles": 1,
+    "runtimeTests": 30,
+    "runtimeFiles": 5,
+    "supportedPacks": 0,
+    "pilotAcceptedEpisodes": 0
+  },
+  "heldInputs": {
+    "path": "/private/tmp/still-shift-ms2-weight45-inputs10.json",
+    "bytes": 436409,
+    "sha256": "sha256:ce0d6c13b64ef5f1d63db0b8a664df405272a23ca7b83d52cb58a5812671144a",
+    "files": 2559,
+    "inputBytes": 119471782
+  },
+  "roots": [
+    {
+      "sessionId": 20596,
+      "exitCode": 0,
+      "passed": ["format1", "build1"]
+    },
+    {
+      "sessionId": 50422,
+      "exitCode": 1,
+      "failed": "unit2: maximum-weight fixture put axes on the node rather than supported text style",
+      "passedTests": 29
+    },
+    {
+      "sessionId": 5164,
+      "exitCode": 0,
+      "passed": ["format3", "unit3: 30 tests", "build3"]
+    },
+    {
+      "sessionId": 17650,
+      "exitCode": 0,
+      "passed": ["format4", "unit4: 33 tests", "build4"]
+    },
+    {
+      "sessionId": 89956,
+      "exitCode": 0,
+      "passed": ["schema5", "identity5", "format5"]
+    },
+    {
+      "sessionId": 18683,
+      "exitCode": 0,
+      "passed": ["inputs6", "fast6: 4281 tests/420 files"]
+    },
+    {
+      "sessionId": 48195,
+      "exitCode": 0,
+      "passed": ["runtime7: 30 tests/5 files", "hold7"]
+    },
+    {
+      "sessionId": 30760,
+      "exitCode": 0,
+      "passed": ["docs8", "hold8", "git diff --check"]
+    },
+    {
+      "sessionId": 58921,
+      "exitCode": 0,
+      "passed": [
+        "format9",
+        "identity9",
+        "inputs9",
+        "fast9: 4282 tests/420 files"
+      ],
+      "qualification": "Initial-text coverage fix; refreshed again after final generated-count conservative targeting change."
+    },
+    {
+      "sessionId": 46012,
+      "exitCode": 0,
+      "passed": [
+        "format10",
+        "identity10",
+        "inputs10",
+        "fast10: 4283 tests/420 files"
+      ]
+    },
+    {
+      "sessionId": 28945,
+      "exitCode": 0,
+      "passed": ["runtime10: 30 tests/5 files", "hold10"]
+    },
+    {
+      "sessionId": 47729,
+      "exitCode": 0,
+      "passed": [
+        "real CLI report schema export: 6328 bytes; bounded receipt 704 bytes"
+      ]
+    }
+  ],
+  "qualification": "Local API/compiled-animator/pose checks only. No new actual-font raster or encoded export proof; no full software/benchmark/final archive/installed verification, supported-pack promotion or human acceptance. No paid generation, merge or publication.",
+  "remaining": [
+    "Pinned MS1 font-byte/cut/axis proof, actual genuine/outline/legacy raster and encoded comparisons, natural English gaps, full release/end/backward/random rendered states.",
+    "Scoped count+fit and all six Thai risk reproductions before adopting finer motion.",
+    "Coverage board, broader label/continuous/readability and genuine spoken inputs, whole resource/lifetime/full/final installed gates before MS2 PR and MS3."
+  ],
+  "logs": [
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-build1.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-build3.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-build4.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-cli10.log",
+      "bytes": 193,
+      "sha256": "sha256:d929aad86b2334ad437722480169bda6adc5376ecfbe7b5b948b96062d2eee16"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-docs8.log",
+      "bytes": 237,
+      "sha256": "sha256:3e97238fa94eb58925d4204925f1269eb05cecaa640b4e393ae981daa627f1b7"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-fast10.log",
+      "bytes": 37193,
+      "sha256": "sha256:9e9cd7c7fe3aebffe3c1efa4e14babaab81e1c1c35cae2a103e1a714595e6885"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-fast6.log",
+      "bytes": 38817,
+      "sha256": "sha256:8477c1a985457554348f68cb73d94d1e9450b3933d55af93a5b739d5dd2c231f"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-fast9.log",
+      "bytes": 36993,
+      "sha256": "sha256:17a3ebb0ba62f0ff9fb90dcbad228b147c84e0bedb12b68b2c4572b13f35b7ff"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-format1.log",
+      "bytes": 396,
+      "sha256": "sha256:7462c57c59029758c5b99589c265013eaeccdd690c839598ef026877a956d06a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-format10.log",
+      "bytes": 96,
+      "sha256": "sha256:affed90809b39a6df24ff4617879bb4494051de1929c63b3a2f5c2fce228231a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-format2.log",
+      "bytes": 42,
+      "sha256": "sha256:c21bb95a4a1400ac182c9751da657f1a1556d42fce037602282397245d2cd221"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-format3.log",
+      "bytes": 42,
+      "sha256": "sha256:876c435c1d8ad1d9f2c8bc72ce1102cb5e408408efabd1801f876bd0cf07dff2"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-format4.log",
+      "bytes": 42,
+      "sha256": "sha256:cc97a5570fbf15d3f7da9676f4d710171e66692cb50868f2f9c7d30a781802c5"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-format5.log",
+      "bytes": 305,
+      "sha256": "sha256:b483e4000ce20e017172689031288beb035f627d67ea777ceeb130837c82f393"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-format9.log",
+      "bytes": 108,
+      "sha256": "sha256:6380bd9ed6feb0d0907b466e7e075118b08ca3c310e1ae6abfc2b7da8ff96cc9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-hold10.log",
+      "bytes": 131,
+      "sha256": "sha256:b1c14c8a6580681f75ec5ee8cde91aae0b70ef0bf9b9b0b71c67aa0a4206f7dd"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-hold7.log",
+      "bytes": 130,
+      "sha256": "sha256:13c57051b328161a162d74bbd30e0f3d5fe882d1bad10bd250f6b55ec36306cc"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-hold8.log",
+      "bytes": 130,
+      "sha256": "sha256:13c57051b328161a162d74bbd30e0f3d5fe882d1bad10bd250f6b55ec36306cc"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-identity10.log",
+      "bytes": 260,
+      "sha256": "sha256:f8b990eb654ee3d38a2620f9d42772d15b1ca019d5af0d4125e264c212069d90"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-identity5.log",
+      "bytes": 260,
+      "sha256": "sha256:f8b990eb654ee3d38a2620f9d42772d15b1ca019d5af0d4125e264c212069d90"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-identity9.log",
+      "bytes": 260,
+      "sha256": "sha256:f8b990eb654ee3d38a2620f9d42772d15b1ca019d5af0d4125e264c212069d90"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-runtime10.log",
+      "bytes": 3421,
+      "sha256": "sha256:4ad7d6515d99fb3f988c7603c61ff98027ec5011fe00ed1a64c721f474f2200a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-runtime7.log",
+      "bytes": 3188,
+      "sha256": "sha256:69fb401c53da6e9af9d91e3d97d90cc755725176b5a1788c3f735c0cc1e2a3a9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-schema5.log",
+      "bytes": 653,
+      "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-unit2.log",
+      "bytes": 4616,
+      "sha256": "sha256:a1f12572e2e49b4e8cb0cc02af942cc9149b7b4a405b56153743b9579d221bd6"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-unit3.log",
+      "bytes": 314,
+      "sha256": "sha256:f2238dcdc6a5ef9dddafe41ee11f222e1f21f3394a443fb3ff85d8fe278c115f"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight45-unit4.log",
+      "bytes": 314,
+      "sha256": "sha256:f215883805d7100c5f0bdadb741fcaa5bb8cba1f76deb9db0a1726cd105cef54"
+    }
+  ],
+  "reviewFixes": [
+    "Include initial text in whole-node span coverage, even when every listed shorter state is fully covered.",
+    "Retain base font for count-generated strings until shared generated-string coverage can prove it unused; this does not adopt count+fit or change legacy counting."
+  ],
+  "followUpRenderEvidence": "docs/mechanism-shorts-ms2-text-weight-render-results.json"
+}

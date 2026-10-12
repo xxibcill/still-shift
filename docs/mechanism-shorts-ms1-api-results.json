@@ -1,0 +1,430 @@
+{
+  "schemaVersion": "mechanism-ms1-api-evidence-1",
+  "createdAt": "2026-10-09T18:06:04.168057+00:00",
+  "worktree": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift",
+  "sourceIdentity": {
+    "branch": "codex/mechanism-ms1",
+    "head": "7519c19d53beabd7c78288b0500896612bfda562",
+    "sharedContractEvaluatorSlice": "fbf9460c",
+    "scope": "Uncommitted owned CLI/protocol/package/audio and narrow source fixes, combined with parent/sibling lifecycle/browser changes; no agent staging or commits."
+  },
+  "ownedFileIdentities": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/protocol.ts",
+      "available": true,
+      "bytes": 9657,
+      "sha256": "sha256:37f33c3f18a0d77232e6e84acc1b430618679004c8c304b0f8946b964dd169ec"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tools/still-shift-cli/src/episode.ts",
+      "available": true,
+      "bytes": 21037,
+      "sha256": "sha256:f0f402e7a1a2ed1c27c018af4c7c743df5172f7c8bfeaa1d3079670d2be65dfe"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tools/still-shift-cli/src/cli.ts",
+      "available": true,
+      "bytes": 18854,
+      "sha256": "sha256:91c715684fb68871f32078a1950d638935ba6aa0035133063893bbac6632821b"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/io.ts",
+      "available": true,
+      "bytes": 15519,
+      "sha256": "sha256:0e46cc0fbd816b1683990ed8e550357641bf0600869b7f10db27d8ce687076d7"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/package.ts",
+      "available": true,
+      "bytes": 23206,
+      "sha256": "sha256:d1747ead209e8ed2d1676b5ef1ce2c8bb557eba3a2d8aa92f53a0f8ea40f9465"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/audio-verification.ts",
+      "available": true,
+      "bytes": 17822,
+      "sha256": "sha256:1fdc28220680bb1409a1c34da715d4b53b556ebcbf10f4c91e9972a4475b1557"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/tape-hook.ts",
+      "available": true,
+      "bytes": 13953,
+      "sha256": "sha256:e57eaea499d18dd12f67e6c2e82f28769912b607afb440527861e09654dad021"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/scene-contract/src/mechanism/episode.ts",
+      "available": true,
+      "bytes": 8963,
+      "sha256": "sha256:86c2ea2ccbc79873a3998edf318c80501d6e445aa7607b6cb8dea2f1434cb263"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/mechanism/canonical.ts",
+      "available": true,
+      "bytes": 1871,
+      "sha256": "sha256:0b97d5dd72139191e4e24a7f77dc157aed4abfbe8f7f1611b09aea9b4e9935eb"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/runtime/mechanism-cli.test.ts",
+      "available": true,
+      "bytes": 8924,
+      "sha256": "sha256:4243db04edff60cf2248b915c747197f133d52a0f0e5fcbb5f3ccf4cffb01d98"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/runtime/mechanism-package.test.ts",
+      "available": true,
+      "bytes": 13450,
+      "sha256": "sha256:a17b7bbe7e6e98242723636d117e11ff8a6e69ebb0233d7a02103d0a4ce21030"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/runtime/mechanism-audio.test.ts",
+      "available": true,
+      "bytes": 6643,
+      "sha256": "sha256:9988ad2ef779a8bab79dffb36f39f5ec7e5c56c359cfcc866f9d8ee47085fc65"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-protocol.test.ts",
+      "available": true,
+      "bytes": 4738,
+      "sha256": "sha256:07211ddfb175217f15b14337a1de67fb23a02c9b265381e76c4b0537629c697b"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/geometry.schema.json",
+      "available": true,
+      "bytes": 7237,
+      "sha256": "sha256:01a7e3e1e872ab0c15ad5fe6b5ec2ef6d815a4f25931889ce9e306a78ab45ed4"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/scene.schema.json",
+      "available": true,
+      "bytes": 22452,
+      "sha256": "sha256:a7e7a4e8b4e3c2f28b5c57d20506e580a939f4ad53c6a40148e0e6597d645701"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/episode.schema.json",
+      "available": true,
+      "bytes": 15110,
+      "sha256": "sha256:da58c871b12db21853c12676a5b2a21c2abcc4df472ebeb923e3883874b52805"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/frame.schema.json",
+      "available": true,
+      "bytes": 8643,
+      "sha256": "sha256:2a6df7ac21e23bdb32ba53a47a547c615b105964210b1666e1631cd47f4ceb8d"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/sidecar.schema.json",
+      "available": true,
+      "bytes": 14066,
+      "sha256": "sha256:f349bed7f7d2de6528e958368c7b92a9da1f884c3d7c36776a65431c9b2d3740"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/patch.schema.json",
+      "available": true,
+      "bytes": 3321,
+      "sha256": "sha256:15c44faad4daa66b965b2ae9155cc4934fb4c6197e15ac6012d9a536f7fde41e"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/receipt.schema.json",
+      "available": true,
+      "bytes": 2893,
+      "sha256": "sha256:c3d32dd4b66ad0e23c769418fbff2e7564ecadbc93a52adecb4bed2a5da8a84c"
+    }
+  ],
+  "protocol": {
+    "version": "mechanism-command-result-1",
+    "commands": [
+      "discover",
+      "schema",
+      "inspect",
+      "validate",
+      "deps",
+      "save",
+      "patch",
+      "prepare",
+      "compile",
+      "preview",
+      "render",
+      "check",
+      "package",
+      "init-tape-hook",
+      "summary"
+    ],
+    "budgets": {
+      "receiptBytes": 32768,
+      "receiptItemsPlusArtifacts": 100,
+      "patchBytes": 16384,
+      "patchOperations": 32
+    },
+    "retention": "Full JSON reports remain available beyond receipt byte/item budgets; bounded scalar receipts provide artifacts, pagination and next action. Mutating commands do not instruct a mutation rerun merely to see omitted items.",
+    "inspect": "Flattened dependency, shot, label and font diagnostics summaries; raw indexed geometry excluded.",
+    "save": "Known-input CLI refuses cross-parent save relocation; portable relocation uses package command.",
+    "diagnostics": "io schema failures preserve every Zod issue in diagnosticsJson with original ZodError cause; CLI full reports retain entire issues array, including direct patch Zod errors.",
+    "schemas": "Seven runtime-generated JSON Schema snapshots refreshed from Zod types including optional font identity/profile/license, fog and shadowRadius. Runtime refinement validation additionally enforces crossrefs, geometry semantics and aggregate budgets."
+  },
+  "package": {
+    "version": "mechanism-project-package-1",
+    "api": [
+      "packageMechanismEpisode(path,{outputDirectory,preparedDirectory?,finalOutput?})",
+      "verifyMechanismPackageArtifacts(directory)"
+    ],
+    "publication": "Exclusive output lock, fresh sibling stage, no existing-destination overwrite, destination recheck and atomic directory rename; failed attempts/cause retained.",
+    "copied": "Authored episode and declared dependencies including optional font license; only explicitly declared plates, sidecars, sequence/capture/prepared receipts and native composition; optional selected final artifact and known reports. Attempt/cache folders excluded.",
+    "rebasing": "Prepared/capture paths become package-relative. Native font/audio references matched by actual resolved dependency path/hash/type rather than hashed font ID; report paths map both original and realpath aliases.",
+    "manifest": "All copied/generated files have hashes except the self-referential package.manifest.json; file budget covers108000 frames plus500 dependencies and shot metadata.",
+    "verification": "After original source/prepared roots removed, copied source loads with identical semantic project hash, native font references resolve, authored state reevaluation agrees with sidecar projection/camera/parts/rigs/assertions, and all file hashes remain exact. This verifier never launches a renderer and does not independently re-prove raycast occlusion.",
+    "testFixtureLimitation": "3frame64px synthetic plate/sidecar metadata and explicit dummy final byte fixture; no browser render or final-media decode is inferred from packaging tests. Optional final report alias extension added after latest package runtime pass and awaits parent gate.",
+    "laterFixtureClosure": {
+      "status": "passed-in-later-pinned-runtime-and-installed-proof",
+      "file": "tests/runtime/mechanism-package.test.ts",
+      "tests": 17,
+      "testMilliseconds": 10804,
+      "log": "/tmp/still-shift-ms1-full-check-3.log",
+      "logLine": 445,
+      "record": "./mechanism-shorts-ms1-full-gate-results.json",
+      "installedRecord": "./mechanism-shorts-ms1-installed-e01-results.json",
+      "scope": "The initial synthetic fixture limitation remains historical. Later pinned package tests include the declared report-alias/live-receipt closure, stale/swapped final and cancellation controls; the separate actual 737-file installed delivery closes relocation and final-media evidence."
+    }
+  },
+  "narrowSourceChanges": {
+    "ioTemps": "randomUUID exclusive temp names for writeMechanismJson and patch scratch files;32 simultaneous writes under mocked Date.now0 yield exactly1 successful exclusive publication.",
+    "fontLicense": "Episode dependency type license and font.license reference must match declared hashed license path. Factory optional fontLicensePath copies original license bytes and CLI supports --font-license.",
+    "labelPositions": {
+      "PULL": [740, 470],
+      "PUSH": [220, 430]
+    },
+    "factoryOwnership": "Released factory after license/label edits; sibling owns contact.datum anchor height repair and parent owns later source-preserving proof/camera changes.",
+    "canonicalAfterCommit": "Added sparse-array rejection in pure canonical JSON after fbf9460c; sparse arrays cannot masquerade as valid canonical dense JSON. Unit regression retained."
+  },
+  "audio": {
+    "version": "mechanism-final-audio-check-1",
+    "api": "verifyMechanismFinalAudio({sourcePath,finalPath,sourceSampleCount,sourceChannels,frameCount,fps,signal?})",
+    "clock": "Actual single48kPCM source stream must match declared channels/count and exact authored compositionPcmBoundary. Final must be one48k stereo AAC/PCM stream at video samplezero.",
+    "codecTolerances": {
+      "aacDecodedExtraSamples": 1023,
+      "pcmDecodedExtraSamples": 0,
+      "containerDurationErrorSamples": 1,
+      "maximumContentAlignmentErrorSamples": 64,
+      "minimumWholeWaveformCorrelation": 0.97,
+      "levelGainRange": [0.94, 1.06],
+      "maximumNormalizedWaveformError": 0.25
+    },
+    "checks": "Decode both artifacts without resampling, padding, stretching or shift compensation; count/hash full PCM; compare full source waveform and independently choose strongest early/middle/late windows with bounded lag search; verify last active source tail. Mono reference duplication matches native mixer.",
+    "resources": {
+      "maximumSourceSamples": 172800000,
+      "maximumDurationSeconds": 3600,
+      "maxScratchPcmBytes": 2764816368,
+      "pageSamples": 8192,
+      "lagSearchSamples": 4800,
+      "probeOutputBytes": 65536,
+      "decodeErrorTailBytes": 65536
+    },
+    "cleanup": "ScratchPCM removed in finally; decoder children reaped and aborted on cancellation/resource excess.",
+    "negativeFixtures": [
+      "missing final audio",
+      "same-duration80ms content shift",
+      "shortened container/decoded stream",
+      "same-duration muted terminal content",
+      "authored/source clock mismatch",
+      "input overflow",
+      "aborted request"
+    ],
+    "positiveFixtures": [
+      "aligned192kbps AAC with codec padding and complete tail",
+      "mono reference duplication in stereo final"
+    ],
+    "pendingFixture": "Exact PCM no-padding/hash-equivalence test added after initial7test pass; parent sequenced runtime gate pending.",
+    "pendingFixtureClosure": {
+      "status": "passed-in-later-pinned-runtime",
+      "initialCheckpointField": "pendingFixture",
+      "file": "tests/runtime/mechanism-audio.test.ts",
+      "tests": 8,
+      "testMilliseconds": 1215,
+      "log": "/tmp/still-shift-ms1-full-check-3.log",
+      "logSha256": "sha256:cb701bafcf558de17513fbbe1f2c30a0ef699717b750bc179bf504aaaf4e832f",
+      "logLine": 487,
+      "record": "./mechanism-shorts-ms1-full-gate-results.json",
+      "scope": "The later eighth exact PCM no-padding/hash-equivalence case is included in the eight passing pinned runtime tests. The original seven-test log and unpinned caveat remain historical."
+    }
+  },
+  "installedPackageReview": {
+    "readOnly": true,
+    "inspected": [
+      "scripts/release/build-package.ts",
+      "scripts/release/package-layout.ts",
+      "scripts/release/installed-cli.ts",
+      "packages/execution-runtime/src/browser.ts",
+      "packages/execution-runtime/package.json",
+      "packages/animation-engine/src/index.ts",
+      "packages/animation-engine/src/mechanism/capture.ts",
+      "packages/animation-engine/src/mechanism/browser.ts"
+    ],
+    "confirmedBySource": [
+      "Engine/schema/renderer public entries include mechanism contract/evaluator/lifecycle through static exports.",
+      "CLI relative .ts imports and capture new URL(./browser.ts) literals are rewritten to emitted .js.",
+      "Browser module is reachable from capture renderer-version live import and therefore compiled.",
+      "All execution-runtime subpath aliases including render-browser are registered from workspace exports and rewritten.",
+      "Three addon import uses declared installed three0.186.0 dependency.",
+      "Runtime schema command generates artifacts directly; snapshots are docs and not required runtime assets.",
+      "Factory font/audio/caption inputs are explicit external arguments with project-relative hashed copies; no source-tree asset default."
+    ],
+    "actionableFinding": {
+      "path": "packages/animation-engine/src/mechanism/capture.ts",
+      "symbol": "captureIdentity",
+      "issue": "toolchain.json is read from Vite-discovered defaultBrowserProjectRoot, which can point to an unrelated consumer workspace during installed execution.",
+      "suggestedFix": "Package-owned fileURLToPath(new URL(../../../../toolchain.json,import.meta.url)); separate package identity from Vite workspace serving root.",
+      "reportedToParent": true,
+      "verification": "Source-based finding only; no installed gate executed by this agent.",
+      "laterClosure": {
+        "status": "repaired-and-installed-verified",
+        "implementation": "Capture reads package-owned toolchain.json through fileURLToPath(new URL(\"../../../../toolchain.json\", import.meta.url)); consumer Vite serving root no longer supplies package identity.",
+        "sourceCommit": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
+        "record": "./mechanism-shorts-ms1-installed-e01-results.json",
+        "scope": "The original source-only finding and its original verification statement are retained; the later OS-denied installed lifecycle provides current evidence."
+      }
+    },
+    "actualInstalledGate": "Parent owns actual clean installed-package build/consumer gate; not claimed complete.",
+    "laterGateClosure": {
+      "status": "passed-separately",
+      "sourceCommit": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
+      "archiveSha256": "sha256:78fb7016080e371955e4c5b39266a8c1a71e4a4c3b78298aa9b6e4a7b5735309",
+      "archiveBytes": 2926256,
+      "offlineChecks": 26,
+      "conditionalOnlineDependencyAudit": "not-run-in-offline-mode",
+      "packageRecord": "./mechanism-shorts-ms1-package-gate-results.json",
+      "installedRecord": "./mechanism-shorts-ms1-installed-e01-results.json",
+      "installedStatus": "installed-baseline-and-text-only-lifecycle-software-passed",
+      "scope": "OS-denied installed baseline and text-only E01 exports pass final software checks. All 696 verified plates are reused with zero new 3D captures; overlays/audio are rerendered. The consumer-only live Darwin-libproc process-inspection exception remains explicit, and installed package/helper bytes remain unchanged. E01 stays legacy/semantically unassessed; human review remains pending."
+    }
+  },
+  "verification": {
+    "logs": [
+      {
+        "path": "/tmp/mechanism-cli-green.log",
+        "available": true,
+        "bytes": 3727,
+        "sha256": "sha256:1b455ec61070e7f9f2a66bd77dcf65eb9bb51eab2c3d331e2fcedba5a67f2c27",
+        "interpretation": "Historical initial failure: catalog added datum/marker mesh groups before parent scene.parts was synchronized; retained."
+      },
+      {
+        "path": "/tmp/mechanism-cli-runtime-green.log",
+        "available": true,
+        "bytes": 310,
+        "sha256": "sha256:958c39cde47ba5bbae9eaf911ce78aa848841483c225607662e01d157586d749",
+        "interpretation": "Earlier8 CLI runtime tests passed; superseded focused9 CLI tests added complete diagnostic retention."
+      },
+      {
+        "path": "/tmp/mechanism-cli-unit-final.log",
+        "available": true,
+        "bytes": 525,
+        "sha256": "sha256:74ac3352a78d82987d4cd9744f06e258c7cbb6cc0047a519d60a7202f2f6b6a7",
+        "interpretation": "Earlier24 focused contract/evaluator/protocol/existingCLI unit tests passed."
+      },
+      {
+        "path": "/tmp/mechanism-package-first.log",
+        "available": true,
+        "bytes": 2877,
+        "sha256": "sha256:6897e3cdea9907cdf8918286c12b893753def44e9b2e62a107d410da6df45be4",
+        "interpretation": "Initial portable package failure from macOS /var vs /private/var alias; repaired with realpath containment/path mappings."
+      },
+      {
+        "path": "/tmp/mechanism-package-green.log",
+        "available": true,
+        "bytes": 793,
+        "sha256": "sha256:91c8e0de8a9586693b4303e33c486bd9e92d7954b2795e1ef7db05e77e61a809",
+        "interpretation": "Repaired4 package +8 CLI runtime tests passed12/12."
+      },
+      {
+        "path": "/tmp/mechanism-schema-cli-final.log",
+        "available": true,
+        "bytes": 793,
+        "sha256": "sha256:514f3455c7d9687413c84ee65d6bd3444159649f55d48a1e6da1f545209b2b98",
+        "interpretation": "Final diagnostic/schema closure:4 package +9 CLI tests passed13/13 before latest optional report alias fixture extension."
+      },
+      {
+        "path": "/tmp/mechanism-audio-first.log",
+        "available": true,
+        "bytes": 313,
+        "sha256": "sha256:abac0596746d0fc3fcd443c30cc71b163b501540f30f189854f4c22cec42a1cb",
+        "interpretation": "Initial7 decoded audio runtime tests passed; later eighth exactPCM case pending parent sequenced gate."
+      },
+      {
+        "path": "/tmp/mechanism-package-types2.log",
+        "available": true,
+        "bytes": 1272,
+        "sha256": "sha256:752dbc0c5e59dbb49e697c95d31c017cc190244f1fecb008f96a3aeba817133c",
+        "interpretation": "Historical whole-tree typecheck contained in-flight browser/typography issues outside owned package slice; retain."
+      },
+      {
+        "path": "/tmp/mechanism-audio-types.log",
+        "available": true,
+        "bytes": 2160,
+        "sha256": "sha256:fcdd67bbe1b3b0d1d41414b99162ee0cdfd0b07f65e0b4861f9a6a58f0c5773d",
+        "interpretation": "Whole-tree typecheck run under unpinned shellNode24.16.0; no helper errors, five new root failure-test receipt.diagnostic errors. Not a pinned gate pass."
+      }
+    ],
+    "pinnedToolchain": "Node22.23.1 via source /Users/jjae/.nvm/nvm.sh && nvm use22.23.1; pnpm10.29.3; parent FFmpeg8.0.1/Chromium pinned.",
+    "pinnedOwnedLint": "Focused Prettier/ESLint passed with pinnedNode22.23.1 after latest audio/package edits.",
+    "runtimeCaveat": "Focused historical tests were run via default shell (Node24.16.0 observed in subsequent typecheck). Parent will corroborate runtime on pinnedNode22 in sequenced gate. No unpinned execution is described as release verification.",
+    "inFlight": "Parent full696frame E01 render running; agent did not launch extra runtime/media test process groups during it.",
+    "pending": [
+      "Parent pinnedNode runtime/whole-tree build gates",
+      "Latest eighth PCM and optional report-alias package regression",
+      "Actual installed consumer mechanism CLI/preview/package gate",
+      "Human continuous-motion and listening acceptance remain separate"
+    ],
+    "currentClosure": {
+      "status": "completed-in-stages",
+      "record": "./mechanism-shorts-ms1-full-gate-results.json",
+      "completionRecord": "./mechanism-shorts-ms1-completion.md",
+      "codeCheckpoint": "09ce824b86e03b3e95616c9fb91b549b9c88845c",
+      "pinnedRuntime": {
+        "node": "22.23.1",
+        "pnpm": "10.29.3",
+        "runtimeTests": 148,
+        "audioTests": 8,
+        "packageTests": 17,
+        "cliTests": 11
+      },
+      "build": "passed in the attempt-3 prefix",
+      "installedLifecycle": "./mechanism-shorts-ms1-installed-e01-results.json",
+      "pending": [
+        "Human continuous playback, listening and creative acceptance remain separate."
+      ],
+      "scope": "Original logs, runtimeCaveat, inFlight and pending fields are the initial checkpoint. Their later software requirements are closed by the pinned prefix, separate installed proof and completed staged suffix; no failed aggregate is converted into a pass."
+    }
+  },
+  "status": "software-verified-in-stages-human-review-pending",
+  "initialCheckpointScope": "Source identities, owned-file hashes, original pending narratives and verification logs describe the initial checkpoint at createdAt. Their original failed/unpinned outcomes are retained; currentCompletion and the later closure annotations record subsequent pinned evidence.",
+  "currentCompletion": {
+    "recordedAt": "2026-10-10T02:00:57.231Z",
+    "status": "software-verified-in-stages-human-review-pending",
+    "codeCheckpoint": "09ce824b86e03b3e95616c9fb91b549b9c88845c",
+    "packageSourceCommit": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
+    "record": "./mechanism-shorts-ms1-full-gate-results.json",
+    "completionRecord": "./mechanism-shorts-ms1-completion.md",
+    "requiredGroups": 76,
+    "method": "staged-unchanged-source",
+    "stagedExitCode": 0,
+    "observedStagedExitAt": "2026-10-10T01:56:50.131599+00:00",
+    "stagedLog": {
+      "path": "/tmp/still-shift-ms1-remaining-required-groups-1.log",
+      "bytes": 217251,
+      "sha256": "5b86ab547312491a5b7c44adb37724576dc923608d97de43fd5e9b5f7092d1de"
+    },
+    "aggregateAttemptsRemainFailed": [1, 2, 3],
+    "uninterruptedPnpmCheckPass": false,
+    "scope": "All required local groups completed on unchanged source/tests/thresholds. This does not establish human continuous playback, listening or creative acceptance.",
+    "archiveAndInstalledLifecycle": {
+      "status": "passed-separately",
+      "sourceCommit": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
+      "archiveSha256": "sha256:78fb7016080e371955e4c5b39266a8c1a71e4a4c3b78298aa9b6e4a7b5735309",
+      "archiveBytes": 2926256,
+      "offlineChecks": 26,
+      "conditionalOnlineDependencyAudit": "not-run-in-offline-mode",
+      "packageRecord": "./mechanism-shorts-ms1-package-gate-results.json",
+      "installedRecord": "./mechanism-shorts-ms1-installed-e01-results.json",
+      "installedStatus": "installed-baseline-and-text-only-lifecycle-software-passed",
+      "scope": "OS-denied installed baseline and text-only E01 exports pass final software checks. All 696 verified plates are reused with zero new 3D captures; overlays/audio are rerendered. The consumer-only live Darwin-libproc process-inspection exception remains explicit, and installed package/helper bytes remain unchanged. E01 stays legacy/semantically unassessed; human review remains pending."
+    }
+  }
+}

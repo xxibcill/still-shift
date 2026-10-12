@@ -1,0 +1,440 @@
+{
+  "version": "mechanism-shorts-ms2-world-annotation-results-1",
+  "date": "2026-10-12",
+  "branch": "codex/mechanism-ms2",
+  "baseCommit": "eacb0200",
+  "status": "part-bound-world-text-software-slice-complete",
+  "implementation": {
+    "route": "Explicit optional cue.worldAnnotations world-text with pinned-font measured overflow-error box, part-local TRS, bounded density/size/ink/side, supplied cue clock/reading guard; normal composition world-graphic shared physical depth.",
+    "schemaLimits": {
+      "perCue": 8,
+      "sizePixels": [2, 512],
+      "fontSizePixels": [1, 256],
+      "pixelsPerUnitMax": 1000000
+    },
+    "stableIds": "Shared cue annotation ID namespace; located missing part/duplicate ID/overfull reading rejections.",
+    "worldPatch": "CAS/stale-target/duplicate-writer guards; property world-annotation/full value omits stable id. Native plate invalidation is required and current whole-cycle render remains truthful.",
+    "sharedVisibility": "Evaluator60 gates all part-bound world graphics by actual effective physical part visibility, including hidden ancestors; unbound legacy world planes unchanged.",
+    "legacy": "Omitted or empty worldAnnotations retains exact legacy composition.",
+    "renderer": "Existing shared world-graphic/font/native depth; no family renderer or assumed mesh surface contact.",
+    "hiddenControlSource": "Positive/exported sources retain strict required draws. Each hidden control derives a separately hashed retained source only when hiding a changing-shape owner/ancestor: impacted shapes require frames1..60 and allow authored-hidden outside proof. Actual frame0 must report hidden physical parts and truthful not-drawn/authored-hidden shape receipts."
+  },
+  "attempts": [
+    {
+      "id": "red1",
+      "actualExitCode": 1,
+      "reason": "Five missing-route failures/one pass in six tests.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-world55-red1.log",
+        "bytes": 5652,
+        "sha256": "sha256:209b6876fd1032e79f5dc5b214daab6be544c8991bdf6e7eeca887af7274d2d7"
+      }
+    },
+    {
+      "id": "focused1",
+      "actualExitCode": 1,
+      "reason": "First implementation-edit guard mismatched an import and aborted before source edits; helper alone cannot add the cue route. Five world failures plus eight passing tests retained; a requested nonexistent narrated-cycles filename selected no suite.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-world55-focused1.log",
+        "bytes": 6189,
+        "sha256": "sha256:ccdb53ab4efe1b8ef20b695f25496c631702ec972ed1b5c90c7baba7ecd92b25"
+      }
+    },
+    {
+      "id": "focused2",
+      "actualExitCode": 0,
+      "reason": "13 tests/two files after initial implementation; the nonexistent plural narrated-cycles filter still selects no third suite.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-world55-focused2.log",
+        "bytes": 1423,
+        "sha256": "sha256:2e03c8bfde528a8c6157581c405fe937100f1bcf81dd9fccf8e098c9cf3acd11"
+      }
+    },
+    {
+      "id": "focused3",
+      "actualExitCode": 0,
+      "reason": "Correct singular narrated-cycle file plus stronger hidden/ancestor/unbound and CAS/reading controls:27 tests/three files.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-world55-focused3.log",
+        "bytes": 1892,
+        "sha256": "sha256:349ece5464df8c211d6e41167653db266d57d33030d32ad316ca051f4c8201d0"
+      }
+    },
+    {
+      "id": "schema1",
+      "actualExitCode": 0,
+      "reason": "Generated the two public narrated-cycle and cue-patch schemas.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-world55-schema1.log",
+        "bytes": 653,
+        "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+      }
+    },
+    {
+      "id": "build1",
+      "actualExitCode": 0,
+      "reason": "Initial world source/type checks pass.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-world55-build1.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "build2",
+      "actualExitCode": 2,
+      "reason": "Literal browser route imports cannot be resolved by tsc; use runtime route variables with a separate type import.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-world55-build2.log",
+        "bytes": 697,
+        "sha256": "sha256:a3422c069a8c59d66f97b0b2de120d37586e52d8ada434ed5ab1e7593951032a"
+      }
+    },
+    {
+      "id": "build3",
+      "actualExitCode": 0,
+      "reason": "Repaired browser route imports; type checks pass.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-world55-build3.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "fast1",
+      "actualExitCode": 0,
+      "reason": "4320 units/424 files pass; source review then notices new source2 test wrapper must forward optional async native finalize.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-world55-fast1.log",
+        "bytes": 37355,
+        "sha256": "sha256:612f73425c137f96523d9027105882cbc365cc1dee6a33e06318483d88d9a1a8"
+      }
+    },
+    {
+      "id": "fast2",
+      "actualExitCode": 0,
+      "reason": "Fresh fast after forwarding finalize; unchanged held input2 passes4320 units/424 files.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-world55-fast2.log",
+        "bytes": 37630,
+        "sha256": "sha256:d65542d0cfe9886ffb9cbd57d53ec4eb69c81daa7a963bd5f070bc22e384d7eb"
+      }
+    },
+    {
+      "id": "native1",
+      "actualExitCode": 0,
+      "reason": "Existing native depth14/six composition/cancellation pass,70 readbacks/30 exact annotation controls audited.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-world55-native1.log",
+        "bytes": 538,
+        "sha256": "sha256:77b9a90d2758f5c3333a2cbe1e085f07193ce43e8dd7627ebcfb248606eed4db"
+      }
+    },
+    {
+      "id": "browser1",
+      "actualExitCode": 1,
+      "reason": "Edited green preview fails the original pure-green filter. Actual GPU probe shows119 ink pixels at160,232,100; the native shared ACES HDR resolve transforms source RGB. The independent display-color oracle is repaired; eight-pixel minimum/projection/hidden/seek checks unchanged.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-world55-browser1.log",
+        "bytes": 1156,
+        "sha256": "sha256:c6bbad2acac43228205c99199de3cd1f403363fc1428c6dfb31f6c2e88a027ad"
+      }
+    },
+    {
+      "id": "fast3",
+      "actualExitCode": 2,
+      "reason": "The added expectedInk receipt field was omitted from its explicit browser-frame type. Global schema/boundary/format/lint pass; build rejects it before units. Add the receipt field type.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-world55-fast3.log",
+        "bytes": 1859,
+        "sha256": "sha256:65eaea1decfceb502b56550390bd4f0f8f31afb66c72fa47b9690853f1708c6a"
+      }
+    },
+    {
+      "id": "fast4",
+      "actualExitCode": 0,
+      "reason": "Final corrected independent display-ink oracle and receipt types; 4320 units/424 files and unchanged held input4.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-world55-fast4.log",
+        "bytes": 37804,
+        "sha256": "sha256:00b90a8cf22012ccba35124297707e1155a1e06ffbd2c265234c0fdf2fea41f1"
+      }
+    },
+    {
+      "id": "browser2",
+      "actualExitCode": 1,
+      "reason": "Both tape stages passed (120 previews/360 seeks/two exports/120 native frames/six hidden controls). Cable before preview passed, then its root-hidden control truthfully rejects a required changing pawl draw; exported source policy remains intact. Separate hidden-control source permits authored-hidden at frame0 only for impacted shapes.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-world55-browser2.log",
+        "bytes": 1478,
+        "sha256": "sha256:da3854987184466022dd0cb85ebbe1a4ec43a081e96488ee4c3326e020f20765"
+      },
+      "failedRecord": {
+        "path": "/private/tmp/still-shift-ms2-world-annotations-XLzqlA/failed.json",
+        "bytes": 138335,
+        "sha256": "sha256:3b27624e770220fd11872d15ff084fecaad5e076033dd193a6644d77e31a673e"
+      },
+      "completeFamilies": 1,
+      "heldInputsVerifiedAfterTerminal": {
+        "path": "/private/tmp/still-shift-ms2-world55-inputs4.json",
+        "bytes": 444710,
+        "sha256": "sha256:43743ca67080c7fd23ad7e70d610e7757fd53c66d46e4eb4c2cfee58bb4955bf"
+      }
+    },
+    {
+      "id": "build4",
+      "actualExitCode": 2,
+      "reason": "New hidden-control observation must narrow to family version2 before reading changing-shape receipts; fixed in the test helper.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-world55-build4.log",
+        "bytes": 1324,
+        "sha256": "sha256:9ad8c2acfb01a768746ca7ff5106b8320b878cd83523f9caa6dd93955405fdfa"
+      }
+    },
+    {
+      "id": "fast5",
+      "actualExitCode": 1,
+      "reason": "Evidence prose was updated while the aggregate formatter was running; its JSON formatting check failed. Source inventory5 unchanged; format repaired before the next run.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-world55-fast5.log",
+        "bytes": 1430,
+        "sha256": "sha256:fd9c84dbc109f79828c880705abbe31843dfdc2931154a8d12af277072b42402"
+      }
+    },
+    {
+      "id": "fast6",
+      "actualExitCode": 0,
+      "reason": "Final held source fast gate passes:4320 unit tests/424 files; schemas/boundaries/format/lint/build passed.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-world55-fast6.log",
+        "bytes": 37657,
+        "sha256": "sha256:e0e615e98747ea0c2e753c649cd53806870f71b42220dc77918c32c39562f3cb"
+      }
+    },
+    {
+      "id": "browser3",
+      "session": 31055,
+      "actualExitCode": 0,
+      "status": "passed",
+      "directory": "/private/tmp/still-shift-ms2-world-annotations-9VKVxc",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-world55-browser3.log",
+        "bytes": 734,
+        "sha256": "sha256:efba60908131148690b00608030ae475319c15341185a5686207e348be1efa8e"
+      },
+      "producer": {
+        "path": "/private/tmp/still-shift-ms2-world-annotations-9VKVxc/run.json",
+        "bytes": 423339,
+        "sha256": "sha256:bf603a4087f1975b0e89d322dae8c5f22bc55fc2cc1add767c02fea013546860"
+      },
+      "families": 3,
+      "previewFrames": 360,
+      "seekDraws": 1080,
+      "nativeExports": 6,
+      "finalNativeFrames": 360,
+      "hiddenOrOmittedControlDraws": 18,
+      "actualFontOverflowNegative": "passed-pinned-font-2x2-box",
+      "beforeAfterAudioIdenticalPairs": 3,
+      "beforeAfterDecodedVideoChangedPairs": 3,
+      "staleRenderAndCheckRejections": "passed-after-CAS-world-edit",
+      "sourceNarrationBytes": "unchanged"
+    }
+  ],
+  "currentFast": {
+    "session": 93035,
+    "id": "fast6",
+    "actualExitCode": 0,
+    "reason": "Final held source fast gate passes:4320 unit tests/424 files; schemas/boundaries/format/lint/build passed.",
+    "log": {
+      "path": "/private/tmp/still-shift-ms2-world55-fast6.log",
+      "bytes": 37657,
+      "sha256": "sha256:e0e615e98747ea0c2e753c649cd53806870f71b42220dc77918c32c39562f3cb"
+    },
+    "unitTests": 4320,
+    "unitFiles": 424
+  },
+  "nativeRegression": {
+    "session": 66144,
+    "actualExitCode": 0,
+    "depthCases": 14,
+    "compositionCases": 6,
+    "cancellation": "passed-required-worker-control",
+    "audit": {
+      "path": "/private/tmp/still-shift-ms2-world55-native-audit1.json",
+      "bytes": 11121,
+      "sha256": "sha256:c0fbb142b788ac4bae382e08d1f63c811b91cd514a1e1cb0ff83a5e0dcc30829"
+    },
+    "log": {
+      "path": "/private/tmp/still-shift-ms2-world55-native1.log",
+      "bytes": 538,
+      "sha256": "sha256:77b9a90d2758f5c3333a2cbe1e085f07193ce43e8dd7627ebcfb248606eed4db"
+    },
+    "qualification": "Native1 actually passed on input2. Only the new world-browser and its helper differ through final inputs5; independent source-delta5 verifies production and existing native owning tests unchanged. Native audit3 rechecks all70 raw readbacks/30 exact control pairs and current source hashes. No repeated native producer or fresh full aggregate is claimed.",
+    "currentSourceAudit": {
+      "path": "/private/tmp/still-shift-ms2-world55-native-audit3.json",
+      "bytes": 11121,
+      "sha256": "sha256:c0fbb142b788ac4bae382e08d1f63c811b91cd514a1e1cb0ff83a5e0dcc30829"
+    },
+    "sourceDelta": {
+      "path": "/private/tmp/still-shift-ms2-world55-source-delta5.json",
+      "bytes": 370,
+      "sha256": "sha256:c6e69706d8ba9de805bb90358d8722385ddd366fc59507f30294eb6982018dde"
+    }
+  },
+  "inputInventory": {
+    "artifact": {
+      "path": "/private/tmp/still-shift-ms2-world55-inputs5.json",
+      "bytes": 444710,
+      "sha256": "sha256:e52a6724b0f69692f49df98a9ec4d2c602a6ce10b742bf48f1c64f37f61d19a8"
+    },
+    "files": 2607,
+    "bytes": 120401922,
+    "afterFinalFastAndBrowser": "independently-verified-unchanged",
+    "selection": "Includes all32 public schema JSON inputs; milestone/API evidence prose excluded."
+  },
+  "browser": {
+    "id": "browser3",
+    "session": 31055,
+    "actualExitCode": 0,
+    "status": "passed",
+    "directory": "/private/tmp/still-shift-ms2-world-annotations-9VKVxc",
+    "log": {
+      "path": "/private/tmp/still-shift-ms2-world55-browser3.log",
+      "bytes": 734,
+      "sha256": "sha256:efba60908131148690b00608030ae475319c15341185a5686207e348be1efa8e"
+    },
+    "producer": {
+      "path": "/private/tmp/still-shift-ms2-world-annotations-9VKVxc/run.json",
+      "bytes": 423339,
+      "sha256": "sha256:bf603a4087f1975b0e89d322dae8c5f22bc55fc2cc1add767c02fea013546860"
+    },
+    "families": 3,
+    "previewFrames": 360,
+    "seekDraws": 1080,
+    "nativeExports": 6,
+    "finalNativeFrames": 360,
+    "hiddenOrOmittedControlDraws": 18,
+    "actualFontOverflowNegative": "passed-pinned-font-2x2-box",
+    "beforeAfterAudioIdenticalPairs": 3,
+    "beforeAfterDecodedVideoChangedPairs": 3,
+    "staleRenderAndCheckRejections": "passed-after-CAS-world-edit",
+    "sourceNarrationBytes": "unchanged"
+  },
+  "remaining": [
+    "Surface placement is not authored or validated by world-text TRS. Screen layout excludes only screen labels; no world-plane automatic layout or continuous-time readability proof is claimed.",
+    "True surface marking with validated physical mesh placement/deformation exclusions and native invalidation.",
+    "Label-only plate reuse; genuine recovered speech clocks/cues/exports; full96/176 items36061 frames/benchmark; whole resources/replay/lifetime; final archive/installed/pack admission/MS2 PR.",
+    "Supported packs0; accepted pilot episodes0; MS3 not started. No paid generation, human acceptance or publication."
+  ],
+  "diagnostic": {
+    "probe": {
+      "path": "/private/tmp/still-shift-ms2-world55-green-probe1.json",
+      "bytes": 744,
+      "sha256": "sha256:3d20c4d30454b58f8246b02b1aaf91a8d5b362416eb9aadd95e77668a7515347"
+    },
+    "png": {
+      "path": "/private/tmp/still-shift-ms2-world55-green-probe1.png",
+      "bytes": 21150,
+      "sha256": "sha256:68503e1c1bf4b0858a7b1b50ba7ac4e4fef0e74bcaf2c7383177aaa468244440"
+    },
+    "actualExitCode": 0,
+    "scope": "Fresh actual GPU frame0 on unchanged edited composition; no normal pass or final output completion inferred."
+  },
+  "currentExecution": {
+    "status": "completed-in-stages",
+    "ownedSessions": {
+      "fast6": 93035,
+      "native1": 66144,
+      "browser3": 31055
+    },
+    "actualTerminalReceipts": "fast6/native1/browser3 exit0; prior failed attempts retained",
+    "finalSourceInputs": "unchanged-inputs5"
+  },
+  "priorBrowserDetails": {
+    "session": 35345,
+    "status": "failed",
+    "actualExitCode": 1,
+    "log": {
+      "path": "/private/tmp/still-shift-ms2-world55-browser1.log",
+      "bytes": 1156,
+      "sha256": "sha256:c6bbad2acac43228205c99199de3cd1f403363fc1428c6dfb31f6c2e88a027ad"
+    },
+    "failure": {
+      "path": "/private/tmp/still-shift-ms2-world-annotations-toy69j/failed.json",
+      "bytes": 669,
+      "sha256": "sha256:77c19c3a7f9983713e59eeee3e2b483dfa99e61a722d4ba3d7ed2a898f6cccb4"
+    },
+    "directory": "/private/tmp/still-shift-ms2-world-annotations-toy69j",
+    "qualifiedPrefix": {
+      "family": "tape-hook",
+      "stage": "before",
+      "previewFrames": 60,
+      "seekDraws": 180,
+      "hiddenOrOmittedControls": 3,
+      "actualFontOverflowNegative": "passed",
+      "nativeExports": 1,
+      "finalNativeFrames": 60,
+      "qualification": "Sequential stage loop enters edited preview only after the before render/check/decode calls complete. Before output/result/scene/native closure/preview files remain; failed.json stores no incomplete local stage array."
+    },
+    "reason": "Edited green preview fails the original pure-green filter. Actual GPU probe shows119 ink pixels at160,232,100; the native shared ACES HDR resolve transforms source RGB. The independent display-color oracle is repaired; eight-pixel minimum/projection/hidden/seek checks unchanged.",
+    "heldInputsAfterTerminal": "Independent inventory2 verify succeeds after actual exit1 and before helper changes."
+  },
+  "nativeHeldInputInventory": {
+    "artifact": {
+      "path": "/private/tmp/still-shift-ms2-world55-inputs2.json",
+      "bytes": 444710,
+      "sha256": "sha256:8145b6734a3585df060269d991ec502696c82df4d0167f9651ef9bb79fba323b"
+    },
+    "files": 2607,
+    "bytes": 120397343,
+    "afterFastNative": "unchanged"
+  },
+  "independentAudit": {
+    "actualExitCode": 0,
+    "artifact": {
+      "path": "/private/tmp/still-shift-ms2-world55-audit1.json",
+      "bytes": 76323,
+      "sha256": "sha256:36915b2c96f1be4b73a362967011e26a48c28bd9a328cb392e655f31444e48b9"
+    },
+    "log": {
+      "path": "/private/tmp/still-shift-ms2-world55-audit1.log",
+      "bytes": 715,
+      "sha256": "sha256:7efe8d122631efe3185ff7285105c354aad2872d4cb567aaf955d66b27b94e3f"
+    },
+    "script": {
+      "path": "/private/tmp/still-shift-ms2-world55-audit.py",
+      "bytes": 9284,
+      "sha256": "sha256:27519f7e249c3678a34e780563b7f2ed94eb01312dff7e71a3645d99da6ba544"
+    },
+    "previewFrames": 360,
+    "seekDraws": 1080,
+    "pngsHashedAndPixelsMatched": 12,
+    "partArtworkMatrixPairs": 360,
+    "encodedBodiesHashed": 6,
+    "decodedFramesHashed": 360,
+    "encodedFramesWithProjectedColoredInk": 360,
+    "decodedAudioBodiesHashed": 6,
+    "sourceFloatWavSampleCountsMatched": 6,
+    "beforeAfterAudioIdenticalPairs": 3,
+    "nativeJournalFramesHashed": 360,
+    "hiddenOrOmittedControlDraws": 18,
+    "hiddenControlSourcePoliciesAndTruthfulMissingDraws": "independently-matched",
+    "scope": "Independent retained-file/decode/hash and recorded part/artwork matrix audit; actual font/ink/projection/visibility and native closure replay belong to the recorded browser producer. No genuine narration, true surface marking, render reuse, continuous-time or human acceptance.",
+    "thresholds": {
+      "partArtworkMatrixMaxError": 1e-8,
+      "previewDisplayRgbPerChannelTolerance": 2,
+      "minimumPreviewInkPixels": 8,
+      "encodedProjectedInkRgbTolerance": 28,
+      "minimumEncodedProjectedInkPixels": 3,
+      "encodedCheck": "Diagnostic colored-ink survival in each projected rectangle; does not verify glyph copy or readability."
+    }
+  },
+  "visualReview": {
+    "reviewer": "Codex agent",
+    "retainedPngsViewed": 12,
+    "framesPerStage": [7, 37],
+    "families": 3,
+    "stages": ["before", "edited"],
+    "scope": "All sampled PNGs show the diagnostic Pin text in each family before/after ink editing. Tape samples follow the moving hook. Actual small240x136 frames are engineering evidence; no continuous human or production readability/material/listening acceptance."
+  }
+}

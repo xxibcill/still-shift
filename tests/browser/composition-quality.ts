@@ -739,7 +739,8 @@ try {
   assert.equal(cliPixels.measured.pixels, true);
   assert.ok("backend" in cliPixels);
   assert.equal(cliPixels.backend, "canvas2d");
-  assert.match(cliPixels.rendererVersion, /^composition-canvas-/);
+  assert.equal(typeof cliPixels.rendererVersion, "string");
+  assert.match(cliPixels.rendererVersion!, /^composition-canvas-/);
   assert.ok(cliPixels.diagnostics.some((d) => d.code === "frozen-pixels"));
   const lint = async (name: string, backend?: string, pixels = true) => {
     let stdout = "",

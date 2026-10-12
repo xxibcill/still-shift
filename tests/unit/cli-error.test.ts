@@ -13,10 +13,15 @@ describe("CLI failure output", () => {
       error: {
         code: "RENDER_FAILED",
         message: "Unexpected animation command failure",
+        diagnostic: {
+          stage: "command",
+          nextAction: expect.any(String),
+          causes: [{ name: "Error", message: expect.any(String) }],
+        },
         context: {
-          operation: "animate",
+          operation: "command",
           recovery:
-            "Retry the same request; if it fails again, report the command and stderr output.",
+            "Inspect the located diagnostic and complete dependency validation before rerunning the affected stage.",
         },
       },
     });

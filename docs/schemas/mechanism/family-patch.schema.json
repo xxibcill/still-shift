@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "mechanism-family-patch-1" },
+    "baseRevision": { "type": "integer", "minimum": 0, "maximum": 2147483647 },
+    "baseHash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "operations": {
+      "minItems": 1,
+      "maxItems": 32,
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "property": { "type": "string", "const": "parameter" },
+              "id": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "value": { "type": "number" }
+            },
+            "required": ["property", "id", "value"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "property": { "type": "string", "const": "mount" },
+              "value": {
+                "type": "object",
+                "properties": {
+                  "position": {
+                    "default": [0, 0, 0],
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      },
+                      {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      },
+                      {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      }
+                    ]
+                  },
+                  "rotation": {
+                    "default": [0, 0, 0],
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      },
+                      {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      },
+                      {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      }
+                    ]
+                  },
+                  "scale": {
+                    "default": [1, 1, 1],
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number",
+                        "exclusiveMinimum": 0,
+                        "maximum": 1000
+                      },
+                      {
+                        "type": "number",
+                        "exclusiveMinimum": 0,
+                        "maximum": 1000
+                      },
+                      {
+                        "type": "number",
+                        "exclusiveMinimum": 0,
+                        "maximum": 1000
+                      }
+                    ]
+                  },
+                  "pivot": {
+                    "default": [0, 0, 0],
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      },
+                      {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      },
+                      {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      }
+                    ]
+                  }
+                },
+                "required": ["position", "rotation", "scale", "pivot"],
+                "additionalProperties": false
+              }
+            },
+            "required": ["property", "value"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "property": { "type": "string", "const": "style" },
+              "value": {
+                "type": "object",
+                "propertyNames": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "additionalProperties": {
+                  "anyOf": [
+                    { "type": "string", "maxLength": 64 },
+                    { "type": "number" }
+                  ]
+                }
+              }
+            },
+            "required": ["property", "value"],
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "required": ["schemaVersion", "baseRevision", "baseHash", "operations"],
+  "additionalProperties": false
+}

@@ -1,0 +1,626 @@
+{
+  "version": "mechanism-ms2-node-owner-results-1",
+  "date": "2026-10-11",
+  "baseSourceCommit": "b3e0169b28465b9a983662859e2f302ab6e257b7",
+  "branch": "codex/mechanism-ms2",
+  "status": "shared-native-source-catalogue-and-result-owner-verified-in-stages",
+  "scope": [
+    "CompositionNodeMemory holds the fixed 512 MiB Node allowance. A render creates one owner before load and passes it through native ingestion/catalogue, export result/RPC/replay reservations and concurrent source revalidation. Finally closes that owner; standalone result-only callers preserve the old scope.",
+    "Native catalogue capacity is admitted before transport/catalogue/variant construction. Walk schema-validated source data without JSON/geometry copies; count unique normalized authored overrides, eight full source trees for transport/schema/hash staging and four per-variant metadata trees. Source1/3 share static mesh data; source2 fully parsed pose geometry is charged per variant.",
+    "Grow existing ingestion reservations without releasing their capacity first. Preserve larger conservative lexical admission for escaped sources. Only completed preparation transfers its reservation to a shared owner; failure/cancellation closes local reservations while preserving other owners.",
+    "Result transient release also drops its private control record. Six new unit controls include combined quota denial, uninterrupted admission, failure cleanup, shared mesh sizing, 9,000 transient retirements and escaped-source admission; two new filesystem controls exercise actual source3 coexistence/failed verification and cancellation during actual catalogue hashing."
+  ],
+  "qualification": "Current fast15/Node16 and actual PBR composition/normal/mixed plus all six native2 groups pass on unchanged inputs15. The render Node metrics are shared-ledger snapshots (before final publication validation), not complete lifetime/process-RSS measurements. Root composition file/text/serialization, other media/code-identity producers, aggregate world/body/replay, final full milestone gates and installed refresh remain separate. Direct producers that do not pass a shared owner retain their original result-only scope; standalone preparation snapshots cover its producer before caller handoff. No quota increase, rendered-math change, whole-Node completion, human acceptance or publication is claimed.",
+  "workingInputs": {
+    "manifest": {
+      "path": "/private/tmp/still-shift-ms2-node-owner36-inputs15.json",
+      "bytes": 431070,
+      "sha256": "sha256:b983fa940622eef0d70dda2f0b8ab4e47e9410e7b1195cfa3baab609e775768a"
+    },
+    "files": 2527,
+    "inputBytes": 119205095,
+    "selection": {
+      "roots": [
+        "apps/",
+        "packages/",
+        "scripts/",
+        "tests/",
+        "tools/",
+        "services/",
+        "benchmarks/",
+        "examples/",
+        "assets/",
+        "catalogs/"
+      ],
+      "rootFiles": "all Git-tracked or nonignored regular root files",
+      "packageProse": [
+        "docs/npm-package-readme.md",
+        "docs/npm-third-party-notices.md"
+      ],
+      "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+    }
+  },
+  "policy": {
+    "nodeAllowanceBytes": 536870912,
+    "preparationBaseBytes": 65536,
+    "fullSourceCopies": 8,
+    "variantCopies": 4,
+    "variantMeshPolicy": "source1/3 share validated static meshes; source2 retains parsed pose meshes per variant",
+    "handoff": "grow existing lease without a release gap; retain the larger lexical estimate; transfer only on success"
+  },
+  "actualRootSessions": [
+    {
+      "session": 27251,
+      "exitCode": 0,
+      "commands": ["format1", "build1"]
+    },
+    {
+      "session": 87747,
+      "exitCode": 2,
+      "commands": ["format2", "build2"],
+      "unrun": ["unit3"]
+    },
+    {
+      "session": 31767,
+      "exitCode": 0,
+      "commands": ["format4", "build4", "unit5", "node6"]
+    },
+    {
+      "session": 39577,
+      "exitCode": 0,
+      "commands": ["format7", "build7", "node8"]
+    },
+    {
+      "session": 18291,
+      "exitCode": 1,
+      "commands": ["format9", "inputs9", "fast9"],
+      "unrun": [
+        "node10",
+        "composition11",
+        "export12",
+        "mixed13",
+        "native2-14",
+        "hold14"
+      ]
+    },
+    {
+      "session": 7579,
+      "exitCode": 0,
+      "commands": [
+        "format15",
+        "inputs15",
+        "fast15",
+        "node16",
+        "composition17",
+        "export18",
+        "mixed19",
+        "native2-20",
+        "hold20"
+      ]
+    }
+  ],
+  "counts": {
+    "unitTests": 4219,
+    "unitFiles": 413,
+    "newControls": 8,
+    "newUnitControls": 6,
+    "newFilesystemControls": 2,
+    "owningNodeTests": 26,
+    "owningNodeFiles": 6,
+    "pbrCompositionFrames": 6,
+    "normalExports": 2,
+    "mixedRuns": 8,
+    "native2BrowserGroups": 6,
+    "supportedPacks": 0,
+    "pilotSupportedEpisodes": 0
+  },
+  "verification": [
+    {
+      "id": "format1",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-node-owner36-format1.log",
+        "bytes": 488,
+        "sha256": "sha256:88e9cfafd0356957b02546c9ea5ecf35bb96b35abe9c9ee61f1b2d741d5b1d3a"
+      }
+    },
+    {
+      "id": "build1",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-node-owner36-build1.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "format2",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-node-owner36-format2.log",
+        "bytes": 243,
+        "sha256": "sha256:da7ff06e29d97ed86277d4110bd8fe9e295ea86b3607dac5793a6773349bff4e"
+      }
+    },
+    {
+      "id": "build2",
+      "exitCode": 2,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-node-owner36-build2.log",
+        "bytes": 805,
+        "sha256": "sha256:40b7757db956cb53d093dfed430711c3736c39adf922212457d42dc2b4d183c4"
+      }
+    },
+    {
+      "id": "format4",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-node-owner36-format4.log",
+        "bytes": 242,
+        "sha256": "sha256:0135fb789528053e66c8379643eecbc3b7739ad6d4cfb20e9f903de506eb7057"
+      }
+    },
+    {
+      "id": "build4",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-node-owner36-build4.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "unit5",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-node-owner36-unit5.log",
+        "bytes": 447,
+        "sha256": "sha256:bb1ac9843bc38a54161bd3d1747d06cb535d9a0377aa982438d4fe1457014878"
+      }
+    },
+    {
+      "id": "node6",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-node-owner36-node6.log",
+        "bytes": 491,
+        "sha256": "sha256:b845c4d0767c3aac63bd5a37855c1e064b4eb4bdde7efedb82e11140ed7a57f0"
+      }
+    },
+    {
+      "id": "format7",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-node-owner36-format7.log",
+        "bytes": 128,
+        "sha256": "sha256:222d7029d45e7159a46c621810e6699d0655f73c24f3dfad0996018f8254332f"
+      }
+    },
+    {
+      "id": "build7",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-node-owner36-build7.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "node8",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-node-owner36-node8.log",
+        "bytes": 491,
+        "sha256": "sha256:b73613af59a5640be47a0dbbf450eefd581e6ad3d9026165747f1981fd020d53"
+      }
+    },
+    {
+      "id": "format9",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-node-owner36-format9.log",
+        "bytes": 121,
+        "sha256": "sha256:7b8ac11c40e95134b927f7b57c0ea3a9dca1a5a687674a5d54e959e3b4ee0ebd"
+      }
+    },
+    {
+      "id": "fast9",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-node-owner36-fast9.log",
+        "bytes": 1765,
+        "sha256": "sha256:797f3c0df1e30c48c373b513a58be514ca0d5374f9184c0007544422d0a9dfe7"
+      }
+    },
+    {
+      "id": "format15",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-node-owner36-format15.log",
+        "bytes": 112,
+        "sha256": "sha256:e5f47827f2551e37d6de9851035ad3f9f722f80167ca2175b3f09e79b9b6b52f"
+      }
+    },
+    {
+      "id": "fast15",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-node-owner36-fast15.log",
+        "bytes": 34101,
+        "sha256": "sha256:905b233d3522524910dffc7083ebd79ad07b2dee4801d42990aab1f6f892f398"
+      }
+    },
+    {
+      "id": "node16",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-node-owner36-node16.log",
+        "bytes": 1887,
+        "sha256": "sha256:64b0e1c1923f11580bfe49214655062e889c576d98ef2590e095d90e884517dc"
+      }
+    },
+    {
+      "id": "composition17",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-node-owner36-composition17.log",
+        "bytes": 833,
+        "sha256": "sha256:08885150b94cd11635ad6ed768057e19c5974003e2fc4bc35adf50aa43742858"
+      }
+    },
+    {
+      "id": "export18",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-node-owner36-export18.log",
+        "bytes": 262,
+        "sha256": "sha256:c8005aef575947d2a045b3641c3e6b5120a13eeadac204fab85175025460f19b"
+      }
+    },
+    {
+      "id": "mixed19",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-node-owner36-mixed19.log",
+        "bytes": 270,
+        "sha256": "sha256:30d4673a0dd0062682f702dd53a38dbe6678ab5ce983d3b481ffff556ef21e2b"
+      }
+    },
+    {
+      "id": "native2-20",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-node-owner36-native2-20.log",
+        "bytes": 1218,
+        "sha256": "sha256:1876bfc382279831d001c48cd937add68b94e5b513a936dbdc133d908879c6bc"
+      }
+    },
+    {
+      "id": "hold20",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-node-owner36-hold20.log",
+        "bytes": 198,
+        "sha256": "sha256:7c7a22adb9a2b92bdc033693e73bdb811d3f6b45ca686af644c61574808bc686"
+      }
+    }
+  ],
+  "actualProofs": [
+    {
+      "command": "composition17",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-pbr-composition-THUFHC",
+        "captures": 6,
+        "binaryFaults": 5,
+        "protocolFaults": 4,
+        "worldArtworkCases": 2,
+        "stylePixelSha256": "sha256:eac66422fc266fad65457950f971c21fa2f1d4f43cb567e4cfb3bbf726844f12",
+        "memory": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 536870912,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 142976304,
+            "metadata": 1753176
+          },
+          "peak": {
+            "pixels": 286768822,
+            "metadata": 20833492
+          },
+          "reservations": 56
+        },
+        "cleanup": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 536870912,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 286768822,
+            "metadata": 20833492
+          },
+          "reservations": 0
+        }
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-pbr-composition-THUFHC/run.json",
+        "bytes": 443834,
+        "sha256": "sha256:30f7dd3685f8c08e5a2d0b0822307a7c05305d76f2e4502765eddd1e252a45e7"
+      }
+    },
+    {
+      "command": "export18",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-normal-export3-WHLC9K",
+        "status": "passed",
+        "exports": 2
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-normal-export3-WHLC9K/run.json",
+        "bytes": 25061,
+        "sha256": "sha256:c61510bb1903343cc8930ff1ee88d1f41e18cc3564f467474391fb7a27c2d1f9"
+      }
+    },
+    {
+      "command": "mixed19",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-mixed-export3-WraxTA",
+        "status": "passed",
+        "runs": 8
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-mixed-export3-WraxTA/run.json",
+        "bytes": 15974,
+        "sha256": "sha256:3f09b0af4228dc91ab1a7d3255eefa7be6340782d9e51c90d8e93e26b0cfbc5c"
+      }
+    },
+    {
+      "command": "native2-20",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-shape-world-Rn9Ahg",
+        "status": "passed",
+        "frames": 5,
+        "scope": "browser-world-and-pixels-only"
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-shape-world-Rn9Ahg/run.json",
+        "bytes": 2976,
+        "sha256": "sha256:610053bb8d20caaf4928ca1f0e40b3a77d9e9c1235e47b0a3c3f66c61f5a0231"
+      }
+    },
+    {
+      "command": "native2-20",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-used-streams-ur91bo",
+        "status": "passed",
+        "frames": 6,
+        "negatives": 11,
+        "scope": "standalone-used-color-streams-only"
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-used-streams-ur91bo/run.json",
+        "bytes": 7870,
+        "sha256": "sha256:835a446690f2800418fdc93ffd87a10eef12f6a1e0440de7bdd4f3859413b3b1"
+      }
+    },
+    {
+      "command": "native2-20",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-frame-observation-isz4Dw",
+        "status": "passed",
+        "frames": 8,
+        "negatives": 4,
+        "scope": "standalone-full-observed-frame2"
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-frame-observation-isz4Dw/run.json",
+        "bytes": 6282,
+        "sha256": "sha256:26be052dc62eb224c67810a420040564edc8c15e8b09557aa0e75e8e65f7519c"
+      }
+    },
+    {
+      "command": "native2-20",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-composition-v2-vI61wY",
+        "status": "passed",
+        "captures": 4,
+        "negatives": 15
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-composition-v2-vI61wY/run.json",
+        "bytes": 95250,
+        "sha256": "sha256:15ba21e7f5af049563f8e81baff514fb2a96d5c9e07a8dff21905ba2831737e2"
+      }
+    },
+    {
+      "command": "native2-20",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-normal-export2-aT1vfE",
+        "status": "passed",
+        "exports": 2
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-normal-export2-aT1vfE/run.json",
+        "bytes": 43901,
+        "sha256": "sha256:3f4c8d2622538ce8af08f8ee3c7a4aa2d5232d1fe3ed7d8f18e3f64e1c9e70b5"
+      }
+    },
+    {
+      "command": "native2-20",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-lab2-WBJofH",
+        "status": "passed",
+        "records": 20
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-lab2-WBJofH/run.json",
+        "bytes": 26366,
+        "sha256": "sha256:b10cf32d83c699ea7bd9cb19680223c752dad343a9b35217731c74de4247cd7c"
+      }
+    }
+  ],
+  "failedRuns": [
+    {
+      "id": "build2",
+      "reason": "Test used roughness instead of the actual roughnessFactor PBR override; corrected field. Unit3 behind build was unrun."
+    },
+    {
+      "id": "fast9",
+      "reason": "Lint required a type-only import for the export request owner type. Corrected import; original suffix was unrun."
+    }
+  ],
+  "remaining": [
+    "Admit root composition I/O and text/serialization plus remaining Node/media/code-identity producers into the same allowance; refresh lifetime/cleanup evidence and whole world/body/replay requirements.",
+    "Finish remaining MS2 packs/rigs/events/labels/cues/help/coverage/typography, required full gates and final installed verification before MS2 PR and MS3."
+  ],
+  "precedingProductionParity": {
+    "normalMP4": [
+      {
+        "previous": {
+          "path": "/private/tmp/still-shift-ms2-normal-export3-I7QeHj/normal3-a.mp4",
+          "bytes": 5862,
+          "sha256": "sha256:bdfa9d0aff02c19a75811ee545e23e2a20f4dfd7e1ba8e2bee5ffecaea716d38"
+        },
+        "current": {
+          "path": "/private/tmp/still-shift-ms2-normal-export3-WHLC9K/normal3-a.mp4",
+          "bytes": 5862,
+          "sha256": "sha256:bdfa9d0aff02c19a75811ee545e23e2a20f4dfd7e1ba8e2bee5ffecaea716d38"
+        }
+      },
+      {
+        "previous": {
+          "path": "/private/tmp/still-shift-ms2-normal-export3-I7QeHj/normal3-b.mp4",
+          "bytes": 5862,
+          "sha256": "sha256:bdfa9d0aff02c19a75811ee545e23e2a20f4dfd7e1ba8e2bee5ffecaea716d38"
+        },
+        "current": {
+          "path": "/private/tmp/still-shift-ms2-normal-export3-WHLC9K/normal3-b.mp4",
+          "bytes": 5862,
+          "sha256": "sha256:bdfa9d0aff02c19a75811ee545e23e2a20f4dfd7e1ba8e2bee5ffecaea716d38"
+        }
+      }
+    ],
+    "mixedRawHTTP": [
+      {
+        "frame": 0,
+        "previous": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-uSHRmv/http-frame-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:7e81ce13fe49f417d6feae3dbe612c698e61780a4e96577cee46e8af8a36ad4a"
+        },
+        "current": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-WraxTA/http-frame-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:7e81ce13fe49f417d6feae3dbe612c698e61780a4e96577cee46e8af8a36ad4a"
+        }
+      },
+      {
+        "frame": 1,
+        "previous": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-uSHRmv/http-frame-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:3057ce618159d91a6d5321f0ca22d6f70dbb9aa0b817b9497d18d22ac89843d2"
+        },
+        "current": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-WraxTA/http-frame-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:3057ce618159d91a6d5321f0ca22d6f70dbb9aa0b817b9497d18d22ac89843d2"
+        }
+      },
+      {
+        "frame": 2,
+        "previous": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-uSHRmv/http-frame-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:62512c6e87ded0509ff6fb8847465d524b2229c3bffbb6cb0366448f0602a096"
+        },
+        "current": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-WraxTA/http-frame-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:62512c6e87ded0509ff6fb8847465d524b2229c3bffbb6cb0366448f0602a096"
+        }
+      },
+      {
+        "frame": 3,
+        "previous": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-uSHRmv/http-frame-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:d80448ba9418a1f4de79656fc8f812168a81838462a5da03480cedc1876b3747"
+        },
+        "current": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-WraxTA/http-frame-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:d80448ba9418a1f4de79656fc8f812168a81838462a5da03480cedc1876b3747"
+        }
+      },
+      {
+        "frame": 4,
+        "previous": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-uSHRmv/http-frame-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:c7a1c4a741af722bcbe00e3c447535a9aee63b378a45cec69309176f44744d00"
+        },
+        "current": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-WraxTA/http-frame-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:c7a1c4a741af722bcbe00e3c447535a9aee63b378a45cec69309176f44744d00"
+        }
+      },
+      {
+        "frame": 5,
+        "previous": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-uSHRmv/http-frame-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:c7a1c4a741af722bcbe00e3c447535a9aee63b378a45cec69309176f44744d00"
+        },
+        "current": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-WraxTA/http-frame-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:c7a1c4a741af722bcbe00e3c447535a9aee63b378a45cec69309176f44744d00"
+        }
+      }
+    ]
+  },
+  "actualRenderNodeSnapshots": [
+    {
+      "scope": "composition-node-source-and-result-capacity",
+      "limits": {
+        "pixels": 1,
+        "metadata": 536870911
+      },
+      "current": {
+        "pixels": 0,
+        "metadata": 5117156
+      },
+      "peak": {
+        "pixels": 0,
+        "metadata": 5551829
+      },
+      "reservations": 4,
+      "limitBytes": 536870912
+    },
+    {
+      "scope": "composition-node-source-and-result-capacity",
+      "limits": {
+        "pixels": 1,
+        "metadata": 536870911
+      },
+      "current": {
+        "pixels": 0,
+        "metadata": 5117156
+      },
+      "peak": {
+        "pixels": 0,
+        "metadata": 5551829
+      },
+      "reservations": 4,
+      "limitBytes": 536870912
+    }
+  ]
+}

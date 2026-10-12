@@ -79,6 +79,88 @@ four and a half minutes on an Apple M5 Pro. See the
 - `pnpm composition:baselines --compare-hardware` measures how far a hardware-GPU
   preview drifts from export and writes a report beside the baseline.
 
+`pnpm test:browser:native3d-depth` runs independent native mesh/world-graphic
+joint depth, HDR resolve, color/alpha/UV, winding, visibility and foreign WebGL
+state controls under the pinned software renderer. It is included in `pnpm test`
+and therefore `pnpm check`/`pnpm check:all`; run it serially with other browser
+and export groups. It retains source identities, actual pixels and failed
+artifacts. Native E01, saved edits/installed lifecycle, representative timing,
+memory and human playback/listening remain separate acceptance requirements.
+
+`pnpm test:browser:mechanism-narrated-cycles` checks the supplied-cue compiler
+against all three candidate families and two synthetic local PCM recording lengths.
+It renders repeated complete cycles with native observation closure replay and
+compares encoded output, every decoded video frame and decoded audio. It is included
+in `pnpm test`; run it serially with other browser/export groups. Synthetic timing
+fixtures do not establish spoken narration, supported packs or pilot acceptance.
+
+`pnpm test:browser:mechanism-spoken-inputs <private-manifest-path>` is an opt-in
+engineering gate for the four recovered MS2 spoken takes. It is deliberately
+excluded from portable `pnpm test`: no private media or timed transcripts are
+committed. The private `ms2-supplied-speech-inputs-1` manifest supplies pinned whole
+48k mono Float32 WAVs, pinned timed-word JSON and exact word-range associations.
+Only selected word fields are used; signed transcript URLs are never serialized.
+The gate checks complete word coverage, the explicit15/9 final-sample corrections,
+source/visible caption and action capacity, legal family poses, and repeated
+640x360 native exports through the public independent output check. Every decoded
+frame and complete PCM stream repeats using one retained decoder frame; the
+unchanged32MiB per-frame ceiling and60s decoder timeout stay fixed. Source recording
+identity is checked separately from lossy AAC repeat parity. Scoped decoded samples
+reveal hidden contact labels and subtle hook travel, so this is not portrait,
+all-frame encoded glyph, listening, supported-pack or pilot acceptance. Run serially
+with browser/export groups. [Genuine evidence](./mechanism-shorts-ms2-genuine-spoken-cue-results.json)
+retains failed and unverified stages and the ordinary fast-tier result.
+
+Add `--presentation` to the private spoken-input command to revise the same saved
+teaching poses through revision/hash checked public cue patches. Named stationary
+camera cuts/holds reserve space for captions and callouts. Existing exposed anchors
+replace hidden hook, pawl-root and spring-seat targets; unchanged source near/far
+planes are rechecked. Source geometry, narration/words, captions, markers and sample
+windows remain exact. Peg held controls now keep the intro closed and interpolate
+opening during the first second of the actual opening cue; its release/stop stay
+unchanged. The cloth contact stays hidden between
+touching surfaces under its original policy; its visible cloth/caption remain
+required. Its jaw contact callout is allowed to hide while initially closed, then
+must be visible by the completed opening. Natural-speed playback and illustrative
+spring force limits remain separate. This mode is also opt-in and excluded from the portable full102 matrix.
+[Presentation evidence](./mechanism-shorts-ms2-spoken-presentation-results.json)
+records actual revised native and decoded inspection scope; a pure visibility
+preflight does not establish encoded glyph or normal-speed audiovisual acceptance.
+
+`pnpm test:browser:mechanism-cue-edits` saves source-pinned cue documents for all
+three candidate families, applies a caption patch, rejects the old base and renders
+both revisions with repeats. It independently replays every final native observation,
+checks that decoded video changes and complete decoded audio/source recording stay
+identical, and compares complete repeated encoded/video/audio outputs. It is included
+in `pnpm test`; run it serially with other browser/export groups. These synthetic
+fixtures do not establish genuine spoken narration, full label QA or pilot acceptance.
+
+`pnpm test:browser:mechanism-cue-lifecycle` compiles saved family/cue projects,
+exports both caption revisions twice per family, checks actual encoded video facts
+and independently replays every final native frame through the public check API.
+It compares complete repeated encoded/decoded video/audio and rejects stale snapshots,
+old output under fresh compilation and altered encoded files. It is included in
+`pnpm test`; run it serially with browser/export groups. It conservatively rerenders
+whole cycles; synthetic fixtures do not establish spoken input or rendered label QA.
+
+`pnpm test:browser:mechanism-cue-layout` checks three candidate families with
+simultaneous annotations/caption/protected contact before and after label/camera
+CAS edits. It measures actual glyph bounds and requires actual GPU-observed visible
+anchors and complete painted copy on every frame; forward/reverse/shuffled preview
+pixels repeat. Repeated native finals compare all encoded/decoded video/audio and
+independently replay every final native frame. Run serially with other browser/export
+groups; it is included in `pnpm test`. Synthetic diagnostic frames are separate from
+full encoded readability, continuous motion and human production acceptance.
+
+`pnpm test:browser:mechanism-annotation-styles` exercises tab/open-callout/bracket/
+arrow/highlight recipes in each of three candidate families. It requires all-frame
+actual visible anchors and complete measured labels, including multi-anchor group
+inheritance, and exact forward/reverse/shuffled preview pixels. Repeated native
+finals independently replay every observed frame and compare complete encoded/video/
+audio output. It uses synthetic PCM; genuine speech, continuous/human readability,
+world/surface routes and plate reuse remain separate. Run serially with browser/
+export groups; it is registered in `pnpm test` and the full local gate.
+
 ## Verification policy
 
 ### Deferred WebGL performance
@@ -148,3 +230,89 @@ registered in `pnpm test`, checks real editor persistence, native decoding, play
 and passage mux delivery against independent audio renders under that exception. The
 [CE16 evidence](./composition-ce16-verification-results.json) separates technical
 checks from unperformed listening, audiovisual QA and GUI inspection.
+
+`pnpm test:browser:native3d-pbr-observation` verifies the standalone strict source3
+frame receipt using actual multi-mesh/group GPU draws, independent camera/pose and
+attribute/mip validation, queued captures, corruption controls and scoped allocator
+cleanup. It is included in `pnpm test`. It does not certify source3 composition
+observations/exports, whole-world budgets, installed portability or human acceptance.
+
+`pnpm test:browser:mechanism-world-annotations` owns the explicit cue world-text
+route: three families, actual font bounds and colored ink, independent scalar
+projection using observed physical part matrices, hidden/omitted controls,
+forward/reverse/shuffled preview, CAS/stale-render failures and before/after native
+final checks. It is registered in the full local matrix and runs serially with
+other browser groups. Synthetic PCM and authored text planes do not certify true
+surface markings, genuine speech, plate reuse, continuous-time or human acceptance.
+
+`pnpm test:browser:mechanism-surface-markings` runs the shared world annotation
+harness with explicit rigid-triangle authoring, separately from its default
+world-text route. It uses unchanged three-family sources/required changing-shape
+policies and larger diagnostic1440x816 frames. Final exports, actual measured
+glyph/ink/part/projection/hidden controls, source clocks and before/after CAS
+checks remain owning gates; semantic surface geometry and retained-file/decode
+audits are recorded separately. Both groups run serially in the local full gate.
+
+`pnpm test:browser:mechanism-native-plates` captures native-only PNG16 sequences
+for all three candidate families through the shared exporter. It retains original
+compiled/native source and copied dependencies, replays the original native
+observation closure, verifies every PNG/decoded frame, preserves the plate hash
+after caption/gain edits and rejects camera changes, altered PNGs and every
+original source/receipt/dependency/closure artifact. Actual staged native-body/PNG
+cancellation checks owned cleanup and observed descendant exit under the existing
+2s policy. Run serially
+with other browser/export groups; it is registered in `pnpm test`. This internal
+capture/check foundation does not prove a cached overlay export or zero fresh3D
+draws, genuine speech, whole resource limits or human/pilot acceptance.
+
+`pnpm test:browser:mechanism-cue-plate-export` checks actual native capture and
+ordinary overlay/audio reuse across all three families and all five visible screen
+styles, before and after caption/sound-gain edits. It checks current source edges, original
+native closure evidence, measured zero new native submissions, actual glyph bounds,
+fixed RGB2 preview parity, complete forward/reverse/shuffled seeks, repeated encoded
+bodies and decoded audio. Altered fact files, stale cues, missing measurements and
+nonzero native counters must reject. It is included in `pnpm test`; run it serially
+with other browser/export groups. Supplied speech, whole resource admission, public
+cache API/CLI and human acceptance remain separate gates. Test fixtures use local
+synthetic PCM and engineering dimensions.
+
+`pnpm test:browser:mechanism-world-plate-export` captures and reuses actual native
+world-text and rigid surface-marking plates across all three families. It checks
+all60 native/cache preview pairs and120 cached seeks per case at fixed RGB2,
+retains world/surface ink at RGB8/min8 in both previews and RGB28/min3 in every
+encoded cached frame, and checks repeated output bodies and complete decoded audio.
+A complete world-ink replacement must reject the original plate before output
+publication. Surface fixtures preserve the previously admitted1440x816 pictures
+and Float32 triangle/bias limits. Streaming decoding keeps one bounded frame rather
+than lifting the older complete-clip helper limit. Run serially with the other
+browser/export groups; it is included in `pnpm test`. Generic synthetic captions
+and a small ink count do not establish encoded glyph/copy/readability, genuine
+speech, factual or pilot acceptance. Whole resource/lifetime and final full-matrix
+verification remain separate gates.
+
+`pnpm test:browser:mechanism-cue-cache-cli` exercises the public engine entry and
+separate actual CLI processes: capture original native plates, render/check through
+both consumers, edit one visible bracket and sound gain, recompile and reuse the
+same plates. It requires measured zero fresh native export submissions, current
+receipt identity, stale output rejection, repeated whole encoded/decoded bodies
+and complete PCM, actual glyph bounds and fixed RGB2 preview parity. Native preview
+draws are counted separately. Protocol runtime controls cover strict schemas,
+pre-aborts and ignored/ambiguous flags before input reads. Run the browser group
+serially; it is included in `pnpm test`. Workspace consumer success does not prove
+final installed-package, live cancellation/in-flight edits, whole resource limits,
+genuine speech, encoded readability or human acceptance.
+
+`pnpm test:browser:mechanism-cue-cache-lifetime` observes the existing real HTTP
+frame reader without adding another stream reader or changing responses. The first
+complete cached worker upload triggers a cue edit, a loaded-audio change, a change
+to an already consumed original plate, or cancellation. It requires the actual
+browser and encoder to be live at each control. Source changes must reject before
+publication; canceled calls retain the exact abort reason. Failed owned output,
+observed descendants and export Vite caches must retire under the existing 2s
+policy. Recovery must reuse the original plates with measured zero fresh native
+export submissions. Supplied parent Node reservations share the fixed allowance;
+whole calls retire local leases, preserve unrelated leases and reject four API
+operations with insufficient remaining quota. Real caller-owned output survives
+an existing-directory rejection. Run this registered group serially. Its process
+RSS samples and declared lease checks do not establish a physical-memory threshold,
+driver-internal lifetime, encoded readability, genuine speech or human acceptance.

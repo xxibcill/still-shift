@@ -15,6 +15,8 @@ import {
 } from "../../renderer-core/src/composition/render/renderer.ts";
 import {
   exportScene,
+  CompositionNodeMemory,
+  serializeCompositionNodeJson,
   type ExportMetrics,
   type ExportRequest,
   COMPOSITION_OUTPUT_VERSION,
@@ -23,6 +25,11 @@ import {
   readCompositionSource,
   type CompositionSource,
 } from "./composition-source.ts";
+import { assertNativeAppearanceCodeIdentity } from "./native3d-appearance-identity.ts";
+import {
+  createNativeObservationRequestVersions,
+  type NativeMechanismExecution,
+} from "./native-observation.ts";
 
 const hash = (bytes: Uint8Array | string) =>
   `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
@@ -32,16 +39,33 @@ export type LoadedComposition = CompositionSource & { scene: CompositionScene };
 /** Prepare an inspected composition source for a selected renderer backend. */
 export async function loadComposition(
   compositionPath: string,
-  backend: CompositionBackend = "canvas2d",
-  options: CompositionMediaPreparationOptions = {},
+  backend?: CompositionBackend,
+  options: CompositionMediaPreparationOptions & {
+    nodeMemory?: CompositionNodeMemory;
+  } = {},
 ): Promise<LoadedComposition> {
-  const source = await readCompositionSource(compositionPath, options);
+  const source = await readCompositionSource(compositionPath, {
+    ...options,
+    ...(backend === undefined ? {} : { backend }),
+  });
   return {
     ...source,
     scene: {
-      ...compositionScene(source.composition, backend),
+      ...compositionScene(
+        source.composition,
+        backend ?? (source.preparedNative3D ? "webgl2" : "canvas2d"),
+      ),
       ...(source.preparedMedia ? { preparedMedia: source.preparedMedia } : {}),
       ...(source.preparedAudio ? { preparedAudio: source.preparedAudio } : {}),
+      ...(source.preparedNative3D
+        ? { preparedNative3D: source.preparedNative3D }
+        : {}),
+      ...(source.nativeAppearanceCodeIdentity
+        ? {
+            nativeAppearanceCodeIdentity: source.nativeAppearanceCodeIdentity,
+            nativeAppearanceCodeSha256: source.nativeAppearanceCodeSha256!,
+          }
+        : {}),
     },
   };
 }
@@ -69,6 +93,8 @@ export type CompositionRenderResult = {
 /** Export through the pinned browser; explicit profiles support editor and social delivery. */
 export async function renderComposition(request: {
   compositionPath: string;
+  /** Optional parent so preparation and export contend within one Node allowance. */
+  nodeMemory?: CompositionNodeMemory;
   outputPath: string;
   signal?: AbortSignal | undefined;
   transport?: ExportRequest["transport"];
@@ -77,6 +103,11 @@ export async function renderComposition(request: {
   format?: ExportRequest["format"];
   workers?: ExportRequest["workers"];
   cacheStatic?: boolean;
+  nativeMechanism?: NativeMechanismExecution;
+  /** Recheck the owning episode's source edges before native output publication. */
+  validateNativeSourceEdges?: () => Promise<void>;
+  /** Recheck owning source revisions before guarded composition publication. */
+  validateSourceEdges?: () => Promise<void>;
 }): Promise<CompositionRenderResult> {
   request.signal?.throwIfAborted();
   if (
@@ -91,131 +122,178 @@ export async function renderComposition(request: {
       "SCENE_INVALID",
       "Composition workers must be 1..4 and cacheStatic must be boolean",
     );
-  const loaded = await loadComposition(
-    request.compositionPath,
-    request.backend,
-    {
-      signal: request.signal,
-      ...(request.cacheDirectory
-        ? { cacheDirectory: request.cacheDirectory }
-        : {}),
-    },
-  );
-  const { width, height } = loaded.scene.canvas;
-  if (request.format === undefined && (width % 2 !== 0 || height % 2 !== 0))
-    throw new AnimationEngineError(
-      "SCENE_INVALID",
-      `MP4 export requires even width and height; received ${width} × ${height}`,
+  const nodeMemory = new CompositionNodeMemory(request.nodeMemory);
+  try {
+    const loaded = await loadComposition(
+      request.compositionPath,
+      request.backend,
+      {
+        nodeMemory,
+        signal: request.signal,
+        ...(request.cacheDirectory
+          ? { cacheDirectory: request.cacheDirectory }
+          : {}),
+      },
     );
-  const outputPath = resolve(request.outputPath);
-  const sceneManifestPath = `${outputPath}.scene.json`;
-  for (const path of [
-    outputPath,
-    sceneManifestPath,
-    `${outputPath}.result.json`,
-  ])
-    try {
-      await stat(path);
+    const { width, height } = loaded.scene.canvas;
+    const nativeObservation = await createNativeObservationRequestVersions(
+      loaded,
+      request.nativeMechanism,
+      { signal: request.signal },
+    );
+    if (request.validateNativeSourceEdges && !nativeObservation)
       throw new AnimationEngineError(
         "SCENE_INVALID",
-        `Output already exists: ${path}`,
+        "Native source-edge validation requires prepared native sources",
       );
-    } catch (error) {
-      if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
-    }
-  // The renderer and evaluator versions participate in cache identity.
-  const manifestBytes = `${JSON.stringify(
-    {
-      schemaVersion: "composition-render-1",
-      rendererVersion: loaded.scene.rendererVersion,
-      evaluatorVersion: COMPOSITION_EVALUATOR_VERSION,
-      sourcePath: loaded.sourcePath,
-      sourceChecksum: loaded.sourceChecksum,
-      systemFontLayers: loaded.systemFontLayers,
+    if (
+      request.validateSourceEdges &&
+      !nativeObservation &&
+      request.format === undefined &&
+      request.workers === undefined &&
+      request.cacheStatic === undefined
+    )
+      throw new AnimationEngineError(
+        "SCENE_INVALID",
+        "Composition source-edge validation requires an explicit guarded profile or worker/cache protocol",
+      );
+    if (request.format === undefined && (width % 2 !== 0 || height % 2 !== 0))
+      throw new AnimationEngineError(
+        "SCENE_INVALID",
+        `MP4 export requires even width and height; received ${width} × ${height}`,
+      );
+    const outputPath = resolve(request.outputPath);
+    const sceneManifestPath = `${outputPath}.scene.json`;
+    for (const path of [
+      outputPath,
+      sceneManifestPath,
+      `${outputPath}.result.json`,
+    ])
+      try {
+        await stat(path);
+        throw new AnimationEngineError(
+          "SCENE_INVALID",
+          `Output already exists: ${path}`,
+        );
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+      }
+    // The renderer and evaluator versions participate in cache identity.
+    const manifest = serializeCompositionNodeJson(
+      nodeMemory,
+      {
+        schemaVersion: "composition-render-1",
+        rendererVersion: loaded.scene.rendererVersion,
+        evaluatorVersion: COMPOSITION_EVALUATOR_VERSION,
+        sourcePath: loaded.sourcePath,
+        sourceChecksum: loaded.sourceChecksum,
+        systemFontLayers: loaded.systemFontLayers,
+        scene: loaded.scene,
+        assetPaths: loaded.assetPaths,
+        ...(request.format
+          ? {
+              outputProfile: {
+                version: COMPOSITION_OUTPUT_VERSION,
+                format: request.format,
+              },
+            }
+          : {}),
+      },
+      2,
+      "\n",
+    );
+    const manifestBytes = manifest.text;
+    let result!: CompositionRenderResult;
+    await exportScene({
+      nodeMemory,
+      ...(nativeObservation ? { nativeObservation } : {}),
       scene: loaded.scene,
+      signal: request.signal,
+      sourcePath: loaded.sourcePath,
+      depthPath: null,
       assetPaths: loaded.assetPaths,
-      ...(request.format
+      ...(loaded.preparedAudio
         ? {
-            outputProfile: {
-              version: COMPOSITION_OUTPUT_VERSION,
-              format: request.format,
+            audioInput: {
+              path: loaded.assetPaths[loaded.preparedAudio.resource.id]!,
+              sha256: loaded.preparedAudio.resource.sha256,
+              byteLength: loaded.preparedAudio.resource.byteLength,
+              sampleCount: loaded.preparedAudio.sampleCount,
             },
           }
         : {}),
-    },
-    null,
-    2,
-  )}\n`;
-  let result!: CompositionRenderResult;
-  await exportScene({
-    scene: loaded.scene,
-    signal: request.signal,
-    sourcePath: loaded.sourcePath,
-    depthPath: null,
-    assetPaths: loaded.assetPaths,
-    ...(loaded.preparedAudio
-      ? {
-          audioInput: {
-            path: loaded.assetPaths[loaded.preparedAudio.resource.id]!,
-            sha256: loaded.preparedAudio.resource.sha256,
-            byteLength: loaded.preparedAudio.resource.byteLength,
-            sampleCount: loaded.preparedAudio.sampleCount,
-          },
-        }
-      : {}),
-    outputPath,
-    sceneManifestContents: manifestBytes,
-    transport: request.transport ?? "png_pipe",
-    ...(request.workers === undefined ? {} : { workers: request.workers }),
-    ...(request.cacheStatic === undefined
-      ? {}
-      : { cacheStatic: request.cacheStatic }),
-    ...(request.format ||
-    request.workers !== undefined ||
-    request.cacheStatic !== undefined
-      ? {
-          ...(request.format ? { format: request.format } : {}),
-          expectedSourceChecksum: loaded.sourceChecksum,
-          validateSources: async () => {
-            const verified = await readCompositionSource(
-              request.compositionPath,
-              {
-                signal: request.signal,
-                ...(request.cacheDirectory
-                  ? { cacheDirectory: request.cacheDirectory }
-                  : {}),
-              },
-            );
-            if (verified.sourceChecksum !== loaded.sourceChecksum)
-              throw Error(
-                "Composition source changed before output publication",
+      outputPath,
+      sceneManifestContents: manifestBytes,
+      transport: request.transport ?? "png_pipe",
+      ...(request.workers === undefined ? {} : { workers: request.workers }),
+      ...(request.cacheStatic === undefined
+        ? {}
+        : { cacheStatic: request.cacheStatic }),
+      ...(loaded.preparedNative3D ||
+      request.format ||
+      request.workers !== undefined ||
+      request.cacheStatic !== undefined
+        ? {
+            ...(request.format ? { format: request.format } : {}),
+            expectedSourceChecksum: loaded.sourceChecksum,
+            validateSources: async () => {
+              const verified = await readCompositionSource(
+                request.compositionPath,
+                {
+                  signal: request.signal,
+                  nodeMemory,
+                  ...(request.cacheDirectory
+                    ? { cacheDirectory: request.cacheDirectory }
+                    : {}),
+                },
               );
+              if (verified.sourceChecksum !== loaded.sourceChecksum)
+                throw Error(
+                  "Composition source changed before output publication",
+                );
+              if (loaded.nativeAppearanceCodeIdentity)
+                await assertNativeAppearanceCodeIdentity(
+                  loaded.nativeAppearanceCodeIdentity,
+                );
+              if (
+                loaded.preparedNative3D &&
+                JSON.stringify(verified.preparedNative3D) !==
+                  JSON.stringify(loaded.preparedNative3D)
+              )
+                throw Error(
+                  "Native source transport changed before output publication",
+                );
+              await request.validateNativeSourceEdges?.();
+              await request.validateSourceEdges?.();
+            },
+          }
+        : {}),
+      resultManifestContents: (metrics) => {
+        result = {
+          schemaVersion: "composition-result-1",
+          status: "rendered",
+          composition: loaded.composition.id,
+          rendererVersion: loaded.scene.rendererVersion,
+          evaluatorVersion: COMPOSITION_EVALUATOR_VERSION,
+          fps: loaded.scene.timeline.fps,
+          frameCount: metrics.frameCount,
+          durationMs: loaded.scene.timeline.durationMs,
+          outputPath,
+          sceneManifestPath,
+          warnings: loaded.warnings,
+          systemFontLayers: loaded.systemFontLayers,
+          checksums: {
+            source: loaded.sourceChecksum,
+            scene: hash(manifestBytes),
+            output: metrics.outputChecksum,
           },
-        }
-      : {}),
-    resultManifestContents: (metrics) => {
-      result = {
-        schemaVersion: "composition-result-1",
-        status: "rendered",
-        composition: loaded.composition.id,
-        rendererVersion: loaded.scene.rendererVersion,
-        evaluatorVersion: COMPOSITION_EVALUATOR_VERSION,
-        fps: loaded.scene.timeline.fps,
-        frameCount: metrics.frameCount,
-        durationMs: loaded.scene.timeline.durationMs,
-        outputPath,
-        sceneManifestPath,
-        warnings: loaded.warnings,
-        systemFontLayers: loaded.systemFontLayers,
-        checksums: {
-          source: loaded.sourceChecksum,
-          scene: hash(manifestBytes),
-          output: metrics.outputChecksum,
-        },
-        metrics,
-      };
-      return `${JSON.stringify(result, null, 2)}\n`;
-    },
-  });
-  return result;
+          metrics,
+        };
+        return `${JSON.stringify(result, null, 2)}\n`;
+      },
+    });
+    return result;
+  } finally {
+    nodeMemory.dispose();
+  }
 }

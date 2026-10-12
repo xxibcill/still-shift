@@ -1,0 +1,468 @@
+{
+  "schemaVersion": "mechanism-ms2-output3-capacity-results-1",
+  "date": "2026-10-11",
+  "branch": "codex/mechanism-ms2",
+  "baseSourceCommit": "1210459f4fd232719f0fa84a57d08c0528be5bb0",
+  "status": "staged-output3-capacity-verified-renderer-export-integration-pending",
+  "scope": [
+    "Explicit conservative output3 capacity API; original output2 API still rejects source3. Shared internal legacy templates retain original sizing.",
+    "Source3 counts bounded common/anchor records, then individual mesh/group submissions with all declared texture roles and complete mip inventories. Oversize passes reject incrementally without building a full large receipt template.",
+    "Fixed quoted finite-number upper bounds, 64 passes,1MiB total packet and sizing scratch admission before graph evaluation; scratch released after both success and rejection.",
+    "Fresh independently validated actual GPU receipts pass the standalone output3 collector and envelope with complete packet bytes below capacity. This does not enable source3 composition collection or authenticated export."
+  ],
+  "workingInputs": {
+    "manifest": {
+      "path": "/private/tmp/still-shift-ms2-capacity3-inputs10.json",
+      "bytes": 428222,
+      "sha256": "sha256:6938b6f41cbe8fd18ca565b29702e597d26a5e5edc7a6134d956468eff487daa"
+    },
+    "files": 2510,
+    "inputBytes": 119073803,
+    "selection": {
+      "roots": [
+        "apps/",
+        "packages/",
+        "scripts/",
+        "tests/",
+        "tools/",
+        "services/",
+        "benchmarks/",
+        "examples/",
+        "assets/",
+        "catalogs/"
+      ],
+      "rootFiles": "all Git-tracked or nonignored regular root files",
+      "packageProse": [
+        "docs/npm-package-readme.md",
+        "docs/npm-third-party-notices.md"
+      ],
+      "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+    }
+  },
+  "actualRootSessions": [
+    {
+      "session": 85961,
+      "exitCode": 0,
+      "commands": ["format1", "build1"]
+    },
+    {
+      "session": 31397,
+      "exitCode": 1,
+      "commands": ["format2", "unit2"],
+      "unrun": ["build2"]
+    },
+    {
+      "session": 23038,
+      "exitCode": 1,
+      "commands": ["format3", "unit3"],
+      "unrun": ["build3"]
+    },
+    {
+      "session": 55097,
+      "exitCode": 2,
+      "commands": ["format4", "unit4", "build4"]
+    },
+    {
+      "session": 17585,
+      "exitCode": 2,
+      "commands": ["format5", "identity5", "inputs5", "fast5"],
+      "unrun": ["node6", "observation7", "composition8", "export9", "hold9"]
+    },
+    {
+      "session": 46965,
+      "exitCode": 1,
+      "commands": ["hold5", "format10", "build10", "inputs10", "fast10"],
+      "unrun": [
+        "node11",
+        "observation12",
+        "composition13",
+        "export14",
+        "hold14"
+      ]
+    },
+    {
+      "session": 94397,
+      "exitCode": 0,
+      "commands": [
+        "units15",
+        "node16",
+        "observation17",
+        "composition18",
+        "export19",
+        "hold19"
+      ]
+    }
+  ],
+  "verification": [
+    {
+      "id": "format1",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-format1.log",
+        "bytes": 269,
+        "sha256": "sha256:be1d7fe6dec032fe4abad1f7bc2b69f7c2ea57e1dad1efd3919024bcc186e193"
+      }
+    },
+    {
+      "id": "build1",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-build1.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "format2",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-format2.log",
+        "bytes": 56,
+        "sha256": "sha256:632a76502b5f3138744d8e3fec8d252d5f8988f21036862235f27acff26c918c"
+      }
+    },
+    {
+      "id": "unit2",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-unit2.log",
+        "bytes": 5769,
+        "sha256": "sha256:a2ca508d5f5d42e161cd6d80cfb24563df51a1d876721b129a7203d31459ed3e"
+      }
+    },
+    {
+      "id": "format3",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-format3.log",
+        "bytes": 56,
+        "sha256": "sha256:4c6f65e936c0e2bc95b19cabe384937da17920558b2edf580dca7741780e3fac"
+      }
+    },
+    {
+      "id": "unit3",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-unit3.log",
+        "bytes": 1953,
+        "sha256": "sha256:4e53a1c1a065f3723301a375d52fe6342f5f6914672c00daa7f3e3ba05602af8"
+      }
+    },
+    {
+      "id": "format4",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-format4.log",
+        "bytes": 55,
+        "sha256": "sha256:bdc72ae4cea5a7bbf0efd23cce3b505ded8f6a554da9237629cb921ab69b54b7"
+      }
+    },
+    {
+      "id": "unit4",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-unit4.log",
+        "bytes": 622,
+        "sha256": "sha256:54e4ab25db8c68fcbcecbc839c273520798997e36182efcc4b58f8d88bdd3ec8"
+      }
+    },
+    {
+      "id": "build4",
+      "exitCode": 2,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-build4.log",
+        "bytes": 604,
+        "sha256": "sha256:194c5c521319af4f826378b3a97334fa143d83b3ff92a8674e6cb346341c9a3e"
+      }
+    },
+    {
+      "id": "format5",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-format5.log",
+        "bytes": 46,
+        "sha256": "sha256:943217291a6102b74f0fddcc7e66f697c0e998cf01558b231aaee35a78766e7c"
+      }
+    },
+    {
+      "id": "identity5",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-identity5.log",
+        "bytes": 260,
+        "sha256": "sha256:c7da431a4c0a45fc07e2d3b3d89d3abd39df807266e7593c24f423651e5ae18c"
+      }
+    },
+    {
+      "id": "fast5",
+      "exitCode": 2,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-fast5.log",
+        "bytes": 2270,
+        "sha256": "sha256:fdc1d3b68d9ebb405b4047ef54aed6eb9da3b178a249b5858979d1dd8947cd20"
+      }
+    },
+    {
+      "id": "hold5",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-hold5.log",
+        "bytes": 194,
+        "sha256": "sha256:c5625d5a9a8ad84ee219d83666e7e7988bbba2a7ccc0eeaf3755bb2eec6a36b4"
+      }
+    },
+    {
+      "id": "format10",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-format10.log",
+        "bytes": 113,
+        "sha256": "sha256:2f7eeb55943cff93392dcf088c9a1aaca266fd1f6ee68ff302d876f772c279de"
+      }
+    },
+    {
+      "id": "build10",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-build10.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "fast10",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-fast10.log",
+        "bytes": 40242,
+        "sha256": "sha256:f06e841adb56cf800879d1927281ab8a4cd58deb958534b447218e56619ac93c"
+      }
+    },
+    {
+      "id": "hold10",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-hold10.log",
+        "bytes": 195,
+        "sha256": "sha256:cac557b6b6b159b69b3ba1389791efc3c61cfcf697d1e34e699c0e8ff4c7b88a"
+      }
+    },
+    {
+      "id": "units15",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-units15.log",
+        "bytes": 41049,
+        "sha256": "sha256:dcac8a5f05d93edab40ba1788484b6dafebc6b653b67a47935c6cead6fa1aabf"
+      }
+    },
+    {
+      "id": "node16",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-node16.log",
+        "bytes": 1818,
+        "sha256": "sha256:ca0fe8e8e0379c0a4c8a845f86cdb93f779851025793ead69e1e0f6168677ab9"
+      }
+    },
+    {
+      "id": "observation17",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-observation17.log",
+        "bytes": 284,
+        "sha256": "sha256:987d53892403e5b26738dd29786878ead2027a85aaee6ac1ddd58cb9d186d9f1"
+      }
+    },
+    {
+      "id": "composition18",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-composition18.log",
+        "bytes": 113,
+        "sha256": "sha256:88f75eb4d7478ce0c9f5d611aac88101146b5e387edd986d1ca78292937bf8b2"
+      }
+    },
+    {
+      "id": "export19",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-export19.log",
+        "bytes": 97,
+        "sha256": "sha256:b1e0ec96ddc6f408c4aa63f84bb6444681caf6d0d6a97547b5806af6680e00ff"
+      }
+    },
+    {
+      "id": "hold19",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-capacity3-hold19.log",
+        "bytes": 195,
+        "sha256": "sha256:cac557b6b6b159b69b3ba1389791efc3c61cfcf697d1e34e699c0e8ff4c7b88a"
+      }
+    },
+    {
+      "id": "composition18-proof",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-composition-v2-B07dvJ",
+        "status": "passed",
+        "captures": 4,
+        "negatives": 15
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-composition-v2-B07dvJ/run.json",
+        "bytes": 94704,
+        "sha256": "sha256:18934a31992478f6370795f7bb7029c0776484b7d315aaab47fc1463df23de93"
+      }
+    },
+    {
+      "id": "export19-proof",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-normal-export2-kLWsLc",
+        "status": "passed",
+        "exports": 2
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-normal-export2-kLWsLc/run.json",
+        "bytes": 43882,
+        "sha256": "sha256:8b26d81a4ae88e228e0f8cf4ea37251845397520f948482eaf772917810f3b89"
+      }
+    }
+  ],
+  "counts": {
+    "unitTests": 4186,
+    "unitFiles": 409,
+    "fast10Passes": 4185,
+    "fast10Failures": 1,
+    "unchangedUnitRerunPasses": 4186,
+    "unchangedUnitRerunFailures": 0,
+    "unitRerunSeconds": 140.49,
+    "focusedTests": 13,
+    "focusedFiles": 3,
+    "newCapacityTests": 4,
+    "owningNodeTests": 10,
+    "owningNodeFiles": 4,
+    "source3Frames": 8,
+    "source3Faults": 21,
+    "actualSource3CollectorPackets": 8,
+    "capacityPerFrame": 28165,
+    "minimumActualPacketBytes": 2512,
+    "maximumActualPacketBytes": 10133,
+    "source3ComposedOutputPackets": 0,
+    "source3Exports": 0,
+    "newInstalledArchives": 0,
+    "supportedPacks": 0,
+    "pilotSupportedEpisodes": 0
+  },
+  "actualSource3Capacity": {
+    "scope": "standalone actual GPU receipts to bounded output3 collector; composition/authenticated export integration pending",
+    "frames": [
+      {
+        "id": "neutral",
+        "sourceFrame": 0,
+        "capacity": 28165,
+        "packetBytes": 9480,
+        "passes": 1
+      },
+      {
+        "id": "half",
+        "sourceFrame": 5,
+        "capacity": 28165,
+        "packetBytes": 10133,
+        "passes": 1
+      },
+      {
+        "id": "rotated",
+        "sourceFrame": 10,
+        "capacity": 28165,
+        "packetBytes": 9824,
+        "passes": 1
+      },
+      {
+        "id": "half-repeat",
+        "sourceFrame": 5,
+        "capacity": 28165,
+        "packetBytes": 10133,
+        "passes": 1
+      },
+      {
+        "id": "neutral-reverse",
+        "sourceFrame": 0,
+        "capacity": 28165,
+        "packetBytes": 9480,
+        "passes": 1
+      },
+      {
+        "id": "hidden",
+        "sourceFrame": 0,
+        "capacity": 28165,
+        "packetBytes": 2512,
+        "passes": 1
+      },
+      {
+        "id": "outside",
+        "sourceFrame": 0,
+        "capacity": 28165,
+        "packetBytes": 2512,
+        "passes": 1
+      },
+      {
+        "id": "restored",
+        "sourceFrame": 0,
+        "capacity": 28165,
+        "packetBytes": 9480,
+        "passes": 1
+      }
+    ],
+    "statistics": {
+      "scope": "declared-application-owned-bytes",
+      "limits": {
+        "pixels": 1,
+        "metadata": 67108864
+      },
+      "current": {
+        "pixels": 0,
+        "metadata": 0
+      },
+      "peak": {
+        "pixels": 0,
+        "metadata": 8650752
+      },
+      "reservations": 0
+    }
+  },
+  "source3Proof": {
+    "path": "/private/tmp/still-shift-ms2-pbr-observation-r2nIvr/run.json",
+    "bytes": 168668,
+    "sha256": "sha256:55797c4e91f4b58f845d398968f56488cea5e29fa1808dc32a1f08fee953688f"
+  },
+  "failedRuns": [
+    {
+      "id": "unit2",
+      "reason": "10/13 pass: new fixtures put multiple native controllers in one scope, conflicting with the existing overlap rule; a new UV assertion overlooked that the plain import already contains UVs. Corrected to separate precomps and equal unbound-image capacity."
+    },
+    {
+      "id": "unit3",
+      "reason": "12/13 pass: four valid repeated large-group passes were still below 1MiB. Eight exact enumerated passes reject bytes; a separate 65-pass plain graph rejects the pass count. No limit changed."
+    },
+    {
+      "id": "build4",
+      "reason": "13 focused tests pass; two new test callbacks returned void where the memory scope requires Promise."
+    },
+    {
+      "id": "fast5",
+      "reason": "Prefix schema/boundaries/format/lint pass; build rejects those callbacks and an untyped result array. No unit/Node/browser suffix ran. Held inputs5 verified unchanged before fixing types."
+    },
+    {
+      "id": "fast10",
+      "reason": "All prefix checks pass;4,185/4,186 units pass. Original gradient-table test times out5,622ms/5,000ms. No suffix ran. Inputs10 verified unchanged; exact default pnpm test:fast rerun passes4,186 without source edits or relaxed limits."
+    }
+  ],
+  "qualification": "Staged final verification: fast10 prefix passes then fails one original strict unit timeout; unchanged default-worker units15, owning Node16 and browser suffix all exit0. Never describe this as an uninterrupted fast/full pass or infer the timeout cause. Actual GPU frames have independently checked physical draws, matrices, bytes and mip receipts; standalone diagnostic packets use their appearance digest as the envelope digest and do not prove authenticated execution identity or composed output. Source3 composition collection/export remains rejected. Complete world/source/body/replay budgets and renderer artwork ownership remain pending. Full runtime/integration/full/benchmark and installed verification were not refreshed; no human visual/listening acceptance, milestone PR, merge/publication or ElevenLabs spending.",
+  "remaining": [
+    "Integrate explicit source3 async runtime hooks and output3 composition collector; preserve foreign-mesh rejection with explicit compositor-owned artwork admission.",
+    "Authenticated source3 request/producer/sink/upload/journal/export/installed proof.",
+    "Whole world/source/body/replay budgets retaining32MiB shard/16 shards/512MiB total and fixed packet/pass limits.",
+    "Remaining MS2 packs/authoring/quality/full milestone gates before its PR, then MS3; human review stays separate."
+  ]
+}

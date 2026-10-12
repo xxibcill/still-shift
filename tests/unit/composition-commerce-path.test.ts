@@ -9,6 +9,9 @@ import { commerceToComposition } from "../../packages/renderer-core/src/composit
 import { COMMERCE_CONTENT_PROVIDERS } from "../../packages/renderer-core/src/composition/adapters/commerce-providers.ts";
 import { compileCommerceScene } from "../../packages/renderer-core/src/commerce-scene.ts";
 import { evaluateAttachedPath } from "../../packages/renderer-core/src/commerce-geometry.ts";
+import { mechanismPortraitProof } from "../helpers/mechanism-portrait-proof.ts";
+import { worldMatrix } from "../../packages/renderer-core/src/commerce-geometry.ts";
+import { transformPoint } from "../../packages/renderer-core/src/node-transform.ts";
 import { evaluateComponentAnnotation } from "../../packages/renderer-core/src/component-annotations.ts";
 import { passageDiagnostics } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import { assertCompositionAdapterState } from "../helpers/composition-adapter-state.ts";
@@ -285,4 +288,55 @@ describe("CE4b attached paths and annotations", () => {
       expect(endpoint).toEqual([expected, 0]);
     }
   });
+});
+
+it("repairs a lost portrait label/leader while retaining the exact semantic cap and transformed endpoint", () => {
+  const negative = mechanismPortraitProof(attached(), false);
+  const corrected = mechanismPortraitProof(attached(), true);
+  expect(corrected.geometry![0]!.anchors.cap).toEqual(
+    negative.geometry![0]!.anchors.cap,
+  );
+  expect(corrected.assets).toEqual(negative.assets);
+  const scene = compileCommerceScene(corrected);
+  const path = scene.nodes.find((node) => node.id === "attached-line")!;
+  const image = scene.nodes.find((node) => node.id === "product-art")!;
+  if (path.type !== "path" || image.type !== "image")
+    throw new Error("fixture");
+  const target = corrected.geometry![0]!.anchors.cap!;
+  const scale = Math.min(image.width / 850, image.height / 1250);
+  const local: [number, number] = [
+    (image.width - 850 * scale) / 2 + (target[0] - 200) * scale,
+    (image.height - 1250 * scale) / 2 + target[1] * scale,
+  ];
+  const faulty = compileCommerceScene(negative);
+  const faultyPath = faulty.nodes.find((node) => node.id === "attached-line")!;
+  if (faultyPath.type !== "path") throw new Error("fixture");
+  for (const frame of [0, 30, 60, 15, 30, 0]) {
+    const line = evaluateComponentAnnotation(scene, path, frame);
+    const actual = transformPoint(
+      worldMatrix(scene, path, frame),
+      line.points.at(-1)!,
+    );
+    const expected = transformPoint(worldMatrix(scene, image, frame), local);
+    expect(actual[0]).toBeCloseTo(expected[0], 9);
+    expect(actual[1]).toBeCloseTo(expected[1], 9);
+    const first = transformPoint(
+      worldMatrix(scene, path, frame),
+      line.points[0]!,
+    );
+    expect(first[0]).toBeGreaterThan(0);
+    expect(actual[0]).toBeLessThan(corrected.width);
+    expect(actual[1]).toBeGreaterThan(0);
+    const wrong = evaluateComponentAnnotation(faulty, faultyPath, frame);
+    expect(
+      transformPoint(
+        worldMatrix(faulty, faultyPath, frame),
+        wrong.points[0]!,
+      )[0],
+    ).toBeLessThan(0);
+  }
+  const cropped = structuredClone(corrected);
+  cropped.componentData!.annotations[0]!.points[1]!.point = [50, 50];
+  expect(() => commerceToComposition(cropped)).toThrow(/outside visible crop/);
+  compareGeometry(JSON.parse(JSON.stringify(corrected)));
 });

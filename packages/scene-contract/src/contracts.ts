@@ -135,12 +135,28 @@ export const AnimationErrorCodeSchema = z.enum([
   "OUTPUT_VALIDATION_FAILED",
 ]);
 
+export const FailureDiagnosticSchema = z.object({
+  stage: z.string().min(1).max(1024),
+  path: z.string().max(1024).optional(),
+  nextAction: z.string().min(1).max(1024),
+  causes: z
+    .array(
+      z.object({
+        name: z.string().min(1).max(64),
+        code: z.string().max(64).optional(),
+        message: z.string().max(1024),
+      }),
+    )
+    .max(8),
+});
+
 export const AnimationFailureSchema = z.object({
   status: z.literal("failed"),
   error: z.object({
     code: AnimationErrorCodeSchema,
     message: z.string().trim().min(1),
     context: z.record(z.string(), DiagnosticContextValueSchema).optional(),
+    diagnostic: FailureDiagnosticSchema.optional(),
   }),
 });
 

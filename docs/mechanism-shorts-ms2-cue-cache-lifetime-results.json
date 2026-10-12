@@ -1,0 +1,936 @@
+{
+  "version": "mechanism-shorts-ms2-cue-cache-lifetime-results-1",
+  "date": "2026-10-12",
+  "branch": "codex/mechanism-ms2",
+  "baseCommit": "63841c814960c58386374e81c74c558b350c88f4",
+  "status": "completed-scoped-live-cache-controls-and-shared-declared-node-owner-staged-verification",
+  "implementation": {
+    "scope": "Compatible nodeMemory option on public cached render/check uses a child of the supplied CompositionNodeMemory, matching capture/original checking. All declared capacities share the unchanged512MiB allowance; local leases retire while unrelated caller leases survive. No source schemas, pixel/driver math, receipt wire versions or quotas change.",
+    "actualControls": "Passive observation of real Node HTTP request events retains exactly one complete bounded130,560B worker0/frame0 body per call. Original handlers/readers/responses run unchanged. A real browser and encoder must be live before CAS contact label edit, loaded audio byte change, consumed original PNG change or AbortController cancellation. No export credentials are retained.",
+    "resourceQualification": "Managed capacities are not physical V8/Playwright/FFmpeg RSS. Six cases retain measured RSS samples and call-level declared snapshots; final artificial parent pressure is separated from normal measured high water. The collector/native fixture buffers are test-owned outside the engine allowance. Whole application/source/driver admission remains a separate gate.",
+    "retirement": "Failed fresh owned directories, all observed Chromium/FFmpeg/ffprobe/time descendants and new export Vite caches must retire. Descendant deadline2s is checked after the owning API settles, as in the existing native cancellation helper. Caller-owned output survives EEXIST; original71 plate files restore to their exact bytes. Root disposal retires the one foreign caller lease.",
+    "recovery": "Current cues compile after the label edit; original native picture remains compatible. One recovery output records60 ordinary image calls, ordered60 deliveries and measured zero fresh native submissions. Native observations remain original60-frame evidence. Complete decoded output/PCM and all six actual first worker bodies independently hash-match retained facts."
+  },
+  "attempts": [
+    {
+      "id": "format1-build1",
+      "session": 3426,
+      "actualExitCode": 2,
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-cachelife63-format1.log",
+          "bytes": 131,
+          "sha256": "sha256:da0ea969411ba37d5d5a51bbe3daa994e530d59eb1419756b9accc056b18e6ad"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-cachelife63-build1.log",
+          "bytes": 450,
+          "sha256": "sha256:a4773e72be074fdebe555bc5079056dc35b3a8d37e983b0b1412ae93db388a5c"
+        }
+      ],
+      "reason": "Two byte index writes violate noUncheckedIndexedAccess; complete output proof misses its metrics argument. Test-only repairs."
+    },
+    {
+      "id": "edit2-format2-build2",
+      "session": 56010,
+      "actualExitCode": 2,
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-cachelife63-format2.log",
+          "bytes": 225,
+          "sha256": "sha256:85ef4277d45a385c0b36fe6b63aa6972812cbf77d71dd04b96b7d3e55609d43e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-cachelife63-build2.log",
+          "bytes": 450,
+          "sha256": "sha256:a4773e72be074fdebe555bc5079056dc35b3a8d37e983b0b1412ae93db388a5c"
+        }
+      ],
+      "reason": "Scratch Python replacement has a quoting SyntaxError before any intended edit. Unguarded sequence still reruns unchanged failing build; tool diagnostic retained. Subsequent sequences use set-e."
+    },
+    {
+      "id": "format3-build3",
+      "session": 69226,
+      "actualExitCode": 0,
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-cachelife63-format3.log",
+          "bytes": 213,
+          "sha256": "sha256:9260fc501881960232bb7d6339e717d7d6bef3bf43ec3081bf3ace3b560610d1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-cachelife63-build3.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        }
+      ],
+      "reason": "Type-safe byte edits/metrics argument, group registration and shared-owner guide compile."
+    },
+    {
+      "id": "format4-build4",
+      "session": 50945,
+      "actualExitCode": 0,
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-cachelife63-format4.log",
+          "bytes": 51,
+          "sha256": "sha256:3e065938bab0565ab7e529425f1f3256f07846290f0c1229ca6538cd54e93416"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-cachelife63-build4.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        }
+      ],
+      "reason": "Passive request-event observer, exact source diagnostic assertions and caller artifact controls compile."
+    },
+    {
+      "id": "render1",
+      "session": 53765,
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cachelife63-render1.log",
+        "bytes": 2324,
+        "sha256": "sha256:0b9e98ba2059ece280977858c1b7ebcdf245d98ca52c2abe59f6bb6d6aacd892"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-cue-cache-lifetime-ENiPUO/run.json",
+        "bytes": 22076,
+        "sha256": "sha256:8c2233d4cf6dcf6dbb3e4b79dca627814680d7418f5d9be88fb8266e13a2c46d"
+      },
+      "reason": "An additional data listener changes request flow and causes a short frame upload before the intended live-browser control. The observer is repaired to tap existing request events only; no production renderer change."
+    },
+    {
+      "id": "render2",
+      "session": 69710,
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cachelife63-render2.log",
+        "bytes": 1015,
+        "sha256": "sha256:b58a35f5a3fcb2d62602c2977ad0683d30c890729d58952a20ee70a8e80dfeac"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-cue-cache-lifetime-69WL7v/run.json",
+        "bytes": 30532,
+        "sha256": "sha256:ad4622b094ad42d100d234e10f8b050df8d3e1f91db92bfa484e571989fb4726"
+      },
+      "reason": "Cue edit control passes; real audio identity rejection occurs but the test incorrectly expects hash/checksum wording. Require the exact existing Audio bytes differ from their authored identity diagnostic."
+    },
+    {
+      "id": "render3",
+      "session": 91418,
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cachelife63-render3.log",
+        "bytes": 1049,
+        "sha256": "sha256:d293c113f488a6796597973a6dc61e11e6f9b15e2c2e6c7dd307cd8ba426c7b6"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-cue-cache-lifetime-YpUAWB/run.json",
+        "bytes": 29423,
+        "sha256": "sha256:e89afe4f07c7e53a38de3f844095857591d3727d8c2ae4555c9b65d65dd93404"
+      },
+      "reason": "Cue/audio controls pass; consumed plate rejects in the earlier shared sequence-manifest guard, rather than the later plate-file guard expected by the test. Require its exact existing diagnostic without weakening protection."
+    },
+    {
+      "id": "render4",
+      "session": 38667,
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cachelife63-render4.log",
+        "bytes": 2258,
+        "sha256": "sha256:e6a3fed8427f75ba067489a3eb13e7f441500382a6a4de96d35edd252f7e5d5b"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-cue-cache-lifetime-o0akJj/run.json",
+        "bytes": 35513,
+        "sha256": "sha256:0c4b1796fbd917623dc2245d17ebb0965807adea6dfb2617972fa9dad895cce1"
+      },
+      "reason": "Three source-edit controls and first live cancel pass; repeated abort leaves a legitimate partial later upload. The observer incorrectly requires its full body after cancellation. Only later aborted uploads are now retained as interrupted; complete frame0 remains mandatory before control."
+    },
+    {
+      "id": "format5-build5-render3",
+      "session": 91418,
+      "actualExitCode": 1,
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-cachelife63-format5.log",
+          "bytes": 63,
+          "sha256": "sha256:cda217cf4b9707843687153c7038345d03f926862c07011c9b0604f1b764d48e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-cachelife63-build5.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        }
+      ],
+      "reason": "Guarded build succeeds and reaches render3; root failure is the retained earlier sequence-guard diagnostic mismatch. No separate successful root terminal inferred."
+    },
+    {
+      "id": "format6-build6-render4",
+      "session": 38667,
+      "actualExitCode": 1,
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-cachelife63-format6.log",
+          "bytes": 63,
+          "sha256": "sha256:8044fd166a5fef5f9a13975822e2cb63ad6cc62eadd8ff5c65096caac88011b2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-cachelife63-build6.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        }
+      ],
+      "reason": "Guarded build succeeds and reaches render4; root failure is the retained partial later-upload observation after repeated abort."
+    },
+    {
+      "id": "format7-build7-render5",
+      "session": 98218,
+      "actualExitCode": 0,
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-cachelife63-format7.log",
+          "bytes": 51,
+          "sha256": "sha256:5c6b60811e52a52d2c6f59a7c18dad5546c50ea30e3e551a0cae506ea927ec0e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-cachelife63-build7.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-cachelife63-render5.log",
+          "bytes": 364,
+          "sha256": "sha256:dfec02ffd6ba31f168c4ff3fa6cf2f47bad6a36218ae5e04e099b84ce5e2a4eb"
+        }
+      ],
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-cue-cache-lifetime-ltM0Fg/run.json",
+        "bytes": 112016,
+        "sha256": "sha256:da147b575307d102723c68fa172de1222793f062f5fe17607e12f844d69b99e4"
+      },
+      "reason": "Owned complete guarded build/capture/six real lifetime cases/recovery/four shared-quota controls pass on held source5. Earlier attempts remain separate."
+    },
+    {
+      "id": "audit1",
+      "session": null,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cachelife63-audit1.log",
+        "bytes": 141,
+        "sha256": "sha256:c6b6e417b125b25438991871c59e38e345e49235ee32b981c2b2ff7ccc361def"
+      },
+      "script": {
+        "path": "/private/tmp/still-shift-ms2-cachelife63-audit1-script.py",
+        "bytes": 14065,
+        "sha256": "sha256:963b4a89f2f754593b9c37f2f36dc47a2120eb24a2e225b26dc28dea251e7a26"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-cachelife63-audit1.json",
+        "bytes": 3830,
+        "sha256": "sha256:61dc95357b9b3fcc0370f49a7ac8685692325c40a9d754f23104b8ebc735d724"
+      },
+      "qualification": "Body/native/recovery/counter/lease fact audit passes. Its direct raw-worker viewing PNG has bottom-first rows; keep it as a diagnostic, not a top-first preview."
+    },
+    {
+      "id": "audit2",
+      "session": null,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cachelife63-audit2.log",
+        "bytes": 141,
+        "sha256": "sha256:c6b6e417b125b25438991871c59e38e345e49235ee32b981c2b2ff7ccc361def"
+      },
+      "script": {
+        "path": "/private/tmp/still-shift-ms2-cachelife63-audit.py",
+        "bytes": 14296,
+        "sha256": "sha256:d444d436e6861bf2b08ac49a95b55a8467164261b00494908ead670ef7223142"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-cachelife63-audit2.json",
+        "bytes": 4024,
+        "sha256": "sha256:ef41338ec07047f14ad9d118e1d4eab928e4accfe5dc9e6df2dcd896a09a54bc"
+      },
+      "qualification": "Fresh complete audit plus a top-first viewing artifact using the same vertical row conversion as the shared WebGL2 encoder. Raw bodies/hashes are unchanged; proper viewing pixels exactly equal prior slice62 frame0 preview."
+    },
+    {
+      "id": "fast1",
+      "session": 30713,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-cachelife63-fast1.log",
+        "bytes": 38449,
+        "sha256": "sha256:aff9e7403147b8f02fe0e353598abdaca202c38e7242c59e1d2252a839577a2b"
+      },
+      "tests": 4348,
+      "files": 427,
+      "scope": "Same complete sequential fast tier schema/native appearance406 first-party79 external/boundary/format/lint/build and4,348 units427files, with one unit worker within the original4-worker ceiling. Not ordinary pnpm check:fast, full102, frozen, benchmark or installed admission."
+    },
+    {
+      "id": "evidence-format-precommit1",
+      "actualNestedPythonExitCode": 1,
+      "enclosingReadOnlyShellExitCode": 0,
+      "session": null,
+      "log": null,
+      "reason": "Formatter changes short-array presentation in the completed evidence JSON; the global record still pins its pre-format bytes. Scratch fact audit catches the stale summary reference. Only the two summary references are refreshed after formatting; source, producer, audit and fast inputs remain unchanged. Tool diagnostic retained."
+    }
+  ],
+  "final": {
+    "heldInputs": {
+      "path": "/private/tmp/still-shift-ms2-cachelife63-inputs5.json",
+      "bytes": 448959,
+      "sha256": "sha256:bab4152f8202ca907c384876a8582015b92494e1f418935be669fcacdaa83838",
+      "files": 2632,
+      "inputBytes": 120640533,
+      "unchangedThroughFinalProducerAuditFastAndPrecommit": true
+    },
+    "earlierHeldInputs": [
+      {
+        "path": "/private/tmp/still-shift-ms2-cachelife63-inputs1.json",
+        "bytes": 448959,
+        "sha256": "sha256:fd193e7fa72796f93bb6043f7285f124f691f647f457395eda4cfc41380b1c6b",
+        "files": 2632,
+        "inputBytes": 120637143
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-cachelife63-inputs2.json",
+        "bytes": 448959,
+        "sha256": "sha256:49f38f89dc7c619b4964717798dceda83544923091608b899eae2a88281868d5",
+        "files": 2632,
+        "inputBytes": 120639912
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-cachelife63-inputs3.json",
+        "bytes": 448959,
+        "sha256": "sha256:9bbfd704dda5ddbc44c694b47a6233d0a0d0476e78c20a7bcdeea81e9013e0a3",
+        "files": 2632,
+        "inputBytes": 120639945
+      },
+      {
+        "path": "/private/tmp/still-shift-ms2-cachelife63-inputs4.json",
+        "bytes": 448959,
+        "sha256": "sha256:e3cfb4bfc50647038dd4335676aa2e555f4ebdfe9ac44081b209002c4604852a",
+        "files": 2632,
+        "inputBytes": 120639965
+      }
+    ],
+    "fullMatrixGroups": 102,
+    "fullMatrixPassed": false,
+    "captureReceipt": {
+      "path": "/private/tmp/still-shift-ms2-cue-cache-lifetime-ltM0Fg/plates/native-plates.json",
+      "bytes": 1999,
+      "sha256": "sha256:8d0eefde96b6a63a13211b3fa7161afb68111015617a700cb8fe6a7195d91e4c"
+    },
+    "cases": [
+      {
+        "name": "cue-label-edit",
+        "status": "passed",
+        "completedUploads": 60,
+        "interruptedUploads": [],
+        "nativeObservationRequests": 0,
+        "actionAtMs": 18650.759374999994,
+        "failure": {
+          "name": "AnimationEngineError",
+          "message": "Compilation does not match the current family/cue revision",
+          "context": {
+            "stage": "mechanism-cue-lifecycle",
+            "diagnosticCode": "mechanism-stale-compilation",
+            "path": "family/cue",
+            "nextAction": "Compile the current family/cue revision into a fresh directory, then render/check that snapshot."
+          }
+        },
+        "preservedAbortReason": null,
+        "sharedNode": {
+          "scope": "composition-node-source-and-result-capacity",
+          "limits": {
+            "pixels": 1,
+            "metadata": 536870911
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 1024
+          },
+          "peak": {
+            "pixels": 0,
+            "metadata": 238934162
+          },
+          "reservations": 1,
+          "limitBytes": 536870912
+        },
+        "sampledPhysicalRss": {
+          "parentPeakRssBytes": 1406025728,
+          "sampledTreePeakRssBytes": 2240348160,
+          "scope": "Sampled real process RSS, including test observer; no application allowance threshold or driver-internal allocation claim"
+        },
+        "cleanupWaitMs": 0.10499999999592546,
+        "survivors": [],
+        "newExportViteCachesAbsent": true,
+        "firstCompleteActualWorkerUpload": {
+          "frame": 0,
+          "worker": 0,
+          "bytes": 130560,
+          "sha256": "sha256:9bf5d46bbf3bddda6cfde023659df940a3e4129e7a43e09f15e5c05f7437a1f2",
+          "path": "/private/tmp/still-shift-ms2-cue-cache-lifetime-ltM0Fg/cue-label-edit-first-frame.rgba",
+          "atMs": 18637.987084000008
+        },
+        "liveBrowserAndEncoderAtControl": [
+          {
+            "pid": 27077,
+            "role": "time"
+          },
+          {
+            "pid": 27093,
+            "role": "ffmpeg"
+          },
+          {
+            "pid": 27094,
+            "role": "chrome-headless-shell"
+          },
+          {
+            "pid": 27125,
+            "role": "chrome-headless-shell"
+          },
+          {
+            "pid": 27126,
+            "role": "chrome-headless-shell"
+          },
+          {
+            "pid": 27142,
+            "role": "chrome-headless-shell"
+          }
+        ],
+        "ownedOutputDirectoryAbsent": true,
+        "qualification": "The first complete raw worker upload triggers the control; no synthetic body or response. Canceled jobs have no published result/submission counters. Cleanup wait is measured after the owning API settles, under the same existing2s descendant policy; no total abort-to-settlement latency inferred."
+      },
+      {
+        "name": "current-audio-edit",
+        "status": "passed",
+        "completedUploads": 60,
+        "interruptedUploads": [],
+        "nativeObservationRequests": 0,
+        "actionAtMs": 19281.26375,
+        "failure": {
+          "name": "PassageError",
+          "message": "Audio bytes differ from their authored identity"
+        },
+        "preservedAbortReason": null,
+        "sharedNode": {
+          "scope": "composition-node-source-and-result-capacity",
+          "limits": {
+            "pixels": 1,
+            "metadata": 536870911
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 1024
+          },
+          "peak": {
+            "pixels": 0,
+            "metadata": 238934162
+          },
+          "reservations": 1,
+          "limitBytes": 536870912
+        },
+        "sampledPhysicalRss": {
+          "parentPeakRssBytes": 1390362624,
+          "sampledTreePeakRssBytes": 2140504064,
+          "scope": "Sampled real process RSS, including test observer; no application allowance threshold or driver-internal allocation claim"
+        },
+        "cleanupWaitMs": 0.03333299999940209,
+        "survivors": [],
+        "newExportViteCachesAbsent": true,
+        "firstCompleteActualWorkerUpload": {
+          "frame": 0,
+          "worker": 0,
+          "bytes": 130560,
+          "sha256": "sha256:9bf5d46bbf3bddda6cfde023659df940a3e4129e7a43e09f15e5c05f7437a1f2",
+          "path": "/private/tmp/still-shift-ms2-cue-cache-lifetime-ltM0Fg/current-audio-edit-first-frame.rgba",
+          "atMs": 19254.45537499999
+        },
+        "liveBrowserAndEncoderAtControl": [
+          {
+            "pid": 29569,
+            "role": "time"
+          },
+          {
+            "pid": 29585,
+            "role": "ffmpeg"
+          },
+          {
+            "pid": 29586,
+            "role": "chrome-headless-shell"
+          },
+          {
+            "pid": 29617,
+            "role": "chrome-headless-shell"
+          },
+          {
+            "pid": 29618,
+            "role": "chrome-headless-shell"
+          },
+          {
+            "pid": 29634,
+            "role": "chrome-headless-shell"
+          }
+        ],
+        "ownedOutputDirectoryAbsent": true,
+        "qualification": "The first complete raw worker upload triggers the control; no synthetic body or response. Canceled jobs have no published result/submission counters. Cleanup wait is measured after the owning API settles, under the same existing2s descendant policy; no total abort-to-settlement latency inferred."
+      },
+      {
+        "name": "consumed-original-plate-edit",
+        "status": "passed",
+        "completedUploads": 60,
+        "interruptedUploads": [],
+        "nativeObservationRequests": 0,
+        "actionAtMs": 20521.64158299999,
+        "failure": {
+          "name": "PassageError",
+          "message": "Original sequence frame differs from its manifest"
+        },
+        "preservedAbortReason": null,
+        "sharedNode": {
+          "scope": "composition-node-source-and-result-capacity",
+          "limits": {
+            "pixels": 1,
+            "metadata": 536870911
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 1024
+          },
+          "peak": {
+            "pixels": 0,
+            "metadata": 238934162
+          },
+          "reservations": 1,
+          "limitBytes": 536870912
+        },
+        "sampledPhysicalRss": {
+          "parentPeakRssBytes": 1368047616,
+          "sampledTreePeakRssBytes": 2169667584,
+          "scope": "Sampled real process RSS, including test observer; no application allowance threshold or driver-internal allocation claim"
+        },
+        "cleanupWaitMs": 0.039958000008482486,
+        "survivors": [],
+        "newExportViteCachesAbsent": true,
+        "firstCompleteActualWorkerUpload": {
+          "frame": 0,
+          "worker": 0,
+          "bytes": 130560,
+          "sha256": "sha256:9bf5d46bbf3bddda6cfde023659df940a3e4129e7a43e09f15e5c05f7437a1f2",
+          "path": "/private/tmp/still-shift-ms2-cue-cache-lifetime-ltM0Fg/consumed-original-plate-edit-first-frame.rgba",
+          "atMs": 20493.30520799999
+        },
+        "liveBrowserAndEncoderAtControl": [
+          {
+            "pid": 32284,
+            "role": "time"
+          },
+          {
+            "pid": 32300,
+            "role": "ffmpeg"
+          },
+          {
+            "pid": 32316,
+            "role": "chrome-headless-shell"
+          },
+          {
+            "pid": 32347,
+            "role": "chrome-headless-shell"
+          },
+          {
+            "pid": 32363,
+            "role": "chrome-headless-shell"
+          },
+          {
+            "pid": 32379,
+            "role": "chrome-headless-shell"
+          }
+        ],
+        "ownedOutputDirectoryAbsent": true,
+        "qualification": "The first complete raw worker upload triggers the control; no synthetic body or response. Canceled jobs have no published result/submission counters. Cleanup wait is measured after the owning API settles, under the same existing2s descendant policy; no total abort-to-settlement latency inferred."
+      },
+      {
+        "name": "cancel-first",
+        "status": "passed",
+        "completedUploads": 3,
+        "interruptedUploads": [],
+        "nativeObservationRequests": 0,
+        "actionAtMs": 19288.832666999995,
+        "failure": {
+          "name": "Error",
+          "message": "Cancel actual cached export after its first complete worker frame: cancel-first"
+        },
+        "preservedAbortReason": true,
+        "sharedNode": {
+          "scope": "composition-node-source-and-result-capacity",
+          "limits": {
+            "pixels": 1,
+            "metadata": 536870911
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 1024
+          },
+          "peak": {
+            "pixels": 0,
+            "metadata": 238934162
+          },
+          "reservations": 1,
+          "limitBytes": 536870912
+        },
+        "sampledPhysicalRss": {
+          "parentPeakRssBytes": 1393049600,
+          "sampledTreePeakRssBytes": 2103017472,
+          "scope": "Sampled real process RSS, including test observer; no application allowance threshold or driver-internal allocation claim"
+        },
+        "cleanupWaitMs": 27.538415999995777,
+        "survivors": [],
+        "newExportViteCachesAbsent": true,
+        "firstCompleteActualWorkerUpload": {
+          "frame": 0,
+          "worker": 0,
+          "bytes": 130560,
+          "sha256": "sha256:9bf5d46bbf3bddda6cfde023659df940a3e4129e7a43e09f15e5c05f7437a1f2",
+          "path": "/private/tmp/still-shift-ms2-cue-cache-lifetime-ltM0Fg/cancel-first-first-frame.rgba",
+          "atMs": 19259.051292000004
+        },
+        "liveBrowserAndEncoderAtControl": [
+          {
+            "pid": 34892,
+            "role": "time"
+          },
+          {
+            "pid": 34908,
+            "role": "ffmpeg"
+          },
+          {
+            "pid": 34909,
+            "role": "chrome-headless-shell"
+          },
+          {
+            "pid": 34925,
+            "role": "chrome-headless-shell"
+          },
+          {
+            "pid": 34926,
+            "role": "chrome-headless-shell"
+          },
+          {
+            "pid": 34942,
+            "role": "chrome-headless-shell"
+          }
+        ],
+        "ownedOutputDirectoryAbsent": true,
+        "qualification": "The first complete raw worker upload triggers the control; no synthetic body or response. Canceled jobs have no published result/submission counters. Cleanup wait is measured after the owning API settles, under the same existing2s descendant policy; no total abort-to-settlement latency inferred."
+      },
+      {
+        "name": "cancel-repeat",
+        "status": "passed",
+        "completedUploads": 3,
+        "interruptedUploads": [],
+        "nativeObservationRequests": 0,
+        "actionAtMs": 18675.457916999992,
+        "failure": {
+          "name": "Error",
+          "message": "Cancel actual cached export after its first complete worker frame: cancel-repeat"
+        },
+        "preservedAbortReason": true,
+        "sharedNode": {
+          "scope": "composition-node-source-and-result-capacity",
+          "limits": {
+            "pixels": 1,
+            "metadata": 536870911
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 1024
+          },
+          "peak": {
+            "pixels": 0,
+            "metadata": 238934162
+          },
+          "reservations": 1,
+          "limitBytes": 536870912
+        },
+        "sampledPhysicalRss": {
+          "parentPeakRssBytes": 1406238720,
+          "sampledTreePeakRssBytes": 2067775488,
+          "scope": "Sampled real process RSS, including test observer; no application allowance threshold or driver-internal allocation claim"
+        },
+        "cleanupWaitMs": 27.51766700000735,
+        "survivors": [],
+        "newExportViteCachesAbsent": true,
+        "firstCompleteActualWorkerUpload": {
+          "frame": 0,
+          "worker": 0,
+          "bytes": 130560,
+          "sha256": "sha256:9bf5d46bbf3bddda6cfde023659df940a3e4129e7a43e09f15e5c05f7437a1f2",
+          "path": "/private/tmp/still-shift-ms2-cue-cache-lifetime-ltM0Fg/cancel-repeat-first-frame.rgba",
+          "atMs": 18648.571750000003
+        },
+        "liveBrowserAndEncoderAtControl": [
+          {
+            "pid": 37089,
+            "role": "time"
+          },
+          {
+            "pid": 37105,
+            "role": "ffmpeg"
+          },
+          {
+            "pid": 37106,
+            "role": "chrome-headless-shell"
+          },
+          {
+            "pid": 37122,
+            "role": "chrome-headless-shell"
+          },
+          {
+            "pid": 37123,
+            "role": "chrome-headless-shell"
+          },
+          {
+            "pid": 37124,
+            "role": "chrome-headless-shell"
+          }
+        ],
+        "ownedOutputDirectoryAbsent": true,
+        "qualification": "The first complete raw worker upload triggers the control; no synthetic body or response. Canceled jobs have no published result/submission counters. Cleanup wait is measured after the owning API settles, under the same existing2s descendant policy; no total abort-to-settlement latency inferred."
+      },
+      {
+        "name": "recovery",
+        "status": "passed",
+        "completedUploads": 60,
+        "interruptedUploads": [],
+        "nativeObservationRequests": 0,
+        "actionAtMs": 18713.621000000014,
+        "failure": {
+          "message": "undefined"
+        },
+        "preservedAbortReason": null,
+        "sharedNode": {
+          "scope": "composition-node-source-and-result-capacity",
+          "limits": {
+            "pixels": 1,
+            "metadata": 536870911
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 1024
+          },
+          "peak": {
+            "pixels": 0,
+            "metadata": 285155818
+          },
+          "reservations": 1,
+          "limitBytes": 536870912
+        },
+        "sampledPhysicalRss": {
+          "parentPeakRssBytes": 1375174656,
+          "sampledTreePeakRssBytes": 2068283392,
+          "scope": "Sampled real process RSS, including test observer; no application allowance threshold or driver-internal allocation claim"
+        },
+        "cleanupWaitMs": 0.045707999990554526,
+        "survivors": [],
+        "newExportViteCachesAbsent": true,
+        "firstCompleteActualWorkerUpload": {
+          "frame": 0,
+          "worker": 0,
+          "bytes": 130560,
+          "sha256": "sha256:9bf5d46bbf3bddda6cfde023659df940a3e4129e7a43e09f15e5c05f7437a1f2",
+          "path": "/private/tmp/still-shift-ms2-cue-cache-lifetime-ltM0Fg/recovery-first-frame.rgba",
+          "atMs": 18689.794916000013
+        },
+        "liveBrowserAndEncoderAtControl": [
+          {
+            "pid": 38692,
+            "role": "time"
+          },
+          {
+            "pid": 38708,
+            "role": "ffmpeg"
+          },
+          {
+            "pid": 38709,
+            "role": "chrome-headless-shell"
+          },
+          {
+            "pid": 38725,
+            "role": "chrome-headless-shell"
+          },
+          {
+            "pid": 38726,
+            "role": "chrome-headless-shell"
+          },
+          {
+            "pid": 38742,
+            "role": "chrome-headless-shell"
+          }
+        ],
+        "ownedOutputDirectoryAbsent": null,
+        "qualification": "The first complete raw worker upload triggers the control; no synthetic body or response. Canceled jobs have no published result/submission counters. Cleanup wait is measured after the owning API settles, under the same existing2s descendant policy; no total abort-to-settlement latency inferred."
+      }
+    ],
+    "originalPlateFiles": 71,
+    "originalNativeCaptureFrames": 60,
+    "inFlightSourceChangeRejections": 3,
+    "liveCachedCancellationControls": 2,
+    "completeRealCachedWorkerUploads": 246,
+    "canceledCompleteUploads": [3, 3],
+    "finalInterruptedLaterUploads": 0,
+    "publishedRecoveryExports": 1,
+    "recoveryVideoFrames": 60,
+    "recoveryMeasuredImageCalls": 60,
+    "recoveryMeasuredFreshNativeSubmissionCalls": 0,
+    "recoveryCurrentOutputCheck": {
+      "schemaVersion": "mechanism-cue-plate-check-result-1",
+      "status": "passed",
+      "outputPath": "/private/tmp/still-shift-ms2-cue-cache-lifetime-ltM0Fg/recovery/output.mp4",
+      "outputSha256": "sha256:34bc22fc6d30a2dd2733be1252f75f0def2c7deb8477e6a888806348149939d4",
+      "nativePictureSha256": "sha256:929474fa283d5019b0797a1b9a802f07655168325e0712b8a14212e74b4ba520",
+      "sequenceSha256": "sha256:bd0e6d63ed8caa7d3f3ece76929a9eeb4c12e2870a9d992c69dcb4e411ff4cee",
+      "freshNativeSubmissionCalls": 0,
+      "originalNativeFrames": 60,
+      "originalNativePasses": 60,
+      "reusedPlateFrames": 60,
+      "video": {
+        "width": 240,
+        "height": 136,
+        "nb_read_frames": "60",
+        "avg_frame_rate": "30/1"
+      },
+      "scope": "current-overlays-final-video-and-measured-zero-new-native-submissions-with-original-capture-proof",
+      "remainingQa": "Visual, listening, whole resource and pilot acceptance remain separate gates."
+    },
+    "currentOriginalPlateCheck": {
+      "schemaVersion": "mechanism-cue-native-plate-check-result-1",
+      "status": "passed",
+      "receiptPath": "/private/tmp/still-shift-ms2-cue-cache-lifetime-ltM0Fg/plates/native-plates.json",
+      "nativePictureSha256": "sha256:929474fa283d5019b0797a1b9a802f07655168325e0712b8a14212e74b4ba520",
+      "sequenceSha256": "sha256:bd0e6d63ed8caa7d3f3ece76929a9eeb4c12e2870a9d992c69dcb4e411ff4cee",
+      "originalNativeFrames": 60,
+      "originalNativePasses": 60,
+      "scope": "current-native-picture-and-original-capture-proof-no-new-native-observations"
+    },
+    "callerOwnedOutputPreserved": {
+      "path": "/private/tmp/still-shift-ms2-cue-cache-lifetime-ltM0Fg/caller-output/keep.txt",
+      "bytes": 40,
+      "sha256": "sha256:a1f014f8e09fee4b119e9caa1cce8d4ff817554cd84c3f8c113c06ddcbcb8930"
+    },
+    "fourSharedQuotaControls": [
+      {
+        "name": "capture",
+        "failure": {
+          "name": "Error",
+          "message": "Composition managed metadata exceed their aggregate worker quota"
+        },
+        "remainingBudgetBytes": 65535
+      },
+      {
+        "name": "original-check",
+        "failure": {
+          "name": "Error",
+          "message": "Composition managed metadata exceed their aggregate worker quota"
+        },
+        "remainingBudgetBytes": 65535
+      },
+      {
+        "name": "cached-render",
+        "failure": {
+          "name": "Error",
+          "message": "Composition managed metadata exceed their aggregate worker quota"
+        },
+        "remainingBudgetBytes": 65535
+      },
+      {
+        "name": "cached-output-check",
+        "failure": {
+          "name": "Error",
+          "message": "Composition managed metadata exceed their aggregate worker quota"
+        },
+        "remainingBudgetBytes": 65535
+      }
+    ],
+    "normalSharedDeclaredHighWaterBytes": 285155818,
+    "sharedDeclaredAllowanceBytes": 536870912,
+    "normalPeakQualification": "Accumulated declared shared capacities through original capture/six real calls, before artificial caller pressure. Not physical RSS or a whole-application allocation proof.",
+    "finalSharedBeforeDisposalAfterArtificialPressure": {
+      "scope": "composition-node-source-and-result-capacity",
+      "limits": {
+        "pixels": 1,
+        "metadata": 536870911
+      },
+      "current": {
+        "pixels": 0,
+        "metadata": 1024
+      },
+      "peak": {
+        "pixels": 0,
+        "metadata": 536805376
+      },
+      "reservations": 1,
+      "limitBytes": 536870912
+    },
+    "finalSharedAfterDisposal": {
+      "scope": "composition-node-source-and-result-capacity",
+      "limits": {
+        "pixels": 1,
+        "metadata": 536870911
+      },
+      "current": {
+        "pixels": 0,
+        "metadata": 0
+      },
+      "peak": {
+        "pixels": 0,
+        "metadata": 536805376
+      },
+      "reservations": 0,
+      "limitBytes": 536870912
+    },
+    "originalBodiesStillExact": true,
+    "actualFirstWorkerBodyFacts": 6,
+    "allSixActualFirstWorkerBodiesIdentical": true,
+    "viewingArtifact": {
+      "path": "/private/tmp/still-shift-ms2-cue-cache-lifetime-ltM0Fg/recovery-first-upload-top-first.png",
+      "bytes": 17668,
+      "sha256": "sha256:1af318d2edfcb50bf96787d630bc796c5fe626f15e5b66483f4ebb396af7eb48",
+      "rawWorkerRows": "bottom-first",
+      "viewingRows": "top-first",
+      "conversion": "Vertical row-order conversion matching shared WebGL2 encoder; raw body/hash remains unchanged"
+    },
+    "properViewingArtifactAgentViewed": true,
+    "properViewingPixelsMatchPriorPublicConsumerPreviewEveryRgbaByte": {
+      "priorPreview": {
+        "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/before-frame-0.png",
+        "bytes": 23508,
+        "sha256": "sha256:fcfe87b9e234a06e3c7092df19f24fe4a550203aafd139fe11b4c7653cdf8ddb"
+      },
+      "pixelSha256": "sha256:0b6620c27e4b589fc9d8955c8037dff193faae317acb6aeddc04b12473e7d7ed",
+      "exact": true
+    }
+  },
+  "independentAudit": {
+    "scope": "Independent original file/body/native PNG16 inverse-transfer/hash/journal/hierarchy/static-camera/current/lowered/recovery worker/video/PCM and live-control recorded-fact audit. Process exit, action timing and caller lease snapshots are cross-checked from the producer; no independent rerun of controls, physical-memory threshold, driver-internal lifetime, encoded readability or human acceptance.",
+    "factPinChecks": 90,
+    "originalNativePng16TransportHashMatches": 60,
+    "partHierarchyPairs": 660,
+    "sourceCameraTriples": 60,
+    "actualFirstWorkerBodyFacts": 6,
+    "recoveryActualDecodedVideoFrames": 60,
+    "completeRecoveryDecodedPcm": {
+      "sha256": "sha256:d95e7ff30b5b4bdfc067ad3f70c071e59a7ce1f01e496d6bf25c9dd074fd45f6",
+      "bytes": 770048
+    },
+    "recordedControlSnapshotsCrossChecked": 5,
+    "qualification": "All facts/bodies/source/journal/hierarchy/static cameras/recovery workers/video/PCM independently checked. Auditor does not rerun live controls or rigs; action/process/lease snapshots are cross-checked.90 fact-pin checks include repeated references, not90 unique files. No encoded glyph/readability/human acceptance."
+  },
+  "remaining": [
+    "Final whole application/source/preparation/world/result/replay and physical-memory/resource/driver-internal lifetime admission remain required. This scoped tape native2 case proves declared shared lease retirement and actual observed process/artifact cleanup, not a global physical RAM threshold.",
+    "Genuine supplied speech cue documents/native exports and shorter revised-copy recompilation, exact source endpoints, reading/action and factual/listening review remain open. Four measured source clocks and13 associations are inputs, not production acceptance.",
+    "Full102 including this registered serial group, frozen176/36061/benchmark and current source/archive/installed API/CLI/pack/validated10-question coverage/MS2 PR before MS3 remain required. Historical stopped full51 keeps its original94-group scope; slice61 producer terminal remains unverified until owning full rerun.",
+    "Encoded glyph/copy/readability, broader continuous layout and human visual/listening/pilot acceptance remain separate. Supported packs0; validated coverage0/10; accepted pilot0. No paid generation, merge, npm publication, Actions or private media redistribution."
+  ]
+}

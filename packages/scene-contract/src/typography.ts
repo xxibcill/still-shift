@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { ScalarCurveSchema, layerFields } from "./motion-craft.ts";
+import {
+  ScalarCurveSchema,
+  layerFields,
+  TextWeightTreatmentSchema,
+} from "./motion-craft.ts";
 import { CurveEasingSchema } from "./motion-easing.ts";
 import { NarrationTimingSchema } from "./narration-timing.ts";
 
@@ -121,12 +125,18 @@ export const TextEventSchema = z
       .optional(),
     color: color.optional(),
     amount: finite.optional(),
+    weightTreatment: TextWeightTreatmentSchema.optional(),
     signal: id.optional(),
     at: z.union([frame, NarrationWordAnchorSchema]),
     duration: frame.positive(),
     ...layerFields,
   })
-  .strict();
+  .strict()
+  .refine(
+    (e) =>
+      !e.weightTreatment || (e.verb === "emphasize" && e.manner === "weight"),
+    "Weight treatment requires emphasize with manner weight",
+  );
 export const typographyNodeFields = {
   style: id.optional(),
   spans: z.array(TextSpanSchema).max(128).optional(),

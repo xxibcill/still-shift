@@ -1,3 +1,7 @@
+import {
+  resolveTextWeightTreatment,
+  TextWeightTreatmentReportSchema,
+} from "./typography-weight.ts";
 import type { NarrationTiming } from "./narration-timing.ts";
 import type {
   NarrationWordAnchor,
@@ -88,32 +92,59 @@ function indexedTextEvents(scene: TextEventScene) {
 export function resolveTextEvents(scene: TextEventScene): ResolvedTextEvent[] {
   return indexedTextEvents(scene).map(({ event }) => event);
 }
+function textIntentEvents(scene: TextEventScene): TextEvent[] {
+  return (scene.intentPresets?.motions ?? []).flatMap((m) => {
+    if (!m.preset.startsWith("text-")) return [];
+    const { preset, window, at } = m;
+    const fields = {
+      node: m.node,
+      span: m.span,
+      target: m.target,
+      replacement: m.replacement,
+      manner: m.manner,
+      color: m.color,
+      amount: m.amount,
+      ...(m.weightTreatment ? { weightTreatment: m.weightTreatment } : {}),
+    };
+    return [
+      {
+        ...fields,
+        verb: preset.slice(5) as TextEvent["verb"],
+        at: at ?? window.start,
+        duration: window.end - window.start,
+      },
+    ];
+  });
+}
+/** Companion receipt from validated authoring data; never inject diagnostics into cached scene pixels. */
+export function inspectTextWeightTreatments(source: TextEventScene) {
+  const scene = {
+    ...source,
+    textEvents: [...(source.textEvents ?? []), ...textIntentEvents(source)],
+  };
+  const receipts = indexedTextEvents(scene)
+    .filter(
+      ({ event }) => event.verb === "emphasize" && event.manner === "weight",
+    )
+    .map(({ event, index }) => {
+      try {
+        const node = scene.nodes.find((node) => node.id === event.node);
+        if (node?.type !== "text")
+          throw Error("text-event-target: " + event.node);
+        return resolveTextWeightTreatment(scene, node, event, index);
+      } catch (error) {
+        throw new TextEventError(error, index);
+      }
+    });
+  return TextWeightTreatmentReportSchema.parse({
+    schemaVersion: "text-weight-treatments-1",
+    receipts,
+  });
+}
 export function compileTextEvents<T extends TextEventScene>(source: T): T {
   if (!source.typography) return source;
   const scene = structuredClone(source);
-  const intents: TextEvent[] = (scene.intentPresets?.motions ?? []).flatMap(
-    (m) => {
-      if (!m.preset.startsWith("text-")) return [];
-      const { preset, window, at } = m;
-      const fields = {
-        node: m.node,
-        span: m.span,
-        target: m.target,
-        replacement: m.replacement,
-        manner: m.manner,
-        color: m.color,
-        amount: m.amount,
-      };
-      return [
-        {
-          ...fields,
-          verb: preset.slice(5) as TextEvent["verb"],
-          at: at ?? window.start,
-          duration: window.end - window.start,
-        },
-      ];
-    },
-  );
+  const intents = textIntentEvents(scene);
   if (intents.length)
     scene.textEvents = [...(scene.textEvents ?? []), ...intents];
   const events = indexedTextEvents(scene);
@@ -205,44 +236,22 @@ export function compileTextEvents<T extends TextEventScene>(source: T): T {
           if (manner === "color")
             animator.to = { fill: event.color ?? "#b64032" };
           if (manner === "weight") {
-            if (event.amount !== undefined && event.amount <= 0)
+            const receipt = resolveTextWeightTreatment(
+              scene,
+              node,
+              event,
+              eventIndex,
+            );
+            if (receipt.status === "unavailable")
               throw new Error(
-                "text-weight-amount: weight emphasis must be positive",
-              );
-            const spanStyle = event.span
-              ? node.spans?.find((span) => span.id === event.span)?.style
-              : undefined;
-            const targetStyles = event.span
-              ? [resolvedTextStyle(node, scene.textStyles ?? {}, spanStyle)]
-              : [
-                  style,
-                  ...(node.spans ?? []).map((span) =>
-                    resolvedTextStyle(node, scene.textStyles ?? {}, span.style),
-                  ),
-                ];
-            const ranges = targetStyles.map((targetStyle) => {
-              const range = scene.fonts?.find(
-                (font) => font.id === targetStyle.fontAsset,
-              )?.variable?.wght;
-              return range
-                ? range.max - (targetStyle.axes?.wght ?? range.default)
-                : 0;
-            });
-            const available = Math.min(...ranges);
-            if (
-              available <= 0 &&
-              event.amount !== undefined &&
-              event.amount > 40
-            )
-              throw new Error(
-                "text-weight-amount: outline width exceeds 40 px",
+                `text-weight-unavailable: ${event.node} needs ${receipt.requestedAmount} wght units, available ${receipt.availableHeadroom}; target ${event.span ?? "whole node"}`,
               );
             animator.to =
-              available > 0
-                ? { axes: { wght: Math.min(event.amount ?? 150, available) } }
+              receipt.resolvedTreatment === "genuine-weight"
+                ? { axes: { wght: receipt.resolvedAmount! } }
                 : {
                     stroke: event.color ?? node.color,
-                    strokeWidth: event.amount ?? size * 0.014,
+                    strokeWidth: receipt.resolvedAmount!,
                   };
           }
           if (manner === "compress" || manner === "expand") {

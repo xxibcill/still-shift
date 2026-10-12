@@ -32,6 +32,7 @@ import {
   retypedClusters,
   reserveCountWidth,
   resolveDisplayedText,
+  correctionReplacementStart,
   transitionSlideLimit,
 } from "./typography-transition.ts";
 import { drawTextDecorations } from "./typography-decorations.ts";
@@ -449,7 +450,7 @@ export function prepareTypography(
       entries.push({
         node: replacement,
         raster,
-        start: event.start + Math.floor(event.duration / 2),
+        start: correctionReplacementStart(event),
         end: event.end,
         x: box.x,
         y:
@@ -516,7 +517,7 @@ export function typographyContainerContent(
     height: Math.min(layout.height, node.textLayout?.height ?? Infinity),
   };
 }
-function displayedContainerContent(
+export function displayedContainerContent(
   node: TextNode,
   prepared: PreparedTypography,
   frame: number,
@@ -794,6 +795,37 @@ function textBlurRuns(poses: TextPose[]) {
   });
   return runs;
 }
+export function typographyRevealPoses(
+  node: TextNode,
+  raster: TextRaster,
+  poses: TextPose[],
+  reveal: number,
+) {
+  if (node.revealMode === "words" && reveal < 1) {
+    const words = [
+      ...new Set(
+        raster.layout.clusters
+          .filter((c) => /\S/u.test(c.text))
+          .map((c) => c.wordIndex),
+      ),
+    ];
+    poses = poses.map((pose, i) => {
+      const rank = words.indexOf(raster.layout.clusters[i]!.wordIndex);
+      const progress = Math.max(
+        0,
+        Math.min(1, reveal * (words.length + 0.5) - rank),
+      );
+      return {
+        ...pose,
+        opacity: pose.opacity * progress,
+        y: pose.y + (1 - progress) * node.fontSize * 0.2,
+      };
+    });
+    reveal = 1;
+  }
+  return { poses, reveal };
+}
+
 function drawRaster(
   ctx: CanvasRenderingContext2D,
   node: TextNode,
@@ -825,28 +857,7 @@ function drawRaster(
     true,
     poses,
   );
-  if (node.revealMode === "words" && reveal < 1) {
-    const words = [
-      ...new Set(
-        raster.layout.clusters
-          .filter((c) => /\S/u.test(c.text))
-          .map((c) => c.wordIndex),
-      ),
-    ];
-    poses = poses.map((pose, i) => {
-      const rank = words.indexOf(raster.layout.clusters[i]!.wordIndex);
-      const progress = Math.max(
-        0,
-        Math.min(1, reveal * (words.length + 0.5) - rank),
-      );
-      return {
-        ...pose,
-        opacity: pose.opacity * progress,
-        y: pose.y + (1 - progress) * node.fontSize * 0.2,
-      };
-    });
-    reveal = 1;
-  }
+  ({ poses, reveal } = typographyRevealPoses(node, raster, poses, reveal));
   for (const group of textBlurRuns(poses)) {
     const layer = resetLayer(prepared.layer, width, height);
     layer.translate(-left, -top);
@@ -889,13 +900,13 @@ function drawRaster(
         ),
       );
       const x = box.x - node.fontSize,
-        y = vertical ? line.baseline - raster.layout.ascent : raster.top;
+        y = vertical ? line.baseline - line.ascent : raster.top;
       const right =
         progress >= 1
           ? box.x + box.width + node.fontSize
           : box.x + box.width * progress;
       const bottom = vertical
-        ? line.baseline + raster.layout.descent
+        ? line.baseline + line.descent
         : raster.top + raster.canvas.height;
       if (progress <= 0) mask.clearRect(left, top, width, height);
       else {
@@ -927,8 +938,7 @@ function drawRaster(
     poses,
   );
 }
-function drawTypographyContent(
-  ctx: CanvasRenderingContext2D,
+export function typographyDrawPlan(
   node: TextNode,
   state: { state: number; reveal: number },
   prepared: PreparedTypography,
@@ -952,16 +962,7 @@ function drawTypographyContent(
   const displayed = resolveDisplayedText(node, frame, state.state);
   if (displayed.kind === "single") {
     const raster = get(displayed.text);
-    drawRaster(
-      ctx,
-      node,
-      raster,
-      posesFor(raster),
-      prepared,
-      frame,
-      state.reveal,
-    );
-    return;
+    return { kind: "single" as const, raster, poses: posesFor(raster) };
   }
   const { transition, progress: p } = displayed;
   const from = get(displayed.fromText),
@@ -973,19 +974,22 @@ function drawTypographyContent(
     poses.forEach((pose, i) => {
       if (i >= visible.count) pose.opacity = 0;
     });
-    drawRaster(ctx, node, raster, poses, prepared, frame, state.reveal);
-    if (transition.caret) {
-      const last = raster.layout.clusters[visible.count - 1];
-      ctx.fillStyle = node.color;
-      ctx.fillRect(
-        last ? last.x + last.advance : raster.layout.lines[0]!.x,
-        (last?.baseline ?? raster.layout.lines[0]!.baseline) -
-          raster.layout.capHeight,
-        Math.max(1, node.fontSize / 30),
-        raster.layout.capHeight,
-      );
-    }
-    return;
+    const last = raster.layout.clusters[visible.count - 1];
+    return {
+      kind: "retype" as const,
+      raster,
+      poses,
+      caret: transition.caret
+        ? {
+            x: last ? last.x + last.advance : raster.layout.lines[0]!.x,
+            y:
+              (last?.baseline ?? raster.layout.lines[0]!.baseline) -
+              raster.layout.capHeight,
+            width: Math.max(1, node.fontSize / 30),
+            height: raster.layout.capHeight,
+          }
+        : undefined,
+    };
   }
   const before = posesFor(from),
     after = posesFor(to),
@@ -1045,6 +1049,39 @@ function drawTypographyContent(
       after[b]!.mask = "none";
     }
   }
+  return { kind: "blend" as const, from, to, before, after };
+}
+
+function drawTypographyContent(
+  ctx: CanvasRenderingContext2D,
+  node: TextNode,
+  state: { state: number; reveal: number },
+  prepared: PreparedTypography,
+  frame: number,
+) {
+  const plan = typographyDrawPlan(node, state, prepared, frame);
+  if (plan.kind !== "blend") {
+    drawRaster(
+      ctx,
+      node,
+      plan.raster,
+      plan.poses,
+      prepared,
+      frame,
+      state.reveal,
+    );
+    if (plan.kind === "retype" && plan.caret) {
+      ctx.fillStyle = node.color;
+      ctx.fillRect(
+        plan.caret.x,
+        plan.caret.y,
+        plan.caret.width,
+        plan.caret.height,
+      );
+    }
+    return;
+  }
+  const { from, to, before, after } = plan;
   const margin = node.fontSize * 4,
     left = Math.min(from.left, to.left) - margin,
     top = Math.min(from.top, to.top) - margin;

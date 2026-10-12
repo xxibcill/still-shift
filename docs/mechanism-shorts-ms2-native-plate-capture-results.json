@@ -1,0 +1,295 @@
+{
+  "version": "mechanism-shorts-ms2-native-plate-capture-results-1",
+  "date": "2026-10-12",
+  "branch": "codex/mechanism-ms2",
+  "baseCommit": "98d99d97",
+  "status": "completed-internal-native-plate-capture-and-original-proof-check-only",
+  "implementation": {
+    "nativeCapture": "Internal native-only PNG16 capture through the shared renderComposition exporter. Own sibling source/receipt/result/scene/sequence files and copied native/world/procedural-font dependencies; existing32MiB source copies, fixed64KiB streaming hash/copy and shared Node source/parser/closure/export allowance. Native output receipts remain original capture observations. No public root cache API/CLI or cached overlay export yet.",
+    "compatibility": "Verify current compiled/native source and actual dependencies before comparing path-independent native picture. Reopen body/dependency pins and independently replay the original native2 closure; caption/gain edits preserve picture, camera edits reject. Full clock/dimensions/background/rig/world/font/native data remain in picture identity.",
+    "qualification": "Internal actual plate capture/check only. World/surface capture breadth, cached overlay pixels and zero fresh3D draws on cached export, genuine speech, whole memory/lifetime/replay/full98/archive/installed/pack/MS2 PR and human acceptance remain open."
+  },
+  "attempts": [
+    {
+      "id": "files-focused1",
+      "session": 11757,
+      "actualExitCode": 0,
+      "reason": "Two real file/FIFO/sparse/exclusive-copy/pre-abort tests pass on initial helper; later cleanup/hash guards receive focused3.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate58-files-focused1.log",
+        "bytes": 485,
+        "sha256": "sha256:cd22d2ea366c851b94ee2a8cb5314f41fb0deb42b8b839cf53af29c6428bb456"
+      }
+    },
+    {
+      "id": "capture-red1",
+      "session": null,
+      "actualExitCode": 1,
+      "reason": "Native plate capture module did not exist; missing-module failure before any native draw.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate58-capture-red1.log",
+        "bytes": 1519,
+        "sha256": "sha256:8ad2b94921349f6725b7b3c40a3479ea778c21c6b5f3f400eb405a93c6247cfb"
+      }
+    },
+    {
+      "id": "build1",
+      "session": 34036,
+      "actualExitCode": 2,
+      "reason": "Typecheck caught transfer library typing and a missing scratch allocation introduced during cleanup hardening; corrected before GPU capture.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate58-build1.log",
+        "bytes": 1338,
+        "sha256": "sha256:bf27efbf414e5e6f4719882dfab3c27372aa987ee9e53b9fcabcbe119c549a8a"
+      }
+    },
+    {
+      "id": "build2",
+      "session": 21010,
+      "actualExitCode": null,
+      "reason": "Combined build2/focused2 shell ended0, but build2 subcommand terminal was not independently retained. No independent build2 success is inferred; fresh build3/4/5 terminals pass.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate58-build2.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "files-focused2",
+      "session": 21010,
+      "actualExitCode": 0,
+      "reason": "Last command of combined owned shell: two file tests pass after allocation/cleanup repair. Build2 is separately qualified.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate58-files-focused2.log",
+        "bytes": 485,
+        "sha256": "sha256:63ef3a5bdbebd41a8d66f707668648e0a54c7fa95c713f87fb26d2c93f28d7f9"
+      }
+    },
+    {
+      "id": "build3",
+      "session": 88612,
+      "actualExitCode": 0,
+      "reason": "Independently observed pinned TypeScript build passes repaired allocation and shared parent owner.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate58-build3.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "build4",
+      "session": 91171,
+      "actualExitCode": 0,
+      "reason": "Independently observed build passes exact JSON byte-pin and PNG color/fact guards before capture1.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate58-build4.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "capture1",
+      "session": 72502,
+      "actualExitCode": 0,
+      "reason": "Three families/180 original native frames/passes; every numbered PNG and decoded frame verified. Caption/gain compatibility and camera/PNG mutation/pre-abort controls pass. Heldinputs1 unchanged through terminal.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate58-capture1.log",
+        "bytes": 97,
+        "sha256": "sha256:618a4662c4b5061ec6f646f8a77c1c4342f82e5faff12f075d18e169e0de01ca"
+      }
+    },
+    {
+      "id": "files-focused3",
+      "session": 63565,
+      "actualExitCode": 0,
+      "reason": "Final bounded file helper: two real tests include exact admitted JSON hash, regular files, sparse/FIFO limits, exclusive copies, mismatch cleanup/pre-abort and shared retained tree storage.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate58-files-focused3.log",
+        "bytes": 485,
+        "sha256": "sha256:259db9ea898bfb672b3ee07f7b38f0edafec03bc460d2d6222e76620dd97b193"
+      }
+    },
+    {
+      "id": "cancel1",
+      "session": 84358,
+      "actualExitCode": 1,
+      "reason": "Actual complete33494B PNG/native journal130560B raw pixel identity precede cancel; owned capture directory removed, immediate exit oracle sees3 still-exiting descendants. Retain failure; adopt the existing2s bounded cleanup policy.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate58-cancel1.log",
+        "bytes": 539,
+        "sha256": "sha256:9c70e125343662427914dcf2375d7abd2d7c0e6b85d464169b4c49b9fa21661d"
+      }
+    },
+    {
+      "id": "cancel2",
+      "session": 7678,
+      "actualExitCode": 0,
+      "reason": "Actual native capture cancels after real staged PNG/journal; directory absent, observed Chromium/FFmpeg descendants gone after25.7044ms within existing2s policy. Before final explicit PNG-footer/process-record guards, which final capture2 must qualify.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate58-cancel2.log",
+        "bytes": 90,
+        "sha256": "sha256:05aac637af54a9517daa42428159eb254941f9545f5b74fc3ccb955dc1136392"
+      }
+    },
+    {
+      "id": "build5",
+      "session": 70049,
+      "actualExitCode": 0,
+      "reason": "Final integrated producer/cancellation/control types pass before capture2.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate58-build5.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "capture2",
+      "session": 69817,
+      "actualExitCode": 0,
+      "reason": "Final registered producer:180 native frames/passes;28 original-artifact corruption controls plus3 altered PNGs/3 camera invalidations; caption/gain compatibility; pre-abort and live real native-body/complete-PNG cancellation. Captured/decoded bodies remain exact against capture1; completeinputs2 unchanged.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate58-capture2.log",
+        "bytes": 272,
+        "sha256": "sha256:a050d8fc5abf1ea657749831fe853476a092e72ab16048152582d1c91df25f4f"
+      }
+    },
+    {
+      "id": "fast1",
+      "session": 71722,
+      "actualExitCode": 0,
+      "reason": "Final local fast gate passes4344 units/427 files plus schemas/identity, boundaries, formatting, lint and build. No full98 or cached render/zero-new3D-draw acceptance.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate58-fast1.log",
+        "bytes": 39296,
+        "sha256": "sha256:8da1aace7e8266f3df8cbdf5316299b374302d06d37d4205cf31bc84e93c9b22"
+      }
+    }
+  ],
+  "capture1": {
+    "directory": "/private/tmp/still-shift-ms2-native-plates-kXMMiZ",
+    "run": {
+      "path": "/private/tmp/still-shift-ms2-native-plates-kXMMiZ/run.json",
+      "bytes": 43840,
+      "sha256": "sha256:a05422a5df523db44c691cc2c9102888a09cb552c293dc1b2d6e66d60066d3ea"
+    },
+    "heldInputs": {
+      "path": "/private/tmp/still-shift-ms2-plate58-inputs1.json",
+      "bytes": 446820,
+      "sha256": "sha256:d0b5afd79897b5139930e7223274d68c77dc6cdb4817328fa9d2839725af2b21"
+    },
+    "counts": {
+      "files": 2619,
+      "bytes": 120508065,
+      "nativeFrames": 180,
+      "nativePasses": 180,
+      "decodedFrames": 180,
+      "pngsAgentViewed": 9
+    },
+    "independentAudit": {
+      "actualExitCode": 0,
+      "scope": "All180 PNG16/hash/decoded frames and native journal clocks;1260 hierarchy pairs and180 source-derived static camera triples. Native source rig replay belongs to closure checker.",
+      "source": {
+        "path": "/private/tmp/still-shift-ms2-plate58-audit.py",
+        "bytes": 7855,
+        "sha256": "sha256:6b36195dbc717300b6fa754e50786aecd9baf63b1c2af4c3c9ae4d52d64b70be"
+      },
+      "result": {
+        "path": "/private/tmp/still-shift-ms2-plate58-audit1.json",
+        "bytes": 49070,
+        "sha256": "sha256:48e52df5e14f4ad8c45ae4118fce415b9bab2c23755109fe62505fb24f0b07a7"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate58-audit1.log",
+        "bytes": 580,
+        "sha256": "sha256:eb176ffc2bc7a2625d4512bd881ca35749ba39273a2b6bcf0a1ac518f18f9e35"
+      }
+    }
+  },
+  "cancel1": {
+    "failedReport": {
+      "path": "/private/tmp/still-shift-ms2-native-plate-cancel-x02hq2/report.json",
+      "bytes": 29125,
+      "sha256": "sha256:7ec14204dd820f378f78a354752a3ca5e9eee9d851c041a9ee5086360c66c392"
+    },
+    "afterFailureAudit": {
+      "path": "/private/tmp/still-shift-ms2-plate58-cancel1-audit.json",
+      "bytes": 119,
+      "sha256": "sha256:d599bbeda027db94a77bc3b8e641762704b569de4ddcd2155de3497b753d0e05"
+    },
+    "qualification": "Failed immediate-exit assertion retained. Subsequent authorized read finds no targeted processes; staged PNG hash equals independently verified complete capture1 frame0. Initial read-only ps unavailable in default sandbox; authorized read used permitted process inspection."
+  },
+  "cancel2": {
+    "report": {
+      "path": "/private/tmp/still-shift-ms2-native-plate-cancel-ipeHgS/report.json",
+      "bytes": 29221,
+      "sha256": "sha256:471c23c179869ddfbc0a68c10c59d3e78374b34794e289e5ecaa5dc870e0bd72"
+    },
+    "qualification": "Real native body/PNG, source2 positive physical draw,25.7044ms cleanup wait, zero observed descendants and no capture directory. Does not establish final explicit footer/process guard until integrated capture2."
+  },
+  "remaining": [
+    "Actual cached overlay export and zero-new3D submission counts; public revision-safe API/CLI/check and direct/reused pixel/audio parity, including real world/surface capture/binding breadth.",
+    "Fresh genuine-speech/sample-clock/cue native exports, whole resources/lifetime/replay/full98/archive/installed/pack/MS2 PR, then MS3. Packs/pilot0; MS3 not started. No paid generation or human acceptance."
+  ],
+  "capture2": {
+    "directory": "/private/tmp/still-shift-ms2-native-plates-BGkXkt",
+    "run": {
+      "path": "/private/tmp/still-shift-ms2-native-plates-BGkXkt/run.json",
+      "bytes": 78940,
+      "sha256": "sha256:c2d28e33d1099842778afe80de7ce826d4e4ca55b4e5300d26a24d3809271765"
+    },
+    "heldInputs": {
+      "path": "/private/tmp/still-shift-ms2-plate58-inputs2.json",
+      "bytes": 446993,
+      "sha256": "sha256:19b3e0b242f47932a07ac1afef370ba825c18fab0ab1e6b942deec06c88cc31f"
+    },
+    "heldCounts": {
+      "files": 2620,
+      "bytes": 120518027
+    },
+    "originalNativeFrames": 180,
+    "originalNativePasses": 180,
+    "corruptedOriginalArtifactControls": 28,
+    "alteredPngControls": 3,
+    "cameraInvalidationControls": 3,
+    "exactPngBodiesAndDecodedFramesAgainstCapture1": 180,
+    "viewQualification": "Nine original capture1 sampled PNGs were viewed. All180 final PNG bodies equal capture1 exactly, including those nine original samples; no pilot/human/cached-overlay acceptance.",
+    "independentAudit": {
+      "actualExitCode": 0,
+      "source": {
+        "path": "/private/tmp/still-shift-ms2-plate58-audit.py",
+        "bytes": 7855,
+        "sha256": "sha256:6b36195dbc717300b6fa754e50786aecd9baf63b1c2af4c3c9ae4d52d64b70be"
+      },
+      "result": {
+        "path": "/private/tmp/still-shift-ms2-plate58-audit3.json",
+        "bytes": 49070,
+        "sha256": "sha256:53058e61fcd077603f47504f836bcd6b5dd8f0fbb52dc271d811fba48fee1ca4"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate58-audit3.log",
+        "bytes": 580,
+        "sha256": "sha256:eb176ffc2bc7a2625d4512bd881ca35749ba39273a2b6bcf0a1ac518f18f9e35"
+      },
+      "scope": "180 PNG16/hash/decode/journal frames,1260 physical hierarchy pairs and180 source-derived static-camera triples; native rig replay belongs to closure checker."
+    },
+    "completeSelectionAndCrossRunAudit": {
+      "path": "/private/tmp/still-shift-ms2-plate58-final-capture-audit1.json",
+      "bytes": 451,
+      "sha256": "sha256:a75b675fde8ae3db4ca404ffaf8a2d8f95e3d91d093fa9f4734537594c1c8eb8"
+    },
+    "cancellation": {
+      "status": "passed",
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-native-plate-cancel-NOmYcq/report.json",
+        "bytes": 29222,
+        "sha256": "sha256:edc9597bf41219607d0195407cdd024f82cde6380f59eb31f715bccf7ed4cd85"
+      },
+      "scope": "Actual staged PNG/native-journal capture cancellation, owned artifact cleanup and observed descendant exit; no published closure or cached reuse proof",
+      "cleanupWaitMs": 26.883832999999868,
+      "survivors": [],
+      "ownedDirectoryAbsent": true,
+      "stagedCompletePngMatchesIndependentlyVerifiedFrame0": true,
+      "qualification": "Final explicit PNG IEND/process record admission and existing2s descendant cleanup; original canceled native packet retained, no published closure or successful render inferred."
+    }
+  }
+}

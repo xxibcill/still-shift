@@ -38,7 +38,10 @@
         "./packages/renderer-core/src/passage-compositions.ts"
       ],
       "@still-shift/motion": ["./packages/motion-builder/src/index.ts"],
-      "@still-shift/motion/node": ["./packages/motion-builder/src/node.ts"]
+      "@still-shift/motion/node": ["./packages/motion-builder/src/node.ts"],
+      "@still-shift/renderer-core/native3d-browser": [
+        "./packages/renderer-core/src/native3d/browser.ts"
+      ]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,

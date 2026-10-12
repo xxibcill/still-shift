@@ -1,0 +1,499 @@
+{
+  "version": "mechanism-ms2-output3-export-results-1",
+  "date": "2026-10-11",
+  "branch": "codex/mechanism-ms2",
+  "baseSourceCommit": "070b4d1c72b00b26905efd187421caeb13b33af9",
+  "status": "normal-source3-export-verified-mixed-installed-accounting-pending",
+  "scope": [
+    "Trusted source3 request producer binds exact loaded composition/source/preparation/appearance identities and samples fresh assigned frames; original source1/source2 producer contracts remain explicit.",
+    "Version dispatch covers admission, sink/closure replay, worker envelope, asynchronous page report and owned packet3 upload acknowledgement. Prepared/packet mismatches reject.",
+    "Normal production route renders two authenticated source3 MP4 exports, each11 frames/11 actual passes, plus one unused-source3 output with0 passes. A shared genuine glTF/PNG fixture prepares fresh verified binaries for preview and normal export.",
+    "Original primitive request narrowing and source1/source2 APIs remain strict; upload ownership/rejection controls now run for both modern packet2/packet3."
+  ],
+  "workingInputs": {
+    "manifest": {
+      "path": "/private/tmp/still-shift-ms2-export3-inputs8.json",
+      "bytes": 429221,
+      "sha256": "sha256:c139fd55580d03e00f7f152e43b3755b298f97dc5b3c824e773c8acecb22b738"
+    },
+    "files": 2516,
+    "inputBytes": 119131512,
+    "selection": {
+      "roots": [
+        "apps/",
+        "packages/",
+        "scripts/",
+        "tests/",
+        "tools/",
+        "services/",
+        "benchmarks/",
+        "examples/",
+        "assets/",
+        "catalogs/"
+      ],
+      "rootFiles": "all Git-tracked or nonignored regular root files",
+      "packageProse": [
+        "docs/npm-package-readme.md",
+        "docs/npm-third-party-notices.md"
+      ],
+      "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+    }
+  },
+  "actualRootSessions": [
+    {
+      "session": 39496,
+      "exitCode": 254,
+      "commands": ["format1", "identity1"]
+    },
+    {
+      "session": 40869,
+      "exitCode": 2,
+      "commands": ["format2", "identity2", "build2"]
+    },
+    {
+      "session": 69894,
+      "exitCode": 2,
+      "commands": ["format4", "build4"]
+    },
+    {
+      "session": 87981,
+      "exitCode": 0,
+      "commands": ["format6", "build6", "export7"]
+    },
+    {
+      "session": 31816,
+      "exitCode": 0,
+      "commands": [
+        "format8",
+        "inputs8",
+        "fast8",
+        "node9",
+        "composition10",
+        "export11",
+        "shapes12",
+        "primitives13",
+        "hold13"
+      ]
+    },
+    {
+      "session": 37665,
+      "exitCode": 0,
+      "commands": ["format14", "inputs14", "composition15", "hold15"]
+    }
+  ],
+  "verification": [
+    {
+      "id": "format1",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-format1.log",
+        "bytes": 363,
+        "sha256": "sha256:3e654bc3c62f6e1622bc618725e34126f93d655b99e8c1518ca086abaf626c98"
+      }
+    },
+    {
+      "id": "identity1",
+      "exitCode": 254,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-identity1.log",
+        "bytes": 135,
+        "sha256": "sha256:7bf81972b786d6cd980386306a7e6ec919c7e763eaff7f351dc51c7144f42154"
+      }
+    },
+    {
+      "id": "format2",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-format2.log",
+        "bytes": 167,
+        "sha256": "sha256:567b6d56d7fc698a6ebd0275fba3348d5b696d5f7d8a239c1225cc93546f1e00"
+      }
+    },
+    {
+      "id": "identity2",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-identity2.log",
+        "bytes": 260,
+        "sha256": "sha256:e1588685c737f2ea8cfb7ede62f7879eea8d49a23816b935634ee84c02869a30"
+      }
+    },
+    {
+      "id": "build2",
+      "exitCode": 2,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-build2.log",
+        "bytes": 1594,
+        "sha256": "sha256:d9931ca42d70632f7e12c4d7cc821785089cf6e9e08585b9616d1f27fb13a3c4"
+      }
+    },
+    {
+      "id": "format4",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-format4.log",
+        "bytes": 100,
+        "sha256": "sha256:c324a50e681d182c72ef6a87e4354a3cf83a08ae19d48b1b4845abc8a421f823"
+      }
+    },
+    {
+      "id": "build4",
+      "exitCode": 2,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-build4.log",
+        "bytes": 1346,
+        "sha256": "sha256:f90273cf756ee776f90a14a2f7fc105f9c04fcfe46bc1c4174102ec6a043e23a"
+      }
+    },
+    {
+      "id": "format6",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-format6.log",
+        "bytes": 43,
+        "sha256": "sha256:f7f78ae71c1b9303335e66060ba2edad36ad0df63df7889e8183de6347c64731"
+      }
+    },
+    {
+      "id": "build6",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-build6.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "export7",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-export7.log",
+        "bytes": 262,
+        "sha256": "sha256:c8e81eaa153e51a6820f90820c5d45c649626109e1ffac0a877258dbd00cda0c"
+      }
+    },
+    {
+      "id": "format8",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-format8.log",
+        "bytes": 50,
+        "sha256": "sha256:b8098fd3240f5fa8f232e7af5163126a2cdeb9229edfa88b0e8be1d6241395b4"
+      }
+    },
+    {
+      "id": "inputs8",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-inputs8.log",
+        "bytes": 240,
+        "sha256": "sha256:9867df2ee5f056c6f64f61f0dbbce61b00a38f1da467ff17fabca6b6133276e4"
+      }
+    },
+    {
+      "id": "fast8",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-fast8.log",
+        "bytes": 38715,
+        "sha256": "sha256:847c86047d34e02f1797e74ff0beb443488979215346fd6210d616adc8377a43"
+      }
+    },
+    {
+      "id": "node9",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-node9.log",
+        "bytes": 1817,
+        "sha256": "sha256:6dc34566637e8d6a5de014623820da5df1b406a866d00355a187038c62ac3579"
+      }
+    },
+    {
+      "id": "composition10",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-composition10.log",
+        "bytes": 833,
+        "sha256": "sha256:eb6731bcc1be6b66ee938d0c1e6cb104b9288594827235bcb9361ddac83b8522"
+      }
+    },
+    {
+      "id": "export11",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-export11.log",
+        "bytes": 262,
+        "sha256": "sha256:57bb01ca0c29276dc22f9b6fc2cb5bcdec8abdefea7802b45596374515407a9e"
+      }
+    },
+    {
+      "id": "shapes12",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-shapes12.log",
+        "bytes": 1218,
+        "sha256": "sha256:7bebd628057c8f1d0ca7c52fa4523e246fe36ffe59c27a260ee33cbab312694f"
+      }
+    },
+    {
+      "id": "primitives13",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-primitives13.log",
+        "bytes": 286,
+        "sha256": "sha256:97e7cca2f08d775580d307b1d030ddf8785bf25b1cbcd5110357eb9bfa44fd8d"
+      }
+    },
+    {
+      "id": "hold13",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-hold13.log",
+        "bytes": 192,
+        "sha256": "sha256:1dbcd99da7e63dfadb9a9f330cd134fda8ed7ee2404749922d1ae2d0813b4650"
+      }
+    },
+    {
+      "id": "format14",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-format14.log",
+        "bytes": 59,
+        "sha256": "sha256:9359de49aa110955ed8b9a86930c1b1f81b454b249d823a91f25c5d2dfbedf9b"
+      }
+    },
+    {
+      "id": "inputs14",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-inputs14.log",
+        "bytes": 241,
+        "sha256": "sha256:0274bc822a89941c0044a90ae6ec7e1a85117b2b68aa5aae8768c011186daaca"
+      }
+    },
+    {
+      "id": "composition15",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-composition15.log",
+        "bytes": 833,
+        "sha256": "sha256:6267ea3eff3409f3c2c2dbeb74e9c50fe2587dde5a932fa10a9619dd77e3613e"
+      }
+    },
+    {
+      "id": "hold15",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-export3-hold15.log",
+        "bytes": 193,
+        "sha256": "sha256:f229ef6302e5f969b0b0253cb2388f484fb3bd921c4fba6b4329f292cccd78cb"
+      }
+    },
+    {
+      "id": "normal-source3-output",
+      "output": {
+        "path": "/private/tmp/still-shift-ms2-normal-export3-va0SBI/normal3-a.mp4",
+        "bytes": 5862,
+        "sha256": "sha256:bdfa9d0aff02c19a75811ee545e23e2a20f4dfd7e1ba8e2bee5ffecaea716d38"
+      },
+      "manifest": {
+        "path": "/private/tmp/still-shift-ms2-normal-export3-va0SBI/normal3-a.mp4.native-observations.json",
+        "bytes": 89351,
+        "sha256": "sha256:62497f653936f15f59410be9d9adfd61e3d7a933a5420bf7e20ba58ab5baa0a0"
+      },
+      "outputFrames": 11,
+      "passCount": 11
+    },
+    {
+      "id": "normal-source3-output",
+      "output": {
+        "path": "/private/tmp/still-shift-ms2-normal-export3-va0SBI/normal3-b.mp4",
+        "bytes": 5862,
+        "sha256": "sha256:bdfa9d0aff02c19a75811ee545e23e2a20f4dfd7e1ba8e2bee5ffecaea716d38"
+      },
+      "manifest": {
+        "path": "/private/tmp/still-shift-ms2-normal-export3-va0SBI/normal3-b.mp4.native-observations.json",
+        "bytes": 89351,
+        "sha256": "sha256:98bc9910a0a0c8002a33e0a8aaba8e00a7b2d0571cc2d13b6cdca8dd669a43af"
+      },
+      "outputFrames": 11,
+      "passCount": 11
+    },
+    {
+      "id": "normal-source3-output",
+      "output": {
+        "path": "/private/tmp/still-shift-ms2-normal-export3-va0SBI/unused3.mp4",
+        "bytes": 1576,
+        "sha256": "sha256:e9a57ef76dd9e9e0fe0adaecbb64edae088cefc0c4e92a2cb50ff37caaad2ef7"
+      },
+      "manifest": {
+        "path": "/private/tmp/still-shift-ms2-normal-export3-va0SBI/unused3.mp4.native-observations.json",
+        "bytes": 89339,
+        "sha256": "sha256:cd97339fb38db930bf446345c0107c8a5be1b357b49c9bb5dd4a7bfccfad2eae"
+      },
+      "outputFrames": 1,
+      "passCount": 0
+    },
+    {
+      "id": "composition10-proof",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-pbr-composition-xpkwJw",
+        "captures": 6,
+        "binaryFaults": 5,
+        "protocolFaults": 4,
+        "worldArtworkCases": 2,
+        "stylePixelSha256": "sha256:eac66422fc266fad65457950f971c21fa2f1d4f43cb567e4cfb3bbf726844f12",
+        "memory": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 536870912,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 142976304,
+            "metadata": 1753176
+          },
+          "peak": {
+            "pixels": 286768822,
+            "metadata": 20833492
+          },
+          "reservations": 56
+        },
+        "cleanup": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 536870912,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 286768822,
+            "metadata": 20833492
+          },
+          "reservations": 0
+        }
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-pbr-composition-xpkwJw/run.json",
+        "bytes": 443820,
+        "sha256": "sha256:2d7f7c0f4463058b4ac19b41496f4a3e22de8f75c41453843fc0db36be7a3118"
+      }
+    },
+    {
+      "id": "composition15-proof",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-pbr-composition-fLxAlL",
+        "captures": 6,
+        "binaryFaults": 5,
+        "protocolFaults": 4,
+        "worldArtworkCases": 2,
+        "stylePixelSha256": "sha256:eac66422fc266fad65457950f971c21fa2f1d4f43cb567e4cfb3bbf726844f12",
+        "memory": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 536870912,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 142976304,
+            "metadata": 1753176
+          },
+          "peak": {
+            "pixels": 286768822,
+            "metadata": 20833492
+          },
+          "reservations": 56
+        },
+        "cleanup": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 536870912,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 286768822,
+            "metadata": 20833492
+          },
+          "reservations": 0
+        }
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-pbr-composition-fLxAlL/run.json",
+        "bytes": 443834,
+        "sha256": "sha256:e94b7859ec971fcfa8aa5f10cc0dab8fe087650d4b9e500f088bf1f31e46283c"
+      }
+    },
+    {
+      "id": "primitives13-proof",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-primitives-native-kjMatR",
+        "status": "passed",
+        "primitives": 7,
+        "captures": 14
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-primitives-native-kjMatR/run.json",
+        "bytes": 79408,
+        "sha256": "sha256:709ad227bae74e2c30e061f0ce3dcf22945cac55c9837d898409a8d9fb3d66e6"
+      }
+    }
+  ],
+  "counts": {
+    "unitTests": 4198,
+    "unitFiles": 410,
+    "owningNodeTests": 10,
+    "owningNodeFiles": 4,
+    "normalSource3Exports": 2,
+    "framesPerSource3Export": 11,
+    "actualPassesPerSource3Export": 11,
+    "unusedSource3Outputs": 1,
+    "unusedSource3Passes": 0,
+    "native2BrowserGroups": 6,
+    "newInstalledArchives": 0,
+    "supportedPacks": 0,
+    "pilotSupportedEpisodes": 0
+  },
+  "proof": {
+    "path": "/private/tmp/still-shift-ms2-normal-export3-va0SBI/run.json",
+    "bytes": 25050,
+    "sha256": "sha256:23f22717d314dbca08b1b2f6acb535fda0615ea1e1c3fa47db8478478e2aa54c"
+  },
+  "qualification": "Current normal fast8 and sequential Node9/composition10/source3 export11/native2 six-group12/legacy primitive13 suffix pass on unchanged held inputs8. Wrong appearance command and request-union caller narrowing failures remain retained; affected browser suffixes did not run in those attempts. Normal source3 exports use trusted fresh execution3 requests, conservative timeline capacity, async report3, admitted upload3, awaited sink3 and independent durable replay before publication. Two actual11-frame exports and one unused-source3 output pass. This does not prove actual mixed1/2/3 export/fault coverage, installed-package source3 rendering, whole world/source/body/replay accounting, human appearance/listening acceptance or remaining MS2 pack/full gates. No MS2 PR, merge, release publication, GitHub Actions or ElevenLabs spending. After that held sequence, only the standalone journal helper comment and scope label changed from pending normal export to separate evidence; composition15 passes on inputs14 with the change explicitly isolated. The fast8 sequence was measured on inputs8.",
+  "remaining": [
+    "Actual mixed source1/source2/source3 exposure/export and authenticated HTTP/lifecycle/forgery controls.",
+    "Installed package source3 export and whole world/source/body/replay bounded admission.",
+    "Remaining MS2 packs/authoring/quality/full software/benchmark gates before its PR, then MS3."
+  ],
+  "unrunSuffixes": ["build1", "export3", "export5"],
+  "failedRuns": [
+    {
+      "id": "identity1",
+      "reason": "Used nonexistent native3d:identity command; build did not run. Correct explicit native3d:identity:generate succeeds at403/79."
+    },
+    {
+      "id": "build2",
+      "reason": "Expanded request union required explicit source3 narrowing in the source3 preview proof and original primitive narrowing to exclude both modern protocols."
+    },
+    {
+      "id": "build4",
+      "reason": "First scripted primitive edit matched request instead of actual binding identifier and missed a one-line import. Corrected actual guard; no type casts or protocol adaptation."
+    }
+  ],
+  "finalAnnotationInputs": {
+    "manifest": {
+      "path": "/private/tmp/still-shift-ms2-export3-inputs14.json",
+      "bytes": 429221,
+      "sha256": "sha256:f7fbc4f25d7e5717c79391e050aa3fbe8204af02cec9651afdfa19adcf14ac0e"
+    },
+    "changed": ["tests/helpers/native-pbr-journal-proof.ts"],
+    "files": 2516,
+    "inputBytes": 119131530
+  }
+}

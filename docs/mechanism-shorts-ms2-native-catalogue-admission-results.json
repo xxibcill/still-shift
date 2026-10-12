@@ -1,0 +1,405 @@
+{
+  "version": "mechanism-shorts-ms2-native-catalogue-admission-results-1",
+  "date": "2026-10-12",
+  "branch": "codex/mechanism-ms2",
+  "baseCommit": "ec700fdb",
+  "status": "scoped-native-catalogue-admission-and-transaction-lifetime-complete-in-stages",
+  "scope": "Admit browser raw native transport/schema/hash and retained catalogue clones before the first schema parse, under existing worker pixels/metadata partitions. Numeric array slots are application payload; objects/text are metadata. No quota increase, source schema/wire/version or render math change. Standalone unmanaged calls preserve their behavior. Catalogue owners participate in an active preparation scratch transaction and commit only with the whole resource phase; standalone managed callers retain owners until their allocator retires.",
+  "policy": {
+    "scannerBytes": 327680,
+    "maximumDepth": 64,
+    "maximumObjectFields": 256,
+    "maximumArrayEntries": 600000,
+    "transportStagingCopies": 8,
+    "variantCopies": 4,
+    "variantPolicy": "Source2 retains full per-variant pose source; source1/3 share static meshes. Count nonempty requests conservatively, capped at the existing64 distinct variant ceiling, without allocating normalized key sets.",
+    "applicationBytes": 8589934592,
+    "nodeAllowanceBytes": 536870912,
+    "workerMetadataBytes": 134217728,
+    "meaning": "Declared application-owned storage, not V8/driver physical RSS."
+  },
+  "attempts": [
+    {
+      "id": "red1-fixture-clock",
+      "actualSession": 40441,
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-red1.log",
+        "bytes": 1915,
+        "sha256": "sha256:28bc99878542d1c00bae9205286c177e75c757be8dc0e30499f140d1d362b9ca"
+      },
+      "scope": "Initial new quota test fails at missing required native sourceStartFrame/sourceFps fields before reaching preparation."
+    },
+    {
+      "id": "red2-reproduced",
+      "actualSession": 47058,
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-red2.log",
+        "bytes": 18383,
+        "sha256": "sha256:03f9342b4af31a330547a8ff9bca288bbab7c39152535ef56d792a0c97191542"
+      },
+      "scope": "Corrected fixture proves missing quota admission: valid catalogue resolves under a one-byte payload budget, instead of rejecting. This is the intended regression failure."
+    },
+    {
+      "id": "green1",
+      "actualSession": 14928,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-green1.log",
+        "bytes": 317,
+        "sha256": "sha256:ee774de37fef70507f1ec9c8cea20bcdaa44ff3003412032c4e82b2d12de7b31"
+      },
+      "scope": "Initial pixel-quota rejection reaches no schema clone and preserves foreign lease."
+    },
+    {
+      "id": "green2",
+      "actualSession": 52663,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-green2.log",
+        "bytes": 448,
+        "sha256": "sha256:980ed5f10fa0d23084260b66d2391677d0fb29d564a1cd8023f76a6faa21f324"
+      },
+      "tests": 24,
+      "files": 3,
+      "scope": "Eight new controls plus current source2/PBR catalogue checks. Source1/2/3 results exactly equal unmanaged preparation; numeric and metadata quota denial, geometry hash failure, accessor and cyclic rejection retire local owners/preserve foreign leases."
+    },
+    {
+      "id": "build1",
+      "actualSession": 85646,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-build1.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "ordinary-fast1",
+      "actualSession": 50006,
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-fast1.log",
+        "bytes": 1252,
+        "sha256": "sha256:7473fd270d5217d36218349ab5ebb996ff8aaf4b70a2baa57b524879ae1fd080"
+      },
+      "scope": "Maintained appearance identity check rejects the new dependency until required source manifest is regenerated."
+    },
+    {
+      "id": "ordinary-fast2",
+      "actualSession": 77246,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-fast2.log",
+        "bytes": 39705,
+        "sha256": "sha256:77da2d9a97d5c700515ace265e4bcbb1ef4cf5331b18c32309c3a0f095fa0609"
+      },
+      "units": 4361,
+      "files": 429,
+      "scope": "Initial64KiB scanner; superseded by conservative327680B maximum-depth/field scratch reservation. No runtime math change."
+    },
+    {
+      "id": "ordinary-fast3",
+      "actualSession": 18878,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-fast3.log",
+        "bytes": 40219,
+        "sha256": "sha256:a891f32592122b306552e286b4528c680d01aada0dc80cc411824a2c4f51b607"
+      },
+      "units": 4361,
+      "files": 429,
+      "unitSeconds": 61.82,
+      "maxWorkers": 4,
+      "scope": "Current bounded scanner on held inputs3;407 first-party/79 external modules in refreshed appearance closure."
+    },
+    {
+      "id": "browser1",
+      "actualSession": 91537,
+      "actualExitCode": 0,
+      "status": "passed",
+      "logPath": "/private/tmp/still-shift-ms2-catalogue69-browser1.log",
+      "receiptPath": "/private/tmp/still-shift-ms2-catalogue69-browser1-receipt.json",
+      "scope": "Six serial native/PBR/family/cache-lifetime owning groups; await actual outer terminal and unchanged final hold. Intermediate stage exits are not the complete batch result.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-browser1.log",
+        "bytes": 5133,
+        "sha256": "sha256:62e93d4b1842443e9446d77d36113b236e007afd14940a48887d53157d9ace8d"
+      },
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-browser1-receipt.json",
+        "bytes": 1960,
+        "sha256": "sha256:8b5927afdf8fdfa587d78cf7b056e7096a857d571f2acef2c960a9fae26bd047"
+      },
+      "stages": [
+        {
+          "group": "test:browser:native3d-shapes",
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-12T10:59:46.066088+00:00",
+          "endedUtc": "2026-10-12T11:00:50.811274+00:00"
+        },
+        {
+          "group": "test:browser:native3d-pbr-export",
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-12T11:00:50.811562+00:00",
+          "endedUtc": "2026-10-12T11:00:58.826036+00:00"
+        },
+        {
+          "group": "test:browser:native3d-pbr-mixed-export",
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-12T11:00:58.826363+00:00",
+          "endedUtc": "2026-10-12T11:01:32.728547+00:00"
+        },
+        {
+          "group": "test:browser:mechanism-packs",
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-12T11:01:32.728844+00:00",
+          "endedUtc": "2026-10-12T11:02:35.853914+00:00"
+        },
+        {
+          "group": "test:browser:mechanism-family-packs",
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-12T11:02:35.854209+00:00",
+          "endedUtc": "2026-10-12T11:03:10.339093+00:00"
+        },
+        {
+          "group": "test:browser:mechanism-cue-cache-lifetime",
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-12T11:03:10.339388+00:00",
+          "endedUtc": "2026-10-12T11:07:28.592433+00:00"
+        }
+      ],
+      "sourceHoldCheckExitCode": 0,
+      "qualification": "Actual owned session91537 exits0; six complete serial groups on exact held inputs3. Later-resource rollback tests are a separate following source revision, not included in this batch."
+    },
+    {
+      "id": "phase-red1",
+      "actualSession": 25935,
+      "actualExitCode": 1,
+      "scope": "Nine controls pass and downstream-load rollback fails:11520 payload/577344 metadata remain, expected only foreign1024. Genuine preparation transaction regression.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-phase-red1.log",
+        "bytes": 2353,
+        "sha256": "sha256:31c779c530844f22f06a8e7f9c292be74da6c7056a36edd3bf532dc1a10cce62"
+      }
+    },
+    {
+      "id": "phase-green1",
+      "actualSession": 75788,
+      "actualExitCode": 1,
+      "scope": "Partial formatted edit left retained undefined; six failures/twenty passes. No assertion weakened.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-phase-green1.log",
+        "bytes": 5611,
+        "sha256": "sha256:4f54971383df09090a1bc23e0f06915bb7a98ddfc805c90f9b0d4ea9a7550c99"
+      }
+    },
+    {
+      "id": "ordinary-fast4",
+      "actualSession": 34748,
+      "actualExitCode": 2,
+      "scope": "Same partial edit: compiler catches undefined retained before units. Schema/boundaries/format/lint complete; no fast pass.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-fast4.log",
+        "bytes": 1630,
+        "sha256": "sha256:3d0aa4d33958bac769354e967fde7b1bc6665878577d6c88cfc8d2eb2f8c1ff8"
+      }
+    },
+    {
+      "id": "phase-green2",
+      "actualSession": 3673,
+      "actualExitCode": 0,
+      "scope": "Complete retained = !memory.hasScratch declaration. Ten new controls and sixteen owning source2/PBR catalogue checks pass26/3; failed resource phase preserves only foreign lease, successful phase survives later frame scratch.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-phase-green2.log",
+        "bytes": 449,
+        "sha256": "sha256:e81c7e0b13deb9d32210b8b74b8623c2e71632495f56c2405857ea3ff9e7a5ed"
+      }
+    },
+    {
+      "id": "ordinary-fast5",
+      "actualSession": 82039,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-fast5.log",
+        "bytes": 40071,
+        "sha256": "sha256:56025e4fe7809a16b4827d9a16e8e192479cb137177de0ca7e4f1c543226d1e8"
+      },
+      "units": 4363,
+      "files": 429,
+      "maxWorkers": 4,
+      "unitSeconds": 60.01,
+      "scope": "Final transaction-correct source, ten new controls; held inputs5 unchanged2644/120860793B."
+    },
+    {
+      "id": "browser2",
+      "actualSession": 4692,
+      "actualExitCode": 0,
+      "status": "passed",
+      "logPath": "/private/tmp/still-shift-ms2-catalogue69-browser2.log",
+      "receiptPath": "/private/tmp/still-shift-ms2-catalogue69-browser2-receipt.json",
+      "scope": "Current final held inputs5; fresh affected native/PBR/family/cache-lifetime serial proof, distinct from completed input3 browser1.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-browser2.log",
+        "bytes": 5155,
+        "sha256": "sha256:98143eac22420ae7980da9735d081252af4b9f26dfaf5b8694aba9c9136db815"
+      },
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-browser2-receipt.json",
+        "bytes": 1982,
+        "sha256": "sha256:19eb6db793a91481870f0894796f7dbfc9585dcc354a1ebff885b72a2c9888fe"
+      },
+      "stages": [
+        {
+          "group": "test:browser:native3d-shapes",
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-12T11:27:11.904239+00:00",
+          "endedUtc": "2026-10-12T11:28:16.811400+00:00"
+        },
+        {
+          "group": "test:browser:native3d-pbr-export",
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-12T11:28:16.811687+00:00",
+          "endedUtc": "2026-10-12T11:28:24.762286+00:00"
+        },
+        {
+          "group": "test:browser:native3d-pbr-mixed-export",
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-12T11:28:24.762564+00:00",
+          "endedUtc": "2026-10-12T11:28:58.651351+00:00"
+        },
+        {
+          "group": "test:browser:mechanism-packs",
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-12T11:28:58.651664+00:00",
+          "endedUtc": "2026-10-12T11:30:02.735617+00:00"
+        },
+        {
+          "group": "test:browser:mechanism-family-packs",
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-12T11:30:02.736119+00:00",
+          "endedUtc": "2026-10-12T11:30:37.614568+00:00"
+        },
+        {
+          "group": "test:browser:mechanism-cue-cache-lifetime",
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-12T11:30:37.614872+00:00",
+          "endedUtc": "2026-10-12T11:34:55.109007+00:00"
+        }
+      ],
+      "sourceHoldCheckExitCode": 0
+    },
+    {
+      "id": "normal-shared-parent1",
+      "actualSession": 5759,
+      "actualExitCode": 0,
+      "script": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-parent-probe1.mjs",
+        "bytes": 3091,
+        "sha256": "sha256:299a5cdad06630b88481ec466bf9c45fd0d99ccd8f2b1b8ef48c492ac19a88f1"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-parent-probe1.log",
+        "bytes": 476,
+        "sha256": "sha256:d127ab49b9dd50b5bb8a7296560bfbd278f1afc7d5d26f8021776412aedd1597"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-parent-5qXVUL/run.json",
+        "bytes": 15714,
+        "sha256": "sha256:c17b1e6437f2f56571d193de7242fc2e618e61151ff5103ec7fa75c29b6ddde6"
+      },
+      "exports": 5,
+      "outputFrames": 56,
+      "nativePasses": 134,
+      "scope": "Public normal renderComposition with supplied shared Node parent across source1+2/source3/tape/peg/mixed1+2+3. Each child retires every local Node reservation before return; foreign1024B/one lease remains, root disposal retires it. All worker acknowledgement reservations/current buckets0, fixed limits and output body SHA verified."
+    },
+    {
+      "id": "normal-shared-parent-independent-audit1",
+      "actualExitCode": 0,
+      "script": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-parent-audit1.py",
+        "bytes": 3950,
+        "sha256": "sha256:987b4f7e35f145675b7356b50b006b5a24bcfe787296178f512002d16a756982"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-parent-audit1.log",
+        "bytes": 218,
+        "sha256": "sha256:829e138ca88f762926dc2c6c65fca94df93327f2ba7b27e0b53d76fdf4f0251d"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-catalogue69-parent-audit1.json",
+        "bytes": 8783,
+        "sha256": "sha256:3376111f843a34310fd444c4123493db3706613f1c14fe0e7290ef71c9f3ade0"
+      },
+      "counts": {
+        "factPins": 25,
+        "outputFrames": 56,
+        "nativePasses": 134,
+        "parentMaximumDeclaredPeakBytes": 219564102,
+        "workerMaximumDeclaredPeakBytes": 826935510,
+        "maximumObservedProcessTreeRssBytes": 2193195008
+      },
+      "scope": "Independent streaming SHA/body/journal count/order and exact fixed-budget/foreign-owner/worker-ack facts for5 actual normal public exports. No decoded movie/audio/glyph/continuous/human or all-physical-RAM claim."
+    }
+  ],
+  "workingInputs": [
+    {
+      "path": "/private/tmp/still-shift-ms2-catalogue69-inputs1.json",
+      "bytes": 450977,
+      "sha256": "sha256:4cf48214a6d478f87b8807e10fd814d27f408d5ece94686af4b993d3189964fd"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-catalogue69-inputs2.json",
+      "bytes": 450977,
+      "sha256": "sha256:2a6bbdc8c778693e6c9fad594160e306f3c50ef9b6c014c8827d911f2b8c5047"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-catalogue69-inputs3.json",
+      "bytes": 450977,
+      "sha256": "sha256:94d2d1dce70e458e82b5e80268aa438a5692654256c0295528785a6ee3784cf6"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-catalogue69-inputs4.json",
+      "bytes": 450977,
+      "sha256": "sha256:633879919f3791013e0cfb81b96449dc45b8df325577806654ddfcf89c0e02ee"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-catalogue69-inputs5.json",
+      "bytes": 450977,
+      "sha256": "sha256:907572bd412672f11f98e3e5931f68e4ab251b92eaf99286329e4534885a4afe"
+    }
+  ],
+  "currentSourceHold": {
+    "files": 2644,
+    "bytes": 120860793,
+    "actualExitCode": 0,
+    "scope": "Final transaction-correct fast5 and browser2 input5; prior source holds remain stage-specific."
+  },
+  "remaining": [
+    "Fresh complete required full102/frozen176/36061/benchmark and current archive/installed validation on committed final source before MS2 PR.",
+    "Retain bounded-profile scope: declared storage, measured process RSS and opaque driver internals differ. Root/source/world/result/replay workflows have scoped quota/lifetime controls and current actual export closure; this does not certify every physical allocation or arbitrary future input.",
+    "Pack/factual disposition and MS2 PR; normal-speed audiovisual, listening, material/hardware appearance and portrait/human review remain separate. Frozen ten-question board classified; new assets/behaviors and positive pilot coverage belong to MS3."
+  ],
+  "paidGeneration": false,
+  "privateMediaRedistributed": false,
+  "finalScopedVerification": {
+    "ordinaryFastUnits": 4363,
+    "ordinaryFastFiles": 429,
+    "owningUnitTests": 26,
+    "owningUnitFiles": 3,
+    "newCatalogueControls": 10,
+    "browserGroups": 6,
+    "normalParentExports": 5,
+    "normalParentOutputFrames": 56,
+    "normalParentNativePasses": 134,
+    "normalParentFactPins": 25,
+    "currentInputs": 2644,
+    "currentInputBytes": 120860793,
+    "sourceHoldAfterFinalChecksActualExitCode": 0,
+    "normalParentDeclaredPeakBytes": 219564102,
+    "normalWorkerDeclaredPeakBytes": 826935510,
+    "normalObservedProcessTreeRssBytes": 2193195008,
+    "qualification": "Distinct stages and source inventories; fast2/3 and browser1 precede the final resource-transaction repair. Final fast5/browser2/parent1/audit1 own their actual terminal results. Reported quota peaks and sampled process RSS are different measurements; no hardware/driver-internal or all-physical-RAM certification."
+  }
+}

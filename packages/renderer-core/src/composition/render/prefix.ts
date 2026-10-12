@@ -10,6 +10,12 @@ import type { RenderOp, SurfaceNode } from "./graph.ts";
 
 /** Selection hints only: complete evaluated closure keys still authorize every reuse. */
 export function compositionPrefixLayers(composition: Composition) {
+  if (
+    [composition, ...(composition.precomps ?? [])].some((scope) =>
+      scope.layers.some((layer) => layer.type === "native3d"),
+    )
+  )
+    return new Set<string>();
   const candidates = new Set<string>();
   const varies = compositionLayerVariation(composition);
   // Expressions, constraints and cameras elsewhere in the document do not

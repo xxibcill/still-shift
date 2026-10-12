@@ -1,3 +1,4 @@
+import { binaryCompositionFixture } from "../helpers/native-pbr-binary-composition-fixture.ts";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -40,6 +41,115 @@ const minimalComposition = (): Composition => ({
   frameCount: 24,
   assets: [],
   layers: [],
+});
+
+// Native admission has its own declared fixture: ordinary spatial CE1 fixtures
+// cannot share a scope with a native controller. Keep all visual inputs intact.
+const nativeContractComposition = (): Composition => ({
+  ...minimalComposition(),
+  id: "native-contract",
+  assets: [
+    pinnedFont(),
+    {
+      id: "physical-scene",
+      type: "native3d",
+      path: "scene.json",
+      sha256: `sha256:${"a".repeat(64)}`,
+      format: "mechanism-scene-1",
+      textureFont: "display",
+    },
+  ],
+  layers: [
+    {
+      id: "physical-world",
+      type: "native3d",
+      asset: "physical-scene",
+      sourceStartFrame: 0.25,
+      sourceFps: 30,
+      camera: {
+        position: [0, 0, 10],
+        target: [0, 0, 0],
+        up: [0, 1, 0],
+        fovDegrees: 45,
+        near: 0.1,
+        far: 100,
+      },
+      cameraKeys: [
+        {
+          frame: 0,
+          position: [0, 0, 10],
+          target: [0, 0, 0],
+          fovDegrees: 45,
+          easing: "linear",
+        },
+      ],
+      controls: { slider: { travel: 0.5, contactMode: "free" } },
+      hiddenParts: ["board"],
+      seed: 42,
+      partOverrides: {
+        hook: {
+          visible: true,
+          transform: {
+            position: [0.1, 0, 0],
+            rotation: [0, 0, 0],
+            scale: [1, 1, 1],
+            pivot: [0, 0, 0],
+          },
+        },
+      },
+      materialOverrides: {
+        steel: {
+          color: "#b7c2c5",
+          roughness: 0.4,
+          metalness: 0.9,
+          opacity: 1,
+          alphaMode: "mask",
+          alphaCutoff: 0.5,
+          side: "double",
+          emissive: "#000000",
+          emissiveIntensity: 0,
+        },
+      },
+    },
+    {
+      id: "world-artwork",
+      type: "solid",
+      size: [32, 16],
+      color: "#ffffff",
+      native3D: {
+        role: "world-graphic",
+        sceneLayer: "physical-world",
+        part: "hook",
+        transform: {
+          position: [0, 0, 1],
+          rotation: [0, 0, 0],
+          scale: [1, 1, 1],
+          pivot: [0, 0, 0],
+        },
+        pixelsPerUnit: 100,
+        originPixels: [16, 8],
+        side: "double",
+        alphaMode: "mask",
+        alphaCutoff: 0.5,
+      },
+    },
+    {
+      id: "screen-annotation",
+      type: "group",
+      size: [100, 100],
+      overlayAfter: "physical-world",
+      native3D: {
+        role: "screen-anchor",
+        sceneLayer: "physical-world",
+        anchor: "hook.pullProof",
+        visibilityPolicy: "offscreen-indicator",
+        visibleWhen: "shown",
+        insetPixels: 12,
+        offsetPixels: [8, 0],
+        target: { kind: "visibility" },
+      },
+    },
+  ],
 });
 
 type Doc = ReturnType<typeof everyField> & Record<string, unknown>;
@@ -573,7 +683,28 @@ describe("composition-1 fixtures", () => {
       ),
     ) as Composition;
     expect(validateComposition(nativeMedia).ok).toBe(true);
-    expect(missing(CompositionSchema, [doc, nativeMedia])).toEqual([]);
+    const nativeContract = nativeContractComposition();
+    const pbrFixture = binaryCompositionFixture(),
+      nativePbr = pbrFixture.composition;
+    const pbrController = nativePbr.layers[0]!;
+    if (pbrController.type !== "native3d")
+      throw Error("Expected native PBR fixture controller");
+    pbrController.pbrMaterialOverrides = {
+      [pbrFixture.source.geometry.materials[0]!.id]: {
+        baseColorFactor: [0.8, 0.2, 0.1, 1],
+        metallicFactor: 0.3,
+        roughnessFactor: 0.6,
+        doubleSided: true,
+      },
+    };
+    expect(validateComposition(nativePbr).ok).toBe(true);
+    expect(validateComposition(nativeContract)).toMatchObject({
+      ok: true,
+      diagnostics: [],
+    });
+    expect(
+      missing(CompositionSchema, [doc, nativeMedia, nativeContract, nativePbr]),
+    ).toEqual([]);
     expect(missing(PrecompSchema, doc.precomps!)).toEqual([]);
     expect(
       missing(CompositionMarkerSchema, [
@@ -586,14 +717,40 @@ describe("composition-1 fixtures", () => {
       expect(
         missing(
           option,
-          [...doc.assets, ...nativeMedia.assets].filter((a) => a.type === type),
+          [
+            ...doc.assets,
+            ...nativeMedia.assets,
+            ...nativeContract.assets,
+            ...nativePbr.assets,
+          ].filter((a) => a.type === type),
         ),
         type,
       ).toEqual([]);
     }
-    const allLayers = [doc, ...doc.precomps!, nativeMedia].flatMap(
-      (s) => s.layers,
-    );
+    const allLayers = [
+      doc,
+      ...doc.precomps!,
+      nativeMedia,
+      nativeContract,
+      nativePbr,
+    ].flatMap((s) => s.layers);
+    // V2 writers are exclusive with v1 controls; cover the layer contract separately.
+    const nativeV2Controller = layers.Native3DLayerSchema.parse({
+      id: "native-v2-writer",
+      type: "native3d",
+      asset: "physical-scene-v2",
+      sourceStartFrame: 0,
+      sourceFps: 30,
+      rigControls: { hinge: { type: "hinge", value: 0.25 } },
+    });
+    expect(nativeV2Controller.controls).toBeUndefined();
+    expect(
+      layers.Native3DLayerSchema.safeParse({
+        ...nativeV2Controller,
+        controls: {},
+      }).success,
+    ).toBe(false);
+    allLayers.push(nativeV2Controller);
     // CE4 providers have their own fixture; keep the CE1 acceptance file unchanged.
     const providers = JSON.parse(
       readFileSync(

@@ -1,0 +1,4502 @@
+{
+  "version": "mechanism-ms2-text-weight-render-results-1",
+  "date": "2026-10-12",
+  "baseSourceCommit": "fbbaa56103c556de24429b864ffb01a73c30cbed",
+  "branch": "codex/mechanism-ms2",
+  "status": "explicit-weight-treatment-software-and-native-render-acceptance-verified-in-stages",
+  "scope": [
+    "Exact pre-slice45 historical event compiler versus current automatic and explicit treatment, through unchanged shared drawing/shaping code and existing native text composition primitives.",
+    "Reuse exact MS1 Noto Sans Thai variable and Plex Semibold static bytes; strict real font identity/coverage and fvar/cut inspection.",
+    "Variable 600 + 150 -> 750 genuine axis; maximum 900, static and mixed static/variable legacy outlines; positive mixed instances 600/850 with 50 headroom and native legacy clamp parity.",
+    "Explicit outline on a variable face differs from genuine weight; genuine unavailable static/maximum/mixed/insufficient/tight-run requests retain resolved-null receipts without changing treatment.",
+    "Full 60-frame forward/reverse/shuffled preview hashes, complete actual encoded/decoded output parity, repeated explicit exports, sampled release/end boundaries and natural English gaps.",
+    "Covered variable spans over an unused static base render genuine weight successfully without changing legacy automatic behavior."
+  ],
+  "counts": {
+    "unitTests": 4284,
+    "unitFiles": 420,
+    "newUnitTests": 1,
+    "focusedWeightEventTests": 36,
+    "backends": 2,
+    "casesPerBackend": 17,
+    "sourceReceipts": 34,
+    "genuineUnavailableControlsPerBackend": 5,
+    "exports": 48,
+    "encodedFrames": 2880,
+    "independentlyDecodedFrames": 2040,
+    "uniquePreviewFrames": 2040,
+    "previewDraws": 6120,
+    "sampledDecodedFrames": 272,
+    "decodedEnglishGapChecks": 544,
+    "actualEncodedStreamsProbed": 48,
+    "crossBackendExactCasesOnThisPinnedDriver": 17,
+    "finalNativeEncodedSamplesInspected": 4,
+    "supportedPacks": 0,
+    "pilotAcceptedEpisodes": 0
+  },
+  "heldInputs": {
+    "path": "/private/tmp/still-shift-ms2-weight46-inputs11.json",
+    "bytes": 436575,
+    "sha256": "sha256:f18f71f038a956777d5f0db40d7910fff940384c5c1334b56fc54ded27731bb3",
+    "files": 2560,
+    "inputBytes": 119495964
+  },
+  "roots": [
+    {
+      "sessionId": 92662,
+      "exitCode": 2,
+      "failed": "build1: deep Playwright serialization type and pixel buffer types",
+      "passed": ["format1"]
+    },
+    {
+      "sessionId": 9432,
+      "exitCode": 1,
+      "passed": ["format2", "build2"],
+      "failed": "browser2: unsupported 640x240 story dimensions rejected before rendering",
+      "artifacts": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-gBfaO4"
+    },
+    {
+      "sessionId": 58940,
+      "exitCode": 2,
+      "passed": ["format3"],
+      "failed": "build3: stale whole-buffer raw hash reference",
+      "unrun": ["browser3"]
+    },
+    {
+      "sessionId": 9414,
+      "exitCode": 1,
+      "passed": ["format4", "build4"],
+      "failed": "browser4: static mixed span inherited unsupported variable axes; explicit empty static axis map fixes valid input",
+      "artifacts": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-OXRqz8"
+    },
+    {
+      "sessionId": 3339,
+      "exitCode": 0,
+      "passed": [
+        "format5",
+        "build5",
+        "browser5: initial Canvas2D 14 cases/20 exports"
+      ]
+    },
+    {
+      "sessionId": 10620,
+      "exitCode": 2,
+      "passed": ["format6"],
+      "failed": "build6: serialized backend widened to string",
+      "unrun": ["inputs6", "browser6", "hold6"]
+    },
+    {
+      "sessionId": 37273,
+      "exitCode": 0,
+      "passed": [
+        "format7",
+        "build7",
+        "inputs7",
+        "browser7: both backends, 28 cases/40 exports",
+        "hold7"
+      ]
+    },
+    {
+      "sessionId": 54859,
+      "exitCode": 1,
+      "passed": ["schema8", "boundaries8", "format8"],
+      "failed": "fast8: unused png binding in report projection",
+      "unrun": ["build8", "unit8", "hold8"]
+    },
+    {
+      "sessionId": 56903,
+      "exitCode": 0,
+      "passed": ["format9", "inputs9", "fast9: 4283 units/420 files", "hold9a"]
+    },
+    {
+      "sessionId": 58691,
+      "exitCode": 0,
+      "passed": [
+        "browser9: both backends after lint correction, 28 cases/40 exports",
+        "hold9b"
+      ]
+    },
+    {
+      "sessionId": 4841,
+      "exitCode": 0,
+      "passed": [
+        "compression10: 42 earlier passed decoded files, lossless decompression hash verified"
+      ]
+    },
+    {
+      "sessionId": 84319,
+      "exitCode": 0,
+      "passed": [
+        "format11",
+        "build11",
+        "inputs11",
+        "browser11: final positive mixed-run headroom corpus, 34 cases/48 exports",
+        "hold11a"
+      ]
+    },
+    {
+      "sessionId": 50710,
+      "exitCode": 0,
+      "passed": ["fast12: 4284 units/420 files", "hold12"]
+    },
+    {
+      "sessionId": 44016,
+      "exitCode": 0,
+      "passed": [
+        "audit13: independent saved-source/compiled-unit/pose/native-layer/all-stream/all-decoded-byte/legacy parity audit"
+      ]
+    },
+    {
+      "sessionId": 21309,
+      "exitCode": 0,
+      "passed": [
+        "compression14: 62 later passed decoded files, lossless decompression hash verified"
+      ]
+    },
+    {
+      "sessionId": 17798,
+      "exitCode": 0,
+      "passed": ["docs15", "hold15", "git diff --check"]
+    }
+  ],
+  "finalRuns": [
+    {
+      "root": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x",
+      "backend": "webgl2",
+      "run": {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/run.json",
+        "bytes": 1856021,
+        "sha256": "sha256:41e0df5fba7319c68286177a7f992de6a90aaaedec4f3e36eb97dafdf5b1059f"
+      },
+      "counts": {
+        "cases": 17,
+        "exports": 24,
+        "encodedFrames": 1440,
+        "previewFrames": 1020,
+        "previewDraws": 3060
+      }
+    },
+    {
+      "root": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L",
+      "backend": "canvas2d",
+      "run": {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/run.json",
+        "bytes": 1825156,
+        "sha256": "sha256:cbf37de78120572d16aaad195d80173661822c51b7f33ff200177bc5b6f6cb50"
+      },
+      "counts": {
+        "cases": 17,
+        "exports": 24,
+        "encodedFrames": 1440,
+        "previewFrames": 1020,
+        "previewDraws": 3060
+      }
+    }
+  ],
+  "artifactAudit": {
+    "path": "/private/tmp/still-shift-ms2-weight46-audit13.json",
+    "bytes": 144797,
+    "sha256": "sha256:f5e607cc99351e80a6137c6964d865a38bbaa3fdbdb2ffa63ea35705f98f4e25"
+  },
+  "artifactAuditResults": {
+    "version": "weight46-independent-artifact-audit-1",
+    "roots": [
+      {
+        "root": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x",
+        "backend": "webgl2",
+        "runSha256": "41e0df5fba7319c68286177a7f992de6a90aaaedec4f3e36eb97dafdf5b1059f",
+        "counts": {
+          "cases": 17,
+          "exports": 24,
+          "encodedFrames": 1440,
+          "previewFrames": 1020,
+          "previewDraws": 3060
+        },
+        "negativeControls": [
+          {
+            "id": "variable-unavailable",
+            "source": {
+              "title": "Explicit weight treatment proof",
+              "fps": 30,
+              "width": 1920,
+              "height": 1080,
+              "background": "#ffffff",
+              "assets": [
+                {
+                  "id": "unused",
+                  "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/empty.svg",
+                  "sha256": "sha256:ffc9f5e4fdeea83920c171e2bd17577127c5d1a2c3c76f07440e10d387132280",
+                  "width": 1,
+                  "height": 1
+                }
+              ],
+              "fonts": [
+                {
+                  "id": "variable",
+                  "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "weight": "600",
+                  "variable": {
+                    "wght": {
+                      "min": 100,
+                      "default": 400,
+                      "max": 900
+                    },
+                    "wdth": {
+                      "min": 62.5,
+                      "default": 100,
+                      "max": 100
+                    }
+                  }
+                },
+                {
+                  "id": "static",
+                  "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "weight": "600"
+                }
+              ],
+              "nodes": [
+                {
+                  "id": "phrase",
+                  "x": 120,
+                  "y": 240,
+                  "width": 0,
+                  "height": 0,
+                  "opacity": 1,
+                  "rotation": 0,
+                  "origin": [0, 0],
+                  "type": "text",
+                  "style": "variable",
+                  "anchor": "cap",
+                  "text": "Room to move",
+                  "textRole": "heading",
+                  "fontSize": 180,
+                  "color": "#202020",
+                  "weight": "normal",
+                  "font": "sans-serif",
+                  "fontAsset": "variable",
+                  "align": "left"
+                }
+              ],
+              "schemaVersion": "story-scene-1",
+              "frameCount": 60,
+              "motionModel": "curves-1",
+              "typography": "type-1",
+              "textStyles": {
+                "variable": {
+                  "fontAsset": "variable",
+                  "axes": {
+                    "wght": 600,
+                    "wdth": 100
+                  }
+                },
+                "static": {
+                  "fontAsset": "static",
+                  "axes": {}
+                },
+                "limited": {
+                  "fontAsset": "variable",
+                  "axes": {
+                    "wght": 850,
+                    "wdth": 100
+                  }
+                }
+              },
+              "textEvents": [
+                {
+                  "id": "weight",
+                  "node": "phrase",
+                  "verb": "emphasize",
+                  "manner": "weight",
+                  "at": 0,
+                  "duration": 10,
+                  "weightTreatment": "genuine-weight",
+                  "amount": 301
+                },
+                {
+                  "node": "phrase",
+                  "verb": "release",
+                  "at": 35,
+                  "duration": 10
+                }
+              ],
+              "authoringVersion": "1",
+              "recipe": {
+                "preset": "generic",
+                "moves": [],
+                "emphasis": []
+              },
+              "connectors": []
+            },
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "genuine-weight",
+              "resolvedTreatment": null,
+              "status": "unavailable",
+              "units": "wght-axis-delta",
+              "requestedAmount": 301,
+              "resolvedAmount": null,
+              "availableHeadroom": 300,
+              "targetScope": "painted-style-runs",
+              "reason": "insufficient-wght-headroom",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                }
+              ]
+            }
+          },
+          {
+            "id": "static-unavailable",
+            "source": {
+              "title": "Explicit weight treatment proof",
+              "fps": 30,
+              "width": 1920,
+              "height": 1080,
+              "background": "#ffffff",
+              "assets": [
+                {
+                  "id": "unused",
+                  "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/empty.svg",
+                  "sha256": "sha256:ffc9f5e4fdeea83920c171e2bd17577127c5d1a2c3c76f07440e10d387132280",
+                  "width": 1,
+                  "height": 1
+                }
+              ],
+              "fonts": [
+                {
+                  "id": "variable",
+                  "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "weight": "600",
+                  "variable": {
+                    "wght": {
+                      "min": 100,
+                      "default": 400,
+                      "max": 900
+                    },
+                    "wdth": {
+                      "min": 62.5,
+                      "default": 100,
+                      "max": 100
+                    }
+                  }
+                },
+                {
+                  "id": "static",
+                  "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "weight": "600"
+                }
+              ],
+              "nodes": [
+                {
+                  "id": "phrase",
+                  "x": 120,
+                  "y": 240,
+                  "width": 0,
+                  "height": 0,
+                  "opacity": 1,
+                  "rotation": 0,
+                  "origin": [0, 0],
+                  "type": "text",
+                  "style": "static",
+                  "anchor": "cap",
+                  "text": "Room to move",
+                  "textRole": "heading",
+                  "fontSize": 180,
+                  "color": "#202020",
+                  "weight": "normal",
+                  "font": "sans-serif",
+                  "fontAsset": "static",
+                  "align": "left"
+                }
+              ],
+              "schemaVersion": "story-scene-1",
+              "frameCount": 60,
+              "motionModel": "curves-1",
+              "typography": "type-1",
+              "textStyles": {
+                "variable": {
+                  "fontAsset": "variable",
+                  "axes": {
+                    "wght": 600,
+                    "wdth": 100
+                  }
+                },
+                "static": {
+                  "fontAsset": "static",
+                  "axes": {}
+                },
+                "limited": {
+                  "fontAsset": "variable",
+                  "axes": {
+                    "wght": 850,
+                    "wdth": 100
+                  }
+                }
+              },
+              "textEvents": [
+                {
+                  "id": "weight",
+                  "node": "phrase",
+                  "verb": "emphasize",
+                  "manner": "weight",
+                  "at": 0,
+                  "duration": 10,
+                  "weightTreatment": "genuine-weight"
+                },
+                {
+                  "node": "phrase",
+                  "verb": "release",
+                  "at": 35,
+                  "duration": 10
+                }
+              ],
+              "authoringVersion": "1",
+              "recipe": {
+                "preset": "generic",
+                "moves": [],
+                "emphasis": []
+              },
+              "connectors": []
+            },
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "genuine-weight",
+              "resolvedTreatment": null,
+              "status": "unavailable",
+              "units": "wght-axis-delta",
+              "requestedAmount": 150,
+              "resolvedAmount": null,
+              "availableHeadroom": 0,
+              "targetScope": "painted-style-runs",
+              "reason": "insufficient-wght-headroom",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "static",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "declaredWeight": "600",
+                  "axisInstance": null,
+                  "axisRange": null,
+                  "headroom": 0
+                }
+              ]
+            }
+          },
+          {
+            "id": "maximum-unavailable",
+            "source": {
+              "title": "Explicit weight treatment proof",
+              "fps": 30,
+              "width": 1920,
+              "height": 1080,
+              "background": "#ffffff",
+              "assets": [
+                {
+                  "id": "unused",
+                  "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/empty.svg",
+                  "sha256": "sha256:ffc9f5e4fdeea83920c171e2bd17577127c5d1a2c3c76f07440e10d387132280",
+                  "width": 1,
+                  "height": 1
+                }
+              ],
+              "fonts": [
+                {
+                  "id": "variable",
+                  "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "weight": "600",
+                  "variable": {
+                    "wght": {
+                      "min": 100,
+                      "default": 400,
+                      "max": 900
+                    },
+                    "wdth": {
+                      "min": 62.5,
+                      "default": 100,
+                      "max": 100
+                    }
+                  }
+                },
+                {
+                  "id": "static",
+                  "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "weight": "600"
+                }
+              ],
+              "nodes": [
+                {
+                  "id": "phrase",
+                  "x": 120,
+                  "y": 240,
+                  "width": 0,
+                  "height": 0,
+                  "opacity": 1,
+                  "rotation": 0,
+                  "origin": [0, 0],
+                  "type": "text",
+                  "style": "variable",
+                  "anchor": "cap",
+                  "text": "Room to move",
+                  "textRole": "heading",
+                  "fontSize": 180,
+                  "color": "#202020",
+                  "weight": "normal",
+                  "font": "sans-serif",
+                  "fontAsset": "variable",
+                  "align": "left"
+                }
+              ],
+              "schemaVersion": "story-scene-1",
+              "frameCount": 60,
+              "motionModel": "curves-1",
+              "typography": "type-1",
+              "textStyles": {
+                "variable": {
+                  "fontAsset": "variable",
+                  "axes": {
+                    "wght": 900,
+                    "wdth": 100
+                  }
+                },
+                "static": {
+                  "fontAsset": "static",
+                  "axes": {}
+                },
+                "limited": {
+                  "fontAsset": "variable",
+                  "axes": {
+                    "wght": 850,
+                    "wdth": 100
+                  }
+                }
+              },
+              "textEvents": [
+                {
+                  "id": "weight",
+                  "node": "phrase",
+                  "verb": "emphasize",
+                  "manner": "weight",
+                  "at": 0,
+                  "duration": 10,
+                  "weightTreatment": "genuine-weight"
+                },
+                {
+                  "node": "phrase",
+                  "verb": "release",
+                  "at": 35,
+                  "duration": 10
+                }
+              ],
+              "authoringVersion": "1",
+              "recipe": {
+                "preset": "generic",
+                "moves": [],
+                "emphasis": []
+              },
+              "connectors": []
+            },
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "genuine-weight",
+              "resolvedTreatment": null,
+              "status": "unavailable",
+              "units": "wght-axis-delta",
+              "requestedAmount": 150,
+              "resolvedAmount": null,
+              "availableHeadroom": 0,
+              "targetScope": "painted-style-runs",
+              "reason": "insufficient-wght-headroom",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 900,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 0
+                }
+              ]
+            }
+          },
+          {
+            "id": "mixed-unavailable",
+            "source": {
+              "title": "Explicit weight treatment proof",
+              "fps": 30,
+              "width": 1920,
+              "height": 1080,
+              "background": "#ffffff",
+              "assets": [
+                {
+                  "id": "unused",
+                  "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/empty.svg",
+                  "sha256": "sha256:ffc9f5e4fdeea83920c171e2bd17577127c5d1a2c3c76f07440e10d387132280",
+                  "width": 1,
+                  "height": 1
+                }
+              ],
+              "fonts": [
+                {
+                  "id": "variable",
+                  "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "weight": "600",
+                  "variable": {
+                    "wght": {
+                      "min": 100,
+                      "default": 400,
+                      "max": 900
+                    },
+                    "wdth": {
+                      "min": 62.5,
+                      "default": 100,
+                      "max": 100
+                    }
+                  }
+                },
+                {
+                  "id": "static",
+                  "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "weight": "600"
+                }
+              ],
+              "nodes": [
+                {
+                  "id": "phrase",
+                  "x": 120,
+                  "y": 240,
+                  "width": 0,
+                  "height": 0,
+                  "opacity": 1,
+                  "rotation": 0,
+                  "origin": [0, 0],
+                  "type": "text",
+                  "style": "variable",
+                  "spans": [
+                    {
+                      "id": "static-run",
+                      "start": 5,
+                      "end": 12,
+                      "style": "static"
+                    }
+                  ],
+                  "anchor": "cap",
+                  "text": "Room to move",
+                  "textRole": "heading",
+                  "fontSize": 180,
+                  "color": "#202020",
+                  "weight": "normal",
+                  "font": "sans-serif",
+                  "fontAsset": "variable",
+                  "align": "left"
+                }
+              ],
+              "schemaVersion": "story-scene-1",
+              "frameCount": 60,
+              "motionModel": "curves-1",
+              "typography": "type-1",
+              "textStyles": {
+                "variable": {
+                  "fontAsset": "variable",
+                  "axes": {
+                    "wght": 600,
+                    "wdth": 100
+                  }
+                },
+                "static": {
+                  "fontAsset": "static",
+                  "axes": {}
+                },
+                "limited": {
+                  "fontAsset": "variable",
+                  "axes": {
+                    "wght": 850,
+                    "wdth": 100
+                  }
+                }
+              },
+              "textEvents": [
+                {
+                  "id": "weight",
+                  "node": "phrase",
+                  "verb": "emphasize",
+                  "manner": "weight",
+                  "at": 0,
+                  "duration": 10,
+                  "weightTreatment": "genuine-weight"
+                },
+                {
+                  "node": "phrase",
+                  "verb": "release",
+                  "at": 35,
+                  "duration": 10
+                }
+              ],
+              "authoringVersion": "1",
+              "recipe": {
+                "preset": "generic",
+                "moves": [],
+                "emphasis": []
+              },
+              "connectors": []
+            },
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "genuine-weight",
+              "resolvedTreatment": null,
+              "status": "unavailable",
+              "units": "wght-axis-delta",
+              "requestedAmount": 150,
+              "resolvedAmount": null,
+              "availableHeadroom": 0,
+              "targetScope": "painted-style-runs",
+              "reason": "insufficient-wght-headroom",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                },
+                {
+                  "span": "static-run",
+                  "fontAsset": "static",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "declaredWeight": "600",
+                  "axisInstance": null,
+                  "axisRange": null,
+                  "headroom": 0
+                }
+              ]
+            }
+          },
+          {
+            "id": "mixed-headroom-unavailable",
+            "source": {
+              "title": "Explicit weight treatment proof",
+              "fps": 30,
+              "width": 1920,
+              "height": 1080,
+              "background": "#ffffff",
+              "assets": [
+                {
+                  "id": "unused",
+                  "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/empty.svg",
+                  "sha256": "sha256:ffc9f5e4fdeea83920c171e2bd17577127c5d1a2c3c76f07440e10d387132280",
+                  "width": 1,
+                  "height": 1
+                }
+              ],
+              "fonts": [
+                {
+                  "id": "variable",
+                  "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "weight": "600",
+                  "variable": {
+                    "wght": {
+                      "min": 100,
+                      "default": 400,
+                      "max": 900
+                    },
+                    "wdth": {
+                      "min": 62.5,
+                      "default": 100,
+                      "max": 100
+                    }
+                  }
+                },
+                {
+                  "id": "static",
+                  "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "weight": "600"
+                }
+              ],
+              "nodes": [
+                {
+                  "id": "phrase",
+                  "x": 120,
+                  "y": 240,
+                  "width": 0,
+                  "height": 0,
+                  "opacity": 1,
+                  "rotation": 0,
+                  "origin": [0, 0],
+                  "type": "text",
+                  "style": "variable",
+                  "spans": [
+                    {
+                      "id": "limited-run",
+                      "start": 5,
+                      "end": 12,
+                      "style": "limited"
+                    }
+                  ],
+                  "anchor": "cap",
+                  "text": "Room to move",
+                  "textRole": "heading",
+                  "fontSize": 180,
+                  "color": "#202020",
+                  "weight": "normal",
+                  "font": "sans-serif",
+                  "fontAsset": "variable",
+                  "align": "left"
+                }
+              ],
+              "schemaVersion": "story-scene-1",
+              "frameCount": 60,
+              "motionModel": "curves-1",
+              "typography": "type-1",
+              "textStyles": {
+                "variable": {
+                  "fontAsset": "variable",
+                  "axes": {
+                    "wght": 600,
+                    "wdth": 100
+                  }
+                },
+                "static": {
+                  "fontAsset": "static",
+                  "axes": {}
+                },
+                "limited": {
+                  "fontAsset": "variable",
+                  "axes": {
+                    "wght": 850,
+                    "wdth": 100
+                  }
+                }
+              },
+              "textEvents": [
+                {
+                  "id": "weight",
+                  "node": "phrase",
+                  "verb": "emphasize",
+                  "manner": "weight",
+                  "at": 0,
+                  "duration": 10,
+                  "weightTreatment": "genuine-weight",
+                  "amount": 51
+                },
+                {
+                  "node": "phrase",
+                  "verb": "release",
+                  "at": 35,
+                  "duration": 10
+                }
+              ],
+              "authoringVersion": "1",
+              "recipe": {
+                "preset": "generic",
+                "moves": [],
+                "emphasis": []
+              },
+              "connectors": []
+            },
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "genuine-weight",
+              "resolvedTreatment": null,
+              "status": "unavailable",
+              "units": "wght-axis-delta",
+              "requestedAmount": 51,
+              "resolvedAmount": null,
+              "availableHeadroom": 50,
+              "targetScope": "painted-style-runs",
+              "reason": "insufficient-wght-headroom",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                },
+                {
+                  "span": "limited-run",
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 850,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 50
+                }
+              ]
+            }
+          }
+        ],
+        "cases": [
+          {
+            "id": "variable-historical",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "auto",
+              "resolvedTreatment": "genuine-weight",
+              "status": "resolved",
+              "units": "wght-axis-delta",
+              "requestedAmount": 150,
+              "resolvedAmount": 150,
+              "availableHeadroom": 300,
+              "targetScope": "legacy-base-and-spans",
+              "reason": null,
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                }
+              ]
+            },
+            "peakAxisDeltas": [0, 150],
+            "peakStrokeWidths": [0],
+            "compiledTo": {
+              "axes": {
+                "wght": 150
+              }
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "fb2016d5b4cd9b7a7655993727ba03224946b497bda800303b56c03d96904c81",
+            "compiledSha256": "3f7ea80aa028cae2ce8906460e5d52a7f009189f8ada3707d989b9eabe7299e1",
+            "compositionSha256": "4c9e45cc14d19a08ad9c413390f0f70d50c5fd2864d9d61156dee115cc455e7a",
+            "decodedSha256": "e86a1f412a8de791200b788faab06ac45664bd799f5bb55f1dcccf8ffdcb2d86",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/variable-historical/first.mp4",
+                "sha256": "3c7a26bf3db08df65125d955536cec2e11d4da12232845012e152bdc69614b2a",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "variable-auto",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "auto",
+              "resolvedTreatment": "genuine-weight",
+              "status": "resolved",
+              "units": "wght-axis-delta",
+              "requestedAmount": 150,
+              "resolvedAmount": 150,
+              "availableHeadroom": 300,
+              "targetScope": "legacy-base-and-spans",
+              "reason": null,
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                }
+              ]
+            },
+            "peakAxisDeltas": [0, 150],
+            "peakStrokeWidths": [0],
+            "compiledTo": {
+              "axes": {
+                "wght": 150
+              }
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "fb2016d5b4cd9b7a7655993727ba03224946b497bda800303b56c03d96904c81",
+            "compiledSha256": "3f7ea80aa028cae2ce8906460e5d52a7f009189f8ada3707d989b9eabe7299e1",
+            "compositionSha256": "4c9e45cc14d19a08ad9c413390f0f70d50c5fd2864d9d61156dee115cc455e7a",
+            "decodedSha256": "e86a1f412a8de791200b788faab06ac45664bd799f5bb55f1dcccf8ffdcb2d86",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/variable-auto/first.mp4",
+                "sha256": "3c7a26bf3db08df65125d955536cec2e11d4da12232845012e152bdc69614b2a",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "variable-explicit",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "genuine-weight",
+              "resolvedTreatment": "genuine-weight",
+              "status": "resolved",
+              "units": "wght-axis-delta",
+              "requestedAmount": 150,
+              "resolvedAmount": 150,
+              "availableHeadroom": 300,
+              "targetScope": "painted-style-runs",
+              "reason": null,
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                }
+              ]
+            },
+            "peakAxisDeltas": [0, 150],
+            "peakStrokeWidths": [0],
+            "compiledTo": {
+              "axes": {
+                "wght": 150
+              }
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "db81ac3c428542ae5ecd433e7738f9896c360ca3341fa5bb20695e16076afe1d",
+            "compiledSha256": "0529bcc9e0beca7ac64000b43bd1497728186233b8d336ce2ebb1491abfaa5fc",
+            "compositionSha256": "4c9e45cc14d19a08ad9c413390f0f70d50c5fd2864d9d61156dee115cc455e7a",
+            "decodedSha256": "e86a1f412a8de791200b788faab06ac45664bd799f5bb55f1dcccf8ffdcb2d86",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/variable-explicit/first.mp4",
+                "sha256": "3c7a26bf3db08df65125d955536cec2e11d4da12232845012e152bdc69614b2a",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              },
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/variable-explicit/repeat.mp4",
+                "sha256": "3c7a26bf3db08df65125d955536cec2e11d4da12232845012e152bdc69614b2a",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "static-historical",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "auto",
+              "resolvedTreatment": "outline",
+              "status": "resolved",
+              "units": "stroke-pixels",
+              "requestedAmount": 2.52,
+              "resolvedAmount": 2.52,
+              "availableHeadroom": 0,
+              "targetScope": "legacy-base-and-spans",
+              "reason": "static-or-max-weight-target",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "static",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "declaredWeight": "600",
+                  "axisInstance": null,
+                  "axisRange": null,
+                  "headroom": 0
+                }
+              ]
+            },
+            "peakAxisDeltas": [0],
+            "peakStrokeWidths": [0, 2.52],
+            "compiledTo": {
+              "stroke": "#202020",
+              "strokeWidth": 2.52
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "ac8b0299a8d79bb1a50cdc525707238e1c8816bd18305ff15f38f1d4f0c4ce03",
+            "compiledSha256": "1a334d78856100033f19d9c79d055cd9feb67ea032132cf3544297b0c213dd81",
+            "compositionSha256": "fcca9479492a32be240533b3b436006f6b7d731013866526d13e0ae3450d61e5",
+            "decodedSha256": "9a474664e893971f992090166f45ba3b6cc65deb83e7f42eb4940948e4296ba1",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/static-historical/first.mp4",
+                "sha256": "c176adab0cc621ad0f6e259a761e1dd6748df16815e38e9b65299caa623bbc2a",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "static-auto",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "auto",
+              "resolvedTreatment": "outline",
+              "status": "resolved",
+              "units": "stroke-pixels",
+              "requestedAmount": 2.52,
+              "resolvedAmount": 2.52,
+              "availableHeadroom": 0,
+              "targetScope": "legacy-base-and-spans",
+              "reason": "static-or-max-weight-target",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "static",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "declaredWeight": "600",
+                  "axisInstance": null,
+                  "axisRange": null,
+                  "headroom": 0
+                }
+              ]
+            },
+            "peakAxisDeltas": [0],
+            "peakStrokeWidths": [0, 2.52],
+            "compiledTo": {
+              "stroke": "#202020",
+              "strokeWidth": 2.52
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "ac8b0299a8d79bb1a50cdc525707238e1c8816bd18305ff15f38f1d4f0c4ce03",
+            "compiledSha256": "1a334d78856100033f19d9c79d055cd9feb67ea032132cf3544297b0c213dd81",
+            "compositionSha256": "fcca9479492a32be240533b3b436006f6b7d731013866526d13e0ae3450d61e5",
+            "decodedSha256": "9a474664e893971f992090166f45ba3b6cc65deb83e7f42eb4940948e4296ba1",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/static-auto/first.mp4",
+                "sha256": "c176adab0cc621ad0f6e259a761e1dd6748df16815e38e9b65299caa623bbc2a",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "static-explicit",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "outline",
+              "resolvedTreatment": "outline",
+              "status": "resolved",
+              "units": "stroke-pixels",
+              "requestedAmount": 2.52,
+              "resolvedAmount": 2.52,
+              "availableHeadroom": 0,
+              "targetScope": "painted-style-runs",
+              "reason": "explicit-outline",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "static",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "declaredWeight": "600",
+                  "axisInstance": null,
+                  "axisRange": null,
+                  "headroom": 0
+                }
+              ]
+            },
+            "peakAxisDeltas": [0],
+            "peakStrokeWidths": [0, 2.52],
+            "compiledTo": {
+              "stroke": "#202020",
+              "strokeWidth": 2.52
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "87830489bba01b032b9d76b9e57feaff2a485d2e2751b2ec56f86e85037bc2ef",
+            "compiledSha256": "e2a9d7dabe4a261929a92adbbe02564f613ed1202c8de2c088c8f8002d15036c",
+            "compositionSha256": "fcca9479492a32be240533b3b436006f6b7d731013866526d13e0ae3450d61e5",
+            "decodedSha256": "9a474664e893971f992090166f45ba3b6cc65deb83e7f42eb4940948e4296ba1",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/static-explicit/first.mp4",
+                "sha256": "c176adab0cc621ad0f6e259a761e1dd6748df16815e38e9b65299caa623bbc2a",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              },
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/static-explicit/repeat.mp4",
+                "sha256": "c176adab0cc621ad0f6e259a761e1dd6748df16815e38e9b65299caa623bbc2a",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "maximum-historical",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "auto",
+              "resolvedTreatment": "outline",
+              "status": "resolved",
+              "units": "stroke-pixels",
+              "requestedAmount": 2.52,
+              "resolvedAmount": 2.52,
+              "availableHeadroom": 0,
+              "targetScope": "legacy-base-and-spans",
+              "reason": "static-or-max-weight-target",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 900,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 0
+                }
+              ]
+            },
+            "peakAxisDeltas": [0],
+            "peakStrokeWidths": [0, 2.52],
+            "compiledTo": {
+              "stroke": "#202020",
+              "strokeWidth": 2.52
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "5a494b1a7570d41424a41772497531f93ea979f4c915ee654f6663adae4a729a",
+            "compiledSha256": "3de8bf636882bf8995a480a4f6c59a0d123b95d569096409c42a0fc41ae89164",
+            "compositionSha256": "c57dfd3120547a904eed2cccb2db2fefe9b1e8232bca459e72646e45701772d5",
+            "decodedSha256": "9ef049adb862c2f6184fd0d16bece85b66032ba3ebcd2edf74729cae6f53e9ef",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/maximum-historical/first.mp4",
+                "sha256": "51c0760feb50c9d526c50301a8b681e3daa074ba3f880a24f33dd9050d8bece3",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "maximum-auto",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "auto",
+              "resolvedTreatment": "outline",
+              "status": "resolved",
+              "units": "stroke-pixels",
+              "requestedAmount": 2.52,
+              "resolvedAmount": 2.52,
+              "availableHeadroom": 0,
+              "targetScope": "legacy-base-and-spans",
+              "reason": "static-or-max-weight-target",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 900,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 0
+                }
+              ]
+            },
+            "peakAxisDeltas": [0],
+            "peakStrokeWidths": [0, 2.52],
+            "compiledTo": {
+              "stroke": "#202020",
+              "strokeWidth": 2.52
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "5a494b1a7570d41424a41772497531f93ea979f4c915ee654f6663adae4a729a",
+            "compiledSha256": "3de8bf636882bf8995a480a4f6c59a0d123b95d569096409c42a0fc41ae89164",
+            "compositionSha256": "c57dfd3120547a904eed2cccb2db2fefe9b1e8232bca459e72646e45701772d5",
+            "decodedSha256": "9ef049adb862c2f6184fd0d16bece85b66032ba3ebcd2edf74729cae6f53e9ef",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/maximum-auto/first.mp4",
+                "sha256": "51c0760feb50c9d526c50301a8b681e3daa074ba3f880a24f33dd9050d8bece3",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "maximum-explicit",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "outline",
+              "resolvedTreatment": "outline",
+              "status": "resolved",
+              "units": "stroke-pixels",
+              "requestedAmount": 2.52,
+              "resolvedAmount": 2.52,
+              "availableHeadroom": 0,
+              "targetScope": "painted-style-runs",
+              "reason": "explicit-outline",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 900,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 0
+                }
+              ]
+            },
+            "peakAxisDeltas": [0],
+            "peakStrokeWidths": [0, 2.52],
+            "compiledTo": {
+              "stroke": "#202020",
+              "strokeWidth": 2.52
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "23b283a27bcd8614f08cb8722590ef12b8d01b86bd490ef4fb3c78db08499e5a",
+            "compiledSha256": "58fff940f5358c6a76a940f40f38fd067c241ef6173eb05c533f1b2022ce1174",
+            "compositionSha256": "c57dfd3120547a904eed2cccb2db2fefe9b1e8232bca459e72646e45701772d5",
+            "decodedSha256": "9ef049adb862c2f6184fd0d16bece85b66032ba3ebcd2edf74729cae6f53e9ef",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/maximum-explicit/first.mp4",
+                "sha256": "51c0760feb50c9d526c50301a8b681e3daa074ba3f880a24f33dd9050d8bece3",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              },
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/maximum-explicit/repeat.mp4",
+                "sha256": "51c0760feb50c9d526c50301a8b681e3daa074ba3f880a24f33dd9050d8bece3",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "mixed-historical",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "auto",
+              "resolvedTreatment": "outline",
+              "status": "resolved",
+              "units": "stroke-pixels",
+              "requestedAmount": 2.52,
+              "resolvedAmount": 2.52,
+              "availableHeadroom": 0,
+              "targetScope": "legacy-base-and-spans",
+              "reason": "static-or-max-weight-target",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                },
+                {
+                  "span": "static-run",
+                  "fontAsset": "static",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "declaredWeight": "600",
+                  "axisInstance": null,
+                  "axisRange": null,
+                  "headroom": 0
+                }
+              ]
+            },
+            "peakAxisDeltas": [0],
+            "peakStrokeWidths": [0, 2.52],
+            "compiledTo": {
+              "stroke": "#202020",
+              "strokeWidth": 2.52
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "4850b5f387eb625bd216bee612d5bf4508f985a0aed2c02e321d062131940af9",
+            "compiledSha256": "4898375b515a20b1d437f2606091d4bdab543753ba5b15c9effe040ab36a70b3",
+            "compositionSha256": "6f47446bb5ae30779fa3443e8c1182bbd2a13efd4f6f8641f851221eea2c07dc",
+            "decodedSha256": "bf4699ba7b4709728ded83cc1ee1fa90684fc96276e8efe108d92e764af482ea",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/mixed-historical/first.mp4",
+                "sha256": "b9bc4b7700bd529a05a34a3d38b459de6d7d18ef8e3763bfba9a1f56a523c939",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "mixed-auto",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "auto",
+              "resolvedTreatment": "outline",
+              "status": "resolved",
+              "units": "stroke-pixels",
+              "requestedAmount": 2.52,
+              "resolvedAmount": 2.52,
+              "availableHeadroom": 0,
+              "targetScope": "legacy-base-and-spans",
+              "reason": "static-or-max-weight-target",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                },
+                {
+                  "span": "static-run",
+                  "fontAsset": "static",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "declaredWeight": "600",
+                  "axisInstance": null,
+                  "axisRange": null,
+                  "headroom": 0
+                }
+              ]
+            },
+            "peakAxisDeltas": [0],
+            "peakStrokeWidths": [0, 2.52],
+            "compiledTo": {
+              "stroke": "#202020",
+              "strokeWidth": 2.52
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "4850b5f387eb625bd216bee612d5bf4508f985a0aed2c02e321d062131940af9",
+            "compiledSha256": "4898375b515a20b1d437f2606091d4bdab543753ba5b15c9effe040ab36a70b3",
+            "compositionSha256": "6f47446bb5ae30779fa3443e8c1182bbd2a13efd4f6f8641f851221eea2c07dc",
+            "decodedSha256": "bf4699ba7b4709728ded83cc1ee1fa90684fc96276e8efe108d92e764af482ea",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/mixed-auto/first.mp4",
+                "sha256": "b9bc4b7700bd529a05a34a3d38b459de6d7d18ef8e3763bfba9a1f56a523c939",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "mixed-explicit",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "outline",
+              "resolvedTreatment": "outline",
+              "status": "resolved",
+              "units": "stroke-pixels",
+              "requestedAmount": 2.52,
+              "resolvedAmount": 2.52,
+              "availableHeadroom": 0,
+              "targetScope": "painted-style-runs",
+              "reason": "explicit-outline",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                },
+                {
+                  "span": "static-run",
+                  "fontAsset": "static",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "declaredWeight": "600",
+                  "axisInstance": null,
+                  "axisRange": null,
+                  "headroom": 0
+                }
+              ]
+            },
+            "peakAxisDeltas": [0],
+            "peakStrokeWidths": [0, 2.52],
+            "compiledTo": {
+              "stroke": "#202020",
+              "strokeWidth": 2.52
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "739a89c5f47ccbc041396c047b58a347fbefa2760b4468f76a17ca768db89ee3",
+            "compiledSha256": "0667b7e5602bc07108ed41835f912261be1bfc94baeeb2a049729ad5c92d2574",
+            "compositionSha256": "6f47446bb5ae30779fa3443e8c1182bbd2a13efd4f6f8641f851221eea2c07dc",
+            "decodedSha256": "bf4699ba7b4709728ded83cc1ee1fa90684fc96276e8efe108d92e764af482ea",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/mixed-explicit/first.mp4",
+                "sha256": "b9bc4b7700bd529a05a34a3d38b459de6d7d18ef8e3763bfba9a1f56a523c939",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              },
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/mixed-explicit/repeat.mp4",
+                "sha256": "b9bc4b7700bd529a05a34a3d38b459de6d7d18ef8e3763bfba9a1f56a523c939",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "mixed-headroom-historical",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "auto",
+              "resolvedTreatment": "genuine-weight",
+              "status": "resolved",
+              "units": "wght-axis-delta",
+              "requestedAmount": 150,
+              "resolvedAmount": 50,
+              "availableHeadroom": 50,
+              "targetScope": "legacy-base-and-spans",
+              "reason": null,
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                },
+                {
+                  "span": "limited-run",
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 850,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 50
+                }
+              ]
+            },
+            "peakAxisDeltas": [0, 50],
+            "peakStrokeWidths": [0],
+            "compiledTo": {
+              "axes": {
+                "wght": 50
+              }
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "1703dd505089a73488d417266235f4ceb333684ac3053ef32072cc13f51e1309",
+            "compiledSha256": "474b42773782e8aa28d96294ac81dcbf7a9637af18c15eb43bd9be525a2f7831",
+            "compositionSha256": "b73f8f8c89e95179e0ce14b7ff5f907ec1d3961fe0294144094bf448094aa995",
+            "decodedSha256": "1dfb8982e4c44057b9253ef2a5e61b2f02e2aa4faf56a12d45db46235c299627",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/mixed-headroom-historical/first.mp4",
+                "sha256": "7bbc821c2d3011d9bcb7086c2fcafb069dbbbf3f854d0b99ea86eb482e1f75eb",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "mixed-headroom-auto",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "auto",
+              "resolvedTreatment": "genuine-weight",
+              "status": "resolved",
+              "units": "wght-axis-delta",
+              "requestedAmount": 150,
+              "resolvedAmount": 50,
+              "availableHeadroom": 50,
+              "targetScope": "legacy-base-and-spans",
+              "reason": null,
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                },
+                {
+                  "span": "limited-run",
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 850,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 50
+                }
+              ]
+            },
+            "peakAxisDeltas": [0, 50],
+            "peakStrokeWidths": [0],
+            "compiledTo": {
+              "axes": {
+                "wght": 50
+              }
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "1703dd505089a73488d417266235f4ceb333684ac3053ef32072cc13f51e1309",
+            "compiledSha256": "474b42773782e8aa28d96294ac81dcbf7a9637af18c15eb43bd9be525a2f7831",
+            "compositionSha256": "b73f8f8c89e95179e0ce14b7ff5f907ec1d3961fe0294144094bf448094aa995",
+            "decodedSha256": "1dfb8982e4c44057b9253ef2a5e61b2f02e2aa4faf56a12d45db46235c299627",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/mixed-headroom-auto/first.mp4",
+                "sha256": "7bbc821c2d3011d9bcb7086c2fcafb069dbbbf3f854d0b99ea86eb482e1f75eb",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "mixed-headroom-explicit",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "genuine-weight",
+              "resolvedTreatment": "genuine-weight",
+              "status": "resolved",
+              "units": "wght-axis-delta",
+              "requestedAmount": 50,
+              "resolvedAmount": 50,
+              "availableHeadroom": 50,
+              "targetScope": "painted-style-runs",
+              "reason": null,
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                },
+                {
+                  "span": "limited-run",
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 850,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 50
+                }
+              ]
+            },
+            "peakAxisDeltas": [0, 50],
+            "peakStrokeWidths": [0],
+            "compiledTo": {
+              "axes": {
+                "wght": 50
+              }
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "470eea5dbaeb8ae754b4e7d6ab7ec0f1ca07617ec981f82a20850488213eae49",
+            "compiledSha256": "471f9a529f30cd6ababcf8d90dbfebed191ffabe67988064f9dd2deb394d298d",
+            "compositionSha256": "b73f8f8c89e95179e0ce14b7ff5f907ec1d3961fe0294144094bf448094aa995",
+            "decodedSha256": "1dfb8982e4c44057b9253ef2a5e61b2f02e2aa4faf56a12d45db46235c299627",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/mixed-headroom-explicit/first.mp4",
+                "sha256": "7bbc821c2d3011d9bcb7086c2fcafb069dbbbf3f854d0b99ea86eb482e1f75eb",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              },
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/mixed-headroom-explicit/repeat.mp4",
+                "sha256": "7bbc821c2d3011d9bcb7086c2fcafb069dbbbf3f854d0b99ea86eb482e1f75eb",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "variable-outline",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "outline",
+              "resolvedTreatment": "outline",
+              "status": "resolved",
+              "units": "stroke-pixels",
+              "requestedAmount": 2.52,
+              "resolvedAmount": 2.52,
+              "availableHeadroom": 300,
+              "targetScope": "painted-style-runs",
+              "reason": "explicit-outline",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                }
+              ]
+            },
+            "peakAxisDeltas": [0],
+            "peakStrokeWidths": [0, 2.52],
+            "compiledTo": {
+              "stroke": "#202020",
+              "strokeWidth": 2.52
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "ebb251754e5b3a429513cfc8d6ac1376c06371bc5446d907ee9e434adaa47d61",
+            "compiledSha256": "1327175597fc63933e481152531a5eaec325a058acc2477569ebd1c1bbe37d30",
+            "compositionSha256": "bea264b7d1276d97b8e4cd1438d159a3183e18ec937e769e323e2917c7fa7135",
+            "decodedSha256": "694bd4813239038606ea009a2fecbce2254586209a4b09b2221cfa185409ac28",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/variable-outline/first.mp4",
+                "sha256": "e2ec99a2478f15ea61511e2a253d77780b5f00337a6b13a6f921297bd29de03b",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              },
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/variable-outline/repeat.mp4",
+                "sha256": "e2ec99a2478f15ea61511e2a253d77780b5f00337a6b13a6f921297bd29de03b",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "covered-base-genuine",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "genuine-weight",
+              "resolvedTreatment": "genuine-weight",
+              "status": "resolved",
+              "units": "wght-axis-delta",
+              "requestedAmount": 150,
+              "resolvedAmount": 150,
+              "availableHeadroom": 300,
+              "targetScope": "painted-style-runs",
+              "reason": null,
+              "fonts": [
+                {
+                  "span": "all",
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                }
+              ]
+            },
+            "peakAxisDeltas": [0, 150],
+            "peakStrokeWidths": [0],
+            "compiledTo": {
+              "axes": {
+                "wght": 150
+              }
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "ac903a24813cd38208270cd87a4ae9f3b408f5541d5d0fc47e845df3b83354bf",
+            "compiledSha256": "e610c510918cf6d38c5a8d0d9c9d13ba08a92ffed08d53aff426079f5bb2a33c",
+            "compositionSha256": "d7c6df4e05d56844ee893c2ca507aa275d3b62eace044937ff7a3fda32f0a0b4",
+            "decodedSha256": "63e4718731f7c679e5ad881ef7548c57545c8027771a13756565f9ff53868335",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/covered-base-genuine/first.mp4",
+                "sha256": "a79d09406c931738efbaa4001b2ade847bd68d7c7d0b4a62f7c2156c34d30b73",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              },
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-hUkv4x/covered-base-genuine/repeat.mp4",
+                "sha256": "a79d09406c931738efbaa4001b2ade847bd68d7c7d0b4a62f7c2156c34d30b73",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          }
+        ]
+      },
+      {
+        "root": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L",
+        "backend": "canvas2d",
+        "runSha256": "cbf37de78120572d16aaad195d80173661822c51b7f33ff200177bc5b6f6cb50",
+        "counts": {
+          "cases": 17,
+          "exports": 24,
+          "encodedFrames": 1440,
+          "previewFrames": 1020,
+          "previewDraws": 3060
+        },
+        "negativeControls": [
+          {
+            "id": "variable-unavailable",
+            "source": {
+              "title": "Explicit weight treatment proof",
+              "fps": 30,
+              "width": 1920,
+              "height": 1080,
+              "background": "#ffffff",
+              "assets": [
+                {
+                  "id": "unused",
+                  "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/empty.svg",
+                  "sha256": "sha256:ffc9f5e4fdeea83920c171e2bd17577127c5d1a2c3c76f07440e10d387132280",
+                  "width": 1,
+                  "height": 1
+                }
+              ],
+              "fonts": [
+                {
+                  "id": "variable",
+                  "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "weight": "600",
+                  "variable": {
+                    "wght": {
+                      "min": 100,
+                      "default": 400,
+                      "max": 900
+                    },
+                    "wdth": {
+                      "min": 62.5,
+                      "default": 100,
+                      "max": 100
+                    }
+                  }
+                },
+                {
+                  "id": "static",
+                  "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "weight": "600"
+                }
+              ],
+              "nodes": [
+                {
+                  "id": "phrase",
+                  "x": 120,
+                  "y": 240,
+                  "width": 0,
+                  "height": 0,
+                  "opacity": 1,
+                  "rotation": 0,
+                  "origin": [0, 0],
+                  "type": "text",
+                  "style": "variable",
+                  "anchor": "cap",
+                  "text": "Room to move",
+                  "textRole": "heading",
+                  "fontSize": 180,
+                  "color": "#202020",
+                  "weight": "normal",
+                  "font": "sans-serif",
+                  "fontAsset": "variable",
+                  "align": "left"
+                }
+              ],
+              "schemaVersion": "story-scene-1",
+              "frameCount": 60,
+              "motionModel": "curves-1",
+              "typography": "type-1",
+              "textStyles": {
+                "variable": {
+                  "fontAsset": "variable",
+                  "axes": {
+                    "wght": 600,
+                    "wdth": 100
+                  }
+                },
+                "static": {
+                  "fontAsset": "static",
+                  "axes": {}
+                },
+                "limited": {
+                  "fontAsset": "variable",
+                  "axes": {
+                    "wght": 850,
+                    "wdth": 100
+                  }
+                }
+              },
+              "textEvents": [
+                {
+                  "id": "weight",
+                  "node": "phrase",
+                  "verb": "emphasize",
+                  "manner": "weight",
+                  "at": 0,
+                  "duration": 10,
+                  "weightTreatment": "genuine-weight",
+                  "amount": 301
+                },
+                {
+                  "node": "phrase",
+                  "verb": "release",
+                  "at": 35,
+                  "duration": 10
+                }
+              ],
+              "authoringVersion": "1",
+              "recipe": {
+                "preset": "generic",
+                "moves": [],
+                "emphasis": []
+              },
+              "connectors": []
+            },
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "genuine-weight",
+              "resolvedTreatment": null,
+              "status": "unavailable",
+              "units": "wght-axis-delta",
+              "requestedAmount": 301,
+              "resolvedAmount": null,
+              "availableHeadroom": 300,
+              "targetScope": "painted-style-runs",
+              "reason": "insufficient-wght-headroom",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                }
+              ]
+            }
+          },
+          {
+            "id": "static-unavailable",
+            "source": {
+              "title": "Explicit weight treatment proof",
+              "fps": 30,
+              "width": 1920,
+              "height": 1080,
+              "background": "#ffffff",
+              "assets": [
+                {
+                  "id": "unused",
+                  "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/empty.svg",
+                  "sha256": "sha256:ffc9f5e4fdeea83920c171e2bd17577127c5d1a2c3c76f07440e10d387132280",
+                  "width": 1,
+                  "height": 1
+                }
+              ],
+              "fonts": [
+                {
+                  "id": "variable",
+                  "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "weight": "600",
+                  "variable": {
+                    "wght": {
+                      "min": 100,
+                      "default": 400,
+                      "max": 900
+                    },
+                    "wdth": {
+                      "min": 62.5,
+                      "default": 100,
+                      "max": 100
+                    }
+                  }
+                },
+                {
+                  "id": "static",
+                  "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "weight": "600"
+                }
+              ],
+              "nodes": [
+                {
+                  "id": "phrase",
+                  "x": 120,
+                  "y": 240,
+                  "width": 0,
+                  "height": 0,
+                  "opacity": 1,
+                  "rotation": 0,
+                  "origin": [0, 0],
+                  "type": "text",
+                  "style": "static",
+                  "anchor": "cap",
+                  "text": "Room to move",
+                  "textRole": "heading",
+                  "fontSize": 180,
+                  "color": "#202020",
+                  "weight": "normal",
+                  "font": "sans-serif",
+                  "fontAsset": "static",
+                  "align": "left"
+                }
+              ],
+              "schemaVersion": "story-scene-1",
+              "frameCount": 60,
+              "motionModel": "curves-1",
+              "typography": "type-1",
+              "textStyles": {
+                "variable": {
+                  "fontAsset": "variable",
+                  "axes": {
+                    "wght": 600,
+                    "wdth": 100
+                  }
+                },
+                "static": {
+                  "fontAsset": "static",
+                  "axes": {}
+                },
+                "limited": {
+                  "fontAsset": "variable",
+                  "axes": {
+                    "wght": 850,
+                    "wdth": 100
+                  }
+                }
+              },
+              "textEvents": [
+                {
+                  "id": "weight",
+                  "node": "phrase",
+                  "verb": "emphasize",
+                  "manner": "weight",
+                  "at": 0,
+                  "duration": 10,
+                  "weightTreatment": "genuine-weight"
+                },
+                {
+                  "node": "phrase",
+                  "verb": "release",
+                  "at": 35,
+                  "duration": 10
+                }
+              ],
+              "authoringVersion": "1",
+              "recipe": {
+                "preset": "generic",
+                "moves": [],
+                "emphasis": []
+              },
+              "connectors": []
+            },
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "genuine-weight",
+              "resolvedTreatment": null,
+              "status": "unavailable",
+              "units": "wght-axis-delta",
+              "requestedAmount": 150,
+              "resolvedAmount": null,
+              "availableHeadroom": 0,
+              "targetScope": "painted-style-runs",
+              "reason": "insufficient-wght-headroom",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "static",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "declaredWeight": "600",
+                  "axisInstance": null,
+                  "axisRange": null,
+                  "headroom": 0
+                }
+              ]
+            }
+          },
+          {
+            "id": "maximum-unavailable",
+            "source": {
+              "title": "Explicit weight treatment proof",
+              "fps": 30,
+              "width": 1920,
+              "height": 1080,
+              "background": "#ffffff",
+              "assets": [
+                {
+                  "id": "unused",
+                  "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/empty.svg",
+                  "sha256": "sha256:ffc9f5e4fdeea83920c171e2bd17577127c5d1a2c3c76f07440e10d387132280",
+                  "width": 1,
+                  "height": 1
+                }
+              ],
+              "fonts": [
+                {
+                  "id": "variable",
+                  "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "weight": "600",
+                  "variable": {
+                    "wght": {
+                      "min": 100,
+                      "default": 400,
+                      "max": 900
+                    },
+                    "wdth": {
+                      "min": 62.5,
+                      "default": 100,
+                      "max": 100
+                    }
+                  }
+                },
+                {
+                  "id": "static",
+                  "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "weight": "600"
+                }
+              ],
+              "nodes": [
+                {
+                  "id": "phrase",
+                  "x": 120,
+                  "y": 240,
+                  "width": 0,
+                  "height": 0,
+                  "opacity": 1,
+                  "rotation": 0,
+                  "origin": [0, 0],
+                  "type": "text",
+                  "style": "variable",
+                  "anchor": "cap",
+                  "text": "Room to move",
+                  "textRole": "heading",
+                  "fontSize": 180,
+                  "color": "#202020",
+                  "weight": "normal",
+                  "font": "sans-serif",
+                  "fontAsset": "variable",
+                  "align": "left"
+                }
+              ],
+              "schemaVersion": "story-scene-1",
+              "frameCount": 60,
+              "motionModel": "curves-1",
+              "typography": "type-1",
+              "textStyles": {
+                "variable": {
+                  "fontAsset": "variable",
+                  "axes": {
+                    "wght": 900,
+                    "wdth": 100
+                  }
+                },
+                "static": {
+                  "fontAsset": "static",
+                  "axes": {}
+                },
+                "limited": {
+                  "fontAsset": "variable",
+                  "axes": {
+                    "wght": 850,
+                    "wdth": 100
+                  }
+                }
+              },
+              "textEvents": [
+                {
+                  "id": "weight",
+                  "node": "phrase",
+                  "verb": "emphasize",
+                  "manner": "weight",
+                  "at": 0,
+                  "duration": 10,
+                  "weightTreatment": "genuine-weight"
+                },
+                {
+                  "node": "phrase",
+                  "verb": "release",
+                  "at": 35,
+                  "duration": 10
+                }
+              ],
+              "authoringVersion": "1",
+              "recipe": {
+                "preset": "generic",
+                "moves": [],
+                "emphasis": []
+              },
+              "connectors": []
+            },
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "genuine-weight",
+              "resolvedTreatment": null,
+              "status": "unavailable",
+              "units": "wght-axis-delta",
+              "requestedAmount": 150,
+              "resolvedAmount": null,
+              "availableHeadroom": 0,
+              "targetScope": "painted-style-runs",
+              "reason": "insufficient-wght-headroom",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 900,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 0
+                }
+              ]
+            }
+          },
+          {
+            "id": "mixed-unavailable",
+            "source": {
+              "title": "Explicit weight treatment proof",
+              "fps": 30,
+              "width": 1920,
+              "height": 1080,
+              "background": "#ffffff",
+              "assets": [
+                {
+                  "id": "unused",
+                  "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/empty.svg",
+                  "sha256": "sha256:ffc9f5e4fdeea83920c171e2bd17577127c5d1a2c3c76f07440e10d387132280",
+                  "width": 1,
+                  "height": 1
+                }
+              ],
+              "fonts": [
+                {
+                  "id": "variable",
+                  "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "weight": "600",
+                  "variable": {
+                    "wght": {
+                      "min": 100,
+                      "default": 400,
+                      "max": 900
+                    },
+                    "wdth": {
+                      "min": 62.5,
+                      "default": 100,
+                      "max": 100
+                    }
+                  }
+                },
+                {
+                  "id": "static",
+                  "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "weight": "600"
+                }
+              ],
+              "nodes": [
+                {
+                  "id": "phrase",
+                  "x": 120,
+                  "y": 240,
+                  "width": 0,
+                  "height": 0,
+                  "opacity": 1,
+                  "rotation": 0,
+                  "origin": [0, 0],
+                  "type": "text",
+                  "style": "variable",
+                  "spans": [
+                    {
+                      "id": "static-run",
+                      "start": 5,
+                      "end": 12,
+                      "style": "static"
+                    }
+                  ],
+                  "anchor": "cap",
+                  "text": "Room to move",
+                  "textRole": "heading",
+                  "fontSize": 180,
+                  "color": "#202020",
+                  "weight": "normal",
+                  "font": "sans-serif",
+                  "fontAsset": "variable",
+                  "align": "left"
+                }
+              ],
+              "schemaVersion": "story-scene-1",
+              "frameCount": 60,
+              "motionModel": "curves-1",
+              "typography": "type-1",
+              "textStyles": {
+                "variable": {
+                  "fontAsset": "variable",
+                  "axes": {
+                    "wght": 600,
+                    "wdth": 100
+                  }
+                },
+                "static": {
+                  "fontAsset": "static",
+                  "axes": {}
+                },
+                "limited": {
+                  "fontAsset": "variable",
+                  "axes": {
+                    "wght": 850,
+                    "wdth": 100
+                  }
+                }
+              },
+              "textEvents": [
+                {
+                  "id": "weight",
+                  "node": "phrase",
+                  "verb": "emphasize",
+                  "manner": "weight",
+                  "at": 0,
+                  "duration": 10,
+                  "weightTreatment": "genuine-weight"
+                },
+                {
+                  "node": "phrase",
+                  "verb": "release",
+                  "at": 35,
+                  "duration": 10
+                }
+              ],
+              "authoringVersion": "1",
+              "recipe": {
+                "preset": "generic",
+                "moves": [],
+                "emphasis": []
+              },
+              "connectors": []
+            },
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "genuine-weight",
+              "resolvedTreatment": null,
+              "status": "unavailable",
+              "units": "wght-axis-delta",
+              "requestedAmount": 150,
+              "resolvedAmount": null,
+              "availableHeadroom": 0,
+              "targetScope": "painted-style-runs",
+              "reason": "insufficient-wght-headroom",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                },
+                {
+                  "span": "static-run",
+                  "fontAsset": "static",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "declaredWeight": "600",
+                  "axisInstance": null,
+                  "axisRange": null,
+                  "headroom": 0
+                }
+              ]
+            }
+          },
+          {
+            "id": "mixed-headroom-unavailable",
+            "source": {
+              "title": "Explicit weight treatment proof",
+              "fps": 30,
+              "width": 1920,
+              "height": 1080,
+              "background": "#ffffff",
+              "assets": [
+                {
+                  "id": "unused",
+                  "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/empty.svg",
+                  "sha256": "sha256:ffc9f5e4fdeea83920c171e2bd17577127c5d1a2c3c76f07440e10d387132280",
+                  "width": 1,
+                  "height": 1
+                }
+              ],
+              "fonts": [
+                {
+                  "id": "variable",
+                  "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "weight": "600",
+                  "variable": {
+                    "wght": {
+                      "min": 100,
+                      "default": 400,
+                      "max": 900
+                    },
+                    "wdth": {
+                      "min": 62.5,
+                      "default": 100,
+                      "max": 100
+                    }
+                  }
+                },
+                {
+                  "id": "static",
+                  "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "weight": "600"
+                }
+              ],
+              "nodes": [
+                {
+                  "id": "phrase",
+                  "x": 120,
+                  "y": 240,
+                  "width": 0,
+                  "height": 0,
+                  "opacity": 1,
+                  "rotation": 0,
+                  "origin": [0, 0],
+                  "type": "text",
+                  "style": "variable",
+                  "spans": [
+                    {
+                      "id": "limited-run",
+                      "start": 5,
+                      "end": 12,
+                      "style": "limited"
+                    }
+                  ],
+                  "anchor": "cap",
+                  "text": "Room to move",
+                  "textRole": "heading",
+                  "fontSize": 180,
+                  "color": "#202020",
+                  "weight": "normal",
+                  "font": "sans-serif",
+                  "fontAsset": "variable",
+                  "align": "left"
+                }
+              ],
+              "schemaVersion": "story-scene-1",
+              "frameCount": 60,
+              "motionModel": "curves-1",
+              "typography": "type-1",
+              "textStyles": {
+                "variable": {
+                  "fontAsset": "variable",
+                  "axes": {
+                    "wght": 600,
+                    "wdth": 100
+                  }
+                },
+                "static": {
+                  "fontAsset": "static",
+                  "axes": {}
+                },
+                "limited": {
+                  "fontAsset": "variable",
+                  "axes": {
+                    "wght": 850,
+                    "wdth": 100
+                  }
+                }
+              },
+              "textEvents": [
+                {
+                  "id": "weight",
+                  "node": "phrase",
+                  "verb": "emphasize",
+                  "manner": "weight",
+                  "at": 0,
+                  "duration": 10,
+                  "weightTreatment": "genuine-weight",
+                  "amount": 51
+                },
+                {
+                  "node": "phrase",
+                  "verb": "release",
+                  "at": 35,
+                  "duration": 10
+                }
+              ],
+              "authoringVersion": "1",
+              "recipe": {
+                "preset": "generic",
+                "moves": [],
+                "emphasis": []
+              },
+              "connectors": []
+            },
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "genuine-weight",
+              "resolvedTreatment": null,
+              "status": "unavailable",
+              "units": "wght-axis-delta",
+              "requestedAmount": 51,
+              "resolvedAmount": null,
+              "availableHeadroom": 50,
+              "targetScope": "painted-style-runs",
+              "reason": "insufficient-wght-headroom",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                },
+                {
+                  "span": "limited-run",
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 850,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 50
+                }
+              ]
+            }
+          }
+        ],
+        "cases": [
+          {
+            "id": "variable-historical",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "auto",
+              "resolvedTreatment": "genuine-weight",
+              "status": "resolved",
+              "units": "wght-axis-delta",
+              "requestedAmount": 150,
+              "resolvedAmount": 150,
+              "availableHeadroom": 300,
+              "targetScope": "legacy-base-and-spans",
+              "reason": null,
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                }
+              ]
+            },
+            "peakAxisDeltas": [0, 150],
+            "peakStrokeWidths": [0],
+            "compiledTo": {
+              "axes": {
+                "wght": 150
+              }
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "410b73ab95321dba22312f37a6fceb52f32d35520360b777c2a8d378fffb04ae",
+            "compiledSha256": "60d82c309fb1bed173e2fdfb8e14d0329d7ba1115ecdf700c8cef223baca050b",
+            "compositionSha256": "78eb08aeffec47ca76b193097411070c236abbd39b4737400822ad3ed1bc4bbd",
+            "decodedSha256": "e86a1f412a8de791200b788faab06ac45664bd799f5bb55f1dcccf8ffdcb2d86",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/variable-historical/first.mp4",
+                "sha256": "3c7a26bf3db08df65125d955536cec2e11d4da12232845012e152bdc69614b2a",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "variable-auto",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "auto",
+              "resolvedTreatment": "genuine-weight",
+              "status": "resolved",
+              "units": "wght-axis-delta",
+              "requestedAmount": 150,
+              "resolvedAmount": 150,
+              "availableHeadroom": 300,
+              "targetScope": "legacy-base-and-spans",
+              "reason": null,
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                }
+              ]
+            },
+            "peakAxisDeltas": [0, 150],
+            "peakStrokeWidths": [0],
+            "compiledTo": {
+              "axes": {
+                "wght": 150
+              }
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "410b73ab95321dba22312f37a6fceb52f32d35520360b777c2a8d378fffb04ae",
+            "compiledSha256": "60d82c309fb1bed173e2fdfb8e14d0329d7ba1115ecdf700c8cef223baca050b",
+            "compositionSha256": "78eb08aeffec47ca76b193097411070c236abbd39b4737400822ad3ed1bc4bbd",
+            "decodedSha256": "e86a1f412a8de791200b788faab06ac45664bd799f5bb55f1dcccf8ffdcb2d86",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/variable-auto/first.mp4",
+                "sha256": "3c7a26bf3db08df65125d955536cec2e11d4da12232845012e152bdc69614b2a",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "variable-explicit",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "genuine-weight",
+              "resolvedTreatment": "genuine-weight",
+              "status": "resolved",
+              "units": "wght-axis-delta",
+              "requestedAmount": 150,
+              "resolvedAmount": 150,
+              "availableHeadroom": 300,
+              "targetScope": "painted-style-runs",
+              "reason": null,
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                }
+              ]
+            },
+            "peakAxisDeltas": [0, 150],
+            "peakStrokeWidths": [0],
+            "compiledTo": {
+              "axes": {
+                "wght": 150
+              }
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "a4b91101caec7fcec567033164181492eb8e81e69d6666346d293ce94bf0751c",
+            "compiledSha256": "fa2cf2a7765d19a1961fcdbd58aa0fea4c5219e61338601d461fd77eec8c4d27",
+            "compositionSha256": "78eb08aeffec47ca76b193097411070c236abbd39b4737400822ad3ed1bc4bbd",
+            "decodedSha256": "e86a1f412a8de791200b788faab06ac45664bd799f5bb55f1dcccf8ffdcb2d86",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/variable-explicit/first.mp4",
+                "sha256": "3c7a26bf3db08df65125d955536cec2e11d4da12232845012e152bdc69614b2a",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              },
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/variable-explicit/repeat.mp4",
+                "sha256": "3c7a26bf3db08df65125d955536cec2e11d4da12232845012e152bdc69614b2a",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "static-historical",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "auto",
+              "resolvedTreatment": "outline",
+              "status": "resolved",
+              "units": "stroke-pixels",
+              "requestedAmount": 2.52,
+              "resolvedAmount": 2.52,
+              "availableHeadroom": 0,
+              "targetScope": "legacy-base-and-spans",
+              "reason": "static-or-max-weight-target",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "static",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "declaredWeight": "600",
+                  "axisInstance": null,
+                  "axisRange": null,
+                  "headroom": 0
+                }
+              ]
+            },
+            "peakAxisDeltas": [0],
+            "peakStrokeWidths": [0, 2.52],
+            "compiledTo": {
+              "stroke": "#202020",
+              "strokeWidth": 2.52
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "1661be7c0a19d8281a381bbf4539169a45a40e4f3d4998b42be36b4ba12605f5",
+            "compiledSha256": "a23d7f8f0a0accf84956b1b7051dd6254c715f62ef368bd6bc1350c0321369eb",
+            "compositionSha256": "2dcce9c2aa36f326a45e2de541ba2c1c67e3ff8ae14a2e5fd1440d00ddedcfea",
+            "decodedSha256": "9a474664e893971f992090166f45ba3b6cc65deb83e7f42eb4940948e4296ba1",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/static-historical/first.mp4",
+                "sha256": "c176adab0cc621ad0f6e259a761e1dd6748df16815e38e9b65299caa623bbc2a",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "static-auto",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "auto",
+              "resolvedTreatment": "outline",
+              "status": "resolved",
+              "units": "stroke-pixels",
+              "requestedAmount": 2.52,
+              "resolvedAmount": 2.52,
+              "availableHeadroom": 0,
+              "targetScope": "legacy-base-and-spans",
+              "reason": "static-or-max-weight-target",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "static",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "declaredWeight": "600",
+                  "axisInstance": null,
+                  "axisRange": null,
+                  "headroom": 0
+                }
+              ]
+            },
+            "peakAxisDeltas": [0],
+            "peakStrokeWidths": [0, 2.52],
+            "compiledTo": {
+              "stroke": "#202020",
+              "strokeWidth": 2.52
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "1661be7c0a19d8281a381bbf4539169a45a40e4f3d4998b42be36b4ba12605f5",
+            "compiledSha256": "a23d7f8f0a0accf84956b1b7051dd6254c715f62ef368bd6bc1350c0321369eb",
+            "compositionSha256": "2dcce9c2aa36f326a45e2de541ba2c1c67e3ff8ae14a2e5fd1440d00ddedcfea",
+            "decodedSha256": "9a474664e893971f992090166f45ba3b6cc65deb83e7f42eb4940948e4296ba1",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/static-auto/first.mp4",
+                "sha256": "c176adab0cc621ad0f6e259a761e1dd6748df16815e38e9b65299caa623bbc2a",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "static-explicit",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "outline",
+              "resolvedTreatment": "outline",
+              "status": "resolved",
+              "units": "stroke-pixels",
+              "requestedAmount": 2.52,
+              "resolvedAmount": 2.52,
+              "availableHeadroom": 0,
+              "targetScope": "painted-style-runs",
+              "reason": "explicit-outline",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "static",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "declaredWeight": "600",
+                  "axisInstance": null,
+                  "axisRange": null,
+                  "headroom": 0
+                }
+              ]
+            },
+            "peakAxisDeltas": [0],
+            "peakStrokeWidths": [0, 2.52],
+            "compiledTo": {
+              "stroke": "#202020",
+              "strokeWidth": 2.52
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "1f1df58527f88f006e8972f924fc4e1d4509b8797395a47fb373f8a4425624e5",
+            "compiledSha256": "69704ef89cc942cc9d3817b5788452403bc7856b8c18328a389b7f4adcca7230",
+            "compositionSha256": "2dcce9c2aa36f326a45e2de541ba2c1c67e3ff8ae14a2e5fd1440d00ddedcfea",
+            "decodedSha256": "9a474664e893971f992090166f45ba3b6cc65deb83e7f42eb4940948e4296ba1",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/static-explicit/first.mp4",
+                "sha256": "c176adab0cc621ad0f6e259a761e1dd6748df16815e38e9b65299caa623bbc2a",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              },
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/static-explicit/repeat.mp4",
+                "sha256": "c176adab0cc621ad0f6e259a761e1dd6748df16815e38e9b65299caa623bbc2a",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "maximum-historical",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "auto",
+              "resolvedTreatment": "outline",
+              "status": "resolved",
+              "units": "stroke-pixels",
+              "requestedAmount": 2.52,
+              "resolvedAmount": 2.52,
+              "availableHeadroom": 0,
+              "targetScope": "legacy-base-and-spans",
+              "reason": "static-or-max-weight-target",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 900,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 0
+                }
+              ]
+            },
+            "peakAxisDeltas": [0],
+            "peakStrokeWidths": [0, 2.52],
+            "compiledTo": {
+              "stroke": "#202020",
+              "strokeWidth": 2.52
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "4856e5436e0b6c8d9e6b9fa01291930f06b0f7cdf9353f3ea03db2e4ec2426d6",
+            "compiledSha256": "de89ec69997903815aa6f6089bc31e2d26bac183702461981f4da356e352d5e8",
+            "compositionSha256": "def64a54d5eba1a78370f2843feec45e64607fd7c910924bd6c6a73083063749",
+            "decodedSha256": "9ef049adb862c2f6184fd0d16bece85b66032ba3ebcd2edf74729cae6f53e9ef",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/maximum-historical/first.mp4",
+                "sha256": "51c0760feb50c9d526c50301a8b681e3daa074ba3f880a24f33dd9050d8bece3",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "maximum-auto",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "auto",
+              "resolvedTreatment": "outline",
+              "status": "resolved",
+              "units": "stroke-pixels",
+              "requestedAmount": 2.52,
+              "resolvedAmount": 2.52,
+              "availableHeadroom": 0,
+              "targetScope": "legacy-base-and-spans",
+              "reason": "static-or-max-weight-target",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 900,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 0
+                }
+              ]
+            },
+            "peakAxisDeltas": [0],
+            "peakStrokeWidths": [0, 2.52],
+            "compiledTo": {
+              "stroke": "#202020",
+              "strokeWidth": 2.52
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "4856e5436e0b6c8d9e6b9fa01291930f06b0f7cdf9353f3ea03db2e4ec2426d6",
+            "compiledSha256": "de89ec69997903815aa6f6089bc31e2d26bac183702461981f4da356e352d5e8",
+            "compositionSha256": "def64a54d5eba1a78370f2843feec45e64607fd7c910924bd6c6a73083063749",
+            "decodedSha256": "9ef049adb862c2f6184fd0d16bece85b66032ba3ebcd2edf74729cae6f53e9ef",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/maximum-auto/first.mp4",
+                "sha256": "51c0760feb50c9d526c50301a8b681e3daa074ba3f880a24f33dd9050d8bece3",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "maximum-explicit",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "outline",
+              "resolvedTreatment": "outline",
+              "status": "resolved",
+              "units": "stroke-pixels",
+              "requestedAmount": 2.52,
+              "resolvedAmount": 2.52,
+              "availableHeadroom": 0,
+              "targetScope": "painted-style-runs",
+              "reason": "explicit-outline",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 900,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 0
+                }
+              ]
+            },
+            "peakAxisDeltas": [0],
+            "peakStrokeWidths": [0, 2.52],
+            "compiledTo": {
+              "stroke": "#202020",
+              "strokeWidth": 2.52
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "965b494ac6a2a391e5e6b059588536c3b71229c9ce1ade543c6e70a32c8c5101",
+            "compiledSha256": "7b48962a7f5ab2c4ca3931422790d4dbc1aa981ea28d7d9e11812eb5838fcdfd",
+            "compositionSha256": "def64a54d5eba1a78370f2843feec45e64607fd7c910924bd6c6a73083063749",
+            "decodedSha256": "9ef049adb862c2f6184fd0d16bece85b66032ba3ebcd2edf74729cae6f53e9ef",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/maximum-explicit/first.mp4",
+                "sha256": "51c0760feb50c9d526c50301a8b681e3daa074ba3f880a24f33dd9050d8bece3",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              },
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/maximum-explicit/repeat.mp4",
+                "sha256": "51c0760feb50c9d526c50301a8b681e3daa074ba3f880a24f33dd9050d8bece3",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "mixed-historical",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "auto",
+              "resolvedTreatment": "outline",
+              "status": "resolved",
+              "units": "stroke-pixels",
+              "requestedAmount": 2.52,
+              "resolvedAmount": 2.52,
+              "availableHeadroom": 0,
+              "targetScope": "legacy-base-and-spans",
+              "reason": "static-or-max-weight-target",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                },
+                {
+                  "span": "static-run",
+                  "fontAsset": "static",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "declaredWeight": "600",
+                  "axisInstance": null,
+                  "axisRange": null,
+                  "headroom": 0
+                }
+              ]
+            },
+            "peakAxisDeltas": [0],
+            "peakStrokeWidths": [0, 2.52],
+            "compiledTo": {
+              "stroke": "#202020",
+              "strokeWidth": 2.52
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "6f765d14f82440eb1805372799709e412c96c13bf41704823adfeac25d0dd5a2",
+            "compiledSha256": "cf6b327b1f03c1c5c9729a8516e98da1a8f9e6981d94f12ac5653d7864a014fe",
+            "compositionSha256": "2abbec7688015e7a4eb503e7d742afacfe31b16d828921bd369fd46e4e4e3e51",
+            "decodedSha256": "bf4699ba7b4709728ded83cc1ee1fa90684fc96276e8efe108d92e764af482ea",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/mixed-historical/first.mp4",
+                "sha256": "b9bc4b7700bd529a05a34a3d38b459de6d7d18ef8e3763bfba9a1f56a523c939",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "mixed-auto",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "auto",
+              "resolvedTreatment": "outline",
+              "status": "resolved",
+              "units": "stroke-pixels",
+              "requestedAmount": 2.52,
+              "resolvedAmount": 2.52,
+              "availableHeadroom": 0,
+              "targetScope": "legacy-base-and-spans",
+              "reason": "static-or-max-weight-target",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                },
+                {
+                  "span": "static-run",
+                  "fontAsset": "static",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "declaredWeight": "600",
+                  "axisInstance": null,
+                  "axisRange": null,
+                  "headroom": 0
+                }
+              ]
+            },
+            "peakAxisDeltas": [0],
+            "peakStrokeWidths": [0, 2.52],
+            "compiledTo": {
+              "stroke": "#202020",
+              "strokeWidth": 2.52
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "6f765d14f82440eb1805372799709e412c96c13bf41704823adfeac25d0dd5a2",
+            "compiledSha256": "cf6b327b1f03c1c5c9729a8516e98da1a8f9e6981d94f12ac5653d7864a014fe",
+            "compositionSha256": "2abbec7688015e7a4eb503e7d742afacfe31b16d828921bd369fd46e4e4e3e51",
+            "decodedSha256": "bf4699ba7b4709728ded83cc1ee1fa90684fc96276e8efe108d92e764af482ea",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/mixed-auto/first.mp4",
+                "sha256": "b9bc4b7700bd529a05a34a3d38b459de6d7d18ef8e3763bfba9a1f56a523c939",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "mixed-explicit",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "outline",
+              "resolvedTreatment": "outline",
+              "status": "resolved",
+              "units": "stroke-pixels",
+              "requestedAmount": 2.52,
+              "resolvedAmount": 2.52,
+              "availableHeadroom": 0,
+              "targetScope": "painted-style-runs",
+              "reason": "explicit-outline",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                },
+                {
+                  "span": "static-run",
+                  "fontAsset": "static",
+                  "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+                  "declaredWeight": "600",
+                  "axisInstance": null,
+                  "axisRange": null,
+                  "headroom": 0
+                }
+              ]
+            },
+            "peakAxisDeltas": [0],
+            "peakStrokeWidths": [0, 2.52],
+            "compiledTo": {
+              "stroke": "#202020",
+              "strokeWidth": 2.52
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "f7f4154a54621091ec51ab907a403c49e1cf207eb1b7357ba1512393a2eafbd9",
+            "compiledSha256": "14ed66d83b02888293e2bcda3a78f437af9cb1486fafce2cfd52258ee101dedf",
+            "compositionSha256": "2abbec7688015e7a4eb503e7d742afacfe31b16d828921bd369fd46e4e4e3e51",
+            "decodedSha256": "bf4699ba7b4709728ded83cc1ee1fa90684fc96276e8efe108d92e764af482ea",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/mixed-explicit/first.mp4",
+                "sha256": "b9bc4b7700bd529a05a34a3d38b459de6d7d18ef8e3763bfba9a1f56a523c939",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              },
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/mixed-explicit/repeat.mp4",
+                "sha256": "b9bc4b7700bd529a05a34a3d38b459de6d7d18ef8e3763bfba9a1f56a523c939",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "mixed-headroom-historical",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "auto",
+              "resolvedTreatment": "genuine-weight",
+              "status": "resolved",
+              "units": "wght-axis-delta",
+              "requestedAmount": 150,
+              "resolvedAmount": 50,
+              "availableHeadroom": 50,
+              "targetScope": "legacy-base-and-spans",
+              "reason": null,
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                },
+                {
+                  "span": "limited-run",
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 850,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 50
+                }
+              ]
+            },
+            "peakAxisDeltas": [0, 50],
+            "peakStrokeWidths": [0],
+            "compiledTo": {
+              "axes": {
+                "wght": 50
+              }
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "e8b43fa7f7ade6d215da890b05553b1cc0b1a40f14bed44d2f4cac85f7748163",
+            "compiledSha256": "64360f3670197941c8fb7dbf7aa8ca183c321aa74934684135d070cd21622e2c",
+            "compositionSha256": "454d647f7a0f839f4513c355704bac26e03d441bf7387745c5c6107cd31488f4",
+            "decodedSha256": "1dfb8982e4c44057b9253ef2a5e61b2f02e2aa4faf56a12d45db46235c299627",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/mixed-headroom-historical/first.mp4",
+                "sha256": "7bbc821c2d3011d9bcb7086c2fcafb069dbbbf3f854d0b99ea86eb482e1f75eb",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "mixed-headroom-auto",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "auto",
+              "resolvedTreatment": "genuine-weight",
+              "status": "resolved",
+              "units": "wght-axis-delta",
+              "requestedAmount": 150,
+              "resolvedAmount": 50,
+              "availableHeadroom": 50,
+              "targetScope": "legacy-base-and-spans",
+              "reason": null,
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                },
+                {
+                  "span": "limited-run",
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 850,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 50
+                }
+              ]
+            },
+            "peakAxisDeltas": [0, 50],
+            "peakStrokeWidths": [0],
+            "compiledTo": {
+              "axes": {
+                "wght": 50
+              }
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "e8b43fa7f7ade6d215da890b05553b1cc0b1a40f14bed44d2f4cac85f7748163",
+            "compiledSha256": "64360f3670197941c8fb7dbf7aa8ca183c321aa74934684135d070cd21622e2c",
+            "compositionSha256": "454d647f7a0f839f4513c355704bac26e03d441bf7387745c5c6107cd31488f4",
+            "decodedSha256": "1dfb8982e4c44057b9253ef2a5e61b2f02e2aa4faf56a12d45db46235c299627",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/mixed-headroom-auto/first.mp4",
+                "sha256": "7bbc821c2d3011d9bcb7086c2fcafb069dbbbf3f854d0b99ea86eb482e1f75eb",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "mixed-headroom-explicit",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "genuine-weight",
+              "resolvedTreatment": "genuine-weight",
+              "status": "resolved",
+              "units": "wght-axis-delta",
+              "requestedAmount": 50,
+              "resolvedAmount": 50,
+              "availableHeadroom": 50,
+              "targetScope": "painted-style-runs",
+              "reason": null,
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                },
+                {
+                  "span": "limited-run",
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 850,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 50
+                }
+              ]
+            },
+            "peakAxisDeltas": [0, 50],
+            "peakStrokeWidths": [0],
+            "compiledTo": {
+              "axes": {
+                "wght": 50
+              }
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "c5faa9d3163bbffbeb9a9abef87a33d0e6014a9e835ade6c0c547ec2b23715fa",
+            "compiledSha256": "372804a16c1b9d29072d18e61d88255d514104b5995fe2bf1f31e109d5b2d71f",
+            "compositionSha256": "454d647f7a0f839f4513c355704bac26e03d441bf7387745c5c6107cd31488f4",
+            "decodedSha256": "1dfb8982e4c44057b9253ef2a5e61b2f02e2aa4faf56a12d45db46235c299627",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/mixed-headroom-explicit/first.mp4",
+                "sha256": "7bbc821c2d3011d9bcb7086c2fcafb069dbbbf3f854d0b99ea86eb482e1f75eb",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              },
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/mixed-headroom-explicit/repeat.mp4",
+                "sha256": "7bbc821c2d3011d9bcb7086c2fcafb069dbbbf3f854d0b99ea86eb482e1f75eb",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "variable-outline",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "outline",
+              "resolvedTreatment": "outline",
+              "status": "resolved",
+              "units": "stroke-pixels",
+              "requestedAmount": 2.52,
+              "resolvedAmount": 2.52,
+              "availableHeadroom": 300,
+              "targetScope": "painted-style-runs",
+              "reason": "explicit-outline",
+              "fonts": [
+                {
+                  "span": null,
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                }
+              ]
+            },
+            "peakAxisDeltas": [0],
+            "peakStrokeWidths": [0, 2.52],
+            "compiledTo": {
+              "stroke": "#202020",
+              "strokeWidth": 2.52
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "e29f3b663a637594cd8f91668b24e6e1e542f6ac08476a22e2c25f87864e2efa",
+            "compiledSha256": "6e2602715965182a860884831530dc149cff209c3dff3df05d2ec18f1d872e3e",
+            "compositionSha256": "30150bf8e9952f48aaa73fc77295fe68ed6aeadcb3525e2a44bd0d1652038e2f",
+            "decodedSha256": "694bd4813239038606ea009a2fecbce2254586209a4b09b2221cfa185409ac28",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/variable-outline/first.mp4",
+                "sha256": "e2ec99a2478f15ea61511e2a253d77780b5f00337a6b13a6f921297bd29de03b",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              },
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/variable-outline/repeat.mp4",
+                "sha256": "e2ec99a2478f15ea61511e2a253d77780b5f00337a6b13a6f921297bd29de03b",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          },
+          {
+            "id": "covered-base-genuine",
+            "receipt": {
+              "eventIndex": 0,
+              "eventId": "weight",
+              "node": "phrase",
+              "span": null,
+              "start": 0,
+              "end": 10,
+              "requestedTreatment": "genuine-weight",
+              "resolvedTreatment": "genuine-weight",
+              "status": "resolved",
+              "units": "wght-axis-delta",
+              "requestedAmount": 150,
+              "resolvedAmount": 150,
+              "availableHeadroom": 300,
+              "targetScope": "painted-style-runs",
+              "reason": null,
+              "fonts": [
+                {
+                  "span": "all",
+                  "fontAsset": "variable",
+                  "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+                  "declaredWeight": "600",
+                  "axisInstance": 600,
+                  "axisRange": {
+                    "min": 100,
+                    "default": 400,
+                    "max": 900
+                  },
+                  "headroom": 300
+                }
+              ]
+            },
+            "peakAxisDeltas": [0, 150],
+            "peakStrokeWidths": [0],
+            "compiledTo": {
+              "axes": {
+                "wght": 150
+              }
+            },
+            "nativeLayerTypes": ["text"],
+            "sourceSha256": "bf1f991d0386f52c3a26be0c5eb9fe58406a58c2c2cad0381f5448e88126f742",
+            "compiledSha256": "a307e5b0a5178d040a89047ecfbdd631838cd58d57160237c7a51f8af92cb385",
+            "compositionSha256": "c56286af97468c31d737cfcd7d63337f672e0aeef2adbf75853924e564fa7b84",
+            "decodedSha256": "63e4718731f7c679e5ad881ef7548c57545c8027771a13756565f9ff53868335",
+            "decodedBytes": 373248000,
+            "outputs": [
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/covered-base-genuine/first.mp4",
+                "sha256": "a79d09406c931738efbaa4001b2ade847bd68d7c7d0b4a62f7c2156c34d30b73",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              },
+              {
+                "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms2-weight46-tvYk1L/covered-base-genuine/repeat.mp4",
+                "sha256": "a79d09406c931738efbaa4001b2ade847bd68d7c7d0b4a62f7c2156c34d30b73",
+                "ffprobe": {
+                  "width": 1920,
+                  "height": 1080,
+                  "r_frame_rate": "30/1",
+                  "nb_read_frames": "60"
+                }
+              }
+            ],
+            "clearDecodedEnglishGaps": 16
+          }
+        ]
+      }
+    ],
+    "crossBackend": [
+      {
+        "id": "variable-historical",
+        "previewExact": true,
+        "encodedExact": true,
+        "decodedExact": true
+      },
+      {
+        "id": "variable-auto",
+        "previewExact": true,
+        "encodedExact": true,
+        "decodedExact": true
+      },
+      {
+        "id": "variable-explicit",
+        "previewExact": true,
+        "encodedExact": true,
+        "decodedExact": true
+      },
+      {
+        "id": "static-historical",
+        "previewExact": true,
+        "encodedExact": true,
+        "decodedExact": true
+      },
+      {
+        "id": "static-auto",
+        "previewExact": true,
+        "encodedExact": true,
+        "decodedExact": true
+      },
+      {
+        "id": "static-explicit",
+        "previewExact": true,
+        "encodedExact": true,
+        "decodedExact": true
+      },
+      {
+        "id": "maximum-historical",
+        "previewExact": true,
+        "encodedExact": true,
+        "decodedExact": true
+      },
+      {
+        "id": "maximum-auto",
+        "previewExact": true,
+        "encodedExact": true,
+        "decodedExact": true
+      },
+      {
+        "id": "maximum-explicit",
+        "previewExact": true,
+        "encodedExact": true,
+        "decodedExact": true
+      },
+      {
+        "id": "mixed-historical",
+        "previewExact": true,
+        "encodedExact": true,
+        "decodedExact": true
+      },
+      {
+        "id": "mixed-auto",
+        "previewExact": true,
+        "encodedExact": true,
+        "decodedExact": true
+      },
+      {
+        "id": "mixed-explicit",
+        "previewExact": true,
+        "encodedExact": true,
+        "decodedExact": true
+      },
+      {
+        "id": "mixed-headroom-historical",
+        "previewExact": true,
+        "encodedExact": true,
+        "decodedExact": true
+      },
+      {
+        "id": "mixed-headroom-auto",
+        "previewExact": true,
+        "encodedExact": true,
+        "decodedExact": true
+      },
+      {
+        "id": "mixed-headroom-explicit",
+        "previewExact": true,
+        "encodedExact": true,
+        "decodedExact": true
+      },
+      {
+        "id": "variable-outline",
+        "previewExact": true,
+        "encodedExact": true,
+        "decodedExact": true
+      },
+      {
+        "id": "covered-base-genuine",
+        "previewExact": true,
+        "encodedExact": true,
+        "decodedExact": true
+      }
+    ],
+    "status": "passed"
+  },
+  "derivedRgbPreservation": [
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-compression10.json",
+      "bytes": 27901,
+      "sha256": "sha256:4fe1d16001053c91f6b956871d19ddea5a7d7a4bd84a837b5c0a15e628135b68"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-compression14.json",
+      "bytes": 41237,
+      "sha256": "sha256:e454e5a038dc1654674f024530bbcff4dbd8f7e439fa9f4073e3f6effd746322"
+    }
+  ],
+  "qualification": "The explicit treatment requirement is satisfied by scoped actual-font software/native rendering evidence. Both backends use native text layers. Cross-backend equality is observed only on this pinned driver; no other-driver guarantee, human comprehension/playback acceptance, production spoken input, supported-pack promotion or complete MS2 acceptance is inferred. Full software/benchmark and final installed verification remain pending. Original failed runs and staged reruns retained; no paid generation, merge or publication. Derived RGB files are losslessly gzip-preserved after full original/decompression checksum checks; encoded exports, snapshots and PNGs remain intact.",
+  "remaining": [
+    "Scoped count+fit generated two-decimal values, all six Thai stress strings plus production copy, independent poses and run boundaries, zero/opt-in tracking before finer support claims.",
+    "Coverage board, broader label/continuous/readability, genuine spoken inputs and supported-pack acceptance.",
+    "Whole resource/lifetime/full software/benchmark and final archive/installed checks before MS2 PR and MS3."
+  ],
+  "logs": [
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-audit13.log",
+      "bytes": 222,
+      "sha256": "sha256:4a09afacbc059546ff87165de53ce6ccfe03f544b72e6eac3e650bbb815c44c1"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-browser11.log",
+      "bytes": 2646,
+      "sha256": "sha256:a539d244e0a9beae86e704c0edf255eb4b17cb12c184fd50fc49bce1510a0b82"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-browser2.log",
+      "bytes": 786,
+      "sha256": "sha256:24caffa4d6769b3087983ed5b7f22926cd458387a932c8a80d7f541135300727"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-browser4.log",
+      "bytes": 952,
+      "sha256": "sha256:25de4352c3101cc1d38570f87e178f8fcef12ea95deaa37d80be5b41e7dae1a8"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-browser5.log",
+      "bytes": 1006,
+      "sha256": "sha256:4455a826121d7c39b69fc2cdcf06f54b2e4b419c2b37c17167a32141b98cce03"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-browser7.log",
+      "bytes": 2266,
+      "sha256": "sha256:3da19c6c23c4abefe656959b3eb5b34387e43045752bf325ecb22310093d36f8"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-browser9.log",
+      "bytes": 2266,
+      "sha256": "sha256:8b497706ef236220a06fd4fcfe1a83ebfd9ca1c18baf94c5b84b6362cfe2084b"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-build1.log",
+      "bytes": 4588,
+      "sha256": "sha256:ca4f1aae5e1d9087b13453b218b019ba4601be4d9ed5ab2370a24868e993d281"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-build11.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-build2.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-build3.log",
+      "bytes": 240,
+      "sha256": "sha256:138d7052bcac596e708ee69a3f50e1edc72979c30823daeea591f1b8bdf54d75"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-build4.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-build5.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-build6.log",
+      "bytes": 290,
+      "sha256": "sha256:8fb3a3ac3a76c8f6a0db5c1f9b91686d6dbb8293cbd92cc3e223b88bc0b23582"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-build7.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-compression10.log",
+      "bytes": 503,
+      "sha256": "sha256:6c88e37ccbeefe5ecaba6ee3009b33efa7335715661212e1c68a448ecc61c1ab"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-compression14.log",
+      "bytes": 638,
+      "sha256": "sha256:4f97a7cee1d01dec13e6233ea7bd1d48ace06d715bc003c29ab71ab1ba351b8f"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-fast12.log",
+      "bytes": 39382,
+      "sha256": "sha256:745fe2e4e881575d65d8abba2a429074ee06b741fecb5d024ebbe8a4fcb693a0"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-fast8.log",
+      "bytes": 1683,
+      "sha256": "sha256:b4925edf04426771ecb84c9256a112cf7dee09d53953098af0f27a27321de9c4"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-fast9.log",
+      "bytes": 40122,
+      "sha256": "sha256:85a096584e818abf23e3f86fa818d74eb92b842105a7ba2fc4e80b30abc74c31"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-format1.log",
+      "bytes": 50,
+      "sha256": "sha256:8d18a9d55f8c2251dd484bf302bf5301003c79c06e3f6c54b25cca5699ef36fc"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-format11.log",
+      "bytes": 92,
+      "sha256": "sha256:a71423f2124af4fc1d476957ec39c6482ff8f161dfe2b2698d4d7a5398456dc3"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-format2.log",
+      "bytes": 50,
+      "sha256": "sha256:c6973c468a3e1945bf1b5071029aca34297d30b15076e78a9b9e7286a0d74526"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-format3.log",
+      "bytes": 50,
+      "sha256": "sha256:939a3cba7d2b97d9518fe626cccc37a30d3e99066dd47e99e72ed08792b90f8b"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-format4.log",
+      "bytes": 62,
+      "sha256": "sha256:e273f92644a501f35b68291da6772280df67c55ec22e9b1dd662a5ce5f533540"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-format5.log",
+      "bytes": 62,
+      "sha256": "sha256:1abaf87a27584dcb058031921d0720c5fb5e6941438cbf9d19960c31c886f759"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-format6.log",
+      "bytes": 92,
+      "sha256": "sha256:36d1a38f0c41bde23a5cdf20518a0a49a5376265fa241c6c86a78e7ebc76ef9e"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-format7.log",
+      "bytes": 50,
+      "sha256": "sha256:2d1ccaf5076a58ad3cfb4cd711ef43f389253c5d993761594f9bd137e0d1dcf2"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-format9.log",
+      "bytes": 62,
+      "sha256": "sha256:1abaf87a27584dcb058031921d0720c5fb5e6941438cbf9d19960c31c886f759"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-hold11a.log",
+      "bytes": 131,
+      "sha256": "sha256:5b3dd80688d62abef9033f723bbfcb4b8275363476981204d2c6793a9c3d579c"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-hold12.log",
+      "bytes": 131,
+      "sha256": "sha256:5b3dd80688d62abef9033f723bbfcb4b8275363476981204d2c6793a9c3d579c"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-hold7.log",
+      "bytes": 130,
+      "sha256": "sha256:993c59263367bd139e2666b0bd2a6807aa2bfb2f13f9783062859b1e00337018"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-hold9a.log",
+      "bytes": 130,
+      "sha256": "sha256:917b748d2c7cf35aeecf56fd7f45e3d88e79a2aa824e7e7c4752d68a588d32bf"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-hold9b.log",
+      "bytes": 130,
+      "sha256": "sha256:917b748d2c7cf35aeecf56fd7f45e3d88e79a2aa824e7e7c4752d68a588d32bf"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-docs15.log",
+      "bytes": 367,
+      "sha256": "sha256:ff18f334f1761d433385699f363ad36620cf0a19c97c32b7205bcbdffeb10484"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-weight46-hold15.log",
+      "bytes": 131,
+      "sha256": "sha256:5b3dd80688d62abef9033f723bbfcb4b8275363476981204d2c6793a9c3d579c"
+    }
+  ],
+  "actualFontIdentityProof": [
+    {
+      "id": "variable",
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+      "sha256": "sha256:5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+      "weight": "600",
+      "variable": {
+        "wght": {
+          "min": 100,
+          "default": 400,
+          "max": 900
+        },
+        "wdth": {
+          "min": 62.5,
+          "default": 100,
+          "max": 100
+        }
+      },
+      "actual": {
+        "fullName": "Noto Sans Thai Regular",
+        "weight": 400,
+        "axes": {
+          "wght": {
+            "min": 100,
+            "default": 400,
+            "max": 900
+          },
+          "wdth": {
+            "min": 62.5,
+            "default": 100,
+            "max": 100
+          }
+        }
+      },
+      "strictDiagnostics": []
+    },
+    {
+      "id": "static",
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+      "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+      "weight": "600",
+      "actual": {
+        "fullName": "IBM Plex Sans SmBld",
+        "weight": 600,
+        "axes": {}
+      },
+      "strictDiagnostics": []
+    }
+  ],
+  "historicalCompilerProof": {
+    "sha256": "790e1fe1d686290226e8699cfd88398188495878256f0fc3c026bd873b74614e",
+    "runtimeSha256": "3018ad81b9798c740c985db03974414ed42aa3506103163b3068eddfb0a51817",
+    "qualification": "Exact historical event-compiler body; unchanged shared style helpers and current supported pinned-font renderer. No old renderer parity inferred from a changed raster."
+  },
+  "unchangedRendererSourceProof": [
+    {
+      "path": "packages/renderer-core/src/typography-renderer.ts",
+      "sha256": "e0de5ced639c3567b15f25b9dee5c3cd008c47a61957c098a42c3db40838271e"
+    },
+    {
+      "path": "packages/renderer-core/src/typography-animation.ts",
+      "sha256": "0dff3801281001782b3732f7701ad6077d0221dbbae86b7fa22c9b5560626c21"
+    },
+    {
+      "path": "packages/renderer-core/src/typography-axes.ts",
+      "sha256": "3736daea99c1efb238832f3c3eb6be227d8752efbd8f71c62a3c9f236dbba8f6"
+    },
+    {
+      "path": "packages/renderer-core/src/typography-style.ts",
+      "sha256": "9f7f2824b1ad1d749d473c1bff7f23e40a7baef5eb20066ebcc2912a13ad9d2a"
+    },
+    {
+      "path": "packages/renderer-core/src/shaped-text.ts",
+      "sha256": "102fb1fb8aa9df218ad8d632abfd637abd2d56dc170a8af6741a3378d192fe3b"
+    },
+    {
+      "path": "packages/renderer-core/src/prepared-fonts.ts",
+      "sha256": "02db9eac03603383bdb159688fc718699d081804f4a00a43786a6a4b5fbeb8f4"
+    },
+    {
+      "path": "packages/renderer-core/src/font-identity.ts",
+      "sha256": "961b0c24606ee4a5ff5ac8dd6be6521bdb84ed11cb0d9c0a9fd5c47965707e76"
+    },
+    {
+      "path": "packages/renderer-core/src/font-metrics.ts",
+      "sha256": "2c49f9a0ffe1ead35d3f19ad33e1258c460bef8a1a047d90c0a606d83899aa78"
+    }
+  ],
+  "finalSourceFiles": [
+    {
+      "path": "tests/browser/mechanism-text-weight-proof.ts",
+      "bytes": 22678,
+      "sha256": "sha256:dc17f4b6707a3193167cbbf9c3219059c7104c2accfcc3fece71e50daebb11b1"
+    },
+    {
+      "path": "tests/unit/typography-events.test.ts",
+      "bytes": 39229,
+      "sha256": "sha256:9376971ba01c4ce75ab12bde6da85d54702006ab278b058e63cc8bd4900f15fd"
+    },
+    {
+      "path": "package.json",
+      "bytes": 21688,
+      "sha256": "sha256:a35dc7b28620d16351c13f55eb809d464316ce55f72442fb2385e16612a2700f"
+    }
+  ]
+}

@@ -1,0 +1,1825 @@
+{
+  "version": "mechanism-ms2-cue-lifecycle-results-1",
+  "date": "2026-10-11",
+  "baseSourceCommit": "f6175842bcda0f317dcdbb29bb6ddc7265626ac1",
+  "branch": "codex/mechanism-ms2",
+  "status": "revision-bound-cue-lifecycle-verified-in-stages",
+  "scope": [
+    "Revision/hash-bound cue compilation receipts rebase project-relative assets and verify actual native/font/audio before fresh snapshot publication.",
+    "Reject stale authoring revisions, exact-byte or semantic snapshot tampering and existing output directories; normal native export rechecks current dependencies before publication.",
+    "Output check verifies actual encoded SHA and video dimensions/frame count/fps, reloads actual media and independently replays all final native observations, then rechecks preparation/output identity.",
+    "CLI prepare/compile/render/check use saved family/cue documents, bounded receipts and complete reports; current public runtime memory partition preserves existing 128 MiB replay allowance.",
+    "All three candidate families before/after caption edits repeat complete encoded/video/audio; stale snapshots, old output under fresh compilation and altered encoded files reject. Whole-cycle rerender only."
+  ],
+  "counts": {
+    "unitTests": 4263,
+    "unitFiles": 419,
+    "runtimeTests": 38,
+    "runtimeFiles": 5,
+    "newRuntimeTests": 5,
+    "families": 3,
+    "finalExports": 12,
+    "observedOutputFrames": 720,
+    "actualCLICommands": 4,
+    "additionalCLIExports": 1,
+    "additionalCLINativeFrames": 60,
+    "supportedPacks": 0,
+    "pilotAcceptedEpisodes": 0
+  },
+  "qualification": "Synthetic local PCM engineering fixtures only. Whole-cycle rerender, normal encoded file/video facts and independent native observation proof; not encoded-pixel derivation from observation metadata, selective shot reuse, full label/listening QA, complete resource/lifetime accounting or full/final installed acceptance. Supported packs/pilot 0; no human acceptance, paid generation, merge or publication.",
+  "roots": [
+    {
+      "sessionId": 18421,
+      "exitCode": 0,
+      "passed": ["format8", "inputs8", "fast8", "runtime8", "browser8", "hold8"]
+    },
+    {
+      "sessionId": 4974,
+      "exitCode": 0,
+      "passed": ["actual CLI prepare/compile/render/check", "clihold8"]
+    },
+    {
+      "sessionId": 39564,
+      "exitCode": 1,
+      "failed": "schema1",
+      "unrun": ["build1"]
+    },
+    {
+      "sessionId": 30247,
+      "exitCode": 2,
+      "failed": "build2",
+      "unrun": ["runtime2"]
+    },
+    {
+      "sessionId": 35186,
+      "exitCode": 0,
+      "passed": ["format3", "build3", "runtime3"]
+    },
+    {
+      "sessionId": 25894,
+      "exitCode": 2,
+      "failed": "build4",
+      "unrun": ["browser4"]
+    },
+    {
+      "sessionId": 71400,
+      "exitCode": 0,
+      "passed": ["format5", "build5", "browser5"]
+    },
+    {
+      "sessionId": 85778,
+      "exitCode": 0,
+      "passed": ["identity6", "inputs6"]
+    },
+    {
+      "sessionId": 68844,
+      "exitCode": 1,
+      "failed": "fast6: package boundary",
+      "unrun": ["runtime6", "hold6"]
+    },
+    {
+      "sessionId": 43117,
+      "exitCode": 1,
+      "failed": "runtime7: one actual-media test exceeded default 5-second timeout",
+      "passed": ["format7", "identity7", "inputs7", "fast7"],
+      "unrun": ["browser7", "hold7"]
+    },
+    {
+      "sessionId": 14395,
+      "exitCode": 0,
+      "passed": [
+        "evidence/docs formatting",
+        "full format check",
+        "final unchanged input verification",
+        "git diff --check"
+      ]
+    }
+  ],
+  "failures": [
+    "Schema1 imported the verifier guard from the wrong module; build1 unrun. Corrected to existing runtime export.",
+    "Build2 accessed composition dimensions as native scene canvas fields and passed an object as nativeMechanism; corrected to composition root dimensions and undefined.",
+    "Build4 proof arrays lacked explicit inferred-element types; browser4 unrun. Corrected harness types.",
+    "Runtime7 passed 37/38 tests but one actual-media test exceeded the default five-second timeout. New media tests now use 15 seconds without changing assertions.",
+    "Fast6 caught a runtime-internal memory import; later groups unrun. Exported unchanged existing partition through public runtime entry and refreshed all required gates."
+  ],
+  "logs": [
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-browser5.log",
+      "bytes": 364,
+      "sha256": "sha256:e06ce58efe7f6f7b85ec6d72e4a8fc6060de4c3eb4d3c08a522d2eb31010434d"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-browser8.log",
+      "bytes": 364,
+      "sha256": "sha256:184842b5454c40d5a70458272a1255bb8ebb4871ae5fce5e3154d2d24fef1c95"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-build2.log",
+      "bytes": 2659,
+      "sha256": "sha256:fb25206abdfdbc665f9b8ec75daae12508cce17d193ad699a094c8b22afcadd5"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-build3.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-build4.log",
+      "bytes": 818,
+      "sha256": "sha256:b4b6135dc3be6c74f967b967a166fc340b392e0ab04aeb2737324671bd7ba87f"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-build5.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-cli8.log",
+      "bytes": 174,
+      "sha256": "sha256:307a2c848452e938b155032d0c664fc1ecece07e803623473fc37a6692c34667"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-clihold8.log",
+      "bytes": 131,
+      "sha256": "sha256:f0e58aa1ee6ba930a707a5e68681bcd8eed98fa59b686a399cb235f9b846d30e"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-fast6.log",
+      "bytes": 1133,
+      "sha256": "sha256:bf2385f38359ecc2c3cb23a664b091830225688de2825e2e6251ef86e7947c62"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-fast7.log",
+      "bytes": 38364,
+      "sha256": "sha256:3865e4b3bbdfae0f22caac79f327392f1727048c5b25bbcbfbc60a7b5d347a8d"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-fast8.log",
+      "bytes": 38862,
+      "sha256": "sha256:ea907a633063c15ed9f1770526533ca9720e7946a1c33987f82fc778a446810a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-format1.log",
+      "bytes": 192,
+      "sha256": "sha256:91b5ac86ede77433b7bb7280ec550f6fec4f9df4f51491a79102858deb792d6c"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-format2.log",
+      "bytes": 104,
+      "sha256": "sha256:cf9524b351559650baed93c28caea422b0b93522f05073c5cfae1122e1baced6"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-format3.log",
+      "bytes": 158,
+      "sha256": "sha256:010bc59928215d82d69b259f7b8194c5fe3303e9b67222ac24cd03ecbb94a9a5"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-format4.log",
+      "bytes": 136,
+      "sha256": "sha256:acfa7707acf34c4d55847bfb113d33707a0bb013180f7a453915410347979e31"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-format5.log",
+      "bytes": 46,
+      "sha256": "sha256:c26dbbfd7c91b1356eb5c220ca696a658242b21dcf411e58c5bbfdcaba3b4117"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-format7.log",
+      "bytes": 139,
+      "sha256": "sha256:bc7bc84d75951b4b16ce85552edfaab915d6145e9475632562177ef5538c28af"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-format8.log",
+      "bytes": 65,
+      "sha256": "sha256:418a78a39e7ede15aa05574c1658b4f75036a8afb3d05eb04dc2fd09de3277e7"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-hold8.log",
+      "bytes": 131,
+      "sha256": "sha256:f0e58aa1ee6ba930a707a5e68681bcd8eed98fa59b686a399cb235f9b846d30e"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-identity6.log",
+      "bytes": 260,
+      "sha256": "sha256:aa2b4bcea22a8e919d3d2b5ab083fdf6b0f126245f04d389e0f340cbee2cee8a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-identity7.log",
+      "bytes": 260,
+      "sha256": "sha256:aa2b4bcea22a8e919d3d2b5ab083fdf6b0f126245f04d389e0f340cbee2cee8a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-inputs6.log",
+      "bytes": 130,
+      "sha256": "sha256:559693e14f4eaec55e7accfba47a2e9ac12eecd148d7b1b02a54dfcafb6e86e9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-inputs7.log",
+      "bytes": 130,
+      "sha256": "sha256:4f857c2c916cb577858bcd208ae4bd6fbc4916d083dca25162dc85c6279bed83"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-inputs8.log",
+      "bytes": 130,
+      "sha256": "sha256:a84ca310729fd3f559f8e6aa3660fc67689aad1813b8c1f7f18e9a052d280ac6"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-runtime3.log",
+      "bytes": 1042,
+      "sha256": "sha256:9410d0a9854954bc17b2d7641b61f7ee96350dd647bbacfc31af950bc6ee2d9c"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-runtime7.log",
+      "bytes": 4283,
+      "sha256": "sha256:5437998b47ddce67164c35c2e9a46b2642a5855e65d249eb25064acfcee62180"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-runtime8.log",
+      "bytes": 3802,
+      "sha256": "sha256:dcdb9a33975434e3024e94558a91cf9bbde524d4d643fd787f5d93b799bf27bf"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-schema1.log",
+      "bytes": 1316,
+      "sha256": "sha256:a1424b0e1b9fc3d3e85ec3fc15e882e888ce0e1d9b176318a769f023d73f23be"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-schema2.log",
+      "bytes": 653,
+      "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-docs9.log",
+      "bytes": 379,
+      "sha256": "sha256:14c47559937758fdda01a6c37052a7849a171fe5a7461d2668001dd18139a946"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-doccheck9.log",
+      "bytes": 333,
+      "sha256": "sha256:23c9d842376c55d98d36ebc8dcc581821dbabf15f9ba56f2eb6331fc5e58c8c2"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-cuelife43-finalhold9.log",
+      "bytes": 131,
+      "sha256": "sha256:f0e58aa1ee6ba930a707a5e68681bcd8eed98fa59b686a399cb235f9b846d30e"
+    }
+  ],
+  "workingInputs": {
+    "path": "/private/tmp/still-shift-ms2-cuelife43-inputs8.json",
+    "bytes": 435580,
+    "sha256": "sha256:42daf7ba0ad803a27dc8ccdfea8fdcc25d155d4c312f617261ae7ef29ed98364"
+  },
+  "browserResult": {
+    "directory": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU",
+    "status": "passed",
+    "families": 3,
+    "exports": 12,
+    "observedOutputFrames": 720,
+    "syntheticAudio": true,
+    "rerenderScope": "whole-cycle"
+  },
+  "browserProof": {
+    "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/run.json",
+    "bytes": 9680514,
+    "sha256": "sha256:d0ad5a84765b4be23045b98248f834866b7b4509638605af6e944c9c7f52eda9"
+  },
+  "priorPassingBrowser": {
+    "path": "/private/tmp/still-shift-ms2-cue-lifecycle-5eQHRi/run.json",
+    "bytes": 9680862,
+    "sha256": "sha256:3142400d8dbe832630a474d354761a9dcc5b36f3afeccb2cef4d8fddacc4504d"
+  },
+  "actualCLI": {
+    "status": "passed",
+    "commands": [
+      {
+        "command": "prepare",
+        "exitCode": 0,
+        "responseBytes": 1163,
+        "receipt": {
+          "schemaVersion": "mechanism-command-result-1",
+          "command": "prepare",
+          "status": "passed",
+          "summary": {
+            "schemaVersion": "mechanism-cue-compile-result-1",
+            "status": "passed",
+            "compositionPath": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/actual-cli/prepared/composition.json",
+            "receiptPath": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/actual-cli/prepared/cue-compilation.json",
+            "scope": "current-revision-semantic-and-actual-media-compilation",
+            "nextAction": "Render this snapshot while the family/cue revision remains current."
+          },
+          "items": [],
+          "artifacts": [
+            {
+              "kind": "compositionPath",
+              "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/actual-cli/prepared/composition.json"
+            },
+            {
+              "kind": "receiptPath",
+              "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/actual-cli/prepared/cue-compilation.json"
+            },
+            {
+              "kind": "full-report",
+              "path": "/private/tmp/still-shift-ms2-cuelife43-cli-prepare.json",
+              "sha256": "sha256:4a30d3dd0ad190d2d6d10464db7f26e5f0d923d9de7df3f7d5c19eb0675a7961"
+            }
+          ],
+          "pagination": {
+            "offset": 0,
+            "returned": 0,
+            "total": 0,
+            "nextOffset": null
+          },
+          "truncated": false,
+          "nextAction": "Read the full-report artifact for the complete result."
+        },
+        "report": "/private/tmp/still-shift-ms2-cuelife43-cli-prepare.json"
+      },
+      {
+        "command": "compile",
+        "exitCode": 0,
+        "responseBytes": 1163,
+        "receipt": {
+          "schemaVersion": "mechanism-command-result-1",
+          "command": "compile",
+          "status": "passed",
+          "summary": {
+            "schemaVersion": "mechanism-cue-compile-result-1",
+            "status": "passed",
+            "compositionPath": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/actual-cli/compiled/composition.json",
+            "receiptPath": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/actual-cli/compiled/cue-compilation.json",
+            "scope": "current-revision-semantic-and-actual-media-compilation",
+            "nextAction": "Render this snapshot while the family/cue revision remains current."
+          },
+          "items": [],
+          "artifacts": [
+            {
+              "kind": "compositionPath",
+              "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/actual-cli/compiled/composition.json"
+            },
+            {
+              "kind": "receiptPath",
+              "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/actual-cli/compiled/cue-compilation.json"
+            },
+            {
+              "kind": "full-report",
+              "path": "/private/tmp/still-shift-ms2-cuelife43-cli-compile.json",
+              "sha256": "sha256:21d95afaf55a0f543c63d0b538b96eb9c84b0f82b89ae81ce8cc09d4cf66a1ca"
+            }
+          ],
+          "pagination": {
+            "offset": 0,
+            "returned": 0,
+            "total": 0,
+            "nextOffset": null
+          },
+          "truncated": false,
+          "nextAction": "Read the full-report artifact for the complete result."
+        },
+        "report": "/private/tmp/still-shift-ms2-cuelife43-cli-compile.json"
+      },
+      {
+        "command": "render",
+        "exitCode": 0,
+        "responseBytes": 2192,
+        "receipt": {
+          "schemaVersion": "mechanism-command-result-1",
+          "command": "render",
+          "status": "passed",
+          "summary": {
+            "schemaVersion": "mechanism-cue-render-result-1",
+            "status": "rendered",
+            "composition": "narrated-cycle",
+            "rendererVersion": "composition-webgl2-0.68.7",
+            "evaluatorVersion": "composition-evaluator-57",
+            "fps": 30,
+            "frameCount": 60,
+            "durationMs": 2000,
+            "outputPath": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/actual-cli/rendered/output.mp4",
+            "sceneManifestPath": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/actual-cli/rendered/output.mp4.scene.json",
+            "warningsCount": 0,
+            "systemFontLayersCount": 0,
+            "compilationReceiptPath": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/actual-cli/compiled/cue-compilation.json",
+            "familyRevision": 0,
+            "cueRevision": 1,
+            "rerenderScope": "whole-cycle",
+            "scope": "current-revision-native-composition-export",
+            "nativeObservations.outputFrames": 60,
+            "nativeObservations.passCount": 60,
+            "nativeObservations.executionSha256": "sha256:28a8d9fe84187df8132cbc4e9bac7c5365c438e369c33c6208b59804b8a80f0f",
+            "nativeObservations.manifestSha256": "sha256:296be2256f770f0fd9c28bb2182c83309a474e425068db5161acaa7c4aa896a0"
+          },
+          "items": [],
+          "artifacts": [
+            {
+              "kind": "composition",
+              "path": "narrated-cycle"
+            },
+            {
+              "kind": "outputPath",
+              "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/actual-cli/rendered/output.mp4"
+            },
+            {
+              "kind": "sceneManifestPath",
+              "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/actual-cli/rendered/output.mp4.scene.json"
+            },
+            {
+              "kind": "compilationReceiptPath",
+              "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/actual-cli/compiled/cue-compilation.json"
+            },
+            {
+              "kind": "native-observation-manifest",
+              "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/actual-cli/rendered/output.mp4.native-observations.json",
+              "sha256": "sha256:296be2256f770f0fd9c28bb2182c83309a474e425068db5161acaa7c4aa896a0"
+            },
+            {
+              "kind": "full-report",
+              "path": "/private/tmp/still-shift-ms2-cuelife43-cli-render.json",
+              "sha256": "sha256:955c413a5b8962d11a18a0c00cbba2eb457471134bdd90f7f38472b4e8c8fae3"
+            }
+          ],
+          "pagination": {
+            "offset": 0,
+            "returned": 0,
+            "total": 0,
+            "nextOffset": null
+          },
+          "truncated": false,
+          "nextAction": "Read the full-report artifact for the complete result."
+        },
+        "report": "/private/tmp/still-shift-ms2-cuelife43-cli-render.json"
+      },
+      {
+        "command": "check",
+        "exitCode": 0,
+        "responseBytes": 1099,
+        "receipt": {
+          "schemaVersion": "mechanism-command-result-1",
+          "command": "check",
+          "status": "passed",
+          "summary": {
+            "schemaVersion": "mechanism-cue-check-result-1",
+            "status": "passed",
+            "scope": "current-revision-dependencies-encoded-video-facts-and-independent-native-observation-proof",
+            "outputPath": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/actual-cli/rendered/output.mp4",
+            "outputSha256": "sha256:d71dc07f2b0885644d344fb8362279d83ba132685c1f28aaeb78eaa3c81fd12e",
+            "familyRevision": 0,
+            "cueRevision": 1,
+            "nativeFrames": 60,
+            "nativePasses": 60,
+            "remainingQa": "Rendered label/layout/typography, listening and pilot acceptance are separate gates."
+          },
+          "items": [],
+          "artifacts": [
+            {
+              "kind": "outputPath",
+              "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/actual-cli/rendered/output.mp4"
+            },
+            {
+              "kind": "full-report",
+              "path": "/private/tmp/still-shift-ms2-cuelife43-cli-check.json",
+              "sha256": "sha256:8e9a8389ada96c8db5fd8e593f95f058bc2af50c61518c4ec36ee34925e21acb"
+            }
+          ],
+          "pagination": {
+            "offset": 0,
+            "returned": 0,
+            "total": 0,
+            "nextOffset": null
+          },
+          "truncated": false,
+          "nextAction": "Read the full-report artifact for the complete result."
+        },
+        "report": "/private/tmp/still-shift-ms2-cuelife43-cli-check.json"
+      }
+    ],
+    "output": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/actual-cli/rendered/output.mp4",
+    "additionalExports": 1,
+    "nativeFrames": 60,
+    "syntheticAudio": true
+  },
+  "actualCLIProof": {
+    "path": "/private/tmp/still-shift-ms2-cuelife43-cli-result.json",
+    "bytes": 8542,
+    "sha256": "sha256:9271a5d0993a690ff87f09574edc660fa0198614ba60435fc50d35228757fbd6"
+  },
+  "compilations": [
+    {
+      "family": "tape-hook",
+      "stage": "before",
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/before-compiled/cue-compilation.json",
+        "bytes": 770,
+        "sha256": "sha256:42397f3891ae9cef235f44b05e48544fafd659b57e1a5ebf086480efd8183076"
+      },
+      "composition": {
+        "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/before-compiled/composition.json",
+        "bytes": 22960,
+        "sha256": "sha256:61c4b1192376963eb498e401c3bcf7e82c74ee9a992707daf402e0d171ebe495"
+      },
+      "outputs": [
+        {
+          "output": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/before-first/output.mp4",
+            "bytes": 32054,
+            "sha256": "sha256:11481496c520d60ad63447bfb423dbe87336740813f616731b656d32d826f560"
+          },
+          "sidecar": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/before-first/output.mp4.result.json",
+            "bytes": 15239,
+            "sha256": "sha256:a22e2be66d46a2935345d2c29ff33ffae4a5bac57d4982ead064d6b25c561d44"
+          },
+          "check": {
+            "schemaVersion": "mechanism-cue-check-result-1",
+            "status": "passed",
+            "scope": "current-revision-dependencies-encoded-video-facts-and-independent-native-observation-proof",
+            "outputPath": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/before-first/output.mp4",
+            "outputSha256": "sha256:11481496c520d60ad63447bfb423dbe87336740813f616731b656d32d826f560",
+            "familyRevision": 0,
+            "cueRevision": 0,
+            "nativeFrames": 60,
+            "nativePasses": 60,
+            "video": {
+              "width": 240,
+              "height": 136,
+              "nb_read_frames": "60",
+              "avg_frame_rate": "30/1"
+            },
+            "remainingQa": "Rendered label/layout/typography, listening and pilot acceptance are separate gates."
+          },
+          "encodedAndDecodedProof": {
+            "encoded": [
+              "sha256:11481496c520d60ad63447bfb423dbe87336740813f616731b656d32d826f560"
+            ],
+            "decodedFrames": [
+              "sha256:cfc1a14d5cca9817453c7d28ffee191c9fe6d7dfb435ce980223b1318ae3b618",
+              "sha256:e349cb9b6764facc1ea1ea787a244bfafe32129219b4931d18a24dfb60ea8bad",
+              "sha256:e349cb9b6764facc1ea1ea787a244bfafe32129219b4931d18a24dfb60ea8bad",
+              "sha256:e349cb9b6764facc1ea1ea787a244bfafe32129219b4931d18a24dfb60ea8bad",
+              "sha256:3b0549a857bad734f3b02fb187f5a98c4b974c92101c97b24f8a09f345eeabad",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:3b0549a857bad734f3b02fb187f5a98c4b974c92101c97b24f8a09f345eeabad",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:3b0549a857bad734f3b02fb187f5a98c4b974c92101c97b24f8a09f345eeabad",
+              "sha256:2677cde089e51d17f4db1b152ef945a31697f638d6e93bcf9ed513eb024dbbfe",
+              "sha256:eaa956899366d180a46f102cc2b5201e8129cba8e57005c6a86e8647640572ff",
+              "sha256:2efc8b031ae66f9f738643b0794fa821d77bee066e3885b872f005b0bf865c05",
+              "sha256:ecded9e93cf488a1adfaa57b086f2795a786d2ec6c33ac2bfa8022db9381023a",
+              "sha256:d419f968ef219d25400cd23e286aa9f1c52e79e5e3e23e9d36737ff1d361b77d",
+              "sha256:63d6afafc4cb35312fa857e53645278d971b323167e0d0059c7886bc2d835f3f",
+              "sha256:a5c8c2553eb4b3d129a9120f3bff4f071b07e229f1f7ac1c06625b9ac537694e",
+              "sha256:049e68cf7a88d6f6bc34df8424831ea052c0b1747a3426f1a1f2f862d96a774a",
+              "sha256:8caa552cac534b06844a370f6074df61de582401ee87ffe6e38f161008f349e0",
+              "sha256:8caa552cac534b06844a370f6074df61de582401ee87ffe6e38f161008f349e0",
+              "sha256:8caa552cac534b06844a370f6074df61de582401ee87ffe6e38f161008f349e0",
+              "sha256:049e68cf7a88d6f6bc34df8424831ea052c0b1747a3426f1a1f2f862d96a774a",
+              "sha256:8caa552cac534b06844a370f6074df61de582401ee87ffe6e38f161008f349e0",
+              "sha256:8caa552cac534b06844a370f6074df61de582401ee87ffe6e38f161008f349e0",
+              "sha256:8caa552cac534b06844a370f6074df61de582401ee87ffe6e38f161008f349e0",
+              "sha256:049e68cf7a88d6f6bc34df8424831ea052c0b1747a3426f1a1f2f862d96a774a",
+              "sha256:35952309b1c4d68e90d17f748a6d32422eba6de1b73e2c1fb3525521e986b919",
+              "sha256:d93752428ccb8312ab67c1976c2ce5bf2c17ca3c127906fca5403ae13058c461",
+              "sha256:e0a081a1b2da968d5ee4c078c775c1f3d9068023e990d48fbe65c9109150799f",
+              "sha256:2971c4acc8a95f72d6dcd61e0810c5083e5aa751ccb6a7ad1b4403fa98c401b0",
+              "sha256:cf3d595a331b51678ee1a83f2f57a8af4613d1f4bd88c091ffcfb39e65f43574",
+              "sha256:f30e1ea46722f54e2f17677c4c1ebd3b523c6b48181bf7aaf931ba9a64404833",
+              "sha256:41013c9d7d0c1d528db955c3cc80f5328c7bb7b12e478287593b9d5bb761a52f",
+              "sha256:35c97e2f977d940e38c4981e93f7594c6a6c8b93dfbc05f4b4ef8fc51fbd657e",
+              "sha256:804e7fdc29c39af39b0afcb417d65bf5b8a527e0251dff9fa197ddf8265ebf3c",
+              "sha256:aacee029dd8be98f4e12f7bec8352478e4ee4ffc025eb53555dcad27a2899442",
+              "sha256:3d23ac26b30e670502061f68979a7ecd62f6fa9092f79b8db9c6a0de8f97d454",
+              "sha256:1894e2bf9552096d9cf2bdbd4b14d9dc2cdd69e96a268e6ab7c9d993570835fe",
+              "sha256:ed6dd83a4c4db6a73c915261210284495b752ac69e41f70d339d209079ab8d13",
+              "sha256:6de915fe56e83cd2952f9e513e86714a7dc246936b2e75b17f63b7f5369dbe60",
+              "sha256:17f0034420beb75ef4ec58503c24b49561cd91c439eb85b21e04592dab7981ca",
+              "sha256:952072f206b971b9f28fe2566108ea54912a88310b3b4e22029a2ee4a4e670e9",
+              "sha256:ea74e2db0704ac4f2ec109ba35cc4131c44e9abb9040c1710b9ff00cf4956ff1",
+              "sha256:572b8f357c1aaf1267d97b74cbde6de7043c176dc0def5ec36632d63684edf45",
+              "sha256:c2f274751fc07b92ea941fa5fc39f3a1e5784de7d18abdbc2ae6e0a1dee07dda",
+              "sha256:e3a4951c36ca4374452e9912d5587b1fa77b6bf6a955f6605ac9b62c6dc5404d",
+              "sha256:26d32b6416cc960f1a1840d3c5bf18ef6dcd28a875cec82383187e53491ee5e0",
+              "sha256:26d32b6416cc960f1a1840d3c5bf18ef6dcd28a875cec82383187e53491ee5e0",
+              "sha256:26d32b6416cc960f1a1840d3c5bf18ef6dcd28a875cec82383187e53491ee5e0",
+              "sha256:e3a4951c36ca4374452e9912d5587b1fa77b6bf6a955f6605ac9b62c6dc5404d",
+              "sha256:26d32b6416cc960f1a1840d3c5bf18ef6dcd28a875cec82383187e53491ee5e0",
+              "sha256:26d32b6416cc960f1a1840d3c5bf18ef6dcd28a875cec82383187e53491ee5e0",
+              "sha256:26d32b6416cc960f1a1840d3c5bf18ef6dcd28a875cec82383187e53491ee5e0",
+              "sha256:26d32b6416cc960f1a1840d3c5bf18ef6dcd28a875cec82383187e53491ee5e0",
+              "sha256:26d32b6416cc960f1a1840d3c5bf18ef6dcd28a875cec82383187e53491ee5e0",
+              "sha256:26d32b6416cc960f1a1840d3c5bf18ef6dcd28a875cec82383187e53491ee5e0",
+              "sha256:26d32b6416cc960f1a1840d3c5bf18ef6dcd28a875cec82383187e53491ee5e0"
+            ],
+            "decodedAudio": "sha256:d95e7ff30b5b4bdfc067ad3f70c071e59a7ce1f01e496d6bf25c9dd074fd45f6",
+            "decodedAudioBytes": 770048
+          }
+        },
+        {
+          "output": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/before-repeat/output.mp4",
+            "bytes": 32054,
+            "sha256": "sha256:11481496c520d60ad63447bfb423dbe87336740813f616731b656d32d826f560"
+          },
+          "sidecar": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/before-repeat/output.mp4.result.json",
+            "bytes": 15176,
+            "sha256": "sha256:56c0f5ff30e1ccf04f790f8770d910c302e224b6ffd791d281f04da5a9316b45"
+          },
+          "check": {
+            "schemaVersion": "mechanism-cue-check-result-1",
+            "status": "passed",
+            "scope": "current-revision-dependencies-encoded-video-facts-and-independent-native-observation-proof",
+            "outputPath": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/before-repeat/output.mp4",
+            "outputSha256": "sha256:11481496c520d60ad63447bfb423dbe87336740813f616731b656d32d826f560",
+            "familyRevision": 0,
+            "cueRevision": 0,
+            "nativeFrames": 60,
+            "nativePasses": 60,
+            "video": {
+              "width": 240,
+              "height": 136,
+              "nb_read_frames": "60",
+              "avg_frame_rate": "30/1"
+            },
+            "remainingQa": "Rendered label/layout/typography, listening and pilot acceptance are separate gates."
+          },
+          "encodedAndDecodedProof": {
+            "encoded": [
+              "sha256:11481496c520d60ad63447bfb423dbe87336740813f616731b656d32d826f560"
+            ],
+            "decodedFrames": [
+              "sha256:cfc1a14d5cca9817453c7d28ffee191c9fe6d7dfb435ce980223b1318ae3b618",
+              "sha256:e349cb9b6764facc1ea1ea787a244bfafe32129219b4931d18a24dfb60ea8bad",
+              "sha256:e349cb9b6764facc1ea1ea787a244bfafe32129219b4931d18a24dfb60ea8bad",
+              "sha256:e349cb9b6764facc1ea1ea787a244bfafe32129219b4931d18a24dfb60ea8bad",
+              "sha256:3b0549a857bad734f3b02fb187f5a98c4b974c92101c97b24f8a09f345eeabad",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:3b0549a857bad734f3b02fb187f5a98c4b974c92101c97b24f8a09f345eeabad",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:3b0549a857bad734f3b02fb187f5a98c4b974c92101c97b24f8a09f345eeabad",
+              "sha256:2677cde089e51d17f4db1b152ef945a31697f638d6e93bcf9ed513eb024dbbfe",
+              "sha256:eaa956899366d180a46f102cc2b5201e8129cba8e57005c6a86e8647640572ff",
+              "sha256:2efc8b031ae66f9f738643b0794fa821d77bee066e3885b872f005b0bf865c05",
+              "sha256:ecded9e93cf488a1adfaa57b086f2795a786d2ec6c33ac2bfa8022db9381023a",
+              "sha256:d419f968ef219d25400cd23e286aa9f1c52e79e5e3e23e9d36737ff1d361b77d",
+              "sha256:63d6afafc4cb35312fa857e53645278d971b323167e0d0059c7886bc2d835f3f",
+              "sha256:a5c8c2553eb4b3d129a9120f3bff4f071b07e229f1f7ac1c06625b9ac537694e",
+              "sha256:049e68cf7a88d6f6bc34df8424831ea052c0b1747a3426f1a1f2f862d96a774a",
+              "sha256:8caa552cac534b06844a370f6074df61de582401ee87ffe6e38f161008f349e0",
+              "sha256:8caa552cac534b06844a370f6074df61de582401ee87ffe6e38f161008f349e0",
+              "sha256:8caa552cac534b06844a370f6074df61de582401ee87ffe6e38f161008f349e0",
+              "sha256:049e68cf7a88d6f6bc34df8424831ea052c0b1747a3426f1a1f2f862d96a774a",
+              "sha256:8caa552cac534b06844a370f6074df61de582401ee87ffe6e38f161008f349e0",
+              "sha256:8caa552cac534b06844a370f6074df61de582401ee87ffe6e38f161008f349e0",
+              "sha256:8caa552cac534b06844a370f6074df61de582401ee87ffe6e38f161008f349e0",
+              "sha256:049e68cf7a88d6f6bc34df8424831ea052c0b1747a3426f1a1f2f862d96a774a",
+              "sha256:35952309b1c4d68e90d17f748a6d32422eba6de1b73e2c1fb3525521e986b919",
+              "sha256:d93752428ccb8312ab67c1976c2ce5bf2c17ca3c127906fca5403ae13058c461",
+              "sha256:e0a081a1b2da968d5ee4c078c775c1f3d9068023e990d48fbe65c9109150799f",
+              "sha256:2971c4acc8a95f72d6dcd61e0810c5083e5aa751ccb6a7ad1b4403fa98c401b0",
+              "sha256:cf3d595a331b51678ee1a83f2f57a8af4613d1f4bd88c091ffcfb39e65f43574",
+              "sha256:f30e1ea46722f54e2f17677c4c1ebd3b523c6b48181bf7aaf931ba9a64404833",
+              "sha256:41013c9d7d0c1d528db955c3cc80f5328c7bb7b12e478287593b9d5bb761a52f",
+              "sha256:35c97e2f977d940e38c4981e93f7594c6a6c8b93dfbc05f4b4ef8fc51fbd657e",
+              "sha256:804e7fdc29c39af39b0afcb417d65bf5b8a527e0251dff9fa197ddf8265ebf3c",
+              "sha256:aacee029dd8be98f4e12f7bec8352478e4ee4ffc025eb53555dcad27a2899442",
+              "sha256:3d23ac26b30e670502061f68979a7ecd62f6fa9092f79b8db9c6a0de8f97d454",
+              "sha256:1894e2bf9552096d9cf2bdbd4b14d9dc2cdd69e96a268e6ab7c9d993570835fe",
+              "sha256:ed6dd83a4c4db6a73c915261210284495b752ac69e41f70d339d209079ab8d13",
+              "sha256:6de915fe56e83cd2952f9e513e86714a7dc246936b2e75b17f63b7f5369dbe60",
+              "sha256:17f0034420beb75ef4ec58503c24b49561cd91c439eb85b21e04592dab7981ca",
+              "sha256:952072f206b971b9f28fe2566108ea54912a88310b3b4e22029a2ee4a4e670e9",
+              "sha256:ea74e2db0704ac4f2ec109ba35cc4131c44e9abb9040c1710b9ff00cf4956ff1",
+              "sha256:572b8f357c1aaf1267d97b74cbde6de7043c176dc0def5ec36632d63684edf45",
+              "sha256:c2f274751fc07b92ea941fa5fc39f3a1e5784de7d18abdbc2ae6e0a1dee07dda",
+              "sha256:e3a4951c36ca4374452e9912d5587b1fa77b6bf6a955f6605ac9b62c6dc5404d",
+              "sha256:26d32b6416cc960f1a1840d3c5bf18ef6dcd28a875cec82383187e53491ee5e0",
+              "sha256:26d32b6416cc960f1a1840d3c5bf18ef6dcd28a875cec82383187e53491ee5e0",
+              "sha256:26d32b6416cc960f1a1840d3c5bf18ef6dcd28a875cec82383187e53491ee5e0",
+              "sha256:e3a4951c36ca4374452e9912d5587b1fa77b6bf6a955f6605ac9b62c6dc5404d",
+              "sha256:26d32b6416cc960f1a1840d3c5bf18ef6dcd28a875cec82383187e53491ee5e0",
+              "sha256:26d32b6416cc960f1a1840d3c5bf18ef6dcd28a875cec82383187e53491ee5e0",
+              "sha256:26d32b6416cc960f1a1840d3c5bf18ef6dcd28a875cec82383187e53491ee5e0",
+              "sha256:26d32b6416cc960f1a1840d3c5bf18ef6dcd28a875cec82383187e53491ee5e0",
+              "sha256:26d32b6416cc960f1a1840d3c5bf18ef6dcd28a875cec82383187e53491ee5e0",
+              "sha256:26d32b6416cc960f1a1840d3c5bf18ef6dcd28a875cec82383187e53491ee5e0",
+              "sha256:26d32b6416cc960f1a1840d3c5bf18ef6dcd28a875cec82383187e53491ee5e0"
+            ],
+            "decodedAudio": "sha256:d95e7ff30b5b4bdfc067ad3f70c071e59a7ce1f01e496d6bf25c9dd074fd45f6",
+            "decodedAudioBytes": 770048
+          }
+        }
+      ],
+      "alteredOutputRejected": {
+        "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/before-altered.mp4",
+        "bytes": 32055,
+        "sha256": "sha256:0369d2d33fe21782b7aac0d9899d205039eb4775a6cd68e11e60c47a2fdc7144"
+      }
+    },
+    {
+      "family": "tape-hook",
+      "stage": "edited",
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/edited-compiled/cue-compilation.json",
+        "bytes": 770,
+        "sha256": "sha256:72fded37d1961ad492b9c390a698a6d238114676ac690ab5e85afe4dafbc2117"
+      },
+      "composition": {
+        "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/edited-compiled/composition.json",
+        "bytes": 22959,
+        "sha256": "sha256:93b79cfb518619e75ed7a26e57c0a69065232139ccb9a98d4f4842727b8a62ab"
+      },
+      "outputs": [
+        {
+          "output": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/edited-first/output.mp4",
+            "bytes": 31976,
+            "sha256": "sha256:d71dc07f2b0885644d344fb8362279d83ba132685c1f28aaeb78eaa3c81fd12e"
+          },
+          "sidecar": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/edited-first/output.mp4.result.json",
+            "bytes": 15285,
+            "sha256": "sha256:6e47114572b17ddc5fbb257c3defd53e3f3612d10e8605d403fabe4b1f18b1f1"
+          },
+          "check": {
+            "schemaVersion": "mechanism-cue-check-result-1",
+            "status": "passed",
+            "scope": "current-revision-dependencies-encoded-video-facts-and-independent-native-observation-proof",
+            "outputPath": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/edited-first/output.mp4",
+            "outputSha256": "sha256:d71dc07f2b0885644d344fb8362279d83ba132685c1f28aaeb78eaa3c81fd12e",
+            "familyRevision": 0,
+            "cueRevision": 1,
+            "nativeFrames": 60,
+            "nativePasses": 60,
+            "video": {
+              "width": 240,
+              "height": 136,
+              "nb_read_frames": "60",
+              "avg_frame_rate": "30/1"
+            },
+            "remainingQa": "Rendered label/layout/typography, listening and pilot acceptance are separate gates."
+          },
+          "encodedAndDecodedProof": {
+            "encoded": [
+              "sha256:d71dc07f2b0885644d344fb8362279d83ba132685c1f28aaeb78eaa3c81fd12e"
+            ],
+            "decodedFrames": [
+              "sha256:cfc1a14d5cca9817453c7d28ffee191c9fe6d7dfb435ce980223b1318ae3b618",
+              "sha256:e349cb9b6764facc1ea1ea787a244bfafe32129219b4931d18a24dfb60ea8bad",
+              "sha256:e349cb9b6764facc1ea1ea787a244bfafe32129219b4931d18a24dfb60ea8bad",
+              "sha256:e349cb9b6764facc1ea1ea787a244bfafe32129219b4931d18a24dfb60ea8bad",
+              "sha256:3b0549a857bad734f3b02fb187f5a98c4b974c92101c97b24f8a09f345eeabad",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:3b0549a857bad734f3b02fb187f5a98c4b974c92101c97b24f8a09f345eeabad",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:3b0549a857bad734f3b02fb187f5a98c4b974c92101c97b24f8a09f345eeabad",
+              "sha256:bd9c594280dd06b9739c91bac49bed8f22022e25fe8325d2b186d0563082d320",
+              "sha256:72b22bda8b06a895de8acf744bf843f0d4cd936a3d89bba5cadfe93ac0c1948f",
+              "sha256:56166098828ee7db4ca90a4f763997d954f1f9295f654d4ff68da42debfe4af9",
+              "sha256:034ab885ad621b873f9d0aa42ee95cd9c612779c8bf56f32cde807913cec3248",
+              "sha256:801fb2c077acf3b9218e7b50ccfeeae135794c3af529a384a67c89d82384de62",
+              "sha256:801fb2c077acf3b9218e7b50ccfeeae135794c3af529a384a67c89d82384de62",
+              "sha256:801fb2c077acf3b9218e7b50ccfeeae135794c3af529a384a67c89d82384de62",
+              "sha256:034ab885ad621b873f9d0aa42ee95cd9c612779c8bf56f32cde807913cec3248",
+              "sha256:801fb2c077acf3b9218e7b50ccfeeae135794c3af529a384a67c89d82384de62",
+              "sha256:801fb2c077acf3b9218e7b50ccfeeae135794c3af529a384a67c89d82384de62",
+              "sha256:801fb2c077acf3b9218e7b50ccfeeae135794c3af529a384a67c89d82384de62",
+              "sha256:034ab885ad621b873f9d0aa42ee95cd9c612779c8bf56f32cde807913cec3248",
+              "sha256:801fb2c077acf3b9218e7b50ccfeeae135794c3af529a384a67c89d82384de62",
+              "sha256:801fb2c077acf3b9218e7b50ccfeeae135794c3af529a384a67c89d82384de62",
+              "sha256:801fb2c077acf3b9218e7b50ccfeeae135794c3af529a384a67c89d82384de62",
+              "sha256:034ab885ad621b873f9d0aa42ee95cd9c612779c8bf56f32cde807913cec3248",
+              "sha256:580f10080691454d43d587ba1dcb425d69415070915f5aa26a224498ec2e912d",
+              "sha256:c06e45710d9e1ed634068206d23dca25779945af002ec4ee2deaa69f53ac7b46",
+              "sha256:a9b5af89179daf7c49a848d77d4f0cb8b9e621a45a15d82b4d08f084e792716d",
+              "sha256:cc88f354a04d7967a022579e297202629c29e2ee556b122ad2818f54b8dba2ed",
+              "sha256:2ca0b70fb6c7c20cbd25a23412230775c8d5a24b4b9fb98f828d765a63fdaa27",
+              "sha256:c1fa4aa6b08d99bcef057ef4fd049fd20619c3faabea5acca24b1b8cc3b882e4",
+              "sha256:d017a984350db18b936f1e9a50488e08ccc58550cb5da2e241fcfea574a7d4cd",
+              "sha256:edc89ad4d55461358b959ca54e270fc6e16e41c3ce14e9e3daf319ebff086aa9",
+              "sha256:4008bc902795895ab2ccafdef1e76dd35f939621e9cff7911393d8ccb4e45a0f",
+              "sha256:cf1d93ed05db7c033647e6f766b57cf16cebe086f324207810fc311b557aef84",
+              "sha256:53e33bf992b587d6d47160c2df13330ffdc0f748a222c43edc78d0f338a2587e",
+              "sha256:67aa752223629d36bf7b835e354fbd90866942b869d0301560cd644f71c02d7c",
+              "sha256:5e73d51f9d4eada4338d2112267acb5c6c5b1fa0d4245c491e99193e1403febf",
+              "sha256:1ece2c875f2f00ff7a4778f0cdd20a66eeb7904ad16b00b91cdcd5fd2c927c2a",
+              "sha256:6a4bfe6b142e41346f6ae464ef16819fa5932d102ad469b68fd702bbd252ceee",
+              "sha256:1275ebcf3694ddfcfe835fee5d0c4e38383814a134d6436a9690f1c916d62633",
+              "sha256:1504dd44d3ac94c80bdcbe206a7f545f3aaecc74a2e8790ec7fedaf1099471b1",
+              "sha256:98afc77a1371bd0167d167be1150c76a2ebf61b705c02b814535e39e3c93c2b2",
+              "sha256:81ac8f1b1f561d7822e1fd38f3069fea56680ab052d7a45810ce6aa923b972dd",
+              "sha256:739b4ff7ff0bd567f53c15544f29a34354f0d9a8e66f27b4f8cd88da091a06e2",
+              "sha256:e7edef0355fa80a8471e5c176e70db46a86a47b5759901f07c324d01d27d3158",
+              "sha256:e7edef0355fa80a8471e5c176e70db46a86a47b5759901f07c324d01d27d3158",
+              "sha256:e7edef0355fa80a8471e5c176e70db46a86a47b5759901f07c324d01d27d3158",
+              "sha256:739b4ff7ff0bd567f53c15544f29a34354f0d9a8e66f27b4f8cd88da091a06e2",
+              "sha256:e7edef0355fa80a8471e5c176e70db46a86a47b5759901f07c324d01d27d3158",
+              "sha256:e7edef0355fa80a8471e5c176e70db46a86a47b5759901f07c324d01d27d3158",
+              "sha256:e7edef0355fa80a8471e5c176e70db46a86a47b5759901f07c324d01d27d3158",
+              "sha256:e7edef0355fa80a8471e5c176e70db46a86a47b5759901f07c324d01d27d3158",
+              "sha256:e7edef0355fa80a8471e5c176e70db46a86a47b5759901f07c324d01d27d3158",
+              "sha256:e7edef0355fa80a8471e5c176e70db46a86a47b5759901f07c324d01d27d3158",
+              "sha256:e7edef0355fa80a8471e5c176e70db46a86a47b5759901f07c324d01d27d3158"
+            ],
+            "decodedAudio": "sha256:d95e7ff30b5b4bdfc067ad3f70c071e59a7ce1f01e496d6bf25c9dd074fd45f6",
+            "decodedAudioBytes": 770048
+          }
+        },
+        {
+          "output": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/edited-repeat/output.mp4",
+            "bytes": 31976,
+            "sha256": "sha256:d71dc07f2b0885644d344fb8362279d83ba132685c1f28aaeb78eaa3c81fd12e"
+          },
+          "sidecar": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/edited-repeat/output.mp4.result.json",
+            "bytes": 15248,
+            "sha256": "sha256:a8a04c59ffe6d19036e8e04d9e0710a9f753ecf98685b3a1a912aa30946ac5e8"
+          },
+          "check": {
+            "schemaVersion": "mechanism-cue-check-result-1",
+            "status": "passed",
+            "scope": "current-revision-dependencies-encoded-video-facts-and-independent-native-observation-proof",
+            "outputPath": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/edited-repeat/output.mp4",
+            "outputSha256": "sha256:d71dc07f2b0885644d344fb8362279d83ba132685c1f28aaeb78eaa3c81fd12e",
+            "familyRevision": 0,
+            "cueRevision": 1,
+            "nativeFrames": 60,
+            "nativePasses": 60,
+            "video": {
+              "width": 240,
+              "height": 136,
+              "nb_read_frames": "60",
+              "avg_frame_rate": "30/1"
+            },
+            "remainingQa": "Rendered label/layout/typography, listening and pilot acceptance are separate gates."
+          },
+          "encodedAndDecodedProof": {
+            "encoded": [
+              "sha256:d71dc07f2b0885644d344fb8362279d83ba132685c1f28aaeb78eaa3c81fd12e"
+            ],
+            "decodedFrames": [
+              "sha256:cfc1a14d5cca9817453c7d28ffee191c9fe6d7dfb435ce980223b1318ae3b618",
+              "sha256:e349cb9b6764facc1ea1ea787a244bfafe32129219b4931d18a24dfb60ea8bad",
+              "sha256:e349cb9b6764facc1ea1ea787a244bfafe32129219b4931d18a24dfb60ea8bad",
+              "sha256:e349cb9b6764facc1ea1ea787a244bfafe32129219b4931d18a24dfb60ea8bad",
+              "sha256:3b0549a857bad734f3b02fb187f5a98c4b974c92101c97b24f8a09f345eeabad",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:3b0549a857bad734f3b02fb187f5a98c4b974c92101c97b24f8a09f345eeabad",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:385a622972171cdfb0c987fd63d1c100808583a8fa96af003243a8db981c7b8f",
+              "sha256:3b0549a857bad734f3b02fb187f5a98c4b974c92101c97b24f8a09f345eeabad",
+              "sha256:bd9c594280dd06b9739c91bac49bed8f22022e25fe8325d2b186d0563082d320",
+              "sha256:72b22bda8b06a895de8acf744bf843f0d4cd936a3d89bba5cadfe93ac0c1948f",
+              "sha256:56166098828ee7db4ca90a4f763997d954f1f9295f654d4ff68da42debfe4af9",
+              "sha256:034ab885ad621b873f9d0aa42ee95cd9c612779c8bf56f32cde807913cec3248",
+              "sha256:801fb2c077acf3b9218e7b50ccfeeae135794c3af529a384a67c89d82384de62",
+              "sha256:801fb2c077acf3b9218e7b50ccfeeae135794c3af529a384a67c89d82384de62",
+              "sha256:801fb2c077acf3b9218e7b50ccfeeae135794c3af529a384a67c89d82384de62",
+              "sha256:034ab885ad621b873f9d0aa42ee95cd9c612779c8bf56f32cde807913cec3248",
+              "sha256:801fb2c077acf3b9218e7b50ccfeeae135794c3af529a384a67c89d82384de62",
+              "sha256:801fb2c077acf3b9218e7b50ccfeeae135794c3af529a384a67c89d82384de62",
+              "sha256:801fb2c077acf3b9218e7b50ccfeeae135794c3af529a384a67c89d82384de62",
+              "sha256:034ab885ad621b873f9d0aa42ee95cd9c612779c8bf56f32cde807913cec3248",
+              "sha256:801fb2c077acf3b9218e7b50ccfeeae135794c3af529a384a67c89d82384de62",
+              "sha256:801fb2c077acf3b9218e7b50ccfeeae135794c3af529a384a67c89d82384de62",
+              "sha256:801fb2c077acf3b9218e7b50ccfeeae135794c3af529a384a67c89d82384de62",
+              "sha256:034ab885ad621b873f9d0aa42ee95cd9c612779c8bf56f32cde807913cec3248",
+              "sha256:580f10080691454d43d587ba1dcb425d69415070915f5aa26a224498ec2e912d",
+              "sha256:c06e45710d9e1ed634068206d23dca25779945af002ec4ee2deaa69f53ac7b46",
+              "sha256:a9b5af89179daf7c49a848d77d4f0cb8b9e621a45a15d82b4d08f084e792716d",
+              "sha256:cc88f354a04d7967a022579e297202629c29e2ee556b122ad2818f54b8dba2ed",
+              "sha256:2ca0b70fb6c7c20cbd25a23412230775c8d5a24b4b9fb98f828d765a63fdaa27",
+              "sha256:c1fa4aa6b08d99bcef057ef4fd049fd20619c3faabea5acca24b1b8cc3b882e4",
+              "sha256:d017a984350db18b936f1e9a50488e08ccc58550cb5da2e241fcfea574a7d4cd",
+              "sha256:edc89ad4d55461358b959ca54e270fc6e16e41c3ce14e9e3daf319ebff086aa9",
+              "sha256:4008bc902795895ab2ccafdef1e76dd35f939621e9cff7911393d8ccb4e45a0f",
+              "sha256:cf1d93ed05db7c033647e6f766b57cf16cebe086f324207810fc311b557aef84",
+              "sha256:53e33bf992b587d6d47160c2df13330ffdc0f748a222c43edc78d0f338a2587e",
+              "sha256:67aa752223629d36bf7b835e354fbd90866942b869d0301560cd644f71c02d7c",
+              "sha256:5e73d51f9d4eada4338d2112267acb5c6c5b1fa0d4245c491e99193e1403febf",
+              "sha256:1ece2c875f2f00ff7a4778f0cdd20a66eeb7904ad16b00b91cdcd5fd2c927c2a",
+              "sha256:6a4bfe6b142e41346f6ae464ef16819fa5932d102ad469b68fd702bbd252ceee",
+              "sha256:1275ebcf3694ddfcfe835fee5d0c4e38383814a134d6436a9690f1c916d62633",
+              "sha256:1504dd44d3ac94c80bdcbe206a7f545f3aaecc74a2e8790ec7fedaf1099471b1",
+              "sha256:98afc77a1371bd0167d167be1150c76a2ebf61b705c02b814535e39e3c93c2b2",
+              "sha256:81ac8f1b1f561d7822e1fd38f3069fea56680ab052d7a45810ce6aa923b972dd",
+              "sha256:739b4ff7ff0bd567f53c15544f29a34354f0d9a8e66f27b4f8cd88da091a06e2",
+              "sha256:e7edef0355fa80a8471e5c176e70db46a86a47b5759901f07c324d01d27d3158",
+              "sha256:e7edef0355fa80a8471e5c176e70db46a86a47b5759901f07c324d01d27d3158",
+              "sha256:e7edef0355fa80a8471e5c176e70db46a86a47b5759901f07c324d01d27d3158",
+              "sha256:739b4ff7ff0bd567f53c15544f29a34354f0d9a8e66f27b4f8cd88da091a06e2",
+              "sha256:e7edef0355fa80a8471e5c176e70db46a86a47b5759901f07c324d01d27d3158",
+              "sha256:e7edef0355fa80a8471e5c176e70db46a86a47b5759901f07c324d01d27d3158",
+              "sha256:e7edef0355fa80a8471e5c176e70db46a86a47b5759901f07c324d01d27d3158",
+              "sha256:e7edef0355fa80a8471e5c176e70db46a86a47b5759901f07c324d01d27d3158",
+              "sha256:e7edef0355fa80a8471e5c176e70db46a86a47b5759901f07c324d01d27d3158",
+              "sha256:e7edef0355fa80a8471e5c176e70db46a86a47b5759901f07c324d01d27d3158",
+              "sha256:e7edef0355fa80a8471e5c176e70db46a86a47b5759901f07c324d01d27d3158"
+            ],
+            "decodedAudio": "sha256:d95e7ff30b5b4bdfc067ad3f70c071e59a7ce1f01e496d6bf25c9dd074fd45f6",
+            "decodedAudioBytes": 770048
+          }
+        }
+      ],
+      "alteredOutputRejected": {
+        "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/tape-hook/edited-altered.mp4",
+        "bytes": 31977,
+        "sha256": "sha256:5781a5c8b2b2fd248ac5391050c8f4defad8350d91065b24f59276751dc96abb"
+      }
+    },
+    {
+      "family": "cable-tie",
+      "stage": "before",
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/cable-tie/before-compiled/cue-compilation.json",
+        "bytes": 770,
+        "sha256": "sha256:19d9ad46d0e7e30f411eccda33872a0b8dd262828e41aea9dfa4280c39e518e8"
+      },
+      "composition": {
+        "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/cable-tie/before-compiled/composition.json",
+        "bytes": 22918,
+        "sha256": "sha256:05430a879cf5545f86b8600fea0de453efe1f1b3fd393b8a21ccc8a9e654c27e"
+      },
+      "outputs": [
+        {
+          "output": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/cable-tie/before-first/output.mp4",
+            "bytes": 28760,
+            "sha256": "sha256:88b180fdd1fe8e3badcfec66b3b02759d15b746826075db6039240ee9a4ce166"
+          },
+          "sidecar": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/cable-tie/before-first/output.mp4.result.json",
+            "bytes": 15270,
+            "sha256": "sha256:5ec34e50a2f29957e360ea6f61171469f1eadd9941a369733e69aeca5efdedc5"
+          },
+          "check": {
+            "schemaVersion": "mechanism-cue-check-result-1",
+            "status": "passed",
+            "scope": "current-revision-dependencies-encoded-video-facts-and-independent-native-observation-proof",
+            "outputPath": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/cable-tie/before-first/output.mp4",
+            "outputSha256": "sha256:88b180fdd1fe8e3badcfec66b3b02759d15b746826075db6039240ee9a4ce166",
+            "familyRevision": 0,
+            "cueRevision": 0,
+            "nativeFrames": 60,
+            "nativePasses": 60,
+            "video": {
+              "width": 240,
+              "height": 136,
+              "nb_read_frames": "60",
+              "avg_frame_rate": "30/1"
+            },
+            "remainingQa": "Rendered label/layout/typography, listening and pilot acceptance are separate gates."
+          },
+          "encodedAndDecodedProof": {
+            "encoded": [
+              "sha256:88b180fdd1fe8e3badcfec66b3b02759d15b746826075db6039240ee9a4ce166"
+            ],
+            "decodedFrames": [
+              "sha256:387df2645e2425666858b318119714293a95ff783895a630bd31614556106d43",
+              "sha256:9b183318627bbaf560ff8ca3eea91502cbbeac0f14e61b870bc68e2fc828dcef",
+              "sha256:653cdb29744f51f3591471c1f63a376f3938d4f69c6f419eb58c0f56d8f0f5b2",
+              "sha256:2a9020da99baac89b6fb921627e50589a090c066404bddd1c4c31dc6ed780260",
+              "sha256:68ce7cf7d24a9b34a74b671f82cf9566340adc0b34266c6d03ec11c99dbe8496",
+              "sha256:ca4e9f51c3c3187e5d6c6bbdf0fea23e517e5f852ed168d85cf5015d8698ae31",
+              "sha256:ede9ec5ab394dcc492a6b133e247139458bfb0bff585e386cc5773680067a723",
+              "sha256:c7fbc725f14f0393f0d3a99af7634e855df0e13da6552415dfa688c26b4e50fa",
+              "sha256:62d775dc0debcdb7b27d142c24f96927c6e448a524471da3c31f1c8dd7275bd6",
+              "sha256:060091470db8dbd304ecc5526365a69f55bd90e4b37adb09f09ecdbcd6fc795e",
+              "sha256:4bd52bd7e9a692fe74e6038726b79c65b7bffdb8b07108d352b9bb15a4d20690",
+              "sha256:f208c8897dfac211fd4c81c192b3dfbbf987b8b739c99eff489faa2dfcae75c7",
+              "sha256:4637029b8b3d94a223ecbf004dccec5166fa39ad28112d5fc15687924ecd92af",
+              "sha256:c7618262aa2574cfb14e47101169848d1a5a98188173840aafdd3ba734ddb2b3",
+              "sha256:6ca21a7228c9907e6eb91f066a0758ad95012b03c0046c25dc6417f026fb4193",
+              "sha256:813159644eb94d3d7c2cde8e6152dc063b4566b5ebebbaa19369bea4608d7104",
+              "sha256:42fe22e581f46e8e55239f1dec84cb83571cd1ce8eff14748ac5d5601e704d53",
+              "sha256:9f3c4beb922a8ff7c5e54514cee33b7d7ecd200a1a5aa3bd479dc81519576b36",
+              "sha256:718e351e6b57444ea104f207f92f7ec69baf2dc7212cbc390a0706e793c8b62b",
+              "sha256:008b54cf211a500fb2f42ff7efca819b3bdcd7ed582a9fde768f1cd5dc77925c",
+              "sha256:223d9852c1fe07c93396221e51a6edf5ce30bd49c73b02da1c764e0432f679ba",
+              "sha256:79cf94733004630b3f9d4cb055b9157c397e870e9e82b1a7508db6812e863d0d",
+              "sha256:d8ecbd6480f5de544b2740bd022bd60806dfed84a9f7a328f5e3994b7ecf9303",
+              "sha256:57f1ae3cd365fca88d3a28bbc3b6ec0789c0d354acde4b203ef99f0de51e7933",
+              "sha256:9a7851d4329000d3082ac05eb3c5104bfc295529f479fde61e939c76ceeb5fed",
+              "sha256:e2d74b440e3dbd1917dec30482f4f90a939b704822e138968f79e55b102700b2",
+              "sha256:e2d74b440e3dbd1917dec30482f4f90a939b704822e138968f79e55b102700b2",
+              "sha256:e2d74b440e3dbd1917dec30482f4f90a939b704822e138968f79e55b102700b2",
+              "sha256:e2d74b440e3dbd1917dec30482f4f90a939b704822e138968f79e55b102700b2",
+              "sha256:e2d74b440e3dbd1917dec30482f4f90a939b704822e138968f79e55b102700b2",
+              "sha256:08c142a70a7f714b8688ef285207e1da43d408db0521730aa6ff2a934b300a45",
+              "sha256:08c142a70a7f714b8688ef285207e1da43d408db0521730aa6ff2a934b300a45",
+              "sha256:08c142a70a7f714b8688ef285207e1da43d408db0521730aa6ff2a934b300a45",
+              "sha256:08c142a70a7f714b8688ef285207e1da43d408db0521730aa6ff2a934b300a45",
+              "sha256:3ca695c26d6cda42b8e691efb4ec3912af33fac88d2486866fe55bd87eb9f341",
+              "sha256:dd09d20e345acd35a9739b48f5e4e3c50914529557069ea8ca0f84ed38b8ed2d",
+              "sha256:e8e836fb17b97a43f9c24e6c951eca92d0ae3a3ec7702441a468f67ec462ab16",
+              "sha256:ff102e73b9095fecd6476f8da60fac033b20f6b15f76fa0dd23f600dda7b6f76",
+              "sha256:4db0000e12351ba7a4db99bcb596f7b423cda07a7e4d4fc2215cb4258d3deb61",
+              "sha256:be598236f023cbb00b18bb16dfdafbe9f025f04f1004fa3067b9f56ee9d3fd8c",
+              "sha256:be598236f023cbb00b18bb16dfdafbe9f025f04f1004fa3067b9f56ee9d3fd8c",
+              "sha256:51b30d5fbbb52ba39c273ba2034d31bea5c9ffb0f61837b805352ba1def05e18",
+              "sha256:000559a8d1422c593ebdde2bf2467501a73660476b6a06f488c173d3dcd44f6f",
+              "sha256:9c6d824306d27c571f0ef78df499e325e8109dafabf5a846ca8497ab2d1d381b",
+              "sha256:b91745626f7d06b4e3e95620878649a846b9bdc9f241c970d8cfa911bcff5440",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed"
+            ],
+            "decodedAudio": "sha256:d95e7ff30b5b4bdfc067ad3f70c071e59a7ce1f01e496d6bf25c9dd074fd45f6",
+            "decodedAudioBytes": 770048
+          }
+        },
+        {
+          "output": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/cable-tie/before-repeat/output.mp4",
+            "bytes": 28760,
+            "sha256": "sha256:88b180fdd1fe8e3badcfec66b3b02759d15b746826075db6039240ee9a4ce166"
+          },
+          "sidecar": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/cable-tie/before-repeat/output.mp4.result.json",
+            "bytes": 15319,
+            "sha256": "sha256:b241896a2f46fa24c34e95acf34569b09f4900ba8fe51590ff7cdbae0b0d752f"
+          },
+          "check": {
+            "schemaVersion": "mechanism-cue-check-result-1",
+            "status": "passed",
+            "scope": "current-revision-dependencies-encoded-video-facts-and-independent-native-observation-proof",
+            "outputPath": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/cable-tie/before-repeat/output.mp4",
+            "outputSha256": "sha256:88b180fdd1fe8e3badcfec66b3b02759d15b746826075db6039240ee9a4ce166",
+            "familyRevision": 0,
+            "cueRevision": 0,
+            "nativeFrames": 60,
+            "nativePasses": 60,
+            "video": {
+              "width": 240,
+              "height": 136,
+              "nb_read_frames": "60",
+              "avg_frame_rate": "30/1"
+            },
+            "remainingQa": "Rendered label/layout/typography, listening and pilot acceptance are separate gates."
+          },
+          "encodedAndDecodedProof": {
+            "encoded": [
+              "sha256:88b180fdd1fe8e3badcfec66b3b02759d15b746826075db6039240ee9a4ce166"
+            ],
+            "decodedFrames": [
+              "sha256:387df2645e2425666858b318119714293a95ff783895a630bd31614556106d43",
+              "sha256:9b183318627bbaf560ff8ca3eea91502cbbeac0f14e61b870bc68e2fc828dcef",
+              "sha256:653cdb29744f51f3591471c1f63a376f3938d4f69c6f419eb58c0f56d8f0f5b2",
+              "sha256:2a9020da99baac89b6fb921627e50589a090c066404bddd1c4c31dc6ed780260",
+              "sha256:68ce7cf7d24a9b34a74b671f82cf9566340adc0b34266c6d03ec11c99dbe8496",
+              "sha256:ca4e9f51c3c3187e5d6c6bbdf0fea23e517e5f852ed168d85cf5015d8698ae31",
+              "sha256:ede9ec5ab394dcc492a6b133e247139458bfb0bff585e386cc5773680067a723",
+              "sha256:c7fbc725f14f0393f0d3a99af7634e855df0e13da6552415dfa688c26b4e50fa",
+              "sha256:62d775dc0debcdb7b27d142c24f96927c6e448a524471da3c31f1c8dd7275bd6",
+              "sha256:060091470db8dbd304ecc5526365a69f55bd90e4b37adb09f09ecdbcd6fc795e",
+              "sha256:4bd52bd7e9a692fe74e6038726b79c65b7bffdb8b07108d352b9bb15a4d20690",
+              "sha256:f208c8897dfac211fd4c81c192b3dfbbf987b8b739c99eff489faa2dfcae75c7",
+              "sha256:4637029b8b3d94a223ecbf004dccec5166fa39ad28112d5fc15687924ecd92af",
+              "sha256:c7618262aa2574cfb14e47101169848d1a5a98188173840aafdd3ba734ddb2b3",
+              "sha256:6ca21a7228c9907e6eb91f066a0758ad95012b03c0046c25dc6417f026fb4193",
+              "sha256:813159644eb94d3d7c2cde8e6152dc063b4566b5ebebbaa19369bea4608d7104",
+              "sha256:42fe22e581f46e8e55239f1dec84cb83571cd1ce8eff14748ac5d5601e704d53",
+              "sha256:9f3c4beb922a8ff7c5e54514cee33b7d7ecd200a1a5aa3bd479dc81519576b36",
+              "sha256:718e351e6b57444ea104f207f92f7ec69baf2dc7212cbc390a0706e793c8b62b",
+              "sha256:008b54cf211a500fb2f42ff7efca819b3bdcd7ed582a9fde768f1cd5dc77925c",
+              "sha256:223d9852c1fe07c93396221e51a6edf5ce30bd49c73b02da1c764e0432f679ba",
+              "sha256:79cf94733004630b3f9d4cb055b9157c397e870e9e82b1a7508db6812e863d0d",
+              "sha256:d8ecbd6480f5de544b2740bd022bd60806dfed84a9f7a328f5e3994b7ecf9303",
+              "sha256:57f1ae3cd365fca88d3a28bbc3b6ec0789c0d354acde4b203ef99f0de51e7933",
+              "sha256:9a7851d4329000d3082ac05eb3c5104bfc295529f479fde61e939c76ceeb5fed",
+              "sha256:e2d74b440e3dbd1917dec30482f4f90a939b704822e138968f79e55b102700b2",
+              "sha256:e2d74b440e3dbd1917dec30482f4f90a939b704822e138968f79e55b102700b2",
+              "sha256:e2d74b440e3dbd1917dec30482f4f90a939b704822e138968f79e55b102700b2",
+              "sha256:e2d74b440e3dbd1917dec30482f4f90a939b704822e138968f79e55b102700b2",
+              "sha256:e2d74b440e3dbd1917dec30482f4f90a939b704822e138968f79e55b102700b2",
+              "sha256:08c142a70a7f714b8688ef285207e1da43d408db0521730aa6ff2a934b300a45",
+              "sha256:08c142a70a7f714b8688ef285207e1da43d408db0521730aa6ff2a934b300a45",
+              "sha256:08c142a70a7f714b8688ef285207e1da43d408db0521730aa6ff2a934b300a45",
+              "sha256:08c142a70a7f714b8688ef285207e1da43d408db0521730aa6ff2a934b300a45",
+              "sha256:3ca695c26d6cda42b8e691efb4ec3912af33fac88d2486866fe55bd87eb9f341",
+              "sha256:dd09d20e345acd35a9739b48f5e4e3c50914529557069ea8ca0f84ed38b8ed2d",
+              "sha256:e8e836fb17b97a43f9c24e6c951eca92d0ae3a3ec7702441a468f67ec462ab16",
+              "sha256:ff102e73b9095fecd6476f8da60fac033b20f6b15f76fa0dd23f600dda7b6f76",
+              "sha256:4db0000e12351ba7a4db99bcb596f7b423cda07a7e4d4fc2215cb4258d3deb61",
+              "sha256:be598236f023cbb00b18bb16dfdafbe9f025f04f1004fa3067b9f56ee9d3fd8c",
+              "sha256:be598236f023cbb00b18bb16dfdafbe9f025f04f1004fa3067b9f56ee9d3fd8c",
+              "sha256:51b30d5fbbb52ba39c273ba2034d31bea5c9ffb0f61837b805352ba1def05e18",
+              "sha256:000559a8d1422c593ebdde2bf2467501a73660476b6a06f488c173d3dcd44f6f",
+              "sha256:9c6d824306d27c571f0ef78df499e325e8109dafabf5a846ca8497ab2d1d381b",
+              "sha256:b91745626f7d06b4e3e95620878649a846b9bdc9f241c970d8cfa911bcff5440",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed",
+              "sha256:fcfc5a2d2b585df3b2d985dd9c75b9f7072c2296a79de5df39c399364952d3ed"
+            ],
+            "decodedAudio": "sha256:d95e7ff30b5b4bdfc067ad3f70c071e59a7ce1f01e496d6bf25c9dd074fd45f6",
+            "decodedAudioBytes": 770048
+          }
+        }
+      ],
+      "alteredOutputRejected": {
+        "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/cable-tie/before-altered.mp4",
+        "bytes": 28761,
+        "sha256": "sha256:544f8c239dcaa5a9fd74793d3e5c861995cb68c6881b8bc87fd6559b8ffceae0"
+      }
+    },
+    {
+      "family": "cable-tie",
+      "stage": "edited",
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/cable-tie/edited-compiled/cue-compilation.json",
+        "bytes": 770,
+        "sha256": "sha256:b7388edf8816fd1a3ade0fe27f95594e89a1ceb7ed73c52b777696d3895bd6d8"
+      },
+      "composition": {
+        "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/cable-tie/edited-compiled/composition.json",
+        "bytes": 22917,
+        "sha256": "sha256:a4355d16e04863adb6441752f8744d9dc118a35af91bcf36dea3a3c4c2aba8b0"
+      },
+      "outputs": [
+        {
+          "output": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/cable-tie/edited-first/output.mp4",
+            "bytes": 28677,
+            "sha256": "sha256:b9366b16c0df58a075ef1442b959d413b2dd32fa281c9fedadcf295bcd601ba6"
+          },
+          "sidecar": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/cable-tie/edited-first/output.mp4.result.json",
+            "bytes": 15281,
+            "sha256": "sha256:4a540f8246dbafb6db93d7d53c334ab3b0a3ecba1d271621dea341ca9ef0de69"
+          },
+          "check": {
+            "schemaVersion": "mechanism-cue-check-result-1",
+            "status": "passed",
+            "scope": "current-revision-dependencies-encoded-video-facts-and-independent-native-observation-proof",
+            "outputPath": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/cable-tie/edited-first/output.mp4",
+            "outputSha256": "sha256:b9366b16c0df58a075ef1442b959d413b2dd32fa281c9fedadcf295bcd601ba6",
+            "familyRevision": 0,
+            "cueRevision": 1,
+            "nativeFrames": 60,
+            "nativePasses": 60,
+            "video": {
+              "width": 240,
+              "height": 136,
+              "nb_read_frames": "60",
+              "avg_frame_rate": "30/1"
+            },
+            "remainingQa": "Rendered label/layout/typography, listening and pilot acceptance are separate gates."
+          },
+          "encodedAndDecodedProof": {
+            "encoded": [
+              "sha256:b9366b16c0df58a075ef1442b959d413b2dd32fa281c9fedadcf295bcd601ba6"
+            ],
+            "decodedFrames": [
+              "sha256:387df2645e2425666858b318119714293a95ff783895a630bd31614556106d43",
+              "sha256:9b183318627bbaf560ff8ca3eea91502cbbeac0f14e61b870bc68e2fc828dcef",
+              "sha256:653cdb29744f51f3591471c1f63a376f3938d4f69c6f419eb58c0f56d8f0f5b2",
+              "sha256:2a9020da99baac89b6fb921627e50589a090c066404bddd1c4c31dc6ed780260",
+              "sha256:68ce7cf7d24a9b34a74b671f82cf9566340adc0b34266c6d03ec11c99dbe8496",
+              "sha256:ca4e9f51c3c3187e5d6c6bbdf0fea23e517e5f852ed168d85cf5015d8698ae31",
+              "sha256:ede9ec5ab394dcc492a6b133e247139458bfb0bff585e386cc5773680067a723",
+              "sha256:c7fbc725f14f0393f0d3a99af7634e855df0e13da6552415dfa688c26b4e50fa",
+              "sha256:62d775dc0debcdb7b27d142c24f96927c6e448a524471da3c31f1c8dd7275bd6",
+              "sha256:060091470db8dbd304ecc5526365a69f55bd90e4b37adb09f09ecdbcd6fc795e",
+              "sha256:4bd52bd7e9a692fe74e6038726b79c65b7bffdb8b07108d352b9bb15a4d20690",
+              "sha256:f208c8897dfac211fd4c81c192b3dfbbf987b8b739c99eff489faa2dfcae75c7",
+              "sha256:93f463a1794fa26d6db386231de8cd9db81d35b67c8ee7077220a09d85848da3",
+              "sha256:4248f27480ed6133d688a87e22a0ce421dca91ad959eeab5252f154a2eea2290",
+              "sha256:d3e085c7d77d166934d373c64ea89cbc0c37ae544199a8f1e4e83214963d46ba",
+              "sha256:f917d3fd5b53e40b72840caa66904054c8d45b0abaeeec893eccb1b58b93c75e",
+              "sha256:432133c8080e41d65cc5b3e5ad3a4b6fd827ed253091abe1efd992ae3e2d56aa",
+              "sha256:8fa7c6b95abf9a63c08114f5864a21361e08b3ed603e249ca06f1fe7181e8947",
+              "sha256:4e88d3773943c764f21e9758459eee527b4f8b2790679bc40f2573cf7f2a4cd0",
+              "sha256:39c23c43657e3a97146513fd299a5e967c5fd2f95b8510d8ad4c8016c80288bd",
+              "sha256:6de581f37a8186fcf1ef140b96d8f8cb5f1dd5ddd87c63adb847e523d8813713",
+              "sha256:1a59b1112a95114183eb7ce408ef1b1453980c8f2d5f98923c28af288a803d1e",
+              "sha256:a10e2892357345bb44eea9c4ba01696fdd40a539871666fd88807c954e24a897",
+              "sha256:4cefb6f1acfc9053349a47201d112f0d2f413a817831650c8dcbc2d36915b41f",
+              "sha256:ae2b9bd588b9c1f3005043d708a642bc27f900b76ac50136e3425d2a35bd3c33",
+              "sha256:55e6d19542920b1974a2dbd1778e1497f2056ce9e0f92f83fa1935e69238d489",
+              "sha256:0e29d90450ce84e74848735c316029e7930632f05539d5fbd0e90654af331c05",
+              "sha256:5dbbba0e0aec454071b0b9521c53f7f1c57133595dd32615dd3afff6caf7fcad",
+              "sha256:f4fff177f8bd4969fd184f5151169c7332228dbb3385beb4013044124e80a1e7",
+              "sha256:83d0af90d0ebb612fa2e7b1aca99d7906fd555ceb6df7ba6b75c881c53a383af",
+              "sha256:5de55d7ea76a7e9e365f83385daab6ee013f808d00b70ff91cdef8f58d573600",
+              "sha256:f5ee80b58b483e0d2df291fd640083ec12b1fd6965c4fe0fcbb86bca1ab9b3c5",
+              "sha256:f3455106cdff09da728c57a7cda1ee1c7a2b079eb593dc36b80ba997679798cb",
+              "sha256:a1683ba8d8e519574f70dffbd09ba126c53db9274712f499a9285bc4ba524f09",
+              "sha256:a1683ba8d8e519574f70dffbd09ba126c53db9274712f499a9285bc4ba524f09",
+              "sha256:a1683ba8d8e519574f70dffbd09ba126c53db9274712f499a9285bc4ba524f09",
+              "sha256:a1683ba8d8e519574f70dffbd09ba126c53db9274712f499a9285bc4ba524f09",
+              "sha256:a1683ba8d8e519574f70dffbd09ba126c53db9274712f499a9285bc4ba524f09",
+              "sha256:b1d32181d608f309ab86726cd301047fec1aea4fe5d97a2c972c1e7fc33f449b",
+              "sha256:b0e038717ab56ecce4937982ac59910a37286b7d7cf73c2175d39facbbd7cf84",
+              "sha256:aeafefddb99872746948c80f7674983b7178f02aa32916ef590a92fc9d7cb0c6",
+              "sha256:25f4d62c5ee7a7261a8fc5e520061413943586c2d2ef85d0ce6f14b123f0efa1",
+              "sha256:1394e8df82a96a64d9fefaa7c011b6f66be9f8cac4f4260dc7716cd9ae9c05f8",
+              "sha256:17e1594758c8131d0cfd7c943b6329f0baed7dc1a2c50de26851eb792ed331fb",
+              "sha256:94b5d80e5f9338eb9358e1ee165f9639749d91e1c7a6cf166af9abe0246c0f9c",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749"
+            ],
+            "decodedAudio": "sha256:d95e7ff30b5b4bdfc067ad3f70c071e59a7ce1f01e496d6bf25c9dd074fd45f6",
+            "decodedAudioBytes": 770048
+          }
+        },
+        {
+          "output": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/cable-tie/edited-repeat/output.mp4",
+            "bytes": 28677,
+            "sha256": "sha256:b9366b16c0df58a075ef1442b959d413b2dd32fa281c9fedadcf295bcd601ba6"
+          },
+          "sidecar": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/cable-tie/edited-repeat/output.mp4.result.json",
+            "bytes": 15237,
+            "sha256": "sha256:7edccf95939eae5f6f3ade558f81e50fd606182f659b4475905385999189cc85"
+          },
+          "check": {
+            "schemaVersion": "mechanism-cue-check-result-1",
+            "status": "passed",
+            "scope": "current-revision-dependencies-encoded-video-facts-and-independent-native-observation-proof",
+            "outputPath": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/cable-tie/edited-repeat/output.mp4",
+            "outputSha256": "sha256:b9366b16c0df58a075ef1442b959d413b2dd32fa281c9fedadcf295bcd601ba6",
+            "familyRevision": 0,
+            "cueRevision": 1,
+            "nativeFrames": 60,
+            "nativePasses": 60,
+            "video": {
+              "width": 240,
+              "height": 136,
+              "nb_read_frames": "60",
+              "avg_frame_rate": "30/1"
+            },
+            "remainingQa": "Rendered label/layout/typography, listening and pilot acceptance are separate gates."
+          },
+          "encodedAndDecodedProof": {
+            "encoded": [
+              "sha256:b9366b16c0df58a075ef1442b959d413b2dd32fa281c9fedadcf295bcd601ba6"
+            ],
+            "decodedFrames": [
+              "sha256:387df2645e2425666858b318119714293a95ff783895a630bd31614556106d43",
+              "sha256:9b183318627bbaf560ff8ca3eea91502cbbeac0f14e61b870bc68e2fc828dcef",
+              "sha256:653cdb29744f51f3591471c1f63a376f3938d4f69c6f419eb58c0f56d8f0f5b2",
+              "sha256:2a9020da99baac89b6fb921627e50589a090c066404bddd1c4c31dc6ed780260",
+              "sha256:68ce7cf7d24a9b34a74b671f82cf9566340adc0b34266c6d03ec11c99dbe8496",
+              "sha256:ca4e9f51c3c3187e5d6c6bbdf0fea23e517e5f852ed168d85cf5015d8698ae31",
+              "sha256:ede9ec5ab394dcc492a6b133e247139458bfb0bff585e386cc5773680067a723",
+              "sha256:c7fbc725f14f0393f0d3a99af7634e855df0e13da6552415dfa688c26b4e50fa",
+              "sha256:62d775dc0debcdb7b27d142c24f96927c6e448a524471da3c31f1c8dd7275bd6",
+              "sha256:060091470db8dbd304ecc5526365a69f55bd90e4b37adb09f09ecdbcd6fc795e",
+              "sha256:4bd52bd7e9a692fe74e6038726b79c65b7bffdb8b07108d352b9bb15a4d20690",
+              "sha256:f208c8897dfac211fd4c81c192b3dfbbf987b8b739c99eff489faa2dfcae75c7",
+              "sha256:93f463a1794fa26d6db386231de8cd9db81d35b67c8ee7077220a09d85848da3",
+              "sha256:4248f27480ed6133d688a87e22a0ce421dca91ad959eeab5252f154a2eea2290",
+              "sha256:d3e085c7d77d166934d373c64ea89cbc0c37ae544199a8f1e4e83214963d46ba",
+              "sha256:f917d3fd5b53e40b72840caa66904054c8d45b0abaeeec893eccb1b58b93c75e",
+              "sha256:432133c8080e41d65cc5b3e5ad3a4b6fd827ed253091abe1efd992ae3e2d56aa",
+              "sha256:8fa7c6b95abf9a63c08114f5864a21361e08b3ed603e249ca06f1fe7181e8947",
+              "sha256:4e88d3773943c764f21e9758459eee527b4f8b2790679bc40f2573cf7f2a4cd0",
+              "sha256:39c23c43657e3a97146513fd299a5e967c5fd2f95b8510d8ad4c8016c80288bd",
+              "sha256:6de581f37a8186fcf1ef140b96d8f8cb5f1dd5ddd87c63adb847e523d8813713",
+              "sha256:1a59b1112a95114183eb7ce408ef1b1453980c8f2d5f98923c28af288a803d1e",
+              "sha256:a10e2892357345bb44eea9c4ba01696fdd40a539871666fd88807c954e24a897",
+              "sha256:4cefb6f1acfc9053349a47201d112f0d2f413a817831650c8dcbc2d36915b41f",
+              "sha256:ae2b9bd588b9c1f3005043d708a642bc27f900b76ac50136e3425d2a35bd3c33",
+              "sha256:55e6d19542920b1974a2dbd1778e1497f2056ce9e0f92f83fa1935e69238d489",
+              "sha256:0e29d90450ce84e74848735c316029e7930632f05539d5fbd0e90654af331c05",
+              "sha256:5dbbba0e0aec454071b0b9521c53f7f1c57133595dd32615dd3afff6caf7fcad",
+              "sha256:f4fff177f8bd4969fd184f5151169c7332228dbb3385beb4013044124e80a1e7",
+              "sha256:83d0af90d0ebb612fa2e7b1aca99d7906fd555ceb6df7ba6b75c881c53a383af",
+              "sha256:5de55d7ea76a7e9e365f83385daab6ee013f808d00b70ff91cdef8f58d573600",
+              "sha256:f5ee80b58b483e0d2df291fd640083ec12b1fd6965c4fe0fcbb86bca1ab9b3c5",
+              "sha256:f3455106cdff09da728c57a7cda1ee1c7a2b079eb593dc36b80ba997679798cb",
+              "sha256:a1683ba8d8e519574f70dffbd09ba126c53db9274712f499a9285bc4ba524f09",
+              "sha256:a1683ba8d8e519574f70dffbd09ba126c53db9274712f499a9285bc4ba524f09",
+              "sha256:a1683ba8d8e519574f70dffbd09ba126c53db9274712f499a9285bc4ba524f09",
+              "sha256:a1683ba8d8e519574f70dffbd09ba126c53db9274712f499a9285bc4ba524f09",
+              "sha256:a1683ba8d8e519574f70dffbd09ba126c53db9274712f499a9285bc4ba524f09",
+              "sha256:b1d32181d608f309ab86726cd301047fec1aea4fe5d97a2c972c1e7fc33f449b",
+              "sha256:b0e038717ab56ecce4937982ac59910a37286b7d7cf73c2175d39facbbd7cf84",
+              "sha256:aeafefddb99872746948c80f7674983b7178f02aa32916ef590a92fc9d7cb0c6",
+              "sha256:25f4d62c5ee7a7261a8fc5e520061413943586c2d2ef85d0ce6f14b123f0efa1",
+              "sha256:1394e8df82a96a64d9fefaa7c011b6f66be9f8cac4f4260dc7716cd9ae9c05f8",
+              "sha256:17e1594758c8131d0cfd7c943b6329f0baed7dc1a2c50de26851eb792ed331fb",
+              "sha256:94b5d80e5f9338eb9358e1ee165f9639749d91e1c7a6cf166af9abe0246c0f9c",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749",
+              "sha256:9fa2d22b6192b14c3559917cbe95df78a4c02bd5890d1a5a21daf9e9cd9b7749"
+            ],
+            "decodedAudio": "sha256:d95e7ff30b5b4bdfc067ad3f70c071e59a7ce1f01e496d6bf25c9dd074fd45f6",
+            "decodedAudioBytes": 770048
+          }
+        }
+      ],
+      "alteredOutputRejected": {
+        "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/cable-tie/edited-altered.mp4",
+        "bytes": 28678,
+        "sha256": "sha256:b8a50e8dd645be21961c4177fb70a691646e01033b71abab1f1a88f1eb917954"
+      }
+    },
+    {
+      "family": "clothespeg",
+      "stage": "before",
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/clothespeg/before-compiled/cue-compilation.json",
+        "bytes": 773,
+        "sha256": "sha256:da2fafcc87c3f5328e36bdd7c7fda7c1eff91f6c653df0c824dac9e2ea6c0c42"
+      },
+      "composition": {
+        "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/clothespeg/before-compiled/composition.json",
+        "bytes": 23389,
+        "sha256": "sha256:c42a700d95e2ca0067172ca116c8b35176df454520a12e270e08d5d6788d0058"
+      },
+      "outputs": [
+        {
+          "output": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/clothespeg/before-first/output.mp4",
+            "bytes": 34634,
+            "sha256": "sha256:76ad5fdb4a8a5d00464cc48e16b3f645476b43993d66bd960ecdc857e0779ed3"
+          },
+          "sidecar": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/clothespeg/before-first/output.mp4.result.json",
+            "bytes": 15264,
+            "sha256": "sha256:d713b17852fb23a0fce0d5c7c523de855eb79f27625ab01c414051461455e724"
+          },
+          "check": {
+            "schemaVersion": "mechanism-cue-check-result-1",
+            "status": "passed",
+            "scope": "current-revision-dependencies-encoded-video-facts-and-independent-native-observation-proof",
+            "outputPath": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/clothespeg/before-first/output.mp4",
+            "outputSha256": "sha256:76ad5fdb4a8a5d00464cc48e16b3f645476b43993d66bd960ecdc857e0779ed3",
+            "familyRevision": 0,
+            "cueRevision": 0,
+            "nativeFrames": 60,
+            "nativePasses": 60,
+            "video": {
+              "width": 240,
+              "height": 136,
+              "nb_read_frames": "60",
+              "avg_frame_rate": "30/1"
+            },
+            "remainingQa": "Rendered label/layout/typography, listening and pilot acceptance are separate gates."
+          },
+          "encodedAndDecodedProof": {
+            "encoded": [
+              "sha256:76ad5fdb4a8a5d00464cc48e16b3f645476b43993d66bd960ecdc857e0779ed3"
+            ],
+            "decodedFrames": [
+              "sha256:f91ebb75f591ed3d01ee7bc03470a1b16cb63958d99ac8a76dfe2b7e5822872c",
+              "sha256:ac12d6cd12cc6edb20465130e35d58bc08f8a10db031606d0d8659bbce8df718",
+              "sha256:9917eb83dfe1ba1b2e541856fa2159f5c011f7d0f6559e57d35094deb7b93fce",
+              "sha256:0629baa6b0e75e532cfe0a667a4e4a0bfd27ac8ce3c43955d1a201369c596053",
+              "sha256:d8f7cc2b77bc6f4f08d52b2dbccc15f6a5ec5f49ac3bd2d41e593304eaf0cf0b",
+              "sha256:491fcf061bc0720bbac0dede322e38690a3adbf776653e29f1b827190528d9f1",
+              "sha256:fa376ecc803541afbf9322a05c36eac4a09c2aa4102501c951a3ec8a1f84db7b",
+              "sha256:f562dda4d39ea32d378790875c58e487919b52d0f9a566160a2c836515707dca",
+              "sha256:6cb69a7b0df614a09b61d7633fd51b1e79b9d1d5885021374d059776a14b53fe",
+              "sha256:813eb7e9654a922019d52c1c894d9f2fae7b709246a9f4c1eec362777a1bab2e",
+              "sha256:9bafd159df6d414a2c72bd30ee41d082084061485ab012bb109e1bfd2a3537bf",
+              "sha256:a92ceb8eec641f4a3805f015dc2f77c7a8b591b7e778a5890b0d01c29ec225c2",
+              "sha256:fe68c865585263ca6ec5fd478ddb86c3f0283ab438e8f7a921e04cae4684b220",
+              "sha256:98a0382fafed9f190b2e314bedd745ca0d1655b9beb3853647dfc44d4bb9d31c",
+              "sha256:922a4630382d9d27ae748db984b271496d89d83d7e79605a107ce64f9e71abe5",
+              "sha256:4f6656fb2a759c7799af860aa5aa0214cc3d135eed6fa5645db29079f94fd67b",
+              "sha256:a52c5a57193d3b228ff2b93674a6161984faf2cff7a985d813ea1c230af5b599",
+              "sha256:5bf35075fbdd09db68ce2d5b270b2d05b293d6c08f9b6f74bf8e7a6807fb54a8",
+              "sha256:e3fd00c405bd68955dab4cfdb5898b7d0b92613a8ba9a600a75daf6efcc9e4b9",
+              "sha256:b485a2fb4e9c8d1fb516fb3462471dd573040e25302954f7fa4901b1d64029b7",
+              "sha256:6ca9fed95c197dac211d318ff05e41e61905dac044387b1143f6d66daa522611",
+              "sha256:921d51d6c25a6f7412811c034d5b4453e06b129147d3f22de889da279dcaac82",
+              "sha256:ba48a5a90c7db3234061fbc1b8c4e7a8efe0f1640c2a65802eaea8a6b28e8fd4",
+              "sha256:c50f920a737fb0bb73ddade88cd4f7f75e926e2146c2b6f0b3d37e575ffbc8fe",
+              "sha256:76cbf8e927b03cb1fde7bb1dce8e54acd4ff23dbf4db1ae3ad4fdeb8335d984b",
+              "sha256:76cbf8e927b03cb1fde7bb1dce8e54acd4ff23dbf4db1ae3ad4fdeb8335d984b",
+              "sha256:76cbf8e927b03cb1fde7bb1dce8e54acd4ff23dbf4db1ae3ad4fdeb8335d984b",
+              "sha256:76cbf8e927b03cb1fde7bb1dce8e54acd4ff23dbf4db1ae3ad4fdeb8335d984b",
+              "sha256:b8079dadf7dc9cce4a598ffc48732901ae3753b5a9cbcc3c47bb3dca5b1fd120",
+              "sha256:89259162bb46bef9d31b548caa7abd990278cabef4410e6c18c2bd8cf2049a7e",
+              "sha256:4f1997dd71e858805f8441c9d9c07ae3937a6d3454019587ef9fbcc7011a4825",
+              "sha256:ddeecdcb9b14f33570534410b3fdae7aeef1dc5bb9148776c570577d9c9c8cd2",
+              "sha256:f0e988110d086f1bf662eb959a921f8c2dedcc68358bbabee5f0ef525e9c749e",
+              "sha256:23471313a584c8810467f0a4813626bf3cd62241981f12f115c504f72b2540eb",
+              "sha256:23794a9ecd5dabb31f844b154fb43c51c64dd872bfaccca72a719ebd6965f0a6",
+              "sha256:9ea7d25c5b26774bfb95eac32eba0d032877c9658549bae177b6f9eacf281da0",
+              "sha256:dcbf936d4d0752e858c592b5fdf09f748e694db0d71cf11caeabecef6638134c",
+              "sha256:d2eac599f9d1eff0c31d49c3565cc0379167eaee07343aece259477c95a30792",
+              "sha256:9c818a9b914a88d902eae64fd2c2897086e317bd057e4571d384d580eedb2ba0",
+              "sha256:ef362664a887ec5089f9b164714f516f6bd97d1e39860b6240422df98dfa7ce4",
+              "sha256:2ba4f15b30ded720e585da780f54126cdd825367ff6d55a513cc47e481ec8c07",
+              "sha256:e68ff3029d42de14964b067b265c4cb5885165b2619bc980bd7aee4cf7c04ce8",
+              "sha256:f1e27f2b656f7d922877ad61ad24efdd155b6b49c496f6880ef52086df1acf6a",
+              "sha256:34dc18936cf6baa830d9604ca670d18d7d18e71d52c7d220434ed105c36ba5fc",
+              "sha256:ab06dc61f3febcbb227d59d5e9f7f6dca8934cb0a420c9024dec374a126c536d",
+              "sha256:093784a7767a8837b5425f40a97cc1c5e02633a801b01ad9c041a53301a80515",
+              "sha256:196adbb437434fd0e87c866969eedbca0cfe3b070e5bdf976a8732011ea81355",
+              "sha256:3473bc28271f63b30495cb9745c054204b07f6ae226e412e3ffc7f76ba8e6ab4",
+              "sha256:371dda6302e69785a49ab08939f10d50dbc0821515576410d63d0774df5f1892",
+              "sha256:9b5c5ec52b6b599b8c8a8a6fc88e7b6b285769902cfc89e5436c055b1a3ea5f5",
+              "sha256:9b5c5ec52b6b599b8c8a8a6fc88e7b6b285769902cfc89e5436c055b1a3ea5f5",
+              "sha256:9b5c5ec52b6b599b8c8a8a6fc88e7b6b285769902cfc89e5436c055b1a3ea5f5",
+              "sha256:9b5c5ec52b6b599b8c8a8a6fc88e7b6b285769902cfc89e5436c055b1a3ea5f5",
+              "sha256:9b5c5ec52b6b599b8c8a8a6fc88e7b6b285769902cfc89e5436c055b1a3ea5f5",
+              "sha256:9b5c5ec52b6b599b8c8a8a6fc88e7b6b285769902cfc89e5436c055b1a3ea5f5",
+              "sha256:9b5c5ec52b6b599b8c8a8a6fc88e7b6b285769902cfc89e5436c055b1a3ea5f5",
+              "sha256:9b5c5ec52b6b599b8c8a8a6fc88e7b6b285769902cfc89e5436c055b1a3ea5f5",
+              "sha256:9b5c5ec52b6b599b8c8a8a6fc88e7b6b285769902cfc89e5436c055b1a3ea5f5",
+              "sha256:9b5c5ec52b6b599b8c8a8a6fc88e7b6b285769902cfc89e5436c055b1a3ea5f5",
+              "sha256:9b5c5ec52b6b599b8c8a8a6fc88e7b6b285769902cfc89e5436c055b1a3ea5f5"
+            ],
+            "decodedAudio": "sha256:d95e7ff30b5b4bdfc067ad3f70c071e59a7ce1f01e496d6bf25c9dd074fd45f6",
+            "decodedAudioBytes": 770048
+          }
+        },
+        {
+          "output": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/clothespeg/before-repeat/output.mp4",
+            "bytes": 34634,
+            "sha256": "sha256:76ad5fdb4a8a5d00464cc48e16b3f645476b43993d66bd960ecdc857e0779ed3"
+          },
+          "sidecar": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/clothespeg/before-repeat/output.mp4.result.json",
+            "bytes": 15254,
+            "sha256": "sha256:77c2c1558934e14d3d8a0f9de4fb68f045b141fada5055945bf7c01413d7e6fd"
+          },
+          "check": {
+            "schemaVersion": "mechanism-cue-check-result-1",
+            "status": "passed",
+            "scope": "current-revision-dependencies-encoded-video-facts-and-independent-native-observation-proof",
+            "outputPath": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/clothespeg/before-repeat/output.mp4",
+            "outputSha256": "sha256:76ad5fdb4a8a5d00464cc48e16b3f645476b43993d66bd960ecdc857e0779ed3",
+            "familyRevision": 0,
+            "cueRevision": 0,
+            "nativeFrames": 60,
+            "nativePasses": 60,
+            "video": {
+              "width": 240,
+              "height": 136,
+              "nb_read_frames": "60",
+              "avg_frame_rate": "30/1"
+            },
+            "remainingQa": "Rendered label/layout/typography, listening and pilot acceptance are separate gates."
+          },
+          "encodedAndDecodedProof": {
+            "encoded": [
+              "sha256:76ad5fdb4a8a5d00464cc48e16b3f645476b43993d66bd960ecdc857e0779ed3"
+            ],
+            "decodedFrames": [
+              "sha256:f91ebb75f591ed3d01ee7bc03470a1b16cb63958d99ac8a76dfe2b7e5822872c",
+              "sha256:ac12d6cd12cc6edb20465130e35d58bc08f8a10db031606d0d8659bbce8df718",
+              "sha256:9917eb83dfe1ba1b2e541856fa2159f5c011f7d0f6559e57d35094deb7b93fce",
+              "sha256:0629baa6b0e75e532cfe0a667a4e4a0bfd27ac8ce3c43955d1a201369c596053",
+              "sha256:d8f7cc2b77bc6f4f08d52b2dbccc15f6a5ec5f49ac3bd2d41e593304eaf0cf0b",
+              "sha256:491fcf061bc0720bbac0dede322e38690a3adbf776653e29f1b827190528d9f1",
+              "sha256:fa376ecc803541afbf9322a05c36eac4a09c2aa4102501c951a3ec8a1f84db7b",
+              "sha256:f562dda4d39ea32d378790875c58e487919b52d0f9a566160a2c836515707dca",
+              "sha256:6cb69a7b0df614a09b61d7633fd51b1e79b9d1d5885021374d059776a14b53fe",
+              "sha256:813eb7e9654a922019d52c1c894d9f2fae7b709246a9f4c1eec362777a1bab2e",
+              "sha256:9bafd159df6d414a2c72bd30ee41d082084061485ab012bb109e1bfd2a3537bf",
+              "sha256:a92ceb8eec641f4a3805f015dc2f77c7a8b591b7e778a5890b0d01c29ec225c2",
+              "sha256:fe68c865585263ca6ec5fd478ddb86c3f0283ab438e8f7a921e04cae4684b220",
+              "sha256:98a0382fafed9f190b2e314bedd745ca0d1655b9beb3853647dfc44d4bb9d31c",
+              "sha256:922a4630382d9d27ae748db984b271496d89d83d7e79605a107ce64f9e71abe5",
+              "sha256:4f6656fb2a759c7799af860aa5aa0214cc3d135eed6fa5645db29079f94fd67b",
+              "sha256:a52c5a57193d3b228ff2b93674a6161984faf2cff7a985d813ea1c230af5b599",
+              "sha256:5bf35075fbdd09db68ce2d5b270b2d05b293d6c08f9b6f74bf8e7a6807fb54a8",
+              "sha256:e3fd00c405bd68955dab4cfdb5898b7d0b92613a8ba9a600a75daf6efcc9e4b9",
+              "sha256:b485a2fb4e9c8d1fb516fb3462471dd573040e25302954f7fa4901b1d64029b7",
+              "sha256:6ca9fed95c197dac211d318ff05e41e61905dac044387b1143f6d66daa522611",
+              "sha256:921d51d6c25a6f7412811c034d5b4453e06b129147d3f22de889da279dcaac82",
+              "sha256:ba48a5a90c7db3234061fbc1b8c4e7a8efe0f1640c2a65802eaea8a6b28e8fd4",
+              "sha256:c50f920a737fb0bb73ddade88cd4f7f75e926e2146c2b6f0b3d37e575ffbc8fe",
+              "sha256:76cbf8e927b03cb1fde7bb1dce8e54acd4ff23dbf4db1ae3ad4fdeb8335d984b",
+              "sha256:76cbf8e927b03cb1fde7bb1dce8e54acd4ff23dbf4db1ae3ad4fdeb8335d984b",
+              "sha256:76cbf8e927b03cb1fde7bb1dce8e54acd4ff23dbf4db1ae3ad4fdeb8335d984b",
+              "sha256:76cbf8e927b03cb1fde7bb1dce8e54acd4ff23dbf4db1ae3ad4fdeb8335d984b",
+              "sha256:b8079dadf7dc9cce4a598ffc48732901ae3753b5a9cbcc3c47bb3dca5b1fd120",
+              "sha256:89259162bb46bef9d31b548caa7abd990278cabef4410e6c18c2bd8cf2049a7e",
+              "sha256:4f1997dd71e858805f8441c9d9c07ae3937a6d3454019587ef9fbcc7011a4825",
+              "sha256:ddeecdcb9b14f33570534410b3fdae7aeef1dc5bb9148776c570577d9c9c8cd2",
+              "sha256:f0e988110d086f1bf662eb959a921f8c2dedcc68358bbabee5f0ef525e9c749e",
+              "sha256:23471313a584c8810467f0a4813626bf3cd62241981f12f115c504f72b2540eb",
+              "sha256:23794a9ecd5dabb31f844b154fb43c51c64dd872bfaccca72a719ebd6965f0a6",
+              "sha256:9ea7d25c5b26774bfb95eac32eba0d032877c9658549bae177b6f9eacf281da0",
+              "sha256:dcbf936d4d0752e858c592b5fdf09f748e694db0d71cf11caeabecef6638134c",
+              "sha256:d2eac599f9d1eff0c31d49c3565cc0379167eaee07343aece259477c95a30792",
+              "sha256:9c818a9b914a88d902eae64fd2c2897086e317bd057e4571d384d580eedb2ba0",
+              "sha256:ef362664a887ec5089f9b164714f516f6bd97d1e39860b6240422df98dfa7ce4",
+              "sha256:2ba4f15b30ded720e585da780f54126cdd825367ff6d55a513cc47e481ec8c07",
+              "sha256:e68ff3029d42de14964b067b265c4cb5885165b2619bc980bd7aee4cf7c04ce8",
+              "sha256:f1e27f2b656f7d922877ad61ad24efdd155b6b49c496f6880ef52086df1acf6a",
+              "sha256:34dc18936cf6baa830d9604ca670d18d7d18e71d52c7d220434ed105c36ba5fc",
+              "sha256:ab06dc61f3febcbb227d59d5e9f7f6dca8934cb0a420c9024dec374a126c536d",
+              "sha256:093784a7767a8837b5425f40a97cc1c5e02633a801b01ad9c041a53301a80515",
+              "sha256:196adbb437434fd0e87c866969eedbca0cfe3b070e5bdf976a8732011ea81355",
+              "sha256:3473bc28271f63b30495cb9745c054204b07f6ae226e412e3ffc7f76ba8e6ab4",
+              "sha256:371dda6302e69785a49ab08939f10d50dbc0821515576410d63d0774df5f1892",
+              "sha256:9b5c5ec52b6b599b8c8a8a6fc88e7b6b285769902cfc89e5436c055b1a3ea5f5",
+              "sha256:9b5c5ec52b6b599b8c8a8a6fc88e7b6b285769902cfc89e5436c055b1a3ea5f5",
+              "sha256:9b5c5ec52b6b599b8c8a8a6fc88e7b6b285769902cfc89e5436c055b1a3ea5f5",
+              "sha256:9b5c5ec52b6b599b8c8a8a6fc88e7b6b285769902cfc89e5436c055b1a3ea5f5",
+              "sha256:9b5c5ec52b6b599b8c8a8a6fc88e7b6b285769902cfc89e5436c055b1a3ea5f5",
+              "sha256:9b5c5ec52b6b599b8c8a8a6fc88e7b6b285769902cfc89e5436c055b1a3ea5f5",
+              "sha256:9b5c5ec52b6b599b8c8a8a6fc88e7b6b285769902cfc89e5436c055b1a3ea5f5",
+              "sha256:9b5c5ec52b6b599b8c8a8a6fc88e7b6b285769902cfc89e5436c055b1a3ea5f5",
+              "sha256:9b5c5ec52b6b599b8c8a8a6fc88e7b6b285769902cfc89e5436c055b1a3ea5f5",
+              "sha256:9b5c5ec52b6b599b8c8a8a6fc88e7b6b285769902cfc89e5436c055b1a3ea5f5",
+              "sha256:9b5c5ec52b6b599b8c8a8a6fc88e7b6b285769902cfc89e5436c055b1a3ea5f5"
+            ],
+            "decodedAudio": "sha256:d95e7ff30b5b4bdfc067ad3f70c071e59a7ce1f01e496d6bf25c9dd074fd45f6",
+            "decodedAudioBytes": 770048
+          }
+        }
+      ],
+      "alteredOutputRejected": {
+        "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/clothespeg/before-altered.mp4",
+        "bytes": 34635,
+        "sha256": "sha256:e2b71920b356058df47859cbe28867484475571a907c74e91a790b1a315967b8"
+      }
+    },
+    {
+      "family": "clothespeg",
+      "stage": "edited",
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/clothespeg/edited-compiled/cue-compilation.json",
+        "bytes": 773,
+        "sha256": "sha256:cb494de0f319c866070dea6bf145ab09848a07ac59b70115a54b6e3fbbcd5c2b"
+      },
+      "composition": {
+        "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/clothespeg/edited-compiled/composition.json",
+        "bytes": 23388,
+        "sha256": "sha256:ade82e1ff5b66bf845b92ff854508807518d40980afd8a064e9e97f2fa856407"
+      },
+      "outputs": [
+        {
+          "output": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/clothespeg/edited-first/output.mp4",
+            "bytes": 34535,
+            "sha256": "sha256:e4c8e9f774ff791a187e269f1c03ec190870aae6613d8cb995fe4bde941306e9"
+          },
+          "sidecar": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/clothespeg/edited-first/output.mp4.result.json",
+            "bytes": 15230,
+            "sha256": "sha256:c34858bfe232d7142783f9a7347689bea7099ac6845f1fbc94c76489ffa6a2e8"
+          },
+          "check": {
+            "schemaVersion": "mechanism-cue-check-result-1",
+            "status": "passed",
+            "scope": "current-revision-dependencies-encoded-video-facts-and-independent-native-observation-proof",
+            "outputPath": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/clothespeg/edited-first/output.mp4",
+            "outputSha256": "sha256:e4c8e9f774ff791a187e269f1c03ec190870aae6613d8cb995fe4bde941306e9",
+            "familyRevision": 0,
+            "cueRevision": 1,
+            "nativeFrames": 60,
+            "nativePasses": 60,
+            "video": {
+              "width": 240,
+              "height": 136,
+              "nb_read_frames": "60",
+              "avg_frame_rate": "30/1"
+            },
+            "remainingQa": "Rendered label/layout/typography, listening and pilot acceptance are separate gates."
+          },
+          "encodedAndDecodedProof": {
+            "encoded": [
+              "sha256:e4c8e9f774ff791a187e269f1c03ec190870aae6613d8cb995fe4bde941306e9"
+            ],
+            "decodedFrames": [
+              "sha256:f91ebb75f591ed3d01ee7bc03470a1b16cb63958d99ac8a76dfe2b7e5822872c",
+              "sha256:ac12d6cd12cc6edb20465130e35d58bc08f8a10db031606d0d8659bbce8df718",
+              "sha256:9917eb83dfe1ba1b2e541856fa2159f5c011f7d0f6559e57d35094deb7b93fce",
+              "sha256:0629baa6b0e75e532cfe0a667a4e4a0bfd27ac8ce3c43955d1a201369c596053",
+              "sha256:d8f7cc2b77bc6f4f08d52b2dbccc15f6a5ec5f49ac3bd2d41e593304eaf0cf0b",
+              "sha256:491fcf061bc0720bbac0dede322e38690a3adbf776653e29f1b827190528d9f1",
+              "sha256:fa376ecc803541afbf9322a05c36eac4a09c2aa4102501c951a3ec8a1f84db7b",
+              "sha256:f562dda4d39ea32d378790875c58e487919b52d0f9a566160a2c836515707dca",
+              "sha256:6cb69a7b0df614a09b61d7633fd51b1e79b9d1d5885021374d059776a14b53fe",
+              "sha256:813eb7e9654a922019d52c1c894d9f2fae7b709246a9f4c1eec362777a1bab2e",
+              "sha256:9bafd159df6d414a2c72bd30ee41d082084061485ab012bb109e1bfd2a3537bf",
+              "sha256:a92ceb8eec641f4a3805f015dc2f77c7a8b591b7e778a5890b0d01c29ec225c2",
+              "sha256:5cec38d76c73df12ceeccc659c908eb7063428d8ad56fb0e4aa45d41a8cbf593",
+              "sha256:c750beda4cac2d7f223f26450823493d58dbb5778a88ff14fb822fcd207f97f7",
+              "sha256:9bb2de3f71b19511cc41abcfd18c82d389a58cc794abcd2d01ec3ad978e04da6",
+              "sha256:cf8b9a75a6fce5825bd48e35b42c2365aa8b712856a5d4d391a91a239f301c27",
+              "sha256:6261ea8297ccc662ff099060cbda74cbb827e913e8711b961262b4883a79837a",
+              "sha256:6261ea8297ccc662ff099060cbda74cbb827e913e8711b961262b4883a79837a",
+              "sha256:6261ea8297ccc662ff099060cbda74cbb827e913e8711b961262b4883a79837a",
+              "sha256:d6f437949b67970ed45a3f50b328e8018c4e63692bb4b49b4c04566a5254cf50",
+              "sha256:56e823f76f9e491f832a25a1bbd89d3ec7f2c0a3f81cbedd31ef1ab19edf5c18",
+              "sha256:906b834ee64f6aedb3e0010d3c9b323703f7c0966d708d43d478b6c14ca808fe",
+              "sha256:633b2b35b5c579c0c6fe3676cc25613c1f7aa96dabc436394dd2fac280200801",
+              "sha256:d3102272acac171ebb2b6a2511f6ad2bc13cac5ffb3cdbd7de5fccbec258be67",
+              "sha256:d3102272acac171ebb2b6a2511f6ad2bc13cac5ffb3cdbd7de5fccbec258be67",
+              "sha256:d3102272acac171ebb2b6a2511f6ad2bc13cac5ffb3cdbd7de5fccbec258be67",
+              "sha256:d3102272acac171ebb2b6a2511f6ad2bc13cac5ffb3cdbd7de5fccbec258be67",
+              "sha256:d3102272acac171ebb2b6a2511f6ad2bc13cac5ffb3cdbd7de5fccbec258be67",
+              "sha256:8b65608f9982d7bc8a585e51072892f11c224d8e655df637c1f39e0f9d32e935",
+              "sha256:908f0fb44b6b67e93a7fcdd136f0270421e8eec9e4b5d86f072056a5d96ff63d",
+              "sha256:1b3ed4f98e828ae34bcb3d87121e1f9807c3929294f5485c35f0434f176d2eeb",
+              "sha256:8ab325204dd501250af68f7246b09957a6b08ffb20f1d98abb024dbe7f43b75f",
+              "sha256:20d0b86de39a25a8a797704e426fa7de674dfb2c5a26fd94bc27a29a328e1bd8",
+              "sha256:85908f26cee423f4cb4f9e801d62afd8864d8bb6095d7e7110ee3c813f32cc7d",
+              "sha256:26b3f64fe85b100d9170592e2db7c8503a90bc32bc3874d940562be11f924afa",
+              "sha256:685695b546efdd7e36887b2c8df07d35d0826b32bb878ca5a71a098ce035191f",
+              "sha256:e4cd477fd01bcd9b67541a992cc095fc7caf5c4bc4258e56938d8a4c7e93825e",
+              "sha256:f660e783042a7273460ec42e448ccaec52ad75c509f8f0ea99788f0c6d9dd824",
+              "sha256:d33e7c385a54bcbcbb8a5fcbc2d47457bebfe88d0a5f8ca3f3aa6fcb071fac11",
+              "sha256:52fe61d070d51d1f2c6a38f74a4a01ca4d493e0ba4901aa235817c3c3113bf72",
+              "sha256:26db54fa44fb762a204ace3188d04c6a37506683fdc215d2cc42bbef75b20976",
+              "sha256:73a81ff4adb267c40b4ca9dcd32e899e969cebec297819c683f0684a32a2e8dc",
+              "sha256:6afd4c4d1f365721274317d1db16133e66d3c8b4971879f3cdc33e7862cabce1",
+              "sha256:669366597f0afd4f5f545fae25e251d7e78a09a6054e324f2f84e6dda389478e",
+              "sha256:403e71d606802ac4ac4ebcdd2b18b073179dcaa243bc4231418046dd09d582c6",
+              "sha256:9f34ec55069dc1892f8fcc1a89ce67c4a27e89c668bbcbc8aff06a4037dfa84e",
+              "sha256:8da2665e33a22717b5b8b4d4924e95f3e95954ea13e63de0dcfa3f44c8c01f89",
+              "sha256:2515ef1634483aef0dd4288187e9b2396266f51f99268deb444afa6434451a08",
+              "sha256:e1831c4dc158c52101ada97387446161a108331670986bfe55f176e44543e66b",
+              "sha256:d8e0427cfb3868bb4cf1bf007dde801c3ad4518368ad22cf8b7ff8a4a7581280",
+              "sha256:d8e0427cfb3868bb4cf1bf007dde801c3ad4518368ad22cf8b7ff8a4a7581280",
+              "sha256:d8e0427cfb3868bb4cf1bf007dde801c3ad4518368ad22cf8b7ff8a4a7581280",
+              "sha256:d8e0427cfb3868bb4cf1bf007dde801c3ad4518368ad22cf8b7ff8a4a7581280",
+              "sha256:d8e0427cfb3868bb4cf1bf007dde801c3ad4518368ad22cf8b7ff8a4a7581280",
+              "sha256:d8e0427cfb3868bb4cf1bf007dde801c3ad4518368ad22cf8b7ff8a4a7581280",
+              "sha256:d8e0427cfb3868bb4cf1bf007dde801c3ad4518368ad22cf8b7ff8a4a7581280",
+              "sha256:d8e0427cfb3868bb4cf1bf007dde801c3ad4518368ad22cf8b7ff8a4a7581280",
+              "sha256:d8e0427cfb3868bb4cf1bf007dde801c3ad4518368ad22cf8b7ff8a4a7581280",
+              "sha256:d8e0427cfb3868bb4cf1bf007dde801c3ad4518368ad22cf8b7ff8a4a7581280",
+              "sha256:d8e0427cfb3868bb4cf1bf007dde801c3ad4518368ad22cf8b7ff8a4a7581280"
+            ],
+            "decodedAudio": "sha256:d95e7ff30b5b4bdfc067ad3f70c071e59a7ce1f01e496d6bf25c9dd074fd45f6",
+            "decodedAudioBytes": 770048
+          }
+        },
+        {
+          "output": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/clothespeg/edited-repeat/output.mp4",
+            "bytes": 34535,
+            "sha256": "sha256:e4c8e9f774ff791a187e269f1c03ec190870aae6613d8cb995fe4bde941306e9"
+          },
+          "sidecar": {
+            "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/clothespeg/edited-repeat/output.mp4.result.json",
+            "bytes": 15282,
+            "sha256": "sha256:9891e31885af10b80be3783bbed492c99fb5697701614188570ed6f1c87e0d69"
+          },
+          "check": {
+            "schemaVersion": "mechanism-cue-check-result-1",
+            "status": "passed",
+            "scope": "current-revision-dependencies-encoded-video-facts-and-independent-native-observation-proof",
+            "outputPath": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/clothespeg/edited-repeat/output.mp4",
+            "outputSha256": "sha256:e4c8e9f774ff791a187e269f1c03ec190870aae6613d8cb995fe4bde941306e9",
+            "familyRevision": 0,
+            "cueRevision": 1,
+            "nativeFrames": 60,
+            "nativePasses": 60,
+            "video": {
+              "width": 240,
+              "height": 136,
+              "nb_read_frames": "60",
+              "avg_frame_rate": "30/1"
+            },
+            "remainingQa": "Rendered label/layout/typography, listening and pilot acceptance are separate gates."
+          },
+          "encodedAndDecodedProof": {
+            "encoded": [
+              "sha256:e4c8e9f774ff791a187e269f1c03ec190870aae6613d8cb995fe4bde941306e9"
+            ],
+            "decodedFrames": [
+              "sha256:f91ebb75f591ed3d01ee7bc03470a1b16cb63958d99ac8a76dfe2b7e5822872c",
+              "sha256:ac12d6cd12cc6edb20465130e35d58bc08f8a10db031606d0d8659bbce8df718",
+              "sha256:9917eb83dfe1ba1b2e541856fa2159f5c011f7d0f6559e57d35094deb7b93fce",
+              "sha256:0629baa6b0e75e532cfe0a667a4e4a0bfd27ac8ce3c43955d1a201369c596053",
+              "sha256:d8f7cc2b77bc6f4f08d52b2dbccc15f6a5ec5f49ac3bd2d41e593304eaf0cf0b",
+              "sha256:491fcf061bc0720bbac0dede322e38690a3adbf776653e29f1b827190528d9f1",
+              "sha256:fa376ecc803541afbf9322a05c36eac4a09c2aa4102501c951a3ec8a1f84db7b",
+              "sha256:f562dda4d39ea32d378790875c58e487919b52d0f9a566160a2c836515707dca",
+              "sha256:6cb69a7b0df614a09b61d7633fd51b1e79b9d1d5885021374d059776a14b53fe",
+              "sha256:813eb7e9654a922019d52c1c894d9f2fae7b709246a9f4c1eec362777a1bab2e",
+              "sha256:9bafd159df6d414a2c72bd30ee41d082084061485ab012bb109e1bfd2a3537bf",
+              "sha256:a92ceb8eec641f4a3805f015dc2f77c7a8b591b7e778a5890b0d01c29ec225c2",
+              "sha256:5cec38d76c73df12ceeccc659c908eb7063428d8ad56fb0e4aa45d41a8cbf593",
+              "sha256:c750beda4cac2d7f223f26450823493d58dbb5778a88ff14fb822fcd207f97f7",
+              "sha256:9bb2de3f71b19511cc41abcfd18c82d389a58cc794abcd2d01ec3ad978e04da6",
+              "sha256:cf8b9a75a6fce5825bd48e35b42c2365aa8b712856a5d4d391a91a239f301c27",
+              "sha256:6261ea8297ccc662ff099060cbda74cbb827e913e8711b961262b4883a79837a",
+              "sha256:6261ea8297ccc662ff099060cbda74cbb827e913e8711b961262b4883a79837a",
+              "sha256:6261ea8297ccc662ff099060cbda74cbb827e913e8711b961262b4883a79837a",
+              "sha256:d6f437949b67970ed45a3f50b328e8018c4e63692bb4b49b4c04566a5254cf50",
+              "sha256:56e823f76f9e491f832a25a1bbd89d3ec7f2c0a3f81cbedd31ef1ab19edf5c18",
+              "sha256:906b834ee64f6aedb3e0010d3c9b323703f7c0966d708d43d478b6c14ca808fe",
+              "sha256:633b2b35b5c579c0c6fe3676cc25613c1f7aa96dabc436394dd2fac280200801",
+              "sha256:d3102272acac171ebb2b6a2511f6ad2bc13cac5ffb3cdbd7de5fccbec258be67",
+              "sha256:d3102272acac171ebb2b6a2511f6ad2bc13cac5ffb3cdbd7de5fccbec258be67",
+              "sha256:d3102272acac171ebb2b6a2511f6ad2bc13cac5ffb3cdbd7de5fccbec258be67",
+              "sha256:d3102272acac171ebb2b6a2511f6ad2bc13cac5ffb3cdbd7de5fccbec258be67",
+              "sha256:d3102272acac171ebb2b6a2511f6ad2bc13cac5ffb3cdbd7de5fccbec258be67",
+              "sha256:8b65608f9982d7bc8a585e51072892f11c224d8e655df637c1f39e0f9d32e935",
+              "sha256:908f0fb44b6b67e93a7fcdd136f0270421e8eec9e4b5d86f072056a5d96ff63d",
+              "sha256:1b3ed4f98e828ae34bcb3d87121e1f9807c3929294f5485c35f0434f176d2eeb",
+              "sha256:8ab325204dd501250af68f7246b09957a6b08ffb20f1d98abb024dbe7f43b75f",
+              "sha256:20d0b86de39a25a8a797704e426fa7de674dfb2c5a26fd94bc27a29a328e1bd8",
+              "sha256:85908f26cee423f4cb4f9e801d62afd8864d8bb6095d7e7110ee3c813f32cc7d",
+              "sha256:26b3f64fe85b100d9170592e2db7c8503a90bc32bc3874d940562be11f924afa",
+              "sha256:685695b546efdd7e36887b2c8df07d35d0826b32bb878ca5a71a098ce035191f",
+              "sha256:e4cd477fd01bcd9b67541a992cc095fc7caf5c4bc4258e56938d8a4c7e93825e",
+              "sha256:f660e783042a7273460ec42e448ccaec52ad75c509f8f0ea99788f0c6d9dd824",
+              "sha256:d33e7c385a54bcbcbb8a5fcbc2d47457bebfe88d0a5f8ca3f3aa6fcb071fac11",
+              "sha256:52fe61d070d51d1f2c6a38f74a4a01ca4d493e0ba4901aa235817c3c3113bf72",
+              "sha256:26db54fa44fb762a204ace3188d04c6a37506683fdc215d2cc42bbef75b20976",
+              "sha256:73a81ff4adb267c40b4ca9dcd32e899e969cebec297819c683f0684a32a2e8dc",
+              "sha256:6afd4c4d1f365721274317d1db16133e66d3c8b4971879f3cdc33e7862cabce1",
+              "sha256:669366597f0afd4f5f545fae25e251d7e78a09a6054e324f2f84e6dda389478e",
+              "sha256:403e71d606802ac4ac4ebcdd2b18b073179dcaa243bc4231418046dd09d582c6",
+              "sha256:9f34ec55069dc1892f8fcc1a89ce67c4a27e89c668bbcbc8aff06a4037dfa84e",
+              "sha256:8da2665e33a22717b5b8b4d4924e95f3e95954ea13e63de0dcfa3f44c8c01f89",
+              "sha256:2515ef1634483aef0dd4288187e9b2396266f51f99268deb444afa6434451a08",
+              "sha256:e1831c4dc158c52101ada97387446161a108331670986bfe55f176e44543e66b",
+              "sha256:d8e0427cfb3868bb4cf1bf007dde801c3ad4518368ad22cf8b7ff8a4a7581280",
+              "sha256:d8e0427cfb3868bb4cf1bf007dde801c3ad4518368ad22cf8b7ff8a4a7581280",
+              "sha256:d8e0427cfb3868bb4cf1bf007dde801c3ad4518368ad22cf8b7ff8a4a7581280",
+              "sha256:d8e0427cfb3868bb4cf1bf007dde801c3ad4518368ad22cf8b7ff8a4a7581280",
+              "sha256:d8e0427cfb3868bb4cf1bf007dde801c3ad4518368ad22cf8b7ff8a4a7581280",
+              "sha256:d8e0427cfb3868bb4cf1bf007dde801c3ad4518368ad22cf8b7ff8a4a7581280",
+              "sha256:d8e0427cfb3868bb4cf1bf007dde801c3ad4518368ad22cf8b7ff8a4a7581280",
+              "sha256:d8e0427cfb3868bb4cf1bf007dde801c3ad4518368ad22cf8b7ff8a4a7581280",
+              "sha256:d8e0427cfb3868bb4cf1bf007dde801c3ad4518368ad22cf8b7ff8a4a7581280",
+              "sha256:d8e0427cfb3868bb4cf1bf007dde801c3ad4518368ad22cf8b7ff8a4a7581280",
+              "sha256:d8e0427cfb3868bb4cf1bf007dde801c3ad4518368ad22cf8b7ff8a4a7581280"
+            ],
+            "decodedAudio": "sha256:d95e7ff30b5b4bdfc067ad3f70c071e59a7ce1f01e496d6bf25c9dd074fd45f6",
+            "decodedAudioBytes": 770048
+          }
+        }
+      ],
+      "alteredOutputRejected": {
+        "path": "/private/tmp/still-shift-ms2-cue-lifecycle-FfoqYU/clothespeg/edited-altered.mp4",
+        "bytes": 34536,
+        "sha256": "sha256:e77af570aab97c5f03f82d2980bf48b25e37a8abfbde4277b5609d8f3c1d7121"
+      }
+    }
+  ],
+  "remaining": [
+    "Selective affected-shot reuse, complete rendered label/layout/readability QA, coverage and typography acceptance.",
+    "Genuine spoken input, supported-pack promotion, whole resource/lifetime audit, full software/benchmark and final installed-package verification before MS2 PR and MS3."
+  ]
+}

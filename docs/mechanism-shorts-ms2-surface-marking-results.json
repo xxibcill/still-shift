@@ -1,0 +1,973 @@
+{
+  "version": "mechanism-shorts-ms2-surface-marking-results-1",
+  "date": "2026-10-12",
+  "branch": "codex/mechanism-ms2",
+  "baseCommit": "d9272caa",
+  "status": "rigid-surface-marking-software-slice-complete",
+  "implementation": {
+    "route": "Indexed immutable Float32 rigid triangle, positive barycentrics/roll, derived part/TRS/front face, full pixel box+raster guard fitted within triangle; opaque material and unit-scale/quantization placement admission.",
+    "patch": "Full stable-ID world-annotation variant replacement removes old route fields, CAS and native invalidation unchanged.",
+    "nativeMath": "Existing physical world-graphic depth/font/mask and evaluator60. Shared graphic meshes now have explicit renderOrder1: physical opaque material order no longer depends on cold/warm allocations; depth testing/writing and physical geometry remain unchanged.",
+    "limits": "No deforming meshes, masked substrate, nonunit source scale, oversized footprint or excessive placement bias; no automatic surface layout or all-camera/driver/encoded readability promise.",
+    "eulerPole": "Stable pitch atan2 and exact-pole up-axis extraction preserve both actual triangle normal and rolled text axis; independent Three near/exact-pole test passes1e-10.",
+    "placementMargin": "32 Float32 ULPs, with0.1% of minimum triangle altitude admission cap; no arbitrary margin inflation. Initial16-ULP ink loss and32-ULP cold-depth-tie seek failure retained.",
+    "streamingProof": "Surface-only H264 proof hashes complete encoded bodies, video per frame and AAC PCM incrementally. Existing default world parallel proof unchanged; exact lengths/extra frame/body checksum errors retained. No complete-video buffer or old16MiB budget increase.",
+    "diagnosticAdmissionRepair": "Measured104x84 logical box/font64 accommodates actual96.31996155x83.2px shaped Pin; complete box+raster guard fits same indexed triangle via derived density.1440x816 retains camera aspect, source models/policies/clocks and existing limits. RGB2/min8 preview and RGB28/min3 encoded thresholds unchanged.",
+    "fixtureCoordinates": "Optional larger fixture output scales authored screen-label coordinates from legacy240x136 before first immutable save. Default factory callers retain exact previous values; no layout/protection threshold relaxed."
+  },
+  "attempts": [
+    {
+      "id": "red1",
+      "actualExitCode": 1,
+      "reason": "Missing surface route: six failed/one passed in seven tests.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-red1.log",
+        "bytes": 9322,
+        "sha256": "sha256:3ed43646309d5e1aff4796e53e0d2c1f04176b4f4886afb60998ac61422b7ae5"
+      }
+    },
+    {
+      "id": "focused1",
+      "actualExitCode": 0,
+      "reason": "Initial route and existing world/cue suites:21 tests/three files pass.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-focused1.log",
+        "bytes": 2026,
+        "sha256": "sha256:e69f6dc07a310147d6532864b9d85edef82fb9102a536bbe69771bd872693bb2"
+      }
+    },
+    {
+      "id": "build1",
+      "actualExitCode": 2,
+      "reason": "Surface/world test fixtures require union narrowing after adding the second annotation variant.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-build1.log",
+        "bytes": 4902,
+        "sha256": "sha256:75b1aae1ed17c68e83236eb7641ed94c7b31af0618660b94eb1836e0304090e4"
+      }
+    },
+    {
+      "id": "focused2",
+      "actualExitCode": 0,
+      "reason": "Added independent Three triangle/normal/rotated-box/Float32/material/precision tests:36 tests/four files pass.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-focused2.log",
+        "bytes": 2758,
+        "sha256": "sha256:afac2fc4a4958b2e80c9d4c8d465129bc462b3b436cd4572a3d81b3ffa51927f"
+      }
+    },
+    {
+      "id": "build2",
+      "actualExitCode": 0,
+      "reason": "Union fixture guards type-check.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-build2.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "build3",
+      "actualExitCode": 0,
+      "reason": "Initial shared two-route browser harness type-checks; later source review fixes edited-stage route preservation before any GPU run.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-build3.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "schema1",
+      "actualExitCode": 0,
+      "reason": "Generated both public cue schemas with the explicit surface variant.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-schema1.log",
+        "bytes": 653,
+        "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+      }
+    },
+    {
+      "id": "fixtures1",
+      "actualExitCode": 0,
+      "reason": "Three explicit rigid diagnostic face selections compile; CLI CJS Three warning is retained, no GPU proof inferred.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-fixtures1.log",
+        "bytes": 4033,
+        "sha256": "sha256:34fe59f66bcc5ef60c6ad0cdc0befdda74dbecd17da1add4cc6e1ca9672d935a"
+      }
+    },
+    {
+      "id": "focused3",
+      "actualExitCode": 1,
+      "reason": "Camera-bound edit guard aborts after editing the resolver but before wiring caller; an undefined internal bound gives three focused failures/33 passes. Repaired bound/caller and added finite guard.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-focused3.log",
+        "bytes": 5947,
+        "sha256": "sha256:3375069f831157cf498f901b8a3b8226aac2668a9792a9823a9e4716775a6f70"
+      }
+    },
+    {
+      "id": "focused4",
+      "actualExitCode": 0,
+      "reason": "Camera bounds wired; large authored camera negative and independent geometry/source checks pass36 tests/four files.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-focused4.log",
+        "bytes": 2625,
+        "sha256": "sha256:2a12ff469a9d515f05f99ed096230ec5b73488c1bf63e328d2777b93458ef91f"
+      }
+    },
+    {
+      "id": "pole-red1",
+      "actualExitCode": 1,
+      "reason": "Independent near-pole normal check fails: distance0.0001965872445473822 >1e-10; nine other surface tests pass.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-pole-red1.log",
+        "bytes": 2479,
+        "sha256": "sha256:d8fbea8651fed876ffa1b46538d813194539d01d151c9fd922a07d7363fe5f35"
+      }
+    },
+    {
+      "id": "focused5",
+      "actualExitCode": 1,
+      "reason": "An edit guard mismatched unformatted test text and aborted before any source change; same pole test fails/36 pass across four files. Retained, not described as a source repair.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-focused5.log",
+        "bytes": 4082,
+        "sha256": "sha256:b41eb49f7ea8975069ae71422d4452920dfce8527658deddc097ed13586c6336"
+      }
+    },
+    {
+      "id": "focused6",
+      "actualExitCode": 0,
+      "reason": "Stable atan2 Euler conversion and exact-pole axis extraction repair normal and rolled text-axis checks. All37 tests/four files pass.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-focused6.log",
+        "bytes": 2759,
+        "sha256": "sha256:a01ce55ca6d1d3e91c14a57429491b8628c6b789cf9fb19f1b203a6eaebfdf5c"
+      }
+    },
+    {
+      "id": "fast1",
+      "actualExitCode": 1,
+      "reason": "Schema/boundaries/format pass, then lint rejects three unused test variables; replaced with real stable-ID assertions and removed the unused mesh variable. No GPU attempt has run.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-fast1.log",
+        "bytes": 1944,
+        "sha256": "sha256:19021d70c87688f612c7c52395baf1edccea0e0a46cd398cd589435c37d02b4d"
+      }
+    },
+    {
+      "id": "fast2",
+      "actualExitCode": 2,
+      "reason": "Schema/boundaries/format/lint pass, build finds TS7022 circular inference in shared browser surface fixture; explicit ReturnType variable annotation repairs the test.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-fast2.log",
+        "bytes": 1732,
+        "sha256": "sha256:9d23cc2b369ce059c4f37420d5284af6841a9ccb0e219890a675f76c135c1273"
+      }
+    },
+    {
+      "id": "build4",
+      "actualExitCode": 0,
+      "reason": "Explicit shared fixture type breaks inference cycle; complete tsc passes.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-build4.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "fast3",
+      "actualExitCode": 0,
+      "reason": "Final held fast gate passes4330 tests/425 files plus schema/boundaries/format/lint/build.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-fast3.log",
+        "bytes": 38396,
+        "sha256": "sha256:8cfb2b2ecad2124ed25aebad43b20e2b7e95a63df50bf98ad1826311b4b5ef1d"
+      }
+    },
+    {
+      "id": "native1",
+      "session": 32016,
+      "actualExitCode": 0,
+      "depthCases": 14,
+      "compositionCases": 6,
+      "cancellation": "passed-required-worker-control",
+      "directory": "/private/tmp/still-shift-ms1n-native-depth-m5cjG7",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-native1.log",
+        "bytes": 538,
+        "sha256": "sha256:2840d8ad1ba4d4e1ec1978e9b33828035f25e5e04f2ca0c8bbbcb15177b4f552"
+      },
+      "independentAudit": {
+        "path": "/private/tmp/still-shift-ms2-surface56-native-audit1.json",
+        "bytes": 11121,
+        "sha256": "sha256:0e303e3c67d4fdc8d61f783b159cb5e86bbe4609b1777b31dd239f93b2b77fce"
+      },
+      "readbacks": 70,
+      "exactControlPairs": 30
+    },
+    {
+      "id": "surface-browser1",
+      "session": 26494,
+      "actualExitCode": 1,
+      "reason": "Saved cue edit tries to change immutable output dimensions; public save rejects path output before native rendering. New optional test-fixture dimensions are authored at initial creation; production pin guard unchanged.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-browser1.log",
+        "bytes": 1347,
+        "sha256": "sha256:85bf53d1c2a386ae1b6863db30352dce3ee2c7699fed6d6b43cec1dbefaa09b8"
+      },
+      "failedRecord": {
+        "path": "/private/tmp/still-shift-ms2-surface-markings-gVQqZD/failed.json",
+        "bytes": 131,
+        "sha256": "sha256:7bc71fa944c16cfba0671feca511a50ba950c0a305f271345b0f9a823623cce0"
+      },
+      "nativeDraws": "not-reached"
+    },
+    {
+      "id": "build5",
+      "actualExitCode": 0,
+      "reason": "First output-factory edit guard aborts after adding only the optional helper argument; that intermediate source type-checks. Caller repair still pending at this result.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-build5.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "build6",
+      "actualExitCode": 0,
+      "reason": "Initial surface fixture720x408 output is passed at creation; authored CAS edits retain output. Clothespeg selects largest clear front triangle on either arm end (left radius0.232818 vs prior right0.082897); independent geometry probe retained, no GPU count or threshold loosened.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-build6.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      },
+      "faceProbe": {
+        "path": "/private/tmp/still-shift-ms2-surface56-peg-faces1.log",
+        "bytes": 2623,
+        "sha256": "sha256:ccdd40cce28cd49f477b60b6c46fa541b54f864066a113be72a8ffbb9e394833"
+      }
+    },
+    {
+      "id": "fast4",
+      "session": 36399,
+      "actualExitCode": 0,
+      "reason": "Final held fast gate passes4330 tests/425 files after optional initial fixture dimensions and larger clear peg triangle; schema/boundaries/format/lint/build pass.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-fast4.log",
+        "bytes": 38508,
+        "sha256": "sha256:74900024cf0edd797c44f5b6a13f0ad32b648a916233058e427b60ba1defc911"
+      }
+    },
+    {
+      "id": "surface-browser2",
+      "session": 27009,
+      "actualExitCode": 1,
+      "reason": "Frame0 fitted top-flange marking reports0 exact ink pixels; diagnostic0/7/37 counts0/2/19. Initial blade-occlusion hypothesis was wrong: actual hide-blade control leaves all counts identical. Bias2 restores24/25/22 pixels; bias4 control also retained. Production placement margin doubles32 ULPs while maintaining0.1% minimum-altitude cap. Original flange fixture restored; no threshold or physical-source relaxation.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-browser2.log",
+        "bytes": 1181,
+        "sha256": "sha256:48b7911094397faaec7e746625e74f02711344cba29addac7c1589643901c2a3"
+      },
+      "failed": {
+        "path": "/private/tmp/still-shift-ms2-surface-markings-xzzaiw/failed.json",
+        "bytes": 680,
+        "sha256": "sha256:250e3cba3eb653b06d2d1b45713b8b829de72046abec36532cb5bfb332f68b9a"
+      },
+      "heldInputs": "/private/tmp/still-shift-ms2-surface56-inputs4.json",
+      "postTerminalInputs": "2610 files/120437890B independently verified unchanged",
+      "diagnostic": {
+        "path": "/private/tmp/still-shift-ms2-surface56-probe1.json",
+        "bytes": 3972,
+        "sha256": "sha256:c31637088f27984c2d3d3a905c245cd962426f00b54f550b3451d3b6799727aa"
+      },
+      "diagnosticCommandLog": {
+        "path": "/private/tmp/still-shift-ms2-surface56-probe3.log",
+        "bytes": 2088,
+        "sha256": "sha256:cda181c8218afb1c2252e1b304c1b7aa659303b9673ceff3d0fd92a08da9b4aa"
+      },
+      "diagnosticLimits": "Local borrowed-helper diagnostic copies skip ink acceptance and render only0/7/37; no positive production/native proof. Initial tmp TS CJS/top-level-await and wrong-cwd package-alias attempts fail before GPU; both logs retained.",
+      "depthDiagnostic": {
+        "path": "/private/tmp/still-shift-ms2-surface56-depth-probe1.log",
+        "bytes": 384,
+        "sha256": "sha256:17605dfd4c0a54d92a9b1db14c31777c4937d29cd698fe9f6987cd6918e1400b"
+      }
+    },
+    {
+      "id": "fast5",
+      "session": 7958,
+      "actualExitCode": 0,
+      "reason": "Temporary front-face test-only experiment passes full fast4330/425; replaced after isolated GPU diagnosis disproves blade occlusion. Not final-source verification.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-fast5.log",
+        "bytes": 38087,
+        "sha256": "sha256:6fcf3a3e604e963d718097867e534046eaf9b4fd7dfe49f6cfbd76be0d36de45"
+      },
+      "heldInputs": "/private/tmp/still-shift-ms2-surface56-inputs5.json"
+    },
+    {
+      "id": "focused7",
+      "session": 21191,
+      "actualExitCode": 0,
+      "reason": "Final32 ULP margin preserves37 tests/four files, including independent normal/text-axis/triangle box/material/precision and CAS controls.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-focused7.log",
+        "bytes": 2626,
+        "sha256": "sha256:1ee0a274de3707ab6ff690a034c4bc57adaeb6fbaf6446d05c3fbe09412d2b53"
+      }
+    },
+    {
+      "id": "surface-browser3",
+      "session": 67563,
+      "actualExitCode": 1,
+      "reason": "Final32 ULP margin clears forward ink acceptance, then exact seek pixel comparison fails. No positive full route pass or native exports claimed; retained diagnostic is investigating actual repeated frames.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-browser3.log",
+        "bytes": 966,
+        "sha256": "sha256:63c2da0b1aafd95247534801e411e4b440acb3f32ce5c45a03b8faded20f6c23"
+      },
+      "failed": {
+        "path": "/private/tmp/still-shift-ms2-surface-markings-FkM463/failed.json",
+        "bytes": 459,
+        "sha256": "sha256:f1807ee7f7db6ada401940e470c59b83b400fd93bfc10bb5468fce47ee73d1e9"
+      },
+      "heldInputs": "/private/tmp/still-shift-ms2-surface56-inputs6.json",
+      "postTerminalInputs": "2610 files/120437890B independently verified unchanged"
+    },
+    {
+      "id": "order-red1",
+      "actualExitCode": 1,
+      "reason": "Test driver omits a newly required camera argument from pinned Three push, before reaching sort assertion; corrected using actual unshift/default sorter.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-order-red1.log",
+        "bytes": 1961,
+        "sha256": "sha256:f47281eaa875225d73ca0a8c7bb2e8eb34db49d184e77ccba75805afb67efa52"
+      }
+    },
+    {
+      "id": "focused8",
+      "actualExitCode": 1,
+      "reason": "Four focused suites40 tests pass; the initial sort driver fails on missing camera; no success inferred.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-focused8.log",
+        "bytes": 4336,
+        "sha256": "sha256:71b5da38300f0de2a359b48beb9bbf612cdab161e14e86e28578dc790a41b6d9"
+      }
+    },
+    {
+      "id": "order-red2",
+      "actualExitCode": 1,
+      "reason": "Actual default pinned Three opaque sorter reverses physical/graphic depth-tie order across material creation:one failed/three passed; failed object serialization warning retained.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-order-red2.log",
+        "bytes": 8713,
+        "sha256": "sha256:aaeccba047c6acc586e0acb325d43795a66b6b0cbe9f0f1ebdc7baee181930de"
+      }
+    },
+    {
+      "id": "focused9",
+      "actualExitCode": 0,
+      "reason": "Explicit renderOrder1 fixes actual cold/warm sorter while preserving depthTest/depthWrite;41 tests/five files pass.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-focused9.log",
+        "bytes": 2687,
+        "sha256": "sha256:d7cf2b909a98d4c1bbc52c6880b2e6e94f40b622a42f5770ffc75c416c81f854"
+      }
+    },
+    {
+      "id": "fast6",
+      "session": 68684,
+      "actualExitCode": 0,
+      "unitTests": 4330,
+      "unitFiles": 425,
+      "reason": "Final32 ULP placement margin; all schema/boundaries/format/lint/build/4330 units425files pass on held inputs6.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-fast6.log",
+        "bytes": 38526,
+        "sha256": "sha256:69d63869b310e314d38b73daafd732e0391a1149058cb3b691d02f26f18afe14"
+      },
+      "qualification": "This fast6 pass predates the shared renderer ordering fix; final fast7 is a separate run."
+    },
+    {
+      "id": "surface-browser4",
+      "session": 43056,
+      "actualExitCode": 1,
+      "reason": "Taped before-stage actual60 previews/180 exact seeks, public native export/check complete; retained test helper full RGBA decoder then fails ENOBUFS at fixed16MiB. No full-family pass claimed. Surface-only streaming proof replaces full decoded-video accumulation without raising old budgets.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-browser4.log",
+        "bytes": 1407,
+        "sha256": "sha256:bd3193cf56cf35688f87cad165747dab0cffb9cc768b8990574ad7bf99cdf497"
+      },
+      "failed": {
+        "path": "/private/tmp/still-shift-ms2-surface-markings-805f1s/failed.json",
+        "bytes": 84,
+        "sha256": "sha256:671e298c074019642a41281c1f37a7448d8c40efdba13dc10e5f574cc55f3e4b"
+      },
+      "heldInputs": "/private/tmp/still-shift-ms2-surface56-inputs7.json",
+      "postTerminalInputs": "independently verified unchanged"
+    },
+    {
+      "id": "build7",
+      "session": 23364,
+      "actualExitCode": 0,
+      "reason": "Surface-only streaming output helper and unchanged default world proof path type-check.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-build7.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "stream-probe1",
+      "actualExitCode": 0,
+      "reason": "Actual retained720x408 native H264 decoded incrementally:60 complete frames/audio, extra-frame and changed checksum negatives pass. Independent full FFmpeg decode70502400 videoB/770048 audioB matches every digest. No native acceptance or RSS guarantee inferred.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-stream-probe1.log",
+        "bytes": 72,
+        "sha256": "sha256:422ad590254aeaa11bb55030ed636ad9f269c44c85711f24add685dc03334c29"
+      },
+      "producer": {
+        "path": "/private/tmp/still-shift-ms2-surface56-stream-probe1.json",
+        "bytes": 5471,
+        "sha256": "sha256:38121c8377844d766b992ad646784b50e07517df0a734e468ce22b70e473ccce"
+      },
+      "independentAudit": {
+        "path": "/private/tmp/still-shift-ms2-surface56-stream-audit1.json",
+        "bytes": 553,
+        "sha256": "sha256:612bc4fb4acf548bd0f49c76f5431839bd61f5b2039376f2e38c4c26f2271d84"
+      }
+    },
+    {
+      "id": "fast8",
+      "session": 83223,
+      "actualExitCode": 1,
+      "reason": "Schema/boundaries pass; newly updated evidence JSON formatting fails. Source inputs8 remain unchanged; only excluded evidence prose formatting is repaired. No lint/build/unit completion inferred.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-fast8.log",
+        "bytes": 1429,
+        "sha256": "sha256:d45f8353828a2752b6fe910eb428f13ae54441bf33ea2f58731726535345d72f"
+      }
+    },
+    {
+      "id": "fast7",
+      "session": 51695,
+      "actualExitCode": 0,
+      "unitTests": 4331,
+      "unitFiles": 425,
+      "reason": "Held final native renderOrder1/surface32ULP source passes schema/boundaries/format/lint/build and4331 units425files.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-fast7.log",
+        "bytes": 38269,
+        "sha256": "sha256:7ec67cc21e739bcf6cf3c7149f2dad0ab3fdbe737eb5f4139b7e2469ec6426b8"
+      }
+    },
+    {
+      "id": "surface-browser5",
+      "session": 93597,
+      "actualExitCode": 0,
+      "reason": "All three families360 previews1080 exact seeks/six exports360 native frames18 controls pass on held inputs8. Independent encoded ink audit then fails; this is not accepted final encoded surface proof.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-browser5.log",
+        "bytes": 748,
+        "sha256": "sha256:091e0a9507552b4db3f76bee0706ee8cd375c6daeed5d57820f209029958be8b"
+      },
+      "producer": {
+        "path": "/private/tmp/still-shift-ms2-surface-markings-342rt2/run.json",
+        "bytes": 424716,
+        "sha256": "sha256:3aa2cfac9f62c5b2b7bcb6484034c1a41e529a9678f6f1c7588891d51e38a843"
+      },
+      "heldInputs": "/private/tmp/still-shift-ms2-surface56-inputs8.json",
+      "postTerminalInputs": "2611 files120444346B independently verified unchanged",
+      "sampledPNGs": "All12 original720x408 PNGs agent-viewed; tiny engineering marks, no readability acceptance."
+    },
+    {
+      "id": "surface-audit1",
+      "actualExitCode": 1,
+      "reason": "RGB28/min3 projected encoded ink fails. Independent six-output diagnosis finds below-threshold frames in five of six streams despite preview visibility; tiny font occupies too little of its logical box for H264 chroma sampling. Physical/source/font/seek/triangle/native proof checks before failure remain retained, no full independent pass.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-audit1.log",
+        "bytes": 1140,
+        "sha256": "sha256:c99affa8697898a3c796dc9adf20c99facf1125d67efdba31cae7738741b0610"
+      },
+      "diagnostic": {
+        "path": "/private/tmp/still-shift-ms2-surface56-encoded-diagnostic1.json",
+        "bytes": 8571,
+        "sha256": "sha256:c659ef45f65739d8541a67b99f782c06614e1d19162925ffd14c7ed53aabbfe5"
+      }
+    },
+    {
+      "id": "fast9",
+      "session": 46818,
+      "actualExitCode": 0,
+      "unitTests": 4331,
+      "unitFiles": 425,
+      "reason": "Final source inputs8 passes schema/boundaries/format/lint/build/4331 units425files after surface-only streaming test helper repair.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-fast9.log",
+        "bytes": 38267,
+        "sha256": "sha256:1825068f85237620dd0dd8dc3f5efa02773b23c3d8f38a6113678017996a18fc"
+      }
+    },
+    {
+      "id": "build8",
+      "session": 29786,
+      "actualExitCode": 0,
+      "reason": "Tighter96x80/font64 and1440x816 surface-only viewport type-check.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-build8.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "surface-browser6",
+      "session": 82820,
+      "actualExitCode": 1,
+      "reason": "1440x816 initial factory save correctly rejects unscaled18px screen label position outside its larger safe margin, before GPU. Optional fixture output now scales authored screen coordinates from legacy240x136; production layout/safe-area rules unchanged.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-browser6.log",
+        "bytes": 1654,
+        "sha256": "sha256:00760ee239b32fb5c9b3b0bab4a6d47749c2f0a040f0b5467dcb716604c96224"
+      },
+      "failed": {
+        "path": "/private/tmp/still-shift-ms2-surface-markings-z0LSyd/failed.json",
+        "bytes": 135,
+        "sha256": "sha256:6856e4f65f9c3a437a81fe44737800f1369922867f6919e08c66ec65ab20d645"
+      },
+      "heldInputs": "/private/tmp/still-shift-ms2-surface56-inputs9.json",
+      "postTerminalInputs": "2611 files120444346B independently verified unchanged"
+    },
+    {
+      "id": "fast10",
+      "session": 79693,
+      "actualExitCode": 0,
+      "unitTests": 4331,
+      "unitFiles": 425,
+      "reason": "Final tight-glyph source inputs9 passes schema/boundaries/format/lint/build/4331 units425files.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-fast10.log",
+        "bytes": 38268,
+        "sha256": "sha256:9a55c7ef6e9077b66714804f5e3635b69c49a4242802061145f4638fbcb7d491"
+      }
+    },
+    {
+      "id": "build9",
+      "session": 52244,
+      "actualExitCode": 0,
+      "reason": "Scaled optional fixture screen coordinates type-check; default world callers unchanged.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-build9.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "surface-browser7",
+      "session": 17105,
+      "actualExitCode": 1,
+      "reason": "Actual pinned-font layout rejects80px logical height for font64 before native draw; SFNT hhea ascent1025/descent275/units1000 gives83.2px full typographic height. Logical84px height now reserves full metrics; measured ink alone cannot certify layout fit. Overflow rule unchanged.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-browser7.log",
+        "bytes": 1678,
+        "sha256": "sha256:8f80d2c3acf5d96f89bab360065f21e5ace4c937b225fe021d0ecb93384b60e4"
+      },
+      "failed": {
+        "path": "/private/tmp/still-shift-ms2-surface-markings-rzfNpW/failed.json",
+        "bytes": 1177,
+        "sha256": "sha256:7ff7cb4ac0585b6e9569a879fcf1c7ecfd8906832e10fd21a2d7d5971f2260d5"
+      },
+      "fontMetrics": {
+        "path": "/private/tmp/still-shift-ms2-surface56-font-metrics1.log",
+        "bytes": 343,
+        "sha256": "sha256:a26653da0e73981d122b799dce529b44e1dd5bde231d1c66c711bf5eb24c58ff"
+      },
+      "heldInputs": "/private/tmp/still-shift-ms2-surface56-inputs10.json",
+      "postTerminalInputs": "2611 files120444660B independently verified unchanged"
+    },
+    {
+      "id": "build10",
+      "actualExitCode": null,
+      "reason": "Previous tool output truncated the terminal receipt. Log contains tsc invocation without errors and no owned build is live, but completion is unverified; retained and rerun as build11.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-build10.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "build11",
+      "session": 2370,
+      "actualExitCode": 0,
+      "reason": "Fresh owned terminal confirms type-check after84px full-font-height repair.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-build11.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "surface-browser8",
+      "session": 98168,
+      "actualExitCode": 1,
+      "reason": "Actual shaped Pin width96.31996154785156px exceeds96px+0.01 unchanged overflow allowance;84px height accommodates83.2px actual metrics. Independent pinned-browser layout probe shows104px box admits same64px font; footprint enlarged within same triangle by deriving new density.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-browser8.log",
+        "bytes": 1678,
+        "sha256": "sha256:464b738b36886177e4dabbbb92180d56a1b7c977806937698187e2aa21b98c65"
+      },
+      "failed": {
+        "path": "/private/tmp/still-shift-ms2-surface-markings-L1IibJ/failed.json",
+        "bytes": 1177,
+        "sha256": "sha256:7ff7cb4ac0585b6e9569a879fcf1c7ecfd8906832e10fd21a2d7d5971f2260d5"
+      },
+      "heldInputs": "/private/tmp/still-shift-ms2-surface56-inputs11.json",
+      "postTerminalInputs": "2611 files120444660B independently verified unchanged",
+      "layoutProbe": {
+        "session": 21422,
+        "actualExitCode": 0,
+        "artifact": {
+          "path": "/private/tmp/still-shift-ms2-surface56-layout-probe1.json",
+          "bytes": 4977,
+          "sha256": "sha256:9eb68b778525ab5206adee381c7cecbdc33d5744a9e3ab3415261e785ed3f826"
+        },
+        "log": {
+          "path": "/private/tmp/still-shift-ms2-surface56-layout-probe1.log",
+          "bytes": 2532,
+          "sha256": "sha256:426bb31f73ab2ed0c4caa24f98fc2bb45d8669cf7227fc25bc7a37b5a10b87c6"
+        }
+      }
+    },
+    {
+      "id": "build12",
+      "session": 55304,
+      "actualExitCode": 0,
+      "reason": "Measured104x84 surface fixture type-checks.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-build12.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "fast11",
+      "session": 53836,
+      "actualExitCode": 0,
+      "unitTests": 4331,
+      "unitFiles": 425,
+      "reason": "Final measured104x84/font64 fixture inputs12 passes schema/boundaries/format/lint/build/4331 units425files. Source inventory independently verified unchanged.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-fast11.log",
+        "bytes": 40370,
+        "sha256": "sha256:9ed0a817ab70488d3882748014f01ab82edd4e8e94812adc230ce1034bf8be4f"
+      }
+    },
+    {
+      "id": "surface-browser9",
+      "session": 2964,
+      "actualExitCode": 0,
+      "reason": "Measured104x84/font64 surface route passes all three families/two ink stages:360 previews1080 seeks/six exports360 native frames18 controls on final held inputs12. Independent final audit remains a separate required gate.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-browser9.log",
+        "bytes": 748,
+        "sha256": "sha256:1e94a27d1befc268e5fc7e4fb8ccd75300d19419bc7d505fdf0a54800242a608"
+      },
+      "producer": {
+        "path": "/private/tmp/still-shift-ms2-surface-markings-J4didA/run.json",
+        "bytes": 424459,
+        "sha256": "sha256:f2171857032df81bd535d9fffc3fc8e9a685349942be95148c28d5e584191636"
+      },
+      "heldInputs": "/private/tmp/still-shift-ms2-surface56-inputs12.json",
+      "postTerminalInputs": "2611 files120444661B independently verified unchanged"
+    }
+  ],
+  "browserHarness": {
+    "routes": ["world-text", "surface-marking"],
+    "positiveFamilySources": "Unmodified strict proof policies and geometry hashes; explicit physical faces at1440x816 for final surface9, unchanged60 frames/96k synthetic narration samples. Historical720x408 attempts retained.",
+    "colors": "Red then green in the same route; actual expected native ACES/sRGB ink oracle unchanged.",
+    "negativeControls": "Existing separately hashed hidden-control source only permits truthful authored-hidden at frame0 for affected changing shapes; exported sources retain required draws.",
+    "newOwningCommand": "pnpm test:browser:mechanism-surface-markings",
+    "aggregateGroups": 97,
+    "currentStatus": "surface9/audit2/default-world1/audit1/legacy-comparison1-passed"
+  },
+  "remaining": [
+    "Label-only native-plate reuse with original authenticated receipts and zero fresh3D draws. Existing world/surface patches require whole-cycle native invalidation; their rendering is verified.",
+    "Genuine recovered speech decode/sample clocks/cues/native exports; whole resources/lifetime/replay; final full97/frozen176/36061/benchmark/archive/installed/pack admission/MS2 PR.",
+    "Broader world/surface layout, encoded glyph-copy/readability, continuous-time/all-driver and human acceptance remain separate. Supported packs0; accepted pilot0; MS3 not started. No paid generation or owner acceptance."
+  ],
+  "currentExecution": {
+    "status": "completed-staged-software-slice",
+    "next": "Commit slice56, implement actual label-only native-plate reuse and remaining MS2 gates."
+  },
+  "currentFast": {
+    "id": "fast11",
+    "session": 53836,
+    "actualExitCode": 0,
+    "unitTests": 4331,
+    "unitFiles": 425,
+    "reason": "Final measured104x84/font64 fixture inputs12 passes schema/boundaries/format/lint/build/4331 units425files. Source inventory independently verified unchanged.",
+    "log": {
+      "path": "/private/tmp/still-shift-ms2-surface56-fast11.log",
+      "bytes": 40370,
+      "sha256": "sha256:9ed0a817ab70488d3882748014f01ab82edd4e8e94812adc230ce1034bf8be4f"
+    }
+  },
+  "nativeRegression": {
+    "id": "native2",
+    "session": 22243,
+    "actualExitCode": 0,
+    "depthCases": 14,
+    "compositionCases": 6,
+    "directory": "/private/tmp/still-shift-ms1n-native-depth-KrH35K",
+    "log": {
+      "path": "/private/tmp/still-shift-ms2-surface56-native2.log",
+      "bytes": 538,
+      "sha256": "sha256:e5cafeed543bfc1bc594120cc03e03894f2b81e94903638f66c292865f0f50f2"
+    },
+    "independentAudit": {
+      "path": "/private/tmp/still-shift-ms2-surface56-native-audit5.json",
+      "bytes": 11121,
+      "sha256": "sha256:cf4ceead1dd6a07432be39efcbf4fc25bea3051ddd12adcf3d7034a46fd040e6"
+    },
+    "readbacks": 70,
+    "exactControlPairs": 30,
+    "requiredProofReport": {
+      "path": "/private/tmp/still-shift-ms1n-native-depth-KrH35K/required-native-proof-reports.json",
+      "bytes": 164,
+      "sha256": "sha256:9f8fe09e101235bd2c6ffb52206bda2e43d78851f8add1cc9862530e9bed06da"
+    },
+    "qualification": "Native2 actually passes on inputs7 after renderOrder1 fix. Only four test browser/streaming/fixture files differ on final inputs12; recorded native owning source hashes/70 readbacks/30 pairs independently match in audit9. Surface9/default world and fast11 are separate staged gates; no full97 aggregate claimed.",
+    "cancellation": "actual required worker cancellation passed; retained packet/pixel/process/cleanup audit",
+    "cancellationAudit": {
+      "path": "/private/tmp/still-shift-ms2-surface56-cancel-audit1.json",
+      "bytes": 596,
+      "sha256": "sha256:fb99f468022b44eb98d44bf7e37384e1e3b02f44f9091225cece2a3fa68ace3e"
+    },
+    "currentSourceAudit": {
+      "path": "/private/tmp/still-shift-ms2-surface56-native-audit9.json",
+      "bytes": 11121,
+      "sha256": "sha256:cf4ceead1dd6a07432be39efcbf4fc25bea3051ddd12adcf3d7034a46fd040e6"
+    },
+    "sourceDelta": {
+      "path": "/private/tmp/still-shift-ms2-surface56-source-delta10.json",
+      "bytes": 398,
+      "sha256": "sha256:b3c908292ddff2a74500909919b7229c74cdcc6a692ec39b0809ba4a12bb44f4"
+    }
+  },
+  "inputInventory": {
+    "artifact": {
+      "path": "/private/tmp/still-shift-ms2-surface56-inputs12.json",
+      "bytes": 445389,
+      "sha256": "sha256:9ee163fcbb2651396fbcb0d4914c29d61d59711d65c96fa2b49dbeacc84a1b1b"
+    },
+    "files": 2611,
+    "inputBytes": 120444661,
+    "afterBuild12": "held",
+    "afterFast11": "2611 files120444661B independently verified unchanged",
+    "afterSurface9": "2611 files120444661B independently verified unchanged",
+    "afterAllFinalStagedGates": "2611 source/schema/test inputs120444661B independently verified unchanged through fast11/surface9/default-world1/independent audits. Milestone/evidence prose excluded as declared; public schemas included."
+  },
+  "seekDiagnostic": {
+    "actualExitCode": 0,
+    "fullSeekDiagnostic": {
+      "path": "/private/tmp/still-shift-ms2-surface56-seek-probe1.json",
+      "bytes": 78908,
+      "sha256": "sha256:50298efcc772a40607c8d5f18d61180bdc21f1635b262c90ed8ba4669200a56b"
+    },
+    "contextDiagnosticLog": {
+      "path": "/private/tmp/still-shift-ms2-surface56-context-probe1.log",
+      "bytes": 445,
+      "sha256": "sha256:b55eaa4841fe7adce242f5ec0dd4233265b13c7a0540d4eca283feb9cdba296d"
+    },
+    "findings": "60 forward frames minimum22 ink; only two frame0 repeat comparisons differ. Independent PNG comparison locates exactly2 pixels385..386,y176; original/warm cameras, frame/artwork JSON and borrowed painted-raster hashes exactly equal. Separate48/64-bias diagnostic controls repeat0 after37 exactly; not product acceptance or adopted cap inflation. Actual Three sort red2 identifies creation-order tie; renderer ordering fix requires fresh fast/native/surface/default-world gates.",
+    "independentAudit": {
+      "path": "/private/tmp/still-shift-ms2-surface56-seek-audit1.json",
+      "bytes": 1977,
+      "sha256": "sha256:fcead95e1b0eda9a49f37d5b193c7a98e5c69850f3bdd1c978aac52e2117631d"
+    }
+  },
+  "historicalNativeRegression": {
+    "id": "native1",
+    "session": 32016,
+    "actualExitCode": 0,
+    "depthCases": 14,
+    "compositionCases": 6,
+    "cancellation": "passed-required-worker-control",
+    "directory": "/private/tmp/still-shift-ms1n-native-depth-m5cjG7",
+    "log": {
+      "path": "/private/tmp/still-shift-ms2-surface56-native1.log",
+      "bytes": 538,
+      "sha256": "sha256:2840d8ad1ba4d4e1ec1978e9b33828035f25e5e04f2ca0c8bbbcb15177b4f552"
+    },
+    "independentAudit": {
+      "path": "/private/tmp/still-shift-ms2-surface56-native-audit1.json",
+      "bytes": 11121,
+      "sha256": "sha256:0e303e3c67d4fdc8d61f783b159cb5e86bbe4609b1777b31dd239f93b2b77fce"
+    },
+    "readbacks": 70,
+    "exactControlPairs": 30,
+    "currentSourceAudit": {
+      "path": "/private/tmp/still-shift-ms2-surface56-native-audit4.json",
+      "bytes": 11121,
+      "sha256": "sha256:0e303e3c67d4fdc8d61f783b159cb5e86bbe4609b1777b31dd239f93b2b77fce"
+    },
+    "sourceDelta": {
+      "path": "/private/tmp/still-shift-ms2-surface56-source-delta6.json",
+      "bytes": 516,
+      "sha256": "sha256:ab0c1edcaa44b2b5febe83e2ec39ff43b392c4a6b4340f84fe11be9f5fb60878"
+    },
+    "qualification": "Native1 actually passes on inputs3. Recorded native producer owning source hashes remain unchanged on inputs6, independently audited70 readbacks/30 pairs. Shared browser/helpers and higher-level surface placement margin change; fresh surface-browser3 is required. Native1 is not repeated or described as one uninterrupted final pass.",
+    "currentSourceStatus": "superseded-by-three-graphics-order-fix; fresh native2 pending"
+  },
+  "partialEncodedDiagnostic": {
+    "path": "/private/tmp/still-shift-ms2-surface56-encoded-diagnostic2.json",
+    "bytes": 989,
+    "sha256": "sha256:0e83eb200c1189b0f7f358b75f7521df20b663d3864e1996d69a7b64c4f3bcb7"
+  },
+  "independentAudit": {
+    "actualExitCode": 0,
+    "session": 80256,
+    "artifact": {
+      "path": "/private/tmp/still-shift-ms2-surface56-audit2.json",
+      "bytes": 76095,
+      "sha256": "sha256:7f2efebe3359d014c75ccbdd6c3d0b312fc772aa03881e1f52eac47ae111d5e9"
+    },
+    "log": {
+      "path": "/private/tmp/still-shift-ms2-surface56-audit2.log",
+      "bytes": 762,
+      "sha256": "sha256:3a0499630b9b8af71dbc55b08869dcf402089d985a03a8658bde550f76da0b61"
+    },
+    "summary": {
+      "version": "ms2-rigid-surface-annotation-audit-1",
+      "status": "passed",
+      "previewFrames": 360,
+      "seekDraws": 1080,
+      "pngsHashedAndPixelsMatched": 12,
+      "partArtworkMatrixPairs": 360,
+      "independentRigidTriangleBoxQuads": 24,
+      "encodedBodiesHashed": 6,
+      "decodedFramesHashed": 360,
+      "encodedFramesWithProjectedColoredInk": 360,
+      "decodedAudioBodiesHashed": 6,
+      "sourceFloatWavSampleCountsMatched": 6,
+      "beforeAfterAudioIdenticalPairs": 3,
+      "nativeJournalFramesHashed": 360,
+      "hiddenOrOmittedControlDraws": 18,
+      "hiddenControlSourcePoliciesAndTruthfulMissingDraws": "independently-matched"
+    },
+    "encodedProjectedInkRgbTolerance": 28,
+    "minimumEncodedProjectedInkPixels": 3,
+    "perStreamObservedMinima": [
+      {
+        "family": "tape-hook",
+        "stages": [
+          {
+            "stage": "before",
+            "minimum": 31
+          },
+          {
+            "stage": "edited",
+            "minimum": 84
+          }
+        ]
+      },
+      {
+        "family": "cable-tie",
+        "stages": [
+          {
+            "stage": "before",
+            "minimum": 48
+          },
+          {
+            "stage": "edited",
+            "minimum": 50
+          }
+        ]
+      },
+      {
+        "family": "clothespeg",
+        "stages": [
+          {
+            "stage": "before",
+            "minimum": 61
+          },
+          {
+            "stage": "edited",
+            "minimum": 63
+          }
+        ]
+      }
+    ],
+    "qualification": "Independent retained-file/decode/hash and recorded part/artwork matrix audit; actual font/ink/projection/visibility and native closure replay belong to the recorded browser producer. Rigid Float32 triangle authoring/fit and existing depth-route proof only; no deforming surface, genuine narration, render reuse, continuous-time, all-driver or human acceptance."
+  },
+  "visualReview": {
+    "reviewer": "Codex agent",
+    "retainedPngsViewed": 12,
+    "dimensions": [1440, 816],
+    "framesPerStage": [7, 37],
+    "families": 3,
+    "stages": ["before", "edited"],
+    "scope": "All12 original-sized sampled PNGs show engineering Pin text on the selected rigid face before/after ink editing. No continuous human appearance, encoded glyph-copy/readability or listening acceptance."
+  },
+  "browser": {
+    "id": "surface-browser9",
+    "session": 2964,
+    "actualExitCode": 0,
+    "directory": "/private/tmp/still-shift-ms2-surface-markings-J4didA",
+    "families": 3,
+    "previewFrames": 360,
+    "seekDraws": 1080,
+    "nativeExports": 6,
+    "finalNativeFrames": 360,
+    "hiddenOrOmittedControlDraws": 18,
+    "beforeAfterAudioIdenticalPairs": 3,
+    "beforeAfterDecodedVideoChangedPairs": 3
+  },
+  "defaultWorldRegression": {
+    "id": "world-browser1",
+    "session": 59008,
+    "actualExitCode": 0,
+    "directory": "/private/tmp/still-shift-ms2-world-annotations-930dNL",
+    "log": {
+      "path": "/private/tmp/still-shift-ms2-surface56-world-browser1.log",
+      "bytes": 734,
+      "sha256": "sha256:f686a1280bdbbc3a925cdaaced108234f12c491c1621f5114c3fa9a2d4ffe299"
+    },
+    "producer": {
+      "path": "/private/tmp/still-shift-ms2-world-annotations-930dNL/run.json",
+      "bytes": 423551,
+      "sha256": "sha256:195e1114d6b94abd51d4b705d5e1366428a1d265477afb8f0199b2c056abff6a"
+    },
+    "previewFrames": 360,
+    "seekDraws": 1080,
+    "nativeExports": 6,
+    "finalNativeFrames": 360,
+    "hiddenOrOmittedControlDraws": 18,
+    "independentAudit": {
+      "session": 5747,
+      "actualExitCode": 0,
+      "artifact": {
+        "path": "/private/tmp/still-shift-ms2-surface56-world-audit1.json",
+        "bytes": 76323,
+        "sha256": "sha256:7ca799c4ffd15bf964d32d844ee32455ed316314bc1813df2b8fe25c7841ba6f"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-surface56-world-audit1.log",
+        "bytes": 715,
+        "sha256": "sha256:de8efad5a6e6a7db76b48e7a3ad79342e1c235d3eab62aeaa33757be4efb382e"
+      }
+    },
+    "retainedPngsAgentViewed": 12,
+    "dimensions": [240, 136],
+    "legacyComparison": {
+      "path": "/private/tmp/still-shift-ms2-surface56-world-legacy-comparison1.json",
+      "bytes": 1892,
+      "sha256": "sha256:c2c146866a62f3452fc1ce82114636c6f5f4d842569666de7d532b17b42e0322"
+    },
+    "exactPriorSlice55PreviewFrames": 360,
+    "exactPriorSlice55DecodedFrames": 360,
+    "exactPriorSlice55AudioBodies": 6,
+    "exactPriorSlice55EncodedBodies": 6,
+    "qualification": "Fresh default world route and independent audit pass after shared ordering fix. Legacy comparison verifies all preview/video/audio/body pixels and hashes against preceding slice55; no full frozen cohort or human acceptance inferred."
+  }
+}

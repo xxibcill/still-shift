@@ -1,0 +1,442 @@
+{
+  "schemaVersion": "mechanism-ms1-input-agent-evidence-1",
+  "worktree": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/",
+  "ownedFiles": [
+    "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/geometry.ts",
+    "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/capture.ts",
+    "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/assertions.ts",
+    "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-geometry.test.ts",
+    "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/runtime/mechanism-capture.test.ts",
+    "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-assertions.test.ts",
+    "tests/helpers/mechanism-bridge-preview.ts",
+    "tests/runtime/mechanism-bridge.test.ts"
+  ],
+  "finalFocusedTests": {
+    "command": "PATH=/Users/jjae/.nvm/versions/node/v22.23.1/bin:$PATH corepack pnpm exec vitest run tests/unit/mechanism-geometry.test.ts tests/unit/mechanism-assertions.test.ts tests/runtime/mechanism-capture.test.ts --maxWorkers=1 --no-file-parallelism",
+    "files": 3,
+    "passed": 24,
+    "durationSeconds": 20.49,
+    "artifactRoot": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-capture-pbBBg5",
+    "finalCombinedAfterSourceAlphaRepair": {
+      "command": "pnpm exec vitest run tests/unit/mechanism-geometry.test.ts tests/unit/mechanism-assertions.test.ts tests/runtime/mechanism-capture.test.ts tests/runtime/mechanism-bridge.test.ts",
+      "passed": 27,
+      "files": 4,
+      "durationSeconds": 14.86,
+      "geometry": 9,
+      "assertions": 8,
+      "capture": 8,
+      "bridge": 2,
+      "captureArtifactRoot": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-capture-YF8D12",
+      "bridgeArtifactRoot": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-bridge-0fnq0Q"
+    },
+    "focusedLint": "passed",
+    "focusedPrettier": "passed",
+    "typeScript": "owned files clear after JSON serialization fix; final observed shared graph error remains parent-owned composition-lint.ts:88 undeclared moduleUrl",
+    "bridgeAfterBrowserPayloadTypeFix": {
+      "passed": 2,
+      "durationSeconds": 6.7,
+      "captureSeconds": 1.722275833,
+      "sampledNodeRssBytes": 338149376,
+      "canvas2dIndependentBlendMax": 1,
+      "webgl2IndependentBlendMax": 1,
+      "eachBackendTransferredPreviewExportMax": 0,
+      "freshAndRepeatedPreviewHashes": "exact",
+      "artifactRoot": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-bridge-2EYAwR",
+      "lint": "passed"
+    }
+  },
+  "proof": {
+    "schemaVersion": "mechanism-plate-capture-1",
+    "requestHash": "sha256:de887b7c249dd954035a97d6fd2070601ed9d3f94b3f5407e84451aeef9fabf6",
+    "outputDirectory": "/tmp/still-shift-ms1-e01-frame138-1791566843417",
+    "patternPath": "/tmp/still-shift-ms1-e01-frame138-1791566843417/%06d.png",
+    "firstFrame": 0,
+    "sequenceManifestPath": "/tmp/still-shift-ms1-e01-frame138-1791566843417/sequence.manifest.json",
+    "sequenceManifestSha256": "sha256:c3b76bf90e31a34ba757de9d1994b9ef0583a1ed1e2f009278bd4edf7a379c20",
+    "sidecarPath": "/tmp/still-shift-ms1-e01-frame138-1791566843417/anchors.sidecar.json",
+    "sidecarSha256": "sha256:eff75ec8e7db602a62d1c84490e8340046d455001b644bf6c5c92185de90e71a",
+    "receiptPath": "/tmp/still-shift-ms1-e01-frame138-1791566843417/capture.receipt.json",
+    "attemptDirectory": "/tmp/.still-shift-ms1-e01-frame138-1791566843417.capture-V1TnPS",
+    "cacheHits": 0,
+    "new3dRenders": 1,
+    "environment": {
+      "profile": "chromium-software-2",
+      "browserVersion": "151.0.7922.34",
+      "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+      "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+      "platform": "darwin",
+      "arch": "arm64"
+    },
+    "frames": [
+      {
+        "path": "000000.png",
+        "sha256": "sha256:74d78a4f52f6163305d4c99c289a2254d014c50035b451a5478c172946ad3e33",
+        "bytes": 1448500,
+        "frame": 0,
+        "sourceFrame": 138
+      }
+    ],
+    "cacheEntryDirectory": "/tmp/still-shift-ms1-e01-proof-cache/de887b7c249dd954035a97d6fd2070601ed9d3f94b3f5407e84451aeef9fabf6/e2d3bf59-007b-43f2-8b56-1db7c4c1d2f7",
+    "projectHash": "sha256:e493419603a1d2d83651e4ccf9356a079c01cfc4776f871d38f31299837c739e",
+    "sourceFrame": 138,
+    "shotId": "V8-02",
+    "png": "/tmp/still-shift-ms1-e01-frame138-1791566843417/000000.png",
+    "wallSeconds": 3.0120544580000006,
+    "nodeRssBytes": 711262208
+  },
+  "stagedFailures": [
+    {
+      "kind": "browser-bootstrap",
+      "failureReceipt": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-capture-Ol7y30/.original.capture-f49FEU/failure.json",
+      "outputExcerpt": "page.evaluate: ReferenceError: __vite_ssr_dynamic_import__ is not defined\nat startRenderer capture.ts:613\nat captureMechanismPlates capture.ts:330\nat beforeAll tests/runtime/mechanism-capture.test.ts:146",
+      "result": "6 tests skipped after failed beforeAll; no mechanism plates published",
+      "repair": "Module script import plus private browser factory global; subsequent actual browser8/8 passes."
+    },
+    {
+      "kind": "focused-lint",
+      "outputExcerpt": "capture.ts:670:21 '_renderer' is assigned a value but never used; capture.ts:674:21 '_visibility' is assigned a value but never used (@typescript-eslint/no-unused-vars)",
+      "repair": "Use renderer metric and visibility values in explicit validation; focused lint passes."
+    },
+    {
+      "kind": "marker-motion-test-fixture",
+      "command": "vitest run tests/unit/mechanism-geometry.test.ts tests/runtime/mechanism-capture.test.ts --maxWorkers=1 --no-file-parallelism",
+      "outputExcerpt": "tests/unit/mechanism-geometry.test.ts:343 MechanismSceneSchema.parse: profile.toneMapping expected aces-filmic; profile.exposure expected number received undefined; profile.output expected srgb-rgba8-straight",
+      "result": "Capture8/8 passed; geometry7/8 passed (15/16 overall)",
+      "repair": "Added required profile fields to pure motion fixture; geometry8/8 and final24/24 pass."
+    },
+    {
+      "kind": "checker-typecheck",
+      "outputExcerpt": "assertions.ts(115,20): TS2345 TravelKey easing optional type missing explicit undefined under exactOptionalPropertyTypes",
+      "repair": "Aligned optional easing with request-input type; no owned-file TypeScript errors remain."
+    },
+    {
+      "stage": "compact bridge fixture bootstrap",
+      "directory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-bridge-gurpX8",
+      "result": "failed suite; 2 tests skipped; no 3D capture launched",
+      "cause": "required geometry dimensions bladeLength and bladeWidth missing",
+      "repair": "fixture dimension metadata supplied; rerun launched real capture"
+    },
+    {
+      "stage": "compact bridge native export oracle",
+      "directory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-bridge-nnzMYV",
+      "failurePath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-bridge-nnzMYV/failure.json",
+      "diagnosticPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-bridge-nnzMYV/export-diagnostic.json",
+      "result": "1 test passed, 1 failed; native preview independent sRGB blend already within 1",
+      "measuredMaxDifference": 16,
+      "cause": "test compared declared BT.709 PNG8 delivery bytes directly against sRGB preview bytes",
+      "repair": "independent declared transfer formula added, tolerance remains 1; max preview/export difference becomes 0"
+    },
+    {
+      "stage": "actual transparent source alpha audit",
+      "directory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-bridge-nnzMYV",
+      "observedPremultipliedColor": [118, 46, 20, 128],
+      "interiorColor": [236, 91, 40, 255],
+      "cause": "parent-owned browser renderer context premultipliedAlpha false with antialiased coverage caused RGB already multiplied by alpha in PNGs labeled straight",
+      "repair": "parent switched context premultipliedAlpha true; browser PNG encoding reconstructs actual straight RGB; constant-color edge assertion added; max edge error 1"
+    },
+    {
+      "stage": "shared TypeScript gate",
+      "result": "first scan 2 errors: bridge.test.ts:444 excessively deep Playwright inferred composition generic, composition-lint.ts:88 missing moduleUrl; next scan only composition-lint error",
+      "repair": "bridge input serialized JSON across browser boundary; other file parent-owned and in flight"
+    }
+  ],
+  "expectedNegativeRuntimeArtifacts": [
+    {
+      "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-capture-pbBBg5/.active-cancelled.capture-IYuZ65/failure.json",
+      "receipt": {
+        "status": "cancelled",
+        "error": {
+          "code": "RENDER_FAILED",
+          "message": "Mechanism plate capture was cancelled",
+          "context": {
+            "diagnostic": "mechanism-capture-cancelled",
+            "stage": "mechanism-capture-render",
+            "path": "frames[0]",
+            "nextAction": "Inspect the retained capture attempt and dependency hashes, then retry into a fresh output directory.",
+            "attemptDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-capture-pbBBg5/.active-cancelled.capture-IYuZ65"
+          },
+          "diagnostic": {
+            "stage": "mechanism-capture-render",
+            "path": "frames[0]",
+            "nextAction": "Inspect the retained capture attempt and dependency hashes, then retry into a fresh output directory.",
+            "causes": [
+              {
+                "name": "AnimationEngineError",
+                "code": "RENDER_FAILED",
+                "message": "Mechanism plate capture was cancelled"
+              },
+              {
+                "name": "Error",
+                "code": "ABORT_ERR",
+                "message": "The operation was cancelled"
+              },
+              {
+                "name": "Error",
+                "message": "Unexpected failure; diagnostic details are unavailable"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-capture-pbBBg5/.cancelled.capture-IrkdUf/failure.json",
+      "receipt": {
+        "status": "cancelled",
+        "error": {
+          "code": "RENDER_FAILED",
+          "message": "Mechanism plate capture was cancelled",
+          "context": {
+            "diagnostic": "mechanism-capture-cancelled",
+            "stage": "mechanism-capture-validate",
+            "path": "scene.geometrySha256",
+            "nextAction": "Inspect the retained capture attempt and dependency hashes, then retry into a fresh output directory.",
+            "attemptDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-capture-pbBBg5/.cancelled.capture-IrkdUf"
+          },
+          "diagnostic": {
+            "stage": "mechanism-capture-validate",
+            "path": "scene.geometrySha256",
+            "nextAction": "Inspect the retained capture attempt and dependency hashes, then retry into a fresh output directory.",
+            "causes": [
+              {
+                "name": "AnimationEngineError",
+                "code": "RENDER_FAILED",
+                "message": "Mechanism plate capture was cancelled"
+              },
+              {
+                "name": "Error",
+                "code": "ABORT_ERR",
+                "message": "The operation was cancelled"
+              },
+              {
+                "name": "Error",
+                "message": "Unexpected failure; diagnostic details are unavailable"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-capture-pbBBg5/.occupied.capture-xsXzkJ/failure.json",
+      "receipt": {
+        "status": "failed",
+        "error": {
+          "code": "RENDER_FAILED",
+          "message": "Mechanism plate capture failed",
+          "context": {
+            "diagnostic": "mechanism-capture-failed",
+            "stage": "mechanism-capture-output",
+            "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-capture-pbBBg5/occupied",
+            "nextAction": "Inspect the retained capture attempt and dependency hashes, then retry into a fresh output directory.",
+            "attemptDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-capture-pbBBg5/.occupied.capture-xsXzkJ"
+          },
+          "diagnostic": {
+            "stage": "mechanism-capture-output",
+            "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-capture-pbBBg5/occupied",
+            "nextAction": "Inspect the retained capture attempt and dependency hashes, then retry into a fresh output directory.",
+            "causes": [
+              {
+                "name": "AnimationEngineError",
+                "code": "RENDER_FAILED",
+                "message": "Mechanism plate capture failed"
+              },
+              {
+                "name": "Error",
+                "code": "EEXIST",
+                "message": "The output already exists or changed"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-capture-pbBBg5/.bad-font.capture-y5g3jv/failure.json",
+      "receipt": {
+        "status": "failed",
+        "error": {
+          "code": "SCENE_INVALID",
+          "message": "Mechanism plate capture failed",
+          "context": {
+            "diagnostic": "mechanism-capture-failed",
+            "stage": "mechanism-capture-validate",
+            "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+            "nextAction": "Inspect the retained capture attempt and dependency hashes, then retry into a fresh output directory.",
+            "attemptDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-capture-pbBBg5/.bad-font.capture-y5g3jv"
+          },
+          "diagnostic": {
+            "stage": "mechanism-capture-validate",
+            "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+            "nextAction": "Inspect the retained capture attempt and dependency hashes, then retry into a fresh output directory.",
+            "causes": [
+              {
+                "name": "AnimationEngineError",
+                "code": "SCENE_INVALID",
+                "message": "Mechanism plate capture failed"
+              },
+              {
+                "name": "Error",
+                "message": "Unexpected failure; diagnostic details are unavailable"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-capture-pbBBg5/.cached.capture-cYNj2k/failure.json",
+      "receipt": {
+        "status": "failed",
+        "error": {
+          "code": "RENDER_FAILED",
+          "message": "Mechanism plate capture failed",
+          "context": {
+            "diagnostic": "mechanism-capture-failed",
+            "stage": "mechanism-capture-cache",
+            "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-capture-pbBBg5/cached",
+            "nextAction": "Inspect the retained capture attempt and dependency hashes, then retry into a fresh output directory.",
+            "attemptDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-capture-pbBBg5/.cached.capture-cYNj2k"
+          },
+          "diagnostic": {
+            "stage": "mechanism-capture-cache",
+            "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-capture-pbBBg5/cached",
+            "nextAction": "Inspect the retained capture attempt and dependency hashes, then retry into a fresh output directory.",
+            "causes": [
+              {
+                "name": "AnimationEngineError",
+                "code": "RENDER_FAILED",
+                "message": "Mechanism plate capture failed"
+              },
+              {
+                "name": "Error",
+                "code": "EEXIST",
+                "message": "The output already exists or changed"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "limits": {
+    "captureFrames": 4096,
+    "pixels": 8388608,
+    "fontBytes": 8388608,
+    "measuredRssScope": "Node resident memory sampled after capture, not peak or Chromium/process-tree RSS",
+    "cacheRenderScope": "mechanism plate renders; pinned Canvas/WebGL environment probe still runs",
+    "protectedRegionScope": "24px-radius clipped squares around raycast-visible physical/proof anchors; whole object extents are not protected",
+    "authoredSimplifications": [
+      "Slot source margin0.095 widened0.115 to preserve0.085 stem clearance around flange bevel",
+      "Closed blade underside/edge topology",
+      "FaceGlow explanatory plane omitted to preserve physical raycast visibility",
+      "Reauthored indexed procedural meshes; not exact original pixel reproduction"
+    ]
+  },
+  "markers": {
+    "parts": {
+      "datum": {
+        "parent": null,
+        "midpoint": [0, 1.375, 1.15]
+      },
+      "thickness": {
+        "parent": "hook",
+        "midpointExpression": ["-h/2", 1.18, 1.2]
+      },
+      "travel": {
+        "parent": "model",
+        "midpointExpression": ["0.72-h/2", 2.22, 0.47]
+      }
+    },
+    "coordinates": "right-handed Y-up, part-local origin0; coordinates multiply modelscale",
+    "ids": [
+      "datum-line",
+      "thickness-crossbar",
+      "thickness-tick-1",
+      "thickness-tick-2",
+      "travel-crossbar",
+      "travel-tick-1",
+      "travel-tick-2"
+    ],
+    "surfaceVisibility": "Midpoints lie inside solid tubes; label targets need a camera-facing surface/clearance offset."
+  },
+  "geometryRepair": {
+    "floor": {
+      "mesh": "studio-floor",
+      "sourceFootprint": [200, 200],
+      "canonicalTopY": -1.5,
+      "solidThickness": 0.1,
+      "tests": "measured bounds retained"
+    },
+    "blade": {
+      "mesh": "blade-curved",
+      "closed": true,
+      "indexedGroups": [
+        {
+          "surface": "top",
+          "material": "blade"
+        },
+        {
+          "surface": "underside",
+          "material": "edges"
+        },
+        {
+          "surface": "walls",
+          "material": "edges"
+        }
+      ],
+      "mapping": "explicit authored local group material IDs mapped to global material catalog indices; contiguous complete triangle ranges validated; no normals inference or overlapping backing"
+    },
+    "proof": {
+      "reportPath": "/tmp/still-shift-ms1-geometry-fixed-proof-1791568808012/proof-report.json",
+      "pngPath": "/tmp/still-shift-ms1-geometry-fixed-proof-1791568808012/000000.png",
+      "sourceFrame": 306,
+      "shotId": "V8-04",
+      "captureSeconds": 2.834462209,
+      "sampledNodeRssBytes": 703627264,
+      "visualObservations": [
+        "metal blade edge and underside; graduations restricted to top",
+        "visible floor horizon strip absent with current source lights/fog",
+        "true slot depth, bevels and solid front preserved",
+        "right slot crop matches original macro treatment"
+      ]
+    }
+  },
+  "alphaBridge": {
+    "firstPassedRun": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-bridge-jTgd8P/proof-report.json",
+    "combinedPassedRun": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-bridge-0fnq0Q/proof-report.json",
+    "size": [96, 96],
+    "sourceOrder": [0, 1, 2, 3, 4, 4, 2, 0, 3, 1, 0],
+    "previewOrder": [0, 4, 8, 2, 10, 3, 4, 0, 9, 1, 8, 5, 7, 6],
+    "actualSource": "constant emissive closed box with source rig controls evaluated independently; real Three MSAA PNG edge coverage",
+    "straightAlpha": {
+      "interiorColor": [236, 91, 40],
+      "halfCoveredEdge": [235, 92, 40, 128],
+      "maximumEdgeRgbDifference": 1,
+      "guard": 2,
+      "guardReason": "four-sample coverage and RGBA8 straight-alpha reconstruction quantization"
+    },
+    "canvas2d": {
+      "blendToleranceBytes": 1,
+      "maximumIndependentSrgbBlendError": 1,
+      "maximumIndependentTransferredPreviewExportError": 0,
+      "freshRepeatedReverseRandomPreviewHashes": "exact"
+    },
+    "webgl2": {
+      "blendToleranceBytes": 1,
+      "maximumIndependentSrgbBlendError": 1,
+      "maximumIndependentTransferredPreviewExportError": 0,
+      "freshRepeatedReverseRandomPreviewHashes": "exact"
+    },
+    "sourceCaptureRepeatedHashesAndState": "exact per source frame; compared sourceFrame, seed, camera, parts, rigs, anchors, assertions and protectedRegions; ordinal numbering intentionally differs",
+    "exportOracle": "independent sRGB to linear-light to BT.709 transfer, because PNG8 public delivery profile declares BT.709; one-byte tolerances retained",
+    "scope": "No promise of identical whole-frame pixels between different backends; each backend independently compared with its own fresh/reused preview and native export. No full E01 duplicate rendering.",
+    "finalAfterBrowserPayloadTypeFix": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-mechanism-bridge-2EYAwR/proof-report.json"
+  },
+  "remainingRubric": [
+    "Fresh nine-shot current-profile composition and final native caption/label reading review remain parent-owned.",
+    "No full 696-frame continuous visual/motion or listening acceptance follows from these clean-plate probes.",
+    "Broad metal reflection/readability and authored simplifications should be reviewed against original source after source lights/fog repairs, not described as pixel-identical reconstruction.",
+    "Protected regions cover visible proof/physical anchor points (radius 24), not whole mesh silhouettes; whole extent protection deferred to MS2."
+  ]
+}

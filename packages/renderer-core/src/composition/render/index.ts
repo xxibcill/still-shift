@@ -3,6 +3,8 @@ export { renderCompositionExposure } from "./exposure.ts";
 export {
   buildRenderGraph,
   type AdjustOp,
+  type NativeDepthOp,
+  type NativeWorldGraphicArtwork,
   type ClipRect,
   type DrawOp,
   type ImageContent,
@@ -43,6 +45,7 @@ export {
   compositionScene,
   createCompositionPreview,
   createCompositionPreviewAsync,
+  renderCompositionFrameAsync,
   loadCompositionResources,
   type CompositionFrameReport,
   type CompositionPreview,

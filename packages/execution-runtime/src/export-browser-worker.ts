@@ -239,5 +239,20 @@ export function summarizeExportWorkers(
     frameUploadAverageMs: upload.average,
     frameUploadP95Ms: upload.p95,
     gpuRenderer: results[0]!.gpuRenderer,
+    ...(results.some((result) => result.nativeObservationStatistics)
+      ? {
+          nativeObservationStatistics: results.reduce(
+            (sum, result) => {
+              if (!result.nativeObservationStatistics)
+                throw Error("Native worker omitted observation counters");
+              sum.outputFrames +=
+                result.nativeObservationStatistics.outputFrames;
+              sum.passCount += result.nativeObservationStatistics.passCount;
+              return sum;
+            },
+            { outputFrames: 0, passCount: 0 },
+          ),
+        }
+      : {}),
   };
 }

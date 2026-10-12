@@ -65,9 +65,16 @@ export {
   resolveNarrationWord,
   resolveTextEvents,
   compileTextEvents,
+  inspectTextWeightTreatments,
   TextEventError,
   type TextEventScene,
   type ResolvedTextEvent,
 } from "./typography-events.ts";
 
 export * from "./soundtrack-project.ts";
+
+export * from "./mechanism/index.ts";
+
+export * from "./native3d/index.ts";
+
+export * from "./typography-weight.ts";

@@ -9,9 +9,12 @@ import {
   type Composition,
   type CompositionPreparedMedia,
   type CompositionPreparedAudio,
+  type CompositionPreparedNative3DVersions,
+  type NativeAppearanceCodeIdentity,
 } from "../../../packages/scene-contract/src/index.ts";
 import {
   createCompositionPreview,
+  renderCompositionFrameAsync,
   loadCompositionResources,
   type CompositionBackend,
   type CompositionPreview,
@@ -23,6 +26,7 @@ import {
 } from "./composition-document.ts";
 import { createCompositionInspector } from "./composition-inspector.ts";
 import { createCompositionOverlay } from "./composition-overlay.ts";
+import { compositionPreviewEvaluation } from "./composition-preview-evaluation.ts";
 import { CompositionAudioPreviewLoader } from "./composition-audio-player.ts";
 import {
   presentCompositionAudioWaveforms,
@@ -153,8 +157,7 @@ let pendingSave: string | undefined;
 let currentProgram: ProgramResponse["snapshot"];
 const inspector = createCompositionInspector({
   evaluation() {
-    const bounds = session.snapshot?.preview.textBounds;
-    return bounds ? { textBounds: bounds } : {};
+    return compositionPreviewEvaluation(session.snapshot?.preview);
   },
   async propose(proposal) {
     if (!documentHistory?.accepts(proposal)) return false;
@@ -178,7 +181,7 @@ const inspector = createCompositionInspector({
       overlay.draw(
         snapshot.composition,
         session.frame,
-        snapshot.preview.textBounds,
+        compositionPreviewEvaluation(snapshot.preview),
       );
   },
 });
@@ -243,7 +246,7 @@ const session = createPreviewSession<CompositionSnapshot>({
     try {
       showLint(
         analyzeCompositionQuality(comp, {
-          evaluation: { textBounds: preview.textBounds },
+          evaluation: compositionPreviewEvaluation(preview),
         }),
       );
       lintAvailable = true;
@@ -289,10 +292,9 @@ const session = createPreviewSession<CompositionSnapshot>({
       );
     el("time").textContent =
       `${(frame / snapshot.scene.fps).toFixed(2)} s · ${frame + 1} / ${snapshot.scene.frameCount}`;
-    overlay.draw(snapshot.composition, frame, snapshot.preview.textBounds);
-    inspector.frame(frame, snapshot.composition, {
-      textBounds: snapshot.preview.textBounds,
-    });
+    const evaluation = compositionPreviewEvaluation(snapshot.preview);
+    overlay.draw(snapshot.composition, frame, evaluation);
+    inspector.frame(frame, snapshot.composition, evaluation);
     listDiagnostics([
       ...snapshot.warnings,
       ...snapshot.report.diagnostics.map((d) => ({
@@ -332,7 +334,7 @@ async function load(
   } = {},
 ): Promise<boolean> {
   ++generation;
-  const backend = backendSelect.value as CompositionBackend;
+  let backend = backendSelect.value as CompositionBackend;
   const retainedFrame =
     edit.frame ?? (programMode || edit.preserveHistory ? session.frame : 0);
   lintAbort?.abort();
@@ -379,6 +381,21 @@ async function load(
           .map((d) => `${d.code} ${d.path}: ${d.message}`)
           .join("\n"),
       );
+    if (
+      result.composition.assets.some((asset) => asset.type === "native3d") &&
+      !new URLSearchParams(location.search).has("backend") &&
+      !backendSelect.dataset.explicit
+    ) {
+      backend = "webgl2";
+      backendSelect.value = "webgl2";
+    }
+    if (
+      backend === "canvas2d" &&
+      result.composition.assets.some((asset) => asset.type === "native3d")
+    )
+      throw Error(
+        "comp-native3d-backend backend: Native composition requires WebGL2",
+      );
     const nextHistory =
       edit.preserveHistory && documentHistory
         ? documentHistory
@@ -388,6 +405,9 @@ async function load(
     let capture: {
       preparedMedia?: CompositionPreparedMedia;
       preparedAudio?: CompositionPreparedAudio;
+      preparedNative3D?: CompositionPreparedNative3DVersions;
+      nativeAppearanceCodeIdentity?: NativeAppearanceCodeIdentity;
+      nativeAppearanceCodeSha256?: string;
       assets: Record<string, string>;
     } = {
       ...(program?.preparedAudio
@@ -396,9 +416,20 @@ async function load(
       ...(program?.preparedMedia
         ? { preparedMedia: program.preparedMedia }
         : {}),
+      ...(program?.preparedNative3D
+        ? { preparedNative3D: program.preparedNative3D }
+        : {}),
+      ...(program?.nativeAppearanceCodeIdentity
+        ? {
+            nativeAppearanceCodeIdentity: program.nativeAppearanceCodeIdentity,
+            nativeAppearanceCodeSha256: program.nativeAppearanceCodeSha256,
+          }
+        : {}),
       assets: program?.assets ?? {},
     };
     if (
+      (result.composition.assets.some((asset) => asset.type === "native3d") &&
+        (!capture.preparedNative3D || edit.document)) ||
       (result.composition.assets.some((asset) => asset.type === "audio") &&
         (!capture.preparedAudio || edit.document)) ||
       (result.composition.assets.some(
@@ -477,6 +508,12 @@ async function load(
         ...(capture.preparedMedia
           ? { preparedMedia: capture.preparedMedia }
           : {}),
+        ...(capture.preparedNative3D
+          ? { preparedNative3D: capture.preparedNative3D }
+          : {}),
+        ...(capture.nativeAppearanceCodeIdentity
+          ? { appearanceCodeIdentity: capture.nativeAppearanceCodeIdentity }
+          : {}),
         signal: ownership.signal,
       },
     );
@@ -510,12 +547,24 @@ async function load(
         (d) => `${d.code} ${d.path}: ${d.message}`,
       ),
     };
+    const source2 = result.composition.assets.some(
+      (asset) =>
+        asset.type === "native3d" && asset.format === "mechanism-scene-2",
+    );
     ownership.renderer(
       {
-        ...(resources.media
+        ...(!source2 && (resources.media || resources.native3D)
           ? { prepareFrame: (frame: number) => renderer.prepareFrame(frame) }
           : {}),
         renderFrame(frame: number) {
+          if (source2)
+            return (async () => {
+              await renderer.prepareFrame(frame);
+              snapshot.report = await renderCompositionFrameAsync(
+                renderer,
+                frame,
+              );
+            })();
           return (snapshot.report = renderer.renderFrame(frame));
         },
         dispose() {
@@ -639,7 +688,11 @@ saveButton.onclick = async () => {
               .join("\n") || "Save failed",
           );
         const savedProgram = await retainProgramSnapshot(payload.snapshot);
-        if (savedProgram.preparedMedia || savedProgram.preparedAudio) {
+        if (
+          savedProgram.preparedMedia ||
+          savedProgram.preparedAudio ||
+          savedProgram.preparedNative3D
+        ) {
           if (
             !(await load("program", {
               program: savedProgram,
@@ -720,6 +773,7 @@ if (programMode) {
   );
   select.disabled = true;
   backendSelect.onchange = () => {
+    backendSelect.dataset.explicit = "true";
     void load(
       "program",
       documentHistory
@@ -783,6 +837,7 @@ if (programMode) {
     void load(select.value);
   };
   backendSelect.onchange = () => {
+    backendSelect.dataset.explicit = "true";
     void load(
       select.value,
       documentHistory

@@ -64,26 +64,106 @@ function trace(
   before?: (key: string, index: number) => void,
   collect = true,
 ) {
-  const hash = createHash("sha256"),
-    counts: Record<string, number> = {},
-    prefix: string[] = [],
-    suffix: string[] = [];
+  type TraceEntry = { key: string; bytes: string; index: number };
+  const entries = new Map<string, TraceEntry>(),
+    orderedEntries: TraceEntry[] = [],
+    chunks: Uint32Array[] = [];
   let calls = 0,
-    pendingHash = "";
-  const record = (key: string) => {
-    if (collect) {
-      pendingHash += key + "\0";
-      if (pendingHash.length >= 65536) {
-        hash.update(pendingHash);
-        pendingHash = "";
-      }
-      counts[key] = (counts[key] ?? 0) + 1;
-      if (prefix.length < 32) prefix.push(key);
-      if (suffix.length === 32) suffix.shift();
-      suffix.push(key);
+    cursor = 0,
+    chunk = collect ? new Uint32Array(65536) : undefined;
+  const entry = (key: string): TraceEntry => {
+    let value = entries.get(key);
+    if (!value) {
+      value = {
+        key,
+        bytes: key + "\0",
+        index: orderedEntries.length,
+      };
+      entries.set(key, value);
+      orderedEntries.push(value);
     }
-    const index = calls++;
-    before?.(key, index);
+    return value;
+  };
+  const capture = (value: TraceEntry) => {
+    if (chunk) {
+      if (cursor === chunk.length) {
+        chunks.push(chunk);
+        chunk = new Uint32Array(65536);
+        cursor = 0;
+      }
+      chunk[cursor++] = value.index;
+    }
+  };
+  const recordEntry =
+    collect && !before
+      ? capture
+      : (value: TraceEntry) => {
+          capture(value);
+          const index = calls++;
+          before?.(value.key, index);
+        };
+  const record = (key: string) => recordEntry(entry(key));
+  const result = () => {
+    const totalCalls =
+      collect && !before ? chunks.length * 65536 + cursor : calls;
+    const hash = createHash("sha256"),
+      counts = new Uint32Array(orderedEntries.length),
+      prefix: string[] = [],
+      suffix: string[] = [];
+    // Every getter is captured and counted. Pack only repetitions proven from
+    // the actual event IDs; no expected trace or hash enters this replay.
+    const replay = (ids: Uint32Array) => {
+      for (const id of ids) counts[id] = counts[id]! + 1;
+      let offset = 0;
+      while (offset < ids.length) {
+        const pattern = ids.subarray(offset, Math.min(offset + 12, ids.length)),
+          text = Array.from(pattern, (id) => orderedEntries[id]!.bytes).join(
+            "",
+          );
+        let repetitions = 1,
+          next = offset + pattern.length;
+        while (
+          next + pattern.length <= ids.length &&
+          text.length * (repetitions + 1) <= 65536
+        ) {
+          let matches = true;
+          for (let i = 0; i < pattern.length; i++)
+            if (ids[next + i] !== pattern[i]) {
+              matches = false;
+              break;
+            }
+          if (!matches) break;
+          repetitions++;
+          next += pattern.length;
+        }
+        hash.update(text.repeat(repetitions));
+        offset = next;
+      }
+    };
+    for (const ids of chunks) replay(ids);
+    if (chunk) {
+      replay(chunk.subarray(0, cursor));
+      const keyAt = (ordinal: number) => {
+        const block = Math.floor(ordinal / 65536),
+          ids = block < chunks.length ? chunks[block]! : chunk!;
+        return orderedEntries[ids[ordinal % 65536]!]!.key;
+      };
+      for (let i = 0; i < Math.min(32, totalCalls); i++) {
+        prefix.push(keyAt(i));
+        suffix.push(keyAt(Math.max(0, totalCalls - 32) + i));
+      }
+    }
+    return {
+      calls: totalCalls,
+      sha256: hash.digest("hex"),
+      counts: Object.fromEntries(
+        orderedEntries.flatMap((value) =>
+          counts[value.index] ? [[value.key, counts[value.index]]] : [],
+        ),
+      ),
+      prefix,
+      suffix,
+    };
   };
   const raw = {
     startColor: [config.index / 16, 0.2, 0.4, 0.15],
@@ -93,10 +173,42 @@ function trace(
     raw.startColor.push(11, 12, 13, 14, 15);
     raw.endColor.push(21, 22, 23, 24, 25);
   }
-  const child = (key: keyof typeof raw) =>
-    new Proxy(raw[key], {
+  const child = (key: keyof typeof raw) => {
+    const names: Record<string, TraceEntry> = Object.assign(
+      Object.create(null),
+      Object.fromEntries(
+        [
+          "toJSON",
+          "length",
+          ...Array.from({ length: 9 }, (_, i) => String(i)),
+        ].map((property) => [property, entry(`${key}.${property}`)]),
+      ),
+    );
+    const channels = [names["0"]!, names["1"]!, names["2"]!, names["3"]!];
+    return new Proxy(raw[key], {
       get(t, k, r) {
-        record(key + "." + String(k));
+        // Own numeric data uses constant access keys; retain every observed read.
+        if (k === "0") {
+          recordEntry(channels[0]!);
+          return t[0];
+        }
+        if (k === "1") {
+          recordEntry(channels[1]!);
+          return t[1];
+        }
+        if (k === "2") {
+          recordEntry(channels[2]!);
+          return t[2];
+        }
+        if (k === "3") {
+          recordEntry(channels[3]!);
+          return t[3];
+        }
+        recordEntry(
+          typeof k === "string"
+            ? (names[k] ?? entry(`${key}.${k}`))
+            : entry(`${key}.${String(k)}`),
+        );
         if (k === "toJSON" && config.mode === "toJSON")
           return function (this: number[]) {
             record("call." + key + ".toJSON");
@@ -105,6 +217,7 @@ function trace(
         return Reflect.get(t, k, r);
       },
     });
+  };
   const refs = { startColor: child("startColor"), endColor: child("endColor") },
     params = new Proxy(raw, {
       get(t, k, r) {
@@ -118,13 +231,7 @@ function trace(
     raw,
     refs,
     params,
-    result: () => ({
-      calls,
-      sha256: hash.update(pendingHash).digest("hex"),
-      counts,
-      prefix,
-      suffix,
-    }),
+    result,
   };
 }
 function observe(memory: ManagedMemory) {

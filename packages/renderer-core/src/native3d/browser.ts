@@ -1,0 +1,55 @@
+/** Explicit browser entry; pure renderer imports never reach Three. */
+export {
+  createNativeThreeWorld,
+  createNativeThreeWorldV2,
+  createNativeThreeWorldV3,
+  createNativeThreeGeometry,
+} from "./three-world.ts";
+export { createNativeDepthRuntime } from "../composition/render/webgl-native-depth.ts";
+export {
+  native3DAppearanceModules,
+  native3DAppearanceExternalModules,
+} from "./appearance-modules.ts";
+export type { NativeTextureFont } from "./three-textures.ts";
+export type {
+  NativeDepthRuntime,
+  NativeDepthRuntimeFactory,
+  NativeDepthRuntimeOptions,
+} from "./runtime.ts";
+export { observeNativeThreeWorld } from "./three-observation.ts";
+export {
+  createNativeThreeShapeObservation,
+  createNativeThreeFrameObservationV2,
+  createNativeThreeQueuedFrameObservationV2,
+  NativeUsedStreamMismatchError,
+} from "./three-shape-observation.ts";
+export type {
+  NativeThreeShapeObservationResult,
+  NativeThreeFrameObservationResultV2,
+} from "./three-shape-observation.ts";
+export {
+  createNativeThreeGraphic,
+  nativeArtworkCorners,
+} from "./three-graphics.ts";
+export { NATIVE_DEPTH_RENDERER_VERSION } from "./resolve.ts";
+export type {
+  NativeThreeWorld,
+  NativeThreeWorldV2,
+  NativeThreeWorldV3,
+  NativeThreeGeometry,
+} from "./three-world.ts";
+export {
+  prepareNativePbrResources,
+  createNativePbrResources,
+} from "./pbr-resources.ts";
+export type {
+  PreparedNativePbrResources,
+  NativePbrResources,
+} from "./pbr-resources.ts";
+export {
+  captureNativePbrGpuDraw,
+  sealNativePbrGpuDraw,
+} from "./pbr-gpu-draw.ts";
+
+export { createNativeThreeQueuedFrameObservationV3 } from "./three-pbr-observation.ts";
+export type { NativeThreeFrameObservationResultV3 } from "./three-pbr-observation.ts";

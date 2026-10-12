@@ -176,7 +176,23 @@ try {
     (await run("installed command version", bin, ["--version"])).trim(),
     metadata.version,
   );
+  const installedManifest = JSON.parse(
+    await readFile(
+      resolve(project, "node_modules/still-shift/package.json"),
+      "utf8",
+    ),
+  ) as { dependencies: Record<string, string> };
+  assert.equal(installedManifest.dependencies["@types/three"], "0.186.0");
   const program = `import { comp, solid } from "still-shift";
+import type { CompositionLintReport } from "still-shift/engine";
+import type { CompositionSemanticAssociation } from "still-shift/renderer";
+import type { createNativeThreeWorld, createNativeThreeGeometry, NativeTextureFont } from "still-shift/renderer/native3d-browser";
+export const nativeTextureFont: NativeTextureFont = { family: "Package fixture", weight: "600" };
+export function nativeCameraFov(world: ReturnType<typeof createNativeThreeWorld>): number { return world.camera.fov; }
+export function nativeEnvironmentColorSpace(world: ReturnType<typeof createNativeThreeWorld>): string | undefined { return world.world.environment?.colorSpace; }
+export function nativeGeometryPositionCount(geometry: ReturnType<typeof createNativeThreeGeometry>): number { return geometry.geometries.get("fixture")?.getAttribute("position").count ?? 0; }
+export const declaredContext: CompositionSemanticAssociation = { id: "amount", purpose: "Read the amount with units", kind: "quantity", start: 0, end: 4, members: [{ layer: "value", text: "12", kind: "value" }, { layer: "unit", text: "mm", kind: "unit" }] };
+export function semanticStatus(report: CompositionLintReport) { return report.semantic.status; }
 export default comp({ id: "package-test", width: 320, height: 192, fps: 24, frames: 4, background: "#fff4df" }, (scene) => {
   scene.add(solid("card", { color: "#305c70", size: [100, 100] }));
 });\n`;
@@ -216,6 +232,50 @@ export default comp({ id: "package-test", width: 320, height: 192, fps: 24, fram
     "validate",
     "--input",
     "composition.ts",
+  ]);
+  await writeFile(
+    resolve(project, "pixel-lint.json"),
+    JSON.stringify({
+      schemaVersion: "composition-1",
+      id: "installed-pixel-lint",
+      metadata: {
+        readingPolicy: { semanticProfile: "require-declared-context" },
+      },
+      width: 320,
+      height: 192,
+      fps: 24,
+      frameCount: 4,
+      background: "#fff4df",
+      assets: [],
+      layers: [
+        {
+          id: "card",
+          type: "solid",
+          color: "#305c70",
+          size: [100, 100],
+          inPoint: 0,
+          outPoint: 4,
+        },
+      ],
+    }),
+  );
+  await writeFile(
+    resolve(project, "pixel-lint.mjs"),
+    `import assert from "node:assert/strict";
+import { lintCompositionFile } from "still-shift/engine";
+import { CompositionSemanticAssociationSchema } from "still-shift/renderer";
+CompositionSemanticAssociationSchema.parse({ id: "amount", purpose: "Read the amount with units", kind: "quantity", start: 0, end: 4, members: [{ layer: "value", text: "12", kind: "value" }, { layer: "unit", text: "mm", kind: "unit" }] });
+const report = await lintCompositionFile("pixel-lint.json", {}, { pixels: true });
+assert.equal(report.backend, "canvas2d");
+assert.equal(typeof report.rendererVersion, "string");
+assert.ok(Array.isArray(report.diagnostics));
+assert.equal(report.semantic.profile, "require-declared-context");
+assert.equal(report.semantic.status, "failed");
+assert.ok(report.diagnostics.some(({ code }) => code === "semantic-context-required"));
+console.log("Installed browser pixel lint completed");\n`,
+  );
+  await run("installed browser pixel-quality analysis", process.execPath, [
+    "pixel-lint.mjs",
   ]);
   await writeFile(
     resolve(project, "legacy.ts"),

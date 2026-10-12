@@ -1,3 +1,4 @@
+import { resolveCompositionQualityPolicy } from "./quality-policy.ts";
 import type { Composition } from "@still-shift/scene-contract";
 import {
   analyzeCompositionQuality,
@@ -6,7 +7,10 @@ import {
 import { PassageError } from "../passage-diagnostics.ts";
 import { measureFrameEnergy } from "../story-continuous-quality.ts";
 import { assertCompositionQualityCapacity } from "./quality-samples.ts";
-import type { CompositionPreview } from "./render/index.ts";
+import {
+  renderCompositionFrameAsync,
+  type CompositionPreview,
+} from "./render/index.ts";
 
 /** Full-resolution grayscale changes reuse the continuous-motion 4-level / 200-pixel default gate. */
 export async function analyzeRenderedCompositionQuality(
@@ -16,17 +20,24 @@ export async function analyzeRenderedCompositionQuality(
   options: { signal?: AbortSignal; onFrame?: (frame: number) => void } = {},
 ) {
   options.signal?.throwIfAborted();
+  const pixelChannelThreshold = resolveCompositionQualityPolicy(
+    comp,
+    policy,
+  ).pixelChannelThreshold;
   assertCompositionQualityCapacity(comp.frameCount * comp.layers.length);
   const counts: number[] = [];
   let previous: Uint8Array | undefined;
   const native = comp.assets.some(
-    (asset) => asset.type === "video" || asset.type === "sequence",
+    (asset) =>
+      asset.type === "video" ||
+      asset.type === "sequence" ||
+      asset.type === "native3d",
   );
   for (let frame = 0; frame < comp.frameCount; frame++) {
     options.signal?.throwIfAborted();
     if (native) await preview.prepareFrame(frame);
     options.signal?.throwIfAborted();
-    const report = preview.renderFrame(frame);
+    const report = await renderCompositionFrameAsync(preview, frame);
     if (report.diagnostics.some((d) => d.severity === "error"))
       throw new PassageError(report.diagnostics);
     const rgba = preview.readPixels();
@@ -38,9 +49,7 @@ export async function analyzeRenderedCompositionQuality(
           0.114 * rgba[i * 4 + 2]!,
       );
     counts.push(
-      previous
-        ? measureFrameEnergy(previous, gray, policy.pixelChannelThreshold ?? 4)
-        : 0,
+      previous ? measureFrameEnergy(previous, gray, pixelChannelThreshold) : 0,
     );
     previous = gray;
     options.onFrame?.(frame);
@@ -52,7 +61,11 @@ export async function analyzeRenderedCompositionQuality(
     ...analyzeCompositionQuality(comp, {
       ...policy,
       pixelChangedCounts: counts,
-      evaluation: { ...policy.evaluation, textBounds: preview.textBounds },
+      evaluation: {
+        ...policy.evaluation,
+        ...preview.evaluationOptions,
+        textBounds: preview.textBounds,
+      },
     }),
     backend: preview.backend,
     rendererVersion: preview.rendererVersion,

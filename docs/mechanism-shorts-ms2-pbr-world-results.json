@@ -1,0 +1,1037 @@
+{
+  "schemaVersion": "ms2-native-pbr-world-results-1",
+  "date": "2026-10-11",
+  "status": "standalone-foundation-verified-milestone-incomplete",
+  "branch": "codex/mechanism-ms2",
+  "sourceCheckpoint": "2056656a3df7617022f90045532bef941a602ab3",
+  "stages": [
+    {
+      "id": "native-pbr-world-1",
+      "status": "expected-red",
+      "sourceCheckpoint": "2056656a3df7617022f90045532bef941a602ab3",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-world-inputs-1.json",
+        "bytes": 421853,
+        "sha256": "sha256:5e59b7920b4b9f427509715141047f3528e2412973901e8016791f4f409908a2",
+        "files": 2473,
+        "inputBytes": 118816794,
+        "sourceCommit": "2056656a3df7617022f90045532bef941a602ab3"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-format-1.log",
+          "bytes": 152,
+          "sha256": "sha256:3a582b3cbbdf206690e981e71fa0282929d2bbed89dd3deaecc8f21a77a2e09d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-inventory-1.log",
+          "bytes": 243,
+          "sha256": "sha256:69b61f40f00c3675cb916bde4b47292e094f90828bab7573bb08c5b2f95e3487"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-red-1.log",
+          "bytes": 1458,
+          "sha256": "sha256:954483ca29e8c05982e57e83f3d7aac4d4ccc507a836dc9236ee49486b111761"
+        }
+      ],
+      "actualRootSession": 35659,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "7408f3",
+      "qualification": "Source3 parser is intentionally absent; first contract red fails."
+    },
+    {
+      "id": "native-pbr-world-2",
+      "status": "failed-build",
+      "sourceCheckpoint": "2056656a3df7617022f90045532bef941a602ab3",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-world-inputs-2.json",
+        "bytes": 422192,
+        "sha256": "sha256:dbc69cdbdf5c703756a196c7bfb4541eacdec0758295a3309cf11c8d900938ce",
+        "files": 2475,
+        "inputBytes": 118822486,
+        "sourceCommit": "2056656a3df7617022f90045532bef941a602ab3"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-build-2.log",
+          "bytes": 2831,
+          "sha256": "sha256:46d32a6f13f2ce0ccee64eafae7a2b7976e0b15f67f70ebf2937f2d901543ad6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-format-2.log",
+          "bytes": 736,
+          "sha256": "sha256:0a5258b43a17f17a30a7a3851591a133befa2a360dc63092d47ff3640afdf0c0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-inventory-2.log",
+          "bytes": 243,
+          "sha256": "sha256:4cfee79fa9d56676eb7a7001cf58a6e45eff804553fd2db9b387221a3f28690d"
+        }
+      ],
+      "actualRootSession": 92947,
+      "actualExitCode": 2,
+      "terminalToolReceipt": "45b141",
+      "qualification": "Zod default wrapper does not expose max; focused suffix did not execute."
+    },
+    {
+      "id": "native-pbr-world-3",
+      "status": "failed-focused-after-build",
+      "sourceCheckpoint": "2056656a3df7617022f90045532bef941a602ab3",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-world-inputs-3.json",
+        "bytes": 422193,
+        "sha256": "sha256:ae9844b8ce152a2ee38ef1b03c292c025a44ca4d83f4804bb875e7015b3667a3",
+        "files": 2475,
+        "inputBytes": 118826378,
+        "sourceCommit": "2056656a3df7617022f90045532bef941a602ab3"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-build-3.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-focused-3.log",
+          "bytes": 4719,
+          "sha256": "sha256:d640b1011e495032b21510195d100afe2782b2db70f512c8bb3f8aa5de66513b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-format-3.log",
+          "bytes": 213,
+          "sha256": "sha256:9fe69dd7f18f9dbcd3c75b2c14b66499599ee249e7a297a7b84c10b54d2c919a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-inventory-3.log",
+          "bytes": 243,
+          "sha256": "sha256:284e2eb115e40cb70ca6d45e694285ca8dfd86c7a2e5c5f3f796566bf6ce56ef"
+        }
+      ],
+      "actualRootSession": 90891,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "bb81cf",
+      "qualification": "Required fixture output/tone-mapping profile omitted; build passes but focused tests fail."
+    },
+    {
+      "id": "native-pbr-world-4",
+      "status": "failed-path-assertion-after-build",
+      "sourceCheckpoint": "2056656a3df7617022f90045532bef941a602ab3",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-world-inputs-4.json",
+        "bytes": 422532,
+        "sha256": "sha256:60b496635a30a8fe5d7463f3cced478d586e54c9cbea1820614a95e3a22584a9",
+        "files": 2477,
+        "inputBytes": 118834573,
+        "sourceCommit": "2056656a3df7617022f90045532bef941a602ab3"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-build-4.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-focused-4.log",
+          "bytes": 2135,
+          "sha256": "sha256:5bc5089a32e8cc9197c9ab08d6c849a8076e12d4d53c888096e9f119e4137908"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-format-4.log",
+          "bytes": 261,
+          "sha256": "sha256:9291b1617109c7eafed500ec127082741c9363a34a5f0ce03dbeafc263e10635"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-inventory-4.log",
+          "bytes": 243,
+          "sha256": "sha256:a09176e847aef8658e09d423a305fb4c88b9ec439164d25286ddb9f6900aff25"
+        }
+      ],
+      "actualRootSession": 96155,
+      "actualExitCode": 1,
+      "terminalToolReceipt": "cdd386",
+      "qualification": "Product returns canonical private/var path; fixture incorrectly expects var alias."
+    },
+    {
+      "id": "native-pbr-world-5",
+      "status": "failed-build-with-unavailable-root-terminal",
+      "sourceCheckpoint": "2056656a3df7617022f90045532bef941a602ab3",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-world-inputs-5.json",
+        "bytes": 422846,
+        "sha256": "sha256:4fca225d9c22bc08428cd7ca879fa879c8a5b65d7aae686e196fae9652d6fdab",
+        "files": 2479,
+        "inputBytes": 118848028,
+        "sourceCommit": "2056656a3df7617022f90045532bef941a602ab3"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-build-5.log",
+          "bytes": 427,
+          "sha256": "sha256:1229f70c876ea91f20f60bc54586d8e7fd54e1c3f4beeef71205a953920a30e4"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-format-5.log",
+          "bytes": 128,
+          "sha256": "sha256:06a141be18c8f0d340282af27b4d9128847b207e21350b941589f622ed4fceb9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-inventory-5.log",
+          "bytes": 243,
+          "sha256": "sha256:389d7a10512a167f8cb70196cd02c9ab5cfab4b609695c77c8e416b6170c1ace"
+        }
+      ],
+      "actualRootSession": null,
+      "actualExitCode": null,
+      "terminalToolReceipt": null,
+      "qualification": "Tool output and session receipt were lost. No live process remains at recovery ecea0f; build log reports TS7034/TS7005. Actual root exit is unavailable; focused/browser suffix absent."
+    },
+    {
+      "id": "native-pbr-world-6",
+      "status": "failed-build",
+      "sourceCheckpoint": "2056656a3df7617022f90045532bef941a602ab3",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-world-inputs-6.json",
+        "bytes": 422846,
+        "sha256": "sha256:f2b45cbe374bdd60dd82ff9189d35700cbd94407524d9751da9375bba6979fe1",
+        "files": 2479,
+        "inputBytes": 118848448,
+        "sourceCommit": "2056656a3df7617022f90045532bef941a602ab3"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-build-6.log",
+          "bytes": 326,
+          "sha256": "sha256:eb0ea3865a8ca928a57822cd6f54bcf3dadebe779d1442d6d2a6fb26632840ad"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-format-6.log",
+          "bytes": 127,
+          "sha256": "sha256:cd9865daa5bb1abe11699ce2102e0754a54befed43c57c4c7e58460e44e6a112"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-inventory-6.log",
+          "bytes": 243,
+          "sha256": "sha256:14c9252f44f434e70e4d12ffea6dc2391d52da169d12ba22a8b0efb7e1384180"
+        }
+      ],
+      "actualRootSession": 67753,
+      "actualExitCode": 2,
+      "terminalToolReceipt": "3c7474",
+      "qualification": "Capture anchor type did not prove tuple indexes; focused/browser suffix absent."
+    },
+    {
+      "id": "native-pbr-world-7",
+      "status": "passed-focused-and-world",
+      "sourceCheckpoint": "2056656a3df7617022f90045532bef941a602ab3",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-world-inputs-7.json",
+        "bytes": 422846,
+        "sha256": "sha256:73b8dac857dac32bfe7f79bcabe3f3e07bd8d598ecc63fef684876fe04296107",
+        "files": 2479,
+        "inputBytes": 118848649,
+        "sourceCommit": "2056656a3df7617022f90045532bef941a602ab3"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-browser-7.log",
+          "bytes": 102,
+          "sha256": "sha256:5be90d3c533ea1dad6c3f5992453e87d48bb0768baecfa0cc651189a98037d24"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-build-7.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-focused-7.log",
+          "bytes": 367,
+          "sha256": "sha256:2db6fbde5ea66ab7ac8c0fd4f39a5f4da371b9933a02f5a6179085b078913b34"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-format-7.log",
+          "bytes": 163,
+          "sha256": "sha256:73ec4071c76b8f3ab2bf09d53f330bdb0c4d5339ff91d5e27697f6ec189e5faa"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-inventory-7.log",
+          "bytes": 243,
+          "sha256": "sha256:277152a73be93dddc6a9cd66e173617e23d8c0fe102712c89350026e3980a62b"
+        }
+      ],
+      "actualRootSession": 4952,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "475fa5",
+      "qualification": "Build plus six focused tests and six shared-world frames/one pose fault pass."
+    },
+    {
+      "id": "native-pbr-world-8",
+      "status": "passed-focused-expanded",
+      "sourceCheckpoint": "2056656a3df7617022f90045532bef941a602ab3",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-world-inputs-8.json",
+        "bytes": 422846,
+        "sha256": "sha256:1df5ac4ae144b995b8e1c09196a976622d8c75b3d3ef36ff9a9494534427909e",
+        "files": 2479,
+        "inputBytes": 118852486,
+        "sourceCommit": "2056656a3df7617022f90045532bef941a602ab3"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-focused-8.log",
+          "bytes": 370,
+          "sha256": "sha256:b73656b0f070c3363462cdcf7aa231428ad9a4a54a7557583d3ae4b47dcbf84d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-format-8.log",
+          "bytes": 123,
+          "sha256": "sha256:df34ef9089f5d634c1966661cb7c4fc1287e98d55e5fb86843a8e4526be06134"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-identity-8.log",
+          "bytes": 260,
+          "sha256": "sha256:f6f03b68c9733991b1cb841437b5c06031cf6f83bd3c11a89657e4660a585fdf"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-inventory-8.log",
+          "bytes": 243,
+          "sha256": "sha256:0936627f36ca6410c17cc28a5ab83546831aea91617c8b17ac0291cc5fafe381"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-schema-8.log",
+          "bytes": 653,
+          "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+        }
+      ],
+      "actualRootSession": 30738,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "f2dcf8",
+      "qualification": "Generated schema/appearance and eighteen focused tests pass."
+    },
+    {
+      "id": "native-pbr-world-9",
+      "status": "passed-prefix-then-command-selection-failure",
+      "sourceCheckpoint": "2056656a3df7617022f90045532bef941a602ab3",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-world-inputs-9.json",
+        "bytes": 422846,
+        "sha256": "sha256:1df5ac4ae144b995b8e1c09196a976622d8c75b3d3ef36ff9a9494534427909e",
+        "files": 2479,
+        "inputBytes": 118852486,
+        "sourceCommit": "2056656a3df7617022f90045532bef941a602ab3"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-browser-9.log",
+          "bytes": 265,
+          "sha256": "sha256:1efbf6ab9332d2a1ed746d99f04cf0ee754b4433f44e0624646bdde8e04f12f6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-component-9.log",
+          "bytes": 277,
+          "sha256": "sha256:28424f7970668b1e42e5020150cbc157a2c8a3b7c0aa0f7caf81a49193076838"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-fast-9.log",
+          "bytes": 33222,
+          "sha256": "sha256:33e583a4028994b00c6f1c7f028b1ff07b6fe5fda6b345148e4f016f1a55001f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-format-9.log",
+          "bytes": 1497,
+          "sha256": "sha256:57091de8a3e14c6df3389900ac4a0093ba8c0ef0069d0f58dbe2ed0b200e24ca"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-identity-9.log",
+          "bytes": 260,
+          "sha256": "sha256:f6f03b68c9733991b1cb841437b5c06031cf6f83bd3c11a89657e4660a585fdf"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-inventory-9.log",
+          "bytes": 243,
+          "sha256": "sha256:cd19378651331aff447ef791a08b9646450c4e4ea1686618a5399f204cb36ba8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-shape-world-9.log",
+          "bytes": 160,
+          "sha256": "sha256:2b15dfc21fe4a604e5bb8bfc17472acc6ed548a2d3e8c9f63683e113f63f3c21"
+        }
+      ],
+      "actualRootSession": 26982,
+      "actualExitCode": 254,
+      "terminalToolReceipt": "984ccb",
+      "qualification": "Fast4165/405 and world6/1/component3/4 pass. A nonexistent pnpm command stops the chain; native2/family/camera/runtime suffix not run."
+    },
+    {
+      "id": "native-pbr-world-10",
+      "status": "passed-broader-before-final-refinement",
+      "sourceCheckpoint": "2056656a3df7617022f90045532bef941a602ab3",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-world-inputs-10.json",
+        "bytes": 422846,
+        "sha256": "sha256:c9ccf49fd36a786979fd1f20aecfc739aebfbff752d6b6be3f9df89ed1b04b99",
+        "files": 2479,
+        "inputBytes": 118852468,
+        "sourceCommit": "2056656a3df7617022f90045532bef941a602ab3"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-browser-10.log",
+          "bytes": 265,
+          "sha256": "sha256:86508ce52a149ebff6657c7f09c235e38766e7239f7177488802b245b76c7eb9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-cameras-10.log",
+          "bytes": 318,
+          "sha256": "sha256:9b6357182cec644ed879a7c14971cd8249f27a2322f86d5849be39363bf6ba04"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-component-10.log",
+          "bytes": 277,
+          "sha256": "sha256:a9e4a56eefca3736d0a6018707193a6178c779a0290ef0479957111adcc12e9e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-families-10.log",
+          "bytes": 331,
+          "sha256": "sha256:b8158ff66434f2a8410a5a8cb8598ea2af387363fcdceebeb1a24e833d92dafa"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-fast-10.log",
+          "bytes": 33399,
+          "sha256": "sha256:0648b243714c596885ac8c6dccaff6be2c23eb92ec4c7ab7f15d9cfe91f4ca14"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-fifo-red-10.log",
+          "bytes": 351,
+          "sha256": "sha256:3a26d7878364ef6f167c4aa90fae7d33f82fc18d0aab79caeea000775e6989cf"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-format-10.log",
+          "bytes": 127,
+          "sha256": "sha256:a6e592f2c847d9a5639649d6337d2fb8ed65b113b64bf5d2c8b82ac476269200"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-held-10.log",
+          "bytes": 196,
+          "sha256": "sha256:02b902feb3f9a55ccc1c79ab0256ef84606cf5af2ab2e7baa453dff92b2b6513"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-identity-10.log",
+          "bytes": 260,
+          "sha256": "sha256:f6f03b68c9733991b1cb841437b5c06031cf6f83bd3c11a89657e4660a585fdf"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-inventory-10.log",
+          "bytes": 244,
+          "sha256": "sha256:e673290c810c459d40df4477cc13628658f429536338910c9b4d038bf0990dce"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-native2-10.log",
+          "bytes": 1218,
+          "sha256": "sha256:ba1a6afef03d52f329b9ce9b5c42aa45f818b6364ccb1d5d073f20b26b5fc32e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-rigid-schema-red-10.log",
+          "bytes": 406,
+          "sha256": "sha256:b223d70e19e16eecaed6983c3fba375139c1b22fb0f0a6f8fda88318b76327ff"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-runtime-10.log",
+          "bytes": 37407,
+          "sha256": "sha256:645963e6ba2ef7945e6eaa1e6805bb28e6edd624f9cfaf138be4dd947ade6e85"
+        }
+      ],
+      "actualRootSession": 30050,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "b2757c",
+      "qualification": "Fast, world/PBR component, all six native2 groups, family and camera repeated exports, full runtime tier pass on snapshot10. Later source11 refines rigid schema, regular-file guards and retained GPU matrices."
+    },
+    {
+      "id": "native-pbr-world-11",
+      "status": "passed-before-added-hierarchy-control",
+      "sourceCheckpoint": "2056656a3df7617022f90045532bef941a602ab3",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-world-inputs-11.json",
+        "bytes": 422846,
+        "sha256": "sha256:62806997bf193fd1703048f2c4e99ce1d186eae6443fd3e33df8b6c035d9de9c",
+        "files": 2479,
+        "inputBytes": 118855166,
+        "sourceCommit": "2056656a3df7617022f90045532bef941a602ab3"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-browser-11.log",
+          "bytes": 265,
+          "sha256": "sha256:034d0c669a5351831376ce2231fc583608e098a9303372550b77a9621a400f37"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-component-11.log",
+          "bytes": 277,
+          "sha256": "sha256:fb4c8b36f3afa9c455b988d0b76dede7379e6e2f97f31861d7bd67d97bf5ffdb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-fast-11.log",
+          "bytes": 35326,
+          "sha256": "sha256:e32d3e16b1ff6c9e23dc944147c9b7f6e6ce35c6b50fdee854f4d304ba5d84ec"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-focused-11.log",
+          "bytes": 430,
+          "sha256": "sha256:d77ede814c89b227b1cd84c406c940fc8f0b5109ded8596540f15477bf15a09a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-format-11.log",
+          "bytes": 458,
+          "sha256": "sha256:7719ea264b27ebc079eaefa64c8c727f0ecffa7e51dab7aca4368416e801c9dc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-held-11.log",
+          "bytes": 196,
+          "sha256": "sha256:dad9695c59fd3acbc43ebf6a7a69511656f6c713ada4c83205ba5be459555364"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-identity-11.log",
+          "bytes": 260,
+          "sha256": "sha256:f6f03b68c9733991b1cb841437b5c06031cf6f83bd3c11a89657e4660a585fdf"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-inventory-11.log",
+          "bytes": 244,
+          "sha256": "sha256:4aee9e70e8b0c2200b12c978260e0dfe47dca14e372dbc2061b5cf3a7f43440b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-native2-11.log",
+          "bytes": 1218,
+          "sha256": "sha256:cc78657f2b80e5ebbea6e48fb22308e06e3b6dfad3a37efa90ebcbc22e030469"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-schema-11.log",
+          "bytes": 653,
+          "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+        }
+      ],
+      "actualRootSession": 8146,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "ebc00d",
+      "qualification": "Fast,21 affected Node tests, world6/1, PBR component3/4 and all six native2 groups pass. Source12 then exercises the accepted reverse part order."
+    },
+    {
+      "id": "native-pbr-world-12",
+      "status": "passed-hierarchy-control",
+      "sourceCheckpoint": "2056656a3df7617022f90045532bef941a602ab3",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-world-inputs-12.json",
+        "bytes": 422846,
+        "sha256": "sha256:16f7ee16388dca223e51bb56d7af7bc4833d50f431384ab5d3fd645a6800d8a4",
+        "files": 2479,
+        "inputBytes": 118855331,
+        "sourceCommit": "2056656a3df7617022f90045532bef941a602ab3"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-format-12.log",
+          "bytes": 92,
+          "sha256": "sha256:3a3c11553f64e6576dbfb35004063be4337ea9c12b1229d2a2a3d98a0f3ceeb8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-inventory-12.log",
+          "bytes": 244,
+          "sha256": "sha256:5c5c7e4170c1754c366f175fd1aa2a7ea6a7b619d56c6746d9e4d41ddb4a9e56"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-red-12.log",
+          "bytes": 265,
+          "sha256": "sha256:7fcb07f3c37d6b1c12a6f531c1f43a1e80df79b46080270d1e1ab2cc0895af6b"
+        }
+      ],
+      "actualRootSession": 73351,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "b903cc",
+      "qualification": "Attempted expected-red input is a positive control: valid child-before-parent metadata already works because the existing shared world creates all groups before attaching parents. No production hierarchy repair was needed."
+    },
+    {
+      "id": "native-pbr-world-13",
+      "status": "passed-current-scoped",
+      "sourceCheckpoint": "2056656a3df7617022f90045532bef941a602ab3",
+      "workingInputs": {
+        "path": "/private/tmp/still-shift-ms2-pbr-world-inputs-13.json",
+        "bytes": 422846,
+        "sha256": "sha256:16f7ee16388dca223e51bb56d7af7bc4833d50f431384ab5d3fd645a6800d8a4",
+        "files": 2479,
+        "inputBytes": 118855331,
+        "sourceCommit": "2056656a3df7617022f90045532bef941a602ab3"
+      },
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-browser-13.log",
+          "bytes": 265,
+          "sha256": "sha256:020facede76903c329f600fd2645c3a58f4e6d6b8744d5c1848b211766a09012"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-fast-13.log",
+          "bytes": 34542,
+          "sha256": "sha256:b97f3262fbde8994fb3bcc96cce0790b048e3d7875f7ba1c2b6f00472228bd84"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-focused-13.log",
+          "bytes": 433,
+          "sha256": "sha256:8d4b9f694d3a570c3c21a02be157085cfafe4bffffe89263bb7ed63613b25455"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-held-13.log",
+          "bytes": 196,
+          "sha256": "sha256:7efc20ee39cb824a1f1a863d18ace612326975eb1e5ed586b245a4b19ed6c8a0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-pbr-world-inventory-13.log",
+          "bytes": 244,
+          "sha256": "sha256:28cc0d0f3540ee7340e3ac49ba47ef9697b23c0c6c42badb2b53c68330a0d6d4"
+        }
+      ],
+      "actualRootSession": 80264,
+      "actualExitCode": 0,
+      "terminalToolReceipt": "ad293c",
+      "qualification": "Final source13 fast,21 affected Node tests and reversed-hierarchy world6/1 pass. Source11 PBR component3/4 and all six native2 groups retain identical production/owning-test inputs; only two source3 tests differ. Snapshot10 full runtime/family/camera evidence remains preceding broader input, not rerun on source13."
+    }
+  ],
+  "extraExpectedRed": {
+    "sourceSnapshot": 10,
+    "generatedSchema": {
+      "path": "/private/tmp/still-shift-ms2-pbr-world-schema-before-11.json",
+      "bytes": 56996,
+      "sha256": "sha256:f29f78c73fe285c52fe2b75e5a6bec8ea95bda806004cf9e70d01bf97b698ddc"
+    },
+    "log": {
+      "path": "/private/tmp/still-shift-ms2-pbr-world-rigid-schema-red-10.log",
+      "bytes": 406,
+      "sha256": "sha256:b223d70e19e16eecaed6983c3fba375139c1b22fb0f0a6f8fda88318b76327ff"
+    },
+    "actualExitCode": 1,
+    "terminalToolReceipt": "c77da6",
+    "reason": "Source3 runtime rejects ratchets but generated authoring schema still exposes them; replaced with the shared rigid-only structural subset."
+  },
+  "extraExpectedFifoRed": {
+    "sourceSnapshot": 10,
+    "log": {
+      "path": "/private/tmp/still-shift-ms2-pbr-world-fifo-red-10.log",
+      "bytes": 351,
+      "sha256": "sha256:3a26d7878364ef6f167c4aa90fae7d33f82fc18d0aab79caeea000775e6989cf"
+    },
+    "actualRootSession": 72499,
+    "actualExitCode": 1,
+    "terminalToolReceipt": "28fa9b",
+    "reason": "Isolated child enters resource loading then blocks on a FIFO; timeout kills and reaps only that child. Source11 adds nonblocking open/type rejection."
+  },
+  "artifacts": [
+    {
+      "snapshot": 7,
+      "group": "still-shift-ms2-pbr-world-browser-7.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-pbr-world-hbjfTi",
+        "status": "passed",
+        "frames": 6,
+        "faults": 1
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-pbr-world-hbjfTi/run.json",
+        "bytes": 18979,
+        "sha256": "sha256:25f17889b9f01acecfea757576f5128af63f1988ad8ca1ef9647814228a91c94"
+      }
+    },
+    {
+      "snapshot": 9,
+      "group": "still-shift-ms2-pbr-world-component-9.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-pbr-resources-Q2CiQo",
+        "status": "passed",
+        "frames": 3,
+        "faults": 4
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-pbr-resources-Q2CiQo/run.json",
+        "bytes": 10304,
+        "sha256": "sha256:65adc7373dac7e46a29818ed75357ddf9e3b116dd523282986a44aa1e9429c0f"
+      }
+    },
+    {
+      "snapshot": 9,
+      "group": "still-shift-ms2-pbr-world-browser-9.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-pbr-world-l2H3B4",
+        "status": "passed",
+        "frames": 6,
+        "faults": 1
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-pbr-world-l2H3B4/run.json",
+        "bytes": 18979,
+        "sha256": "sha256:25f17889b9f01acecfea757576f5128af63f1988ad8ca1ef9647814228a91c94"
+      }
+    },
+    {
+      "snapshot": 10,
+      "group": "still-shift-ms2-pbr-world-native2-10.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-shape-world-ac4NaW",
+        "status": "passed",
+        "frames": 5,
+        "scope": "browser-world-and-pixels-only"
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-shape-world-ac4NaW/run.json",
+        "bytes": 2976,
+        "sha256": "sha256:1f1992024ce6298031c17cad5207b6e05aa137b48577d205c74ee1a274e7c65e"
+      }
+    },
+    {
+      "snapshot": 10,
+      "group": "still-shift-ms2-pbr-world-native2-10.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-used-streams-9tIxwp",
+        "status": "passed",
+        "frames": 6,
+        "negatives": 11,
+        "scope": "standalone-used-color-streams-only"
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-used-streams-9tIxwp/run.json",
+        "bytes": 7870,
+        "sha256": "sha256:0e4a12fdc6b6397c9902f2e3ceabd9df8fb68f40b8f2af6a33ee4dead0f7abfe"
+      }
+    },
+    {
+      "snapshot": 10,
+      "group": "still-shift-ms2-pbr-world-native2-10.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-frame-observation-KLfx2W",
+        "status": "passed",
+        "frames": 8,
+        "negatives": 4,
+        "scope": "standalone-full-observed-frame2"
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-frame-observation-KLfx2W/run.json",
+        "bytes": 6282,
+        "sha256": "sha256:45cec9c43a20b5ccb472b1daaf291a0f6246e9b21b3a15ede9f4838e312de999"
+      }
+    },
+    {
+      "snapshot": 10,
+      "group": "still-shift-ms2-pbr-world-native2-10.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-composition-v2-VMF452",
+        "status": "passed",
+        "captures": 4,
+        "negatives": 15
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-composition-v2-VMF452/run.json",
+        "bytes": 91713,
+        "sha256": "sha256:927c7325c17bfa4ee125c555c139b4f104e5ac0caf44978568ecd36abe74c582"
+      }
+    },
+    {
+      "snapshot": 10,
+      "group": "still-shift-ms2-pbr-world-native2-10.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-normal-export2-XHTH7n",
+        "status": "passed",
+        "exports": 2
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-normal-export2-XHTH7n/run.json",
+        "bytes": 43804,
+        "sha256": "sha256:50a2dadf612d6bac1fc7098cf63c090bfbde80471fa83a73b8ed60734e388be2"
+      }
+    },
+    {
+      "snapshot": 10,
+      "group": "still-shift-ms2-pbr-world-native2-10.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-lab2-csCW9w",
+        "status": "passed",
+        "records": 20
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-lab2-csCW9w/run.json",
+        "bytes": 26355,
+        "sha256": "sha256:a2257125cf72ac82f46a0bd38df922a5967e6f5695cbe6eeea593f67ab315638"
+      }
+    },
+    {
+      "snapshot": 10,
+      "group": "still-shift-ms2-pbr-world-families-10.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-family-packs-6pKbJF",
+        "status": "passed",
+        "families": 2,
+        "dimensionsPerFamily": 2,
+        "previewCaptures": 40,
+        "finalExports": 8
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-family-packs-6pKbJF/run.json",
+        "bytes": 977461,
+        "sha256": "sha256:5e48c19e4ed9ec96c81413a092e07a5fbfc9112f784ab29a64c5c5af00532cf4"
+      }
+    },
+    {
+      "snapshot": 10,
+      "group": "still-shift-ms2-pbr-world-component-10.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-pbr-resources-9RzZHv",
+        "status": "passed",
+        "frames": 3,
+        "faults": 4
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-pbr-resources-9RzZHv/run.json",
+        "bytes": 10304,
+        "sha256": "sha256:31491ca0ceb9d7e0ae4027abbe7a47a0cde803dd6841ba6018c03dddfb4c9116"
+      }
+    },
+    {
+      "snapshot": 10,
+      "group": "still-shift-ms2-pbr-world-cameras-10.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-cameras-KzyhGD",
+        "status": "passed",
+        "families": 3,
+        "dimensionsPerFamily": 2,
+        "previewCaptures": 156,
+        "finalExports": 12
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-cameras-KzyhGD/run.json",
+        "bytes": 4561812,
+        "sha256": "sha256:46fd3583c7a62fba413e970d6575febe2c8ad078902a2584a0d82c306be80bdb"
+      }
+    },
+    {
+      "snapshot": 10,
+      "group": "still-shift-ms2-pbr-world-browser-10.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-pbr-world-SYUKPJ",
+        "status": "passed",
+        "frames": 6,
+        "faults": 1
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-pbr-world-SYUKPJ/run.json",
+        "bytes": 18979,
+        "sha256": "sha256:194f22425e1dc14a0507651d54709176c6731b2ee4642516ac6a1038fb6abc2f"
+      }
+    },
+    {
+      "snapshot": 11,
+      "group": "still-shift-ms2-pbr-world-native2-11.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-shape-world-wD0Dw0",
+        "status": "passed",
+        "frames": 5,
+        "scope": "browser-world-and-pixels-only"
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-shape-world-wD0Dw0/run.json",
+        "bytes": 2976,
+        "sha256": "sha256:1f1992024ce6298031c17cad5207b6e05aa137b48577d205c74ee1a274e7c65e"
+      }
+    },
+    {
+      "snapshot": 11,
+      "group": "still-shift-ms2-pbr-world-native2-11.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-used-streams-g88xbs",
+        "status": "passed",
+        "frames": 6,
+        "negatives": 11,
+        "scope": "standalone-used-color-streams-only"
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-used-streams-g88xbs/run.json",
+        "bytes": 7870,
+        "sha256": "sha256:0e4a12fdc6b6397c9902f2e3ceabd9df8fb68f40b8f2af6a33ee4dead0f7abfe"
+      }
+    },
+    {
+      "snapshot": 11,
+      "group": "still-shift-ms2-pbr-world-native2-11.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-frame-observation-hd6eCj",
+        "status": "passed",
+        "frames": 8,
+        "negatives": 4,
+        "scope": "standalone-full-observed-frame2"
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-frame-observation-hd6eCj/run.json",
+        "bytes": 6282,
+        "sha256": "sha256:a28b9b6ae4fd8cfb8bf95d3bd0fe6f47f59c9a66f6c62bc15667410fde1fe87e"
+      }
+    },
+    {
+      "snapshot": 11,
+      "group": "still-shift-ms2-pbr-world-native2-11.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-composition-v2-fPmwzA",
+        "status": "passed",
+        "captures": 4,
+        "negatives": 15
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-composition-v2-fPmwzA/run.json",
+        "bytes": 91713,
+        "sha256": "sha256:2b8a0cea9c65ec81beb83aaf3f7c1615b082f68d7d8eba2cc989441454400fa3"
+      }
+    },
+    {
+      "snapshot": 11,
+      "group": "still-shift-ms2-pbr-world-native2-11.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-normal-export2-dJcTMj",
+        "status": "passed",
+        "exports": 2
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-normal-export2-dJcTMj/run.json",
+        "bytes": 43700,
+        "sha256": "sha256:f929c39860ae2533669be290536cea197a9fd52f2b5308749f4b28a77c615cdd"
+      }
+    },
+    {
+      "snapshot": 11,
+      "group": "still-shift-ms2-pbr-world-native2-11.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-lab2-1ojVSo",
+        "status": "passed",
+        "records": 20
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-lab2-1ojVSo/run.json",
+        "bytes": 26321,
+        "sha256": "sha256:e95025599b57950e9c2b3057d4488d49070a58b4b7da59ffd789ef089fa289a2"
+      }
+    },
+    {
+      "snapshot": 11,
+      "group": "still-shift-ms2-pbr-world-component-11.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-pbr-resources-yQXnIo",
+        "status": "passed",
+        "frames": 3,
+        "faults": 4
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-pbr-resources-yQXnIo/run.json",
+        "bytes": 10304,
+        "sha256": "sha256:31491ca0ceb9d7e0ae4027abbe7a47a0cde803dd6841ba6018c03dddfb4c9116"
+      }
+    },
+    {
+      "snapshot": 11,
+      "group": "still-shift-ms2-pbr-world-browser-11.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-pbr-world-T70Jbs",
+        "status": "passed",
+        "frames": 6,
+        "faults": 1
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-pbr-world-T70Jbs/run.json",
+        "bytes": 23574,
+        "sha256": "sha256:01def071f6093460e78928f3c3ccf5cb1f797eb21bd0cffc5e8ad211c6e3a8b0"
+      }
+    },
+    {
+      "snapshot": 12,
+      "group": "still-shift-ms2-pbr-world-red-12.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-pbr-world-DFXFEi",
+        "status": "passed",
+        "frames": 6,
+        "faults": 1
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-pbr-world-DFXFEi/run.json",
+        "bytes": 23574,
+        "sha256": "sha256:7636bfa16754c0e98af5afaeec79ee03f644409238446977b14acbc8101a8e20"
+      }
+    },
+    {
+      "snapshot": 13,
+      "group": "still-shift-ms2-pbr-world-browser-13.log",
+      "summary": {
+        "directory": "/private/tmp/still-shift-ms2-pbr-world-gaWiXa",
+        "status": "passed",
+        "frames": 6,
+        "faults": 1
+      },
+      "record": {
+        "path": "/private/tmp/still-shift-ms2-pbr-world-gaWiXa/run.json",
+        "bytes": 23574,
+        "sha256": "sha256:7636bfa16754c0e98af5afaeec79ee03f644409238446977b14acbc8101a8e20"
+      }
+    }
+  ],
+  "currentCounts": {
+    "unitTests": 4165,
+    "unitFiles": 405,
+    "worldFrames": 6,
+    "worldPoseFaults": 1,
+    "pbrComponentFrames": 3,
+    "pbrComponentFaults": 4,
+    "native2Groups": 6,
+    "affectedNodeSummaries": [
+      "Test Files  3 passed (3)",
+      "Tests  21 passed (21)"
+    ],
+    "broaderRuntime10Summaries": [
+      "Test Files  30 passed (30)",
+      "Tests  195 passed (195)",
+      "Test Files  56 passed (56)",
+      "Tests  321 passed (321)"
+    ],
+    "broaderFamily10Exports": 8,
+    "broaderCamera10Exports": 12,
+    "nativePbrCompositionExports": 0,
+    "newInstalledArchives": 0
+  },
+  "sameProductionAndOwningProofInputs11": {
+    "changedSelectedInputs": [
+      "tests/browser/native-pbr-world.ts",
+      "tests/unit/native-pbr-scene.test.ts"
+    ],
+    "qualification": "Only the two named source3 tests differ; PBR component and native2 producer/owning-test inputs remain identical."
+  },
+  "currentWorldProof": {
+    "path": "/private/tmp/still-shift-ms2-pbr-world-gaWiXa/run.json",
+    "bytes": 23574,
+    "sha256": "sha256:7636bfa16754c0e98af5afaeec79ee03f644409238446977b14acbc8101a8e20"
+  },
+  "hierarchyOrderControl": {
+    "ordered11": {
+      "path": "/private/tmp/still-shift-ms2-pbr-world-T70Jbs/run.json",
+      "bytes": 23574,
+      "sha256": "sha256:01def071f6093460e78928f3c3ccf5cb1f797eb21bd0cffc5e8ad211c6e3a8b0"
+    },
+    "reversed13": {
+      "path": "/private/tmp/still-shift-ms2-pbr-world-gaWiXa/run.json",
+      "bytes": 23574,
+      "sha256": "sha256:7636bfa16754c0e98af5afaeec79ee03f644409238446977b14acbc8101a8e20"
+    },
+    "allSixPixelAndGpuMatrixPairsIdentical": true,
+    "qualification": "Accepted child-before-parent metadata works in the existing shared constructor; the attempted red12 was a positive control and needed no production repair."
+  },
+  "generatedSchema": {
+    "path": "docs/schemas/mechanism/scene-3.schema.json",
+    "bytes": 54137,
+    "sha256": "sha256:edec167fbf5b198e5b2352a5f65325f7849e7af87c9a60f5e91a8db9a50e1ed0"
+  },
+  "scopeLimits": [
+    "Standalone source3/shared-world API only; existing composition versions1/2 remain strict. Source3 composition asset/worker/HTTP binary admission, frame3 observation, graph preview/export and installed proof remain pending.",
+    "GPU proof is a single imported diagnostic lever/color draw with independent camera/pose matrices and PBR mip0 bytes/transfer. It does not certify complete imported mechanisms, other draw association, mip pixel values or human appearance.",
+    "Component64MiB payload bill excludes whole-world/PMREM/metadata/packet/replay accounting and caller/scratch/RSS; existing budgets/tolerances unchanged.",
+    "Source13 differs from source11 only in the source3 browser driver and unit tests. Source11 PBR-component and all six native2 proofs retain unchanged production/owning-test inputs. Source13 current checks are distinct from snapshot10 full runtime/family/camera checks. Their input/producer records remain retained; they were not rerun after source11 schema/file guards and source13 test refinements.",
+    "Supported packs remain empty and pilotSupportedEpisodes0. Whole MS2 generator/registry/event/label/cue/typography/300-board and full/installed gates remain before its PR and MS3."
+  ],
+  "recordedAtUTC": "2026-10-11T04:02:13.426557+00:00"
+}
