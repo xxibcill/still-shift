@@ -50,9 +50,10 @@ still hold before relying on them.
   artifacts, propagates failures, and links current facts in reports/handoffs.
   Immutable program snapshots preserve original definitions after plan edits.
   77 owning controls/build/lint/schemas/boundaries/declarations pass; two early
-  CLI type failures are retained. Earlierbc5b989b passes complete4439-unit fast
-  with2690 inputs held; program repair requires fresh complete tiers. Actual native
-  proof is next; no current terminal native pass is claimed. Evidence6 source6615
+  CLI type failures are retained. Source6bcba8a4 passes complete4440-unit fast
+  with2691 inputs/121316579B exact. Actual native proof is running (session70833,
+  qa7-browser1 prefix, root iGZHNG); re-poll that live handle, no terminal pass
+  claimed. Complete runtime follows it. Earlierbc5b989b fast remains separate. Evidence6 source6615
   separately retains4 outputs/240 frames/108 images/188 pins, exact local tiers and
   the additional60-frame/27-image/46-pin camera-cut proof, with failed attempts.
   Original scope remains: broader faults/analytic/continuous collision/reviews;
@@ -259,7 +260,8 @@ still hold before relying on them.
   both original/repaired rule ranges.
 - **Results:**77 scoped owning checks/build/lint/schemas/boundaries/declarations pass.
   Earlierbc5b989b separately passes complete4439-unit fast with2690 inputs exact;
-  the program repair requires fresh current fast/runtime and actual native proof.
+  current6bcba8a4 passes complete4440-unit fast with2691 inputs/121316579B exact.
+  Native proof is running as session70833/root iGZHNG; complete runtime follows.
 - **Open / next:** current source-held native/independent QA and local tiers; original
   broader faults/repairs, ten-question/five-asset/two-behavior pilot, genuine inputs/
   reviews and final gates remain. No spending, Actions, merge or publication.

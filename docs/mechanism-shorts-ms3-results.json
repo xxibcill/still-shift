@@ -392,7 +392,15 @@
       "record": "docs/mechanism-shorts-ms3-qa-results.json",
       "focusedTests": 77,
       "qualification": "Scoped operational code/preflight only. Native controls are implemented but not yet run on this committed source. Historical evidence6 local/native proofs have separate bindings. No pilot, whole mechanical/glyph/continuous/factual/listening/human acceptance, spending, Actions, merge or publication is claimed.",
-      "historyRepair": "Immutable original program retention implemented; latest native/local-tier proof pending"
+      "historyRepair": "Immutable original program retention implemented; latest native/local-tier proof pending",
+      "completeFast": {
+        "sourceCommit": "6bcba8a495e1f0f37d2547042ab85ec190cfcecd",
+        "unitTests": 4440,
+        "heldInputFiles": 2691,
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0
+      },
+      "currentNativeProof": "running-session70833"
     }
   ],
   "targets": {

@@ -330,6 +330,21 @@
       "path": "/private/tmp/still-shift-ms3-qa7-gate3-receipt.json",
       "bytes": 2938,
       "sha256": "sha256:0182bcdd16d01498ccc7ad99259c351473a2c0574f52c0722cd2a36e4cafdd1d"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-fast2.log",
+      "bytes": 44521,
+      "sha256": "sha256:847f15c6598385fe8f4459a9a7ce29bbc441317909014d4d3ab2d63044d7681a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-fast2-receipt.json",
+      "bytes": 361,
+      "sha256": "sha256:19dd112d03f8b58c377eda2b8a71913a0ed8b3e12d0bdc16bb1284cd01b9364f"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-fast2-inputs.json",
+      "bytes": 459374,
+      "sha256": "sha256:b075fe6ea15c5a7ad943c7cceb1e5ef28fe78cc253aa31bb002f34937b0d0f9d"
     }
   ],
   "nativeOwningControls": [
@@ -446,6 +461,40 @@
     "reason": "Hashes and failure findings alone did not preserve the original rule program body after a QA dependency edit. Retain full immutable programs and assert both original/repaired ranges in the native owner.",
     "baseSource": "bc5b989bb1d9a598ef17702e98ea6c3f3b60c614",
     "scopedControls": 77,
-    "currentCompleteFastAndNative": "pending"
+    "currentCompleteFastAndNative": "Current complete fast passed; actual native proof running"
+  },
+  "committedSource": "6bcba8a495e1f0f37d2547042ab85ec190cfcecd",
+  "completeFast": {
+    "status": "passed",
+    "command": "pnpm check:fast",
+    "sourceCommit": "6bcba8a495e1f0f37d2547042ab85ec190cfcecd",
+    "startedUtc": "2026-10-12T23:13:07.378865+00:00",
+    "pid": 54878,
+    "inventory": "/private/tmp/still-shift-ms3-qa7-fast2-inputs.json",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-12T23:15:30.244611+00:00",
+    "session": 93064,
+    "unitTests": 4440,
+    "unitFiles": 437,
+    "unitSeconds": 74.04,
+    "heldInputFiles": 2691,
+    "heldInputBytes": 121316579
+  },
+  "runningVerification": {
+    "status": "running",
+    "command": "pnpm test:browser:mechanism-production-native",
+    "sourceCommit": "6bcba8a495e1f0f37d2547042ab85ec190cfcecd",
+    "startedUtc": "2026-10-12T23:17:03.521386+00:00",
+    "pid": 58477,
+    "inventory": "/private/tmp/still-shift-ms3-qa7-browser1-inputs.json",
+    "actualExitCode": null,
+    "session": 70833,
+    "root": "/private/tmp/still-shift-ms3-production-native-iGZHNG",
+    "receipt": "/private/tmp/still-shift-ms3-qa7-browser1-receipt.json",
+    "log": "/private/tmp/still-shift-ms3-qa7-browser1.log",
+    "heldInputFiles": 2691,
+    "heldInputBytes": 121316579,
+    "lastToolObservation": "Session70833 confirmed live after launch. Re-poll the same handle; no terminal pass claimed."
   }
 }
