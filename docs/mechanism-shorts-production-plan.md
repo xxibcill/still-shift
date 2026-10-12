@@ -848,6 +848,20 @@ mechanism families establish whether the architecture transfers.
       all12 sampled PNGs are agent-viewed. Failed color, required-shape control, type
       and format attempts remain in [world-text evidence](./mechanism-shorts-ms2-world-annotation-results.json).
       A world plane does not validate a mesh surface or broader world layout.
+      Slice56 adds explicit rigid indexed-triangle marking, Float32 face/basis
+      placement, guarded-box/opaque/unit-scale/precision admission and complete
+      variant CAS replacement. A real pinned Three cold/warm sorting negative
+      leads to stable physical/artwork depth ties with depth tests/writes active.
+      Final fast11 passes4,331 units/425 files. Native2/current source audit9 passes
+      depth14/six composition/cancellation/70 readbacks/30 exact pairs. Surface9
+      passes360 previews/1,080 seeks/six exports/360 native frames/18 controls;
+      independent audit2 verifies24 triangle-box quads/360 matrices and colored
+      ink in every encoded frame. Fresh default world1/audit1 preserves all360
+      preview/decoded frames and six audio/encoded bodies against slice55.
+      All24 original surface/world PNGs agent-viewed; held2,611 inputs/120,444,661B
+      unchanged. Actual font/safe-area, encoded ink,16-ULP/cold-seek and decoder
+      failures remain in [surface evidence](./mechanism-shorts-ms2-surface-marking-results.json).
+      Broader layout/encoded glyph-copy/readability and human review stay open.
       This expanded criterion remains unchecked.
 - [ ] Add tabs, open callouts, brackets, arrows and restrained highlights with
       explicit hidden/offscreen behavior and authored locks. A true surface marking
@@ -866,8 +880,9 @@ mechanism families establish whether the architecture transfers.
       dependency and retained PNG audits. The
       centered-group, cable framing and mismatched arrow ink failures are repaired
       and retained in [style evidence](./mechanism-shorts-ms2-annotation-style-results.json).
-      The world/surface and plate-invalidation/reuse parts of this criterion remain
-      unchecked.
+      Slices55/56 cover bounded world/surface binding and actual invalidation.
+      Label-only native-plate reuse and broader encoded/human acceptance keep
+      this criterion unchecked.
 - [ ] Compile semantic contact/release/return events from supplied narration cues
       into all picture, annotation, caption and sound tracks. Reject overfull shots,
       out-of-recording cues and insufficient reading/action time. Do not stretch

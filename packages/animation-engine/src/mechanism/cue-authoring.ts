@@ -9,6 +9,8 @@ import {
   MechanismNarratedCycleSchema,
   MechanismHashSchema,
   MechanismSceneV2Schema,
+  MechanismWorldTextAnnotationSchema,
+  MechanismSurfaceMarkingSchema,
 } from "@still-shift/scene-contract";
 import { compileMechanismNarratedCycle } from "./narrated-cycle.ts";
 import {
@@ -76,9 +78,10 @@ export const MechanismCuePatchSchema = z
             .object({
               ...annotationTarget,
               property: z.literal("world-annotation"),
-              value: cue.shape.worldAnnotations
-                .unwrap()
-                .element.omit({ id: true }),
+              value: z.discriminatedUnion("kind", [
+                MechanismWorldTextAnnotationSchema.omit({ id: true }),
+                MechanismSurfaceMarkingSchema.omit({ id: true }),
+              ]),
             })
             .strict(),
           z
@@ -231,7 +234,11 @@ export function applyMechanismCuePatch(
             "Unknown stable world annotation target",
             path,
           );
-        Object.assign(annotation, operation.value);
+        const index = target.worldAnnotations!.indexOf(annotation);
+        target.worldAnnotations![index] = {
+          id: annotation.id,
+          ...operation.value,
+        };
         native = true;
       } else if (operation.property === "sound-gain") {
         path = `cues.${target.id}.sounds.${operation.sound}.gainDb`;

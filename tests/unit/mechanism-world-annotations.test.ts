@@ -101,7 +101,9 @@ describe("cue world text authoring", () => {
   });
   it("returns a cue-located missing physical part before rendering", () => {
     const f = input();
-    f.document.cues[0]!.worldAnnotations![0]!.part = "missing";
+    const annotation = f.document.cues[0]!.worldAnnotations![0]!;
+    if (!("part" in annotation)) throw Error("Expected world text part");
+    annotation.part = "missing";
     try {
       compileMechanismNarratedCycle(f.instance, f.document);
       throw Error("Expected a located part rejection");

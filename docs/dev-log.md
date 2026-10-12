@@ -45,7 +45,7 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Fifty-five slices include the frozen ten-question board, expanded Thai review and
+  Fifty-six slices include the frozen ten-question board, expanded Thai review and
   recovered existing spoken inputs for all three families. Four audio hashes and
   thirteen supplied word-range/shot associations match. The shorter tape-hook take
   uses revised copy; the failed identical-script assumption is retained. No fresh supplied-speech
@@ -78,11 +78,29 @@ still hold before relying on them.
   sampled PNGs agent-viewed. Held2,607 inputs/120,401,922B unchanged. Failed ACES
   color assumption, strict hidden-pawl control, receipt types and formatting remain
   retained. Final full96/176 items/36,061 frames/benchmark remains required.
+  Slice56 completes rigid indexed-triangle markings from actual Float32 geometry,
+  full-box/material/deformation/precision admission and full-variant CAS edits.
+  Actual pinned Three sorting reproduces cold/warm allocation depth ties; explicit
+  graphic renderOrder1 repairs exact seeks with depth tests/writes active.
+  Final fast11 passes4,331 units/425 files. Native2/current owning-source audit9
+  passesdepth14/six composition/cancellation/70 readbacks/30 exact pairs; only
+  four test files differ from the native2 producer. Surface9/audit2 passes360
+  previews/1,080 seeks/six exports/360 native frames/18 controls and24 triangle-box
+  quads; all encoded frames retain ink at unchangedRGB28/min3. Default world1/
+  audit1 preserves all360 preview/decoded frames/six audio/encoded bodies from
+  slice55. All24 original surface/world PNGs agent-viewed. Held2,611 inputs/
+  120,444,661B unchanged through staged gates. Failed720x408 encoded ink,16-ULP
+  loss/cold seek, test decoder ENOBUFS and actual font/safe-area cases are retained.
+  Actual96.31996155x83.2px shaping fits final104x84/font64; thresholds unchanged.
+  Build10 completion remains unverified after truncated tool output; owned
+  build11/12 and final fast11 confirm repairs. Next is actual label-only plate reuse.
+  The full matrix is97; no full97 pass claimed.
   Coverage stays 0/10 validated; packs are candidates; accepted pilot episodes 0.
-  Next: true rigid surface marking and label-only plate reuse; bound fresh
+  Next: label-only plate reuse; bound fresh
   speech/sample clocks and cue exports; refresh the full gate,
   whole resources/final installed/pack admission and MS2 PR. MS3 not started.
   No human acceptance, merge/publication or paid generation.
+  [Surface evidence](./mechanism-shorts-ms2-surface-marking-results.json),
   [World text evidence](./mechanism-shorts-ms2-world-annotation-results.json),
   [Screen style evidence](./mechanism-shorts-ms2-annotation-style-results.json),
   [Annotation geometry](./mechanism-shorts-ms2-annotation-results.json),
@@ -246,6 +264,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — MS2 slice56: rigid surface marking and stable depth ties
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `d9272caa`.
+- **Done:** actual Float32 indexed faces, fitted guarded boxes, bounded precision,
+  full-variant CAS/native invalidation and stable physical/artwork draw order.
+- **Results:** final fast11 passes4,331 units/425 files; native2/current audit9
+  passes14/six/cancellation/70 readbacks/30 exact pairs. Surface9/audit2 passes360
+  previews/1,080 seeks/six exports/360 native frames/18 controls/24 triangle quads.
+  Default world1 preserves360 preview/decoded frames/six audio/encoded bodies.
+  All24 original PNGs viewed; held2,611 inputs/120,444,661B unchanged in stages.
+- **Rejected / do not repeat:**16-ULP ink loss, cold/warm material order, clip-sized
+  decoder store,720px encoded ink failure and unmeasured font/safe-area boxes.
+  Failed attempts retained; build10 lost terminal receipt remains unverified.
+- **Open / next:** real label-only plate reuse, genuine speech, whole resources,
+  full97/final installed/pack/PR/owner gates. Packs/pilot0; MS3 not started.
+- **Records:** [Surface evidence](./mechanism-shorts-ms2-surface-marking-results.json),
+  [API](./mechanism-narrated-cycles.md#rigid-surface-markings), [MS2 plan](./mechanism-shorts-production-plan.md).
 
 ### 2026-10-12 — MS2 slice55: part-bound world text and physical visibility
 

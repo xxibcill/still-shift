@@ -31,9 +31,17 @@ import {
   parallelOutputProof,
   parallelChecksum,
 } from "../helpers/composition-parallel-proof.ts";
+import { streamingCompositionOutputProof } from "../helpers/composition-streaming-proof.ts";
+import { surfaceAnnotationFixture } from "../helpers/mechanism-surface-fixture.ts";
 import type * as Proof from "../helpers/mechanism-world-annotations-browser.ts";
+const route = process.argv[2] ?? "world-text";
+assert.ok(route === "world-text" || route === "surface-marking");
 const root = resolve(import.meta.dirname, "../.."),
-  directory = await mkdtemp("/private/tmp/still-shift-ms2-world-annotations-");
+  directory = await mkdtemp(
+    route === "world-text"
+      ? "/private/tmp/still-shift-ms2-world-annotations-"
+      : "/private/tmp/still-shift-ms2-surface-markings-",
+  );
 const server = await createServer({
   root,
   configFile: false,
@@ -104,16 +112,27 @@ try {
   assertPinnedRenderEnvironment(environment);
   for (const family of ["tape-hook", "cable-tie", "clothespeg"] as const) {
     const base = join(directory, family),
-      fixture = await createCueProjectFixture(base, family),
+      fixture = await createCueProjectFixture(
+        base,
+        family,
+        route === "surface-marking"
+          ? { width: 1440, height: 816, fps: 30 }
+          : undefined,
+      ),
       original = await readMechanismCueAuthoring(
         fixture.instance,
         fixture.cuePath,
       );
+    const surface: ReturnType<typeof surfaceAnnotationFixture> | undefined =
+      route === "surface-marking"
+        ? surfaceAnnotationFixture(fixture.instance.scene, family)
+        : undefined;
     const part =
-      family === "tape-hook"
+      surface?.part ??
+      (family === "tape-hook"
         ? fixture.instance.scene.rigs.find((r) => r.type === "slider")!
             .movingPart
-        : fixture.instance.scene.parts[0]!.id;
+        : fixture.instance.scene.parts[0]!.id);
     const legacy = compileMechanismNarratedCycle(
         fixture.instance,
         fixture.document,
@@ -179,7 +198,7 @@ try {
       revision: 1,
       cues: fixture.document.cues.map((cue) => ({
         ...cue,
-        worldAnnotations: [world],
+        worldAnnotations: [surface?.annotation ?? world],
       })),
     });
     await saveMechanismCueAuthoring(
@@ -214,22 +233,16 @@ try {
             schemaVersion: "mechanism-cue-patch-1",
             baseRevision: current.document.revision,
             baseHash: current.projectHash,
-            operations: authored.cues.map((cue) => ({
-              cue: cue.id,
-              annotation: "mark",
-              property: "world-annotation",
-              value: {
-                kind: "world-text",
-                text: world.text,
-                part: world.part,
-                transform: world.transform,
-                pixelsPerUnit: world.pixelsPerUnit,
-                sizePixels: world.sizePixels,
-                fontSizePixels: world.fontSizePixels,
-                ink: "#00ff00",
-                side: world.side,
-              },
-            })),
+            operations: authored.cues.map((cue) => {
+              const { id, ...value } = cue.worldAnnotations![0]!;
+              assert.equal(id, "mark");
+              return {
+                cue: cue.id,
+                annotation: "mark",
+                property: "world-annotation",
+                value: { ...value, ink: "#00ff00" },
+              };
+            }),
           },
         );
         const forbidden = join(base, "stale-render");
@@ -262,6 +275,18 @@ try {
         ),
         loaded = await loadComposition(compiled.compositionPath, "webgl2"),
         color = stage === "before" ? "red" : "green";
+      const worldLayers = loaded.composition.layers.filter(
+        (layer) => layer.metadata?.track === "world-annotation",
+      );
+      assert.equal(worldLayers.length, 4);
+      for (const layer of worldLayers) {
+        if (surface)
+          assert.equal(
+            (layer.metadata?.surface as { mesh: string }).mesh,
+            surface.selected.mesh,
+          );
+        else assert.equal(layer.metadata?.surface, undefined);
+      }
       const args = [
         loaded.composition,
         loaded.preparedNative3D!,
@@ -398,7 +423,9 @@ try {
           join(base, stage + "-compiled"),
           render.outputPath,
         ),
-        proof = await parallelOutputProof(render.outputPath, render.metrics);
+        proof = await (route === "surface-marking"
+          ? streamingCompositionOutputProof(render.outputPath, render.metrics)
+          : parallelOutputProof(render.outputPath, render.metrics));
       assert.equal(check.nativeFrames, 60);
       assert.equal(check.nativePasses, 60);
       stages.push({
@@ -421,7 +448,14 @@ try {
       parallelChecksum(await readFile(join(base, "narration.wav"))),
       authored.narration.sha256,
     );
-    fixtures.push({ family, part, stages, patchReceipt });
+    fixtures.push({
+      family,
+      part,
+      route,
+      ...(surface ? { surfaceSelection: surface.selected } : {}),
+      stages,
+      patchReceipt,
+    });
     process.stdout.write(
       JSON.stringify({
         family,
@@ -438,13 +472,16 @@ try {
     JSON.stringify(
       {
         version: "mechanism-world-annotation-proof-1",
+        route,
         status: "passed",
         environment,
         fixtures,
         scope:
           "Explicit cue world text, actual font bounds, independent scalar projection/part matrices, visible ink, hidden/omitted controls, all-frame forward/reverse/random preview, revision-safe edits and before/after native final checks.",
         limits:
-          "Synthetic local PCM; no true surface marking, label-only plate reuse, genuine speech, continuous-time or human readability/appearance acceptance.",
+          route === "surface-marking"
+            ? "Synthetic local PCM; explicit rigid-triangle marking only. No deforming surface, label-only plate reuse, genuine speech, continuous-time or human readability/appearance acceptance."
+            : "Synthetic local PCM; no true surface marking, label-only plate reuse, genuine speech, continuous-time or human readability/appearance acceptance.",
       },
       null,
       2,

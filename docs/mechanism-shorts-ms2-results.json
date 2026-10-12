@@ -18044,9 +18044,68 @@
         "Label-only plate reuse; genuine recovered speech clocks/cues/exports; full96/176 items36061 frames/benchmark; whole resources/replay/lifetime; final archive/installed/pack admission/MS2 PR.",
         "Supported packs0; accepted pilot episodes0; MS3 not started. No paid generation, human acceptance or publication."
       ]
+    },
+    "fiftySixthSlice": {
+      "status": "rigid-surface-marking-software-slice-complete",
+      "evidence": "docs/mechanism-shorts-ms2-surface-marking-results.json",
+      "scope": "Explicit immutable rigid-triangle markings from actual Float32 positions, fitted guarded boxes, opaque/unit-scale/precision admission, stable variant CAS/native invalidation and deterministic physical/artwork depth ties.",
+      "verification": {
+        "fast11": {
+          "actualExitCode": 0,
+          "unitTests": 4331,
+          "unitFiles": 425
+        },
+        "nativeRegression": {
+          "actualExitCode": 0,
+          "depthCases": 14,
+          "compositionCases": 6,
+          "cancellation": "passed",
+          "rawReadbacks": 70,
+          "exactControlPairs": 30,
+          "qualification": "Native2 actually passes on inputs7 after renderOrder1 fix. Only four test browser/streaming/fixture files differ on final inputs12; recorded native owning source hashes/70 readbacks/30 pairs independently match in audit9. Surface9/default world and fast11 are separate staged gates; no full97 aggregate claimed."
+        },
+        "surfaceBrowser9": {
+          "actualExitCode": 0,
+          "families": 3,
+          "previewFrames": 360,
+          "seekDraws": 1080,
+          "nativeExports": 6,
+          "finalNativeFrames": 360,
+          "hiddenOrOmittedControlDraws": 18,
+          "triangleBoxQuadsIndependentlyMatched": 24,
+          "decodedColoredInkFrames": 360,
+          "minimumEncodedInkPixelsObserved": 31,
+          "beforeAfterAudioIdenticalPairs": 3,
+          "originalPngsAgentViewed": 12
+        },
+        "defaultWorldBrowser1": {
+          "actualExitCode": 0,
+          "previewFrames": 360,
+          "seekDraws": 1080,
+          "nativeExports": 6,
+          "finalNativeFrames": 360,
+          "hiddenOrOmittedControlDraws": 18,
+          "originalPngsAgentViewed": 12,
+          "exactPriorSlice55DecodedVideoFrames": 360,
+          "exactPriorSlice55AudioAndEncodedBodies": 6
+        },
+        "independentAudits": "passed-surface24-triangle-quads/360-matrices/360-decoded-frames/six-audio-bodies/source-clock/control-source-policies-and-default-world-regression",
+        "heldInputs": {
+          "files": 2611,
+          "bytes": 120444661,
+          "unchanged": true
+        }
+      },
+      "failuresRetained": "Euler pole, partial edits, lint/type,16-ULP ink loss, cold/warm actual Three sorting,16MiB test decoder ENOBUFS,720x408 encoded ink failure and actual font/safe-area admission failures. Lost build10 completion remains unverified; owned build11/12 and final fast11 pass.",
+      "remaining": [
+        "Label-only native-plate reuse with original authenticated receipts and zero fresh3D draws. Existing world/surface patches require whole-cycle native invalidation; their rendering is verified.",
+        "Genuine recovered speech decode/sample clocks/cues/native exports; whole resources/lifetime/replay; final full97/frozen176/36061/benchmark/archive/installed/pack admission/MS2 PR.",
+        "Broader world/surface layout, encoded glyph-copy/readability, continuous-time/all-driver and human acceptance remain separate. Supported packs0; accepted pilot0; MS3 not started. No paid generation or owner acceptance."
+      ]
     }
   },
   "limits": [
+    "Slice56 completes the bounded rigid surface software route and deterministic shared depth ties. Final fast11 passes4331 units425files; native2/source audit9 passes70 readbacks30 exact pairs/cancellation. Surface9 and independent audit2 pass360 previews1080 seeks/six exports360 native frames18 controls/24 triangle-box quads; encoded ink minimum31 at unchangedRGB28/min3. Default world1/audit1 passes and preserves all360 preview/decoded frames/six audio/encoded bodies against slice55. All24 original surface/world PNGs agent-viewed; held2611 inputs120444661B unchanged through staged gates. Failed attempts retained. Label-only plate reuse, genuine speech, whole resources/lifetime/replay/full97/final archive/installed/pack/MS2 PR/owner acceptance remain open. Packs/pilot0; MS3 not started.",
     "Slice55 verifies explicit part-bound world text/CAS/native invalidation and physical hidden-part ancestry. Final fast6 passes4320 units/424 files; native1 owning source unchanged; browser3 passes360 previews1080 seeks/six exports360 native frames18 controls. Independent PNG/matrix/decode/source-clock/control audit passes; all12 PNGs agent-viewed. ACES color-filter, hidden required-shape, receipt-type and formatting failures remain retained. True surface marking, label plate reuse, genuine speech, whole resources/lifetime/replay/full96/final installed/pack admission/MS2 PR/human acceptance remain open. Packs/pilot0; MS3 not started.",
     "Slice54 wires five screen cue recipes across three candidate families; final fast2 passes4313 units/423 files, native depth14/six composition/cancellation pass, and fresh180 previews/540 seeks/six exports360 native frames plus independent decoded/body/PNG audit pass on unchanged2603 inputs120347181B. Red, fixture, type, camera and arrow-ink failures remain retained. World/surface routes, plate reuse, genuine speech and remaining MS2/full95/final/pack/pilot/human/PR gates remain open.",
     "Slice53 implements bounded shared composition bracket/arrow geometry with immutable sampled paths, all-anchor visibility, early secondary-reference checks and located writer/viewport failures. Final fast4 passes 4,303 units/422 files; native-depth4 passes14 depth/six composition cases/cancellation, including42 new readbacks and30 independently audited exact dynamic/control pairs. Inventory4 unchanged2,568 files/119,629,177B. Failures and staged passes retained. Full51 was deliberately stopped with actual exit130 before this feature work; final full94-group/176-item/36,061-frame/benchmark gate remains required. Cue recipes/world/surface/plate reuse and broader MS2/PR/pack/pilot acceptance stay open.",

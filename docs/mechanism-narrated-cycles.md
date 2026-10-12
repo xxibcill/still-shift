@@ -214,7 +214,39 @@ stale targets and duplicate writers. World text changes the native plate and
 reports `invalidate-whole-native-clip`; the current lifecycle performs that work
 when rendered. The patch receipt is a work requirement, not proof of render reuse.
 
-A world-text plane does not validate contact with a mesh surface. True surface
-markings need their own supported placement route and invalidation proof. The
-world-text software/browser checks also leave genuine-speech, continuous-time,
-encoded readability and human appearance acceptance open.
+A world-text plane does not validate contact with a mesh surface. Use the rigid
+surface route below to admit placement on one indexed triangle. Genuine-speech,
+continuous-time, encoded readability and human appearance acceptance remain open.
+
+## Rigid surface markings
+
+`worldAnnotations` also admits `kind: "surface-marking"`. It uses the same text,
+font size, pixel box, density and ink fields as world text. Instead of an authored
+part/TRS/side, supply an immutable `mesh`, zero-based indexed `triangle`, positive
+`barycentric` weights summing to one, and optional `rollRadians` (-pi to pi).
+The compiler derives the owning part, face normal, center and plane orientation
+from the actual GPU Float32 vertices. The first triangle edge defines the text's
+horizontal axis; roll rotates that basis in the face plane.
+
+The complete logical box plus one raster pixel on each edge must fit strictly
+inside that triangle. The route rejects missing or degenerate triangles,
+deforming teaching meshes, ambiguous material groups and masked substrates.
+It currently requires unit scale on every physical source part. A conservative
+Float32 placement budget includes source geometry, part translations/pivots,
+rig travel, source clip range and authored camera positions. Its outward depth
+bias must remain within 0.1% of the triangle's minimum altitude; an unsupported
+precision case fails at the cue's triangle instead of placing a floating label.
+This admission budget does not certify every camera, driver or encoded glyph.
+
+The marking is ordinary pinned-font mask artwork in the shared physical depth
+pass. Depth ties use a stable physical-then-artwork draw order, with depth testing
+and writing active. It follows its mesh's physical part and hidden ancestors, participates in
+physical occlusion and changes the native plate. It does not alter the mesh,
+material or supplied narration. Reading-time and actual glyph-overflow errors
+remain enforced. Screen-label layout does not solve surface placement.
+
+A `world-annotation` patch replaces the complete variant while preserving its
+stable ID, so switching between world text and surface marking removes fields
+from the previous route. Either route requires native-plate invalidation; the
+current public lifecycle rerenders the whole cycle. Actual label-only plate
+reuse remains a separate requirement.

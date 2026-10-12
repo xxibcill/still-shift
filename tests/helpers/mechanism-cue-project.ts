@@ -1,3 +1,4 @@
+import type { MechanismNarratedCycle } from "@still-shift/scene-contract";
 import { mkdir, writeFile, readFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { narratedCycleFixture } from "./mechanism-narrated-cycle.ts";
@@ -11,6 +12,7 @@ import { saveMechanismCueAuthoring } from "../../packages/animation-engine/src/m
 export async function createCueProjectFixture(
   directory: string,
   family: "tape-hook" | "cable-tie" | "clothespeg" = "tape-hook",
+  output?: MechanismNarratedCycle["output"],
 ) {
   await mkdir(directory, { recursive: true });
   const { instance, document } = narratedCycleFixture(family, 96000),
@@ -35,7 +37,16 @@ export async function createCueProjectFixture(
   await writeFile(join(directory, "tick.wav"), tick.wav);
   document.narration.path = "narration.wav";
   document.narration.sha256 = mechanismHash(recording.wav);
-  document.output = { width: 240, height: 136, fps: 30 };
+  document.output = output ?? { width: 240, height: 136, fps: 30 };
+  if (output)
+    for (const cue of document.cues)
+      cue.annotations = cue.annotations.map((annotation) => ({
+        ...annotation,
+        position: [
+          (annotation.position[0] * output.width) / 240,
+          (annotation.position[1] * output.height) / 136,
+        ] as [number, number],
+      }));
   for (const cue of document.cues)
     for (const sound of cue.sounds) {
       sound.asset.path = "tick.wav";

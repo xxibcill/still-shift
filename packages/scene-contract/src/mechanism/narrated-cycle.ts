@@ -134,6 +134,34 @@ export const MechanismWorldTextAnnotationSchema = z
     side: z.enum(["front", "double"]).default("front"),
   })
   .strict();
+export const MechanismSurfaceMarkingSchema =
+  MechanismWorldTextAnnotationSchema.omit({
+    kind: true,
+    part: true,
+    transform: true,
+    side: true,
+  })
+    .extend({
+      kind: z.literal("surface-marking"),
+      mesh: MechanismIdSchema,
+      triangle: z.number().int().min(0).max(500_000),
+      barycentric: z
+        .tuple([
+          z.number().finite().positive().max(1),
+          z.number().finite().positive().max(1),
+          z.number().finite().positive().max(1),
+        ])
+        .refine(
+          (weights) => Math.abs(weights.reduce((a, b) => a + b, 0) - 1) < 1e-8,
+          "Barycentric weights must sum to one",
+        ),
+      rollRadians: z.number().finite().min(-Math.PI).max(Math.PI).default(0),
+    })
+    .strict();
+export const MechanismWorldAnnotationSchema = z.discriminatedUnion("kind", [
+  MechanismWorldTextAnnotationSchema,
+  MechanismSurfaceMarkingSchema,
+]);
 const sample = z.number().int().min(0).max(172_800_000);
 const reference = z
   .object({
@@ -261,7 +289,7 @@ export const MechanismNarratedCycleSchema = z
               .max(8)
               .default([]),
             worldAnnotations: z
-              .array(MechanismWorldTextAnnotationSchema)
+              .array(MechanismWorldAnnotationSchema)
               .max(8)
               .optional(),
             sounds: z

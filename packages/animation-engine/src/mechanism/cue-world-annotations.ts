@@ -2,9 +2,10 @@ import type {
   CompositionLayer,
   MechanismNarratedCycle,
 } from "@still-shift/scene-contract";
-type Annotation = NonNullable<
+type WorldAnnotation = NonNullable<
   MechanismNarratedCycle["cues"][number]["worldAnnotations"]
 >[number];
+type Annotation = Extract<WorldAnnotation, { kind: "world-text" }>;
 type Context = {
   controller: string;
   cue: string;

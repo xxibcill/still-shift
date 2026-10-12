@@ -1,3 +1,4 @@
+import { resolveCueSurfaceMarking } from "./cue-surface-markings.ts";
 import { compileCueWorldText } from "./cue-world-annotations.ts";
 import { compileCueAnnotation } from "./cue-annotations.ts";
 import { planMechanismCueLayout } from "./cue-layout.ts";
@@ -62,7 +63,25 @@ export function compileMechanismNarratedCycle(
       "Recording exceeds the mechanism output frame limit",
       ["narration", "sampleCount"],
     );
+  const surfaceCameraBound = Math.max(
+    0,
+    ...document.cues.flatMap((cue) =>
+      cue.camera
+        ? [Math.hypot(...cue.camera.position), Math.hypot(...cue.camera.target)]
+        : [],
+    ),
+  );
   const cues = new Map<string, Cue>();
+  const resolvedWorld = new Map<
+    NonNullable<Cue["worldAnnotations"]>[number],
+    {
+      annotation: Extract<
+        NonNullable<Cue["worldAnnotations"]>[number],
+        { kind: "world-text" }
+      >;
+      surface?: ReturnType<typeof resolveCueSurfaceMarking>["surface"];
+    }
+  >();
   const segmenter = new Intl.Segmenter(document.locale, {
     granularity: "grapheme",
   });
@@ -204,11 +223,28 @@ export function compileMechanismNarratedCycle(
           "id",
         ]);
       annotationIds.add(annotation.id);
-      if (!instance.scene.parts.some((part) => part.id === annotation.part))
-        fail("mechanism-cue-part", "Unknown world annotation part", [
-          ...annotationPath,
-          "part",
-        ]);
+      if (annotation.kind === "surface-marking")
+        resolvedWorld.set(
+          annotation,
+          resolveCueSurfaceMarking(
+            instance.scene,
+            annotation,
+            (message, field) =>
+              fail("mechanism-cue-surface", message, [
+                ...annotationPath,
+                field,
+              ]),
+            surfaceCameraBound,
+          ),
+        );
+      else {
+        if (!instance.scene.parts.some((part) => part.id === annotation.part))
+          fail("mechanism-cue-part", "Unknown world annotation part", [
+            ...annotationPath,
+            "part",
+          ]);
+        resolvedWorld.set(annotation, { annotation });
+      }
       reading(annotation.text, [...annotationPath, "text"]);
     }
     return {
@@ -473,19 +509,22 @@ export function compileMechanismNarratedCycle(
           },
         }),
       );
-    for (const annotation of cue.worldAnnotations ?? [])
-      layers.push(
-        compileCueWorldText(annotation, {
-          controller,
-          cue: cue.id,
-          id: trackId("world-annotation", cue.id, annotation.id),
-          startFrame: timing.startFrame,
-          endFrameExclusive: timing.endFrameExclusive,
-          sourceSamples: [cue.startSample, cue.endSampleExclusive],
-          font: fontId,
-          locale: document.locale,
-        }),
-      );
+    for (const annotation of cue.worldAnnotations ?? []) {
+      const resolved = resolvedWorld.get(annotation)!;
+      const layer = compileCueWorldText(resolved.annotation, {
+        controller,
+        cue: cue.id,
+        id: trackId("world-annotation", cue.id, annotation.id),
+        startFrame: timing.startFrame,
+        endFrameExclusive: timing.endFrameExclusive,
+        sourceSamples: [cue.startSample, cue.endSampleExclusive],
+        font: fontId,
+        locale: document.locale,
+      });
+      if (resolved.surface)
+        layer.metadata = { ...layer.metadata, surface: resolved.surface };
+      layers.push(layer);
+    }
     const soundIds = new Set<string>();
     for (const [soundIndex, sound] of cue.sounds.entries()) {
       const path = ["cues", index, "sounds", soundIndex];

@@ -89,6 +89,9 @@ gl_FragColor=vec4(nativeSrgbToLinear(straight),1.0);
   });
   const mesh = new Mesh(geometry, material);
   mesh.name = artwork.layer;
+  // Keep depth ties independent of whether this graphic or the physical world
+  // allocated its materials first. Physical opaque meshes render before artwork.
+  mesh.renderOrder = 1;
   mesh.matrixAutoUpdate = false;
   mesh.matrix.fromArray(artwork.worldMatrix);
   mesh.frustumCulled = true;

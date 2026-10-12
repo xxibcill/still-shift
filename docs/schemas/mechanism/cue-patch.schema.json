@@ -439,151 +439,238 @@
               },
               "property": { "type": "string", "const": "world-annotation" },
               "value": {
-                "type": "object",
-                "properties": {
-                  "kind": { "type": "string", "const": "world-text" },
-                  "text": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 4000
-                  },
-                  "part": {
-                    "type": "string",
-                    "maxLength": 128,
-                    "pattern": "^[A-Za-z][\\w.-]*$"
-                  },
-                  "transform": {
+                "anyOf": [
+                  {
                     "type": "object",
                     "properties": {
-                      "position": {
-                        "default": [0, 0, 0],
+                      "kind": { "type": "string", "const": "world-text" },
+                      "text": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 4000
+                      },
+                      "part": {
+                        "type": "string",
+                        "maxLength": 128,
+                        "pattern": "^[A-Za-z][\\w.-]*$"
+                      },
+                      "transform": {
+                        "type": "object",
+                        "properties": {
+                          "position": {
+                            "default": [0, 0, 0],
+                            "type": "array",
+                            "prefixItems": [
+                              {
+                                "type": "number",
+                                "minimum": -1000000,
+                                "maximum": 1000000
+                              },
+                              {
+                                "type": "number",
+                                "minimum": -1000000,
+                                "maximum": 1000000
+                              },
+                              {
+                                "type": "number",
+                                "minimum": -1000000,
+                                "maximum": 1000000
+                              }
+                            ]
+                          },
+                          "rotation": {
+                            "default": [0, 0, 0],
+                            "type": "array",
+                            "prefixItems": [
+                              {
+                                "type": "number",
+                                "minimum": -1000000,
+                                "maximum": 1000000
+                              },
+                              {
+                                "type": "number",
+                                "minimum": -1000000,
+                                "maximum": 1000000
+                              },
+                              {
+                                "type": "number",
+                                "minimum": -1000000,
+                                "maximum": 1000000
+                              }
+                            ]
+                          },
+                          "scale": {
+                            "default": [1, 1, 1],
+                            "type": "array",
+                            "prefixItems": [
+                              {
+                                "type": "number",
+                                "exclusiveMinimum": 0,
+                                "maximum": 1000
+                              },
+                              {
+                                "type": "number",
+                                "exclusiveMinimum": 0,
+                                "maximum": 1000
+                              },
+                              {
+                                "type": "number",
+                                "exclusiveMinimum": 0,
+                                "maximum": 1000
+                              }
+                            ]
+                          },
+                          "pivot": {
+                            "default": [0, 0, 0],
+                            "type": "array",
+                            "prefixItems": [
+                              {
+                                "type": "number",
+                                "minimum": -1000000,
+                                "maximum": 1000000
+                              },
+                              {
+                                "type": "number",
+                                "minimum": -1000000,
+                                "maximum": 1000000
+                              },
+                              {
+                                "type": "number",
+                                "minimum": -1000000,
+                                "maximum": 1000000
+                              }
+                            ]
+                          }
+                        },
+                        "required": ["position", "rotation", "scale", "pivot"],
+                        "additionalProperties": false
+                      },
+                      "pixelsPerUnit": {
+                        "type": "number",
+                        "exclusiveMinimum": 0,
+                        "maximum": 1000000
+                      },
+                      "sizePixels": {
                         "type": "array",
                         "prefixItems": [
-                          {
-                            "type": "number",
-                            "minimum": -1000000,
-                            "maximum": 1000000
-                          },
-                          {
-                            "type": "number",
-                            "minimum": -1000000,
-                            "maximum": 1000000
-                          },
-                          {
-                            "type": "number",
-                            "minimum": -1000000,
-                            "maximum": 1000000
-                          }
+                          { "type": "integer", "minimum": 2, "maximum": 512 },
+                          { "type": "integer", "minimum": 2, "maximum": 512 }
                         ]
                       },
-                      "rotation": {
-                        "default": [0, 0, 0],
-                        "type": "array",
-                        "prefixItems": [
-                          {
-                            "type": "number",
-                            "minimum": -1000000,
-                            "maximum": 1000000
-                          },
-                          {
-                            "type": "number",
-                            "minimum": -1000000,
-                            "maximum": 1000000
-                          },
-                          {
-                            "type": "number",
-                            "minimum": -1000000,
-                            "maximum": 1000000
-                          }
-                        ]
+                      "fontSizePixels": {
+                        "default": 18,
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 256
                       },
-                      "scale": {
-                        "default": [1, 1, 1],
-                        "type": "array",
-                        "prefixItems": [
-                          {
-                            "type": "number",
-                            "exclusiveMinimum": 0,
-                            "maximum": 1000
-                          },
-                          {
-                            "type": "number",
-                            "exclusiveMinimum": 0,
-                            "maximum": 1000
-                          },
-                          {
-                            "type": "number",
-                            "exclusiveMinimum": 0,
-                            "maximum": 1000
-                          }
-                        ]
+                      "ink": {
+                        "default": "#101820",
+                        "type": "string",
+                        "pattern": "^#[a-fA-F0-9]{6}$"
                       },
-                      "pivot": {
-                        "default": [0, 0, 0],
-                        "type": "array",
-                        "prefixItems": [
-                          {
-                            "type": "number",
-                            "minimum": -1000000,
-                            "maximum": 1000000
-                          },
-                          {
-                            "type": "number",
-                            "minimum": -1000000,
-                            "maximum": 1000000
-                          },
-                          {
-                            "type": "number",
-                            "minimum": -1000000,
-                            "maximum": 1000000
-                          }
-                        ]
+                      "side": {
+                        "default": "front",
+                        "type": "string",
+                        "enum": ["front", "double"]
                       }
                     },
-                    "required": ["position", "rotation", "scale", "pivot"],
+                    "required": [
+                      "kind",
+                      "text",
+                      "part",
+                      "transform",
+                      "pixelsPerUnit",
+                      "sizePixels",
+                      "fontSizePixels",
+                      "ink",
+                      "side"
+                    ],
                     "additionalProperties": false
                   },
-                  "pixelsPerUnit": {
-                    "type": "number",
-                    "exclusiveMinimum": 0,
-                    "maximum": 1000000
-                  },
-                  "sizePixels": {
-                    "type": "array",
-                    "prefixItems": [
-                      { "type": "integer", "minimum": 2, "maximum": 512 },
-                      { "type": "integer", "minimum": 2, "maximum": 512 }
-                    ]
-                  },
-                  "fontSizePixels": {
-                    "default": 18,
-                    "type": "number",
-                    "minimum": 1,
-                    "maximum": 256
-                  },
-                  "ink": {
-                    "default": "#101820",
-                    "type": "string",
-                    "pattern": "^#[a-fA-F0-9]{6}$"
-                  },
-                  "side": {
-                    "default": "front",
-                    "type": "string",
-                    "enum": ["front", "double"]
+                  {
+                    "type": "object",
+                    "properties": {
+                      "text": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 4000
+                      },
+                      "pixelsPerUnit": {
+                        "type": "number",
+                        "exclusiveMinimum": 0,
+                        "maximum": 1000000
+                      },
+                      "sizePixels": {
+                        "type": "array",
+                        "prefixItems": [
+                          { "type": "integer", "minimum": 2, "maximum": 512 },
+                          { "type": "integer", "minimum": 2, "maximum": 512 }
+                        ]
+                      },
+                      "fontSizePixels": {
+                        "default": 18,
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 256
+                      },
+                      "ink": {
+                        "default": "#101820",
+                        "type": "string",
+                        "pattern": "^#[a-fA-F0-9]{6}$"
+                      },
+                      "kind": { "type": "string", "const": "surface-marking" },
+                      "mesh": {
+                        "type": "string",
+                        "maxLength": 128,
+                        "pattern": "^[A-Za-z][\\w.-]*$"
+                      },
+                      "triangle": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 500000
+                      },
+                      "barycentric": {
+                        "type": "array",
+                        "prefixItems": [
+                          {
+                            "type": "number",
+                            "exclusiveMinimum": 0,
+                            "maximum": 1
+                          },
+                          {
+                            "type": "number",
+                            "exclusiveMinimum": 0,
+                            "maximum": 1
+                          },
+                          {
+                            "type": "number",
+                            "exclusiveMinimum": 0,
+                            "maximum": 1
+                          }
+                        ]
+                      },
+                      "rollRadians": {
+                        "default": 0,
+                        "type": "number",
+                        "minimum": -3.141592653589793,
+                        "maximum": 3.141592653589793
+                      }
+                    },
+                    "required": [
+                      "text",
+                      "pixelsPerUnit",
+                      "sizePixels",
+                      "fontSizePixels",
+                      "ink",
+                      "kind",
+                      "mesh",
+                      "triangle",
+                      "barycentric",
+                      "rollRadians"
+                    ],
+                    "additionalProperties": false
                   }
-                },
-                "required": [
-                  "kind",
-                  "text",
-                  "part",
-                  "transform",
-                  "pixelsPerUnit",
-                  "sizePixels",
-                  "fontSizePixels",
-                  "ink",
-                  "side"
-                ],
-                "additionalProperties": false
+                ]
               }
             },
             "required": ["cue", "annotation", "property", "value"],

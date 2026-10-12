@@ -211,3 +211,11 @@ forward/reverse/shuffled preview, CAS/stale-render failures and before/after nat
 final checks. It is registered in the full local matrix and runs serially with
 other browser groups. Synthetic PCM and authored text planes do not certify true
 surface markings, genuine speech, plate reuse, continuous-time or human acceptance.
+
+`pnpm test:browser:mechanism-surface-markings` runs the shared world annotation
+harness with explicit rigid-triangle authoring, separately from its default
+world-text route. It uses unchanged three-family sources/required changing-shape
+policies and larger diagnostic1440x816 frames. Final exports, actual measured
+glyph/ink/part/projection/hidden controls, source clocks and before/after CAS
+checks remain owning gates; semantic surface geometry and retained-file/decode
+audits are recorded separately. Both groups run serially in the local full gate.
