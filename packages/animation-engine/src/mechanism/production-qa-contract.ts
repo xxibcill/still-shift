@@ -57,6 +57,26 @@ export const MechanismProductionQAPlanSchema = z
       .max(128),
   })
   .strict();
+export const MechanismProductionQAProgramSchema = z
+  .object({
+    schemaVersion: z.literal("mechanism-production-qa-program-1"),
+    plan: MechanismProductionQAPlanSchema,
+    planSha256: MechanismHashSchema,
+    registrySha256: MechanismHashSchema,
+    registrations: z.array(MechanismSemanticRegistrationSchema).min(1).max(32),
+    measurements: z.array(selector).min(1).max(128),
+  })
+  .strict()
+  .superRefine((program, ctx) => {
+    if (
+      mechanismPackHash(program.plan) !== program.planSha256 ||
+      mechanismPackHash(program.registrations) !== program.registrySha256
+    )
+      ctx.addIssue({
+        code: "custom",
+        message: "Retained QA program hashes must match its actual definitions",
+      });
+  });
 export type MechanismProductionQAPlan = z.infer<
   typeof MechanismProductionQAPlanSchema
 >;
@@ -99,6 +119,7 @@ export const MechanismProductionQAFactsSchema = z
         cueProjectHash: MechanismHashSchema,
         sourceSceneSha256: MechanismHashSchema,
         nativeCapture: MechanismProductionOwnedFileSchema,
+        program: MechanismProductionOwnedFileSchema,
       })
       .strict(),
     timeline: z

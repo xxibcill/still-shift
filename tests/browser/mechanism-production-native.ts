@@ -478,6 +478,40 @@ try {
     repairedProduct.report.binding.inputSha256,
     seededProduct.report.binding.inputSha256,
   );
+  const originalProgram = JSON.parse(
+    await readFile(
+      join(
+        output,
+        seededProduct.artifacts.find((f) =>
+          f.path.endsWith("/qa-program.json"),
+        )!.path,
+      ),
+      "utf8",
+    ),
+  );
+  const repairedProgram = JSON.parse(
+    await readFile(
+      join(
+        output,
+        repairedProduct.artifacts.find((f) =>
+          f.path.endsWith("/qa-program.json"),
+        )!.path,
+      ),
+      "utf8",
+    ),
+  );
+  assert.deepEqual(
+    originalProgram.registrations.find(
+      (r: { id: string }) => r.id === "seeded-strap-limit",
+    ).rules[0].range,
+    [0, 0.001],
+  );
+  assert.deepEqual(
+    repairedProgram.registrations.find(
+      (r: { id: string }) => r.id === "seeded-strap-limit",
+    ).rules[0].range,
+    [0, 1],
+  );
   assert.equal(repairedProduct.report.unresolvedMechanicalFailures, 0);
   assert.equal(
     repairedProduct.report.qa.find((q) => q.dimension === "mechanical")!.status,

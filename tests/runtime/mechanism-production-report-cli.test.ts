@@ -57,6 +57,7 @@ describe("production discovery and schema CLI", () => {
       "production-evidence",
       "production-handoff",
       "production-qa-plan",
+      "production-qa-program",
       "production-qa-facts",
     ]) {
       const path = join(dir, kind + ".json"),

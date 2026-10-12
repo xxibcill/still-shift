@@ -11,6 +11,7 @@ import { freezeMechanismPack, mechanismPackHash } from "./pack-support.ts";
 import type { MechanismProductionBinding } from "./production-report.ts";
 import {
   MechanismProductionQAPlanSchema,
+  MechanismProductionQAProgramSchema,
   mechanismProductionMeasurementUnit,
   type MechanismProductionQAPlan,
   type MechanismProductionMeasurement,
@@ -129,6 +130,18 @@ export class MechanismProductionQASampler {
       throw Error(
         "Native QA sample/comparison budget exceeded before capture traversal",
       );
+  }
+  get program() {
+    return freezeMechanismPack(
+      MechanismProductionQAProgramSchema.parse({
+        schemaVersion: "mechanism-production-qa-program-1",
+        plan: this.plan,
+        planSha256: this.planSha256,
+        registrySha256: this.registry.sha256,
+        registrations: this.registry.registrations,
+        measurements: this.selectors,
+      }),
+    );
   }
   observe(
     packet: NativeObservedOutputFrameV2,

@@ -352,6 +352,7 @@ export async function createMechanismProductionNativeExecutor(): Promise<Mechani
         qa[qa.findIndex((q) => q.dimension === finding.dimension)] = finding;
       const artifacts = [
         quality.artifact,
+        quality.program,
         quality.raw,
         quality.grouped,
         output,

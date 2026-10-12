@@ -48,9 +48,11 @@ still hold before relying on them.
   QA7 now pins declarative plans, replays original native scalar samples, retains
   MS2 expected-state timeline results and immutable raw/grouped warning/facts
   artifacts, propagates failures, and links current facts in reports/handoffs.
-  76 owning controls/build/lint/schemas/boundaries/declarations pass; two early
-  CLI type failures are retained. Actual native proof and complete fast/runtime
-  tiers are next; no current terminal native pass is claimed. Evidence6 source6615
+  Immutable program snapshots preserve original definitions after plan edits.
+  77 owning controls/build/lint/schemas/boundaries/declarations pass; two early
+  CLI type failures are retained. Earlierbc5b989b passes complete4439-unit fast
+  with2690 inputs held; program repair requires fresh complete tiers. Actual native
+  proof is next; no current terminal native pass is claimed. Evidence6 source6615
   separately retains4 outputs/240 frames/108 images/188 pins, exact local tiers and
   the additional60-frame/27-image/46-pin camera-cut proof, with failed attempts.
   Original scope remains: broader faults/analytic/continuous collision/reviews;
@@ -247,6 +249,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — Preserve original production QA programs
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, frombc5b989b.
+- **Done:** retain the full immutable authored plan, scalar selectors and registered
+  definitions alongside each product, including the built-in rule. Original failed
+  revisions remain auditable after a QA dependency edit; native controls assert
+  both original/repaired rule ranges.
+- **Results:**77 scoped owning checks/build/lint/schemas/boundaries/declarations pass.
+  Earlierbc5b989b separately passes complete4439-unit fast with2690 inputs exact;
+  the program repair requires fresh current fast/runtime and actual native proof.
+- **Open / next:** current source-held native/independent QA and local tiers; original
+  broader faults/repairs, ten-question/five-asset/two-behavior pilot, genuine inputs/
+  reviews and final gates remain. No spending, Actions, merge or publication.
+- **Records:** [QA evidence](./mechanism-shorts-ms3-qa-results.json),
+  [QA API](./mechanism-production-qa.md), [tracker](./mechanism-shorts-ms3-acceptance.md).
 
 ### 2026-10-13 — MS3 operational native QA and artifact-bound warnings
 

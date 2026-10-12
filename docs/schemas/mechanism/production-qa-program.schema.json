@@ -1,0 +1,385 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "mechanism-production-qa-program-1"
+    },
+    "plan": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "type": "string",
+          "const": "mechanism-production-qa-plan-1"
+        },
+        "registrations": {
+          "maxItems": 31,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "schemaVersion": {
+                "type": "string",
+                "const": "mechanism-semantic-registration-1"
+              },
+              "id": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "description": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1024
+              },
+              "domain": {
+                "type": "string",
+                "enum": ["mechanical", "collision"]
+              },
+              "method": { "type": "string", "const": "sampled-numeric-range" },
+              "requireEveryOutputFrame": { "type": "boolean" },
+              "rules": {
+                "minItems": 1,
+                "maxItems": 16,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "measurement": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "range": {
+                      "type": "array",
+                      "prefixItems": [
+                        { "type": "number" },
+                        { "type": "number" }
+                      ]
+                    },
+                    "unit": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 32
+                    },
+                    "rig": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "parts": {
+                      "maxItems": 128,
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      }
+                    },
+                    "relationship": {
+                      "anyOf": [
+                        { "type": "string", "minLength": 1, "maxLength": 128 },
+                        { "type": "null" }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "measurement",
+                    "range",
+                    "unit",
+                    "rig",
+                    "parts",
+                    "relationship"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "schemaVersion",
+              "id",
+              "description",
+              "domain",
+              "method",
+              "requireEveryOutputFrame",
+              "rules"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "measurements": {
+          "maxItems": 127,
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "measurement": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "kind": { "type": "string", "const": "part-matrix-change" },
+                  "part": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  }
+                },
+                "required": ["measurement", "kind", "part"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "measurement": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "kind": { "type": "string", "const": "part-origin-distance" },
+                  "part": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  }
+                },
+                "required": ["measurement", "kind", "part"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "measurement": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "kind": { "type": "string", "const": "anchor-separation" },
+                  "anchors": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "string",
+                        "maxLength": 128,
+                        "pattern": "^[A-Za-z][\\w.-]*$"
+                      },
+                      {
+                        "type": "string",
+                        "maxLength": 128,
+                        "pattern": "^[A-Za-z][\\w.-]*$"
+                      }
+                    ]
+                  }
+                },
+                "required": ["measurement", "kind", "anchors"],
+                "additionalProperties": false
+              }
+            ]
+          }
+        },
+        "warningBindings": {
+          "maxItems": 128,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "layer": { "type": "string", "minLength": 1, "maxLength": 1024 },
+              "controllingRig": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "parts": {
+                "maxItems": 128,
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z][\\w.-]*$"
+                }
+              }
+            },
+            "required": ["layer", "controllingRig", "parts"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "registrations",
+        "measurements",
+        "warningBindings"
+      ],
+      "additionalProperties": false
+    },
+    "planSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "registrySha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "registrations": {
+      "minItems": 1,
+      "maxItems": 32,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "schemaVersion": {
+            "type": "string",
+            "const": "mechanism-semantic-registration-1"
+          },
+          "id": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[A-Za-z][\\w.-]*$"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1024
+          },
+          "domain": { "type": "string", "enum": ["mechanical", "collision"] },
+          "method": { "type": "string", "const": "sampled-numeric-range" },
+          "requireEveryOutputFrame": { "type": "boolean" },
+          "rules": {
+            "minItems": 1,
+            "maxItems": 16,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "measurement": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "range": {
+                  "type": "array",
+                  "prefixItems": [{ "type": "number" }, { "type": "number" }]
+                },
+                "unit": { "type": "string", "minLength": 1, "maxLength": 32 },
+                "rig": { "type": "string", "minLength": 1, "maxLength": 128 },
+                "parts": {
+                  "maxItems": 128,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  }
+                },
+                "relationship": {
+                  "anyOf": [
+                    { "type": "string", "minLength": 1, "maxLength": 128 },
+                    { "type": "null" }
+                  ]
+                }
+              },
+              "required": [
+                "measurement",
+                "range",
+                "unit",
+                "rig",
+                "parts",
+                "relationship"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "id",
+          "description",
+          "domain",
+          "method",
+          "requireEveryOutputFrame",
+          "rules"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "measurements": {
+      "minItems": 1,
+      "maxItems": 128,
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "measurement": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "kind": { "type": "string", "const": "part-matrix-change" },
+              "part": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              }
+            },
+            "required": ["measurement", "kind", "part"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "measurement": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "kind": { "type": "string", "const": "part-origin-distance" },
+              "part": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              }
+            },
+            "required": ["measurement", "kind", "part"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "measurement": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "kind": { "type": "string", "const": "anchor-separation" },
+              "anchors": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  },
+                  {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  }
+                ]
+              }
+            },
+            "required": ["measurement", "kind", "anchors"],
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "plan",
+    "planSha256",
+    "registrySha256",
+    "registrations",
+    "measurements"
+  ],
+  "additionalProperties": false
+}

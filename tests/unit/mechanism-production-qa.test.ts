@@ -189,6 +189,26 @@ describe("operational native QA selectors and failures", () => {
     expect(() => sampler.observe(p, evidence)).toThrow(/accessor/);
     expect(calls).toBe(0);
   });
+  it("retains immutable actual rule definitions and selectors after the caller changes its authored plan", () => {
+    const authored = custom(),
+      sampler = new MechanismProductionQASampler(
+        authored,
+        createTapeHookPack().scene,
+        1,
+      );
+    authored.registrations[0]!.rules[0]!.range = [0, 42];
+    expect(
+      sampler.program.registrations.find((r) => r.id === "contact")!.rules[0]!
+        .range,
+    ).toEqual([0, 0.05]);
+    expect(
+      sampler.program.registrations.some(
+        (r) => r.id === "production.stationary-mount",
+      ),
+    ).toBe(true);
+    expect(sampler.program.measurements).toHaveLength(2);
+    expect(Object.isFrozen(sampler.program)).toBe(true);
+  });
   it("refuses incomplete, duplicate and unordered output intervals", () => {
     const s = new MechanismProductionQASampler(
       DEFAULT_MECHANISM_PRODUCTION_QA_PLAN,

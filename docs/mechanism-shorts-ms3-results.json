@@ -390,8 +390,9 @@
       "id": "operational-qa7",
       "status": "scoped-operational-qa-code-verified-native-proof-and-complete-local-tiers-pending",
       "record": "docs/mechanism-shorts-ms3-qa-results.json",
-      "focusedTests": 76,
-      "qualification": "Scoped operational code/preflight only. Native controls are implemented but not yet run on this committed source. Historical evidence6 local/native proofs have separate bindings. No pilot, whole mechanical/glyph/continuous/factual/listening/human acceptance, spending, Actions, merge or publication is claimed."
+      "focusedTests": 77,
+      "qualification": "Scoped operational code/preflight only. Native controls are implemented but not yet run on this committed source. Historical evidence6 local/native proofs have separate bindings. No pilot, whole mechanical/glyph/continuous/factual/listening/human acceptance, spending, Actions, merge or publication is claimed.",
+      "historyRepair": "Immutable original program retention implemented; latest native/local-tier proof pending"
     }
   ],
   "targets": {
@@ -420,7 +421,7 @@
   },
   "remaining": [
     "Actual native interruption/cancellation/corrupt-cache/recovery/relocation proof and remaining worker/managed integration; implemented native executor/dependency/code-profile/cache/full-decode proof is retained separately.",
-    "Operational registered assertions/MS2 timeline/grouped warnings/report/handoff integration is implemented with76 scoped controls; actual native source-held proof and complete local tiers are pending. Broader faults, analytic/continuous collision and actual whole reviews remain.",
+    "Operational registered assertions/MS2 timeline/grouped warnings/report/handoff integration is implemented with77 scoped controls; actual native source-held proof and complete local tiers are pending. Broader faults, analytic/continuous collision and actual whole reviews remain.",
     "Original ten-pilot review artifacts; scoped/stale repairs/affected rerender and automatic MS1 overlap recovery preserving plates. Three-family evidence derivation, actual camera-cut extraction and fresh-session handoff are verified separately.",
     "Original ten distinct question fixtures with actual factual/design/genuine speech/visual proof; five assets and two behaviors remain required and unadmitted.",
     "One actual bounded episode/cohort report command and generated production schema/limit agreement are verified. Broader import/preview/export capability reconciliation, actual pilot measurements, final full/archive/installed and MS3 PR remain.",

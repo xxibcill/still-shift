@@ -215,6 +215,7 @@ export async function evaluateMechanismProductionNativeQA(input: {
         owner,
       );
     };
+    const program = await persist("qa-program.json", sampler.program);
     const raw = await persist("qa-raw-warnings.json", {
       schemaVersion: "mechanism-production-raw-warnings-1",
       binding: input.binding,
@@ -250,6 +251,7 @@ export async function evaluateMechanismProductionNativeQA(input: {
         cueProjectHash: authored.projectHash,
         sourceSceneSha256: instance.sourceSha256,
         nativeCapture: capture,
+        program,
       },
       timeline: {
         method:
@@ -289,7 +291,7 @@ export async function evaluateMechanismProductionNativeQA(input: {
         "Original native output-frame scalars and current expected-state transitions/event order, plus advisory composition-state warnings. Individual sampled rules do not prove whole mechanical correctness, between-frame collision, encoded glyphs, continuous playback, factual truth or listening. Unknown diagnostic units and composition-only controllers remain explicitly unresolved.",
     });
     const artifact = await persist("qa-facts.json", facts);
-    return { facts, artifact, raw, grouped: warningGroups };
+    return { facts, artifact, raw, program, grouped: warningGroups };
   } finally {
     for (const r of release.reverse()) r();
     reserve.release();

@@ -8,6 +8,7 @@ import {
 } from "./production-handoff.ts";
 import {
   MechanismProductionQAPlanSchema,
+  MechanismProductionQAProgramSchema,
   MechanismProductionQAFactsSchema,
   MECHANISM_PRODUCTION_QA_LIMITS,
 } from "./production-qa-contract.ts";
@@ -34,6 +35,7 @@ import { MECHANISM_RESPONSE_LIMITS } from "./protocol.ts";
 import { freezeMechanismPack } from "./pack-support.ts";
 export const mechanismProductionSchemas = {
   "production-qa-plan": MechanismProductionQAPlanSchema,
+  "production-qa-program": MechanismProductionQAProgramSchema,
   "production-qa-facts": MechanismProductionQAFactsSchema,
   "production-evidence": MechanismProductionEvidenceSchema,
   "production-handoff": MechanismProductionHandoffSchema,

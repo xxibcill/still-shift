@@ -6,6 +6,10 @@ declarative semantic rules. It also retains the current cue compiler's MS2
 expected-state transition/event-order result and advisory composition-state lint.
 No supplied JavaScript is executed by a rule.
 
+Every product retains an immutable `qa-program.json` containing the actual authored
+plan, selectors and registered definitions, including the built-in rule. Failed
+products therefore keep their program after a later QA file change.
+
 Every product has immutable `qa-facts.json`, `qa-raw-warnings.json` and
 `qa-warning-groups.json` artifacts. Fresh reuse/report checks recompute their
 contents from current sources and the verified original capture; changing data
