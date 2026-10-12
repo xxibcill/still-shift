@@ -43,65 +43,31 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS2 in progress (2026-10-13):** `codex/mechanism-ms2` uses the existing
-  managed worktree, carries exact MS1N `bf30a253`
-  ([PR #56](https://github.com/xxibcill/still-shift/pull/56)), and has no MS2 PR yet.
-  Runtime implementation is `963d3991`; slice72 adds erased public type annotations.
-  Supported packs0, validated coverage0/10, accepted pilot0; MS3 has not started.
-  The frozen ten-question cohort is classified; its five assets/two behaviors
-  belong to MS3. Scoped E06 patent access is recovered; no new behavior admitted.
-  Genuine presentation66 is independently complete: four existing whole48k takes,
-  247 words/20 windows,8 repeated exports/5136 native-decoded frames/79 viewed
-  samples; full old/new AAC PCM stays exact. Peg opening now107–137/release312,
-  unchanged12-frame return; intentional cloth/first closed-jaw occlusion remains.
-  Three exact recipe-bound family thumbnails are packaged. Slice67 fixes ordinary
-  Node/Lab strip-only loading. Slice69 adds browser catalogue allocation admission
-  and resource-transaction rollback under unchanged quotas. Final fast5 passes
-  4363 units/429 files;26 owning controls/six current browser groups/five normal
-  shared-parent exports56frames134passes/independent25-pin audit pass in stages.
-  Held2644 inputs/120860793B remain exact; quotas/RSS/driver internals differ.
-  **Full70 passes:** `pnpm check:all` actually exits0 on `963d3991` at
-  2026-10-12T17:25:47Z. Independent audit reconciles all102 groups,
-  unit4363/runtime243/integration322/depth14, frozen176/36061 frames in262.12s,
-  benchmark547 samples/mean0.9149ms and exact2644 inputs/120860793B.
-  Current world-plate, public cache and cache-lifetime suffix completes.
-  Historical live snapshots, full51/full67 failures and timing deferrals remain.
-  World and surface each3 families/360 previews/1080 seeks/6 exports/18 hidden
-  controls pass; native plate capture/check passes3 families. Layout12
-  exports/720 frames/all-frame bounds+seeks, cameras156 captures/12 exports, and
-  five annotation recipes per family/6 exports/360 native frames complete. Narrated
-  cycles/cue edits/saved lifecycle/count-fit and both24-export weight matrices
-  complete; engineering PCM stays separate from genuine speech/human review. Commerce127 items/28200
-  frames pass; cinematic15 fixtures/46 rows/5520 frames qualify with zero pixel
-  failures/errors and18 existing WebGL timing deferrals. Composition/native depth,
-  PBR resource/world/observation/composition/normal/mixed export and six-part
-  native-shapes scripts complete; no physical-memory certification is inferred. Legacy7 fixtures/26 rows/3552
-  frames complete with1 retained WebGL timing deferral; family timeline completes. Earlier
-  partial173-row count included other groups, is invalidated, and is retained with
-  its correction in private progress3/4. Do not restart a live job.
-  Full51 exit130 and full67 exit1 remain retained; world61's original producer
-  terminal remains unverified. Fresh current owning proof cannot invent that receipt.
-  Declaration repair72 is committed at `6e3ed5ca`; build/package declarations and
-  fast4363/429 pass. Exactly2641 unaffected inputs stay exact; three erased type
-  changes emit identical JavaScript. Fresh package73 passes28 installed checks;
-  retained archive SHA `1adb9bc4f88a3de7e6be8ac91ea77efbd4f6ec7ce964f8cca495fdfcfc27d86e`
-  binds6e3ed5ca. Independent archive audit matches2367 members/970 source files.
-  Consumer73 wrong enum expectation,74 macOS setuid-ps restriction and75 stale
-  cable-tie fixture reference failures remain retained. Consumer-only live-libproc
-  identity adapter matches system ps; installed bytes and file denial stay fixed.
-  Current consumer76/session69359 is live with full70 fixtures:5 projects/29 pins,
-  ten denied roots, all-family saved-input preflight and public registry/schema/
-  thumbnail checks pass. Final native/cache outputs and independent decoder audit
-  precede finite pack disposition and MS2 PR. No installed aggregate is claimed.
-  Full encoded glyph/continuous/listening/material/hardware/portrait/human review
-  remains unreviewed; finer Thai stays unadopted. Archive source is6e3ed5ca,
-  distinct from later evidence-only commits.
-  No paid generation, publication/merge, Actions or private-media redistribution.
-  [Acceptance](./mechanism-shorts-ms2-acceptance.md),
+- **MS2 software checkpoint delivered (2026-10-13):** `codex/mechanism-ms2`
+  carries exact MS1N `bf30a253` ([PR #56](https://github.com/xxibcill/still-shift/pull/56));
+  MS2 PR is next, MS3 unstarted. Full70 actual0/all102 groups on963d3991,
+  unit4363/runtime243/integration322/depth14 and frozen176/36061 in262.12s pass;
+  no-op benchmark547 samples/mean0.9149ms. Erased declaration repair6e3ed5ca
+  passes fast/declarations; three edited modules emit identical JavaScript and
+  2641 unaffected inputs stay exact. Package73 actual0/28 checks; retained archive
+  `1adb9bc4f88a3de7e6be8ac91ea77efbd4f6ec7ce964f8cca495fdfcfc27d86e`
+  binds6e3ed5ca, distinct from later evidence prose. Source audit2367 members/970
+  sources and installed76 actual0/13 exports/independent574 decoded frames pass.
+  All2367 installed files/26 immutable inputs match; caption edits change picture
+  with unchanged decoded audio and0 fresh native submissions. Failed/stopped
+  attempts, timing deferrals, consumer enum/setuid-ps/stale-fixture failures and
+  world61 missing historical terminal remain retained; live-libproc exception is
+  explicitly preflighted. Pack disposition stays candidate3/supported0,
+  validated coverage0/10/accepted pilot0. Genuine66 retains its separate binding;
+  final consumer uses engineering PCM. Whole glyph/continuous/listening/factual/
+  material/hardware/portrait/human review remains unreviewed; finer Thai unadopted.
+  MS3 retains five assets/two behaviors and ten frozen questions. No spending,
+  publication/merge, Actions or private-media redistribution.
+  [Completion](./mechanism-shorts-ms2-completion.md),
+  [acceptance](./mechanism-shorts-ms2-acceptance.md),
+  [final installed](./mechanism-shorts-ms2-final-installed-results.json),
+  [disposition](./mechanism-shorts-ms2-pack-disposition.json),
   [full history](./mechanism-shorts-ms2-full-gate-results.json),
-  [catalogue closure](./mechanism-shorts-ms2-native-catalogue-admission-results.json),
-  [presentation](./mechanism-shorts-ms2-spoken-presentation-results.json),
-  [all evidence](./mechanism-shorts-ms2-results.json),
   [ordered plan](./mechanism-shorts-production-plan.md).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
@@ -260,6 +226,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — MS2 software checkpoint and candidate disposition
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`; package/runtime6e3ed5ca.
+- **Results:** Installed76 actual0;13 exports/574 independently decoded frames,
+  repeat identities, caption picture/audio separation,26 immutable inputs and
+  2367 installed file identities pass. Full/package history stays staged and bound.
+- **Disposition:** Three candidates retained, supported0/coverage0/10/pilot0;
+  human/factual/whole glyph/continuous/listening/portrait and finer Thai stay open.
+- **Next:** MS2 PR against main before separate MS3 original queue/QA/report/pilot
+  scope. No merge, publication, Actions or ElevenLabs spending.
+- **Records:** [Completion](./mechanism-shorts-ms2-completion.md),
+  [final installed](./mechanism-shorts-ms2-final-installed-results.json),
+  [pack disposition](./mechanism-shorts-ms2-pack-disposition.json).
 
 ### 2026-10-13 — MS2 package closure and installed retry history
 

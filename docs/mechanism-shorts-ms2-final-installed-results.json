@@ -2,7 +2,7 @@
   "version": 1,
   "date": "2026-10-13",
   "milestone": "MS2",
-  "status": "package-and-archive-passed-final-installed-consumer-in-flight",
+  "status": "passed-in-stages-package-archive-installed-and-independent-decoder",
   "verifiedPackageSourceCommit": "6e3ed5ca524f39b9f5b67c4656bca6ff84e3228f",
   "archive": {
     "path": "/private/tmp/still-shift-ms2-final73-package-umklxwr5/still-shift-0.1.1.tgz",
@@ -141,7 +141,7 @@
   ],
   "currentAttempt": {
     "id": "consumer76-1",
-    "status": "in-flight",
+    "status": "passed",
     "owningSession": 69359,
     "receiptPath": "/private/tmp/still-shift-ms2-final76-consumer1-receipt.json",
     "logPath": "/private/tmp/still-shift-ms2-final76-consumer1.log",
@@ -150,7 +150,54 @@
       "path": "/private/tmp/still-shift-ms2-final76-live1.json",
       "bytes": 1160,
       "sha256": "sha256:0cef79b2a01b204f16feccfd448b328fc08aac2669d0c4d11441142aa10d4cdb"
-    }
+    },
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-12T18:11:18.497100+00:00",
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms2-final76-consumer1-receipt.json",
+      "bytes": 790,
+      "sha256": "sha256:fbcc1a7892f88914edfa30c6a470cb6fd5db1a275d1fa9cbf06263d760dd48fb"
+    },
+    "log": {
+      "path": "/private/tmp/still-shift-ms2-final76-consumer1.log",
+      "bytes": 1612,
+      "sha256": "sha256:688a58a5589bc4d1699a16f13c91db646b56b06dd9b2e4531546c1d552f1cfe3"
+    },
+    "installedRun": {
+      "path": "/private/tmp/still-shift-ms2-installed76-lctjv970/ms2-final-run.json",
+      "bytes": 958153,
+      "sha256": "sha256:db897e0c90a6f4fdf204d3be6e03869261867acac16f93df5372aabbb7edd29e"
+    },
+    "installedConfig": {
+      "path": "/private/tmp/still-shift-ms2-installed76-lctjv970/ms2-final-config.json",
+      "bytes": 6936,
+      "sha256": "sha256:71e033d924484252e1211f051a9f07f6c43398048d20f9d35e945b381c281d9a"
+    },
+    "inputManifest": {
+      "path": "/private/tmp/still-shift-ms2-final-consumer-inputs76-x_ry7j4p/inputs.json",
+      "bytes": 7465,
+      "sha256": "sha256:e9e5c46a490cc11ddd12e7961e06721fdb2671e1b979132047d9658ceb2323cf"
+    },
+    "installedBytes": {
+      "path": "/private/tmp/still-shift-ms2-final76-installed-bytes1.json",
+      "bytes": 397,
+      "sha256": "sha256:2583d005a41bedbf81ead3da91d82624b5ddfa7cc2445601299d2ad99c469285"
+    },
+    "decodedAudit": {
+      "path": "/private/tmp/still-shift-ms2-final76-decoded-audit1.json",
+      "bytes": 64142,
+      "sha256": "sha256:b4a8fda7af6ad6f534614fa6f79ff10c960b81a9bf70e36f25c8a224696ea31a"
+    },
+    "decodedAuditor": {
+      "path": "/private/tmp/still-shift-ms2-final-consumer71-audit.py",
+      "bytes": 7056,
+      "sha256": "sha256:7caa68d3a55e245fab48e3b2558468cb8298e7edb6e4932bcb06362303a79f78"
+    },
+    "outputCount": 13,
+    "decodedFrames": 574,
+    "unchangedInputPins": 26,
+    "freshNativeSubmissionCallsForCachedExports": 0
   },
   "repairs": [
     "Consumer73 wrong runtime format expectation corrected to authoritative installed-js; no product change.",
@@ -196,7 +243,7 @@
   },
   "qualification": "Engineering supplied PCM/input fixtures and automated public lifecycle proof; no genuine speech, whole glyph, listening, continuous mechanics, physical memory certification, supported-pack/pilot, merge or publication inference. Archive binds exact6e3ed5ca source before later evidence-only commits.",
   "remaining": [
-    "Wait for actual consumer76 terminal; independent decoded13-output audit and immutable installed/media pins.",
-    "Record finite pack disposition and MS2 PR targeting main; then original MS3 queue/QA/ten-question pilot scope."
+    "Finite pack disposition and MS2 PR against main, then original MS3 scope.",
+    "Candidate support, whole glyph, continuous audiovisual/listening, factual/material/hardware/portrait/human acceptance and finer Thai remain unapproved; no merge/publication."
   ]
 }

@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "date": "2026-10-13",
+  "milestone": "MS2",
+  "status": "software-checkpoint-with-candidate-disposition",
+  "registry": {
+    "path": "/private/tmp/still-shift-ms2-installed76-lctjv970/ms2-output/families.json",
+    "bytes": 113728,
+    "sha256": "sha256:84dcd8125478ad98dc6b89a74d330a8d9c4af0e415e54d0c96076246b64aabda"
+  },
+  "rows": [
+    {
+      "family": "tape-hook",
+      "reference": {
+        "id": "tape-hook",
+        "version": "1.0.0",
+        "sha256": "sha256:5f7fa4100db1ecbb36eb62d2c036857b3740ded49e41856870aed2769e260dd5",
+        "variant": "floating-hook",
+        "detail": "teaching"
+      },
+      "publicStatus": "candidate",
+      "disposition": "retain-candidate",
+      "softwareEvidence": [
+        "Current full70 family/camera/annotation/world/surface/cache owning groups.",
+        "Current installed76 saved cue compile/capture/check/repeat/edit/stale-rejection under file denial.",
+        "Independent decoded final output identity and audio/picture checks."
+      ],
+      "factualScope": "Thickness-derived floating hook travel and fixed rivets under the declared teaching geometry; broader product/hardware claims remain unreviewed.",
+      "review": {
+        "sampledAgentPresentation": "scoped prior66 samples and thumbnails68; does not supply human acceptance",
+        "factual": "unreviewed",
+        "hardwareAndMaterialAppearance": "unreviewed",
+        "wholeEncodedGlyphs": "unreviewed",
+        "continuousAudiovisual": "unreviewed",
+        "listening": "unreviewed",
+        "portraitHuman": "unreviewed"
+      }
+    },
+    {
+      "family": "cable-tie",
+      "reference": {
+        "id": "cable-tie",
+        "version": "1.0.0",
+        "sha256": "sha256:c4243b4d3f4ae14561f955eff5874d1954adabf944d4daf96ca27d48b22b7a7c",
+        "variant": "outside-serrated-integral-pawl-cutaway",
+        "detail": "teaching"
+      },
+      "publicStatus": "candidate",
+      "disposition": "retain-candidate",
+      "softwareEvidence": [
+        "Current full70 family/camera/annotation/world/surface/cache owning groups.",
+        "Current installed76 saved cue compile/capture/check/repeat/edit/stale-rejection under file denial.",
+        "Independent decoded final output identity and audio/picture checks."
+      ],
+      "factualScope": "Outside-serrated integral fixed-root pawl cutaway; release and load-seating designs are distinct MS3 extensions and are not admitted by this pack.",
+      "review": {
+        "sampledAgentPresentation": "scoped prior66 samples and thumbnails68; does not supply human acceptance",
+        "factual": "unreviewed",
+        "hardwareAndMaterialAppearance": "unreviewed",
+        "wholeEncodedGlyphs": "unreviewed",
+        "continuousAudiovisual": "unreviewed",
+        "listening": "unreviewed",
+        "portraitHuman": "unreviewed"
+      }
+    },
+    {
+      "family": "clothespeg",
+      "reference": {
+        "id": "clothespeg",
+        "version": "1.0.0",
+        "sha256": "sha256:1d6050d5ac18a16722e3766bf8da86a4f0c418012d50e3a15a6eeadd1b7ac281",
+        "variant": "wood-arms-central-spring-cloth",
+        "detail": "teaching"
+      },
+      "publicStatus": "candidate",
+      "disposition": "retain-candidate",
+      "softwareEvidence": [
+        "Current full70 family/camera/annotation/world/surface/cache owning groups.",
+        "Current installed76 saved cue compile/capture/check/repeat/edit/stale-rejection under file denial.",
+        "Independent decoded final output identity and audio/picture checks."
+      ],
+      "factualScope": "Opposing rigid arms, central spring seats and authored return/cloth contact; calibrated forces and the ideal moment-arm extension remain separate.",
+      "review": {
+        "sampledAgentPresentation": "scoped prior66 samples and thumbnails68; does not supply human acceptance",
+        "factual": "unreviewed",
+        "hardwareAndMaterialAppearance": "unreviewed",
+        "wholeEncodedGlyphs": "unreviewed",
+        "continuousAudiovisual": "unreviewed",
+        "listening": "unreviewed",
+        "portraitHuman": "unreviewed"
+      }
+    }
+  ],
+  "supportedPacks": 0,
+  "validatedPilotCoverage": {
+    "passed": 0,
+    "denominator": 10
+  },
+  "acceptedPilot": 0,
+  "promotion": "No support-status mutation or inferred owner acceptance. Future positive admission must bind actual episode/factual/design/review receipts to exact versions.",
+  "finerThai": "Remains unadopted; preserved split findings and incomplete intermediate mark/overlap/gap disposition. Count-fit software scope is delivered.",
+  "next": "MS2 PR then separate MS3 queue/QA/report and original frozen ten-question cohort, including five assets and two behaviors."
+}
