@@ -57,7 +57,9 @@ still hold before relying on them.
   relative relocation are tested; no real native executor/render/QA/pilot yet.
   Per-attempt owners retire;64MiB returned-state admission transfers to a supplied
   parent under unchanged512MiB Node policy. Type-import lint and partial edit-script
-  failures are retained. Coverage0/10; five assets/two behaviors remain unadmitted.
+  failures are retained. Queue2 fast1 exits1 at package boundaries (two private
+  runtime-helper imports); repaired through the public export entry, fresh fast
+  still required. Coverage0/10; five assets/two behaviors remain unadmitted.
   Next: real renderer/dependency adapter, then original QA/semantics/repairs/
   artifacts/capabilities/CLI/pilot and final gates. No spending authority, human
   acceptance, publication/merge or Actions.
@@ -250,6 +252,17 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — MS3 queue boundary failure and public-entry repair
+
+- **Agent / branch:** Codex on codex/mechanism-ms3; fast1 held da66f620.
+- **Failure:** Full fast tier exits1 at boundaries; two queue imports used the
+  private execution-runtime JSON module. Inputs2653/120944496B remained exact;
+  later formatting/lint/compiler/unit steps were not run by that gate.
+- **Repair:** Export existing JSON sizing helper beside the public serializer;
+  queue uses the public export entry. No boundary exemption or logic/limit change.
+- **Next:** Fresh owning/boundary/type verification and fast2; native adapter and
+  original MS3 scope remain. [Evidence](./mechanism-shorts-ms3-queue-results.json).
 
 ### 2026-10-13 — MS3 durable controller mechanics verified
 

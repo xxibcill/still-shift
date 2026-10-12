@@ -8,7 +8,7 @@ import { publishArtifacts } from "@still-shift/execution-runtime/publication";
 import {
   compositionNodeJsonSize,
   serializeCompositionNodeJson,
-} from "../../../execution-runtime/src/composition-node-json.ts";
+} from "@still-shift/execution-runtime/export";
 import { readBoundedSourceBytes } from "../bounded-source-read.ts";
 import {
   NativeSourceAdmission,

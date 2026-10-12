@@ -191,6 +191,33 @@
       "stage": "record-writer-dev-log-anchor",
       "actualExitCode": 1,
       "reason": "After writing other records, a formatted dev-log substring was not found. Corrected only the log and retained the partial write; did not rerun or duplicate the verification entry."
+    },
+    {
+      "id": "queue2-fast1",
+      "command": "pnpm check:fast",
+      "session": 73248,
+      "actualExitCode": 1,
+      "sourceCommit": "da66f62046b67b0d2f5b2f5a093f109c4a7368d1",
+      "sourceHoldCheckExitCode": 0,
+      "stage": "package boundaries",
+      "reason": "Two queue imports used internal execution-runtime JSON helper path. The existing serializer is public; expose the existing size helper through that entry and use it, without changing checker policy or runtime logic. Later checks did not execute.",
+      "pins": [
+        {
+          "path": "/private/tmp/still-shift-ms3-queue2-fast1.log",
+          "bytes": 2061,
+          "sha256": "sha256:0b115db5ce28d5814ae25a83694fac9a813636bdd1c036326bed1753b6e1c167"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-queue2-fast1-receipt.json",
+          "bytes": 358,
+          "sha256": "sha256:84f63b50751da8d11fddfe2c4b916f6c157733c0251e2e9bba024fd2be39eeea"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-queue2-inputs1.json",
+          "bytes": 452572,
+          "sha256": "sha256:7e2fbdc51b5534dbaa1719f7082a8a777eae82f1b9829153316df486576c86bd"
+        }
+      ]
     }
   ],
   "remaining": [

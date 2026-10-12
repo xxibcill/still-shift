@@ -6,7 +6,7 @@ import {
   acquireArtifactLock,
   type ArtifactLockOptions,
 } from "@still-shift/execution-runtime/locks";
-import { compositionNodeJsonSize } from "../../../execution-runtime/src/composition-node-json.ts";
+import { compositionNodeJsonSize } from "@still-shift/execution-runtime/export";
 import {
   MechanismProductionQueueSchema,
   MechanismProductionQueueStateSchema,
