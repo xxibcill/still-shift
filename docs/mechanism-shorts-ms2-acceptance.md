@@ -2,15 +2,19 @@
 
 2026-10-12. MS2 remains in progress on `codex/mechanism-ms2`. This is the finite
 14-row implementation matrix from the [approved plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring),
-read against `aa58eddf`. It does not replace the plan's requirements, certify
+originally read against `aa58eddf` and now refreshed against implementation
+`963d3991`. It does not replace the plan's requirements, certify
 candidate packs, or close outstanding review dimensions.
 
-The fresh full gate is `final67-full1`, owning session25739, on2,638 held source
-inputs. It exited1 at runtime after4,353 unit tests passed;242 runtime tests passed and
-one failed because ordinary Node rejected a constructor parameter property.
-Its full102 chain,176 frozen items/36,061 frames and benchmark are incomplete. [Full-gate history](./mechanism-shorts-ms2-full-gate-results.json) preserves
-full51's deliberately stopped exit130 and its historical94-group matrix.
-The private genuine-speech/presentation gates remain separate.
+The current fresh full gate is `final70-full1`, owning session32036, on2,644
+held source inputs/120,860,793 bytes at `963d3991`. It remains live; unit4,363,
+runtime243 and integration322 tests pass, and an owned snapshot reaches group63
+(commerce adapter). Full102,176 frozen items/36,061 frames and the benchmark
+remain unfinished. [Full-gate history](./mechanism-shorts-ms2-full-gate-results.json)
+retains full51's stopped exit130 and full67's actual runtime exit1. Slice67
+repairs that ordinary Node syntax defect; slice69's final fast5 and current
+owning runtime/native/parent stages pass under the unchanged quotas. The private
+genuine-speech/presentation gates and human review remain separate.
 
 | #   | Approved requirement                                                 | Delivered software and scoped evidence                                                                                                                                                                                                                                                                                                                               | Remaining acceptance                                                                                                                                                                                                                                          |
 | --- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -31,11 +35,12 @@ The private genuine-speech/presentation gates remain separate.
 
 ## Finite next work
 
-1. Repair the located ordinary-Node syntax failure using the existing test, then
-   obtain and independently reconcile a new102-group full gate, frozen matrix,
-   actual benchmark measurements and unchanged source hold. Preserve failed
-   attempts and reruns separately. World61's missing original terminal cannot be
-   manufactured from its audit; the current owning full route supplies fresh proof.
+1. Complete the live final70 gate and independently reconcile its exact102-group
+   chain, frozen matrix, actual benchmark measurements and unchanged source hold.
+   Slice67's located ordinary-Node failure is repaired; do not repeat that repair
+   or restart the live owning process. Preserve failed attempts and reruns
+   separately. World61's missing original terminal cannot be manufactured from
+   its audit; the current owning full route supplies fresh proof if it completes.
 2. Close or locate the remaining aggregate source/preparation/world/result/replay
    resource accounting against the existing512MiB Node/8GiB application policy.
    Slice69 closes the located browser-catalogue admission/transaction rollback
