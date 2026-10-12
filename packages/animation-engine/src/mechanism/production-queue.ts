@@ -10,7 +10,6 @@ import { compositionNodeJsonSize } from "@still-shift/execution-runtime/export";
 import {
   MechanismProductionQueueSchema,
   MechanismProductionQueueStateSchema,
-  MechanismProductionQueueProductSchema,
   MechanismProductionQueueCheckpointSchema,
   MECHANISM_PRODUCTION_QUEUE_LIMITS as LIMIT,
   type MechanismProductionQueue,
@@ -29,7 +28,13 @@ import {
 } from "./production-queue-files.ts";
 import { cuePlateFile } from "./cue-plate-files.ts";
 import { freezeMechanismPack, mechanismPackHash } from "./pack-support.ts";
-import { inspectMechanismProductionDisposition } from "./production-report.ts";
+import {
+  productionQueueItemIdentity as identity,
+  productionQueueItemRequest as request,
+  assertProductionProduct as assertProduct,
+  productionReportAttempts as reportAttempts,
+  assertProductionJournal,
+} from "./production-queue-validation.ts";
 
 export class MechanismProductionTransientError extends Error {}
 export type MechanismProductionExecutionContext = {
@@ -59,22 +64,6 @@ export interface MechanismProductionQueueOptions extends ArtifactLockOptions {
   nodeMemory?: CompositionNodeMemory;
 }
 const now = () => new Date().toISOString();
-const identity = (item: MechanismProductionQueueItem) =>
-  mechanismPackHash({
-    id: item.id,
-    question: item.question,
-    family: item.family,
-    designVariant: item.designVariant,
-  });
-const request = (
-  item: MechanismProductionQueueItem,
-  queue: MechanismProductionQueue,
-) =>
-  mechanismPackHash({
-    item,
-    codeSha256: queue.codeSha256,
-    profileSha256: queue.profileSha256,
-  });
 const diagnostic = (error: unknown) => {
   try {
     return String(error).slice(0, 2048);
@@ -122,25 +111,7 @@ function reconcile(
       "id",
     );
   if (prior.manifestHash === hash) {
-    if (
-      prior.revision !== queue.revision ||
-      prior.codeSha256 !== queue.codeSha256 ||
-      prior.profileSha256 !== queue.profileSha256 ||
-      prior.rows.length !== queue.items.length ||
-      queue.items.some((item) => {
-        const row = prior.rows.find((r) => r.id === item.id);
-        return (
-          !row ||
-          row.identityHash !== identity(item) ||
-          row.requestHash !== request(item, queue)
-        );
-      })
-    )
-      productionFailure(
-        "production-journal-binding",
-        "Stored journal differs from its queued manifest",
-        "queue-state.json",
-      );
+    assertProductionJournal(queue, hash, prior);
     return prior;
   }
   if (
@@ -205,52 +176,6 @@ function reconcile(
     rows,
     updatedUtc: now(),
   };
-}
-function assertProduct(
-  queue: MechanismProductionQueue,
-  item: MechanismProductionQueueItem,
-  row: MechanismProductionQueueRow,
-  value: unknown,
-): MechanismProductionQueueProduct {
-  const product = MechanismProductionQueueProductSchema.parse(value),
-    report = product.report;
-  if (
-    product.requestHash !== row.requestHash ||
-    report.binding.inputSha256 !== row.requestHash ||
-    report.id !== item.id ||
-    report.question !== item.question ||
-    report.family !== item.family ||
-    report.designVariant !== item.designVariant ||
-    report.binding.codeSha256 !== queue.codeSha256 ||
-    report.binding.profileSha256 !== queue.profileSha256 ||
-    report.clock.outputFrames !== item.clock.outputFrames ||
-    report.clock.sourceSamples !== item.clock.sourceSamples
-  )
-    productionFailure(
-      "production-product-binding",
-      "Worker product differs from its queue request",
-      item.id,
-    );
-  if (
-    inspectMechanismProductionDisposition(report).statuses.technical !==
-    "passed"
-  )
-    productionFailure(
-      "production-technical-incomplete",
-      "Worker must complete current technical checks before publication",
-      item.id,
-    );
-  return freezeMechanismPack(product);
-}
-function reportAttempts(attempts: MechanismProductionAttempt[]) {
-  return attempts.map((a) => ({
-    number: a.number,
-    inputSha256: a.requestHash,
-    status: a.status,
-    stage: a.stage,
-    seconds: a.seconds,
-    diagnostic: a.diagnostic,
-  }));
 }
 export async function runMechanismProductionQueue(
   manifestPath: string,

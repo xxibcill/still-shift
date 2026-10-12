@@ -15,9 +15,14 @@ import {
   MechanismCommandReceiptSchema,
 } from "../packages/animation-engine/src/mechanism/protocol.ts";
 import { mechanismFamilySchemas } from "../packages/animation-engine/src/mechanism/family-registry.ts";
+import {
+  mechanismProductionSchemas,
+  mechanismProductionCapabilityMarkdown,
+} from "../packages/animation-engine/src/mechanism/production-registry.ts";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const schemas = {
   ...mechanismFamilySchemas,
+  ...mechanismProductionSchemas,
   geometry: MechanismGeometrySchema,
   scene: MechanismSceneSchema,
   episode: MechanismEpisodeSchema,
@@ -45,3 +50,17 @@ if (stale.length)
   throw new Error(
     `Stale mechanism schemas: ${stale.join(", ")}. Run pnpm schema:generate.`,
   );
+
+const capabilityPath = resolve(
+  root,
+  "docs/mechanism-production-capabilities.md",
+);
+const capabilities = await format(mechanismProductionCapabilityMarkdown(), {
+  parser: "markdown",
+});
+if (process.argv.includes("--check")) {
+  if ((await readFile(capabilityPath, "utf8").catch(() => "")) !== capabilities)
+    throw Error(
+      "Stale production capability reference. Run pnpm schema:generate.",
+    );
+} else await writeFile(capabilityPath, capabilities);

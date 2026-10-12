@@ -147,3 +147,7 @@ export * from "./mechanism/production-output-check.ts";
 
 export * from "./mechanism/production-semantic.ts";
 export * from "./mechanism/production-warnings.ts";
+
+export * from "./mechanism/production-report-io.ts";
+
+export * from "./mechanism/production-registry.ts";

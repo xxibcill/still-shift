@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "dimension": {
+      "type": "string",
+      "enum": [
+        "technical",
+        "mechanical",
+        "sampled-visual",
+        "continuous-motion",
+        "listening",
+        "factual"
+      ]
+    },
+    "status": { "type": "string", "enum": ["passed", "failed", "unreviewed"] },
+    "binding": {
+      "type": "object",
+      "properties": {
+        "inputSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "outputSha256": {
+          "anyOf": [
+            { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+            { "type": "null" }
+          ]
+        },
+        "codeSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "profileSha256": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "inputSha256",
+        "outputSha256",
+        "codeSha256",
+        "profileSha256"
+      ],
+      "additionalProperties": false
+    },
+    "method": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "evaluatedInterval": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "unit": {
+              "type": "string",
+              "enum": ["output-frame", "source-sample"]
+            },
+            "start": { "type": "integer", "minimum": 0, "maximum": 172800000 },
+            "endExclusive": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 172800000
+            }
+          },
+          "required": ["unit", "start", "endExclusive"],
+          "additionalProperties": false
+        },
+        { "type": "null" }
+      ]
+    },
+    "evidence": {
+      "maxItems": 4,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+          "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+        },
+        "required": ["path", "sha256"],
+        "additionalProperties": false
+      }
+    },
+    "reviewer": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": ["automated", "agent", "human"]
+            },
+            "id": { "type": "string", "minLength": 1, "maxLength": 128 }
+          },
+          "required": ["kind", "id"],
+          "additionalProperties": false
+        },
+        { "type": "null" }
+      ]
+    },
+    "explanation": { "type": "string", "minLength": 1, "maxLength": 2048 }
+  },
+  "required": [
+    "dimension",
+    "status",
+    "binding",
+    "method",
+    "evaluatedInterval",
+    "evidence",
+    "reviewer",
+    "explanation"
+  ],
+  "additionalProperties": false
+}

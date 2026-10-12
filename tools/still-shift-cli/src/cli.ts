@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
+import { runProductionCli } from "./production.ts";
 import { runEpisodeCli } from "./episode.ts";
 import { runSoundtrackCli } from "./soundtrack-cli.ts";
 import { prepareCommerceFile } from "../../../packages/animation-engine/src/commerce-preparation.ts";
@@ -60,6 +61,8 @@ const DEFAULT_IO: CliIo = {
 const HELP = `Still Shift v${ENGINE_VERSION}
 
 Usage:
+  pnpm still-shift production discover|schema --kind <kind>
+  pnpm still-shift production report --manifest <queue.json> --output-dir <queue-output> [--report <fresh.json>]
   pnpm still-shift episode discover|schema
   pnpm still-shift episode inspect|validate|deps|summary --input <episode.json>
   pnpm still-shift episode init-tape-hook --output-dir <fresh-dir> --font <font.ttf> [--font-license <OFL.txt>] [--audio <audio.wav>] [--captions <captions.json>]
@@ -227,6 +230,7 @@ export const runCli = async (
   args: string[],
   io: CliIo = DEFAULT_IO,
 ): Promise<number> => {
+  if (args[0] === "production") return runProductionCli(args.slice(1), io);
   if (args[0] === "episode") return runEpisodeCli(args.slice(1), io);
   if (args[0] === "soundtrack" && !args.includes("--help"))
     return runSoundtrackCli(args.slice(1), io);

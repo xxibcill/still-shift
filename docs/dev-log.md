@@ -44,24 +44,24 @@ still hold before relying on them.
 ## Current state
 
 - **MS3 in progress (2026-10-13):** codex/mechanism-ms3 carries exact MS2495fb2c0
-  after PR57 opened/attached. Native executor efa50574 passes complete fast1:
-  4404 units/432 files/68.04s,2659 inputs/120986008B exact. Actual three-family
-  queue proof retains four exports/240 decoded frames, caption video change with
-  exact audio and0 fresh3D; independent54-pin audit. Semantic4 now adds bounded
-  declarative registrations, located MS2 timeline results and inherited warning
-  groups with exact raw peaks/units/children/bad frames. Final scoped gate passes
-  21 tests/build/lint/boundaries/public declarations; real native capture reuse
-  checks180 mount samples and3 separately seeded measurement controls with every
-  current dependency/product pin checked. Complete fast1 on114f8df8 passes4418/434 in63.52s with2663 inputs/
-  121017359B exact. Fixture
-  inheritance/schema failures, wrapper syntax and earlier staged proofs retained.
-  No whole mechanical/continuous collision or human review inferred. Remaining:
-  durable QA/warning/handoff integration, actual native faults/relocation, scoped
-  repair/automatic MS1 overlap, CLI/capabilities and all ten frozen questions with
-  five assets/two behaviors. Coverage0/10, targets unmeasured, no spending/Actions/
-  merge/publication. [Tracker](./mechanism-shorts-ms3-acceptance.md),
-  [native evidence](./mechanism-shorts-ms3-native-executor-results.json),
-  [semantic evidence](./mechanism-shorts-ms3-semantic-results.json),
+  after PR57 opened/attached. Native efa50574 and semantic114f8df8 checkpoints
+  pass their separate held fast gates (latest4418/434,2663 inputs exact). Native
+  proof retains four exports/240 decoded frames and0 fresh caption-edit3D;
+  semantic proof checks180 actual mount samples/3 seeded controls. Report5 now
+  connects durable journals/sealed products/current verifier to one bounded
+  episode/cohort CLI report, seven production schemas and generated capability
+  limits.54 scoped checks/build/lint/schema/boundary/package declarations pass.
+  Actual fresh native report invocation and held fast tier are next; no current
+  real report/pilot claim yet. Source/output/runtime staleness invalidates readiness;
+  histories/raw reviews stay linked, missing tokens remainnull. Remaining original
+  scope: semantic/warning/QA integration; phone/shot/contact/cut/crop/handoff;
+  native faults/relocation; scoped repair/automatic MS1 overlap; ten frozen
+  questions/five assets/two behaviors and genuine inputs/reviews; broader capability
+  reconciliation and final gates/archive/installed/MS3 PR. Coverage0/10, targets
+  unmeasured. No spending/Actions/merge/publication or human acceptance.
+  [Tracker](./mechanism-shorts-ms3-acceptance.md),
+  [report command](./mechanism-production-report-command.md),
+  [report evidence](./mechanism-shorts-ms3-report-command-results.json),
   [results](./mechanism-shorts-ms3-results.json).
 
 - **MS2 software checkpoint delivered (2026-10-13):** `codex/mechanism-ms2`
@@ -249,6 +249,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — MS3 durable episode/cohort report command and schema registry
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from1ce6d24c.
+- **Done:** Locked artifact-bound report reader and one bounded CLI invocation;
+  original attempts/stale reviews/product references retained. Seven production
+  schemas and capability reference derive from the actual shared registry.
+- **Results:**54 scoped checks plus build/lint/schemas/boundaries/public package
+  declarations pass. Actual native report proof and held fast tier are next.
+- **Guards:** Missing/changed output/source/runtime invalidates readiness;
+  QA/token evidence must name verified artifacts. Callback source/output races
+  and final journal changes reject. Shared parent keeps foreign1024B and64MiB
+  returned result capacity; no physical RSS or human/pilot acceptance inferred.
+- **Open / next:** Fresh three-family native/CLI proof, fast gate, then every
+  original remaining QA/warnings/evidence/repair/native-fault/pilot requirement.
+- **Records:** [Command](./mechanism-production-report-command.md),
+  [report evidence](./mechanism-shorts-ms3-report-command-results.json),
+  [tracker](./mechanism-shorts-ms3-acceptance.md).
 
 ### 2026-10-13 — MS3 bounded semantic programs and inherited warning evidence
 

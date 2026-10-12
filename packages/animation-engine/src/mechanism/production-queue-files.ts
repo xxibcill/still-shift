@@ -151,6 +151,24 @@ export async function verifyProductionArtifacts(
         artifact.path,
       );
   }
+  for (const evidence of [
+    ...product.report.qa.flatMap((review) => review.evidence),
+    ...(product.report.authoring.measurementEvidence
+      ? [product.report.authoring.measurementEvidence]
+      : []),
+  ])
+    if (
+      !product.artifacts.some(
+        (artifact) =>
+          artifact.path === evidence.path &&
+          artifact.sha256 === evidence.sha256,
+      )
+    )
+      productionFailure(
+        "production-review-evidence",
+        "Review/token evidence must name a verified owned product artifact",
+        evidence.path,
+      );
   if (
     !product.artifacts.some(
       (f) => f.sha256 === product.report.binding.outputSha256,

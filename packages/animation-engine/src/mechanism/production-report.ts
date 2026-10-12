@@ -302,50 +302,89 @@ export function mechanismProductionPercentile(
   return sorted[lower]! + (sorted[upper]! - sorted[lower]!) * (at - lower);
 }
 
-export type MechanismProductionCohortReport = {
-  schemaVersion: "mechanism-production-cohort-report-1";
-  percentileMethod: "linear-interpolation-at-n-minus-one";
-  selected: number;
-  attempted: number;
-  firstPassTechnical: {
-    completed: number;
-    passed: number;
-    rate: number | null;
-    targetSatisfied: boolean | null;
-  };
-  failures: {
-    failedAttempts: number;
-    repeatedFailureEpisodes: number;
-    cancelled: number;
-    interrupted: number;
-  };
-  reviewedReady: number;
-  reviewCounts: Record<
-    MechanismQADimension,
-    { passed: number; failed: number; unreviewed: number }
-  >;
-  durations: Record<
-    "setupSeconds" | "routineSeconds" | "renderSeconds",
-    { available: number; p50: number | null; p95: number | null }
-  >;
-  authoring: {
-    comparablePairedTasks: number;
-    routineMedianTokens: number | null;
-    baselineMedianTokens: number | null;
-    savings: number | null;
-    targetSatisfied: boolean | null;
-  };
-  rows: {
-    id: string;
-    question: string;
-    family: string;
-    reviewedReady: boolean;
-    attempts: number;
-    failedAttempts: number;
-    staleDimensions: MechanismQADimension[];
-    incompleteDimensions: MechanismQADimension[];
-  }[];
-};
+const reviewCount = z
+  .object({
+    passed: z.number().int().nonnegative().max(300),
+    failed: z.number().int().nonnegative().max(300),
+    unreviewed: z.number().int().nonnegative().max(300),
+  })
+  .strict();
+const durationSummary = z
+  .object({
+    available: z.number().int().nonnegative().max(300),
+    p50: measurement,
+    p95: measurement,
+  })
+  .strict();
+export const MechanismProductionCohortReportSchema = z
+  .object({
+    schemaVersion: z.literal("mechanism-production-cohort-report-1"),
+    percentileMethod: z.literal("linear-interpolation-at-n-minus-one"),
+    selected: z.number().int().nonnegative().max(300),
+    attempted: z.number().int().nonnegative().max(300),
+    firstPassTechnical: z
+      .object({
+        completed: z.number().int().nonnegative().max(300),
+        passed: z.number().int().nonnegative().max(300),
+        rate: z.number().min(0).max(1).nullable(),
+        targetSatisfied: z.boolean().nullable(),
+      })
+      .strict(),
+    failures: z
+      .object({
+        failedAttempts: z.number().int().nonnegative().max(28800),
+        repeatedFailureEpisodes: z.number().int().nonnegative().max(300),
+        cancelled: z.number().int().nonnegative().max(28800),
+        interrupted: z.number().int().nonnegative().max(28800),
+      })
+      .strict(),
+    reviewedReady: z.number().int().nonnegative().max(300),
+    reviewCounts: z
+      .object(
+        Object.fromEntries(
+          MECHANISM_QA_DIMENSIONS.map((d) => [d, reviewCount]),
+        ) as Record<MechanismQADimension, typeof reviewCount>,
+      )
+      .strict(),
+    durations: z
+      .object({
+        setupSeconds: durationSummary,
+        routineSeconds: durationSummary,
+        renderSeconds: durationSummary,
+      })
+      .strict(),
+    authoring: z
+      .object({
+        comparablePairedTasks: z.number().int().nonnegative().max(300),
+        routineMedianTokens: measurement,
+        baselineMedianTokens: measurement,
+        savings: z.number().finite().nullable(),
+        targetSatisfied: z.boolean().nullable(),
+      })
+      .strict(),
+    rows: z
+      .array(
+        z
+          .object({
+            id: MechanismIdSchema,
+            question: z.string().min(1).max(512),
+            family: z.string().min(1).max(128),
+            reviewedReady: z.boolean(),
+            attempts: z.number().int().nonnegative().max(96),
+            failedAttempts: z.number().int().nonnegative().max(96),
+            staleDimensions: z.array(z.enum(MECHANISM_QA_DIMENSIONS)).max(6),
+            incompleteDimensions: z
+              .array(z.enum(MECHANISM_QA_DIMENSIONS))
+              .max(6),
+          })
+          .strict(),
+      )
+      .max(300),
+  })
+  .strict();
+export type MechanismProductionCohortReport = z.infer<
+  typeof MechanismProductionCohortReportSchema
+>;
 export function summarizeMechanismProductionCohort(
   input: readonly unknown[],
 ): MechanismProductionCohortReport {

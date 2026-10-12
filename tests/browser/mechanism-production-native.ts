@@ -3,6 +3,8 @@ import { mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import {
   createMechanismProductionNativeExecutor,
+  readMechanismProductionReports,
+  MechanismProductionReportBundleSchema,
   runMechanismProductionQueue,
   inspectMechanismProductionNativeItem,
   patchMechanismCueAuthoring,
@@ -11,6 +13,8 @@ import {
   inspectMechanismProductionDisposition,
   type MechanismProductionQueueProduct,
 } from "@still-shift/animation-engine";
+import { runProcess } from "@still-shift/execution-runtime/subprocess";
+import { MechanismCommandReceiptSchema } from "../../packages/animation-engine/src/mechanism/protocol.ts";
 import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
 import { createCueProjectFixture } from "../helpers/mechanism-cue-project.ts";
 
@@ -173,6 +177,62 @@ try {
   assert.notDeepEqual(before.video, after.video);
   assert.equal(parent.statistics.current.metadata, 192 * 1024 * 1024 + 1024);
   assert(foreign.active);
+  const bundle = await readMechanismProductionReports(
+    manifestPath,
+    output,
+    executor,
+    { nodeMemory: parent },
+  );
+  assert.equal(
+    bundle.episodes.filter((e) => e.validation.status === "verified").length,
+    3,
+  );
+  assert.equal(bundle.cohort.reviewedReady, 0);
+  assert.equal(bundle.cohort.reviewCounts.technical.passed, 3);
+  assert.equal(bundle.cohort.reviewCounts.listening.unreviewed, 3);
+  assert.equal(bundle.cohort.authoring.savings, null);
+  assert.equal(parent.statistics.current.metadata, 256 * 1024 * 1024 + 1024);
+  const completePath = join(directory, "production-report.json");
+  const reportCommand = await runProcess(
+    process.execPath,
+    [
+      "--import",
+      "tsx",
+      join(process.cwd(), "tools/still-shift-cli/src/cli.ts"),
+      "production",
+      "report",
+      "--manifest",
+      manifestPath,
+      "--output-dir",
+      output,
+      "--report",
+      completePath,
+      "--limit",
+      "4",
+    ],
+    { maxBuffer: 65536 },
+  );
+  const receipt = MechanismCommandReceiptSchema.parse(
+    JSON.parse(reportCommand.stdout),
+  );
+  assert.equal(receipt.summary.selected, 3);
+  assert.equal(receipt.items.length, 4);
+  assert.equal(receipt.truncated, true);
+  assert.equal(receipt.artifacts.length, 1);
+  const complete = MechanismProductionReportBundleSchema.parse(
+    JSON.parse(await readFile(completePath, "utf8")),
+  );
+  assert.equal(complete.episodes.length, 3);
+  assert.equal(complete.cohort.firstPassTechnical.passed, 3);
+  assert.equal(complete.cohort.durations.routineSeconds.available, 3);
+  assert.equal(complete.cohort.authoring.savings, null);
+  assert.equal(executions, 4);
+  await record({
+    name: "production-report-api-and-actual-cli",
+    completePath,
+    cohort: complete.cohort,
+    receipt,
+  });
   parent.dispose();
   assert.equal(parent.statistics.reservations, 0);
   await writeFile(

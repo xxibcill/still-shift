@@ -169,6 +169,8 @@ export interface MechanismReceiptOptions {
   offset?: number;
   limit?: number;
   retainFullResult?: boolean;
+  /** A caller has already admitted and published this complete report. */
+  retainedFullReport?: MechanismReceiptArtifact;
 }
 
 /** Bound terminal output and retain the complete result whenever anything is omitted. */
@@ -263,23 +265,32 @@ export async function createMechanismCommandReceipt(
   if (
     receipt.truncated ||
     options.reportPath !== undefined ||
-    options.retainFullResult
+    options.retainFullResult ||
+    options.retainedFullReport !== undefined
   ) {
-    const path =
-      options.reportPath === undefined
-        ? join(
-            await mkdtemp(join(tmpdir(), "still-shift-episode-report-")),
-            "report.json",
-          )
-        : resolve(options.reportPath);
-    const bytes = `${JSON.stringify(input.fullResult ?? { summary: input.summary, items: allItems, artifacts: allArtifacts }, null, 2)}\n`;
-    await mkdir(dirname(path), { recursive: true });
-    await writeFile(path, bytes, { flag: "wx" });
-    fullReport = {
-      kind: "full-report",
-      path,
-      sha256: `sha256:${createHash("sha256").update(bytes).digest("hex")}`,
-    };
+    if (options.retainedFullReport) {
+      fullReport = artifact.parse(options.retainedFullReport);
+      if (fullReport.kind !== "full-report" || !fullReport.sha256)
+        throw Error(
+          "Retained complete report requires full-report kind and its published hash",
+        );
+    } else {
+      const path =
+        options.reportPath === undefined
+          ? join(
+              await mkdtemp(join(tmpdir(), "still-shift-episode-report-")),
+              "report.json",
+            )
+          : resolve(options.reportPath);
+      const bytes = `${JSON.stringify(input.fullResult ?? { summary: input.summary, items: allItems, artifacts: allArtifacts }, null, 2)}\n`;
+      await mkdir(dirname(path), { recursive: true });
+      await writeFile(path, bytes, { flag: "wx" });
+      fullReport = {
+        kind: "full-report",
+        path,
+        sha256: `sha256:${createHash("sha256").update(bytes).digest("hex")}`,
+      };
+    }
     receipt.artifacts.push(fullReport);
   }
   while (

@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "mechanism-semantic-registration-1"
+    },
+    "id": {
+      "type": "string",
+      "maxLength": 128,
+      "pattern": "^[A-Za-z][\\w.-]*$"
+    },
+    "description": { "type": "string", "minLength": 1, "maxLength": 1024 },
+    "domain": { "type": "string", "enum": ["mechanical", "collision"] },
+    "method": { "type": "string", "const": "sampled-numeric-range" },
+    "requireEveryOutputFrame": { "type": "boolean" },
+    "rules": {
+      "minItems": 1,
+      "maxItems": 16,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "measurement": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "range": {
+            "type": "array",
+            "prefixItems": [{ "type": "number" }, { "type": "number" }]
+          },
+          "unit": { "type": "string", "minLength": 1, "maxLength": 32 },
+          "rig": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "parts": {
+            "maxItems": 128,
+            "type": "array",
+            "items": { "type": "string", "minLength": 1, "maxLength": 128 }
+          },
+          "relationship": {
+            "anyOf": [
+              { "type": "string", "minLength": 1, "maxLength": 128 },
+              { "type": "null" }
+            ]
+          }
+        },
+        "required": [
+          "measurement",
+          "range",
+          "unit",
+          "rig",
+          "parts",
+          "relationship"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "description",
+    "domain",
+    "method",
+    "requireEveryOutputFrame",
+    "rules"
+  ],
+  "additionalProperties": false
+}
