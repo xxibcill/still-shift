@@ -3,7 +3,7 @@
   "milestone": "MS3",
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
-  "status": "in-progress-report-and-durable-controller-mechanics-verified",
+  "status": "in-progress-native-executor-scoped-proof-verified",
   "baseMain": "57967fa6497249d75e740ba837b8e2687cc81a98",
   "ms2Prerequisite": {
     "commit": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
@@ -250,6 +250,15 @@
         }
       ],
       "qualification": "Complete fast tier and current public-entry declaration build on468797da; no actual native execution, QA, final full/archive/installed, pilot or human acceptance."
+    },
+    {
+      "id": "native-executor3",
+      "status": "native-executor-scoped-proof-passed-in-stages",
+      "record": "docs/mechanism-shorts-ms3-native-executor-results.json",
+      "outputs": 4,
+      "decodedFrames": 240,
+      "owningTests": 42,
+      "qualification": "Engineering adapter proof only. No genuine narration, whole glyph, mechanical, factual, continuous-motion, listening, human or pilot acceptance; no spending/publishing/merging/Actions."
     }
   ],
   "targets": {

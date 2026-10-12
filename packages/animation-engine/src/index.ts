@@ -140,3 +140,7 @@ export type {
 } from "./mechanism/cue-plate-lifecycle.ts";
 export * from "./mechanism/production-report.ts";
 export * from "./mechanism/production-queue.ts";
+export * from "./mechanism/production-native-identity.ts";
+export * from "./mechanism/production-native-inputs.ts";
+export * from "./mechanism/production-native-executor.ts";
+export * from "./mechanism/production-output-check.ts";

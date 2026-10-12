@@ -1,13 +1,17 @@
 # Durable production queue controller
 
 runMechanismProductionQueue(manifestPath, outputDirectory, executor, options) is
-public from the engine. Its real renderer adapter and CLI remain in development.
-An injected executor currently proves scheduling mechanics with real file/lock/
-checkpoint I/O; this supplies no video, fact, human review or pilot acceptance.
+public from the engine. `createMechanismProductionNativeExecutor()` builds a
+real shared renderer adapter; its `createQueue(id, projects, manifestDirectory)`
+snapshots every current source/media dependency and actual code/profile identity.
+The CLI remains in development. Generic fixtures prove scheduling mechanics;
+[the native proof](./mechanism-shorts-ms3-native-executor-results.json) separately
+retains actual three-family capture, cache reuse, caption revision and full decode.
+These engineering inputs supply no fact, human review or pilot acceptance.
 
 A versioned manifest names ID/revision/base hash, code/profile identities and one
 to300 distinct questions. Each item declares family/cue paths, design, clocks and
-at most128 file pins. The real adapter must construct the complete source/media
+at most128 file pins. The native adapter constructs the complete source/media
 set; the controller verifies every declared pin. Revisions require the previous
 hash and preserve selected IDs/questions/families/designs. Missing or orphan
 history rejects rather than resetting the audit trail.
@@ -37,3 +41,10 @@ owner blocked in filesystem execution, not a native encoder.
 [Evidence](./mechanism-shorts-ms3-queue-results.json) retains methods/failures;
 [MS3 acceptance](./mechanism-shorts-ms3-acceptance.md) preserves all original
 workstreams and the ten questions/five assets/two behaviors.
+
+The native adapter measures original worker/aggregate submission counters, verifies
+retained original captures, renders cached overlays/audio and fully decodes RGBA
+and float32 PCM through bounded streams. Technical QA binds the actual output,
+inputs, runtime code/profile and clocks; the other five dimensions stay unreviewed.
+Caption-only revision reuses plates with zero new native submissions. Native
+receipt locators currently reject relocation; supporting relocation is still open.

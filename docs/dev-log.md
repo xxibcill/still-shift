@@ -43,25 +43,23 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS3 in progress (2026-10-13):** codex/mechanism-ms3 starts from main57967fa6
-  and carries exact MS2495fb2c0 via76dd8971 after PR57 opened/attached. Report1
-  artifact/clock-bound QA and queue2 durable controller are committed; latest
-  implementation468797da. Queue2 owns strict journals/products, bounded retries,
-  independent failures, cancel/restart/CAS/cache/hash guards;39 owning checks
-  include actual SIGKILL of a filesystem fixture. Complete fast2 actual0 passes
-  4401 units/431 files in69.09s with2653 inputs/120944490B exact; current public
-  declarations pass. Fast1 boundary failure, type-import lint and preparation
-  failures remain retained; public-entry repair keeps checker/limits intact.
-  64MiB result admission transfers to supplied parent; per-attempt scopes retire
-  under unchanged512MiB Node policy. Generic controller fixtures supply no real
-  native render, QA, registered semantics, repair/handoff, CLI or pilot evidence.
-  Coverage0/10; five assets/two behaviors unadmitted, targets unmeasured. Next:
-  real shared renderer/dependency/code-profile adapter, then every original MS3
-  workstream and final full/archive/installed/MS3 PR. Human reviews remain open;
-  no ElevenLabs spending authority, publication/merge or Actions.
+- **MS3 in progress (2026-10-13):** codex/mechanism-ms3 carries exact MS2495fb2c0
+  after PR57 opened/attached. Report/queue mechanics and native3 real adapter now
+  have scoped proof: three distinct families, four outputs/240 fully decoded
+  frames, completed-product reuse and caption revision with0 fresh native calls,
+  changed video/exact decoded audio. Independent audit checks54 pins. Current
+  package declarations/boundaries and42 owning tests pass with terminal receipts;
+  full fast tier on this slice is next. Original failed build/counter/browser1
+  fixture and missing49709 terminal observation remain retained. Shared parent
+  keeps foreign1024B and64MiB per returned state; dispose retires reservations.
+  Five nontechnical QA dimensions remain unreviewed. Native receipt relocation,
+  actual interruption/cancel/corrupt recovery, semantic QA/warnings, repair and
+  handoff, CLI and all ten original pilot questions remain. Coverage0/10; five
+  assets/two behaviors unadmitted, targets unmeasured. No ElevenLabs spending,
+  publication/merge, Actions or human acceptance.
   [Tracker](./mechanism-shorts-ms3-acceptance.md),
+  [native evidence](./mechanism-shorts-ms3-native-executor-results.json),
   [queue](./mechanism-production-queue.md),
-  [queue evidence](./mechanism-shorts-ms3-queue-results.json),
   [results](./mechanism-shorts-ms3-results.json).
 
 - **MS2 software checkpoint delivered (2026-10-13):** `codex/mechanism-ms2`
@@ -249,6 +247,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — MS3 native queue executor and independent full-decode proof
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from31ec031c.
+- **Done:** Actual shared native/cache adapter, complete dependency/code/profile
+  snapshots and bounded full RGBA/PCM output check; technical artifact-bound QA.
+- **Results:** Three distinct families, four exports/240 decoded frames; caption
+  edit changes picture with exact audio and0 new native calls. Independent54-pin
+  audit passes; package/boundaries/42 owning tests have fresh terminal receipts.
+- **Rejected:** Browser1 accidentally made three tape fixtures and rejected native
+  statistics using a cached-only schema; corrected actual family/assertions and
+  counter envelope, retaining cached zero-submit guard. Other staged failures and
+  truncated49709 final observation retained; no uninterrupted-pass claim.
+- **Open / next:** Fast gate, remaining native fault/relocation, semantic QA,
+  warning/handoff/repair/CLI and every original pilot extension/review requirement.
+- **Records:** [Native evidence](./mechanism-shorts-ms3-native-executor-results.json),
+  [tracker](./mechanism-shorts-ms3-acceptance.md).
 
 ### 2026-10-13 — MS3 durable-controller fast gate passes after boundary repair
 
