@@ -16347,6 +16347,25 @@
       "frozenBoardUnchanged": true,
       "behaviorAdmitted": false,
       "coverageValidated": 0
+    },
+    {
+      "id": "spoken-presentation66",
+      "status": "implemented-scoped-fast-preflight-native-full-validation-in-flight",
+      "record": {
+        "path": "docs/mechanism-shorts-ms2-spoken-presentation-results.json",
+        "bytes": 60843,
+        "sha256": "sha256:7f84f443755ff348c75651b3a832e6bb62e0eab19ff38a81bb0d2f3f6d6ecfe3"
+      },
+      "scope": "Stationary named views/exposed existing anchors and diagnosed peg opening moved into own cue; whole audio/source geometry/captions/markers/word/windows preserved. No production renderer/admission change.",
+      "ordinaryFast": "Actual terminal0/4353 units428files/held2638 inputs after retained format/lint failures",
+      "nativeInFlight": {
+        "actualSession": 20684,
+        "root": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ",
+        "actualExitCode": null,
+        "qualifiedPrefixFrames": 1174,
+        "expectedBatchFrames": 5136
+      },
+      "remaining": "Finish owned native batch/full independent audit/encoded inspection. All broader full/final resource/pack/coverage/owner gates remain."
     }
   ],
   "implementation": {
@@ -18540,6 +18559,24 @@
       "changedCodeOrBoard": false,
       "behaviorAdmitted": false,
       "remaining": "Specific patent load-seating factual asset, new behavior contract/analytic oracle/continuous native evidence plus all unchanged broader MS2 gates remain required."
+    },
+    "sixtySixthSlice": {
+      "status": "implemented-scoped-fast-preflight-native-full-validation-in-flight",
+      "record": {
+        "path": "docs/mechanism-shorts-ms2-spoken-presentation-results.json",
+        "bytes": 60843,
+        "sha256": "sha256:7f84f443755ff348c75651b3a832e6bb62e0eab19ff38a81bb0d2f3f6d6ecfe3"
+      },
+      "scope": "Stationary named views/exposed existing anchors and diagnosed peg opening moved into own cue; whole audio/source geometry/captions/markers/word/windows preserved. No production renderer/admission change.",
+      "ordinaryFast": "Actual terminal0/4353 units428files/held2638 inputs after retained format/lint failures",
+      "nativeInFlight": {
+        "actualSession": 20684,
+        "root": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ",
+        "actualExitCode": null,
+        "qualifiedPrefixFrames": 1174,
+        "expectedBatchFrames": 5136
+      },
+      "remaining": "Finish owned native batch/full independent audit/encoded inspection. All broader full/final resource/pack/coverage/owner gates remain."
     }
   },
   "limits": [
@@ -18567,6 +18604,7 @@
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ],
   "remaining": [
+    "Slice66 presentation code/preflight/ordinary fast complete; owned native1/session20684 still running. Qualified first-hook1174-frame repeat prefix/first19 viewed encoded samples are not full-batch acceptance. Finish all8 exports/independent full audit/decoded review, then current full102/frozen/benchmark/final archive/installed/pack/MS2 PR; coverage0/10/pilot0 remain.",
     "Slice64 completes scoped genuine spoken cue/native output evidence for four existing takes:247 words/20 windows/eight repeated outputs/5136 native and decoded frames; audit60 pins/41028 hierarchy pairs/5136 cameras and ordinary fast4353 units428files pass. Exact endpoint corrections authored, shorter revised hook recompiled. Private opt-in gate keeps full102 portable. Contact labels hidden under current occlusion policy and subtle wide-view hook travel remain visual issues; no human/portrait/pack/coverage acceptance. Whole resources/full102/frozen/benchmark/final archive/installed/pack/MS2 PR remain open. E06 primary-read supplement is ready separately; frozen selection unchanged."
   ]
 }

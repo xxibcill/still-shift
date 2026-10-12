@@ -1,0 +1,846 @@
+{
+  "version": "mechanism-shorts-ms2-spoken-presentation-results-1",
+  "date": "2026-10-12",
+  "branch": "codex/mechanism-ms2",
+  "baseCommit": "09e3ddff",
+  "status": "implemented-scoped-fast-preflight-native-full-validation-in-flight",
+  "scope": "Four existing genuine whole recordings,20 measured visual windows. Named camera framing and existing physical annotation anchors, plus the diagnosed peg opening moved into its spoken cue. No production renderer/admission change.640x360 engineering output is not the MS3 portrait pilot.",
+  "direction": {
+    "decision": "REVISE",
+    "skill": "video-visual-director",
+    "governingEvidence": "docs/mechanism-shorts-ms2-genuine-spoken-cue-results.json",
+    "audience": "General English-language viewers learning everyday mechanisms; this pass is an engineering presentation proof",
+    "runtime": "Each unchanged complete take:19.5512083/21.5016875/21.4088125/23.0342083 seconds; output frame ceiling remains separate",
+    "actualInputsRefreshed": "All20 current saved cues and relevant full source scenes/controls/anchors; hook and peg decoded contact sheets agent-viewed in this pass. Earlier all44 samples remain preserved.",
+    "permittedDelta": "Stationary named camera cuts/holds and semantically appropriate exposed existing anchors; additionally keep peg intro closed and interpolate its opening in the first second of the supplied opening cue. Preserve source geometry, audio/words, captions, font, local markers, intervals, other rig controls and peg release/stop.",
+    "inspectionLimits": "Still images, exact metadata and sampled/pure physical visibility can support framing. No normal-speed playback, listening or human product acceptance is inferred.",
+    "retainedCompromises": [
+      "Cloth/wood contact lies between touching physical surfaces. Retain hide-occluded and rely on visible cloth plus the essential caption; do not force a leader through the wood.",
+      "Held return states interpolate linearly, contrary to an initial step assumption. Native temporal samples found original peg opening under the intro instead of its opening cue; revise those two held controls. Illustrative spring dynamics and natural-speed audiovisual/force acceptance remain separate."
+    ],
+    "takes": [
+      {
+        "id": "EU-001",
+        "family": "tape-hook",
+        "wordCount": 61,
+        "sourceSampleCount": 938458,
+        "sourcePcmSha256": "sha256:82c8e2fc63d90fb3c178867cc1bf0915ac74b88a0d5d14300ce7ef1be00b7320",
+        "assetFacts": [
+          {
+            "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001/family.json",
+            "bytes": 451,
+            "sha256": "a95a2aefc9f8f9956ab4e949553bd28971361fa0807a644a617f02143e6b1096"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001/scene.json",
+            "bytes": 5587949,
+            "sha256": "24f21fb301a6fd42ad874ddf98f7d310a0138924a56ffaba3acbc1578d335e3e"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001/marker.wav",
+            "bytes": 9644,
+            "sha256": "dd72d8df15d3b8fcc4dc0df79d7881232d16ebdfe463fbe4fc6039b07d70116e"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001/cues.json",
+            "bytes": 8899,
+            "sha256": "05163eb01cb501d666b053d17a83394d34ec80df004dafb4ceba9dcf8ac19ec7"
+          }
+        ],
+        "narration": {
+          "path": "/private/tmp/still-shift-ms2-spoken60-gq15jyon/EU-001-48k-f32.wav",
+          "bytes": 3753876,
+          "sha256": "bd8ced6dccae240b7c56f3bb25b143c82bc124dcbc668c8e0355207c7e5b5a11"
+        }
+      },
+      {
+        "id": "EU-002",
+        "family": "cable-tie",
+        "wordCount": 62,
+        "sourceSampleCount": 1032081,
+        "sourcePcmSha256": "sha256:11e144392856472d225de845b230e38139f6dc7bd2445327e2c0b10cb29aaa22",
+        "assetFacts": [
+          {
+            "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-002/family.json",
+            "bytes": 465,
+            "sha256": "2d744e6f7ea4421fb3bcbb43f3feb7b2f459cb9cdfbf5a3caf712787bd532856"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-002/scene.json",
+            "bytes": 966861,
+            "sha256": "a42d91627ddce017a5fdcc1c14e5570be2589e2d875a2203e3ce5e2c3a7bea1f"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-002/marker.wav",
+            "bytes": 9644,
+            "sha256": "dd72d8df15d3b8fcc4dc0df79d7881232d16ebdfe463fbe4fc6039b07d70116e"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-002/cues.json",
+            "bytes": 8488,
+            "sha256": "a80645da4fa5efc0bdaa4e5d2118405ab60e4b00a8ebaffc414a5f38ef2102ff"
+          }
+        ],
+        "narration": {
+          "path": "/private/tmp/still-shift-ms2-spoken60-gq15jyon/EU-002-48k-f32.wav",
+          "bytes": 4128368,
+          "sha256": "4040bb9b169bc5f8424f4524170e99228d888ddc29a5ad190736a80ab18ad606"
+        }
+      },
+      {
+        "id": "EU-003",
+        "family": "clothespeg",
+        "wordCount": 60,
+        "sourceSampleCount": 1027623,
+        "sourcePcmSha256": "sha256:d0d79016ccbf2d6fff606e2800da341d04e2e66b6b6692e5a6c7d9ce5f2ad3a1",
+        "assetFacts": [
+          {
+            "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-003/family.json",
+            "bytes": 468,
+            "sha256": "355a041b1bcdb246c4dad269cdec2a75582a23af33c94f7390744f2c87eb13d6"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-003/scene.json",
+            "bytes": 468500,
+            "sha256": "a42f350d856ee6d05ae00bf3ba5deb87657d6812b17ca02ead3953fa09365464"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-003/marker.wav",
+            "bytes": 9644,
+            "sha256": "dd72d8df15d3b8fcc4dc0df79d7881232d16ebdfe463fbe4fc6039b07d70116e"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-003/cues.json",
+            "bytes": 8534,
+            "sha256": "34ff20c22308cfc73b128c8051d3803b4f534f485d1d9823d58503bb379a4877"
+          }
+        ],
+        "narration": {
+          "path": "/private/tmp/still-shift-ms2-spoken60-gq15jyon/EU-003-48k-f32.wav",
+          "bytes": 4110536,
+          "sha256": "a2ac73fdb6dedc3fc8ec2ee07d134fa50c77578b1e351ad7742e4256956033d7"
+        }
+      },
+      {
+        "id": "EU-001-legacy",
+        "family": "tape-hook",
+        "wordCount": 64,
+        "sourceSampleCount": 1105642,
+        "sourcePcmSha256": "sha256:d14765728896aaa84f12c63a756ef4bfb57e810f6f2e037c1df6098b3e0db4eb",
+        "assetFacts": [
+          {
+            "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001-legacy/family.json",
+            "bytes": 458,
+            "sha256": "168f81883d2f3266e997dd3fb7937099d83f54c29fd8ff6b04b3f34453ce49f0"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001-legacy/scene.json",
+            "bytes": 5587949,
+            "sha256": "24f21fb301a6fd42ad874ddf98f7d310a0138924a56ffaba3acbc1578d335e3e"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001-legacy/marker.wav",
+            "bytes": 9644,
+            "sha256": "dd72d8df15d3b8fcc4dc0df79d7881232d16ebdfe463fbe4fc6039b07d70116e"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-spoken-inputs-ej77A9/EU-001-legacy/cues.json",
+            "bytes": 10195,
+            "sha256": "180eec0aee5a869f437c10b741707759159d46b4f6899a2b27fa4127a2ea8fa5"
+          }
+        ],
+        "narration": {
+          "path": "/private/tmp/still-shift-ms2-spoken60-gq15jyon/EU-001-legacy-48k-f32.wav",
+          "bytes": 4422612,
+          "sha256": "7a704258273877dbc0ae928958672f78ccca61da78f98f459b897715e4b2d03f"
+        }
+      }
+    ],
+    "compositions": [
+      {
+        "compositionId": "EU-001/intro",
+        "sourceCueId": "intro",
+        "sourceSamples": [0, 158256],
+        "outputFrames": [0, 99],
+        "timebase": "48000 Hz mono source; 30 fps output; half-open [start,end)",
+        "wordRangeOneBasedInclusive": [1, 9],
+        "timingConfidence": "Own supplied selected word timings, validated against exact source endpoint; ASR alignment is not human listening/conformance acceptance",
+        "visualJob": "Orient to sliding hook and fixed rivets",
+        "visibleExplanation": "Existing complete native family geometry and teaching controls; Orient to sliding hook and fixed rivets",
+        "essentialSupportingWords": "The hook slides on purpose.",
+        "plannedFraming": "recognition",
+        "plannedAnchor": "hook.flange",
+        "annotationPolicy": "hide-occluded preserved",
+        "developmentAndResolvedFrame": "Existing measured cue-referenced controls retained, except peg holds closed through intro then opens linearly from frame107 to137 in its unchanged opening window; released at unchanged312 with the same stop. No physical force solver or natural-speed acceptance is inferred.",
+        "transitionReason": "A stationary cut exposes a different physical face/detail; shared cable/peg camera groups hold the prior view",
+        "likelyMisreading": "A view/label is a teaching explanation; it is not a force or stiffness measurement. Tape face direction follows its real datum; generic tie is not the E06 patent load-seating embodiment.",
+        "assetId": "EU-001",
+        "technique": "Public immutable camera recipe plus revision/hash checked cue patch; native depth and anchor visibility remain authoritative",
+        "nextReview": "Fresh native output, independent replay, decoded entry/mid/exit/cut-adjacent frames and temporal samples. Normal-speed audiovisual/human acceptance remains separate."
+      },
+      {
+        "compositionId": "EU-001/inside-face",
+        "sourceCueId": "inside-face",
+        "sourceSamples": [158256, 326016],
+        "outputFrames": [99, 204],
+        "timebase": "48000 Hz mono source; 30 fps output; half-open [start,end)",
+        "wordRangeOneBasedInclusive": [10, 21],
+        "timingConfidence": "Own supplied selected word timings, validated against exact source endpoint; ASR alignment is not human listening/conformance acceptance",
+        "visualJob": "Identify the edge/inside-face datum",
+        "visibleExplanation": "Existing complete native family geometry and teaching controls; Identify the edge/inside-face datum",
+        "essentialSupportingWords": "An edge meets the inside face.",
+        "plannedFraming": "approach",
+        "plannedAnchor": "hook.innerFace",
+        "annotationPolicy": "hide-occluded preserved",
+        "developmentAndResolvedFrame": "Existing measured cue-referenced controls retained, except peg holds closed through intro then opens linearly from frame107 to137 in its unchanged opening window; released at unchanged312 with the same stop. No physical force solver or natural-speed acceptance is inferred.",
+        "transitionReason": "A stationary cut exposes a different physical face/detail; shared cable/peg camera groups hold the prior view",
+        "likelyMisreading": "A view/label is a teaching explanation; it is not a force or stiffness measurement. Tape face direction follows its real datum; generic tie is not the E06 patent load-seating embodiment.",
+        "assetId": "EU-001",
+        "technique": "Public immutable camera recipe plus revision/hash checked cue patch; native depth and anchor visibility remain authoritative",
+        "nextReview": "Fresh native output, independent replay, decoded entry/mid/exit/cut-adjacent frames and temporal samples. Normal-speed audiovisual/human acceptance remains separate."
+      },
+      {
+        "compositionId": "EU-001/outside-face",
+        "sourceCueId": "outside-face",
+        "sourceSamples": [326016, 503760],
+        "outputFrames": [204, 315],
+        "timebase": "48000 Hz mono source; 30 fps output; half-open [start,end)",
+        "wordRangeOneBasedInclusive": [22, 33],
+        "timingConfidence": "Own supplied selected word timings, validated against exact source endpoint; ASR alignment is not human listening/conformance acceptance",
+        "visualJob": "Reset the viewing side and identify the wall/outside-face datum",
+        "visibleExplanation": "Existing complete native family geometry and teaching controls; Reset the viewing side and identify the wall/outside-face datum",
+        "essentialSupportingWords": "A wall meets the outside face.",
+        "plannedFraming": "comparison",
+        "plannedAnchor": "hook.outerFace",
+        "annotationPolicy": "hide-occluded preserved",
+        "developmentAndResolvedFrame": "Existing measured cue-referenced controls retained, except peg holds closed through intro then opens linearly from frame107 to137 in its unchanged opening window; released at unchanged312 with the same stop. No physical force solver or natural-speed acceptance is inferred.",
+        "transitionReason": "A stationary cut exposes a different physical face/detail; shared cable/peg camera groups hold the prior view",
+        "likelyMisreading": "A view/label is a teaching explanation; it is not a force or stiffness measurement. Tape face direction follows its real datum; generic tie is not the E06 patent load-seating embodiment.",
+        "assetId": "EU-001",
+        "technique": "Public immutable camera recipe plus revision/hash checked cue patch; native depth and anchor visibility remain authoritative",
+        "nextReview": "Fresh native output, independent replay, decoded entry/mid/exit/cut-adjacent frames and temporal samples. Normal-speed audiovisual/human acceptance remains separate."
+      },
+      {
+        "compositionId": "EU-001/thickness",
+        "sourceCueId": "thickness",
+        "sourceSamples": [503760, 656448],
+        "outputFrames": [315, 411],
+        "timebase": "48000 Hz mono source; 30 fps output; half-open [start,end)",
+        "wordRangeOneBasedInclusive": [34, 43],
+        "timingConfidence": "Own supplied selected word timings, validated against exact source endpoint; ASR alignment is not human listening/conformance acceptance",
+        "visualJob": "Expose the face separation and existing thickness mark",
+        "visibleExplanation": "Existing complete native family geometry and teaching controls; Expose the face separation and existing thickness mark",
+        "essentialSupportingWords": "The faces are one thickness apart.",
+        "plannedFraming": "macro",
+        "plannedAnchor": "hook.thicknessMarker",
+        "annotationPolicy": "hide-occluded preserved",
+        "developmentAndResolvedFrame": "Existing measured cue-referenced controls retained, except peg holds closed through intro then opens linearly from frame107 to137 in its unchanged opening window; released at unchanged312 with the same stop. No physical force solver or natural-speed acceptance is inferred.",
+        "transitionReason": "A stationary cut exposes a different physical face/detail; shared cable/peg camera groups hold the prior view",
+        "likelyMisreading": "A view/label is a teaching explanation; it is not a force or stiffness measurement. Tape face direction follows its real datum; generic tie is not the E06 patent load-seating embodiment.",
+        "assetId": "EU-001",
+        "technique": "Public immutable camera recipe plus revision/hash checked cue patch; native depth and anchor visibility remain authoritative",
+        "nextReview": "Fresh native output, independent replay, decoded entry/mid/exit/cut-adjacent frames and temporal samples. Normal-speed audiovisual/human acceptance remains separate."
+      },
+      {
+        "compositionId": "EU-001/compensate",
+        "sourceCueId": "compensate",
+        "sourceSamples": [656448, 938458],
+        "outputFrames": [411, 587],
+        "timebase": "48000 Hz mono source; 30 fps output; half-open [start,end)",
+        "wordRangeOneBasedInclusive": [44, 61],
+        "timingConfidence": "Own supplied selected word timings, validated against exact source endpoint; ASR alignment is not human listening/conformance acceptance",
+        "visualJob": "Hold a closeup on travel relative to fixed rivets",
+        "visibleExplanation": "Existing complete native family geometry and teaching controls; Hold a closeup on travel relative to fixed rivets",
+        "essentialSupportingWords": "Travel matches the hook thickness.",
+        "plannedFraming": "approach",
+        "plannedAnchor": "rivet.travel",
+        "annotationPolicy": "hide-occluded preserved",
+        "developmentAndResolvedFrame": "Existing measured cue-referenced controls retained, except peg holds closed through intro then opens linearly from frame107 to137 in its unchanged opening window; released at unchanged312 with the same stop. No physical force solver or natural-speed acceptance is inferred.",
+        "transitionReason": "A stationary cut exposes a different physical face/detail; shared cable/peg camera groups hold the prior view",
+        "likelyMisreading": "A view/label is a teaching explanation; it is not a force or stiffness measurement. Tape face direction follows its real datum; generic tie is not the E06 patent load-seating embodiment.",
+        "assetId": "EU-001",
+        "technique": "Public immutable camera recipe plus revision/hash checked cue patch; native depth and anchor visibility remain authoritative",
+        "nextReview": "Fresh native output, independent replay, decoded entry/mid/exit/cut-adjacent frames and temporal samples. Normal-speed audiovisual/human acceptance remains separate."
+      },
+      {
+        "compositionId": "EU-002/intro",
+        "sourceCueId": "intro",
+        "sourceSamples": [0, 257472],
+        "outputFrames": [0, 161],
+        "timebase": "48000 Hz mono source; 30 fps output; half-open [start,end)",
+        "wordRangeOneBasedInclusive": [1, 15],
+        "timingConfidence": "Own supplied selected word timings, validated against exact source endpoint; ASR alignment is not human listening/conformance acceptance",
+        "visualJob": "Orient strap travel and tie head",
+        "visibleExplanation": "Existing complete native family geometry and teaching controls; Orient strap travel and tie head",
+        "essentialSupportingWords": "Forward slides. Backward catches.",
+        "plannedFraming": "recognition",
+        "plannedAnchor": "strap.outerSurface",
+        "annotationPolicy": "hide-occluded preserved",
+        "developmentAndResolvedFrame": "Existing measured cue-referenced controls retained, except peg holds closed through intro then opens linearly from frame107 to137 in its unchanged opening window; released at unchanged312 with the same stop. No physical force solver or natural-speed acceptance is inferred.",
+        "transitionReason": "A stationary cut exposes a different physical face/detail; shared cable/peg camera groups hold the prior view",
+        "likelyMisreading": "A view/label is a teaching explanation; it is not a force or stiffness measurement. Tape face direction follows its real datum; generic tie is not the E06 patent load-seating embodiment.",
+        "assetId": "EU-002",
+        "technique": "Public immutable camera recipe plus revision/hash checked cue patch; native depth and anchor visibility remain authoritative",
+        "nextReview": "Fresh native output, independent replay, decoded entry/mid/exit/cut-adjacent frames and temporal samples. Normal-speed audiovisual/human acceptance remains separate."
+      },
+      {
+        "compositionId": "EU-002/tongue",
+        "sourceCueId": "tongue",
+        "sourceSamples": [257472, 472560],
+        "outputFrames": [161, 296],
+        "timebase": "48000 Hz mono source; 30 fps output; half-open [start,end)",
+        "wordRangeOneBasedInclusive": [16, 27],
+        "timingConfidence": "Own supplied selected word timings, validated against exact source endpoint; ASR alignment is not human listening/conformance acceptance",
+        "visualJob": "Identify the deforming pawl by its tip",
+        "visibleExplanation": "Existing complete native family geometry and teaching controls; Identify the deforming pawl by its tip",
+        "essentialSupportingWords": "A plastic tongue meets the teeth.",
+        "plannedFraming": "macro",
+        "plannedAnchor": "pawl.tip",
+        "annotationPolicy": "hide-occluded preserved",
+        "developmentAndResolvedFrame": "Existing measured cue-referenced controls retained, except peg holds closed through intro then opens linearly from frame107 to137 in its unchanged opening window; released at unchanged312 with the same stop. No physical force solver or natural-speed acceptance is inferred.",
+        "transitionReason": "A stationary cut exposes a different physical face/detail; shared cable/peg camera groups hold the prior view",
+        "likelyMisreading": "A view/label is a teaching explanation; it is not a force or stiffness measurement. Tape face direction follows its real datum; generic tie is not the E06 patent load-seating embodiment.",
+        "assetId": "EU-002",
+        "technique": "Public immutable camera recipe plus revision/hash checked cue patch; native depth and anchor visibility remain authoritative",
+        "nextReview": "Fresh native output, independent replay, decoded entry/mid/exit/cut-adjacent frames and temporal samples. Normal-speed audiovisual/human acceptance remains separate."
+      },
+      {
+        "compositionId": "EU-002/forward-pass",
+        "sourceCueId": "forward-pass",
+        "sourceSamples": [472560, 737856],
+        "outputFrames": [296, 462],
+        "timebase": "48000 Hz mono source; 30 fps output; half-open [start,end)",
+        "wordRangeOneBasedInclusive": [28, 42],
+        "timingConfidence": "Own supplied selected word timings, validated against exact source endpoint; ASR alignment is not human listening/conformance acceptance",
+        "visualJob": "Keep the same view for actual tooth lift and travel",
+        "visibleExplanation": "Existing complete native family geometry and teaching controls; Keep the same view for actual tooth lift and travel",
+        "essentialSupportingWords": "Each tooth flexes the tongue aside.",
+        "plannedFraming": "macro",
+        "plannedAnchor": "pawl.tip",
+        "annotationPolicy": "hide-occluded preserved",
+        "developmentAndResolvedFrame": "Existing measured cue-referenced controls retained, except peg holds closed through intro then opens linearly from frame107 to137 in its unchanged opening window; released at unchanged312 with the same stop. No physical force solver or natural-speed acceptance is inferred.",
+        "transitionReason": "A stationary cut exposes a different physical face/detail; shared cable/peg camera groups hold the prior view",
+        "likelyMisreading": "A view/label is a teaching explanation; it is not a force or stiffness measurement. Tape face direction follows its real datum; generic tie is not the E06 patent load-seating embodiment.",
+        "assetId": "EU-002",
+        "technique": "Public immutable camera recipe plus revision/hash checked cue patch; native depth and anchor visibility remain authoritative",
+        "nextReview": "Fresh native output, independent replay, decoded entry/mid/exit/cut-adjacent frames and temporal samples. Normal-speed audiovisual/human acceptance remains separate."
+      },
+      {
+        "compositionId": "EU-002/blocked-reverse",
+        "sourceCueId": "blocked-reverse",
+        "sourceSamples": [737856, 1032081],
+        "outputFrames": [462, 646],
+        "timebase": "48000 Hz mono source; 30 fps output; half-open [start,end)",
+        "wordRangeOneBasedInclusive": [43, 62],
+        "timingConfidence": "Own supplied selected word timings, validated against exact source endpoint; ASR alignment is not human listening/conformance acceptance",
+        "visualJob": "Keep the seated tip/head relationship visible",
+        "visibleExplanation": "Existing complete native family geometry and teaching controls; Keep the seated tip/head relationship visible",
+        "essentialSupportingWords": "Reverse motion catches on a tooth.",
+        "plannedFraming": "macro",
+        "plannedAnchor": "pawl.tip",
+        "annotationPolicy": "hide-occluded preserved",
+        "developmentAndResolvedFrame": "Existing measured cue-referenced controls retained, except peg holds closed through intro then opens linearly from frame107 to137 in its unchanged opening window; released at unchanged312 with the same stop. No physical force solver or natural-speed acceptance is inferred.",
+        "transitionReason": "A stationary cut exposes a different physical face/detail; shared cable/peg camera groups hold the prior view",
+        "likelyMisreading": "A view/label is a teaching explanation; it is not a force or stiffness measurement. Tape face direction follows its real datum; generic tie is not the E06 patent load-seating embodiment.",
+        "assetId": "EU-002",
+        "technique": "Public immutable camera recipe plus revision/hash checked cue patch; native depth and anchor visibility remain authoritative",
+        "nextReview": "Fresh native output, independent replay, decoded entry/mid/exit/cut-adjacent frames and temporal samples. Normal-speed audiovisual/human acceptance remains separate."
+      },
+      {
+        "compositionId": "EU-003/intro",
+        "sourceCueId": "intro",
+        "sourceSamples": [0, 171072],
+        "outputFrames": [0, 107],
+        "timebase": "48000 Hz mono source; 30 fps output; half-open [start,end)",
+        "wordRangeOneBasedInclusive": [1, 9],
+        "timingConfidence": "Own supplied selected word timings, validated against exact source endpoint; ASR alignment is not human listening/conformance acceptance",
+        "visualJob": "Orient wooden arms, cloth and spring",
+        "visibleExplanation": "Existing complete native family geometry and teaching controls; Orient wooden arms, cloth and spring",
+        "essentialSupportingWords": "The peg keeps squeezing.",
+        "plannedFraming": "recognition",
+        "plannedAnchor": "lower.seat",
+        "annotationPolicy": "hide-occluded preserved",
+        "developmentAndResolvedFrame": "Existing measured cue-referenced controls retained, except peg holds closed through intro then opens linearly from frame107 to137 in its unchanged opening window; released at unchanged312 with the same stop. No physical force solver or natural-speed acceptance is inferred.",
+        "transitionReason": "A stationary cut exposes a different physical face/detail; shared cable/peg camera groups hold the prior view",
+        "likelyMisreading": "A view/label is a teaching explanation; it is not a force or stiffness measurement. Tape face direction follows its real datum; generic tie is not the E06 patent load-seating embodiment.",
+        "assetId": "EU-003",
+        "technique": "Public immutable camera recipe plus revision/hash checked cue patch; native depth and anchor visibility remain authoritative",
+        "nextReview": "Fresh native output, independent replay, decoded entry/mid/exit/cut-adjacent frames and temporal samples. Normal-speed audiovisual/human acceptance remains separate."
+      },
+      {
+        "compositionId": "EU-003/open",
+        "sourceCueId": "open",
+        "sourceSamples": [171072, 497664],
+        "outputFrames": [107, 312],
+        "timebase": "48000 Hz mono source; 30 fps output; half-open [start,end)",
+        "wordRangeOneBasedInclusive": [10, 27],
+        "timingConfidence": "Own supplied selected word timings, validated against exact source endpoint; ASR alignment is not human listening/conformance acceptance",
+        "visualJob": "Keep jaw opening on the same side and view",
+        "visibleExplanation": "Existing complete native family geometry and teaching controls; Keep jaw opening on the same side and view",
+        "essentialSupportingWords": "The arms turn and the jaws open.",
+        "plannedFraming": "recognition",
+        "plannedAnchor": "upper.tip",
+        "annotationPolicy": "hide-occluded retained; closed jaw tip may hide during opening, then must be visible from frame137 onward",
+        "developmentAndResolvedFrame": "Existing measured cue-referenced controls retained, except peg holds closed through intro then opens linearly from frame107 to137 in its unchanged opening window; released at unchanged312 with the same stop. No physical force solver or natural-speed acceptance is inferred.",
+        "transitionReason": "A stationary cut exposes a different physical face/detail; shared cable/peg camera groups hold the prior view",
+        "likelyMisreading": "A view/label is a teaching explanation; it is not a force or stiffness measurement. Tape face direction follows its real datum; generic tie is not the E06 patent load-seating embodiment.",
+        "assetId": "EU-003",
+        "technique": "Public immutable camera recipe plus revision/hash checked cue patch; native depth and anchor visibility remain authoritative",
+        "nextReview": "Fresh native output, independent replay, decoded entry/mid/exit/cut-adjacent frames and temporal samples. Normal-speed audiovisual/human acceptance remains separate."
+      },
+      {
+        "compositionId": "EU-003/release",
+        "sourceCueId": "release",
+        "sourceSamples": [497664, 654240],
+        "outputFrames": [312, 409],
+        "timebase": "48000 Hz mono source; 30 fps output; half-open [start,end)",
+        "wordRangeOneBasedInclusive": [28, 37],
+        "timingConfidence": "Own supplied selected word timings, validated against exact source endpoint; ASR alignment is not human listening/conformance acceptance",
+        "visualJob": "Follow spring return with its visible lower seat",
+        "visibleExplanation": "Existing complete native family geometry and teaching controls; Follow spring return with its visible lower seat",
+        "essentialSupportingWords": "Let go: the spring closes the jaws.",
+        "plannedFraming": "recognition",
+        "plannedAnchor": "spring.seat.b",
+        "annotationPolicy": "hide-occluded preserved",
+        "developmentAndResolvedFrame": "Existing measured cue-referenced controls retained, except peg holds closed through intro then opens linearly from frame107 to137 in its unchanged opening window; released at unchanged312 with the same stop. No physical force solver or natural-speed acceptance is inferred.",
+        "transitionReason": "A stationary cut exposes a different physical face/detail; shared cable/peg camera groups hold the prior view",
+        "likelyMisreading": "A view/label is a teaching explanation; it is not a force or stiffness measurement. Tape face direction follows its real datum; generic tie is not the E06 patent load-seating embodiment.",
+        "assetId": "EU-003",
+        "technique": "Public immutable camera recipe plus revision/hash checked cue patch; native depth and anchor visibility remain authoritative",
+        "nextReview": "Fresh native output, independent replay, decoded entry/mid/exit/cut-adjacent frames and temporal samples. Normal-speed audiovisual/human acceptance remains separate."
+      },
+      {
+        "compositionId": "EU-003/fabric",
+        "sourceCueId": "fabric",
+        "sourceSamples": [654240, 879936],
+        "outputFrames": [409, 550],
+        "timebase": "48000 Hz mono source; 30 fps output; half-open [start,end)",
+        "wordRangeOneBasedInclusive": [38, 52],
+        "timingConfidence": "Own supplied selected word timings, validated against exact source endpoint; ASR alignment is not human listening/conformance acceptance",
+        "visualJob": "Hold the cloth/jaw gap after return; retain hidden contact anchor",
+        "visibleExplanation": "Existing complete native family geometry and teaching controls; Hold the cloth/jaw gap after return; retain hidden contact anchor",
+        "essentialSupportingWords": "Fabric stops them closing fully.",
+        "plannedFraming": "recognition",
+        "plannedAnchor": "cloth.upper",
+        "annotationPolicy": "hide-occluded preserved",
+        "developmentAndResolvedFrame": "Existing measured cue-referenced controls retained, except peg holds closed through intro then opens linearly from frame107 to137 in its unchanged opening window; released at unchanged312 with the same stop. No physical force solver or natural-speed acceptance is inferred.",
+        "transitionReason": "A stationary cut exposes a different physical face/detail; shared cable/peg camera groups hold the prior view",
+        "likelyMisreading": "A view/label is a teaching explanation; it is not a force or stiffness measurement. Tape face direction follows its real datum; generic tie is not the E06 patent load-seating embodiment.",
+        "assetId": "EU-003",
+        "technique": "Public immutable camera recipe plus revision/hash checked cue patch; native depth and anchor visibility remain authoritative",
+        "nextReview": "Fresh native output, independent replay, decoded entry/mid/exit/cut-adjacent frames and temporal samples. Normal-speed audiovisual/human acceptance remains separate."
+      },
+      {
+        "compositionId": "EU-003/bias",
+        "sourceCueId": "bias",
+        "sourceSamples": [879936, 1027623],
+        "outputFrames": [550, 643],
+        "timebase": "48000 Hz mono source; 30 fps output; half-open [start,end)",
+        "wordRangeOneBasedInclusive": [53, 60],
+        "timingConfidence": "Own supplied selected word timings, validated against exact source endpoint; ASR alignment is not human listening/conformance acceptance",
+        "visualJob": "Show the seated spring after the cloth stop",
+        "visibleExplanation": "Existing complete native family geometry and teaching controls; Show the seated spring after the cloth stop",
+        "essentialSupportingWords": "The spring remains biased.",
+        "plannedFraming": "macro",
+        "plannedAnchor": "spring.seat.b",
+        "annotationPolicy": "hide-occluded preserved",
+        "developmentAndResolvedFrame": "Existing measured cue-referenced controls retained, except peg holds closed through intro then opens linearly from frame107 to137 in its unchanged opening window; released at unchanged312 with the same stop. No physical force solver or natural-speed acceptance is inferred.",
+        "transitionReason": "A stationary cut exposes a different physical face/detail; shared cable/peg camera groups hold the prior view",
+        "likelyMisreading": "A view/label is a teaching explanation; it is not a force or stiffness measurement. Tape face direction follows its real datum; generic tie is not the E06 patent load-seating embodiment.",
+        "assetId": "EU-003",
+        "technique": "Public immutable camera recipe plus revision/hash checked cue patch; native depth and anchor visibility remain authoritative",
+        "nextReview": "Fresh native output, independent replay, decoded entry/mid/exit/cut-adjacent frames and temporal samples. Normal-speed audiovisual/human acceptance remains separate."
+      },
+      {
+        "compositionId": "EU-001-legacy/intro",
+        "sourceCueId": "intro",
+        "sourceSamples": [0, 126480],
+        "outputFrames": [0, 80],
+        "timebase": "48000 Hz mono source; 30 fps output; half-open [start,end)",
+        "wordRangeOneBasedInclusive": [1, 6],
+        "timingConfidence": "Own supplied selected word timings, validated against exact source endpoint; ASR alignment is not human listening/conformance acceptance",
+        "visualJob": "Orient to sliding hook and fixed rivets",
+        "visibleExplanation": "Existing complete native family geometry and teaching controls; Orient to sliding hook and fixed rivets",
+        "essentialSupportingWords": "The hook slides on purpose.",
+        "plannedFraming": "recognition",
+        "plannedAnchor": "hook.flange",
+        "annotationPolicy": "hide-occluded preserved",
+        "developmentAndResolvedFrame": "Existing measured cue-referenced controls retained, except peg holds closed through intro then opens linearly from frame107 to137 in its unchanged opening window; released at unchanged312 with the same stop. No physical force solver or natural-speed acceptance is inferred.",
+        "transitionReason": "A stationary cut exposes a different physical face/detail; shared cable/peg camera groups hold the prior view",
+        "likelyMisreading": "A view/label is a teaching explanation; it is not a force or stiffness measurement. Tape face direction follows its real datum; generic tie is not the E06 patent load-seating embodiment.",
+        "assetId": "EU-001-legacy",
+        "technique": "Public immutable camera recipe plus revision/hash checked cue patch; native depth and anchor visibility remain authoritative",
+        "nextReview": "Fresh native output, independent replay, decoded entry/mid/exit/cut-adjacent frames and temporal samples. Normal-speed audiovisual/human acceptance remains separate."
+      },
+      {
+        "compositionId": "EU-001-legacy/inside-face",
+        "sourceCueId": "inside-face",
+        "sourceSamples": [126480, 261360],
+        "outputFrames": [80, 164],
+        "timebase": "48000 Hz mono source; 30 fps output; half-open [start,end)",
+        "wordRangeOneBasedInclusive": [7, 15],
+        "timingConfidence": "Own supplied selected word timings, validated against exact source endpoint; ASR alignment is not human listening/conformance acceptance",
+        "visualJob": "Identify the edge/inside-face datum",
+        "visibleExplanation": "Existing complete native family geometry and teaching controls; Identify the edge/inside-face datum",
+        "essentialSupportingWords": "An edge meets the inside face.",
+        "plannedFraming": "approach",
+        "plannedAnchor": "hook.innerFace",
+        "annotationPolicy": "hide-occluded preserved",
+        "developmentAndResolvedFrame": "Existing measured cue-referenced controls retained, except peg holds closed through intro then opens linearly from frame107 to137 in its unchanged opening window; released at unchanged312 with the same stop. No physical force solver or natural-speed acceptance is inferred.",
+        "transitionReason": "A stationary cut exposes a different physical face/detail; shared cable/peg camera groups hold the prior view",
+        "likelyMisreading": "A view/label is a teaching explanation; it is not a force or stiffness measurement. Tape face direction follows its real datum; generic tie is not the E06 patent load-seating embodiment.",
+        "assetId": "EU-001-legacy",
+        "technique": "Public immutable camera recipe plus revision/hash checked cue patch; native depth and anchor visibility remain authoritative",
+        "nextReview": "Fresh native output, independent replay, decoded entry/mid/exit/cut-adjacent frames and temporal samples. Normal-speed audiovisual/human acceptance remains separate."
+      },
+      {
+        "compositionId": "EU-001-legacy/outside-face",
+        "sourceCueId": "outside-face",
+        "sourceSamples": [261360, 397344],
+        "outputFrames": [164, 249],
+        "timebase": "48000 Hz mono source; 30 fps output; half-open [start,end)",
+        "wordRangeOneBasedInclusive": [16, 24],
+        "timingConfidence": "Own supplied selected word timings, validated against exact source endpoint; ASR alignment is not human listening/conformance acceptance",
+        "visualJob": "Reset the viewing side and identify the wall/outside-face datum",
+        "visibleExplanation": "Existing complete native family geometry and teaching controls; Reset the viewing side and identify the wall/outside-face datum",
+        "essentialSupportingWords": "A wall meets the outside face.",
+        "plannedFraming": "comparison",
+        "plannedAnchor": "hook.outerFace",
+        "annotationPolicy": "hide-occluded preserved",
+        "developmentAndResolvedFrame": "Existing measured cue-referenced controls retained, except peg holds closed through intro then opens linearly from frame107 to137 in its unchanged opening window; released at unchanged312 with the same stop. No physical force solver or natural-speed acceptance is inferred.",
+        "transitionReason": "A stationary cut exposes a different physical face/detail; shared cable/peg camera groups hold the prior view",
+        "likelyMisreading": "A view/label is a teaching explanation; it is not a force or stiffness measurement. Tape face direction follows its real datum; generic tie is not the E06 patent load-seating embodiment.",
+        "assetId": "EU-001-legacy",
+        "technique": "Public immutable camera recipe plus revision/hash checked cue patch; native depth and anchor visibility remain authoritative",
+        "nextReview": "Fresh native output, independent replay, decoded entry/mid/exit/cut-adjacent frames and temporal samples. Normal-speed audiovisual/human acceptance remains separate."
+      },
+      {
+        "compositionId": "EU-001-legacy/thickness",
+        "sourceCueId": "thickness",
+        "sourceSamples": [397344, 537216],
+        "outputFrames": [249, 336],
+        "timebase": "48000 Hz mono source; 30 fps output; half-open [start,end)",
+        "wordRangeOneBasedInclusive": [25, 31],
+        "timingConfidence": "Own supplied selected word timings, validated against exact source endpoint; ASR alignment is not human listening/conformance acceptance",
+        "visualJob": "Expose the face separation and existing thickness mark",
+        "visibleExplanation": "Existing complete native family geometry and teaching controls; Expose the face separation and existing thickness mark",
+        "essentialSupportingWords": "The faces are one thickness apart.",
+        "plannedFraming": "macro",
+        "plannedAnchor": "hook.thicknessMarker",
+        "annotationPolicy": "hide-occluded preserved",
+        "developmentAndResolvedFrame": "Existing measured cue-referenced controls retained, except peg holds closed through intro then opens linearly from frame107 to137 in its unchanged opening window; released at unchanged312 with the same stop. No physical force solver or natural-speed acceptance is inferred.",
+        "transitionReason": "A stationary cut exposes a different physical face/detail; shared cable/peg camera groups hold the prior view",
+        "likelyMisreading": "A view/label is a teaching explanation; it is not a force or stiffness measurement. Tape face direction follows its real datum; generic tie is not the E06 patent load-seating embodiment.",
+        "assetId": "EU-001-legacy",
+        "technique": "Public immutable camera recipe plus revision/hash checked cue patch; native depth and anchor visibility remain authoritative",
+        "nextReview": "Fresh native output, independent replay, decoded entry/mid/exit/cut-adjacent frames and temporal samples. Normal-speed audiovisual/human acceptance remains separate."
+      },
+      {
+        "compositionId": "EU-001-legacy/compensate",
+        "sourceCueId": "compensate",
+        "sourceSamples": [537216, 843168],
+        "outputFrames": [336, 527],
+        "timebase": "48000 Hz mono source; 30 fps output; half-open [start,end)",
+        "wordRangeOneBasedInclusive": [32, 49],
+        "timingConfidence": "Own supplied selected word timings, validated against exact source endpoint; ASR alignment is not human listening/conformance acceptance",
+        "visualJob": "Hold a closeup on travel relative to fixed rivets",
+        "visibleExplanation": "Existing complete native family geometry and teaching controls; Hold a closeup on travel relative to fixed rivets",
+        "essentialSupportingWords": "Travel matches the hook thickness.",
+        "plannedFraming": "approach",
+        "plannedAnchor": "rivet.travel",
+        "annotationPolicy": "hide-occluded preserved",
+        "developmentAndResolvedFrame": "Existing measured cue-referenced controls retained, except peg holds closed through intro then opens linearly from frame107 to137 in its unchanged opening window; released at unchanged312 with the same stop. No physical force solver or natural-speed acceptance is inferred.",
+        "transitionReason": "A stationary cut exposes a different physical face/detail; shared cable/peg camera groups hold the prior view",
+        "likelyMisreading": "A view/label is a teaching explanation; it is not a force or stiffness measurement. Tape face direction follows its real datum; generic tie is not the E06 patent load-seating embodiment.",
+        "assetId": "EU-001-legacy",
+        "technique": "Public immutable camera recipe plus revision/hash checked cue patch; native depth and anchor visibility remain authoritative",
+        "nextReview": "Fresh native output, independent replay, decoded entry/mid/exit/cut-adjacent frames and temporal samples. Normal-speed audiovisual/human acceptance remains separate."
+      },
+      {
+        "compositionId": "EU-001-legacy/aligned",
+        "sourceCueId": "aligned",
+        "sourceSamples": [843168, 1105642],
+        "outputFrames": [527, 692],
+        "timebase": "48000 Hz mono source; 30 fps output; half-open [start,end)",
+        "wordRangeOneBasedInclusive": [50, 64],
+        "timingConfidence": "Own supplied selected word timings, validated against exact source endpoint; ASR alignment is not human listening/conformance acceptance",
+        "visualJob": "Return to the outside contact reference",
+        "visibleExplanation": "Existing complete native family geometry and teaching controls; Return to the outside contact reference",
+        "essentialSupportingWords": "Both contact positions stay aligned.",
+        "plannedFraming": "comparison",
+        "plannedAnchor": "hook.outerFace",
+        "annotationPolicy": "hide-occluded preserved",
+        "developmentAndResolvedFrame": "Existing measured cue-referenced controls retained, except peg holds closed through intro then opens linearly from frame107 to137 in its unchanged opening window; released at unchanged312 with the same stop. No physical force solver or natural-speed acceptance is inferred.",
+        "transitionReason": "A stationary cut exposes a different physical face/detail; shared cable/peg camera groups hold the prior view",
+        "likelyMisreading": "A view/label is a teaching explanation; it is not a force or stiffness measurement. Tape face direction follows its real datum; generic tie is not the E06 patent load-seating embodiment.",
+        "assetId": "EU-001-legacy",
+        "technique": "Public immutable camera recipe plus revision/hash checked cue patch; native depth and anchor visibility remain authoritative",
+        "nextReview": "Fresh native output, independent replay, decoded entry/mid/exit/cut-adjacent frames and temporal samples. Normal-speed audiovisual/human acceptance remains separate."
+      }
+    ],
+    "reviewFindings": [
+      {
+        "version": "native-preview1",
+        "interval": "EU-003/intro frames0/53/106; open107/209/311",
+        "observation": "Peg already opens over intro; opening-cue frames are held open. Renderer held states interpolate toward next held state, not step.",
+        "repair": "Add a held0 at open107, move target held\u00b1.16 to open+48000 samples/frame137, preserve original release312/stop0.",
+        "nextEvidence": "Fresh per-frame analytic linear angle check and actual revised native temporal/encoded frames; natural-speed review remains separate."
+      },
+      {
+        "version": "native-preview1",
+        "interval": "All20 entry/mid/exit samples",
+        "observation": "Contact labels present for both hook faces, pawl tip and lower peg seat; cloth contact still hides as physically expected. Hook closeup reveals flange/rivets/contact, but .18 travel still needs denser motion sampling.",
+        "repair": "Retain the new named stationary views/valid anchors; keep cloth caption and geometry; inspect actual movement around its authored cue keys.",
+        "nextEvidence": "Fresh final native/decoded sampling with measured visible travel and readable supporting captions, without inferring force/natural-speed acceptance."
+      },
+      {
+        "version": "native-preview2",
+        "interval": "EU-003 frames0/53/106/107/108/113/122/137/138/209/311/312/360/408/409/479/549/550/596/642",
+        "observation": "Corrected intro stays closed; jaws develop during spoken opening. Jaw contact label hides at closed107 and appears108 onward; return and cloth stop visible.",
+        "repair": "Retain corrected held timing and physical hide policy.",
+        "nextEvidence": "Revised whole native encoded export and source/full PCM invariance; normal-speed visual/listening/factual forces remain separate."
+      },
+      {
+        "version": "first-encoded-review1",
+        "interval": "EU-001 19 decoded samples including compensation411/426/441/456/471/498/586",
+        "observation": "Both face labels and captions are present/readable in inspected frames. Hook shifts relative to fixed rivets in the compensation closeup; actual native projected endpoint separation11.635pixels.",
+        "repair": "Retain current framing and untouched world travel.",
+        "nextEvidence": "Remaining genuine whole exports/repeats and independent full audit, including revised peg, old/new complete PCM and all native cut cameras. No encoded all-frame glyph or 1x audiovisual acceptance inferred."
+      }
+    ]
+  },
+  "attempts": [
+    {
+      "id": "candidate-pose-scan1",
+      "actualSession": 20641,
+      "actualExitCode": 0,
+      "artifact": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-candidates1.json",
+        "bytes": 534286,
+        "sha256": "21ebf42d856686a18f3dbe462c0d55f82c2226d3902d89cdd0e1394acb6fb28f"
+      },
+      "scope": "14 current-copy cues/252 sampled recipe candidates. Legacy misnamed in diagnostic and skipped; not20-cue/all-frame evidence."
+    },
+    {
+      "id": "build1",
+      "actualSession": 50020,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-build1.log",
+        "bytes": 98,
+        "sha256": "ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      },
+      "scope": "Typecheck of initial helper before clipping repair"
+    },
+    {
+      "id": "targeted-lint1",
+      "actualSession": 70441,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-lint1.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "scope": "Initial helper/test before clipping repair"
+    },
+    {
+      "id": "preflight1",
+      "actualSession": 15101,
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-preflight1.log",
+        "bytes": 1502,
+        "sha256": "4874c0ac6455bb3456a63c52522953eb5260e8fe87c4d115a46dd698e07809c7"
+      },
+      "scope": "First original16-file parity/presentation preflight stops at first cue before successful patch or native render",
+      "diagnostic": "mechanism-cue-camera: source near/far retained by narrated tracks. Recipe camera clipped differently; corrected by fixed source planes and explicit envelope recheck."
+    },
+    {
+      "id": "preflight2",
+      "actualSession": 77103,
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-preflight2.log",
+        "bytes": 909,
+        "sha256": "957107c2215e7191aad6f77e5b87397dc32e3d6f501b39d9201b2a7645f18eef"
+      },
+      "scope": "First take reaches all-frame expected visibility, then existing compiled-folder protection rejects EEXIST. Corrected with a fresh revision-specific compilation directory; original remains."
+    },
+    {
+      "id": "preflight3",
+      "actualSession": 62480,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-preflight3.log",
+        "bytes": 201,
+        "sha256": "493e3ded3c0be52baea4aefeebd655464eae613e7194b86f056d035df7beac19"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-preflight-OJPel7/run.json",
+        "bytes": 469887,
+        "sha256": "c2a9d7039479cc514def40c196b3c5d2d96ee86d6ec47d78d9d047137f02c8cf"
+      },
+      "scope": "All16 initial family/scene/marker/cue bodies match immutable64 originals before patch; four saved camera/anchor revisions compile. Pure visibility2568 frames:2427 visible/141 intentional cloth contact occluded. Original premature peg opening retained here; superseded by4."
+    },
+    {
+      "id": "native-preview1",
+      "actualSession": 50973,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-preview1.log",
+        "bytes": 115,
+        "sha256": "4a022ea5d417653a25ff1b7a560a1dbf8c6507ec354890c5ca9c8ed322a2ea9c"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-preflight-OJPel7/presentation-preview.json",
+        "bytes": 1735382,
+        "sha256": "c98807b79a6f5d052af29124cb550e1841d96392d66e8ecb06e7c1730d46d489"
+      },
+      "scope": "All60 actual native entry/mid/exit captures checked against pinned source/GPU receipt; all four contact sheets agent-viewed. Preview PNGs, not encoded output or normal-speed playback. Shows newly readable labels and closer views; also exposes original peg opening under intro."
+    },
+    {
+      "id": "build2",
+      "actualSession": 86194,
+      "actualExitCode": 2,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-build2.log",
+        "bytes": 1676,
+        "sha256": "44d1ecfc96034aff85cecdd5c3574777b9b7de1dfa3e0cf97dc2d820ee01a0b6"
+      },
+      "scope": "Unsafe inferred camera/annotation union cast rejects a rig-control operation. Corrected by typing operations directly from the public patch schema; no production/type-contract relaxation."
+    },
+    {
+      "id": "build3",
+      "actualSession": 71920,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-build3.log",
+        "bytes": 98,
+        "sha256": "ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      },
+      "scope": "Final typed public patch operations and independent peg motion expectation"
+    },
+    {
+      "id": "preflight4",
+      "actualSession": 48291,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-preflight4.log",
+        "bytes": 201,
+        "sha256": "4b2f4092ad1df819177bd6e6b2a5b2e0984ed478b107fa38b553dda6ba41c2c1"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-preflight-vFVQlN/run.json",
+        "bytes": 473899,
+        "sha256": "35580aa499500f307f28b8ad9cebb37adaa3d198e02784c7824ece81bd88822f"
+      },
+      "scope": "All16 pre-revision bodies exact versus immutable64. All20 revised windows/four saved revisions compile; pure visibility2568 output frames2426visible/142occluded (141 cloth plus opening first frame). Independent linear peg angle/phase expectation643 frames, both upper/lower: closed0..106, opens107..137, release312 unchanged. Camera envelope samples preserve same posed angle range; actual new timing is independently sampled per frame."
+    },
+    {
+      "id": "native-preview2",
+      "actualSession": 19795,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-preview2.log",
+        "bytes": 115,
+        "sha256": "0ce2507b29f2a6f1e94721a73d1d99405fbd462183e4271a80dd12a4e6ad5689"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-preflight-vFVQlN/presentation-preview.json",
+        "bytes": 511568,
+        "sha256": "b423f3a415aeb1caad73cfbd7bf8fef6f1e50d36fc4b938f21cc955be634ea92"
+      },
+      "scope": "Corrected peg20 native temporal captures/strict used-source GPU receipt checks. Two contact sheets/all20 frames agent-viewed. Intro0/53/106 closed, open107 closed/label hidden,108+ opens/label visible,137 full-open, release312/stop unchanged. PNG preview, not encoded or natural-speed audiovisual acceptance."
+    },
+    {
+      "id": "ordinary-fast1",
+      "actualSession": 3294,
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-fast1.log",
+        "bytes": 1433,
+        "sha256": "0be23f036d6aa826cdd05babba0e4221271884d3b0be7c9106ec12bb8557dbfa"
+      },
+      "scope": "Schema/boundaries pass; formatter rejects this newly written draft JSON before lint/build/units. Format the record and rerun; code/held2 source unchanged."
+    },
+    {
+      "id": "ordinary-fast2",
+      "actualSession": 72237,
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-fast2.log",
+        "bytes": 1898,
+        "sha256": "44a44764a5ed11d7d8203dffdd9b51fc27a9f130bae1ecea7d3e1eb4f598269a"
+      },
+      "scope": "Schema/boundaries/formatter pass, then helper lint requires type-only zod/schema imports. Runtime function/body authoring unchanged by the import cleanup."
+    },
+    {
+      "id": "ordinary-fast3",
+      "actualSession": 80968,
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-fast3.log",
+        "bytes": 41064,
+        "sha256": "5d4155c79c9e5f9e571b2920398e3f7973487099d4fc3c462aee5f82c68e7434"
+      },
+      "scope": "Ordinary pnpm check:fast: schemas/boundaries/full formatter/lint/build/4353 units428files under four-worker ceiling. Unit duration66.26s. Held3 complete2638 inputs/120690519B unchanged through actual terminal."
+    },
+    {
+      "id": "first-encoded-review1",
+      "actualExitCode": 0,
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-first-review1.json",
+        "bytes": 6574,
+        "sha256": "e7936bc219a35a48a832128fbd1d9fd8a851cabb8c9ce9f4ce45bcb322a3d6d6"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-presentation66-first-review1.log",
+        "bytes": 169,
+        "sha256": "a75e354b4bd6e92f4bd4ef4384fda6842e37bc14c34cc6d1dd8ef7ac5b072ef8"
+      },
+      "scope": "Separate scoped first EU-001 only: complete587-frame decode,19 selected encoded entry/mid/exit/cycle frames agent-viewed. Actual native hook endpoint world motion.18 illustrative units and projected11.635003895514366 pixels; fixed rivet world/pixel witness. Full batch/repeat terminal not implied."
+    },
+    {
+      "id": "native-export1",
+      "actualSession": 20684,
+      "actualExitCode": null,
+      "state": "running",
+      "root": "/private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ",
+      "logPath": "/private/tmp/still-shift-ms2-presentation66-render1.log",
+      "scope": "Held3 current implementation. Four supplied takes x first/repeat planned8 exports/5136 frames. So far first hook pair has rendered/checked/decoded receipts and exact whole encoded/frame/PCM pair proof in live run snapshot. This is a qualified1174-frame prefix, not a full-batch terminal pass. Continue the owned session before final evidence."
+    }
+  ],
+  "supportedPacks": 0,
+  "validatedCoverage": {
+    "passed": 0,
+    "total": 10
+  },
+  "acceptedPilotEpisodes": 0,
+  "productionRendererOrAdmissionChanged": false,
+  "paidGeneration": false,
+  "privateMediaRedistributed": false,
+  "remaining": [
+    "Finish owned native-export1 session20684; independently audit all current encoded/repeated output, held-cut camera matrices, source/old-new complete PCM and native angle/label proofs. Inspect actual selected final encoded frames for all takes.",
+    "Whole current required102/frozen/benchmark/final archive/installed gates",
+    "Pack/factual/validated10-question coverage/MS2 PR and MS3 pilot",
+    "Normal-speed audiovisual/human/portrait product acceptance"
+  ],
+  "sourceHolds": [
+    {
+      "path": "/private/tmp/still-shift-ms2-presentation66-inputs1.json",
+      "bytes": 449949,
+      "sha256": "aaa2340afee198dccfc580f0dd911e005e39a865a07474477d5270fb748fc08e"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-presentation66-inputs2.json",
+      "bytes": 449950,
+      "sha256": "75fb2e0f66db76a88eb0c104d54602ff3ad0fb5870e42576ec3f171c46e2141a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-presentation66-inputs3.json",
+      "bytes": 449950,
+      "sha256": "8d54d34d437952c2e1dd698b56e9fecc68fdbd848d88405579c7aaa1f2711884"
+    }
+  ],
+  "sourceHoldsScope": "Hold1 precedes diagnosed peg timing repair. Hold2\u2192hold3 changes only helper type imports56B, no runtime/authoring function delta. Hold3 pins final source for ordinary fast3 and native-export1; source equality is scoped to each owning stage."
+}

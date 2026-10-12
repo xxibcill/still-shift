@@ -111,6 +111,22 @@ all-frame encoded glyph, listening, supported-pack or pilot acceptance. Run seri
 with browser/export groups. [Genuine evidence](./mechanism-shorts-ms2-genuine-spoken-cue-results.json)
 retains failed and unverified stages and the ordinary fast-tier result.
 
+Add `--presentation` to the private spoken-input command to revise the same saved
+teaching poses through revision/hash checked public cue patches. Named stationary
+camera cuts/holds reserve space for captions and callouts. Existing exposed anchors
+replace hidden hook, pawl-root and spring-seat targets; unchanged source near/far
+planes are rechecked. Source geometry, narration/words, captions, markers and sample
+windows remain exact. Peg held controls now keep the intro closed and interpolate
+opening during the first second of the actual opening cue; its release/stop stay
+unchanged. The cloth contact stays hidden between
+touching surfaces under its original policy; its visible cloth/caption remain
+required. Its jaw contact callout is allowed to hide while initially closed, then
+must be visible by the completed opening. Natural-speed playback and illustrative
+spring force limits remain separate. This mode is also opt-in and excluded from the portable full102 matrix.
+[Presentation evidence](./mechanism-shorts-ms2-spoken-presentation-results.json)
+records actual revised native and decoded inspection scope; a pure visibility
+preflight does not establish encoded glyph or normal-speed audiovisual acceptance.
+
 `pnpm test:browser:mechanism-cue-edits` saves source-pinned cue documents for all
 three candidate families, applies a caption patch, rejects the old base and renders
 both revisions with repeats. It independently replays every final native observation,

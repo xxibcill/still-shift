@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { mkdtemp, writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { join, dirname } from "node:path";
 import {
   compileMechanismNarratedCycle,
   sampleMechanismPackTimeline,
@@ -14,6 +14,7 @@ import {
   readSpokenTake,
 } from "../helpers/mechanism-spoken-inputs.ts";
 import { authorSpokenCueProject } from "../helpers/mechanism-spoken-authoring.ts";
+import { reviseSpokenCuePresentation } from "../helpers/mechanism-spoken-presentation.ts";
 import { streamingOutputProof } from "../helpers/composition-streaming-output-proof.ts";
 import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
 import { MechanismEvaluationErrorV2 } from "../../packages/renderer-core/src/mechanism/types-v2.ts";
@@ -23,6 +24,11 @@ const manifestPath = process.argv[2];
 assert.ok(
   manifestPath,
   "Pass the private ms2-supplied-speech-inputs-1 manifest path",
+);
+const presentationMode = process.argv[3] === "--presentation";
+assert.ok(
+  process.argv[3] === undefined || presentationMode,
+  "Unknown speech proof option",
 );
 const inputs = await readSpokenInputManifest(manifestPath);
 const directory = await mkdtemp("/private/tmp/still-shift-ms2-spoken-inputs-");
@@ -37,6 +43,7 @@ const snapshot = async (status: string) =>
         status,
         directory,
         manifestSha256: inputs.sha256,
+        presentationMode,
         fixtures,
         supportedPacks: 0,
         pilotAcceptedEpisodes: 0,
@@ -48,6 +55,13 @@ const snapshot = async (status: string) =>
 try {
   for (const take of inputs.manifest.takes) {
     const authored = await authorSpokenCueProject(take, directory);
+    const presentation = presentationMode
+      ? await reviseSpokenCuePresentation(authored)
+      : undefined;
+    if (presentation) {
+      authored.document = presentation.document;
+      authored.compiled = presentation.compiled;
+    }
     const { instance, document } = authored;
     const compiled = compileMechanismNarratedCycle(instance, document);
     const frameCount = Math.ceil(take.sampleCount / 1600);
@@ -205,7 +219,7 @@ try {
       const render = await renderMechanismCueProject(
         authored.familyPath,
         authored.cuePath,
-        join(directory, take.id, "compiled"),
+        dirname(authored.compiled.compositionPath),
         join(directory, take.id, suffix),
       );
       assert.equal(render.frameCount, frameCount);
@@ -216,7 +230,7 @@ try {
       const check = await checkMechanismCueOutput(
         authored.familyPath,
         authored.cuePath,
-        join(directory, take.id, "compiled"),
+        dirname(authored.compiled.compositionPath),
         render.outputPath,
       );
       assert.equal(check.nativeFrames, frameCount);
@@ -253,6 +267,7 @@ try {
     );
     fixtures.push({
       ...facts,
+      presentation: presentation?.record ?? null,
       onsetProof,
       negatives,
       semanticPoses,
@@ -277,6 +292,7 @@ try {
       directory,
       status: "passed",
       genuineExistingAudioTakes: 4,
+      presentationMode,
       exports: 8,
       observedNativeFrames: 5136,
       privatelyRetainedMedia: true,

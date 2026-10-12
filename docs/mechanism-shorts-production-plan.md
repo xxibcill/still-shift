@@ -1005,6 +1005,21 @@ mechanism families establish whether the architecture transfers.
       retains failed full-page fetches and unavailable text extraction. It changes
       no code or frozen board and admits no universal tie, force magnitude, factual
       asset, new behavior, continuous native, supported pack or episode coverage.
+      Slice66 implements a bounded presentation pass on all20 genuine windows:
+      stationary named cuts/holds reserve caption/callout space; existing visible
+      anchors expose hook faces, pawl tip and peg spring seat. Native temporal
+      samples diagnose held-state interpolation opening the peg during intro;
+      public CAS moves its one-second opening to frames107–137 of its spoken cue,
+      retaining release312/stop and all whole audio/captions/word/sample windows.
+      All16 original pre-revision bodies match slice64. Preflight4 checks2568 frames
+      (2426 visible/142 intentional contact occlusions) and independent peg angles;
+      native previews80 captures/encoded first-hook19 samples are agent-viewed.
+      Ordinary fast3 passes4353 units/428 files on held2638 inputs. Owned native1
+      is still running: first-hook1174-frame exact repeat prefix is qualified,
+      not a full-batch pass. [Presentation evidence](./mechanism-shorts-ms2-spoken-presentation-results.json)
+      preserves clipping/EEXIST/type/format/lint failures and the superseded timing.
+      Hidden cloth/initial jaw contacts remain physically hidden; current full,
+      final archive/installed/pack/coverage/human/portrait gates stay open.
 - [ ] Expose registry-derived discovery, per-component schema/parameter help,
       small examples, asset metadata and stable revision-aware editing. Publish
       versioned JSON Schemas for the expanded contracts and retain MS1 response

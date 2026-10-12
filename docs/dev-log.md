@@ -45,7 +45,7 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56)
-  (`bf30a253`). Sixty-five slices are committed/prepared; MS2 has no PR yet.
+  (`bf30a253`). Sixty-six slices are committed/prepared; MS2 has no PR yet.
   Validated coverage0/10, supported packs0, accepted pilot0; MS3 has not started.
   Frozen question selection remains fixed; E06 new asset/behavior and finer Thai
   motion are provisional. Native/source3, five screen recipes, rigid world/surface
@@ -80,10 +80,21 @@ still hold before relying on them.
   Specific patent embodiment supports the question; prior full-page/extraction
   failures remain. Frozen board/selection match slice50 hashes. No code/board change,
   no general tie/load-magnitude claim or new behavior/pack/episode admission.
+  Slice66 implements named stationary cameras/exposed existing anchors on20 windows.
+  Peg held interpolation formerly opened during intro; actual native samples find
+  it, and CAS moves one-second opening to spoken frames107–137/release312 unchanged.
+  Preflight4 checks2568 frames/independent peg angles, original16 bodies exact;
+  80 native preview captures and first-hook19 encoded frames are agent-viewed.
+  Ordinary fast3 owns0 (4353/428) on held2638/120690519B; failed clipping/EEXIST/type/
+  formatter/type-import lint retained. Owned native1/session20684 is RUNNING at
+  /private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ: first-hook1174 native/decoded-frame
+  exact repeat prefix is qualified; finish8 exports/full audit before final claims.
+  Hidden cloth/first closed-jaw label and natural-speed/force limits remain explicit.
   Next: improve genuine camera/contact-label/continuous presentation,
   whole application/source/world/result/replay/physical/driver admission, current
   full/final archive/installed/pack/validated10-question coverage/MS2 PR before MS3.
   No paid generation, merge/publication, Actions or private media redistribution.
+  [Spoken presentation](./mechanism-shorts-ms2-spoken-presentation-results.json),
   [E06 primary source](./mechanism-shorts-ms2-e06-primary-admission-results.json),
   [Genuine cues](./mechanism-shorts-ms2-genuine-spoken-cue-results.json),
   [Live cache/leases](./mechanism-shorts-ms2-cue-cache-lifetime-results.json),
@@ -250,6 +261,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — MS2 spoken presentation checkpoint; full exports still running
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `09e3ddff`.
+- **Scope:** Existing four whole takes/20 windows; named cameras and visible anchors,
+  with one diagnosed peg held-interpolation timing repair through public CAS.
+- **Results:** Exact original16 bodies; preflight4/80 native preview captures,
+  ordinary fast3 owns0 (4353/428, held2638 inputs). First-hook19 encoded samples
+  show preserved.18-unit motion/projected11.635px and exposed face labels.
+- **Rejected:** Source clip-plane mismatch, existing compiled-directory overwrite,
+  unsafe operation union and draft format/type-import lint; all retained.
+- **In flight:** Owned native-export1/session20684 at private `9gvrGQ` root;
+  first-hook1174-frame exact repeated prefix, full8/final audit still pending.
+- **Next:** Finish owned export/full independent audit/encoded review. Full102,
+  final installed/archive/pack/coverage/MS2 PR and human/portrait gates remain open.
+- **Records:** [Presentation](./mechanism-shorts-ms2-spoken-presentation-results.json),
+  [Plan](./mechanism-shorts-production-plan.md). No spend, Actions or publication.
 
 ### 2026-10-12 — MS2 E06 official primary-source access supplement
 
