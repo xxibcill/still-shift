@@ -55,8 +55,10 @@ still hold before relying on them.
   all3 items fail at state lint without prepared native sources; root iGZHNG and
   exact source hold retained. Loader repair passes scoped actual180 samples/3
   families and rederivation/foreign-lease cleanup. Gate4 passes77 owning checks,
-  build/lint/schema/boundaries/declarations. Fresh current complete tiers and
-  a fresh committed-source native run follow; earlier fast proofs stay separate. Evidence6 source6615
+  build/lint/schema/boundaries/declarations. Repaired787d passes complete4440-unit
+  fast with2691 inputs/121316935B held. Native attempt2 is running/session92659,
+  qa7-browser2 prefix/root TVn7h4: re-poll this live handle, no terminal pass claimed.
+  Independent audit and complete runtime follow; earlier passes remain separate. Evidence6 source6615
   separately retains4 outputs/240 frames/108 images/188 pins, exact local tiers and
   the additional60-frame/27-image/46-pin camera-cut proof, with failed attempts.
   Original scope remains: broader faults/analytic/continuous collision/reviews;
@@ -265,8 +267,9 @@ still hold before relying on them.
 - **Results:** separate retained-capture scope passes180 samples/3 families,
   seeded cable failure, fresh rederivation and foreign-lease/parent cleanup.
   Owning gate4 passes77 controls/build/lint/schema/boundaries/declarations;
-  fresh committed-source whole native and complete local
-  tiers remain required. No pilot/human acceptance or uninterrupted pass claimed.
+  repaired787d passes complete4440-unit fast; native attempt2/session92659 is live
+  at root TVn7h4. Its independent audit and complete runtime remain required.
+  No pilot/human acceptance or uninterrupted pass claimed.
 - **Records:** [QA evidence](./mechanism-shorts-ms3-qa-results.json). Original
   broader faults/repairs, ten questions/five assets/two behaviors/genuine inputs/
   reviews/final gates remain. No spending, Actions, merge or publication.

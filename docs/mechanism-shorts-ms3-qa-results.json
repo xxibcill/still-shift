@@ -5,7 +5,7 @@
   "branch": "codex/mechanism-ms3",
   "baseCommit": "2e0dd3eb20cdda4cc772d308a90d05e898320ef0",
   "pullRequest": "https://github.com/xxibcill/still-shift/pull/58",
-  "status": "actual-native-first-attempt-failed-loader-repair-scoped-verified",
+  "status": "loader-repair-complete-fast-verified-native-attempt2-running",
   "sourceSnapshot": [
     {
       "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-qa-contract.ts",
@@ -385,6 +385,21 @@
       "path": "/private/tmp/still-shift-ms3-qa7-gate4-receipt.json",
       "bytes": 2938,
       "sha256": "sha256:d10e6fdf3f991e72c3a9260e49a145e2440657a64a4d5d4c401e49a9fe58445e"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-fast3.log",
+      "bytes": 43563,
+      "sha256": "sha256:5f44d57caf77315b639c870fe4a4055b2f89a37bd3b4aa92adb06089d67952fe"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-fast3-receipt.json",
+      "bytes": 361,
+      "sha256": "sha256:69127935e44d97b403cbcb16cf73b519b0bc456695cedd2cca6850a82dc7b743"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-fast3-inputs.json",
+      "bytes": 459374,
+      "sha256": "sha256:5890740692ab571a62e74ce685793743750d5a46f39a57674ac0439b89682dc4"
     }
   ],
   "nativeOwningControls": [
@@ -395,7 +410,7 @@
     "Current bundle/handoff facts refs and original failed products remain visible."
   ],
   "remaining": [
-    "Actual source-held native controls, independent data/frame audits, and complete fast/runtime tiers.",
+    "Native attempt2/session92659 and independent QA/frame audit; complete current runtime tier follows. Current complete fast is verified on787d.",
     "Broader mechanical/visual/audio fault suite, analytic/sampled/continuous collision work and actual whole reviews.",
     "Real native interruption/cancel/corrupt/relocation, scoped/affected repair and automatic MS1 overlap.",
     "Original ten frozen questions/five new assets/two behaviors/genuine inputs/factual/design/visual/listening evidence; broader capabilities and final full/archive/installed/MS3 PR completion."
@@ -503,24 +518,23 @@
     "scopedControls": 77,
     "currentCompleteFastAndNative": "Current complete fast passed; actual native proof running"
   },
-  "committedSource": "6bcba8a495e1f0f37d2547042ab85ec190cfcecd",
+  "committedSource": "787d96e81ff54dbc922117939c21d14294f150d6",
   "completeFast": {
     "status": "passed",
     "command": "pnpm check:fast",
-    "sourceCommit": "6bcba8a495e1f0f37d2547042ab85ec190cfcecd",
-    "startedUtc": "2026-10-12T23:13:07.378865+00:00",
-    "pid": 54878,
-    "inventory": "/private/tmp/still-shift-ms3-qa7-fast2-inputs.json",
+    "sourceCommit": "787d96e81ff54dbc922117939c21d14294f150d6",
+    "startedUtc": "2026-10-12T23:26:54.220436+00:00",
+    "pid": 78396,
+    "inventory": "/private/tmp/still-shift-ms3-qa7-fast3-inputs.json",
     "actualExitCode": 0,
     "sourceHoldCheckExitCode": 0,
-    "endedUtc": "2026-10-12T23:15:30.244611+00:00",
-    "session": 93064,
+    "endedUtc": "2026-10-12T23:29:10.744701+00:00",
+    "session": 46954,
     "unitTests": 4440,
     "unitFiles": 437,
-    "unitSeconds": 74.04,
+    "unitSeconds": 70.6,
     "heldInputFiles": 2691,
-    "heldInputBytes": 121316579,
-    "qualification": "Exact6bcba8a4 before the native-source preparation repair; refresh on the repaired source"
+    "heldInputBytes": 121316935
   },
   "nativeAttempts": [
     {
@@ -591,7 +605,7 @@
       ],
       "qualification": "Current loader repair on retained failed-run renders/captures, plus actual rederivation and scoped memory cleanup. Separate original6bc render binding; no current whole executor, pilot or human acceptance."
     },
-    "owningPreflight": "gate4 actual0:77 controls/build/lint/schema/boundaries/declarations pass; fresh committed-source whole native and complete tiers next"
+    "owningPreflight": "gate4 actual0/77 controls; complete fast actual0 on787d; fresh native attempt2 running"
   },
   "priorProgramPreflight": {
     "status": "passed",
@@ -670,5 +684,39 @@
     "session": 66676,
     "focusedTests": 77,
     "files": 8
+  },
+  "priorProgramCompleteFast": {
+    "status": "passed",
+    "command": "pnpm check:fast",
+    "sourceCommit": "6bcba8a495e1f0f37d2547042ab85ec190cfcecd",
+    "startedUtc": "2026-10-12T23:13:07.378865+00:00",
+    "pid": 54878,
+    "inventory": "/private/tmp/still-shift-ms3-qa7-fast2-inputs.json",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-12T23:15:30.244611+00:00",
+    "session": 93064,
+    "unitTests": 4440,
+    "unitFiles": 437,
+    "unitSeconds": 74.04,
+    "heldInputFiles": 2691,
+    "heldInputBytes": 121316579,
+    "qualification": "Exact6bcba8a4 before the native-source preparation repair; refresh on the repaired source"
+  },
+  "runningVerification": {
+    "status": "running",
+    "command": "pnpm test:browser:mechanism-production-native",
+    "sourceCommit": "787d96e81ff54dbc922117939c21d14294f150d6",
+    "startedUtc": "2026-10-12T23:29:41.183381+00:00",
+    "pid": 82642,
+    "inventory": "/private/tmp/still-shift-ms3-qa7-browser2-inputs.json",
+    "actualExitCode": null,
+    "session": 92659,
+    "root": "/private/tmp/still-shift-ms3-production-native-TVn7h4",
+    "receipt": "/private/tmp/still-shift-ms3-qa7-browser2-receipt.json",
+    "log": "/private/tmp/still-shift-ms3-qa7-browser2.log",
+    "heldInputFiles": 2691,
+    "heldInputBytes": 121316935,
+    "lastToolObservation": "Session92659 confirmed live after launch on the committed loader repair. Re-poll this handle; no current native terminal pass claimed."
   }
 }

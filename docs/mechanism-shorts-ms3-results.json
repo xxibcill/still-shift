@@ -388,19 +388,19 @@
     },
     {
       "id": "operational-qa7",
-      "status": "actual-native-first-attempt-failed-loader-repair-scoped-verified",
+      "status": "loader-repair-complete-fast-verified-native-attempt2-running",
       "record": "docs/mechanism-shorts-ms3-qa-results.json",
       "focusedTests": 77,
       "qualification": "Three native queue items fail without prepared native sources in state lint. Retained-capture loader repair succeeds; fresh committed-source native/current-tier verification pending.",
       "historyRepair": "Immutable original program retention implemented; latest native/local-tier proof pending",
       "completeFast": {
-        "sourceCommit": "6bcba8a495e1f0f37d2547042ab85ec190cfcecd",
+        "sourceCommit": "787d96e81ff54dbc922117939c21d14294f150d6",
         "unitTests": 4440,
         "heldInputFiles": 2691,
         "actualExitCode": 0,
         "sourceHoldCheckExitCode": 0
       },
-      "currentNativeProof": "attempt1 failed at operational-qa; loader repair scoped verified"
+      "currentNativeProof": "attempt1 failed, retained; attempt2 running session92659/root TVn7h4"
     }
   ],
   "targets": {
