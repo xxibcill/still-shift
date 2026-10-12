@@ -86,9 +86,9 @@ still hold before relying on them.
   Preflight4 checks2568 frames/independent peg angles, original16 bodies exact;
   80 native preview captures and first-hook19 encoded frames are agent-viewed.
   Ordinary fast3 owns0 (4353/428) on held2638/120690519B; failed clipping/EEXIST/type/
-  formatter/type-import lint retained. Owned native1/session20684 is RUNNING at
-  /private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ: first-hook1174 native/decoded-frame
-  exact repeat prefix is qualified; finish8 exports/full audit before final claims.
+  formatter/type-import lint retained. Owned native1/session20684 now has recovered terminal0 at
+  /private/tmp/still-shift-ms2-spoken-inputs-9gvrGQ: all8 exports/5136 native and
+  decoded frames complete; independent audit/remaining encoded review are pending.
   Hidden cloth/first closed-jaw label and natural-speed/force limits remain explicit.
   Next: improve genuine camera/contact-label/continuous presentation,
   whole application/source/world/result/replay/physical/driver admission, current
@@ -262,9 +262,10 @@ still hold before relying on them.
 
 ## Entries
 
-### 2026-10-12 — MS2 spoken presentation checkpoint; full exports still running
+### 2026-10-12 — MS2 spoken presentation checkpoint and new-chat handoff
 
 - **Agent / branch:** Codex on `codex/mechanism-ms2`, from `09e3ddff`.
+- **Done:** `75e7c23d` commits the tested presentation/timing changes.
 - **Scope:** Existing four whole takes/20 windows; named cameras and visible anchors,
   with one diagnosed peg held-interpolation timing repair through public CAS.
 - **Results:** Exact original16 bodies; preflight4/80 native preview captures,
@@ -272,8 +273,10 @@ still hold before relying on them.
   show preserved.18-unit motion/projected11.635px and exposed face labels.
 - **Rejected:** Source clip-plane mismatch, existing compiled-directory overwrite,
   unsafe operation union and draft format/type-import lint; all retained.
-- **In flight:** Owned native-export1/session20684 at private `9gvrGQ` root;
-  first-hook1174-frame exact repeated prefix, full8/final audit still pending.
+- **Handoff:** Native-export1/session20684 terminal0 recovered; run reports passed,
+  all8 exports/5136 native and decoded frames. Independent audit/encoded review
+  remain pending; the results record deliberately retains staged/in-flight status.
+  Owner requested a new chat with the same goal; resume from this checkpoint.
 - **Next:** Finish owned export/full independent audit/encoded review. Full102,
   final installed/archive/pack/coverage/MS2 PR and human/portrait gates remain open.
 - **Records:** [Presentation](./mechanism-shorts-ms2-spoken-presentation-results.json),
