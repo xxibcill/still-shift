@@ -368,7 +368,7 @@
       "record": "docs/mechanism-shorts-ms3-evidence-results.json",
       "focusedTests": 57,
       "scopedImages": 81,
-      "qualification": "Actual three-family native queue/API/report/separate CLI handoff, independent strict image/projection/full-decode/PCM checks and complete held fast/runtime tiers passed in retained stages. These engineering proofs do not supply actual changed-camera cut coverage, whole glyph/mechanical/continuous/listening/factual/human review, final full/archive/installed verification or pilot acceptance.",
+      "qualification": "Actual three-family native queue/API/report/separate CLI handoff, independent strict image/projection/full-decode/PCM checks and complete held fast/runtime tiers passed in retained stages. A separate authored camera-cut fixture adds60 actual frames/27 images with independent before/after pixels and hashed native matrices. These engineering proofs do not supply whole glyph/mechanical/continuous/listening/factual/human review, final full/archive/installed verification or pilot acceptance.",
       "outputs": 4,
       "decodedFrames": 240,
       "images": 108,
@@ -376,7 +376,15 @@
       "unitTests": 4431,
       "runtimeTests": 247,
       "integrationTests": 322,
-      "depthTests": 14
+      "depthTests": 14,
+      "actualCameraCut": {
+        "decodedFrames": 60,
+        "images": 27,
+        "cutFrames": [14, 15],
+        "independentPins": 46,
+        "actualExitCode": 0,
+        "qualification": "Single two-second engineering tape cut. This verifies actual cut extraction and observed camera choice, not pilot distinctness or physical/glyph/factual/listening/human acceptance."
+      }
     }
   ],
   "targets": {
@@ -406,7 +414,7 @@
   "remaining": [
     "Actual native interruption/cancellation/corrupt-cache/recovery/relocation proof and remaining worker/managed integration; implemented native executor/dependency/code-profile/cache/full-decode proof is retained separately.",
     "Integrate the implemented registered scalar assertions, located MS2 timeline results and grouped raw warnings into durable artifact-bound technical/mechanical/sampled/continuous/listening QA; analytic/continuous collision, broader fault suite and actual reviews remain open.",
-    "Actual changed-camera cut and ten-pilot review artifacts; scoped/stale repairs/affected rerender and automatic MS1 overlap recovery preserving plates. Three-family evidence derivation and fresh-session handoff are verified separately.",
+    "Original ten-pilot review artifacts; scoped/stale repairs/affected rerender and automatic MS1 overlap recovery preserving plates. Three-family evidence derivation, actual camera-cut extraction and fresh-session handoff are verified separately.",
     "Original ten distinct question fixtures with actual factual/design/genuine speech/visual proof; five assets and two behaviors remain required and unadmitted.",
     "One actual bounded episode/cohort report command and generated production schema/limit agreement are verified. Broader import/preview/export capability reconciliation, actual pilot measurements, final full/archive/installed and MS3 PR remain.",
     "Retain candidate/owner reviews and finer Thai limits; no ElevenLabs spend without explicit project/batch/model/voice/takes/credits approval."

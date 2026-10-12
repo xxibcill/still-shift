@@ -51,8 +51,10 @@ still hold before relying on them.
   failed on YUV-before-RGBA resizing, corrected audit passes with strict equality.
   Complete fast/runtime tiers pass on prose-onlyfab32e29 with all2683 inputs/
   121225370B exactly matching6615. Scoped gate's lint failure is also retained.
-  Semantic/warning operational integration is next. Actual changed-camera cuts,
-  native fault/relocation proofs, scoped repair/MS1 overlap, all ten frozen questions/
+  Separate actual camera-cut proof passes60 frames/27 images, independently
+  checking frames14/15, authored positions and hashed native matrices/46 pins.
+  Semantic/warning operational integration is next. Native fault/relocation proofs,
+  scoped repair/MS1 overlap, all ten frozen questions/
   five assets/two behaviors/genuine inputs/reviews, capability reconciliation and
   final full103/archive/installed/MS3 PR completion remain. Coverage0/10; targets
   unmeasured. No whole glyph/mechanical/continuous/listening/factual/human
@@ -259,9 +261,12 @@ still hold before relying on them.
   identical to the render source. Earlier scoped57 checks and forged/stale controls
   remain separate. First independent phone audit failed on its YUV resize order;
   corrected RGBA audit passes without weakening checks. Type-import lint failure retained.
+- **Additional proof:** a separate CAS-authored camera cut captures60 frames/27
+  images; independent46-pin audit matches before/after frames14/15 exactly and
+  verifies source camera positions against original native matrices. Inputs stay exact.
 - **Open / next:** operational semantic/grouped-warning QA, real native faults/
   relocation and scoped repair; original ten-question/five-asset/two-behavior pilot,
-  genuine inputs/reviews, changed-camera cuts and final gates remain unaccepted.
+  genuine inputs/reviews and final gates remain unaccepted.
 - **Records:** [evidence](./mechanism-shorts-ms3-evidence-results.json),
   [acceptance tracker](./mechanism-shorts-ms3-acceptance.md). No spending/publication/merge/Actions.
 

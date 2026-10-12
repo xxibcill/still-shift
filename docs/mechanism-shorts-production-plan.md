@@ -1187,7 +1187,7 @@ explanations, not ten recolors or camera substitutions of E01.
       Group inherited motion warnings by controlling rig, event and interval,
       retaining maximum measured change with units, affected child/part references,
       raw details and bad-frame links.
-- [ ] Generate phone-size overviews, shot entry/mid/exit images, contact/cut samples,
+- [x] Generate phone-size overviews, shot entry/mid/exit images, contact/cut samples,
       useful crops, full-decode/audio reports and compact fresh-session handoffs.
 - [ ] Exercise scoped repairs, stale-revision rejection and affected-shot rerendering.
       Prevent a changed asset from retaining a prior reviewed-ready state.

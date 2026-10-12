@@ -375,12 +375,12 @@
     }
   ],
   "remaining": [
-    "Actual changed-camera cut extraction and ten pilot artifact/review scope; engineering images and fresh CLI handoff are verified separately.",
+    "Original ten pilot evidence artifacts and reviews; engineering source-derived images, actual authored cut extraction and fresh CLI handoff are verified separately.",
     "Operational semantic/grouped-warning QA, analytic/sampled/continuous collision distinction and seeded broader mechanical/visual/audio fault suite.",
     "Actual native interruption/cancel/corrupt/relocation, scoped/affected repair and automatic MS1 overlap.",
     "Original ten questions/five assets/two behaviors/genuine inputs/factual/design/visual/listening review, broader capabilities and final full/archive/installed/MS3 PR completion."
   ],
-  "qualification": "Actual three-family native queue/API/report/separate CLI handoff, independent strict image/projection/full-decode/PCM checks and complete held fast/runtime tiers passed in retained stages. These engineering proofs do not supply actual changed-camera cut coverage, whole glyph/mechanical/continuous/listening/factual/human review, final full/archive/installed verification or pilot acceptance.",
+  "qualification": "Actual three-family native queue/API/report/separate CLI handoff, independent strict image/projection/full-decode/PCM checks and complete held fast/runtime tiers passed in retained stages. A separate authored camera-cut fixture adds60 actual frames/27 images with independent before/after pixels and hashed native matrices. These engineering proofs do not supply whole glyph/mechanical/continuous/listening/factual/human review, final full/archive/installed verification or pilot acceptance.",
   "committedSource": "6615b02b8b6646ae52d2a009c3dcf46f8bc72e06",
   "integratedNativeProof": {
     "status": "passed",
@@ -422,7 +422,7 @@
       "images": 27,
       "cropExceptions": 0
     },
-    "qualification": "Three short engineering fixtures and one caption revision; actual authored changed-camera cut extraction and ten pilot products remain pending. PCM is engineering input. No whole glyph/mechanical/continuous/listening/factual/human acceptance."
+    "qualification": "Three short engineering fixtures and one caption revision; ten pilot products remain pending. A separate actual changed-camera cut proof is retained under actualCameraCutProof. PCM is engineering input; no whole glyph/mechanical/continuous/listening/factual/human acceptance."
   },
   "independentAudit": {
     "status": "passed-in-two-attempts",
@@ -535,5 +535,86 @@
       "allThreeInventoriesEqual": true,
       "qualification": "The fab32e29 commit changes evidence prose only; all browser/runtime/fast runtime input bytes remain identical to6615b02b."
     }
+  },
+  "actualCameraCutProof": {
+    "status": "passed",
+    "command": "node --import tsx /private/tmp/still-shift-ms3-evidence6-cut1.mts",
+    "sourceCommit": "d6fcd22858166b29a8fba887cb1a95cc4fb82bd8",
+    "startedUtc": "2026-10-12T22:35:25.731535+00:00",
+    "pid": 95199,
+    "inventory": "/private/tmp/still-shift-ms3-evidence6-cut1-inputs.json",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-12T22:38:36.276233+00:00",
+    "session": 47264,
+    "auditSession": 16071,
+    "auditActualExitCode": 0,
+    "root": "/private/tmp/still-shift-ms3-evidence6-cut-AtkcBk",
+    "fixture": "Single two-second engineering tape-hook source with a CAS-authored camera cut at sourceSample24000/outputFrame15",
+    "cutFrames": [14, 15],
+    "decodedFrames": 60,
+    "images": 27,
+    "freshNativeSubmissions": 60,
+    "independentPins": 46,
+    "methods": [
+      "independent bounded final-video RGBA decoding",
+      "exact before/after frame PNG bytes",
+      "actual hashed native observation camera matrices and source camera positions",
+      "Python byte-sliced crops and normalized-RGBA phone transforms"
+    ],
+    "sourceBinding": {
+      "heldInputFiles": 2683,
+      "heldInputBytes": 121225370,
+      "exactRuntimeInputMatchTo6615b02bAndLocalTiers": true,
+      "qualification": "d6fcd228 changes evidence records only; cut fixture and audit are retained separate private scripts. No software source changed."
+    },
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-evidence6-cut1.mts",
+        "bytes": 5318,
+        "sha256": "sha256:a9ff60ec613f586190edd12e7940affa8af4d2b7951613c87edbd0a56ca3d7c5"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-evidence6-cut1.py",
+        "bytes": 1440,
+        "sha256": "sha256:b2284f392dd3802b5ec1efe20298e5300059afc1800233ac89bf3b0670b6028c"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-evidence6-cut1.json",
+        "bytes": 18551,
+        "sha256": "sha256:e5504300eb06d15c2e8dc26872e3d7066e3dcae7d286a87eaf7ca1598211301f"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-evidence6-cut1.log",
+        "bytes": 1043,
+        "sha256": "sha256:2736857b1a3dc2f5c1d178904200c7202f95f7badf34eb996e5532617a5f8898"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-evidence6-cut1-receipt.json",
+        "bytes": 416,
+        "sha256": "sha256:af0a3d30cb9dfc26bf14a0fd5cebb4c3416b81dd0caa2aa8b2b630beb06c830d"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-evidence6-cut1-inputs.json",
+        "bytes": 457945,
+        "sha256": "sha256:496a2ee6c22fcad2615f98f5919b70d4430cd94919d563cfbecb41d19c9b9c5a"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-evidence6-cut1-audit.py",
+        "bytes": 6057,
+        "sha256": "sha256:62dda247cff89fb2617c4405a227a9e51e253790e9b5a6057a046d63ee38249a"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-evidence6-cut1-audit.json",
+        "bytes": 23319,
+        "sha256": "sha256:9d1fc5aeb5615ef57e1823b7aa8cc7705710713ae717d0956a775c5a8bc87b14"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-evidence6-cut1-audit.log",
+        "bytes": 84,
+        "sha256": "sha256:3f0d95743747526adbf85ba647d26ac88a002930f8ddd7df9f9ecf94ce9abbfa"
+      }
+    ],
+    "qualification": "Single two-second engineering tape cut. This verifies actual cut extraction and observed camera choice, not pilot distinctness or physical/glyph/factual/listening/human acceptance."
   }
 }
