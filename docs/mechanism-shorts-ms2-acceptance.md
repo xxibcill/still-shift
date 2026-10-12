@@ -8,11 +8,12 @@ candidate packs, or close outstanding review dimensions.
 
 The current fresh full gate is `final70-full1`, owning session32036, on2,644
 held source inputs/120,860,793 bytes at `963d3991`. It remains live; unit4,363,
-runtime243 and integration322 tests pass, and an owned snapshot reaches group81
-(family defaults), after commerce127 items/28,200 frames pass. Existing
+runtime243 and integration322 tests pass, and an owned snapshot reaches group88
+(narrated cycles), after commerce127 items/28,200 frames pass. Existing
 Cinematic15 fixtures/46 backend-variant rows/5,520 frames also qualify, with
-zero pixel failures/errors and18 WebGL timing deferrals recorded separately. Full102,176 frozen items/36,061 frames and the benchmark
-remain unfinished. [Full-gate history](./mechanism-shorts-ms2-full-gate-results.json)
+zero pixel failures/errors and18 WebGL timing deferrals recorded separately. All176 frozen items/36,061 frames pass in262.12s, independently reconciled
+against176 actual ok rows and the following script header. Remaining full102
+mechanism suffix and benchmark stay unfinished. [Full-gate history](./mechanism-shorts-ms2-full-gate-results.json)
 retains full51's stopped exit130 and full67's actual runtime exit1. Slice67
 repairs that ordinary Node syntax defect; slice69's final fast5 and current
 owning runtime/native/parent stages pass under the unchanged quotas. The private

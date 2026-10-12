@@ -515,11 +515,11 @@
       ],
       "qualification": "Fresh complete gate after committed slices67\u201369. Fast/focused/native/normal-parent proofs are separate prerequisite stages; await actual outer terminal, exact chain reconciliation/frozen/benchmark measurements and final source hold.",
       "latestLiveSnapshot": {
-        "path": "/private/tmp/still-shift-ms2-final70-progress7.json",
-        "bytes": 3928,
-        "sha256": "sha256:b8f59858746ecf68c3e1a8d3585981eefa17a4c992f513706609b6e6dfa29a46"
+        "path": "/private/tmp/still-shift-ms2-final70-progress8.json",
+        "bytes": 4164,
+        "sha256": "sha256:8c4e8955fef1ee2ad648d12a1f9f7a87c5ebfd5a5ada82143e71687e58a00683"
       },
-      "latestSnapshotQualification": "Owned process live at family-defaults/group81, preceding80 sequential scripts exit0. Legacy7 inventory fixtures/26 backend-variant rows/3552 frames reconcile with zero pixel failures/errors and1 existing WebGL timing deferral. Held2644/120860793B exact. Partial only; no full/frozen/benchmark/installed completion.",
+      "latestSnapshotQualification": "Owned session live at narrated-cycles/group88; preceding87 sequential scripts exit0. Independently reconcile all176 frozen ok rows/36061 frames/262.12s and later script header. Tape/primitives/tie-peg pack scripts complete; remaining suffix/benchmark/installed acceptance remains unproven on unchanged2644/120860793B.",
       "priorLiveSnapshots": [
         {
           "path": "/private/tmp/still-shift-ms2-final70-progress5.json",
@@ -530,8 +530,19 @@
           "path": "/private/tmp/still-shift-ms2-final70-progress6.json",
           "bytes": 3707,
           "sha256": "sha256:9afafb5b191c9eab43bc6aa36cfa8c4f86b238f4cdd109b076d16fa30536fd82"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-final70-progress7.json",
+          "bytes": 3928,
+          "sha256": "sha256:b8f59858746ecf68c3e1a8d3585981eefa17a4c992f513706609b6e6dfa29a46"
         }
-      ]
+      ],
+      "frozenCompletion": {
+        "items": 176,
+        "frames": 36061,
+        "seconds": 262.12,
+        "matchedRows": 176
+      }
     }
   ],
   "remaining": [
