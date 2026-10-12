@@ -16468,6 +16468,17 @@
       "normalParentFrames": 56,
       "normalParentPasses": 134,
       "independentNormalParentPins": 25
+    },
+    {
+      "id": "final70-full1",
+      "status": "in-flight",
+      "owningSession": 32036,
+      "actualExitCode": null,
+      "sourceCommit": "963d3991e81f8dc03546471fafbef532d1d0aa1a",
+      "requiredGroups": 102,
+      "frozenItems": 176,
+      "frozenFrames": 36061,
+      "record": "docs/mechanism-shorts-ms2-full-gate-results.json"
     }
   ],
   "implementation": {
@@ -18789,6 +18800,7 @@
     "Prior native execution/archive identities and 0.1.1 publication records remain unchanged; no new release or human acceptance."
   ],
   "remaining": [
+    "Fresh full70/session32036 runs pnpm check:all on committed963d3991/held2644 inputs. All102 groups/frozen176/36061/benchmark/current archive/installed/pack disposition and MS2 PR remain; prior failures/stopped attempts remain unchanged.",
     "Slice69 scoped browser catalogue/source1/2/3 allocation and preparation transaction lifetime complete in stages:final fast4363 units429files/26 owning controls/six current browser groups/five normal shared-parent exports56frames134passes/independent25 pins. Held2644 inputs remain exact. Fresh full102/frozen/benchmark/current archive/installed/pack disposition/MS2 PR remain; driver/physical and human limits are explicit.",
     "Slice66 scoped code/fast/native/audit/selected final-frame review complete:8 exports/5136 native-decoded frames/64 pins/79 viewed samples. Source held2638 inputs unchanged. Reconcile finite acceptance, current full102/frozen/benchmark/final archive/installed/pack admission/MS2 PR; no human/portrait/pilot acceptance.",
     "Slice64 completes scoped genuine spoken cue/native output evidence for four existing takes:247 words/20 windows/eight repeated outputs/5136 native and decoded frames; audit60 pins/41028 hierarchy pairs/5136 cameras and ordinary fast4353 units428files pass. Exact endpoint corrections authored, shorter revised hook recompiled. Private opt-in gate keeps full102 portable. Contact labels hidden under current occlusion policy and subtle wide-view hook travel remain visual issues; no human/portrait/pack/coverage acceptance. Whole resources/full102/frozen/benchmark/final archive/installed/pack/MS2 PR remain open. E06 primary-read supplement is ready separately; frozen selection unchanged."
