@@ -71,7 +71,10 @@ still hold before relying on them.
   `/private/tmp/still-shift-ms2-final-consumer-inputs71-f5qfdz02`; the consumer harness
   and bounded decoder auditor pass syntax only. Replay association/rejection controls
   and caption-only decoded audio/picture checks are prepared in private consumer71
-  scripts; the fresh package wrapper is also syntax-checked and preserves prior/new
+  scripts. Public registry/CLI parameter help, schema digest/range checks, bounded
+  reports/pagination and located unsupported-family diagnostics are prepared; the
+  later OS denial also covers the consumer source-rebuild copy. The fresh package
+  wrapper is syntax-checked and preserves prior/new
   receipts and exact verified archives. No installed execution is claimed. Final archive/source audit/installed execution and pack
   disposition precede MS2 PR. Full encoded glyph/continuous/listening/material/
   hardware/portrait/human acceptance remains unreviewed; finer Thai stays unadopted.
@@ -246,7 +249,7 @@ still hold before relying on them.
 - **Done:** reproduced successful preparation under a one-byte payload budget; admission now precedes schema clones. Initial eight quota/source/cleanup controls and owning catalogues24/3 pass; superseded fast3 passes4361 units/429 files with bounded327680B scanner and407+79 source closure.
 - **Retained:** initial missing fixture clocks, genuine red quota failure, identity-stale fast1 and superseded64KiB scanner fast2. Worker128MiB metadata/8GiB application and Node512MiB policies remain fixed; payload admission is not RSS certification.
 - **Final results:** phase rollback initially retains11520 payload/577344 metadata instead of foreign1024; corrected transaction ownership passes26 cases. Partial formatted edit/undefined-retained failures are retained. Final fast5 owns0:4363/429; browser2/session4692 owns0 for six groups; parent probe1/session5759 owns0 for5 exports/56frames/134passes, audit25 pins owns0. Held2644/120860793B remains exact.
-- **Next:** committed `963d3991`; fresh full70/session32036 runs102 groups/frozen176/36061/benchmark on held2644 inputs. Current archive/installed and pack disposition precede MS2 PR; stage-specific evidence and physical/driver/human limits remain. The latest owned snapshot confirms it remains live at group63; runtime243 and integration322 pass. Five portable consumer projects/29 input pins are staged, public replay/rejection harness and independent full-decoded frame/PCM caption-edit auditor syntax pass; the package-retention wrapper is syntax-checked; execution waits for the full gate. Acceptance handoff now names the live attempt and completed Node repair. No aggregate/installed completion is inferred.
+- **Next:** committed `963d3991`; fresh full70/session32036 runs102 groups/frozen176/36061/benchmark on held2644 inputs. Current archive/installed and pack disposition precede MS2 PR; stage-specific evidence and physical/driver/human limits remain. The latest owned snapshot confirms it remains live at group63; runtime243 and integration322 pass. Five portable consumer projects/29 input pins are staged, public replay/rejection harness and independent full-decoded frame/PCM caption-edit auditor syntax pass; the package-retention wrapper is syntax-checked; execution waits for the full gate. Acceptance handoff now names the live attempt and completed Node repair. Installed registry/CLI help/schema/bounded-report controls and source-rebuild denial are prepared and syntax-checked; actual execution remains pending. No aggregate/installed completion is inferred.
 - **Records:** [Catalogue admission](./mechanism-shorts-ms2-native-catalogue-admission-results.json), [acceptance](./mechanism-shorts-ms2-acceptance.md).
 
 ### 2026-10-12 — Deliver declared family thumbnail assets
