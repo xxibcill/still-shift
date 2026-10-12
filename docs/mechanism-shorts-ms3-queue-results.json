@@ -280,5 +280,10 @@
   ],
   "qualification": "All packs candidate; admitted assets/behaviors0, coverage0/10/pilot0. No ElevenLabs spending, human review, publication, merge or Actions.",
   "committedControllerSource": "da66f62046b67b0d2f5b2f5a093f109c4a7368d1",
-  "publicEntryRepairSource": "468797dad1ccdf7ab3e3b871f4dc6da1d9b42fdc"
+  "publicEntryRepairSource": "468797dad1ccdf7ab3e3b871f4dc6da1d9b42fdc",
+  "laterNativeExecutor": {
+    "record": "docs/mechanism-shorts-ms3-native-executor-results.json",
+    "commit": "efa5057440c1c95a7ac7aa263cc48f50d9a2c41b",
+    "qualification": "Original queue2 record remains scoped to its controller mechanics; subsequent native3 has actual capture/cache/dependency/full-decode evidence."
+  }
 }

@@ -604,5 +604,42 @@
     "Remaining whole mechanical fault suite, actual native interruption/cancel/corrupt/relocation, scoped repair/affected-shot render and automatic MS1 overlap path.",
     "All original ten pilot questions/five new assets/two behaviors/genuine inputs/factual/design/visual/listening review, capability/CLI and final gates/archive/installed/MS3 PR."
   ],
-  "qualification": "Scoped QA engineering layer and actual sample evidence only. No whole mechanical, collision, human, factual, listening, pilot acceptance or newly achieved production target."
+  "qualification": "Scoped QA engineering layer and actual sample evidence only. No whole mechanical, collision, human, factual, listening, pilot acceptance or newly achieved production target.",
+  "committedSource": "114f8df89d2d77aa6c2ae5af292fd2190b6bb8fc",
+  "fast1": {
+    "status": "passed",
+    "command": "pnpm check:fast",
+    "sourceCommit": "114f8df89d2d77aa6c2ae5af292fd2190b6bb8fc",
+    "startedUtc": "2026-10-12T20:44:15.067366+00:00",
+    "pid": 85158,
+    "inventory": "/private/tmp/still-shift-ms3-semantic4-inputs1.json",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-12T20:46:22.009136+00:00",
+    "id": "semantic4-fast1",
+    "session": 51338,
+    "unitTests": 4418,
+    "unitFiles": 434,
+    "unitDurationSeconds": 63.52,
+    "heldInputFiles": 2663,
+    "heldInputBytes": 121017359,
+    "pins": [
+      {
+        "path": "/private/tmp/still-shift-ms3-semantic4-fast1.log",
+        "bytes": 41652,
+        "sha256": "sha256:327aeb7d26e7d033f55e5ea5c41791c465517e40c0c981550ba75d323bc4e89c"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-semantic4-fast1-receipt.json",
+        "bytes": 362,
+        "sha256": "sha256:92420e53ff6228680e346a91fba03f4e12dfb0c6ec35064fdb748bfe14e70544"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-semantic4-inputs1.json",
+        "bytes": 454374,
+        "sha256": "sha256:4a4dc429bec60981399c7fc3551621c5b76c3f6721e3c7dd7fb2652df127ff1f"
+      }
+    ],
+    "qualification": "Complete fast tier on114f8df8. Scoped native/render and sample proofs keep their separate code/artifact bindings. All final full/archive/installed/pilot and human review gates remain open."
+  }
 }

@@ -52,7 +52,8 @@ still hold before relying on them.
   groups with exact raw peaks/units/children/bad frames. Final scoped gate passes
   21 tests/build/lint/boundaries/public declarations; real native capture reuse
   checks180 mount samples and3 separately seeded measurement controls with every
-  current dependency/product pin checked. Final slice fast tier is next. Fixture
+  current dependency/product pin checked. Complete fast1 on114f8df8 passes4418/434 in63.52s with2663 inputs/
+  121017359B exact. Fixture
   inheritance/schema failures, wrapper syntax and earlier staged proofs retained.
   No whole mechanical/continuous collision or human review inferred. Remaining:
   durable QA/warning/handoff integration, actual native faults/relocation, scoped
@@ -262,7 +263,9 @@ still hold before relying on them.
 - **Rejected:** Actual opacity fixtures used null inheritance, then an invalid
   nested group; corrected to the existing flat group/parent schema. Failed wrapper,
   both failed gates and earlier separate proof/code bindings remain retained.
-- **Open / next:** Fast tier, durable QA/warnings/handoff integration, original
+- **Fast checkpoint:**114f8df8 passes4418 units/434 files/63.52s with2663 inputs
+  and121017359B held exact; original staged verification remains visible.
+- **Open / next:** Durable QA/warnings/handoff integration, original
   analytic/continuous/fault/repair/CLI and complete pilot extension/review scope.
 - **Records:** [Semantic evidence](./mechanism-shorts-ms3-semantic-results.json),
   [API and limits](./mechanism-production-semantic.md),

@@ -3,8 +3,11 @@
 The public engine exports `MechanismProductionEpisodeReportSchema`,
 `MechanismProductionQASchema`, `createUnreviewedMechanismQA`,
 `inspectMechanismProductionDisposition` and `summarizeMechanismProductionCohort`.
-These are data validation and pure summary helpers. A durable controller exists with an injected executor; real renderer integration,
-report CLI, QA execution and positive pilot admission remain in development.
+These are data validation and pure summary helpers. The durable controller and
+real native executor now retain attempts and artifact-bound technical full-decode
+QA. [Registered semantic and warning helpers](./mechanism-production-semantic.md)
+have separate actual-sample proof. Their durable integration, report CLI, broader
+QA execution and positive pilot admission remain in development.
 
 An episode report names its question, family/design, input/output/code/profile
 hashes and output-frame/source-sample clocks. It retains contiguous original
@@ -21,7 +24,9 @@ complete intervals with the proper units. Sampled visual evidence retains its
 scoped method; it does not certify every encoded glyph or continuous frame.
 Mechanical failure counts prevent reviewed-ready state. Reviewer metadata is a
 recorded declaration, not automatic proof that a person listened or watched.
-The future I/O controller must validate actual artifact identities and execution.
+The queue controller validates actual artifact bytes and identities. Native
+execution supplies its current source/cache/output checks and complete decode;
+review declarations still require their own artifact-specific evidence.
 
 Cohort summaries retain individual rows, failures/repeated failures, review counts,
 selected versus attempted counts and measurement availability. Distinct IDs and
