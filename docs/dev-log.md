@@ -45,7 +45,7 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Sixty-one slices include the frozen ten-question board, expanded Thai review and
+  Sixty-two slices include the frozen ten-question board, expanded Thai review and
   recovered existing spoken inputs for all three families. Four audio hashes and
   thirteen supplied word-range/shot associations match. The shorter tape-hook take
   uses revised copy; the failed identical-script assumption is retained. Fresh48k source clocks for four supplied takes have since been measured locally;
@@ -151,9 +151,19 @@ still hold before relying on them.
   three-family style test preserves every assertion and5s per-family; tape keeps30s.
   One-worker full fast-tier2 passes4,348 units/427 files on held2,627 inputs/
   120,587,636B; no production/browser change after the owning render/audit.
-  The full matrix is100; no full100 pass claimed.
+  Slice62 exposes the versioned cue cache lifecycle at the existing engine root
+  and bounded CLI/discovery, with strict receipt schemas/types and a package guide.
+  Owned render1 verifies60 original captures/four API/CLI cached exports/240 image
+  calls and zero fresh native export submissions; label/gain edits preserve plates.
+  Current/stale/directory/pre-abort/flag controls pass. Independent audit1 checks
+  33 pins/60 PNG16 native transport identities/660 hierarchy pairs/60 camera triples/
+  240 decoded MP4 frames/four PCM streams; all10 sampled PNGs agent-viewed.
+  Fast-tier1 with one unit worker passes4,348 units/427 files; focused runtime22
+  tests/three files pass. Held2,631 inputs/120,619,011B unchanged. Root-red before
+  draws, unverified format2 and scratch hash-namespace audit failure are retained.
+  The full matrix is101; no full101 or installed consumer pass claimed.
   Coverage stays 0/10 validated; packs are candidates; accepted pilot episodes 0.
-  Next: public cache API/CLI and in-flight consumer checks; record fresh
+  Next: in-flight cache edits/cancellation and whole resources; record fresh
   genuine spoken cue/native exports; refresh the full gate,
   whole resources/final installed/pack admission and MS2 PR. MS3 not started.
   No human acceptance, merge/publication or paid generation.
@@ -326,6 +336,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — MS2 public native cue cache API and CLI
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `86258de3`.
+- **Done:** Four lifecycle methods plus strict receipt schemas/constants/types at
+  the engine root; CLI capture/reuse/current checks/discovery and package guide.
+- **Results:** Owned60-frame original capture, four actual API/CLI cached outputs,
+  zero fresh native export submissions;120 preview pairs/maxRGB1 at fixed2. Current
+  label/gain edit reuses plates; stale outputs reject. Independent33-pin/60 PNG/
+  660 hierarchy/60 camera/240 decoded-frame/four PCM audit passes;10 PNGs viewed.
+  Fast tier(one unit worker) passes4,348/427; focused runtime22/3;2,631 inputs unchanged.
+- **Rejected / do not repeat:** Missing public exports, ignored/ambiguous flags;
+  scratch prefixed/unprefixed hash mismatch. Unverified format2 retained.
+- **Open / next:** Live edits/cancellation/whole resources, genuine speech,
+  full101/frozen/benchmark/source/archive/installed/pack/MS2 PR; packs/pilot0.
+- **Records:** [Public cache evidence](./mechanism-shorts-ms2-public-cue-cache-results.json),
+  [API and CLI](./mechanism-cue-native-plates.md). No paid generation/human acceptance.
 
 ### 2026-10-12 — MS2 slice61: world and surface cache breadth
 

@@ -256,3 +256,15 @@ browser/export groups; it is included in `pnpm test`. Generic synthetic captions
 and a small ink count do not establish encoded glyph/copy/readability, genuine
 speech, factual or pilot acceptance. Whole resource/lifetime and final full-matrix
 verification remain separate gates.
+
+`pnpm test:browser:mechanism-cue-cache-cli` exercises the public engine entry and
+separate actual CLI processes: capture original native plates, render/check through
+both consumers, edit one visible bracket and sound gain, recompile and reuse the
+same plates. It requires measured zero fresh native export submissions, current
+receipt identity, stale output rejection, repeated whole encoded/decoded bodies
+and complete PCM, actual glyph bounds and fixed RGB2 preview parity. Native preview
+draws are counted separately. Protocol runtime controls cover strict schemas,
+pre-aborts and ignored/ambiguous flags before input reads. Run the browser group
+serially; it is included in `pnpm test`. Workspace consumer success does not prove
+final installed-package, live cancellation/in-flight edits, whole resource limits,
+genuine speech, encoded readability or human acceptance.

@@ -38,9 +38,15 @@ const file = z
     sha256: MechanismHashSchema,
   })
   .strict();
+export const MECHANISM_CUE_NATIVE_PLATES_VERSION =
+  "mechanism-cue-native-plates-1" as const;
+export interface MechanismCueNativePlateOptions {
+  readonly signal?: AbortSignal | undefined;
+  readonly nodeMemory?: CompositionNodeMemory;
+}
 export const MechanismCueNativePlatesSchema = z
   .object({
-    schemaVersion: z.literal("mechanism-cue-native-plates-1"),
+    schemaVersion: z.literal(MECHANISM_CUE_NATIVE_PLATES_VERSION),
     nativePictureSha256: MechanismHashSchema,
     originalCompilation: file,
     originalSource: file,
@@ -50,6 +56,9 @@ export const MechanismCueNativePlatesSchema = z
     sequence: CompositionSequenceAssetSchema,
   })
   .strict();
+export type MechanismCueNativePlates = z.infer<
+  typeof MechanismCueNativePlatesSchema
+>;
 const closure = z
   .object({
     version: z.literal("native-observation-closure-2"),
@@ -402,10 +411,7 @@ export async function prepareMechanismCueNativePlates(
   cuePath: string,
   preparedDirectory: string,
   outputDirectory: string,
-  options: {
-    signal?: AbortSignal | undefined;
-    nodeMemory?: CompositionNodeMemory;
-  } = {},
+  options: MechanismCueNativePlateOptions = {},
 ) {
   options.signal?.throwIfAborted();
   const owner = new CompositionNodeMemory(options.nodeMemory),
@@ -491,7 +497,7 @@ export async function prepareMechanismCueNativePlates(
     if (!output)
       failure("sequence", "Native capture omitted numbered PNG sequence facts");
     const receipt = MechanismCueNativePlatesSchema.parse({
-      schemaVersion: "mechanism-cue-native-plates-1",
+      schemaVersion: MECHANISM_CUE_NATIVE_PLATES_VERSION,
       nativePictureSha256: current.sha256,
       originalCompilation,
       originalSource,
@@ -544,10 +550,7 @@ export async function checkMechanismCueNativePlates(
   cuePath: string,
   preparedDirectory: string,
   platesDirectory: string,
-  options: {
-    signal?: AbortSignal | undefined;
-    nodeMemory?: CompositionNodeMemory;
-  } = {},
+  options: MechanismCueNativePlateOptions = {},
 ) {
   options.signal?.throwIfAborted();
   const directory = resolve(platesDirectory),

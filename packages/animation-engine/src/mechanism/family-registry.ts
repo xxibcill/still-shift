@@ -1,3 +1,5 @@
+import { MechanismCueNativePlatesSchema } from "./cue-native-plates.ts";
+import { MechanismCuePlateExportSchema } from "./cue-plate-lifecycle.ts";
 import { TextWeightTreatmentReportSchema } from "@still-shift/scene-contract";
 import { MechanismCueCompilationSchema } from "./cue-lifecycle.ts";
 import { MechanismCuePatchSchema } from "./cue-authoring.ts";
@@ -76,6 +78,8 @@ export const MechanismFamilyRegistrySelectionSchema = z
 export const mechanismFamilySchemas = {
   "text-weight-treatments": TextWeightTreatmentReportSchema,
   "cue-compilation": MechanismCueCompilationSchema,
+  "cue-native-plates": MechanismCueNativePlatesSchema,
+  "cue-plate-export": MechanismCuePlateExportSchema,
   "cue-patch": MechanismCuePatchSchema,
   "family-authoring": MechanismFamilyAuthoringSchema,
   "family-patch": MechanismFamilyPatchSchema,
@@ -147,6 +151,9 @@ export function inspectMechanismFamilyRegistry(
         "pack",
         "pack-timeline",
         "narrated-cycle",
+        "cue-compilation",
+        "cue-native-plates",
+        "cue-plate-export",
         "scene-2",
         "teaching-shape",
       ],

@@ -33,9 +33,14 @@ const file = z
     sha256: MechanismHashSchema,
   })
   .strict();
+export const MECHANISM_CUE_PLATE_EXPORT_VERSION =
+  "mechanism-cue-plate-export-1" as const;
+export interface MechanismCuePlateOptions {
+  readonly signal?: AbortSignal | undefined;
+}
 export const MechanismCuePlateExportSchema = z
   .object({
-    schemaVersion: z.literal("mechanism-cue-plate-export-1"),
+    schemaVersion: z.literal(MECHANISM_CUE_PLATE_EXPORT_VERSION),
     currentCompilation: file,
     currentSource: file,
     loweredSource: file,
@@ -47,6 +52,9 @@ export const MechanismCuePlateExportSchema = z
     output: file,
   })
   .strict();
+export type MechanismCuePlateExport = z.infer<
+  typeof MechanismCuePlateExportSchema
+>;
 const row = z
   .object({
     phase: z.string(),
@@ -614,7 +622,7 @@ export async function renderMechanismCuePlateProject(
   preparedDirectory: string,
   platesDirectory: string,
   outputDirectory: string,
-  options: { signal?: AbortSignal | undefined } = {},
+  options: MechanismCuePlateOptions = {},
 ) {
   const owner = new CompositionNodeMemory(),
     directory = resolve(outputDirectory);
@@ -660,7 +668,7 @@ export async function renderMechanismCuePlateProject(
       },
     });
     const receipt = MechanismCuePlateExportSchema.parse({
-      schemaVersion: "mechanism-cue-plate-export-1",
+      schemaVersion: MECHANISM_CUE_PLATE_EXPORT_VERSION,
       currentCompilation: value.currentCompilation,
       currentSource: value.currentSource,
       loweredSource: await cuePlateFile(loweredSourcePath, owner, {
@@ -703,7 +711,7 @@ export async function checkMechanismCuePlateOutput(
   preparedDirectory: string,
   platesDirectory: string,
   outputPath: string,
-  options: { signal?: AbortSignal | undefined } = {},
+  options: MechanismCuePlateOptions = {},
 ) {
   const owner = new CompositionNodeMemory(),
     actualPath = resolve(outputPath);

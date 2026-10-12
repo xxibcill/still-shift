@@ -1,0 +1,548 @@
+{
+  "version": "mechanism-shorts-ms2-public-cue-cache-results-1",
+  "date": "2026-10-12",
+  "branch": "codex/mechanism-ms2",
+  "baseCommit": "86258de38a17c92adf86391739e19c0951b9fa4c",
+  "status": "completed-public-engine-root-and-cli-consumer-staged-verification",
+  "implementation": {
+    "scope": "Existing engine root explicitly exports four capture/check/render/check functions, two strict versioned receipt schemas/constants and four inferred/options types. CLI cue prepare/render/check, bounded discovery and generated schema routes expose the same verified lifecycle. Installed entry is still-shift/engine; current real producer uses workspace @still-shift/animation-engine. Private partition/lowering modules remain internal.",
+    "wireVersions": [
+      "mechanism-cue-native-plates-1",
+      "mechanism-cue-plate-export-1"
+    ],
+    "cliContract": "Capture requires authoring cue/prepared-dir/plates-dir and rejects output-dir; cached rendering/checking use current compilation and original plates. Final-output selects cached-video check; otherwise checks current original plate compatibility. Ignored or noncue new flags reject before missing inputs are opened. Existing32KiB/100-item command receipts, one-worker WebGL2 and integer/key/source/Node limits are unchanged.",
+    "actualConsumer": "One admitted tape native2 picture at240x136/30fps/60frames with all five visible screen recipes. Actual CLI process captures60 original plates, engine-root API and CLI each export before and after CAS full contact-bracket replacement Pin to Here and sound gain-6. Captions remain engineering fixtures. Current native-preview draws are separate from the cached-export zero-native claim.",
+    "sourceChecks": "Current compiled family/cue receipts are required. Old API compilation and actual CLI old-compilation/old-output checks reject after editing; existing-directory API capture rejects without changing original receipt bytes. New current compilation reuses authenticated original native picture. In-flight edits remain a separate gate.",
+    "scopeLimits": "No source3 or arbitrary nested physical-controller expansion, limit increase, whole RSS/resource acceptance, installed archive pass, genuine speech, encoded glyph/readability or human acceptance."
+  },
+  "attempts": [
+    {
+      "id": "root-red1",
+      "actualExitCode": 1,
+      "session": null,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-publiccache62-root-red1.log",
+        "bytes": 801,
+        "sha256": "sha256:7e1e9f18c937b5917a06c6709944a525cfc93471d1acb8df2f3895811b6ba275"
+      },
+      "reason": "Actual public-root probe fails on absent exported capture function before any render or draw."
+    },
+    {
+      "id": "format1-schema1-build1",
+      "actualExitCode": 0,
+      "session": 79974,
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-publiccache62-format1.log",
+          "bytes": 377,
+          "sha256": "sha256:3e666279c3ce7edc9307bda02cccf6564a9aaf20756a7783af95839b395d5523"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-publiccache62-schema1.log",
+          "bytes": 653,
+          "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-publiccache62-build1.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        }
+      ],
+      "scope": "First API/CLI wiring formats, generates only two new strict receipt schemas and compiles."
+    },
+    {
+      "id": "format2",
+      "actualExitCode": null,
+      "session": null,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-publiccache62-format2.log",
+        "bytes": 105,
+        "sha256": "sha256:b9187b9078b04f02b71166c529fd9565269253ac9173624b580c5b17f7cf6a9b"
+      },
+      "scope": "Terminal is not preserved in this continuation; no pass inferred. Later owned formatting/build and final fast tier cover current files."
+    },
+    {
+      "id": "root-green1",
+      "actualExitCode": 0,
+      "session": 5749,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-publiccache62-root-green1.log",
+        "bytes": 194,
+        "sha256": "sha256:dd41e3975797fa1fca6f7b68a1fa82983b359ffd8b1483a17dd05f42b789f6f9"
+      },
+      "scope": "Actual four root methods, two version constants and strict schemas available; zero draws."
+    },
+    {
+      "id": "runtime1",
+      "actualExitCode": 0,
+      "session": 70931,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-publiccache62-runtime1.log",
+        "bytes": 838,
+        "sha256": "sha256:f1adfe16dde4875cc11f10aa332f3d30472624210f226296d5d483b74efd9a87"
+      },
+      "tests": 22,
+      "files": 3,
+      "scope": "New3 public protocol/runtime controls plus existing4 registry and15 real CLI controls. Existing final-layout render runs; no mocks."
+    },
+    {
+      "id": "format3-build2",
+      "actualExitCode": 0,
+      "session": 61382,
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-publiccache62-format3.log",
+          "bytes": 46,
+          "sha256": "sha256:00d303bd366403331f8d6a8dfbcce24222f252486ef19807a0266d01a01061a1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-publiccache62-build2.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        }
+      ],
+      "scope": "Initial real consumer script compiles."
+    },
+    {
+      "id": "format4-build3",
+      "actualExitCode": 0,
+      "session": 99625,
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-publiccache62-format4.log",
+          "bytes": 171,
+          "sha256": "sha256:08aba691e4c2b339e9c8c244de1ab274d34fc73fdc6ba529f8ca9c0fa57d1e3e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-publiccache62-build3.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        }
+      ],
+      "scope": "Current consumer registration, API/CLI and package guide compile."
+    },
+    {
+      "id": "guide-format1-render1",
+      "actualExitCode": 0,
+      "session": 43847,
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms2-publiccache62-guide-format1.log",
+          "bytes": 53,
+          "sha256": "sha256:c8006461f08a3a6784295636ac842c8ed7b10c1f1fbfcfce5282b76f5529cd25"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-publiccache62-render1.log",
+          "bytes": 175,
+          "sha256": "sha256:0e936c0bcc035b11b7fc84890e95a659de52a70ffeff81d06b13b63a0bba8671"
+        }
+      ],
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/run.json",
+        "bytes": 343585,
+        "sha256": "sha256:b7751e462af62811fbfff4bce5a2a6535824f56fdf3ee28f381f30a8fdd9cce1"
+      },
+      "scope": "Owned complete real public API/CLI capture/current/edit/reuse/stale consumer passes."
+    },
+    {
+      "id": "audit1",
+      "actualExitCode": 0,
+      "session": null,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-publiccache62-audit1.log",
+        "bytes": 141,
+        "sha256": "sha256:971b4026a332b0f4103a4527d01e9b530692bb80314b0fd66ce135b950e156e3"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-publiccache62-audit1.json",
+        "bytes": 8960,
+        "sha256": "sha256:66f82f9326c4fe57f4f24dc43f1d85f0d192ab4256281f805224c2b68d1d08f5"
+      },
+      "scope": "Owned direct independent audit terminal0;33 fact-pin checks/60 exact original PNG16 transport identities/660 hierarchy pairs/60 source-camera triples/240 actual MP4 decoded frames/four complete PCM streams."
+    },
+    {
+      "id": "fast1",
+      "actualExitCode": 0,
+      "session": 19001,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-publiccache62-fast1.log",
+        "bytes": 38452,
+        "sha256": "sha256:54136a14648e64db0b78eed4a87da5355001d5e3885722c2b56a99db063fc227"
+      },
+      "tests": 4348,
+      "files": 427,
+      "scope": "Complete fast tier serial unit variation: sequential schema/native appearance406 first-party79 external/boundary/format/lint/build and all4,348 units427files. Unit workers1 stays within existing4-worker ceiling; no ordinary check:fast/full101/runtime/integration/frozen/benchmark pass inferred."
+    },
+    {
+      "id": "source-check1",
+      "actualExitCode": 1,
+      "session": null,
+      "log": null,
+      "scope": "Scratch checker compares prefixed actual hash to unprefixed source inventory and incorrectly lists every file. No source mutation. Corrected check removes optional namespace and confirms all2,631 files unchanged; tool diagnostic retained, no separate log."
+    },
+    {
+      "id": "source-check2",
+      "actualExitCode": 0,
+      "session": null,
+      "log": null,
+      "scope": "Corrected direct source audit independently confirms all2,631 input files/120,619,011B unchanged."
+    }
+  ],
+  "final": {
+    "heldSourceInputs": {
+      "path": "/private/tmp/still-shift-ms2-publiccache62-inputs1.json",
+      "bytes": 448792,
+      "sha256": "sha256:b53c4888bbcf7419c372bd271d9c8997af19fac9245030e359fefea3fc04ece4",
+      "files": 2631,
+      "inputBytes": 120619011,
+      "unchangedThroughRenderAuditFastAndPrecommit": true
+    },
+    "fullMatrixGroups": 101,
+    "fullMatrixPassed": false,
+    "originalNativePlateReceipt": {
+      "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/plates/native-plates.json",
+      "bytes": 1985,
+      "sha256": "sha256:aefe85eedb9fe7a4af86a41a9469ec63138e374222e6429182967d54a82e11a8"
+    },
+    "originalNativePictureSha256": "sha256:929474fa283d5019b0797a1b9a802f07655168325e0712b8a14212e74b4ba520",
+    "originalNativeSequenceSha256": "sha256:bd0e6d63ed8caa7d3f3ece76929a9eeb4c12e2870a9d992c69dcb4e411ff4cee",
+    "originalNativeCheck": {
+      "schemaVersion": "mechanism-cue-native-plate-check-result-1",
+      "status": "passed",
+      "receiptPath": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/plates/native-plates.json",
+      "nativePictureSha256": "sha256:929474fa283d5019b0797a1b9a802f07655168325e0712b8a14212e74b4ba520",
+      "sequenceSha256": "sha256:bd0e6d63ed8caa7d3f3ece76929a9eeb4c12e2870a9d992c69dcb4e411ff4cee",
+      "originalNativeFrames": 60,
+      "originalNativePasses": 60,
+      "scope": "current-native-picture-and-original-capture-proof-no-new-native-observations"
+    },
+    "originalCliCheckCode": 0,
+    "stages": [
+      {
+        "stage": "before",
+        "currentCompilation": {
+          "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/compiled/cue-compilation.json",
+          "bytes": 758,
+          "sha256": "sha256:159b51322de3f4dfe4756eef4b419b4c394c17575850ac2e9433a84137f01855"
+        },
+        "outputs": [
+          {
+            "consumer": "public-engine-api",
+            "output": {
+              "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/before-api/output.mp4",
+              "bytes": 34131,
+              "sha256": "sha256:4c8fb3b6a43a1e54ce95e390ebc2b35f8476541ddee5a08041941996f1016f23"
+            },
+            "cachedReceipt": {
+              "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/before-api/output.mp4.cue-plate-export.json",
+              "bytes": 1870,
+              "sha256": "sha256:6881a5bc13a5d6236961be47a024dd912c62c6a470d916fae775405e7b2e92f6"
+            },
+            "freshNativeSubmissionCalls": 0,
+            "originalNativeFrames": 60,
+            "imageCalls": 60
+          },
+          {
+            "consumer": "actual-cli-process",
+            "output": {
+              "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/before-cli/output.mp4",
+              "bytes": 34131,
+              "sha256": "sha256:4c8fb3b6a43a1e54ce95e390ebc2b35f8476541ddee5a08041941996f1016f23"
+            },
+            "cachedReceipt": {
+              "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/before-cli/output.mp4.cue-plate-export.json",
+              "bytes": 1870,
+              "sha256": "sha256:f8dd33b6a243613f3d9062451d7fb5961e6ea672b513135050d633bc115f1645"
+            },
+            "freshNativeSubmissionCalls": 0,
+            "originalNativeFrames": 60,
+            "imageCalls": 60
+          }
+        ],
+        "apiCurrentCheck": {
+          "schemaVersion": "mechanism-cue-plate-check-result-1",
+          "status": "passed",
+          "outputPath": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/before-api/output.mp4",
+          "outputSha256": "sha256:4c8fb3b6a43a1e54ce95e390ebc2b35f8476541ddee5a08041941996f1016f23",
+          "nativePictureSha256": "sha256:929474fa283d5019b0797a1b9a802f07655168325e0712b8a14212e74b4ba520",
+          "sequenceSha256": "sha256:bd0e6d63ed8caa7d3f3ece76929a9eeb4c12e2870a9d992c69dcb4e411ff4cee",
+          "freshNativeSubmissionCalls": 0,
+          "originalNativeFrames": 60,
+          "originalNativePasses": 60,
+          "reusedPlateFrames": 60,
+          "video": {
+            "width": 240,
+            "height": 136,
+            "nb_read_frames": "60",
+            "avg_frame_rate": "30/1"
+          },
+          "scope": "current-overlays-final-video-and-measured-zero-new-native-submissions-with-original-capture-proof",
+          "remainingQa": "Visual, listening, whole resource and pilot acceptance remain separate gates."
+        },
+        "cliCheckCode": 0,
+        "nativeReceiptBytesUnchanged": true,
+        "repeatedWholeEncodedBodiesDecodedFramesAndCompletePcmEqual": true,
+        "decodedPcm": {
+          "sha256": "sha256:d95e7ff30b5b4bdfc067ad3f70c071e59a7ce1f01e496d6bf25c9dd074fd45f6",
+          "bytes": 770048
+        },
+        "previewFramePairs": 60,
+        "cachedPreviewDraws": 180,
+        "extraCachedSeekFrames": 120,
+        "maximumPreviewRgbDifference": 1,
+        "fixedPreviewRgbTolerance": 2,
+        "sampledPngs": [
+          {
+            "frame": 0,
+            "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/before-frame-0.png",
+            "sha256": "sha256:fcfe87b9e234a06e3c7092df19f24fe4a550203aafd139fe11b4c7653cdf8ddb"
+          },
+          {
+            "frame": 15,
+            "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/before-frame-15.png",
+            "sha256": "sha256:ad3679796bbf2e3b1ad793ae904154149cf75270743e04775881b401671b6203"
+          },
+          {
+            "frame": 30,
+            "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/before-frame-30.png",
+            "sha256": "sha256:6af0181e75429662ce003419b0bbfebe3811080adaa05b93657d13902431a32c"
+          },
+          {
+            "frame": 45,
+            "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/before-frame-45.png",
+            "sha256": "sha256:6e41db5eb110d374f3ee9c12c926059ca825834a020efe275d0b9cdf4942a004"
+          },
+          {
+            "frame": 59,
+            "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/before-frame-59.png",
+            "sha256": "sha256:6e41db5eb110d374f3ee9c12c926059ca825834a020efe275d0b9cdf4942a004"
+          }
+        ],
+        "staleControls": []
+      },
+      {
+        "stage": "edited",
+        "currentCompilation": {
+          "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/edited-compiled/cue-compilation.json",
+          "bytes": 765,
+          "sha256": "sha256:c34b4cc2fc8462d26802ca303c5cca1cfacb8b7877ce76200d17b29d93877ada"
+        },
+        "outputs": [
+          {
+            "consumer": "public-engine-api",
+            "output": {
+              "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/edited-api/output.mp4",
+              "bytes": 34335,
+              "sha256": "sha256:b423ee354f4a54cb18da08d2d5e91579d16116b10bcc2ed3a972c8ca4be04e3d"
+            },
+            "cachedReceipt": {
+              "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/edited-api/output.mp4.cue-plate-export.json",
+              "bytes": 1884,
+              "sha256": "sha256:f5a1a019923721e5865c4da383a7cb56b557ca9031eaca66358591e3958a952b"
+            },
+            "freshNativeSubmissionCalls": 0,
+            "originalNativeFrames": 60,
+            "imageCalls": 60
+          },
+          {
+            "consumer": "actual-cli-process",
+            "output": {
+              "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/edited-cli/output.mp4",
+              "bytes": 34335,
+              "sha256": "sha256:b423ee354f4a54cb18da08d2d5e91579d16116b10bcc2ed3a972c8ca4be04e3d"
+            },
+            "cachedReceipt": {
+              "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/edited-cli/output.mp4.cue-plate-export.json",
+              "bytes": 1884,
+              "sha256": "sha256:02ef2313fe2d07d60b419872a145aea3351b0e95c0d86d2d5b5f19c7df0d8249"
+            },
+            "freshNativeSubmissionCalls": 0,
+            "originalNativeFrames": 60,
+            "imageCalls": 60
+          }
+        ],
+        "apiCurrentCheck": {
+          "schemaVersion": "mechanism-cue-plate-check-result-1",
+          "status": "passed",
+          "outputPath": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/edited-api/output.mp4",
+          "outputSha256": "sha256:b423ee354f4a54cb18da08d2d5e91579d16116b10bcc2ed3a972c8ca4be04e3d",
+          "nativePictureSha256": "sha256:929474fa283d5019b0797a1b9a802f07655168325e0712b8a14212e74b4ba520",
+          "sequenceSha256": "sha256:bd0e6d63ed8caa7d3f3ece76929a9eeb4c12e2870a9d992c69dcb4e411ff4cee",
+          "freshNativeSubmissionCalls": 0,
+          "originalNativeFrames": 60,
+          "originalNativePasses": 60,
+          "reusedPlateFrames": 60,
+          "video": {
+            "width": 240,
+            "height": 136,
+            "nb_read_frames": "60",
+            "avg_frame_rate": "30/1"
+          },
+          "scope": "current-overlays-final-video-and-measured-zero-new-native-submissions-with-original-capture-proof",
+          "remainingQa": "Visual, listening, whole resource and pilot acceptance remain separate gates."
+        },
+        "cliCheckCode": 0,
+        "nativeReceiptBytesUnchanged": true,
+        "repeatedWholeEncodedBodiesDecodedFramesAndCompletePcmEqual": true,
+        "decodedPcm": {
+          "sha256": "sha256:efafba735f513d2a081bcea947e5c1cf4605672bda79ac8c69f6ba97e43d7a21",
+          "bytes": 770048
+        },
+        "previewFramePairs": 60,
+        "cachedPreviewDraws": 180,
+        "extraCachedSeekFrames": 120,
+        "maximumPreviewRgbDifference": 1,
+        "fixedPreviewRgbTolerance": 2,
+        "sampledPngs": [
+          {
+            "frame": 0,
+            "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/edited-frame-0.png",
+            "sha256": "sha256:fcfe87b9e234a06e3c7092df19f24fe4a550203aafd139fe11b4c7653cdf8ddb"
+          },
+          {
+            "frame": 15,
+            "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/edited-frame-15.png",
+            "sha256": "sha256:568fff7cc0878113074c569f18931f4eff26d601db8ca51a3433c9f5f2a22926"
+          },
+          {
+            "frame": 30,
+            "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/edited-frame-30.png",
+            "sha256": "sha256:6af0181e75429662ce003419b0bbfebe3811080adaa05b93657d13902431a32c"
+          },
+          {
+            "frame": 45,
+            "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/edited-frame-45.png",
+            "sha256": "sha256:6e41db5eb110d374f3ee9c12c926059ca825834a020efe275d0b9cdf4942a004"
+          },
+          {
+            "frame": 59,
+            "path": "/private/tmp/still-shift-ms2-public-cue-cache-wz3b8h/edited-frame-59.png",
+            "sha256": "sha256:6e41db5eb110d374f3ee9c12c926059ca825834a020efe275d0b9cdf4942a004"
+          }
+        ],
+        "staleControls": [
+          {
+            "kind": "old-compilation",
+            "code": 2,
+            "receipt": {
+              "schemaVersion": "mechanism-command-result-1",
+              "command": "check",
+              "status": "failed",
+              "summary": {
+                "code": "mechanism-stale-compilation",
+                "message": "Compilation does not match the current family/cue revision",
+                "stage": "mechanism-cue-lifecycle",
+                "path": "family/cue"
+              },
+              "items": [
+                {
+                  "name": "AnimationEngineError",
+                  "code": "SCENE_INVALID",
+                  "message": "Compilation does not match the current family/cue revision"
+                }
+              ],
+              "artifacts": [
+                {
+                  "kind": "full-report",
+                  "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-episode-report-hlFvVm/report.json",
+                  "sha256": "sha256:88f0c04fbb548039cd20ed5965c1c9ee8ddd3e9df13da43ee124bb3c65f083e8"
+                }
+              ],
+              "pagination": {
+                "offset": 0,
+                "returned": 1,
+                "total": 1,
+                "nextOffset": null
+              },
+              "truncated": false,
+              "nextAction": "Compile the current family/cue revision into a fresh directory, then render/check that snapshot. Read the full-report artifact for the complete result."
+            }
+          },
+          {
+            "kind": "old-output-current-compilation",
+            "code": 2,
+            "receipt": {
+              "schemaVersion": "mechanism-command-result-1",
+              "command": "check",
+              "status": "failed",
+              "summary": {
+                "code": "mechanism-cue-plate-export-identity",
+                "message": "Cached receipt does not name its owning artifact",
+                "stage": "mechanism-cue-plate-export",
+                "path": "currentCompilation"
+              },
+              "items": [
+                {
+                  "name": "AnimationEngineError",
+                  "code": "SCENE_INVALID",
+                  "message": "Cached receipt does not name its owning artifact"
+                }
+              ],
+              "artifacts": [
+                {
+                  "kind": "full-report",
+                  "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-episode-report-Lo65pU/report.json",
+                  "sha256": "sha256:500f31234f023cdb94e5cf4e779d112484a8b3851c71835196905eaec04e1897"
+                }
+              ],
+              "pagination": {
+                "offset": 0,
+                "returned": 1,
+                "total": 1,
+                "nextOffset": null
+              },
+              "truncated": false,
+              "nextAction": "Compile current cues and render into a fresh directory using verified compatible original native plates. Read the full-report artifact for the complete result."
+            }
+          }
+        ]
+      }
+    ],
+    "totals": {
+      "originalNativeCaptureFrames": 60,
+      "cachedExports": 4,
+      "cachedOutputFrames": 240,
+      "measuredImageCalls": 240,
+      "measuredFreshNativeSubmissionCalls": 0,
+      "nativeCachePreviewFramePairs": 120,
+      "cachedPreviewDraws": 360,
+      "freshNativePreviewDrawsSeparateFromExport": 120,
+      "extraCachedSeekFrames": 240,
+      "maximumPreviewRgbDifference": 1,
+      "fixedPreviewRgbTolerance": 2,
+      "originalSampledPngsAgentViewed": 10,
+      "actualCliStaleControls": 2,
+      "apiStaleCompilationControl": 1,
+      "existingDirectoryPreservationControl": 1,
+      "completeDecodedPcmChangesAfterGainEdit": true
+    }
+  },
+  "independentAudit": {
+    "script": {
+      "path": "/private/tmp/still-shift-ms2-publiccache62-audit.py",
+      "bytes": 12155,
+      "sha256": "sha256:062d07d719003845aad7627b19cbcd8c872ef8316feb9ba08fb85a8c9ac572cf"
+    },
+    "report": {
+      "path": "/private/tmp/still-shift-ms2-publiccache62-audit1.json",
+      "bytes": 8960,
+      "sha256": "sha256:66f82f9326c4fe57f4f24dc43f1d85f0d192ab4256281f805224c2b68d1d08f5"
+    },
+    "scope": "Independent fact/body/source/worker/journal/hierarchy/static-camera/original PNG16 inverse-transfer/native-transport/output probe/per-frame decode/complete PCM audit. Producer preview metadata and10 sampled pixel hashes are cross-checked; the auditor does not rerender previews or independently replay rigs and claims no installed/human/full-resource acceptance.",
+    "factPinChecks": 33,
+    "originalNativePng16TransportHashMatches": 60,
+    "independentPartHierarchyPairs": 660,
+    "independentSourceCameraTriples": 60,
+    "actualMp4DecodedFrames": 240,
+    "completeDecodedPcmStreams": 4,
+    "sampledPngPixelHashes": 10,
+    "qualification": "No production validator calls or independent browser/rig rerender. Actual producer preview pairs/seeks/worker data are cross-checked, and sampled PNG decoded pixels match the retained preview hashes. Native previews do perform fresh draws and are not included in the zero-new-native export claim."
+  },
+  "remaining": [
+    "Actual in-flight cue/dependency edits, live cached-output cancellation and whole application/physical memory/resource/lifetime/replay admission remain required. Pre-abort and declared per-owner quotas are not these gates.",
+    "Final source/archive/installed still-shift/engine and CLI consumer verification remain required; workspace root exposure alone is not an installed package pass.",
+    "Genuine recovered speech cue/native exports and shorter revised-copy recompilation, exact sample endpoints, reading/action and factual/listening review remain open.",
+    "Full101 including this registered consumer group, frozen176/36061/benchmark, source/archive/installed/pack/validated10-question coverage/MS2 PR before MS3 remain required. Historical stopped full51 retains its original94-group scope.",
+    "Broader continuous layout and encoded glyph/copy/readability and human acceptance remain separate. Generic engineering captions do not establish a factual pilot. Supported packs0; validated coverage0/10; accepted pilot0. No paid generation, merge, npm publication, Actions or private media redistribution."
+  ]
+}

@@ -922,6 +922,19 @@ mechanism families establish whether the architecture transfers.
       full matrix is100 and must own a fresh terminal; public API/CLI/in-flight,
       whole resources/final installed/pack/genuine speech and broader encoded/human
       acceptance remain required. The expanded annotation criterion stays unchecked.
+      Slice62 exposes the verified cache lifecycle at the existing public engine
+      root with strict receipt schemas/constants/types and bounded CLI/discovery.
+      Owned actual API/CLI consumer capture60/export4 verifies240 image calls and
+      zero fresh native export submissions; label/gain edits preserve original plates,
+      current checks pass and old compilation/output checks reject. Independent audit1
+      verifies33 fact pins/60 original PNG16 transport identities/660 hierarchy pairs/
+      60 camera triples/240 decoded MP4 frames/four complete PCM streams. All10 sampled
+      PNGs are agent-viewed;120 preview pairs/max1 remain within fixedRGB2. Fast-tier1
+      one-worker passes4,348 units/427 files; runtime22/three files pass on held2,631
+      unchanged inputs/120,619,011B. [Public cache evidence](./mechanism-shorts-ms2-public-cue-cache-results.json)
+      retains the root-red and audit/format qualifications. Full101, final installed
+      consumer, in-flight edits/cancellation and whole resource/lifetime gates remain
+      required alongside genuine speech/encoded readability/pack/human acceptance.
 - [ ] Compile semantic contact/release/return events from supplied narration cues
       into all picture, annotation, caption and sound tracks. Reject overfull shots,
       out-of-recording cues and insufficient reading/action time. Do not stretch

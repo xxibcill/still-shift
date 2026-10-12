@@ -117,3 +117,24 @@ export * from "./mechanism/family-authoring.ts";
 export * from "./mechanism/cue-authoring.ts";
 
 export * from "./mechanism/cue-lifecycle.ts";
+
+export {
+  MECHANISM_CUE_NATIVE_PLATES_VERSION,
+  MechanismCueNativePlatesSchema,
+  prepareMechanismCueNativePlates,
+  checkMechanismCueNativePlates,
+} from "./mechanism/cue-native-plates.ts";
+export type {
+  MechanismCueNativePlates,
+  MechanismCueNativePlateOptions,
+} from "./mechanism/cue-native-plates.ts";
+export {
+  MECHANISM_CUE_PLATE_EXPORT_VERSION,
+  MechanismCuePlateExportSchema,
+  renderMechanismCuePlateProject,
+  checkMechanismCuePlateOutput,
+} from "./mechanism/cue-plate-lifecycle.ts";
+export type {
+  MechanismCuePlateExport,
+  MechanismCuePlateOptions,
+} from "./mechanism/cue-plate-lifecycle.ts";

@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "mechanism-cue-native-plates-1"
+    },
+    "nativePictureSha256": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "originalCompilation": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
+        "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      },
+      "required": ["path", "bytes", "sha256"],
+      "additionalProperties": false
+    },
+    "originalSource": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
+        "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      },
+      "required": ["path", "bytes", "sha256"],
+      "additionalProperties": false
+    },
+    "nativeSource": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
+        "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      },
+      "required": ["path", "bytes", "sha256"],
+      "additionalProperties": false
+    },
+    "sceneManifest": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
+        "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      },
+      "required": ["path", "bytes", "sha256"],
+      "additionalProperties": false
+    },
+    "renderResult": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
+        "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      },
+      "required": ["path", "bytes", "sha256"],
+      "additionalProperties": false
+    },
+    "sequence": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z][\\w-]*$"
+        },
+        "path": { "type": "string", "minLength": 1, "maxLength": 1024 },
+        "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "width": { "type": "integer", "minimum": 1, "maximum": 32768 },
+        "height": { "type": "integer", "minimum": 1, "maximum": 32768 },
+        "frameCount": { "type": "integer", "minimum": 1, "maximum": 864000 },
+        "frameRate": {
+          "type": "object",
+          "properties": {
+            "numerator": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000000
+            },
+            "denominator": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100000
+            }
+          },
+          "required": ["numerator", "denominator"],
+          "additionalProperties": false
+        },
+        "color": {
+          "type": "object",
+          "properties": {
+            "primaries": { "type": "string", "const": "bt709" },
+            "transfer": { "type": "string", "enum": ["bt709", "iec61966-2-1"] },
+            "matrix": { "type": "string", "enum": ["bt709", "gbr"] },
+            "range": { "type": "string", "enum": ["tv", "pc"] }
+          },
+          "required": ["primaries", "transfer", "matrix", "range"],
+          "additionalProperties": false
+        },
+        "type": { "type": "string", "const": "sequence" },
+        "manifestPath": { "type": "string", "minLength": 1, "maxLength": 1024 },
+        "firstFrame": { "type": "integer", "minimum": 0, "maximum": 1000000 }
+      },
+      "required": [
+        "id",
+        "path",
+        "sha256",
+        "width",
+        "height",
+        "frameCount",
+        "frameRate",
+        "color",
+        "type",
+        "manifestPath",
+        "firstFrame"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "nativePictureSha256",
+    "originalCompilation",
+    "originalSource",
+    "nativeSource",
+    "sceneManifest",
+    "renderResult",
+    "sequence"
+  ],
+  "additionalProperties": false
+}

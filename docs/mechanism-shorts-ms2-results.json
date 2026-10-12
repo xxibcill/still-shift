@@ -16220,6 +16220,53 @@
       "fullMatrixGroups": 100,
       "fullMatrixPassed": false,
       "qualification": "Production and browser sources unchanged from the owning six-case artifacts/audit; subsequent edits register the group and split a pre-existing style test into three located family cases. Complete producer report exists but terminal is unverified. Fresh full100/frozen/resources/public/installed/pack/genuine speech/human/pilot gates remain open."
+    },
+    {
+      "id": "public-cue-cache62",
+      "status": "completed-public-engine-root-and-cli-consumer-staged-verification",
+      "sourceCheckpoint": "86258de38a17c92adf86391739e19c0951b9fa4c",
+      "record": {
+        "path": "docs/mechanism-shorts-ms2-public-cue-cache-results.json",
+        "bytes": 26257,
+        "sha256": "sha256:d5a574df60e7683b95e7a414237625185cdcd8d14fd37879b7dec8069bf8300d"
+      },
+      "actualProducerSession": 43847,
+      "actualProducerExitCode": 0,
+      "actualAuditExitCode": 0,
+      "actualFastTierSession": 19001,
+      "actualFastTierExitCode": 0,
+      "fastTierVariant": "Same sequential schema/boundary/format/lint/build/unit stages with one unit worker within the4-worker ceiling.",
+      "unitTests": 4348,
+      "unitFiles": 427,
+      "focusedRuntimeTests": 22,
+      "focusedRuntimeFiles": 3,
+      "heldInputFiles": 2631,
+      "heldInputBytes": 120619011,
+      "originalNativeCaptureFrames": 60,
+      "cachedExports": 4,
+      "cachedOutputFrames": 240,
+      "measuredImageCalls": 240,
+      "measuredFreshNativeSubmissionCalls": 0,
+      "nativeCachePreviewFramePairs": 120,
+      "cachedPreviewDraws": 360,
+      "freshNativePreviewDrawsSeparateFromExport": 120,
+      "extraCachedSeekFrames": 240,
+      "maximumPreviewRgbDifference": 1,
+      "fixedPreviewRgbTolerance": 2,
+      "originalSampledPngsAgentViewed": 10,
+      "actualCliStaleControls": 2,
+      "apiStaleCompilationControl": 1,
+      "existingDirectoryPreservationControl": 1,
+      "completeDecodedPcmChangesAfterGainEdit": true,
+      "independentFactPinChecks": 33,
+      "independentOriginalPng16TransportHashMatches": 60,
+      "independentHierarchyPairs": 660,
+      "independentSourceCameraTriples": 60,
+      "independentDecodedMp4Frames": 240,
+      "completeDecodedPcmStreams": 4,
+      "fullMatrixGroups": 101,
+      "fullMatrixPassed": false,
+      "qualification": "Actual workspace engine-root API and separate CLI process; final archive/installed consumer, in-flight edits/cancellation and whole resources remain separate gates."
     }
   ],
   "implementation": {
@@ -18319,9 +18366,34 @@
         "Broader continuous layout and encoded glyph/copy/readability remain open. These are synthetic engineering pictures with generic Start/Touch/Free/Back captions. Cable-tie variant stays non-releasable; these captions do not imply a legal release or factual pilot.",
         "Supported packs0; validated coverage0/10; accepted pilot0. No human acceptance, paid generation, merge, npm publication, Actions or private media redistribution."
       ]
+    },
+    "sixtySecondSlice": {
+      "record": {
+        "path": "docs/mechanism-shorts-ms2-public-cue-cache-results.json",
+        "bytes": 26257,
+        "sha256": "sha256:d5a574df60e7683b95e7a414237625185cdcd8d14fd37879b7dec8069bf8300d"
+      },
+      "scope": "Existing engine root explicitly exports four capture/check/render/check functions, two strict versioned receipt schemas/constants and four inferred/options types. CLI cue prepare/render/check, bounded discovery and generated schema routes expose the same verified lifecycle. Installed entry is still-shift/engine; current real producer uses workspace @still-shift/animation-engine. Private partition/lowering modules remain internal.",
+      "heldSourceInputs": {
+        "path": "/private/tmp/still-shift-ms2-publiccache62-inputs1.json",
+        "bytes": 448792,
+        "sha256": "sha256:b53c4888bbcf7419c372bd271d9c8997af19fac9245030e359fefea3fc04ece4",
+        "files": 2631,
+        "inputBytes": 120619011,
+        "unchangedThroughRenderAuditFastAndPrecommit": true
+      },
+      "failuresRetained": "Actual root-red before draws; unverified format2 terminal and scratch source-check hash-namespace mismatch. Owned runtime/build/render/audit/fast tier pass; no full or installed acceptance.",
+      "remaining": [
+        "Actual in-flight cue/dependency edits, live cached-output cancellation and whole application/physical memory/resource/lifetime/replay admission remain required. Pre-abort and declared per-owner quotas are not these gates.",
+        "Final source/archive/installed still-shift/engine and CLI consumer verification remain required; workspace root exposure alone is not an installed package pass.",
+        "Genuine recovered speech cue/native exports and shorter revised-copy recompilation, exact sample endpoints, reading/action and factual/listening review remain open.",
+        "Full101 including this registered consumer group, frozen176/36061/benchmark, source/archive/installed/pack/validated10-question coverage/MS2 PR before MS3 remain required. Historical stopped full51 retains its original94-group scope.",
+        "Broader continuous layout and encoded glyph/copy/readability and human acceptance remain separate. Generic engineering captions do not establish a factual pilot. Supported packs0; validated coverage0/10; accepted pilot0. No paid generation, merge, npm publication, Actions or private media redistribution."
+      ]
     }
   },
   "limits": [
+    "Slice62 exposes the existing native2/flat-controller cache lifecycle at the engine root and strict public receipt/schema/version contracts, with bounded CLI/discovery. Owned producer passes60 original captures/four cached exports/240 image calls and zero fresh native export submissions;120 preview pairs/max1 fixed2 and240 extra cached seeks. All10 sampled PNGs agent-viewed; independent33-pin/60 PNG/660 hierarchy/60 camera/240 decoded frames/four PCM audit and4,348-unit427-file fast tier pass on2,631 unchanged inputs. New3 and existing19 runtime controls pass. Full101, installed archive, in-flight edits/cancellation, whole resources, genuine speech, encoded readability/pack/human acceptance remain open; packs/pilot0.",
     "Slice61 verifies native world/surface cache breadth in six retained engineering cases with owned independent audit1 and one-worker fast-tier2, while the producer terminal remains explicitly unverified. Original360 PNG16 frames independently recover their native RGBA transport hashes;360 preview pairs/maxRGB1 and all fixed ink guards pass. Both12 cached receipts/counters and720 output frames retain zero new native calls. Failed ordinary/isolated timeouts remain; all assertions retain5s per-family/30s tape budgets. Full matrix is100 with no full100 pass. Public cache API/CLI, whole resources/installed/pack/genuine speech/encoded readability and human acceptance remain open; packs/pilot0.",
     "Slice60 establishes exact48k normalized sample clocks for four existing spoken MP3 takes, with unchanged original file bodies and exact normalized PCM re-decodes. Two rounded words need15/9 sample authoring clamps and peg final visual cue+1 sample; no correction/cue/native export or listening acceptance is claimed. The revised-copy hook is3.483s shorter; private media are outside Git and no credits were spent.",
     "Slice59 verifies current synthetic integer-grid cached overlays across all five visible screen styles/three families with zero new native submissions, original proof replay and fixedRGB2 previews. Lossy direct/cache H264 deltas remain diagnostic; public API/CLI, actual world/surface cache breadth, full99/resources/final installed/pack/genuine spoken outputs and human acceptance remain open. Supported packs/pilot0.",

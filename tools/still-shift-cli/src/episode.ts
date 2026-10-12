@@ -1,4 +1,14 @@
 import {
+  MECHANISM_CUE_NATIVE_PLATES_VERSION,
+  prepareMechanismCueNativePlates,
+  checkMechanismCueNativePlates,
+} from "../../../packages/animation-engine/src/mechanism/cue-native-plates.ts";
+import {
+  MECHANISM_CUE_PLATE_EXPORT_VERSION,
+  renderMechanismCuePlateProject,
+  checkMechanismCuePlateOutput,
+} from "../../../packages/animation-engine/src/mechanism/cue-plate-lifecycle.ts";
+import {
   compileMechanismCueProject,
   renderMechanismCueProject,
   checkMechanismCueOutput,
@@ -123,6 +133,8 @@ const commandFlags: Record<MechanismCommand, readonly string[]> = {
   patch: ["input", "request", "authoring", "family-input"],
   prepare: [
     "input",
+    "prepared-dir",
+    "plates-dir",
     "output-dir",
     "cache-dir",
     "route",
@@ -140,6 +152,7 @@ const commandFlags: Record<MechanismCommand, readonly string[]> = {
   preview: ["input", "output-dir", "cache-dir", "frame", "route"],
   render: [
     "input",
+    "plates-dir",
     "output-dir",
     "cache-dir",
     "backend",
@@ -150,6 +163,7 @@ const commandFlags: Record<MechanismCommand, readonly string[]> = {
   ],
   check: [
     "input",
+    "plates-dir",
     "prepared-dir",
     "final-output",
     "route",
@@ -586,6 +600,8 @@ async function discover(
       nativeRenderVersion: "mechanism-native-render-result-1",
       nativeCheckVersion: "mechanism-native-check-result-1",
       nativePackageVersion: "mechanism-native-project-package-1",
+      cueNativePlatesVersion: MECHANISM_CUE_NATIVE_PLATES_VERSION,
+      cuePlateExportVersion: MECHANISM_CUE_PLATE_EXPORT_VERSION,
       nativeSourceVersions: "mechanism-scene-1 solid-scene-1",
       nativeGeometryVersion: "solid-geometry-1",
       nativeObservationVersion: "native3d-observed-output-frame-1",
@@ -627,6 +643,23 @@ async function discover(
         schema: "native-inspection-selection",
         keyRows:
           "One authored camera/control key per bounded pageable row; frames are absolute source frames",
+      },
+      {
+        kind: "cue-native-plate-cache",
+        authoring: "cue",
+        nativePlatesVersion: MECHANISM_CUE_NATIVE_PLATES_VERSION,
+        exportVersion: MECHANISM_CUE_PLATE_EXPORT_VERSION,
+        backend: "webgl2",
+        workers: 1,
+        capture:
+          "prepare --authoring cue --prepared-dir <current-compilation> --plates-dir <fresh-plates-directory>",
+        reuse:
+          "render --authoring cue --prepared-dir <current-compilation> --plates-dir <verified-plates> --output-dir <fresh-output-directory>",
+        checking:
+          "check --authoring cue --prepared-dir <current-compilation> --plates-dir <verified-plates>; add --final-output to check a cached video",
+        scope:
+          "Current native2 cue pictures with one flat physical controller and admitted world artwork. Original native observations remain original; cached output requires measured zero fresh native submissions. Packs and human/pilot acceptance remain separate.",
+        schemas: "cue-native-plates cue-plate-export",
       },
       {
         kind: "native-observation-limits",
@@ -696,6 +729,22 @@ async function execute(
       }),
     );
   const input = required(flags, "input");
+  if (flags.has("plates-dir") && flags.get("authoring") !== "cue")
+    throw cliError(
+      "--plates-dir requires --authoring cue",
+      "mechanism-authoring-option",
+      "--plates-dir",
+    );
+  if (
+    command === "prepare" &&
+    flags.has("prepared-dir") &&
+    flags.get("authoring") !== "cue"
+  )
+    throw cliError(
+      "--prepared-dir on prepare requires --authoring cue",
+      "mechanism-authoring-option",
+      "--prepared-dir",
+    );
   if (flags.get("authoring") === "cue") {
     if (["prepare", "compile", "render", "check"].includes(command)) {
       const familyPath = required(flags, "family-input");
@@ -716,6 +765,63 @@ async function execute(
           "Cue lifecycle requires webgl2",
           "mechanism-backend",
           "--backend",
+        );
+      const platesDirectory = flags.get("plates-dir");
+      if (command === "prepare" && platesDirectory !== undefined) {
+        if (flags.has("output-dir"))
+          throw cliError(
+            "Plate capture writes --plates-dir; omit --output-dir",
+            "mechanism-authoring-option",
+            "--output-dir",
+          );
+        return resultView(
+          command,
+          await prepareMechanismCueNativePlates(
+            familyPath,
+            input,
+            required(flags, "prepared-dir"),
+            platesDirectory,
+            { signal },
+          ),
+        );
+      }
+      if (command === "prepare" && flags.has("prepared-dir"))
+        throw cliError(
+          "--prepared-dir on cue prepare requires --plates-dir",
+          "mechanism-authoring-option",
+          "--prepared-dir",
+        );
+      if (command === "render" && platesDirectory !== undefined)
+        return resultView(
+          command,
+          await renderMechanismCuePlateProject(
+            familyPath,
+            input,
+            required(flags, "prepared-dir"),
+            platesDirectory,
+            required(flags, "output-dir"),
+            { signal },
+          ),
+        );
+      if (command === "check" && platesDirectory !== undefined)
+        return resultView(
+          command,
+          flags.has("final-output")
+            ? await checkMechanismCuePlateOutput(
+                familyPath,
+                input,
+                required(flags, "prepared-dir"),
+                platesDirectory,
+                required(flags, "final-output"),
+                { signal },
+              )
+            : await checkMechanismCueNativePlates(
+                familyPath,
+                input,
+                required(flags, "prepared-dir"),
+                platesDirectory,
+                { signal },
+              ),
         );
       if (command === "prepare" || command === "compile")
         return resultView(
