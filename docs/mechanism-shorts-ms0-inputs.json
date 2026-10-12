@@ -1,0 +1,1394 @@
+{
+  "schemaVersion": "mechanism-ms0-input-audit-1",
+  "auditedAt": "2026-10-09",
+  "scope": "Read-only original-input discovery, byte identity, font metadata/cmap inspection, media metadata and historical row inspection; no customer scripts executed, no new rendering or continuous playback/listening, no source media copied into Git",
+  "sourceRoot": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook",
+  "externalSources": {
+    "archive": {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Still Shift Developer Feedback 2026-10-07.zip",
+      "bytes": 6490672,
+      "sha256": "3421233df90efff5bf658444b5743888e28e46e37bdb4859f937c79532f557f4"
+    },
+    "pastedBrief": {
+      "path": "/Users/jjae/.codex/attachments/856aef49-2ffc-4d2f-9b5a-37fcde319976/Pasted text.txt",
+      "bytes": 24586,
+      "sha256": "7e8977a1f90dd2c3ae03db3fb634459723976fd708618e894b0864b776a55ab1"
+    }
+  },
+  "repositoryHead": "e6eb7b06e3b5a042be2c1e2568a1a84cf9c041ad",
+  "archiveManifest": {
+    "count": 25,
+    "allSizesAndSha256Match": true,
+    "files": [
+      {
+        "path": "Developer Brief.md",
+        "bytes": 24586,
+        "sha256": "7e8977a1f90dd2c3ae03db3fb634459723976fd708618e894b0864b776a55ab1"
+      },
+      {
+        "path": "Evidence.md",
+        "bytes": 7085,
+        "sha256": "a0904c2dcd7d9afd69fd42a4f3de80f651e792984f805830c686db857434d6d3"
+      },
+      {
+        "path": "README.md",
+        "bytes": 2945,
+        "sha256": "37cd220892294e4b225f9af9bc8f325722e50a69576f150d64f5ffa513b47910"
+      },
+      {
+        "path": "Scale Model.md",
+        "bytes": 5063,
+        "sha256": "60155c07e82c95b424e6b461db120bfc052cdc6a326c17b1c02f40a5363f2710"
+      },
+      {
+        "path": "backlog.csv",
+        "bytes": 2245,
+        "sha256": "c808d2f0be93eb3f761a7b3e9f2b2e5949d4c2b1dc2027dd92fe4aeea89c188d"
+      },
+      {
+        "path": "benchmark-template.csv",
+        "bytes": 403,
+        "sha256": "be17f258611a263005006fe5036acdc2836b6662c1ac231c0cbe363400315996"
+      },
+      {
+        "path": "capacity_model.py",
+        "bytes": 1535,
+        "sha256": "e32f6e73c450a7cd912e3528f32d7c6f80e6121497bdfb56dd489e0e4d023e15"
+      },
+      {
+        "path": "episode.example.json",
+        "bytes": 4984,
+        "sha256": "34971aeb4ff9d844f8eb3d8e657d0daac6151497c9583336b2abc5319f17e7cb"
+      },
+      {
+        "path": "episode.schema.json",
+        "bytes": 5264,
+        "sha256": "09235777f541d2282a746c6e782111ca322ba4cd93218e06fdf495bc68bce51e"
+      },
+      {
+        "path": "evidence/QA-v008.md",
+        "bytes": 2476,
+        "sha256": "a77ef50e4141665d0f388a705941fefaced1a03a01fd82999a39258362f5db61"
+      },
+      {
+        "path": "evidence/Still-Shift-episode-notes.md",
+        "bytes": 3215,
+        "sha256": "632607a721a661121989e3c6115d63e7abd5d5858d37073292a61cbc73221012"
+      },
+      {
+        "path": "evidence/checks-v008.json",
+        "bytes": 1574,
+        "sha256": "4c5230d109fd9a2a351516dc76bbb4d5ad5636584da4bb719c3fdfd3b9901f67"
+      },
+      {
+        "path": "evidence/inspected-source-hashes.json",
+        "bytes": 1966,
+        "sha256": "cc4906b09c28bb1e893601537e5892571860a7800d2843d93045f216c2970cc3"
+      },
+      {
+        "path": "evidence/original-file-receipts.json",
+        "bytes": 3407,
+        "sha256": "8adfdab610316fe10c51e7dde116ebe349e63939063b1db8be36b69362900723"
+      },
+      {
+        "path": "evidence/original-source/index.html",
+        "bytes": 1018,
+        "sha256": "c8854cf254bc3bbf89c7688be38a4bd7fa9d936e4d5e5cc585766c723006afd9"
+      },
+      {
+        "path": "evidence/original-source/labels.mjs",
+        "bytes": 3713,
+        "sha256": "2f6302e99e09edaa00e3bdddcb83ebcf2d8781b7b2a65503b75767422dd19d06"
+      },
+      {
+        "path": "evidence/original-source/render.mjs",
+        "bytes": 2108,
+        "sha256": "ecfd351f10d9fba05db1befdfd9f6403af5ce575338398593d2a4b6ebe571651"
+      },
+      {
+        "path": "evidence/original-source/scene.mjs",
+        "bytes": 9392,
+        "sha256": "51a51d2539cec41c74ca9bf452e04cf3634a2496cb8a9414ce525e1ad7d28113"
+      },
+      {
+        "path": "evidence/original-source/verify.py",
+        "bytes": 3561,
+        "sha256": "0ff74e3785fe647c12652865a647deee3446b03f771e0bbd30e9db690b76dd21"
+      },
+      {
+        "path": "evidence/tape-hook-v006.mp4",
+        "bytes": 1169300,
+        "sha256": "ca196b7dc345791f91b6ddf6c365b56926ff450670e3e2a738ae50e91ae22219"
+      },
+      {
+        "path": "evidence/tape-hook-v008.mp4",
+        "bytes": 4549762,
+        "sha256": "ca8bf292cf4dc7f4c5ede598cc1c2e5908177cda12474bef98fb387a778039b1"
+      },
+      {
+        "path": "evidence/timeline-1.jpg",
+        "bytes": 349089,
+        "sha256": "de9d5141ed08fa6dfa9c1feefcdb51ca77117569a5e9eea0c4b77c62805174b3"
+      },
+      {
+        "path": "evidence/timeline-2.jpg",
+        "bytes": 357028,
+        "sha256": "96fd0e8573ed5ebe33dd046a37de98c1128dd6be1b2c2643656ed5d1b1540afb"
+      },
+      {
+        "path": "evidence/timeline-3.jpg",
+        "bytes": 255839,
+        "sha256": "95eef4f1e3f21e4443dfc27d486be172d199e125962af20c6a3f02bce2367925"
+      },
+      {
+        "path": "verification.json",
+        "bytes": 2876,
+        "sha256": "11369c82636b3b54d69b856d892070065186c759cc861c76cb6e671de31175e9"
+      }
+    ]
+  },
+  "pastedBriefByteIdentical": true,
+  "originalCopyReceipts": [
+    {
+      "packagePath": "evidence/tape-hook-v008.mp4",
+      "originalProjectPath": "Everyday Unlocked/03 Episodes/E01 Tape Hook/exports/everyday-unlocked-tape-hook-v008.mp4",
+      "sha256": "ca8bf292cf4dc7f4c5ede598cc1c2e5908177cda12474bef98fb387a778039b1",
+      "bytes": 4549762,
+      "originalExists": true,
+      "sha256Match": true
+    },
+    {
+      "packagePath": "evidence/tape-hook-v006.mp4",
+      "originalProjectPath": "Everyday Unlocked/03 Episodes/E01 Tape Hook/exports/everyday-unlocked-tape-hook-v006.mp4",
+      "sha256": "ca196b7dc345791f91b6ddf6c365b56926ff450670e3e2a738ae50e91ae22219",
+      "bytes": 1169300,
+      "originalExists": true,
+      "sha256Match": true
+    },
+    {
+      "packagePath": "evidence/timeline-1.jpg",
+      "originalProjectPath": "Everyday Unlocked/03 Episodes/E01 Tape Hook/review/v008/timeline-1.jpg",
+      "sha256": "de9d5141ed08fa6dfa9c1feefcdb51ca77117569a5e9eea0c4b77c62805174b3",
+      "bytes": 349089,
+      "originalExists": true,
+      "sha256Match": true
+    },
+    {
+      "packagePath": "evidence/timeline-2.jpg",
+      "originalProjectPath": "Everyday Unlocked/03 Episodes/E01 Tape Hook/review/v008/timeline-2.jpg",
+      "sha256": "96fd0e8573ed5ebe33dd046a37de98c1128dd6be1b2c2643656ed5d1b1540afb",
+      "bytes": 357028,
+      "originalExists": true,
+      "sha256Match": true
+    },
+    {
+      "packagePath": "evidence/timeline-3.jpg",
+      "originalProjectPath": "Everyday Unlocked/03 Episodes/E01 Tape Hook/review/v008/timeline-3.jpg",
+      "sha256": "95eef4f1e3f21e4443dfc27d486be172d199e125962af20c6a3f02bce2367925",
+      "bytes": 255839,
+      "originalExists": true,
+      "sha256Match": true
+    },
+    {
+      "packagePath": "evidence/checks-v008.json",
+      "originalProjectPath": "Everyday Unlocked/03 Episodes/E01 Tape Hook/review/v008/checks.json",
+      "sha256": "4c5230d109fd9a2a351516dc76bbb4d5ad5636584da4bb719c3fdfd3b9901f67",
+      "bytes": 1574,
+      "originalExists": true,
+      "sha256Match": true
+    },
+    {
+      "packagePath": "evidence/QA-v008.md",
+      "originalProjectPath": "Everyday Unlocked/03 Episodes/E01 Tape Hook/QA Report.md",
+      "sha256": "a77ef50e4141665d0f388a705941fefaced1a03a01fd82999a39258362f5db61",
+      "bytes": 2476,
+      "originalExists": true,
+      "sha256Match": true
+    },
+    {
+      "packagePath": "evidence/Still-Shift-episode-notes.md",
+      "originalProjectPath": "Everyday Unlocked/03 Episodes/E01 Tape Hook/Still Shift Notes.md",
+      "sha256": "632607a721a661121989e3c6115d63e7abd5d5858d37073292a61cbc73221012",
+      "bytes": 3215,
+      "originalExists": true,
+      "sha256Match": true
+    },
+    {
+      "packagePath": "evidence/original-source/scene.mjs",
+      "originalProjectPath": "Everyday Unlocked/03 Episodes/E01 Tape Hook/three-v008/scene.mjs",
+      "sha256": "51a51d2539cec41c74ca9bf452e04cf3634a2496cb8a9414ce525e1ad7d28113",
+      "bytes": 9392,
+      "originalExists": true,
+      "sha256Match": true
+    },
+    {
+      "packagePath": "evidence/original-source/labels.mjs",
+      "originalProjectPath": "Everyday Unlocked/03 Episodes/E01 Tape Hook/three-v008/labels.mjs",
+      "sha256": "2f6302e99e09edaa00e3bdddcb83ebcf2d8781b7b2a65503b75767422dd19d06",
+      "bytes": 3713,
+      "originalExists": true,
+      "sha256Match": true
+    },
+    {
+      "packagePath": "evidence/original-source/render.mjs",
+      "originalProjectPath": "Everyday Unlocked/03 Episodes/E01 Tape Hook/three-v008/render.mjs",
+      "sha256": "ecfd351f10d9fba05db1befdfd9f6403af5ce575338398593d2a4b6ebe571651",
+      "bytes": 2108,
+      "originalExists": true,
+      "sha256Match": true
+    },
+    {
+      "packagePath": "evidence/original-source/verify.py",
+      "originalProjectPath": "Everyday Unlocked/03 Episodes/E01 Tape Hook/three-v008/verify.py",
+      "sha256": "0ff74e3785fe647c12652865a647deee3446b03f771e0bbd30e9db690b76dd21",
+      "bytes": 3561,
+      "originalExists": true,
+      "sha256Match": true
+    },
+    {
+      "packagePath": "evidence/original-source/index.html",
+      "originalProjectPath": "Everyday Unlocked/03 Episodes/E01 Tape Hook/three-v008/index.html",
+      "sha256": "c8854cf254bc3bbf89c7688be38a4bd7fa9d936e4d5e5cc585766c723006afd9",
+      "bytes": 1018,
+      "originalExists": true,
+      "sha256Match": true
+    }
+  ],
+  "historicallyInspectedSources": {
+    "historicalHead": "01fbca203ceb012b31afd15ecfe6d68482bbe0ed",
+    "scope": "Selected source identity; whole checkout not certified",
+    "current": [
+      {
+        "path": "docs/user-guide.md",
+        "sha256": "a649133eef932e1b224ff8dac6066778059eac7f9965a7f10cd6d48d3f54e4e4",
+        "currentSha256": "3f10bc807611b0a7c94620a90b76712dbfbd06a7b59a435a5842ed65365448f9",
+        "matchesHistorical": false
+      },
+      {
+        "path": "docs/reusable-components.md",
+        "sha256": "43e2b8dd3a8700c338b88ee0271fab63807c4d03e0613b6c5e2a2d226298570b",
+        "currentSha256": "43e2b8dd3a8700c338b88ee0271fab63807c4d03e0613b6c5e2a2d226298570b",
+        "matchesHistorical": true
+      },
+      {
+        "path": "docs/composition-reference.md",
+        "sha256": "62880996caf0f3d98be8c56a4a8eb62fbcb2b427a9abec331554e9ae207256d9",
+        "currentSha256": "dfa9b93f005604e60fceefbca539033321610e7822ff99f6b17ffbfa37ea4b8e",
+        "matchesHistorical": false
+      },
+      {
+        "path": "packages/scene-contract/src/composition/layers.ts",
+        "sha256": "c10d251e3ca10b934d372696f60b70893bf638799f59c0ec3f108cce8c565ae6",
+        "currentSha256": "0985ba0b3955631beb8a1bdd7f05d486f40b0ae81c209b5af440531d8cb815a4",
+        "matchesHistorical": false
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/providers.ts",
+        "sha256": "921119ea214d2086f420b477874080b5330e3ff5ff4209a909fe3b9ca387e42a",
+        "currentSha256": "30fc19d44b704fff6274f18d5984291507a3237377cd7bde64f4d1bdf4dc354d",
+        "matchesHistorical": false
+      },
+      {
+        "path": "packages/renderer-core/src/composition/render/webgl2.ts",
+        "sha256": "a6cacbd685b5e1e1a42b8e4b8cfbef63124da82b1d86b185367919f6446f259d",
+        "currentSha256": "96afde79d995224c29eb9a3bfbc6f503ccf586084f7d8ee38361ec52b993d7cc",
+        "matchesHistorical": false
+      },
+      {
+        "path": "packages/renderer-core/src/composition/evaluate/version.ts",
+        "sha256": "9d175a70cae512376e5735787bad815dc4ff0af09e467113d232c6cd97420ac3",
+        "currentSha256": "b0b3f85ff8c05d2b365583fd212095fe764ca61a4ab3367f83ceec43bb5da9af",
+        "matchesHistorical": false
+      },
+      {
+        "path": "packages/animation-engine/src/composition-media.ts",
+        "sha256": "5b4e6c350ef00c8d2e29d239a76c98d8def15d0f40bb01c2f0d2472e4a9aca79",
+        "currentSha256": "5b4e6c350ef00c8d2e29d239a76c98d8def15d0f40bb01c2f0d2472e4a9aca79",
+        "matchesHistorical": true
+      },
+      {
+        "path": "packages/animation-engine/src/composition-media-audio.ts",
+        "sha256": "d4b08fcf83beee56efffeba30a4d6777a36d35ef006a4444fdf07d1acdc4516d",
+        "currentSha256": "470674585742f77dabeec7ae974be8ed82c3572163fbc9bb94eed42075a00884",
+        "matchesHistorical": false
+      },
+      {
+        "path": "packages/animation-engine/src/composition-source.ts",
+        "sha256": "60ea3b2251320344a945e1b429edfee7603d27ba16dfec2524175350e5e151ef",
+        "currentSha256": "60ea3b2251320344a945e1b429edfee7603d27ba16dfec2524175350e5e151ef",
+        "matchesHistorical": true
+      },
+      {
+        "path": "tools/still-shift-cli/src/cli.ts",
+        "sha256": "1df9007d406c3027764118f3ee65d6f2a6039c24934f6a70b2270ea5697afe55",
+        "currentSha256": "77d9f9178f877935956ebbbbdd15a287b1fc99c949c26faf2ea35aa89e612df9",
+        "matchesHistorical": false
+      }
+    ]
+  },
+  "originalDependencies": [
+    {
+      "sourceId": "assets/narration-take-1.mp3",
+      "role": "retained alternative narration take",
+      "bytes": 395841,
+      "sha256": "eb220fdea230e0cff43e30034d78e6bc4832fc45e428b8bd6b8795edab8bab69",
+      "provenance": "Customer original local E01 project; identity matches production/narration receipt where listed.",
+      "licenseEvidence": "Historical source receipt records ElevenLabs generation provenance; provider/account license terms and permission for public redistribution are not captured. Authorized local implementation can consume original files without publishing or copying them into Git.",
+      "mediaMetadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "codec_type": "audio",
+            "sample_rate": "44100",
+            "channels": 1,
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "23.591474"
+        }
+      },
+      "selected": false
+    },
+    {
+      "sourceId": "assets/narration-take-2.mp3",
+      "role": "selected original narration take",
+      "bytes": 386645,
+      "sha256": "dfc4bb322f2c14a9966e72677e4ac433039ee70eed5af21c92f932e6160800dd",
+      "provenance": "Customer original local E01 project; identity matches production/narration receipt where listed.",
+      "licenseEvidence": "Historical source receipt records ElevenLabs generation provenance; provider/account license terms and permission for public redistribution are not captured. Authorized local implementation can consume original files without publishing or copying them into Git.",
+      "mediaMetadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "codec_type": "audio",
+            "sample_rate": "44100",
+            "channels": 1,
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "23.034195"
+        }
+      },
+      "selected": true
+    },
+    {
+      "sourceId": "assets/narration-take-3.mp3",
+      "role": "retained alternative narration take",
+      "bytes": 383720,
+      "sha256": "91ee58c45167ad472a5ad527a557cfc9d57316a29b6a03175dc8a44e7208c1dd",
+      "provenance": "Customer original local E01 project; identity matches production/narration receipt where listed.",
+      "licenseEvidence": "Historical source receipt records ElevenLabs generation provenance; provider/account license terms and permission for public redistribution are not captured. Authorized local implementation can consume original files without publishing or copying them into Git.",
+      "mediaMetadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "codec_type": "audio",
+            "sample_rate": "44100",
+            "channels": 1,
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "22.848435"
+        }
+      },
+      "selected": false
+    },
+    {
+      "sourceId": "assets/narration-take-4.mp3",
+      "role": "retained alternative narration take",
+      "bytes": 395841,
+      "sha256": "cf4596250548fefcf82d81d84111868b4848865e0434e804061bd4488bc46693",
+      "provenance": "Customer original local E01 project; identity matches production/narration receipt where listed.",
+      "licenseEvidence": "Historical source receipt records ElevenLabs generation provenance; provider/account license terms and permission for public redistribution are not captured. Authorized local implementation can consume original files without publishing or copying them into Git.",
+      "mediaMetadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "mp3",
+            "codec_type": "audio",
+            "sample_rate": "44100",
+            "channels": 1,
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "23.591474"
+        }
+      },
+      "selected": false
+    },
+    {
+      "sourceId": "assets/mix-v001.wav",
+      "role": "original final narration/SFX mix",
+      "bytes": 6681702,
+      "sha256": "93cf722caec63d04eb7388a7da2c315a747175d63a39d3f413c3b254da922eb7",
+      "provenance": "Production Log: selected take 2 reused at original speed; locally authored tones/noise; no music or third-party effects.",
+      "licenseEvidence": "Customer original mix; no standalone third-party effects. Source permission does not establish public Git redistribution.",
+      "mediaMetadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s24le",
+            "codec_type": "audio",
+            "sample_rate": "48000",
+            "channels": 2,
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "23.200000"
+        }
+      }
+    },
+    {
+      "sourceId": "assets/editorial-sfx.wav",
+      "role": "original editorial sound effects",
+      "bytes": 4454444,
+      "sha256": "02230347d4de3238a8e43c74faae2907e20facd45a1f82fde4ca49068e5c997b",
+      "provenance": "Sound cue ledger: mathematical tones/noise authored locally.",
+      "licenseEvidence": "Original authored effects; public redistribution permission is not in the source receipts.",
+      "mediaMetadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "pcm_s16le",
+            "codec_type": "audio",
+            "sample_rate": "48000",
+            "channels": 2,
+            "r_frame_rate": "0/0"
+          }
+        ],
+        "format": {
+          "duration": "23.200000"
+        }
+      }
+    },
+    {
+      "sourceId": "assets/captions.json",
+      "role": "seventeen measured phrase-caption cues",
+      "bytes": 2986,
+      "sha256": "ab67257b0908174f4ca2bde5d0bdbc598c593ed136295f4db73a08eaae15af03",
+      "provenance": "Derived from actual take-2 Scribe word timing; production receipt binds SHA-256.",
+      "licenseEvidence": "Customer authored timing input; no separate public redistribution license."
+    },
+    {
+      "sourceId": "assets/transcription.json",
+      "role": "64 word timings and exact ASR transcript",
+      "bytes": 6982,
+      "sha256": "a4464b86ffceb27ccf8baf690a0662044757bb5233f7dabfe0be58c09ff2ea09",
+      "provenance": "Eleven Scribe v1, selected narration take 2; zero-credit historical receipt.",
+      "licenseEvidence": "Customer supplied text/timing; no separate public redistribution license."
+    },
+    {
+      "sourceId": "assets/sound-cues.json",
+      "role": "seven original sound cue records",
+      "bytes": 911,
+      "sha256": "f12ec67e9367115bba9b4241d63a28bf338b7aeb53ceb6e18cdb09e31422ce97",
+      "provenance": "Author-created source cue ledger.",
+      "licenseEvidence": "Customer supplied cue ledger; no separate public redistribution license."
+    },
+    {
+      "sourceId": "assets/plex-sans-semibold.ttf",
+      "role": "original caption/annotation font",
+      "bytes": 202632,
+      "sha256": "a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+      "provenance": "Byte-identical to repository assets/story-motion/fonts/plex-sans-semibold.ttf.",
+      "licenseEvidence": "Embedded name table: IBM copyright; SIL Open Font License 1.1. Full license already at assets/story-motion/fonts/plex-LICENSE.txt."
+    },
+    {
+      "sourceId": "receipts/narration.json",
+      "role": "original generation provenance and take selection",
+      "bytes": 2430,
+      "sha256": "21173ee94cbd18868f2de2300e0ccedfa20e9321056f479e5464682b1faa8cfe",
+      "provenance": "Historical customer source receipt.",
+      "licenseEvidence": "Contains generation identifiers; audit records identity only. Do not copy receipt bytes publicly."
+    },
+    {
+      "sourceId": "receipts/transcription.json",
+      "role": "original word-timing provenance",
+      "bytes": 387,
+      "sha256": "e04f7871051515c3abaee91441e0dbe969f01c12cbc3fa3b9ebaf93bd3510445",
+      "provenance": "Historical customer source receipt.",
+      "licenseEvidence": "Audit records identity only. Do not copy receipt bytes publicly."
+    },
+    {
+      "sourceId": "Shot and Narration Map.csv",
+      "role": "exact integer shot edit boundaries",
+      "bytes": 829,
+      "sha256": "e7063ba71d667fe4fcccc6ab6a2e1adaccf42f5188336b07f4e0799cda74199f",
+      "provenance": "Matches delivered v008 rendered row groups.",
+      "licenseEvidence": "Customer authored source timing; audit publishes derived boundaries only."
+    },
+    {
+      "sourceId": "Visual Revision v008.md",
+      "role": "shot-specific visual/label intent",
+      "bytes": 2833,
+      "sha256": "de102d7c737bb5f8df016ca08350dfcf60117b4d76b1f9effe9b00563b45e9c4",
+      "provenance": "Original v008 customer revision source.",
+      "licenseEvidence": "Customer authored source evidence; audit records identity/derived map only."
+    },
+    {
+      "sourceId": "Episode Brief.md",
+      "role": "chosen design, factual source and conceptual dimension contract",
+      "bytes": 3527,
+      "sha256": "ec5fa872ed87b7b94dc1cd0f3cd631416ec5304e5f21ab6be6d46170de56c5b0",
+      "provenance": "Original customer E01 authored brief; native historical build instructions are not current implementation authority.",
+      "licenseEvidence": "Customer supplied brief; not a redistribution grant."
+    },
+    {
+      "sourceId": "Production Log.md",
+      "role": "historical provenance and review limitations",
+      "bytes": 6523,
+      "sha256": "f4727531ac197ac10cd21c88aa9ed89b802409a7fac31120d6576518a93bd2df",
+      "provenance": "Customer original episode production log.",
+      "licenseEvidence": "Customer supplied historical source evidence; not a redistribution grant."
+    },
+    {
+      "sourceId": "production.json",
+      "role": "historical final export and source identity manifest",
+      "bytes": 6319,
+      "sha256": "927adac838b87c796f39ac22fd4af3e4b9a3a1a3f950b5aeb90ceca816a21d02",
+      "provenance": "Original current-v008 production ledger.",
+      "licenseEvidence": "Historical local customer ledger; publication explicitly unauthorized."
+    },
+    {
+      "sourceId": "exports/speech-captions.srt",
+      "role": "caption export derivative",
+      "bytes": 953,
+      "sha256": "8b9328283fe18f7e44e9c957d15121a3443559bbdab7a9549755ab97dd036139",
+      "provenance": "Production manifest binds original SRT identity.",
+      "licenseEvidence": "Customer original caption derivative; no standalone redistribution license."
+    },
+    {
+      "sourceId": "three-v008/render-checks.json",
+      "role": "historical per-frame scene/label evaluation rows",
+      "bytes": 263397,
+      "sha256": "b848a5e9f0c3341b6e2516a8ca5de39fed3f6713f45e8f818f9891692bbc2d8d",
+      "provenance": "696 historical rendered-row records, inspected without executing supplied scripts.",
+      "licenseEvidence": "Customer source evidence, not newly computed rendering acceptance."
+    },
+    {
+      "sourceId": "three-v008/pose-checks.json",
+      "role": "historical pose evaluation rows",
+      "bytes": 12054,
+      "sha256": "e73be2aaaff95f4263931bb666261b407c830f59c362d3798e2912590a4c36db",
+      "provenance": "30 historical pose records.",
+      "licenseEvidence": "Customer source evidence, not newly computed rendering acceptance."
+    },
+    {
+      "sourceId": "review/v008/checks.json",
+      "role": "historical technical QA summary",
+      "bytes": 1574,
+      "sha256": "4c5230d109fd9a2a351516dc76bbb4d5ad5636584da4bb719c3fdfd3b9901f67",
+      "provenance": "Hash matches packaged archive checks-v008.json.",
+      "licenseEvidence": "Technical evidence only; continuous playback/listening not reviewed."
+    },
+    {
+      "sourceId": "exports/everyday-unlocked-tape-hook-v008.mp4",
+      "role": "delivered v008 render reference",
+      "bytes": 4549762,
+      "sha256": "ca8bf292cf4dc7f4c5ede598cc1c2e5908177cda12474bef98fb387a778039b1",
+      "provenance": "Hash matches archived MP4 and original production ledger.",
+      "licenseEvidence": "Customer supplied original output; no upload/publication or public Git copying authorized.",
+      "mediaMetadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 1080,
+            "height": 1920,
+            "pix_fmt": "yuv420p",
+            "color_space": "bt709",
+            "r_frame_rate": "30/1",
+            "nb_frames": "696"
+          },
+          {
+            "codec_name": "aac",
+            "codec_type": "audio",
+            "sample_rate": "48000",
+            "channels": 2,
+            "r_frame_rate": "0/0",
+            "nb_frames": "1089"
+          }
+        ],
+        "format": {
+          "duration": "23.200000"
+        }
+      }
+    },
+    {
+      "sourceId": "three-v008/scene.mjs",
+      "role": "historical source evidence; do not execute as setup",
+      "bytes": 9392,
+      "sha256": "51a51d2539cec41c74ca9bf452e04cf3634a2496cb8a9414ce525e1ad7d28113",
+      "provenance": "Byte-identical to packaged original-source snapshot.",
+      "licenseEvidence": "Customer authored scene/capture/verification source supplied to explain requirements. No explicit public source redistribution license. Port supported reusable behavior; do not ship host-specific runner."
+    },
+    {
+      "sourceId": "three-v008/labels.mjs",
+      "role": "historical source evidence; do not execute as setup",
+      "bytes": 3713,
+      "sha256": "2f6302e99e09edaa00e3bdddcb83ebcf2d8781b7b2a65503b75767422dd19d06",
+      "provenance": "Byte-identical to packaged original-source snapshot.",
+      "licenseEvidence": "Customer authored scene/capture/verification source supplied to explain requirements. No explicit public source redistribution license. Port supported reusable behavior; do not ship host-specific runner."
+    },
+    {
+      "sourceId": "three-v008/render.mjs",
+      "role": "historical source evidence; do not execute as setup",
+      "bytes": 2108,
+      "sha256": "ecfd351f10d9fba05db1befdfd9f6403af5ce575338398593d2a4b6ebe571651",
+      "provenance": "Byte-identical to packaged original-source snapshot.",
+      "licenseEvidence": "Customer authored scene/capture/verification source supplied to explain requirements. No explicit public source redistribution license. Port supported reusable behavior; do not ship host-specific runner."
+    },
+    {
+      "sourceId": "three-v008/verify.py",
+      "role": "historical source evidence; do not execute as setup",
+      "bytes": 3561,
+      "sha256": "0ff74e3785fe647c12652865a647deee3446b03f771e0bbd30e9db690b76dd21",
+      "provenance": "Byte-identical to packaged original-source snapshot.",
+      "licenseEvidence": "Customer authored scene/capture/verification source supplied to explain requirements. No explicit public source redistribution license. Port supported reusable behavior; do not ship host-specific runner."
+    },
+    {
+      "sourceId": "three-v008/index.html",
+      "role": "historical source evidence; do not execute as setup",
+      "bytes": 1018,
+      "sha256": "c8854cf254bc3bbf89c7688be38a4bd7fa9d936e4d5e5cc585766c723006afd9",
+      "provenance": "Byte-identical to packaged original-source snapshot.",
+      "licenseEvidence": "Customer authored scene/capture/verification source supplied to explain requirements. No explicit public source redistribution license. Port supported reusable behavior; do not ship host-specific runner."
+    }
+  ],
+  "fontAudit": {
+    "fontSourceId": "assets/plex-sans-semibold.ttf",
+    "names": {
+      "0": ["Copyright 2018 IBM Corp. All rights reserved."],
+      "1": ["IBM Plex Sans SmBld"],
+      "2": ["Regular"],
+      "4": ["IBM Plex Sans SmBld"],
+      "5": ["Version 3.005"],
+      "6": ["IBMPlexSans-SmBld"],
+      "13": [
+        "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: http://scripts.sil.org/OFL"
+      ],
+      "14": ["http://scripts.sil.org/OFL"],
+      "16": ["IBM Plex Sans"],
+      "17": ["SemiBold"]
+    },
+    "static": true,
+    "axes": [],
+    "os2Weight": 600,
+    "os2Width": 5,
+    "exactCopyScope": "All 17 actual caption texts, seven annotation labels and ENLARGED VIEW",
+    "exactCopyUniqueCodePoints": [
+      32, 39, 44, 45, 46, 58, 65, 67, 68, 69, 71, 72, 73, 75, 76, 78, 79, 80,
+      82, 83, 84, 85, 86, 87, 97, 99, 100, 101, 102, 103, 104, 105, 107, 108,
+      109, 110, 111, 112, 114, 115, 116, 117, 118, 119, 121
+    ],
+    "missingExactCopyCodePoints": [],
+    "coverage": "PASS_CMAP_ONLY",
+    "runtimeLoadingAndRenderedTypography": "NOT_RECHECKED",
+    "thaiBlockCodePoints": ["0xe3f"],
+    "thaiProbeDisposition": "The only Thai-block code point is U+0E3F currency sign; use the separately pinned Noto Sans Thai asset for a Thai capability probe. Plex does not cover Thai letters/marks.",
+    "repoFontIdentity": {
+      "sourceId": "assets/story-motion/fonts/plex-sans-semibold.ttf",
+      "bytes": 202632,
+      "sha256": "a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+      "byteIdenticalToCustomer": true
+    },
+    "fullLicenseIdentity": {
+      "sourceId": "assets/story-motion/fonts/plex-LICENSE.txt",
+      "bytes": 4362,
+      "sha256": "d741e57d5f865e294df801f96b7b5161a88b211df65887e4358d271c9fc5fb4f"
+    },
+    "cssMappingLimit": "Historical @font-face does not declare font-weight; caption CSS requests 600 while SVG labels request the default weight. Exact browser synthesis must be checked against rendered reference; internal weight600 alone does not certify the original CSS selection.",
+    "bladeTextureFont": {
+      "sourceDeclaration": "600 104px Arial",
+      "textScope": "Procedural tape digits 1 through 10",
+      "historicalResolvedCut": "NOT_RECORDED",
+      "axes": "System candidates are static",
+      "portableDisposition": "No distributable original blade texture or recorded resolved Arial cut is supplied. Inspect/pin a redistributable glyph texture or declare any changed texture font. This is an exact visual identity limitation, not a missing narration/caption dependency.",
+      "currentHostCandidates": [
+        {
+          "sourceId": "/System/Library/Fonts/Supplemental/Arial.ttf",
+          "bytes": 773236,
+          "sha256": "525979822591a3447cfc49d943d6f7683508e25543407871c0ed8fed05fd2bd9",
+          "postscriptNames": ["ArialMT"],
+          "weight": 400,
+          "redistributionLicense": "NOT_VERIFIED; do not copy system font into portable package"
+        },
+        {
+          "sourceId": "/System/Library/Fonts/Supplemental/Arial Bold.ttf",
+          "bytes": 750984,
+          "sha256": "d72db21f9242aedd6b917d8549ad5921766b24d5f8d0becfda2ff4c620b3c2e0",
+          "postscriptNames": ["Arial-BoldMT"],
+          "weight": 700,
+          "redistributionLicense": "NOT_VERIFIED; do not copy system font into portable package"
+        }
+      ]
+    }
+  },
+  "audioBinding": {
+    "originalNarrationSourceId": "assets/narration-take-2.mp3",
+    "originalNarrationEncoding": "MP3 mono 44100Hz; this is the generated original, not an extraction from final AAC",
+    "spokenDurationSeconds": 23.034195011337868,
+    "finalSourceMixId": "assets/mix-v001.wav",
+    "finalSourceMixEncoding": "PCM 24-bit stereo 48000Hz",
+    "finalSourceMixDurationSeconds": 23.2,
+    "finalPictureDurationSeconds": 23.2,
+    "allowSpeechStretch": false,
+    "allowInsertedNarrationSilence": false,
+    "placeholderNarrationWavResolved": false,
+    "placeholderDisposition": "episode.example.json narration.wav and word-cues.json are design placeholders. Bind actual selected original MP3, original final WAV mix and transcription.json/captions.json rather than claiming placeholder files exist.",
+    "finalAacIsNotOriginalNarration": true,
+    "sourceAudioSamplesPreservation": "Original source hashes recoverable; no newly rendered output sample-preservation check performed."
+  },
+  "captionTiming": {
+    "sourceId": "assets/captions.json",
+    "count": 17,
+    "frameRange": [0, 693],
+    "cues": [
+      {
+        "id": 0,
+        "startSeconds": 0,
+        "endSeconds": 1.115,
+        "startFrame": 0,
+        "endFrameExclusive": 35,
+        "lineCount": 1
+      },
+      {
+        "id": 1,
+        "startSeconds": 1.196,
+        "endSeconds": 2.252,
+        "startFrame": 36,
+        "endFrameExclusive": 70,
+        "lineCount": 1
+      },
+      {
+        "id": 2,
+        "startSeconds": 2.635,
+        "endSeconds": 3.831,
+        "startFrame": 79,
+        "endFrameExclusive": 116,
+        "lineCount": 1
+      },
+      {
+        "id": 3,
+        "startSeconds": 3.855,
+        "endSeconds": 5.004,
+        "startFrame": 116,
+        "endFrameExclusive": 152,
+        "lineCount": 1
+      },
+      {
+        "id": 4,
+        "startSeconds": 5.445,
+        "endSeconds": 6.722,
+        "startFrame": 163,
+        "endFrameExclusive": 202,
+        "lineCount": 1
+      },
+      {
+        "id": 5,
+        "startSeconds": 6.745,
+        "endSeconds": 7.837,
+        "startFrame": 202,
+        "endFrameExclusive": 237,
+        "lineCount": 1
+      },
+      {
+        "id": 6,
+        "startSeconds": 8.278,
+        "endSeconds": 9.033,
+        "startFrame": 248,
+        "endFrameExclusive": 273,
+        "lineCount": 1
+      },
+      {
+        "id": 7,
+        "startSeconds": 9.242,
+        "endSeconds": 10.809,
+        "startFrame": 277,
+        "endFrameExclusive": 326,
+        "lineCount": 2
+      },
+      {
+        "id": 8,
+        "startSeconds": 11.192,
+        "endSeconds": 12.156,
+        "startFrame": 336,
+        "endFrameExclusive": 367,
+        "lineCount": 1
+      },
+      {
+        "id": 9,
+        "startSeconds": 12.225,
+        "endSeconds": 13.793,
+        "startFrame": 367,
+        "endFrameExclusive": 416,
+        "lineCount": 2
+      },
+      {
+        "id": 10,
+        "startSeconds": 13.944,
+        "endSeconds": 14.849,
+        "startFrame": 418,
+        "endFrameExclusive": 447,
+        "lineCount": 1
+      },
+      {
+        "id": 11,
+        "startSeconds": 14.895,
+        "endSeconds": 15.952,
+        "startFrame": 447,
+        "endFrameExclusive": 480,
+        "lineCount": 1
+      },
+      {
+        "id": 12,
+        "startSeconds": 16.01,
+        "endSeconds": 17.124,
+        "startFrame": 480,
+        "endFrameExclusive": 516,
+        "lineCount": 1
+      },
+      {
+        "id": 13,
+        "startSeconds": 17.566,
+        "endSeconds": 18.541,
+        "startFrame": 527,
+        "endFrameExclusive": 558,
+        "lineCount": 1
+      },
+      {
+        "id": 14,
+        "startSeconds": 18.634,
+        "endSeconds": 19.795,
+        "startFrame": 559,
+        "endFrameExclusive": 596,
+        "lineCount": 1
+      },
+      {
+        "id": 15,
+        "startSeconds": 20.12,
+        "endSeconds": 21.362,
+        "startFrame": 604,
+        "endFrameExclusive": 643,
+        "lineCount": 1
+      },
+      {
+        "id": 16,
+        "startSeconds": 21.42,
+        "endSeconds": 23.034,
+        "startFrame": 643,
+        "endFrameExclusive": 693,
+        "lineCount": 2
+      }
+    ],
+    "importantBinding": "Caption cue11 [447,480) crosses shot cut at frame472; keep phrase cues independent of shots. Caption cue8 starts336; source shot transition begins336 despite source float threshold11.1666667.",
+    "transcriptionSourceId": "assets/transcription.json",
+    "wordCount": 64
+  },
+  "frozenShotMap": [
+    {
+      "shotId": "V8-01",
+      "startFrame": 0,
+      "endFrameExclusive": 78,
+      "startSeconds": 0.0,
+      "endSeconds": 2.6,
+      "purpose": "recognize",
+      "rigState": "free-travel",
+      "measurementMode": null,
+      "selectedContactFace": null,
+      "label": "",
+      "labelEvidence": {},
+      "historicalQRange": [0, 0.18],
+      "originalAudioSourceId": "assets/mix-v001.wav",
+      "cutBoundaryFrames": [0],
+      "proofTarget": null
+    },
+    {
+      "shotId": "V8-02",
+      "startFrame": 78,
+      "endFrameExclusive": 163,
+      "startSeconds": 2.6,
+      "endSeconds": 5.433333333333334,
+      "purpose": "pull-contact",
+      "rigState": "pulling",
+      "measurementMode": "outside",
+      "selectedContactFace": "hook.innerFace",
+      "label": "PULL",
+      "labelEvidence": {
+        "PULL": {
+          "activeBoundsStartFrame": 78,
+          "activeBoundsEndFrameExclusive": 163,
+          "boundsEvaluations": 85,
+          "fullyVisibleFrames": 73
+        }
+      },
+      "historicalQRange": [0, 0.18],
+      "originalAudioSourceId": "assets/mix-v001.wav",
+      "cutBoundaryFrames": [77, 78, 79],
+      "proofTarget": "hook.innerFace"
+    },
+    {
+      "shotId": "V8-03",
+      "startFrame": 163,
+      "endFrameExclusive": 247,
+      "startSeconds": 5.433333333333334,
+      "endSeconds": 8.233333333333333,
+      "purpose": "push-contact",
+      "rigState": "pushing",
+      "measurementMode": "inside",
+      "selectedContactFace": "hook.outerFace",
+      "label": "PUSH",
+      "labelEvidence": {
+        "PUSH": {
+          "activeBoundsStartFrame": 163,
+          "activeBoundsEndFrameExclusive": 247,
+          "boundsEvaluations": 84,
+          "fullyVisibleFrames": 71
+        }
+      },
+      "historicalQRange": [0, 0.18],
+      "originalAudioSourceId": "assets/mix-v001.wav",
+      "cutBoundaryFrames": [162, 163, 164],
+      "proofTarget": "hook.outerFace"
+    },
+    {
+      "shotId": "V8-04",
+      "startFrame": 247,
+      "endFrameExclusive": 336,
+      "startSeconds": 8.233333333333333,
+      "endSeconds": 11.2,
+      "purpose": "thickness-proof",
+      "rigState": "pulled",
+      "measurementMode": null,
+      "selectedContactFace": null,
+      "label": "THICKNESS",
+      "labelEvidence": {
+        "THICKNESS": {
+          "activeBoundsStartFrame": 274,
+          "activeBoundsEndFrameExclusive": 336,
+          "boundsEvaluations": 62,
+          "fullyVisibleFrames": 52
+        }
+      },
+      "historicalQRange": [0, 0],
+      "originalAudioSourceId": "assets/mix-v001.wav",
+      "cutBoundaryFrames": [246, 247, 248],
+      "proofTarget": "hook.thickness"
+    },
+    {
+      "shotId": "V8-05",
+      "startFrame": 336,
+      "endFrameExclusive": 418,
+      "startSeconds": 11.2,
+      "endSeconds": 13.933333333333334,
+      "purpose": "travel-proof",
+      "rigState": "free-travel",
+      "measurementMode": null,
+      "selectedContactFace": null,
+      "label": "TRAVEL",
+      "labelEvidence": {
+        "TRAVEL": {
+          "activeBoundsStartFrame": 336,
+          "activeBoundsEndFrameExclusive": 418,
+          "boundsEvaluations": 82,
+          "fullyVisibleFrames": 70
+        }
+      },
+      "historicalQRange": [0, 0.18],
+      "originalAudioSourceId": "assets/mix-v001.wav",
+      "cutBoundaryFrames": [335, 336, 337],
+      "proofTarget": "rivet.travel"
+    },
+    {
+      "shotId": "V8-06",
+      "startFrame": 418,
+      "endFrameExclusive": 472,
+      "startSeconds": 13.933333333333334,
+      "endSeconds": 15.733333333333333,
+      "purpose": "aligned-inner-face",
+      "rigState": "pulled",
+      "measurementMode": "outside",
+      "selectedContactFace": "hook.innerFace",
+      "label": "INSIDE",
+      "labelEvidence": {
+        "INSIDE": {
+          "activeBoundsStartFrame": 418,
+          "activeBoundsEndFrameExclusive": 472,
+          "boundsEvaluations": 54,
+          "fullyVisibleFrames": 41
+        }
+      },
+      "historicalQRange": [0, 0],
+      "originalAudioSourceId": "assets/mix-v001.wav",
+      "cutBoundaryFrames": [417, 418, 419],
+      "proofTarget": "hook.innerFace"
+    },
+    {
+      "shotId": "V8-07",
+      "startFrame": 472,
+      "endFrameExclusive": 526,
+      "startSeconds": 15.733333333333333,
+      "endSeconds": 17.533333333333335,
+      "purpose": "aligned-outer-face",
+      "rigState": "pushed",
+      "measurementMode": "inside",
+      "selectedContactFace": "hook.outerFace",
+      "label": "OUTSIDE",
+      "labelEvidence": {
+        "OUTSIDE": {
+          "activeBoundsStartFrame": 472,
+          "activeBoundsEndFrameExclusive": 526,
+          "boundsEvaluations": 54,
+          "fullyVisibleFrames": 41
+        }
+      },
+      "historicalQRange": [0.18, 0.18],
+      "originalAudioSourceId": "assets/mix-v001.wav",
+      "cutBoundaryFrames": [471, 472, 473],
+      "proofTarget": "hook.outerFace"
+    },
+    {
+      "shotId": "V8-08",
+      "startFrame": 526,
+      "endFrameExclusive": 603,
+      "startSeconds": 17.533333333333335,
+      "endSeconds": 20.1,
+      "purpose": "fixed-rivets-slot-slide",
+      "rigState": "free-travel",
+      "measurementMode": null,
+      "selectedContactFace": null,
+      "label": "SLIDES",
+      "labelEvidence": {
+        "SLIDES": {
+          "activeBoundsStartFrame": 526,
+          "activeBoundsEndFrameExclusive": 603,
+          "boundsEvaluations": 77,
+          "fullyVisibleFrames": 64
+        }
+      },
+      "historicalQRange": [0, 0.18],
+      "originalAudioSourceId": "assets/mix-v001.wav",
+      "cutBoundaryFrames": [525, 526, 527],
+      "proofTarget": "hook.flange"
+    },
+    {
+      "shotId": "V8-09",
+      "startFrame": 603,
+      "endFrameExclusive": 696,
+      "startSeconds": 20.1,
+      "endSeconds": 23.2,
+      "purpose": "return-context",
+      "rigState": "pulled",
+      "measurementMode": "outside",
+      "selectedContactFace": "hook.innerFace",
+      "label": "",
+      "labelEvidence": {},
+      "historicalQRange": [0, 0],
+      "originalAudioSourceId": "assets/mix-v001.wav",
+      "cutBoundaryFrames": [602, 603, 604],
+      "proofTarget": "housing.center"
+    }
+  ],
+  "semanticEventReference": {
+    "status": "Derived from inspected source expressions, not a preexisting semantic event input file; preserve original timing rather than claiming cues were already compiled",
+    "sourceId": "three-v008/scene.mjs",
+    "events": [
+      {
+        "id": "recognize-free-travel",
+        "shotId": "V8-01",
+        "motionWindowsSeconds": [
+          [0.3, 0.72],
+          [1.1, 1.46],
+          [1.65, 2.03]
+        ]
+      },
+      {
+        "id": "pull-extend",
+        "shotId": "V8-02",
+        "startSeconds": 3.65,
+        "endSeconds": 4.6,
+        "qFrom": 0.18,
+        "qTo": 0,
+        "contactEquation": "modelRootX + q = 0 throughout contact shot"
+      },
+      {
+        "id": "push-retract",
+        "shotId": "V8-03",
+        "startSeconds": 6.5,
+        "endSeconds": 7.6,
+        "qFrom": 0,
+        "qTo": 0.18,
+        "contactEquation": "modelRootX + q - h = 0 throughout contact shot"
+      },
+      {
+        "id": "thickness-marker",
+        "shotId": "V8-04",
+        "labelThresholdSeconds": 9.12,
+        "bracketThresholdSeconds": 9.13,
+        "firstFrame": 274
+      },
+      {
+        "id": "travel-detail",
+        "shotId": "V8-05",
+        "motionWindowsSeconds": [
+          [11.35, 12.05],
+          [12.75, 13.4]
+        ]
+      },
+      {
+        "id": "inner-face-hold",
+        "shotId": "V8-06",
+        "frameInterval": [418, 472],
+        "q": 0,
+        "labelMeaning": "inner hook face; outside measurement mode"
+      },
+      {
+        "id": "outer-face-hold",
+        "shotId": "V8-07",
+        "frameInterval": [472, 526],
+        "q": 0.18,
+        "labelMeaning": "outer hook face; inside measurement mode"
+      },
+      {
+        "id": "slot-slide-fixed-rivets",
+        "shotId": "V8-08",
+        "motionWindowsSeconds": [
+          [17.8, 18.35],
+          [18.8, 19.42]
+        ]
+      },
+      {
+        "id": "whole-tool-return",
+        "shotId": "V8-09",
+        "frameInterval": [603, 696],
+        "datumVisibleBeforeSeconds": 21.5
+      }
+    ],
+    "sourceSoundCueLedger": {
+      "sourceId": "assets/sound-cues.json",
+      "cues": [
+        {
+          "time": 4.8667,
+          "kind": "short original synthetic contact accent",
+          "peak_design_dbfs": -26
+        },
+        {
+          "time": 7.6333,
+          "kind": "short original synthetic contact accent",
+          "peak_design_dbfs": -26
+        },
+        {
+          "time": 15.2,
+          "kind": "short original synthetic contact accent",
+          "peak_design_dbfs": -26
+        },
+        {
+          "time": 2.5667,
+          "kind": "original noise transition",
+          "peak_design_dbfs": -35
+        },
+        {
+          "time": 8.2333,
+          "kind": "original noise transition",
+          "peak_design_dbfs": -35
+        },
+        {
+          "time": 11.1667,
+          "kind": "original noise transition",
+          "peak_design_dbfs": -35
+        },
+        {
+          "time": 17.5333,
+          "kind": "original noise transition",
+          "peak_design_dbfs": -35
+        }
+      ]
+    },
+    "soundBindingLimit": "Three contact-accent timestamps (4.8667,7.6333,15.2) do not directly equal all source motion completion events. Preserve original mix; semantic binding for reusable edit recipes is future implementation."
+  },
+  "contactTerminologyResolution": {
+    "status": "RESOLVED_FOR_SELECTED_CONCEPTUAL_DESIGN",
+    "factualSource": {
+      "title": "STANLEY: Why does the hook on the end of the Stanley tape rule move?",
+      "url": "https://support.stanleytools.com/hc/en-us/articles/360012682938-Why-does-the-hook-on-the-end-of-the-Stanley-tape-rule-move",
+      "reviewedAt": "2026-10-09",
+      "pageUpdatedAt": "2025-07-25",
+      "supports": "Hook travel compensates thickness; outside measurement pulls and inside measurement pushes. Does not supply manufacturing dimensions."
+    },
+    "independentFields": ["measurementMode", "selectedContactFace", "rigState"],
+    "pull": {
+      "measurementMode": "outside",
+      "selectedContactFace": "hook.innerFace",
+      "rigEndpoint": "pulled",
+      "q": 0,
+      "localPlateInterval": [-0.18, 0],
+      "innerFaceWorldEquation": "modelRootX + q",
+      "contactDatum": 0
+    },
+    "push": {
+      "measurementMode": "inside",
+      "selectedContactFace": "hook.outerFace",
+      "rigEndpoint": "pushed",
+      "q": 0.18,
+      "localPlateInterval": [0, 0.18],
+      "outerFaceWorldEquation": "modelRootX + q - h",
+      "contactDatum": 0
+    },
+    "labelMeaning": "INSIDE/OUTSIDE label the hook face in shots6/7, not measurement mode. They are not swapped when measurementMode outside/inside is introduced.",
+    "rigTransitions": "Source q runs from h to0 when pulled and0 to h when pushed; root translation keeps the chosen contact face at x0 throughout the contact demonstration. Use named states, not inferred label text.",
+    "referenceFieldPolicy": "selectedContactFace is null or a physical inner/outer hook face; proofTarget independently names annotation/camera/detail targets. Return context retains outside measurement contact with hook.innerFace while camera proofTarget is housing.center."
+  },
+  "modelSimplifications": [
+    "Unbranded generic tape measure, authored dimensions in explanatory units; hook thickness h=.18 and travel h are conceptual, not manufacturing measurements.",
+    "No CAD, real tolerance, force/contact simulation, material certification or general collision detection.",
+    "Two rivets/slot forms are authored original geometry; rivets are children of fixed model, hook flange is the moving group.",
+    "Blade is procedurally curved with z=1.91+.075*(1-y*y) and a thin backing box; doubled-sided blade material is a source modeling choice.",
+    "Rounded flange extrusion provides real through-slots and bevels; front hook, fold transition and housing are authored generic solid shapes.",
+    "Wood grain and tape digits are generated procedural textures; studio RoomEnvironment is a library scene, not a licensed customer photographic environment.",
+    "Source slots/clearance/contact tests are analytic model checks, not mechanical certification.",
+    "Each shot uses intentionally authored camera views/cuts; no general auto-framing or reusable camera compiler is present in historical scripts."
+  ],
+  "historicalQa": {
+    "sourceId": "review/v008/checks.json",
+    "frameCount": 696,
+    "shotCount": 9,
+    "boundsEvaluations": 498,
+    "fullyVisibleLabelFrames": {
+      "PULL": 73,
+      "PUSH": 71,
+      "THICKNESS": 52,
+      "TRAVEL": 70,
+      "INSIDE": 41,
+      "OUTSIDE": 41,
+      "SLIDES": 64
+    },
+    "contactFrameChecks": 370,
+    "slotChecks": 1392,
+    "hookBladeClearanceChecks": 696,
+    "decodedSampleFrames": [
+      0, 12, 24, 36, 48, 60, 72, 77, 78, 79, 84, 96, 108, 120, 132, 144, 156,
+      162, 163, 164, 168, 180, 192, 204, 216, 228, 240, 246, 247, 248, 252, 264,
+      276, 288, 300, 312, 324, 335, 336, 337, 348, 360, 372, 384, 396, 408, 417,
+      418, 419, 420, 432, 444, 456, 468, 471, 472, 473, 480, 492, 504, 516, 525,
+      526, 527, 528, 540, 552, 564, 576, 588, 600, 602, 603, 604, 612, 624, 636,
+      648, 660, 672, 684, 695
+    ],
+    "decodedSampleFrameCount": 82,
+    "fullDecodeHistorical": "PASS",
+    "continuousPlaybackListening": "NOT_REVIEWED",
+    "currentVisualInspection": "All three original v008 timeline contact sheets viewed on2026-10-09. Recognizable housing return, solid hook side faces, two through-slots, fixed rivets, varied seven labels, pull wood contact and push wall contact visible in samples. This remains sampled still-image evidence, not audiovisual acceptance.",
+    "creativeFeedback": "Brief records customer considered v008 better; production ledger remains review pending. This is not final creative approval."
+  },
+  "runtimeDependencyInventory": {
+    "historicalSourceDeclaredThreeVersion": "0.186.0",
+    "historicalRecordedNativeRuntime": {
+      "renderer": "composition-webgl2-0.66.0",
+      "evaluator": "composition-evaluator-53",
+      "node": "22.23.1",
+      "chromium": "151.0.7922.34"
+    },
+    "currentToolchain": {
+      "node": "22.23.1",
+      "pnpm": "10.29.3",
+      "python": "3.12.11",
+      "uv": "0.7.12",
+      "playwright": "1.62.1",
+      "chromiumRevision": "1234",
+      "chromiumVersion": "151.0.7922.34",
+      "ffmpeg": "8.0.1"
+    },
+    "installedDependencies": [
+      {
+        "name": "three",
+        "version": "0.186.0",
+        "license": "MIT",
+        "packageJsonIdentity": {
+          "bytes": 3672,
+          "sha256": "ab4ff6950aab522dfe6980f19914a5eb2cadb689a36c6c44f4d3869c5e46dc89"
+        },
+        "licenseFileIdentity": {
+          "bytes": 1081,
+          "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc"
+        },
+        "currentResolvedPath": "/Users/jjae/Documents/playground/still-shift/node_modules/.pnpm/three@0.186.0/node_modules/three/package.json",
+        "historicalExactIdentity": "Version for Three is recorded; Playwright current pinned version is corroborated by toolchain. Historical source does not hash node_modules/package contents or browser binary."
+      },
+      {
+        "name": "playwright",
+        "version": "1.62.1",
+        "license": "Apache-2.0",
+        "packageJsonIdentity": {
+          "bytes": 1416,
+          "sha256": "ca170ec143a88ed3043ac953eb3b2377b2b97304104f4e1e23316684ce2c35af"
+        },
+        "licenseFileIdentity": {
+          "bytes": 11601,
+          "sha256": "45873d00a0dd243596deb4aa23b2493b3d1f0671921bf2538ea431d7380220eb"
+        },
+        "currentResolvedPath": "/Users/jjae/Documents/playground/still-shift/node_modules/.pnpm/playwright@1.62.1/node_modules/playwright/package.json",
+        "historicalExactIdentity": "Version for Three is recorded; Playwright current pinned version is corroborated by toolchain. Historical source does not hash node_modules/package contents or browser binary."
+      }
+    ],
+    "portableLimit": "Historical capture imports absolute checkout paths, starts its own local HTTP server and uses platform Metal flags. No portable package/dependency lock was supplied for that standalone episode. Do not execute/adopt runner as supported production."
+  },
+  "unresolvedInputsAndClaims": [
+    {
+      "id": "original-source-recovery",
+      "status": "RESOLVED",
+      "blocksExactE01Reconstruction": false,
+      "detail": "Original selected narration MP3, final WAV mix, effects WAV, font, captions, transcription, sound cues, scene sources and shot map recovered and hashed."
+    },
+    {
+      "id": "placeholder-inputs",
+      "status": "NOT_REAL_SOURCE_IDS",
+      "blocksExactE01Reconstruction": false,
+      "detail": "Do not invent narration.wav/word-cues.json from the design fixture; bind actual recovered inputs."
+    },
+    {
+      "id": "blade-font-identity",
+      "status": "HISTORICAL_RESOLVED_CUT_NOT_RECORDED",
+      "blocksExactPixelIdentityClaim": true,
+      "detail": "Unpinned system Arial600 contributes procedural tape digits. This does not block bridge/native contracts or E01 mechanics; explicit texture-font disposition and render comparison are required."
+    },
+    {
+      "id": "runtime-history",
+      "status": "EXACT_ORIGINAL_GPU_DRIVER_BROWSER_BUILD_CONTENTS_NOT_CAPTURED",
+      "blocksBitExactHistoricalGpuPixelClaim": true,
+      "detail": "Versions/source are known; hardware/backend/browser hashes are not historical receipts. New implementation must pin its own runtime and verify similarity/parity instead of inventing historical identity."
+    },
+    {
+      "id": "redistribution",
+      "status": "PUBLIC_MEDIA_REDISTRIBUTION_LICENSE_NOT_SUPPLIED",
+      "blocksAuthorizedLocalTechnicalWork": false,
+      "detail": "Keep customer originals outside Git. Portable customer handoff can include scoped licensed dependencies; public demo should use independent synthetic fixtures and existing OFL assets."
+    },
+    {
+      "id": "narration-license",
+      "status": "PROVENANCE_CAPTURED_ACCOUNT_TERMS_NOT_AUDITED",
+      "blocksLocalSourceConsumption": false,
+      "detail": "Original purchase generation receipt does not replace a provider/account licensing review for public redistribution."
+    },
+    {
+      "id": "continuous-review",
+      "status": "NOT_REVIEWED",
+      "blocksHumanProductionAcceptance": true,
+      "detail": "No continuous playback/listening or exact-output human acceptance can be inferred from decoded images/technical pass."
+    }
+  ]
+}

@@ -1,0 +1,446 @@
+{
+  "schemaVersion": "mechanism-milestone-results-1",
+  "milestone": "MS0",
+  "date": "2026-10-09",
+  "status": "complete",
+  "owner": "Codex",
+  "branch": "codex/mechanism-ms0",
+  "implementationAuthorization": "Owner requested the ordered five-milestone implementation, separate branch/PR for each and frequent commits on 2026-10-09.",
+  "baseline": {
+    "main": "e6eb7b06e3b5a042be2c1e2568a1a84cf9c041ad",
+    "releaseSource": "db28a938eeef63bee5626590359ed3e0b1293355",
+    "compositionBaselineIdentity": "e6eb7b06e3b5a042be2c1e2568a1a84cf9c041ad",
+    "sourceTreeComparison": {
+      "status": "passed",
+      "method": "git diff --name-status release-source main across complete tracked trees; all differences are documentation",
+      "changedPaths": [
+        {
+          "status": "M",
+          "path": "docs/dev-log.md"
+        },
+        {
+          "status": "M",
+          "path": "docs/npm-release-plan.md"
+        },
+        {
+          "status": "M",
+          "path": "docs/npm-release-results.json"
+        },
+        {
+          "status": "A",
+          "path": "docs/release-branch-setup-results.json"
+        }
+      ],
+      "nonDocumentationChanges": [],
+      "trackedPathsAtRelease": 2578,
+      "trackedPathsAtMain": 2579,
+      "unchangedNonDocumentationPaths": 2191,
+      "sourceAndBuildInputPathsCompared": 1150,
+      "sourceAndBuildInputPrefixes": [
+        "packages/",
+        "tools/",
+        "services/",
+        "apps/",
+        "scripts/",
+        "examples/",
+        "benchmarks/fixtures/"
+      ],
+      "buildRootNames": [
+        ".npmrc",
+        "eslint.config.mjs",
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        "pyproject.toml",
+        "toolchain.json",
+        "tsconfig.build.json",
+        "tsconfig.json",
+        "uv.lock",
+        "vite.config.ts",
+        "vitest.config.ts"
+      ],
+      "note": "This comparison covers complete committed trees. Dirty owner documentation/skill changes in the primary checkout are not baseline changes and were not modified."
+    },
+    "versions": {
+      "compositionSchema": "composition-1",
+      "evaluator": "composition-evaluator-57",
+      "canvasRenderer": "composition-canvas-1.47.7",
+      "webglRenderer": "composition-webgl2-0.68.7",
+      "mediaDecoder": "composition-media-decoder-2",
+      "audioDecoder": "composition-audio-decoder-1",
+      "audioMixer": "composition-audio-mixer-2",
+      "output": "composition-output-1",
+      "compositionExportRuntime": "chromium-ffmpeg-0.7.1",
+      "parallelExportRuntime": "chromium-ffmpeg-0.8.1",
+      "browserProfile": "chromium-software-2"
+    },
+    "toolchain": {
+      "node": "22.23.1",
+      "pnpm": "10.29.3",
+      "python": "3.12.11",
+      "uv": "0.7.12",
+      "playwright": "1.62.1",
+      "chromiumRevision": "1234",
+      "chromiumVersion": "151.0.7922.34",
+      "ffmpeg": "8.0.1"
+    }
+  },
+  "compositionGate": {
+    "approvedLane": "CE13 → CE15 → CE14",
+    "all21CoreDeliverablesMerged": true,
+    "ce16": "Delivered; reuse current audio APIs, human listening remains separate.",
+    "softwareVerification": "passed-in-stages; historical failures and reruns retained",
+    "sourceInputsUnchangedFromRelease": true,
+    "freshCompleteGate": false,
+    "releaseEvidenceRevalidation": {
+      "record": "docs/npm-release-results.json",
+      "checks": [
+        {
+          "path": "benchmarks/results/npm-release-20261009/continuation.json",
+          "absolutePath": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/npm-release-20261009/continuation.json",
+          "available": true,
+          "expectedSha256": "f6db929f262366bd2364274f1b9f0eb55ee3d2a79df88fe1f388966c9def4ac9",
+          "actualSha256": "f6db929f262366bd2364274f1b9f0eb55ee3d2a79df88fe1f388966c9def4ac9",
+          "hashMatches": true,
+          "byteLength": 2883
+        },
+        {
+          "path": "benchmarks/results/npm-release-20261009/continuation.log",
+          "absolutePath": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/npm-release-20261009/continuation.log",
+          "available": true,
+          "expectedSha256": "92133a67f7784dd766c06b132b2091a8f95ada8fd52a3be8a805bdda1387013e",
+          "actualSha256": "92133a67f7784dd766c06b132b2091a8f95ada8fd52a3be8a805bdda1387013e",
+          "hashMatches": true,
+          "byteLength": 204002
+        },
+        {
+          "path": "benchmarks/results/npm-release-20261009/full-gate.json",
+          "absolutePath": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/npm-release-20261009/full-gate.json",
+          "available": true,
+          "expectedSha256": "34debec41d97f3653a009cd3ec7cf98b7b91d1cb368f20f3d3c64b20103b2445",
+          "actualSha256": "34debec41d97f3653a009cd3ec7cf98b7b91d1cb368f20f3d3c64b20103b2445",
+          "hashMatches": true,
+          "byteLength": 503
+        },
+        {
+          "path": "benchmarks/results/npm-release-20261009/full-gate.log",
+          "absolutePath": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/npm-release-20261009/full-gate.log",
+          "available": true,
+          "expectedSha256": "d48e240eb3367bf8202695aaffd20b20dce2f237bd344e2ed597ed0baf69e34a",
+          "actualSha256": "d48e240eb3367bf8202695aaffd20b20dce2f237bd344e2ed597ed0baf69e34a",
+          "hashMatches": true,
+          "byteLength": 3204476
+        },
+        {
+          "path": "benchmarks/results/npm-release-20261009/panel-rerun.log",
+          "absolutePath": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/npm-release-20261009/panel-rerun.log",
+          "available": true,
+          "expectedSha256": "9e847b6313ace8b7867a8febb8ea8f4c946472b7ef3f0e8621e6299fd50dc799",
+          "actualSha256": "9e847b6313ace8b7867a8febb8ea8f4c946472b7ef3f0e8621e6299fd50dc799",
+          "hashMatches": true,
+          "byteLength": 1049
+        }
+      ],
+      "allRequestedArtifactsAvailable": true,
+      "allRecordedHashesMatch": true,
+      "recordedFullGate": {
+        "command": "pnpm release:check",
+        "startedAt": "2026-10-09T09:49:23.531002+00:00",
+        "baseCommit": "bd0197cdcbef7ef78f84d41d55c3dad508c34b7f",
+        "trackedDiffSha256": "91787f54c9a875a0d2b7b46ce626d2262b2ca4e948a80a523e888dce01165516",
+        "log": "benchmarks/results/npm-release-20261009/full-gate.log",
+        "status": "failed",
+        "exitCode": 1,
+        "elapsedSeconds": 5860.625,
+        "finishedAt": "2026-10-09T11:27:04.141985+00:00",
+        "logSha256": "d48e240eb3367bf8202695aaffd20b20dce2f237bd344e2ed597ed0baf69e34a",
+        "failure": "commerce/atom-panel render + readback median ratio 1.2667984198048172 exceeds the unchanged 1.25 limit; pixel parity passed."
+      },
+      "recordedContinuation": {
+        "commands": [
+          "pnpm test:browser:composition-commerce-adapter",
+          "pnpm test:browser:composition-cinematic-adapter",
+          "pnpm test:browser:composition-typography-adapter",
+          "pnpm test:browser:composition-provider-typography",
+          "pnpm test:browser:composition-program",
+          "pnpm test:browser:composition-inspector",
+          "pnpm test:browser:composition-builder",
+          "pnpm test:browser:composition-depth",
+          "pnpm test:browser:composition-legacy-adapter",
+          "pnpm test:browser:composition-family-timeline",
+          "pnpm test:browser:composition-family-defaults",
+          "pnpm test:browser:composition-baselines",
+          "pnpm benchmark",
+          "pnpm test:package"
+        ],
+        "startedAt": "2026-10-09T11:28:47.913435+00:00",
+        "baseCommit": "bd0197cdcbef7ef78f84d41d55c3dad508c34b7f",
+        "log": "benchmarks/results/npm-release-20261009/continuation.log",
+        "status": "failed",
+        "completedCommands": [
+          {
+            "command": "pnpm test:browser:composition-commerce-adapter",
+            "exitCode": 0,
+            "seconds": 2576.553
+          },
+          {
+            "command": "pnpm test:browser:composition-cinematic-adapter",
+            "exitCode": 0,
+            "seconds": 3891.173
+          },
+          {
+            "command": "pnpm test:browser:composition-typography-adapter",
+            "exitCode": 0,
+            "seconds": 199.165
+          },
+          {
+            "command": "pnpm test:browser:composition-provider-typography",
+            "exitCode": 0,
+            "seconds": 10.148
+          },
+          {
+            "command": "pnpm test:browser:composition-program",
+            "exitCode": 0,
+            "seconds": 14.424
+          },
+          {
+            "command": "pnpm test:browser:composition-inspector",
+            "exitCode": 0,
+            "seconds": 18.672
+          },
+          {
+            "command": "pnpm test:browser:composition-builder",
+            "exitCode": 0,
+            "seconds": 27.248
+          },
+          {
+            "command": "pnpm test:browser:composition-depth",
+            "exitCode": 0,
+            "seconds": 520.715
+          },
+          {
+            "command": "pnpm test:browser:composition-legacy-adapter",
+            "exitCode": 0,
+            "seconds": 1510.48
+          },
+          {
+            "command": "pnpm test:browser:composition-family-timeline",
+            "exitCode": 0,
+            "seconds": 15.186
+          },
+          {
+            "command": "pnpm test:browser:composition-family-defaults",
+            "exitCode": 0,
+            "seconds": 1325.746
+          },
+          {
+            "command": "pnpm test:browser:composition-baselines",
+            "exitCode": 0,
+            "seconds": 286.034
+          },
+          {
+            "command": "pnpm benchmark",
+            "exitCode": 0,
+            "seconds": 2.761
+          },
+          {
+            "command": "pnpm test:package",
+            "exitCode": 1,
+            "seconds": 41.64
+          }
+        ],
+        "reason": "Rerun the full commerce suite after a panel timing outlier, then every remaining release check without changing thresholds.",
+        "exitCode": 1,
+        "elapsedSeconds": 10439.963,
+        "finishedAt": "2026-10-09T14:22:47.954318+00:00",
+        "logSha256": "92133a67f7784dd766c06b132b2091a8f95ada8fd52a3be8a805bdda1387013e"
+      },
+      "technicalVerification": {
+        "status": "passed-in-stages",
+        "softwareGate": "pnpm check && pnpm benchmark",
+        "packageGate": "pnpm test:package",
+        "uninterruptedAggregatePass": false,
+        "explanation": "All required software checks passed across the initial run and complete failed-suite rerun/continuation. The initial panel timing outlier passed focused and complete-suite reruns without threshold changes. The continuation then exposed an installed browser-setup path bug; after repair, all 26 final archive checks passed. After making the root package public, synchronize the pnpm publication lock metadata and repair missing runtime shrinkwrap inclusion. Root packing and all 26 corrected archive checks pass; renderer/engine sources and dependency versions remain unchanged."
+      },
+      "interpretation": "These are independently rehashed retained historical logs, not a new gate run. Full release gate failed on a timing outlier; focused/complete-suite reruns and continuation/software completion plus final package checks establish passed-in-stages status. Preserve failures and do not relabel as an uninterrupted pass."
+    },
+    "deferred": [
+      "CE6-P owner-paused",
+      "CE8-L-F advanced shading deferred",
+      "CE5-X/Q9 blocked",
+      "CE9-F1 follow-up"
+    ]
+  },
+  "acceptance": [
+    {
+      "id": "MS0-API",
+      "status": "delivered",
+      "evidence": "./mechanism-shorts-ms0-api-audit.json"
+    },
+    {
+      "id": "MS0-INPUTS",
+      "status": "delivered",
+      "evidence": "./mechanism-shorts-ms0-inputs.json",
+      "summary": "27 recovered dependencies; all 25 archive entries and 13 source-copy receipts pass; no audio/caption recovery blocker."
+    },
+    {
+      "id": "MS0-FONTS",
+      "status": "delivered",
+      "evidence": "./mechanism-shorts-ms0-typography-audit.json",
+      "summary": "Actual static Plex SemiBold cut and E01 exact-copy cmap coverage; Plex Thai negative and Noto control retained."
+    },
+    {
+      "id": "MS0-REFERENCE",
+      "status": "delivered",
+      "evidence": "./mechanism-shorts-ms0-inputs.json",
+      "summary": "Nine half-open shot ranges, seven label roles, events and cut-crossing captions frozen from original v008 source and historical 696-frame rows."
+    },
+    {
+      "id": "MS0-RUBRIC",
+      "status": "delivered",
+      "evidence": "./mechanism-shorts-ms0-baseline.md#frozen-visual-and-explanation-rubric"
+    },
+    {
+      "id": "MS0-MEASUREMENT",
+      "status": "delivered",
+      "evidence": "./mechanism-shorts-ms0-baseline.md#comparable-baseline-tasks-and-telemetry",
+      "tokens": null,
+      "activeCreatorMinutes": null,
+      "savings": null
+    },
+    {
+      "id": "MS0-BOUNDARIES",
+      "status": "delivered",
+      "evidence": "./mechanism-shorts-ms0-baseline.md#initial-package-and-resource-boundaries",
+      "budgets": "provisional admission limits; actual representative-scene costs unmeasured"
+    },
+    {
+      "id": "MS0-ESTIMATES",
+      "status": "delivered",
+      "evidence": "./mechanism-shorts-ms0-baseline.md#milestone-work-estimate-and-checkpoints",
+      "calendarDeadline": null
+    }
+  ],
+  "verification": [
+    {
+      "command": "pnpm install --offline --frozen-lockfile",
+      "exitCode": 0,
+      "context": "Isolated worktree; Node22.23.1/pnpm10.29.3; 178 packages from local store; lock unchanged."
+    },
+    {
+      "command": "pnpm toolchain:check",
+      "exitCode": 0,
+      "context": "Pinned toolchain and real Chromium startup pass; isolated Python environment created."
+    },
+    {
+      "command": "gh api repos/xxibcill/still-shift/actions/permissions",
+      "exitCode": 0,
+      "actionsEnabled": false,
+      "settingsChanged": false
+    },
+    {
+      "command": "pnpm exec prettier --check <all changed Markdown/JSON>; local link/anchor check; git diff --check",
+      "status": "passed",
+      "localReferencesChecked": 81,
+      "missingPathsOrAnchors": 0,
+      "note": "Final status/log formatting rechecked before commit."
+    }
+  ],
+  "review": {
+    "sampledReferenceImages": {
+      "status": "inspected",
+      "method": "Original three v008 timeline sheets inspected in this session; preserve source hash bindings.",
+      "claim": "Reference/rubric assessment only; no new implementation images."
+    },
+    "continuousMotion": "not-reviewed",
+    "listening": "not-reviewed",
+    "humanCreativeAcceptance": "not-reviewed"
+  },
+  "unresolved": [
+    {
+      "id": "original-source-recovery",
+      "status": "RESOLVED",
+      "blocksExactE01Reconstruction": false,
+      "detail": "Original selected narration MP3, final WAV mix, effects WAV, font, captions, transcription, sound cues, scene sources and shot map recovered and hashed."
+    },
+    {
+      "id": "placeholder-inputs",
+      "status": "NOT_REAL_SOURCE_IDS",
+      "blocksExactE01Reconstruction": false,
+      "detail": "Do not invent narration.wav/word-cues.json from the design fixture; bind actual recovered inputs."
+    },
+    {
+      "id": "blade-font-identity",
+      "status": "HISTORICAL_RESOLVED_CUT_NOT_RECORDED",
+      "blocksExactPixelIdentityClaim": true,
+      "detail": "Unpinned system Arial600 contributes procedural tape digits. This does not block bridge/native contracts or E01 mechanics; explicit texture-font disposition and render comparison are required."
+    },
+    {
+      "id": "runtime-history",
+      "status": "EXACT_ORIGINAL_GPU_DRIVER_BROWSER_BUILD_CONTENTS_NOT_CAPTURED",
+      "blocksBitExactHistoricalGpuPixelClaim": true,
+      "detail": "Versions/source are known; hardware/backend/browser hashes are not historical receipts. New implementation must pin its own runtime and verify similarity/parity instead of inventing historical identity."
+    },
+    {
+      "id": "redistribution",
+      "status": "PUBLIC_MEDIA_REDISTRIBUTION_LICENSE_NOT_SUPPLIED",
+      "blocksAuthorizedLocalTechnicalWork": false,
+      "detail": "Keep customer originals outside Git. Portable customer handoff can include scoped licensed dependencies; public demo should use independent synthetic fixtures and existing OFL assets."
+    },
+    {
+      "id": "narration-license",
+      "status": "PROVENANCE_CAPTURED_ACCOUNT_TERMS_NOT_AUDITED",
+      "blocksLocalSourceConsumption": false,
+      "detail": "Original purchase generation receipt does not replace a provider/account licensing review for public redistribution."
+    },
+    {
+      "id": "continuous-review",
+      "status": "NOT_REVIEWED",
+      "blocksHumanProductionAcceptance": true,
+      "detail": "No continuous playback/listening or exact-output human acceptance can be inferred from decoded images/technical pass."
+    }
+  ],
+  "next": "Create MS0 PR against main after verification, then create codex/mechanism-ms1 based on main with the exact MS0 prerequisite commits. Start contract/one-frame/contact-shot bridge proof before full E01.",
+  "limits": [
+    "No historical customer scripts executed; no customer media committed.",
+    "No runtime source edits or fresh full software gate in MS0.",
+    "Actual mesh/material performance, final typography/rendering and portable E01 lifecycle are MS1/MS1N work.",
+    "No publication or public media redistribution performed."
+  ],
+  "artifacts": {
+    "inputs": "docs/mechanism-shorts-ms0-inputs.json",
+    "api": "docs/mechanism-shorts-ms0-api-audit.json",
+    "typography": "docs/mechanism-shorts-ms0-typography-audit.json",
+    "protocol": "docs/mechanism-shorts-ms0-baseline.md"
+  },
+  "verificationHistory": [
+    {
+      "stage": "isolated toolchain executable lookup",
+      "status": "failed",
+      "reason": "Direct v22 bin/pnpm path does not exist; use nvm activation and installed pnpm shim.",
+      "resolution": "nvm use22.23.1; pnpm install and toolchain check pass."
+    },
+    {
+      "stage": "ad-hoc documentation reference checker",
+      "status": "failed",
+      "reason": "Unbalanced regular expression; no application test failure.",
+      "resolution": "Corrected checker then found missing restored-record reference and pre-existing deformation anchor; both fixed."
+    },
+    {
+      "stage": "document references rerun",
+      "status": "passed",
+      "checked": 81,
+      "failures": []
+    }
+  ],
+  "independentReview": {
+    "reviewer": "Separate MS0 API audit agent",
+    "initialFindings": [
+      "Stale baseline/activation text",
+      "Overloaded selectedContactFace for camera/annotation targets",
+      "Typography recovery note stale"
+    ],
+    "status": "all three repaired and independently verified; no remaining substantive blocker",
+    "softwareTestsOrRenders": false
+  }
+}

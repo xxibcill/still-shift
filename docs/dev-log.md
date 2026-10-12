@@ -43,6 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #51 conflicts resolved (2026-10-12):** merged `main` `3fab0162` into
+  MS0 head `d55908fa` in an isolated worktree. Retain the approved MS0 → MS1 →
+  required MS1N → MS2 → MS3 sequence and both the MS0 audit and 0.1.1 release
+  records. The roadmap now names the 0.1.1 checkpoint. Dated MS0 input/API/font
+  evidence remains unchanged; its source comparisons still refer to the original
+  `e6eb7b06` / `db28a938` audit, not a new release verification. Conflict resolution
+  changes documentation only relative to `main`; PR integration remains pending.
+  [PR #51](https://github.com/xxibcill/still-shift/pull/51),
+  [resolution record](#2026-10-12--resolve-ms0-pr-51-conflicts).
+
 - **Documentation patch 0.1.1 published (2026-10-10):** npm `latest` is `0.1.1`.
   The public archive matches the verified archive byte for byte (SHA-256
   `5cf82c0379f3a78e5b91b96200b5f9b5816cbf8975f860a3deda40fe96fa8ac5`).
@@ -58,6 +68,19 @@ still hold before relying on them.
   acceptance remain unchanged. Unrelated checkout edits are preserved.
   [Release records](./npm-release-results.json),
   [promotion #54](https://github.com/xxibcill/still-shift/pull/54).
+
+- **MS0 audit complete (2026-10-09):** Codex on `codex/mechanism-ms0` from
+  `main` `e6eb7b06`; milestone [PR #51](https://github.com/xxibcill/still-shift/pull/51)
+  is open. Original E01 inputs are recovered: 27 dependencies, all 25 ZIP manifest identities and 13
+  original-copy receipts match; actual Plex static cut/copy coverage passes.
+  At that audit, composition source was unchanged from release, and five stored gate
+  artifacts match their recorded hashes. Rubric, protocol, boundaries and
+  provisional budgets are frozen. Exact historical Arial/GPU identities, public
+  customer-media redistribution and human review remain limited. Original local
+  edits are preserved. Next: MS1 contract/one-frame/contact-shot bridge proof.
+  [Results](./mechanism-shorts-ms0-results.json),
+  [baseline protocol](./mechanism-shorts-ms0-baseline.md),
+  [ordered plan](./mechanism-shorts-production-plan.md).
 
 - **Development/release branches established (2026-10-09):** `production` and
   annotated `v0.1.0` are pushed at `db28a938`, containing the source for the
@@ -158,6 +181,22 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-10-12 — Resolve MS0 PR #51 conflicts
+
+- **Agent / branch:** Codex resolving `codex/mechanism-ms0` in an isolated worktree;
+  original checkout edits preserved.
+- **Done:** merge `main` `3fab0162` into MS0 `d55908fa`; resolve `ROADMAP.md` and
+  `docs/dev-log.md`, retaining the required MS1N stage and both dated histories.
+  Refresh current release references to 0.1.1; preserve all original MS0 audit JSON.
+- **Verification:** pinned Node 22.23.1 / pnpm 10.29.3; all 12 PR documents pass
+  Prettier and whitespace checks. No unresolved conflicts/markers; both complete
+  log histories, original MS0 JSON and release evidence are preserved. Initial
+  roadmap formatting warning repaired and the full document check rerun passed.
+- **Limits / next:** documentation-only diff against `main`; no new software,
+  release or render gate. PR integration and human acceptance remain separate.
+- **Records:** [PR #51](https://github.com/xxibcill/still-shift/pull/51),
+  [MS0 audit](./mechanism-shorts-ms0-results.json), [release record](./npm-release-results.json).
+
 ### 2026-10-10 — Publish and verify documentation patch 0.1.1
 
 - **Done:** owner completed npm browser publishing authentication; exact verified
@@ -194,6 +233,36 @@ still hold before relying on them.
 - **Limits:** no publication or human visual/listening acceptance is inferred.
 - **Records:** [refresh evidence](./usage-docs-refresh-results.json),
   [release procedure](./npm-release-plan.md).
+
+### 2026-10-09 — Complete MS0 baseline and input audit
+
+- **Agent / branch:** Codex on `codex/mechanism-ms0` from `main` `e6eb7b06`.
+- **Done:** restore required plans in `2b72ae42`; recover/hash original E01 inputs,
+  verify font cut/cmap, freeze nine-shot/label/event map and physical contact names.
+  Publish current API/font audits, visual rubric, comparable telemetry protocol,
+  package boundaries, provisional resource limits and milestone slice estimates.
+- **Verification:** pinned toolchain/real browser startup, document formatting and
+  references; five historical gate artifacts rehashed. Source/build inputs unchanged
+  from released checkpoint. Independent review's three findings repaired and verified.
+- **Failures / limits:** initial link-check regex failed; corrected run found two
+  references, now fixed. No new software gate, episode render or human acceptance;
+  historical release remains passed in stages. Tokens/labor savings remain null.
+- **Next:** create MS0 PR, then a separate MS1 branch carrying its exact dependency.
+- **Records:** [results](./mechanism-shorts-ms0-results.json),
+  [inventory](./mechanism-shorts-ms0-inputs.json), [protocol](./mechanism-shorts-ms0-baseline.md).
+
+### 2026-10-09 — Activate ordered mechanism implementation
+
+- **Agent / branch:** Codex on `codex/mechanism-ms0`, based on `main` `e6eb7b06`.
+- **Scope:** owner-authorized MS0 audit, then MS1 → MS1N → MS2 → MS3; one branch
+  and PR for each milestone. Active goal created; isolated worktree preserves
+  unrelated original edits. Restore only the required mechanism/typography plans.
+- **Progress:** three parallel read-only audits cover original E01 inputs, current
+  composition APIs and typography/probe routes. Customer source project is found.
+- **Verification / next:** locked dependencies installed offline; record actual
+  source/input hashes, current closure evidence and baseline protocol before MS0 PR.
+- **Records:** [production plan](./mechanism-shorts-production-plan.md),
+  [feedback coverage](./mechanism-shorts-feedback-coverage-audit-2026-10-07.md).
 
 ### 2026-10-09 — Adopt release branches and contribution rules
 
