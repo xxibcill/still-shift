@@ -62,8 +62,8 @@ still hold before relying on them.
   Held2644 inputs/120860793B remain exact; quotas/RSS/driver internals differ.
   **Full70 is live:** owned session32036, `pnpm check:all`, source `963d3991`,
   inventory `/private/tmp/still-shift-ms2-final70-inputs1.json`, log
-  `/private/tmp/still-shift-ms2-final70-full1.log`. Latest owned poll reaches group52
-  (composition lighting); unit4363/runtime243/integration322 pass. Required102 groups,
+  `/private/tmp/still-shift-ms2-final70-full1.log`. Owned snapshot reaches group59
+  (composition native passage); unit4363/runtime243/integration322 pass. Required102 groups,
   frozen176/36061 frames and benchmark remain unfinished. Do not restart a live job.
   Full51 exit130 and full67 exit1 remain retained; world61's original producer
   terminal remains unverified. Fresh current owning proof cannot invent that receipt.
@@ -245,7 +245,7 @@ still hold before relying on them.
 - **Done:** reproduced successful preparation under a one-byte payload budget; admission now precedes schema clones. Initial eight quota/source/cleanup controls and owning catalogues24/3 pass; superseded fast3 passes4361 units/429 files with bounded327680B scanner and407+79 source closure.
 - **Retained:** initial missing fixture clocks, genuine red quota failure, identity-stale fast1 and superseded64KiB scanner fast2. Worker128MiB metadata/8GiB application and Node512MiB policies remain fixed; payload admission is not RSS certification.
 - **Final results:** phase rollback initially retains11520 payload/577344 metadata instead of foreign1024; corrected transaction ownership passes26 cases. Partial formatted edit/undefined-retained failures are retained. Final fast5 owns0:4363/429; browser2/session4692 owns0 for six groups; parent probe1/session5759 owns0 for5 exports/56frames/134passes, audit25 pins owns0. Held2644/120860793B remains exact.
-- **Next:** committed `963d3991`; fresh full70/session32036 runs102 groups/frozen176/36061/benchmark on held2644 inputs. Current archive/installed and pack disposition precede MS2 PR; stage-specific evidence and physical/driver/human limits remain. Specific owned-session polling confirms it remains live at group52; runtime243 and integration322 pass. Five portable consumer projects/29 input pins are staged, public replay/rejection harness and independent full-decoded frame/PCM caption-edit auditor syntax pass; execution waits for the full gate. No aggregate/installed completion is inferred.
+- **Next:** committed `963d3991`; fresh full70/session32036 runs102 groups/frozen176/36061/benchmark on held2644 inputs. Current archive/installed and pack disposition precede MS2 PR; stage-specific evidence and physical/driver/human limits remain. The latest owned snapshot confirms it remains live at group59; runtime243 and integration322 pass. Five portable consumer projects/29 input pins are staged, public replay/rejection harness and independent full-decoded frame/PCM caption-edit auditor syntax pass; execution waits for the full gate. No aggregate/installed completion is inferred.
 - **Records:** [Catalogue admission](./mechanism-shorts-ms2-native-catalogue-admission-results.json), [acceptance](./mechanism-shorts-ms2-acceptance.md).
 
 ### 2026-10-12 — Deliver declared family thumbnail assets
