@@ -129,9 +129,15 @@ export const MechanismProductionEpisodeReportSchema = z
           .object({
             number: z.number().int().min(1).max(96),
             inputSha256: MechanismHashSchema,
-            status: z.enum(["passed", "failed", "cancelled", "interrupted"]),
+            status: z.enum([
+              "running",
+              "passed",
+              "failed",
+              "cancelled",
+              "interrupted",
+            ]),
             stage: z.string().min(1).max(128),
-            seconds: z.number().finite().nonnegative().max(86400),
+            seconds: z.number().finite().nonnegative().max(86400).nullable(),
             diagnostic: z.string().max(2048).nullable(),
           })
           .strict(),
@@ -302,6 +308,7 @@ export type MechanismProductionCohortReport = {
   selected: number;
   attempted: number;
   firstPassTechnical: {
+    completed: number;
     passed: number;
     rate: number | null;
     targetSatisfied: boolean | null;
@@ -366,6 +373,9 @@ export function summarizeMechanismProductionCohort(
     MECHANISM_QA_DIMENSIONS.forEach((k) => reviewCounts[k][d.statuses[k]]++),
   );
   const attempted = reports.filter((r) => r.attempts.length).length;
+  const firstCompleted = reports.filter(
+    (r) => r.attempts[0] && r.attempts[0].status !== "running",
+  ).length;
   const firstPassed = reports.filter(
     (r) => r.attempts[0]?.status === "passed",
   ).length;
@@ -418,10 +428,11 @@ export function summarizeMechanismProductionCohort(
     selected: reports.length,
     attempted,
     firstPassTechnical: {
+      completed: firstCompleted,
       passed: firstPassed,
-      rate: attempted ? firstPassed / attempted : null,
+      rate: firstCompleted ? firstPassed / firstCompleted : null,
       targetSatisfied:
-        reports.length && attempted === reports.length
+        reports.length && firstCompleted === reports.length
           ? firstPassed / reports.length >= 0.9
           : null,
     },

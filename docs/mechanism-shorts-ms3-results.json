@@ -3,7 +3,7 @@
   "milestone": "MS3",
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
-  "status": "in-progress-artifact-bound-report-foundation-verified",
+  "status": "in-progress-report-and-durable-controller-mechanics-verified",
   "baseMain": "57967fa6497249d75e740ba837b8e2687cc81a98",
   "ms2Prerequisite": {
     "commit": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
@@ -190,6 +190,14 @@
         }
       ],
       "qualification": "Complete fast tier on the report-foundation checkpoint only. No MS3 full/final package/installed/durable runner/QA execution/pilot or human acceptance claim."
+    },
+    {
+      "id": "durable-queue2",
+      "status": "durable-controller-mechanics-verified-native-adapter-pending",
+      "record": "docs/mechanism-shorts-ms3-queue-results.json",
+      "owningTests": 39,
+      "nativeAdapter": "not-implemented",
+      "actualSIGKILLFixture": true
     }
   ],
   "targets": {
@@ -217,7 +225,7 @@
     }
   },
   "remaining": [
-    "Durable queue manifests/receipts/caches/cancellation/restart/bounded retries and independent item failures using CE15 workers/publication.",
+    "Real shared renderer/cue/native-cache executor, automatic complete dependency snapshots and code/profile identity; actual native cache/managed ownership proof.",
     "Execute artifact-bound technical/mechanical/sampled/continuous/listening QA and registered bounded semantic assertions, inherited warning groups, exact methods/intervals/evidence.",
     "Phone/shot/contact/cut/crop/full-decode/audio/handoff artifacts; scoped/stale repairs/affected rerender and automatic MS1 overlap recovery preserving plates.",
     "Original ten distinct question fixtures with actual factual/design/genuine speech/visual proof; five assets and two behaviors remain required and unadmitted.",

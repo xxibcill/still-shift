@@ -3,8 +3,8 @@
 The public engine exports `MechanismProductionEpisodeReportSchema`,
 `MechanismProductionQASchema`, `createUnreviewedMechanismQA`,
 `inspectMechanismProductionDisposition` and `summarizeMechanismProductionCohort`.
-These are data validation and pure summary helpers. A durable runner, report CLI,
-QA execution and positive pilot admission are still in development.
+These are data validation and pure summary helpers. A durable controller exists with an injected executor; real renderer integration,
+report CLI, QA execution and positive pilot admission remain in development.
 
 An episode report names its question, family/design, input/output/code/profile
 hashes and output-frame/source-sample clocks. It retains contiguous original
@@ -27,7 +27,8 @@ Cohort summaries retain individual rows, failures/repeated failures, review coun
 selected versus attempted counts and measurement availability. Distinct IDs and
 normalized literal questions are required; the frozen pilot board supplies its
 separate semantic/selection contract. p50/p95 use linear interpolation at(n−1)×p.
-Missing timings remainnull. First-pass targets remain unavailable while selected
+Missing timings, including interrupted-attempt duration, remainnull. Running first
+attempts do not become completed first-pass measurements. First-pass targets remain unavailable while selected
 rows are unattempted. Token savings requires retained evidence and comparable
 paired measurements for every selected task; setup/routine fields stay separate.
 No unit-fixture value is a real pilot metric.

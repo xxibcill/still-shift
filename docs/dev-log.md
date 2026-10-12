@@ -51,12 +51,16 @@ still hold before relying on them.
   fast tier actual0 on5b70cbd7 passes4385 units/430 files in78.31s; all2646
   inputs/120886395B remain held. Added clock
   guards exposed an incorrect listening test-fixture unit (8 failed/13 passed);
-  fixture repaired, guard retained. No durable runner, actual QA, registered
-  semantics, repairs/handoff/CLI or pilot completion yet. Coverage0/10; original
-  five assets/two behaviors remain unadmitted. Tokens/timing targets unmeasured;
-  no new human review or ElevenLabs spending authority. Next: existing-worker
-  durable queue/receipt/cache/cancel/restart/retry with owning admission and tests,
-  then all original MS3 workstreams and final local gates/archive/installed/MS3 PR.
+  fixture repaired, guard retained. Queue2 now passes39 owning tests (15 queue/23 report/1 actual SIGKILL filesystem
+  worker), compiler/lint/declarations in stages. Strict journals, sealed adoption,
+  bounded retries, independent failures, cancel/CAS/cache/input stability and
+  relative relocation are tested; no real native executor/render/QA/pilot yet.
+  Per-attempt owners retire;64MiB returned-state admission transfers to a supplied
+  parent under unchanged512MiB Node policy. Type-import lint and partial edit-script
+  failures are retained. Coverage0/10; five assets/two behaviors remain unadmitted.
+  Next: real renderer/dependency adapter, then original QA/semantics/repairs/
+  artifacts/capabilities/CLI/pilot and final gates. No spending authority, human
+  acceptance, publication/merge or Actions.
   [Tracker](./mechanism-shorts-ms3-acceptance.md),
   [report model](./mechanism-production-reports.md),
   [results](./mechanism-shorts-ms3-results.json).
@@ -246,6 +250,19 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — MS3 durable controller mechanics verified
+
+- **Agent / branch:** Codex on codex/mechanism-ms3 from2830a293.
+- **Results:** Queue/journal/checkpoints, bounded retries, independent failures,
+  cancel/recovery/CAS/hash/ownership guards pass39 owning checks/compiler/lint/
+  declarations. Actual SIGKILL fixture retains partial files and resumes items.
+- **Retained:** Partial patch/record-writer preparation failures and lint import
+  failure. Generic fixtures supply no native/render/QA/pilot acceptance.
+- **Next:** Real native adapter and original MS3 scope; ten questions/five assets/
+  two behaviors remain. No paid generation, human review or publication.
+- **Records:** [Queue](./mechanism-production-queue.md),
+  [evidence](./mechanism-shorts-ms3-queue-results.json), [tracker](./mechanism-shorts-ms3-acceptance.md).
 
 ### 2026-10-13 — MS3 report checkpoint fast tier completes
 

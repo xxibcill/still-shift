@@ -139,3 +139,4 @@ export type {
   MechanismCuePlateOptions,
 } from "./mechanism/cue-plate-lifecycle.ts";
 export * from "./mechanism/production-report.ts";
+export * from "./mechanism/production-queue.ts";

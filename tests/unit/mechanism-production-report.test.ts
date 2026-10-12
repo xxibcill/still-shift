@@ -207,6 +207,7 @@ describe("production cohort measurements", () => {
     expect(result.selected).toBe(2);
     expect(result.attempted).toBe(1);
     expect(result.firstPassTechnical).toEqual({
+      completed: 1,
       passed: 0,
       rate: 0,
       targetSatisfied: null,
@@ -241,6 +242,31 @@ describe("production cohort measurements", () => {
     expect(
       summarizeMechanismProductionCohort([a, b]).authoring.savings,
     ).toBeNull();
+  });
+  it("keeps running first attempts incomplete and retains unavailable interrupted timings", () => {
+    const value = episode();
+    value.attempts = [
+      {
+        number: 1,
+        inputSha256: hash("a"),
+        status: "running",
+        stage: "render",
+        seconds: null,
+        diagnostic: null,
+      },
+    ];
+    const active = summarizeMechanismProductionCohort([value]);
+    expect(active.attempted).toBe(1);
+    expect(active.firstPassTechnical).toEqual({
+      completed: 0,
+      passed: 0,
+      rate: null,
+      targetSatisfied: null,
+    });
+    value.attempts[0]!.status = "interrupted";
+    const stopped = summarizeMechanismProductionCohort([value]);
+    expect(stopped.firstPassTechnical.completed).toBe(1);
+    expect(stopped.failures.interrupted).toBe(1);
   });
   it("rejects normalized duplicate questions despite different IDs", () => {
     const a = episode("E01"),
