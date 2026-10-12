@@ -16480,12 +16480,12 @@
       "frozenFrames": 36061,
       "record": "docs/mechanism-shorts-ms2-full-gate-results.json",
       "latestLiveSnapshot": {
-        "path": "/private/tmp/still-shift-ms2-final70-progress8.json",
-        "bytes": 4164,
-        "sha256": "sha256:8c4e8955fef1ee2ad648d12a1f9f7a87c5ebfd5a5ada82143e71687e58a00683"
+        "path": "/private/tmp/still-shift-ms2-final70-progress9.json",
+        "bytes": 4301,
+        "sha256": "sha256:7fce5925db50a75c0cc793f7e4e6b2cbee200b9fe279438ac90723f01ff2c94e"
       },
-      "qualifiedPrefixGroups": 87,
-      "currentSnapshotGroup": "test:browser:mechanism-narrated-cycles",
+      "qualifiedPrefixGroups": 92,
+      "currentSnapshotGroup": "test:browser:mechanism-cue-layout",
       "completedCinematic": {
         "inventoryFixtures": 15,
         "rows": 46,

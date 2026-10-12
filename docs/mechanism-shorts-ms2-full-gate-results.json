@@ -515,11 +515,11 @@
       ],
       "qualification": "Fresh complete gate after committed slices67\u201369. Fast/focused/native/normal-parent proofs are separate prerequisite stages; await actual outer terminal, exact chain reconciliation/frozen/benchmark measurements and final source hold.",
       "latestLiveSnapshot": {
-        "path": "/private/tmp/still-shift-ms2-final70-progress8.json",
-        "bytes": 4164,
-        "sha256": "sha256:8c4e8955fef1ee2ad648d12a1f9f7a87c5ebfd5a5ada82143e71687e58a00683"
+        "path": "/private/tmp/still-shift-ms2-final70-progress9.json",
+        "bytes": 4301,
+        "sha256": "sha256:7fce5925db50a75c0cc793f7e4e6b2cbee200b9fe279438ac90723f01ff2c94e"
       },
-      "latestSnapshotQualification": "Owned session live at narrated-cycles/group88; preceding87 sequential scripts exit0. Independently reconcile all176 frozen ok rows/36061 frames/262.12s and later script header. Tape/primitives/tie-peg pack scripts complete; remaining suffix/benchmark/installed acceptance remains unproven on unchanged2644/120860793B.",
+      "latestSnapshotQualification": "Owned session live at cue-layout/group93; preceding92 sequential scripts exit0. Narrated cycles/cue edits/saved cue lifecycle, count-fit63-string cases and WebGL/Canvas weight matrices (24 exports each) complete. Frozen176/36061/262.12s remains verified;2644/120860793B inputs exact. Remaining full suffix/benchmark/installed acceptance unproven; engineering PCM does not replace genuine speech/human acceptance.",
       "priorLiveSnapshots": [
         {
           "path": "/private/tmp/still-shift-ms2-final70-progress5.json",
@@ -535,6 +535,11 @@
           "path": "/private/tmp/still-shift-ms2-final70-progress7.json",
           "bytes": 3928,
           "sha256": "sha256:b8f59858746ecf68c3e1a8d3585981eefa17a4c992f513706609b6e6dfa29a46"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-final70-progress8.json",
+          "bytes": 4164,
+          "sha256": "sha256:8c4e8955fef1ee2ad648d12a1f9f7a87c5ebfd5a5ada82143e71687e58a00683"
         }
       ],
       "frozenCompletion": {
