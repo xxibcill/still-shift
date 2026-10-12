@@ -997,6 +997,14 @@ mechanism families establish whether the architecture transfers.
       and whole resources/current full/final gates remain open; no human acceptance
       follows from this engineering proof. The private opt-in group does not make
       the portable full102 depend on private media.
+      Slice65 supplements frozen E06 source access with an owned official USPTO
+      22-page patent scan and visual reading of complete relevant pages1/3/10/11/12,
+      including Fig8–11 and printed columns7–9. The specific illustrated load-seating
+      embodiment supports the question; source/selection hashes still match slice50.
+      [Primary-source admission](./mechanism-shorts-ms2-e06-primary-admission-results.json)
+      retains failed full-page fetches and unavailable text extraction. It changes
+      no code or frozen board and admits no universal tie, force magnitude, factual
+      asset, new behavior, continuous native, supported pack or episode coverage.
 - [ ] Expose registry-derived discovery, per-component schema/parameter help,
       small examples, asset metadata and stable revision-aware editing. Publish
       versioned JSON Schemas for the expanded contracts and retain MS1 response

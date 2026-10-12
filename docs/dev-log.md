@@ -45,7 +45,7 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56)
-  (`bf30a253`). Sixty-four slices are committed/prepared; MS2 has no PR yet.
+  (`bf30a253`). Sixty-five slices are committed/prepared; MS2 has no PR yet.
   Validated coverage0/10, supported packs0, accepted pilot0; MS3 has not started.
   Frozen question selection remains fixed; E06 new asset/behavior and finer Thai
   motion are provisional. Native/source3, five screen recipes, rigid world/surface
@@ -75,13 +75,16 @@ still hold before relying on them.
   Full51 was intentionally stopped(exit130) at original94 groups; qualified38-group
   prefix/interrupted39th remain. World61 producer terminal remains unverified.
   Full102/frozen176/36,061-frame/benchmark/current archive/installed refresh is required.
-  E06 official USPTO PDF supplement is ready privately after full-page web failures;
-  relevant complete pages/figures are read, supporting that specific embodiment.
-  This does not admit its new load-seating behavior or alter the frozen board.
-  Next: save that supplemental source evidence, improve genuine presentation,
+  Slice65 admits scoped E06 primary-source access: official USPTO22-page scan,
+  owned fetch0 and complete relevant page1/3/10/11/12/Fig8–11 visual reading.
+  Specific patent embodiment supports the question; prior full-page/extraction
+  failures remain. Frozen board/selection match slice50 hashes. No code/board change,
+  no general tie/load-magnitude claim or new behavior/pack/episode admission.
+  Next: improve genuine camera/contact-label/continuous presentation,
   whole application/source/world/result/replay/physical/driver admission, current
   full/final archive/installed/pack/validated10-question coverage/MS2 PR before MS3.
   No paid generation, merge/publication, Actions or private media redistribution.
+  [E06 primary source](./mechanism-shorts-ms2-e06-primary-admission-results.json),
   [Genuine cues](./mechanism-shorts-ms2-genuine-spoken-cue-results.json),
   [Live cache/leases](./mechanism-shorts-ms2-cue-cache-lifetime-results.json),
   [Public cache](./mechanism-shorts-ms2-public-cue-cache-results.json),
@@ -247,6 +250,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — MS2 E06 official primary-source access supplement
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `8ef6d048`.
+- **Done:** Official USPTO22-page scan obtained(fetch0); complete relevant pages
+  1/3/10/11/12 and Fig8–11 visually read with the PDF skill. Specific patent's
+  withdrawal/load-seating mechanism supports the unchanged E06 question.
+- **Results:** Source/selection hashes match slice50; code and frozen board remain
+  exact. This closes scoped source access, not asset/behavior/native/coverage admission.
+- **Rejected / do not repeat:** Full web pages inaccessible; search excerpts alone
+  are insufficient. Scan has no text; missing pdftotext did not become a text pass.
+- **Open / next:** Dedicated factual asset, analytic behavior/continuous native
+  proof; genuine presentation and remaining resources/full/final MS2 gates. Packs0.
+- **Records:** [Primary-source supplement](./mechanism-shorts-ms2-e06-primary-admission-results.json).
 
 ### 2026-10-12 — MS2 genuine supplied speech and native cue outputs
 
