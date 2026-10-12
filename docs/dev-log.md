@@ -45,22 +45,18 @@ still hold before relying on them.
 
 - **MS3 in progress (2026-10-13):** codex/mechanism-ms3, draft
   [PR58](https://github.com/xxibcill/still-shift/pull/58) open/attached to main.
-  Evidence6 now builds source-clock entry/mid/exit/event/cut samples, phone/caption/
-  actual-native-projection crops, exact final PCM and compact CAS handoffs. Retained
-  eec outputs yield81 verified images across3 families;3 forged/stale controls
-  reject, including altered phone pixels with recomputed declarations.57 focused
-  checks/build/lint/schema/boundary/declarations pass after one type-import lint
-  repair; failed gate retained. Source6615b02b is pushed to PR58. Fresh native/
-  CLI handoff proof is running (session45359, report prefix evidence6-browser1,
-  root mmKpvN), holding2683 inputs/121225370B. No terminal pass claimed; re-poll
-  this live handle. Complete fast/runtime tiers follow after it finishes. Report5 eec1954a retains its separate complete4426-unit,
-  runtime247/integration322/depth14/smoke/240-frame/57-pin/default-CLI proof.
-  Evidence derivation supplies no whole glyph/mechanical/continuous/listening/
-  factual/human acceptance. Original scope remains: operational QA/warnings and
-  full fault suite; native faults/relocation; scoped repair/MS1 overlap; all ten
-  frozen questions/five assets/two behaviors/genuine inputs/reviews; broader
-  capability reconciliation and final full103/archive/installed/PR completion.
-  Coverage0/10; targets unmeasured, no spending/Actions/merge/npm/media publication.
+  Evidence6 source6615b02b passes actual native/report/separate CLI handoff:
+  four outputs/240 decoded frames/108 source-derived images. Independent audit
+  checks exact crops/phone pixels/native projections/PCM and188 pins; first audit
+  failed on YUV-before-RGBA resizing, corrected audit passes with strict equality.
+  Complete fast/runtime tiers pass on prose-onlyfab32e29 with all2683 inputs/
+  121225370B exactly matching6615. Scoped gate's lint failure is also retained.
+  Semantic/warning operational integration is next. Actual changed-camera cuts,
+  native fault/relocation proofs, scoped repair/MS1 overlap, all ten frozen questions/
+  five assets/two behaviors/genuine inputs/reviews, capability reconciliation and
+  final full103/archive/installed/MS3 PR completion remain. Coverage0/10; targets
+  unmeasured. No whole glyph/mechanical/continuous/listening/factual/human
+  acceptance, spending, Actions, merge or npm/media publication is claimed.
   [Tracker](./mechanism-shorts-ms3-acceptance.md),
   [evidence API](./mechanism-production-evidence.md),
   [evidence record](./mechanism-shorts-ms3-evidence-results.json),
@@ -251,6 +247,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — MS3 native review evidence and held local gates
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; source6615b02b,
+  prose-only gate headfab32e29; [draft PR58](https://github.com/xxibcill/still-shift/pull/58).
+- **Done:** actual three-family queue/report/separate fresh-session handoff and
+  four outputs/240 frames/108 review images, independently checked against final
+  RGBA, original projections and exact PCM;188 immutable pins checked.
+- **Results:** complete fast/runtime tiers pass with2683 inputs/121225370B
+  identical to the render source. Earlier scoped57 checks and forged/stale controls
+  remain separate. First independent phone audit failed on its YUV resize order;
+  corrected RGBA audit passes without weakening checks. Type-import lint failure retained.
+- **Open / next:** operational semantic/grouped-warning QA, real native faults/
+  relocation and scoped repair; original ten-question/five-asset/two-behavior pilot,
+  genuine inputs/reviews, changed-camera cuts and final gates remain unaccepted.
+- **Records:** [evidence](./mechanism-shorts-ms3-evidence-results.json),
+  [acceptance tracker](./mechanism-shorts-ms3-acceptance.md). No spending/publication/merge/Actions.
 
 ### 2026-10-13 — MS3 source-bound review images, exact audio and compact handoffs
 

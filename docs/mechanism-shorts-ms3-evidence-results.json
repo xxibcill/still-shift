@@ -3,7 +3,7 @@
   "milestone": "MS3",
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
-  "status": "scoped-evidence-builder-and-source-transform-controls-verified-integrated-run-pending",
+  "status": "actual-native-evidence-fresh-handoff-and-complete-fast-runtime-tiers-verified",
   "baseCommit": "5ceb8396",
   "pullRequest": "https://github.com/xxibcill/still-shift/pull/58",
   "sourceSnapshot": [
@@ -317,28 +317,223 @@
       "path": "/private/tmp/still-shift-ms3-evidence6-gate2-receipt.json",
       "bytes": 2611,
       "sha256": "sha256:9421151b211bc4fcba467bc4ca9aafe897192e904d43b51ab4b5f2b471c57af9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-browser1.log",
+      "bytes": 1217,
+      "sha256": "sha256:74b0c6a6296851d005e818ace997117c9874d0a0eb8608fde331e509cf8d112b"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-browser1-receipt.json",
+      "bytes": 399,
+      "sha256": "sha256:7485ebde441bea7e3399798780f8f64c85a15499d9a879274e05cf39fc2d013f"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-browser1-inputs.json",
+      "bytes": 457945,
+      "sha256": "sha256:28a7903b0f0be2beb262a6066e45a77c5c6d57a76c47fb1fc98df30a023080f1"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-runtime1.log",
+      "bytes": 41902,
+      "sha256": "sha256:3d21780b4c6b816fc16d17719b111514afae4ae186d7fb193a80b17e4d18ecf3"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-runtime1-receipt.json",
+      "bytes": 373,
+      "sha256": "sha256:64d466df21f1aed93bc9305c9e3f6984373e46a49049e267c2d33af7ffd2bc15"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-runtime1-inputs.json",
+      "bytes": 457945,
+      "sha256": "sha256:c12531df63227176108323abdfa900953890c63891386bf1ffd69008d0306092"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-fast1.log",
+      "bytes": 43028,
+      "sha256": "sha256:cec0afe9bb5ae07a045ea8253b8405daa6a358bcb75cdef68fe5d2c53e5195ae"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-fast1-receipt.json",
+      "bytes": 367,
+      "sha256": "sha256:7c72fbc395da93ceca08d582aeb5c630271e37b74833aa38b2bc1142c7c2c279"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-fast1-inputs.json",
+      "bytes": 457945,
+      "sha256": "sha256:c12531df63227176108323abdfa900953890c63891386bf1ffd69008d0306092"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-production-native-mmKpvN/run.json",
+      "bytes": 20971,
+      "sha256": "sha256:f2d54947cea3f42bf2fb6347dbe92b3d3337982c325ff2fdeb9a55821601166a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-production-native-mmKpvN/fresh-session-handoff.json",
+      "bytes": 3457,
+      "sha256": "sha256:275fea77a0b5363666e0b22d455d3d4f8f529c0a5cedcd44e7744725b0800b42"
     }
   ],
   "remaining": [
-    "Fresh current native/API/report/fresh-session handoff proof and complete held fast/runtime tiers.",
+    "Actual changed-camera cut extraction and ten pilot artifact/review scope; engineering images and fresh CLI handoff are verified separately.",
     "Operational semantic/grouped-warning QA, analytic/sampled/continuous collision distinction and seeded broader mechanical/visual/audio fault suite.",
     "Actual native interruption/cancel/corrupt/relocation, scoped/affected repair and automatic MS1 overlap.",
     "Original ten questions/five assets/two behaviors/genuine inputs/factual/design/visual/listening review, broader capabilities and final full/archive/installed/MS3 PR completion."
   ],
-  "qualification": "Scoped evidence/code controls only at this checkpoint; integrated native/fresh-session proof and final MS3 acceptance remain unproven.",
+  "qualification": "Actual three-family native queue/API/report/separate CLI handoff, independent strict image/projection/full-decode/PCM checks and complete held fast/runtime tiers passed in retained stages. These engineering proofs do not supply actual changed-camera cut coverage, whole glyph/mechanical/continuous/listening/factual/human review, final full/archive/installed verification or pilot acceptance.",
   "committedSource": "6615b02b8b6646ae52d2a009c3dcf46f8bc72e06",
-  "runningVerification": {
+  "integratedNativeProof": {
+    "status": "passed",
     "command": "pnpm test:browser:mechanism-production-native",
-    "session": 45359,
-    "pid": 3214,
     "sourceCommit": "6615b02b8b6646ae52d2a009c3dcf46f8bc72e06",
     "startedUtc": "2026-10-12T22:11:22.282178+00:00",
-    "receipt": "/private/tmp/still-shift-ms3-evidence6-browser1-receipt.json",
-    "log": "/private/tmp/still-shift-ms3-evidence6-browser1.log",
+    "pid": 3214,
     "inventory": "/private/tmp/still-shift-ms3-evidence6-browser1-inputs.json",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-12T22:20:09.938431+00:00",
+    "session": 45359,
     "root": "/private/tmp/still-shift-ms3-production-native-mmKpvN",
+    "executions": 4,
+    "outputs": 4,
+    "decodedFrames": 240,
+    "families": 3,
     "heldInputFiles": 2683,
     "heldInputBytes": 121225370,
-    "lastToolObservation": "Session45359 confirmed running; no terminal result yet. Re-poll the same handle rather than restarting from a timeout."
+    "images": 108,
+    "imageKinds": {
+      "frame": 60,
+      "phone": 16,
+      "caption-crop": 16,
+      "anchor-crop": 16
+    },
+    "stages": [
+      "cold",
+      "completed-product-reuse",
+      "caption-only-revision",
+      "production-report-api-and-actual-cli",
+      "review-images-audio-and-fresh-session-handoff"
+    ],
+    "freshSessionHandoff": {
+      "scope": "mechanism-production",
+      "episode": "S1",
+      "sourceStatus": "current-verified",
+      "reviewedReady": false,
+      "images": 27,
+      "cropExceptions": 0
+    },
+    "qualification": "Three short engineering fixtures and one caption revision; actual authored changed-camera cut extraction and ten pilot products remain pending. PCM is engineering input. No whole glyph/mechanical/continuous/listening/factual/human acceptance."
+  },
+  "independentAudit": {
+    "status": "passed-in-two-attempts",
+    "audit1": {
+      "session": 2370,
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-evidence6-audit1.log",
+        "bytes": 380,
+        "sha256": "sha256:19009837709340aba44c7cce17a7e4b1151ac7c13296f59c5b91cffa88e84288"
+      },
+      "script": {
+        "path": "/private/tmp/still-shift-ms3-evidence6-audit1.py",
+        "bytes": 14168,
+        "sha256": "sha256:2e001a21a6fd958a5d3f2fff03d5c569a9ca231209bce68df457fe7573e8dd1c"
+      },
+      "reason": "Phone comparison resized YUV planes before converting to RGBA, unlike the declared decoded-RGBA image transform. Strict byte equality failed. Corrected only the independent audit input filter to format=rgba before selection/scale; no implementation, assertion or limit weakened."
+    },
+    "audit2": {
+      "session": 51040,
+      "actualExitCode": 0,
+      "images": 108,
+      "decodedFrames": 240,
+      "outputs": 4,
+      "pins": 188,
+      "methods": {
+        "images": 108,
+        "kinds": {
+          "frame": 60,
+          "phone": 16,
+          "caption-crop": 16,
+          "anchor-crop": 16
+        },
+        "fullFrames": "independent exact final decoded-frame bytes",
+        "crops": "independent Python byte slicing",
+        "phone": "independent direct-final-video FFmpeg transformation",
+        "nativeProjections": "independent read of hashed original capture rows",
+        "PCM": "independent complete final-review audio decode",
+        "freshSessionHandoff": "current product/code/binding/statuses and32KiB bound"
+      },
+      "reportAudit": {
+        "episodes": 3,
+        "cohortRows": 3,
+        "originalAttemptCount": 4,
+        "currentDurationRows": 3,
+        "percentiles": "independently recomputed",
+        "CLIPageRows": 4,
+        "CLICompleteRows": 15,
+        "reviewCounts": "independently recomputed",
+        "pilotAdmission": "not-established"
+      },
+      "result": {
+        "path": "/private/tmp/still-shift-ms3-evidence6-audit2.json",
+        "bytes": 109876,
+        "sha256": "sha256:7cc4c410b0b06e927ae1382ea7689333a100472ea74b0347fac97889d66a618e"
+      },
+      "script": {
+        "path": "/private/tmp/still-shift-ms3-evidence6-audit2.py",
+        "bytes": 14180,
+        "sha256": "sha256:6179c1d8623ccc67dddd6e80b17e0fe71cfccdc6051acd0306dc946c4b71c4f0"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-evidence6-audit2.log",
+        "bytes": 85,
+        "sha256": "sha256:7df7fefe59d69028adda2ebc50af8afdca0d7adcb9f38cba192ce426123015f5"
+      }
+    }
+  },
+  "completeLocalTiers": {
+    "runtime": {
+      "status": "passed",
+      "command": "pnpm check:runtime",
+      "sourceCommit": "fab32e2921c7a45fe805b61a42c40b08f473e00b",
+      "startedUtc": "2026-10-12T22:20:42.758816+00:00",
+      "pid": 23774,
+      "inventory": "/private/tmp/still-shift-ms3-evidence6-runtime1-inputs.json",
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-12T22:29:18.733378+00:00",
+      "session": 27509,
+      "runtimeTests": 247,
+      "runtimeFiles": 42,
+      "runtimeDurationSeconds": 135.32,
+      "integrationTests": 322,
+      "integrationFiles": 57,
+      "integrationDurationSeconds": 343.99,
+      "depthTests": 14,
+      "browserSmoke": "passed"
+    },
+    "fast": {
+      "status": "passed",
+      "command": "pnpm check:fast",
+      "sourceCommit": "fab32e2921c7a45fe805b61a42c40b08f473e00b",
+      "startedUtc": "2026-10-12T22:29:30.530567+00:00",
+      "pid": 73779,
+      "inventory": "/private/tmp/still-shift-ms3-evidence6-fast1-inputs.json",
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-12T22:31:43.185473+00:00",
+      "session": 59690,
+      "unitTests": 4431,
+      "unitFiles": 436,
+      "unitDurationSeconds": 67.66
+    },
+    "sourceBinding": {
+      "renderSourceCommit": "6615b02b8b6646ae52d2a009c3dcf46f8bc72e06",
+      "localTierHead": "fab32e2921c7a45fe805b61a42c40b08f473e00b",
+      "heldInputFiles": 2683,
+      "heldInputBytes": 121225370,
+      "allThreeInventoriesEqual": true,
+      "qualification": "The fab32e29 commit changes evidence prose only; all browser/runtime/fast runtime input bytes remain identical to6615b02b."
+    }
   }
 }

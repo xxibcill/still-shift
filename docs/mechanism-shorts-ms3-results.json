@@ -3,7 +3,7 @@
   "milestone": "MS3",
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
-  "status": "in-progress-review-evidence-scoped-verified",
+  "status": "in-progress-review-evidence-native-and-local-tiers-verified",
   "baseMain": "57967fa6497249d75e740ba837b8e2687cc81a98",
   "ms2Prerequisite": {
     "commit": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
@@ -15,7 +15,7 @@
     "changedRelativeToMS2": ["ROADMAP.md", "docs/dev-log.md"],
     "runtimeSourceChanges": 0,
     "ms0OwnerMerge": "57967fa6497249d75e740ba837b8e2687cc81a98",
-    "retainedOwnerLogEntry": "2026-10-12 \u2014 Resolve MS0 PR #51 conflicts",
+    "retainedOwnerLogEntry": "2026-10-12 — Resolve MS0 PR #51 conflicts",
     "failedPREdit": "gh pr edit used deprecated projectCards GraphQL query; REST body PATCH actually succeeded."
   },
   "frozenSelection": {
@@ -364,11 +364,19 @@
     },
     {
       "id": "review-evidence6",
-      "status": "scoped-evidence-builder-and-source-transform-controls-verified-integrated-run-pending",
+      "status": "actual-native-evidence-fresh-handoff-and-complete-fast-runtime-tiers-verified",
       "record": "docs/mechanism-shorts-ms3-evidence-results.json",
       "focusedTests": 57,
       "scopedImages": 81,
-      "qualification": "Scoped evidence/code controls only at this checkpoint; integrated native/fresh-session proof and final MS3 acceptance remain unproven."
+      "qualification": "Actual three-family native queue/API/report/separate CLI handoff, independent strict image/projection/full-decode/PCM checks and complete held fast/runtime tiers passed in retained stages. These engineering proofs do not supply actual changed-camera cut coverage, whole glyph/mechanical/continuous/listening/factual/human review, final full/archive/installed verification or pilot acceptance.",
+      "outputs": 4,
+      "decodedFrames": 240,
+      "images": 108,
+      "independentPins": 188,
+      "unitTests": 4431,
+      "runtimeTests": 247,
+      "integrationTests": 322,
+      "depthTests": 14
     }
   ],
   "targets": {
@@ -398,7 +406,7 @@
   "remaining": [
     "Actual native interruption/cancellation/corrupt-cache/recovery/relocation proof and remaining worker/managed integration; implemented native executor/dependency/code-profile/cache/full-decode proof is retained separately.",
     "Integrate the implemented registered scalar assertions, located MS2 timeline results and grouped raw warnings into durable artifact-bound technical/mechanical/sampled/continuous/listening QA; analytic/continuous collision, broader fault suite and actual reviews remain open.",
-    "Phone/shot/contact/cut/crop/full-decode/audio/handoff artifacts; scoped/stale repairs/affected rerender and automatic MS1 overlap recovery preserving plates.",
+    "Actual changed-camera cut and ten-pilot review artifacts; scoped/stale repairs/affected rerender and automatic MS1 overlap recovery preserving plates. Three-family evidence derivation and fresh-session handoff are verified separately.",
     "Original ten distinct question fixtures with actual factual/design/genuine speech/visual proof; five assets and two behaviors remain required and unadmitted.",
     "One actual bounded episode/cohort report command and generated production schema/limit agreement are verified. Broader import/preview/export capability reconciliation, actual pilot measurements, final full/archive/installed and MS3 PR remain.",
     "Retain candidate/owner reviews and finer Thai limits; no ElevenLabs spend without explicit project/batch/model/voice/takes/credits approval."
