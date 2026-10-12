@@ -19,6 +19,14 @@ snapshots. Slice67 repairs the Node syntax defect; slice69 closes the located
 catalogue admission/rollback gap under unchanged quotas. Fresh proof does not
 supply world61's missing historical terminal or human production review.
 
+The first fresh package71 attempt actually fails declaration compilation. Slice72
+adds explicit public return types for six APIs; `pnpm build`, `build:package` and
+`check:fast` (4,363 units/429 files) pass. Exactly2,641 inputs stay unchanged and
+the three edited files emit byte-identical JavaScript under pinned TypeScript.
+Full70 retains its exact original source binding; affected type/package checks
+qualify this follow-up under the plan's verification policy. The package must be
+rebuilt and verified again. [Failure and repair](./mechanism-shorts-ms2-declaration-repair-results.json).
+
 | #   | Approved requirement                                                 | Delivered software and scoped evidence                                                                                                                                                                                                                                                                                                                               | Remaining acceptance                                                                                                                                                                                                                                          |
 | --- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1   | Three versioned families and inspectable metadata                    | Tape two dimensions, cable tie and peg two dimensions each; frozen references, hierarchy, units, bounds, pivots, physical anchors, material/parameter/variant/detail/compatibility, camera targets, neutral/diagnostic poses and thumbnail recipes. [Pack API](./mechanism-pack-api.md), slices14/16/17/40.                                                          | Current aggregate/installed admission and pack disposition. Metadata still declares `candidate`; slice68 now delivers three recipe-bound packaged PNGs with six independently checked native frames. Factual and human appearance acceptance remain separate. |

@@ -46,7 +46,7 @@ still hold before relying on them.
 - **MS2 in progress (2026-10-13):** `codex/mechanism-ms2` uses the existing
   managed worktree, carries exact MS1N `bf30a253`
   ([PR #56](https://github.com/xxibcill/still-shift/pull/56)), and has no MS2 PR yet.
-  Sixty-nine slices are committed; latest implementation is `963d3991`.
+  Runtime implementation is `963d3991`; slice72 adds erased public type annotations.
   Supported packs0, validated coverage0/10, accepted pilot0; MS3 has not started.
   The frozen ten-question cohort is classified; its five assets/two behaviors
   belong to MS3. Scoped E06 patent access is recovered; no new behavior admitted.
@@ -256,6 +256,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — MS2 package declaration failure and scoped repair
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2` from `57d7bfbd`.
+- **Failure:** Fresh package71 exits1 before archive admission: TS7056/TS2742 in
+  six exported APIs. Original log/receipt remain retained; no package pass inferred.
+- **Repair/results:** Explicit public return types only; build/declaration build
+  and fast4363 units/429 files pass. Exactly2641 inputs unchanged; all three
+  edited modules emit byte-identical runtime JavaScript with pinned TypeScript.
+- **Verification scope:** Full70 stays tied to963d3991. The plan permits affected
+  follow-up checks where broad evidence stays valid; fresh archive/installed checks
+  still remain. No full rerun or human acceptance is claimed.
+- **Records:** [Declaration repair](./mechanism-shorts-ms2-declaration-repair-results.json),
+  [acceptance](./mechanism-shorts-ms2-acceptance.md).
 
 ### 2026-10-13 — Final MS2 full gate completes
 

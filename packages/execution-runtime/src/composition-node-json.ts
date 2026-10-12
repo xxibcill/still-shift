@@ -124,7 +124,11 @@ export function serializeCompositionNodeJson(
   value: unknown,
   space = 0,
   suffix = "",
-) {
+): {
+  text: string;
+  lease: ReturnType<CompositionNodeMemory["reserve"]>;
+  size: ReturnType<typeof compositionNodeJsonSize>;
+} {
   const scratch = owner.reserve(65536);
   try {
     const size = compositionNodeJsonSize(

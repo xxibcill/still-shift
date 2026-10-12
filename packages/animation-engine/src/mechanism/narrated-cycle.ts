@@ -11,7 +11,10 @@ import {
   type Composition,
   type CompositionLayer,
 } from "@still-shift/scene-contract";
-import { compileMechanismPackTimeline } from "./pack-timeline.ts";
+import {
+  compileMechanismPackTimeline,
+  type CompiledMechanismPackTimeline,
+} from "./pack-timeline.ts";
 import { MechanismPackInvariantError } from "./pack-invariant.ts";
 import {
   freezeMechanismPack,
@@ -25,11 +28,37 @@ const trackId = (kind: string, cue: string, member = "") =>
   `${kind}-${mechanismPackHash([cue, member]).slice(7, 39)}`;
 type Cue = MechanismNarratedCycle["cues"][number];
 type Reference = { cue: string; edge: "start" | "end"; offsetSamples: number };
+export interface CompiledMechanismNarratedCycle {
+  version: "compiled-mechanism-narrated-cycle-1";
+  revision: number;
+  sourceDocumentSha256: string;
+  timeline: CompiledMechanismPackTimeline;
+  composition: Composition;
+  cueMap: {
+    cue: string;
+    startFrame: number;
+    endFrameExclusive: number;
+    shotEndFrameExclusive: number;
+    startSample: number;
+    endSampleExclusive: number;
+    onsetDelaySamples: number;
+  }[];
+  labelLayout: ReturnType<typeof planMechanismCueLayout>;
+  recording: {
+    sourceSamples: number;
+    sourceSha256: string;
+    fps: number;
+    frameCount: number;
+    renderBoundarySamples: number;
+    samplePolicy: "unchanged-source-clock";
+  };
+  timingPolicy: "first-output-frame-at-or-after-cue";
+}
 /** Compile all tracks from the same supplied PCM cue map. No asset I/O or paid generation. */
 export function compileMechanismNarratedCycle(
   instance: MechanismPackInstanceSource,
   input: unknown,
-) {
+): CompiledMechanismNarratedCycle {
   const fail = (
     code: string,
     message: string,

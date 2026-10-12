@@ -16543,6 +16543,16 @@
         "status": "passed",
         "directory": "/private/tmp/still-shift-ms2-cue-cache-lifetime-t36DAd"
       }
+    },
+    {
+      "id": "declaration-repair72",
+      "status": "scoped-declaration-repair-passed-package-refresh-pending",
+      "record": "docs/mechanism-shorts-ms2-declaration-repair-results.json",
+      "failedPackageExitCode": 1,
+      "fastExitCode": 0,
+      "unchangedInputs": 2641,
+      "runtimeIdenticalSourceFiles": 3,
+      "qualification": "Per approved plan follow-up policy, retain full70 on its exact original checkpoint and qualify the type-only repair with actual fast/declaration checks, exact 2641 unchanged-input and three byte-identical emitted-JavaScript checks, then fresh package and installed verification. Broad runtime/frozen evidence is not invalidated; do not relabel full70 as a rerun on the repaired source."
     }
   ],
   "implementation": {

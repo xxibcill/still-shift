@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "date": "2026-10-13",
+  "milestone": "MS2",
+  "status": "scoped-declaration-repair-passed-package-refresh-pending",
+  "baseCommit": "57d7bfbd04f193660b13db4468ff8c587cc1c31f",
+  "failedPackageAttempt": {
+    "status": "failed",
+    "command": "pnpm test:package",
+    "sourceCommit": "57d7bfbd04f193660b13db4468ff8c587cc1c31f",
+    "startedUtc": "2026-10-12T17:45:38.103737+00:00",
+    "pid": 71837,
+    "inputInventory": "/private/tmp/still-shift-ms2-final71-package-inputs1.json",
+    "actualExitCode": 1,
+    "publication": false,
+    "preexistingVerification": "/private/tmp/still-shift-ms2-final71-package-l881lpr_/previous-package-verification.json",
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-12T17:45:45.106742+00:00",
+    "retainedVerification": "/private/tmp/still-shift-ms2-final71-package-l881lpr_/package-verification.json",
+    "consumerDirectory": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift npm consumer-0GtBA0",
+    "checks": []
+  },
+  "problem": "Fresh npm declaration compilation failed with TS7056 and TS2742 on six exported cue/compiled/Node serialization APIs. No archive or installed execution was produced by that attempt.",
+  "repair": "Explicit named compiled-cycle and cue inspection/patch result interfaces plus the Node serializer return annotation. Existing schema-derived Composition/MechanismNarratedCycle and local lease API types remain authoritative. No runtime logic, constants, dependency, wire schema or quotas change.",
+  "erasure": {
+    "status": "passed",
+    "fullGateSourceCommit": "963d3991e81f8dc03546471fafbef532d1d0aa1a",
+    "typescriptVersion": "5.9.2",
+    "checkedHeldInputs": 2644,
+    "unchangedInputs": 2641,
+    "rows": [
+      {
+        "file": "packages/animation-engine/src/mechanism/cue-authoring.ts",
+        "beforeSourceSha256": "sha256:f7885d1aa80b53c8901fbca76042b5fdc2900a82b3264574e3f818c9a8a0437b",
+        "afterSourceSha256": "sha256:70d3f04ba493fbc8713178baa46ba6e0d53c73706f0a0cb5c672740b4f338fb4",
+        "emittedJavaScriptBytes": 14860,
+        "emittedJavaScriptSha256": "sha256:37cd106fa7e0b85c958aebd1610aab810c70087ce7c780637ab64f5fd209f403",
+        "runtimeIdentical": true
+      },
+      {
+        "file": "packages/animation-engine/src/mechanism/narrated-cycle.ts",
+        "beforeSourceSha256": "sha256:8480c9c9cc16863b9a441b1faae35a45aaba3b44881db28ebbfaf44bbb860c8d",
+        "afterSourceSha256": "sha256:5a4e86fe311b185007bfbaad4b443e7078b667ce79c59b6c15ad35fd3e249bfa",
+        "emittedJavaScriptBytes": 22981,
+        "emittedJavaScriptSha256": "sha256:c9791fb53d8583838161aac39527d80684b545074a0556f54154d6643f86ba6d",
+        "runtimeIdentical": true
+      },
+      {
+        "file": "packages/execution-runtime/src/composition-node-json.ts",
+        "beforeSourceSha256": "sha256:a2c6e717bc8e9e232fc3c84aaae67b5b7b0d4555e99d11813b39b56162d52212",
+        "afterSourceSha256": "sha256:0709d5559aaa818b5610c9008ae0e1cb6738164f1538971fb933efab5c46457a",
+        "emittedJavaScriptBytes": 5361,
+        "emittedJavaScriptSha256": "sha256:7c6982e0037d8b1113e1030b87fb06488b1a0033f91aba43b9af620cad9fb9c0",
+        "runtimeIdentical": true
+      }
+    ],
+    "qualification": "Exactly three held source files change only through erased type annotations/imports. Pinned TypeScript emits byte-identical JavaScript; runtime/frozen/benchmark full70 remains scoped to its original checkpoint. Fresh fast/declaration/package/installed checks qualify the repaired public types."
+  },
+  "verification": [
+    {
+      "command": "pnpm build",
+      "actualExitCode": 0
+    },
+    {
+      "command": "pnpm build:package",
+      "actualExitCode": 0
+    },
+    {
+      "command": "pnpm check:fast",
+      "session": 91161,
+      "actualExitCode": 0,
+      "unitTests": 4363,
+      "unitFiles": 429,
+      "seconds": 69.89
+    }
+  ],
+  "pins": [
+    {
+      "path": "/private/tmp/still-shift-ms2-final71-package1.log",
+      "bytes": 4886,
+      "sha256": "sha256:d8961f985ee6248de51b359e72c57e3f5dc8b29e48c8381c6000f6565ff8cce5"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-final71-package1-receipt.json",
+      "bytes": 760,
+      "sha256": "sha256:9e726a722086e6df633857dc195a80549f48462a16396b8c36147c74095f457d"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-declaration72-erasure1.json",
+      "bytes": 1924,
+      "sha256": "sha256:1bb1a9e54468a4532c42754531e8f141139414f076ae91ac35ecc55bda49933e"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-declaration72-erasure.mjs",
+      "bytes": 2479,
+      "sha256": "sha256:02c066db98e44e08471b8170e674329cb7886a57fae9f1b1b01a335c850b5ad7"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-declaration72-build1.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-declaration72-package-build1.log",
+      "bytes": 208,
+      "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-declaration72-fast1.log",
+      "bytes": 42595,
+      "sha256": "sha256:7998f41db9de3040c82619e838d5406a11ef31fc176de96f82e5953e5c8a02db"
+    }
+  ],
+  "verificationDecision": "Per approved plan follow-up policy, retain full70 on its exact original checkpoint and qualify the type-only repair with actual fast/declaration checks, exact 2641 unchanged-input and three byte-identical emitted-JavaScript checks, then fresh package and installed verification. Broad runtime/frozen evidence is not invalidated; do not relabel full70 as a rerun on the repaired source.",
+  "remaining": [
+    "Fresh full package/source archive and installed public lifecycle verification.",
+    "Finite pack disposition/MS2 PR, then original MS3 scope; human review and finer Thai support remain unaccepted."
+  ]
+}

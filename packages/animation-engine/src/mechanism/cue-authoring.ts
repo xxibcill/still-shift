@@ -11,8 +11,12 @@ import {
   MechanismSceneV2Schema,
   MechanismWorldTextAnnotationSchema,
   MechanismSurfaceMarkingSchema,
+  type MechanismNarratedCycle,
 } from "@still-shift/scene-contract";
-import { compileMechanismNarratedCycle } from "./narrated-cycle.ts";
+import {
+  compileMechanismNarratedCycle,
+  type CompiledMechanismNarratedCycle,
+} from "./narrated-cycle.ts";
 import {
   freezeMechanismPack,
   mechanismPackHash,
@@ -21,6 +25,29 @@ import {
 import { MechanismPackInvariantError } from "./pack-invariant.ts";
 import { readMechanismJson, writeMechanismJson, mechanismHash } from "./io.ts";
 import { MECHANISM_RESPONSE_LIMITS } from "./protocol.ts";
+export interface MechanismCueAuthoringInspection {
+  document: MechanismNarratedCycle;
+  projectHash: string;
+  compiled: CompiledMechanismNarratedCycle;
+}
+export interface MechanismCuePatchResult
+  extends MechanismCueAuthoringInspection {
+  schemaVersion: "mechanism-cue-patch-result-1";
+  changedPaths: string[];
+  affectedShots: string[];
+  cacheEffects: {
+    sourceScene: string;
+    nativePlates: string;
+    overlays: string;
+    soundMix: string;
+    narration: string;
+  };
+  nextAction: string;
+}
+export interface SavedMechanismCuePatchResult extends MechanismCuePatchResult {
+  path: string;
+  revision: number;
+}
 const cue = MechanismNarratedCycleSchema.shape.cues.element;
 const cueTarget = { cue: cue.shape.id };
 const annotationTarget = {
@@ -140,7 +167,7 @@ function version(input: unknown, expected: string) {
 export function inspectMechanismCueAuthoring(
   instance: MechanismPackInstanceSource,
   input: unknown,
-) {
+): MechanismCueAuthoringInspection {
   version(input, "mechanism-narrated-cycle-1");
   const document = MechanismNarratedCycleSchema.parse(input);
   try {
@@ -164,7 +191,7 @@ export function applyMechanismCuePatch(
   instance: MechanismPackInstanceSource,
   input: unknown,
   request: unknown,
-) {
+): MechanismCuePatchResult {
   const current = inspectMechanismCueAuthoring(instance, input);
   version(request, "mechanism-cue-patch-1");
   const patch = MechanismCuePatchSchema.parse(request);
@@ -357,7 +384,7 @@ async function verifySource(
 export async function readMechanismCueAuthoring(
   instance: MechanismPackInstanceSource,
   path: string,
-) {
+): Promise<MechanismCueAuthoringInspection> {
   const result = inspectMechanismCueAuthoring(
     instance,
     await readMechanismJson(resolve(path)),
@@ -429,7 +456,7 @@ export async function patchMechanismCueAuthoring(
   instance: MechanismPackInstanceSource,
   path: string,
   request: unknown,
-) {
+): Promise<SavedMechanismCuePatchResult> {
   const current = await readMechanismCueAuthoring(instance, path),
     result = applyMechanismCuePatch(instance, current.document, request);
   const saved = await saveMechanismCueAuthoring(
