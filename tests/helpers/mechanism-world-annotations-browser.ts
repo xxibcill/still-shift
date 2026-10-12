@@ -81,7 +81,7 @@ function contains(corners: readonly number[][], p: number[]) {
   return values.every((v) => v >= -3) || values.every((v) => v <= 3);
 }
 /** Independent scalar ACES/encoded-sRGB oracle for the pinned native HDR resolve. */
-function displayInk(
+export function displayInk(
   composition: Composition,
   prepared: CompositionPreparedNative3DVersions,
   color: "red" | "green",

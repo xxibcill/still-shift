@@ -906,6 +906,22 @@ mechanism families establish whether the architecture transfers.
       retains failed attempts and lossy encoded diagnostics. Internal modules only;
       public API/CLI, actual world/surface cache breadth, full99/resources/installed/
       pack admission and broader encoded/human acceptance keep this criterion unchecked.
+      Slice61 adds actual world/surface plate reuse across all three families with
+      admitted240x136/1440x816 pictures. Six retained cases verify360 preview pairs
+      within fixedRGB2/max1,720 seeks,12 native-ink invalidations and unchanged
+      RGB8/min8 preview/RGB28/min3 encoded guards;30 sampled PNGs are agent-viewed.
+      The producer reports passed but its truncated root terminal is unverified.
+      Owned independent audit1 checks114 fact pins,360 PNG16 frames recovered to
+      original native RGBA transport hashes,2,520 hierarchy/360 camera triples,
+      720 MP4 decoded frames and18 complete PCM streams. Failed ordinary fast1 and
+      isolated style timeouts are retained. Separately located family cases preserve
+      every assertion and5s per-case; tape keeps30s. Complete one-worker fast-tier2
+      passes4,348 units/427 files on held2,627 inputs/120,587,636B. No production or
+      browser change follows the owning render/audit. [World/surface cache evidence](./mechanism-shorts-ms2-world-plate-export-results.json)
+      separates artifact completion from the lost producer terminal. The registered
+      full matrix is100 and must own a fresh terminal; public API/CLI/in-flight,
+      whole resources/final installed/pack/genuine speech and broader encoded/human
+      acceptance remain required. The expanded annotation criterion stays unchecked.
 - [ ] Compile semantic contact/release/return events from supplied narration cues
       into all picture, annotation, caption and sound tracks. Reject overfull shots,
       out-of-recording cues and insufficient reading/action time. Do not stretch

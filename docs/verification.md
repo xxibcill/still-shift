@@ -239,6 +239,20 @@ native closure evidence, measured zero new native submissions, actual glyph boun
 fixed RGB2 preview parity, complete forward/reverse/shuffled seeks, repeated encoded
 bodies and decoded audio. Altered fact files, stale cues, missing measurements and
 nonzero native counters must reject. It is included in `pnpm test`; run it serially
-with other browser/export groups. World/surface plate breadth, supplied speech,
-whole resource admission, public cache API/CLI and human acceptance remain separate
-gates. Test fixtures use local synthetic PCM and engineering dimensions.
+with other browser/export groups. Supplied speech, whole resource admission, public
+cache API/CLI and human acceptance remain separate gates. Test fixtures use local
+synthetic PCM and engineering dimensions.
+
+`pnpm test:browser:mechanism-world-plate-export` captures and reuses actual native
+world-text and rigid surface-marking plates across all three families. It checks
+all60 native/cache preview pairs and120 cached seeks per case at fixed RGB2,
+retains world/surface ink at RGB8/min8 in both previews and RGB28/min3 in every
+encoded cached frame, and checks repeated output bodies and complete decoded audio.
+A complete world-ink replacement must reject the original plate before output
+publication. Surface fixtures preserve the previously admitted1440x816 pictures
+and Float32 triangle/bias limits. Streaming decoding keeps one bounded frame rather
+than lifting the older complete-clip helper limit. Run serially with the other
+browser/export groups; it is included in `pnpm test`. Generic synthetic captions
+and a small ink count do not establish encoded glyph/copy/readability, genuine
+speech, factual or pilot acceptance. Whole resource/lifetime and final full-matrix
+verification remain separate gates.

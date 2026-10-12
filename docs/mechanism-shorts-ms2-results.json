@@ -16178,6 +16178,48 @@
       "roundedWordEndpointOverrunSamples": [15, 9],
       "revisedCopyHookReductionSeconds": 3.483,
       "qualification": "Data-only authoritative clocks; endpoint proposals not applied, no genuine spoken cue/native output, listening, factual or pilot acceptance. Customer audio/transcripts remain outside Git; no spending."
+    },
+    {
+      "id": "native-world-surface-plate-export61",
+      "status": "passed-six-case-artifacts-and-owned-audit-fast-tier-with-unverified-producer-terminal",
+      "sourceCheckpoint": "c2da9f5cb47bd4dc149e543bae68920ab4f6e74b",
+      "record": {
+        "path": "docs/mechanism-shorts-ms2-world-plate-export-results.json",
+        "bytes": 52800,
+        "sha256": "sha256:30ed72d1523b33376a29b442c3fb7af07b0b2d080cb57f245eb2b90c093539c4"
+      },
+      "producerActualExitCode": null,
+      "actualAuditSession": 39875,
+      "actualAuditExitCode": 0,
+      "actualFastTierSession": 88083,
+      "actualFastTierExitCode": 0,
+      "fastTierVariant": "Same sequential schema/boundary/format/lint/build/unit stages with one unit worker within the4-worker ceiling; ordinary check:fast failure is retained.",
+      "unitTests": 4348,
+      "unitFiles": 427,
+      "heldInputFiles": 2627,
+      "heldInputBytes": 120587636,
+      "originalNativeCaptureFrames": 360,
+      "directExports": 6,
+      "directNativeFrames": 360,
+      "cachedExports": 12,
+      "cachedOutputFrames": 720,
+      "measuredImageCalls": 720,
+      "measuredFreshNativeSubmissionCalls": 0,
+      "nativeCachePreviewFramePairs": 360,
+      "cachedPreviewDraws": 1080,
+      "extraCachedSeekFrames": 720,
+      "maximumPreviewRgbDifference": 1,
+      "inkEditInvalidationChecks": 12,
+      "originalSampledPreviewPngsAgentViewed": 30,
+      "independentFactPinChecks": 114,
+      "independentNativePng16TransportHashMatches": 360,
+      "independentPartHierarchyPairs": 2520,
+      "independentSourceCameraTriples": 360,
+      "independentActualMp4DecodedFrames": 720,
+      "completeDecodedAudioStreams": 18,
+      "fullMatrixGroups": 100,
+      "fullMatrixPassed": false,
+      "qualification": "Production and browser sources unchanged from the owning six-case artifacts/audit; subsequent edits register the group and split a pre-existing style test into three located family cases. Complete producer report exists but terminal is unverified. Fresh full100/frozen/resources/public/installed/pack/genuine speech/human/pilot gates remain open."
     }
   ],
   "implementation": {
@@ -18246,9 +18288,41 @@
         "Actual world/surface plate breadth, public cache API/CLI, encoded glyph/copy/readability, full99/frozen176/36061/benchmark/resources/lifetime/source/archive/installed/pack/MS2 PR remain required before MS3.",
         "Packs0; validated coverage0/10; accepted pilot0. No paid generation, human acceptance, merge, publication, Actions or private media redistribution."
       ]
+    },
+    "sixtyFirstSlice": {
+      "record": {
+        "path": "docs/mechanism-shorts-ms2-world-plate-export-results.json",
+        "bytes": 52800,
+        "sha256": "sha256:30ed72d1523b33376a29b442c3fb7af07b0b2d080cb57f245eb2b90c093539c4"
+      },
+      "scope": "No production code changes from slice59. An existing multi-family style unit test is split into three family cases, preserving every assertion and the5s per-case budget; the unchanged exhaustive overlay test keeps30s. New real browser/export fixtures reuse the previously admitted world240x136 and surface1440x816 pictures across all three families at30fps/60frames. Four world-graphic layers per native partition remain baked into original plates; ordinary captions/audio export through the shared image path.",
+      "originalProducerSourceInputs": {
+        "path": "/private/tmp/still-shift-ms2-worldplate61-inputs2.json",
+        "bytes": 448119,
+        "sha256": "sha256:a2fe592ccaed9f56bcd2e76a761438ba41da14547a82f03ee6db94b32639b8d3",
+        "files": 2627,
+        "inputBytes": 120587489
+      },
+      "finalVerificationSourceInputs": {
+        "path": "/private/tmp/still-shift-ms2-worldplate61-inputs4.json",
+        "bytes": 448119,
+        "sha256": "sha256:34b4606e4e89799ed648e82e4c191eb782b32887ad77ea90e44cc95ab22d40d7",
+        "files": 2627,
+        "inputBytes": 120587636
+      },
+      "producerTerminalQualification": "The complete producer reports passed and all six retained fixture records are audited. The process was observed exited, but the root command session ID/terminal receipt was lost in truncated tool output. No exit0 or uninterrupted full pass is inferred; final full100 must own a fresh terminal.",
+      "failuresRetained": "Browser URL TypeScript import, lost build2/render1 terminals, default PNG transfer assumption, absent zscale filter and ordinary fast1/two unit timeouts/isolated style timeout. Original5s per-family and30s tape budgets remain; all original assertions retained in separately located family cases.",
+      "remaining": [
+        "Public versioned root cache API/CLI/discovery and actual current/stale consumer checks; in-flight edits/cancellation and whole resource/lifetime/replay admission remain required.",
+        "Genuine recovered spoken cue/native output and shorter revised-copy recompilation, actual reading/action and factual/listening review remain open.",
+        "Full100 including this new group, frozen176/36061/benchmark and final source/archive/installed/pack/validated10-question coverage/MS2 PR before MS3 remain required. The earlier stopped full51 retains its original94-group scope.",
+        "Broader continuous layout and encoded glyph/copy/readability remain open. These are synthetic engineering pictures with generic Start/Touch/Free/Back captions. Cable-tie variant stays non-releasable; these captions do not imply a legal release or factual pilot.",
+        "Supported packs0; validated coverage0/10; accepted pilot0. No human acceptance, paid generation, merge, npm publication, Actions or private media redistribution."
+      ]
     }
   },
   "limits": [
+    "Slice61 verifies native world/surface cache breadth in six retained engineering cases with owned independent audit1 and one-worker fast-tier2, while the producer terminal remains explicitly unverified. Original360 PNG16 frames independently recover their native RGBA transport hashes;360 preview pairs/maxRGB1 and all fixed ink guards pass. Both12 cached receipts/counters and720 output frames retain zero new native calls. Failed ordinary/isolated timeouts remain; all assertions retain5s per-family/30s tape budgets. Full matrix is100 with no full100 pass. Public cache API/CLI, whole resources/installed/pack/genuine speech/encoded readability and human acceptance remain open; packs/pilot0.",
     "Slice60 establishes exact48k normalized sample clocks for four existing spoken MP3 takes, with unchanged original file bodies and exact normalized PCM re-decodes. Two rounded words need15/9 sample authoring clamps and peg final visual cue+1 sample; no correction/cue/native export or listening acceptance is claimed. The revised-copy hook is3.483s shorter; private media are outside Git and no credits were spent.",
     "Slice59 verifies current synthetic integer-grid cached overlays across all five visible screen styles/three families with zero new native submissions, original proof replay and fixedRGB2 previews. Lossy direct/cache H264 deltas remain diagnostic; public API/CLI, actual world/surface cache breadth, full99/resources/final installed/pack/genuine spoken outputs and human acceptance remain open. Supported packs/pilot0.",
     "Slice58 completes internal native-only PNG16 capture/current-picture compatibility/original source/dependency/closure replay. Final capture2/audit3 verifies180 original native frames/passes/PNG/decoded/journal frames,1260 hierarchy pairs/180 source-camera triples; all180 PNG/decode bodies equal capture1. Caption/gain preserve plates;28 artifact/3 PNG/3 camera changes reject. Live source2 native-body/complete-PNG cancel removes owned directory/observed Chromium/FFmpeg descendants within26.9ms under existing2s policy. Final fast1 passes4344 units427files; real final file runtime2 tests pass; held2620 inputs120518027B unchanged. Failed red/build/type/immediate-cancel attempts and unverified build2 subterminal retained. Original observations stay original. Actual cached overlays/zero fresh3D export draws/public API/CLI, world/surface capture breadth, genuine speech, whole resources/lifetimes/replay/full98/archive/installed/pack/MS2 PR/human acceptance remain open. Packs/pilot0; MS3 not started.",

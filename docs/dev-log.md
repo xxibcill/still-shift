@@ -45,7 +45,7 @@ still hold before relying on them.
 
 - **MS2 in progress (2026-10-12):** `codex/mechanism-ms2` carries exact
   [native prerequisite PR #56](https://github.com/xxibcill/still-shift/pull/56).
-  Sixty slices include the frozen ten-question board, expanded Thai review and
+  Sixty-one slices include the frozen ten-question board, expanded Thai review and
   recovered existing spoken inputs for all three families. Four audio hashes and
   thirteen supplied word-range/shot associations match. The shorter tape-hook take
   uses revised copy; the failed identical-script assumption is retained. Fresh48k source clocks for four supplied takes have since been measured locally;
@@ -141,12 +141,23 @@ still hold before relying on them.
   need15/9 sample authoring clamps, and peg's final visual endpoint needs+1 sample.
   Canonical clips remain outsideGit. The revised-copy hook is3.483s shorter;
   no spoken cue compilation/native export or listening acceptance is inferred.
-  The full matrix is99; no full99 pass claimed.
+  Slice61 completes six retained world/surface cache cases with unchanged preview
+  and encoded ink guards:360 original frames,6 direct/12 cached exports,360 preview
+  pairs/maxRGB1 and720 cached seeks. All12 ink-edit rejection checks pass;30 sampled
+  PNGs agent-viewed. Producer reports passed but lost root terminal is unverified.
+  Owned audit1 verifies114 fact pins,360 PNG16/native transport hashes,2,520 hierarchy
+  pairs/360 source-camera triples and720 MP4 decoded frames/18 complete PCM streams.
+  Ordinary fast1 and isolated style timeout are retained. Splitting one existing
+  three-family style test preserves every assertion and5s per-family; tape keeps30s.
+  One-worker full fast-tier2 passes4,348 units/427 files on held2,627 inputs/
+  120,587,636B; no production/browser change after the owning render/audit.
+  The full matrix is100; no full100 pass claimed.
   Coverage stays 0/10 validated; packs are candidates; accepted pilot episodes 0.
-  Next: actual world/surface plate breadth/public cache API/CLI; record fresh
+  Next: public cache API/CLI and in-flight consumer checks; record fresh
   genuine spoken cue/native exports; refresh the full gate,
   whole resources/final installed/pack admission and MS2 PR. MS3 not started.
   No human acceptance, merge/publication or paid generation.
+  [World/surface cache](./mechanism-shorts-ms2-world-plate-export-results.json),
   [Native plate export](./mechanism-shorts-ms2-native-plate-export-results.json),
   [Native plate capture](./mechanism-shorts-ms2-native-plate-capture-results.json),
   [Plate foundation](./mechanism-shorts-ms2-native-plate-reuse-results.json),
@@ -315,6 +326,26 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-12 — MS2 slice61: world and surface cache breadth
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2` from `c2da9f5c`.
+- **Scope:** Real native world/surface capture, cached preview/export and ink invalidation.
+- **Results:** Six cases retain360 original frames,6 direct/12 cached exports,
+  zero new native calls,360 preview pairs/maxRGB1 and720 cached seeks. All12 stale
+  ink checks reject;30 original sampled PNGs agent-viewed. Producer reports passed;
+  truncated root terminal remains unverified rather than inferred exit0.
+- **Audit:** Owned audit1 checks114 fact pins,360 exact PNG16/native transport hashes,
+  2,520 hierarchy pairs/360 source-camera triples,720 MP4 decodes and18 PCM streams.
+- **Verification:** Ordinary fast1/two timeouts and isolated style failure retained.
+  One style test becomes3 family cases with every assertion and5s per-case intact;
+  tape retains30s. One-worker complete fast-tier2 passes4,348 units/427 files on held
+  2,627 inputs/120,587,636B; production/browser sources match the owning render/audit.
+- **Rejected:** Browser import resolution, default sRGB PNG decode assumption and
+  absent zscale filter; scalar inversion of declared BT.709 recovers original pixels.
+- **Open:** Public API/CLI/in-flight/whole resources, genuine spoken/native outputs,
+  full100/frozen/benchmark/final installed/pack/MS2 PR and broader encoded/human QA.
+- **Records:** [World/surface cache evidence](./mechanism-shorts-ms2-world-plate-export-results.json).
 
 ### 2026-10-12 — MS2 slice60: fresh recovered speech sample clocks
 

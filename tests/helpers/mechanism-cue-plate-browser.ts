@@ -44,6 +44,7 @@ export async function cuePlateBrowserProof(
   directPaths: Record<string, string>,
   cached: CompositionScene,
   cachedPaths: Record<string, string>,
+  expectedInk?: readonly [number, number, number],
 ) {
   const original = await preview(direct, directPaths);
   let reused: Awaited<ReturnType<typeof preview>> | undefined;
@@ -54,6 +55,8 @@ export async function cuePlateBrowserProof(
     maximumRgbDifference: number;
     changedRgbValues: number;
     textBounds: unknown[];
+    nativeInkPixels?: number;
+    cachedInkPixels?: number;
   }[] = [];
   const sampledPngs: { frame: number; png: string }[] = [];
   try {
@@ -205,6 +208,33 @@ export async function cuePlateBrowserProof(
               ": " +
               maximumRgbDifference,
           );
+        let nativeInkPixels = 0,
+          cachedInkPixels = 0;
+        if (expectedInk) {
+          for (let i = 0; i < a.length; i += 4) {
+            if (
+              expectedInk.every(
+                (color, channel) => Math.abs(a[i + channel]! - color) <= 8,
+              )
+            )
+              nativeInkPixels++;
+            if (
+              expectedInk.every(
+                (color, channel) => Math.abs(b[i + channel]! - color) <= 8,
+              )
+            )
+              cachedInkPixels++;
+          }
+          if (nativeInkPixels < 8 || cachedInkPixels < 8)
+            throw Error(
+              "World/surface ink below unchanged RGB8/min8 in actual direct/cache preview at " +
+                frame +
+                ": " +
+                nativeInkPixels +
+                "/" +
+                cachedInkPixels,
+            );
+        }
         frames.push({
           frame,
           directSha256: await checksum(a),
@@ -212,6 +242,7 @@ export async function cuePlateBrowserProof(
           maximumRgbDifference,
           changedRgbValues,
           textBounds,
+          ...(expectedInk ? { nativeInkPixels, cachedInkPixels } : {}),
         });
         if ([0, 15, 30, 45, 59].includes(frame)) {
           const canvas = document.createElement("canvas");

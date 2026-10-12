@@ -36,8 +36,9 @@ function location(run: () => unknown) {
   throw Error("Expected located rejection");
 }
 describe("cue screen annotation recipes", () => {
-  it("compiles all five styles for each family using native composition layers and unchanged recording/timeline", () => {
-    for (const family of ["tape-hook", "cable-tie", "clothespeg"] as const) {
+  it.each(["tape-hook", "cable-tie", "clothespeg"] as const)(
+    "compiles all five styles using native composition layers and unchanged recording/timeline: %s",
+    (family) => {
       const fixture = narratedCycleFixture(family);
       const styles = [
         { kind: "tab" },
@@ -90,8 +91,8 @@ describe("cue screen annotation recipes", () => {
           ).toBe(true);
         expect(Object.isFrozen(result.composition)).toBe(true);
       }
-    }
-  });
+    },
+  );
   it("uses selected ink consistently for an arrow shaft and head", () => {
     for (const ink of ["#101820", "#d04020"]) {
       const input = styled("tape-hook", { kind: "arrow", ink });
