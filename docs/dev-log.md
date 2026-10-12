@@ -44,21 +44,20 @@ still hold before relying on them.
 ## Current state
 
 - **MS3 in progress (2026-10-13):** codex/mechanism-ms3 carries exact MS2495fb2c0
-  after PR57 opened/attached. Native efa50574 and semantic114f8df8 checkpoints
-  pass their separate held fast gates (latest4418/434,2663 inputs exact). Native
-  proof retains four exports/240 decoded frames and0 fresh caption-edit3D;
-  semantic proof checks180 actual mount samples/3 seeded controls. Report5 now
-  connects durable journals/sealed products/current verifier to one bounded
-  episode/cohort CLI report, seven production schemas and generated capability
-  limits.54 scoped checks/build/lint/schema/boundary/package declarations pass.
-  Actual fresh native report invocation and held fast tier are next; no current
-  real report/pilot claim yet. Source/output/runtime staleness invalidates readiness;
-  histories/raw reviews stay linked, missing tokens remainnull. Remaining original
-  scope: semantic/warning/QA integration; phone/shot/contact/cut/crop/handoff;
-  native faults/relocation; scoped repair/automatic MS1 overlap; ten frozen
-  questions/five assets/two behaviors and genuine inputs/reviews; broader capability
-  reconciliation and final gates/archive/installed/MS3 PR. Coverage0/10, targets
-  unmeasured. No spending/Actions/merge/publication or human acceptance.
+  after PR57 opened/attached. Report5 eec1954a now has actual three-family
+  native/API/CLI proof: four exports/240 decoded frames/0 fresh caption-edit3D;
+  current reports verify three products. Default CLI emits3 episode+12 cohort
+  rows in3611B; paged and default complete reports are byte-identical. Independent
+  57-pin audit recomputes original attempts/percentiles/reviews and full decode.
+  Complete fast4426/435 and runtime247/42+integration322/57+depth14+browser smoke
+  actually pass, with2676 inputs/121137341B held exact. Public declarations and
+  54 focused checks pass separately. Fifteen nontechnical dimensions unreviewed,
+  tokensnull, no reviewed-ready or pilot claim. Original remaining scope:
+  semantic/warning/QA integration; phone/shot/contact/cut/crop/handoff; native
+  faults/relocation; scoped repair/automatic MS1 overlap; ten frozen questions/
+  five assets/two behaviors and genuine inputs/reviews; broader capability
+  reconciliation and final full103/archive/installed/MS3 PR. Coverage0/10,
+  targets unmeasured, Actions actually disabled; no spending/merge/publication.
   [Tracker](./mechanism-shorts-ms3-acceptance.md),
   [report command](./mechanism-production-report-command.md),
   [report evidence](./mechanism-shorts-ms3-report-command-results.json),
@@ -256,14 +255,17 @@ still hold before relying on them.
 - **Done:** Locked artifact-bound report reader and one bounded CLI invocation;
   original attempts/stale reviews/product references retained. Seven production
   schemas and capability reference derive from the actual shared registry.
-- **Results:**54 scoped checks plus build/lint/schemas/boundaries/public package
-  declarations pass. Actual native report proof and held fast tier are next.
+- **Results:**54 focused checks/build/lint/schemas/boundaries/public declarations
+  pass. Current actual native+CLI proof and independent240-frame/57-pin/report
+  audit pass. Default response emits15 rows/3611B; complete reports repeat exactly.
+  Full fast4426/435 and runtime247/42+integration322/57+depth14+browser smoke
+  actually exit0 with2676 inputs/121137341B exact on eec1954a.
 - **Guards:** Missing/changed output/source/runtime invalidates readiness;
   QA/token evidence must name verified artifacts. Callback source/output races
   and final journal changes reject. Shared parent keeps foreign1024B and64MiB
   returned result capacity; no physical RSS or human/pilot acceptance inferred.
-- **Open / next:** Fresh three-family native/CLI proof, fast gate, then every
-  original remaining QA/warnings/evidence/repair/native-fault/pilot requirement.
+- **Open / next:** Every original remaining QA/warnings/evidence/repair/native-
+  fault/pilot extension/review requirement and final full/archive/installed/MS3 PR.
 - **Records:** [Command](./mechanism-production-report-command.md),
   [report evidence](./mechanism-shorts-ms3-report-command-results.json),
   [tracker](./mechanism-shorts-ms3-acceptance.md).

@@ -6,8 +6,9 @@ The public engine exports `MechanismProductionEpisodeReportSchema`,
 These are data validation and pure summary helpers. The durable controller and
 real native executor now retain attempts and artifact-bound technical full-decode
 QA. [Registered semantic and warning helpers](./mechanism-production-semantic.md)
-have separate actual-sample proof. Their durable integration, report CLI, broader
-QA execution and positive pilot admission remain in development.
+have separate actual-sample proof. The [report command](./mechanism-production-report-command.md)
+now connects actual native products to bounded episode/cohort reports. Semantic/
+warning integration, broader QA and positive pilot admission remain in development.
 
 An episode report names its question, family/design, input/output/code/profile
 hashes and output-frame/source-sample clocks. It retains contiguous original

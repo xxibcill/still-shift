@@ -1203,7 +1203,7 @@ explanations, not ten recolors or camera substitutions of E01.
       implementation. Generate concise capability references from registries/schema;
       document supported imports, batch scope and preview/export limits, and expose
       those same implemented limits in machine-readable capability discovery.
-- [ ] Deliver one documented report command that emits a small episode report and
+- [x] Deliver one documented report command that emits a small episode report and
       cohort summary with p50/p95 durations, first-pass technical success, repeated
       failures and unresolved review counts. Include individual rows, percentile
       method, measurement availability and separate setup versus routine effort.

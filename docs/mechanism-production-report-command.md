@@ -16,7 +16,8 @@ items. `--offset` and `--limit` page the deterministic combined rows. Every resp
 links one complete report containing all episode reports, original attempts,
 current dispositions, retained reviews, prior product/cache-failure references and
 cohort rows. The report file must be fresh; omitting `--report` creates a private
-temporary report. The command never executes or retries jobs.
+temporary report. The command never executes or retries jobs. Receipt status describes report
+generation; per-item validation and disposition describe readiness.
 
 The report reader acquires the existing queue lock and checks manifest/journal
 binding, complete declared dependency pins, immutable product seals, checkpoint

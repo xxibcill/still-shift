@@ -3,7 +3,7 @@
   "milestone": "MS3",
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
-  "status": "scoped-api-cli-verified-native-browser-pending",
+  "status": "actual-native-report-and-complete-fast-runtime-tiers-verified",
   "baseCommit": "1ce6d24c",
   "sourceSnapshot": [
     {
@@ -198,9 +198,29 @@
   ],
   "logs": [
     {
+      "path": "/private/tmp/still-shift-ms3-report5-audit1.log",
+      "bytes": 69,
+      "sha256": "sha256:8172c31dc348b13a8c827cfd214ca20edeb01c67f234e1bd885ed03fbf5189e2"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-report5-browser1.log",
+      "bytes": 1213,
+      "sha256": "sha256:ba2f3608ad61346275ab57bd6bf25293b86726618f953418224e38bcec870e5a"
+    },
+    {
       "path": "/private/tmp/still-shift-ms3-report5-build1.log",
       "bytes": 98,
       "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-report5-default-cli1-stderr.log",
+      "bytes": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-report5-fast1.log",
+      "bytes": 41989,
+      "sha256": "sha256:d03c923d4e4d2d55792bb44cb7f314e58a774a79b72c94637833421f0ff4a08a"
     },
     {
       "path": "/private/tmp/still-shift-ms3-report5-gate1-0.log",
@@ -238,6 +258,11 @@
       "sha256": "sha256:fdce95697981f3d6586687dec326a10cb3e4bbe41ecc184232eaae5f4228a733"
     },
     {
+      "path": "/private/tmp/still-shift-ms3-report5-runtime1.log",
+      "bytes": 41818,
+      "sha256": "sha256:6650b708ea4646ce97c29f60ab628f0182755f82722dc36391144f6a2b096da6"
+    },
+    {
       "path": "/private/tmp/still-shift-ms3-report5-schemas1.log",
       "bytes": 653,
       "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
@@ -248,16 +273,242 @@
       "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
     },
     {
+      "path": "/private/tmp/still-shift-ms3-report5-browser1-receipt.json",
+      "bytes": 397,
+      "sha256": "sha256:12db69c386bda4767f4e8e1f74b952b80323e6c25b275db195e776173456283c"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-report5-default-cli1-receipt.json",
+      "bytes": 892,
+      "sha256": "sha256:3e8ce1f740291b886073d199d088cb1a8a4d7f5dca0800086de8c5e5f95c82f9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-report5-fast1-receipt.json",
+      "bytes": 365,
+      "sha256": "sha256:b0d19b4ab91b504f67b92da158ad22797df452a5205cf4803670a9bbad1e1573"
+    },
+    {
       "path": "/private/tmp/still-shift-ms3-report5-gate1-receipt.json",
       "bytes": 2469,
       "sha256": "sha256:82cc0b46ba2bc8ef77a3f2ff4e21df0bd2487a0f96b6eaaf0b7e70bee9672dd7"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-report5-runtime1-receipt.json",
+      "bytes": 371,
+      "sha256": "sha256:da4ae801b18e18a907cab911784a4d5752b736538e220eea6229d07df33f2918"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-report5-browser1-inputs.json",
+      "bytes": 456676,
+      "sha256": "sha256:57439c1cedc5029543cb191a4894c365f0b0e1a9a9042b029ea070d66c1deb6f"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-report5-fast1-inputs.json",
+      "bytes": 456676,
+      "sha256": "sha256:57439c1cedc5029543cb191a4894c365f0b0e1a9a9042b029ea070d66c1deb6f"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-report5-runtime1-inputs.json",
+      "bytes": 456676,
+      "sha256": "sha256:57439c1cedc5029543cb191a4894c365f0b0e1a9a9042b029ea070d66c1deb6f"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-report5-default-cli1-stdout.json",
+      "bytes": 3611,
+      "sha256": "sha256:659b3305bf4d1f0b5fbf4c45b494cdc91ee19d623146c196839f2e52d5078716"
     }
   ],
   "remaining": [
-    "Current actual native browser report invocation and complete held-source fast tier.",
     "Registered semantic/warning integration, actual mechanical/sample-visual/continuous/listening/factual QA and evidence/phone/shot/contact/cut/crop/handoff.",
     "Actual native interruption/cancel/corrupt/relocation, scoped/affected repair and automatic MS1 seeded overlap.",
-    "All ten original questions/five new assets/two behaviors/genuine inputs/reviews; broader import/preview/export capability reconciliation and final full/archive/installed/MS3 PR."
+    "All ten original questions/five new assets/two behaviors/genuine inputs/reviews; broader import/preview/export capability reconciliation and final full/archive/installed/MS3 PR.",
+    "Final required full103 matrix, exact archive and isolated installed proof and completed MS3 PR; existing original pilot and review requirements remain unchanged."
   ],
-  "qualification": "Scoped controller/report/CLI checks only at this checkpoint. No current actual report-on-native-output, pilot, human or newly achieved production target is claimed before the separate actual browser proof."
+  "qualification": "Actual three-family queue/native report/API/separate CLI proof, independent complete decode/report audit, and complete fast/runtime tiers on eec1954a with2676 inputs held exact. Final full/archive/installed and all original pilot extensions/genuine inputs/reviews remain open; no pilot/human acceptance or newly achieved target.",
+  "originalScopedStatus": "scoped-api-cli-verified-native-browser-pending",
+  "committedSource": "eec1954a1357aa88c8b7f113e425805d7b272f49",
+  "browser1": {
+    "session": 43769,
+    "status": "passed",
+    "command": "pnpm test:browser:mechanism-production-native",
+    "sourceCommit": "eec1954a1357aa88c8b7f113e425805d7b272f49",
+    "startedUtc": "2026-10-12T21:07:43.276414+00:00",
+    "pid": 8877,
+    "inventory": "/private/tmp/still-shift-ms3-report5-browser1-inputs.json",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-12T21:13:56.789526+00:00",
+    "root": "/private/tmp/still-shift-ms3-production-native-gUAUFb",
+    "outputs": 4,
+    "decodedFrames": 240,
+    "executions": 4,
+    "reportAPIVerifiedEpisodes": 3,
+    "CLIPageRows": 4,
+    "CLICompleteRows": 15,
+    "parentAfterFourReturnedStatesBytes": 268436480,
+    "parentAfterDisposeReservations": 0,
+    "pin": {
+      "path": "/private/tmp/still-shift-ms3-production-native-gUAUFb/run.json",
+      "bytes": 18230,
+      "sha256": "sha256:a739ed60ffee094d6b6d79ea90b6cc244d216331100324a5e997d150715bf8ff"
+    }
+  },
+  "defaultCLI1": {
+    "session": 94896,
+    "status": "passed",
+    "command": [
+      "node",
+      "--import",
+      "tsx",
+      "tools/still-shift-cli/src/cli.ts",
+      "production",
+      "report",
+      "--manifest",
+      "/private/tmp/still-shift-ms3-production-native-gUAUFb/queue.json",
+      "--output-dir",
+      "/private/tmp/still-shift-ms3-production-native-gUAUFb/output",
+      "--report",
+      "/private/tmp/still-shift-ms3-production-native-gUAUFb/production-report-default.json"
+    ],
+    "sourceCommit": "eec1954a1357aa88c8b7f113e425805d7b272f49",
+    "startedUtc": "2026-10-12T21:29:09.141470+00:00",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "responseBytes": 3611,
+    "returnedRows": 15,
+    "episodeRows": 3,
+    "cohortCategoryRows": 12,
+    "completeReportBytesExact": true,
+    "completeReportSha256": "sha256:65ee33d59c973a41e86950224ae82022d9bf5e74e630b0d34085ca5b987249d4",
+    "endedUtc": "2026-10-12T21:29:35.379470+00:00",
+    "pin": {
+      "path": "/private/tmp/still-shift-ms3-production-native-gUAUFb/production-report-default.json",
+      "bytes": 41972,
+      "sha256": "sha256:65ee33d59c973a41e86950224ae82022d9bf5e74e630b0d34085ca5b987249d4"
+    }
+  },
+  "independentAudit": {
+    "actualExitCode": 0,
+    "outputs": 4,
+    "decodedFrames": 240,
+    "pins": 57,
+    "reportAudit": {
+      "episodes": 3,
+      "cohortRows": 3,
+      "originalAttemptCount": 4,
+      "currentDurationRows": 3,
+      "percentiles": "independently recomputed",
+      "CLIPageRows": 4,
+      "CLICompleteRows": 15,
+      "reviewCounts": "independently recomputed",
+      "pilotAdmission": "not-established"
+    },
+    "result": {
+      "path": "/private/tmp/still-shift-ms3-report5-audit1.json",
+      "bytes": 40079,
+      "sha256": "sha256:c14bac316053fb540f13b1d1d71ae59bdcdca47d41d7e263f49365e4f9b3c32e"
+    }
+  },
+  "runtime1": {
+    "session": 78413,
+    "status": "passed",
+    "command": "pnpm check:runtime",
+    "sourceCommit": "eec1954a1357aa88c8b7f113e425805d7b272f49",
+    "startedUtc": "2026-10-12T21:14:28.036999+00:00",
+    "pid": 22240,
+    "inventory": "/private/tmp/still-shift-ms3-report5-runtime1-inputs.json",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-12T21:22:57.102900+00:00",
+    "runtimeTests": 247,
+    "runtimeFiles": 42,
+    "runtimeDurationSeconds": 134.57,
+    "integrationTests": 322,
+    "integrationFiles": 57,
+    "integrationDurationSeconds": 337.55,
+    "depthTests": 14,
+    "browserSmoke": "Lab session and reusable component --smoke-only --ui-export --timing-only",
+    "heldInputFiles": 2676,
+    "heldInputBytes": 121137341
+  },
+  "fast1": {
+    "session": 42761,
+    "status": "passed",
+    "command": "pnpm check:fast",
+    "sourceCommit": "eec1954a1357aa88c8b7f113e425805d7b272f49",
+    "startedUtc": "2026-10-12T21:23:13.548320+00:00",
+    "pid": 65375,
+    "inventory": "/private/tmp/still-shift-ms3-report5-fast1-inputs.json",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-12T21:25:23.205998+00:00",
+    "unitTests": 4426,
+    "unitFiles": 435,
+    "unitDurationSeconds": 65.5,
+    "heldInputFiles": 2676,
+    "heldInputBytes": 121137341
+  },
+  "actualEngineeringCohort": {
+    "episodes": 3,
+    "originalAttempts": 4,
+    "currentProductsVerified": 3,
+    "durations": {
+      "setupSeconds": {
+        "available": 3,
+        "p50": 6.462995916999993,
+        "p95": 12.997286916699998
+      },
+      "routineSeconds": {
+        "available": 3,
+        "p50": 10.628433583999984,
+        "p95": 67.29950252060002
+      },
+      "renderSeconds": {
+        "available": 3,
+        "p50": 10.628433583999984,
+        "p95": 67.29950252060002
+      }
+    },
+    "reviewCounts": {
+      "technical": {
+        "passed": 3,
+        "failed": 0,
+        "unreviewed": 0
+      },
+      "mechanical": {
+        "passed": 0,
+        "failed": 0,
+        "unreviewed": 3
+      },
+      "sampled-visual": {
+        "passed": 0,
+        "failed": 0,
+        "unreviewed": 3
+      },
+      "continuous-motion": {
+        "passed": 0,
+        "failed": 0,
+        "unreviewed": 3
+      },
+      "listening": {
+        "passed": 0,
+        "failed": 0,
+        "unreviewed": 3
+      },
+      "factual": {
+        "passed": 0,
+        "failed": 0,
+        "unreviewed": 3
+      }
+    },
+    "authoring": {
+      "comparablePairedTasks": 0,
+      "routineMedianTokens": null,
+      "baselineMedianTokens": null,
+      "savings": null,
+      "targetSatisfied": null
+    },
+    "reviewedReady": 0,
+    "scope": "Three synthetic engineering questions, not the original ten-question pilot. No target achievement or human acceptance."
+  }
 }

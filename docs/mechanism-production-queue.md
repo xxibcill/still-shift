@@ -4,7 +4,8 @@ runMechanismProductionQueue(manifestPath, outputDirectory, executor, options) is
 public from the engine. `createMechanismProductionNativeExecutor()` builds a
 real shared renderer adapter; its `createQueue(id, projects, manifestDirectory)`
 snapshots every current source/media dependency and actual code/profile identity.
-The CLI remains in development. Generic fixtures prove scheduling mechanics;
+The [report CLI](./mechanism-production-report-command.md) is verified; queue
+execution uses the public API. Generic fixtures prove scheduling mechanics;
 [the native proof](./mechanism-shorts-ms3-native-executor-results.json) separately
 retains actual three-family capture, cache reuse, caption revision and full decode.
 These engineering inputs supply no fact, human review or pilot acceptance.

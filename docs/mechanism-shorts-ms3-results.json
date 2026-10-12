@@ -3,7 +3,7 @@
   "milestone": "MS3",
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
-  "status": "in-progress-production-report-command-scoped-verified",
+  "status": "in-progress-actual-production-report-command-verified",
   "baseMain": "57967fa6497249d75e740ba837b8e2687cc81a98",
   "ms2Prerequisite": {
     "commit": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
@@ -347,6 +347,20 @@
       "record": "docs/mechanism-shorts-ms3-report-command-results.json",
       "focusedTests": 54,
       "qualification": "Scoped controller/report/CLI checks only at this checkpoint. No current actual report-on-native-output, pilot, human or newly achieved production target is claimed before the separate actual browser proof."
+    },
+    {
+      "id": "report-command5-actual-gates",
+      "status": "actual-native-report-and-complete-fast-runtime-tiers-verified",
+      "sourceCommit": "eec1954a1357aa88c8b7f113e425805d7b272f49",
+      "record": "docs/mechanism-shorts-ms3-report-command-results.json",
+      "unitTests": 4426,
+      "runtimeTests": 247,
+      "integrationTests": 322,
+      "depthTests": 14,
+      "outputs": 4,
+      "decodedFrames": 240,
+      "defaultCLIResponseBytes": 3611,
+      "qualification": "Actual three-family queue/native report/API/separate CLI proof, independent complete decode/report audit, and complete fast/runtime tiers on eec1954a with2676 inputs held exact. Final full/archive/installed and all original pilot extensions/genuine inputs/reviews remain open; no pilot/human acceptance or newly achieved target."
     }
   ],
   "targets": {
@@ -378,7 +392,7 @@
     "Integrate the implemented registered scalar assertions, located MS2 timeline results and grouped raw warnings into durable artifact-bound technical/mechanical/sampled/continuous/listening QA; analytic/continuous collision, broader fault suite and actual reviews remain open.",
     "Phone/shot/contact/cut/crop/full-decode/audio/handoff artifacts; scoped/stale repairs/affected rerender and automatic MS1 overlap recovery preserving plates.",
     "Original ten distinct question fixtures with actual factual/design/genuine speech/visual proof; five assets and two behaviors remain required and unadmitted.",
-    "Report CLI and generated production schemas/limits are implemented; current native report proof/fast gate, broader import/preview/export reconciliation, real pilot measurements and required final full/archive/installed/MS3 PR remain.",
+    "One actual bounded episode/cohort report command and generated production schema/limit agreement are verified. Broader import/preview/export capability reconciliation, actual pilot measurements, final full/archive/installed and MS3 PR remain.",
     "Retain candidate/owner reviews and finer Thai limits; no ElevenLabs spend without explicit project/batch/model/voice/takes/credits approval."
   ],
   "qualification": "MS2 software checkpoint and its exact private archive remain historical prerequisites. New MS3 source is not qualified by relabelling MS2 full/installed gates. Structural model caps do not by themselves certify lifecycle I/O/managed-memory admission or review execution.",
