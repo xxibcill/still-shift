@@ -35,3 +35,10 @@ Figures10/11 and printed column8 support the qualitative normal-lock to ultimate
 load topology: the first tooth already engages; the second tooth and frame stop
 join under further loading while hinge deformation permits bounded shifting.
 The original frozen E06 question remains unchanged.
+
+Current native controls independently verify 126 decoded frames, captured poses,
+252 packed web position/normal streams and zero sampled pawl/ledge overlap.
+Four inspected decoded stills identify a required source-alignment repair: the
+current web is attached at the upper-left pawl edge/left frame wall, while the
+patent places its hinge near the lower rear/stop. This candidate is provisional;
+E06 factual and whole episode admission remain open.

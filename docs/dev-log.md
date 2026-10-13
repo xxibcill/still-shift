@@ -114,8 +114,13 @@ still hold before relying on them.
   10 owning/101 dense force samples/123 triangle states,73 scoped/9 files,4 CLI and
   compile/lint/schema/boundary/package checks pass with2,725 inputs exact.
   Initial fixture/API/Float64 assertions and stale discovery failures are retained.
-  [Asset record](./mechanism-shorts-ms3-load-asset-results.json); actual native and
-  committed current tiers remain pending. No whole/pilot admission.
+  [Asset record](./mechanism-shorts-ms3-load-asset-results.json). Native1/audit1 on
+  ae70d735 pass126 frames/252 used web streams/15,750 scalar comparisons; all
+  decoded and12,096 pawl/ledge triangle checks have zero overlap. Four packet
+  negatives reject. Full tiers1 pass4,528/448 fast,253/45 runtime,322/57 integration,
+  depth14/smoke with2,725 inputs/121,701,051B exact. Four decoded stills reviewed;
+  source hinge placement remains a required asset repair. No E06/whole/pilot
+  admission; all handles closed.
   Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
   Remaining original scope: clearer views and actual whole reviews, E06 asset/
@@ -322,8 +327,12 @@ still hold before relying on them.
 - **Retained:** Invalid fixture/API fields, overly exact mounted Float64 demand,
   saved-family API error and stale discovery assertions; triangle clipping caught
   a real small-pitch tooth/frame overlap. Ledge moved clear; all123 states pass.
-- **Open / next:** Actual native original-observation audit, committed current
-  tiers, physical/factual/design/continuous/whole and original MS3 pilot work.
+- **Native / current tiers:**ae70d735 native1/audit1 pass126 frames/252 used
+  streams/15,750 scalars, decoded all;12,096 triangle checks have zero overlap.
+  Full tiers1 pass4,528/448 fast,253/45 runtime,322/57 integration,14/smoke exact.
+- **Open / next:** Four actually viewed decoded stills identify hinge placement
+  source alignment as required repair; original E06 explanation and whole/pilot
+  reviews remain. Four malformed observation packets reject. All handles closed.
 - **Records:** [Asset evidence](./mechanism-shorts-ms3-load-asset-results.json).
   Geometry and compliance are illustrative; accepted0/10, no spending/publication.
 
