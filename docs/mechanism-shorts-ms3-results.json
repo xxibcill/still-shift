@@ -3,7 +3,7 @@
   "milestone": "MS3",
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
-  "status": "in-progress-declarative-complete-tiers-passed-retry-next",
+  "status": "in-progress-targeted-retry-scoped-verified",
   "baseMain": "57967fa6497249d75e740ba837b8e2687cc81a98",
   "ms2Prerequisite": {
     "commit": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
@@ -471,6 +471,14 @@
         "browserSmoke": "completed",
         "heldInputFiles": 2698
       }
+    },
+    {
+      "id": "targeted-retry9",
+      "status": "targeted-retry-scoped-verified-complete-tiers-and-real-native-recovery-pending",
+      "record": "docs/mechanism-shorts-ms3-retry-results.json",
+      "focusedTests": 48,
+      "owningSourceHoldExitCode": 0,
+      "qualification": "Targeted authorization verified through strict source-held owning/fixture lifecycle and CLI controls only. Earlier79f3 complete fast/runtime and6080 native/independent evidence remain separately bound. No current real native CLI recovery or whole review/pilot acceptance."
     }
   ],
   "targets": {

@@ -4,6 +4,7 @@ import { MechanismProductionEpisodeReportSchema } from "./production-report.ts";
 
 export const MECHANISM_PRODUCTION_QUEUE_LIMITS = {
   items: 300,
+  retryItems: 32,
   inputs: 128,
   attemptsPerRevision: 3,
   attemptsPerItem: 96,
@@ -89,10 +90,24 @@ export const MechanismProductionQueueSchema = z
     codeSha256: MechanismHashSchema,
     profileSha256: MechanismHashSchema,
     maximumAttempts: z.number().int().min(1).max(3),
+    retryFailedIds: z.array(id).min(1).max(32).optional(),
     items: z.array(MechanismProductionQueueItemSchema).min(1).max(300),
   })
   .strict()
   .superRefine((queue, ctx) => {
+    if (
+      queue.retryFailedIds &&
+      (queue.revision === 0 ||
+        new Set(queue.retryFailedIds).size !== queue.retryFailedIds.length ||
+        queue.retryFailedIds.some(
+          (id) => !queue.items.some((item) => item.id === id),
+        ))
+    )
+      ctx.addIssue({
+        code: "custom",
+        message:
+          "Retry IDs require a revised queue and distinct selected item IDs",
+      });
     const questions = queue.items.map((i) =>
       i.question.normalize("NFKC").trim().replace(/\s+/g, " ").toLowerCase(),
     );

@@ -62,6 +62,7 @@ const HELP = `Still Shift v${ENGINE_VERSION}
 
 Usage:
   pnpm still-shift production queue --projects <projects.json> --manifest <new-queue.json>
+  pnpm still-shift production retry --manifest <queue.json> --output-dir <queue-output> --request <retry.json>
   pnpm still-shift production run --manifest <queue.json> --output-dir <queue-output> [--report <new-state.json>]
   pnpm still-shift production discover
   pnpm still-shift production schema --kind <kind>

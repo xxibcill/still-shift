@@ -91,5 +91,38 @@ journal's authority without inventing terminal row statuses.
 otherwise the complete state snapshot is saved to a temporary directory. `--offset`
 and `--limit` page its compact receipt within the existing response limits. Technical
 execution leaves whole mechanical, visual, continuous-motion, factual and listening
-reviews separate. Permanent failures currently require changed dependency input
-through a CAS revision; an explicit bounded retry workflow remains pending.
+reviews separate. Changed inputs require a source revision; restored permanent
+failures can use the bounded targeted retry workflow below.
+
+## Targeted retry after input repair
+
+A retry request declares the exact current canonical manifest hash and revision,
+plus at most 32 distinct failed or cancelled episode IDs. Obtain the revision/hash
+from the complete current production report. Requests are capped at 16 KiB.
+
+```json
+{
+  "schemaVersion": "mechanism-production-retry-1",
+  "baseRevision": 0,
+  "baseHash": "sha256:<current canonical manifest hash>",
+  "episodes": ["E02"]
+}
+```
+
+```sh
+pnpm still-shift production retry --manifest queue.json --output-dir output --request retry.json
+pnpm still-shift production run --manifest queue.json --output-dir output
+```
+
+Repair the selected dependencies to their pinned bytes before retrying. The command
+checks those pins and the exact current journal, locks both output and manifest,
+archives the original and proposed manifests, and atomically advances the current
+manifest by one CAS revision. It preserves journal bytes, attempts, products and
+reviews. Retry grants one new attempt batch only to selected terminal items; it
+performs no execution. `run` then verifies completed neighbors, retains original
+failed attempts, and consumes that authorization within the unchanged bounds of
+three attempts per revision, 96 per item and 32 revisions. Repeated runs of a consumed
+authorization grant no extra attempts. Stale requests, active owners, completed or
+unknown targets, corrupt history and exhausted budgets reject before replacement.
+An interrupted running row must first be resumed so the runner can recover its
+sealed completion or retain its interruption receipt.

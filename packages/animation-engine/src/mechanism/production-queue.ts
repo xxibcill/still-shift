@@ -444,7 +444,24 @@ export async function runMechanismProductionQueue(
             await save();
           }
         }
-        if (row.status === "failed" && !row.attempts.at(-1)?.retryable)
+        const previousAttempt = row.attempts.at(-1);
+        const targetedRetry =
+          queue.retryFailedIds?.includes(item.id) === true &&
+          previousAttempt?.revision !== queue.revision &&
+          previousAttempt?.requestHash === row.requestHash;
+        if (
+          queue.retryFailedIds &&
+          !targetedRetry &&
+          ["failed", "cancelled"].includes(row.status) &&
+          previousAttempt?.revision !== queue.revision &&
+          previousAttempt?.requestHash === row.requestHash
+        )
+          continue;
+        if (
+          row.status === "failed" &&
+          !previousAttempt?.retryable &&
+          !targetedRetry
+        )
           continue;
         const used = row.attempts.filter(
           (a) =>

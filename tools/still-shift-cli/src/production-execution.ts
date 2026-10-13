@@ -4,6 +4,7 @@ import {
   createMechanismProductionNativeExecutor,
   createMechanismProductionQueueFile,
   runMechanismProductionQueue,
+  retryMechanismProductionQueue,
 } from "@still-shift/animation-engine";
 import { requireArgument } from "./named-options.ts";
 import type { MechanismReceiptRow } from "../../../packages/animation-engine/src/mechanism/protocol.ts";
@@ -43,10 +44,37 @@ async function runQueue(
   }
 }
 export async function executeProductionCommand(
-  command: "queue" | "run",
+  command: "queue" | "run" | "retry",
   flags: Map<string, string>,
   owner: CompositionNodeMemory,
 ) {
+  if (command === "retry") {
+    const complete = await retryMechanismProductionQueue(
+      requireArgument(flags, "manifest"),
+      requireArgument(flags, "output-dir"),
+      requireArgument(flags, "request"),
+      { nodeMemory: owner },
+    );
+    return {
+      complete,
+      status: "passed" as const,
+      receiptCommand: "patch" as const,
+      summary: {
+        scope: "mechanism-production",
+        queueId: complete.queueId,
+        revision: complete.revision,
+        retries: complete.episodes.length,
+        execution: "not-started",
+        pilotAdmission: "not-established",
+      },
+      items: complete.episodes.map((id) => ({
+        kind: "retry-authorized",
+        id,
+      })) as MechanismReceiptRow[],
+      nextAction:
+        "Run the exact revised manifest. Prior attempts/products/reviews remain retained; unchanged completed neighbors are verified on resume.",
+    };
+  }
   if (command === "queue") {
     const complete = await createMechanismProductionQueueFile(
       requireArgument(flags, "projects"),

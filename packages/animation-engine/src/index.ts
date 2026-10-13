@@ -162,3 +162,8 @@ export {
   createMechanismProductionQueueFile,
   type MechanismProductionQueueFactory,
 } from "./mechanism/production-projects.ts";
+
+export {
+  MechanismProductionRetrySchema,
+  retryMechanismProductionQueue,
+} from "./mechanism/production-retry.ts";

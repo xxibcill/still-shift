@@ -34,24 +34,32 @@ export async function runProductionCli(
   try {
     const command = args[0];
     if (
-      !["discover", "schema", "queue", "run", "report", "handoff"].includes(
-        command ?? "",
-      )
+      ![
+        "discover",
+        "schema",
+        "queue",
+        "run",
+        "retry",
+        "report",
+        "handoff",
+      ].includes(command ?? "")
     )
       throw Error(
-        "Production command must be discover, schema, queue, run, report or handoff",
+        "Production command must be discover, schema, queue, run, retry, report or handoff",
       );
     const flags = parseNamedArguments(
       args.slice(1),
       command === "queue"
         ? ["projects", "manifest"]
-        : command === "schema"
-          ? ["kind", "output", "report"]
-          : command === "discover"
-            ? ["report"]
-            : command === "handoff"
-              ? ["manifest", "output-dir", "episode", "report"]
-              : ["manifest", "output-dir", "report", "offset", "limit"],
+        : command === "retry"
+          ? ["manifest", "output-dir", "request", "report"]
+          : command === "schema"
+            ? ["kind", "output", "report"]
+            : command === "discover"
+              ? ["report"]
+              : command === "handoff"
+                ? ["manifest", "output-dir", "episode", "report"]
+                : ["manifest", "output-dir", "report", "offset", "limit"],
     );
     const offset = Number(flags.get("offset") ?? 0),
       limit = Number(flags.get("limit") ?? 100);
@@ -67,11 +75,14 @@ export async function runProductionCli(
       MechanismProductionSchemaSelectionSchema.parse(
         requireArgument(flags, "kind"),
       );
-    if (["queue", "run", "report", "handoff"].includes(command ?? "")) {
+    if (
+      ["queue", "run", "retry", "report", "handoff"].includes(command ?? "")
+    ) {
       requireArgument(flags, "manifest");
       if (command !== "queue") requireArgument(flags, "output-dir");
       else requireArgument(flags, "projects");
       if (command === "handoff") requireArgument(flags, "episode");
+      if (command === "retry") requireArgument(flags, "request");
     }
     const report =
       (command === "queue" ? requireArgument(flags, "manifest") : undefined) ??
@@ -90,9 +101,9 @@ export async function runProductionCli(
       summary: MechanismReceiptRow,
       items: MechanismReceiptRow[] = [];
     let status: "passed" | "failed" | "cancelled" = "passed";
-    let executionCommand: "save" | "render" | undefined;
+    let executionCommand: "save" | "render" | "patch" | undefined;
     let executionNextAction: string | undefined;
-    if (command === "queue" || command === "run") {
+    if (command === "queue" || command === "run" || command === "retry") {
       const execution = await executeProductionCommand(command, flags, owner);
       complete = execution.complete;
       summary = execution.summary;

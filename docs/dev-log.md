@@ -62,8 +62,14 @@ still hold before relying on them.
   passes complete fast (4,448 tests / 439 files), with 2,698 exact inputs.
   Runtime/session 9677 actually passes 252 tests, 322 integration, 14 depth
   and smoke on `79f3c3f2`, with identical 2,698 inputs. Real native CLI
-  faults/recovery and explicit
-  bounded retry, interruption/cancel/corrupt/relocation remain pending. Scoped/MS1 repair, ten frozen questions,
+  faults/recovery remain pending. Targeted retry now implements exact CAS,
+  repaired-pin admission, dual locks, immutable manifest ancestry and selected
+  bounded batches while retaining neighbors/journals/reviews.48 owning checks
+  plus build/lint/fourteen schemas/boundaries/declarations pass with exact source.
+  An initial compile failure (missing test imports) and wrapper syntax failure
+  are retained. Retry source still needs complete tiers and real native recovery;
+  its fault harness is an unintegrated/unrun draft needing child cleanup and checks.
+  Scoped/MS1 repair, ten frozen questions,
   five assets/two behaviors, genuine inputs/reviews, capability reconciliation
   and final full/archive/installed verification remain. Coverage is 0/10; no
   pilot target achieved. Primary extension research and an E10 dimensional draft
@@ -257,6 +263,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — Add exact-CAS targeted retry with retained ancestry
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `7aeae978`.
+- **Done:** repaired-pin/selected-terminal retry, output and manifest locks,
+  original/next manifest archives, unchanged journal/review/product retention and
+  one bounded attempt batch. Unselected failed/cancelled neighbors remain held.
+- **Results:** held48 owning checks plus build/lint/fourteen schemas/boundaries/
+  declarations pass. Fixture lifecycle actually reaches96 attempts/32 revisions
+  and refuses97th; real native/OS recovery remains pending.
+- **Retained failures:** missing test imports compile2; inline wrapper syntax
+  fails before any commands. Both repaired; earlier scoped runs remain qualified.
+- **Next:** commit, complete current fast/runtime, integrate/check/run the actual
+  native fault harness and audit it. All original MS3 pilot/extension gates remain.
+- **Records:** [retry proof](./mechanism-shorts-ms3-retry-results.json),
+  [queue/retry commands](./mechanism-production-queue.md).
 
 ### 2026-10-13 — Add declarative production queue and run commands
 
