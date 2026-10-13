@@ -4,7 +4,7 @@
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
   "baseCommit": "29cb1ddc92234a3c3dee9ce1a456bbb8c1c40f7a",
-  "status": "reusable-behavior-foundation-scoped-passed-fast-pending-asset-native-pending",
+  "status": "reusable-behavior-foundation-current-fast-scoped-passed-asset-native-pending",
   "implementation": {
     "method": "ideal-static-single-axis-moment-balance-1",
     "exports": [
@@ -448,12 +448,68 @@
     }
   ],
   "remaining": [
-    "Full fast verification of committed source.",
     "Dedicated E10 press-point asset, saved-family/cue and native observation/QA integration.",
     "Original MS3 visual/factual/design/continuous/listening/genuine narration, E06 extension, repair/capability/pilot/final gates."
   ],
   "pilotAcceptedEpisodes": 0,
   "newAssetAdmitted": false,
   "newBehaviorPilotAdmitted": false,
-  "qualification": "Reusable expected-state behavior foundation and software evidence only. Original five assets/two behaviors/ten questions remain required; no native observed force, real peg force, E10/whole/pilot acceptance, spending, merge or publication."
+  "qualification": "Reusable expected-state behavior foundation and software evidence only. Original five assets/two behaviors/ten questions remain required; no native observed force, real peg force, E10/whole/pilot acceptance, spending, merge or publication.",
+  "committedSource": "5ad2695d7cd690d998df22e5db9a87318e702705",
+  "completeFast": {
+    "status": "passed",
+    "sourceCommit": "5ad2695d7cd690d998df22e5db9a87318e702705",
+    "startedUtc": "2026-10-13T06:16:13.477973+00:00",
+    "pid": 6597,
+    "inventory": "/private/tmp/still-shift-ms3-moment15-fast1-inputs.json",
+    "steps": [
+      {
+        "command": ["pnpm", "check:fast"],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T06:16:13.479286+00:00",
+        "endedUtc": "2026-10-13T06:18:33.796396+00:00",
+        "log": "/private/tmp/still-shift-ms3-moment15-fast1-0.log"
+      }
+    ],
+    "actualExitCode": 0,
+    "endedUtc": "2026-10-13T06:18:33.796851+00:00",
+    "unitTests": 4496,
+    "testFiles": 444,
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-moment15-fast1.py",
+        "bytes": 1825,
+        "sha256": "sha256:6ca361cdcbed50d9c3454b43bd0084eb0a1a499d3c7c2d26a28829a670d13bf5"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-moment15-fast1.log",
+        "bytes": 1187,
+        "sha256": "sha256:06f89e0c018e93e1e910fa5eda5644ebe975495eac5c7d210eb99ff9431a64ff"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-moment15-fast1-receipt.json",
+        "bytes": 634,
+        "sha256": "sha256:28bd99c9072377ea2c4a4844f94639dc3c2345ef7baeeabad8a1877b784c9a5e"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-moment15-fast1-inputs.json",
+        "bytes": 463703,
+        "sha256": "sha256:4fef92bebfb41529c8397dac4e4deab3446751c440ca48e18c8758153b51844b"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-moment15-fast1-0.log",
+        "bytes": 43736,
+        "sha256": "sha256:ebee1ae87450bd3e5e17c2eb1157ee5879ced2070b9a660187bdbc6ad3efb2a3"
+      }
+    ]
+  },
+  "nextIntegrationDesign": {
+    "file": {
+      "path": "/private/tmp/still-shift-ms3-moment15-next-integration.md",
+      "bytes": 1661,
+      "sha256": "sha256:96114a76625bae95728e5c6ccbd1a8ec548130c0296f7905f5d5a8e041a16baa"
+    },
+    "status": "design-note-only-unimplemented"
+  }
 }

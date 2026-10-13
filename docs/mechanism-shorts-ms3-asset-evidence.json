@@ -117,7 +117,7 @@
       "qualification": "Primary theory only. No quantitative real peg force, new behavior, asset or pilot admission.",
       "implementation": {
         "record": "docs/mechanism-shorts-ms3-moment-results.json",
-        "status": "reusable-behavior-foundation-scoped-passed-fast-pending-asset-native-pending",
+        "status": "reusable-behavior-foundation-current-fast-scoped-passed-asset-native-pending",
         "qualification": "Reusable expected-state behavior foundation and software evidence only. Original five assets/two behaviors/ten questions remain required; no native observed force, real peg force, E10/whole/pilot acceptance, spending, merge or publication."
       }
     }

@@ -86,8 +86,8 @@ still hold before relying on them.
   lint/schema/boundary/package declarations and4 CLI checks pass. Three emitted
   public CLI schemas/type exports verify using pinned workspace dependencies.
   Test-location, wrong boundary command and missing emitted dependency failures
-  remain retained. Current full fast is next; press-point asset/native integration
-  and all whole/pilot gates remain open. [Moment](./mechanism-shorts-ms3-moment-results.json).
+  remain retained. Full fast on5ad2695d now passes4,496/444, all2,716 inputs
+  exact. Press-point asset/native integration and all whole/pilot gates remain open. [Moment](./mechanism-shorts-ms3-moment-results.json).
   No active prior native handle remains. Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
   Remaining original scope: clearer views and actual whole reviews, E05 native
@@ -290,7 +290,7 @@ still hold before relying on them.
   public model/input/result schemas. Calibration uses scene units; normal frame stays exact.
 - **Results:**24 owning/6 registry checks, compile/lint/schema/boundary,
   package declarations,4 CLI checks and3 actual emitted public schema exports pass.
-  All2,716 inputs/121,510,710B held; full current fast remains next.
+  Full fast on5ad2695d passes4,496/444, all2,716 inputs/121,510,710B exact.
 - **Retained:** Test's error-location mismatch; wrong boundary command; missing
   emitted dependency links. Public proof reuses pinned workspace dependencies.
 - **Open / next:** Separate press-point asset/family/cue/native proof and original
