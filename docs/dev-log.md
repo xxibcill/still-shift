@@ -134,6 +134,8 @@ still hold before relying on them.
   family packets, three supplied whole-recording portrait projects and seven new
   recording drafts. The existing serial production run is live; E01 has587 native/
   decoded frames with five visual errors and unaligned comparison stills retained.
+  Independent audit passes all587 observation/scalar/frame rows,34 images and
+  exact final/review PCM, with original whole source/audio/transcript pins checked.
   E01 queue item is sealed; E03 is rendering and E08 is pending. Seven matching audio/timing inputs are requested; unrelated
   recordings are excluded. No synthesis is authorized by this production plan.
   Each later source has its own binding;
@@ -340,7 +342,9 @@ still hold before relying on them.
 - **Results:** Author3 and family-packet2 actually exit0; frozen ten question/
   answer/pack bindings and seven script pairs validate. Existing native1 is live;
   E01 has587 native/full decoded frames, five visual errors and17 warning groups.
-  Three decoded stills viewed; caption placement/contrast and unaligned views remain.
+  Independent E01 audit actually exits0:587 native/scalar/decoded frame rows,34
+  images, all artifact pins and final/review PCM match; original source PCM/sample
+  and transcript identities remain exact. Three stills viewed; presentation remains.
 - **Rejected / do not repeat:** Wrong compile-result nesting, changed camera clip
   planes and sandbox ps denial remain retained; unrelated recordings are excluded.
 - **Open / next:** Finish the same serial run, audit/repair actual products and

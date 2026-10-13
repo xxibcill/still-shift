@@ -111,8 +111,8 @@
     "sourceBytes": 121706266,
     "runtimeCodeAndProfileIgnoreDocumentationAndGitHead": true,
     "queueStateAtInspection": {
-      "E01": "passed-with-unresolved-QA",
-      "E03": "running-native-cache",
+      "E01": "passed-review-evidence",
+      "E03": "running-render-cached",
       "E08": "pending"
     },
     "E01AvailableEvidence": {
@@ -128,7 +128,8 @@
         "Decoded recognition still has low material contrast."
       ],
       "qualification": "Partial run inspection only. Static still review does not establish continuous motion, listening, whole factual acceptance or a completed production run."
-    }
+    },
+    "inspectedUtc": "2026-10-13T11:38:55.735562+00:00"
   },
   "documentValidation": {
     "status": "passed",
@@ -149,5 +150,54 @@
     "Obtain seven matching supplied narration/timing inputs; existing unrelated recordings are excluded.",
     "Original ten whole factual/design/visual/continuous/listening reviews, broader QA/repair/capability measurements and final full/archive/installed gates remain open."
   ],
-  "scope": "Local authoring and engineering evidence; no ElevenLabs spend, publication, merge, Actions change or human acceptance."
+  "scope": "Local authoring and engineering evidence; no ElevenLabs spend, publication, merge, Actions change or human acceptance.",
+  "independentAudits": [
+    {
+      "episode": "E01",
+      "status": "passed",
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "auditor": {
+        "path": "/private/tmp/still-shift-ms3-pilot22-audit.py",
+        "bytes": 10799,
+        "sha256": "sha256:89d70c801c87b88cfc87e160fcfe5e99bf12f1d3289c7179f123444aa7db20b7"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-pilot22-audit-E01.log",
+        "bytes": 242,
+        "sha256": "sha256:cc36d90e4d643de8cc8e679c639b061e583d66bc9cee61060671fa76ff1a33f4"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-pilot22-audit-E01.json",
+        "bytes": 61824,
+        "sha256": "sha256:179442e919595d68e68207e81abb7c072c104eea9d31e715907b49ddfa5f403a"
+      },
+      "nativeFrames": 587,
+      "decodedFrames": 587,
+      "images": 34,
+      "scalarComparisons": 587,
+      "warningGroups": 17,
+      "visualErrors": 5,
+      "sourceNarrationSamples": 938458,
+      "sourcePcmSha256": "sha256:82c8e2fc63d90fb3c178867cc1bf0915ac74b88a0d5d14300ce7ef1be00b7320",
+      "binding": {
+        "inputSha256": "sha256:db8b68972650ca87e53702ba4c1f480b1dcd95e4e4ef58c96d06e1d044ba5495",
+        "outputSha256": "sha256:0233f9e57fc5775402030665073fbd2b42e42d66ff1568ebea1c0cc2e86c86f2",
+        "codeSha256": "sha256:14836055d4c44015d6b3e661976d93bcea1710915115ea919c2e1e4fcff4e171",
+        "profileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+      },
+      "work": {
+        "freshNativeSubmissions": 587,
+        "reusedNativePlates": false
+      },
+      "methods": [
+        "independent original native observation artifact pins and all-frame scalar recomputation",
+        "full streaming final RGBA decode, exact extracted frame/crop bytes and phone transforms",
+        "full final/review PCM equality; original whole source WAV/PCM/transcript pins separately verified",
+        "raw grouped peaks, artifact binding and unreviewed handoff preserved"
+      ],
+      "qualification": "Technical identity/sample-clock/sampled-mount audit. No whole mechanism/factual/continuous/listening/human/pilot acceptance. AAC output PCM is not claimed byte-identical to source PCM.",
+      "verifiedPins": 55
+    }
+  ]
 }
