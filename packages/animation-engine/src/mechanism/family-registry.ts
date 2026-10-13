@@ -41,6 +41,7 @@ import {
   ClothespegPackInputSchema,
   ClothespegPackParametersSchema,
   NotchedLinePackParametersSchema,
+  ClothespegPackVariantSchema,
 } from "./clothespeg-pack.ts";
 import { freezeMechanismPack, mechanismPackHash } from "./pack-support.ts";
 import {
@@ -168,6 +169,12 @@ export function inspectMechanismFamilyRegistry(
                   variant: "notched-line",
                 }),
               },
+              {
+                id: "ideal-lever",
+                input: ClothespegPackInputSchema.parse({
+                  variant: "ideal-lever-press-points",
+                }),
+              },
             ]
           : []),
         ...(id === "tape-hook"
@@ -197,36 +204,34 @@ export function inspectMechanismFamilyRegistry(
               };
             })
           : id === "clothespeg"
-            ? (["wood-arms-central-spring-cloth", "notched-line"] as const).map(
-                (variant) => {
-                  const receipt = inspectClothespegPack(variant),
-                    schema =
-                      variant === "notched-line"
-                        ? NotchedLinePackParametersSchema
-                        : ClothespegPackParametersSchema;
-                  if (
-                    mechanismPackHash(z.toJSONSchema(schema)) !==
-                    receipt.pack.generator.parameterSchemaSha256
-                  )
-                    throw Error(
-                      "Variant parameter schema differs from immutable metadata",
-                    );
-                  return {
-                    id: variant,
-                    parameterSchema:
-                      variant === "notched-line"
-                        ? "notched-line-parameters"
-                        : "clothespeg-parameters",
-                    reference: {
-                      id: receipt.pack.id,
-                      version: receipt.pack.version,
-                      sha256: receipt.sha256,
-                      variant,
-                      detail: "teaching",
-                    },
-                  };
-                },
-              )
+            ? ClothespegPackVariantSchema.options.map((variant) => {
+                const receipt = inspectClothespegPack(variant),
+                  schema =
+                    variant === "notched-line"
+                      ? NotchedLinePackParametersSchema
+                      : ClothespegPackParametersSchema;
+                if (
+                  mechanismPackHash(z.toJSONSchema(schema)) !==
+                  receipt.pack.generator.parameterSchemaSha256
+                )
+                  throw Error(
+                    "Variant parameter schema differs from immutable metadata",
+                  );
+                return {
+                  id: variant,
+                  parameterSchema:
+                    variant === "notched-line"
+                      ? "notched-line-parameters"
+                      : "clothespeg-parameters",
+                  reference: {
+                    id: receipt.pack.id,
+                    version: receipt.pack.version,
+                    sha256: receipt.sha256,
+                    variant,
+                    detail: "teaching",
+                  },
+                };
+              })
             : id === "cable-tie"
               ? CableTiePackVariantSchema.options.map((variant) => {
                   const receipt = inspectCableTiePack(variant);

@@ -1,3 +1,4 @@
+import { MECHANISM_STATIC_MOMENT_LIMITS } from "@still-shift/scene-contract";
 import { MechanismProductionRetrySchema } from "./production-retry.ts";
 import { MechanismProductionProjectsSchema } from "./production-projects.ts";
 import {
@@ -97,6 +98,21 @@ export function inspectMechanismProductionCapabilities() {
     response: MECHANISM_RESPONSE_LIMITS,
     semantics: MECHANISM_SEMANTIC_LIMITS,
     operationalQA: MECHANISM_PRODUCTION_QA_LIMITS,
+    staticMoment: {
+      limits: MECHANISM_STATIC_MOMENT_LIMITS,
+      selector: "static-moment-balance",
+      method: "ideal-static-single-axis-moment-balance-1",
+      quantities: [
+        { quantity: "required-force-newtons", unit: "N" },
+        { quantity: "signed-arm-meters", unit: "meter" },
+        { quantity: "balance-residual-newton-meters", unit: "N*m" },
+      ],
+      evidence:
+        "original-native-anchors-reference-matrices-and-scene-calibration",
+      resistance: "prescribed-signed-N*m-or-N*mm",
+      missingMeasurement: "absent-position-or-inadmissible-balance",
+      assumption: "fixed-axis-rigid-arm-prescribed-resistance-1",
+    },
     nativeExecutor: {
       families: ["tape-hook", "cable-tie", "clothespeg"],
       packDisposition: "candidate",
@@ -138,7 +154,7 @@ export function mechanismProductionCapabilityMarkdown() {
 | Compact handoff bytes | ${c.handoff.bytes} |
 | QA plan / facts bytes | ${c.operationalQA.planBytes} / ${c.operationalQA.factsBytes} |
 | QA retained capacity / state-lint maximum capacity | ${c.operationalQA.retainedCapacityBytes} / ${c.operationalQA.qualityCapacityBytes} |
-| State-lint layer-frames / raw warning rows | ${c.operationalQA.qualityLayerFrames} / ${c.operationalQA.warningRows} |\n| Semantic registrations / rules / samples / comparisons | ${c.semantics.registrations} / ${c.semantics.rules} / ${c.semantics.samples} / ${c.semantics.comparisons} |\n\nQueue creation consumes a strict \`production-projects\` declaration, capped at
+| State-lint layer-frames / raw warning rows | ${c.operationalQA.qualityLayerFrames} / ${c.operationalQA.warningRows} |\n| Ideal moment models / minimum arm meters / maximum force newtons | ${c.staticMoment.limits.models} / ${c.staticMoment.limits.minimumArmMeters} / ${c.staticMoment.limits.maximumForceNewtons} |\n| Semantic registrations / rules / samples / comparisons | ${c.semantics.registrations} / ${c.semantics.rules} / ${c.semantics.samples} / ${c.semantics.comparisons} |\n\nQueue creation consumes a strict \`production-projects\` declaration, capped at
 ${c.projects.items} projects and ${c.projects.bytes} bytes. Family/cue/QA paths resolve
 from its file directory. It publishes one new immutable manifest and performs no
 native capture. Run executes or resumes that pinned manifest through the existing

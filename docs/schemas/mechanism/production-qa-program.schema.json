@@ -121,6 +121,118 @@
                     "minLength": 1,
                     "maxLength": 128
                   },
+                  "kind": {
+                    "type": "string",
+                    "const": "static-moment-balance"
+                  },
+                  "quantity": {
+                    "type": "string",
+                    "enum": [
+                      "required-force-newtons",
+                      "signed-arm-meters",
+                      "balance-residual-newton-meters"
+                    ]
+                  },
+                  "model": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "maxLength": 128,
+                        "pattern": "^[A-Za-z][\\w.-]*$"
+                      },
+                      "pivotAnchor": {
+                        "type": "string",
+                        "maxLength": 128,
+                        "pattern": "^[A-Za-z][\\w.-]*$"
+                      },
+                      "applicationAnchor": {
+                        "type": "string",
+                        "maxLength": 128,
+                        "pattern": "^[A-Za-z][\\w.-]*$"
+                      },
+                      "referencePart": {
+                        "type": "string",
+                        "maxLength": 128,
+                        "pattern": "^[A-Za-z][\\w.-]*$"
+                      },
+                      "axis": {
+                        "type": "array",
+                        "prefixItems": [
+                          {
+                            "type": "number",
+                            "minimum": -1000000,
+                            "maximum": 1000000
+                          },
+                          {
+                            "type": "number",
+                            "minimum": -1000000,
+                            "maximum": 1000000
+                          },
+                          {
+                            "type": "number",
+                            "minimum": -1000000,
+                            "maximum": 1000000
+                          }
+                        ]
+                      },
+                      "forceDirection": {
+                        "type": "array",
+                        "prefixItems": [
+                          {
+                            "type": "number",
+                            "minimum": -1000000,
+                            "maximum": 1000000
+                          },
+                          {
+                            "type": "number",
+                            "minimum": -1000000,
+                            "maximum": 1000000
+                          },
+                          {
+                            "type": "number",
+                            "minimum": -1000000,
+                            "maximum": 1000000
+                          }
+                        ]
+                      },
+                      "resistingTorque": {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": "number",
+                            "minimum": -1000000,
+                            "maximum": 1000000
+                          },
+                          "unit": { "type": "string", "enum": ["N*m", "N*mm"] }
+                        },
+                        "required": ["value", "unit"],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "pivotAnchor",
+                      "applicationAnchor",
+                      "referencePart",
+                      "axis",
+                      "forceDirection",
+                      "resistingTorque"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": ["measurement", "kind", "quantity", "model"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "measurement": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
                   "kind": { "type": "string", "const": "part-matrix-change" },
                   "part": {
                     "type": "string",
@@ -305,6 +417,115 @@
       "type": "array",
       "items": {
         "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "measurement": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "kind": { "type": "string", "const": "static-moment-balance" },
+              "quantity": {
+                "type": "string",
+                "enum": [
+                  "required-force-newtons",
+                  "signed-arm-meters",
+                  "balance-residual-newton-meters"
+                ]
+              },
+              "model": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  },
+                  "pivotAnchor": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  },
+                  "applicationAnchor": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  },
+                  "referencePart": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  },
+                  "axis": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      },
+                      {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      },
+                      {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      }
+                    ]
+                  },
+                  "forceDirection": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      },
+                      {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      },
+                      {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      }
+                    ]
+                  },
+                  "resistingTorque": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      },
+                      "unit": { "type": "string", "enum": ["N*m", "N*mm"] }
+                    },
+                    "required": ["value", "unit"],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "id",
+                  "pivotAnchor",
+                  "applicationAnchor",
+                  "referencePart",
+                  "axis",
+                  "forceDirection",
+                  "resistingTorque"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": ["measurement", "kind", "quantity", "model"],
+            "additionalProperties": false
+          },
           {
             "type": "object",
             "properties": {

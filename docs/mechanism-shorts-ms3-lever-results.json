@@ -1,0 +1,560 @@
+{
+  "version": "mechanism-shorts-ms3-lever-results-1",
+  "episode": "E10",
+  "date": "2026-10-13",
+  "branch": "codex/mechanism-ms3",
+  "baseCommit": "8c28428b33395cc701ab8f6b0f4ba32060a18150",
+  "status": "factory-candidate-owning-passed-current-tiers-native-pending",
+  "behaviorFoundation": "docs/mechanism-shorts-ms3-moment-results.json",
+  "identity": {
+    "sourceSha256": "sha256:d00f6cf8e6605d1d88356a0562b9b82388ce999bb5fab26129b28e833e13991b",
+    "metadataSha256": "sha256:232ab247b3139293cb3b283b2c34d7c948c0e2b0b77df8b758479f8ec4bc2c25",
+    "metadataBytes": 13792,
+    "parts": 7,
+    "meshes": 6,
+    "anchors": 16,
+    "defaultSource": "sha256:f2d265adfc6d94480063abfb7a82a4cbec36111299025bd49156e1281143939e",
+    "defaultMetadata": "sha256:1d6050d5ac18a16722e3766bf8da86a4f0c418012d50e3a15a6eeadd1b7ac281",
+    "lineSource": "sha256:1937a914b366842ed133932040dc4fd041a98854d7b6626bfea489a7a67daf90",
+    "lineMetadata": "sha256:7698b6a3f64781495f27fc0358b8c24b87213845d0da4033e111ad69acb7723f"
+  },
+  "sourceSnapshot": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/clothespeg-ideal-lever.ts",
+      "bytes": 3844,
+      "sha256": "sha256:4ec6b1289610c852b19bce956a35bf179ccd407285a21909d7a4c79bd2811792"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/clothespeg-pack.ts",
+      "bytes": 19589,
+      "sha256": "sha256:6e0d62b3cb8fd9d3ee49439bf6436a1bda4468df5b2701596d6cc0a8098e6e8d"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/camera-descriptions.ts",
+      "bytes": 7003,
+      "sha256": "sha256:48f5d32744120c996a956440fe749fa4e59dd24f70c8807a54caa824f205320e"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/family-registry.ts",
+      "bytes": 9891,
+      "sha256": "sha256:19b8fc7c6e5d9fef7c09f05be4f3bf2fa6a1865ba799849d5980f91aced8744e"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-qa-contract.ts",
+      "bytes": 9595,
+      "sha256": "sha256:e4e0523ad95e6126e35954d252b92120858056feb3fc3392c07c11e39dcaf2f6"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-qa-sampling.ts",
+      "bytes": 9244,
+      "sha256": "sha256:5869fcbb2e1de73aed285f075e30d149e01be7f4e033c784a39aebfd7a83b809"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-qa-moment.ts",
+      "bytes": 2301,
+      "sha256": "sha256:ec64020c7516ae08314c86562d9da7fb5d74a3b96408301caf05502ae20af24e"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-registry.ts",
+      "bytes": 9886,
+      "sha256": "sha256:494f956c4cbc7a4ecd7b30d0400cc8376c5374c850932eb631c16f277fb32705"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-ideal-lever.test.ts",
+      "bytes": 15766,
+      "sha256": "sha256:43e515866ec54edac5c210c3ede649fcb26b674ece8f578d052f7d3d43f533ca"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/runtime/mechanism-family-registry-cli.test.ts",
+      "bytes": 4743,
+      "sha256": "sha256:9d584943f4495a0c8b8df4838053d32791718898a02d22eed5c8221f447b3f55"
+    }
+  ],
+  "implementation": {
+    "asset": "Distinct ideal-lever-press-points candidate: two closed colored physical pads on the same upper arm with cap/application anchors, shared fixed pivot and coincident attachment witnesses. Separate immutable metadata; strict third input branch; named saved-family example and physical camera target. Rear handle heights follow length to preserve the full admitted opening.",
+    "behavior": "Pinned declarative QA moment selectors derive ideal force, signed arm and residual from original captured positioned anchors/reference matrices and scene calibration. Models include prescribed signed resistance; quantities expose N/meter/N*m. At most16 distinct exact models; shared model computed once per frame; absent/inadmissible observations yield located registered missing measurements.",
+    "assumptions": "Fixed pivot/axis, rigid geometry, prescribed resistance; no measured spring/friction/contact/physical grip rating.",
+    "defaultAndNotchedLineIdentitiesPreserved": true,
+    "pilotAssetAdmitted": false,
+    "pilotBehaviorAdmitted": false
+  },
+  "owningTests": 11,
+  "scopedUnitTests": 80,
+  "scopedUnitFiles": 7,
+  "scopedCLITests": 4,
+  "preflight2": {
+    "status": "passed",
+    "baseCommit": "8c28428b33395cc701ab8f6b0f4ba32060a18150",
+    "scope": "uncommitted working source with exact post-generation inventory",
+    "startedUtc": "2026-10-13T06:48:10.299769+00:00",
+    "pid": 29783,
+    "steps": [
+      {
+        "command": ["pnpm", "native3d:identity:generate"],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": null,
+        "startedUtc": "2026-10-13T06:48:10.300231+00:00",
+        "endedUtc": "2026-10-13T06:48:11.393758+00:00",
+        "log": "/private/tmp/still-shift-ms3-lever16-preflight2-0.log"
+      },
+      {
+        "command": ["pnpm", "schema:generate"],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": null,
+        "startedUtc": "2026-10-13T06:48:11.394113+00:00",
+        "endedUtc": "2026-10-13T06:48:13.981740+00:00",
+        "log": "/private/tmp/still-shift-ms3-lever16-preflight2-1.log"
+      },
+      {
+        "command": ["pnpm", "build"],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T06:48:13.981996+00:00",
+        "endedUtc": "2026-10-13T06:48:23.942238+00:00",
+        "log": "/private/tmp/still-shift-ms3-lever16-preflight2-2.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "eslint",
+          "packages/animation-engine/src/mechanism/clothespeg-ideal-lever.ts",
+          "packages/animation-engine/src/mechanism/clothespeg-pack.ts",
+          "packages/animation-engine/src/mechanism/camera-descriptions.ts",
+          "packages/animation-engine/src/mechanism/family-registry.ts",
+          "packages/animation-engine/src/mechanism/production-qa-contract.ts",
+          "packages/animation-engine/src/mechanism/production-qa-sampling.ts",
+          "packages/animation-engine/src/mechanism/production-qa-moment.ts",
+          "packages/animation-engine/src/mechanism/production-registry.ts",
+          "tests/unit/mechanism-ideal-lever.test.ts",
+          "tests/runtime/mechanism-family-registry-cli.test.ts"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T06:48:23.942555+00:00",
+        "endedUtc": "2026-10-13T06:48:24.833112+00:00",
+        "log": "/private/tmp/still-shift-ms3-lever16-preflight2-3.log"
+      },
+      {
+        "command": ["pnpm", "schema:check"],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T06:48:24.833424+00:00",
+        "endedUtc": "2026-10-13T06:48:28.204679+00:00",
+        "log": "/private/tmp/still-shift-ms3-lever16-preflight2-4.log"
+      },
+      {
+        "command": ["pnpm", "check:boundaries"],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T06:48:28.205007+00:00",
+        "endedUtc": "2026-10-13T06:48:29.231294+00:00",
+        "log": "/private/tmp/still-shift-ms3-lever16-preflight2-5.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/mechanism-ideal-lever.test.ts",
+          "tests/unit/mechanism-static-moment.test.ts",
+          "tests/unit/mechanism-production-qa.test.ts",
+          "tests/unit/mechanism-family-packs.test.ts",
+          "tests/unit/mechanism-family-registry.test.ts",
+          "tests/unit/mechanism-family-authoring.test.ts",
+          "tests/unit/mechanism-camera-recipes.test.ts"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T06:48:29.231745+00:00",
+        "endedUtc": "2026-10-13T06:48:36.062075+00:00",
+        "log": "/private/tmp/still-shift-ms3-lever16-preflight2-6.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/runtime/mechanism-family-registry-cli.test.ts"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T06:48:36.062364+00:00",
+        "endedUtc": "2026-10-13T06:48:39.134525+00:00",
+        "log": "/private/tmp/still-shift-ms3-lever16-preflight2-7.log"
+      },
+      {
+        "command": ["pnpm", "build:package"],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T06:48:39.134861+00:00",
+        "endedUtc": "2026-10-13T06:48:50.367181+00:00",
+        "log": "/private/tmp/still-shift-ms3-lever16-preflight2-8.log"
+      }
+    ],
+    "actualExitCode": 0,
+    "inventory": "/private/tmp/still-shift-ms3-lever16-preflight2-inputs.json",
+    "endedUtc": "2026-10-13T06:48:50.367549+00:00"
+  },
+  "preflight2Files": [
+    {
+      "path": "/private/tmp/still-shift-ms3-lever16-preflight2.py",
+      "bytes": 2963,
+      "sha256": "sha256:5093cd85125d1191cdf0e4099632ba13dff284ca2338dac88dccb2c7bd3d6a1a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-lever16-preflight2.log",
+      "bytes": 7496,
+      "sha256": "sha256:abbb85dc1c7557eb79c0fff5a35e8fdf231c63b5badb7be68d4a76472af80ea3"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-lever16-preflight2-receipt.json",
+      "bytes": 4486,
+      "sha256": "sha256:48926fc541725c1c0d5967399a7c6cc21f070331ae255dd5fa669f6bd62ebace"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-lever16-preflight2-inputs.json",
+      "bytes": 464236,
+      "sha256": "sha256:6fee3cad70ca7eaef3130abbcfc6bc25da5f030ab512ca635ae23b70bdd5d9ea"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-lever16-preflight2-0.log",
+      "bytes": 260,
+      "sha256": "sha256:c94f9b70490ba1166f14a68ff78f642cec9fbca6dd75a245ac610ac684f2890f"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-lever16-preflight2-1.log",
+      "bytes": 653,
+      "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-lever16-preflight2-2.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-lever16-preflight2-3.log",
+      "bytes": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-lever16-preflight2-4.log",
+      "bytes": 502,
+      "sha256": "sha256:2e8f77e67cd67cd1b01e55fba7f0c678fc0591040493d687402f67b1c488ed88"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-lever16-preflight2-5.log",
+      "bytes": 186,
+      "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-lever16-preflight2-6.log",
+      "bytes": 2490,
+      "sha256": "sha256:06e69108deba902817f457768c4463683e3605582b304c29a4fa7852ea228840"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-lever16-preflight2-7.log",
+      "bytes": 446,
+      "sha256": "sha256:65451a91b3d6465717ab255f32b7dca20d5c5080f0a5215a784b03a6360f2658"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-lever16-preflight2-8.log",
+      "bytes": 208,
+      "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+    }
+  ],
+  "heldInputs": {
+    "files": 2719,
+    "bytes": 121561481,
+    "inventory": {
+      "path": "/private/tmp/still-shift-ms3-lever16-preflight2-inputs.json",
+      "bytes": 464236,
+      "sha256": "sha256:6fee3cad70ca7eaef3130abbcfc6bc25da5f030ab512ca635ae23b70bdd5d9ea"
+    }
+  },
+  "geometryChecks": {
+    "dimensionCases": 3,
+    "posedCases": 9,
+    "closedPadMeshes": 6,
+    "scope": "Actual factory indexed pad surface edge incidence, surface attachment at pad bottoms, cap/application anchors, rear-handle separation, all required relationships/contact stop guards and CAS/source identities. Sampled engineering geometry only; no whole contact/continuous/factual/design approval."
+  },
+  "inspectionFiles": [
+    {
+      "path": "/private/tmp/still-shift-ms3-lever16-inspect1.mts",
+      "bytes": 972,
+      "sha256": "sha256:15d00e05e8a31657576b357fd4aaccbb74086d0e4dadd80e6a1d2e3d27db4bfe"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-lever16-inspect1.json",
+      "bytes": 637,
+      "sha256": "sha256:2dae9852ab48527e3d8f7de881406493d6aa2182dfe46ca813374a3d197f0a0c"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-lever16-inspect1.log",
+      "bytes": 596,
+      "sha256": "sha256:0cdd40a336b9a75688b134545aedc2735072ffeb966edec41842d485e147685d"
+    }
+  ],
+  "inspectionQualification": "Factory identity proof written; separate Node terminal not retained. Scoped gates independently check the relevant factory/identity behavior.",
+  "earlierChecks": [
+    {
+      "id": "red1",
+      "actualExitCode": 1,
+      "expected": "7 owning checks fail before asset/selector implementation; unsealed test source later evolved.",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-red1.log",
+          "bytes": 13443,
+          "sha256": "sha256:165f7da05f92c385e68011266d6508c39749a15e1bbbea40299c03aec6a906cb"
+        }
+      ]
+    },
+    {
+      "id": "green1",
+      "actualExitCode": 0,
+      "tests": 7,
+      "scope": "Initial owning checks only; no final-source binding.",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-green1.log",
+          "bytes": 315,
+          "sha256": "sha256:0697e18786ffcb859b9454836002d3f207607a30d0c3f932c0767d9636af827d"
+        }
+      ]
+    },
+    {
+      "id": "green2",
+      "actualExitCode": 1,
+      "passed": 42,
+      "failed": 1,
+      "tests": 43,
+      "reason": "New guard test read changed.instance instead of inspecting changed.document; not an implementation/geometry failure. Source/test snapshot unsealed.",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-green2.log",
+          "bytes": 3200,
+          "sha256": "sha256:d6e806552d9e38268e041db5e05250406d6f1e957bc8f6816bd9224e599c97e3"
+        }
+      ]
+    },
+    {
+      "id": "build1",
+      "actualExitCode": 2,
+      "reason": "Two test accesses to absent changed.instance plus nullable reference type query. Test corrections preserve the actual API/error guards. Snapshot unsealed.",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-build1.log",
+          "bytes": 1106,
+          "sha256": "sha256:3289821e72cf6f53ea4d03ffacef19630970221d1a87325656d325ce9bd0c281"
+        }
+      ]
+    },
+    {
+      "id": "green3",
+      "actualExitCode": 0,
+      "tests": 43,
+      "scope": "Corrected owning/QA/theory checks before final machine capability additions.",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-green3.log",
+          "bytes": 1055,
+          "sha256": "sha256:3c5d88cf4eca3047ef61375353dec0fc2a3df6b33fa206b42a3519d91eac5552"
+        }
+      ]
+    },
+    {
+      "id": "preflight1",
+      "receipt": {
+        "status": "passed",
+        "baseCommit": "8c28428b33395cc701ab8f6b0f4ba32060a18150",
+        "scope": "uncommitted working source with exact post-generation inventory",
+        "startedUtc": "2026-10-13T06:45:17.830083+00:00",
+        "pid": 28175,
+        "steps": [
+          {
+            "command": ["pnpm", "native3d:identity:generate"],
+            "actualExitCode": 0,
+            "sourceHoldExitCode": null,
+            "startedUtc": "2026-10-13T06:45:17.830787+00:00",
+            "endedUtc": "2026-10-13T06:45:19.022173+00:00",
+            "log": "/private/tmp/still-shift-ms3-lever16-preflight1-0.log"
+          },
+          {
+            "command": ["pnpm", "schema:generate"],
+            "actualExitCode": 0,
+            "sourceHoldExitCode": null,
+            "startedUtc": "2026-10-13T06:45:19.022657+00:00",
+            "endedUtc": "2026-10-13T06:45:21.626525+00:00",
+            "log": "/private/tmp/still-shift-ms3-lever16-preflight1-1.log"
+          },
+          {
+            "command": ["pnpm", "build"],
+            "actualExitCode": 0,
+            "sourceHoldExitCode": 0,
+            "startedUtc": "2026-10-13T06:45:21.626887+00:00",
+            "endedUtc": "2026-10-13T06:45:31.536562+00:00",
+            "log": "/private/tmp/still-shift-ms3-lever16-preflight1-2.log"
+          },
+          {
+            "command": [
+              "pnpm",
+              "exec",
+              "eslint",
+              "packages/animation-engine/src/mechanism/clothespeg-ideal-lever.ts",
+              "packages/animation-engine/src/mechanism/clothespeg-pack.ts",
+              "packages/animation-engine/src/mechanism/camera-descriptions.ts",
+              "packages/animation-engine/src/mechanism/family-registry.ts",
+              "packages/animation-engine/src/mechanism/production-qa-contract.ts",
+              "packages/animation-engine/src/mechanism/production-qa-sampling.ts",
+              "packages/animation-engine/src/mechanism/production-qa-moment.ts",
+              "tests/unit/mechanism-ideal-lever.test.ts",
+              "tests/runtime/mechanism-family-registry-cli.test.ts"
+            ],
+            "actualExitCode": 0,
+            "sourceHoldExitCode": 0,
+            "startedUtc": "2026-10-13T06:45:31.537475+00:00",
+            "endedUtc": "2026-10-13T06:45:32.416107+00:00",
+            "log": "/private/tmp/still-shift-ms3-lever16-preflight1-3.log"
+          },
+          {
+            "command": ["pnpm", "schema:check"],
+            "actualExitCode": 0,
+            "sourceHoldExitCode": 0,
+            "startedUtc": "2026-10-13T06:45:32.416594+00:00",
+            "endedUtc": "2026-10-13T06:45:35.884657+00:00",
+            "log": "/private/tmp/still-shift-ms3-lever16-preflight1-4.log"
+          },
+          {
+            "command": ["pnpm", "check:boundaries"],
+            "actualExitCode": 0,
+            "sourceHoldExitCode": 0,
+            "startedUtc": "2026-10-13T06:45:35.885074+00:00",
+            "endedUtc": "2026-10-13T06:45:36.897463+00:00",
+            "log": "/private/tmp/still-shift-ms3-lever16-preflight1-5.log"
+          },
+          {
+            "command": [
+              "pnpm",
+              "exec",
+              "vitest",
+              "run",
+              "tests/unit/mechanism-ideal-lever.test.ts",
+              "tests/unit/mechanism-static-moment.test.ts",
+              "tests/unit/mechanism-production-qa.test.ts",
+              "tests/unit/mechanism-family-packs.test.ts",
+              "tests/unit/mechanism-family-registry.test.ts",
+              "tests/unit/mechanism-family-authoring.test.ts",
+              "tests/unit/mechanism-camera-recipes.test.ts"
+            ],
+            "actualExitCode": 0,
+            "sourceHoldExitCode": 0,
+            "startedUtc": "2026-10-13T06:45:36.897956+00:00",
+            "endedUtc": "2026-10-13T06:45:43.671501+00:00",
+            "log": "/private/tmp/still-shift-ms3-lever16-preflight1-6.log"
+          },
+          {
+            "command": [
+              "pnpm",
+              "exec",
+              "vitest",
+              "run",
+              "tests/runtime/mechanism-family-registry-cli.test.ts"
+            ],
+            "actualExitCode": 0,
+            "sourceHoldExitCode": 0,
+            "startedUtc": "2026-10-13T06:45:43.672009+00:00",
+            "endedUtc": "2026-10-13T06:45:46.854824+00:00",
+            "log": "/private/tmp/still-shift-ms3-lever16-preflight1-7.log"
+          },
+          {
+            "command": ["pnpm", "build:package"],
+            "actualExitCode": 0,
+            "sourceHoldExitCode": 0,
+            "startedUtc": "2026-10-13T06:45:46.855125+00:00",
+            "endedUtc": "2026-10-13T06:45:57.904212+00:00",
+            "log": "/private/tmp/still-shift-ms3-lever16-preflight1-8.log"
+          }
+        ],
+        "actualExitCode": 0,
+        "inventory": "/private/tmp/still-shift-ms3-lever16-preflight1-inputs.json",
+        "endedUtc": "2026-10-13T06:45:57.904546+00:00"
+      },
+      "scope": "Passed earlier input binding before final capability publication; unit79/7, CLI4, package declarations. Retained separately.",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-preflight1.py",
+          "bytes": 2898,
+          "sha256": "sha256:437ac94fbc8a4e4565c3b1a709be7f1debf3bd614c568dc23d72231eef29f984"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-preflight1.log",
+          "bytes": 7364,
+          "sha256": "sha256:94b78033830a38bc67a938c082e3d762555dea10679027270391734a334d4872"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-preflight1-receipt.json",
+          "bytes": 4412,
+          "sha256": "sha256:16f7bb25c81c974267b9f27855738a5fbface276423db04b69170f26dcdacfd6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-preflight1-inputs.json",
+          "bytes": 464236,
+          "sha256": "sha256:2512247451e42943a364181cdb7346821f459109ffbd200c8c4e833857c7aece"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-preflight1-0.log",
+          "bytes": 260,
+          "sha256": "sha256:c94f9b70490ba1166f14a68ff78f642cec9fbca6dd75a245ac610ac684f2890f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-preflight1-1.log",
+          "bytes": 653,
+          "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-preflight1-2.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-preflight1-3.log",
+          "bytes": 0,
+          "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-preflight1-4.log",
+          "bytes": 502,
+          "sha256": "sha256:2e8f77e67cd67cd1b01e55fba7f0c678fc0591040493d687402f67b1c488ed88"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-preflight1-5.log",
+          "bytes": 186,
+          "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-preflight1-6.log",
+          "bytes": 2490,
+          "sha256": "sha256:c6a5859ccf37f8e7475fb689845fd9c38c1ebf10e07fd725771e7a93ba3ca8f0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-preflight1-7.log",
+          "bytes": 446,
+          "sha256": "sha256:372297bd6265ee323fe5716983871049393eab0b98b75d122578679202858d4f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-preflight1-8.log",
+          "bytes": 208,
+          "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+        }
+      ]
+    }
+  ],
+  "remaining": [
+    "Complete fast/runtime and actual native default/two press-point controls on committed source.",
+    "Independent original observation force/model/units/rules, final image/audio/default-parity audit and visual repairs.",
+    "E06 extension and all original MS3 scoped/MS1 repairs, genuine ten frozen questions/reviews, capability/final/package/metrics gates."
+  ],
+  "qualification": "E10 factory/new-asset plus reusable observed-selector software implementation only; actual native evidence is pending. All five required assets/two behaviors/ten original questions remain required. Pilot0/10, whole mechanical/factual/design/continuous/genuine speech/listening unreviewed. No spending, merge or publication."
+}

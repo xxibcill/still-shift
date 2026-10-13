@@ -116,6 +116,11 @@
       ],
       "qualification": "Primary theory only. No quantitative real peg force, new behavior, asset or pilot admission.",
       "implementation": {
+        "record": "docs/mechanism-shorts-ms3-lever-results.json",
+        "status": "factory-candidate-owning-passed-current-tiers-native-pending",
+        "qualification": "E10 factory/new-asset plus reusable observed-selector software implementation only; actual native evidence is pending. All five required assets/two behaviors/ten original questions remain required. Pilot0/10, whole mechanical/factual/design/continuous/genuine speech/listening unreviewed. No spending, merge or publication."
+      },
+      "behaviorFoundation": {
         "record": "docs/mechanism-shorts-ms3-moment-results.json",
         "status": "reusable-behavior-foundation-current-fast-scoped-passed-asset-native-pending",
         "qualification": "Reusable expected-state behavior foundation and software evidence only. Original five assets/two behaviors/ten questions remain required; no native observed force, real peg force, E10/whole/pilot acceptance, spending, merge or publication."

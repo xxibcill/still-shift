@@ -27,6 +27,9 @@ export function describeMechanismPackCameras(
   });
   const notchedLine =
     family === "clothespeg" && scene.parts.some((part) => part.id === "line");
+  const idealLever =
+    family === "clothespeg" &&
+    scene.anchors.some((anchor) => anchor.id === "press.far");
   const releaseTie =
     family === "cable-tie" &&
     scene.anchors.some((anchor) => anchor.id === "release.trigger");
@@ -82,6 +85,22 @@ export function describeMechanismPackCameras(
           [1, 0.1, 1],
           [1, 0.6, 0.7],
         ];
+  } else if (idealLever) {
+    focus = meshes([
+      "upper.arm",
+      "press.near.mesh",
+      "press.far.mesh",
+      "spring.mesh",
+    ]);
+    contact = "lever.pivot";
+    detail = "press.far";
+    relationship = ["press.near.attached", "press.far.attached"];
+    proof = [surface("far-pad-cap", "press.far.mesh", "press.far", [0, 1, 0])];
+    directions = [
+      [0.3, 0.8, 1],
+      [0.6, 0.8, 1],
+      [0.2, 1, 1],
+    ];
   } else {
     focus = meshes(notchedLine ? ["line.round"] : ["spring.mesh"]);
     contact = notchedLine ? "line.front" : "upper.tip";

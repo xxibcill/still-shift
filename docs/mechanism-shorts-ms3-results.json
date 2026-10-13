@@ -655,6 +655,17 @@
       "sourceCommit": "5ad2695d7cd690d998df22e5db9a87318e702705",
       "unitTests": 4496,
       "unitFiles": 444
+    },
+    {
+      "id": "ideal-lever16",
+      "record": "docs/mechanism-shorts-ms3-lever-results.json",
+      "status": "factory-candidate-owning-passed-current-tiers-native-pending",
+      "owningTests": 11,
+      "scopedUnitTests": 80,
+      "scopedUnitFiles": 7,
+      "scopedCLITests": 4,
+      "defaultAndLineIdentitiesPreserved": true,
+      "qualification": "E10 factory/new-asset plus reusable observed-selector software implementation only; actual native evidence is pending. All five required assets/two behaviors/ten original questions remain required. Pilot0/10, whole mechanical/factual/design/continuous/genuine speech/listening unreviewed. No spending, merge or publication."
     }
   ],
   "targets": {

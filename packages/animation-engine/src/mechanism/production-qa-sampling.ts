@@ -1,3 +1,7 @@
+import {
+  sampleProductionMoment,
+  validateProductionMomentModels,
+} from "./production-qa-moment.ts";
 import { compositionNodeJsonSize } from "@still-shift/execution-runtime/export";
 import type {
   NativeObservedOutputFrameV2,
@@ -55,6 +59,7 @@ export class MechanismProductionQASampler {
     evidence: { path: string; sha256: string };
   }[] = [];
   private retainedCapacity = 0;
+  private readonly scaleToMeters: number;
   constructor(
     input: unknown,
     scene: MechanismSceneV2,
@@ -75,6 +80,8 @@ export class MechanismProductionQASampler {
       },
       ...this.plan.measurements,
     ];
+    this.scaleToMeters = scene.units.scaleToMeters;
+    validateProductionMomentModels(this.selectors, this.scaleToMeters);
     const parts = new Set(scene.parts.map((p) => p.id)),
       anchors = new Set(scene.anchors.map((a) => a.id));
     if (
@@ -86,9 +93,14 @@ export class MechanismProductionQASampler {
       );
     for (const selector of this.selectors) {
       if (
-        selector.kind === "anchor-separation"
-          ? selector.anchors.some((a) => !anchors.has(a))
-          : !parts.has(selector.part)
+        selector.kind === "static-moment-balance"
+          ? !parts.has(selector.model.referencePart) ||
+            [selector.model.pivotAnchor, selector.model.applicationAnchor].some(
+              (a) => !anchors.has(a),
+            )
+          : selector.kind === "anchor-separation"
+            ? selector.anchors.some((a) => !anchors.has(a))
+            : !parts.has(selector.part)
       )
         throw Error("QA selector names an absent physical part or anchor");
     }
@@ -165,9 +177,29 @@ export class MechanismProductionQASampler {
     if (this.samples.length >= this.frameCount)
       throw Error("Native QA capture exceeds its output clock");
     const observed = packet.passes[0]!.observed,
-      measurements: Record<string, number> = {};
+      measurements: Record<string, number> = {},
+      moments = new Map<string, ReturnType<typeof sampleProductionMoment>>();
     for (const selector of this.selectors) {
-      if (selector.kind === "anchor-separation") {
+      if (selector.kind === "static-moment-balance") {
+        if (!moments.has(selector.model.id))
+          moments.set(
+            selector.model.id,
+            sampleProductionMoment(
+              selector.model,
+              observed,
+              this.scaleToMeters,
+            ),
+          );
+        const result = moments.get(selector.model.id);
+        if (result)
+          measurements[selector.measurement] =
+            selector.quantity === "required-force-newtons"
+              ? result.requiredForceNewtons
+              : selector.quantity === "signed-arm-meters"
+                ? result.signedMomentArmMeters
+                : result.requiredForceNewtons * result.signedMomentArmMeters +
+                  result.resistingTorqueNewtonMeters;
+      } else if (selector.kind === "anchor-separation") {
         const a = observed.anchors[selector.anchors[0]],
           b = observed.anchors[selector.anchors[1]];
         if (a && b && a.status === "positioned" && b.status === "positioned")

@@ -1,3 +1,4 @@
+import { createIdealLeverScene } from "./clothespeg-ideal-lever.ts";
 import { createNotchedLineScene } from "./clothespeg-notched-line.ts";
 import { describeMechanismPackCameras } from "./camera-descriptions.ts";
 import { z } from "zod";
@@ -55,13 +56,28 @@ const NotchedLinePackInputSchema = z
     }),
   })
   .strict();
+const IdealLeverPackInputSchema = z
+  .object({
+    ...mechanismPackOptions,
+    variant: z.literal("ideal-lever-press-points"),
+    parameters: ClothespegPackParametersSchema.default({
+      armLength: 6,
+      armWidth: 0.8,
+      clothThickness: 0.16,
+    }),
+  })
+  .strict();
+export const ClothespegPackVariantSchema = z.enum([
+  "wood-arms-central-spring-cloth",
+  "notched-line",
+  "ideal-lever-press-points",
+]);
 export const ClothespegPackInputSchema = z.discriminatedUnion("variant", [
   LegacyClothespegPackInputSchema,
   NotchedLinePackInputSchema,
+  IdealLeverPackInputSchema,
 ]);
-export type ClothespegPackVariant =
-  | "wood-arms-central-spring-cloth"
-  | "notched-line";
+export type ClothespegPackVariant = z.infer<typeof ClothespegPackVariantSchema>;
 export type ClothespegPackParameters = z.infer<
   typeof ClothespegPackParametersSchema
 >;
@@ -495,13 +511,57 @@ function inspectNotchedLinePack(): MechanismPackMetadataReceipt {
   );
   return lineMetadata;
 }
+let leverMetadata: MechanismPackMetadataReceipt | undefined;
+function idealLeverScene(options: z.infer<typeof IdealLeverPackInputSchema>) {
+  return createIdealLeverScene(
+    pegScene({ ...options, variant: undefined }),
+    options.parameters,
+  );
+}
+function inspectIdealLeverPack(): MechanismPackMetadataReceipt {
+  if (leverMetadata) return leverMetadata;
+  const scene = idealLeverScene(
+      IdealLeverPackInputSchema.parse({ variant: "ideal-lever-press-points" }),
+    ),
+    legacy = inspectLegacyClothespegPack();
+  leverMetadata = createPackMetadata(
+    scene,
+    {
+      id: "clothespeg",
+      family: "clothespeg",
+      generatorId: "wood-arm-ideal-lever-press-points-solid",
+      factualVariant: {
+        id: "ideal-lever-press-points",
+        dimensionBasis: "illustrative",
+        description:
+          "Conventional wooden arms and central torsion spring with two separate teaching press pads on the same handle and a common pivot. Pads and dimensions are illustrative, not manufacturer features. A separately pinned ideal static moment model prescribes resistance and calculates input force using the calibrated perpendicular arm. Spring tracks do not supply measured torque; no friction, stiffness, grip-force or product rating claim.",
+        sources: [
+          ...legacy.pack.factualVariant.sources,
+          {
+            url: "https://openstax.org/books/college-physics-ap-courses/pages/9-5-simple-machines",
+            claim:
+              "Ideal static lever equilibrium balances opposing force torques about a fixed pivot using perpendicular moment arms. Its peg application and prescribed resistance are explicit idealizations.",
+          },
+        ],
+      },
+      parameters: legacy.pack.parameters,
+      cameraTargets: describeMechanismPackCameras(scene, "clothespeg"),
+      neutralPose: legacy.pack.neutralPose,
+      diagnosticViews: legacy.pack.diagnosticViews,
+    },
+    z.toJSONSchema(ClothespegPackParametersSchema),
+  );
+  return leverMetadata;
+}
 export function inspectClothespegPack(
   variant: ClothespegPackVariant = "wood-arms-central-spring-cloth",
 ) {
-  z.enum(["wood-arms-central-spring-cloth", "notched-line"]).parse(variant);
+  ClothespegPackVariantSchema.parse(variant);
   return variant === "notched-line"
     ? inspectNotchedLinePack()
-    : inspectLegacyClothespegPack();
+    : variant === "ideal-lever-press-points"
+      ? inspectIdealLeverPack()
+      : inspectLegacyClothespegPack();
 }
 function createLegacyClothespeg(
   options: z.infer<typeof LegacyClothespegPackInputSchema>,
@@ -523,6 +583,17 @@ function createNotchedLinePeg(
     options.expectedPack,
   );
 }
+function createIdealLeverPeg(
+  options: z.infer<typeof IdealLeverPackInputSchema>,
+) {
+  return createPackInstance(
+    idealLeverScene(options),
+    inspectIdealLeverPack(),
+    options.parameters,
+    options.expectedPack,
+  );
+}
+export type IdealLeverPackInstance = ReturnType<typeof createIdealLeverPeg>;
 export type ClothespegPackInstance = ReturnType<typeof createLegacyClothespeg>;
 export type NotchedLinePackInstance = ReturnType<typeof createNotchedLinePeg>;
 export function createClothespegPack(
@@ -532,18 +603,26 @@ export function createClothespegPack(
   input: z.input<typeof NotchedLinePackInputSchema>,
 ): NotchedLinePackInstance;
 export function createClothespegPack(
+  input: z.input<typeof IdealLeverPackInputSchema>,
+): IdealLeverPackInstance;
+export function createClothespegPack(
   input: z.input<typeof ClothespegPackInputSchema>,
-): ClothespegPackInstance | NotchedLinePackInstance;
+): ClothespegPackInstance | NotchedLinePackInstance | IdealLeverPackInstance;
 export function createClothespegPack(
   input: z.input<typeof ClothespegPackInputSchema> = {},
 ) {
   const options = ClothespegPackInputSchema.parse(input);
   return options.variant === "notched-line"
     ? createNotchedLinePeg(options)
-    : createLegacyClothespeg(options);
+    : options.variant === "ideal-lever-press-points"
+      ? createIdealLeverPeg(options)
+      : createLegacyClothespeg(options);
 }
 export function evaluateClothespegPackFrame(
-  instance: ClothespegPackInstance | NotchedLinePackInstance,
+  instance:
+    | ClothespegPackInstance
+    | NotchedLinePackInstance
+    | IdealLeverPackInstance,
   request: MechanismFrameRequestV2,
 ) {
   return evaluatePackFrame(instance, request);

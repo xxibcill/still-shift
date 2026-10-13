@@ -56,6 +56,12 @@ contact, deformation or motion. A peg application is an idealized inference from
 Its easing/return track supplies no measured resistance torque. Scene calibration
 and resistance must be declared explicitly before reporting a force.
 
-This is the E10 behavior foundation. The separate press-point asset, saved-family/
-cue integration, original native observation checks and episode reviews remain
-required. It does not admit E10 or alter the frozen ten-question denominator.
+The `ideal-lever-press-points` clothespeg candidate provides separate physical
+near/far pads and anchors. Its saved-family input retains the legacy dimension
+parameters; the resistance is a separate pinned QA model. The production
+`static-moment-balance` selector derives the same ideal quantities from original
+native captured positions/matrices and calibration, with at most16 distinct models
+per plan. See [production QA](./mechanism-production-qa.md) for quantities and units.
+
+Native/episode evidence and whole reviews remain separate gates. This API and
+candidate do not admit E10 or alter the frozen ten-question denominator.

@@ -87,11 +87,16 @@ still hold before relying on them.
   public CLI schemas/type exports verify using pinned workspace dependencies.
   Test-location, wrong boundary command and missing emitted dependency failures
   remain retained. Full fast on5ad2695d now passes4,496/444, all2,716 inputs
-  exact. Press-point asset/native integration and all whole/pilot gates remain open. [Moment](./mechanism-shorts-ms3-moment-results.json).
+  exact. [E10 press-point](./mechanism-shorts-ms3-lever-results.json) now adds two
+  closed attached pads, shared pivot, strict variant/camera discovery and original-
+  capture force/arm/residual selectors with pinned resistance. Final80 units/7
+  files,4 CLI checks, build/lint/schema/boundary/package declarations pass with
+  2,719 inputs held. Test result-shape/type failures are retained. Current complete
+  tiers and actual native controls/default parity remain next. Whole/pilot review stays open.
   No active prior native handle remains. Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
-  Remaining original scope: clearer views and actual whole reviews, E05 native
-  proof, E06/E10 assets and behaviors, all ten frozen questions/genuine narration,
+  Remaining original scope: clearer views and actual whole reviews, E06 asset/
+  behavior and E10 native integration/proof, all ten frozen questions/genuine narration,
   scoped/MS1 automatic repair, broader seeded QA, capability reconciliation,
   comparable token measurements and final full/benchmark/archive/installed gate.
   Accepted coverage remains0/10; tokens staynull. No ElevenLabs spend, merge,
@@ -282,6 +287,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — E10 press-point asset and observed ideal-force selectors
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `8c28428b`.
+- **Done:** Distinct closed near/far pads, cap anchors/shared pivot and attachment
+  witnesses; strict variant/family/camera discovery. Prescribed force models live
+  in pinned QA programs and derive N/meter/N\*m from original captured geometry.
+- **Results:** Final80 units/7 files,4 CLI checks, build/lint/schema/boundary/
+  package declarations pass;2,719 inputs held. Default and notched identities exact.
+- **Retained:** New test used the wrong family-patch result/type references;
+  corrected without weakening geometry/contact/CAS/model guards. Red checks retained.
+- **Open / next:** Current complete tiers, actual native/independent/default proof
+  and original E06/MS3 scope. All whole/pilot/genuine listening reviews stay open.
+- **Records:** [Lever candidate](./mechanism-shorts-ms3-lever-results.json).
+  Accepted pilot0/10; no spending, publication or merge.
 
 ### 2026-10-13 — E10 calibrated ideal moment behavior foundation
 

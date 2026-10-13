@@ -114,3 +114,48 @@ pressures the same parent to verify that quota rejection cannot trigger rerender
 Use `still-shift production schema --kind production-qa-plan` or
 `production-qa-facts` for the current strict contracts. Generated
 [capabilities](./mechanism-production-capabilities.md) expose the same limits.
+
+## Ideal static force from captured geometry
+
+The `static-moment-balance` selector calculates an ideal static result from the
+original positioned native anchors, captured reference-part matrix and source
+scene calibration. Its prescribed signed resistance stays in the pinned QA plan
+and immutable program; it does not come from the spring return track.
+
+Add a selector such as this to the plan's `measurements` array:
+
+```json
+{
+  "measurement": "force.near",
+  "kind": "static-moment-balance",
+  "quantity": "required-force-newtons",
+  "model": {
+    "id": "near",
+    "pivotAnchor": "lever.pivot",
+    "applicationAnchor": "press.near",
+    "referencePart": "model",
+    "axis": [0, 0, 1],
+    "forceDirection": [0, -1, 0],
+    "resistingTorque": { "value": 10, "unit": "N*mm" }
+  }
+}
+```
+
+The quantities and rule units are `required-force-newtons` / `N`,
+`signed-arm-meters` / `meter`, and `balance-residual-newton-meters` / `N*m`.
+A plan admits at most 16 distinct model IDs. Repeated quantities may share an ID
+only when their entire model definitions match. Each model is evaluated once per
+captured output frame. All anchor/part references, direction declarations, scene
+calibration, counts and units are checked before traversal.
+
+Absent positioned anchors or an inadmissible balance produce missing measurements
+and the registered rule's located `semantic-measurement-missing` finding. The
+original frame link and complete model remain available in the facts/program.
+Numeric corruption still rejects; no zero or substitute expected anchor is invented.
+
+A QA-only model revision follows the existing pinned QA dependency contract;
+geometry-capture reuse remains subject to the original source/cache verification.
+The result assumes a fixed pivot/axis, rigid geometry and prescribed resistance.
+It is a derived ideal force, not a measured peg rating. Individual sampled rules
+leave whole mechanical, continuous, factual and listening review unreviewed.
+See [the model API and assumptions](./mechanism-static-moment.md).

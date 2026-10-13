@@ -3,6 +3,7 @@ import { mechanismPackHash } from "./pack-support.ts";
 import {
   MechanismHashSchema,
   MechanismIdSchema,
+  MechanismStaticMomentModelSchema,
 } from "@still-shift/scene-contract";
 import { MechanismSemanticRegistrationSchema } from "./production-semantic.ts";
 import { MechanismProductionBindingSchema } from "./production-report.ts";
@@ -17,6 +18,18 @@ export const MECHANISM_PRODUCTION_QA_LIMITS = {
 } as const;
 const measurement = z.string().min(1).max(128);
 const selector = z.discriminatedUnion("kind", [
+  z
+    .object({
+      measurement,
+      kind: z.literal("static-moment-balance"),
+      quantity: z.enum([
+        "required-force-newtons",
+        "signed-arm-meters",
+        "balance-residual-newton-meters",
+      ]),
+      model: MechanismStaticMomentModelSchema,
+    })
+    .strict(),
   z
     .object({
       measurement,
@@ -265,6 +278,12 @@ export type MechanismProductionQAFacts = z.infer<
 export function mechanismProductionMeasurementUnit(
   m: MechanismProductionMeasurement,
 ) {
+  if (m.kind === "static-moment-balance")
+    return m.quantity === "required-force-newtons"
+      ? "N"
+      : m.quantity === "signed-arm-meters"
+        ? "meter"
+        : "N*m";
   return m.kind === "part-matrix-change"
     ? "maximum-matrix-component-delta"
     : "scene-unit";
