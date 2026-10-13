@@ -159,8 +159,10 @@ still hold before relying on them.
   angle/gap/camera expectations pass. E08 reaches cloth stop at322, with550
   stable camera frames; measured seat residual3.66e-8 is not whole admission.
   Nine encoded phone stills viewed. E01 thickness/travel proof still needs work;
-  revision2 pure full-cue vertex/marker framing is authored after retained rejected
-  candidates. Both current products retain five visual errors and whole gates.
+  revision2 now runs as an exact-CAS E01 input revision, preserving E08 and prior
+  products. All587 new native frames capture; independent272-frame witness and
+  216-frame paired-contact metadata audits pass. Two native stills viewed; final
+  export/report remain live. Prior products retain five visual errors/whole gates.
   [Capability docs](./mechanism-shorts-ms3-capability-results.json) repair four
   stale guides/README against source3/export/installed evidence. Actual discovery
   reads pass after retained IPC denials; scoped machine/generated references stay
@@ -366,6 +368,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — E01 scoped input revision and captured witness proof
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, frombf56c916.
+- **Done:** Revision0 manifest/journal retained; revision1 changes onlyE01 inputs,
+  keeps its clock/question/family, and preserves E08. Queue reconciliation retains
+  the prior E01 product and E08's single completed attempt/all15 artifact pins.
+- **Evidence:** New587-frame native capture; independent272-frame witness audit
+  checks1,994,368 projected source vertices, visible anchors and52.06/29.29px spans.
+  Independent216-frame paired-contact audit passes. Seven cloned negatives reject.
+  Two native stills viewed; source hold2,726/121,710,550B remains exact.
+- **Open / next:** Final overlay export/report are still live; encoded phone views,
+  final neighbor/product/decode audit and current handoff remain. CLI capability
+  and bounded bridge recovery drafts are prepared outside the held source tree.
+  Seven genuine inputs and all original whole/final requirements remain open.
+- **Record:** [Framing evidence](./mechanism-shorts-ms3-framing-results.json).
 
 ### 2026-10-13 — Seal framing products, capture audits and current 3D guides
 

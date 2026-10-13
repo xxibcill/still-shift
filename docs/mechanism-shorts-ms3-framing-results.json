@@ -532,5 +532,164 @@
       "reason": "Thickness preflight also demanded unrelated flange/rivet framing; the refined thickness shot checks every required front/fold and witness vertex on every cue frame. Travel still frames flange/rivets."
     },
     "qualification": "Pure all-vertex/witness-size/anchor-visibility authoring preflight only. No new capture, encoded glyph/whole/pilot acceptance. Existing source family, controls, narrated captions and supplied recording remain unchanged."
+  },
+  "scopedWitnessRevision": {
+    "status": "native-capture-audited-final-export-in-flight",
+    "sourceCommit": "bf56c916a49b0cff265b4372922d6330b7b8268c",
+    "revision": 1,
+    "cueRevision": 2,
+    "revisionMethod": "Current native item inspection; exact prior manifest revision/hash; normal queue reconciliation archives prior E01 product and keeps E08 unchanged. Failed-item retry authorization does not apply to a passed row.",
+    "revisionEvidence": {
+      "path": "/private/tmp/still-shift-ms3-framing27-E01-revise.json",
+      "bytes": 1844,
+      "sha256": "sha256:b63e7ef92a793ae1a9235fe34c81a70d9bd151d7b02dfda70c1df82fd096d494"
+    },
+    "sourceHoldInventory": {
+      "path": "/private/tmp/still-shift-ms3-framing27-native1-inputs.json",
+      "bytes": 465418,
+      "sha256": "sha256:8c4ae81dd6354d4b166a079e45fcbf04eb9439203c93949fc76d286133df7507"
+    },
+    "privateReceiptPath": "/private/tmp/still-shift-ms3-framing27-native1-receipt.json",
+    "nativeFrames": 587,
+    "nativeStillsActuallyViewed": [362, 498],
+    "audits": [
+      {
+        "kind": "witness",
+        "actualExitCode": 0,
+        "report": {
+          "path": "/private/tmp/still-shift-ms3-framing27-E01-witness-audit1.json",
+          "bytes": 3180,
+          "sha256": "sha256:1a8f6e302d54ce0f63b490f064e145d8c2278c41ad2e4d357043e5e97184a08c"
+        },
+        "summary": {
+          "status": "passed",
+          "nativeFrames": 587,
+          "witnessFrames": 272,
+          "statistics": [
+            {
+              "cue": "thickness",
+              "start": 315,
+              "endExclusive": 411,
+              "crossbar": "thickness-crossbar",
+              "anchor": "hook.thicknessMarker",
+              "checkedFrames": 96,
+              "projectedVertices": 87936,
+              "meshIds": [
+                "hook-front",
+                "hook-fold",
+                "thickness-crossbar",
+                "thickness-tick-1",
+                "thickness-tick-2"
+              ],
+              "minimumCrossbarNativePixels": 52.05944051474887,
+              "roi": [54, 150, 1026, 1500],
+              "visibleAnchorFrames": 96
+            },
+            {
+              "cue": "compensate",
+              "start": 411,
+              "endExclusive": 587,
+              "crossbar": "travel-crossbar",
+              "anchor": "rivet.travelMarker",
+              "checkedFrames": 176,
+              "projectedVertices": 1906432,
+              "meshIds": [
+                "hook-flange",
+                "hook-front",
+                "hook-fold",
+                "rivet-1-stem",
+                "rivet-1-cap",
+                "rivet-1-ring",
+                "rivet-2-stem",
+                "rivet-2-cap",
+                "rivet-2-ring",
+                "travel-crossbar",
+                "travel-tick-1",
+                "travel-tick-2"
+              ],
+              "minimumCrossbarNativePixels": 29.29478942043704,
+              "roi": [54, 150, 1026, 1500],
+              "visibleAnchorFrames": 176
+            }
+          ],
+          "negativeClonedPackets": [
+            {
+              "kind": "cropped-projection",
+              "status": "rejected"
+            },
+            {
+              "kind": "hidden-witness-anchor",
+              "status": "rejected"
+            },
+            {
+              "kind": "changed-mount",
+              "status": "rejected"
+            }
+          ],
+          "qualification": "Original captured world/view/projection matrices independently place every required source vertex in the reserved viewport on every witness cue frame. Captured anchor visibility and witness pixel spans are checked. This is metadata/projected-geometry evidence, not full framebuffer visibility, glyph, continuous collision, listening or whole/pilot acceptance."
+        }
+      },
+      {
+        "kind": "contact",
+        "actualExitCode": 0,
+        "report": {
+          "path": "/private/tmp/still-shift-ms3-framing27-E01-contact-audit1.json",
+          "bytes": 2169,
+          "sha256": "sha256:9538b166704ae0a117c40a4a0ee8a69d3d89bbd404986ac1e6ff14782510ef3f"
+        },
+        "summary": {
+          "status": "passed",
+          "statistics": {
+            "nativeFrames": 587,
+            "contactFrames": 216,
+            "maximumWorldError": 0,
+            "maximumReprojectionError": 0,
+            "maximumDatumPixelError": 2.5421149729252077e-13,
+            "visibleContactFrames": 216
+          },
+          "ranges": [
+            {
+              "name": "inside",
+              "start": 99,
+              "endExclusive": 204,
+              "contact": "hook.innerFace",
+              "hookTranslation": 0
+            },
+            {
+              "name": "outside",
+              "start": 204,
+              "endExclusive": 315,
+              "contact": "hook.outerFace",
+              "hookTranslation": 0.18
+            }
+          ],
+          "negativeClonedPackets": [
+            {
+              "kind": "moving-mount",
+              "status": "rejected"
+            },
+            {
+              "kind": "wrong-inside-stop",
+              "status": "rejected"
+            },
+            {
+              "kind": "swapped-projection",
+              "status": "rejected"
+            },
+            {
+              "kind": "occluded-contact",
+              "status": "rejected"
+            }
+          ],
+          "methods": [
+            "Verify original hashed native observation closure covers all587 submitted output frames.",
+            "Use immutable scene part-local definitions and actual captured world matrices to recompute contact coordinates.",
+            "Independently multiply actual captured view/projection matrices to recompute pixels, stable plane/scale and contact visibility."
+          ],
+          "qualification": "Actual native-capture metadata/projection evidence and four cloned-auditor negatives only; no full encoded glyph/whole collision/factual/continuous/listening/human/pilot acceptance."
+        }
+      }
+    ],
+    "qualification": "Native capture metadata and two native stills only; current final export/report is still running. No current encoded witness or whole admission."
   }
 }
