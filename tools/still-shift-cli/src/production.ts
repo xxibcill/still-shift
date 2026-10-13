@@ -1,3 +1,4 @@
+import { executeProductionCommand } from "./production-execution.ts";
 import { mkdtemp } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
@@ -32,19 +33,25 @@ export async function runProductionCli(
   const owner = new CompositionNodeMemory();
   try {
     const command = args[0];
-    if (!["discover", "schema", "report", "handoff"].includes(command ?? ""))
+    if (
+      !["discover", "schema", "queue", "run", "report", "handoff"].includes(
+        command ?? "",
+      )
+    )
       throw Error(
-        "Production command must be discover, schema, report or handoff",
+        "Production command must be discover, schema, queue, run, report or handoff",
       );
     const flags = parseNamedArguments(
       args.slice(1),
-      command === "schema"
-        ? ["kind", "output", "report"]
-        : command === "discover"
-          ? ["report"]
-          : command === "handoff"
-            ? ["manifest", "output-dir", "episode", "report"]
-            : ["manifest", "output-dir", "report", "offset", "limit"],
+      command === "queue"
+        ? ["projects", "manifest"]
+        : command === "schema"
+          ? ["kind", "output", "report"]
+          : command === "discover"
+            ? ["report"]
+            : command === "handoff"
+              ? ["manifest", "output-dir", "episode", "report"]
+              : ["manifest", "output-dir", "report", "offset", "limit"],
     );
     const offset = Number(flags.get("offset") ?? 0),
       limit = Number(flags.get("limit") ?? 100);
@@ -60,12 +67,14 @@ export async function runProductionCli(
       MechanismProductionSchemaSelectionSchema.parse(
         requireArgument(flags, "kind"),
       );
-    if (command === "report" || command === "handoff") {
+    if (["queue", "run", "report", "handoff"].includes(command ?? "")) {
       requireArgument(flags, "manifest");
-      requireArgument(flags, "output-dir");
+      if (command !== "queue") requireArgument(flags, "output-dir");
+      else requireArgument(flags, "projects");
       if (command === "handoff") requireArgument(flags, "episode");
     }
     const report =
+      (command === "queue" ? requireArgument(flags, "manifest") : undefined) ??
       flags.get("report") ??
       flags.get("output") ??
       join(
@@ -75,10 +84,23 @@ export async function runProductionCli(
     if (report.length > 2048)
       throw Error("Production report path exceeds2048 characters");
     const path = resolve(report);
+    if (path.length > 2048)
+      throw Error("Resolved production report path exceeds2048 characters");
     let complete: unknown,
       summary: MechanismReceiptRow,
       items: MechanismReceiptRow[] = [];
-    if (command === "discover") {
+    let status: "passed" | "failed" | "cancelled" = "passed";
+    let executionCommand: "save" | "render" | undefined;
+    let executionNextAction: string | undefined;
+    if (command === "queue" || command === "run") {
+      const execution = await executeProductionCommand(command, flags, owner);
+      complete = execution.complete;
+      summary = execution.summary;
+      items = execution.items;
+      status = execution.status;
+      executionCommand = execution.receiptCommand;
+      executionNextAction = execution.nextAction;
+    } else if (command === "discover") {
       const caps = inspectMechanismProductionCapabilities();
       complete = caps;
       summary = {
@@ -231,29 +253,32 @@ export async function runProductionCli(
         ];
       }
     }
-    await writeProductionJSON(
-      path,
-      complete,
-      owner,
-      command === "handoff" ? 32768 : 8 * 1024 * 1024,
-      true,
-    );
+    if (command !== "queue")
+      await writeProductionJSON(
+        path,
+        complete,
+        owner,
+        command === "handoff" ? 32768 : 8 * 1024 * 1024,
+        true,
+      );
     const retained = await cuePlateFile(path, owner);
     const receipt = await createMechanismCommandReceipt(
       {
         command:
-          command === "report" || command === "handoff"
+          executionCommand ??
+          (command === "report" || command === "handoff"
             ? "summary"
             : command === "schema"
               ? "schema"
-              : "discover",
-        status: "passed",
+              : "discover"),
+        status,
         summary,
         items,
         nextAction:
-          command === "report"
+          executionNextAction ??
+          (command === "report"
             ? "Inspect validation exceptions and unreviewed dimensions in the complete report. Resume the queue or review this exact artifact; pilot admission stays separate."
-            : "Use the published production schemas and report command.",
+            : "Use the published production schemas and report command."),
       },
       {
         offset,
@@ -266,7 +291,7 @@ export async function runProductionCli(
       },
     );
     io.stdout(JSON.stringify(receipt) + "\n");
-    return 0;
+    return status === "cancelled" ? 130 : status === "failed" ? 1 : 0;
   } catch (error) {
     const diagnostic = failureDiagnostic(error);
     io.stderr(

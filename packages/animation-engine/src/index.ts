@@ -156,3 +156,9 @@ export * from "./mechanism/production-evidence-contract.ts";
 export * from "./mechanism/production-handoff.ts";
 export * from "./mechanism/production-qa-contract.ts";
 export * from "./mechanism/production-qa-sampling.ts";
+
+export {
+  MechanismProductionProjectsSchema,
+  createMechanismProductionQueueFile,
+  type MechanismProductionQueueFactory,
+} from "./mechanism/production-projects.ts";

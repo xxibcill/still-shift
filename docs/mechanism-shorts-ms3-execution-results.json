@@ -1,0 +1,317 @@
+{
+  "version": 1,
+  "milestone": "MS3",
+  "date": "2026-10-13",
+  "branch": "codex/mechanism-ms3",
+  "baseCommit": "6386d619",
+  "status": "declarative-queue-run-scoped-verified-current-complete-tiers-and-native-cli-recovery-pending",
+  "sourceSnapshot": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-projects.ts",
+      "bytes": 5575,
+      "sha256": "sha256:bf4e91d0f76188872e75481527cf89f8c95662b197bcdf3a3084f6f4f487c6a1"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-registry.ts",
+      "bytes": 7921,
+      "sha256": "sha256:052857b7d66f94b8dc73c070359d22e7b1c732755a2c7171d9326a72528fc9e2"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/index.ts",
+      "bytes": 4882,
+      "sha256": "sha256:bb58b6a614e2c9f91e8be86b31ad41827fa3efca5c5040a3b43c2e5cce5a821a"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tools/still-shift-cli/src/production-execution.ts",
+      "bytes": 4915,
+      "sha256": "sha256:614c589bc956ca1a2bdacb1e54af4834a23e86dee8f125b396060e92adedf9c0"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tools/still-shift-cli/src/production.ts",
+      "bytes": 11263,
+      "sha256": "sha256:ac7af43c00963a0f093a1c8743800eb2404e7ba00199afb6717d2a3d0a8d0158"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tools/still-shift-cli/src/cli.ts",
+      "bytes": 19519,
+      "sha256": "sha256:3dbd50d3159465386ab2459e03dcc251f60b082d62078c90faa53c225010885e"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-production-projects.test.ts",
+      "bytes": 5369,
+      "sha256": "sha256:4e2c4ff6f56e24abd66e4b48d59a98ef68c2cc1f8786324d9ad7520a3183b069"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/runtime/mechanism-production-queue-cli.test.ts",
+      "bytes": 3664,
+      "sha256": "sha256:45b332be2a3741bf9229eaf212eee9c77f1ed403e3e655fcf978e8d67290a42f"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/runtime/mechanism-production-run-cli.test.ts",
+      "bytes": 6417,
+      "sha256": "sha256:9df5626c987a38eaf2b421b866c9cdba28a42276d94dfb695aa3695312ab1e83"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/runtime/mechanism-production-report-cli.test.ts",
+      "bytes": 3755,
+      "sha256": "sha256:421559089eb6c4004c6180b201ebccf81b86d87554529b236f082b9b86568a8c"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/production-projects.schema.json",
+      "bytes": 1085,
+      "sha256": "sha256:d7325205fffbd92de03228b145708750a1d29cae7b7e314e6d0c7ddc88fa413d"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-production-capabilities.md",
+      "bytes": 3407,
+      "sha256": "sha256:ad007ac498d08da2e84fb16c9eddb81e9ad68e16c6c0549911a98ba004944474"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-production-queue.md",
+      "bytes": 5397,
+      "sha256": "sha256:14b4610719efb3631c0c35367fb8d61735404dfa7dcb301982747b30445b897b"
+    }
+  ],
+  "delivered": [
+    "Strict production-projects schema, maximum300 distinct questions/IDs and1MiB descriptor; prospective cardinality guard precedes item validators/producers.",
+    "Immutable manifest creation resolves family/cue/QA paths from the project descriptor and checks generated item identity/paths. Existing/concurrent destinations are preserved.",
+    "Production queue/run commands remove per-episode queue/capture code; run uses the original guarded serial native adapter and bounded compact/full state outputs.",
+    "SIGINT/SIGTERM lifecycle handlers request durable cancellation; pending rows and absent new queue results remain honest. Exit0/1/2/130 separates execution pass/item failure/invalid input/cancellation.",
+    "Machine discovery, thirteen production schemas and generated capability reference expose implemented creation/execution/response limits."
+  ],
+  "scopedPreflight": {
+    "status": "passed",
+    "startedUtc": "2026-10-13T01:00:37.338016+00:00",
+    "commands": [
+      {
+        "command": ["pnpm", "build"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-execution8-gate2-0.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/mechanism-production-projects.test.ts",
+          "tests/unit/mechanism-production-queue.test.ts",
+          "tests/unit/mechanism-production-report-io.test.ts",
+          "tests/runtime/mechanism-production-queue-cli.test.ts",
+          "tests/runtime/mechanism-production-run-cli.test.ts",
+          "tests/runtime/mechanism-production-report-cli.test.ts",
+          "tests/runtime/native-node-config.test.ts",
+          "--maxWorkers=2",
+          "--no-file-parallelism"
+        ],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-execution8-gate2-1.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "eslint",
+          "packages/animation-engine/src/mechanism/production-projects.ts",
+          "packages/animation-engine/src/mechanism/production-registry.ts",
+          "packages/animation-engine/src/index.ts",
+          "tools/still-shift-cli/src/production-execution.ts",
+          "tools/still-shift-cli/src/production.ts",
+          "tools/still-shift-cli/src/cli.ts",
+          "tests/unit/mechanism-production-projects.test.ts",
+          "tests/runtime/mechanism-production-queue-cli.test.ts",
+          "tests/runtime/mechanism-production-run-cli.test.ts",
+          "tests/runtime/mechanism-production-report-cli.test.ts"
+        ],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-execution8-gate2-2.log"
+      },
+      {
+        "command": ["pnpm", "schema:generate"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-execution8-gate2-3.log"
+      },
+      {
+        "command": ["pnpm", "schema:check"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-execution8-gate2-4.log"
+      },
+      {
+        "command": ["pnpm", "check:boundaries"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-execution8-gate2-5.log"
+      },
+      {
+        "command": ["pnpm", "build:package"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-execution8-gate2-6.log"
+      }
+    ],
+    "endedUtc": "2026-10-13T01:01:17.844655+00:00",
+    "session": 41035,
+    "focusedTests": 37,
+    "files": 7
+  },
+  "earlierScope": {
+    "scope1": [
+      {
+        "command": ["pnpm", "build"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-execution8-scope1-0.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/mechanism-production-projects.test.ts"
+        ],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-execution8-scope1-1.log"
+      }
+    ],
+    "scope2": [
+      {
+        "command": ["pnpm", "build"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-execution8-scope2-0.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/mechanism-production-projects.test.ts",
+          "tests/runtime/mechanism-production-queue-cli.test.ts",
+          "tests/runtime/mechanism-production-run-cli.test.ts",
+          "tests/runtime/mechanism-production-report-cli.test.ts",
+          "--maxWorkers=2",
+          "--no-file-parallelism"
+        ],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-execution8-scope2-1.log"
+      }
+    ]
+  },
+  "retainedFailure": {
+    "status": "failed",
+    "startedUtc": "2026-10-13T00:58:02.504774+00:00",
+    "commands": [
+      {
+        "command": ["pnpm", "build"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-execution8-gate1-0.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/mechanism-production-projects.test.ts",
+          "tests/unit/mechanism-production-queue.test.ts",
+          "tests/unit/mechanism-production-report-io.test.ts",
+          "tests/runtime/mechanism-production-queue-cli.test.ts",
+          "tests/runtime/mechanism-production-run-cli.test.ts",
+          "tests/runtime/mechanism-production-report-cli.test.ts",
+          "tests/runtime/native-node-config.test.ts",
+          "--maxWorkers=2",
+          "--no-file-parallelism"
+        ],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-execution8-gate1-1.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "eslint",
+          "packages/animation-engine/src/mechanism/production-projects.ts",
+          "packages/animation-engine/src/mechanism/production-registry.ts",
+          "packages/animation-engine/src/index.ts",
+          "tools/still-shift-cli/src/production-execution.ts",
+          "tools/still-shift-cli/src/production.ts",
+          "tools/still-shift-cli/src/cli.ts",
+          "tests/unit/mechanism-production-projects.test.ts",
+          "tests/runtime/mechanism-production-queue-cli.test.ts",
+          "tests/runtime/mechanism-production-run-cli.test.ts",
+          "tests/runtime/mechanism-production-report-cli.test.ts"
+        ],
+        "actualExitCode": 1,
+        "log": "/private/tmp/still-shift-ms3-execution8-gate1-2.log"
+      }
+    ],
+    "endedUtc": "2026-10-13T00:58:26.166216+00:00",
+    "reason": "One consistent-type-import lint failure; fixed with an erased type-only import. Build and37 owning checks passed; later schema/boundary/declaration steps were unstarted."
+  },
+  "logs": [
+    {
+      "path": "/private/tmp/still-shift-ms3-execution8-gate1-0.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-execution8-gate1-1.log",
+      "bytes": 1014,
+      "sha256": "sha256:f43c083d8b6dcfa53fe0882c0b117625b6280fc4109e527cbdbc190a0cf0dba7"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-execution8-gate1-2.log",
+      "bytes": 345,
+      "sha256": "sha256:2e3fe2e48987bbbc1581f8eb48bc3bf00aeb39a63c2946129b39dded6146b2a8"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-execution8-gate2-0.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-execution8-gate2-1.log",
+      "bytes": 1014,
+      "sha256": "sha256:a2dbaa78f2c3f05b6f01830be5be7395d44a7a32aa67971268048ff31020402f"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-execution8-gate2-2.log",
+      "bytes": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-execution8-gate2-3.log",
+      "bytes": 653,
+      "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-execution8-gate2-4.log",
+      "bytes": 502,
+      "sha256": "sha256:904ab0505f30dcbfbc30b28c2b2da22c2d2cc49f3c99a0200defa634e56ec546"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-execution8-gate2-5.log",
+      "bytes": 186,
+      "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-execution8-gate2-6.log",
+      "bytes": 208,
+      "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-execution8-gate1-receipt.json",
+      "bytes": 1782,
+      "sha256": "sha256:a421a6c122fdff319445a532dbc2df089cd533da80ab2d072089afeeff646834"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-execution8-gate2-receipt.json",
+      "bytes": 2486,
+      "sha256": "sha256:bfe6fe3c43351db22d9d43aaeda660146d753e3727393c16208bfd2ecbd641a8"
+    }
+  ],
+  "qualification": "Three actual family inputs and current native identity are inspected by CLI creation without capture. Run/resume/failure/signal controls use an explicitly declared fixture adapter and owned callback invocation; no actual native CLI execution/OS interruption/cancellation/recovery acceptance is claimed. Earlier QA7 current source6080 has its separate native/independent proof. New source needs current complete tiers and actual native CLI fault/recovery evidence.",
+  "remaining": [
+    "Complete current fast/runtime tiers and actual native CLI execution, SIGKILL/SIGTERM, corruption, missing audio, export failure, relocation and recovery.",
+    "Explicit bounded targeted retry/CAS workflow for repaired permanent inputs; preserve valid neighboring products and review history.",
+    "All original MS3 unified review/analytic/continuous/fault/scoped/MS1 repair and ten-episode/five-assets/two-behaviors/genuine-input/pilot/capability/final-gate/archive/installed work."
+  ]
+}

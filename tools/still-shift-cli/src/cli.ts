@@ -61,6 +61,8 @@ const DEFAULT_IO: CliIo = {
 const HELP = `Still Shift v${ENGINE_VERSION}
 
 Usage:
+  pnpm still-shift production queue --projects <projects.json> --manifest <new-queue.json>
+  pnpm still-shift production run --manifest <queue.json> --output-dir <queue-output> [--report <new-state.json>]
   pnpm still-shift production discover
   pnpm still-shift production schema --kind <kind>
   pnpm still-shift production report --manifest <queue.json> --output-dir <queue-output> [--report <fresh.json>]

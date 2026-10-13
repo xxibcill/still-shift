@@ -54,9 +54,13 @@ still hold before relying on them.
   actual current CLI reports and independent cohort percentiles/review counts.
   Native attempts 1/2 and runtime attempt 1 remain retained failures. Whole
   mechanical/glyph/factual/continuous/listening/human reviews remain open.
-  Queue creation/execution currently require code; declarative CLI drafts are
-  prepared for integration next, then explicit bounded recovery and real native
-  interruption/cancel/corrupt/relocation. Scoped/MS1 repair, ten frozen questions,
+  Declarative queue/run commands now remove per-episode queue/capture code;
+  strict project/immutable-manifest admission and bounded state receipts pass
+  37 owning checks plus build/lint/schema/boundary/declaration preflight. Three
+  real family inputs are pinned without capture; execution/failure/signal tests
+  use a declared fixture adapter. One lint failure is retained. New source still
+  requires complete fast/runtime and real native CLI faults/recovery. Explicit
+  bounded retry, interruption/cancel/corrupt/relocation remain pending. Scoped/MS1 repair, ten frozen questions,
   five assets/two behaviors, genuine inputs/reviews, capability reconciliation
   and final full/archive/installed verification remain. Coverage is 0/10; no
   pilot target achieved. Primary extension research and an E10 dimensional draft
@@ -250,6 +254,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — Add declarative production queue and run commands
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `6386d619`.
+- **Done:** strict bounded project declarations, immutable generated manifests,
+  existing native queue execution/resume, compact/full state receipts, cancellation
+  handlers and honest exit statuses. Thirteen schemas and discovery/docs agree.
+- **Results:** 37 owning checks, build, lint, generated schemas, boundaries and
+  package declarations pass. One type-only import lint failure is retained.
+- **Scope:** actual three-family creation pins inputs without capture. Execution,
+  failure and cancellation controls use a fixture adapter/owned callback only;
+  real native CLI/OS faults and current complete tiers are pending.
+- **Next:** commit and complete fast/runtime, then targeted bounded retry and real
+  native fault/recovery proof. Original MS3 assets/behaviors/pilot/final gates remain.
+- **Records:** [execution evidence](./mechanism-shorts-ms3-execution-results.json),
+  [queue commands](./mechanism-production-queue.md), [QA7 proof](./mechanism-shorts-ms3-qa-results.json).
 
 ### 2026-10-13 — Verify native capacity repair and independent QA history
 

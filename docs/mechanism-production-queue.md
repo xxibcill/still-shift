@@ -49,3 +49,47 @@ and float32 PCM through bounded streams. Technical QA binds the actual output,
 inputs, runtime code/profile and clocks; the other five dimensions stay unreviewed.
 Caption-only revision reuses plates with zero new native submissions. Native
 receipt locators currently reject relocation; supporting relocation is still open.
+
+## Declarative queue and command execution
+
+Create a `mechanism-production-projects-1` JSON file with an `id` and distinct
+`projects`. Each project declares `id`, `question`, `familyPath`, `cuePath` and
+optional `qaPath`. Relative paths resolve from this declaration's directory.
+The native adapter inspects every current family, cue and source/media pin.
+
+```json
+{
+  "schemaVersion": "mechanism-production-projects-1",
+  "id": "production-pilot",
+  "projects": [
+    {
+      "id": "E01",
+      "question": "How does the floating hook establish zero?",
+      "familyPath": "E01/family.json",
+      "cuePath": "E01/cues.json"
+    }
+  ]
+}
+```
+
+```sh
+pnpm still-shift production queue --projects projects.json --manifest queue.json
+pnpm still-shift production run --manifest queue.json --output-dir output
+pnpm still-shift production report --manifest queue.json --output-dir output
+```
+
+`queue` accepts up to 300 projects in a 1 MiB declaration and creates an immutable
+manifest. An existing destination is preserved. Creation performs no native capture.
+`run` uses the existing serial native executor, verifies completed products on
+resume, retains failures and emits bounded episode rows with a complete state link.
+It returns 0 when all items pass technical execution, 1 for terminal item failure,
+2 for invalid input/command and 130 for cancellation. SIGINT/SIGTERM request durable
+cancellation; a cancellation before a new result is available preserves the existing
+journal's authority without inventing terminal row statuses.
+
+`run --report new-state.json` retains its full state at an explicit new destination;
+otherwise the complete state snapshot is saved to a temporary directory. `--offset`
+and `--limit` page its compact receipt within the existing response limits. Technical
+execution leaves whole mechanical, visual, continuous-motion, factual and listening
+reviews separate. Permanent failures currently require changed dependency input
+through a CAS revision; an explicit bounded retry workflow remains pending.

@@ -53,6 +53,7 @@ describe("production discovery and schema CLI", () => {
       "production-cohort-report",
       "production-report-bundle",
       "production-queue",
+      "production-projects",
       "semantic-registration",
       "production-evidence",
       "production-handoff",
