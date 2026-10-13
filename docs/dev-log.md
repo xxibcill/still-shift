@@ -145,7 +145,8 @@ still hold before relying on them.
   Five red regressions now pass; owning25/2 and complete fast4,535/448 pass.
   Held2,726 inputs/121,709,868B also pass synthetic cue-layout12 exports/720 frames
   and narrated-cycle12/900 with full observation/glyph/seek/repeat checks. Current
-  E03 repair compilation is ready; actual portrait repair/export remains next.
+  E03 repair compilation is ready; original-plate check/export/final-check is live
+  onb5f8fbae. No current repaired portrait completion is claimed yet.
   Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
   [Automatic overlap preflight](./mechanism-shorts-ms3-repair-results.json) now
@@ -350,7 +351,7 @@ still hold before relying on them.
 ### 2026-10-13 — Shared caption geometry and safe-area compiler repair
 
 - **Agent / branch:** Codex on `codex/mechanism-ms3`, from03edf64c.
-- **Done:** Shared text/backing/exclusion geometry fits three lines with padding
+- **Done:** b5f8fbae shares text/backing/exclusion geometry, fitting three lines with padding
   in5% safe inset; portrait backing height384→207px. Annotation font sizing and
   source narration clocks remain unchanged.
 - **Results:** Five actual red failures then25 owning passes; full fast4,535/448
@@ -358,7 +359,7 @@ still hold before relying on them.
   synthetic cue-layout12 exports/720 frames and narrated-cycle12/900 checks.
 - **Rejected / do not repeat:** Invalid Vitest unit project filter retained; no
   tests ran in that startup attempt. The corrected red/green results are separate.
-- **Open / next:** Current E03 compilation is ready for original-plate export;
+- **Open / next:** Current E03 original-plate check/export/final-check is live onb5f8fbae;
   E01/E08 framing, current production bindings and full original scope remain.
 - **Records:** [Caption](./mechanism-shorts-ms3-caption-results.json),
   [original subset](./mechanism-shorts-ms3-pilot-results.json).

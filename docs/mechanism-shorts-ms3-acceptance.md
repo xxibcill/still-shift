@@ -47,3 +47,10 @@ questions, current family bindings and seven recording drafts. [Pilot results](.
 retains authoring failures and the completed source-bound three-product subset. Three available inputs
 are a subset of the original denominator10; drafts are not supplied narration.
 The approved production plan uses supplied audio only and excludes synthesis.
+
+[Caption repair](./mechanism-shorts-ms3-caption-results.json) onb5f8fbae passes
+complete fast4,535/448 and relevant synthetic browser layout/narrated-cycle
+checks (24 exports,1,620 observed frames) with2,726 inputs held. The current
+E03 original-plate check/export/final-check is live. Earlier59ce0e5f pilot
+products retain their historical binding; source changes require current
+product/QA/handoff verification. All ten whole/pilot requirements remain open.

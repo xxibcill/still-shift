@@ -8,7 +8,7 @@
     "bytes": 465418,
     "sha256": "sha256:9d81489df32c4a04f6f0e87069cd2d686e23b2e23773677563739a4021eef702"
   },
-  "implementationCommit": null,
+  "implementationCommit": "b5f8fbaeafa52d24d5e93e36427868589b4a7d52",
   "status": "software-and-synthetic-browser-verified",
   "problem": "Original portrait products used20% height caption backings ending at99% frame height. Four standard viewport regressions reproduce violation of the5% safe inset.",
   "change": "One shared caption geometry function gives compiled text/backing and annotation exclusions the same rectangle, fits three lines plus font-relative padding inside5% inset and reduces1080x1920 backing height384 to207 pixels. Existing annotation font sizing and narration clocks remain unchanged.",
@@ -120,7 +120,9 @@
       "bytes": 1703,
       "sha256": "sha256:ac85998b6a946de690efba1241008b295325e96ef4b64396f41b02849b67ed12"
     },
-    "status": "current-compile-ready-for-original-plate-check-and-export"
+    "status": "original-plate-check-and-export-running",
+    "receipt": "/private/tmp/still-shift-ms3-pilot24-E03-export1-receipt.json",
+    "sourceCommit": "b5f8fbaeafa52d24d5e93e36427868589b4a7d52"
   },
   "remaining": [
     "Verify current E03 caption-only export against original immutable native plates and complete decoded audio/frame evidence.",
