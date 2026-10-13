@@ -81,6 +81,54 @@ function clippedTriangleArea(
     ) / 2
   );
 }
+function polygonArea(points: Point2[]) {
+  return (
+    Math.abs(
+      points.reduce((sum, a, i) => {
+        const b = points[(i + 1) % points.length]!;
+        return sum + a[0] * b[1] - a[1] * b[0];
+      }, 0),
+    ) / 2
+  );
+}
+function triangleIntersectionArea(a: Point2[], b: Point2[]) {
+  if (polygonArea(a) < 1e-12 || polygonArea(b) < 1e-12) return 0;
+  for (const axis of [0, 1])
+    if (
+      Math.max(...a.map((p) => p[axis]!)) <
+        Math.min(...b.map((p) => p[axis]!)) ||
+      Math.max(...b.map((p) => p[axis]!)) < Math.min(...a.map((p) => p[axis]!))
+    )
+      return 0;
+  const orientation = Math.sign(
+    b.reduce((sum, p, i) => {
+      const q = b[(i + 1) % 3]!;
+      return sum + p[0] * q[1] - p[1] * q[0];
+    }, 0),
+  );
+  let polygon = a;
+  for (let j = 0; j < 3; j++) {
+    const p = b[j]!,
+      q = b[(j + 1) % 3]!,
+      distance = (v: Point2) =>
+        orientation *
+        ((q[0] - p[0]) * (v[1] - p[1]) - (q[1] - p[1]) * (v[0] - p[0])),
+      output: Point2[] = [];
+    for (let i = 0; i < polygon.length; i++) {
+      const x = polygon[i]!,
+        y = polygon[(i + 1) % polygon.length]!,
+        dx = distance(x),
+        dy = distance(y);
+      if (dx >= 0) output.push(x);
+      if (dx >= 0 !== dy >= 0) {
+        const f = dx / (dx - dy);
+        output.push([x[0] + f * (y[0] - x[0]), x[1] + f * (y[1] - x[1])]);
+      }
+    }
+    polygon = output;
+  }
+  return polygonArea(polygon);
+}
 describe("hinged two-tooth load-stop cable candidate", () => {
   it("keeps standard and release identities exact while exposing a distinct physical candidate", () => {
     expect(createCableTiePack().sourceSha256).toBe(
@@ -229,6 +277,97 @@ describe("hinged two-tooth load-stop cable candidate", () => {
         expect(f.relationships["hinge.pawl.attached"]!.residual).toBeLessThan(
           1e-8,
         );
+      }
+    }
+  });
+  it("attaches the web at the lower rear beside the stop and shortens it through seating", () => {
+    for (const pitch of [0.35, 0.5, 0.7]) {
+      const p = createCableTiePack({ variant, parameters: { pitch } });
+      const definition = p.scene.teachingShapes[0]!;
+      expect(definition.generator).toBe("seated-flexible-web-1");
+      const root = p.scene.anchors.find((a) => a.id === "head.hingeSeat")!,
+        moving = p.scene.anchors.find((a) => a.id === "pawl.hingeSeat")!;
+      if (
+        root.source.kind !== "part-local" ||
+        moving.source.kind !== "part-local"
+      )
+        throw Error("Rigid seats required");
+      expect(root.source.position).toEqual([pitch + 0.3, 0.1, 0]);
+      expect(moving.source.position).toEqual([pitch + 0.4, 0.18, 0]);
+      const ledge = p.scene.geometry.meshes.find(
+        (m) => m.id === "head.stopLedge",
+      )!;
+      expect(root.source.position[1]).toBeCloseTo(ledge.bounds.max[1], 7);
+      expect(root.source.position[0]).toBeGreaterThan(ledge.bounds.min[0]);
+      expect(root.source.position[0]).toBeLessThan(ledge.bounds.max[0]);
+      let lastSpan = Infinity;
+      for (let i = 0; i <= 32; i++) {
+        const f = sample(p, i / 4, i),
+          a = f.anchors["head.hingeSeat"]!.world,
+          b = f.anchors["pawl.hingeSeat"]!.world,
+          span = Math.hypot(...a.map((v, axis) => v - b[axis]!));
+        expect(span).toBeLessThanOrEqual(lastSpan + 1e-12);
+        expect(span).toBeGreaterThan(0.075);
+        lastSpan = span;
+        expect(f.relationships["hinge.root.attached"]!.residual).toBeLessThan(
+          1e-12,
+        );
+        expect(f.relationships["hinge.pawl.attached"]!.residual).toBeLessThan(
+          1e-12,
+        );
+      }
+    }
+  });
+  it("keeps the deforming web clear of both pawl solids and the adjacent frame solids", () => {
+    for (const pitch of [0.35, 0.5, 0.7]) {
+      const p = createCableTiePack({ variant, parameters: { pitch } }),
+        template = p.scene.geometry.meshes.find(
+          (m) => m.id === "hinge.web.mesh",
+        )!;
+      for (let i = 0; i <= 40; i++) {
+        const frame = sample(p, i / 4, i),
+          web = frame.shapeStates["hinge.web"]!;
+        const triangles = (
+          positions: readonly number[],
+          indices: readonly number[],
+          part: string,
+        ) => {
+          const posed = Array.from(
+            { length: positions.length / 3 },
+            (_, v) =>
+              transformPoint(
+                frame.parts[part]!.worldMatrix,
+                positions.slice(v * 3, v * 3 + 3) as [number, number, number],
+              ).slice(0, 2) as Point2,
+          );
+          return Array.from({ length: indices.length / 3 }, (_, t) =>
+            indices.slice(t * 3, t * 3 + 3).map((v) => posed[v]!),
+          ).filter((t) => polygonArea(t) > 1e-12);
+        };
+        const webTriangles = triangles(
+          web.positions,
+          template.indices,
+          web.ownerPart,
+        );
+        for (const mesh of p.scene.geometry.meshes.filter(
+          (m) =>
+            m.partId === "pawl" ||
+            ["head.stopLedge", "head.webRoot"].includes(m.id),
+        )) {
+          const solidTriangles = triangles(
+            mesh.positions,
+            mesh.indices,
+            mesh.partId,
+          );
+          let maximum = 0;
+          for (const a of webTriangles)
+            for (const b of solidTriangles)
+              maximum = Math.max(maximum, triangleIntersectionArea(a, b));
+          expect(
+            maximum,
+            `pitch${pitch}/force${i / 4}/web versus${mesh.id}`,
+          ).toBeLessThanOrEqual(1e-10);
+        }
       }
     }
   });

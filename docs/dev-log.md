@@ -121,6 +121,11 @@ still hold before relying on them.
   depth14/smoke with2,725 inputs/121,701,051B exact. Four decoded stills reviewed;
   source hinge placement remains a required asset repair. No E06/whole/pilot
   admission; all handles closed.
+  E06 lower-rear hinge repair now has75 scoped/9 files,4 CLI/build/lint/schema/
+  boundary/package checks with2,725 exact inputs. The web attaches to the rear
+  underside/stop-bearing ledge, shortens in99 seating samples and stays clear of
+  pawn/frame solids in123 sampled states. Fresh native and current tiers remain
+  next. [Alignment record](./mechanism-shorts-ms3-load-alignment-results.json).
   Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
   Remaining original scope: clearer views and actual whole reviews, E06 asset/
@@ -315,6 +320,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — E06 lower-rear hinge anatomy repair
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `cd175dbc`.
+- **Done:** Hinge attaches at the rear underside and stop-bearing ledge; rear
+  body/frame geometry and posed terminal tangents support shortening under load.
+- **Results:**12 owning checks;99 shortening/123 web-solid/123 pawl-ledge states.
+  Final preflight1 passes75 units/9 files,4 CLI/build/lint/schema/boundary/package
+  checks with2,725 exact inputs. Primary pages3/10 re-viewed, retained PDF exact.
+- **Retained:** Earlier misplaced candidate and its actual native/full checks
+  remain historical; no relabeling or manufacturer/material calibration claim.
+- **Open / next:** Fresh committed native/original-stream audit and current tiers;
+  original E06 explanation and remaining MS3/whole/pilot admission stay open.
+- **Records:** [Alignment evidence](./mechanism-shorts-ms3-load-alignment-results.json).
+  Accepted0/10; no spending, merge/publication or Actions change.
 
 ### 2026-10-13 — E06 separate load-stop asset and two-seat flexible web
 

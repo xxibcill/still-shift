@@ -1,0 +1,386 @@
+{
+  "version": "mechanism-shorts-ms3-load-alignment-results-1",
+  "episode": "E06",
+  "date": "2026-10-13",
+  "branch": "codex/mechanism-ms3",
+  "baseCommit": "cd175dbc4a8f05533a4df8469697b5776249d38a",
+  "status": "lower-rear-hinge-repair-preflight-passed-native-current-tiers-pending",
+  "qualification": "Repairs the known upper-left hinge-placement mismatch with a lower rear underside/stop-ledged attachment and shortening web. Source comparison and scoped software/sampled geometry checks only; fresh original native/current tier verification and original factual/design/continuous/narration/listening/whole/pilot admission remain pending. No measured geometry/material/force claim; accepted0/10 and frozen questions unchanged.",
+  "supersedesGeometrySource": "ae70d735cd263c424113de6d8ba430226bc33c7e",
+  "historicalEvidence": "docs/mechanism-shorts-ms3-load-asset-results.json",
+  "primarySource": {
+    "record": "docs/mechanism-shorts-ms2-e06-primary-admission-results.json",
+    "pdf": {
+      "path": "/private/tmp/still-shift-ms2-e06-primary65.pdf",
+      "bytes": 2192495,
+      "sha256": "sha256:ff367dfe2c6ed062c9075c7bf456d76fe469341195fc2c445f54c17b2ccb7a53"
+    },
+    "pagesActuallyViewed": [3, 10],
+    "figureScope": "Figures8-11; printed columns7/8",
+    "finding": "The hinge171 joins the lower rear of the pawl to the frame near stop185 and the bearing ledge/surface. Fig10 primary locking precedes Fig11 second-tooth/stop engagement; further shifting is bounded.",
+    "qualification": "Qualitative anatomical correspondence; not manufacturer dimensions, measured compliance or full factual/human/whole approval."
+  },
+  "repair": {
+    "fixedSeat": "[pitch+.3,.1,0], on the actual stop-bearing ledge top surface",
+    "movingSeat": "[pitch+.4,.18,0], rear underside beyond the semicylindrical stop",
+    "body": "Rear underside extended to accommodate the hinge; frame rear wall/back/guide connect around the ledge.",
+    "tangents": "Both end tangents are local +Y, posed from the rigid seat transforms.",
+    "deformation": "All99 seating samples across3 admitted pitches shorten the seat-to-seat span monotonically; endpoints remain attached.",
+    "scope": "No new rig law or shape generator; existing bounded two-seat planar web and load-seat behavior reused."
+  },
+  "owningTests": 12,
+  "scopedTests": 75,
+  "scopedFiles": 9,
+  "cliTests": 4,
+  "denseForceSamples": 101,
+  "pawlLedgeOverlapStates": 123,
+  "webSolidClearanceStates": 123,
+  "webShorteningStates": 99,
+  "preflight": {
+    "status": "passed",
+    "baseCommit": "cd175dbc4a8f05533a4df8469697b5776249d38a",
+    "scope": "uncommitted working source with exact post-generation inventory",
+    "startedUtc": "2026-10-13T10:04:57.957991+00:00",
+    "pid": 84241,
+    "steps": [
+      {
+        "command": ["pnpm", "native3d:identity:generate"],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": null,
+        "startedUtc": "2026-10-13T10:04:57.958655+00:00",
+        "endedUtc": "2026-10-13T10:04:59.335997+00:00",
+        "log": "/private/tmp/still-shift-ms3-align20-preflight1-0.log"
+      },
+      {
+        "command": ["pnpm", "schema:generate"],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": null,
+        "startedUtc": "2026-10-13T10:04:59.336350+00:00",
+        "endedUtc": "2026-10-13T10:05:02.008108+00:00",
+        "log": "/private/tmp/still-shift-ms3-align20-preflight1-1.log"
+      },
+      {
+        "command": ["pnpm", "build"],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T10:05:02.008371+00:00",
+        "endedUtc": "2026-10-13T10:05:13.187695+00:00",
+        "log": "/private/tmp/still-shift-ms3-align20-preflight1-2.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "eslint",
+          "packages/animation-engine/src/mechanism/cable-tie-pack.ts",
+          "packages/animation-engine/src/mechanism/camera-descriptions.ts",
+          "packages/animation-engine/src/mechanism/family-registry.ts",
+          "packages/renderer-core/src/mechanism/teaching-shapes.ts",
+          "packages/renderer-core/src/mechanism/teaching-topology.ts",
+          "packages/scene-contract/src/mechanism/pack-document.ts",
+          "packages/scene-contract/src/mechanism/scene-validation-v2.ts",
+          "packages/scene-contract/src/mechanism/teaching-shapes.ts",
+          "packages/scene-contract/src/native3d/shape-observation.ts",
+          "tests/unit/mechanism-release-trigger.test.ts",
+          "packages/animation-engine/src/mechanism/cable-tie-load.ts",
+          "packages/renderer-core/src/mechanism/teaching-web.ts",
+          "tests/unit/mechanism-flexible-web.test.ts",
+          "tests/unit/mechanism-load-stop.test.ts",
+          "tests/runtime/mechanism-family-registry-cli.test.ts"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T10:05:13.188134+00:00",
+        "endedUtc": "2026-10-13T10:05:14.180497+00:00",
+        "log": "/private/tmp/still-shift-ms3-align20-preflight1-3.log"
+      },
+      {
+        "command": ["pnpm", "schema:check"],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T10:05:14.180833+00:00",
+        "endedUtc": "2026-10-13T10:05:17.783667+00:00",
+        "log": "/private/tmp/still-shift-ms3-align20-preflight1-4.log"
+      },
+      {
+        "command": ["pnpm", "check:boundaries"],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T10:05:17.783993+00:00",
+        "endedUtc": "2026-10-13T10:05:18.837959+00:00",
+        "log": "/private/tmp/still-shift-ms3-align20-preflight1-5.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/mechanism-load-stop.test.ts",
+          "tests/unit/mechanism-flexible-web.test.ts",
+          "tests/unit/mechanism-v2-shape-contract.test.ts",
+          "tests/unit/mechanism-v2-posed-shapes.test.ts",
+          "tests/unit/mechanism-release-trigger.test.ts",
+          "tests/unit/mechanism-load-seat.test.ts",
+          "tests/unit/mechanism-family-packs.test.ts",
+          "tests/unit/mechanism-family-registry.test.ts",
+          "tests/unit/native3d-v2-shape-owners.test.ts"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T10:05:18.838294+00:00",
+        "endedUtc": "2026-10-13T10:05:26.228400+00:00",
+        "log": "/private/tmp/still-shift-ms3-align20-preflight1-6.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/runtime/mechanism-family-registry-cli.test.ts"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T10:05:26.228763+00:00",
+        "endedUtc": "2026-10-13T10:05:29.588387+00:00",
+        "log": "/private/tmp/still-shift-ms3-align20-preflight1-7.log"
+      },
+      {
+        "command": ["pnpm", "build:package"],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T10:05:29.588719+00:00",
+        "endedUtc": "2026-10-13T10:05:41.784414+00:00",
+        "log": "/private/tmp/still-shift-ms3-align20-preflight1-8.log"
+      }
+    ],
+    "actualExitCode": 0,
+    "inventory": "/private/tmp/still-shift-ms3-align20-preflight1-inputs.json",
+    "endedUtc": "2026-10-13T10:05:41.784797+00:00"
+  },
+  "heldInputs": {
+    "files": 2725,
+    "bytes": 121706266,
+    "inventory": {
+      "path": "/private/tmp/still-shift-ms3-align20-preflight1-inputs.json",
+      "bytes": 465244,
+      "sha256": "sha256:31a71b80b835f0b657935713f4613e6ea81aaaff352cd192158cea19869765e2"
+    }
+  },
+  "preflightFiles": [
+    {
+      "path": "/private/tmp/still-shift-ms3-align20-preflight1.py",
+      "bytes": 3304,
+      "sha256": "sha256:1a207e4e440cfa56a9d29f0d84d52ad27949af61f87de4d4ed8713241ae2b0e3"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-align20-preflight1.log",
+      "bytes": 8136,
+      "sha256": "sha256:bc2f96204e9118033a1631b9159aa2f7727ad0349f1257adde604e9ad0b85efb"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-align20-preflight1-receipt.json",
+      "bytes": 4862,
+      "sha256": "sha256:97225548868031b53c127c8fa8058e89d78fd4e6032c6b1570e3c3e4e108a6eb"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-align20-preflight1-inputs.json",
+      "bytes": 465244,
+      "sha256": "sha256:31a71b80b835f0b657935713f4613e6ea81aaaff352cd192158cea19869765e2"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-align20-preflight1-0.log",
+      "bytes": 260,
+      "sha256": "sha256:4fe637f22703388be65b0ae183ad889fb7942f6dbdb3581cc03f2f0873ad799c"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-align20-preflight1-1.log",
+      "bytes": 653,
+      "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-align20-preflight1-2.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-align20-preflight1-3.log",
+      "bytes": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-align20-preflight1-4.log",
+      "bytes": 502,
+      "sha256": "sha256:75caaa9ec7dae17127ba659f07ec937f1067935cca5dac6d5259dc094952c8c7"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-align20-preflight1-5.log",
+      "bytes": 186,
+      "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-align20-preflight1-6.log",
+      "bytes": 2118,
+      "sha256": "sha256:bc1f2c4993c0d36c45251c5c7c488b108b7a89912c4d62c4df0bddc781bdcc3b"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-align20-preflight1-7.log",
+      "bytes": 446,
+      "sha256": "sha256:f15eec486978aaec340a558081d6f15193724b09f8ac0d2c88ddf5428bb6dbb2"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-align20-preflight1-8.log",
+      "bytes": 208,
+      "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+    }
+  ],
+  "sourceSnapshot": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/cable-tie-load.ts",
+      "bytes": 8679,
+      "sha256": "sha256:3c79f0d0a2335aa3cc6fead7cd8ba1dcb00db71ff6839421b212c0e37722ff50"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/cable-tie-pack.ts",
+      "bytes": 14842,
+      "sha256": "sha256:6692bc373f3f2b5ee10f4cf82e2b5a0c356a544adb902132c983baf8f327fd21"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-load-stop.test.ts",
+      "bytes": 14964,
+      "sha256": "sha256:04d10521c159bd2b14d5a5f1a2a5870a1b31f916646e6364d4b596101070b648"
+    }
+  ],
+  "earlierChecks": [
+    {
+      "id": "check1",
+      "receipt": {
+        "status": "passed",
+        "startedUtc": "2026-10-13T10:01:00.274726+00:00",
+        "baseCommit": "cd175dbc4a8f05533a4df8469697b5776249d38a",
+        "scope": "uncommitted web source",
+        "steps": [
+          {
+            "command": ["pnpm", "build"],
+            "actualExitCode": 0,
+            "log": "/private/tmp/still-shift-ms3-align20-check1-0.log",
+            "startedUtc": "2026-10-13T10:01:00.300564+00:00",
+            "endedUtc": "2026-10-13T10:01:10.138828+00:00"
+          },
+          {
+            "command": [
+              "pnpm",
+              "exec",
+              "vitest",
+              "run",
+              "--config",
+              "vitest.config.ts",
+              "tests/unit/mechanism-load-stop.test.ts",
+              "tests/unit/mechanism-flexible-web.test.ts",
+              "tests/unit/mechanism-v2-shape-contract.test.ts",
+              "tests/unit/mechanism-v2-posed-shapes.test.ts",
+              "tests/unit/mechanism-release-trigger.test.ts"
+            ],
+            "actualExitCode": 0,
+            "log": "/private/tmp/still-shift-ms3-align20-check1-1.log",
+            "startedUtc": "2026-10-13T10:01:10.139930+00:00",
+            "endedUtc": "2026-10-13T10:01:15.741108+00:00"
+          }
+        ],
+        "actualExitCode": 0,
+        "endedUtc": "2026-10-13T10:01:15.741376+00:00"
+      },
+      "scope": "Unsealed working source; build and owning/neighbor units pass, before final generated inventory.",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-align20-check1.py",
+          "bytes": 1552,
+          "sha256": "sha256:11358bbfd9707050be0514e7445e8c8e9d8207377b1c28e50e897a7a829e19c6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align20-check1-receipt.json",
+          "bytes": 1167,
+          "sha256": "sha256:43efaadb740b781aaae3ba2ee8ec568461d3aa7f101a6b60dc08c45c2c4e2f88"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align20-check1-0.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align20-check1-1.log",
+          "bytes": 1179,
+          "sha256": "sha256:1ad47995c24ae1f6849d3c26fb9902a6ae11c9fdfd8216f01d406850dbf2a314"
+        }
+      ]
+    },
+    {
+      "id": "check2",
+      "receipt": {
+        "status": "passed",
+        "startedUtc": "2026-10-13T10:03:03.615461+00:00",
+        "baseCommit": "cd175dbc4a8f05533a4df8469697b5776249d38a",
+        "scope": "uncommitted web source",
+        "steps": [
+          {
+            "command": ["pnpm", "build"],
+            "actualExitCode": 0,
+            "log": "/private/tmp/still-shift-ms3-align20-check2-0.log",
+            "startedUtc": "2026-10-13T10:03:03.623100+00:00",
+            "endedUtc": "2026-10-13T10:03:14.437449+00:00"
+          },
+          {
+            "command": [
+              "pnpm",
+              "exec",
+              "vitest",
+              "run",
+              "--config",
+              "vitest.config.ts",
+              "tests/unit/mechanism-load-stop.test.ts",
+              "tests/unit/mechanism-flexible-web.test.ts",
+              "tests/unit/mechanism-v2-shape-contract.test.ts",
+              "tests/unit/mechanism-v2-posed-shapes.test.ts",
+              "tests/unit/mechanism-release-trigger.test.ts"
+            ],
+            "actualExitCode": 0,
+            "log": "/private/tmp/still-shift-ms3-align20-check2-1.log",
+            "startedUtc": "2026-10-13T10:03:14.438571+00:00",
+            "endedUtc": "2026-10-13T10:03:21.175799+00:00"
+          }
+        ],
+        "actualExitCode": 0,
+        "endedUtc": "2026-10-13T10:03:21.176312+00:00"
+      },
+      "scope": "Unsealed working source; build and owning/neighbor units pass, before final generated inventory.",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-align20-check2.py",
+          "bytes": 1552,
+          "sha256": "sha256:f17aba2e651be486f5793caa35c409edf9d2fedce8b38eaae4da1870d803186b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align20-check2-receipt.json",
+          "bytes": 1167,
+          "sha256": "sha256:e664a6e10699dacd2048ee20bbeef5e2ad87bf9d8a7888be68a91baa35f3ba74"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align20-check2-0.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align20-check2-1.log",
+          "bytes": 1320,
+          "sha256": "sha256:a9a9767ac83163540f7f2ecdb2a1c8e6efdf60480907873679ddb3bdbec4f9f5"
+        }
+      ]
+    }
+  ],
+  "remaining": [
+    "Fresh committed-source native exports and independent captured GPU/pose/seat/shortening/web-solid audit.",
+    "Complete committed current fast/runtime tiers.",
+    "Original E06 explanation/factual/design/continuous/genuine narration/listening/whole evidence, all-ten pilot and remaining MS3 repair/QA/capability/metrics/final/archive/installed gates."
+  ]
+}

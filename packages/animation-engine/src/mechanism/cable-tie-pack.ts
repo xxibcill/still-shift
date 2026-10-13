@@ -292,7 +292,7 @@ export function inspectCableTiePack(
             id: variant,
             dimensionBasis: "illustrative",
             description:
-              "Hinged two-tooth pawl within a cutaway frame: primary tooth contact is constrained, the protected second tooth closes its gap as the pawl seats, and a semicylindrical stop reaches a fixed frame ledge. A separate closed flexible web attaches both rigid ends. Patent3,872,547 Figures10/11 support the qualitative load path; geometry, SI compliance, prescribed contact and force values are illustrative. This models loading after normal locking, without insertion, measured stiffness, friction, stress, product rating or manufacturer dimensions.",
+              "Hinged two-tooth pawl within a cutaway frame: primary tooth contact is constrained, the protected second tooth closes its gap as the pawl seats, and a semicylindrical stop reaches a fixed frame ledge. A separate closed flexible web joins the rear underside of the pawl to the stop-bearing frame ledge and shortens as the pawl seats. Patent3,872,547 Figures10/11 support the qualitative load path; geometry, SI compliance, prescribed contact and force values are illustrative. This models loading after normal locking, without insertion, measured stiffness, friction, stress, product rating or manufacturer dimensions.",
             sources: [
               {
                 url: "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/3872547",

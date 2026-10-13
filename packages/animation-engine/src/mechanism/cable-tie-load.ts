@@ -27,16 +27,16 @@ export function createLoadResponsiveCableScene(
   const { pitch, strapWidth, toothCount } = parameters;
   const tilt = 0.12,
     stopRadius = 0.08;
-  const pawlSeat: MechanismVector = [-0.05, 0.35, 0];
+  const pawlSeat: MechanismVector = [pitch + 0.4, 0.18, 0];
   const pawlTransform = MechanismTransformSchema.parse({
       rotation: [0, 0, tilt],
     }),
     pawlMatrix = matrixFromTransform(pawlTransform),
     posedSeat = transformPoint(pawlMatrix, pawlSeat),
     posedTangent = normalize(
-      transformMechanismDirectionV2(pawlMatrix, [1, 0, 0]),
+      transformMechanismDirectionV2(pawlMatrix, [0, 1, 0]),
     );
-  const rootSeat: MechanismVector = [-0.3, 0.35, 0];
+  const rootSeat: MechanismVector = [pitch + 0.3, 0.1, 0];
   const meshes: MechanismPrimitiveInput[] = [
     {
       id: "strap.body",
@@ -59,8 +59,8 @@ export function createLoadResponsiveCableScene(
         [pitch - 0.08, 0.18],
         [pitch, 0],
         [pitch + 0.1, 0.18],
-        [pitch + 0.3, 0.18],
-        [pitch + 0.3, 0.4],
+        [pitch + 0.45, 0.18],
+        [pitch + 0.45, 0.4],
         [-0.05, 0.4],
         [-0.05, 0.18],
       ],
@@ -85,7 +85,7 @@ export function createLoadResponsiveCableScene(
       partId: "head",
       materialId: "nylon",
       kind: "rounded-box",
-      size: [1.8, 0.95, 0.18],
+      size: [pitch + 1.15, 0.95, 0.18],
       radius: 0.04,
       segments: 2,
     },
@@ -116,7 +116,7 @@ export function createLoadResponsiveCableScene(
       partId: "head",
       materialId: "nylon",
       kind: "rounded-box",
-      size: [1.8, 0.12, strapWidth + 0.3],
+      size: [pitch + 1.15, 0.12, strapWidth + 0.3],
       radius: 0.02,
       segments: 2,
     },
@@ -148,11 +148,11 @@ export function createLoadResponsiveCableScene(
       mesh.id === "strap.body"
         ? [((toothCount - 1) * pitch) / 2, -0.19, 0]
         : mesh.id === "head.back"
-          ? [0.45, 0.225, -strapWidth / 2 - 0.16]
+          ? [(pitch + 0.25) / 2, 0.225, -strapWidth / 2 - 0.16]
           : mesh.id === "head.webRoot"
-            ? [-0.375, 0.5, 0]
+            ? [pitch + 0.625, 0.35, 0]
             : mesh.id === "head.guide"
-              ? [0.45, -0.34, 0]
+              ? [(pitch + 0.25) / 2, -0.34, 0]
               : [
                   0,
                   0,
@@ -175,12 +175,12 @@ export function createLoadResponsiveCableScene(
         width: strapWidth * 0.7,
         thickness: 0.018,
         widthAxis: [0, 0, 1],
-        minSpan: 0.08,
+        minSpan: 0.075,
         maxSpan: 0.4,
         longitudinalSegments: 16,
         terminalTangents: [
-          [1, 0, 0],
-          [1, 0, 0],
+          [0, 1, 0],
+          [0, 1, 0],
         ],
       },
     },
@@ -188,7 +188,7 @@ export function createLoadResponsiveCableScene(
     {
       generator: "seated-flexible-web-1",
       seats: [rootSeat, posedSeat],
-      terminalTangents: [[1, 0, 0], posedTangent],
+      terminalTangents: [[0, 1, 0], posedTangent],
     },
   );
   geometry.meshes.push(web.mesh);
@@ -207,7 +207,7 @@ export function createLoadResponsiveCableScene(
       { id: "model", parent: "mount" },
       { id: "head", parent: "model" },
       { id: "strap", parent: "model" },
-      { id: "pawl", parent: "model", transform: { rotation: [0, 0, tilt] } },
+      { id: "pawl", parent: "model", transform: pawlTransform },
     ],
     rigs: [
       {

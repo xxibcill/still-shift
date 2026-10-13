@@ -706,6 +706,14 @@
       "scalarComparisons": 15750,
       "currentTiers": "fast4528/runtime253/integration322/depth14/smoke",
       "sourceAlignment": "repair-required"
+    },
+    {
+      "id": "load-alignment20",
+      "record": "docs/mechanism-shorts-ms3-load-alignment-results.json",
+      "status": "lower-rear-hinge-repair-preflight-passed-native-current-tiers-pending",
+      "scopedTests": 75,
+      "cliTests": 4,
+      "qualification": "Repairs the known upper-left hinge-placement mismatch with a lower rear underside/stop-ledged attachment and shortening web. Source comparison and scoped software/sampled geometry checks only; fresh original native/current tier verification and original factual/design/continuous/narration/listening/whole/pilot admission remain pending. No measured geometry/material/force claim; accepted0/10 and frozen questions unchanged."
     }
   ],
   "targets": {

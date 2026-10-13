@@ -1418,5 +1418,9 @@
     "sourcePagesActuallyViewed": [3, 10],
     "issue": "Current web attaches to the upper-left pawl edge/left frame wall. Patent Figures8-11 place hinge171 at the lower rear of the pawl near the frame ledge/stop. The simplified candidate must align that attachment anatomy and resulting deformation before claiming source fidelity.",
     "next": "Move and validate the hinge/frame attachment geometry against the retained source figures, refresh source/metadata/native/gates, then build the original E06 explanation."
+  },
+  "followup": {
+    "record": "docs/mechanism-shorts-ms3-load-alignment-results.json",
+    "scope": "New source repairs the identified hinge anatomy; this originalae70d735 evidence stays historical."
   }
 }
