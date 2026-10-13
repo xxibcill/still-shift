@@ -1,0 +1,153 @@
+{
+  "version": "mechanism-ms3-original-pilot-results-1",
+  "date": "2026-10-13",
+  "sourceCommit": "59ce0e5f568c58c649737d7c08c6e76ff4612d06",
+  "implementationSourceCommit": "8c34b4619f57370ea38204a641a47f19295a00cb",
+  "boardRawSha256": "sha256:e6fbe4ca81771b482be89dc28d8cebe0f35df394b1913f12c8f876f8cf963dd5",
+  "selection": "ms3-pilot-2026-10-12-v1",
+  "originalDenominator": 10,
+  "acceptedEpisodes": 0,
+  "routineTokenMeasurements": null,
+  "privateRoot": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w",
+  "authoring": {
+    "status": "passed-after-two-retained-failures",
+    "attempts": [
+      {
+        "attempt": "author1",
+        "receipt": "/private/tmp/still-shift-ms3-pilot21-author1-receipt.json",
+        "receiptSha256": "sha256:09da46833f1b5a31f6e4ca9ff16421c8f0aaf66f1cd5410fc725e1f4dc7243ff",
+        "actualExitCode": 1,
+        "sourceHoldCheckExitCode": 0,
+        "sourceCommit": "59ce0e5f568c58c649737d7c08c6e76ff4612d06",
+        "qualification": "Input authoring only; no pilot acceptance."
+      },
+      {
+        "attempt": "author2",
+        "receipt": "/private/tmp/still-shift-ms3-pilot21-author2-receipt.json",
+        "receiptSha256": "sha256:d7b4f46393b71d61cbfae34f2aa6a66e6093c1029c2dbcefac0906256e9bd636",
+        "actualExitCode": 1,
+        "sourceHoldCheckExitCode": 0,
+        "sourceCommit": "59ce0e5f568c58c649737d7c08c6e76ff4612d06",
+        "qualification": "Input authoring only; no pilot acceptance."
+      },
+      {
+        "attempt": "author3",
+        "receipt": "/private/tmp/still-shift-ms3-pilot21-author3-receipt.json",
+        "receiptSha256": "sha256:4fc373bd62264700203ec4acb6ec65d3da84c8a1021bed6d25fa2967a6b1c58a",
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "sourceCommit": "59ce0e5f568c58c649737d7c08c6e76ff4612d06",
+        "qualification": "Input authoring only; no pilot acceptance."
+      },
+      {
+        "attempt": "families2",
+        "receipt": "/private/tmp/still-shift-ms3-pilot21-families2-receipt.json",
+        "receiptSha256": "sha256:7ecc0001c84491130f182edfacad31c5d4e53276e092a031a05fb892937d28c0",
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": null,
+        "sourceCommit": null,
+        "qualification": "Input authoring only; no pilot acceptance."
+      }
+    ],
+    "failures": [
+      {
+        "attempt": "author1",
+        "reason": "Assumed compile result had a nested compiled composition; actual public result supplies compositionPath."
+      },
+      {
+        "attempt": "author2",
+        "reason": "Generated camera clip planes differed from fixed narrated scene planes; pose revalidated with fixed planes in author3."
+      },
+      {
+        "attempt": "families1",
+        "actualNodeExitCode": 1,
+        "outerShellExitCode": 0,
+        "reason": "Default sandbox denied the existing artifact-lock ps check. The outer shell cat status is not a Node pass. Fresh families2 packet authoring passed with authorized process inspection."
+      }
+    ],
+    "portraitProjects": [
+      {
+        "id": "E01",
+        "takeId": "EU-001",
+        "frames": 587,
+        "width": 1080,
+        "height": 1920,
+        "fps": 30
+      },
+      {
+        "id": "E03",
+        "takeId": "EU-002",
+        "frames": 646,
+        "width": 1080,
+        "height": 1920,
+        "fps": 30
+      },
+      {
+        "id": "E08",
+        "takeId": "EU-003",
+        "frames": 643,
+        "width": 1080,
+        "height": 1920,
+        "fps": 30
+      }
+    ],
+    "tenFamilyPackets": {
+      "path": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/family-packets.json",
+      "sha256": "sha256:0a85ec837e8e8178b28d5cff4ccda1dd48d18a6ab94a4aa8fb4a389bcdaed107",
+      "rows": 10
+    },
+    "missingNarration": ["E02", "E04", "E05", "E06", "E07", "E09", "E10"],
+    "recordingDrafts": 7,
+    "privateTranscriptCopied": false,
+    "audioGeneration": false
+  },
+  "productionRun": {
+    "attempt": "native1",
+    "status": "running-at-record-time",
+    "receipt": "/private/tmp/still-shift-ms3-pilot21-native1-receipt.json",
+    "queueExitCode": 0,
+    "queueSourceHoldExitCode": 0,
+    "sourceInputs": 2725,
+    "sourceBytes": 121706266,
+    "runtimeCodeAndProfileIgnoreDocumentationAndGitHead": true,
+    "queueStateAtInspection": {
+      "E01": "passed-with-unresolved-QA",
+      "E03": "running-native-cache",
+      "E08": "pending"
+    },
+    "E01AvailableEvidence": {
+      "nativeFrames": 587,
+      "fullDecodedFrames": 587,
+      "sampledVisualErrors": 5,
+      "warningGroups": 17,
+      "stillsActuallyViewed": [49, 151, 204],
+      "findings": [
+        "Caption panel extends below the 5 percent safe inset and reserves excessive height.",
+        "Missing measured caption/annotation text bounds are retained in the QA warnings.",
+        "Inside/outside contact stills use different camera poses and screen locations; these stills do not establish the required aligned comparison.",
+        "Decoded recognition still has low material contrast."
+      ],
+      "qualification": "Partial run inspection only. Static still review does not establish continuous motion, listening, whole factual acceptance or a completed production run."
+    }
+  },
+  "documentValidation": {
+    "status": "passed",
+    "frozenQuestionsAndAnswers": 10,
+    "currentFamilyBindings": 10,
+    "exactBeatAndFullScriptPairs": 7,
+    "protectedScriptCopies": 0,
+    "privatePathsInBrief": 0,
+    "retainedGeneratorCorrections": [
+      "Initial validator compared the brief selection ID with the full board selection object; corrected to its actual id before any write.",
+      "Public draft revision reference used an absolute temporary path; reduced to its basename before validation."
+    ]
+  },
+  "remaining": [
+    "Finish the existing serial production run and retain actual terminals.",
+    "Audit current full native/decode/audio/evidence identities and inspect the other two actual products.",
+    "Repair observed portrait presentation and prove scoped affected output with unchanged native plates where applicable.",
+    "Obtain seven matching supplied narration/timing inputs; existing unrelated recordings are excluded.",
+    "Original ten whole factual/design/visual/continuous/listening reviews, broader QA/repair/capability measurements and final full/archive/installed gates remain open."
+  ],
+  "scope": "Local authoring and engineering evidence; no ElevenLabs spend, publication, merge, Actions change or human acceptance."
+}

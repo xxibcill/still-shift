@@ -130,6 +130,12 @@ still hold before relying on them.
   2,725 inputs/121,706,266B exact. Four decoded stills viewed; all handles closed.
   Five assets/two behaviors have engineering evidence; original episode/whole/
   pilot admission remains open. [Alignment record](./mechanism-shorts-ms3-load-alignment-results.json).
+  [Original pilot](./mechanism-shorts-ms3-pilot-results.json) now has all ten current
+  family packets, three supplied whole-recording portrait projects and seven new
+  recording drafts. The existing serial production run is live; E01 has587 native/
+  decoded frames with five visual errors and unaligned comparison stills retained.
+  E01 queue item is sealed; E03 is rendering and E08 is pending. Seven matching audio/timing inputs are requested; unrelated
+  recordings are excluded. No synthesis is authorized by this production plan.
   Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
   Remaining original scope: clearer E06/E10 explanations and actual whole reviews,
@@ -324,6 +330,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — Original ten-question pilot inputs and recording drafts
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from59ce0e5f.
+- **Done:** Ten current family packets; E01/E03/E08 whole supplied narration
+  portrait projects (587/646/643 frames), fixed-plane camera revalidation and
+  seven exact beat/full-script recording drafts. Original denominator stays10.
+- **Results:** Author3 and family-packet2 actually exit0; frozen ten question/
+  answer/pack bindings and seven script pairs validate. Existing native1 is live;
+  E01 has587 native/full decoded frames, five visual errors and17 warning groups.
+  Three decoded stills viewed; caption placement/contrast and unaligned views remain.
+- **Rejected / do not repeat:** Wrong compile-result nesting, changed camera clip
+  planes and sandbox ps denial remain retained; unrelated recordings are excluded.
+- **Open / next:** Finish the same serial run, audit/repair actual products and
+  receive seven matching supplied audio/timing inputs. No new speech generation.
+- **Records:** [Brief](./mechanism-shorts-ms3-pilot-brief.md),
+  [results](./mechanism-shorts-ms3-pilot-results.json), [tracker](./mechanism-shorts-ms3-acceptance.md).
 
 ### 2026-10-13 — E06 lower-rear hinge anatomy repair
 
