@@ -108,8 +108,8 @@ still hold before relying on them.
   depth14/smoke with2,721 inputs/121,615,123B exact. Generic native3/audit1
   pass4 submitted/decoded frames,16 captured matrices/8 virtual anchors and292
   scalar comparisons with zero oracle error. Both pre-render strict composition
-  failures remain retained. Separate patent asset/flexible web and physical
-  contact/stop/nonpenetration native proof remain next. All gate handles closed.
+  failures remain retained. This closes the generic rig proof.
+  The physical candidate and its remaining source repair follow below.
   E06 now adds a separate physical load-stop candidate and two-seat flexible web;
   10 owning/101 dense force samples/123 triangle states,73 scoped/9 files,4 CLI and
   compile/lint/schema/boundary/package checks pass with2,725 inputs exact.
