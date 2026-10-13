@@ -13,11 +13,18 @@ import { z } from "zod";
 import { cuePlateFile } from "./cue-plate-files.ts";
 import { BlenderProductionQueueItemSchema } from "./production-queue-contract.ts";
 
+import {
+  BlenderProductionQAPlanSchema,
+  admitBlenderProductionQAPlan,
+  BLENDER_PRODUCTION_QA_LIMITS,
+} from "./blender-production-qa-contract.ts";
+
 export interface BlenderProductionProjectInput {
   id: string;
   question: string;
   familyPath: string;
   cuePath: string;
+  qaPath?: string | undefined;
 }
 export async function readBlenderEpisode(
   project: BlenderProductionProjectInput,
@@ -71,10 +78,29 @@ export async function readBlenderEpisode(
         "Native episode plan ID differs from the selected queue question",
       );
     const compiled = compileBlenderEpisode(resolvedSource, resolvedPlan);
+    const qaPath =
+      project.qaPath === undefined
+        ? undefined
+        : await realpath(resolve(manifestDirectory, project.qaPath));
+    const qa =
+      qaPath === undefined
+        ? undefined
+        : await readProductionJSON(
+            qaPath,
+            BlenderProductionQAPlanSchema,
+            owner,
+            BLENDER_PRODUCTION_QA_LIMITS.planBytes,
+            signal,
+          );
+    if (qa) {
+      loaded.push(qa);
+      admitBlenderProductionQAPlan(qa.value, compiled.frameCount);
+    }
     const pins = new Map<string, { sha256?: string; bytes?: number }>([
       [familyPath, { sha256: source.sha256 }],
       [cuePath, { sha256: plan.sha256 }],
     ]);
+    if (qaPath && qa) pins.set(qaPath, { sha256: qa.sha256 });
     for (const file of [
       resolvedSource.asset,
       ...source.value.evidenceFiles.map((f) => ({
@@ -162,6 +188,7 @@ export async function readBlenderEpisode(
     inputs.sort((a, b) => a.path.localeCompare(b.path, "en"));
     return {
       compiled,
+      qa: qa ? { plan: qa.value, sha256: qa.sha256 } : undefined,
       item: BlenderProductionQueueItemSchema.parse({
         id: project.id,
         question: project.question,
@@ -174,6 +201,11 @@ export async function readBlenderEpisode(
         cuePath: relative(resolve(manifestDirectory), cuePath)
           .split("\\")
           .join("/"),
+        ...(qaPath
+          ? {
+              qaPath: relative(manifestDirectory, qaPath).split("\\").join("/"),
+            }
+          : {}),
         clock: {
           outputFrames: compiled.frameCount,
           sourceSamples: compiled.plan.narration.sampleCount,

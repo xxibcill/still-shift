@@ -1,0 +1,295 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "blender-production-qa-plan-1"
+    },
+    "measurements": {
+      "minItems": 1,
+      "maxItems": 128,
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "measurement": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "kind": { "type": "string", "const": "actual-control" },
+              "control": { "type": "string", "minLength": 1, "maxLength": 128 }
+            },
+            "required": ["measurement", "kind", "control"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "measurement": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "kind": { "type": "string", "const": "part-origin-drift" },
+              "part": { "type": "string", "minLength": 1, "maxLength": 128 },
+              "referenceFrame": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1999
+              }
+            },
+            "required": ["measurement", "kind", "part", "referenceFrame"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "measurement": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "kind": { "type": "string", "const": "part-matrix-drift" },
+              "part": { "type": "string", "minLength": 1, "maxLength": 128 },
+              "referenceFrame": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1999
+              }
+            },
+            "required": ["measurement", "kind", "part", "referenceFrame"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "measurement": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "kind": { "type": "string", "const": "part-origin-separation" },
+              "parts": {
+                "type": "array",
+                "prefixItems": [
+                  { "type": "string", "minLength": 1, "maxLength": 128 },
+                  { "type": "string", "minLength": 1, "maxLength": 128 }
+                ]
+              }
+            },
+            "required": ["measurement", "kind", "parts"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "measurement": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "kind": { "type": "string", "const": "part-bounds-span" },
+              "part": { "type": "string", "minLength": 1, "maxLength": 128 },
+              "axis": { "type": "string", "enum": ["x", "y", "z"] }
+            },
+            "required": ["measurement", "kind", "part", "axis"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "measurement": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "kind": { "type": "string", "const": "part-bounds-separation" },
+              "parts": {
+                "type": "array",
+                "prefixItems": [
+                  { "type": "string", "minLength": 1, "maxLength": 128 },
+                  { "type": "string", "minLength": 1, "maxLength": 128 }
+                ]
+              },
+              "axis": { "type": "string", "enum": ["x", "y", "z"] }
+            },
+            "required": ["measurement", "kind", "parts", "axis"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "measurement": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "kind": { "type": "string", "const": "part-render-flag" },
+              "part": { "type": "string", "minLength": 1, "maxLength": 128 }
+            },
+            "required": ["measurement", "kind", "part"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "measurement": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "kind": { "type": "string", "const": "surface-hash-change" },
+              "part": { "type": "string", "minLength": 1, "maxLength": 128 },
+              "referenceFrame": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 1999
+              }
+            },
+            "required": ["measurement", "kind", "part", "referenceFrame"],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "programs": {
+      "minItems": 1,
+      "maxItems": 32,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[A-Za-z][\\w.-]*$"
+          },
+          "interval": {
+            "type": "object",
+            "properties": {
+              "start": { "type": "integer", "minimum": 0, "maximum": 1999 },
+              "endExclusive": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 2000
+              }
+            },
+            "required": ["start", "endExclusive"],
+            "additionalProperties": false
+          },
+          "registrations": {
+            "minItems": 1,
+            "maxItems": 32,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "schemaVersion": {
+                  "type": "string",
+                  "const": "mechanism-semantic-registration-1"
+                },
+                "id": {
+                  "type": "string",
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z][\\w.-]*$"
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1024
+                },
+                "domain": {
+                  "type": "string",
+                  "enum": ["mechanical", "collision"]
+                },
+                "method": {
+                  "type": "string",
+                  "const": "sampled-numeric-range"
+                },
+                "requireEveryOutputFrame": { "type": "boolean" },
+                "rules": {
+                  "minItems": 1,
+                  "maxItems": 16,
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "measurement": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "range": {
+                        "type": "array",
+                        "prefixItems": [
+                          { "type": "number" },
+                          { "type": "number" }
+                        ]
+                      },
+                      "unit": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 32
+                      },
+                      "rig": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "parts": {
+                        "maxItems": 128,
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 128
+                        }
+                      },
+                      "relationship": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 128
+                          },
+                          { "type": "null" }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "measurement",
+                      "range",
+                      "unit",
+                      "rig",
+                      "parts",
+                      "relationship"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "schemaVersion",
+                "id",
+                "description",
+                "domain",
+                "method",
+                "requireEveryOutputFrame",
+                "rules"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": ["id", "interval", "registrations"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["schemaVersion", "measurements", "programs"],
+  "additionalProperties": false
+}

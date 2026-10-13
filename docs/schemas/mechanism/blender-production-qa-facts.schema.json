@@ -1,0 +1,380 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "blender-production-qa-facts-1"
+    },
+    "binding": {
+      "type": "object",
+      "properties": {
+        "inputSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "outputSha256": {
+          "anyOf": [
+            { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+            { "type": "null" }
+          ]
+        },
+        "codeSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "profileSha256": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "inputSha256",
+        "outputSha256",
+        "codeSha256",
+        "profileSha256"
+      ],
+      "additionalProperties": false
+    },
+    "planSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "source": {
+      "type": "object",
+      "properties": {
+        "plates": {
+          "type": "object",
+          "properties": {
+            "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+            "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
+            "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+          },
+          "required": ["path", "bytes", "sha256"],
+          "additionalProperties": false
+        },
+        "program": {
+          "type": "object",
+          "properties": {
+            "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+            "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
+            "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+          },
+          "required": ["path", "bytes", "sha256"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["plates", "program"],
+      "additionalProperties": false
+    },
+    "semantics": {
+      "minItems": 1,
+      "maxItems": 32,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[A-Za-z][\\w.-]*$"
+          },
+          "execution": {
+            "type": "object",
+            "properties": {
+              "schemaVersion": {
+                "type": "string",
+                "const": "mechanism-semantic-execution-1"
+              },
+              "registrySha256": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              },
+              "binding": {
+                "type": "object",
+                "properties": {
+                  "inputSha256": {
+                    "type": "string",
+                    "pattern": "^sha256:[a-f0-9]{64}$"
+                  },
+                  "outputSha256": {
+                    "anyOf": [
+                      { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+                      { "type": "null" }
+                    ]
+                  },
+                  "codeSha256": {
+                    "type": "string",
+                    "pattern": "^sha256:[a-f0-9]{64}$"
+                  },
+                  "profileSha256": {
+                    "type": "string",
+                    "pattern": "^sha256:[a-f0-9]{64}$"
+                  }
+                },
+                "required": [
+                  "inputSha256",
+                  "outputSha256",
+                  "codeSha256",
+                  "profileSha256"
+                ],
+                "additionalProperties": false
+              },
+              "interval": {
+                "type": "object",
+                "properties": {
+                  "start": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "endExclusive": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": ["start", "endExclusive"],
+                "additionalProperties": false
+              },
+              "comparisons": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100000
+              },
+              "rawSamples": {
+                "maxItems": 10000,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "frame": { "type": "number", "minimum": 0 },
+                    "measurements": {
+                      "type": "object",
+                      "propertyNames": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 128
+                      },
+                      "additionalProperties": { "type": "number" }
+                    },
+                    "evidence": {
+                      "type": "object",
+                      "properties": {
+                        "path": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 2048
+                        },
+                        "sha256": {
+                          "type": "string",
+                          "pattern": "^sha256:[a-f0-9]{64}$"
+                        }
+                      },
+                      "required": ["path", "sha256"],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": ["frame", "measurements", "evidence"],
+                  "additionalProperties": false
+                }
+              },
+              "assertions": {
+                "maxItems": 32,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "maxLength": 128,
+                      "pattern": "^[A-Za-z][\\w.-]*$"
+                    },
+                    "domain": {
+                      "type": "string",
+                      "enum": ["mechanical", "collision"]
+                    },
+                    "method": {
+                      "type": "string",
+                      "const": "sampled-numeric-range"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": ["passed", "failed", "unreviewed"]
+                    },
+                    "checkedSamples": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 10000
+                    },
+                    "completeOutputFrameCoverage": { "type": "boolean" },
+                    "findings": {
+                      "maxItems": 100000,
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "code": { "type": "string", "maxLength": 128 },
+                          "assertion": { "type": "string", "maxLength": 128 },
+                          "frame": {
+                            "anyOf": [
+                              { "type": "number", "minimum": 0 },
+                              { "type": "null" }
+                            ]
+                          },
+                          "rig": {
+                            "anyOf": [
+                              { "type": "string", "maxLength": 128 },
+                              { "type": "null" }
+                            ]
+                          },
+                          "parts": {
+                            "maxItems": 128,
+                            "type": "array",
+                            "items": { "type": "string", "maxLength": 128 }
+                          },
+                          "relationship": {
+                            "anyOf": [
+                              { "type": "string", "maxLength": 128 },
+                              { "type": "null" }
+                            ]
+                          },
+                          "measurement": {
+                            "anyOf": [
+                              { "type": "string", "maxLength": 128 },
+                              { "type": "null" }
+                            ]
+                          },
+                          "measured": {
+                            "anyOf": [{ "type": "number" }, { "type": "null" }]
+                          },
+                          "expectedRange": {
+                            "anyOf": [
+                              {
+                                "type": "array",
+                                "prefixItems": [
+                                  { "type": "number" },
+                                  { "type": "number" }
+                                ]
+                              },
+                              { "type": "null" }
+                            ]
+                          },
+                          "unit": {
+                            "anyOf": [
+                              { "type": "string", "maxLength": 32 },
+                              { "type": "null" }
+                            ]
+                          },
+                          "sampleIndex": {
+                            "anyOf": [
+                              {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 9007199254740991
+                              },
+                              { "type": "null" }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "code",
+                          "assertion",
+                          "frame",
+                          "rig",
+                          "parts",
+                          "relationship",
+                          "measurement",
+                          "measured",
+                          "expectedRange",
+                          "unit",
+                          "sampleIndex"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "domain",
+                    "method",
+                    "status",
+                    "checkedSamples",
+                    "completeOutputFrameCoverage",
+                    "findings"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "continuousCollision": {
+                "type": "string",
+                "const": "unreviewed"
+              },
+              "qualification": { "type": "string", "maxLength": 2048 }
+            },
+            "required": [
+              "schemaVersion",
+              "registrySha256",
+              "binding",
+              "interval",
+              "comparisons",
+              "rawSamples",
+              "assertions",
+              "continuousCollision",
+              "qualification"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": ["id", "execution"],
+        "additionalProperties": false
+      }
+    },
+    "warnings": {
+      "type": "object",
+      "properties": {
+        "raw": {
+          "type": "object",
+          "properties": {
+            "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+            "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
+            "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+          },
+          "required": ["path", "bytes", "sha256"],
+          "additionalProperties": false
+        },
+        "grouped": {
+          "type": "object",
+          "properties": {
+            "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+            "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
+            "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+          },
+          "required": ["path", "bytes", "sha256"],
+          "additionalProperties": false
+        },
+        "groups": { "type": "integer", "minimum": 0, "maximum": 2048 }
+      },
+      "required": ["raw", "grouped", "groups"],
+      "additionalProperties": false
+    },
+    "failures": {
+      "type": "object",
+      "properties": {
+        "mechanical": { "type": "integer", "minimum": 0, "maximum": 100000 }
+      },
+      "required": ["mechanical"],
+      "additionalProperties": false
+    },
+    "continuousCollision": { "type": "string", "const": "unreviewed" },
+    "mechanicalAcceptance": {
+      "type": "string",
+      "const": "separate-whole-mechanism-review"
+    },
+    "qualification": { "type": "string", "maxLength": 2048 }
+  },
+  "required": [
+    "schemaVersion",
+    "binding",
+    "planSha256",
+    "source",
+    "semantics",
+    "warnings",
+    "failures",
+    "continuousCollision",
+    "mechanicalAcceptance",
+    "qualification"
+  ],
+  "additionalProperties": false
+}

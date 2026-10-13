@@ -118,6 +118,65 @@ describe("native episode complete input admission", () => {
       await rm(f.root, { recursive: true, force: true });
     }
   });
+  it("pins an optional native QA plan and rejects intervals outside the whole episode", async () => {
+    const f = await inputFixture(),
+      owner = new CompositionNodeMemory();
+    const qaPath = join(f.root, "qa.json"),
+      plan = {
+        schemaVersion: "blender-production-qa-plan-1",
+        measurements: [
+          {
+            kind: "actual-control",
+            measurement: "travel",
+            control: "slider.travel",
+          },
+        ],
+        programs: [
+          {
+            id: "whole",
+            interval: { start: 0, endExclusive: 60 },
+            registrations: [
+              {
+                schemaVersion: "mechanism-semantic-registration-1",
+                id: "range",
+                description: "Original control bounds",
+                domain: "mechanical",
+                method: "sampled-numeric-range",
+                requireEveryOutputFrame: true,
+                rules: [
+                  {
+                    measurement: "travel",
+                    range: [0.34, 3.65],
+                    unit: "control-value",
+                    rig: "controls",
+                    parts: [],
+                    relationship: null,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+    try {
+      await writeFile(qaPath, JSON.stringify(plan));
+      const result = await readBlenderEpisode(
+        { ...f.project, qaPath },
+        f.root,
+        owner,
+      );
+      expect(result.item.qaPath).toBe("qa.json");
+      expect(result.item.inputs.some((p) => p.path === "qa.json")).toBe(true);
+      plan.programs[0]!.interval.endExclusive = 61;
+      await writeFile(qaPath, JSON.stringify(plan));
+      await expect(
+        readBlenderEpisode({ ...f.project, qaPath }, f.root, owner),
+      ).rejects.toThrow(/actual episode clock/);
+    } finally {
+      owner.dispose();
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
   it("rejects changed source pins before accepting a native episode input set", async () => {
     const f = await inputFixture(),
       owner = new CompositionNodeMemory();

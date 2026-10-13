@@ -1,10 +1,19 @@
-import { mkdtemp, mkdir, writeFile, readFile, rm } from "node:fs/promises";
+import {
+  mkdtemp,
+  mkdir,
+  writeFile,
+  readFile,
+  rm,
+  realpath,
+} from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
 import {
   compileBlenderEpisode,
+  evaluateBlenderProductionQA,
+  BlenderEpisodePlatesSchema,
   checkBlenderEpisodePlates,
   blenderEpisodePlateKey,
   type BlenderProductionIdentity,
@@ -14,10 +23,13 @@ import {
   blenderEpisodePlan,
   blenderHash,
 } from "../fixtures/blender-episode-support.ts";
+import { productionFile } from "../../packages/animation-engine/src/mechanism/production-queue-files.ts";
 import { mechanismPackHash } from "../../packages/animation-engine/src/mechanism/pack-support.ts";
 
 async function nativeFixture() {
-  const root = await mkdtemp(join(tmpdir(), "blender-plate-fixture-"));
+  const root = await realpath(
+    await mkdtemp(join(tmpdir(), "blender-plate-fixture-")),
+  );
   await mkdir(join(root, "capture"));
   const plan = blenderEpisodePlan();
   plan.controlTracks["slider.travel"] = [
@@ -160,6 +172,118 @@ describe("native frame dependency closure", () => {
           owner,
         ),
       ).toEqual(f.map);
+    } finally {
+      owner.dispose();
+      await rm(f.root, { recursive: true, force: true });
+    }
+    expect(foreign.active).toBe(true);
+    expect(parent.statistics.current.metadata).toBe(1024);
+    parent.dispose();
+  });
+  it("replays native QA failures, pins peak images and rejects changed facts while preserving a foreign owner", async () => {
+    const f = await nativeFixture(),
+      parent = new CompositionNodeMemory(),
+      foreign = parent.reserve(1024),
+      owner = new CompositionNodeMemory(parent);
+    try {
+      await mkdir(join(f.root, "qa"));
+      await writeFile(join(f.root, "map.json"), JSON.stringify(f.map));
+      const map = BlenderEpisodePlatesSchema.parse(f.map);
+      const plan = {
+        schemaVersion: "blender-production-qa-plan-1",
+        measurements: [
+          {
+            kind: "actual-control",
+            measurement: "travel",
+            control: "slider.travel",
+          },
+          {
+            kind: "part-origin-drift",
+            measurement: "missing",
+            part: "absent.mount",
+            referenceFrame: 0,
+          },
+        ],
+        programs: [
+          {
+            id: "fixture-event",
+            interval: { start: 0, endExclusive: 60 },
+            registrations: [
+              {
+                schemaVersion: "mechanism-semantic-registration-1",
+                id: "observed-defects",
+                description:
+                  "Synthetic byte fixture; no rendered-image or mechanical approval",
+                domain: "mechanical",
+                method: "sampled-numeric-range",
+                requireEveryOutputFrame: true,
+                rules: [
+                  {
+                    measurement: "travel",
+                    range: [0, 0],
+                    unit: "control-value",
+                    rig: "controls",
+                    parts: ["slider"],
+                    relationship: "seeded-wrong-hold",
+                  },
+                  {
+                    measurement: "missing",
+                    range: [0, 0],
+                    unit: "native-unit",
+                    rig: "controls",
+                    parts: ["absent.mount"],
+                    relationship: "seeded-missing-mount",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+      const input = {
+        plan,
+        planSha256: blenderHash(JSON.stringify(plan)),
+        compiled: f.compiled,
+        map,
+        identity: f.identity,
+        binding: {
+          inputSha256: blenderHash("inputs"),
+          outputSha256: blenderHash("output"),
+          codeSha256: f.identity.codeSha256,
+          profileSha256: f.identity.profileSha256,
+        },
+        outputRoot: f.root,
+        directory: join(f.root, "qa"),
+        plates: await productionFile(f.root, "map.json", owner),
+        owner,
+      };
+      const qa = await evaluateBlenderProductionQA(input);
+      expect(qa.facts.failures.mechanical).toBe(120);
+      const groups = JSON.parse(
+        await readFile(join(f.root, "qa/qa-warning-groups.json"), "utf8"),
+      );
+      expect(groups.groups).toHaveLength(2);
+      expect(groups.groups[0].badFrames[0]).toEqual({
+        path: map.frames[0]!.image.path,
+        sha256: map.frames[0]!.image.sha256,
+      });
+      expect(
+        groups.groups
+          .map(
+            (g: { maximumMeasuredChange: number }) => g.maximumMeasuredChange,
+          )
+          .sort(),
+      ).toEqual([0.34, 1]);
+      expect(
+        (await evaluateBlenderProductionQA({ ...input, verify: true })).facts,
+      ).toEqual(qa.facts);
+      await writeFile(
+        join(f.root, "qa/qa-facts.json"),
+        JSON.stringify({ ...qa.facts, failures: { mechanical: 0 } }),
+      );
+      await expect(
+        evaluateBlenderProductionQA({ ...input, verify: true }),
+      ).rejects.toThrow(/current observation replay/);
     } finally {
       owner.dispose();
       await rm(f.root, { recursive: true, force: true });

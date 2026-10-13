@@ -1,4 +1,4 @@
-import { join, relative } from "node:path";
+import { dirname, join, relative } from "node:path";
 import { z } from "zod";
 import {
   CompositionNodeMemory,
@@ -31,6 +31,7 @@ import {
   productionFile,
   productionOwnedPath,
 } from "./production-queue-files.ts";
+import { evaluateBlenderProductionQA } from "./blender-production-qa.ts";
 import { mechanismPackHash } from "./pack-support.ts";
 import type { MechanismProductionExecutor } from "./production-queue.ts";
 
@@ -98,10 +99,6 @@ export async function createBlenderProductionExecutor(options: {
         id,
         projects,
       });
-      if (declaration.projects.some((p) => p.qaPath !== undefined))
-        throw Error(
-          "Native Blender QA-plan integration remains required for qaPath declarations",
-        );
       await assertIdentity();
       const items = [];
       for (const project of declaration.projects) {
@@ -131,7 +128,11 @@ export async function createBlenderProductionExecutor(options: {
           "Native Blender executor requires an explicit Blender queue item",
         );
       await assertIdentity();
-      const { compiled, item: expected } = await readBlenderEpisode(
+      const {
+        compiled,
+        qa: nativeQA,
+        item: expected,
+      } = await readBlenderEpisode(
         item,
         context.manifestDirectory,
         context.nodeMemory,
@@ -216,7 +217,40 @@ export async function createBlenderProductionExecutor(options: {
         codeSha256: identity.codeSha256,
         profileSha256: identity.profileSha256,
       };
+      const quality = nativeQA
+        ? await evaluateBlenderProductionQA({
+            plan: nativeQA.plan,
+            planSha256: nativeQA.sha256,
+            compiled,
+            map,
+            identity,
+            binding,
+            outputRoot: context.outputRoot,
+            directory: context.attemptDirectory,
+            plates: artifacts[0]!,
+            owner: context.nodeMemory,
+            signal: context.signal,
+          })
+        : undefined;
+      if (quality) artifacts.push(...quality.artifacts);
       const qa = createUnreviewedMechanismQA(binding);
+      if (quality?.facts.failures.mechanical)
+        qa[1] = {
+          ...qa[1]!,
+          status: "failed",
+          method: "registered-retained-native-observation-ranges",
+          evaluatedInterval: {
+            unit: "output-frame",
+            start: 0,
+            endExclusive: compiled.frameCount,
+          },
+          evidence: [
+            { path: quality.factsPin.path, sha256: quality.factsPin.sha256 },
+          ],
+          reviewer: { kind: "automated", id: "native-blender-observation-qa" },
+          explanation:
+            "Registered sampled rules failed at retained frame/part/relationship locations. Whole-mechanism acceptance remains separate.",
+        };
       qa[0] = {
         ...qa[0]!,
         status: "passed",
@@ -227,6 +261,7 @@ export async function createBlenderProductionExecutor(options: {
           endExclusive: compiled.frameCount,
         },
         evidence: artifacts
+          .slice(0, 4)
           .filter((f) => f.path !== artifacts[2]!.path)
           .map((f) => ({ path: f.path, sha256: f.sha256 })),
         reviewer: { kind: "automated", id: "shared-native-blender-executor" },
@@ -247,7 +282,7 @@ export async function createBlenderProductionExecutor(options: {
           clock: item.clock,
           attempts: [],
           qa,
-          unresolvedMechanicalFailures: 0,
+          unresolvedMechanicalFailures: quality?.facts.failures.mechanical ?? 0,
           durations: {
             setupSeconds: null,
             routineSeconds: null,
@@ -284,7 +319,11 @@ export async function createBlenderProductionExecutor(options: {
           "Native output binding does not name its actual video artifact",
         );
       await assertIdentity();
-      const { compiled, item: expected } = await readBlenderEpisode(
+      const {
+        compiled,
+        qa: nativeQA,
+        item: expected,
+      } = await readBlenderEpisode(
         item,
         context.manifestDirectory,
         context.nodeMemory,
@@ -350,6 +389,46 @@ export async function createBlenderProductionExecutor(options: {
           throw Error(
             "Native saved composition differs from its current episode plan",
           );
+        if (nativeQA) {
+          const quality = await evaluateBlenderProductionQA({
+            plan: nativeQA.plan,
+            planSha256: nativeQA.sha256,
+            compiled,
+            map: map.value,
+            identity,
+            binding: product.report.binding,
+            outputRoot: context.outputRoot,
+            directory: dirname(await artifact("qa-facts.json")),
+            plates: product.artifacts.find((f) =>
+              f.path.endsWith("/native-plates.json"),
+            )!,
+            owner: context.nodeMemory,
+            signal: context.signal,
+            verify: true,
+          });
+          for (const pin of quality.artifacts)
+            if (
+              !product.artifacts.some(
+                (f) => mechanismPackHash(f) === mechanismPackHash(pin),
+              )
+            )
+              throw Error(
+                "Native QA artifact is absent from its product closure",
+              );
+          if (
+            product.report.unresolvedMechanicalFailures !==
+              quality.facts.failures.mechanical ||
+            product.report.qa.find((q) => q.dimension === "mechanical")
+              ?.status !==
+              (quality.facts.failures.mechanical ? "failed" : "unreviewed")
+          )
+            throw Error(
+              "Native QA report does not agree with its replayed sampled findings",
+            );
+        } else if (
+          product.artifacts.some((f) => f.path.endsWith("/qa-facts.json"))
+        )
+          throw Error("Native QA facts require the current selected QA plan");
         const decoded = await checkMechanismProductionDecodedOutput(
           await artifact("output.mp4"),
           {

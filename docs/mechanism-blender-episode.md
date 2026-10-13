@@ -79,11 +79,27 @@ changed/corrupt cache records retain rejection diagnostics.
 Export writes a saved native composition and fully decodes its video/audio.
 Verification reopens the captured origins, current mapping, composition and
 encoded output without another Blender render. Technical QA binds current
-input/output/code/profile/clocks. The remaining five review dimensions stay
+input/output/code/profile/clocks. Passing sampled numeric rules leaves whole-mechanism review unreviewed. A failed
+registered rule marks mechanical QA failed and retains the original frame, rig,
+parts, relationship, measurement and range. The other review dimensions remain
 unreviewed. Source changes require exact-CAS queue revisions; historical products
 keep their original identities. The production CLI now routes queue/run/report to this backend from explicit
-creation selection and pinned manifest versions. Native QA-plan/handoff integration
-remains pending. `qaPath` declarations are rejected by this candidate factory.
+creation selection and pinned manifest versions. An optional pinned `qaPath` now selects `BlenderProductionQAPlanSchema`. It declares
+named observation selectors and bounded interval programs using the existing
+semantic registrations. Units are `control-value`, `matrix-component`, `boolean`
+or `native-unit`; source-library units carry no inferred meter calibration.
+Selectors use actual Bpy controls, row-major matrices, evaluated bounds, render
+flags and surface hashes. Signed AABB separation is a bounds measurement and does
+not establish surface contact or collision; a render flag does not prove visibility.
+
+QA authenticates original native state receipts before replay. It writes bound
+`qa-program.json`, `qa-warnings.json`, `qa-warning-groups.json` and `qa-facts.json`.
+All numeric samples and located findings remain accessible. Consecutive failure
+runs retain their actual peak frame and image; grouped warnings retain raw peak
+ownership. Report verification recomputes these artifacts against the current
+inputs/export without another Blender render. Comparison and retained-data limits
+apply before reads/execution and serialization. Native review evidence and handoff
+remain pending.
 
 Limits are1MiB per source/plan,2,000 output frames,128 shots,256 speech cues,
 256 keys per track,64 controls,4,096px per dimension and8,388,608 pixels. Sampling

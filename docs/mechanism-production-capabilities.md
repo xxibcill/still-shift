@@ -55,9 +55,20 @@ frames, 64 controls and
 128 shots and
 256 speech cues in
 1048576 bytes. These are candidate
-technical lifecycle limits. Native QA-plan/grouped-warning/review-evidence/handoff
-integration and whole pilot acceptance remain pending; unsupported `qaPath`
-declarations reject. The handoff command retains its original Three.js scope.
+technical lifecycle limits. Optional native `qaPath` declarations pin bounded
+observation selectors and registered interval programs. Native QA limits are
+65536 plan bytes,
+8388608 facts bytes,
+2097152 bytes per observation,
+32 programs,
+128 measurements,
+100000 aggregate comparisons and
+2048 consecutive failure runs.
+Actual retained Bpy observations supply numeric rules; reports bind raw findings,
+grouped peaks and images to the current export. Bounds separation does not prove
+surface contact/collision, and passed samples leave whole mechanical review open.
+Native review evidence/handoff and whole pilot acceptance remain pending.
+The handoff command retains its original Three.js scope.
 
 The three-family native production profile is webgl2 with
 raw_rgba transport. The three pack families remain

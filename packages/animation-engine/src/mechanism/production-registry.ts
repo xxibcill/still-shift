@@ -7,6 +7,11 @@ import {
   BlenderEpisodePlanSchema,
   BLENDER_EPISODE_LIMITS,
 } from "./blender-episode-contract.ts";
+import {
+  BlenderProductionQAPlanSchema,
+  BlenderProductionQAFactsSchema,
+  BLENDER_PRODUCTION_QA_LIMITS,
+} from "./blender-production-qa-contract.ts";
 import { BlenderEpisodePlatesSchema } from "./blender-episode-plates.ts";
 import { MECHANISM_STATIC_MOMENT_LIMITS } from "@still-shift/scene-contract";
 import { MechanismProductionRetrySchema } from "./production-retry.ts";
@@ -54,6 +59,8 @@ export const mechanismProductionSchemas = {
   "blender-episode-source": BlenderEpisodeSourceSchema,
   "blender-episode-plan": BlenderEpisodePlanSchema,
   "blender-episode-plates": BlenderEpisodePlatesSchema,
+  "blender-production-qa-plan": BlenderProductionQAPlanSchema,
+  "blender-production-qa-facts": BlenderProductionQAFactsSchema,
   "blender-production-queue": BlenderProductionQueueSchema,
   "blender-production-product": BlenderProductionQueueProductSchema,
   "blender-production-episode-report": BlenderProductionEpisodeReportSchema,
@@ -159,12 +166,18 @@ export function inspectMechanismProductionCapabilities() {
         "sealed-original-Blender-capture-submission-receipts",
       technicalChecks:
         "canonical-input-pins-current-capture-controls-cameras-full-RGBA-PCM-decode",
-      pending: [
-        "native-QA-plan",
-        "grouped-native-warnings",
-        "native-review-evidence-handoff",
-        "whole-pilot-review",
-      ],
+      qa: {
+        limits: BLENDER_PRODUCTION_QA_LIMITS,
+        plan: "optional-pinned-qaPath",
+        evidence: "authenticated-retained-Bpy-observations",
+        methods: [
+          "registered-numeric-ranges",
+          "consecutive-failure-runs-and-grouped-peaks",
+        ],
+        surfaceContact: "not-inferred-from-AABB",
+        wholeAcceptance: "separate-review",
+      },
+      pending: ["native-review-evidence-handoff", "whole-pilot-review"],
     },
     nativeExecutor: {
       families: ["tape-hook", "cable-tie", "clothespeg"],
@@ -235,9 +248,20 @@ ${c.nativeBlenderExecutor.captureLimits.pixels} pixels. Episode plans allow
 ${c.nativeBlenderExecutor.episodeLimits.shots} shots and
 ${c.nativeBlenderExecutor.episodeLimits.speechCues} speech cues in
 ${c.nativeBlenderExecutor.episodeLimits.documentBytes} bytes. These are candidate
-technical lifecycle limits. Native QA-plan/grouped-warning/review-evidence/handoff
-integration and whole pilot acceptance remain pending; unsupported \`qaPath\`
-declarations reject. The handoff command retains its original Three.js scope.
+technical lifecycle limits. Optional native \`qaPath\` declarations pin bounded
+observation selectors and registered interval programs. Native QA limits are
+${c.nativeBlenderExecutor.qa.limits.planBytes} plan bytes,
+${c.nativeBlenderExecutor.qa.limits.factsBytes} facts bytes,
+${c.nativeBlenderExecutor.qa.limits.observationBytes} bytes per observation,
+${c.nativeBlenderExecutor.qa.limits.programs} programs,
+${c.nativeBlenderExecutor.qa.limits.measurements} measurements,
+${c.nativeBlenderExecutor.qa.limits.comparisons} aggregate comparisons and
+${c.nativeBlenderExecutor.qa.limits.warningRows} consecutive failure runs.
+Actual retained Bpy observations supply numeric rules; reports bind raw findings,
+grouped peaks and images to the current export. Bounds separation does not prove
+surface contact/collision, and passed samples leave whole mechanical review open.
+Native review evidence/handoff and whole pilot acceptance remain pending.
+The handoff command retains its original Three.js scope.
 
 The three-family native production profile is ${c.nativeExecutor.profile.backend} with\n${c.nativeExecutor.profile.transport} transport. The three pack families remain\ncandidates. Operational QA replays original output-frame scalars and current cue timeline checks,
 retains raw warnings and exact grouped peaks, and links immutable facts in reports and

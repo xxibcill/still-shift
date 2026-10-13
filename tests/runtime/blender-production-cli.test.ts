@@ -13,6 +13,7 @@ import {
   BlenderProductionQueueProductSchema,
   type MechanismProductionExecutor,
   inspectMechanismProductionCapabilities,
+  mechanismProductionCapabilityMarkdown,
 } from "@still-shift/animation-engine";
 import {
   fixture,
@@ -359,7 +360,13 @@ describe("native Blender production CLI with a declared byte-fixture adapter", (
         "retry",
         "report",
       ]);
-      expect(caps.nativeBlenderExecutor.pending).toContain("native-QA-plan");
+      expect(caps.nativeBlenderExecutor.qa.plan).toBe("optional-pinned-qaPath");
+      expect(mechanismProductionCapabilityMarkdown()).toContain(
+        "Optional native `qaPath`",
+      );
+      expect(mechanismProductionCapabilityMarkdown()).not.toContain(
+        "unsupported `qaPath`",
+      );
       for (const kind of caps.schemas.filter((k) => k.startsWith("blender-"))) {
         const output = join(f.root, kind + ".json");
         expect(
