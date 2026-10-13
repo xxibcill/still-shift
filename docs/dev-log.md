@@ -130,23 +130,24 @@ still hold before relying on them.
   2,725 inputs/121,706,266B exact. Four decoded stills viewed; all handles closed.
   Five assets/two behaviors have engineering evidence; original episode/whole/
   pilot admission remains open. [Alignment record](./mechanism-shorts-ms3-load-alignment-results.json).
-  [Original pilot](./mechanism-shorts-ms3-pilot-results.json) now has all ten current
-  family packets, three supplied whole-recording portrait projects and seven new
-  recording drafts. The existing serial production run is live; E01 has587 native/
-  decoded frames with five visual errors and unaligned comparison stills retained.
-  Independent audit passes all587 observation/scalar/frame rows,34 images and
+  [Original pilot](./mechanism-shorts-ms3-pilot-results.json) queue/run/report all
+  actually exit0 on59ce0e5f with2,725/121,706,266B held. E01/E03/E08 independent
+  audits verify1,876 native/scalar/decoded frames,94 images, all artifact pins and
   exact final/review PCM, with original whole source/audio/transcript pins checked.
-  E01/E03 queue items are sealed; E08 is rendering. E03 independent audit passes
-  all646 native/scalar/decoded frames,27 images and exact final/review PCM; four
-  phone stills viewed and four visual errors remain. Seven matching audio/timing inputs are requested; unrelated
-  recordings are excluded. No synthesis is authorized by this production plan.
+  Subset3/3 technical passes coexist with three sampled-visual failures; whole/
+  factual/continuous/listening stay unreviewed. Twelve phone/native stills viewed.
+  Seven matching inputs are requested; unrelated recordings are excluded. All ten
+  current family packets and seven recording drafts stay separate from narration.
+  Caption regression reproduces99% panel bottoms in four viewports; E01 aligned
+  comparison and E08 jaw/cloth framing need repair. The original run is terminal.
   Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
   [Automatic overlap preflight](./mechanism-shorts-ms3-repair-results.json) now
   reproduces the seeded target with the current pure API/historical measurements,
   selects one of12 bounded candidates and restores69 readable frames while
   retaining neighbors. A private current CLI seed preserves seven dependencies;
-  fresh bad/fixed render/final recheck and696-plate proof still remain.
+  fresh bad/fixed render/final recheck and696-plate proof still remain. Old MS1
+  cache lacks current appearance identity; current baseline refresh is required.
   Remaining original scope: clearer E06/E10 explanations and actual whole reviews,
   all ten frozen questions/genuine narration,
   scoped/MS1 automatic repair, broader seeded QA, capability reconciliation,
@@ -339,6 +340,25 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — Seal three supplied portrait products and reproduce caption defect
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from19f1c2be.
+- **Done:** Same native1 queue/run/report all actually exit0 with source held;
+  independent audits verify1,876 native/scalar/decoded frames,94 images and exact
+  final/review PCM. Original whole audio samples/PCM/transcripts remain exact.
+- **Results:** Current report validates all three products and its percentiles/
+  review counts recompute. Subset3/3 technical,0 reviewed-ready; accepted0/10.
+  E01/E03/E08 visual errors5/4/4 remain. Twelve actual stills viewed; E01 unaligned
+  comparison and E08 jaw/cloth crops remain failures to resolve.
+- **Rejected / do not repeat:** Caption regression1 hit inherited annotation
+  placement first; isolated regression2 confirms panel bottoms99% at four sizes.
+  Historical MS1 cache lacks current appearance closure; do not relabel it current.
+- **Open / next:** Caption/exclusion compiler repair, current source verification,
+  episode framing and actual bounded bridge recovery. Seven matching narration
+  inputs and original whole/pilot/final gate scope remain; no synthesis/spending.
+- **Records:** [Pilot](./mechanism-shorts-ms3-pilot-results.json),
+  [recovery](./mechanism-shorts-ms3-repair-results.json).
 
 ### 2026-10-13 — E03 portrait audit and bounded overlap-recovery preflight
 

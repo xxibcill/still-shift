@@ -85,9 +85,23 @@
   },
   "remaining": [
     "Wait for the existing serial original-pilot run to finish before another render group.",
+    "After the caption compiler repair and its checks, establish a genuinely current bridge baseline; retain any fresh baseline captures as setup work. Compare historical/current plates explicitly, and prove zero fresh3D for the repair stage rather than falsely claiming setup used the old cache.",
     "Fresh current bad export/detection, bounded automatic one-patch decision, affected export and final-file recheck.",
     "Verify all696 bridge clean plates/sidecars unchanged, zero new3D, unchanged neighbors and retained bad evidence.",
     "Exercise stale request/unsupported recovery exceptions and save a current fresh-session handoff."
   ],
-  "qualification": "This is not the requested completed automatic recovery proof. Historical pixel/sidecar evidence is not relabeled as fresh, and no extra render or GUI action was performed."
+  "qualification": "This is not the requested completed automatic recovery proof. Historical pixel/sidecar evidence is not relabeled as fresh, and no extra render or GUI action was performed.",
+  "historicalCachePreflight": {
+    "actualExitCode": 0,
+    "status": "not-current-compatible",
+    "report": {
+      "path": "/private/tmp/still-shift-ms3-overlap23-cache-check.json",
+      "bytes": 24785,
+      "sha256": "sha256:e831fc37d944df89f22e7e44e27c4071da425bc2b476eaeeb67b97c0221de223"
+    },
+    "historicalAppearanceModules": 0,
+    "currentAppearanceModules": 489,
+    "reason": "Historical MS1 identity has no appearanceCodeIdentity field, while current capture identity pins the conservative native appearance closure. Cache entries cannot be relabeled as current.",
+    "newCapturesPerformed": 0
+  }
 }

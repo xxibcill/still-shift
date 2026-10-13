@@ -103,17 +103,21 @@
   },
   "productionRun": {
     "attempt": "native1",
-    "status": "running-at-record-time",
-    "receipt": "/private/tmp/still-shift-ms3-pilot21-native1-receipt.json",
+    "status": "passed",
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-pilot21-native1-receipt.json",
+      "bytes": 2204,
+      "sha256": "sha256:003904ba663be5a8568f2d9c5d1fa2189f1d5470172cbe077c0bc70aada8a1da"
+    },
     "queueExitCode": 0,
     "queueSourceHoldExitCode": 0,
     "sourceInputs": 2725,
     "sourceBytes": 121706266,
     "runtimeCodeAndProfileIgnoreDocumentationAndGitHead": true,
     "queueStateAtInspection": {
-      "E01": "passed-review-evidence",
-      "E03": "passed-review-evidence",
-      "E08": "running-render-cached"
+      "E01": "passed",
+      "E03": "passed",
+      "E08": "passed"
     },
     "E01AvailableEvidence": {
       "nativeFrames": 587,
@@ -142,6 +146,82 @@
         "Four raw frozen-run errors remain; purposeful contact holds need evidence-bound review, not blanket suppression."
       ],
       "qualification": "Static phone still review only; continuous/listening and whole mechanical/factual acceptance remain unreviewed."
+    },
+    "actualExitCode": 0,
+    "steps": [
+      {
+        "command": [
+          "pnpm",
+          "still-shift",
+          "production",
+          "queue",
+          "--projects",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/projects.json",
+          "--manifest",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/queue.json"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T10:53:20.055846+00:00",
+        "endedUtc": "2026-10-13T10:53:23.949498+00:00",
+        "log": "/private/tmp/still-shift-ms3-pilot21-native1-0.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "still-shift",
+          "production",
+          "run",
+          "--manifest",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/queue.json",
+          "--output-dir",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/production1",
+          "--report",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/state1.json"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T10:53:23.949906+00:00",
+        "endedUtc": "2026-10-13T12:00:04.517752+00:00",
+        "log": "/private/tmp/still-shift-ms3-pilot21-native1-1.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "still-shift",
+          "production",
+          "report",
+          "--manifest",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/queue.json",
+          "--output-dir",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/production1",
+          "--report",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/report1.json"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T12:00:04.518342+00:00",
+        "endedUtc": "2026-10-13T12:09:25.167694+00:00",
+        "log": "/private/tmp/still-shift-ms3-pilot21-native1-2.log"
+      }
+    ],
+    "endedUtc": "2026-10-13T12:09:25.168113+00:00",
+    "nativeFrames": 1876,
+    "independentlyDecodedFrames": 1876,
+    "independentImages": 94,
+    "independentScalarComparisons": 1876,
+    "independentlyVerifiedPins": 157,
+    "qualification": "Current E01/E03/E08 subset execution only, original denominator10 and accepted0/10 retained. Three technical passes coexist with three sampled-visual failures and twelve unreviewed dimension rows.",
+    "E08AvailableEvidence": {
+      "nativeFrames": 643,
+      "fullDecodedFrames": 643,
+      "sampledVisualErrors": 4,
+      "phoneStillsActuallyViewed": [53, 209, 360, 479, 596],
+      "findings": [
+        "Caption panel violates bottom safe inset and reserves excessive height.",
+        "Opening, release, fabric-stop and bias macro stills crop out the jaw tips or cloth; sampled pictures do not establish their spoken claims."
+      ],
+      "qualification": "Static phone review only. Whole mechanics, factual, continuous playback and listening remain unreviewed."
     }
   },
   "documentValidation": {
@@ -157,8 +237,7 @@
     ]
   },
   "remaining": [
-    "Finish the existing serial production run and retain actual terminals.",
-    "Audit current full native/decode/audio/evidence identities and inspect the other two actual products.",
+    "Repair caption compiler/exclusion geometry and E01/E08 explanation framing; revalidate changed source and current artifacts.",
     "Repair observed portrait presentation and prove scoped affected output with unchanged native plates where applicable.",
     "Obtain seven matching supplied narration/timing inputs; existing unrelated recordings are excluded.",
     "Original ten whole factual/design/visual/continuous/listening reviews, broader QA/repair/capability measurements and final full/archive/installed gates remain open."
@@ -253,6 +332,139 @@
       ],
       "qualification": "Technical identity/sample-clock/sampled-mount audit. No whole mechanism/factual/continuous/listening/human/pilot acceptance. AAC output PCM is not claimed byte-identical to source PCM.",
       "verifiedPins": 48
+    },
+    {
+      "episode": "E08",
+      "status": "passed",
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-pilot23-audit-E08-receipt.json",
+        "bytes": 343,
+        "sha256": "sha256:d15b9a42b7db7010dd2b2c56946d4f39ac57b06a2fce90b2b337fd5ee7005e4f"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-pilot22-audit-E08.json",
+        "bytes": 65994,
+        "sha256": "sha256:8d1bfd5348fa4542f41b359d21fcb69f05d76647a058b27b1d94c00e4a7a8511"
+      },
+      "nativeFrames": 643,
+      "decodedFrames": 643,
+      "images": 33,
+      "scalarComparisons": 643,
+      "warningGroups": 14,
+      "visualErrors": 4,
+      "sourceNarrationSamples": 1027623,
+      "sourcePcmSha256": "sha256:d0d79016ccbf2d6fff606e2800da341d04e2e66b6b6692e5a6c7d9ce5f2ad3a1",
+      "binding": {
+        "inputSha256": "sha256:cb1e95f227a9dcf08b7eb5b39d03bded89560f9c4b124d6ca596d36bb3246b8d",
+        "outputSha256": "sha256:b83335ff1572e4ba76b9b7e6f8ef9302ecf9c3c8f5fd0739b09106b733c99916",
+        "codeSha256": "sha256:14836055d4c44015d6b3e661976d93bcea1710915115ea919c2e1e4fcff4e171",
+        "profileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+      },
+      "work": {
+        "freshNativeSubmissions": 643,
+        "reusedNativePlates": false
+      },
+      "methods": [
+        "independent original native observation artifact pins and all-frame scalar recomputation",
+        "full streaming final RGBA decode, exact extracted frame/crop bytes and phone transforms",
+        "full final/review PCM equality; original whole source WAV/PCM/transcript pins separately verified",
+        "raw grouped peaks, artifact binding and unreviewed handoff preserved"
+      ],
+      "qualification": "Technical identity/sample-clock/sampled-mount audit. No whole mechanism/factual/continuous/listening/human/pilot acceptance. AAC output PCM is not claimed byte-identical to source PCM.",
+      "verifiedPins": 54
     }
-  ]
+  ],
+  "cohortAudit": {
+    "status": "passed",
+    "actualExitCode": 0,
+    "report": {
+      "path": "/private/tmp/still-shift-ms3-pilot23-cohort-audit.json",
+      "bytes": 3582,
+      "sha256": "sha256:dc67f8b0c8004fbbb4eae7dd34c7ed054a89a7648d7e5fce271273450bf2a843"
+    },
+    "subsetEpisodes": 3,
+    "originalDenominator": 10,
+    "firstPassTechnical": {
+      "completed": 3,
+      "passed": 3,
+      "rate": 1,
+      "targetSatisfied": true
+    },
+    "reviewCounts": {
+      "technical": {
+        "passed": 3,
+        "failed": 0,
+        "unreviewed": 0
+      },
+      "mechanical": {
+        "passed": 0,
+        "failed": 0,
+        "unreviewed": 3
+      },
+      "sampled-visual": {
+        "passed": 0,
+        "failed": 3,
+        "unreviewed": 0
+      },
+      "continuous-motion": {
+        "passed": 0,
+        "failed": 0,
+        "unreviewed": 3
+      },
+      "listening": {
+        "passed": 0,
+        "failed": 0,
+        "unreviewed": 3
+      },
+      "factual": {
+        "passed": 0,
+        "failed": 0,
+        "unreviewed": 3
+      }
+    },
+    "percentiles": "independently recomputed",
+    "reviewedReady": 0,
+    "qualification": "Only original E01/E03/E08 subset. Its 3/3 first-pass technical result does not establish the original ten-episode target or any whole review."
+  },
+  "captionRegression": {
+    "status": "reproduced-before-repair",
+    "attempts": [
+      {
+        "script": {
+          "path": "/private/tmp/still-shift-ms3-pilot23-caption-regression.mts",
+          "bytes": 1302,
+          "sha256": "sha256:5c4468415255d71cb5b7c6ad04075c4d9f9e0a3570f0f26ed7886af0554c65c8"
+        },
+        "log": {
+          "path": "/private/tmp/still-shift-ms3-pilot23-caption-regression.log",
+          "bytes": 1556,
+          "sha256": "sha256:2348d0129dd0026015a8c818f027cf63b516dc2ee407034badfbb259c5696c89"
+        },
+        "actualExitCode": 1,
+        "reason": "Inherited annotation placement prevented isolating the caption geometry assertion."
+      },
+      {
+        "script": {
+          "path": "/private/tmp/still-shift-ms3-pilot23-caption-regression2.mts",
+          "bytes": 1394,
+          "sha256": "sha256:a6618c48c047c5f30b239859c98ea7c8a8d90a781d06e33e5db87c99115b899c"
+        },
+        "log": {
+          "path": "/private/tmp/still-shift-ms3-pilot23-caption-regression2.log",
+          "bytes": 960,
+          "sha256": "sha256:7aa8ea9252bd360701d6dccf09ccffab710a97046c738d3c894456a2bc9ffc97"
+        },
+        "actualExitCode": 1,
+        "reason": "All four standard viewports place the panel bottom at99%, exceeding the5% safe inset; caption-only fixture confirms the intended regression."
+      }
+    ],
+    "viewports": [
+      [320, 180],
+      [1280, 720],
+      [720, 1280],
+      [1080, 1920]
+    ]
+  }
 }
