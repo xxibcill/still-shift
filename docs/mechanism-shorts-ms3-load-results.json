@@ -4,7 +4,7 @@
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
   "baseCommit": "08edb13a33dc9df30f94d0064ead9ef836aa6bdd",
-  "status": "load-behavior-foundation-scoped-passed-current-tiers-asset-native-pending",
+  "status": "load-foundation-current-tiers-generic-native-audit-passed-e06-asset-pending",
   "sourceSnapshot": [
     {
       "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/mechanism/load-seat-v2.ts",
@@ -389,9 +389,376 @@
     "qualification": "Scoped documentary reread only; prior vague figure10 stop wording is superseded. No asset/behavior/factual/whole admission."
   },
   "remaining": [
-    "Current complete fast/runtime verification of committed source.",
-    "Patent-specific separate two-tooth pawl/frame-stop asset and flexible hinge/web, independent contact/stop/nonpenetration oracle and actual native observations.",
+    "Patent-specific separate two-tooth pawl/frame-stop asset and flexible hinge/web, independent physical contact/stop/nonpenetration oracle and actual native observations.",
     "All original MS3 pilot/narration/whole/repair/capability/metrics/final/archive/installed work."
   ],
-  "qualification": "Reusable force-driven behavior foundation and software checks only. No new E06 asset/native/contact/continuous/factual/design/genuine speech/listening/pilot acceptance; frozen ten questions and accepted0/10 unchanged. No spending, merge or publication."
+  "qualification": "Reusable force-driven behavior foundation verified on7425e734 by current software tiers and a four-frame generic native fixture/independent numeric audit. Virtual point contact is verified; E06 physical tooth/web/stop geometry, surface contact/nonpenetration, continuous motion, factual/design/genuine speech/listening/whole/pilot acceptance remain pending. Frozen ten questions and accepted0/10 unchanged; no spending, merge or publication.",
+  "sourceCommit": "7425e734b263ecf7342e44f20b5fa47db94e5ca7",
+  "currentVerification": {
+    "receipt": {
+      "status": "passed",
+      "sourceCommit": "7425e734b263ecf7342e44f20b5fa47db94e5ca7",
+      "startedUtc": "2026-10-13T08:20:18.214049+00:00",
+      "pid": 36949,
+      "inventory": "/private/tmp/still-shift-ms3-load18-tiers1-inputs.json",
+      "steps": [
+        {
+          "command": ["pnpm", "check:fast"],
+          "actualExitCode": 0,
+          "sourceHoldCheckExitCode": 0,
+          "startedUtc": "2026-10-13T08:20:18.214739+00:00",
+          "endedUtc": "2026-10-13T08:22:45.143277+00:00",
+          "log": "/private/tmp/still-shift-ms3-load18-tiers1-0.log"
+        },
+        {
+          "command": ["pnpm", "check:runtime"],
+          "actualExitCode": 0,
+          "sourceHoldCheckExitCode": 0,
+          "startedUtc": "2026-10-13T08:22:45.143841+00:00",
+          "endedUtc": "2026-10-13T08:31:36.661771+00:00",
+          "log": "/private/tmp/still-shift-ms3-load18-tiers1-1.log"
+        }
+      ],
+      "actualExitCode": 0,
+      "endedUtc": "2026-10-13T08:31:36.662223+00:00"
+    },
+    "fast": {
+      "tests": 4518,
+      "files": 446
+    },
+    "runtime": {
+      "tests": 253,
+      "files": 45
+    },
+    "integration": {
+      "tests": 322,
+      "files": 57
+    },
+    "depthTests": 14,
+    "browserSmoke": "passed",
+    "heldFiles": 2721,
+    "heldBytes": 121615123,
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-load18-tiers1.py",
+        "bytes": 1849,
+        "sha256": "sha256:517d2e3d9ee18555ed3f90b4735265a6b157f1299658efff13f9cc74ba976477"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-load18-tiers1.log",
+        "bytes": 1753,
+        "sha256": "sha256:48c45a4504c4d8eff39738c3055bdaa5d485f9bf8e2330560d199340b0bcc758"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-load18-tiers1-receipt.json",
+        "bytes": 951,
+        "sha256": "sha256:619b018172bdcbd092bc307f45c42ff150f98f502b7afa89dc1b118bde894833"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-load18-tiers1-inputs.json",
+        "bytes": 464570,
+        "sha256": "sha256:1a90830274d8c6d1308a27feefb1f0ac25642ab591637a30841eb635a205b232"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-load18-tiers1-0.log",
+        "bytes": 45515,
+        "sha256": "sha256:8ff53c19f7cfd7da9d777878086595ae74d60177136e3442971eb0e165829d5b"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-load18-tiers1-1.log",
+        "bytes": 42286,
+        "sha256": "sha256:5ff35ffd32d0b413dc2e09ad05e8f585f5043c2ffd90581bc2372a9e1df15854"
+      }
+    ]
+  },
+  "nativeAttempts": [
+    {
+      "id": "native1",
+      "receipt": {
+        "status": "failed",
+        "command": "node --import tsx /private/tmp/still-shift-ms3-load18-native1.mts",
+        "sourceCommit": "7425e734b263ecf7342e44f20b5fa47db94e5ca7",
+        "startedUtc": "2026-10-13T08:37:53.837732+00:00",
+        "pid": 93139,
+        "inventory": "/private/tmp/still-shift-ms3-load18-native1-inputs.json",
+        "actualExitCode": 1,
+        "sourceHoldCheckExitCode": 0,
+        "endedUtc": "2026-10-13T08:37:55.204156+00:00"
+      },
+      "root": "/private/tmp/still-shift-ms3-load-native-oJUBpj",
+      "reason": "Pre-render strict composition admission rejected unknown seed and missing required id. No native submissions.",
+      "freshNativeSubmissions": 0,
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-native1.mts",
+          "bytes": 3512,
+          "sha256": "sha256:69a1762cac77c1e9e6bcce6f45d5f530e83fc25b2139f4273903cbc5fda0a25f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-native1.py",
+          "bytes": 1440,
+          "sha256": "sha256:302283530aa59caac765fb2d7d82f38541c1fa2eed3665fae97bb0ab3af002bf"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-native1.log",
+          "bytes": 1419,
+          "sha256": "sha256:c1691826210e6558a8fd7b9b224ceb4cfc6876fba08e1af954070449d1c9154e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-native1-receipt.json",
+          "bytes": 416,
+          "sha256": "sha256:8f692f06a8acec4c1f99c10b819ee64d21d2a5d61734a71caa01f9461816ad02"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-native1-inputs.json",
+          "bytes": 464570,
+          "sha256": "sha256:1a90830274d8c6d1308a27feefb1f0ac25642ab591637a30841eb635a205b232"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load-native-oJUBpj/failure.json",
+          "bytes": 906,
+          "sha256": "sha256:ef3ce48d9ce3ff4ad46bda0d0a1d3d755e816a3fa8cdbd0f857a42f78558163b"
+        }
+      ]
+    },
+    {
+      "id": "native2",
+      "receipt": {
+        "status": "failed",
+        "command": "node --import tsx /private/tmp/still-shift-ms3-load18-native2.mts",
+        "sourceCommit": "7425e734b263ecf7342e44f20b5fa47db94e5ca7",
+        "startedUtc": "2026-10-13T08:40:56.230018+00:00",
+        "pid": 94484,
+        "inventory": "/private/tmp/still-shift-ms3-load18-native2-inputs.json",
+        "actualExitCode": 1,
+        "sourceHoldCheckExitCode": 0,
+        "endedUtc": "2026-10-13T08:40:57.558464+00:00"
+      },
+      "root": "/private/tmp/still-shift-ms3-load-native-gPATez",
+      "reason": "Pre-render strict composition admission rejected missing required id after seed removal. No native submissions.",
+      "freshNativeSubmissions": 0,
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-native2.mts",
+          "bytes": 3505,
+          "sha256": "sha256:529743bbe8f98e015cb923b94d8ba3414252d6d5089b17f500a0d0dda0b4d514"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-native2.py",
+          "bytes": 1440,
+          "sha256": "sha256:a971e9687468ebd9635cfd9af9c4328e8e26d7fce39aa1be9529c1cb44f36438"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-native2.log",
+          "bytes": 1283,
+          "sha256": "sha256:cf3aa23a835534f9666de84aa767a6694468979046a0330bdaed77add79eebc5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-native2-receipt.json",
+          "bytes": 416,
+          "sha256": "sha256:3680e1f7199e9d2a4c1eab750b90632fae8723127a61b314767941744d62d2e7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-native2-inputs.json",
+          "bytes": 464570,
+          "sha256": "sha256:1a90830274d8c6d1308a27feefb1f0ac25642ab591637a30841eb635a205b232"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load-native-gPATez/failure.json",
+          "bytes": 582,
+          "sha256": "sha256:73fe0d61b519f04d7eeeec586c56c01138e85100df7182b1d968926ed8a06454"
+        }
+      ]
+    },
+    {
+      "id": "native3",
+      "receipt": {
+        "status": "passed",
+        "command": "node --import tsx /private/tmp/still-shift-ms3-load18-native3.mts",
+        "sourceCommit": "7425e734b263ecf7342e44f20b5fa47db94e5ca7",
+        "startedUtc": "2026-10-13T08:49:07.223177+00:00",
+        "pid": 95971,
+        "inventory": "/private/tmp/still-shift-ms3-load18-native3-inputs.json",
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "endedUtc": "2026-10-13T08:49:11.192946+00:00"
+      },
+      "root": "/private/tmp/still-shift-ms3-load-native-CEu8AI",
+      "reason": "Required composition id supplied; actual shared normal composition export completed four native submissions.",
+      "freshNativeSubmissions": 4,
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-native3.mts",
+          "bytes": 3534,
+          "sha256": "sha256:cc56457cd1c6ef30d72f4c2d527060cc31de5f7de06bf80514e7c8d5d0c51456"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-native3.py",
+          "bytes": 1440,
+          "sha256": "sha256:10f49529adffa00bc83d083d3734c53fb055f500871153fe458ab60b65fef1bc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-native3.log",
+          "bytes": 1030,
+          "sha256": "sha256:a9ac04b5960d8bb6b277e24a71b60fa7495f8b87125a88d2dd59b28a252187fc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-native3-receipt.json",
+          "bytes": 416,
+          "sha256": "sha256:387cd9acdf8b5689422dd75981f4ae46968a3879e87d7abf49778472a08aadc2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-native3-inputs.json",
+          "bytes": 464570,
+          "sha256": "sha256:1a90830274d8c6d1308a27feefb1f0ac25642ab591637a30841eb635a205b232"
+        }
+      ]
+    }
+  ],
+  "independentNativeAudit": {
+    "receipt": {
+      "status": "passed",
+      "sourceCommit": "7425e734b263ecf7342e44f20b5fa47db94e5ca7",
+      "startedUtc": "2026-10-13T08:55:00.376284+00:00",
+      "pid": 134,
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-13T08:55:01.096853+00:00"
+    },
+    "results": {
+      "status": "passed",
+      "sourceCommit": "7425e734b263ecf7342e44f20b5fa47db94e5ca7",
+      "root": "/private/tmp/still-shift-ms3-load-native-CEu8AI",
+      "frames": 4,
+      "capturedPartMatrices": 16,
+      "capturedAnchors": 8,
+      "scalarComparisons": 292,
+      "maximumOracleError": 0,
+      "stopPoseSaturation": true,
+      "decodedFrames": 4,
+      "decodedBytes": 230400,
+      "decodedSha256": "sha256:c6fcfddccb41d73da47eed91a2b6719e139e0bb9506e749001286e9469b2aace",
+      "decodedFrameSha256": [
+        "sha256:9b072772ab0d360eebe236e29ea7a0c157d576ba74e5f047bb65526c2b5d46f9",
+        "sha256:58022e55e7887f9f6e9c9f298cddbc7d457bc9b9d3641b772a73f5e985191fc1",
+        "sha256:25fa1aaa3b82677e6ad28156e8a41cf9bd2ce211f7634ded2b9f8263a1b32538",
+        "sha256:e5d60cafe31562000df5adc8db19cef7564672c68b0015d4d228d4b0e7fbaed3"
+      ],
+      "decodeCommand": [
+        "/opt/homebrew/bin/ffmpeg",
+        "-v",
+        "error",
+        "-i",
+        "/private/tmp/still-shift-ms3-load-native-CEu8AI/output.mp4",
+        "-map",
+        "0:v:0",
+        "-f",
+        "rawvideo",
+        "-pix_fmt",
+        "rgba",
+        "pipe:1"
+      ],
+      "actualDecodeExitCode": 0,
+      "oracle": [
+        {
+          "frame": 0,
+          "forceNewtons": 0,
+          "displacementMeters": 0.0,
+          "angleRadians": -0.0,
+          "contactWorld": [0.0, 0, 0]
+        },
+        {
+          "frame": 1,
+          "forceNewtons": 5,
+          "displacementMeters": 0.0005,
+          "angleRadians": -0.05,
+          "contactWorld": [-0.08461049660796471, 0, 0]
+        },
+        {
+          "frame": 2,
+          "forceNewtons": 10,
+          "displacementMeters": 0.001,
+          "angleRadians": -0.1,
+          "contactWorld": [-0.16838464123618746, 0, 0]
+        },
+        {
+          "frame": 3,
+          "forceNewtons": 30,
+          "displacementMeters": 0.001,
+          "angleRadians": -0.1,
+          "contactWorld": [-0.16838464123618746, 0, 0]
+        }
+      ],
+      "pins": [
+        {
+          "path": "/private/tmp/still-shift-ms3-load-native-CEu8AI/output.mp4.native-observations.000.ndjson",
+          "bytes": 15492,
+          "sha256": "sha256:ee32ca35fa0dbe7022ba8009fef164ece36e87ed8be2fe9dd3f517f118a52041"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load-native-CEu8AI/scene.json",
+          "bytes": 70013,
+          "sha256": "sha256:0004327c0832e1ba06f93e0d47cb6831aa51bbf7accf279f2a7e7777e57b7489"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load-native-CEu8AI/composition.json",
+          "bytes": 1221,
+          "sha256": "sha256:58e35398684614bbd3676db24d0968a5cda9dc693d81e29a5945f575a4a76ddf"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load-native-CEu8AI/output.mp4",
+          "bytes": 2525,
+          "sha256": "sha256:1e07ea3be1f1067e2c05de704fe393c02915e555c0c0aa5c5ab578833cc9e232"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load-native-CEu8AI/output.mp4.scene.json",
+          "bytes": 192727,
+          "sha256": "sha256:3378688f69ff41d681644a66bc9a511a9ec5804428b8e3b75f3dd7aedea162fb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load-native-CEu8AI/output.mp4.native-observations.json",
+          "bytes": 90458,
+          "sha256": "sha256:ce07678f14ecc0384512e701806e5081c5b156a8531489201fd486a3397cc8c3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load-native-CEu8AI/render.json",
+          "bytes": 7548,
+          "sha256": "sha256:559b8381b74c23282bd89e4bf08dd68bd83df801f58a6f83f247c3f258178003"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load-native-CEu8AI/run.json",
+          "bytes": 444,
+          "sha256": "sha256:11ae5090c064289ec91c566fa17f50bf86004605ac529d27cb960c884e899465"
+        }
+      ],
+      "qualification": "Generic virtual contact point and two-body numeric pose proof only; no E06 tooth surface, flexible hinge, frame stop geometry, nonpenetration, continuous motion, factual/design/listening/whole/pilot acceptance."
+    },
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-load18-audit1.py",
+        "bytes": 6594,
+        "sha256": "sha256:4d10344ba676fe47188ed2003f02aec06c64e45d342f3a9dc3ff62cc7c61bf7a"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-load18-audit1.log",
+        "bytes": 822,
+        "sha256": "sha256:c2b35cb940026e9c2397fbdc39cb4236d90c76af5fef478aef4abd7c04a0324b"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-load18-audit1-receipt.json",
+        "bytes": 258,
+        "sha256": "sha256:5e78e8664d9d8b16da81d77449fb5d3c5d449158dc10111c0078de4ab3209cb3"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-load18-audit1-results.json",
+        "bytes": 3804,
+        "sha256": "sha256:5e7dd11737c7e47b42eaf6418991abbe68e4f39b7c5c7d19c5b0c06a1411d728"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-load18-audit1-decode.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  }
 }

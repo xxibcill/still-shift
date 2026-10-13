@@ -679,11 +679,17 @@
     {
       "id": "load-seat18",
       "record": "docs/mechanism-shorts-ms3-load-results.json",
-      "status": "load-behavior-foundation-scoped-passed-current-tiers-asset-native-pending",
+      "status": "load-foundation-current-tiers-generic-native-audit-passed-e06-asset-pending",
       "owningTests": 11,
       "scopedTests": 67,
       "cliTests": 4,
-      "qualification": "Reusable force-driven behavior foundation and software checks only. No new E06 asset/native/contact/continuous/factual/design/genuine speech/listening/pilot acceptance; frozen ten questions and accepted0/10 unchanged. No spending, merge or publication."
+      "qualification": "Reusable force-driven behavior foundation verified on7425e734 by current software tiers and a four-frame generic native fixture/independent numeric audit. Virtual point contact is verified; E06 physical tooth/web/stop geometry, surface contact/nonpenetration, continuous motion, factual/design/genuine speech/listening/whole/pilot acceptance remain pending. Frozen ten questions and accepted0/10 unchanged; no spending, merge or publication.",
+      "sourceCommit": "7425e734b263ecf7342e44f20b5fa47db94e5ca7",
+      "completeTiers": "fast4518/runtime253/integration322/depth14/smoke",
+      "freshGenericNativeSubmissions": 4,
+      "genericDecodedFrames": 4,
+      "genericMatrixScalarComparisons": 292,
+      "physicalE06AssetProof": false
     }
   ],
   "targets": {

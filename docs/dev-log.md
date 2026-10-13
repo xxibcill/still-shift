@@ -103,9 +103,14 @@ still hold before relying on them.
   are owned by one force control, SI compliance/geometric stop/contact conservation
   and cue resolution.11 owning/101 dense samples,67 scoped/7 files,4 CLI/type/
   lint/schema/boundary/package checks pass on2,721 held inputs. Compile/patch
-  failures retained. [Load](./mechanism-shorts-ms3-load-results.json). Current full
-  tiers, separate patent asset/flexible web/native contact proof remain next.
-  No active prior native handle remains. Each later source has its own binding;
+  failures retained. [Load](./mechanism-shorts-ms3-load-results.json). Complete
+  tiers1 on7425e734 pass fast4,518/446, runtime253/45, integration322/57,
+  depth14/smoke with2,721 inputs/121,615,123B exact. Generic native3/audit1
+  pass4 submitted/decoded frames,16 captured matrices/8 virtual anchors and292
+  scalar comparisons with zero oracle error. Both pre-render strict composition
+  failures remain retained. Separate patent asset/flexible web and physical
+  contact/stop/nonpenetration native proof remain next. All gate handles closed.
+  Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
   Remaining original scope: clearer views and actual whole reviews, E06 asset/
   behavior, E10/explanation reviews, all ten frozen questions/genuine narration,
@@ -303,14 +308,16 @@ still hold before relying on them.
 ### 2026-10-13 — E06 force-driven load seating foundation
 
 - **Agent / branch:** Codex on `codex/mechanism-ms3`, from `08edb13a`.
-- **Done:** New source2 load-seat rig/control, two-part ownership and contact-
-  conserving motion, SI compliance, scaled geometric hard stop/reaction and cue clocks.
-- **Results:**11 owning checks/101 dense samples,67 scoped units/7 files,4 CLI,
-  type/lint/schema/boundary/package compilation pass;2,721 inputs held.
-- **Retained:** Initial compile failures, partial edit locator failure and bounded
-  range tuple repair. Source3 subset stays explicit; no rig fallback added.
-- **Open / next:** Full current tiers; actual separate two-tooth/frame-stop asset,
-  flexible web and native contact/stop/nonpenetration proof. Original MS3 remains.
+- **Done:**7425e734 adds source2 load-seat controls, two-part ownership/contact-
+  conserving motion, SI compliance, scaled geometric stop/reaction and cue clocks.
+- **Results:**11 owning/101 dense samples;67 scoped/4 CLI/package checks pass.
+  Complete tiers1 on7425e734 pass4,518/446 fast,253/45 runtime,322/57 integration,
+  depth14/smoke with2,721 inputs/121,615,123B exact. Generic native3/audit1 pass
+  4 frames,16 matrices/8 virtual anchors/292 scalar comparisons, zero oracle error.
+- **Retained:** Compile/partial-edit/range failures and both pre-render composition
+  rejections. Numeric native proof is a generic fixture; all handles closed.
+- **Open / next:** Separate two-tooth/frame-stop asset, flexible web and physical
+  contact/stop/nonpenetration native proof; original MS3 and whole reviews remain.
 - **Records:** [Load results](./mechanism-shorts-ms3-load-results.json),
   [law and bounds](./mechanism-load-seat.md). Pilot0/10; no spending/publication.
 
