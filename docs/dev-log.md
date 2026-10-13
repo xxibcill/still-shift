@@ -152,8 +152,9 @@ still hold before relying on them.
   [E01/E08 framing](./mechanism-shorts-ms3-framing-results.json) revisions preserve
   whole narration/family/scene/cue windows. E01 pure216-frame paired contacts align
   at one screen datum; E08 all643 pose/visibility expectations pass with opening
-  in its actual spoken window. Normal serial native25 is live: E01 rendering,
-  E08 pending. Native/encoded framing admission remains open.
+  in its actual spoken window. Normal serial native25 is live: E01 native587
+  frames complete/overlay export in progress, E08 pending. Two native diagnostic
+  contact stills viewed; final encoded/whole framing admission remains open.
   Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
   [Automatic overlap preflight](./mechanism-shorts-ms3-repair-results.json) now

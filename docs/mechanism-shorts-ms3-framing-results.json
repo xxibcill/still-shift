@@ -123,14 +123,25 @@
       {
         "id": "E01",
         "status": "running",
-        "stage": "native-cache"
+        "stage": "render-cached"
       },
       {
         "id": "E08",
         "status": "pending",
         "stage": null
       }
-    ]
+    ],
+    "E01AvailableNativeCapture": {
+      "status": "rendered",
+      "frames": 587,
+      "root": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/production1/native-cache/8a470dcb9a3d00cdba09f32b11288ffbbf9d7abfe3443566888884bf838c7b90",
+      "nativeStillsActuallyViewed": [151, 259],
+      "findings": [
+        "Both opposite contact views use the paired camera aim and scale.",
+        "Foreground cyan witness projects at different horizontal positions after the mirrored-view cut; complete encoded overlays/story review is still required."
+      ],
+      "qualification": "Two original native diagnostic stills only; not final output or complete visual/whole acceptance."
+    }
   },
   "remaining": [
     "Finish the existing serial native run/report; retain any actual failures.",
