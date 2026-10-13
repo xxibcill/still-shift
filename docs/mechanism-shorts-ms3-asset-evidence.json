@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "primary-research-only",
+  "status": "primary-research-and-scoped-drafts-only",
   "assets": [
     {
       "status": "primary-text-and-drawing-pages-inspected",
@@ -120,5 +120,207 @@
   },
   "captureNotes": [
     "E09 web PDF cache miss; direct primary PDF download succeeded. First local render command used an incorrect bundle binary path and exited127; corrected bundled Poppler render completed0 and figures1-4 were inspected."
-  ]
+  ],
+  "geometryDraft": {
+    "episode": "E02",
+    "status": "scoped-draft-only-not-integrated",
+    "currentBuilder": {
+      "path": "/private/tmp/still-shift-ms3-retention-geometry-draft2.mts",
+      "bytes": 6176,
+      "sha256": "sha256:f845cfdb7ad31662941164f1ce86f85b3c315f6a920a203bc01f9c85f80f1bcd"
+    },
+    "scene": {
+      "path": "/private/tmp/still-shift-ms3-retention-scene-draft2.json",
+      "bytes": 5339771,
+      "sha256": "sha256:791cee9903895194f04cbb9071705b191f4e3269172c3edf6d3fe12eea4f080e"
+    },
+    "attempts": [
+      {
+        "name": "scope1",
+        "receipt": {
+          "command": [
+            "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+            "--import",
+            "tsx",
+            "/private/tmp/still-shift-ms3-retention-geometry-scope1.mts"
+          ],
+          "actualExitCode": 1,
+          "endedUtc": "2026-10-13T02:29:39.762307+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention-geometry-scope1.log"
+        },
+        "files": [
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-scope1.mts",
+            "bytes": 2677,
+            "sha256": "sha256:6982018bce5daabecf4e5839ed49f080bb0d7042f2c46ea06e53989f8957c9a3"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-scope1.log",
+            "bytes": 1257,
+            "sha256": "sha256:c487c3558f28db94f0ac2e0933574e44b8d46318d2502423470e17397cae1978"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-scope1-receipt.json",
+            "bytes": 315,
+            "sha256": "sha256:d4c5093f6a4d087b0eb521e26bdbe3e959b5f2548915d8e2d05b81a0e5910497"
+          }
+        ],
+        "scope": "Failed frame-request fields; corrected probe retained separately."
+      },
+      {
+        "name": "scope2",
+        "receipt": {
+          "command": [
+            "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+            "--import",
+            "tsx",
+            "/private/tmp/still-shift-ms3-retention-geometry-scope2.mts"
+          ],
+          "actualExitCode": 0,
+          "endedUtc": "2026-10-13T02:34:45.035636+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention-geometry-scope2.log"
+        },
+        "files": [
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-scope2.mts",
+            "bytes": 2670,
+            "sha256": "sha256:8475f1e73fc15ea8c33479b246273805d0376d8cd0cf734393c89352462ade65"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-scope2.log",
+            "bytes": 436,
+            "sha256": "sha256:5ceceb0043f4cee24207bb9e3bbc64e4f4bf27d5266d168ef40deacf74fbde34"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-scope2-receipt.json",
+            "bytes": 315,
+            "sha256": "sha256:875de76c307468002566c3e672557ed3288e2c7a1b5922aaf9f9d772409c883f"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-scope2.json",
+            "bytes": 948,
+            "sha256": "sha256:480b0f206bbb10be385b5f30bc4cbe3f4a0e4568e44eeeb1ce06ce9ab30d01ef"
+          }
+        ],
+        "scope": "Original draft analytic capsule and relationship checks only."
+      },
+      {
+        "name": "ray1",
+        "receipt": {
+          "command": [
+            "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+            "--import",
+            "tsx",
+            "/private/tmp/still-shift-ms3-retention-geometry-ray1.mts"
+          ],
+          "actualExitCode": 1,
+          "endedUtc": "2026-10-13T02:42:55.889206+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention-geometry-ray1.log"
+        },
+        "files": [
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-ray1.mts",
+            "bytes": 3708,
+            "sha256": "sha256:8f43bed416d0f52a40856d0be9a00b2bcd19e3bbae87c0bfc248ebeb5d84820c"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-ray1.log",
+            "bytes": 613,
+            "sha256": "sha256:9a6fd133fd436673f1d6abcd13ed1b8e96d76ddf3ce37dc395a5c2ce9f3b86dc"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-ray1-receipt.json",
+            "bytes": 311,
+            "sha256": "sha256:fd625c8d342397c84cd3cbc0783dc8e20afc9aa0809cef442ca606ddb8c9a3f4"
+          }
+        ],
+        "scope": "Independent actual triangle ray failed0.0113996 clearance under facets; no mesh pass."
+      },
+      {
+        "name": "scope3",
+        "receipt": {
+          "command": [
+            "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+            "--import",
+            "tsx",
+            "/private/tmp/still-shift-ms3-retention-geometry-scope3.mts"
+          ],
+          "actualExitCode": 0,
+          "endedUtc": "2026-10-13T02:43:46.563335+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention-geometry-scope3.log"
+        },
+        "files": [
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-scope3.mts",
+            "bytes": 2672,
+            "sha256": "sha256:c028e58566e62fd71e181fa7bfff9dea1d0022bef03c2c602217f3bb1d40ed3f"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-scope3.log",
+            "bytes": 436,
+            "sha256": "sha256:5ceceb0043f4cee24207bb9e3bbc64e4f4bf27d5266d168ef40deacf74fbde34"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-scope3-receipt.json",
+            "bytes": 315,
+            "sha256": "sha256:f4ce057760926b8d421ed0f59fd23a97339993c18c7bb33e93ade16ea16aa4f4"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-scope3.json",
+            "bytes": 948,
+            "sha256": "sha256:480b0f206bbb10be385b5f30bc4cbe3f4a0e4568e44eeeb1ce06ce9ab30d01ef"
+          }
+        ],
+        "scope": "Corrected circumscribed slot facets; pure expected/analytic checks pass."
+      },
+      {
+        "name": "ray2",
+        "receipt": {
+          "command": [
+            "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+            "--import",
+            "tsx",
+            "/private/tmp/still-shift-ms3-retention-geometry-ray2.mts"
+          ],
+          "actualExitCode": 0,
+          "endedUtc": "2026-10-13T02:43:49.410184+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention-geometry-ray2.log"
+        },
+        "files": [
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-ray2.mts",
+            "bytes": 3713,
+            "sha256": "sha256:b30c543f87fe1202ffd3efe508edd5aa8dba4105227bcd831559876d7b6b3c62"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-ray2.log",
+            "bytes": 140,
+            "sha256": "sha256:817bc94690f934dc1e59c304746601a569b17458ce5159735fc74c5ffa432124"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-ray2-receipt.json",
+            "bytes": 311,
+            "sha256": "sha256:126ec925376027d73e94432bfb4b846d0193bf8acfcfb2b9eededfe40f7048c2"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-ray2.json",
+            "bytes": 2164,
+            "sha256": "sha256:04134d7bb06d8f2ea454e595b655fb2ab443dbe76654959b4bb5191e7cc25732"
+          }
+        ],
+        "scope": "Corrected geometry passes44928 actual double-sided triangle rays at9 parameter combinations/13 travel states/64 angles/3 rivets/2 sections; min upper0.01212268625 and lower0.00448666707. Sampled, not continuous/native."
+      }
+    ],
+    "qualification": "New three-slot curved tapered neck, drilled blade and three stepped rivets with upper/lower stems and both retaining heads. Illustrative dimensions; no factory/native/factual/design/asset/pilot admission.",
+    "originalBuilder": {
+      "path": "/private/tmp/still-shift-ms3-retention-geometry-draft.mts",
+      "bytes": 6153,
+      "sha256": "sha256:61260376ebd0eb10bac7e3f152da617a2b22eca990d6731ad468efe21964e0bb"
+    },
+    "remaining": [
+      "Integrate a distinct immutable factual candidate variant through existing family/factory/timeline/import/capability contracts.",
+      "Preserve default floating-hook source/metadata/pixels; add truthful actual slot width/bounds and full-blade parameter support.",
+      "Actual native observed geometry and clear retention view; independent factual/design/mechanics review and eventual E02 pilot admission."
+    ]
+  }
 }

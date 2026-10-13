@@ -61,8 +61,8 @@ still hold before relying on them.
   use a declared fixture adapter. One lint failure is retained. New source still
   passes complete fast (4,448 tests / 439 files), with 2,698 exact inputs.
   Runtime/session 9677 actually passes 252 tests, 322 integration, 14 depth
-  and smoke on `79f3c3f2`, with identical 2,698 inputs. Real native CLI
-  faults/recovery remain pending. Targeted retry now implements exact CAS,
+  and smoke on `79f3c3f2`, with identical 2,698 inputs. Actual native CLI
+  recovery was subsequently verified on `c474c9c5` below. Targeted retry implements exact CAS,
   repaired-pin admission, dual locks, immutable manifest ancestry and selected
   bounded batches while retaining neighbors/journals/reviews.48 owning checks
   plus build/lint/fourteen schemas/boundaries/declarations pass with exact source.
@@ -75,13 +75,17 @@ still hold before relying on them.
   unrun drafts remain retained. Final harness is now registered in the full test
   chain and passes compile/lint/pinned toolchain/boundary preflight. Only root
   package scripts and the new test differ from passed0d59 runtime inputs; no
-  implementation/lock/toolchain files changed. Actual native10 invocation is
-  live under session3926/sourcec474c9c5, root
-  /private/tmp/still-shift-ms3-native-recovery-LK3dFu. SIGKILL after real PNG is
-  observed and S1 resumes with retained interrupted attempt/current attempt2;
-  this is a partial prefix, not terminal recovery acceptance. Poll the saved
-  handle/receipt without restarting; independent complete audit remains next. Initial drafts
-  remain retained under their original hashes.
+  implementation/lock/toolchain files changed.
+  Native10 actual CLI/OS faults/recovery now pass on held `c474c9c5`, actual0/hold0,
+  session3926 closed. SIGKILL after PNG, SIGTERM during cached export, corrupt
+  scene/missing audio, owned export collision, targeted retries and relocation
+  retain all attempts/unaffected neighbors. Ten sealed engineering products use
+  360 fresh native submissions. Independent audit2 actual0/hold0 checks600 frames,
+  270 images,600 scalar samples and473 pins, exact history/current CLI/cohort;
+  audit1 retains its restricted-environment report failure. Ready0, first-pass2/3,
+  missing tokensnull. E02 scratch geometry now has actual three slots/drilled
+  blade/stepped rivets and passes44928 sampled triangle rays after retained
+  frame-request and faceting failures; factory/native/asset admission stays open.
   Scoped/MS1 repair, ten frozen questions,
   five assets/two behaviors, genuine inputs/reviews, capability reconciliation
   and final full/archive/installed verification remain. Coverage is 0/10; no
@@ -276,6 +280,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — Actual native CLI recovery and independent artifact audit
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, source`c474c9c5`.
+- **Done:** Native10/session3926 actual0/hold0; all2,703 inputs/121,404,590B exact.
+  SIGKILL/SIGTERM, input/audio/export faults, selected retries and original-path-
+  unavailable relocation retain attempts and unaffected neighbors.
+- **Results:** Ten engineering products/360 fresh native submissions; audit2
+  actual0/hold0 verifies600 decoded frames/270 images/600 scalars/473 pins and
+  fresh current report/cohort. First-pass2/3, reviewed-ready0, tokensnull.
+- **Rejected / retained:** Audit1 fresh report failed in restricted environment;
+  managed worktree report and complete audit2 pass. E02 frame request and
+  faceted-slot clearance failures retained; corrected draft passes44,928 rays.
+- **Open / next:** Integrate E02 factual candidate, remaining four assets/two
+  behaviors, scoped/MS1 repair, original ten genuine/reviewed episodes and final gates.
+- **Records:** [native recovery](./mechanism-shorts-ms3-native-recovery-results.json),
+  [asset drafts](./mechanism-shorts-ms3-asset-evidence.json), [tracker](./mechanism-shorts-ms3-acceptance.md).
 
 ### 2026-10-13 — Register actual native CLI/OS recovery verification
 

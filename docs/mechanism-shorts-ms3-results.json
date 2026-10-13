@@ -501,14 +501,35 @@
     },
     {
       "id": "native-cli-recovery10",
-      "status": "actual-native-cli-os-recovery-running",
+      "status": "actual-native-cli-os-recovery-and-independent-audit-passed",
       "record": "docs/mechanism-shorts-ms3-native-recovery-results.json",
-      "qualification": "Registered compiled verification, not executed evidence. Synthetic engineering PCM; independent decode/image/current-history audit and whole mechanical/glyph/factual/continuous/listening/human/pilot review remain separate. No actual OS/native recovery pass claimed.",
+      "qualification": "Actual CLI/OS interruption/cancellation/input corruption/missing audio/export collision/targeted retries/relocation and independent complete artifact/history/current-report audit pass on held c474c9c5. Ten retained sealed products are engineering executions, not ten pilot episodes. Synthetic engineering PCM; whole mechanical/glyph/factual/continuous/listening/human and pilot acceptance remain unreviewed.",
       "currentNative": {
-        "status": "running",
-        "session": 3926,
+        "status": "passed",
+        "command": "pnpm test:browser:mechanism-production-recovery",
         "sourceCommit": "c474c9c5c976b4c249163c0749d80f7e11e370f4",
-        "root": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu"
+        "startedUtc": "2026-10-13T02:14:26.395640+00:00",
+        "pid": 13770,
+        "inventory": "/private/tmp/still-shift-ms3-native10-browser1-inputs.json",
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "endedUtc": "2026-10-13T02:38:18.096339+00:00",
+        "session": 3926,
+        "root": "/private/tmp/still-shift-ms3-native-relocated-YkvFDd",
+        "products": 10,
+        "freshNativeSubmissions": 360
+      },
+      "independentAudit": {
+        "attempt": 2,
+        "sourceCommit": "c474c9c5c976b4c249163c0749d80f7e11e370f4",
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "products": 10,
+        "decodedFrames": 600,
+        "images": 270,
+        "actualScalarSamples": 600,
+        "pins": 473,
+        "firstAuditFailureRetained": true
       }
     }
   ],
@@ -537,8 +558,8 @@
     }
   },
   "remaining": [
-    "Actual native interruption/cancellation/corrupt-cache/recovery/relocation proof and remaining worker/managed integration; implemented native executor/dependency/code-profile/cache/full-decode proof is retained separately.",
-    "Operational registered assertions/MS2 timeline/grouped warnings/report/handoff integration is implemented with77 scoped controls; actual native source-held proof and complete local tiers are pending. Broader faults, analytic/continuous collision and actual whole reviews remain.",
+    "Actual CLI/OS interruption/cancellation/input corruption/missing audio/export collision/targeted retries/relocation and independent473-pin audit now pass on c474c9c5; retain exact bindings and any remaining worker/managed integration requirements.",
+    "Operational registered assertions/MS2 timeline/grouped warnings/report/handoff integration passes scoped controls, exact local tiers and actual native independent audits. Broader faults, analytic/continuous collision and actual whole reviews remain.",
     "Original ten-pilot review artifacts; scoped/stale repairs/affected rerender and automatic MS1 overlap recovery preserving plates. Three-family evidence derivation, actual camera-cut extraction and fresh-session handoff are verified separately.",
     "Original ten distinct question fixtures with actual factual/design/genuine speech/visual proof; five assets and two behaviors remain required and unadmitted.",
     "One actual bounded episode/cohort report command and generated production schema/limit agreement are verified. Broader import/preview/export capability reconciliation, actual pilot measurements, final full/archive/installed and MS3 PR remain.",

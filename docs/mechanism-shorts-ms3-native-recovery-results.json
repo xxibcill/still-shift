@@ -4,7 +4,7 @@
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
   "baseCommit": "169603a3",
-  "status": "actual-native-cli-os-recovery-running",
+  "status": "actual-native-cli-os-recovery-and-independent-audit-passed",
   "sourceSnapshot": [
     {
       "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/browser/mechanism-production-recovery.ts",
@@ -121,7 +121,7 @@
           "log": "/private/tmp/still-shift-ms3-native10-preflight3-3.log"
         }
       ],
-      "qualification": "Final compile/lint/pinned-toolchain/boundary pass; actual group unrun."
+      "qualification": "Final compile/lint/pinned-toolchain/boundary pass; subsequent actual native invocation is recorded separately below."
     }
   ],
   "registeredCommand": "pnpm test:browser:mechanism-production-recovery",
@@ -191,26 +191,43 @@
       "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
     }
   ],
-  "qualification": "Registered compiled verification, not executed evidence. Synthetic engineering PCM; independent decode/image/current-history audit and whole mechanical/glyph/factual/continuous/listening/human/pilot review remain separate. No actual OS/native recovery pass claimed.",
+  "qualification": "Actual CLI/OS interruption/cancellation/input corruption/missing audio/export collision/targeted retries/relocation and independent complete artifact/history/current-report audit pass on held c474c9c5. Ten retained sealed products are engineering executions, not ten pilot episodes. Synthetic engineering PCM; whole mechanical/glyph/factual/continuous/listening/human and pilot acceptance remain unreviewed.",
   "remaining": [
-    "Actual serial invocation and terminal/source-hold receipt; retain failures/partials and owned-worker cleanup.",
-    "Independent complete decoded frame/audio/image/program/cohort/history audit on recovered outputs.",
-    "All original MS3 scoped/MS1 repairs, broader QA, ten questions/five assets/two behaviors/genuine inputs/capabilities and final full/benchmark/archive/installed work."
+    "Broader registered QA faults and genuine whole reviews.",
+    "Original MS3 scoped/MS1 repairs, ten frozen questions/five assets/two behaviors/genuine inputs/capabilities and final full/benchmark/archive/installed work."
   ],
   "committedSource": "c474c9c5c976b4c249163c0749d80f7e11e370f4",
   "attempts": [
     {
-      "status": "running",
+      "status": "passed",
       "command": "pnpm test:browser:mechanism-production-recovery",
       "sourceCommit": "c474c9c5c976b4c249163c0749d80f7e11e370f4",
       "startedUtc": "2026-10-13T02:14:26.395640+00:00",
       "pid": 13770,
       "inventory": "/private/tmp/still-shift-ms3-native10-browser1-inputs.json",
-      "actualExitCode": null,
+      "actualExitCode": 0,
       "session": 3926,
-      "root": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu",
+      "root": "/private/tmp/still-shift-ms3-native-relocated-YkvFDd",
       "logPath": "/private/tmp/still-shift-ms3-native10-browser1.log",
-      "resume": "Poll session3926. If handle closes, inspect final receipt/log/run or failure files. Observation timeout is not terminal. Do not restart a confirmed live run."
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-13T02:38:18.096339+00:00",
+      "originalRoot": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu",
+      "retiredRoot": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu.retired",
+      "run": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-YkvFDd/run.json",
+        "bytes": 4964,
+        "sha256": "sha256:b3e82508db8d0e9a4d4e6385a9c0df86f8f8a7f622d29b871c2351e6061f69bd"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-native10-browser1.log",
+        "bytes": 1212,
+        "sha256": "sha256:5de50b4e434443c339eb55f9a96b278c3feddceb90537cbb39a71cce37f7fbd5"
+      },
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-native10-browser1-receipt.json",
+        "bytes": 401,
+        "sha256": "sha256:e2b8831fe6d00fa28e6ed4aea165d65a0c7ab7f9a889d99d35738ddafc8cce90"
+      }
     }
   ],
   "observedPrefix": {
@@ -220,11 +237,335 @@
       "bytes": 2451,
       "sha256": "sha256:c1ec551108c96f11df022f6dfe2bf694eee49aaa578617dc49d2003c50f7bdf2"
     },
-    "observation": "ActualSIGKILL closed the owned process group after a real PNG; queue resumed S1 with retained interrupted attempt and current running attempt2. Remaining products/faults/recovery/cohort/independent audit unverified."
+    "observation": "ActualSIGKILL closed the owned process group after a real PNG; queue resumed S1 with retained interrupted attempt and current running attempt2. Remaining products/faults/recovery/cohort/independent audit unverified.",
+    "retainedAt": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu.retired/stage-1-actual-sigkill-native-output.json",
+    "qualification": "Historical live prefix retained; superseded by the separately pinned actual terminal run and complete independent audit."
   },
   "heldInputs": {
     "files": 2703,
     "bytes": 121404590,
     "inventory": "/private/tmp/still-shift-ms3-native10-browser1-inputs.json"
-  }
+  },
+  "nativeSummary": {
+    "products": 10,
+    "freshNativeSubmissions": 360,
+    "root": "/private/tmp/still-shift-ms3-native-relocated-YkvFDd",
+    "originalRoot": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu",
+    "retiredRoot": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu.retired",
+    "failedAttempts": 3,
+    "cancelled": 1,
+    "interrupted": 1,
+    "firstPassed": 2,
+    "firstPassDenominator": 3,
+    "reviewedReady": 0,
+    "engineeringPCM": true
+  },
+  "stagePins": [
+    {
+      "name": "cli-queue",
+      "originalReceipt": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu/stage-0-cli-queue.json",
+        "bytes": 1362,
+        "sha256": "sha256:caaa1be60b7073dc0f3f0da99104e2a296562c886828b4cd2d27b25af5e9a9c6"
+      },
+      "retainedFile": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu.retired/stage-0-cli-queue.json",
+        "bytes": 1362,
+        "sha256": "sha256:caaa1be60b7073dc0f3f0da99104e2a296562c886828b4cd2d27b25af5e9a9c6"
+      }
+    },
+    {
+      "name": "actual-sigkill-native-output",
+      "originalReceipt": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu/stage-1-actual-sigkill-native-output.json",
+        "bytes": 2451,
+        "sha256": "sha256:c1ec551108c96f11df022f6dfe2bf694eee49aaa578617dc49d2003c50f7bdf2"
+      },
+      "retainedFile": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu.retired/stage-1-actual-sigkill-native-output.json",
+        "bytes": 2451,
+        "sha256": "sha256:c1ec551108c96f11df022f6dfe2bf694eee49aaa578617dc49d2003c50f7bdf2"
+      }
+    },
+    {
+      "name": "resume-after-sigkill",
+      "originalReceipt": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu/stage-2-resume-after-sigkill.json",
+        "bytes": 7993,
+        "sha256": "sha256:2a5a14453512f1614338ea2e67b03d6787e586f77376d997c0df9537df339f6c"
+      },
+      "retainedFile": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu.retired/stage-2-resume-after-sigkill.json",
+        "bytes": 7993,
+        "sha256": "sha256:2a5a14453512f1614338ea2e67b03d6787e586f77376d997c0df9537df339f6c"
+      }
+    },
+    {
+      "name": "actual-sigterm-cached-export",
+      "originalReceipt": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu/stage-3-actual-sigterm-cached-export.json",
+        "bytes": 6374,
+        "sha256": "sha256:aebbdb757328966be6a08ae88d6fda51a2ed199b9dd971d1ed46343636a5f7a5"
+      },
+      "retainedFile": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu.retired/stage-3-actual-sigterm-cached-export.json",
+        "bytes": 6374,
+        "sha256": "sha256:aebbdb757328966be6a08ae88d6fda51a2ed199b9dd971d1ed46343636a5f7a5"
+      }
+    },
+    {
+      "name": "resume-after-sigterm",
+      "originalReceipt": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu/stage-4-resume-after-sigterm.json",
+        "bytes": 9175,
+        "sha256": "sha256:dc3810aed84d3ad7349fa4720d9bd3965b789c0bb0080c8f00910da470a59412"
+      },
+      "retainedFile": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu.retired/stage-4-resume-after-sigterm.json",
+        "bytes": 9175,
+        "sha256": "sha256:dc3810aed84d3ad7349fa4720d9bd3965b789c0bb0080c8f00910da470a59412"
+      }
+    },
+    {
+      "name": "corrupt-scene-missing-audio",
+      "originalReceipt": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu/stage-5-corrupt-scene-missing-audio.json",
+        "bytes": 10937,
+        "sha256": "sha256:17e9e8c1e0fa57b26270f948ba67cadb3ef18051c187f00cebbd5745627af862"
+      },
+      "retainedFile": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu.retired/stage-5-corrupt-scene-missing-audio.json",
+        "bytes": 10937,
+        "sha256": "sha256:17e9e8c1e0fa57b26270f948ba67cadb3ef18051c187f00cebbd5745627af862"
+      }
+    },
+    {
+      "name": "cli-retry",
+      "originalReceipt": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu/stage-6-cli-retry.json",
+        "bytes": 1489,
+        "sha256": "sha256:630d43bb521515b9e0301b6df6488d1ebb2622b1830ac55d1ffb1d7f9234a42d"
+      },
+      "retainedFile": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu.retired/stage-6-cli-retry.json",
+        "bytes": 1489,
+        "sha256": "sha256:630d43bb521515b9e0301b6df6488d1ebb2622b1830ac55d1ffb1d7f9234a42d"
+      }
+    },
+    {
+      "name": "targeted-input-recovery",
+      "originalReceipt": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu/stage-7-targeted-input-recovery.json",
+        "bytes": 12253,
+        "sha256": "sha256:16fb29876c4ac7552fc08a6eed6832cacc7977578abc45fe0e993440eb955a28"
+      },
+      "retainedFile": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu.retired/stage-7-targeted-input-recovery.json",
+        "bytes": 12253,
+        "sha256": "sha256:16fb29876c4ac7552fc08a6eed6832cacc7977578abc45fe0e993440eb955a28"
+      }
+    },
+    {
+      "name": "owned-export-collision-injected",
+      "originalReceipt": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu/stage-8-owned-export-collision-injected.json",
+        "bytes": 351,
+        "sha256": "sha256:9041a1eb0d3378d7862307b28a6c7061c6248226fc9fbaa6cc219b37d44f62a2"
+      },
+      "retainedFile": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu.retired/stage-8-owned-export-collision-injected.json",
+        "bytes": 351,
+        "sha256": "sha256:9041a1eb0d3378d7862307b28a6c7061c6248226fc9fbaa6cc219b37d44f62a2"
+      }
+    },
+    {
+      "name": "owned-export-publication-failure",
+      "originalReceipt": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu/stage-9-owned-export-publication-failure.json",
+        "bytes": 10970,
+        "sha256": "sha256:6ca661f76aed978d1f557fb99c14b08010446a475aa60946473352e21fe0a6ae"
+      },
+      "retainedFile": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu.retired/stage-9-owned-export-publication-failure.json",
+        "bytes": 10970,
+        "sha256": "sha256:6ca661f76aed978d1f557fb99c14b08010446a475aa60946473352e21fe0a6ae"
+      }
+    },
+    {
+      "name": "cli-retry",
+      "originalReceipt": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu/stage-10-cli-retry.json",
+        "bytes": 1417,
+        "sha256": "sha256:2e0e5f1812aeb0ed2a11b299d8db21f43e1421a4ce66faceb4f5d3d1a1159b3f"
+      },
+      "retainedFile": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu.retired/stage-10-cli-retry.json",
+        "bytes": 1417,
+        "sha256": "sha256:2e0e5f1812aeb0ed2a11b299d8db21f43e1421a4ce66faceb4f5d3d1a1159b3f"
+      }
+    },
+    {
+      "name": "targeted-export-recovery",
+      "originalReceipt": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu/stage-11-targeted-export-recovery.json",
+        "bytes": 13508,
+        "sha256": "sha256:a36ab6d1185ad35188b7b518689700149e4aab35be625ace0fda8bd64b299b77"
+      },
+      "retainedFile": {
+        "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu.retired/stage-11-targeted-export-recovery.json",
+        "bytes": 13508,
+        "sha256": "sha256:a36ab6d1185ad35188b7b518689700149e4aab35be625ace0fda8bd64b299b77"
+      }
+    },
+    {
+      "name": "cli-report",
+      "originalReceipt": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-YkvFDd/stage-12-cli-report.json",
+        "bytes": 5760,
+        "sha256": "sha256:8d3c88048c7b7e1421d77d2e6bded679ca317fd8a0127db2de2be566bf695f54"
+      },
+      "retainedFile": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-YkvFDd/stage-12-cli-report.json",
+        "bytes": 5760,
+        "sha256": "sha256:8d3c88048c7b7e1421d77d2e6bded679ca317fd8a0127db2de2be566bf695f54"
+      }
+    },
+    {
+      "name": "actual-relocation-recovery",
+      "originalReceipt": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-YkvFDd/stage-13-actual-relocation-recovery.json",
+        "bytes": 16462,
+        "sha256": "sha256:dbc7d66d1f7f31804552231d2d73d2f4e23b6edcbdbe10104866b3829334c949"
+      },
+      "retainedFile": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-YkvFDd/stage-13-actual-relocation-recovery.json",
+        "bytes": 16462,
+        "sha256": "sha256:dbc7d66d1f7f31804552231d2d73d2f4e23b6edcbdbe10104866b3829334c949"
+      }
+    },
+    {
+      "name": "cli-report",
+      "originalReceipt": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-YkvFDd/stage-14-cli-report.json",
+        "bytes": 6026,
+        "sha256": "sha256:dcb8cd422ec1a4d8f215d7986e54c0324e6209e6c3a47b328acd74b0e69c0626"
+      },
+      "retainedFile": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-YkvFDd/stage-14-cli-report.json",
+        "bytes": 6026,
+        "sha256": "sha256:dcb8cd422ec1a4d8f215d7986e54c0324e6209e6c3a47b328acd74b0e69c0626"
+      }
+    }
+  ],
+  "independentAuditAttempts": [
+    {
+      "attempt": 1,
+      "receipt": {
+        "status": "failed",
+        "startedUtc": "2026-10-13T02:38:46.615844+00:00",
+        "pid": 64097,
+        "sourceCommit": "c474c9c5c976b4c249163c0749d80f7e11e370f4",
+        "documentationHead": "2b6278010a76664da44984439abe99b2c7625d5d",
+        "nativeRun": "/private/tmp/still-shift-ms3-native-relocated-YkvFDd",
+        "actualExitCode": 1,
+        "sourceHoldCheckExitCode": 0,
+        "endedUtc": "2026-10-13T02:38:54.709153+00:00"
+      },
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-native10-audit1.py",
+          "bytes": 20723,
+          "sha256": "sha256:cc02039b6edd69a0dbb497e41bd7f9380e8a596cde11c92b40bc923018ef0b2f"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-native10-audit1-wrapper.py",
+          "bytes": 1366,
+          "sha256": "sha256:d07a5fa62749ce9636c3b543725cb9e86fc1be83a8570a00c84b70a1fca837a7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-native10-audit1.log",
+          "bytes": 1870,
+          "sha256": "sha256:571f11a00aef58ea23cbf6ecedd306c9679aedc5db0b0004b81dc6b24ed003a2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-native10-audit1-receipt.json",
+          "bytes": 398,
+          "sha256": "sha256:d3410610ed7f1f30218bc6af36688efe7ca39184ab3ffcec12a77d8bffb71eba"
+        }
+      ],
+      "failure": "Media/native scalar/warning/image/stage/history prefix completed; fresh CLI report returned2 with unavailable diagnostic in restricted execution environment. No complete audit pass claimed.",
+      "cliDiagnostics": [
+        {
+          "path": "/private/tmp/still-shift-ms3-native10-audit1-cli-diagnostic.json",
+          "bytes": 898,
+          "sha256": "sha256:33034a3bc704383b6fa930196ad8d14dfba7150878caacedfe879f90e04ac4d0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-native10-audit1-cli-diagnostic2.json",
+          "bytes": 2046,
+          "sha256": "sha256:0514ec341954706fe39d1540759268cbe7a4f6423156432702803d6fbfc11599"
+        }
+      ],
+      "followup": "Identical report operation passed in managed worktree escalation environment; second complete audit ran in that environment with command terminal output retained."
+    },
+    {
+      "attempt": 2,
+      "receipt": {
+        "status": "passed",
+        "startedUtc": "2026-10-13T02:43:08.211500+00:00",
+        "pid": 79797,
+        "sourceCommit": "c474c9c5c976b4c249163c0749d80f7e11e370f4",
+        "documentationHead": "2b6278010a76664da44984439abe99b2c7625d5d",
+        "nativeRun": "/private/tmp/still-shift-ms3-native-relocated-YkvFDd",
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "endedUtc": "2026-10-13T02:44:30.198901+00:00"
+      },
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-native10-audit2.py",
+          "bytes": 20978,
+          "sha256": "sha256:b0bf9431264870f9445f185bd0be28d11815ccda604a15a93c19bf522f9829ab"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-native10-audit2-wrapper.py",
+          "bytes": 1366,
+          "sha256": "sha256:78a374b8c9c17ca56dd0fcb69295751045dc65b3ec14d6fd4024e363a7d44695"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-native10-audit2.log",
+          "bytes": 946,
+          "sha256": "sha256:2814211b91b3e537ebf1a410fdfb8ea782d8e9b09256124795f4a2e48bc78ac9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-native10-audit2-receipt.json",
+          "bytes": 398,
+          "sha256": "sha256:a2ce06ed4a4d55fb7a40e9668fa8317381676b7a259fe123f4aa1fb0ae67cc52"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-native10-audit2.json",
+          "bytes": 191529,
+          "sha256": "sha256:3c13153b3f27a58dd3dd2a98fd7d67399fb91b1c89b952602cafd5cab8c63808"
+        }
+      ],
+      "summary": {
+        "products": 10,
+        "decodedFrames": 600,
+        "images": 270,
+        "independentNativeCaptures": 6,
+        "actualScalarSamples": 600,
+        "freshNativeSubmissions": 360
+      },
+      "pins": 473,
+      "methods": [
+        "actual SIGKILL/SIGTERM and partial native PNG receipt, exact attempts/neighbors/CAS retry/export collision history",
+        "relocation with original directory unavailable and independently current CLI validation",
+        "retained immutable programs and hashed original native matrices/anchors; no relabeling old capture as fresh",
+        "independent scalar/range/failure and raw warning peak/unit/children/parts/frame recomputation",
+        "full final video/audio decode and exact RGBA frame/crop/phone transforms",
+        "independent cohort percentiles/review/first-pass and null authoring measurements"
+      ],
+      "qualification": "Engineering lifecycle/QA/cache/history proof only. No whole mechanical/glyph/factual/continuous/listening/pilot/human acceptance."
+    }
+  ]
 }
