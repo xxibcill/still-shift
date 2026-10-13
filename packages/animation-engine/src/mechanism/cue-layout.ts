@@ -1,3 +1,4 @@
+import { mechanismCueCaptionLayout } from "./cue-caption.ts";
 import type {
   MechanismNarratedCycle,
   MechanismRigControlsV2,
@@ -80,12 +81,7 @@ export function planMechanismCueLayout(
         "mechanism-cue-layout-anchor",
         "Protected contact anchors must be known and unique",
       );
-    const caption = {
-      x: width * 0.05,
-      y: height * 0.79,
-      width: width * 0.9,
-      height: height * 0.2,
-    };
+    const caption = mechanismCueCaptionLayout(width, height).exclusion;
     const labels = cue.annotations.map((annotation) => {
       const locked = annotation.layout?.locked ?? true;
       const positions: Position[] = [

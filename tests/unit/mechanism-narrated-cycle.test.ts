@@ -19,6 +19,60 @@ function failure(run: () => unknown) {
   throw Error("Expected located compiler rejection");
 }
 describe("supplied narration cue compiler", () => {
+  function captionLayers(width: number, height: number) {
+    const { instance, document } = narratedCycleFixture("tape-hook");
+    const result = compileMechanismNarratedCycle(instance, {
+      ...document,
+      output: { ...document.output, width, height },
+      cues: document.cues.map((cue) => ({
+        ...cue,
+        annotations: [],
+        worldAnnotations: [],
+        layout: undefined,
+      })),
+    });
+    const text = result.composition.layers.find(
+      (layer) => layer.type === "text" && layer.metadata?.track === "caption",
+    );
+    const panel = result.composition.layers.find(
+      (layer) =>
+        layer.type === "shape" && layer.metadata?.track === "caption-panel",
+    );
+    if (text?.type !== "text" || panel?.type !== "shape")
+      throw Error("Expected caption text and backing");
+    const rectangle = panel.contents.find((content) => content.type === "rect");
+    if (rectangle?.type !== "rect")
+      throw Error("Expected caption backing extent");
+    return { text, panel, rectangle };
+  }
+  it.each([
+    [320, 180],
+    [1280, 720],
+    [720, 1280],
+    [1080, 1920],
+  ])(
+    "fits caption text and backing in the five percent safe inset at %dx%d",
+    (width, height) => {
+      const { text, panel, rectangle } = captionLayers(width, height);
+      const [x, y] = panel.transform!.position as [number, number];
+      const [panelWidth, panelHeight] = rectangle.size as [number, number];
+      const [textX, textY] = text.transform!.position as [number, number];
+      const [textWidth, textHeight] = text.size!;
+      expect(x - panelWidth / 2).toBeGreaterThanOrEqual(width * 0.05 - 1e-8);
+      expect(x + panelWidth / 2).toBeLessThanOrEqual(width * 0.95 + 1e-8);
+      expect(y - panelHeight / 2).toBeGreaterThanOrEqual(height * 0.05 - 1e-8);
+      expect(y + panelHeight / 2).toBeLessThanOrEqual(height * 0.95 + 1e-8);
+      expect(textX).toBeGreaterThanOrEqual(x - panelWidth / 2);
+      expect(textX + textWidth).toBeLessThanOrEqual(x + panelWidth / 2);
+      expect(textY).toBeGreaterThanOrEqual(y - panelHeight / 2);
+      expect(textY + textHeight).toBeLessThanOrEqual(y + panelHeight / 2);
+      expect(textHeight).toBeGreaterThanOrEqual(text.fontSize! * 3 * 1.2);
+    },
+  );
+  it("reserves three text lines without an oversized portrait caption backing", () => {
+    const { rectangle } = captionLayers(1080, 1920);
+    expect((rectangle.size as [number, number])[1]).toBeLessThan(1920 * 0.12);
+  });
   it("compiles all five tracks for three distinct family consumers with unchanged source clock", () => {
     for (const family of ["tape-hook", "cable-tie", "clothespeg"] as const) {
       const { instance, document } = narratedCycleFixture(family),

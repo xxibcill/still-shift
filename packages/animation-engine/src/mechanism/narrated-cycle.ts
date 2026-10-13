@@ -1,3 +1,4 @@
+import { mechanismCueCaptionLayout } from "./cue-caption.ts";
 import { resolveCueSurfaceMarking } from "./cue-surface-markings.ts";
 import { compileCueWorldText } from "./cue-world-annotations.ts";
 import { compileCueAnnotation } from "./cue-annotations.ts";
@@ -425,6 +426,7 @@ export function compileMechanismNarratedCycle(
   let camera = instance.scene.camera;
   const controller = "mechanism-cycle-world";
   const fontSize = Math.max(8, Math.min(width / 24, height / 13));
+  const caption = mechanismCueCaptionLayout(width, height);
   const textLayer = (
     id: string,
     text: string,
@@ -438,7 +440,7 @@ export function compileMechanismNarratedCycle(
     text,
     fontAsset: fontId,
     style: fontId,
-    fontSize,
+    fontSize: caption.fontSize,
     color: "#ffffff",
     align: "center",
     anchor: "top",
@@ -446,7 +448,11 @@ export function compileMechanismNarratedCycle(
     outPoint: end,
     transform: { anchor: [0, 0], position },
     size,
-    textBox: { locale: document.locale, maxLines: 3, lineHeight: 1.2 },
+    textBox: {
+      locale: document.locale,
+      maxLines: caption.maxLines,
+      lineHeight: caption.lineHeight,
+    },
   });
   const panel = (
     id: string,
@@ -506,8 +512,8 @@ export function compileMechanismNarratedCycle(
         cue.text,
         timing.startFrame,
         timing.endFrameExclusive,
-        [width * 0.08, height * 0.8],
-        [width * 0.84, height * 0.18],
+        caption.textPosition,
+        caption.textSize,
       ),
       metadata: {
         cue: cue.id,
@@ -518,8 +524,8 @@ export function compileMechanismNarratedCycle(
     layers.push({
       ...panel(
         trackId("caption-panel", cue.id),
-        [width * 0.5, height * 0.89],
-        [width * 0.9, height * 0.2],
+        caption.panelPosition,
+        caption.panelSize,
         timing.startFrame,
         timing.endFrameExclusive,
       ),
