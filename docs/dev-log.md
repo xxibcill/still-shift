@@ -68,8 +68,9 @@ still hold before relying on them.
   plus build/lint/fourteen schemas/boundaries/declarations pass with exact source.
   An initial compile failure (missing test imports) and wrapper syntax failure
   are retained. Retry source `0d590658` now passes complete fast4,458/440,
-  with2,702 inputs/121,387,685B exact. Runtime/session65430 is live; poll its
-  handle/receipt without restarting. Native draft2 has improved child cleanup,
+  with2,702 inputs/121,387,685B exact. Runtime/session65430 now passes253/45,
+  integration322/57, depth14/smoke actual0/hold0 on the same source. Native
+  draft3 adds publication-phase export collision; draft2 has improved child cleanup,
   bounded output/close receipts and distinct captions, but remains unintegrated/
   unrun and needs compile/lint/registration/preflight before actual OS/recovery
   and independent audit. Initial draft is retained under its original hash.
@@ -281,7 +282,8 @@ still hold before relying on them.
   fails before any commands. Both repaired; earlier scoped runs remain qualified.
 - **Checkpoint:** committed/pushed `0d590658`; complete fast4,458/440 actual0/
   hold0,2,702 inputs/121,387,685B exact. Runtime/session65430 is live on the same
-  source. Poll its handle/receipt, then integrate/check/run native draft2 and audit it. All original MS3 pilot/extension gates remain.
+  source. It now passes253 runtime/322 integration/depth14/smoke actual0/hold0.
+  Next: integrate/check/run native draft3 and independently audit it. All original MS3 pilot/extension gates remain.
 - **Records:** [retry proof](./mechanism-shorts-ms3-retry-results.json),
   [queue/retry commands](./mechanism-production-queue.md).
 

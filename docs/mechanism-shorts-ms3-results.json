@@ -3,7 +3,7 @@
   "milestone": "MS3",
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
-  "status": "in-progress-targeted-retry-fast-passed-runtime-running",
+  "status": "in-progress-targeted-retry-complete-tiers-passed-native-harness-next",
   "baseMain": "57967fa6497249d75e740ba837b8e2687cc81a98",
   "ms2Prerequisite": {
     "commit": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
@@ -474,7 +474,7 @@
     },
     {
       "id": "targeted-retry9",
-      "status": "current-complete-fast-passed-runtime-running-native-recovery-pending",
+      "status": "complete-current-fast-runtime-passed-real-native-recovery-pending",
       "record": "docs/mechanism-shorts-ms3-retry-results.json",
       "focusedTests": 48,
       "owningSourceHoldExitCode": 0,
@@ -487,9 +487,16 @@
         "sourceHoldCheckExitCode": 0
       },
       "currentRuntime": {
-        "status": "running",
+        "status": "passed",
         "session": 65430,
-        "sourceCommit": "0d59065879e92891987ae818d3574bf1d0f2ff49"
+        "sourceCommit": "0d59065879e92891987ae818d3574bf1d0f2ff49",
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "runtimeTests": 253,
+        "integrationTests": 322,
+        "depthTests": 14,
+        "browserSmoke": "completed",
+        "heldInputFiles": 2702
       }
     }
   ],
