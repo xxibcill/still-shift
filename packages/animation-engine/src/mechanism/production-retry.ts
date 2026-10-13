@@ -6,11 +6,11 @@ import { acquireArtifactLock } from "@still-shift/execution-runtime/locks";
 import { MechanismHashSchema } from "@still-shift/scene-contract";
 import { MECHANISM_RESPONSE_LIMITS } from "./protocol.ts";
 import {
-  MechanismProductionQueueSchema,
+  MechanismProductionQueueVersionsSchema as MechanismProductionQueueSchema,
   MechanismProductionQueueStateSchema,
   MechanismProductionQueueItemSchema,
   MECHANISM_PRODUCTION_QUEUE_LIMITS as LIMIT,
-  type MechanismProductionQueue,
+  type MechanismProductionQueueAny as MechanismProductionQueue,
 } from "./production-queue-contract.ts";
 import { assertProductionJournal } from "./production-queue-validation.ts";
 import { mechanismPackHash } from "./pack-support.ts";

@@ -110,7 +110,7 @@ export const MechanismProductionQASchema = z
   });
 export type MechanismProductionQA = z.infer<typeof MechanismProductionQASchema>;
 
-export const MechanismProductionEpisodeReportSchema = z
+const productionEpisodeFields = z
   .object({
     schemaVersion: z.literal("mechanism-production-episode-report-1"),
     id: MechanismIdSchema,
@@ -171,42 +171,69 @@ export const MechanismProductionEpisodeReportSchema = z
       })
       .strict(),
   })
-  .strict()
-  .superRefine((report, ctx) => {
-    const reject = (message: string) =>
-      ctx.addIssue({ code: "custom", message });
+  .strict();
+function validateProductionEpisode(
+  report: Pick<
+    z.infer<typeof productionEpisodeFields>,
+    "qa" | "attempts" | "binding" | "clock" | "authoring"
+  >,
+  ctx: z.RefinementCtx,
+) {
+  const reject = (message: string) => ctx.addIssue({ code: "custom", message });
+  if (
+    new Set(report.qa.map((q) => q.dimension)).size !==
+    MECHANISM_QA_DIMENSIONS.length
+  )
+    reject("Each QA dimension must appear exactly once");
+  if (report.attempts.some((a, i) => a.number !== i + 1))
+    reject("Attempt history must retain contiguous original attempt numbers");
+  for (const review of report.qa) {
+    const interval = review.evaluatedInterval;
     if (
-      new Set(report.qa.map((q) => q.dimension)).size !==
-      MECHANISM_QA_DIMENSIONS.length
-    )
-      reject("Each QA dimension must appear exactly once");
-    if (report.attempts.some((a, i) => a.number !== i + 1))
-      reject("Attempt history must retain contiguous original attempt numbers");
-    for (const review of report.qa) {
-      const interval = review.evaluatedInterval;
-      if (
-        interval &&
-        mechanismProductionBindingMatches(review.binding, report.binding)
-      ) {
-        const limit =
-          interval.unit === "output-frame"
-            ? report.clock.outputFrames
-            : report.clock.sourceSamples;
-        if (interval.endExclusive > limit)
-          reject("Current QA interval exceeds its bound artifact clock");
-      }
+      interval &&
+      mechanismProductionBindingMatches(review.binding, report.binding)
+    ) {
+      const limit =
+        interval.unit === "output-frame"
+          ? report.clock.outputFrames
+          : report.clock.sourceSamples;
+      if (interval.endExclusive > limit)
+        reject("Current QA interval exceeds its bound artifact clock");
     }
-    const tokens = report.authoring;
-    if (
-      [
-        tokens.setupTokens,
-        tokens.routineTokens,
-        tokens.baselineRoutineTokens,
-      ].some((x) => x !== null) &&
-      !tokens.measurementEvidence
-    )
-      reject("Token measurements require retained measurement evidence");
-  });
+  }
+  const tokens = report.authoring;
+  if (
+    [
+      tokens.setupTokens,
+      tokens.routineTokens,
+      tokens.baselineRoutineTokens,
+    ].some((x) => x !== null) &&
+    !tokens.measurementEvidence
+  )
+    reject("Token measurements require retained measurement evidence");
+}
+export const MechanismProductionEpisodeReportSchema =
+  productionEpisodeFields.superRefine(validateProductionEpisode);
+export const BlenderProductionEpisodeReportSchema = z
+  .object({
+    ...productionEpisodeFields.shape,
+    schemaVersion: z.literal("mechanism-production-episode-report-2"),
+    backend: z.literal("blender-native"),
+    family: z.string().regex(/^[A-Za-z][A-Za-z0-9.-]{0,127}$/),
+  })
+  .strict()
+  .superRefine(validateProductionEpisode);
+export type BlenderProductionEpisodeReport = z.infer<
+  typeof BlenderProductionEpisodeReportSchema
+>;
+export const MechanismProductionEpisodeReportVersionsSchema = z.union([
+  MechanismProductionEpisodeReportSchema,
+  BlenderProductionEpisodeReportSchema,
+]);
+export type MechanismProductionEpisodeReportAny = z.infer<
+  typeof MechanismProductionEpisodeReportVersionsSchema
+>;
+
 export type MechanismProductionEpisodeReport = z.infer<
   typeof MechanismProductionEpisodeReportSchema
 >;
@@ -248,7 +275,7 @@ export type MechanismProductionDisposition = {
 export function inspectMechanismProductionDisposition(
   input: unknown,
 ): MechanismProductionDisposition {
-  const report = MechanismProductionEpisodeReportSchema.parse(input);
+  const report = MechanismProductionEpisodeReportVersionsSchema.parse(input);
   const staleDimensions: MechanismQADimension[] = [];
   const incompleteDimensions: MechanismQADimension[] = [];
   const statuses = {} as MechanismProductionDisposition["statuses"];
@@ -391,7 +418,7 @@ export function summarizeMechanismProductionCohort(
   input: readonly unknown[],
 ): MechanismProductionCohortReport {
   const reports = z
-    .array(MechanismProductionEpisodeReportSchema)
+    .array(MechanismProductionEpisodeReportVersionsSchema)
     .max(300)
     .parse(input);
   if (new Set(reports.map((r) => r.id)).size !== reports.length)

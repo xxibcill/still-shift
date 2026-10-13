@@ -15,7 +15,7 @@ import {
   nativeJsonTreeCapacity,
 } from "../native-source-admission.ts";
 import { cuePlateFile } from "./cue-plate-files.ts";
-import type { MechanismProductionQueueProduct } from "./production-queue-contract.ts";
+import type { MechanismProductionQueueProductAny as MechanismProductionQueueProduct } from "./production-queue-contract.ts";
 
 export function productionFailure(
   code: string,

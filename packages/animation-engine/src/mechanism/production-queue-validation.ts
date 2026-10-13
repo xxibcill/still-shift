@@ -1,10 +1,10 @@
 import {
-  MechanismProductionQueueProductSchema,
-  type MechanismProductionQueue,
-  type MechanismProductionQueueItem,
+  MechanismProductionQueueProductVersionsSchema as MechanismProductionQueueProductSchema,
+  type MechanismProductionQueueAny as MechanismProductionQueue,
+  type MechanismProductionQueueItemAny as MechanismProductionQueueItem,
   type MechanismProductionQueueState,
   type MechanismProductionQueueRow,
-  type MechanismProductionQueueProduct,
+  type MechanismProductionQueueProductAny as MechanismProductionQueueProduct,
   type MechanismProductionAttempt,
 } from "./production-queue-contract.ts";
 import { productionFailure } from "./production-queue-files.ts";
@@ -18,6 +18,7 @@ export const productionQueueItemIdentity = (
     question: item.question,
     family: item.family,
     designVariant: item.designVariant,
+    ...("backend" in item ? { backend: item.backend } : {}),
   });
 export const productionQueueItemRequest = (
   item: MechanismProductionQueueItem,
@@ -64,6 +65,8 @@ export function assertProductionProduct(
   const product = MechanismProductionQueueProductSchema.parse(value),
     report = product.report;
   if (
+    (queue.schemaVersion === "mechanism-production-queue-2") !==
+      (product.schemaVersion === "mechanism-production-queue-product-2") ||
     product.requestHash !== row.requestHash ||
     report.binding.inputSha256 !== row.requestHash ||
     report.id !== item.id ||

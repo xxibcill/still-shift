@@ -104,6 +104,10 @@ export async function createMechanismProductionNativeExecutor(): Promise<Mechani
       });
     },
     execute: async (item, context) => {
+      if ("backend" in item)
+        throw Error(
+          "Use the native Blender production executor for this queue item",
+        );
       await assertCode();
       const expected = await inspectMechanismProductionNativeItem(
         {
@@ -419,6 +423,11 @@ export async function createMechanismProductionNativeExecutor(): Promise<Mechani
       } satisfies MechanismProductionQueueProduct;
     },
     verify: async (item, product, context) => {
+      if (
+        "backend" in item ||
+        product.schemaVersion !== "mechanism-production-queue-product-1"
+      )
+        throw Error("Native executor cannot verify another production backend");
       await assertCode();
       const outputFile = product.artifacts.find(
         (f) => f.sha256 === product.report.binding.outputSha256,

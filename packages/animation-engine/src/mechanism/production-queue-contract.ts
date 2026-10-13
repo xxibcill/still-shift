@@ -1,7 +1,10 @@
 import { z } from "zod";
 import { MechanismProductionFindingSchema } from "./production-failure.ts";
 import { MechanismHashSchema } from "@still-shift/scene-contract";
-import { MechanismProductionEpisodeReportSchema } from "./production-report.ts";
+import {
+  MechanismProductionEpisodeReportSchema,
+  BlenderProductionEpisodeReportSchema,
+} from "./production-report.ts";
 
 export const MECHANISM_PRODUCTION_QUEUE_LIMITS = {
   items: 300,
@@ -130,6 +133,82 @@ export const MechanismProductionQueueSchema = z
 export type MechanismProductionQueue = z.infer<
   typeof MechanismProductionQueueSchema
 >;
+export const BlenderProductionQueueItemSchema = z
+  .object({
+    ...MechanismProductionQueueItemSchema.shape,
+    backend: z.literal("blender-native"),
+    family: z.string().regex(/^[A-Za-z][A-Za-z0-9.-]{0,127}$/),
+  })
+  .strict()
+  .superRefine((item, ctx) => {
+    const paths = item.inputs.map((f) => f.path);
+    if (
+      new Set(paths).size !== paths.length ||
+      !paths.includes(item.familyPath) ||
+      !paths.includes(item.cuePath) ||
+      (item.qaPath !== undefined && !paths.includes(item.qaPath))
+    )
+      ctx.addIssue({
+        code: "custom",
+        message:
+          "Unique dependency pins must include native family and cue documents",
+      });
+  });
+export type BlenderProductionQueueItem = z.infer<
+  typeof BlenderProductionQueueItemSchema
+>;
+export const BlenderProductionQueueSchema = z
+  .object({
+    ...MechanismProductionQueueSchema.shape,
+    schemaVersion: z.literal("mechanism-production-queue-2"),
+    items: z.array(BlenderProductionQueueItemSchema).min(1).max(300),
+  })
+  .strict()
+  .superRefine((queue, ctx) => {
+    const questions = queue.items.map((i) =>
+      i.question.normalize("NFKC").trim().replace(/\s+/g, " ").toLowerCase(),
+    );
+    if (
+      new Set(queue.items.map((i) => i.id)).size !== queue.items.length ||
+      questions.some((q) => !q) ||
+      new Set(questions).size !== questions.length
+    )
+      ctx.addIssue({
+        code: "custom",
+        message: "Queue requires distinct item IDs and normalized questions",
+      });
+    if ((queue.revision === 0) !== (queue.baseHash === null))
+      ctx.addIssue({
+        code: "custom",
+        message: "Queue revisions require previous manifest hash",
+      });
+    if (
+      queue.retryFailedIds &&
+      (queue.revision === 0 ||
+        new Set(queue.retryFailedIds).size !== queue.retryFailedIds.length ||
+        queue.retryFailedIds.some(
+          (id) => !queue.items.some((i) => i.id === id),
+        ))
+    )
+      ctx.addIssue({
+        code: "custom",
+        message:
+          "Retry IDs require a revised queue and distinct selected item IDs",
+      });
+  });
+export type BlenderProductionQueue = z.infer<
+  typeof BlenderProductionQueueSchema
+>;
+export const MechanismProductionQueueVersionsSchema = z.union([
+  MechanismProductionQueueSchema,
+  BlenderProductionQueueSchema,
+]);
+export type MechanismProductionQueueAny = z.infer<
+  typeof MechanismProductionQueueVersionsSchema
+>;
+export type MechanismProductionQueueItemAny =
+  MechanismProductionQueueAny["items"][number];
+
 export const MechanismProductionAttemptSchema = z
   .object({
     number: z.number().int().min(1).max(96),
@@ -165,6 +244,22 @@ export const MechanismProductionQueueProductSchema = z
 export type MechanismProductionQueueProduct = z.infer<
   typeof MechanismProductionQueueProductSchema
 >;
+export const BlenderProductionQueueProductSchema =
+  MechanismProductionQueueProductSchema.extend({
+    schemaVersion: z.literal("mechanism-production-queue-product-2"),
+    report: BlenderProductionEpisodeReportSchema,
+  });
+export type BlenderProductionQueueProduct = z.infer<
+  typeof BlenderProductionQueueProductSchema
+>;
+export const MechanismProductionQueueProductVersionsSchema = z.union([
+  MechanismProductionQueueProductSchema,
+  BlenderProductionQueueProductSchema,
+]);
+export type MechanismProductionQueueProductAny = z.infer<
+  typeof MechanismProductionQueueProductVersionsSchema
+>;
+
 export const MechanismProductionQueueCheckpointSchema =
   MechanismProductionQueueProductSchema.extend({
     completion: MechanismProductionAttemptSchema,
@@ -183,6 +278,29 @@ export const MechanismProductionQueueCheckpointSchema =
 export type MechanismProductionQueueCheckpoint = z.infer<
   typeof MechanismProductionQueueCheckpointSchema
 >;
+export const BlenderProductionQueueCheckpointSchema =
+  BlenderProductionQueueProductSchema.extend({
+    completion: MechanismProductionAttemptSchema,
+  }).superRefine((c, ctx) => {
+    if (
+      c.completion.status !== "passed" ||
+      c.completion.endedUtc === null ||
+      c.completion.seconds === null ||
+      c.completion.requestHash !== c.requestHash
+    )
+      ctx.addIssue({
+        code: "custom",
+        message: "Sealed completion must bind its finished attempt",
+      });
+  });
+export type BlenderProductionQueueCheckpoint = z.infer<
+  typeof BlenderProductionQueueCheckpointSchema
+>;
+export const MechanismProductionQueueCheckpointVersionsSchema = z.union([
+  MechanismProductionQueueCheckpointSchema,
+  BlenderProductionQueueCheckpointSchema,
+]);
+
 export const MechanismProductionQueueRowSchema = z
   .object({
     id,

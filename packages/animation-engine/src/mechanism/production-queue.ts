@@ -11,15 +11,15 @@ import {
 } from "@still-shift/execution-runtime/locks";
 import { compositionNodeJsonSize } from "@still-shift/execution-runtime/export";
 import {
-  MechanismProductionQueueSchema,
+  MechanismProductionQueueVersionsSchema as MechanismProductionQueueSchema,
   MechanismProductionQueueStateSchema,
-  MechanismProductionQueueCheckpointSchema,
+  MechanismProductionQueueCheckpointVersionsSchema as MechanismProductionQueueCheckpointSchema,
   MECHANISM_PRODUCTION_QUEUE_LIMITS as LIMIT,
-  type MechanismProductionQueue,
-  type MechanismProductionQueueItem,
+  type MechanismProductionQueueAny as MechanismProductionQueue,
+  type MechanismProductionQueueItemAny as MechanismProductionQueueItem,
   type MechanismProductionQueueState,
   type MechanismProductionQueueRow,
-  type MechanismProductionQueueProduct,
+  type MechanismProductionQueueProductAny as MechanismProductionQueueProduct,
   type MechanismProductionAttempt,
 } from "./production-queue-contract.ts";
 import {
@@ -143,7 +143,7 @@ function reconcile(
     if (row.identityHash !== identity(item))
       productionFailure(
         "production-question-change",
-        "Queue revision must preserve its explanation, family and design variant",
+        "Queue revision must preserve its explanation, family, design variant and backend",
         item.id,
       );
     const next = request(item, queue);

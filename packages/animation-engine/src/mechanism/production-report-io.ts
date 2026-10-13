@@ -11,9 +11,9 @@ import {
   type FailureDiagnostic,
 } from "@still-shift/scene-contract";
 import {
-  MechanismProductionQueueSchema,
+  MechanismProductionQueueVersionsSchema as MechanismProductionQueueSchema,
   MechanismProductionQueueStateSchema,
-  MechanismProductionQueueCheckpointSchema,
+  MechanismProductionQueueCheckpointVersionsSchema as MechanismProductionQueueCheckpointSchema,
   MECHANISM_PRODUCTION_QUEUE_LIMITS as LIMIT,
   MechanismProductionOwnedFileSchema,
   type MechanismProductionQueueRow,
@@ -34,9 +34,9 @@ import {
 import {
   createUnreviewedMechanismQA,
   inspectMechanismProductionDisposition,
-  MechanismProductionEpisodeReportSchema,
+  MechanismProductionEpisodeReportVersionsSchema as MechanismProductionEpisodeReportSchema,
   summarizeMechanismProductionCohort,
-  type MechanismProductionEpisodeReport,
+  type MechanismProductionEpisodeReportAny as MechanismProductionEpisodeReport,
   type MechanismProductionDisposition,
   type MechanismProductionCohortReport,
   type MechanismProductionQA,
@@ -416,7 +416,11 @@ export async function readMechanismProductionReports(
         profileSha256: executor.profileSha256,
       };
       const report = MechanismProductionEpisodeReportSchema.parse({
-        schemaVersion: "mechanism-production-episode-report-1",
+        schemaVersion:
+          "backend" in item
+            ? "mechanism-production-episode-report-2"
+            : "mechanism-production-episode-report-1",
+        ...("backend" in item ? { backend: item.backend } : {}),
         id: item.id,
         question: item.question,
         family: item.family,

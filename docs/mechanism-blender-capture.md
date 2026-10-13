@@ -46,3 +46,30 @@ Its four control states and repeated pose match; two lossless Still Shift export
 change only the text area, with all captured bytes unchanged. H.264 comparison
 is separately retained because lossy output is not region-byte-identical.
 No narrated episode or whole/pilot acceptance follows from this prototype.
+
+## Production queue versions
+
+The candidate engine now exposes `BlenderProductionQueueSchema` and its matching
+item, product, checkpoint and episode-report schemas/types. A Blender queue uses
+`mechanism-production-queue-2`; every item requires `backend: "blender-native"`.
+Its `family` is a descriptive native-object identifier such as `zipper` or
+`keyhole-slot`. It supplies no qualification in the older three-family registry.
+`familyPath` identifies the native source binding document, and `cuePath` the
+native episode plan. Both documents and any declared QA plan must have unique
+file pins. Inspecting their complete dependency set belongs to the backend.
+
+Version 2 products and episode reports use their corresponding `-2` versions;
+reports also retain the explicit backend. The version dispatch schemas feed the
+same durable controller, targeted retry API and report reader. They retain owned
+artifact hashes, current input/output/code/profile/clocks, sealed completion,
+original attempts, independent failures and the six separate QA dimensions.
+The common report bundle keeps its version-1 envelope and accepts either explicit
+episode-report version. Generic unit artifacts prove this lifecycle only.
+
+The existing version-1 queue/product/report schemas and family admission stay
+strict. Legacy item identity hashes stay exact; a Blender identity includes its
+backend. A completed legacy question cannot be relabeled as a Blender item or
+reuse a legacy product under the new manifest. The Three.js native executor
+rejects Blender items before source admission. The production CLI and declarative
+queue factory still use that executor. A full Blender production executor, cue
+compiler, native semantic QA and all-ten narrated delivery remain in progress.
