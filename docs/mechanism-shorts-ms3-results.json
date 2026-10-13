@@ -3,7 +3,7 @@
   "milestone": "MS3",
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
-  "status": "in-progress-current-qa-fast-runtime-passed-native-running",
+  "status": "in-progress-operational-qa-verified-recovery-cli-next",
   "baseMain": "57967fa6497249d75e740ba837b8e2687cc81a98",
   "ms2Prerequisite": {
     "commit": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
@@ -388,10 +388,10 @@
     },
     {
       "id": "operational-qa7",
-      "status": "current-complete-fast-runtime-passed-native-attempt3-running",
+      "status": "actual-operational-native-qa-fast-runtime-and-independent-audit-verified",
       "record": "docs/mechanism-shorts-ms3-qa-results.json",
       "focusedTests": 87,
-      "qualification": "Current6080b8df complete fast/runtime pass with exact matching inputs. Actual native3 and independent audit remain running/pending; two native failures/runtime1 failure and independent artifact-only proof retained. Full original MS3/pilot/reviews remain open.",
+      "qualification": "Current6080b8df complete fast/runtime/native and independent230-pin artifact/history/report audit pass. Both native failures and runtime1 failure remain retained. This engineering proof grants no pilot or whole mechanical/glyph/factual/continuous/listening/human acceptance. All original remaining MS3 work is open.",
       "historyRepair": "Immutable original program retention implemented; latest native/local-tier proof pending",
       "completeFast": {
         "sourceCommit": "6080b8dff1bf3f31712ee890839602a5934479a0",
@@ -401,10 +401,15 @@
         "sourceHoldCheckExitCode": 0
       },
       "currentNativeProof": {
-        "status": "running",
+        "status": "passed",
         "session": 1042,
         "sourceCommit": "6080b8dff1bf3f31712ee890839602a5934479a0",
-        "directory": "/private/tmp/still-shift-ms3-production-native-xoLXjI"
+        "directory": "/private/tmp/still-shift-ms3-production-native-xoLXjI",
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "executions": 5,
+        "outputs": 5,
+        "decodedFrames": 300
       },
       "failedRunArtifactAudit": {
         "products": 5,
@@ -430,6 +435,15 @@
         "heldInputFiles": 2692,
         "actualExitCode": 0,
         "sourceHoldCheckExitCode": 0
+      },
+      "independentAudit": {
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "products": 5,
+        "decodedFrames": 300,
+        "images": 135,
+        "actualScalarSamples": 300,
+        "pins": 230
       }
     }
   ],

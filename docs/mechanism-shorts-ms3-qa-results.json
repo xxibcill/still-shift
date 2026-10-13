@@ -5,7 +5,7 @@
   "branch": "codex/mechanism-ms3",
   "baseCommit": "2e0dd3eb20cdda4cc772d308a90d05e898320ef0",
   "pullRequest": "https://github.com/xxibcill/still-shift/pull/58",
-  "status": "current-complete-fast-runtime-passed-native-attempt3-running",
+  "status": "actual-operational-native-qa-fast-runtime-and-independent-audit-verified",
   "sourceSnapshot": [
     {
       "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-qa-contract.ts",
@@ -567,7 +567,6 @@
     "Current bundle/handoff facts refs and original failed products remain visible."
   ],
   "remaining": [
-    "Actual native attempt3 terminal, quota preservation/one-item/five-execution/zero-new-native assertions, and independent artifact/lifecycle/current CLI/cohort audit. Complete current fast/runtime now pass; earlier failures retained.",
     "Broader mechanical/visual/audio fault suite, analytic/sampled/continuous collision work and actual whole reviews.",
     "Real native interruption/cancel/corrupt/relocation, scoped/affected repair and automatic MS1 overlap.",
     "Original ten frozen questions/five new assets/two behaviors/genuine inputs/factual/design/visual/listening evidence; broader capabilities and final full/archive/installed/MS3 PR completion."
@@ -795,18 +794,55 @@
       ]
     },
     {
-      "status": "running",
+      "status": "passed",
       "command": "pnpm test:browser:mechanism-production-native",
       "sourceCommit": "6080b8dff1bf3f31712ee890839602a5934479a0",
       "startedUtc": "2026-10-13T00:23:31.950991+00:00",
       "pid": 24769,
       "inventory": "/private/tmp/still-shift-ms3-qa7-browser3-inputs.json",
-      "actualExitCode": null,
+      "actualExitCode": 0,
       "attempt": 3,
       "session": 1042,
       "directory": "/private/tmp/still-shift-ms3-production-native-xoLXjI",
       "logPath": "/private/tmp/still-shift-ms3-qa7-browser3.log",
-      "resume": "Poll session1042; if handle has closed, inspect final receipt, log and run/failure files. Never restart this live attempt or infer terminal success. Independent audit3 remains required."
+      "resume": "Actual native3 terminal0/hold0 and independent audit3 terminal0/hold0 confirmed. Do not repeat this completed source-bound run.",
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-13T00:39:46.328020+00:00",
+      "executions": 5,
+      "outputs": 5,
+      "decodedFrames": 300,
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-qa7-browser3.log",
+          "bytes": 1207,
+          "sha256": "sha256:85630c8eb83ecf343bc569f5fcd3218620151214cec29e5b9c0f059fc201dbb1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-qa7-browser3-receipt.json",
+          "bytes": 394,
+          "sha256": "sha256:91533c4eb3fbd43467d843e271c5cf00c8caf089ad029882a2523d3f03a05035"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-qa7-browser3-inputs.json",
+          "bytes": 459540,
+          "sha256": "sha256:6c4a7bc5a3c7bf4e99e45e343bd2b8880a6547d33613cd906b6492406e22cee7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-production-native-xoLXjI/run.json",
+          "bytes": 10330,
+          "sha256": "sha256:d20e086d289752332085e2b12e5f759779a41f6434504f99d5c365572e5e9ed6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-production-native-xoLXjI/output/queue-state.json",
+          "bytes": 4636,
+          "sha256": "sha256:c148eeee1724619f003908a7a3b13f9492b4f5ec6a20ffa35428cf4b01d48265"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-production-native-xoLXjI/progress.json",
+          "bytes": 9986,
+          "sha256": "sha256:54927760e684c8d1bd05de9b0cdac9dcf679deafc27f390d876613f7b6902d48"
+        }
+      ]
     }
   ],
   "loaderRepair": {
@@ -1054,13 +1090,13 @@
       "Actual native owner adds same-parent96 MiB pressure/rejection with unchanged sealed rows and zero executions, then retires pressure and keeps five-execution/one-item/zero-new-native QA-only repair assertions."
     ],
     "preflightTests": 87,
-    "currentNativeAndCompleteTiers": "Complete fast4445 and runtime247/integration322/depth14/smoke pass on6080b8df with2692 exact matching inputs; actual native3 runs under session1042, terminal and independent audit pending.",
+    "currentNativeAndCompleteTiers": "Exact6080b8df complete fast/runtime and actual native3 pass; pressure preserves sealed rows, exactly5 executions, caption/QA-only0 fresh native draws. Independent current CLI/cohort/artifact/history audit passes230 pins. Original broader MS3 remains open.",
     "compatibilityRepair": {
       "baseCommit": "f981166d80e89a5e85f355a3133a48d02e02f72d",
       "method": "Native subclass retains original PassageError diagnostic code/path alongside typed capacity identity; explicit field assignments preserve Node strip-only imports. Runtime1 failure is retained.",
       "owningTests": 87,
       "affectedRuntimeTests": 6,
-      "completeCurrentVerification": "Complete fast and runtime actual0/hold0 on6080b8df; native3 running"
+      "completeCurrentVerification": "Exact6080b8df complete fast/runtime/native and independent audit actual0/hold0"
     }
   },
   "priorLoaderCompleteFast": {
@@ -1443,12 +1479,188 @@
       "bytes": 16954,
       "sha256": "sha256:bdfd3de40c79e56ffcc9263361c1ffe0c8b3a2939a1e704a461b83234c4e2188"
     },
-    "status": "prepared-not-run",
+    "status": "completed-actual0-sourceHold0",
     "methods": [
       "independent originals/program/scalars/peaks and full decoded frame/audio/135 derived images",
       "sealed stage hash/history/attempt/product preservation and caption/QA-only parity",
       "actual final current report CLI plus independent p50/p95/review/first-pass/null-token recomputation"
     ],
-    "qualification": "Run only after actual native3 success; no audit3 pass claimed."
+    "qualification": "Run only after actual native3 success; no audit3 pass claimed.",
+    "actualExitCode": 0
+  },
+  "independentAudit": {
+    "status": "passed",
+    "startedUtc": "2026-10-13T00:41:55.715731+00:00",
+    "pid": 59535,
+    "sourceCommit": "6080b8dff1bf3f31712ee890839602a5934479a0",
+    "documentationHead": "c3004c3962c92a62cff03dbde3e566dbd1b50aca",
+    "nativeRun": "/private/tmp/still-shift-ms3-production-native-xoLXjI",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-13T00:43:13.482829+00:00",
+    "session": 49635,
+    "products": 5,
+    "decodedFrames": 300,
+    "images": 135,
+    "actualScalarSamples": 300,
+    "originalNativeCaptures": 3,
+    "pins": 230,
+    "cohorts": [
+      {
+        "revision": 1,
+        "selected": 3,
+        "reviewCounts": {
+          "technical": {
+            "passed": 3,
+            "failed": 0,
+            "unreviewed": 0
+          },
+          "mechanical": {
+            "passed": 0,
+            "failed": 1,
+            "unreviewed": 2
+          },
+          "sampled-visual": {
+            "passed": 0,
+            "failed": 3,
+            "unreviewed": 0
+          },
+          "continuous-motion": {
+            "passed": 0,
+            "failed": 0,
+            "unreviewed": 3
+          },
+          "listening": {
+            "passed": 0,
+            "failed": 0,
+            "unreviewed": 3
+          },
+          "factual": {
+            "passed": 0,
+            "failed": 0,
+            "unreviewed": 3
+          }
+        },
+        "durations": {
+          "setupSeconds": {
+            "available": 3,
+            "p50": 6.520935915999988,
+            "p95": 13.058679353500029
+          },
+          "routineSeconds": {
+            "available": 3,
+            "p50": 14.841075624999998,
+            "p95": 107.7827602381
+          },
+          "renderSeconds": {
+            "available": 3,
+            "p50": 10.991167083000008,
+            "p95": 68.5521722583
+          }
+        },
+        "authoring": {
+          "comparablePairedTasks": 0,
+          "routineMedianTokens": null,
+          "baselineMedianTokens": null,
+          "savings": null,
+          "targetSatisfied": null
+        }
+      },
+      {
+        "revision": 2,
+        "selected": 3,
+        "reviewCounts": {
+          "technical": {
+            "passed": 3,
+            "failed": 0,
+            "unreviewed": 0
+          },
+          "mechanical": {
+            "passed": 0,
+            "failed": 0,
+            "unreviewed": 3
+          },
+          "sampled-visual": {
+            "passed": 0,
+            "failed": 3,
+            "unreviewed": 0
+          },
+          "continuous-motion": {
+            "passed": 0,
+            "failed": 0,
+            "unreviewed": 3
+          },
+          "listening": {
+            "passed": 0,
+            "failed": 0,
+            "unreviewed": 3
+          },
+          "factual": {
+            "passed": 0,
+            "failed": 0,
+            "unreviewed": 3
+          }
+        },
+        "durations": {
+          "setupSeconds": {
+            "available": 3,
+            "p50": 6.520935915999988,
+            "p95": 13.058679353500029
+          },
+          "routineSeconds": {
+            "available": 3,
+            "p50": 14.841075624999998,
+            "p95": 107.7827602381
+          },
+          "renderSeconds": {
+            "available": 3,
+            "p50": 10.991167083000008,
+            "p95": 68.5521722583
+          }
+        },
+        "authoring": {
+          "comparablePairedTasks": 0,
+          "routineMedianTokens": null,
+          "baselineMedianTokens": null,
+          "savings": null,
+          "targetSatisfied": null
+        }
+      }
+    ],
+    "methods": [
+      "independent stage/attempt/product history, actual current CLI and cohort percentile/review recomputation",
+      "hashed original native matrices/anchors and retained immutable programs",
+      "independent scalar/range/failure-count recomputation",
+      "raw warning peaks/units/children/parts/frame links",
+      "full final-video/audio decode and strict image transformations"
+    ],
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-qa7-audit3.py",
+        "bytes": 16954,
+        "sha256": "sha256:bdfd3de40c79e56ffcc9263361c1ffe0c8b3a2939a1e704a461b83234c4e2188"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-qa7-audit3-wrapper.py",
+        "bytes": 1357,
+        "sha256": "sha256:22d1395731494625cc8ae11c04f867c8d837ee2e9ad989b87bef12ae47f0233a"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-qa7-audit3.log",
+        "bytes": 932,
+        "sha256": "sha256:70cd53487b3a87dc5abadb70e5e17f436e3b89d62212d249b255f0e3de7739a4"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-qa7-audit3.json",
+        "bytes": 96295,
+        "sha256": "sha256:3a6ee353098892c3cee39f803bc95412f632dee3475e3610aff256e16c598a1f"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-qa7-audit3-receipt.json",
+        "bytes": 399,
+        "sha256": "sha256:f69384079f989b1fc48f8023e5442e5e45dca113ab9f0cb04460d4f697759ee0"
+      }
+    ],
+    "qualification": "Engineering QA/failure/cache/history proof only. No whole mechanical/glyph/factual/continuous/listening/pilot/human acceptance."
   }
 }

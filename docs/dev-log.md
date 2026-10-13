@@ -43,31 +43,25 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS3 in progress (2026-10-13):** codex/mechanism-ms3,
-  [draft PR58](https://github.com/xxibcill/still-shift/pull/58) open/attached to main.
-  QA7 pins plans/programs, original native scalar/MS2 timeline facts and raw/grouped
-  warnings; current report/handoff bindings expose failures without whole acceptance.
-  Native attempt1 fails missing preparation; loader repair/source787d passes complete
-  4440-unit fast (2691 exact inputs/121316935B). Attempt2 then fails the five-execution
-  assertion: unchanged tape cache verification lacks shared capacity, invalidates a
-  valid product and rerenders it. Both failures, rows and source holds are retained.
-  Independent audit of attempt2's5 sealed products passes300 frames/135 images/
-  300 scalar samples/221 pins; this is artifact evidence on a failed lifecycle.
-  Capacity repair now preserves sealed products/checkpoints/native caches with typed
-  unavailable errors; scoped consumers retire after snapshots, all sharing512 MiB.
-  Source6080b8df complete fast4445/438 and runtime247/42/integration322/57/
-  depth14/smoke pass,2692 inputs/121326949B exact across both tiers and native3.
-  Runtime1's3/247 diagnostic/direct-Node failures remain retained; compatibility
-  repair also passes87 owning/6 affected runtime checks and package preflight.
-  Native attempt3 is live under session1042, root
-  /private/tmp/still-shift-ms3-production-native-xoLXjI; no terminal pass yet.
-  Independent audit3 is prepared for artifact/history/current CLI/cohort checks.
-  E02/E05/E09/E10 primary research and an E10 dimensional draft are retained;
-  no extension asset/behavior admission claimed.
-  Original broader faults/analytic/continuous collision/reviews, native faults/
-  relocation, scoped/MS1 repair, all ten questions/five assets/two behaviors/genuine
-  inputs/reviews, capabilities and final full/archive/installed/MS3 completion remain.
-  Coverage0/10; targets unmeasured. No spending, Actions, merge or publication.
+- **MS3 in progress (2026-10-13):** `codex/mechanism-ms3`,
+  [draft PR #58](https://github.com/xxibcill/still-shift/pull/58) open/attached to main.
+  QA7 source `6080b8df` passes complete fast (4,445 tests), runtime (247),
+  integration (322), depth (14) and smoke with all 2,692 inputs held exact.
+  Native attempt 3 actually passes five executions/five products. Real quota
+  pressure preserves sealed rows; caption and QA-only revisions add zero native
+  draws. Independent audit verifies 300 decoded frames, 135 images, 300 scalar
+  samples and 230 pins, including original/current programs, retained failures,
+  actual current CLI reports and independent cohort percentiles/review counts.
+  Native attempts 1/2 and runtime attempt 1 remain retained failures. Whole
+  mechanical/glyph/factual/continuous/listening/human reviews remain open.
+  Queue creation/execution currently require code; declarative CLI drafts are
+  prepared for integration next, then explicit bounded recovery and real native
+  interruption/cancel/corrupt/relocation. Scoped/MS1 repair, ten frozen questions,
+  five assets/two behaviors, genuine inputs/reviews, capability reconciliation
+  and final full/archive/installed verification remain. Coverage is 0/10; no
+  pilot target achieved. Primary extension research and an E10 dimensional draft
+  remain separate from asset/behavior admission. No spending, merge, publication
+  or Actions changes.
   [QA record](./mechanism-shorts-ms3-qa-results.json),
   [QA API](./mechanism-production-qa.md), [tracker](./mechanism-shorts-ms3-acceptance.md).
 
@@ -256,6 +250,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — Verify native capacity repair and independent QA history
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, code source `6080b8df`.
+- **Results:** native attempt 3/session 1042 actually exits 0/hold 0 with five
+  executions/products. Quota rejection preserves sealed rows; caption/QA-only
+  revisions reuse native plates with zero new submissions.
+- **Independent:** audit3/session 49635 exits 0/hold 0: 300 decoded frames,
+  135 images, 300 scalar samples, 230 pins and original/current program/history,
+  actual current report CLI, percentile/review/null-token checks.
+- **Retained limits:** both earlier native failures and runtime1 failure remain;
+  engineering checks grant no whole review or pilot acceptance.
+- **Next:** integrate declarative queue creation/run CLI, then bounded retry and
+  real native faults/recovery; all original MS3 repairs/extensions/pilot/gates remain.
+- **Records:** [QA results](./mechanism-shorts-ms3-qa-results.json),
+  [acceptance tracker](./mechanism-shorts-ms3-acceptance.md).
 
 ### 2026-10-13 — Verify current QA tiers and start native capacity proof
 
