@@ -1,3 +1,4 @@
+import { createCableTiePack } from "../../packages/animation-engine/src/mechanism/cable-tie-pack.ts";
 import { describe, expect, it } from "vitest";
 import {
   MechanismShapeDrawEvidenceSchema,
@@ -295,6 +296,87 @@ describe("sealed teaching shape evidence", () => {
       NativeObservedShapeSchema.safeParse({
         ...receipt,
         landmarks: { tip: [0, 0, 0] },
+      }).success,
+    ).toBe(false);
+  });
+});
+
+describe("sealed optional trigger observation", () => {
+  it("seals the source's trigger flag and rejects missing or invented used landmarks", async () => {
+    const source = createCableTiePack({
+        variant: "inside-serrated-extended-trigger-cutaway",
+      }).scene,
+      prepared = await prepareNative3DSceneV2(
+        source,
+        "sha256:" + "a".repeat(64),
+      ),
+      association =
+        prepared.variants[prepared.baseSourceKey]!.shapeAssociations.pawl!;
+    expect(association.triggerLandmark).toBe(true);
+    const layout = {
+        location: 0,
+        byteLength: association.vertexCount * 12,
+        components: 3,
+        type: 5126,
+        enabled: true,
+        normalized: false,
+        integer: false,
+        divisor: 0,
+        stride: 12,
+        byteOffset: 0,
+      },
+      point = {
+        local: [0, 0, 0],
+        world: [0, 0, 0],
+        positionMethod: "used-position-landmark-1",
+      },
+      hash = "sha256:" + "b".repeat(64);
+    const receipt = {
+      association,
+      driverStateKey: "pawl:1",
+      status: "drawn",
+      ownerWorldMatrix: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+      positionSha256: hash,
+      normalSha256: hash,
+      indexSha256: hash,
+      positionLayout: layout,
+      normalLayout: { ...layout, location: 1 },
+      landmarks: { root: point, tip: point, trigger: point },
+      submissions: association.groups.map((group) => ({
+        ...group,
+        drawOrdinal: group.groupIndex,
+        readbackOrdinal: group.groupIndex,
+        streamSet: 0,
+        mode: 4,
+        type: 5123,
+        byteOffset: group.start * 2,
+      })),
+    };
+    expect(NativeObservedShapeSchema.safeParse(receipt).success).toBe(true);
+    expect(
+      NativeObservedShapeSchema.safeParse({
+        ...receipt,
+        landmarks: { root: point, tip: point },
+      }).success,
+    ).toBe(false);
+    expect(
+      NativeObservedShapeSchema.safeParse({
+        ...receipt,
+        landmarks: { ...receipt.landmarks, invented: point },
+      }).success,
+    ).toBe(false);
+    const unextended = { ...association };
+    delete unextended.triggerLandmark;
+    expect(
+      NativeObservedShapeSchema.safeParse({
+        ...receipt,
+        association: unextended,
+      }).success,
+    ).toBe(false);
+    expect(
+      NativeShapeAssociationSchema.safeParse({
+        ...association,
+        generator: "seated-torsion-spring-1",
       }).success,
     ).toBe(false);
   });

@@ -69,18 +69,17 @@ still hold before relying on them.
   optional bounded topology and strict landmark contracts. Original tie hashes
   and its non-releasable guard remain exact. Final42 owning checks/21 closed
   states/build/lint/schema/boundary/declarations pass with2,710 inputs held.
-  Frame-key and metadata-inventory failures are retained. Current complete
-  fast now passes4,471/443 on e39cbfe3, exact2,710 inputs. Runtime1/session79490 closed failed:251/253 pass, two stale CLI
-  example/schema checks. Integration/depth/smoke unstarted. Checks now cover6
-  examples and both strict peg variants. Current rerun/session43054 is live on
-  e1fa27bf; fast2 now passes4,471/443 with exact inputs. Poll its saved handle.
-  Three actual saved native input controls admit release/withdrawal/relatch, but
-  capture is unstarted. Native/default parity remain next
-  because renderer contracts changed.
+  Frame-key and metadata-inventory failures are retained. Complete tiers2 on
+  e1fa27bf passes fast4,471/443, runtime253/45, integration322/57, depth14 and
+  smoke with2,710 inputs exact. Native1 ended failed with its default T0 sealed:
+  E1/E2 observation inventory still expected root/tip. Optional trigger association
+  is now sealed from the declaration and requires exactly root/tip/trigger.
+  Build/lint/schema and17 scoped tests pass with2,710 inputs held; complete
+  current tiers and a fresh actual native run/default audit remain next.
   No active prior native handle remains. Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
-  Remaining original scope: clearer views and actual whole reviews, E05/E06/E10
-  assets plus E06/E10 behaviors, all ten frozen questions/genuine narration,
+  Remaining original scope: clearer views and actual whole reviews, E05 native
+  proof, E06/E10 assets and behaviors, all ten frozen questions/genuine narration,
   scoped/MS1 automatic repair, broader seeded QA, capability reconciliation,
   comparable token measurements and final full/benchmark/archive/installed gate.
   Accepted coverage remains0/10; tokens staynull. No ElevenLabs spend, merge,
@@ -282,11 +281,12 @@ still hold before relying on them.
   boundary and declarations pass;2,710 inputs held. Engaged reverse rejects.
 - **Rejected / retained:** Frame-key regex and two-landmark metadata inventory
   failures repaired without removing required root/tip or weakening release guards.
-- **Results added:** Current fast4,471/443 actually passes on e39cbfe3, all2,710
-  inputs exact. Runtime1 failed two stale CLI example/schema checks (251/253);
-  integration/depth/smoke unstarted. Retained; repaired4 CLI checks pass and
-  e1fa27bf full tiers rerun is live/session43054.
-- **Open / next:** Current runtime/native/default audit and actual
+- **Results added:** Earlier full tiers2 passes fast4,471/443, runtime253/45,
+  integration322/57, depth14/smoke with exact inputs. Runtime1 failure is retained.
+  Native1 default sealed; E1/E2 failed exact landmark inventory. Observation repair
+  seals optional trigger from the declaration and retains exact inventory checks.
+  Build/lint/schema plus17 scoped tests pass; all2,710 inputs held.
+- **Open / next:** Current fast/runtime, native/default audit and actual
   visual/factual/design/genuine narration/whole review; E06/E10 and original MS3 scope.
 - **Records:** [trigger candidate](./mechanism-shorts-ms3-trigger-results.json).
   Accepted pilot remains0/10; no paid generation, publication or merge.
