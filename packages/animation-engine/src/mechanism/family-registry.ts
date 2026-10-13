@@ -9,6 +9,9 @@ import {
 } from "./family-authoring.ts";
 import { z } from "zod";
 import {
+  MechanismStaticMomentModelSchema,
+  MechanismStaticMomentInputSchema,
+  MechanismStaticMomentResultSchema,
   MechanismPackDocumentSchema,
   MechanismPackTimelineSchema,
   MechanismNarratedCycleSchema,
@@ -79,6 +82,9 @@ export const MechanismFamilyRegistrySelectionSchema = z
   .strict();
 /** Used by both generated schema files and CLI schema export. */
 export const mechanismFamilySchemas = {
+  "static-moment-model": MechanismStaticMomentModelSchema,
+  "static-moment-input": MechanismStaticMomentInputSchema,
+  "static-moment-result": MechanismStaticMomentResultSchema,
   "text-weight-treatments": TextWeightTreatmentReportSchema,
   "cue-compilation": MechanismCueCompilationSchema,
   "cue-native-plates": MechanismCueNativePlatesSchema,

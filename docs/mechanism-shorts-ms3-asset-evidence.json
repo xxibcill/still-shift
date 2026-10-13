@@ -114,7 +114,12 @@
         "Compute moment arm from force-line direction and press-point displacement, reject zero/degenerate arm; compare near/far press points at fixed geometry and resistance.",
         "Separately declare spring/contact/loss assumptions; whole-arm scaling or force-arrow sizing is insufficient."
       ],
-      "qualification": "Primary theory only. No quantitative real peg force, new behavior, asset or pilot admission."
+      "qualification": "Primary theory only. No quantitative real peg force, new behavior, asset or pilot admission.",
+      "implementation": {
+        "record": "docs/mechanism-shorts-ms3-moment-results.json",
+        "status": "reusable-behavior-foundation-scoped-passed-fast-pending-asset-native-pending",
+        "qualification": "Reusable expected-state behavior foundation and software evidence only. Original five assets/two behaviors/ten questions remain required; no native observed force, real peg force, E10/whole/pilot acceptance, spending, merge or publication."
+      }
     }
   ],
   "qualification": "Original five required assets/two behaviors/ten questions remain unadmitted. This capture does not change the frozen board or denominator.",

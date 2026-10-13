@@ -28,3 +28,8 @@ export type {
   MechanismTeachingTopology,
   MechanismTeachingRecipe,
 } from "./teaching-topology.ts";
+
+export {
+  solveMechanismStaticMomentBalance,
+  evaluateMechanismStaticMomentFrame,
+} from "./static-moment.ts";

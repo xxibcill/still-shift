@@ -1755,6 +1755,13 @@ export const native3DAppearanceModules: readonly {
     ),
   },
   {
+    name: "scene-contract/src/mechanism/static-moment.ts",
+    url: new URL(
+      "../../../scene-contract/src/mechanism/static-moment.ts",
+      import.meta.url,
+    ),
+  },
+  {
     name: "scene-contract/src/mechanism/teaching-shapes.ts",
     url: new URL(
       "../../../scene-contract/src/mechanism/teaching-shapes.ts",

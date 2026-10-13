@@ -1,0 +1,459 @@
+{
+  "version": "mechanism-shorts-ms3-moment-results-1",
+  "episode": "E10",
+  "date": "2026-10-13",
+  "branch": "codex/mechanism-ms3",
+  "baseCommit": "29cb1ddc92234a3c3dee9ce1a456bbb8c1c40f7a",
+  "status": "reusable-behavior-foundation-scoped-passed-fast-pending-asset-native-pending",
+  "implementation": {
+    "method": "ideal-static-single-axis-moment-balance-1",
+    "exports": [
+      "solveMechanismStaticMomentBalance",
+      "evaluateMechanismStaticMomentFrame"
+    ],
+    "schemas": [
+      "static-moment-model",
+      "static-moment-input",
+      "static-moment-result"
+    ],
+    "scope": "Bounded signed torque balance from calibrated world geometry and normalized reference force/axis. Posed adapter evaluates the ordinary frame once and returns it unchanged with immutable derived moment states. No authored pose arrows are substituted for the calculation.",
+    "assumptions": "Fixed pivot/axis, rigid geometry, prescribed signed resistance; no measured spring, friction, contact or product force.",
+    "sources": [
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/scene-contract/src/mechanism/static-moment.ts",
+        "bytes": 3020,
+        "sha256": "sha256:5ac40dd42c94f60985c51f5c8f4b7a37fbdd1e7af144bd963c43f1bda0075b53"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/mechanism/static-moment.ts",
+        "bytes": 5281,
+        "sha256": "sha256:63815a9082ac14abf6f9961986e29de0ccd54215801dc2a9e442866ca0e2103c"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/scene-contract/src/mechanism/index.ts",
+        "bytes": 478,
+        "sha256": "sha256:e14807ec7e022ec1d3806613cc0b8a798e34a87967d487bf4ca076e4de993238"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/mechanism/index.ts",
+        "bytes": 1117,
+        "sha256": "sha256:56fee3e341145dc6d03dfd7abb3df1d99d466fb109be0dc119db41665c3724a6"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/family-registry.ts",
+        "bytes": 9773,
+        "sha256": "sha256:9e609164bc9a485ec4fcc514e66e8aad6b9e7a8991585f7777932872de90057a"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/native3d/appearance-modules.ts",
+        "bytes": 73317,
+        "sha256": "sha256:7588c2ec35454002fef8f514aa3ed8775f9af1bba757b10a600ef00f31e19b8d"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-static-moment.test.ts",
+        "bytes": 8654,
+        "sha256": "sha256:6ecc778d6c8295295aa3bb2607efac589f7c9378e1560f7d2c4c69f31a82f4a3"
+      }
+    ],
+    "sourceTheory": "https://openstax.org/books/college-physics-ap-courses/pages/9-5-simple-machines",
+    "applicationInference": "Peg application is idealized. E10 still requires separate press-point geometry, saved-family/cue integration, original native observations and factual/design/whole/genuine speech/listening evidence."
+  },
+  "scope2": {
+    "status": "passed",
+    "baseCommit": "29cb1ddc92234a3c3dee9ce1a456bbb8c1c40f7a",
+    "scope": "uncommitted exact input inventory",
+    "inventory": "/private/tmp/still-shift-ms3-moment15-scope2-inputs.json",
+    "startedUtc": "2026-10-13T06:06:23.468676+00:00",
+    "pid": 97224,
+    "steps": [
+      {
+        "command": ["pnpm", "build"],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T06:06:23.469318+00:00",
+        "endedUtc": "2026-10-13T06:06:35.333020+00:00",
+        "log": "/private/tmp/still-shift-ms3-moment15-scope2-0.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "eslint",
+          "packages/scene-contract/src/mechanism/static-moment.ts",
+          "packages/renderer-core/src/mechanism/static-moment.ts",
+          "packages/animation-engine/src/mechanism/family-registry.ts",
+          "tests/unit/mechanism-static-moment.test.ts"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T06:06:35.333656+00:00",
+        "endedUtc": "2026-10-13T06:06:36.202587+00:00",
+        "log": "/private/tmp/still-shift-ms3-moment15-scope2-1.log"
+      },
+      {
+        "command": ["pnpm", "schema:check"],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T06:06:36.202981+00:00",
+        "endedUtc": "2026-10-13T06:06:39.825423+00:00",
+        "log": "/private/tmp/still-shift-ms3-moment15-scope2-2.log"
+      },
+      {
+        "command": ["pnpm", "check:boundaries"],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T06:06:39.825722+00:00",
+        "endedUtc": "2026-10-13T06:06:40.871623+00:00",
+        "log": "/private/tmp/still-shift-ms3-moment15-scope2-3.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/mechanism-static-moment.test.ts",
+          "tests/unit/mechanism-family-registry.test.ts"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T06:06:40.871932+00:00",
+        "endedUtc": "2026-10-13T06:06:44.183095+00:00",
+        "log": "/private/tmp/still-shift-ms3-moment15-scope2-4.log"
+      }
+    ],
+    "actualExitCode": 0,
+    "endedUtc": "2026-10-13T06:06:44.183535+00:00"
+  },
+  "scope2Files": [
+    {
+      "path": "/private/tmp/still-shift-ms3-moment15-scope2.py",
+      "bytes": 2054,
+      "sha256": "sha256:f7681d13dc7dd21d6ce98303d28df46b026294b08d2489e66201f15b865bacaf"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-moment15-scope2.log",
+      "bytes": 3865,
+      "sha256": "sha256:00209588347158626a14466a58313d4d6ccdf336b8324e32fcd3d62838666248"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-moment15-scope2-receipt.json",
+      "bytes": 2333,
+      "sha256": "sha256:3c4f594a530afe07219e98e324826748e625c07ef8ca63bc6b6dfd5d1e0c87cd"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-moment15-scope2-inputs.json",
+      "bytes": 463703,
+      "sha256": "sha256:7bbf85f5992047bba5f28a6de10715048e3ed8090001c768f023fab873539b10"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-moment15-scope2-0.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-moment15-scope2-1.log",
+      "bytes": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-moment15-scope2-2.log",
+      "bytes": 502,
+      "sha256": "sha256:2e8f77e67cd67cd1b01e55fba7f0c678fc0591040493d687402f67b1c488ed88"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-moment15-scope2-3.log",
+      "bytes": 186,
+      "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-moment15-scope2-4.log",
+      "bytes": 498,
+      "sha256": "sha256:4507142785916bb8d14c5731efeb4186c2fa346b4e8558481f0eb3a37a61ed08"
+    }
+  ],
+  "tests": {
+    "owning": 24,
+    "registry": 6,
+    "totalScoped": 30,
+    "testFiles": 2,
+    "methods": [
+      "independent perpendicular cross-product/dimensional examples",
+      "unit equivalents and signed resistance/direction/degenerate rejection",
+      "three posed near/far comparisons against independent trigonometric oracle",
+      "unchanged normal frame equality",
+      "rotated/translated/scaled mount with inverse force scaling",
+      "strict declaration/result references, counts and balance rejection"
+    ]
+  },
+  "heldInputs": {
+    "files": 2716,
+    "bytes": 121510710,
+    "inventory": {
+      "path": "/private/tmp/still-shift-ms3-moment15-scope2-inputs.json",
+      "bytes": 463703,
+      "sha256": "sha256:7bbf85f5992047bba5f28a6de10715048e3ed8090001c768f023fab873539b10"
+    }
+  },
+  "package1": {
+    "status": "passed",
+    "scope": "exact uncommitted scope2 inventory",
+    "inventory": "/private/tmp/still-shift-ms3-moment15-scope2-inputs.json",
+    "startedUtc": "2026-10-13T06:08:08.659628+00:00",
+    "pid": 99374,
+    "steps": [
+      {
+        "command": ["pnpm", "build:package"],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T06:08:08.660623+00:00",
+        "endedUtc": "2026-10-13T06:08:20.859316+00:00",
+        "log": "/private/tmp/still-shift-ms3-moment15-package1-0.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/runtime/mechanism-family-registry-cli.test.ts"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T06:08:20.859788+00:00",
+        "endedUtc": "2026-10-13T06:08:24.105927+00:00",
+        "log": "/private/tmp/still-shift-ms3-moment15-package1-1.log"
+      }
+    ],
+    "actualExitCode": 0,
+    "endedUtc": "2026-10-13T06:08:24.106222+00:00"
+  },
+  "package1Files": [
+    {
+      "path": "/private/tmp/still-shift-ms3-moment15-package1.py",
+      "bytes": 1675,
+      "sha256": "sha256:4029a537407428262b86787149e4ef35c0d4ba5e16a45c4bdb07b5bf26e6f6aa"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-moment15-package1.log",
+      "bytes": 1616,
+      "sha256": "sha256:ee3ba1fc5425bc1de096e1d736b79d427bd107b505a51c6f0f3b74ffa0c1a190"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-moment15-package1-receipt.json",
+      "bytes": 1028,
+      "sha256": "sha256:a821cc4eab17b72dc225a3c20424a8b601c41679198e8b8bf4b6314773f97bad"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-moment15-package1-0.log",
+      "bytes": 208,
+      "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-moment15-package1-1.log",
+      "bytes": 446,
+      "sha256": "sha256:af31ff412135fd2b76a093395ea4f1b2283f4894bbb4fae7c7466a784a05bb97"
+    }
+  ],
+  "public3": {
+    "status": "passed",
+    "startedUtc": "2026-10-13T06:13:39.238340+00:00",
+    "inventory": "/private/tmp/still-shift-ms3-moment15-scope2-inputs.json",
+    "scope": "same held scope2 inputs with pinned workspace dependency-store reuse",
+    "actualExitCode": 0,
+    "sourceHoldExitCode": 0,
+    "endedUtc": "2026-10-13T06:13:41.577244+00:00"
+  },
+  "public3Files": [
+    {
+      "path": "/private/tmp/still-shift-ms3-moment15-public3.py",
+      "bytes": 1421,
+      "sha256": "sha256:4a5efe805b8e2e700f72ec66ce2cc57af71fd174362f179e316887e6fa2c7ad6"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-moment15-public3.mts",
+      "bytes": 2607,
+      "sha256": "sha256:3cef3f1e017646cd104ccf7a91aa29a36265c04cc6fc8e68c6cfde5754be383f"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-moment15-public3.log",
+      "bytes": 1030,
+      "sha256": "sha256:67a61813c0fdf89d07feff043b8b1da5bdba0b8583f0cba35c09e4df687f2077"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-moment15-public3.json",
+      "bytes": 1201,
+      "sha256": "sha256:27371845e4f22b462b9d9835c25a20f886bb92aa46b521e5077534ff091d4108"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-moment15-public3-receipt.json",
+      "bytes": 335,
+      "sha256": "sha256:8c098da24075063e9c125fa39973a7639c2e64379756ac249e49452195bcdaa6"
+    }
+  ],
+  "publicQualification": "Emitted package reuse of pinned workspace dependency store, typed declarations and three actual public CLI schema exports only; not archive or isolated installation verification.",
+  "retainedFailures": [
+    {
+      "id": "unit1",
+      "actualExitCode": 1,
+      "passed": 22,
+      "failed": 1,
+      "reason": "Test expected error context at the top level instead of the existing location field; implementation location remained correct.",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-moment15-unit1.log",
+          "bytes": 4068,
+          "sha256": "sha256:bde3bbdd5bfa83d70ba9614279fd3816657f5198d5a7c1e99990291b77996f18"
+        }
+      ]
+    },
+    {
+      "id": "scope1",
+      "receipt": {
+        "status": "failed",
+        "baseCommit": "29cb1ddc92234a3c3dee9ce1a456bbb8c1c40f7a",
+        "scope": "uncommitted exact input inventory",
+        "inventory": "/private/tmp/still-shift-ms3-moment15-scope1-inputs.json",
+        "startedUtc": "2026-10-13T06:05:15.530028+00:00",
+        "pid": 95713,
+        "steps": [
+          {
+            "command": ["pnpm", "build"],
+            "actualExitCode": 0,
+            "sourceHoldExitCode": 0,
+            "startedUtc": "2026-10-13T06:05:15.530660+00:00",
+            "endedUtc": "2026-10-13T06:05:26.436467+00:00",
+            "log": "/private/tmp/still-shift-ms3-moment15-scope1-0.log"
+          },
+          {
+            "command": [
+              "pnpm",
+              "exec",
+              "eslint",
+              "packages/scene-contract/src/mechanism/static-moment.ts",
+              "packages/renderer-core/src/mechanism/static-moment.ts",
+              "packages/animation-engine/src/mechanism/family-registry.ts",
+              "tests/unit/mechanism-static-moment.test.ts"
+            ],
+            "actualExitCode": 0,
+            "sourceHoldExitCode": 0,
+            "startedUtc": "2026-10-13T06:05:26.436834+00:00",
+            "endedUtc": "2026-10-13T06:05:27.317829+00:00",
+            "log": "/private/tmp/still-shift-ms3-moment15-scope1-1.log"
+          },
+          {
+            "command": ["pnpm", "schema:check"],
+            "actualExitCode": 0,
+            "sourceHoldExitCode": 0,
+            "startedUtc": "2026-10-13T06:05:27.318076+00:00",
+            "endedUtc": "2026-10-13T06:05:31.073018+00:00",
+            "log": "/private/tmp/still-shift-ms3-moment15-scope1-2.log"
+          },
+          {
+            "command": ["pnpm", "boundaries:check"],
+            "actualExitCode": 254,
+            "sourceHoldExitCode": 0,
+            "startedUtc": "2026-10-13T06:05:31.073356+00:00",
+            "endedUtc": "2026-10-13T06:05:31.367539+00:00",
+            "log": "/private/tmp/still-shift-ms3-moment15-scope1-3.log"
+          }
+        ],
+        "actualExitCode": 254,
+        "endedUtc": "2026-10-13T06:05:31.367859+00:00"
+      },
+      "reason": "Incorrect boundaries:check command exited254; remaining unit group unstarted. Same source passes actual check:boundaries in scope2.",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-moment15-scope1.py",
+          "bytes": 2054,
+          "sha256": "sha256:0e89b8ca82e7cac7da6fc1f31a2cac81376f15df9071ac2968203d705c24db97"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-moment15-scope1.log",
+          "bytes": 1561,
+          "sha256": "sha256:7d24cf64fc521ec0fa89ae3ccb06e7126b1844143ba11d757238cdd3e91a21fd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-moment15-scope1-receipt.json",
+          "bytes": 1888,
+          "sha256": "sha256:fc63f0bec411e361a4e15a378759efb53119351918a0a26198fc2d7c1cd22a45"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-moment15-scope1-inputs.json",
+          "bytes": 463703,
+          "sha256": "sha256:7bbf85f5992047bba5f28a6de10715048e3ed8090001c768f023fab873539b10"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-moment15-scope1-0.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-moment15-scope1-1.log",
+          "bytes": 0,
+          "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-moment15-scope1-2.log",
+          "bytes": 502,
+          "sha256": "sha256:2e8f77e67cd67cd1b01e55fba7f0c678fc0591040493d687402f67b1c488ed88"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-moment15-scope1-3.log",
+          "bytes": 123,
+          "sha256": "sha256:2a378c7165ccdb7f87eb7f2690821e44dc191d5884e7ad83909c70e15192e081"
+        }
+      ]
+    },
+    {
+      "id": "public1",
+      "actualExitCode": 1,
+      "reason": "Emitted package folder had no external dependency links; public root import failed finding clipper2-ts. No public import/CLI pass.",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-moment15-public1.mts",
+          "bytes": 2558,
+          "sha256": "sha256:85dc15f053bf0a54983677d8daf7f67a85d2c9e257de3bfce7e7b29d084a6109"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-moment15-public1.log",
+          "bytes": 1405,
+          "sha256": "sha256:5a7a5e7df0efeecb6df0c444a3eaa7ff3b32fd972d160def9b7f3f3f9079038a"
+        }
+      ]
+    },
+    {
+      "id": "public2",
+      "actualNodeExitCode": null,
+      "outerShellExitCode": 0,
+      "proofStatus": "passed",
+      "reason": "Assertions/public exports/schema proof complete, but the trailing holder command obscured the separate Node exit. Public3 rerun retains the explicit Node terminal.",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-moment15-public2.mts",
+          "bytes": 2607,
+          "sha256": "sha256:b3cf8a96981d94881b7e5d7817ee9764b48f8240035588367379d45ed1199c66"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-moment15-public2.log",
+          "bytes": 1030,
+          "sha256": "sha256:37b20f2ed814f0ed6009ed9c1ce3ea7affc39ae4c631370c5d2b137d558fc7c7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-moment15-public2.json",
+          "bytes": 1201,
+          "sha256": "sha256:5bc78fb1c987c8684a977e29522bdfee85c834db2fb52407cd0d680fb5be7716"
+        }
+      ]
+    }
+  ],
+  "remaining": [
+    "Full fast verification of committed source.",
+    "Dedicated E10 press-point asset, saved-family/cue and native observation/QA integration.",
+    "Original MS3 visual/factual/design/continuous/listening/genuine narration, E06 extension, repair/capability/pilot/final gates."
+  ],
+  "pilotAcceptedEpisodes": 0,
+  "newAssetAdmitted": false,
+  "newBehaviorPilotAdmitted": false,
+  "qualification": "Reusable expected-state behavior foundation and software evidence only. Original five assets/two behaviors/ten questions remain required; no native observed force, real peg force, E10/whole/pilot acceptance, spending, merge or publication."
+}
