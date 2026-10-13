@@ -72,8 +72,12 @@ still hold before relying on them.
   integration322/57, depth14/smoke actual0/hold0 on the same source. Native
   draft3 adds publication-phase export collision; draft2 has improved child cleanup,
   bounded output/close receipts and distinct captions, but remains unintegrated/
-  unrun and needs compile/lint/registration/preflight before actual OS/recovery
-  and independent audit. Initial draft is retained under its original hash.
+  unrun drafts remain retained. Final harness is now registered in the full test
+  chain and passes compile/lint/pinned toolchain/boundary preflight. Only root
+  package scripts and the new test differ from passed0d59 runtime inputs; no
+  implementation/lock/toolchain files changed. Actual invocation/source hold and
+  independent audit are next; no OS/native recovery pass yet. Initial drafts
+  remain retained under their original hashes.
   Scoped/MS1 repair, ten frozen questions,
   five assets/two behaviors, genuine inputs/reviews, capability reconciliation
   and final full/archive/installed verification remain. Coverage is 0/10; no
@@ -268,6 +272,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — Register actual native CLI/OS recovery verification
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `169603a3`.
+- **Done:** registered three-family queue/run/retry/report lifecycle with actual
+  SIGKILL/SIGTERM, corruption/missing audio, observed encoded-temp publication
+  collision and relocation/current-report checks. Bounded child output and owned
+  cleanup retain failed stages and avoid invented terminal statuses.
+- **Preflight:** compile/lint/pinned tools/boundaries pass; initial empty-catch
+  lint failure is retained. All prior runtime inputs except package script
+  registration are exact; the new test is the only added input.
+- **Next:** commit and run serially; no actual OS/native pass yet. Independently
+  audit recovered artifacts/history, then original MS3 repairs/extensions/pilot.
+- **Records:** [native lifecycle record](./mechanism-shorts-ms3-native-recovery-results.json),
+  [retry proof](./mechanism-shorts-ms3-retry-results.json).
 
 ### 2026-10-13 — Add exact-CAS targeted retry with retained ancestry
 

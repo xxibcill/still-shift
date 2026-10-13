@@ -1,0 +1,200 @@
+{
+  "version": 1,
+  "milestone": "MS3",
+  "date": "2026-10-13",
+  "branch": "codex/mechanism-ms3",
+  "baseCommit": "169603a3",
+  "status": "registered-native-cli-recovery-preflight-passed-not-run",
+  "sourceSnapshot": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/browser/mechanism-production-recovery.ts",
+      "bytes": 16736,
+      "sha256": "sha256:de7b879b160f38ed487efc525d80d29aec37107e5dcddcfc6939b2bc6783fae2"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/package.json",
+      "bytes": 23568,
+      "sha256": "sha256:87d43e6f23a22613db7f5f7adcdfd7beabb366206477b9facf8d704bb6c955f9"
+    }
+  ],
+  "priorRetryVerification": {
+    "source": "0d59065879e92891987ae818d3574bf1d0f2ff49",
+    "completeFast": 4458,
+    "runtime": 253,
+    "integration": 322,
+    "depth": 14,
+    "smoke": "completed",
+    "actualExitCode": 0,
+    "sourceHoldExitCode": 0
+  },
+  "sourceComparison": {
+    "changed": ["package.json"],
+    "added": ["tests/browser/mechanism-production-recovery.ts"],
+    "removed": [],
+    "unchangedPriorInputs": 2701,
+    "qualification": "Only registration/root script and new harness differ; all existing package/runtime/lock/toolchain inputs match the passed retry checkpoint. Current full milestone/benchmark/archive/installed gate remains required."
+  },
+  "preflightAttempts": [
+    {
+      "name": "preflight1",
+      "receipt": [
+        {
+          "command": ["pnpm", "build"],
+          "actualExitCode": 0,
+          "log": "/private/tmp/still-shift-ms3-native10-preflight1-0.log"
+        },
+        {
+          "command": [
+            "pnpm",
+            "exec",
+            "eslint",
+            "tests/browser/mechanism-production-recovery.ts"
+          ],
+          "actualExitCode": 1,
+          "log": "/private/tmp/still-shift-ms3-native10-preflight1-1.log"
+        }
+      ],
+      "failure": "Compile0 then lint1 empty catch; later steps unstarted."
+    },
+    {
+      "name": "preflight2",
+      "receipt": [
+        {
+          "command": ["pnpm", "build"],
+          "actualExitCode": 0,
+          "log": "/private/tmp/still-shift-ms3-native10-preflight2-0.log"
+        },
+        {
+          "command": [
+            "pnpm",
+            "exec",
+            "eslint",
+            "tests/browser/mechanism-production-recovery.ts"
+          ],
+          "actualExitCode": 0,
+          "log": "/private/tmp/still-shift-ms3-native10-preflight2-1.log"
+        },
+        {
+          "command": ["pnpm", "toolchain:check"],
+          "actualExitCode": 0,
+          "log": "/private/tmp/still-shift-ms3-native10-preflight2-2.log"
+        },
+        {
+          "command": ["pnpm", "check:boundaries"],
+          "actualExitCode": 0,
+          "log": "/private/tmp/still-shift-ms3-native10-preflight2-3.log"
+        },
+        {
+          "command": ["pnpm", "schema:check"],
+          "actualExitCode": 0,
+          "log": "/private/tmp/still-shift-ms3-native10-preflight2-4.log"
+        }
+      ],
+      "qualification": "Preliminary compile/lint/toolchain/boundary/schema pass before requiring observed nonempty temporary MP4 and exact final counts."
+    },
+    {
+      "name": "preflight3",
+      "receipt": [
+        {
+          "command": ["pnpm", "build"],
+          "actualExitCode": 0,
+          "log": "/private/tmp/still-shift-ms3-native10-preflight3-0.log"
+        },
+        {
+          "command": [
+            "pnpm",
+            "exec",
+            "eslint",
+            "tests/browser/mechanism-production-recovery.ts"
+          ],
+          "actualExitCode": 0,
+          "log": "/private/tmp/still-shift-ms3-native10-preflight3-1.log"
+        },
+        {
+          "command": ["pnpm", "toolchain:check"],
+          "actualExitCode": 0,
+          "log": "/private/tmp/still-shift-ms3-native10-preflight3-2.log"
+        },
+        {
+          "command": ["pnpm", "check:boundaries"],
+          "actualExitCode": 0,
+          "log": "/private/tmp/still-shift-ms3-native10-preflight3-3.log"
+        }
+      ],
+      "qualification": "Final compile/lint/pinned-toolchain/boundary pass; actual group unrun."
+    }
+  ],
+  "registeredCommand": "pnpm test:browser:mechanism-production-recovery",
+  "verificationScope": [
+    "Actual production queue/run/retry/report commands on three declared engineering families.",
+    "SIGKILL after observed nonempty native PNG and before sealed completion, then unchanged-queue recovery.",
+    "SIGTERM at cached export and durable cancellation/resume.",
+    "Corrupt owned scene/missing owned audio, unaffected-neighbor retention, restored pins and targeted retries.",
+    "Observed nonempty owned temporary MP4 before final-path collision, failed export receipt and targeted recovery.",
+    "Relocation with original path made unavailable, stale old bindings/readiness and current technical recovery/report.",
+    "Expected10 sealed products,3 failed attempts,1 cancellation,1 interruption and2/3 first-pass technical results; no pilot target admission."
+  ],
+  "logs": [
+    {
+      "path": "/private/tmp/still-shift-ms3-native10-preflight1-0.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native10-preflight1-1.log",
+      "bytes": 190,
+      "sha256": "sha256:9bd53c3915784bcd726daacea31335ec70ccbc02f54b40592b8720c33e61275f"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native10-preflight2-0.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native10-preflight2-1.log",
+      "bytes": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native10-preflight2-2.log",
+      "bytes": 238,
+      "sha256": "sha256:3ad3e8695b8ffa18ae57b07d1c45db12e5120b82d71ffeceb0845c7eef4c0929"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native10-preflight2-3.log",
+      "bytes": 186,
+      "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native10-preflight2-4.log",
+      "bytes": 502,
+      "sha256": "sha256:904ab0505f30dcbfbc30b28c2b2da22c2d2cc49f3c99a0200defa634e56ec546"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native10-preflight3-0.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native10-preflight3-1.log",
+      "bytes": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native10-preflight3-2.log",
+      "bytes": 238,
+      "sha256": "sha256:3ad3e8695b8ffa18ae57b07d1c45db12e5120b82d71ffeceb0845c7eef4c0929"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native10-preflight3-3.log",
+      "bytes": 186,
+      "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+    }
+  ],
+  "qualification": "Registered compiled verification, not executed evidence. Synthetic engineering PCM; independent decode/image/current-history audit and whole mechanical/glyph/factual/continuous/listening/human/pilot review remain separate. No actual OS/native recovery pass claimed.",
+  "remaining": [
+    "Actual serial invocation and terminal/source-hold receipt; retain failures/partials and owned-worker cleanup.",
+    "Independent complete decoded frame/audio/image/program/cohort/history audit on recovered outputs.",
+    "All original MS3 scoped/MS1 repairs, broader QA, ten questions/five assets/two behaviors/genuine inputs/capabilities and final full/benchmark/archive/installed work."
+  ]
+}

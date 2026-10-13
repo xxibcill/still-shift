@@ -3,7 +3,7 @@
   "milestone": "MS3",
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
-  "status": "in-progress-targeted-retry-complete-tiers-passed-native-harness-next",
+  "status": "in-progress-native-cli-recovery-registered-preflight-verified",
   "baseMain": "57967fa6497249d75e740ba837b8e2687cc81a98",
   "ms2Prerequisite": {
     "commit": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
@@ -498,6 +498,12 @@
         "browserSmoke": "completed",
         "heldInputFiles": 2702
       }
+    },
+    {
+      "id": "native-cli-recovery10",
+      "status": "registered-native-cli-recovery-preflight-passed-not-run",
+      "record": "docs/mechanism-shorts-ms3-native-recovery-results.json",
+      "qualification": "Registered compiled verification, not executed evidence. Synthetic engineering PCM; independent decode/image/current-history audit and whole mechanical/glyph/factual/continuous/listening/human/pilot review remain separate. No actual OS/native recovery pass claimed."
     }
   ],
   "targets": {
