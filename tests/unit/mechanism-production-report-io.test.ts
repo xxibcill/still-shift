@@ -1,7 +1,10 @@
 import { readFile, writeFile, rm, access } from "node:fs/promises";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
+import {
+  CompositionNodeMemory,
+  CompositionNodeCapacityError,
+} from "@still-shift/execution-runtime/export";
 import {
   readMechanismProductionReports,
   runMechanismProductionQueue,
@@ -69,6 +72,41 @@ describe("durable production episode and cohort reports", () => {
       result.cohort,
     );
     await expect(access(join(f.output, ".production.lock"))).rejects.toThrow();
+  });
+  it("reports unavailable capacity without relabelling source bytes as stale or changing sealed attempts", async () => {
+    const f = await run();
+    const before = await readFile(join(f.output, "queue-state.json"));
+    try {
+      const bundle = await readMechanismProductionReports(f.path, f.output, {
+        ...f.e,
+        verify: async () => {
+          throw new CompositionNodeCapacityError(
+            2,
+            1,
+            "seeded unavailable capacity",
+          );
+        },
+      });
+      expect(
+        bundle.episodes.every(
+          (e) =>
+            e.validation.status === "unavailable" &&
+            !e.disposition.reviewedReady,
+        ),
+      ).toBe(true);
+      expect(
+        bundle.episodes.every(
+          (e) =>
+            e.retainedQA[0]?.status === "passed" &&
+            e.report.qa[0]?.status === "unreviewed",
+        ),
+      ).toBe(true);
+      expect(await readFile(join(f.output, "queue-state.json"))).toEqual(
+        before,
+      );
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+    }
   });
   it("invalidates readiness for current runtime mismatch while retaining original artifact review records and durations", async () => {
     const f = await run();

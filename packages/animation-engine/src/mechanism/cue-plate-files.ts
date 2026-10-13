@@ -32,10 +32,9 @@ export async function readCuePlateJson(
   try {
     bytes = await readBoundedSourceBytes(path, {
       signal,
-      maximumBytes: Math.min(
-        maximumBytes,
-        Math.max(0, Math.floor((owner.availableBytes - 128) / 3) - 1),
-      ),
+      // Keep the fixed file ceiling. The admission callback reserves shared
+      // body/decode capacity before allocation and reports typed quota failures.
+      maximumBytes,
       admit: (capacity) => {
         body = owner.reserve(capacity * 3 + 128);
       },

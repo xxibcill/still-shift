@@ -1,3 +1,4 @@
+import { CompositionNodeCapacityError } from "@still-shift/execution-runtime/export";
 import { expect, it } from "vitest";
 import {
   NativeSourceAdmission,
@@ -17,7 +18,7 @@ it("counts decoded structure independently of whitespace and escaped punctuation
   expect(JSON.parse(text).key).toHaveLength(5);
   expect(() =>
     nativeJsonTreeCapacity(text, bytes - 1, "assets.fixture"),
-  ).toThrow(/Node source capacity/);
+  ).toThrow(CompositionNodeCapacityError);
 });
 it("rejects deeply nested valid JSON before its parser can create the tree", () => {
   const text = "[".repeat(129) + "0" + "]".repeat(129);

@@ -2,7 +2,10 @@ import { mkdtemp, readFile, rm, writeFile, cp } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
+import {
+  CompositionNodeMemory,
+  CompositionNodeCapacityError,
+} from "@still-shift/execution-runtime/export";
 import {
   runMechanismProductionQueue,
   MechanismProductionTransientError,
@@ -152,6 +155,51 @@ describe("durable production queue", () => {
       expect(state.rows[0]!.cacheFailures).toHaveLength(1);
       expect(state.rows[0]!.attempts).toHaveLength(2);
       expect(state.rows[1]!.attempts).toHaveLength(1);
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
+  it("preserves sealed products and attempts when reuse verification lacks capacity, then resumes without rerender", async () => {
+    const f = await fixture();
+    let calls = 0,
+      unavailable = false;
+    const worker = {
+      ...executor(async (i, c) => {
+        calls++;
+        return product(i, c);
+      }),
+      verify: async () => {
+        if (unavailable)
+          throw new CompositionNodeCapacityError(
+            2,
+            1,
+            "seeded unavailable capacity",
+          );
+      },
+    };
+    try {
+      const initial = await runMechanismProductionQueue(
+        f.path,
+        f.output,
+        worker,
+      );
+      unavailable = true;
+      await expect(
+        runMechanismProductionQueue(f.path, f.output, worker),
+      ).rejects.toBeInstanceOf(CompositionNodeCapacityError);
+      const retained = JSON.parse(
+        await readFile(join(f.output, "queue-state.json"), "utf8"),
+      );
+      expect(retained.rows).toEqual(initial.rows);
+      expect(calls).toBe(2);
+      unavailable = false;
+      const resumed = await runMechanismProductionQueue(
+        f.path,
+        f.output,
+        worker,
+      );
+      expect(resumed.rows).toEqual(initial.rows);
+      expect(calls).toBe(2);
     } finally {
       await rm(f.root, { recursive: true, force: true });
     }

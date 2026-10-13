@@ -19,7 +19,10 @@ import {
 } from "@still-shift/animation-engine";
 import { runProcess } from "@still-shift/execution-runtime/subprocess";
 import { MechanismCommandReceiptSchema } from "../../packages/animation-engine/src/mechanism/protocol.ts";
-import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
+import {
+  CompositionNodeMemory,
+  isCompositionNodeCapacityError,
+} from "@still-shift/execution-runtime/export";
 import { createCueProjectFixture } from "../helpers/mechanism-cue-project.ts";
 
 const directory = await mkdtemp(
@@ -27,8 +30,23 @@ const directory = await mkdtemp(
 );
 const progressPath = join(directory, "progress.json");
 const stages: unknown[] = [];
-const record = async (value: unknown) => {
-  stages.push(value);
+const record = async (value: {
+  name: string;
+  state?: unknown;
+  [key: string]: unknown;
+}) => {
+  const { state, ...compact } = value;
+  if (state !== undefined) {
+    const path = join(directory, `stage-${stages.length}-${value.name}.json`),
+      body = JSON.stringify(state, null, 2) + "\n";
+    await writeFile(path, body);
+    compact.stateFile = {
+      path,
+      bytes: Buffer.byteLength(body),
+      sha256: "sha256:" + createHash("sha256").update(body).digest("hex"),
+    };
+  }
+  stages.push(compact);
   await writeFile(
     progressPath,
     JSON.stringify({ status: "running", stages }, null, 2) + "\n",
@@ -37,6 +55,12 @@ const record = async (value: unknown) => {
 console.log(JSON.stringify({ status: "running", directory }));
 const parent = new CompositionNodeMemory(),
   foreign = parent.reserve(1024);
+const resultOwners: CompositionNodeMemory[] = [];
+const resultOwner = () => {
+  const owner = new CompositionNodeMemory(parent);
+  resultOwners.push(owner);
+  return owner;
+};
 try {
   const projects = [];
   const questions = [
@@ -136,9 +160,11 @@ try {
     manifestPath,
     output,
     observed,
-    { nodeMemory: parent },
+    { nodeMemory: resultOwner() },
   );
   await record({ name: "cold", state: first });
+  const initialS2RequestHash = first.rows[1]!.requestHash,
+    initialS2ProductPath = first.rows[1]!.product!.path;
   assert.deepEqual(
     first.rows.map((r) => r.status),
     ["passed", "passed", "passed"],
@@ -217,7 +243,7 @@ try {
         manifestPath,
         outputRoot: output,
         attemptDirectory: join(output, "items", "S2", "1"),
-        requestHash: first.rows[1]!.requestHash,
+        requestHash: initialS2RequestHash,
         nodeMemory: parent,
         progress: async () => {},
       }),
@@ -235,7 +261,7 @@ try {
     manifestPath,
     output,
     observed,
-    { nodeMemory: parent },
+    { nodeMemory: resultOwner() },
   );
   await record({ name: "completed-product-reuse", state: repeated });
   assert.equal(executions, 3);
@@ -270,9 +296,10 @@ try {
     manifestPath,
     output,
     observed,
-    { nodeMemory: parent },
+    { nodeMemory: resultOwner() },
   );
   await record({ name: "caption-only-revision", state: edited });
+  const beforeQAHash = edited.manifestHash;
   assert.equal(executions, 4);
   assert(edited.rows.every((r) => r.status === "passed"));
   const changed = JSON.parse(
@@ -300,7 +327,7 @@ try {
     manifestPath,
     output,
     executor,
-    { nodeMemory: parent },
+    { nodeMemory: resultOwner() },
   );
   assert.equal(
     bundle.episodes.filter((e) => e.validation.status === "verified").length,
@@ -434,6 +461,37 @@ try {
     handoffReceipt,
     evidence: generatedEvidence,
   });
+  // Full prior states have been persisted and consumed. Retire their result owners,
+  // preserving the foreign lease and the one shared 512 MiB allowance.
+  for (const owner of resultOwners) owner.dispose();
+  resultOwners.length = 0;
+  assert.equal(parent.statistics.current.metadata, 1024);
+  assert(foreign.active);
+  const beforePressure = JSON.parse(
+    await readFile(join(output, "queue-state.json"), "utf8"),
+  );
+  const pressure = parent.reserve(parent.availableBytes - 96 * 1024 * 1024);
+  try {
+    await assert.rejects(
+      runMechanismProductionQueue(manifestPath, output, observed, {
+        nodeMemory: parent,
+      }),
+      isCompositionNodeCapacityError,
+    );
+    const afterPressure = JSON.parse(
+      await readFile(join(output, "queue-state.json"), "utf8"),
+    );
+    assert.deepEqual(afterPressure.rows, beforePressure.rows);
+    assert.equal(executions, 4);
+  } finally {
+    pressure.release();
+  }
+  assert.equal(parent.statistics.current.metadata, 1024);
+  await record({
+    name: "quota-rejection-preserves-sealed-products",
+    executions,
+    unchangedRows: true,
+  });
   const qaPath = projects[1]!.qaPath!;
   const beforeQA = JSON.parse(await readFile(qaPath, "utf8"));
   beforeQA.registrations[0].rules[0].range = [0, 1];
@@ -444,14 +502,14 @@ try {
       manifestPath,
       outputRoot: output,
       attemptDirectory: join(output, "items", "S2", "1"),
-      requestHash: first.rows[1]!.requestHash,
+      requestHash: initialS2RequestHash,
       nodeMemory: parent,
       progress: async () => {},
     }),
     /dependency snapshot changed/,
   );
   manifest.revision = 2;
-  manifest.baseHash = edited.manifestHash;
+  manifest.baseHash = beforeQAHash;
   manifest.items[1] = await inspectMechanismProductionNativeItem(
     projects[1]!,
     directory,
@@ -461,7 +519,7 @@ try {
     manifestPath,
     output,
     observed,
-    { nodeMemory: parent },
+    { nodeMemory: resultOwner() },
   );
   assert.equal(executions, 5);
   assert(qaRepaired.rows.every((r) => r.status === "passed"));
@@ -519,14 +577,14 @@ try {
   );
   assert(
     qaRepaired.rows[1]!.priorProducts.some(
-      (f) => f.path === first.rows[1]!.product!.path,
+      (f) => f.path === initialS2ProductPath,
     ),
   );
   const repairedBundle = await readMechanismProductionReports(
     manifestPath,
     output,
     executor,
-    { nodeMemory: parent },
+    { nodeMemory: resultOwner() },
   );
   assert(
     repairedBundle.episodes.every(
@@ -582,5 +640,6 @@ try {
   );
   throw error;
 } finally {
+  for (const owner of resultOwners) owner.dispose();
   parent.dispose();
 }

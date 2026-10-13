@@ -98,6 +98,19 @@ capped at256 MiB, with100,000 layer-frames and2,048 raw warnings as prospective
 ceilings. Insufficient shared allowance rejects before analysis. These admission
 claims do not certify driver or physical host RSS.
 
+A Node-capacity rejection is unavailable verification, not evidence of changed
+artifact bytes. Queue/checkpoint reuse preserves sealed products and attempts and
+returns the typed capacity error; native plate caches are not quarantined for
+that reason. Reports retain raw prior reviews but make current verification
+unavailable. Free unneeded consumer capacities before retrying.
+
+Returned queue/report states retain their capacity in the supplied consumer. For
+several calls sharing one parent, give each result a child `CompositionNodeMemory`
+owner, consume or serialize the result, then dispose that child when the result is
+no longer needed. Other owners and foreign leases stay active. The native proof
+records stage states to files before retiring those result owners, and deliberately
+pressures the same parent to verify that quota rejection cannot trigger rerendering.
+
 Use `still-shift production schema --kind production-qa-plan` or
 `production-qa-facts` for the current strict contracts. Generated
 [capabilities](./mechanism-production-capabilities.md) expose the same limits.

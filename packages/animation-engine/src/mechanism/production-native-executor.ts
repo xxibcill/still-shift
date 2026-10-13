@@ -1,3 +1,4 @@
+import { isCompositionNodeCapacityError } from "@still-shift/execution-runtime/export";
 import {
   evaluateMechanismProductionNativeQA,
   mechanismProductionQAFailureReview,
@@ -175,6 +176,7 @@ export async function createMechanismProductionNativeExecutor(): Promise<Mechani
           reused = true;
         } catch (error) {
           context.signal?.throwIfAborted();
+          if (isCompositionNodeCapacityError(error)) throw error;
           const rejected = plates + ".rejected-" + randomUUID();
           await rename(plates, rejected);
           await writeProductionJSON(

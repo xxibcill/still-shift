@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "status": "primary-research-only",
+  "assets": [
+    {
+      "status": "primary-text-and-drawing-pages-inspected",
+      "episode": "E02",
+      "source": "https://patentimages.storage.googleapis.com/49/10/78/60a2fdbc72d1a9/US4930227.pdf",
+      "viewedPDFPages": [2, 3],
+      "viewedFigures": "1-12, focusing1-8",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-E02-US4930227.pdf",
+          "bytes": 633660,
+          "sha256": "sha256:ca613d2e4b04b1cb4bd609779cec3eb318982edc882102ba79f16e73fd1f694b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-E02-US4930227-figure-2.png",
+          "bytes": 113813,
+          "sha256": "sha256:c1fdc5e6e32951ab96af50cbfc2db54c2868e2b466b6fc329f5ba68f662f45f8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-E02-US4930227-figure-3.png",
+          "bytes": 124113,
+          "sha256": "sha256:6eb83402f2bbb56ef1a9646ca1e108d161dec11ce03cd3a33d393b1426bcc5f2"
+        }
+      ],
+      "factualScope": "Three axial rivets through hook slots and smaller blade holes; larger upper shanks guide travel; enlarged heads retain the hook. Tapered elongated body follows curved blade cross-section. Figures6/8 show the sliding assembly at opposite travel ends.",
+      "implementationWitnesses": [
+        "Three distinct slots and three fixed stepped rivets, including top and bottom heads.",
+        "Head diameter exceeds slot width; upper-shank diameter fits the slot while lower shank fits the smaller blade hole.",
+        "Independent all-frame checks of each rivet-to-slot axial clearance over existing slider travel, with endpoint witnesses.",
+        "Tapered/curved slotted-body geometry and readable retention view, rather than an extra decorative rivet on the old two-rivet model."
+      ],
+      "qualification": "Primary geometry research only. Dimensions remain illustrative; no asset, physical-force, factual/design/pilot or human admission yet.",
+      "date": "2026-10-13",
+      "frozenSelection": "ms3-pilot-2026-10-12-v1",
+      "admittedAssets": 0
+    }
+  ],
+  "qualification": "Original five required assets/two behaviors/ten questions remain unadmitted. This capture does not change the frozen board or denominator."
+}

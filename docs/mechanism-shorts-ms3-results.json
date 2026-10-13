@@ -388,10 +388,10 @@
     },
     {
       "id": "operational-qa7",
-      "status": "loader-repair-complete-fast-verified-native-attempt2-running",
+      "status": "native-attempt2-failed-capacity-preservation-repair-scoped-verified",
       "record": "docs/mechanism-shorts-ms3-qa-results.json",
-      "focusedTests": 77,
-      "qualification": "Three native queue items fail without prepared native sources in state lint. Retained-capture loader repair succeeds; fresh committed-source native/current-tier verification pending.",
+      "focusedTests": 86,
+      "qualification": "Both native lifecycle failures remain actual failures. The second run separately supplies independently checked5 products/300 frames/135 images/221 pins, not lifecycle success. Capacity/consumer-ownership repair passes86 scoped controls; fresh current complete tiers and actual native rerun remain required. Original MS3/pilot/human scope is unchanged.",
       "historyRepair": "Immutable original program retention implemented; latest native/local-tier proof pending",
       "completeFast": {
         "sourceCommit": "787d96e81ff54dbc922117939c21d14294f150d6",
@@ -400,7 +400,14 @@
         "actualExitCode": 0,
         "sourceHoldCheckExitCode": 0
       },
-      "currentNativeProof": "attempt1 failed, retained; attempt2 running session92659/root TVn7h4"
+      "currentNativeProof": "attempt1 preparation failure and attempt2 capacity/cache-invalidation failure retained; repair scoped verified",
+      "failedRunArtifactAudit": {
+        "products": 5,
+        "decodedFrames": 300,
+        "images": 135,
+        "pins": 221,
+        "scope": "failed lifecycle, independent artifact audit only"
+      }
     }
   ],
   "targets": {

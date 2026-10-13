@@ -43,32 +43,27 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS3 in progress (2026-10-13):** codex/mechanism-ms3, draft
-  [PR58](https://github.com/xxibcill/still-shift/pull/58) open/attached to main.
-  QA7 now pins declarative plans, replays original native scalar samples, retains
-  MS2 expected-state timeline results and immutable raw/grouped warning/facts
-  artifacts, propagates failures, and links current facts in reports/handoffs.
-  Immutable program snapshots preserve original definitions after plan edits.
-  77 owning controls/build/lint/schemas/boundaries/declarations pass; two early
-  CLI type failures are retained. Source6bcba8a4 passes complete4440-unit fast
-  with2691 inputs/121316579B exact. Native attempt1/session70833 actually exits1:
-  all3 items fail at state lint without prepared native sources; root iGZHNG and
-  exact source hold retained. Loader repair passes scoped actual180 samples/3
-  families and rederivation/foreign-lease cleanup. Gate4 passes77 owning checks,
-  build/lint/schema/boundaries/declarations. Repaired787d passes complete4440-unit
-  fast with2691 inputs/121316935B held. Native attempt2 is running/session92659,
-  qa7-browser2 prefix/root TVn7h4: re-poll this live handle, no terminal pass claimed.
-  Independent audit and complete runtime follow; earlier passes remain separate. Evidence6 source6615
-  separately retains4 outputs/240 frames/108 images/188 pins, exact local tiers and
-  the additional60-frame/27-image/46-pin camera-cut proof, with failed attempts.
-  Original scope remains: broader faults/analytic/continuous collision/reviews;
-  native faults/relocation; scoped repair/MS1 overlap; all ten frozen questions/
-  five assets/two behaviors/genuine inputs/reviews; capability reconciliation and
-  final full103/archive/installed/MS3 PR completion. Coverage0/10; targets unmeasured.
-  No whole mechanical/glyph/factual/continuous/listening/human acceptance, spending,
-  Actions, merge or publication is claimed.
-  [QA API](./mechanism-production-qa.md), [QA record](./mechanism-shorts-ms3-qa-results.json),
-  [tracker](./mechanism-shorts-ms3-acceptance.md), [results](./mechanism-shorts-ms3-results.json).
+- **MS3 in progress (2026-10-13):** codex/mechanism-ms3,
+  [draft PR58](https://github.com/xxibcill/still-shift/pull/58) open/attached to main.
+  QA7 pins plans/programs, original native scalar/MS2 timeline facts and raw/grouped
+  warnings; current report/handoff bindings expose failures without whole acceptance.
+  Native attempt1 fails missing preparation; loader repair/source787d passes complete
+  4440-unit fast (2691 exact inputs/121316935B). Attempt2 then fails the five-execution
+  assertion: unchanged tape cache verification lacks shared capacity, invalidates a
+  valid product and rerenders it. Both failures, rows and source holds are retained.
+  Independent audit of attempt2's5 sealed products passes300 frames/135 images/
+  300 scalar samples/221 pins; this is artifact evidence on a failed lifecycle.
+  Capacity repair now preserves sealed products/checkpoints/native caches with typed
+  unavailable errors; scoped consumers retire after snapshots, all sharing512 MiB.
+  86 owning tests/build/lint/schema/boundaries/declarations pass. Fresh complete tiers
+  and native attempt3 are next. E02 primary patent text/drawings are inspected and
+  hashed for later actual three-rivet asset work; no asset admission claimed.
+  Original broader faults/analytic/continuous collision/reviews, native faults/
+  relocation, scoped/MS1 repair, all ten questions/five assets/two behaviors/genuine
+  inputs/reviews, capabilities and final full/archive/installed/MS3 completion remain.
+  Coverage0/10; targets unmeasured. No spending, Actions, merge or publication.
+  [QA record](./mechanism-shorts-ms3-qa-results.json),
+  [QA API](./mechanism-production-qa.md), [tracker](./mechanism-shorts-ms3-acceptance.md).
 
 - **MS2 software checkpoint delivered (2026-10-13):** `codex/mechanism-ms2`
   carries exact MS1N `bf30a253` ([PR #56](https://github.com/xxibcill/still-shift/pull/56));
@@ -255,6 +250,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — Preserve valid native products under shared-capacity rejection
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from23726890.
+- **Failure:** native attempt2/session92659 actually exits1 on exact787d inputs:
+  six executions rather than five, because insufficient shared capacity invalidates
+  unchanged tape evidence and starts an unnecessary failing render. Retained rootTVn7h4.
+- **Done:** typed Node/source capacity errors preserve cached products/checkpoints/
+  plates; unavailable reports retain prior raw reviews. Result owners retire after
+  persisted snapshots, preserving the same512 MiB parent and foreign leases.
+- **Results:**86 owning checks plus build/lint/schema/boundaries/declarations pass.
+  Independent failed-run artifact audit passes5 products/300 frames/135 images/
+  300 scalars/221 pins, with no lifecycle success or whole/pilot/human acceptance.
+- **Open / next:** fresh current complete tiers and native proof, plus original
+  faults/repairs, five assets/two behaviors/ten questions/genuine inputs/reviews/final gates.
+- **Records:** [QA evidence](./mechanism-shorts-ms3-qa-results.json),
+  [QA API](./mechanism-production-qa.md). E02 primary research remains unadmitted.
 
 ### 2026-10-13 — Retain native QA preparation failure and repair its input resources
 

@@ -2,6 +2,7 @@ import { dirname, join, resolve } from "node:path";
 import { realpath } from "node:fs/promises";
 import {
   CompositionNodeMemory,
+  isCompositionNodeCapacityError,
   compositionNodeJsonSize,
 } from "@still-shift/execution-runtime/export";
 import { acquireArtifactLock } from "@still-shift/execution-runtime/locks";
@@ -400,7 +401,9 @@ export async function readMechanismProductionReports(
         }
       } catch (error) {
         options.signal?.throwIfAborted();
-        validation = "stale";
+        validation = isCompositionNodeCapacityError(error)
+          ? "unavailable"
+          : "stale";
         outputSha256 = null;
         issue = failureDiagnostic(error);
       } finally {

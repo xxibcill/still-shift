@@ -1,5 +1,9 @@
 import { COMPOSITION_NODE_MEMORY_ALLOWANCE } from "@still-shift/scene-contract";
-import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
+import {
+  CompositionNodeMemory,
+  CompositionNodeCapacityError,
+  isCompositionNodeCapacityError,
+} from "@still-shift/execution-runtime/export";
 import { type MemoryLease } from "../../renderer-core/src/managed-memory.ts";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 
@@ -22,10 +26,11 @@ export function nativeJsonTreeCapacity(
   const add = (count: number) => {
     bytes += count;
     if (!Number.isSafeInteger(bytes) || bytes > maximum)
-      passageError(
-        "comp-native3d-limit",
+      throw new CompositionNodeCapacityError(
+        bytes,
+        maximum,
         "Native JSON exceeds its admitted Node source capacity",
-        { path: location },
+        location,
       );
   };
   for (let index = 0; index < text.length; ) {
@@ -114,7 +119,14 @@ export class NativeSourceAdmission {
       const lease = this.memory.reserve(bytes);
       this.owned.add(lease);
       return lease;
-    } catch {
+    } catch (error) {
+      if (isCompositionNodeCapacityError(error))
+        throw new CompositionNodeCapacityError(
+          bytes,
+          this.memory.availableBytes,
+          "Native inputs exceed the composition Node source allowance",
+          location,
+        );
       passageError(
         "comp-native3d-limit",
         "Native inputs exceed the composition Node source allowance",
@@ -168,8 +180,16 @@ export class NativeSourceAdmission {
     // Escaped source strings can make the lexical estimate larger than the
     // decoded plan. Keep that already-admitted capacity instead of rejecting.
     bytes = Math.max(bytes, prior);
+    const growth = bytes - prior;
+    if (growth > this.memory.availableBytes)
+      throw new CompositionNodeCapacityError(
+        growth,
+        this.memory.availableBytes,
+        "Prepared native catalogues exceed the shared Node allowance",
+        "preparedNative3D",
+      );
     try {
-      first.resize(first.bytes + bytes - prior);
+      first.resize(first.bytes + growth);
     } catch {
       passageError(
         "comp-native3d-limit",

@@ -1,7 +1,10 @@
 import { mkdir, realpath, readdir } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { performance } from "node:perf_hooks";
-import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
+import {
+  CompositionNodeMemory,
+  isCompositionNodeCapacityError,
+} from "@still-shift/execution-runtime/export";
 import {
   acquireArtifactLock,
   type ArtifactLockOptions,
@@ -368,6 +371,7 @@ export async function runMechanismProductionQueue(
             row.status = "passed";
             recovered = true;
           } catch (error) {
+            if (isCompositionNodeCapacityError(error)) throw error;
             if (!missing(error))
               attempt.diagnostic =
                 "Unusable interrupted completion: " +
@@ -419,6 +423,7 @@ export async function runMechanismProductionQueue(
             continue;
           } catch (error) {
             if (options.signal?.aborted) break;
+            if (isCompositionNodeCapacityError(error)) throw error;
             if (
               row.priorProducts.length >= LIMIT.revisions ||
               row.cacheFailures.length >= LIMIT.revisions
