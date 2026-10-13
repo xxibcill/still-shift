@@ -133,7 +133,15 @@
     },
     "generatedReference": "docs/mechanism-production-capabilities.md",
     "sharedData": "tools/still-shift-cli/src/media-capabilities.ts",
-    "qualification": "Real CLI discovery, generated reference equality, admitted parser/profile limits and bounded policy/admission behavior. Fresh complete recovery, broader seeded QA, full/archive/installed and whole/pilot requirements stay open."
+    "qualification": "Real CLI discovery, generated reference equality, admitted parser/profile limits and bounded policy/admission behavior. Fresh complete recovery, broader seeded QA, full/archive/installed and whole/pilot requirements stay open.",
+    "implementationCommit": "7941b710c4540c6c26f171d21e267d38f15c57c8",
+    "postCommitSourceHoldExitCode": 0,
+    "runtimeIdentity": {
+      "path": "/private/tmp/still-shift-ms3-capabilities29-runtime-identity.json",
+      "bytes": 660,
+      "sha256": "sha256:fa25d10358ffc74ed2ae44d42a2f477b989564cb42bb98f0ffc6a9e7759a2784"
+    },
+    "runtimeCoreUnchanged": true
   },
   "currentDiscovery": [
     {

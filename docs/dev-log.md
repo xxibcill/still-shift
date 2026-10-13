@@ -172,7 +172,9 @@ still hold before relying on them.
   reads pass after retained IPC denials. Shared CLI media discovery/generated
   reference now agree on rigid import, native/legacy formats, batch and bounded
   recovery limits. Held current fast4,539/449 and eight runtime checks pass.
-  Fresh automatic bridge and original full/final scope remain open. README changed only after native25 terminal; other2,725 inputs stay exact.
+  Implementation7941b710/post-commit hold0 and unchanged package code/profile
+  identity are verified. Fresh current bridge baseline now runs as setup; actual
+  recovery and original full/final scope remain open. README changed only after native25 terminal; other2,725 inputs stay exact.
   Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
   [Automatic overlap preflight](./mechanism-shorts-ms3-repair-results.json) now
@@ -391,7 +393,9 @@ still hold before relying on them.
   2,732 inputs/121,745,634B. Both real discovery commands exit0 with equal media.
 - **Retained:** Draft import/type/harness and no-write edit failures remain; fast1
   passes before the original bad-output stream/hash repair, then fast2 refreshes.
-- **Open / next:** Fresh current696-plate bridge baseline is setup; actual bounded
+- **Binding:** Implementation7941b710 contains the exact held inputs; post-commit
+  hold0. Actual package code/profile identity still matches current native products.
+- **Open / next:** Fresh current696-plate bridge baseline now runs as setup; bounded
   recovery/final-file proof, original seven inputs/whole and full/final gates remain.
 - **Records:** [Capabilities](./mechanism-shorts-ms3-capability-results.json),
   [recovery](./mechanism-shorts-ms3-repair-results.json).

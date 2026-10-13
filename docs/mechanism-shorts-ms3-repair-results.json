@@ -143,6 +143,16 @@
       "bytes": 1234,
       "sha256": "sha256:dd4b89d4dfd7f424adbc6f45b57c6ebbe5e6882a4d3de925e312ddf6d7c49d7f"
     },
-    "freshEndToEndProof": "pending"
+    "freshEndToEndProof": "pending",
+    "implementationCommit": "7941b710c4540c6c26f171d21e267d38f15c57c8"
+  },
+  "currentFreshBridgeBaseline": {
+    "status": "running",
+    "receiptPath": "/private/tmp/still-shift-ms3-overlap29-baseline1-receipt.json",
+    "sourceCommit": "7941b710c4540c6c26f171d21e267d38f15c57c8",
+    "privateRoot": "/private/tmp/still-shift-ms3-auto-overlap-1y226be1",
+    "output": "bad-current29",
+    "cache": "cache-current29",
+    "qualification": "Fresh current696-frame baseline capture is setup; no claim of historical cache reuse, completed automatic recovery or whole admission."
   }
 }
