@@ -136,10 +136,17 @@ still hold before relying on them.
   decoded frames with five visual errors and unaligned comparison stills retained.
   Independent audit passes all587 observation/scalar/frame rows,34 images and
   exact final/review PCM, with original whole source/audio/transcript pins checked.
-  E01 queue item is sealed; E03 is rendering and E08 is pending. Seven matching audio/timing inputs are requested; unrelated
+  E01/E03 queue items are sealed; E08 is rendering. E03 independent audit passes
+  all646 native/scalar/decoded frames,27 images and exact final/review PCM; four
+  phone stills viewed and four visual errors remain. Seven matching audio/timing inputs are requested; unrelated
   recordings are excluded. No synthesis is authorized by this production plan.
   Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
+  [Automatic overlap preflight](./mechanism-shorts-ms3-repair-results.json) now
+  reproduces the seeded target with the current pure API/historical measurements,
+  selects one of12 bounded candidates and restores69 readable frames while
+  retaining neighbors. A private current CLI seed preserves seven dependencies;
+  fresh bad/fixed render/final recheck and696-plate proof still remain.
   Remaining original scope: clearer E06/E10 explanations and actual whole reviews,
   all ten frozen questions/genuine narration,
   scoped/MS1 automatic repair, broader seeded QA, capability reconciliation,
@@ -332,6 +339,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — E03 portrait audit and bounded overlap-recovery preflight
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, fromf70be2cb.
+- **Done:** Independent E03 audit actually exits0:646 original native/scalar/
+  decoded frame rows,27 images, all pins and exact final/review PCM. Original
+  source WAV/PCM/transcript identities remain exact; four phone stills viewed.
+- **Results:** E01/E03 sealed; same native1 handle remains live on E08. E03 has
+  four visual errors. Caption panel reaches99% height and violates5% safe inset;
+  native-run source remains byte-held before any compiler repair.
+- **Recovery preflight:** Current pure overlay API with historical sidecars/text
+  selects a clear generic candidate in one of12 trials and restores69 readable
+  frames with unchanged neighbor findings. Current public CLI seeds revision3
+  on a private MS1 copy, preserving seven dependencies and scoped cache effects.
+- **Open / next:** E08 terminal/audit; fresh automatic bad/fixed exports, final-file
+  recheck and all696 unchanged bridge plates. Preflight is not that completed gate.
+- **Records:** [Pilot](./mechanism-shorts-ms3-pilot-results.json),
+  [automatic recovery](./mechanism-shorts-ms3-repair-results.json).
 
 ### 2026-10-13 — Original ten-question pilot inputs and recording drafts
 

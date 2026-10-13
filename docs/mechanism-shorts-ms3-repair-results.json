@@ -1,0 +1,93 @@
+{
+  "version": "mechanism-ms3-automatic-overlap-results-1",
+  "date": "2026-10-13",
+  "sourceCommit": "f70be2cba0cdba2aad5422889f15dea246aca0c7",
+  "status": "preflight-and-current-fixture-seeding-only",
+  "root": "/private/tmp/still-shift-ms3-auto-overlap-1y226be1",
+  "initialInspect": {
+    "actualExitCode": 0,
+    "log": {
+      "path": "/private/tmp/still-shift-ms3-overlap23-initial-inspect.log",
+      "bytes": 5926,
+      "sha256": "sha256:6e178472cda7d0925136aa296b0d42d905ea52b365155a27f5b63276d87b5060"
+    },
+    "report": {
+      "path": "/private/tmp/still-shift-ms3-overlap23-initial-inspect.json",
+      "bytes": 6861,
+      "sha256": "sha256:dbcb53b0f5707efdde6464d3279161aecb6a9522c17434eedd0ec280133e1391"
+    }
+  },
+  "policyPreflight": {
+    "actualExitCode": 0,
+    "log": {
+      "path": "/private/tmp/still-shift-ms3-overlap23-preflight.log",
+      "bytes": 236,
+      "sha256": "sha256:7895bc0f4a1eab24dacedb7bf57c764eb72d9c62595e85d7d31ee2f08b795839"
+    },
+    "script": {
+      "path": "/private/tmp/still-shift-ms3-overlap23-preflight.mts",
+      "bytes": 4188,
+      "sha256": "sha256:1fef826f078c26fa2a79d57bb35fb2d001e0ecad248b32cdad40b91891de2fb2"
+    },
+    "report": {
+      "path": "/private/tmp/still-shift-ms3-auto-overlap-1y226be1/policy-preflight.json",
+      "bytes": 1765,
+      "sha256": "sha256:23eabcced92e10f6a697b11db0d8c6acb8829dd60895ad47d3b97f1991cd84fd"
+    },
+    "policy": {
+      "maxPatchTargets": 1,
+      "maxCandidates": 12,
+      "maxRenders": 1,
+      "onePatch": true,
+      "noCreatorDecision": true
+    },
+    "candidateTrials": 1,
+    "selectedPosition": [540, 1152],
+    "restoredReadableFrames": 69,
+    "neighborFindingsUnchanged": true,
+    "qualification": "Pure current API decision preflight using historical sidecars/measured text. Not a fresh detection/render/recheck, not whole/pilot acceptance."
+  },
+  "currentSeed": {
+    "status": "passed",
+    "actualExitCode": 0,
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-auto-overlap-1y226be1/seed-run.json",
+      "bytes": 2681,
+      "sha256": "sha256:81b83d470a35e5d4686afdb51fbcc9d27ac318bf47a174a4ee5e607756400a4d"
+    },
+    "request": {
+      "path": "/private/tmp/still-shift-ms3-auto-overlap-1y226be1/seed.patch.json",
+      "bytes": 323,
+      "sha256": "sha256:7b6c12fa5186dc8a9cddbcc80f46d2aa0579eba20eade75d25977a1c23238b55"
+    },
+    "result": {
+      "path": "/private/tmp/still-shift-ms3-auto-overlap-1y226be1/seed.patch.result.json",
+      "bytes": 523,
+      "sha256": "sha256:41e3e3077f3f407b934351b09cd881be99dd7ee3873211411ca9518c9c2608c6"
+    },
+    "inspection": {
+      "path": "/private/tmp/still-shift-ms3-auto-overlap-1y226be1/seed.inspection.json",
+      "bytes": 6862,
+      "sha256": "sha256:a05ea4a013a6cbab28709cd71980d807f7f96dc6714e963e05f03607037c3bdc"
+    },
+    "revision": 3,
+    "dependencyPins": 7,
+    "sourceHoldInputs": 2725,
+    "sourceHoldBytes": 121706266,
+    "affectedShots": ["V8-05"],
+    "cacheEffects": {
+      "geometry": "reuse",
+      "cleanPlates": "reuse",
+      "sidecars": "reuse",
+      "overlays": "invalidate-affected-shots",
+      "audio": "reuse"
+    }
+  },
+  "remaining": [
+    "Wait for the existing serial original-pilot run to finish before another render group.",
+    "Fresh current bad export/detection, bounded automatic one-patch decision, affected export and final-file recheck.",
+    "Verify all696 bridge clean plates/sidecars unchanged, zero new3D, unchanged neighbors and retained bad evidence.",
+    "Exercise stale request/unsupported recovery exceptions and save a current fresh-session handoff."
+  ],
+  "qualification": "This is not the requested completed automatic recovery proof. Historical pixel/sidecar evidence is not relabeled as fresh, and no extra render or GUI action was performed."
+}

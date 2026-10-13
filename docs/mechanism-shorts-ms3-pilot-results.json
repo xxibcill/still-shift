@@ -112,8 +112,8 @@
     "runtimeCodeAndProfileIgnoreDocumentationAndGitHead": true,
     "queueStateAtInspection": {
       "E01": "passed-review-evidence",
-      "E03": "running-render-cached",
-      "E08": "pending"
+      "E03": "passed-review-evidence",
+      "E08": "running-render-cached"
     },
     "E01AvailableEvidence": {
       "nativeFrames": 587,
@@ -129,7 +129,20 @@
       ],
       "qualification": "Partial run inspection only. Static still review does not establish continuous motion, listening, whole factual acceptance or a completed production run."
     },
-    "inspectedUtc": "2026-10-13T11:38:55.735562+00:00"
+    "inspectedUtc": "2026-10-13T11:51:47.814886+00:00",
+    "E03AvailableEvidence": {
+      "nativeFrames": 646,
+      "fullDecodedFrames": 646,
+      "sampledVisualErrors": 4,
+      "warningGroups": 15,
+      "phoneStillsActuallyViewed": [80, 228, 378, 553],
+      "findings": [
+        "Oversized caption panel and bottom safe-area placement match the E01 compiler issue.",
+        "Recognition, tongue, passing-tooth and blocked contact are visible in the four sampled phone stills.",
+        "Four raw frozen-run errors remain; purposeful contact holds need evidence-bound review, not blanket suppression."
+      ],
+      "qualification": "Static phone still review only; continuous/listening and whole mechanical/factual acceptance remain unreviewed."
+    }
   },
   "documentValidation": {
     "status": "passed",
@@ -198,6 +211,48 @@
       ],
       "qualification": "Technical identity/sample-clock/sampled-mount audit. No whole mechanism/factual/continuous/listening/human/pilot acceptance. AAC output PCM is not claimed byte-identical to source PCM.",
       "verifiedPins": 55
+    },
+    {
+      "episode": "E03",
+      "status": "passed",
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-pilot23-audit-E03-receipt.json",
+        "bytes": 343,
+        "sha256": "sha256:b792874c172685d93b151daa02d187434e0b9064c12dabb551a4e995053d5150"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-pilot22-audit-E03.json",
+        "bytes": 64790,
+        "sha256": "sha256:959d16991136a21182a4a644db357f4de56f1701e0575c8773acfa0f75d79b6f"
+      },
+      "nativeFrames": 646,
+      "decodedFrames": 646,
+      "images": 27,
+      "scalarComparisons": 646,
+      "warningGroups": 15,
+      "visualErrors": 4,
+      "sourceNarrationSamples": 1032081,
+      "sourcePcmSha256": "sha256:11e144392856472d225de845b230e38139f6dc7bd2445327e2c0b10cb29aaa22",
+      "binding": {
+        "inputSha256": "sha256:f64db3bda8811cdf942e9b6ee053b0fcfded5953a6eec7c83e9a1185bcb438b8",
+        "outputSha256": "sha256:64c728c9cb5f037e71ac9871e0787a2b12b0bd0aa8a009541b8ebe189b0636da",
+        "codeSha256": "sha256:14836055d4c44015d6b3e661976d93bcea1710915115ea919c2e1e4fcff4e171",
+        "profileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+      },
+      "work": {
+        "freshNativeSubmissions": 646,
+        "reusedNativePlates": false
+      },
+      "methods": [
+        "independent original native observation artifact pins and all-frame scalar recomputation",
+        "full streaming final RGBA decode, exact extracted frame/crop bytes and phone transforms",
+        "full final/review PCM equality; original whole source WAV/PCM/transcript pins separately verified",
+        "raw grouped peaks, artifact binding and unreviewed handoff preserved"
+      ],
+      "qualification": "Technical identity/sample-clock/sampled-mount audit. No whole mechanism/factual/continuous/listening/human/pilot acceptance. AAC output PCM is not claimed byte-identical to source PCM.",
+      "verifiedPins": 48
     }
   ]
 }
