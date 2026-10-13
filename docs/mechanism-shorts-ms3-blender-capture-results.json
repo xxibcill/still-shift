@@ -1,7 +1,7 @@
 {
   "version": "mechanism-ms3-blender-native-capture-results-1",
   "date": "2026-10-14",
-  "sourceCommit": null,
+  "sourceCommit": "6c7cd6c9925a66013949276f0f1f25ab427c0066",
   "baseCommit": "9d30db873f943c454cdeb7b2aa0938842436b0ea",
   "runtime": {
     "codeSha256": "sha256:19681627200c522c3cbc46dd57d7cf3a1254c3234e76b8c2e4b281df4d29ed4d",
@@ -201,5 +201,13 @@
   "denominator": 10,
   "routineTokenMeasurements": null,
   "newElevenLabsCalls": 0,
-  "qualification": "Shared native capture foundation and actual full zipper content/receiver prototype. Editable native source/controls stay in Blender; receiving scope is cached sequence/text. No reduced model, transferred editable mesh rig, all-ten production, whole review or public package adoption is claimed."
+  "qualification": "Shared native capture foundation and actual full zipper content/receiver prototype. Editable native source/controls stay in Blender; receiving scope is cached sequence/text. No reduced model, transferred editable mesh rig, all-ten production, whole review or public package adoption is claimed.",
+  "committedSourceVerification": {
+    "actualExitCode": 0,
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-blender36-committed-source.json",
+      "bytes": 190,
+      "sha256": "sha256:27a7ca1972671870cd3e654b99427336e131405802441046468f2826c696378c"
+    }
+  }
 }

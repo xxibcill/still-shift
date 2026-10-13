@@ -414,11 +414,12 @@ still hold before relying on them.
 
 ### 2026-10-14 — Preserve actual native asset content in a shared capture producer
 
-- **Agent / branch:** Codex on `codex/mechanism-ms3`, from9d30db87.
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, implementation6c7cd6c9, from9d30db87.
 - **Done:** Shared data-only Blender capture API/worker, bounded complete controls,
   frozen inputs/native observations, owned hashes and caller-memory cleanup.
 - **Verification:** Fast4,549/451, runtime admission1, Python lint/format pass;
-  all2,744 inputs/121,816,073B held. Runtime1968/694, appearance/profile exact.
+  all2,744 inputs/121,816,073B held; committed source also exits0.
+  Runtime1968/694, appearance/profile exact.
 - **Actual assets:** Ten three-state native probes/repeated-shuffled equality pass.
   Full129,768-vertex zipper captures four control states without source rebuild;
   eight pins and repeated geometry/decoded pixels match. Five native still/receiver
