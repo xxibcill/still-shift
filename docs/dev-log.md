@@ -145,8 +145,15 @@ still hold before relying on them.
   Five red regressions now pass; owning25/2 and complete fast4,535/448 pass.
   Held2,726 inputs/121,709,868B also pass synthetic cue-layout12 exports/720 frames
   and narrated-cycle12/900 with full observation/glyph/seek/repeat checks. Current
-  E03 repair compilation is ready; original-plate check/export/final-check is live
-  onb5f8fbae. No current repaired portrait completion is claimed yet.
+  E03 original-plate check/export/final-check now actually exit0 onb5f8fbae;
+  independent646-frame difference/exact decoded PCM/656 unchanged file audit passes.
+  Four phone stills viewed; current state lint removes all four outside-safe-area
+  warnings, retaining four frozen-run errors. No whole/pilot acceptance.
+  [E01/E08 framing](./mechanism-shorts-ms3-framing-results.json) revisions preserve
+  whole narration/family/scene/cue windows. E01 pure216-frame paired contacts align
+  at one screen datum; E08 all643 pose/visibility expectations pass with opening
+  in its actual spoken window. Normal serial native25 is live: E01 rendering,
+  E08 pending. Native/encoded framing admission remains open.
   Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
   [Automatic overlap preflight](./mechanism-shorts-ms3-repair-results.json) now
@@ -347,6 +354,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — Verify E03 caption export and author E01/E08 framing repairs
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from63bd4bd6.
+- **Done:** E03 plate check/export/final check actually exit0, with0 fresh native
+  calls/646 reused frames/656 original files unchanged. Independent full decode
+  changes all646 picture frames and preserves complete PCM. Four phone stills viewed.
+- **Results:** Current pure state lint reduces outside-safe-area4→0; four frozen
+  errors remain. Path-only audit loader and sandbox ps failures stay retained.
+- **Framing authoring:** E01 holds both contacts through their complete spoken
+  windows and aligns their pure projection over216 frames. E08 retains closed
+  intro, opens in its spoken cue and frames jaws/cloth with shared recognition
+  camera; all643 pure motion/visibility checks pass. Source family/scene/voice/
+  cue windows stay exact. Hidden fabric-contact policy remains an explicit limit.
+- **Open / next:** Same normal native25 process is live on E01; E08 pending.
+  Actual native/encoded review, unified rebinding and original full scope remain.
+- **Records:** [Caption](./mechanism-shorts-ms3-caption-results.json),
+  [framing](./mechanism-shorts-ms3-framing-results.json).
 
 ### 2026-10-13 — Shared caption geometry and safe-area compiler repair
 

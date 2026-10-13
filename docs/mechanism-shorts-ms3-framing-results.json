@@ -1,0 +1,142 @@
+{
+  "version": "mechanism-ms3-original-framing-results-1",
+  "date": "2026-10-13",
+  "sourceCommit": "63bd4bd688003989528711b5fe84de5e2614ba97",
+  "implementationCommit": "b5f8fbaeafa52d24d5e93e36427868589b4a7d52",
+  "sourceInputs": 2726,
+  "sourceBytes": 121709868,
+  "originalDenominator": 10,
+  "acceptedEpisodes": 0,
+  "rows": [
+    {
+      "id": "E01",
+      "takeId": "EU-001",
+      "privateRoot": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/E01",
+      "actualAuthoringExitCode": 0,
+      "run": {
+        "path": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/E01/run.json",
+        "bytes": 3155,
+        "sha256": "sha256:f94509a0032fc6e3b219d3269ce6bcbd65b3b83ad854807c3efca7768a22a3d1"
+      },
+      "revision": 1,
+      "frames": 587,
+      "wholeNarrationAndCueWindowsUnchanged": true,
+      "familyAndSceneFilesByteIdentical": true,
+      "qualification": "Pure authored expectation/preflight only; new native and encoded products remain in flight.",
+      "pairedCameraFrames": 216,
+      "maximumPureContactError": 0,
+      "maximumPurePixelAlignmentError": 1.1368683772161603e-13,
+      "controlChange": "Remove the pre-outside interpolation so inside contact holds through its complete spoken cue; outside stop changes at its declared camera cut.",
+      "cameraAttempts": {
+        "path": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/E01/camera-attempts.json",
+        "bytes": 1236,
+        "sha256": "sha256:4e215dffd6bc22d63da91540b4d65c7c2ba49d937849b86a4230d85e6df2e96f"
+      }
+    },
+    {
+      "id": "E08",
+      "takeId": "EU-003",
+      "privateRoot": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/E08",
+      "actualAuthoringExitCode": 0,
+      "run": {
+        "path": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/E08/run.json",
+        "bytes": 1813,
+        "sha256": "sha256:e2a589f5548c0b681817f2633ec6cf0ed6f0084479cbe6b19cfc30eca3854055"
+      },
+      "revision": 1,
+      "frames": 643,
+      "wholeNarrationAndCueWindowsUnchanged": true,
+      "familyAndSceneFilesByteIdentical": true,
+      "qualification": "Pure authored expectation/preflight only; new native and encoded products remain in flight.",
+      "pureMotionCheckedFrames": 643,
+      "motionExpectation": {
+        "closedThroughFrameExclusive": 107,
+        "openingFrames": [107, 137],
+        "releasedAtFrame": 312,
+        "amplitudeRadians": 0.16,
+        "evidence": "independent linear angle expectation on every authored output frame; not natural-speed playback"
+      },
+      "visibility": [
+        {
+          "cue": "intro",
+          "anchor": "lower.seat",
+          "frames": [0, 107],
+          "counts": {
+            "visible": 107
+          },
+          "evidence": "pure expected physical visibility, not native observation or encoded glyph proof"
+        },
+        {
+          "cue": "open",
+          "anchor": "upper.tip",
+          "frames": [107, 312],
+          "counts": {
+            "occluded": 3,
+            "visible": 202
+          },
+          "evidence": "pure expected physical visibility, not native observation or encoded glyph proof"
+        },
+        {
+          "cue": "release",
+          "anchor": "spring.seat.b",
+          "frames": [312, 409],
+          "counts": {
+            "visible": 97
+          },
+          "evidence": "pure expected physical visibility, not native observation or encoded glyph proof"
+        },
+        {
+          "cue": "fabric",
+          "anchor": "cloth.upper",
+          "frames": [409, 550],
+          "counts": {
+            "occluded": 141
+          },
+          "evidence": "pure expected physical visibility, not native observation or encoded glyph proof"
+        },
+        {
+          "cue": "bias",
+          "anchor": "spring.seat.b",
+          "frames": [550, 643],
+          "counts": {
+            "visible": 93
+          },
+          "evidence": "pure expected physical visibility, not native observation or encoded glyph proof"
+        }
+      ],
+      "retainedCompromise": "Fabric contact remains occluded under hide-occluded; its caption and visible cloth remain required. Held poses interpolate linearly; opening is moved from intro into its spoken cue. Illustrative spring return does not establish natural continuous motion or a force simulation.",
+      "presentationRecord": {
+        "path": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/E08/presentation-record.json",
+        "bytes": 68236,
+        "sha256": "sha256:2a3a4291bc177e345bbcc2e794a2fa6f32f06e963232ee43f9dc66add2e1de4a"
+      }
+    }
+  ],
+  "nativeRun": {
+    "status": "running-at-record-time",
+    "receipt": "/private/tmp/still-shift-ms3-framing25-native1-receipt.json",
+    "queueActualExitCode": 0,
+    "queueSourceHoldCheckExitCode": 0,
+    "privateRoot": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1",
+    "inspectedUtc": "2026-10-13T13:21:19.016438+00:00",
+    "queueItems": [
+      {
+        "id": "E01",
+        "status": "running",
+        "stage": "native-cache"
+      },
+      {
+        "id": "E08",
+        "status": "pending",
+        "stage": null
+      }
+    ]
+  },
+  "remaining": [
+    "Finish the existing serial native run/report; retain any actual failures.",
+    "Independently audit original capture and full decoded picture/audio/evidence, then inspect aligned contact and jaw/cloth views.",
+    "Keep hidden fabric contact under its declared policy; visible cloth/caption must establish the stop.",
+    "Original ten episode scope, seven genuine missing inputs, whole reviews, bounded automatic bridge recovery, broader QA/capability/metrics and final gates remain."
+  ],
+  "qualification": "Two original question repairs, not new distinct episodes or a replacement denominator. Supplied source audio unchanged; no synthesis/spending/human/pilot acceptance."
+}
