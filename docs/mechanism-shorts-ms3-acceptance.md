@@ -53,12 +53,12 @@ complete fast4,535/448 and relevant synthetic browser layout/narrated-cycle
 checks (24 exports,1,620 observed frames) with2,726 inputs held. E03 original-plate
 check/export/final-check and independent646-frame/PCM/656-file audit now pass.
 Four phone stills are inspected; four frozen-run errors remain. The current
-E01/E08 framing revisions preserve supplied audio and original questions; normal
-native25 is live with E01 rendered587 native frames/overlay export in progress
-and E08 pending. Earlier59ce0e5f pilot
+E01/E08 framing revisions preserve supplied audio and original questions; native25 queue/run/report actually exit0, with1,230 independently audited
+native/scalar/decoded frames and68 review images. Nine phone stills were inspected;
+E01 thickness/travel witnesses still require revision2 rendering. Earlier59ce0e5f pilot
 products retain their historical binding; source changes require current
 product/QA/handoff verification. All ten whole/pilot requirements remain open.
 
 [Framing records](./mechanism-shorts-ms3-framing-results.json) distinguish E01
-all-frame pure contact/projection, E08 pure motion/visibility and the live actual
-native products. Seven narration inputs and original whole/pilot reviews remain.
+pure preflights from actual captured contact/projection and motion/gap
+audits of the completed native products. Seven narration inputs and original whole/pilot reviews remain.

@@ -381,7 +381,7 @@ still hold before relying on them.
   implementation, retaining scope/history. Discovery reads pass after IPC denials.
   A prefixed-versus-bare SHA bookkeeping mistake is retained/corrected: onlyREADME
   changes after native terminal; other2,725 inputs remain exact.
-- **Open / next:** Current E01 scoped input revision; fresh bounded bridge recovery; scoped
+- **Open / next:** Current E01 scoped input revision (revision0 archived, onlyE01 changed); fresh bounded bridge recovery; scoped
   machine/generated capabilities; original seven inputs/whole/final gates. No
   pilot/human admission; measured seat residual is not whole geometry acceptance.
 - **Records:** [Framing](./mechanism-shorts-ms3-framing-results.json),
