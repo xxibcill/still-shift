@@ -1,0 +1,290 @@
+{
+  "schemaVersion": "ms3-blender-cli-results-1",
+  "date": "2026-10-14",
+  "status": "candidate-native-cli-verified",
+  "implementationCommit": "2bb34a240664463ea0fa9c40d1eb5f5e1c71e222",
+  "runtimeCodeSha256": "sha256:5fde6b50eb1a9b9333277977fcd4ee9d49d77ff3f5d03c5f9594ef61fe536576",
+  "nativeProfileSha256": "sha256:a51512b29d4a8d4c0cb10f71e4717bd326b925ba5f088c592640791fae290ae1",
+  "ownerSelection": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+  "sourceInventory": {
+    "path": "/private/tmp/still-shift-ms3-blender39-inputs1.json",
+    "files": 2765,
+    "bytes": 122001824,
+    "postCommitHold": {
+      "status": "passed",
+      "mode": "check",
+      "files": 2765,
+      "bytes": 122001824
+    }
+  },
+  "softwareVerification": {
+    "receipt": "/private/tmp/still-shift-ms3-blender39-gate1-receipt.json",
+    "result": {
+      "steps": [
+        {
+          "name": "python",
+          "argv": [
+            "uv",
+            "run",
+            "--no-sync",
+            "ruff",
+            "check",
+            "packages/animation-engine/src/blender-capture-worker.py"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 0.21243404177948833
+        },
+        {
+          "name": "python-format",
+          "argv": [
+            "uv",
+            "run",
+            "--no-sync",
+            "ruff",
+            "format",
+            "--check",
+            "packages/animation-engine/src/blender-capture-worker.py"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 0.1558236670680344
+        },
+        {
+          "name": "fast",
+          "argv": ["pnpm", "check:fast"],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 133.3439154168591
+        },
+        {
+          "name": "runtime",
+          "argv": [
+            "pnpm",
+            "exec",
+            "vitest",
+            "run",
+            "tests/runtime/blender-production-cli.test.ts",
+            "tests/runtime/blender-episode-inputs.test.ts",
+            "tests/runtime/blender-production-backend-admission.test.ts",
+            "tests/runtime/blender-capture-admission.test.ts",
+            "tests/runtime/mechanism-production-queue-cli.test.ts",
+            "tests/runtime/mechanism-production-run-cli.test.ts",
+            "tests/runtime/mechanism-production-report-cli.test.ts",
+            "tests/runtime/mechanism-production-retry-cli.test.ts",
+            "tests/runtime/mechanism-production-queue-recovery.test.ts",
+            "--maxWorkers=2",
+            "--no-file-parallelism"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 13.98141225008294
+        }
+      ],
+      "actualExitCode": 0
+    },
+    "fastTests": 4567,
+    "fastFiles": 454,
+    "affectedRuntimeTests": 21,
+    "affectedRuntimeFiles": 9,
+    "focused": {
+      "receipt": "/private/tmp/still-shift-ms3-blender39-focused2.log",
+      "passedTests": 16,
+      "files": 5,
+      "qualification": "Declared synthetic byte-fixture adapters test routing/retry/reporting; they launch no Blender renderer and establish no video quality."
+    }
+  },
+  "actualCLI": {
+    "receipt": "/private/tmp/still-shift-ms3-blender39-cli1-receipt.json",
+    "result": {
+      "steps": [
+        {
+          "name": "queue",
+          "argv": [
+            "queue",
+            "--projects",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/cli-projects.json",
+            "--manifest",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/cli-created-queue.json",
+            "--backend",
+            "blender-native",
+            "--blender-executable",
+            "/Applications/Blender.app/Contents/MacOS/Blender"
+          ],
+          "actualExitCode": 0,
+          "expectedExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 3.1468160829972476
+        },
+        {
+          "name": "mismatch",
+          "argv": [
+            "run",
+            "--manifest",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/cli-current-queue.json",
+            "--output-dir",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/output",
+            "--backend",
+            "three-native"
+          ],
+          "actualExitCode": 2,
+          "expectedExitCode": 2,
+          "holdExitCode": 0,
+          "seconds": 1.5213197078555822
+        },
+        {
+          "name": "missing-executable",
+          "argv": [
+            "run",
+            "--manifest",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/cli-current-queue.json",
+            "--output-dir",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/output"
+          ],
+          "actualExitCode": 2,
+          "expectedExitCode": 2,
+          "holdExitCode": 0,
+          "seconds": 1.463640125002712
+        },
+        {
+          "name": "run",
+          "argv": [
+            "run",
+            "--manifest",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/cli-current-queue.json",
+            "--output-dir",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/output",
+            "--blender-executable",
+            "/Applications/Blender.app/Contents/MacOS/Blender",
+            "--report",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/cli-state.json"
+          ],
+          "actualExitCode": 0,
+          "expectedExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 35.81529049994424
+        },
+        {
+          "name": "report",
+          "argv": [
+            "report",
+            "--manifest",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/cli-current-queue.json",
+            "--output-dir",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/output",
+            "--blender-executable",
+            "/Applications/Blender.app/Contents/MacOS/Blender",
+            "--report",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/cli-report.json"
+          ],
+          "actualExitCode": 0,
+          "expectedExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 2.8635125409346074
+        },
+        {
+          "name": "resume",
+          "argv": [
+            "run",
+            "--manifest",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/cli-current-queue.json",
+            "--output-dir",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/output",
+            "--blender-executable",
+            "/Applications/Blender.app/Contents/MacOS/Blender",
+            "--report",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/cli-resume-state.json"
+          ],
+          "actualExitCode": 0,
+          "expectedExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 2.7363435418810695
+        },
+        {
+          "name": "discover",
+          "argv": [
+            "discover",
+            "--report",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/cli-capabilities.json"
+          ],
+          "actualExitCode": 0,
+          "expectedExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 1.2122236248105764
+        }
+      ],
+      "actualExitCode": 0,
+      "summary": {
+        "episode": "EU-004",
+        "outputFrames": 653,
+        "newNativeRenders": 0,
+        "unchangedCaptureFiles": 664,
+        "completeDecodedPictureAudioEqual": true,
+        "resumeExecutesNoNewAttempt": true,
+        "preservedPriorProducts": 4,
+        "wholeReview": "unreviewed",
+        "selectedEngineeringSubset": 1,
+        "acceptedPilot": 0
+      }
+    },
+    "qualification": "Actual whole Alden EU-004 engineering draft, immutable queue creation, expected mismatch/missing-host errors, fresh current export/report/resume and discovery. Zero additional Blender renders; earlier seals keep their own source bindings."
+  },
+  "independentAudit": {
+    "receipt": "/private/tmp/still-shift-ms3-blender39-audit1.json",
+    "result": {
+      "status": "passed",
+      "codeSha256": "sha256:5fde6b50eb1a9b9333277977fcd4ee9d49d77ff3f5d03c5f9594ef61fe536576",
+      "profileSha256": "sha256:a51512b29d4a8d4c0cb10f71e4717bd326b925ba5f088c592640791fae290ae1",
+      "productFile": {
+        "path": "products/EU-004-c3d3587fceebe573-5.json",
+        "bytes": 9088,
+        "sha256": "sha256:33a16be52738269d84812b723eb371efa4a51510086224bbe83c0eb304c4aa88"
+      },
+      "ownedArtifactsVerified": 4,
+      "completeEpisodeAndCohortInOneReport": true,
+      "reportBytes": 2620,
+      "technicalPassed": 1,
+      "otherFiveDimensionsUnreviewed": 1,
+      "pilotAccepted": 0
+    }
+  },
+  "implemented": [
+    "explicit three-native/blender-native queue selection with unchanged legacy default",
+    "manifest-version-selected run/report and explicit host executable for Blender",
+    "backend mismatch rejection before producer construction",
+    "shared version-dispatched immutable canonical queue publication",
+    "manifest-version-preserving targeted retry without producer construction",
+    "seven strict native source/plan/capture/map/queue/product/report schema selectors",
+    "machine/generated backend limits and CLI help/guide reconciliation"
+  ],
+  "retainedExpectedFailures": [
+    {
+      "kind": "backend-mismatch",
+      "actualExitCode": 2,
+      "record": "/private/tmp/still-shift-ms3-blender39-cli1-mismatch.log"
+    },
+    {
+      "kind": "missing-host-executable",
+      "actualExitCode": 2,
+      "record": "/private/tmp/still-shift-ms3-blender39-cli1-missing-executable.log"
+    }
+  ],
+  "limits": {
+    "newElevenLabsCalls": 0,
+    "newASRCalls": 0,
+    "newBlenderRenders": 0,
+    "acceptedPilotEpisodes": 0,
+    "distinctSelectedPilotEpisodes": 10,
+    "distinctWholeEngineeringEpisodes": 1,
+    "pairedRoutineTokenMeasurements": null,
+    "fullSoftwareBenchmarkArchiveInstalledRefresh": false
+  },
+  "remaining": [
+    "native registered semantic QA/grouped warnings and review evidence/handoff integration",
+    "HD staging and remaining nine actual episode plans/products",
+    "broader seeded faults and pilot coverage admission",
+    "all-frame glyph/mechanical/contact/factual/continuous-motion/listening review",
+    "relocated/isolated receiver verification",
+    "paired effort and final software/benchmark/archive/installed gates"
+  ]
+}

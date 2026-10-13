@@ -245,6 +245,17 @@ still hold before relying on them.
   Opposing-action captions are repaired with13 exact-copy cues; macro/staging and
   whole reviews remain. Initial type/root/lint/private-import/audit failures stay
   retained. Native QA/handoff/CLI, HD/all-ten products and final gates remain open.
+  [Native CLI routing](./mechanism-shorts-ms3-blender-cli-results.json) now connects
+  explicit Blender queue creation and manifest-selected run/report to the shared
+  controller. Canonical immutable creation, version-preserving retries, seven
+  strict native schemas and machine/generated limits retain the legacy default.
+  Current2bb34a24 passes fast4,567/454, runtime21/9 and Python checks with2,765
+  inputs/122,001,824B exact/post-commit hold0. Runtime5fde; native profilea515.
+  Actual EU-004 CLI queue/run/report/resume/discover passes, expected backend/host
+  errors exit2, all664 capture files stay exact and decoded picture/audio repeat.
+  Resume adds no attempt; fresh export adds0 Blender renders. The2,620-byte report
+  emits current episode/cohort together with five whole dimensions unreviewed.
+  Native QA/grouped warnings/evidence/handoff and HD/all-ten/final gates remain.
   Accepted coverage remains0/10; tokens staynull. No ElevenLabs spend, merge,
   publication or Actions change. [Tracker](./mechanism-shorts-ms3-acceptance.md).
 
@@ -433,6 +444,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Route native Blender episodes through the production CLI
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, implementation2bb34a24, from13bfee35.
+- **Done:** Explicit queue backend/host, manifest-selected execution/reporting,
+  canonical immutable publication, version-preserving retries and seven native schemas.
+- **Verification:** Fast4,567/454, runtime21/9 and Python checks pass; all2,765
+  inputs/122,001,824B exact/post-commit hold0. Runtime5fde, nativea515.
+- **Actual:** EU-004 CLI creation/run/report/resume/discovery pass; mismatch and
+  missing-host controls correctly exit2. All664 capture files stay exact;0 new
+  Blender renders, complete decoded picture/audio repeat and no new resume attempt.
+- **Report:** One2,620-byte invocation emits episode/cohort and original attempts;
+  technical passes, other five dimensions unreviewed. Prior products stay bound.
+- **Next:** Native QA/grouped warnings/evidence/handoff, HD/all-ten plans/products,
+  broader faults/coverage, whole reviews and final gates. Accepted0/10, effortnull.
+- **Records:** [CLI evidence](./mechanism-shorts-ms3-blender-cli-results.json),
+  [native guide](./mechanism-blender-episode.md), [capabilities](./mechanism-production-capabilities.md).
 
 ### 2026-10-14 — Render the first whole actual take through a native Blender queue
 

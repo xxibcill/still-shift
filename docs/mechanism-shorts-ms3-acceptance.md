@@ -130,3 +130,15 @@ held. Native QA/handoff/CLI integration, HD staging, the other nine whole produc
 all whole reviews/broader faults/coverage and final gates remain open. Accepted
 pilot0/10 and paired token measurementsnull; this is one distinct engineering
 episode, not four pilot episodes or a complete first-ten cohort.
+
+[Native Blender CLI routing](./mechanism-shorts-ms3-blender-cli-results.json)
+on2bb34a24 now supplies explicit queue creation, manifest-selected run/report,
+version-preserving retries and seven generated native schema selectors. Actual
+EU-004 CLI creation/export/report/resume/discovery pass on5fde; both useful backend
+and missing-host controls exit2. All664 original capture files remain exact,
+complete decoded picture/audio repeat, fresh export uses zero Blender renders and
+resume adds no attempt. A single2,620-byte report emits current episode/cohort,
+retained history, null effort and five unreviewed whole dimensions. Fast4,567/454,
+runtime21/9 and Python checks pass with2,765 inputs held. This closes native CLI
+routing, not native QA/grouped warnings/evidence/handoff, HD/all-ten or final gates.
+Pilot accepted0/10; the selected denominator remains ten distinct episodes.
