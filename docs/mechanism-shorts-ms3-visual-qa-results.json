@@ -1,7 +1,7 @@
 {
   "version": "mechanism-ms3-rendered-visual-qa-results-1",
   "date": "2026-10-14",
-  "sourceCommit": null,
+  "sourceCommit": "439bf9da929e37994a98f25944e632fa8c572974",
   "baseCommit": "7a1a7cc442388d5c89d3e4756fe88fdcfd58c3b0",
   "runtime": {
     "codeSha256": "sha256:10f7c5720f1236db3a4325ceda6eeb5868dc49040cbf129de6d99604d7cddc8a",
@@ -382,5 +382,13 @@
   "denominator": 10,
   "routineTokenMeasurements": null,
   "newElevenLabsCalls": 0,
-  "qualification": "Scoped current production preview/glyph QA and source-bound engineering controls. No original genuine product is resealed, no full software/benchmark/archive/installed gate is refreshed, and no whole/pilot or human acceptance is inferred."
+  "qualification": "Scoped current production preview/glyph QA and source-bound engineering controls. No original genuine product is resealed, no full software/benchmark/archive/installed gate is refreshed, and no whole/pilot or human acceptance is inferred.",
+  "committedSourceVerification": {
+    "actualExitCode": 0,
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-visual35-committed-source.json",
+      "bytes": 206,
+      "sha256": "sha256:bf01560705c95b77e42e9490583328b501744c6eedeb206d51cb487391d00615"
+    }
+  }
 }

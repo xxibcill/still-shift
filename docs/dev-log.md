@@ -407,13 +407,14 @@ still hold before relying on them.
 
 ### 2026-10-14 — Bind rendered caption QA to verified cached native products
 
-- **Agent / branch:** Codex on `codex/mechanism-ms3`, from7a1a7cc4.
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, implementation439bf9da, from7a1a7cc4.
 - **Done:** Cached preview pixels/glyphs, retained rendered evidence, speech-source
   metadata/body role and partial audio-tail coverage; shared lint owner/statistics.
 - **Verification:** Current fast4,544/450 and19 integration checks pass. Real native
   queue/cache/caption/report/handoff/quota/QA-only revision passes five outputs/
   300 decoded frames; independent80 pins match and QA submits zero fresh3D.
-  All2,739 inputs/121,792,968B stay exact; runtime10f7/691, appearance/profile exact.
+  All2,739 inputs/121,792,968B stay exact; committed source hold also exits0.
+  Runtime10f7/691, appearance/profile exact.
 - **Fault controls:** Three 2D exports/180 decoded frames, exact between-control
   PCM; clip/short hold locates0–14. Wrong copy rejects preflight. Four encoded
   stills viewed; partial tail passes with missing final-frame audio still rejected.
