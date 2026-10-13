@@ -90,9 +90,14 @@ still hold before relying on them.
   family candidate. Default source/metadata pins stay exact; metadata28,022B.
   Final30 owning/build/lint/schema/boundary/declarations and44,928 factory triangle
   rays pass; initial visibility/camera/test-API/Float32 failures are retained.
-  Full bladeLength span is repaired and final preflight source-held. Current fast
-  and actual native/default pixel/review evidence remain next on this changed
-  source; prior c474 native10 evidence is not relabeled as current acceptance.
+  Full bladeLength span is repaired and final preflight source-held. Complete fast
+  now passes4,462 tests/441 files on `9e4ccce1`, exact2,705 inputs/121,426,284B.
+  Actual native D0/R1/R2 controls are live under session36579; poll saved handle.
+  Root: /private/tmp/still-shift-ms3-retention-native-1cp5nE.
+  First native draft failed before rendering: label exceeded reading-time
+  budget. Shorter Rivet label preserves the limit; failed files/receipt retained.
+  Terminal/default pixel/independent review evidence remains next. Prior c474
+  native10 evidence is not relabeled as current changed-source acceptance.
   Scoped/MS1 repair, ten frozen questions,
   five assets/two behaviors, genuine inputs/reviews, capability reconciliation
   and final full/archive/installed verification remain. Coverage is 0/10; no
@@ -299,7 +304,9 @@ still hold before relying on them.
 - **Rejected / retained:** Missing typed visibility, inherited camera mesh,
   test patch-result misuse and double-vs-Float32 extent expectation. Full blade
   length now preserves its exact geometric span; final preflight refreshed.
-- **Open / next:** Current full fast, actual candidate/default native evidence,
+- **Results added:** Complete fast4,462/441 actually passes on `9e4ccce1`,
+  with2,705 inputs/121,426,284B exact; native controls live/session36579.
+- **Open / next:** Actual candidate/default native terminal/independent evidence,
   factual/design/genuine narration/reviews and remaining original MS3 work.
 - **Records:** [retention candidate](./mechanism-shorts-ms3-retention-results.json),
   [tracker](./mechanism-shorts-ms3-acceptance.md). Accepted pilot remains0/10.

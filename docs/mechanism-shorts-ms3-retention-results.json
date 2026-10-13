@@ -5,7 +5,7 @@
   "episode": "E02",
   "branch": "codex/mechanism-ms3",
   "baseCommit": "c2eec22811fac0cc9eca056089b1ed3edf560ead",
-  "status": "factory-candidate-owning-passed-current-fast-native-pending",
+  "status": "factory-candidate-complete-fast-passed-native2-running",
   "sourceSnapshot": [
     {
       "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/tape-slotted-retention.ts",
@@ -429,7 +429,7 @@
   },
   "qualification": "Factory/software candidate only. Original E02 factual/design/actual native/continuous/visual/genuine narration/listening/pilot admission remains open. No newly accepted asset or episode; no ElevenLabs spend. Native10 on c474c9c5 retains its exact prior source binding, not current changed-source acceptance.",
   "remaining": [
-    "Current complete fast tier.",
+    "Actual native/default/candidate controls terminal/source-hold receipts and independent complete decode/image/matrix/history/default pixel audit.",
     "Actual native observed candidate renders, readable retention proof, default pixel identity and complete decoded review evidence.",
     "Independent factual/design/mechanical review, genuine E02 narration and eventual original frozen-pilot admission."
   ],
@@ -531,5 +531,102 @@
       ],
       "qualification": "Double-sided Moller-Trumbore ray intersections against actual subdivided triangle meshes at declared upper/lower stem section heights, nine parameter combinations, thirteen travel states and sixty-four angles per rivet. Conservative circumscribed stem radii. Sampled geometric evidence only; no continuous collision/native/factory/factual/design/pilot acceptance."
     }
-  }
+  },
+  "committedSource": "9e4ccce166d8f3f04c32923fae5b20dc3a8535da",
+  "completeFast": {
+    "status": "passed",
+    "command": "pnpm check:fast",
+    "sourceCommit": "9e4ccce166d8f3f04c32923fae5b20dc3a8535da",
+    "startedUtc": "2026-10-13T03:02:06.861480+00:00",
+    "pid": 30110,
+    "inventory": "/private/tmp/still-shift-ms3-retention11-fast1-inputs.json",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-13T03:04:23.266064+00:00",
+    "unitTests": 4462,
+    "testFiles": 441,
+    "heldInputFiles": 2705,
+    "heldInputBytes": 121426284,
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-retention11-fast1-receipt.json",
+      "bytes": 369,
+      "sha256": "sha256:040844e6669a5a1c1ac3dc787b8158a7856aa4be90c753985d4509806080ceeb"
+    },
+    "log": {
+      "path": "/private/tmp/still-shift-ms3-retention11-fast1.log",
+      "bytes": 44325,
+      "sha256": "sha256:c4a7e8f4db779077ef259aa0be42817f09a5f6be7d9bc883f76cffca234f392d"
+    },
+    "inventoryFile": {
+      "path": "/private/tmp/still-shift-ms3-retention11-fast1-inputs.json",
+      "bytes": 461793,
+      "sha256": "sha256:a6da92427f5151f59cad45cf0b2550c658d1c51f4bca125f73753247cf65c795"
+    }
+  },
+  "nativeAttempts": [
+    {
+      "status": "failed",
+      "command": "node --import tsx /private/tmp/still-shift-ms3-retention11-native1.mts",
+      "sourceCommit": "9e4ccce166d8f3f04c32923fae5b20dc3a8535da",
+      "startedUtc": "2026-10-13T03:06:01.119621+00:00",
+      "pid": 43502,
+      "inventory": "/private/tmp/still-shift-ms3-retention11-native1-inputs.json",
+      "actualExitCode": 1,
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-13T03:06:05.192275+00:00",
+      "session": 63261,
+      "root": "/private/tmp/still-shift-ms3-retention-native-JMhjoi",
+      "reason": "Pre-render cue admission rejected Retaining rivets label under unchanged reading-time budget; no queue/native execution occurred.",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-native1.mts",
+          "bytes": 4589,
+          "sha256": "sha256:ff0b30c2b585dc2de506e02ebdff0efe195c780412216abd70d2c2ed17ca576e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-native1.py",
+          "bytes": 1460,
+          "sha256": "sha256:55a5f323c0f84f2660f9dc700befb0c7d4611c279e3b9e953ca1648126423629"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-native1.log",
+          "bytes": 1961,
+          "sha256": "sha256:2a1c7c482fde199c1d13a4d1eb26a30d2c56b810661a62c20741875262138109"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-native1-receipt.json",
+          "bytes": 426,
+          "sha256": "sha256:06aa74a5faf0fb38fa1daa08b7fa23e7998207d50b055a9e9778cd25c573544d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-retention-native-JMhjoi/failure.json",
+          "bytes": 795,
+          "sha256": "sha256:3bfc38e71184a3c5d81e02eaf60d87e25bdc61b65acf5c28bff70b5aa990e160"
+        }
+      ]
+    },
+    {
+      "status": "running",
+      "command": "node --import tsx /private/tmp/still-shift-ms3-retention11-native2.mts",
+      "sourceCommit": "9e4ccce166d8f3f04c32923fae5b20dc3a8535da",
+      "startedUtc": "2026-10-13T03:07:46.051164+00:00",
+      "pid": 47263,
+      "inventory": "/private/tmp/still-shift-ms3-retention11-native2-inputs.json",
+      "actualExitCode": null,
+      "session": 36579,
+      "harness": {
+        "path": "/private/tmp/still-shift-ms3-retention11-native2.mts",
+        "bytes": 4578,
+        "sha256": "sha256:ff91c16e8bad7260b5ccb8eb07860515491cfe00d3c1049bd3db3b7a7eb1eab1"
+      },
+      "wrapper": {
+        "path": "/private/tmp/still-shift-ms3-retention11-native2.py",
+        "bytes": 1558,
+        "sha256": "sha256:e28b559f21bf147ed391b962e1fff18a24751da3efbd5bac73dc324151c18466"
+      },
+      "logPath": "/private/tmp/still-shift-ms3-retention11-native2.log",
+      "resume": "Poll session36579; if closed inspect saved receipt/log/root run or failure. Do not restart a confirmed live run. The first failed admission is retained separately.",
+      "root": "/private/tmp/still-shift-ms3-retention-native-1cp5nE"
+    }
+  ]
 }

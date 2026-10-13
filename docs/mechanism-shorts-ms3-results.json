@@ -535,10 +535,64 @@
     {
       "id": "slotted-retention11",
       "record": "docs/mechanism-shorts-ms3-retention-results.json",
-      "status": "factory-candidate-owning-passed-current-fast-native-pending",
+      "status": "factory-candidate-complete-fast-passed-native2-running",
       "owningTests": 30,
       "defaultIdentitiesPreserved": true,
-      "qualification": "Factory/software candidate only. Original E02 factual/design/actual native/continuous/visual/genuine narration/listening/pilot admission remains open. No newly accepted asset or episode; no ElevenLabs spend. Native10 on c474c9c5 retains its exact prior source binding, not current changed-source acceptance."
+      "qualification": "Factory/software candidate only. Original E02 factual/design/actual native/continuous/visual/genuine narration/listening/pilot admission remains open. No newly accepted asset or episode; no ElevenLabs spend. Native10 on c474c9c5 retains its exact prior source binding, not current changed-source acceptance.",
+      "completeFast": {
+        "status": "passed",
+        "command": "pnpm check:fast",
+        "sourceCommit": "9e4ccce166d8f3f04c32923fae5b20dc3a8535da",
+        "startedUtc": "2026-10-13T03:02:06.861480+00:00",
+        "pid": 30110,
+        "inventory": "/private/tmp/still-shift-ms3-retention11-fast1-inputs.json",
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "endedUtc": "2026-10-13T03:04:23.266064+00:00",
+        "unitTests": 4462,
+        "testFiles": 441,
+        "heldInputFiles": 2705,
+        "heldInputBytes": 121426284,
+        "receipt": {
+          "path": "/private/tmp/still-shift-ms3-retention11-fast1-receipt.json",
+          "bytes": 369,
+          "sha256": "sha256:040844e6669a5a1c1ac3dc787b8158a7856aa4be90c753985d4509806080ceeb"
+        },
+        "log": {
+          "path": "/private/tmp/still-shift-ms3-retention11-fast1.log",
+          "bytes": 44325,
+          "sha256": "sha256:c4a7e8f4db779077ef259aa0be42817f09a5f6be7d9bc883f76cffca234f392d"
+        },
+        "inventoryFile": {
+          "path": "/private/tmp/still-shift-ms3-retention11-fast1-inputs.json",
+          "bytes": 461793,
+          "sha256": "sha256:a6da92427f5151f59cad45cf0b2550c658d1c51f4bca125f73753247cf65c795"
+        }
+      },
+      "native": {
+        "status": "running",
+        "command": "node --import tsx /private/tmp/still-shift-ms3-retention11-native2.mts",
+        "sourceCommit": "9e4ccce166d8f3f04c32923fae5b20dc3a8535da",
+        "startedUtc": "2026-10-13T03:07:46.051164+00:00",
+        "pid": 47263,
+        "inventory": "/private/tmp/still-shift-ms3-retention11-native2-inputs.json",
+        "actualExitCode": null,
+        "session": 36579,
+        "harness": {
+          "path": "/private/tmp/still-shift-ms3-retention11-native2.mts",
+          "bytes": 4578,
+          "sha256": "sha256:ff91c16e8bad7260b5ccb8eb07860515491cfe00d3c1049bd3db3b7a7eb1eab1"
+        },
+        "wrapper": {
+          "path": "/private/tmp/still-shift-ms3-retention11-native2.py",
+          "bytes": 1558,
+          "sha256": "sha256:e28b559f21bf147ed391b962e1fff18a24751da3efbd5bac73dc324151c18466"
+        },
+        "logPath": "/private/tmp/still-shift-ms3-retention11-native2.log",
+        "resume": "Poll session36579; if closed inspect saved receipt/log/root run or failure. Do not restart a confirmed live run. The first failed admission is retained separately.",
+        "root": "/private/tmp/still-shift-ms3-retention-native-1cp5nE"
+      },
+      "nativeAdmissionFailureRetained": true
     }
   ],
   "targets": {
