@@ -4,7 +4,7 @@
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
   "baseCommit": "7aeae978",
-  "status": "targeted-retry-scoped-verified-complete-tiers-and-real-native-recovery-pending",
+  "status": "current-complete-fast-passed-runtime-running-native-recovery-pending",
   "sourceSnapshot": [
     {
       "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-retry.ts",
@@ -505,8 +505,66 @@
     "qualification": "Before use, add owned-child cleanup/close-event handling, make second caption edit distinct, compile/lint/register it and preflight actual injection paths; no OS/native recovery pass claimed."
   },
   "remaining": [
-    "Complete current fast/runtime tiers on committed retry code, then real native CLI SIGKILL/SIGTERM/corruption/missing-audio/export-failure/relocation and independent recovery audit.",
+    "Runtime/session65430 terminal on committed0d590658, then actual native CLI OS/fault/recovery and independent audit. Complete current fast4458/440 passes with2702 exact inputs.",
     "All original unified whole-review/analytic/continuous/fault/scoped/MS1 repair and ten questions/five assets/two behaviors/genuine inputs/pilot/capability/final full/archive/installed work."
   ],
-  "qualification": "Targeted authorization verified through strict source-held owning/fixture lifecycle and CLI controls only. Earlier79f3 complete fast/runtime and6080 native/independent evidence remain separately bound. No current real native CLI recovery or whole review/pilot acceptance."
+  "qualification": "Targeted authorization verified through strict source-held owning/fixture lifecycle and CLI controls only. Earlier79f3 complete fast/runtime and6080 native/independent evidence remain separately bound. No current real native CLI recovery or whole review/pilot acceptance.",
+  "committedSource": "0d59065879e92891987ae818d3574bf1d0f2ff49",
+  "completeFast": {
+    "status": "passed",
+    "command": "pnpm check:fast",
+    "sourceCommit": "0d59065879e92891987ae818d3574bf1d0f2ff49",
+    "startedUtc": "2026-10-13T01:47:28.734445+00:00",
+    "pid": 48491,
+    "inventory": "/private/tmp/still-shift-ms3-retry9-fast1-inputs.json",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-13T01:49:39.304230+00:00",
+    "session": 42236,
+    "unitTests": 4458,
+    "unitFiles": 440,
+    "unitSeconds": 67.48,
+    "heldInputFiles": 2702,
+    "heldInputBytes": 121387685,
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-retry9-fast1.log",
+        "bytes": 42689,
+        "sha256": "sha256:594335b5cefc64b07704d8cf48bff1a6052e09212285db2e890bd4b1587f3e97"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-retry9-fast1-receipt.json",
+        "bytes": 364,
+        "sha256": "sha256:f55da82c40f3b68517aab349963a94c4aa6a64f1efae80ef1a3713b1c69ac19d"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-retry9-fast1-inputs.json",
+        "bytes": 461272,
+        "sha256": "sha256:e6e76e4a4cd97f07800220c2ac710180a0cdfefd5c040adbff3844710de4a637"
+      }
+    ]
+  },
+  "runtimeAttempts": [
+    {
+      "status": "running",
+      "command": "pnpm check:runtime",
+      "sourceCommit": "0d59065879e92891987ae818d3574bf1d0f2ff49",
+      "startedUtc": "2026-10-13T01:51:03.028242+00:00",
+      "pid": 56804,
+      "inventory": "/private/tmp/still-shift-ms3-retry9-runtime1-inputs.json",
+      "actualExitCode": null,
+      "session": 65430,
+      "logPath": "/private/tmp/still-shift-ms3-retry9-runtime1.log",
+      "resume": "Poll session65430; if handle has closed inspect final receipt/log. Do not restart a confirmed live run. No current runtime terminal pass claimed."
+    }
+  ],
+  "preparedNativeRecovery2": {
+    "file": {
+      "path": "/private/tmp/still-shift-ms3-native-recovery-draft2.ts",
+      "bytes": 11882,
+      "sha256": "sha256:4d53bf7dc7fd5d0a08217373ed04f5e2e2d5113b7dea84317dae83f2f78e4d33"
+    },
+    "status": "cleanup-improved-unintegrated-unrun-draft",
+    "qualification": "Retains initial draft under its original exact hash. Draft2 adds bounded child output/close receipts/owned cleanup/process-group kill and distinct caption edits. Still requires integration/type/lint/registration/preflight and actual OS/native/independent audit; no pass claimed."
+  }
 }

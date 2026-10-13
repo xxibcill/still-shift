@@ -67,8 +67,12 @@ still hold before relying on them.
   bounded batches while retaining neighbors/journals/reviews.48 owning checks
   plus build/lint/fourteen schemas/boundaries/declarations pass with exact source.
   An initial compile failure (missing test imports) and wrapper syntax failure
-  are retained. Retry source still needs complete tiers and real native recovery;
-  its fault harness is an unintegrated/unrun draft needing child cleanup and checks.
+  are retained. Retry source `0d590658` now passes complete fast4,458/440,
+  with2,702 inputs/121,387,685B exact. Runtime/session65430 is live; poll its
+  handle/receipt without restarting. Native draft2 has improved child cleanup,
+  bounded output/close receipts and distinct captions, but remains unintegrated/
+  unrun and needs compile/lint/registration/preflight before actual OS/recovery
+  and independent audit. Initial draft is retained under its original hash.
   Scoped/MS1 repair, ten frozen questions,
   five assets/two behaviors, genuine inputs/reviews, capability reconciliation
   and final full/archive/installed verification remain. Coverage is 0/10; no
@@ -275,8 +279,9 @@ still hold before relying on them.
   and refuses97th; real native/OS recovery remains pending.
 - **Retained failures:** missing test imports compile2; inline wrapper syntax
   fails before any commands. Both repaired; earlier scoped runs remain qualified.
-- **Next:** commit, complete current fast/runtime, integrate/check/run the actual
-  native fault harness and audit it. All original MS3 pilot/extension gates remain.
+- **Checkpoint:** committed/pushed `0d590658`; complete fast4,458/440 actual0/
+  hold0,2,702 inputs/121,387,685B exact. Runtime/session65430 is live on the same
+  source. Poll its handle/receipt, then integrate/check/run native draft2 and audit it. All original MS3 pilot/extension gates remain.
 - **Records:** [retry proof](./mechanism-shorts-ms3-retry-results.json),
   [queue/retry commands](./mechanism-production-queue.md).
 
