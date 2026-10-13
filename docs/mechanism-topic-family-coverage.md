@@ -1,5 +1,7 @@
 # MS2 topic-to-family candidate coverage board
 
+**Historical MS2 engineering cohort:** On2026-10-14 the owner chose Everyday Unlocked’s actual first ten episodes for MS3. The [current pilot selection](./mechanism-shorts-ms3-pilot-selection.json) supersedes this cohort for production. This board’s ten questions, hash and prior evidence stay unchanged; they are not the active MS3 denominator. The version-1 auditor remains scoped to these three families and does not admit the seven additional channel objects.
+
 The first cohort contains ten selected causal questions across the three MS2
 families. The [saved board](./mechanism-topic-family-coverage.json) freezes stable
 IDs, exact base pack references, factual variants, causal relationships, required

@@ -1,0 +1,831 @@
+{
+  "schemaVersion": "mechanism-ms3-channel-pilot-selection-1",
+  "revision": 2,
+  "date": "2026-10-14",
+  "milestone": "MS3",
+  "sourceCheckpoint": "a36c7b85de511eb15d124b8baaaa8d762e4c2b2b",
+  "ownerDecision": "Use Everyday Unlocked actual first ten episodes",
+  "selectionCriteria": [
+    "Select Everyday Unlocked actual EU-001 through EU-010 in their channel order, as explicitly requested by the owner on 2026-10-14.",
+    "Each row must retain its object-specific causal explanation, selected construction and existing whole narration; recolors, captions and camera changes do not add distinct episodes.",
+    "Use existing Alden Eleven v4 recordings at their original 1x tempo. Existing offline ASR observations provide provisional word timing; audiovisual review locks cues.",
+    "Preserve the former E01-E10 engineering cohort and its source-bound results as history. Its output, listening and runtime receipts do not transfer to this revised cohort."
+  ],
+  "supportCriteria": [
+    "Current source/asset/clock and Still Shift binding must be verified for every row before an episode is admitted.",
+    "Separate technical, factual/design, mechanical, encoded readability, continuous playback and listening evidence is required; unreviewed remains unreviewed.",
+    "Published catalog standalone qualification is an imported status, not Still Shift episode or pilot acceptance.",
+    "Measure coverage, first-pass completion and paired routine effort against these ten selected rows; missing telemetry remains null."
+  ],
+  "selection": {
+    "id": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+    "selectedEpisodeIds": [
+      "EU-001",
+      "EU-002",
+      "EU-003",
+      "EU-004",
+      "EU-005",
+      "EU-006",
+      "EU-007",
+      "EU-008",
+      "EU-009",
+      "EU-010"
+    ],
+    "sha256": "sha256:8c5f378389d595c83fdcf3ff1cd41bd2d57d64b3a622c953013cffe39d001471"
+  },
+  "episodes": [
+    {
+      "id": "EU-001",
+      "object": "Tape-measure end hook",
+      "question": "Why does the hook on a tape measure move?",
+      "explanationKey": "sliding_datum_compensation-eu-001",
+      "selectedDesign": "Existing unbranded conceptual floating hook",
+      "sourceVerifiedAnswerFromSavedBrief": "STANLEY documents hook movement compensating for hook thickness. Pulling uses the inner face for outside measurement; pushing uses the outer face for inside measurement.",
+      "sourceReview": "Imported local preproduction record; current episode factual/design acceptance pending",
+      "sources": [
+        {
+          "url": "https://support.stanleytools.com/hc/en-us/articles/360012682938-Why-does-the-hook-on-the-end-of-the-Stanley-tape-rule-move",
+          "title": "Why does the hook on the end of the Stanley tape rule move?",
+          "primary_owner": "STANLEY",
+          "accessed_on": "2026-10-08",
+          "locator": "Explanation paragraphs: outside and inside measurement",
+          "supported_claim": "Travel compensates for hook thickness; no dimensional drawing supplied.",
+          "inspection_method": "newly_opened_primary_text",
+          "limitations": "Text inspected; linked drawings were not visually inspected. Conceptual geometry only, with no SKU dimensions or force claim."
+        },
+        {
+          "url": "file:///Users/jjae/Documents/obsidian/ai-business/Everyday%20Unlocked/03%20Episodes/E01%20Tape%20Hook/Episode%20Brief.md",
+          "title": "E01 Episode Brief",
+          "primary_owner": "Everyday Unlocked local episode authority",
+          "accessed_on": "2026-10-08",
+          "locator": "Geometry contract and current E01 scope",
+          "supported_claim": "Authored datum x=0, travel=h; pulled plate [-h,0], pushed plate [0,h]; blade begins h farther right.",
+          "inspection_method": "historical_local_episode_contract_read",
+          "limitations": "Episode authority re-read; no fresh v008 audiovisual or manufacturing review. Local explanatory units are not CAD dimensions."
+        },
+        {
+          "url": "file:///Users/jjae/Documents/obsidian/ai-business/Everyday%20Unlocked/03%20Episodes/E01%20Tape%20Hook/README.md",
+          "title": "E01 current v008 README",
+          "primary_owner": "Everyday Unlocked local episode authority",
+          "accessed_on": "2026-10-08",
+          "locator": "Current cut/source links and review limitation",
+          "supported_claim": "Current v008 uses three-v008 scene and annotation sources; existing geometry/audio retained and continuous playback unreviewed.",
+          "inspection_method": "historical_local_episode_record_read",
+          "limitations": "Re-read current README. Original Episode Brief build-route wording is historical; current Three.js/SVG/FFmpeg source authority governs."
+        }
+      ],
+      "format": {
+        "width": 1080,
+        "height": 1920,
+        "fps": 30
+      },
+      "narration": {
+        "status": "existing-whole-recording",
+        "voice": "Alden — Everyday Unlocked",
+        "model": "eleven_v4",
+        "scriptVersion": "directed-repair-v004",
+        "wavSha256": "sha256:25b159d95222162a589d87579502a120d3b4f77197dc8c4403044cbec728856e",
+        "mp3Sha256": "sha256:ba5a7cf8a5ebf8789e33aab9c20cfa98c6b353f4bc55f59232ef26b0efd7e97d",
+        "durationSeconds": 20.32,
+        "tempoFactor": 1,
+        "decodeExitCode": 0,
+        "timingSha256": "sha256:175fe29de35af43a7ec940dff091bf7c2f38a7b0eb65dca2d1a2bfd6b9431ab5",
+        "timingMethod": "Existing offline ASR word observations; provisional edit boundaries, no invented timestamps",
+        "observedWords": 64,
+        "timingIssues": [],
+        "textReviewStatus": "SUPPORTED",
+        "alignmentReview": "Exact script/ASR token reconciliation and shot/caption cue authoring pending; EU-003 compound spelling and EU-005 inflection recheck remain explicit",
+        "listening": "unreviewed"
+      },
+      "nativeAsset": {
+        "sha256": "sha256:2e0fc8ec95445a041b10877006602cad7717006f5b0188f3e9625f4b64e8ca62",
+        "bytes": 207253,
+        "catalogReadiness": "qualified_standalone_component_episode_checks_pending",
+        "catalogBuildStatus": "saved_qualified_standalone_component",
+        "recipeSha256": "sha256:b6499dd34b2eeef70418605a32df8e3f113c32d204f813b7c657872bc62382fd",
+        "shotQualified": false,
+        "stillShiftBinding": "pending"
+      },
+      "route": "existing-family-candidate",
+      "softwareFamilyCandidate": "tape-hook",
+      "historicalEngineeringEpisode": "E01",
+      "historicalOverlapScope": "Same object/topic only; former Alex take and old cue/output/review hashes remain historical",
+      "requiredWork": [
+        "Validate source construction against exact native asset and selected spoken claims",
+        "Bind controls and sampled contact/geometry assertions through supported Still Shift interfaces",
+        "Author shots and captions against this exact Alden recording and observed timings",
+        "Render and independently check full decoded output, readable captions, motion and unchanged narration",
+        "Complete factual/design, mechanical, continuous audiovisual and listening review"
+      ],
+      "support": {
+        "state": "not-validated",
+        "accepted": false
+      }
+    },
+    {
+      "id": "EU-002",
+      "object": "Cable tie",
+      "question": "Why does a cable tie tighten but resist pulling backward?",
+      "explanationKey": "linear_rack_integral_pawl-eu-002",
+      "selectedDesign": "one-piece outside-serrated nylon cable tie with integral rooted plastic tongue",
+      "sourceVerifiedAnswerFromSavedBrief": "A retaining tongue engages strap teeth: forward insertion permits tooth passage and pawl recovery; reverse withdrawal loads retaining contacts. E02 supplies the outside-serrated orientation and connected pawl root.",
+      "sourceReview": "Imported local preproduction record; current episode factual/design acceptance pending",
+      "sources": [
+        {
+          "url": "https://www.hellermanntyton.com/competences/cable-ties-and-fixings",
+          "title": "Cable ties and fixings",
+          "primary_owner": "HellermannTyton",
+          "accessed_on": "2026-10-08",
+          "locator": "Locking systems; plastic tongue section",
+          "supported_claim": "Integral plastic tongue engages strap teeth and prevents backward withdrawal.",
+          "inspection_method": "newly_opened_primary_text",
+          "limitations": "Text inspected; linked drawings were not visually inspected. Conceptual geometry only, with no SKU dimensions or force claim."
+        },
+        {
+          "url": "file:///Users/jjae/Documents/obsidian/ai-business/Everyday%20Unlocked/03%20Episodes/E02%20Cable%20Tie/Asset%20and%20Rig%20Specification.md",
+          "title": "E02 Asset and Rig Specification",
+          "primary_owner": "Everyday Unlocked local episode authority",
+          "accessed_on": "2026-10-08",
+          "locator": "Selected construction, pawl root and strap constraints",
+          "supported_claim": "Existing source selection is outside-serrated; one connected strap and integral flexing pawl.",
+          "inspection_method": "historical_local_episode_contract_read",
+          "limitations": "Existing episode specification re-read; catalogue diagram subsequently inspected in the separately listed primary-PDF observation. No built rig inspection."
+        },
+        {
+          "url": "https://www.hellermanntyton.com/binaries/content/assets/downloads/au/full-catalogue.pdf",
+          "title": "HellermannTyton full catalogue — cable tie locking technology",
+          "primary_owner": "HellermannTyton",
+          "accessed_on": "2026-10-08",
+          "locator": "Printed page22, upper diagram captioned Locking technology of an outside serrated tie",
+          "supported_claim": "Actual diagram shows head, connected tongue, serration and strap with rightward threading. Integral plastic tongue construction is distinct from the KR pin and SST ball examples lower on the page.",
+          "inspection_method": "public_pdf_download_local_diagram_pixels_inspected",
+          "limitations": "Actual retained page pixels viewed on 2026-10-08. No SKU dimensions, physical stiffness, holding force or built-contact QA established.",
+          "local_snapshot": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Preproduction Stages 1-3/research/root-references/hellermann-page22-022.png"
+        }
+      ],
+      "format": {
+        "width": 1080,
+        "height": 1920,
+        "fps": 30
+      },
+      "narration": {
+        "status": "existing-whole-recording",
+        "voice": "Alden — Everyday Unlocked",
+        "model": "eleven_v4",
+        "scriptVersion": "directed-repair-v004",
+        "wavSha256": "sha256:ceba4694d3e670e3165c9e87277442cb1788020bacd038995aa89a7f7101bf38",
+        "mp3Sha256": "sha256:2a8e4999ad7659c769fb04662f62b112064ee633b889361864bb845941d29ed3",
+        "durationSeconds": 19.6,
+        "tempoFactor": 1,
+        "decodeExitCode": 0,
+        "timingSha256": "sha256:aec771906b3ddea6cd6192c1832a71e692fceb7b3b7ae1aa20b2bdba6a184496",
+        "timingMethod": "Existing offline ASR word observations; provisional edit boundaries, no invented timestamps",
+        "observedWords": 60,
+        "timingIssues": [],
+        "textReviewStatus": "SUPPORTED",
+        "alignmentReview": "Exact script/ASR token reconciliation and shot/caption cue authoring pending; EU-003 compound spelling and EU-005 inflection recheck remain explicit",
+        "listening": "unreviewed"
+      },
+      "nativeAsset": {
+        "sha256": "sha256:4fcbdee97d011ee9743aa9db33e40d24bfc744f1c479e71a95a5eb2e5a842765",
+        "bytes": 96977540,
+        "catalogReadiness": "qualified_standalone_component_episode_checks_pending",
+        "catalogBuildStatus": "saved_qualified_standalone_component",
+        "recipeSha256": "sha256:b6499dd34b2eeef70418605a32df8e3f113c32d204f813b7c657872bc62382fd",
+        "shotQualified": false,
+        "stillShiftBinding": "pending"
+      },
+      "route": "existing-family-candidate",
+      "softwareFamilyCandidate": "cable-tie",
+      "historicalEngineeringEpisode": "E03",
+      "historicalOverlapScope": "Same object/topic only; former Alex take and old cue/output/review hashes remain historical",
+      "requiredWork": [
+        "Validate source construction against exact native asset and selected spoken claims",
+        "Bind controls and sampled contact/geometry assertions through supported Still Shift interfaces",
+        "Author shots and captions against this exact Alden recording and observed timings",
+        "Render and independently check full decoded output, readable captions, motion and unchanged narration",
+        "Complete factual/design, mechanical, continuous audiovisual and listening review"
+      ],
+      "support": {
+        "state": "not-validated",
+        "accepted": false
+      }
+    },
+    {
+      "id": "EU-003",
+      "object": "Spring clothespeg",
+      "question": "Why does squeezing one end of a clothespeg open the other?",
+      "explanationKey": "opposed_levers_torsion_return-eu-003",
+      "selectedDesign": "Conventional wooden two-arm peg around US4063333A Fig7; reconstructed seated normal state, excluding improved retention parts",
+      "sourceVerifiedAnswerFromSavedBrief": "The conventional arms rock around central support: handle closure opens the jaws. The torsion spring coils occupy opposed inner grooves and its ends act in outer recesses. Release closes toward fabric while spring loading remains.",
+      "sourceReview": "Imported local preproduction record; current episode factual/design acceptance pending",
+      "sources": [
+        {
+          "url": "https://patents.google.com/patent/US4063333A/en",
+          "title": "US4063333A — Clothes pin",
+          "primary_owner": "Inventor/applicant named in US4063333A (original patent disclosure)",
+          "accessed_on": "2026-10-08",
+          "locator": "Description of conventional Fig.7, members64/65, grooves74/75, coil76 and ends77/78",
+          "supported_claim": "Conventional arms, central spring seating and failure illustration distinguish the selected ordinary peg from the invention.",
+          "inspection_method": "newly_opened_primary_text",
+          "limitations": "Patent text inspected; diagram pixels were not delivered by the web tool. Named embodiment only, no mapping to a contemporary branded product."
+        },
+        {
+          "url": "file:///Users/jjae/Documents/obsidian/ai-business/Everyday%20Unlocked/03%20Episodes/E03%20Clothespeg/references/patent-drawing-3.png",
+          "title": "E03 retained patent drawing sheet2",
+          "primary_owner": "US4063333A patent disclosure retained locally",
+          "accessed_on": "2026-10-08",
+          "locator": "Fig.7 compared with Fig.8–10",
+          "supported_claim": "Fig.7 is a dislocated failure pose; improved assemblies on the same sheet must not be adopted.",
+          "inspection_method": "local_diagram_pixels_inspected_2026-10-08",
+          "limitations": "Viewed actual local pixels. Normal seated assembly must follow source text and existing E03 authority; failure position is not normal state."
+        },
+        {
+          "url": "file:///Users/jjae/Documents/obsidian/ai-business/Everyday%20Unlocked/03%20Episodes/E03%20Clothespeg/references/patent-drawing-2.png",
+          "title": "E03 retained patent drawing sheet1",
+          "primary_owner": "US4063333A patent disclosure retained locally",
+          "accessed_on": "2026-10-08",
+          "locator": "Figs1–6 improved embodiment",
+          "supported_claim": "Improved retention construction differs from the conventional selected peg.",
+          "inspection_method": "local_diagram_pixels_inspected_2026-10-08",
+          "limitations": "Viewed actual local pixels as exclusion comparison; this improved geometry is not selected."
+        }
+      ],
+      "format": {
+        "width": 1080,
+        "height": 1920,
+        "fps": 30
+      },
+      "narration": {
+        "status": "existing-whole-recording",
+        "voice": "Alden — Everyday Unlocked",
+        "model": "eleven_v4",
+        "scriptVersion": "directed-repair-v004",
+        "wavSha256": "sha256:8f0efa34a0785d898e672e0549ad8c9593124380128657b98c51e0fd531d220a",
+        "mp3Sha256": "sha256:82243daad63888a99e6cbdb04c1718a2249c7cfd65e05ff2c0dd950e53bfba2b",
+        "durationSeconds": 19.6,
+        "tempoFactor": 1,
+        "decodeExitCode": 0,
+        "timingSha256": "sha256:c5506e23505f94e1ba6f487313239e329dff9c52a3d885c3e82b8b77c0b31fd2",
+        "timingMethod": "Existing offline ASR word observations; provisional edit boundaries, no invented timestamps",
+        "observedWords": 57,
+        "timingIssues": [],
+        "textReviewStatus": "SUPPORTED",
+        "alignmentReview": "Exact script/ASR token reconciliation and shot/caption cue authoring pending; EU-003 compound spelling and EU-005 inflection recheck remain explicit",
+        "listening": "unreviewed"
+      },
+      "nativeAsset": {
+        "sha256": "sha256:b4882a20e21161207f1e788a6c84c55c69ddc00758f405cfa3aa4c0bdb26d362",
+        "bytes": 4683848,
+        "catalogReadiness": "qualified_standalone_component_episode_checks_pending",
+        "catalogBuildStatus": "saved_qualified_standalone_component",
+        "recipeSha256": "sha256:b6499dd34b2eeef70418605a32df8e3f113c32d204f813b7c657872bc62382fd",
+        "shotQualified": false,
+        "stillShiftBinding": "pending"
+      },
+      "route": "existing-family-candidate",
+      "softwareFamilyCandidate": "clothespeg",
+      "historicalEngineeringEpisode": "E08",
+      "historicalOverlapScope": "Same object/topic only; former Alex take and old cue/output/review hashes remain historical",
+      "requiredWork": [
+        "Validate source construction against exact native asset and selected spoken claims",
+        "Bind controls and sampled contact/geometry assertions through supported Still Shift interfaces",
+        "Author shots and captions against this exact Alden recording and observed timings",
+        "Render and independently check full decoded output, readable captions, motion and unchanged narration",
+        "Complete factual/design, mechanical, continuous audiovisual and listening review"
+      ],
+      "support": {
+        "state": "not-validated",
+        "accepted": false
+      }
+    },
+    {
+      "id": "EU-004",
+      "object": "Metal-tooth zipper",
+      "question": "How does a zipper join its teeth?",
+      "explanationKey": "branching_guide_interlock-eu-004",
+      "selectedDesign": "US1219881A metal-element zipper: identical staggered projection/recess members with a diverging-channel slider; YKK general tunnel explanation as corroboration.",
+      "sourceVerifiedAnswerFromSavedBrief": "The slider constrains the two rows onto a joining path. Each metal member has a projection and matching recess; reversing the slider introduces its separating tongue and diverging branches.",
+      "sourceReview": "Imported local preproduction record; current episode factual/design acceptance pending",
+      "sources": [
+        {
+          "url": "https://patents.google.com/patent/US1219881A/en",
+          "title": "US1219881A — Separable fastener",
+          "primary_owner": "Inventor/applicant named in US1219881A (original patent disclosure)",
+          "accessed_on": "2026-10-08",
+          "locator": "Fig.4 member; description/claims1–3 and7 slider channels and tongue",
+          "supported_claim": "Projection/recess interlock and guide geometry are described for this metal-element construction.",
+          "inspection_method": "newly_opened_primary_text",
+          "limitations": "Patent text inspected; diagram pixels were not delivered by the web tool. Named embodiment only, no mapping to a contemporary branded product."
+        },
+        {
+          "url": "https://www.ykk.com/english/ykk/tech/01.html",
+          "title": "Vol.1 Structure of a zipper",
+          "primary_owner": "YKK",
+          "accessed_on": "2026-10-08",
+          "locator": "Structure explanation: Y-shaped tunnel",
+          "supported_claim": "The branching slider channel joins elements in one direction and separates them in reverse.",
+          "inspection_method": "newly_opened_primary_text",
+          "limitations": "Text inspected; linked drawings were not visually inspected. Conceptual geometry only, with no SKU dimensions or force claim."
+        }
+      ],
+      "format": {
+        "width": 1080,
+        "height": 1920,
+        "fps": 30
+      },
+      "narration": {
+        "status": "existing-whole-recording",
+        "voice": "Alden — Everyday Unlocked",
+        "model": "eleven_v4",
+        "scriptVersion": "directed-repair-v004",
+        "wavSha256": "sha256:f1ff76a8423c8b08656771d2aa3d0b97a9bcf9abeff7afd5d74410205d479fe3",
+        "mp3Sha256": "sha256:c4e8e43b8e5f8238ab74868b87823555fa484cbe1fe97b1defba977d27c42988",
+        "durationSeconds": 21.76,
+        "tempoFactor": 1,
+        "decodeExitCode": 0,
+        "timingSha256": "sha256:be727d4c96017a47db5029b25c1f41c142d0783c28f13094f56f430db98b5090",
+        "timingMethod": "Existing offline ASR word observations; provisional edit boundaries, no invented timestamps",
+        "observedWords": 61,
+        "timingIssues": [],
+        "textReviewStatus": "SUPPORTED",
+        "alignmentReview": "Exact script/ASR token reconciliation and shot/caption cue authoring pending; EU-003 compound spelling and EU-005 inflection recheck remain explicit",
+        "listening": "unreviewed"
+      },
+      "nativeAsset": {
+        "sha256": "sha256:668cc570be38d9fb933b89be70191887be1fd43720b5c384f03a11a6c749bbd3",
+        "bytes": 2015637,
+        "catalogReadiness": "qualified_standalone_component_episode_checks_pending",
+        "catalogBuildStatus": "saved_qualified_standalone_component",
+        "recipeSha256": "sha256:a8ae0f9d1d3fc3b0a5e3d693a0219caf3f19b35c9897f8d1af0fad9f8c899530",
+        "shotQualified": false,
+        "stillShiftBinding": "pending"
+      },
+      "route": "existing-blender-asset-binding-needed",
+      "softwareFamilyCandidate": null,
+      "historicalEngineeringEpisode": null,
+      "historicalOverlapScope": "No former three-product pilot counterpart",
+      "requiredWork": [
+        "Validate source construction against exact native asset and selected spoken claims",
+        "Bind controls and sampled contact/geometry assertions through supported Still Shift interfaces",
+        "Author shots and captions against this exact Alden recording and observed timings",
+        "Render and independently check full decoded output, readable captions, motion and unchanged narration",
+        "Complete factual/design, mechanical, continuous audiovisual and listening review"
+      ],
+      "support": {
+        "state": "not-validated",
+        "accepted": false
+      }
+    },
+    {
+      "id": "EU-005",
+      "object": "Keyhole mounting slot",
+      "question": "How does a keyhole mounting slot hold a screw?",
+      "explanationKey": "head_entry_translation_capture-eu-005",
+      "selectedDesign": "Conventional keyhole slot disclosed in EP1817988A1 background: enlarged entry then narrower shank track, without the invention’s additional snap neck.",
+      "sourceVerifiedAnswerFromSavedBrief": "A screw head enters the large opening. Translation places its narrower shank in the slot while the head overlaps the surrounding material, preventing straight pull-through there.",
+      "sourceReview": "Imported local preproduction record; current episode factual/design acceptance pending",
+      "sources": [
+        {
+          "url": "https://patents.google.com/patent/EP1817988A1/en",
+          "title": "EP1817988A1 — Keyhole mounting system",
+          "primary_owner": "Inventor/applicant named in EP1817988A1 (original patent disclosure)",
+          "accessed_on": "2026-10-08",
+          "locator": "Background conventional keyhole geometry",
+          "supported_claim": "Large entry admits the head; narrow section receives shank and captures the head. Proposed snap-fit addition is excluded.",
+          "inspection_method": "newly_opened_primary_text",
+          "limitations": "Patent text inspected; diagram pixels were not delivered by the web tool. Named embodiment only, no mapping to a contemporary branded product."
+        },
+        {
+          "url": "https://www.hangmanproducts.com/shop/p/keyhole-hangers",
+          "title": "Keyhole Hangers",
+          "primary_owner": "Hangman Products",
+          "accessed_on": "2026-10-08",
+          "locator": "Double-headed screw and keyhole hanger product description",
+          "supported_claim": "Maker provides a real use context, without dimensionally certifying the chosen patent-background schematic.",
+          "inspection_method": "newly_opened_primary_text",
+          "limitations": "Text inspected; linked drawings were not visually inspected. Conceptual geometry only, with no SKU dimensions or force claim."
+        }
+      ],
+      "format": {
+        "width": 1080,
+        "height": 1920,
+        "fps": 30
+      },
+      "narration": {
+        "status": "existing-whole-recording",
+        "voice": "Alden — Everyday Unlocked",
+        "model": "eleven_v4",
+        "scriptVersion": "directed-repair-v004",
+        "wavSha256": "sha256:1fc6d74f08988af9e7eee7f525e4e552113bea9a2a0e5df2a27259ca35e1c24d",
+        "mp3Sha256": "sha256:4fc26c6c9245d847cab95cffc28d62642e04eb4943f7b9306c62516689ee0a94",
+        "durationSeconds": 19.92,
+        "tempoFactor": 1,
+        "decodeExitCode": 0,
+        "timingSha256": "sha256:3da657f501dd9526b6f3b641c07a70aeb5cbbba2345a006b18f522838e4fcefe",
+        "timingMethod": "Existing offline ASR word observations; provisional edit boundaries, no invented timestamps",
+        "observedWords": 62,
+        "timingIssues": [],
+        "textReviewStatus": "SUPPORTED",
+        "alignmentReview": "Exact script/ASR token reconciliation and shot/caption cue authoring pending; EU-003 compound spelling and EU-005 inflection recheck remain explicit",
+        "listening": "unreviewed"
+      },
+      "nativeAsset": {
+        "sha256": "sha256:d14bc1d7ba6a66f7fbcd3e065e79c32fe14da9d9105fde2fbd37a4336c2b7dae",
+        "bytes": 138567,
+        "catalogReadiness": "qualified_standalone_native_component",
+        "catalogBuildStatus": "saved_qualified_standalone_component",
+        "recipeSha256": "sha256:98c86d11c80f738075772d465447070eab69463e91562d4dac22fa78bb9fd5cb",
+        "shotQualified": false,
+        "stillShiftBinding": "pending"
+      },
+      "route": "existing-blender-asset-binding-needed",
+      "softwareFamilyCandidate": null,
+      "historicalEngineeringEpisode": null,
+      "historicalOverlapScope": "No former three-product pilot counterpart",
+      "requiredWork": [
+        "Validate source construction against exact native asset and selected spoken claims",
+        "Bind controls and sampled contact/geometry assertions through supported Still Shift interfaces",
+        "Author shots and captions against this exact Alden recording and observed timings",
+        "Render and independently check full decoded output, readable captions, motion and unchanged narration",
+        "Complete factual/design, mechanical, continuous audiovisual and listening review"
+      ],
+      "support": {
+        "state": "not-validated",
+        "accepted": false
+      }
+    },
+    {
+      "id": "EU-006",
+      "object": "Binder clip",
+      "question": "Why do binder-clip handles make the jaws open?",
+      "explanationKey": "lever_actuated_sheet_spring-eu-006",
+      "selectedDesign": "US1139627A continuous triangular sheet-steel binder, integral rolled jaw journals and body-bearing wire levers; authored U-handle proportions, clamping action only",
+      "sourceVerifiedAnswerFromSavedBrief": "Wire handles bear against the body to provide leverage. Squeezing deforms the spring-steel sides and opens the gripping edges; releasing allows the elastic body to close on paper.",
+      "sourceReview": "Imported local preproduction record; current episode factual/design acceptance pending",
+      "sources": [
+        {
+          "url": "https://patents.google.com/patent/US1139627A/en",
+          "title": "US1139627A — Clip",
+          "primary_owner": "Inventor/applicant named in US1139627A (original patent disclosure)",
+          "accessed_on": "2026-10-08",
+          "locator": "Description of triangular steel body, tubular jaws and removable handle levers; Figs1–3",
+          "supported_claim": "The spring resides in the sheet-metal body; handles act as operating levers.",
+          "inspection_method": "newly_opened_primary_text",
+          "limitations": "Patent text inspected; diagram pixels were not delivered by the web tool. Named embodiment only, no mapping to a contemporary branded product."
+        }
+      ],
+      "format": {
+        "width": 1080,
+        "height": 1920,
+        "fps": 30
+      },
+      "narration": {
+        "status": "existing-whole-recording",
+        "voice": "Alden — Everyday Unlocked",
+        "model": "eleven_v4",
+        "scriptVersion": "directed-repair-v004",
+        "wavSha256": "sha256:548b73c585568a670a2da061c75ab3f3fb935b00332be23291de3110b97b2af1",
+        "mp3Sha256": "sha256:01083c1a336358aaa0c7d3dd75a52452b47f898ac8b07456ba6cc3826f29ceea",
+        "durationSeconds": 21.12,
+        "tempoFactor": 1,
+        "decodeExitCode": 0,
+        "timingSha256": "sha256:65b7012cf62fbb048d23e4cf500eb4cf4937b8df4df230f22b78feca7848bd98",
+        "timingMethod": "Existing offline ASR word observations; provisional edit boundaries, no invented timestamps",
+        "observedWords": 63,
+        "timingIssues": [],
+        "textReviewStatus": "SUPPORTED",
+        "alignmentReview": "Exact script/ASR token reconciliation and shot/caption cue authoring pending; EU-003 compound spelling and EU-005 inflection recheck remain explicit",
+        "listening": "unreviewed"
+      },
+      "nativeAsset": {
+        "sha256": "sha256:78baf6707008fd253ee7b2799e47e57722f73e9a72a792d345e90fb20f6764d5",
+        "bytes": 1498620,
+        "catalogReadiness": "qualified_standalone_native_component",
+        "catalogBuildStatus": "saved_qualified_standalone_component",
+        "recipeSha256": "sha256:98c86d11c80f738075772d465447070eab69463e91562d4dac22fa78bb9fd5cb",
+        "shotQualified": false,
+        "stillShiftBinding": "pending"
+      },
+      "route": "existing-blender-asset-binding-needed",
+      "softwareFamilyCandidate": null,
+      "historicalEngineeringEpisode": null,
+      "historicalOverlapScope": "No former three-product pilot counterpart",
+      "requiredWork": [
+        "Validate source construction against exact native asset and selected spoken claims",
+        "Bind controls and sampled contact/geometry assertions through supported Still Shift interfaces",
+        "Author shots and captions against this exact Alden recording and observed timings",
+        "Render and independently check full decoded output, readable captions, motion and unchanged narration",
+        "Complete factual/design, mechanical, continuous audiovisual and listening review"
+      ],
+      "support": {
+        "state": "not-validated",
+        "accepted": false
+      }
+    },
+    {
+      "id": "EU-007",
+      "object": "Side-release buckle",
+      "question": "How does a side-release buckle lock and release?",
+      "explanationKey": "paired_cantilever_snap_release-eu-007",
+      "selectedDesign": "US5546642A improved side-release buckle embodiment with resilient male arms, upper/lower abutments and female release actuators.",
+      "sourceVerifiedAnswerFromSavedBrief": "Insertion deflects male arms until their abutments meet retaining surfaces. Squeezing the two female actuators flexes the arms inward and clears those contacts for withdrawal.",
+      "sourceReview": "Imported local preproduction record; current episode factual/design acceptance pending",
+      "sources": [
+        {
+          "url": "https://patents.google.com/patent/US5546642A/en",
+          "title": "US5546642A — Side release buckle",
+          "primary_owner": "Inventor/applicant named in US5546642A (original patent disclosure)",
+          "accessed_on": "2026-10-08",
+          "locator": "Male Figs2–6, female Figs7–12, engagement Figs14–16; description of abutments and actuators",
+          "supported_claim": "Resilient arms and corresponding retaining surfaces give positive retention; actuators release it.",
+          "inspection_method": "newly_opened_primary_text",
+          "limitations": "Patent text inspected; diagram pixels were not delivered by the web tool. Named embodiment only, no mapping to a contemporary branded product."
+        }
+      ],
+      "format": {
+        "width": 1080,
+        "height": 1920,
+        "fps": 30
+      },
+      "narration": {
+        "status": "existing-whole-recording",
+        "voice": "Alden — Everyday Unlocked",
+        "model": "eleven_v4",
+        "scriptVersion": "directed-repair-v004",
+        "wavSha256": "sha256:ff5a3d3d72fadbbdb674598cfd2221362ef95a53910a60fa9c11df63056624f1",
+        "mp3Sha256": "sha256:97d3138a549201a95b08dfc47f965706ead4667771b08452def64157d02595e5",
+        "durationSeconds": 23.6,
+        "tempoFactor": 1,
+        "decodeExitCode": 0,
+        "timingSha256": "sha256:5f8cf92a6f11f1e51f3eb919d3eadd9c3e2299ea7466da33008a740755cebad0",
+        "timingMethod": "Existing offline ASR word observations; provisional edit boundaries, no invented timestamps",
+        "observedWords": 64,
+        "timingIssues": [],
+        "textReviewStatus": "SUPPORTED",
+        "alignmentReview": "Exact script/ASR token reconciliation and shot/caption cue authoring pending; EU-003 compound spelling and EU-005 inflection recheck remain explicit",
+        "listening": "unreviewed"
+      },
+      "nativeAsset": {
+        "sha256": "sha256:5e003f0e5845e9284eaaefd6f25c3d34acd05f5c8d46e82e3acca8b96296c30f",
+        "bytes": 160050,
+        "catalogReadiness": "qualified_standalone_native_component",
+        "catalogBuildStatus": "saved_qualified_standalone_component",
+        "recipeSha256": "sha256:98c86d11c80f738075772d465447070eab69463e91562d4dac22fa78bb9fd5cb",
+        "shotQualified": false,
+        "stillShiftBinding": "pending"
+      },
+      "route": "existing-blender-asset-binding-needed",
+      "softwareFamilyCandidate": null,
+      "historicalEngineeringEpisode": null,
+      "historicalOverlapScope": "No former three-product pilot counterpart",
+      "requiredWork": [
+        "Validate source construction against exact native asset and selected spoken claims",
+        "Bind controls and sampled contact/geometry assertions through supported Still Shift interfaces",
+        "Author shots and captions against this exact Alden recording and observed timings",
+        "Render and independently check full decoded output, readable captions, motion and unchanged narration",
+        "Complete factual/design, mechanical, continuous audiovisual and listening review"
+      ],
+      "support": {
+        "state": "not-validated",
+        "accepted": false
+      }
+    },
+    {
+      "id": "EU-008",
+      "object": "Door spring latch",
+      "question": "Why does a door latch retract and spring back?",
+      "explanationKey": "sliding_cam_contact_spring_return-eu-008",
+      "selectedDesign": "US10837199B2 latch550 closing subassembly, Figs16–18: cam face556, spring570 and fixed boss572; show the closing stroke rather than the separate deadlocking system.",
+      "sourceVerifiedAnswerFromSavedBrief": "The inclined closing cam contacts the strike and pushes the bolt into its housing. A spring between the bolt and a fixed boss biases it outward, so it extends when the strike opening permits it.",
+      "sourceReview": "Imported local preproduction record; current episode factual/design acceptance pending",
+      "sources": [
+        {
+          "url": "https://patents.google.com/patent/US10837199B2/en",
+          "title": "US10837199B2 — Cylindrical latch bolt assembly having beveled blocking surface",
+          "primary_owner": "Inventor/applicant named in US10837199B2 (original patent disclosure)",
+          "accessed_on": "2026-10-08",
+          "locator": "Description Figs16A/B and17–18, cam556 and spring570/boss572",
+          "supported_claim": "Closing cam retracts bolt; the documented fixed spring boss supplies bolt extension.",
+          "inspection_method": "newly_opened_primary_text",
+          "limitations": "Patent text inspected; diagram pixels were not delivered by the web tool. Named embodiment only, no mapping to a contemporary branded product."
+        }
+      ],
+      "format": {
+        "width": 1080,
+        "height": 1920,
+        "fps": 30
+      },
+      "narration": {
+        "status": "existing-whole-recording",
+        "voice": "Alden — Everyday Unlocked",
+        "model": "eleven_v4",
+        "scriptVersion": "directed-repair-v004",
+        "wavSha256": "sha256:e43e1132d3ad6eb4846008a5c47e804c84921c3b15024dd3f9c94c9d80d3a636",
+        "mp3Sha256": "sha256:11f25bf792b5c7529cf5c201ca3cbb100619e4e6b54d97b263c6c01db724b746",
+        "durationSeconds": 19.28,
+        "tempoFactor": 1,
+        "decodeExitCode": 0,
+        "timingSha256": "sha256:18384cd9749058a69c374fbe0c777b757a945123e6c2e3f458a1ad2397d31a60",
+        "timingMethod": "Existing offline ASR word observations; provisional edit boundaries, no invented timestamps",
+        "observedWords": 61,
+        "timingIssues": [],
+        "textReviewStatus": "SUPPORTED",
+        "alignmentReview": "Exact script/ASR token reconciliation and shot/caption cue authoring pending; EU-003 compound spelling and EU-005 inflection recheck remain explicit",
+        "listening": "unreviewed"
+      },
+      "nativeAsset": {
+        "sha256": "sha256:d77e09c9022cb5e26a66a1083bccf3e95048b4e9e4ae3a6c3e7def498d441079",
+        "bytes": 173445,
+        "catalogReadiness": "qualified_standalone_native_component",
+        "catalogBuildStatus": "saved_qualified_standalone_component",
+        "recipeSha256": "sha256:98c86d11c80f738075772d465447070eab69463e91562d4dac22fa78bb9fd5cb",
+        "shotQualified": false,
+        "stillShiftBinding": "pending"
+      },
+      "route": "existing-blender-asset-binding-needed",
+      "softwareFamilyCandidate": null,
+      "historicalEngineeringEpisode": null,
+      "historicalOverlapScope": "No former three-product pilot counterpart",
+      "requiredWork": [
+        "Validate source construction against exact native asset and selected spoken claims",
+        "Bind controls and sampled contact/geometry assertions through supported Still Shift interfaces",
+        "Author shots and captions against this exact Alden recording and observed timings",
+        "Render and independently check full decoded output, readable captions, motion and unchanged narration",
+        "Complete factual/design, mechanical, continuous audiovisual and listening review"
+      ],
+      "support": {
+        "state": "not-validated",
+        "accepted": false
+      }
+    },
+    {
+      "id": "EU-009",
+      "object": "Curved tape-measure blade",
+      "question": "Why is a tape-measure blade curved?",
+      "explanationKey": "developable_strip_section_change-eu-009",
+      "selectedDesign": "Conventional transverse curved blade in WO2020159114A1 background Fig.2; explicit flattening comparison and authored exposed teaching mandrel",
+      "sourceVerifiedAnswerFromSavedBrief": "The patent describes a conventional curved blade as resisting longitudinal self-weight bending and being flattened for winding. The curved cross-section changes the section’s bending response; no numerical stiffness or standout length is established here.",
+      "sourceReview": "Imported local preproduction record; current episode factual/design acceptance pending",
+      "sources": [
+        {
+          "url": "https://patents.google.com/patent/WO2020159114A1/en",
+          "title": "WO2020159114A1 — Tape measure blade",
+          "primary_owner": "Inventor/applicant named in WO2020159114A1 (original patent disclosure)",
+          "accessed_on": "2026-10-08",
+          "locator": "Background description of conventional Fig.2 curved section and reel flattening",
+          "supported_claim": "Conventional transverse curvature supports blade extension and can flatten for coiling.",
+          "inspection_method": "newly_opened_primary_text",
+          "limitations": "English translated patent text inspected; Fig.2 pixels not delivered. Exclude claimed groove inventions, numerical performance and exact product curvature."
+        }
+      ],
+      "format": {
+        "width": 1080,
+        "height": 1920,
+        "fps": 30
+      },
+      "narration": {
+        "status": "existing-whole-recording",
+        "voice": "Alden — Everyday Unlocked",
+        "model": "eleven_v4",
+        "scriptVersion": "directed-repair-v004",
+        "wavSha256": "sha256:b1f92b9fa353f9a23a83b9fd4a0f0fb1d1ca2b16f026529436542be56aee6388",
+        "mp3Sha256": "sha256:2432a7cf70828651938c70083326eaf86dbfbba1f67a0b7f1a3e77570bd5c00e",
+        "durationSeconds": 19.84,
+        "tempoFactor": 1,
+        "decodeExitCode": 0,
+        "timingSha256": "sha256:9260f7a2e207ba9625df20fe5eb0b670e4d8a97aa52304ebd52bca79a07abc95",
+        "timingMethod": "Existing offline ASR word observations; provisional edit boundaries, no invented timestamps",
+        "observedWords": 63,
+        "timingIssues": [],
+        "textReviewStatus": "SUPPORTED",
+        "alignmentReview": "Exact script/ASR token reconciliation and shot/caption cue authoring pending; EU-003 compound spelling and EU-005 inflection recheck remain explicit",
+        "listening": "unreviewed"
+      },
+      "nativeAsset": {
+        "sha256": "sha256:2b8fde570293006dcb982db13693694479de368323229f8608df41d6d0936dcc",
+        "bytes": 578761,
+        "catalogReadiness": "qualified_standalone_native_component",
+        "catalogBuildStatus": "saved_qualified_standalone_component",
+        "recipeSha256": "sha256:98c86d11c80f738075772d465447070eab69463e91562d4dac22fa78bb9fd5cb",
+        "shotQualified": false,
+        "stillShiftBinding": "pending"
+      },
+      "route": "existing-blender-asset-binding-needed",
+      "softwareFamilyCandidate": null,
+      "historicalEngineeringEpisode": null,
+      "historicalOverlapScope": "No former three-product pilot counterpart",
+      "requiredWork": [
+        "Validate source construction against exact native asset and selected spoken claims",
+        "Bind controls and sampled contact/geometry assertions through supported Still Shift interfaces",
+        "Author shots and captions against this exact Alden recording and observed timings",
+        "Render and independently check full decoded output, readable captions, motion and unchanged narration",
+        "Complete factual/design, mechanical, continuous audiovisual and listening review"
+      ],
+      "support": {
+        "state": "not-validated",
+        "accepted": false
+      }
+    },
+    {
+      "id": "EU-010",
+      "object": "Stay-on can tab",
+      "question": "How does a soda-can tab open the scored panel?",
+      "explanationKey": "lever_scored_panel_hinge-eu-010",
+      "selectedDesign": "US6575684B2 first stay-on lid embodiment: tab42/44, rivet16, bendable flange46, tongue17 and score58 ending in hinge19.",
+      "sourceVerifiedAnswerFromSavedBrief": "Lifting the tab heel makes its nose press the opening tongue. In this design the retained flange bends as a fulcrum; the outer score ruptures and the unscored hinge keeps the panel attached.",
+      "sourceReview": "Imported local preproduction record; current episode factual/design acceptance pending",
+      "sources": [
+        {
+          "url": "https://patents.google.com/patent/US6575684B2/en",
+          "title": "US6575684B2 — Easy opening can end",
+          "primary_owner": "Inventor/applicant named in US6575684B2 (original patent disclosure)",
+          "accessed_on": "2026-10-08",
+          "locator": "First embodiment Figs1–6; tab operation, flange46, outer score58 and hinge19",
+          "supported_claim": "Nose pressure opens the scored panel; rivet attachment and hinge retain tab and tongue.",
+          "inspection_method": "newly_opened_primary_text",
+          "limitations": "Patent text inspected; diagram pixels were not delivered by the web tool. Named embodiment only, no mapping to a contemporary branded product."
+        }
+      ],
+      "format": {
+        "width": 1080,
+        "height": 1920,
+        "fps": 30
+      },
+      "narration": {
+        "status": "existing-whole-recording",
+        "voice": "Alden — Everyday Unlocked",
+        "model": "eleven_v4",
+        "scriptVersion": "directed-repair-v004",
+        "wavSha256": "sha256:702548703c6de1146b4c384d9de5eedc8300d09bdaf621194085aa82e1b8d338",
+        "mp3Sha256": "sha256:e29c15152f270ffe525a82a0726c33270b2f97a9d0ab3e8f3ece4729516a7e45",
+        "durationSeconds": 20.88,
+        "tempoFactor": 1,
+        "decodeExitCode": 0,
+        "timingSha256": "sha256:84e476b4f7c1fad7aa97cf8b8e31b0209e8bdb0198a1ec5f487d0b1ae686cfc0",
+        "timingMethod": "Existing offline ASR word observations; provisional edit boundaries, no invented timestamps",
+        "observedWords": 61,
+        "timingIssues": [],
+        "textReviewStatus": "SUPPORTED",
+        "alignmentReview": "Exact script/ASR token reconciliation and shot/caption cue authoring pending; EU-003 compound spelling and EU-005 inflection recheck remain explicit",
+        "listening": "unreviewed"
+      },
+      "nativeAsset": {
+        "sha256": "sha256:6a7dfc3a60d84c81beb182c4fa14d606cb03ec0a54113a30d0a5ae438f47e838",
+        "bytes": 3029224,
+        "catalogReadiness": "qualified_standalone_native_component",
+        "catalogBuildStatus": "saved_qualified_standalone_component",
+        "recipeSha256": "sha256:98c86d11c80f738075772d465447070eab69463e91562d4dac22fa78bb9fd5cb",
+        "shotQualified": false,
+        "stillShiftBinding": "pending"
+      },
+      "route": "existing-blender-asset-binding-needed",
+      "softwareFamilyCandidate": null,
+      "historicalEngineeringEpisode": null,
+      "historicalOverlapScope": "No former three-product pilot counterpart",
+      "requiredWork": [
+        "Validate source construction against exact native asset and selected spoken claims",
+        "Bind controls and sampled contact/geometry assertions through supported Still Shift interfaces",
+        "Author shots and captions against this exact Alden recording and observed timings",
+        "Render and independently check full decoded output, readable captions, motion and unchanged narration",
+        "Complete factual/design, mechanical, continuous audiovisual and listening review"
+      ],
+      "support": {
+        "state": "not-validated",
+        "accepted": false
+      }
+    }
+  ],
+  "summary": {
+    "selected": 10,
+    "recordingsLocated": 10,
+    "audioDecodesPassed": 10,
+    "wordTimingFilesLocated": 10,
+    "wordTimingBoundsPassed": 10,
+    "nativeAssetPinsMatched": 10,
+    "existingSoftwareFamilyCandidates": 3,
+    "existingBlenderAssetsNeedingBinding": 7,
+    "validated": 0,
+    "accepted": 0,
+    "routineTokenMeasurements": null
+  },
+  "privateInventory": {
+    "path": "/private/tmp/still-shift-ms3-everyday34/inputs.json",
+    "sha256": "sha256:f9f02e71b607d4f578308f109aaf3e9366fd2baff04cc2ef292b98a3629972f3",
+    "bytes": 110378
+  },
+  "changes": [
+    {
+      "revision": 2,
+      "date": "2026-10-14",
+      "reason": "Explicit owner selection of the actual channel first ten; seven different test-plan questions are no longer requested narration inputs. New Alden takes require fresh clocks/QA for all ten. Existing extension implementation and historical proofs are preserved.",
+      "previousSelection": "ms3-pilot-2026-10-12-v1",
+      "previousSelectionSha256": "sha256:0d68b0e03e6e4df482328af097c81b54aa8cdee1f7d1fbc028778760bdba7367",
+      "previousBoard": "docs/mechanism-topic-family-coverage.json",
+      "previousBoardRawSha256": "sha256:e6fbe4ca81771b482be89dc28d8cebe0f35df394b1913f12c8f876f8cf963dd5",
+      "previousBrief": "docs/mechanism-shorts-ms3-pilot-brief-original-v1.json",
+      "previousBriefRawSha256": "sha256:d7cc96b2fbe9ad382ae34859617bff9e9b28217dade78f275c8cd91c4d1ac134"
+    }
+  ],
+  "auditScope": "This channel selection includes seven objects outside the version-1 three-family coverage auditor. It is a pinned planning/intake revision; registry admission and positive coverage remain pending. No historic gate is rebadged, no synthesis or new ElevenLabs spending."
+}

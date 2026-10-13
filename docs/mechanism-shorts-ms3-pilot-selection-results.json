@@ -1,0 +1,75 @@
+{
+  "version": "mechanism-ms3-channel-pilot-selection-results-1",
+  "date": "2026-10-14",
+  "ownerDecision": "Use Everyday Unlocked actual first ten episodes",
+  "selection": {
+    "id": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+    "selectedEpisodeIds": [
+      "EU-001",
+      "EU-002",
+      "EU-003",
+      "EU-004",
+      "EU-005",
+      "EU-006",
+      "EU-007",
+      "EU-008",
+      "EU-009",
+      "EU-010"
+    ],
+    "sha256": "sha256:8c5f378389d595c83fdcf3ff1cd41bd2d57d64b3a622c953013cffe39d001471"
+  },
+  "intake": {
+    "selectedRows": 10,
+    "checkedSourcePins": 72,
+    "decodedAudio": 10,
+    "orderedBoundedWordTimes": 616,
+    "nativeAssetHashesMatched": 10,
+    "historicalBoardAndBriefBytesUnchanged": true,
+    "newElevenLabsCalls": 0
+  },
+  "audit": {
+    "actualExitCode": 0,
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-everyday34/audit.json",
+      "bytes": 1123,
+      "sha256": "sha256:00e159cf9eb486fa41e56799d9a3d891c0eeb1bf79a417517519650680ffa640"
+    },
+    "checks": [
+      {
+        "name": "format",
+        "exitCode": 0
+      },
+      {
+        "name": "diff",
+        "exitCode": 0
+      },
+      {
+        "name": "historical-board",
+        "exitCode": 0
+      }
+    ]
+  },
+  "retainedFailure": {
+    "actualExitCode": 1,
+    "check": "native canonical selection hash",
+    "expected": "sha256:7da57348aaaf1781ad1f47d18606bc71664ef2a72a2e64ed1d9dee150ca56773",
+    "actual": "sha256:8c5f378389d595c83fdcf3ff1cd41bd2d57d64b3a622c953013cffe39d001471",
+    "reason": "Python JSON retained 1.0 while the project canonical number encoder emits 1. Corrected with the existing native canonical encoder before committing the cohort.",
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-everyday34/audit1-failure.json",
+      "bytes": 423,
+      "sha256": "sha256:a0f7fb74f77b2010ea08655f987a21745554808528d068f4db7f82e4a3915004"
+    }
+  },
+  "privateInputs": {
+    "path": "/private/tmp/still-shift-ms3-everyday34/inputs.json",
+    "bytes": 110378,
+    "sha256": "sha256:f9f02e71b607d4f578308f109aaf3e9366fd2baff04cc2ef292b98a3629972f3"
+  },
+  "rejectedProductionInput": "Original First 10 Narration v003 package is marked rejected for monotone delivery. It remains bound to its historical engineering products, not selected for this Alden cohort.",
+  "newWork": "Current exact-copy cue alignment, seven additional object-specific Still Shift bindings, broader registry/coverage admission, final renders and all whole reviews. Prior software milestone and extension work remains intact.",
+  "scope": "Selection/intake and documentation audit only. No actual Still Shift bindings, rendered native proof, broader coverage admission, listening, full software gate or pilot acceptance.",
+  "acceptedEpisodes": 0,
+  "denominator": 10,
+  "routineTokenMeasurements": null
+}

@@ -1,9 +1,9 @@
 {
   "version": 1,
   "milestone": "MS3",
-  "date": "2026-10-13",
+  "date": "2026-10-14",
   "branch": "codex/mechanism-ms3",
-  "status": "in-progress-actual-native-cli-os-recovery-running",
+  "status": "in-progress-owner-selected-channel-first-ten",
   "baseMain": "57967fa6497249d75e740ba837b8e2687cc81a98",
   "ms2Prerequisite": {
     "commit": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
@@ -15,7 +15,7 @@
     "changedRelativeToMS2": ["ROADMAP.md", "docs/dev-log.md"],
     "runtimeSourceChanges": 0,
     "ms0OwnerMerge": "57967fa6497249d75e740ba837b8e2687cc81a98",
-    "retainedOwnerLogEntry": "2026-10-12 \u2014 Resolve MS0 PR #51 conflicts",
+    "retainedOwnerLogEntry": "2026-10-12 — Resolve MS0 PR #51 conflicts",
     "failedPREdit": "gh pr edit used deprecated projectCards GraphQL query; REST body PATCH actually succeeded."
   },
   "frozenSelection": {
@@ -773,5 +773,42 @@
     "remainingAssetBehavior": null,
     "qualification": "Source-bound software/native sampled engineering evidence only; asset/behavior/pilot product admission remains separate. Frozen ten questions and accepted0/10 stay unchanged.",
     "provisionalE06Candidate": "Five required engineering assets/two behaviors now have source-bound implementation/native evidence. The identified E06 hinge anatomy repair is verified; original factual/design/explanation/whole/pilot admission remains separate."
-  }
+  },
+  "currentPilotSelection": {
+    "record": "docs/mechanism-shorts-ms3-pilot-selection.json",
+    "selection": {
+      "id": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+      "selectedEpisodeIds": [
+        "EU-001",
+        "EU-002",
+        "EU-003",
+        "EU-004",
+        "EU-005",
+        "EU-006",
+        "EU-007",
+        "EU-008",
+        "EU-009",
+        "EU-010"
+      ],
+      "sha256": "sha256:8c5f378389d595c83fdcf3ff1cd41bd2d57d64b3a622c953013cffe39d001471"
+    },
+    "summary": {
+      "selected": 10,
+      "recordingsLocated": 10,
+      "audioDecodesPassed": 10,
+      "wordTimingFilesLocated": 10,
+      "wordTimingBoundsPassed": 10,
+      "nativeAssetPinsMatched": 10,
+      "existingSoftwareFamilyCandidates": 3,
+      "existingBlenderAssetsNeedingBinding": 7,
+      "validated": 0,
+      "accepted": 0,
+      "routineTokenMeasurements": null
+    },
+    "previousFrozenSelectionStatus": "historical; exact former selection/evidence retained",
+    "newElevenLabsCalls": 0
+  },
+  "frozenSelectionStatus": "Historical three-family engineering cohort; active owner-selected pilot is currentPilotSelection",
+  "requiredNewAssetsScope": "Historical extension plan and proofs retained; current pilot uses the native assets declared in currentPilotSelection",
+  "requiredNewBehaviorsScope": "Historical extension plan and proofs retained; current pilot bindings are tracked separately"
 }

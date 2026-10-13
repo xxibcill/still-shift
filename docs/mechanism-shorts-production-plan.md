@@ -1194,11 +1194,13 @@ explanations, not ten recolors or camera substitutions of E01.
       Run the MS1 overlap detection/patch/render/recheck path automatically without
       GUI interaction or routine creator decisions. Preserve a bounded recovery
       policy and report unresolved factual/creative judgments as exceptions.
-- [ ] Run ten distinct episode fixtures across the three validated families, including
-      changed narration and camera choices. Supply a question, fact evidence, design
-      variant and visual proof for each. Select them from the MS2 coverage board;
-      maintain candidate routing, new-asset/new-rig counts and coverage against the
-      frozen distinct-episode denominator. Record new-asset and new-behavior work.
+- [ ] Run Everyday Unlocked’s actual EU-001–EU-010 episodes, selected explicitly
+      by the owner on2026-10-14 in the [revised pilot brief](./mechanism-shorts-ms3-pilot-brief.md).
+      Supply a question, fact evidence, design variant and visual proof for each.
+      Reuse existing whole Alden recordings and native assets with current bindings.
+      Maintain routing, new-asset/new-rig work and coverage against the revised
+      ten-episode denominator. Preserve the former three-family board and extension
+      proofs as history; update broader registry/coverage admission for this cohort.
 - [ ] Repair stale documentation about media and 3D artwork against the completed
       implementation. Generate concise capability references from registries/schema;
       document supported imports, batch scope and preview/export limits, and expose

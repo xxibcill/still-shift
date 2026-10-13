@@ -190,9 +190,12 @@ still hold before relying on them.
   has0 errors/50 warnings. Fresh stale-request rejection and source/output-bound
   compact handoff pass. Whole/pilot reviews remain open. Prior failed baseline
   and earlier source-bound gates retain their own evidence.
-  The owner-supplied Reusable3D Asset Plan path contains build plans and episode
-  references, without audio/timing files. Linked newer300-topic Alden recordings
-  still differ from the seven frozen questions; clarification is pending.
+  The owner selected Everyday Unlocked actual EU-001–EU-010 on2026-10-14.
+  [Revised pilot](./mechanism-shorts-ms3-pilot-brief.md) closes the seven-recording
+  request. All ten Alden v4 whole takes decode, observed word timings match their
+  WAV pins, and ten native asset hashes match the catalog. The original board and
+  Alex products remain historical; current production/broader coverage/whole review
+  stays0/10. No media or private transcript is copied into the repository.
   [Located failures](./mechanism-shorts-ms3-located-failure-results.json) now
   preserve trusted invariant locations through cue wrappers, both CLI routes and
   optional queue/report attempt findings. Real illegal-transition/event-order
@@ -203,7 +206,7 @@ still hold before relying on them.
   genuine final checks retain their historical binding; current native rebinding
   and all broader rendered faults/whole inputs/reviews/final gates remain open.
   Remaining original scope: clearer E06/E10 explanations and actual whole reviews,
-  all ten frozen questions/genuine narration,
+  current channel-first-ten bindings, cue authoring and whole reviews,
   broader seeded QA, native QA rebinding, capability reconciliation,
   comparable token measurements and final full/benchmark/archive/installed gate.
   Accepted coverage remains0/10; tokens staynull. No ElevenLabs spend, merge,
@@ -394,6 +397,31 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Select Everyday Unlocked actual first ten for the pilot
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, froma36c7b85.
+- **Owner decision:** Use actual channel EU-001–EU-010; supersede the earlier ten
+  mechanism questions and close the seven additional recording request.
+- **Done:** Versioned selection/brief, archived exact original brief, updated plan
+  and acceptance tracker. Existing engineering proofs retain their identities.
+- **Intake:** All ten existing Alden v4 WAV/MP3 hashes match delivery; full WAV
+  decode passes. All616 observed words have ordered starts/bounded audio clocks.
+  Ten actual native Blender hashes match the current catalog; no rebuild/generation.
+- **Verification:** Native canonical selection/source-pin audit, document format,
+  diff and historical board checks exit0;72 pins/616 word intervals verified.
+  Initial Python number-encoding hash mismatch is retained and corrected using
+  the project canonical encoder.
+- **Open:** Current object-specific bindings, exact-copy cue alignment, rendered
+  factual/design/mechanical/readability/continuous/listening review and final gates.
+  Broader registry admission remains pending; accepted0/10, paired tokensnull.
+- **In flight:** Earlier uncommitted visual-QA code is preserved. Build2 passes;
+  focused1 retains27 passes/one speech-caption admission failure. No current
+  visual-QA integration or refreshed full gate is claimed by this documentation slice.
+- **Records:** [Pilot selection](./mechanism-shorts-ms3-pilot-selection.json),
+  [intake results](./mechanism-shorts-ms3-pilot-selection-results.json),
+  [brief](./mechanism-shorts-ms3-pilot-brief.md); private inputs in
+  `/private/tmp/still-shift-ms3-everyday34/inputs.json`. No ElevenLabs spend.
 
 ### 2026-10-14 — Preserve located timeline failures through CLI and durable history
 

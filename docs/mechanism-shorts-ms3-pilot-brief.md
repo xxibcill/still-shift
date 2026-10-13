@@ -1,175 +1,36 @@
-# MS3 original pilot production brief
+# MS3 Everyday Unlocked first-ten pilot brief
 
-2026-10-13. Frozen selection `ms3-pilot-2026-10-12-v1`; all ten questions remain unchanged.
+2026-10-14. The owner selected **Everyday Unlocked’s actual first ten episodes**.
 
-Use the requested procedural 3D explanation style at 1080×1920 and 30 fps. Narration and evidence determine runtime, normally20–40 seconds. Supplied audio and its measured word/cue timing are the editorial master. Do not pad, slow or stretch speech to reach a duration or shot count.
+Active selection: `ms3-everyday-unlocked-first-ten-2026-10-14-v2`. Selected IDs are EU-001–EU-010 in channel order, with denominator 10. The [selection record](./mechanism-shorts-ms3-pilot-selection.json) pins questions, design/source records, recordings, observed timing, native assets and outstanding work.
 
-E01/E03/E08 use existing whole private recordings, assigned by their actual claims. The seven other recordings in the customer’s first-ten folder describe different mechanisms and are excluded from this frozen pilot. The seven new scripts below are recording drafts, with no approval or invented audio timestamps. This work includes no synthesis or paid generation.
+Use the requested procedural 3D explanation style at 1080×1920/30 fps. Existing whole Alden — Everyday Unlocked, Eleven v4 recordings are the editorial master, at their original 1× tempo. Their measured lengths are 19.28–23.60 seconds; preserve their duration and words.
 
-| Episode | Frozen question                                                                              | Runtime variant                            | Narration                                  |
-| ------- | -------------------------------------------------------------------------------------------- | ------------------------------------------ | ------------------------------------------ |
-| E01     | Why does a tape measure hook move?                                                           | `floating-hook`                            | Whole supplied recording EU-001            |
-| E02     | How can a loose tape hook slide without falling off?                                         | `slotted-retention`                        | Matching audio/timing missing; draft below |
-| E03     | Why does this cable tie tighten but resist pulling back?                                     | `outside-serrated-integral-pawl-cutaway`   | Whole supplied recording EU-002            |
-| E04     | Why does the modeled tie latch in steps rather than at any position?                         | `outside-serrated-integral-pawl-cutaway`   | Matching audio/timing missing; draft below |
-| E05     | Why can a releasable cable tie back out when its trigger is pressed?                         | `inside-serrated-extended-trigger-cutaway` | Matching audio/timing missing; draft below |
-| E06     | How can reverse tension seat a pawl more firmly against a tie head?                          | `hinged-pawl-frame-stop`                   | Matching audio/timing missing; draft below |
-| E07     | Why does squeezing a clothespeg handle open its jaws?                                        | `wood-arms-central-spring-cloth`           | Matching audio/timing missing; draft below |
-| E08     | Why does a clothespeg close again after the handles are released?                            | `wood-arms-central-spring-cloth`           | Whole supplied recording EU-003            |
-| E09     | What do the opposing jaw notches do when a clothespeg grips a line?                          | `notched-line`                             | Matching audio/timing missing; draft below |
-| E10     | How does pressing farther from the pivot change the force needed in an idealized clothespeg? | `ideal-lever-press-points`                 | Matching audio/timing missing; draft below |
+| Episode | Object                    | Question                                                   | Existing audio |
+| ------- | ------------------------- | ---------------------------------------------------------- | -------------- |
+| EU-001  | Tape-measure end hook     | Why does the hook on a tape measure move?                  | 20.32s         |
+| EU-002  | Cable tie                 | Why does a cable tie tighten but resist pulling backward?  | 19.60s         |
+| EU-003  | Spring clothespeg         | Why does squeezing one end of a clothespeg open the other? | 19.60s         |
+| EU-004  | Metal-tooth zipper        | How does a zipper join its teeth?                          | 21.76s         |
+| EU-005  | Keyhole mounting slot     | How does a keyhole mounting slot hold a screw?             | 19.92s         |
+| EU-006  | Binder clip               | Why do binder-clip handles make the jaws open?             | 21.12s         |
+| EU-007  | Side-release buckle       | How does a side-release buckle lock and release?           | 23.60s         |
+| EU-008  | Door spring latch         | Why does a door latch retract and spring back?             | 19.28s         |
+| EU-009  | Curved tape-measure blade | Why is a tape-measure blade curved?                        | 19.84s         |
+| EU-010  | Stay-on can tab           | How does a soda-can tab open the scored panel?             | 20.88s         |
 
-The runtime variant names above map to the frozen design IDs; they do not rename the board or count a new question. The private family-packet record contains current immutable pack/source hashes for all ten. Seven families are prepared without a cue/audio placeholder or runnable queue item.
+## Inputs and production work
 
-## Supplied audio and intake
+The selected delivery is the existing `EU001-035 Alden Eleven v4 Narration v001` package in the channel’s `03 Episodes` library. All ten WAV/MP3 hashes match its delivery manifest; all ten WAVs fully decode locally. Existing offline ASR files contain observed word times bound to those same WAV hashes; all 616 observed word intervals are inside their measured audio clocks and have ordered starts. These observations require exact-copy alignment and audiovisual cue review. EU-003 compound spelling and EU-005 inflection rechecks remain explicit. Earlier Alex timing maps apply to their original recordings only.
 
-E01 uses the current EU-001 recording (19.5512 seconds), E03 uses EU-002 (21.5017 seconds), and E08 uses EU-003 (21.4088 seconds). The current E01 voice source is shorter than the normal range; it stays whole and unchanged. It does not replace the separate original696-frame E01 benchmark. Exact source/transcript pins and sample intervals stay in the private input manifest and pilot rows. No private transcript text or media is copied into this repository.
+The supplied asset plan links ten saved Blender masters. All ten actual file hashes match the current library catalog. Catalog standalone qualification is recorded as imported evidence; it supplies no Still Shift episode acceptance. Tape hook, cable tie and clothespeg can reuse existing software-family candidates after current binding checks. Zipper, keyhole slot, binder clip, buckle, latch, curved blade and can tab need object-specific bindings to their existing native assets. No replacement model build is inferred merely from a new pilot ID.
 
-For each remaining question, supply the full audio path and word/cue timing path, identifying the episode and whether the spoken copy is fixed. Local import measures the real clock and pins the bytes before authoring cue windows. The existing private four-take test manifest is a fixed fixture, not a general ten-episode intake schema.
+Production next binds each selected construction and its bounded controls, authors shots/captions from the exact Alden take, renders, and checks the final decoded picture/audio. Factual/design, mechanical, readable encoded text, continuous playback and listening reviews remain pending for every selected row. Accepted coverage is 0/10; paired routine-token measurements remain unavailable. No new ElevenLabs generation is required for intake.
 
-The portrait authoring uses the existing family, cue, camera and production APIs. Generated camera poses are revalidated with the scene’s fixed near/far planes before narrated cue compilation. Source intervals and original words stay intact; synthetic engineering onset markers are omitted from these candidates.
+The private inventory retains full paths, scripts, input/evidence hashes, actual audio clocks and decode outcomes. Public documentation retains selection and evidence metadata without copying private narration or media.
 
-## Narration and shot drafts
+## Revision history
 
-Durations below are estimates from an English cadence bracket of2.8–3.2 words per second. They are planning assumptions, not measured takes or locked timing. Each beat has one principal action and camera intention. Final timing and caption segmentation follow the supplied recording.
+This owner decision supersedes the earlier ten mechanism questions as the active MS3 pilot. The [original brief](./mechanism-shorts-ms3-pilot-brief-original-v1.md), [original JSON](./mechanism-shorts-ms3-pilot-brief-original-v1.json), [MS2 candidate board](./mechanism-topic-family-coverage.md) and source-bound [original pilot results](./mechanism-shorts-ms3-pilot-results.json) retain their identities. Earlier extension implementations remain reusable engineering work. The request for seven additional test-plan recordings is closed.
 
-### E02 — How can a loose tape hook slide without falling off?
-
-Status: new recording draft, 73 words, estimated22.81–26.07 seconds. Actual narration/timings are missing.
-
-| Beat | Exact draft spoken line                                                                                              | Visible evidence and camera                                                       |
-| ---- | -------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| B1   | The tape hook can slide, so what keeps it attached? Look underneath the rivet heads.                                 | Reveal rivet head and elongated slot; hold a top/side cutaway.                    |
-| B2   | Each rivet passes through a long slot in the hook. Its wider head overlaps the edges, keeping the hook on the blade. | Show the cap overlapping both slot edges; hold the frame.                         |
-| B3   | The narrow shaft has room to move along the slot, but only until it reaches an end.                                  | Slide the hook between stops; hold the rivet reference.                           |
-| B4   | The slots allow the travel. The heads provide the retention. Those are two different jobs in the same connection.    | Compare head retention with permitted longitudinal travel; return to recognition. |
-
-**Copy-ready full script**
-
-```text
-The tape hook can slide, so what keeps it attached? Look underneath the rivet heads. Each rivet passes through a long slot in the hook. Its wider head overlaps the edges, keeping the hook on the blade. The narrow shaft has room to move along the slot, but only until it reaches an end. The slots allow the travel. The heads provide the retention. Those are two different jobs in the same connection.
-```
-
-Sources and model basis: [US4930227A](https://patents.google.com/patent/US4930227A/en).
-
-### E04 — Why does the modeled tie latch in steps rather than at any position?
-
-Status: new recording draft, 73 words, estimated22.81–26.07 seconds. Actual narration/timings are missing.
-
-| Beat | Exact draft spoken line                                                                                                                | Visible evidence and camera                                                                      |
-| ---- | -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| B1   | Why does this modeled tie settle in steps? Follow the row of teeth past the flexible catch.                                            | Show adjacent teeth and the catch; hold a macro.                                                 |
-| B2   | A tooth pushes the catch aside. After it passes, the catch returns into the next gap.                                                  | Feed one tooth through and settle; hold the catch reference.                                     |
-| B3   | The spacing between neighboring teeth sets the distance between those seated positions. Change that spacing, and the step changes too. | Mark successive seats, then compare two pitches at fixed world scale; cut between aligned views. |
-| B4   | The model is repeating the same tooth-and-gap pattern. It is not choosing a new resting place at every possible position.              | Hold neighboring seated positions and the interval witness; return to recognition.               |
-
-**Copy-ready full script**
-
-```text
-Why does this modeled tie settle in steps? Follow the row of teeth past the flexible catch. A tooth pushes the catch aside. After it passes, the catch returns into the next gap. The spacing between neighboring teeth sets the distance between those seated positions. Change that spacing, and the step changes too. The model is repeating the same tooth-and-gap pattern. It is not choosing a new resting place at every possible position.
-```
-
-Sources and model basis: [mechanism-topic-family-coverage.json](mechanism-topic-family-coverage.json), [cable-tie-pack.ts](../packages/animation-engine/src/mechanism/cable-tie-pack.ts).
-
-### E05 — Why can a releasable cable tie back out when its trigger is pressed?
-
-Status: new recording draft, 74 words, estimated23.12–26.43 seconds. Actual narration/timings are missing.
-
-| Beat | Exact draft spoken line                                                                                                                     | Visible evidence and camera                                                         |
-| ---- | ------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| B1   | This tie has a release trigger. Press it, and the strap can come back out.                                                                  | Show the extended trigger and engaged catch; hold a cutaway.                        |
-| B2   | The trigger is part of the flexible catch. Pressing it moves that catch away from the teeth instead of forcing a tooth backward through it. | Press the trigger with the catch/trigger geometry moving together; hold the camera. |
-| B3   | With the catch clear, there is a path for the strap to withdraw.                                                                            | Withdraw the released strap through the cleared path; hold a side view.             |
-| B4   | Let the trigger return, and the catch can meet the teeth again. Release works by clearing the obstacle, then restoring it.                  | Restore engagement and hold the seated state; return to recognition.                |
-
-**Copy-ready full script**
-
-```text
-This tie has a release trigger. Press it, and the strap can come back out. The trigger is part of the flexible catch. Pressing it moves that catch away from the teeth instead of forcing a tooth backward through it. With the catch clear, there is a path for the strap to withdraw. Let the trigger return, and the catch can meet the teeth again. Release works by clearing the obstacle, then restoring it.
-```
-
-Sources and model basis: [RELK2R release closure](https://www.hellermanntyton.com/products/cable-ties-releasable/relk2r/115-02202).
-
-### E06 — How can reverse tension seat a pawl more firmly against a tie head?
-
-Status: new recording draft, 73 words, estimated22.81–26.07 seconds. Actual narration/timings are missing.
-
-| Beat | Exact draft spoken line                                                                                                        | Visible evidence and camera                                                             |
-| ---- | ------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
-| B1   | Can pulling backward make a tie seat more firmly? In this load-responsive design, the pawl can shift a little inside the head. | Show the pawl inside the frame and lower rear hinge; hold the cutaway.                  |
-| B2   | The strap already meets its first tooth. Further loading shifts and turns the pawl while the thin hinge deforms.               | Apply the declared qualitative load and show hinge/pawl shifting; hold the reference.   |
-| B3   | A second tooth moves into contact, and the rounded stop reaches the frame.                                                     | Show second-tooth and frame-stop contact together; cut to the stop macro.               |
-| B4   | That stop bounds the movement. The shape turns reverse tension into additional contact at the teeth and the frame.             | Increase the model control beyond the stop with unchanged poses; hold the stop witness. |
-
-**Copy-ready full script**
-
-```text
-Can pulling backward make a tie seat more firmly? In this load-responsive design, the pawl can shift a little inside the head. The strap already meets its first tooth. Further loading shifts and turns the pawl while the thin hinge deforms. A second tooth moves into contact, and the rounded stop reaches the frame. That stop bounds the movement. The shape turns reverse tension into additional contact at the teeth and the frame.
-```
-
-Sources and model basis: [US3872547A official PDF](https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/3872547), [mechanism-shorts-ms3-load-alignment-results.json](mechanism-shorts-ms3-load-alignment-results.json).
-
-### E07 — Why does squeezing a clothespeg handle open its jaws?
-
-Status: new recording draft, 81 words, estimated25.31–28.93 seconds. Actual narration/timings are missing.
-
-| Beat | Exact draft spoken line                                                                                                                      | Visible evidence and camera                                            |
-| ---- | -------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| B1   | Why do the jaws open when you squeeze these handles? Watch the middle of the peg.                                                            | Show both handles, jaws and common pivot; hold a side view.            |
-| B2   | Each wooden arm turns around that region. Its handle is on one side; its jaw is on the other.                                                | Identify ends on opposite sides; hold the pivot reference.             |
-| B3   | Bring the handles together, and the jaw ends move apart. The two ends of each arm move in opposite directions around the same turning point. | Squeeze and open with attached displacement witnesses; hold the frame. |
-| B4   | The handles and jaws share that rotation around the middle. Bringing the handles together changes the spacing between the jaw ends.          | Return to the starting pose around the same pivot; hold the side view. |
-
-**Copy-ready full script**
-
-```text
-Why do the jaws open when you squeeze these handles? Watch the middle of the peg. Each wooden arm turns around that region. Its handle is on one side; its jaw is on the other. Bring the handles together, and the jaw ends move apart. The two ends of each arm move in opposite directions around the same turning point. The handles and jaws share that rotation around the middle. Bringing the handles together changes the spacing between the jaw ends.
-```
-
-Sources and model basis: [US2590881A](https://patents.google.com/patent/US2590881A/en).
-
-### E09 — What do the opposing jaw notches do when a clothespeg grips a line?
-
-Status: new recording draft, 80 words, estimated25.0–28.57 seconds. Actual narration/timings are missing.
-
-| Beat | Exact draft spoken line                                                                                                                                                                        | Visible evidence and camera                                                     |
-| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| B1   | What are these matching recesses in the jaws for? Put a round line between them.                                                                                                               | Place the round line at the opposing notches; hold a front/side cutaway.        |
-| B2   | As the jaws close, the two notches form a shaped seat around the line.                                                                                                                         | Close into the declared line stop; hold the seat.                               |
-| B3   | The spring keeps the arms biased toward closure, while the recesses make room for the round shape.                                                                                             | Show spring and notch roles; cut to the spring detail.                          |
-| B4   | Those are separate roles: the spring supplies the closing bias, and the notches define where the line sits. The opening motion lets the line enter; the shaped seat is where the jaws meet it. | Return to the line seat with no friction/strength claim; hold the contact view. |
-
-**Copy-ready full script**
-
-```text
-What are these matching recesses in the jaws for? Put a round line between them. As the jaws close, the two notches form a shaped seat around the line. The spring keeps the arms biased toward closure, while the recesses make room for the round shape. Those are separate roles: the spring supplies the closing bias, and the notches define where the line sits. The opening motion lets the line enter; the shaped seat is where the jaws meet it.
-```
-
-Sources and model basis: [US2590881A](https://patents.google.com/patent/US2590881A/en), [mechanism-shorts-ms3-line-results.json](mechanism-shorts-ms3-line-results.json).
-
-### E10 — How does pressing farther from the pivot change the force needed in an idealized clothespeg?
-
-Status: new recording draft, 73 words, estimated22.81–26.07 seconds. Actual narration/timings are missing.
-
-| Beat | Exact draft spoken line                                                                                                                              | Visible evidence and camera                                                                   |
-| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| B1   | Why can pressing farther from the pivot take less force? Compare the two push points while keeping the resisting twist the same.                     | Show near/far pads on one unchanged arm and shared pivot; hold a side view.                   |
-| B2   | In this ideal balance, force times its perpendicular distance from the pivot must match that twist.                                                  | Show push lines and perpendicular moment arms with fixed declared resistance; hold a diagram. |
-| B3   | A push line farther from the pivot needs less force for the same balance.                                                                            | Compare computed forces from original posed anchors; cut between aligned views.               |
-| B4   | Real pegs also have changing spring and contact geometry. This comparison isolates the leverage: same resistance, different distance from the pivot. | Hold the idealization and comparison result; return to recognition.                           |
-
-**Copy-ready full script**
-
-```text
-Why can pressing farther from the pivot take less force? Compare the two push points while keeping the resisting twist the same. In this ideal balance, force times its perpendicular distance from the pivot must match that twist. A push line farther from the pivot needs less force for the same balance. Real pegs also have changing spring and contact geometry. This comparison isolates the leverage: same resistance, different distance from the pivot.
-```
-
-Sources and model basis: [OpenStax ideal levers](https://openstax.org/books/college-physics-ap-courses/pages/9-5-simple-machines), [mechanism-shorts-ms3-lever-results.json](mechanism-shorts-ms3-lever-results.json).
-
-## Evidence and review contract
-
-For every original episode retain the frozen question/answer, selected factual variant, immutable family/source, supplied audio/transcript pins, semantic beat coverage and final artifact identity. Extract phone overviews, shot entry/mid/exit, contact/cut images, caption/anchor crops and full decode/audio evidence through the production workflow. A successful compile or encode establishes its named technical scope; whole factual/design/visual/continuous/listening acceptance stays separate.
-
-The E02 rivet/slot, E05 trigger, E06 pawl/hinge/stop, E09 notch/line and E10 ideal lever extensions have source-bound engineering records. The episode must visibly establish its own causal question. E04 spacing is an analytic teaching model; E06 compliance is illustrative; E10 fixes declared resistance. No measured manufacturer force, friction, stiffness or holding-strength claim is introduced.
-
-Three available inputs form a runnable subset, not a replacement denominator. Report subset execution separately from the original ten-episode target. Keep first-pass failures, missing-input rows, unresolved QA and unavailable token measurements visible. Pilot acceptance remains0/10 until the original gates are established.
+Former E01/E03/E08 correspond by topic to EU-001/EU-002/EU-003. Their old Alex recordings, cue clocks, outputs and reviews remain historical and are not reclassified as current Alden products. The broader channel selection is a planning record; the version-1 three-family registry auditor does not yet admit its seven additional objects.
