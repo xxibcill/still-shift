@@ -75,8 +75,12 @@ still hold before relying on them.
   unrun drafts remain retained. Final harness is now registered in the full test
   chain and passes compile/lint/pinned toolchain/boundary preflight. Only root
   package scripts and the new test differ from passed0d59 runtime inputs; no
-  implementation/lock/toolchain files changed. Actual invocation/source hold and
-  independent audit are next; no OS/native recovery pass yet. Initial drafts
+  implementation/lock/toolchain files changed. Actual native10 invocation is
+  live under session3926/sourcec474c9c5, root
+  /private/tmp/still-shift-ms3-native-recovery-LK3dFu. SIGKILL after real PNG is
+  observed and S1 resumes with retained interrupted attempt/current attempt2;
+  this is a partial prefix, not terminal recovery acceptance. Poll the saved
+  handle/receipt without restarting; independent complete audit remains next. Initial drafts
   remain retained under their original hashes.
   Scoped/MS1 repair, ten frozen questions,
   five assets/two behaviors, genuine inputs/reviews, capability reconciliation
@@ -283,8 +287,10 @@ still hold before relying on them.
 - **Preflight:** compile/lint/pinned tools/boundaries pass; initial empty-catch
   lint failure is retained. All prior runtime inputs except package script
   registration are exact; the new test is the only added input.
-- **Next:** commit and run serially; no actual OS/native pass yet. Independently
-  audit recovered artifacts/history, then original MS3 repairs/extensions/pilot.
+- **Live:** committed/pushed c474c9c5; actual native10/session3926/rootLK3dFu
+  started and is confirmed live. Real PNG/SIGKILL and resumed S1 attempt2 are
+  observed; no terminal gate or independent audit pass yet. Poll its saved
+  handle/receipt before starting anything else. Original MS3 remains open.
 - **Records:** [native lifecycle record](./mechanism-shorts-ms3-native-recovery-results.json),
   [retry proof](./mechanism-shorts-ms3-retry-results.json).
 

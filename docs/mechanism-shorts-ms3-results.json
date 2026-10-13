@@ -3,7 +3,7 @@
   "milestone": "MS3",
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
-  "status": "in-progress-native-cli-recovery-registered-preflight-verified",
+  "status": "in-progress-actual-native-cli-os-recovery-running",
   "baseMain": "57967fa6497249d75e740ba837b8e2687cc81a98",
   "ms2Prerequisite": {
     "commit": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
@@ -501,9 +501,15 @@
     },
     {
       "id": "native-cli-recovery10",
-      "status": "registered-native-cli-recovery-preflight-passed-not-run",
+      "status": "actual-native-cli-os-recovery-running",
       "record": "docs/mechanism-shorts-ms3-native-recovery-results.json",
-      "qualification": "Registered compiled verification, not executed evidence. Synthetic engineering PCM; independent decode/image/current-history audit and whole mechanical/glyph/factual/continuous/listening/human/pilot review remain separate. No actual OS/native recovery pass claimed."
+      "qualification": "Registered compiled verification, not executed evidence. Synthetic engineering PCM; independent decode/image/current-history audit and whole mechanical/glyph/factual/continuous/listening/human/pilot review remain separate. No actual OS/native recovery pass claimed.",
+      "currentNative": {
+        "status": "running",
+        "session": 3926,
+        "sourceCommit": "c474c9c5c976b4c249163c0749d80f7e11e370f4",
+        "root": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu"
+      }
     }
   ],
   "targets": {

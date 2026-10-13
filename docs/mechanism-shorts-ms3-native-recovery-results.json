@@ -4,7 +4,7 @@
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
   "baseCommit": "169603a3",
-  "status": "registered-native-cli-recovery-preflight-passed-not-run",
+  "status": "actual-native-cli-os-recovery-running",
   "sourceSnapshot": [
     {
       "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/browser/mechanism-production-recovery.ts",
@@ -196,5 +196,35 @@
     "Actual serial invocation and terminal/source-hold receipt; retain failures/partials and owned-worker cleanup.",
     "Independent complete decoded frame/audio/image/program/cohort/history audit on recovered outputs.",
     "All original MS3 scoped/MS1 repairs, broader QA, ten questions/five assets/two behaviors/genuine inputs/capabilities and final full/benchmark/archive/installed work."
-  ]
+  ],
+  "committedSource": "c474c9c5c976b4c249163c0749d80f7e11e370f4",
+  "attempts": [
+    {
+      "status": "running",
+      "command": "pnpm test:browser:mechanism-production-recovery",
+      "sourceCommit": "c474c9c5c976b4c249163c0749d80f7e11e370f4",
+      "startedUtc": "2026-10-13T02:14:26.395640+00:00",
+      "pid": 13770,
+      "inventory": "/private/tmp/still-shift-ms3-native10-browser1-inputs.json",
+      "actualExitCode": null,
+      "session": 3926,
+      "root": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu",
+      "logPath": "/private/tmp/still-shift-ms3-native10-browser1.log",
+      "resume": "Poll session3926. If handle closes, inspect final receipt/log/run or failure files. Observation timeout is not terminal. Do not restart a confirmed live run."
+    }
+  ],
+  "observedPrefix": {
+    "status": "partial-live-observation-no-terminal-pass",
+    "actualSIGKILLStage": {
+      "path": "/private/tmp/still-shift-ms3-native-recovery-LK3dFu/stage-1-actual-sigkill-native-output.json",
+      "bytes": 2451,
+      "sha256": "sha256:c1ec551108c96f11df022f6dfe2bf694eee49aaa578617dc49d2003c50f7bdf2"
+    },
+    "observation": "ActualSIGKILL closed the owned process group after a real PNG; queue resumed S1 with retained interrupted attempt and current running attempt2. Remaining products/faults/recovery/cohort/independent audit unverified."
+  },
+  "heldInputs": {
+    "files": 2703,
+    "bytes": 121404590,
+    "inventory": "/private/tmp/still-shift-ms3-native10-browser1-inputs.json"
+  }
 }
