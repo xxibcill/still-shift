@@ -142,3 +142,20 @@ retained history, null effort and five unreviewed whole dimensions. Fast4,567/45
 runtime21/9 and Python checks pass with2,765 inputs held. This closes native CLI
 routing, not native QA/grouped warnings/evidence/handoff, HD/all-ten or final gates.
 Pilot accepted0/10; the selected denominator remains ten distinct episodes.
+
+[Native Blender observation QA](./mechanism-shorts-ms3-blender-qa-results.json)
+on `780209e3` admits pinned plans and registered interval rules against actual
+retained Bpy controls, row-major matrices, bounds and geometry hashes. Located
+missing/range findings and consecutive warning runs preserve peak images and raw
+ownership; current report verification recomputes bound immutable QA artifacts.
+Current runtime `9a39` passes 4,573 fast tests/455 files, 22 runtime checks/nine files
+and Python checks with 2,770 inputs held. The current EU-004 passing repair preserves
+complete decoded picture/audio and all 664 captures with zero fresh Blender renders.
+The preceding `b6a7` seeded product retains 26 located failures in two groups. An
+independent audit verifies 373 pins and 3,944 comparisons across both predecessors
+and the current repair. Passing sampled rules leaves whole mechanical review
+unreviewed. Bounds and render flags establish neither surface contact nor actual
+visibility. All software/native/helper failures remain in the records. Native
+rendered readability/review evidence/handoff, HD all-ten products, broader event/
+contact/fault/coverage, whole reviews, comparable effort and final gates remain.
+Accepted coverage is 0/10; these exports represent one distinct engineering episode.

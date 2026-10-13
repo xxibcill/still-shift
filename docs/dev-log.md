@@ -45,219 +45,35 @@ still hold before relying on them.
 
 - **MS3 in progress (2026-10-14):** `codex/mechanism-ms3`,
   [draft PR #58](https://github.com/xxibcill/still-shift/pull/58) targets main.
-  Durable queues, declarative creation/run, targeted CAS retries, artifact-bound
-  QA, review evidence and current episode/cohort reporting are implemented.
-  [Retry9](./mechanism-shorts-ms3-retry-results.json) retains exact0d590 fast/runtime
-  (4,458/253/322/14/smoke). [Native10](./mechanism-shorts-ms3-native-recovery-results.json)
-  proves actual CLI/OS faults, retries and relocation on c474c9c5; independent
-  600-frame/270-image/473-pin audit passes. All failed runs remain in the records.
-  [E02](./mechanism-shorts-ms3-retention-results.json) adds slotted retention on
-  9e4ccce1:4,462 fast tests, three native controls,180 frames/81 images/149 pins,
-  and exact default picture/audio parity. Seven visual errors per control and
-  inadequate explanation views remain; no whole/factual/design/pilot approval.
-  [E09](./mechanism-shorts-ms3-line-results.json) now adds a distinct notched-jaw/
-  round-line factory candidate with its own strict lineRadius schema. Default peg
-  source/metadata stay exact. Final37 owning checks,666 sampled jaw states,
-  build/lint/schema/boundary/declarations pass with2,708 inputs held. Missing
-  material defaults and Float32 notch intrusion are retained failures; geometry
-  repair preserves1e-8 contact tolerance. Current2cf64882 complete fast4,467/442
-  and three native controls pass exact. Independent audit180 frames/81 images/
-  180 scalars/149 pins passes, with default all-frame picture/audio parity against
-  priorc474 capture. Visual errors remain default6/new10 each; no whole acceptance.
-  [E05](./mechanism-shorts-ms3-trigger-results.json) now has a distinct inside-
-  serrated release candidate with one closed flexible catch/extended trigger,
-  optional bounded topology and strict landmark contracts. Original tie hashes
-  and its non-releasable guard remain exact. Final42 owning checks/21 closed
-  states/build/lint/schema/boundary/declarations pass with2,710 inputs held.
-  Frame-key and metadata-inventory failures are retained. Complete tiers2 on
-  e1fa27bf passes fast4,471/443, runtime253/45, integration322/57, depth14 and
-  smoke with2,710 inputs exact. Native1 ended failed with its default T0 sealed:
-  E1/E2 observation inventory still expected root/tip. Optional trigger association
-  is now sealed from the declaration and requires exactly root/tip/trigger.
-  Build/lint/schema and17 scoped tests pass. Native2 on e9ad9f71 and independent
-  audit2 now pass:180 fresh frames/81 images/180 scalars/149 pins,120 trigger used-
-  position hashes,30 released withdrawal frames and exact default decoded picture/
-  audio parity. Audit1's saved-family field error is retained. Visual errors remain
-  T0:7/E1:8/E2:8; three inspected stills confirm final views/labels need work.
-  Current full tiers3 passes4,472/443 fast,253/45 runtime,322/57 integration,
-  depth14/smoke with exact2,710 inputs/121,488,798B. All handles closed.
-  Original E06/E10/pilot work remains. E10 now has a reusable unit-aware ideal
-  moment solver and posed-anchor adapter;24 owning/6 registry checks, compile/
-  lint/schema/boundary/package declarations and4 CLI checks pass. Three emitted
-  public CLI schemas/type exports verify using pinned workspace dependencies.
-  Test-location, wrong boundary command and missing emitted dependency failures
-  remain retained. Full fast on5ad2695d now passes4,496/444, all2,716 inputs
-  exact. [E10 press-point](./mechanism-shorts-ms3-lever-results.json) now adds two
-  closed attached pads, shared pivot, strict variant/camera discovery and original-
-  capture force/arm/residual selectors with pinned resistance. Final80 units/7
-  files,4 CLI checks, build/lint/schema/boundary/package declarations pass with
-  2,719 inputs held. Native2/audit2 on9ba870d2 pass180 frames/81 images/900
-  scalar values/720 ideal moment quantities/151 pins and exact default decoded
-  picture/audio parity. Full tiers3 on test-repaired e4a01a42 pass4,507/445 fast,
-  253/45 runtime,322/57 integration, depth14/smoke with2,719 inputs/121,561,536B
-  exact. Both stale-discovery full failures, failed focused repair, pre-render
-  layout/audit identity failures and f6876f65's corrected passed label remain
-  retained. Only the owning test changed after native proof; production inputs
-  stay exact. Visual errors P0:6/M1:14/M2:14 and all whole/pilot reviews stay open.
-  E06 now has a reusable force-driven load-seat foundation: two physical writers
-  are owned by one force control, SI compliance/geometric stop/contact conservation
-  and cue resolution.11 owning/101 dense samples,67 scoped/7 files,4 CLI/type/
-  lint/schema/boundary/package checks pass on2,721 held inputs. Compile/patch
-  failures retained. [Load](./mechanism-shorts-ms3-load-results.json). Complete
-  tiers1 on7425e734 pass fast4,518/446, runtime253/45, integration322/57,
-  depth14/smoke with2,721 inputs/121,615,123B exact. Generic native3/audit1
-  pass4 submitted/decoded frames,16 captured matrices/8 virtual anchors and292
-  scalar comparisons with zero oracle error. Both pre-render strict composition
-  failures remain retained. This closes the generic rig proof.
-  The physical candidate and its remaining source repair follow below.
-  E06 now adds a separate physical load-stop candidate and two-seat flexible web;
-  10 owning/101 dense force samples/123 triangle states,73 scoped/9 files,4 CLI and
-  compile/lint/schema/boundary/package checks pass with2,725 inputs exact.
-  Initial fixture/API/Float64 assertions and stale discovery failures are retained.
-  [Asset record](./mechanism-shorts-ms3-load-asset-results.json). Native1/audit1 on
-  ae70d735 pass126 frames/252 used web streams/15,750 scalar comparisons; all
-  decoded and12,096 pawl/ledge triangle checks have zero overlap. Four packet
-  negatives reject. Full tiers1 pass4,528/448 fast,253/45 runtime,322/57 integration,
-  depth14/smoke with2,725 inputs/121,701,051B exact. Four decoded stills reviewed;
-  that source hinge-placement mismatch is repaired by the following slice.
-  No E06/whole/pilot admission; all handles closed.
-  E06 lower-rear hinge repair8c34b461 now has75 scoped/9 files,4 CLI/package
-  checks and fresh native1/audit2:126 decoded frames/252 packed streams/17,262
-  scalars/2,483,712 web-solid triangle pairs.99 seat samples shorten and123
-  geometry states pass. Audit1's attachment-rounding rejection is retained;
-  only derived terminal seam bounds apply, with unchanged unrelated area gate.
-  Full tiers1 pass4,530/448 fast,253/45 runtime,322/57 integration,14/smoke with
-  2,725 inputs/121,706,266B exact. Four decoded stills viewed; all handles closed.
-  Five assets/two behaviors have engineering evidence; original episode/whole/
-  pilot admission remains open. [Alignment record](./mechanism-shorts-ms3-load-alignment-results.json).
-  [Original pilot](./mechanism-shorts-ms3-pilot-results.json) queue/run/report all
-  actually exit0 on59ce0e5f with2,725/121,706,266B held. E01/E03/E08 independent
-  audits verify1,876 native/scalar/decoded frames,94 images, all artifact pins and
-  exact final/review PCM, with original whole source/audio/transcript pins checked.
-  Subset3/3 technical passes coexist with three sampled-visual failures; whole/
-  factual/continuous/listening stay unreviewed. Twelve phone/native stills viewed.
-  Seven matching inputs are requested; unrelated recordings are excluded. All ten
-  current family packets and seven recording drafts stay separate from narration.
-  Caption regression reproduces99% panel bottoms in four viewports; E01 aligned
-  comparison and E08 jaw/cloth framing need repair. The original run is terminal.
-  [Caption repair](./mechanism-shorts-ms3-caption-results.json) now shares compiled
-  backing/text and annotation exclusions:1080x1920 backing384→207px inside5% inset.
-  Five red regressions now pass; owning25/2 and complete fast4,535/448 pass.
-  Held2,726 inputs/121,709,868B also pass synthetic cue-layout12 exports/720 frames
-  and narrated-cycle12/900 with full observation/glyph/seek/repeat checks. Current
-  E03 original-plate check/export/final-check now actually exit0 onb5f8fbae;
-  independent646-frame difference/exact decoded PCM/656 unchanged file audit passes.
-  Four phone stills viewed; current state lint removes all four outside-safe-area
-  warnings, retaining four frozen-run errors. No whole/pilot acceptance.
-  [E01/E08 framing](./mechanism-shorts-ms3-framing-results.json) revisions preserve
-  whole narration/family/scene/cue windows. E01 pure216-frame paired contacts align
-  at one screen datum; E08 all643 pose/visibility expectations pass with opening
-  in its actual spoken window. Native25 queue/run/report all actually exit0 on
-  held63bd4bd6 inputs. Independent audits pass1,230 native/scalar/decoded frames,
-  68 images and complete unchanged decoded audio against the original products.
-  E01 actual216-frame visible-contact/world/matrix projection and E08 all643
-  angle/gap/camera expectations pass. E08 reaches cloth stop at322, with550
-  stable camera frames; measured seat residual3.66e-8 is not whole admission.
-  Nine encoded phone stills viewed. E01 thickness/travel proof still needs work;
-  revision2 now runs as an exact-CAS E01 input revision, preserving E08 and prior
-  products. All587 new native frames capture; independent272-frame witness and
-  216-frame paired-contact metadata audits pass. Two native/two encoded phone
-  stills viewed. All315 earlier native frames remain byte-identical; decoded274
-  frames change starting313, including two boundary frames. Complete decoded
-  narration is unchanged. E01 sealed/run exits0 with hold0; independent587-frame/
-  scalar/34-image audit passes. E08 row/product/all15 pins and prior E01 product
-  remain exact. Run/report both actually exit0/hold0; whole gates remain.
-  [Capability docs](./mechanism-shorts-ms3-capability-results.json) repair four
-  stale guides/README against source3/export/installed evidence. Actual discovery
-  reads pass after retained IPC denials. Shared CLI media discovery/generated
-  reference now agree on rigid import, native/legacy formats, batch and bounded
-  recovery limits. Held current fast4,539/449 and eight runtime checks pass.
-  Implementation7941b710/post-commit hold0 is retained as its own checkpoint.
-  Fresh bridge baseline captured696 frames/exported, then failed final checking:
-  explicit cache was lost to a retained corrupt fallback audio entry. Cache
-  propagation repairbf302e91 passes actual red/green regression, fast4,539/449
-  and44 owning checks with2,733 inputs held. Package code is now042a; appearance
-  and profile stay exact. Fresh current public checks pass all three final videos,
-  with1,876 frames/zero new3D, byte-identical fresh compositions and1,934 protected
-  files unchanged. [Current native checks](./mechanism-shorts-ms3-current-native-results.json)
-  retain failed receipt-location pairing and corrected owning-path checks. Historical
-  production seals stay unchanged; current unified seals/cohort rebinding is open.
-  [Automatic recovery](./mechanism-shorts-ms3-repair-results.json) now completes
-  actual current detection, one bounded candidate/position patch/export and final
-  recheck. All696 plates/nine sidecars/seven private files and neighbors stay
-  exact; zero new3D. Only82 affected-shot decoded frames change;614 outside frames
-  and complete PCM remain byte-identical. Readable hold69/required30; final check
-  has0 errors/50 warnings. Fresh stale-request rejection and source/output-bound
-  compact handoff pass. Whole/pilot reviews remain open. Prior failed baseline
-  and earlier source-bound gates retain their own evidence.
-  The owner selected Everyday Unlocked actual EU-001–EU-010 on2026-10-14.
-  [Revised pilot](./mechanism-shorts-ms3-pilot-brief.md) closes the seven-recording
-  request. All ten Alden v4 whole takes decode, observed word timings match their
-  WAV pins, and ten native asset hashes match the catalog. The original board and
-  Alex products remain historical; current production/broader coverage/whole review
-  stays0/10. No media or private transcript is copied into the repository.
-  [Located failures](./mechanism-shorts-ms3-located-failure-results.json) now
-  preserve trusted invariant locations through cue wrappers, both CLI routes and
-  optional queue/report attempt findings. Real illegal-transition/event-order
-  preflight controls pass; journal/report/restart keeps the failed finding and
-  healthy neighbor. Owning62/8 and corrected fast4,543/450 pass with2,736 inputs
-  held. Initial fast1 stopped on two preceding evidence-format errors; retained.
-  [Rendered visual QA](./mechanism-shorts-ms3-visual-qa-results.json) now adds
-  cached all-frame preview pixels/glyphs, exact speech metadata/body role and
-  partial-tail coverage. Current fast4,544/450,19 integration and real native
-  five-product/300-frame checks pass with2,739 inputs held. Independent80 artifact
-  pins match; QA performs zero fresh3D. Runtime is10f7/691, with appearance/profile
-  exact. All failed builds/default-provenance/body-role/tail/extraction/audit runs
-  remain. Prior genuine product checks retain historical bindings; current actual
-  first-ten binding/cues/whole review and final gates remain open.
-  Remaining original scope: clearer E06/E10 explanations and actual whole reviews,
-  current channel-first-ten bindings, cue authoring and whole reviews,
-  broader seeded QA, native QA rebinding, capability reconciliation,
-  comparable token measurements and final full/benchmark/archive/installed gate.
-  [Native Blender capture](./mechanism-shorts-ms3-blender-capture-results.json)
-  now preserves existing geometry/deformation/materials through a shared data-only
-  worker. Ten native probes repeat/shuffle exactly; actual full129,768-vertex zipper
-  captures four controls and its lossless Still Shift text edit preserves all eight
-  image/observation pins with zero new Blender calls. Fast4,549/451, runtime1 and
-  Python lint/format pass on2,744 held inputs; runtime1968/694. Original startup,
-  formatting/font and lossy-codec failures remain. Editable source/controls stay
-  native in Blender; cached sequence/text receiving is verified, not automatic
-  Three.js rig/shader transfer. Actual all-ten production/QA integration remains.
-  [Blender lifecycle versions](./mechanism-shorts-ms3-blender-versions-results.json)
-  now use explicit queue/product/report2 backend bindings through the existing
-  controller, retry and report reader. Legacy family admission and identities stay
-  exact; cross-backend reclassification/product reuse rejects. Fast4,556/452 and
-  affected runtime11/6 pass on2,746 held inputs/121,859,262B; implementation2b335cb2
-  post-commit hold0. Runtime34a0/694; appearance/profile remain exact. Initial
-  type/assertion/generated-schema/lint failures remain retained. Generic byte
-  fixtures establish lifecycle only; actual Blender executor/cues/QA/all-ten
-  delivery and every whole/final gate remain open.
-  [Native narrated adapter](./mechanism-shorts-ms3-blender-episode-results.json)
-  now uses existing Blender assets, whole-audio clocks, absolute shot/control tracks,
-  per-state producer/counter seals, independent output copies and full decode.
-  Current310a7e8b passes fast4,567/454, runtime16/8 and Python checks with2,756
-  inputs/121,935,718B exact/post-commit hold0. Runtime92ff/700; native profilea515.
-  Actual EU-004 whole21.76s/653-frame320×568 draft captures7 scout+321 fresh states;
-  font/caption/source-locator revisions preserve whole decoded audio and add0
-  Blender renders. Current fresh product verifies through the canonical path.
-  Independent3,296 pins/2,612 mapped frames/328 observations pass; max129,768
-  physical vertices retained. Three native+nine encoded samples inspected.
-  Opposing-action captions are repaired with13 exact-copy cues; macro/staging and
-  whole reviews remain. Initial type/root/lint/private-import/audit failures stay
-  retained. Native QA/handoff/CLI, HD/all-ten products and final gates remain open.
-  [Native CLI routing](./mechanism-shorts-ms3-blender-cli-results.json) now connects
-  explicit Blender queue creation and manifest-selected run/report to the shared
-  controller. Canonical immutable creation, version-preserving retries, seven
-  strict native schemas and machine/generated limits retain the legacy default.
-  Current2bb34a24 passes fast4,567/454, runtime21/9 and Python checks with2,765
-  inputs/122,001,824B exact/post-commit hold0. Runtime5fde; native profilea515.
-  Actual EU-004 CLI queue/run/report/resume/discover passes, expected backend/host
-  errors exit2, all664 capture files stay exact and decoded picture/audio repeat.
-  Resume adds no attempt; fresh export adds0 Blender renders. The2,620-byte report
-  emits current episode/cohort together with five whole dimensions unreviewed.
-  Native QA/grouped warnings/evidence/handoff and HD/all-ten/final gates remain.
-  Accepted coverage remains0/10; tokens staynull. No ElevenLabs spend, merge,
-  publication or Actions change. [Tracker](./mechanism-shorts-ms3-acceptance.md).
+  The active pilot is Everyday Unlocked actual EU-001–EU-010. The earlier request
+  for seven recordings is closed. All ten existing Alden takes, timings and catalog
+  native assets were located; old Alex products retain their original bindings.
+  [Pilot brief](./mechanism-shorts-ms3-pilot-brief.md),
+  [full acceptance and scope](./mechanism-shorts-ms3-acceptance.md).
+  Durable serial queues, pinned inputs, CAS revisions/retries, preserved history,
+  current reports and the legacy native QA/evidence/recovery workflow are implemented.
+  Shared Blender capture and whole-recording compilation preserve native geometry,
+  drivers, materials, cameras and controls with authenticated state caches.
+  Explicit CLI routing and version 2 products retain the legacy default.
+  [Native QA](./mechanism-shorts-ms3-blender-qa-results.json) now admits pinned plans,
+  replays actual Bpy numeric observations, retains located missing/range failures,
+  groups peak images and verifies export-bound facts on resume.
+  Source `780209e3`, runtime identity `9a39` across 702 files, passes 4,573 fast tests
+  in 455 files, 22 affected runtime checks in nine files and Python checks.
+  All 2,770 pinned inputs (122,066,184 bytes) remain exact after commit.
+  EU-004 is one 21.76-second, 653-frame, 320×568 engineering draft. The current QA
+  repair adds zero Blender renders, preserving all 664 originals and complete decoded
+  picture/audio. The retained seeded checks detect 26 failures in two groups.
+  An independent audit verifies 373 pins and 3,944 numeric comparisons across three
+  exports. Whole reviews remain unreviewed; accepted coverage is 0/10 and paired
+  routine effort is null. All failed runs and helper errors remain recorded.
+  **Next:** native rendered QA/review evidence/handoff; HD plans/products for all ten
+  with object-specific cues and factual bindings; broader faults/events/contact/coverage;
+  whole factual/mechanical/glyph/continuous/listening and original E06/E10 reviews;
+  comparable effort; final full software/benchmark/archive/installed-package gates.
+  [Production plan](./mechanism-shorts-production-plan.md),
+  [native workflow](./mechanism-blender-episode.md),
+  [capabilities](./mechanism-production-capabilities.md).
 
 - **MS2 software checkpoint delivered (2026-10-13):** `codex/mechanism-ms2`
   carries exact MS1N `bf30a253` ([PR #56](https://github.com/xxibcill/still-shift/pull/56));
@@ -444,6 +260,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Bind native Blender observation QA to current episode exports
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; implementation `780209e3`, from `d8e8d404`.
+- **Done:** Pinned native QA plans, actual Bpy selectors/interval rules, located
+  missing/range failures, grouped peak images and immutable report-linked facts/replay.
+- **Verification:** 4,573 fast tests/455 files, 22 runtime checks/nine files and Python
+  checks pass. All 2,770 inputs/122,066,184 bytes remain exact after commit.
+  Runtime identity `9a39`; native producer profile `a515`.
+- **Actual:** Current EU-004 passing repair/report/resume adds zero Blender renders.
+  All 664 originals and complete decoded picture/audio remain exact. The seeded
+  26 failures/two groups and independent 373-pin/3,944-comparison audit verify.
+- **Retained:** Strict optional types/artifact references, temporary fixture alias,
+  helper registration-order assumption and all predecessor held gates.
+- **Next:** Native rendered QA/evidence/handoff, HD all-ten products, broader faults/
+  coverage/whole reviews, comparable effort and final gates. Accepted coverage: 0/10.
+- **Records:** [QA evidence](./mechanism-shorts-ms3-blender-qa-results.json),
+  [native guide](./mechanism-blender-episode.md), [acceptance](./mechanism-shorts-ms3-acceptance.md).
 
 ### 2026-10-14 — Route native Blender episodes through the production CLI
 
