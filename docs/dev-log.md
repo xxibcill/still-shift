@@ -161,8 +161,10 @@ still hold before relying on them.
   Nine encoded phone stills viewed. E01 thickness/travel proof still needs work;
   revision2 now runs as an exact-CAS E01 input revision, preserving E08 and prior
   products. All587 new native frames capture; independent272-frame witness and
-  216-frame paired-contact metadata audits pass. Two native stills viewed; final
-  export/report remain live. Prior products retain five visual errors/whole gates.
+  216-frame paired-contact metadata audits pass. Two native/two encoded phone
+  stills viewed. All315 earlier native frames remain byte-identical; decoded274
+  frames change starting313, including two boundary frames. Complete decoded
+  narration is unchanged. Final QA/report remain live; no whole admission.
   [Capability docs](./mechanism-shorts-ms3-capability-results.json) repair four
   stale guides/README against source3/export/installed evidence. Actual discovery
   reads pass after retained IPC denials; scoped machine/generated references stay
@@ -378,10 +380,14 @@ still hold before relying on them.
 - **Evidence:** New587-frame native capture; independent272-frame witness audit
   checks1,994,368 projected source vertices, visible anchors and52.06/29.29px spans.
   Independent216-frame paired-contact audit passes. Seven cloned negatives reject.
-  Two native stills viewed; source hold2,726/121,710,550B remains exact.
+  Two native/two encoded phone stills viewed. Native315-frame prefix stays exact;
+  decoded274 frames change starting313. Complete decoded PCM is identical.
+  Source hold2,726/121,710,550B remains exact.
 - **Open / next:** Final overlay export/report are still live; encoded phone views,
-  final neighbor/product/decode audit and current handoff remain. CLI capability
-  and bounded bridge recovery drafts are prepared outside the held source tree.
+  final neighbor/product audit and current handoff remain. CLI capability
+  and bounded bridge recovery drafts are prepared outside the held source tree;
+  final isolated typecheck5 and historical pure policy2 pass. Missing export,
+  position inference and incidental harness/type-startup failures are retained.
   Seven genuine inputs and all original whole/final requirements remain open.
 - **Record:** [Framing evidence](./mechanism-shorts-ms3-framing-results.json).
 

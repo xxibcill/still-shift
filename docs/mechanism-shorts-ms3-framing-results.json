@@ -534,7 +534,7 @@
     "qualification": "Pure all-vertex/witness-size/anchor-visibility authoring preflight only. No new capture, encoded glyph/whole/pilot acceptance. Existing source family, controls, narrated captions and supplied recording remain unchanged."
   },
   "scopedWitnessRevision": {
-    "status": "native-capture-audited-final-export-in-flight",
+    "status": "encoded-diagnostics-audited-final-qa-report-in-flight",
     "sourceCommit": "bf56c916a49b0cff265b4372922d6330b7b8268c",
     "revision": 1,
     "cueRevision": 2,
@@ -690,6 +690,36 @@
         }
       }
     ],
-    "qualification": "Native capture metadata and two native stills only; current final export/report is still running. No current encoded witness or whole admission."
+    "qualification": "Native and encoded-file diagnostics complete, but current product/report sealing remains live. Native frames0\u2013314 are byte-identical; decoded frames313\u2013314 also change at the boundary. No unverified codec cause or whole/pilot acceptance is inferred.",
+    "encodedStillsActuallyViewed": [362, 498],
+    "encodedExtraction": {
+      "path": "/private/tmp/still-shift-ms3-framing27-phone/extraction.json",
+      "bytes": 419,
+      "sha256": "sha256:d44d8abf89dc9857ec32b501704f86145c1348c1e33163f39530076cc1216ee6"
+    },
+    "encodedVisualFindings": [
+      "Both phone-size callouts are readable and point to visible witnesses.",
+      "The travel witness remains small; whole explanatory visual admission stays open."
+    ],
+    "nativeComparison": {
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-framing27-E01-native-comparison1.json",
+        "bytes": 2786,
+        "sha256": "sha256:b527be49d445f5affc86a0ff983ff1131e933e41b6de230fe6f90f9d1b91098e"
+      },
+      "unchangedPrefixFrames": 315,
+      "changedFrameCount": 272
+    },
+    "decodedComparison": {
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-framing27-E01-comparison1.json",
+        "bytes": 3686,
+        "sha256": "sha256:2e548ad3bb3920d95d2df02c7f5cc4e680d0fb2a0ec477ed5fd2c0b13930a24f"
+      },
+      "decodedFrames": 587,
+      "unchangedPrefixFrames": 313,
+      "changedFrameCount": 274,
+      "wholeDecodedAudioUnchanged": true
+    }
   }
 }
