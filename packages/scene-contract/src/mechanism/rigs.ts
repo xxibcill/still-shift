@@ -103,11 +103,29 @@ const ratchetRig = z
   })
   .strict();
 
+const loadSeatRig = z
+  .object({
+    id: MechanismIdSchema,
+    type: z.literal("load-seat"),
+    movingPart: MechanismIdSchema,
+    reactionPart: MechanismIdSchema,
+    referencePart: MechanismIdSchema,
+    reactionAxis: MechanismUnitAxisV2Schema,
+    normalAxis: MechanismUnitAxisV2Schema,
+    pivot: MechanismVectorSchema,
+    contactPoint: MechanismVectorSchema,
+    maxForceNewtons: z.number().finite().positive().max(1e6),
+    complianceMetersPerNewton: z.number().finite().positive().max(1),
+    maxTravelMeters: z.number().finite().positive().max(1),
+    seatingAngleRadians: z.number().finite().min(-0.4).max(0.4),
+  })
+  .strict();
 const mechanismRigFieldsV2 = z.discriminatedUnion("type", [
   sliderRig,
   hingeRig,
   returnRig,
   ratchetRig,
+  loadSeatRig,
 ]);
 function validateMechanismRigV2(
   rig: z.infer<typeof mechanismRigFieldsV2>,
@@ -130,6 +148,30 @@ function validateMechanismRigV2(
       "Moving and reference parts must differ",
       ["referencePart"],
     );
+  if (rig.type === "load-seat") {
+    if (
+      rig.reactionPart === rig.movingPart ||
+      rig.reactionPart === rig.referencePart
+    )
+      mechanismIssue(
+        context,
+        "mechanism-control-owner",
+        "Load seating requires distinct moving, reaction and reference parts",
+        ["reactionPart"],
+      );
+    const dot = rig.reactionAxis.reduce(
+      (sum, value, index) => sum + value * rig.normalAxis[index]!,
+      0,
+    );
+    if (Math.abs(dot) > 1e-8)
+      mechanismIssue(
+        context,
+        "mechanism-rig-axis",
+        "Load seating axes must form an orthonormal reference plane",
+        ["normalAxis"],
+      );
+    return;
+  }
   const range = rig.type === "hinge" ? rig.angleRange : rig.range;
   const path = rig.type === "hinge" ? "angleRange" : "range";
   if (range[1] <= range[0])
@@ -266,6 +308,9 @@ export const MechanismRigControlV2Schema = z
   .discriminatedUnion("type", [
     z.object({ type: z.literal("slider"), ...scalarFields }).strict(),
     z.object({ type: z.literal("hinge"), ...scalarFields }).strict(),
+    z
+      .object({ type: z.literal("load-seat"), loadNewtons: scalarWriter })
+      .strict(),
     z
       .object({ type: z.literal("spring-return"), states: returnStates })
       .strict(),

@@ -1,0 +1,397 @@
+{
+  "version": "mechanism-shorts-ms3-load-results-1",
+  "episode": "E06",
+  "date": "2026-10-13",
+  "branch": "codex/mechanism-ms3",
+  "baseCommit": "08edb13a33dc9df30f94d0064ead9ef836aa6bdd",
+  "status": "load-behavior-foundation-scoped-passed-current-tiers-asset-native-pending",
+  "sourceSnapshot": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/mechanism/load-seat-v2.ts",
+      "bytes": 5389,
+      "sha256": "sha256:7bb30a757d5da9c776dedfb73197e4e7912d244924ca5edd3d6e7e5f61d899c5"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/mechanism/evaluate-v2.ts",
+      "bytes": 9936,
+      "sha256": "sha256:5acd7f59b30599865fefe8966bb0e0ac2ecbd18a989c3ac641dc2b2d214c7929"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/mechanism/prepare-v2.ts",
+      "bytes": 3350,
+      "sha256": "sha256:5b7f9492e94537275eca5cfbb467bc65fdceb4460ff189513e0f64869362fc08"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/mechanism/rig-tracks-v2.ts",
+      "bytes": 14468,
+      "sha256": "sha256:aaed5891461eafd03ea0c6b7f1243f9aa11696c4f2582ffae4c6542d7eefd53b"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/mechanism/types-v2.ts",
+      "bytes": 2067,
+      "sha256": "sha256:f42b74ef064b4046772ec42104f0e8c7e995b577b40038b530b0fb8941f07e62"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/scene-contract/src/mechanism/rigs.ts",
+      "bytes": 9678,
+      "sha256": "sha256:f26f5618759901bbd52c214dec5797d827a92beb6c8699eb83da5ca347726438"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/scene-contract/src/mechanism/frame-v2.ts",
+      "bytes": 10195,
+      "sha256": "sha256:7977607f3c599000df2a8575d33832607bae74cdb7e9cd4302e62bd6db987478"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/scene-contract/src/mechanism/scene-validation-v2.ts",
+      "bytes": 14555,
+      "sha256": "sha256:49a10ff4122e73a65daf54523a0b79489efb7704c0234df49f5f4f79a5d5da26"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/scene-contract/src/mechanism/pack-document.ts",
+      "bytes": 25088,
+      "sha256": "sha256:7e06e3fde28a565c3c44afea074f4d3592d5e9a75e5608f0adbaefdfd48652d3"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/scene-contract/src/mechanism/narrated-cycle.ts",
+      "bytes": 9954,
+      "sha256": "sha256:759145e5ef25bf126f89a3501aa94a52166b2ca6873e605e438377f94ff81e12"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/narrated-cycle.ts",
+      "bytes": 23482,
+      "sha256": "sha256:530d22d52f79ad3bbc69058c30c120c35b103dd2a25323e7a637e8a33353f33c"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/cue-surface-markings.ts",
+      "bytes": 7116,
+      "sha256": "sha256:cfc04ba91b06cc2b6298a5a5cd981387c169dc90d86e673d11b2f5ce56c40ccc"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-load-seat.test.ts",
+      "bytes": 10646,
+      "sha256": "sha256:69897a1b4ae269b449e843fcd7394b04f01bddd98838333fecb9827884bbc083"
+    }
+  ],
+  "implementation": {
+    "rig": "load-seat",
+    "forceWriter": "loadNewtons value or source-frame/cue-reference keys",
+    "method": "prescribed SI linear compliance with scaled geometric hard stop and contact-conserving two-part rigid motion",
+    "scope": "One scalar force drives moving/reaction parts; stop saturation and reaction retained. Shared pose preparation/evaluation, frame schema, metadata and narrated cue resolution support the new kind. Existing source3 rigid-only subset is unchanged.",
+    "assumptions": "Illustrative compliance and angular seating law; no measured stiffness, material stress, friction or product rating. This is not the E06 physical asset.",
+    "ownedParts": 2,
+    "uniformReferenceScale": true,
+    "nonuniformReferenceScale": "located rejection"
+  },
+  "owningTests": 11,
+  "denseForceSamples": 101,
+  "scopedTests": 67,
+  "scopedFiles": 7,
+  "cliTests": 4,
+  "preflight": {
+    "status": "passed",
+    "baseCommit": "08edb13a33dc9df30f94d0064ead9ef836aa6bdd",
+    "scope": "uncommitted working source with exact post-generation inventory",
+    "startedUtc": "2026-10-13T08:16:32.144550+00:00",
+    "pid": 34273,
+    "steps": [
+      {
+        "command": ["pnpm", "native3d:identity:generate"],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": null,
+        "startedUtc": "2026-10-13T08:16:32.145249+00:00",
+        "endedUtc": "2026-10-13T08:16:33.351288+00:00",
+        "log": "/private/tmp/still-shift-ms3-load18-preflight1-0.log"
+      },
+      {
+        "command": ["pnpm", "schema:generate"],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": null,
+        "startedUtc": "2026-10-13T08:16:33.351715+00:00",
+        "endedUtc": "2026-10-13T08:16:36.051262+00:00",
+        "log": "/private/tmp/still-shift-ms3-load18-preflight1-1.log"
+      },
+      {
+        "command": ["pnpm", "build"],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T08:16:36.051588+00:00",
+        "endedUtc": "2026-10-13T08:16:46.753766+00:00",
+        "log": "/private/tmp/still-shift-ms3-load18-preflight1-2.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "eslint",
+          "packages/scene-contract/src/mechanism/rigs.ts",
+          "packages/scene-contract/src/mechanism/frame-v2.ts",
+          "packages/scene-contract/src/mechanism/scene-validation-v2.ts",
+          "packages/scene-contract/src/mechanism/pack-document.ts",
+          "packages/scene-contract/src/mechanism/narrated-cycle.ts",
+          "packages/renderer-core/src/mechanism/prepare-v2.ts",
+          "packages/renderer-core/src/mechanism/types-v2.ts",
+          "packages/renderer-core/src/mechanism/load-seat-v2.ts",
+          "packages/renderer-core/src/mechanism/rig-tracks-v2.ts",
+          "packages/renderer-core/src/mechanism/evaluate-v2.ts",
+          "packages/animation-engine/src/mechanism/narrated-cycle.ts",
+          "packages/animation-engine/src/mechanism/cue-surface-markings.ts",
+          "tests/unit/mechanism-load-seat.test.ts"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T08:16:46.754257+00:00",
+        "endedUtc": "2026-10-13T08:16:47.726275+00:00",
+        "log": "/private/tmp/still-shift-ms3-load18-preflight1-3.log"
+      },
+      {
+        "command": ["pnpm", "schema:check"],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T08:16:47.726572+00:00",
+        "endedUtc": "2026-10-13T08:16:51.311809+00:00",
+        "log": "/private/tmp/still-shift-ms3-load18-preflight1-4.log"
+      },
+      {
+        "command": ["pnpm", "check:boundaries"],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T08:16:51.312144+00:00",
+        "endedUtc": "2026-10-13T08:16:52.360913+00:00",
+        "log": "/private/tmp/still-shift-ms3-load18-preflight1-5.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/mechanism-load-seat.test.ts",
+          "tests/unit/mechanism-v2-rig-tracks.test.ts",
+          "tests/unit/mechanism-v2-rig-contract.test.ts",
+          "tests/unit/mechanism-v2-scene-contract.test.ts",
+          "tests/unit/mechanism-v2-frame-contract.test.ts",
+          "tests/unit/mechanism-narrated-cycle.test.ts",
+          "tests/unit/mechanism-family-packs.test.ts"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T08:16:52.361261+00:00",
+        "endedUtc": "2026-10-13T08:16:57.411529+00:00",
+        "log": "/private/tmp/still-shift-ms3-load18-preflight1-6.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/runtime/mechanism-family-registry-cli.test.ts"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T08:16:57.411821+00:00",
+        "endedUtc": "2026-10-13T08:17:00.657949+00:00",
+        "log": "/private/tmp/still-shift-ms3-load18-preflight1-7.log"
+      },
+      {
+        "command": ["pnpm", "build:package"],
+        "actualExitCode": 0,
+        "sourceHoldExitCode": 0,
+        "startedUtc": "2026-10-13T08:17:00.658271+00:00",
+        "endedUtc": "2026-10-13T08:17:12.700042+00:00",
+        "log": "/private/tmp/still-shift-ms3-load18-preflight1-8.log"
+      }
+    ],
+    "actualExitCode": 0,
+    "inventory": "/private/tmp/still-shift-ms3-load18-preflight1-inputs.json",
+    "endedUtc": "2026-10-13T08:17:12.700430+00:00"
+  },
+  "preflightFiles": [
+    {
+      "path": "/private/tmp/still-shift-ms3-load18-preflight1.py",
+      "bytes": 3060,
+      "sha256": "sha256:c0ff6191b82386504c2b4ed7782699394b03e6f57a7ca3782fc01b1a5fc1bfde"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-load18-preflight1.log",
+      "bytes": 7679,
+      "sha256": "sha256:30ac66ab8fda7ea3194db9006ec950ea4b70ccb47c3bb6f42ae17233e98e97b2"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-load18-preflight1-receipt.json",
+      "bytes": 4601,
+      "sha256": "sha256:5b943147f5dbee68a68ca58231ac5ba88dd6dc3cc39f8719f96b566a8e8e8b63"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-load18-preflight1-inputs.json",
+      "bytes": 464570,
+      "sha256": "sha256:458406cf54405ee9d44b98d0beeda2e971097e82704fe9eeeaac41d228901f09"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-load18-preflight1-0.log",
+      "bytes": 260,
+      "sha256": "sha256:afcc59fd59d8bc3134929cd699ba4c0ffeee5daa9f1b8cde5a8bfbe0eada7aca"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-load18-preflight1-1.log",
+      "bytes": 653,
+      "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-load18-preflight1-2.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-load18-preflight1-3.log",
+      "bytes": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-load18-preflight1-4.log",
+      "bytes": 502,
+      "sha256": "sha256:0468f183c95f78f6dde05d0ff11c9aebc017165c6bfa310e83148c7a32bab04e"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-load18-preflight1-5.log",
+      "bytes": 186,
+      "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-load18-preflight1-6.log",
+      "bytes": 1247,
+      "sha256": "sha256:84e51ccc971ced16baf4a62b43905aaa0616e92995ef4a987acca0dd121a652c"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-load18-preflight1-7.log",
+      "bytes": 446,
+      "sha256": "sha256:01e6f674e2dee79669bb6653128f4336e52bd5fa37eeaeb545d02b35446a14cc"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-load18-preflight1-8.log",
+      "bytes": 208,
+      "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+    }
+  ],
+  "heldInputs": {
+    "files": 2721,
+    "bytes": 121615123,
+    "inventory": {
+      "path": "/private/tmp/still-shift-ms3-load18-preflight1-inputs.json",
+      "bytes": 464570,
+      "sha256": "sha256:458406cf54405ee9d44b98d0beeda2e971097e82704fe9eeeaac41d228901f09"
+    }
+  },
+  "earlierChecks": [
+    {
+      "id": "red1",
+      "actualExitCode": 1,
+      "expected": "Six specifications fail before rig admission/implementation; unsealed snapshot",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-red1.log",
+          "bytes": 6525,
+          "sha256": "sha256:97fcb79ba46d8fe8dc60e1c864ba6cf7ddae23a8518edead30ddda90fabbe7ba"
+        }
+      ]
+    },
+    {
+      "id": "green1",
+      "actualExitCode": 0,
+      "tests": 6,
+      "scope": "Initial behavior only; not final-source binding",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-green1.log",
+          "bytes": 313,
+          "sha256": "sha256:401a060661769b3c50adb184d89db3821ff7a9a4dea5f5c446a3330dbe3a9ad8"
+        }
+      ]
+    },
+    {
+      "id": "build1",
+      "actualExitCode": 2,
+      "reason": "Compound ownership typing, matrix tuple assertion and metadata neutral/range handling missing; unsealed source",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-build1.log",
+          "bytes": 9404,
+          "sha256": "sha256:a232d5599f26910adca69cfe0e8e6b94a85f41654e96dc844a9be4b2bbc621da"
+        }
+      ]
+    },
+    {
+      "id": "build2",
+      "receipt": {
+        "actualExitCode": 2,
+        "startedUtc": "2026-10-13T08:05:54.149539+00:00",
+        "endedUtc": "2026-10-13T08:06:04.148416+00:00"
+      },
+      "reason": "Edit3 string locator failed after partial renderer fixes; metadata/scene typing still incomplete. No pass.",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-build2.log",
+          "bytes": 3857,
+          "sha256": "sha256:d088955f2529d774ca2848fe145814af0f68c5d3a4c72d2101efc4706a091f4b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-build2-receipt.json",
+          "bytes": 128,
+          "sha256": "sha256:651dd26c0f6b117d9aad4da172b906b3b52e0c898f17c24d7f051dc269e50557"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-edit3.py",
+          "bytes": 2505,
+          "sha256": "sha256:f92cc98309abd22ee11c4f1d11281deda218d12bba198fa09b23e6fb267dabb4"
+        }
+      ]
+    },
+    {
+      "id": "build3",
+      "receipt": {
+        "actualExitCode": 2,
+        "startedUtc": "2026-10-13T08:07:44.615257+00:00",
+        "endedUtc": "2026-10-13T08:07:55.306402+00:00"
+      },
+      "reason": "New range branch inferred an array instead of a bounded tuple; typed tuple repaired without changing limits",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-build3.log",
+          "bytes": 368,
+          "sha256": "sha256:ca808a90a701dea3dff54dbf6354c869c4ac8c01a8f99c970c80ee7bc51f7d93"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-build3-receipt.json",
+          "bytes": 128,
+          "sha256": "sha256:8adc5b05664480180cdb456ff56df0006f037aabf279a3b2660eadb271e3224b"
+        }
+      ]
+    },
+    {
+      "id": "green2",
+      "actualExitCode": 0,
+      "tests": 51,
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-load18-green2.log",
+          "bytes": 974,
+          "sha256": "sha256:0b993a10d828d8f04263f6737ca6c5124c04fdafaae260f0bc9321e35897f738"
+        }
+      ],
+      "scope": "Owning/rig/scene/narration checks before final generated closure/preflight"
+    }
+  ],
+  "primarySource": {
+    "record": "docs/mechanism-shorts-ms2-e06-primary-admission-results.json",
+    "currentRereadPDFPages": [10],
+    "printedColumns": [7, 8],
+    "finding": "The description distinguishes Fig9 insertion, Fig10 normal locking with the second tooth not yet engaged, and Fig11 ultimate load with stop engagement and the second tooth. Hinge deformation permits rotation/shifting. No measured compliance curve is provided.",
+    "qualification": "Scoped documentary reread only; prior vague figure10 stop wording is superseded. No asset/behavior/factual/whole admission."
+  },
+  "remaining": [
+    "Current complete fast/runtime verification of committed source.",
+    "Patent-specific separate two-tooth pawl/frame-stop asset and flexible hinge/web, independent contact/stop/nonpenetration oracle and actual native observations.",
+    "All original MS3 pilot/narration/whole/repair/capability/metrics/final/archive/installed work."
+  ],
+  "qualification": "Reusable force-driven behavior foundation and software checks only. No new E06 asset/native/contact/continuous/factual/design/genuine speech/listening/pilot acceptance; frozen ten questions and accepted0/10 unchanged. No spending, merge or publication."
+}

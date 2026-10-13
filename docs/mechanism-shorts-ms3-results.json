@@ -675,6 +675,15 @@
       "independentPins": 151,
       "currentTierSource": "e4a01a420e2b5c36fc66a4d8bcdc137be32ffa68",
       "completeTiers": "fast4507/runtime253/integration322/depth14/smoke"
+    },
+    {
+      "id": "load-seat18",
+      "record": "docs/mechanism-shorts-ms3-load-results.json",
+      "status": "load-behavior-foundation-scoped-passed-current-tiers-asset-native-pending",
+      "owningTests": 11,
+      "scopedTests": 67,
+      "cliTests": 4,
+      "qualification": "Reusable force-driven behavior foundation and software checks only. No new E06 asset/native/contact/continuous/factual/design/genuine speech/listening/pilot acceptance; frozen ten questions and accepted0/10 unchanged. No spending, merge or publication."
     }
   ],
   "targets": {

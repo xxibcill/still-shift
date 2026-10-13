@@ -99,7 +99,12 @@ still hold before relying on them.
   layout/audit identity failures and f6876f65's corrected passed label remain
   retained. Only the owning test changed after native proof; production inputs
   stay exact. Visual errors P0:6/M1:14/M2:14 and all whole/pilot reviews stay open.
-  E06 primary PDF/figures supplement is reconciled; its asset/load behavior is next.
+  E06 now has a reusable force-driven load-seat foundation: two physical writers
+  are owned by one force control, SI compliance/geometric stop/contact conservation
+  and cue resolution.11 owning/101 dense samples,67 scoped/7 files,4 CLI/type/
+  lint/schema/boundary/package checks pass on2,721 held inputs. Compile/patch
+  failures retained. [Load](./mechanism-shorts-ms3-load-results.json). Current full
+  tiers, separate patent asset/flexible web/native contact proof remain next.
   No active prior native handle remains. Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
   Remaining original scope: clearer views and actual whole reviews, E06 asset/
@@ -294,6 +299,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — E06 force-driven load seating foundation
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `08edb13a`.
+- **Done:** New source2 load-seat rig/control, two-part ownership and contact-
+  conserving motion, SI compliance, scaled geometric hard stop/reaction and cue clocks.
+- **Results:**11 owning checks/101 dense samples,67 scoped units/7 files,4 CLI,
+  type/lint/schema/boundary/package compilation pass;2,721 inputs held.
+- **Retained:** Initial compile failures, partial edit locator failure and bounded
+  range tuple repair. Source3 subset stays explicit; no rig fallback added.
+- **Open / next:** Full current tiers; actual separate two-tooth/frame-stop asset,
+  flexible web and native contact/stop/nonpenetration proof. Original MS3 remains.
+- **Records:** [Load results](./mechanism-shorts-ms3-load-results.json),
+  [law and bounds](./mechanism-load-seat.md). Pilot0/10; no spending/publication.
 
 ### 2026-10-13 — E10 press-point asset and observed ideal-force selectors
 

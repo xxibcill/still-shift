@@ -777,6 +777,10 @@ export const native3DAppearanceModules: readonly {
     url: new URL("../mechanism/evaluate.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/mechanism/load-seat-v2.ts",
+    url: new URL("../mechanism/load-seat-v2.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/mechanism/matrix-v2.ts",
     url: new URL("../mechanism/matrix-v2.ts", import.meta.url),
   },

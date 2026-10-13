@@ -68,10 +68,13 @@ function validatePartDependencies(scene: Scene, context: Context) {
   );
   scene.rigs.forEach((rig, index) => {
     if (rig.type !== "spring-return")
-      dependencies.get(rig.movingPart)?.push({
-        id: rig.referencePart,
-        path: ["rigs", index, "referencePart"],
-      });
+      for (const part of rig.type === "load-seat"
+        ? [rig.movingPart, rig.reactionPart]
+        : [rig.movingPart])
+        dependencies.get(part)?.push({
+          id: rig.referencePart,
+          path: ["rigs", index, "referencePart"],
+        });
   });
   const complete = new Set<string>();
   const active = new Set<string>();
@@ -146,15 +149,74 @@ function validateRigReferences(scene: Scene, context: Context) {
     }
     for (const field of ["movingPart", "referencePart"] as const)
       requireReference(parts, rig[field], [...location, field], context);
-    const previous = owners.get(rig.movingPart);
-    if (previous)
-      mechanismIssue(
-        context,
-        "mechanism-control-owner",
-        `${rig.movingPart} is already driven by ${previous}`,
-        [...location, "movingPart"],
+    const drivenParts =
+      rig.type === "load-seat"
+        ? [
+            { id: rig.movingPart, field: "movingPart" },
+            { id: rig.reactionPart, field: "reactionPart" },
+          ]
+        : [{ id: rig.movingPart, field: "movingPart" }];
+    for (const { id, field } of drivenParts) {
+      const previous = owners.get(id);
+      if (field === "reactionPart")
+        requireReference(parts, id, [...location, field], context);
+      if (previous)
+        mechanismIssue(
+          context,
+          "mechanism-control-owner",
+          `${id} is already driven by ${previous}`,
+          [...location, field],
+        );
+      owners.set(id, rig.id);
+    }
+    if (rig.type === "load-seat") {
+      const physicalParts = new Set(
+        scene.rigs.flatMap((candidate) =>
+          candidate.type === "spring-return"
+            ? []
+            : candidate.type === "load-seat"
+              ? [candidate.movingPart, candidate.reactionPart]
+              : [candidate.movingPart],
+        ),
       );
-    owners.set(rig.movingPart, rig.id);
+      for (const body of [rig.movingPart, rig.reactionPart]) {
+        let parent = scene.parts.find((part) => part.id === body)?.parent;
+        const visited = new Set<string>();
+        while (
+          parent !== undefined &&
+          parent !== rig.referencePart &&
+          !visited.has(parent)
+        ) {
+          visited.add(parent);
+          if (physicalParts.has(parent))
+            mechanismIssue(
+              context,
+              "mechanism-load-reference",
+              "Independent motion between a coupled body and its reference is unsupported",
+              [...location, "referencePart"],
+            );
+          parent = scene.parts.find((part) => part.id === parent)?.parent;
+        }
+      }
+      for (const field of ["movingPart", "reactionPart"] as const)
+        if (!isDescendant(scene, rig[field], rig.referencePart))
+          mechanismIssue(
+            context,
+            "mechanism-load-reference",
+            "Both load-seating parts must belong to the reference assembly",
+            [...location, field],
+          );
+      if (
+        isDescendant(scene, rig.movingPart, rig.reactionPart) ||
+        isDescendant(scene, rig.reactionPart, rig.movingPart)
+      )
+        mechanismIssue(
+          context,
+          "mechanism-load-reference",
+          "Coupled load-seating parts cannot be ancestors of one another",
+          [...location, "reactionPart"],
+        );
+    }
     if (rig.type === "ratchet") validateRatchet(scene, rig, location, context);
   });
 }

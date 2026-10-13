@@ -599,6 +599,100 @@
               "toothDatumAnchor"
             ],
             "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "type": { "type": "string", "const": "load-seat" },
+              "movingPart": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "reactionPart": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "referencePart": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "reactionAxis": {
+                "type": "array",
+                "prefixItems": [
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+                ]
+              },
+              "normalAxis": {
+                "type": "array",
+                "prefixItems": [
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+                ]
+              },
+              "pivot": {
+                "type": "array",
+                "prefixItems": [
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+                ]
+              },
+              "contactPoint": {
+                "type": "array",
+                "prefixItems": [
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+                ]
+              },
+              "maxForceNewtons": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1000000
+              },
+              "complianceMetersPerNewton": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1
+              },
+              "maxTravelMeters": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1
+              },
+              "seatingAngleRadians": {
+                "type": "number",
+                "minimum": -0.4,
+                "maximum": 0.4
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "movingPart",
+              "reactionPart",
+              "referencePart",
+              "reactionAxis",
+              "normalAxis",
+              "pivot",
+              "contactPoint",
+              "maxForceNewtons",
+              "complianceMetersPerNewton",
+              "maxTravelMeters",
+              "seatingAngleRadians"
+            ],
+            "additionalProperties": false
           }
         ]
       }

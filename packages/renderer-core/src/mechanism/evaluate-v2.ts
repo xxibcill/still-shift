@@ -1,3 +1,4 @@
+import { loadSeatRotationAxis } from "./load-seat-v2.ts";
 import { MechanismAnchorSourceV2Schema } from "@still-shift/scene-contract";
 import {
   MechanismFrameRequestV2Schema,
@@ -130,34 +131,70 @@ function evaluateParts(
     if (rig) {
       const value = rigs[rig.id]!;
       const reference = parts[rig.referencePart]!.worldMatrix;
-      const neutral =
-        rig.type === "hinge"
-          ? rig.neutralAngle
-          : rig.type === "slider"
-            ? rig.neutral
-            : rig.range[0] + rig.neutralTooth * rig.pitch;
-      const scalar =
-        value.type === "hinge"
-          ? value.angleRadians
-          : value.type === "slider" || value.type === "ratchet"
-            ? value.position
-            : neutral;
-      if (scalar !== neutral) {
-        const motion =
+      if (rig.type === "load-seat" && value.type === "load-seat") {
+        if (value.displacementMeters > 0) {
+          const vector =
+            id === rig.movingPart
+              ? value.movingTranslation
+              : value.reactionTranslation;
+          const translation = [
+            ...IDENTITY_MATRIX.slice(0, 12),
+            ...vector,
+            1,
+          ] as unknown as typeof IDENTITY_MATRIX;
+          const motion =
+            id === rig.movingPart
+              ? multiplyMatrices(
+                  translation,
+                  rotationAroundAxisV2(
+                    loadSeatRotationAxis(rig),
+                    value.angleRadians,
+                    rig.pivot,
+                  ),
+                )
+              : translation;
+          worldMatrix = multiplyMatrices(
+            multiplyMatrices(
+              multiplyMatrices(reference, motion),
+              inverseMechanismMatrixV2(reference),
+            ),
+            worldMatrix,
+          );
+          localMatrix = multiplyMatrices(
+            inverseMechanismMatrixV2(parentWorld),
+            worldMatrix,
+          );
+        }
+      } else if (rig.type !== "load-seat") {
+        const neutral =
           rig.type === "hinge"
-            ? rotationAroundAxisV2(rig.axis, scalar - neutral, rig.pivot)
-            : translationAlongAxisV2(rig.axis, scalar - neutral);
-        worldMatrix = multiplyMatrices(
-          multiplyMatrices(
-            multiplyMatrices(reference, motion),
-            inverseMechanismMatrixV2(reference),
-          ),
-          worldMatrix,
-        );
-        localMatrix = multiplyMatrices(
-          inverseMechanismMatrixV2(parentWorld),
-          worldMatrix,
-        );
+            ? rig.neutralAngle
+            : rig.type === "slider"
+              ? rig.neutral
+              : rig.range[0] + rig.neutralTooth * rig.pitch;
+        const scalar =
+          value.type === "hinge"
+            ? value.angleRadians
+            : value.type === "slider" || value.type === "ratchet"
+              ? value.position
+              : neutral;
+        if (scalar !== neutral) {
+          const motion =
+            rig.type === "hinge"
+              ? rotationAroundAxisV2(rig.axis, scalar - neutral, rig.pivot)
+              : translationAlongAxisV2(rig.axis, scalar - neutral);
+          worldMatrix = multiplyMatrices(
+            multiplyMatrices(
+              multiplyMatrices(reference, motion),
+              inverseMechanismMatrixV2(reference),
+            ),
+            worldMatrix,
+          );
+          localMatrix = multiplyMatrices(
+            inverseMechanismMatrixV2(parentWorld),
+            worldMatrix,
+          );
+        }
       }
     }
     parts[id] = {

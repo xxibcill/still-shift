@@ -339,35 +339,44 @@ export function compileMechanismNarratedCycle(
     controls[entry.rig] =
       control.type === "slider" || control.type === "hinge"
         ? { type: control.type, ...scalar(control, [...path, "control"]) }
-        : control.type === "ratchet"
+        : control.type === "load-seat"
           ? {
-              type: "ratchet",
-              position: scalar(control.position, [
+              type: control.type,
+              loadNewtons: scalar(control.loadNewtons, [
                 ...path,
                 "control",
-                "position",
+                "loadNewtons",
               ]),
-              latchKeys: control.latchKeys.map((key, i) => ({
-                frame: resolve(key.at, [
+            }
+          : control.type === "ratchet"
+            ? {
+                type: "ratchet",
+                position: scalar(control.position, [
                   ...path,
                   "control",
-                  "latchKeys",
-                  i,
-                  "at",
+                  "position",
                 ]),
-                state: key.state,
-              })),
-            }
-          : {
-              type: "spring-return",
-              states: control.states.map((state, i) => {
-                const { at, ...rest } = state;
-                return {
-                  ...rest,
-                  frame: resolve(at, [...path, "control", "states", i, "at"]),
-                };
-              }),
-            };
+                latchKeys: control.latchKeys.map((key, i) => ({
+                  frame: resolve(key.at, [
+                    ...path,
+                    "control",
+                    "latchKeys",
+                    i,
+                    "at",
+                  ]),
+                  state: key.state,
+                })),
+              }
+            : {
+                type: "spring-return",
+                states: control.states.map((state, i) => {
+                  const { at, ...rest } = state;
+                  return {
+                    ...rest,
+                    frame: resolve(at, [...path, "control", "states", i, "at"]),
+                  };
+                }),
+              };
   }
   const timeline = compileMechanismPackTimeline(instance, {
     schemaVersion: "mechanism-pack-timeline-1",

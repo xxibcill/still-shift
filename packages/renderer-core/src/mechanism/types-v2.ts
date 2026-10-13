@@ -28,6 +28,15 @@ export interface PreparedMechanismRigTracksV2 {
   readonly version: "prepared-mechanism-rig-tracks-2";
   readonly rigs: DeepReadonly<MechanismSceneV2["rigs"]>;
   readonly controls: DeepReadonly<MechanismRigControlsV2>;
+  readonly loadSeatCalibrations?: Readonly<
+    Record<
+      string,
+      {
+        readonly metersPerReferenceUnit: number;
+        readonly referenceScale: number;
+      }
+    >
+  >;
 }
 
 export interface PreparedMechanismPoseV2 {

@@ -105,7 +105,13 @@
         "Explicit load-to-pose/contact/stop response with a declared illustrative law and independent oracle; arrows/authored reverse poses alone are insufficient.",
         "Preserve the standard non-releasable pack; verify contact, saturation, nonpenetration and actual native observations."
       ],
-      "qualification": "Documentary supplement only. No load law, asset, native, factual/design/whole/pilot or physical rating admission; frozen question/selection remains exact."
+      "qualification": "Documentary supplement only. No load law, asset, native, factual/design/whole/pilot or physical rating admission; frozen question/selection remains exact.",
+      "behaviorFoundation": {
+        "record": "docs/mechanism-shorts-ms3-load-results.json",
+        "status": "load-behavior-foundation-scoped-passed-current-tiers-asset-native-pending",
+        "qualification": "Reusable force-driven behavior foundation and software checks only. No new E06 asset/native/contact/continuous/factual/design/genuine speech/listening/pilot acceptance; frozen ten questions and accepted0/10 unchanged. No spending, merge or publication."
+      },
+      "sourceClarification": "Printed column8: Fig10 is normal locking with second tooth not engaged; Fig11 is ultimate load with stop and second tooth engagement. This supersedes vague figure10-stop wording in earlier notes."
     },
     {
       "episode": "E09",

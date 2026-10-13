@@ -191,6 +191,12 @@ const control = z.discriminatedUnion("type", [
   z.object({ type: z.literal("hinge"), ...scalar }).strict(),
   z
     .object({
+      type: z.literal("load-seat"),
+      loadNewtons: z.object(scalar).strict(),
+    })
+    .strict(),
+  z
+    .object({
       type: z.literal("spring-return"),
       states: z
         .array(

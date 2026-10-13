@@ -44,11 +44,18 @@ export function prepareMechanismPoseV2<S extends MechanismKinematicSceneV2>(
       );
   });
   const parts = new Map(scene.parts.map((part) => [part.id, part]));
-  const physicalRigs = new Map(
-    scene.rigs
-      .filter((rig) => rig.type !== "spring-return")
-      .map((rig) => [rig.movingPart, rig]),
-  );
+  const physicalRigs = new Map<
+    string,
+    Exclude<
+      MechanismKinematicSceneV2["rigs"][number],
+      { type: "spring-return" }
+    >
+  >();
+  for (const rig of scene.rigs) {
+    if (rig.type === "spring-return") continue;
+    physicalRigs.set(rig.movingPart, rig);
+    if (rig.type === "load-seat") physicalRigs.set(rig.reactionPart, rig);
+  }
   const orderedPartIds: string[] = [],
     visited = new Set<string>();
   function visit(id: string) {

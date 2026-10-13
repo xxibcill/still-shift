@@ -39,6 +39,20 @@ export const MechanismRigFrameV2Schema = z.discriminatedUnion("type", [
   z
     .object({
       id: MechanismIdSchema,
+      type: z.literal("load-seat"),
+      loadNewtons: z.number().finite().nonnegative().max(1e6),
+      displacementMeters: z.number().finite().nonnegative().max(1e6),
+      stopTravelMeters: z.number().finite().positive().max(1e6),
+      angleRadians: z.number().finite().min(-0.4).max(0.4),
+      movingTranslation: MechanismVectorSchema,
+      reactionTranslation: MechanismVectorSchema,
+      phase: z.enum(["unloaded", "seating", "stopped"]),
+      stopReactionNewtons: z.number().finite().nonnegative().max(1e6),
+    })
+    .strict(),
+  z
+    .object({
+      id: MechanismIdSchema,
       type: z.literal("slider"),
       position: scalar,
     })

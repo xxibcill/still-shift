@@ -480,6 +480,17 @@ export const MechanismPackDocumentSchema = z
             [...path, "movingPart"],
           );
         driven.add(rig.movingPart);
+        if (rig.type === "load-seat") {
+          requireId(parts, rig.reactionPart, [...path, "reactionPart"]);
+          if (driven.has(rig.reactionPart))
+            mechanismIssue(
+              context,
+              "mechanism-pack-reference",
+              "Duplicate physical writer",
+              [...path, "reactionPart"],
+            );
+          driven.add(rig.reactionPart);
+        }
         if (rig.type === "ratchet") {
           requireId(shapes, rig.pawlShape, [...path, "pawlShape"]);
           requireId(anchors, rig.pawlTipAnchor, [...path, "pawlTipAnchor"]);
@@ -687,7 +698,12 @@ export const MechanismPackDocumentSchema = z
         );
         return;
       }
-      const range = rig.type === "hinge" ? rig.angleRange : rig.range;
+      const range: readonly [number, number] =
+        rig.type === "hinge"
+          ? rig.angleRange
+          : rig.type === "load-seat"
+            ? [0, rig.maxForceNewtons]
+            : rig.range;
       if (pose.value < range[0] || pose.value > range[1])
         mechanismIssue(
           context,
@@ -714,7 +730,9 @@ export const MechanismPackDocumentSchema = z
             ? rig.neutralAngle
             : rig.type === "slider"
               ? rig.neutral
-              : rig.range[0] + rig.neutralTooth * rig.pitch;
+              : rig.type === "load-seat"
+                ? 0
+                : rig.range[0] + rig.neutralTooth * rig.pitch;
         if (pose.value !== neutral)
           mechanismIssue(
             context,
