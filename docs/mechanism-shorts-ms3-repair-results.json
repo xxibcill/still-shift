@@ -2,7 +2,7 @@
   "version": "mechanism-ms3-automatic-overlap-results-1",
   "date": "2026-10-13",
   "sourceCommit": "f70be2cba0cdba2aad5422889f15dea246aca0c7",
-  "status": "preflight-and-current-fixture-seeding-only",
+  "status": "bounded-current-cli-implemented-fresh-bridge-proof-open",
   "root": "/private/tmp/still-shift-ms3-auto-overlap-1y226be1",
   "initialInspect": {
     "actualExitCode": 0,
@@ -84,7 +84,7 @@
     }
   },
   "remaining": [
-    "Wait for the existing serial original-pilot run to finish before another render group.",
+    "With native27 run/report now terminal0, establish the genuinely current bridge baseline as setup, then run the generic bounded current recovery command serially.",
     "After the caption compiler repair and its checks, establish a genuinely current bridge baseline; retain any fresh baseline captures as setup work. Compare historical/current plates explicitly, and prove zero fresh3D for the repair stage rather than falsely claiming setup used the old cache.",
     "Fresh current bad export/detection, bounded automatic one-patch decision, affected export and final-file recheck.",
     "Verify all696 bridge clean plates/sidecars unchanged, zero new3D, unchanged neighbors and retained bad evidence.",
@@ -117,5 +117,32 @@
     "oldRequestRevision": 1,
     "diagnostic": "mechanism-stale-revision",
     "qualification": "Current public CLI rejection of an old repair request on the private revision3 seed. Fresh automatic detection/decision/render/recheck still required."
+  },
+  "currentRecoveryImplementation": {
+    "entryPoint": "episode patch --recovery overlap",
+    "sourceFiles": [
+      "tools/still-shift-cli/src/overlay-overlap-policy.ts",
+      "tools/still-shift-cli/src/episode-overlap-recovery.ts"
+    ],
+    "limits": {
+      "targets": 1,
+      "candidates": 12,
+      "patches": 1,
+      "renders": 1
+    },
+    "measurements": "Current source-bound prepared check and measured target/qualification glyphs; historical preflight is not used for final decisions.",
+    "invariants": [
+      "exact-CAS source position patch",
+      "scope preserves all other authored fields",
+      "unchanged current clean plates, sidecars, dependencies and neighbor findings",
+      "streamed original bad-output hash retained and rechecked",
+      "whole final check/remaining findings reported separately from recovery success"
+    ],
+    "gate": {
+      "path": "/private/tmp/still-shift-ms3-capabilities28-fast2-receipt.json",
+      "bytes": 1234,
+      "sha256": "sha256:dd4b89d4dfd7f424adbc6f45b57c6ebbe5e6882a4d3de925e312ddf6d7c49d7f"
+    },
+    "freshEndToEndProof": "pending"
   }
 }

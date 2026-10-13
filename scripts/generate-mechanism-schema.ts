@@ -19,6 +19,7 @@ import {
   mechanismProductionSchemas,
   mechanismProductionCapabilityMarkdown,
 } from "../packages/animation-engine/src/mechanism/production-registry.ts";
+import { mediaCapabilityMarkdown } from "../tools/still-shift-cli/src/media-capabilities.ts";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const schemas = {
   ...mechanismFamilySchemas,
@@ -55,9 +56,12 @@ const capabilityPath = resolve(
   root,
   "docs/mechanism-production-capabilities.md",
 );
-const capabilities = await format(mechanismProductionCapabilityMarkdown(), {
-  parser: "markdown",
-});
+const capabilities = await format(
+  mechanismProductionCapabilityMarkdown() + mediaCapabilityMarkdown(),
+  {
+    parser: "markdown",
+  },
+);
 if (process.argv.includes("--check")) {
   if ((await readFile(capabilityPath, "utf8").catch(() => "")) !== capabilities)
     throw Error(

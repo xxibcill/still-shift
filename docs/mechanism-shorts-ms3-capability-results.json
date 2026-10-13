@@ -2,7 +2,7 @@
   "version": "mechanism-ms3-capability-reconciliation-results-1",
   "date": "2026-10-13",
   "sourceCommit": "4f01bbafc0514b975d9780f00e405b460acc8897",
-  "status": "four-current-guides-repaired-machine-generated-reconciliation-open",
+  "status": "scoped-machine-generated-capabilities-implemented-and-verified-final-scope-open",
   "reads": [
     {
       "command": "episode discover",
@@ -71,16 +71,16 @@
   ],
   "remaining": [
     {
-      "item": "Machine discovery and generated capability reference",
-      "finding": "Production capabilities defer general imports/preview/export formats to episode discovery, but its actual full result has no corresponding scoped import/format rows. Legacy route version fields must retain their meaning; add explicit route-scoped data from current registries/schema rather than relabeling legacy protocol1."
-    },
-    {
       "item": "Documented actual import/batch/preview-export agreement",
       "finding": "Current general source3/rigid-import software records establish named routes; broader current capability reconciliation and final source/package checks remain."
     },
     {
       "item": "Current package/source closure",
       "finding": "README changed after the native25 terminal; all2725 other held inputs remain exact. Future full/archive/installed gates must use current committed docs/source."
+    },
+    {
+      "item": "Current fresh automatic bridge recovery",
+      "finding": "Shared machine/generated limits and the bounded CLI are implemented; fresh bad/fixed export/final-check and unchanged696-plate/zero-new3D proof remain."
     }
   ],
   "qualification": "Documentation and read-only discovery evidence. No new render/group, runtime source mutation, supported-pack/whole/pilot/human acceptance or publication.",
@@ -100,5 +100,97 @@
       "reason": "Compared prefixed computed SHA with bare stored SHA; false all-file mismatch. No source change beyond the intended README edit."
     },
     "qualification": "README changed after native25 actual terminal. Runtime code stays b5f8fbae; old inventory remains historical rather than relabeled current."
-  }
+  },
+  "currentImplementation": {
+    "sourceBaseCommit": "e5da61111051ead4cd9531ace1f430840c50fba9",
+    "sourceBinding": "candidate source held by inventory; final commit is recorded separately without relabeling historical runs",
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-capabilities28-fast2-receipt.json",
+      "bytes": 1234,
+      "sha256": "sha256:dd4b89d4dfd7f424adbc6f45b57c6ebbe5e6882a4d3de925e312ddf6d7c49d7f"
+    },
+    "inventory": {
+      "path": "/private/tmp/still-shift-ms3-capabilities28-fast2-inputs.json",
+      "bytes": 466446,
+      "sha256": "sha256:f18dcc8a8ab6c692b2a565f120267950a210d5891e15df8ce405432c3a563f67"
+    },
+    "fastTests": 4539,
+    "fastFiles": 449,
+    "currentRuntimeTests": 8,
+    "allStepExitCodes": [0, 0],
+    "allHoldExitCodes": [0, 0],
+    "focusedInitialTests": 27,
+    "focusedInitialFiles": 5,
+    "focusedLog": {
+      "path": "/private/tmp/still-shift-ms3-capabilities28-focused1.log",
+      "bytes": 973,
+      "sha256": "sha256:c71b02240643587db021a2a19a727604e50139020b65cda223f6f8a878bed2bd"
+    },
+    "strengthenedAdmissionLog": {
+      "path": "/private/tmp/still-shift-ms3-capabilities28-admission3.log",
+      "bytes": 323,
+      "sha256": "sha256:b6b0cfec26f8f977532752f2184a89599977169c373cee415293a866c878d709"
+    },
+    "generatedReference": "docs/mechanism-production-capabilities.md",
+    "sharedData": "tools/still-shift-cli/src/media-capabilities.ts",
+    "qualification": "Real CLI discovery, generated reference equality, admitted parser/profile limits and bounded policy/admission behavior. Fresh complete recovery, broader seeded QA, full/archive/installed and whole/pilot requirements stay open."
+  },
+  "currentDiscovery": [
+    {
+      "command": "episode discover",
+      "actualExitCode": 0,
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-capabilities28-episode.json",
+        "bytes": 13836,
+        "sha256": "sha256:b88dbd7a2fe0fcc4137650d0aab52325f9433b72a5848e14df4fac435e1b4c2f"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-capabilities28-episode.log",
+        "bytes": 8188,
+        "sha256": "sha256:ebab1aeb1867e433f468776c59208c0d097beaa19804fb51aba74dbfbec39564"
+      }
+    },
+    {
+      "command": "production discover",
+      "actualExitCode": 0,
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-capabilities28-production.json",
+        "bytes": 9388,
+        "sha256": "sha256:60dd32866094f65794895e583aa324aa5ed7aa216dc605330f80ca0f96e7b022"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-capabilities28-production.log",
+        "bytes": 2910,
+        "sha256": "sha256:b929412b7a2e12358e53a6529d40af1a838075237f024bd5f799dee49c16730b"
+      }
+    }
+  ],
+  "retainedDraftFailures": [
+    {
+      "scope": "draft-only",
+      "actualExitCode": 1,
+      "reason": "Requested profile function is not exported through the public runtime export entry. Removed unsupported profile-detail import; public format list retained."
+    },
+    {
+      "scope": "draft typecheck1",
+      "actualExitCode": 2,
+      "reason": "Temporary project could not resolve vitest/globals. Node-only draft types corrected."
+    },
+    {
+      "scope": "draft typecheck2",
+      "actualExitCode": 2,
+      "reason": "Position operation inferred string; literal type retained."
+    },
+    {
+      "scope": "draft typecheck4",
+      "actualExitCode": 2,
+      "reason": "Incidental exploratory harness was included by wildcard; three-module check5/6 pass."
+    },
+    {
+      "scope": "admission edit attempt",
+      "innerPythonExitCode": 1,
+      "outerShellExitCode": 0,
+      "reason": "Substring lookup failed before writing; following unchanged four tests passed. Entire test replaced; admission3 asserts the intended diagnostics and passes."
+    }
+  ]
 }

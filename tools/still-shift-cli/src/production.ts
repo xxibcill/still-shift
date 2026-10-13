@@ -1,3 +1,7 @@
+import {
+  inspectMediaCapabilities,
+  mediaCapabilityRows,
+} from "./media-capabilities.ts";
 import { executeProductionCommand } from "./production-execution.ts";
 import { mkdtemp } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -112,7 +116,10 @@ export async function runProductionCli(
       executionCommand = execution.receiptCommand;
       executionNextAction = execution.nextAction;
     } else if (command === "discover") {
-      const caps = inspectMechanismProductionCapabilities();
+      const caps = {
+        ...inspectMechanismProductionCapabilities(),
+        media: inspectMediaCapabilities(),
+      };
       complete = caps;
       summary = {
         scope: "mechanism-production",
@@ -121,7 +128,10 @@ export async function runProductionCli(
         responseItems: caps.response.items,
         packDisposition: caps.nativeExecutor.packDisposition,
       };
-      items = caps.schemas.map((kind) => ({ kind: "schema", name: kind }));
+      items = [
+        ...caps.schemas.map((kind) => ({ kind: "schema", name: kind })),
+        ...mediaCapabilityRows(),
+      ];
     } else if (command === "schema") {
       const kind = MechanismProductionSchemaSelectionSchema.parse(
         flags.get("kind"),

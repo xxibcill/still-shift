@@ -169,14 +169,19 @@ still hold before relying on them.
   remain exact. Run/report both actually exit0/hold0; whole gates remain.
   [Capability docs](./mechanism-shorts-ms3-capability-results.json) repair four
   stale guides/README against source3/export/installed evidence. Actual discovery
-  reads pass after retained IPC denials; scoped machine/generated references stay
-  open. README changed only after native25 terminal; other2,725 inputs stay exact.
+  reads pass after retained IPC denials. Shared CLI media discovery/generated
+  reference now agree on rigid import, native/legacy formats, batch and bounded
+  recovery limits. Held current fast4,539/449 and eight runtime checks pass.
+  Fresh automatic bridge and original full/final scope remain open. README changed only after native25 terminal; other2,725 inputs stay exact.
   Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
   [Automatic overlap preflight](./mechanism-shorts-ms3-repair-results.json) now
   reproduces the seeded target with the current pure API/historical measurements,
   selects one of12 bounded candidates and restores69 readable frames while
-  retaining neighbors. A private current CLI seed preserves seven dependencies;
+  retaining neighbors. Generic current CLI now implements one measured target,
+  at most12 candidates/one patch/export, unchanged plates/dependencies/neighbors
+  and retained bad-output hash, with separate whole status. A private CLI seed
+  preserves seven dependencies;
   current CLI rejects old revision1 repair against private revision3 with bytes
   unchanged; fresh bad/fixed render/final recheck and696-plate proof remain. Old MS1
   cache lacks current appearance identity; current baseline refresh is required.
@@ -372,6 +377,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — Shared capabilities and bounded bridge recovery CLI
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, frome5da6111.
+- **Done:** Episode/production discovery and generated reference share import,
+  batch, preview/export and recovery limits. Legacy protocol1 scope stays exact;
+  native compositions list all four admitted sources/seven profiles/one worker.
+  Generic `episode patch --recovery overlap` owns current detection, exact-CAS
+  position patch, one export/final recheck and preserved plates/neighbors/bad output.
+- **Results:** Initial27 focused checks pass; stronger four admission diagnostics
+  pass. Held final fast4,539/449 plus eight runtime checks all exit0/hold0 on
+  2,732 inputs/121,745,634B. Both real discovery commands exit0 with equal media.
+- **Retained:** Draft import/type/harness and no-write edit failures remain; fast1
+  passes before the original bad-output stream/hash repair, then fast2 refreshes.
+- **Open / next:** Fresh current696-plate bridge baseline is setup; actual bounded
+  recovery/final-file proof, original seven inputs/whole and full/final gates remain.
+- **Records:** [Capabilities](./mechanism-shorts-ms3-capability-results.json),
+  [recovery](./mechanism-shorts-ms3-repair-results.json).
 
 ### 2026-10-13 — E01 scoped input revision and captured witness proof
 

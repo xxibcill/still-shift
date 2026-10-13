@@ -54,3 +54,23 @@ acceptance; current failures remain visible.
 General imports and preview/export formats use existing episode
 discovery. Review declarations, missing token data and pilot admission remain
 separate from technical completion.
+
+## Import, batch and rendering routes
+
+Generated from the same scoped data exposed by episode and production discovery. Legacy episode protocol1 version fields retain their original meaning.
+
+Automatic bridge overlap recovery uses `episode patch --recovery overlap` with current `--input`, `--prepared-dir`, `--final-output`, fresh `--output-dir` and `--cache-dir`. Its bounds are1 target,12 candidates,1 patch and1 export. It requires current measured target/qualification glyphs, retains the bad check and exact-CAS request, reuses every current clean plate and rechecks the final file. Unsupported/multiple targets or exhausted candidates leave source unchanged. Other final findings remain visible.
+
+| Route              | Entry point                                                | Source                                                                 | Workers | Export formats                                               |
+| ------------------ | ---------------------------------------------------------- | ---------------------------------------------------------------------- | ------- | ------------------------------------------------------------ |
+| composition-native | comp preview / comp render                                 | mechanism-scene-1, solid-scene-1, mechanism-scene-2, mechanism-scene-3 | 1       | prores4444, png8, png16, h264, hevc10, prores422hq, vp9alpha |
+| episode-legacy     | episode preview / episode render                           | mechanism-episode-1                                                    | 1       | legacy-mp4                                                   |
+| cue-native-plates  | episode compile / prepare / render / check --authoring cue | mechanism-narrated-cycle-1                                             | 1       | legacy-mp4                                                   |
+
+Rigid glTF/GLB import uses the Node API, without a glTF import CLI. The static triangle, rigid hierarchy, opaque core metallic/roughness and UV0 subset produces an intermediate asset. Native preview/export requires an authored mechanism-scene-3 plus separately verified hashed RGBA resources prepared through prepareRigidGltfPbr. Animation, skin, morph, sparse accessors, required extensions and remote resource fetching are excluded. Source bytes are capped at 33554432; dependencies at 33554432; image bytes at 8388608; texture pixels at 8388608. The complete report contains all import limits.
+
+Image batch consumes JSONL image requests with concurrency1–2. It is not an episode composition queue. Production consumes at most 300 pinned family/cue projects with one serial worker and retained attempts.
+
+Omitting the composition format retains legacy MP4 output. Profiled output dimensions are16–8192, with format-specific even-dimension requirements and lossless PNG/raw RGBA transport. Ordinary compositions accept1–4 workers; authenticated native observation delivery requires1. Higher-bit-depth profiles convert RGBA8 capture and do not establish higher-precision source capture.
+
+Native composition preview/export shares prepared source/resource admission. Hardware preview appearance needs its own evidence. Episode preview returns one requested frame; episode export checks the whole final file. Cue capture stores png16 native plates, then exports MP4 overlays under the original picture/observation binding. Supported packs and whole pilot review remain separate.

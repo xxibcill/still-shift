@@ -9,6 +9,7 @@ import {
   MechanismProductionReportBundleSchema,
 } from "@still-shift/animation-engine";
 import { MechanismCommandReceiptSchema } from "../../packages/animation-engine/src/mechanism/protocol.ts";
+import { inspectMediaCapabilities } from "../../tools/still-shift-cli/src/media-capabilities.ts";
 async function run(args: string[]) {
   let stdout = "",
     stderr = "";
@@ -34,7 +35,10 @@ describe("production discovery and schema CLI", () => {
     );
     expect(receipt.artifacts).toHaveLength(1);
     const caps = JSON.parse(await readFile(path, "utf8"));
-    expect(caps).toEqual(inspectMechanismProductionCapabilities());
+    expect(caps).toEqual({
+      ...inspectMechanismProductionCapabilities(),
+      media: inspectMediaCapabilities(),
+    });
     expect(caps.queue.items).toBe(300);
     expect(caps.nativeExecutor.profile.workers).toBe(1);
     const generated = await readFile(

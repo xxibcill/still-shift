@@ -29,6 +29,11 @@ import {
   MECHANISM_FAMILY_REGISTRY_VERSION,
 } from "../../../packages/animation-engine/src/mechanism/family-registry.ts";
 import { readFile, stat } from "node:fs/promises";
+import {
+  inspectMediaCapabilities,
+  mediaCapabilityRows,
+} from "./media-capabilities.ts";
+import { recoverEpisodeOverlap } from "./episode-overlap-recovery.ts";
 import { dirname, resolve } from "node:path";
 import { z } from "zod";
 import {
@@ -130,7 +135,17 @@ const commandFlags: Record<MechanismCommand, readonly string[]> = {
     "authoring",
     "family-input",
   ],
-  patch: ["input", "request", "authoring", "family-input"],
+  patch: [
+    "input",
+    "request",
+    "authoring",
+    "family-input",
+    "recovery",
+    "prepared-dir",
+    "final-output",
+    "output-dir",
+    "cache-dir",
+  ],
   prepare: [
     "input",
     "prepared-dir",
@@ -579,7 +594,7 @@ async function discover(
       nextAction:
         "Export the family input schema with episode schema --kind <family>-input; use the complete report for immutable asset metadata.",
     };
-  return {
+  const discovery: MechanismReceiptInput = {
     command: "discover",
     summary: {
       protocol: "mechanism-command-result-1",
@@ -674,8 +689,15 @@ async function discover(
       },
     ],
     nextAction:
-      "episode init-tape-hook --output-dir <fresh-directory> --font <font.ttf>; episode inspect --input <episode.json>",
+      "episode discover --report <fresh.json> exposes complete import, batch and render limits; episode init-tape-hook --output-dir <fresh-directory> --font <font.ttf>",
   };
+  discovery.items?.push(...mediaCapabilityRows());
+  discovery.fullResult = {
+    summary: discovery.summary,
+    items: discovery.items,
+    media: inspectMediaCapabilities(),
+  };
+  return discovery;
 }
 async function schema(
   flags: Map<string, string>,
@@ -727,6 +749,13 @@ async function execute(
           ? { captionsPath: required(flags, "captions") }
           : {}),
       }),
+    );
+  if (
+    flags.has("recovery") &&
+    (flags.has("authoring") || flags.has("family-input"))
+  )
+    throw cliError(
+      "Overlap recovery requires the bridge episode route, without authoring overrides",
     );
   const input = required(flags, "input");
   if (flags.has("plates-dir") && flags.get("authoring") !== "cue")
@@ -1057,6 +1086,35 @@ async function execute(
     );
   }
   if (command === "patch") {
+    if (flags.has("recovery")) {
+      if (
+        flags.get("recovery") !== "overlap" ||
+        flags.has("request") ||
+        flags.has("authoring") ||
+        flags.has("family-input")
+      )
+        throw cliError(
+          "--recovery overlap requires a bridge episode and excludes --request and authoring overrides",
+        );
+      return resultView(
+        command,
+        await recoverEpisodeOverlap(input, {
+          preparedDirectory: required(flags, "prepared-dir"),
+          finalOutput: required(flags, "final-output"),
+          outputDirectory: required(flags, "output-dir"),
+          cacheDirectory: required(flags, "cache-dir"),
+          signal,
+        }),
+      );
+    }
+    if (
+      ["prepared-dir", "final-output", "output-dir", "cache-dir"].some((flag) =>
+        flags.has(flag),
+      )
+    )
+      throw cliError(
+        "Recovery output/cache options require --recovery overlap",
+      );
     const request = await readPatchRequest(required(flags, "request"), io);
     return resultView(
       command,
