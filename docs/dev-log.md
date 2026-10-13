@@ -166,7 +166,7 @@ still hold before relying on them.
   frames change starting313, including two boundary frames. Complete decoded
   narration is unchanged. E01 sealed/run exits0 with hold0; independent587-frame/
   scalar/34-image audit passes. E08 row/product/all15 pins and prior E01 product
-  remain exact. Report is still live; five visual errors and whole gates remain.
+  remain exact. Run/report both actually exit0/hold0; whole gates remain.
   [Capability docs](./mechanism-shorts-ms3-capability-results.json) repair four
   stale guides/README against source3/export/installed evidence. Actual discovery
   reads pass after retained IPC denials; scoped machine/generated references stay
@@ -388,7 +388,8 @@ still hold before relying on them.
 - **Sealed:** E01 run actually exits0/hold0; independent587-frame/scalar/34-image
   product audit passes with five visual errors. E08 row/product/all15 pins and
   original E01 product remain exact. Diagnostics match the current sealed binding.
-- **Open / next:** Final report is still live; capability/recovery integration,
+- **Terminal:** Run/report both actually exit0/hold0 on unchanged2,726 inputs.
+- **Open / next:** Capability/recovery integration,
   fresh bridge proof and original whole/final scope remain. CLI capability
   and bounded bridge recovery drafts are prepared outside the held source tree;
   final isolated typecheck5 and historical pure policy2 pass. Missing export,

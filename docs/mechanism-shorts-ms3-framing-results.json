@@ -208,7 +208,7 @@
     "qualification": "Two repaired original question products only. Both technical passes coexist with five sampled-visual errors each and unreviewed whole dimensions; original denominator10 remains."
   },
   "remaining": [
-    "Render/recheck E01 revision2 through an exact-CAS queue input revision, preserving the completed E08 neighbor and prior products.",
+    "Complete original whole explanatory, mechanical, factual, continuous-motion and listening reviews; the scoped E01 witness revision has completed technical run/report/audit evidence.",
     "Independently audit original capture and full decoded picture/audio/evidence, then inspect aligned contact and jaw/cloth views.",
     "Keep hidden fabric contact under its declared policy; visible cloth/caption must establish the stop.",
     "Original ten episode scope, seven genuine missing inputs, whole reviews, bounded automatic bridge recovery, broader QA/capability/metrics and final gates remain."
@@ -534,7 +534,7 @@
     "qualification": "Pure all-vertex/witness-size/anchor-visibility authoring preflight only. No new capture, encoded glyph/whole/pilot acceptance. Existing source family, controls, narrated captions and supplied recording remain unchanged."
   },
   "scopedWitnessRevision": {
-    "status": "sealed-product-independent-audit-passed-report-in-flight",
+    "status": "passed-technical-scope-whole-admission-open",
     "sourceCommit": "bf56c916a49b0cff265b4372922d6330b7b8268c",
     "revision": 1,
     "cueRevision": 2,
@@ -690,7 +690,7 @@
         }
       }
     ],
-    "qualification": "Current E01 product sealed and independently audited; full source-held report command remains running. Technical checks retain five sampled-visual errors and unreviewed whole dimensions. Native frames0\u2013314 are byte-identical; decoded frames313\u2013314 also change. No unverified codec cause or pilot acceptance.",
+    "qualification": "Exact-CAS E01 input revision, normal run and report all terminal0 with source hold0. E08 row/product/all15 artifact pins and original E01 product remain exact. Current587-frame/scalar/34-image independent audit passes, while five visual errors and whole review stay open. Native frames0\u2013314 are byte-identical; decoded frames313\u2013314 also change. Original denominator10/accepted0 remains.",
     "encodedStillsActuallyViewed": [362, 498],
     "encodedExtraction": {
       "path": "/private/tmp/still-shift-ms3-framing27-phone/extraction.json",
@@ -759,6 +759,57 @@
       "E01Attempts": 2,
       "E01PriorProducts": 1,
       "qualification": "After E01 sealed, the completed E08 row, product and all15 artifacts remain exact. Current report command is still running; whole admission remains open."
+    },
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-framing27-native1-receipt.json",
+      "bytes": 1776,
+      "sha256": "sha256:583d49398296a163e143aa666de2317826f5acccdc54d87dc5860a453b60a839"
+    },
+    "actualExitCode": 0,
+    "steps": [
+      {
+        "command": [
+          "pnpm",
+          "still-shift",
+          "production",
+          "run",
+          "--manifest",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/queue.json",
+          "--output-dir",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/production1",
+          "--report",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/state2.json"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T14:53:02.393284+00:00",
+        "endedUtc": "2026-10-13T15:32:25.249706+00:00",
+        "log": "/private/tmp/still-shift-ms3-framing27-native1-0.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "still-shift",
+          "production",
+          "report",
+          "--manifest",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/queue.json",
+          "--output-dir",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/production1",
+          "--report",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/report2.json"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T15:32:25.250189+00:00",
+        "endedUtc": "2026-10-13T15:41:31.548034+00:00",
+        "log": "/private/tmp/still-shift-ms3-framing27-native1-1.log"
+      }
+    ],
+    "currentReport": {
+      "path": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/report2.json",
+      "bytes": 31403,
+      "sha256": "sha256:be2d52cdbec9e1702f80fe118a43b3d8532eca5b7976c9f672fde897e34106d7"
     }
   }
 }
