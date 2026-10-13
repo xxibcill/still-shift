@@ -690,6 +690,15 @@
       "genericDecodedFrames": 4,
       "genericMatrixScalarComparisons": 292,
       "physicalE06AssetProof": false
+    },
+    {
+      "id": "load-asset19",
+      "record": "docs/mechanism-shorts-ms3-load-asset-results.json",
+      "status": "physical-load-stop-web-candidate-preflight-passed-native-current-tiers-pending",
+      "owningTests": 10,
+      "scopedTests": 73,
+      "cliTests": 4,
+      "qualification": "Separate physical load-stop asset and closed two-seat flexible web, plus scoped software/sampled geometric evidence only. Native observation proof, complete current tiers, original explanation/factual/design/continuous/genuine narration/listening/whole/pilot reviews remain pending. No physical product-force claim; frozen questions/accepted0/10 unchanged. No spending, merge or publication."
     }
   ],
   "targets": {

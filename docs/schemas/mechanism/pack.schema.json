@@ -857,6 +857,78 @@
               "seats"
             ],
             "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "generator": {
+                "type": "string",
+                "const": "seated-flexible-web-1"
+              },
+              "mesh": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "ownerPart": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "topologySha256": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              },
+              "declarationSha256": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              },
+              "landmarks": {
+                "minItems": 2,
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string", "enum": ["seat-a", "seat-b"] },
+                    "vertices": { "type": "number", "const": 4 }
+                  },
+                  "required": ["id", "vertices"],
+                  "additionalProperties": false
+                }
+              },
+              "seats": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  },
+                  {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "generator",
+              "mesh",
+              "ownerPart",
+              "topologySha256",
+              "declarationSha256",
+              "landmarks",
+              "seats"
+            ],
+            "additionalProperties": false
           }
         ]
       }

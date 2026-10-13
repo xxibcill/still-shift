@@ -338,7 +338,9 @@ function validateShapes(scene: Scene, context: Context) {
         );
     } else {
       centerlineSamples +=
-        shape.parameters.coilSamples + 2 * shape.parameters.legSamples;
+        shape.generator === "seated-flexible-web-1"
+          ? shape.parameters.longitudinalSegments + 1
+          : shape.parameters.coilSamples + 2 * shape.parameters.legSamples;
       shape.seats.forEach((id, seat) => {
         const anchor = scene.anchors.find((anchor) => anchor.id === id);
         if (
@@ -349,7 +351,7 @@ function validateShapes(scene: Scene, context: Context) {
           mechanismIssue(
             context,
             "mechanism-spring-seat",
-            "Spring seats must be declared rigid part-local seat anchors",
+            "Seated shapes require declared rigid part-local seat anchors",
             [...path, "seats", seat],
           );
       });

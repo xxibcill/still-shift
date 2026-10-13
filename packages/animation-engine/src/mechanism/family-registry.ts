@@ -159,6 +159,12 @@ export function inspectMechanismFamilyRegistry(
                   variant: "inside-serrated-extended-trigger-cutaway",
                 }),
               },
+              {
+                id: "load-stop",
+                input: CableTiePackInputSchema.parse({
+                  variant: "hinged-pawl-frame-stop",
+                }),
+              },
             ]
           : []),
         ...(id === "clothespeg"

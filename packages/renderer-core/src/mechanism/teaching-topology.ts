@@ -14,6 +14,10 @@ export type MechanismTeachingRecipe =
   | Pick<
       Extract<Shape, { generator: "seated-torsion-spring-1" }>,
       "generator" | "parameters"
+    >
+  | Pick<
+      Extract<Shape, { generator: "seated-flexible-web-1" }>,
+      "generator" | "parameters"
     >;
 export interface MechanismTeachingTopology {
   readonly vertices: number;
@@ -27,12 +31,15 @@ export function createMechanismTeachingTopology(
   recipe: MechanismTeachingRecipe,
 ): MechanismTeachingTopology {
   const pawl = recipe.generator === "fixed-root-pawl-curve-1";
+  const web = recipe.generator === "seated-flexible-web-1";
   const rings = pawl
     ? recipe.parameters.longitudinalSegments +
       1 +
       (recipe.parameters.trigger?.segments ?? 0)
-    : recipe.parameters.coilSamples + 2 * recipe.parameters.legSamples;
-  const sides = pawl ? 4 : recipe.parameters.tubeSides;
+    : web
+      ? recipe.parameters.longitudinalSegments + 1
+      : recipe.parameters.coilSamples + 2 * recipe.parameters.legSamples;
+  const sides = pawl || web ? 4 : recipe.parameters.tubeSides;
   const indices: number[] = [],
     uvs: number[] = [];
   for (let ring = 0; ring < rings; ring++) {
@@ -72,26 +79,33 @@ export function createMechanismTeachingTopology(
           ? [{ id: "trigger" as const, vertexIndices: ringIndices(rings - 1) }]
           : []),
       ]
-    : [
-        { id: "seat-a", vertexIndices: ringIndices(0) },
-        { id: "seat-b", vertexIndices: ringIndices(rings - 1) },
-        {
-          id: "coil-a",
-          vertexIndices: ringIndices(
-            recipe.generator === "seated-torsion-spring-1"
-              ? recipe.parameters.legSamples
-              : 0,
-          ),
-        },
-        {
-          id: "coil-b",
-          vertexIndices: ringIndices(
-            recipe.generator === "seated-torsion-spring-1"
-              ? recipe.parameters.legSamples + recipe.parameters.coilSamples - 1
-              : 0,
-          ),
-        },
-      ];
+    : web
+      ? [
+          { id: "seat-a", vertexIndices: ringIndices(0) },
+          { id: "seat-b", vertexIndices: ringIndices(rings - 1) },
+        ]
+      : [
+          { id: "seat-a", vertexIndices: ringIndices(0) },
+          { id: "seat-b", vertexIndices: ringIndices(rings - 1) },
+          {
+            id: "coil-a",
+            vertexIndices: ringIndices(
+              recipe.generator === "seated-torsion-spring-1"
+                ? recipe.parameters.legSamples
+                : 0,
+            ),
+          },
+          {
+            id: "coil-b",
+            vertexIndices: ringIndices(
+              recipe.generator === "seated-torsion-spring-1"
+                ? recipe.parameters.legSamples +
+                    recipe.parameters.coilSamples -
+                    1
+                : 0,
+            ),
+          },
+        ];
   return Object.freeze({
     vertices: (rings + 2) * sides,
     indices: Object.freeze(indices),

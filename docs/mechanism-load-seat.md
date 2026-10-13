@@ -1,9 +1,10 @@
 # Force-driven load seating
 
 `mechanism-scene-2` admits a `load-seat` rig with one force writer and two coupled
-rigid parts. It supplies the reusable behavior foundation for E06. The separate
-patent-specific two-tooth pawl, flexible hinge/web, frame stop and native contact
-proof are still required; no asset or episode is admitted by this rig alone.
+rigid parts. It supplies the reusable behavior foundation for E06. A separate
+[hinged-pawl/frame-stop candidate](./mechanism-load-stop.md) now supplies rigid
+teeth/stop geometry and a two-seat web. Native physical evidence and episode
+reviews remain separate; this rig alone admits no episode.
 
 The source declares `movingPart`, `reactionPart`, `referencePart`, orthonormal
 `reactionAxis`/`normalAxis`, a reference-space `pivot` and coincident neutral

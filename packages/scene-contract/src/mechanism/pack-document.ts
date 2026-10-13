@@ -171,6 +171,27 @@ const shapeMetadata = z.discriminatedUnion("generator", [
       seats: z.tuple([MechanismIdSchema, MechanismIdSchema]),
     })
     .strict(),
+  z
+    .object({
+      id: MechanismIdSchema,
+      generator: z.literal("seated-flexible-web-1"),
+      mesh: MechanismIdSchema,
+      ownerPart: MechanismIdSchema,
+      topologySha256: MechanismHashSchema,
+      declarationSha256: MechanismHashSchema,
+      landmarks: z
+        .array(
+          z
+            .object({
+              id: z.enum(["seat-a", "seat-b"]),
+              vertices: z.literal(4),
+            })
+            .strict(),
+        )
+        .length(2),
+      seats: z.tuple([MechanismIdSchema, MechanismIdSchema]),
+    })
+    .strict(),
 ]);
 /** Metadata only. Mesh arrays and texture payloads have no supported field. */
 export const MechanismPackDocumentSchema = z

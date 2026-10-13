@@ -195,6 +195,7 @@ describe("inside-serrated extended-trigger candidate", () => {
     expect(registry.examples.map((e) => e.id)).toEqual([
       "default",
       "inside-release",
+      "load-stop",
     ]);
     expect(registry.variants.map((v) => v.id)).toContain(variant);
   });

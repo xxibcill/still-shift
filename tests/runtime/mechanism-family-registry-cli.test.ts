@@ -36,7 +36,7 @@ describe("family registry CLI", () => {
     expect(result.receipt.summary.supportedPacks).toBe(0);
     expect(
       result.receipt.items.filter((item) => item.kind === "example"),
-    ).toHaveLength(7);
+    ).toHaveLength(8);
     expect(
       result.receipt.items
         .filter((item) => item.kind === "example")
@@ -46,6 +46,7 @@ describe("family registry CLI", () => {
       "tape-hook:slotted-retention",
       "cable-tie:default",
       "cable-tie:inside-release",
+      "cable-tie:load-stop",
       "clothespeg:default",
       "clothespeg:notched-line",
       "clothespeg:ideal-lever",

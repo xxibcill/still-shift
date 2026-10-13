@@ -33,6 +33,9 @@ export function describeMechanismPackCameras(
   const releaseTie =
     family === "cable-tie" &&
     scene.anchors.some((anchor) => anchor.id === "release.trigger");
+  const loadTie =
+    family === "cable-tie" &&
+    scene.anchors.some((anchor) => anchor.id === "pawl.stopFoot");
   const whole = parts(
     family === "tape-hook" ? ["hook", "blade", "housing"] : ["model"],
   );
@@ -67,6 +70,30 @@ export function describeMechanismPackCameras(
       [0.7, 0.35, 1],
       [1, 0.1, 1],
       [0.4, 0.1, 1],
+    ];
+  } else if (loadTie) {
+    focus = meshes([
+      "pawl.body",
+      "pawl.stop",
+      "head.stopLedge",
+      "hinge.web.mesh",
+    ]);
+    contact = "pawl.primaryTooth";
+    detail = "pawl.stopFoot";
+    relationship = [
+      "primary.contact",
+      "secondary.gap",
+      "stop.gap",
+      "hinge.pawl.attached",
+    ];
+    proof = [
+      surface("pawl-front", "pawl.body", contact, [0, 0, 1]),
+      surface("stop-front", "pawl.stop", detail, [0, 0, 1]),
+    ];
+    directions = [
+      [0.1, 0.2, 1],
+      [0, 0, 1],
+      [0.3, 0.3, 1],
     ];
   } else if (family === "cable-tie") {
     focus = meshes(["pawl.mesh", "head.root"]);
@@ -165,7 +192,7 @@ export function describeMechanismPackCameras(
     return {
       id,
       intent,
-      motionIntent: `${intent}: ${family === "tape-hook" ? (comparison ? "show the push/outside face" : "show hook travel and the pull/inside face") : family === "cable-tie" ? (releaseTie ? "show fixed-root trigger press, catch clearance and inside tooth engagement" : "show fixed-root pawl lift and seated tooth engagement") : notchedLine ? "show opposing jaw notches and return to round-line contact" : "show seated spring and return to cloth contact"}`,
+      motionIntent: `${intent}: ${family === "tape-hook" ? (comparison ? "show the push/outside face" : "show hook travel and the pull/inside face") : family === "cable-tie" ? (loadTie ? "show primary tooth contact, second-tooth seating, flexible web and frame-stop hold" : releaseTie ? "show fixed-root trigger press, catch clearance and inside tooth engagement" : "show fixed-root pawl lift and seated tooth engagement") : notchedLine ? "show opposing jaw notches and return to round-line contact" : "show seated spring and return to cloth contact"}`,
       target: {
         kind: full ? "part" : "anchor",
         id: full

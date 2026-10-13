@@ -57,7 +57,11 @@ export const NativeShapeAssociationSchema = z
     shape: MechanismIdSchema,
     mesh: MechanismIdSchema,
     ownerPart: MechanismIdSchema,
-    generator: z.enum(["fixed-root-pawl-curve-1", "seated-torsion-spring-1"]),
+    generator: z.enum([
+      "fixed-root-pawl-curve-1",
+      "seated-torsion-spring-1",
+      "seated-flexible-web-1",
+    ]),
     triggerLandmark: z.literal(true).optional(),
     declarationSha256: MechanismHashSchema,
     templateSha256: MechanismHashSchema,
@@ -155,7 +159,9 @@ const drawn = z
         ? shape.association.triggerLandmark
           ? ["root", "tip", "trigger"]
           : ["root", "tip"]
-        : ["seat-a", "seat-b", "coil-a", "coil-b"];
+        : shape.association.generator === "seated-flexible-web-1"
+          ? ["seat-a", "seat-b"]
+          : ["seat-a", "seat-b", "coil-a", "coil-b"];
     if (
       Object.keys(shape.landmarks).length !== expectedLandmarks.length ||
       expectedLandmarks.some((id) => !Object.hasOwn(shape.landmarks, id))

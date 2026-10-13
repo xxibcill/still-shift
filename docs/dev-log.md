@@ -110,6 +110,12 @@ still hold before relying on them.
   scalar comparisons with zero oracle error. Both pre-render strict composition
   failures remain retained. Separate patent asset/flexible web and physical
   contact/stop/nonpenetration native proof remain next. All gate handles closed.
+  E06 now adds a separate physical load-stop candidate and two-seat flexible web;
+  10 owning/101 dense force samples/123 triangle states,73 scoped/9 files,4 CLI and
+  compile/lint/schema/boundary/package checks pass with2,725 inputs exact.
+  Initial fixture/API/Float64 assertions and stale discovery failures are retained.
+  [Asset record](./mechanism-shorts-ms3-load-asset-results.json); actual native and
+  committed current tiers remain pending. No whole/pilot admission.
   Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
   Remaining original scope: clearer views and actual whole reviews, E06 asset/
@@ -304,6 +310,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — E06 separate load-stop asset and two-seat flexible web
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `4a218e6e`.
+- **Done:** Separate two-tooth pawl/semicylindrical stop/frame ledge/guide and
+  changing closed planar web; strict variant, metadata, camera and CLI discovery.
+- **Results:**10 owning checks,101 load samples/123 triangle states/21 web states;
+  73 scoped units/9 files,4 CLI/build/lint/schema/boundary/package checks pass.
+  Final preflight3 holds2,725 inputs/121,701,051B; default/release hashes stay exact.
+- **Retained:** Invalid fixture/API fields, overly exact mounted Float64 demand,
+  saved-family API error and stale discovery assertions; triangle clipping caught
+  a real small-pitch tooth/frame overlap. Ledge moved clear; all123 states pass.
+- **Open / next:** Actual native original-observation audit, committed current
+  tiers, physical/factual/design/continuous/whole and original MS3 pilot work.
+- **Records:** [Asset evidence](./mechanism-shorts-ms3-load-asset-results.json).
+  Geometry and compliance are illustrative; accepted0/10, no spending/publication.
 
 ### 2026-10-13 — E06 force-driven load seating foundation
 

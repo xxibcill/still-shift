@@ -85,7 +85,8 @@
       "type": "string",
       "enum": [
         "outside-serrated-integral-pawl-cutaway",
-        "inside-serrated-extended-trigger-cutaway"
+        "inside-serrated-extended-trigger-cutaway",
+        "hinged-pawl-frame-stop"
       ]
     },
     "parameters": {

@@ -825,6 +825,10 @@ export const native3DAppearanceModules: readonly {
     url: new URL("../mechanism/teaching-topology.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/mechanism/teaching-web.ts",
+    url: new URL("../mechanism/teaching-web.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/mechanism/types-v2.ts",
     url: new URL("../mechanism/types-v2.ts", import.meta.url),
   },
