@@ -64,6 +64,13 @@ still hold before relying on them.
   and three native controls pass exact. Independent audit180 frames/81 images/
   180 scalars/149 pins passes, with default all-frame picture/audio parity against
   priorc474 capture. Visual errors remain default6/new10 each; no whole acceptance.
+  [E05](./mechanism-shorts-ms3-trigger-results.json) now has a distinct inside-
+  serrated release candidate with one closed flexible catch/extended trigger,
+  optional bounded topology and strict landmark contracts. Original tie hashes
+  and its non-releasable guard remain exact. Final42 owning checks/21 closed
+  states/build/lint/schema/boundary/declarations pass with2,710 inputs held.
+  Frame-key and metadata-inventory failures are retained. Current complete
+  fast/runtime/native/default parity are next because renderer contracts changed.
   No active prior native handle remains. Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
   Remaining original scope: clearer views and actual whole reviews, E05/E06/E10
@@ -258,6 +265,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — E05 closed extended-trigger factory candidate
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `ba6f59d7`.
+- **Done:** Inside-serrated cutaway with protruding flexible trigger, one shared
+  pawl driver/closed topology, strict optional landmarks and saved-family discovery.
+  Original tie source/metadata and non-releasable guard stay exact.
+- **Results:** Final42 owning checks/21 deformation states/build/lint/schema/
+  boundary and declarations pass;2,710 inputs held. Engaged reverse rejects.
+- **Rejected / retained:** Frame-key regex and two-landmark metadata inventory
+  failures repaired without removing required root/tip or weakening release guards.
+- **Open / next:** Current complete fast/runtime/native/default audit and actual
+  visual/factual/design/genuine narration/whole review; E06/E10 and original MS3 scope.
+- **Records:** [trigger candidate](./mechanism-shorts-ms3-trigger-results.json).
+  Accepted pilot remains0/10; no paid generation, publication or merge.
 
 ### 2026-10-13 — E09 notched-jaw and round-line factory candidate
 

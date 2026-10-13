@@ -21,7 +21,15 @@ export const MECHANISM_TEACHING_SHAPE_LIMITS = Object.freeze({
 
 export const MechanismShapeLandmarkSchema = z
   .object({
-    id: z.enum(["root", "tip", "seat-a", "seat-b", "coil-a", "coil-b"]),
+    id: z.enum([
+      "root",
+      "tip",
+      "trigger",
+      "seat-a",
+      "seat-b",
+      "coil-a",
+      "coil-b",
+    ]),
     vertexIndices: z
       .array(
         z
@@ -120,6 +128,14 @@ const pawl = z
         thickness: dimension,
         maxDeflection: z.number().finite().min(0).max(500),
         longitudinalSegments: z.number().int().min(2).max(32),
+        trigger: z
+          .object({
+            length: dimension,
+            width: dimension,
+            segments: z.number().int().min(2).max(8),
+          })
+          .strict()
+          .optional(),
       })
       .strict(),
   })
@@ -159,7 +175,9 @@ export const MechanismTeachingShapeSchema = z
   .superRefine((shape, context) => {
     const expected =
       shape.generator === "fixed-root-pawl-curve-1"
-        ? ["root", "tip"]
+        ? shape.parameters.trigger
+          ? ["root", "tip", "trigger"]
+          : ["root", "tip"]
         : ["seat-a", "seat-b", "coil-a", "coil-b"];
     const actual = shape.landmarks.map((landmark) => landmark.id);
     if (
@@ -183,6 +201,18 @@ export const MechanismTeachingShapeSchema = z
           "mechanism-shape-range",
           "Pawl deflection cannot exceed half its length",
           ["parameters", "maxDeflection"],
+        );
+      const trigger = shape.parameters.trigger;
+      if (
+        trigger &&
+        maxDeflection * (1 + (3 * trigger.length) / length) >
+          (length + trigger.length) / 2
+      )
+        mechanismIssue(
+          context,
+          "mechanism-shape-range",
+          "Trigger deflection exceeds the declared closed-beam envelope",
+          ["parameters", "trigger", "length"],
         );
       if (thickness >= length / 2)
         mechanismIssue(

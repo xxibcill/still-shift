@@ -28,7 +28,9 @@ export function createMechanismTeachingTopology(
 ): MechanismTeachingTopology {
   const pawl = recipe.generator === "fixed-root-pawl-curve-1";
   const rings = pawl
-    ? recipe.parameters.longitudinalSegments + 1
+    ? recipe.parameters.longitudinalSegments +
+      1 +
+      (recipe.parameters.trigger?.segments ?? 0)
     : recipe.parameters.coilSamples + 2 * recipe.parameters.legSamples;
   const sides = pawl ? 4 : recipe.parameters.tubeSides;
   const indices: number[] = [],
@@ -62,7 +64,13 @@ export function createMechanismTeachingTopology(
   const landmarks: MechanismShapeLandmark[] = pawl
     ? [
         { id: "root", vertexIndices: ringIndices(0) },
-        { id: "tip", vertexIndices: ringIndices(rings - 1) },
+        {
+          id: "tip",
+          vertexIndices: ringIndices(recipe.parameters.longitudinalSegments),
+        },
+        ...(recipe.parameters.trigger
+          ? [{ id: "trigger" as const, vertexIndices: ringIndices(rings - 1) }]
+          : []),
       ]
     : [
         { id: "seat-a", vertexIndices: ringIndices(0) },

@@ -31,6 +31,7 @@ import {
   inspectCableTiePack,
   CableTiePackInputSchema,
   CableTiePackParametersSchema,
+  CableTiePackVariantSchema,
 } from "./cable-tie-pack.ts";
 import {
   inspectClothespegPack,
@@ -143,6 +144,16 @@ export function inspectMechanismFamilyRegistry(
       parameters: metadata.pack.parameters,
       examples: [
         { id: "default", input: entry.input.parse({}) },
+        ...(id === "cable-tie"
+          ? [
+              {
+                id: "inside-release",
+                input: CableTiePackInputSchema.parse({
+                  variant: "inside-serrated-extended-trigger-cutaway",
+                }),
+              },
+            ]
+          : []),
         ...(id === "clothespeg"
           ? [
               {
@@ -210,18 +221,32 @@ export function inspectMechanismFamilyRegistry(
                   };
                 },
               )
-            : [
-                {
-                  id: metadata.pack.factualVariant.id,
-                  reference: {
-                    id: metadata.pack.id,
-                    version: metadata.pack.version,
-                    sha256: metadata.sha256,
-                    variant: metadata.pack.factualVariant.id,
-                    detail: "teaching",
+            : id === "cable-tie"
+              ? CableTiePackVariantSchema.options.map((variant) => {
+                  const receipt = inspectCableTiePack(variant);
+                  return {
+                    id: variant,
+                    reference: {
+                      id: receipt.pack.id,
+                      version: receipt.pack.version,
+                      sha256: receipt.sha256,
+                      variant,
+                      detail: "teaching",
+                    },
+                  };
+                })
+              : [
+                  {
+                    id: metadata.pack.factualVariant.id,
+                    reference: {
+                      id: metadata.pack.id,
+                      version: metadata.pack.version,
+                      sha256: metadata.sha256,
+                      variant: metadata.pack.factualVariant.id,
+                      detail: "teaching",
+                    },
                   },
-                },
-              ],
+                ],
       metadata,
       controls: metadata.pack.rigs.map((rig) => ({
         id: rig.id,

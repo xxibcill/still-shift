@@ -1,0 +1,314 @@
+{
+  "version": 1,
+  "milestone": "MS3",
+  "episode": "E05",
+  "date": "2026-10-13",
+  "branch": "codex/mechanism-ms3",
+  "baseCommit": "ba6f59d799c34a774c3abc78a03c3ae169970453",
+  "status": "factory-trigger-owning-passed-fast-runtime-native-pending",
+  "sourceSnapshot": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/cable-tie-input.schema.json",
+      "bytes": 3610,
+      "sha256": "sha256:495b2b96dbedf816618b50c8a4a1997019fb972800abbc8f68a06bf8360cd65b"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/family-authoring.schema.json",
+      "bytes": 28511,
+      "sha256": "sha256:0ed073b2f531f66058c84f1532ce074811d3d12829c3465abcb186e7b71f3588"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/frame-2.schema.json",
+      "bytes": 15493,
+      "sha256": "sha256:f5400c168a8224b2395144991173cce59780a18d56f848069975cc6a81f9f197"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/native-frame-3.schema.json",
+      "bytes": 24850,
+      "sha256": "sha256:d510424b8af2abf4618f30709650a6b1b32fe9b56d478e85a0e4c715da05d4a5"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/pack.schema.json",
+      "bytes": 41685,
+      "sha256": "sha256:aaba829df2debb5b1854a472f8aab884eb20ebb99d1474184177303f435de802"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/prepared-native3d-3.schema.json",
+      "bytes": 252188,
+      "sha256": "sha256:e8bb0b78375c7e4e2f48279579146db2b88a70f775c797f4b55a741186b1a394"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/scene-2.schema.json",
+      "bytes": 49542,
+      "sha256": "sha256:f6eb39fc490f7f3e5f41532fa9c2f8390ed1be514447535396188aea0701aeb7"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/scene-3.schema.json",
+      "bytes": 55024,
+      "sha256": "sha256:b50ec342a1d702568e2fed260d79b2b20d9ea6cc7a4abce7339369ed7fa50c1e"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/teaching-shape.schema.json",
+      "bytes": 11781,
+      "sha256": "sha256:be5903af5f2502b68b8cd9ceb7b7f4060bc6ffc6aee5e04643c0c8f49901c776"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/cable-tie-pack.ts",
+      "bytes": 12693,
+      "sha256": "sha256:ecb763bfeefc4ab085d53fb9b05aa2e0dfb349e132ce3eae0c58d20954d3e74a"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/camera-descriptions.ts",
+      "bytes": 6455,
+      "sha256": "sha256:da01f94b95b07b549aaf50e9cb96dc4a1427d40800c361814207336fec4f4115"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/family-registry.ts",
+      "bytes": 9485,
+      "sha256": "sha256:5a118379b1005fccf888e1a3c2d305e9504d6502d0cb077cac3adca586c2b4aa"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/mechanism/teaching-pawl.ts",
+      "bytes": 2848,
+      "sha256": "sha256:5965f533076f5af493343ab14e27edf6aeb037492011a3d7031110c3b6b86bb6"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/mechanism/teaching-topology.ts",
+      "bytes": 4047,
+      "sha256": "sha256:e8939cb1e952eec24040baed2d18656b258f5debbe9f8a3281c1a8285afb7ae9"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/scene-contract/src/mechanism/frame-v2.ts",
+      "bytes": 9606,
+      "sha256": "sha256:3590f39c24cc9b81892447672e574edbf65e5c4ffcf9fea8a8e8fc978ce73c66"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/scene-contract/src/mechanism/pack-document.ts",
+      "bytes": 24493,
+      "sha256": "sha256:f4a5a53a2ffcbcb7f0c7bec1ae01997cee7685def6b291d460ad049262ea6691"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/scene-contract/src/mechanism/teaching-shapes.ts",
+      "bytes": 7785,
+      "sha256": "sha256:739a29ccad412aab422e024b6feacce80e3c003e52988b098b45f8c781bb92bf"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/cable-tie-release.ts",
+      "bytes": 4378,
+      "sha256": "sha256:2361187f168cf4a929193911d9e3c37187eebd0d08276b598e102c36977385fc"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-release-trigger.test.ts",
+      "bytes": 7872,
+      "sha256": "sha256:e953feb02f84e7de39cff46edb8cfa5dc8c8b629cedecf89bf7a0c03a81b4dae"
+    }
+  ],
+  "primarySource": {
+    "url": "https://www.hellermanntyton.com/products/cable-ties-releasable/relk2r/115-02202",
+    "catalogue": "https://www.hellermanntyton.com/shared/assets/PDP_PS_RELK_Series_com.pdf",
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-E05-RELK-catalogue.pdf",
+        "bytes": 200006,
+        "sha256": "sha256:247096721b350c37b3b24e7a9465231e26002e254d749730a35d39d72a1ba97d"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-E05-RELK-catalogue-page.png",
+        "bytes": 380975,
+        "sha256": "sha256:dea72a627c4a25df591afe9a36de72355c544c9c8e44c4efabef23941ef0eb98"
+      }
+    ],
+    "qualification": "Manufacturer photo/closure diagram inspected. Exact internal geometry and dimensions remain illustrative/unreviewed."
+  },
+  "implementation": [
+    "Optional bounded trigger section continues the fixed-root pawl tangent, flares to a wider paddle and preserves one closed mesh/shared driver.",
+    "Required root/tip landmarks remain; trigger landmark exists only for the optional section. Strict frame/metadata inventories updated without relaxing base required landmarks.",
+    "Inside-serrated source mesh and reflected head place the pawl below the tail, with a protruding trigger and separated reference cables on the bundle side.",
+    "Only the new immutable factual variant admits teaching-release; original T50SOS-style non-releasable guard and original source/metadata remain exact.",
+    "Schema/registry/camera/saved-family/CAS integration uses existing ratchet and pawl scalar; E06/E10 required behaviors remain separate."
+  ],
+  "identity": {
+    "defaultSource": "sha256:3a59ce85a880bf2f92d90b4cdbbbe9336b44d607b40c13836b8f6888f9f5af5d",
+    "defaultMetadata": "sha256:c4243b4d3f4ae14561f955eff5874d1954adabf944d4daf96ca27d48b22b7a7c",
+    "candidateSource": "sha256:4067278bc9a3b9815a1325fe83b4e776fc6b0859d6f4afd8090bc891290dc4d5",
+    "candidateMetadata": "sha256:877a7b778a7f2daa5232e6be6ac934fe12f55326ed349969b7de75b7202fb191",
+    "metadataBytes": 14042,
+    "meshes": 16,
+    "parts": 6
+  },
+  "owningTests": 42,
+  "actualTestFiles": 5,
+  "closedSurfaceSamples": 21,
+  "preflight": {
+    "receipt": [
+      {
+        "command": ["pnpm", "build"],
+        "actualExitCode": 0,
+        "startedUtc": "2026-10-13T04:50:54.703653+00:00",
+        "endedUtc": "2026-10-13T04:51:06.973443+00:00",
+        "log": "/private/tmp/still-shift-ms3-trigger13-preflight2-0.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "eslint",
+          "packages/scene-contract/src/mechanism/teaching-shapes.ts",
+          "packages/scene-contract/src/mechanism/frame-v2.ts",
+          "packages/scene-contract/src/mechanism/pack-document.ts",
+          "packages/renderer-core/src/mechanism/teaching-pawl.ts",
+          "packages/renderer-core/src/mechanism/teaching-topology.ts",
+          "packages/animation-engine/src/mechanism/cable-tie-release.ts",
+          "packages/animation-engine/src/mechanism/cable-tie-pack.ts",
+          "packages/animation-engine/src/mechanism/camera-descriptions.ts",
+          "packages/animation-engine/src/mechanism/family-registry.ts",
+          "tests/unit/mechanism-release-trigger.test.ts"
+        ],
+        "actualExitCode": 0,
+        "startedUtc": "2026-10-13T04:51:06.974825+00:00",
+        "endedUtc": "2026-10-13T04:51:07.831752+00:00",
+        "log": "/private/tmp/still-shift-ms3-trigger13-preflight2-1.log"
+      },
+      {
+        "command": ["pnpm", "schema:check"],
+        "actualExitCode": 0,
+        "startedUtc": "2026-10-13T04:51:07.832104+00:00",
+        "endedUtc": "2026-10-13T04:51:11.337762+00:00",
+        "log": "/private/tmp/still-shift-ms3-trigger13-preflight2-2.log"
+      },
+      {
+        "command": ["pnpm", "check:boundaries"],
+        "actualExitCode": 0,
+        "startedUtc": "2026-10-13T04:51:11.338067+00:00",
+        "endedUtc": "2026-10-13T04:51:12.247107+00:00",
+        "log": "/private/tmp/still-shift-ms3-trigger13-preflight2-3.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/mechanism-release-trigger.test.ts",
+          "tests/unit/mechanism-family-packs.test.ts",
+          "tests/unit/mechanism-family-authoring.test.ts",
+          "tests/unit/mechanism-family-registry.test.ts",
+          "tests/unit/mechanism-v2-posed-shapes.test.ts",
+          "tests/unit/mechanism-teaching-shapes.test.ts"
+        ],
+        "actualExitCode": 0,
+        "startedUtc": "2026-10-13T04:51:12.247529+00:00",
+        "endedUtc": "2026-10-13T04:51:18.671133+00:00",
+        "log": "/private/tmp/still-shift-ms3-trigger13-preflight2-4.log"
+      }
+    ],
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-preflight2-0.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-preflight2-1.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-preflight2-2.log",
+        "bytes": 502,
+        "sha256": "sha256:904ab0505f30dcbfbc30b28c2b2da22c2d2cc49f3c99a0200defa634e56ec546"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-preflight2-3.log",
+        "bytes": 186,
+        "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-preflight2-4.log",
+        "bytes": 1784,
+        "sha256": "sha256:00e0ecfd8f0c88f321ab05f85d204e93cf31064df983739c5c5287467bcd65c7"
+      }
+    ],
+    "sourceHoldExitCode": 0,
+    "qualification": "Final compile/lint/schema/boundary and42 actual owning tests in5 files pass. Requested mechanism-teaching-shapes.test.ts pattern matched no file; no sixth-file execution claimed."
+  },
+  "packageDeclarations": {
+    "receipt": {
+      "command": ["pnpm", "build:package"],
+      "actualExitCode": 0,
+      "startedUtc": "2026-10-13T04:52:50.418824+00:00",
+      "endedUtc": "2026-10-13T04:53:02.798735+00:00",
+      "log": "/private/tmp/still-shift-ms3-trigger13-package1.log"
+    },
+    "file": {
+      "path": "/private/tmp/still-shift-ms3-trigger13-package1.log",
+      "bytes": 208,
+      "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+    },
+    "qualification": "Declaration build only; no archive/installed/release pass."
+  },
+  "earlierChecks": [
+    {
+      "name": "preflight1",
+      "actualExitCode": 0,
+      "file": {
+        "path": "/private/tmp/still-shift-ms3-trigger13-preflight1.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      },
+      "qualification": "Preliminary compile before final frame/metadata inventory and wrapper release/camera/registry edits."
+    },
+    {
+      "name": "inspect1",
+      "actualExitCode": 1,
+      "file": {
+        "path": "/private/tmp/still-shift-ms3-trigger13-inspect1.log",
+        "bytes": 1662,
+        "sha256": "sha256:e9c857937d8f5d98c70a8d32fe98a050cb531f753a8ca9074b6bed0158c670ce"
+      },
+      "failure": "Frame landmark key regex excluded optional trigger; no factory pass."
+    },
+    {
+      "name": "inspect2",
+      "actualExitCode": 1,
+      "file": {
+        "path": "/private/tmp/still-shift-ms3-trigger13-inspect2.log",
+        "bytes": 1254,
+        "sha256": "sha256:330a243c50ce3fbe07e92c978e71590032f0baad4264ae43b3e5dc50126d4ba9"
+      },
+      "failure": "Pawl metadata summary allowed only two landmarks; no factory pass."
+    },
+    {
+      "name": "inspect3",
+      "actualExitCode": 0,
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger13-inspect3.log",
+          "bytes": 414,
+          "sha256": "sha256:9ed2f29a65a444c28c96df51b2cebd8e9e1c9cefadb17cde942ac622769349a8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger13-inspect1.json",
+          "bytes": 443,
+          "sha256": "sha256:a2371943d8f21119a59ded661efb739d57f184e66094f8cfb8e6065bac2371dc"
+        }
+      ],
+      "scope": "Default old capture identity match plus candidate released reverse poses only."
+    }
+  ],
+  "heldInputs": {
+    "files": 2710,
+    "bytes": 121484911,
+    "inventory": {
+      "path": "/private/tmp/still-shift-ms3-trigger13-preflight2-inputs.json",
+      "bytes": 462666,
+      "sha256": "sha256:d514814985fb4cae5be0e769cca38e4fdab193bd8153dc316dd5be7a0454ec2d"
+    }
+  },
+  "qualification": "Factory/software geometry/controls only. Renderer/contract code changed, so current complete fast/runtime/native/default pixel/independent proof is required; prior E09/E02/current-OS bindings remain historical. No factual/design/whole/continuous/genuine speech/listening/pilot acceptance, physical force claim, spending or publication.",
+  "remaining": [
+    "Current complete fast and runtime tiers.",
+    "Actual native default/release/withdrawal and changed dimensions, independent all-frame decode/images/observations/default parity.",
+    "Resolved visual findings/genuine narration/whole/factual/design reviews, E06/E10 assets/behaviors and all remaining original MS3 pilot/repair/capability/final gates."
+  ]
+}

@@ -128,6 +128,31 @@ its SHA-256 and weight. The repository example uses
 The browser and normal renderer verify and decode these bytes; no system-font
 substitution is used. Installed-package font delivery remains to be verified.
 
+## Inside-serrated releasable candidate
+
+Use `createCableTiePack({ variant: "inside-serrated-extended-trigger-cutaway" })`
+and `inspectCableTiePack("inside-serrated-extended-trigger-cutaway")` for E05's
+separate candidate. It follows the [RELK2R product/closure diagram](https://www.hellermanntyton.com/products/cable-ties-releasable/relk2r/115-02202).
+The model exposes a straight tail/head cutaway, with serrations facing three
+reference cables and a wider flexible trigger extending past the locking tip.
+Dimensions, release curvature and material appearance remain illustrative.
+The selected original outside-serrated variant retains its source/metadata and
+non-releasable guard, including rejection of future authored release keys.
+
+The same `pitch`, `strapWidth` and `toothCount` parameters apply. The new
+reference admits the existing `teaching-release` ratchet policy; engaged reverse
+remains illegal. One `pawlDeflection` scalar moves both catch and trigger, with
+one closed capped mesh. The optional generator `parameters.trigger` declares
+length, width and2–8 sections. Its far section continues the base tangent and
+has a bounded deflection envelope. Root/tip landmarks remain required; a trigger
+landmark is present only when the section is authored. Old unextended topology
+is unchanged. Metadata and frame contracts explicitly admit the new landmark.
+
+Factory checks verify21 closed deformation states, fixed root, downward trigger/
+catch motion, released withdrawal and saved-family CAS/registry identity.
+Current runtime/native/default parity and factual/design/whole/continuous/
+genuine narration/listening/pilot review remain separate. No force rating is inferred.
+
 ## Notched-jaw round-line candidate
 
 E09 uses `createClothespegPack({ variant: "notched-line" })` and

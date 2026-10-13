@@ -26,6 +26,9 @@ Inspect the selected variant through `inspectTapeHookPack("slotted-retention")`.
 Clothespeg includes a `notched-line` example/reference with the selected
 `notched-line-parameters` schema. Its default cloth metadata remains unchanged.
 Use `inspectClothespegPack("notched-line")` for the new candidate's metadata.
+Cable-tie includes an `inside-release` example and the distinct
+`inside-serrated-extended-trigger-cutaway` reference; its default non-releasable
+metadata remains unchanged.
 The exported `TapeHookPackInputSchema`,
 `CableTiePackInputSchema` and `ClothespegPackInputSchema` are the same schemas used
 by their generators. Their `expectedPack` references retain existing strict

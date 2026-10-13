@@ -614,6 +614,7 @@
                       "enum": [
                         "root",
                         "tip",
+                        "trigger",
                         "seat-a",
                         "seat-b",
                         "coil-a",
@@ -725,6 +726,28 @@
                     "type": "integer",
                     "minimum": 2,
                     "maximum": 32
+                  },
+                  "trigger": {
+                    "type": "object",
+                    "properties": {
+                      "length": {
+                        "type": "number",
+                        "exclusiveMinimum": 0,
+                        "maximum": 1000
+                      },
+                      "width": {
+                        "type": "number",
+                        "exclusiveMinimum": 0,
+                        "maximum": 1000
+                      },
+                      "segments": {
+                        "type": "integer",
+                        "minimum": 2,
+                        "maximum": 8
+                      }
+                    },
+                    "required": ["length", "width", "segments"],
+                    "additionalProperties": false
                   }
                 },
                 "required": [
@@ -783,6 +806,7 @@
                       "enum": [
                         "root",
                         "tip",
+                        "trigger",
                         "seat-a",
                         "seat-b",
                         "coil-a",

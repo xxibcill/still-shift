@@ -640,12 +640,15 @@
               },
               "landmarks": {
                 "minItems": 2,
-                "maxItems": 2,
+                "maxItems": 3,
                 "type": "array",
                 "items": {
                   "type": "object",
                   "properties": {
-                    "id": { "type": "string", "enum": ["root", "tip"] },
+                    "id": {
+                      "type": "string",
+                      "enum": ["root", "tip", "trigger"]
+                    },
                     "vertices": {
                       "type": "integer",
                       "minimum": 1,

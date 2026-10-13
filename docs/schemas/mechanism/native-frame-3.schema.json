@@ -374,7 +374,7 @@
                 "type": "object",
                 "propertyNames": {
                   "type": "string",
-                  "pattern": "^(root|tip|seat-a|seat-b|coil-a|coil-b)$"
+                  "pattern": "^(root|tip|trigger|seat-a|seat-b|coil-a|coil-b)$"
                 },
                 "additionalProperties": {
                   "type": "array",

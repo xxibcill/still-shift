@@ -91,7 +91,7 @@ export const MechanismShapeFrameSchema = z
       .strict(),
     landmarks: z
       .record(
-        z.string().regex(/^(root|tip|seat-a|seat-b|coil-a|coil-b)$/),
+        z.string().regex(/^(root|tip|trigger|seat-a|seat-b|coil-a|coil-b)$/),
         MechanismVectorSchema,
       )
       .refine(

@@ -27,6 +27,9 @@ export function describeMechanismPackCameras(
   });
   const notchedLine =
     family === "clothespeg" && scene.parts.some((part) => part.id === "line");
+  const releaseTie =
+    family === "cable-tie" &&
+    scene.anchors.some((anchor) => anchor.id === "release.trigger");
   const whole = parts(
     family === "tape-hook" ? ["hook", "blade", "housing"] : ["model"],
   );
@@ -65,14 +68,20 @@ export function describeMechanismPackCameras(
   } else if (family === "cable-tie") {
     focus = meshes(["pawl.mesh", "head.root"]);
     contact = "pawl.tip";
-    detail = "pawl.root";
+    detail = releaseTie ? "release.trigger" : "pawl.root";
     relationship = ["pawl.tooth.seated", "pawl.root.fixed"];
     proof = [surface("pawl-tip", "pawl.mesh", contact, [1, 0, 0])];
-    directions = [
-      [0.8, 0.4, 1],
-      [1, 0.1, 1],
-      [1, 0.6, 0.7],
-    ];
+    directions = releaseTie
+      ? [
+          [0.8, -0.4, -1],
+          [1, -0.1, -1],
+          [1, -0.6, -0.7],
+        ]
+      : [
+          [0.8, 0.4, 1],
+          [1, 0.1, 1],
+          [1, 0.6, 0.7],
+        ];
   } else {
     focus = meshes(notchedLine ? ["line.round"] : ["spring.mesh"]);
     contact = notchedLine ? "line.front" : "upper.tip";
@@ -137,7 +146,7 @@ export function describeMechanismPackCameras(
     return {
       id,
       intent,
-      motionIntent: `${intent}: ${family === "tape-hook" ? (comparison ? "show the push/outside face" : "show hook travel and the pull/inside face") : family === "cable-tie" ? "show fixed-root pawl lift and seated tooth engagement" : notchedLine ? "show opposing jaw notches and return to round-line contact" : "show seated spring and return to cloth contact"}`,
+      motionIntent: `${intent}: ${family === "tape-hook" ? (comparison ? "show the push/outside face" : "show hook travel and the pull/inside face") : family === "cable-tie" ? (releaseTie ? "show fixed-root trigger press, catch clearance and inside tooth engagement" : "show fixed-root pawl lift and seated tooth engagement") : notchedLine ? "show opposing jaw notches and return to round-line contact" : "show seated spring and return to cloth contact"}`,
       target: {
         kind: full ? "part" : "anchor",
         id: full

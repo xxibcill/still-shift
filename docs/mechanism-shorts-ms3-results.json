@@ -623,6 +623,15 @@
         "pins": 149,
         "defaultDecodedFrameAndAudioParity": true
       }
+    },
+    {
+      "id": "release-trigger13",
+      "record": "docs/mechanism-shorts-ms3-trigger-results.json",
+      "status": "factory-trigger-owning-passed-fast-runtime-native-pending",
+      "owningTests": 42,
+      "closedSurfaceSamples": 21,
+      "defaultIdentitiesPreserved": true,
+      "qualification": "Factory/software geometry/controls only. Renderer/contract code changed, so current complete fast/runtime/native/default pixel/independent proof is required; prior E09/E02/current-OS bindings remain historical. No factual/design/whole/continuous/genuine speech/listening/pilot acceptance, physical force claim, spending or publication."
     }
   ],
   "targets": {

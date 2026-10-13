@@ -125,12 +125,23 @@ const shapeMetadata = z.discriminatedUnion("generator", [
         .array(
           z
             .object({
-              id: z.enum(["root", "tip"]),
+              id: z.enum(["root", "tip", "trigger"]),
               vertices: z.number().int().min(1).max(16),
             })
             .strict(),
         )
-        .length(2),
+        .min(2)
+        .max(3)
+        .refine(
+          (landmarks) =>
+            landmarks.some((l) => l.id === "root") &&
+            landmarks.some((l) => l.id === "tip") &&
+            (landmarks.length === 2 ||
+              landmarks.some((l) => l.id === "trigger")),
+          {
+            message: "Pawl metadata requires root/tip and an optional trigger",
+          },
+        ),
       driver: z
         .object({
           rig: MechanismIdSchema,
