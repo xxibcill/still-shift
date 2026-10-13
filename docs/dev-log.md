@@ -164,7 +164,9 @@ still hold before relying on them.
   216-frame paired-contact metadata audits pass. Two native/two encoded phone
   stills viewed. All315 earlier native frames remain byte-identical; decoded274
   frames change starting313, including two boundary frames. Complete decoded
-  narration is unchanged. Final QA/report remain live; no whole admission.
+  narration is unchanged. E01 sealed/run exits0 with hold0; independent587-frame/
+  scalar/34-image audit passes. E08 row/product/all15 pins and prior E01 product
+  remain exact. Report is still live; five visual errors and whole gates remain.
   [Capability docs](./mechanism-shorts-ms3-capability-results.json) repair four
   stale guides/README against source3/export/installed evidence. Actual discovery
   reads pass after retained IPC denials; scoped machine/generated references stay
@@ -383,8 +385,11 @@ still hold before relying on them.
   Two native/two encoded phone stills viewed. Native315-frame prefix stays exact;
   decoded274 frames change starting313. Complete decoded PCM is identical.
   Source hold2,726/121,710,550B remains exact.
-- **Open / next:** Final overlay export/report are still live; encoded phone views,
-  final neighbor/product audit and current handoff remain. CLI capability
+- **Sealed:** E01 run actually exits0/hold0; independent587-frame/scalar/34-image
+  product audit passes with five visual errors. E08 row/product/all15 pins and
+  original E01 product remain exact. Diagnostics match the current sealed binding.
+- **Open / next:** Final report is still live; capability/recovery integration,
+  fresh bridge proof and original whole/final scope remain. CLI capability
   and bounded bridge recovery drafts are prepared outside the held source tree;
   final isolated typecheck5 and historical pure policy2 pass. Missing export,
   position inference and incidental harness/type-startup failures are retained.

@@ -534,7 +534,7 @@
     "qualification": "Pure all-vertex/witness-size/anchor-visibility authoring preflight only. No new capture, encoded glyph/whole/pilot acceptance. Existing source family, controls, narrated captions and supplied recording remain unchanged."
   },
   "scopedWitnessRevision": {
-    "status": "encoded-diagnostics-audited-final-qa-report-in-flight",
+    "status": "sealed-product-independent-audit-passed-report-in-flight",
     "sourceCommit": "bf56c916a49b0cff265b4372922d6330b7b8268c",
     "revision": 1,
     "cueRevision": 2,
@@ -690,7 +690,7 @@
         }
       }
     ],
-    "qualification": "Native and encoded-file diagnostics complete, but current product/report sealing remains live. Native frames0\u2013314 are byte-identical; decoded frames313\u2013314 also change at the boundary. No unverified codec cause or whole/pilot acceptance is inferred.",
+    "qualification": "Current E01 product sealed and independently audited; full source-held report command remains running. Technical checks retain five sampled-visual errors and unreviewed whole dimensions. Native frames0\u2013314 are byte-identical; decoded frames313\u2013314 also change. No unverified codec cause or pilot acceptance.",
     "encodedStillsActuallyViewed": [362, 498],
     "encodedExtraction": {
       "path": "/private/tmp/still-shift-ms3-framing27-phone/extraction.json",
@@ -720,6 +720,45 @@
       "unchangedPrefixFrames": 313,
       "changedFrameCount": 274,
       "wholeDecodedAudioUnchanged": true
+    },
+    "independentSealedProductAudit": {
+      "actualExitCode": 0,
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-framing28-product-audit-E01.json",
+        "bytes": 62681,
+        "sha256": "sha256:8210462c7eabd2a92ae0c93bf6e249280f08aac3edce83b2d38b37814faf3c6c"
+      },
+      "nativeFrames": 587,
+      "decodedFrames": 587,
+      "images": 34,
+      "scalarComparisons": 587,
+      "warningGroups": 14,
+      "visualErrors": 5,
+      "binding": {
+        "inputSha256": "sha256:d914a01c9e8206f08c85a803ed1b90ae1e3136c8b78410a0520882105965dfe5",
+        "outputSha256": "sha256:ef1e3923d320353ef60881c4c419c22aba28e7c81e6b639fcf04cdac8f7f8fd9",
+        "codeSha256": "sha256:c0206e9900f1f5123425c0384e7ac0cc7dbdeb29f9bf67a04bcdc1a93541483a",
+        "profileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+      },
+      "work": {
+        "freshNativeSubmissions": 587,
+        "reusedNativePlates": false
+      },
+      "qualification": "Technical identity/sample-clock/sampled-mount audit. No whole mechanism/factual/continuous/listening/human/pilot acceptance. AAC output PCM is not claimed byte-identical to source PCM."
+    },
+    "sealedNeighborAudit": {
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-framing28-neighbor1.json",
+        "bytes": 331,
+        "sha256": "sha256:114d0e4767cf08c7c024145599269a1ad98aef24dc82cc10ea35e6cf724204d5"
+      },
+      "status": "passed",
+      "E08RowByteStructureUnchanged": true,
+      "E08Attempts": 1,
+      "E08ArtifactPins": 15,
+      "E01Attempts": 2,
+      "E01PriorProducts": 1,
+      "qualification": "After E01 sealed, the completed E08 row, product and all15 artifacts remain exact. Current report command is still running; whole admission remains open."
     }
   }
 }
