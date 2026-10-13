@@ -73,9 +73,10 @@ still hold before relying on them.
   draft3 adds publication-phase export collision; draft2 has improved child cleanup,
   bounded output/close receipts and distinct captions, but remains unintegrated/
   unrun drafts remain retained. Final harness is now registered in the full test
-  chain and passes compile/lint/pinned toolchain/boundary preflight. Only root
-  package scripts and the new test differ from passed0d59 runtime inputs; no
-  implementation/lock/toolchain files changed.
+  chain and passes compile/lint/pinned toolchain/boundary preflight. At native10
+  registration, only root scripts and the new test differed from passed0d59
+  runtime inputs; implementation/lock/toolchain inputs then stayed exact. The
+  later E02 implementation has its separate9e4ccce1 binding below.
   Native10 actual CLI/OS faults/recovery now pass on held `c474c9c5`, actual0/hold0,
   session3926 closed. SIGKILL after PNG, SIGTERM during cached export, corrupt
   scene/missing audio, owned export collision, targeted retries and relocation
@@ -92,12 +93,14 @@ still hold before relying on them.
   rays pass; initial visibility/camera/test-API/Float32 failures are retained.
   Full bladeLength span is repaired and final preflight source-held. Complete fast
   now passes4,462 tests/441 files on `9e4ccce1`, exact2,705 inputs/121,426,284B.
-  Actual native D0/R1/R2 controls are live under session36579; poll saved handle.
-  Root: /private/tmp/still-shift-ms3-retention-native-1cp5nE.
-  First native draft failed before rendering: label exceeded reading-time
-  budget. Shorter Rivet label preserves the limit; failed files/receipt retained.
-  Terminal/default pixel/independent review evidence remains next. Prior c474
-  native10 evidence is not relabeled as current changed-source acceptance.
+  Native2/session36579 is closed actual0/hold0 on9e4ccce1: three native engineering
+  products/current CLI verify. Independent audit1 actual0/hold0 verifies180 frames,
+  81 images,180 scalars and149 pins; all default decoded pixels/audio match prior
+  c474 cold product. First draft's pre-render reading-time admission failure is
+  retained; shorter Rivet label preserves its limit. All three products retain7
+  sampled visual errors; overview is insufficient readable retention proof.
+  E02 factual/design/whole/genuine narration/pilot admission stays open. Prior
+  c474 native10 evidence keeps its separate source binding.
   Scoped/MS1 repair, ten frozen questions,
   five assets/two behaviors, genuine inputs/reviews, capability reconciliation
   and final full/archive/installed verification remain. Coverage is 0/10; no
@@ -305,8 +308,10 @@ still hold before relying on them.
   test patch-result misuse and double-vs-Float32 extent expectation. Full blade
   length now preserves its exact geometric span; final preflight refreshed.
 - **Results added:** Complete fast4,462/441 actually passes on `9e4ccce1`,
-  with2,705 inputs/121,426,284B exact; native controls live/session36579.
-- **Open / next:** Actual candidate/default native terminal/independent evidence,
+  with2,705 inputs/121,426,284B exact. Native2 is now closed actual0/hold0;
+  independent audit actual0/hold0 verifies180 frames/81 images/180 scalars/149 pins
+  and exact all-frame default picture/audio parity against priorc474 capture.
+- **Open / next:** Clear retention views, retained visual findings,
   factual/design/genuine narration/reviews and remaining original MS3 work.
 - **Records:** [retention candidate](./mechanism-shorts-ms3-retention-results.json),
   [tracker](./mechanism-shorts-ms3-acceptance.md). Accepted pilot remains0/10.

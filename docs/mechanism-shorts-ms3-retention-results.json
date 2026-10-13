@@ -5,7 +5,7 @@
   "episode": "E02",
   "branch": "codex/mechanism-ms3",
   "baseCommit": "c2eec22811fac0cc9eca056089b1ed3edf560ead",
-  "status": "factory-candidate-complete-fast-passed-native2-running",
+  "status": "factory-candidate-fast-native-independent-audit-passed",
   "sourceSnapshot": [
     {
       "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/tape-slotted-retention.ts",
@@ -427,11 +427,10 @@
     },
     "actualHoldExitCode": 0
   },
-  "qualification": "Factory/software candidate only. Original E02 factual/design/actual native/continuous/visual/genuine narration/listening/pilot admission remains open. No newly accepted asset or episode; no ElevenLabs spend. Native10 on c474c9c5 retains its exact prior source binding, not current changed-source acceptance.",
+  "qualification": "Distinct factory/software/native engineering candidate on exact9e4ccce1 with complete fast,180 fresh native submissions and149-pin independent audit; all180 final decoded frames/81 images/180 native scalar samples verify and default all-frame pixels/audio match priorc474 cold product. Seven sampled visual errors remain per product; whole/factual/design/continuous/listening/genuine narration/pilot acceptance remains open. No newly accepted asset/episode, ElevenLabs spending or publication.",
   "remaining": [
-    "Actual native/default/candidate controls terminal/source-hold receipts and independent complete decode/image/matrix/history/default pixel audit.",
-    "Actual native observed candidate renders, readable retention proof, default pixel identity and complete decoded review evidence.",
-    "Independent factual/design/mechanical review, genuine E02 narration and eventual original frozen-pilot admission."
+    "Readable retention explanation views and resolved original QA/whole/factual/design/continuous/genuine speech/listening evidence for E02.",
+    "Remaining original four new assets/two behaviors, all ten frozen questions, scoped/MS1 repair, broader faults/capability reconciliation and final full/benchmark/archive/installed work."
   ],
   "independentFactoryRay": {
     "receipt": {
@@ -606,13 +605,13 @@
       ]
     },
     {
-      "status": "running",
+      "status": "passed",
       "command": "node --import tsx /private/tmp/still-shift-ms3-retention11-native2.mts",
       "sourceCommit": "9e4ccce166d8f3f04c32923fae5b20dc3a8535da",
       "startedUtc": "2026-10-13T03:07:46.051164+00:00",
       "pid": 47263,
       "inventory": "/private/tmp/still-shift-ms3-retention11-native2-inputs.json",
-      "actualExitCode": null,
+      "actualExitCode": 0,
       "session": 36579,
       "harness": {
         "path": "/private/tmp/still-shift-ms3-retention11-native2.mts",
@@ -625,8 +624,126 @@
         "sha256": "sha256:e28b559f21bf147ed391b962e1fff18a24751da3efbd5bac73dc324151c18466"
       },
       "logPath": "/private/tmp/still-shift-ms3-retention11-native2.log",
-      "resume": "Poll session36579; if closed inspect saved receipt/log/root run or failure. Do not restart a confirmed live run. The first failed admission is retained separately.",
-      "root": "/private/tmp/still-shift-ms3-retention-native-1cp5nE"
+      "root": "/private/tmp/still-shift-ms3-retention-native-1cp5nE",
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-13T03:25:09.640104+00:00",
+      "run": {
+        "path": "/private/tmp/still-shift-ms3-retention-native-1cp5nE/run.json",
+        "bytes": 482,
+        "sha256": "sha256:f155ab43f16adf66b78026452426e9749ffb8c16b26ee36222b5a913bf52dd0d"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-retention11-native2.log",
+        "bytes": 1497,
+        "sha256": "sha256:cc0d64a814f84949881cf8491fc46625df41efe92d2e8d9f77f7acfe3176257e"
+      },
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-retention11-native2-receipt.json",
+        "bytes": 426,
+        "sha256": "sha256:2caf748051c383551a31e9a8c030e6516277dc5434cc2914862b601c1bc38cca"
+      },
+      "qualification": "Actual current-source three declarative engineering products and current CLI report pass; first pre-render reading admission failure retained."
     }
-  ]
+  ],
+  "independentAudit": {
+    "receipt": {
+      "status": "passed",
+      "startedUtc": "2026-10-13T03:26:33.942018+00:00",
+      "pid": 76100,
+      "sourceCommit": "9e4ccce166d8f3f04c32923fae5b20dc3a8535da",
+      "documentationHead": "d9a32280c03f08d6a804940ccca0ee852261f9ce",
+      "nativeRun": "/private/tmp/still-shift-ms3-retention-native-1cp5nE",
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-13T03:26:36.485758+00:00"
+    },
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-retention11-audit1.py",
+        "bytes": 12336,
+        "sha256": "sha256:9f8ea112475978f57f13937b47ad4f9a70ae4989e4d5a4c2264a955c6f7c1c6d"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-retention11-audit1-wrapper.py",
+        "bytes": 1371,
+        "sha256": "sha256:de9083dc7eed362ce7b1040d82bf13c9008fc81fd03a85a2fd5f66be491b3f9a"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-retention11-audit1.log",
+        "bytes": 929,
+        "sha256": "sha256:9bc839859d07a79142ed1dbc3c6cf384b4634fe6ce4d0a8a40232a7fe9478c7f"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-retention11-audit1-receipt.json",
+        "bytes": 398,
+        "sha256": "sha256:f569caacf7f2d48d2b36fa7bdc4dce423f8a4de768c84f83d93c8b64a68e6419"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-retention11-audit1.json",
+        "bytes": 65096,
+        "sha256": "sha256:706dc4c58d967821982ab3aa24b9ce71ffd1cc220668c9fa7da2b453a8f64b8e"
+      }
+    ],
+    "summary": {
+      "products": 3,
+      "decodedFrames": 180,
+      "images": 81,
+      "actualScalarSamples": 180,
+      "independentNativeCaptures": 3,
+      "freshNativeSubmissions": 180
+    },
+    "pins": 149,
+    "defaultDecodedFrameAndAudioParity": true,
+    "methods": [
+      "all pinned artifacts/original native anchors/matrices/scalars/rules/warnings",
+      "full RGBA/video/audio decode and exact image/crop/phone equality",
+      "all three current technical reports and distinct candidate/reference geometry",
+      "exact all-frame decoded default picture/audio comparison against prior c474 native10 cold product"
+    ],
+    "qualification": "Current engineering software/native/decoded evidence only. No actual native mesh cavity clearance, readable retention/factual/design/whole/continuous/listening/genuine speech/pilot acceptance."
+  },
+  "currentReport": {
+    "path": "/private/tmp/still-shift-ms3-retention-native-1cp5nE/current-report.json",
+    "bytes": 44857,
+    "sha256": "sha256:4a6291906341957083159f35b15c2b627115ea2e2b702a864b7d90c0407bac78"
+  },
+  "engineeringReviewCounts": {
+    "technical": {
+      "passed": 3,
+      "failed": 0,
+      "unreviewed": 0
+    },
+    "mechanical": {
+      "passed": 0,
+      "failed": 0,
+      "unreviewed": 3
+    },
+    "sampled-visual": {
+      "passed": 0,
+      "failed": 3,
+      "unreviewed": 0
+    },
+    "continuous-motion": {
+      "passed": 0,
+      "failed": 0,
+      "unreviewed": 3
+    },
+    "listening": {
+      "passed": 0,
+      "failed": 0,
+      "unreviewed": 3
+    },
+    "factual": {
+      "passed": 0,
+      "failed": 0,
+      "unreviewed": 3
+    }
+  },
+  "engineeringFirstPass": {
+    "completed": 3,
+    "passed": 3,
+    "rate": 1,
+    "targetSatisfied": true
+  },
+  "reviewedReady": 0
 }
