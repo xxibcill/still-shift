@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "blender-native-capture-job-1"
+    },
+    "id": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "assetPath": { "type": "string", "minLength": 1, "maxLength": 2048 },
+    "assetSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "collection": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "camera": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "requireEmbeddedResources": { "default": false, "type": "boolean" },
+    "outputDirectory": { "type": "string", "minLength": 1, "maxLength": 2048 },
+    "width": { "type": "integer", "minimum": 16, "maximum": 4096 },
+    "height": { "type": "integer", "minimum": 16, "maximum": 4096 },
+    "fps": { "type": "integer", "minimum": 1, "maximum": 120 },
+    "samples": {
+      "default": 32,
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 256
+    },
+    "controller": {
+      "type": "object",
+      "properties": {
+        "object": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "properties": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "min": {
+                "type": "number",
+                "minimum": -1000000,
+                "maximum": 1000000
+              },
+              "max": {
+                "type": "number",
+                "minimum": -1000000,
+                "maximum": 1000000
+              }
+            },
+            "required": ["min", "max"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["object", "properties"],
+      "additionalProperties": false
+    },
+    "frames": {
+      "minItems": 1,
+      "maxItems": 2000,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "sourceFrame": { "type": "number", "minimum": 0, "maximum": 108000 },
+          "camera": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "controls": {
+            "default": {},
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "additionalProperties": {
+              "type": "number",
+              "minimum": -1000000,
+              "maximum": 1000000
+            }
+          },
+          "hiddenParts": {
+            "default": [],
+            "maxItems": 128,
+            "type": "array",
+            "items": { "type": "string", "minLength": 1, "maxLength": 256 }
+          }
+        },
+        "required": ["sourceFrame", "controls", "hiddenParts"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "assetPath",
+    "assetSha256",
+    "collection",
+    "camera",
+    "requireEmbeddedResources",
+    "outputDirectory",
+    "width",
+    "height",
+    "fps",
+    "samples",
+    "frames"
+  ],
+  "additionalProperties": false
+}

@@ -140,3 +140,19 @@ adds authenticated cached-preview pixels/glyphs, exact speech-cue metadata and
 zero-new-native submission counters to bound production artifacts. Its five
 engineering products/300 frames and retained fault controls keep whole reviews
 unreviewed; existing genuine pilot products retain their historical bindings.
+
+## Native Blender queue routing
+
+For saved native Blender sources, create the version2 queue with
+`--backend blender-native --blender-executable /absolute/host/Blender`.
+Run/report inspect the pinned manifest version; version2 requires that explicit
+host executable and verifies its actual profile. A supplied `--backend` must
+match the manifest before either producer is constructed. Version1 creation and
+execution retain their original Three.js default. Retry preserves either version
+and starts no producer. Source/project locators and the requested destination
+folder are canonicalized before binding and immutable publication.
+
+The [native episode guide](./mechanism-blender-episode.md) documents source/plan
+fields and the CLI commands. The shared [generated capability reference](./mechanism-production-capabilities.md)
+and `production discover/schema` expose the same implemented limits and candidate
+qualification. Native QA-plan/grouped-warning/evidence/handoff work remains open.

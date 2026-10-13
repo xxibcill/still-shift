@@ -1,3 +1,13 @@
+import {
+  BlenderCaptureJobSchema,
+  BLENDER_CAPTURE_LIMITS,
+} from "./blender-capture-contract.ts";
+import {
+  BlenderEpisodeSourceSchema,
+  BlenderEpisodePlanSchema,
+  BLENDER_EPISODE_LIMITS,
+} from "./blender-episode-contract.ts";
+import { BlenderEpisodePlatesSchema } from "./blender-episode-plates.ts";
 import { MECHANISM_STATIC_MOMENT_LIMITS } from "@still-shift/scene-contract";
 import { MechanismProductionRetrySchema } from "./production-retry.ts";
 import { MechanismProductionProjectsSchema } from "./production-projects.ts";
@@ -18,11 +28,14 @@ import {
 import { z } from "zod";
 import {
   MechanismProductionQueueSchema,
+  BlenderProductionQueueSchema,
+  BlenderProductionQueueProductSchema,
   MechanismProductionQueueStateSchema,
   MECHANISM_PRODUCTION_QUEUE_LIMITS,
 } from "./production-queue-contract.ts";
 import {
   MechanismProductionEpisodeReportSchema,
+  BlenderProductionEpisodeReportSchema,
   MechanismProductionCohortReportSchema,
   MechanismProductionQASchema,
 } from "./production-report.ts";
@@ -37,6 +50,13 @@ import {
 import { MECHANISM_RESPONSE_LIMITS } from "./protocol.ts";
 import { freezeMechanismPack } from "./pack-support.ts";
 export const mechanismProductionSchemas = {
+  "blender-native-capture-job": BlenderCaptureJobSchema,
+  "blender-episode-source": BlenderEpisodeSourceSchema,
+  "blender-episode-plan": BlenderEpisodePlanSchema,
+  "blender-episode-plates": BlenderEpisodePlatesSchema,
+  "blender-production-queue": BlenderProductionQueueSchema,
+  "blender-production-product": BlenderProductionQueueProductSchema,
+  "blender-production-episode-report": BlenderProductionEpisodeReportSchema,
   "production-retry": MechanismProductionRetrySchema,
   "production-projects": MechanismProductionProjectsSchema,
   "production-qa-plan": MechanismProductionQAPlanSchema,
@@ -113,6 +133,39 @@ export function inspectMechanismProductionCapabilities() {
       missingMeasurement: "absent-position-or-inadmissible-balance",
       assumption: "fixed-axis-rigid-arm-prescribed-resistance-1",
     },
+    backendSelection: {
+      creationDefault: "three-native",
+      execution: "pinned-manifest-schema-version",
+      explicitFlag: "--backend",
+      values: ["three-native", "blender-native"],
+      blenderExecutableFlag: "--blender-executable",
+      blenderExecutable: "explicit-required-host-executable-no-auto-install",
+      mismatches: "reject-before-producer-construction",
+      retry: "manifest-version-preserved-no-producer-execution",
+    },
+    nativeBlenderExecutor: {
+      status: "candidate",
+      manifestSchema: "mechanism-production-queue-2",
+      commands: ["queue", "run", "retry", "report"],
+      resourcePolicy: "embedded-only",
+      source: "saved-native-collection-controls-cameras-and-material-graphs",
+      receiver: "verified-sequence-native-text-and-whole-audio",
+      meshDriverShaderTransfer: "not-provided",
+      captureLimits: BLENDER_CAPTURE_LIMITS,
+      episodeLimits: BLENDER_EPISODE_LIMITS,
+      cache:
+        "per-state-producer-profile-and-native-source-key-with-original-pins",
+      nativeCounterEvidence:
+        "sealed-original-Blender-capture-submission-receipts",
+      technicalChecks:
+        "canonical-input-pins-current-capture-controls-cameras-full-RGBA-PCM-decode",
+      pending: [
+        "native-QA-plan",
+        "grouped-native-warnings",
+        "native-review-evidence-handoff",
+        "whole-pilot-review",
+      ],
+    },
     nativeExecutor: {
       families: ["tape-hook", "cable-tie", "clothespeg"],
       packDisposition: "candidate",
@@ -169,7 +222,24 @@ unchanged completed neighbors keep their products. The three-attempt/revision,
 96-attempt/item and 32-revision bounds remain fixed. Retry performs no execution;
 run consumes its authorization, retaining original failed attempts and reviews.
 
-The native production profile is ${c.nativeExecutor.profile.backend} with\n${c.nativeExecutor.profile.transport} transport. The three pack families remain\ncandidates. Operational QA replays original output-frame scalars and current cue timeline checks,
+Queue creation defaults to \`three-native\`. Select \`--backend blender-native\`
+with \`--blender-executable /absolute/host/Blender\` for native source/plan documents.
+Run and report choose the backend from the pinned manifest version; an optional
+\`--backend\` must agree. Blender version2 manifests require the same explicit host
+executable/profile. Retry keeps either manifest version and executes no producer.
+The Blender source policy is ${c.nativeBlenderExecutor.resourcePolicy}; its receiver
+uses verified sequences, native editable text and whole original audio. Source/control
+tracks remain in Blender. Capture limits are ${c.nativeBlenderExecutor.captureLimits.frames}
+frames, ${c.nativeBlenderExecutor.captureLimits.controls} controls and
+${c.nativeBlenderExecutor.captureLimits.pixels} pixels. Episode plans allow
+${c.nativeBlenderExecutor.episodeLimits.shots} shots and
+${c.nativeBlenderExecutor.episodeLimits.speechCues} speech cues in
+${c.nativeBlenderExecutor.episodeLimits.documentBytes} bytes. These are candidate
+technical lifecycle limits. Native QA-plan/grouped-warning/review-evidence/handoff
+integration and whole pilot acceptance remain pending; unsupported \`qaPath\`
+declarations reject. The handoff command retains its original Three.js scope.
+
+The three-family native production profile is ${c.nativeExecutor.profile.backend} with\n${c.nativeExecutor.profile.transport} transport. The three pack families remain\ncandidates. Operational QA replays original output-frame scalars and current cue timeline checks,
 retains raw warnings and exact grouped peaks, and links immutable facts in reports and
 handoffs. A custom QA plan is a pinned declarative dependency. State-lint admission is
 2 MiB plus 4 KiB per generated layer-frame, capped by the published capacity and shared

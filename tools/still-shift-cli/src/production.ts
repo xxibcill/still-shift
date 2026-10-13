@@ -2,8 +2,12 @@ import {
   inspectMediaCapabilities,
   mediaCapabilityRows,
 } from "./media-capabilities.ts";
+import {
+  createProductionCliExecutor,
+  validateProductionBackendFlags,
+} from "./production-backend.ts";
 import { executeProductionCommand } from "./production-execution.ts";
-import { mkdtemp } from "node:fs/promises";
+import { mkdtemp, realpath } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { z } from "zod";
@@ -11,12 +15,11 @@ import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
 import {
   mechanismProductionFailureFinding,
   readMechanismProductionReports,
-  createMechanismProductionNativeExecutor,
   inspectMechanismProductionCapabilities,
   MechanismProductionSchemaSelectionSchema,
   mechanismProductionSchemas,
   MechanismProductionHandoffSchema,
-  MechanismProductionQueueCheckpointSchema,
+  MechanismProductionQueueCheckpointVersionsSchema,
 } from "@still-shift/animation-engine";
 import {
   createMechanismCommandReceipt,
@@ -55,7 +58,7 @@ export async function runProductionCli(
     const flags = parseNamedArguments(
       args.slice(1),
       command === "queue"
-        ? ["projects", "manifest"]
+        ? ["projects", "manifest", "backend", "blender-executable"]
         : command === "retry"
           ? ["manifest", "output-dir", "request", "report"]
           : command === "schema"
@@ -63,9 +66,25 @@ export async function runProductionCli(
             : command === "discover"
               ? ["report"]
               : command === "handoff"
-                ? ["manifest", "output-dir", "episode", "report"]
-                : ["manifest", "output-dir", "report", "offset", "limit"],
+                ? [
+                    "manifest",
+                    "output-dir",
+                    "episode",
+                    "report",
+                    "backend",
+                    "blender-executable",
+                  ]
+                : [
+                    "manifest",
+                    "output-dir",
+                    "report",
+                    "offset",
+                    "limit",
+                    "backend",
+                    "blender-executable",
+                  ],
     );
+    validateProductionBackendFlags(flags);
     const offset = Number(flags.get("offset") ?? 0),
       limit = Number(flags.get("limit") ?? 100);
     if (
@@ -142,7 +161,7 @@ export async function runProductionCli(
       });
       summary = { scope: "mechanism-production", kind };
     } else {
-      const executor = await createMechanismProductionNativeExecutor();
+      const executor = await createProductionCliExecutor(flags, owner, true);
       const bundle = await readMechanismProductionReports(
         requireArgument(flags, "manifest"),
         requireArgument(flags, "output-dir"),
@@ -161,10 +180,12 @@ export async function runProductionCli(
           throw Error(
             "Handoff requires a selected episode with current verified artifacts; inspect production report exceptions and resume the queue.",
           );
-        const root = resolve(requireArgument(flags, "output-dir"));
+        const root = await realpath(
+          resolve(requireArgument(flags, "output-dir")),
+        );
         const product = await readProductionJSON(
           await productionOwnedPath(root, episode.product.path),
-          MechanismProductionQueueCheckpointSchema,
+          MechanismProductionQueueCheckpointVersionsSchema,
           owner,
           4 * 1024 * 1024,
         );

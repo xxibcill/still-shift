@@ -61,12 +61,12 @@ const DEFAULT_IO: CliIo = {
 const HELP = `Still Shift v${ENGINE_VERSION}
 
 Usage:
-  pnpm still-shift production queue --projects <projects.json> --manifest <new-queue.json>
+  pnpm still-shift production queue --projects <projects.json> --manifest <new-queue.json> [--backend three-native|blender-native] [--blender-executable <host-path>]
   pnpm still-shift production retry --manifest <queue.json> --output-dir <queue-output> --request <retry.json>
-  pnpm still-shift production run --manifest <queue.json> --output-dir <queue-output> [--report <new-state.json>]
+  pnpm still-shift production run --manifest <queue.json> --output-dir <queue-output> [--blender-executable <host-path>] [--report <new-state.json>]
   pnpm still-shift production discover
   pnpm still-shift production schema --kind <kind>
-  pnpm still-shift production report --manifest <queue.json> --output-dir <queue-output> [--report <fresh.json>]
+  pnpm still-shift production report --manifest <queue.json> --output-dir <queue-output> [--blender-executable <host-path>] [--report <fresh.json>]
   pnpm still-shift episode discover|schema
   pnpm still-shift episode inspect|validate|deps|summary --input <episode.json>
   pnpm still-shift episode init-tape-hook --output-dir <fresh-dir> --font <font.ttf> [--font-license <OFL.txt>] [--audio <audio.wav>] [--captions <captions.json>]

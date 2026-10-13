@@ -1,11 +1,11 @@
 import { failureDiagnostic } from "@still-shift/scene-contract";
 import type { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
 import {
-  createMechanismProductionNativeExecutor,
   createMechanismProductionQueueFile,
   runMechanismProductionQueue,
   retryMechanismProductionQueue,
 } from "@still-shift/animation-engine";
+import { createProductionCliExecutor } from "./production-backend.ts";
 import { requireArgument } from "./named-options.ts";
 import type { MechanismReceiptRow } from "../../../packages/animation-engine/src/mechanism/protocol.ts";
 
@@ -14,6 +14,7 @@ async function runQueue(
   manifest: string,
   output: string,
   owner: CompositionNodeMemory,
+  flags: Map<string, string>,
 ) {
   const controller = new AbortController();
   const interrupt = () =>
@@ -23,7 +24,12 @@ async function runQueue(
   process.on("SIGINT", interrupt);
   process.on("SIGTERM", terminate);
   try {
-    const executor = await createMechanismProductionNativeExecutor();
+    const executor = await createProductionCliExecutor(
+      flags,
+      owner,
+      true,
+      controller.signal,
+    );
     const state = await runMechanismProductionQueue(
       manifest,
       output,
@@ -79,7 +85,7 @@ export async function executeProductionCommand(
     const complete = await createMechanismProductionQueueFile(
       requireArgument(flags, "projects"),
       requireArgument(flags, "manifest"),
-      await createMechanismProductionNativeExecutor(),
+      await createProductionCliExecutor(flags, owner, false),
       { nodeMemory: owner },
     );
     return {
@@ -113,6 +119,7 @@ export async function executeProductionCommand(
     requireArgument(flags, "manifest"),
     requireArgument(flags, "output-dir"),
     owner,
+    flags,
   );
   if (complete === null)
     return {

@@ -42,7 +42,24 @@ unchanged completed neighbors keep their products. The three-attempt/revision,
 96-attempt/item and 32-revision bounds remain fixed. Retry performs no execution;
 run consumes its authorization, retaining original failed attempts and reviews.
 
-The native production profile is webgl2 with
+Queue creation defaults to `three-native`. Select `--backend blender-native`
+with `--blender-executable /absolute/host/Blender` for native source/plan documents.
+Run and report choose the backend from the pinned manifest version; an optional
+`--backend` must agree. Blender version2 manifests require the same explicit host
+executable/profile. Retry keeps either manifest version and executes no producer.
+The Blender source policy is embedded-only; its receiver
+uses verified sequences, native editable text and whole original audio. Source/control
+tracks remain in Blender. Capture limits are 2000
+frames, 64 controls and
+8388608 pixels. Episode plans allow
+128 shots and
+256 speech cues in
+1048576 bytes. These are candidate
+technical lifecycle limits. Native QA-plan/grouped-warning/review-evidence/handoff
+integration and whole pilot acceptance remain pending; unsupported `qaPath`
+declarations reject. The handoff command retains its original Three.js scope.
+
+The three-family native production profile is webgl2 with
 raw_rgba transport. The three pack families remain
 candidates. Operational QA replays original output-frame scalars and current cue timeline checks,
 retains raw warnings and exact grouped peaks, and links immutable facts in reports and

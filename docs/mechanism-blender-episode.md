@@ -81,9 +81,9 @@ Verification reopens the captured origins, current mapping, composition and
 encoded output without another Blender render. Technical QA binds current
 input/output/code/profile/clocks. The remaining five review dimensions stay
 unreviewed. Source changes require exact-CAS queue revisions; historical products
-keep their original identities. The existing production CLI still selects the
-Three.js executor; Blender command routing and native QA-plan/handoff integration
-remain pending. `qaPath` declarations are rejected by this candidate factory.
+keep their original identities. The production CLI now routes queue/run/report to this backend from explicit
+creation selection and pinned manifest versions. Native QA-plan/handoff integration
+remains pending. `qaPath` declarations are rejected by this candidate factory.
 
 Limits are1MiB per source/plan,2,000 output frames,128 shots,256 speech cues,
 256 keys per track,64 controls,4,096px per dimension and8,388,608 pixels. Sampling
@@ -97,3 +97,25 @@ retains the actual full Alden zipper engineering draft, cache/font/caption repai
 and failed checks. Its320×568 draft supplies no1080×1920 production, whole glyph,
 mechanical/contact, factual, continuous-motion or listening acceptance. Current
 pilot admission remains0/10; the other nine episode plans and final gates remain.
+
+## Production CLI
+
+Use the same strict `mechanism-production-projects-1` declaration with native
+`source.json` and `plan.json` paths. Creation defaults to the Three.js adapter;
+select Blender explicitly for a new native queue. The host executable is required
+for Blender creation, execution and reporting. Run/report select the backend from
+the manifest; an optional `--backend` must agree with that version. Retry grants a
+bounded exact-CAS batch without constructing either producer.
+
+```sh
+pnpm still-shift production queue --projects projects.json --manifest queue.json --backend blender-native --blender-executable /Applications/Blender.app/Contents/MacOS/Blender
+pnpm still-shift production run --manifest queue.json --output-dir output --blender-executable /Applications/Blender.app/Contents/MacOS/Blender
+pnpm still-shift production report --manifest queue.json --output-dir output --blender-executable /Applications/Blender.app/Contents/MacOS/Blender --report fresh-report.json
+```
+
+`production discover` exposes both candidate backends and their actual limits.
+`production schema --kind blender-episode-source` and the other `blender-*`
+selectors emit the same strict source/plan/capture/map/queue/product/report
+contracts used by the runtime. These declarations establish technical routing;
+they supply no supported-pack, whole-review or pilot qualification. Native
+handoff generation remains pending and returns a missing-artifact exception.

@@ -1,4 +1,4 @@
-import { readFile, writeFile, rm, stat } from "node:fs/promises";
+import { readFile, writeFile, rm, stat, realpath } from "node:fs/promises";
 import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
 import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
@@ -22,6 +22,7 @@ async function setup() {
     })),
   };
   await writeFile(projectsPath, JSON.stringify(input));
+  const canonicalRoot = await realpath(f.root);
   const factory = {
     createQueue: async (
       _id: string,
@@ -40,7 +41,7 @@ async function setup() {
         cuePath: relative(directory, projects[index]!.cuePath),
         inputs: item.inputs.map((pin) => ({
           ...pin,
-          path: relative(directory, join(f.root, pin.path)),
+          path: relative(directory, join(canonicalRoot, pin.path)),
         })),
       })),
     }),

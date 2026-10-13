@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "blender-episode-plan-1" },
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$" },
+    "locale": { "type": "string", "enum": ["en", "th"] },
+    "width": { "type": "integer", "minimum": 16, "maximum": 4096 },
+    "height": { "type": "integer", "minimum": 16, "maximum": 4096 },
+    "fps": { "type": "integer", "minimum": 1, "maximum": 120 },
+    "samples": { "type": "integer", "minimum": 1, "maximum": 256 },
+    "background": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+    "narration": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z][\\w-]*$"
+        },
+        "path": { "type": "string", "minLength": 1, "maxLength": 1024 },
+        "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "type": { "type": "string", "const": "audio" },
+        "sampleRate": { "type": "number", "const": 48000 },
+        "sampleCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 172800000
+        },
+        "channels": {
+          "anyOf": [
+            { "type": "number", "const": 1 },
+            { "type": "number", "const": 2 }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "path",
+        "sha256",
+        "type",
+        "sampleRate",
+        "sampleCount",
+        "channels"
+      ],
+      "additionalProperties": false
+    },
+    "originalNarrationClock": {
+      "type": "object",
+      "properties": {
+        "sampleRate": { "type": "integer", "minimum": 8000, "maximum": 192000 },
+        "samples": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 172800000
+        }
+      },
+      "required": ["sampleRate", "samples"],
+      "additionalProperties": false
+    },
+    "font": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string", "minLength": 1, "maxLength": 1024 },
+        "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "weight": { "type": "string", "pattern": "^[1-9]00$" }
+      },
+      "required": ["path", "sha256", "weight"],
+      "additionalProperties": false
+    },
+    "sourceFrameTrack": {
+      "minItems": 1,
+      "maxItems": 256,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "frame": { "type": "integer", "minimum": 0, "maximum": 1999 },
+          "value": {
+            "type": "number",
+            "minimum": -1000000,
+            "maximum": 1000000
+          },
+          "interpolation": {
+            "type": "string",
+            "enum": ["hold", "linear", "smoothstep"]
+          }
+        },
+        "required": ["frame", "value", "interpolation"],
+        "additionalProperties": false
+      }
+    },
+    "controlTracks": {
+      "type": "object",
+      "propertyNames": { "type": "string", "minLength": 1, "maxLength": 256 },
+      "additionalProperties": {
+        "minItems": 1,
+        "maxItems": 256,
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "frame": { "type": "integer", "minimum": 0, "maximum": 1999 },
+            "value": {
+              "type": "number",
+              "minimum": -1000000,
+              "maximum": 1000000
+            },
+            "interpolation": {
+              "type": "string",
+              "enum": ["hold", "linear", "smoothstep"]
+            }
+          },
+          "required": ["frame", "value", "interpolation"],
+          "additionalProperties": false
+        }
+      }
+    },
+    "shots": {
+      "minItems": 1,
+      "maxItems": 128,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "start": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "endExclusive": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "camera": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "hiddenParts": {
+            "maxItems": 128,
+            "type": "array",
+            "items": { "type": "string", "minLength": 1, "maxLength": 256 }
+          }
+        },
+        "required": ["id", "start", "endExclusive", "camera", "hiddenParts"],
+        "additionalProperties": false
+      }
+    },
+    "speech": {
+      "minItems": 1,
+      "maxItems": 256,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "text": { "type": "string", "minLength": 1, "maxLength": 1024 },
+          "startSample": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "endSampleExclusive": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": ["id", "text", "startSample", "endSampleExclusive"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "locale",
+    "width",
+    "height",
+    "fps",
+    "samples",
+    "background",
+    "narration",
+    "originalNarrationClock",
+    "font",
+    "sourceFrameTrack",
+    "controlTracks",
+    "shots",
+    "speech"
+  ],
+  "additionalProperties": false
+}

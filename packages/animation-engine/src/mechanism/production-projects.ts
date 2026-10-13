@@ -1,11 +1,12 @@
-import { dirname, resolve } from "node:path";
+import { mkdir, realpath } from "node:fs/promises";
+import { basename, dirname, resolve } from "node:path";
 import { z } from "zod";
 import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
 import {
-  MechanismProductionQueueSchema,
+  MechanismProductionQueueVersionsSchema as MechanismProductionQueueSchema,
   MechanismProductionQueueItemSchema,
   MECHANISM_PRODUCTION_QUEUE_LIMITS as LIMIT,
-  type MechanismProductionQueue,
+  type MechanismProductionQueueAny as MechanismProductionQueue,
 } from "./production-queue-contract.ts";
 import {
   readProductionJSON,
@@ -101,7 +102,7 @@ export async function createMechanismProductionQueueFile(
     );
     try {
       options.signal?.throwIfAborted();
-      const sourceDirectory = dirname(inputPath);
+      const sourceDirectory = dirname(await realpath(inputPath));
       const projects = input.value.projects.map((p) => ({
         id: p.id,
         question: p.question,
@@ -111,12 +112,16 @@ export async function createMechanismProductionQueueFile(
           ? {}
           : { qaPath: resolve(sourceDirectory, p.qaPath) }),
       }));
+      for (const project of projects) {
+        project.familyPath = await realpath(project.familyPath);
+        project.cuePath = await realpath(project.cuePath);
+        if (project.qaPath !== undefined)
+          project.qaPath = await realpath(project.qaPath);
+      }
+      await mkdir(dirname(destination), { recursive: true });
+      const manifestDirectory = await realpath(dirname(destination));
       const manifest = MechanismProductionQueueSchema.parse(
-        await factory.createQueue(
-          input.value.id,
-          projects,
-          dirname(destination),
-        ),
+        await factory.createQueue(input.value.id, projects, manifestDirectory),
       );
       if (
         manifest.id !== input.value.id ||
@@ -126,12 +131,12 @@ export async function createMechanismProductionQueueFile(
           return (
             item.id !== project.id ||
             item.question !== project.question ||
-            resolve(dirname(destination), item.familyPath) !==
+            resolve(manifestDirectory, item.familyPath) !==
               project.familyPath ||
-            resolve(dirname(destination), item.cuePath) !== project.cuePath ||
+            resolve(manifestDirectory, item.cuePath) !== project.cuePath ||
             (item.qaPath === undefined
               ? undefined
-              : resolve(dirname(destination), item.qaPath)) !== project.qaPath
+              : resolve(manifestDirectory, item.qaPath)) !== project.qaPath
           );
         })
       )
@@ -142,7 +147,7 @@ export async function createMechanismProductionQueueFile(
         );
       options.signal?.throwIfAborted();
       await writeProductionJSON(
-        destination,
+        resolve(manifestDirectory, basename(destination)),
         manifest,
         owner,
         LIMIT.manifestBytes,
