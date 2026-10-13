@@ -177,3 +177,10 @@ export {
   BLENDER_CAPTURE_LIMITS,
   type BlenderCaptureJob,
 } from "./mechanism/blender-capture-contract.ts";
+
+export * from "./mechanism/blender-episode-contract.ts";
+export * from "./mechanism/blender-episode-compile.ts";
+export * from "./mechanism/blender-episode-inputs.ts";
+export * from "./mechanism/blender-episode-plates.ts";
+export * from "./mechanism/blender-production-identity.ts";
+export { createBlenderProductionExecutor } from "./mechanism/blender-production-executor.ts";

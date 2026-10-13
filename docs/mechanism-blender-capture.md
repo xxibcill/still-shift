@@ -71,5 +71,7 @@ strict. Legacy item identity hashes stay exact; a Blender identity includes its
 backend. A completed legacy question cannot be relabeled as a Blender item or
 reuse a legacy product under the new manifest. The Three.js native executor
 rejects Blender items before source admission. The production CLI and declarative
-queue factory still use that executor. A full Blender production executor, cue
-compiler, native semantic QA and all-ten narrated delivery remain in progress.
+queue factory still use that executor. The candidate [native episode adapter](./mechanism-blender-episode.md) now supplies
+a Node executor and absolute cue compiler with separately bound narrated-draft
+evidence. Native QA-plan/handoff/CLI integration and all-ten HD delivery remain
+in progress.

@@ -97,6 +97,22 @@ def execute(job, job_path):
     camera = bpy.data.objects.get(job["camera"])
     if collection is None or camera is None or camera.type != "CAMERA":
         raise ValueError("Capture requires the named source collection and camera")
+    if job.get("requireEmbeddedResources"):
+        if bpy.data.libraries:
+            raise ValueError("Native episode source requires embedded libraries/resources")
+        for image in bpy.data.images:
+            if image.source not in {"GENERATED", "VIEWER"} and image.filepath:
+                if not image.packed_file and not image.packed_files:
+                    raise ValueError("Unpacked native image resource: " + image.name)
+        for font in bpy.data.fonts:
+            if font.filepath not in {"", "<builtin>"} and not font.packed_file:
+                raise ValueError("Unpacked native font resource: " + font.name)
+    cameras = {}
+    for name in {job["camera"], *(frame.get("camera", job["camera"]) for frame in job["frames"])}:
+        view = bpy.data.objects.get(name)
+        if view is None or view.type != "CAMERA":
+            raise ValueError("Named native shot camera is absent: " + name)
+        cameras[name] = view
     objects = {obj.name: obj for obj in collection.all_objects}
     controller = None
     contract = job.get("controller")
@@ -112,6 +128,13 @@ def execute(job, job_path):
         if any(name not in objects for name in frame["hiddenParts"]):
             raise ValueError("Hidden part must belong to the native asset collection")
     visibility = {name: obj.hide_render for name, obj in objects.items()}
+    visibility_drivers = [
+        (driver, driver.mute)
+        for obj in objects.values()
+        if obj.animation_data
+        for driver in obj.animation_data.drivers
+        if driver.data_path == "hide_render"
+    ]
     scene.camera = camera
     scene.render.resolution_x = job["width"]
     scene.render.resolution_y = job["height"]
@@ -124,14 +147,25 @@ def execute(job, job_path):
     scene.render.film_transparent = True
     records = []
     for index, requested in enumerate(job["frames"]):
+        for driver, muted in visibility_drivers:
+            driver.mute = muted
+        for name, obj in objects.items():
+            obj.hide_render = visibility[name]
+        camera = cameras[requested.get("camera", job["camera"])]
+        scene.camera = camera
         scene.frame_set(math.floor(requested["sourceFrame"]), subframe=requested["sourceFrame"] % 1)
         if controller:
             for key, value in requested["controls"].items():
                 controller[key] = float(value)
             controller.update_tag()
         bpy.context.view_layer.update()
-        for name, obj in objects.items():
-            obj.hide_render = visibility[name] or name in requested["hiddenParts"]
+        for name in requested["hiddenParts"]:
+            obj = objects[name]
+            if obj.animation_data:
+                for driver in obj.animation_data.drivers:
+                    if driver.data_path == "hide_render":
+                        driver.mute = True
+            obj.hide_render = True
         image = frames_directory / ("frame-" + str(index).zfill(6) + ".png")
         scene.render.filepath = str(image)
         bpy.ops.render.render(write_still=True)
@@ -150,6 +184,10 @@ def execute(job, job_path):
                 "camera": {
                     "name": camera.name,
                     "worldMatrix": matrix_values(camera.matrix_world),
+                    "type": camera.data.type,
+                    "orthoScale": camera.data.ortho_scale,
+                    "clipStart": camera.data.clip_start,
+                    "clipEnd": camera.data.clip_end,
                     "lensMillimeters": camera.data.lens,
                 },
                 "requestedControls": requested["controls"],

@@ -24,6 +24,7 @@ export const BlenderCaptureJobSchema = z
     assetSha256: z.string().regex(/^sha256:[a-f0-9]{64}$/),
     collection: name,
     camera: name,
+    requireEmbeddedResources: z.boolean().default(false),
     outputDirectory: z.string().min(1).max(2048),
     width: z.number().int().min(16).max(limits.dimension),
     height: z.number().int().min(16).max(limits.dimension),
@@ -44,6 +45,7 @@ export const BlenderCaptureJobSchema = z
         z
           .object({
             sourceFrame: z.number().finite().min(0).max(108000),
+            camera: name.optional(),
             controls: z.record(name, number).default({}),
             hiddenParts: z.array(name).max(limits.hiddenParts).default([]),
           })
