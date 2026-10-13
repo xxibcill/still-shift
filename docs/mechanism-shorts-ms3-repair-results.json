@@ -2,7 +2,7 @@
   "version": "mechanism-ms3-automatic-overlap-results-1",
   "date": "2026-10-13",
   "sourceCommit": "f70be2cba0cdba2aad5422889f15dea246aca0c7",
-  "status": "bounded-current-cli-implemented-fresh-bridge-proof-open",
+  "status": "current-real-automatic-bridge-recovery-verified-whole-original-goal-open",
   "root": "/private/tmp/still-shift-ms3-auto-overlap-1y226be1",
   "initialInspect": {
     "actualExitCode": 0,
@@ -84,11 +84,9 @@
     }
   },
   "remaining": [
-    "Continue the completed fresh baseline at its affected public final-check stage using the valid owned cache, then execute the bounded current recovery command serially.",
-    "After the caption compiler repair and its checks, establish a genuinely current bridge baseline; retain any fresh baseline captures as setup work. Compare historical/current plates explicitly, and prove zero fresh3D for the repair stage rather than falsely claiming setup used the old cache.",
-    "Fresh current bad export/detection, bounded automatic one-patch decision, affected export and final-file recheck.",
-    "Verify all696 bridge clean plates/sidecars unchanged, zero new3D, unchanged neighbors and retained bad evidence.",
-    "Exercise stale request/unsupported recovery exceptions and save a current fresh-session handoff."
+    "Keep this scoped legacy MS1 bridge/UI proof distinct from original ten-question pilot admission and whole mechanism/factual/continuous/listening/human acceptance.",
+    "Complete broader required seeded QA, original seven missing narration/timing inputs and all original whole/final gates.",
+    "Refresh current native QA products/report/handoffs after the package runtime identity changes to042a; unchanged appearance identity permits verified plate reuse rather than invented old-code acceptance."
   ],
   "qualification": "This is not the requested completed automatic recovery proof. Historical pixel/sidecar evidence is not relabeled as fresh, and no extra render or GUI action was performed.",
   "historicalCachePreflight": {
@@ -143,8 +141,9 @@
       "bytes": 1234,
       "sha256": "sha256:dd4b89d4dfd7f424adbc6f45b57c6ebbe5e6882a4d3de925e312ddf6d7c49d7f"
     },
-    "freshEndToEndProof": "pending",
-    "implementationCommit": "7941b710c4540c6c26f171d21e267d38f15c57c8"
+    "freshEndToEndProof": "verified",
+    "implementationCommit": "7941b710c4540c6c26f171d21e267d38f15c57c8",
+    "finalImplementationCommit": "bf302e9140e0ab4b61f83609fbc39fa9c1f825e4"
   },
   "currentFreshBridgeBaseline": {
     "status": "failed-final-check-after-complete-export",
@@ -209,6 +208,109 @@
       "bytes": 600,
       "sha256": "sha256:e6834c5052265b16259b6ee30f9b574c90b65f7a8cfdf1fdc8116a78701eca7a"
     },
-    "qualification": "Regression and owning software gates only. Actual affected-stage check, fresh automatic repair/696-plate proof and current native QA rebinding remain open."
+    "qualification": "Regression and owning software gates only. Actual affected-stage check, fresh automatic repair/696-plate proof and current native QA rebinding remain open.",
+    "implementationCommit": "bf302e9140e0ab4b61f83609fbc39fa9c1f825e4",
+    "postCommitSourceHoldExitCode": 0,
+    "owningSuffixTests": 44
+  },
+  "currentAffectedStageContinuation": {
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-overlap30-final-check1-receipt.json",
+      "bytes": 220690,
+      "sha256": "sha256:1e77836f4d7f375eb877d5a858d0d12bcb32a3748efc951235fe8ba4d4aa7296"
+    },
+    "actualWrapperExitCode": 0,
+    "actualCliExitCode": 2,
+    "sourceHoldExitCode": 0,
+    "preservedPhysicalFiles": 723,
+    "new3dRenders": 0,
+    "qualification": "The actual seeded bad layout remains an expected failing check. Original failed render/cache/video stay retained."
+  },
+  "currentAutomaticRecovery": {
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-overlap30-recovery1-receipt.json",
+      "bytes": 3821,
+      "sha256": "sha256:a0c38ebbdd31791e7c783822a210c7a24bdc37a60a74a22c2aee27966c4c9124"
+    },
+    "actualCliExitCode": 0,
+    "actualWrapperExitCode": 0,
+    "sourceHoldExitCode": 0,
+    "result": {
+      "path": "/private/tmp/still-shift-ms3-auto-overlap-1y226be1/recovery30/recovery-result.json",
+      "bytes": 1374,
+      "sha256": "sha256:11aab6d9ddc7d3e6c8c33bdc7f79a07be75e3a0f53d7026fc2a6b9f6d6a35047"
+    },
+    "patches": 1,
+    "exports": 1,
+    "candidateTrials": 1,
+    "target": {
+      "shot": "V8-05",
+      "label": "label-travel"
+    },
+    "position": [540, 1152],
+    "sourceRevision": 4,
+    "originalPhysicalPlates": 696,
+    "new3dRenders": 0,
+    "immutablePrivateDependencyFiles": 7,
+    "readableFrames": 69,
+    "requiredReadableFrames": 30,
+    "neighborsUnchanged": true,
+    "finalCheckValid": true,
+    "remainingErrorFindings": 0,
+    "qualityWarnings": 50,
+    "qualityErrors": 0,
+    "qualification": "Current real public CLI automatic detection, one exact-CAS position patch, one export and final-file recheck. All696 current plates/sidecars, seven private dependencies and neighbor findings unchanged; zero new3D. Scope is recovery, not whole original question/pilot admission; remaining findings stay visible."
+  },
+  "independentCurrentAudit": {
+    "actualExitCode": 0,
+    "report": {
+      "path": "/private/tmp/still-shift-ms3-overlap30-independent-audit1.json",
+      "bytes": 326955,
+      "sha256": "sha256:e8e666a37345fcf28354b8d6007ac2b30345131ad41e7fd063be094da9abe4da"
+    },
+    "nativePlates": 696,
+    "sidecars": 9,
+    "decodedFramesEach": 696,
+    "changedDecodedFrames": 82,
+    "changedDecodedInterval": {
+      "start": 336,
+      "endExclusive": 418
+    },
+    "unchangedOutsideShotFrames": 614,
+    "oldNewWholeDecodedAudioUnchanged": true,
+    "phoneFramesActuallyViewed": [377],
+    "qualification": "Independent complete plate/sidecar/source-scope, scalar layout/hold and streaming final RGBA/PCM evidence. Encoded pixels can change across codec boundaries beyond an authored shot; changed frame indices are retained. Legacy bridge mechanism explanation/factual/continuous/listening/human and original ten pilot acceptance remain unreviewed."
+  },
+  "freshSession": {
+    "summary": {
+      "path": "/private/tmp/still-shift-ms3-overlap30-fresh-summary1.json",
+      "bytes": 6862,
+      "sha256": "sha256:eb5b156252bbf18fd70f960e085421dc93299f2a56e0d49d4a50cd8e746e8ade"
+    },
+    "summaryCliExitCode": 0,
+    "handoff": {
+      "path": "/private/tmp/still-shift-ms3-auto-overlap-1y226be1/recovery30/handoff.json",
+      "bytes": 3035,
+      "sha256": "sha256:e6aed1ad032730cd71667e1e515767d2a3a2894c8e7e5a0b2a752e3a612cf6c9"
+    },
+    "handoffBytes": 3035,
+    "currentFinalCheck": {
+      "path": "/private/tmp/still-shift-ms3-overlap30-fresh-check1.json",
+      "bytes": 62110,
+      "sha256": "sha256:779c0a6616e8a364bd3e7d8dc188a21d2e56c7532a46422fd3f063c2170630f3"
+    },
+    "finalCheckCliExitCode": 0,
+    "sourceHoldExitCode": 0
+  },
+  "freshConsumedRequestNegative": {
+    "report": {
+      "path": "/private/tmp/still-shift-ms3-overlap30-stale1.json",
+      "bytes": 437,
+      "sha256": "sha256:d2dbf78990e78d4d049b74332feadb16ca7a32e6dc33773a05afaa5157a0f9bc"
+    },
+    "actualExitCode": 2,
+    "oldRequestRevision": 3,
+    "currentRevision": 4,
+    "sourceUnchanged": true
   }
 }

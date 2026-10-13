@@ -385,6 +385,25 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-10-13 — Complete real bounded MS1 bridge recovery and fresh handoff
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, implementationbf302e91.
+- **Actual flow:** Failed baseline/696 setup captures retained; affected current
+  check actually exits2 for the seeded defect. Generic CLI then selects one of12
+  candidates, patches revision3→4 and exports/rechecks once, all actually exit0/hold0.
+- **Independent proof:** 696 plates/nine sidecars/seven private files and neighbors
+  remain exact; zero new3D. Only82 affected-shot decoded frames change,614 others
+  and complete PCM remain byte-identical. Source changes only one label position.
+- **Current result:** Readable hold69/required30; final technical check0 error
+  findings/50 warnings. Consumed patch freshly rejects2 with bytes unchanged;
+  fresh summary/final-check processes and3,035-byte source/output handoff pass.
+  Two encoded phone stills viewed: the moved label exposes its dimension marker.
+- **Open / next:** Current native QA rebinding for042a code; broader seeded QA,
+  original seven inputs/all ten whole reviews, paired token metrics and full/final
+  source/archive/installed gates. Legacy/UI proof is not whole/pilot admission.
+- **Records:** [Recovery](./mechanism-shorts-ms3-repair-results.json),
+  [acceptance](./mechanism-shorts-ms3-acceptance.md).
+
 ### 2026-10-13 — Repair explicit cache loss exposed by the real bridge baseline
 
 - **Agent / branch:** Codex on `codex/mechanism-ms3`, fromc5d3a39a.
