@@ -214,8 +214,15 @@ still hold before relying on them.
   current channel-first-ten bindings, cue authoring and whole reviews,
   broader seeded QA, native QA rebinding, capability reconciliation,
   comparable token measurements and final full/benchmark/archive/installed gate.
-  Ten existing native asset/control contracts are located, including two external
-  control files; importing their Blender rigs is not implied.
+  [Native Blender capture](./mechanism-shorts-ms3-blender-capture-results.json)
+  now preserves existing geometry/deformation/materials through a shared data-only
+  worker. Ten native probes repeat/shuffle exactly; actual full129,768-vertex zipper
+  captures four controls and its lossless Still Shift text edit preserves all eight
+  image/observation pins with zero new Blender calls. Fast4,549/451, runtime1 and
+  Python lint/format pass on2,744 held inputs; runtime1968/694. Original startup,
+  formatting/font and lossy-codec failures remain. Editable source/controls stay
+  native in Blender; cached sequence/text receiving is verified, not automatic
+  Three.js rig/shader transfer. Actual all-ten production/QA integration remains.
   Accepted coverage remains0/10; tokens staynull. No ElevenLabs spend, merge,
   publication or Actions change. [Tracker](./mechanism-shorts-ms3-acceptance.md).
 
@@ -404,6 +411,26 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Preserve actual native asset content in a shared capture producer
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from9d30db87.
+- **Done:** Shared data-only Blender capture API/worker, bounded complete controls,
+  frozen inputs/native observations, owned hashes and caller-memory cleanup.
+- **Verification:** Fast4,549/451, runtime admission1, Python lint/format pass;
+  all2,744 inputs/121,816,073B held. Runtime1968/694, appearance/profile exact.
+- **Actual assets:** Ten three-state native probes/repeated-shuffled equality pass.
+  Full129,768-vertex zipper captures four control states without source rebuild;
+  eight pins and repeated geometry/decoded pixels match. Five native still/receiver
+  inspections performed; PNG preview inspected through a decoded JPEG as needed.
+- **Receiver:** Load/save/reload/two lossless exports decode8 frames;5,928 changed
+  text pixels, all outside-area pixels/captured files exact, zero new Blender calls.
+- **Retained:** Sandbox startup139, Python formatting, unsupported font field and
+  H.264 region-byte failure; host command and lossless scopes remain distinct.
+- **Next:** Actual first-ten cue/control/camera and generic queue/QA integration,
+  all whole reviews/broader coverage and full/final gates. Accepted0/10, tokensnull.
+- **Records:** [Native capture](./mechanism-shorts-ms3-blender-capture-results.json),
+  [API scope](./mechanism-blender-capture.md). No synthesis, merge or publication.
 
 ### 2026-10-14 — Bind rendered caption QA to verified cached native products
 

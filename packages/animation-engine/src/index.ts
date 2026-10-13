@@ -169,3 +169,11 @@ export {
   MechanismProductionRetrySchema,
   retryMechanismProductionQueue,
 } from "./mechanism/production-retry.ts";
+
+export { captureBlenderAsset } from "./mechanism/blender-capture.ts";
+export {
+  BlenderCaptureJobSchema,
+  parseBlenderCaptureJob,
+  BLENDER_CAPTURE_LIMITS,
+  type BlenderCaptureJob,
+} from "./mechanism/blender-capture-contract.ts";

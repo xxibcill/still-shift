@@ -94,3 +94,12 @@ builds, lint/default-identity regressions, missing body-role native attempt,
 partial-tail red, private extraction and audit errors remain retained. These are
 component/cached-preview checks; broader faults and all actual channel-first-ten
 whole/encoded/listening/factual/continuous requirements remain.
+
+[Native Blender capture foundation](./mechanism-shorts-ms3-blender-capture-results.json)
+retains the actual first-ten assets rather than reducing deformation or native
+material graphs to the rigid glTF subset. Ten native three-state probes and
+repeated seeks pass; actual full zipper control/sequence-text receiving passes
+four native renders and two lossless exports, with zero Blender calls for text
+editing. Fast4,549/451 and runtime1/Python lint/format pass. This foundation is
+not a narrated first-ten pilot row, full native queue/QA integration or whole
+asset/episode/continuous/listening/factual acceptance.
