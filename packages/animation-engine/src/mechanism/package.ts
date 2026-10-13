@@ -360,6 +360,7 @@ export async function packageMechanismEpisode(
   options: {
     outputDirectory: string;
     preparedDirectory?: string;
+    cacheDirectory?: string;
     finalOutput?: string;
     signal?: AbortSignal;
     route?: MechanismRoute;

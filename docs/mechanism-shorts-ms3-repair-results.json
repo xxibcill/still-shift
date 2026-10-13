@@ -84,7 +84,7 @@
     }
   },
   "remaining": [
-    "With native27 run/report now terminal0, establish the genuinely current bridge baseline as setup, then run the generic bounded current recovery command serially.",
+    "Continue the completed fresh baseline at its affected public final-check stage using the valid owned cache, then execute the bounded current recovery command serially.",
     "After the caption compiler repair and its checks, establish a genuinely current bridge baseline; retain any fresh baseline captures as setup work. Compare historical/current plates explicitly, and prove zero fresh3D for the repair stage rather than falsely claiming setup used the old cache.",
     "Fresh current bad export/detection, bounded automatic one-patch decision, affected export and final-file recheck.",
     "Verify all696 bridge clean plates/sidecars unchanged, zero new3D, unchanged neighbors and retained bad evidence.",
@@ -147,12 +147,68 @@
     "implementationCommit": "7941b710c4540c6c26f171d21e267d38f15c57c8"
   },
   "currentFreshBridgeBaseline": {
-    "status": "running",
+    "status": "failed-final-check-after-complete-export",
     "receiptPath": "/private/tmp/still-shift-ms3-overlap29-baseline1-receipt.json",
     "sourceCommit": "7941b710c4540c6c26f171d21e267d38f15c57c8",
     "privateRoot": "/private/tmp/still-shift-ms3-auto-overlap-1y226be1",
     "output": "bad-current29",
     "cache": "cache-current29",
-    "qualification": "Fresh current696-frame baseline capture is setup; no claim of historical cache reuse, completed automatic recovery or whole admission."
+    "qualification": "All696 current physical frames and final video exported. Final checking lost the explicit cache selection and rejected a missing manifest in the retained fallback cache. This failed attempt remains; affected final-check continuation and complete recovery still required.",
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-overlap29-baseline1-receipt.json",
+      "bytes": 2860,
+      "sha256": "sha256:cee4ddb6785609e1fc0bf1c7721c917405ac0bc9cbe9d832791d60f9b55b2415"
+    },
+    "actualExitCode": 1,
+    "commandExitCode": 1,
+    "sourceHoldCheckExitCode": 0,
+    "completedFreshNativeFrames": 696
+  },
+  "cachePropagationRepair": {
+    "status": "implemented-owning-gates-passed-final-stage-continuation-open",
+    "sourceBaseCommit": "c5d3a39a63162ba0e274f9d986c1b5397ba4c3bb",
+    "inventory": {
+      "path": "/private/tmp/still-shift-ms3-overlap29-cache-checks1-inputs.json",
+      "bytes": 466615,
+      "sha256": "sha256:b28db6986e4349cc9dcb94e02e3429e12b28bd953160176353dd5e87f5be691e"
+    },
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-overlap29-cache-checks1-receipt.json",
+      "bytes": 1351,
+      "sha256": "sha256:686acda03c9adb226884b534279fa9283fe95e9b86bcbb37e7b44fd96226a150"
+    },
+    "regressionRed": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-overlap29-cache-red1.log",
+        "bytes": 2425,
+        "sha256": "sha256:b07217e683e648d734dd998b23e3c97cc05d8cc0c62194d6caa064d6d63a0ca0"
+      }
+    },
+    "green": {
+      "actualExitCode": 0,
+      "tests": 33,
+      "files": 3,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-overlap29-cache-green1.log",
+        "bytes": 685,
+        "sha256": "sha256:5b6260ccd0b595b9dbcd78cb411303347ef456d2472e1ce1e46bdded5e161685"
+      }
+    },
+    "fastTests": 4539,
+    "fastFiles": 449,
+    "fix": "Preserve the explicit media cache through lint, bridge/native check/render, native preview/package, CLI check/package and bounded recovery. Corrupt fallback cache stays intact.",
+    "fallbackAudioDirectory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-composition-media/e883540d905d977581252ffeb8dc6375deb025a642daeb045ed52499b1b5fe34/6f2643a03288bcb5c5a9f4049830c4af9ffe43c89bd4de92d1ce13750e352c58",
+    "runtimeIdentity": {
+      "path": "/private/tmp/still-shift-ms3-overlap29-cache-runtime-identity.json",
+      "bytes": 660,
+      "sha256": "sha256:faea90802781d95fbff3801f6785cc62d5617df1238fbe30362c225df3a60f8d"
+    },
+    "historicalIdentityRestoration": {
+      "path": "/private/tmp/still-shift-ms3-overlap29-runtime-snapshot-restoration.json",
+      "bytes": 600,
+      "sha256": "sha256:e6834c5052265b16259b6ee30f9b574c90b65f7a8cfdf1fdc8116a78701eca7a"
+    },
+    "qualification": "Regression and owning software gates only. Actual affected-stage check, fresh automatic repair/696-plate proof and current native QA rebinding remain open."
   }
 }

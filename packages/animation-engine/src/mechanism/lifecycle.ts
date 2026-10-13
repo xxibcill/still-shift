@@ -277,6 +277,7 @@ export async function checkMechanismEpisode(
   options: {
     preparedDirectory?: string;
     finalOutput?: string;
+    cacheDirectory?: string;
     signal?: AbortSignal;
     route?: MechanismRoute;
   } = {},
@@ -404,6 +405,9 @@ export async function checkMechanismEpisode(
         pixels: true,
         backend: "canvas2d",
         collectTextBounds: true,
+        ...(options.cacheDirectory
+          ? { cacheDirectory: options.cacheDirectory }
+          : {}),
         ...(options.signal ? { signal: options.signal } : {}),
       },
     );
@@ -572,6 +576,9 @@ export async function renderMechanismEpisode(
   const check = await checkMechanismEpisode(path, {
       preparedDirectory: prepared.outputDirectory,
       finalOutput: render.outputPath,
+      ...(options.cacheDirectory
+        ? { cacheDirectory: options.cacheDirectory }
+        : {}),
       ...(options.signal ? { signal: options.signal } : {}),
     }),
     result = {

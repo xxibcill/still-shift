@@ -42,23 +42,27 @@ export async function lintCompositionFile(
     pixels?: boolean;
     backend?: CompositionBackend;
     collectTextBounds?: boolean;
+    cacheDirectory?: string;
     signal?: AbortSignal;
   } = {},
 ): Promise<CompositionLintReport> {
   options.signal?.throwIfAborted();
   const backend = options.backend ?? "canvas2d";
-  const loaded = await loadComposition(input, backend).catch(
-    (error: unknown) => {
-      if (
-        error instanceof AnimationEngineError &&
-        typeof error.context?.diagnosticsJson === "string"
-      )
-        throw new PassageError(
-          JSON.parse(error.context.diagnosticsJson) as PassageDiagnostic[],
-        );
-      throw error;
-    },
-  );
+  const loaded = await loadComposition(input, backend, {
+    ...(options.cacheDirectory
+      ? { cacheDirectory: options.cacheDirectory }
+      : {}),
+    ...(options.signal ? { signal: options.signal } : {}),
+  }).catch((error: unknown) => {
+    if (
+      error instanceof AnimationEngineError &&
+      typeof error.context?.diagnosticsJson === "string"
+    )
+      throw new PassageError(
+        JSON.parse(error.context.diagnosticsJson) as PassageDiagnostic[],
+      );
+    throw error;
+  });
   options.signal?.throwIfAborted();
   if (!options.pixels)
     return {

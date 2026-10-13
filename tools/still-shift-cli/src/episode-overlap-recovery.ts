@@ -116,6 +116,7 @@ export async function recoverEpisodeOverlap(
       preparedDirectory: options.preparedDirectory,
       finalOutput: options.finalOutput,
       route: "bridge",
+      cacheDirectory: options.cacheDirectory,
       ...(options.signal ? { signal: options.signal } : {}),
     });
     if (bad.projectHash !== loaded.projectHash)
@@ -218,6 +219,7 @@ export async function recoverEpisodeOverlap(
       preparedDirectory: rendered.prepared.outputDirectory,
       finalOutput: rendered.outputPath,
       route: "bridge",
+      cacheDirectory: options.cacheDirectory,
       ...(options.signal ? { signal: options.signal } : {}),
     });
     const after = checked.overlayReport;

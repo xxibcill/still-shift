@@ -174,7 +174,12 @@ still hold before relying on them.
   recovery limits. Held current fast4,539/449 and eight runtime checks pass.
   Implementation7941b710/post-commit hold0 and unchanged package code/profile
   identity are verified. Fresh current bridge baseline now runs as setup; actual
-  recovery and original full/final scope remain open. README changed only after native25 terminal; other2,725 inputs stay exact.
+  recovery and original full/final scope remain open. Fresh baseline exported all
+  696 current frames/video but failed final checking: explicit cache selection
+  was lost to a retained corrupt fallback audio entry. Cache propagation repair
+  passes red/green regression and current fast4,539/449/owning gates on2,733 inputs.
+  Its new package code identity requires current native QA rebinding; appearance
+  identity is unchanged. Continue the affected final-check stage, preserving failure. README changed only after native25 terminal; other2,725 inputs stay exact.
   Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
   [Automatic overlap preflight](./mechanism-shorts-ms3-repair-results.json) now
@@ -379,6 +384,25 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — Repair explicit cache loss exposed by the real bridge baseline
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, fromc5d3a39a.
+- **Failure retained:** Fresh baseline actually captures696 current frames and
+  exports video, then CLI1/wrapper1/hold0: final lint lost the explicit cache and
+  read a retained empty fallback audio entry. No historical cache was relabeled.
+- **Fix:** Explicit cache now reaches lint, bridge/native render/check, native
+  preview/package, CLI check/package and generic recovery. Fallback corruption
+  remains intact. Small synthetic PCM regression actually fails red, then33
+  owning checks pass; current held fast4,539/449 and owning suffix exit0/hold0.
+- **Binding:** 2,733 inputs/121,749,373B held. Package runtime code changes to042a;
+  appearance/profile remain unchanged. Current native QA must be rebound.
+- **Retained mistake:** Reused diagnostic helper output overwrote its historical
+  identity file; reconstructed original bytes match its committed SHA exactly.
+  New identity stays separate; the verified restoration has its own record.
+- **Next:** Resume actual final checking with the owned cache, then bounded
+  recovery/696-plate proof. Original seven inputs/whole/full-final scope remains.
+- **Record:** [Recovery evidence](./mechanism-shorts-ms3-repair-results.json).
 
 ### 2026-10-13 — Shared capabilities and bounded bridge recovery CLI
 

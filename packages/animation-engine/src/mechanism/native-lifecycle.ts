@@ -131,6 +131,7 @@ export type NativeMechanismRelocationAssociation = {
   observationManifestPath?: string;
 };
 export type NativeMechanismCheckOptions = {
+  cacheDirectory?: string;
   preparedDirectory?: string;
   finalOutput?: string;
   signal?: AbortSignal;
@@ -670,6 +671,7 @@ export async function verifyNativePreparedEpisode(
   directory: string,
   options: {
     signal?: AbortSignal;
+    cacheDirectory?: string;
     verifyCode?: boolean;
     route?: MechanismRoute;
   } = {},
@@ -805,6 +807,9 @@ export async function checkNativeMechanismEpisode(
           pixels: true,
           backend: "webgl2",
           collectTextBounds: true,
+          ...(options.cacheDirectory
+            ? { cacheDirectory: options.cacheDirectory }
+            : {}),
           ...(options.signal ? { signal: options.signal } : {}),
         });
   let finalProbe: unknown,
@@ -1277,6 +1282,9 @@ export async function renderNativeMechanismEpisode(
   const check = await checkNativeMechanismEpisode(loaded, {
     preparedDirectory: prepared.outputDirectory,
     finalOutput: render.outputPath,
+    ...(options.cacheDirectory
+      ? { cacheDirectory: options.cacheDirectory }
+      : {}),
     ...(options.signal ? { signal: options.signal } : {}),
   });
   const result = {

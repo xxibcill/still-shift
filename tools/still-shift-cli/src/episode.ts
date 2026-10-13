@@ -178,6 +178,7 @@ const commandFlags: Record<MechanismCommand, readonly string[]> = {
   ],
   check: [
     "input",
+    "cache-dir",
     "plates-dir",
     "prepared-dir",
     "final-output",
@@ -185,7 +186,14 @@ const commandFlags: Record<MechanismCommand, readonly string[]> = {
     "authoring",
     "family-input",
   ],
-  package: ["input", "output-dir", "prepared-dir", "final-output", "route"],
+  package: [
+    "input",
+    "output-dir",
+    "prepared-dir",
+    "final-output",
+    "route",
+    "cache-dir",
+  ],
   "init-tape-hook": ["output-dir", "font", "font-license", "audio", "captions"],
   summary: ["input", "authoring", "family-input"],
 };
@@ -1151,6 +1159,7 @@ async function execute(
         ...prepared,
         ...final,
         ...route,
+        ...cache,
         signal,
       }),
     );
@@ -1162,6 +1171,7 @@ async function execute(
         ...prepared,
         ...final,
         ...route,
+        ...cache,
         signal,
       }),
     );
