@@ -177,7 +177,11 @@ still hold before relying on them.
   explicit cache was lost to a retained corrupt fallback audio entry. Cache
   propagation repairbf302e91 passes actual red/green regression, fast4,539/449
   and44 owning checks with2,733 inputs held. Package code is now042a; appearance
-  and profile stay exact. Current native QA rebinding is in flight.
+  and profile stay exact. Fresh current public checks pass all three final videos,
+  with1,876 frames/zero new3D, byte-identical fresh compositions and1,934 protected
+  files unchanged. [Current native checks](./mechanism-shorts-ms3-current-native-results.json)
+  retain failed receipt-location pairing and corrected owning-path checks. Historical
+  production seals stay unchanged; current unified seals/cohort rebinding is open.
   [Automatic recovery](./mechanism-shorts-ms3-repair-results.json) now completes
   actual current detection, one bounded candidate/position patch/export and final
   recheck. All696 plates/nine sidecars/seven private files and neighbors stay
@@ -381,6 +385,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Verify all three existing pilot videos with the current runtime
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, fromb9b1bd42.
+- **Result:** Three fresh public compilations and final-video checks actually
+  exit0/hold0 on042a runtime;1,876 original frames and zero new3D. All three fresh
+  compositions are byte-identical to export sources;1,934 protected files stay exact.
+- **Failure retained:** Initial E01 check exits2/hold0 because a new compilation
+  location cannot satisfy an old export's owning receipt. Correct continuation
+  uses the recorded original compilation path; receipts/videos are not rewritten.
+- **Audit / handoff:** Independent byte/hash/source audit actually exits0; fresh
+  6,297-byte technical handoff pins outputs/checks/current runtime/restart commands.
+- **Open / next:** Historical unified seals/cohort retain old runtime bindings;
+  seven matching inputs/scope clarification, whole reviews, broader seeded QA and
+  final package/software gates remain. No new export or human admission inferred.
+- **Records:** [Current native checks](./mechanism-shorts-ms3-current-native-results.json).
 
 ### 2026-10-14 — Reconcile supplied asset-plan reference and current recovery state
 

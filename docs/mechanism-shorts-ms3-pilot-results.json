@@ -466,5 +466,17 @@
       [720, 1280],
       [1080, 1920]
     ]
+  },
+  "currentRuntimeTechnicalRecheck": {
+    "record": "docs/mechanism-shorts-ms3-current-native-results.json",
+    "status": "passed",
+    "sourceCommit": "b9b1bd4217fcf0c7597edc06bba1eb1672b99613",
+    "codeSha256": "sha256:042a3d5f23ba9fce707d682548c23dbce09c34ac4c92de1a711243ec3cc8f66e",
+    "frameTotal": 1876,
+    "protectedFiles": 1934,
+    "freshNativeSubmissionCalls": 0,
+    "historicalProductsRelabeled": false,
+    "currentProductionSeals": "pending",
+    "wholeReviews": "unreviewed"
   }
 }
