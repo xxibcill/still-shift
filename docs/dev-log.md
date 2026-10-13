@@ -44,71 +44,31 @@ still hold before relying on them.
 ## Current state
 
 - **MS3 in progress (2026-10-13):** `codex/mechanism-ms3`,
-  [draft PR #58](https://github.com/xxibcill/still-shift/pull/58) open/attached to main.
-  QA7 source `6080b8df` passes complete fast (4,445 tests), runtime (247),
-  integration (322), depth (14) and smoke with all 2,692 inputs held exact.
-  Native attempt 3 actually passes five executions/five products. Real quota
-  pressure preserves sealed rows; caption and QA-only revisions add zero native
-  draws. Independent audit verifies 300 decoded frames, 135 images, 300 scalar
-  samples and 230 pins, including original/current programs, retained failures,
-  actual current CLI reports and independent cohort percentiles/review counts.
-  Native attempts 1/2 and runtime attempt 1 remain retained failures. Whole
-  mechanical/glyph/factual/continuous/listening/human reviews remain open.
-  Declarative queue/run commands now remove per-episode queue/capture code;
-  strict project/immutable-manifest admission and bounded state receipts pass
-  37 owning checks plus build/lint/schema/boundary/declaration preflight. Three
-  real family inputs are pinned without capture; execution/failure/signal tests
-  use a declared fixture adapter. One lint failure is retained. New source still
-  passes complete fast (4,448 tests / 439 files), with 2,698 exact inputs.
-  Runtime/session 9677 actually passes 252 tests, 322 integration, 14 depth
-  and smoke on `79f3c3f2`, with identical 2,698 inputs. Actual native CLI
-  recovery was subsequently verified on `c474c9c5` below. Targeted retry implements exact CAS,
-  repaired-pin admission, dual locks, immutable manifest ancestry and selected
-  bounded batches while retaining neighbors/journals/reviews.48 owning checks
-  plus build/lint/fourteen schemas/boundaries/declarations pass with exact source.
-  An initial compile failure (missing test imports) and wrapper syntax failure
-  are retained. Retry source `0d590658` now passes complete fast4,458/440,
-  with2,702 inputs/121,387,685B exact. Runtime/session65430 now passes253/45,
-  integration322/57, depth14/smoke actual0/hold0 on the same source. Native
-  draft3 adds publication-phase export collision; draft2 has improved child cleanup,
-  bounded output/close receipts and distinct captions, but remains unintegrated/
-  unrun drafts remain retained. Final harness is now registered in the full test
-  chain and passes compile/lint/pinned toolchain/boundary preflight. At native10
-  registration, only root scripts and the new test differed from passed0d59
-  runtime inputs; implementation/lock/toolchain inputs then stayed exact. The
-  later E02 implementation has its separate9e4ccce1 binding below.
-  Native10 actual CLI/OS faults/recovery now pass on held `c474c9c5`, actual0/hold0,
-  session3926 closed. SIGKILL after PNG, SIGTERM during cached export, corrupt
-  scene/missing audio, owned export collision, targeted retries and relocation
-  retain all attempts/unaffected neighbors. Ten sealed engineering products use
-  360 fresh native submissions. Independent audit2 actual0/hold0 checks600 frames,
-  270 images,600 scalar samples and473 pins, exact history/current CLI/cohort;
-  audit1 retains its restricted-environment report failure. Ready0, first-pass2/3,
-  missing tokensnull. E02 scratch geometry now has actual three slots/drilled
-  blade/stepped rivets and passes44928 sampled triangle rays after retained
-  frame-request and faceting failures; factory/native/asset admission stays open.
-  E02 slotted-retention is now integrated as a distinct immutable factory/saved-
-  family candidate. Default source/metadata pins stay exact; metadata28,022B.
-  Final30 owning/build/lint/schema/boundary/declarations and44,928 factory triangle
-  rays pass; initial visibility/camera/test-API/Float32 failures are retained.
-  Full bladeLength span is repaired and final preflight source-held. Complete fast
-  now passes4,462 tests/441 files on `9e4ccce1`, exact2,705 inputs/121,426,284B.
-  Native2/session36579 is closed actual0/hold0 on9e4ccce1: three native engineering
-  products/current CLI verify. Independent audit1 actual0/hold0 verifies180 frames,
-  81 images,180 scalars and149 pins; all default decoded pixels/audio match prior
-  c474 cold product. First draft's pre-render reading-time admission failure is
-  retained; shorter Rivet label preserves its limit. All three products retain7
-  sampled visual errors; overview is insufficient readable retention proof.
-  E02 factual/design/whole/genuine narration/pilot admission stays open. Prior
-  c474 native10 evidence keeps its separate source binding.
-  Scoped/MS1 repair, ten frozen questions,
-  five assets/two behaviors, genuine inputs/reviews, capability reconciliation
-  and final full/archive/installed verification remain. Coverage is 0/10; no
-  pilot target achieved. Primary extension research and an E10 dimensional draft
-  remain separate from asset/behavior admission. No spending, merge, publication
-  or Actions changes.
-  [QA record](./mechanism-shorts-ms3-qa-results.json),
-  [QA API](./mechanism-production-qa.md), [tracker](./mechanism-shorts-ms3-acceptance.md).
+  [draft PR #58](https://github.com/xxibcill/still-shift/pull/58) targets main.
+  Durable queues, declarative creation/run, targeted CAS retries, artifact-bound
+  QA, review evidence and current episode/cohort reporting are implemented.
+  [Retry9](./mechanism-shorts-ms3-retry-results.json) retains exact0d590 fast/runtime
+  (4,458/253/322/14/smoke). [Native10](./mechanism-shorts-ms3-native-recovery-results.json)
+  proves actual CLI/OS faults, retries and relocation on c474c9c5; independent
+  600-frame/270-image/473-pin audit passes. All failed runs remain in the records.
+  [E02](./mechanism-shorts-ms3-retention-results.json) adds slotted retention on
+  9e4ccce1:4,462 fast tests, three native controls,180 frames/81 images/149 pins,
+  and exact default picture/audio parity. Seven visual errors per control and
+  inadequate explanation views remain; no whole/factual/design/pilot approval.
+  [E09](./mechanism-shorts-ms3-line-results.json) now adds a distinct notched-jaw/
+  round-line factory candidate with its own strict lineRadius schema. Default peg
+  source/metadata stay exact. Final37 owning checks,666 sampled jaw states,
+  build/lint/schema/boundary/declarations pass with2,708 inputs held. Missing
+  material defaults and Float32 notch intrusion are retained failures; geometry
+  repair preserves1e-8 contact tolerance. Current complete fast/native remain next.
+  No active prior native handle remains. Each later source has its own binding;
+  prior E02/native10 gates are not relabeled as current-source verification.
+  Remaining original scope: clearer views and actual whole reviews, E05/E06/E10
+  assets plus E06/E10 behaviors, all ten frozen questions/genuine narration,
+  scoped/MS1 automatic repair, broader seeded QA, capability reconciliation,
+  comparable token measurements and final full/benchmark/archive/installed gate.
+  Accepted coverage remains0/10; tokens staynull. No ElevenLabs spend, merge,
+  publication or Actions change. [Tracker](./mechanism-shorts-ms3-acceptance.md).
 
 - **MS2 software checkpoint delivered (2026-10-13):** `codex/mechanism-ms2`
   carries exact MS1N `bf30a253` ([PR #56](https://github.com/xxibcill/still-shift/pull/56));
@@ -295,6 +255,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — E09 notched-jaw and round-line factory candidate
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `14017066`.
+- **Done:** Actual concave jaws/round line, line contacts/stops, selected radius
+  schema, immutable candidate, saved-family CAS and discovery/camera references.
+  Default peg source/metadata pins and cloth inputs remain exact.
+- **Results:** Final37 owning checks/666 sampled jaw states/build/lint/schema/
+  boundary and package declarations pass, with2,708 source inputs held.
+- **Rejected / retained:** Typed material defaults and Float32 facet intrusion
+  (-4.97e-8) failed; actual geometry repaired with1e-8 tolerance unchanged.
+  Longer-handle geometry preserves separation through the sampled opening range.
+- **Open / next:** Complete current fast/native/default pixel audit; actual
+  readable/factual/design/genuine narration/whole reviews and original MS3 scope.
+- **Records:** [line candidate](./mechanism-shorts-ms3-line-results.json),
+  [tracker](./mechanism-shorts-ms3-acceptance.md). Accepted pilot remains0/10.
 
 ### 2026-10-13 — Integrate E02 three-rivet retention factory candidate
 

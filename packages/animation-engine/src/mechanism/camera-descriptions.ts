@@ -25,6 +25,8 @@ export function describeMechanismPackCameras(
     kind: "meshes",
     ids,
   });
+  const notchedLine =
+    family === "clothespeg" && scene.parts.some((part) => part.id === "line");
   const whole = parts(
     family === "tape-hook" ? ["hook", "blade", "housing"] : ["model"],
   );
@@ -72,20 +74,28 @@ export function describeMechanismPackCameras(
       [1, 0.6, 0.7],
     ];
   } else {
-    focus = meshes(["spring.mesh"]);
-    contact = "upper.tip";
-    detail = "spring.coil";
+    focus = meshes(notchedLine ? ["line.round"] : ["spring.mesh"]);
+    contact = notchedLine ? "line.front" : "upper.tip";
+    detail = notchedLine ? "line.front" : "spring.coil";
     relationship = ["spring.upper.seated", "spring.lower.seated"];
-    proof = [
-      surface("coil-front", "spring.mesh", detail, [0, 0, 1], [0.27, -0.2, 1]),
-      surface(
-        "lower-seat-exit",
-        "spring.mesh",
-        "lower.seat",
-        [0, 0, 1],
-        [0, 0, 0.15],
-      ),
-    ];
+    proof = notchedLine
+      ? [surface("line-end", "line.round", "line.front", [0, 0, 1])]
+      : [
+          surface(
+            "coil-front",
+            "spring.mesh",
+            detail,
+            [0, 0, 1],
+            [0.27, -0.2, 1],
+          ),
+          surface(
+            "lower-seat-exit",
+            "spring.mesh",
+            "lower.seat",
+            [0, 0, 1],
+            [0, 0, 0.15],
+          ),
+        ];
     directions = [
       [0.1, 0, 1],
       [0.1, -0.1, 1],
@@ -112,7 +122,9 @@ export function describeMechanismPackCameras(
     const comparison =
       family === "tape-hook" && intent === "aligned-comparison";
     const pegComparison =
-      family === "clothespeg" && intent === "aligned-comparison";
+      family === "clothespeg" &&
+      !notchedLine &&
+      intent === "aligned-comparison";
     const full =
       intent === "recognition" ||
       intent === "controlled-orbit" ||
@@ -125,7 +137,7 @@ export function describeMechanismPackCameras(
     return {
       id,
       intent,
-      motionIntent: `${intent}: ${family === "tape-hook" ? (comparison ? "show the push/outside face" : "show hook travel and the pull/inside face") : family === "cable-tie" ? "show fixed-root pawl lift and seated tooth engagement" : "show seated spring and return to cloth contact"}`,
+      motionIntent: `${intent}: ${family === "tape-hook" ? (comparison ? "show the push/outside face" : "show hook travel and the pull/inside face") : family === "cable-tie" ? "show fixed-root pawl lift and seated tooth engagement" : notchedLine ? "show opposing jaw notches and return to round-line contact" : "show seated spring and return to cloth contact"}`,
       target: {
         kind: full ? "part" : "anchor",
         id: full

@@ -73,7 +73,12 @@
         "Limit line seat to the front jaw notches; the deep gullet placement in Fig3 illustrates a displacement problem, not the intended line seating position.",
         "Exclude the patent-specific slot19/tongue24/ledge22 restraint improvement from the conventional asset."
       ],
-      "qualification": "Illustrative conventional geometry only; no dimensions, friction, holding-force, new asset or factual/design/pilot acceptance."
+      "qualification": "Illustrative conventional geometry only; no dimensions, friction, holding-force, new asset or factual/design/pilot acceptance.",
+      "implementation": {
+        "record": "docs/mechanism-shorts-ms3-line-results.json",
+        "status": "factory-candidate-owning-passed-fast-native-pending",
+        "qualification": "Software factory candidate only, with illustrative dimensions and return bias. No holding/friction/stiffness simulation, native/default pixel proof, supported-family/factual/design/continuous/genuine narration/listening/pilot acceptance. E02 native9e4ccce1 and earlier lifecycle bindings stay historical and separate."
+      }
     },
     {
       "episode": "E10",

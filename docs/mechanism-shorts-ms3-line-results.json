@@ -1,0 +1,357 @@
+{
+  "version": 1,
+  "milestone": "MS3",
+  "episode": "E09",
+  "date": "2026-10-13",
+  "branch": "codex/mechanism-ms3",
+  "baseCommit": "1401706623b2c3e4923da8949fded0376dac3ec2",
+  "status": "factory-candidate-owning-passed-fast-native-pending",
+  "sourceSnapshot": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/clothespeg-pack.ts",
+      "bytes": 16446,
+      "sha256": "sha256:07862f6bf419dbbc02e6d93dd8503965d22fc904cf16e8d083045a46ea21242a"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/clothespeg-notched-line.ts",
+      "bytes": 5339,
+      "sha256": "sha256:34daf5752dd8784e02ffaeae47a40df07cbb9afa3ff876bb80fa2c4fee810a50"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/camera-descriptions.ts",
+      "bytes": 6074,
+      "sha256": "sha256:a5dbf0ef7a32bbbd8698140b308dd9a5eb899360b9b7173e3834ef431b7abb45"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/family-registry.ts",
+      "bytes": 8602,
+      "sha256": "sha256:f6859099ef792deb8d9f7d14ef19caa14eba90acf395ec4cfe4b97ac8f0ba10c"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-notched-line.test.ts",
+      "bytes": 9241,
+      "sha256": "sha256:50f94cc1a030816efea1c0514d9d6739a43191589b66f9f6595c6918f2941c8a"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/clothespeg-input.schema.json",
+      "bytes": 7996,
+      "sha256": "sha256:d2b54ffa95f6db88c3caa7afa050c25cd13cc292e48d6e8a1483ff901f1c4bdc"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/family-authoring.schema.json",
+      "bytes": 28282,
+      "sha256": "sha256:be000aa1f4e58887953af3e27a2841abff47f4d6f4aa41a91ea164bcef070375"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/notched-line-parameters.schema.json",
+      "bytes": 508,
+      "sha256": "sha256:a608a936f6cfeeee0ea5d30fc50600d0458a54e7d007d4c2e02050ff1706f779"
+    }
+  ],
+  "primarySource": {
+    "url": "https://patents.google.com/patent/US2590881A/en",
+    "drawing": {
+      "path": "/private/tmp/still-shift-ms3-E09-US2590881-figures.png",
+      "bytes": 131461,
+      "sha256": "sha256:832e8cfc55c2599df1fde94194640fce0d50fb8dbe662c6752374a589e9e03e6"
+    },
+    "pdf": {
+      "path": "/private/tmp/still-shift-ms3-E09-US2590881.pdf",
+      "bytes": 487309,
+      "sha256": "sha256:4e061821489f657ed5de07b8cef2faf6691acdf389235e3493d3003fc69438fc"
+    },
+    "scope": "Conventional front jaw notches13 seat a round line. Exclude slot19/tongue24/ledge22 improvements and deep-gullet displacement pose."
+  },
+  "implementation": [
+    "Actual opposing concave jaw profiles with tangent facets and a separate closed cylindrical line, preserving existing central spring/seated-leg rig.",
+    "Separate selected-variant lineRadius parameter schema and strict immutable variant reference; default cloth factory/source/metadata remain unchanged.",
+    "Neutral line contacts/return stop use explicit upper/lower line gap relationships; closing through the line rejects with location.",
+    "Longer handles preserve separation throughout the existing opening range; actual triangle cross-sections and circle distances sampled across9 size combinations/37 poses/two jaws.",
+    "Variant-specific line camera targets, saved family/CAS changes and discovery examples/references/parameter schema."
+  ],
+  "defaultIdentity": {
+    "sourceSha256": "sha256:f2d265adfc6d94480063abfb7a82a4cbec36111299025bd49156e1281143939e",
+    "metadataSha256": "sha256:1d6050d5ac18a16722e3766bf8da86a4f0c418012d50e3a15a6eeadd1b7ac281",
+    "meshDataSha256": "sha256:8d6e8d9756f349733ed524f64938b32fbd5c451e7b68ff8ccc15f77e270eae81",
+    "metadataBytes": 11659
+  },
+  "candidateIdentity": {
+    "variant": "notched-line",
+    "source": "sha256:1937a914b366842ed133932040dc4fd041a98854d7b6626bfea489a7a67daf90",
+    "metadata": "sha256:7698b6a3f64781495f27fc0358b8c24b87213845d0da4033e111ad69acb7723f",
+    "metadataBytes": 11131,
+    "meshes": 4,
+    "parts": 5
+  },
+  "owningTests": 37,
+  "sampledJawStates": 666,
+  "contactTolerance": 1e-8,
+  "geometryMargin": 1e-5,
+  "qualification": "Software factory candidate only, with illustrative dimensions and return bias. No holding/friction/stiffness simulation, native/default pixel proof, supported-family/factual/design/continuous/genuine narration/listening/pilot acceptance. E02 native9e4ccce1 and earlier lifecycle bindings stay historical and separate.",
+  "failedAttempts": [
+    {
+      "name": "preflight1",
+      "actualExitCode": 2,
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-line12-preflight1.log",
+          "bytes": 1026,
+          "sha256": "sha256:31c7f14b57615ea6e04af3719fa9f62111285262e89d0c8ab74360fbb4e4d2bb"
+        }
+      ],
+      "reason": "New line material omitted typed defaults; reused full parsed base material with a distinct line ID."
+    }
+  ],
+  "preflightAttempts": [
+    {
+      "attempt": 2,
+      "receipt": [
+        {
+          "command": ["pnpm", "build"],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T03:48:44.808360+00:00",
+          "endedUtc": "2026-10-13T03:48:54.761340+00:00",
+          "log": "/private/tmp/still-shift-ms3-line12-preflight2-0.log"
+        },
+        {
+          "command": [
+            "pnpm",
+            "exec",
+            "eslint",
+            "packages/animation-engine/src/mechanism/clothespeg-pack.ts",
+            "packages/animation-engine/src/mechanism/clothespeg-notched-line.ts",
+            "packages/animation-engine/src/mechanism/family-registry.ts",
+            "packages/animation-engine/src/mechanism/camera-descriptions.ts",
+            "tests/unit/mechanism-notched-line.test.ts"
+          ],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T03:48:54.762162+00:00",
+          "endedUtc": "2026-10-13T03:48:55.472261+00:00",
+          "log": "/private/tmp/still-shift-ms3-line12-preflight2-1.log"
+        },
+        {
+          "command": ["pnpm", "schema:check"],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T03:48:55.472571+00:00",
+          "endedUtc": "2026-10-13T03:48:58.732549+00:00",
+          "log": "/private/tmp/still-shift-ms3-line12-preflight2-2.log"
+        },
+        {
+          "command": ["pnpm", "check:boundaries"],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T03:48:58.733021+00:00",
+          "endedUtc": "2026-10-13T03:48:59.573522+00:00",
+          "log": "/private/tmp/still-shift-ms3-line12-preflight2-3.log"
+        },
+        {
+          "command": [
+            "pnpm",
+            "exec",
+            "vitest",
+            "run",
+            "tests/unit/mechanism-notched-line.test.ts",
+            "tests/unit/mechanism-family-packs.test.ts",
+            "tests/unit/mechanism-family-authoring.test.ts",
+            "tests/unit/mechanism-family-registry.test.ts",
+            "tests/unit/mechanism-pack-timeline.test.ts"
+          ],
+          "actualExitCode": 1,
+          "startedUtc": "2026-10-13T03:48:59.573801+00:00",
+          "endedUtc": "2026-10-13T03:49:05.863383+00:00",
+          "log": "/private/tmp/still-shift-ms3-line12-preflight2-4.log"
+        }
+      ],
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-line12-preflight2-0.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-line12-preflight2-1.log",
+          "bytes": 0,
+          "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-line12-preflight2-2.log",
+          "bytes": 502,
+          "sha256": "sha256:904ab0505f30dcbfbc30b28c2b2da22c2d2cc49f3c99a0200defa634e56ec546"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-line12-preflight2-3.log",
+          "bytes": 186,
+          "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-line12-preflight2-4.log",
+          "bytes": 3417,
+          "sha256": "sha256:9ddbe16679cbc715d6fef8667d7f39f9a67145139dd9663d3826ad0f0bb8fb7a"
+        }
+      ],
+      "qualification": "Build/lint/schema/boundaries0;36 passed/1 failed actual circle clearance(-4.97017849e-8) under Float32 rounding; original1e-8 tolerance retained."
+    },
+    {
+      "attempt": 3,
+      "receipt": [
+        {
+          "command": ["pnpm", "build"],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T03:52:34.111849+00:00",
+          "endedUtc": "2026-10-13T03:52:44.011658+00:00",
+          "log": "/private/tmp/still-shift-ms3-line12-preflight3-0.log"
+        },
+        {
+          "command": [
+            "pnpm",
+            "exec",
+            "eslint",
+            "packages/animation-engine/src/mechanism/clothespeg-pack.ts",
+            "packages/animation-engine/src/mechanism/clothespeg-notched-line.ts",
+            "packages/animation-engine/src/mechanism/family-registry.ts",
+            "packages/animation-engine/src/mechanism/camera-descriptions.ts",
+            "tests/unit/mechanism-notched-line.test.ts"
+          ],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T03:52:44.012757+00:00",
+          "endedUtc": "2026-10-13T03:52:44.725859+00:00",
+          "log": "/private/tmp/still-shift-ms3-line12-preflight3-1.log"
+        },
+        {
+          "command": ["pnpm", "schema:check"],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T03:52:44.726189+00:00",
+          "endedUtc": "2026-10-13T03:52:47.957285+00:00",
+          "log": "/private/tmp/still-shift-ms3-line12-preflight3-2.log"
+        },
+        {
+          "command": ["pnpm", "check:boundaries"],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T03:52:47.957790+00:00",
+          "endedUtc": "2026-10-13T03:52:48.792906+00:00",
+          "log": "/private/tmp/still-shift-ms3-line12-preflight3-3.log"
+        },
+        {
+          "command": [
+            "pnpm",
+            "exec",
+            "vitest",
+            "run",
+            "tests/unit/mechanism-notched-line.test.ts",
+            "tests/unit/mechanism-family-packs.test.ts",
+            "tests/unit/mechanism-family-authoring.test.ts",
+            "tests/unit/mechanism-family-registry.test.ts",
+            "tests/unit/mechanism-pack-timeline.test.ts"
+          ],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T03:52:48.793304+00:00",
+          "endedUtc": "2026-10-13T03:52:55.058934+00:00",
+          "log": "/private/tmp/still-shift-ms3-line12-preflight3-4.log"
+        }
+      ],
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-line12-preflight3-0.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-line12-preflight3-1.log",
+          "bytes": 0,
+          "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-line12-preflight3-2.log",
+          "bytes": 502,
+          "sha256": "sha256:904ab0505f30dcbfbc30b28c2b2da22c2d2cc49f3c99a0200defa634e56ec546"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-line12-preflight3-3.log",
+          "bytes": 186,
+          "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-line12-preflight3-4.log",
+          "bytes": 2062,
+          "sha256": "sha256:26ea93e366cffeea4e7241cd6245459f77aa0e3770e5885ab15c0aa2da4a0633"
+        }
+      ],
+      "qualification": "Final all37 owning/build/lint/schema/boundary0 and exact2708-input hold after geometry rounding/handle repair."
+    }
+  ],
+  "packageDeclarations": {
+    "receipt": [
+      {
+        "command": ["pnpm", "build:package"],
+        "actualExitCode": 0,
+        "startedUtc": "2026-10-13T03:54:36.278296+00:00",
+        "endedUtc": "2026-10-13T03:54:48.127562+00:00",
+        "log": "/private/tmp/still-shift-ms3-line12-package1-0.log"
+      },
+      {
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "/private/tmp/still-shift-ms3-line12-inspect1.mts"
+        ],
+        "actualExitCode": 0,
+        "startedUtc": "2026-10-13T03:54:48.128424+00:00",
+        "endedUtc": "2026-10-13T03:54:48.686789+00:00",
+        "log": "/private/tmp/still-shift-ms3-line12-package1-1.log"
+      }
+    ],
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-line12-package1-0.log",
+        "bytes": 208,
+        "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-line12-package1-1.log",
+        "bytes": 496,
+        "sha256": "sha256:52d7f2dd4f1e2b72900e902527f21caae38c0431b449fe669bf8dbc04e31b591"
+      }
+    ],
+    "qualification": "Declaration/identity checks only; no current archive or installed/release pass."
+  },
+  "heldInputs": {
+    "files": 2708,
+    "bytes": 121460685,
+    "inventory": {
+      "path": "/private/tmp/still-shift-ms3-line12-preflight3-inputs.json",
+      "bytes": 462320,
+      "sha256": "sha256:7ce0b34019fb6a40203a3f4bd35e9a96202952c10bcd2fe91b6c02cd625f7d04"
+    },
+    "checkExitCode": 0
+  },
+  "remaining": [
+    "Complete current fast tier.",
+    "Actual native/default/candidate line renders and independent full decode/image/matrix/history/default parity audit.",
+    "Readable factual/design/whole/genuine speech/listening E09 proof, remaining three assets/two behaviors, all frozen ten-pilot/scoped/MS1/broader QA/capability/final gates."
+  ],
+  "failedSource": {
+    "path": "/private/tmp/still-shift-ms3-line12-failed-module1.ts",
+    "bytes": 5136,
+    "sha256": "sha256:cd05987c872775fb98de574c7844412d7af9bfb964f33b62a0ca1f18406ed78c"
+  },
+  "initialIdentityProbe": {
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-line12-inspect1.log",
+        "bytes": 496,
+        "sha256": "sha256:a45c694edac0d4b2fef651398121fdfd71850b280f087d8f14a53b6a0bd14293"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-line12-baseline.json",
+        "bytes": 295,
+        "sha256": "sha256:9aa1b0c22ca5eb816b2be074fc610541b13e4f41a68dc786cfe71b5bef0adc22"
+      }
+    ],
+    "qualification": "Initial old/new pose identities precede geometric repair. Scene1 scratch file was overwritten by the later identity probe before being pinned; its current file is not evidence of the failed source."
+  },
+  "currentScene": {
+    "path": "/private/tmp/still-shift-ms3-line12-scene1.json",
+    "bytes": 385685,
+    "sha256": "sha256:10ad3428af256bcea0cb672c236223d99791911e400e86d908530b8909596127"
+  }
+}

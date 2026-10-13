@@ -591,6 +591,15 @@
         "pins": 149,
         "defaultDecodedFrameAndAudioParity": true
       }
+    },
+    {
+      "id": "notched-line12",
+      "record": "docs/mechanism-shorts-ms3-line-results.json",
+      "status": "factory-candidate-owning-passed-fast-native-pending",
+      "owningTests": 37,
+      "sampledJawStates": 666,
+      "defaultIdentitiesPreserved": true,
+      "qualification": "Software factory candidate only, with illustrative dimensions and return bias. No holding/friction/stiffness simulation, native/default pixel proof, supported-family/factual/design/continuous/genuine narration/listening/pilot acceptance. E02 native9e4ccce1 and earlier lifecycle bindings stay historical and separate."
     }
   ],
   "targets": {

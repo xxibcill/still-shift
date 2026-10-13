@@ -128,6 +128,32 @@ its SHA-256 and weight. The repository example uses
 The browser and normal renderer verify and decode these bytes; no system-font
 substitution is used. Installed-package font delivery remains to be verified.
 
+## Notched-jaw round-line candidate
+
+E09 uses `createClothespegPack({ variant: "notched-line" })` and
+`inspectClothespegPack("notched-line")`. This distinct candidate has actual facing
+concave jaw notches and a separate closed round line, following conventional
+front seating in [US2590881A](https://patents.google.com/patent/US2590881A/en).
+The slot/tongue/ledge restraint improvement and deep-gullet displacement are excluded.
+Dimensions remain illustrative; no friction or holding-force claim is made.
+
+Selected parameters are `armLength`5–8 (default6), `armWidth`0.6–1.1 (default0.8),
+and `lineRadius`0.08–0.18 (default0.16). The omitted variant keeps the original
+cloth peg and its exact source/metadata identities. Strict selected schemas reject
+`clothThickness` on a notched-line input and `lineRadius` on a default cloth input.
+The registry exposes the `notched-line-parameters` schema and example/reference.
+Saved family CAS edits can change line radius while preserving that reference.
+
+Neutral upper/lower jaw contacts meet the line. Existing spring-return controls
+use `stopValue: 0`; positive closing beyond neutral is rejected by
+`upper.line.gap`/`lower.line.gap`. Tangent notch facets include a horizontal
+contact face; a1e-5 outward geometry margin protects the other facets from
+Float32 rounding, with the original1e-8 contact tolerance retained. Rear handle
+heights scale with arm length to preserve separation across the opening range.
+Software checks independently slice actual triangles at nine sizes and37 poses
+per size/two jaws. Native appearance, whole mechanics/collision, factual/design,
+genuine narration/listening and pilot acceptance remain separate.
+
 ## Cable-tie and clothespeg candidates
 
 The public `inspectCableTiePack`, `createCableTiePack`,

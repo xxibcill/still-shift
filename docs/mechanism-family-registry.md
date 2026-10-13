@@ -23,6 +23,9 @@ registry validates the parameter schema digest against the immutable pack receip
 entries are frozen. Tape-hook includes an additional `slotted-retention` example and
 reference; its default metadata remains the original `floating-hook` definition.
 Inspect the selected variant through `inspectTapeHookPack("slotted-retention")`.
+Clothespeg includes a `notched-line` example/reference with the selected
+`notched-line-parameters` schema. Its default cloth metadata remains unchanged.
+Use `inspectClothespegPack("notched-line")` for the new candidate's metadata.
 The exported `TapeHookPackInputSchema`,
 `CableTiePackInputSchema` and `ClothespegPackInputSchema` are the same schemas used
 by their generators. Their `expectedPack` references retain existing strict

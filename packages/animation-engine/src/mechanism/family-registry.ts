@@ -36,6 +36,7 @@ import {
   inspectClothespegPack,
   ClothespegPackInputSchema,
   ClothespegPackParametersSchema,
+  NotchedLinePackParametersSchema,
 } from "./clothespeg-pack.ts";
 import { freezeMechanismPack, mechanismPackHash } from "./pack-support.ts";
 import {
@@ -91,6 +92,7 @@ export const mechanismFamilySchemas = {
   "cable-tie-parameters": CableTiePackParametersSchema,
   "clothespeg-input": ClothespegPackInputSchema,
   "clothespeg-parameters": ClothespegPackParametersSchema,
+  "notched-line-parameters": NotchedLinePackParametersSchema,
   pack: MechanismPackDocumentSchema,
   "pack-timeline": MechanismPackTimelineSchema,
   "narrated-cycle": MechanismNarratedCycleSchema,
@@ -141,6 +143,16 @@ export function inspectMechanismFamilyRegistry(
       parameters: metadata.pack.parameters,
       examples: [
         { id: "default", input: entry.input.parse({}) },
+        ...(id === "clothespeg"
+          ? [
+              {
+                id: "notched-line",
+                input: ClothespegPackInputSchema.parse({
+                  variant: "notched-line",
+                }),
+              },
+            ]
+          : []),
         ...(id === "tape-hook"
           ? [
               {
@@ -167,18 +179,49 @@ export function inspectMechanismFamilyRegistry(
                 },
               };
             })
-          : [
-              {
-                id: metadata.pack.factualVariant.id,
-                reference: {
-                  id: metadata.pack.id,
-                  version: metadata.pack.version,
-                  sha256: metadata.sha256,
-                  variant: metadata.pack.factualVariant.id,
-                  detail: "teaching",
+          : id === "clothespeg"
+            ? (["wood-arms-central-spring-cloth", "notched-line"] as const).map(
+                (variant) => {
+                  const receipt = inspectClothespegPack(variant),
+                    schema =
+                      variant === "notched-line"
+                        ? NotchedLinePackParametersSchema
+                        : ClothespegPackParametersSchema;
+                  if (
+                    mechanismPackHash(z.toJSONSchema(schema)) !==
+                    receipt.pack.generator.parameterSchemaSha256
+                  )
+                    throw Error(
+                      "Variant parameter schema differs from immutable metadata",
+                    );
+                  return {
+                    id: variant,
+                    parameterSchema:
+                      variant === "notched-line"
+                        ? "notched-line-parameters"
+                        : "clothespeg-parameters",
+                    reference: {
+                      id: receipt.pack.id,
+                      version: receipt.pack.version,
+                      sha256: receipt.sha256,
+                      variant,
+                      detail: "teaching",
+                    },
+                  };
                 },
-              },
-            ],
+              )
+            : [
+                {
+                  id: metadata.pack.factualVariant.id,
+                  reference: {
+                    id: metadata.pack.id,
+                    version: metadata.pack.version,
+                    sha256: metadata.sha256,
+                    variant: metadata.pack.factualVariant.id,
+                    detail: "teaching",
+                  },
+                },
+              ],
       metadata,
       controls: metadata.pack.rigs.map((rig) => ({
         id: rig.id,
