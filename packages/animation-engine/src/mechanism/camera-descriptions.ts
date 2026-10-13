@@ -35,10 +35,23 @@ export function describeMechanismPackCameras(
     proof: Surface[],
     directions: [number, number, number][];
   if (family === "tape-hook") {
-    focus = meshes(["hook-front", "hook-fold"]);
+    const retention = scene.geometry.meshes.some(
+      (mesh) => mesh.id === "hook-retention-neck",
+    );
+    focus = meshes(
+      retention
+        ? [
+            "hook-front",
+            "hook-retention-neck",
+            ...[1, 2, 3].map((i) => `retention.rivet.${i}.top.mesh`),
+          ]
+        : ["hook-front", "hook-fold"],
+    );
     contact = "hook.innerFace";
-    detail = "hook.thickness";
-    relationship = ["hook.innerRange"];
+    detail = retention ? "retention.rivet.2.upper.center" : "hook.thickness";
+    relationship = retention
+      ? ["hook.innerRange", "retention.rivet.2.upper.fixed"]
+      : ["hook.innerRange"];
     proof = [
       surface("inner-face", "hook-front", contact, [1, 0, 0], [0, 0, 0.12]),
     ];

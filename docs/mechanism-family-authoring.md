@@ -24,6 +24,12 @@ await patchMechanismFamilyAuthoring("/tmp/demo/family.json", {
 });
 ```
 
+For a distinct three-rivet candidate, create a new family with
+`createMechanismFamilyAuthoring("tape-hook", "retention", { variant: "slotted-retention" })`.
+The saved document pins that candidate's immutable reference. Variant changes
+require new family creation; a scoped parameter/mount/style patch preserves the
+selected variant and pack identity. Candidate status does not establish pilot approval.
+
 Patches target named parameters or the whole mount/style. Parameter names must
 exist in the selected family. Final validation applies the real family input
 schema and generator, including bounds, relationships and immutable pack revision.

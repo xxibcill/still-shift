@@ -24,6 +24,7 @@ import {
 import {
   inspectTapeHookPack,
   TapeHookPackInputSchema,
+  TapeHookPackVariantSchema,
   TapeHookPackParametersSchema,
 } from "./tape-hook-pack.ts";
 import {
@@ -138,7 +139,46 @@ export function inspectMechanismFamilyRegistry(
       parameterSchema: `${id}-parameters`,
       parameterSchemaSha256: metadata.pack.generator.parameterSchemaSha256,
       parameters: metadata.pack.parameters,
-      examples: [{ id: "default", input: entry.input.parse({}) }],
+      examples: [
+        { id: "default", input: entry.input.parse({}) },
+        ...(id === "tape-hook"
+          ? [
+              {
+                id: "slotted-retention",
+                input: TapeHookPackInputSchema.parse({
+                  variant: "slotted-retention",
+                }),
+              },
+            ]
+          : []),
+      ],
+      variants:
+        id === "tape-hook"
+          ? TapeHookPackVariantSchema.options.map((variant) => {
+              const receipt = inspectTapeHookPack(variant);
+              return {
+                id: variant,
+                reference: {
+                  id: receipt.pack.id,
+                  version: receipt.pack.version,
+                  sha256: receipt.sha256,
+                  variant,
+                  detail: "teaching",
+                },
+              };
+            })
+          : [
+              {
+                id: metadata.pack.factualVariant.id,
+                reference: {
+                  id: metadata.pack.id,
+                  version: metadata.pack.version,
+                  sha256: metadata.sha256,
+                  variant: metadata.pack.factualVariant.id,
+                  detail: "teaching",
+                },
+              },
+            ],
       metadata,
       controls: metadata.pack.rigs.map((rig) => ({
         id: rig.id,

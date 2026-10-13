@@ -46,6 +46,10 @@
         "input": {
           "type": "object",
           "properties": {
+            "variant": {
+              "type": "string",
+              "enum": ["floating-hook", "slotted-retention"]
+            },
             "parameters": {
               "default": {
                 "hookThickness": 0.18,

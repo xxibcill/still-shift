@@ -531,6 +531,14 @@
         "pins": 473,
         "firstAuditFailureRetained": true
       }
+    },
+    {
+      "id": "slotted-retention11",
+      "record": "docs/mechanism-shorts-ms3-retention-results.json",
+      "status": "factory-candidate-owning-passed-current-fast-native-pending",
+      "owningTests": 30,
+      "defaultIdentitiesPreserved": true,
+      "qualification": "Factory/software candidate only. Original E02 factual/design/actual native/continuous/visual/genuine narration/listening/pilot admission remains open. No newly accepted asset or episode; no ElevenLabs spend. Native10 on c474c9c5 retains its exact prior source binding, not current changed-source acceptance."
     }
   ],
   "targets": {

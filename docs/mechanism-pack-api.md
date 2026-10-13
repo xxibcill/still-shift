@@ -69,10 +69,37 @@ values. The hook-thickness range is 0.04–0.35, blade length 4–20 and blade w
 1–3. The tested dimensions are 0.18/10/2 and 0.26/14/2.5. A style change preserves
 mesh arrays and their hash while changing the effective material/source identity.
 
+## Three-rivet slotted retention candidate
+
+Use `createTapeHookPack({ variant: "slotted-retention" })` or
+`inspectTapeHookPack("slotted-retention")` for E02's distinct candidate. The
+omitted variant keeps the original `floating-hook` source and metadata identities.
+The new reference has its own immutable metadata hash; a floating-hook
+`expectedPack` is rejected for this variant. Saved family creation accepts the
+same variant field, and registry examples/references expose both choices.
+
+The candidate has a tapered curved neck with three elongated through-slots,
+a blade with three smaller holes, and three fixed stepped rivets. Each rivet
+has lower/upper shanks and top/bottom retaining heads. The geometry follows
+[US4930227A figures 1–8](https://patents.google.com/patent/US4930227A/en);
+dimensions remain authored illustrative values. Nominal slot width is0.23,
+upper/lower shank radii are0.085/0.055, blade-hole radius is0.06 and retaining
+head radius is0.17. Capsule polygons circumscribe the nominal opening to
+preserve0.012 axial clearance after triangulation. The maximum polygon width
+is `0.23 / cos(pi/28)`, rather than an asserted exact0.23 mesh width.
+
+Software checks preserve default identities, validate saved-family CAS and
+mounted endpoints, and independently intersect actual triangles at nine
+thickness/width combinations, thirteen travel states and64 directions per
+rivet. Those sampled checks do not establish continuous collision, actual native
+appearance, factual/design approval, a supported pack or E02 pilot acceptance.
+The candidate's camera recipes reference its actual neck/front/rivet meshes.
+
 ## Rig and composition route
 
-The slider moves `hook` relative to `model` over `[0, hookThickness]`. Its six
-rivet meshes remain owned by `blade`. The optional `mount` transform moves the
+The slider moves `hook` relative to `model` over `[0, hookThickness]`. The default
+variant has six rivet meshes owned by `blade`; slotted retention has twelve meshes
+on separate rivet components parented to `blade`. The optional `mount` transform moves the
 model and its board/wall/datum reference together. `evaluateTapeHookPackFrame()`
 performs fresh expected-state evaluation and rejects wrong travel, rivet
 ownership, failed declared relationships or a changed source identity.

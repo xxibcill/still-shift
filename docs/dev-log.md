@@ -86,6 +86,13 @@ still hold before relying on them.
   missing tokensnull. E02 scratch geometry now has actual three slots/drilled
   blade/stepped rivets and passes44928 sampled triangle rays after retained
   frame-request and faceting failures; factory/native/asset admission stays open.
+  E02 slotted-retention is now integrated as a distinct immutable factory/saved-
+  family candidate. Default source/metadata pins stay exact; metadata28,022B.
+  Final30 owning/build/lint/schema/boundary/declarations and44,928 factory triangle
+  rays pass; initial visibility/camera/test-API/Float32 failures are retained.
+  Full bladeLength span is repaired and final preflight source-held. Current fast
+  and actual native/default pixel/review evidence remain next on this changed
+  source; prior c474 native10 evidence is not relabeled as current acceptance.
   Scoped/MS1 repair, ten frozen questions,
   five assets/two behaviors, genuine inputs/reviews, capability reconciliation
   and final full/archive/installed verification remain. Coverage is 0/10; no
@@ -280,6 +287,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — Integrate E02 three-rivet retention factory candidate
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `c2eec228`.
+- **Done:** Optional slotted-retention variant with distinct immutable metadata,
+  actual slots/blade holes/stepped rivets, variant cameras, saved-family CAS and
+  registry examples/references; original default source/metadata pins unchanged.
+- **Results:** Final30 owning checks/build/lint/schema/boundary and package
+  declarations pass, with2,705 inputs exact; factory geometry passes44,928 rays.
+- **Rejected / retained:** Missing typed visibility, inherited camera mesh,
+  test patch-result misuse and double-vs-Float32 extent expectation. Full blade
+  length now preserves its exact geometric span; final preflight refreshed.
+- **Open / next:** Current full fast, actual candidate/default native evidence,
+  factual/design/genuine narration/reviews and remaining original MS3 work.
+- **Records:** [retention candidate](./mechanism-shorts-ms3-retention-results.json),
+  [tracker](./mechanism-shorts-ms3-acceptance.md). Accepted pilot remains0/10.
 
 ### 2026-10-13 — Actual native CLI recovery and independent artifact audit
 
