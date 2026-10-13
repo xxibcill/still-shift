@@ -2,8 +2,8 @@
   "version": "mechanism-shorts-ms3-located-failure-results-1",
   "date": "2026-10-14",
   "sourceBaseCommit": "6e25cb4206d049d929db7c2a40a2cb46abeaaffb",
-  "implementationCommit": null,
-  "sourceBinding": "Dirty candidate held across owning checks, separate CLI processes and corrected fast gate; exact post-commit binding is recorded after commit.",
+  "implementationCommit": "6f5e7c537c939d42fba07912bb31558a48e4c162",
+  "sourceBinding": "Exact implementation commit matches the held 2,736-file candidate inventory after commit; post-commit source hold exits0. Fast1 failure and Fast2 rerun remain separate.",
   "runtime": {
     "codeSha256": "sha256:528bf70a93845deefd3b31d4e457179dd8c232dbec44f03d44705f3d34103e52",
     "profileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b",
@@ -181,5 +181,11 @@
     "Current unified native product/cohort bindings, all ten frozen questions, seven genuine narration/timing inputs and whole reviews remain open. Prior042a native technical checks are historical after this runtime528b change.",
     "Paired routine-token measurements and final full/benchmark/archive/isolated-installed verification remain."
   ],
-  "qualification": "Expected-state seed and durable error-preservation proof. No rendered intersection/glyph/state/audio fault proof, independent new native/video decode, whole mechanical/factual/continuous/listening/human or pilot acceptance."
+  "qualification": "Expected-state seed and durable error-preservation proof. No rendered intersection/glyph/state/audio fault proof, independent new native/video decode, whole mechanical/factual/continuous/listening/human or pilot acceptance.",
+  "postCommitSourceHold": {
+    "implementationCommit": "6f5e7c537c939d42fba07912bb31558a48e4c162",
+    "actualExitCode": 0,
+    "files": 2736,
+    "bytes": 121771507
+  }
 }

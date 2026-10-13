@@ -397,13 +397,14 @@ still hold before relying on them.
 
 ### 2026-10-14 — Preserve located timeline failures through CLI and durable history
 
-- **Agent / branch:** Codex on `codex/mechanism-ms3`, held candidate from6e25cb42.
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, implementation`6f5e7c53`, from6e25cb42.
 - **Done:** Cue wrappers keep invariant causes; bounded structured findings now
   survive both CLI routes, queue journals, fresh reports and restarts. Legacy
   diagnostics/old attempts retain their meaning and the healthy neighbor stays exact.
 - **Verification:** Owning62/8 pass. Separate CLI processes actually exit2 for
   the expected illegal transition at15–30; event-order API locates frame1/path.
   Corrected full fast actually exits0/hold0:4,543/450,2,736 inputs/121,771,507B.
+- **Binding:** Exact committed candidate source hold also exits0.
 - **Failure retained:** Initial fast stops on two prior evidence-format mistakes;
   formatting only corrected and original JSON data retained. Code/profile/appearance
   identity is528b/d6ee/53d0; earlier042a genuine checks remain historical.
