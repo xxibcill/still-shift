@@ -103,3 +103,14 @@ four native renders and two lossless exports, with zero Blender calls for text
 editing. Fast4,549/451 and runtime1/Python lint/format pass. This foundation is
 not a narrated first-ten pilot row, full native queue/QA integration or whole
 asset/episode/continuous/listening/factual acceptance.
+
+[Native Blender lifecycle versions](./mechanism-shorts-ms3-blender-versions-results.json)
+on2b335cb2 add explicit queue/product/report2 backend identity while preserving
+strict legacy families and canonical item hashes. Seven new unit controls cover
+sealing/reuse, failed reports, targeted retry ancestry, changed artifacts, QA
+bounds and cross-backend rejection. Full fast4,556/452 and affected runtime11/6
+pass on2,746 exact inputs; runtime34a0/694. The actual Three.js executor refuses
+Blender items before source admission. These are generic byte-fixture and command
+lifecycle checks; the full Blender production executor/cue compiler/semantic QA
+and all-ten narrated products remain required. Current coverage/whole admission
+stays0/10 and paired token measurements staynull. All failed runs are retained.

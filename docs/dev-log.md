@@ -223,6 +223,15 @@ still hold before relying on them.
   formatting/font and lossy-codec failures remain. Editable source/controls stay
   native in Blender; cached sequence/text receiving is verified, not automatic
   Three.js rig/shader transfer. Actual all-ten production/QA integration remains.
+  [Blender lifecycle versions](./mechanism-shorts-ms3-blender-versions-results.json)
+  now use explicit queue/product/report2 backend bindings through the existing
+  controller, retry and report reader. Legacy family admission and identities stay
+  exact; cross-backend reclassification/product reuse rejects. Fast4,556/452 and
+  affected runtime11/6 pass on2,746 held inputs/121,859,262B; implementation2b335cb2
+  post-commit hold0. Runtime34a0/694; appearance/profile remain exact. Initial
+  type/assertion/generated-schema/lint failures remain retained. Generic byte
+  fixtures establish lifecycle only; actual Blender executor/cues/QA/all-ten
+  delivery and every whole/final gate remain open.
   Accepted coverage remains0/10; tokens staynull. No ElevenLabs spend, merge,
   publication or Actions change. [Tracker](./mechanism-shorts-ms3-acceptance.md).
 
@@ -411,6 +420,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Version the native Blender production lifecycle
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, implementation2b335cb2, froma039e870.
+- **Done:** Explicit Blender queue/product/report2 schemas/types; shared durable
+  resume, failed reports, targeted retry ancestry and artifact invalidation.
+  Legacy schemas/identities stay exact; cross-backend product/reclassification rejects.
+- **Verification:** Fast4,556/452 and affected runtime11/6 pass; all2,746 inputs/
+  121,859,262B held, including post-commit hold0. Runtime34a0/694; profile/appearance exact.
+- **Retained:** Missing union type, rejection-assertion wording, stale generated
+  report-bundle schema and unused test binding. Successful scopes remain separate.
+- **Inputs:** Existing ASR copy normalization matches9/10; EU-005's inflection
+  discrepancy retains its prior recheck. No new transcription/generation/review.
+- **Next:** Actual Blender executor/cue/semantic QA integration and ten narrated
+  products, broader faults/coverage, whole reviews and final gates. Accepted0/10, tokensnull.
+- **Records:** [Lifecycle evidence](./mechanism-shorts-ms3-blender-versions-results.json),
+  [API scope](./mechanism-blender-capture.md). No spend, merge or publication.
 
 ### 2026-10-14 — Preserve actual native asset content in a shared capture producer
 
