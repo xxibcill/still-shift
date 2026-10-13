@@ -5,7 +5,7 @@
   "branch": "codex/mechanism-ms3",
   "baseCommit": "2e0dd3eb20cdda4cc772d308a90d05e898320ef0",
   "pullRequest": "https://github.com/xxibcill/still-shift/pull/58",
-  "status": "capacity-compatibility-repair-scoped-verified-complete-reruns-pending",
+  "status": "current-complete-fast-runtime-passed-native-attempt3-running",
   "sourceSnapshot": [
     {
       "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-qa-contract.ts",
@@ -512,6 +512,51 @@
       "path": "/private/tmp/still-shift-ms3-qa7-gate6-receipt.json",
       "bytes": 3613,
       "sha256": "sha256:6f45fc0fba2b8e3daa7be25fdcb49659448e1c4015f2a5ae92a2a39089b30191"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-gate7-0.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-gate7-1.log",
+      "bytes": 1999,
+      "sha256": "sha256:773a493bb9e53a477944e29993f24d196ac99906086ece3a23643b5cf632d391"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-gate7-2.log",
+      "bytes": 589,
+      "sha256": "sha256:3dcb1a0f048f9a3905e28a0e86de1b15eca99bbd3f956d65280a92879ca173d7"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-gate7-3.log",
+      "bytes": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-gate7-4.log",
+      "bytes": 653,
+      "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-gate7-5.log",
+      "bytes": 502,
+      "sha256": "sha256:904ab0505f30dcbfbc30b28c2b2da22c2d2cc49f3c99a0200defa634e56ec546"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-gate7-6.log",
+      "bytes": 186,
+      "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-gate7-7.log",
+      "bytes": 208,
+      "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-qa7-gate7-receipt.json",
+      "bytes": 3979,
+      "sha256": "sha256:3770de805041359745ae32077ae778731101e13a94790fbe1114fcc14ebecc47"
     }
   ],
   "nativeOwningControls": [
@@ -522,7 +567,7 @@
     "Current bundle/handoff facts refs and original failed products remain visible."
   ],
   "remaining": [
-    "Current committed-source complete fast/runtime and native attempt3, including actual quota preservation and independent audit. Earlier lifecycle failures and separately passing artifact audit remain retained.",
+    "Actual native attempt3 terminal, quota preservation/one-item/five-execution/zero-new-native assertions, and independent artifact/lifecycle/current CLI/cohort audit. Complete current fast/runtime now pass; earlier failures retained.",
     "Broader mechanical/visual/audio fault suite, analytic/sampled/continuous collision work and actual whole reviews.",
     "Real native interruption/cancel/corrupt/relocation, scoped/affected repair and automatic MS1 overlap.",
     "Original ten frozen questions/five new assets/two behaviors/genuine inputs/factual/design/visual/listening evidence; broader capabilities and final full/archive/installed/MS3 PR completion."
@@ -630,24 +675,41 @@
     "scopedControls": 77,
     "currentCompleteFastAndNative": "Current complete fast passed; actual native proof running"
   },
-  "committedSource": "787d96e81ff54dbc922117939c21d14294f150d6",
+  "committedSource": "6080b8dff1bf3f31712ee890839602a5934479a0",
   "completeFast": {
     "status": "passed",
     "command": "pnpm check:fast",
-    "sourceCommit": "f981166d80e89a5e85f355a3133a48d02e02f72d",
-    "startedUtc": "2026-10-13T00:02:52.022322+00:00",
-    "pid": 31235,
-    "inventory": "/private/tmp/still-shift-ms3-qa7-fast4-inputs.json",
+    "sourceCommit": "6080b8dff1bf3f31712ee890839602a5934479a0",
+    "startedUtc": "2026-10-13T00:12:03.602781+00:00",
+    "pid": 62675,
+    "inventory": "/private/tmp/still-shift-ms3-qa7-fast5-inputs.json",
     "actualExitCode": 0,
     "sourceHoldCheckExitCode": 0,
-    "endedUtc": "2026-10-13T00:05:02.194807+00:00",
-    "session": 81002,
-    "unitTests": 4444,
+    "endedUtc": "2026-10-13T00:14:22.216156+00:00",
+    "session": 10783,
+    "unitTests": 4445,
     "unitFiles": 438,
-    "unitSeconds": 65.94,
+    "unitSeconds": 73.45,
     "heldInputFiles": 2692,
-    "heldInputBytes": 121325633,
-    "qualification": "Exact f981 capacity repair before diagnostic/strip-only compatibility repair. Complete gates must refresh on the new source."
+    "heldInputBytes": 121326949,
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-qa7-fast5.log",
+        "bytes": 44595,
+        "sha256": "sha256:7109ddbc2c26d83ed8bc99b6c1c56ff9fb00316721af22dd46be6ba7f27db16c"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-qa7-fast5-receipt.json",
+        "bytes": 361,
+        "sha256": "sha256:c51fb93e55961e8cf971e899c748471391d8423a4819858cb8a522080958b6e8"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-qa7-fast5-inputs.json",
+        "bytes": 459540,
+        "sha256": "sha256:6c4a7bc5a3c7bf4e99e45e343bd2b8880a6547d33613cd906b6492406e22cee7"
+      }
+    ],
+    "qualification": "Exact6080b8df capacity/diagnostic/strip-only compatibility source; successful fast tier only."
   },
   "nativeAttempts": [
     {
@@ -731,6 +793,20 @@
           "sha256": "sha256:ede366af0896925c065185a371823ab51a15c2ef4ecf5405f574a8c0b1a71152"
         }
       ]
+    },
+    {
+      "status": "running",
+      "command": "pnpm test:browser:mechanism-production-native",
+      "sourceCommit": "6080b8dff1bf3f31712ee890839602a5934479a0",
+      "startedUtc": "2026-10-13T00:23:31.950991+00:00",
+      "pid": 24769,
+      "inventory": "/private/tmp/still-shift-ms3-qa7-browser3-inputs.json",
+      "actualExitCode": null,
+      "attempt": 3,
+      "session": 1042,
+      "directory": "/private/tmp/still-shift-ms3-production-native-xoLXjI",
+      "logPath": "/private/tmp/still-shift-ms3-qa7-browser3.log",
+      "resume": "Poll session1042; if handle has closed, inspect final receipt, log and run/failure files. Never restart this live attempt or infer terminal success. Independent audit3 remains required."
     }
   ],
   "loaderRepair": {
@@ -978,13 +1054,13 @@
       "Actual native owner adds same-parent96 MiB pressure/rejection with unchanged sealed rows and zero executions, then retires pressure and keeps five-execution/one-item/zero-new-native QA-only repair assertions."
     ],
     "preflightTests": 87,
-    "currentNativeAndCompleteTiers": "New compatibility source requires complete fast/runtime and native attempt3; no native attempt3 started yet.",
+    "currentNativeAndCompleteTiers": "Complete fast4445 and runtime247/integration322/depth14/smoke pass on6080b8df with2692 exact matching inputs; actual native3 runs under session1042, terminal and independent audit pending.",
     "compatibilityRepair": {
       "baseCommit": "f981166d80e89a5e85f355a3133a48d02e02f72d",
       "method": "Native subclass retains original PassageError diagnostic code/path alongside typed capacity identity; explicit field assignments preserve Node strip-only imports. Runtime1 failure is retained.",
       "owningTests": 87,
       "affectedRuntimeTests": 6,
-      "completeCurrentVerification": "pending"
+      "completeCurrentVerification": "Complete fast and runtime actual0/hold0 on6080b8df; native3 running"
     }
   },
   "priorLoaderCompleteFast": {
@@ -1044,6 +1120,46 @@
           "sha256": "sha256:b99da521eb53c094bc76299e09724455b5a6289dfeb377a4dbd24b145f5b461a"
         }
       ]
+    },
+    {
+      "status": "passed",
+      "command": "pnpm check:runtime",
+      "sourceCommit": "6080b8dff1bf3f31712ee890839602a5934479a0",
+      "startedUtc": "2026-10-13T00:14:36.825815+00:00",
+      "pid": 71765,
+      "inventory": "/private/tmp/still-shift-ms3-qa7-runtime2-inputs.json",
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-13T00:23:15.243218+00:00",
+      "session": 24635,
+      "runtimeTests": 247,
+      "runtimeFiles": 42,
+      "runtimeSeconds": 134.82,
+      "integrationTests": 322,
+      "integrationFiles": 57,
+      "integrationSeconds": 346.15,
+      "depthTests": 14,
+      "browserSmoke": "completed",
+      "heldInputFiles": 2692,
+      "heldInputBytes": 121326949,
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-qa7-runtime2.log",
+          "bytes": 42059,
+          "sha256": "sha256:fe35ea1a86b8b1e4bd85f7ed37f95051e59e9d98b3687746216c55a1c2588e42"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-qa7-runtime2-receipt.json",
+          "bytes": 367,
+          "sha256": "sha256:753c31c80fde5b6a296aae075a748356fa5dcc1bd6c07584003b2fdcf01c2e10"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-qa7-runtime2-inputs.json",
+          "bytes": 459540,
+          "sha256": "sha256:6c4a7bc5a3c7bf4e99e45e343bd2b8880a6547d33613cd906b6492406e22cee7"
+        }
+      ],
+      "qualification": "Current complete runtime tier actual0/hold0; runtime1 actual1 remains retained."
     }
   ],
   "priorCapacityPreflight": {
@@ -1261,5 +1377,78 @@
       "bytes": 10193,
       "sha256": "sha256:916ff9eacda9e64430f0153d84dbea7e46abe3a4d11fdc9454f6fdeb00acf7da"
     }
-  ]
+  ],
+  "priorCapacityCompleteFast": {
+    "status": "passed",
+    "command": "pnpm check:fast",
+    "sourceCommit": "f981166d80e89a5e85f355a3133a48d02e02f72d",
+    "startedUtc": "2026-10-13T00:02:52.022322+00:00",
+    "pid": 31235,
+    "inventory": "/private/tmp/still-shift-ms3-qa7-fast4-inputs.json",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-13T00:05:02.194807+00:00",
+    "session": 81002,
+    "unitTests": 4444,
+    "unitFiles": 438,
+    "unitSeconds": 65.94,
+    "heldInputFiles": 2692,
+    "heldInputBytes": 121325633,
+    "qualification": "Exact f981 capacity repair before diagnostic/strip-only compatibility repair. Complete gates must refresh on the new source."
+  },
+  "completeRuntime": {
+    "status": "passed",
+    "command": "pnpm check:runtime",
+    "sourceCommit": "6080b8dff1bf3f31712ee890839602a5934479a0",
+    "startedUtc": "2026-10-13T00:14:36.825815+00:00",
+    "pid": 71765,
+    "inventory": "/private/tmp/still-shift-ms3-qa7-runtime2-inputs.json",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-13T00:23:15.243218+00:00",
+    "session": 24635,
+    "runtimeTests": 247,
+    "runtimeFiles": 42,
+    "runtimeSeconds": 134.82,
+    "integrationTests": 322,
+    "integrationFiles": 57,
+    "integrationSeconds": 346.15,
+    "depthTests": 14,
+    "browserSmoke": "completed",
+    "heldInputFiles": 2692,
+    "heldInputBytes": 121326949,
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-qa7-runtime2.log",
+        "bytes": 42059,
+        "sha256": "sha256:fe35ea1a86b8b1e4bd85f7ed37f95051e59e9d98b3687746216c55a1c2588e42"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-qa7-runtime2-receipt.json",
+        "bytes": 367,
+        "sha256": "sha256:753c31c80fde5b6a296aae075a748356fa5dcc1bd6c07584003b2fdcf01c2e10"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-qa7-runtime2-inputs.json",
+        "bytes": 459540,
+        "sha256": "sha256:6c4a7bc5a3c7bf4e99e45e343bd2b8880a6547d33613cd906b6492406e22cee7"
+      }
+    ],
+    "qualification": "Current complete runtime tier actual0/hold0; runtime1 actual1 remains retained."
+  },
+  "preparedIndependentAudit": {
+    "path": "/private/tmp/still-shift-ms3-qa7-audit3.py",
+    "file": {
+      "path": "/private/tmp/still-shift-ms3-qa7-audit3.py",
+      "bytes": 16954,
+      "sha256": "sha256:bdfd3de40c79e56ffcc9263361c1ffe0c8b3a2939a1e704a461b83234c4e2188"
+    },
+    "status": "prepared-not-run",
+    "methods": [
+      "independent originals/program/scalars/peaks and full decoded frame/audio/135 derived images",
+      "sealed stage hash/history/attempt/product preservation and caption/QA-only parity",
+      "actual final current report CLI plus independent p50/p95/review/first-pass/null-token recomputation"
+    ],
+    "qualification": "Run only after actual native3 success; no audit3 pass claimed."
+  }
 }

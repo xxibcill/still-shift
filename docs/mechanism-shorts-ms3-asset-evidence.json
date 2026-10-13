@@ -36,7 +36,89 @@
       "date": "2026-10-13",
       "frozenSelection": "ms3-pilot-2026-10-12-v1",
       "admittedAssets": 0
+    },
+    {
+      "episode": "E05",
+      "status": "primary-manufacturer-text-inspected",
+      "source": "https://www.hellermanntyton.com/products/cable-ties-releasable/relk2r/115-02202",
+      "factualScope": "RELK2R is inside serrated, uses a plastic pawl, and has an extended trigger. The manufacturer describes pressing the extended pawl down to release the strap.",
+      "implementationWitnesses": [
+        "Separate inside-serrated mesh, actual extended trigger/pawl linkage and backward clearance while released.",
+        "Keep the T50SOS non-releasable factory guard; admit this different factual asset through existing generic teaching-release rig only after geometry checks."
+      ],
+      "qualification": "Text only; detailed trigger topology, dimensions and actual asset remain unreviewed."
+    },
+    {
+      "episode": "E09",
+      "status": "primary-text-and-drawing-page-inspected",
+      "source": "https://patents.google.com/patent/US2590881A/en",
+      "pdfSource": "https://patentimages.storage.googleapis.com/60/4f/28/963cbea474bddb/US2590881.pdf",
+      "viewedPDFPages": [1],
+      "viewedFigures": [1, 2, 3, 4],
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-E09-US2590881.pdf",
+          "bytes": 487309,
+          "sha256": "sha256:4e061821489f657ed5de07b8cef2faf6691acdf389235e3493d3003fc69438fc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-E09-US2590881-figures.png",
+          "bytes": 131461,
+          "sha256": "sha256:832e8cfc55c2599df1fde94194640fce0d50fb8dbe662c6752374a589e9e03e6"
+        }
+      ],
+      "factualScope": "Conventional opposing arms rock about the torsion coil; facing jaw notches13 seat a clothesline. The spring wings bias jaws together and handles open them.",
+      "implementationWitnesses": [
+        "Create actual opposing concave notch profiles and separate round line, with line-to-jaw contact anchors and a nonpenetrating closure stop.",
+        "Limit line seat to the front jaw notches; the deep gullet placement in Fig3 illustrates a displacement problem, not the intended line seating position.",
+        "Exclude the patent-specific slot19/tongue24/ledge22 restraint improvement from the conventional asset."
+      ],
+      "qualification": "Illustrative conventional geometry only; no dimensions, friction, holding-force, new asset or factual/design/pilot acceptance."
+    },
+    {
+      "episode": "E10",
+      "status": "primary-educational-text-inspected",
+      "source": "https://openstax.org/books/college-physics-ap-courses/pages/9-5-simple-machines",
+      "factualScope": "For static ideal equilibrium, torque about the fixed pivot balances using perpendicular input/output force moment arms.",
+      "implementationWitnesses": [
+        "Unit-aware resistance torque N\u00b7m and perpendicular arm m yield ideal input force N.",
+        "Compute moment arm from force-line direction and press-point displacement, reject zero/degenerate arm; compare near/far press points at fixed geometry and resistance.",
+        "Separately declare spring/contact/loss assumptions; whole-arm scaling or force-arrow sizing is insufficient."
+      ],
+      "qualification": "Primary theory only. No quantitative real peg force, new behavior, asset or pilot admission."
     }
   ],
-  "qualification": "Original five required assets/two behaviors/ten questions remain unadmitted. This capture does not change the frozen board or denominator."
+  "qualification": "Original five required assets/two behaviors/ten questions remain unadmitted. This capture does not change the frozen board or denominator.",
+  "theoryDraft": {
+    "episode": "E10",
+    "status": "scoped-draft-only-not-integrated",
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-static-moment-draft.mts",
+        "bytes": 2720,
+        "sha256": "sha256:30ea3d29093ed85680d596fa0c1c038126ee58f953dec98cd5182dd58d0ca8ea"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-static-moment-scope1.mts",
+        "bytes": 1379,
+        "sha256": "sha256:3df08a85bb4cc7305dfd2c27b7e82572b9454d6a0df6d3366f9bcb75b776bf74"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-static-moment-scope1.log",
+        "bytes": 728,
+        "sha256": "sha256:3ff0b2cd21e9d818c1e50cc7de5bda5dbe9b0d578eb2c6d7c0100b1f305aaf58"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-static-moment-scope1-receipt.json",
+        "bytes": 327,
+        "sha256": "sha256:8f9e13b9756960dbbd280637b2ccfe54b8aacb2477d5230278d575e357a2282d"
+      }
+    ],
+    "actualExitCode": 0,
+    "scope": "Dimensional N\u00b7m/N\u00b7mm and m/cm/mm oracle, near/far points, normalized/translated vectors and degenerate/wrong-direction rejection; no scene/behavior/native/asset/pilot admission.",
+    "verification": "Direct Node run prints success; explicit terminal recheck returns0 and reproduces the original log byte-for-byte. No admitted behavior."
+  },
+  "captureNotes": [
+    "E09 web PDF cache miss; direct primary PDF download succeeded. First local render command used an incorrect bundle binary path and exited127; corrected bundled Poppler render completed0 and figures1-4 were inspected."
+  ]
 }

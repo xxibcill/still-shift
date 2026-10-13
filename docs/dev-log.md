@@ -55,12 +55,15 @@ still hold before relying on them.
   300 scalar samples/221 pins; this is artifact evidence on a failed lifecycle.
   Capacity repair now preserves sealed products/checkpoints/native caches with typed
   unavailable errors; scoped consumers retire after snapshots, all sharing512 MiB.
-  Sourcef981 complete fast passes4444 units/438 files with2692 exact inputs;
-  runtime1 fails3/247 checks: dropped native diagnostics and unsupported Node
-  parameter-property syntax. Both are repaired, preserving typed capacity identity
-  plus original comp-native3d-limit/path.87 owning/6 affected runtime checks and
-  build/lint/schema/boundaries/declarations pass. Fresh complete tiers and native3
-  remain next. E02 primary evidence is hashed; no asset admission claimed.
+  Source6080b8df complete fast4445/438 and runtime247/42/integration322/57/
+  depth14/smoke pass,2692 inputs/121326949B exact across both tiers and native3.
+  Runtime1's3/247 diagnostic/direct-Node failures remain retained; compatibility
+  repair also passes87 owning/6 affected runtime checks and package preflight.
+  Native attempt3 is live under session1042, root
+  /private/tmp/still-shift-ms3-production-native-xoLXjI; no terminal pass yet.
+  Independent audit3 is prepared for artifact/history/current CLI/cohort checks.
+  E02/E05/E09/E10 primary research and an E10 dimensional draft are retained;
+  no extension asset/behavior admission claimed.
   Original broader faults/analytic/continuous collision/reviews, native faults/
   relocation, scoped/MS1 repair, all ten questions/five assets/two behaviors/genuine
   inputs/reviews, capabilities and final full/archive/installed/MS3 completion remain.
@@ -253,6 +256,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — Verify current QA tiers and start native capacity proof
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, source `6080b8df`.
+- **Results:** complete fast4445/438 and runtime247/42, integration322/57,
+  depth14/smoke actually exit0/hold0;2692 matching inputs/121326949B exact.
+- **Live:** native attempt3/session1042/root `xoLXjI`, source6080b8df. Poll the
+  saved handle/receipt before doing anything else; terminal and independent audit3
+  remain pending. Both earlier native failures and runtime1 failure are retained.
+- **Independent work:** E05 manufacturer text/E09 primary figures/E10 theory read;
+  dimensional moment-balance draft passes scoped oracles only, not extension admission.
+- **Next:** close native3 receipt, run independent artifact/history/current report
+  audit, then remaining actual faults/repairs/extensions/ten pilot/final gates.
+- **Records:** [QA history](./mechanism-shorts-ms3-qa-results.json),
+  [extension research](./mechanism-shorts-ms3-asset-evidence.json), [PR58](https://github.com/xxibcill/still-shift/pull/58).
 
 ### 2026-10-13 — Preserve native diagnostics and direct Node imports
 

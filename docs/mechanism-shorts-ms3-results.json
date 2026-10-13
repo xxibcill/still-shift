@@ -3,7 +3,7 @@
   "milestone": "MS3",
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
-  "status": "in-progress-operational-qa-capacity-compatibility-repair",
+  "status": "in-progress-current-qa-fast-runtime-passed-native-running",
   "baseMain": "57967fa6497249d75e740ba837b8e2687cc81a98",
   "ms2Prerequisite": {
     "commit": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
@@ -388,19 +388,24 @@
     },
     {
       "id": "operational-qa7",
-      "status": "capacity-compatibility-repair-scoped-verified-complete-reruns-pending",
+      "status": "current-complete-fast-runtime-passed-native-attempt3-running",
       "record": "docs/mechanism-shorts-ms3-qa-results.json",
       "focusedTests": 87,
-      "qualification": "Two native lifecycle failures and runtime1 diagnostic/strip-only failures remain retained. Independent failed-run artifact proof remains scoped. Compatibility repair passes87 owning and6 affected runtime controls; complete current tiers and native rerun still required. Original MS3/pilot/human scope remains unchanged.",
+      "qualification": "Current6080b8df complete fast/runtime pass with exact matching inputs. Actual native3 and independent audit remain running/pending; two native failures/runtime1 failure and independent artifact-only proof retained. Full original MS3/pilot/reviews remain open.",
       "historyRepair": "Immutable original program retention implemented; latest native/local-tier proof pending",
       "completeFast": {
-        "sourceCommit": "f981166d80e89a5e85f355a3133a48d02e02f72d",
-        "unitTests": 4444,
+        "sourceCommit": "6080b8dff1bf3f31712ee890839602a5934479a0",
+        "unitTests": 4445,
         "heldInputFiles": 2692,
         "actualExitCode": 0,
         "sourceHoldCheckExitCode": 0
       },
-      "currentNativeProof": "attempt1 preparation failure and attempt2 capacity/cache-invalidation failure retained; repair scoped verified",
+      "currentNativeProof": {
+        "status": "running",
+        "session": 1042,
+        "sourceCommit": "6080b8dff1bf3f31712ee890839602a5934479a0",
+        "directory": "/private/tmp/still-shift-ms3-production-native-xoLXjI"
+      },
       "failedRunArtifactAudit": {
         "products": 5,
         "decodedFrames": 300,
@@ -415,6 +420,16 @@
         "sourceHoldCheckExitCode": 0,
         "runtimePassed": 244,
         "runtimeFailed": 3
+      },
+      "completeRuntime": {
+        "sourceCommit": "6080b8dff1bf3f31712ee890839602a5934479a0",
+        "runtimeTests": 247,
+        "integrationTests": 322,
+        "depthTests": 14,
+        "browserSmoke": "completed",
+        "heldInputFiles": 2692,
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0
       }
     }
   ],
