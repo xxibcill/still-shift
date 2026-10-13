@@ -659,13 +659,20 @@
     {
       "id": "ideal-lever16",
       "record": "docs/mechanism-shorts-ms3-lever-results.json",
-      "status": "factory-candidate-owning-passed-current-tiers-native-pending",
+      "status": "native-independent-passed-fast1-stale-test-failed-rerun-pending",
       "owningTests": 11,
       "scopedUnitTests": 80,
       "scopedUnitFiles": 7,
       "scopedCLITests": 4,
       "defaultAndLineIdentitiesPreserved": true,
-      "qualification": "E10 factory/new-asset plus reusable observed-selector software implementation only; actual native evidence is pending. All five required assets/two behaviors/ten original questions remain required. Pilot0/10, whole mechanical/factual/design/continuous/genuine speech/listening unreviewed. No spending, merge or publication."
+      "qualification": "Current E10 factory/observed ideal-force engineering proof:180 native frames/81 images/900 scalar values including720 ideal moment quantities/151 pins on9ba. Fixed prescribed10Nmm near/far comparison holds in120 frames; default decoded picture/audio parity passes. Force is idealized, not measured product force. Whole mechanical/factual/design/continuous/genuine speech/listening/pilot remains unreviewed; accepted0/10. No spending, merge or publication.",
+      "sourceCommit": "9ba870d26cb0cf283f8ceabe5010ac55f112fab3",
+      "freshNativeSubmissions": 180,
+      "decodedFrames": 180,
+      "images": 81,
+      "scalarValues": 900,
+      "momentValues": 720,
+      "independentPins": 151
     }
   ],
   "targets": {

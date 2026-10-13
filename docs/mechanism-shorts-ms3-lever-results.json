@@ -4,7 +4,7 @@
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
   "baseCommit": "8c28428b33395cc701ab8f6b0f4ba32060a18150",
-  "status": "factory-candidate-owning-passed-current-tiers-native-pending",
+  "status": "native-independent-passed-fast1-stale-test-failed-rerun-pending",
   "behaviorFoundation": "docs/mechanism-shorts-ms3-moment-results.json",
   "identity": {
     "sourceSha256": "sha256:d00f6cf8e6605d1d88356a0562b9b82388ce999bb5fab26129b28e833e13991b",
@@ -552,9 +552,330 @@
     }
   ],
   "remaining": [
-    "Complete fast/runtime and actual native default/two press-point controls on committed source.",
-    "Independent original observation force/model/units/rules, final image/audio/default-parity audit and visual repairs.",
-    "E06 extension and all original MS3 scoped/MS1 repairs, genuine ten frozen questions/reviews, capability/final/package/metrics gates."
+    "Current complete fast/runtime rerun after test-only discovery repair.",
+    "Final explanation/narration timing and visual findings P0:6/M1:14/M2:14; whole/factual/design/continuous/genuine narration/listening reviews.",
+    "E06 and original MS3 repair/capability/ten frozen episode/metrics/final/archive/installed gates."
   ],
-  "qualification": "E10 factory/new-asset plus reusable observed-selector software implementation only; actual native evidence is pending. All five required assets/two behaviors/ten original questions remain required. Pilot0/10, whole mechanical/factual/design/continuous/genuine speech/listening unreviewed. No spending, merge or publication."
+  "qualification": "Current E10 factory/observed ideal-force engineering proof:180 native frames/81 images/900 scalar values including720 ideal moment quantities/151 pins on9ba. Fixed prescribed10Nmm near/far comparison holds in120 frames; default decoded picture/audio parity passes. Force is idealized, not measured product force. Whole mechanical/factual/design/continuous/genuine speech/listening/pilot remains unreviewed; accepted0/10. No spending, merge or publication.",
+  "committedSource": "9ba870d26cb0cf283f8ceabe5010ac55f112fab3",
+  "native2": {
+    "status": "passed",
+    "command": "node --import tsx /private/tmp/still-shift-ms3-lever16-native2.mts",
+    "sourceCommit": "9ba870d26cb0cf283f8ceabe5010ac55f112fab3",
+    "startedUtc": "2026-10-13T07:00:07.490048+00:00",
+    "pid": 34805,
+    "inventory": "/private/tmp/still-shift-ms3-lever16-native2-inputs.json",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-13T07:02:33.194594+00:00",
+    "root": "/private/tmp/still-shift-ms3-lever-native-4Wq4jF",
+    "products": 3,
+    "freshNativeSubmissions": 180,
+    "engineeringPCM": true,
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-lever16-native2.py",
+        "bytes": 1444,
+        "sha256": "sha256:a36cd1f345b1ad1e7096d648ac30b604f4f3dd8b60ebd4fd93a44bd31f0b4ca9"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-lever16-native2.mts",
+        "bytes": 5743,
+        "sha256": "sha256:374f1875f0f215dadd22508ceeaa1baa957b2635d91ec28ddac72306c722092b"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-lever16-native2.log",
+        "bytes": 1402,
+        "sha256": "sha256:d51e68b767ee32c843d38d23bd0cc54252b90a6b4e349ad893354c3cdc3d1f76"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-lever16-native2-receipt.json",
+        "bytes": 418,
+        "sha256": "sha256:dd04d2dc224d8c2c5ab802bd6109ee933a75e24b7293828ca98ed65cabf8f124"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-lever16-native2-inputs.json",
+        "bytes": 464236,
+        "sha256": "sha256:95315a34fced3506220c6815b598a015b13054b89b0b493cb328db28e6909616"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-lever-native-4Wq4jF/run.json",
+        "bytes": 480,
+        "sha256": "sha256:0e45f407d7ae0d302ab9038f03f2aabb5d7b8e210cdd39d09fe2206cd115660b"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-lever-native-4Wq4jF/current-report.json",
+        "bytes": 44927,
+        "sha256": "sha256:81d68a337594d2db580778a62bc7e4528c403f869a5beb2257fbb478c3d29e27"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-lever-native-4Wq4jF/native-run-state.json",
+        "bytes": 3342,
+        "sha256": "sha256:dcb937e65788db2c62ab515bdbea84cc50930114c0430db2d1dec7354aa24216"
+      }
+    ]
+  },
+  "independentAudit2": {
+    "status": "passed",
+    "startedUtc": "2026-10-13T07:06:46.812020+00:00",
+    "pid": 43388,
+    "sourceCommit": "9ba870d26cb0cf283f8ceabe5010ac55f112fab3",
+    "documentationHead": "9ba870d26cb0cf283f8ceabe5010ac55f112fab3",
+    "nativeRun": "/private/tmp/still-shift-ms3-lever-native-4Wq4jF",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-13T07:06:49.211774+00:00",
+    "decodedFrames": 180,
+    "images": 81,
+    "sampleRows": 180,
+    "scalarValues": 900,
+    "momentValues": 720,
+    "forceFrames": 120,
+    "pins": 151,
+    "defaultDecodedPictureAudioExact": true,
+    "defaultReference": "c474 native10 cold peg S3/1 retained product",
+    "fixedResistance": {
+      "value": 10,
+      "unit": "N*mm"
+    },
+    "findings": [
+      {
+        "id": "M1",
+        "failures": {
+          "mechanical": 0,
+          "sampledVisual": 14
+        },
+        "assertions": [
+          ["ideal.far", "passed", 0],
+          ["ideal.near", "passed", 0],
+          ["production.stationary-mount", "passed", 0]
+        ]
+      },
+      {
+        "id": "M2",
+        "failures": {
+          "mechanical": 0,
+          "sampledVisual": 14
+        },
+        "assertions": [
+          ["ideal.far", "passed", 0],
+          ["ideal.near", "passed", 0],
+          ["production.stationary-mount", "passed", 0]
+        ]
+      },
+      {
+        "id": "P0",
+        "failures": {
+          "mechanical": 0,
+          "sampledVisual": 6
+        },
+        "assertions": [["production.stationary-mount", "passed", 0]]
+      }
+    ],
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-lever16-audit2.py",
+        "bytes": 16228,
+        "sha256": "sha256:91e5085e3c9731f0c447490b85341b8a6ebeee4557330a6db4ce6a39ca3002ab"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-lever16-audit2-wrapper.py",
+        "bytes": 1359,
+        "sha256": "sha256:7b0e5ed77ef923a89258308176d1e2271fff2d501aebed936750b9188f902154"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-lever16-audit2.log",
+        "bytes": 921,
+        "sha256": "sha256:44f8c0c2201939e457af6b8dfab298f11274a7bc0bffb01dedeae4136dfdbe26"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-lever16-audit2-receipt.json",
+        "bytes": 394,
+        "sha256": "sha256:14bf6692f547b759961988693dc5ccb900a1af88cd0dd3cd6fa86b8ad7c2ecbd"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-lever16-audit2.json",
+        "bytes": 65477,
+        "sha256": "sha256:7531e9f825a518c0b90470ca4fc07c42bf8f0ca4ad3ab3552fc09f26d2d535e0"
+      }
+    ],
+    "qualification": "Current engineering software/native/decoded evidence only. 900 original observation scalar values including720 independently derived ideal moment quantities verify; near force exceeds far force at fixed prescribed resistance in120 frames. No measured peg force, whole contact, readable explanation/factual/design/continuous/listening/genuine speech/pilot acceptance."
+  },
+  "failedNativeRuns": [
+    {
+      "status": "failed",
+      "command": "node --import tsx /private/tmp/still-shift-ms3-lever16-native1.mts",
+      "sourceCommit": "9ba870d26cb0cf283f8ceabe5010ac55f112fab3",
+      "startedUtc": "2026-10-13T06:56:20.603928+00:00",
+      "pid": 32117,
+      "inventory": "/private/tmp/still-shift-ms3-lever16-native1-inputs.json",
+      "actualExitCode": 1,
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-13T06:56:22.100309+00:00",
+      "root": "/private/tmp/still-shift-ms3-lever-native-PRZjyJ",
+      "reason": "Far label backing exceeded the cue-wide safe area at authored x480. No queue/native render started; same source rerun moves it to x360 and preserves all layout guards.",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-native1.py",
+          "bytes": 1444,
+          "sha256": "sha256:786ff12666d62f9ccb7dca9054ec7735bbb8b1e30f10ef75fd39492394e64a63"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-native1.mts",
+          "bytes": 5743,
+          "sha256": "sha256:814a966cc29ffac6321f66d31c6fc8125754b55c592f95df531b0e3fe83f1d41"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-native1.log",
+          "bytes": 1962,
+          "sha256": "sha256:f5525e42bc03b67b81afb3b8deb0312e93f83fdeec7655199dae73346a8de8be"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-native1-receipt.json",
+          "bytes": 418,
+          "sha256": "sha256:8c2a964ec73e0a9ca586dd7e2b0711e79d82e7f64ba2c00692a7048a2cc5fa0b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-native1-inputs.json",
+          "bytes": 464236,
+          "sha256": "sha256:95315a34fced3506220c6815b598a015b13054b89b0b493cb328db28e6909616"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever-native-PRZjyJ/failure.json",
+          "bytes": 845,
+          "sha256": "sha256:a250b46c272945581172fb910a35a569a02fd1f02f76c4bc07fc4a5ecfae5e32"
+        }
+      ]
+    }
+  ],
+  "failedAudits": [
+    {
+      "status": "failed",
+      "startedUtc": "2026-10-13T07:04:42.701793+00:00",
+      "pid": 42495,
+      "sourceCommit": "9ba870d26cb0cf283f8ceabe5010ac55f112fab3",
+      "documentationHead": "9ba870d26cb0cf283f8ceabe5010ac55f112fab3",
+      "nativeRun": "/private/tmp/still-shift-ms3-lever-native-4Wq4jF",
+      "actualExitCode": 1,
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-13T07:04:45.169619+00:00",
+      "reason": "Auditor equated parsed canonical scene identity with raw source-file byte identity. Audit2 independently checks both identities using original JSON.stringify numeric tokens with sorted object keys. Native products/source unchanged.",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-audit1.py",
+          "bytes": 15484,
+          "sha256": "sha256:8f4d7ec94a92dcf7e3e011de4e4be8dfb43a20dca18d016d86844572f5f7bb95"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-audit1-wrapper.py",
+          "bytes": 1359,
+          "sha256": "sha256:827ef8a636a1b2eeffaaa3b16a750214f443638ce8fab0565b1474f49f67324d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-audit1.log",
+          "bytes": 1137,
+          "sha256": "sha256:2ee96222742c2c4a6170ffab7e86c4f106cb070f9399abd5fddad7e0998a877b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-audit1-receipt.json",
+          "bytes": 394,
+          "sha256": "sha256:932f316b1fccdd2d66c962cca09af41452ea1b61df4eb9572ce3f68d95cfe9cb"
+        }
+      ]
+    }
+  ],
+  "failedTierRuns": [
+    {
+      "status": "failed",
+      "sourceCommit": "9ba870d26cb0cf283f8ceabe5010ac55f112fab3",
+      "startedUtc": "2026-10-13T07:09:03.686621+00:00",
+      "pid": 44165,
+      "inventory": "/private/tmp/still-shift-ms3-lever16-tiers1-inputs.json",
+      "steps": [
+        {
+          "command": ["pnpm", "check:fast"],
+          "actualExitCode": 1,
+          "sourceHoldCheckExitCode": 0,
+          "startedUtc": "2026-10-13T07:09:03.687305+00:00",
+          "endedUtc": "2026-10-13T07:11:18.514117+00:00",
+          "log": "/private/tmp/still-shift-ms3-lever16-tiers1-0.log"
+        }
+      ],
+      "actualExitCode": 1,
+      "endedUtc": "2026-10-13T07:11:18.514429+00:00",
+      "passed": 4506,
+      "failed": 1,
+      "unitTests": 4507,
+      "unitFiles": 445,
+      "remainingGroups": "runtime/integration/depth/smoke unstarted",
+      "reason": "E09 owning test expected only default/notched-line examples; actual complete registry includes ideal-lever. Exact expected list now includes all three; no production source change.",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-tiers1.py",
+          "bytes": 1850,
+          "sha256": "sha256:b9dc3a1ffc4ed13ee35494b72d2417c28b2511590822119c495deabf75261525"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-tiers1.log",
+          "bytes": 646,
+          "sha256": "sha256:79af7a0ca74a2c94431646b82c81c50625ba31d219fa40bf041e012fcf1c63e5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-tiers1-receipt.json",
+          "bytes": 635,
+          "sha256": "sha256:3251c6bc358295c441704a2cf9aa445bdc112a5142d1d6907d8288dbeba50e58"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-tiers1-inputs.json",
+          "bytes": 464236,
+          "sha256": "sha256:95315a34fced3506220c6815b598a015b13054b89b0b493cb328db28e6909616"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-tiers1-0.log",
+          "bytes": 45425,
+          "sha256": "sha256:b44f4230bf98aaaf5cba8209d0172e583acdaa18b9a198c7bff3eded040046fa"
+        }
+      ]
+    }
+  ],
+  "discoveryTestRepair": {
+    "actualExitCode": 0,
+    "tests": 5,
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-lever16-discovery-fix1.log",
+        "bytes": 1862,
+        "sha256": "sha256:75a4482db417f56fd3174bdc164cb09f84d9699e300b70b9de652445f2f63a3e"
+      }
+    ],
+    "scope": "Exact three peg examples; existing notched/default geometry and CAS guards retained."
+  },
+  "nativeImplementationPreservationAfterTestRepair": {
+    "changedInputs": ["tests/unit/mechanism-notched-line.test.ts"],
+    "unchangedInputs": 2718,
+    "method": "Byte/hash comparison of every retained native2 input; only this owning test changed. Native2 retains exact9ba source binding."
+  },
+  "sampledVisualInspection": {
+    "method": "Agent read three original final still images",
+    "control": "M1",
+    "outputFrames": [0, 15, 37],
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-lever-native-4Wq4jF/output/items/M1/1/review/frame-000000.png",
+        "bytes": 42888,
+        "sha256": "sha256:ea2d5a728d9cf031d78608f939475c34f2a93fbb046946f433de9329bbc3bf58"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-lever-native-4Wq4jF/output/items/M1/1/review/frame-000003.png",
+        "bytes": 52894,
+        "sha256": "sha256:6b0ce94b0aee843d412c99c919cdec330b642c40e6abe3d25de5f24c285c0315"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-lever-native-4Wq4jF/output/items/M1/1/review/frame-000009.png",
+        "bytes": 48607,
+        "sha256": "sha256:c7c49f432f889ae5cebb103fa1f25c12623890959645a297ee941ef434e3b5b2"
+      }
+    ],
+    "finding": "Both colored pads, labels and common pivot are visible in the selected static/open/return images. No continuous playback/listening/whole/factual/design acceptance. Source lint retains14 sampled visual errors per candidate (12 reading-time,2 frozen-run) and6 for default."
+  }
 }

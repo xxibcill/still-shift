@@ -92,11 +92,16 @@ still hold before relying on them.
   capture force/arm/residual selectors with pinned resistance. Final80 units/7
   files,4 CLI checks, build/lint/schema/boundary/package declarations pass with
   2,719 inputs held. Test result-shape/type failures are retained. Current complete
-  tiers and actual native controls/default parity remain next. Whole/pilot review stays open.
+  native2/audit2 now pass180 frames/81 images/900 scalar values/720 ideal moment
+  quantities/151 pins and exact default decoded picture/audio parity on9ba870d2.
+  Native1 safe-area and audit1 canonical/byte identity failures are retained.
+  Full fast1 ends4,506/4,507 with one stale E09 discovery test; runtime unstarted.
+  Test-only exact-list repair passes5 checks; current complete rerun remains next.
+  Visual errors P0:6/M1:14/M2:14 and all whole/pilot reviews remain open.
   No active prior native handle remains. Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
   Remaining original scope: clearer views and actual whole reviews, E06 asset/
-  behavior and E10 native integration/proof, all ten frozen questions/genuine narration,
+  behavior, current E10 tiers and reviews, all ten frozen questions/genuine narration,
   scoped/MS1 automatic repair, broader seeded QA, capability reconciliation,
   comparable token measurements and final full/benchmark/archive/installed gate.
   Accepted coverage remains0/10; tokens staynull. No ElevenLabs spend, merge,
@@ -298,8 +303,12 @@ still hold before relying on them.
   package declarations pass;2,719 inputs held. Default and notched identities exact.
 - **Retained:** New test used the wrong family-patch result/type references;
   corrected without weakening geometry/contact/CAS/model guards. Red checks retained.
-- **Open / next:** Current complete tiers, actual native/independent/default proof
-  and original E06/MS3 scope. All whole/pilot/genuine listening reviews stay open.
+- **Results added:** Native2/audit2 pass180 frames/81 images/900 scalars/720 moment
+  quantities/151 pins and default all-frame decoded picture/audio parity on9ba.
+  Native1 layout and audit1 identity failures retained. Fast1 fails one stale E09
+  discovery expectation (4,506/4,507); test-only repair5 passes, runtime unstarted.
+- **Open / next:** Current complete tiers rerun, visual errors6/14/14 and original
+  E06/MS3 scope. All whole/pilot/genuine listening reviews stay open.
 - **Records:** [Lever candidate](./mechanism-shorts-ms3-lever-results.json).
   Accepted pilot0/10; no spending, publication or merge.
 
