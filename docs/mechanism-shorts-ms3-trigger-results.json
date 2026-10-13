@@ -5,7 +5,7 @@
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
   "baseCommit": "ba6f59d799c34a774c3abc78a03c3ae169970453",
-  "status": "owning-fast1-passed-runtime1-failure-cli-repaired-rerun-pending",
+  "status": "cli-repaired-complete-tiers2-running-native-pending",
   "sourceSnapshot": [
     {
       "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/cable-tie-input.schema.json",
@@ -318,32 +318,24 @@
   ],
   "committedSource": "e39cbfe3e87b83cc27d3ff0d33ed1e2b211c85b0",
   "currentTiers": {
-    "status": "failed",
-    "sourceCommit": "e39cbfe3e87b83cc27d3ff0d33ed1e2b211c85b0",
-    "startedUtc": "2026-10-13T04:56:08.836543+00:00",
-    "pid": 2625,
-    "inventory": "/private/tmp/still-shift-ms3-trigger13-tiers1-inputs.json",
+    "status": "running",
+    "sourceCommit": "e1fa27bf3b7587ce65b1e69ca677c73e297fc1a6",
+    "startedUtc": "2026-10-13T05:11:08.592310+00:00",
+    "pid": 25968,
+    "inventory": "/private/tmp/still-shift-ms3-trigger13-tiers2-inputs.json",
     "steps": [
       {
         "command": ["pnpm", "check:fast"],
         "actualExitCode": 0,
         "sourceHoldCheckExitCode": 0,
-        "startedUtc": "2026-10-13T04:56:08.837275+00:00",
-        "endedUtc": "2026-10-13T04:58:26.901550+00:00",
-        "log": "/private/tmp/still-shift-ms3-trigger13-tiers1-0.log"
-      },
-      {
-        "command": ["pnpm", "check:runtime"],
-        "actualExitCode": 1,
-        "sourceHoldCheckExitCode": 0,
-        "startedUtc": "2026-10-13T04:58:26.901875+00:00",
-        "endedUtc": "2026-10-13T05:00:50.447838+00:00",
-        "log": "/private/tmp/still-shift-ms3-trigger13-tiers1-1.log"
+        "startedUtc": "2026-10-13T05:11:08.592847+00:00",
+        "endedUtc": "2026-10-13T05:13:24.349992+00:00",
+        "log": "/private/tmp/still-shift-ms3-trigger13-tiers2-0.log"
       }
     ],
-    "actualExitCode": 1,
-    "endedUtc": "2026-10-13T05:00:50.448146+00:00",
-    "session": 79490
+    "actualExitCode": null,
+    "session": 43054,
+    "resume": "Poll session43054; do not restart a confirmed live run. Inspect the retained terminal receipt/log when it closes."
   },
   "completeFast": {
     "actualExitCode": 0,
@@ -441,5 +433,43 @@
     "tests": 4,
     "actualExitCode": 0,
     "scope": "Six exact family/variant examples and strict branch schemas; original32KiB response bound retained."
+  },
+  "completeFast2": {
+    "sourceCommit": "e1fa27bf3b7587ce65b1e69ca677c73e297fc1a6",
+    "unitTests": 4471,
+    "testFiles": 443,
+    "actualExitCode": 0,
+    "sourceHoldExitCode": 0,
+    "step": {
+      "command": ["pnpm", "check:fast"],
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "startedUtc": "2026-10-13T05:11:08.592847+00:00",
+      "endedUtc": "2026-10-13T05:13:24.349992+00:00",
+      "log": "/private/tmp/still-shift-ms3-trigger13-tiers2-0.log"
+    }
+  },
+  "preparedNativeInputs": {
+    "status": "admitted-no-render",
+    "root": "/private/tmp/still-shift-ms3-trigger-native-jxs7yy",
+    "actualExitCode": 0,
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-seed1.mts",
+        "bytes": 4002,
+        "sha256": "sha256:1623b17d48e4535a74f83ef4830d2468f67eaebd7390717dae5910a586895112"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-seed1.log",
+        "bytes": 176,
+        "sha256": "sha256:3eeae58d999c52e57f44f50a9bcfd1b0a5cc7f9b1c446902a27eac2e6883ec3e"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger-native-jxs7yy/seed.json",
+        "bytes": 819,
+        "sha256": "sha256:f6e39204867e3b1de1194501e4bb17c8c4f99c1ff1f46c79a39189dfa7f224ae"
+      }
+    ],
+    "scope": "Three saved-family/cue controls including release/withdrawal/relatch and changed dimensions. No queue/native execution yet."
   }
 }

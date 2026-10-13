@@ -72,7 +72,10 @@ still hold before relying on them.
   Frame-key and metadata-inventory failures are retained. Current complete
   fast now passes4,471/443 on e39cbfe3, exact2,710 inputs. Runtime1/session79490 closed failed:251/253 pass, two stale CLI
   example/schema checks. Integration/depth/smoke unstarted. Checks now cover6
-  examples and both strict peg variants; a current rerun and native/default parity remain next
+  examples and both strict peg variants. Current rerun/session43054 is live on
+  e1fa27bf; fast2 now passes4,471/443 with exact inputs. Poll its saved handle.
+  Three actual saved native input controls admit release/withdrawal/relatch, but
+  capture is unstarted. Native/default parity remain next
   because renderer contracts changed.
   No active prior native handle remains. Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
@@ -281,7 +284,8 @@ still hold before relying on them.
   failures repaired without removing required root/tip or weakening release guards.
 - **Results added:** Current fast4,471/443 actually passes on e39cbfe3, all2,710
   inputs exact. Runtime1 failed two stale CLI example/schema checks (251/253);
-  integration/depth/smoke unstarted. Retained; updated checks and rerun are next.
+  integration/depth/smoke unstarted. Retained; repaired4 CLI checks pass and
+  e1fa27bf full tiers rerun is live/session43054.
 - **Open / next:** Current runtime/native/default audit and actual
   visual/factual/design/genuine narration/whole review; E06/E10 and original MS3 scope.
 - **Records:** [trigger candidate](./mechanism-shorts-ms3-trigger-results.json).
