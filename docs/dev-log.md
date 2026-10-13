@@ -55,9 +55,12 @@ still hold before relying on them.
   300 scalar samples/221 pins; this is artifact evidence on a failed lifecycle.
   Capacity repair now preserves sealed products/checkpoints/native caches with typed
   unavailable errors; scoped consumers retire after snapshots, all sharing512 MiB.
-  86 owning tests/build/lint/schema/boundaries/declarations pass. Fresh complete tiers
-  and native attempt3 are next. E02 primary patent text/drawings are inspected and
-  hashed for later actual three-rivet asset work; no asset admission claimed.
+  Sourcef981 complete fast passes4444 units/438 files with2692 exact inputs;
+  runtime1 fails3/247 checks: dropped native diagnostics and unsupported Node
+  parameter-property syntax. Both are repaired, preserving typed capacity identity
+  plus original comp-native3d-limit/path.87 owning/6 affected runtime checks and
+  build/lint/schema/boundaries/declarations pass. Fresh complete tiers and native3
+  remain next. E02 primary evidence is hashed; no asset admission claimed.
   Original broader faults/analytic/continuous collision/reviews, native faults/
   relocation, scoped/MS1 repair, all ten questions/five assets/two behaviors/genuine
   inputs/reviews, capabilities and final full/archive/installed/MS3 completion remain.
@@ -250,6 +253,19 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — Preserve native diagnostics and direct Node imports
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `f981166d`.
+- **Done:** preserve original native capacity diagnostic code/path alongside typed
+  cache-safe rejection; replace constructor parameter properties with erasable fields.
+- **Results:** f981 complete fast4444/438 passes; runtime1 actual1/hold0 retains
+  three failures and244 passes, with integration/depth/smoke unstarted. Repaired
+  preflight passes87 owning plus6 affected runtime checks and package checks.
+- **Next:** commit, refresh complete fast/runtime, then actual native attempt3 and
+  independent artifact/lifecycle/current-report audit. Original full MS3 remains open.
+- **Records:** [QA history](./mechanism-shorts-ms3-qa-results.json),
+  [acceptance tracker](./mechanism-shorts-ms3-acceptance.md).
 
 ### 2026-10-13 — Preserve valid native products under shared-capacity rejection
 

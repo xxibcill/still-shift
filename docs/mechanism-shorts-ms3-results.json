@@ -3,7 +3,7 @@
   "milestone": "MS3",
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
-  "status": "in-progress-operational-qa-code-scoped-verified",
+  "status": "in-progress-operational-qa-capacity-compatibility-repair",
   "baseMain": "57967fa6497249d75e740ba837b8e2687cc81a98",
   "ms2Prerequisite": {
     "commit": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
@@ -15,7 +15,7 @@
     "changedRelativeToMS2": ["ROADMAP.md", "docs/dev-log.md"],
     "runtimeSourceChanges": 0,
     "ms0OwnerMerge": "57967fa6497249d75e740ba837b8e2687cc81a98",
-    "retainedOwnerLogEntry": "2026-10-12 — Resolve MS0 PR #51 conflicts",
+    "retainedOwnerLogEntry": "2026-10-12 \u2014 Resolve MS0 PR #51 conflicts",
     "failedPREdit": "gh pr edit used deprecated projectCards GraphQL query; REST body PATCH actually succeeded."
   },
   "frozenSelection": {
@@ -388,15 +388,15 @@
     },
     {
       "id": "operational-qa7",
-      "status": "native-attempt2-failed-capacity-preservation-repair-scoped-verified",
+      "status": "capacity-compatibility-repair-scoped-verified-complete-reruns-pending",
       "record": "docs/mechanism-shorts-ms3-qa-results.json",
-      "focusedTests": 86,
-      "qualification": "Both native lifecycle failures remain actual failures. The second run separately supplies independently checked5 products/300 frames/135 images/221 pins, not lifecycle success. Capacity/consumer-ownership repair passes86 scoped controls; fresh current complete tiers and actual native rerun remain required. Original MS3/pilot/human scope is unchanged.",
+      "focusedTests": 87,
+      "qualification": "Two native lifecycle failures and runtime1 diagnostic/strip-only failures remain retained. Independent failed-run artifact proof remains scoped. Compatibility repair passes87 owning and6 affected runtime controls; complete current tiers and native rerun still required. Original MS3/pilot/human scope remains unchanged.",
       "historyRepair": "Immutable original program retention implemented; latest native/local-tier proof pending",
       "completeFast": {
-        "sourceCommit": "787d96e81ff54dbc922117939c21d14294f150d6",
-        "unitTests": 4440,
-        "heldInputFiles": 2691,
+        "sourceCommit": "f981166d80e89a5e85f355a3133a48d02e02f72d",
+        "unitTests": 4444,
+        "heldInputFiles": 2692,
         "actualExitCode": 0,
         "sourceHoldCheckExitCode": 0
       },
@@ -407,6 +407,14 @@
         "images": 135,
         "pins": 221,
         "scope": "failed lifecycle, independent artifact audit only"
+      },
+      "affectedRuntimeTests": 6,
+      "runtimeAttempt1": {
+        "sourceCommit": "f981166d80e89a5e85f355a3133a48d02e02f72d",
+        "actualExitCode": 1,
+        "sourceHoldCheckExitCode": 0,
+        "runtimePassed": 244,
+        "runtimeFailed": 3
       }
     }
   ],

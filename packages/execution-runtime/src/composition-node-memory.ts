@@ -6,14 +6,20 @@ import {
 /** Admission failure does not imply that previously verified source/artifact bytes changed. */
 export class CompositionNodeCapacityError extends Error {
   readonly code = "composition-node-capacity";
+  readonly requestedBytes: number;
+  readonly availableBytes: number;
+  readonly path: string | undefined;
   constructor(
-    readonly requestedBytes: number,
-    readonly availableBytes: number,
+    requestedBytes: number,
+    availableBytes: number,
     message = "Composition managed metadata exceed their aggregate worker quota",
-    readonly path?: string,
+    path?: string,
   ) {
     super(message);
     this.name = "CompositionNodeCapacityError";
+    this.requestedBytes = requestedBytes;
+    this.availableBytes = availableBytes;
+    this.path = path;
   }
 }
 export function isCompositionNodeCapacityError(

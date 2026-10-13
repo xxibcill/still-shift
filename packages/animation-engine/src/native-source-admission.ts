@@ -5,7 +5,26 @@ import {
   isCompositionNodeCapacityError,
 } from "@still-shift/execution-runtime/export";
 import { type MemoryLease } from "../../renderer-core/src/managed-memory.ts";
-import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
+import {
+  passageError,
+  type PassageDiagnostic,
+} from "../../renderer-core/src/passage-diagnostics.ts";
+
+class NativeSourceCapacityError extends CompositionNodeCapacityError {
+  readonly diagnostics: PassageDiagnostic[];
+  constructor(
+    requestedBytes: number,
+    availableBytes: number,
+    message: string,
+    path: string,
+  ) {
+    super(requestedBytes, availableBytes, message, path);
+    this.name = "PassageError";
+    this.diagnostics = [
+      { code: "comp-native3d-limit", severity: "error", message, path },
+    ];
+  }
+}
 
 const SCANNER_BYTES = 65536;
 const PARSE_COPIES = 8;
@@ -26,7 +45,7 @@ export function nativeJsonTreeCapacity(
   const add = (count: number) => {
     bytes += count;
     if (!Number.isSafeInteger(bytes) || bytes > maximum)
-      throw new CompositionNodeCapacityError(
+      throw new NativeSourceCapacityError(
         bytes,
         maximum,
         "Native JSON exceeds its admitted Node source capacity",
@@ -121,7 +140,7 @@ export class NativeSourceAdmission {
       return lease;
     } catch (error) {
       if (isCompositionNodeCapacityError(error))
-        throw new CompositionNodeCapacityError(
+        throw new NativeSourceCapacityError(
           bytes,
           this.memory.availableBytes,
           "Native inputs exceed the composition Node source allowance",
@@ -182,7 +201,7 @@ export class NativeSourceAdmission {
     bytes = Math.max(bytes, prior);
     const growth = bytes - prior;
     if (growth > this.memory.availableBytes)
-      throw new CompositionNodeCapacityError(
+      throw new NativeSourceCapacityError(
         growth,
         this.memory.availableBytes,
         "Prepared native catalogues exceed the shared Node allowance",
