@@ -219,15 +219,7 @@
     "providedPath": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Reusable 3D Asset Plan",
     "planHasAudioOrTimingFiles": false,
     "linkedChannelLibrary": "Newer EU-001\u2013EU-300 Alden recordings retain the channel topic set, distinct from seven frozen MS3 questions. No question changes or clip extraction inferred.",
-    "missing": [
-      "E02",
-      "E04",
-      "E05",
-      "E06",
-      "E07",
-      "E09",
-      "E10"
-    ],
+    "missing": ["E02", "E04", "E05", "E06", "E07", "E09", "E10"],
     "clarification": "Missing input path versus requested pilot-topic change; pending."
   },
   "remaining": [

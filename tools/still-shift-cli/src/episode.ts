@@ -1,3 +1,4 @@
+import { mechanismProductionFailureFinding } from "../../../packages/animation-engine/src/mechanism/production-failure.ts";
 import {
   MECHANISM_CUE_NATIVE_PLATES_VERSION,
   prepareMechanismCueNativePlates,
@@ -1276,6 +1277,7 @@ export async function runEpisodeCli(
         ? 2
         : 1;
   } catch (error) {
+    const finding = mechanismProductionFailureFinding(error);
     const diagnostic = failureDiagnostic(error),
       context = error instanceof AnimationEngineError ? error.context : {};
     const issue = error instanceof z.ZodError ? error.issues[0] : undefined;
@@ -1284,7 +1286,8 @@ export async function runEpisodeCli(
       (error instanceof Error ? error.message : "Episode command failed");
     const summary: MechanismReceiptRow = {
       code: String(
-        context?.diagnosticCode ??
+        finding?.code ??
+          context?.diagnosticCode ??
           (issue ? "mechanism-schema" : "mechanism-command-failed"),
       ),
       message: sanitizeDiagnosticText(message),
@@ -1307,6 +1310,7 @@ export async function runEpisodeCli(
       })!.diagnosticsJson as string,
     ) as unknown[];
     const rows = [
+      ...(finding ? [row(finding)] : []),
       ...completeDiagnostics.map(row),
       ...(diagnostic.causes?.map((cause) => row(cause)) ?? []),
     ];
@@ -1319,6 +1323,7 @@ export async function runEpisodeCli(
         fullResult: {
           summary,
           diagnostic,
+          ...(finding ? { finding } : {}),
           diagnostics: completeDiagnostics,
           ...(error instanceof AnimationEngineError
             ? { failure: error.toFailure() }

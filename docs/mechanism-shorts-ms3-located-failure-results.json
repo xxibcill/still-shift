@@ -1,0 +1,185 @@
+{
+  "version": "mechanism-shorts-ms3-located-failure-results-1",
+  "date": "2026-10-14",
+  "sourceBaseCommit": "6e25cb4206d049d929db7c2a40a2cb46abeaaffb",
+  "implementationCommit": null,
+  "sourceBinding": "Dirty candidate held across owning checks, separate CLI processes and corrected fast gate; exact post-commit binding is recorded after commit.",
+  "runtime": {
+    "codeSha256": "sha256:528bf70a93845deefd3b31d4e457179dd8c232dbec44f03d44705f3d34103e52",
+    "profileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b",
+    "runtimeFiles": 689,
+    "runtimeFormat": "source-ts",
+    "nativeAppearanceCodeSha256": "sha256:53d07cba1e91332e91992d5e512e1992e979428cf91cf34ddbdb949745e7dc3e",
+    "profile": {
+      "backend": "webgl2",
+      "transport": "raw_rgba",
+      "workers": 1,
+      "nodeVersion": "22.23.1",
+      "ffmpegVersion": "ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers",
+      "toolchainSha256": "sha256:4329ec000367b7c96c18900dffd57aee4651136ff8f3f8008f508ec43b77aaf5"
+    }
+  },
+  "sourceInputs": 2736,
+  "sourceBytes": 121771507,
+  "sourceInventory": {
+    "path": "/private/tmp/still-shift-ms3-failure32-gate1-inputs.json",
+    "bytes": 467142,
+    "sha256": "sha256:c7b6e4847c381a752e02f355576f5e3a1ba03b324078ec2381bf5582716163ab"
+  },
+  "originalDenominator": 10,
+  "acceptedEpisodes": 0,
+  "change": "Cue wrappers retain the trusted invariant cause; bounded helper preserves code/message/path/frame/rig/parts/relationship/interval/pack through up to eight typed engine wrappers. Optional attempt finding survives durable journals, fresh reports, restarts and both CLI failure routes without changing legacy diagnostic strings or histories.",
+  "owningChecks": {
+    "status": "passed",
+    "tests": 62,
+    "files": 8,
+    "unitTests": 53,
+    "runtimeTests": 9,
+    "log": {
+      "path": "/private/tmp/still-shift-ms3-failure32-focused2.log",
+      "bytes": 1911,
+      "sha256": "sha256:6644f23fb08b98d813aebbb17799216b6bfd92ba59e8ea41dbfc398d3d8e3bad"
+    },
+    "initialFocused": {
+      "path": "/private/tmp/still-shift-ms3-failure32-focused1.log",
+      "bytes": 873,
+      "sha256": "sha256:5c7cb0833cee03084d8fcb9a6802509de21e79ad634cf8baf8691c07744cbb34"
+    }
+  },
+  "fastGate": {
+    "status": "passed-after-formatting-repair",
+    "tests": 4543,
+    "files": 450,
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-failure32-fast2-receipt.json",
+      "bytes": 720,
+      "sha256": "sha256:84b32e598a33dccedf30551a291491a53138c5ecea4f5d50a512505b73a9c981"
+    },
+    "log": {
+      "path": "/private/tmp/still-shift-ms3-failure32-fast2.log",
+      "bytes": 46152,
+      "sha256": "sha256:2efa04ac33f09d1e5ea2bcc5a77febe53b8c7c09358cb92ceedf2fe3b57193f1"
+    },
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0
+  },
+  "retainedFailure": {
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-failure32-gate1-receipt.json",
+      "bytes": 2475,
+      "sha256": "sha256:b56c01c4eedff706154f91889985f37866f9827c63a0be47545adbbe93356444"
+    },
+    "actualExitCode": 1,
+    "failedStage": "format:check:ts",
+    "sourceHoldCheckExitCode": 0,
+    "reason": "Two evidence files committed in the preceding slice were not Prettier-formatted. Only their formatting was corrected; prior current-native JSON data is byte-independent but semantically identical.",
+    "snapshots": [
+      {
+        "path": "/private/tmp/still-shift-ms3-failure32-unformatted-acceptance.md",
+        "bytes": 14123,
+        "sha256": "sha256:c88de3c4a76b08711ff1ec248becbc670c3311a321b03c98baa3cf5549f0edad"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-failure32-unformatted-current-native-results.json",
+        "bytes": 11832,
+        "sha256": "sha256:d08eecfbbf076f55433090077643a92c1a9a1a85605c07ded910cc3bcbd5b5c2"
+      }
+    ]
+  },
+  "actualExpectedStateFaults": {
+    "authorExitCode": 0,
+    "privateRoot": "/private/tmp/still-shift-ms3-failure32-actual-lBo6pC",
+    "method": "Actual current expected-state compiler/admission and public timeline check, no native capture or final-video fault proof.",
+    "syntheticAudio": "Existing two-second local PCM fixture; no provider or genuine pilot input.",
+    "illegalTransition": {
+      "productionCliExitCode": 2,
+      "episodeCliExitCode": 2,
+      "finding": {
+        "code": "mechanism-timeline-transition",
+        "message": "Authored event is not a legal state transition",
+        "path": ["timeline", "events", 1],
+        "frame": 15,
+        "interval": {
+          "startFrame": 15,
+          "endFrameExclusive": 30
+        },
+        "rig": "slider",
+        "parts": ["board", "hook"],
+        "relationship": "hook.innerRange",
+        "pack": {
+          "id": "tape-hook",
+          "version": "1.0.0",
+          "sha256": "sha256:5f7fa4100db1ecbb36eb62d2c036857b3740ded49e41856870aed2769e260dd5",
+          "variant": "floating-hook",
+          "detail": "teaching"
+        }
+      },
+      "onlyAuthoredChange": "Remove first declared legal transition; all other cue fields match saved valid baseline.",
+      "removedTransition": {
+        "from": "ready",
+        "to": "touching",
+        "event": "contact"
+      },
+      "sourceCue": {
+        "path": "/private/tmp/still-shift-ms3-failure32-actual-lBo6pC/illegal-transition/cues.json",
+        "bytes": 5702,
+        "sha256": "sha256:953eb7878e12a779a81a0277243e677483cfde87005ceb87597968117953be57"
+      },
+      "validBaseline": {
+        "path": "/private/tmp/still-shift-ms3-failure32-actual-lBo6pC/valid-cue-before.json",
+        "bytes": 5787,
+        "sha256": "sha256:80af007a8f6a039f292a2aaf3c484dfcfa9a99b54991c5b41e8518af304b60d1"
+      },
+      "productionLog": {
+        "path": "/private/tmp/still-shift-ms3-failure32-gate1-1.log",
+        "bytes": 1325,
+        "sha256": "sha256:9c5e52a49a56a3fc77e48fad09ebfe938fc9513cfc242220d4d5555eb2b6c111"
+      },
+      "episodeLog": {
+        "path": "/private/tmp/still-shift-ms3-failure32-gate1-2.log",
+        "bytes": 1865,
+        "sha256": "sha256:11544d22146f722e21a02f5bfcc35d4a28faa1299c9acfaf394693ded462f7e6"
+      },
+      "fullEpisodeReport": {
+        "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-episode-report-lou24n/report.json",
+        "bytes": 2495,
+        "sha256": "sha256:4df71d7e10878075e50c14d8baccbdd15cef7526f7f23aff22f94bdba36f48e9"
+      },
+      "queueCreated": false,
+      "sourceBytesUnchangedAcrossCommands": true
+    },
+    "eventOrder": {
+      "input": {
+        "path": "/private/tmp/still-shift-ms3-failure32-actual-lBo6pC/invalid-event-order.json",
+        "bytes": 1106,
+        "sha256": "sha256:dbac24e681dcacba0129a17e00891142d7885d08f519ea8b72b47bd5fec23a4a"
+      },
+      "result": {
+        "path": "/private/tmp/still-shift-ms3-failure32-actual-lBo6pC/event-order-result.json",
+        "bytes": 870,
+        "sha256": "sha256:89a04d5c7f8fe8dfb2296cbb1a77772c347f5aa4a0db7ddbb201b635ccd1cec5"
+      },
+      "finding": {
+        "code": "mechanism-timeline-event",
+        "path": ["timeline", "events", 2, "frame"],
+        "pack": {
+          "id": "tape-hook",
+          "version": "1.0.0",
+          "sha256": "sha256:5f7fa4100db1ecbb36eb62d2c036857b3740ded49e41856870aed2769e260dd5",
+          "variant": "floating-hook",
+          "detail": "teaching"
+        },
+        "frame": 1
+      },
+      "method": "expected-state-output-frames-and-exact-event-boundaries",
+      "collisionMethod": "not-evaluated",
+      "locationFieldsNotPresent": "No invented rig/parts/relationship/interval for an input-order failure."
+    }
+  },
+  "remaining": [
+    "Complete the original broader fault suite: intersection, moving mount, clipped text, unreadable hold, wrong label state, missing audio/export failure with useful frame evidence where applicable. Historical native/OS/cache fault proofs retain their own bindings.",
+    "Current unified native product/cohort bindings, all ten frozen questions, seven genuine narration/timing inputs and whole reviews remain open. Prior042a native technical checks are historical after this runtime528b change.",
+    "Paired routine-token measurements and final full/benchmark/archive/isolated-installed verification remain."
+  ],
+  "qualification": "Expected-state seed and durable error-preservation proof. No rendered intersection/glyph/state/audio fault proof, independent new native/video decode, whole mechanical/factual/continuous/listening/human or pilot acceptance."
+}

@@ -39,6 +39,8 @@ import {
   assertProductionJournal,
 } from "./production-queue-validation.ts";
 
+import { mechanismProductionFailureFinding } from "./production-failure.ts";
+
 export class MechanismProductionTransientError extends Error {}
 export type MechanismProductionExecutionContext = {
   manifestDirectory: string;
@@ -542,6 +544,8 @@ export async function runMechanismProductionQueue(
             attempt.endedUtc = now();
             attempt.seconds = (performance.now() - began) / 1000;
             attempt.diagnostic = diagnostic(error);
+            const finding = mechanismProductionFailureFinding(error);
+            if (finding) attempt.finding = finding;
             row.status = attempt.status;
             again =
               error instanceof MechanismProductionTransientError &&

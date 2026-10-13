@@ -9,6 +9,7 @@ import { join, resolve } from "node:path";
 import { z } from "zod";
 import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
 import {
+  mechanismProductionFailureFinding,
   readMechanismProductionReports,
   createMechanismProductionNativeExecutor,
   inspectMechanismProductionCapabilities,
@@ -315,11 +316,13 @@ export async function runProductionCli(
     return status === "cancelled" ? 130 : status === "failed" ? 1 : 0;
   } catch (error) {
     const diagnostic = failureDiagnostic(error);
+    const finding = mechanismProductionFailureFinding(error);
     io.stderr(
       JSON.stringify({
         schemaVersion: "mechanism-production-command-failure-1",
         status: "failed",
         diagnostic,
+        ...(finding ? { finding } : {}),
       }) + "\n",
     );
     return 2;

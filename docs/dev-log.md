@@ -193,6 +193,15 @@ still hold before relying on them.
   The owner-supplied Reusable3D Asset Plan path contains build plans and episode
   references, without audio/timing files. Linked newer300-topic Alden recordings
   still differ from the seven frozen questions; clarification is pending.
+  [Located failures](./mechanism-shorts-ms3-located-failure-results.json) now
+  preserve trusted invariant locations through cue wrappers, both CLI routes and
+  optional queue/report attempt findings. Real illegal-transition/event-order
+  preflight controls pass; journal/report/restart keeps the failed finding and
+  healthy neighbor. Owning62/8 and corrected fast4,543/450 pass with2,736 inputs
+  held. Initial fast1 stopped on two preceding evidence-format errors; retained.
+  Package runtime is now528b/689 files; appearance/profile stay exact. Prior042a
+  genuine final checks retain their historical binding; current native rebinding
+  and all broader rendered faults/whole inputs/reviews/final gates remain open.
   Remaining original scope: clearer E06/E10 explanations and actual whole reviews,
   all ten frozen questions/genuine narration,
   broader seeded QA, native QA rebinding, capability reconciliation,
@@ -385,6 +394,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Preserve located timeline failures through CLI and durable history
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, held candidate from6e25cb42.
+- **Done:** Cue wrappers keep invariant causes; bounded structured findings now
+  survive both CLI routes, queue journals, fresh reports and restarts. Legacy
+  diagnostics/old attempts retain their meaning and the healthy neighbor stays exact.
+- **Verification:** Owning62/8 pass. Separate CLI processes actually exit2 for
+  the expected illegal transition at15–30; event-order API locates frame1/path.
+  Corrected full fast actually exits0/hold0:4,543/450,2,736 inputs/121,771,507B.
+- **Failure retained:** Initial fast stops on two prior evidence-format mistakes;
+  formatting only corrected and original JSON data retained. Code/profile/appearance
+  identity is528b/d6ee/53d0; earlier042a genuine checks remain historical.
+- **Open / next:** Broader rendered faults, current native/cohort seals, original
+  seven inputs/all ten whole reviews, paired metrics and full/final package gates.
+- **Records:** [Located failures](./mechanism-shorts-ms3-located-failure-results.json).
 
 ### 2026-10-14 — Verify all three existing pilot videos with the current runtime
 

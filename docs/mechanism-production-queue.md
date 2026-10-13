@@ -23,6 +23,14 @@ permanent/transient failures. Retries are capped at three per revision,96 total
 attempts and32 revisions. Permanent failures require input repair; other items
 continue. Interrupted duration remainsnull. Cancelled runs retain pending items.
 
+A failed attempt may also retain a bounded structured `finding` from a trusted
+mechanism invariant error. It preserves the original code/path/frame, available
+rig/parts/relationship/interval and pack reference through typed error wrappers.
+The journal, fresh episode report and restart keep that finding alongside the
+legacy diagnostic string. Old attempts without the optional field remain valid.
+[Located failure proof](./mechanism-shorts-ms3-located-failure-results.json)
+separates expected-state admission errors from rendered-frame observations.
+
 Produced paths remain inside the owned output directory. Dependencies, artifact
 bytes and report/input/output/code/profile/clock identities are rechecked. Sealed
 completions can be adopted after a lost final journal update; unfinished dead

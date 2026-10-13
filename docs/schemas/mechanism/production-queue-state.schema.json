@@ -89,6 +89,87 @@
                     { "type": "null" }
                   ]
                 },
+                "finding": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 128
+                    },
+                    "message": { "type": "string", "maxLength": 1024 },
+                    "path": {
+                      "maxItems": 64,
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          { "type": "string", "maxLength": 128 },
+                          {
+                            "type": "integer",
+                            "minimum": -9007199254740991,
+                            "maximum": 9007199254740991
+                          }
+                        ]
+                      }
+                    },
+                    "frame": { "type": "number" },
+                    "interval": {
+                      "type": "object",
+                      "properties": {
+                        "startFrame": { "type": "number" },
+                        "endFrameExclusive": { "type": "number" }
+                      },
+                      "required": ["startFrame", "endFrameExclusive"],
+                      "additionalProperties": false
+                    },
+                    "rig": { "type": "string", "maxLength": 128 },
+                    "parts": {
+                      "maxItems": 128,
+                      "type": "array",
+                      "items": { "type": "string", "maxLength": 128 }
+                    },
+                    "relationship": { "type": "string", "maxLength": 128 },
+                    "pack": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "maxLength": 128,
+                          "pattern": "^[A-Za-z][\\w.-]*$"
+                        },
+                        "version": {
+                          "type": "string",
+                          "maxLength": 64,
+                          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+                        },
+                        "sha256": {
+                          "type": "string",
+                          "pattern": "^sha256:[a-f0-9]{64}$"
+                        },
+                        "variant": {
+                          "type": "string",
+                          "maxLength": 128,
+                          "pattern": "^[A-Za-z][\\w.-]*$"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "maxLength": 128,
+                          "pattern": "^[A-Za-z][\\w.-]*$"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "version",
+                        "sha256",
+                        "variant",
+                        "detail"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": ["code", "message", "path"],
+                  "additionalProperties": false
+                },
                 "retryable": { "type": "boolean" }
               },
               "required": [

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { MechanismProductionFindingSchema } from "./production-failure.ts";
 import { MechanismHashSchema } from "@still-shift/scene-contract";
 import { MechanismProductionEpisodeReportSchema } from "./production-report.ts";
 
@@ -140,6 +141,7 @@ export const MechanismProductionAttemptSchema = z
     endedUtc: z.string().datetime({ offset: true }).nullable(),
     seconds: z.number().finite().nonnegative().max(86400).nullable(),
     diagnostic: z.string().max(2048).nullable(),
+    finding: MechanismProductionFindingSchema.optional(),
     retryable: z.boolean(),
   })
   .strict();

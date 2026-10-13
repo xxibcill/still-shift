@@ -101,5 +101,6 @@ export function productionReportAttempts(
     stage: a.stage,
     seconds: a.seconds,
     diagnostic: a.diagnostic,
+    ...(a.finding ? { finding: a.finding } : {}),
   }));
 }

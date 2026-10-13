@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { MechanismProductionFindingSchema } from "./production-failure.ts";
 import {
   MechanismHashSchema,
   MechanismIdSchema,
@@ -139,6 +140,7 @@ export const MechanismProductionEpisodeReportSchema = z
             stage: z.string().min(1).max(128),
             seconds: z.number().finite().nonnegative().max(86400).nullable(),
             diagnostic: z.string().max(2048).nullable(),
+            finding: MechanismProductionFindingSchema.optional(),
           })
           .strict(),
       )

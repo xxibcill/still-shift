@@ -6,6 +6,16 @@ declarative semantic rules. It also retains the current cue compiler's MS2
 expected-state transition/event-order result and advisory composition-state lint.
 No supplied JavaScript is executed by a rule.
 
+Invalid cue transitions can fail before a queue or native output exists. Both
+CLI routes preserve the located invariant finding; the episode full report and
+production failure record retain the rig, parts and expected interval when the
+compiler supplies them. Event-order errors retain their exact path/frame without
+invented physical ownership. Failed executor attempts keep the same optional
+finding in durable history and fresh reports. These preflight findings do not
+count as observed native collision or final-frame evidence. The helper admits
+at most32KiB of passive location data and follows at most eight typed wrappers;
+ordinary diagnostics remain available when no bounded location is supported.
+
 Every product retains an immutable `qa-program.json` containing the actual authored
 plan, selectors and registered definitions, including the built-in rule. Failed
 products therefore keep their program after a later QA file change.
