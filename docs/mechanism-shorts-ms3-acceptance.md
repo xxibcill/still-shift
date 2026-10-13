@@ -114,3 +114,19 @@ Blender items before source admission. These are generic byte-fixture and comman
 lifecycle checks; the full Blender production executor/cue compiler/semantic QA
 and all-ten narrated products remain required. Current coverage/whole admission
 stays0/10 and paired token measurements staynull. All failed runs are retained.
+
+[Native narrated Blender executor](./mechanism-shorts-ms3-blender-episode-results.json)
+on310a7e8b now runs an actual whole Alden EU-004 take through explicit version2
+queue products with producer-bound per-state caching and full decode. The320×568/
+653-frame engineering draft uses7 scout+321 cold native renders. Font/caption and
+canonical-input-path revisions preserve complete decoded audio and add zero
+Blender renders; the current product has a fresh92ff binding, with older seals
+unchanged. Independent3,296 file pins/2,612 mapped frame states/328 native
+observations verify all four products. Thirteen sentence-boundary cues preserve
+exact whole script copy and repair the opposing-action caption samples. Source
+geometry retains129,768 physical vertices; no model rebuild or Three.js transfer
+is inferred. Fast4,567/454, runtime16/8 and Python checks pass with2,756 inputs
+held. Native QA/handoff/CLI integration, HD staging, the other nine whole products,
+all whole reviews/broader faults/coverage and final gates remain open. Accepted
+pilot0/10 and paired token measurementsnull; this is one distinct engineering
+episode, not four pilot episodes or a complete first-ten cohort.

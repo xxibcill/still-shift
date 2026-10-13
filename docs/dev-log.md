@@ -232,6 +232,19 @@ still hold before relying on them.
   type/assertion/generated-schema/lint failures remain retained. Generic byte
   fixtures establish lifecycle only; actual Blender executor/cues/QA/all-ten
   delivery and every whole/final gate remain open.
+  [Native narrated adapter](./mechanism-shorts-ms3-blender-episode-results.json)
+  now uses existing Blender assets, whole-audio clocks, absolute shot/control tracks,
+  per-state producer/counter seals, independent output copies and full decode.
+  Current310a7e8b passes fast4,567/454, runtime16/8 and Python checks with2,756
+  inputs/121,935,718B exact/post-commit hold0. Runtime92ff/700; native profilea515.
+  Actual EU-004 whole21.76s/653-frame320×568 draft captures7 scout+321 fresh states;
+  font/caption/source-locator revisions preserve whole decoded audio and add0
+  Blender renders. Current fresh product verifies through the canonical path.
+  Independent3,296 pins/2,612 mapped frames/328 observations pass; max129,768
+  physical vertices retained. Three native+nine encoded samples inspected.
+  Opposing-action captions are repaired with13 exact-copy cues; macro/staging and
+  whole reviews remain. Initial type/root/lint/private-import/audit failures stay
+  retained. Native QA/handoff/CLI, HD/all-ten products and final gates remain open.
   Accepted coverage remains0/10; tokens staynull. No ElevenLabs spend, merge,
   publication or Actions change. [Tracker](./mechanism-shorts-ms3-acceptance.md).
 
@@ -420,6 +433,26 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Render the first whole actual take through a native Blender queue
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, implementation310a7e8b, frome2baa840.
+- **Done:** Absolute shot/control/caption compiler, whole original/decoded audio
+  clocks, complete canonical pins, per-state native cache/producer seals and executor.
+- **Verification:** Fast4,567/454, affected runtime16/8 and Python checks pass;
+  all2,756 inputs/121,935,718B exact/post-commit hold0. Runtime92ff/700, nativea515.
+- **Actual:** EU-004 whole21.76s/653 frames at320×568:7 scout+321 fresh native renders.
+  Font/caption/source-path revisions reuse all states with0 new Blender renders;
+  whole decoded audio stays exact. Current fresh product opens through the real path.
+- **Audit / views:**3,296 pins/2,612 mapped frames/328 observations/129,768 physical
+  vertices pass. Three native+nine encoded samples inspected;13 exact-copy cues
+  repair opposing-action caption grouping. Macro/full staging and whole reviews stay open.
+- **Retained:** Sequence-type/lock/artifact typing, cache/input aliases, lint and
+  private-script imports; optional FFmpeg doctor gaps remain scoped to unused features.
+- **Next:** Native QA/handoff/CLI, HD/all-ten products, broader faults/coverage,
+  whole reviews, paired effort and final gates. Accepted0/10; no spend/merge/publication.
+- **Records:** [Evidence](./mechanism-shorts-ms3-blender-episode-results.json),
+  [Node workflow](./mechanism-blender-episode.md).
 
 ### 2026-10-14 — Version the native Blender production lifecycle
 
