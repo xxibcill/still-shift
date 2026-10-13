@@ -36,7 +36,19 @@ describe("family registry CLI", () => {
     expect(result.receipt.summary.supportedPacks).toBe(0);
     expect(
       result.receipt.items.filter((item) => item.kind === "example"),
-    ).toHaveLength(3);
+    ).toHaveLength(6);
+    expect(
+      result.receipt.items
+        .filter((item) => item.kind === "example")
+        .map((item) => `${item.family}:${item.id}`),
+    ).toEqual([
+      "tape-hook:default",
+      "tape-hook:slotted-retention",
+      "cable-tie:default",
+      "cable-tie:inside-release",
+      "clothespeg:default",
+      "clothespeg:notched-line",
+    ]);
     const complete = JSON.parse(await readFile(report, "utf8"));
     expect(complete.entries).toHaveLength(3);
     expect(complete.entries[2].metadata.pack.teachingShapes).toHaveLength(1);
@@ -85,7 +97,17 @@ describe("family registry CLI", () => {
       expect(result.code).toBe(0);
       expect(Buffer.byteLength(result.output)).toBeLessThanOrEqual(32768);
       const schema = JSON.parse(await readFile(output, "utf8"));
-      expect(schema.additionalProperties).toBe(false);
+      const branches = schema.anyOf ?? [schema];
+      expect(branches).toHaveLength(kind === "clothespeg-input" ? 2 : 1);
+      for (const branch of branches)
+        expect(branch.additionalProperties).toBe(false);
+      if (kind === "clothespeg-input")
+        expect(
+          branches.map(
+            (branch: { properties: { variant: { const: string } } }) =>
+              branch.properties.variant.const,
+          ),
+        ).toEqual(["wood-arms-central-spring-cloth", "notched-line"]);
       if (kind === "narrated-cycle")
         expect(schema.properties.schemaVersion.const).toBe(
           "mechanism-narrated-cycle-1",

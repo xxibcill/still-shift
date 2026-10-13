@@ -70,7 +70,10 @@ still hold before relying on them.
   and its non-releasable guard remain exact. Final42 owning checks/21 closed
   states/build/lint/schema/boundary/declarations pass with2,710 inputs held.
   Frame-key and metadata-inventory failures are retained. Current complete
-  fast/runtime/native/default parity are next because renderer contracts changed.
+  fast now passes4,471/443 on e39cbfe3, exact2,710 inputs. Runtime1/session79490 closed failed:251/253 pass, two stale CLI
+  example/schema checks. Integration/depth/smoke unstarted. Checks now cover6
+  examples and both strict peg variants; a current rerun and native/default parity remain next
+  because renderer contracts changed.
   No active prior native handle remains. Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
   Remaining original scope: clearer views and actual whole reviews, E05/E06/E10
@@ -276,7 +279,10 @@ still hold before relying on them.
   boundary and declarations pass;2,710 inputs held. Engaged reverse rejects.
 - **Rejected / retained:** Frame-key regex and two-landmark metadata inventory
   failures repaired without removing required root/tip or weakening release guards.
-- **Open / next:** Current complete fast/runtime/native/default audit and actual
+- **Results added:** Current fast4,471/443 actually passes on e39cbfe3, all2,710
+  inputs exact. Runtime1 failed two stale CLI example/schema checks (251/253);
+  integration/depth/smoke unstarted. Retained; updated checks and rerun are next.
+- **Open / next:** Current runtime/native/default audit and actual
   visual/factual/design/genuine narration/whole review; E06/E10 and original MS3 scope.
 - **Records:** [trigger candidate](./mechanism-shorts-ms3-trigger-results.json).
   Accepted pilot remains0/10; no paid generation, publication or merge.

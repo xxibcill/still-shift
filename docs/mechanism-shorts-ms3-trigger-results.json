@@ -5,7 +5,7 @@
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
   "baseCommit": "ba6f59d799c34a774c3abc78a03c3ae169970453",
-  "status": "factory-trigger-owning-passed-fast-runtime-native-pending",
+  "status": "owning-fast1-passed-runtime1-failure-cli-repaired-rerun-pending",
   "sourceSnapshot": [
     {
       "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/cable-tie-input.schema.json",
@@ -101,6 +101,11 @@
       "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-release-trigger.test.ts",
       "bytes": 7872,
       "sha256": "sha256:e953feb02f84e7de39cff46edb8cfa5dc8c8b629cedecf89bf7a0c03a81b4dae"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/runtime/mechanism-family-registry-cli.test.ts",
+      "bytes": 4642,
+      "sha256": "sha256:008d3d46b3871b13e5287c8357f407536fe98df360647f5eaa2a7c5b3e93306a"
     }
   ],
   "primarySource": {
@@ -310,5 +315,131 @@
     "Current complete fast and runtime tiers.",
     "Actual native default/release/withdrawal and changed dimensions, independent all-frame decode/images/observations/default parity.",
     "Resolved visual findings/genuine narration/whole/factual/design reviews, E06/E10 assets/behaviors and all remaining original MS3 pilot/repair/capability/final gates."
-  ]
+  ],
+  "committedSource": "e39cbfe3e87b83cc27d3ff0d33ed1e2b211c85b0",
+  "currentTiers": {
+    "status": "failed",
+    "sourceCommit": "e39cbfe3e87b83cc27d3ff0d33ed1e2b211c85b0",
+    "startedUtc": "2026-10-13T04:56:08.836543+00:00",
+    "pid": 2625,
+    "inventory": "/private/tmp/still-shift-ms3-trigger13-tiers1-inputs.json",
+    "steps": [
+      {
+        "command": ["pnpm", "check:fast"],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T04:56:08.837275+00:00",
+        "endedUtc": "2026-10-13T04:58:26.901550+00:00",
+        "log": "/private/tmp/still-shift-ms3-trigger13-tiers1-0.log"
+      },
+      {
+        "command": ["pnpm", "check:runtime"],
+        "actualExitCode": 1,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T04:58:26.901875+00:00",
+        "endedUtc": "2026-10-13T05:00:50.447838+00:00",
+        "log": "/private/tmp/still-shift-ms3-trigger13-tiers1-1.log"
+      }
+    ],
+    "actualExitCode": 1,
+    "endedUtc": "2026-10-13T05:00:50.448146+00:00",
+    "session": 79490
+  },
+  "completeFast": {
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "sourceCommit": "e39cbfe3e87b83cc27d3ff0d33ed1e2b211c85b0",
+    "unitTests": 4471,
+    "testFiles": 443,
+    "heldInputFiles": 2710,
+    "heldInputBytes": 121484911
+  },
+  "runtimeFailure": {
+    "actualExitCode": 1,
+    "runtimeTests": 253,
+    "passed": 251,
+    "failed": 2,
+    "files": 45,
+    "sourceHoldExitCode": 0,
+    "remainingGroups": "integration/depth/smoke unstarted",
+    "reason": "CLI checks assumed3 examples and flat root strict-object schema. Updated variant discovery has6 examples; peg input uses two independently strict branches."
+  },
+  "failedTierRuns": [
+    {
+      "status": "failed",
+      "sourceCommit": "e39cbfe3e87b83cc27d3ff0d33ed1e2b211c85b0",
+      "startedUtc": "2026-10-13T04:56:08.836543+00:00",
+      "pid": 2625,
+      "inventory": "/private/tmp/still-shift-ms3-trigger13-tiers1-inputs.json",
+      "steps": [
+        {
+          "command": ["pnpm", "check:fast"],
+          "actualExitCode": 0,
+          "sourceHoldCheckExitCode": 0,
+          "startedUtc": "2026-10-13T04:56:08.837275+00:00",
+          "endedUtc": "2026-10-13T04:58:26.901550+00:00",
+          "log": "/private/tmp/still-shift-ms3-trigger13-tiers1-0.log"
+        },
+        {
+          "command": ["pnpm", "check:runtime"],
+          "actualExitCode": 1,
+          "sourceHoldCheckExitCode": 0,
+          "startedUtc": "2026-10-13T04:58:26.901875+00:00",
+          "endedUtc": "2026-10-13T05:00:50.447838+00:00",
+          "log": "/private/tmp/still-shift-ms3-trigger13-tiers1-1.log"
+        }
+      ],
+      "actualExitCode": 1,
+      "endedUtc": "2026-10-13T05:00:50.448146+00:00",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger13-tiers1.py",
+          "bytes": 1852,
+          "sha256": "sha256:6e31ca3e920c847cf0b7a5e7157df4b400d4e9e626f5d11b64d9f85b4a8772a1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger13-tiers1.log",
+          "bytes": 972,
+          "sha256": "sha256:55aa6d08fb7bd815200b5b67222620aebf6d83a2dc159e55a19c213ac3f12df0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger13-tiers1-receipt.json",
+          "bytes": 959,
+          "sha256": "sha256:40866d927ce53f33762ae2106aa7edbc1bfec989f7b5d67775f7ec49f4192b11"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger13-tiers1-inputs.json",
+          "bytes": 462666,
+          "sha256": "sha256:259585ff7f5f51c03578e6961213137fa57d529bc746fb44881230e1bfea0d7d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger13-tiers1-0.log",
+          "bytes": 43785,
+          "sha256": "sha256:e65b16c28b216beb71bfae0c095fcc81c045a409c4b0da551006a67969423b6e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger13-tiers1-1.log",
+          "bytes": 17448,
+          "sha256": "sha256:897e1efbfb864fa5afb45bf71978cd8b2ceec3a30b40de97a4e37894a9741c3a"
+        }
+      ]
+    }
+  ],
+  "cliRepair": {
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-cli-scope1.log",
+        "bytes": 446,
+        "sha256": "sha256:74940afc6e7f385b52f01fe85c6b0790c48cbc0bd083a0eb300b29c990aab00d"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-cli-scope2.log",
+        "bytes": 446,
+        "sha256": "sha256:f01f9744907fc589daae7926142c8d1b515d7b33dfb4a026f56d072b02d15ea5"
+      }
+    ],
+    "tests": 4,
+    "actualExitCode": 0,
+    "scope": "Six exact family/variant examples and strict branch schemas; original32KiB response bound retained."
+  }
 }
