@@ -158,6 +158,24 @@ it("speech caption eligibility requires measured intact copy throughout the cue 
   );
 });
 
+it("admits an unchanged speech cue ending in a partial last output frame and rejects missing last-frame audio", () => {
+  const { comp, policy } = speechFixture();
+  comp.frameCount = 33;
+  const audio = comp.layers[1]!;
+  const asset = comp.assets.find((entry) => entry.id === "speech")!;
+  if (audio.type !== "audio" || asset.type !== "audio") throw Error("fixture");
+  audio.outPoint = 33;
+  asset.sampleCount = 52800 - 1;
+  audio.sourceEndSample = asset.sampleCount;
+  expect(
+    analyzeCompositionQuality(comp, policy).speechCaptions?.[0]?.eligible,
+  ).toBe(true);
+  audio.sourceEndSample = 32 * 1600;
+  expect(() => analyzeCompositionQuality(comp, policy)).toThrow(
+    /pinned narration samples/,
+  );
+});
+
 function proofFixture() {
   const proof: CompositionPhysicalProofHold = {
     id: "inside",

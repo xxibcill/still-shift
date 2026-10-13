@@ -1,4 +1,8 @@
 import { loadComposition } from "../composition-render.ts";
+import {
+  evaluateMechanismProductionVisualQA,
+  mechanismProductionVisualPolicy,
+} from "./production-qa-visual.ts";
 import { z } from "zod";
 import { join, relative, resolve } from "node:path";
 import {
@@ -165,14 +169,32 @@ export async function evaluateMechanismProductionNativeQA(input: {
       );
     const qualityLease = owner.reserve(qualityCapacity);
     let quality;
+    let renderedVisual;
     try {
+      renderedVisual = await evaluateMechanismProductionVisualQA({
+        outputRoot: context.outputRoot,
+        video: input.video,
+        expectedComposition: {
+          path: join(input.preparedDirectory, "composition.json"),
+          sha256: composition.sha256,
+        },
+        expectedNativeReceipt: capture,
+        document: authored.document,
+        nodeMemory: owner,
+        signal: context.signal,
+      });
       const loaded = await loadComposition(
         join(input.preparedDirectory, "composition.json"),
         "webgl2",
         { nodeMemory: owner, signal: context.signal },
       );
       quality = analyzeCompositionQuality(loaded.composition, {
+        ...mechanismProductionVisualPolicy(
+          loaded.composition,
+          authored.document,
+        ),
         evaluation: {
+          textBounds: renderedVisual.textBounds,
           ...(loaded.native3D ? { preparedNative3D: loaded.native3D } : {}),
         },
         intentionalCuts: authored.document.cues
@@ -190,6 +212,22 @@ export async function evaluateMechanismProductionNativeQA(input: {
           end: c.shotEndFrameExclusive,
         })),
       });
+      const stateQuality = quality;
+      const seen = new Set(
+        stateQuality.diagnostics.map((d) => mechanismPackHash(d)),
+      );
+      quality = {
+        ...renderedVisual.quality,
+        diagnostics: [
+          ...stateQuality.diagnostics,
+          ...renderedVisual.quality.diagnostics.filter(
+            (d) => !seen.has(mechanismPackHash(d)),
+          ),
+        ],
+      };
+      quality.status = quality.diagnostics.some((d) => d.severity === "error")
+        ? "failed"
+        : "passed";
       compositionNodeJsonSize(quality, 0, "", 8 * 1024 * 1024);
       if (quality.diagnostics.length > LIMIT.warningRows)
         throw Error("Production raw warning row budget exceeded");
@@ -225,10 +263,17 @@ export async function evaluateMechanismProductionNativeQA(input: {
       );
     };
     const program = await persist("qa-program.json", sampler.program);
+    const rendered = await persist("qa-rendered-visual.json", {
+      schemaVersion: "mechanism-production-rendered-visual-1",
+      binding: input.binding,
+      ...renderedVisual,
+    });
     const raw = await persist("qa-raw-warnings.json", {
       schemaVersion: "mechanism-production-raw-warnings-1",
       binding: input.binding,
-      method: "composition-state-lint-no-rendered-pixel-or-glyph-acceptance",
+      method:
+        "current-source-state-and-verified-cached-plate-preview-pixels-and-measured-glyphs",
+      renderedVisual: rendered,
       quality,
     });
     const grouped = mapMechanismProductionWarnings({
@@ -276,6 +321,7 @@ export async function evaluateMechanismProductionNativeQA(input: {
       semantics,
       warnings: {
         raw,
+        rendered,
         grouped: warningGroups,
         groups: grouped.groups.length,
         errors: sampledVisualFailures,
@@ -297,10 +343,10 @@ export async function evaluateMechanismProductionNativeQA(input: {
       },
       mechanicalAcceptance: "separate-whole-mechanism-review",
       qualification:
-        "Original native output-frame scalars and current expected-state transitions/event order, plus advisory composition-state warnings. Individual sampled rules do not prove whole mechanical correctness, between-frame collision, encoded glyphs, continuous playback, factual truth or listening. Unknown diagnostic units and composition-only controllers remain explicitly unresolved.",
+        "Original native output-frame scalars and current expected-state transitions/event order, plus source-state warnings and all-frame cached-plate preview pixels/measured glyphs. Individual sampled rules do not prove whole mechanical correctness, between-frame collision, encoded glyphs, continuous playback, factual truth or listening. Unknown diagnostic units and composition-only controllers remain explicitly unresolved.",
     });
     const artifact = await persist("qa-facts.json", facts);
-    return { facts, artifact, raw, program, grouped: warningGroups };
+    return { facts, artifact, raw, rendered, program, grouped: warningGroups };
   } finally {
     for (const r of release.reverse()) r();
     reserve.release();

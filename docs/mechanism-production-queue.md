@@ -134,3 +134,9 @@ authorization grant no extra attempts. Stale requests, active owners, completed 
 unknown targets, corrupt history and exhausted budgets reject before replacement.
 An interrupted running row must first be resumed so the runner can recover its
 sealed completion or retain its interruption receipt.
+
+Current [rendered visual QA evidence](./mechanism-shorts-ms3-visual-qa-results.json)
+adds authenticated cached-preview pixels/glyphs, exact speech-cue metadata and
+zero-new-native submission counters to bound production artifacts. Its five
+engineering products/300 frames and retained fault controls keep whole reviews
+unreviewed; existing genuine pilot products retain their historical bindings.

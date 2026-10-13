@@ -1,3 +1,7 @@
+import {
+  mechanismCueSpeechCaption,
+  mechanismCueSpeechSourceHash,
+} from "./cue-speech-caption.ts";
 import { mechanismCueCaptionLayout } from "./cue-caption.ts";
 import { resolveCueSurfaceMarking } from "./cue-surface-markings.ts";
 import { compileCueWorldText } from "./cue-world-annotations.ts";
@@ -85,6 +89,8 @@ export function compileMechanismNarratedCycle(
     );
   }
   const document = parsed.data!;
+  const sourceDocumentSha256 = mechanismPackHash(document);
+  const speechSourceSha256 = mechanismCueSpeechSourceHash(document);
   const { width, height, fps } = document.output;
   const frameCount = outputFrame(document.narration.sampleCount, fps);
   if (frameCount > 108000)
@@ -434,7 +440,7 @@ export function compileMechanismNarratedCycle(
     end: number,
     position: [number, number],
     size: [number, number],
-  ): CompositionLayer => ({
+  ): Extract<CompositionLayer, { type: "text" }> => ({
     id,
     type: "text",
     text,
@@ -515,10 +521,17 @@ export function compileMechanismNarratedCycle(
         caption.textPosition,
         caption.textSize,
       ),
+      textRole: "body",
       metadata: {
         cue: cue.id,
         track: "caption",
         sourceSamples: [cue.startSample, cue.endSampleExclusive],
+        speechCue: mechanismCueSpeechCaption(
+          document,
+          index,
+          trackId("caption", cue.id),
+          speechSourceSha256,
+        ),
       },
     });
     layers.push({
@@ -726,7 +739,7 @@ export function compileMechanismNarratedCycle(
   return freezeMechanismPack({
     version: "compiled-mechanism-narrated-cycle-1" as const,
     revision: document.revision,
-    sourceDocumentSha256: mechanismPackHash(document),
+    sourceDocumentSha256,
     timeline,
     composition: validation.composition!,
     cueMap: frames,

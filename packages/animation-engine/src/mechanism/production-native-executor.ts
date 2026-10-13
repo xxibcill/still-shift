@@ -356,6 +356,7 @@ export async function createMechanismProductionNativeExecutor(): Promise<Mechani
         quality.artifact,
         quality.program,
         quality.raw,
+        quality.rendered,
         quality.grouped,
         output,
         review.manifest,

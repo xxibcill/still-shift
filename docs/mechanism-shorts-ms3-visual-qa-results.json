@@ -1,0 +1,386 @@
+{
+  "version": "mechanism-ms3-rendered-visual-qa-results-1",
+  "date": "2026-10-14",
+  "sourceCommit": null,
+  "baseCommit": "7a1a7cc442388d5c89d3e4756fe88fdcfd58c3b0",
+  "runtime": {
+    "codeSha256": "sha256:10f7c5720f1236db3a4325ceda6eeb5868dc49040cbf129de6d99604d7cddc8a",
+    "profileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b",
+    "runtimeFiles": 691,
+    "runtimeFormat": "source-ts",
+    "nativeAppearanceCodeSha256": "sha256:53d07cba1e91332e91992d5e512e1992e979428cf91cf34ddbdb949745e7dc3e",
+    "profile": {
+      "backend": "webgl2",
+      "transport": "raw_rgba",
+      "workers": 1,
+      "nodeVersion": "22.23.1",
+      "ffmpegVersion": "ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers",
+      "toolchainSha256": "sha256:4329ec000367b7c96c18900dffd57aee4651136ff8f3f8008f508ec43b77aaf5"
+    }
+  },
+  "sourceHold": {
+    "inventory": {
+      "path": "/private/tmp/still-shift-ms3-visual35-inputs6.json",
+      "bytes": 467683,
+      "sha256": "sha256:a9ccb221852da3c18db7cd5a6691ea0dfc1a096cd1d29f816eadc60862b7a73e"
+    },
+    "files": 2739,
+    "bytes": 121792968,
+    "allCurrentChecksExitCode": 0
+  },
+  "implementation": [
+    "Authenticated cached-plate source is linted on every output frame using actual preview pixels and measured glyph bounds; dimensions, clocks, native absence, video/source/export pins are rechecked.",
+    "qa-rendered-visual.json is a bound artifact linked from optional facts.warnings.rendered; raw/grouped warnings merge source-state and cached-preview diagnostics. Fresh report/reuse checks recompute these facts.",
+    "Compiler captions carry body role and exact source speech declarations. Canonical speech-source identity binds words, sample windows, audio, source length, locale and frame rate separately from picture annotation defaults; full project binding remains independent.",
+    "Speech coverage admits a partial final video frame when every displayed frame begins within the unchanged source audio; missing final-frame source coverage still rejects.",
+    "lintCompositionFile accepts a shared Node owner and optional submission statistics; child disposal preserves foreign capacities. Wall-clock statistics are excluded from stable derived artifacts."
+  ],
+  "verification": {
+    "fast": {
+      "passedTests": 4544,
+      "passedFiles": 450,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-visual35-gate5-receipt.json",
+        "bytes": 935,
+        "sha256": "sha256:64aa25df80d4d7359475654e6d3e7e1597e0a729421cd84717347c6c88685217"
+      }
+    },
+    "currentSpeechAndVisualFocused": {
+      "passedTests": 7,
+      "passedFiles": 2,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-visual35-gate4-receipt.json",
+        "bytes": 804,
+        "sha256": "sha256:97e6e8d670b5172325884a36c978ee6b8724a0b29230befb5925e57de6f24ec5"
+      },
+      "qualification": "This focused prefix passed before the following fast build found the text factory union-return type. The correction changes only its erased return type; current fast and current integration/native checks follow."
+    },
+    "currentIntegration": {
+      "passedTests": 19,
+      "passedFiles": 3,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-visual35-controls2-receipt.json",
+        "bytes": 939,
+        "sha256": "sha256:a07207bcce3ad1700cce6ce9988fd1cf1ff3e30d88f1d0b89c4eadf97c65754e"
+      }
+    },
+    "native": {
+      "root": "/private/tmp/still-shift-ms3-production-native-tSbxx3",
+      "run": {
+        "path": "/private/tmp/still-shift-ms3-production-native-tSbxx3/run.json",
+        "bytes": 10336,
+        "sha256": "sha256:faa06acf64f578e826ecd9b3b20b103b8c8fc804ebb0e43e2f79e26d7283c99f"
+      },
+      "actualExitCode": 0,
+      "outputs": 5,
+      "fullyDecodedFrames": 300,
+      "freshNativeSubmissions": 180,
+      "qaNativeSubmissions": 0,
+      "audit": {
+        "path": "/private/tmp/still-shift-ms3-visual35-native-audit.json",
+        "bytes": 5060,
+        "sha256": "sha256:35f10408efd734f5b2dc4e09e4585b28a3f67f4bfe7f5ea79c6892212c3c59ae"
+      },
+      "artifactPinsMatched": 80,
+      "scope": "Current original native/cached queue production with synthetic local PCM; source/QA/export/review pins audited. Whole factual, continuous, listening and pilot acceptance remain unreviewed.",
+      "retainedProductQAFrames": 300
+    },
+    "controls": {
+      "run": {
+        "path": "/private/tmp/still-shift-ms3-visual35-controls-2kxeYM/run.json",
+        "bytes": 2912,
+        "sha256": "sha256:1beadf6e6a9a3f21302b4fa7df66d99236ff5fbc90f092d841274387a2e65247"
+      },
+      "root": "/private/tmp/still-shift-ms3-visual35-controls-2kxeYM",
+      "rows": [
+        {
+          "control": "baseline",
+          "method": "actual-60-frame-2d-preview-pixels-and-glyph-bounds",
+          "nativeCalls": 0,
+          "findings": [],
+          "encodedOutput": "/private/tmp/still-shift-ms3-visual35-controls-2kxeYM/baseline.mp4",
+          "fullyDecodedFrames": 60,
+          "decodedAudioSha256": "sha256:bfe2cbc3c5fcc7f45ac8cb2ea33ccb8935dbc14f4f7e55da2d14fc13180a3d45"
+        },
+        {
+          "control": "clipped",
+          "method": "actual-60-frame-2d-preview-pixels-and-glyph-bounds",
+          "nativeCalls": 0,
+          "findings": [
+            {
+              "code": "reading-time",
+              "severity": "error",
+              "nodes": ["caption"],
+              "node": "caption",
+              "path": "speechCaptions.0",
+              "frames": [0, 14],
+              "measured": 0,
+              "message": "Speech caption must retain exact intact visible copy throughout the supplied cue; 0/15 frames qualify."
+            }
+          ],
+          "encodedOutput": "/private/tmp/still-shift-ms3-visual35-controls-2kxeYM/clipped.mp4",
+          "fullyDecodedFrames": 60,
+          "decodedAudioSha256": "sha256:bfe2cbc3c5fcc7f45ac8cb2ea33ccb8935dbc14f4f7e55da2d14fc13180a3d45"
+        },
+        {
+          "control": "short-hold",
+          "method": "actual-60-frame-2d-preview-pixels-and-glyph-bounds",
+          "nativeCalls": 0,
+          "findings": [
+            {
+              "code": "reading-time",
+              "severity": "error",
+              "nodes": ["caption"],
+              "node": "caption",
+              "path": "speechCaptions.0",
+              "frames": [0, 14],
+              "measured": 0.1,
+              "message": "Speech caption must retain exact intact visible copy throughout the supplied cue; 3/15 frames qualify."
+            }
+          ],
+          "encodedOutput": "/private/tmp/still-shift-ms3-visual35-controls-2kxeYM/short-hold.mp4",
+          "fullyDecodedFrames": 60,
+          "decodedAudioSha256": "sha256:bfe2cbc3c5fcc7f45ac8cb2ea33ccb8935dbc14f4f7e55da2d14fc13180a3d45"
+        },
+        {
+          "control": "wrong-copy",
+          "method": "preflight",
+          "diagnostics": [
+            {
+              "code": "comp-lint-speech-caption",
+              "severity": "error",
+              "message": "Speech captions require exact copy and unchanged source cue boundaries",
+              "path": "speechCaptions.0.layer"
+            }
+          ]
+        }
+      ],
+      "fullyDecodedFrames": 180,
+      "exactBetweenControlDecodedAudio": true,
+      "encodedStillsViewed": [
+        "baseline-frame6.png",
+        "clipped-frame6.png",
+        "short-hold-frame6.png",
+        "short-hold-frame13.png"
+      ],
+      "scope": "Three 2D preview/MP4 controls with located frame0-14 findings and sampled encoded images; one wrong-copy policy preflight. Synthetic local PCM, no native fault or whole listening/pilot approval."
+    }
+  },
+  "retainedFailures": [
+    {
+      "run": "focused1",
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-visual35-focused1-receipt.json",
+        "bytes": 323,
+        "sha256": "sha256:020e70a286db55fe7e29f942fa819e21a773b5ec766afbcb2d5ead9bf746c630"
+      },
+      "steps": [
+        {
+          "name": "build",
+          "argv": ["pnpm", "build"],
+          "exitCode": 2,
+          "holdExitCode": 0,
+          "elapsedSeconds": 11.607116937637329,
+          "hold": "{\"status\": \"passed\", \"mode\": \"check\", \"files\": 2739, \"bytes\": 121790920}\n"
+        }
+      ],
+      "actualExitCode": 2
+    },
+    {
+      "run": "gate1",
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-visual35-gate1-receipt.json",
+        "bytes": 327,
+        "sha256": "sha256:c416a94ebeabe0610620025fd0adc65f69005c84c77f835165ccc260caf70a12"
+      },
+      "steps": [
+        {
+          "name": "fast",
+          "argv": ["pnpm", "check:fast"],
+          "exitCode": 1,
+          "holdExitCode": 0,
+          "elapsedSeconds": 57.740768909454346,
+          "hold": "{\"status\": \"passed\", \"mode\": \"check\", \"files\": 2739, \"bytes\": 121791179}\n"
+        }
+      ],
+      "actualExitCode": 1
+    },
+    {
+      "run": "gate2",
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-visual35-gate2-receipt.json",
+        "bytes": 326,
+        "sha256": "sha256:a0f5f73ef5ee559e81e3340d5314a0fd5dbc63504c801d45547ef94cb70d68ec"
+      },
+      "steps": [
+        {
+          "name": "fast",
+          "argv": ["pnpm", "check:fast"],
+          "exitCode": 1,
+          "holdExitCode": 0,
+          "elapsedSeconds": 147.6738531589508,
+          "hold": "{\"status\": \"passed\", \"mode\": \"check\", \"files\": 2739, \"bytes\": 121791194}\n"
+        }
+      ],
+      "actualExitCode": 1
+    },
+    {
+      "run": "gate3",
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-visual35-gate3-receipt.json",
+        "bytes": 647,
+        "sha256": "sha256:6d099140f83a68afcc13edbcd0a3ab232971616b3ed0043959a036fabc995166"
+      },
+      "steps": [
+        {
+          "name": "fast",
+          "argv": ["pnpm", "check:fast"],
+          "exitCode": 0,
+          "holdExitCode": 0,
+          "elapsedSeconds": 146.62524580955505,
+          "hold": "{\"status\": \"passed\", \"mode\": \"check\", \"files\": 2739, \"bytes\": 121791965}\n"
+        },
+        {
+          "name": "native",
+          "argv": ["pnpm", "test:browser:mechanism-production-native"],
+          "exitCode": 1,
+          "holdExitCode": 0,
+          "elapsedSeconds": 232.493173122406,
+          "hold": "{\"status\": \"passed\", \"mode\": \"check\", \"files\": 2739, \"bytes\": 121791965}\n"
+        }
+      ],
+      "actualExitCode": 1
+    },
+    {
+      "run": "gate4",
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-visual35-gate4-receipt.json",
+        "bytes": 804,
+        "sha256": "sha256:97e6e8d670b5172325884a36c978ee6b8724a0b29230befb5925e57de6f24ec5"
+      },
+      "steps": [
+        {
+          "name": "speech-tail",
+          "argv": [
+            "pnpm",
+            "exec",
+            "vitest",
+            "run",
+            "tests/unit/composition-quality-speech-proof.test.ts",
+            "tests/integration/mechanism-production-visual.test.ts",
+            "--maxWorkers=1"
+          ],
+          "exitCode": 0,
+          "holdExitCode": 0,
+          "elapsedSeconds": 11.534056901931763,
+          "hold": "{\"status\": \"passed\", \"mode\": \"check\", \"files\": 2739, \"bytes\": 121792941}\n"
+        },
+        {
+          "name": "fast",
+          "argv": ["pnpm", "check:fast"],
+          "exitCode": 2,
+          "holdExitCode": 0,
+          "elapsedSeconds": 70.17740607261658,
+          "hold": "{\"status\": \"passed\", \"mode\": \"check\", \"files\": 2739, \"bytes\": 121792941}\n"
+        }
+      ],
+      "actualExitCode": 2
+    },
+    {
+      "run": "controls1",
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-visual35-controls1-receipt.json",
+        "bytes": 405,
+        "sha256": "sha256:99f966ba255b6e226187f4260ac0d5679c91548cb7d7b79677ff57adbd5ce37f"
+      },
+      "steps": [
+        {
+          "name": "controls",
+          "argv": [
+            "node",
+            "--import",
+            "tsx",
+            "/private/tmp/still-shift-ms3-visual35-controls.mts"
+          ],
+          "exitCode": 1,
+          "holdExitCode": 0,
+          "elapsedSeconds": 6.608375787734985,
+          "hold": "{\"status\": \"passed\", \"mode\": \"check\", \"files\": 2739, \"bytes\": 121792968}\n"
+        }
+      ],
+      "actualExitCode": 1
+    }
+  ],
+  "additionalRetainedFailures": [
+    {
+      "run": "visual33",
+      "build1ActualExitCode": 2,
+      "build2ActualExitCode": 0,
+      "focused1ActualExitCode": 1,
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms3-visual33-build1.log",
+          "bytes": 4090,
+          "sha256": "sha256:2c4ef4891aa4ca1074174d874b6a1663ad79ec359474c269b8dc3e77e18d09f3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-visual33-build2.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-visual33-focused1.log",
+          "bytes": 2411,
+          "sha256": "sha256:3c40e5d9c3a6efa1eaeb6fb9f245e65989e3b4dcc93030822bc32b30257737dc"
+        }
+      ]
+    },
+    {
+      "run": "speech-tail-red1",
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-visual35-tail-red1.log",
+        "bytes": 2027,
+        "sha256": "sha256:dba61341bfa93033b2e6a245ffa1727a050ba79997c67b380b308e1d7cdad6b0"
+      }
+    },
+    {
+      "run": "native-audit1",
+      "actualExitCode": 1,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-visual35-native-audit1-failure.json",
+        "bytes": 178,
+        "sha256": "sha256:40a7515297b47464b51a5258658b8017b5004fca0efaaca74d48b156281a866b"
+      }
+    }
+  ],
+  "failureReasons": [
+    "Earlier build type errors and missing source speech metadata.",
+    "JSON-safe required locale type; unused timing destructure.",
+    "Full fast found caption provenance depending on equivalent annotation/world defaults; canonical speech-only source projection restores exact default composition parity.",
+    "First native run fails all three rows on missing body caption role; its retained test exception occurs before the status assertion. The assertion now precedes product dereference.",
+    "Partial-tail admission fails red, then passes with insufficient last-frame audio still rejected; subsequent fast catches the factory union return type.",
+    "Private encoded-still FFmpeg select filter quoting fails after baseline decode; corrected controls retain the failed output.",
+    "Independent audit initially addresses a nonexistent top-level product field; corrected audit uses actual report.binding."
+  ],
+  "nextPilotBindingIntake": {
+    "record": {
+      "path": "/private/tmp/still-shift-ms3-everyday34/native-controls-intake.json",
+      "bytes": 20632,
+      "sha256": "sha256:8ed6099da49b242baafc6203ae791e84ea4f110b049123a565bfdd5766aa0b35"
+    },
+    "contracts": 10,
+    "separateControlFiles": 2,
+    "method": "Read-only existing native asset/control contracts; no new Blender evaluation or receiver transfer claim"
+  },
+  "remaining": [
+    "Current actual EU-001-EU-010 exact-copy cue alignment, seven broader object bindings, current production/cohort/coverage admission and all whole factual/design/mechanical/encoded/continuous/listening reviews.",
+    "Broader seeded intersection, moving-mount, wrong-state label, missing audio/export and owner review scopes retain their own evidence or open requirements; this component proof does not replace them.",
+    "Final current full software/benchmark/source archive/checksum and isolated-installed gates, capability reconciliation and comparable paired routine-token measurements."
+  ],
+  "acceptedEpisodes": 0,
+  "denominator": 10,
+  "routineTokenMeasurements": null,
+  "newElevenLabsCalls": 0,
+  "qualification": "Scoped current production preview/glyph QA and source-bound engineering controls. No original genuine product is resealed, no full software/benchmark/archive/installed gate is refreshed, and no whole/pilot or human acceptance is inferred."
+}

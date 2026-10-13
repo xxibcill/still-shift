@@ -35,6 +35,7 @@ export { importNarrationFile } from "./narration-import.ts";
 export {
   lintCompositionFile,
   type CompositionLintReport,
+  type CompositionLintOptions,
 } from "./composition-lint.ts";
 
 export {

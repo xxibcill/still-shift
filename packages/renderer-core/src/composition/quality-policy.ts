@@ -492,7 +492,12 @@ export function resolveCompositionQualityPolicy(
       (audio.outPoint ?? comp.frameCount) < cue.end ||
       (audio.sourceEndSample ?? asset.sampleCount) -
         (audio.sourceStartSample ?? 0) <
-        ((cue.end - (audio.inPoint ?? 0)) * asset.sampleRate) / comp.fps
+        // The final output frame may contain a partial unchanged source tail.
+        // Every displayed frame still requires at least one source sample.
+        Math.ceil(
+          ((cue.end - 1 - (audio.inPoint ?? 0)) * asset.sampleRate) / comp.fps,
+        ) +
+          1
     )
       passageError(
         "comp-lint-speech-caption",

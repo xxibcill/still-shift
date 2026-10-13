@@ -202,13 +202,20 @@ still hold before relying on them.
   preflight controls pass; journal/report/restart keeps the failed finding and
   healthy neighbor. Owning62/8 and corrected fast4,543/450 pass with2,736 inputs
   held. Initial fast1 stopped on two preceding evidence-format errors; retained.
-  Package runtime is now528b/689 files; appearance/profile stay exact. Prior042a
-  genuine final checks retain their historical binding; current native rebinding
-  and all broader rendered faults/whole inputs/reviews/final gates remain open.
+  [Rendered visual QA](./mechanism-shorts-ms3-visual-qa-results.json) now adds
+  cached all-frame preview pixels/glyphs, exact speech metadata/body role and
+  partial-tail coverage. Current fast4,544/450,19 integration and real native
+  five-product/300-frame checks pass with2,739 inputs held. Independent80 artifact
+  pins match; QA performs zero fresh3D. Runtime is10f7/691, with appearance/profile
+  exact. All failed builds/default-provenance/body-role/tail/extraction/audit runs
+  remain. Prior genuine product checks retain historical bindings; current actual
+  first-ten binding/cues/whole review and final gates remain open.
   Remaining original scope: clearer E06/E10 explanations and actual whole reviews,
   current channel-first-ten bindings, cue authoring and whole reviews,
   broader seeded QA, native QA rebinding, capability reconciliation,
   comparable token measurements and final full/benchmark/archive/installed gate.
+  Ten existing native asset/control contracts are located, including two external
+  control files; importing their Blender rigs is not implied.
   Accepted coverage remains0/10; tokens staynull. No ElevenLabs spend, merge,
   publication or Actions change. [Tracker](./mechanism-shorts-ms3-acceptance.md).
 
@@ -398,6 +405,25 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-10-14 — Bind rendered caption QA to verified cached native products
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from7a1a7cc4.
+- **Done:** Cached preview pixels/glyphs, retained rendered evidence, speech-source
+  metadata/body role and partial audio-tail coverage; shared lint owner/statistics.
+- **Verification:** Current fast4,544/450 and19 integration checks pass. Real native
+  queue/cache/caption/report/handoff/quota/QA-only revision passes five outputs/
+  300 decoded frames; independent80 pins match and QA submits zero fresh3D.
+  All2,739 inputs/121,792,968B stay exact; runtime10f7/691, appearance/profile exact.
+- **Fault controls:** Three 2D exports/180 decoded frames, exact between-control
+  PCM; clip/short hold locates0–14. Wrong copy rejects preflight. Four encoded
+  stills viewed; partial tail passes with missing final-frame audio still rejected.
+- **Failures retained:** Build/lint/default-provenance/body-role native failures,
+  partial-tail red, factory union type, private FFmpeg filter and audit field error.
+- **Next:** Ten channel asset/control contracts are located (two separate control
+  files); actual first-ten binding/cues/whole reviews and full/final gates remain.
+  Accepted0/10; no spending, merge, publication or human acceptance.
+- **Records:** [Visual QA evidence](./mechanism-shorts-ms3-visual-qa-results.json).
+
 ### 2026-10-14 — Select Everyday Unlocked actual first ten for the pilot
 
 - **Agent / branch:** Codex on `codex/mechanism-ms3`, froma36c7b85.
@@ -415,9 +441,8 @@ still hold before relying on them.
 - **Open:** Current object-specific bindings, exact-copy cue alignment, rendered
   factual/design/mechanical/readability/continuous/listening review and final gates.
   Broader registry admission remains pending; accepted0/10, paired tokensnull.
-- **In flight:** Earlier uncommitted visual-QA code is preserved. Build2 passes;
-  focused1 retains27 passes/one speech-caption admission failure. No current
-  visual-QA integration or refreshed full gate is claimed by this documentation slice.
+- **Subsequent work:** The following visual-QA entry retains the earlier failures
+  and current verified implementation; this selection entry remains intake only.
 - **Records:** [Pilot selection](./mechanism-shorts-ms3-pilot-selection.json),
   [intake results](./mechanism-shorts-ms3-pilot-selection-results.json),
   [brief](./mechanism-shorts-ms3-pilot-brief.md); private inputs in

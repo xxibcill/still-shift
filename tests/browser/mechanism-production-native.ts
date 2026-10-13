@@ -163,12 +163,12 @@ try {
     { nodeMemory: resultOwner() },
   );
   await record({ name: "cold", state: first });
-  const initialS2RequestHash = first.rows[1]!.requestHash,
-    initialS2ProductPath = first.rows[1]!.product!.path;
   assert.deepEqual(
     first.rows.map((r) => r.status),
     ["passed", "passed", "passed"],
   );
+  const initialS2RequestHash = first.rows[1]!.requestHash,
+    initialS2ProductPath = first.rows[1]!.product!.path;
   assert.equal(parent.statistics.current.metadata, 64 * 1024 * 1024 + 1024);
   assert(foreign.active);
   const products: MechanismProductionQueueProduct[] = [];
@@ -208,6 +208,18 @@ try {
       product.report.qa.find((q) => q.dimension === "sampled-visual")!.status,
       quality.failures.sampledVisual ? "failed" : "unreviewed",
     );
+    assert(
+      quality.warnings.rendered,
+      "Current production QA retains rendered visual evidence",
+    );
+    const renderedVisual = JSON.parse(
+      await readFile(join(output, quality.warnings.rendered.path), "utf8"),
+    );
+    assert.equal(renderedVisual.nativeSubmissionCalls, 0);
+    assert.equal(renderedVisual.frameCount, product.report.clock.outputFrames);
+    assert.equal(renderedVisual.quality.measured.pixels, true);
+    assert.equal(renderedVisual.quality.measured.textBounds, true);
+    assert(renderedVisual.quality.textBounds);
     assert.equal(quality.collision.analytic, "not-evaluated");
     assert.equal(quality.collision.continuous, "unreviewed");
     assert(

@@ -1,3 +1,4 @@
+import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
 import {
   AnimationEngineError,
   type Composition,
@@ -30,25 +31,49 @@ export type CompositionLintReport = CompositionQualityReport & {
   validationDiagnostics: PassageDiagnostic[];
   backend?: CompositionBackend;
   rendererVersion?: string;
+  renderStatistics?: ReturnType<
+    NonNullable<
+      ReturnType<typeof Renderer.createCompositionPreview>["renderStatistics"]
+    >
+  >;
   textBounds?: NonNullable<
     NonNullable<CompositionQualityPolicy["evaluation"]>["textBounds"]
   >;
 };
 
+export type CompositionLintOptions = BrowserRuntimeOptions & {
+  pixels?: boolean;
+  backend?: CompositionBackend;
+  collectTextBounds?: boolean;
+  collectStatistics?: boolean;
+  cacheDirectory?: string;
+  nodeMemory?: CompositionNodeMemory;
+  signal?: AbortSignal | undefined;
+};
 export async function lintCompositionFile(
   input: string,
   policy: CompositionQualityPolicy = {},
-  options: BrowserRuntimeOptions & {
-    pixels?: boolean;
-    backend?: CompositionBackend;
-    collectTextBounds?: boolean;
-    cacheDirectory?: string;
-    signal?: AbortSignal;
-  } = {},
+  options: CompositionLintOptions = {},
+): Promise<CompositionLintReport> {
+  const owner = new CompositionNodeMemory(options.nodeMemory);
+  try {
+    return await lintOwnedComposition(input, policy, {
+      ...options,
+      nodeMemory: owner,
+    });
+  } finally {
+    owner.dispose();
+  }
+}
+async function lintOwnedComposition(
+  input: string,
+  policy: CompositionQualityPolicy,
+  options: CompositionLintOptions & { nodeMemory: CompositionNodeMemory },
 ): Promise<CompositionLintReport> {
   options.signal?.throwIfAborted();
   const backend = options.backend ?? "canvas2d";
   const loaded = await loadComposition(input, backend, {
+    nodeMemory: options.nodeMemory,
     ...(options.cacheDirectory
       ? { cacheDirectory: options.cacheDirectory }
       : {}),
@@ -134,6 +159,7 @@ export async function lintCompositionFile(
         policyJson,
         backend,
         collectTextBounds,
+        collectStatistics,
       }) => {
         const comp = JSON.parse(json) as Composition;
         const policy = JSON.parse(policyJson) as CompositionQualityPolicy;
@@ -160,15 +186,19 @@ export async function lintCompositionFile(
             document.createElement("canvas"),
             comp,
             resources,
-            { backend },
+            { backend, collectStatistics },
+          );
+          const report = await renderer.analyzeRenderedCompositionQuality(
+            comp,
+            preview,
+            policy,
           );
           return {
             ok: true as const,
-            report: await renderer.analyzeRenderedCompositionQuality(
-              comp,
-              preview,
-              policy,
-            ),
+            report,
+            ...(collectStatistics
+              ? { renderStatistics: preview.renderStatistics?.() }
+              : {}),
             ...(collectTextBounds ? { textBounds: preview.textBounds } : {}),
           };
         } catch (error) {
@@ -188,12 +218,16 @@ export async function lintCompositionFile(
         policyJson: JSON.stringify(policy),
         backend,
         collectTextBounds: options.collectTextBounds ?? false,
+        collectStatistics: options.collectStatistics ?? false,
       },
     );
     options.signal?.throwIfAborted();
     if (!result.ok) throw new PassageError(result.diagnostics);
     return {
       ...result.report,
+      ...(result.renderStatistics
+        ? { renderStatistics: result.renderStatistics }
+        : {}),
       validationDiagnostics: loaded.warnings,
       ...(result.textBounds ? { textBounds: result.textBounds } : {}),
     };

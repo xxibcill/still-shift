@@ -191,6 +191,7 @@ export const MechanismProductionQAFactsSchema = z
     warnings: z
       .object({
         raw: MechanismProductionOwnedFileSchema,
+        rendered: MechanismProductionOwnedFileSchema.optional(),
         grouped: MechanismProductionOwnedFileSchema,
         groups: z.number().int().nonnegative().max(2048),
         errors: z.number().int().nonnegative().max(2048),

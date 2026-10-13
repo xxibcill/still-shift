@@ -3,7 +3,7 @@
 The native production executor replays the original native2 capture, reads selected
 physical world-matrix/anchor scalars for every output frame, and executes bounded
 declarative semantic rules. It also retains the current cue compiler's MS2
-expected-state transition/event-order result and advisory composition-state lint.
+expected-state transition/event-order result, composition-state lint and cached-plate preview pixels/glyph bounds.
 No supplied JavaScript is executed by a rule.
 
 Invalid cue transitions can fail before a queue or native output exists. Both
@@ -20,12 +20,38 @@ Every product retains an immutable `qa-program.json` containing the actual autho
 plan, selectors and registered definitions, including the built-in rule. Failed
 products therefore keep their program after a later QA file change.
 
-Every product has immutable `qa-facts.json`, `qa-raw-warnings.json` and
-`qa-warning-groups.json` artifacts. Fresh reuse/report checks recompute their
+Current products retain immutable `qa-facts.json`, `qa-raw-warnings.json`,
+`qa-warning-groups.json` and `qa-rendered-visual.json` artifacts. Fresh reuse/report checks recompute their
 contents from current sources and the verified original capture; changing data
 and recomputing declared file hashes does not authorize a different measurement.
 The report bundle links current facts as `qualityEvidence`; compact episode rows
 carry its path/hash. Handoffs link the same facts as `assets.qualityReport`.
+
+## Rendered caption and overlay checks
+
+Production QA verifies the cached export source, then renders its flat plate/overlay
+composition on every output frame for preview pixels and measured glyph bounds.
+It checks the source/video/export bindings and clock, requires cached sequence
+content with no native bindings, and retains actual submission counters proving
+zero new native3D calls. The original native capture remains the physical evidence.
+`facts.warnings.rendered` links the bound `qa-rendered-visual.json`; the field is
+optional for historical records. Raw/grouped warnings include current source-state
+and measured cached-preview findings. Fresh reuse and report checks recompute
+these derived artifacts, rather than accepting self-rewritten measurements.
+
+Compiler captions declare their original words, sample-derived frame windows and
+pinned narration as body text. Their canonical speech-source hash excludes unrelated
+picture annotations and equivalent defaults; the complete project hash still binds
+production inputs. Speech-following eligibility keeps the raw independent reading
+budget visible and leaves listening review required. A partial final output frame
+is allowed when every displayed frame starts within the unchanged audio source;
+a missing final-frame sample still rejects. Speech is never lengthened for reading.
+
+Clipped and short-visible-hold captions produce located preview findings. A layer
+whose words differ from its source cue fails policy admission before rendering.
+These checks measure preview glyphs and all-frame pixel changes. Encoded glyph
+review, continuous audiovisual inspection and listening remain separate scopes.
+See [current visual QA evidence](./mechanism-shorts-ms3-visual-qa-results.json).
 
 ## Optional registered plan
 
@@ -92,7 +118,7 @@ split into fabricated per-event measurements.
 ## Scope and limits
 
 Current registered failures count toward unresolved mechanical failures and set
-mechanical QA to failed. Advisory state-lint errors set sampled-visual QA to
+mechanical QA to failed. Source-state and measured cached-preview errors set sampled-visual QA to
 failed. Successful individual checks retain whole mechanical/visual acceptance
 as unreviewed. Analytic collision is not evaluated; sampled collision has only
 the declared scalar rule's scope; continuous collision remains unreviewed.

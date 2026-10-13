@@ -83,3 +83,14 @@ summary/final-check process pass. Two encoded phone stills are inspected. This
 scoped legacy/UI proof does not admit the original ten episodes or whole
 mechanical/factual/continuous/listening/human review. Package code identity042a
 requires current native QA rebinding; appearance/profile remain unchanged.
+
+[Rendered visual QA](./mechanism-shorts-ms3-visual-qa-results.json) on10f7 runtime
+passes current fast4,544/450,19 integration checks and the real five-product/300-frame
+native queue/report/reuse/quota/QA-only revision proof with zero fresh3D during QA.
+Independent80 artifact pins match. Three 2D controls fully decode180 frames with
+identical between-control PCM; clipping and short hold locate0–14, wrong copy
+fails before rendering, and four encoded stills are inspected. Earlier failed
+builds, lint/default-identity regressions, missing body-role native attempt,
+partial-tail red, private extraction and audit errors remain retained. These are
+component/cached-preview checks; broader faults and all actual channel-first-ten
+whole/encoded/listening/factual/continuous requirements remain.
