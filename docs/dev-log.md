@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS3 in progress (2026-10-13):** `codex/mechanism-ms3`,
+- **MS3 in progress (2026-10-14):** `codex/mechanism-ms3`,
   [draft PR #58](https://github.com/xxibcill/still-shift/pull/58) targets main.
   Durable queues, declarative creation/run, targeted CAS retries, artifact-bound
   QA, review evidence and current episode/cohort reporting are implemented.
@@ -172,29 +172,26 @@ still hold before relying on them.
   reads pass after retained IPC denials. Shared CLI media discovery/generated
   reference now agree on rigid import, native/legacy formats, batch and bounded
   recovery limits. Held current fast4,539/449 and eight runtime checks pass.
-  Implementation7941b710/post-commit hold0 and unchanged package code/profile
-  identity are verified. Fresh current bridge baseline now runs as setup; actual
-  recovery and original full/final scope remain open. Fresh baseline exported all
-  696 current frames/video but failed final checking: explicit cache selection
-  was lost to a retained corrupt fallback audio entry. Cache propagation repair
-  passes red/green regression and current fast4,539/449/owning gates on2,733 inputs.
-  Its new package code identity requires current native QA rebinding; appearance
-  identity is unchanged. Continue the affected final-check stage, preserving failure. README changed only after native25 terminal; other2,725 inputs stay exact.
-  Each later source has its own binding;
-  prior E02/native10 gates are not relabeled as current-source verification.
-  [Automatic overlap preflight](./mechanism-shorts-ms3-repair-results.json) now
-  reproduces the seeded target with the current pure API/historical measurements,
-  selects one of12 bounded candidates and restores69 readable frames while
-  retaining neighbors. Generic current CLI now implements one measured target,
-  at most12 candidates/one patch/export, unchanged plates/dependencies/neighbors
-  and retained bad-output hash, with separate whole status. A private CLI seed
-  preserves seven dependencies;
-  current CLI rejects old revision1 repair against private revision3 with bytes
-  unchanged; fresh bad/fixed render/final recheck and696-plate proof remain. Old MS1
-  cache lacks current appearance identity; current baseline refresh is required.
+  Implementation7941b710/post-commit hold0 is retained as its own checkpoint.
+  Fresh bridge baseline captured696 frames/exported, then failed final checking:
+  explicit cache was lost to a retained corrupt fallback audio entry. Cache
+  propagation repairbf302e91 passes actual red/green regression, fast4,539/449
+  and44 owning checks with2,733 inputs held. Package code is now042a; appearance
+  and profile stay exact. Current native QA rebinding is in flight.
+  [Automatic recovery](./mechanism-shorts-ms3-repair-results.json) now completes
+  actual current detection, one bounded candidate/position patch/export and final
+  recheck. All696 plates/nine sidecars/seven private files and neighbors stay
+  exact; zero new3D. Only82 affected-shot decoded frames change;614 outside frames
+  and complete PCM remain byte-identical. Readable hold69/required30; final check
+  has0 errors/50 warnings. Fresh stale-request rejection and source/output-bound
+  compact handoff pass. Whole/pilot reviews remain open. Prior failed baseline
+  and earlier source-bound gates retain their own evidence.
+  The owner-supplied Reusable3D Asset Plan path contains build plans and episode
+  references, without audio/timing files. Linked newer300-topic Alden recordings
+  still differ from the seven frozen questions; clarification is pending.
   Remaining original scope: clearer E06/E10 explanations and actual whole reviews,
   all ten frozen questions/genuine narration,
-  scoped/MS1 automatic repair, broader seeded QA, capability reconciliation,
+  broader seeded QA, native QA rebinding, capability reconciliation,
   comparable token measurements and final full/benchmark/archive/installed gate.
   Accepted coverage remains0/10; tokens staynull. No ElevenLabs spend, merge,
   publication or Actions change. [Tracker](./mechanism-shorts-ms3-acceptance.md).
@@ -384,6 +381,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Reconcile supplied asset-plan reference and current recovery state
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from9715cd3f.
+- **Lookup:** Read the owner-supplied asset-plan folder and linked episode inputs.
+  No recordings or timing files exist within the plan; newer Alden library
+  recordings retain the channel topic set, distinct from seven frozen questions.
+- **Current state:** Corrected stale automatic-recovery setup text to the actual
+  completed detection/patch/export/audit/handoff results; historical failure stays.
+- **Open / next:** Clarify missing narration versus a requested pilot change;
+  rebind the available three products to042a runtime with verified plate reuse.
+  Original ten-question/whole-review/full-package scope remains; no spending.
+- **Records:** [Recovery](./mechanism-shorts-ms3-repair-results.json),
+  [pilot brief](./mechanism-shorts-ms3-pilot-brief.md).
 
 ### 2026-10-13 — Complete real bounded MS1 bridge recovery and fresh handoff
 
