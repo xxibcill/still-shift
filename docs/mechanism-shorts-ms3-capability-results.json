@@ -1,0 +1,104 @@
+{
+  "version": "mechanism-ms3-capability-reconciliation-results-1",
+  "date": "2026-10-13",
+  "sourceCommit": "4f01bbafc0514b975d9780f00e405b460acc8897",
+  "status": "four-current-guides-repaired-machine-generated-reconciliation-open",
+  "reads": [
+    {
+      "command": "episode discover",
+      "actualExitCode": 0,
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-capabilities26-episode2.json",
+        "bytes": 7006,
+        "sha256": "sha256:23f63a68f53dd1376d5086ffcf1967e08a95c2558554a6da56cf172bc12a9581"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-capabilities26-episode2.log",
+        "bytes": 6680,
+        "sha256": "sha256:a8dcfb48b643b752aafcf42312622be5da20015350e6f81fe335c959bfa9c745"
+      }
+    },
+    {
+      "command": "production discover",
+      "actualExitCode": 0,
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-capabilities26-production2.json",
+        "bytes": 4414,
+        "sha256": "sha256:d9570b100224db123598eec3d13d0fb27bfa6263fc78cb35585282a0727e5169"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-capabilities26-production2.log",
+        "bytes": 1517,
+        "sha256": "sha256:ce58b5de20b11f39f283996f6bf8e1ed9da67ffc0cfacb312bc61a6a8c5ae87f"
+      }
+    }
+  ],
+  "retainedStartupFailures": [
+    {
+      "command": "episode discover",
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-capabilities26-episode.log",
+        "bytes": 1272,
+        "sha256": "sha256:71ca90b8c4d3d1de1d29a350ff49de65cb1abd8907809cb1995a0bcd3dce4439"
+      },
+      "reason": "Default sandbox denied tsx IPC listen before command execution."
+    },
+    {
+      "command": "production discover",
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-capabilities26-production.log",
+        "bytes": 1278,
+        "sha256": "sha256:de81cf0f3e75e2797ae48c675c2189a2b669c48e19bad077b0ea31a68cd28dbf"
+      },
+      "reason": "Default sandbox denied tsx IPC listen before command execution."
+    }
+  ],
+  "documentationChanges": [
+    "docs/user-guide.md",
+    "docs/rigid-gltf-import.md",
+    "docs/native-pbr-resources.md",
+    "README.md"
+  ],
+  "authoritativeSources": [
+    "packages/scene-contract/src/composition/native3d-v2.ts",
+    "packages/animation-engine/src/mechanism/gltf-pbr.ts",
+    "packages/animation-engine/src/mechanism/native-pbr-files.ts",
+    "docs/mechanism-shorts-ms2-output3-export-results.json",
+    "docs/mechanism-shorts-ms2-output3-mixed-results.json",
+    "docs/mechanism-shorts-ms2-installed-source3-results.json"
+  ],
+  "remaining": [
+    {
+      "item": "Machine discovery and generated capability reference",
+      "finding": "Production capabilities defer general imports/preview/export formats to episode discovery, but its actual full result has no corresponding scoped import/format rows. Legacy route version fields must retain their meaning; add explicit route-scoped data from current registries/schema rather than relabeling legacy protocol1."
+    },
+    {
+      "item": "Documented actual import/batch/preview-export agreement",
+      "finding": "Current general source3/rigid-import software records establish named routes; broader current capability reconciliation and final source/package checks remain."
+    },
+    {
+      "item": "Current package/source closure",
+      "finding": "README changed after the native25 terminal; all2725 other held inputs remain exact. Future full/archive/installed gates must use current committed docs/source."
+    }
+  ],
+  "qualification": "Documentation and read-only discovery evidence. No new render/group, runtime source mutation, supported-pack/whole/pilot/human acceptance or publication.",
+  "readmeClosure": {
+    "report": {
+      "path": "/private/tmp/still-shift-ms3-capabilities26-readme-closure.json",
+      "bytes": 514,
+      "sha256": "sha256:4d11f87e4da3f80f677d08c6e8bc2fc1d70e8146f65084661ae1cb0aa842242a"
+    },
+    "status": "passed",
+    "heldInputs": 2726,
+    "changedInputs": ["README.md"],
+    "unchangedOtherInputs": 2725,
+    "retainedFailure": {
+      "innerPythonExitCode": 1,
+      "outerShellExitCode": 0,
+      "reason": "Compared prefixed computed SHA with bare stored SHA; false all-file mismatch. No source change beyond the intended README edit."
+    },
+    "qualification": "README changed after native25 actual terminal. Runtime code stays b5f8fbae; old inventory remains historical rather than relabeled current."
+  }
+}

@@ -113,8 +113,12 @@
     }
   ],
   "nativeRun": {
-    "status": "running-at-record-time",
-    "receipt": "/private/tmp/still-shift-ms3-framing25-native1-receipt.json",
+    "status": "passed",
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-framing25-native1-receipt.json",
+      "bytes": 2356,
+      "sha256": "sha256:068f51e15343b14b9bd04a2a0a7ffca24ce3accf6cd6fa731796a2e76db4d137"
+    },
     "queueActualExitCode": 0,
     "queueSourceHoldCheckExitCode": 0,
     "privateRoot": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1",
@@ -122,13 +126,11 @@
     "queueItems": [
       {
         "id": "E01",
-        "status": "running",
-        "stage": "render-cached"
+        "status": "passed"
       },
       {
         "id": "E08",
-        "status": "pending",
-        "stage": null
+        "status": "passed"
       }
     ],
     "E01AvailableNativeCapture": {
@@ -141,13 +143,394 @@
         "Foreground cyan witness projects at different horizontal positions after the mirrored-view cut; complete encoded overlays/story review is still required."
       ],
       "qualification": "Two original native diagnostic stills only; not final output or complete visual/whole acceptance."
-    }
+    },
+    "actualExitCode": 0,
+    "steps": [
+      {
+        "command": [
+          "pnpm",
+          "still-shift",
+          "production",
+          "queue",
+          "--projects",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/projects.json",
+          "--manifest",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/queue.json"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T13:12:36.787458+00:00",
+        "endedUtc": "2026-10-13T13:12:40.496945+00:00",
+        "log": "/private/tmp/still-shift-ms3-framing25-native1-0.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "still-shift",
+          "production",
+          "run",
+          "--manifest",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/queue.json",
+          "--output-dir",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/production1",
+          "--report",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/state1.json"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T13:12:40.497272+00:00",
+        "endedUtc": "2026-10-13T14:06:49.157764+00:00",
+        "log": "/private/tmp/still-shift-ms3-framing25-native1-1.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "still-shift",
+          "production",
+          "report",
+          "--manifest",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/queue.json",
+          "--output-dir",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/production1",
+          "--report",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/report1.json"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T14:06:49.158289+00:00",
+        "endedUtc": "2026-10-13T14:15:41.068808+00:00",
+        "log": "/private/tmp/still-shift-ms3-framing25-native1-2.log"
+      }
+    ],
+    "nativeFrames": 1230,
+    "independentlyDecodedFrames": 1230,
+    "independentReviewImages": 68,
+    "qualification": "Two repaired original question products only. Both technical passes coexist with five sampled-visual errors each and unreviewed whole dimensions; original denominator10 remains."
   },
   "remaining": [
-    "Finish the existing serial native run/report; retain any actual failures.",
+    "Render/recheck the separate E01 revision2 thickness/travel repair through bounded current retry, preserving the completed E08 neighbor and prior products.",
     "Independently audit original capture and full decoded picture/audio/evidence, then inspect aligned contact and jaw/cloth views.",
     "Keep hidden fabric contact under its declared policy; visible cloth/caption must establish the stop.",
     "Original ten episode scope, seven genuine missing inputs, whole reviews, bounded automatic bridge recovery, broader QA/capability/metrics and final gates remain."
   ],
-  "qualification": "Two original question repairs, not new distinct episodes or a replacement denominator. Supplied source audio unchanged; no synthesis/spending/human/pilot acceptance."
+  "qualification": "Two original question repairs, not new distinct episodes or a replacement denominator. Supplied source audio unchanged; no synthesis/spending/human/pilot acceptance.",
+  "independentProductAudits": [
+    {
+      "id": "E01",
+      "actualExitCode": 0,
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-framing26-product-audit-E01.json",
+        "bytes": 62688,
+        "sha256": "sha256:d8fa9f79aac3dcb45c395bbf179fe6bd596f7e039535228eb1d5770ea8a69448"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-framing26-product-audit-E01.log",
+        "bytes": 242,
+        "sha256": "sha256:eedce2785bbdef9661c334ddf85534b572c562ea91912bbf064d1b608dd95e83"
+      },
+      "nativeFrames": 587,
+      "decodedFrames": 587,
+      "images": 34,
+      "scalarComparisons": 587,
+      "warningGroups": 12,
+      "visualErrors": 5,
+      "binding": {
+        "inputSha256": "sha256:e4046617ee6882cf2ade5a2a6cd970364d829667449784020d011e2fc0b07330",
+        "outputSha256": "sha256:981ebdf48a011329733651384f889dffac26a4f01c1021ee7d5097c8a6ff4935",
+        "codeSha256": "sha256:c0206e9900f1f5123425c0384e7ac0cc7dbdeb29f9bf67a04bcdc1a93541483a",
+        "profileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+      },
+      "work": {
+        "freshNativeSubmissions": 587,
+        "reusedNativePlates": false
+      },
+      "qualification": "Technical identity/sample-clock/sampled-mount audit. No whole mechanism/factual/continuous/listening/human/pilot acceptance. AAC output PCM is not claimed byte-identical to source PCM."
+    },
+    {
+      "id": "E08",
+      "actualExitCode": 0,
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-framing26-product-audit-E08.json",
+        "bytes": 67096,
+        "sha256": "sha256:9e6a686696d28b694d9a25b5b34a2c25bdd53e86084914807e8371ad613f5d2d"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-framing26-product-audit-E08.log",
+        "bytes": 242,
+        "sha256": "sha256:142ed4372a1ac24a3babe5265590a4a59a4c3c04388954d2c221cf5302e43ba7"
+      },
+      "nativeFrames": 643,
+      "decodedFrames": 643,
+      "images": 34,
+      "scalarComparisons": 643,
+      "warningGroups": 14,
+      "visualErrors": 5,
+      "binding": {
+        "inputSha256": "sha256:8491bcb53d094520d33e81985fb7016a00910316c40b660f5e7c773c95c27ee0",
+        "outputSha256": "sha256:f3801d11eaa7f5b005d7e557de63be6784a5cfb74d151b178c96c633b5ccb64a",
+        "codeSha256": "sha256:c0206e9900f1f5123425c0384e7ac0cc7dbdeb29f9bf67a04bcdc1a93541483a",
+        "profileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+      },
+      "work": {
+        "freshNativeSubmissions": 643,
+        "reusedNativePlates": false
+      },
+      "qualification": "Technical identity/sample-clock/sampled-mount audit. No whole mechanism/factual/continuous/listening/human/pilot acceptance. AAC output PCM is not claimed byte-identical to source PCM."
+    }
+  ],
+  "E01CapturedContactAudit": {
+    "actualExitCode": 0,
+    "report": {
+      "path": "/private/tmp/still-shift-ms3-framing26-E01-capture-audit1.json",
+      "bytes": 2169,
+      "sha256": "sha256:cf14a205235904c51914b55ea774d76682ddd94c8209d54869f785525cd15e34"
+    },
+    "summary": {
+      "status": "passed",
+      "statistics": {
+        "nativeFrames": 587,
+        "contactFrames": 216,
+        "maximumWorldError": 0,
+        "maximumReprojectionError": 0,
+        "maximumDatumPixelError": 2.5421149729252077e-13,
+        "visibleContactFrames": 216
+      },
+      "ranges": [
+        {
+          "name": "inside",
+          "start": 99,
+          "endExclusive": 204,
+          "contact": "hook.innerFace",
+          "hookTranslation": 0
+        },
+        {
+          "name": "outside",
+          "start": 204,
+          "endExclusive": 315,
+          "contact": "hook.outerFace",
+          "hookTranslation": 0.18
+        }
+      ],
+      "negativeClonedPackets": [
+        {
+          "kind": "moving-mount",
+          "status": "rejected"
+        },
+        {
+          "kind": "wrong-inside-stop",
+          "status": "rejected"
+        },
+        {
+          "kind": "swapped-projection",
+          "status": "rejected"
+        },
+        {
+          "kind": "occluded-contact",
+          "status": "rejected"
+        }
+      ],
+      "methods": [
+        "Verify original hashed native observation closure covers all587 submitted output frames.",
+        "Use immutable scene part-local definitions and actual captured world matrices to recompute contact coordinates.",
+        "Independently multiply actual captured view/projection matrices to recompute pixels, stable plane/scale and contact visibility."
+      ],
+      "qualification": "Actual native-capture metadata/projection evidence and four cloned-auditor negatives only; no full encoded glyph/whole collision/factual/continuous/listening/human/pilot acceptance."
+    }
+  },
+  "E08CapturedMotionAudit": {
+    "actualExitCode": 0,
+    "report": {
+      "path": "/private/tmp/still-shift-ms3-framing26-E08-motion-audit1.json",
+      "bytes": 1670,
+      "sha256": "sha256:8bfb391daa5d6eaeee0eac0f0091c9d27189593b3398e95470fcf124b842d3f3"
+    },
+    "summary": {
+      "status": "passed",
+      "frames": 643,
+      "angleComparisons": 1286,
+      "gapComparisons": 1286,
+      "cameraStableFrames": 550,
+      "closedIntroFrames": 107,
+      "openingFrames": [107, 137],
+      "releasedAtFrame": 312,
+      "firstClothStopFrame": 322,
+      "stopFrames": 321,
+      "maximumAngleError": 2.7755575615628914e-17,
+      "minimumLandmarkGap": 0.0,
+      "stopRetainsRestAngleDifferenceRadians": 0.024994793618920156,
+      "maximumObservedSeatSeparationWithoutWholeAcceptance": 3.65923531009829e-8,
+      "method": "Independent piecewise linear opening/smoothstep-to-prescribed-stop formula and atan2 from actual captured matrices; actual captured contact landmark gaps and shared camera are checked on every output frame.",
+      "qualification": "Native metadata/motion/contact-landmark proof only. Seat separation is measured rather than whole geometry admission; no force/stiffness estimate, triangle/continuous collision, encoded glyph/listening/human/pilot acceptance."
+    }
+  },
+  "oldNewDecodedComparison": {
+    "actualExitCode": 0,
+    "report": {
+      "path": "/private/tmp/still-shift-ms3-framing26-old-new-audit1.json",
+      "bytes": 1548,
+      "sha256": "sha256:23bec3c3bd7df0f4d81d47dede144a7f5d65f4704578504366695eda3360eba7"
+    },
+    "summary": {
+      "status": "passed",
+      "results": [
+        {
+          "id": "E01",
+          "frames": 587,
+          "changedDecodedFrames": 587,
+          "completeDecodedAudioUnchanged": true,
+          "oldAuditedMovieStillByteIdentical": true,
+          "sourceNarrationSamples": 938458,
+          "newBinding": {
+            "inputSha256": "sha256:e4046617ee6882cf2ade5a2a6cd970364d829667449784020d011e2fc0b07330",
+            "outputSha256": "sha256:981ebdf48a011329733651384f889dffac26a4f01c1021ee7d5097c8a6ff4935",
+            "codeSha256": "sha256:c0206e9900f1f5123425c0384e7ac0cc7dbdeb29f9bf67a04bcdc1a93541483a",
+            "profileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+          }
+        },
+        {
+          "id": "E08",
+          "frames": 643,
+          "changedDecodedFrames": 643,
+          "completeDecodedAudioUnchanged": true,
+          "oldAuditedMovieStillByteIdentical": true,
+          "sourceNarrationSamples": 1027623,
+          "newBinding": {
+            "inputSha256": "sha256:8491bcb53d094520d33e81985fb7016a00910316c40b660f5e7c773c95c27ee0",
+            "outputSha256": "sha256:f3801d11eaa7f5b005d7e557de63be6784a5cfb74d151b178c96c633b5ccb64a",
+            "codeSha256": "sha256:c0206e9900f1f5123425c0384e7ac0cc7dbdeb29f9bf67a04bcdc1a93541483a",
+            "profileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+          }
+        }
+      ],
+      "qualification": "Complete old/new decoded picture/audio comparison backed by newly decoded streams and pinned prior audit plus unchanged old movie bytes. No whole/continuous/listening/human/pilot acceptance."
+    }
+  },
+  "encodedStillsActuallyViewed": {
+    "E01": [151, 259, 362, 498],
+    "E08": [53, 209, 360, 479, 596]
+  },
+  "currentVisualFindings": {
+    "E01": [
+      "Inside/outside labels now point to the common captured visible contact.",
+      "Thickness/travel callouts still hide; their dimension witnesses remain cramped/cropped in the encoded stills."
+    ],
+    "E08": [
+      "Whole recognition view now shows jaw tips, cloth, opening and return together; intro/open/release callouts are visible.",
+      "Fabric contact stays occluded under its declared policy; visible cloth/caption remains the proof.",
+      "Five raw frozen-run errors remain; continuous/listening/whole review not established."
+    ]
+  },
+  "nextE01WitnessRevision": {
+    "status": "authored-preflight-only",
+    "revision": 2,
+    "privateRoot": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair2/E01-attempt2",
+    "run": {
+      "path": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair2/E01-attempt2/run.json",
+      "bytes": 7307,
+      "sha256": "sha256:224e30ab55ac49625c6a9a40ae075ae16e3d543943fcae14ec986261e99ec423"
+    },
+    "actualAuthoringExitCode": 0,
+    "plans": [
+      {
+        "cue": "thickness",
+        "anchor": "hook.thicknessMarker",
+        "meshIds": [
+          "hook-front",
+          "hook-fold",
+          "thickness-crossbar",
+          "thickness-tick-1",
+          "thickness-tick-2"
+        ],
+        "trials": [
+          {
+            "scale": 1,
+            "status": "rejected",
+            "error": "MechanismPackInvariantError: Actual posed target bounds escape the available region"
+          },
+          {
+            "scale": 1.15,
+            "status": "rejected",
+            "error": "MechanismPackInvariantError: Actual posed target bounds escape the available region"
+          },
+          {
+            "scale": 1.4,
+            "status": "rejected",
+            "error": "MechanismPackInvariantError: Actual posed target bounds escape the available region"
+          },
+          {
+            "scale": 1.7,
+            "status": "passed",
+            "checkedFrames": 96,
+            "minimumCrossbarPixels": 52.05944051474887
+          }
+        ]
+      },
+      {
+        "cue": "compensate",
+        "anchor": "rivet.travelMarker",
+        "meshIds": [
+          "hook-flange",
+          "hook-front",
+          "hook-fold",
+          "rivet-1-stem",
+          "rivet-1-cap",
+          "rivet-1-ring",
+          "rivet-2-stem",
+          "rivet-2-cap",
+          "rivet-2-ring",
+          "travel-crossbar",
+          "travel-tick-1",
+          "travel-tick-2"
+        ],
+        "trials": [
+          {
+            "scale": 1,
+            "status": "rejected",
+            "error": "MechanismPackInvariantError: Actual posed target bounds escape the available region"
+          },
+          {
+            "scale": 1.15,
+            "status": "rejected",
+            "error": "AssertionError [ERR_ASSERTION]: hook-flange leaves proof viewport"
+          },
+          {
+            "scale": 1.4,
+            "status": "rejected",
+            "error": "AssertionError [ERR_ASSERTION]: hook-flange leaves proof viewport"
+          },
+          {
+            "scale": 1.7,
+            "status": "rejected",
+            "error": "AssertionError [ERR_ASSERTION]: hook-flange leaves proof viewport"
+          },
+          {
+            "scale": 2,
+            "status": "rejected",
+            "error": "AssertionError [ERR_ASSERTION]: hook-flange leaves proof viewport"
+          },
+          {
+            "scale": 2.5,
+            "status": "rejected",
+            "error": "AssertionError [ERR_ASSERTION]: hook-flange leaves proof viewport"
+          },
+          {
+            "scale": 3,
+            "status": "passed",
+            "checkedFrames": 176,
+            "minimumCrossbarPixels": 29.29478942043704
+          }
+        ]
+      }
+    ],
+    "retainedFailedAttempt": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-framing26-E01-proof-author1.log",
+        "bytes": 308,
+        "sha256": "sha256:7e54246c57a51c5a5c49d289189675fc2de9eb4eb8de536bff5853af9d6a8737"
+      },
+      "reason": "Thickness preflight also demanded unrelated flange/rivet framing; all nine relevant vertices/marker checks remain, while the refined thickness shot frames its required front/fold and witness. Travel still frames flange/rivets."
+    },
+    "qualification": "Pure all-vertex/witness-size/anchor-visibility authoring preflight only. No new capture, encoded glyph/whole/pilot acceptance. Existing source family, controls, narrated captions and supplied recording remain unchanged."
+  }
 }

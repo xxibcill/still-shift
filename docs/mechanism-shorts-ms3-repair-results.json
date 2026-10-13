@@ -103,5 +103,19 @@
     "currentAppearanceModules": 489,
     "reason": "Historical MS1 identity has no appearanceCodeIdentity field, while current capture identity pins the conservative native appearance closure. Cache entries cannot be relabeled as current.",
     "newCapturesPerformed": 0
+  },
+  "currentStaleOldRequestNegative": {
+    "status": "expected-stale-rejection-verified",
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-overlap26-stale1-receipt.json",
+      "bytes": 1020,
+      "sha256": "sha256:0b18bb7178284540795e965b79e9358ff30fe7384f974ac08d2ac91847590c96"
+    },
+    "actualExitCode": 2,
+    "sourceBytesUnchanged": true,
+    "currentRevision": 3,
+    "oldRequestRevision": 1,
+    "diagnostic": "mechanism-stale-revision",
+    "qualification": "Current public CLI rejection of an old repair request on the private revision3 seed. Fresh automatic detection/decision/render/recheck still required."
   }
 }

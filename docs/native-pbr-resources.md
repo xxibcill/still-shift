@@ -1,14 +1,17 @@
 # Native PBR resource preparation
 
-MS2 provides a bounded resource component for imported rigid glTF geometry. It
-uses `solid-geometry-2` and `native-pbr-material-1`, with separate encoded-source
-and decoded-pixel identities. Existing native source1/source2 parsers remain
-strict. Explicit source3 preparation, binary admission and shared-world composition
-preview consume this component. Every used mip now has component storage/transfer
-validation. A standalone strict frame3 owner now measures actual GPU draws and
-Three state with independent validation. Explicit asynchronous composition
-observation/output3 capacity now consume it. Normal authenticated source3 exports now consume it. Installed and complete
-world/source/body/replay proof remain pending.
+The bounded rigid glTF resource component uses `solid-geometry-2` and
+`native-pbr-material-1`, with separate encoded-source and decoded-pixel identities.
+Explicit `mechanism-scene-3` preparation, verified binary admission, shared-world
+composition preview, authenticated normal/mixed exports and isolated installed
+source3 execution are implemented and have source-bound software evidence.
+Original source1/source2 parsers remain strict. The sections below retain their
+staged history; use [normal export](./mechanism-shorts-ms2-output3-export-results.json),
+[mixed export](./mechanism-shorts-ms2-output3-mixed-results.json) and
+[installed source3](./mechanism-shorts-ms2-installed-source3-results.json) records
+for those completed software scopes. Whole imported-world design/material/hardware
+appearance, supported-family/pilot review and current MS3 final package gates
+remain separate.
 
 ## Node preparation
 
@@ -60,10 +63,11 @@ try {
 }
 ```
 
-`geometry` and `pixelInputs` must arrive through a verified binary handoff; that
-composition transport is pending. The test fixture's tiny numeric-array handoff
-is test-only. It does not establish admission for production image payloads in
-existing JSON worker packets.
+`geometry` and `pixelInputs` must arrive through the verified source3 binary
+handoff. Production composition loads separately declared and hashed RGBA files,
+and authenticated output3 execution retains its admission and ownership checks.
+The test fixture's tiny numeric-array handoff remains test-only; it does not
+establish admission for image payloads in existing JSON worker packets.
 
 Browser preparation parses the strict contract, copies/re-hashes each RGBA input
 and retains private pixels. The factory requires an owned prepared object. It

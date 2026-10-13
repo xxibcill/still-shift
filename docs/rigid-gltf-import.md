@@ -5,14 +5,18 @@ MS2 exports `importRigidGltf`, `decodeRigidGltf` and `inspectRigidGltf` from
 intermediate representation with named parts, baked geometry, original transform
 bases, PBR texture roles, encoded images and exact dependency identities.
 
-The IR is **not yet a renderable native composition source**. The new
-`prepareRigidGltfPbr` stage decodes and hashes PNG/JPEG pixels and prepares explicit
-`solid-geometry-2` material/tangent resources. Standalone rigid `mechanism-scene-3`
-preparation now verifies separate RGBA files and drives imported parts through
-existing rigs in the shared native Three world, with actual GPU resource and
-camera/pose proof. Composition admission, worker/HTTP binary handoff, mip-data
-proof and imported-model preview/export remain MS2 work; the owning acceptance
-criterion stays unchecked. See [PBR resource preparation](./native-pbr-resources.md).
+The IR is **not a native composition source by itself**. `prepareRigidGltfPbr`
+decodes and hashes PNG/JPEG pixels into `solid-geometry-2` material/tangent
+resources. A declared `mechanism-scene-3` source references separate verified
+RGBA files and drives imported rigid parts through the shared native Three world.
+That source now has composition preview, authenticated normal MP4 export and
+mixed source1/source2/source3 execution evidence. See [resource/source3 preparation](./native-pbr-resources.md),
+[normal exports](./mechanism-shorts-ms2-output3-export-results.json),
+[mixed exports](./mechanism-shorts-ms2-output3-mixed-results.json) and
+[isolated installed source3](./mechanism-shorts-ms2-installed-source3-results.json).
+Each record retains its own verified source and failed stages. These are software
+and fixture claims; whole imported-world design/material/hardware appearance,
+supported packs and pilot acceptance remain separate.
 
 ```ts
 import {
@@ -88,8 +92,8 @@ Images may use local/data URIs or separate buffer views. Declared MIME and data
 URI MIME must match the header. Encoded image bytes are retained unchanged as
 base64 and SHA-256. A header match does not establish a valid compressed payload,
 pixel color conversion or native texture compatibility. `prepareRigidGltfPbr`
-now performs bounded pixel preparation; complete native composition admission
-remains pending. It requires pinned FFmpeg8.0.1, checks encoded header dimensions
+performs bounded pixel preparation; native source3 composition/export consumes
+its verified separate resources. It requires pinned FFmpeg8.0.1, checks encoded header dimensions
 and MIME again, validates supported PNG structure/CRC, ignores image metadata
 and returns straight top-left RGBA8 plus source/pixel hashes. Compressed payload
 failures and cancellation settle after the decoder closes its pipes.
@@ -126,6 +130,7 @@ a located budget error; the complete asset returned by import remains available.
 beginning with `gltf`.
 
 Verification and retained failed stages are recorded in
-[MS2 results](./mechanism-shorts-ms2-results.json). Native PBR import, whole MS2
-acceptance, installed-package verification and human visual/listening acceptance
-remain separate pending requirements.
+[MS2 results](./mechanism-shorts-ms2-results.json). Native source3 preview/export
+and installed checks have the scoped records linked above; current MS3 final
+package verification, whole imported-world review and human visual/listening
+acceptance remain separate.

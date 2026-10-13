@@ -152,16 +152,27 @@ still hold before relying on them.
   [E01/E08 framing](./mechanism-shorts-ms3-framing-results.json) revisions preserve
   whole narration/family/scene/cue windows. E01 pure216-frame paired contacts align
   at one screen datum; E08 all643 pose/visibility expectations pass with opening
-  in its actual spoken window. Normal serial native25 is live: E01 native587
-  frames complete/overlay export in progress, E08 pending. Two native diagnostic
-  contact stills viewed; final encoded/whole framing admission remains open.
+  in its actual spoken window. Native25 queue/run/report all actually exit0 on
+  held63bd4bd6 inputs. Independent audits pass1,230 native/scalar/decoded frames,
+  68 images and complete unchanged decoded audio against the original products.
+  E01 actual216-frame visible-contact/world/matrix projection and E08 all643
+  angle/gap/camera expectations pass. E08 reaches cloth stop at322, with550
+  stable camera frames; measured seat residual3.66e-8 is not whole admission.
+  Nine encoded phone stills viewed. E01 thickness/travel proof still needs work;
+  revision2 pure full-cue vertex/marker framing is authored after retained rejected
+  candidates. Both current products retain five visual errors and whole gates.
+  [Capability docs](./mechanism-shorts-ms3-capability-results.json) repair four
+  stale guides/README against source3/export/installed evidence. Actual discovery
+  reads pass after retained IPC denials; scoped machine/generated references stay
+  open. README changed only after native25 terminal; other2,725 inputs stay exact.
   Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
   [Automatic overlap preflight](./mechanism-shorts-ms3-repair-results.json) now
   reproduces the seeded target with the current pure API/historical measurements,
   selects one of12 bounded candidates and restores69 readable frames while
   retaining neighbors. A private current CLI seed preserves seven dependencies;
-  fresh bad/fixed render/final recheck and696-plate proof still remain. Old MS1
+  current CLI rejects old revision1 repair against private revision3 with bytes
+  unchanged; fresh bad/fixed render/final recheck and696-plate proof remain. Old MS1
   cache lacks current appearance identity; current baseline refresh is required.
   Remaining original scope: clearer E06/E10 explanations and actual whole reviews,
   all ten frozen questions/genuine narration,
@@ -355,6 +366,27 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-13 — Seal framing products, capture audits and current 3D guides
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from4f01bbaf.
+- **Done:** Native25 queue/run/report actually exit0 on held2,726/121,709,868B.
+  Independent1,230-frame/native/scalar/68-image audit and old/new complete decoded
+  audio preservation pass. E01 actual216 visible contacts align; E08 actual643
+  angles/gaps pass, reaches cloth stop322 and retains550 stable camera frames.
+- **Review:** Nine phone stills viewed. E08 now shows jaws/cloth/return; E01's
+  thickness/travel witnesses still need revision2. Pure272-frame geometry/witness/
+  visibility preflight passes after retained camera rejections; no new render yet.
+- **Docs:** Four current guides/README now reflect source3 preview/export/installed
+  implementation, retaining scope/history. Discovery reads pass after IPC denials.
+  A prefixed-versus-bare SHA bookkeeping mistake is retained/corrected: onlyREADME
+  changes after native terminal; other2,725 inputs remain exact.
+- **Open / next:** Current E01 scoped retry; fresh bounded bridge recovery; scoped
+  machine/generated capabilities; original seven inputs/whole/final gates. No
+  pilot/human admission; measured seat residual is not whole geometry acceptance.
+- **Records:** [Framing](./mechanism-shorts-ms3-framing-results.json),
+  [capabilities](./mechanism-shorts-ms3-capability-results.json),
+  [recovery](./mechanism-shorts-ms3-repair-results.json).
 
 ### 2026-10-13 — Verify E03 caption export and author E01/E08 framing repairs
 

@@ -93,8 +93,18 @@ provide 2.5D perspective/focus; WebGL2 adds prepared depth displacement and boun
 flat ambient/point/spot lights. Supplied video, PNG sequences and native audio
 render with checked preparation, trim/remapping and waveforms. Mesh warp and
 puppet pins bend supplied artwork with stiffness/overlap regions. These are
-implemented building blocks; solid 3D and mechanism-production roadmap work remain
-planned. See the [complete feature map](./docs/user-guide.md#implemented-feature-map).
+implemented building blocks. See the [complete feature map](./docs/user-guide.md#implemented-feature-map).
+
+**Solid 3D and mechanisms:** Native meshes and world text share Three.js depth
+and lighting. Bounded rigid glTF/GLB preparation provides verified PBR source3
+resources for composition preview/export. Saved mechanism families and supplied
+narration cues provide reusable controls, camera recipes, native plates and
+artifact-specific QA/evidence, with durable production queues and reports.
+Tapes, ties and clothespegs remain candidate families; original episode/pilot and
+whole factual/material/continuous/listening review stay separate. See
+[native PBR](./docs/native-pbr-resources.md), [rigid imports](./docs/rigid-gltf-import.md),
+[mechanism packs](./docs/mechanism-pack-api.md) and
+[production queues](./docs/mechanism-production-queue.md).
 
 **Delivery and soundtracks:** Composition exports include H.264, HEVC10,
 ProRes422HQ, ProRes4444, VP9 alpha and PNG8/PNG16 sequences, plus optional static
