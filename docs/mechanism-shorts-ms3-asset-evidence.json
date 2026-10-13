@@ -68,8 +68,8 @@
       },
       "implementation": {
         "record": "docs/mechanism-shorts-ms3-trigger-results.json",
-        "status": "factory-trigger-owning-passed-fast-runtime-native-pending",
-        "qualification": "Factory/software geometry/controls only. Renderer/contract code changed, so current complete fast/runtime/native/default pixel/independent proof is required; prior E09/E02/current-OS bindings remain historical. No factual/design/whole/continuous/genuine speech/listening/pilot acceptance, physical force claim, spending or publication."
+        "status": "factory-candidate-current-tiers-native-independent-passed",
+        "qualification": "Current E05 factory/software/native sampled trigger/default engineering proof only. Sourcee9ad9f71 binds180 fresh submissions/180 decoded frames/81 images/120 trigger position hashes/149 pins. Original default all-frame decoded picture/audio parity passes. No whole mechanical/continuous/factual/design/genuine speech/listening/pilot acceptance, physical force claim, spending or publication."
       }
     },
     {
@@ -145,7 +145,29 @@
     ],
     "actualExitCode": 0,
     "scope": "Dimensional N\u00b7m/N\u00b7mm and m/cm/mm oracle, near/far points, normalized/translated vectors and degenerate/wrong-direction rejection; no scene/behavior/native/asset/pilot admission.",
-    "verification": "Direct Node run prints success; explicit terminal recheck returns0 and reproduces the original log byte-for-byte. No admitted behavior."
+    "verification": "Direct Node run prints success; explicit terminal recheck returns0 and reproduces the original log byte-for-byte. No admitted behavior.",
+    "frameBoundCheck": {
+      "status": "pure-expected-frame-draft-passed-not-integrated",
+      "actualExitCode": 0,
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-static-moment-frame-draft.mts",
+          "bytes": 2715,
+          "sha256": "sha256:41ffe2e58edb120927d686a5b02cf56265c73fc678566b3dee89cc5ea767c3ee"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-static-moment-frame-draft.json",
+          "bytes": 2778,
+          "sha256": "sha256:b2c2c60c7663c735384b9f779eca0069d18b030470c195a73ac90c1f8425b0b3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-static-moment-frame-draft.log",
+          "bytes": 243,
+          "sha256": "sha256:2c35f9fc9e8454b73b38eea357afe7b3bce2d0767c5d790f1e03326384ec4550"
+        }
+      ],
+      "scope": "Three posed anchor near/far comparisons use calibrated illustrative scale. Fixed N\u00b7m resistance yields force N; source draft only, no new press geometry, reusable behavior, observed native force or asset/episode admission."
+    }
   },
   "captureNotes": [
     "E09 web PDF cache miss; direct primary PDF download succeeded. First local render command used an incorrect bundle binary path and exited127; corrected bundled Poppler render completed0 and figures1-4 were inspected."

@@ -74,8 +74,14 @@ still hold before relying on them.
   smoke with2,710 inputs exact. Native1 ended failed with its default T0 sealed:
   E1/E2 observation inventory still expected root/tip. Optional trigger association
   is now sealed from the declaration and requires exactly root/tip/trigger.
-  Build/lint/schema and17 scoped tests pass with2,710 inputs held; complete
-  current tiers and a fresh actual native run/default audit remain next.
+  Build/lint/schema and17 scoped tests pass. Native2 on e9ad9f71 and independent
+  audit2 now pass:180 fresh frames/81 images/180 scalars/149 pins,120 trigger used-
+  position hashes,30 released withdrawal frames and exact default decoded picture/
+  audio parity. Audit1's saved-family field error is retained. Visual errors remain
+  T0:7/E1:8/E2:8; three inspected stills confirm final views/labels need work.
+  Current full tiers3 passes4,472/443 fast,253/45 runtime,322/57 integration,
+  depth14/smoke with exact2,710 inputs/121,488,798B. All handles closed.
+  Original E06/E10/pilot work remains.
   No active prior native handle remains. Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
   Remaining original scope: clearer views and actual whole reviews, E05 native
@@ -281,12 +287,12 @@ still hold before relying on them.
   boundary and declarations pass;2,710 inputs held. Engaged reverse rejects.
 - **Rejected / retained:** Frame-key regex and two-landmark metadata inventory
   failures repaired without removing required root/tip or weakening release guards.
-- **Results added:** Earlier full tiers2 passes fast4,471/443, runtime253/45,
-  integration322/57, depth14/smoke with exact inputs. Runtime1 failure is retained.
-  Native1 default sealed; E1/E2 failed exact landmark inventory. Observation repair
-  seals optional trigger from the declaration and retains exact inventory checks.
-  Build/lint/schema plus17 scoped tests pass; all2,710 inputs held.
-- **Open / next:** Current fast/runtime, native/default audit and actual
+- **Results added:** Current e9ad9f71 passes fast4,472/443, runtime253/45,
+  integration322/57, depth14/smoke with exact2,710 inputs. Native2/audit2 pass:
+  180 frames/81 images/149 pins,120 trigger streams,30 release/withdrawal frames
+  and exact default decoded picture/audio parity. Native1 inventory rejection,
+  runtime1 stale CLI checks and audit1 wrong saved-family field are retained.
+- **Open / next:** Visual errors T0:7/E1:8/E2:8 and final views; actual
   visual/factual/design/genuine narration/whole review; E06/E10 and original MS3 scope.
 - **Records:** [trigger candidate](./mechanism-shorts-ms3-trigger-results.json).
   Accepted pilot remains0/10; no paid generation, publication or merge.

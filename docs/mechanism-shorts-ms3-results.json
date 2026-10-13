@@ -627,13 +627,23 @@
     {
       "id": "release-trigger13",
       "record": "docs/mechanism-shorts-ms3-trigger-results.json",
-      "status": "observation-repaired-scoped-passed-current-tiers-native-pending",
+      "status": "factory-candidate-current-tiers-native-independent-passed",
       "owningTests": 42,
       "closedSurfaceSamples": 21,
       "defaultIdentitiesPreserved": true,
-      "qualification": "Factory/software geometry/controls only. Renderer/contract code changed, so current complete fast/runtime/native/default pixel/independent proof is required; prior E09/E02/current-OS bindings remain historical. No factual/design/whole/continuous/genuine speech/listening/pilot acceptance, physical force claim, spending or publication.",
+      "qualification": "Current E05 factory/software/native sampled trigger/default engineering proof only. Sourcee9ad9f71 binds180 fresh submissions/180 decoded frames/81 images/120 trigger position hashes/149 pins. Original default all-frame decoded picture/audio parity passes. No whole mechanical/continuous/factual/design/genuine speech/listening/pilot acceptance, physical force claim, spending or publication.",
       "previousCompleteTiers": "e1fa27bf fast4471/runtime253/integration322/depth14/smoke passed, retained separately",
-      "failedNativeRun": "T0 sealed; E1/E2 exact landmark inventory rejected; retained"
+      "failedNativeRun": "T0 sealed; E1/E2 exact landmark inventory rejected; retained",
+      "sourceCommit": "e9ad9f715c0dbf0af383d5a882daae9c06ac5632",
+      "unitTests": 4472,
+      "products": 3,
+      "freshNativeSubmissions": 180,
+      "decodedFrames": 180,
+      "images": 81,
+      "independentPins": 149,
+      "usedTriggerPositionHashes": 120,
+      "defaultDecodedPictureAudioExact": true,
+      "completeTiers": "fast4472/runtime253/integration322/depth14/smoke on exacte9ad9f71"
     }
   ],
   "targets": {
