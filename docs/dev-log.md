@@ -60,7 +60,10 @@ still hold before relying on them.
   source/metadata stay exact. Final37 owning checks,666 sampled jaw states,
   build/lint/schema/boundary/declarations pass with2,708 inputs held. Missing
   material defaults and Float32 notch intrusion are retained failures; geometry
-  repair preserves1e-8 contact tolerance. Current complete fast/native remain next.
+  repair preserves1e-8 contact tolerance. Current2cf64882 complete fast4,467/442
+  and three native controls pass exact. Independent audit180 frames/81 images/
+  180 scalars/149 pins passes, with default all-frame picture/audio parity against
+  priorc474 capture. Visual errors remain default6/new10 each; no whole acceptance.
   No active prior native handle remains. Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
   Remaining original scope: clearer views and actual whole reviews, E05/E06/E10
@@ -264,10 +267,12 @@ still hold before relying on them.
   Default peg source/metadata pins and cloth inputs remain exact.
 - **Results:** Final37 owning checks/666 sampled jaw states/build/lint/schema/
   boundary and package declarations pass, with2,708 source inputs held.
+  Complete fast4,467/442 and native three controls now pass on2cf64882; audit
+  verifies180 frames/81 images/180 scalars/149 pins and exact default picture/audio.
 - **Rejected / retained:** Typed material defaults and Float32 facet intrusion
   (-4.97e-8) failed; actual geometry repaired with1e-8 tolerance unchanged.
   Longer-handle geometry preserves separation through the sampled opening range.
-- **Open / next:** Complete current fast/native/default pixel audit; actual
+- **Open / next:** Retained visual errors (default6/new10 each), clear line views,
   readable/factual/design/genuine narration/whole reviews and original MS3 scope.
 - **Records:** [line candidate](./mechanism-shorts-ms3-line-results.json),
   [tracker](./mechanism-shorts-ms3-acceptance.md). Accepted pilot remains0/10.

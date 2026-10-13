@@ -595,11 +595,34 @@
     {
       "id": "notched-line12",
       "record": "docs/mechanism-shorts-ms3-line-results.json",
-      "status": "factory-candidate-owning-passed-fast-native-pending",
+      "status": "factory-candidate-fast-native-independent-audit-passed",
       "owningTests": 37,
       "sampledJawStates": 666,
       "defaultIdentitiesPreserved": true,
-      "qualification": "Software factory candidate only, with illustrative dimensions and return bias. No holding/friction/stiffness simulation, native/default pixel proof, supported-family/factual/design/continuous/genuine narration/listening/pilot acceptance. E02 native9e4ccce1 and earlier lifecycle bindings stay historical and separate."
+      "qualification": "Factory/software/native engineering candidate on exact2cf64882 with complete fast4,467/442,180 fresh native submissions and149-pin independent audit. All180 final decoded frames/81 exact images/180 native scalars verify; default peg all-frame decoded pixels/audio match priorc474 capture. Visual findings remain P0:6/L1:10/L2:10. Whole/factual/design/continuous/genuine speech/listening/pilot acceptance remains open; no holding-force simulation, spending or publication.",
+      "completeFast": {
+        "sourceCommit": "2cf64882d6750601e79f6fff173aa8590a068463",
+        "unitTests": 4467,
+        "testFiles": 442,
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "heldInputFiles": 2708
+      },
+      "native": {
+        "sourceCommit": "2cf64882d6750601e79f6fff173aa8590a068463",
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "products": 3
+      },
+      "independentAudit": {
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "decodedFrames": 180,
+        "images": 81,
+        "actualScalarSamples": 180,
+        "pins": 149,
+        "defaultDecodedFrameAndAudioParity": true
+      }
     }
   ],
   "targets": {

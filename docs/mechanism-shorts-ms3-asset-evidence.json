@@ -46,7 +46,26 @@
         "Separate inside-serrated mesh, actual extended trigger/pawl linkage and backward clearance while released.",
         "Keep the T50SOS non-releasable factory guard; admit this different factual asset through existing generic teaching-release rig only after geometry checks."
       ],
-      "qualification": "Text only; detailed trigger topology, dimensions and actual asset remain unreviewed."
+      "qualification": "Text only; detailed trigger topology, dimensions and actual asset remain unreviewed.",
+      "diagramCapture": {
+        "date": "2026-10-13",
+        "source": "https://www.hellermanntyton.com/shared/assets/PDP_PS_RELK_Series_com.pdf",
+        "files": [
+          {
+            "path": "/private/tmp/still-shift-ms3-E05-RELK-catalogue.pdf",
+            "bytes": 200006,
+            "sha256": "sha256:247096721b350c37b3b24e7a9465231e26002e254d749730a35d39d72a1ba97d"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-E05-RELK-catalogue-page.png",
+            "bytes": 380975,
+            "sha256": "sha256:dea72a627c4a25df591afe9a36de72355c544c9c8e44c4efabef23941ef0eb98"
+          }
+        ],
+        "viewedPages": [1],
+        "scope": "Manufacturer photo and closure diagram show the extended pawl alongside the tail and finger release away from the serrated strap. Text states inside serrated/releasable plastic pawl. Dimensions remain illustrative for implementation; exact internal topology/asset still unreviewed.",
+        "retrievalNotes": "Catalogue PDF downloaded/rendered/viewed. Technical datasheet and embedded video web fetches returned cache misses; neither was inspected."
+      }
     },
     {
       "episode": "E09",
@@ -76,8 +95,8 @@
       "qualification": "Illustrative conventional geometry only; no dimensions, friction, holding-force, new asset or factual/design/pilot acceptance.",
       "implementation": {
         "record": "docs/mechanism-shorts-ms3-line-results.json",
-        "status": "factory-candidate-owning-passed-fast-native-pending",
-        "qualification": "Software factory candidate only, with illustrative dimensions and return bias. No holding/friction/stiffness simulation, native/default pixel proof, supported-family/factual/design/continuous/genuine narration/listening/pilot acceptance. E02 native9e4ccce1 and earlier lifecycle bindings stay historical and separate."
+        "status": "factory-candidate-fast-native-independent-audit-passed",
+        "qualification": "Factory/software/native engineering candidate on exact2cf64882 with complete fast4,467/442,180 fresh native submissions and149-pin independent audit. All180 final decoded frames/81 exact images/180 native scalars verify; default peg all-frame decoded pixels/audio match priorc474 capture. Visual findings remain P0:6/L1:10/L2:10. Whole/factual/design/continuous/genuine speech/listening/pilot acceptance remains open; no holding-force simulation, spending or publication."
       }
     },
     {
