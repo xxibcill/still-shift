@@ -41,6 +41,9 @@ The earlier `ae70d735` candidate retains its 126-frame native evidence in the
 an upper-left hinge-placement mismatch. The current repair attaches the web to
 the rear pawl underside and the stop-bearing frame ledge; both end tangents follow
 their seats. It checks shortening through seating and web clearance against the
-pawl/adjacent frame solids across the admitted pitches. Fresh native/current-tier
-proof and the remaining episode reviews are tracked in the
+pawl/adjacent frame solids across the admitted pitches. The repaired source now has126 native/decoded frames and captured shortening/
+attachment proof. A first audit rejected tiny packed-coordinate contact at the
+intended attachment; the corrected audit verifies terminal-only Float32 normal/
+lateral envelopes and keeps the strict overlap gate elsewhere. Current tiers and
+the remaining episode reviews are tracked in the
 [alignment record](./mechanism-shorts-ms3-load-alignment-results.json).

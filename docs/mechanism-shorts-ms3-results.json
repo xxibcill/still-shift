@@ -710,10 +710,18 @@
     {
       "id": "load-alignment20",
       "record": "docs/mechanism-shorts-ms3-load-alignment-results.json",
-      "status": "lower-rear-hinge-repair-preflight-passed-native-current-tiers-pending",
+      "status": "rear-hinge-repair-native-audit-current-tiers-passed-original-episode-review-pending",
       "scopedTests": 75,
       "cliTests": 4,
-      "qualification": "Repairs the known upper-left hinge-placement mismatch with a lower rear underside/stop-ledged attachment and shortening web. Source comparison and scoped software/sampled geometry checks only; fresh original native/current tier verification and original factual/design/continuous/narration/listening/whole/pilot admission remain pending. No measured geometry/material/force claim; accepted0/10 and frozen questions unchanged."
+      "qualification": "Qualitative lower-rear hinge/stop-ledged anatomy repair verified on8c34b461 with current local tiers,126 normal native/decoded frames,252 packed web streams and sampled shortening/selected-solid clearance. Connected terminal Float32 seams are bounded independently; unrelated geometry retains the strict area gate. Whole factual/design/continuous/genuine narration/listening/pilot admission remains pending; accepted0/10 and frozen questions unchanged. No measured force/material claim, spending, merge or publication.",
+      "sourceCommit": "8c34b4619f57370ea38204a641a47f19295a00cb",
+      "freshNativeSubmissions": 126,
+      "decodedFrames": 126,
+      "usedWebStreams": 252,
+      "scalarComparisons": 17262,
+      "webSolidTrianglePairChecks": 2483712,
+      "currentTiers": "fast4530/runtime253/integration322/depth14/smoke",
+      "sourceAlignment": "identified-attachment-repair-verified"
     }
   ],
   "targets": {
@@ -759,11 +767,11 @@
   },
   "libraryExtensionProgress": {
     "requiredAssets": ["E02", "E05", "E06", "E09", "E10"],
-    "engineeringImplementedAssets": ["E02", "E05", "E09", "E10"],
+    "engineeringImplementedAssets": ["E02", "E05", "E06", "E09", "E10"],
     "requiredBehaviors": ["E06", "E10"],
-    "engineeringImplementedBehaviors": ["E10"],
-    "remainingAssetBehavior": "E06",
+    "engineeringImplementedBehaviors": ["E06", "E10"],
+    "remainingAssetBehavior": null,
     "qualification": "Source-bound software/native sampled engineering evidence only; asset/behavior/pilot product admission remains separate. Frozen ten questions and accepted0/10 stay unchanged.",
-    "provisionalE06Candidate": "Current geometry/rig/native software evidence delivered; known hinge-source alignment and original episode admission remain, so E06 is not counted as completed."
+    "provisionalE06Candidate": "Five required engineering assets/two behaviors now have source-bound implementation/native evidence. The identified E06 hinge anatomy repair is verified; original factual/design/explanation/whole/pilot admission remains separate."
   }
 }

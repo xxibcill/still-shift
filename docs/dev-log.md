@@ -119,17 +119,21 @@ still hold before relying on them.
   decoded and12,096 pawl/ledge triangle checks have zero overlap. Four packet
   negatives reject. Full tiers1 pass4,528/448 fast,253/45 runtime,322/57 integration,
   depth14/smoke with2,725 inputs/121,701,051B exact. Four decoded stills reviewed;
-  source hinge placement remains a required asset repair. No E06/whole/pilot
-  admission; all handles closed.
-  E06 lower-rear hinge repair now has75 scoped/9 files,4 CLI/build/lint/schema/
-  boundary/package checks with2,725 exact inputs. The web attaches to the rear
-  underside/stop-bearing ledge, shortens in99 seating samples and stays clear of
-  pawn/frame solids in123 sampled states. Fresh native and current tiers remain
-  next. [Alignment record](./mechanism-shorts-ms3-load-alignment-results.json).
+  that source hinge-placement mismatch is repaired by the following slice.
+  No E06/whole/pilot admission; all handles closed.
+  E06 lower-rear hinge repair8c34b461 now has75 scoped/9 files,4 CLI/package
+  checks and fresh native1/audit2:126 decoded frames/252 packed streams/17,262
+  scalars/2,483,712 web-solid triangle pairs.99 seat samples shorten and123
+  geometry states pass. Audit1's attachment-rounding rejection is retained;
+  only derived terminal seam bounds apply, with unchanged unrelated area gate.
+  Full tiers1 pass4,530/448 fast,253/45 runtime,322/57 integration,14/smoke with
+  2,725 inputs/121,706,266B exact. Four decoded stills viewed; all handles closed.
+  Five assets/two behaviors have engineering evidence; original episode/whole/
+  pilot admission remains open. [Alignment record](./mechanism-shorts-ms3-load-alignment-results.json).
   Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
-  Remaining original scope: clearer views and actual whole reviews, E06 asset/
-  behavior, E10/explanation reviews, all ten frozen questions/genuine narration,
+  Remaining original scope: clearer E06/E10 explanations and actual whole reviews,
+  all ten frozen questions/genuine narration,
   scoped/MS1 automatic repair, broader seeded QA, capability reconciliation,
   comparable token measurements and final full/benchmark/archive/installed gate.
   Accepted coverage remains0/10; tokens staynull. No ElevenLabs spend, merge,
@@ -331,8 +335,13 @@ still hold before relying on them.
   checks with2,725 exact inputs. Primary pages3/10 re-viewed, retained PDF exact.
 - **Retained:** Earlier misplaced candidate and its actual native/full checks
   remain historical; no relabeling or manufacturer/material calibration claim.
-- **Open / next:** Fresh committed native/original-stream audit and current tiers;
-  original E06 explanation and remaining MS3/whole/pilot admission stay open.
+- **Native/current:**8c34b461 native1/audit2 pass126 frames/252 packed streams/
+  17,262 scalars/2,483,712 web-solid triangle pairs. Audit1 rounding rejection
+  retained; connected terminal-only packing bounds preserve unrelated area gate.
+  Tiers1 pass4,530/448 fast,253/45 runtime,322/57 integration,14/smoke exact.
+- **Open / next:** Original E06 explanation and factual/design/continuous/whole
+  review; five engineering assets/two behaviors delivered, pilot0/10. Four decoded
+  stills viewed, nine extracted; all handles closed.
 - **Records:** [Alignment evidence](./mechanism-shorts-ms3-load-alignment-results.json).
   Accepted0/10; no spending, merge/publication or Actions change.
 

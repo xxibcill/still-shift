@@ -121,8 +121,9 @@
       },
       "hingeAlignment": {
         "record": "docs/mechanism-shorts-ms3-load-alignment-results.json",
-        "status": "lower-rear-hinge-repair-preflight-passed-native-current-tiers-pending",
-        "qualification": "Repairs the known upper-left hinge-placement mismatch with a lower rear underside/stop-ledged attachment and shortening web. Source comparison and scoped software/sampled geometry checks only; fresh original native/current tier verification and original factual/design/continuous/narration/listening/whole/pilot admission remain pending. No measured geometry/material/force claim; accepted0/10 and frozen questions unchanged."
+        "status": "rear-hinge-repair-native-audit-current-tiers-passed-original-episode-review-pending",
+        "qualification": "Qualitative lower-rear hinge/stop-ledged anatomy repair verified on8c34b461 with current local tiers,126 normal native/decoded frames,252 packed web streams and sampled shortening/selected-solid clearance. Connected terminal Float32 seams are bounded independently; unrelated geometry retains the strict area gate. Whole factual/design/continuous/genuine narration/listening/pilot admission remains pending; accepted0/10 and frozen questions unchanged. No measured force/material claim, spending, merge or publication.",
+        "sourceCommit": "8c34b4619f57370ea38204a641a47f19295a00cb"
       }
     },
     {

@@ -4,8 +4,8 @@
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
   "baseCommit": "cd175dbc4a8f05533a4df8469697b5776249d38a",
-  "status": "lower-rear-hinge-repair-preflight-passed-native-current-tiers-pending",
-  "qualification": "Repairs the known upper-left hinge-placement mismatch with a lower rear underside/stop-ledged attachment and shortening web. Source comparison and scoped software/sampled geometry checks only; fresh original native/current tier verification and original factual/design/continuous/narration/listening/whole/pilot admission remain pending. No measured geometry/material/force claim; accepted0/10 and frozen questions unchanged.",
+  "status": "rear-hinge-repair-native-audit-current-tiers-passed-original-episode-review-pending",
+  "qualification": "Qualitative lower-rear hinge/stop-ledged anatomy repair verified on8c34b461 with current local tiers,126 normal native/decoded frames,252 packed web streams and sampled shortening/selected-solid clearance. Connected terminal Float32 seams are bounded independently; unrelated geometry retains the strict area gate. Whole factual/design/continuous/genuine narration/listening/pilot admission remains pending; accepted0/10 and frozen questions unchanged. No measured force/material claim, spending, merge or publication.",
   "supersedesGeometrySource": "ae70d735cd263c424113de6d8ba430226bc33c7e",
   "historicalEvidence": "docs/mechanism-shorts-ms3-load-asset-results.json",
   "primarySource": {
@@ -379,8 +379,632 @@
     }
   ],
   "remaining": [
-    "Fresh committed-source native exports and independent captured GPU/pose/seat/shortening/web-solid audit.",
-    "Complete committed current fast/runtime tiers.",
-    "Original E06 explanation/factual/design/continuous/genuine narration/listening/whole evidence, all-ten pilot and remaining MS3 repair/QA/capability/metrics/final/archive/installed gates."
-  ]
+    "Original E06 explanation with labelled/cropped views and factual/design/continuous/genuine narration/listening/whole evidence.",
+    "All ten frozen original pilot questions, automatic/scoped repair, broader seeded QA, capability reconciliation, comparable metrics, final full/benchmark/archive/installed and pilot gates."
+  ],
+  "sourceCommit": "8c34b4619f57370ea38204a641a47f19295a00cb",
+  "currentVerification": {
+    "receipt": {
+      "status": "passed",
+      "sourceCommit": "8c34b4619f57370ea38204a641a47f19295a00cb",
+      "startedUtc": "2026-10-13T10:17:14.082428+00:00",
+      "pid": 87748,
+      "inventory": "/private/tmp/still-shift-ms3-align20-tiers1-inputs.json",
+      "steps": [
+        {
+          "command": ["pnpm", "check:fast"],
+          "actualExitCode": 0,
+          "sourceHoldCheckExitCode": 0,
+          "startedUtc": "2026-10-13T10:17:14.083239+00:00",
+          "endedUtc": "2026-10-13T10:19:31.981410+00:00",
+          "log": "/private/tmp/still-shift-ms3-align20-tiers1-0.log"
+        },
+        {
+          "command": ["pnpm", "check:runtime"],
+          "actualExitCode": 0,
+          "sourceHoldCheckExitCode": 0,
+          "startedUtc": "2026-10-13T10:19:31.981757+00:00",
+          "endedUtc": "2026-10-13T10:28:12.365696+00:00",
+          "log": "/private/tmp/still-shift-ms3-align20-tiers1-1.log"
+        }
+      ],
+      "actualExitCode": 0,
+      "endedUtc": "2026-10-13T10:28:12.366275+00:00"
+    },
+    "fast": {
+      "tests": 4530,
+      "files": 448
+    },
+    "runtime": {
+      "tests": 253,
+      "files": 45
+    },
+    "integration": {
+      "tests": 322,
+      "files": 57
+    },
+    "depthTests": 14,
+    "browserSmoke": "passed",
+    "heldFiles": 2725,
+    "heldBytes": 121706266,
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-tiers1.py",
+        "bytes": 1850,
+        "sha256": "sha256:b19a938c0f97b37c34cc101521358c9e7e026342da49361843b529c2bbac4ae5"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-tiers1.log",
+        "bytes": 1759,
+        "sha256": "sha256:8ae54d9d72766b98ec445cee8431ec99afdfe64317f0b9c4672e40163c0f856d"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-tiers1-receipt.json",
+        "bytes": 954,
+        "sha256": "sha256:5dc576078c16f1ab9a0d35183982d1fff385bf514e8fdd2423b6da42fabe167e"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-tiers1-inputs.json",
+        "bytes": 465244,
+        "sha256": "sha256:a320130b0e2e37983d6049c2a0b85514f7721385171ee967a22cd8cd2d6ebc07"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-tiers1-0.log",
+        "bytes": 44847,
+        "sha256": "sha256:a23c519ad4bd71de57c59919622d673c5da83aceff25b6377c72b653d7dbb65c"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-tiers1-1.log",
+        "bytes": 41698,
+        "sha256": "sha256:33df050a9c4d542c61eaef775660f5891eb3a5a736ac7ce65036e991d619877d"
+      }
+    ]
+  },
+  "nativeExport": {
+    "receipt": {
+      "status": "passed",
+      "command": "node --import tsx /private/tmp/still-shift-ms3-align20-native1.mts",
+      "sourceCommit": "8c34b4619f57370ea38204a641a47f19295a00cb",
+      "startedUtc": "2026-10-13T10:07:52.585008+00:00",
+      "pid": 85439,
+      "inventory": "/private/tmp/still-shift-ms3-align20-native1-inputs.json",
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-13T10:08:10.701005+00:00"
+    },
+    "root": "/private/tmp/still-shift-ms3-align-native-D7pVg7",
+    "freshNativeSubmissions": 126,
+    "products": 3,
+    "framesEach": 42,
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-native1.mts",
+        "bytes": 3136,
+        "sha256": "sha256:3a9f8e9e9b0b28fa05009f7ad660fe95b5d9e894b86739aec001b65a9f7773de"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-native1.py",
+        "bytes": 1444,
+        "sha256": "sha256:de7de599d9114ffb213b7611b9e893d4501bcb6d5625ddb4257411ab162fe954"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-native1.log",
+        "bytes": 1188,
+        "sha256": "sha256:27084b5ff8c7e61aabea8042ea51efb3fcb4be916e477d608ae77ac3ab9834a1"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-native1-receipt.json",
+        "bytes": 418,
+        "sha256": "sha256:539e24796179f415a8c1235c389798709b16caefb9a7d553539185aae8c0fdf0"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-native1-inputs.json",
+        "bytes": 465244,
+        "sha256": "sha256:a320130b0e2e37983d6049c2a0b85514f7721385171ee967a22cd8cd2d6ebc07"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/run.json",
+        "bytes": 2452,
+        "sha256": "sha256:da9edf6d63512523f90de8212727f92ea61bb53215347e124b27eebd06b7df9d"
+      }
+    ]
+  },
+  "retainedAuditFailure": {
+    "receipt": {
+      "status": "failed",
+      "sourceCommit": "8c34b4619f57370ea38204a641a47f19295a00cb",
+      "startedUtc": "2026-10-13T10:09:36.640985+00:00",
+      "pid": 87389,
+      "actualExitCode": 1,
+      "error": "('D2', 8, 'pawl.body', 1.5094994698650055e-10)",
+      "endedUtc": "2026-10-13T10:09:40.015550+00:00"
+    },
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-audit1.py",
+        "bytes": 13159,
+        "sha256": "sha256:562dfa36654df9e5ecde6c6880c83c1267772ebbc8ddb56453aec653132f3e63"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-audit1.log",
+        "bytes": 529,
+        "sha256": "sha256:bc8eac44d79b32b42888f53753f61863c04f9aaa46f9587c23e1c53d5090fc80"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-audit1-receipt.json",
+        "bytes": 289,
+        "sha256": "sha256:da238bed78c60e6999e81333e694c23db18e68d3fe75eb42b8bcb6a84cdc6429"
+      }
+    ],
+    "reason": "A fixed raw1e-10 triangle-area limit rejected D2/frame8 at the intended pawl attachment. The original capture and source are unchanged. The diagnostic found normal intrusion1.004223346146027e-8 within independently computed Float32 packing bound1.7194790853684137e-8. Corrected audit2 admits only terminal-ring attachment contacts within derived normal/lateral envelopes; all unrelated overlap retains the original limit."
+  },
+  "seamDiagnostic": {
+    "results": {
+      "case": "D2",
+      "frame": 8,
+      "forceNewtons": 2,
+      "hits": [
+        {
+          "triangle": 121,
+          "vertices": [61, 65, 64],
+          "area": 1.5094994698650055e-10,
+          "localIntersection": [
+            [1.1089999637460066, 0.18000000715255737],
+            [1.1089999643216535, 0.18000001719479083],
+            [1.0909999433334183, 0.18000001388252554],
+            [1.0909999527014045, 0.18000000715255732]
+          ],
+          "depth": 1.004223346146027e-8,
+          "derivedVertexPackingNormalBound": 1.7194790853684137e-8
+        },
+        {
+          "triangle": 121,
+          "vertices": [61, 65, 64],
+          "area": 1.5094994698650055e-10,
+          "localIntersection": [
+            [1.1089999637460066, 0.18000000715255737],
+            [1.1089999643216535, 0.18000001719479083],
+            [1.0909999433334183, 0.18000001388252554],
+            [1.0909999527014045, 0.18000000715255732]
+          ],
+          "depth": 1.004223346146027e-8,
+          "derivedVertexPackingNormalBound": 1.7194790853684137e-8
+        },
+        {
+          "triangle": 125,
+          "vertices": [63, 67, 66],
+          "area": 1.5094989147534932e-10,
+          "localIntersection": [
+            [1.090999942946694, 0.18000000715255737],
+            [1.0909999433334183, 0.18000001388252554],
+            [1.1089999643216535, 0.18000001719479083],
+            [1.1089999463438183, 0.1800000071525574]
+          ],
+          "depth": 1.004223346146027e-8,
+          "derivedVertexPackingNormalBound": 1.7194790853684137e-8
+        },
+        {
+          "triangle": 125,
+          "vertices": [63, 67, 66],
+          "area": 1.5094989147534932e-10,
+          "localIntersection": [
+            [1.090999942946694, 0.18000000715255737],
+            [1.0909999433334183, 0.18000001388252554],
+            [1.1089999643216535, 0.18000001719479083],
+            [1.1089999463438183, 0.1800000071525574]
+          ],
+          "depth": 1.004223346146027e-8,
+          "derivedVertexPackingNormalBound": 1.7194790853684137e-8
+        }
+      ],
+      "maximumDepth": 1.004223346146027e-8,
+      "maximumDerivedQuantizationBound": 1.7194790853684137e-8,
+      "terminalRingVertices": [64, 65, 66, 67],
+      "qualification": "Diagnostic only; no repaired audit pass."
+    },
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-seam-diagnostic1.py",
+        "bytes": 3037,
+        "sha256": "sha256:e0221bd096f7ea5748376459386dcf6196ea9b22afd6bbf385014754898fd9c0"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-seam-diagnostic1-results.json",
+        "bytes": 2699,
+        "sha256": "sha256:0e5a00f40db7888b781001314a514aa0b07bdb3f090e4ad4043d64c97e11f6eb"
+      }
+    ]
+  },
+  "independentNativeAudit": {
+    "receipt": {
+      "status": "passed",
+      "sourceCommit": "8c34b4619f57370ea38204a641a47f19295a00cb",
+      "startedUtc": "2026-10-13T10:15:35.827830+00:00",
+      "pid": 87677,
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-13T10:15:40.595855+00:00"
+    },
+    "results": {
+      "status": "passed",
+      "sourceCommit": "8c34b4619f57370ea38204a641a47f19295a00cb",
+      "root": "/private/tmp/still-shift-ms3-align-native-D7pVg7",
+      "products": [
+        {
+          "id": "D0",
+          "frames": 42,
+          "decodedFrames": 42,
+          "decodedSha256": "sha256:3e0f82fe5ffbf4a108920d91938409d5008c47ff122858837b091e57163b571d",
+          "uniqueUsedPositionHashes": 33,
+          "triangleChecks": 4032,
+          "actualDecodeExitCode": 0,
+          "neutralSeatSpan": 0.19985837952634536,
+          "stoppedSeatSpan": 0.08281607212389942,
+          "monotonicShortening": true
+        },
+        {
+          "id": "D1",
+          "frames": 42,
+          "decodedFrames": 42,
+          "decodedSha256": "sha256:9c07e61b6c92ab408b34d1a47b2842bde198a76bc3ad18f22133fd388b21aa00",
+          "uniqueUsedPositionHashes": 33,
+          "triangleChecks": 4032,
+          "actualDecodeExitCode": 0,
+          "neutralSeatSpan": 0.18364720135087945,
+          "stoppedSeatSpan": 0.08310151181489711,
+          "monotonicShortening": true
+        },
+        {
+          "id": "D2",
+          "frames": 42,
+          "decodedFrames": 42,
+          "decodedSha256": "sha256:b41d4b912f2d4b13b8690b0ff4e44abe0d4e896bcac5011974adc93b9479290b",
+          "uniqueUsedPositionHashes": 33,
+          "triangleChecks": 4032,
+          "actualDecodeExitCode": 0,
+          "neutralSeatSpan": 0.22189997578008833,
+          "stoppedSeatSpan": 0.08245590306616357,
+          "monotonicShortening": true
+        }
+      ],
+      "nativeFrames": 126,
+      "decodedFrames": 126,
+      "usedWebStreams": 252,
+      "scalarComparisons": 17262,
+      "maximumOracleError": 1.1102230246251565e-16,
+      "maximumUsedSeatResidual": 4.8717002650064236e-8,
+      "maximumSampledTriangleOverlapArea": 0,
+      "maximumUsedSeatQuantizationBound": 4.9641674212418106e-8,
+      "maximumSampledWebSolidOverlapArea": 1.5094994698650055e-10,
+      "webSolidTriangleChecks": 2483712,
+      "quantizedAttachmentContacts": 4,
+      "maximumAttachmentNormalIntrusion": 1.004223346146027e-8,
+      "maximumDerivedAttachmentPackingBound": 1.7194790853684137e-8,
+      "maximumUnrelatedOverlapArea": 6.034747701555432e-11,
+      "pins": [
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D0/output.mp4.native-observations.000.ndjson",
+          "bytes": 380250,
+          "sha256": "sha256:9096bc9e33ff6260aa7836af993e23e0e4371183dc06be0cc4ba27eddf155e83"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D0/scene.json",
+          "bytes": 1066788,
+          "sha256": "sha256:c4419f5bb45d81f2c5f9f824473a80c2ae54327f59c3671d4a75e5cba8f6553e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D0/composition.json",
+          "bytes": 5962,
+          "sha256": "sha256:1e462fbd4ba0c0ac754535132d1dd012717327414eac450b3ad146db15ca8f02"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D0/output.mp4",
+          "bytes": 17769,
+          "sha256": "sha256:41fe0ebe424fbc1c7b7ea91a79bf3fef3be0b361a6ea58d77595dff7e16bfb18"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D0/output.mp4.scene.json",
+          "bytes": 1561709,
+          "sha256": "sha256:6b49e1d25b7abc0b4889ad50922e50181b96e0688f6b569368c86ccfd50a53ec"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D0/output.mp4.native-observations.json",
+          "bytes": 91635,
+          "sha256": "sha256:f61eb62442bf005a0207ec103f5b0d027f1e44d8faa6b13f17eeee1a4fe044d4"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D0/render.json",
+          "bytes": 7564,
+          "sha256": "sha256:77852fba9de2317d23106d567602681688d78ceebbc9038323d2b66682cd40f0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D0/product.json",
+          "bytes": 584,
+          "sha256": "sha256:965d11ab19d5a40e2741c6f7b369aa2b1a87e020d5a5b22e67125af8dcca754d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D1/output.mp4.native-observations.000.ndjson",
+          "bytes": 381553,
+          "sha256": "sha256:aaeb2b5df5ff6c4b14116d21f843d6f2b41872f838a3dc0ccea9f103569e4be3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D1/scene.json",
+          "bytes": 1054877,
+          "sha256": "sha256:8f6b0f616e180e15d9be7b95b6fa02ea7dd933b762fdd3bd7b10e57aafd73503"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D1/composition.json",
+          "bytes": 5962,
+          "sha256": "sha256:0e9248bfdc3f9bac0c9cf39442bbd8a878613a8fcdf83ca1d63eac1345418d5b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D1/output.mp4",
+          "bytes": 15180,
+          "sha256": "sha256:913657e82e2a9601df10cea972194603bc28e98fc7fa8dcba09d6b6cd6751961"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D1/output.mp4.scene.json",
+          "bytes": 1542818,
+          "sha256": "sha256:120386dec0feed58dbc9f0f4331546439ffd00194cb06ded6d092a79adcc744b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D1/output.mp4.native-observations.json",
+          "bytes": 91635,
+          "sha256": "sha256:41d410e02714b9de4d52f5ba08ae165029f14c7ca8157237209298c4edc0c10a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D1/render.json",
+          "bytes": 7562,
+          "sha256": "sha256:1e3dd8d91370dbd5b7a3c1043d92895e0fa53c40af2b272f1559aa0a93a087d2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D1/product.json",
+          "bytes": 588,
+          "sha256": "sha256:5442ed5638af4a7304453fb6c6394acddc65bcc13b1104e1a0e5035c7a72d076"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D2/output.mp4.native-observations.000.ndjson",
+          "bytes": 381011,
+          "sha256": "sha256:5a06077b0c1e0702b9125c284f9984a9160d911867c10e7cbbdf323086f07a76"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D2/scene.json",
+          "bytes": 1099822,
+          "sha256": "sha256:dcd44494faf2fb223d3c9fe8f814df566bc21faf0bd7a8cd1fed5978bebe1eee"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D2/composition.json",
+          "bytes": 5962,
+          "sha256": "sha256:e1c6eacfc7932d1ce296cb16513736591b67e267a280e923f88cca845431fedf"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D2/output.mp4",
+          "bytes": 19230,
+          "sha256": "sha256:48e4f55b75083fc4a4051dd1f0e4d829eb7cebb4b102493c9b6a4fded41ec488"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D2/output.mp4.scene.json",
+          "bytes": 1608703,
+          "sha256": "sha256:bdc8755d0720c80d99406aba7a9552f722fe9adc873da81028eefdbde9203833"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D2/output.mp4.native-observations.json",
+          "bytes": 91635,
+          "sha256": "sha256:f4518e1797fd23a61221f825c25a4b6f75b632675565e2888b73bfd054a7eaba"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D2/render.json",
+          "bytes": 7556,
+          "sha256": "sha256:80fbc421fb5c80facc06ed7303893fbb8471e6c0148b31b90d619a90bafcc119"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D2/product.json",
+          "bytes": 587,
+          "sha256": "sha256:99cf445a5a0d9bb26a928816cdba14f11ea2d46f73e8893e57ad14d5fa441fa4"
+        }
+      ],
+      "qualification": "Independent numeric/packed GPU stream/decoded evidence for this physical E06 teaching candidate at three admitted dimension sets. Repaired lower-rear hinge: monotonic shortening and selected packed-web/rigid-solid triangle clearance verified. Connected terminal-only Float32 seam contacts remain within independently calculated normal/lateral packing envelopes; unrelated overlaps retain the1e-10 area gate. Sampled selected-plane/triangle contact scope; no continuous/all-pair collision, measured force/material, factual/design/narration/listening/whole/pilot admission."
+    },
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-audit2.py",
+        "bytes": 15889,
+        "sha256": "sha256:1e08df6896cf13a052ebbfaa7d5d29ffc7ae85517270f504d919444d00ce9646"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-audit2.log",
+        "bytes": 2490,
+        "sha256": "sha256:00ef5331d7acfef49920b8dd9a4eb9e01a7f28b2b056311e6f68bebec22cc9e5"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-audit2-receipt.json",
+        "bytes": 260,
+        "sha256": "sha256:5b9e91daa88ed100962c4df3561797ea8e110f3f6263ccde20abaf766e2520d4"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-audit2-results.json",
+        "bytes": 7765,
+        "sha256": "sha256:21f996bf5a4185c2ab034790bfcd6ac0a11bc5129efc358c0b239fd63535f619"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-audit2-D0-decode.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-audit2-D1-decode.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-audit2-D2-decode.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "observationSchemaControls": {
+    "results": {
+      "status": "passed",
+      "sourceCommit": "8c34b4619f57370ea38204a641a47f19295a00cb",
+      "originalObservation": "/private/tmp/still-shift-ms3-align-native-D7pVg7/D0/output.mp4.native-observations.000.ndjson",
+      "positivePackets": 1,
+      "negativePackets": 4,
+      "results": [
+        {
+          "id": "missing-seat",
+          "status": "rejected",
+          "issues": [
+            {
+              "path": ["passes", 0, "observed", "shapes", "hinge.web"],
+              "message": "Used landmarks retain the generator's exact sealed inventory"
+            },
+            {
+              "path": ["passes", 0, "observed", "anchors", "hinge.movingEnd"],
+              "message": "Drawn shape anchors use the exact measured GPU landmark"
+            }
+          ]
+        },
+        {
+          "id": "extra-coil",
+          "status": "rejected",
+          "issues": [
+            {
+              "path": ["passes", 0, "observed", "shapes", "hinge.web"],
+              "message": "Used landmarks retain the generator's exact sealed inventory"
+            }
+          ]
+        },
+        {
+          "id": "wrong-spring",
+          "status": "rejected",
+          "issues": [
+            {
+              "path": ["passes", 0, "observed", "shapes", "hinge.web"],
+              "message": "Used landmarks retain the generator's exact sealed inventory"
+            }
+          ]
+        },
+        {
+          "id": "pawl-trigger",
+          "status": "rejected",
+          "issues": [
+            {
+              "path": [
+                "passes",
+                0,
+                "observed",
+                "shapes",
+                "hinge.web",
+                "association",
+                "triggerLandmark"
+              ],
+              "message": "Only a pawl association can seal a trigger landmark"
+            }
+          ]
+        }
+      ],
+      "qualification": "Strict public observation-schema checks against cloned original packets, without changing retained observations or exercising a negative GPU submission."
+    },
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-negative1.mts",
+        "bytes": 1715,
+        "sha256": "sha256:b233569ed66700f1336ef2e29e26e4c9a51544195959bb8e21b8da1862d6a3b2"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-negative1.log",
+        "bytes": 46,
+        "sha256": "sha256:d533c07c9268546927fc6e556b3fc68b1660d1443cb1bdf342d66059f6ff9cac"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-align20-negative1-results.json",
+        "bytes": 2101,
+        "sha256": "sha256:705ab2e190130e3f4a048e7c23d9d280780ef6c9c7343f4a00445b711e10ad75"
+      }
+    ]
+  },
+  "decodedStills": {
+    "record": {
+      "images": [
+        {
+          "case": "D0",
+          "frame": 0,
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/inspection1/D0/frame-01.png",
+          "bytes": 27457,
+          "sha256": "sha256:4006ee244ecc45d42ad846435ecc11d2f6d39c62f8a191db04e3f524efc9a118"
+        },
+        {
+          "case": "D0",
+          "frame": 16,
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/inspection1/D0/frame-02.png",
+          "bytes": 30167,
+          "sha256": "sha256:4f97fe76a5a338ba9ee54b59441394b70e25881f50f8b48b672a795ad7549734"
+        },
+        {
+          "case": "D0",
+          "frame": 32,
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/inspection1/D0/frame-03.png",
+          "bytes": 29453,
+          "sha256": "sha256:708565c2bd5aeca433d95e4877cf01279682f313b8ff3bf878b00f76d3e5384f"
+        },
+        {
+          "case": "D1",
+          "frame": 0,
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/inspection1/D1/frame-01.png",
+          "bytes": 22930,
+          "sha256": "sha256:9133e02c13e0c14ef6346c2c2dd2cee6c426ad6b94f37c803bc89649ab3fc4d8"
+        },
+        {
+          "case": "D1",
+          "frame": 16,
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/inspection1/D1/frame-02.png",
+          "bytes": 24355,
+          "sha256": "sha256:4a5a3a21595d8d92924b2ac15d8392bf00819ba0ea735c1414e2325f24b3fbb6"
+        },
+        {
+          "case": "D1",
+          "frame": 32,
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/inspection1/D1/frame-03.png",
+          "bytes": 23309,
+          "sha256": "sha256:65a616a35d676dddee3e203f0f5eb304d7c182121cabe50686fc92e2c9a8026b"
+        },
+        {
+          "case": "D2",
+          "frame": 0,
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/inspection1/D2/frame-01.png",
+          "bytes": 29607,
+          "sha256": "sha256:c90b5f14e72146c94399f98151b7ecf11b10ad7a51e9e2e40104156142f4d043"
+        },
+        {
+          "case": "D2",
+          "frame": 16,
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/inspection1/D2/frame-02.png",
+          "bytes": 32047,
+          "sha256": "sha256:c95257bb9df071071d131b0cab5112e2ca32950c2ac41e10567b9bb0db3e3a17"
+        },
+        {
+          "case": "D2",
+          "frame": 32,
+          "path": "/private/tmp/still-shift-ms3-align-native-D7pVg7/inspection1/D2/frame-03.png",
+          "bytes": 31279,
+          "sha256": "sha256:bfcac8178f65c319d22af27485a71192dbd0d4345fa096436627bcc612394b67"
+        }
+      ],
+      "qualification": "Final decoded stills; actual viewed samples recorded separately. No playback/continuous/whole/listening admission."
+    },
+    "actuallyViewed": [
+      ["D0", 0],
+      ["D0", 32],
+      ["D1", 32],
+      ["D2", 32]
+    ],
+    "finding": "Rear underside web/ledge attachment and shortening are visible; labelled/cropped whole explanation and playback remain pending.",
+    "qualification": "Nine extracted decoded stills; four actually viewed. No human/playback/listening/whole approval."
+  },
+  "sourceAlignmentDisposition": {
+    "status": "qualitative-attachment-repair-verified",
+    "basis": "Retained primary pages3/10 plus actual code/geometry and original native attachment/shortening evidence. The known upper-left attachment is replaced by a lower rear underside/stop-bearing ledge attachment.",
+    "scope": "Repairs this identified anatomical mismatch; complete source fidelity, material behavior and original E06 episode admission remain separate."
+  }
 }
