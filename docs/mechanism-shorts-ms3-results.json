@@ -659,7 +659,7 @@
     {
       "id": "ideal-lever16",
       "record": "docs/mechanism-shorts-ms3-lever-results.json",
-      "status": "native-independent-passed-second-stale-assertion-repaired-current-tiers-pending",
+      "status": "factory-candidate-current-tiers-native-independent-passed",
       "owningTests": 11,
       "scopedUnitTests": 80,
       "scopedUnitFiles": 7,
@@ -672,7 +672,9 @@
       "images": 81,
       "scalarValues": 900,
       "momentValues": 720,
-      "independentPins": 151
+      "independentPins": 151,
+      "currentTierSource": "e4a01a420e2b5c36fc66a4d8bcdc137be32ffa68",
+      "completeTiers": "fast4507/runtime253/integration322/depth14/smoke"
     }
   ],
   "targets": {
@@ -715,5 +717,13 @@
     "state": "open-draft",
     "base": "main",
     "purpose": "MS3 in-progress review; original acceptance and pilot scope remains active"
+  },
+  "libraryExtensionProgress": {
+    "requiredAssets": ["E02", "E05", "E06", "E09", "E10"],
+    "engineeringImplementedAssets": ["E02", "E05", "E09", "E10"],
+    "requiredBehaviors": ["E06", "E10"],
+    "engineeringImplementedBehaviors": ["E10"],
+    "remainingAssetBehavior": "E06",
+    "qualification": "Source-bound software/native sampled engineering evidence only; asset/behavior/pilot product admission remains separate. Frozen ten questions and accepted0/10 stay unchanged."
   }
 }

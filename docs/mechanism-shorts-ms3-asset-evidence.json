@@ -73,6 +73,41 @@
       }
     },
     {
+      "episode": "E06",
+      "status": "supplemental-primary-figures-description-inspected-asset-behavior-pending",
+      "sourceRecord": "docs/mechanism-shorts-ms2-e06-primary-admission-results.json",
+      "source": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/3872547",
+      "currentRead": {
+        "date": "2026-10-13",
+        "exactRetainedPDFVerified": true,
+        "pdfPagesViewed": [3, 11],
+        "scope": "Figures8-11 and printed columns9/10 only; no new full22-page/OCR claim.",
+        "files": [
+          {
+            "path": "/private/tmp/still-shift-ms2-e06-primary65-page3.png",
+            "bytes": 209805,
+            "sha256": "sha256:96af3c3083c04eeb28598e440bc805ef2ef909c3b013fcbc76029863a6a81c49"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-e06-primary65-page11.png",
+            "bytes": 339009,
+            "sha256": "sha256:4a1644c7aed98de8b57434b2ac5b6c133eab7148c3b8e993ad01937a5da50857"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-E06-source-review17.md",
+            "bytes": 1273,
+            "sha256": "sha256:6f07a3a6df7e9a5d95df39bf0dcb2c48ff2f0e688ae713e1a9d03c8377dbd8ea"
+          }
+        ]
+      },
+      "implementationWitnesses": [
+        "Separate hinged-pawl/frame-stop asset with the first and protected second teeth, hinge/web and inside-frame stop.",
+        "Explicit load-to-pose/contact/stop response with a declared illustrative law and independent oracle; arrows/authored reverse poses alone are insufficient.",
+        "Preserve the standard non-releasable pack; verify contact, saturation, nonpenetration and actual native observations."
+      ],
+      "qualification": "Documentary supplement only. No load law, asset, native, factual/design/whole/pilot or physical rating admission; frozen question/selection remains exact."
+    },
+    {
       "episode": "E09",
       "status": "primary-text-and-drawing-page-inspected",
       "source": "https://patents.google.com/patent/US2590881A/en",
@@ -117,7 +152,7 @@
       "qualification": "Primary theory only. No quantitative real peg force, new behavior, asset or pilot admission.",
       "implementation": {
         "record": "docs/mechanism-shorts-ms3-lever-results.json",
-        "status": "native-independent-passed-second-stale-assertion-repaired-current-tiers-pending",
+        "status": "factory-candidate-current-tiers-native-independent-passed",
         "qualification": "Current E10 factory/observed ideal-force engineering proof:180 native frames/81 images/900 scalar values including720 ideal moment quantities/151 pins on9ba. Fixed prescribed10Nmm near/far comparison holds in120 frames; default decoded picture/audio parity passes. Force is idealized, not measured product force. Whole mechanical/factual/design/continuous/genuine speech/listening/pilot remains unreviewed; accepted0/10. No spending, merge or publication."
       },
       "behaviorFoundation": {

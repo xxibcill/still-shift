@@ -91,20 +91,19 @@ still hold before relying on them.
   closed attached pads, shared pivot, strict variant/camera discovery and original-
   capture force/arm/residual selectors with pinned resistance. Final80 units/7
   files,4 CLI checks, build/lint/schema/boundary/package declarations pass with
-  2,719 inputs held. Test result-shape/type failures are retained. Current complete
-  native2/audit2 now pass180 frames/81 images/900 scalar values/720 ideal moment
-  quantities/151 pins and exact default decoded picture/audio parity on9ba870d2.
-  Native1 safe-area and audit1 canonical/byte identity failures are retained.
-  Full fast1 ends4,506/4,507 with one stale E09 discovery test; runtime unstarted.
-  First focused list repair actually failed the next stale variant assertion;
-  its f6876f65 passed label was wrong and is corrected in the record. Fast2 also
-  failed4,506/4,507; runtime unstarted. Both exact lists now include3 peg entries;
-  final focused5 has an actual0 receipt. Current complete rerun remains next.
-  Visual errors P0:6/M1:14/M2:14 and all whole/pilot reviews remain open.
+  2,719 inputs held. Native2/audit2 on9ba870d2 pass180 frames/81 images/900
+  scalar values/720 ideal moment quantities/151 pins and exact default decoded
+  picture/audio parity. Full tiers3 on test-repaired e4a01a42 pass4,507/445 fast,
+  253/45 runtime,322/57 integration, depth14/smoke with2,719 inputs/121,561,536B
+  exact. Both stale-discovery full failures, failed focused repair, pre-render
+  layout/audit identity failures and f6876f65's corrected passed label remain
+  retained. Only the owning test changed after native proof; production inputs
+  stay exact. Visual errors P0:6/M1:14/M2:14 and all whole/pilot reviews stay open.
+  E06 primary PDF/figures supplement is reconciled; its asset/load behavior is next.
   No active prior native handle remains. Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
   Remaining original scope: clearer views and actual whole reviews, E06 asset/
-  behavior, current E10 tiers and reviews, all ten frozen questions/genuine narration,
+  behavior, E10/explanation reviews, all ten frozen questions/genuine narration,
   scoped/MS1 automatic repair, broader seeded QA, capability reconciliation,
   comparable token measurements and final full/benchmark/archive/installed gate.
   Accepted coverage remains0/10; tokens staynull. No ElevenLabs spend, merge,
@@ -299,23 +298,20 @@ still hold before relying on them.
 ### 2026-10-13 — E10 press-point asset and observed ideal-force selectors
 
 - **Agent / branch:** Codex on `codex/mechanism-ms3`, from `8c28428b`.
-- **Done:** Distinct closed near/far pads, cap anchors/shared pivot and attachment
-  witnesses; strict variant/family/camera discovery. Prescribed force models live
-  in pinned QA programs and derive N/meter/N\*m from original captured geometry.
-- **Results:** Final80 units/7 files,4 CLI checks, build/lint/schema/boundary/
-  package declarations pass;2,719 inputs held. Default and notched identities exact.
-- **Retained:** New test used the wrong family-patch result/type references;
-  corrected without weakening geometry/contact/CAS/model guards. Red checks retained.
-- **Results added:** Native2/audit2 pass180 frames/81 images/900 scalars/720 moment
-  quantities/151 pins and default all-frame decoded picture/audio parity on9ba.
-  Native1 layout and audit1 identity failures retained. Fast1 fails one stale E09
-  discovery expectation (4,506/4,507); focused1 and fast2 then failed the second
-  stale variant assertion. f6876f65's focused passed label was erroneous; corrected.
-  Final focused2 actually passes5 with both exact lists fixed; runtime unstarted.
-- **Open / next:** Current complete tiers rerun, visual errors6/14/14 and original
-  E06/MS3 scope. All whole/pilot/genuine listening reviews stay open.
-- **Records:** [Lever candidate](./mechanism-shorts-ms3-lever-results.json).
-  Accepted pilot0/10; no spending, publication or merge.
+- **Done:**9ba870d2 adds closed near/far pads, shared pivot/attachment witnesses,
+  strict variant/camera discovery and calibrated original-capture force selectors.
+- **Results:**80 scoped units/4 CLI/package declarations pass. Native2/audit2 on9ba
+  prove180 frames/81 images/900 scalars/720 ideal moment quantities/151 pins and
+  exact default decoded picture/audio parity. e4a01a42 full tiers3 actually pass:
+  fast4,507/445, runtime253/45, integration322/57, depth14/smoke;2,719 inputs exact.
+- **Retained:** Test result/type failures, layout rejection, canonical/byte audit
+  mismatch, two stale-discovery full failures and first focused failure. f6876f65's
+  focused passed label was erroneous and corrected; final focused5 actually passes.
+- **Open / next:** Visual errors6/14/14; E06 asset/load behavior and original MS3
+  ten-question/genuine narration/whole reviews, repairs, metrics and final gates.
+- **Records:** [Lever results](./mechanism-shorts-ms3-lever-results.json),
+  [E06 primary supplement](./mechanism-shorts-ms2-e06-primary-admission-results.json).
+  Accepted pilot0/10; no spending, publication, merge or Actions change.
 
 ### 2026-10-13 — E10 calibrated ideal moment behavior foundation
 

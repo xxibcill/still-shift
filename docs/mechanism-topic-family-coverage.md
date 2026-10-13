@@ -69,11 +69,14 @@ The generic ratchet's teaching-release state is a reuse hypothesis; the new
 trigger geometry and clearance must prove that no behavior extension is needed.
 The standard cable-tie family guard continues to reject release.
 
-E06 records the primary search excerpt for
-[US3872547A](https://patents.google.com/patent/US3872547A/ca). Full-page access
-failed. Recover its complete figures and description before approving the factual
-variant or building the load-response behavior. The existing scalar tooth lift
-has no load-dependent seating model.
+E06 froze the primary search excerpt for
+[US3872547A](https://patents.google.com/patent/US3872547A/ca). The later
+[primary admission record](./mechanism-shorts-ms2-e06-primary-admission-results.json)
+retains an exact official22-page PDF and relevant rendered figure/description
+pages for cable tie100. This supplements the unchanged frozen board. The separate
+hinged-pawl/frame-stop asset, explicit load-response behavior, independent contact/
+stop/native evidence and factual acceptance remain required. Existing scalar tooth
+lift has no load-dependent seating model.
 
 E07–E09 use only the conventional spring-clamp construction described in
 [US2590881A](https://patents.google.com/patent/US2590881A/en), excluding that

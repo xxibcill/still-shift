@@ -4,7 +4,7 @@
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
   "baseCommit": "8c28428b33395cc701ab8f6b0f4ba32060a18150",
-  "status": "native-independent-passed-second-stale-assertion-repaired-current-tiers-pending",
+  "status": "factory-candidate-current-tiers-native-independent-passed",
   "behaviorFoundation": "docs/mechanism-shorts-ms3-moment-results.json",
   "identity": {
     "sourceSha256": "sha256:d00f6cf8e6605d1d88356a0562b9b82388ce999bb5fab26129b28e833e13991b",
@@ -552,7 +552,6 @@
     }
   ],
   "remaining": [
-    "Current complete fast/runtime rerun after test-only discovery repair.",
     "Final explanation/narration timing and visual findings P0:6/M1:14/M2:14; whole/factual/design/continuous/genuine narration/listening reviews.",
     "E06 and original MS3 repair/capability/ten frozen episode/metrics/final/archive/installed gates."
   ],
@@ -959,5 +958,76 @@
       }
     ],
     "finding": "Both colored pads, labels and common pivot are visible in the selected static/open/return images. No continuous playback/listening/whole/factual/design acceptance. Source lint retains14 sampled visual errors per candidate (12 reading-time,2 frozen-run) and6 for default."
+  },
+  "currentTiers": {
+    "status": "passed",
+    "sourceCommit": "e4a01a420e2b5c36fc66a4d8bcdc137be32ffa68",
+    "startedUtc": "2026-10-13T07:22:57.248993+00:00",
+    "pid": 61581,
+    "inventory": "/private/tmp/still-shift-ms3-lever16-tiers3-inputs.json",
+    "steps": [
+      {
+        "command": ["pnpm", "check:fast"],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T07:22:57.249615+00:00",
+        "endedUtc": "2026-10-13T07:25:11.550568+00:00",
+        "log": "/private/tmp/still-shift-ms3-lever16-tiers3-0.log"
+      },
+      {
+        "command": ["pnpm", "check:runtime"],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T07:25:11.550940+00:00",
+        "endedUtc": "2026-10-13T07:33:47.522254+00:00",
+        "log": "/private/tmp/still-shift-ms3-lever16-tiers3-1.log"
+      }
+    ],
+    "actualExitCode": 0,
+    "endedUtc": "2026-10-13T07:33:47.522680+00:00",
+    "counts": {
+      "unitTests": 4507,
+      "unitFiles": 445,
+      "runtimeTests": 253,
+      "runtimeFiles": 45,
+      "integrationTests": 322,
+      "integrationFiles": 57,
+      "depthTests": 14,
+      "browserSmoke": "completed"
+    },
+    "heldInputFiles": 2719,
+    "heldInputBytes": 121561536,
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-lever16-tiers3.py",
+        "bytes": 1850,
+        "sha256": "sha256:d4863542b42ff3dbe2fc213f7020e3d5c00f996637897cf04f91b7f2be2186d5"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-lever16-tiers3.log",
+        "bytes": 1759,
+        "sha256": "sha256:ba139644b58c4b94ff620197929eb5bd5b2b4415c03a5251507b76654ab40004"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-lever16-tiers3-receipt.json",
+        "bytes": 954,
+        "sha256": "sha256:c993979ee14eb91a97a55cd34ade8b7ab26883e383028794a6bb02992493fa9d"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-lever16-tiers3-inputs.json",
+        "bytes": 464236,
+        "sha256": "sha256:711a56d7e0f89d9d4775cf337f884205d0650d39c421e42edd409ae6010b8e27"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-lever16-tiers3-0.log",
+        "bytes": 43670,
+        "sha256": "sha256:8147639c6eec7aade09f70581294981376acc4adf596f11867a56a42094ff328"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-lever16-tiers3-1.log",
+        "bytes": 41804,
+        "sha256": "sha256:c7420e2b234863787e5221aca137e770e9637d5d60014520091955479cdc8c3c"
+      }
+    ]
   }
 }
