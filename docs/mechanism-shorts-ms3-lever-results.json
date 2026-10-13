@@ -4,7 +4,7 @@
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
   "baseCommit": "8c28428b33395cc701ab8f6b0f4ba32060a18150",
-  "status": "native-independent-passed-fast1-stale-test-failed-rerun-pending",
+  "status": "native-independent-passed-second-stale-assertion-repaired-current-tiers-pending",
   "behaviorFoundation": "docs/mechanism-shorts-ms3-moment-results.json",
   "identity": {
     "sourceSha256": "sha256:d00f6cf8e6605d1d88356a0562b9b82388ce999bb5fab26129b28e833e13991b",
@@ -836,19 +836,101 @@
           "sha256": "sha256:b44f4230bf98aaaf5cba8209d0172e583acdaa18b9a198c7bff3eded040046fa"
         }
       ]
+    },
+    {
+      "status": "failed",
+      "sourceCommit": "f6876f6598457175f2159d9468bde7cea90b77ba",
+      "startedUtc": "2026-10-13T07:17:54.651112+00:00",
+      "pid": 53391,
+      "inventory": "/private/tmp/still-shift-ms3-lever16-tiers2-inputs.json",
+      "steps": [
+        {
+          "command": ["pnpm", "check:fast"],
+          "actualExitCode": 1,
+          "sourceHoldCheckExitCode": 0,
+          "startedUtc": "2026-10-13T07:17:54.651765+00:00",
+          "endedUtc": "2026-10-13T07:20:09.430369+00:00",
+          "log": "/private/tmp/still-shift-ms3-lever16-tiers2-0.log"
+        }
+      ],
+      "actualExitCode": 1,
+      "endedUtc": "2026-10-13T07:20:09.430701+00:00",
+      "passed": 4506,
+      "failed": 1,
+      "unitTests": 4507,
+      "unitFiles": 445,
+      "remainingGroups": "runtime/integration/depth/smoke unstarted",
+      "reason": "Second stale E09 exact variant-list assertion; production source unchanged. Both exact lists are now corrected and focused5 actually passes.",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-tiers2.py",
+          "bytes": 1850,
+          "sha256": "sha256:8c6c870b960538ba2b9793d40774619146c82c349f0083921e6fa89553fd3da2"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-tiers2.log",
+          "bytes": 646,
+          "sha256": "sha256:87123f914c4a9a2fd7ee40a6db1cd10ba0b67ba57c9fc85cb54dbb82dd311f24"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-tiers2-receipt.json",
+          "bytes": 635,
+          "sha256": "sha256:ab940e2e22e2585e177ca3b6c1eb489260e7920c7004001d826efeea25dad239"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-tiers2-inputs.json",
+          "bytes": 464236,
+          "sha256": "sha256:24b001f37bd44f1d89104b1071f2e0491637d22d9c0c72a09e9c3c42d372d1a7"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-tiers2-0.log",
+          "bytes": 45107,
+          "sha256": "sha256:a7d590c07cb47de88d5f2bdb12e29e045bdaa3770b6c92a224d05d4e2dcb117c"
+        }
+      ]
     }
   ],
   "discoveryTestRepair": {
-    "actualExitCode": 0,
-    "tests": 5,
-    "files": [
-      {
-        "path": "/private/tmp/still-shift-ms3-lever16-discovery-fix1.log",
-        "bytes": 1862,
-        "sha256": "sha256:75a4482db417f56fd3174bdc164cb09f84d9699e300b70b9de652445f2f63a3e"
-      }
-    ],
-    "scope": "Exact three peg examples; existing notched/default geometry and CAS guards retained."
+    "firstFocusedAttempt": {
+      "actualExitCode": 1,
+      "passed": 4,
+      "failed": 1,
+      "tests": 5,
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-discovery-fix1.log",
+          "bytes": 1862,
+          "sha256": "sha256:75a4482db417f56fd3174bdc164cb09f84d9699e300b70b9de652445f2f63a3e"
+        }
+      ],
+      "reason": "After the example list was corrected, the next exact variant list still expected two entries."
+    },
+    "finalFocusedAttempt": {
+      "status": "passed",
+      "actualExitCode": 0,
+      "startedUtc": "2026-10-13T07:20:52.493971+00:00",
+      "endedUtc": "2026-10-13T07:20:55.612949+00:00",
+      "testFile": "tests/unit/mechanism-notched-line.test.ts",
+      "tests": 5,
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-discovery-fix2.py",
+          "bytes": 836,
+          "sha256": "sha256:878f12f926c0c26f74b3b509cffe338d278fea4c9d92c7d3df53178c3c8c9b87"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-discovery-fix2.log",
+          "bytes": 461,
+          "sha256": "sha256:fdd7dd09fb8c5493e69273cee94c926a810a2b21a503188f2fb4fc11cac7b956"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-lever16-discovery-fix2-receipt.json",
+          "bytes": 209,
+          "sha256": "sha256:394fbeae19185128e07d5504e2132896f2ad3f0105715dfced9aebd6f1162897"
+        }
+      ]
+    },
+    "recordCorrection": "The f6876f65 handoff incorrectly labeled the first focused attempt as passed. Its actual failed log is now recorded; no uninterrupted pass is claimed. Both complete exact lists now include all three peg entries."
   },
   "nativeImplementationPreservationAfterTestRepair": {
     "changedInputs": ["tests/unit/mechanism-notched-line.test.ts"],

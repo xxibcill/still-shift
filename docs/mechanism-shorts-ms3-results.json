@@ -659,7 +659,7 @@
     {
       "id": "ideal-lever16",
       "record": "docs/mechanism-shorts-ms3-lever-results.json",
-      "status": "native-independent-passed-fast1-stale-test-failed-rerun-pending",
+      "status": "native-independent-passed-second-stale-assertion-repaired-current-tiers-pending",
       "owningTests": 11,
       "scopedUnitTests": 80,
       "scopedUnitFiles": 7,

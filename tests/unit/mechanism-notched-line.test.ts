@@ -144,6 +144,7 @@ describe("notched jaws and round-line candidate", () => {
     expect(registry.variants.map((v) => v.id)).toEqual([
       "wood-arms-central-spring-cloth",
       "notched-line",
+      "ideal-lever-press-points",
     ]);
     expect(registry.variants[1]).toMatchObject({
       parameterSchema: "notched-line-parameters",

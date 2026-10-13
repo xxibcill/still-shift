@@ -96,7 +96,10 @@ still hold before relying on them.
   quantities/151 pins and exact default decoded picture/audio parity on9ba870d2.
   Native1 safe-area and audit1 canonical/byte identity failures are retained.
   Full fast1 ends4,506/4,507 with one stale E09 discovery test; runtime unstarted.
-  Test-only exact-list repair passes5 checks; current complete rerun remains next.
+  First focused list repair actually failed the next stale variant assertion;
+  its f6876f65 passed label was wrong and is corrected in the record. Fast2 also
+  failed4,506/4,507; runtime unstarted. Both exact lists now include3 peg entries;
+  final focused5 has an actual0 receipt. Current complete rerun remains next.
   Visual errors P0:6/M1:14/M2:14 and all whole/pilot reviews remain open.
   No active prior native handle remains. Each later source has its own binding;
   prior E02/native10 gates are not relabeled as current-source verification.
@@ -306,7 +309,9 @@ still hold before relying on them.
 - **Results added:** Native2/audit2 pass180 frames/81 images/900 scalars/720 moment
   quantities/151 pins and default all-frame decoded picture/audio parity on9ba.
   Native1 layout and audit1 identity failures retained. Fast1 fails one stale E09
-  discovery expectation (4,506/4,507); test-only repair5 passes, runtime unstarted.
+  discovery expectation (4,506/4,507); focused1 and fast2 then failed the second
+  stale variant assertion. f6876f65's focused passed label was erroneous; corrected.
+  Final focused2 actually passes5 with both exact lists fixed; runtime unstarted.
 - **Open / next:** Current complete tiers rerun, visual errors6/14/14 and original
   E06/MS3 scope. All whole/pilot/genuine listening reviews stay open.
 - **Records:** [Lever candidate](./mechanism-shorts-ms3-lever-results.json).
