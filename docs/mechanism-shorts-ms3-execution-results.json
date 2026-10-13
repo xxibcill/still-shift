@@ -4,7 +4,7 @@
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
   "baseCommit": "6386d619",
-  "status": "declarative-queue-run-scoped-verified-current-complete-tiers-and-native-cli-recovery-pending",
+  "status": "complete-current-fast-passed-runtime-running-native-cli-faults-pending",
   "sourceSnapshot": [
     {
       "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-projects.ts",
@@ -310,8 +310,57 @@
   ],
   "qualification": "Three actual family inputs and current native identity are inspected by CLI creation without capture. Run/resume/failure/signal controls use an explicitly declared fixture adapter and owned callback invocation; no actual native CLI execution/OS interruption/cancellation/recovery acceptance is claimed. Earlier QA7 current source6080 has its separate native/independent proof. New source needs current complete tiers and actual native CLI fault/recovery evidence.",
   "remaining": [
-    "Complete current fast/runtime tiers and actual native CLI execution, SIGKILL/SIGTERM, corruption, missing audio, export failure, relocation and recovery.",
+    "Current runtime/session9677 terminal, then actual native CLI execution/OS faults: SIGKILL/SIGTERM, corruption, missing audio, export failure, relocation and recovery. Complete fast4448 now passes on exact79f3 source.",
     "Explicit bounded targeted retry/CAS workflow for repaired permanent inputs; preserve valid neighboring products and review history.",
     "All original MS3 unified review/analytic/continuous/fault/scoped/MS1 repair and ten-episode/five-assets/two-behaviors/genuine-input/pilot/capability/final-gate/archive/installed work."
+  ],
+  "committedSource": "79f3c3f20205ef64c892acf36077d81bd666ac02",
+  "completeFast": {
+    "status": "passed",
+    "command": "pnpm check:fast",
+    "sourceCommit": "79f3c3f20205ef64c892acf36077d81bd666ac02",
+    "startedUtc": "2026-10-13T01:06:18.864602+00:00",
+    "pid": 73177,
+    "inventory": "/private/tmp/still-shift-ms3-execution8-fast1-inputs.json",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-13T01:08:27.443663+00:00",
+    "session": 48129,
+    "unitTests": 4448,
+    "unitFiles": 439,
+    "unitSeconds": 65.6,
+    "heldInputFiles": 2698,
+    "heldInputBytes": 121356886,
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-execution8-fast1.log",
+        "bytes": 42278,
+        "sha256": "sha256:5a111dcf9834409dac732dde4dd2c799b0c24a6331a936dd8eaaa16a09c4c556"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-execution8-fast1-receipt.json",
+        "bytes": 368,
+        "sha256": "sha256:0620852569c9c2726dbad79d6931d2366987fe9f1f9af333fe7b26bae63ffe5f"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-execution8-fast1-inputs.json",
+        "bytes": 460581,
+        "sha256": "sha256:e589ba224fcb3dbbdceb6fceb7a9fa7c7576e12793fb6cee94afaf5b73bf3804"
+      }
+    ]
+  },
+  "runtimeAttempts": [
+    {
+      "status": "running",
+      "command": "pnpm check:runtime",
+      "sourceCommit": "79f3c3f20205ef64c892acf36077d81bd666ac02",
+      "startedUtc": "2026-10-13T01:09:57.594327+00:00",
+      "pid": 78927,
+      "inventory": "/private/tmp/still-shift-ms3-execution8-runtime1-inputs.json",
+      "actualExitCode": null,
+      "session": 9677,
+      "logPath": "/private/tmp/still-shift-ms3-execution8-runtime1.log",
+      "resume": "Poll session9677; if handle has closed, inspect final receipt/log. Do not restart a confirmed live run. No current runtime terminal pass yet."
+    }
   ]
 }

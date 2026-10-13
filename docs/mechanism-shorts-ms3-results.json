@@ -3,7 +3,7 @@
   "milestone": "MS3",
   "date": "2026-10-13",
   "branch": "codex/mechanism-ms3",
-  "status": "in-progress-declarative-execution-code-scoped-verified",
+  "status": "in-progress-declarative-fast-passed-runtime-running",
   "baseMain": "57967fa6497249d75e740ba837b8e2687cc81a98",
   "ms2Prerequisite": {
     "commit": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
@@ -449,9 +449,21 @@
     {
       "id": "declarative-execution8",
       "record": "docs/mechanism-shorts-ms3-execution-results.json",
-      "status": "declarative-queue-run-scoped-verified-current-complete-tiers-and-native-cli-recovery-pending",
+      "status": "complete-current-fast-passed-runtime-running-native-cli-faults-pending",
       "focusedTests": 37,
-      "qualification": "Three actual family inputs and current native identity are inspected by CLI creation without capture. Run/resume/failure/signal controls use an explicitly declared fixture adapter and owned callback invocation; no actual native CLI execution/OS interruption/cancellation/recovery acceptance is claimed. Earlier QA7 current source6080 has its separate native/independent proof. New source needs current complete tiers and actual native CLI fault/recovery evidence."
+      "qualification": "Three actual family inputs and current native identity are inspected by CLI creation without capture. Run/resume/failure/signal controls use an explicitly declared fixture adapter and owned callback invocation; no actual native CLI execution/OS interruption/cancellation/recovery acceptance is claimed. Earlier QA7 current source6080 has its separate native/independent proof. New source needs current complete tiers and actual native CLI fault/recovery evidence.",
+      "completeFast": {
+        "sourceCommit": "79f3c3f20205ef64c892acf36077d81bd666ac02",
+        "unitTests": 4448,
+        "heldInputFiles": 2698,
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0
+      },
+      "currentRuntime": {
+        "status": "running",
+        "session": 9677,
+        "sourceCommit": "79f3c3f20205ef64c892acf36077d81bd666ac02"
+      }
     }
   ],
   "targets": {

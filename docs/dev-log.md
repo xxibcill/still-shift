@@ -59,7 +59,9 @@ still hold before relying on them.
   37 owning checks plus build/lint/schema/boundary/declaration preflight. Three
   real family inputs are pinned without capture; execution/failure/signal tests
   use a declared fixture adapter. One lint failure is retained. New source still
-  requires complete fast/runtime and real native CLI faults/recovery. Explicit
+  passes complete fast (4,448 tests / 439 files), with 2,698 exact inputs.
+  Runtime is live under session 9677, code source `79f3c3f2`; real native CLI
+  faults/recovery remain pending. Explicit
   bounded retry, interruption/cancel/corrupt/relocation remain pending. Scoped/MS1 repair, ten frozen questions,
   five assets/two behaviors, genuine inputs/reviews, capability reconciliation
   and final full/archive/installed verification remain. Coverage is 0/10; no
@@ -266,8 +268,10 @@ still hold before relying on them.
 - **Scope:** actual three-family creation pins inputs without capture. Execution,
   failure and cancellation controls use a fixture adapter/owned callback only;
   real native CLI/OS faults and current complete tiers are pending.
-- **Next:** commit and complete fast/runtime, then targeted bounded retry and real
-  native fault/recovery proof. Original MS3 assets/behaviors/pilot/final gates remain.
+- **Checkpoint:** committed/pushed `79f3c3f2`; complete fast4,448/439 exits0/hold0
+  with2,698 inputs/121,356,886B exact. Runtime/session9677 is live on the same
+  source; poll its handle/receipt without restarting. Real native CLI faults and
+  targeted retry remain next. Original MS3 assets/behaviors/pilot/final gates remain.
 - **Records:** [execution evidence](./mechanism-shorts-ms3-execution-results.json),
   [queue commands](./mechanism-production-queue.md), [QA7 proof](./mechanism-shorts-ms3-qa-results.json).
 
