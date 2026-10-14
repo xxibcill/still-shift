@@ -15,6 +15,7 @@ import {
   readBlenderEpisode,
   type BlenderProductionProjectInput,
 } from "./blender-episode-inputs.ts";
+import { readBlenderEpisodeAnchorFrames } from "./blender-episode-annotations.ts";
 import { composeBlenderEpisode } from "./blender-episode-compile.ts";
 import {
   prepareBlenderEpisodePlates,
@@ -163,20 +164,34 @@ export async function createBlenderProductionExecutor(options: {
         4 * 1024 * 1024,
         true,
       );
-      await writeProductionJSON(
-        compositionPath,
-        composeBlenderEpisode(
-          compiled,
-          sequence(context.outputRoot, map, compiled),
-        ),
+      const anchors = await readBlenderEpisodeAnchorFrames(
+        compiled,
+        map,
+        identity,
+        context.outputRoot,
         context.nodeMemory,
-        1024 * 1024,
-        true,
+        context.signal,
       );
+      try {
+        await writeProductionJSON(
+          compositionPath,
+          composeBlenderEpisode(
+            compiled,
+            sequence(context.outputRoot, map, compiled),
+            anchors.frames,
+          ),
+          context.nodeMemory,
+          1024 * 1024,
+          true,
+        );
+      } finally {
+        anchors.release();
+      }
       await context.progress("native-blender-composition-export");
       await renderComposition({
         compositionPath,
         outputPath,
+        cacheDirectory: join(context.attemptDirectory, "receiver-cache"),
         backend: "webgl2",
         transport: "raw_rgba",
         workers: 1,
@@ -414,18 +429,31 @@ export async function createBlenderProductionExecutor(options: {
           context.nodeMemory,
           context.signal,
         );
-        if (
-          mechanismPackHash(composition.value) !==
-          mechanismPackHash(
-            composeBlenderEpisode(
-              compiled,
-              sequence(context.outputRoot, map.value, compiled),
-            ),
+        const anchors = await readBlenderEpisodeAnchorFrames(
+          compiled,
+          map.value,
+          identity,
+          context.outputRoot,
+          context.nodeMemory,
+          context.signal,
+        );
+        try {
+          if (
+            mechanismPackHash(composition.value) !==
+            mechanismPackHash(
+              composeBlenderEpisode(
+                compiled,
+                sequence(context.outputRoot, map.value, compiled),
+                anchors.frames,
+              ),
+            )
           )
-        )
-          throw Error(
-            "Native saved composition differs from its current episode plan",
-          );
+            throw Error(
+              "Native saved composition differs from its current episode plan",
+            );
+        } finally {
+          anchors.release();
+        }
         const visual = await evaluateBlenderProductionVisualQA({
           compiled,
           map: map.value,

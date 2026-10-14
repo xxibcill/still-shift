@@ -174,6 +174,7 @@ export { captureBlenderAsset } from "./mechanism/blender-capture.ts";
 export {
   BlenderCaptureJobSchema,
   BlenderCameraFramingSchema,
+  BlenderHighlightsSchema,
   parseBlenderCaptureJob,
   BLENDER_CAPTURE_LIMITS,
   type BlenderCaptureJob,
@@ -190,3 +191,8 @@ export * from "./mechanism/blender-production-qa-contract.ts";
 export * from "./mechanism/blender-production-qa.ts";
 
 export * from "./mechanism/blender-production-visual.ts";
+
+export {
+  readBlenderEpisodeAnchorFrames,
+  type BlenderAnchorFrames,
+} from "./mechanism/blender-episode-annotations.ts";

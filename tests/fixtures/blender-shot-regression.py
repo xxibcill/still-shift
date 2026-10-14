@@ -44,6 +44,16 @@ for name, location in [("shell", (-0.5, 0, 0)), ("cutaway", (0.5, 0, 0))]:
     variable.type = "SINGLE_PROP"
     variable.targets[0].id = controller
     variable.targets[0].data_path = '["input"]' if name == "shell" else '["hide_cutaway"]'
+original_material = bpy.data.materials.new("original-neutral")
+original_material.use_nodes = True
+original_shader = original_material.node_tree.nodes["Principled BSDF"]
+original_shader.inputs["Emission Color"].default_value = (0.3, 0.3, 0.3, 1)
+original_shader.inputs["Emission Strength"].default_value = 0.2
+bpy.data.objects["shell"].data.materials.append(original_material)
+bpy.data.objects["cutaway"].data = bpy.data.objects["shell"].data
+anchor = bpy.data.objects.new("anchor.fixed", None)
+collection.objects.link(anchor)
+anchor.location = (-0.5, 0, 0)
 cameras = {}
 for name, kind in [("camera.main", "ORTHO"), ("camera.perspective", "PERSP")]:
     data = bpy.data.cameras.new(name)
@@ -77,6 +87,8 @@ def frame(camera, value=0.0, framing=None, hidden=None, shown=None):
         "controls": {"input": value},
         "hiddenParts": hidden or [],
         "shownParts": shown or [],
+        "anchors": ["anchor.fixed", "shell", "cutaway"],
+        "highlights": {},
     }
     if framing:
         value["framing"] = framing
@@ -104,6 +116,8 @@ frames = [
     ),
     frame("camera.perspective"),
 ]
+frames[1]["highlights"] = {"cutaway": "#0099ff"}
+frames[3]["highlights"] = {"shell": "#ff3300"}
 job = {
     "schemaVersion": "blender-native-capture-job-1",
     "id": "shot-regression",
@@ -137,9 +151,37 @@ for index, request in enumerate(frames):
         assert visible == {"cutaway": False, "shell": True}
     else:
         assert visible == {"cutaway": False, "shell": True}
-    records.append({"frame": index, "camera": actual, "visible": visible})
+    assert observation["highlights"] == request["highlights"]
+    assert observation["anchors"]["anchor.fixed"]["kind"] == "object-origin"
+    assert observation["anchors"]["shell"]["kind"] == "evaluated-bounds-center"
+    if index in [0, 1, 2, 3]:
+        image = bpy.data.images.load(
+            str(root / "capture/frames" / f"frame-{index:06d}.png"), check_existing=False
+        )
+        px, py = observation["anchors"]["cutaway" if index == 1 else "shell"]["pixel"]
+        x, y = int(px), image.size[1] - 1 - int(py)
+        color = list(image.pixels[(y * image.size[0] + x) * 4 : (y * image.size[0] + x) * 4 + 4])
+        if index == 1:
+            assert color[2] > 2 * color[0] and color[2] > 0.01, color
+        elif index == 3:
+            assert color[0] > 2 * color[2] and color[0] > 0.01, color
+        else:
+            assert abs(color[0] - color[2]) < 0.02 and color[3] > 0.9, color
+        bpy.data.images.remove(image)
+    records.append(
+        {
+            "frame": index,
+            "camera": actual,
+            "visible": visible,
+            "highlights": observation["highlights"],
+            "anchors": observation["anchors"],
+        }
+    )
 assert worker.digest_file(asset) == source_hash
 bpy.ops.wm.open_mainfile(filepath=str(asset), load_ui=False)
+assert bpy.data.objects["shell"].data == bpy.data.objects["cutaway"].data
+assert bpy.data.objects["shell"].material_slots[0].material.name == "original-neutral"
+assert bpy.data.objects["cutaway"].material_slots[0].material.name == "original-neutral"
 for name in ["camera.main", "camera.perspective"]:
     data = bpy.data.objects[name].data
     assert data.ortho_scale == 4 and data.lens == 50 and data.shift_x == data.shift_y == 0

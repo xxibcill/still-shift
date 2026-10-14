@@ -16,6 +16,7 @@ import {
   BlenderEpisodePlatesSchema,
   checkBlenderEpisodePlates,
   blenderEpisodePlateKey,
+  readBlenderEpisodeAnchorFrames,
   type BlenderProductionIdentity,
 } from "@still-shift/animation-engine";
 import {
@@ -28,6 +29,7 @@ import { mechanismPackHash } from "../../packages/animation-engine/src/mechanism
 
 async function nativeFixture(
   options: {
+    callout?: boolean;
     shot?: {
       framing?: { orthoScale: number; shiftX?: number };
       shownParts?: string[];
@@ -55,6 +57,23 @@ async function nativeFixture(
     },
   ];
   Object.assign(plan.shots[0]!, options.shot);
+  if (options.callout)
+    Object.assign(plan, {
+      callouts: [
+        {
+          id: "cup",
+          text: "Cup",
+          shot: "held",
+          anchor: "anchor.cup",
+          part: "cup",
+          start: 0,
+          endExclusive: 60,
+          position: [0.3, 0.2],
+          color: "#ffc14a",
+          controlRanges: {},
+        },
+      ],
+    });
   const compiled = compileBlenderEpisode(blenderEpisodeSource(), plan);
   const pin = async (path: string, content: string) => {
     const bytes = Buffer.from(content);
@@ -103,6 +122,17 @@ async function nativeFixture(
       },
       requestedControls: job.frames[0]!.controls,
       actualControls: job.frames[0]!.controls,
+      anchors: options.callout
+        ? {
+            "anchor.cup": {
+              kind: "object-origin",
+              world: [0, 0, 0],
+              pixel: [100, 200],
+              depth: 5,
+              inFrame: true,
+            },
+          }
+        : {},
       parts: options.parts ?? [],
     }),
   );
@@ -174,6 +204,54 @@ async function nativeFixture(
   return { root, compiled, identity, map };
 }
 describe("native frame dependency closure", () => {
+  it("retains authenticated same-state label projections under the caller allowance and rejects changed records", async () => {
+    const f = await nativeFixture({
+        callout: true,
+        parts: [{ name: "cup", visible: true }],
+      }),
+      parent = new CompositionNodeMemory(),
+      foreign = parent.reserve(1024),
+      owner = new CompositionNodeMemory(parent),
+      before = parent.availableBytes;
+    try {
+      const data = await readBlenderEpisodeAnchorFrames(
+        f.compiled,
+        f.map as unknown as Parameters<
+          typeof readBlenderEpisodeAnchorFrames
+        >[1],
+        f.identity,
+        f.root,
+        owner,
+      );
+      expect(data.frames).toHaveLength(60);
+      expect(data.frames[17]).toMatchObject({
+        anchors: { "anchor.cup": { pixel: [100, 200] } },
+        partVisibility: { cup: true },
+      });
+      expect(parent.availableBytes).toBeLessThan(before);
+      data.release();
+      expect(parent.availableBytes).toBe(before);
+      await writeFile(join(f.root, "capture/observation.json"), "changed");
+      await expect(
+        readBlenderEpisodeAnchorFrames(
+          f.compiled,
+          f.map as unknown as Parameters<
+            typeof readBlenderEpisodeAnchorFrames
+          >[1],
+          f.identity,
+          f.root,
+          owner,
+        ),
+      ).rejects.toBeDefined();
+      expect(parent.availableBytes).toBe(before);
+      expect(foreign.active).toBe(true);
+    } finally {
+      owner.dispose();
+      parent.dispose();
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
+
   it("authenticates requested projection and explicit cutaway states against retained observations", async () => {
     for (const fault of [
       "none",

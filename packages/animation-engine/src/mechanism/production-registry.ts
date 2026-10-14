@@ -169,6 +169,16 @@ export function inspectMechanismProductionCapabilities() {
         "per-state-producer-profile-and-native-source-key-with-original-pins",
       nativeCounterEvidence:
         "sealed-original-Blender-capture-submission-receipts",
+      annotations: {
+        highlights:
+          "bounded-temporary-per-part-materials-original-slots-restored",
+        anchorKinds: ["saved-object-origin", "evaluated-part-bounds-center"],
+        labels: "native-editable-text-and-same-state-captured-leaders",
+        labelEdits:
+          "reuse-native-states-when-queries-highlights-and-poses-match",
+        sourceStates: "declared-control-range-checks-and-current-render-flags",
+        physicalVisibility: "not-inferred-from-projection-or-flags",
+      },
       technicalChecks:
         "canonical-input-pins-current-capture-controls-cameras-full-RGBA-PCM-decode",
       qa: {
@@ -260,7 +270,14 @@ ${c.nativeBlenderExecutor.captureLimits.pixels} pixels. Episode plans allow
 ${c.nativeBlenderExecutor.episodeLimits.shots} shots and
 ${c.nativeBlenderExecutor.episodeLimits.speechCues} speech cues in
 ${c.nativeBlenderExecutor.episodeLimits.documentBytes} bytes. These are candidate
-technical lifecycle limits. Optional native \`qaPath\` declarations pin bounded
+technical lifecycle limits. Native annotations allow
+${c.nativeBlenderExecutor.episodeLimits.callouts} labels,
+${c.nativeBlenderExecutor.episodeLimits.calloutSamples} active label samples,
+${c.nativeBlenderExecutor.episodeLimits.simultaneousCallouts} simultaneous labels and
+${c.nativeBlenderExecutor.captureLimits.highlights} highlight colors per native job.
+Labels follow saved object origins or actual evaluated part bounds centers;
+projection/render flags do not approve visible surface contact. Text/placement
+edits reuse matching native states. Optional native \`qaPath\` declarations pin bounded
 observation selectors and registered interval programs. Native QA limits are
 ${c.nativeBlenderExecutor.qa.limits.planBytes} plan bytes,
 ${c.nativeBlenderExecutor.qa.limits.factsBytes} facts bytes,

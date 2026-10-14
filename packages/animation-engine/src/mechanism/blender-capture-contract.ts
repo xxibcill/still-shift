@@ -6,6 +6,8 @@ export const BLENDER_CAPTURE_LIMITS = Object.freeze({
   frames: 2000,
   controls: 64,
   hiddenParts: 128,
+  highlights: 32,
+  anchors: 64,
   dimension: 4096,
   pixels: 8_388_608,
 });
@@ -16,6 +18,18 @@ const name = z
   .refine((s) => !s.includes("\0"));
 const number = z.number().finite().min(-1e6).max(1e6);
 const limits = BLENDER_CAPTURE_LIMITS;
+export const BlenderProjectedAnchorSchema = z
+  .object({
+    kind: z.enum(["object-origin", "evaluated-bounds-center"]),
+    world: z.tuple([number, number, number]),
+    pixel: z.tuple([number, number]),
+    depth: number,
+    inFrame: z.boolean(),
+  })
+  .strict();
+export const BlenderHighlightsSchema = z
+  .record(name, z.string().regex(/^#[0-9a-fA-F]{6}$/))
+  .refine((v) => Object.keys(v).length <= limits.highlights);
 export const BlenderCameraFramingSchema = z
   .object({
     orthoScale: z.number().finite().min(0.0001).max(10000).optional(),
@@ -66,6 +80,8 @@ export const BlenderCaptureJobSchema = z
             sourceFrame: z.number().finite().min(0).max(108000),
             camera: name.optional(),
             framing: BlenderCameraFramingSchema.optional(),
+            highlights: BlenderHighlightsSchema.default({}),
+            anchors: z.array(name).max(limits.anchors).default([]),
             controls: z.record(name, number).default({}),
             hiddenParts: z.array(name).max(limits.hiddenParts).default([]),
             shownParts: z.array(name).max(limits.hiddenParts).default([]),
@@ -83,6 +99,15 @@ export const BlenderCaptureJobSchema = z
         message: "Capture pixel budget exceeded",
         path: ["width"],
       });
+    if (
+      new Set(job.frames.flatMap((frame) => Object.values(frame.highlights)))
+        .size > limits.highlights
+    )
+      context.addIssue({
+        code: "custom",
+        message: "Native highlight palette budget exceeded",
+        path: ["frames"],
+      });
     const properties = job.controller?.properties ?? {};
     if (Object.keys(properties).length > limits.controls)
       context.addIssue({
@@ -98,6 +123,18 @@ export const BlenderCaptureJobSchema = z
           path: ["controller", "properties", key],
         });
     for (const [index, frame] of job.frames.entries()) {
+      if (
+        new Set(frame.anchors).size !== frame.anchors.length ||
+        Object.keys(frame.highlights).some((name) =>
+          frame.hiddenParts.includes(name),
+        )
+      )
+        context.addIssue({
+          code: "custom",
+          message:
+            "Anchors must be distinct and highlights cannot name hidden parts",
+          path: ["frames", index],
+        });
       if (
         new Set(frame.hiddenParts).size !== frame.hiddenParts.length ||
         new Set(frame.shownParts).size !== frame.shownParts.length ||

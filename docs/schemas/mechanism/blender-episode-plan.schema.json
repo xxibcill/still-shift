@@ -153,6 +153,19 @@
             },
             "additionalProperties": false
           },
+          "highlights": {
+            "default": {},
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "additionalProperties": {
+              "type": "string",
+              "pattern": "^#[0-9a-fA-F]{6}$"
+            }
+          },
           "hiddenParts": {
             "maxItems": 128,
             "type": "array",
@@ -170,8 +183,73 @@
           "start",
           "endExclusive",
           "camera",
+          "highlights",
           "hiddenParts",
           "shownParts"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "callouts": {
+      "default": [],
+      "maxItems": 64,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "text": { "type": "string", "minLength": 1, "maxLength": 80 },
+          "shot": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "anchor": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "part": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "start": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "endExclusive": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 9007199254740991
+          },
+          "position": {
+            "type": "array",
+            "prefixItems": [
+              { "type": "number", "minimum": 0.04, "maximum": 0.96 },
+              { "type": "number", "minimum": 0.04, "maximum": 0.7 }
+            ]
+          },
+          "color": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+          "controlRanges": {
+            "default": {},
+            "type": "object",
+            "propertyNames": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "additionalProperties": {
+              "type": "object",
+              "properties": {
+                "min": { "type": "number" },
+                "max": { "type": "number" }
+              },
+              "required": ["min", "max"],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "text",
+          "shot",
+          "anchor",
+          "part",
+          "start",
+          "endExclusive",
+          "position",
+          "color",
+          "controlRanges"
         ],
         "additionalProperties": false
       }
@@ -216,6 +294,7 @@
     "sourceFrameTrack",
     "controlTracks",
     "shots",
+    "callouts",
     "speech"
   ],
   "additionalProperties": false

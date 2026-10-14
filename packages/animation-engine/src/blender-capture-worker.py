@@ -138,6 +138,53 @@ def apply_camera_framing(camera, framing):
     camera.data.update_tag()
 
 
+def highlight_material(color):
+    import bpy
+
+    values = [int(color[index : index + 2], 16) / 255 for index in [1, 3, 5]]
+    linear = [v / 12.92 if v <= 0.04045 else ((v + 0.055) / 1.055) ** 2.4 for v in values]
+    material = bpy.data.materials.new("capture-highlight-" + color[1:])
+    material.use_nodes = True
+    material.diffuse_color = (*linear, 1)
+    shader = material.node_tree.nodes["Principled BSDF"]
+    shader.inputs["Base Color"].default_value = (*linear, 1)
+    shader.inputs["Metallic"].default_value = 0.15
+    shader.inputs["Roughness"].default_value = 0.35
+    shader.inputs["Emission Color"].default_value = (*linear, 1)
+    shader.inputs["Emission Strength"].default_value = 0.2
+    return material
+
+
+def project_anchors(names, objects, parts, graph, scene, camera, width, height):
+    from bpy_extras.object_utils import world_to_camera_view
+    from mathutils import Vector
+
+    surfaces = {part["name"]: part for part in parts}
+    result = {}
+    for name in names:
+        obj = objects[name]
+        if obj.type in {"MESH", "CURVE", "SURFACE"}:
+            bounds = surfaces.get(name, {}).get("worldBounds")
+            if bounds is None:
+                raise ValueError("Native part anchor lacks evaluated bounds: " + name)
+            world = Vector([(a + b) / 2 for a, b in zip(bounds["min"], bounds["max"])])
+            kind = "evaluated-bounds-center"
+        else:
+            world = obj.evaluated_get(graph).matrix_world.translation
+            kind = "object-origin"
+        point = world_to_camera_view(scene, camera, world)
+        result[name] = {
+            "kind": kind,
+            "world": list(world),
+            "pixel": [point.x * width, (1 - point.y) * height],
+            "depth": point.z,
+            "inFrame": 0 <= point.x <= 1
+            and 0 <= point.y <= 1
+            and camera.data.clip_start <= point.z <= camera.data.clip_end,
+        }
+    return result
+
+
 def execute(job, job_path):
     import bpy
 
@@ -185,7 +232,21 @@ def execute(job, job_path):
                 raise ValueError("Declared native numeric property is absent: " + key)
         prepare_controller(controller, contract["properties"])
     framed_data = {}
+    highlighted = {name for frame in job["frames"] for name in frame["highlights"]}
+    colors = {color for frame in job["frames"] for color in frame["highlights"].values()}
+    materials = {color: highlight_material(color) for color in sorted(colors)}
+    material_slots = {}
+    for name in highlighted:
+        obj = objects.get(name)
+        if obj is None or obj.type not in {"MESH", "CURVE", "SURFACE"}:
+            raise ValueError("Highlight requires a native surface part: " + name)
+        if not obj.material_slots:
+            obj.data = obj.data.copy()
+            obj.data.materials.append(None)
+        material_slots[name] = [(slot.link, slot.material) for slot in obj.material_slots]
     for frame in job["frames"]:
+        if any(name not in objects for name in frame["anchors"]):
+            raise ValueError("Anchor must belong to the native asset collection")
         if any(name not in objects for name in [*frame["hiddenParts"], *frame["shownParts"]]):
             raise ValueError("Visibility override must belong to the native asset collection")
         view = cameras[frame.get("camera", job["camera"])]
@@ -219,6 +280,10 @@ def execute(job, job_path):
     scene.render.film_transparent = True
     records = []
     for index, requested in enumerate(job["frames"]):
+        for name, slots in material_slots.items():
+            for slot, (link, material) in zip(objects[name].material_slots, slots):
+                slot.link = link
+                slot.material = material
         for data, projection in framed_data.items():
             for key, value in projection.items():
                 setattr(data, CAMERA_PROJECTION_FIELDS[key], value)
@@ -244,6 +309,12 @@ def execute(job, job_path):
                         if driver.data_path == "hide_render":
                             driver.mute = True
                 obj.hide_render = hidden
+        for name, color in requested["highlights"].items():
+            for slot in objects[name].material_slots:
+                slot.link = "OBJECT"
+                slot.material = materials[color]
+            objects[name].update_tag()
+        bpy.context.view_layer.update()
         image = frames_directory / ("frame-" + str(index).zfill(6) + ".png")
         scene.render.filepath = str(image)
         bpy.ops.render.render(write_still=True)
@@ -275,6 +346,23 @@ def execute(job, job_path):
                 if controller
                 else {},
                 "parts": parts,
+                "highlights": {
+                    name: color
+                    for name, color in requested["highlights"].items()
+                    if all(
+                        slot.material == materials[color] for slot in objects[name].material_slots
+                    )
+                },
+                "anchors": project_anchors(
+                    requested["anchors"],
+                    objects,
+                    parts,
+                    graph,
+                    scene,
+                    camera,
+                    job["width"],
+                    job["height"],
+                ),
                 "scope": (
                     "Actual native evaluated surface hashes/matrices/bounds after rendering. "
                     "No inferred contact, visibility, force, continuous or factual approval."

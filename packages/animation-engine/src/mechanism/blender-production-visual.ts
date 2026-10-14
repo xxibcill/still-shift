@@ -64,7 +64,7 @@ export function admitBlenderProductionVisualWork(
     frameCount > 2000 ||
     !Number.isSafeInteger(layers) ||
     layers < 1 ||
-    layers > 514
+    layers > 706
   )
     throw Error("Native visual QA requires bounded episode frame/layer counts");
   const layerFrames = frameCount * layers,
@@ -424,6 +424,7 @@ export async function evaluateBlenderProductionVisualQA(input: {
     let quality;
     try {
       quality = await lintCompositionFile(sourcePath, speech.evaluatedPolicy, {
+        cacheDirectory: join(artifactDirectory, "receiver-cache"),
         backend: "webgl2",
         pixels: true,
         collectTextBounds: true,

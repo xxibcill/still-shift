@@ -7,7 +7,10 @@ import type { CompositionNodeMemory } from "@still-shift/execution-runtime/expor
 import { isCompositionNodeCapacityError } from "@still-shift/execution-runtime/export";
 import { acquireArtifactLock } from "@still-shift/execution-runtime/locks";
 import { MechanismProductionOwnedFileSchema } from "./production-queue-contract.ts";
-import { BlenderCaptureJobSchema } from "./blender-capture-contract.ts";
+import {
+  BlenderCaptureJobSchema,
+  BlenderProjectedAnchorSchema,
+} from "./blender-capture-contract.ts";
 import { captureBlenderAsset } from "./blender-capture.ts";
 import {
   readProductionJSON,
@@ -91,6 +94,8 @@ const observation = z
       .passthrough(),
     requestedControls: z.record(z.string(), z.number().finite()),
     actualControls: z.record(z.string(), z.number().finite()),
+    highlights: z.record(z.string(), z.string()).default({}),
+    anchors: z.record(z.string(), BlenderProjectedAnchorSchema).default({}),
     parts: z.array(z.unknown()).max(2048),
   })
   .passthrough();
@@ -144,6 +149,7 @@ export function blenderEpisodePlateKey(
       camera: frame.camera ?? job.camera,
       hiddenParts: [...frame.hiddenParts].sort(),
       shownParts: [...frame.shownParts].sort(),
+      anchors: [...frame.anchors].sort(),
     },
   });
 }
@@ -331,6 +337,15 @@ function reader(
               "Actual native camera framing differs from the frozen request",
             );
         }
+        if (
+          mechanismPackHash(facts.value.highlights) !==
+            mechanismPackHash(frame.highlights) ||
+          JSON.stringify(Object.keys(facts.value.anchors).sort()) !==
+            JSON.stringify([...frame.anchors].sort())
+        )
+          throw Error(
+            "Actual native highlights/anchors differ from the frozen request",
+          );
         if (frame.hiddenParts.length || frame.shownParts.length) {
           const part = z
             .object({ name: z.string(), visible: z.boolean() })

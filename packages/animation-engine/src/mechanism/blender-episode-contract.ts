@@ -8,6 +8,7 @@ import {
   BlenderCaptureJobSchema,
   BLENDER_CAPTURE_LIMITS,
   BlenderCameraFramingSchema,
+  BlenderHighlightsSchema,
 } from "./blender-capture-contract.ts";
 import { MechanismProductionFileSchema } from "./production-queue-contract.ts";
 
@@ -17,6 +18,10 @@ export const BLENDER_EPISODE_LIMITS = Object.freeze({
   shots: 128,
   speechCues: 256,
   keysPerTrack: 256,
+  callouts: 64,
+  calloutSamples: 4096,
+  simultaneousCallouts: 4,
+  calloutControlRanges: 8,
 });
 const name = z
   .string()
@@ -93,6 +98,7 @@ export const BlenderEpisodePlanSchema = z
             endExclusive: z.number().int().positive(),
             camera: name,
             framing: BlenderCameraFramingSchema.optional(),
+            highlights: BlenderHighlightsSchema.default({}),
             hiddenParts: z.array(name).max(128),
             shownParts: z.array(name).max(128).default([]),
           })
@@ -100,6 +106,38 @@ export const BlenderEpisodePlanSchema = z
       )
       .min(1)
       .max(128),
+    callouts: z
+      .array(
+        z
+          .object({
+            id: name,
+            text: z.string().min(1).max(80),
+            shot: name,
+            anchor: name,
+            part: name,
+            start: z.number().int().nonnegative(),
+            endExclusive: z.number().int().positive(),
+            position: z.tuple([
+              z.number().finite().min(0.04).max(0.96),
+              z.number().finite().min(0.04).max(0.7),
+            ]),
+            color: z.string().regex(/^#[0-9a-fA-F]{6}$/),
+            controlRanges: z
+              .record(
+                name,
+                z
+                  .object({
+                    min: z.number().finite(),
+                    max: z.number().finite(),
+                  })
+                  .strict(),
+              )
+              .default({}),
+          })
+          .strict(),
+      )
+      .max(BLENDER_EPISODE_LIMITS.callouts)
+      .default([]),
     speech: z
       .array(
         z
@@ -163,6 +201,41 @@ export const BlenderEpisodePlanSchema = z
       reject(
         "Shots must form one ordered complete partition with distinct IDs and hidden parts",
       );
+    if (
+      new Set(plan.callouts.map((c) => c.id)).size !== plan.callouts.length ||
+      plan.callouts.reduce((n, c) => n + c.endExclusive - c.start, 0) >
+        BLENDER_EPISODE_LIMITS.calloutSamples ||
+      plan.callouts.some((c) => {
+        const shot = plan.shots.find((s) => s.id === c.shot);
+        return (
+          !shot ||
+          c.start < shot.start ||
+          c.endExclusive > shot.endExclusive ||
+          c.start >= c.endExclusive ||
+          shot.hiddenParts.includes(c.part) ||
+          Object.keys(c.controlRanges).length >
+            BLENDER_EPISODE_LIMITS.calloutControlRanges ||
+          Object.values(c.controlRanges).some((r) => r.min > r.max)
+        );
+      })
+    )
+      reject(
+        "Callouts need distinct IDs, one source shot, visible parts and a bounded active sample/control budget",
+      );
+    for (let frame = 0; frame < frames; frame++)
+      if (
+        plan.callouts.filter((c) => frame >= c.start && frame < c.endExclusive)
+          .length > 4
+      ) {
+        reject("At most four native callouts may overlap");
+        break;
+      }
+    if (
+      plan.shots.some((s) =>
+        Object.keys(s.highlights).some((part) => s.hiddenParts.includes(part)),
+      )
+    )
+      reject("Native highlights cannot name explicitly hidden parts");
     if (
       new Set(plan.speech.map((s) => s.id)).size !== plan.speech.length ||
       plan.speech.some(

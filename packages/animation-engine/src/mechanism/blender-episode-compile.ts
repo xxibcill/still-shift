@@ -12,6 +12,10 @@ import {
 import { parseBlenderCaptureJob } from "./blender-capture-contract.ts";
 import { mechanismPackHash, freezeMechanismPack } from "./pack-support.ts";
 import { mechanismCueCaptionLayout } from "./cue-caption.ts";
+import {
+  composeBlenderCallouts,
+  type BlenderAnchorFrames,
+} from "./blender-episode-annotations.ts";
 
 type CompositionSequenceAsset = Extract<
   Composition["assets"][number],
@@ -54,10 +58,15 @@ export function compileBlenderEpisode(
         (shot.endExclusive - shot.start) *
           (shot.camera.length * 2 +
             128 +
-            [...shot.hiddenParts, ...shot.shownParts].reduce(
-              (n, name) => n + name.length * 2 + 16,
-              0,
-            )),
+            [
+              ...shot.hiddenParts,
+              ...shot.shownParts,
+              ...Object.keys(shot.highlights),
+            ].reduce((n, name) => n + name.length * 2 + 16, 0)),
+      0,
+    ) +
+    plan.callouts.reduce(
+      (n, c) => n + (c.endExclusive - c.start) * (c.anchor.length * 2 + 256),
       0,
     );
   if (projectedWork > 16 * 1024 * 1024)
@@ -80,8 +89,25 @@ export function compileBlenderEpisode(
       ),
       hiddenParts: shot.hiddenParts,
       shownParts: shot.shownParts,
+      highlights: shot.highlights,
+      anchors: [
+        ...new Set(
+          plan.callouts
+            .filter((c) => frame >= c.start && frame < c.endExclusive)
+            .map((c) => c.anchor),
+        ),
+      ].sort(),
     };
   });
+  for (const callout of plan.callouts)
+    for (let frame = callout.start; frame < callout.endExclusive; frame++)
+      for (const [key, range] of Object.entries(callout.controlRanges)) {
+        const value = frames[frame]!.controls[key];
+        if (value === undefined || value < range.min || value > range.max)
+          throw Error(
+            `Native callout ${callout.id} is outside its declared control state at frame ${frame}`,
+          );
+      }
   const job = parseBlenderCaptureJob({
     schemaVersion: "blender-native-capture-job-1",
     id: plan.id,
@@ -116,6 +142,7 @@ export function compileBlenderEpisode(
 export function composeBlenderEpisode(
   compiled: ReturnType<typeof compileBlenderEpisode>,
   sequence: CompositionSequenceAsset,
+  anchorFrames?: BlenderAnchorFrames,
 ) {
   const { plan, frameCount, speechSourceSha256 } = compiled;
   if (
@@ -129,7 +156,10 @@ export function composeBlenderEpisode(
       "Native plate sequence must match the whole episode clock and dimensions",
     );
   const layout = mechanismCueCaptionLayout(plan.width, plan.height);
-  const layers: CompositionLayer[] = [];
+  const layers: CompositionLayer[] = composeBlenderCallouts(
+    compiled,
+    anchorFrames,
+  );
   for (const cue of plan.speech) {
     const start = blenderEpisodeFrameCount(cue.startSample, plan.fps),
       end = blenderEpisodeFrameCount(cue.endSampleExclusive, plan.fps),

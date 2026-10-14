@@ -55,7 +55,14 @@ frames, 64 controls and
 128 shots and
 256 speech cues in
 1048576 bytes. These are candidate
-technical lifecycle limits. Optional native `qaPath` declarations pin bounded
+technical lifecycle limits. Native annotations allow
+64 labels,
+4096 active label samples,
+4 simultaneous labels and
+32 highlight colors per native job.
+Labels follow saved object origins or actual evaluated part bounds centers;
+projection/render flags do not approve visible surface contact. Text/placement
+edits reuse matching native states. Optional native `qaPath` declarations pin bounded
 observation selectors and registered interval programs. Native QA limits are
 65536 plan bytes,
 8388608 facts bytes,
