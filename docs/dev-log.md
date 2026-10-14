@@ -43,6 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
+- **MS3 whole review and runtime-tier repair (2026-10-15):** fixed-range
+  Standards/Spec review finds two P2s: five new process-spawning suites in unit,
+  and inherited planned-edit declarations masking recovery after retry. All five
+  suites move byte-exactly to runtime; 52 tests/5 files pass sequentially with
+  two-worker ceiling. Provenance repair, final gates and repair review remain
+  next in isolation. Producer58827/source1090 remain untouched; actual EU001–EU010
+  and full original1× narration remain selected. No rendering or acceptance.
+  [Whole review and repairs](./mechanism-shorts-ms3-whole-review84-results.json).
+
 - **MS3 later native source fixes qualified in stages (2026-10-15):** isolated
   from `0491e622`, port upstream PR56 repairs `42397d3f`/`2b7a4f20` to shared
   physical visibility and all four source formats. Red10/20, corrected20,
@@ -359,6 +368,17 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — MS3 whole review: restore runtime suite placement
+
+- **Agent / branch:** Codex on `codex/ms3-review-fixes` from `9f43a67a`.
+- **Done:** move five process-spawning suites from unit to runtime, preserving
+  exact bytes, real lock/recovery behavior and all assertions.
+- **Results:** 52 tests/5 runtime files pass in17.05s with sequential files and
+  at most two workers; no browser/native/asset commands.
+- **Open / next:** fix stale planned-edit retry provenance; final fast/runtime,
+  independent repair reviews and integration await the live producer freeze.
+- **Records:** [Whole review](./mechanism-shorts-ms3-whole-review84-results.json).
 
 ### 2026-10-15 — Verify installed native source repairs without original roots
 

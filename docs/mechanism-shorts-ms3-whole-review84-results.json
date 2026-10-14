@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "ms3-whole-review-results-1",
+  "capturedUtc": "2026-10-14T23:19:30.814489+00:00",
+  "review": {
+    "base": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
+    "head": "9f43a67a4632c30474ced8214d10bac8fe0095a2",
+    "standards": {
+      "findings": 1,
+      "priority": "P2",
+      "issue": "Five newly added unit suites invoke real Python process-identity locks, contrary to documented tier prerequisites/concurrency.",
+      "status": "repaired-isolated-scoped-runtime-passed"
+    },
+    "spec": {
+      "findings": 1,
+      "priority": "P2",
+      "issue": "Retry-only manifests copy revisionChanges; a stale planned-edit on an unchanged neighbor can mask subsequent cache recovery in first-pass metrics.",
+      "status": "repair-pending"
+    },
+    "limits": "Read-only two-axis source/test review; no renderer, asset work, paid generation or whole-review acceptance."
+  },
+  "runtimeTierRepair": {
+    "moves": [
+      {
+        "from": "tests/unit/mechanism-production-queue.test.ts",
+        "to": "tests/runtime/mechanism-production-queue.test.ts",
+        "sha256": "156f96b6a47e2bdb921cabec874088d9251be8a93545562122fef90e9530b440"
+      },
+      {
+        "from": "tests/unit/mechanism-production-retry.test.ts",
+        "to": "tests/runtime/mechanism-production-retry.test.ts",
+        "sha256": "ee47beda0cec24bb673148c96771bb62f6398fdf312c7cb0ff9c6ca4b970da82"
+      },
+      {
+        "from": "tests/unit/mechanism-production-report-io.test.ts",
+        "to": "tests/runtime/mechanism-production-report-io.test.ts",
+        "sha256": "b030fe5661e933aedf2696c47f556c77df1d96768412ac10dc3e3e449e48f952"
+      },
+      {
+        "from": "tests/unit/mechanism-production-failure.test.ts",
+        "to": "tests/runtime/mechanism-production-failure.test.ts",
+        "sha256": "2d1c09ab52c5e82317e2b881bbc16a9782a1e919ee30e9f34f4cf028014d87eb"
+      },
+      {
+        "from": "tests/unit/blender-production-versions.test.ts",
+        "to": "tests/runtime/blender-production-versions.test.ts",
+        "sha256": "7b9ad766103c1cf5aa405e854bbff292f610f1fffcaeb228c8c7740870e50b49"
+      }
+    ],
+    "sourceBytesUnchanged": true,
+    "test": {
+      "command": "pnpm exec vitest run tests/runtime/mechanism-production-queue.test.ts tests/runtime/mechanism-production-retry.test.ts tests/runtime/mechanism-production-report-io.test.ts tests/runtime/mechanism-production-failure.test.ts tests/runtime/blender-production-versions.test.ts --maxWorkers=2 --no-file-parallelism",
+      "actualExitCode": 0,
+      "filesPassed": 5,
+      "testsPassed": 52,
+      "seconds": 17.05,
+      "log": "/private/tmp/still-shift-ms3-review84-runtime-tier1.log"
+    }
+  },
+  "open": [
+    "Full fast/runtime gates after subsequent repair",
+    "Independent review of repairs",
+    "Integration only after producer session58827 terminates",
+    "Fresh current package/render proofs after source integration",
+    "Whole factual/mechanical/motion/glyph/listening/human reviews"
+  ]
+}
