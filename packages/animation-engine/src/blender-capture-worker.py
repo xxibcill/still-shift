@@ -78,6 +78,44 @@ def describe_geometry(collection, graph):
     return parts
 
 
+def action_curves(action, slot_handle):
+    if action.is_action_layered:
+        for layer in action.layers:
+            for strip in layer.strips:
+                for bag in strip.channelbags:
+                    if bag.slot_handle == slot_handle:
+                        yield from bag.fcurves
+    else:
+        yield from action.fcurves
+
+
+def prepare_controller(controller, properties):
+    """Override declared input channels; retain native drivers and source clocks."""
+    animation = controller.animation_data
+    if animation is None:
+        return
+    paths = {"[" + json.dumps(key, ensure_ascii=False) + "]" for key in properties}
+    if any(curve.data_path in paths for curve in animation.drivers):
+        raise ValueError("Declared native input is itself driven; choose an undriven input")
+    bindings = [animation]
+    bindings.extend(strip for track in animation.nla_tracks for strip in track.strips)
+    for binding in bindings:
+        action = binding.action
+        if action is None:
+            continue
+        slot_handle = binding.action_slot_handle
+        if not any(curve.data_path in paths for curve in action_curves(action, slot_handle)):
+            continue
+        # An action/slot can be shared by other source objects. Copy before muting.
+        owned = action.copy()
+        binding.action = owned
+        if owned.is_action_layered:
+            binding.action_slot_handle = slot_handle
+        for curve in action_curves(owned, slot_handle):
+            if curve.data_path in paths:
+                curve.mute = True
+
+
 def execute(job, job_path):
     import bpy
 
@@ -123,7 +161,7 @@ def execute(job, job_path):
         for key in contract["properties"]:
             if key not in controller or not isinstance(controller[key], int | float):
                 raise ValueError("Declared native numeric property is absent: " + key)
-        controller.animation_data_clear()
+        prepare_controller(controller, contract["properties"])
     for frame in job["frames"]:
         if any(name not in objects for name in frame["hiddenParts"]):
             raise ValueError("Hidden part must belong to the native asset collection")
@@ -157,7 +195,7 @@ def execute(job, job_path):
         if controller:
             for key, value in requested["controls"].items():
                 controller[key] = float(value)
-            controller.update_tag()
+            controller.update_tag(refresh={"OBJECT", "TIME"})
         bpy.context.view_layer.update()
         for name in requested["hiddenParts"]:
             obj = objects[name]
