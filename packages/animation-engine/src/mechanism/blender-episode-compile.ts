@@ -149,7 +149,7 @@ export function composeBlenderEpisode(
   sequence: CompositionSequenceAsset,
   anchorFrames?: BlenderAnchorFrames,
   proofHolds: readonly CompositionPhysicalProofHold[] = [],
-) {
+): Composition {
   const { plan, frameCount, speechSourceSha256 } = compiled;
   if (
     sequence.frameCount !== frameCount ||
