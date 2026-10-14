@@ -75,17 +75,20 @@ still hold before relying on them.
   scoped to candidate revisions/changed-camera inputs, not all audio/model files.
   Original H3/canceled59/failed60 journals held separately. No source edits until
   run/report/resume is terminal.
-  **First three fresh completions:** EU001610, EU002588 andEU003588 frames seal
-  onfc4cc2ae, with QA0 errors/37,27,37 warnings. Thirty product artifact pins
-  rehashed; every whole decoded RGBA stream equals repaired H3 and original
-  whole AAC parity passes. Current native audit covers1,786 clocks/proof rows,
-  7,144 pins and1,251 active-label frames, zero fresh native captures.
+  **First five fresh completions:** EU001–EU005 seal onfc4cc2ae; independent
+  artifact pins/full RGBA/original whole AAC parity pass. EU004653 frames equal
+  prior camera-repaired purpose60; other four streams equal repaired H3. Preview
+  QA0 errors and37/27/37/28/34 warnings. Current native audit coversEU001–EU006:
+  3,671 frames/14,684 pins/2,313 active-label frames, zero fresh native captures.
+  Fifteen actual keyhole encoded phone frames show readable entry/slot/head
+  labels and the retained/released geometry in selected views. Whole reviews
+  remain open; original wrapper71417 continuesEU006 quality checking.
   **Located EU002 cut repair:** Sixteen encoded phone frames reveal camera
   reorientation at269 during tongue return. Separate shot02 candidate retains
   passage view over269–374; all control/speech/audio/shot clocks unchanged.
   Actual588-frame/five-shot camera guard and exact268/269 head/root/camera
   boundary pass, zero renders/original source bytes unchanged. Actual scouts and
-  encoded repair remain unrun; original frozen batch continuesEU004 export.
+  encoded repair remain unrun; original frozen batch continuesEU006 quality checking.
   [Cut review and candidate](./mechanism-shorts-ms3-first-ten-camera-cut-review-results.json).
   **Script source review:** all ten frozen spoken explanations compared with fresh
   primary text; design boundaries/inferences and rendered witnesses recorded.
@@ -286,6 +289,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Zipper/keyhole current exports and encoded keyhole review
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `07ce264c`.
+- **Done:** Current EU004653/EU005598 frames seal; ten artifact pins each/full
+  original AAC parity pass. Zipper RGBA equals the camera-repaired purpose60
+  output; keyhole RGBA equals repaired H3. Preview QA0 errors/28 and34 warnings.
+- **Native audit:** New EU004/EU005/EU006 captures pass; cumulative3,671 frames,
+  14,684 pins/2,313 active-label frames, zero fresh native renders.
+- **Images:** Fifteen actual encoded keyhole phone/cut frames inspected; entry,
+  slot/head labels readable and selected retention/release views clear. Whole
+  contact/encoded glyph/continuous/listening/factual approval remains open.
+- **Live / next:** Original71417 confirmed live, EU006 in QA. Continue outputs;
+  scoped EU002 camera scouts/repair wait for frozen lifecycle. Accepted0/10.
+- **Records:** [Current outputs and image scope](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json).
 
 ### 2026-10-14 — Two more verified outputs and a located cable-tie cut repair
 
