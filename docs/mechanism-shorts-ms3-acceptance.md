@@ -280,3 +280,16 @@ spring/arm construction; Fig7’s unstable over-insertion and added invention pa
 are excluded, and fabric/preload reasoning remains a qualified inference. EU-003
 QA retains 20 static errors / 17 warnings / 54 images. The remaining seven batch
 stages, whole reviews, broader faults/handoff/effort/final gates and pilot 0/10 stay open.
+
+[EU-004/EU-005 HD evidence](./mechanism-shorts-ms3-first-ten-hd-EU004-EU005-results.json)
+verifies 653 / 598 frames, complete original AAC reference parity and independent
+full RGBA decoding through EOF. First-five totals are 3,037 decoded frames /
+12,148 native file pins / 1,974 active labels. Ten new encoded phone midpoints are
+inspected. Authored join/reverse and entry/slide/probe/return/withdraw windows align
+with the original speech cues. Primary text supports the selected metal-cup zipper
+and plain keyhole construction, excluding the fixing patent’s added snap neck.
+Whole geometry/contact/encoded-glyph/playback/listening acceptance remains open.
+First-five QA retains 90 static errors / 78 warnings / 264 images. The sixth native
+map additionally verifies, but its export and the remaining cohort/report/resume
+are in flight. Prepared cable-tie cue and clothespeg pointer repairs remain separate
+and unrendered; pilot 0/10, broader faults/handoff/effort/final gates remain open.

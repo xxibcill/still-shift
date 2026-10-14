@@ -61,15 +61,19 @@ still hold before relying on them.
   [Scout repairs and rejected attempts](./mechanism-shorts-ms3-first-ten-annotation-scout-results.json).
   **Live batch:** `actual-first-ten-full-HD47`, private `output-all10-47` root.
   It preserves the old two-item trial and uses an exact native-cache copy.
-  EU-001–EU-003 transactions complete 1,786 frames. Independent 7,144 pins /
-  1,251 active labels, original whole AAC parity and full encoded RGBA decode
-  through EOF pass. Five/five/seven encoded phone midpoints are inspected.
-  QA remains failed: EU-001 has 21 static errors / 16 warnings / 59 images;
-  EU-002 has 17 / 15 / 50; EU-003 has 20 / 17 / 54. Remaining seven stages and
-  full cohort report/resume are pending; no engine edits while the batch runs.
-  [EU-001 checks](./mechanism-shorts-ms3-first-ten-hd-progress-results.json),
-  [EU-002 source/cues](./mechanism-shorts-ms3-first-ten-hd-EU002-results.json),
-  [EU-003 source/pointer](./mechanism-shorts-ms3-first-ten-hd-EU003-results.json).
+  EU-001–EU-005 transactions complete 3,037 frames. Independent 12,148 pins /
+  1,974 active labels, original whole AAC parity and full encoded RGBA decode
+  through EOF pass. Five/five/seven/five/five encoded phone midpoints are inspected.
+  The sixth capture/annotation map additionally verifies: 14,684 pins / 2,313 labels
+  across available states; its export remains in flight at this checkpoint.
+  QA remains failed: first five retain 90 static errors / 78 warnings / 264 images.
+  Remaining five stages and full cohort report/resume are pending; no engine edits
+  while the batch runs. Zipper/keyhole actions align with their spoken control cues;
+  primary text supports the selected constructions, leaving whole contact/review open.
+  [First HD checks](./mechanism-shorts-ms3-first-ten-hd-progress-results.json),
+  [cable-tie cues](./mechanism-shorts-ms3-first-ten-hd-EU002-results.json),
+  [clothespeg pointer](./mechanism-shorts-ms3-first-ten-hd-EU003-results.json),
+  [zipper/keyhole checks](./mechanism-shorts-ms3-first-ten-hd-EU004-EU005-results.json).
   **Located repair:** EU-002 tongue settles at frame 170, before the return line
   at frames 268–319. Separate `inputs-cue-repair49` retimes only `tighten` to peak
   at 253 / settle at 319. Pure admission passes; capture/export/event/playback
@@ -272,6 +276,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Verify zipper and keyhole HD deliveries
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; source `4679b8a8` remains held.
+- **Done:** EU-004 / 653 frames (321 fresh / 332 reused), EU-005 / 598 (158 / 440).
+  First five independently verify 3,037 full decoded frames / original whole AAC
+  parity / 12,148 native pins / 1,974 active labels; ten new phone midpoints viewed.
+- **Observed:** Join/separate and insert/slide/probe/remove controls align with the
+  corresponding authored speech windows. Primary texts support selected metal-cup
+  and plain-keyhole constructions; whole contact/geometry and playback remain open.
+- **Open:** Five completed QA reports retain 90 static errors / 78 warnings / 264
+  images. Sixth capture map verifies; remaining export/cohort report/resume stay live.
+  Prepared EU-002/EU-003 repairs await capture/encode; no live inputs changed.
+- **Records:** [Zipper/keyhole HD evidence](./mechanism-shorts-ms3-first-ten-hd-EU004-EU005-results.json).
+  Whole reviews / accepted pilot 0/10; routine effort null.
 
 ### 2026-10-14 — Verify clothespeg HD output and locate spring-pointer repair
 
