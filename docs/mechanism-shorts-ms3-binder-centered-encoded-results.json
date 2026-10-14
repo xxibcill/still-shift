@@ -139,7 +139,18 @@
       "unchangedNeighborsExact": 9
     },
     "nineCurrentRowsAndSealsExact": true,
-    "reportResume": "report0 recorded; resume remains live at this checkpoint"
+    "reportResume": "terminal; queue/run/report/resume all actual0 with exact inputs and nine unchanged neighbors",
+    "terminalReceipt": {
+      "path": "/private/tmp/still-shift-ms3-blender56-whole-camera1-receipt.json",
+      "bytes": 3960,
+      "sha256": "sha256:a26da92a7a8279c782f8a5be3300455482197f66e871f9e112f89f90dc3a4f44"
+    },
+    "finalCurrentCohortSnapshot": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/final-current-H3-before-holds.json",
+      "bytes": 13008,
+      "sha256": "sha256:9cba8eaf533411fb033d2a0a37aec8d5ce528ebc346458f6923dd51dd4fc0491"
+    },
+    "resumeSeconds": 365.43983616586775
   },
   "binderAttempt3": {
     "product": {
@@ -252,7 +263,7 @@
   "routineTokenMeasurements": null,
   "wholeReview": "UNREVIEWED",
   "remaining": [
-    "Terminal camera resume and unchanged-neighbor checks.",
+    "Camera lifecycle complete; next source slice adds bounded authored native hold-purpose/paint/phase validation.",
     "Authored native hold purposes with complete authenticated frame/paint/phase validation and meaningful faults.",
     "Broader physical/contact/fault/coverage/handoff/whole reviews/effort and final software/benchmark/archive/installed gates."
   ]

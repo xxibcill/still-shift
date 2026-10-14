@@ -110,7 +110,8 @@ still hold before relying on them.
   [Centered encoded evidence](./mechanism-shorts-ms3-binder-centered-encoded-results.json).
   [Current repaired export evidence](./mechanism-shorts-ms3-first-ten-scoped-repair-results.json).
   [Binder staging/framing](./mechanism-shorts-ms3-binder-staging-framing-results.json).
-  No engine edits while repaired exports run.
+  Current media lifecycle is terminal; next source work is bounded native hold
+  purpose/paint/phase validation with current-source artifact rebinding.
   [Lifecycle/repair start](./mechanism-shorts-ms3-first-ten-hd-lifecycle-repair-results.json).
   **Next:** complete repair renders/audits and resolved holds/staging; native
   contact/phone/audio handoff; broader physical label/event/intersection/mount faults;
@@ -315,7 +316,8 @@ still hold before relying on them.
   and visible insertion. Nine current neighbor rows/seals remain exact.
 - **Current cohort:** 6,181 native frames / 24,724 pins / 4,257 active labels reverify.
   QA still178 static errors / 162 warnings / 537 images, preserved unresolved.
-- **Lifecycle:** Camera run847.01s / report371.06s actual0, inputs exact; resume live.
+- **Lifecycle:** Camera run847.01s / report371.06s / resume365.44s actual0, inputs
+  exact and nine neighbors unchanged. Final H3 cohort snapshot is retained.
 - **Retained:** Lossy decoded changes0–160/283–406 exceed source0–113/293–406.
   Hold contract needs complete shot-layer/paint evidence; guessed file read failed,
   actual interfaces inspected. No engine edits or PNG-equality suppression.

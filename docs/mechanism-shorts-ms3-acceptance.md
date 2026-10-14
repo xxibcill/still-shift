@@ -376,3 +376,10 @@ complete shot-layer and expected-paint evidence, while the native compiler curre
 uses one whole-episode sequence; PNG equality alone is insufficient. Native hold
 purposes/phase validation, broader faults/handoff/whole/effort/final gates and pilot0/10
 remain open. No source edits occur during the live camera lifecycle.
+
+The framing revision now also finishes resume365.44s, actual0 with exact inputs,
+no new attempts and nine unchanged neighbors. The final current H3 cohort snapshot
+is retained before hold-source work. Future source changes require current artifact /
+QA rebinding; existing product identities remain historical. Media execution is
+stable, while authored native hold/paint/phase validation and all whole/fault/handoff/
+effort/final gates remain open. [Terminal centered output](./mechanism-shorts-ms3-binder-centered-encoded-results.json).
