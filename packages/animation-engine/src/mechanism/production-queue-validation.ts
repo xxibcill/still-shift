@@ -105,5 +105,6 @@ export function productionReportAttempts(
     seconds: a.seconds,
     diagnostic: a.diagnostic,
     ...(a.finding ? { finding: a.finding } : {}),
+    ...(a.provenance ? { provenance: a.provenance } : {}),
   }));
 }

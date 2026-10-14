@@ -70,8 +70,23 @@ describe("production discovery and schema CLI", () => {
         result = await run(["schema", "--kind", kind, "--output", path]);
       expect(result.code).toBe(0);
       const schema = JSON.parse(await readFile(path, "utf8"));
-      expect(schema.additionalProperties).toBe(false);
-      expect(schema.properties.schemaVersion.const).toContain("mechanism-");
+      const variants = kind === "production-handoff" ? schema.anyOf : [schema];
+      expect(variants).toHaveLength(kind === "production-handoff" ? 2 : 1);
+      for (const variant of variants) {
+        expect(variant.type).toBe("object");
+        expect(variant.additionalProperties).toBe(false);
+        expect(variant.properties.schemaVersion.const).toContain("mechanism-");
+      }
+      if (kind === "production-handoff")
+        expect(
+          variants.map(
+            (variant: { properties: { schemaVersion: { const: string } } }) =>
+              variant.properties.schemaVersion.const,
+          ),
+        ).toEqual([
+          "mechanism-production-handoff-1",
+          "mechanism-production-handoff-2",
+        ]);
     }
     expect(
       MechanismProductionReportBundleSchema.safeParse({

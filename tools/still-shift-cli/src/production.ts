@@ -309,7 +309,19 @@ export async function runProductionCli(
             category: "first-pass-technical",
             ...c.firstPassTechnical,
           },
-          { kind: "cohort", category: "failures", ...c.failures },
+          {
+            kind: "cohort",
+            category: "failures",
+            failedAttempts: c.failures.failedAttempts,
+            repeatedFailureEpisodes: c.failures.repeatedFailureEpisodes,
+            cancelled: c.failures.cancelled,
+            interrupted: c.failures.interrupted,
+          },
+          {
+            kind: "cohort",
+            category: "failure-origins",
+            ...c.failures.origins,
+          },
           { kind: "cohort", category: "authoring", ...c.authoring },
           ...Object.entries(c.durations).map(([category, values]) => ({
             kind: "cohort",

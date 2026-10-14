@@ -432,6 +432,7 @@ export async function readMechanismProductionReports(
         binding,
         clock: item.clock,
         attempts: productionReportAttempts(row.attempts),
+        ...(row.interventions ? { interventions: row.interventions } : {}),
         qa:
           validation === "verified" && original
             ? original.qa

@@ -211,15 +211,148 @@ describe("production cohort measurements", () => {
       passed: 0,
       rate: 0,
       targetSatisfied: null,
+      unverified: 0,
     });
     expect(result.failures).toEqual({
       failedAttempts: 2,
       repeatedFailureEpisodes: 1,
       cancelled: 0,
       interrupted: 0,
+      origins: { transient: 0, authored: 0, unknown: 2 },
     });
     expect(result.rows[0]!.failedAttempts).toBe(2);
     expect(result.reviewCounts.listening.unreviewed).toBe(2);
+  });
+  it("keeps unclassified replacement jobs unverified despite their passed attempts", () => {
+    const value = episode();
+    value.attempts = ["a", "b"].map((key, i) => ({
+      number: i + 1,
+      inputSha256: hash(key),
+      status: "passed" as const,
+      stage: "render",
+      seconds: 2,
+      diagnostic: null,
+    }));
+    const result = summarizeMechanismProductionCohort([value]);
+    expect(result.firstPassTechnical.rate).toBeNull();
+    expect(result.firstPassTechnical.targetSatisfied).toBeNull();
+  });
+  it.each([
+    ["planned-edit", 1, true],
+    ["repair", 0, false],
+    ["manual-recovery", 0, false],
+    ["recovery", 0, false],
+    ["retry", 0, false],
+    ["unknown", null, null],
+  ] as const)(
+    "classifies original completion followed by %s",
+    (kind, rate, target) => {
+      const value = episode();
+      value.attempts = [
+        {
+          number: 1,
+          inputSha256: hash("a"),
+          status: "passed",
+          stage: "render",
+          seconds: 2,
+          diagnostic: null,
+          provenance: { kind: "initial", reason: "Original job" },
+        },
+        {
+          number: 2,
+          inputSha256: hash("b"),
+          status: "passed",
+          stage: "render",
+          seconds: 2,
+          diagnostic: null,
+          provenance: { kind, reason: "Recorded follow-up reason" },
+        },
+      ];
+      const result = summarizeMechanismProductionCohort([value]);
+      expect(result.firstPassTechnical.rate).toBe(rate);
+      expect(result.firstPassTechnical.targetSatisfied).toBe(target);
+      expect(result.rows[0]!.firstPass).toBe(
+        rate === null ? "unverified" : rate ? "passed" : "failed",
+      );
+    },
+  );
+  it("keeps a failed later planned-edit job outside the original submitted job", () => {
+    const value = episode();
+    value.attempts = [
+      {
+        number: 1,
+        inputSha256: hash("a"),
+        status: "passed",
+        stage: "render",
+        seconds: 2,
+        diagnostic: null,
+        provenance: { kind: "initial", reason: "Original job" },
+      },
+      {
+        number: 2,
+        inputSha256: hash("b"),
+        status: "failed",
+        stage: "render",
+        seconds: 2,
+        diagnostic: "Authored edit failure",
+        provenance: {
+          kind: "planned-edit",
+          reason: "New copy",
+          failureOrigin: "authored",
+        },
+      },
+      {
+        number: 3,
+        inputSha256: hash("b"),
+        status: "failed",
+        stage: "render",
+        seconds: 2,
+        diagnostic: "Temporary interruption",
+        provenance: {
+          kind: "retry",
+          reason: "Retry edited job",
+          failureOrigin: "transient",
+        },
+      },
+    ];
+    const result = summarizeMechanismProductionCohort([value]);
+    expect(result.firstPassTechnical.targetSatisfied).toBe(true);
+    expect(result.failures.origins).toEqual({
+      authored: 1,
+      transient: 1,
+      unknown: 0,
+    });
+  });
+  it("leaves legacy successful jobs unverified and rejects inconsistent provenance", () => {
+    const value = episode();
+    value.attempts = [
+      {
+        number: 1,
+        inputSha256: hash("a"),
+        status: "passed",
+        stage: "render",
+        seconds: 2,
+        diagnostic: null,
+      },
+    ];
+    expect(
+      summarizeMechanismProductionCohort([value]).firstPassTechnical.unverified,
+    ).toBe(1);
+    expect(() =>
+      MechanismProductionEpisodeReportSchema.parse({
+        ...value,
+        attempts: [
+          {
+            ...value.attempts[0],
+            provenance: {
+              kind: "initial",
+              reason: "Original job",
+              failureOrigin: "authored",
+            },
+          },
+        ],
+      }),
+    ).toThrow(/failed attempt/);
   });
   it("requires paired comparable evidence for all selected tasks before savings", () => {
     const a = episode("E01"),
@@ -262,6 +395,7 @@ describe("production cohort measurements", () => {
       passed: 0,
       rate: null,
       targetSatisfied: null,
+      unverified: 0,
     });
     value.attempts[0]!.status = "interrupted";
     const stopped = summarizeMechanismProductionCohort([value]);

@@ -1,0 +1,341 @@
+{
+  "schemaVersion": "ms3-first-pass-provenance-review-results-1",
+  "date": "2026-10-15",
+  "branch": "codex/ms3-review-fixes",
+  "baseCommit": "3a7dcd69",
+  "status": "implemented-independent-review-and-current-fast-fixture-runtime-passed",
+  "requirement": "First submitted job completes without repair, retry or manual recovery; retain transient/authored breakdowns.",
+  "changes": [
+    "Bounded attempt provenance copied unchanged into journals, checkpoints and reports",
+    "Manifest-bound planned-edit/repair/manual-recovery declarations",
+    "Automatic same-request retry and cache recovery classification",
+    "Bounded chronological intervention history independent of whether another attempt executes",
+    "Unknown successful legacy histories retain null aggregate rate and target",
+    "Failure-origin transient/authored/unknown totals and per-row first-pass disposition"
+  ],
+  "independentReview": {
+    "standards": "No hard documented violation or correctness issue found. New revision validator duplication resolved. Optional P3 maintenance judgment: report/journal intervention chronology predicate is duplicated; no current difference confirmed.",
+    "spec": {
+      "initialPropagationFindings": [
+        {
+          "severity": "P2",
+          "finding": "Same-request declared manual recovery was dropped by reuse without another execution",
+          "red": "red2",
+          "repair": "record intervention before unchanged-row return and include in current report"
+        },
+        {
+          "severity": "P2",
+          "finding": "Cache recovery beyond maximumAttempts retained passed first-pass target",
+          "red": "red2",
+          "repair": "record intervention when verification fails, independently of new attempts"
+        }
+      ],
+      "bothConcreteRegressionsPass": true,
+      "finalFollowup": "No remaining concrete staged defect found; both recovery gaps close. Read-only source/test inspection, no exports or spending."
+    },
+    "record": "mechanism-shorts-ms3-code-review.md"
+  },
+  "checks": {
+    "originalRed": {
+      "actualExitCode": 1,
+      "reproduced": "Unclassified replacement reported success"
+    },
+    "reviewRed": {
+      "actualExitCode": 1,
+      "failedTests": 2,
+      "passedTests": 20
+    },
+    "green3": {
+      "actualExitCode": 0,
+      "tests": 73,
+      "files": 4,
+      "seconds": 10.37
+    },
+    "types3": {
+      "actualExitCode": 0
+    },
+    "earlierFast1": {
+      "actualExitCode": 0,
+      "tests": 4609,
+      "files": 458,
+      "seconds": 90.81,
+      "scope": "Before intervention propagation fixes; not final current gate"
+    },
+    "fast2": {
+      "actualExitCode": 0,
+      "tests": 4611,
+      "files": 458,
+      "seconds": 92.64,
+      "scope": "Current production source and intervention fixes; before schema-discovery runtime-test expectation correction"
+    },
+    "runtime3": {
+      "actualExitCode": 0,
+      "tests": 14,
+      "files": 4,
+      "scope": "Declared fixture adapters and bounded schema discovery; no actual native render"
+    },
+    "fast3": {
+      "actualExitCode": 0,
+      "tests": 4611,
+      "files": 458,
+      "seconds": 91.67,
+      "scope": "After schema-discovery runtime expectation repair; production implementation unchanged from fast2"
+    }
+  },
+  "historical": {
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-review69-first-pass-historical1.json",
+      "bytes": 25205,
+      "sha256": "f6f23d290b6edd25b1a7d2f06bc18472257c11cf302a396daacff180a8dbdb87"
+    },
+    "cohorts": [
+      {
+        "name": "original-h3",
+        "state": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/queue-state.json",
+          "bytes": 13008,
+          "sha256": "sha256:9cba8eaf533411fb033d2a0a37aec8d5ce528ebc346458f6923dd51dd4fc0491"
+        },
+        "products": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/products/EU-001-00c45963c001ab77-1.json",
+            "bytes": 9125,
+            "sha256": "sha256:10bcd7fc5e4da98bf80040ffdb392a5c34da30b32319a7fad5c5a708d972a92b"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/products/EU-002-2288f3bfd554cfda-2.json",
+            "bytes": 9471,
+            "sha256": "sha256:41c5a92a56eae94b823de159df3c9a85c599994d07b6b87bca39aecd5466c1b6"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/products/EU-003-8f61a5ff50cdb98d-2.json",
+            "bytes": 9500,
+            "sha256": "sha256:c091d7b470ed62b50dde1d77d49596abf3eb0d9266647655ce939025c27b73b4"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/products/EU-004-d7f67568e2dde8d2-1.json",
+            "bytes": 9244,
+            "sha256": "sha256:1d80a691c16d137fb69e75d091e4f643eaed1f00481a03da027af1f905dea6a7"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/products/EU-005-0815d5825e366ea1-1.json",
+            "bytes": 9254,
+            "sha256": "sha256:24f48e8b26a353cb1037739f5cb60067b3cd453e19a3974d192c90c41ec8831c"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/products/EU-006-80fb053b47918ffa-3.json",
+            "bytes": 9823,
+            "sha256": "sha256:67f127a75c267f4ecbf66f82193cba0a1a515907eecd6434955ee92e43d45f6e"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/products/EU-007-e0286a4373805c8f-1.json",
+            "bytes": 9240,
+            "sha256": "sha256:0f6aa8287e771d00815d72d5429d5597ae947aacae0db5e9c44a2c87605154bf"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/products/EU-008-edc6908b07626560-1.json",
+            "bytes": 9268,
+            "sha256": "sha256:42c1027c55d51e02dbe3c395d95b3efb59e5e459dc46aaefdea80568b3cda24f"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/products/EU-009-4f70fded93394488-1.json",
+            "bytes": 9239,
+            "sha256": "sha256:d8a0530f4ab3086eed1ade3dc6b8773530172eaec380c87ff22661783fc27da4"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/products/EU-010-df0414ee2e44dd3e-1.json",
+            "bytes": 9215,
+            "sha256": "sha256:ee1d47b8a65d1e6fa0c5a399bcebda2b569de3511760ae24bb9c81302f7eb185"
+          }
+        ],
+        "firstPassTechnical": {
+          "completed": 10,
+          "passed": 0,
+          "rate": null,
+          "unverified": 10,
+          "targetSatisfied": null
+        }
+      },
+      {
+        "name": "cohort61-before-failed-revision",
+        "state": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/pre-corrections65-state.json",
+          "bytes": 10379,
+          "sha256": "sha256:3a810a9a40f114ab54f59737525683d550f640f54e2cf205e4787b67f2056fe1"
+        },
+        "products": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/products/EU-001-3463d72a8814d004-1.json",
+            "bytes": 9819,
+            "sha256": "sha256:4ab2c3d49d94f4986d8fc20695815def25af2fea7e06c9dbfb91719a4c725662"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/products/EU-002-e818cdec3f36b221-1.json",
+            "bytes": 9870,
+            "sha256": "sha256:246b3ead605768ab92e0f9f45b76508817045554b31b637265606e19f14b84bb"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/products/EU-003-7294c0aab66cc30e-1.json",
+            "bytes": 9928,
+            "sha256": "sha256:d59be40db24d88e192d3bab225f12faac61e9e7ae6f5db17de2a3743465124a6"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/products/EU-004-7bb121e68a797bdb-1.json",
+            "bytes": 9939,
+            "sha256": "sha256:6129850c795aa5e6bf35dd5d75eedddb6ddb381080ed936d2ff4e39f8581c09f"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/products/EU-005-82c846afb471895c-1.json",
+            "bytes": 9941,
+            "sha256": "sha256:13e85730c6561a24cb88df678c9c62b9af69960ee134e6c2cc8b033c24392c24"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/products/EU-006-ac788c824e383833-1.json",
+            "bytes": 9962,
+            "sha256": "sha256:65a4445ad47fec9d0e08c40c17ea772939e518ecc81bdc552b06a0bab6bdf917"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/products/EU-007-a472a16f03ff0274-1.json",
+            "bytes": 9927,
+            "sha256": "sha256:0210ce109cddff1d1ba9797e11ff39d01dffe3aa62bc14394c54c38562812ae5"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/products/EU-008-efa90e8e52f30306-1.json",
+            "bytes": 9956,
+            "sha256": "sha256:afef36e1917e96847fbfad58a15caf547805633baa02168ef7ae673e61b32c88"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/products/EU-009-d4166ee12d10c081-1.json",
+            "bytes": 9934,
+            "sha256": "sha256:292f1b562802a8a5cba150ebba5a0bf244aac5568141404374d15069aca6a26e"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/products/EU-010-8e7f86495806b4fe-1.json",
+            "bytes": 9919,
+            "sha256": "sha256:4441d0585ff838eb84e0b4ca5c8a7ae4775a4b66e5a745960393d224cdf52cc5"
+          }
+        ],
+        "firstPassTechnical": {
+          "completed": 10,
+          "passed": 0,
+          "rate": null,
+          "unverified": 10,
+          "targetSatisfied": null
+        }
+      }
+    ],
+    "scope": "Current summarizer over exact historical sealed reports. No original binding change or invented event backfill."
+  },
+  "logs": {
+    "red1": {
+      "path": "/private/tmp/still-shift-ms3-review69-first-pass-red1.log",
+      "bytes": 3650,
+      "sha256": "33f3cbd47f2321ce13418df2d6e6964bc0115eba28a719d4176e072be57977ef"
+    },
+    "red2": {
+      "path": "/private/tmp/still-shift-ms3-review69-first-pass-red2.log",
+      "bytes": 4826,
+      "sha256": "eb56e28196be3160cf65debfe8f6c0e773475d76bcae30ba1038d37d6a418e1a"
+    },
+    "green1": {
+      "path": "/private/tmp/still-shift-ms3-review69-first-pass-green1.log",
+      "bytes": 951,
+      "sha256": "fd4f482845f32e6aa4dff496b98271cca3594eca516be56d6d57eca209c27555"
+    },
+    "green2": {
+      "path": "/private/tmp/still-shift-ms3-review69-first-pass-green2.log",
+      "bytes": 685,
+      "sha256": "4669b32c53764e791ffe2ab41b03145148cb7ca3d331236e358f6ed66308af64"
+    },
+    "green3": {
+      "path": "/private/tmp/still-shift-ms3-review69-first-pass-green3.log",
+      "bytes": 816,
+      "sha256": "1de74a3e9b6c7cbaa0b45cb8a3981e1b202950bbb81df4065ef00cc63a87122c"
+    },
+    "types1": {
+      "path": "/private/tmp/still-shift-ms3-review69-first-pass-types1.log",
+      "bytes": 690,
+      "sha256": "04c9a8c8d684fa62cf11019629fc5511c60605e01ffce808a5d712642dc13acd"
+    },
+    "types2": {
+      "path": "/private/tmp/still-shift-ms3-review69-first-pass-types2.log",
+      "bytes": 101,
+      "sha256": "28157f22c7c4323340b13c65bb0d104629fe513917fa25e5a06300d5256f1029"
+    },
+    "types3": {
+      "path": "/private/tmp/still-shift-ms3-review69-first-pass-types3.log",
+      "bytes": 101,
+      "sha256": "28157f22c7c4323340b13c65bb0d104629fe513917fa25e5a06300d5256f1029"
+    },
+    "fast1": {
+      "path": "/private/tmp/still-shift-ms3-review69-first-pass-fast1.log",
+      "bytes": 48953,
+      "sha256": "2a7ff5772792a3dd80131660d5f9611150f2b63b327a7e01c30639601eef5012"
+    },
+    "schema1": {
+      "path": "/private/tmp/still-shift-ms3-review69-first-pass-schema1.log",
+      "bytes": 665,
+      "sha256": "471a65a3499ebe74f49e051ffb9c9c45edb5789a9191c14a7fe603c6de63bebf"
+    },
+    "schema2": {
+      "path": "/private/tmp/still-shift-ms3-review69-first-pass-schema2.log",
+      "bytes": 665,
+      "sha256": "471a65a3499ebe74f49e051ffb9c9c45edb5789a9191c14a7fe603c6de63bebf"
+    },
+    "historical1": {
+      "path": "/private/tmp/still-shift-ms3-review69-first-pass-historical1.log",
+      "bytes": 250,
+      "sha256": "9d5e0880fdbe2bcd23415f43f39a75b67f42b51c9ed8140f78911213db23741f"
+    },
+    "fast2": {
+      "path": "/private/tmp/still-shift-ms3-review69-first-pass-fast2.log",
+      "bytes": 48303,
+      "sha256": "470435cb24aa33e751491e59029d231467c4817af30caab23ccd13f708df49d1"
+    },
+    "runtime1": {
+      "path": "/private/tmp/still-shift-ms3-review69-first-pass-runtime1.log",
+      "bytes": 2099,
+      "sha256": "1e60b398293cf1fc3218eb9965705b98cdeeb1248b4d37217554241f757bb41f"
+    },
+    "runtime2": {
+      "path": "/private/tmp/still-shift-ms3-review69-first-pass-runtime2.log",
+      "bytes": 1930,
+      "sha256": "ab7a66c02918165aec812daffddf7553e5359dd01203b22a5c32a5a37dd62982"
+    },
+    "runtime3": {
+      "path": "/private/tmp/still-shift-ms3-review69-first-pass-runtime3.log",
+      "bytes": 712,
+      "sha256": "c37cb407361e4a62f6c011020d158fe1f86a4d2568ced20d675e048861fab496"
+    },
+    "runtime-format1": {
+      "path": "/private/tmp/still-shift-ms3-review69-first-pass-runtime-format1.log",
+      "bytes": 71,
+      "sha256": "443c1aeefd52e739e5fcc9db66729cba6df9d3d8f5dc06def19d1bebae27e8fd"
+    },
+    "runtime-format2": {
+      "path": "/private/tmp/still-shift-ms3-review69-first-pass-runtime-format2.log",
+      "bytes": 59,
+      "sha256": "ca5fa908877dd310d62b2aa326fe814527daddcb9f92a3d1669241d9f1c73274"
+    },
+    "fast3": {
+      "path": "/private/tmp/still-shift-ms3-review69-first-pass-fast3.log",
+      "bytes": 48849,
+      "sha256": "e3421c29731eab9020207ed24dee54cd5eefa76af5b8cd5ff00d810dcba9ab34"
+    }
+  },
+  "open": [
+    "Actual current native producer/relocated/installed lifecycle after source integration",
+    "Full current software/benchmark/archive/installed verification",
+    "Whole factual/mechanical/visual/normal-speed/listening pilot reviews",
+    "Comparable paired routine effort; tokens remain null"
+  ],
+  "acceptedPilot": 0,
+  "elevenLabsSpend": 0,
+  "publication": false,
+  "merge": false,
+  "githubActions": false,
+  "retainedFailures": [
+    "Type attempt1: nested origin totals did not meet bounded scalar CLI item contract; fixed by separate failure-origins row.",
+    "Runtime attempts1/2: schema discovery expected one strict handoff root; first edit did not apply. Attempt3 verifies both strict version1/version2 alternatives and passes."
+  ]
+}

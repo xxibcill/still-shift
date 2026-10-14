@@ -156,3 +156,44 @@ The [native episode guide](./mechanism-blender-episode.md) documents source/plan
 fields and the CLI commands. The shared [generated capability reference](./mechanism-production-capabilities.md)
 and `production discover/schema` expose the same implemented limits and candidate
 qualification. Native QA-plan/grouped-warning/evidence/handoff work remains open.
+
+## First-pass provenance
+
+First-pass technical completion means the original submitted job finished without
+repair, retry or recovery. Every new attempt records a bounded provenance kind and
+reason in the retained journal and episode report. Changed submissions without a
+recorded reason stay `unknown`; historical passed attempts without provenance keep
+the cohort rate and target unverified. A failed original attempt remains a known
+first-pass failure even when its origin was not classified.
+
+A revised manifest may declare `revisionChanges` for selected IDs:
+
+```json
+{
+  "revisionChanges": [
+    {
+      "id": "EU-002",
+      "kind": "repair",
+      "reason": "Correct the camera cut during tongue return"
+    }
+  ]
+}
+```
+
+The manifest hash authenticates the declared reason. Use `planned-edit` for new
+editorial work, `repair` for correcting the submitted job, or `manual-recovery`
+when manual intervention was needed. A planned edit starts separate work for this
+metric; later failures/retries in that edit remain visible in the failure totals.
+The runner records same-request retries and invalid-product `recovery` itself.
+It also retains bounded `interventions` in chronological attempt order, so a
+same-request manual recovery or exhausted cache recovery affects first-pass
+classification even when no new execution runs.
+These declarations describe provenance, and require an accurate author assessment;
+they do not establish visual or mechanical approval.
+
+`firstPassTechnical.unverified` and each cohort row's `firstPass` expose gaps.
+An unknown original completion leaves the aggregate rate/target null. Failed
+attempts retain transient/authored/unknown origin totals. Explicit transient and
+`MechanismProductionAuthoredError` adapter errors get their respective tags;
+unclassified errors remain unknown. Terminal attempt states and prior products
+are retained, including failures followed by successful repairs.

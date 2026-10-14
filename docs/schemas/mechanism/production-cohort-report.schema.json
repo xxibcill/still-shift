@@ -25,9 +25,16 @@
         },
         "targetSatisfied": {
           "anyOf": [{ "type": "boolean" }, { "type": "null" }]
-        }
+        },
+        "unverified": { "type": "integer", "minimum": 0, "maximum": 300 }
       },
-      "required": ["completed", "passed", "rate", "targetSatisfied"],
+      "required": [
+        "completed",
+        "passed",
+        "rate",
+        "targetSatisfied",
+        "unverified"
+      ],
       "additionalProperties": false
     },
     "failures": {
@@ -40,13 +47,24 @@
           "maximum": 300
         },
         "cancelled": { "type": "integer", "minimum": 0, "maximum": 28800 },
-        "interrupted": { "type": "integer", "minimum": 0, "maximum": 28800 }
+        "interrupted": { "type": "integer", "minimum": 0, "maximum": 28800 },
+        "origins": {
+          "type": "object",
+          "properties": {
+            "transient": { "type": "integer", "minimum": 0, "maximum": 28800 },
+            "authored": { "type": "integer", "minimum": 0, "maximum": 28800 },
+            "unknown": { "type": "integer", "minimum": 0, "maximum": 28800 }
+          },
+          "required": ["transient", "authored", "unknown"],
+          "additionalProperties": false
+        }
       },
       "required": [
         "failedAttempts",
         "repeatedFailureEpisodes",
         "cancelled",
-        "interrupted"
+        "interrupted",
+        "origins"
       ],
       "additionalProperties": false
     },
@@ -218,6 +236,10 @@
           "reviewedReady": { "type": "boolean" },
           "attempts": { "type": "integer", "minimum": 0, "maximum": 96 },
           "failedAttempts": { "type": "integer", "minimum": 0, "maximum": 96 },
+          "firstPass": {
+            "type": "string",
+            "enum": ["pending", "passed", "failed", "unverified"]
+          },
           "staleDimensions": {
             "maxItems": 6,
             "type": "array",
@@ -256,6 +278,7 @@
           "reviewedReady",
           "attempts",
           "failedAttempts",
+          "firstPass",
           "staleDimensions",
           "incompleteDimensions"
         ],

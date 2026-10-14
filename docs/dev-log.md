@@ -51,8 +51,12 @@ still hold before relying on them.
   parser/type/realpath/lint failures retained. Copied actual EU002 media verifies
   PCM and rejects re-signed clock/audio mutations without a fresh export.
   Current native/relocated/installed producer proofs and final gates remain open.
-  Independent review also found first-pass repair/recovery classification missing;
-  that finding stays open. No new spend or acceptance.
+  First-pass provenance now retains explicit revision reasons, independent recovery
+  events and transient/authored/unknown origins. Both followup propagation defects
+  reproduce red and pass among73 scoped tests; exact historical all-ten reports
+  remain unverified10/target null. Fast4,611 tests and14 fixture-runtime checks pass; both final reviews find no
+  functional defect. Final refresh4,611/458 passes after the schema-discovery
+  expectation repair. No new spend or acceptance.
   [Review, checks and limits](./mechanism-shorts-ms3-native-handoff-review-results.json).
 
 - **MS3 in progress (2026-10-15):** `codex/mechanism-ms3`,
@@ -278,6 +282,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — First-pass provenance and recovery reporting
+
+- **Agent / branch:** Codex on `codex/ms3-review-fixes`, from `3a7dcd69`.
+- **Done:** retained bounded revision reasons, attempt provenance and independent
+  recovery interventions; planned edits start separate work for the original-job
+  metric. Failed attempt states stay intact; unknown origin/history stays unknown.
+- **Results:** scoped73 tests/types pass; same-request manual recovery and exhausted
+  cache recovery reproduce red then pass. Earlier fast4,609 preceded those fixes.
+  Fast4,611 tests/14 fixture-runtime checks pass; final fast refresh4,611/458
+  passes after a stale schema-discovery expectation repair. Final reviews find no functional
+  defect; optional chronology-validation duplication retained. Historical
+  H3/cohort61 exact ten-product reports
+  each keep10 first-pass classifications unverified and target null.
+- **Open:** actual integrated producer/relocated/installed proofs, full gates,
+  paired effort and whole pilot reviews. Frozen portable68 continues unchanged.
+- **Records:** [Provenance and independent review](./mechanism-shorts-ms3-first-pass-provenance-results.json).
 
 ### 2026-10-15 — Native compact handoff review repair
 
