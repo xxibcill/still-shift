@@ -50,8 +50,10 @@ still hold before relying on them.
   fixture; corrected28/4 passes. Fast4,634/460 passes95.34s; final fixture
   format/lint/types refreshed separately after its edit during build/unit phase.
   Standards0 / Spec0. Main producer remains frozen; integration and fresh
-  GPU/runtime/full gates await terminal58827. Archive77 does not include this
-  port and must be refreshed for final current-package claims.
+  GPU/runtime/full gates await terminal58827. Archive81 now builds/installs and passes13 actual installed source checks,
+  strict public types/discovery and all2,573 member hashes. Compiled runtimeebc2
+  remains distinct. The initial bare-consumer tsx cwd failure is retained.
+  No renderer group ran; fresh installed lifecycle and full gates stay open.
   [Review adaptation](./mechanism-shorts-ms3-native-source-review-results.json).
 
 - **MS3 declaration portability repair (2026-10-15):** isolated source `20e1afe2`
@@ -357,6 +359,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Verify installed native source repairs without original roots
+
+- **Agent / branch:** Codex on `codex/ms3-review-fixes`, source `8e11e6b8`.
+- **Results:** private archive5,437,291B /2,573 exact members; offline install,
+  13 real-file public source controls across all four formats, bounded/redacted
+  diagnostics, strict public TypeScript and CLI discovery pass with originals
+  denied. Installed runtimeebc2 and profile1dd0 are truthfully retained.
+- **Retained:** source-data preparation used bare consumer cwd without tsx;
+  installed reader then rejected missing cases. Corrected preparation/reader pass.
+- **Open / next:** primary58827 terminal, source integration, fresh GPU/runtime/
+  full gates and fresh installed export/report/resume/handoff. Archive81 retained
+  separately from77, with durable ignored exact copy; no publication or acceptance.
+- **Records:** [current package source repair evidence](./mechanism-shorts-ms3-native-source-review-results.json).
 
 ### 2026-10-15 — Carry reviewed native visibility and diagnostics into MS3
 
