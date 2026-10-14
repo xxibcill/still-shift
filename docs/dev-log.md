@@ -62,11 +62,17 @@ still hold before relying on them.
   keeps512MiB quota/QA thresholds unchanged. Red regression9pass/1fail; fixed
   targeted24/4 pass. Actual708-frame visual replay under256MiB caller reservations
   passes0 errors/33 warnings, zero native calls; original output binding unchanged.
-  Preliminary type-only import/frozen-identity replay failures retained. Fast4,594/457 and schema/boundary/format/lint/types pass. Complete
-  runtime tier running, session56779. Source2,778/122,205,150B held.
+  Preliminary type-only import/frozen-identity replay failures retained. Fast4,594/457 and schema/boundary/format/lint/types pass. Complete runtime
+  tier passes actual0 in546.19s: runtime271/52, integration324/59, depth14 and
+  browser smoke; held2,778 inputs/122,205,150B stay exact. Repair source4b58f49b,
+  runtimefc4cc2ae, unchanged native profile1dd0.
   Cohort60 report/resume unrun after terminal failure; old products not relabelled.
-  **Next:** finish fixed-source software checks, commit/evidence, separate all-ten
-  current-source lifecycle. Whole factual/mechanical/encoded glyph/continuous/
+  **Fresh cohort61 live:** actual-first-ten-native-purpose61, wrapper71417,
+  output-purpose61, queue-holds61.json. Exact COW cache import6,935 files /
+  2,795,500,494B; same53 private dependencies/6,533,750B and all ten episode rows.
+  Original H3/canceled59/failed60 journals held separately. No source edits until
+  run/report/resume is terminal.
+  **Next:** poll71417; complete fresh lifecycle and independent current outputs. Whole factual/mechanical/encoded glyph/continuous/
   listening and original E06/E10 reviews, broader physical faults, native portable
   handoff, comparable effort and full software/benchmark/archive/installed gates
   remain. Accepted0/10; paired routine telemetry null. Actions disabled;
@@ -276,7 +282,10 @@ still hold before relying on them.
   retains64MiB. Scoped fix keeps quota/thresholds. Red9pass/1fail; fixed24/4 pass.
   Full708-frame pixel replay under256MiB caller capacity passes0 errors/33 warnings,
   zero native calls. Preliminary import/private replay failures retained.
-- **Next / records:** Fast4,594/457 passes; runtime running, new cohort and whole reviews remain,
+- **Next / records:** Fast4,594/457 and full runtime actual0/546.19s pass. Cohort61 now
+  live71417 on4b58f49b/fc4cc2ae after exact6,935-file/2,795,500,494B COW import.
+  Same ten input rows and53 private dependencies; all prior journals held. New
+  lifecycle and whole reviews remain,
   accepted0/10. [Evidence](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json).
 
 ### 2026-10-14 — Complete zipper geometry/cameras and two more sealed exports

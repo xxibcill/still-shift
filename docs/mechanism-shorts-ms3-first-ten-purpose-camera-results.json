@@ -1,7 +1,7 @@
 {
   "schemaVersion": "ms3-first-ten-purpose-camera-results-1",
   "date": "2026-10-14",
-  "status": "terminal-purpose60-nine-sealed-one-verification-capacity-failure-fix-in-software-verification",
+  "status": "authentication-lifetime-fix-verified-separate-current-source-cohort61-live",
   "source": {
     "runtimeSha256": "sha256:c7cde29700a9db643776cbb9faa7a96cc4d931f8281abcfaf96dd85a9d75f45b",
     "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
@@ -1740,6 +1740,23 @@
         "scope": "Real EU007 saved output visual re-verification under retained64MiB caller capacity. Existing failed queue/product binding remains unchanged."
       },
       "cause": "Completed map authentication retains64MiB in the verifier owner. Actual delivery verification fails admitting138395648 bytes with138373999 available, a21649-byte shortfall. Earlier isolated replay with lower caller capacity passes and does not reproduce the delivery failure."
+    },
+    "latchNativeImageDiff": {
+      "episode": "EU-008",
+      "frames": 579,
+      "changedNativePngFrames": [
+        311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324,
+        325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338,
+        339, 340, 341, 342, 343, 344, 345, 346, 347, 348, 349, 350, 351, 352,
+        353, 354, 355, 356, 357, 358, 359, 360, 361, 362, 363, 364, 365, 366,
+        367, 368, 369, 370, 371, 372, 373, 374, 375, 376, 377, 378, 379, 380,
+        381, 382, 383, 384, 385, 386, 387, 388, 389, 390, 391, 392, 393
+      ],
+      "nativePngHashesExactOutsideRepairedCameraWindow": true,
+      "repairedCameraWindow": [311, 394],
+      "encodedChangedSpans": [[303, 500]],
+      "encodedChangesOutsideNativeRepair": 117,
+      "scope": "All native image hash comparisons. Final encoded RGBA differences extend beyond the native camera repair; no blanket outside-window encoded equality."
     }
   },
   "authenticationLifetimeRepair": {
@@ -1812,12 +1829,80 @@
       "log": "/private/tmp/still-shift-ms3-holds61-auth-fast1.log"
     },
     "runtime": {
-      "status": "running",
-      "runner": "/private/tmp/still-shift-ms3-holds61-auth-gates1.py",
-      "receipt": "/private/tmp/still-shift-ms3-holds61-auth-gates1-receipt.json",
-      "session": 56779
+      "status": "passed",
+      "actualExitCode": 0,
+      "runtimeTests": 271,
+      "runtimeFiles": 52,
+      "integrationTests": 324,
+      "integrationFiles": 59,
+      "depthTests": 14,
+      "browserSmoke": "passed",
+      "sourceHoldExact": true,
+      "receipt": {
+        "steps": [
+          {
+            "step": "runtime",
+            "actualExitCode": 0,
+            "holdExitCode": 0,
+            "seconds": 546.1947595418897
+          }
+        ],
+        "ownedCache": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-holds61-auth-runtime-cache-lufahta7",
+        "reason": "Fresh owned media cache avoids the retained old shared-cache missing-manifest defect; no source, cache quota, thresholds or shared files changed.",
+        "actualExitCode": 0
+      },
+      "log": "/private/tmp/still-shift-ms3-holds61-auth-gates1-runtime.log"
     },
     "runtimeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
-    "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+    "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+    "sourceCommit": "4b58f49be3841b004260e3bfa5650644a427479b"
+  },
+  "freshCohort": {
+    "id": "actual-first-ten-native-purpose61",
+    "sourceCommit": "4b58f49be3841b004260e3bfa5650644a427479b",
+    "runtimeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+    "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+    "manifest": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-holds61.json",
+      "bytes": 37224,
+      "sha256": "sha256:146c116f8832ed0d05b8e2a6f1013a85cd6555830eb9394801d3c656abfe70bb"
+    },
+    "projects": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/projects-all10-holds61-cli.json",
+      "bytes": 3048,
+      "sha256": "sha256:64b04888e2263c3d8302d2e16c86fffadbe55dbc89c85ae869f70c14a1881786"
+    },
+    "privateInventory": {
+      "path": "/private/tmp/still-shift-ms3-holds61-private-inputs1.json",
+      "bytes": 13455,
+      "sha256": "sha256:a664c2d50e1f6386b2413f3d7244bb7292871e2db5020c3307d79a1de7f094dc"
+    },
+    "privateFiles": 53,
+    "privateBytes": 6533750,
+    "allEpisodeRowsAndDependenciesEqualPurpose60": true,
+    "cacheImport": {
+      "status": "passed",
+      "source": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose60/blender-cache",
+      "destination": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/blender-cache",
+      "files": 6935,
+      "bytes": 2795500494,
+      "seconds": 6.267111625056714,
+      "allCopiedBytesExact": true,
+      "method": "APFS copy-on-write; no symlinks or quotas changed",
+      "originalJournalAndSealedDeliveriesUntouched": true
+    },
+    "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61",
+    "wrapper": "/private/tmp/still-shift-ms3-holds61-whole1.py",
+    "receipt": "/private/tmp/still-shift-ms3-holds61-whole1-receipt.json",
+    "sessionId": 71417,
+    "execution": "run-live-report-resume-pending",
+    "preservedJournals": [
+      "output-all10-47",
+      "output-purpose59",
+      "output-purpose60"
+    ],
+    "sourceEdits": "Wait until this frozen lifecycle is terminal",
+    "wholeReviews": "UNREVIEWED",
+    "acceptedPilot": 0
   }
 }
