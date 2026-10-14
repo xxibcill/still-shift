@@ -537,3 +537,14 @@ repository/bundle paths are denied. Original producer1090 and installed receiver
 stay distinct. The initial omitted sequence sidecar failed; exact closure repair
 passes. Fresh installed production/export/report/resume/handoff creation remains open.
 [Receiving proof and retained failure](./mechanism-shorts-ms3-package-portability-results.json).
+
+The current bounded all-ten run actually exits0 in4,829.51s. All ten outputs now
+independently verify6,181 frames,130 root artifacts,1,084 review images,928 samples
+and24,724 native pins with exact prior whole picture/original narration parity.
+Preview0 errors/343 warnings remain distinct from whole production acceptance.
+Ten exact independent local MP4 copies are available through the ignored review
+index at `benchmarks/results/ms3-actual-first-ten-review80/index.md`. The failed
+initial copy helper and corrected delivery are retained. Report/resume/ten handoffs
+remain in progress in58827; source integration, other renderer groups, full current
+gates, physical fault images and whole reviews stay open.
+[All-ten saved-output and delivery evidence](./mechanism-shorts-ms3-current-first-ten-recovery-results.json).
