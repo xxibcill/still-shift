@@ -43,6 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #52 review fixes (2026-10-14):** three P2 findings are posted inline at
+  reviewed head `a204cde0`. Displayed-copy case handling is repaired locally;
+  panel/proof-region coverage and discarded-cutout occlusion remain in flight.
+  Seven new regressions and all 50 focused semantic/reading/font tests pass, as
+  does the type check. An initial implementation/type failure and invalid system
+  fixture are retained in the results. The PR log formatting is repaired with
+  this update. One finding is committed per slice; push waits for the final fix
+  and verification. [Fix records](./pr-52-fix-results.json).
+
 - **MS1 software complete in stages (2026-10-10):** `codex/mechanism-ms1` carries
   exact MS0 prerequisite `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51)
   remains open/unmerged. All 76 original required groups completed on unchanged
@@ -203,6 +212,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Repair PR #52 displayed-copy case handling
+
+- **Agent / branch:** Codex on `codex/pr-52-review-fixes` from PR head `a204cde0`.
+- **Done:** posted all three inline findings; semantic/reading samples now follow
+  shaped locale/span case and provider-local styles. Partial-copy and correction
+  evidence remain conservative; legacy system text is unchanged.
+- **Checks:** seven regressions and all 50 focused semantic/reading/font tests
+  pass; TypeScript passes. Existing log formatting is repaired. Initial fixture,
+  duplicate-variable and optional-property failures remain recorded.
+- **Next:** fix panel proof-region coverage, then cutout visibility; complete
+  local gates and push all three commits after the final slice. MS0 PR #51 is
+  integrated in this PR's merged `main` prerequisite; old dated evidence remains.
+- **Records:** [fix results](./pr-52-fix-results.json),
+  [case comment](https://github.com/xxibcill/still-shift/pull/52#discussion_r4266537125).
 
 ### 2026-10-10 — MS1 PR opened; native milestone next
 
@@ -559,6 +583,7 @@ still hold before relying on them.
   diagnostics/font/reading/repair evidence and required local full gate.
 - **Records:** [MS0 PR](https://github.com/xxibcill/still-shift/pull/51),
   [production plan](./mechanism-shorts-production-plan.md).
+
 ### 2026-10-12 — Resolve MS0 PR #51 conflicts
 
 - **Agent / branch:** Codex resolving `codex/mechanism-ms0` in an isolated worktree;

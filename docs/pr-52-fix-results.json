@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "still-shift-pr-fixes-1",
+  "date": "2026-10-14",
+  "timezone": "Asia/Bangkok",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/52",
+  "reviewedHead": "a204cde0e9dbcdf5ff8ea57217fd2ab5c2ebbb93",
+  "branch": "codex/pr-52-review-fixes",
+  "pushPolicy": "One commit per finding; push all three commits only after the final commit.",
+  "reviewId": 5512798912,
+  "findings": [
+    {
+      "id": "display-case",
+      "commentId": 4266537125,
+      "commentUrl": "https://github.com/xxibcill/still-shift/pull/52#discussion_r4266537125",
+      "status": "fixed-locally",
+      "implementation": "Shared sample normalization uses the shaper’s locale-aware per-grapheme case/style rules, including span overrides and provider-local styles. Partial transitions remain ambiguous even when normalized endpoint strings agree; correction artwork uses base styles without source spans. Legacy system text is unchanged.",
+      "verification": {
+        "regressionTests": 7,
+        "focusedTestsPassed": 50,
+        "typeCheck": "passed",
+        "logs": [
+          "/private/tmp/pr52-fix-case-red.log",
+          "/private/tmp/pr52-fix-case-green.log",
+          "/private/tmp/pr52-fix-case-build.log",
+          "/private/tmp/pr52-fix-case-green-2.log",
+          "/private/tmp/pr52-fix-case-build-2.log"
+        ]
+      }
+    },
+    {
+      "id": "protected-panel",
+      "commentId": 4266537129,
+      "commentUrl": "https://github.com/xxibcill/still-shift/pull/52#discussion_r4266537129",
+      "status": "pending"
+    },
+    {
+      "id": "cutout-visibility",
+      "commentId": 4266537132,
+      "commentUrl": "https://github.com/xxibcill/still-shift/pull/52#discussion_r4266537132",
+      "status": "pending"
+    }
+  ],
+  "retainedFailures": [
+    "Initial sandboxed worktree dependency installation was denied; the authorized rerun reused all locked dependencies.",
+    "Case regression baseline: six expected assertion failures and one invalid system-text fixture. The fixture referenced removed font assets; corrected before the green run.",
+    "First case implementation run found a duplicate local variable and exact-optional-property type issue; corrected before the 50-test and type-check pass."
+  ],
+  "verification": {
+    "aggregateFast": "pending",
+    "runtime": "pending",
+    "browser": "pending",
+    "originalReviewFast": "failed at docs/dev-log.md formatting; formatting repaired with the first fix log update"
+  },
+  "limits": [
+    "No paid generation, publication, merge, new full E01 production run or human visual/listening acceptance."
+  ]
+}

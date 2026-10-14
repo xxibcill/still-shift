@@ -3,6 +3,7 @@ import type {
   CompositionLayer,
   PreparedNode,
   TextEvent,
+  TextStyle,
 } from "@still-shift/scene-contract";
 import { multiplyMatrix, type Matrix } from "../node-transform.ts";
 import { evaluateComp } from "./evaluate/index.ts";
@@ -36,6 +37,11 @@ import {
   resolveDisplayedText,
 } from "../typography-transition.ts";
 import { typographyClock } from "./render/text-clock.ts";
+import {
+  caseText,
+  resolvedTextStyle,
+  type TextNode,
+} from "../typography-style.ts";
 
 export type CompositionQualitySample = {
   id: string;
@@ -104,6 +110,52 @@ function combinedTextCopies(copies: readonly string[]): TextCopy {
     : { textCopies: distinct };
 }
 
+function shapedCopyCase(
+  node: TextNode,
+  text: string,
+  styles: Record<string, TextStyle>,
+): string {
+  const base = resolvedTextStyle(node, styles);
+  const changesCase = (style: TextStyle) =>
+    style.case === "upper" || style.case === "lower";
+  if (
+    !changesCase(base) &&
+    !node.spans?.some((span) =>
+      changesCase(resolvedTextStyle(node, styles, span.style)),
+    )
+  )
+    return text;
+  const locale = node.locale ?? node.textBox?.locale ?? "en";
+  return [
+    ...new Intl.Segmenter(locale, { granularity: "grapheme" }).segment(text),
+  ]
+    .map((segment, index) => {
+      const span = node.spans?.find(
+        (span) => index >= span.start && index < span.end,
+      );
+      return caseText(
+        segment.segment,
+        resolvedTextStyle(node, styles, span?.style),
+        locale,
+      );
+    })
+    .join("");
+}
+function shapedCopyCases(
+  copy: TextCopy,
+  node: TextNode,
+  styles: Record<string, TextStyle>,
+): TextCopy {
+  // Keep partial-copy evidence even when case conversion makes its endpoints equal.
+  return copy.text === undefined
+    ? {
+        textCopies: (copy.textCopies ?? []).map((text) =>
+          shapedCopyCase(node, text, styles),
+        ),
+      }
+    : { text: shapedCopyCase(node, copy.text, styles) };
+}
+
 function displayedTextCopies(
   node: Parameters<typeof resolveDisplayedText>[0],
   frame: number,
@@ -165,16 +217,24 @@ function nativeText(comp: Composition, state: EvaluatedLayer) {
   const mix = state.stateMix ?? 1;
   const current = copies(state.state ?? 0);
   const prior = copies(state.stateFrom ?? state.state ?? 0);
+  const node = layer as TextNode;
+  const styles = comp.textStyles ?? {};
+  const copy = combinedTextCopies(
+    mix === 0 ? prior : mix === 1 ? current : [...prior, ...current],
+  );
   return {
     ...withCorrectionArtwork(
-      combinedTextCopies(
-        mix === 0 ? prior : mix === 1 ? current : [...prior, ...current],
-      ),
+      typed ? shapedCopyCases(copy, node, styles) : copy,
       state.time,
       typed
         ? (layer.corrections ?? []).map((correction) => ({
             ...correction,
             duration: correction.end - correction.start,
+            replacement: shapedCopyCase(
+              { ...node, spans: undefined },
+              correction.replacement,
+              styles,
+            ),
           }))
         : [],
     ),
@@ -212,7 +272,7 @@ function providerText(state: EvaluatedLayer) {
     !story && (layer.state !== undefined || layer.stateFrom !== undefined)
       ? state.state
       : undefined;
-  const copy = (index: number): string[] => {
+  const copyAtState = (index: number): string[] => {
     const text = typeof numeric === "string" ? numeric : node.text;
     return typed
       ? displayedTextCopies(
@@ -226,14 +286,18 @@ function providerText(state: EvaluatedLayer) {
             : String(states?.[index] ?? text),
         ];
   };
-  const current = copy(Number(contentState ?? sample.state ?? 0));
-  const prior = story ? current : copy(state.stateFrom ?? state.state ?? 0);
+  const current = copyAtState(Number(contentState ?? sample.state ?? 0));
+  const prior = story
+    ? current
+    : copyAtState(state.stateFrom ?? state.state ?? 0);
   const mix = state.stateMix ?? 1;
+  const styles = (params.textStyles ?? {}) as Record<string, TextStyle>;
+  const copy = combinedTextCopies(
+    mix === 0 ? prior : mix === 1 ? current : [...prior, ...current],
+  );
   return {
     ...withCorrectionArtwork(
-      combinedTextCopies(
-        mix === 0 ? prior : mix === 1 ? current : [...prior, ...current],
-      ),
+      typed ? shapedCopyCases(copy, node as TextNode, styles) : copy,
       sourceTime ?? frame,
       typed
         ? resolveTextEvents({
@@ -241,7 +305,20 @@ function providerText(state: EvaluatedLayer) {
             fps: Number(params.fps),
             frameCount: Number(params.frameCount),
             textEvents: params.textEvents as TextEvent[] | undefined,
-          }).filter((event) => event.verb === "correct")
+          })
+            .filter((event) => event.verb === "correct")
+            .map((event) => ({
+              ...event,
+              ...(event.replacement === undefined
+                ? {}
+                : {
+                    replacement: shapedCopyCase(
+                      { ...(node as TextNode), spans: undefined },
+                      event.replacement,
+                      styles,
+                    ),
+                  }),
+            }))
         : [],
     ),
     role: node.textRole as CompositionQualitySample["role"],
