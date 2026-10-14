@@ -7,6 +7,10 @@ import { MechanismProductionOwnedFileSchema } from "./production-queue-contract.
 import { MechanismCueCompilationSchema } from "./cue-lifecycle.ts";
 export const MECHANISM_PRODUCTION_HANDOFF_LIMITS = { bytes: 32768 } as const;
 const status = z.enum(["passed", "failed", "unreviewed"]);
+const validGenerationSnapshot = (handoff: {
+  sourceStatus: string;
+  reviewedReady: boolean;
+}) => handoff.sourceStatus !== "generation-snapshot" || !handoff.reviewedReady;
 export const MechanismProductionHandoffSchema = z
   .object({
     schemaVersion: z.literal("mechanism-production-handoff-1"),
@@ -54,9 +58,51 @@ export const MechanismProductionHandoffSchema = z
     qualification: z.string().max(2048),
   })
   .strict()
-  .refine((h) => h.sourceStatus !== "generation-snapshot" || !h.reviewedReady, {
+  .refine(validGenerationSnapshot, {
     message: "A generation snapshot cannot claim reviewed-ready acceptance",
   });
 export type MechanismProductionHandoff = z.infer<
   typeof MechanismProductionHandoffSchema
+>;
+
+/** Native episodes share the compact resume contract, without three-family cue data. */
+export const BlenderProductionHandoffSchema = z
+  .object({
+    ...MechanismProductionHandoffSchema.shape,
+    schemaVersion: z.literal("mechanism-production-handoff-2"),
+    backend: z.literal("blender-native"),
+    family: z.string().regex(/^[A-Za-z][A-Za-z0-9.-]{0,127}$/),
+    compilation: z
+      .object({
+        frameCount: z.number().int().positive().max(2000),
+        width: z.number().int().min(16).max(4096),
+        height: z.number().int().min(16).max(4096),
+        fps: z.number().int().positive().max(60),
+        sourceSamples: z.number().int().positive().max(172800000),
+        sourceAssetSha256: MechanismProductionBindingSchema.shape.inputSha256,
+      })
+      .strict(),
+    resume: MechanismProductionHandoffSchema.shape.resume.extend({
+      qaPath: z.string().min(1).max(2048).optional(),
+    }),
+    assets: MechanismProductionHandoffSchema.shape.assets.extend({
+      composition: MechanismProductionOwnedFileSchema,
+      nativePlates: MechanismProductionOwnedFileSchema,
+    }),
+    summary: MechanismProductionHandoffSchema.shape.summary.extend({
+      shots: z.number().int().positive().max(128),
+      sampledFrames: z.number().int().nonnegative().max(512),
+      images: z.number().int().nonnegative().max(512),
+    }),
+  })
+  .strict()
+  .refine(validGenerationSnapshot, {
+    message: "A generation snapshot cannot claim reviewed-ready acceptance",
+  });
+export const MechanismProductionHandoffVersionsSchema = z.union([
+  MechanismProductionHandoffSchema,
+  BlenderProductionHandoffSchema,
+]);
+export type BlenderProductionHandoff = z.infer<
+  typeof BlenderProductionHandoffSchema
 >;

@@ -1,0 +1,216 @@
+{
+  "schemaVersion": "ms3-native-handoff-review-results-1",
+  "date": "2026-10-15",
+  "branch": "codex/ms3-review-fixes",
+  "baseCommit": "d45f3f4f0bb56a8e20a1df859d93ce9ca96ed025",
+  "scope": "Isolated native compact handoff repair while frozen all-ten portable lifecycle continues on the original source.",
+  "review": {
+    "fixedBase": "76dd8971f29a0a09afa6003318392642381ea001",
+    "fixedHead": "d45f3f4f0bb56a8e20a1df859d93ce9ca96ed025",
+    "standards": {
+      "hardViolations": 0,
+      "judgmentFindings": [
+        {
+          "severity": "P3",
+          "finding": "Possible duplicated queue refinements between backend schema versions; maintenance judgment, no correctness failure confirmed."
+        }
+      ],
+      "repairFollowup": "No runtime defect or documented-standard violation found in staged handoff. Stale capability and guide claims identified and corrected."
+    },
+    "spec": {
+      "findings": [
+        {
+          "severity": "P2",
+          "requirement": "Compact fresh-session native handoff and resume",
+          "status": "implemented; current native/relocated/installed production proofs open"
+        },
+        {
+          "severity": "P2",
+          "requirement": "First-pass success without repair/retry/manual recovery and transient/authored breakdown",
+          "status": "open; original metric counts the first passed attempt alone"
+        }
+      ],
+      "repairFollowup": "No concrete staged handoff regression found. Source/artifact/PCM authentication and relocated current paths inspected; read-only review is not a production proof.",
+      "withdrawnObservation": "Prospective over-512MiB stereo review PCM is excluded by the enforced 600-second native composition duration limit."
+    }
+  },
+  "implementation": {
+    "nativeSchema": "mechanism-production-handoff-2",
+    "legacyPreserved": "mechanism-production-handoff-1",
+    "maximumPacketBytes": 32768,
+    "finalAudio": "complete decoded output PCM",
+    "resumePaths": "authenticated current manifest and product root",
+    "generationSnapshotReady": false
+  },
+  "checks": {
+    "unit": {
+      "actualExitCode": 0,
+      "tests": 30,
+      "files": 3
+    },
+    "types": {
+      "actualExitCode": 0,
+      "attempt": 3
+    },
+    "runtimeFixture": {
+      "actualExitCode": 0,
+      "tests": 6,
+      "files": 1,
+      "attempt": 4,
+      "actualNativeRender": false
+    },
+    "fast": {
+      "actualExitCode": 0,
+      "tests": 4596,
+      "files": 458,
+      "seconds": 88.53,
+      "attempt": 3,
+      "scope": "After capability/guide refresh, evidence and development-log additions"
+    }
+  },
+  "retainedFailures": [
+    "Red schema tests: missing native schema before repair",
+    "Type attempt1: incompatible safeExtend literals, exact optional signal, extra parser argument",
+    "Type attempt2: missing current manifest schema argument",
+    "Runtime attempts1/2: parser argument; attempt3: lexical versus canonical output root expectation",
+    "Fast attempt1: extracted legacy z import must be type-only",
+    "Actual helper attempt1: lexical tmp root violated strict owned path checks; canonical root correction preserved boundary"
+  ],
+  "retainedMediaHelper": {
+    "status": "passed-native-handoff-helper-over-retained-final-media",
+    "episode": "EU-002",
+    "sourceBinding": {
+      "inputSha256": "sha256:bf04318119c5ad325350d43b7ba3e973eee707c674525e6a20d12aa34bc9e748",
+      "outputSha256": "sha256:f8c223632b6d5054727998958163e84815bfe9a8698fbb37c0b99064da6b61ab",
+      "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+      "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+    },
+    "out": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-handoff69-actual-VN3wCn",
+    "handoff": {
+      "path": "review/handoff.json",
+      "bytes": 3933,
+      "sha256": "sha256:0df3ab5a3af835ee55885434a8b0a7fcb0b2616501cd0b0c13304708b5fce992"
+    },
+    "pins": [
+      {
+        "path": "review/review-audio.wav",
+        "bytes": 7528540,
+        "sha256": "sha256:9f37f761abab15e5d262670c1ac3d842b2dd5bd0bb24d43c14e3032642b9203c"
+      },
+      {
+        "path": "review/handoff.json",
+        "bytes": 3933,
+        "sha256": "sha256:0df3ab5a3af835ee55885434a8b0a7fcb0b2616501cd0b0c13304708b5fce992"
+      }
+    ],
+    "exactFinalDecodedPcmVerified": true,
+    "reSignedWrongClockRejected": true,
+    "reSignedChangedPcmRejected": true,
+    "originalVideoSha256": "sha256:f8c223632b6d5054727998958163e84815bfe9a8698fbb37c0b99064da6b61ab",
+    "scope": "New isolated helper over copied prior actual final media. No fresh native/video export or whole listening acceptance. Does not rebind the historical product or establish full receiving/installed lifecycle; copied capture/evidence manifests retain original scope."
+  },
+  "logs": {
+    "handoff-red1": {
+      "path": "/private/tmp/still-shift-ms3-review69-handoff-red1.log",
+      "bytes": 2467,
+      "sha256": "08b3071da9a78d6755254bd8d85715343279b4c9202affbf63e055125dc83b4c"
+    },
+    "handoff-green2": {
+      "path": "/private/tmp/still-shift-ms3-review69-handoff-green2.log",
+      "bytes": 614,
+      "sha256": "c64447536c8e661148c4387004f74c1cf5a8799bf2991707266e781fe273384e"
+    },
+    "handoff-types1": {
+      "path": "/private/tmp/still-shift-ms3-review69-handoff-types1.log",
+      "bytes": 5005,
+      "sha256": "85f3ddf3c131702231338b1a73720c0258504e06c8e36781e7112a1626dbcf41"
+    },
+    "handoff-types2": {
+      "path": "/private/tmp/still-shift-ms3-review69-handoff-types2.log",
+      "bytes": 461,
+      "sha256": "4419ba180c6ead4a3d9a4d800fe1a6e372193651e02b6d8b4695c3f9a05ba69a"
+    },
+    "handoff-types3": {
+      "path": "/private/tmp/still-shift-ms3-review69-handoff-types3.log",
+      "bytes": 101,
+      "sha256": "28157f22c7c4323340b13c65bb0d104629fe513917fa25e5a06300d5256f1029"
+    },
+    "handoff-runtime1": {
+      "path": "/private/tmp/still-shift-ms3-review69-handoff-runtime1.log",
+      "bytes": 2345,
+      "sha256": "2624cdab249f7b48f809d6b27b2d27849386a693748537bb1cace0d19594ef51"
+    },
+    "handoff-runtime2": {
+      "path": "/private/tmp/still-shift-ms3-review69-handoff-runtime2.log",
+      "bytes": 2345,
+      "sha256": "dcb4720fbf00135c1c948f76fc040ebd3b57d5ed09825558d7bac08b526cd39a"
+    },
+    "handoff-runtime3": {
+      "path": "/private/tmp/still-shift-ms3-review69-handoff-runtime3.log",
+      "bytes": 2899,
+      "sha256": "05a93d5448b7a875c32dad438a2eef8526a4cb7ec53cdbb9c2c1089227b6f4f5"
+    },
+    "handoff-runtime4": {
+      "path": "/private/tmp/still-shift-ms3-review69-handoff-runtime4.log",
+      "bytes": 322,
+      "sha256": "3f47d2ee74603479eddc6a988867616cc240f95e89fec98a518dc43d72054cba"
+    },
+    "handoff-fast1": {
+      "path": "/private/tmp/still-shift-ms3-review69-handoff-fast1.log",
+      "bytes": 1802,
+      "sha256": "9c825899a07d416c270eedfe442b61ba3c6ce757754094fd3882c3939c84b760"
+    },
+    "handoff-fast2": {
+      "path": "/private/tmp/still-shift-ms3-review69-handoff-fast2.log",
+      "bytes": 48361,
+      "sha256": "12430277f6b65d3658d37f0f206bf3bded5d1a0a36794b098b1549e9d41274df"
+    },
+    "handoff-schema1": {
+      "path": "/private/tmp/still-shift-ms3-review69-handoff-schema1.log",
+      "bytes": 665,
+      "sha256": "471a65a3499ebe74f49e051ffb9c9c45edb5789a9191c14a7fe603c6de63bebf"
+    },
+    "handoff-schema2": {
+      "path": "/private/tmp/still-shift-ms3-review69-handoff-schema2.log",
+      "bytes": 665,
+      "sha256": "471a65a3499ebe74f49e051ffb9c9c45edb5789a9191c14a7fe603c6de63bebf"
+    },
+    "handoff-actual1": {
+      "path": "/private/tmp/still-shift-ms3-review69-handoff-actual1.log",
+      "bytes": 1186,
+      "sha256": "f56f85b6b8cf711f0f1047f4051ab3cb520033f6db1c98b07617348b93200fff"
+    },
+    "handoff-actual2": {
+      "path": "/private/tmp/still-shift-ms3-review69-handoff-actual2.log",
+      "bytes": 1444,
+      "sha256": "7b5c53836bd8c4009b6f08f35467722b1de3e91fb4d20b059a892eb632d07c7d"
+    },
+    "handoff-fast3": {
+      "path": "/private/tmp/still-shift-ms3-review69-handoff-fast3.log",
+      "bytes": 48215,
+      "sha256": "7d880a6ca86c42e49049def0b94b9886a714813364daad58d2477c7cb24633ba"
+    },
+    "handoff-schema3": {
+      "path": "/private/tmp/still-shift-ms3-review69-handoff-schema3.log",
+      "bytes": 665,
+      "sha256": "471a65a3499ebe74f49e051ffb9c9c45edb5789a9191c14a7fe603c6de63bebf"
+    },
+    "handoff-format3": {
+      "path": "/private/tmp/still-shift-ms3-review69-handoff-format3.log",
+      "bytes": 297,
+      "sha256": "2adc1874ab4178c1c662feb17134c4af338d2dce6f52650927cd44517d8c2d08"
+    }
+  },
+  "open": [
+    "Actual new native production and current producer binding",
+    "Fresh and relocated CLI receiving",
+    "Installed-package handoff",
+    "First-pass repair/recovery and failure provenance classification",
+    "Full current software/benchmark/archive/installed gates",
+    "Whole visual/mechanical/factual/motion/listening review; pilot accepted0/10"
+  ],
+  "elevenLabsSpend": 0,
+  "publication": false,
+  "merge": false,
+  "githubActions": false
+}

@@ -9,7 +9,7 @@ import {
 import { executeProductionCommand } from "./production-execution.ts";
 import { mkdtemp, realpath } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { z } from "zod";
 import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
 import {
@@ -18,7 +18,9 @@ import {
   inspectMechanismProductionCapabilities,
   MechanismProductionSchemaSelectionSchema,
   mechanismProductionSchemas,
-  MechanismProductionHandoffSchema,
+  MechanismProductionHandoffVersionsSchema,
+  mechanismProductionBindingMatches,
+  MechanismProductionQueueVersionsSchema,
   MechanismProductionQueueCheckpointVersionsSchema,
 } from "@still-shift/animation-engine";
 import {
@@ -199,7 +201,7 @@ export async function runProductionCli(
             throw Error("Episode lacks its compact handoff artifact");
           const snapshot = await readProductionJSON(
             await productionOwnedPath(root, reference.path),
-            MechanismProductionHandoffSchema,
+            MechanismProductionHandoffVersionsSchema,
             owner,
             32768,
           );
@@ -208,9 +210,55 @@ export async function runProductionCli(
               throw Error(
                 "Handoff snapshot bytes changed after the current report audit",
               );
-            complete = MechanismProductionHandoffSchema.parse({
+            if (
+              !mechanismProductionBindingMatches(
+                snapshot.value.binding,
+                episode.report.binding,
+              )
+            )
+              throw Error(
+                "Handoff binding differs from the current verified episode",
+              );
+            let resume = snapshot.value.resume;
+            if (
+              snapshot.value.schemaVersion === "mechanism-production-handoff-2"
+            ) {
+              const manifestPath = resolve(requireArgument(flags, "manifest"));
+              const current = await readProductionJSON(
+                manifestPath,
+                MechanismProductionQueueVersionsSchema,
+                owner,
+                1024 * 1024,
+              );
+              try {
+                if (current.sha256 !== bundle.source.manifestFileSha256)
+                  throw Error(
+                    "Manifest changed after the current handoff audit",
+                  );
+                const item = current.value.items.find(
+                  (item) => item.id === episode.report.id,
+                );
+                if (!item || !("backend" in item))
+                  throw Error(
+                    "Native handoff requires the current native episode source",
+                  );
+                resume = {
+                  manifestPath,
+                  outputDirectory: root,
+                  familyPath: resolve(dirname(manifestPath), item.familyPath),
+                  cuePath: resolve(dirname(manifestPath), item.cuePath),
+                  ...(item.qaPath
+                    ? { qaPath: resolve(dirname(manifestPath), item.qaPath) }
+                    : {}),
+                };
+              } finally {
+                current.release();
+              }
+            }
+            complete = MechanismProductionHandoffVersionsSchema.parse({
               ...snapshot.value,
               sourceStatus: "current-verified",
+              resume,
               qa: episode.disposition.statuses,
               reviewedReady: episode.disposition.reviewedReady,
             });

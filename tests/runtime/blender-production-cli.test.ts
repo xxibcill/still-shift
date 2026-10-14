@@ -1,4 +1,4 @@
-import { readFile, writeFile, rm } from "node:fs/promises";
+import { readFile, writeFile, rm, mkdir, realpath } from "node:fs/promises";
 import { join, relative, resolve } from "node:path";
 import { describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({ blender: vi.fn(), native: vi.fn() }));
@@ -10,6 +10,7 @@ vi.mock("@still-shift/animation-engine", async (importOriginal) => ({
 import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
 import {
   BlenderProductionQueueSchema,
+  BlenderProductionHandoffSchema,
   BlenderProductionQueueProductSchema,
   type MechanismProductionExecutor,
   inspectMechanismProductionCapabilities,
@@ -20,6 +21,7 @@ import {
   product,
   code,
   profile,
+  hash,
 } from "../fixtures/mechanism-production-queue-support.ts";
 import { MechanismCommandReceiptSchema } from "../../packages/animation-engine/src/mechanism/protocol.ts";
 import { mechanismPackHash } from "../../packages/animation-engine/src/mechanism/pack-support.ts";
@@ -229,6 +231,128 @@ describe("native Blender production CLI with a declared byte-fixture adapter", (
       expect(complete.cohort.authoring.savings).toBeNull();
       expect(calls).toBe(2);
       expect(mocks.native).not.toHaveBeenCalled();
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
+  it("receives a native compact handoff with current resume paths and visible unfinished reviews", async () => {
+    const f = await setup();
+    const base = worker();
+    let calls = 0;
+    mocks.blender.mockResolvedValue(
+      worker(async (item, context) => {
+        calls++;
+        const produced = await base.execute(item, context);
+        const pin = produced.artifacts[0]!;
+        const snapshot = BlenderProductionHandoffSchema.parse({
+          schemaVersion: "mechanism-production-handoff-2",
+          backend: "blender-native",
+          id: item.id,
+          question: item.question,
+          family: item.family,
+          designVariant: item.designVariant,
+          binding: produced.report.binding,
+          sourceStatus: "generation-snapshot",
+          compilation: {
+            frameCount: item.clock.outputFrames,
+            width: 320,
+            height: 568,
+            fps: 30,
+            sourceSamples: item.clock.sourceSamples,
+            sourceAssetSha256: hash("native-fixture"),
+          },
+          resume: {
+            manifestPath: "/retired/queue.json",
+            outputDirectory: "/retired/output",
+            familyPath: "/retired/family.json",
+            cuePath: "/retired/cues.json",
+          },
+          assets: {
+            video: pin,
+            audio: pin,
+            evidence: pin,
+            decodedReport: pin,
+            composition: pin,
+            nativePlates: pin,
+          },
+          summary: { shots: 1, sampledFrames: 0, images: 0, cropExceptions: 0 },
+          qa: Object.fromEntries(
+            produced.report.qa.map((review) => [
+              review.dimension,
+              review.status,
+            ]),
+          ),
+          reviewedReady: false,
+          nextAction: "Review byte-fixture handoff only.",
+          qualification:
+            "Declared byte-fixture adapter; no actual media/QA acceptance.",
+        });
+        const directory = join(context.attemptDirectory, "review");
+        await mkdir(directory);
+        const path = join(directory, "handoff.json"),
+          bytes = JSON.stringify(snapshot);
+        await writeFile(path, bytes);
+        return BlenderProductionQueueProductSchema.parse({
+          ...produced,
+          artifacts: [
+            ...produced.artifacts,
+            {
+              path: relative(context.outputRoot, path),
+              bytes: Buffer.byteLength(bytes),
+              sha256: hash(bytes),
+            },
+          ],
+        });
+      }),
+    );
+    try {
+      expect(
+        (
+          await run([
+            "run",
+            "--manifest",
+            f.path,
+            "--output-dir",
+            f.output,
+            "--blender-executable",
+            executable,
+            "--report",
+            join(f.root, "run.json"),
+          ])
+        ).exitCode,
+      ).toBe(0);
+      const journal = await readFile(join(f.output, "queue-state.json"));
+      const result = await run([
+        "handoff",
+        "--manifest",
+        f.path,
+        "--output-dir",
+        f.output,
+        "--episode",
+        "EU-004",
+        "--blender-executable",
+        executable,
+        "--report",
+        join(f.root, "handoff.json"),
+      ]);
+      expect(result.exitCode).toBe(0);
+      expect(Buffer.byteLength(result.stdout)).toBeLessThanOrEqual(32768);
+      const packet = BlenderProductionHandoffSchema.parse(
+        JSON.parse(await readFile(join(f.root, "handoff.json"), "utf8")),
+      );
+      expect(packet.sourceStatus).toBe("current-verified");
+      expect(packet.resume).toEqual({
+        manifestPath: f.path,
+        outputDirectory: await realpath(f.output),
+        familyPath: join(f.root, "family.json"),
+        cuePath: join(f.root, "cues.json"),
+      });
+      expect(packet.reviewedReady).toBe(false);
+      expect(packet.qa.listening).toBe("unreviewed");
+      expect(await readFile(join(f.output, "queue-state.json"))).toEqual(
+        journal,
+      );
+      expect(calls).toBe(2);
     } finally {
       await rm(f.root, { recursive: true, force: true });
     }
