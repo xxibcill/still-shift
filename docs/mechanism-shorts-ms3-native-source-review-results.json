@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "ms3-native-source-review-adaptation-results-1",
+  "date": "2026-10-15",
+  "status": "source-focused-fast-qualified-in-stages-integration-render-runtime-open",
+  "baseCommit": "0491e622c36a0b979e7f4854ad24e4e9a010375c",
+  "upstreamRepairs": {
+    "worktree": "/Users/jjae/.codex/worktrees/ms1n-review-fixes/still-shift",
+    "maskCommit": "42397d3f",
+    "diagnosticsCommit": "2b7a4f20",
+    "evidence": "docs/pr-56-fix-results.json"
+  },
+  "changes": [
+    "Move the shader-equivalent Float32 mask rule into the later shared physical visibility module, retaining the PBR material branch and matching actual Three observation.",
+    "Select the existing strict mechanism1/solid1/mechanism2/mechanism3 schemas separately from genuine declared-format mismatch; retain first located semantic issue and bound/redact new diagnostic fields.",
+    "Preserve the later native source capacity/disposal, detached input buffers, PBR binary resource verification and preparation paths."
+  ],
+  "checks": [
+    {
+      "name": "port-red1",
+      "actualExitCode": 1,
+      "passed": 10,
+      "failed": 10,
+      "files": 3,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review79-port-red1.log",
+        "bytes": 11302,
+        "sha256": "sha256:9a615393d1add169b29758f7a1b36b3ffad5a00f5eb78d2c129bb515d1083bcf"
+      }
+    },
+    {
+      "name": "port-green1",
+      "actualExitCode": 0,
+      "passed": 20,
+      "failed": 0,
+      "files": 3,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review79-port-green1.log",
+        "bytes": 448,
+        "sha256": "sha256:20e74548c8bec507f89d0bacad6114348c8cceffbf2757d5db04a1767d30e74b"
+      }
+    },
+    {
+      "name": "port-green2-expanded",
+      "actualExitCode": 1,
+      "passed": 27,
+      "failed": 1,
+      "files": 4,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review79-port-green2.log",
+        "bytes": 2901,
+        "sha256": "sha256:9c4ba1c057ad8aec7c2ea18ce17b781458e8fa7ef76502679b866a43707f7503"
+      },
+      "cause": "v1 source-only control inherited tape graduation texture without its unrelated pinned font. Source correctly rejected at textureFont."
+    },
+    {
+      "name": "port-green3-corrected-fixture",
+      "actualExitCode": 0,
+      "passed": 28,
+      "failed": 0,
+      "files": 4,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review79-port-green3.log",
+        "bytes": 756,
+        "sha256": "sha256:f41d0633592c89708b51fc51df8ef937362147ea3c19663f440bc9b3940d2318"
+      },
+      "scope": "Remove atlas from source-only fixture and recompute geometry hash; all four formats, actual source diagnostics, mask queries and existing binary PBR admission pass."
+    },
+    {
+      "name": "port-fast1",
+      "actualExitCode": 0,
+      "tests": 4634,
+      "files": 460,
+      "seconds": 95.34,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review79-port-fast1.log",
+        "bytes": 49589,
+        "sha256": "sha256:ecf70306c9e4ac65a2b7a1a0e240b8b919f731c63a7813d6308b6fb3eda1a980"
+      },
+      "qualification": "Production source stayed exact throughout; source-only runtime fixture was corrected after format/lint prefix while build/unit phase was running. Final fixture format/lint/types were independently refreshed, so verification is staged, not one uninterrupted final-tree aggregate."
+    },
+    {
+      "name": "final-runtime-fixture-format-lint-types",
+      "actualExitCode": 0,
+      "typeLog": {
+        "path": "/private/tmp/still-shift-ms3-review79-final-types1.log",
+        "bytes": 101,
+        "sha256": "sha256:28157f22c7c4323340b13c65bb0d104629fe513917fa25e5a06300d5256f1029"
+      },
+      "command": "prettier --check runtime fixture; eslint runtime fixture; pnpm build",
+      "qualification": "Actual wrapper exit0 after final fixture edit; no source logic changed after source fast run began."
+    }
+  ],
+  "retainedHelperMistake": "Initial patch --check was accidentally invoked in already-patched MS1N checkout and failed without mutation; correct isolated MS3 checkout check/apply passed before the red run.",
+  "independentReviews": {
+    "Standards": {
+      "agent": "/root/ms3_standards69",
+      "findings": []
+    },
+    "Spec": {
+      "agent": "/root/ms3_spec69",
+      "findings": []
+    }
+  },
+  "liveProducer": {
+    "sourceCommit": "3df62a55",
+    "runtimeSha256": "1090f97c",
+    "session": 58827,
+    "sourceUnchanged": true
+  },
+  "limits": {
+    "integration": "after primary terminal only",
+    "freshGPU": "open",
+    "fullCurrentRuntimeRenderSoftwareBenchmarkArchiveInstalled": "open",
+    "package77": "Archive20e1/runtime d734 remains the earlier installed evidence; it does not contain these later source repairs. Refresh final archive/checks rather than relabel.",
+    "wholePilotReviews": "unreviewed",
+    "acceptedPilot": 0,
+    "paidGeneration": false
+  }
+}

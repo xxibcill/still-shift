@@ -8,7 +8,11 @@ import { verifyNativePbrSourceResources } from "./mechanism/native-pbr-files.ts"
 import { gltfJsonHash } from "./mechanism/gltf-identity.ts";
 import {
   CompositionPreparedNative3DVersionsSchema,
-  Native3DSourceVersionsSchema,
+  MechanismSceneSchema,
+  MechanismSceneV2Schema,
+  MechanismSceneV3Schema,
+  SolidSceneSchema,
+  sanitizeDiagnosticText,
   type Composition,
   type CompositionPreparedNative3DVersions,
   type NativeAppearanceCodeIdentity,
@@ -21,6 +25,13 @@ import {
   loadNativeAppearanceCodeIdentity,
   hashNativeAppearanceCodeIdentity,
 } from "./native3d-appearance-identity.ts";
+
+const nativeSourceSchemas = {
+  "mechanism-scene-1": MechanismSceneSchema,
+  "solid-scene-1": SolidSceneSchema,
+  "mechanism-scene-2": MechanismSceneV2Schema,
+  "mechanism-scene-3": MechanismSceneV3Schema,
+};
 
 export type CompositionNative3DPreparation = {
   preparedNative3D: CompositionPreparedNative3DVersions;
@@ -89,13 +100,45 @@ export async function prepareCompositionNative3D(
             { path: `assets.${asset.id}` },
           );
         }
-        const parsed = Native3DSourceVersionsSchema.safeParse(value);
-        if (!parsed.success || parsed.data.schemaVersion !== asset.format)
+        const schemaVersion =
+          typeof value === "object" &&
+          value !== null &&
+          "schemaVersion" in value
+            ? value.schemaVersion
+            : undefined;
+        if (schemaVersion !== asset.format)
           passageError(
             "comp-native3d-source",
             "Native source does not match its declared format",
-            { path: `assets.${asset.id}.format` },
+            {
+              path: sanitizeDiagnosticText(`assets.${asset.id}.format`),
+              sourcePath: sanitizeDiagnosticText(path),
+            },
           );
+        const parsed = nativeSourceSchemas[asset.format].safeParse(value);
+        if (!parsed.success) {
+          const issue = parsed.error.issues[0]!;
+          const field = [
+            "assets",
+            asset.id,
+            ...issue.path,
+            ...(issue.code === "unrecognized_keys"
+              ? issue.keys.slice(0, 1)
+              : []),
+          ].join(".");
+          const diagnosticCode =
+            issue.code === "custom" ? issue.params?.diagnosticCode : undefined;
+          passageError(
+            typeof diagnosticCode === "string"
+              ? diagnosticCode
+              : "comp-native3d-source",
+            sanitizeDiagnosticText(issue.message),
+            {
+              path: sanitizeDiagnosticText(field),
+              sourcePath: sanitizeDiagnosticText(path),
+            },
+          );
+        }
         source = parsed.data;
         input.complete();
       } finally {

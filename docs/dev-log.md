@@ -43,6 +43,17 @@ still hold before relying on them.
 
 ## Current state
 
+- **MS3 later native source fixes qualified in stages (2026-10-15):** isolated
+  from `0491e622`, port upstream PR56 repairs `42397d3f`/`2b7a4f20` to shared
+  physical visibility and all four source formats. Red10/20, corrected20,
+  expanded27/28 fails an unrelated missing atlas font in the new source-only
+  fixture; corrected28/4 passes. Fast4,634/460 passes95.34s; final fixture
+  format/lint/types refreshed separately after its edit during build/unit phase.
+  Standards0 / Spec0. Main producer remains frozen; integration and fresh
+  GPU/runtime/full gates await terminal58827. Archive77 does not include this
+  port and must be refreshed for final current-package claims.
+  [Review adaptation](./mechanism-shorts-ms3-native-source-review-results.json).
+
 - **MS3 declaration portability repair (2026-10-15):** isolated source `20e1afe2`
   names the existing public Composition return type after actual package emit
   failed TS2742/TS7056. Exact erased module JS is unchanged. Package emit, private
@@ -346,6 +357,18 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Carry reviewed native visibility and diagnostics into MS3
+
+- **Agent / branch:** Codex on `codex/ms3-review-fixes`, after `0491e622`.
+- **Done:** Float32 legacy mask visibility plus bounded located schema diagnostics
+  across all four existing native formats, preserving PBR/source admission.
+- **Results:** focused28/4, fast4,634/460 and final fixture format/lint/types pass
+  in stages; Standards0 / Spec0. All red/fixture failures are retained.
+- **Open / next:** integrate after58827 terminal; serial GPU/runtime/full/current
+  archive proofs. Original1090 producer and earlierd734 installed evidence stay
+  bound to their exact historical source; no new render or acceptance claimed.
+- **Records:** [native source adaptation](./mechanism-shorts-ms3-native-source-review-results.json).
 
 ### 2026-10-15 — Fix declaration emit and admit copied first ten from installed archive
 

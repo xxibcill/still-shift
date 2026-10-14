@@ -53,7 +53,7 @@ const materialSurvives = (
 ) =>
   "schemaVersion" in material ||
   material.alphaMode !== "mask" ||
-  material.opacity >= material.alphaCutoff;
+  Math.fround(material.opacity) >= Math.fround(material.alphaCutoff);
 
 /** Physical catalogue only: floors and anchor-owning parts participate, graphics do not. */
 export function nativeAnchorVisibilities(

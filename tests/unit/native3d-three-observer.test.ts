@@ -119,6 +119,23 @@ describe("independent actual native Three observation", () => {
       f.shared.dispose();
     }
   });
+  it.each([
+    [0.499999999, 0.5, "occluded"],
+    [0.5, 0.500000001, "occluded"],
+    [0.49, 0.5, "visible"],
+  ] as const)(
+    "matches GPU mask uniforms at opacity %s and cutoff %s",
+    async (opacity, alphaCutoff, visibility) => {
+      const f = await fixture();
+      try {
+        f.material.opacity = opacity;
+        f.material.alphaTest = alphaCutoff;
+        expect(f.observe().anchors.behind!.visibility).toBe(visibility);
+      } finally {
+        f.shared.dispose();
+      }
+    },
+  );
   it("uses actual material mask and camera-axis clip policy, excluding graphic planes", async () => {
     const f = await fixture();
     try {

@@ -10,6 +10,7 @@ import { nativeSolidFixture } from "../helpers/native3d-fixture.ts";
 
 // Frozen pre-optimization algorithm from 3ac7d29f. It intentionally transforms
 // every triangle vertex for every anchor, independently of the new reuse path.
+// Mask survival follows GPU Float32 uniforms after the precision correction.
 import type {
   Native3DSource,
   NativeSceneFrame,
@@ -59,7 +60,8 @@ function triangleDistance(
   return distance >= 0 && Number.isFinite(distance) ? distance : null;
 }
 const materialSurvives = (material: DeepReadonly<MechanismMaterial>) =>
-  material.alphaMode !== "mask" || material.opacity >= material.alphaCutoff;
+  material.alphaMode !== "mask" ||
+  Math.fround(material.opacity) >= Math.fround(material.alphaCutoff);
 
 /** Physical catalogue only: floors and anchor-owning parts participate, graphics do not. */
 function referenceScreenAnchors(
@@ -236,6 +238,24 @@ describe("frame-local indexed native visibility reuse", () => {
       expect(nativeScreenAnchors(source, frame)).toEqual(expected);
     }
   });
+  it.each([
+    [0.499999999, 0.5, "occluded"],
+    [0.5, 0.500000001, "occluded"],
+    [0.49, 0.5, "visible"],
+  ] as const)(
+    "matches GPU mask uniforms at opacity %s and cutoff %s",
+    (opacity, alphaCutoff, visibility) => {
+      const source = sourceFixture();
+      Object.assign(source.geometry.materials[0]!, {
+        alphaMode: "mask",
+        opacity,
+        alphaCutoff,
+      });
+      expect(
+        nativeScreenAnchors(source, frameFixture(source)).behind!.visibility,
+      ).toBe(visibility);
+    },
+  );
   it("preserves endpoint, mask-group, front winding, near/far and hidden classifications", () => {
     const base = sourceFixture(),
       mesh = base.geometry.meshes[0]!;
@@ -286,7 +306,7 @@ describe("frame-local indexed native visibility reuse", () => {
     expect(
       nativeScreenAnchors(cases[0]!, frameFixture(cases[0]!))["second-behind"]!
         .visibility,
-    ).toBe("visible");
+    ).toBe("occluded");
     expect(
       nativeScreenAnchors(cases[1]!, frameFixture(cases[1]!))["second-behind"]!
         .visibility,
