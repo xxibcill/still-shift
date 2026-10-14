@@ -159,3 +159,22 @@ visibility. All software/native/helper failures remain in the records. Native
 rendered readability/review evidence/handoff, HD all-ten products, broader event/
 contact/fault/coverage, whole reviews, comparable effort and final gates remain.
 Accepted coverage is 0/10; these exports represent one distinct engineering episode.
+
+[Rendered native QA](./mechanism-shorts-ms3-blender-visual-results.json) on `d4f7e247`
+now measures every output frame using actual cached preview pixels and glyph bounds,
+with independent pinned caption/audio intervals and exact encoded endpoint images.
+Both default and numeric-plan routes verify export/report/resume with zero new
+Blender renders and complete decoded picture/audio parity. Each retains 13 frozen-
+pixel errors and 47 images; authored hold purpose and staging require review.
+Four full rendered seeds detect clipping, a two-frame hold, changed copy and missing
+source narration. Missing narration produces renderer placeholder silence; all 13
+source intervals fail and an independent PCM peak check confirms exact silence.
+The failed helper assumption is retained separately from successful source QA/replay.
+A 319-pin/285-image-and-video-pixel audit passes; three samples are inspected.
+Current runtime `2695` passes 4,578 fast tests/456 files, 22 runtime checks/nine files
+and Python checks with 2,773 inputs held. This closes rendered native source/preview
+QA and endpoint images. It does not prove wrong physical label-state association,
+all encoded glyphs, whole motion/listening/factual/mechanical acceptance, native
+phone/contact/crop/audio handoff, HD all-ten delivery, broader faults/coverage or
+final gates. These cases remain one distinct engineering episode; accepted coverage
+is 0/10 and comparable routine token measurements are unavailable.

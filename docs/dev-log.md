@@ -55,19 +55,25 @@ still hold before relying on them.
   Shared Blender capture and whole-recording compilation preserve native geometry,
   drivers, materials, cameras and controls with authenticated state caches.
   Explicit CLI routing and version 2 products retain the legacy default.
-  [Native QA](./mechanism-shorts-ms3-blender-qa-results.json) now admits pinned plans,
-  replays actual Bpy numeric observations, retains located missing/range failures,
-  groups peak images and verifies export-bound facts on resume.
-  Source `780209e3`, runtime identity `9a39` across 702 files, passes 4,573 fast tests
-  in 455 files, 22 affected runtime checks in nine files and Python checks.
-  All 2,770 pinned inputs (122,066,184 bytes) remain exact after commit.
-  EU-004 is one 21.76-second, 653-frame, 320×568 engineering draft. The current QA
-  repair adds zero Blender renders, preserving all 664 originals and complete decoded
-  picture/audio. The retained seeded checks detect 26 failures in two groups.
-  An independent audit verifies 373 pins and 3,944 numeric comparisons across three
-  exports. Whole reviews remain unreviewed; accepted coverage is 0/10 and paired
-  routine effort is null. All failed runs and helper errors remain recorded.
-  **Next:** native rendered QA/review evidence/handoff; HD plans/products for all ten
+  [Native numeric QA](./mechanism-shorts-ms3-blender-qa-results.json) retains located
+  missing/range findings, grouped peaks and current export-bound replay.
+  [Rendered native QA](./mechanism-shorts-ms3-blender-visual-results.json) now checks
+  every output frame using cached preview pixels and measured glyphs, compares
+  captions/audio intervals against the pinned plan, and retains exact encoded PNGs.
+  Default and numeric-plan products expose the current visual evidence in reports.
+  Source `d4f7e247`, runtime `2695` across 703 files, passes 4,578 fast tests in
+  456 files, 22 affected runtime checks in nine files and Python checks. All 2,773
+  inputs (122,130,025 bytes) remain exact after commit.
+  Actual EU-004 remains one 21.76-second, 653-frame, 320×568 engineering draft.
+  Default/numeric export/report/resume preserve complete decoded picture/audio and
+  all 664 originals with zero fresh Blender renders. Each keeps 13 frozen-pixel
+  errors and 47 encoded endpoint images; hold purpose/staging need review.
+  Four actual rendered seeds detect clipping, short hold, wrong copy and missing
+  source narration. The renderer's placeholder silence is independently confirmed.
+  A 319-pin/285-PNG-and-video-pixel audit passes across six cases; three PNGs viewed.
+  All failed software/helper runs remain recorded. Whole reviews remain unreviewed;
+  accepted coverage is 0/10 and paired routine effort is null.
+  **Next:** native hold/staging repairs and review evidence/handoff; HD plans/products for all ten
   with object-specific cues and factual bindings; broader faults/events/contact/coverage;
   whole factual/mechanical/glyph/continuous/listening and original E06/E10 reviews;
   comparable effort; final full software/benchmark/archive/installed-package gates.
@@ -260,6 +266,25 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Measure native rendered frames and retain encoded QA images
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; implementation `d4f7e247`, from `1cebefc7`.
+- **Done:** Default all-frame cached pixels/glyphs, independent pinned speech/audio
+  checks, located failures, exact encoded warning PNGs, grouped peaks and fresh replay.
+- **Verification:** 4,578 fast tests/456 files, 22 runtime checks/nine files and Python
+  checks pass. All 2,773 inputs/122,130,025 bytes remain exact after commit.
+- **Actual:** Both native CLI routes preserve complete decoded picture/audio and
+  all 664 original captures with zero new Blender renders. Each retains 13 frozen-
+  pixel errors and 47 images; no sampled-visual pass or whole approval is claimed.
+- **Faults / audit:** Four rendered seeds verify clipping, short hold, wrong copy and
+  missing source narration. Independent 319 pins/285 PNG-video hashes pass; three
+  samples viewed. The placeholder-silence helper failure and all compile/schema/
+  fixture failures remain recorded; completion verifies the existing missing-audio case.
+- **Next:** Hold/staging review, native review/handoff, HD all-ten, broader faults/
+  coverage/whole reviews, comparable effort and final gates. Accepted coverage: 0/10.
+- **Records:** [Rendered QA](./mechanism-shorts-ms3-blender-visual-results.json),
+  [native guide](./mechanism-blender-episode.md), [acceptance](./mechanism-shorts-ms3-acceptance.md).
 
 ### 2026-10-14 — Bind native Blender observation QA to current episode exports
 
