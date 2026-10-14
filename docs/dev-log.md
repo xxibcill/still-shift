@@ -43,16 +43,19 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS3 bounded recovery live (2026-10-15):** qualified coverage repair integrated
-  at3df62a55; producer packages/worker/runtime1090f97c/profile1dd0 unchanged and
-  independently rechecked. Exact-CAS revision1 selects only nine failed jobs.
-  Unified58827 live; E1 verified/retained, E2 executing retry, later failed rows
-  retained until their retry.2,792 source files/122,374,188B held,107 current and
-  1,221 prior/E1 native/image/artifact/history files guarded. Original failed r0
-  snapshots retained, no first-pass or whole success inferred. Source73 actual
-  auditor returns10 selected/0 supported with8 reuse/2 revisions/0 new rig types.
-  Collect terminal run/report/resume/ten handoffs before any source mutation;
-  full receiving/installed/software, real faults and whole reviews remain open.
+- **MS3 bounded recovery live (2026-10-15):** coverage repair integrated at
+  `3df62a55`; producer runtime `1090f97c` and profile `1dd0` remain exact.
+  Revision 1 selects only nine failed jobs. Unified session 58827 is live:
+  E1/E2 are sealed and independently verified; E3 is running. The remaining
+  failed rows await their retry. All 2,792 source files remain exact; 107 current
+  and 1,221 prior/E1 files are guarded. Original failed attempts are preserved.
+  E2 verifies 13 root artifacts, 90 review images, 2,352 native pins and 588 frames;
+  its movie matches prior complete picture/audio evidence. The wrong physical
+  label-state seed is rejected at frame 239, with native witnesses at 239/266.
+  The failed helper's frame-field assumption and corrected run are retained.
+  Collect terminal lifecycle before source changes. Receiving, installed-package,
+  full software, actual mount/intersection fault output and whole reviews remain
+  open. Accepted pilot: 0/10; paired authoring tokens are unavailable.
   [Current bounded recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json).
 
 - **MS3 native coverage repair qualified in isolation (2026-10-15):** source/schema/
@@ -347,6 +350,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Verify recovered cable tie and actual label-state admission
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; producer frozen at `3df62a55`.
+- **Results:** EU002 sealed. All 13 root artifacts, 90 review images, 77 samples,
+  five shots, two crop exceptions, 2,352 native pins and 588 frame bindings verify.
+  Movie bytes match prior full RGBA/PCM/original narration evidence. No fresh
+  native renders or whole acceptance inferred.
+- **Fault:** moving the real E1 Inside face label to its outside-state shot,
+  preserving the inside control range, rejects at frame 239. Native observations
+  and images at 239/266 authenticate mode 1. Initial helper confused final and
+  deduplicated capture frame fields; failure and corrected exit 0 are retained.
+- **Open / next:** session 58827 live, E3 running, original attempt prefixes exact.
+  Finish terminal lifecycle, receiving/installed/full software, actual mount/
+  intersection fault output and whole reviews. Pilot acceptance remains 0/10.
+- **Records:** [recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json),
+  [label-state proof](./mechanism-shorts-ms3-physical-label-state-results.json).
 
 ### 2026-10-15 — Integrate coverage and start exact bounded recovery
 

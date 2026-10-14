@@ -2,7 +2,7 @@
   "schemaVersion": "ms3-current-first-ten-bounded-recovery-results-1",
   "date": "2026-10-15",
   "status": "running-bounded-nine-job-retry-after-exact-input-restoration",
-  "capturedAt": "2026-10-14T21:27:51.473628+00:00",
+  "capturedAt": "2026-10-14T21:36:49.823459+00:00",
   "sourceCommit": "3df62a5598dc46e021ee2c51b173ba33a38d2af6",
   "runtimeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
   "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
@@ -74,14 +74,14 @@
   },
   "stateAtCapture": {
     "file": {
-      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/queue-state.json",
-      "bytes": 13265,
-      "sha256": "sha256:64a9661bf1c260855e3ff8808ca69cee8568e2da0a80a54eacbf176bc8461552"
+      "path": "/private/tmp/still-shift-ms3-recovery75-state1.json",
+      "bytes": 14034,
+      "sha256": "sha256:8751492725fc20e446010858a4a26470c73fb0471d9ab3f7961e8fa26adc872f"
     },
     "statuses": {
       "EU-001": "passed",
-      "EU-002": "running",
-      "EU-003": "failed",
+      "EU-002": "passed",
+      "EU-003": "running",
       "EU-004": "failed",
       "EU-005": "failed",
       "EU-006": "failed",
@@ -100,9 +100,8 @@
         "reason": "Repeated submission of the same request"
       },
       "EU-003": {
-        "kind": "initial",
-        "reason": "First submitted job in this retained queue journal",
-        "failureOrigin": "unknown"
+        "kind": "retry",
+        "reason": "Repeated submission of the same request"
       },
       "EU-004": {
         "kind": "initial",
@@ -153,5 +152,217 @@
     "completeCurrentRunReportResumeHandoffReceivingInstalledSoftwareAndRealFaultProof": "open",
     "source73ActualAuditorPassedWithSupportZero": true,
     "newSpending": false
-  }
+  },
+  "progressSnapshots": [
+    {
+      "capturedAt": "2026-10-14T21:27:51.473628+00:00",
+      "stateAtCapture": {
+        "file": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/queue-state.json",
+          "bytes": 13265,
+          "sha256": "sha256:64a9661bf1c260855e3ff8808ca69cee8568e2da0a80a54eacbf176bc8461552"
+        },
+        "statuses": {
+          "EU-001": "passed",
+          "EU-002": "running",
+          "EU-003": "failed",
+          "EU-004": "failed",
+          "EU-005": "failed",
+          "EU-006": "failed",
+          "EU-007": "failed",
+          "EU-008": "failed",
+          "EU-009": "failed",
+          "EU-010": "failed"
+        },
+        "attemptKinds": {
+          "EU-001": {
+            "kind": "initial",
+            "reason": "First submitted job in this retained queue journal"
+          },
+          "EU-002": {
+            "kind": "retry",
+            "reason": "Repeated submission of the same request"
+          },
+          "EU-003": {
+            "kind": "initial",
+            "reason": "First submitted job in this retained queue journal",
+            "failureOrigin": "unknown"
+          },
+          "EU-004": {
+            "kind": "initial",
+            "reason": "First submitted job in this retained queue journal",
+            "failureOrigin": "unknown"
+          },
+          "EU-005": {
+            "kind": "initial",
+            "reason": "First submitted job in this retained queue journal",
+            "failureOrigin": "unknown"
+          },
+          "EU-006": {
+            "kind": "initial",
+            "reason": "First submitted job in this retained queue journal",
+            "failureOrigin": "unknown"
+          },
+          "EU-007": {
+            "kind": "initial",
+            "reason": "First submitted job in this retained queue journal",
+            "failureOrigin": "unknown"
+          },
+          "EU-008": {
+            "kind": "initial",
+            "reason": "First submitted job in this retained queue journal",
+            "failureOrigin": "unknown"
+          },
+          "EU-009": {
+            "kind": "initial",
+            "reason": "First submitted job in this retained queue journal",
+            "failureOrigin": "unknown"
+          },
+          "EU-010": {
+            "kind": "initial",
+            "reason": "First submitted job in this retained queue journal",
+            "failureOrigin": "unknown"
+          }
+        }
+      },
+      "wrapperReceiptAtCapture": {
+        "steps": [],
+        "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/queue-current72.json",
+        "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72",
+        "sourceCommit": "3df62a55",
+        "runtimeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+        "scope": "Bounded revision1 retry of9 failed jobs after restoring exact disappeared input bytes. Existing E1 is verified and retained. Same runtime/profile and whole original Alden takes1x. All original failed attempts retained; no first-pass success or savings inferred.",
+        "acceptedPilot": 0,
+        "wholeReviews": "UNREVIEWED",
+        "declaredInputFiles": 107,
+        "protectedPriorFiles": 1221
+      }
+    }
+  ],
+  "independentCompletedProducts": [
+    {
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-current72-EU001-product-audit1.json",
+        "bytes": 1812,
+        "sha256": "sha256:e603c8a58fb79e47e89580b2927e8302b8385b1fa91cae90fc9835d196c2f860"
+      },
+      "result": {
+        "id": "EU-001",
+        "status": "passed-current-integrated-native-product-review-closure",
+        "rootArtifactsVerified": 13,
+        "reviewImagesVerified": 113,
+        "reviewSamples": 100,
+        "reviewShots": 5,
+        "cropExceptions": 2,
+        "product": {
+          "path": "products/EU-001-daefc3cc7faa9869-1.json",
+          "bytes": 10644,
+          "sha256": "sha256:12d114ee61c1a6f1d507c78429833edc250e45469ef2de55e89f3187e7575261"
+        },
+        "binding": {
+          "inputSha256": "sha256:daefc3cc7faa98699f15011508143afc79b5080d09231b264fd4bec066810878",
+          "outputSha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e",
+          "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 610,
+        "previewErrors": 0,
+        "previewWarnings": 37,
+        "historicalEncodedReceipt": {
+          "path": "/private/tmp/still-shift-ms3-portable68-EU-001-encoded1.json",
+          "bytes": 2502,
+          "sha256": "sha256:5845fca4902a564eabf15ad2e23122646c7170608f0d76db76591c640ff42b81"
+        },
+        "currentMovieExactAgainstFullyAuditedPortableMovie": true,
+        "completeRGBAAndPCMParityByAuthenticatedExactMovie": true,
+        "currentWholeReviewStates": {
+          "technical": "passed",
+          "mechanical": "unreviewed",
+          "sampled-visual": "passed",
+          "continuous-motion": "unreviewed",
+          "listening": "unreviewed",
+          "factual": "unreviewed"
+        },
+        "scope": "Independent root/nested file pins, PNG shapes, shared exact PCM metadata and handoff closure. Complete RGBA/PCM and original narration parity reused after exact movie and prior receipt/media rehash. Native pin proof, image pixel transforms and full PCM WAV independently rechecked separately; no whole glyph/playback/listening/factual/mechanical or pilot approval."
+      }
+    },
+    {
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-current72-EU002-product-audit1.json",
+        "bytes": 1810,
+        "sha256": "sha256:40c51f69ce397c8d1b1b350a5d21916695cd2efc61882ce9fe46ee8211893016"
+      },
+      "result": {
+        "id": "EU-002",
+        "status": "passed-current-integrated-native-product-review-closure",
+        "rootArtifactsVerified": 13,
+        "reviewImagesVerified": 90,
+        "reviewSamples": 77,
+        "reviewShots": 5,
+        "cropExceptions": 2,
+        "product": {
+          "path": "products/EU-002-9adfbd99e697423c-2.json",
+          "bytes": 11379,
+          "sha256": "sha256:50b636d00008bbcf2378247527c20f3aa7aecd0bff001d785b04b48fecf32a53"
+        },
+        "binding": {
+          "inputSha256": "sha256:9adfbd99e697423ce12ca38f5065f8658eaf83a2d9d2e28ad409bdca42d9bfcb",
+          "outputSha256": "sha256:f8c223632b6d5054727998958163e84815bfe9a8698fbb37c0b99064da6b61ab",
+          "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 588,
+        "previewErrors": 0,
+        "previewWarnings": 27,
+        "historicalEncodedReceipt": {
+          "path": "/private/tmp/still-shift-ms3-portable68-EU-002-encoded1.json",
+          "bytes": 2505,
+          "sha256": "sha256:4b0e832ddd068dd4f1fb73dc129f6aa0069cbfedc397075ea0ac44812d64853b"
+        },
+        "currentMovieExactAgainstFullyAuditedPortableMovie": true,
+        "completeRGBAAndPCMParityByAuthenticatedExactMovie": true,
+        "currentWholeReviewStates": {
+          "technical": "passed",
+          "mechanical": "unreviewed",
+          "sampled-visual": "passed",
+          "continuous-motion": "unreviewed",
+          "listening": "unreviewed",
+          "factual": "unreviewed"
+        },
+        "scope": "Independent root/nested file pins, PNG shapes, shared exact PCM metadata and handoff closure. Complete RGBA/PCM and original narration parity reused after exact movie and prior receipt/media rehash. Native pin proof, image pixel transforms and full PCM WAV independently rechecked separately; no whole glyph/playback/listening/factual/mechanical or pilot approval."
+      }
+    }
+  ],
+  "independentEU002NativeProof": {
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-current72-native-audit-EU002-1.json",
+      "bytes": 889,
+      "sha256": "sha256:6c7b28c7490a38d46b36e2af4495680712f8614ecd2b5a5a184e88a04e78b2de"
+    },
+    "result": {
+      "status": "passed-available-native-artifacts",
+      "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+      "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+      "queueId": "actual-first-ten-current72",
+      "rows": [
+        {
+          "id": "EU-002",
+          "statusAtAudit": "passed",
+          "frames": 588,
+          "proofHolds": 5,
+          "pinChecks": 2352,
+          "uniquePinsVerified": 838,
+          "activeLabelFrames": 344,
+          "freshNativeRenders": 0,
+          "reusedNativeFrames": 588,
+          "completePhysicalProofAndGlobalFrameClockPassed": true
+        }
+      ],
+      "skipped": [],
+      "scope": "Current saved native pins, complete physical proof metadata, actual controller phases, absolute sequence frame clocks and source callout copy/projection. Not surface contact, encoded glyph, full playback/listening or pilot acceptance."
+    },
+    "actualExitCode": 0
+  },
+  "originalR0AttemptsExactPrefixesAtCapture": true
 }

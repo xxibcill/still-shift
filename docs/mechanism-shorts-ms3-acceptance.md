@@ -486,3 +486,16 @@ need explicit canonical/portable rebinding before a fresh all-ten lifecycle.
 Composite review selection has0 preview errors/343 warnings/542 images; accepted
 pilot0/10 and effort tokens null remain unchanged.
 [Portable input evidence](./mechanism-shorts-ms3-first-ten-portable-input-results.json).
+
+The current bounded recovery independently verifies EU002: 588 frames, 13 root
+artifacts, 90 review images and 2,352 native pins. Its movie bytes match prior
+full RGBA/PCM/original narration evidence. The current run is still live.
+[Recovery progress](./mechanism-shorts-ms3-current-first-ten-recovery-results.json).
+
+Moving the real E1 Inside face label to its opposite outside-state shot rejects
+at frame 239. Pinned native observations and images at 239/266 authenticate
+mode 1, source geometry and the affected frames. The initial helper's capture-frame
+assumption fails and is repaired. This qualifies physical-state admission with
+zero fresh renders; rendered faulty-overlay, actual moving-mount/intersection
+output and whole review requirements remain open.
+[Scoped actual label-state evidence](./mechanism-shorts-ms3-physical-label-state-results.json).
