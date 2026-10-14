@@ -1,0 +1,190 @@
+{
+  "schemaVersion": "still-shift-pr-review-1",
+  "date": "2026-10-14",
+  "timezone": "Asia/Bangkok",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/52",
+  "reviewedHead": "15c4bd537ba035d8b16653a11fb79dbd397b4a17",
+  "baseCommit": "57967fa6497249d75e740ba837b8e2687cc81a98",
+  "mergeBase": "57967fa6497249d75e740ba837b8e2687cc81a98",
+  "sourceSnapshot": "/private/tmp/still-shift-pr52-rereview",
+  "scope": "Independent Standards and Spec reviews of the complete current PR diff, including all three earlier fixes. Source unchanged; no GitHub review submitted.",
+  "axes": {
+    "standards": {
+      "findings": [],
+      "coverage": [
+        "Repository contribution, composition and verification rules",
+        "Shared semantic and reading quality changes",
+        "Font identity, coverage and case handling",
+        "Failure sanitization and contract boundaries"
+      ],
+      "conclusion": "No actionable documented-standard violations or meaningful baseline smells."
+    },
+    "spec": {
+      "source": "docs/mechanism-shorts-production-plan.md",
+      "findings": [
+        {
+          "id": "camera-clipped-occluder",
+          "priority": "P2",
+          "title": "Ignore camera-clipped surfaces during anchor raycasts",
+          "file": "packages/animation-engine/src/mechanism/browser.ts",
+          "lines": [257, 261],
+          "requirement": "Compute anchor visibility against the actual 3D scene during preparation.",
+          "trigger": "A camera with near=1, a fully clipped opaque blocker at camera depth 0.20-0.30, and an exposed hook target at depth 5.82.",
+          "observed": "Clipped-blocker and hidden-blocker PNG bytes have the same SHA-256, but the target sidecars report occluded and visible respectively. The clipped variant also removes the target protected region.",
+          "impact": "Native hide-occluded labels disappear and exposed proof regions lose protection even though the blocker is absent from the rendered plate.",
+          "repair": "Filter raycast intersections according to camera-space clipping before deciding occlusion.",
+          "proofDirectory": "/private/tmp/pr52-near-clip-kB1aCO",
+          "pngSha256": "f2e80de564d29dec5a571880e70f9faa7ba5bf538dc4cf62e1e802e99a4d971b",
+          "parentVerification": "Independently rehashed both PNGs, read both sidecars and confirmed native overlay displayState depends on the erroneous visibility."
+        },
+        {
+          "id": "shot-reference-preflight",
+          "priority": "P2",
+          "title": "Validate shot rig and part references before capture",
+          "file": "packages/animation-engine/src/mechanism/io.ts",
+          "lines": [254, 265],
+          "requirement": "report missing dependencies, hash mismatches and unsupported inputs without rendering, modifying source or writing a package.",
+          "trigger": "An unknownSlider rig writer or unknownPart hidden-part reference on E01 final shot V8-09.",
+          "observed": "Both dependency inspection and CLI validate return success with no findings. Frame evaluation then throws Unknown rig writer or Unknown hidden part.",
+          "impact": "Preparation validates and captures shots sequentially; a fresh run can capture 603 earlier frames before discovering the invalid last-shot reference.",
+          "repair": "Check all shot control IDs and hidden-part IDs against the loaded scene during shared read-only inspection.",
+          "parentVerification": "Independently reran standalone deps/validate/evaluation controls on current source and checked final-shot start=603 and sequential prepare loop.",
+          "proofDirectory": "/private/tmp/pr52-preflight-aJXlFa"
+        }
+      ],
+      "conclusion": "Two reproduced P2 defects; no additional actionable missing requirements or scope expansion."
+    }
+  },
+  "verification": {
+    "toolchain": {
+      "node": "22.23.1",
+      "pnpm": "10.29.3",
+      "python": "3.12.11"
+    },
+    "lockedDependencies": "Retained installed dependencies have an identical pnpm-lock.yaml; package-local links added only in the temporary snapshot.",
+    "fastAttempts": [
+      {
+        "status": "failed",
+        "reason": "Initial snapshot dependency link referenced a removed worktree install; eslint unavailable after schema, boundaries and formatting passed."
+      },
+      {
+        "status": "failed",
+        "reason": "Root dependencies restored, but package-local dependency links missing; schema, boundaries, formatting and lint pass, TypeScript build fails on missing soundtrack/earcut/clipper modules."
+      },
+      {
+        "status": "passed",
+        "command": "pnpm check:fast",
+        "setup": "Complete retained package-local dependencies and OS process inspection available.",
+        "unitTests": 3785,
+        "unitFiles": 357,
+        "unitSeconds": 40.92
+      }
+    ],
+    "buildContinuation": {
+      "status": "passed",
+      "command": "pnpm build",
+      "afterDependencyRepair": true
+    },
+    "mechanismRuntime": {
+      "status": "passed",
+      "command": "pnpm exec vitest run tests/runtime/mechanism-*.test.ts --maxWorkers=2 --no-file-parallelism",
+      "tests": 66,
+      "files": 9,
+      "seconds": 66.02
+    },
+    "whitespace": {
+      "status": "passed",
+      "command": "git diff --check 57967fa6...15c4bd53"
+    },
+    "finalGitHubRefs": {
+      "headUnchanged": true,
+      "baseUnchanged": true,
+      "state": "OPEN",
+      "retainedFailure": "Initial sandboxed final GitHub read failed to connect; permitted read-only retry succeeded."
+    }
+  },
+  "limits": [
+    "No fresh full pnpm check/check:runtime/release gate, installed archive verification or 696-frame E01 production encode.",
+    "No continuous playback/listening or human creative acceptance.",
+    "No production-code changes, GitHub comments/review, commit, merge, publication or paid generation.",
+    "Primary checkout changes are limited to this review record and a minimal development-log update; prior unrelated edits preserved."
+  ],
+  "recommendation": "Both reproduced Spec defects are fixed. Independent fix reviews have no actionable defects; owner merge decision and human acceptance remain pending.",
+  "evidence": [
+    {
+      "path": "/private/tmp/still-shift-pr52-rereview.diff",
+      "bytes": 2319932,
+      "sha256": "991f58c4a0565d547a74c1fe67544597a7647967d511a516ec2e852b2928e19a"
+    },
+    {
+      "path": "/private/tmp/pr52-rereview-fast.log",
+      "bytes": 1251,
+      "sha256": "f78017dcdbd59b63129ab7b22588373ee15bfafd69ed250714b2a9219e2c8bdc"
+    },
+    {
+      "path": "/private/tmp/pr52-rereview-fast-rerun.log",
+      "bytes": 3941,
+      "sha256": "be734b26443396706720a261f7bd86ad69316ed672797c8574f8bfc9984faa29"
+    },
+    {
+      "path": "/private/tmp/pr52-rereview-build-continuation.log",
+      "bytes": 82,
+      "sha256": "ca602a83477133e8aa748c366b8e33b84efd21aba93a6106b9c8887283a686b0"
+    },
+    {
+      "path": "/private/tmp/pr52-rereview-fast-final.log",
+      "bytes": 28493,
+      "sha256": "ce4215dc0665d11092ac5a552cf88e269a11d653c3387a28d4634975ecaf0291"
+    },
+    {
+      "path": "/private/tmp/pr52-rereview-mechanism.log",
+      "bytes": 6159,
+      "sha256": "7c25dbe646b1ebccf6ef3699b9f48d4da582437ff2263f36e0c11bfd7fc3ecac"
+    },
+    {
+      "path": "/private/tmp/pr52-near-clip-repro.mts",
+      "bytes": 2868,
+      "sha256": "d4096b9985471867e8f26010d7e9add1f4626d25a911dd13a4387d5775be72e6"
+    },
+    {
+      "path": "/private/tmp/pr52-preflight-repro.mts",
+      "bytes": 2266,
+      "sha256": "9438e3b730c556dc1e2f4cb1e802511ffc3c75ba27477ac366c3a36f388e6c4e"
+    },
+    {
+      "path": "/private/tmp/pr52-rereview-preflight.out",
+      "bytes": 702,
+      "sha256": "8c7a3b95cb2ee07bb32bfb9a2ae014c71df52e89de2fc2750ba03fe4c3f5ff34"
+    },
+    {
+      "path": "/private/tmp/pr52-near-clip-kB1aCO/clipped/anchors.sidecar.json",
+      "bytes": 17159,
+      "sha256": "37b6e7c4212f6a40745756a851ff55247afc9773a8b57a7a3881f036f5266729"
+    },
+    {
+      "path": "/private/tmp/pr52-near-clip-kB1aCO/clipped/000000.png",
+      "bytes": 15041,
+      "sha256": "f2e80de564d29dec5a571880e70f9faa7ba5bf538dc4cf62e1e802e99a4d971b"
+    },
+    {
+      "path": "/private/tmp/pr52-near-clip-kB1aCO/hidden/anchors.sidecar.json",
+      "bytes": 17679,
+      "sha256": "9827457e0c27f3b954bd913dcf179bb06f001f8b7b4e41cfaa580bc49d280c33"
+    },
+    {
+      "path": "/private/tmp/pr52-near-clip-kB1aCO/hidden/000000.png",
+      "bytes": 15041,
+      "sha256": "f2e80de564d29dec5a571880e70f9faa7ba5bf538dc4cf62e1e802e99a4d971b"
+    }
+  ],
+  "initialRecommendation": "Address both Spec findings before merging. Standards has zero findings; Spec has two findings with worst severity P2.",
+  "remediation": {
+    "reviewId": 5513478797,
+    "status": "both-fixed-for-one-final-push",
+    "record": "docs/pr-52-rereview-fix-results.json",
+    "firstFindingCommit": "b1ebafa4516e6b7f0e33dcc678c81e5f23012bfb",
+    "secondFindingCommit": "Containing final finding commit",
+    "fast": "passed",
+    "runtime": "passed"
+  }
+}

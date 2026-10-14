@@ -43,6 +43,47 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #56 conflicts resolved (2026-10-15):** merge `main` `b3765142` into
+  native head `bf30a253`, preserving shared Three rendering, all five MS1 review
+  fixes, native bindings/paint inspection and both development histories.
+  Final fast verification passes 3,929 units; runtime verification completes in
+  stages: 185 runtime, all 321 integration, 14 Python tests and browser smoke. Native depth,
+  composition and cancellation checks plus 24 encoded semantic cases pass.
+  Both runtime failures are retained: stricter no-directory test repair and an
+  unchanged five-case rerun after two Python protocol timeouts. No uninterrupted runtime aggregate pass.
+  PR #51 and #52 are merged; PR #56 remains open for owner review/merge.
+  Primary edits are preserved. No fresh full E01/release gate or human acceptance.
+  [Resolution evidence](./pr-56-conflict-resolution-results.json),
+  [PR #56](https://github.com/xxibcill/still-shift/pull/56).
+
+- **PR #52 second review fixes (2026-10-14):** both new P2 findings are posted
+  inline on reviewed head `15c4bd53` and repaired in separate slices. Camera-space
+  clipping is committed as `b1ebafa4`; this final slice validates every shot's rig
+  writers and hidden parts during shared read-only preflight. Fast checks pass
+  3,785 units; the complete runtime tier passes 156 runtime (including 71
+  mechanism), 318 integration and 14 Python tests plus browser smoke. Both
+  independent fix reviews have no actionable defects. Original regression and
+  offline Python setup failures are retained. One commit per finding and one
+  combined final push to PR #52; PR #52 is merged at `b3765142`; human acceptance remains pending.
+  Primary checkout edits and its Python environment are preserved.
+  [Re-review](./pr-52-rereview-results.json),
+  [fix evidence](./pr-52-rereview-fix-results.json).
+
+- **PR #52 review fixes complete (2026-10-14):** three inline P2 findings are
+  repaired in one commit each: case handling `1925af45`, panel protection/default
+  E01 layouts `1f9efb37`, and the cutout fix in the containing final slice. Fresh
+  fast verification passes all 3,785 units; all 151 runtime, 318 integration and
+  14 Python tests plus browser smoke complete in stages. The initial runtime
+  aggregate remains failed for a missing worktree soundtrack runtime; the pinned
+  existing runtime enables the retained continuation. All 66 mechanism tests are
+  refreshed after default-layout repair; four mask controls and 24 encoded
+  semantic cases pass. Fresh pinned-font measurement over all 696 retained E01
+  sidecar frames accepts layout and all seven holds. Both review agents find no
+  remaining actionable defects. The shared editable Python package is restored
+  to the primary checkout. Push follows the final slice to PR #52; PR #52 is merged at `b3765142`;
+  human visual/listening acceptance remains pending.
+  [Fix records](./pr-52-fix-results.json).
+
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
   inventory15:2,329 inputs/117,503,155B. Original full6 retains a qualified19-group
   prefix and an interruption without terminal/EOF receipts; the exact58-group
@@ -52,14 +93,14 @@ still hold before relying on them.
   Installed consumer6/companion4 pass their scoped checks, adding two diagnostic
   frames and preserving original source342/source81 full-length render identities.
   Human playback/listening, encoded glyph and material/hardware appearance remain
-  pending; the cross-driver pixel diagnostic fails. Native PR is next, then MS2;
+  pending; the cross-driver pixel diagnostic fails. PR #56 is open, with conflict-resolution evidence recorded here;
   no merge/publication or customer-media redistribution is claimed.
   [Completion](./mechanism-shorts-ms1n-completion.md),
   [results](./mechanism-shorts-ms1n-results.json).
 
 - **MS1 software complete in stages (2026-10-10):** `codex/mechanism-ms1` carries
   exact MS0 prerequisite `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51)
-  remains open/unmerged. All 76 original required groups completed on unchanged
+  is merged into `main` at `57967fa6` (2026-10-14). All 76 original required groups completed on unchanged
   `09ce824b` production/test inputs: attempt 3 passes initial checks and 61 groups,
   then fails required Canvas timing 1.351 > 1.25 with exact pixels; the unchanged
   strict matrix and 15-command suffix actually exit 0. Final 176 baselines/36,061
@@ -69,17 +110,52 @@ still hold before relying on them.
   exports, each reusing all plates with 0 new 3D captures. Fresh 24-case typography
   controls/negatives pass; E01 remains legacy/semantically unassessed. Consumer
   libproc exception, customer-media redistribution and human review limits remain.
-  [MS1 PR #52](https://github.com/xxibcill/still-shift/pull/52) is open against
-  `main`; native work has started on its separate branch with interfaces frozen.
+  [MS1 PR #52](https://github.com/xxibcill/still-shift/pull/52) is merged into
+  `main` at `b3765142`; PR #56 carries the native milestone with interfaces frozen.
   Original checkout edits are preserved. [Completion](./mechanism-shorts-ms1-completion.md),
   [results](./mechanism-shorts-ms1-results.json), [gate history](./mechanism-shorts-ms1-full-gate-results.json).
 
 - **MS0 audit complete (2026-10-09):** `codex/mechanism-ms0` audit is committed
-  at `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51) is open.
+  at `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51) is merged into `main` (2026-10-14).
   Original E01 inputs:27 dependencies,25 ZIP identities and13 original-copy
   receipts match; actual Plex static cut/copy coverage passes. Rubric, protocol,
   boundaries and budgets are frozen. Historical Arial/GPU identities, public
   customer-media redistribution and human review remain limited.
+- **PR #51 conflicts resolved (2026-10-12):** merged `main` `3fab0162` into
+  MS0 head `d55908fa` in an isolated worktree. Retain the approved MS0 → MS1 →
+  required MS1N → MS2 → MS3 sequence and both the MS0 audit and 0.1.1 release
+  records. The roadmap now names the 0.1.1 checkpoint. Dated MS0 input/API/font
+  evidence remains unchanged; its source comparisons still refer to the original
+  `e6eb7b06` / `db28a938` audit, not a new release verification. Conflict resolution
+  changes documentation only relative to `main`; PR #51 is now integrated.
+  [PR #51](https://github.com/xxibcill/still-shift/pull/51),
+  [resolution record](#2026-10-12--resolve-ms0-pr-51-conflicts).
+
+- **Documentation patch 0.1.1 published (2026-10-10):** npm `latest` is `0.1.1`.
+  The public archive matches the verified archive byte for byte (SHA-256
+  `5cf82c0379f3a78e5b91b96200b5f9b5816cbf8975f860a3deda40fe96fa8ac5`).
+  All 733 shipped source files match `73c01fa7`; `production` and fixed annotated
+  `v0.1.1` now point there. PR #53 integrated the candidate into `main`; release
+  promotion #54 preserved ancestry by fast-forward. Local release verification
+  passed in stages: 3,666 units, 85 runtime, 318 integration, 14 depth, all 69
+  browser commands, 176 frozen baselines / 36,061 frames, and 27 online package
+  checks; production audit reports zero known vulnerabilities. Initial setup
+  failure, interrupted rerun, authentication failure and stale registry reads are
+  retained. Owner completed npm browser publication authentication. Existing
+  WebGL timing deferrals, no-op benchmark limits and separate human visual/listening
+  acceptance remain unchanged. Unrelated checkout edits are preserved.
+  [Release records](./npm-release-results.json),
+  [promotion #54](https://github.com/xxibcill/still-shift/pull/54).
+
+- **MS0 audit complete (2026-10-09):** Codex on `codex/mechanism-ms0` from
+  `main` `e6eb7b06`; milestone [PR #51](https://github.com/xxibcill/still-shift/pull/51)
+  is merged into `main` (2026-10-14). Original E01 inputs are recovered: 27 dependencies, all 25 ZIP manifest identities and 13
+  original-copy receipts match; actual Plex static cut/copy coverage passes.
+  At that audit, composition source was unchanged from release, and five stored gate
+  artifacts match their recorded hashes. Rubric, protocol, boundaries and
+  provisional budgets are frozen. Exact historical Arial/GPU identities, public
+  customer-media redistribution and human review remain limited. Original local
+  edits are preserved. Next: MS1 contract/one-frame/contact-shot bridge proof.
   [Results](./mechanism-shorts-ms0-results.json),
   [baseline protocol](./mechanism-shorts-ms0-baseline.md),
   [ordered plan](./mechanism-shorts-production-plan.md).
@@ -182,6 +258,112 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Resolve native 3D PR #56 conflicts
+
+- **Agent / branch:** Codex in an isolated PR #56 worktree, from `bf30a253`.
+- **Done:** merge `main` `b3765142`; keep native shared rendering and MS1
+  cutout/clipping, panel-protection, semantic-case and all-shot preflight fixes.
+- **Results:** final fast gate passes 3,929 units; runtime verification completes
+  in stages: 185 runtime, all 321 integration and 14 Python tests plus browser smoke. Native depth,
+  composition/cancellation and 24 encoded semantic cases pass on unchanged inputs.
+- **Retained failures:** first runtime run passes 183/fails two directory
+  assumptions; require `ENOENT`, preserving exact diagnostics/source snapshots.
+  Second aggregate passes 185 runtime/319 integration, then two protocol timeouts.
+  Unchanged five-case rerun passes in 1.5 seconds and the remaining suffix passes.
+  Exact timeout cause remains unproven; budgets unchanged; no uninterrupted runtime aggregate pass.
+- **Open / next:** PR #56 owner review/merge and human
+  acceptance remain pending. Full E01/release verification was not refreshed.
+- **Records:** [Resolution evidence](./pr-56-conflict-resolution-results.json),
+  [PR #56](https://github.com/xxibcill/still-shift/pull/56).
+
+### 2026-10-14 — Fix all-shot rig and part preflight in PR #52's final slice
+
+- **Agent / branch:** Codex on `codex/pr52-clipping-preflight-fixes`; first fix
+  `b1ebafa4` covers camera clipping, this separate final slice covers preflight.
+- **Done:** shared inspection aggregates located invalid rig/part references;
+  `deps`, load, CLI validate and prepare reject final-shot errors before capture.
+- **Results:** three preflight assertions fail before the fix; all 24 focused
+  CLI/dependency/project tests pass. Fast gate passes 3,785 units; runtime gate
+  passes 156 runtime, 318 integration and 14 Python tests plus browser smoke.
+  Both independent fix reviews have no actionable findings; verified inputs stay
+  unchanged. Final-shot negatives preserve source snapshots and capture no files.
+- **Retained:** initial offline Python setup lacked the cached Ruff wheel; a
+  separate clone of the pinned environment synchronizes offline and completes
+  verification without altering the primary editable package.
+- **Delivery / limits:** two finding-specific commits share one final push to
+  PR #52. Owner merge and human review remain pending; no full E01 encode or
+  release gate, publication or paid generation.
+- **Records:** [fix evidence](./pr-52-rereview-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/52#discussion_r4267137464).
+
+### 2026-10-14 — Fix camera-clipped anchor visibility after PR #52 re-review
+
+- **Agent / branch:** Codex on `codex/pr52-clipping-preflight-fixes`, from
+  reviewed PR head `15c4bd53`; managed isolated worktree.
+- **Done:** posted both new P2 findings inline; filter raycast intersections by
+  camera-space near/far clipping while retaining later visible occluders.
+- **Results:** two new centered/off-axis regressions fail before the fix; all
+  14 capture tests and TypeScript build pass afterward. Locked offline dependency
+  installation succeeds. Existing cutout/material-group/cancellation checks pass.
+- **Open / next:** fix shot rig/part preflight in its own second commit; push both
+  fixes only after that slice. No full E01 encode or human acceptance inferred.
+- **Records:** [review](./pr-52-rereview-results.json),
+  [fix evidence](./pr-52-rereview-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/52#discussion_r4267137457).
+
+### 2026-10-14 — Repair discarded-cutout anchor visibility; finish PR #52 fixes
+
+- **Agent / branch:** Codex on `codex/pr-52-review-fixes` after `1f9efb37`.
+- **Done:** raycast occlusion honors effective grouped materials and shader
+  float32 cutoffs. Three real capture regressions fail before the fix and pass
+  afterward; opaque and cutoff-boundary occlusion remain enforced.
+- **Verification:** fresh fast check passes 3,785 units; 151 runtime, 318
+  integration, 14 Python tests and browser smoke complete in stages. Refreshed
+  mechanism group passes all 66 tests; four mask and 24 encoded semantic controls
+  pass. All 696 retained E01 frames pass fresh font-bound layout checks.
+- **Retained failures:** initial runtime aggregate fails on missing worktree
+  soundtrack setup; the corrected pinned-runtime continuation passes all four
+  affected suites. Source/test hashes and all negative controls are retained.
+- **Review / next:** independent Standards and Spec agents find no remaining
+  actionable defects. Commit this third finding, then push all three to PR #52.
+  Owner merge and human acceptance remain separate; no release publication.
+- **Records:** [fix results](./pr-52-fix-results.json),
+  [cutout comment](https://github.com/xxibcill/still-shift/pull/52#discussion_r4266537132).
+
+### 2026-10-14 — Protect proof regions from overlay panels
+
+- **Agent / branch:** Codex on `codex/pr-52-review-fixes` after `1925af45`.
+- **Done:** label/caption panel dimensions are shared by emitted geometry and
+  layout checks; panel footprints now participate in protection, clipping and
+  other-overlay exclusions while their own text remains permitted.
+- **Checks:** all four regressions fail before the fix; all 13 overlay tests and
+  TypeScript pass afterward. Both 61-frame portrait controls pass with stable
+  reverse seeks and transformed endpoints; no new human acceptance claim.
+- **E01 follow-up:** fresh checking exposed caption-panel coverage and OUTSIDE
+  panel clipping in the retained example. Narrower inset captions and a 20-pixel
+  inward label repair preserve supplied copy/timing. Fresh pinned-font measurement
+  passes all 696 retained sidecar frames and all seven holds; no new 3D capture,
+  encode or human acceptance. These repairs stay in this finding's commit.
+- **Next:** complete the cutout slice, refresh local gates after the default-layout
+  repair, and push all three commits after the final slice.
+- **Records:** [fix results](./pr-52-fix-results.json),
+  [panel comment](https://github.com/xxibcill/still-shift/pull/52#discussion_r4266537129).
+
+### 2026-10-14 — Repair PR #52 displayed-copy case handling
+
+- **Agent / branch:** Codex on `codex/pr-52-review-fixes` from PR head `a204cde0`.
+- **Done:** posted all three inline findings; semantic/reading samples now follow
+  shaped locale/span case and provider-local styles. Partial-copy and correction
+  evidence remain conservative; legacy system text is unchanged.
+- **Checks:** seven regressions and all 50 focused semantic/reading/font tests
+  pass; TypeScript passes. Existing log formatting is repaired. Initial fixture,
+  duplicate-variable and optional-property failures remain recorded.
+- **Next:** fix panel proof-region coverage, then cutout visibility; complete
+  local gates and push all three commits after the final slice. MS0 PR #51 is
+  integrated in this PR's merged `main` prerequisite; old dated evidence remains.
+- **Records:** [fix results](./pr-52-fix-results.json),
+  [case comment](https://github.com/xxibcill/still-shift/pull/52#discussion_r4266537125).
 
 ### 2026-10-10 — Native software gate completes in recorded stages
 
@@ -1149,6 +1331,59 @@ still hold before relying on them.
   diagnostics/font/reading/repair evidence and required local full gate.
 - **Records:** [MS0 PR](https://github.com/xxibcill/still-shift/pull/51),
   [production plan](./mechanism-shorts-production-plan.md).
+
+### 2026-10-12 — Resolve MS0 PR #51 conflicts
+
+- **Agent / branch:** Codex resolving `codex/mechanism-ms0` in an isolated worktree;
+  original checkout edits preserved.
+- **Done:** merge `main` `3fab0162` into MS0 `d55908fa`; resolve `ROADMAP.md` and
+  `docs/dev-log.md`, retaining the required MS1N stage and both dated histories.
+  Refresh current release references to 0.1.1; preserve all original MS0 audit JSON.
+- **Verification:** pinned Node 22.23.1 / pnpm 10.29.3; all 12 PR documents pass
+  Prettier and whitespace checks. No unresolved conflicts/markers; both complete
+  log histories, original MS0 JSON and release evidence are preserved. Initial
+  roadmap formatting warning repaired and the full document check rerun passed.
+- **Limits / next:** documentation-only diff against `main`; no new software,
+  release or render gate. PR integration and human acceptance remain separate.
+- **Records:** [PR #51](https://github.com/xxibcill/still-shift/pull/51),
+  [MS0 audit](./mechanism-shorts-ms0-results.json), [release record](./npm-release-results.json).
+
+### 2026-10-10 — Publish and verify documentation patch 0.1.1
+
+- **Done:** owner completed npm browser publishing authentication; exact verified
+  archive published as `still-shift@0.1.1` and tagged npm `latest`. Downloaded
+  registry bytes match the tested SHA-256, SHA-512 integrity and SHA-1 checksum.
+- **Checkpoint:** source `73c01fa7`; PR #53 merged into `main`, promotion #54
+  fast-forwarded `production`, and fixed annotated `v0.1.1` points to that exact
+  source. Publication records follow separately without changing the release.
+- **Verification:** full gate completed in stages; 3,666 units, 85 runtime,
+  318 integration, 14 depth, 69 browser commands, 176 frozen baselines / 36,061
+  frames and 27 online installed-package checks pass. Zero known production
+  audit vulnerabilities; 733 packaged source files match the release commit.
+- **Retain:** setup failure, interrupted rerun, first npm E404/E401 attempt and
+  initial stale registry reads. Existing WebGL timing deferrals, no-op benchmark
+  limits and separate human visual/listening acceptance remain unchanged.
+- **Records:** [release results](./npm-release-results.json),
+  [patch plan](./npm-patch-0.1.1-plan.md),
+  [publication evidence](../benchmarks/results/npm-patch-0.1.1-20261010/publication-success.json).
+
+### 2026-10-10 — Prepare documentation patch 0.1.1
+
+- **Agent / branch:** Codex on `codex/docs-patch-0-1-1` from `main` `e6eb7b06`.
+- **Scope:** patch package guides, capability discovery and both skills for every
+  implemented feature; include guides/skills/examples with installed links.
+- **Isolation:** copy only usage-refresh changes. Preserve unrelated working-tree
+  roadmap/research changes and the fixed published archive/tag.
+- **Prior evidence:** development fast gate passes 3,666 units and the isolated
+  documentation candidate passes 26 offline package checks after retained reruns.
+- **Prepared:** public version/lock metadata is `0.1.1`; dependency pins are unchanged.
+- **Retain:** full run on `a437d980` passed 3,666 units and 85 runtime tests, then
+  failed 38 integration cases with the missing optional audio runtime; 280 passed.
+- **Repair / next:** prepare the hash-locked audio runtime, document fresh-checkout
+  prerequisites and rerun the full gate on the revised committed candidate.
+- **Limits:** no publication or human visual/listening acceptance is inferred.
+- **Records:** [refresh evidence](./usage-docs-refresh-results.json),
+  [release procedure](./npm-release-plan.md).
 
 ### 2026-10-09 — Complete MS0 baseline and input audit
 

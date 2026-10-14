@@ -249,7 +249,7 @@ describe("native mechanism overlays", () => {
     )!;
     expect(caption.transform).toMatchObject({
       anchor: [0, 0],
-      position: [86.4, 1670.4],
+      position: [183.60000000000002, 1670.4],
     });
     const paint = buildRenderGraph(comp, evaluateComp(comp, 0)).root.ops.map(
       (op) => op.layer,
@@ -448,4 +448,149 @@ it("rejects wrong physical parts and avoids ID encoding collisions", () => {
   expect(mechanismOverlayLayerId("label", "pull.1")).not.toBe(
     mechanismOverlayLayerId("label", "pull-1"),
   );
+});
+
+describe("mechanism panel footprints", () => {
+  function measuredFixture() {
+    const data = fixture();
+    const comp = compileMechanismOverlays(data.loaded, data.captures);
+    const textBounds = Object.fromEntries(
+      comp.layers
+        .filter((layer) => layer.type === "text")
+        .map((layer) => [
+          layer.id,
+          [{ left: -80, right: 80, top: 0, bottom: 40 }],
+        ]),
+    );
+    return { ...data, textBounds };
+  }
+  it("rejects a label panel covering a visible proof anchor even when its text is clear, and accepts the moved repair", () => {
+    const { loaded, captures, textBounds } = measuredFixture();
+    for (const row of captures[0]!.sidecar.frames) {
+      row.anchors[0]!.pixel = [534, 216];
+      row.protectedRegions = [{ id: "contact", bounds: [510, 192, 48, 48] }];
+    }
+    const report = checkMechanismOverlays(loaded.episode, captures, {
+      textBounds,
+    });
+    expect(report.layoutAccepted).toBe(false);
+    expect(report.findings).toContainEqual(
+      expect.objectContaining({
+        code: "mechanism-label-protected-region",
+        label: "pull.0",
+        other: "contact",
+        frames: [0, 29],
+        measurement: "measured",
+      }),
+    );
+    expect(report.holds[0]!.longestReadableFrames).toBe(0);
+    loaded.episode.shots[0]!.labels[0]!.position = [540, 80];
+    const repaired = checkMechanismOverlays(loaded.episode, captures, {
+      textBounds,
+    });
+    expect(repaired.layoutAccepted).toBe(true);
+    expect(repaired.holds[0]!.longestReadableFrames).toBe(30);
+  });
+  it("rejects caption panel coverage outside the measured caption text", () => {
+    const { loaded, captures, textBounds } = measuredFixture();
+    for (const capture of captures)
+      for (const row of capture.sidecar.frames)
+        row.protectedRegions = [{ id: "contact", bounds: [596, 1786, 48, 48] }];
+    const report = checkMechanismOverlays(loaded.episode, captures, {
+      textBounds,
+    });
+    expect(report.layoutAccepted).toBe(false);
+    expect(report.findings).toContainEqual(
+      expect.objectContaining({
+        code: "mechanism-label-protected-region",
+        path: "captions.0.text",
+        other: "contact",
+        frames: [0, 59],
+      }),
+    );
+  });
+  it("detects neighboring panel overlap without counting a panel's own text as a collision", () => {
+    const { loaded, captures, textBounds } = measuredFixture();
+    loaded.episode.shots[0]!.labels.push({
+      ...loaded.episode.shots[0]!.labels[0]!,
+      id: "push",
+      role: "PUSH",
+      text: "PUSH",
+      position: [700, 150],
+    });
+    for (const id of ["pull.0", "push"])
+      textBounds[mechanismOverlayLayerId("label", id)] = [
+        { left: -20, right: 20, top: 0, bottom: 20 },
+      ];
+    const report = checkMechanismOverlays(loaded.episode, captures, {
+      textBounds,
+    });
+    expect(report.findings).toContainEqual(
+      expect.objectContaining({
+        code: "mechanism-label-overlap",
+        label: "pull.0",
+        frames: [0, 29],
+      }),
+    );
+    loaded.episode.shots[0]!.labels[1]!.position = [850, 150];
+    expect(
+      checkMechanismOverlays(loaded.episode, captures, { textBounds })
+        .layoutAccepted,
+    ).toBe(true);
+  });
+  it("locates panel clipping even when the measured glyph bounds fit", () => {
+    const { loaded, captures, textBounds } = measuredFixture();
+    loaded.episode.shots[0]!.labels[0]!.position = [50, 150];
+    textBounds[mechanismOverlayLayerId("label", "pull.0")] = [
+      { left: 0, right: 40, top: 0, bottom: 20 },
+    ];
+    const report = checkMechanismOverlays(loaded.episode, captures, {
+      textBounds,
+    });
+    expect(report.findings).toContainEqual(
+      expect.objectContaining({
+        code: "mechanism-label-offscreen",
+        label: "pull.0",
+        frames: [0, 29],
+      }),
+    );
+    expect(report.holds[0]!.longestReadableFrames).toBe(0);
+  });
+});
+
+it("keeps the default OUTSIDE panel inside the portrait and caption backgrounds clear of the enlarged view's edge proof", () => {
+  const { loaded, captures } = fixture();
+  loaded.episode.shots[0]!.labels[0] = {
+    ...loaded.episode.shots[0]!.labels[0]!,
+    role: "OUTSIDE",
+    text: "OUTSIDE",
+    position: createTapeHookShots()[6]!.labels[0]!.position,
+  };
+  const comp = compileMechanismOverlays(loaded, captures);
+  const frame = evaluateComp(comp, 0);
+  const labelPanel = frame.layers.find(
+    (layer) => layer.id === mechanismOverlayLayerId("panel", "pull.0"),
+  )!;
+  expect(labelPanel.bounds!.left).toBeGreaterThanOrEqual(0);
+  const captionPanel = frame.layers.find(
+    (layer) => layer.id === mechanismOverlayLayerId("caption-panel", "caption"),
+  )!;
+  expect(captionPanel.bounds!.left).toBeGreaterThan(135.5);
+  const textBounds = Object.fromEntries(
+    comp.layers
+      .filter((layer) => layer.type === "text")
+      .map((layer) => [
+        layer.id,
+        [{ left: 0, right: 120, top: 0, bottom: 40 }],
+      ]),
+  );
+  for (const capture of captures)
+    for (const row of capture.sidecar.frames)
+      row.protectedRegions = [
+        { id: "edge-proof", bounds: [87.5, 1684.6, 48, 48] },
+      ];
+  expect(
+    checkMechanismOverlays(loaded.episode, captures, { textBounds })
+      .layoutAccepted,
+  ).toBe(true);
 });

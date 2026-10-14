@@ -252,8 +252,26 @@ function sceneReferenceFindings(
   scene: MechanismScene,
 ): MechanismFinding[] {
   const anchors = new Set(scene.anchors.map((anchor) => anchor.id));
+  const rigs = new Set(scene.rigs.map((rig) => rig.id));
+  const parts = new Set(scene.parts.map((part) => part.id));
   const findings: MechanismFinding[] = [];
-  for (const shot of episode.shots)
+  for (const shot of episode.shots) {
+    for (const rig of Object.keys(shot.controls))
+      if (!rigs.has(rig))
+        findings.push({
+          code: "mechanism-control-reference",
+          path: `shots.${shot.id}.controls.${rig}`,
+          message: `Unknown rig writer ${rig}`,
+          shot: shot.id,
+        });
+    for (const [index, part] of shot.hiddenParts.entries())
+      if (!parts.has(part))
+        findings.push({
+          code: "mechanism-part-reference",
+          path: `shots.${shot.id}.hiddenParts.${index}`,
+          message: `Unknown hidden part ${part}`,
+          shot: shot.id,
+        });
     for (const label of shot.labels)
       for (const property of ["anchor", "proofTarget"] as const)
         if (label[property] && !anchors.has(label[property]!))
@@ -262,6 +280,7 @@ function sceneReferenceFindings(
             path: `shots.${shot.id}.labels.${label.id}.${property}`,
             message: `Unknown anchor ${label[property]}`,
           });
+  }
   return findings;
 }
 function fontTextRuns(episode: MechanismEpisode, fontId: string) {

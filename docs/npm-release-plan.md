@@ -140,8 +140,16 @@ and [release tagging](https://git-scm.com/book/en/v2/Git-Basics-Tagging).
 
 ```sh
 pnpm install --frozen-lockfile
+uv sync --frozen --python 3.12.11
+pnpm browser:install
+pnpm soundtrack:setup
 pnpm release:check
 ```
+
+Fresh checkouts need the pinned Python environment, Chromium and the separate
+hash-locked soundtrack runtime because the full gate exercises all supported
+workers. FFmpeg/ffprobe must also be on `PATH`; run `pnpm toolchain:check` to
+confirm the pinned toolchain. Runtime setup does not publish a package.
 
 `release:check` runs the existing full `check:all` software gate, then builds,
 packs and tests the installed package. The archived corpus remains excluded.

@@ -9,7 +9,7 @@ import {
   rm,
   writeFile,
 } from "node:fs/promises";
-import { dirname, relative, resolve, sep } from "node:path";
+import { dirname, posix, relative, resolve, sep } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import ts from "typescript";
 import {
@@ -20,6 +20,14 @@ import {
 
 const projectRoot = fileURLToPath(new URL("../../", import.meta.url));
 const javascript = (path: string) => path.replace(/\.ts$/, ".js");
+
+/** The authoring README lives in docs; its installed copy links into source/docs. */
+export function rewriteNpmReadmeLinks(text: string): string {
+  return text.replace(
+    /\]\((\.\.?\/[^)]+)\)/g,
+    (_match, path: string) => `](${posix.normalize(`source/docs/${path}`)})`,
+  );
+}
 
 async function filesIn(directory: string): Promise<string[]> {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -196,6 +204,30 @@ async function copyRuntimeAssets(root: string, output: string) {
   );
 }
 
+/** Keep installed feature guides and agent skills together with their references. */
+export async function copyPackageGuides(root: string, output: string) {
+  const releaseRecords = new Set([
+    "docs/npm-release-results.json",
+    "docs/release-branch-setup-results.json",
+  ]);
+  for (const file of await filesIn(resolve(root, "docs"))) {
+    const path = relative(root, file).split(sep).join("/");
+    if (
+      (!/\.(md|txt)$/.test(file) && !releaseRecords.has(path)) ||
+      !includeSourcePath(root, file)
+    )
+      continue;
+    const target = resolve(output, "source", relative(root, file));
+    await mkdir(dirname(target), { recursive: true });
+    await cp(file, target);
+  }
+  for (const directory of ["skills", "examples"])
+    await cp(resolve(root, directory), resolve(output, "source", directory), {
+      recursive: true,
+      filter: (file) => includeSourcePath(root, file),
+    });
+}
+
 async function copyCorrespondingSource(root: string, output: string) {
   const files = [
     "package.json",
@@ -207,8 +239,10 @@ async function copyCorrespondingSource(root: string, output: string) {
     "toolchain.json",
     "pyproject.toml",
     "uv.lock",
-    "docs/npm-package-readme.md",
-    "docs/npm-third-party-notices.md",
+    "README.md",
+    "CONTRIBUTING.md",
+    "AGENTS.md",
+    "ROADMAP.md",
   ];
   for (const path of [
     ...files,
@@ -225,6 +259,7 @@ async function copyCorrespondingSource(root: string, output: string) {
       filter: (file) => includeSourcePath(root, file),
     });
   }
+  await copyPackageGuides(root, output);
 }
 
 export async function buildNpmPackage(root = projectRoot): Promise<string> {
@@ -291,8 +326,13 @@ export async function buildNpmPackage(root = projectRoot): Promise<string> {
     resolve(output, "scripts/release/installed-cli.js"),
     rewritePackageReferences(cli, cliSource, root, aliases),
   );
+  await writeFile(
+    resolve(output, "README.md"),
+    rewriteNpmReadmeLinks(
+      await readFile(resolve(root, "docs/npm-package-readme.md"), "utf8"),
+    ),
+  );
   for (const [source, target] of [
-    ["docs/npm-package-readme.md", "README.md"],
     ["LICENSE", "LICENSE"],
     ["docs/npm-third-party-notices.md", "THIRD-PARTY-NOTICES.md"],
   ])

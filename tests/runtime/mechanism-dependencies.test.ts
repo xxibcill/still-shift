@@ -18,6 +18,8 @@ import {
 import { createTapeHookProject } from "../../packages/animation-engine/src/mechanism/tape-hook.ts";
 import { mediaFloat32Wave } from "../helpers/composition-media-audio.ts";
 import { readFontIdentity } from "../../packages/renderer-core/src/font-identity.ts";
+import { prepareMechanismEpisode } from "../../packages/animation-engine/src/mechanism/lifecycle.ts";
+import { runEpisodeCli } from "../../tools/still-shift-cli/src/episode.ts";
 
 const roots: string[] = [];
 afterEach(async () => {
@@ -226,7 +228,7 @@ it("uses actual pinned font cut, exact-copy coverage and explicit axes in both d
   );
 });
 
-it("reports matching-hash geometry and all independent anchor references with exact locations", async () => {
+it("reports matching-hash geometry and all independent scene references with exact locations", async () => {
   const { path, episode } = await fixture();
   const scene = JSON.parse(
     await readFile(join(dirname(path), "scene.json"), "utf8"),
@@ -235,6 +237,9 @@ it("reports matching-hash geometry and all independent anchor references with ex
   await replaceDependency(path, episode, episode.scene, JSON.stringify(scene));
   episode.shots[1]!.labels[0]!.anchor = "missing.anchor";
   episode.shots[1]!.labels[0]!.proofTarget = "missing.proof";
+  episode.shots[1]!.controls.unknownSlider = { travel: 0.5 };
+  const hiddenIndex = episode.shots[1]!.hiddenParts.length;
+  episode.shots[1]!.hiddenParts.push("unknownPart");
   await save(path, episode);
   const report = await mechanismDependencyReport(path);
   expect(report.findings).toEqual(
@@ -251,9 +256,66 @@ it("reports matching-hash geometry and all independent anchor references with ex
         code: "mechanism-anchor-reference",
         path: "shots.V8-02.labels.label-pull.proofTarget",
       }),
+      expect.objectContaining({
+        code: "mechanism-control-reference",
+        path: "shots.V8-02.controls.unknownSlider",
+      }),
+      expect.objectContaining({
+        code: "mechanism-part-reference",
+        path: `shots.V8-02.hiddenParts.${hiddenIndex}`,
+      }),
     ]),
   );
 });
+
+it.each(["rig", "part"] as const)(
+  "rejects an unknown final-shot %s in deps, validate and prepare before any capture",
+  async (reference) => {
+    const { root, path, episode } = await fixture();
+    const shot = episode.shots.at(-1)!;
+    const hiddenIndex = shot.hiddenParts.length;
+    if (reference === "rig") shot.controls.unknownSlider = { travel: 0.5 };
+    else shot.hiddenParts.push("unknownPart");
+    await save(path, episode);
+    const before = await snapshot(dirname(path));
+    const code =
+      reference === "rig"
+        ? "mechanism-control-reference"
+        : "mechanism-part-reference";
+    const findingPath =
+      reference === "rig"
+        ? `shots.${shot.id}.controls.unknownSlider`
+        : `shots.${shot.id}.hiddenParts.${hiddenIndex}`;
+    const report = await mechanismDependencyReport(path);
+    expect(report.valid).toBe(false);
+    expect(report.findings).toEqual([
+      expect.objectContaining({ code, path: findingPath, shot: shot.id }),
+    ]);
+    await expect(readMechanismEpisode(path)).rejects.toMatchObject({
+      context: { diagnosticCode: code, path: findingPath },
+    });
+    let output = "";
+    const exit = await runEpisodeCli(["validate", "--input", path], {
+      stdout: (value) => {
+        output += value;
+      },
+      stderr: () => undefined,
+    });
+    expect(exit).toBe(2);
+    expect(JSON.parse(output)).toMatchObject({
+      status: "failed",
+      summary: { code, path: findingPath },
+    });
+    const prepared = join(root, "prepared");
+    await expect(
+      prepareMechanismEpisode(path, { outputDirectory: prepared }),
+    ).rejects.toMatchObject({
+      context: { diagnosticCode: code, path: findingPath },
+    });
+    await expect(stat(prepared)).rejects.toMatchObject({ code: "ENOENT" });
+    expect(await snapshot(dirname(path))).toEqual(before);
+  },
+);
 
 it("reuses supported exact PCM metadata and actual scene/font preparation while preserving every source byte", async () => {
   const { root, path, episode } = await fixture();
