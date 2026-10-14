@@ -43,6 +43,18 @@ still hold before relying on them.
 
 ## Current state
 
+- **MS3 bounded recovery live (2026-10-15):** qualified coverage repair integrated
+  at3df62a55; producer packages/worker/runtime1090f97c/profile1dd0 unchanged and
+  independently rechecked. Exact-CAS revision1 selects only nine failed jobs.
+  Unified58827 live; E1 verified/retained, E2 executing retry, later failed rows
+  retained until their retry.2,792 source files/122,374,188B held,107 current and
+  1,221 prior/E1 native/image/artifact/history files guarded. Original failed r0
+  snapshots retained, no first-pass or whole success inferred. Source73 actual
+  auditor returns10 selected/0 supported with8 reuse/2 revisions/0 new rig types.
+  Collect terminal run/report/resume/ten handoffs before any source mutation;
+  full receiving/installed/software, real faults and whole reviews remain open.
+  [Current bounded recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json).
+
 - **MS3 native coverage repair qualified in isolation (2026-10-15):** source/schema/
   actual native board now reconciles the ten selected rows, pinned whole narration/
   original1x clock/format, source/controllers and declared asset/rig work. Independent
@@ -335,6 +347,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Integrate coverage and start exact bounded recovery
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` (source3df62a55).
+- **Done:** qualified native coverage repair integrated; log conflict retains failed
+  r0 run/restoration plus isolated tests/reviews. Native producer identity remains
+  exactly1090f97c/profile1dd0; no picture/capture runtime changes or old binding rewrite.
+- **Results:** source73 actual auditor passes10 selected/0 support,8 reuse/2 revisions/
+  0 new rig types.18 focused/3 files/types and current isolated fast4,628/460 pass.
+  Exact-CAS retry authorization selects nine failed jobs. Unified58827 live:
+  E1 retained, E2 retry executing, original failures/history preserved.
+- **Open / next:** hold2,792 source inputs/107 current/1,221 prior files and collect
+  actual terminal status; independent new products, full receiving/installed/
+  software, physical fault proof and whole reviews. Accepted0/10, tokensnull.
+- **Records:** [recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json),
+  [native coverage](./mechanism-shorts-ms3-native-coverage-review-results.json).
 
 ### 2026-10-15 — Native selected-cohort coverage and actual failed-state audit
 

@@ -1,0 +1,157 @@
+{
+  "schemaVersion": "ms3-current-first-ten-bounded-recovery-results-1",
+  "date": "2026-10-15",
+  "status": "running-bounded-nine-job-retry-after-exact-input-restoration",
+  "capturedAt": "2026-10-14T21:27:51.473628+00:00",
+  "sourceCommit": "3df62a5598dc46e021ee2c51b173ba33a38d2af6",
+  "runtimeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+  "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+  "unifiedSession": 58827,
+  "frozenSource": {
+    "files": 2792,
+    "bytes": 122374188,
+    "inventory": {
+      "path": "/private/tmp/still-shift-ms3-recovery74-source-inputs1.json",
+      "bytes": 477140,
+      "sha256": "sha256:7c69f187e455df2410946b647207ead706433e8908302f448f4d8de89d447f41"
+    }
+  },
+  "currentProducerIdentity": {
+    "status": "exact-current-identity-and-nine-failed-retry-set",
+    "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+    "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+    "sourcePackagesAndWorkerUnchanged": true,
+    "episodes": [
+      "EU-002",
+      "EU-003",
+      "EU-004",
+      "EU-005",
+      "EU-006",
+      "EU-007",
+      "EU-008",
+      "EU-009",
+      "EU-010"
+    ],
+    "completedNeighbor": "EU-001",
+    "scope": "Retry declaration only; no history rewrite, execution, generation or acceptance."
+  },
+  "authorization": {
+    "actualExitCode": 0,
+    "request": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/retry-recovery74.json",
+      "bytes": 310,
+      "sha256": "sha256:e025423d1a57eaea422885eda5cfc5f661f78a09f2d84826aecd327e3cc0bbde"
+    },
+    "result": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/retry-recovery74-result.json",
+      "bytes": 1118,
+      "sha256": "sha256:1639802c77987af040db63158e974ad8ae886359fde7ab726701374f236e5060"
+    },
+    "newManifest": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/queue-current72.json",
+      "bytes": 32387,
+      "sha256": "sha256:f5529b40b39ab35563d26694c3a633274b9d6e89aa70d68ea438c956ee30fc35"
+    },
+    "revision": 1
+  },
+  "wrapper": {
+    "path": "/private/tmp/still-shift-ms3-recovery74-whole1.py",
+    "bytes": 6731,
+    "sha256": "sha256:ce3b5025159d49dcc0db7c3827c93e480a4b4b79d9be7044ff8faa35b6f25828"
+  },
+  "wrapperReceiptAtCapture": {
+    "steps": [],
+    "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/queue-current72.json",
+    "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72",
+    "sourceCommit": "3df62a55",
+    "runtimeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+    "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+    "scope": "Bounded revision1 retry of9 failed jobs after restoring exact disappeared input bytes. Existing E1 is verified and retained. Same runtime/profile and whole original Alden takes1x. All original failed attempts retained; no first-pass success or savings inferred.",
+    "acceptedPilot": 0,
+    "wholeReviews": "UNREVIEWED",
+    "declaredInputFiles": 107,
+    "protectedPriorFiles": 1221
+  },
+  "stateAtCapture": {
+    "file": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/queue-state.json",
+      "bytes": 13265,
+      "sha256": "sha256:64a9661bf1c260855e3ff8808ca69cee8568e2da0a80a54eacbf176bc8461552"
+    },
+    "statuses": {
+      "EU-001": "passed",
+      "EU-002": "running",
+      "EU-003": "failed",
+      "EU-004": "failed",
+      "EU-005": "failed",
+      "EU-006": "failed",
+      "EU-007": "failed",
+      "EU-008": "failed",
+      "EU-009": "failed",
+      "EU-010": "failed"
+    },
+    "attemptKinds": {
+      "EU-001": {
+        "kind": "initial",
+        "reason": "First submitted job in this retained queue journal"
+      },
+      "EU-002": {
+        "kind": "retry",
+        "reason": "Repeated submission of the same request"
+      },
+      "EU-003": {
+        "kind": "initial",
+        "reason": "First submitted job in this retained queue journal",
+        "failureOrigin": "unknown"
+      },
+      "EU-004": {
+        "kind": "initial",
+        "reason": "First submitted job in this retained queue journal",
+        "failureOrigin": "unknown"
+      },
+      "EU-005": {
+        "kind": "initial",
+        "reason": "First submitted job in this retained queue journal",
+        "failureOrigin": "unknown"
+      },
+      "EU-006": {
+        "kind": "initial",
+        "reason": "First submitted job in this retained queue journal",
+        "failureOrigin": "unknown"
+      },
+      "EU-007": {
+        "kind": "initial",
+        "reason": "First submitted job in this retained queue journal",
+        "failureOrigin": "unknown"
+      },
+      "EU-008": {
+        "kind": "initial",
+        "reason": "First submitted job in this retained queue journal",
+        "failureOrigin": "unknown"
+      },
+      "EU-009": {
+        "kind": "initial",
+        "reason": "First submitted job in this retained queue journal",
+        "failureOrigin": "unknown"
+      },
+      "EU-010": {
+        "kind": "initial",
+        "reason": "First submitted job in this retained queue journal",
+        "failureOrigin": "unknown"
+      }
+    }
+  },
+  "qualification": {
+    "originalFailedR0HistoryRetained": true,
+    "completedE1NotSelectedForRetry": true,
+    "sameWholeOriginalNarrationAndProducerRuntime": true,
+    "declaredFilesGuarded": 107,
+    "protectedPriorFilesGuarded": 1221,
+    "actualPilotAccepted": 0,
+    "pairedTokens": null,
+    "wholeReviews": "UNREVIEWED",
+    "completeCurrentRunReportResumeHandoffReceivingInstalledSoftwareAndRealFaultProof": "open",
+    "source73ActualAuditorPassedWithSupportZero": true,
+    "newSpending": false
+  }
+}
