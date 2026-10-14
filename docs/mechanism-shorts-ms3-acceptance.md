@@ -383,3 +383,18 @@ is retained before hold-source work. Future source changes require current artif
 QA rebinding; existing product identities remain historical. Media execution is
 stable, while authored native hold/paint/phase validation and all whole/fault/handoff/
 effort/final gates remain open. [Terminal centered output](./mechanism-shorts-ms3-binder-centered-encoded-results.json).
+
+[First-ten spoken claim review](./mechanism-shorts-ms3-first-ten-claim-review-results.json)
+compares the frozen Alden scripts against freshly read manufacturer/original
+patent text for all ten selected designs. Claims are supported within explicit
+design boundaries; spring loading in EU003/EU006 is an explicit inference.
+Original patent title metadata is corrected in this separate record. Existing
+source-evidence inputs stay unchanged during rendering. Each row lists the
+required visible witnesses; this text review supplies no whole rendered factual,
+mechanical, continuous or listening pass. Pilot acceptance remains0/10.
+
+Complete current dependency audit verifies107 declared files/130,470,362B and
+111 declared-plus-candidate files/132,527,805B. The original53-file wrapper hold
+covers revision/camera candidate inputs; it must not be described as all ten
+recording/model dependencies. The production CLI verifies every declared input
+pin during item admission and verification.

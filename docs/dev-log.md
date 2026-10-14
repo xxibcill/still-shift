@@ -69,9 +69,21 @@ still hold before relying on them.
   Cohort60 report/resume unrun after terminal failure; old products not relabelled.
   **Fresh cohort61 live:** actual-first-ten-native-purpose61, wrapper71417,
   output-purpose61, queue-holds61.json. Exact COW cache import6,935 files /
-  2,795,500,494B; same53 private dependencies/6,533,750B and all ten episode rows.
+  2,795,500,494B; same53 candidate/camera inputs/6,533,750B and ten episode rows.
+  Complete refreshed audit verifies107 declared dependencies/130,470,362B and
+  111 declared-plus-candidate files/132,527,805B. The original53 hold remains
+  scoped to candidate revisions/changed-camera inputs, not all audio/model files.
   Original H3/canceled59/failed60 journals held separately. No source edits until
   run/report/resume is terminal.
+  **First fresh completion:** EU001 seals onfc4cc2ae: QA0 errors/37 warnings,
+  21 declared physical holds; ten producer-bound artifact pins rehashed. Complete
+  610 RGBA frames equal H3 and original whole AAC parity passes. Current native
+  audit coversEU001/EU002:1,198 clocks/proof rows,4,792 pins and873 label frames,
+  zero new native captures. EU002 now exporting; original wrapper71417 live.
+  **Script source review:** all ten frozen spoken explanations compared with fresh
+  primary text; design boundaries/inferences and rendered witnesses recorded.
+  No whole rendered factual/mechanical/AV acceptance follows.
+  [Claim review](./mechanism-shorts-ms3-first-ten-claim-review-results.json).
   **Next:** poll71417; complete fresh lifecycle and independent current outputs. Whole factual/mechanical/encoded glyph/continuous/
   listening and original E06/E10 reviews, broader physical faults, native portable
   handoff, comparable effort and full software/benchmark/archive/installed gates
@@ -267,6 +279,26 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — First-ten spoken source review and complete dependency audit
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `b892b915`.
+- **Done:** Compare all ten frozen Alden explanations with freshly read primary
+  text; preserve selected embodiments, explicit spring-load inferences and the
+  required rendered witnesses. Correct three source titles in the new record;
+  original/live input files remain unchanged. Initial peg page retrieval failure
+  recovers through the matching primary patent result.
+- **Scope correction:** Original53-file wrapper hold covers candidate/camera
+  revisions. New full audit verifies107 declared files/130,470,362B and111 union
+  files/132,527,805B, including all original models/recordings. CLI independently
+  checks every declared dependency during admission and delivery verification.
+- **First completion:** Fresh EU001 seals onfc4cc2ae; full610-frame RGBA equals
+  H3, original whole AAC parity passes, ten product artifact pins rehashed.
+  Native audit EU001/EU002 covers1,198 frames/4,792 pins/873 label frames,
+  zero fresh native captures. EU002 exporting in confirmed-live71417. Continue
+  original process; text/technical evidence supplies no whole/AV/pilot acceptance.
+- **Records:** [Claim review](./mechanism-shorts-ms3-first-ten-claim-review-results.json),
+  [live cohort and input scope](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json).
 
 ### 2026-10-14 — All-ten output audit and buckle verification memory repair
 

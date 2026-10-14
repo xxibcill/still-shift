@@ -1,0 +1,378 @@
+{
+  "schemaVersion": "ms3-first-ten-spoken-claim-review-1",
+  "date": "2026-10-14",
+  "selection": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+  "status": "completed-selected-design-text-source-review",
+  "scope": "Current frozen Alden narration claims compared with freshly read primary text. Script support is separate from the completed movie\u2019s factual/mechanical/continuous/listening review; no output review or pilot acceptance is granted. No manufacturing dimensions or simulated force results are inferred.",
+  "episodes": [
+    {
+      "id": "EU-001",
+      "question": "Why does the hook on a tape measure move?",
+      "spokenSourcePlan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-001/plan.json",
+        "bytes": 7885,
+        "sha256": "sha256:3ed3ee81c52056329a57707f3c4caf617092fa1584d8970883f82e3b376d0bf1"
+      },
+      "sourceDefinition": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-001/source.json",
+        "bytes": 2159,
+        "sha256": "sha256:2d8de9baf2cfeaaeef5d7f56464e3ea09837f96c57b5b20a4a1c00e506f1a8f2"
+      },
+      "narrationSha256": "sha256:25b159d95222162a589d87579502a120d3b4f77197dc8c4403044cbec728856e",
+      "speechSourceSha256": "sha256:c8913f770af9515de235144d895eeac40b0a9f8f70c9da2c82752aaec2db4882",
+      "selectedDesign": "Existing unbranded conceptual floating hook",
+      "claimSummary": "Hook travel compensates for its own thickness when changing contact face.",
+      "designBoundary": "Outside pull uses the inner hook face; inside push uses the outer face. The model thickness is conceptual.",
+      "support": [
+        {
+          "url": "https://support.stanleytools.com/hc/en-us/articles/360012682938-Why-does-the-hook-on-the-end-of-the-Stanley-tape-rule-move",
+          "title": "Why does the hook on the end of the Stanley tape rule move?",
+          "locator": "Explanation of hook thickness and inside/outside measurement",
+          "inspection": "freshly-opened-primary-text-2026-10-14"
+        }
+      ],
+      "explicitInferences": [],
+      "scriptVerdict": "supported-with-explicit-design-boundaries",
+      "renderedWitnessesRequired": [
+        "Confirm visible selected faces and equal hook-thickness travel throughout the completed movie."
+      ],
+      "renderedFactualMechanicalReview": "UNREVIEWED"
+    },
+    {
+      "id": "EU-002",
+      "question": "Why does a cable tie tighten but resist pulling backward?",
+      "spokenSourcePlan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-002/plan.json",
+        "bytes": 6825,
+        "sha256": "sha256:ab9d437927ab0adc3832757a0595667ff8550f4967f9b3fddf7f546f549b9bd6"
+      },
+      "sourceDefinition": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-002/source.json",
+        "bytes": 1984,
+        "sha256": "sha256:da4224df04eea0389a513623031a262efa61608ede96f3450936a96eb8408348"
+      },
+      "narrationSha256": "sha256:ceba4694d3e670e3165c9e87277442cb1788020bacd038995aa89a7f7101bf38",
+      "speechSourceSha256": "sha256:b42a6e4fa55ae054ad1ce5b9f2593ec9d36665401670242c014d740e59fce4bd",
+      "selectedDesign": "one-piece outside-serrated nylon cable tie with integral rooted plastic tongue",
+      "claimSummary": "An integral flexible tongue passes strap teeth forward and engages them against backward withdrawal.",
+      "designBoundary": "Applies to the selected one-piece serrated nylon construction, not every cable-tie locking system.",
+      "support": [
+        {
+          "url": "https://www.hellermanntyton.com/competences/cable-ties-and-fixings",
+          "title": "Cable ties and zip ties for industry",
+          "locator": "FAQ: How does a cable tie fastener work?; Cable ties with plastic pawls",
+          "inspection": "freshly-opened-primary-text-2026-10-14"
+        }
+      ],
+      "explicitInferences": [],
+      "scriptVerdict": "supported-with-explicit-design-boundaries",
+      "renderedWitnessesRequired": [
+        "Confirm tongue deflection/recovery and reverse retaining contact at the spoken phases."
+      ],
+      "renderedFactualMechanicalReview": "UNREVIEWED"
+    },
+    {
+      "id": "EU-003",
+      "question": "Why does squeezing one end of a clothespeg open the other?",
+      "spokenSourcePlan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-003/plan.json",
+        "bytes": 8328,
+        "sha256": "sha256:d09d61624eb9d379c6425a44ccb03c7e5ba62b2040a73653c632401cde676afc"
+      },
+      "sourceDefinition": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-003/source.json",
+        "bytes": 2353,
+        "sha256": "sha256:f528a870ec8dd0ffa9302272b5ebf62a58ccacaf569cfd6c11c87cdfe9c357ea"
+      },
+      "narrationSha256": "sha256:8f0efa34a0785d898e672e0549ad8c9593124380128657b98c51e0fd531d220a",
+      "speechSourceSha256": "sha256:3149854537e0123dbb025292c239f545604e9694fe975e2919c57d10e82ed843",
+      "selectedDesign": "Conventional wooden two-arm peg around US4063333A Fig7; reconstructed seated normal state, excluding improved retention parts",
+      "claimSummary": "Closing the handle ends overcomes the central spring and opens the gripping ends; the spring tends to close them after release.",
+      "designBoundary": "Use conventional members64/65 and spring66. Fig7 depicts a failure state; improved retaining clips and pins are excluded.",
+      "support": [
+        {
+          "url": "https://patents.google.com/patent/US4063333A/en",
+          "title": "Clothespin",
+          "locator": "Conventional Fig7 description, members64/65, tails69/71, coil76 and ends77/78",
+          "inspection": "freshly-opened-primary-text-2026-10-14"
+        }
+      ],
+      "explicitInferences": [
+        "Continued load with fabric between the jaws is an inference from the spring closing tendency and prevented full closure, not a measured force result."
+      ],
+      "scriptVerdict": "supported-with-explicit-design-boundaries",
+      "renderedWitnessesRequired": [
+        "Confirm the coil remains seated, spring ends remain anchored and fabric prevents full closure."
+      ],
+      "renderedFactualMechanicalReview": "UNREVIEWED"
+    },
+    {
+      "id": "EU-004",
+      "question": "How does a zipper join its teeth?",
+      "spokenSourcePlan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-004/plan.json",
+        "bytes": 7629,
+        "sha256": "sha256:ec19399dce3d7ea9e93d853f4ec005df40155577618eef1bf6801b8ffcb634ff"
+      },
+      "sourceDefinition": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-004/source.json",
+        "bytes": 2910,
+        "sha256": "sha256:16d63f0655a5c701c292f4a65025b788552f2567872fc1c8c137a41b8c0ff3d6"
+      },
+      "narrationSha256": "sha256:f1ff76a8423c8b08656771d2aa3d0b97a9bcf9abeff7afd5d74410205d479fe3",
+      "speechSourceSha256": "sha256:b26177e76d97f4b0ee5ac670ac1f1d2ead938b1293cd3f1d6053548ef27c5ad5",
+      "selectedDesign": "US1219881A metal-element zipper: identical staggered projection/recess members with a diverging-channel slider; YKK general tunnel explanation as corroboration.",
+      "claimSummary": "The branching slider guide brings staggered projection/recess elements together and separates them on reversal.",
+      "designBoundary": "Applies to the selected metal-element construction. The divider and guide, rather than a tooth replacement, explain the reverse operation.",
+      "support": [
+        {
+          "url": "https://patents.google.com/patent/US1219881A/en",
+          "title": "Separable fastener",
+          "locator": "Slider6; Y-shaped channel/tongue; member projection10/recess11; claims describing opposite travel",
+          "inspection": "freshly-opened-primary-text-2026-10-14"
+        },
+        {
+          "url": "https://www.ykk.com/english/ykk/tech/01.html",
+          "title": "To begin with, what\u2019s the structure of a zipper?",
+          "locator": "Y-shaped tunnel explanation",
+          "inspection": "freshly-opened-manufacturer-text-2026-10-14"
+        }
+      ],
+      "explicitInferences": [],
+      "scriptVerdict": "supported-with-explicit-design-boundaries",
+      "renderedWitnessesRequired": [
+        "Confirm mating tooth cups and guide/divider paths in the joined and separated poses."
+      ],
+      "renderedFactualMechanicalReview": "UNREVIEWED"
+    },
+    {
+      "id": "EU-005",
+      "question": "How does a keyhole mounting slot hold a screw?",
+      "spokenSourcePlan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-005/plan.json",
+        "bytes": 7202,
+        "sha256": "sha256:955ec8fb7095bae245a9e10edc9de8b26b84ff4d7b318e477bbf4cf269930b81"
+      },
+      "sourceDefinition": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-005/source.json",
+        "bytes": 2204,
+        "sha256": "sha256:d8cd2caf24f1d9569b49f46fcffcc29134cc9ef1eba7ded0813f1485f2530d0e"
+      },
+      "narrationSha256": "sha256:1fc6d74f08988af9e7eee7f525e4e552113bea9a2a0e5df2a27259ca35e1c24d",
+      "speechSourceSha256": "sha256:c6fa10ec9a5cbf0c1dbf2aca79111efe3484e07cc0229bf5b68ab12e86475948",
+      "selectedDesign": "Conventional keyhole slot disclosed in EP1817988A1 background: enlarged entry then narrower shank track, without the invention\u2019s additional snap neck.",
+      "claimSummary": "The enlarged opening admits a fastener head; the narrow portion accepts its shank while surrounding material retains the wider head.",
+      "designBoundary": "The selected conventional slot excludes the patent invention\u2019s additional snap neck. Reverse translation can disengage it.",
+      "support": [
+        {
+          "url": "https://patents.google.com/patent/EP1817988A1/en",
+          "title": "Picture frame fixings",
+          "locator": "Opening description of known keyhole fixings, before the snap-fit invention",
+          "inspection": "freshly-opened-primary-text-2026-10-14"
+        }
+      ],
+      "explicitInferences": [],
+      "scriptVerdict": "supported-with-explicit-design-boundaries",
+      "renderedWitnessesRequired": [
+        "Confirm the head passes the entry, overlaps narrow edges and clears again only at the entry."
+      ],
+      "renderedFactualMechanicalReview": "UNREVIEWED"
+    },
+    {
+      "id": "EU-006",
+      "question": "Why do binder-clip handles make the jaws open?",
+      "spokenSourcePlan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-006/plan.json",
+        "bytes": 10175,
+        "sha256": "sha256:097ce1a7597c8b65eb3d8788685648cb22b4092034d7fc8bfdfe14a73143cbf1"
+      },
+      "sourceDefinition": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-006/source.json",
+        "bytes": 2153,
+        "sha256": "sha256:2dacc5b19e08e332d600d52ab6454824e805644e0c754ada4eff615a8a9075ca"
+      },
+      "narrationSha256": "sha256:548b73c585568a670a2da061c75ab3f3fb935b00332be23291de3110b97b2af1",
+      "speechSourceSha256": "sha256:5f59ca13514b1d361df77f36da6995544f647703f9bed5289fb03e7f2b9c9070",
+      "selectedDesign": "US1139627A continuous triangular sheet-steel binder, integral rolled jaw journals and body-bearing wire levers; authored U-handle proportions, clamping action only",
+      "claimSummary": "The clip\u2019s spring-steel body provides closing force; the wire handles use the body/back as a fulcrum to spread its jaws.",
+      "designBoundary": "Covers the selected clamping operation. The patent also uses resilient handles for retention and folding; the narration does not deny that elasticity.",
+      "support": [
+        {
+          "url": "https://patents.google.com/patent/US1139627A/en",
+          "title": "Paper-binding clip",
+          "locator": "Opening description; bodyA/B, tubular jaws1/2 and handleD operation in Figs1\u20133",
+          "inspection": "freshly-opened-primary-text-2026-10-14"
+        }
+      ],
+      "explicitInferences": [
+        "Persistent grip with paper preventing full closure follows from the documented resilient body; no measured force or stiffness is claimed."
+      ],
+      "scriptVerdict": "supported-with-explicit-design-boundaries",
+      "renderedWitnessesRequired": [
+        "Confirm handle/body bearing and jaw opening, continuous body deformation and paper-held return."
+      ],
+      "renderedFactualMechanicalReview": "UNREVIEWED"
+    },
+    {
+      "id": "EU-007",
+      "question": "How does a side-release buckle lock and release?",
+      "spokenSourcePlan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-007/plan.json",
+        "bytes": 9339,
+        "sha256": "sha256:deb417e748c444408debb53f9cf5e57b35de1081bbdcf4d9628bb0c6080c9dec"
+      },
+      "sourceDefinition": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-007/source.json",
+        "bytes": 2269,
+        "sha256": "sha256:47b854f51c4452e18274fc31541c394b7ead1c3334c5d8a5902ada34073792a8"
+      },
+      "narrationSha256": "sha256:ff5a3d3d72fadbbdb674598cfd2221362ef95a53910a60fa9c11df63056624f1",
+      "speechSourceSha256": "sha256:791934ed733134f4895b8f2d6a10f684fa3750907a835a88d5f67d4d899ae356",
+      "selectedDesign": "US5546642A improved side-release buckle embodiment with resilient male arms, upper/lower abutments and female release actuators.",
+      "claimSummary": "Insertion bends two male arms inward; their abutments recover behind female retaining surfaces. Both female actuators press the arms inward to release them.",
+      "designBoundary": "Specifically the improved embodiment with upper/lower abutments and separate female actuating members, as the narration\u2019s in-this-version qualifier states.",
+      "support": [
+        {
+          "url": "https://patents.google.com/patent/US5546642A/en",
+          "title": "Side-release buckle fastener",
+          "locator": "Figs7\u201316; arms24, abutments38/40, retaining surfaces60, actuating members66 and insertion/release operation",
+          "inspection": "freshly-opened-primary-text-2026-10-14"
+        }
+      ],
+      "explicitInferences": [],
+      "scriptVerdict": "supported-with-explicit-design-boundaries",
+      "renderedWitnessesRequired": [
+        "Confirm all retaining contacts under pull and both actuators clearing those contacts before withdrawal."
+      ],
+      "renderedFactualMechanicalReview": "UNREVIEWED"
+    },
+    {
+      "id": "EU-008",
+      "question": "Why does a door latch retract and spring back?",
+      "spokenSourcePlan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-008/plan.json",
+        "bytes": 7107,
+        "sha256": "sha256:4d8ff5f771b3fbe83be14b347928e86d9f4254dcb493826c2fa8111cb4d9d3bb"
+      },
+      "sourceDefinition": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-008/source.json",
+        "bytes": 2774,
+        "sha256": "sha256:e00bba132e3a02c201a0af7628db05dca6c8232f9d3b7679d430850c7ab11b41"
+      },
+      "narrationSha256": "sha256:e43e1132d3ad6eb4846008a5c47e804c84921c3b15024dd3f9c94c9d80d3a636",
+      "speechSourceSha256": "sha256:d017c697194bde47e5e41ed348235945b07f85ca89d2222638986d4c3918e588",
+      "selectedDesign": "US10837199B2 latch550 closing subassembly, Figs16\u201318: cam face556, spring570 and fixed boss572; show the closing stroke rather than the separate deadlocking system.",
+      "claimSummary": "A sloping bolt face contacts the strike to retract the bolt; the fixed spring support biases the bolt outward when the strike opening permits.",
+      "designBoundary": "Only latch550\u2019s closing stroke is explained. Omitted deadlocking internals do not become an implied security demonstration.",
+      "support": [
+        {
+          "url": "https://patents.google.com/patent/US10837199B2/en",
+          "title": "Cylindrical latch bolt assembly having beveled blocking surface",
+          "locator": "Figs16\u201318; cam556, spring570 and fixed boss572",
+          "inspection": "freshly-opened-primary-text-2026-10-14"
+        }
+      ],
+      "explicitInferences": [],
+      "scriptVerdict": "supported-with-explicit-design-boundaries",
+      "renderedWitnessesRequired": [
+        "Confirm strike/cam contact, spring compression against a fixed seat and extension into the strike opening."
+      ],
+      "renderedFactualMechanicalReview": "UNREVIEWED"
+    },
+    {
+      "id": "EU-009",
+      "question": "Why is a tape-measure blade curved?",
+      "spokenSourcePlan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-009/plan.json",
+        "bytes": 9642,
+        "sha256": "sha256:71e3eb547e6889a96fd234e4538aee4d8494cd5e55a2f1c65b5b8745f0f75d78"
+      },
+      "sourceDefinition": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-009/source.json",
+        "bytes": 2130,
+        "sha256": "sha256:034bc0690091389c8e67bda7dfd3f995e020abafc02f5b99eceb7c5cfae37c22"
+      },
+      "narrationSha256": "sha256:b1f92b9fa353f9a23a83b9fd4a0f0fb1d1ca2b16f026529436542be56aee6388",
+      "speechSourceSha256": "sha256:476a035e6abbe07672e1dc40e5278df4cfad38448fb4b708c50a49698cb1bc73",
+      "selectedDesign": "Conventional transverse curved blade in WO2020159114A1 background Fig.2; explicit flattening comparison and authored exposed teaching mandrel",
+      "claimSummary": "Transverse curvature helps a conventional tape blade resist longitudinal droop; flattening across its width permits winding.",
+      "designBoundary": "Use conventional Fig2 background, not the added groove invention. The exposed teaching mandrel and support comparison are illustrative; no standout length or stiffness value is established.",
+      "support": [
+        {
+          "url": "https://patents.google.com/patent/WO2020159114A1/en",
+          "title": "Blade for tape measure",
+          "locator": "Background description of conventional Fig2 and flattening around bobbin3",
+          "inspection": "freshly-opened-primary-text-2026-10-14"
+        }
+      ],
+      "explicitInferences": [],
+      "scriptVerdict": "supported-with-explicit-design-boundaries",
+      "renderedWitnessesRequired": [
+        "Confirm transverse flattening before/through winding without introducing an unsupported quantitative performance claim."
+      ],
+      "renderedFactualMechanicalReview": "UNREVIEWED"
+    },
+    {
+      "id": "EU-010",
+      "question": "How does a soda-can tab open the scored panel?",
+      "spokenSourcePlan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-010/plan.json",
+        "bytes": 8878,
+        "sha256": "sha256:b146a8d78778e53e30e2786a8d0b4c36fcc35ceb1c501df998c137d6858725ec"
+      },
+      "sourceDefinition": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-010/source.json",
+        "bytes": 2042,
+        "sha256": "sha256:fb764f1ed61fd8da169b449f9e188e15ee084498112fa36d5d020bf09633eaf0"
+      },
+      "narrationSha256": "sha256:702548703c6de1146b4c384d9de5eedc8300d09bdaf621194085aa82e1b8d338",
+      "speechSourceSha256": "sha256:7f02e2baccf38a2100ac80d883c1a70492b7fd4a6d1e7041c55627d5b4bb5619",
+      "selectedDesign": "US6575684B2 first stay-on lid embodiment: tab42/44, rivet16, bendable flange46, tongue17 and score58 ending in hinge19.",
+      "claimSummary": "The rivet retains a bendable tab flange; lifting the heel presses the nose against the scored tongue, whose remaining hinge keeps it attached while opening.",
+      "designBoundary": "Selected first lid embodiment. The flange bends; the rivet is not depicted as a free pin bearing. Main outer score58 ruptures; hinge19 remains.",
+      "support": [
+        {
+          "url": "https://patents.google.com/patent/US6575684B2/en",
+          "title": "Die for stay-on-tab",
+          "locator": "First lid embodiment Figs1\u20136; flange46/rivet16, outer score58, tongue17 and hinge19",
+          "inspection": "freshly-opened-primary-text-2026-10-14"
+        }
+      ],
+      "explicitInferences": [],
+      "scriptVerdict": "supported-with-explicit-design-boundaries",
+      "renderedWitnessesRequired": [
+        "Confirm a stationary rivet, flange bending, nose/panel contact, incomplete score loop and retained panel hinge."
+      ],
+      "renderedFactualMechanicalReview": "UNREVIEWED"
+    }
+  ],
+  "sourceTitleCorrections": [
+    {
+      "id": "EU-005",
+      "actualTitle": "Picture frame fixings",
+      "retainedPriorTitle": "Keyhole mounting system"
+    },
+    {
+      "id": "EU-006",
+      "actualTitle": "Paper-binding clip",
+      "retainedPriorTitle": "Clip"
+    },
+    {
+      "id": "EU-010",
+      "actualTitle": "Die for stay-on-tab",
+      "retainedPriorTitle": "Easy opening can end"
+    }
+  ],
+  "retrievalFailures": [
+    {
+      "url": "https://patents.google.com/patent/US4063333A/en",
+      "firstOpen": "Internal Error",
+      "recovery": "Primary-domain search followed by opening the matching original patent succeeds."
+    }
+  ],
+  "liveRenderInputsChanged": false,
+  "originalSourceEvidenceFilesChanged": false,
+  "wholeReviews": "UNREVIEWED",
+  "acceptedPilot": 0,
+  "pairedRoutineTelemetry": null
+}

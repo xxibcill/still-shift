@@ -1903,6 +1903,169 @@
     ],
     "sourceEdits": "Wait until this frozen lifecycle is terminal",
     "wholeReviews": "UNREVIEWED",
-    "acceptedPilot": 0
+    "acceptedPilot": 0,
+    "completeDependencyAudit": {
+      "status": "passed-complete-declared-and-candidate-dependency-audit",
+      "queueId": "actual-first-ten-native-purpose61",
+      "runtimeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+      "declaredFiles": 107,
+      "declaredBytes": 130470362,
+      "candidateHoldFiles": 53,
+      "additionalDeclaredFiles": 58,
+      "allUnionFiles": 111,
+      "allUnionBytes": 132527805,
+      "scope": "Read-only current audit of every manifest-declared dependency plus revision/camera candidate hold. Original53-file hold remains unchanged and covers candidate revisions/camera dependencies rather than all ten audio/model dependencies. CLI validates all declared dependency pins during each item admission/verification."
+    },
+    "candidateHoldScopeCorrection": "The original53-file wrapper hold covers candidate revisions and EU004/EU008 changed-camera dependencies. It is not the complete ten-audio/ten-model manifest dependency union. CLI admission verifies all107 declared pins; separate read-only audit verifies111 union files including all recordings/models and candidate files.",
+    "currentNativeAudit": {
+      "artifact": "/private/tmp/still-shift-ms3-holds61-native-audit1.json",
+      "rows": [
+        {
+          "id": "EU-001",
+          "statusAtAudit": "passed",
+          "frames": 610,
+          "proofHolds": 5,
+          "pinChecks": 2440,
+          "uniquePinsVerified": 738,
+          "activeLabelFrames": 529,
+          "freshNativeRenders": 0,
+          "reusedNativeFrames": 610,
+          "completePhysicalProofAndGlobalFrameClockPassed": true
+        },
+        {
+          "id": "EU-002",
+          "statusAtAudit": "running",
+          "frames": 588,
+          "proofHolds": 5,
+          "pinChecks": 2352,
+          "uniquePinsVerified": 834,
+          "activeLabelFrames": 344,
+          "freshNativeRenders": 0,
+          "reusedNativeFrames": 588,
+          "completePhysicalProofAndGlobalFrameClockPassed": true
+        }
+      ],
+      "frames": 1198,
+      "pinChecks": 4792,
+      "activeLabelFrames": 873,
+      "scope": "Current saved native pins, complete physical proof metadata, actual controller phases, absolute sequence frame clocks and source callout copy/projection. Not surface contact, encoded glyph, full playback/listening or pilot acceptance."
+    },
+    "firstSealedEpisode": {
+      "productAudit": {
+        "id": "EU-001",
+        "status": "passed-current-producer-bound-product-closure",
+        "producerBoundArtifactsVerified": 10,
+        "product": {
+          "path": "products/EU-001-3463d72a8814d004-1.json",
+          "bytes": 9819,
+          "sha256": "sha256:4ab2c3d49d94f4986d8fc20695815def25af2fea7e06c9dbfb91719a4c725662"
+        },
+        "binding": {
+          "inputSha256": "sha256:3463d72a8814d0040cac64e6cd51d55fb992ecf5046d4e8ce1d17269183796ef",
+          "outputSha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 610,
+        "previewErrors": 0,
+        "previewWarnings": 37,
+        "declaredPhysicalHolds": 21,
+        "encodedEvidenceImages": 59,
+        "wholeReviews": "UNREVIEWED",
+        "scope": "Current saved product/artifact pins, independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+      },
+      "completeEncodedAudit": {
+        "product": {
+          "path": "products/EU-001-3463d72a8814d004-1.json",
+          "bytes": 9819,
+          "sha256": "sha256:4ab2c3d49d94f4986d8fc20695815def25af2fea7e06c9dbfb91719a4c725662"
+        },
+        "runtimeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+        "status": "passed-scoped-retained-export-decode",
+        "frames": 610,
+        "sourceSamples": 975360,
+        "frameTailPaddingSamples": 640,
+        "changedRgbaFrames": [],
+        "rgbaFrameHashesExactAgainstH3": true,
+        "originalWholeAACReferenceParity": true,
+        "oldMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-001/1/output.mp4",
+          "bytes": 1321056,
+          "sha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e"
+        },
+        "retainedPurposeMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/items/EU-001/1/output.mp4",
+          "bytes": 1321056,
+          "sha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose61/EU-001/purpose-decoded.f32",
+            "bytes": 7815168,
+            "sha256": "sha256:b9bc1c8bca52d9ac6b9dba7fe2cd87103f4ce56b76d56c03c0900a5fc5137989"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose61/EU-001/reference-decoded.f32",
+            "bytes": 7815168,
+            "sha256": "sha256:b9bc1c8bca52d9ac6b9dba7fe2cd87103f4ce56b76d56c03c0900a5fc5137989"
+          }
+        ],
+        "scope": "Current fc4 producer-bound export, full RGBA decode and original whole AAC reference. No full encoded glyph, playback, listening or pilot acceptance."
+      },
+      "wholeReviews": "UNREVIEWED"
+    },
+    "currentRows": [
+      {
+        "id": "EU-001",
+        "status": "passed",
+        "stage": "native-blender-rendered-visual-qa"
+      },
+      {
+        "id": "EU-002",
+        "status": "passed",
+        "stage": "native-blender-rendered-visual-qa"
+      },
+      {
+        "id": "EU-003",
+        "status": "running",
+        "stage": "native-blender-composition-export"
+      },
+      {
+        "id": "EU-004",
+        "status": "pending",
+        "stage": null
+      },
+      {
+        "id": "EU-005",
+        "status": "pending",
+        "stage": null
+      },
+      {
+        "id": "EU-006",
+        "status": "pending",
+        "stage": null
+      },
+      {
+        "id": "EU-007",
+        "status": "pending",
+        "stage": null
+      },
+      {
+        "id": "EU-008",
+        "status": "pending",
+        "stage": null
+      },
+      {
+        "id": "EU-009",
+        "status": "pending",
+        "stage": null
+      },
+      {
+        "id": "EU-010",
+        "status": "pending",
+        "stage": null
+      }
+    ],
+    "spokenClaimReview": "docs/mechanism-shorts-ms3-first-ten-claim-review-results.json"
   }
 }
