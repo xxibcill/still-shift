@@ -439,3 +439,27 @@ now creates a separate bounded EU002/EU007 correction cohort66 with exact
 complete sorted inputs and fresh canonical-path guards. All prior all-ten
 product/artifact bytes and original/canceled/failed journals are protected;
 whole acceptance remains open. [Failure and recovery](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json).
+
+The bounded canonical-path EU002/EU007 correction cohort66 finishes
+run1201.69s/report82.64s/resume82.60s terminal0, with21 declared inputs and114
+protected prior product/artifact/journal files exact. Both corrections seal;
+1,296 full encoded RGBA/original AAC frames,20 product artifact pins and5,184
+native pins independently verify. Scoped QA0 errors/63 warnings/102 images;
+15 tie/18 buckle encoded phone frames actually inspected. The unchanged spoken
+bend assertions now report0 failures against the corrected native observations.
+Buckle settled-state interval explicitly moves294→359 to follow its planned
+recovery. Original75-failure output and failed revision1 remain retained.
+NativeRGBA changes269–373 for tie and164–358 for buckle. Encoded changes261–381
+and164–426/502–707 extend beyond authored windows; no outside equality is claimed.
+[Correction closure](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json).
+
+Portable first-ten data inputs contain75 exact payloads/130,306,267B and105
+unique declared dependencies, all inside both original and relocated bundles.
+Fresh-process native admission yields identical ten rows/6,181 clocks. This is
+input portability only: source runtime is required separately; fresh native
+render, installed consumer handoff, full AV/contact/factual review and acceptance
+remain open. Eight retained baseline bindings still name retired aliases and
+need explicit canonical/portable rebinding before a fresh all-ten lifecycle.
+Composite review selection has0 preview errors/343 warnings/542 images; accepted
+pilot0/10 and effort tokens null remain unchanged.
+[Portable input evidence](./mechanism-shorts-ms3-first-ten-portable-input-results.json).

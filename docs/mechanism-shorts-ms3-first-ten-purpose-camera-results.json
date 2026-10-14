@@ -3258,7 +3258,7 @@
     "scopedCorrectionRecovery": {
       "id": "actual-first-ten-scoped-corrections66",
       "episodes": ["EU-002", "EU-007"],
-      "execution": "run-live-report-resume-pending",
+      "execution": "terminal-run-report-resume-passed",
       "manifest": {
         "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-corrections66.json",
         "bytes": 6997,
@@ -3818,7 +3818,266 @@
           "bytes": 11127,
           "sha256": "sha256:9610043523d71a5275d158e315e5a4deb471a79bf46a854409e390756c1b2e68"
         }
-      }
+      },
+      "terminalLifecycle": {
+        "steps": [
+          {
+            "step": "run",
+            "actualExitCode": 0,
+            "seconds": 1201.6938316251617,
+            "sourceHoldExitCode": 0,
+            "declaredInputsExact": true,
+            "priorProductsMediaAndJournalsExact": true,
+            "episodeStatuses": {
+              "EU-002": "passed",
+              "EU-007": "passed"
+            }
+          },
+          {
+            "step": "report",
+            "actualExitCode": 0,
+            "seconds": 82.63790520885959,
+            "sourceHoldExitCode": 0,
+            "declaredInputsExact": true,
+            "priorProductsMediaAndJournalsExact": true,
+            "episodeStatuses": {
+              "EU-002": "passed",
+              "EU-007": "passed"
+            }
+          },
+          {
+            "step": "resume",
+            "actualExitCode": 0,
+            "seconds": 82.60369320795871,
+            "sourceHoldExitCode": 0,
+            "declaredInputsExact": true,
+            "priorProductsMediaAndJournalsExact": true,
+            "episodeStatuses": {
+              "EU-002": "passed",
+              "EU-007": "passed"
+            }
+          }
+        ],
+        "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-corrections66.json",
+        "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-corrections66",
+        "scope": "Only EU002/EU007 corrections from actual first ten; byte-exact canonical model relocation, original complete recordings at1x. Failed revision1 and prior products remain preserved.",
+        "acceptedPilot": 0,
+        "wholeReviews": "UNREVIEWED",
+        "declaredInputFiles": 21,
+        "protectedFiles": 114,
+        "resumeRowsExact": true,
+        "actualExitCode": 0,
+        "receiptPin": {
+          "path": "/private/tmp/still-shift-ms3-corrections66-whole1-receipt.json",
+          "bytes": 1557,
+          "sha256": "sha256:d17858832379550d69ae760f5f65c9f49a606da8737fbf316edcebc8232c132f"
+        }
+      },
+      "secondCorrectedSealedEpisode": {
+        "status": "sealed-scoped-corrected-export",
+        "productAudit": {
+          "id": "EU-007",
+          "status": "passed-current-producer-bound-product-closure",
+          "producerBoundArtifactsVerified": 10,
+          "product": {
+            "path": "products/EU-007-4618effe0d5225c6-1.json",
+            "bytes": 9928,
+            "sha256": "sha256:91fa8800b82461d9ed49d48025a6b3ef7f2cdde5546b269356841bbd9ea04cf5"
+          },
+          "binding": {
+            "inputSha256": "sha256:4618effe0d5225c6b5a0a5e1162c26240dac3047328a8a2c5c6a3bab14d9b610",
+            "outputSha256": "sha256:01a008b76eb7f357d3087d8478b43a2991908f9c80467abcf267fdd4afa61051",
+            "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+            "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+          },
+          "frames": 708,
+          "previewErrors": 0,
+          "previewWarnings": 36,
+          "declaredPhysicalHolds": 21,
+          "encodedEvidenceImages": 58,
+          "wholeReviews": "UNREVIEWED",
+          "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+        },
+        "productAuditPin": {
+          "path": "/private/tmp/still-shift-ms3-corrections66-EU007-product-audit1.json",
+          "bytes": 980,
+          "sha256": "sha256:47f1e442f8af8ed5ab42b80643bd2cf31482cd3e6050a6c66a4bc1131c63dd13"
+        },
+        "completeEncodedAuditPin": {
+          "path": "/private/tmp/still-shift-ms3-corrections66-EU-007-encoded1.json",
+          "bytes": 6101,
+          "sha256": "sha256:c19568a2aafdeb6e94af6e0836029937f2c32f13705caaf76559d8b91db6845d"
+        },
+        "frames": 708,
+        "originalWholeAACReferenceParity": true,
+        "changedEncodedFrameRangesInclusive": [
+          [164, 426],
+          [502, 707]
+        ],
+        "actualEncodedPhoneReview": {
+          "status": "selected-encoded-phone-stills-inspected",
+          "rows": [
+            {
+              "id": "EU-007",
+              "frames": [
+                0, 196, 229, 253, 264, 334, 342, 359, 427, 460, 501, 502, 526,
+                565, 610, 611, 674, 707
+              ],
+              "sheets": [
+                "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-corrections66/EU-007/phone-review1/sheet-0.png",
+                "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-corrections66/EU-007/phone-review1/sheet-1.png",
+                "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-corrections66/EU-007/phone-review1/sheet-2.png"
+              ],
+              "movieSha256": "sha256:01a008b76eb7f357d3087d8478b43a2991908f9c80467abcf267fdd4afa61051",
+              "scope": "Actual retained encoded phone stills; static inspection pending, no full playback/listening approval."
+            }
+          ],
+          "actualSheetsViewed": 3,
+          "sheetPins": [
+            {
+              "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-corrections66/EU-007/phone-review1/sheet-0.png",
+              "bytes": 275439,
+              "sha256": "sha256:ccbe2027d165dec702643b1fbe3df16520e0a2210ce3d24a349c4f01d0a9a31d"
+            },
+            {
+              "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-corrections66/EU-007/phone-review1/sheet-1.png",
+              "bytes": 425255,
+              "sha256": "sha256:51839588fe01fd94a443d649c27cef25e167de14bfe2a97adfc67d0b422c9788"
+            },
+            {
+              "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-corrections66/EU-007/phone-review1/sheet-2.png",
+              "bytes": 107197,
+              "sha256": "sha256:819cd143cb1b3679337be75c225ca2d11fb052f3fac49d8cff28b7274150d9cb"
+            }
+          ],
+          "findings": "Actual encoded229/253 show inward arm bend during the spoken claim;334/342 show outward recovery. Arm leaders visibly land on the cyan arm at264/334/342/359/502/526/565/610. All selected caption/part labels readable. Static selected review only; no full motion/contact/listening acceptance."
+        },
+        "independentCompleteQAReview": {
+          "status": "passed-corrected-spoken-bend-state",
+          "binding": {
+            "inputSha256": "sha256:4618effe0d5225c6b5a0a5e1162c26240dac3047328a8a2c5c6a3bab14d9b610",
+            "outputSha256": "sha256:01a008b76eb7f357d3087d8478b43a2991908f9c80467abcf267fdd4afa61051",
+            "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+            "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+          },
+          "failures": 0,
+          "groups": 0,
+          "artifacts": [
+            {
+              "path": "independent-spoken-review66/EU-007/qa-program.json",
+              "bytes": 8018,
+              "sha256": "sha256:9a14ed68e2da6cd9848fe71a454982f0a150d833af0feb99b810a31bcde6c6d7"
+            },
+            {
+              "path": "independent-spoken-review66/EU-007/qa-warnings.json",
+              "bytes": 473,
+              "sha256": "sha256:2af4fc7affcf69f1a86debf425109ef6ad1492be7a4a545c8075fa1f41f94eb7"
+            },
+            {
+              "path": "independent-spoken-review66/EU-007/qa-warning-groups.json",
+              "bytes": 676,
+              "sha256": "sha256:ac8d6a0ffbdcecd08de25310dc53b095acc7e350b1c80436304ff00d2851f443"
+            },
+            {
+              "path": "independent-spoken-review66/EU-007/qa-facts.json",
+              "bytes": 380315,
+              "sha256": "sha256:a349daa312b50af91874bf15600663be22812c6a42d559a3ad37233fa0fa6cf4"
+            }
+          ],
+          "scope": "Source-word-derived sampled control/local-mesh deformation assertions over229\u2013254. Corrected delivery seal/journal unchanged; no whole listening/contact acceptance.",
+          "receipt": {
+            "path": "/private/tmp/still-shift-ms3-corrections66-EU007-independent-qa1.json",
+            "bytes": 1458,
+            "sha256": "sha256:a3977553447e04ce9e8d7072b7ac868b8545cb443e6e6dbdd87031894864f18a"
+          },
+          "spokenProgramExactAgainstRetained75FailureReview": true,
+          "spokenProgramCanonicalSha256": "sha256:e5f3420ca379df32fe1540a5b7f13fb3cc35f86db43d76daa590beddeaf2fbb5",
+          "qualification": "Same spoken interval and three numeric/deformation assertions. Original133-frame settled phase starts294; corrected68-frame phase starts359 to match intentionally delayed recovery. This phase-clock revision is explicit, not a weakened spoken assertion."
+        },
+        "wholeReviews": "UNREVIEWED",
+        "acceptedPilot": 0
+      },
+      "completeNativeRgbaComparison": {
+        "status": "passed-complete-native-png-rgba-compare",
+        "rows": [
+          {
+            "id": "EU-002",
+            "frames": 588,
+            "nativeRgbaChangedFrames": [
+              269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281,
+              282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 293, 294,
+              295, 296, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307,
+              308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320,
+              321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333,
+              334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345, 346,
+              347, 348, 349, 350, 351, 352, 353, 354, 355, 356, 357, 358, 359,
+              360, 361, 362, 363, 364, 365, 366, 367, 368, 369, 370, 371, 372,
+              373
+            ],
+            "nativeRgbaChangedRangesInclusive": [[269, 373]],
+            "encodedRgbaChangedRangesInclusive": [[261, 381]],
+            "encodedChangedOutsideNativeRgbaChangeRangesInclusive": [
+              [261, 268],
+              [374, 381]
+            ]
+          },
+          {
+            "id": "EU-007",
+            "frames": 708,
+            "nativeRgbaChangedFrames": [
+              164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176,
+              177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189,
+              190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202,
+              203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215,
+              216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228,
+              229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241,
+              242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254,
+              255, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267,
+              268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280,
+              281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 293,
+              294, 295, 296, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306,
+              307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319,
+              320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332,
+              333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343, 344, 345,
+              346, 347, 348, 349, 350, 351, 352, 353, 354, 355, 356, 357, 358
+            ],
+            "nativeRgbaChangedRangesInclusive": [[164, 358]],
+            "encodedRgbaChangedRangesInclusive": [
+              [164, 426],
+              [502, 707]
+            ],
+            "encodedChangedOutsideNativeRgbaChangeRangesInclusive": [
+              [359, 426],
+              [502, 707]
+            ]
+          }
+        ],
+        "uniquePngDecodes": 669,
+        "scope": "All native PNG pins independently verified and decoded RGBA compared, distinct from PNG metadata byte hashes and final lossy encoded RGBA changes. No listening/contact/force or whole acceptance.",
+        "receipt": {
+          "path": "/private/tmp/still-shift-ms3-corrections66-native-pixels1.json",
+          "bytes": 5210,
+          "sha256": "sha256:008b29267eee300ba4637b889e400632a00d761a125586e5fd7374fcf592c779"
+        }
+      },
+      "nativeByteVsEncodedComparison": {
+        "receipt": {
+          "path": "/private/tmp/still-shift-ms3-corrections66-change-windows1.json",
+          "bytes": 19709,
+          "sha256": "sha256:9a33bdb5af5a671d12b3b73b7d36b57cbdff2fa01bc827f92a7804f7e08217e3"
+        },
+        "qualification": "All708 buckle PNG byte pins differ because source-bound files change; direct decoded native RGBA comparison instead locates164\u2013358. PNG byte differences are not pixel differences."
+      },
+      "scopedQA": {
+        "frames": 1296,
+        "previewErrors": 0,
+        "previewWarnings": 63,
+        "encodedEvidenceImages": 102,
+        "sourceMappedPins": 5184,
+        "freshNativeRenders": 255,
+        "reusedNativeFrames": 1041
+      },
+      "encodedDifferenceQualification": "Cable-tie decoded changes261\u2013381 extend16 frames beyond native269\u2013373. Buckle nativeRGBA changes164\u2013358; leader revisions cover264\u2013426 and502\u2013610. Encoded changes extend through707, including97 frames611\u2013707 outside authored native/leader windows. No outside encoded equality or codec cause inferred."
     },
     "binderAndCanTabEncodedPhoneReview": {
       "status": "selected-encoded-phone-stills-inspected",
@@ -3903,6 +4162,29 @@
         "bytes": 5288,
         "sha256": "sha256:3000668a49c076b2492e096adc3bd57970eb5e5696db55f04d23f81f8874aa44"
       }
-    }
+    },
+    "currentFirstTenDeliverySelection": {
+      "unchangedEpisodeIds": [
+        "EU-001",
+        "EU-003",
+        "EU-004",
+        "EU-005",
+        "EU-006",
+        "EU-008",
+        "EU-009",
+        "EU-010"
+      ],
+      "unchangedProducts": "Retained cohort61 revision0 source-bound products, all bytes guarded through correction lifecycle",
+      "correctedEpisodeIds": ["EU-002", "EU-007"],
+      "correctedProducts": "cohort66 products, terminal run/report/resume current canonical inputs",
+      "previewErrors": 0,
+      "previewWarnings": 343,
+      "encodedEvidenceImages": 542,
+      "frames": 6181,
+      "qualification": "Composite review selection only; not an all-ten current manifest verification. Eight earlier product bindings name retired objects paths and require explicit canonical/portable rebinding before a fresh all-ten lifecycle. No historical binding relabelled.",
+      "wholeReviews": "UNREVIEWED",
+      "acceptedPilot": 0
+    },
+    "portableInputRecord": "docs/mechanism-shorts-ms3-first-ten-portable-input-results.json"
   }
 }

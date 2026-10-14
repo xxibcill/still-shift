@@ -1,0 +1,676 @@
+{
+  "schemaVersion": "mechanism-ms3-first-ten-portable-inputs-1",
+  "date": "2026-10-15",
+  "status": "passed-portable-original-and-relocated-native-input-admission",
+  "build": {
+    "status": "prepared-portable-byte-exact-first-ten-inputs",
+    "root": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten67-v2",
+    "files": [
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-001/v002/asset.blend",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-001/v002/asset.blend",
+        "path": "files/2e0fc8ec95445a041b10877006602cad7717006f5b0188f3e9625f4b64e8ca62.blend",
+        "bytes": 207253,
+        "sha256": "sha256:2e0fc8ec95445a041b10877006602cad7717006f5b0188f3e9625f4b64e8ca62"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-001/v002/asset.json",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-001/v002/asset.json",
+        "path": "files/15cb0a9fbe144848a48a80263e71af9ab9cdbcbfa78d7ca1c8fc85c1faffc938.json",
+        "bytes": 22434,
+        "sha256": "sha256:15cb0a9fbe144848a48a80263e71af9ab9cdbcbfa78d7ca1c8fc85c1faffc938"
+      },
+      {
+        "original": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-001/source-evidence.json",
+        "canonical": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-001/source-evidence.json",
+        "path": "files/65122af2d4a7fb004663610e7a9766407f7ea2505d1dc99df6c3c20e3813540a.json",
+        "bytes": 7254,
+        "sha256": "sha256:65122af2d4a7fb004663610e7a9766407f7ea2505d1dc99df6c3c20e3813540a"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Preproduction Stages 1-3/ideas/EU-001.md",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Preproduction Stages 1-3/ideas/EU-001.md",
+        "path": "files/5910d8268c54cd2cd90ce796d46d4468cff9121001979d8861923ad2d022a003.md",
+        "bytes": 5632,
+        "sha256": "sha256:5910d8268c54cd2cd90ce796d46d4468cff9121001979d8861923ad2d022a003"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/checks/EU-001-take01.json",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/checks/EU-001-take01.json",
+        "path": "files/175fe29de35af43a7ec940dff091bf7c2f38a7b0eb65dca2d1a2bfd6b9431ab5.json",
+        "bytes": 10708,
+        "sha256": "sha256:175fe29de35af43a7ec940dff091bf7c2f38a7b0eb65dca2d1a2bfd6b9431ab5"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-001/v002/controls.json",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-001/v002/controls.json",
+        "path": "files/5f242b79efb56cf1dd4b7a8b330ba398e58349ae0247ec269755a6ec82049554.json",
+        "bytes": 388,
+        "sha256": "sha256:5f242b79efb56cf1dd4b7a8b330ba398e58349ae0247ec269755a6ec82049554"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/audio/EU-001-alden-take01.wav",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/audio/EU-001-alden-take01.wav",
+        "path": "files/25b159d95222162a589d87579502a120d3b4f77197dc8c4403044cbec728856e.wav",
+        "bytes": 1792302,
+        "sha256": "sha256:25b159d95222162a589d87579502a120d3b4f77197dc8c4403044cbec728856e"
+      },
+      {
+        "original": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-sans-medium.ttf",
+        "canonical": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-sans-medium.ttf",
+        "path": "files/331c8639d7598b2cde62a911a71db195e30cb655cd6bdf2e324a7e984955f907.ttf",
+        "bytes": 202460,
+        "sha256": "sha256:331c8639d7598b2cde62a911a71db195e30cb655cd6bdf2e324a7e984955f907"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-002/v002/asset.blend",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-002/v002/asset.blend",
+        "path": "files/4fcbdee97d011ee9743aa9db33e40d24bfc744f1c479e71a95a5eb2e5a842765.blend",
+        "bytes": 96977540,
+        "sha256": "sha256:4fcbdee97d011ee9743aa9db33e40d24bfc744f1c479e71a95a5eb2e5a842765"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-002/v002/asset.json",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-002/v002/asset.json",
+        "path": "files/bb8ed8f2e3b385c0f88ccb46867e88ac922858b3a1bbe6e2b4f34727af268e7a.json",
+        "bytes": 8136,
+        "sha256": "sha256:bb8ed8f2e3b385c0f88ccb46867e88ac922858b3a1bbe6e2b4f34727af268e7a"
+      },
+      {
+        "original": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-002/source-evidence.json",
+        "canonical": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-002/source-evidence.json",
+        "path": "files/544fd12957b94e2b1bcd2df62b38a84c64e9bad08dbb678ea9e39774e57c0585.json",
+        "bytes": 8763,
+        "sha256": "sha256:544fd12957b94e2b1bcd2df62b38a84c64e9bad08dbb678ea9e39774e57c0585"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Preproduction Stages 1-3/ideas/EU-002.md",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Preproduction Stages 1-3/ideas/EU-002.md",
+        "path": "files/fea0b469b79364f062bb1aa4bfde8c5b94507eefdcea8e36a103814e3e4c4937.md",
+        "bytes": 6578,
+        "sha256": "sha256:fea0b469b79364f062bb1aa4bfde8c5b94507eefdcea8e36a103814e3e4c4937"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/checks/EU-002-take01.json",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/checks/EU-002-take01.json",
+        "path": "files/aec771906b3ddea6cd6192c1832a71e692fceb7b3b7ae1aa20b2bdba6a184496.json",
+        "bytes": 10074,
+        "sha256": "sha256:aec771906b3ddea6cd6192c1832a71e692fceb7b3b7ae1aa20b2bdba6a184496"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/audio/EU-002-alden-take01.wav",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/audio/EU-002-alden-take01.wav",
+        "path": "files/ceba4694d3e670e3165c9e87277442cb1788020bacd038995aa89a7f7101bf38.wav",
+        "bytes": 1728798,
+        "sha256": "sha256:ceba4694d3e670e3165c9e87277442cb1788020bacd038995aa89a7f7101bf38"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-003/v002/asset.blend",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-003/v002/asset.blend",
+        "path": "files/b4882a20e21161207f1e788a6c84c55c69ddc00758f405cfa3aa4c0bdb26d362.blend",
+        "bytes": 4683848,
+        "sha256": "sha256:b4882a20e21161207f1e788a6c84c55c69ddc00758f405cfa3aa4c0bdb26d362"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-003/v002/asset.json",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-003/v002/asset.json",
+        "path": "files/7f9498e35d6e5cd6ef03ba85d0eba7db37bb995fe192a69def888300d5bb9655.json",
+        "bytes": 9541,
+        "sha256": "sha256:7f9498e35d6e5cd6ef03ba85d0eba7db37bb995fe192a69def888300d5bb9655"
+      },
+      {
+        "original": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-003/source-evidence.json",
+        "canonical": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-003/source-evidence.json",
+        "path": "files/59b69b9779a976a39689689c1be3eaabd6b4fc8006526f679492ec59b003fbba.json",
+        "bytes": 8566,
+        "sha256": "sha256:59b69b9779a976a39689689c1be3eaabd6b4fc8006526f679492ec59b003fbba"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Preproduction Stages 1-3/ideas/EU-003.md",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Preproduction Stages 1-3/ideas/EU-003.md",
+        "path": "files/e98e3b40c0d18f16653063ee17273346901e4fe613be0ce686a3caf67b52a737.md",
+        "bytes": 6552,
+        "sha256": "sha256:e98e3b40c0d18f16653063ee17273346901e4fe613be0ce686a3caf67b52a737"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/checks/EU-003-take01.json",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/checks/EU-003-take01.json",
+        "path": "files/c5506e23505f94e1ba6f487313239e329dff9c52a3d885c3e82b8b77c0b31fd2.json",
+        "bytes": 9795,
+        "sha256": "sha256:c5506e23505f94e1ba6f487313239e329dff9c52a3d885c3e82b8b77c0b31fd2"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-003/v002/controls.json",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-003/v002/controls.json",
+        "path": "files/bc59f0ab9fa01971cdc626a161998393187bc9306be101a86e388296f234bd01.json",
+        "bytes": 2444,
+        "sha256": "sha256:bc59f0ab9fa01971cdc626a161998393187bc9306be101a86e388296f234bd01"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/audio/EU-003-alden-take01.wav",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/audio/EU-003-alden-take01.wav",
+        "path": "files/8f0efa34a0785d898e672e0549ad8c9593124380128657b98c51e0fd531d220a.wav",
+        "bytes": 1728798,
+        "sha256": "sha256:8f0efa34a0785d898e672e0549ad8c9593124380128657b98c51e0fd531d220a"
+      },
+      {
+        "original": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v4/EU-004/asset-camera.blend",
+        "canonical": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v4/EU-004/asset-camera.blend",
+        "path": "files/322587868049c245052635eb0c58db3a09e5dbf16ff8fe34efca6d1ffe2de593.blend",
+        "bytes": 2014123,
+        "sha256": "sha256:322587868049c245052635eb0c58db3a09e5dbf16ff8fe34efca6d1ffe2de593"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-004/v002/asset.json",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-004/v002/asset.json",
+        "path": "files/b924a8e0e4e9bff6133ed5c1534b4d3ac0d8d05128bcb374816b1738d1c750a4.json",
+        "bytes": 7416,
+        "sha256": "sha256:b924a8e0e4e9bff6133ed5c1534b4d3ac0d8d05128bcb374816b1738d1c750a4"
+      },
+      {
+        "original": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-004/source-evidence.json",
+        "canonical": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-004/source-evidence.json",
+        "path": "files/0fe26c4f0e11b7ac5650fed1c7223d8ae05d1cbf649fd1c106165e560fb8e664.json",
+        "bytes": 8071,
+        "sha256": "sha256:0fe26c4f0e11b7ac5650fed1c7223d8ae05d1cbf649fd1c106165e560fb8e664"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Preproduction Stages 1-3/ideas/EU-004.md",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Preproduction Stages 1-3/ideas/EU-004.md",
+        "path": "files/1ae9c24b3fe43004d7f9998a3d03bfba849e09a2a7d557975a5680e85b439dbf.md",
+        "bytes": 6122,
+        "sha256": "sha256:1ae9c24b3fe43004d7f9998a3d03bfba849e09a2a7d557975a5680e85b439dbf"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/checks/EU-004-take01.json",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/checks/EU-004-take01.json",
+        "path": "files/be727d4c96017a47db5029b25c1f41c142d0783c28f13094f56f430db98b5090.json",
+        "bytes": 10291,
+        "sha256": "sha256:be727d4c96017a47db5029b25c1f41c142d0783c28f13094f56f430db98b5090"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-004/v002/asset.blend",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-004/v002/asset.blend",
+        "path": "files/668cc570be38d9fb933b89be70191887be1fd43720b5c384f03a11a6c749bbd3.blend",
+        "bytes": 2015637,
+        "sha256": "sha256:668cc570be38d9fb933b89be70191887be1fd43720b5c384f03a11a6c749bbd3"
+      },
+      {
+        "original": "/private/tmp/still-shift-ms3-holds59-build-cameras1.json",
+        "canonical": "/private/tmp/still-shift-ms3-holds59-build-cameras1.json",
+        "path": "files/05044ef4d01a2273b2a0a415147521bc7964ecb875c01033a670a3a6c992e4bc.json",
+        "bytes": 1141,
+        "sha256": "sha256:05044ef4d01a2273b2a0a415147521bc7964ecb875c01033a670a3a6c992e4bc"
+      },
+      {
+        "original": "/private/tmp/still-shift-ms3-holds59-camera-fit3.json",
+        "canonical": "/private/tmp/still-shift-ms3-holds59-camera-fit3.json",
+        "path": "files/7cd7826d596125a204d721f1386697e6a4ed539923e67424c8131cf9f4b75092.json",
+        "bytes": 9108,
+        "sha256": "sha256:7cd7826d596125a204d721f1386697e6a4ed539923e67424c8131cf9f4b75092"
+      },
+      {
+        "original": "/private/tmp/still-shift-ms3-holds59-EU-004-camera-guard5.json",
+        "canonical": "/private/tmp/still-shift-ms3-holds59-EU-004-camera-guard5.json",
+        "path": "files/7df8014d4456c01b04f8e90dabf1e36ab4597980e9ca6c0e30a5327551970f03.json",
+        "bytes": 5413,
+        "sha256": "sha256:7df8014d4456c01b04f8e90dabf1e36ab4597980e9ca6c0e30a5327551970f03"
+      },
+      {
+        "original": "/private/tmp/still-shift-ms3-holds59-scout1.json",
+        "canonical": "/private/tmp/still-shift-ms3-holds59-scout1.json",
+        "path": "files/353d2d89bc9324efc35b6303f67af3e990ffeeb5b79cd242286b8c266bea9828.json",
+        "bytes": 10994,
+        "sha256": "sha256:353d2d89bc9324efc35b6303f67af3e990ffeeb5b79cd242286b8c266bea9828"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/audio/EU-004-alden-take01.wav",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/audio/EU-004-alden-take01.wav",
+        "path": "files/f1ff76a8423c8b08656771d2aa3d0b97a9bcf9abeff7afd5d74410205d479fe3.wav",
+        "bytes": 1919310,
+        "sha256": "sha256:f1ff76a8423c8b08656771d2aa3d0b97a9bcf9abeff7afd5d74410205d479fe3"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-005/v003/asset.blend",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-005/v003/asset.blend",
+        "path": "files/d14bc1d7ba6a66f7fbcd3e065e79c32fe14da9d9105fde2fbd37a4336c2b7dae.blend",
+        "bytes": 138567,
+        "sha256": "sha256:d14bc1d7ba6a66f7fbcd3e065e79c32fe14da9d9105fde2fbd37a4336c2b7dae"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-005/v003/asset.json",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-005/v003/asset.json",
+        "path": "files/9edb8dd34a17675820be5e61fc39fa92041370f40462d50cb4dc389c5a13b1bf.json",
+        "bytes": 9861,
+        "sha256": "sha256:9edb8dd34a17675820be5e61fc39fa92041370f40462d50cb4dc389c5a13b1bf"
+      },
+      {
+        "original": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-005/source-evidence.json",
+        "canonical": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-005/source-evidence.json",
+        "path": "files/85918529add218399b4171b0c1fd6b45cf2d5a6a46816ea4e4008c083a0bbfb0.json",
+        "bytes": 7386,
+        "sha256": "sha256:85918529add218399b4171b0c1fd6b45cf2d5a6a46816ea4e4008c083a0bbfb0"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Preproduction Stages 1-3/ideas/EU-005.md",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Preproduction Stages 1-3/ideas/EU-005.md",
+        "path": "files/9c04ac7b128ce53588dd15ac19a5c89902c2b060d6d1c7ad287536a7b22bdda2.md",
+        "bytes": 5570,
+        "sha256": "sha256:9c04ac7b128ce53588dd15ac19a5c89902c2b060d6d1c7ad287536a7b22bdda2"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/checks/EU-005-take01.json",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/checks/EU-005-take01.json",
+        "path": "files/3da657f501dd9526b6f3b641c07a70aeb5cbbba2345a006b18f522838e4fcefe.json",
+        "bytes": 10315,
+        "sha256": "sha256:3da657f501dd9526b6f3b641c07a70aeb5cbbba2345a006b18f522838e4fcefe"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-005/v003/source/control_contract.py",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-005/v003/source/control_contract.py",
+        "path": "files/d8b8aa09be8aa21d584e94ca4451e875b84580a679b69cfb082aff0285869072.py",
+        "bytes": 4126,
+        "sha256": "sha256:d8b8aa09be8aa21d584e94ca4451e875b84580a679b69cfb082aff0285869072"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/audio/EU-005-alden-take01.wav",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/audio/EU-005-alden-take01.wav",
+        "path": "files/1fc6d74f08988af9e7eee7f525e4e552113bea9a2a0e5df2a27259ca35e1c24d.wav",
+        "bytes": 1757022,
+        "sha256": "sha256:1fc6d74f08988af9e7eee7f525e4e552113bea9a2a0e5df2a27259ca35e1c24d"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-006/v002/asset.blend",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-006/v002/asset.blend",
+        "path": "files/78baf6707008fd253ee7b2799e47e57722f73e9a72a792d345e90fb20f6764d5.blend",
+        "bytes": 1498620,
+        "sha256": "sha256:78baf6707008fd253ee7b2799e47e57722f73e9a72a792d345e90fb20f6764d5"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-006/v002/asset.json",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-006/v002/asset.json",
+        "path": "files/498ceb21de1f28fb1311dab3ccd17139029dd745932a6629f85f1cd0801aed3e.json",
+        "bytes": 19497,
+        "sha256": "sha256:498ceb21de1f28fb1311dab3ccd17139029dd745932a6629f85f1cd0801aed3e"
+      },
+      {
+        "original": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-006/source-evidence.json",
+        "canonical": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-006/source-evidence.json",
+        "path": "files/46fc4bd6016d24a18ca585c3bd6aea8a4efc244f872b6d9a884a62133aee13cb.json",
+        "bytes": 6979,
+        "sha256": "sha256:46fc4bd6016d24a18ca585c3bd6aea8a4efc244f872b6d9a884a62133aee13cb"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Preproduction Stages 1-3/ideas/EU-006.md",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Preproduction Stages 1-3/ideas/EU-006.md",
+        "path": "files/57227ca5909552dcea60e9a73651c5f4275e7b0ae3cb43fd948f8910cd718c91.md",
+        "bytes": 5324,
+        "sha256": "sha256:57227ca5909552dcea60e9a73651c5f4275e7b0ae3cb43fd948f8910cd718c91"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/checks/EU-006-take01.json",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/checks/EU-006-take01.json",
+        "path": "files/65b7012cf62fbb048d23e4cf500eb4cf4937b8df4df230f22b78feca7848bd98.json",
+        "bytes": 10473,
+        "sha256": "sha256:65b7012cf62fbb048d23e4cf500eb4cf4937b8df4df230f22b78feca7848bd98"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-006/v002/source/control_contract.py",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-006/v002/source/control_contract.py",
+        "path": "files/70b9a3154696ef3523c6ad65657fde6c0e8b8f7b5fb27d473107a6803f1aac9e.py",
+        "bytes": 3456,
+        "sha256": "sha256:70b9a3154696ef3523c6ad65657fde6c0e8b8f7b5fb27d473107a6803f1aac9e"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/audio/EU-006-alden-take01.wav",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/audio/EU-006-alden-take01.wav",
+        "path": "files/548b73c585568a670a2da061c75ab3f3fb935b00332be23291de3110b97b2af1.wav",
+        "bytes": 1862862,
+        "sha256": "sha256:548b73c585568a670a2da061c75ab3f3fb935b00332be23291de3110b97b2af1"
+      },
+      {
+        "original": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/repair-spoken-bend64-v2/EU-007/asset-arm-anchor.blend",
+        "canonical": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/repair-spoken-bend64-v2/EU-007/asset-arm-anchor.blend",
+        "path": "files/bc7ffbe4b8e629c80f5714a7b87ad679235d553d82f8b292c07da27307eb16b7.blend",
+        "bytes": 158911,
+        "sha256": "sha256:bc7ffbe4b8e629c80f5714a7b87ad679235d553d82f8b292c07da27307eb16b7"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-007/v002/asset.json",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-007/v002/asset.json",
+        "path": "files/0909c5becd6a68296962c3baac01f7f359d2cff8d081a1470f108d2ff6ca7b00.json",
+        "bytes": 30609,
+        "sha256": "sha256:0909c5becd6a68296962c3baac01f7f359d2cff8d081a1470f108d2ff6ca7b00"
+      },
+      {
+        "original": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-007/source-evidence.json",
+        "canonical": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-007/source-evidence.json",
+        "path": "files/084a647fbf96e1b8cbc6537d4de5dad930d34c452bb252e8c93c080f10f643c8.json",
+        "bytes": 6725,
+        "sha256": "sha256:084a647fbf96e1b8cbc6537d4de5dad930d34c452bb252e8c93c080f10f643c8"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Preproduction Stages 1-3/ideas/EU-007.md",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Preproduction Stages 1-3/ideas/EU-007.md",
+        "path": "files/ec8597c55100b37db9da738e55a1ed4761e5342cbad79ddda195e8a38429a30f.md",
+        "bytes": 5225,
+        "sha256": "sha256:ec8597c55100b37db9da738e55a1ed4761e5342cbad79ddda195e8a38429a30f"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/checks/EU-007-take01.json",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/checks/EU-007-take01.json",
+        "path": "files/5f8cf92a6f11f1e51f3eb919d3eadd9c3e2299ea7466da33008a740755cebad0.json",
+        "bytes": 11378,
+        "sha256": "sha256:5f8cf92a6f11f1e51f3eb919d3eadd9c3e2299ea7466da33008a740755cebad0"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-007/v002/source/control_contract.py",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-007/v002/source/control_contract.py",
+        "path": "files/4f261e922fef2aefb51163ada887004727b8ea876d2259c7ad6b8b3d5dd833ff.py",
+        "bytes": 2298,
+        "sha256": "sha256:4f261e922fef2aefb51163ada887004727b8ea876d2259c7ad6b8b3d5dd833ff"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/audio/EU-007-alden-take01.wav",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/audio/EU-007-alden-take01.wav",
+        "path": "files/ff5a3d3d72fadbbdb674598cfd2221362ef95a53910a60fa9c11df63056624f1.wav",
+        "bytes": 2081598,
+        "sha256": "sha256:ff5a3d3d72fadbbdb674598cfd2221362ef95a53910a60fa9c11df63056624f1"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-008/v002/asset.blend",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-008/v002/asset.blend",
+        "path": "files/d77e09c9022cb5e26a66a1083bccf3e95048b4e9e4ae3a6c3e7def498d441079.blend",
+        "bytes": 173445,
+        "sha256": "sha256:d77e09c9022cb5e26a66a1083bccf3e95048b4e9e4ae3a6c3e7def498d441079"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-008/v002/asset.json",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-008/v002/asset.json",
+        "path": "files/d8543b1e580e4429cc5a04fa95ae984843d6b0b9ad03b94b772702406bd729a0.json",
+        "bytes": 21286,
+        "sha256": "sha256:d8543b1e580e4429cc5a04fa95ae984843d6b0b9ad03b94b772702406bd729a0"
+      },
+      {
+        "original": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-008/source-evidence.json",
+        "canonical": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-008/source-evidence.json",
+        "path": "files/60335550f3fa9c16b73c46422e91bee5caf1eb0afbc1cc52d02c3a3424135aa9.json",
+        "bytes": 7801,
+        "sha256": "sha256:60335550f3fa9c16b73c46422e91bee5caf1eb0afbc1cc52d02c3a3424135aa9"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Preproduction Stages 1-3/ideas/EU-008.md",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Preproduction Stages 1-3/ideas/EU-008.md",
+        "path": "files/bbf044cf410e96579771b9bb79aa11f61b0f7308ddb736195b17ab9c4b63dfbb.md",
+        "bytes": 5991,
+        "sha256": "sha256:bbf044cf410e96579771b9bb79aa11f61b0f7308ddb736195b17ab9c4b63dfbb"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/checks/EU-008-take01.json",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/checks/EU-008-take01.json",
+        "path": "files/18384cd9749058a69c374fbe0c777b757a945123e6c2e3f458a1ad2397d31a60.json",
+        "bytes": 10660,
+        "sha256": "sha256:18384cd9749058a69c374fbe0c777b757a945123e6c2e3f458a1ad2397d31a60"
+      },
+      {
+        "original": "/private/tmp/still-shift-ms3-holds59-EU008-projection-calibrate1.json",
+        "canonical": "/private/tmp/still-shift-ms3-holds59-EU008-projection-calibrate1.json",
+        "path": "files/2efe14a88e9994d3a805867ba43738101347cb52f1e178f37b60422e9e27f1b7.json",
+        "bytes": 758,
+        "sha256": "sha256:2efe14a88e9994d3a805867ba43738101347cb52f1e178f37b60422e9e27f1b7"
+      },
+      {
+        "original": "/private/tmp/still-shift-ms3-holds59-EU-008-camera-guard6.json",
+        "canonical": "/private/tmp/still-shift-ms3-holds59-EU-008-camera-guard6.json",
+        "path": "files/1da433719c63e5c38ecf4cb7f8fbc3abbb723db8d2196b58b99ecc32034554ad.json",
+        "bytes": 5396,
+        "sha256": "sha256:1da433719c63e5c38ecf4cb7f8fbc3abbb723db8d2196b58b99ecc32034554ad"
+      },
+      {
+        "original": "/private/tmp/still-shift-ms3-holds59-scout2.json",
+        "canonical": "/private/tmp/still-shift-ms3-holds59-scout2.json",
+        "path": "files/8ef1ca917171e6a37483dbba5b2ab5ac45776df45c5a6012bc7aa3fc8c57b7fb.json",
+        "bytes": 3306,
+        "sha256": "sha256:8ef1ca917171e6a37483dbba5b2ab5ac45776df45c5a6012bc7aa3fc8c57b7fb"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/audio/EU-008-alden-take01.wav",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/audio/EU-008-alden-take01.wav",
+        "path": "files/e43e1132d3ad6eb4846008a5c47e804c84921c3b15024dd3f9c94c9d80d3a636.wav",
+        "bytes": 1700574,
+        "sha256": "sha256:e43e1132d3ad6eb4846008a5c47e804c84921c3b15024dd3f9c94c9d80d3a636"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-009/v002/asset.blend",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-009/v002/asset.blend",
+        "path": "files/2b8fde570293006dcb982db13693694479de368323229f8608df41d6d0936dcc.blend",
+        "bytes": 578761,
+        "sha256": "sha256:2b8fde570293006dcb982db13693694479de368323229f8608df41d6d0936dcc"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-009/v002/asset.json",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-009/v002/asset.json",
+        "path": "files/25eebd8e30e2011e39de317e80ea2b80c4cd7612aaa5f72c2055fc93b3dbb358.json",
+        "bytes": 16141,
+        "sha256": "sha256:25eebd8e30e2011e39de317e80ea2b80c4cd7612aaa5f72c2055fc93b3dbb358"
+      },
+      {
+        "original": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-009/source-evidence.json",
+        "canonical": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-009/source-evidence.json",
+        "path": "files/8e0efd5ed3f29f4b8bc088a7aca71b47958fcea8901f25d70b961e56ff1d3b42.json",
+        "bytes": 6689,
+        "sha256": "sha256:8e0efd5ed3f29f4b8bc088a7aca71b47958fcea8901f25d70b961e56ff1d3b42"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Preproduction Stages 1-3/ideas/EU-009.md",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Preproduction Stages 1-3/ideas/EU-009.md",
+        "path": "files/0694da97a5283f1272a976d87bff71510495f04a2714c3daf4a984780c7bfca7.md",
+        "bytes": 5225,
+        "sha256": "sha256:0694da97a5283f1272a976d87bff71510495f04a2714c3daf4a984780c7bfca7"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/checks/EU-009-take01.json",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/checks/EU-009-take01.json",
+        "path": "files/9260f7a2e207ba9625df20fe5eb0b670e4d8a97aa52304ebd52bca79a07abc95.json",
+        "bytes": 10761,
+        "sha256": "sha256:9260f7a2e207ba9625df20fe5eb0b670e4d8a97aa52304ebd52bca79a07abc95"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-009/v002/source/control_contract.py",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-009/v002/source/control_contract.py",
+        "path": "files/32f3e776ab5b56e1900ecb84aa62b31cefb8aa9519c393a7e7d7ba324d7a63af.py",
+        "bytes": 3608,
+        "sha256": "sha256:32f3e776ab5b56e1900ecb84aa62b31cefb8aa9519c393a7e7d7ba324d7a63af"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/audio/EU-009-alden-take01.wav",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/audio/EU-009-alden-take01.wav",
+        "path": "files/b1f92b9fa353f9a23a83b9fd4a0f0fb1d1ca2b16f026529436542be56aee6388.wav",
+        "bytes": 1749966,
+        "sha256": "sha256:b1f92b9fa353f9a23a83b9fd4a0f0fb1d1ca2b16f026529436542be56aee6388"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-010/v002/asset.blend",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-010/v002/asset.blend",
+        "path": "files/6a7dfc3a60d84c81beb182c4fa14d606cb03ec0a54113a30d0a5ae438f47e838.blend",
+        "bytes": 3029224,
+        "sha256": "sha256:6a7dfc3a60d84c81beb182c4fa14d606cb03ec0a54113a30d0a5ae438f47e838"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-010/v002/asset.json",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/models/OBJ-EU-010/v002/asset.json",
+        "path": "files/9ba375e27d7d1218e2f475b2f2773eecb4df3e28aa0e32746705cae3d9804434.json",
+        "bytes": 29611,
+        "sha256": "sha256:9ba375e27d7d1218e2f475b2f2773eecb4df3e28aa0e32746705cae3d9804434"
+      },
+      {
+        "original": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-010/source-evidence.json",
+        "canonical": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-010/source-evidence.json",
+        "path": "files/ccca869bc10cc4377f6fb2c1be272798c006bbcbaa1ae242257877f8a06057ad.json",
+        "bytes": 7090,
+        "sha256": "sha256:ccca869bc10cc4377f6fb2c1be272798c006bbcbaa1ae242257877f8a06057ad"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Preproduction Stages 1-3/ideas/EU-010.md",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Preproduction Stages 1-3/ideas/EU-010.md",
+        "path": "files/0fdeeb11f9d512b062b0e7e6ec93cd778c9d018b24b06259b7b3c92b73b0ec3f.md",
+        "bytes": 5458,
+        "sha256": "sha256:0fdeeb11f9d512b062b0e7e6ec93cd778c9d018b24b06259b7b3c92b73b0ec3f"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/checks/EU-010-take01.json",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/checks/EU-010-take01.json",
+        "path": "files/84e476b4f7c1fad7aa97cf8b8e31b0209e8bdb0198a1ec5f487d0b1ae686cfc0.json",
+        "bytes": 10530,
+        "sha256": "sha256:84e476b4f7c1fad7aa97cf8b8e31b0209e8bdb0198a1ec5f487d0b1ae686cfc0"
+      },
+      {
+        "original": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/audio/EU-010-alden-take01.wav",
+        "canonical": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/EU001-035 Alden Eleven v4 Narration v001/audio/EU-010-alden-take01.wav",
+        "path": "files/702548703c6de1146b4c384d9de5eedc8300d09bdaf621194085aa82e1b8d338.wav",
+        "bytes": 1841694,
+        "sha256": "sha256:702548703c6de1146b4c384d9de5eedc8300d09bdaf621194085aa82e1b8d338"
+      }
+    ],
+    "copiedFiles": 75,
+    "copiedBytes": 130306267,
+    "rows": [
+      {
+        "id": "EU-001",
+        "sourceDirectory": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-001",
+        "relativePathsOnly": true,
+        "allControlsCamerasSpeechClocksExact": true,
+        "wholeOriginalNarration": true
+      },
+      {
+        "id": "EU-002",
+        "sourceDirectory": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/repair-canonical66/EU-002",
+        "relativePathsOnly": true,
+        "allControlsCamerasSpeechClocksExact": true,
+        "wholeOriginalNarration": true
+      },
+      {
+        "id": "EU-003",
+        "sourceDirectory": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-003",
+        "relativePathsOnly": true,
+        "allControlsCamerasSpeechClocksExact": true,
+        "wholeOriginalNarration": true
+      },
+      {
+        "id": "EU-004",
+        "sourceDirectory": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-004",
+        "relativePathsOnly": true,
+        "allControlsCamerasSpeechClocksExact": true,
+        "wholeOriginalNarration": true
+      },
+      {
+        "id": "EU-005",
+        "sourceDirectory": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-005",
+        "relativePathsOnly": true,
+        "allControlsCamerasSpeechClocksExact": true,
+        "wholeOriginalNarration": true
+      },
+      {
+        "id": "EU-006",
+        "sourceDirectory": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-006",
+        "relativePathsOnly": true,
+        "allControlsCamerasSpeechClocksExact": true,
+        "wholeOriginalNarration": true
+      },
+      {
+        "id": "EU-007",
+        "sourceDirectory": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/repair-canonical66/EU-007",
+        "relativePathsOnly": true,
+        "allControlsCamerasSpeechClocksExact": true,
+        "wholeOriginalNarration": true
+      },
+      {
+        "id": "EU-008",
+        "sourceDirectory": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-008",
+        "relativePathsOnly": true,
+        "allControlsCamerasSpeechClocksExact": true,
+        "wholeOriginalNarration": true
+      },
+      {
+        "id": "EU-009",
+        "sourceDirectory": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-009",
+        "relativePathsOnly": true,
+        "allControlsCamerasSpeechClocksExact": true,
+        "wholeOriginalNarration": true
+      },
+      {
+        "id": "EU-010",
+        "sourceDirectory": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v6/EU-010",
+        "relativePathsOnly": true,
+        "allControlsCamerasSpeechClocksExact": true,
+        "wholeOriginalNarration": true
+      }
+    ],
+    "runtimeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+    "requiredSourceCommit": "4b58f49be3841b004260e3bfa5650644a427479b",
+    "sourceCodeIncluded": false,
+    "scope": "Private portable data inputs only; experimental MS3 implementation at required source commit still needed. All selected payload bytes exact, input documents path-adapted. No fresh render, whole motion/listening/contact or installed-package qualification."
+  },
+  "buildReceipt": {
+    "path": "/private/tmp/still-shift-ms3-portable67-build2.json",
+    "bytes": 41345,
+    "sha256": "sha256:f6d6c6e1640a7ed2491e819ad3aef17a498c9522feae2515d09783018ba0d532"
+  },
+  "buildScript": {
+    "path": "/private/tmp/still-shift-ms3-portable67-build2.py",
+    "bytes": 4670,
+    "sha256": "sha256:30b495c4a3e08e33e238b02ff0920c2536eebcfb78fa3cc5586e8d33bacede9f"
+  },
+  "originalAdmission": {
+    "path": "/private/tmp/still-shift-ms3-portable67-admit2.log",
+    "bytes": 1037,
+    "sha256": "sha256:41b5f65b02eb96b741fd46a381c67edbb331936df45e13e5aa5e5926ac05c345"
+  },
+  "relocatedAdmission": {
+    "path": "/private/tmp/still-shift-ms3-portable67-relocated-admit1.log",
+    "bytes": 1069,
+    "sha256": "sha256:63e9c2f6e2ef59bc52cf90666d0b0e44fd68bcf836cfb5f976513255655d5265"
+  },
+  "relocation": {
+    "status": "passed-original-and-relocated-fresh-process-native-input-admission",
+    "originalRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten67-v2",
+    "relocatedRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten67-relocated",
+    "queueObjectsExact": true,
+    "episodes": 10,
+    "frames": 6181,
+    "uniqueDeclaredInputFiles": 105,
+    "allDeclaredPathsInsideBundle": true,
+    "allDeclaredPinsExact": true,
+    "newNativeRenders": 0,
+    "installedPackageReview": "UNREVIEWED",
+    "wholeContactListening": "UNREVIEWED",
+    "retainedFailedPreparation": "First helper required optional font byte field and failed; partial first directory and failed admission log retained. Corrected v2 verifies provided hashes and optional byte lengths.",
+    "scope": "Portable data input admission only, experimental MS3 source runtime still required. Fresh Blender render, playback/QA, installed consumer handoff and acceptance not inferred."
+  },
+  "relocationReceipt": {
+    "path": "/private/tmp/still-shift-ms3-portable67-relocated1.json",
+    "bytes": 1057,
+    "sha256": "sha256:c1d206e148726feae56fe2341d877222827b71744df08c7ce71fb9eca544f3ec"
+  },
+  "originalManifest": {
+    "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten67-v2/queue.json",
+    "bytes": 32167,
+    "sha256": "sha256:90d9f57f13354725ab407d49dc1606f83fb62e38166a1c9a2ecc74f8d96f64cd"
+  },
+  "relocatedManifest": {
+    "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten67-relocated/queue-readback.json",
+    "bytes": 32167,
+    "sha256": "sha256:90d9f57f13354725ab407d49dc1606f83fb62e38166a1c9a2ecc74f8d96f64cd"
+  },
+  "failedAdmissionRetained": {
+    "path": "/private/tmp/still-shift-ms3-portable67-admit1.log",
+    "bytes": 294,
+    "sha256": "sha256:a7434449b852e5712de5ee1121afd750c9320848e49942eba671d8ab3e09e2a9"
+  },
+  "noFreshRenders": true,
+  "sourceCodeIncluded": false,
+  "installedConsumerReview": "UNREVIEWED",
+  "wholeMotionListening": "UNREVIEWED",
+  "acceptedPilot": 0,
+  "publication": false
+}

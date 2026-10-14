@@ -1,7 +1,7 @@
 {
   "schemaVersion": "mechanism-ms3-first-ten-buckle-review-1",
   "date": "2026-10-15",
-  "status": "guarded-correction-canonical-recovery-running",
+  "status": "corrected-export-sealed-scoped-encoded-phone-check-passed",
   "episode": "EU-007",
   "episodeSelection": "Actual Everyday Unlocked first ten; existing complete Alden Eleven v4 at1x",
   "originalTimingCandidate": {
@@ -705,7 +705,7 @@
   "canonicalRecovery": {
     "id": "actual-first-ten-scoped-corrections66",
     "episodes": ["EU-002", "EU-007"],
-    "execution": "run-live-report-resume-pending",
+    "execution": "terminal-run-report-resume-passed",
     "manifest": {
       "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-corrections66.json",
       "bytes": 6997,
@@ -758,6 +758,135 @@
       }
     ],
     "scope": "Separate bounded two-episode correction queue, native builder creates exact sorted complete inputs. All ten baseline products and artifact bytes plus original/canceled/failed journals guarded. Canonical model bytes equal original; external objects compatibility paths remain retired.",
+    "wholeReviews": "UNREVIEWED",
+    "acceptedPilot": 0,
+    "terminalLifecycleReceipt": {
+      "path": "/private/tmp/still-shift-ms3-corrections66-whole1-receipt.json",
+      "bytes": 1557,
+      "sha256": "sha256:d17858832379550d69ae760f5f65c9f49a606da8737fbf316edcebc8232c132f"
+    }
+  },
+  "correctedExport": {
+    "status": "sealed-scoped-corrected-export",
+    "productAudit": {
+      "id": "EU-007",
+      "status": "passed-current-producer-bound-product-closure",
+      "producerBoundArtifactsVerified": 10,
+      "product": {
+        "path": "products/EU-007-4618effe0d5225c6-1.json",
+        "bytes": 9928,
+        "sha256": "sha256:91fa8800b82461d9ed49d48025a6b3ef7f2cdde5546b269356841bbd9ea04cf5"
+      },
+      "binding": {
+        "inputSha256": "sha256:4618effe0d5225c6b5a0a5e1162c26240dac3047328a8a2c5c6a3bab14d9b610",
+        "outputSha256": "sha256:01a008b76eb7f357d3087d8478b43a2991908f9c80467abcf267fdd4afa61051",
+        "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      "frames": 708,
+      "previewErrors": 0,
+      "previewWarnings": 36,
+      "declaredPhysicalHolds": 21,
+      "encodedEvidenceImages": 58,
+      "wholeReviews": "UNREVIEWED",
+      "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+    },
+    "productAuditPin": {
+      "path": "/private/tmp/still-shift-ms3-corrections66-EU007-product-audit1.json",
+      "bytes": 980,
+      "sha256": "sha256:47f1e442f8af8ed5ab42b80643bd2cf31482cd3e6050a6c66a4bc1131c63dd13"
+    },
+    "completeEncodedAuditPin": {
+      "path": "/private/tmp/still-shift-ms3-corrections66-EU-007-encoded1.json",
+      "bytes": 6101,
+      "sha256": "sha256:c19568a2aafdeb6e94af6e0836029937f2c32f13705caaf76559d8b91db6845d"
+    },
+    "frames": 708,
+    "originalWholeAACReferenceParity": true,
+    "changedEncodedFrameRangesInclusive": [
+      [164, 426],
+      [502, 707]
+    ],
+    "actualEncodedPhoneReview": {
+      "status": "selected-encoded-phone-stills-inspected",
+      "rows": [
+        {
+          "id": "EU-007",
+          "frames": [
+            0, 196, 229, 253, 264, 334, 342, 359, 427, 460, 501, 502, 526, 565,
+            610, 611, 674, 707
+          ],
+          "sheets": [
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-corrections66/EU-007/phone-review1/sheet-0.png",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-corrections66/EU-007/phone-review1/sheet-1.png",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-corrections66/EU-007/phone-review1/sheet-2.png"
+          ],
+          "movieSha256": "sha256:01a008b76eb7f357d3087d8478b43a2991908f9c80467abcf267fdd4afa61051",
+          "scope": "Actual retained encoded phone stills; static inspection pending, no full playback/listening approval."
+        }
+      ],
+      "actualSheetsViewed": 3,
+      "sheetPins": [
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-corrections66/EU-007/phone-review1/sheet-0.png",
+          "bytes": 275439,
+          "sha256": "sha256:ccbe2027d165dec702643b1fbe3df16520e0a2210ce3d24a349c4f01d0a9a31d"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-corrections66/EU-007/phone-review1/sheet-1.png",
+          "bytes": 425255,
+          "sha256": "sha256:51839588fe01fd94a443d649c27cef25e167de14bfe2a97adfc67d0b422c9788"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-corrections66/EU-007/phone-review1/sheet-2.png",
+          "bytes": 107197,
+          "sha256": "sha256:819cd143cb1b3679337be75c225ca2d11fb052f3fac49d8cff28b7274150d9cb"
+        }
+      ],
+      "findings": "Actual encoded229/253 show inward arm bend during the spoken claim;334/342 show outward recovery. Arm leaders visibly land on the cyan arm at264/334/342/359/502/526/565/610. All selected caption/part labels readable. Static selected review only; no full motion/contact/listening acceptance."
+    },
+    "independentCompleteQAReview": {
+      "status": "passed-corrected-spoken-bend-state",
+      "binding": {
+        "inputSha256": "sha256:4618effe0d5225c6b5a0a5e1162c26240dac3047328a8a2c5c6a3bab14d9b610",
+        "outputSha256": "sha256:01a008b76eb7f357d3087d8478b43a2991908f9c80467abcf267fdd4afa61051",
+        "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      "failures": 0,
+      "groups": 0,
+      "artifacts": [
+        {
+          "path": "independent-spoken-review66/EU-007/qa-program.json",
+          "bytes": 8018,
+          "sha256": "sha256:9a14ed68e2da6cd9848fe71a454982f0a150d833af0feb99b810a31bcde6c6d7"
+        },
+        {
+          "path": "independent-spoken-review66/EU-007/qa-warnings.json",
+          "bytes": 473,
+          "sha256": "sha256:2af4fc7affcf69f1a86debf425109ef6ad1492be7a4a545c8075fa1f41f94eb7"
+        },
+        {
+          "path": "independent-spoken-review66/EU-007/qa-warning-groups.json",
+          "bytes": 676,
+          "sha256": "sha256:ac8d6a0ffbdcecd08de25310dc53b095acc7e350b1c80436304ff00d2851f443"
+        },
+        {
+          "path": "independent-spoken-review66/EU-007/qa-facts.json",
+          "bytes": 380315,
+          "sha256": "sha256:a349daa312b50af91874bf15600663be22812c6a42d559a3ad37233fa0fa6cf4"
+        }
+      ],
+      "scope": "Source-word-derived sampled control/local-mesh deformation assertions over229\u2013254. Corrected delivery seal/journal unchanged; no whole listening/contact acceptance.",
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-corrections66-EU007-independent-qa1.json",
+        "bytes": 1458,
+        "sha256": "sha256:a3977553447e04ce9e8d7072b7ac868b8545cb443e6e6dbdd87031894864f18a"
+      },
+      "spokenProgramExactAgainstRetained75FailureReview": true,
+      "spokenProgramCanonicalSha256": "sha256:e5f3420ca379df32fe1540a5b7f13fb3cc35f86db43d76daa590beddeaf2fbb5",
+      "qualification": "Same spoken interval and three numeric/deformation assertions. Original133-frame settled phase starts294; corrected68-frame phase starts359 to match intentionally delayed recovery. This phase-clock revision is explicit, not a weakened spoken assertion."
+    },
     "wholeReviews": "UNREVIEWED",
     "acceptedPilot": 0
   }

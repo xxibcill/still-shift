@@ -46,46 +46,40 @@ still hold before relying on them.
 - **MS3 in progress (2026-10-15):** `codex/mechanism-ms3`,
   [draft PR #58](https://github.com/xxibcill/still-shift/pull/58) targets main.
   Actual Everyday Unlocked EU001–EU010 use complete existing Alden takes at1×;
-  obsolete missing-seven intake closed. Cohort61 run5208.05s/report382.27s/
-  resume388.31s finish actual0, all ten current-source products seal on attempt1.
-  Independent full RGBA/original AAC checks pass all ten; zipper/latch compare
-  against prior camera-repaired output, eight against repaired H3. All6,181
-  native frames/24,724 mapped pins/4,257 active-label frames verify. Scoped preview
-  QA0 errors/340 warnings/537 images is not whole acceptance.
-  Source4b58f49b/runtimefc4cc2ae/native profile1dd0 remain held exact; memory fix
-  fast4,594/runtime271/integration324/depth14/browser smoke passed previously.
-  **Located review defects:** EU002 changes view during return; EU007 stays
-  unbent during spoken inward-bend claim (75 independent located failures), and
-  its old leader points outside the named arm. Preliminary guard failure and
-  visually ambiguous root-pointer candidate retained/rejected.
-  **Scoped repairs:** initial revision1 fails: hand-authored EU002 dependency
-  ordering differs, then original `objects/` aliases retire during verification.
-  Seven neighbor rows fail missing files and retain prior products. No rollback.
-  All28 moved dependencies rehash exact under canonical `models/` paths.
-  Native builder now creates separate EU002/EU007 recovery cohort66, wrapper53999,
-  with unchanged runtime/profile and guarded all-ten prior artifacts/journals.
-  Exact preparation guards pass588/708 frames; buckle
-  private annotation-only derivative preserves all708 physical part dictionaries
-  and follows evaluated surface exactly across272 active label frames. Six tie/
-  nine final buckle native phone frames actually inspected. Corrected cable-tie
-  native588 frames/2,352 mapped pins pass;48 new/540 cached states. Another19
-  binder/17 can-tab encoded phone frames are actually inspected on six sheets;
-  readable labels and selected paper/attachment/hinge witnesses recorded.
-  All prior product/media
-  bytes and original/canceled/failed journals
-  must remain exact; originals/history/assets/pointers preserved. Full corrected
-  encoded review, continuous/listening/mechanical/factual acceptance, portable
-  handoff/effort/fault/final gates remain open; accepted0/10, effort tokens null.
-  **Corrected EU002 sealed:**588 full RGBA/original AAC frames and ten product
-  artifact pins pass; QA0 errors/27 warnings/44 images. Actual15 encoded phone
-  frames inspected;268/269 stays in the same view through319 return. Encoded
-  changes261–381 extend16 frames outside native269–373; no outside equality claim.
-  Corrected buckle now exports; both1,296 native frames/5,184 mapped pins verify,
-  plus25 actual spoken controls/50 changed arm meshes/272 in-frame pointers.
+  obsolete missing-seven intake closed. Cohort61 revision0 run5208.05s/report382.27s/
+  resume388.31s terminal0, all ten seal. Independent6,181 full encoded frames/
+  original AAC and24,724 native pins pass; scope0 preview errors/340 warnings/
+  537 images remains separate from whole acceptance.
+  **Corrected tie/buckle:** located camera jump and75 spoken bend failures plus
+  foreign arm pointer repaired. Initial revision1 fails hand-authored dependency
+  order and then concurrent retirement of `objects/` aliases; failed rows/products
+  retained. All28 moved dependencies rehash exact at canonical `models/` paths.
+  Native builder creates bounded correction cohort66: run1201.69s/report82.64s/
+  resume82.60s terminal0, exact21 declared inputs and114 protected prior artifacts/
+  journals. Both corrected deliveries seal;1,296 full RGBA/original AAC frames,
+  20 product artifact pins and5,184 native pins verify. QA0 errors/63 warnings/
+  102 images. Actual15 tie/18 buckle encoded phone frames inspected. Same spoken
+  QA assertions now0 failures; all272 surface-pointer frames follow evaluated
+  arm exactly and708 physical dictionaries preserve original at matching controls.
+  NativeRGBA changes tie269–373/buckle164–358; encoded changes tie261–381/
+  buckle164–426,502–707 extend outside authored windows, retained without an
+  outside-equality claim. Earlier19 binder/17 can-tab phone frames inspected.
+  **Portable data inputs:**75 payloads/130,306,267B byte-exact,105 declared files
+  all within relocated bundle; fresh-process original/relocated admission and
+  ten queue rows/6,181 clocks match. Partial font-byte helper failure retained.
+  Source implementation not included; fresh render/installed consumer handoff
+  and whole review remain open. Composite review selection has eight retained
+  cohort61 products plus two corrections (0 preview errors/343 warnings/542 images).
+  Eight old bindings name retired paths and need canonical/portable rebinding
+  before a fresh all-ten lifecycle; no historical identity relabelled.
+  Frozen source4b58f49b/runtimefc4cc2ae/profile1dd0 unchanged; earlier fast4,594/
+  runtime271/integration324/depth14/browser smoke pass. Whole factual/mechanical/
+  normal-speed/listening, broader faults, complete portable/installed handoff,
+  paired effort and final release gates remain open; accepted0/10, tokens null.
   No new ElevenLabs spend, publication, merge or GitHub Actions.
-  [Terminal cohort and revision](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json),
-  [tie cut](./mechanism-shorts-ms3-first-ten-camera-cut-review-results.json),
-  [buckle timing/pointer](./mechanism-shorts-ms3-first-ten-buckle-review-results.json).
+  [Terminal outputs/repairs](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json),
+  [buckle review](./mechanism-shorts-ms3-first-ten-buckle-review-results.json),
+  [portable input evidence](./mechanism-shorts-ms3-first-ten-portable-input-results.json).
 
 - **MS2 software checkpoint delivered (2026-10-13):** `codex/mechanism-ms2`
   carries exact MS1N `bf30a253` ([PR #56](https://github.com/xxibcill/still-shift/pull/56));
@@ -272,6 +266,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Corrected tie/buckle deliveries and portable first-ten inputs
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` from `f0a4cba0`.
+- **Done:** two corrected deliveries, run/report/resume terminal0; complete1,296
+  encoded RGBA/original AAC,20 product pins and5,184 native pins independently
+  verify. Prior114 artifact/journal files stay exact. All33 selected corrected
+  encoded phone frames actually inspected; buckle same spoken QA now0 failures.
+- **Portable:**75 payloads/130,306,267B exact; fresh original/relocated native
+  admission yields identical ten rows/6,181 clocks,105 inputs inside bundle.
+- **Retained limits:** failed revision1/retired aliases, initial font-byte helper
+  failure and decoded changes outside authored windows remain explicit.
+- **Open:** eight baseline product bindings need canonical/portable rebinding;
+  whole AV/contact/factual review, fresh portable/installed handoff, broader faults,
+  paired effort/final gates and owner acceptance remain open; accepted0/10.
+- **Records:** [correction closure](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json),
+  [buckle repair](./mechanism-shorts-ms3-first-ten-buckle-review-results.json),
+  [portable inputs](./mechanism-shorts-ms3-first-ten-portable-input-results.json).
 
 ### 2026-10-15 — All ten current exports and source-timed buckle repairs
 

@@ -593,7 +593,7 @@
   },
   "liveInputFilesChanged": false,
   "newNativeRenders": 3,
-  "renderedRepair": "EU002 sealed in bounded canonical recovery; shared run/report/resume still live",
+  "renderedRepair": "EU002 sealed, correction cohort run/report/resume terminal0",
   "wholeReviews": "UNREVIEWED",
   "acceptedPilot": 0,
   "retainedPrePrepareAdapters": {
@@ -633,7 +633,7 @@
   "canonicalRecovery": {
     "id": "actual-first-ten-scoped-corrections66",
     "episodes": ["EU-002", "EU-007"],
-    "execution": "run-live-report-resume-pending",
+    "execution": "terminal-run-report-resume-passed",
     "manifest": {
       "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-corrections66.json",
       "bytes": 6997,
@@ -687,7 +687,12 @@
     ],
     "scope": "Separate bounded two-episode correction queue, native builder creates exact sorted complete inputs. All ten baseline products and artifact bytes plus original/canceled/failed journals guarded. Canonical model bytes equal original; external objects compatibility paths remain retired.",
     "wholeReviews": "UNREVIEWED",
-    "acceptedPilot": 0
+    "acceptedPilot": 0,
+    "terminalLifecycleReceipt": {
+      "path": "/private/tmp/still-shift-ms3-corrections66-whole1-receipt.json",
+      "bytes": 1557,
+      "sha256": "sha256:d17858832379550d69ae760f5f65c9f49a606da8737fbf316edcebc8232c132f"
+    }
   },
   "correctedExport": {
     "status": "sealed-scoped-corrected-export",
