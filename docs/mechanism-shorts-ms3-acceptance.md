@@ -266,3 +266,17 @@ at frames 268–319. A separate candidate retimes only `tighten`; pure admission
 passes, but repaired native capture, encoded event alignment and playback remain.
 The unchanged live cohort continues its remaining eight episodes. Whole reviews,
 resolved holds, broader faults/coverage/effort/final gates and pilot 0/10 remain open.
+
+[EU-003 HD evidence](./mechanism-shorts-ms3-first-ten-hd-EU003-results.json) verifies
+588 frames (58 fresh / 530 reused), complete original AAC reference parity and
+independent full RGBA decode through EOF. The first three deliveries total 1,786
+frames / 7,144 native file pins / 1,251 active labels. Seven encoded phone midpoints
+and the actual conventional-clothespeg patent figure are inspected. The close-up
+spring leader targets wood, 38.40 native pixels from visible cyan wire. A separate
+one-anchor repair selects the saved outer-leg seat (3.74px in the same calibrated
+pose) and passes pure source admission; actual captured query, encoded correction,
+whole-shot visibility and playback remain. Source text supports the conventional
+spring/arm construction; Fig7’s unstable over-insertion and added invention parts
+are excluded, and fabric/preload reasoning remains a qualified inference. EU-003
+QA retains 20 static errors / 17 warnings / 54 images. The remaining seven batch
+stages, whole reviews, broader faults/handoff/effort/final gates and pilot 0/10 stay open.

@@ -61,18 +61,23 @@ still hold before relying on them.
   [Scout repairs and rejected attempts](./mechanism-shorts-ms3-first-ten-annotation-scout-results.json).
   **Live batch:** `actual-first-ten-full-HD47`, private `output-all10-47` root.
   It preserves the old two-item trial and uses an exact native-cache copy.
-  EU-001 and EU-002 transactions complete 610 + 588 frames. Independent 4,792
-  pins / 873 active labels, complete original AAC reference parity and full encoded
-  RGBA decode to EOF pass. Five encoded phone midpoints per episode are inspected.
+  EU-001–EU-003 transactions complete 1,786 frames. Independent 7,144 pins /
+  1,251 active labels, original whole AAC parity and full encoded RGBA decode
+  through EOF pass. Five/five/seven encoded phone midpoints are inspected.
   QA remains failed: EU-001 has 21 static errors / 16 warnings / 59 images;
-  EU-002 has 17 static errors / 15 warnings / 50 images. Full remaining eight stages
-  and cohort report/resume are pending; no engine edits while the batch runs.
+  EU-002 has 17 / 15 / 50; EU-003 has 20 / 17 / 54. Remaining seven stages and
+  full cohort report/resume are pending; no engine edits while the batch runs.
   [EU-001 checks](./mechanism-shorts-ms3-first-ten-hd-progress-results.json),
-  [EU-002 checks and source diagram](./mechanism-shorts-ms3-first-ten-hd-EU002-results.json).
+  [EU-002 source/cues](./mechanism-shorts-ms3-first-ten-hd-EU002-results.json),
+  [EU-003 source/pointer](./mechanism-shorts-ms3-first-ten-hd-EU003-results.json).
   **Located repair:** EU-002 tongue settles at frame 170, before the return line
   at frames 268–319. Separate `inputs-cue-repair49` retimes only `tighten` to peak
   at 253 / settle at 319. Pure admission passes; capture/export/event/playback
   review remains pending. Live inputs and complete narration stay unchanged.
+  **Second repair:** EU-003 spring close-up leader ends on wood, 38.40 native px
+  from visible cyan wire. Separate `inputs-pointer-repair50` selects saved outer
+  leg seat (3.74px in the same captured pose); pure admission passes. Actual new
+  capture/encoded/whole-shot review remains; all other inputs stay exact.
   **Next:** remaining HD audits, cue repair and resolved holds/staging; native
   contact/phone/audio handoff; broader physical label/event/intersection/mount faults;
   whole factual/mechanical/glyph/continuous/listening and original E06/E10 reviews;
@@ -267,6 +272,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Verify clothespeg HD output and locate spring-pointer repair
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; held source `4679b8a8` stays exact.
+- **Done:** EU-003 / 588 frames, 58 fresh / 530 reused states. First three: 7,144
+  pins / 1,251 active labels, whole original AAC parity and 1,786 encoded frames
+  decoded through EOF. Seven EU-003 phone midpoints and original patent Fig7 viewed.
+- **Found:** Close-up spring pointer ends on wood, 38.40 native px from cyan wire.
+  Separate saved outer-leg guide is 3.74px from wire in the byte-identical calibrated
+  pose; one-anchor candidate passes pure admission. Live plans/audio/motion unchanged.
+- **Open:** Actual repaired capture/encode/whole-shot and playback; EU-003 QA retains
+  20 static errors / 17 warnings / 54 images. Remaining seven batch stages continue.
+- **Sources:** Conventional construction distinguished from unstable Fig7 state and
+  added invention parts; qualitative fabric-bias inference remains explicit.
+- **Records:** [EU-003 output/source/pointer](./mechanism-shorts-ms3-first-ten-hd-EU003-results.json).
+  Whole reviews / pilot 0/10 and routine effort null remain.
 
 ### 2026-10-14 — Verify cable-tie HD output and locate a tongue-return cue repair
 
