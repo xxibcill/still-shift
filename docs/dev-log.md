@@ -61,19 +61,25 @@ still hold before relying on them.
   every output frame using cached preview pixels and measured glyphs, compares
   captions/audio intervals against the pinned plan, and retains exact encoded PNGs.
   Default and numeric-plan products expose the current visual evidence in reports.
-  Source `d4f7e247`, runtime `2695` across 703 files, passes 4,578 fast tests in
-  456 files, 22 affected runtime checks in nine files and Python checks. All 2,773
-  inputs (122,130,025 bytes) remain exact after commit.
-  Actual EU-004 remains one 21.76-second, 653-frame, 320×568 engineering draft.
-  Default/numeric export/report/resume preserve complete decoded picture/audio and
-  all 664 originals with zero fresh Blender renders. Each keeps 13 frozen-pixel
-  errors and 47 encoded endpoint images; hold purpose/staging need review.
-  Four actual rendered seeds detect clipping, short hold, wrong copy and missing
-  source narration. The renderer's placeholder silence is independently confirmed.
-  A 319-pin/285-PNG-and-video-pixel audit passes across six cases; three PNGs viewed.
-  All failed software/helper runs remain recorded. Whole reviews remain unreviewed;
-  accepted coverage is 0/10 and paired routine effort is null.
-  **Next:** native hold/staging repairs and review evidence/handoff; HD plans/products for all ten
+  [All-ten native scouts](./mechanism-shorts-ms3-first-ten-scout-results.json)
+  bind whole existing recordings, exact-copy captions and object-specific controls
+  to 1080×1920/30fps plans (6,181 frames). Phone proofs exposed a producer bug:
+  clearing controller animation removed native derived drivers. Source `4999692b`
+  preserves them and unrelated clock channels, overriding only declared keyed
+  inputs in copied active/NLA actions. The actual native regression checks ten
+  forward/repeated/reverse states; all ten assets now show sampled geometric change.
+  Runtime `05c4`, native profile `8ad3`; 4,578 fast tests/456 files, 12 affected
+  native runtime checks/four files and Python checks pass. All 2,774 inputs
+  (122,135,610 bytes) remain exact after commit. The repaired scout uses 42 fresh
+  native renders for 50 mapped HD states; 200 mapped pins independently match and
+  all ten phone sheets were inspected. Cropped recognition/contact macros and
+  occluded causal parts remain located staging failures; full products have not run.
+  Prior rendered-QA zipper/default/numeric/fault proofs retain their `2695/a515`
+  bindings and complete picture/audio/capture evidence. They do not establish a
+  current producer pass. Failed preflights, rejected frozen scouts and the diagnostic
+  exception remain recorded. Whole reviews remain unreviewed; accepted coverage is
+  0/10 and paired routine effort is null.
+  **Next:** per-shot native framing/contact/cutaway repairs and review evidence/handoff; HD products for all ten
   with object-specific cues and factual bindings; broader faults/events/contact/coverage;
   whole factual/mechanical/glyph/continuous/listening and original E06/E10 reviews;
   comparable effort; final full software/benchmark/archive/installed-package gates.
@@ -266,6 +272,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Restore native drivers after actual first-ten phone scouts
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; source `4999692b`, from `5c464e6d`.
+- **Done:** All ten whole-recording HD plans and 50 selected native states;
+  repaired controller clearing that froze cable-tie/peg and can-tab derived motion.
+- **Verification:** Native active/NLA/shared-action/source-clock regression passes
+  ten forward/repeated/reverse states. Fast 4,578/456, affected runtime 12/four files
+  and Python checks pass; all 2,774 inputs/122,135,610 bytes remain exact.
+- **Actual:** 42 current native renders, 50 mapped HD states, 200 independent pins,
+  ten phone sheets inspected; original assets/recordings unchanged. Runtime `05c4`,
+  native profile `8ad3`; previous products retain their historical bindings.
+- **Retained:** Two failed preflights, frozen first scouts and a probe exception
+  that Blender reported as exit0; the corrected probe uses an explicit error exit.
+- **Next:** Framing/contact visibility repairs before whole captures; HD all-ten,
+  native handoff, remaining whole/fault/effort/final gates. Accepted coverage: 0/10.
+- **Records:** [First-ten scouts](./mechanism-shorts-ms3-first-ten-scout-results.json),
+  [native guide](./mechanism-blender-episode.md), [acceptance](./mechanism-shorts-ms3-acceptance.md).
 
 ### 2026-10-14 — Measure native rendered frames and retain encoded QA images
 

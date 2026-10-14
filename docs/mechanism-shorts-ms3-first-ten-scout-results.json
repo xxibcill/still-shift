@@ -1,0 +1,2122 @@
+{
+  "schemaVersion": "ms3-first-ten-native-scout-results-1",
+  "date": "2026-10-14",
+  "status": "all-ten-hd-plans-and-sampled-native-driver-repair-verified-staging-open",
+  "implementationCommit": "4999692bf1fa5d3411775d810f7f05ba65adbdad",
+  "runtimeCodeSha256": "sha256:05c41b069b3aa616607bafe35b2d25fcdcd8ee34a34516cbfacd03d29e25c1ea",
+  "nativeProfileSha256": "sha256:8ad353cfe20711d9562bf7bef9c92a48b7f80a179354237bb96d8af86b57fccd",
+  "receivingProfileChanged": false,
+  "ownerSelection": {
+    "id": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+    "selectedEpisodeIds": [
+      "EU-001",
+      "EU-002",
+      "EU-003",
+      "EU-004",
+      "EU-005",
+      "EU-006",
+      "EU-007",
+      "EU-008",
+      "EU-009",
+      "EU-010"
+    ],
+    "sha256": "sha256:8c5f378389d595c83fdcf3ff1cd41bd2d57d64b3a622c953013cffe39d001471"
+  },
+  "privateRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie",
+  "sourceInventory": {
+    "path": "/private/tmp/still-shift-ms3-blender43-inputs1.json",
+    "files": 2774,
+    "bytes": 122135610,
+    "postCommitCheck": "passed"
+  },
+  "inputAuthoring": {
+    "records": [
+      {
+        "path": "/private/tmp/still-shift-ms3-blender42-author1.py",
+        "bytes": 17339,
+        "sha256": "sha256:fcf1c220f90a454ce3091242818ef858925251166b829d66acdfdb972cda31b3"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-blender42-caption-refine2.py",
+        "bytes": 2424,
+        "sha256": "sha256:fff0ffc4edeeca6d93450df113833ce70b0abacb2d6990155edca7d7e22779ba"
+      }
+    ],
+    "exactExistingScriptCaptionChunks": true,
+    "newASROrSpeechGeneration": false,
+    "sourceRecordingTempo": 1,
+    "plannedHDFrames": 6181,
+    "preflight": {
+      "path": "/private/tmp/still-shift-ms3-blender42-preflight3.json",
+      "bytes": 34511,
+      "sha256": "sha256:01381b9909a3b5bcfc3dc58629ecb2b343ab0ddba102b184b848303f8db4b390"
+    },
+    "preRepairQueueStatus": "historical preflight queue on 2695/a515; no current whole product or final queue admission inferred",
+    "rangeAndCameraMembershipValidation": {
+      "path": "/private/tmp/still-shift-ms3-blender42-validate1.json",
+      "bytes": 2440,
+      "sha256": "sha256:e38cd9242074052ca2a0d9cc3a78f89718c13c2744eefc04355d1c80f2c32555"
+    },
+    "rangeValidationScope": "6181 requested planned states, existing source contract range/order prerequisites and camera/hide membership; no captured physical validation"
+  },
+  "diagnosis": {
+    "failure": "controller.animation_data_clear removed native derived-property drivers as well as keyed public inputs",
+    "actualSourcesAffected": [
+      "EU-002",
+      "EU-003",
+      "EU-010 derived flange/contact parts"
+    ],
+    "readOnlyRedGreenProbe": {
+      "path": "/private/tmp/still-shift-ms3-blender43-controller-probe2.json",
+      "bytes": 75788,
+      "sha256": "sha256:a41aa54ca099238581a8fc876eb345682f760d13caee9fd5e5f3d3f52d807ce2"
+    },
+    "repair": "Mute only declared public input F-curves in private copies of their active/NLA action slots. Preserve native drivers, unrelated source clocks and other users of shared actions. Reject a declared input that is itself driven.",
+    "regression": {
+      "fixture": "tests/fixtures/blender-driver-regression.py",
+      "argv": [
+        "/Applications/Blender.app/Contents/MacOS/Blender",
+        "--background",
+        "--factory-startup",
+        "--python-exit-code",
+        "1",
+        "--python",
+        "tests/fixtures/blender-driver-regression.py"
+      ],
+      "actualExitCode": 0,
+      "evaluatedForwardRepeatedReverseStates": 10,
+      "nativeRenders": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-blender43-regression1.log",
+        "bytes": 359,
+        "sha256": "sha256:735fc18a432956440354ff28445ef77d395f0cf2ee997625bc66fc1d605b8a79"
+      }
+    }
+  },
+  "softwareVerification": {
+    "gate": {
+      "path": "/private/tmp/still-shift-ms3-blender43-gate1-receipt.json",
+      "bytes": 1479,
+      "sha256": "sha256:df6227da9f090a4c69a5cb50e7d77793bed9f9371a1999d2270ef0ee53414c42"
+    },
+    "result": {
+      "steps": [
+        {
+          "name": "python",
+          "argv": [
+            "uv",
+            "run",
+            "--no-sync",
+            "ruff",
+            "check",
+            "packages/animation-engine/src/blender-capture-worker.py",
+            "tests/fixtures/blender-driver-regression.py"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 0.35155154089443386
+        },
+        {
+          "name": "python-format",
+          "argv": [
+            "uv",
+            "run",
+            "--no-sync",
+            "ruff",
+            "format",
+            "--check",
+            "packages/animation-engine/src/blender-capture-worker.py",
+            "tests/fixtures/blender-driver-regression.py"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 0.16025691688992083
+        },
+        {
+          "name": "fast",
+          "argv": ["pnpm", "check:fast"],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 135.67578749987297
+        },
+        {
+          "name": "runtime",
+          "argv": [
+            "pnpm",
+            "exec",
+            "vitest",
+            "run",
+            "tests/runtime/blender-production-cli.test.ts",
+            "tests/runtime/blender-episode-inputs.test.ts",
+            "tests/runtime/blender-production-backend-admission.test.ts",
+            "tests/runtime/blender-capture-admission.test.ts",
+            "--maxWorkers=2",
+            "--no-file-parallelism"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 5.173457124968991
+        }
+      ],
+      "actualExitCode": 0
+    },
+    "fastTests": 4578,
+    "fastFiles": 456,
+    "nativeRuntimeChecks": 12,
+    "nativeRuntimeFiles": 4,
+    "pythonLintAndFormat": "passed"
+  },
+  "actualScoutRendering": {
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-blender43-scout2-receipt.json",
+      "bytes": 161,
+      "sha256": "sha256:a4656f39f9018854e7bef45c6cf767cdd31742405b0532c55cf970dcb1ad59af"
+    },
+    "result": {
+      "actualExitCode": 0,
+      "heldEngineInputsExitCode": 0,
+      "heldPrivateInputFiles": 63,
+      "privateInputBytesUnchanged": true,
+      "seconds": 48.888869791990146
+    },
+    "mappedStates": 50,
+    "freshNativeRenders": 42,
+    "reusedOutputStates": 8,
+    "allSourceAssetsRemainExact": true,
+    "audit": {
+      "path": "/private/tmp/still-shift-ms3-blender43-audit1.json",
+      "bytes": 22846,
+      "sha256": "sha256:725822fd9acf8f578576ef5049397c00ed7a1cb0128e226c753f902128c5cb76"
+    },
+    "independentlyCheckedMappedPins": 200,
+    "phoneSize": [360, 640],
+    "inspectedSheets": 10,
+    "inspectedMappedStates": 50,
+    "inspectionScope": "Selected native clean mechanism PNGs scaled to phone size. No captions, final output, continuous playback or listening review."
+  },
+  "phoneFindings": {
+    "EU-001": "Recognition is readable. Side view shows a narrow hook face beside a tall obstruction; guide view does not yet make the thickness/travel comparison visible.",
+    "EU-002": "Actual strap and pawl move after repair. Recognition clips the loop/bundle; passage/root/contact views are too tight to retain causal context.",
+    "EU-003": "Actual jaws and spring respond, and loaded fabric is now visible. Main and side clip the peg ends; spring-back macro crops the assembly.",
+    "EU-004": "Main and guide views show joined/open rows. Cup macro is too tight to isolate one matching bump/hollow.",
+    "EU-005": "Wide-hole/narrow-slot sequence is legible. Edge overlap and captured-head seating need a side/contact witness.",
+    "EU-006": "Operation view shows the opening, but grip view is dominated by paper and clipped metal; jaw contact needs reframing.",
+    "EU-007": "Main/contact views show assembly and withdrawal. Macro crops the latch/actuator context and needs a clear release witness.",
+    "EU-008": "Main view shows the spring and closing context. Cam-contact view is crowded/occluded and spring view is too tight.",
+    "EU-009": "Final winding shape changes. Main clips the reel/extended blade; winding close-up clips the reel and needs better selected movement endpoints.",
+    "EU-010": "Tab lift and inward panel movement are visible after repair. Main rim/body crop and macro occlusion still hide the flange/contact explanation."
+  },
+  "episodes": [
+    {
+      "id": "EU-001",
+      "question": "Why does the hook on a tape measure move?",
+      "sourceNativeAsset": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-001/v002/asset.blend",
+        "bytes": 207253,
+        "sha256": "sha256:2e0fc8ec95445a041b10877006602cad7717006f5b0188f3e9625f4b64e8ca62"
+      },
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-001/source.json",
+        "bytes": 2159,
+        "sha256": "sha256:2d8de9baf2cfeaaeef5d7f56464e3ea09837f96c57b5b20a4a1c00e506f1a8f2"
+      },
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-001/plan.json",
+        "bytes": 5217,
+        "sha256": "sha256:6d28851ebad8385ade24bacd64ed2538820f6b6bd7d9416319db8d4abd0eb533"
+      },
+      "direction": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-001/direction.json",
+        "bytes": 3159,
+        "sha256": "sha256:19f95f11ecc748cd5876ca76079e3058c9fdb6f8ab5f05f8812512b5432cbbba"
+      },
+      "sourceEvidence": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-001/source-evidence.json",
+        "bytes": 7254,
+        "sha256": "sha256:65122af2d4a7fb004663610e7a9766407f7ea2505d1dc99df6c3c20e3813540a"
+      },
+      "outputFrames": 610,
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "wholeOriginalRecording": true,
+      "speechCues": 12,
+      "shots": 5,
+      "scout": {
+        "id": "EU-001",
+        "fullSourceFrames": 610,
+        "scoutFrames": [0, 107, 239, 454, 609],
+        "captureFrames": 5,
+        "width": 1080,
+        "height": 1920,
+        "freshNativeRenders": 4,
+        "reusedOutputFrames": 1,
+        "map": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-001/native-plates.json",
+        "images": [
+          {
+            "originalOutputFrame": 0,
+            "seconds": 0,
+            "camera": "camera.recognition",
+            "controls": {
+              "manual": 1,
+              "measurement_mode": 0,
+              "slide_fraction": 0,
+              "approach": 1
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-001/plates/frames/frame-000000.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/9b69c049-c63f-43b3-9de8-d4f7b12955ea/frames/frame-000000.json"
+          },
+          {
+            "originalOutputFrame": 107,
+            "seconds": 3.566666666666667,
+            "camera": "camera.recognition",
+            "controls": {
+              "manual": 1,
+              "measurement_mode": 0,
+              "slide_fraction": 0,
+              "approach": 1
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-001/plates/frames/frame-000001.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/9b69c049-c63f-43b3-9de8-d4f7b12955ea/frames/frame-000000.json"
+          },
+          {
+            "originalOutputFrame": 239,
+            "seconds": 7.966666666666667,
+            "camera": "camera.side",
+            "controls": {
+              "manual": 1,
+              "measurement_mode": 1,
+              "slide_fraction": 1,
+              "approach": 1
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-001/plates/frames/frame-000002.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/9b69c049-c63f-43b3-9de8-d4f7b12955ea/frames/frame-000001.json"
+          },
+          {
+            "originalOutputFrame": 454,
+            "seconds": 15.133333333333333,
+            "camera": "camera.guide",
+            "controls": {
+              "manual": 1,
+              "measurement_mode": 1,
+              "slide_fraction": 1,
+              "approach": 1
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-001/plates/frames/frame-000003.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/9b69c049-c63f-43b3-9de8-d4f7b12955ea/frames/frame-000002.json"
+          },
+          {
+            "originalOutputFrame": 609,
+            "seconds": 20.3,
+            "camera": "camera.main",
+            "controls": {
+              "manual": 1,
+              "measurement_mode": 1,
+              "slide_fraction": 1,
+              "approach": 1
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-001/plates/frames/frame-000004.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/9b69c049-c63f-43b3-9de8-d4f7b12955ea/frames/frame-000003.json"
+          }
+        ],
+        "seconds": 2.5315287500000005
+      },
+      "sampledGeometryAudit": {
+        "id": "EU-001",
+        "sourceAssetBytesExact": true,
+        "originalOutputFrames": [0, 107, 239, 454, 609],
+        "changedEvaluatedPartsVsFirst": [
+          {
+            "originalOutputFrame": 107,
+            "parts": []
+          },
+          {
+            "originalOutputFrame": 239,
+            "parts": ["hook.contactFace", "hook.fold", "hook.slottedFlange"]
+          },
+          {
+            "originalOutputFrame": 454,
+            "parts": ["hook.contactFace", "hook.fold", "hook.slottedFlange"]
+          },
+          {
+            "originalOutputFrame": 609,
+            "parts": ["hook.contactFace", "hook.fold", "hook.slottedFlange"]
+          }
+        ],
+        "phoneSheetInspected": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/phone-scouts2/EU-001.png",
+        "phoneFindingsPending": true
+      },
+      "wholeFactualMechanicalEncodedGlyphContinuousListeningReview": "UNREVIEWED",
+      "productionAcceptance": "not-admitted"
+    },
+    {
+      "id": "EU-002",
+      "question": "Why does a cable tie tighten but resist pulling backward?",
+      "sourceNativeAsset": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-002/v002/asset.blend",
+        "bytes": 96977540,
+        "sha256": "sha256:4fcbdee97d011ee9743aa9db33e40d24bfc744f1c479e71a95a5eb2e5a842765"
+      },
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-002/source.json",
+        "bytes": 1984,
+        "sha256": "sha256:da4224df04eea0389a513623031a262efa61608ede96f3450936a96eb8408348"
+      },
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-002/plan.json",
+        "bytes": 4613,
+        "sha256": "sha256:c930dcbb2983d0149f57cdc9e8b307607cfc8eb29389625e55417c2d478c6a48"
+      },
+      "direction": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-002/direction.json",
+        "bytes": 3173,
+        "sha256": "sha256:8bab4f4167f9cae56abe4ed71b1113e56e5015efcba34102699f5ec8802e44ff"
+      },
+      "sourceEvidence": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-002/source-evidence.json",
+        "bytes": 8763,
+        "sha256": "sha256:544fd12957b94e2b1bcd2df62b38a84c64e9bad08dbb678ea9e39774e57c0585"
+      },
+      "outputFrames": 588,
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "wholeOriginalRecording": true,
+      "speechCues": 11,
+      "shots": 5,
+      "scout": {
+        "id": "EU-002",
+        "fullSourceFrames": 588,
+        "scoutFrames": [0, 132, 269, 396, 587],
+        "captureFrames": 5,
+        "width": 1080,
+        "height": 1920,
+        "freshNativeRenders": 5,
+        "reusedOutputFrames": 0,
+        "map": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-002/native-plates.json",
+        "images": [
+          {
+            "originalOutputFrame": 0,
+            "seconds": 0,
+            "camera": "camera.main",
+            "controls": {
+              "manual": 1,
+              "tighten": 0,
+              "reverse": 0,
+              "reveal": 0,
+              "context": 1
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-002/plates/frames/frame-000000.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/bda29abd-4ad9-4dab-82cf-9b1b6f44f249/frames/frame-000000.json"
+          },
+          {
+            "originalOutputFrame": 132,
+            "seconds": 4.4,
+            "camera": "camera.passage",
+            "controls": {
+              "manual": 1,
+              "tighten": 0,
+              "reverse": 0,
+              "reveal": 1,
+              "context": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-002/plates/frames/frame-000001.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/bda29abd-4ad9-4dab-82cf-9b1b6f44f249/frames/frame-000001.json"
+          },
+          {
+            "originalOutputFrame": 269,
+            "seconds": 8.966666666666667,
+            "camera": "camera.root",
+            "controls": {
+              "manual": 1,
+              "tighten": 1,
+              "reverse": 0,
+              "reveal": 1,
+              "context": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-002/plates/frames/frame-000002.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/bda29abd-4ad9-4dab-82cf-9b1b6f44f249/frames/frame-000002.json"
+          },
+          {
+            "originalOutputFrame": 396,
+            "seconds": 13.2,
+            "camera": "camera.contact",
+            "controls": {
+              "manual": 1,
+              "tighten": 1,
+              "reverse": 1,
+              "reveal": 1,
+              "context": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-002/plates/frames/frame-000003.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/bda29abd-4ad9-4dab-82cf-9b1b6f44f249/frames/frame-000003.json"
+          },
+          {
+            "originalOutputFrame": 587,
+            "seconds": 19.566666666666666,
+            "camera": "camera.whole_section",
+            "controls": {
+              "manual": 1,
+              "tighten": 1,
+              "reverse": 1,
+              "reveal": 1,
+              "context": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-002/plates/frames/frame-000004.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/bda29abd-4ad9-4dab-82cf-9b1b6f44f249/frames/frame-000004.json"
+          }
+        ],
+        "seconds": 4.502542167
+      },
+      "sampledGeometryAudit": {
+        "id": "EU-002",
+        "sourceAssetBytesExact": true,
+        "originalOutputFrames": [0, 132, 269, 396, 587],
+        "changedEvaluatedPartsVsFirst": [
+          {
+            "originalOutputFrame": 132,
+            "parts": []
+          },
+          {
+            "originalOutputFrame": 269,
+            "parts": ["tie.pawl", "tie.strap"]
+          },
+          {
+            "originalOutputFrame": 396,
+            "parts": ["tie.strap"]
+          },
+          {
+            "originalOutputFrame": 587,
+            "parts": ["tie.strap"]
+          }
+        ],
+        "phoneSheetInspected": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/phone-scouts2/EU-002.png",
+        "phoneFindingsPending": true
+      },
+      "wholeFactualMechanicalEncodedGlyphContinuousListeningReview": "UNREVIEWED",
+      "productionAcceptance": "not-admitted"
+    },
+    {
+      "id": "EU-003",
+      "question": "Why does squeezing one end of a clothespeg open the other?",
+      "sourceNativeAsset": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-003/v002/asset.blend",
+        "bytes": 4683848,
+        "sha256": "sha256:b4882a20e21161207f1e788a6c84c55c69ddc00758f405cfa3aa4c0bdb26d362"
+      },
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-003/source.json",
+        "bytes": 2353,
+        "sha256": "sha256:f528a870ec8dd0ffa9302272b5ebf62a58ccacaf569cfd6c11c87cdfe9c357ea"
+      },
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-003/plan.json",
+        "bytes": 5096,
+        "sha256": "sha256:ccd4064c77a4fa6a345291a6955e6c3438298d0741e2f3f2382dbfc1c7b88e62"
+      },
+      "direction": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-003/direction.json",
+        "bytes": 3911,
+        "sha256": "sha256:e23a09cd565ed2482302f7facdc5fbee0a30a0ef8575a47f194c677c2450696e"
+      },
+      "sourceEvidence": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-003/source-evidence.json",
+        "bytes": 8566,
+        "sha256": "sha256:59b69b9779a976a39689689c1be3eaabd6b4fc8006526f679492ec59b003fbba"
+      },
+      "outputFrames": 588,
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "wholeOriginalRecording": true,
+      "speechCues": 11,
+      "shots": 7,
+      "scout": {
+        "id": "EU-003",
+        "fullSourceFrames": 588,
+        "scoutFrames": [0, 140, 283, 441, 587],
+        "captureFrames": 5,
+        "width": 1080,
+        "height": 1920,
+        "freshNativeRenders": 3,
+        "reusedOutputFrames": 2,
+        "map": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-003/native-plates.json",
+        "images": [
+          {
+            "originalOutputFrame": 0,
+            "seconds": 0,
+            "camera": "camera.main",
+            "controls": {
+              "manual": 1,
+              "open": 0,
+              "fabric": 1,
+              "reveal": 0,
+              "context": 1,
+              "isolate_spring": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-003/plates/frames/frame-000000.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/c05061ff-07d4-4091-b6e8-553bf96f4dc9/frames/frame-000000.json"
+          },
+          {
+            "originalOutputFrame": 140,
+            "seconds": 4.666666666666667,
+            "camera": "camera.side",
+            "controls": {
+              "manual": 1,
+              "open": 1,
+              "fabric": 1,
+              "reveal": 0,
+              "context": 1,
+              "isolate_spring": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-003/plates/frames/frame-000001.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/c05061ff-07d4-4091-b6e8-553bf96f4dc9/frames/frame-000001.json"
+          },
+          {
+            "originalOutputFrame": 283,
+            "seconds": 9.433333333333334,
+            "camera": "camera.side",
+            "controls": {
+              "manual": 1,
+              "open": 1,
+              "fabric": 1,
+              "reveal": 0,
+              "context": 1,
+              "isolate_spring": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-003/plates/frames/frame-000002.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/c05061ff-07d4-4091-b6e8-553bf96f4dc9/frames/frame-000001.json"
+          },
+          {
+            "originalOutputFrame": 441,
+            "seconds": 14.7,
+            "camera": "camera.spring_back",
+            "controls": {
+              "manual": 1,
+              "open": 0,
+              "fabric": 1,
+              "reveal": 1,
+              "context": 1,
+              "isolate_spring": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-003/plates/frames/frame-000003.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/c05061ff-07d4-4091-b6e8-553bf96f4dc9/frames/frame-000002.json"
+          },
+          {
+            "originalOutputFrame": 587,
+            "seconds": 19.566666666666666,
+            "camera": "camera.main",
+            "controls": {
+              "manual": 1,
+              "open": 0,
+              "fabric": 1,
+              "reveal": 0,
+              "context": 1,
+              "isolate_spring": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-003/plates/frames/frame-000004.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/c05061ff-07d4-4091-b6e8-553bf96f4dc9/frames/frame-000000.json"
+          }
+        ],
+        "seconds": 1.7789287920000005
+      },
+      "sampledGeometryAudit": {
+        "id": "EU-003",
+        "sourceAssetBytesExact": true,
+        "originalOutputFrames": [0, 140, 283, 441, 587],
+        "changedEvaluatedPartsVsFirst": [
+          {
+            "originalOutputFrame": 140,
+            "parts": ["peg.armA", "peg.armB", "peg.spring"]
+          },
+          {
+            "originalOutputFrame": 283,
+            "parts": ["peg.armA", "peg.armB", "peg.spring"]
+          },
+          {
+            "originalOutputFrame": 441,
+            "parts": []
+          },
+          {
+            "originalOutputFrame": 587,
+            "parts": []
+          }
+        ],
+        "phoneSheetInspected": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/phone-scouts2/EU-003.png",
+        "phoneFindingsPending": true
+      },
+      "wholeFactualMechanicalEncodedGlyphContinuousListeningReview": "UNREVIEWED",
+      "productionAcceptance": "not-admitted"
+    },
+    {
+      "id": "EU-004",
+      "question": "How does a zipper join its teeth?",
+      "sourceNativeAsset": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-004/v002/asset.blend",
+        "bytes": 2015637,
+        "sha256": "sha256:668cc570be38d9fb933b89be70191887be1fd43720b5c384f03a11a6c749bbd3"
+      },
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-004/source.json",
+        "bytes": 1832,
+        "sha256": "sha256:ad07280f85c52340736d4a4cb0cac760f8651fe9e3ed4fa871605ef585fa03b5"
+      },
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-004/plan.json",
+        "bytes": 5216,
+        "sha256": "sha256:a8b214b0d3aaaca80e6912d20ea2ac9858a768889b85a7d698ea0ef10146389d"
+      },
+      "direction": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-004/direction.json",
+        "bytes": 2207,
+        "sha256": "sha256:9d01fe26d2442abcff8b82de5adb9de1556cd0c1c6ed06076975895021c50daf"
+      },
+      "sourceEvidence": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-004/source-evidence.json",
+        "bytes": 8071,
+        "sha256": "sha256:0fe26c4f0e11b7ac5650fed1c7223d8ae05d1cbf649fd1c106165e560fb8e664"
+      },
+      "outputFrames": 653,
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "wholeOriginalRecording": true,
+      "speechCues": 13,
+      "shots": 5,
+      "scout": {
+        "id": "EU-004",
+        "fullSourceFrames": 653,
+        "scoutFrames": [0, 190, 429, 520, 652],
+        "captureFrames": 5,
+        "width": 1080,
+        "height": 1920,
+        "freshNativeRenders": 4,
+        "reusedOutputFrames": 1,
+        "map": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-004/native-plates.json",
+        "images": [
+          {
+            "originalOutputFrame": 0,
+            "seconds": 0,
+            "camera": "camera.main",
+            "controls": {
+              "slider.travel": 0.34
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-004/plates/frames/frame-000000.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/b45f5adf-0a52-41c6-9c96-df5daa042eca/frames/frame-000000.json"
+          },
+          {
+            "originalOutputFrame": 190,
+            "seconds": 6.333333333333333,
+            "camera": "camera.main",
+            "controls": {
+              "slider.travel": 1.811111111111111
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-004/plates/frames/frame-000001.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/b45f5adf-0a52-41c6-9c96-df5daa042eca/frames/frame-000001.json"
+          },
+          {
+            "originalOutputFrame": 429,
+            "seconds": 14.3,
+            "camera": "camera.cup",
+            "controls": {
+              "slider.travel": 3.65
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-004/plates/frames/frame-000002.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/b45f5adf-0a52-41c6-9c96-df5daa042eca/frames/frame-000002.json"
+          },
+          {
+            "originalOutputFrame": 520,
+            "seconds": 17.333333333333332,
+            "camera": "camera.guide",
+            "controls": {
+              "slider.travel": 1.9813223140495868
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-004/plates/frames/frame-000003.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/b45f5adf-0a52-41c6-9c96-df5daa042eca/frames/frame-000003.json"
+          },
+          {
+            "originalOutputFrame": 652,
+            "seconds": 21.733333333333334,
+            "camera": "camera.main",
+            "controls": {
+              "slider.travel": 0.34
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-004/plates/frames/frame-000004.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/b45f5adf-0a52-41c6-9c96-df5daa042eca/frames/frame-000000.json"
+          }
+        ],
+        "seconds": 3.321556542
+      },
+      "sampledGeometryAudit": {
+        "id": "EU-004",
+        "sourceAssetBytesExact": true,
+        "originalOutputFrames": [0, 190, 429, 520, 652],
+        "changedEvaluatedPartsVsFirst": [
+          {
+            "originalOutputFrame": 190,
+            "parts": [
+              "cord.lower.-1",
+              "cord.lower.1",
+              "cord.upper.-1",
+              "cord.upper.1",
+              "cup.-1.0",
+              "cup.-1.1",
+              "cup.-1.10",
+              "cup.-1.11",
+              "cup.-1.2",
+              "cup.-1.3",
+              "cup.-1.4",
+              "cup.-1.5",
+              "cup.-1.6",
+              "cup.-1.7",
+              "cup.-1.8",
+              "cup.-1.9",
+              "cup.1.0",
+              "cup.1.1",
+              "cup.1.10",
+              "cup.1.11",
+              "cup.1.2",
+              "cup.1.3",
+              "cup.1.4",
+              "cup.1.5",
+              "cup.1.6",
+              "cup.1.7",
+              "cup.1.8",
+              "cup.1.9",
+              "jaw.-1.0",
+              "jaw.-1.1",
+              "jaw.-1.10",
+              "jaw.-1.11",
+              "jaw.-1.2",
+              "jaw.-1.3",
+              "jaw.-1.4",
+              "jaw.-1.5",
+              "jaw.-1.6",
+              "jaw.-1.7",
+              "jaw.-1.8",
+              "jaw.-1.9",
+              "jaw.1.0",
+              "jaw.1.1",
+              "jaw.1.10",
+              "jaw.1.11",
+              "jaw.1.2",
+              "jaw.1.3",
+              "jaw.1.4",
+              "jaw.1.5",
+              "jaw.1.6",
+              "jaw.1.7",
+              "jaw.1.8",
+              "jaw.1.9",
+              "slider.cap.eye",
+              "slider.cap.eye.foot.-1",
+              "slider.cap.eye.foot.1",
+              "slider.cap.lower",
+              "slider.cap.upper",
+              "slider.plate.lower",
+              "slider.plate.upper",
+              "slider.pull.ring",
+              "slider.rivet.head.lower",
+              "slider.rivet.head.upper",
+              "slider.rivet.shaft",
+              "slider.tongue",
+              "slider.wall.-1.lower",
+              "slider.wall.-1.upper",
+              "slider.wall.1.lower",
+              "slider.wall.1.upper",
+              "stop.top.block.-1",
+              "stop.top.block.1",
+              "stop.top.jaw.-1",
+              "stop.top.jaw.1",
+              "tail.-1.0",
+              "tail.-1.1",
+              "tail.-1.10",
+              "tail.-1.11",
+              "tail.-1.2",
+              "tail.-1.3",
+              "tail.-1.4",
+              "tail.-1.5",
+              "tail.-1.6",
+              "tail.-1.7",
+              "tail.-1.8",
+              "tail.-1.9",
+              "tail.1.0",
+              "tail.1.1",
+              "tail.1.10",
+              "tail.1.11",
+              "tail.1.2",
+              "tail.1.3",
+              "tail.1.4",
+              "tail.1.5",
+              "tail.1.6",
+              "tail.1.7",
+              "tail.1.8",
+              "tail.1.9",
+              "tape.-1",
+              "tape.1"
+            ]
+          },
+          {
+            "originalOutputFrame": 429,
+            "parts": [
+              "cord.lower.-1",
+              "cord.lower.1",
+              "cord.upper.-1",
+              "cord.upper.1",
+              "cup.-1.0",
+              "cup.-1.1",
+              "cup.-1.10",
+              "cup.-1.11",
+              "cup.-1.2",
+              "cup.-1.3",
+              "cup.-1.4",
+              "cup.-1.5",
+              "cup.-1.6",
+              "cup.-1.7",
+              "cup.-1.8",
+              "cup.-1.9",
+              "cup.1.0",
+              "cup.1.1",
+              "cup.1.10",
+              "cup.1.11",
+              "cup.1.2",
+              "cup.1.3",
+              "cup.1.4",
+              "cup.1.5",
+              "cup.1.6",
+              "cup.1.7",
+              "cup.1.8",
+              "cup.1.9",
+              "jaw.-1.0",
+              "jaw.-1.1",
+              "jaw.-1.10",
+              "jaw.-1.11",
+              "jaw.-1.2",
+              "jaw.-1.3",
+              "jaw.-1.4",
+              "jaw.-1.5",
+              "jaw.-1.6",
+              "jaw.-1.7",
+              "jaw.-1.8",
+              "jaw.-1.9",
+              "jaw.1.0",
+              "jaw.1.1",
+              "jaw.1.10",
+              "jaw.1.11",
+              "jaw.1.2",
+              "jaw.1.3",
+              "jaw.1.4",
+              "jaw.1.5",
+              "jaw.1.6",
+              "jaw.1.7",
+              "jaw.1.8",
+              "jaw.1.9",
+              "slider.cap.eye",
+              "slider.cap.eye.foot.-1",
+              "slider.cap.eye.foot.1",
+              "slider.cap.lower",
+              "slider.cap.upper",
+              "slider.plate.lower",
+              "slider.plate.upper",
+              "slider.pull.ring",
+              "slider.rivet.head.lower",
+              "slider.rivet.head.upper",
+              "slider.rivet.shaft",
+              "slider.tongue",
+              "slider.wall.-1.lower",
+              "slider.wall.-1.upper",
+              "slider.wall.1.lower",
+              "slider.wall.1.upper",
+              "stop.top.block.-1",
+              "stop.top.block.1",
+              "stop.top.jaw.-1",
+              "stop.top.jaw.1",
+              "tail.-1.0",
+              "tail.-1.1",
+              "tail.-1.10",
+              "tail.-1.11",
+              "tail.-1.2",
+              "tail.-1.3",
+              "tail.-1.4",
+              "tail.-1.5",
+              "tail.-1.6",
+              "tail.-1.7",
+              "tail.-1.8",
+              "tail.-1.9",
+              "tail.1.0",
+              "tail.1.1",
+              "tail.1.10",
+              "tail.1.11",
+              "tail.1.2",
+              "tail.1.3",
+              "tail.1.4",
+              "tail.1.5",
+              "tail.1.6",
+              "tail.1.7",
+              "tail.1.8",
+              "tail.1.9",
+              "tape.-1",
+              "tape.1"
+            ]
+          },
+          {
+            "originalOutputFrame": 520,
+            "parts": [
+              "cord.lower.-1",
+              "cord.lower.1",
+              "cord.upper.-1",
+              "cord.upper.1",
+              "cup.-1.0",
+              "cup.-1.1",
+              "cup.-1.10",
+              "cup.-1.11",
+              "cup.-1.2",
+              "cup.-1.3",
+              "cup.-1.4",
+              "cup.-1.5",
+              "cup.-1.6",
+              "cup.-1.7",
+              "cup.-1.8",
+              "cup.-1.9",
+              "cup.1.0",
+              "cup.1.1",
+              "cup.1.10",
+              "cup.1.11",
+              "cup.1.2",
+              "cup.1.3",
+              "cup.1.4",
+              "cup.1.5",
+              "cup.1.6",
+              "cup.1.7",
+              "cup.1.8",
+              "cup.1.9",
+              "jaw.-1.0",
+              "jaw.-1.1",
+              "jaw.-1.10",
+              "jaw.-1.11",
+              "jaw.-1.2",
+              "jaw.-1.3",
+              "jaw.-1.4",
+              "jaw.-1.5",
+              "jaw.-1.6",
+              "jaw.-1.7",
+              "jaw.-1.8",
+              "jaw.-1.9",
+              "jaw.1.0",
+              "jaw.1.1",
+              "jaw.1.10",
+              "jaw.1.11",
+              "jaw.1.2",
+              "jaw.1.3",
+              "jaw.1.4",
+              "jaw.1.5",
+              "jaw.1.6",
+              "jaw.1.7",
+              "jaw.1.8",
+              "jaw.1.9",
+              "slider.cap.eye",
+              "slider.cap.eye.foot.-1",
+              "slider.cap.eye.foot.1",
+              "slider.cap.lower",
+              "slider.cap.upper",
+              "slider.plate.lower",
+              "slider.plate.upper",
+              "slider.pull.ring",
+              "slider.rivet.head.lower",
+              "slider.rivet.head.upper",
+              "slider.rivet.shaft",
+              "slider.tongue",
+              "slider.wall.-1.lower",
+              "slider.wall.-1.upper",
+              "slider.wall.1.lower",
+              "slider.wall.1.upper",
+              "stop.top.block.-1",
+              "stop.top.block.1",
+              "stop.top.jaw.-1",
+              "stop.top.jaw.1",
+              "tail.-1.0",
+              "tail.-1.1",
+              "tail.-1.10",
+              "tail.-1.11",
+              "tail.-1.2",
+              "tail.-1.3",
+              "tail.-1.4",
+              "tail.-1.5",
+              "tail.-1.6",
+              "tail.-1.7",
+              "tail.-1.8",
+              "tail.-1.9",
+              "tail.1.0",
+              "tail.1.1",
+              "tail.1.10",
+              "tail.1.11",
+              "tail.1.2",
+              "tail.1.3",
+              "tail.1.4",
+              "tail.1.5",
+              "tail.1.6",
+              "tail.1.7",
+              "tail.1.8",
+              "tail.1.9",
+              "tape.-1",
+              "tape.1"
+            ]
+          },
+          {
+            "originalOutputFrame": 652,
+            "parts": []
+          }
+        ],
+        "phoneSheetInspected": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/phone-scouts2/EU-004.png",
+        "phoneFindingsPending": true
+      },
+      "wholeFactualMechanicalEncodedGlyphContinuousListeningReview": "UNREVIEWED",
+      "productionAcceptance": "not-admitted"
+    },
+    {
+      "id": "EU-005",
+      "question": "How does a keyhole mounting slot hold a screw?",
+      "sourceNativeAsset": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-005/v003/asset.blend",
+        "bytes": 138567,
+        "sha256": "sha256:d14bc1d7ba6a66f7fbcd3e065e79c32fe14da9d9105fde2fbd37a4336c2b7dae"
+      },
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-005/source.json",
+        "bytes": 2204,
+        "sha256": "sha256:d8cd2caf24f1d9569b49f46fcffcc29134cc9ef1eba7ded0813f1485f2530d0e"
+      },
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-005/plan.json",
+        "bytes": 5100,
+        "sha256": "sha256:65657a05b63f55497c8ac48eff83a73cc2d0364d0df5a49fd8ce8a90c52a0761"
+      },
+      "direction": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-005/direction.json",
+        "bytes": 3141,
+        "sha256": "sha256:03ab26f5a3c2ad4ce259940e883d57a923f83a263137759ac7c661030e994717"
+      },
+      "sourceEvidence": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-005/source-evidence.json",
+        "bytes": 7386,
+        "sha256": "sha256:85918529add218399b4171b0c1fd6b45cf2d5a6a46816ea4e4008c083a0bbfb0"
+      },
+      "outputFrames": 598,
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "wholeOriginalRecording": true,
+      "speechCues": 10,
+      "shots": 5,
+      "scout": {
+        "id": "EU-005",
+        "fullSourceFrames": 598,
+        "scoutFrames": [0, 137, 228, 497, 597],
+        "captureFrames": 5,
+        "width": 1080,
+        "height": 1920,
+        "freshNativeRenders": 4,
+        "reusedOutputFrames": 1,
+        "map": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-005/native-plates.json",
+        "images": [
+          {
+            "originalOutputFrame": 0,
+            "seconds": 0,
+            "camera": "camera.main",
+            "controls": {
+              "capture": 0,
+              "insert": 0,
+              "pull_probe": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-005/plates/frames/frame-000000.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/de41129c-7ca8-428f-aa5f-5d5df4dd2ce3/frames/frame-000000.json"
+          },
+          {
+            "originalOutputFrame": 137,
+            "seconds": 4.566666666666666,
+            "camera": "camera.contact",
+            "controls": {
+              "capture": 0,
+              "insert": 0,
+              "pull_probe": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-005/plates/frames/frame-000001.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/de41129c-7ca8-428f-aa5f-5d5df4dd2ce3/frames/frame-000001.json"
+          },
+          {
+            "originalOutputFrame": 228,
+            "seconds": 7.6,
+            "camera": "camera.main",
+            "controls": {
+              "capture": 1,
+              "insert": 1,
+              "pull_probe": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-005/plates/frames/frame-000002.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/de41129c-7ca8-428f-aa5f-5d5df4dd2ce3/frames/frame-000002.json"
+          },
+          {
+            "originalOutputFrame": 497,
+            "seconds": 16.566666666666666,
+            "camera": "camera.contact",
+            "controls": {
+              "capture": 1,
+              "insert": 1,
+              "pull_probe": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-005/plates/frames/frame-000003.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/de41129c-7ca8-428f-aa5f-5d5df4dd2ce3/frames/frame-000003.json"
+          },
+          {
+            "originalOutputFrame": 597,
+            "seconds": 19.9,
+            "camera": "camera.contact",
+            "controls": {
+              "capture": 0,
+              "insert": 0,
+              "pull_probe": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-005/plates/frames/frame-000004.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/de41129c-7ca8-428f-aa5f-5d5df4dd2ce3/frames/frame-000001.json"
+          }
+        ],
+        "seconds": 2.21494125
+      },
+      "sampledGeometryAudit": {
+        "id": "EU-005",
+        "sourceAssetBytesExact": true,
+        "originalOutputFrames": [0, 137, 228, 497, 597],
+        "changedEvaluatedPartsVsFirst": [
+          {
+            "originalOutputFrame": 137,
+            "parts": []
+          },
+          {
+            "originalOutputFrame": 228,
+            "parts": ["plate"]
+          },
+          {
+            "originalOutputFrame": 497,
+            "parts": ["plate"]
+          },
+          {
+            "originalOutputFrame": 597,
+            "parts": []
+          }
+        ],
+        "phoneSheetInspected": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/phone-scouts2/EU-005.png",
+        "phoneFindingsPending": true
+      },
+      "wholeFactualMechanicalEncodedGlyphContinuousListeningReview": "UNREVIEWED",
+      "productionAcceptance": "not-admitted"
+    },
+    {
+      "id": "EU-006",
+      "question": "Why do binder-clip handles make the jaws open?",
+      "sourceNativeAsset": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-006/v002/asset.blend",
+        "bytes": 1498620,
+        "sha256": "sha256:78baf6707008fd253ee7b2799e47e57722f73e9a72a792d345e90fb20f6764d5"
+      },
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-006/source.json",
+        "bytes": 2153,
+        "sha256": "sha256:2dacc5b19e08e332d600d52ab6454824e805644e0c754ada4eff615a8a9075ca"
+      },
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-006/plan.json",
+        "bytes": 4794,
+        "sha256": "sha256:1debaae9cb6d35d2ac58271de07b995c9b170fe6dd9251e67fca41266c6798da"
+      },
+      "direction": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-006/direction.json",
+        "bytes": 3915,
+        "sha256": "sha256:28d350bb392abcae862a23eeea04dff5ac168b4a79337e543a302b03d16d225a"
+      },
+      "sourceEvidence": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-006/source-evidence.json",
+        "bytes": 6979,
+        "sha256": "sha256:46fc4bd6016d24a18ca585c3bd6aea8a4efc244f872b6d9a884a62133aee13cb"
+      },
+      "outputFrames": 634,
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "wholeOriginalRecording": true,
+      "speechCues": 11,
+      "shots": 7,
+      "scout": {
+        "id": "EU-006",
+        "fullSourceFrames": 634,
+        "scoutFrames": [0, 190, 317, 427, 633],
+        "captureFrames": 5,
+        "width": 1080,
+        "height": 1920,
+        "freshNativeRenders": 4,
+        "reusedOutputFrames": 1,
+        "map": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-006/native-plates.json",
+        "images": [
+          {
+            "originalOutputFrame": 0,
+            "seconds": 0,
+            "camera": "camera.main",
+            "controls": {
+              "squeeze": 0,
+              "paper_insert": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-006/plates/frames/frame-000000.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/defb6d85-beef-4f0a-baba-a5d38d0e6d4c/frames/frame-000000.json"
+          },
+          {
+            "originalOutputFrame": 190,
+            "seconds": 6.333333333333333,
+            "camera": "camera.operation",
+            "controls": {
+              "squeeze": 1,
+              "paper_insert": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-006/plates/frames/frame-000001.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/defb6d85-beef-4f0a-baba-a5d38d0e6d4c/frames/frame-000001.json"
+          },
+          {
+            "originalOutputFrame": 317,
+            "seconds": 10.566666666666666,
+            "camera": "camera.main",
+            "controls": {
+              "squeeze": 0,
+              "paper_insert": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-006/plates/frames/frame-000002.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/defb6d85-beef-4f0a-baba-a5d38d0e6d4c/frames/frame-000000.json"
+          },
+          {
+            "originalOutputFrame": 427,
+            "seconds": 14.233333333333333,
+            "camera": "camera.grip",
+            "controls": {
+              "squeeze": 1,
+              "paper_insert": 1
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-006/plates/frames/frame-000003.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/defb6d85-beef-4f0a-baba-a5d38d0e6d4c/frames/frame-000002.json"
+          },
+          {
+            "originalOutputFrame": 633,
+            "seconds": 21.1,
+            "camera": "camera.operation",
+            "controls": {
+              "squeeze": 0.26189771774566734,
+              "paper_insert": 1
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-006/plates/frames/frame-000004.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/defb6d85-beef-4f0a-baba-a5d38d0e6d4c/frames/frame-000003.json"
+          }
+        ],
+        "seconds": 2.382312291000002
+      },
+      "sampledGeometryAudit": {
+        "id": "EU-006",
+        "sourceAssetBytesExact": true,
+        "originalOutputFrames": [0, 190, 317, 427, 633],
+        "changedEvaluatedPartsVsFirst": [
+          {
+            "originalOutputFrame": 190,
+            "parts": [
+              "body",
+              "handleA.wire",
+              "handleB.wire",
+              "inspection.section.body",
+              "inspection.section.handleA.wire",
+              "inspection.section.handleB.wire"
+            ]
+          },
+          {
+            "originalOutputFrame": 317,
+            "parts": []
+          },
+          {
+            "originalOutputFrame": 427,
+            "parts": [
+              "body",
+              "handleA.wire",
+              "handleB.wire",
+              "inspection.section.body",
+              "inspection.section.handleA.wire",
+              "inspection.section.handleB.wire",
+              "paper.sheet.0",
+              "paper.sheet.1",
+              "paper.sheet.2",
+              "paper.sheet.3",
+              "paper.sheet.4",
+              "paper.sheet.5"
+            ]
+          },
+          {
+            "originalOutputFrame": 633,
+            "parts": [
+              "body",
+              "handleA.wire",
+              "handleB.wire",
+              "inspection.section.body",
+              "inspection.section.handleA.wire",
+              "inspection.section.handleB.wire",
+              "paper.sheet.0",
+              "paper.sheet.1",
+              "paper.sheet.2",
+              "paper.sheet.3",
+              "paper.sheet.4",
+              "paper.sheet.5"
+            ]
+          }
+        ],
+        "phoneSheetInspected": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/phone-scouts2/EU-006.png",
+        "phoneFindingsPending": true
+      },
+      "wholeFactualMechanicalEncodedGlyphContinuousListeningReview": "UNREVIEWED",
+      "productionAcceptance": "not-admitted"
+    },
+    {
+      "id": "EU-007",
+      "question": "How does a side-release buckle lock and release?",
+      "sourceNativeAsset": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-007/v002/asset.blend",
+        "bytes": 160050,
+        "sha256": "sha256:5e003f0e5845e9284eaaefd6f25c3d34acd05f5c8d46e82e3acca8b96296c30f"
+      },
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-007/source.json",
+        "bytes": 2269,
+        "sha256": "sha256:47b854f51c4452e18274fc31541c394b7ead1c3334c5d8a5902ada34073792a8"
+      },
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-007/plan.json",
+        "bytes": 6036,
+        "sha256": "sha256:4cc996fc8a05f4e37caa41e7709cd0beba76ab94732aad11b9736239c3e0dbd7"
+      },
+      "direction": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-007/direction.json",
+        "bytes": 3892,
+        "sha256": "sha256:eb892e2604b82a3cf3eb35ecb86711dbea454003652af5229f49ca187dcb011c"
+      },
+      "sourceEvidence": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-007/source-evidence.json",
+        "bytes": 6725,
+        "sha256": "sha256:084a647fbf96e1b8cbc6537d4de5dad930d34c452bb252e8c93c080f10f643c8"
+      },
+      "outputFrames": 708,
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "wholeOriginalRecording": true,
+      "speechCues": 12,
+      "shots": 7,
+      "scout": {
+        "id": "EU-007",
+        "fullSourceFrames": 708,
+        "scoutFrames": [0, 164, 427, 526, 707],
+        "captureFrames": 5,
+        "width": 1080,
+        "height": 1920,
+        "freshNativeRenders": 5,
+        "reusedOutputFrames": 0,
+        "map": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-007/native-plates.json",
+        "images": [
+          {
+            "originalOutputFrame": 0,
+            "seconds": 0,
+            "camera": "camera.main",
+            "controls": {
+              "plug.insert": 1,
+              "actuators.squeeze": 0,
+              "plug.withdraw": 0,
+              "pull_probe": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-007/plates/frames/frame-000000.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/7a019a03-ad5f-4bc6-b857-596b155d9bc3/frames/frame-000000.json"
+          },
+          {
+            "originalOutputFrame": 164,
+            "seconds": 5.466666666666667,
+            "camera": "camera.contact",
+            "controls": {
+              "plug.insert": 0,
+              "actuators.squeeze": 0,
+              "plug.withdraw": 0,
+              "pull_probe": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-007/plates/frames/frame-000001.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/7a019a03-ad5f-4bc6-b857-596b155d9bc3/frames/frame-000001.json"
+          },
+          {
+            "originalOutputFrame": 427,
+            "seconds": 14.233333333333333,
+            "camera": "camera.macro",
+            "controls": {
+              "plug.insert": 1,
+              "actuators.squeeze": 0,
+              "plug.withdraw": 0,
+              "pull_probe": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-007/plates/frames/frame-000002.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/7a019a03-ad5f-4bc6-b857-596b155d9bc3/frames/frame-000002.json"
+          },
+          {
+            "originalOutputFrame": 526,
+            "seconds": 17.533333333333335,
+            "camera": "camera.main",
+            "controls": {
+              "plug.insert": 1,
+              "actuators.squeeze": 1,
+              "plug.withdraw": 0,
+              "pull_probe": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-007/plates/frames/frame-000003.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/7a019a03-ad5f-4bc6-b857-596b155d9bc3/frames/frame-000003.json"
+          },
+          {
+            "originalOutputFrame": 707,
+            "seconds": 23.566666666666666,
+            "camera": "camera.main",
+            "controls": {
+              "plug.insert": 1,
+              "actuators.squeeze": 1,
+              "plug.withdraw": 1,
+              "pull_probe": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-007/plates/frames/frame-000004.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/7a019a03-ad5f-4bc6-b857-596b155d9bc3/frames/frame-000004.json"
+          }
+        ],
+        "seconds": 2.4687719580000014
+      },
+      "sampledGeometryAudit": {
+        "id": "EU-007",
+        "sourceAssetBytesExact": true,
+        "originalOutputFrames": [0, 164, 427, 526, 707],
+        "changedEvaluatedPartsVsFirst": [
+          {
+            "originalOutputFrame": 164,
+            "parts": [
+              "alignment_arm",
+              "male.abutment.-1.-1",
+              "male.abutment.-1.1",
+              "male.abutment.1.-1",
+              "male.abutment.1.1",
+              "male.arm.-1",
+              "male.arm.1",
+              "male.crossbar.-0.065",
+              "male.crossbar.-0.32",
+              "male.side.-1",
+              "male.side.1",
+              "webbing.male"
+            ]
+          },
+          {
+            "originalOutputFrame": 427,
+            "parts": []
+          },
+          {
+            "originalOutputFrame": 526,
+            "parts": [
+              "female.actuator_stem.-1",
+              "female.actuator_stem.1",
+              "female.extension.-1",
+              "female.extension.1",
+              "female.grip.-1",
+              "female.grip.1",
+              "male.abutment.-1.-1",
+              "male.abutment.-1.1",
+              "male.abutment.1.-1",
+              "male.abutment.1.1",
+              "male.arm.-1",
+              "male.arm.1"
+            ]
+          },
+          {
+            "originalOutputFrame": 707,
+            "parts": [
+              "alignment_arm",
+              "female.actuator_stem.-1",
+              "female.actuator_stem.1",
+              "female.extension.-1",
+              "female.extension.1",
+              "female.grip.-1",
+              "female.grip.1",
+              "male.abutment.-1.-1",
+              "male.abutment.-1.1",
+              "male.abutment.1.-1",
+              "male.abutment.1.1",
+              "male.arm.-1",
+              "male.arm.1",
+              "male.crossbar.-0.065",
+              "male.crossbar.-0.32",
+              "male.side.-1",
+              "male.side.1",
+              "webbing.male"
+            ]
+          }
+        ],
+        "phoneSheetInspected": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/phone-scouts2/EU-007.png",
+        "phoneFindingsPending": true
+      },
+      "wholeFactualMechanicalEncodedGlyphContinuousListeningReview": "UNREVIEWED",
+      "productionAcceptance": "not-admitted"
+    },
+    {
+      "id": "EU-008",
+      "question": "Why does a door latch retract and spring back?",
+      "sourceNativeAsset": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-008/v002/asset.blend",
+        "bytes": 173445,
+        "sha256": "sha256:d77e09c9022cb5e26a66a1083bccf3e95048b4e9e4ae3a6c3e7def498d441079"
+      },
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-008/source.json",
+        "bytes": 2170,
+        "sha256": "sha256:72e9b661956f1e10fe908e85150a8e16a37a6575841f133100d4890a299037fc"
+      },
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-008/plan.json",
+        "bytes": 4414,
+        "sha256": "sha256:95c88ea3d1176414989cf9cbb6bf3a4ac284a1cc427d6fd70a01654163133b10"
+      },
+      "direction": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-008/direction.json",
+        "bytes": 3136,
+        "sha256": "sha256:cfd19243d46533f996301068d39582ef9a8d9ab9dc3aa7a1c29082af4441af1f"
+      },
+      "sourceEvidence": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-008/source-evidence.json",
+        "bytes": 7801,
+        "sha256": "sha256:60335550f3fa9c16b73c46422e91bee5caf1eb0afbc1cc52d02c3a3424135aa9"
+      },
+      "outputFrames": 579,
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "wholeOriginalRecording": true,
+      "speechCues": 11,
+      "shots": 5,
+      "scout": {
+        "id": "EU-008",
+        "fullSourceFrames": 579,
+        "scoutFrames": [0, 147, 311, 433, 578],
+        "captureFrames": 5,
+        "width": 1080,
+        "height": 1920,
+        "freshNativeRenders": 5,
+        "reusedOutputFrames": 0,
+        "map": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-008/native-plates.json",
+        "images": [
+          {
+            "originalOutputFrame": 0,
+            "seconds": 0,
+            "camera": "camera.main",
+            "controls": {
+              "closing_travel": 0,
+              "spring_return": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-008/plates/frames/frame-000000.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/c3933cfd-b7a3-4274-b6c9-a1ed6212ce1a/frames/frame-000000.json"
+          },
+          {
+            "originalOutputFrame": 147,
+            "seconds": 4.9,
+            "camera": "camera.cam_contact",
+            "controls": {
+              "closing_travel": 0.45,
+              "spring_return": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-008/plates/frames/frame-000001.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/c3933cfd-b7a3-4274-b6c9-a1ed6212ce1a/frames/frame-000001.json"
+          },
+          {
+            "originalOutputFrame": 311,
+            "seconds": 10.366666666666667,
+            "camera": "camera.spring",
+            "controls": {
+              "closing_travel": 0.85,
+              "spring_return": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-008/plates/frames/frame-000002.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/c3933cfd-b7a3-4274-b6c9-a1ed6212ce1a/frames/frame-000002.json"
+          },
+          {
+            "originalOutputFrame": 433,
+            "seconds": 14.433333333333334,
+            "camera": "camera.main",
+            "controls": {
+              "closing_travel": 1.15,
+              "spring_return": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-008/plates/frames/frame-000003.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/c3933cfd-b7a3-4274-b6c9-a1ed6212ce1a/frames/frame-000003.json"
+          },
+          {
+            "originalOutputFrame": 578,
+            "seconds": 19.266666666666666,
+            "camera": "camera.main",
+            "controls": {
+              "closing_travel": 1.15,
+              "spring_return": 1
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-008/plates/frames/frame-000004.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/c3933cfd-b7a3-4274-b6c9-a1ed6212ce1a/frames/frame-000004.json"
+          }
+        ],
+        "seconds": 2.505646292000001
+      },
+      "sampledGeometryAudit": {
+        "id": "EU-008",
+        "sourceAssetBytesExact": true,
+        "originalOutputFrames": [0, 147, 311, 433, 578],
+        "changedEvaluatedPartsVsFirst": [
+          {
+            "originalOutputFrame": 147,
+            "parts": [
+              "bevelled_nose",
+              "case.floor",
+              "case.side.-0.31",
+              "case.side.0.31",
+              "door.section",
+              "faceplate",
+              "faceplate.screw_head.-0.4",
+              "faceplate.screw_head.0.4",
+              "faceplate.screw_shank.-0.4",
+              "faceplate.screw_shank.0.4",
+              "return_spring",
+              "spring.fixed_end",
+              "spring.moving_end",
+              "spring_reaction",
+              "spring_shoulder",
+              "tail"
+            ]
+          },
+          {
+            "originalOutputFrame": 311,
+            "parts": [
+              "bevelled_nose",
+              "case.floor",
+              "case.side.-0.31",
+              "case.side.0.31",
+              "door.section",
+              "faceplate",
+              "faceplate.screw_head.-0.4",
+              "faceplate.screw_head.0.4",
+              "faceplate.screw_shank.-0.4",
+              "faceplate.screw_shank.0.4",
+              "return_spring",
+              "spring.fixed_end",
+              "spring.moving_end",
+              "spring_reaction",
+              "spring_shoulder",
+              "tail"
+            ]
+          },
+          {
+            "originalOutputFrame": 433,
+            "parts": [
+              "bevelled_nose",
+              "case.floor",
+              "case.side.-0.31",
+              "case.side.0.31",
+              "door.section",
+              "faceplate",
+              "faceplate.screw_head.-0.4",
+              "faceplate.screw_head.0.4",
+              "faceplate.screw_shank.-0.4",
+              "faceplate.screw_shank.0.4",
+              "return_spring",
+              "spring.fixed_end",
+              "spring.moving_end",
+              "spring_reaction",
+              "spring_shoulder",
+              "tail"
+            ]
+          },
+          {
+            "originalOutputFrame": 578,
+            "parts": [
+              "bevelled_nose",
+              "case.floor",
+              "case.side.-0.31",
+              "case.side.0.31",
+              "door.section",
+              "faceplate",
+              "faceplate.screw_head.-0.4",
+              "faceplate.screw_head.0.4",
+              "faceplate.screw_shank.-0.4",
+              "faceplate.screw_shank.0.4",
+              "return_spring",
+              "spring.fixed_end",
+              "spring.moving_end",
+              "spring_reaction",
+              "spring_shoulder",
+              "tail"
+            ]
+          }
+        ],
+        "phoneSheetInspected": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/phone-scouts2/EU-008.png",
+        "phoneFindingsPending": true
+      },
+      "wholeFactualMechanicalEncodedGlyphContinuousListeningReview": "UNREVIEWED",
+      "productionAcceptance": "not-admitted"
+    },
+    {
+      "id": "EU-009",
+      "question": "Why is a tape-measure blade curved?",
+      "sourceNativeAsset": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-009/v002/asset.blend",
+        "bytes": 578761,
+        "sha256": "sha256:2b8fde570293006dcb982db13693694479de368323229f8608df41d6d0936dcc"
+      },
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-009/source.json",
+        "bytes": 2130,
+        "sha256": "sha256:034bc0690091389c8e67bda7dfd3f995e020abafc02f5b99eceb7c5cfae37c22"
+      },
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-009/plan.json",
+        "bytes": 5658,
+        "sha256": "sha256:4c452bcb8a8200a1b1cad9da1c6c5edb53954ab9021478af5b102177136a1716"
+      },
+      "direction": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-009/direction.json",
+        "bytes": 3919,
+        "sha256": "sha256:1a3005638264341f307bfe35f64a9cfc2e0e070e9bf7d230df150e69fa100be2"
+      },
+      "sourceEvidence": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-009/source-evidence.json",
+        "bytes": 6689,
+        "sha256": "sha256:8e0efd5ed3f29f4b8bc088a7aca71b47958fcea8901f25d70b961e56ff1d3b42"
+      },
+      "outputFrames": 596,
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "wholeOriginalRecording": true,
+      "speechCues": 12,
+      "shots": 7,
+      "scout": {
+        "id": "EU-009",
+        "fullSourceFrames": 596,
+        "scoutFrames": [0, 193, 413, 546, 595],
+        "captureFrames": 5,
+        "width": 1080,
+        "height": 1920,
+        "freshNativeRenders": 3,
+        "reusedOutputFrames": 2,
+        "map": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-009/native-plates.json",
+        "images": [
+          {
+            "originalOutputFrame": 0,
+            "seconds": 0,
+            "camera": "camera.main",
+            "controls": {
+              "curvature": 1,
+              "feed": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-009/plates/frames/frame-000000.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/43074440-a469-45d5-b516-effe0902a127/frames/frame-000000.json"
+          },
+          {
+            "originalOutputFrame": 193,
+            "seconds": 6.433333333333334,
+            "camera": "camera.main",
+            "controls": {
+              "curvature": 1,
+              "feed": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-009/plates/frames/frame-000001.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/43074440-a469-45d5-b516-effe0902a127/frames/frame-000000.json"
+          },
+          {
+            "originalOutputFrame": 413,
+            "seconds": 13.766666666666667,
+            "camera": "camera.winding",
+            "controls": {
+              "curvature": 0,
+              "feed": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-009/plates/frames/frame-000002.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/43074440-a469-45d5-b516-effe0902a127/frames/frame-000001.json"
+          },
+          {
+            "originalOutputFrame": 546,
+            "seconds": 18.2,
+            "camera": "camera.winding",
+            "controls": {
+              "curvature": 0,
+              "feed": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-009/plates/frames/frame-000003.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/43074440-a469-45d5-b516-effe0902a127/frames/frame-000001.json"
+          },
+          {
+            "originalOutputFrame": 595,
+            "seconds": 19.833333333333332,
+            "camera": "camera.winding",
+            "controls": {
+              "curvature": 0,
+              "feed": 1
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-009/plates/frames/frame-000004.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/43074440-a469-45d5-b516-effe0902a127/frames/frame-000002.json"
+          }
+        ],
+        "seconds": 2.1492723340000013
+      },
+      "sampledGeometryAudit": {
+        "id": "EU-009",
+        "sourceAssetBytesExact": true,
+        "originalOutputFrames": [0, 193, 413, 546, 595],
+        "changedEvaluatedPartsVsFirst": [
+          {
+            "originalOutputFrame": 193,
+            "parts": []
+          },
+          {
+            "originalOutputFrame": 413,
+            "parts": ["blade"]
+          },
+          {
+            "originalOutputFrame": 546,
+            "parts": ["blade"]
+          },
+          {
+            "originalOutputFrame": 595,
+            "parts": [
+              "blade",
+              "reel.drum",
+              "reel.flange.-0.52",
+              "reel.flange.0.52",
+              "reel.tail_weld"
+            ]
+          }
+        ],
+        "phoneSheetInspected": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/phone-scouts2/EU-009.png",
+        "phoneFindingsPending": true
+      },
+      "wholeFactualMechanicalEncodedGlyphContinuousListeningReview": "UNREVIEWED",
+      "productionAcceptance": "not-admitted"
+    },
+    {
+      "id": "EU-010",
+      "question": "How does a soda-can tab open the scored panel?",
+      "sourceNativeAsset": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-010/v002/asset.blend",
+        "bytes": 3029224,
+        "sha256": "sha256:6a7dfc3a60d84c81beb182c4fa14d606cb03ec0a54113a30d0a5ae438f47e838"
+      },
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-010/source.json",
+        "bytes": 2042,
+        "sha256": "sha256:fb764f1ed61fd8da169b449f9e188e15ee084498112fa36d5d020bf09633eaf0"
+      },
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-010/plan.json",
+        "bytes": 4470,
+        "sha256": "sha256:081d6c1eb67634e1af173000f1605554f1873145a706903a991650769aa14ec0"
+      },
+      "direction": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-010/direction.json",
+        "bytes": 3510,
+        "sha256": "sha256:f3dd5131dafa58f95b94cc6bf27d5e1b451aff9125c6e38ef2dcd78986f0a896"
+      },
+      "sourceEvidence": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs/EU-010/source-evidence.json",
+        "bytes": 7090,
+        "sha256": "sha256:ccca869bc10cc4377f6fb2c1be272798c006bbcbaa1ae242257877f8a06057ad"
+      },
+      "outputFrames": 627,
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "wholeOriginalRecording": true,
+      "speechCues": 11,
+      "shots": 6,
+      "scout": {
+        "id": "EU-010",
+        "fullSourceFrames": 627,
+        "scoutFrames": [0, 136, 350, 579, 626],
+        "captureFrames": 5,
+        "width": 1080,
+        "height": 1920,
+        "freshNativeRenders": 5,
+        "reusedOutputFrames": 0,
+        "map": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-010/native-plates.json",
+        "images": [
+          {
+            "originalOutputFrame": 0,
+            "seconds": 0,
+            "camera": "camera.main",
+            "controls": {
+              "lift": 0
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-010/plates/frames/frame-000000.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/9833feec-3866-4bef-88e8-835ccddc6d73/frames/frame-000000.json"
+          },
+          {
+            "originalOutputFrame": 136,
+            "seconds": 4.533333333333333,
+            "camera": "camera.macro",
+            "controls": {
+              "lift": 0.15
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-010/plates/frames/frame-000001.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/9833feec-3866-4bef-88e8-835ccddc6d73/frames/frame-000001.json"
+          },
+          {
+            "originalOutputFrame": 350,
+            "seconds": 11.666666666666666,
+            "camera": "camera.top",
+            "controls": {
+              "lift": 0.45
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-010/plates/frames/frame-000002.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/9833feec-3866-4bef-88e8-835ccddc6d73/frames/frame-000002.json"
+          },
+          {
+            "originalOutputFrame": 579,
+            "seconds": 19.3,
+            "camera": "camera.main",
+            "controls": {
+              "lift": 0.8
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-010/plates/frames/frame-000003.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/9833feec-3866-4bef-88e8-835ccddc6d73/frames/frame-000003.json"
+          },
+          {
+            "originalOutputFrame": 626,
+            "seconds": 20.866666666666667,
+            "camera": "camera.main",
+            "controls": {
+              "lift": 1
+            },
+            "image": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/scouts2/EU-010/plates/frames/frame-000004.png",
+            "observation": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache/captures/9833feec-3866-4bef-88e8-835ccddc6d73/frames/frame-000004.json"
+          }
+        ],
+        "seconds": 22.945505125000004
+      },
+      "sampledGeometryAudit": {
+        "id": "EU-010",
+        "sourceAssetBytesExact": true,
+        "originalOutputFrames": [0, 136, 350, 579, 626],
+        "changedEvaluatedPartsVsFirst": [
+          {
+            "originalOutputFrame": 136,
+            "parts": [
+              "inspection.section.tab.contact50",
+              "inspection.section.tab.flex_flange46",
+              "inspection.section.tab.frame14",
+              "inspection.section.tab.rolled_edge",
+              "inspection.section.tongue.hinge19",
+              "inspection.section.tongue.panel17",
+              "tab.contact50",
+              "tab.flex_flange46",
+              "tab.frame14",
+              "tab.rolled_edge",
+              "tongue.hinge19",
+              "tongue.panel17"
+            ]
+          },
+          {
+            "originalOutputFrame": 350,
+            "parts": [
+              "inspection.section.tab.contact50",
+              "inspection.section.tab.flex_flange46",
+              "inspection.section.tab.frame14",
+              "inspection.section.tab.rolled_edge",
+              "inspection.section.tongue.hinge19",
+              "inspection.section.tongue.panel17",
+              "tab.contact50",
+              "tab.flex_flange46",
+              "tab.frame14",
+              "tab.rolled_edge",
+              "tongue.hinge19",
+              "tongue.panel17"
+            ]
+          },
+          {
+            "originalOutputFrame": 579,
+            "parts": [
+              "inspection.section.tab.contact50",
+              "inspection.section.tab.flex_flange46",
+              "inspection.section.tab.frame14",
+              "inspection.section.tab.rolled_edge",
+              "inspection.section.tongue.hinge19",
+              "inspection.section.tongue.panel17",
+              "tab.contact50",
+              "tab.flex_flange46",
+              "tab.frame14",
+              "tab.rolled_edge",
+              "tongue.hinge19",
+              "tongue.panel17"
+            ]
+          },
+          {
+            "originalOutputFrame": 626,
+            "parts": [
+              "inspection.section.tab.contact50",
+              "inspection.section.tab.flex_flange46",
+              "inspection.section.tab.frame14",
+              "inspection.section.tab.rolled_edge",
+              "inspection.section.tongue.hinge19",
+              "inspection.section.tongue.panel17",
+              "tab.contact50",
+              "tab.flex_flange46",
+              "tab.frame14",
+              "tab.rolled_edge",
+              "tongue.hinge19",
+              "tongue.panel17"
+            ]
+          }
+        ],
+        "phoneSheetInspected": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/phone-scouts2/EU-010.png",
+        "phoneFindingsPending": true
+      },
+      "wholeFactualMechanicalEncodedGlyphContinuousListeningReview": "UNREVIEWED",
+      "productionAcceptance": "not-admitted"
+    }
+  ],
+  "retainedAttempts": [
+    {
+      "record": "/private/tmp/still-shift-ms3-blender42-preflight1.log",
+      "actualExitCode": 1,
+      "reason": "Queue declaration contained unsupported authoring keys; per-episode input reads had passed."
+    },
+    {
+      "record": "/private/tmp/still-shift-ms3-blender42-preflight2.log",
+      "actualExitCode": 1,
+      "reason": "Existing output directory was created without recursive mode."
+    },
+    {
+      "record": "/private/tmp/still-shift-ms3-blender42-preflight3.log",
+      "actualExitCode": 0,
+      "reason": "Corrected allowed fields and existing-directory handling; pre-repair code binding retained."
+    },
+    {
+      "record": "/private/tmp/still-shift-ms3-blender42-scout1.json",
+      "actualExitCode": 0,
+      "reason": "50 mapped states/42 renders on prior producer; phone proofs exposed frozen cable tie/clothespeg and incomplete can-tab derived movement. These remain a rejected revision, not current evidence."
+    },
+    {
+      "record": "/private/tmp/still-shift-ms3-blender43-controller-probe1.log",
+      "processExitCode": 0,
+      "semanticStatus": "failed",
+      "reason": "Probe incorrectly iterated a Blender object instead of its property keys; Blender lacked --python-exit-code and returned 0 despite the exception. Corrected probe2 uses --python-exit-code 1 and passes."
+    }
+  ],
+  "remaining": [
+    "Data-only per-shot native camera framing and meaningful contact/cutaway visibility; inspect repaired phone-size witnesses before whole capture.",
+    "All ten whole HD products and current producer/input bindings; actual motion/caption/narration review.",
+    "Native review/handoff lifecycle, broader event/contact/physical-label/fault/coverage checks.",
+    "Whole factual/mechanical/encoded-glyph/continuous/listening review, original E06/E10 review and comparable paired routine effort.",
+    "Final full software/benchmark/archive/isolated-installed verification."
+  ],
+  "pilotAccepted": 0,
+  "pilotDenominator": 10,
+  "routineTokenTelemetry": null,
+  "elevenLabsSpending": 0,
+  "publishedOrMerged": false
+}

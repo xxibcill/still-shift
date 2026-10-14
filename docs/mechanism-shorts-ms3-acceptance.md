@@ -53,6 +53,13 @@ original Alex three-product subset and its failures under the previous selection
 Those clocks/products/reviews do not transfer to the current Alden takes.
 The production plan continues to use supplied audio only.
 
+[All-ten HD scouts](./mechanism-shorts-ms3-first-ten-scout-results.json) now bind
+6,181 planned frames to the existing source assets and original recordings. Actual
+phone inspection found cropped/occluded contacts and a shared controller-clearing
+bug; the native driver repair passes captured state and graph regressions. All ten
+repaired phone sheets remain drafts with located framing work. No whole HD product,
+current whole review or pilot admission follows from these sampled scouts.
+
 [Caption repair](./mechanism-shorts-ms3-caption-results.json) onb5f8fbae passes
 complete fast4,535/448 and relevant synthetic browser layout/narrated-cycle
 checks (24 exports,1,620 observed frames) with2,726 inputs held. E03 original-plate

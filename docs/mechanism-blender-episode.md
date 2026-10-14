@@ -22,6 +22,14 @@ and optional explicit cutaway hides. Camera projection metadata and evaluated
 surface/matrix/bounds accompany the captured frames. Visibility drivers are
 restored before each absolute state; explicit hides override only that frame.
 
+Native controller drivers and unrelated source-clock channels remain active. Only
+keyed channels for declared public inputs are muted in private copies of their
+active/NLA action slots; shared source actions stay intact for other objects.
+Declaring a driven property as a public input fails before rendering. The native
+regression is `tests/fixtures/blender-driver-regression.py`, run with Blender's
+`--background --python-exit-code 1 --python` options. It checks actual graph values
+across forward, repeated and backward states without rendering.
+
 Narration's asset count describes the existing renderer's actual 48kHz decoded
 PCM. The source clock separately retains the original rate/count, checked against
 FFprobe. Their durations must agree; this route contains no narration speed,
@@ -112,7 +120,10 @@ The [source-bound evidence](./mechanism-shorts-ms3-blender-episode-results.json)
 retains the actual full Alden zipper engineering draft, cache/font/caption repairs
 and failed checks. Its320×568 draft supplies no1080×1920 production, whole glyph,
 mechanical/contact, factual, continuous-motion or listening acceptance. Current
-pilot admission remains0/10; the other nine episode plans and final gates remain.
+pilot admission remains0/10. [All ten HD plans and phone scouts](./mechanism-shorts-ms3-first-ten-scout-results.json)
+now exist; framing/contact staging, whole products/reviews and final gates remain.
+Current producer changes invalidate prior producer-bound captures; historical
+products keep their original binding.
 
 ## Production CLI
 
