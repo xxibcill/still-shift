@@ -43,6 +43,19 @@ still hold before relying on them.
 
 ## Current state
 
+- **MS3 native coverage repair qualified in isolation (2026-10-15):** source/schema/
+  actual native board now reconciles the ten selected rows, pinned whole narration/
+  original1x clock/format, source/controllers and declared asset/rig work. Independent
+  narration/publication/order findings repaired after red2;18 focused/3 files/types
+  and final fast4,628/460 pass. Actual complete auditor returns10 selected/0 supported,
+  8 reuse/2 asset revisions/0 new rig types; fresh E1 verifies, nine failed rows stay
+  unavailable. Failed r0 manifest/journal unchanged. Initial OS ps denial retained.
+  Current72 is terminal failed after37 copied inputs disappeared;111 restored copies
+  and durable backup retain all exact bytes. Integrated on the milestone branch; bounded retry next;
+  successful current full lifecycle/receiving/installed/software and real fault/
+  whole review remain open. No paid generation or positive acceptance.
+  [Native cohort audit](./mechanism-shorts-ms3-native-coverage-review-results.json).
+
 - **MS3 current run failed; inputs restored (2026-10-15):** exact source5a91ad91/
   runtime1090f97c/profile1dd0 remains unchanged. Unified42093 is terminal1:
   run990.86s, EU001 sealed;EU002–EU010 failed after37 copied dependencies vanished
@@ -323,20 +336,22 @@ still hold before relying on them.
 
 ## Entries
 
-### 2026-10-15 — Preserve current run failure and restore exact dependencies
+### 2026-10-15 — Native selected-cohort coverage and actual failed-state audit
 
-- **Agent / branch:** Codex on `codex/mechanism-ms3` (source5a91ad91 held).
-- **Results:** current run terminal1 in990.86s; E1 seals, nine others fail when37
-  copied dependencies vanish. Cause not established; source remains exact.
-  Independent E1 checks610frames/13 pins/113 images/2 exceptions/2,440 native pins;
-  movie exact against prior full picture/audio proof. Whole acceptance remains0/10.
-- **Recovery:**37 exact originals found;111 temporary copies restored, all107
-  current/354 prior files reverified;112-file durable ignored backup byte-exact.
-  Failed r0 state/manifest and all attempts retained. No retry yet.
-- **Open / next:** qualified native coverage source repair in isolated branch,
-  bounded9-row retry; full report/resume/handoff/receiving/installed/software gates,
-  real intersection/mount/physical-label fault proof and whole reviews.
-- **Records:** [current lifecycle/failure](./mechanism-shorts-ms3-current-first-ten-lifecycle-results.json).
+- **Agent / branch:** Codex on `codex/ms3-review-fixes` (from87dbe002).
+- **Done:** generic native registry/board, frozen narration/clock/format admission,
+  exact channel order, distinct asset/rig totals and immutable bounded audit reports.
+- **Results:**18 focused tests/types and fast4,628/460 pass in stages. Actual auditor
+  handles all ten restored source/plan/narration bindings: support0, reuse8, asset
+  revisions2, new rig types0; one current E1 verifies and nine failed rows remain
+  unavailable. Failed journal/manifest bytes unchanged; no generation or repair.
+- **Rejected:** family/index fixtures, omitted order guard and review narration/order
+  regressions retained; output overwrite risk repaired. OS ps denial corrected by
+  existing approved process-inspection route. No source defect inferred from input loss.
+- **Open / next:** integrate qualified repair, bounded nine-row retry, full receiving/
+  installed/software, real intersection/mount/physical-label and whole reviews.
+- **Records:** [coverage evidence](./mechanism-shorts-ms3-native-coverage-review-results.json),
+  [native board/command](./mechanism-native-coverage.md).
 
 ### 2026-10-15 — Start the integrated actual first-ten lifecycle
 
@@ -11168,3 +11183,18 @@ still-shift --json` returns `[]`. The verified local archive hash still matches.
 - **Open:** current full gates/installed handoff/whole reviews; accepted0/10,
   tokens null. No new spend, publish, merge or Actions.
 - **Records:** [Portable lifecycle and partial audits](./mechanism-shorts-ms3-first-ten-portable-lifecycle-results.json).
+
+### 2026-10-15 — Preserve current run failure and restore exact dependencies
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` (source5a91ad91 held).
+- **Results:** current run terminal1 in990.86s; E1 seals, nine others fail when37
+  copied dependencies vanish. Cause not established; source remains exact.
+  Independent E1 checks610frames/13 pins/113 images/2 exceptions/2,440 native pins;
+  movie exact against prior full picture/audio proof. Whole acceptance remains0/10.
+- **Recovery:**37 exact originals found;111 temporary copies restored, all107
+  current/354 prior files reverified;112-file durable ignored backup byte-exact.
+  Failed r0 state/manifest and all attempts retained. No retry yet.
+- **Open / next:** qualified native coverage source repair in isolated branch,
+  bounded9-row retry; full report/resume/handoff/receiving/installed/software gates,
+  real intersection/mount/physical-label fault proof and whole reviews.
+- **Records:** [current lifecycle/failure](./mechanism-shorts-ms3-current-first-ten-lifecycle-results.json).

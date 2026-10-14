@@ -1,0 +1,216 @@
+{
+  "schemaVersion": "mechanism-native-coverage-board-2",
+  "revision": 1,
+  "selectionFile": {
+    "path": "mechanism-shorts-ms3-pilot-selection.json",
+    "bytes": 48736,
+    "sha256": "sha256:004f378e3380905fb5ac7ce213f83e2753c7dedf579d841cedaa0994f5c73b64"
+  },
+  "selection": {
+    "id": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+    "selectedEpisodeIds": [
+      "EU-001",
+      "EU-002",
+      "EU-003",
+      "EU-004",
+      "EU-005",
+      "EU-006",
+      "EU-007",
+      "EU-008",
+      "EU-009",
+      "EU-010"
+    ],
+    "sha256": "sha256:8c5f378389d595c83fdcf3ff1cd41bd2d57d64b3a622c953013cffe39d001471"
+  },
+  "registry": [
+    {
+      "id": "OBJ-EU-001",
+      "family": "tape-hook",
+      "designVariant": "Existing unbranded conceptual floating hook",
+      "selectedAssetSha256": "sha256:2e0fc8ec95445a041b10877006602cad7717006f5b0188f3e9625f4b64e8ca62",
+      "currentAssetSha256": "sha256:2e0fc8ec95445a041b10877006602cad7717006f5b0188f3e9625f4b64e8ca62",
+      "controllerSha256": "sha256:c0f3beacbc006778c5a8d711b668e82bf044f52e5694b972a60d16a69b3a03b8"
+    },
+    {
+      "id": "OBJ-EU-002",
+      "family": "cable-tie",
+      "designVariant": "one-piece outside-serrated nylon cable tie with integral rooted plastic tongue",
+      "selectedAssetSha256": "sha256:4fcbdee97d011ee9743aa9db33e40d24bfc744f1c479e71a95a5eb2e5a842765",
+      "currentAssetSha256": "sha256:4fcbdee97d011ee9743aa9db33e40d24bfc744f1c479e71a95a5eb2e5a842765",
+      "controllerSha256": "sha256:3ac6949fae00e8f2e46611b8cc804697480c0a5b9163dede2c5b28f516dc847d"
+    },
+    {
+      "id": "OBJ-EU-003",
+      "family": "clothespeg",
+      "designVariant": "Conventional wooden two-arm peg around US4063333A Fig7; reconstructed seated normal state, excluding improved retention parts",
+      "selectedAssetSha256": "sha256:b4882a20e21161207f1e788a6c84c55c69ddc00758f405cfa3aa4c0bdb26d362",
+      "currentAssetSha256": "sha256:b4882a20e21161207f1e788a6c84c55c69ddc00758f405cfa3aa4c0bdb26d362",
+      "controllerSha256": "sha256:c0acbb95df29c4cc1a74428a713875eef8523d471ff9eeeab0b527304d34cbce"
+    },
+    {
+      "id": "OBJ-EU-004",
+      "family": "zipper",
+      "designVariant": "US1219881A metal-element zipper: identical staggered projection/recess members with a diverging-channel slider; YKK general tunnel explanation as corroboration.",
+      "selectedAssetSha256": "sha256:668cc570be38d9fb933b89be70191887be1fd43720b5c384f03a11a6c749bbd3",
+      "currentAssetSha256": "sha256:322587868049c245052635eb0c58db3a09e5dbf16ff8fe34efca6d1ffe2de593",
+      "controllerSha256": "sha256:e9134b88dd8b1eb45ba6f7a1eb35377e674d8be708712028de1701353b9ac54f"
+    },
+    {
+      "id": "OBJ-EU-005",
+      "family": "keyhole-slot",
+      "designVariant": "Conventional keyhole slot disclosed in EP1817988A1 background: enlarged entry then narrower shank track, without the invention’s additional snap neck.",
+      "selectedAssetSha256": "sha256:d14bc1d7ba6a66f7fbcd3e065e79c32fe14da9d9105fde2fbd37a4336c2b7dae",
+      "currentAssetSha256": "sha256:d14bc1d7ba6a66f7fbcd3e065e79c32fe14da9d9105fde2fbd37a4336c2b7dae",
+      "controllerSha256": "sha256:762dbaa99d545dad439b9ecf4ab42eda69c1feffce554ae1d7fa846942b8fa8c"
+    },
+    {
+      "id": "OBJ-EU-006",
+      "family": "binder-clip",
+      "designVariant": "US1139627A continuous triangular sheet-steel binder, integral rolled jaw journals and body-bearing wire levers; authored U-handle proportions, clamping action only",
+      "selectedAssetSha256": "sha256:78baf6707008fd253ee7b2799e47e57722f73e9a72a792d345e90fb20f6764d5",
+      "currentAssetSha256": "sha256:78baf6707008fd253ee7b2799e47e57722f73e9a72a792d345e90fb20f6764d5",
+      "controllerSha256": "sha256:6e43b11718c52a9a6d31f5c1c44cec6bf1c95a0c22c1e77906667cc42c6ad2bd"
+    },
+    {
+      "id": "OBJ-EU-007",
+      "family": "side-release-buckle",
+      "designVariant": "US5546642A improved side-release buckle embodiment with resilient male arms, upper/lower abutments and female release actuators.",
+      "selectedAssetSha256": "sha256:5e003f0e5845e9284eaaefd6f25c3d34acd05f5c8d46e82e3acca8b96296c30f",
+      "currentAssetSha256": "sha256:bc7ffbe4b8e629c80f5714a7b87ad679235d553d82f8b292c07da27307eb16b7",
+      "controllerSha256": "sha256:33ada69211a8b7da76445dbcbdcdd6172470ce0b0ac2fac8e575f2a11dcbaff1"
+    },
+    {
+      "id": "OBJ-EU-008",
+      "family": "spring-latch",
+      "designVariant": "US10837199B2 latch550 closing subassembly, Figs16–18: cam face556, spring570 and fixed boss572; show the closing stroke rather than the separate deadlocking system.",
+      "selectedAssetSha256": "sha256:d77e09c9022cb5e26a66a1083bccf3e95048b4e9e4ae3a6c3e7def498d441079",
+      "currentAssetSha256": "sha256:d77e09c9022cb5e26a66a1083bccf3e95048b4e9e4ae3a6c3e7def498d441079",
+      "controllerSha256": "sha256:b644a36b598f0a720421061f046e02a7b4d5168461d1723602ca6295fd985169"
+    },
+    {
+      "id": "OBJ-EU-009",
+      "family": "curved-tape-blade",
+      "designVariant": "Conventional transverse curved blade in WO2020159114A1 background Fig.2; explicit flattening comparison and authored exposed teaching mandrel",
+      "selectedAssetSha256": "sha256:2b8fde570293006dcb982db13693694479de368323229f8608df41d6d0936dcc",
+      "currentAssetSha256": "sha256:2b8fde570293006dcb982db13693694479de368323229f8608df41d6d0936dcc",
+      "controllerSha256": "sha256:7a51a582ef16b84c33b968713a77b36c09e4bb37e3fcbf7cce7831cf4e8de589"
+    },
+    {
+      "id": "OBJ-EU-010",
+      "family": "stay-on-can-tab",
+      "designVariant": "US6575684B2 first stay-on lid embodiment: tab42/44, rivet16, bendable flange46, tongue17 and score58 ending in hinge19.",
+      "selectedAssetSha256": "sha256:6a7dfc3a60d84c81beb182c4fa14d606cb03ec0a54113a30d0a5ae438f47e838",
+      "currentAssetSha256": "sha256:6a7dfc3a60d84c81beb182c4fa14d606cb03ec0a54113a30d0a5ae438f47e838",
+      "controllerSha256": "sha256:e598ba232bdc390ab73e526f2c7f3b46127dbf6ddf02d0267b038cc3016ead08"
+    }
+  ],
+  "episodes": [
+    {
+      "id": "EU-001",
+      "registryId": "OBJ-EU-001",
+      "route": "existing-pack-rig",
+      "assetWork": [],
+      "rigWork": [],
+      "newRigType": null,
+      "workEvidence": []
+    },
+    {
+      "id": "EU-002",
+      "registryId": "OBJ-EU-002",
+      "route": "existing-pack-rig",
+      "assetWork": [],
+      "rigWork": [],
+      "newRigType": null,
+      "workEvidence": []
+    },
+    {
+      "id": "EU-003",
+      "registryId": "OBJ-EU-003",
+      "route": "existing-pack-rig",
+      "assetWork": [],
+      "rigWork": [],
+      "newRigType": null,
+      "workEvidence": []
+    },
+    {
+      "id": "EU-004",
+      "registryId": "OBJ-EU-004",
+      "route": "new-asset-existing-rig",
+      "assetWork": [
+        "Retained native zipper source revision differs from the frozen selection asset identity; current narrated source/evidence is bound independently."
+      ],
+      "rigWork": [],
+      "newRigType": null,
+      "workEvidence": [
+        {
+          "path": "mechanism-shorts-ms3-blender-episode-results.json",
+          "bytes": 14843,
+          "sha256": "sha256:ee96a073acd86e312a5d0d36c2da8cefa1948afa63d114e2cd16c0332b1ed4e6"
+        }
+      ]
+    },
+    {
+      "id": "EU-005",
+      "registryId": "OBJ-EU-005",
+      "route": "existing-pack-rig",
+      "assetWork": [],
+      "rigWork": [],
+      "newRigType": null,
+      "workEvidence": []
+    },
+    {
+      "id": "EU-006",
+      "registryId": "OBJ-EU-006",
+      "route": "existing-pack-rig",
+      "assetWork": [],
+      "rigWork": [],
+      "newRigType": null,
+      "workEvidence": []
+    },
+    {
+      "id": "EU-007",
+      "registryId": "OBJ-EU-007",
+      "route": "new-asset-existing-rig",
+      "assetWork": [
+        "Surface anchor repair creates a new native asset version; arm geometry/control phases are retained at matching authored states."
+      ],
+      "rigWork": [],
+      "newRigType": null,
+      "workEvidence": [
+        {
+          "path": "mechanism-shorts-ms3-first-ten-buckle-review-results.json",
+          "bytes": 39205,
+          "sha256": "sha256:85bf09b2472b596b16749dd81b25a635955a4d2fae650135ddf88b32de26e5d3"
+        }
+      ]
+    },
+    {
+      "id": "EU-008",
+      "registryId": "OBJ-EU-008",
+      "route": "existing-pack-rig",
+      "assetWork": [],
+      "rigWork": [],
+      "newRigType": null,
+      "workEvidence": []
+    },
+    {
+      "id": "EU-009",
+      "registryId": "OBJ-EU-009",
+      "route": "existing-pack-rig",
+      "assetWork": [],
+      "rigWork": [],
+      "newRigType": null,
+      "workEvidence": []
+    },
+    {
+      "id": "EU-010",
+      "registryId": "OBJ-EU-010",
+      "route": "existing-pack-rig",
+      "assetWork": [],
+      "rigWork": [],
+      "newRigType": null,
+      "workEvidence": []
+    }
+  ],
+  "qualification": "Existing selected native assets and their controller bindings are imported reusable library inputs. Two current asset identities differ from frozen intake and are disclosed as revisions. Rig-work totals are declared library work, not automatic physical or behavior qualification. Fresh current production verification and all six actual artifact-specific reviews are required for support; no positive pilot acceptance is inferred."
+}
