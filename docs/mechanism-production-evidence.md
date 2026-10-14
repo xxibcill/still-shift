@@ -59,3 +59,11 @@ identity. Fresh integrated native/CLI handoff and complete local tiers remain
 separate required proofs. Image generation/decode does not establish whole glyph,
 mechanical, continuous-motion, listening, factual, human or ten-episode pilot
 acceptance.
+
+Native Blender products use the separately discoverable
+`blender-production-evidence` selector and strict version2 manifest. Their sampling
+uses authored output frames and preserves shot/control/source-frame/callout/speech
+origins. [The native guide](./mechanism-blender-episode.md#encoded-native-review-package)
+describes exact encoded phone/crop/PCM generation and fresh verification. This
+implementation remains subject to current producer, receiving, installed-package
+and whole-review qualification; helper checks alone do not establish those gates.

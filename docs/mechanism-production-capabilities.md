@@ -79,6 +79,16 @@ and measured glyphs. It allows 100000
 layer-frames, 8388608 report bytes and
 512 exact encoded bad-frame PNGs.
 Bad-frame image hashes are checked against the bound video on fresh replay.
+Native review evidence uses version2 with up to 512
+unique final-file samples and 1024 images.
+Admission checks the prospective sample/image budgets before capture or export.
+Shot entry/mid/exit, source/control keys, speech/callout events and cut boundaries
+retain separate origins when names or frames coincide. Each shot receives an exact
+360×640
+phone transform and shared-caption crop. Active retained native projections supply
+anchor crops; missing projections produce located exceptions. Review generation and
+fresh pixel verification do not submit new native renders. Source identity ignores
+receiving-machine file locations while retaining authored content and dependency pins.
 The handoff command supports both production backends. Native version-2 packets
 retain bounded source/compilation metadata, current artifact references and exact
 final decoded PCM. Receiving refreshes resume paths from the current manifest;

@@ -44,7 +44,7 @@ still hold before relying on them.
 ## Current state
 
 - **MS3 isolated review repairs (2026-10-15):** `codex/ms3-review-fixes` starts
-  at exact `d45f3f4f`; frozen original source remains live for portable68. Native
+  at exact `d45f3f4f`; frozen original portable68 lifecycle is terminal on the milestone branch. Native
   compact handoff now authenticates source/clock/artifact closure and final PCM,
   refreshes current resume paths after relocation and preserves unfinished review.
   Scoped30 units/6 fixture-runtime tests and fast4,596 tests pass in stages;
@@ -58,6 +58,14 @@ still hold before relying on them.
   functional defect. Final refresh4,611/458 passes after the schema-discovery
   expectation repair. No new spend or acceptance.
   [Review, checks and limits](./mechanism-shorts-ms3-native-handoff-review-results.json).
+
+  Native encoded-review package now covers shot/cut/control/callout/speech samples,
+  phone/caption/anchor crops and exact final PCM. Copied actual EU008 helper verifies
+  89 samples/102 images under256MiB; re-signed source and phone mutations reject;
+  review-folder relocation passes. Two crop exceptions retained. Independent P2
+  anchor-contract narrowing reproduced red and repaired consistently. Current
+  full native producer/receiving/installed gates and whole acceptance remain open.
+  [Native encoded-review checks and retained failures](./mechanism-shorts-ms3-native-encoded-review-results.json).
 
 - **MS3 in progress (2026-10-15):** `codex/mechanism-ms3`,
   [draft PR #58](https://github.com/xxibcill/still-shift/pull/58) targets main.
@@ -282,6 +290,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Native final-file review package and anchor compatibility repair
+
+- **Agent / branch:** Codex on `codex/ms3-review-fixes` (from `018c2540`).
+- **Done:** native review planning/extraction/verification, discovery/schema,
+  exact final PCM shared with handoff; legacy helper API preserved.
+- **Results:** copied actual EU008 gives89 samples/102 images/5 shots/2 exceptions;
+  re-signed source/phone changes reject and review-folder relocation passes.
+  Initial scoped12 tests, fixture-runtime10 and fast4,616 pass in stages.
+  Independent P2 native anchor-bound defect reproduces red; repair passes23
+  scoped tests including256 admission/257 rejection; final fast4,617/459 passes in80.61s.
+- **Rejected:** absent planner, role expectation, unused binding, memory constructor
+  and default-schema-access failures retained; no historical binding relabelled.
+- **Open / next:** integrate after current gate; fresh native/CLI/installed and
+  whole factual/mechanical/glyph/motion/listening review. No spend or acceptance.
+- **Records:** [review evidence](./mechanism-shorts-ms3-native-encoded-review-results.json),
+  [separate Standards/Spec review](./mechanism-shorts-ms3-code-review.md).
 
 ### 2026-10-15 — First-pass provenance and recovery reporting
 

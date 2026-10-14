@@ -1,4 +1,8 @@
 import {
+  buildBlenderProductionReview,
+  checkBlenderProductionReview,
+} from "./blender-production-review.ts";
+import {
   buildBlenderProductionHandoff,
   checkBlenderProductionHandoff,
 } from "./blender-production-handoff.ts";
@@ -338,6 +342,19 @@ export async function createBlenderProductionExecutor(options: {
         explanation:
           "Current input pins, native capture/control/camera mapping and whole decoded output clocks verified. Mechanics, sampled/encoded readability, factual, continuous motion and listening remain separate.",
       };
+      const review = await buildBlenderProductionReview({
+        compiled,
+        binding,
+        decoded,
+        outputRoot: context.outputRoot,
+        directory: join(context.attemptDirectory, "review-evidence"),
+        video: artifacts[2]!,
+        decodedReport: artifacts[3]!,
+        nativePlates: artifacts[0]!,
+        owner: context.nodeMemory,
+        signal: context.signal,
+      });
+      artifacts.push(review.artifact);
       artifacts.push(
         ...(await buildBlenderProductionHandoff({
           compiled,
@@ -352,6 +369,8 @@ export async function createBlenderProductionExecutor(options: {
           outputRoot: context.outputRoot,
           directory: join(context.attemptDirectory, "review"),
           decoded,
+          audio: review.audio,
+          cropExceptions: review.cropExceptions,
           resume: {
             manifestPath: context.manifestPath ?? null,
             outputDirectory: context.outputRoot,
@@ -363,13 +382,14 @@ export async function createBlenderProductionExecutor(options: {
           },
           assets: {
             video: artifacts[2]!,
-            evidence: visual.artifact,
+            evidence: review.artifact,
+            renderedVisualReport: visual.artifact,
             decodedReport: artifacts[3]!,
             composition: artifacts[1]!,
             nativePlates: artifacts[0]!,
             ...(quality ? { qualityReport: quality.factsPin } : {}),
           },
-          images: visual.report.images,
+          images: review.images,
           owner: context.nodeMemory,
           signal: context.signal,
         })),
@@ -608,6 +628,31 @@ export async function createBlenderProductionExecutor(options: {
           context.nodeMemory,
           context.signal,
         );
+        const reviewEvidence = product.artifacts.find((file) =>
+          file.path.endsWith("/review-evidence/evidence.json"),
+        );
+        if (!reviewEvidence)
+          throw Error(
+            "Native Blender product lacks its encoded review evidence",
+          );
+        const review = await checkBlenderProductionReview({
+          compiled,
+          binding: product.report.binding,
+          decoded,
+          outputRoot: context.outputRoot,
+          evidence: reviewEvidence,
+          video: product.artifacts.find((file) =>
+            file.path.endsWith("/output.mp4"),
+          )!,
+          decodedReport: product.artifacts.find((file) =>
+            file.path.endsWith("/decoded-output.json"),
+          )!,
+          nativePlates: product.artifacts.find((file) =>
+            file.path.endsWith("/native-plates.json"),
+          )!,
+          owner: context.nodeMemory,
+          signal: context.signal,
+        });
         const handoff = product.artifacts.find((file) =>
           file.path.endsWith("/review/handoff.json"),
         );
@@ -631,7 +676,8 @@ export async function createBlenderProductionExecutor(options: {
             video: product.artifacts.find((file) =>
               file.path.endsWith("/output.mp4"),
             )!,
-            evidence: visual.artifact,
+            evidence: review.artifact,
+            renderedVisualReport: visual.artifact,
             decodedReport: product.artifacts.find((file) =>
               file.path.endsWith("/decoded-output.json"),
             )!,
@@ -649,7 +695,8 @@ export async function createBlenderProductionExecutor(options: {
                 }
               : {}),
           },
-          images: visual.report.images,
+          images: review.images,
+          cropExceptions: review.cropExceptions,
           owner: context.nodeMemory,
           signal: context.signal,
         });

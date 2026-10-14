@@ -61,6 +61,7 @@ describe("production discovery and schema CLI", () => {
       "production-retry",
       "semantic-registration",
       "production-evidence",
+      "blender-production-evidence",
       "production-handoff",
       "production-qa-plan",
       "production-qa-program",

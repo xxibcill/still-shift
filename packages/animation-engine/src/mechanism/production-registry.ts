@@ -1,3 +1,4 @@
+import { BlenderProductionEvidenceSchema } from "./blender-production-review-contract.ts";
 import {
   BlenderProductionRenderedVisualSchema,
   BLENDER_PRODUCTION_VISUAL_LIMITS,
@@ -69,6 +70,7 @@ export const mechanismProductionSchemas = {
   "blender-production-queue": BlenderProductionQueueSchema,
   "blender-production-product": BlenderProductionQueueProductSchema,
   "blender-production-episode-report": BlenderProductionEpisodeReportSchema,
+  "blender-production-evidence": BlenderProductionEvidenceSchema,
   "production-retry": MechanismProductionRetrySchema,
   "production-projects": MechanismProductionProjectsSchema,
   "production-qa-plan": MechanismProductionQAPlanSchema,
@@ -207,6 +209,17 @@ export function inspectMechanismProductionCapabilities() {
         badFrames: "exact-RGBA-from-bound-encoded-output",
         wholeEncodedGlyphApproval: "separate-review",
       },
+      reviewEvidence: {
+        schemaVersion: "mechanism-production-evidence-2",
+        limits: MECHANISM_PRODUCTION_EVIDENCE_LIMITS,
+        sampling: "shot-entry-mid-exit-control-callout-speech-events-and-cuts",
+        crops: ["shared-caption-rectangle", "actual-active-native-projections"],
+        verification:
+          "current-source-fingerprint-encoded-pixel-transforms-final-PCM",
+        nativeSubmissions: "none-for-review-generation-or-verification",
+        missingProjection: "located-crop-exception",
+        wholeAcceptance: "separate-review",
+      },
       pending: ["whole-encoded-glyph-review", "whole-pilot-review"],
     },
     nativeExecutor: {
@@ -302,6 +315,16 @@ and measured glyphs. It allows ${c.nativeBlenderExecutor.renderedQA.limits.layer
 layer-frames, ${c.nativeBlenderExecutor.renderedQA.limits.reportBytes} report bytes and
 ${c.nativeBlenderExecutor.renderedQA.limits.badFrames} exact encoded bad-frame PNGs.
 Bad-frame image hashes are checked against the bound video on fresh replay.
+Native review evidence uses version2 with up to ${c.nativeBlenderExecutor.reviewEvidence.limits.samples}
+unique final-file samples and ${c.nativeBlenderExecutor.reviewEvidence.limits.images} images.
+Admission checks the prospective sample/image budgets before capture or export.
+Shot entry/mid/exit, source/control keys, speech/callout events and cut boundaries
+retain separate origins when names or frames coincide. Each shot receives an exact
+${c.nativeBlenderExecutor.reviewEvidence.limits.phoneWidth}×${c.nativeBlenderExecutor.reviewEvidence.limits.phoneHeight}
+phone transform and shared-caption crop. Active retained native projections supply
+anchor crops; missing projections produce located exceptions. Review generation and
+fresh pixel verification do not submit new native renders. Source identity ignores
+receiving-machine file locations while retaining authored content and dependency pins.
 The handoff command supports both production backends. Native version-2 packets
 retain bounded source/compilation metadata, current artifact references and exact
 final decoded PCM. Receiving refreshes resume paths from the current manifest;

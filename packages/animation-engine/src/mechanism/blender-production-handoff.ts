@@ -43,9 +43,11 @@ interface HandoffSource {
     decodedReport: Pin;
     composition: Pin;
     nativePlates: Pin;
+    renderedVisualReport?: Pin;
     qualityReport?: Pin;
   };
   images: readonly { frame: number }[];
+  cropExceptions?: number;
 }
 function snapshotMetadata(input: HandoffSource) {
   return {
@@ -63,7 +65,7 @@ function snapshotMetadata(input: HandoffSource) {
       shots: input.compiled.plan.shots.length,
       sampledFrames: new Set(input.images.map((image) => image.frame)).size,
       images: input.images.length,
-      cropExceptions: 0,
+      cropExceptions: input.cropExceptions ?? 0,
     },
     qa: Object.fromEntries(
       input.qa.map((review) => [review.dimension, review.status]),
@@ -91,6 +93,7 @@ export async function buildBlenderProductionHandoff(
     outputRoot: string;
     directory: string;
     decoded: MechanismProductionDecodedOutput;
+    audio?: Pin;
     resume: {
       manifestPath: string | null;
       outputDirectory: string;
@@ -103,33 +106,42 @@ export async function buildBlenderProductionHandoff(
   },
 ) {
   await mkdir(input.directory, { recursive: false });
-  const audioPath = join(input.directory, "review-audio.wav");
-  await evidenceProcess(
-    "ffmpeg",
-    [
-      "-v",
-      "error",
-      "-nostdin",
-      "-threads",
-      "1",
-      "-i",
-      await productionOwnedPath(input.outputRoot, input.assets.video.path),
-      "-map",
-      "0:a:0",
-      "-vn",
-      "-c:a",
-      "pcm_f32le",
-      audioPath,
-    ],
-    input.owner,
-    input.signal,
-  );
+  const audioPath = input.audio
+    ? await productionOwnedPath(input.outputRoot, input.audio.path)
+    : join(input.directory, "review-audio.wav");
+  if (!input.audio) {
+    await evidenceProcess(
+      "ffmpeg",
+      [
+        "-v",
+        "error",
+        "-nostdin",
+        "-threads",
+        "1",
+        "-i",
+        await productionOwnedPath(input.outputRoot, input.assets.video.path),
+        "-map",
+        "0:a:0",
+        "-vn",
+        "-c:a",
+        "pcm_f32le",
+        audioPath,
+      ],
+      input.owner,
+      input.signal,
+    );
+  }
   await checkReviewAudio(audioPath, input.decoded, input.owner, input.signal);
   const audio = await productionFile(
     input.outputRoot,
     relative(input.outputRoot, audioPath),
     input.owner,
   );
+  if (
+    input.audio &&
+    mechanismPackHash(audio) !== mechanismPackHash(input.audio)
+  )
+    throw Error("Native handoff supplied audio pin changed");
   const snapshot = BlenderProductionHandoffSchema.parse({
     schemaVersion: "mechanism-production-handoff-2",
     backend: "blender-native",
