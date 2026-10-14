@@ -24,7 +24,7 @@ import {
   WebGLRenderer,
 } from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
-import type { Object3D } from "three";
+import type { Intersection, Object3D } from "three";
 import type { MechanismScene } from "@still-shift/scene-contract";
 import type { evaluateMechanismFrame } from "../../../renderer-core/src/mechanism/index.ts";
 
@@ -256,7 +256,7 @@ export async function createMechanismPlateRenderer(
           );
           const first = raycaster
             .intersectObjects(meshes, false)
-            .find((hit) => visible(hit.object));
+            .find(occludesAnchor);
           if (first && first.distance < distance - 0.0001)
             visibility = "occluded";
         }
@@ -279,6 +279,18 @@ export async function createMechanismPlateRenderer(
     png: () => canvas.toDataURL("image/png").split(",")[1]!,
     dispose,
   };
+}
+
+function occludesAnchor(hit: Intersection): boolean {
+  if (!(hit.object instanceof Mesh) || !visible(hit.object)) return false;
+  const material = Array.isArray(hit.object.material)
+    ? hit.object.material[hit.face?.materialIndex ?? 0]
+    : hit.object.material;
+  // Supported procedural maps are opaque; masks use the material's float uniforms.
+  return Boolean(
+    material?.visible &&
+      Math.fround(material.opacity) >= Math.fround(material.alphaTest),
+  );
 }
 
 function visible(object: Object3D): boolean {

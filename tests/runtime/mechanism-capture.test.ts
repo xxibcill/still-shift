@@ -1,3 +1,4 @@
+import { BoxGeometry } from "three";
 import { createHash } from "node:crypto";
 import { createRequire } from "node:module";
 import { mkdir, mkdtemp, readFile, readdir, writeFile } from "node:fs/promises";
@@ -26,6 +27,7 @@ import {
   createTapeHookGeometry,
   TAPE_HOOK_RIVET_MESH_IDS,
 } from "../../packages/animation-engine/src/mechanism/geometry.ts";
+import { createTapeHookScene } from "../../packages/animation-engine/src/mechanism/tape-hook.ts";
 import { inspectCompositionPng } from "../../packages/animation-engine/src/composition-media-color.ts";
 
 const fontPath = fileURLToPath(
@@ -474,4 +476,140 @@ describe("first-party mechanism plate capture", () => {
       context: { path: fontPath },
     });
   });
+});
+
+describe("cutout anchor visibility", () => {
+  function cutoutScene(opacity: number, grouped: boolean) {
+    const source = createTapeHookScene();
+    source.parts.forEach((part) => {
+      part.visible = ["model", "hook"].includes(part.id);
+    });
+    source.parts.push({
+      id: "cutout",
+      visible: true,
+      transform: {
+        position: [-2, 1.25, 0.3],
+        rotation: [0, 0, 0],
+        scale: [1, 1, 1],
+        pivot: [0, 0, 0],
+      },
+    });
+    source.geometry.materials.push({
+      id: "cutout",
+      color: "#ffffff",
+      roughness: 1,
+      metalness: 0,
+      opacity,
+      alphaMode: "mask",
+      alphaCutoff: 0.5,
+      side: "double",
+      emissive: "#000000",
+      emissiveIntensity: 0,
+    });
+    const box = new BoxGeometry(0.5, 5, 5);
+    box.computeBoundingBox();
+    source.geometry.meshes.push({
+      id: "cutout",
+      partId: "cutout",
+      materialId: grouped ? source.geometry.materials[0]!.id : "cutout",
+      positions: Array.from(box.attributes.position!.array),
+      normals: Array.from(box.attributes.normal!.array),
+      indices: Array.from(box.index!.array),
+      bounds: {
+        min: box.boundingBox!.min.toArray() as [number, number, number],
+        max: box.boundingBox!.max.toArray() as [number, number, number],
+      },
+      ...(grouped
+        ? {
+            groups: [
+              {
+                start: 0,
+                count: box.index!.count,
+                materialIndex: source.geometry.materials.length - 1,
+              },
+            ],
+          }
+        : {}),
+    });
+    box.dispose();
+    source.anchors.push({
+      id: "front-face",
+      part: "hook",
+      position: [-0.18, 1.25, 0.3],
+      role: "proof-target",
+    });
+    source.camera = {
+      position: [-6, 1.25, 0.3],
+      target: [-0.18, 1.25, 0.3],
+      up: [0, 1, 0],
+      fovDegrees: 36,
+      near: 0.03,
+      far: 100,
+    };
+    source.geometrySha256 = canonicalMechanismHash(source.geometry);
+    return MechanismSceneSchema.parse(source);
+  }
+  async function captureCutout(
+    source: MechanismScene,
+    id: string,
+    hiddenParts: string[] = [],
+  ) {
+    const frame = evaluateMechanismFrame(prepareMechanismScene(source), {
+      frame: 0,
+      width: 160,
+      height: 284,
+      hiddenParts,
+    });
+    const result = await captureMechanismPlates({
+      ...options,
+      scene: source,
+      frames: [frame],
+      outputDirectory: join(root, id),
+    });
+    const sidecar = MechanismSidecarSchema.parse(
+      JSON.parse(await readFile(result.sidecarPath, "utf8")),
+    );
+    return {
+      result,
+      sidecar,
+      anchor: sidecar.frames[0]!.anchors.find(
+        (anchor) => anchor.anchor === "front-face",
+      )!,
+    };
+  }
+  it.each([false, true])(
+    "keeps an exposed anchor visible behind discarded cutouts (material groups: %s)",
+    async (grouped) => {
+      const source = cutoutScene(0, grouped);
+      const discarded = await captureCutout(source, `discarded-${grouped}`);
+      const hidden = await captureCutout(source, `hidden-cutout-${grouped}`, [
+        "cutout",
+      ]);
+      expect(discarded.result.frames[0]!.sha256).toBe(
+        hidden.result.frames[0]!.sha256,
+      );
+      expect(hidden.anchor.visibility).toBe("visible");
+      expect(discarded.anchor.visibility).toBe("visible");
+      expect(
+        discarded.sidecar.frames[0]!.protectedRegions.some(
+          (region) => region.id === "front-face",
+        ),
+      ).toBe(true);
+    },
+    120_000,
+  );
+  it("uses the shader's strict cutoff comparison and still rejects opaque occlusion", async () => {
+    const below = await captureCutout(cutoutScene(0.49, false), "below-cutoff");
+    const boundary = await captureCutout(cutoutScene(0.5, false), "at-cutoff");
+    expect(below.anchor.visibility).toBe("visible");
+    expect(boundary.anchor.visibility).toBe("occluded");
+    expect(below.result.frames[0]!.sha256).not.toBe(
+      boundary.result.frames[0]!.sha256,
+    );
+    const roundedBoundary = await captureCutout(
+      cutoutScene(0.499999999, false),
+      "float-cutoff",
+    );
+    expect(roundedBoundary.anchor.visibility).toBe("occluded");
+  }, 120_000);
 });

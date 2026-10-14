@@ -43,18 +43,24 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #52 review fixes (2026-10-14):** three P2 findings are posted inline at
-  reviewed head `a204cde0`. Displayed-copy case handling is committed at `1925af45`;
-  panel/proof-region coverage and the exposed E01 default layouts are repaired.
-  All 50 focused case/reading/font and 14 overlay tests pass; type checks and
-  both 61-frame portrait anchor controls pass. Discarded-cutout occlusion remains
-  in flight. Initial failures and baseline negatives are retained. The PR log
-  formatting is repaired. Push waits for the final fix and verification.
+- **PR #52 review fixes complete (2026-10-14):** three inline P2 findings are
+  repaired in one commit each: case handling `1925af45`, panel protection/default
+  E01 layouts `1f9efb37`, and the cutout fix in the containing final slice. Fresh
+  fast verification passes all 3,785 units; all 151 runtime, 318 integration and
+  14 Python tests plus browser smoke complete in stages. The initial runtime
+  aggregate remains failed for a missing worktree soundtrack runtime; the pinned
+  existing runtime enables the retained continuation. All 66 mechanism tests are
+  refreshed after default-layout repair; four mask controls and 24 encoded
+  semantic cases pass. Fresh pinned-font measurement over all 696 retained E01
+  sidecar frames accepts layout and all seven holds. Both review agents find no
+  remaining actionable defects. The shared editable Python package is restored
+  to the primary checkout. Push follows the final slice to PR #52; owner merge
+  and human visual/listening acceptance remain pending.
   [Fix records](./pr-52-fix-results.json).
 
 - **MS1 software complete in stages (2026-10-10):** `codex/mechanism-ms1` carries
   exact MS0 prerequisite `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51)
-  remains open/unmerged. All 76 original required groups completed on unchanged
+  is merged into `main` at `57967fa6` (2026-10-14). All 76 original required groups completed on unchanged
   `09ce824b` production/test inputs: attempt 3 passes initial checks and 61 groups,
   then fails required Canvas timing 1.351 > 1.25 with exact pixels; the unchanged
   strict matrix and 15-command suffix actually exit 0. Final 176 baselines/36,061
@@ -70,7 +76,7 @@ still hold before relying on them.
   [results](./mechanism-shorts-ms1-results.json), [gate history](./mechanism-shorts-ms1-full-gate-results.json).
 
 - **MS0 audit complete (2026-10-09):** `codex/mechanism-ms0` audit is committed
-  at `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51) is open.
+  at `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51) is merged into `main` (2026-10-14).
   Original E01 inputs:27 dependencies,25 ZIP identities and13 original-copy
   receipts match; actual Plex static cut/copy coverage passes. Rubric, protocol,
   boundaries and budgets are frozen. Historical Arial/GPU identities, public
@@ -81,7 +87,7 @@ still hold before relying on them.
   records. The roadmap now names the 0.1.1 checkpoint. Dated MS0 input/API/font
   evidence remains unchanged; its source comparisons still refer to the original
   `e6eb7b06` / `db28a938` audit, not a new release verification. Conflict resolution
-  changes documentation only relative to `main`; PR integration remains pending.
+  changes documentation only relative to `main`; PR #51 is now integrated.
   [PR #51](https://github.com/xxibcill/still-shift/pull/51),
   [resolution record](#2026-10-12--resolve-ms0-pr-51-conflicts).
 
@@ -103,7 +109,7 @@ still hold before relying on them.
 
 - **MS0 audit complete (2026-10-09):** Codex on `codex/mechanism-ms0` from
   `main` `e6eb7b06`; milestone [PR #51](https://github.com/xxibcill/still-shift/pull/51)
-  is open. Original E01 inputs are recovered: 27 dependencies, all 25 ZIP manifest identities and 13
+  is merged into `main` (2026-10-14). Original E01 inputs are recovered: 27 dependencies, all 25 ZIP manifest identities and 13
   original-copy receipts match; actual Plex static cut/copy coverage passes.
   At that audit, composition source was unchanged from release, and five stored gate
   artifacts match their recorded hashes. Rubric, protocol, boundaries and
@@ -212,6 +218,25 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Repair discarded-cutout anchor visibility; finish PR #52 fixes
+
+- **Agent / branch:** Codex on `codex/pr-52-review-fixes` after `1f9efb37`.
+- **Done:** raycast occlusion honors effective grouped materials and shader
+  float32 cutoffs. Three real capture regressions fail before the fix and pass
+  afterward; opaque and cutoff-boundary occlusion remain enforced.
+- **Verification:** fresh fast check passes 3,785 units; 151 runtime, 318
+  integration, 14 Python tests and browser smoke complete in stages. Refreshed
+  mechanism group passes all 66 tests; four mask and 24 encoded semantic controls
+  pass. All 696 retained E01 frames pass fresh font-bound layout checks.
+- **Retained failures:** initial runtime aggregate fails on missing worktree
+  soundtrack setup; the corrected pinned-runtime continuation passes all four
+  affected suites. Source/test hashes and all negative controls are retained.
+- **Review / next:** independent Standards and Spec agents find no remaining
+  actionable defects. Commit this third finding, then push all three to PR #52.
+  Owner merge and human acceptance remain separate; no release publication.
+- **Records:** [fix results](./pr-52-fix-results.json),
+  [cutout comment](https://github.com/xxibcill/still-shift/pull/52#discussion_r4266537132).
 
 ### 2026-10-14 — Protect proof regions from overlay panels
 

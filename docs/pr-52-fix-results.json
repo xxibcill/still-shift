@@ -26,7 +26,7 @@
           "/private/tmp/pr52-fix-case-build-2.log"
         ]
       },
-      "commit": "1925af45"
+      "commit": "1925af453fa93d7ae1099e596b82db019a3abe22"
     },
     {
       "id": "protected-panel",
@@ -57,13 +57,27 @@
           "measurement": "Fresh pinned-font text measurement against retained real sidecars; no new 3D capture or final encode.",
           "evidence": "/private/tmp/pr52-panel-e01-font-review.json"
         }
-      }
+      },
+      "commit": "1f9efb37fd8760e96076301133e390856f07f92e"
     },
     {
       "id": "cutout-visibility",
       "commentId": 4266537132,
       "commentUrl": "https://github.com/xxibcill/still-shift/pull/52#discussion_r4266537132",
-      "status": "pending"
+      "status": "fixed-locally",
+      "implementation": "Anchor occlusion selects each intersection’s effective face-group material, respects object/material visibility, and applies the shader’s strict float32 opacity/cutoff comparison. Current supported procedural maps are opaque; capture source identities invalidate older cache entries automatically.",
+      "verification": {
+        "regressionTests": 3,
+        "focusedTestsPassed": 11,
+        "typeCheck": "passed",
+        "shaderBoundary": "0.49 discards; 0.5 and float32-rounded 0.499999999 retain opaque occlusion.",
+        "logs": [
+          "/private/tmp/pr52-fix-cutout-red.log",
+          "/private/tmp/pr52-fix-cutout-green.log",
+          "/private/tmp/pr52-fix-cutout-build.log"
+        ]
+      },
+      "commit": "Containing final fix commit"
     }
   ],
   "retainedFailures": [
@@ -73,12 +87,37 @@
     "Panel baseline: all four new regressions fail before the fix; all 13 overlay tests pass after it.",
     "Checking the retained E01 with panel footprints exposed caption coverage at frames 346..397 and 6.4 pixels of OUTSIDE panel clipping. Default layouts were repaired within the same panel finding; fresh pinned-font measurement passes all 696 retained sidecar frames.",
     "The first standalone E01 recheck selected aliases from the primary checkout; rerunning from the fix worktree corrected the review-helper import context.",
-    "Initial runtime tier passed all 151 runtime tests, then 36 tests in four soundtrack-dependent integration suites failed for the missing worktree audio runtime. All 53 tests in those suites, 14 Python tests and browser smoke pass in the corrected continuation; the initial aggregate remains failed."
+    "Initial runtime tier passed all 151 runtime tests, then 36 tests in four soundtrack-dependent integration suites failed for the missing worktree audio runtime. All 53 tests in those suites, 14 Python tests and browser smoke pass in the corrected continuation; the initial aggregate remains failed.",
+    "All three cutout regressions fail before the raycast filter; all 11 capture tests pass afterward. Initial aggregate runtime remains failed; corrected continuation and refreshed relevant groups complete the verification tier in stages."
   ],
   "verification": {
-    "aggregateFast": "pending",
-    "runtime": "pending",
-    "browser": "pending",
+    "aggregateFast": {
+      "status": "passed",
+      "command": "pnpm check:fast",
+      "unitTests": 3785,
+      "unitFiles": 357,
+      "afterDefaultRepair": true
+    },
+    "runtime": {
+      "status": "completed-in-stages",
+      "initialAggregate": "failed at missing soundtrack runtime; retained as failed",
+      "runtimeTests": 151,
+      "integrationTests": 318,
+      "depthTests": 14,
+      "browserSmoke": "passed",
+      "mechanismRefresh": {
+        "tests": 66,
+        "files": 9,
+        "afterDefaultRepair": true
+      }
+    },
+    "browser": {
+      "status": "passed",
+      "typographyMaskControls": 4,
+      "semanticEncodedCases": 24,
+      "packet": "/private/tmp/still-shift-ms1-semantic-typography-rZCipA/result.json",
+      "expectedNegativeControlsRetained": true
+    },
     "originalReviewFast": "failed at docs/dev-log.md formatting; formatting repaired with the first fix log update",
     "firstFastPass": {
       "status": "passed",
@@ -99,9 +138,70 @@
       "depthTests": 14,
       "browserSmoke": "passed",
       "environment": "Existing pinned Python 3.12.11, DawDreamer 0.9.0, NumPy 2.3.3 and SciPy 1.16.2 selected explicitly."
+    },
+    "independentReview": {
+      "standards": "No actionable outstanding defects",
+      "spec": "No actionable outstanding defects",
+      "scope": "Read-only review of all three code/test fixes plus retained evidence"
+    },
+    "sourceAndTestHashes": {
+      "packages/renderer-core/src/composition/quality-samples.ts": "2a6e3323ac5b50cafdcbee01fe32f6a31de2bfc7918e6761b80d7499489c4980",
+      "packages/animation-engine/src/mechanism/overlays.ts": "250028425ab840b4fd89ad695fb353bc97560a6a1c8da9d5dfa55f7d5978dfaa",
+      "packages/animation-engine/src/mechanism/tape-hook.ts": "80db6ecba60ee1a5dffac7342cdc2e39f6cf2e27b2eb5150fc5548dcbaed4945",
+      "packages/animation-engine/src/mechanism/browser.ts": "d5a43f52cf901fb57bf3d24e0222e43d02c535954b79afb315048fbf8bc7fe95",
+      "tests/unit/composition-semantic-context.test.ts": "5504da7319bfe3b060174e652557a4549ec8b0a0d817d5529fb04087b84c0830",
+      "tests/unit/mechanism-overlays.test.ts": "9649782f452aa3f6d9c4bd50bcf1c56e33165d03a637c09a8f4e057844bb3ac4",
+      "tests/runtime/mechanism-capture.test.ts": "24a523d3dddea6db6e8f76170c4b24abb6ece634bfdf0edeef5a54d5663c5bd1"
+    },
+    "evidence": [
+      {
+        "path": "/private/tmp/pr52-fixes-fast-final.log",
+        "bytes": 28121,
+        "sha256": "80261bf86b5c072c7bfbc4800598bbb4632936c0cd6521a54cd2385548de8914"
+      },
+      {
+        "path": "/private/tmp/pr52-fixes-runtime.log",
+        "bytes": 48696,
+        "sha256": "069c05ffb9db3f6da8d4d2aab249f39a00d128cac6ece85d19d8470d552a0273"
+      },
+      {
+        "path": "/private/tmp/pr52-fixes-runtime-continuation.log",
+        "bytes": 6686,
+        "sha256": "b00735dff2cc97c6c82568e7890321010816a55bda0dcd54f6491286ca8e1c89"
+      },
+      {
+        "path": "/private/tmp/pr52-fixes-mechanism-final.log",
+        "bytes": 6297,
+        "sha256": "c5c16eef20500f4c0359a04b2453271ced44ae71d620dc95599c887a043a6057"
+      },
+      {
+        "path": "/private/tmp/pr52-fixes-typography-final.log",
+        "bytes": 4730,
+        "sha256": "10ad9cf1e7c632d91260312d3da8941d1fb1bf2a21de56b167a2c076ccf7cb40"
+      },
+      {
+        "path": "/private/tmp/pr52-panel-e01-font-review.json",
+        "bytes": 6945,
+        "sha256": "a6f09424ea5abfc43786eda4120dd6b115da7ff4d1f376d857d1355c0b6612d6"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms1-semantic-typography-rZCipA/result.json",
+        "bytes": 2183762,
+        "sha256": "bcc098a72d694edffa3bc2a2daa424d58cbe24fee0e7618892f94e50c9001de9"
+      }
+    ],
+    "pythonEnvironment": {
+      "primaryEditablePackageRestored": true,
+      "source": "/Users/jjae/Documents/playground/still-shift/services/depth-worker/src/still_shift_depth/__init__.py"
     }
   },
   "limits": [
     "No paid generation, publication, merge, new full E01 production run or human visual/listening acceptance."
-  ]
+  ],
+  "delivery": {
+    "target": "origin/codex/mechanism-ms1",
+    "method": "Fast-forward push after the third and final finding commit",
+    "findingCommits": 3,
+    "mergeDecision": "Owner review pending"
+  }
 }
