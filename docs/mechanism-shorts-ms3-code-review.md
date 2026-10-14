@@ -43,3 +43,21 @@ findings are repaired at the source/scoped-test level, with full production gate
 still open. [Handoff evidence](./mechanism-shorts-ms3-native-handoff-review-results.json)
 and [first-pass evidence](./mechanism-shorts-ms3-first-pass-provenance-results.json)
 retain checks, failures and practical limits.
+
+## Native encoded-review followup (2026-10-15)
+
+**Standards:** one P2 contract compatibility finding: v2 review inherited legacy
+128-character anchors while native callouts admit256. No other hard documented
+breach or actionable maintenance smell was established.
+
+**Spec:** same P2 finding; mandatory preflight newly rejected accepted native names.
+No other concrete pin/pixel/clock or cleanup defect found. Both reviews were
+read-only and establish no production or whole audiovisual acceptance.
+
+The256-character regression reproduces red, then passes after v2 shot anchors,
+image projections and exception projections reuse the native anchor contract.
+Legacy admission remains unchanged;257-character native names still reject.
+Scoped23 tests/6 files pass. The first attempted schema access failed because
+callouts are defaulted; unwrap repair and failed stages remain in the
+[native encoded-review evidence](./mechanism-shorts-ms3-native-encoded-review-results.json).
+Full current native producer/CLI/installed and whole review remain open.

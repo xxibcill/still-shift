@@ -262,3 +262,27 @@ a nonconvex part’s evaluated bounds center may project into its hollow space.
 Inspect encoded delivery-size frames after binding the target. Visibility
 requests should name actual renderable surface objects; hiding a saved Empty
 container does not hide its children or supply a renderable visibility record.
+
+## Encoded native review package
+
+Each current native product retains `review-evidence/evidence.json` using the strict
+`mechanism-production-evidence-2` schema (`production schema --kind
+blender-production-evidence`). Samples come from the final encoded video, retaining
+shot entry/mid/exit, both sides of cuts and before/at/after authored source/control,
+callout and speech events. Coincident frames retain all named origins. Admission
+rejects over512 unique samples or1024 images before capture/export.
+
+Every shot has a360×640 phone overview and the caption region derived from the
+shared caption layout. Its detail sample uses active original native anchor
+projections; unavailable anchors produce located crop exceptions. In-frame
+projection is not an occlusion or visible-surface-contact judgment. The manifest
+also pins complete final decoded PCM and links the source video/decode/native map.
+Review production and checking require no new Blender renders.
+
+Fresh verification rederives the sample clock, source content fingerprint and
+original projections, rehashes all files and checks actual PNG dimensions/pixels
+against the current final video and declared transforms. Re-signed unrelated images
+cannot replace these checks. Content identity excludes receiving-machine asset
+paths; authored controls, copy, timing, asset/font/audio hashes and other plan fields
+remain bound. The compact handoff links this package and the separate rendered QA
+report, preserves unfinished review states and carries current resume paths.

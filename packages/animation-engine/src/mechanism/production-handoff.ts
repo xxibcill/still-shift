@@ -77,7 +77,7 @@ export const BlenderProductionHandoffSchema = z
         frameCount: z.number().int().positive().max(2000),
         width: z.number().int().min(16).max(4096),
         height: z.number().int().min(16).max(4096),
-        fps: z.number().int().positive().max(60),
+        fps: z.number().int().positive().max(120),
         sourceSamples: z.number().int().positive().max(172800000),
         sourceAssetSha256: MechanismProductionBindingSchema.shape.inputSha256,
       })
@@ -88,11 +88,13 @@ export const BlenderProductionHandoffSchema = z
     assets: MechanismProductionHandoffSchema.shape.assets.extend({
       composition: MechanismProductionOwnedFileSchema,
       nativePlates: MechanismProductionOwnedFileSchema,
+      renderedVisualReport: MechanismProductionOwnedFileSchema.optional(),
     }),
     summary: MechanismProductionHandoffSchema.shape.summary.extend({
       shots: z.number().int().positive().max(128),
       sampledFrames: z.number().int().nonnegative().max(512),
-      images: z.number().int().nonnegative().max(512),
+      images: z.number().int().nonnegative().max(1024),
+      cropExceptions: z.number().int().nonnegative().max(128),
     }),
   })
   .strict()

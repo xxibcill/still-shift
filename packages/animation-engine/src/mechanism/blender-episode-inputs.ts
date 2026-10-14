@@ -1,3 +1,4 @@
+import { planBlenderProductionReview } from "./blender-production-review-contract.ts";
 import { admitBlenderProductionVisualWork } from "./blender-production-visual.ts";
 import { realpath } from "node:fs/promises";
 import { dirname, relative, resolve } from "node:path";
@@ -79,6 +80,7 @@ export async function readBlenderEpisode(
         "Native episode plan ID differs from the selected queue question",
       );
     const compiled = compileBlenderEpisode(resolvedSource, resolvedPlan);
+    planBlenderProductionReview(compiled);
     admitBlenderProductionVisualWork(
       compiled.frameCount,
       2 * compiled.plan.speech.length +

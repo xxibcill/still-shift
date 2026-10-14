@@ -1,0 +1,199 @@
+{
+  "schemaVersion": "ms3-native-encoded-review-results-1",
+  "date": "2026-10-15",
+  "branch": "codex/ms3-review-fixes",
+  "baseCommit": "018c2540",
+  "status": "source-implemented-scoped-and-retained-actual-media-helper-verified-current-full-producer-open",
+  "requirement": "MS3 phone-size overviews, shot entry/mid/exit and contact/cut/event samples, caption and projected-anchor crops, full final PCM and current source-bound compact handoff.",
+  "changes": [
+    "Bounded native source/clock planning before capture with explicit shot/control/source-frame/callout/speech roles",
+    "Final encoded RGBA samples and derived360x640 phone/caption/anchor images; unavailable useful crops retain located exceptions",
+    "Path-independent authored source identity retains all content pins and control/camera/callout/timing fields",
+    "Complete final float32 PCM retained once and shared with compact native handoff",
+    "Fresh verification authenticates transitive native evidence, encoded frame hashes, PNG bytes/shapes/pixels, derived transforms and complete PCM",
+    "Separate native v2 evidence discovery/schema and documented limits; legacy helper/API preserved",
+    "Native256-character anchor bound preserved for shot plans, image projections and exception projections; legacy128 unchanged"
+  ],
+  "independentReview": {
+    "standards": "One P2 compatibility defect: native v2 inherited legacy128-character anchor cap while native allows256. Reproduced red and repaired consistently. No other hard standard breach found.",
+    "spec": "Same P2 anchor cap reproduced and repaired. No other concrete source/pin/pixel/clock or cleanup defect found. Full current native producer/CLI/installed proofs remain open.",
+    "record": "mechanism-shorts-ms3-code-review.md",
+    "followup": "Both Standards and Spec independently confirm the three native anchor fields preserve256 and legacy stays128; no remaining specific repair defect."
+  },
+  "checks": {
+    "originalRed": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review70-native-red1.log",
+        "bytes": 1589,
+        "sha256": "sha256:432558db085f437397bdd1a1e3c2152a0584fe53f72b8f28170a424017a2d6ff"
+      },
+      "reason": "Planner absent before implementation"
+    },
+    "green4": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review70-native-green4.log",
+        "bytes": 611,
+        "sha256": "sha256:14e0950ce6079206cf6620d133423d8928403316783241e51e05610befc7d170"
+      },
+      "tests": 12,
+      "files": 3
+    },
+    "lint1": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review70-lint1.log",
+        "bytes": 474,
+        "sha256": "sha256:e5367046c509acbc02bb36ae901d53b14110f6a82daeb4e61c3d307ab5aa1d74"
+      },
+      "reason": "Unused removed path bindings; replaced by key-filtering helper"
+    },
+    "green3": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review70-native-green3.log",
+        "bytes": 2669,
+        "sha256": "sha256:a534c2ca984395a90525e2db80ce5fb2cf59d03595cf4a0ed83d47ba263368b9"
+      },
+      "reason": "Expected sample roles had not yet included explicit origin",
+      "passed": 11,
+      "failed": 1
+    },
+    "fixtureRuntime1": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review70-runtime1.log",
+        "bytes": 471,
+        "sha256": "sha256:23c1c8f5aad8538db96f6e812041c46728e6f1d62ea391b969d8babea4a106d7"
+      },
+      "tests": 10,
+      "files": 3,
+      "scope": "Before adding discovery selector expectation"
+    },
+    "fast1": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review70-fast1.log",
+        "bytes": 48822,
+        "sha256": "sha256:058b875269cfb891860fb9622e461adeda7a0480b791d1df816684251ba29d34"
+      },
+      "tests": 4616,
+      "files": 459,
+      "seconds": 85.36,
+      "scope": "Before independent anchor-bound finding and its repair"
+    },
+    "anchorRed1": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review70-anchor-red1.log",
+        "bytes": 2344,
+        "sha256": "sha256:6c577d7dfcfdef6d9b1bb1a8e054c068001afa50bfabb41d20dacc7d9a95e34c"
+      },
+      "passed": 5,
+      "failed": 1,
+      "reason": "Accepted native256-character anchor rejected at inherited128 bound"
+    },
+    "schema3": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review70-schema3.log",
+        "bytes": 1481,
+        "sha256": "sha256:6a0b51f000931cb53ff35f01a9da3cebba6b9aaeffe49e8fdfb85164314f86b2"
+      },
+      "reason": "Defaulted callout array required unwrap before reading element; corrected"
+    },
+    "anchorGreen1": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review70-anchor-green1.log",
+        "bytes": 3239,
+        "sha256": "sha256:08bcb5bbee55b705eff5b136add25981d413d5789e5a3b21b0e2b8e747b552e6"
+      },
+      "reason": "Same schema-access issue stopped5 suites before execution"
+    },
+    "anchorGreen2": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review70-anchor-green2.log",
+        "bytes": 827,
+        "sha256": "sha256:8f0a1d22571b5cca59a02305f6d51a5a4d2baa609af44cfe2782c6ec7d09b442"
+      },
+      "tests": 23,
+      "files": 6,
+      "seconds": 3.17,
+      "scope": "Native planning/handoff, legacy evidence, fixture CLI/discovery and repeated-invalid-reader memory cleanup"
+    },
+    "fast2": {
+      "actualExitCode": 0,
+      "tests": 4617,
+      "files": 459,
+      "seconds": 80.61,
+      "scope": "Final current source after native anchor compatibility repair",
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review70-fast2.log",
+        "bytes": 46720,
+        "sha256": "sha256:885c1833e255944c4ac18bd7f68a5fd00ad9b97f98bf1cfacafaafd5ed0df30a"
+      }
+    }
+  },
+  "actual": {
+    "failedConstructorProbe": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review70-actual1.log",
+        "bytes": 491,
+        "sha256": "sha256:e575443e6c066a08d1593565dbfccbd64c2beafef1efb19324e6e02002bd479f"
+      },
+      "reason": "CompositionNodeMemory accepts parent, not numeric allowance; corrected to reserve half of shared512MiB owner"
+    },
+    "earlierActual2": {
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-review70-actual2.json",
+        "bytes": 5333,
+        "sha256": "sha256:3a43dd68a14f0776081888cb45799a7011329473e0091fd34040d03524afe30f"
+      },
+      "actualExitCode": 0,
+      "scope": "Retained earlier helper stage before role-origin addition"
+    },
+    "actual3": {
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-review70-actual3.json",
+        "bytes": 5333,
+        "sha256": "sha256:97e4fbaa093bac2c638833eaac327ab42731617992550aa19b61e9da18ec1db6"
+      },
+      "actualExitCode": 0,
+      "episode": "EU-008",
+      "samples": 89,
+      "images": 102,
+      "shots": 5,
+      "cropExceptions": 2,
+      "resignedWrongSourceRejected": true,
+      "completeFinalPCMExact": true,
+      "scope": "New review helper over copied retained actual media and historicalfc4 binding; no fresh native render/current full producer qualification"
+    },
+    "actual4": {
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-review70-actual4.json",
+        "bytes": 588,
+        "sha256": "sha256:1f3683c267b3593a01c7be451a6608247f8b2d79094e65feebb152b7384bf6b7"
+      },
+      "actualExitCode": 0,
+      "resignedChangedPhoneRejected": true,
+      "originalRestoredAndRechecked": true,
+      "reviewFolderRelocatedAndRechecked": true,
+      "currentOutputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-review70-actual-Q74EWm-relocated",
+      "scope": "Review folder relocation only; full receiving native producer/CLI and installed package remain open"
+    },
+    "memoryAllowanceBytes": 268435456
+  },
+  "qualification": {
+    "acceptedPilot": 0,
+    "newPaidGeneration": false,
+    "newNativeRender": false,
+    "wholeFactualMechanicalEncodedGlyphNormalSpeedListening": "unreviewed",
+    "fullCurrentNativeProducerCLIInstalled": "open",
+    "samplesDoNotGrantWholeAcceptance": true,
+    "historicalProductsAndJournalsUnchanged": true
+  }
+}
