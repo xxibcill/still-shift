@@ -59,12 +59,13 @@ still hold before relying on them.
   [Centered output/current cohort](./mechanism-shorts-ms3-binder-centered-encoded-results.json),
   [scoped repairs](./mechanism-shorts-ms3-first-ten-scoped-repair-results.json),
   [original exports/lifecycle](./mechanism-shorts-ms3-first-ten-complete-hd-export-results.json).
-  **New source slice:** bounded native authored hold purpose, authenticated
+  **New source slice `57d4d016`:** bounded native authored hold purpose, authenticated
   evaluated geometry and whole-sequence shot offsets are implemented. Runtime
   `c7cde297`, unchanged native profile `1dd0`; 2,778 inputs / 122,203,611 bytes held.
   Fast passes 4,593 tests / 457 files plus schema/boundary/format/lint/types.
-  Required runtime tier is running sequentially on a fresh owned media cache;
-  preliminary failures and a canceled overlapping attempt are retained.
+  Complete runtime tier passes actual0 in 520.13s: runtime271/52,
+  integration324/59, depth14 and browser smoke. Source remains exact on a fresh
+  owned cache. Preliminary failures/canceled overlapping attempt remain retained.
   A separate EU006 candidate checks all 634 preview frames/glyph measurements
   with zero new native calls. Four covered static findings become review warnings;
   15 errors / 22 warnings remain. Its 113-frame proof has one physical state and
@@ -72,8 +73,8 @@ still hold before relying on them.
   Original H3 journal remains exact; no purpose is saved to pilot inputs yet.
   [Native hold evidence](./mechanism-shorts-ms3-native-hold-results.json),
   [native workflow](./mechanism-blender-episode.md).
-  **Next:** finish source verification; author whole-cohort purpose/phase/staging
-  evidence and rebind current-source exports/QA. Broader physical label/event/
+  **Next:** author whole-cohort purpose/phase/staging evidence and rebind
+  current-source exports/QA. Broader physical label/event/
   intersection/mount faults, native handoff, whole factual/mechanical/encoded
   glyph/continuous/listening and original E06/E10 reviews, comparable effort and
   final full software/benchmark/archive/installed gates remain. Accepted pilot is
@@ -274,14 +275,15 @@ still hold before relying on them.
   controls, evaluated mesh/topology and part state; split native sequence layers
   at absolute shot clocks and account for them before capture. QA reconstructs
   evidence independently and retains raw findings/review requirements.
-- **Results:** Fast 4,593 / 457 passes on 2,778 held inputs. EU006 candidate measures
+- **Results:** Source `57d4d016`: fast4,593/457; complete runtime520.13s actual0
+  (271/52, integration324/59, depth14, smoke), source exact. EU006 candidate measures
   634 cached preview frames and glyphs, zero native calls; four static findings
   become warnings, leaving 15 errors / 22 warnings. Final-source native replay
   confirms 113 frames / one physical state. Original cohort journal stays exact.
 - **Retained:** Incomplete fixture, missing export, stale schemas and two type
   failures; premature runtime attempt canceled143 and restarted sequentially.
-- **Open / next:** Runtime tier in flight; whole-cohort purpose/phase/staging and
-  current-source exports/QA, whole reviews and final milestone gates remain.
+- **Open / next:** Whole-cohort purpose/phase/staging and current-source exports/QA,
+  whole reviews and final milestone gates remain.
 - **Records:** [Held source and scoped evidence](./mechanism-shorts-ms3-native-hold-results.json),
   [native contract](./mechanism-blender-episode.md). Pilot still 0/10; no spending.
 

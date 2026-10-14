@@ -1,7 +1,7 @@
 {
   "schemaVersion": "ms3-native-hold-results-1",
   "date": "2026-10-14",
-  "status": "source-slice-fast-passed-runtime-in-progress",
+  "status": "bounded-native-hold-source-slice-verified-production-acceptance-open",
   "pilot": {
     "selection": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
     "episodes": "EU001\u2013EU010 actual Everyday Unlocked first ten",
@@ -19,7 +19,8 @@
       "sha256": "sha256:a282fe90eb59e4eaa95edb601e4d706730ec8130e01c4f00a4a4f158af10585b"
     },
     "files": 2778,
-    "bytes": 122203611
+    "bytes": 122203611,
+    "sourceCommit": "57d4d0161d9492215219535f9d15666ac041580c"
   },
   "implemented": [
     "Optional bounded authored shot proofPurpose; no automatically invented purpose",
@@ -51,8 +52,34 @@
       }
     },
     "runtime": {
-      "status": "in-progress",
-      "runner": "/private/tmp/still-shift-ms3-holds58-gates2.py"
+      "steps": [
+        {
+          "step": "runtime",
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 520.1324737910181
+        }
+      ],
+      "ownedCache": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-holds58-runtime-cache2-50apz8uk",
+      "reason": "Fresh owned media cache avoids the retained old shared-cache missing-manifest defect; no source, cache quota, thresholds or shared files changed.",
+      "actualExitCode": 0,
+      "runtimeTests": 271,
+      "runtimeFiles": 52,
+      "integrationTests": 324,
+      "integrationFiles": 59,
+      "depthTests": 14,
+      "browserSmokeActualExitCode": 0,
+      "sourceHoldPassed": true,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-holds58-gates2-receipt.json",
+        "bytes": 445,
+        "sha256": "sha256:360fcf1b2adbb804a2e2006e8887e2bd06938c542b5688e4e026a3af09e71161"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-holds58-gates2-runtime.log",
+        "bytes": 42990,
+        "sha256": "sha256:2b604861586a3c74a3986e89d4b3983a18a8a96f543b486c96886048e2c3a324"
+      }
     }
   },
   "retainedAttempts": [
