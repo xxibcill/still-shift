@@ -129,6 +129,13 @@ still hold before relying on them.
   starts on an exact1,851-file/653,583,036B native-cache copy; original two-item journal
   and deliveries remain intact. Full batch is in flight; code/source holds stay exact.
   [All-eight annotation proof](./mechanism-shorts-ms3-first-ten-annotation-scout-results.json).
+  **Full-ten HD progress:** EU-001 transaction completes610 frames (113 new/497
+  reused native states). Independent2,440 pins/529 active label bindings and full
+  original AAC reference parity pass. Five encoded phone midpoints are inspected.
+  QA remains failed:21 static-frame errors,11 reading-time/5 inset warnings,59
+  evidence images. Remaining nine stages and full run/report/resume remain live;
+  source stays2,777 files/122,189,105 bytes exact. These checks do not admit the pilot.
+  [Full-ten progress](./mechanism-shorts-ms3-first-ten-hd-progress-results.json).
   **Next:** remaining causal annotations/resolved holds and review evidence/handoff; HD products for all ten
   with object-specific cues and factual bindings; broader faults/events/contact/coverage;
   whole factual/mechanical/glyph/continuous/listening and original E06/E10 reviews;
@@ -322,6 +329,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Verify the first full-cohort HD delivery
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; held source `4679b8a8` stays exact.
+- **Done:** EU-001/610-frame full-cohort delivery;113 fresh/497 reused native states.
+  Independent2,440 pins/529 active labels and complete original AAC reference parity pass.
+- **Viewed:** Five encoded phone midpoints; sampled face/flange/rivet labels are readable.
+- **Open:** QA retains21 static errors,11 reading-time/5 inset warnings and59 images.
+  Queue transaction completion does not approve these findings or any whole review.
+- **In flight:** Remaining nine episodes and full run/report/resume; no source edits or
+  new paid generation. All2,777 engine inputs/122,189,105 bytes remain exact.
+- **Retained:** Harmless metadata helper TypeError; no production/source mutation.
+- **Records:** [Full-ten progress](./mechanism-shorts-ms3-first-ten-hd-progress-results.json),
+  [acceptance](./mechanism-shorts-ms3-acceptance.md). Pilot0/10; routine effortnull.
 
 ### 2026-10-14 — Inspect the remaining eight actual episode annotations
 

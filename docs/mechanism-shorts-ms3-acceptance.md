@@ -244,3 +244,12 @@ runs using an exact1,851-file/653,583,036B native-cache copy and its own ledger.
 Original trial deliveries remain intact. Full batch outputs/terminal verification,
 whole reviews, native hold/handoff, broader faults/effort and final gates stay open;
 accepted pilot0/10 and routine token measurementsnull.
+
+[Full-cohort HD progress](./mechanism-shorts-ms3-first-ten-hd-progress-results.json)
+records the completed EU-001 transaction:610 frames,113 fresh/497 reused native
+states,2,440 independently verified file pins/529 label-frame bindings and complete
+original AAC reference parity. Five encoded phone midpoint views are inspected.
+Its QA still fails with21 stationary-pixel errors,11 reading-time/5 inset warnings
+and59 evidence images. Remaining nine episodes and complete cohort run/report/resume
+remain in flight. Whole reviews and accepted pilot0/10 remain unchanged; queue
+completion, original-audio parity and sampled images are separate evidence scopes.
