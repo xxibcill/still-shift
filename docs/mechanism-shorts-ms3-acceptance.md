@@ -398,3 +398,12 @@ Complete current dependency audit verifies107 declared files/130,470,362B and
 covers revision/camera candidate inputs; it must not be described as all ten
 recording/model dependencies. The production CLI verifies every declared input
 pin during item admission and verification.
+
+[Encoded cable-tie cut review](./mechanism-shorts-ms3-first-ten-camera-cut-review-results.json)
+locates a view-direction change at269 during the tongue return. A separate
+shot02 same-view candidate preserves all narration/control/shot clocks and passes
+actual588-frame camera/fixed-reference checks plus the268/269 boundary. Sixteen
+current encoded phone frames are actually inspected; candidate native scouts,
+encoded repair and normal-speed review remain required. Current EU001/EU002/EU003
+products have independent whole RGBA/original AAC parity, but this located issue
+and all whole reviews prevent pilot acceptance.

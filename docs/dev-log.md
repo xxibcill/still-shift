@@ -75,11 +75,18 @@ still hold before relying on them.
   scoped to candidate revisions/changed-camera inputs, not all audio/model files.
   Original H3/canceled59/failed60 journals held separately. No source edits until
   run/report/resume is terminal.
-  **First fresh completion:** EU001 seals onfc4cc2ae: QA0 errors/37 warnings,
-  21 declared physical holds; ten producer-bound artifact pins rehashed. Complete
-  610 RGBA frames equal H3 and original whole AAC parity passes. Current native
-  audit coversEU001/EU002:1,198 clocks/proof rows,4,792 pins and873 label frames,
-  zero new native captures. EU002 now exporting; original wrapper71417 live.
+  **First three fresh completions:** EU001610, EU002588 andEU003588 frames seal
+  onfc4cc2ae, with QA0 errors/37,27,37 warnings. Thirty product artifact pins
+  rehashed; every whole decoded RGBA stream equals repaired H3 and original
+  whole AAC parity passes. Current native audit covers1,786 clocks/proof rows,
+  7,144 pins and1,251 active-label frames, zero fresh native captures.
+  **Located EU002 cut repair:** Sixteen encoded phone frames reveal camera
+  reorientation at269 during tongue return. Separate shot02 candidate retains
+  passage view over269–374; all control/speech/audio/shot clocks unchanged.
+  Actual588-frame/five-shot camera guard and exact268/269 head/root/camera
+  boundary pass, zero renders/original source bytes unchanged. Actual scouts and
+  encoded repair remain unrun; original frozen batch continuesEU004 export.
+  [Cut review and candidate](./mechanism-shorts-ms3-first-ten-camera-cut-review-results.json).
   **Script source review:** all ten frozen spoken explanations compared with fresh
   primary text; design boundaries/inferences and rendered witnesses recorded.
   No whole rendered factual/mechanical/AV acceptance follows.
@@ -279,6 +286,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Two more verified outputs and a located cable-tie cut repair
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `b5e30c23`.
+- **Done:** Current EU002/EU003 seal588 frames each; QA0 errors/27 and37 warnings.
+  Independent ten product pins each, every RGBA frame and complete original AAC
+  parity pass. Combined native audits cover1,786 frames/7,144 pins/1,251 labels.
+- **Image finding:** Sixteen encoded EU002 phone frames inspected. Cut269 changes
+  the strap’s visible direction during tongue return; readable labels do not
+  remove this visual issue. Separate shot02 candidate holds the passage view.
+- **Preflight:** Compile588 frames passes; actual588-frame/five-shot shared camera
+  guard and exact268/269 head/root/camera boundary pass. No original/live input
+  edits or new renders. Candidate scouts/encoded repair remain unrun.
+- **Next:** Continue confirmed-live71417/EU004 export; run candidate scouts and
+  scoped repair after frozen lifecycle, plus whole reviews. Accepted0/10.
+- **Records:** [Current outputs](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json),
+  [cut review/candidate](./mechanism-shorts-ms3-first-ten-camera-cut-review-results.json).
 
 ### 2026-10-14 — First-ten spoken source review and complete dependency audit
 

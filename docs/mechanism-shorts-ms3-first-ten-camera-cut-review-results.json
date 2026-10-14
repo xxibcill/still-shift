@@ -1,0 +1,398 @@
+{
+  "schemaVersion": "ms3-first-ten-camera-cut-review-1",
+  "date": "2026-10-14",
+  "status": "encoded-cut-issue-located-scoped-candidate-guard-passed",
+  "episode": "EU-002",
+  "currentBinding": {
+    "inputSha256": "sha256:e818cdec3f36b2218191d4c08fbf5bb6a4ae9c14522550579f0d0782513af598",
+    "outputSha256": "sha256:a7c57e576bb9ada2617ebb5d8051bd0eb0c5ccc0526373c01e6a405b10ceb4e9",
+    "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+    "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+  },
+  "encodedPhoneReview": {
+    "frames": [
+      0, 27, 131, 132, 196, 246, 253, 267, 269, 293, 319, 374, 396, 435, 476,
+      587
+    ],
+    "actualFramesViewed": 16,
+    "sheets": [
+      {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose61/EU-002/phone-review/sheet-0.png",
+        "bytes": 409064,
+        "sha256": "sha256:1aae11fbdb1c72d1756523b2dae4b2ca4fd29c6b583170f1ef20964dfd4b23fe"
+      },
+      {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose61/EU-002/phone-review/sheet-1.png",
+        "bytes": 362249,
+        "sha256": "sha256:3f8150af0f5b80007474371170e87778506463d610a700f20343a1a0e43ec42b"
+      }
+    ],
+    "findings": [
+      "Flexible tongue, fixed root and retaining contact labels are readable in the selected encoded phone samples.",
+      "Frame269 changes from passage to root camera while tongue return continues until319. The selected images change the visible side of the outgoing strap; this disrupts the directional explanation.",
+      "Root remains visible, but a same-view return is the scoped repair. These stills supply no normal-speed or whole contact/listening acceptance."
+    ]
+  },
+  "retainedObservations": {
+    "path": "/private/tmp/still-shift-ms3-holds61-EU002-cut-observations1.json",
+    "bytes": 6460,
+    "sha256": "sha256:c7a9c49b446d9fa3454234ef0aba383a68bee1f77d4565851076b15c4a384469"
+  },
+  "candidate": {
+    "status": "prepared-scoped-camera-cut-candidate",
+    "episode": "EU-002",
+    "currentCodeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+    "issue": {
+      "boundaryFrame": 269,
+      "seconds": 8.966666666666667,
+      "interval": [253, 319],
+      "observed": "Selected encoded frames switch from passage to root view during the narrated tongue return; the strap exits on different screen sides across the cut.",
+      "cameraOpticalAxisAngleDegrees": 45.14822532424309,
+      "method": "Sixteen actual encoded phone-size frames and retained native camera/control records; no continuous playback review.",
+      "controlsAtBoundary": {
+        "manual": 1.0,
+        "tighten": 0.6212121212121212,
+        "reverse": 0.0,
+        "reveal": 1.0,
+        "context": 0.0
+      },
+      "returnSettledFrame": 319,
+      "severity": "visual-direction-repair"
+    },
+    "candidate": {
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/repair-camera-cut62/EU-002/source.json",
+        "bytes": 1984,
+        "sha256": "sha256:da4224df04eea0389a513623031a262efa61608ede96f3450936a96eb8408348"
+      },
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/repair-camera-cut62/EU-002/plan.json",
+        "bytes": 6853,
+        "sha256": "sha256:7f02d4b99668c410159c40345170f8d6e7bf92ff4e66fbf34d5e86cc5bd282c3"
+      },
+      "qa": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/repair-camera-cut62/EU-002/qa.json",
+        "bytes": 3456,
+        "sha256": "sha256:98aff7166369281011b747643645fdd0d832a7e850a86a7b1749641cc13f1c41"
+      },
+      "changedShot": "shot-02",
+      "changedFrames": [269, 374],
+      "camera": "camera.passage",
+      "framing": {
+        "orthoScale": 0.65,
+        "shiftY": -0.08
+      },
+      "preserved": [
+        "original narration and sample clock",
+        "all speech and callout copy/times",
+        "all controls/source frames/shot boundaries",
+        "source asset and sampled QA programs"
+      ],
+      "purpose": "Show the tongue returning into the next gap while its root remains fixed in the same view."
+    },
+    "requiredBeforeDependentRender": [
+      "Confirm root anchor/leader and all relevant head/tongue contacts in small native scouts.",
+      "Inspect encoded transition/return samples from the scoped repair; whole playback remains separate."
+    ],
+    "liveInputFilesChanged": false,
+    "cameraGuard": {
+      "status": "PASS",
+      "frames": 588,
+      "receipt": {
+        "episode": "EU-002",
+        "sourceAssetSha256": "sha256:4fcbdee97d011ee9743aa9db33e40d24bfc744f1c479e71a95a5eb2e5a842765",
+        "sourceBytesUnchanged": true,
+        "newNativeRenders": 0,
+        "jobSha256": "sha256:924f94ff98dd111bb8f494312b0589b0aff31e7b2317f65ef7b0a6fdd51f6ef2",
+        "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
+        "helperSha256": "sha256:f3539c0b73b10e881ad292ad2aafed8ca40878c1a6d2ead73805bee77ef56377",
+        "adapterSha256": "sha256:d0dc47fdb121addfea982a8491b171f88f1e978598c2493990fad35c4a310ff6",
+        "reports": [
+          {
+            "id": "shot-00",
+            "verdict": "PASS",
+            "frames": [0, 131],
+            "sample_count": 132,
+            "tolerances": {
+              "camera_matrix": 1e-6,
+              "projection": 1e-6,
+              "anchor_world": 1e-6,
+              "anchor_pixels": 1.0,
+              "reference_scale_ratio": 0.001
+            },
+            "worst": {
+              "camera_matrix": {
+                "value": 0.0,
+                "frame": 0
+              },
+              "projection": {
+                "value": 0.0,
+                "frame": 0
+              },
+              "anchor_world": {
+                "value": 0.0,
+                "frame": 0
+              },
+              "anchor_pixels": {
+                "value": 0.0,
+                "frame": 0
+              },
+              "reference_scale_ratio": {
+                "value": 0.0,
+                "frame": 0
+              }
+            },
+            "failures": [],
+            "scope": "Actual evaluated locked camera and declared fixed-reference invariants only; not framing, visibility, planned movement or continuous playback."
+          },
+          {
+            "id": "shot-01",
+            "verdict": "PASS",
+            "frames": [132, 268],
+            "sample_count": 137,
+            "tolerances": {
+              "camera_matrix": 1e-6,
+              "projection": 1e-6,
+              "anchor_world": 1e-6,
+              "anchor_pixels": 1.0,
+              "reference_scale_ratio": 0.001
+            },
+            "worst": {
+              "camera_matrix": {
+                "value": 0.0,
+                "frame": 132
+              },
+              "projection": {
+                "value": 0.0,
+                "frame": 132
+              },
+              "anchor_world": {
+                "value": 0.0,
+                "frame": 132
+              },
+              "anchor_pixels": {
+                "value": 0.0,
+                "frame": 132
+              },
+              "reference_scale_ratio": {
+                "value": 0.0,
+                "frame": 132
+              }
+            },
+            "failures": [],
+            "scope": "Actual evaluated locked camera and declared fixed-reference invariants only; not framing, visibility, planned movement or continuous playback."
+          },
+          {
+            "id": "shot-02",
+            "verdict": "PASS",
+            "frames": [269, 373],
+            "sample_count": 105,
+            "tolerances": {
+              "camera_matrix": 1e-6,
+              "projection": 1e-6,
+              "anchor_world": 1e-6,
+              "anchor_pixels": 1.0,
+              "reference_scale_ratio": 0.001
+            },
+            "worst": {
+              "camera_matrix": {
+                "value": 0.0,
+                "frame": 269
+              },
+              "projection": {
+                "value": 0.0,
+                "frame": 269
+              },
+              "anchor_world": {
+                "value": 0.0,
+                "frame": 269
+              },
+              "anchor_pixels": {
+                "value": 0.0,
+                "frame": 269
+              },
+              "reference_scale_ratio": {
+                "value": 0.0,
+                "frame": 269
+              }
+            },
+            "failures": [],
+            "scope": "Actual evaluated locked camera and declared fixed-reference invariants only; not framing, visibility, planned movement or continuous playback."
+          },
+          {
+            "id": "shot-03",
+            "verdict": "PASS",
+            "frames": [374, 475],
+            "sample_count": 102,
+            "tolerances": {
+              "camera_matrix": 1e-6,
+              "projection": 1e-6,
+              "anchor_world": 1e-6,
+              "anchor_pixels": 1.0,
+              "reference_scale_ratio": 0.001
+            },
+            "worst": {
+              "camera_matrix": {
+                "value": 0.0,
+                "frame": 374
+              },
+              "projection": {
+                "value": 0.0,
+                "frame": 374
+              },
+              "anchor_world": {
+                "value": 0.0,
+                "frame": 374
+              },
+              "anchor_pixels": {
+                "value": 0.0,
+                "frame": 374
+              },
+              "reference_scale_ratio": {
+                "value": 0.0,
+                "frame": 374
+              }
+            },
+            "failures": [],
+            "scope": "Actual evaluated locked camera and declared fixed-reference invariants only; not framing, visibility, planned movement or continuous playback."
+          },
+          {
+            "id": "shot-04",
+            "verdict": "PASS",
+            "frames": [476, 587],
+            "sample_count": 112,
+            "tolerances": {
+              "camera_matrix": 1e-6,
+              "projection": 1e-6,
+              "anchor_world": 1e-6,
+              "anchor_pixels": 1.0,
+              "reference_scale_ratio": 0.001
+            },
+            "worst": {
+              "camera_matrix": {
+                "value": 0.0,
+                "frame": 476
+              },
+              "projection": {
+                "value": 0.0,
+                "frame": 476
+              },
+              "anchor_world": {
+                "value": 0.0,
+                "frame": 476
+              },
+              "anchor_pixels": {
+                "value": 0.0,
+                "frame": 476
+              },
+              "reference_scale_ratio": {
+                "value": 0.0,
+                "frame": 476
+              }
+            },
+            "failures": [],
+            "scope": "Actual evaluated locked camera and declared fixed-reference invariants only; not framing, visibility, planned movement or continuous playback."
+          }
+        ]
+      }
+    },
+    "renderedScouts": "NOT RUN",
+    "dependentRender": "NOT STARTED",
+    "wholeReviews": "UNREVIEWED",
+    "pilotAcceptance": 0,
+    "candidateCompile": {
+      "status": "passed",
+      "frames": 588,
+      "log": "/private/tmp/still-shift-ms3-holds62-EU002-camera-compile1.log"
+    },
+    "boundaryAudit": {
+      "status": "passed-exact-camera-and-fixed-root-across-boundary",
+      "frames": [268, 269],
+      "sourceAssetSha256": "sha256:4fcbdee97d011ee9743aa9db33e40d24bfc744f1c479e71a95a5eb2e5a842765",
+      "sourceBytesUnchanged": true,
+      "cameraAndFixedRootSamplesExact": true,
+      "newNativeRenders": 0,
+      "samples": [
+        {
+          "matrix": [
+            0.8514243364334106, -0.15370094776153564, 0.5014505386352539,
+            0.5047037601470947, 0.524477481842041, 0.24951444566249847,
+            -0.8140429258346558, -0.8411729335784912, 2.004869870120274e-8,
+            0.9560954570770264, 0.29305535554885864, 0.3364691734313965, 0.0,
+            0.0, 0.0, 1.0
+          ],
+          "projection": [
+            50.0, 0.6499999761581421, 0.0, -0.07999999821186066, 36.0, 24.0,
+            0.10000000149011612, 1000.0
+          ],
+          "type": "ORTHO",
+          "sensor_fit": "AUTO",
+          "pixels": [
+            [531.5381669998169, 1169.7661972045898],
+            [303.060919046402, 1398.684196472168]
+          ],
+          "anchors_world": [
+            [-0.016823459416627884, 0.0, 0.05299389362335205],
+            [-0.1076701357960701, 0.0, 0.11944655328989029]
+          ],
+          "segment_world": [
+            [-0.03364691883325577, 0.0, 0.05299389362335205],
+            [0.0, 0.0, 0.05299389362335205]
+          ],
+          "span": 85.98897437416187,
+          "render_geometry": [1080.0, 1920.0, 1.0, 1.0]
+        },
+        {
+          "matrix": [
+            0.8514243364334106, -0.15370094776153564, 0.5014505386352539,
+            0.5047037601470947, 0.524477481842041, 0.24951444566249847,
+            -0.8140429258346558, -0.8411729335784912, 2.004869870120274e-8,
+            0.9560954570770264, 0.29305535554885864, 0.3364691734313965, 0.0,
+            0.0, 0.0, 1.0
+          ],
+          "projection": [
+            50.0, 0.6499999761581421, 0.0, -0.07999999821186066, 36.0, 24.0,
+            0.10000000149011612, 1000.0
+          ],
+          "type": "ORTHO",
+          "sensor_fit": "AUTO",
+          "pixels": [
+            [531.5381669998169, 1169.7661972045898],
+            [303.060919046402, 1398.684196472168]
+          ],
+          "anchors_world": [
+            [-0.016823459416627884, 0.0, 0.05299389362335205],
+            [-0.1076701357960701, 0.0, 0.11944655328989029]
+          ],
+          "segment_world": [
+            [-0.03364691883325577, 0.0, 0.05299389362335205],
+            [0.0, 0.0, 0.05299389362335205]
+          ],
+          "span": 85.98897437416187,
+          "render_geometry": [1080.0, 1920.0, 1.0, 1.0]
+        }
+      ],
+      "scope": "Actual Bpy camera/projection/render geometry and fixed head/root landmarks across the revised boundary. Not pixel/framing/occlusion or continuous playback."
+    }
+  },
+  "guardAdapter": {
+    "path": "/private/tmp/still-shift-ms3-holds62-camera-guard1.py",
+    "bytes": 3652,
+    "sha256": "sha256:d0dc47fdb121addfea982a8491b171f88f1e978598c2493990fad35c4a310ff6"
+  },
+  "boundaryAdapter": {
+    "path": "/private/tmp/still-shift-ms3-holds62-camera-boundary1.py",
+    "bytes": 3529,
+    "sha256": "sha256:3cdfd0c9d1bfbfd0e71f45d00ab18d87d84bea3de1fb085feb6ba7e732e3cfeb"
+  },
+  "candidateJob": {
+    "path": "/private/tmp/still-shift-ms3-holds62-EU-002-job1.json",
+    "bytes": 250753,
+    "sha256": "sha256:924f94ff98dd111bb8f494312b0589b0aff31e7b2317f65ef7b0a6fdd51f6ef2"
+  },
+  "liveInputFilesChanged": false,
+  "newNativeRenders": 0,
+  "renderedRepair": "NOT STARTED",
+  "wholeReviews": "UNREVIEWED",
+  "acceptedPilot": 0
+}

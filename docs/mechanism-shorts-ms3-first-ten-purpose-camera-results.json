@@ -1918,7 +1918,18 @@
     },
     "candidateHoldScopeCorrection": "The original53-file wrapper hold covers candidate revisions and EU004/EU008 changed-camera dependencies. It is not the complete ten-audio/ten-model manifest dependency union. CLI admission verifies all107 declared pins; separate read-only audit verifies111 union files including all recordings/models and candidate files.",
     "currentNativeAudit": {
-      "artifact": "/private/tmp/still-shift-ms3-holds61-native-audit1.json",
+      "artifacts": [
+        {
+          "path": "/private/tmp/still-shift-ms3-holds61-native-audit1.json",
+          "bytes": 1714,
+          "sha256": "sha256:75518ec9846e59fd831b10992e5ae4689cffce78d3902c315e1bb5c4d7a09bc8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-holds61-native-audit2.json",
+          "bytes": 897,
+          "sha256": "sha256:647b2284433327d2a874c98a6923120776f945b0def65a2a3ea45b806baeb172"
+        }
+      ],
       "rows": [
         {
           "id": "EU-001",
@@ -1943,11 +1954,23 @@
           "freshNativeRenders": 0,
           "reusedNativeFrames": 588,
           "completePhysicalProofAndGlobalFrameClockPassed": true
+        },
+        {
+          "id": "EU-003",
+          "statusAtAudit": "running",
+          "frames": 588,
+          "proofHolds": 7,
+          "pinChecks": 2352,
+          "uniquePinsVerified": 662,
+          "activeLabelFrames": 378,
+          "freshNativeRenders": 0,
+          "reusedNativeFrames": 588,
+          "completePhysicalProofAndGlobalFrameClockPassed": true
         }
       ],
-      "frames": 1198,
-      "pinChecks": 4792,
-      "activeLabelFrames": 873,
+      "frames": 1786,
+      "pinChecks": 7144,
+      "activeLabelFrames": 1251,
       "scope": "Current saved native pins, complete physical proof metadata, actual controller phases, absolute sequence frame clocks and source callout copy/projection. Not surface contact, encoded glyph, full playback/listening or pilot acceptance."
     },
     "firstSealedEpisode": {
@@ -2027,23 +2050,23 @@
       },
       {
         "id": "EU-003",
-        "status": "running",
-        "stage": "native-blender-composition-export"
+        "status": "passed",
+        "stage": "native-blender-rendered-visual-qa"
       },
       {
         "id": "EU-004",
-        "status": "pending",
-        "stage": null
+        "status": "passed",
+        "stage": "native-blender-rendered-visual-qa"
       },
       {
         "id": "EU-005",
-        "status": "pending",
-        "stage": null
+        "status": "passed",
+        "stage": "native-blender-rendered-visual-qa"
       },
       {
         "id": "EU-006",
-        "status": "pending",
-        "stage": null
+        "status": "running",
+        "stage": "native-blender-composition-export"
       },
       {
         "id": "EU-007",
@@ -2066,6 +2089,135 @@
         "stage": null
       }
     ],
-    "spokenClaimReview": "docs/mechanism-shorts-ms3-first-ten-claim-review-results.json"
+    "spokenClaimReview": "docs/mechanism-shorts-ms3-first-ten-claim-review-results.json",
+    "secondSealedEpisode": {
+      "productAudit": {
+        "id": "EU-002",
+        "status": "passed-current-producer-bound-product-closure",
+        "producerBoundArtifactsVerified": 10,
+        "product": {
+          "path": "products/EU-002-e818cdec3f36b221-1.json",
+          "bytes": 9870,
+          "sha256": "sha256:246b3ead605768ab92e0f9f45b76508817045554b31b637265606e19f14b84bb"
+        },
+        "binding": {
+          "inputSha256": "sha256:e818cdec3f36b2218191d4c08fbf5bb6a4ae9c14522550579f0d0782513af598",
+          "outputSha256": "sha256:a7c57e576bb9ada2617ebb5d8051bd0eb0c5ccc0526373c01e6a405b10ceb4e9",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 588,
+        "previewErrors": 0,
+        "previewWarnings": 27,
+        "declaredPhysicalHolds": 12,
+        "encodedEvidenceImages": 44,
+        "wholeReviews": "UNREVIEWED",
+        "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+      },
+      "completeEncodedAudit": {
+        "product": {
+          "path": "products/EU-002-e818cdec3f36b221-1.json",
+          "bytes": 9870,
+          "sha256": "sha256:246b3ead605768ab92e0f9f45b76508817045554b31b637265606e19f14b84bb"
+        },
+        "runtimeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+        "status": "passed-scoped-retained-export-decode",
+        "frames": 588,
+        "sourceSamples": 940800,
+        "frameTailPaddingSamples": 0,
+        "changedRgbaFrames": [],
+        "rgbaFrameHashesExactAgainstH3": true,
+        "originalWholeAACReferenceParity": true,
+        "oldMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-002/2/output.mp4",
+          "bytes": 1678960,
+          "sha256": "sha256:a7c57e576bb9ada2617ebb5d8051bd0eb0c5ccc0526373c01e6a405b10ceb4e9"
+        },
+        "retainedPurposeMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/items/EU-002/1/output.mp4",
+          "bytes": 1678960,
+          "sha256": "sha256:a7c57e576bb9ada2617ebb5d8051bd0eb0c5ccc0526373c01e6a405b10ceb4e9"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose61/EU-002/purpose-decoded.f32",
+            "bytes": 7528448,
+            "sha256": "sha256:7e65716e01ddeb237c168c3cbfc5d2f58de1f12df7da40e32a27d98c47563d39"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose61/EU-002/reference-decoded.f32",
+            "bytes": 7528448,
+            "sha256": "sha256:7e65716e01ddeb237c168c3cbfc5d2f58de1f12df7da40e32a27d98c47563d39"
+          }
+        ],
+        "scope": "Current fc4 producer-bound export, full RGBA decode and original whole AAC reference. No full encoded glyph, playback, listening or pilot acceptance."
+      },
+      "wholeReviews": "UNREVIEWED"
+    },
+    "thirdSealedEpisode": {
+      "productAudit": {
+        "id": "EU-003",
+        "status": "passed-current-producer-bound-product-closure",
+        "producerBoundArtifactsVerified": 10,
+        "product": {
+          "path": "products/EU-003-7294c0aab66cc30e-1.json",
+          "bytes": 9928,
+          "sha256": "sha256:d59be40db24d88e192d3bab225f12faac61e9e7ae6f5db17de2a3743465124a6"
+        },
+        "binding": {
+          "inputSha256": "sha256:7294c0aab66cc30eab47ad95b3303c936a4f90995d7f39f28eb24160d4d3714e",
+          "outputSha256": "sha256:aa7039b505d2155700672a25a2f484114035352f33ccec480f673cb869d47c3b",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 588,
+        "previewErrors": 0,
+        "previewWarnings": 37,
+        "declaredPhysicalHolds": 20,
+        "encodedEvidenceImages": 54,
+        "wholeReviews": "UNREVIEWED",
+        "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+      },
+      "completeEncodedAudit": {
+        "product": {
+          "path": "products/EU-003-7294c0aab66cc30e-1.json",
+          "bytes": 9928,
+          "sha256": "sha256:d59be40db24d88e192d3bab225f12faac61e9e7ae6f5db17de2a3743465124a6"
+        },
+        "runtimeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+        "status": "passed-scoped-retained-export-decode",
+        "frames": 588,
+        "sourceSamples": 940800,
+        "frameTailPaddingSamples": 0,
+        "changedRgbaFrames": [],
+        "rgbaFrameHashesExactAgainstH3": true,
+        "originalWholeAACReferenceParity": true,
+        "oldMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-003/2/output.mp4",
+          "bytes": 990990,
+          "sha256": "sha256:aa7039b505d2155700672a25a2f484114035352f33ccec480f673cb869d47c3b"
+        },
+        "retainedPurposeMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/items/EU-003/1/output.mp4",
+          "bytes": 990990,
+          "sha256": "sha256:aa7039b505d2155700672a25a2f484114035352f33ccec480f673cb869d47c3b"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose61/EU-003/purpose-decoded.f32",
+            "bytes": 7528448,
+            "sha256": "sha256:147d32349d7daa3c74bb1a4f107a4c20d456206529ce224d4a37251ee0fe4f48"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose61/EU-003/reference-decoded.f32",
+            "bytes": 7528448,
+            "sha256": "sha256:147d32349d7daa3c74bb1a4f107a4c20d456206529ce224d4a37251ee0fe4f48"
+          }
+        ],
+        "scope": "Current fc4 producer-bound export, full RGBA decode and original whole AAC reference. No full encoded glyph, playback, listening or pilot acceptance."
+      },
+      "wholeReviews": "UNREVIEWED"
+    },
+    "scopedCameraCutRepair": "docs/mechanism-shorts-ms3-first-ten-camera-cut-review-results.json"
   }
 }
