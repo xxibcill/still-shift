@@ -67,11 +67,21 @@ still hold before relying on them.
   Exact preparation guards pass588/708 frames; buckle
   private annotation-only derivative preserves all708 physical part dictionaries
   and follows evaluated surface exactly across272 active label frames. Six tie/
-  nine final buckle native phone frames actually inspected. All prior product/media
+  nine final buckle native phone frames actually inspected. Corrected cable-tie
+  native588 frames/2,352 mapped pins pass;48 new/540 cached states. Another19
+  binder/17 can-tab encoded phone frames are actually inspected on six sheets;
+  readable labels and selected paper/attachment/hinge witnesses recorded.
+  All prior product/media
   bytes and original/canceled/failed journals
   must remain exact; originals/history/assets/pointers preserved. Full corrected
   encoded review, continuous/listening/mechanical/factual acceptance, portable
   handoff/effort/fault/final gates remain open; accepted0/10, effort tokens null.
+  **Corrected EU002 sealed:**588 full RGBA/original AAC frames and ten product
+  artifact pins pass; QA0 errors/27 warnings/44 images. Actual15 encoded phone
+  frames inspected;268/269 stays in the same view through319 return. Encoded
+  changes261–381 extend16 frames outside native269–373; no outside equality claim.
+  Corrected buckle now exports; both1,296 native frames/5,184 mapped pins verify,
+  plus25 actual spoken controls/50 changed arm meshes/272 in-frame pointers.
   No new ElevenLabs spend, publication, merge or GitHub Actions.
   [Terminal cohort and revision](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json),
   [tie cut](./mechanism-shorts-ms3-first-ten-camera-cut-review-results.json),
@@ -280,6 +290,11 @@ still hold before relying on them.
 - **Retained setup failure:** first canonical compiler helper used an incorrect
   script filename; corrected source compiles both588/708 frames, fresh guards
   pass. Cache import7,001 files/2,816,954,354B exact.
+- **Review follow-up:**19 binder/17 can-tab encoded phone stills inspected on
+  six sheets; readable labels and selected paper/attachment/hinge witnesses.
+  Corrected cable-tie588 native frames/2,352 pins pass,48 new/540 reused states.
+  All588 actual saved physical dictionaries/3,528 part-frame checks and controls
+  equal the retained baseline; only camera changes.
 - **Open:** complete corrected outputs/AV/whole reviews and remaining production
   acceptance gates; accepted0/10. No new spend, merge, publish or Actions.
 - **Records:** [terminal/source evidence](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json),

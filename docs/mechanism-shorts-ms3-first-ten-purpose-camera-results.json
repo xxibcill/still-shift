@@ -3312,7 +3312,597 @@
       ],
       "scope": "Separate bounded two-episode correction queue, native builder creates exact sorted complete inputs. All ten baseline products and artifact bytes plus original/canceled/failed journals guarded. Canonical model bytes equal original; external objects compatibility paths remain retired.",
       "wholeReviews": "UNREVIEWED",
-      "acceptedPilot": 0
+      "acceptedPilot": 0,
+      "availableNativeAudit": {
+        "status": "passed-available-native-artifacts",
+        "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+        "queueId": "actual-first-ten-scoped-corrections66",
+        "rows": [
+          {
+            "id": "EU-002",
+            "statusAtAudit": "running",
+            "frames": 588,
+            "proofHolds": 5,
+            "pinChecks": 2352,
+            "uniquePinsVerified": 838,
+            "activeLabelFrames": 344,
+            "freshNativeRenders": 48,
+            "reusedNativeFrames": 540,
+            "completePhysicalProofAndGlobalFrameClockPassed": true
+          }
+        ],
+        "skipped": [
+          {
+            "id": "EU-007",
+            "status": "pending"
+          }
+        ],
+        "scope": "Current saved native pins, complete physical proof metadata, actual controller phases, absolute sequence frame clocks and source callout copy/projection. Not surface contact, encoded glyph, full playback/listening or pilot acceptance.",
+        "receipt": {
+          "path": "/private/tmp/still-shift-ms3-corrections66-native-audit1.json",
+          "bytes": 965,
+          "sha256": "sha256:bcb0131bb5186434aa841bcb45541b391601b602e217d37687ec01588781ffc4"
+        }
+      },
+      "cableTieActualGeometryParity": {
+        "status": "passed-complete-actual-camera-only-geometry-parity",
+        "episode": "EU-002",
+        "frames": 588,
+        "partFrameChecks": 3528,
+        "controlsEveryFrameExact": true,
+        "actualPhysicalPartDictionariesEveryFrameExact": true,
+        "differentFrames": [],
+        "baseline": "cohort61-revision0-retained-native-map",
+        "scope": "Actual saved evaluated mesh/world/visibility dictionaries at every frame; camera revision only. Complete surface/contact/encoded/audio acceptance remains separate.",
+        "receipt": {
+          "path": "/private/tmp/still-shift-ms3-corrections66-EU002-actual-geometry1.json",
+          "bytes": 487,
+          "sha256": "sha256:a10d6c15e633f2ed578306fbe8a0d4a116683d6c4374eb5ba459e7d96365dd6f"
+        }
+      },
+      "firstCorrectedSealedEpisode": {
+        "status": "sealed-scoped-corrected-export",
+        "productAudit": {
+          "id": "EU-002",
+          "status": "passed-current-producer-bound-product-closure",
+          "producerBoundArtifactsVerified": 10,
+          "product": {
+            "path": "products/EU-002-bf04318119c5ad32-1.json",
+            "bytes": 9884,
+            "sha256": "sha256:bd197ff29a04df3c6d1436653235c7e278bc669f4a7afe28f4f16b30f2683f83"
+          },
+          "binding": {
+            "inputSha256": "sha256:bf04318119c5ad325350d43b7ba3e973eee707c674525e6a20d12aa34bc9e748",
+            "outputSha256": "sha256:f8c223632b6d5054727998958163e84815bfe9a8698fbb37c0b99064da6b61ab",
+            "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+            "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+          },
+          "frames": 588,
+          "previewErrors": 0,
+          "previewWarnings": 27,
+          "declaredPhysicalHolds": 12,
+          "encodedEvidenceImages": 44,
+          "wholeReviews": "UNREVIEWED",
+          "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+        },
+        "productAuditPin": {
+          "path": "/private/tmp/still-shift-ms3-corrections66-EU002-product-audit1.json",
+          "bytes": 980,
+          "sha256": "sha256:8fbcdc7b7c3d98615aba508de9c60c8c2f0e3391a12450b3323a60ade406f82e"
+        },
+        "completeEncodedAuditPin": {
+          "path": "/private/tmp/still-shift-ms3-corrections66-EU-002-encoded1.json",
+          "bytes": 2968,
+          "sha256": "sha256:cc1f003c11a3d9008560a293fb2f59bcaa3ddf9033bc85537aa7bffb6eee034a"
+        },
+        "frames": 588,
+        "originalWholeAACReferenceParity": true,
+        "changedEncodedFrames": 121,
+        "changedEncodedRangeInclusive": [261, 381],
+        "changedNativeShotRangeInclusive": [269, 373],
+        "encodedOutsideNativeWindow": 16,
+        "qualification": "Decoded lossy changes extend beyond native camera window. No claim of encoded equality outside269\u2013373.",
+        "actualEncodedPhoneReview": {
+          "status": "selected-encoded-phone-stills-inspected",
+          "rows": [
+            {
+              "id": "EU-002",
+              "frames": [
+                0, 196, 246, 253, 267, 268, 269, 293, 319, 373, 374, 396, 435,
+                476, 587
+              ],
+              "sheets": [
+                "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-corrections66/EU-002/phone-review1/sheet-0.png",
+                "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-corrections66/EU-002/phone-review1/sheet-1.png"
+              ],
+              "movieSha256": "sha256:f8c223632b6d5054727998958163e84815bfe9a8698fbb37c0b99064da6b61ab",
+              "scope": "Actual retained encoded phone stills; static inspection pending, no full playback/listening approval."
+            }
+          ],
+          "actualSheetsViewed": 2,
+          "findings": "Actual encoded selected268/269 maintain same passage view through319 return; root and tongue/tooth labels readable. Original whole audio parity. Full normal-speed listening/contact acceptance remains open.",
+          "sheetPins": [
+            {
+              "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-corrections66/EU-002/phone-review1/sheet-0.png",
+              "bytes": 327110,
+              "sha256": "sha256:323480a29e8ff94a90cc578caaf0ffb113e0474520861ef1be6982b91afc1e02"
+            },
+            {
+              "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-corrections66/EU-002/phone-review1/sheet-1.png",
+              "bytes": 303833,
+              "sha256": "sha256:1923c601cd7725bb08d7b33ca65bd400ef54c6c78211574dae40a74a8db48bc3"
+            }
+          ]
+        },
+        "wholeReviews": "UNREVIEWED",
+        "acceptedPilot": 0
+      },
+      "nativeAuditBoth": {
+        "status": "passed-available-native-artifacts",
+        "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+        "queueId": "actual-first-ten-scoped-corrections66",
+        "rows": [
+          {
+            "id": "EU-002",
+            "statusAtAudit": "passed",
+            "frames": 588,
+            "proofHolds": 5,
+            "pinChecks": 2352,
+            "uniquePinsVerified": 838,
+            "activeLabelFrames": 344,
+            "freshNativeRenders": 48,
+            "reusedNativeFrames": 540,
+            "completePhysicalProofAndGlobalFrameClockPassed": true
+          },
+          {
+            "id": "EU-007",
+            "statusAtAudit": "running",
+            "frames": 708,
+            "proofHolds": 7,
+            "pinChecks": 2832,
+            "uniquePinsVerified": 927,
+            "activeLabelFrames": 485,
+            "freshNativeRenders": 207,
+            "reusedNativeFrames": 501,
+            "completePhysicalProofAndGlobalFrameClockPassed": true
+          }
+        ],
+        "skipped": [],
+        "scope": "Current saved native pins, complete physical proof metadata, actual controller phases, absolute sequence frame clocks and source callout copy/projection. Not surface contact, encoded glyph, full playback/listening or pilot acceptance.",
+        "receipt": {
+          "path": "/private/tmp/still-shift-ms3-corrections66-native-audit2.json",
+          "bytes": 1231,
+          "sha256": "sha256:595c0f13dd43572ba97b138386b1f38f58cbdcdb1be5b0bcfdd394db61fef5fc"
+        }
+      },
+      "buckleSpokenNativeAssertions": {
+        "status": "passed-actual-native-spoken-bend-state",
+        "episode": "EU-007",
+        "nativeMapSha256": "sha256:4ee0a786310eddaf1816076f96bc55687c058f7a9066baac46d128049f3c2a9c",
+        "wordWindowFrames": [229, 254],
+        "controlAssertions": 25,
+        "localMeshAssertions": 50,
+        "surfacePointerInFrameAssertions": 272,
+        "rows": [
+          {
+            "frame": 229,
+            "insert": 0.5557894736842105,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/78298301-48d2-429f-b7cf-ac19ac9ba466/frames/frame-000000.json",
+              "bytes": 36145,
+              "sha256": "sha256:1c262b11d8c42011713ce88eca0f3c4f68812d942a249c12afe828a57cb84a5a"
+            }
+          },
+          {
+            "frame": 230,
+            "insert": 0.5726315789473684,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000095.json",
+              "bytes": 36148,
+              "sha256": "sha256:70d47ea3b5708b56d5a43b6bbc9b13e27babe5889d642e4a320be890fb306410"
+            }
+          },
+          {
+            "frame": 231,
+            "insert": 0.5894736842105263,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000096.json",
+              "bytes": 36143,
+              "sha256": "sha256:d11b25462b669864868643d2c305892554a2288614aa73b197448aed63e91142"
+            }
+          },
+          {
+            "frame": 232,
+            "insert": 0.6063157894736841,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000097.json",
+              "bytes": 36145,
+              "sha256": "sha256:07ccb20d88d5cc6579158f916464b653a8a06059165e3b1860fa6898ebae1db2"
+            }
+          },
+          {
+            "frame": 233,
+            "insert": 0.6231578947368421,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000098.json",
+              "bytes": 36146,
+              "sha256": "sha256:ba6d0ca29bae7fbbdad76b3b53e55a5ce8bfc02814f5159ea370db5069bf7efd"
+            }
+          },
+          {
+            "frame": 234,
+            "insert": 0.6399999999999999,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000099.json",
+              "bytes": 36142,
+              "sha256": "sha256:acf7ecef66888d4b770be6dc30aa5d3c1f69a82d9907e960756ab2f17754409d"
+            }
+          },
+          {
+            "frame": 235,
+            "insert": 0.6568421052631579,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000100.json",
+              "bytes": 36150,
+              "sha256": "sha256:b164bcd00679450cf9b859b1e36fb80f3de081f0768b9b9179112f2e870cb876"
+            }
+          },
+          {
+            "frame": 236,
+            "insert": 0.6736842105263158,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000101.json",
+              "bytes": 36128,
+              "sha256": "sha256:61c1b391cf6c380c552833c1cf921110cfa39fd91fa0222099eaf16f7fad0a7d"
+            }
+          },
+          {
+            "frame": 237,
+            "insert": 0.6905263157894737,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000102.json",
+              "bytes": 36149,
+              "sha256": "sha256:e6ea07327624b0a739ba830c226ee61f6bb69639f3fe1885ca587a3581076424"
+            }
+          },
+          {
+            "frame": 238,
+            "insert": 0.7073684210526315,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000103.json",
+              "bytes": 36146,
+              "sha256": "sha256:01413448373a633751ed53c385a9e2dedd2ff376e9d601a781aecb8c583675fd"
+            }
+          },
+          {
+            "frame": 239,
+            "insert": 0.7242105263157894,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000104.json",
+              "bytes": 36160,
+              "sha256": "sha256:868992a9a5dee8ee5fc1a4d5a4a4219ee7dd5a3c63528a2478e31f8551be20aa"
+            }
+          },
+          {
+            "frame": 240,
+            "insert": 0.7410526315789473,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000105.json",
+              "bytes": 36163,
+              "sha256": "sha256:31d95debaefa80795b161d92706fb1a81992fbd1ea05fff1ed651cd51e89e1bf"
+            }
+          },
+          {
+            "frame": 241,
+            "insert": 0.7578947368421053,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000106.json",
+              "bytes": 36172,
+              "sha256": "sha256:b45aa523b4f18c844560b5c0d372c486448c78a99f686c40d2af2681c4f81bab"
+            }
+          },
+          {
+            "frame": 242,
+            "insert": 0.7747368421052631,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000107.json",
+              "bytes": 36161,
+              "sha256": "sha256:421a194049489239dce403a367634288e1fea958d5346fceba97083e6174615f"
+            }
+          },
+          {
+            "frame": 243,
+            "insert": 0.791578947368421,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000108.json",
+              "bytes": 36134,
+              "sha256": "sha256:3925c1e4208e2bfa2a0581562c9dcaf23b86e64b70d04ba71c3374fa9b161c19"
+            }
+          },
+          {
+            "frame": 244,
+            "insert": 0.8084210526315788,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000109.json",
+              "bytes": 36151,
+              "sha256": "sha256:a38981b4b0538ee82c9280d72daf52262e9c1169c1dc0cb8f41a5a136c92adf6"
+            }
+          },
+          {
+            "frame": 245,
+            "insert": 0.8252631578947368,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000110.json",
+              "bytes": 36158,
+              "sha256": "sha256:431999d353910d3f0a48f73ea4bb4f5265597baef451e512296834df1f04ecf7"
+            }
+          },
+          {
+            "frame": 246,
+            "insert": 0.8421052631578947,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000111.json",
+              "bytes": 36143,
+              "sha256": "sha256:1b90b6d6a7acad5e7a403eed999f1e2ee7288b00f424251fdbce55599142873d"
+            }
+          },
+          {
+            "frame": 247,
+            "insert": 0.8589473684210526,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000112.json",
+              "bytes": 36150,
+              "sha256": "sha256:3bfe682d0e7db116641f76d9cead6e3000597dec74a73f85d238d1a2d56cf0b9"
+            }
+          },
+          {
+            "frame": 248,
+            "insert": 0.8757894736842105,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000113.json",
+              "bytes": 36161,
+              "sha256": "sha256:73c730e529fe0bc62de4f1114bb8c3479f49556ffcf745040117645bc18eca80"
+            }
+          },
+          {
+            "frame": 249,
+            "insert": 0.8926315789473684,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000114.json",
+              "bytes": 36175,
+              "sha256": "sha256:322a520c34ec8babb7d5ec25fe0ffe25773feab098cde993b5dc1b127c892328"
+            }
+          },
+          {
+            "frame": 250,
+            "insert": 0.9094736842105262,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000115.json",
+              "bytes": 36140,
+              "sha256": "sha256:edb46d2a95442f37d65ff7035f75600047ef57f6c2e14371a669ba5ce6e03626"
+            }
+          },
+          {
+            "frame": 251,
+            "insert": 0.9263157894736842,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000116.json",
+              "bytes": 36151,
+              "sha256": "sha256:3a788531c24c3f9c6536f75c28a55d67b92d3f02682f241e014763ebabf240d5"
+            }
+          },
+          {
+            "frame": 252,
+            "insert": 0.943157894736842,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/ce349ed7-ff29-4275-a793-47d73f8845ef/frames/frame-000117.json",
+              "bytes": 36156,
+              "sha256": "sha256:0dd589f16cf081c0472d6cfb446085898ec04b0a11ffa46d4ac7520c39c088d0"
+            }
+          },
+          {
+            "frame": 253,
+            "insert": 0.96,
+            "evaluatedLocalMeshesChanged": {
+              "male.arm.-1": true,
+              "male.arm.1": true
+            },
+            "observation": {
+              "path": "blender-cache/captures/78298301-48d2-429f-b7cf-ac19ac9ba466/frames/frame-000001.json",
+              "bytes": 36146,
+              "sha256": "sha256:3e44ff7cd8aa4c0c85f2cebf586e3519c0ac063640fc5b2d7effd7181a862f69"
+            }
+          }
+        ],
+        "scope": "Independent actual saved evaluated native mesh/control assertions over spoken bend words; all active final surface-pointer projections. No full rendered glyph/contact/force/listening approval.",
+        "receipt": {
+          "path": "/private/tmp/still-shift-ms3-corrections66-EU007-spoken-native1.json",
+          "bytes": 11127,
+          "sha256": "sha256:9610043523d71a5275d158e315e5a4deb471a79bf46a854409e390756c1b2e68"
+        }
+      }
+    },
+    "binderAndCanTabEncodedPhoneReview": {
+      "status": "selected-encoded-phone-stills-inspected",
+      "rows": [
+        {
+          "id": "EU-006",
+          "frames": [
+            0, 112, 113, 159, 160, 175, 190, 205, 249, 293, 317, 406, 424, 427,
+            451, 500, 541, 620, 633
+          ],
+          "sheets": [
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose61/EU-006/phone-review66-v2/sheet-0.png",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose61/EU-006/phone-review66-v2/sheet-1.png",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose61/EU-006/phone-review66-v2/sheet-2.png"
+          ],
+          "movieSha256": "sha256:6b3fbd3e784cbc68d41afd4663e1be78a45d554a2500d6c0732ebc58ac32f9e7",
+          "scope": "Actually inspected selected encoded phone stills only; full motion, sound/listening, contact/force and whole factual acceptance remain unreviewed.",
+          "findings": [
+            "Spring-body and handle/steel/bearing/gripping-edge labels are readable in selected frames.",
+            "Selected160/175/190 front views show changing steel opening;293/317 show return;406/424 show paper insertion;451/500 and541/620 show retained paper between jaws.",
+            "The205\u2013293 bearing macro shows the wire/body contact while body-opening words are spoken; that crop alone does not establish full-body motion or force."
+          ],
+          "sheetPins": [
+            {
+              "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose61/EU-006/phone-review66-v2/sheet-0.png",
+              "bytes": 257416,
+              "sha256": "sha256:ed43ce526eb6da8081dfe064a4f00af291aad6ffc70ec7e5e2c9d88520823d89"
+            },
+            {
+              "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose61/EU-006/phone-review66-v2/sheet-1.png",
+              "bytes": 354124,
+              "sha256": "sha256:026ad054c121fe712765c883659eb456a43d7459e3b80d9a629b8f93dd925a92"
+            },
+            {
+              "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose61/EU-006/phone-review66-v2/sheet-2.png",
+              "bytes": 62444,
+              "sha256": "sha256:d5192a5b029d95b9d6830310b3f04d7a63cedea45ce0a3392604465f99d77f1e"
+            }
+          ]
+        },
+        {
+          "id": "EU-010",
+          "frames": [
+            0, 27, 84, 136, 190, 210, 237, 278, 350, 377, 420, 443, 500, 578,
+            579, 606, 626
+          ],
+          "sheets": [
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose61/EU-010/phone-review66-v2/sheet-0.png",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose61/EU-010/phone-review66-v2/sheet-1.png",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose61/EU-010/phone-review66-v2/sheet-2.png"
+          ],
+          "movieSha256": "sha256:d0bb64e9be3be90af9857fc5ace4d30c1c31b4f919551be60a165970bd0288bc",
+          "scope": "Actually inspected selected encoded phone stills only; full motion, sound/listening, contact/force and whole factual acceptance remain unreviewed.",
+          "findings": [
+            "Rivet, flexing-metal and hinge labels are readable in selected frames.",
+            "Selected210/237 show the schematic attachment bend;443/500/578 show the retained metal hinge;579/606/626 show the attached panel/tab in the final broader view.",
+            "The score-line whole-lid views show opening progression but do not by themselves prove every score/no-penetration detail or normal-speed causal timing."
+          ],
+          "sheetPins": [
+            {
+              "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose61/EU-010/phone-review66-v2/sheet-0.png",
+              "bytes": 444532,
+              "sha256": "sha256:ac2f81053de3683357f3319692a4c0afd81a3de252875610e14c5ab9e749eb0b"
+            },
+            {
+              "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose61/EU-010/phone-review66-v2/sheet-1.png",
+              "bytes": 448094,
+              "sha256": "sha256:669d61bfff97e61c9af03958d4bdba931304cd8678e7ffbbc17e05927ea213b2"
+            },
+            {
+              "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose61/EU-010/phone-review66-v2/sheet-2.png",
+              "bytes": 53983,
+              "sha256": "sha256:7304cf49728ffb342b00d614007e1410ff53cbb8c8df83faab134dd8a9233269"
+            }
+          ]
+        }
+      ],
+      "actualSheetsViewed": 6,
+      "retainedExtractionFailure": "First select expression lacked filtergraph quoting and failed before extracting frames; corrected v2 quoted expression produced all36 selected images. Empty original attempt directory retained.",
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-holds61-phone-review66-inspected1.json",
+        "bytes": 5288,
+        "sha256": "sha256:3000668a49c076b2492e096adc3bd57970eb5e5696db55f04d23f81f8874aa44"
+      }
     }
   }
 }

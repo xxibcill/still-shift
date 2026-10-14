@@ -1,7 +1,7 @@
 {
   "schemaVersion": "ms3-first-ten-camera-cut-review-1",
   "date": "2026-10-15",
-  "status": "guarded-correction-canonical-recovery-running",
+  "status": "corrected-export-sealed-scoped-encoded-phone-check-passed",
   "episode": "EU-002",
   "currentBinding": {
     "inputSha256": "sha256:e818cdec3f36b2218191d4c08fbf5bb6a4ae9c14522550579f0d0782513af598",
@@ -593,7 +593,7 @@
   },
   "liveInputFilesChanged": false,
   "newNativeRenders": 3,
-  "renderedRepair": "Separate two-episode canonical-path correction cohort running",
+  "renderedRepair": "EU002 sealed in bounded canonical recovery; shared run/report/resume still live",
   "wholeReviews": "UNREVIEWED",
   "acceptedPilot": 0,
   "retainedPrePrepareAdapters": {
@@ -686,6 +686,83 @@
       }
     ],
     "scope": "Separate bounded two-episode correction queue, native builder creates exact sorted complete inputs. All ten baseline products and artifact bytes plus original/canceled/failed journals guarded. Canonical model bytes equal original; external objects compatibility paths remain retired.",
+    "wholeReviews": "UNREVIEWED",
+    "acceptedPilot": 0
+  },
+  "correctedExport": {
+    "status": "sealed-scoped-corrected-export",
+    "productAudit": {
+      "id": "EU-002",
+      "status": "passed-current-producer-bound-product-closure",
+      "producerBoundArtifactsVerified": 10,
+      "product": {
+        "path": "products/EU-002-bf04318119c5ad32-1.json",
+        "bytes": 9884,
+        "sha256": "sha256:bd197ff29a04df3c6d1436653235c7e278bc669f4a7afe28f4f16b30f2683f83"
+      },
+      "binding": {
+        "inputSha256": "sha256:bf04318119c5ad325350d43b7ba3e973eee707c674525e6a20d12aa34bc9e748",
+        "outputSha256": "sha256:f8c223632b6d5054727998958163e84815bfe9a8698fbb37c0b99064da6b61ab",
+        "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      "frames": 588,
+      "previewErrors": 0,
+      "previewWarnings": 27,
+      "declaredPhysicalHolds": 12,
+      "encodedEvidenceImages": 44,
+      "wholeReviews": "UNREVIEWED",
+      "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+    },
+    "productAuditPin": {
+      "path": "/private/tmp/still-shift-ms3-corrections66-EU002-product-audit1.json",
+      "bytes": 980,
+      "sha256": "sha256:8fbcdc7b7c3d98615aba508de9c60c8c2f0e3391a12450b3323a60ade406f82e"
+    },
+    "completeEncodedAuditPin": {
+      "path": "/private/tmp/still-shift-ms3-corrections66-EU-002-encoded1.json",
+      "bytes": 2968,
+      "sha256": "sha256:cc1f003c11a3d9008560a293fb2f59bcaa3ddf9033bc85537aa7bffb6eee034a"
+    },
+    "frames": 588,
+    "originalWholeAACReferenceParity": true,
+    "changedEncodedFrames": 121,
+    "changedEncodedRangeInclusive": [261, 381],
+    "changedNativeShotRangeInclusive": [269, 373],
+    "encodedOutsideNativeWindow": 16,
+    "qualification": "Decoded lossy changes extend beyond native camera window. No claim of encoded equality outside269\u2013373.",
+    "actualEncodedPhoneReview": {
+      "status": "selected-encoded-phone-stills-inspected",
+      "rows": [
+        {
+          "id": "EU-002",
+          "frames": [
+            0, 196, 246, 253, 267, 268, 269, 293, 319, 373, 374, 396, 435, 476,
+            587
+          ],
+          "sheets": [
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-corrections66/EU-002/phone-review1/sheet-0.png",
+            "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-corrections66/EU-002/phone-review1/sheet-1.png"
+          ],
+          "movieSha256": "sha256:f8c223632b6d5054727998958163e84815bfe9a8698fbb37c0b99064da6b61ab",
+          "scope": "Actual retained encoded phone stills; static inspection pending, no full playback/listening approval."
+        }
+      ],
+      "actualSheetsViewed": 2,
+      "findings": "Actual encoded selected268/269 maintain same passage view through319 return; root and tongue/tooth labels readable. Original whole audio parity. Full normal-speed listening/contact acceptance remains open.",
+      "sheetPins": [
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-corrections66/EU-002/phone-review1/sheet-0.png",
+          "bytes": 327110,
+          "sha256": "sha256:323480a29e8ff94a90cc578caaf0ffb113e0474520861ef1be6982b91afc1e02"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-corrections66/EU-002/phone-review1/sheet-1.png",
+          "bytes": 303833,
+          "sha256": "sha256:1923c601cd7725bb08d7b33ca65bd400ef54c6c78211574dae40a74a8db48bc3"
+        }
+      ]
+    },
     "wholeReviews": "UNREVIEWED",
     "acceptedPilot": 0
   }
