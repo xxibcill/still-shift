@@ -6,28 +6,30 @@ was opened/attached. Only roadmap/log prose differs at integration; the owner's
 MS0 merge is retained. This tracker preserves the
 [approved MS3 scope](./mechanism-shorts-production-plan.md#ms3-production-lifecycle-and-ten-episode-pilot).
 
-The2026-10-15 source review repairs are integrated through `5a91ad91`: authenticated
-native compact handoff, explicit first-pass repair/recovery provenance, native
-encoded phone/shot/cut/event/caption/anchor evidence, and separate four-state QA
-applicability decisions. Current combined fast4,619/459 and focused checks pass;
-failed stages and independent Standards/Spec findings are retained. The earlier
-relocated all-ten lifecycle is terminal with6,181 full RGBA/PCM frames,100 product
-pins and24,724 native pins independently verified. Fresh current runtime1090f97c
-run/report/resume/ten handoffs is running with exact source/prior-file guards.
-Current full receiving/installed/software gates and whole pilot reviews remain
-open. Accepted0/10 and paired tokensnull; repeated lifecycles do not establish
-original first-pass completion or savings. [Current lifecycle](./mechanism-shorts-ms3-current-first-ten-lifecycle-results.json),
-[native review](./mechanism-shorts-ms3-native-encoded-review-results.json),
-[applicability QA](./mechanism-shorts-ms3-four-state-qa-results.json).
+Current2026-10-15 evidence binds the actual EU001–EU010 to frozen producer
+`3df62a55` / runtime1090 / profile1dd0. The bounded all-ten run and report actually
+exit0; independent checks cover6,181 frames,130 root artifacts,1,084 review images,
+24,724 native pins and exact original narration parity. The local review index is
+`benchmarks/results/ms3-actual-first-ten-review80/index.md`. Unified58827 continues
+resume/ten handoffs; no other renderer group or source integration may start yet.
 
-Native coverage admission is now implemented and independently reviewed through
-3df62a55. Its actual ten-row audit authenticates selected narration/source/plan/
-controller/work pins and reports8 reused identities/2 revisions/0 new rig types,
-with0 support; no whole review or original first-pass target is inferred. The
-current integrated run's temporary input loss leaves E1 sealed and9 failures
-retained. Exact originals restore111 copies; bounded revision1 recovery is now
-live with producer runtime unchanged. [Recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json),
-[coverage checks/actual scope](./mechanism-shorts-ms3-native-coverage-review-results.json).
+The actual report reconciles first-pass technical completion at1/10 (10%), below
+the90% target, with nine original failures preserved. Token savings remain null
+without comparable paired measurements. Technical and sampled-visual pass10 each;
+mechanical, factual, continuous-motion and listening remain unreviewed10 each,
+with0 reviewed-ready/accepted. Render p50/p95 are474.63/574.84s; these are separate
+from absent setup/routine measurements. [Current authoritative evidence](./mechanism-shorts-ms3-current-first-ten-recovery-results.json).
+
+Isolated source repairs20e1/8e11 await integration after terminal58827. Current
+private archive81 passes build, all2,573 member hashes, offline install,13 actual
+public source checks, strict installed types and discovery under original-source
+denial. Its compiled runtimeebc2 remains distinct from historical1090/d734. Fresh
+installed lifecycle82 is prepared and guard-blocked while primary is live.
+[Current package proof](./mechanism-shorts-ms3-native-source-review-results.json).
+
+Four actual geometry fault images remain open. Their existing work-budget guard
+returns2; a revised allowance was requested and is pending. Other software work
+continues. [Physical fault preparation and guard](./mechanism-shorts-ms3-physical-fault-preparation-results.json).
 
 | Approved workstream                                            | Current evidence                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Remaining                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

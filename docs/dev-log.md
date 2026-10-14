@@ -48,7 +48,9 @@ still hold before relying on them.
   exits0 in4,829.51s. All ten products independently verify6,181 frames,130 root
   artifacts,1,084 review images,928 samples and24,724 native pins; exact prior whole
   picture/PCM/original narration parity holds. Preview0 errors/343 warnings.
-  Unified58827 continues report/resume/ten handoffs; do not start another renderer
+  Report also exits0 in472.55s; independent product/journal/count/percentile
+  reconciliation passes. First-pass1/10 (10%) fails90% target, savings null.
+  Unified58827 continues resume/ten handoffs; do not start another renderer
   or integrate source until its actual terminal. Original attempts remain exact;
   all2,792 source files,107 inputs and1,221 prior/E1 files are guarded.
   Durable ignored `benchmarks/results/ms3-actual-first-ten-review80/index.md` links
@@ -59,8 +61,11 @@ still hold before relying on them.
   Isolated20e1 declaration and8e11 native-policy fixes await integration; upstream
   PR56 repairs42397d3f/2b7a4f20 are committed separately with focused/fast proof,
   fresh GPU/runtime pending. Archive77 does not include the later policy fixes.
-  Actual physical fault images, full current software/benchmark/archive/installed
-  gates and whole reviews remain open; no spending/publication/merge.
+  Current private archive81 /compiled runtimeebc2 verifies2,573 members and13
+  public installed source controls plus strict types/discovery; updated installed82
+  lifecycle is prepared, earlier79 remains unexecuted. Physical fault budget guard
+  blocks four pending captures; explicit revised allowance is requested/pending.
+  Full current software/benchmark/archive/installed gates and whole reviews remain open; no spending/publication/merge.
   [Recovery and review delivery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json),
   [package evidence](./mechanism-shorts-ms3-package-portability-results.json).
 
@@ -356,6 +361,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Reconcile actual cohort metrics and current installed contracts
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; frozen producer unchanged.
+- **Results:** all-ten report exits0 in472.55s; independent retained-journal/product
+  identities, six review counts and percentile arithmetic pass. First-pass1/10
+  fails90% target; savings null and whole reviews remain unreviewed. Initial audit
+  assumed unchanged raw journal after resume; retained snapshot proves only UTC changed.
+- **Package:** source8e11 archive81 verifies2,573 members /13 installed source
+  cases /strict types/discovery. Latest compiled lifecycle82 is prepared with exact
+  own inputs/cache and denials; older79 is preserved without execution.
+- **Limit:** fault-asset guard returns2 on conservative shared-session totals;
+  revised $10/35M allowance requested, pending. No dependent fault command started.
+- **Open / next:**58827 resume/ten handoffs, source integration and serial GPU/full/
+  installed gates; four physical fault images and whole reviews remain.
+- **Records:** [recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json),
+  [current package](./mechanism-shorts-ms3-native-source-review-results.json),
+  [fault guard](./mechanism-shorts-ms3-physical-fault-preparation-results.json).
 
 ### 2026-10-15 — Deliver actual first ten local review videos
 

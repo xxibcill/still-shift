@@ -80,6 +80,46 @@
           "EU-009": "passed",
           "EU-010": "passed"
         }
+      },
+      {
+        "step": "report",
+        "actualExitCode": 0,
+        "seconds": 472.55409504217096,
+        "currentSourceExact": true,
+        "declaredInputsExact": true,
+        "priorFilesExact": true,
+        "episodeStatuses": {
+          "EU-001": "passed",
+          "EU-002": "passed",
+          "EU-003": "passed",
+          "EU-004": "passed",
+          "EU-005": "passed",
+          "EU-006": "passed",
+          "EU-007": "passed",
+          "EU-008": "passed",
+          "EU-009": "passed",
+          "EU-010": "passed"
+        }
+      },
+      {
+        "step": "resume",
+        "actualExitCode": 0,
+        "seconds": 466.20870516612194,
+        "currentSourceExact": true,
+        "declaredInputsExact": true,
+        "priorFilesExact": true,
+        "episodeStatuses": {
+          "EU-001": "passed",
+          "EU-002": "passed",
+          "EU-003": "passed",
+          "EU-004": "passed",
+          "EU-005": "passed",
+          "EU-006": "passed",
+          "EU-007": "passed",
+          "EU-008": "passed",
+          "EU-009": "passed",
+          "EU-010": "passed"
+        }
       }
     ],
     "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/queue-current72.json",
@@ -91,7 +131,8 @@
     "acceptedPilot": 0,
     "wholeReviews": "UNREVIEWED",
     "declaredInputFiles": 107,
-    "protectedPriorFiles": 1221
+    "protectedPriorFiles": 1221,
+    "resumeRowsExact": true
   },
   "stateAtCapture": {
     "file": {
@@ -123,7 +164,16 @@
     "wholeReviews": "UNREVIEWED",
     "completeCurrentRunReportResumeHandoffReceivingInstalledSoftwareAndRealFaultProof": "open",
     "source73ActualAuditorPassedWithSupportZero": true,
-    "newSpending": false
+    "newSpending": false,
+    "firstPassTechnicalTarget": {
+      "status": "not-achieved",
+      "passed": 1,
+      "completed": 10,
+      "rate": 0.1,
+      "target": 0.9,
+      "originalFailedAttemptsPreserved": true
+    },
+    "authoringSavingsTarget": "unverified-no-comparable-paired-token-measurements"
   },
   "progressSnapshots": [
     {
@@ -1290,5 +1340,111 @@
     "status": "isolated-qualified-not-integrated-until-58827-terminal",
     "evidence": "docs/mechanism-shorts-ms3-native-source-review-results.json",
     "originalProducerRuntimeNotRebound": true
+  },
+  "independentCohortReport": {
+    "actualExitCode": 0,
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-recovery82-report-audit2.json",
+      "bytes": 2495,
+      "sha256": "sha256:e3fee690cb60a052c618c5afa3f55409196cf4d3aeac24a404f7a466275f60f9"
+    },
+    "result": {
+      "status": "passed-independent-current-all-ten-report-reconciliation",
+      "report": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/report-recovery74.json",
+        "bytes": 168547,
+        "sha256": "sha256:222a2a6768eeca7fca3330f697f55f771505f27fa51aa0c887004922f3b104ec"
+      },
+      "journalAtReport": {
+        "path": "/private/tmp/still-shift-ms3-progress80-state1.json",
+        "bytes": 19614,
+        "sha256": "sha256:3cf235edaa237802e8c3fa6845ee0e847fec6dd65c14c6d10f007e619ddee259"
+      },
+      "currentJournal": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/queue-state.json",
+        "bytes": 19614,
+        "sha256": "sha256:4530602e93de5dc153f49d662f0ce228ff94866c243e8d4b81b190388bd08095"
+      },
+      "onlyResumeUpdatedUtcChanged": true,
+      "episodes": 10,
+      "reviewCounts": {
+        "technical": {
+          "passed": 10,
+          "failed": 0,
+          "unreviewed": 0,
+          "notApplicable": 0
+        },
+        "mechanical": {
+          "passed": 0,
+          "failed": 0,
+          "unreviewed": 10,
+          "notApplicable": 0
+        },
+        "sampled-visual": {
+          "passed": 10,
+          "failed": 0,
+          "unreviewed": 0,
+          "notApplicable": 0
+        },
+        "continuous-motion": {
+          "passed": 0,
+          "failed": 0,
+          "unreviewed": 10,
+          "notApplicable": 0
+        },
+        "listening": {
+          "passed": 0,
+          "failed": 0,
+          "unreviewed": 10,
+          "notApplicable": 0
+        },
+        "factual": {
+          "passed": 0,
+          "failed": 0,
+          "unreviewed": 10,
+          "notApplicable": 0
+        }
+      },
+      "firstPassTechnical": {
+        "completed": 10,
+        "passed": 1,
+        "rate": 0.1,
+        "unverified": 0,
+        "targetSatisfied": false
+      },
+      "failures": {
+        "failedAttempts": 9,
+        "repeatedFailureEpisodes": 0,
+        "cancelled": 0,
+        "interrupted": 0,
+        "origins": {
+          "transient": 0,
+          "authored": 0,
+          "unknown": 9
+        }
+      },
+      "renderSeconds": {
+        "available": 10,
+        "p50": 474.63485874950004,
+        "p95": 574.8377828831498
+      },
+      "authoring": {
+        "comparablePairedTasks": 0,
+        "routineMedianTokens": null,
+        "baselineMedianTokens": null,
+        "savings": null,
+        "targetSatisfied": null
+      },
+      "scope": "Original journal/product hashes, exact report fields/current bindings, six review counts and independent percentile arithmetic. First-pass target is contradicted at10%, savings unavailable, whole reviews unreviewed. This does not qualify full lifecycle or pilot acceptance."
+    },
+    "initialHelperFailure": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-recovery82-report-audit1.log",
+        "bytes": 320,
+        "sha256": "sha256:8690397800ac772d78546bec5495527aa2bcbf00683c0ae0cb45f941c27dfc14"
+      },
+      "cause": "Helper assumed resume would keep the raw journal byte identity. Resume changes updatedUtc only; exact retained report-time journal snapshot matches the published hash. Corrected audit authenticates it and verifies other journal fields remain exact."
+    }
   }
 }

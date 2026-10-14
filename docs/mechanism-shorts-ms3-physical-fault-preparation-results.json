@@ -406,5 +406,23 @@
     "preconditions": "Confirm unified session 58827 terminal; validate main source hold; same persistent asset budget must admit work. Four phone native captures, serial, no new paid generation."
   },
   "wholeReviews": "unreviewed",
-  "acceptedPilot": 0
+  "acceptedPilot": 0,
+  "budgetCheckpoint80": {
+    "actualExitCode": 2,
+    "status": "blocked-by-existing-operational-asset-budget",
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-physical-faults76/budget-check80.json",
+      "bytes": 870,
+      "sha256": "sha256:3b9ee35d0599f30c8fae6dccb6337ab95618b5cfd8ee1eef253aa68b771ff0a9"
+    },
+    "reportedTotalTokens": 29759702,
+    "reportedStandardEquivalentUSD": 6.861364,
+    "currentTokenCap": 5000000,
+    "currentStandardEquivalentUSDCap": 5,
+    "attributionLimit": "Ledger counts the same root session after asset preparation, including later unrelated package/MS1N work. These conservative raw totals are not a precise asset-only cost or invoice. No reset, exclusions or ceiling increase applied.",
+    "remaining": "Four sparse native phone captures, actual captured-selector replay and image inspection on the two already prepared disposable fault assets.",
+    "creatorRequest": "Explicit revised total $10 API-equivalent /35 million tokens requested; no reply received, existing cap remains in force.",
+    "rule": "Operations/Blender/Work Budget.md: Raising a ceiling requires the Creator's explicit revised amount; at100% stop substantive model work.",
+    "dependentCommandsStarted": false
+  }
 }

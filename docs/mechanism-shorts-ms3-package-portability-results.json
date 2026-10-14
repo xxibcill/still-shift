@@ -400,7 +400,58 @@
       },
       "scope": "Expected refusal before primary lifecycle terminal, no renderer launched."
     },
-    "status": "prepared-not-run",
+    "status": "superseded-without-execution-by-current-package81-lifecycle82",
     "scope": "Fresh one-episode compiled-runtime manifest, original source path denial and verified matching-profile warm native cache. Old queue/product/items absent; no binding rewriting or native/browser rendering."
+  },
+  "currentPackage81Preparation": {
+    "sourceCommit": "8e11e6b8",
+    "evidence": "docs/mechanism-shorts-ms3-native-source-review-results.json",
+    "consumer": "/private/tmp/still-shift-ms3-package81-consumer",
+    "copyReceipt": {
+      "path": "/private/tmp/still-shift-ms3-package82-prepare-copy1.json",
+      "bytes": 104413,
+      "sha256": "sha256:2f879b43453f25ee67deb04a07b3f829e7ad4c86d7cddc2d1b60c3ab5ef74feb"
+    },
+    "copiedInputFiles": 115,
+    "copiedInputBytes": 130642814,
+    "nativeCacheFiles": 386,
+    "nativeCacheBytes": 194102281,
+    "allTenAdmission": {
+      "actualExitCode": 0,
+      "manifest": {
+        "path": "/private/tmp/still-shift-ms3-package81-consumer/receive-inputs1/queue-installed82-all.json",
+        "bytes": 32166,
+        "sha256": "sha256:4d621ec5af03bce28b77900087e0e627d9f8be77d9e61b8ad16e38f5333a595d"
+      },
+      "episodes": 10,
+      "frames": 6181
+    },
+    "oneEpisodeAdmission": {
+      "actualExitCode": 0,
+      "manifest": {
+        "path": "/private/tmp/still-shift-ms3-package81-consumer/receive-inputs1/queue-installed82.json",
+        "bytes": 3293,
+        "sha256": "sha256:824ef11b688ec4ec8ec8391dc08dd537eb5ee140cc70007aa63bb9ffc44e290a"
+      },
+      "episodes": 1,
+      "frames": 610
+    },
+    "runtimeSha256": "sha256:ebc2d314a78f53bcc98acdd79ab6cdf4724e1f5f788dfb72cdd1506511a09c8d",
+    "runner": {
+      "path": "/private/tmp/still-shift-ms3-package82-installed-lifecycle1.py",
+      "bytes": 3759,
+      "sha256": "sha256:e75f6b546532375b1bc0a22b10fca12bfea7c897364164bb70bfe19d0eff7320"
+    },
+    "renderAdmissionGuard": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package82-installed-admission-block1.log",
+        "bytes": 292,
+        "sha256": "sha256:abfebbd97ac6c553fb052feefc7eb19d7ee5dd5e24d0523ed22bb12e8d75e2fb"
+      },
+      "scope": "Expected refusal before primary lifecycle terminal; zero renderers launched."
+    },
+    "status": "prepared-not-run",
+    "scope": "Uses current repaired archive81; original repository/Obsidian/bundle and earlier consumer77 roots denied. Earlier79 preparation remains preserved; no earlier installed job was executed or rebound."
   }
 }
