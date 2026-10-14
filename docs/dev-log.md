@@ -382,6 +382,8 @@ still hold before relying on them.
 - **Results:** isolated10cb84a4/e231440e fix runtime tier and stale retry edit
   provenance;54 runtime/5 files and4,582 unit/455 files pass. Standards0/Spec0.
   Retain initial invalid-fixture failure and corrected real red regressions.
+  Initial main evidence push is generically rejected; unchanged remote is verified,
+  identical non-forced retry succeeds at0f5c3638. Cause unknown; failure retained.
 - **Open / next:** finish original handoffs before integrating repairs; refresh
   current package/installed/runtime/render gates. Archive81 belongs to older code.
   Whole audiovisual acceptance and pending physical-fault allowance stay open.

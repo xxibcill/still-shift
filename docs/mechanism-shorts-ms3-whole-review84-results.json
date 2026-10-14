@@ -130,5 +130,26 @@
     },
     "commit": "e231440e"
   },
-  "sourceBeforeIntegration": "Live producer1090 remains frozen; latest repair changes its future identity. Archive81 and prepared installed82 retain their earlier8e11 snapshot and do not prove this new repair."
+  "sourceBeforeIntegration": "Live producer1090 remains frozen; latest repair changes its future identity. Archive81 and prepared installed82 retain their earlier8e11 snapshot and do not prove this new repair.",
+  "delivery": {
+    "isolatedBranch": "codex/ms3-review-fixes",
+    "isolatedHead": "452b8194",
+    "isolatedPushActualExitCode": 0,
+    "mainEvidenceHead": "0f5c3638baf9d14a83c51a645a262ded608346da",
+    "firstMainPush": {
+      "actualExitCode": 1,
+      "reportedReason": "remote rejected codex/mechanism-ms3 -> codex/mechanism-ms3 (failed)",
+      "cause": "Not established; no non-fast-forward diagnostic",
+      "remoteVerifiedUnchanged": "c911ca034f0436f14ccba42e4441302770a99408"
+    },
+    "identicalNonForcedRetry": {
+      "actualExitCode": 0,
+      "remoteExact": "0f5c3638baf9d14a83c51a645a262ded608346da",
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review84-main-push2.log",
+        "bytes": 113,
+        "sha256": "sha256:8f22569d2475ba2bfb1c8a8e2c78fc46658daeba79e38e6fe8a23ec2f6473c5c"
+      }
+    }
+  }
 }
