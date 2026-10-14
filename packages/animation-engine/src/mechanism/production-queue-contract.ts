@@ -1,4 +1,9 @@
 import { z } from "zod";
+import {
+  MechanismProductionAttemptProvenanceSchema,
+  MechanismProductionInterventionSchema,
+  MechanismProductionRevisionChangeSchema,
+} from "./production-attempt-provenance.ts";
 import { MechanismProductionFindingSchema } from "./production-failure.ts";
 import { MechanismHashSchema } from "@still-shift/scene-contract";
 import {
@@ -85,6 +90,30 @@ export const MechanismProductionQueueItemSchema = z
 export type MechanismProductionQueueItem = z.infer<
   typeof MechanismProductionQueueItemSchema
 >;
+function validateRevisionChanges(
+  queue: {
+    revision: number;
+    items: readonly { id: string }[];
+    revisionChanges?: readonly { id: string }[] | undefined;
+  },
+  ctx: z.RefinementCtx,
+) {
+  if (
+    queue.revisionChanges &&
+    (queue.revision === 0 ||
+      new Set(queue.revisionChanges.map((c) => c.id)).size !==
+        queue.revisionChanges.length ||
+      queue.revisionChanges.some(
+        (c) => !queue.items.some((i) => i.id === c.id),
+      ))
+  )
+    ctx.addIssue({
+      code: "custom",
+      message:
+        "Revision changes require distinct selected IDs in a revised queue",
+    });
+}
+
 export const MechanismProductionQueueSchema = z
   .object({
     schemaVersion: z.literal("mechanism-production-queue-1"),
@@ -95,6 +124,11 @@ export const MechanismProductionQueueSchema = z
     profileSha256: MechanismHashSchema,
     maximumAttempts: z.number().int().min(1).max(3),
     retryFailedIds: z.array(id).min(1).max(32).optional(),
+    revisionChanges: z
+      .array(MechanismProductionRevisionChangeSchema)
+      .min(1)
+      .max(300)
+      .optional(),
     items: z.array(MechanismProductionQueueItemSchema).min(1).max(300),
   })
   .strict()
@@ -112,6 +146,7 @@ export const MechanismProductionQueueSchema = z
         message:
           "Retry IDs require a revised queue and distinct selected item IDs",
       });
+    validateRevisionChanges(queue, ctx);
     const questions = queue.items.map((i) =>
       i.question.normalize("NFKC").trim().replace(/\s+/g, " ").toLowerCase(),
     );
@@ -165,6 +200,7 @@ export const BlenderProductionQueueSchema = z
   })
   .strict()
   .superRefine((queue, ctx) => {
+    validateRevisionChanges(queue, ctx);
     const questions = queue.items.map((i) =>
       i.question.normalize("NFKC").trim().replace(/\s+/g, " ").toLowerCase(),
     );
@@ -221,6 +257,7 @@ export const MechanismProductionAttemptSchema = z
     seconds: z.number().finite().nonnegative().max(86400).nullable(),
     diagnostic: z.string().max(2048).nullable(),
     finding: MechanismProductionFindingSchema.optional(),
+    provenance: MechanismProductionAttemptProvenanceSchema.optional(),
     retryable: z.boolean(),
   })
   .strict();
@@ -308,6 +345,10 @@ export const MechanismProductionQueueRowSchema = z
     requestHash: MechanismHashSchema,
     status: z.enum(["pending", "running", "passed", "failed", "cancelled"]),
     attempts: z.array(MechanismProductionAttemptSchema).max(96),
+    interventions: z
+      .array(MechanismProductionInterventionSchema)
+      .max(64)
+      .optional(),
     product: MechanismProductionOwnedFileSchema.nullable(),
     priorProducts: z.array(MechanismProductionOwnedFileSchema).max(32),
     cacheFailures: z
@@ -324,6 +365,18 @@ export const MechanismProductionQueueRowSchema = z
   })
   .strict()
   .superRefine((row, ctx) => {
+    if (
+      row.interventions?.some(
+        (event, i, events) =>
+          event.afterAttempt > row.attempts.length ||
+          (i > 0 && event.afterAttempt < events[i - 1]!.afterAttempt),
+      )
+    )
+      ctx.addIssue({
+        code: "custom",
+        message:
+          "Interventions must follow retained attempts in chronological order",
+      });
     if (row.attempts.some((a, i) => a.number !== i + 1))
       ctx.addIssue({
         code: "custom",

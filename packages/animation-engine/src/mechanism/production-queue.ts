@@ -42,6 +42,7 @@ import {
 import { mechanismProductionFailureFinding } from "./production-failure.ts";
 
 export class MechanismProductionTransientError extends Error {}
+export class MechanismProductionAuthoredError extends Error {}
 export type MechanismProductionExecutionContext = {
   manifestDirectory: string;
   manifestPath?: string;
@@ -147,6 +148,18 @@ function reconcile(
         item.id,
       );
     const next = request(item, queue);
+    const declaredChange = queue.revisionChanges?.find(
+      (change) => change.id === item.id,
+    );
+    if ((declaredChange || row.requestHash !== next) && row.attempts.length) {
+      (row.interventions ??= []).push({
+        afterAttempt: row.attempts.length,
+        kind: declaredChange?.kind ?? "unknown",
+        reason:
+          declaredChange?.reason ??
+          "Changed submission has no recorded revision classification",
+      });
+    }
     if (row.requestHash === next) return row;
     const unfinished = row.attempts.at(-1);
     if (unfinished?.status === "running") {
@@ -435,6 +448,11 @@ export async function runMechanismProductionQueue(
                 "Cache failure history budget is exhausted",
                 item.id,
               );
+            (row.interventions ??= []).push({
+              afterAttempt: row.attempts.length,
+              kind: "recovery",
+              reason: "Sealed product failed current verification",
+            });
             row.cacheFailures.push({
               requestHash: row.requestHash,
               atUtc: now(),
@@ -475,8 +493,36 @@ export async function runMechanismProductionQueue(
             row.attempts.length >= LIMIT.attemptsPerItem
           )
             break;
+          const previous = row.attempts.at(-1);
+          const declaredChange = queue.revisionChanges?.find(
+            (c) => c.id === item.id,
+          );
+          const provenance = !previous
+            ? {
+                kind: "initial" as const,
+                reason: "First submitted job in this retained queue journal",
+              }
+            : previous.requestHash !== row.requestHash
+              ? declaredChange
+                ? { kind: declaredChange.kind, reason: declaredChange.reason }
+                : {
+                    kind: "unknown" as const,
+                    reason:
+                      "Changed submission has no recorded revision classification",
+                  }
+              : row.cacheFailures.some((f) => f.requestHash === row.requestHash)
+                ? {
+                    kind: "recovery" as const,
+                    reason:
+                      "Sealed product failed current verification before re-execution",
+                  }
+                : {
+                    kind: "retry" as const,
+                    reason: "Repeated submission of the same request",
+                  };
           const attempt: MechanismProductionAttempt = {
             number: row.attempts.length + 1,
+            provenance,
             revision: queue.revision,
             requestHash: row.requestHash,
             status: "running",
@@ -527,6 +573,9 @@ export async function runMechanismProductionQueue(
               report: {
                 ...product.report,
                 attempts: reportAttempts(row.attempts),
+                ...(row.interventions
+                  ? { interventions: row.interventions }
+                  : {}),
               },
               completion: { ...attempt },
             });
@@ -544,6 +593,13 @@ export async function runMechanismProductionQueue(
             attempt.endedUtc = now();
             attempt.seconds = (performance.now() - began) / 1000;
             attempt.diagnostic = diagnostic(error);
+            if (attempt.status === "failed")
+              attempt.provenance!.failureOrigin =
+                error instanceof MechanismProductionTransientError
+                  ? "transient"
+                  : error instanceof MechanismProductionAuthoredError
+                    ? "authored"
+                    : "unknown";
             const finding = mechanismProductionFailureFinding(error);
             if (finding) attempt.finding = finding;
             row.status = attempt.status;

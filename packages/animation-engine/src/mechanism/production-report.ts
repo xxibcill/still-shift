@@ -1,4 +1,9 @@
 import { z } from "zod";
+import {
+  MechanismProductionAttemptProvenanceSchema,
+  MechanismProductionInterventionSchema,
+  mechanismProductionFirstPass,
+} from "./production-attempt-provenance.ts";
 import { MechanismProductionFindingSchema } from "./production-failure.ts";
 import {
   MechanismHashSchema,
@@ -141,10 +146,15 @@ const productionEpisodeFields = z
             seconds: z.number().finite().nonnegative().max(86400).nullable(),
             diagnostic: z.string().max(2048).nullable(),
             finding: MechanismProductionFindingSchema.optional(),
+            provenance: MechanismProductionAttemptProvenanceSchema.optional(),
           })
           .strict(),
       )
       .max(96),
+    interventions: z
+      .array(MechanismProductionInterventionSchema)
+      .max(64)
+      .optional(),
     qa: z
       .array(MechanismProductionQASchema)
       .length(MECHANISM_QA_DIMENSIONS.length),
@@ -175,7 +185,7 @@ const productionEpisodeFields = z
 function validateProductionEpisode(
   report: Pick<
     z.infer<typeof productionEpisodeFields>,
-    "qa" | "attempts" | "binding" | "clock" | "authoring"
+    "qa" | "attempts" | "binding" | "clock" | "authoring" | "interventions"
   >,
   ctx: z.RefinementCtx,
 ) {
@@ -187,6 +197,22 @@ function validateProductionEpisode(
     reject("Each QA dimension must appear exactly once");
   if (report.attempts.some((a, i) => a.number !== i + 1))
     reject("Attempt history must retain contiguous original attempt numbers");
+  if (
+    report.interventions?.some(
+      (event, i, events) =>
+        event.afterAttempt > report.attempts.length ||
+        (i > 0 && event.afterAttempt < events[i - 1]!.afterAttempt),
+    )
+  )
+    reject(
+      "Interventions must follow retained attempts in chronological order",
+    );
+  for (const [index, attempt] of report.attempts.entries()) {
+    if (attempt.provenance?.kind === "initial" && index !== 0)
+      reject("Only the original attempt may be classified as initial");
+    if (attempt.provenance?.failureOrigin && attempt.status !== "failed")
+      reject("Failure origins require a failed attempt");
+  }
   for (const review of report.qa) {
     const interval = review.evaluatedInterval;
     if (
@@ -357,6 +383,7 @@ export const MechanismProductionCohortReportSchema = z
         passed: z.number().int().nonnegative().max(300),
         rate: z.number().min(0).max(1).nullable(),
         targetSatisfied: z.boolean().nullable(),
+        unverified: z.number().int().nonnegative().max(300),
       })
       .strict(),
     failures: z
@@ -365,6 +392,13 @@ export const MechanismProductionCohortReportSchema = z
         repeatedFailureEpisodes: z.number().int().nonnegative().max(300),
         cancelled: z.number().int().nonnegative().max(28800),
         interrupted: z.number().int().nonnegative().max(28800),
+        origins: z
+          .object({
+            transient: z.number().int().nonnegative().max(28800),
+            authored: z.number().int().nonnegative().max(28800),
+            unknown: z.number().int().nonnegative().max(28800),
+          })
+          .strict(),
       })
       .strict(),
     reviewedReady: z.number().int().nonnegative().max(300),
@@ -401,6 +435,7 @@ export const MechanismProductionCohortReportSchema = z
             reviewedReady: z.boolean(),
             attempts: z.number().int().nonnegative().max(96),
             failedAttempts: z.number().int().nonnegative().max(96),
+            firstPass: z.enum(["pending", "passed", "failed", "unverified"]),
             staleDimensions: z.array(z.enum(MECHANISM_QA_DIMENSIONS)).max(6),
             incompleteDimensions: z
               .array(z.enum(MECHANISM_QA_DIMENSIONS))
@@ -444,9 +479,16 @@ export function summarizeMechanismProductionCohort(
   const firstCompleted = reports.filter(
     (r) => r.attempts[0] && r.attempts[0].status !== "running",
   ).length;
-  const firstPassed = reports.filter(
-    (r) => r.attempts[0]?.status === "passed",
-  ).length;
+  const firstPass = reports.map((r) =>
+    mechanismProductionFirstPass(r.attempts, r.interventions),
+  );
+  const firstPassed = firstPass.filter((s) => s === "passed").length;
+  const unverified = firstPass.filter((s) => s === "unverified").length;
+  const failureOrigins = { transient: 0, authored: 0, unknown: 0 };
+  for (const attempt of reports.flatMap((r) => r.attempts))
+    if (attempt.status === "failed")
+      failureOrigins[attempt.provenance?.failureOrigin ?? "unknown"]++;
+
   const paired = reports.filter(
     (r) =>
       r.authoring.comparable &&
@@ -498,9 +540,10 @@ export function summarizeMechanismProductionCohort(
     firstPassTechnical: {
       completed: firstCompleted,
       passed: firstPassed,
-      rate: firstCompleted ? firstPassed / firstCompleted : null,
+      rate: firstCompleted && !unverified ? firstPassed / firstCompleted : null,
+      unverified,
       targetSatisfied:
-        reports.length && firstCompleted === reports.length
+        reports.length && firstCompleted === reports.length && !unverified
           ? firstPassed / reports.length >= 0.9
           : null,
     },
@@ -513,6 +556,7 @@ export function summarizeMechanismProductionCohort(
       interrupted: reports
         .flatMap((r) => r.attempts)
         .filter((a) => a.status === "interrupted").length,
+      origins: failureOrigins,
     },
     reviewedReady: dispositions.filter((d) => d.reviewedReady).length,
     reviewCounts,
@@ -530,6 +574,7 @@ export function summarizeMechanismProductionCohort(
       family: r.family,
       reviewedReady: dispositions[i]!.reviewedReady,
       attempts: r.attempts.length,
+      firstPass: firstPass[i]!,
       failedAttempts: failures[i]!,
       staleDimensions: dispositions[i]!.staleDimensions,
       incompleteDimensions: dispositions[i]!.incompleteDimensions,

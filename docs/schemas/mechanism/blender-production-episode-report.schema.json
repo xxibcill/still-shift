@@ -153,6 +153,30 @@
             },
             "required": ["code", "message", "path"],
             "additionalProperties": false
+          },
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "initial",
+                  "retry",
+                  "planned-edit",
+                  "repair",
+                  "manual-recovery",
+                  "recovery",
+                  "unknown"
+                ]
+              },
+              "reason": { "type": "string", "minLength": 1, "maxLength": 512 },
+              "failureOrigin": {
+                "type": "string",
+                "enum": ["transient", "authored", "unknown"]
+              }
+            },
+            "required": ["kind", "reason"],
+            "additionalProperties": false
           }
         },
         "required": [
@@ -163,6 +187,29 @@
           "seconds",
           "diagnostic"
         ],
+        "additionalProperties": false
+      }
+    },
+    "interventions": {
+      "maxItems": 64,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "afterAttempt": { "type": "integer", "minimum": 1, "maximum": 96 },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "planned-edit",
+              "repair",
+              "manual-recovery",
+              "recovery",
+              "unknown"
+            ]
+          },
+          "reason": { "type": "string", "minLength": 1, "maxLength": 512 }
+        },
+        "required": ["afterAttempt", "kind", "reason"],
         "additionalProperties": false
       }
     },

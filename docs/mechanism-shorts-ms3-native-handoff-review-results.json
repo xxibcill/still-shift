@@ -27,7 +27,7 @@
         {
           "severity": "P2",
           "requirement": "First-pass success without repair/retry/manual recovery and transient/authored breakdown",
-          "status": "open; original metric counts the first passed attempt alone"
+          "status": "Implemented with scoped recovery regression proofs; see mechanism-shorts-ms3-first-pass-provenance-results.json. Current full gates and final independent followup remain open."
         }
       ],
       "repairFollowup": "No concrete staged handoff regression found. Source/artifact/PCM authentication and relocated current paths inspected; read-only review is not a production proof.",
@@ -205,7 +205,6 @@
     "Actual new native production and current producer binding",
     "Fresh and relocated CLI receiving",
     "Installed-package handoff",
-    "First-pass repair/recovery and failure provenance classification",
     "Full current software/benchmark/archive/installed gates",
     "Whole visual/mechanical/factual/motion/listening review; pilot accepted0/10"
   ],
