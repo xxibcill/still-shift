@@ -1,4 +1,8 @@
 import {
+  BlenderProductionRenderedVisualSchema,
+  BLENDER_PRODUCTION_VISUAL_LIMITS,
+} from "./blender-production-visual.ts";
+import {
   BlenderCaptureJobSchema,
   BLENDER_CAPTURE_LIMITS,
 } from "./blender-capture-contract.ts";
@@ -59,6 +63,7 @@ export const mechanismProductionSchemas = {
   "blender-episode-source": BlenderEpisodeSourceSchema,
   "blender-episode-plan": BlenderEpisodePlanSchema,
   "blender-episode-plates": BlenderEpisodePlatesSchema,
+  "blender-production-rendered-visual": BlenderProductionRenderedVisualSchema,
   "blender-production-qa-plan": BlenderProductionQAPlanSchema,
   "blender-production-qa-facts": BlenderProductionQAFactsSchema,
   "blender-production-queue": BlenderProductionQueueSchema,
@@ -177,6 +182,13 @@ export function inspectMechanismProductionCapabilities() {
         surfaceContact: "not-inferred-from-AABB",
         wholeAcceptance: "separate-review",
       },
+      renderedQA: {
+        limits: BLENDER_PRODUCTION_VISUAL_LIMITS,
+        default: "all-native-products",
+        measurement: "all-output-frame-cached-preview-pixels-and-glyphs",
+        badFrames: "exact-RGBA-from-bound-encoded-output",
+        wholeEncodedGlyphApproval: "separate-review",
+      },
       pending: ["native-review-evidence-handoff", "whole-pilot-review"],
     },
     nativeExecutor: {
@@ -260,7 +272,13 @@ ${c.nativeBlenderExecutor.qa.limits.warningRows} consecutive failure runs.
 Actual retained Bpy observations supply numeric rules; reports bind raw findings,
 grouped peaks and images to the current export. Bounds separation does not prove
 surface contact/collision, and passed samples leave whole mechanical review open.
-Native review evidence/handoff and whole pilot acceptance remain pending.
+Default native rendered QA evaluates every frame with actual cached preview pixels
+and measured glyphs. It allows ${c.nativeBlenderExecutor.renderedQA.limits.layerFrames}
+layer-frames, ${c.nativeBlenderExecutor.renderedQA.limits.reportBytes} report bytes and
+${c.nativeBlenderExecutor.renderedQA.limits.badFrames} exact encoded bad-frame PNGs.
+Bad-frame image hashes are checked against the bound video on fresh replay.
+All-frame encoded-glyph review, native review evidence/handoff and whole pilot
+acceptance remain pending.
 The handoff command retains its original Three.js scope.
 
 The three-family native production profile is ${c.nativeExecutor.profile.backend} with\n${c.nativeExecutor.profile.transport} transport. The three pack families remain\ncandidates. Operational QA replays original output-frame scalars and current cue timeline checks,

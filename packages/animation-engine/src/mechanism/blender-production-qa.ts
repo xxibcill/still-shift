@@ -107,6 +107,7 @@ export async function evaluateBlenderProductionQA(input: {
   owner: CompositionNodeMemory;
   signal?: AbortSignal | undefined;
   verify?: boolean;
+  rendered?: Awaited<ReturnType<typeof productionFile>> | undefined;
 }) {
   const plan = admitBlenderProductionQAPlan(
       input.plan,
@@ -388,7 +389,12 @@ export async function evaluateBlenderProductionQA(input: {
       planSha256: input.planSha256,
       source: { plates: input.plates, program },
       semantics: executions,
-      warnings: { raw, grouped: groupedPin, groups: grouped.groups.length },
+      warnings: {
+        raw,
+        ...(input.rendered ? { rendered: input.rendered } : {}),
+        grouped: groupedPin,
+        groups: grouped.groups.length,
+      },
       failures: { mechanical: failures },
       continuousCollision: "unreviewed",
       mechanicalAcceptance: "separate-whole-mechanism-review",

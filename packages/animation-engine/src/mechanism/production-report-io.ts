@@ -377,7 +377,11 @@ export async function readMechanismProductionReports(
               qualityEvidence =
                 product.artifacts.find((f) =>
                   f.path.endsWith("/qa-facts.json"),
-                ) ?? null;
+                ) ??
+                product.artifacts.find((f) =>
+                  f.path.endsWith("/qa-rendered-visual.json"),
+                ) ??
+                null;
               validation = "verified";
             } else {
               validation = "stale";

@@ -251,6 +251,7 @@ export const BlenderProductionQAFactsSchema = z
     warnings: z
       .object({
         raw: MechanismProductionOwnedFileSchema,
+        rendered: MechanismProductionOwnedFileSchema.optional(),
         grouped: MechanismProductionOwnedFileSchema,
         groups: z.number().int().nonnegative().max(2048),
       })

@@ -187,3 +187,5 @@ export { createBlenderProductionExecutor } from "./mechanism/blender-production-
 
 export * from "./mechanism/blender-production-qa-contract.ts";
 export * from "./mechanism/blender-production-qa.ts";
+
+export * from "./mechanism/blender-production-visual.ts";

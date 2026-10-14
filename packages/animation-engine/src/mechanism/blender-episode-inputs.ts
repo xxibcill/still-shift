@@ -1,3 +1,4 @@
+import { admitBlenderProductionVisualWork } from "./blender-production-visual.ts";
 import { realpath } from "node:fs/promises";
 import { dirname, relative, resolve } from "node:path";
 import type { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
@@ -78,6 +79,10 @@ export async function readBlenderEpisode(
         "Native episode plan ID differs from the selected queue question",
       );
     const compiled = compileBlenderEpisode(resolvedSource, resolvedPlan);
+    admitBlenderProductionVisualWork(
+      compiled.frameCount,
+      2 * compiled.plan.speech.length + 2,
+    );
     const qaPath =
       project.qaPath === undefined
         ? undefined

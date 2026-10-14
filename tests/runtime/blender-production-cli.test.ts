@@ -361,6 +361,10 @@ describe("native Blender production CLI with a declared byte-fixture adapter", (
         "report",
       ]);
       expect(caps.nativeBlenderExecutor.qa.plan).toBe("optional-pinned-qaPath");
+      expect(caps.nativeBlenderExecutor.renderedQA.default).toBe(
+        "all-native-products",
+      );
+      expect(caps.nativeBlenderExecutor.renderedQA.limits.badFrames).toBe(512);
       expect(mechanismProductionCapabilityMarkdown()).toContain(
         "Optional native `qaPath`",
       );

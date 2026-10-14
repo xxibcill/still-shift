@@ -81,8 +81,8 @@ Verification reopens the captured origins, current mapping, composition and
 encoded output without another Blender render. Technical QA binds current
 input/output/code/profile/clocks. Passing sampled numeric rules leaves whole-mechanism review unreviewed. A failed
 registered rule marks mechanical QA failed and retains the original frame, rig,
-parts, relationship, measurement and range. The other review dimensions remain
-unreviewed. Source changes require exact-CAS queue revisions; historical products
+parts, relationship, measurement and range. Sampled-visual QA now reports measured frame/glyph findings. Factual, continuous
+and listening reviews remain unreviewed. Source changes require exact-CAS queue revisions; historical products
 keep their original identities. The production CLI now routes queue/run/report to this backend from explicit
 creation selection and pinned manifest versions. An optional pinned `qaPath` now selects `BlenderProductionQAPlanSchema`. It declares
 named observation selectors and bounded interval programs using the existing
@@ -135,3 +135,21 @@ selectors emit the same strict source/plan/capture/map/queue/product/report
 contracts used by the runtime. These declarations establish technical routing;
 they supply no supported-pack, whole-review or pilot qualification. Native
 handoff generation remains pending and returns a missing-artifact exception.
+
+Every native product now runs rendered QA with all output frames, actual cached-
+sequence preview pixels and measured glyph bounds. The pinned source plan supplies
+caption copy, audio/sample intervals and native shot cuts independently of the saved
+text being checked. Source-copy/audio mismatches keep the affected cue/frame range
+while layout measurement continues with valid speech declarations. The evaluator
+retains `qa-rendered-visual.json`, grouped warnings and exact RGBA PNGs decoded from
+the bound output at warning endpoints. Fresh verification repeats rendered analysis
+and checks saved PNG pixels against that video without another Blender render.
+Optional numeric facts link the visual report; products without a numeric plan
+expose it directly as report quality evidence.
+
+Rendered QA is admitted before native capture: at most 100,000 layer-frames and
+256 MiB of prospective quality capacity. Reports are bounded to 8 MiB, 2,048 warning
+rows and 512 endpoint images. Measured sampled-visual status does not establish
+all-frame encoded-glyph, factual, mechanical, continuous or listening acceptance.
+Full phone overviews, shot/contact crops, audio review and native handoff integration
+remain separate work.

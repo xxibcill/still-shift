@@ -31,6 +31,7 @@ import {
   productionFile,
   productionOwnedPath,
 } from "./production-queue-files.ts";
+import { evaluateBlenderProductionVisualQA } from "./blender-production-visual.ts";
 import { evaluateBlenderProductionQA } from "./blender-production-qa.ts";
 import { mechanismPackHash } from "./pack-support.ts";
 import type { MechanismProductionExecutor } from "./production-queue.ts";
@@ -217,6 +218,21 @@ export async function createBlenderProductionExecutor(options: {
         codeSha256: identity.codeSha256,
         profileSha256: identity.profileSha256,
       };
+      await context.progress("native-blender-rendered-visual-qa");
+      const visual = await evaluateBlenderProductionVisualQA({
+        compiled,
+        map,
+        identity,
+        binding,
+        outputRoot: context.outputRoot,
+        directory: context.attemptDirectory,
+        composition: artifacts[1]!,
+        plates: artifacts[0]!,
+        video: artifacts[2]!,
+        owner: context.nodeMemory,
+        signal: context.signal,
+      });
+      artifacts.push(...visual.artifacts);
       const quality = nativeQA
         ? await evaluateBlenderProductionQA({
             plan: nativeQA.plan,
@@ -230,6 +246,7 @@ export async function createBlenderProductionExecutor(options: {
             plates: artifacts[0]!,
             owner: context.nodeMemory,
             signal: context.signal,
+            rendered: visual.artifact,
           })
         : undefined;
       if (quality) artifacts.push(...quality.artifacts);
@@ -251,6 +268,26 @@ export async function createBlenderProductionExecutor(options: {
           explanation:
             "Registered sampled rules failed at retained frame/part/relationship locations. Whole-mechanism acceptance remains separate.",
         };
+      qa[2] = {
+        ...qa[2]!,
+        status: visual.errors ? "failed" : "passed",
+        method: visual.report.method,
+        evaluatedInterval: {
+          unit: "output-frame",
+          start: 0,
+          endExclusive: compiled.frameCount,
+        },
+        evidence: [
+          { path: visual.artifact.path, sha256: visual.artifact.sha256 },
+          { path: visual.grouped.path, sha256: visual.grouped.sha256 },
+        ],
+        reviewer: {
+          kind: "automated",
+          id: "native-blender-rendered-visual-qa",
+        },
+        explanation:
+          "All-frame cached-sequence preview pixels and glyph bounds evaluated; exact encoded bad-frame images retained. Whole encoded-text, continuous and listening reviews remain separate.",
+      };
       qa[0] = {
         ...qa[0]!,
         status: "passed",
@@ -389,6 +426,40 @@ export async function createBlenderProductionExecutor(options: {
           throw Error(
             "Native saved composition differs from its current episode plan",
           );
+        const visual = await evaluateBlenderProductionVisualQA({
+          compiled,
+          map: map.value,
+          identity,
+          binding: product.report.binding,
+          outputRoot: context.outputRoot,
+          directory: dirname(await artifact("qa-rendered-visual.json")),
+          composition: product.artifacts.find((f) =>
+            f.path.endsWith("/composition.json"),
+          )!,
+          plates: product.artifacts.find((f) =>
+            f.path.endsWith("/native-plates.json"),
+          )!,
+          video: product.artifacts.find((f) => f.path.endsWith("/output.mp4"))!,
+          owner: context.nodeMemory,
+          signal: context.signal,
+          verify: true,
+        });
+        for (const pin of visual.artifacts)
+          if (
+            !product.artifacts.some(
+              (f) => mechanismPackHash(f) === mechanismPackHash(pin),
+            )
+          )
+            throw Error(
+              "Native visual QA artifact is absent from its product closure",
+            );
+        if (
+          product.report.qa.find((q) => q.dimension === "sampled-visual")
+            ?.status !== (visual.errors ? "failed" : "passed")
+        )
+          throw Error(
+            "Native sampled-visual status differs from current rendered replay",
+          );
         if (nativeQA) {
           const quality = await evaluateBlenderProductionQA({
             plan: nativeQA.plan,
@@ -405,6 +476,7 @@ export async function createBlenderProductionExecutor(options: {
             owner: context.nodeMemory,
             signal: context.signal,
             verify: true,
+            rendered: visual.artifact,
           });
           for (const pin of quality.artifacts)
             if (
