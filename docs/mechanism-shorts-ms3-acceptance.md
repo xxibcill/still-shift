@@ -231,3 +231,16 @@ encoded phone frames confirm the leaders meet the cyan fold and unused paper is
 absent. Earlier hollow-target outputs and the Empty-container failure remain.
 Stationary-purpose QA, native handoff, the other eight scouts/HD products, whole
 reviews, broader faults/effort and final gates remain open; accepted pilot0/10.
+
+[Remaining-eight annotation proof](./mechanism-shorts-ms3-first-ten-annotation-scout-results.json)
+now authenticates138 sampled native states/552 file pins/99 active labels. All
+29 initial and20 repaired phone midpoint views are inspected after small shared
+compositor exports138/93 frames without new native submissions. Native ownership,
+MESH/CURVE/SURFACE discovery, hook crop, spring/arm targets, tail identity and
+blade-state/contrast repairs retain all rejected attempts. Original masters,
+complete Alden recordings, speech and control clocks remain exact. Fixed queue
+membership rejects extending the two-item trial; a separate ten-item HD batch
+runs using an exact1,851-file/653,583,036B native-cache copy and its own ledger.
+Original trial deliveries remain intact. Full batch outputs/terminal verification,
+whole reviews, native hold/handoff, broader faults/effort and final gates stay open;
+accepted pilot0/10 and routine token measurementsnull.

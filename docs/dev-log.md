@@ -118,6 +118,17 @@ still hold before relying on them.
   now meet the visible fold and omit unused paper. The Empty-container trial and
   prior hollow-target outputs remain retained. Whole reviews/accepted coverage0/10.
   [Annotation evidence](./mechanism-shorts-ms3-native-annotation-results.json).
+  **Remaining-eight annotation proof:** Native collection discovery corrects the
+  outside clothespeg marker. All eight revised scout sets pass138 states/552 pins/
+  99 active label samples. Initial pass59 fresh/79 reused; scoped repairs15 fresh/
+  123 reused. Shared compositor generates138 sampled pose frames, then93 affected
+  frames with no new native submissions. All29 initial and20 corrected phone
+  midpoints are inspected; hook crop, spring/arm targets, tail identification and
+  blade state/contrast improve. Masters/whole voices/speech/control clocks stay exact.
+  A two-to-ten queue revision is correctly rejected. Separate `actual-first-ten-full-HD47`
+  starts on an exact1,851-file/653,583,036B native-cache copy; original two-item journal
+  and deliveries remain intact. Full batch is in flight; code/source holds stay exact.
+  [All-eight annotation proof](./mechanism-shorts-ms3-first-ten-annotation-scout-results.json).
   **Next:** remaining causal annotations/resolved holds and review evidence/handoff; HD products for all ten
   with object-specific cues and factual bindings; broader faults/events/contact/coverage;
   whole factual/mechanical/glyph/continuous/listening and original E06/E10 reviews;
@@ -311,6 +322,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Inspect the remaining eight actual episode annotations
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; source stays `4679b8a8`/`db4e`/`1dd0`.
+- **Done:** Actual native member discovery; corrected owned handle guide, hook cameras,
+  spring/arm targets, bolt-tail identity and blade state/contrast. Original clocks stay exact.
+- **Evidence:** Eight sets/138 native states,552 pins/99 active labels;59 then15 fresh
+  renders,79/123 reused. Silent labelled probes138 then93 frames;29+20 phone midpoints inspected.
+- **Retained:** Outside marker/ownership failures, overly strict private type guard,
+  whole-narration probe rejection and immutable queue-ID expansion rejection.
+- **In flight:** Separate fixed ten-item HD batch uses exact1,851-file/653,583,036B
+  native-cache copy; two-item journal/deliveries untouched. Full terminal/audits remain.
+- **Next:** Batch completion, native hold/handoff/whole/fault/effort/final gates. Pilot0/10.
+- **Records:** [Remaining-eight proof](./mechanism-shorts-ms3-first-ten-annotation-scout-results.json),
+  [acceptance](./mechanism-shorts-ms3-acceptance.md).
 
 ### 2026-10-14 — Bound receiving root pixels and package-verifier controls
 
