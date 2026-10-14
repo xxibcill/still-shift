@@ -43,6 +43,19 @@ still hold before relying on them.
 
 ## Current state
 
+- **MS3 declaration portability repair (2026-10-15):** isolated source `20e1afe2`
+  names the existing public Composition return type after actual package emit
+  failed TS2742/TS7056. Exact erased module JS is unchanged. Package emit, private
+  archive and fast 4,628/460 pass; Standards/Spec followups have no findings.
+  Archive installs offline; installed public API, CLI discovery, TypeScript
+  consumer and all-ten copied input admission (6,181 frames) pass while original
+  worktrees/Obsidian/bundle access is denied. Missing offline type-tool metadata
+  and pinned fetch recovery remain recorded. Compiled identity `d7345fb9` is
+  distinct from live source `1090f97c`; no rebinding. Integrate after session
+  58827 terminates. Installed actual export/handoff/full gates and whole pilot
+  remain open; main source freeze is untouched.
+  [Package repair and isolated receiving admission](./mechanism-shorts-ms3-package-portability-results.json).
+
 - **MS3 native coverage repair qualified in isolation (2026-10-15):** source/schema/
   actual native board now reconciles the ten selected rows, pinned whole narration/
   original1x clock/format, source/controllers and declared asset/rig work. Independent
@@ -333,6 +346,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Fix declaration emit and admit copied first ten from installed archive
+
+- **Agent / branch:** Codex on `codex/ms3-review-fixes`; code fix `20e1afe2`.
+- **Problem / fix:** real package build cannot serialize the inferred composer
+  type (TS2742/TS7056). Explicit existing `Composition` return type fixes emit;
+  transpiled module bytes remain exact. Both independent review axes find no issue.
+- **Results:** fast 4,628/460, private pack/offline install, isolated public API/
+  discovery and strict TypeScript consumer pass. Exact 112-file receiving copy
+  admits all ten episodes/6,181 frames under compiled runtime `d7345fb9` with
+  original repositories/Obsidian/input bundle denied. No renderer started.
+- **Retained failures:** original package build; missing offline type-tool metadata
+  followed by exact pinned dependency fetch. Prior generated package is preserved.
+- **Open / next:** integrate after live 58827 terminal; installed real export,
+  report/resume/handoff, full software/benchmark/archive gate and whole pilot.
+- **Record:** [package portability](./mechanism-shorts-ms3-package-portability-results.json).
 
 ### 2026-10-15 — Native selected-cohort coverage and actual failed-state audit
 

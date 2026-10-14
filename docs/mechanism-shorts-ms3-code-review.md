@@ -94,3 +94,10 @@ Actual auditor returns10 selected/0 supported,8 reuse/2 asset revisions/0 new ri
 types; current E1 verifies, nine retained failures stay unavailable. This is an
 actual auditor proof over a failed production cohort, not all-ten production
 success. [Checks/failures/limits](./mechanism-shorts-ms3-native-coverage-review-results.json).
+
+Package declaration followup (2026-10-15), source `20e1afe2` from `a37038ef`:
+Standards: no findings; existing named domain type clarifies the public result.
+Spec: no findings; it matches the returned CompositionSchema and preserves native
+assets, narration, captions and physical proof. Review was read-only; actual build,
+fast, installed input and type checks are separate evidence. Original TS2742/TS7056
+package failure remains retained. [Evidence](./mechanism-shorts-ms3-package-portability-results.json).
