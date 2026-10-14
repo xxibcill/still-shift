@@ -1,0 +1,259 @@
+{
+  "schemaVersion": "ms3-binder-centered-encoded-results-1",
+  "date": "2026-10-14",
+  "status": "centered-binder-encoded-output-verified-current-all-ten-capture-pins-rechecked",
+  "sourceCommit": "4679b8a835e51a1f2d5e9c8ac49ec099b894a1a8",
+  "runtimeCodeSha256": "sha256:db4e4d9a560eb4fe1f0fdd4e98bf76e467ce70226adebcda5af86c0b55a826d8",
+  "nativeProfileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+  "heldSource": {
+    "status": "exact",
+    "files": 2777,
+    "bytes": 122189105
+  },
+  "cameraRevision": {
+    "revision": 2,
+    "runExitCode": 0,
+    "runSeconds": 847.0079342501704,
+    "receiptAtCheckpoint": {
+      "steps": [
+        {
+          "step": "queue",
+          "actualExitCode": 0,
+          "heldEngineInputsExitCode": 0,
+          "privateInputsExact": true,
+          "seconds": 3.5317246669437736
+        },
+        {
+          "step": "run",
+          "actualExitCode": 0,
+          "heldEngineInputsExitCode": 0,
+          "privateInputsExact": true,
+          "seconds": 847.0079342501704
+        },
+        {
+          "step": "report",
+          "actualExitCode": 0,
+          "heldEngineInputsExitCode": 0,
+          "privateInputsExact": true,
+          "seconds": 371.0581481659319
+        }
+      ],
+      "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-camera56.json",
+      "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47",
+      "state": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/state-camera56.json",
+      "report": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/report-camera56.json",
+      "rows": [
+        {
+          "id": "EU-001",
+          "status": "passed",
+          "product": {
+            "path": "products/EU-001-00c45963c001ab77-1.json",
+            "bytes": 9125,
+            "sha256": "sha256:10bcd7fc5e4da98bf80040ffdb392a5c34da30b32319a7fad5c5a708d972a92b"
+          }
+        },
+        {
+          "id": "EU-002",
+          "status": "passed",
+          "product": {
+            "path": "products/EU-002-2288f3bfd554cfda-2.json",
+            "bytes": 9471,
+            "sha256": "sha256:41c5a92a56eae94b823de159df3c9a85c599994d07b6b87bca39aecd5466c1b6"
+          }
+        },
+        {
+          "id": "EU-003",
+          "status": "passed",
+          "product": {
+            "path": "products/EU-003-8f61a5ff50cdb98d-2.json",
+            "bytes": 9500,
+            "sha256": "sha256:c091d7b470ed62b50dde1d77d49596abf3eb0d9266647655ce939025c27b73b4"
+          }
+        },
+        {
+          "id": "EU-004",
+          "status": "passed",
+          "product": {
+            "path": "products/EU-004-d7f67568e2dde8d2-1.json",
+            "bytes": 9244,
+            "sha256": "sha256:1d80a691c16d137fb69e75d091e4f643eaed1f00481a03da027af1f905dea6a7"
+          }
+        },
+        {
+          "id": "EU-005",
+          "status": "passed",
+          "product": {
+            "path": "products/EU-005-0815d5825e366ea1-1.json",
+            "bytes": 9254,
+            "sha256": "sha256:24f48e8b26a353cb1037739f5cb60067b3cd453e19a3974d192c90c41ec8831c"
+          }
+        },
+        {
+          "id": "EU-006",
+          "status": "passed",
+          "product": {
+            "path": "products/EU-006-80fb053b47918ffa-3.json",
+            "bytes": 9823,
+            "sha256": "sha256:67f127a75c267f4ecbf66f82193cba0a1a515907eecd6434955ee92e43d45f6e"
+          }
+        },
+        {
+          "id": "EU-007",
+          "status": "passed",
+          "product": {
+            "path": "products/EU-007-e0286a4373805c8f-1.json",
+            "bytes": 9240,
+            "sha256": "sha256:0f6aa8287e771d00815d72d5429d5597ae947aacae0db5e9c44a2c87605154bf"
+          }
+        },
+        {
+          "id": "EU-008",
+          "status": "passed",
+          "product": {
+            "path": "products/EU-008-edc6908b07626560-1.json",
+            "bytes": 9268,
+            "sha256": "sha256:42c1027c55d51e02dbe3c395d95b3efb59e5e459dc46aaefdea80568b3cda24f"
+          }
+        },
+        {
+          "id": "EU-009",
+          "status": "passed",
+          "product": {
+            "path": "products/EU-009-4f70fded93394488-1.json",
+            "bytes": 9239,
+            "sha256": "sha256:d8a0530f4ab3086eed1ade3dc6b8773530172eaec380c87ff22661783fc27da4"
+          }
+        },
+        {
+          "id": "EU-010",
+          "status": "passed",
+          "product": {
+            "path": "products/EU-010-df0414ee2e44dd3e-1.json",
+            "bytes": 9215,
+            "sha256": "sha256:ee1d47b8a65d1e6fa0c5a399bcebda2b569de3511760ae24bb9c81302f7eb185"
+          }
+        }
+      ],
+      "acceptedPilot": 0,
+      "wholeReview": "UNREVIEWED",
+      "unchangedNeighborsExact": 9
+    },
+    "nineCurrentRowsAndSealsExact": true,
+    "reportResume": "report0 recorded; resume remains live at this checkpoint"
+  },
+  "binderAttempt3": {
+    "product": {
+      "path": "products/EU-006-80fb053b47918ffa-3.json",
+      "bytes": 9823,
+      "sha256": "sha256:67f127a75c267f4ecbf66f82193cba0a1a515907eecd6434955ee92e43d45f6e"
+    },
+    "video": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-006/3/output.mp4",
+      "bytes": 1253872,
+      "sha256": "sha256:6b3fbd3e784cbc68d41afd4663e1be78a45d554a2500d6c0732ebc58ac32f9e7"
+    },
+    "frames": 634,
+    "wholeOriginalAACReferenceParity": true,
+    "fullEncodedRGBADecodeToEOF": true,
+    "nativeCapture": {
+      "id": "EU-006",
+      "frames": 634,
+      "labels": 5,
+      "originalAssetAndAudioExact": true,
+      "freshNativeRenders": 25,
+      "reusedNativeFrames": 609,
+      "completeProjectionPhaseAndLeaderChecks": true,
+      "wholePhysicalGlyphContinuousListeningReview": "UNREVIEWED"
+    },
+    "nativeAudit": {
+      "path": "/private/tmp/still-shift-ms3-blender57-native-audit1.json",
+      "bytes": 697,
+      "sha256": "sha256:13789212d57d98df13eca7ba9bc1338eaf9e41e91a5cf86e0dbaf1d38efe1238"
+    },
+    "encodedAudit": {
+      "path": "/private/tmp/still-shift-ms3-blender57-encoded-audit1.json",
+      "bytes": 11837,
+      "sha256": "sha256:a4b6fcd504082b4d4526ff08eaa49ec4e88a520ef050189729f0616d376e578e"
+    },
+    "diffRecord": {
+      "path": "/private/tmp/still-shift-ms3-blender57-encoded-diff1.json",
+      "bytes": 1049,
+      "sha256": "sha256:390557f5b5b9a0af24989025644d9bc3e9fad8434379c3638da07cc1db96bdc5"
+    },
+    "sourceChangedSpans": [
+      [0, 113],
+      [293, 406]
+    ],
+    "encodedChangedSpans": [
+      [0, 160],
+      [283, 406]
+    ],
+    "encodedDifferenceFramesOutsideSourceIntervals": 57,
+    "phoneSheet": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-camera57/EU-006/staging-frames.png",
+      "bytes": 205354,
+      "sha256": "sha256:7ae718354fc0576871cc64b7ee00cf9da98dd57aeb0f509bfcee26ab641ce407"
+    },
+    "inspectedFrames": [56, 359, 405, 406, 414, 426],
+    "observed": "Clip is visibly larger/centered in recognition and closed-return; paper insertion remains visible after the intentional shot boundary.",
+    "actualProjection": {
+      "path": "/private/tmp/still-shift-ms3-blender56-camera-calibrate1.json",
+      "bytes": 683,
+      "sha256": "sha256:9324740cd40b5c0e8b964d1e1c4acf8ddb09868dc18edfa79d88d3093d899269"
+    },
+    "qa": {
+      "artifact": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-006/3/qa-rendered-visual.json",
+        "bytes": 64164,
+        "sha256": "sha256:960d8f9b4550c3026fe227ea39a4161dfb841c0b3c25729eab8c9163e9bd874a"
+      },
+      "status": "failed",
+      "counts": {
+        "outside-safe-area:warning": 8,
+        "reading-time:warning": 10,
+        "frozen-pixels:error": 19
+      },
+      "images": 57
+    },
+    "scope": "Full decoded byte/audio/clock checks, actual captured projection/label checks and six inspected encoded staging views. No complete encoded glyph/contact/continuous/listening or human acceptance."
+  },
+  "currentAllTenNativeAudit": {
+    "record": {
+      "path": "/private/tmp/still-shift-ms3-blender57-current-all10-native-audit1.json",
+      "bytes": 3421,
+      "sha256": "sha256:ce8be19594d23c596ea5592dcdc9f24339682f831737a93155d7c1704628252d"
+    },
+    "script": {
+      "path": "/private/tmp/still-shift-ms3-blender57-current-all10-native-audit1.py",
+      "bytes": 3878,
+      "sha256": "sha256:bb88816eddf7402186ff1b8a3acb9e07d9f4e8adb96a1987a4f5861fe2e1ecc8"
+    },
+    "frames": 6181,
+    "pinChecks": 24724,
+    "activeLabelSamples": 4257,
+    "scope": "Current native capture pins/highlight assignment/projection records and saved text/leader phase bindings; no surface contact, all-frame encoded glyph, continuous or listening approval."
+  },
+  "currentAllTenQA": {
+    "status": "failed-unresolved",
+    "counts": {
+      "outside-safe-area:warning": 60,
+      "reading-time:warning": 102,
+      "frozen-pixels:error": 178
+    },
+    "images": 537
+  },
+  "holdInterfaceInspection": {
+    "existingRendererContract": "Captured physicalProofHolds require complete shot-layer ranges and matching metadata; the current native compiler has one full-episode sequence layer.",
+    "implication": "Native hold support must authenticate declared shot purpose, actual capture and expected paint/phase using the correct media clock. Native PNG equality alone cannot be promoted to a resolved warning.",
+    "retainedReadFailure": "An assumed physical-proof.ts filename does not exist; read-only attempt failed without source changes. Existing quality-policy/physical-proof-quality/native-proof-quality interfaces were inspected instead.",
+    "sourceEdits": "none while camera lifecycle remains live"
+  },
+  "acceptedPilot": 0,
+  "routineTokenMeasurements": null,
+  "wholeReview": "UNREVIEWED",
+  "remaining": [
+    "Terminal camera resume and unchanged-neighbor checks.",
+    "Authored native hold purposes with complete authenticated frame/paint/phase validation and meaningful faults.",
+    "Broader physical/contact/fault/coverage/handoff/whole reviews/effort and final software/benchmark/archive/installed gates."
+  ]
+}

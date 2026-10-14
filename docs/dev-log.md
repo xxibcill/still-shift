@@ -101,8 +101,13 @@ still hold before relying on them.
   exits0 in1,783.40s; report/resume finish387.58s / 380.32s, exact inputs and seven
   neighbors. Read-only Blender projection confirms centered[.5,.4] bounds with
   zero renders/source changes. Framing-only revision2 now runs; nine current
-  rows/seals stay exact at start. Its captures/encoded review and terminal checks
-  remain in flight. QA and all whole approvals remain open.
+  rows/seals stay exact. Centered attempt3 now fully decodes634 frames / preserves
+  original AAC parity; six encoded staging views show the larger centered clip and
+  preserved insertion. Current all-ten capture audit rechecks24,724 pins / 4,257
+  labels. Camera run847.01s / report371.06s pass; resume remains live. Native changes
+  stay0–113/293–406; lossy decoded changes0–160/283–406 are retained. Current whole
+  QA still178 static errors / 162 warnings / 537 images; no finding suppression.
+  [Centered encoded evidence](./mechanism-shorts-ms3-binder-centered-encoded-results.json).
   [Current repaired export evidence](./mechanism-shorts-ms3-first-ten-scoped-repair-results.json).
   [Binder staging/framing](./mechanism-shorts-ms3-binder-staging-framing-results.json).
   No engine edits while repaired exports run.
@@ -301,6 +306,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Verify centered binder output and current cohort captures
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; engine source remains held.
+- **Done:** Binder attempt3 / 634 frames (25 fresh / 609 reused), full original AAC
+  parity / encoded decode through EOF. Six staging views show centered/larger clip
+  and visible insertion. Nine current neighbor rows/seals remain exact.
+- **Current cohort:** 6,181 native frames / 24,724 pins / 4,257 active labels reverify.
+  QA still178 static errors / 162 warnings / 537 images, preserved unresolved.
+- **Lifecycle:** Camera run847.01s / report371.06s actual0, inputs exact; resume live.
+- **Retained:** Lossy decoded changes0–160/283–406 exceed source0–113/293–406.
+  Hold contract needs complete shot-layer/paint evidence; guessed file read failed,
+  actual interfaces inspected. No engine edits or PNG-equality suppression.
+- **Records:** [Centered encoded/current cohort evidence](./mechanism-shorts-ms3-binder-centered-encoded-results.json).
+  Whole/fault/handoff/effort/final gates remain; accepted pilot0/10.
 
 ### 2026-10-14 — Verify binder cleanup output and locate remaining framing issue
 

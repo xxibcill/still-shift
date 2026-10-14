@@ -363,3 +363,16 @@ source master stays exact and no renders occur. Framing-only exact-CAS revision2
 now runs with nine current rows/seals exact at start. Actual rendered/encoded
 staging, its terminal lifecycle, whole/fault/handoff/effort/final gates and pilot0/10
 remain open. [Current framing evidence](./mechanism-shorts-ms3-binder-staging-framing-results.json).
+
+[Centered binder output/current cohort](./mechanism-shorts-ms3-binder-centered-encoded-results.json)
+now verify634 encoded frames / original AAC parity and six inspected staging views,
+showing the centered clip and preserved paper insertion. Native capture uses25 new /
+609 reused states. Nine current rows/seals remain exact; all-ten capture audit
+rechecks6,181 frames / 24,724 pins / 4,257 active labels. Camera run847.01s / report
+371.06s pass with exact inputs; resume remains live. Current QA still178 static errors /
+162 warnings / 537 images. Lossy decoded changes0–160/283–406 versus source
+0–113/293–406 remain recorded. Existing hold classification requires authenticated
+complete shot-layer and expected-paint evidence, while the native compiler currently
+uses one whole-episode sequence; PNG equality alone is insufficient. Native hold
+purposes/phase validation, broader faults/handoff/whole/effort/final gates and pilot0/10
+remain open. No source edits occur during the live camera lifecycle.
