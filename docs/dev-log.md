@@ -61,10 +61,10 @@ still hold before relying on them.
   picture/PCM/original narration parity holds. Preview0 errors/343 warnings.
   Report also exits0 in472.55s; independent product/journal/count/percentile
   reconciliation passes. First-pass1/10 (10%) fails90% target, savings null.
-  Resume exits0 in466.21s with unchanged episode rows. First4 compact handoffs
+  Resume exits0 in466.21s with unchanged episode rows. First5 compact handoffs
   pass independent packet/resume/source/8-asset closure audits. CPU-only follower
   26381 audits new sealed packets automatically; primary58827 remains live.
-  Unified58827 continues remaining6 handoffs; do not start another renderer
+  Unified58827 continues remaining5 handoffs; do not start another renderer
   or integrate source until its actual terminal. Original attempts remain exact;
   all2,792 source files,107 inputs and1,221 prior/E1 files are guarded.
   Durable ignored `benchmarks/results/ms3-actual-first-ten-review80/index.md` links
@@ -290,7 +290,7 @@ still hold before relying on them.
   corrected audit verifies exact corresponding source lock. Initial isolation
   blocks setuid system ps; copied binary is killed/not used. Fixed system ps-only
   exception passes; actual Node/pinned Python retain5 original-root read denials.
-- **Tracker:** reconcile current run/report/resume,4 verified handoffs and latest
+- **Tracker:** reconcile current run/report/resume,5 verified handoffs and latest
   installed85 proof. First-pass10% is measured and fails90%; only paired token
   savings are unverified. Historical engineering rows retain their own cohort.
 - **Open / next:** latest installed86 admits all10/6,181 frames and prepares E1
