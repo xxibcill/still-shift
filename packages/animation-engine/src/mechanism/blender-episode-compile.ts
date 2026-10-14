@@ -17,6 +17,11 @@ import {
   type BlenderAnchorFrames,
 } from "./blender-episode-annotations.ts";
 
+import {
+  CompositionPhysicalProofHoldSchema,
+  type CompositionPhysicalProofHold,
+} from "@still-shift/renderer-core";
+
 type CompositionSequenceAsset = Extract<
   Composition["assets"][number],
   { type: "sequence" }
@@ -143,6 +148,7 @@ export function composeBlenderEpisode(
   compiled: ReturnType<typeof compileBlenderEpisode>,
   sequence: CompositionSequenceAsset,
   anchorFrames?: BlenderAnchorFrames,
+  proofHolds: readonly CompositionPhysicalProofHold[] = [],
 ) {
   const { plan, frameCount, speechSourceSha256 } = compiled;
   if (
@@ -223,19 +229,50 @@ export function composeBlenderEpisode(
     inPoint: 0,
     outPoint: frameCount,
   });
-  layers.push({
-    id: "native-plates",
-    type: "sequence",
-    asset: sequence.id,
-    size: [plan.width, plan.height],
-    fit: "stretch",
-    frameBlending: "hold",
-    sourceInFrame: 0,
-    sourceOutFrame: frameCount,
-    inPoint: 0,
-    outPoint: frameCount,
-    transform: { anchor: [0, 0], position: [0, 0] },
-  });
+  const declared = plan.shots.filter((s) => s.proofPurpose !== undefined);
+  const proofs = proofHolds.map((p) =>
+    CompositionPhysicalProofHoldSchema.parse(p),
+  );
+  if (
+    proofs.length !== declared.length ||
+    declared.some((s, i) => {
+      const p = proofs[i]!;
+      return (
+        p.id !== s.id ||
+        p.purpose !== s.proofPurpose ||
+        p.layer !== "native-plates-" + s.id ||
+        p.start !== s.start ||
+        p.end !== s.endExclusive ||
+        p.sourceStartFrame !== s.start ||
+        p.frames.length !== s.endExclusive - s.start ||
+        p.frames.some((f, j) => f.frame !== s.start + j)
+      );
+    })
+  )
+    throw Error(
+      "Native proof purposes require matching complete authenticated shot evidence",
+    );
+  const intervals = proofs.length
+    ? plan.shots
+    : [{ id: "", start: 0, endExclusive: frameCount }];
+  for (const shot of intervals) {
+    const proof = proofs.find((p) => p.id === shot.id);
+    layers.push({
+      id: shot.id ? "native-plates-" + shot.id : "native-plates",
+      type: "sequence",
+      asset: sequence.id,
+      size: [plan.width, plan.height],
+      fit: "stretch",
+      frameBlending: "hold",
+      sourceInFrame: shot.start,
+      sourceOutFrame: shot.endExclusive,
+      ...(shot.id ? { startFrame: shot.start } : {}),
+      inPoint: shot.start,
+      outPoint: shot.endExclusive,
+      transform: { anchor: [0, 0], position: [0, 0] },
+      ...(proof ? { metadata: { physicalProof: proof } } : {}),
+    });
+  }
   return CompositionSchema.parse({
     schemaVersion: "composition-1",
     id: plan.id,

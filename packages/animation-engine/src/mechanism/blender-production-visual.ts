@@ -10,11 +10,13 @@ import {
 import {
   CompositionQualityPolicySchema,
   type CompositionQualityPolicy,
+  type CompositionPhysicalProofHold,
 } from "@still-shift/renderer-core";
 import {
   CompositionNodeMemory,
   compositionNodeJsonSize,
 } from "@still-shift/execution-runtime/export";
+import { readBlenderEpisodeProofHolds } from "./blender-episode-proof.ts";
 import { lintCompositionFile } from "../composition-lint.ts";
 import { blenderEpisodeFrameCount } from "./blender-episode-contract.ts";
 import type { compileBlenderEpisode } from "./blender-episode-compile.ts";
@@ -81,8 +83,10 @@ export function admitBlenderProductionVisualWork(
 /** The policy comes from the pinned original episode plan, independently of the saved text being checked. */
 export function blenderProductionVisualPolicy(
   compiled: Compiled,
+  proofHolds: CompositionPhysicalProofHold[] = [],
 ): CompositionQualityPolicy {
   return {
+    ...(proofHolds.length ? { physicalProofHolds: proofHolds } : {}),
     speechCaptions: compiled.plan.speech.map((c) => ({
       id: "caption-" + c.id,
       cueId: c.id,
@@ -108,8 +112,9 @@ export function blenderProductionVisualPolicy(
 export function blenderProductionSpeechFindings(
   compiled: Compiled,
   composition: Composition,
+  proofHolds: CompositionPhysicalProofHold[] = [],
 ) {
-  const expected = blenderProductionVisualPolicy(compiled),
+  const expected = blenderProductionVisualPolicy(compiled, proofHolds),
     valid: NonNullable<CompositionQualityPolicy["speechCaptions"]> = [];
   const findings: {
     code: string;
@@ -325,6 +330,9 @@ export async function evaluateBlenderProductionVisualQA(input: {
 }) {
   const owner = new CompositionNodeMemory(input.owner);
   owner.reserve(BLENDER_PRODUCTION_VISUAL_LIMITS.retainedCapacityBytes);
+  let proofs:
+    | Awaited<ReturnType<typeof readBlenderEpisodeProofHolds>>
+    | undefined;
   let source:
     | Awaited<
         ReturnType<typeof readProductionJSON<typeof CompositionSchema._output>>
@@ -414,7 +422,19 @@ export async function evaluateBlenderProductionVisualQA(input: {
       throw Error(
         "Native visual QA requires the matching flat authenticated sequence and episode clock",
       );
-    const speech = blenderProductionSpeechFindings(input.compiled, c);
+    proofs = await readBlenderEpisodeProofHolds(
+      input.compiled,
+      input.map,
+      input.identity,
+      input.outputRoot,
+      owner,
+      input.signal,
+    );
+    const speech = blenderProductionSpeechFindings(
+      input.compiled,
+      c,
+      proofs.holds,
+    );
     const policy = speech.expectedPolicy,
       capacity = admitBlenderProductionVisualWork(
         c.frameCount,
@@ -649,6 +669,7 @@ export async function evaluateBlenderProductionVisualQA(input: {
       artifacts: [artifact, grouped],
     };
   } finally {
+    proofs?.release();
     source?.release();
     owner.dispose();
   }

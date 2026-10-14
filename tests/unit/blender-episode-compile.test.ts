@@ -13,6 +13,87 @@ import {
 } from "../fixtures/blender-episode-support.ts";
 
 describe("native Blender episode compilation", () => {
+  it("retains the complete sequence clock across proof-shot boundaries without changing native capture keys", () => {
+    const plan = blenderEpisodePlan(),
+      source = blenderEpisodeSource();
+    const before = compileBlenderEpisode(source, plan);
+    Object.assign(plan.shots[1]!, {
+      proofPurpose: "Explain the held tooth contact",
+    });
+    const compiled = compileBlenderEpisode(source, plan);
+    expect(compiled.job.frames).toEqual(before.job.frames);
+    const sequence = {
+      id: "plates",
+      type: "sequence" as const,
+      path: "frame-%06d.png",
+      manifestPath: "sequence.json",
+      sha256: blenderHash("sequence"),
+      firstFrame: 0,
+      width: 320,
+      height: 568,
+      frameCount: 60,
+      frameRate: { numerator: 30, denominator: 1 },
+      color: {
+        primaries: "bt709" as const,
+        transfer: "iec61966-2-1" as const,
+        matrix: "gbr" as const,
+        range: "pc" as const,
+      },
+    };
+    expect(() => composeBlenderEpisode(compiled, sequence)).toThrow(
+      /authenticated shot evidence/,
+    );
+    const proof = {
+      id: "guide",
+      purpose: "Explain the held tooth contact",
+      layer: "native-plates-guide",
+      start: 30,
+      end: 60,
+      sourceStartFrame: 30,
+      evidenceSha256: blenderHash("evidence"),
+      frames: Array.from({ length: 30 }, (_, i) => ({
+        frame: i + 30,
+        plateSha256: blenderHash("plate"),
+        physicalSha256: blenderHash("physical"),
+      })),
+    };
+    const composition = composeBlenderEpisode(compiled, sequence, undefined, [
+      proof,
+    ]);
+    expect(
+      composition.layers.filter((l) => l.type === "sequence"),
+    ).toMatchObject([
+      {
+        id: "native-plates-recognition",
+        inPoint: 0,
+        outPoint: 30,
+        startFrame: 0,
+        sourceInFrame: 0,
+        sourceOutFrame: 30,
+      },
+      {
+        id: "native-plates-guide",
+        inPoint: 30,
+        outPoint: 60,
+        startFrame: 30,
+        sourceInFrame: 30,
+        sourceOutFrame: 60,
+        metadata: { physicalProof: proof },
+      },
+    ]);
+    for (const mutation of [
+      { purpose: "wrong" },
+      { sourceStartFrame: 0 },
+      { frames: proof.frames.slice(1) },
+    ])
+      expect(() =>
+        composeBlenderEpisode(compiled, sequence, undefined, [
+          { ...proof, ...mutation },
+        ]),
+      ).toThrow(/authenticated shot evidence/);
+    Object.assign(plan.shots[1]!, { proofPurpose: " " });
+    expect(() => parseBlenderEpisodePlan(plan)).toThrow();
+  });
   it("samples shot framing/visibility absolutely and only invalidates affected clean states", () => {
     const source = blenderEpisodeSource(),
       plan = blenderEpisodePlan();

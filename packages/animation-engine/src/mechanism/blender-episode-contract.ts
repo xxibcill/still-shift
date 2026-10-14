@@ -97,6 +97,7 @@ export const BlenderEpisodePlanSchema = z
             start: z.number().int().nonnegative(),
             endExclusive: z.number().int().positive(),
             camera: name,
+            proofPurpose: z.string().trim().min(1).max(400).optional(),
             framing: BlenderCameraFramingSchema.optional(),
             highlights: BlenderHighlightsSchema.default({}),
             hiddenParts: z.array(name).max(128),

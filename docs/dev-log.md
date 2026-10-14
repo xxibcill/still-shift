@@ -45,82 +45,41 @@ still hold before relying on them.
 
 - **MS3 in progress (2026-10-14):** `codex/mechanism-ms3`,
   [draft PR #58](https://github.com/xxibcill/still-shift/pull/58) targets main.
-  Active pilot: actual Everyday Unlocked EU-001–EU-010, original complete Alden
-  recordings at 1×. The seven-recording request is closed. Source `4679b8a8`, runtime
-  `db4e`, native profile `1dd0`; all 2,777 inputs / 122,189,105 bytes remain held.
-  [Pilot brief](./mechanism-shorts-ms3-pilot-brief.md),
-  [complete acceptance and outstanding work](./mechanism-shorts-ms3-acceptance.md).
-  Durable native queues, current QA, part/anchor annotations and bounded caches
-  are implemented. Fast 4,589 / runtime 271 / integration 324 / depth 14 / browser
-  smoke and 144 cache cases pass in recorded stages. Three old shared audio-cache
-  failures remain; 23 owning cases pass on fresh caches without source/quota changes.
-  [Annotation/cache source and failures](./mechanism-shorts-ms3-native-annotation-results.json).
-  All ten plans compile 6,181 HD frames / 59 shots / 42 labels. Original masters,
-  recordings and speech remain exact. Eight remaining scouts authenticate 138
-  states / 552 pins / 99 labels; 29 initial and 20 repaired phone samples are viewed.
-  [Scout repairs and rejected attempts](./mechanism-shorts-ms3-first-ten-annotation-scout-results.json).
-  **Live batch:** `actual-first-ten-full-HD47`, private `output-all10-47` root.
-  It preserves the old two-item trial and uses an exact native-cache copy.
-  All ten HD transactions complete 6,181 frames: 1,078 fresh / 5,103 reused
-  native states. Full run actually exits 0 in 6,062.67s; source/private inputs stay
-  exact. Independent 24,724 pins / 4,257 active labels, complete original AAC parity
-  and all 6,181 encoded RGBA frames through EOF pass. Ten phone midpoint sheets /
-  59 selected encoded frames are inspected. QA remains failed: 183 static errors /
-  161 warnings / 543 evidence images. Full report/resume now finish actual0 in
-  460.13s / 384.10s, inputs exact; resume adds no attempt. Primary texts
-  support selected constructions; full contact/glyph/continuous/listening stay open.
-  [Complete first-ten export checks](./mechanism-shorts-ms3-first-ten-complete-hd-export-results.json).
-  **Located repair:** EU-002 tongue settles at frame 170, before the return line
-  at frames 268–319. Separate `inputs-cue-repair49` retimes only `tighten` to peak
-  at 253 / settle at 319. Pure admission passes; capture/export/event/playback
-  review remains pending. Live inputs and complete narration stay unchanged.
-  **Second repair:** EU-003 spring close-up leader ends on wood, 38.40 native px
-  from visible cyan wire. Separate `inputs-pointer-repair50` selects saved outer
-  leg seat (3.74px in the same captured pose); pure admission passes. Actual new
-  capture/encoded/whole-shot review remains; all other inputs stay exact.
-  **Third repair:** `inputs-staging-repair52` hides unused binder paper in recognition
-  and closed-return, preserving insertion from406 via a separate shot. Pure admission
-  passes; capture/encoded staging and boundary/playback review remain. No voice,
-  control, frame-clock, camera or other callout changes.
-  Same-ten `projects-all10-repairs53-cli.json` compiles 6,181 frames / 42 labels.
-  Original lifecycle is terminal. Exact-CAS repair revision1 now runs the three
-  changed inputs; seven original rows/product seals remain identical at start.
-  All183 frozen windows have identical native observations/PNGs, but no hold
-  purpose, paint/event, encoded or whole acceptance follows from that equality.
-  All three revised captures now verify 1,810 frames / 7,240 pins / 1,061 labels,
-  with 211 fresh / 1,599 reused states. EU-002/EU-003 attempt2 exports fully decode
-  and preserve original AAC parity. Six return frames and three corrected-pointer
-  frames are inspected; fixed root/38 actual tongue shapes and spring-wire target
-  support the scoped repairs. Lossy decode changes extend to132–382 / 227–283;
-  source repair windows stay132–319 / 235–283. Old/new spring source pixels match.
-  EU-006 leaf flags pass1,482 checks and its634-frame output now fully decodes /
-  preserves original AAC parity. Six encoded staging views show unused paper
-  absent and insertion visible; the clip sits too high after removal. Separate
-  bounds-derived framing candidate (scale4.07317 / shiftY0.22343) passes admission,
-  preserves all other inputs, and needs actual capture/encoded review. Repair run
-  exits0 in1,783.40s; report/resume finish387.58s / 380.32s, exact inputs and seven
-  neighbors. Read-only Blender projection confirms centered[.5,.4] bounds with
-  zero renders/source changes. Framing-only revision2 now runs; nine current
-  rows/seals stay exact. Centered attempt3 now fully decodes634 frames / preserves
-  original AAC parity; six encoded staging views show the larger centered clip and
-  preserved insertion. Current all-ten capture audit rechecks24,724 pins / 4,257
-  labels. Camera run847.01s / report371.06s pass; resume remains live. Native changes
-  stay0–113/293–406; lossy decoded changes0–160/283–406 are retained. Current whole
-  QA still178 static errors / 162 warnings / 537 images; no finding suppression.
-  [Centered encoded evidence](./mechanism-shorts-ms3-binder-centered-encoded-results.json).
-  [Current repaired export evidence](./mechanism-shorts-ms3-first-ten-scoped-repair-results.json).
-  [Binder staging/framing](./mechanism-shorts-ms3-binder-staging-framing-results.json).
-  Current media lifecycle is terminal; next source work is bounded native hold
-  purpose/paint/phase validation with current-source artifact rebinding.
-  [Lifecycle/repair start](./mechanism-shorts-ms3-first-ten-hd-lifecycle-repair-results.json).
-  **Next:** complete repair renders/audits and resolved holds/staging; native
-  contact/phone/audio handoff; broader physical label/event/intersection/mount faults;
-  whole factual/mechanical/glyph/continuous/listening and original E06/E10 reviews;
-  comparable effort and final full software/benchmark/archive/installed gates.
-  Accepted pilot remains 0/10; paired routine telemetry is null. Historical source
-  bindings/rejected attempts remain intact; no merge, publication or paid generation.
-  [Production plan](./mechanism-shorts-production-plan.md),
+  Active pilot is actual Everyday Unlocked EU001–EU010 with complete existing
+  Alden takes at 1×. The old seven-recording request is closed; intake needs no
+  additional recordings. [Pilot brief](./mechanism-shorts-ms3-pilot-brief.md),
+  [complete acceptance](./mechanism-shorts-ms3-acceptance.md).
+  **Retained media checkpoint H3:** all ten HD drafts, 6,181 frames / 60 shots /
+  42 labels. Original masters/voice/speech remain exact. Current repairs cover
+  EU002 tongue return, EU003 spring pointer and EU006 unused paper/centered camera.
+  Run/report/resume are terminal; the final resume preserves all nine neighboring
+  deliveries. Complete native pins, full decoded video and original AAC parity
+  are recorded. QA still fails with 178 static errors / 162 warnings / 537 images.
+  These deliveries retain source `4679b8a8`, runtime `db4e`, native profile `1dd0`.
+  [Centered output/current cohort](./mechanism-shorts-ms3-binder-centered-encoded-results.json),
+  [scoped repairs](./mechanism-shorts-ms3-first-ten-scoped-repair-results.json),
+  [original exports/lifecycle](./mechanism-shorts-ms3-first-ten-complete-hd-export-results.json).
+  **New source slice:** bounded native authored hold purpose, authenticated
+  evaluated geometry and whole-sequence shot offsets are implemented. Runtime
+  `c7cde297`, unchanged native profile `1dd0`; 2,778 inputs / 122,203,611 bytes held.
+  Fast passes 4,593 tests / 457 files plus schema/boundary/format/lint/types.
+  Required runtime tier is running sequentially on a fresh owned media cache;
+  preliminary failures and a canceled overlapping attempt are retained.
+  A separate EU006 candidate checks all 634 preview frames/glyph measurements
+  with zero new native calls. Four covered static findings become review warnings;
+  15 errors / 22 warnings remain. Its 113-frame proof has one physical state and
+  caption boundaries split expected paint. Final-source native replay passes.
+  Original H3 journal remains exact; no purpose is saved to pilot inputs yet.
+  [Native hold evidence](./mechanism-shorts-ms3-native-hold-results.json),
   [native workflow](./mechanism-blender-episode.md).
+  **Next:** finish source verification; author whole-cohort purpose/phase/staging
+  evidence and rebind current-source exports/QA. Broader physical label/event/
+  intersection/mount faults, native handoff, whole factual/mechanical/encoded
+  glyph/continuous/listening and original E06/E10 reviews, comparable effort and
+  final full software/benchmark/archive/installed gates remain. Accepted pilot is
+  0/10; paired routine telemetry null. Historical bindings/rejected attempts stay
+  intact. Actions disabled; no merge, publication or paid generation.
+  [Production plan](./mechanism-shorts-production-plan.md).
 
 - **MS2 software checkpoint delivered (2026-10-13):** `codex/mechanism-ms2`
   carries exact MS1N `bf30a253` ([PR #56](https://github.com/xxibcill/still-shift/pull/56));
@@ -307,6 +266,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Native authored hold evidence and whole-sequence shot clocks
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `b81c17a6`.
+- **Done:** Bound optional shot purposes to complete authenticated camera,
+  controls, evaluated mesh/topology and part state; split native sequence layers
+  at absolute shot clocks and account for them before capture. QA reconstructs
+  evidence independently and retains raw findings/review requirements.
+- **Results:** Fast 4,593 / 457 passes on 2,778 held inputs. EU006 candidate measures
+  634 cached preview frames and glyphs, zero native calls; four static findings
+  become warnings, leaving 15 errors / 22 warnings. Final-source native replay
+  confirms 113 frames / one physical state. Original cohort journal stays exact.
+- **Retained:** Incomplete fixture, missing export, stale schemas and two type
+  failures; premature runtime attempt canceled143 and restarted sequentially.
+- **Open / next:** Runtime tier in flight; whole-cohort purpose/phase/staging and
+  current-source exports/QA, whole reviews and final milestone gates remain.
+- **Records:** [Held source and scoped evidence](./mechanism-shorts-ms3-native-hold-results.json),
+  [native contract](./mechanism-blender-episode.md). Pilot still 0/10; no spending.
 
 ### 2026-10-14 — Verify centered binder output and current cohort captures
 

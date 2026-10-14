@@ -171,6 +171,25 @@ and checks saved PNG pixels against that video without another Blender render.
 Optional numeric facts link the visual report; products without a numeric plan
 expose it directly as report quality evidence.
 
+A shot may declare an optional `proofPurpose` (1–400 nonblank characters) for
+stationary explanatory intervals. The producer authenticates every original
+capture pin and builds complete frame evidence from actual camera, control,
+mesh/topology, part transform/visibility and highlight state. Missing geometry or
+changed observations reject the declaration. Composition and QA reconstruct the
+same evidence independently from the pinned plan and native map.
+
+With a declared purpose, shots share the original whole-episode sequence asset
+and retain their absolute source-frame ranges. `sourceStartFrame` on a physical
+proof describes that sequence offset; older per-shot captures default to zero.
+Classification also requires matching source ordinals, identical native plates
+and physical state, and unchanged complete expected paint. Caption, leader or
+other paint changes split stationary intervals. Only fully covered frozen
+findings become warnings; raw severity, measurements, purpose, evidence and the
+required review remain. This does not establish correct spoken timing, contact,
+factual accuracy or continuous/listening acceptance. Prospective capacity counts
+all split sequence layers before capture. Undeclared shots retain ordinary frozen
+findings, and plans without a purpose keep the original single-sequence layout.
+
 Rendered QA is admitted before native capture: at most 100,000 layer-frames and
 256 MiB of prospective quality capacity. Reports are bounded to 8 MiB, 2,048 warning
 rows and 512 endpoint images. Measured sampled-visual status does not establish

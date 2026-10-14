@@ -24,12 +24,14 @@ import {
   blenderEpisodePlan,
   blenderHash,
 } from "../fixtures/blender-episode-support.ts";
+import { readBlenderEpisodeProofHolds } from "../../packages/animation-engine/src/mechanism/blender-episode-proof.ts";
 import { productionFile } from "../../packages/animation-engine/src/mechanism/production-queue-files.ts";
 import { mechanismPackHash } from "../../packages/animation-engine/src/mechanism/pack-support.ts";
 
 async function nativeFixture(
   options: {
     callout?: boolean;
+    proof?: boolean;
     shot?: {
       framing?: { orthoScale: number; shiftX?: number };
       shownParts?: string[];
@@ -54,6 +56,9 @@ async function nativeFixture(
       endExclusive: 60,
       camera: "camera.main",
       hiddenParts: [],
+      ...(options.proof
+        ? { proofPurpose: "Explain the fixed tooth contact" }
+        : {}),
     },
   ];
   Object.assign(plan.shots[0]!, options.shot);
@@ -115,6 +120,7 @@ async function nativeFixture(
       sourceAssetSha256: job.assetSha256,
       camera: {
         name: "camera.main",
+        worldMatrix: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
         type: "ORTHO",
         orthoScale: 4,
         shiftX: 0.2,
@@ -122,6 +128,7 @@ async function nativeFixture(
       },
       requestedControls: job.frames[0]!.controls,
       actualControls: job.frames[0]!.controls,
+      highlights: job.frames[0]!.highlights,
       anchors: options.callout
         ? {
             "anchor.cup": {
@@ -133,7 +140,21 @@ async function nativeFixture(
             },
           }
         : {},
-      parts: options.parts ?? [],
+      parts:
+        options.parts ??
+        (options.proof
+          ? [
+              {
+                name: "tooth",
+                visible: true,
+                vertices: 8,
+                triangles: 12,
+                positionsSha256: blenderHash("positions"),
+                triangleIndicesSha256: blenderHash("indices"),
+                worldMatrix: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+              },
+            ]
+          : []),
     }),
   );
   const receipt = await pin(
@@ -204,6 +225,75 @@ async function nativeFixture(
   return { root, compiled, identity, map };
 }
 describe("native frame dependency closure", () => {
+  it("builds complete authored proof holds from authenticated evaluated mesh state and releases its allowance", async () => {
+    const f = await nativeFixture({ proof: true }),
+      parent = new CompositionNodeMemory();
+    const foreign = parent.reserve(1024),
+      before = parent.availableBytes;
+    try {
+      const data = await readBlenderEpisodeProofHolds(
+        f.compiled,
+        BlenderEpisodePlatesSchema.parse(f.map),
+        f.identity,
+        f.root,
+        parent,
+      );
+      expect(data.holds).toHaveLength(1);
+      expect(data.holds[0]).toMatchObject({
+        id: "held",
+        purpose: "Explain the fixed tooth contact",
+        layer: "native-plates-held",
+        start: 0,
+        end: 60,
+        sourceStartFrame: 0,
+      });
+      expect(data.holds[0]!.frames).toHaveLength(60);
+      expect(
+        new Set(data.holds[0]!.frames.map((r) => r.physicalSha256)).size,
+      ).toBe(1);
+      expect(data.holds[0]!.frames.map((r) => r.frame)).toEqual(
+        Array.from({ length: 60 }, (_, f) => f),
+      );
+      data.release();
+      expect(parent.availableBytes).toBe(before);
+      await writeFile(
+        join(f.root, f.map.frames[0]!.observation.path),
+        "changed",
+      );
+      await expect(
+        readBlenderEpisodeProofHolds(
+          f.compiled,
+          BlenderEpisodePlatesSchema.parse(f.map),
+          f.identity,
+          f.root,
+          parent,
+        ),
+      ).rejects.toThrow(/retained pin/);
+      expect(parent.availableBytes).toBe(before);
+    } finally {
+      foreign.release();
+      parent.dispose();
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
+  it("does not invent a proof purpose or accept missing evaluated geometry", async () => {
+    const f = await nativeFixture({ proof: true, parts: [] }),
+      owner = new CompositionNodeMemory();
+    try {
+      await expect(
+        readBlenderEpisodeProofHolds(
+          f.compiled,
+          BlenderEpisodePlatesSchema.parse(f.map),
+          f.identity,
+          f.root,
+          owner,
+        ),
+      ).rejects.toThrow();
+    } finally {
+      owner.dispose();
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
   it("retains authenticated same-state label projections under the caller allowance and rejects changed records", async () => {
     const f = await nativeFixture({
         callout: true,

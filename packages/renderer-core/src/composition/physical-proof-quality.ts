@@ -18,7 +18,7 @@ function capturedFrameSignature(
     !plate?.onScreen ||
     !plate.fullyOnScreen ||
     !pair ||
-    pair.first !== at - proof.start ||
+    pair.first !== at - proof.start + proof.sourceStartFrame ||
     pair.mix !== 0
   )
     return undefined;

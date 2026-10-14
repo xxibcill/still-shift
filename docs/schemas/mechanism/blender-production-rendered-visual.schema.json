@@ -313,6 +313,12 @@
                 "minimum": -9007199254740991,
                 "maximum": 108000
               },
+              "sourceStartFrame": {
+                "default": 0,
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 108000
+              },
               "evidenceSha256": {
                 "type": "string",
                 "pattern": "^sha256:[a-f0-9]{64}$"
@@ -349,6 +355,7 @@
               "layer",
               "start",
               "end",
+              "sourceStartFrame",
               "evidenceSha256",
               "frames"
             ],
@@ -709,6 +716,12 @@
                 "minimum": -9007199254740991,
                 "maximum": 108000
               },
+              "sourceStartFrame": {
+                "default": 0,
+                "type": "integer",
+                "minimum": -9007199254740991,
+                "maximum": 108000
+              },
               "evidenceSha256": {
                 "type": "string",
                 "pattern": "^sha256:[a-f0-9]{64}$"
@@ -745,6 +758,7 @@
               "layer",
               "start",
               "end",
+              "sourceStartFrame",
               "evidenceSha256",
               "frames"
             ],

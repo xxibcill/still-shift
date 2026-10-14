@@ -16,6 +16,7 @@ import {
   type BlenderProductionProjectInput,
 } from "./blender-episode-inputs.ts";
 import { readBlenderEpisodeAnchorFrames } from "./blender-episode-annotations.ts";
+import { readBlenderEpisodeProofHolds } from "./blender-episode-proof.ts";
 import { composeBlenderEpisode } from "./blender-episode-compile.ts";
 import {
   prepareBlenderEpisodePlates,
@@ -172,19 +173,32 @@ export async function createBlenderProductionExecutor(options: {
         context.nodeMemory,
         context.signal,
       );
+      let proofs:
+        | Awaited<ReturnType<typeof readBlenderEpisodeProofHolds>>
+        | undefined;
       try {
+        proofs = await readBlenderEpisodeProofHolds(
+          compiled,
+          map,
+          identity,
+          context.outputRoot,
+          context.nodeMemory,
+          context.signal,
+        );
         await writeProductionJSON(
           compositionPath,
           composeBlenderEpisode(
             compiled,
             sequence(context.outputRoot, map, compiled),
             anchors.frames,
+            proofs.holds,
           ),
           context.nodeMemory,
           1024 * 1024,
           true,
         );
       } finally {
+        proofs?.release();
         anchors.release();
       }
       await context.progress("native-blender-composition-export");
@@ -437,7 +451,18 @@ export async function createBlenderProductionExecutor(options: {
           context.nodeMemory,
           context.signal,
         );
+        let proofs:
+          | Awaited<ReturnType<typeof readBlenderEpisodeProofHolds>>
+          | undefined;
         try {
+          proofs = await readBlenderEpisodeProofHolds(
+            compiled,
+            map.value,
+            identity,
+            context.outputRoot,
+            context.nodeMemory,
+            context.signal,
+          );
           if (
             mechanismPackHash(composition.value) !==
             mechanismPackHash(
@@ -445,6 +470,7 @@ export async function createBlenderProductionExecutor(options: {
                 compiled,
                 sequence(context.outputRoot, map.value, compiled),
                 anchors.frames,
+                proofs.holds,
               ),
             )
           )
@@ -452,6 +478,7 @@ export async function createBlenderProductionExecutor(options: {
               "Native saved composition differs from its current episode plan",
             );
         } finally {
+          proofs?.release();
           anchors.release();
         }
         const visual = await evaluateBlenderProductionVisualQA({

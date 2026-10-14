@@ -118,6 +118,7 @@ export const CompositionPhysicalProofHoldSchema = z
     layer: z.string().min(1).max(1024),
     start: frame,
     end: frame,
+    sourceStartFrame: frame.default(0),
     evidenceSha256: z.string().regex(/^sha256:[a-f0-9]{64}$/),
     frames: z
       .array(

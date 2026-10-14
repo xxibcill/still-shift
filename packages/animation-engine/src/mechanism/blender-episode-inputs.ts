@@ -81,7 +81,12 @@ export async function readBlenderEpisode(
     const compiled = compileBlenderEpisode(resolvedSource, resolvedPlan);
     admitBlenderProductionVisualWork(
       compiled.frameCount,
-      2 * compiled.plan.speech.length + 3 * compiled.plan.callouts.length + 2,
+      2 * compiled.plan.speech.length +
+        3 * compiled.plan.callouts.length +
+        1 +
+        (compiled.plan.shots.some((s) => s.proofPurpose !== undefined)
+          ? compiled.plan.shots.length
+          : 1),
     );
     const qaPath =
       project.qaPath === undefined
