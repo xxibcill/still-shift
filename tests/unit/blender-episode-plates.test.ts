@@ -225,6 +225,35 @@ async function nativeFixture(
   return { root, compiled, identity, map };
 }
 describe("native frame dependency closure", () => {
+  it("releases authentication scratch before repeated delivery checks and preserves foreign reservations on failure", async () => {
+    const f = await nativeFixture(),
+      owner = new CompositionNodeMemory(),
+      foreign = owner.reserve(192 * 1024 * 1024),
+      before = owner.availableBytes;
+    try {
+      for (let check = 0; check < 2; check++) {
+        await expect(
+          checkBlenderEpisodePlates(
+            f.map,
+            f.compiled,
+            f.identity,
+            f.root,
+            owner,
+          ),
+        ).resolves.toEqual(f.map);
+        expect(owner.availableBytes).toBe(before);
+      }
+      await writeFile(join(f.root, "capture/observation.json"), "changed");
+      await expect(
+        checkBlenderEpisodePlates(f.map, f.compiled, f.identity, f.root, owner),
+      ).rejects.toThrow();
+      expect(owner.availableBytes).toBe(before);
+      expect(foreign.active).toBe(true);
+    } finally {
+      owner.dispose();
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
   it("builds complete authored proof holds from authenticated evaluated mesh state and releases its allowance", async () => {
     const f = await nativeFixture({ proof: true }),
       parent = new CompositionNodeMemory();

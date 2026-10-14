@@ -45,93 +45,36 @@ still hold before relying on them.
 
 - **MS3 in progress (2026-10-14):** `codex/mechanism-ms3`,
   [draft PR #58](https://github.com/xxibcill/still-shift/pull/58) targets main.
-  Active pilot is actual Everyday Unlocked EU001–EU010 with complete existing
-  Alden takes at 1×. The old seven-recording request is closed; intake needs no
-  additional recordings. [Pilot brief](./mechanism-shorts-ms3-pilot-brief.md),
-  [complete acceptance](./mechanism-shorts-ms3-acceptance.md).
-  **Retained media checkpoint H3:** all ten HD drafts, 6,181 frames / 60 shots /
-  42 labels. Original masters/voice/speech remain exact. Current repairs cover
-  EU002 tongue return, EU003 spring pointer and EU006 unused paper/centered camera.
-  Run/report/resume are terminal; the final resume preserves all nine neighboring
-  deliveries. Complete native pins, full decoded video and original AAC parity
-  are recorded. QA still fails with 178 static errors / 162 warnings / 537 images.
-  These deliveries retain source `4679b8a8`, runtime `db4e`, native profile `1dd0`.
-  [Centered output/current cohort](./mechanism-shorts-ms3-binder-centered-encoded-results.json),
-  [scoped repairs](./mechanism-shorts-ms3-first-ten-scoped-repair-results.json),
-  [original exports/lifecycle](./mechanism-shorts-ms3-first-ten-complete-hd-export-results.json).
-  **New source slice `57d4d016`:** bounded native authored hold purpose, authenticated
-  evaluated geometry and whole-sequence shot offsets are implemented. Runtime
-  `c7cde297`, unchanged native profile `1dd0`; 2,778 inputs / 122,203,611 bytes held.
-  Fast passes 4,593 tests / 457 files plus schema/boundary/format/lint/types.
-  Complete runtime tier passes actual0 in 520.13s: runtime271/52,
-  integration324/59, depth14 and browser smoke. Source remains exact on a fresh
-  owned cache. Preliminary failures/canceled overlapping attempt remain retained.
-  A separate EU006 candidate checks all 634 preview frames/glyph measurements
-  with zero new native calls. Four covered static findings become review warnings;
-  15 errors / 22 warnings remain. Its 113-frame proof has one physical state and
-  caption boundaries split expected paint. Final-source native replay passes.
-  Original H3 journal remains exact; no purpose is saved to pilot inputs yet.
-  [Native hold evidence](./mechanism-shorts-ms3-native-hold-results.json),
-  [native workflow](./mechanism-blender-episode.md).
-  **Current-source cohort now terminal/canceled:** `actual-first-ten-native-purpose59` in
-  `output-purpose59`; manifest `queue-holds59.json`, wrapper90896 terminal130.
-  Sixty purposes and39 sampled state/staging programs preserve all original
-  narration, speech and control tracks. Eight unchanged-camera episodes pass
-  4,949 frame clocks/camera checks and11,625 actual state comparisons. Preflight
-  catches the moving tape housing reference, zipper auto-zoom/follow and latch
-  spring follow. Separate zipper camera-only derivative adds two unanimated views;
-  masters, original geometry/control data and production pointers stay unchanged.
-  Shared guards pass all653 zipper/579 latch frames. Twenty-five selected native
-  states match original rendered physical parts (12 fresh/13 reused); four phone
-  sheets are actually viewed. The initial latch spring-seat crop is rejected and
-  corrected using actual projection shift sensitivity; corrected seat is visible.
-  Viewport-only geometry comparison lags at frame99 and remains retained; actual
-  render observations match the originals. Copy-on-write cache import5,841 files /
-  2,358,130,288 bytes is exact. EU001 exports then fails rendered-QA shared
-  metadata quota; EU002 is gracefully canceled during export, eight stay pending.
-  Wrapper exits130 in823.33s with exact engine/private inputs and original H3
-  journal. Reports/resume are unrun; partial outputs and located failure retained.
-  **Memory repair working slice:** dispose completed64MiB proof authentication
-  capacity before downstream QA. New active-reservation regression fails old
-  source (8pass/1fail) and passes fixed9 cases; quota unchanged. New2,778 inputs /
-  122,203,842 bytes held; runtime `abe3c933`. Fast4,593/457 passes and actual
-  shared-budget610-frame pixel/glyph replay completes0 errors/37 warnings,
-  21 classified static holds, zero new native calls. Complete runtime passes actual0 in591.06s: runtime271/52, integration324/59,
-  depth14 and browser smoke; source stays exact.
-  [Purpose/camera evidence and live handles](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json).
-  **Retry now live:** `actual-first-ten-native-purpose60`, `queue-holds60.json`,
-  `output-purpose60`, wrapper11682. Source `731e658b`/runtime `abe3c933`, unchanged
-  native profile `1dd0`. Exact COW import5,889 files/2,375,705,915 bytes from the
-  canceled cohort preserves useful native states. All53 candidate dependencies
-  (6,533,750 bytes) held. Retained unsealed EU001 movie independently decodes all610
-  RGBA frames identical to H3 and preserves complete original AAC reference parity;
-  this does not become a current-source product seal or whole acceptance.
-  **Current EU001 completion:** sealed current `abe3c933` export finishes actual
-  rendered QA with0 errors/37 warnings (21 declared physical holds). Complete610
-  RGBA decode equals H3; original whole AAC reference parity passes. EU001/EU002
-  native audits check1,198 global frame clocks/complete proof rows,4,792 pins and
-  873 active-label frames, zero fresh native captures. EU002 now also seals:
-  actual588-frame QA0 errors/27 warnings,12 declared physical holds; complete
-  decoded RGBA equals repaired H3 and original whole AAC parity passes. EU003
-  now also seals with actual588-frame QA0 errors/37 warnings and complete H3
-  RGBA/original AAC parity. EU004 seals653 frames: QA0 errors/28 warnings;
-  independent75,095 actual part/frame comparisons preserve original geometry/
-  controls and locked cameras over the entire clip. Complete video/AAC decode
-  passes; repaired picture changes0–401/450–653. Unchanged cup native pixels have
-  measured differences (max1 RGBA unit at three samples), not blanket equality.
-  Fifteen actual encoded phone/cut frames are viewed: guide/tooth labels readable,
-  fixed views preserve recognition. Current native audit covers2,439 frames/
-  9,756 pins/1,614 active-label frames. EU005 has finished technical export, EU006
-  is running; later output audits/whole acceptance remain. This closes the actual
-  EU001 QA quota failure, not all cohort or whole-review acceptance. Failed IPC audit remains; direct import works.
-  **Next:** re-poll11682; complete new run/report/resume and
-  independent native/encoded audio/picture audits. Broader physical label/event/
-  intersection/mount faults, native handoff, whole factual/mechanical/encoded
-  glyph/continuous/listening and original E06/E10 reviews, comparable effort and
-  final full software/benchmark/archive/installed gates remain. Accepted pilot is
-  0/10; paired routine telemetry null. Historical bindings/rejected attempts stay
-  intact. Actions disabled; no merge, publication or paid generation.
-  [Production plan](./mechanism-shorts-production-plan.md).
+  Pilot uses actual Everyday Unlocked EU001–EU010 and complete existing Alden
+  recordings at1×. The old seven-recording intake is closed.
+  Original H3 media/journal, source bindings and failed/canceled attempts retained.
+  Original masters/assets/pointers unchanged.
+  **Cohort60 terminal:** wrapper11682 exits1 after5415.13s; nine products seal,
+  EU007 fails delivery verification after its rendered QA passes. All6181 saved
+  frames pass complete native clocks/proofs,24724 pins and4257 active label frames.
+  All ten movies fully decode and retain original whole AAC parity. Eight full
+  RGBA streams equal repaired H3; zipper/latch camera repairs differ. Complete
+  geometry/control parity and locked cameras pass for both; selected15 zipper/
+  12 latch encoded phone frames actually inspected. Saved QA has0 preview errors,
+  340 warnings and537 encoded evidence images; whole reviews remain open.
+  **EU007 capacity repair:** actual verifier reproduces21649-byte shortfall.
+  Completed map authentication retains64MiB. Scoped scratch disposal on every exit
+  keeps512MiB quota/QA thresholds unchanged. Red regression9pass/1fail; fixed
+  targeted24/4 pass. Actual708-frame visual replay under256MiB caller reservations
+  passes0 errors/33 warnings, zero native calls; original output binding unchanged.
+  Preliminary type-only import/frozen-identity replay failures retained. Fast4,594/457 and schema/boundary/format/lint/types pass. Complete
+  runtime tier running, session56779. Source2,778/122,205,150B held.
+  Cohort60 report/resume unrun after terminal failure; old products not relabelled.
+  **Next:** finish fixed-source software checks, commit/evidence, separate all-ten
+  current-source lifecycle. Whole factual/mechanical/encoded glyph/continuous/
+  listening and original E06/E10 reviews, broader physical faults, native portable
+  handoff, comparable effort and full software/benchmark/archive/installed gates
+  remain. Accepted0/10; paired routine telemetry null. Actions disabled;
+  no paid generation/merge/publication.
+  [Pilot brief](./mechanism-shorts-ms3-pilot-brief.md),
+  [current evidence](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json),
+  [complete acceptance](./mechanism-shorts-ms3-acceptance.md),
+  [production plan](./mechanism-shorts-production-plan.md).
 
 - **MS2 software checkpoint delivered (2026-10-13):** `codex/mechanism-ms2`
   carries exact MS1N `bf30a253` ([PR #56](https://github.com/xxibcill/still-shift/pull/56));
@@ -318,6 +261,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — All-ten output audit and buckle verification memory repair
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `e04f06e4`.
+- **Terminal:** Cohort60 wrapper11682 exits1 in5415.13s: nine sealed products;
+  EU007 delivery-verification failure. Source/private inputs and H3 journal exact.
+  Report/resume unrun after failure; original outputs retained.
+- **Audits:** All6181 native frames/24724 pins/4257 label frames pass. All ten
+  full video/AAC decodes pass; eight RGBA streams equal repaired H3. Latch579
+  frames preserve geometry/controls over12738 part/frame comparisons, five locked
+  cameras; twelve actual encoded phone frames inspected.
+- **Repair:** Actual verifier reproduces21649-byte shortfall; authentication
+  retains64MiB. Scoped fix keeps quota/thresholds. Red9pass/1fail; fixed24/4 pass.
+  Full708-frame pixel replay under256MiB caller capacity passes0 errors/33 warnings,
+  zero native calls. Preliminary import/private replay failures retained.
+- **Next / records:** Fast4,594/457 passes; runtime running, new cohort and whole reviews remain,
+  accepted0/10. [Evidence](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json).
 
 ### 2026-10-14 — Complete zipper geometry/cameras and two more sealed exports
 

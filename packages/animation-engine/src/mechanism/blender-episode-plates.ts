@@ -3,7 +3,7 @@ import { constants } from "node:fs";
 import { join, relative, resolve, isAbsolute } from "node:path";
 import { randomUUID } from "node:crypto";
 import { z } from "zod";
-import type { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
+import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
 import { isCompositionNodeCapacityError } from "@still-shift/execution-runtime/export";
 import { acquireArtifactLock } from "@still-shift/execution-runtime/locks";
 import { MechanismProductionOwnedFileSchema } from "./production-queue-contract.ts";
@@ -553,98 +553,103 @@ export async function checkBlenderEpisodePlates(
   compiled: Compiled,
   identity: BlenderProductionIdentity,
   root: string,
-  owner: CompositionNodeMemory,
+  parent: CompositionNodeMemory,
   signal?: AbortSignal,
 ) {
-  owner.reserve(64 * 1024 * 1024);
-  root = await realpath(root);
-  const map = BlenderEpisodePlatesSchema.parse(input);
-  if (
-    map.producerProfileSha256 !== identity.profileSha256 ||
-    map.frameCount !== compiled.frameCount ||
-    map.frames.length !== compiled.frameCount
-  )
-    throw Error("Native episode map differs from its current producer/clock");
-  const verified = reader(root, compiled, identity, owner, signal);
+  const owner = new CompositionNodeMemory(parent);
   try {
-    let submitted = 0;
-    for (const pin of map.freshCaptures) {
-      const result = await readProductionJSON(
-        await pinned(root, pin, owner, signal),
-        capture,
+    owner.reserve(64 * 1024 * 1024);
+    root = await realpath(root);
+    const map = BlenderEpisodePlatesSchema.parse(input);
+    if (
+      map.producerProfileSha256 !== identity.profileSha256 ||
+      map.frameCount !== compiled.frameCount ||
+      map.frames.length !== compiled.frameCount
+    )
+      throw Error("Native episode map differs from its current producer/clock");
+    const verified = reader(root, compiled, identity, owner, signal);
+    try {
+      let submitted = 0;
+      for (const pin of map.freshCaptures) {
+        const result = await readProductionJSON(
+          await pinned(root, pin, owner, signal),
+          capture,
+          owner,
+          8 * 1024 * 1024,
+          signal,
+        );
+        try {
+          submitted += result.value.summary.blenderRenders;
+        } finally {
+          result.release();
+        }
+        if (
+          !map.frames.some(
+            (f) => mechanismPackHash(f.capture) === mechanismPackHash(pin),
+          )
+        )
+          throw Error("Fresh native submission is not used by this episode");
+      }
+      if (
+        submitted !== map.freshNativeRenders ||
+        map.reusedOutputFrames !== map.frameCount - submitted
+      )
+        throw Error(
+          "Native submission counters differ from actual capture receipts",
+        );
+      for (const [frame, pin] of map.frames.entries()) {
+        if (
+          pin.frame !== frame ||
+          pin.key !==
+            blenderEpisodePlateKey(
+              compiled.job,
+              compiled.job.frames[frame]!,
+              identity.profileSha256,
+            )
+        )
+          throw Error(
+            "Native output mapping differs from its current episode plan",
+          );
+        const original = await verified.read(pin);
+        if (
+          mechanismPackHash(pin.observation) !==
+            mechanismPackHash(original.observation) ||
+          pin.image.sha256 !== original.image.sha256 ||
+          pin.image.bytes !== original.image.bytes
+        )
+          throw Error(
+            "Native output mapping differs from the original captured frame",
+          );
+        await pinned(root, pin.image, owner, signal);
+      }
+      const sequence = await readProductionJSON(
+        await pinned(root, map.sequence, owner, signal),
+        z
+          .object({
+            schemaVersion: z.literal("composition-sequence-1"),
+            frames: z.array(z.string()).max(2000),
+          })
+          .strict(),
         owner,
-        8 * 1024 * 1024,
+        1024 * 1024,
         signal,
       );
       try {
-        submitted += result.value.summary.blenderRenders;
-      } finally {
-        result.release();
-      }
-      if (
-        !map.frames.some(
-          (f) => mechanismPackHash(f.capture) === mechanismPackHash(pin),
+        if (
+          mechanismPackHash(sequence.value.frames) !==
+          mechanismPackHash(map.frames.map((f) => f.image.sha256))
         )
-      )
-        throw Error("Fresh native submission is not used by this episode");
-    }
-    if (
-      submitted !== map.freshNativeRenders ||
-      map.reusedOutputFrames !== map.frameCount - submitted
-    )
-      throw Error(
-        "Native submission counters differ from actual capture receipts",
-      );
-    for (const [frame, pin] of map.frames.entries()) {
-      if (
-        pin.frame !== frame ||
-        pin.key !==
-          blenderEpisodePlateKey(
-            compiled.job,
-            compiled.job.frames[frame]!,
-            identity.profileSha256,
-          )
-      )
-        throw Error(
-          "Native output mapping differs from its current episode plan",
-        );
-      const original = await verified.read(pin);
-      if (
-        mechanismPackHash(pin.observation) !==
-          mechanismPackHash(original.observation) ||
-        pin.image.sha256 !== original.image.sha256 ||
-        pin.image.bytes !== original.image.bytes
-      )
-        throw Error(
-          "Native output mapping differs from the original captured frame",
-        );
-      await pinned(root, pin.image, owner, signal);
-    }
-    const sequence = await readProductionJSON(
-      await pinned(root, map.sequence, owner, signal),
-      z
-        .object({
-          schemaVersion: z.literal("composition-sequence-1"),
-          frames: z.array(z.string()).max(2000),
-        })
-        .strict(),
-      owner,
-      1024 * 1024,
-      signal,
-    );
-    try {
-      if (
-        mechanismPackHash(sequence.value.frames) !==
-        mechanismPackHash(map.frames.map((f) => f.image.sha256))
-      )
-        throw Error(
-          "Native sequence hash order differs from the episode mapping",
-        );
+          throw Error(
+            "Native sequence hash order differs from the episode mapping",
+          );
+      } finally {
+        sequence.release();
+      }
+      return map;
     } finally {
-      sequence.release();
+      verified.release();
     }
-    return map;
   } finally {
-    verified.release();
+    owner.dispose();
   }
 }
