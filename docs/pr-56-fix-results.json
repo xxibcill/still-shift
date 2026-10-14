@@ -231,5 +231,71 @@
       }
     },
     "scope": "Locked offline isolated .venv, editable depth worker points only to this worktree; primary environment untouched. Node22.23.1/pnpm10.29.3/Python3.12.11/Chromium1234/FFmpeg8.0.1 verified. No browser/render group run."
+  },
+  "installedAffectedApiProof": {
+    "sourceCommit": "4ee86286",
+    "archive": {
+      "path": "/private/tmp/still-shift-ms1n-package83/still-shift-0.1.1.tgz",
+      "bytes": 4293945,
+      "sha256": "sha256:70a96d1f35aea915468000c1004d65f63790d4d74b236f0f56fdfd4244f5d91b"
+    },
+    "memberAudit": {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms1n-package83-members1.json",
+        "bytes": 476,
+        "sha256": "sha256:6d421ba528c9bdbfb7854be72885e82fea645fe43fd2e74b9b56f2418f30fd4a"
+      },
+      "files": 1956
+    },
+    "packageBuild": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-package83-build1.log",
+        "bytes": 216,
+        "sha256": "sha256:167d04c1a17ae9753499fe050669ff10590095cf52a9d837a34bf82275124e56"
+      }
+    },
+    "privatePack": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-package83-pack1.log",
+        "bytes": 257973,
+        "sha256": "sha256:d4d90cc97010b24dac43f784b60e915ca9f261b718c90cf1635f8455fa9a2fdf"
+      }
+    },
+    "offlineInstall": {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms1n-package83-install1.json",
+        "bytes": 483,
+        "sha256": "sha256:ae26004e2c5ca6a7b6ee9cf5cd2b982275f03622e337506b4e1f8e0f5164c151"
+      }
+    },
+    "publicSourceChecks": {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms1n-package83-installed-diagnostics1.json",
+        "bytes": 72298,
+        "sha256": "sha256:d53744d75815808efd2bfcf04cead5a4c87b0b2b5e6207f8095a41b21f4e7c5f"
+      },
+      "cases": 9,
+      "appearanceSha256": "sha256:66e15226f8600059d27dfc438dc5f38f51e23654f3e79db5fd4c5a9d69f9f662",
+      "sourceRootsDenied": true
+    },
+    "strictInstalledTypes": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-package83-installed-types1.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "scope": "Actual affected installed APIs for both existing MS1N formats and located/sanitized failures. No fresh GPU, runtime/render tier, full legacy E01 rerender, release or publication inferred.",
+    "durableIgnoredArchiveCopy": {
+      "path": "/Users/jjae/.codex/worktrees/ms1n-review-fixes/still-shift/benchmarks/results/ms1n-package83/still-shift-0.1.1.tgz",
+      "bytes": 4293945,
+      "sha256": "sha256:70a96d1f35aea915468000c1004d65f63790d4d74b236f0f56fdfd4244f5d91b"
+    }
   }
 }

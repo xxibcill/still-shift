@@ -53,7 +53,9 @@ still hold before relying on them.
   filesystem checks and refreshed fast3,935/381 pass. Both final review axes
   have zero findings; long-key and raw mismatch-path review defects are retained
   with their repairs. Locked offline isolated Python setup and pinned toolchain pass; primary
-  environment untouched. Existing PR head remains unchanged pending runtime gates. No merge or
+  environment untouched. Private archive83 verifies1,956 members; offline installed
+  public diagnostics9 and strict types pass with originals denied. GPU/runtime
+  gates and safe existing-PR fast-forward remain pending. No merge or
   acceptance. [Repair evidence](./pr-56-fix-results.json).
 
 - **PR #56 conflicts resolved (2026-10-15):** merge `main` `b3765142` into
@@ -271,6 +273,18 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Verify the affected MS1N installed APIs
+
+- **Agent / branch:** Codex on `codex/ms1n-review-fixes`, source `4ee86286`.
+- **Results:** package build/private archive4,293,945B and all1,956 member bytes
+  match. Offline consumer passes9 actual-file public source/diagnostic controls
+  over the two supported formats and strict public TypeScript with original
+  source roots denied. Appearance identity66e15226 remains distinct and truthful.
+- **Open / next:** serial fresh repaired GPU and required runtime/render checks,
+  then verify remote PR56 head before fast-forward. Full legacy/human acceptance
+  stays scoped; archive retained privately, no publication or merge.
+- **Records:** [PR56 repair evidence](./pr-56-fix-results.json).
 
 ### 2026-10-15 — Preserve located native source diagnostics
 
