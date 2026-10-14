@@ -70,8 +70,14 @@ still hold before relying on them.
   Source implementation not included; fresh render/installed consumer handoff
   and whole review remain open. Composite review selection has eight retained
   cohort61 products plus two corrections (0 preview errors/343 warnings/542 images).
-  Eight old bindings name retired paths and need canonical/portable rebinding
-  before a fresh all-ten lifecycle; no historical identity relabelled.
+  All-ten portable68 run/report/resume now uses the relocated canonical bundle,
+  preserving106 declared files and137 prior artifact/journal files. Run is live;
+  first six seal. Independent3,671 RGBA frames/whole PCM match selected deliveries,
+  60 product pins and14,684 native pins pass with0 new native captures. Terminal
+  report/resume and remaining four audits pending; historical identities retained.
+  Isolated3a7dcd69 repairs native compact handoff (fast4,596 pass); first-pass
+  provenance/recovery has73 scoped tests/types pass with current fast gate running.
+  Original live runtime remains frozen pending lifecycle completion.
   Frozen source4b58f49b/runtimefc4cc2ae/profile1dd0 unchanged; earlier fast4,594/
   runtime271/integration324/depth14/browser smoke pass. Whole factual/mechanical/
   normal-speed/listening, broader faults, complete portable/installed handoff,
@@ -266,6 +272,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Relocated first-ten lifecycle and isolated review repairs
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `d45f3f4f`.
+- **Live:** original portable68 run/report/resume75382 confirmed live; first six
+  seal, buckle running. All106 declared files and137 prior files guarded.
+- **Results:** independent3,671 full RGBA/whole PCM frames,60 product pins and
+  14,684 native pins pass. Preview0 errors/remaining warnings retained. No new
+  native captures; complete report/resume/remaining outputs unrun at capture.
+- **Isolation:** native handoff fix3a7dcd69 fast4,596 pass. First-pass provenance
+  and two reproduced recovery gaps repaired;73 scoped tests/types pass, final fast
+  running. Source integration waits for frozen lifecycle terminal.
+- **Open:** current full gates/installed handoff/whole reviews; accepted0/10,
+  tokens null. No new spend, publish, merge or Actions.
+- **Records:** [Portable lifecycle and partial audits](./mechanism-shorts-ms3-first-ten-portable-lifecycle-results.json).
 
 ### 2026-10-15 — Corrected tie/buckle deliveries and portable first-ten inputs
 
