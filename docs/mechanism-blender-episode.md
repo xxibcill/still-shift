@@ -232,3 +232,9 @@ Revisited roots can restore their current authenticated pixels from the owned
 exchange. Public `verifyMechanismPackageArtifacts` forwards its declared
 `signal`/`route` only; direct `verifyNativeMechanismPackageArtifacts` additionally
 admits an explicit `cacheDirectory`.
+
+For visible targets, prefer a saved semantic anchor on the intended surface:
+a nonconvex part’s evaluated bounds center may project into its hollow space.
+Inspect encoded delivery-size frames after binding the target. Visibility
+requests should name actual renderable surface objects; hiding a saved Empty
+container does not hide its children or supply a renderable visibility record.

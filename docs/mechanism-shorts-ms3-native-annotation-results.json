@@ -301,7 +301,7 @@
   "pilotDenominator": 10,
   "routineTokenMeasurements": null,
   "wholeReview": "UNREVIEWED",
-  "status": "annotation-bindings-and-bounded-cache-software-verified-in-stages-whole-HD-retry-in-flight",
+  "status": "two-whole-HD-drafts-exported-and-verified-binder-phone-target-repair-in-flight",
   "implementation": {
     "highlights": "Bounded temporary opaque material palette; object-linked slots and shared source data restored, never saving native masters. Actual assigned colors and queried anchors enter native keys.",
     "callouts": "Bounded editable text, panels and same-state held-key leaders. Native origin or evaluated bounds center records are authenticated; declared rendered part and in-frame target are required at each active frame. Source control ranges bind label phase.",
@@ -614,7 +614,7 @@
     "The unchanged-source full integration rerun retains three missing-preview failures from an old shared audio cache missing its manifest. Exact guard diagnosis and fresh owned-cache success retained;23 owning cases then pass, with shared bytes and quotas intact."
   ],
   "remaining": [
-    "Encoded whole HD products/report/resume for this two-episode subset.",
+    "Complete binder target-repair whole export/report/resume and current encoded conformity.",
     "Native scouts and causal visibility/encoded review for the other eight annotation drafts, then whole HD products for all ten.",
     "Resolved hold purposes, native phone/contact/crop/audio review evidence and fresh-session handoff.",
     "Broader physical label-state, event-order, contact and fault/coverage checks.",
@@ -630,14 +630,13 @@
     "postCommitStatus": "passed"
   },
   "wholeHDCurrentRetry": {
-    "sourceCommit": "4679b8a835e51a1f2d5e9c8ac49ec099b894a1a8",
-    "runtimeCodeSha256": "sha256:db4e4d9a560eb4fe1f0fdd4e98bf76e467ce70226adebcda5af86c0b55a826d8",
-    "manifest": {
-      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-annotations4.json",
-      "bytes": 7028,
-      "sha256": "sha256:b19801bcf4eac0d64cd9ced18c48a57ee8f66988fec14478f8b24c920fdc1e7c"
+    "status": "queue/run/report/resume actually exit0; two source-bound drafts, not pilot acceptance",
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-blender46-whole1-receipt.json",
+      "bytes": 1837,
+      "sha256": "sha256:ece4bbfc5ea62cf7d4100bd939f5cb4ea52aa1e61462fcfdfab0fc6807061bfb"
     },
-    "queueCreation": {
+    "result": {
       "steps": [
         {
           "step": "queue",
@@ -645,12 +644,509 @@
           "heldEngineInputsExitCode": 0,
           "privateInputsExact": true,
           "seconds": 2.6663753751199692
+        },
+        {
+          "step": "run",
+          "actualExitCode": 0,
+          "heldEngineInputsExitCode": 0,
+          "privateInputsExact": true,
+          "seconds": 1074.7811404170934
+        },
+        {
+          "step": "report",
+          "actualExitCode": 0,
+          "heldEngineInputsExitCode": 0,
+          "privateInputsExact": true,
+          "seconds": 77.33236733311787
+        },
+        {
+          "step": "resume",
+          "actualExitCode": 0,
+          "heldEngineInputsExitCode": 0,
+          "privateInputsExact": true,
+          "seconds": 76.86963987513445
         }
       ],
       "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-annotations4.json",
-      "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output"
+      "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output",
+      "state": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/state-annotations4.json",
+      "report": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/report-annotations4.json",
+      "rows": [
+        {
+          "id": "EU-006",
+          "status": "passed",
+          "product": {
+            "path": "products/EU-006-8560aaca28c4eaa9-3.json",
+            "bytes": 11329,
+            "sha256": "sha256:ca0d74b7614172647fea4e687fcc35c1bad993fb0f920606280a491eb34ae251"
+          }
+        },
+        {
+          "id": "EU-010",
+          "status": "passed",
+          "product": {
+            "path": "products/EU-010-df0414ee2e44dd3e-3.json",
+            "bytes": 11296,
+            "sha256": "sha256:e34f74a4634086833fcc48a8473f388df98c43c340a8b16d8c4f0e443edba3e8"
+          }
+        }
+      ],
+      "acceptedPilot": 0,
+      "wholeReview": "UNREVIEWED",
+      "actualExitCode": 0
     },
-    "status": "run/report/resume in flight; terminal completion and encoded audit required",
-    "acceptedPilot": 0
+    "nativeRenders": 0,
+    "reusedNativeFrames": 1261,
+    "freshReportValidation": ["verified", "verified"],
+    "resumeAddsAttempts": false
+  },
+  "currentFullAnnotationAudit": {
+    "pin": {
+      "path": "/private/tmp/still-shift-ms3-blender46-annotation-audit2.json",
+      "bytes": 846,
+      "sha256": "sha256:ea42eeecffcec4d487a19a80904e5d10931dd0128b5772135364ad6446939a5b"
+    },
+    "result": {
+      "status": "passed",
+      "mappedPinChecks": 5044,
+      "activeLabelSamples": 829,
+      "rows": [
+        {
+          "id": "EU-006",
+          "frames": 634,
+          "labels": 5,
+          "originalAssetAndAudioExact": true,
+          "zeroFreshNativeRenders": true,
+          "completeProjectionPhaseAndLeaderChecks": true,
+          "wholePhysicalGlyphContinuousListeningReview": "UNREVIEWED"
+        },
+        {
+          "id": "EU-010",
+          "frames": 627,
+          "labels": 4,
+          "originalAssetAndAudioExact": true,
+          "zeroFreshNativeRenders": true,
+          "completeProjectionPhaseAndLeaderChecks": true,
+          "wholePhysicalGlyphContinuousListeningReview": "UNREVIEWED"
+        }
+      ],
+      "scope": "Current native capture pins/highlight assignment/projection records and saved text/leader phase bindings; no surface contact, all-frame encoded glyph, continuous or listening approval."
+    }
+  },
+  "encodedAudit": {
+    "pin": {
+      "path": "/private/tmp/still-shift-ms3-blender46-encoded-audit1.json",
+      "bytes": 7786,
+      "sha256": "sha256:7f8a5f7115e4072683e5787441c7a5aa7439bcf15b1563a41d91672be27f23a9"
+    },
+    "result": {
+      "status": "passed",
+      "scope": "Complete encoded stream facts, original whole narration at 1x versus an independent pinned AAC reference, selected encoded phone images. This is not listening, continuous viewing or all-frame encoded glyph approval.",
+      "rows": [
+        {
+          "id": "EU-006",
+          "movie": {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/items/EU-006/3/output.mp4",
+            "bytes": 1286869,
+            "sha256": "sha256:1ac7fa74dc4392856ead92e8d242e3536afbc638140b42e600b2314772f79723"
+          },
+          "frames": 634,
+          "wholeSourceSamples": 1013760,
+          "mixedVideoClockSamples": 1014400,
+          "frameQuantizationTailSamples": 640,
+          "independentWholeAACDecodedParity": true,
+          "decoded": [
+            {
+              "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations4/EU-006/encoded.f32",
+              "bytes": 8118272,
+              "sha256": "sha256:b947ee2daca22c3ca7e10fe36e1a83d8ec6b4502017ef0e90a3fc7a44812e69a"
+            },
+            {
+              "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations4/EU-006/reference.f32",
+              "bytes": 8118272,
+              "sha256": "sha256:b947ee2daca22c3ca7e10fe36e1a83d8ec6b4502017ef0e90a3fc7a44812e69a"
+            }
+          ],
+          "images": [
+            {
+              "sourceFrame": 136,
+              "seconds": 4.533333333333333,
+              "native": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations4/EU-006/native-00.png",
+                "bytes": 284403,
+                "sha256": "sha256:a63ccf56e11385aae0bbb4852f58c74cf7626eeaef9ffcb8ec0277c458a8bd71"
+              },
+              "phone": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations4/EU-006/phone-000136.png",
+                "bytes": 55612,
+                "sha256": "sha256:07c7fa19210523064440a2024bfd52c5dea795909c2da2749f40a8446d289314"
+              }
+            },
+            {
+              "sourceFrame": 182,
+              "seconds": 6.066666666666666,
+              "native": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations4/EU-006/native-01.png",
+                "bytes": 328433,
+                "sha256": "sha256:97320936ee6fc5399f8f8e0fb5ba4d5371f349e2c4c45aea5afd7648d55dd5c2"
+              },
+              "phone": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations4/EU-006/phone-000182.png",
+                "bytes": 64381,
+                "sha256": "sha256:519e600be63e907a469891e7ea8a372ce3d758224d5eb3cb97d50ce24ac72837"
+              }
+            },
+            {
+              "sourceFrame": 248,
+              "seconds": 8.266666666666667,
+              "native": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations4/EU-006/native-02.png",
+                "bytes": 249781,
+                "sha256": "sha256:dcad002934326be5de38ae8b306822813457491e89749c49d263a8ba5f22fe98"
+              },
+              "phone": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations4/EU-006/phone-000248.png",
+                "bytes": 54495,
+                "sha256": "sha256:6052cb3e2aea92c11d991d8fbb44f7d1d776837491bea9e96b8f187851d39982"
+              }
+            },
+            {
+              "sourceFrame": 483,
+              "seconds": 16.1,
+              "native": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations4/EU-006/native-03.png",
+                "bytes": 541046,
+                "sha256": "sha256:9381b2677af581792e5be3f04f2378f832c79978948e9a14d607c68e84867a86"
+              },
+              "phone": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations4/EU-006/phone-000483.png",
+                "bytes": 103412,
+                "sha256": "sha256:d85e67a104a8a86c36aef9f0a86fe7368a993138515b7b831c23367b5885c596"
+              }
+            }
+          ],
+          "wholeGlyphContinuousListeningReview": "UNREVIEWED"
+        },
+        {
+          "id": "EU-010",
+          "movie": {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/items/EU-010/3/output.mp4",
+            "bytes": 1553861,
+            "sha256": "sha256:d0bb64e9be3be90af9857fc5ace4d30c1c31b4f919551be60a165970bd0288bc"
+          },
+          "frames": 627,
+          "wholeSourceSamples": 1002240,
+          "mixedVideoClockSamples": 1003200,
+          "frameQuantizationTailSamples": 960,
+          "independentWholeAACDecodedParity": true,
+          "decoded": [
+            {
+              "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations4/EU-010/encoded.f32",
+              "bytes": 8028160,
+              "sha256": "sha256:17f3ae3a4b0289b4bc69c252ff4087a8a42be1bf0aab7b205b52cd212ebc8a89"
+            },
+            {
+              "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations4/EU-010/reference.f32",
+              "bytes": 8028160,
+              "sha256": "sha256:17f3ae3a4b0289b4bc69c252ff4087a8a42be1bf0aab7b205b52cd212ebc8a89"
+            }
+          ],
+          "images": [
+            {
+              "sourceFrame": 173,
+              "seconds": 5.766666666666667,
+              "native": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations4/EU-010/native-00.png",
+                "bytes": 1123894,
+                "sha256": "sha256:ab54cfcaa1d0162cedef840ee49984bfe4b5a3560444a81079c90ba828c4458f"
+              },
+              "phone": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations4/EU-010/phone-000173.png",
+                "bytes": 202035,
+                "sha256": "sha256:4bdb58220382a827035e895b0f7a73152c7d203e89c5ab44dd7258789cd67fba"
+              }
+            },
+            {
+              "sourceFrame": 279,
+              "seconds": 9.3,
+              "native": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations4/EU-010/native-01.png",
+                "bytes": 240422,
+                "sha256": "sha256:d6aa7f392b2b3fb9c9f78c4cc23bc44070cfc8473a7963a4823f8f2e99c50a76"
+              },
+              "phone": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations4/EU-010/phone-000279.png",
+                "bytes": 50183,
+                "sha256": "sha256:bad496e9fb8784c2ca46488938c02480619ed5268c1ba8bfabc0e8ab91a4c385"
+              }
+            },
+            {
+              "sourceFrame": 510,
+              "seconds": 17.0,
+              "native": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations4/EU-010/native-02.png",
+                "bytes": 751987,
+                "sha256": "sha256:3be565a2dabe24fb6cbb1a59e51b6ec0d80ab309ee6d1d9ae9eaaa7a36316ffb"
+              },
+              "phone": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations4/EU-010/phone-000510.png",
+                "bytes": 146663,
+                "sha256": "sha256:3919ac89e66bbce45a4972da600f944beaeca5f1b43ce9d344f2eb216f66484f"
+              }
+            }
+          ],
+          "wholeGlyphContinuousListeningReview": "UNREVIEWED"
+        }
+      ]
+    }
+  },
+  "sampledPhoneReview": {
+    "status": "inspected-with-repair-needed",
+    "frames": {
+      "EU-006": [136, 182, 248, 483],
+      "EU-010": [173, 279, 510]
+    },
+    "findings": [
+      "All seven sampled captions/labels are readable; no whole encoded-glyph or continuous/listening approval.",
+      "EU006 Spring body/Flexing steel leaders end in hollow space because evaluated bounds centers are targeting aids. Saved steel-fold anchor repair required.",
+      "Sampled journal/grip and can rivet/flexing-metal/hinge labels remain location-readable drafts; surface contact and whole factual/mechanical reviews remain open."
+    ]
+  },
+  "renderedQA": {
+    "EU-006": {
+      "errors": 19,
+      "warnings": 17,
+      "errorCode": "frozen-pixels",
+      "images": 57
+    },
+    "EU-010": {
+      "errors": 20,
+      "warnings": 16,
+      "errorCode": "frozen-pixels",
+      "images": 58
+    },
+    "scope": "Source/preview measured QA with encoded warning images; no blanket suppression or accepted pilot follows.",
+    "staticBinderCandidates": {
+      "pin": {
+        "path": "/private/tmp/still-shift-ms3-blender46-static-audit1.json",
+        "bytes": 4865,
+        "sha256": "sha256:5800caf14d2315e44cf03d5183c3964b6131109720efc202c36b422a985f0bdb"
+      },
+      "result": {
+        "id": "EU-006",
+        "status": "audited-candidate-holds-only",
+        "scope": "Exact native observation/PNG pin equality across located frozen-pixel windows. This does not resolve a finding, approve hold purpose, text, playback, contact or listening. Different query sets may also change an observation hash.",
+        "frozenPixelFindings": 19,
+        "exactCapturedStaticCandidates": 19,
+        "rows": [
+          {
+            "diagnosticFrames": [1, 56],
+            "examinedFrames": [0, 57],
+            "identicalCapturedObservationAndPNG": true,
+            "observationStates": 1,
+            "PNGStates": 1
+          },
+          {
+            "diagnosticFrames": [58, 74],
+            "examinedFrames": [57, 75],
+            "identicalCapturedObservationAndPNG": true,
+            "observationStates": 1,
+            "PNGStates": 1
+          },
+          {
+            "diagnosticFrames": [76, 102],
+            "examinedFrames": [75, 103],
+            "identicalCapturedObservationAndPNG": true,
+            "observationStates": 1,
+            "PNGStates": 1
+          },
+          {
+            "diagnosticFrames": [104, 110],
+            "examinedFrames": [103, 111],
+            "identicalCapturedObservationAndPNG": true,
+            "observationStates": 1,
+            "PNGStates": 1
+          },
+          {
+            "diagnosticFrames": [114, 145],
+            "examinedFrames": [113, 146],
+            "identicalCapturedObservationAndPNG": true,
+            "observationStates": 1,
+            "PNGStates": 1
+          },
+          {
+            "diagnosticFrames": [147, 159],
+            "examinedFrames": [146, 160],
+            "identicalCapturedObservationAndPNG": true,
+            "observationStates": 1,
+            "PNGStates": 1
+          },
+          {
+            "diagnosticFrames": [191, 204],
+            "examinedFrames": [190, 205],
+            "identicalCapturedObservationAndPNG": true,
+            "observationStates": 1,
+            "PNGStates": 1
+          },
+          {
+            "diagnosticFrames": [206, 215],
+            "examinedFrames": [205, 216],
+            "identicalCapturedObservationAndPNG": true,
+            "observationStates": 1,
+            "PNGStates": 1
+          },
+          {
+            "diagnosticFrames": [217, 278],
+            "examinedFrames": [216, 279],
+            "identicalCapturedObservationAndPNG": true,
+            "observationStates": 1,
+            "PNGStates": 1
+          },
+          {
+            "diagnosticFrames": [280, 292],
+            "examinedFrames": [279, 293],
+            "identicalCapturedObservationAndPNG": true,
+            "observationStates": 1,
+            "PNGStates": 1
+          },
+          {
+            "diagnosticFrames": [318, 353],
+            "examinedFrames": [317, 354],
+            "identicalCapturedObservationAndPNG": true,
+            "observationStates": 1,
+            "PNGStates": 1
+          },
+          {
+            "diagnosticFrames": [355, 389],
+            "examinedFrames": [354, 390],
+            "identicalCapturedObservationAndPNG": true,
+            "observationStates": 1,
+            "PNGStates": 1
+          },
+          {
+            "diagnosticFrames": [391, 405],
+            "examinedFrames": [390, 406],
+            "identicalCapturedObservationAndPNG": true,
+            "observationStates": 1,
+            "PNGStates": 1
+          },
+          {
+            "diagnosticFrames": [458, 521],
+            "examinedFrames": [457, 522],
+            "identicalCapturedObservationAndPNG": true,
+            "observationStates": 1,
+            "PNGStates": 1
+          },
+          {
+            "diagnosticFrames": [523, 536],
+            "examinedFrames": [522, 537],
+            "identicalCapturedObservationAndPNG": true,
+            "observationStates": 1,
+            "PNGStates": 1
+          },
+          {
+            "diagnosticFrames": [542, 572],
+            "examinedFrames": [541, 573],
+            "identicalCapturedObservationAndPNG": true,
+            "observationStates": 1,
+            "PNGStates": 1
+          },
+          {
+            "diagnosticFrames": [574, 586],
+            "examinedFrames": [573, 587],
+            "identicalCapturedObservationAndPNG": true,
+            "observationStates": 1,
+            "PNGStates": 1
+          },
+          {
+            "diagnosticFrames": [588, 624],
+            "examinedFrames": [587, 625],
+            "identicalCapturedObservationAndPNG": true,
+            "observationStates": 1,
+            "PNGStates": 1
+          },
+          {
+            "diagnosticFrames": [626, 633],
+            "examinedFrames": [625, 634],
+            "identicalCapturedObservationAndPNG": true,
+            "observationStates": 1,
+            "PNGStates": 1
+          }
+        ]
+      }
+    }
+  },
+  "binderTargetRepair": {
+    "status": "revised whole export in flight",
+    "source": "inputs-annotations6/EU-006/plan.json",
+    "change": "Only two target names change to saved anchor.back; unused paper is hidden by its six actual surface names in three close-ups. Whole original narration, speech and control clocks remain unchanged.",
+    "rejectedTrial": "Empty paper container is not a recorded renderable surface and does not hide its children; native visibility replay rejected that request. Original failed log retained. This was an authoring member-selection error, not a visibility-driver defect.",
+    "rejectedLog": {
+      "path": "/private/tmp/still-shift-ms3-blender46-scout-binder4.log",
+      "bytes": 676,
+      "sha256": "sha256:6a8ae3d25bfc231d0874c278a429bbf140e143761f5c1cc59689023f133a57bf"
+    },
+    "scout": {
+      "path": "/private/tmp/still-shift-ms3-blender46-scout-binder6.json",
+      "bytes": 6459,
+      "sha256": "sha256:a14ec150dc2cfcb32f7f4ed6c842b1b931957a07464e72d365a224116573e0ee"
+    },
+    "scoutFrames": 9,
+    "freshNativeScoutRenders": 5,
+    "targetAppearance": {
+      "pin": {
+        "path": "/private/tmp/still-shift-ms3-blender46-binder6-surface-targets.json",
+        "bytes": 1094,
+        "sha256": "sha256:91760e5dea284cf6a2bcc5a216dbb20b6bdfc601ee01d4f220d555aa01e63994"
+      },
+      "result": {
+        "status": "measured",
+        "rows": [
+          {
+            "scoutIndex": 0,
+            "inFrame": true,
+            "nearestCyanSurfacePixelDistance": 1.5994644165039062,
+            "paperSurfacesHidden": true
+          },
+          {
+            "scoutIndex": 1,
+            "inFrame": true,
+            "nearestCyanSurfacePixelDistance": 1.5994644165039062,
+            "paperSurfacesHidden": true
+          },
+          {
+            "scoutIndex": 2,
+            "inFrame": true,
+            "nearestCyanSurfacePixelDistance": 1.5994644165039062,
+            "paperSurfacesHidden": true
+          },
+          {
+            "scoutIndex": 3,
+            "inFrame": true,
+            "nearestCyanSurfacePixelDistance": 0.498199462890625,
+            "paperSurfacesHidden": true
+          },
+          {
+            "scoutIndex": 4,
+            "inFrame": true,
+            "nearestCyanSurfacePixelDistance": 0.498199462890625,
+            "paperSurfacesHidden": true
+          },
+          {
+            "scoutIndex": 5,
+            "inFrame": true,
+            "nearestCyanSurfacePixelDistance": 0.498199462890625,
+            "paperSurfacesHidden": true
+          }
+        ],
+        "scope": "Sampled proximity of queried anchor to actual cyan body pixels; not contact/continuous/full-encoded-glyph approval."
+      }
+    },
+    "currentQueue": "queue-annotations7.json",
+    "attempt": 4,
+    "newNativeRenders": 28,
+    "reusedNativeFrames": 606,
+    "canNeighbor": "Attempt3/product unchanged; not resubmitted for rendering.",
+    "requiredNext": "Terminal run/report/resume, current full label binding and encoded target/audio conformity."
   }
 }

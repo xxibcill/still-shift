@@ -211,3 +211,15 @@ Unchanged-source owning-file replay passes23 cases using fresh caches; no shared
 cache deletion or quota change occurs. All2,777 source inputs stay exact after
 commit. The current `db4e`/`1dd0` whole HD attempt3 is in flight; source/software
 checks do not establish terminal export or pilot/whole acceptance.
+
+The two whole HD attempt3 drafts now complete real queue/run/report/resume on
+`db4e`/`1dd0`, with zero new native renders and1,261 reused states. Current5,044
+file pins/829 active labels and independent complete original AAC reference
+parity verify; normal video-frame quantization adds only640/960 trailing mixed
+samples. Seven encoded phone stills are inspected. QA retains39 frozen-pixel
+errors and115 review images. Two binder bounds-center leaders land in hollow
+space; the saved fold-anchor/leaf-paper repair passes9 native scouts with sampled
+0.5–1.6px proximity to actual cyan body pixels. Its attempt4 export is in flight,
+with28 new/606 reused native frames and unchanged can neighbor. The rejected
+Empty-container hide request is retained as an authoring error. These facts do
+not admit whole reviews, the other eight HD products or accepted pilot coverage.

@@ -102,10 +102,18 @@ still hold before relying on them.
   8,000 frames pass in recorded stages. Three old shared-cache fixture failures
   retain their missing-manifest guard;23 owning cases pass on fresh owned caches.
   All2,777 source inputs/122,189,105 bytes stay exact after commit. Current runtime
-  `db4e`/native profile `1dd0`; whole HD attempt3 is running with retained native
-  states. All-ten drafts compile6,181 frames/42 labels with original masters,
+  `db4e`/native profile `1dd0`; two whole HD attempt3 drafts now complete
+  queue/run/report/resume with zero new native renders/1,261 reused states.
+  Full current5,044 pins/829 label samples and independent whole AAC reference
+  parity pass; only640/960 samples of video-frame quantization tail are added by
+  the ordinary mixed output clock. Seven phone frames are inspected. All-ten
+  drafts compile6,181 frames/42 labels with original masters,
   narration/speech/motion clocks exact; eight new native scouts remain. Full HD
-  terminal exports/reports/encoded inspection remain in flight; accepted stays0/10.
+  current reviews remain open; QA retains39 frozen-pixel errors/115 images.
+  Two binder leaders target hollow bounds-center space; saved fold-anchor repair
+  and leaf-paper cleanup pass9 native scouts, target-to-cyan-pixel distance0.5–1.6px.
+  Attempt4 is exporting with28 new/606 reused native frames and unchanged can
+  neighbor. An Empty-container hide trial is rejected and retained. Accepted0/10.
   [Annotation evidence](./mechanism-shorts-ms3-native-annotation-results.json).
   **Next:** remaining causal annotations/resolved holds and review evidence/handoff; HD products for all ten
   with object-specific cues and factual bindings; broader faults/events/contact/coverage;
@@ -311,9 +319,14 @@ still hold before relying on them.
 - **Retained:** Real cache-capacity red/green, unused test argument, unsupported
   wrapper forwarding and three missing-manifest shared-cache fixture failures.
   The23 owning cases pass on fresh caches; shared cache and quotas remain intact.
-- **Actual / next:** Whole HD EU-006/EU-010 attempt3 runs on `db4e`/`1dd0`;
-  complete export/report/resume and encoded label/audio checks remain. All-ten
-  drafts compile6,181 frames/42 labels; eight new native scouts remain. Pilot0/10.
+- **Actual:** Two HD attempt3 drafts complete queue/run/report/resume on `db4e`/
+  `1dd0`, zero new native renders/1,261 reused states;5,044 pins/829 labels verify.
+  Independent full original AAC reference parity passes. Seven phone stills inspected.
+- **Open / repair:** QA retains39 frozen-pixel errors/115 images. Two binder bounds-
+  center targets land in hollow space; saved fold target/leaf-paper cleanup passes9
+  native scouts and0.5–1.6px cyan-surface proximity. Attempt4 runs with28 new/606 reused
+  native states; can neighbor stays unchanged. Empty-parent hide failure retained.
+  All-ten drafts compile6,181 frames/42 labels; eight new scouts remain. Pilot0/10.
 - **Records:** [Annotation and cache evidence](./mechanism-shorts-ms3-native-annotation-results.json),
   [acceptance](./mechanism-shorts-ms3-acceptance.md).
 
