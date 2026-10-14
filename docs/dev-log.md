@@ -72,11 +72,12 @@ still hold before relying on them.
   cohort61 products plus two corrections (0 preview errors/343 warnings/542 images).
   All-ten portable68 run/report/resume now uses the relocated canonical bundle,
   preserving106 declared files and137 prior artifact/journal files. Run is live;
-  first six seal. Independent3,671 RGBA frames/whole PCM match selected deliveries,
-  60 product pins and14,684 native pins pass with0 new native captures. Terminal
-  report/resume and remaining four audits pending; historical identities retained.
+  first seven seal. Independent4,379 RGBA frames/whole PCM match selected deliveries,
+  70 product pins and17,516 native pins pass with0 new native captures. Terminal
+  report/resume and remaining three audits pending; historical identities retained.
   Isolated3a7dcd69 repairs native compact handoff (fast4,596 pass); first-pass
-  provenance/recovery has73 scoped tests/types pass with current fast gate running.
+  provenance/recovery has73 scoped tests, fast4,611 and14 fixture-runtime checks
+  pass in stages; final refresh4,611/458 passes and018c2540 is committed/pushed.
   Original live runtime remains frozen pending lifecycle completion.
   Frozen source4b58f49b/runtimefc4cc2ae/profile1dd0 unchanged; earlier fast4,594/
   runtime271/integration324/depth14/browser smoke pass. Whole factual/mechanical/
@@ -276,14 +277,14 @@ still hold before relying on them.
 ### 2026-10-15 — Relocated first-ten lifecycle and isolated review repairs
 
 - **Agent / branch:** Codex on `codex/mechanism-ms3`, from `d45f3f4f`.
-- **Live:** original portable68 run/report/resume75382 confirmed live; first six
-  seal, buckle running. All106 declared files and137 prior files guarded.
-- **Results:** independent3,671 full RGBA/whole PCM frames,60 product pins and
-  14,684 native pins pass. Preview0 errors/remaining warnings retained. No new
+- **Live:** original portable68 run/report/resume75382 confirmed live; first seven
+  seal, door latch running. All106 declared files and137 prior files guarded.
+- **Results:** independent4,379 full RGBA/whole PCM frames,70 product pins and
+  17,516 native pins pass. Preview0 errors/remaining warnings retained. No new
   native captures; complete report/resume/remaining outputs unrun at capture.
 - **Isolation:** native handoff fix3a7dcd69 fast4,596 pass. First-pass provenance
-  and two reproduced recovery gaps repaired;73 scoped tests/types pass, final fast
-  running. Source integration waits for frozen lifecycle terminal.
+  and two reproduced recovery gaps repaired;73 scoped tests/types pass, fast4,611/14 fixture-runtime checks pass in stages; final refresh4,611/458
+  passes and018c2540 is committed/pushed. Source integration waits for frozen lifecycle terminal.
 - **Open:** current full gates/installed handoff/whole reviews; accepted0/10,
   tokens null. No new spend, publish, merge or Actions.
 - **Records:** [Portable lifecycle and partial audits](./mechanism-shorts-ms3-first-ten-portable-lifecycle-results.json).

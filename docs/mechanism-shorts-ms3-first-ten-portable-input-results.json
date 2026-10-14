@@ -676,7 +676,7 @@
   "currentLifecycle": {
     "record": "mechanism-shorts-ms3-first-ten-portable-lifecycle-results.json",
     "status": "running-frozen-all-ten-portable-lifecycle",
-    "completedAtCapture": 6,
+    "completedAtCapture": 7,
     "wholeReviews": "UNREVIEWED",
     "scope": "Fresh relocated render lifecycle in progress; original input-admission results retain their exact prior scope."
   }

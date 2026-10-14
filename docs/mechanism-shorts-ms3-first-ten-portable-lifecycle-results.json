@@ -51,13 +51,13 @@
     "actualHoldCheckExitCode": 0
   },
   "independentPartial": {
-    "episodes": 6,
-    "frames": 3671,
-    "productArtifactPins": 60,
-    "nativePins": 14684,
+    "episodes": 7,
+    "frames": 4379,
+    "productArtifactPins": 70,
+    "nativePins": 17516,
     "previewErrors": 0,
-    "previewWarnings": 200,
-    "encodedEvidenceImages": 315,
+    "previewWarnings": 236,
+    "encodedEvidenceImages": 373,
     "products": [
       {
         "id": "EU-001",
@@ -194,6 +194,29 @@
         "previewWarnings": 37,
         "declaredPhysicalHolds": 19,
         "encodedEvidenceImages": 57,
+        "wholeReviews": "UNREVIEWED",
+        "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+      },
+      {
+        "id": "EU-007",
+        "status": "passed-current-producer-bound-product-closure",
+        "producerBoundArtifactsVerified": 10,
+        "product": {
+          "path": "products/EU-007-fc2f9e002f278cf5-1.json",
+          "bytes": 9934,
+          "sha256": "sha256:cb6ba9bd5c3945fd3d07d6bfaecad6ca38d1eb67edd187a4cc802e1be4a6e331"
+        },
+        "binding": {
+          "inputSha256": "sha256:fc2f9e002f278cf5e7dd8ecbc051a4778d4303108833e7c402bb1ed0c099940b",
+          "outputSha256": "sha256:01a008b76eb7f357d3087d8478b43a2991908f9c80467abcf267fdd4afa61051",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 708,
+        "previewErrors": 0,
+        "previewWarnings": 36,
+        "declaredPhysicalHolds": 21,
+        "encodedEvidenceImages": 58,
         "wholeReviews": "UNREVIEWED",
         "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
       }
@@ -486,6 +509,54 @@
         ],
         "wholeReviews": "UNREVIEWED",
         "scope": "All RGBA frames and final PCM decoded independently. Prior original-whole AAC parity is reused only after rehashing its exact movie and receipt. No encoded glyph, normal-speed viewing, listening or pilot acceptance."
+      },
+      {
+        "id": "EU-007",
+        "status": "passed-complete-portable-decode-and-selected-reference-parity",
+        "product": {
+          "path": "products/EU-007-fc2f9e002f278cf5-1.json",
+          "bytes": 9934,
+          "sha256": "sha256:cb6ba9bd5c3945fd3d07d6bfaecad6ca38d1eb67edd187a4cc802e1be4a6e331"
+        },
+        "binding": {
+          "inputSha256": "sha256:fc2f9e002f278cf5e7dd8ecbc051a4778d4303108833e7c402bb1ed0c099940b",
+          "outputSha256": "sha256:01a008b76eb7f357d3087d8478b43a2991908f9c80467abcf267fdd4afa61051",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 708,
+        "rgbaFrameHashesExactAgainstSelectedDelivery": true,
+        "completePcmExactAgainstSelectedDelivery": true,
+        "originalWholeAACReferenceParityByAuthenticatedPriorReceipt": true,
+        "priorReceipt": {
+          "path": "/private/tmp/still-shift-ms3-corrections66-EU-007-encoded1.json",
+          "bytes": 6101,
+          "sha256": "sha256:c19568a2aafdeb6e94af6e0836029937f2c32f13705caaf76559d8b91db6845d"
+        },
+        "priorMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-corrections66/items/EU-007/1/output.mp4",
+          "bytes": 2010733,
+          "sha256": "sha256:01a008b76eb7f357d3087d8478b43a2991908f9c80467abcf267fdd4afa61051"
+        },
+        "portableMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/items/EU-007/1/output.mp4",
+          "bytes": 2010733,
+          "sha256": "sha256:01a008b76eb7f357d3087d8478b43a2991908f9c80467abcf267fdd4afa61051"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-007/prior-decoded.f32",
+            "bytes": 9068544,
+            "sha256": "sha256:edc077081c85137fbbed5dbdf27692284126fdf96a4c86362def3ba59f127a0b"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-007/portable-decoded.f32",
+            "bytes": 9068544,
+            "sha256": "sha256:edc077081c85137fbbed5dbdf27692284126fdf96a4c86362def3ba59f127a0b"
+          }
+        ],
+        "wholeReviews": "UNREVIEWED",
+        "scope": "All RGBA frames and final PCM decoded independently. Prior original-whole AAC parity is reused only after rehashing its exact movie and receipt. No encoded glyph, normal-speed viewing, listening or pilot acceptance."
       }
     ],
     "nativeAudits": [
@@ -580,6 +651,28 @@
         ],
         "skipped": [],
         "scope": "Current saved native pins, complete physical proof metadata, actual controller phases, absolute sequence frame clocks and source callout copy/projection. Not surface contact, encoded glyph, full playback/listening or pilot acceptance."
+      },
+      {
+        "status": "passed-available-native-artifacts",
+        "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+        "queueId": "actual-first-ten-portable67",
+        "rows": [
+          {
+            "id": "EU-007",
+            "statusAtAudit": "passed",
+            "frames": 708,
+            "proofHolds": 7,
+            "pinChecks": 2832,
+            "uniquePinsVerified": 927,
+            "activeLabelFrames": 485,
+            "freshNativeRenders": 0,
+            "reusedNativeFrames": 708,
+            "completePhysicalProofAndGlobalFrameClockPassed": true
+          }
+        ],
+        "skipped": [],
+        "scope": "Current saved native pins, complete physical proof metadata, actual controller phases, absolute sequence frame clocks and source callout copy/projection. Not surface contact, encoded glyph, full playback/listening or pilot acceptance."
       }
     ]
   },
@@ -592,10 +685,11 @@
       "files": 458,
       "actualExitCode": 0
     },
-    "firstPass": "bounded provenance and independent recovery events implemented;73 scoped tests/types pass; final fast gate running. Historical all-ten missing provenance stays unverified."
+    "firstPass": "Committed and pushed on isolated branch. Final independent review finds no functional defect;73 scoped tests/types, final fast4,611/458 and14 fixture-runtime checks pass in stages. Historical missing provenance stays unverified. Integration and actual current native/installed/final gates remain open.",
+    "firstPassCommit": "018c2540"
   },
   "open": [
-    "Remaining four portable outputs plus terminal report and no-extra-attempt resume",
+    "Remaining three portable outputs plus terminal report and no-extra-attempt resume",
     "Independent remaining frame/native/audio audits",
     "Integrate isolated repairs after the frozen lifecycle terminates",
     "Actual current native/relocated/installed handoff and full software/benchmark/archive/installed gates",
@@ -607,5 +701,27 @@
   "elevenLabsSpend": 0,
   "publication": false,
   "merge": false,
-  "githubActions": false
+  "githubActions": false,
+  "progressSnapshots": [
+    {
+      "capturedAt": "2026-10-14T19:09:38.665114+00:00",
+      "state": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/queue-state.json",
+        "bytes": 8894,
+        "sha256": "sha256:18939dc8a097dd32dc9f7da2a715cfe715b9d856d7b7e58dd60179f71bd171cc"
+      },
+      "statuses": {
+        "EU-001": "passed",
+        "EU-002": "passed",
+        "EU-003": "passed",
+        "EU-004": "passed",
+        "EU-005": "passed",
+        "EU-006": "passed",
+        "EU-007": "passed",
+        "EU-008": "running",
+        "EU-009": "pending",
+        "EU-010": "pending"
+      }
+    }
+  ]
 }
