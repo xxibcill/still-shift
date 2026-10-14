@@ -178,5 +178,92 @@
     "evidence": "docs/mechanism-shorts-ms3-package-portability-results.json",
     "freshInstalledLifecycle86": "prepared-not-run",
     "fullCurrentSoftwareAndPackageGate": "open"
+  },
+  "currentCpu87Qualification": {
+    "sourceCommit": "26c4a074ef5d635cceb439de8394a71a70b8524d",
+    "cpuPython": {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-cpu87-python1.json",
+        "bytes": 2155,
+        "sha256": "sha256:a4035d389de7805c828be5a9cf105f9a48c43ec32ca19aac34fea859539c797a"
+      },
+      "stages": [
+        {
+          "stage": "setup",
+          "actualExitCode": 0,
+          "seconds": 0.7967621251009405,
+          "log": {
+            "path": "/private/tmp/still-shift-ms3-cpu87-setup1.log",
+            "bytes": 1283,
+            "sha256": "sha256:e5ef253a7db00a6df0f8ff6f622938abe8a8c712bf1ab33569cb29968d6e23ad"
+          }
+        },
+        {
+          "stage": "depth",
+          "actualExitCode": 0,
+          "seconds": 17.37950291694142,
+          "log": {
+            "path": "/private/tmp/still-shift-ms3-cpu87-depth1.log",
+            "bytes": 297,
+            "sha256": "sha256:3ff8ce90fd1224ea461af523eefdd6d652d423e38e0f61abefa01e397c61acc9"
+          }
+        },
+        {
+          "stage": "python-format",
+          "actualExitCode": 0,
+          "seconds": 0.8431730410084128,
+          "log": {
+            "path": "/private/tmp/still-shift-ms3-cpu87-python-format1.log",
+            "bytes": 27,
+            "sha256": "sha256:5b9f70ad96522f492ef846065642c069b5627379aff2ab3f74acd2e3b9ecfe34"
+          }
+        },
+        {
+          "stage": "python-lint",
+          "actualExitCode": 0,
+          "seconds": 0.019237583968788385,
+          "log": {
+            "path": "/private/tmp/still-shift-ms3-cpu87-python-lint1.log",
+            "bytes": 19,
+            "sha256": "sha256:82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+          }
+        },
+        {
+          "stage": "soundtrack-lint",
+          "actualExitCode": 0,
+          "seconds": 0.17451533395797014,
+          "log": {
+            "path": "/private/tmp/still-shift-ms3-cpu87-soundtrack-lint1.log",
+            "bytes": 351,
+            "sha256": "sha256:1d175ee3e66cae58da5765042a812eb3b50258a298c22551e2bf4430c8d58b43"
+          }
+        }
+      ],
+      "depthTestsPassed": 14,
+      "editableSource": "/Users/jjae/.codex/worktrees/ms3-review-fixes/still-shift/services/depth-worker/src",
+      "otherVenvFilesProtected": 12,
+      "otherVenvFilesExact": true
+    },
+    "sourceIntegrationPreflight": {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-integration87-preflight1.json",
+        "bytes": 5529,
+        "sha256": "sha256:25b6544e0337e348bbba88c6a2f1ef593068509310404535b2df8a255fd95758"
+      },
+      "reviewedSourceCommits": ["20e1afe2", "8e11e6b8", "10cb84a4", "e231440e"],
+      "changedPathCount": 19,
+      "retainedTargetFiles": 14,
+      "privateCopyMatchesReviewedTarget": true,
+      "mainSourceAndIndexUntouched": true
+    },
+    "deferred": {
+      "fullToolchainCheck": "Actually launches Chromium; not run while primary58827 is live",
+      "fullRuntimeTier": "Includes actual browser captures/exports; not run while primary58827 is live",
+      "liveSourceIntegration": "Wait for primary58827 actual terminal, then preserve newer docs while integrating exactly the four source repair commits",
+      "otherFullSoftwarePackageRenderGates": "open"
+    },
+    "qualification": "CPU-only setup/depth14/Python formatting+lint/soundtrack lint and private source-only integration rehearsal pass. No browser/native/render group, live integration, spending, publishing or whole pilot acceptance."
   }
 }

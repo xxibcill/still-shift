@@ -43,6 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
+- **MS3 CPU gates and integration rehearsal (2026-10-15):** isolated26c4/codee231
+  now owns a locked offline Python3.12.11 environment pointing only to its own
+  service source. Depth14, Python format/lint and soundtrack lint pass;12 existing
+  configuration/editable-path files in the primary/main/MS1N venvs remain exact.
+  A source-only private-copy apply rehearses19 paths/14 target files, matching
+  exactly20e1/8e11/10cb/e231 with no live source/index changes. Full runtime and
+  toolchain checks actually launch browsers, so they remain queued behind58827.
+  Integration/full GPU/software/package and whole acceptance stay open.
+  [Current CPU and integration proof](./mechanism-shorts-ms3-whole-review84-results.json).
+
 - **MS3 latest installed package85 checked (2026-10-15):** codee231/source452b
   builds and installs privately;2,573 archive members,13 source controls,4 actual
   retry/cache/real-lock controls, strict public types and discovery pass in stages.
@@ -61,10 +71,10 @@ still hold before relying on them.
   picture/PCM/original narration parity holds. Preview0 errors/343 warnings.
   Report also exits0 in472.55s; independent product/journal/count/percentile
   reconciliation passes. First-pass1/10 (10%) fails90% target, savings null.
-  Resume exits0 in466.21s with unchanged episode rows. First5 compact handoffs
+  Resume exits0 in466.21s with unchanged episode rows. First6 compact handoffs
   pass independent packet/resume/source/8-asset closure audits. CPU-only follower
   26381 audits new sealed packets automatically; primary58827 remains live.
-  Unified58827 continues remaining5 handoffs; do not start another renderer
+  Unified58827 continues remaining4 handoffs; do not start another renderer
   or integrate source until its actual terminal. Original attempts remain exact;
   all2,792 source files,107 inputs and1,221 prior/E1 files are guarded.
   Durable ignored `benchmarks/results/ms3-actual-first-ten-review80/index.md` links
@@ -278,6 +288,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — MS3 CPU-only gate and exact integration preflight
+
+- **Agent / branch:** Codex; isolated `26c4a074` / source codee231.
+- **Done:** locked offline isolated Python environment, exact own editable path;
+  14 CPU worker tests, Python format/lint and soundtrack lint pass. All12 other
+  venv configuration/editable files remain byte-exact.
+- **Preflight:** only the four reviewed repair commits account for19 source/test
+  paths. Applying their aggregate to standalone copies matches all14 resulting
+  target files/deletions exactly; main source/index remain unchanged.
+- **Progress:** sixth current compact handoff (EU006) also passes independent
+  closure checks; four remain in live producer58827, CPU follower26381.
+- **Open / next:** primary58827 is live. Full runtime/toolchain include actual
+  browsers; integrate source and run full gates only after actual terminal.
+  No renderer, new source change, asset work or spending in this slice.
+- **Records:** [CPU/integration qualification](./mechanism-shorts-ms3-whole-review84-results.json).
 
 ### 2026-10-15 — Latest installed MS3 repairs and process isolation
 
