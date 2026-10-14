@@ -1,7 +1,7 @@
 {
   "schemaVersion": "ms3-first-ten-purpose-camera-results-1",
   "date": "2026-10-14",
-  "status": "camera-and-eight-episode-preflight-passed-current-cohort-running",
+  "status": "camera-preflight-passed-current-cohort-canceled-after-qa-quota-failure",
   "source": {
     "runtimeSha256": "sha256:c7cde29700a9db643776cbb9faa7a96cc4d931f8281abcfaf96dd85a9d75f45b",
     "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
@@ -378,13 +378,13 @@
     "stateAtRecord": [
       {
         "id": "EU-001",
-        "status": "running",
+        "status": "failed",
         "attempts": 1
       },
       {
         "id": "EU-002",
-        "status": "pending",
-        "attempts": 0
+        "status": "cancelled",
+        "attempts": 1
       },
       {
         "id": "EU-003",
@@ -427,7 +427,36 @@
         "attempts": 0
       }
     ],
-    "runReportResume": "Run live; report/resume not started. Re-poll the confirmed live handle; do not restart on observation timeout."
+    "runReportResume": "Run terminal130 after graceful SIGINT. EU001 failed rendered QA shared metadata quota; EU002 canceled during export; eight pending. Report/resume not run. Do not resume the old-code manifest after a source fix.",
+    "terminalReceipt": {
+      "steps": [
+        {
+          "step": "run",
+          "actualExitCode": 130,
+          "sourceHoldExitCode": 0,
+          "privateInputsExact": true,
+          "originalJournalExact": true,
+          "seconds": 823.334234500071
+        }
+      ],
+      "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-holds59.json",
+      "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose59",
+      "scope": "Separate current-source candidate cohort; original completed H3 and masters remain preserved. Whole acceptance stays open.",
+      "cameraPhoneReview": {
+        "zipperFrames": 15,
+        "latchOriginalFrames": 5,
+        "latchCorrectedFrames": 5,
+        "actualSheetsViewed": 4,
+        "scope": "Static clean native images at phone size; fixed-view framing and visible spring seat. Full encoded labels, continuity/playback and listening UNREVIEWED."
+      }
+    },
+    "memoryFailure": {
+      "episode": "EU-001",
+      "stage": "native-blender-rendered-visual-qa",
+      "diagnostic": "CompositionNodeCapacityError: Composition managed metadata exceed their aggregate worker quota",
+      "exportAndNativeCaptureRetained": true,
+      "retryable": false
+    }
   },
   "originalCohort": {
     "id": "actual-first-ten-full-HD47",
@@ -444,5 +473,53 @@
     "Comparable paired effort and final full software/benchmark/archive/installed-package gates"
   ],
   "paidGeneration": "None",
-  "publication": "No merge or publication"
+  "publication": "No merge or publication",
+  "memoryRepair": {
+    "status": "source-fix-fast-and-actual-shared-pixel-replay-passed-runtime-live",
+    "cause": "Completed64MiB authentication reservation stayed owned during downstream QA",
+    "change": "Dispose a separate authentication owner before retaining bounded proof-frame data",
+    "quotaChanged": false,
+    "red": {
+      "actualExitCode": 1,
+      "passed": 8,
+      "failed": 1,
+      "log": "/private/tmp/still-shift-ms3-holds59-memory-red1.log"
+    },
+    "green": {
+      "actualExitCode": 0,
+      "passed": 9,
+      "log": "/private/tmp/still-shift-ms3-holds59-memory-green1.log"
+    },
+    "sourceInventory": "/private/tmp/still-shift-ms3-holds59-memory-inputs1.json",
+    "pixelReplayScope": "Existing610-frame composition under shared production-like reservations; no current-source export/seal.",
+    "runtimeSha256": "sha256:abe3c9335f6144e8d2ef466e41e4c83fbcac0ea8d2fcd4df5ea0b497aacf97a8",
+    "fast": {
+      "actualExitCode": 0,
+      "tests": 4593,
+      "files": 457,
+      "log": "/private/tmp/still-shift-ms3-holds59-memory-fast1.log"
+    },
+    "actualSharedPixelReplay": {
+      "status": "passed-scoped-shared-owner-pixel-replay",
+      "runtimeSha256": "sha256:abe3c9335f6144e8d2ef466e41e4c83fbcac0ea8d2fcd4df5ea0b497aacf97a8",
+      "frameCount": 610,
+      "callerAndVisualReservedBytes": 100663296,
+      "retainedProofBytes": 1249280,
+      "releasedAuthenticationBytes": 67108864,
+      "qualityStatus": "passed",
+      "errors": 0,
+      "warnings": 37,
+      "measured": {
+        "evaluatedState": true,
+        "pixels": true,
+        "pixelMethod": "grayscale-energy",
+        "textBounds": true
+      },
+      "classified": 21,
+      "newNativeCalls": 0,
+      "scope": "Actual existing610-frame composition under production-like shared reservations. Existing export remains at its old binding; no current-source export/product seal or whole acceptance."
+    },
+    "runtimeSession": 18455,
+    "runtimeRunner": "/private/tmp/still-shift-ms3-holds59-memory-gates1.py"
+  }
 }

@@ -238,6 +238,7 @@ describe("native frame dependency closure", () => {
         f.root,
         parent,
       );
+      expect(parent.availableBytes).toBe(before - f.compiled.frameCount * 2048);
       expect(data.holds).toHaveLength(1);
       expect(data.holds[0]).toMatchObject({
         id: "held",

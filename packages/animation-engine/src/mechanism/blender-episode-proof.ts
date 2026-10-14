@@ -53,14 +53,19 @@ export async function readBlenderEpisodeProofHolds(
     return { holds: [] as CompositionPhysicalProofHold[], release: () => {} };
   const owner = new CompositionNodeMemory(nodeMemory);
   try {
-    await checkBlenderEpisodePlates(
-      map,
-      compiled,
-      identity,
-      root,
-      owner,
-      signal,
-    );
+    const authentication = new CompositionNodeMemory(owner);
+    try {
+      await checkBlenderEpisodePlates(
+        map,
+        compiled,
+        identity,
+        root,
+        authentication,
+        signal,
+      );
+    } finally {
+      authentication.dispose();
+    }
     owner.reserve(compiled.frameCount * 2048);
     const hashes = new Map<string, string>();
     const holds: CompositionPhysicalProofHold[] = [];

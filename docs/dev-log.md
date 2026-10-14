@@ -73,8 +73,8 @@ still hold before relying on them.
   Original H3 journal remains exact; no purpose is saved to pilot inputs yet.
   [Native hold evidence](./mechanism-shorts-ms3-native-hold-results.json),
   [native workflow](./mechanism-blender-episode.md).
-  **Current-source cohort live:** `actual-first-ten-native-purpose59` in
-  `output-purpose59`; manifest `queue-holds59.json`, wrapper session90896.
+  **Current-source cohort now terminal/canceled:** `actual-first-ten-native-purpose59` in
+  `output-purpose59`; manifest `queue-holds59.json`, wrapper90896 terminal130.
   Sixty purposes and39 sampled state/staging programs preserve all original
   narration, speech and control tracks. Eight unchanged-camera episodes pass
   4,949 frame clocks/camera checks and11,625 actual state comparisons. Preflight
@@ -87,12 +87,21 @@ still hold before relying on them.
   corrected using actual projection shift sensitivity; corrected seat is visible.
   Viewport-only geometry comparison lags at frame99 and remains retained; actual
   render observations match the originals. Copy-on-write cache import5,841 files /
-  2,358,130,288 bytes is exact. Run is live; report/resume and fresh whole output
-  audits have not completed. Engine/private inputs held; original H3 journal exact.
+  2,358,130,288 bytes is exact. EU001 exports then fails rendered-QA shared
+  metadata quota; EU002 is gracefully canceled during export, eight stay pending.
+  Wrapper exits130 in823.33s with exact engine/private inputs and original H3
+  journal. Reports/resume are unrun; partial outputs and located failure retained.
+  **Memory repair working slice:** dispose completed64MiB proof authentication
+  capacity before downstream QA. New active-reservation regression fails old
+  source (8pass/1fail) and passes fixed9 cases; quota unchanged. New2,778 inputs /
+  122,203,842 bytes held; runtime `abe3c933`. Fast4,593/457 passes and actual
+  shared-budget610-frame pixel/glyph replay completes0 errors/37 warnings,
+  21 classified static holds, zero new native calls. Full runtime18455 is live.
   [Purpose/camera evidence and live handles](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json).
-  **Next:** re-poll90896 (do not restart on timeout); complete current-source
-  run/report/resume and independent native/encoded audio/picture audits. No engine
-  source edits while this frozen job is live. Broader physical label/event/
+  **Next:** re-poll runtime18455; finish verification of the committed
+  resource-lifetime repair. Create a new code-bound cohort after the fix;
+  do not resume old-code `queue-holds59.json`. Complete run/report/resume and
+  independent native/encoded audio/picture audits. Broader physical label/event/
   intersection/mount faults, native handoff, whole factual/mechanical/encoded
   glyph/continuous/listening and original E06/E10 reviews, comparable effort and
   final full software/benchmark/archive/installed gates remain. Accepted pilot is
@@ -286,6 +295,22 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-10-14 — Release completed native-proof authentication capacity
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `9f2eea35`.
+- **Failure:** New cohort EU001 exports, then exceeds shared QA metadata quota;
+  EU002 gracefully canceled. Terminal130/823.33s, original H3/held inputs exact.
+- **Fix:** Release the completed64MiB authentication owner before retaining proof
+  frames. No quota or quality-threshold change. Active-owner assertion fails on
+  old code (8pass/1fail) and passes fixed9 cases.
+- **Evidence:** Fast4,593/457 and actual610-frame cached pixel/glyph replay under
+  shared96MiB caller/visual reservations pass. Proofs retain1,249,280 bytes;
+  64MiB authentication released. Replay0 errors/37 warnings,21 declared holds,
+  zero new native calls; old export binding remains old and acceptance0/10.
+- **Next:** Full runtime18455 live on held2,778 inputs/122,203,842 bytes. Finish
+  it, then new code-bound cohort; do not resume canceled old-code manifest.
+- **Records:** [Retained run, fix and scoped replay](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json).
+
 ### 2026-10-14 — First-ten purposes, fixed cameras and current-source queue
 
 - **Agent / branch:** Codex on `codex/mechanism-ms3`, from `dc77a741`.
@@ -297,10 +322,12 @@ still hold before relying on them.
   views pass shared guards over653/579 frames. Actual25 native states match original
   rendered physical parts; four phone sheets viewed. Correct the spring-seat crop
   through actual Blender projection. Viewport lag/rejected candidates remain.
-- **Live / next:** Separate current-source ten-item queue is running in
-  `output-purpose59`, wrapper90896; exact5,841-file COW native-cache import,
-  2,778 engine inputs and51 private dependencies held, original H3 journal exact.
-  Await run/report/resume and full audits; no engine changes during the live batch.
+- **Run / repair:** Current-source cohort is terminal130: EU001 exports then fails
+  QA aggregate metadata quota; EU002 gracefully canceled, eight pending. Original
+  H3/source/private inputs stay exact. Fix64MiB authentication lifetime, with real
+  old-source red and fixed9-case green. Fast4,593/457 and actual shared610-frame
+  pixel/glyph replay pass (0 errors/37 warnings), no quota change. Runtime18455
+  live; finish it before a new code-bound cohort. Retain all failures.
 - **Records:** [Purpose/camera evidence](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json).
   Acceptance0/10, full reviews/effort/final gates open; no spending/publication.
 
