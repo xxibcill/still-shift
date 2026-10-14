@@ -46,7 +46,7 @@ still hold before relying on them.
 - **MS3 bounded recovery live (2026-10-15):** coverage repair integrated at
   `3df62a55`; producer runtime `1090f97c` and profile `1dd0` remain exact.
   Revision 1 selects only nine failed jobs. Unified session 58827 is live:
-  E1/E2 are sealed and independently verified; E3 is running. The remaining
+  E1/E2/E3 are sealed and independently verified; E4 is running. The remaining
   failed rows await their retry. All 2,792 source files remain exact; 107 current
   and 1,221 prior/E1 files are guarded. Original failed attempts are preserved.
   E2 verifies 13 root artifacts, 90 review images, 2,352 native pins and 588 frames;
@@ -56,6 +56,8 @@ still hold before relying on them.
   Collect terminal lifecycle before source changes. Receiving, installed-package,
   full software, actual mount/intersection fault output and whole reviews remain
   open. Accepted pilot: 0/10; paired authoring tokens are unavailable.
+  Actual geometry fault derivatives now prove 0.3 fixed-board drift and wall/hook
+  shared strict interior penetration; four phone captures await terminal session.
   [Current bounded recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json).
 
 - **MS3 native coverage repair qualified in isolation (2026-10-15):** source/schema/
@@ -350,6 +352,26 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Prove physical fault geometry and recovered clothespeg
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; producer remains frozen.
+- **Results:** EU003 verifies 588 frames, 13 root artifacts, 104 review images and
+  2,352 native pins; complete movie parity reuses authenticated prior RGBA/PCM.
+  Session 58827 remains live, E4 running; original attempts stay exact.
+- **Fault preparation:** disposable fixed-board derivative moves 0.3 scene units
+  and passes fresh reload. Wall/hook derivative shares a strict interior point
+  in both actual closed oriented evaluated surfaces. Original source is exact.
+  Registered semantics locate findings at frames 159/266. Four native phone
+  captures are admitted but correctly blocked until the main renderer terminates.
+- **Retained failure:** exact convex assumption fails on bevel geometry; Blender
+  exits 0 despite assertion. New strategy uses winding with cube/torus controls
+  and explicit Python failure exit, without tolerance changes. Persistent budget
+  and compact handoff are retained; no fresh renders or positive acceptance.
+- **Open / next:** actual captured fault images/review and selector replay, current
+  terminal/receiving/installed/full software and whole reviews. Pilot 0/10.
+- **Records:** [fault preparation](./mechanism-shorts-ms3-physical-fault-preparation-results.json),
+  [recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json).
 
 ### 2026-10-15 — Verify recovered cable tie and actual label-state admission
 

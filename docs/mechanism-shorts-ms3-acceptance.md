@@ -499,3 +499,13 @@ assumption fails and is repaired. This qualifies physical-state admission with
 zero fresh renders; rendered faulty-overlay, actual moving-mount/intersection
 output and whole review requirements remain open.
 [Scoped actual label-state evidence](./mechanism-shorts-ms3-physical-label-state-results.json).
+
+EU003 now independently verifies 588 frame bindings, 13 root artifacts, 104 review
+images and 2,352 native pins, with exact prior complete movie parity. The main
+recovery remains live. Disposable actual fixed-mount and penetration derivatives
+now produce measured geometry findings at final frames 159/266. Fresh mount
+reload and independently tested closed-surface winding checks pass; the failed
+convex assumption and misleading Blender exit 0 remain visible. Four admitted
+phone captures await the main lifecycle’s terminal receipt. Actual faulty images,
+image review and native captured-selector replay remain open.
+[Physical fault preparation](./mechanism-shorts-ms3-physical-fault-preparation-results.json).
