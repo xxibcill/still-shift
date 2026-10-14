@@ -13,7 +13,7 @@ import { tmpdir } from "node:os";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
-import { buildNpmPackage } from "./build-package.ts";
+import { buildNpmPackage, rewriteNpmReadmeLinks } from "./build-package.ts";
 import { packNpmPackage } from "./pack-package.ts";
 
 const execute = promisify(execFile);
@@ -108,6 +108,62 @@ try {
       "--fetch-retries=0",
       ...consumerDependencies,
     ]);
+  const installedSource = resolve(project, "node_modules/still-shift/source");
+  const documentationStart = performance.now();
+  assert.equal(
+    await readFile(
+      resolve(project, "node_modules/still-shift/README.md"),
+      "utf8",
+    ),
+    rewriteNpmReadmeLinks(
+      await readFile(resolve(root, "docs/npm-package-readme.md"), "utf8"),
+    ),
+    "Installed README must resolve feature links relative to the package root",
+  );
+  for (const path of [
+    "README.md",
+    "CONTRIBUTING.md",
+    "AGENTS.md",
+    "docs/user-guide.md",
+    "docs/composition-reference.md",
+    "docs/composition-media.md",
+    "docs/story-acting.md",
+    "docs/story-motion-implementation.md",
+    "docs/ecommerce-motion-implementation.md",
+    "docs/reusable-components.md",
+    "docs/typography-engine.md",
+    "docs/narration-timing.md",
+    "docs/soundtrack-project.md",
+    "docs/npm-release-results.json",
+    "docs/release-branch-setup-results.json",
+    "skills/ask-still-shift/SKILL.md",
+    "skills/ask-still-shift/agents/openai.yaml",
+    "skills/compose-with-still-shift/SKILL.md",
+    "examples/composition/12-puppet-acting/composition.json",
+    "examples/composition/12-puppet-acting/actor.svg",
+    "examples/composition/12-puppet-acting/house.svg",
+  ])
+    assert.deepEqual(
+      await readFile(resolve(installedSource, path)),
+      await readFile(resolve(root, path)),
+      `Installed documentation/source example differs: ${path}`,
+    );
+  await assert.rejects(
+    readFile(
+      resolve(
+        installedSource,
+        "docs/composition-ce15-radial-gpu-metadata-results.json",
+      ),
+    ),
+    { code: "ENOENT" },
+    "Historical measurement dumps must remain outside the installed package",
+  );
+  checks.push({
+    name: "installed feature guides, skills and self-contained puppet example",
+    seconds: (performance.now() - documentationStart) / 1000,
+    stdout:
+      "All required documentation and example files match the package source.\n",
+  });
   const bin = resolve(project, "node_modules/.bin/still-shift");
   const metadata = JSON.parse(
     await readFile(resolve(root, "npm-release.json"), "utf8"),

@@ -1,0 +1,67 @@
+{
+  "version": "0.1.1",
+  "dist": {
+    "shasum": "a2cb9b5dd7c6875ae429538ff9264ff92f17738d",
+    "tarball": "https://registry.npmjs.org/still-shift/-/still-shift-0.1.1.tgz",
+    "fileCount": 1712,
+    "integrity": "sha512-hNki299W292WbV/BtHGEQooy9iRIFyV4gHvnu/m1kGaXgDbjsC7ZrCdxHDzvZPlhnps8RvlvN8ZLrjXXxhFcoQ==",
+    "signatures": [
+      {
+        "sig": "MEQCIE9hrdv0GmnkTDHGPFoSFT3WuL3eKpgyUa+z5zrOCY12AiBOf80A4II6Sknmn4SoktIRModV+ASgrmJwVlJ7kTriTg==",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      },
+      {
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U",
+        "sig": "MEYCIQDUcYOGM8fu25g6LqE05UxlCQT202gmDBs/hykyM+XKJgIhAI5uISKQmGJ9RQGKKMz9rEAbUfk915AXMXhbJH1PXDzE"
+      }
+    ],
+    "unpackedSize": 23544758
+  },
+  "license": "GPL-3.0-only",
+  "engines": {
+    "node": ">=22.23.1 <23"
+  },
+  "bin": {
+    "still-shift": "bin/still-shift.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./packages/motion-builder/src/index.d.ts",
+      "import": "./packages/motion-builder/src/index.js"
+    },
+    "./engine": {
+      "types": "./packages/animation-engine/src/index.d.ts",
+      "import": "./packages/animation-engine/src/index.js"
+    },
+    "./motion": {
+      "types": "./packages/motion-builder/src/index.d.ts",
+      "import": "./packages/motion-builder/src/index.js"
+    },
+    "./schema": {
+      "types": "./packages/scene-contract/src/index.d.ts",
+      "import": "./packages/scene-contract/src/index.js"
+    },
+    "./runtime": {
+      "types": "./packages/execution-runtime/src/index.d.ts",
+      "import": "./packages/execution-runtime/src/index.js"
+    },
+    "./renderer": {
+      "types": "./packages/renderer-core/src/index.d.ts",
+      "import": "./packages/renderer-core/src/index.js"
+    },
+    "./motion/node": {
+      "types": "./packages/motion-builder/src/node.d.ts",
+      "import": "./packages/motion-builder/src/node.js"
+    }
+  },
+  "dist-tags": {
+    "latest": "0.1.1"
+  },
+  "time": {
+    "created": "2026-10-09T15:17:51.309Z",
+    "modified": "2026-10-10T10:13:28.079Z",
+    "0.0.0-stage": "2026-10-09T15:17:51.309Z",
+    "0.1.0": "2026-10-09T15:25:03.607Z",
+    "0.1.1": "2026-10-10T10:13:27.912Z"
+  }
+}
