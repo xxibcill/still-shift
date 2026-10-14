@@ -7,6 +7,7 @@ import {
 import {
   BlenderCaptureJobSchema,
   BLENDER_CAPTURE_LIMITS,
+  BlenderCameraFramingSchema,
 } from "./blender-capture-contract.ts";
 import { MechanismProductionFileSchema } from "./production-queue-contract.ts";
 
@@ -91,7 +92,9 @@ export const BlenderEpisodePlanSchema = z
             start: z.number().int().nonnegative(),
             endExclusive: z.number().int().positive(),
             camera: name,
+            framing: BlenderCameraFramingSchema.optional(),
             hiddenParts: z.array(name).max(128),
+            shownParts: z.array(name).max(128).default([]),
           })
           .strict(),
       )
@@ -150,7 +153,11 @@ export const BlenderEpisodePlanSchema = z
         (s, i) =>
           s.start >= s.endExclusive ||
           (i > 0 && s.start !== plan.shots[i - 1]!.endExclusive) ||
-          new Set(s.hiddenParts).size !== s.hiddenParts.length,
+          new Set(s.hiddenParts).size !== s.hiddenParts.length ||
+          new Set(s.shownParts).size !== s.shownParts.length ||
+          s.hiddenParts.some((part) => s.shownParts.includes(part)) ||
+          s.hiddenParts.length + s.shownParts.length >
+            BLENDER_CAPTURE_LIMITS.hiddenParts,
       )
     )
       reject(

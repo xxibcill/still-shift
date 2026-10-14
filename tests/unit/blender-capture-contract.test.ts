@@ -83,3 +83,45 @@ it("rejects unknown job instructions, duplicate hides and pixel budget violation
     }),
   ).toThrow();
 });
+
+it("bounds native framing and requires disjoint visibility overrides", () => {
+  const input = job();
+  Object.assign(input.frames[0]!, {
+    framing: { orthoScale: 2.5, shiftX: -0.2 },
+    shownParts: ["section"],
+  });
+  expect(parseBlenderCaptureJob(input).frames[0]).toMatchObject({
+    framing: { orthoScale: 2.5, shiftX: -0.2 },
+    shownParts: ["section"],
+  });
+  for (const framing of [
+    {},
+    { orthoScale: 0 },
+    { orthoScale: 10001 },
+    { shiftX: 11 },
+    { lensMillimeters: Infinity },
+    { orthoScale: 3, lensMillimeters: 50 },
+    { arbitrary: 1 },
+  ]) {
+    expect(() =>
+      parseBlenderCaptureJob({
+        ...job(),
+        frames: [{ ...job().frames[0], framing }],
+      }),
+    ).toThrow();
+  }
+  for (const overrides of [
+    { hiddenParts: ["a"], shownParts: ["a"] },
+    { shownParts: ["a", "a"] },
+    {
+      hiddenParts: Array.from({ length: 128 }, (_, i) => "hidden" + i),
+      shownParts: ["shown"],
+    },
+  ])
+    expect(() =>
+      parseBlenderCaptureJob({
+        ...job(),
+        frames: [{ ...job().frames[0], ...overrides }],
+      }),
+    ).toThrow();
+});

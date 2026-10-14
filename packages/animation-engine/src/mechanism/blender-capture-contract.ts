@@ -16,6 +16,25 @@ const name = z
   .refine((s) => !s.includes("\0"));
 const number = z.number().finite().min(-1e6).max(1e6);
 const limits = BLENDER_CAPTURE_LIMITS;
+export const BlenderCameraFramingSchema = z
+  .object({
+    orthoScale: z.number().finite().min(0.0001).max(10000).optional(),
+    lensMillimeters: z.number().finite().min(1).max(2000).optional(),
+    shiftX: z.number().finite().min(-10).max(10).optional(),
+    shiftY: z.number().finite().min(-10).max(10).optional(),
+  })
+  .strict()
+  .superRefine((framing, context) => {
+    if (
+      !Object.values(framing).some((value) => value !== undefined) ||
+      (framing.orthoScale !== undefined &&
+        framing.lensMillimeters !== undefined)
+    )
+      context.addIssue({
+        code: "custom",
+        message: "Framing requires values and at most one native zoom mode",
+      });
+  });
 export const BlenderCaptureJobSchema = z
   .object({
     schemaVersion: z.literal("blender-native-capture-job-1"),
@@ -46,8 +65,10 @@ export const BlenderCaptureJobSchema = z
           .object({
             sourceFrame: z.number().finite().min(0).max(108000),
             camera: name.optional(),
+            framing: BlenderCameraFramingSchema.optional(),
             controls: z.record(name, number).default({}),
             hiddenParts: z.array(name).max(limits.hiddenParts).default([]),
+            shownParts: z.array(name).max(limits.hiddenParts).default([]),
           })
           .strict(),
       )
@@ -77,10 +98,16 @@ export const BlenderCaptureJobSchema = z
           path: ["controller", "properties", key],
         });
     for (const [index, frame] of job.frames.entries()) {
-      if (new Set(frame.hiddenParts).size !== frame.hiddenParts.length)
+      if (
+        new Set(frame.hiddenParts).size !== frame.hiddenParts.length ||
+        new Set(frame.shownParts).size !== frame.shownParts.length ||
+        frame.hiddenParts.some((part) => frame.shownParts.includes(part)) ||
+        frame.hiddenParts.length + frame.shownParts.length > limits.hiddenParts
+      )
         context.addIssue({
           code: "custom",
-          message: "Duplicate hidden part",
+          message:
+            "Visibility overrides must be distinct, disjoint and inside their combined budget",
           path: ["frames", index, "hiddenParts"],
         });
       for (const [key, value] of Object.entries(frame.controls)) {

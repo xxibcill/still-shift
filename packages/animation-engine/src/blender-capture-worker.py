@@ -116,6 +116,28 @@ def prepare_controller(controller, properties):
                 curve.mute = True
 
 
+CAMERA_PROJECTION_FIELDS = {
+    "orthoScale": "ortho_scale",
+    "lensMillimeters": "lens",
+    "shiftX": "shift_x",
+    "shiftY": "shift_y",
+}
+
+
+def apply_camera_framing(camera, framing):
+    if not framing:
+        return
+    if camera.data.animation_data is not None:
+        raise ValueError("Framing requires unanimated native camera projection data")
+    if ("orthoScale" in framing and camera.data.type != "ORTHO") or (
+        "lensMillimeters" in framing and camera.data.type != "PERSP"
+    ):
+        raise ValueError("Framing zoom mode differs from the native camera type")
+    for key, value in framing.items():
+        setattr(camera.data, CAMERA_PROJECTION_FIELDS[key], float(value))
+    camera.data.update_tag()
+
+
 def execute(job, job_path):
     import bpy
 
@@ -162,9 +184,21 @@ def execute(job, job_path):
             if key not in controller or not isinstance(controller[key], int | float):
                 raise ValueError("Declared native numeric property is absent: " + key)
         prepare_controller(controller, contract["properties"])
+    framed_data = {}
     for frame in job["frames"]:
-        if any(name not in objects for name in frame["hiddenParts"]):
-            raise ValueError("Hidden part must belong to the native asset collection")
+        if any(name not in objects for name in [*frame["hiddenParts"], *frame["shownParts"]]):
+            raise ValueError("Visibility override must belong to the native asset collection")
+        view = cameras[frame.get("camera", job["camera"])]
+        if frame.get("framing"):
+            data = view.data
+            if data not in framed_data:
+                framed_data[data] = {
+                    key: getattr(data, field) for key, field in CAMERA_PROJECTION_FIELDS.items()
+                }
+            # Validate every shot before the first native render.
+            apply_camera_framing(view, frame["framing"])
+            for key, value in framed_data[data].items():
+                setattr(data, CAMERA_PROJECTION_FIELDS[key], value)
     visibility = {name: obj.hide_render for name, obj in objects.items()}
     visibility_drivers = [
         (driver, driver.mute)
@@ -185,6 +219,10 @@ def execute(job, job_path):
     scene.render.film_transparent = True
     records = []
     for index, requested in enumerate(job["frames"]):
+        for data, projection in framed_data.items():
+            for key, value in projection.items():
+                setattr(data, CAMERA_PROJECTION_FIELDS[key], value)
+            data.update_tag()
         for driver, muted in visibility_drivers:
             driver.mute = muted
         for name, obj in objects.items():
@@ -197,13 +235,15 @@ def execute(job, job_path):
                 controller[key] = float(value)
             controller.update_tag(refresh={"OBJECT", "TIME"})
         bpy.context.view_layer.update()
-        for name in requested["hiddenParts"]:
-            obj = objects[name]
-            if obj.animation_data:
-                for driver in obj.animation_data.drivers:
-                    if driver.data_path == "hide_render":
-                        driver.mute = True
-            obj.hide_render = True
+        apply_camera_framing(camera, requested.get("framing"))
+        for names, hidden in [(requested["hiddenParts"], True), (requested["shownParts"], False)]:
+            for name in names:
+                obj = objects[name]
+                if obj.animation_data:
+                    for driver in obj.animation_data.drivers:
+                        if driver.data_path == "hide_render":
+                            driver.mute = True
+                obj.hide_render = hidden
         image = frames_directory / ("frame-" + str(index).zfill(6) + ".png")
         scene.render.filepath = str(image)
         bpy.ops.render.render(write_still=True)
@@ -227,6 +267,8 @@ def execute(job, job_path):
                     "clipStart": camera.data.clip_start,
                     "clipEnd": camera.data.clip_end,
                     "lensMillimeters": camera.data.lens,
+                    "shiftX": camera.data.shift_x,
+                    "shiftY": camera.data.shift_y,
                 },
                 "requestedControls": requested["controls"],
                 "actualControls": {key: float(controller[key]) for key in contract["properties"]}

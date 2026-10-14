@@ -26,7 +26,17 @@ import {
 import { productionFile } from "../../packages/animation-engine/src/mechanism/production-queue-files.ts";
 import { mechanismPackHash } from "../../packages/animation-engine/src/mechanism/pack-support.ts";
 
-async function nativeFixture() {
+async function nativeFixture(
+  options: {
+    shot?: {
+      framing?: { orthoScale: number; shiftX?: number };
+      shownParts?: string[];
+      hiddenParts?: string[];
+    };
+    camera?: { orthoScale?: number; shiftX?: number };
+    parts?: Array<{ name: string; visible: boolean }>;
+  } = {},
+) {
   const root = await realpath(
     await mkdtemp(join(tmpdir(), "blender-plate-fixture-")),
   );
@@ -44,6 +54,7 @@ async function nativeFixture() {
       hiddenParts: [],
     },
   ];
+  Object.assign(plan.shots[0]!, options.shot);
   const compiled = compileBlenderEpisode(blenderEpisodeSource(), plan);
   const pin = async (path: string, content: string) => {
     const bytes = Buffer.from(content);
@@ -83,10 +94,16 @@ async function nativeFixture() {
       outputFrame: 0,
       sourceFrame: 0,
       sourceAssetSha256: job.assetSha256,
-      camera: { name: "camera.main" },
+      camera: {
+        name: "camera.main",
+        type: "ORTHO",
+        orthoScale: 4,
+        shiftX: 0.2,
+        ...options.camera,
+      },
       requestedControls: job.frames[0]!.controls,
       actualControls: job.frames[0]!.controls,
-      parts: [],
+      parts: options.parts ?? [],
     }),
   );
   const receipt = await pin(
@@ -157,6 +174,55 @@ async function nativeFixture() {
   return { root, compiled, identity, map };
 }
 describe("native frame dependency closure", () => {
+  it("authenticates requested projection and explicit cutaway states against retained observations", async () => {
+    for (const fault of [
+      "none",
+      "scale",
+      "hidden",
+      "shown",
+      "missing",
+    ] as const) {
+      const f = await nativeFixture({
+          shot: {
+            framing: { orthoScale: 4, shiftX: 0.2 },
+            hiddenParts: ["cover"],
+            shownParts: ["section"],
+          },
+          camera: { orthoScale: fault === "scale" ? 5 : 4.00000001 },
+          parts:
+            fault === "missing"
+              ? []
+              : [
+                  { name: "cover", visible: fault === "hidden" },
+                  { name: "section", visible: fault !== "shown" },
+                ],
+        }),
+        parent = new CompositionNodeMemory(),
+        foreign = parent.reserve(1024),
+        owner = new CompositionNodeMemory(parent);
+      try {
+        const result = checkBlenderEpisodePlates(
+          f.map,
+          f.compiled,
+          f.identity,
+          f.root,
+          owner,
+        );
+        if (fault === "none") await expect(result).resolves.toEqual(f.map);
+        else
+          await expect(result).rejects.toThrow(
+            fault === "scale" ? /framing differs/ : /visibility differs/,
+          );
+      } finally {
+        owner.dispose();
+        await rm(f.root, { recursive: true, force: true });
+        expect(foreign.active).toBe(true);
+        expect(parent.statistics.current.metadata).toBe(1024);
+        parent.dispose();
+      }
+    }
+  });
+
   it("verifies every mapped state and actual submission receipt while preserving a foreign owner", async () => {
     const f = await nativeFixture(),
       parent = new CompositionNodeMemory(),

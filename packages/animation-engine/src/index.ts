@@ -173,6 +173,7 @@ export {
 export { captureBlenderAsset } from "./mechanism/blender-capture.ts";
 export {
   BlenderCaptureJobSchema,
+  BlenderCameraFramingSchema,
   parseBlenderCaptureJob,
   BLENDER_CAPTURE_LIMITS,
   type BlenderCaptureJob,

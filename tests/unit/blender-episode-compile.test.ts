@@ -13,6 +13,60 @@ import {
 } from "../fixtures/blender-episode-support.ts";
 
 describe("native Blender episode compilation", () => {
+  it("samples shot framing/visibility absolutely and only invalidates affected clean states", () => {
+    const source = blenderEpisodeSource(),
+      plan = blenderEpisodePlan();
+    const baseline = compileBlenderEpisode(source, plan);
+    Object.assign(plan.shots[1]!, {
+      framing: { orthoScale: 4, shiftX: 0.2 },
+      shownParts: ["section.b", "section.a"],
+    });
+    const before = JSON.stringify(plan),
+      changed = compileBlenderEpisode(source, plan);
+    expect(changed.job.frames[29]).toMatchObject({ shownParts: [] });
+    expect(changed.job.frames[29]!.framing).toBeUndefined();
+    expect(changed.job.frames[30]).toMatchObject({
+      framing: { orthoScale: 4, shiftX: 0.2 },
+      shownParts: ["section.b", "section.a"],
+    });
+    const keys = (c: typeof baseline) =>
+      c.job.frames.map((f) =>
+        blenderEpisodePlateKey(c.job, f, blenderHash("profile")),
+      );
+    expect(keys(changed).slice(0, 30)).toEqual(keys(baseline).slice(0, 30));
+    expect(
+      keys(changed)
+        .slice(30)
+        .every((key, i) => key !== keys(baseline)[i + 30]),
+    ).toBe(true);
+    expect(
+      blenderEpisodePlateKey(
+        changed.job,
+        { ...changed.job.frames[30]!, shownParts: ["section.a", "section.b"] },
+        blenderHash("profile"),
+      ),
+    ).toBe(keys(changed)[30]);
+    expect(JSON.stringify(plan)).toBe(before);
+    Object.assign(plan.shots[1]!, { shownParts: ["slider.plate.upper"] });
+    expect(() => parseBlenderEpisodePlan(plan)).toThrow();
+  });
+  it("rejects expanded per-frame visibility work before generating the native job", () => {
+    const plan = blenderEpisodePlan();
+    plan.narration.sampleCount = 3200000;
+    plan.originalNarrationClock.samples = 2940000;
+    plan.shots[0]!.endExclusive = 1000;
+    plan.shots[1]!.start = 1000;
+    plan.shots[1]!.endExclusive = 2000;
+    for (const shot of plan.shots)
+      shot.hiddenParts = Array.from(
+        { length: 128 },
+        (_, i) => "part" + String(i).padStart(3, "0") + "x".repeat(249),
+      );
+    expect(() => compileBlenderEpisode(blenderEpisodeSource(), plan)).toThrow(
+      /expanded-track budget/,
+    );
+  });
+
   it("samples the complete whole-narration timeline from absolute controls and shot cameras", () => {
     const source = blenderEpisodeSource(),
       plan = blenderEpisodePlan();

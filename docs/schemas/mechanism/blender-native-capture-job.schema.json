@@ -64,6 +64,24 @@
         "properties": {
           "sourceFrame": { "type": "number", "minimum": 0, "maximum": 108000 },
           "camera": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "framing": {
+            "type": "object",
+            "properties": {
+              "orthoScale": {
+                "type": "number",
+                "minimum": 0.0001,
+                "maximum": 10000
+              },
+              "lensMillimeters": {
+                "type": "number",
+                "minimum": 1,
+                "maximum": 2000
+              },
+              "shiftX": { "type": "number", "minimum": -10, "maximum": 10 },
+              "shiftY": { "type": "number", "minimum": -10, "maximum": 10 }
+            },
+            "additionalProperties": false
+          },
           "controls": {
             "default": {},
             "type": "object",
@@ -83,9 +101,15 @@
             "maxItems": 128,
             "type": "array",
             "items": { "type": "string", "minLength": 1, "maxLength": 256 }
+          },
+          "shownParts": {
+            "default": [],
+            "maxItems": 128,
+            "type": "array",
+            "items": { "type": "string", "minLength": 1, "maxLength": 256 }
           }
         },
-        "required": ["sourceFrame", "controls", "hiddenParts"],
+        "required": ["sourceFrame", "controls", "hiddenParts", "shownParts"],
         "additionalProperties": false
       }
     }

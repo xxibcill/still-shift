@@ -79,7 +79,16 @@ const observation = z
     outputFrame: z.number().int().nonnegative(),
     sourceFrame: z.number().finite(),
     sourceAssetSha256: z.string(),
-    camera: z.object({ name: z.string() }).passthrough(),
+    camera: z
+      .object({
+        name: z.string(),
+        type: z.string().optional(),
+        orthoScale: z.number().finite().optional(),
+        lensMillimeters: z.number().finite().optional(),
+        shiftX: z.number().finite().optional(),
+        shiftY: z.number().finite().optional(),
+      })
+      .passthrough(),
     requestedControls: z.record(z.string(), z.number().finite()),
     actualControls: z.record(z.string(), z.number().finite()),
     parts: z.array(z.unknown()).max(2048),
@@ -134,6 +143,7 @@ export function blenderEpisodePlateKey(
       ...frame,
       camera: frame.camera ?? job.camera,
       hiddenParts: [...frame.hiddenParts].sort(),
+      shownParts: [...frame.shownParts].sort(),
     },
   });
 }
@@ -306,6 +316,42 @@ function reader(
           throw Error(
             "Actual native controls/camera differ from the frozen frame request",
           );
+        for (const [field, expected] of Object.entries(frame.framing ?? {})) {
+          if (expected === undefined) continue;
+          const actual =
+            facts.value.camera[field as keyof typeof facts.value.camera];
+          if (
+            typeof actual !== "number" ||
+            Math.abs(actual - expected) >
+              Math.max(1e-6, Math.abs(expected) * 1e-6) ||
+            (field === "orthoScale" && facts.value.camera.type !== "ORTHO") ||
+            (field === "lensMillimeters" && facts.value.camera.type !== "PERSP")
+          )
+            throw Error(
+              "Actual native camera framing differs from the frozen request",
+            );
+        }
+        if (frame.hiddenParts.length || frame.shownParts.length) {
+          const part = z
+            .object({ name: z.string(), visible: z.boolean() })
+            .passthrough();
+          const observedParts = new Map<string, boolean>();
+          for (const value of facts.value.parts) {
+            const parsed = part.safeParse(value);
+            if (parsed.success)
+              observedParts.set(parsed.data.name, parsed.data.visible);
+          }
+          for (const [names, visible] of [
+            [frame.hiddenParts, false],
+            [frame.shownParts, true],
+          ] as const)
+            for (const name of names)
+              if (observedParts.get(name) !== visible)
+                throw Error(
+                  "Actual native visibility differs from the frozen request: " +
+                    name,
+                );
+        }
       } finally {
         facts.release();
       }

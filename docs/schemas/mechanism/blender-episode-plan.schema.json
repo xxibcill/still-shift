@@ -135,13 +135,44 @@
             "maximum": 9007199254740991
           },
           "camera": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "framing": {
+            "type": "object",
+            "properties": {
+              "orthoScale": {
+                "type": "number",
+                "minimum": 0.0001,
+                "maximum": 10000
+              },
+              "lensMillimeters": {
+                "type": "number",
+                "minimum": 1,
+                "maximum": 2000
+              },
+              "shiftX": { "type": "number", "minimum": -10, "maximum": 10 },
+              "shiftY": { "type": "number", "minimum": -10, "maximum": 10 }
+            },
+            "additionalProperties": false
+          },
           "hiddenParts": {
+            "maxItems": 128,
+            "type": "array",
+            "items": { "type": "string", "minLength": 1, "maxLength": 256 }
+          },
+          "shownParts": {
+            "default": [],
             "maxItems": 128,
             "type": "array",
             "items": { "type": "string", "minLength": 1, "maxLength": 256 }
           }
         },
-        "required": ["id", "start", "endExclusive", "camera", "hiddenParts"],
+        "required": [
+          "id",
+          "start",
+          "endExclusive",
+          "camera",
+          "hiddenParts",
+          "shownParts"
+        ],
         "additionalProperties": false
       }
     },

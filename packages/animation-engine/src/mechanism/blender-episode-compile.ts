@@ -47,7 +47,19 @@ export function compileBlenderEpisode(
     plan.fps,
   );
   const projectedWork =
-    frameCount * (512 + declared.reduce((n, k) => n + k.length * 2 + 128, 0));
+    frameCount * (512 + declared.reduce((n, k) => n + k.length * 2 + 128, 0)) +
+    plan.shots.reduce(
+      (bytes, shot) =>
+        bytes +
+        (shot.endExclusive - shot.start) *
+          (shot.camera.length * 2 +
+            128 +
+            [...shot.hiddenParts, ...shot.shownParts].reduce(
+              (n, name) => n + name.length * 2 + 16,
+              0,
+            )),
+      0,
+    );
   if (projectedWork > 16 * 1024 * 1024)
     throw Error(
       "Native episode expanded-track budget exceeded before sampling",
@@ -59,6 +71,7 @@ export function compileBlenderEpisode(
     return {
       sourceFrame: sampleBlenderEpisodeTrack(plan.sourceFrameTrack, frame),
       camera: shot.camera,
+      ...(shot.framing ? { framing: shot.framing } : {}),
       controls: Object.fromEntries(
         declared.map((k) => [
           k,
@@ -66,6 +79,7 @@ export function compileBlenderEpisode(
         ]),
       ),
       hiddenParts: shot.hiddenParts,
+      shownParts: shot.shownParts,
     };
   });
   const job = parseBlenderCaptureJob({
