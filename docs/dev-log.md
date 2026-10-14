@@ -61,19 +61,19 @@ still hold before relying on them.
   [Scout repairs and rejected attempts](./mechanism-shorts-ms3-first-ten-annotation-scout-results.json).
   **Live batch:** `actual-first-ten-full-HD47`, private `output-all10-47` root.
   It preserves the old two-item trial and uses an exact native-cache copy.
-  EU-001–EU-005 transactions complete 3,037 frames. Independent 12,148 pins /
-  1,974 active labels, original whole AAC parity and full encoded RGBA decode
-  through EOF pass. Five/five/seven/five/five encoded phone midpoints are inspected.
-  The sixth capture/annotation map additionally verifies: 14,684 pins / 2,313 labels
-  across available states; its export remains in flight at this checkpoint.
-  QA remains failed: first five retain 90 static errors / 78 warnings / 264 images.
-  Remaining five stages and full cohort report/resume are pending; no engine edits
-  while the batch runs. Zipper/keyhole actions align with their spoken control cues;
-  primary text supports the selected constructions, leaving whole contact/review open.
+  EU-001–EU-007 transactions complete 4,379 frames. Independent 17,516 native
+  pins / 2,798 active labels, original whole AAC parity and full encoded RGBA decode
+  through EOF pass. Seven per-episode phone sheets (41 selected frames) are inspected.
+  Available capture checks extend through EU-008: 19,832 pins / 3,355 label samples.
+  First-seven QA remains failed: 127 static errors / 110 warnings / 374 images.
+  Remaining encoded audits, batch stages and full report/resume are pending;
+  no engine edits while the batch runs. Source text supports the selected designs,
+  leaving whole contact, encoded glyph, continuous and listening reviews open.
   [First HD checks](./mechanism-shorts-ms3-first-ten-hd-progress-results.json),
   [cable-tie cues](./mechanism-shorts-ms3-first-ten-hd-EU002-results.json),
   [clothespeg pointer](./mechanism-shorts-ms3-first-ten-hd-EU003-results.json),
-  [zipper/keyhole checks](./mechanism-shorts-ms3-first-ten-hd-EU004-EU005-results.json).
+  [zipper/keyhole](./mechanism-shorts-ms3-first-ten-hd-EU004-EU005-results.json),
+  [binder/buckle](./mechanism-shorts-ms3-first-ten-hd-EU006-EU007-results.json).
   **Located repair:** EU-002 tongue settles at frame 170, before the return line
   at frames 268–319. Separate `inputs-cue-repair49` retimes only `tighten` to peak
   at 253 / settle at 319. Pure admission passes; capture/export/event/playback
@@ -82,6 +82,10 @@ still hold before relying on them.
   from visible cyan wire. Separate `inputs-pointer-repair50` selects saved outer
   leg seat (3.74px in the same captured pose); pure admission passes. Actual new
   capture/encoded/whole-shot review remains; all other inputs stay exact.
+  **Third repair:** `inputs-staging-repair52` hides unused binder paper in recognition
+  and closed-return, preserving insertion from406 via a separate shot. Pure admission
+  passes; capture/encoded staging and boundary/playback review remain. No voice,
+  control, frame-clock, camera or other callout changes.
   **Next:** remaining HD audits, cue repair and resolved holds/staging; native
   contact/phone/audio handoff; broader physical label/event/intersection/mount faults;
   whole factual/mechanical/glyph/continuous/listening and original E06/E10 reviews;
@@ -276,6 +280,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Verify binder/buckle HD and prepare binder staging cleanup
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; source `4679b8a8` stays held.
+- **Done:** EU-006 / 634 frames (0 fresh / 634 reused), EU-007 / 708 (150 / 558).
+  First seven: 4,379 complete decoded frames / original AAC parity / 17,516 native
+  pins / 2,798 active labels. Fourteen new encoded phone midpoints inspected.
+- **Found:** Unused binder paper floats below the clip before its demonstration.
+  Separate visibility/shot candidate preserves paper insertion and all voice/control
+  clocks; pure admission passes. Actual capture/staging/boundary review remains.
+- **Sources:** Primary patent text supports body spring/levers and the selected
+  female-actuator buckle; quantitative stress/security/contact remain unreviewed.
+- **Open:** First-seven QA retains 127 static errors / 110 warnings / 374 images.
+  Available eighth map verifies; remaining cohort/export/report/resume stay live.
+- **Records:** [Binder/buckle checks and candidate](./mechanism-shorts-ms3-first-ten-hd-EU006-EU007-results.json).
+  Whole reviews / pilot 0/10; routine effort null; no live input/source edits.
 
 ### 2026-10-14 — Verify zipper and keyhole HD deliveries
 

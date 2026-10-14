@@ -293,3 +293,16 @@ First-five QA retains 90 static errors / 78 warnings / 264 images. The sixth nat
 map additionally verifies, but its export and the remaining cohort/report/resume
 are in flight. Prepared cable-tie cue and clothespeg pointer repairs remain separate
 and unrendered; pilot 0/10, broader faults/handoff/effort/final gates remain open.
+
+[EU-006/EU-007 HD evidence](./mechanism-shorts-ms3-first-ten-hd-EU006-EU007-results.json)
+verifies 634 / 708 frames, complete original AAC reference parity and independent
+full RGBA decode through EOF. First-seven totals are 4,379 frames / 17,516 native
+pins / 2,798 active labels. Fourteen new phone midpoint views are inspected; primary
+text supports spring-body levers and the selected female-actuator buckle. Unused
+binder paper is visible before its demonstration. A separate six-leaf visibility
+cleanup preserves insertion406–427 via a new shot boundary and all original voice,
+control, camera and caption inputs; pure admission passes, actual captured staging,
+encoded/boundary/playback review remains. First-seven QA retains 127 static errors /
+110 warnings / 374 images. Available native maps extend through EU-008; remaining
+encoded audits, cohort report/resume and prepared repairs stay open, along with
+whole reviews/broader faults/handoff/effort/final gates. Accepted pilot remains 0/10.

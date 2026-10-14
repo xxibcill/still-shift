@@ -1,0 +1,377 @@
+{
+  "schemaVersion": "ms3-first-ten-hd-EU006-EU007-results-1",
+  "date": "2026-10-14",
+  "status": "binder-and-buckle-HD-verified-binder-staging-candidate-preflighted",
+  "sourceCommit": "4679b8a835e51a1f2d5e9c8ac49ec099b894a1a8",
+  "runtimeCodeSha256": "sha256:db4e4d9a560eb4fe1f0fdd4e98bf76e467ce70226adebcda5af86c0b55a826d8",
+  "nativeProfileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+  "heldSource": {
+    "status": "exact",
+    "files": 2777,
+    "bytes": 122189105
+  },
+  "nativeAudit": {
+    "record": {
+      "path": "/private/tmp/still-shift-ms3-blender52-annotation-audit1.json",
+      "bytes": 3073,
+      "sha256": "sha256:2e7ba14e96f5008ad3442d76ff9604f7f92f192a819a2c5dc814da99d8b3a48c"
+    },
+    "script": {
+      "path": "/private/tmp/still-shift-ms3-blender52-annotation-audit1.py",
+      "bytes": 3791,
+      "sha256": "sha256:606ffe195ac731ed17b8f39737639df98648dbc16e02771bcab30384314b9b2b"
+    },
+    "availableCaptureEpisodes": [
+      "EU-001",
+      "EU-002",
+      "EU-003",
+      "EU-004",
+      "EU-005",
+      "EU-006",
+      "EU-007",
+      "EU-008"
+    ],
+    "availablePinChecks": 19832,
+    "availableActiveLabels": 3355,
+    "completedEncodedEpisodes": [
+      "EU-001",
+      "EU-002",
+      "EU-003",
+      "EU-004",
+      "EU-005",
+      "EU-006",
+      "EU-007"
+    ],
+    "completedFrames": 4379,
+    "completedNativePinChecks": 17516,
+    "completedActiveLabels": 2798,
+    "scope": "Current native capture pins/highlight assignment/projection records and saved text/leader phase bindings; no surface contact, all-frame encoded glyph, continuous or listening approval."
+  },
+  "encodedAudit": {
+    "record": {
+      "path": "/private/tmp/still-shift-ms3-blender52-encoded-audit1.json",
+      "bytes": 40069,
+      "sha256": "sha256:72b46c61529a4781d9ad0a23529983c727b2db8648453dc680d06ea608b19ca6"
+    },
+    "script": {
+      "path": "/private/tmp/still-shift-ms3-blender52-encoded-audit1.py",
+      "bytes": 5197,
+      "sha256": "sha256:002f014ced0a6dcd81779997acea9d638ae3ccadc740f93a1d85c279dce81412"
+    },
+    "episodes": [
+      "EU-001",
+      "EU-002",
+      "EU-003",
+      "EU-004",
+      "EU-005",
+      "EU-006",
+      "EU-007"
+    ],
+    "wholeOriginalAACParity": true,
+    "scope": "Complete encoded stream facts, original narration versus independent AAC reference, selected encoded images. No listening/continuous/all-frame glyph approval."
+  },
+  "fullPicture": {
+    "record": {
+      "path": "/private/tmp/still-shift-ms3-blender52-full-picture1.json",
+      "bytes": 1597,
+      "sha256": "sha256:2dcf840db4d261fae3000da2955033cb0e03a4d42b606116601f6004adc22a5b"
+    },
+    "rows": [
+      {
+        "id": "EU-006",
+        "decodedFrames": 634,
+        "movie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-006/1/output.mp4",
+          "bytes": 1277032,
+          "sha256": "sha256:89d0881e1de9f8a1f2e9b3b716a0382f097988d62599c4c9d07f5ababbe06f28"
+        },
+        "digest": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-006/full-picture.framemd5",
+          "bytes": 50936,
+          "sha256": "sha256:7824d9d893dddcbcbaed77e79b0794f07280deb4ce36f31fbdf82fa281fd6ac0"
+        },
+        "scope": "Complete encoded RGBA decoding through EOF; no continuous viewing/encoded glyph semantic approval."
+      },
+      {
+        "id": "EU-007",
+        "decodedFrames": 708,
+        "movie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-007/1/output.mp4",
+          "bytes": 1963872,
+          "sha256": "sha256:c7790721f325b0b584ce9c1be70111cb9f4b4d469a2b87b8818401de673fdc95"
+        },
+        "digest": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-007/full-picture.framemd5",
+          "bytes": 56856,
+          "sha256": "sha256:9ded7a00c7d25911589fec78777be557388b1e37151d1e7ce278033fccfc3448"
+        },
+        "scope": "Complete encoded RGBA decoding through EOF; no continuous viewing/encoded glyph semantic approval."
+      }
+    ],
+    "combinedFirstSevenDecodedFrames": 4379
+  },
+  "rows": [
+    {
+      "id": "EU-006",
+      "frames": 634,
+      "labels": 5,
+      "originalAssetAndAudioExact": true,
+      "freshNativeRenders": 0,
+      "reusedNativeFrames": 634,
+      "completeProjectionPhaseAndLeaderChecks": true,
+      "wholePhysicalGlyphContinuousListeningReview": "UNREVIEWED",
+      "video": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-006/1/output.mp4",
+        "bytes": 1277032,
+        "sha256": "sha256:89d0881e1de9f8a1f2e9b3b716a0382f097988d62599c4c9d07f5ababbe06f28"
+      },
+      "wholeOriginalAACReferenceParity": true,
+      "selectedEncodedFrames": [56, 136, 182, 248, 359, 483, 587],
+      "phoneSheet": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-006/midpoints.png",
+        "bytes": 436466,
+        "sha256": "sha256:85b77fc0802b0efcf56dca277c37115631687774d2e8673e2bd07b0443839489"
+      },
+      "phoneInspection": "Seven encoded phone midpoints inspected. Labels identify body/handle/bearing/grip or arm/edge/stop in sampled views. Binder recognition and closed-return still show unused floating paper. Whole contact/glyph/continuous/listening review remains open.",
+      "qa": {
+        "artifact": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-006/1/qa-rendered-visual.json",
+          "bytes": 63593,
+          "sha256": "sha256:1117b9be2184baf34422f15f29b7d78d657da8aabe02edd2f652cfcb50f073df"
+        },
+        "status": "failed",
+        "counts": {
+          "outside-safe-area:warning": 7,
+          "reading-time:warning": 10,
+          "frozen-pixels:error": 19
+        },
+        "images": 57,
+        "disposition": "unresolved"
+      }
+    },
+    {
+      "id": "EU-007",
+      "frames": 708,
+      "labels": 5,
+      "originalAssetAndAudioExact": true,
+      "freshNativeRenders": 150,
+      "reusedNativeFrames": 558,
+      "completeProjectionPhaseAndLeaderChecks": true,
+      "wholePhysicalGlyphContinuousListeningReview": "UNREVIEWED",
+      "video": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-007/1/output.mp4",
+        "bytes": 1963872,
+        "sha256": "sha256:c7790721f325b0b584ce9c1be70111cb9f4b4d469a2b87b8818401de673fdc95"
+      },
+      "wholeOriginalAACReferenceParity": true,
+      "selectedEncodedFrames": [81, 213, 345, 464, 556, 642, 690],
+      "phoneSheet": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-007/midpoints.png",
+        "bytes": 708771,
+        "sha256": "sha256:5207f712f87002543e0a5293d886b90dcf0abc06db78fb9e2c1e18f601f519de"
+      },
+      "phoneInspection": "Seven encoded phone midpoints inspected. Labels identify body/handle/bearing/grip or arm/edge/stop in sampled views. Binder recognition and closed-return still show unused floating paper. Whole contact/glyph/continuous/listening review remains open.",
+      "qa": {
+        "artifact": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-007/1/qa-rendered-visual.json",
+          "bytes": 62201,
+          "sha256": "sha256:e2a36bd613ba6b498c8dac5dec25ba7950ed161f4ab9324624ecf9fb35046300"
+        },
+        "status": "failed",
+        "counts": {
+          "outside-safe-area:warning": 7,
+          "reading-time:warning": 8,
+          "frozen-pixels:error": 18
+        },
+        "images": 53,
+        "disposition": "unresolved"
+      }
+    }
+  ],
+  "firstSevenQA": {
+    "staticErrors": 127,
+    "warnings": 110,
+    "evidenceImages": 374,
+    "status": "failed-unresolved"
+  },
+  "cueInspection": [
+    {
+      "id": "EU-006",
+      "squeezeControlFrames": [160, 190],
+      "squeezeSpeechFrames": [161, 279],
+      "returnControlFrames": [293, 317],
+      "returnSpeechFrames": [293, 390],
+      "paperInsertControlFrames": [406, 424],
+      "loadedCloseControlFrames": [427, 451],
+      "paperAndLoadedBodySpeechFrames": [406, 522],
+      "scope": "Authored phase timing and current retained control/label records; actual bearing/contact/material stress and whole playback remain open."
+    },
+    {
+      "id": "EU-007",
+      "insertionControlFrames": [264, 294],
+      "joinSpeechFrames": [238, 282],
+      "pullControlFrames": [427, 445],
+      "pullSpeechFrames": [427, 489],
+      "squeezeControlFrames": [502, 526],
+      "squeezeSpeechFrames": [502, 596],
+      "clearanceSpeechFrames": [608, 647],
+      "withdrawControlFrames": [674, 701],
+      "withdrawSpeechFrames": [662, 696],
+      "scope": "Press-before-withdraw order and authored phase correspondence; whole arm/stop clearance and continuous event/contact review remain open."
+    }
+  ],
+  "factualSourceReview": [
+    {
+      "id": "EU-006",
+      "url": "https://patents.google.com/patent/US1139627A/en",
+      "title": "US1139627A Paper-binding clip",
+      "accessedOn": "2026-10-14",
+      "locator": "Description of triangular spring-steel back/sides and operating handles acting as levers about back/side edges",
+      "method": "Primary patent text read; no fresh patent-figure inspection in this slice",
+      "supported": "The resilient sheet-metal body supplies closing bias; wire handles operate as levers to open its sides.",
+      "limits": "The source also discusses handle spring stress for journal retention. Authored U-handle proportions, quantitative body strain/force, bearing clearance and whole clamping acceptance are not certified."
+    },
+    {
+      "id": "EU-007",
+      "url": "https://patents.google.com/patent/US5546642A/en",
+      "title": "US5546642A Side-release buckle fastener",
+      "accessedOn": "2026-10-14",
+      "locator": "Description of ramps56/surfaces60, resilient arms24/abutments38 and female actuating members66/extension72; insertion and disengagement paragraphs",
+      "method": "Primary patent text read; no fresh patent-figure inspection in this slice",
+      "supported": "Insertion flexes male arms until their abutments engage retaining surfaces. Female buttons flex the arms inward to clear those surfaces for withdrawal.",
+      "limits": "This selected female-actuator embodiment is explicit in the narration. Not every side-release buckle uses it; numeric force/security, complete stop contacts and all-frame clearance remain unreviewed."
+    }
+  ],
+  "binderStagingCandidate": {
+    "record": {
+      "path": "/private/tmp/still-shift-ms3-blender52-staging-repair1.json",
+      "bytes": 796,
+      "sha256": "sha256:ec366565e1a5bf5593188e65dcc34d7165b4597d2409a2bb50d697c10ff27826"
+    },
+    "preflight": {
+      "path": "/private/tmp/still-shift-ms3-blender52-staging-preflight1.json",
+      "bytes": 324,
+      "sha256": "sha256:c7a4c0aa9be425c6732d7e39609d477849f5c32fbb84296e199e447b6999cc96"
+    },
+    "source": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-staging-repair52/EU-006/source.json",
+      "bytes": 2153,
+      "sha256": "sha256:2dacc5b19e08e332d600d52ab6454824e805644e0c754ada4eff615a8a9075ca"
+    },
+    "plan": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-staging-repair52/EU-006/plan.json",
+      "bytes": 9417,
+      "sha256": "sha256:8ef84bb751bf90f6b989d76d7c9773baf6847065190392351c5b2aee65599da0"
+    },
+    "changes": "Hide six actual paper leaves in recognition0\u2013113 and closed-return293\u2013406; retain visible insertion406\u2013427 with its own declared shot boundary.",
+    "originalNarrationSpeechControlsSourceFrameFramingCalloutsAndMasterExact": true,
+    "status": "pure-admission-passed-capture-and-encoded-staging-review-pending",
+    "liveBatchInputs": "unchanged"
+  },
+  "queueSnapshot": {
+    "id": "actual-first-ten-full-HD47",
+    "updatedUtc": "2026-10-14T08:41:15.456Z",
+    "rows": [
+      {
+        "id": "EU-001",
+        "status": "passed",
+        "lastStage": "native-blender-rendered-visual-qa",
+        "product": {
+          "path": "products/EU-001-00c45963c001ab77-1.json",
+          "bytes": 9125,
+          "sha256": "sha256:10bcd7fc5e4da98bf80040ffdb392a5c34da30b32319a7fad5c5a708d972a92b"
+        }
+      },
+      {
+        "id": "EU-002",
+        "status": "passed",
+        "lastStage": "native-blender-rendered-visual-qa",
+        "product": {
+          "path": "products/EU-002-611543058e800346-1.json",
+          "bytes": 9187,
+          "sha256": "sha256:5c27e8d3319b290b573b39e9ca86afcde85fa4b6335b9959a9028a8923907b85"
+        }
+      },
+      {
+        "id": "EU-003",
+        "status": "passed",
+        "lastStage": "native-blender-rendered-visual-qa",
+        "product": {
+          "path": "products/EU-003-db973726be2f0daa-1.json",
+          "bytes": 9227,
+          "sha256": "sha256:edd432ea7ba809bd352dd45d8ebdf535cb2c77918a66eb9bdb29fbfdab8029d1"
+        }
+      },
+      {
+        "id": "EU-004",
+        "status": "passed",
+        "lastStage": "native-blender-rendered-visual-qa",
+        "product": {
+          "path": "products/EU-004-d7f67568e2dde8d2-1.json",
+          "bytes": 9244,
+          "sha256": "sha256:1d80a691c16d137fb69e75d091e4f643eaed1f00481a03da027af1f905dea6a7"
+        }
+      },
+      {
+        "id": "EU-005",
+        "status": "passed",
+        "lastStage": "native-blender-rendered-visual-qa",
+        "product": {
+          "path": "products/EU-005-0815d5825e366ea1-1.json",
+          "bytes": 9254,
+          "sha256": "sha256:24f48e8b26a353cb1037739f5cb60067b3cd453e19a3974d192c90c41ec8831c"
+        }
+      },
+      {
+        "id": "EU-006",
+        "status": "passed",
+        "lastStage": "native-blender-rendered-visual-qa",
+        "product": {
+          "path": "products/EU-006-3f50b143a78b81cc-1.json",
+          "bytes": 9255,
+          "sha256": "sha256:b44cb5356f037124ff4eb1db8e48ec51f27d2ece39d3bcfea46b4ed67223da9c"
+        }
+      },
+      {
+        "id": "EU-007",
+        "status": "passed",
+        "lastStage": "native-blender-rendered-visual-qa",
+        "product": {
+          "path": "products/EU-007-e0286a4373805c8f-1.json",
+          "bytes": 9240,
+          "sha256": "sha256:0f6aa8287e771d00815d72d5429d5597ae947aacae0db5e9c44a2c87605154bf"
+        }
+      },
+      {
+        "id": "EU-008",
+        "status": "passed",
+        "lastStage": "native-blender-rendered-visual-qa",
+        "product": {
+          "path": "products/EU-008-edc6908b07626560-1.json",
+          "bytes": 9268,
+          "sha256": "sha256:42c1027c55d51e02dbe3c395d95b3efb59e5e459dc46aaefdea80568b3cda24f"
+        }
+      },
+      {
+        "id": "EU-009",
+        "status": "running",
+        "lastStage": "native-blender-composition-export",
+        "product": null
+      },
+      {
+        "id": "EU-010",
+        "status": "pending",
+        "lastStage": null,
+        "product": null
+      }
+    ]
+  },
+  "acceptedPilot": 0,
+  "routineTokenMeasurements": null,
+  "wholeReview": "UNREVIEWED",
+  "next": [
+    "Finish unchanged cohort and report/resume.",
+    "Complete remaining encoded audits and current repair capture/export/review.",
+    "Resolved native holds/staging/contact/fault/handoff/whole reviews/effort/final gates."
+  ]
+}
