@@ -1,0 +1,455 @@
+{
+  "schemaVersion": "ms3-native-shot-framing-results-1",
+  "date": "2026-10-14",
+  "status": "native-framing-and-cutaway-declarations-verified-causal-annotation-open",
+  "implementationCommit": "0e23b87356474683511002ebbcfe095d914d00f6",
+  "runtimeCodeSha256": "sha256:fe107a4e4d596c3405bec316209da9f4f04f2d5dc359c13ff2235bd23b1e0d6c",
+  "nativeProfileSha256": "sha256:effb228d35386e4b7a75e8aec3973e0d0dc3ce847edaf20c79d6235716e9035d",
+  "ownerSelection": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+  "sourceInventory": {
+    "path": "/private/tmp/still-shift-ms3-blender44-inputs1.json",
+    "files": 2775,
+    "bytes": 122154520,
+    "postCommitStatus": "passed"
+  },
+  "implementation": {
+    "framing": "Optional per-shot/per-frame bounded orthographic scale or perspective lens and X/Y shifts; original camera transforms remain. Shared data resets to original values before every frame. Native animated projection data and wrong zoom modes reject before capture.",
+    "visibility": "Combined 128 distinct/disjoint hidden/shown native collection members; original visibility drivers/baselines restored for every frame.",
+    "authentication": "Framing and sorted show/hide states enter native state keys. Retained observations must match requested numeric projection and render flags. Flags/anchors do not establish visual visibility or surface contact.",
+    "admission": "Prospective 16MiB expanded state budget includes camera/member names before sampling."
+  },
+  "software": {
+    "gate": {
+      "path": "/private/tmp/still-shift-ms3-blender44-gate1-receipt.json",
+      "bytes": 2359,
+      "sha256": "sha256:31067d2ed1598e117cd135fe7e1a45c2649516e987811642ce8f28bcf7252011"
+    },
+    "result": {
+      "steps": [
+        {
+          "name": "python",
+          "argv": [
+            "uv",
+            "run",
+            "--no-sync",
+            "ruff",
+            "check",
+            "packages/animation-engine/src/blender-capture-worker.py",
+            "tests/fixtures/blender-driver-regression.py",
+            "tests/fixtures/blender-shot-regression.py"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 0.2217854589689523
+        },
+        {
+          "name": "python-format",
+          "argv": [
+            "uv",
+            "run",
+            "--no-sync",
+            "ruff",
+            "format",
+            "--check",
+            "packages/animation-engine/src/blender-capture-worker.py",
+            "tests/fixtures/blender-driver-regression.py",
+            "tests/fixtures/blender-shot-regression.py"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 0.1541657920461148
+        },
+        {
+          "name": "driver-regression",
+          "argv": [
+            "/Applications/Blender.app/Contents/MacOS/Blender",
+            "--background",
+            "--factory-startup",
+            "--python-exit-code",
+            "1",
+            "--python",
+            "tests/fixtures/blender-driver-regression.py"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 0.6584396660327911
+        },
+        {
+          "name": "shot-regression",
+          "argv": [
+            "/Applications/Blender.app/Contents/MacOS/Blender",
+            "--background",
+            "--factory-startup",
+            "--python-exit-code",
+            "1",
+            "--python",
+            "tests/fixtures/blender-shot-regression.py"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 0.8898798329755664
+        },
+        {
+          "name": "fast",
+          "argv": ["pnpm", "check:fast"],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 132.722780500073
+        },
+        {
+          "name": "runtime",
+          "argv": [
+            "pnpm",
+            "exec",
+            "vitest",
+            "run",
+            "tests/runtime/blender-production-cli.test.ts",
+            "tests/runtime/blender-episode-inputs.test.ts",
+            "tests/runtime/blender-production-backend-admission.test.ts",
+            "tests/runtime/blender-capture-admission.test.ts",
+            "--maxWorkers=2",
+            "--no-file-parallelism"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 5.244717209134251
+        }
+      ],
+      "actualExitCode": 0
+    },
+    "fastTests": 4582,
+    "fastFiles": 456,
+    "nativeRuntimeChecks": 12,
+    "nativeRuntimeFiles": 4,
+    "nativeDriverRegressionStates": 10,
+    "nativeShotRegressionFrames": 7,
+    "nativeShotRegressionScope": "Synthetic actual worker orthographic/perspective/shared-camera-data resets; native visibility flags, restored source file and wrong/animated projection rejection. These checks are not physical or pilot approval."
+  },
+  "currentAuthoring": {
+    "brief": {
+      "path": "/private/tmp/still-shift-ms3-blender44-author-framing4.json",
+      "bytes": 380,
+      "sha256": "sha256:35db8137b994f2bf58bb68976aaa3377ad4553cbeba2fc5c0573cf9a6c649426"
+    },
+    "authoring": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/authoring-framing4.json",
+      "bytes": 11681,
+      "sha256": "sha256:ddd3af881278b9f83d41fddfdf525973f015c3fb03c9bb8441d118200c2d2967"
+    },
+    "projects": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/projects-framing4.json",
+      "bytes": 2203,
+      "sha256": "sha256:f3416997712266f89ee90bed01236b0dda08f8da7c8acbd3add7f15dc9a9a3aa"
+    },
+    "wholeOriginalRecordingsAndCaptionTimingsUnchanged": true,
+    "HD": [1080, 1920],
+    "fps": 30,
+    "plannedFrames": 6181,
+    "shots": 59,
+    "currentWholeQueueProduct": "not-rendered; previous 2695/a515 queue/products retain their own binding"
+  },
+  "revisions": [
+    {
+      "revision": 1,
+      "scout": {
+        "path": "/private/tmp/still-shift-ms3-blender44-scout1.json",
+        "bytes": 121015,
+        "sha256": "sha256:707a8f016ef2cf1f8b51dcb7b19544fb591ab6eccf02f07717a077ef1ce65b6e"
+      },
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-blender44-scout1-receipt.json",
+        "bytes": 161,
+        "sha256": "sha256:09b77ca291d2758e32687d8510d38eae973934e8617bb0f9451810d34274303a"
+      },
+      "result": {
+        "actualExitCode": 0,
+        "heldEngineInputsExitCode": 0,
+        "heldPrivateInputFiles": 105,
+        "privateInputBytesUnchanged": true,
+        "seconds": 90.61849754094146
+      },
+      "mappedFrames": 177,
+      "freshNativeRenders": 89,
+      "reusedOutputFrames": 88,
+      "phoneSheets": {
+        "path": "/private/tmp/still-shift-ms3-blender44-sheets1.json",
+        "bytes": 21890,
+        "sha256": "sha256:043c10ba03e40bcf52734b7be2b2d8a07d27f4b0397192fa21b3df051d1885bd"
+      }
+    },
+    {
+      "revision": 2,
+      "scout": {
+        "path": "/private/tmp/still-shift-ms3-blender44-scout2.json",
+        "bytes": 121042,
+        "sha256": "sha256:e8b150b32b7c62f883f8eae8de42a05ef041b2ed0b0dbd2f5be96fa4e6bdbbc5"
+      },
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-blender44-scout2-receipt.json",
+        "bytes": 161,
+        "sha256": "sha256:3abe0c0b42be9ae9dc3a0ec22c6bf15ac21cbfdc0dbc36e37c1581ed4615ca83"
+      },
+      "result": {
+        "actualExitCode": 0,
+        "heldEngineInputsExitCode": 0,
+        "heldPrivateInputFiles": 147,
+        "privateInputBytesUnchanged": true,
+        "seconds": 28.06855266704224
+      },
+      "mappedFrames": 177,
+      "freshNativeRenders": 9,
+      "reusedOutputFrames": 168,
+      "phoneSheets": {
+        "path": "/private/tmp/still-shift-ms3-blender44-sheets2.json",
+        "bytes": 24141,
+        "sha256": "sha256:012dab2394a09c9289675d568ebf7b9580ffa02da48018a29e51a2c2354f8294"
+      }
+    },
+    {
+      "revision": 3,
+      "scout": {
+        "path": "/private/tmp/still-shift-ms3-blender44-scout3.json",
+        "bytes": 121004,
+        "sha256": "sha256:15d31fea5dd4a52b04ca6002ce3e074facb829b3152fdd909e8256ee225949f7"
+      },
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-blender44-scout3-receipt.json",
+        "bytes": 161,
+        "sha256": "sha256:d4df574d14ad8795c02035150494f83eff3a50d6f2c71d44e7019699429ee555"
+      },
+      "result": {
+        "actualExitCode": 0,
+        "heldEngineInputsExitCode": 0,
+        "heldPrivateInputFiles": 189,
+        "privateInputBytesUnchanged": true,
+        "seconds": 19.93772295792587
+      },
+      "mappedFrames": 177,
+      "freshNativeRenders": 5,
+      "reusedOutputFrames": 172,
+      "phoneSheets": {
+        "path": "/private/tmp/still-shift-ms3-blender44-sheets3.json",
+        "bytes": 24127,
+        "sha256": "sha256:facd861f33c42a0aee618a22de6389e0c7913187921c52cd1d79a90dde85d345"
+      }
+    },
+    {
+      "revision": 4,
+      "scout": {
+        "path": "/private/tmp/still-shift-ms3-blender44-scout4.json",
+        "bytes": 121008,
+        "sha256": "sha256:e2940835b338ac52cce7586e43b163a9a7d1db7cd69b01d337a2acd6f10b61e9"
+      },
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-blender44-scout4-receipt.json",
+        "bytes": 162,
+        "sha256": "sha256:2af9808e100f6338e26fca9a3755ccf6822b4c7829ff3af8caadc888d0737bed"
+      },
+      "result": {
+        "actualExitCode": 0,
+        "heldEngineInputsExitCode": 0,
+        "heldPrivateInputFiles": 231,
+        "privateInputBytesUnchanged": true,
+        "seconds": 13.641179000027478
+      },
+      "mappedFrames": 177,
+      "freshNativeRenders": 2,
+      "reusedOutputFrames": 175,
+      "phoneSheets": {
+        "path": "/private/tmp/still-shift-ms3-blender44-sheets4.json",
+        "bytes": 24124,
+        "sha256": "sha256:23e99473744f9143728947245679285b486973fc78728d4e615e49850eb4db4d"
+      }
+    }
+  ],
+  "currentAudit": {
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-blender44-audit1.json",
+      "bytes": 3303,
+      "sha256": "sha256:02198a72c7a13775221d90a0137933b85a83497e1da06880dc0bd9afdd72fec9"
+    },
+    "result": {
+      "status": "passed",
+      "scope": "Current mapped/source/narration pins, actual control/camera/framing/render-flag declarations, PNG dimensions and independently copied source-capture bytes. Render flags/anchors do not prove visual visibility or surface contact. No final export or continuous/listening acceptance.",
+      "codeSha256": "sha256:fe107a4e4d596c3405bec316209da9f4f04f2d5dc359c13ff2235bd23b1e0d6c",
+      "producerProfileSha256": "sha256:effb228d35386e4b7a75e8aec3973e0d0dc3ce847edaf20c79d6235716e9035d",
+      "mappedPins": 708,
+      "independentOutputCopies": 177,
+      "checkedVisibilityDeclarations": 327,
+      "rows": [
+        {
+          "id": "EU-001",
+          "mappedStates": 15,
+          "assetAndNarrationBytesExact": true,
+          "requestedCamerasControlsFramingAndRenderFlagsMatch": true,
+          "independentOutputPNGFiles": 15,
+          "wholeAndPhysicalVisibilityAcceptance": "UNREVIEWED"
+        },
+        {
+          "id": "EU-002",
+          "mappedStates": 15,
+          "assetAndNarrationBytesExact": true,
+          "requestedCamerasControlsFramingAndRenderFlagsMatch": true,
+          "independentOutputPNGFiles": 15,
+          "wholeAndPhysicalVisibilityAcceptance": "UNREVIEWED"
+        },
+        {
+          "id": "EU-003",
+          "mappedStates": 21,
+          "assetAndNarrationBytesExact": true,
+          "requestedCamerasControlsFramingAndRenderFlagsMatch": true,
+          "independentOutputPNGFiles": 21,
+          "wholeAndPhysicalVisibilityAcceptance": "UNREVIEWED"
+        },
+        {
+          "id": "EU-004",
+          "mappedStates": 15,
+          "assetAndNarrationBytesExact": true,
+          "requestedCamerasControlsFramingAndRenderFlagsMatch": true,
+          "independentOutputPNGFiles": 15,
+          "wholeAndPhysicalVisibilityAcceptance": "UNREVIEWED"
+        },
+        {
+          "id": "EU-005",
+          "mappedStates": 15,
+          "assetAndNarrationBytesExact": true,
+          "requestedCamerasControlsFramingAndRenderFlagsMatch": true,
+          "independentOutputPNGFiles": 15,
+          "wholeAndPhysicalVisibilityAcceptance": "UNREVIEWED"
+        },
+        {
+          "id": "EU-006",
+          "mappedStates": 21,
+          "assetAndNarrationBytesExact": true,
+          "requestedCamerasControlsFramingAndRenderFlagsMatch": true,
+          "independentOutputPNGFiles": 21,
+          "wholeAndPhysicalVisibilityAcceptance": "UNREVIEWED"
+        },
+        {
+          "id": "EU-007",
+          "mappedStates": 21,
+          "assetAndNarrationBytesExact": true,
+          "requestedCamerasControlsFramingAndRenderFlagsMatch": true,
+          "independentOutputPNGFiles": 21,
+          "wholeAndPhysicalVisibilityAcceptance": "UNREVIEWED"
+        },
+        {
+          "id": "EU-008",
+          "mappedStates": 15,
+          "assetAndNarrationBytesExact": true,
+          "requestedCamerasControlsFramingAndRenderFlagsMatch": true,
+          "independentOutputPNGFiles": 15,
+          "wholeAndPhysicalVisibilityAcceptance": "UNREVIEWED"
+        },
+        {
+          "id": "EU-009",
+          "mappedStates": 21,
+          "assetAndNarrationBytesExact": true,
+          "requestedCamerasControlsFramingAndRenderFlagsMatch": true,
+          "independentOutputPNGFiles": 21,
+          "wholeAndPhysicalVisibilityAcceptance": "UNREVIEWED"
+        },
+        {
+          "id": "EU-010",
+          "mappedStates": 18,
+          "assetAndNarrationBytesExact": true,
+          "requestedCamerasControlsFramingAndRenderFlagsMatch": true,
+          "independentOutputPNGFiles": 18,
+          "wholeAndPhysicalVisibilityAcceptance": "UNREVIEWED"
+        }
+      ]
+    },
+    "independentOutputCopies": 177,
+    "mappedPins": 708,
+    "checkedVisibilityDeclarations": 327
+  },
+  "phoneInspection": {
+    "midpoints": 59,
+    "overviewSheets": 10,
+    "overviewResizeLimitation": "Some 2160/2520-wide tool displays were resized to 2048px; originals remain 360x640 per panel.",
+    "targetedTripletSheets": 10,
+    "targetedMappedSamples": 30,
+    "scope": "Selected clean native PNGs only; no final captions, complete encoded video, continuous playback or listening.",
+    "findings": {
+      "recognition": "Wider source-camera framing preserves the peg, loop/bundle and can rim; main shots remain subject to full product review.",
+      "keyhole": "Native side view exposes the head above the narrower track.",
+      "binder": "The oblique grip shows the paper/body relationship; section journal is present but needs annotation to make the bearing/reaction relationship legible.",
+      "latch": "Oblique contact restores context but bevel/strike causality still needs a clearer labeled witness.",
+      "can": "Overhead rivet is distinguishable. Straight/oblique section views still merge same-material rivet/flange cut faces; isolated hardware confirms they render rather than being absent. Targeted highlights/labels are the next repair.",
+      "otherContacts": "Matched tape travel/thickness, zipper cup pairing and buckle release need explicit causal annotation and complete motion/glyph review."
+    }
+  },
+  "diagnostics": {
+    "anchorFocus": [
+      {
+        "path": "/private/tmp/still-shift-ms3-blender44-anchor-focus1.json",
+        "bytes": 10829,
+        "sha256": "sha256:63a0fc42b61213fecc615d522b7cb7600da7dd5e460268545c03c093369b793b"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-blender44-anchor-focus2.json",
+        "bytes": 10816,
+        "sha256": "sha256:bc41c26fcf65b97b6b5eeafe1685cfc648a08dadd21e655106ad71abcb708421"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-blender44-anchor-focus3.json",
+        "bytes": 1438,
+        "sha256": "sha256:d916fed403ffd686849dee993a4c96573b1cd5dfd8e954c713b039f457be2e7f"
+      }
+    ],
+    "sourceRenderability": {
+      "path": "/private/tmp/still-shift-ms3-blender44-renderability1.log",
+      "bytes": 2428,
+      "sha256": "sha256:6fa33f2fadba72fb2f7219153e809d5aa186f46181a6b6cbb5a225dbc0483224"
+    },
+    "sourceCameraOrder": {
+      "path": "/private/tmp/still-shift-ms3-blender44-camera-order1.log",
+      "bytes": 816,
+      "sha256": "sha256:d44238913c9626a48ec33354354fbc39a9a41b1984ebf2fe2c6a6e8e11cac212"
+    },
+    "cameraOrderResult": "No timeline camera markers in the three checked sources; frame_set retains assigned cameras. No camera-order source fix was made.",
+    "isolatedCanHardware": {
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-blender44-can-isolate1.log",
+        "bytes": 429,
+        "sha256": "sha256:85c08aa11910c76ba1915948a678c64a423d90f16a4fa88bb6386b0995706d04"
+      },
+      "capture": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/can-hardware-isolate1/capture.json",
+        "bytes": 1736,
+        "sha256": "sha256:4bb24063b84f122ef5445da6397f7538e453d093f836d3db3d36ab9e58c0befe"
+      },
+      "image": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/can-hardware-isolate1/frames/frame-000000.png",
+        "bytes": 610311,
+        "sha256": "sha256:4c0a6e0dab7280a791632d90f958cc52f270b9f2e5126d846e819413c3f26d29"
+      },
+      "nativeRenders": 1,
+      "inspected": true,
+      "scope": "Only four saved section hardware parts drawn. Selected metal cut faces blend visually; no whole-mechanism acceptance."
+    }
+  },
+  "retainedFailures": [
+    {
+      "record": "/private/tmp/still-shift-ms3-blender44-build1.log",
+      "actualExitCode": 2,
+      "reason": "Optional framing entry was possibly undefined; corrected explicit skip and one-pass part parsing. Build2 and final held gates pass."
+    },
+    {
+      "record": "/private/tmp/still-shift-ms3-blender44-sheets3-failed1.py",
+      "actualExitCode": 1,
+      "reason": "Derived sheet helper incorrectly referenced its not-yet-created output as the prior source; corrected and completed. Native captures/source unchanged."
+    }
+  ],
+  "remaining": [
+    "Causal labels/highlights bound to saved parts/anchors, resolved-hold purposes and native review/handoff.",
+    "All ten current whole HD products and whole factual/mechanical/encoded-glyph/continuous/listening review.",
+    "Broader physical-label/event/contact/fault/coverage checks, original E06/E10 review and comparable paired routine effort.",
+    "Final full software/benchmark/archive/isolated-installed gates."
+  ],
+  "pilotAccepted": 0,
+  "pilotDenominator": 10,
+  "routineTokenTelemetry": null,
+  "elevenLabsSpending": 0,
+  "publishedOrMerged": false
+}

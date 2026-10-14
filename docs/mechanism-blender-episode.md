@@ -20,7 +20,20 @@ control has one absolute track. Keys start at zero; hold, linear and smoothstep
 sampling is independent of seek history. Each shot selects a saved native camera
 and optional explicit cutaway hides. Camera projection metadata and evaluated
 surface/matrix/bounds accompany the captured frames. Visibility drivers are
-restored before each absolute state; explicit hides override only that frame.
+restored before each absolute state. Optional `shownParts` and `hiddenParts` contain
+at most128 distinct, disjoint source collection members together. Overrides apply
+only to the requested frame; a render flag does not prove visible contact.
+
+A shot may supply `framing`: `orthoScale` (0.0001–10,000) for an orthographic camera
+or `lensMillimeters` (1–2,000) for a perspective camera, plus optional `shiftX` and
+`shiftY` (−10–10). Values are finite and at least one is required. Original camera
+transforms remain. Shared projection data resets before each source state; animated
+projection data and mismatched zoom modes reject before the first render. Framing
+and sorted visibility overrides enter native state keys; replay compares actual
+projection values and declared part render flags. Expanded member/camera strings
+are admitted before frame sampling. The actual worker regression is
+`tests/fixtures/blender-shot-regression.py`; run it with Blender's
+`--background --python-exit-code 1 --python` options.
 
 Native controller drivers and unrelated source-clock channels remain active. Only
 keyed channels for declared public inputs are muted in private copies of their
@@ -164,3 +177,10 @@ rows and 512 endpoint images. Measured sampled-visual status does not establish
 all-frame encoded-glyph, factual, mechanical, continuous or listening acceptance.
 Full phone overviews, shot/contact crops, audio review and native handoff integration
 remain separate work.
+
+[Current native framing proof](./mechanism-shorts-ms3-native-framing-results.json)
+retains all ten 59-shot/177-state HD scouts and scoped camera repairs. Causal
+labels/highlights and resolved holds still need implementation/review before the
+whole products. Same-material cut faces can remain unclear despite correct source
+geometry, camera projection and render flags; those numeric checks do not approve
+physical contact or pixel readability.

@@ -68,18 +68,26 @@ still hold before relying on them.
   preserves them and unrelated clock channels, overriding only declared keyed
   inputs in copied active/NLA actions. The actual native regression checks ten
   forward/repeated/reverse states; all ten assets now show sampled geometric change.
-  Runtime `05c4`, native profile `8ad3`; 4,578 fast tests/456 files, 12 affected
-  native runtime checks/four files and Python checks pass. All 2,774 inputs
-  (122,135,610 bytes) remain exact after commit. The repaired scout uses 42 fresh
-  native renders for 50 mapped HD states; 200 mapped pins independently match and
-  all ten phone sheets were inspected. Cropped recognition/contact macros and
-  occluded causal parts remain located staging failures; full products have not run.
+  [Native framing](./mechanism-shorts-ms3-native-framing-results.json) adds bounded
+  per-shot native scale/lens/shifts, source projection resets and saved cutaway
+  show/hide overrides. Native keys and observation checks bind their actual values.
+  Source `0e23b873`, runtime `fe10`, native profile `effb`; 4,582 fast tests/456 files,
+  12 affected runtime checks/four files and both native regressions pass. All 2,775
+  held inputs (122,154,520 bytes) remain exact after commit. The 59-shot scaffold
+  captures entry/mid/exit (177 states): initial 89 renders, then scoped 9/5/2 fresh
+  renders with 168/172/175 reused outputs. Independent 708 pins/177 copies and 327
+  requested render flags match; all ten midpoint overviews and ten targeted triplets
+  were viewed. Main framing improves, but causal contacts need part/anchor-bound
+  labels/highlights. One isolated hardware render confirms the tab's cut faces render
+  but blend visually; camera/flag checks do not approve visibility. Full HD products
+  have not run; original masters/audio remain unchanged. Failed build/sheet helpers
+  and each insufficient camera revision remain retained.
   Prior rendered-QA zipper/default/numeric/fault proofs retain their `2695/a515`
   bindings and complete picture/audio/capture evidence. They do not establish a
   current producer pass. Failed preflights, rejected frozen scouts and the diagnostic
   exception remain recorded. Whole reviews remain unreviewed; accepted coverage is
   0/10 and paired routine effort is null.
-  **Next:** per-shot native framing/contact/cutaway repairs and review evidence/handoff; HD products for all ten
+  **Next:** causal annotations/resolved holds and review evidence/handoff; HD products for all ten
   with object-specific cues and factual bindings; broader faults/events/contact/coverage;
   whole factual/mechanical/glyph/continuous/listening and original E06/E10 reviews;
   comparable effort; final full software/benchmark/archive/installed-package gates.
@@ -272,6 +280,25 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Frame native shots and expose saved cutaways
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; source `0e23b873`, from `8f1fafd6`.
+- **Done:** Bounded scale/lens/shifts, absolute source resets, disjoint show/hide,
+  prospective expansion admission and authenticated observed settings/state keys.
+- **Verification:** Fast 4,582/456, native runtime 12/four files, Python and both native
+  regressions pass. All 2,775 inputs/122,154,520 bytes remain exact after commit.
+- **Actual:** 59 shots/177 HD states for all ten; revisions use 89/9/5/2 fresh native
+  renders and retain exact unaffected images. Independent 708 pins/177 copies/327
+  render flags match. Ten overviews/ten targeted triplets viewed; contacts remain drafts.
+- **Finding:** Isolated can hardware renders, but same-metal cut faces blend visually.
+  More camera-only changes are insufficient; use part/anchor-bound causal annotations.
+- **Retained:** Optional-value build failure, sheet-source typo and every insufficient
+  view revision. No whole HD/AV acceptance; pilot 0/10, routine effort null.
+- **Next:** Annotations/resolved holds, native handoff, whole products/reviews,
+  broader faults/effort/final gates. No spending, publication, merge or Actions.
+- **Records:** [Native framing](./mechanism-shorts-ms3-native-framing-results.json),
+  [first-ten scouts](./mechanism-shorts-ms3-first-ten-scout-results.json), [native guide](./mechanism-blender-episode.md).
 
 ### 2026-10-14 — Restore native drivers after actual first-ten phone scouts
 
