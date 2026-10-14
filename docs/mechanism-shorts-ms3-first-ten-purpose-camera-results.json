@@ -1,7 +1,7 @@
 {
   "schemaVersion": "ms3-first-ten-purpose-camera-results-1",
   "date": "2026-10-14",
-  "status": "camera-preflight-passed-current-cohort-canceled-after-qa-quota-failure",
+  "status": "memory-fix-completely-verified-current-source-retry-running",
   "source": {
     "runtimeSha256": "sha256:c7cde29700a9db643776cbb9faa7a96cc4d931f8281abcfaf96dd85a9d75f45b",
     "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
@@ -475,7 +475,7 @@
   "paidGeneration": "None",
   "publication": "No merge or publication",
   "memoryRepair": {
-    "status": "source-fix-fast-and-actual-shared-pixel-replay-passed-runtime-live",
+    "status": "fast-shared-pixel-and-complete-runtime-verified",
     "cause": "Completed64MiB authentication reservation stayed owned during downstream QA",
     "change": "Dispose a separate authentication owner before retaining bounded proof-frame data",
     "quotaChanged": false,
@@ -519,7 +519,95 @@
       "newNativeCalls": 0,
       "scope": "Actual existing610-frame composition under production-like shared reservations. Existing export remains at its old binding; no current-source export/product seal or whole acceptance."
     },
-    "runtimeSession": 18455,
-    "runtimeRunner": "/private/tmp/still-shift-ms3-holds59-memory-gates1.py"
+    "runtimeRunner": "/private/tmp/still-shift-ms3-holds59-memory-gates1.py",
+    "sourceCommit": "731e658be49e7267266765112625355a8b662d4f",
+    "runtimeVerification": {
+      "steps": [
+        {
+          "step": "runtime",
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 591.0614152920898
+        }
+      ],
+      "ownedCache": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-holds59-memory-runtime-cache-lcoi2hx9",
+      "reason": "Fresh owned media cache avoids the retained old shared-cache missing-manifest defect; no source, cache quota, thresholds or shared files changed.",
+      "actualExitCode": 0,
+      "runtimeTests": 271,
+      "runtimeFiles": 52,
+      "integrationTests": 324,
+      "integrationFiles": 59,
+      "depthTests": 14,
+      "browserSmokeActualExitCode": 0
+    }
+  },
+  "retainedEU001IndependentEncodedAudit": {
+    "status": "passed-scoped-retained-export-decode",
+    "frames": 610,
+    "sourceSamples": 975360,
+    "frameTailPaddingSamples": 640,
+    "changedRgbaFrames": [],
+    "rgbaFrameHashesExactAgainstH3": true,
+    "originalWholeAACReferenceParity": true,
+    "oldMovie": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-001/1/output.mp4",
+      "bytes": 1321056,
+      "sha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e"
+    },
+    "retainedPurposeMovie": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose59/items/EU-001/1/output.mp4",
+      "bytes": 1321056,
+      "sha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e"
+    },
+    "audio": [
+      {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose60-retained-EU001/purpose-decoded.f32",
+        "bytes": 7815168,
+        "sha256": "sha256:b9bc1c8bca52d9ac6b9dba7fe2cd87103f4ce56b76d56c03c0900a5fc5137989"
+      },
+      {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose60-retained-EU001/reference-decoded.f32",
+        "bytes": 7815168,
+        "sha256": "sha256:b9bc1c8bca52d9ac6b9dba7fe2cd87103f4ce56b76d56c03c0900a5fc5137989"
+      }
+    ],
+    "scope": "Unsealed c7 export retained after QA quota failure, full RGBA decode and original whole AAC reference. No current abe export/seal, full encoded glyph, playback, listening or pilot acceptance."
+  },
+  "retryCohort": {
+    "id": "actual-first-ten-native-purpose60",
+    "manifest": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-holds60.json",
+      "bytes": 37224,
+      "sha256": "sha256:25126426ac3101a63b837828358679e88c6437ccd2e5a9ae9cf90b02bc03fa9e"
+    },
+    "projects": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/projects-all10-holds60-cli.json",
+      "bytes": 3048,
+      "sha256": "sha256:fc56f8286a2610e5d91c57a6d235bd4dd527918c20be0cecbfc9213ef0afefe3"
+    },
+    "sourceCommit": "731e658be49e7267266765112625355a8b662d4f",
+    "runtimeSha256": "sha256:abe3c9335f6144e8d2ef466e41e4c83fbcac0ea8d2fcd4df5ea0b497aacf97a8",
+    "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose60",
+    "cacheImport": {
+      "status": "passed",
+      "source": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose59/blender-cache",
+      "destination": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose60/blender-cache",
+      "files": 5889,
+      "bytes": 2375705915,
+      "seconds": 5.857673041988164,
+      "allCopiedBytesExact": true,
+      "method": "APFS copy-on-write; no symlinks or quotas changed",
+      "originalJournalAndSealedDeliveriesUntouched": true
+    },
+    "privateInventory": {
+      "path": "/private/tmp/still-shift-ms3-holds60-private-inputs1.json",
+      "bytes": 20966,
+      "sha256": "sha256:9766ae8077ebce1112f70c3e32b7f3df78c98525577471124e83707eada7f868"
+    },
+    "wrapper": "/private/tmp/still-shift-ms3-holds60-whole1.py",
+    "receipt": "/private/tmp/still-shift-ms3-holds60-whole1-receipt.json",
+    "sessionId": 11682,
+    "execution": "run-live-report-resume-pending",
+    "originalH3AndCanceled59Preserved": true
   }
 }

@@ -96,11 +96,17 @@ still hold before relying on them.
   source (8pass/1fail) and passes fixed9 cases; quota unchanged. New2,778 inputs /
   122,203,842 bytes held; runtime `abe3c933`. Fast4,593/457 passes and actual
   shared-budget610-frame pixel/glyph replay completes0 errors/37 warnings,
-  21 classified static holds, zero new native calls. Full runtime18455 is live.
+  21 classified static holds, zero new native calls. Complete runtime passes actual0 in591.06s: runtime271/52, integration324/59,
+  depth14 and browser smoke; source stays exact.
   [Purpose/camera evidence and live handles](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json).
-  **Next:** re-poll runtime18455; finish verification of the committed
-  resource-lifetime repair. Create a new code-bound cohort after the fix;
-  do not resume old-code `queue-holds59.json`. Complete run/report/resume and
+  **Retry now live:** `actual-first-ten-native-purpose60`, `queue-holds60.json`,
+  `output-purpose60`, wrapper11682. Source `731e658b`/runtime `abe3c933`, unchanged
+  native profile `1dd0`. Exact COW import5,889 files/2,375,705,915 bytes from the
+  canceled cohort preserves useful native states. All53 candidate dependencies
+  (6,533,750 bytes) held. Retained unsealed EU001 movie independently decodes all610
+  RGBA frames identical to H3 and preserves complete original AAC reference parity;
+  this does not become a current-source product seal or whole acceptance.
+  **Next:** re-poll11682; complete new run/report/resume and
   independent native/encoded audio/picture audits. Broader physical label/event/
   intersection/mount faults, native handoff, whole factual/mechanical/encoded
   glyph/continuous/listening and original E06/E10 reviews, comparable effort and
@@ -295,6 +301,22 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-10-14 — Verified memory fix and separate all-ten retry
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `731e658b`.
+- **Done:** Complete runtime tier passes actual0 in591.06s: runtime271/52,
+  integration324/59, depth14, browser smoke; held source exact. Retained failed
+  EU001 export independently decodes610 RGBA frames identical to original H3,
+  with original complete AAC reference parity; its old binding is preserved.
+- **Retry:** Separate `actual-first-ten-native-purpose60` on runtime`abe3c933`,
+  profile`1dd0`,6,181 frames. Exact COW native-cache copy5,889 files/2,375,705,915B.
+  Run11682 live; report/resume pending. All53 private dependencies held, no new
+  script/audio/control changes. Original H3 and canceled59 history stay intact.
+- **Next:** Re-poll11682; source edits wait until the frozen lifecycle is terminal.
+  Full fresh outputs/audits, whole reviews, broader faults/handoff/effort/final
+  gates remain; acceptance0/10. No paid generation, merge or publication.
+- **Records:** [Verified fix and retry](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json).
+
 ### 2026-10-14 — Release completed native-proof authentication capacity
 
 - **Agent / branch:** Codex on `codex/mechanism-ms3`, from `9f2eea35`.
@@ -307,8 +329,8 @@ still hold before relying on them.
   shared96MiB caller/visual reservations pass. Proofs retain1,249,280 bytes;
   64MiB authentication released. Replay0 errors/37 warnings,21 declared holds,
   zero new native calls; old export binding remains old and acceptance0/10.
-- **Next:** Full runtime18455 live on held2,778 inputs/122,203,842 bytes. Finish
-  it, then new code-bound cohort; do not resume canceled old-code manifest.
+- **Next:** Complete runtime591.06s passes actual0 (271/52,324/59,depth14,smoke),
+  held inputs exact. New code-bound cohort60 runs in11682; prior cohort stays canceled.
 - **Records:** [Retained run, fix and scoped replay](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json).
 
 ### 2026-10-14 — First-ten purposes, fixed cameras and current-source queue
