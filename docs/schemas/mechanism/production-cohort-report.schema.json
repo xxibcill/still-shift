@@ -77,9 +77,15 @@
           "properties": {
             "passed": { "type": "integer", "minimum": 0, "maximum": 300 },
             "failed": { "type": "integer", "minimum": 0, "maximum": 300 },
-            "unreviewed": { "type": "integer", "minimum": 0, "maximum": 300 }
+            "unreviewed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "notApplicable": {
+              "default": 0,
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 300
+            }
           },
-          "required": ["passed", "failed", "unreviewed"],
+          "required": ["passed", "failed", "unreviewed", "notApplicable"],
           "additionalProperties": false
         },
         "mechanical": {
@@ -87,9 +93,15 @@
           "properties": {
             "passed": { "type": "integer", "minimum": 0, "maximum": 300 },
             "failed": { "type": "integer", "minimum": 0, "maximum": 300 },
-            "unreviewed": { "type": "integer", "minimum": 0, "maximum": 300 }
+            "unreviewed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "notApplicable": {
+              "default": 0,
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 300
+            }
           },
-          "required": ["passed", "failed", "unreviewed"],
+          "required": ["passed", "failed", "unreviewed", "notApplicable"],
           "additionalProperties": false
         },
         "sampled-visual": {
@@ -97,9 +109,15 @@
           "properties": {
             "passed": { "type": "integer", "minimum": 0, "maximum": 300 },
             "failed": { "type": "integer", "minimum": 0, "maximum": 300 },
-            "unreviewed": { "type": "integer", "minimum": 0, "maximum": 300 }
+            "unreviewed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "notApplicable": {
+              "default": 0,
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 300
+            }
           },
-          "required": ["passed", "failed", "unreviewed"],
+          "required": ["passed", "failed", "unreviewed", "notApplicable"],
           "additionalProperties": false
         },
         "continuous-motion": {
@@ -107,9 +125,15 @@
           "properties": {
             "passed": { "type": "integer", "minimum": 0, "maximum": 300 },
             "failed": { "type": "integer", "minimum": 0, "maximum": 300 },
-            "unreviewed": { "type": "integer", "minimum": 0, "maximum": 300 }
+            "unreviewed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "notApplicable": {
+              "default": 0,
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 300
+            }
           },
-          "required": ["passed", "failed", "unreviewed"],
+          "required": ["passed", "failed", "unreviewed", "notApplicable"],
           "additionalProperties": false
         },
         "listening": {
@@ -117,9 +141,15 @@
           "properties": {
             "passed": { "type": "integer", "minimum": 0, "maximum": 300 },
             "failed": { "type": "integer", "minimum": 0, "maximum": 300 },
-            "unreviewed": { "type": "integer", "minimum": 0, "maximum": 300 }
+            "unreviewed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "notApplicable": {
+              "default": 0,
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 300
+            }
           },
-          "required": ["passed", "failed", "unreviewed"],
+          "required": ["passed", "failed", "unreviewed", "notApplicable"],
           "additionalProperties": false
         },
         "factual": {
@@ -127,9 +157,15 @@
           "properties": {
             "passed": { "type": "integer", "minimum": 0, "maximum": 300 },
             "failed": { "type": "integer", "minimum": 0, "maximum": 300 },
-            "unreviewed": { "type": "integer", "minimum": 0, "maximum": 300 }
+            "unreviewed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "notApplicable": {
+              "default": 0,
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 300
+            }
           },
-          "required": ["passed", "failed", "unreviewed"],
+          "required": ["passed", "failed", "unreviewed", "notApplicable"],
           "additionalProperties": false
         }
       },

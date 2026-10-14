@@ -1,0 +1,1719 @@
+{
+  "schemaVersion": "ms3-portable-first-ten-lifecycle-results-1",
+  "date": "2026-10-15",
+  "status": "passed-terminal-run-report-resume-all-ten-relocated-portable-inputs",
+  "capturedAt": "2026-10-14T19:04:17.233381+00:00",
+  "manifest": {
+    "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten67-relocated/queue-readback.json",
+    "bytes": 32167,
+    "sha256": "sha256:90d9f57f13354725ab407d49dc1606f83fb62e38166a1c9a2ecc74f8d96f64cd"
+  },
+  "wrapper": {
+    "path": "/private/tmp/still-shift-ms3-portable68-whole1.py",
+    "bytes": 4927,
+    "sha256": "sha256:4c3a336024d073ebc601846ad7aa4a6599e8f15acc0bf26ec40fa582739b2af4"
+  },
+  "wrapperReceiptAtCapture": {
+    "steps": [],
+    "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten67-relocated/queue-readback.json",
+    "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68",
+    "scope": "All actual EU001\u2013EU010 in a fresh relocated portable input lifecycle. Corrected EU002/EU007, eight unchanged editorial plans. All whole original Alden takes at1x. Previous products/journals retain their exact identities.",
+    "acceptedPilot": 0,
+    "wholeReviews": "UNREVIEWED",
+    "declaredInputFiles": 106,
+    "protectedFiles": 137
+  },
+  "unifiedSession": 75382,
+  "processConfirmedLiveThisTurn": true,
+  "stateSnapshot": {
+    "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/queue-state.json",
+    "bytes": 8894,
+    "sha256": "sha256:b6249e620e29677ddb608cd4811349e7a8dc14ed583400c793fc53b272eba09c",
+    "statuses": {
+      "EU-001": "passed",
+      "EU-002": "passed",
+      "EU-003": "passed",
+      "EU-004": "passed",
+      "EU-005": "passed",
+      "EU-006": "passed",
+      "EU-007": "passed",
+      "EU-008": "running",
+      "EU-009": "pending",
+      "EU-010": "pending"
+    }
+  },
+  "frozenSource": {
+    "sourceCommit": "4b58f49be3841b004260e3bfa5650644a427479b",
+    "runtimeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+    "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+    "heldFiles": 2778,
+    "heldBytes": 122205150,
+    "actualHoldCheckExitCode": 0
+  },
+  "independentPartial": {
+    "episodes": 7,
+    "frames": 4379,
+    "productArtifactPins": 70,
+    "nativePins": 17516,
+    "previewErrors": 0,
+    "previewWarnings": 236,
+    "encodedEvidenceImages": 373,
+    "products": [
+      {
+        "id": "EU-001",
+        "status": "passed-current-producer-bound-product-closure",
+        "producerBoundArtifactsVerified": 10,
+        "product": {
+          "path": "products/EU-001-ffd04439aac4a91d-1.json",
+          "bytes": 9827,
+          "sha256": "sha256:b5aa43cb371ba4a6bc836efeaf2a07f439a877c18091040a6fb0d5397d63eeb7"
+        },
+        "binding": {
+          "inputSha256": "sha256:ffd04439aac4a91d9d4319a7c7a9b8e29c34cdfddb3149eedd0ef9fb6bbfa333",
+          "outputSha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 610,
+        "previewErrors": 0,
+        "previewWarnings": 37,
+        "declaredPhysicalHolds": 21,
+        "encodedEvidenceImages": 59,
+        "wholeReviews": "UNREVIEWED",
+        "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+      },
+      {
+        "id": "EU-002",
+        "status": "passed-current-producer-bound-product-closure",
+        "producerBoundArtifactsVerified": 10,
+        "product": {
+          "path": "products/EU-002-2ef5c70553bcab97-1.json",
+          "bytes": 9885,
+          "sha256": "sha256:b8e0085937da9b03ec1e40d6da802ea43b872f769f99fbaeb6efa1a8918193cc"
+        },
+        "binding": {
+          "inputSha256": "sha256:2ef5c70553bcab978ebfb8b41cea02c509355425b2c4b64d5cd192fba79dc5f2",
+          "outputSha256": "sha256:f8c223632b6d5054727998958163e84815bfe9a8698fbb37c0b99064da6b61ab",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 588,
+        "previewErrors": 0,
+        "previewWarnings": 27,
+        "declaredPhysicalHolds": 12,
+        "encodedEvidenceImages": 44,
+        "wholeReviews": "UNREVIEWED",
+        "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+      },
+      {
+        "id": "EU-003",
+        "status": "passed-current-producer-bound-product-closure",
+        "producerBoundArtifactsVerified": 10,
+        "product": {
+          "path": "products/EU-003-ea0d98cfc426847f-1.json",
+          "bytes": 9930,
+          "sha256": "sha256:3d80b066a61a6d9b68d430035ec0959bb9bf2b85cef3c1e743649c2f1ca7bed6"
+        },
+        "binding": {
+          "inputSha256": "sha256:ea0d98cfc426847fe5e51f9d4bb2be8642644b2259f16b50832bd5615ca3737a",
+          "outputSha256": "sha256:aa7039b505d2155700672a25a2f484114035352f33ccec480f673cb869d47c3b",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 588,
+        "previewErrors": 0,
+        "previewWarnings": 37,
+        "declaredPhysicalHolds": 20,
+        "encodedEvidenceImages": 54,
+        "wholeReviews": "UNREVIEWED",
+        "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+      },
+      {
+        "id": "EU-004",
+        "status": "passed-current-producer-bound-product-closure",
+        "producerBoundArtifactsVerified": 10,
+        "product": {
+          "path": "products/EU-004-3792a8f0932127df-1.json",
+          "bytes": 9938,
+          "sha256": "sha256:941daff29e23188b01445f9318b4243fbc3c58ee5850b9a738a38fd29117ce5d"
+        },
+        "binding": {
+          "inputSha256": "sha256:3792a8f0932127df1c0f027accc133b6a2160089afd463c035d7780a32bf97cc",
+          "outputSha256": "sha256:f2b6b6ffb0c2077ffbe9ce7c4b50ce5e2da71b275ac6164cf625ba254cdab39d",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 653,
+        "previewErrors": 0,
+        "previewWarnings": 28,
+        "declaredPhysicalHolds": 13,
+        "encodedEvidenceImages": 47,
+        "wholeReviews": "UNREVIEWED",
+        "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+      },
+      {
+        "id": "EU-005",
+        "status": "passed-current-producer-bound-product-closure",
+        "producerBoundArtifactsVerified": 10,
+        "product": {
+          "path": "products/EU-005-765e4108ec32dc71-1.json",
+          "bytes": 9948,
+          "sha256": "sha256:615366a4af2bf69bd1c491340806d594b69ce5380b70a49d38f465262742eb7a"
+        },
+        "binding": {
+          "inputSha256": "sha256:765e4108ec32dc7114c1da6c9ccc9e10c96f091de74b2eeece6498382d3a73bd",
+          "outputSha256": "sha256:887d993a18e4165d4e6cd016e2e429f0e6ea8dd80c9e82ca885a3bad5edfb3d5",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 598,
+        "previewErrors": 0,
+        "previewWarnings": 34,
+        "declaredPhysicalHolds": 19,
+        "encodedEvidenceImages": 54,
+        "wholeReviews": "UNREVIEWED",
+        "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+      },
+      {
+        "id": "EU-006",
+        "status": "passed-current-producer-bound-product-closure",
+        "producerBoundArtifactsVerified": 10,
+        "product": {
+          "path": "products/EU-006-ea24cedea45bd0c1-1.json",
+          "bytes": 9958,
+          "sha256": "sha256:e9326c1164baa79ed028b2e61afe3abc96ec3ba1b46c4393c4dc7ef617f3fbba"
+        },
+        "binding": {
+          "inputSha256": "sha256:ea24cedea45bd0c1317c0e3727fa4e6346373507b0147b969e5a20b2bb4fd8fd",
+          "outputSha256": "sha256:6b3fbd3e784cbc68d41afd4663e1be78a45d554a2500d6c0732ebc58ac32f9e7",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 634,
+        "previewErrors": 0,
+        "previewWarnings": 37,
+        "declaredPhysicalHolds": 19,
+        "encodedEvidenceImages": 57,
+        "wholeReviews": "UNREVIEWED",
+        "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+      },
+      {
+        "id": "EU-007",
+        "status": "passed-current-producer-bound-product-closure",
+        "producerBoundArtifactsVerified": 10,
+        "product": {
+          "path": "products/EU-007-fc2f9e002f278cf5-1.json",
+          "bytes": 9934,
+          "sha256": "sha256:cb6ba9bd5c3945fd3d07d6bfaecad6ca38d1eb67edd187a4cc802e1be4a6e331"
+        },
+        "binding": {
+          "inputSha256": "sha256:fc2f9e002f278cf5e7dd8ecbc051a4778d4303108833e7c402bb1ed0c099940b",
+          "outputSha256": "sha256:01a008b76eb7f357d3087d8478b43a2991908f9c80467abcf267fdd4afa61051",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 708,
+        "previewErrors": 0,
+        "previewWarnings": 36,
+        "declaredPhysicalHolds": 21,
+        "encodedEvidenceImages": 58,
+        "wholeReviews": "UNREVIEWED",
+        "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+      }
+    ],
+    "decodes": [
+      {
+        "id": "EU-001",
+        "status": "passed-complete-portable-decode-and-selected-reference-parity",
+        "product": {
+          "path": "products/EU-001-ffd04439aac4a91d-1.json",
+          "bytes": 9827,
+          "sha256": "sha256:b5aa43cb371ba4a6bc836efeaf2a07f439a877c18091040a6fb0d5397d63eeb7"
+        },
+        "binding": {
+          "inputSha256": "sha256:ffd04439aac4a91d9d4319a7c7a9b8e29c34cdfddb3149eedd0ef9fb6bbfa333",
+          "outputSha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 610,
+        "rgbaFrameHashesExactAgainstSelectedDelivery": true,
+        "completePcmExactAgainstSelectedDelivery": true,
+        "originalWholeAACReferenceParityByAuthenticatedPriorReceipt": true,
+        "priorReceipt": {
+          "path": "/private/tmp/still-shift-ms3-holds61-EU001-current-encoded1.json",
+          "bytes": 1846,
+          "sha256": "sha256:22a9e31fc6bc1dabb1d0b4956e2684a98e7f763bdc58774ed2470ea60331a4fe"
+        },
+        "priorMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/items/EU-001/1/output.mp4",
+          "bytes": 1321056,
+          "sha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e"
+        },
+        "portableMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/items/EU-001/1/output.mp4",
+          "bytes": 1321056,
+          "sha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-001/prior-decoded.f32",
+            "bytes": 7815168,
+            "sha256": "sha256:b9bc1c8bca52d9ac6b9dba7fe2cd87103f4ce56b76d56c03c0900a5fc5137989"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-001/portable-decoded.f32",
+            "bytes": 7815168,
+            "sha256": "sha256:b9bc1c8bca52d9ac6b9dba7fe2cd87103f4ce56b76d56c03c0900a5fc5137989"
+          }
+        ],
+        "wholeReviews": "UNREVIEWED",
+        "scope": "All RGBA frames and final PCM decoded independently. Prior original-whole AAC parity is reused only after rehashing its exact movie and receipt. No encoded glyph, normal-speed viewing, listening or pilot acceptance."
+      },
+      {
+        "id": "EU-002",
+        "status": "passed-complete-portable-decode-and-selected-reference-parity",
+        "product": {
+          "path": "products/EU-002-2ef5c70553bcab97-1.json",
+          "bytes": 9885,
+          "sha256": "sha256:b8e0085937da9b03ec1e40d6da802ea43b872f769f99fbaeb6efa1a8918193cc"
+        },
+        "binding": {
+          "inputSha256": "sha256:2ef5c70553bcab978ebfb8b41cea02c509355425b2c4b64d5cd192fba79dc5f2",
+          "outputSha256": "sha256:f8c223632b6d5054727998958163e84815bfe9a8698fbb37c0b99064da6b61ab",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 588,
+        "rgbaFrameHashesExactAgainstSelectedDelivery": true,
+        "completePcmExactAgainstSelectedDelivery": true,
+        "originalWholeAACReferenceParityByAuthenticatedPriorReceipt": true,
+        "priorReceipt": {
+          "path": "/private/tmp/still-shift-ms3-corrections66-EU-002-encoded1.json",
+          "bytes": 2968,
+          "sha256": "sha256:cc1f003c11a3d9008560a293fb2f59bcaa3ddf9033bc85537aa7bffb6eee034a"
+        },
+        "priorMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-corrections66/items/EU-002/1/output.mp4",
+          "bytes": 1607349,
+          "sha256": "sha256:f8c223632b6d5054727998958163e84815bfe9a8698fbb37c0b99064da6b61ab"
+        },
+        "portableMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/items/EU-002/1/output.mp4",
+          "bytes": 1607349,
+          "sha256": "sha256:f8c223632b6d5054727998958163e84815bfe9a8698fbb37c0b99064da6b61ab"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-002/prior-decoded.f32",
+            "bytes": 7528448,
+            "sha256": "sha256:7e65716e01ddeb237c168c3cbfc5d2f58de1f12df7da40e32a27d98c47563d39"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-002/portable-decoded.f32",
+            "bytes": 7528448,
+            "sha256": "sha256:7e65716e01ddeb237c168c3cbfc5d2f58de1f12df7da40e32a27d98c47563d39"
+          }
+        ],
+        "wholeReviews": "UNREVIEWED",
+        "scope": "All RGBA frames and final PCM decoded independently. Prior original-whole AAC parity is reused only after rehashing its exact movie and receipt. No encoded glyph, normal-speed viewing, listening or pilot acceptance."
+      },
+      {
+        "id": "EU-003",
+        "status": "passed-complete-portable-decode-and-selected-reference-parity",
+        "product": {
+          "path": "products/EU-003-ea0d98cfc426847f-1.json",
+          "bytes": 9930,
+          "sha256": "sha256:3d80b066a61a6d9b68d430035ec0959bb9bf2b85cef3c1e743649c2f1ca7bed6"
+        },
+        "binding": {
+          "inputSha256": "sha256:ea0d98cfc426847fe5e51f9d4bb2be8642644b2259f16b50832bd5615ca3737a",
+          "outputSha256": "sha256:aa7039b505d2155700672a25a2f484114035352f33ccec480f673cb869d47c3b",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 588,
+        "rgbaFrameHashesExactAgainstSelectedDelivery": true,
+        "completePcmExactAgainstSelectedDelivery": true,
+        "originalWholeAACReferenceParityByAuthenticatedPriorReceipt": true,
+        "priorReceipt": {
+          "path": "/private/tmp/still-shift-ms3-holds61-EU003-current-encoded1.json",
+          "bytes": 1842,
+          "sha256": "sha256:c67dad217bcad51c038c5723dc33dd86e95256c9d1a23d8965e0a3c65a096aa7"
+        },
+        "priorMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/items/EU-003/1/output.mp4",
+          "bytes": 990990,
+          "sha256": "sha256:aa7039b505d2155700672a25a2f484114035352f33ccec480f673cb869d47c3b"
+        },
+        "portableMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/items/EU-003/1/output.mp4",
+          "bytes": 990990,
+          "sha256": "sha256:aa7039b505d2155700672a25a2f484114035352f33ccec480f673cb869d47c3b"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-003/prior-decoded.f32",
+            "bytes": 7528448,
+            "sha256": "sha256:147d32349d7daa3c74bb1a4f107a4c20d456206529ce224d4a37251ee0fe4f48"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-003/portable-decoded.f32",
+            "bytes": 7528448,
+            "sha256": "sha256:147d32349d7daa3c74bb1a4f107a4c20d456206529ce224d4a37251ee0fe4f48"
+          }
+        ],
+        "wholeReviews": "UNREVIEWED",
+        "scope": "All RGBA frames and final PCM decoded independently. Prior original-whole AAC parity is reused only after rehashing its exact movie and receipt. No encoded glyph, normal-speed viewing, listening or pilot acceptance."
+      },
+      {
+        "id": "EU-004",
+        "status": "passed-complete-portable-decode-and-selected-reference-parity",
+        "product": {
+          "path": "products/EU-004-3792a8f0932127df-1.json",
+          "bytes": 9938,
+          "sha256": "sha256:941daff29e23188b01445f9318b4243fbc3c58ee5850b9a738a38fd29117ce5d"
+        },
+        "binding": {
+          "inputSha256": "sha256:3792a8f0932127df1c0f027accc133b6a2160089afd463c035d7780a32bf97cc",
+          "outputSha256": "sha256:f2b6b6ffb0c2077ffbe9ce7c4b50ce5e2da71b275ac6164cf625ba254cdab39d",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 653,
+        "rgbaFrameHashesExactAgainstSelectedDelivery": true,
+        "completePcmExactAgainstSelectedDelivery": true,
+        "originalWholeAACReferenceParityByAuthenticatedPriorReceipt": true,
+        "priorReceipt": {
+          "path": "/private/tmp/still-shift-ms3-holds61-EU004-current-encoded1.json",
+          "bytes": 1895,
+          "sha256": "sha256:c1f9d16ac726cb0fa96ca49d8ec8133bee6a04f2987ba3e2007a9e4171c83fbf"
+        },
+        "priorMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/items/EU-004/1/output.mp4",
+          "bytes": 2809132,
+          "sha256": "sha256:f2b6b6ffb0c2077ffbe9ce7c4b50ce5e2da71b275ac6164cf625ba254cdab39d"
+        },
+        "portableMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/items/EU-004/1/output.mp4",
+          "bytes": 2809132,
+          "sha256": "sha256:f2b6b6ffb0c2077ffbe9ce7c4b50ce5e2da71b275ac6164cf625ba254cdab39d"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-004/prior-decoded.f32",
+            "bytes": 8364032,
+            "sha256": "sha256:7de7cc01d3145f39c37c6a6042bb8bd518c74fc8287ff20be3bd0deabf1a87eb"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-004/portable-decoded.f32",
+            "bytes": 8364032,
+            "sha256": "sha256:7de7cc01d3145f39c37c6a6042bb8bd518c74fc8287ff20be3bd0deabf1a87eb"
+          }
+        ],
+        "wholeReviews": "UNREVIEWED",
+        "scope": "All RGBA frames and final PCM decoded independently. Prior original-whole AAC parity is reused only after rehashing its exact movie and receipt. No encoded glyph, normal-speed viewing, listening or pilot acceptance."
+      },
+      {
+        "id": "EU-005",
+        "status": "passed-complete-portable-decode-and-selected-reference-parity",
+        "product": {
+          "path": "products/EU-005-765e4108ec32dc71-1.json",
+          "bytes": 9948,
+          "sha256": "sha256:615366a4af2bf69bd1c491340806d594b69ce5380b70a49d38f465262742eb7a"
+        },
+        "binding": {
+          "inputSha256": "sha256:765e4108ec32dc7114c1da6c9ccc9e10c96f091de74b2eeece6498382d3a73bd",
+          "outputSha256": "sha256:887d993a18e4165d4e6cd016e2e429f0e6ea8dd80c9e82ca885a3bad5edfb3d5",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 598,
+        "rgbaFrameHashesExactAgainstSelectedDelivery": true,
+        "completePcmExactAgainstSelectedDelivery": true,
+        "originalWholeAACReferenceParityByAuthenticatedPriorReceipt": true,
+        "priorReceipt": {
+          "path": "/private/tmp/still-shift-ms3-holds61-EU005-current-encoded1.json",
+          "bytes": 1846,
+          "sha256": "sha256:4cc9d5e1e04246337b7dc8701f4033094e8a64edc214110824e45aa7966385b9"
+        },
+        "priorMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/items/EU-005/1/output.mp4",
+          "bytes": 1745077,
+          "sha256": "sha256:887d993a18e4165d4e6cd016e2e429f0e6ea8dd80c9e82ca885a3bad5edfb3d5"
+        },
+        "portableMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/items/EU-005/1/output.mp4",
+          "bytes": 1745077,
+          "sha256": "sha256:887d993a18e4165d4e6cd016e2e429f0e6ea8dd80c9e82ca885a3bad5edfb3d5"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-005/prior-decoded.f32",
+            "bytes": 7659520,
+            "sha256": "sha256:8aca8931847b048b9466a06568858166cc8741a5efeace90d69ab49049608246"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-005/portable-decoded.f32",
+            "bytes": 7659520,
+            "sha256": "sha256:8aca8931847b048b9466a06568858166cc8741a5efeace90d69ab49049608246"
+          }
+        ],
+        "wholeReviews": "UNREVIEWED",
+        "scope": "All RGBA frames and final PCM decoded independently. Prior original-whole AAC parity is reused only after rehashing its exact movie and receipt. No encoded glyph, normal-speed viewing, listening or pilot acceptance."
+      },
+      {
+        "id": "EU-006",
+        "status": "passed-complete-portable-decode-and-selected-reference-parity",
+        "product": {
+          "path": "products/EU-006-ea24cedea45bd0c1-1.json",
+          "bytes": 9958,
+          "sha256": "sha256:e9326c1164baa79ed028b2e61afe3abc96ec3ba1b46c4393c4dc7ef617f3fbba"
+        },
+        "binding": {
+          "inputSha256": "sha256:ea24cedea45bd0c1317c0e3727fa4e6346373507b0147b969e5a20b2bb4fd8fd",
+          "outputSha256": "sha256:6b3fbd3e784cbc68d41afd4663e1be78a45d554a2500d6c0732ebc58ac32f9e7",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 634,
+        "rgbaFrameHashesExactAgainstSelectedDelivery": true,
+        "completePcmExactAgainstSelectedDelivery": true,
+        "originalWholeAACReferenceParityByAuthenticatedPriorReceipt": true,
+        "priorReceipt": {
+          "path": "/private/tmp/still-shift-ms3-holds61-EU006-current-encoded1.json",
+          "bytes": 1847,
+          "sha256": "sha256:d4dd5beed687c21daf11adcd59d521f55ef18c93571088c6167913b365907461"
+        },
+        "priorMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/items/EU-006/1/output.mp4",
+          "bytes": 1253872,
+          "sha256": "sha256:6b3fbd3e784cbc68d41afd4663e1be78a45d554a2500d6c0732ebc58ac32f9e7"
+        },
+        "portableMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/items/EU-006/1/output.mp4",
+          "bytes": 1253872,
+          "sha256": "sha256:6b3fbd3e784cbc68d41afd4663e1be78a45d554a2500d6c0732ebc58ac32f9e7"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-006/prior-decoded.f32",
+            "bytes": 8118272,
+            "sha256": "sha256:b947ee2daca22c3ca7e10fe36e1a83d8ec6b4502017ef0e90a3fc7a44812e69a"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-006/portable-decoded.f32",
+            "bytes": 8118272,
+            "sha256": "sha256:b947ee2daca22c3ca7e10fe36e1a83d8ec6b4502017ef0e90a3fc7a44812e69a"
+          }
+        ],
+        "wholeReviews": "UNREVIEWED",
+        "scope": "All RGBA frames and final PCM decoded independently. Prior original-whole AAC parity is reused only after rehashing its exact movie and receipt. No encoded glyph, normal-speed viewing, listening or pilot acceptance."
+      },
+      {
+        "id": "EU-007",
+        "status": "passed-complete-portable-decode-and-selected-reference-parity",
+        "product": {
+          "path": "products/EU-007-fc2f9e002f278cf5-1.json",
+          "bytes": 9934,
+          "sha256": "sha256:cb6ba9bd5c3945fd3d07d6bfaecad6ca38d1eb67edd187a4cc802e1be4a6e331"
+        },
+        "binding": {
+          "inputSha256": "sha256:fc2f9e002f278cf5e7dd8ecbc051a4778d4303108833e7c402bb1ed0c099940b",
+          "outputSha256": "sha256:01a008b76eb7f357d3087d8478b43a2991908f9c80467abcf267fdd4afa61051",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 708,
+        "rgbaFrameHashesExactAgainstSelectedDelivery": true,
+        "completePcmExactAgainstSelectedDelivery": true,
+        "originalWholeAACReferenceParityByAuthenticatedPriorReceipt": true,
+        "priorReceipt": {
+          "path": "/private/tmp/still-shift-ms3-corrections66-EU-007-encoded1.json",
+          "bytes": 6101,
+          "sha256": "sha256:c19568a2aafdeb6e94af6e0836029937f2c32f13705caaf76559d8b91db6845d"
+        },
+        "priorMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-corrections66/items/EU-007/1/output.mp4",
+          "bytes": 2010733,
+          "sha256": "sha256:01a008b76eb7f357d3087d8478b43a2991908f9c80467abcf267fdd4afa61051"
+        },
+        "portableMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/items/EU-007/1/output.mp4",
+          "bytes": 2010733,
+          "sha256": "sha256:01a008b76eb7f357d3087d8478b43a2991908f9c80467abcf267fdd4afa61051"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-007/prior-decoded.f32",
+            "bytes": 9068544,
+            "sha256": "sha256:edc077081c85137fbbed5dbdf27692284126fdf96a4c86362def3ba59f127a0b"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-007/portable-decoded.f32",
+            "bytes": 9068544,
+            "sha256": "sha256:edc077081c85137fbbed5dbdf27692284126fdf96a4c86362def3ba59f127a0b"
+          }
+        ],
+        "wholeReviews": "UNREVIEWED",
+        "scope": "All RGBA frames and final PCM decoded independently. Prior original-whole AAC parity is reused only after rehashing its exact movie and receipt. No encoded glyph, normal-speed viewing, listening or pilot acceptance."
+      }
+    ],
+    "nativeAudits": [
+      {
+        "status": "passed-available-native-artifacts",
+        "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+        "queueId": "actual-first-ten-portable67",
+        "rows": [
+          {
+            "id": "EU-001",
+            "statusAtAudit": "passed",
+            "frames": 610,
+            "proofHolds": 5,
+            "pinChecks": 2440,
+            "uniquePinsVerified": 738,
+            "activeLabelFrames": 529,
+            "freshNativeRenders": 0,
+            "reusedNativeFrames": 610,
+            "completePhysicalProofAndGlobalFrameClockPassed": true
+          },
+          {
+            "id": "EU-002",
+            "statusAtAudit": "passed",
+            "frames": 588,
+            "proofHolds": 5,
+            "pinChecks": 2352,
+            "uniquePinsVerified": 838,
+            "activeLabelFrames": 344,
+            "freshNativeRenders": 0,
+            "reusedNativeFrames": 588,
+            "completePhysicalProofAndGlobalFrameClockPassed": true
+          },
+          {
+            "id": "EU-003",
+            "statusAtAudit": "passed",
+            "frames": 588,
+            "proofHolds": 7,
+            "pinChecks": 2352,
+            "uniquePinsVerified": 662,
+            "activeLabelFrames": 378,
+            "freshNativeRenders": 0,
+            "reusedNativeFrames": 588,
+            "completePhysicalProofAndGlobalFrameClockPassed": true
+          },
+          {
+            "id": "EU-004",
+            "statusAtAudit": "passed",
+            "frames": 653,
+            "proofHolds": 5,
+            "pinChecks": 2612,
+            "uniquePinsVerified": 985,
+            "activeLabelFrames": 363,
+            "freshNativeRenders": 0,
+            "reusedNativeFrames": 653,
+            "completePhysicalProofAndGlobalFrameClockPassed": true
+          },
+          {
+            "id": "EU-005",
+            "statusAtAudit": "passed",
+            "frames": 598,
+            "proofHolds": 5,
+            "pinChecks": 2392,
+            "uniquePinsVerified": 772,
+            "activeLabelFrames": 360,
+            "freshNativeRenders": 0,
+            "reusedNativeFrames": 598,
+            "completePhysicalProofAndGlobalFrameClockPassed": true
+          }
+        ],
+        "skipped": [],
+        "scope": "Current saved native pins, complete physical proof metadata, actual controller phases, absolute sequence frame clocks and source callout copy/projection. Not surface contact, encoded glyph, full playback/listening or pilot acceptance."
+      },
+      {
+        "status": "passed-available-native-artifacts",
+        "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+        "queueId": "actual-first-ten-portable67",
+        "rows": [
+          {
+            "id": "EU-006",
+            "statusAtAudit": "passed",
+            "frames": 634,
+            "proofHolds": 8,
+            "pinChecks": 2536,
+            "uniquePinsVerified": 747,
+            "activeLabelFrames": 339,
+            "freshNativeRenders": 0,
+            "reusedNativeFrames": 634,
+            "completePhysicalProofAndGlobalFrameClockPassed": true
+          }
+        ],
+        "skipped": [],
+        "scope": "Current saved native pins, complete physical proof metadata, actual controller phases, absolute sequence frame clocks and source callout copy/projection. Not surface contact, encoded glyph, full playback/listening or pilot acceptance."
+      },
+      {
+        "status": "passed-available-native-artifacts",
+        "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+        "queueId": "actual-first-ten-portable67",
+        "rows": [
+          {
+            "id": "EU-007",
+            "statusAtAudit": "passed",
+            "frames": 708,
+            "proofHolds": 7,
+            "pinChecks": 2832,
+            "uniquePinsVerified": 927,
+            "activeLabelFrames": 485,
+            "freshNativeRenders": 0,
+            "reusedNativeFrames": 708,
+            "completePhysicalProofAndGlobalFrameClockPassed": true
+          }
+        ],
+        "skipped": [],
+        "scope": "Current saved native pins, complete physical proof metadata, actual controller phases, absolute sequence frame clocks and source callout copy/projection. Not surface contact, encoded glyph, full playback/listening or pilot acceptance."
+      }
+    ]
+  },
+  "sourceRepairsInIsolation": {
+    "worktree": "/Users/jjae/.codex/worktrees/ms3-review-fixes/still-shift",
+    "baseCommit": "d45f3f4f0bb56a8e20a1df859d93ce9ca96ed025",
+    "handoffCommit": "3a7dcd69",
+    "handoffFast": {
+      "tests": 4596,
+      "files": 458,
+      "actualExitCode": 0
+    },
+    "firstPass": "Committed and pushed on isolated branch. Final independent review finds no functional defect;73 scoped tests/types, final fast4,611/458 and14 fixture-runtime checks pass in stages. Historical missing provenance stays unverified. Integration and actual current native/installed/final gates remain open.",
+    "firstPassCommit": "018c2540",
+    "nativeReviewEvidence": "Native shot/event/phone/caption/anchor review package under implementation; copied actual EU008 helper proof passes with102 images/exact PCM, no new native rendering. Current source fast/full/producer/installed qualification open."
+  },
+  "open": [
+    "Commit and integrate isolated source fixes after required verification",
+    "Actual current native producer, fresh/relocated CLI receiving and installed handoff",
+    "Full current software/benchmark/archive/installed gates",
+    "Whole factual/mechanical/encoded-glyph/normal-speed/listening reviews and paired effort"
+  ],
+  "acceptedPilot": 0,
+  "wholeReviews": "UNREVIEWED",
+  "routineTokens": null,
+  "elevenLabsSpend": 0,
+  "publication": false,
+  "merge": false,
+  "githubActions": false,
+  "progressSnapshots": [
+    {
+      "capturedAt": "2026-10-14T19:09:38.665114+00:00",
+      "state": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/queue-state.json",
+        "bytes": 8894,
+        "sha256": "sha256:18939dc8a097dd32dc9f7da2a715cfe715b9d856d7b7e58dd60179f71bd171cc"
+      },
+      "statuses": {
+        "EU-001": "passed",
+        "EU-002": "passed",
+        "EU-003": "passed",
+        "EU-004": "passed",
+        "EU-005": "passed",
+        "EU-006": "passed",
+        "EU-007": "passed",
+        "EU-008": "running",
+        "EU-009": "pending",
+        "EU-010": "pending"
+      }
+    },
+    {
+      "capturedAt": "2026-10-14T19:16:34.665438+00:00",
+      "processConfirmedLiveThisTurn": true,
+      "state": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/queue-state.json",
+        "bytes": 9534,
+        "sha256": "sha256:e22603aeb942b3133591ce4bb3c66bcaf5f7d5571149741f4c53cd1a419c657d"
+      },
+      "statuses": {
+        "EU-001": "passed",
+        "EU-002": "passed",
+        "EU-003": "passed",
+        "EU-004": "passed",
+        "EU-005": "passed",
+        "EU-006": "passed",
+        "EU-007": "passed",
+        "EU-008": "passed",
+        "EU-009": "running",
+        "EU-010": "pending"
+      }
+    }
+  ],
+  "terminal": {
+    "steps": [
+      {
+        "step": "run",
+        "actualExitCode": 0,
+        "seconds": 5212.011276040925,
+        "sourceHoldExitCode": 0,
+        "declaredInputsExact": true,
+        "priorProductsMediaAndJournalsExact": true,
+        "episodeStatuses": {
+          "EU-001": "passed",
+          "EU-002": "passed",
+          "EU-003": "passed",
+          "EU-004": "passed",
+          "EU-005": "passed",
+          "EU-006": "passed",
+          "EU-007": "passed",
+          "EU-008": "passed",
+          "EU-009": "passed",
+          "EU-010": "passed"
+        }
+      },
+      {
+        "step": "report",
+        "actualExitCode": 0,
+        "seconds": 396.02712266589515,
+        "sourceHoldExitCode": 0,
+        "declaredInputsExact": true,
+        "priorProductsMediaAndJournalsExact": true,
+        "episodeStatuses": {
+          "EU-001": "passed",
+          "EU-002": "passed",
+          "EU-003": "passed",
+          "EU-004": "passed",
+          "EU-005": "passed",
+          "EU-006": "passed",
+          "EU-007": "passed",
+          "EU-008": "passed",
+          "EU-009": "passed",
+          "EU-010": "passed"
+        }
+      },
+      {
+        "step": "resume",
+        "actualExitCode": 0,
+        "seconds": 394.7155576250516,
+        "sourceHoldExitCode": 0,
+        "declaredInputsExact": true,
+        "priorProductsMediaAndJournalsExact": true,
+        "episodeStatuses": {
+          "EU-001": "passed",
+          "EU-002": "passed",
+          "EU-003": "passed",
+          "EU-004": "passed",
+          "EU-005": "passed",
+          "EU-006": "passed",
+          "EU-007": "passed",
+          "EU-008": "passed",
+          "EU-009": "passed",
+          "EU-010": "passed"
+        }
+      }
+    ],
+    "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten67-relocated/queue-readback.json",
+    "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68",
+    "scope": "All actual EU001\u2013EU010 in a fresh relocated portable input lifecycle. Corrected EU002/EU007, eight unchanged editorial plans. All whole original Alden takes at1x. Previous products/journals retain their exact identities.",
+    "acceptedPilot": 0,
+    "wholeReviews": "UNREVIEWED",
+    "declaredInputFiles": 106,
+    "protectedFiles": 137,
+    "resumeRowsExact": true,
+    "actualExitCode": 0
+  },
+  "terminalProcessExitCode": 0,
+  "independentComplete": {
+    "episodes": 10,
+    "frames": 6181,
+    "productArtifactPins": 100,
+    "nativePins": 24724,
+    "previewErrors": 0,
+    "previewWarnings": 343,
+    "encodedEvidenceImages": 542,
+    "physicalProofShots": 60,
+    "products": [
+      {
+        "id": "EU-001",
+        "status": "passed-current-producer-bound-product-closure",
+        "producerBoundArtifactsVerified": 10,
+        "product": {
+          "path": "products/EU-001-ffd04439aac4a91d-1.json",
+          "bytes": 9827,
+          "sha256": "sha256:b5aa43cb371ba4a6bc836efeaf2a07f439a877c18091040a6fb0d5397d63eeb7"
+        },
+        "binding": {
+          "inputSha256": "sha256:ffd04439aac4a91d9d4319a7c7a9b8e29c34cdfddb3149eedd0ef9fb6bbfa333",
+          "outputSha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 610,
+        "previewErrors": 0,
+        "previewWarnings": 37,
+        "declaredPhysicalHolds": 21,
+        "encodedEvidenceImages": 59,
+        "wholeReviews": "UNREVIEWED",
+        "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+      },
+      {
+        "id": "EU-002",
+        "status": "passed-current-producer-bound-product-closure",
+        "producerBoundArtifactsVerified": 10,
+        "product": {
+          "path": "products/EU-002-2ef5c70553bcab97-1.json",
+          "bytes": 9885,
+          "sha256": "sha256:b8e0085937da9b03ec1e40d6da802ea43b872f769f99fbaeb6efa1a8918193cc"
+        },
+        "binding": {
+          "inputSha256": "sha256:2ef5c70553bcab978ebfb8b41cea02c509355425b2c4b64d5cd192fba79dc5f2",
+          "outputSha256": "sha256:f8c223632b6d5054727998958163e84815bfe9a8698fbb37c0b99064da6b61ab",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 588,
+        "previewErrors": 0,
+        "previewWarnings": 27,
+        "declaredPhysicalHolds": 12,
+        "encodedEvidenceImages": 44,
+        "wholeReviews": "UNREVIEWED",
+        "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+      },
+      {
+        "id": "EU-003",
+        "status": "passed-current-producer-bound-product-closure",
+        "producerBoundArtifactsVerified": 10,
+        "product": {
+          "path": "products/EU-003-ea0d98cfc426847f-1.json",
+          "bytes": 9930,
+          "sha256": "sha256:3d80b066a61a6d9b68d430035ec0959bb9bf2b85cef3c1e743649c2f1ca7bed6"
+        },
+        "binding": {
+          "inputSha256": "sha256:ea0d98cfc426847fe5e51f9d4bb2be8642644b2259f16b50832bd5615ca3737a",
+          "outputSha256": "sha256:aa7039b505d2155700672a25a2f484114035352f33ccec480f673cb869d47c3b",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 588,
+        "previewErrors": 0,
+        "previewWarnings": 37,
+        "declaredPhysicalHolds": 20,
+        "encodedEvidenceImages": 54,
+        "wholeReviews": "UNREVIEWED",
+        "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+      },
+      {
+        "id": "EU-004",
+        "status": "passed-current-producer-bound-product-closure",
+        "producerBoundArtifactsVerified": 10,
+        "product": {
+          "path": "products/EU-004-3792a8f0932127df-1.json",
+          "bytes": 9938,
+          "sha256": "sha256:941daff29e23188b01445f9318b4243fbc3c58ee5850b9a738a38fd29117ce5d"
+        },
+        "binding": {
+          "inputSha256": "sha256:3792a8f0932127df1c0f027accc133b6a2160089afd463c035d7780a32bf97cc",
+          "outputSha256": "sha256:f2b6b6ffb0c2077ffbe9ce7c4b50ce5e2da71b275ac6164cf625ba254cdab39d",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 653,
+        "previewErrors": 0,
+        "previewWarnings": 28,
+        "declaredPhysicalHolds": 13,
+        "encodedEvidenceImages": 47,
+        "wholeReviews": "UNREVIEWED",
+        "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+      },
+      {
+        "id": "EU-005",
+        "status": "passed-current-producer-bound-product-closure",
+        "producerBoundArtifactsVerified": 10,
+        "product": {
+          "path": "products/EU-005-765e4108ec32dc71-1.json",
+          "bytes": 9948,
+          "sha256": "sha256:615366a4af2bf69bd1c491340806d594b69ce5380b70a49d38f465262742eb7a"
+        },
+        "binding": {
+          "inputSha256": "sha256:765e4108ec32dc7114c1da6c9ccc9e10c96f091de74b2eeece6498382d3a73bd",
+          "outputSha256": "sha256:887d993a18e4165d4e6cd016e2e429f0e6ea8dd80c9e82ca885a3bad5edfb3d5",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 598,
+        "previewErrors": 0,
+        "previewWarnings": 34,
+        "declaredPhysicalHolds": 19,
+        "encodedEvidenceImages": 54,
+        "wholeReviews": "UNREVIEWED",
+        "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+      },
+      {
+        "id": "EU-006",
+        "status": "passed-current-producer-bound-product-closure",
+        "producerBoundArtifactsVerified": 10,
+        "product": {
+          "path": "products/EU-006-ea24cedea45bd0c1-1.json",
+          "bytes": 9958,
+          "sha256": "sha256:e9326c1164baa79ed028b2e61afe3abc96ec3ba1b46c4393c4dc7ef617f3fbba"
+        },
+        "binding": {
+          "inputSha256": "sha256:ea24cedea45bd0c1317c0e3727fa4e6346373507b0147b969e5a20b2bb4fd8fd",
+          "outputSha256": "sha256:6b3fbd3e784cbc68d41afd4663e1be78a45d554a2500d6c0732ebc58ac32f9e7",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 634,
+        "previewErrors": 0,
+        "previewWarnings": 37,
+        "declaredPhysicalHolds": 19,
+        "encodedEvidenceImages": 57,
+        "wholeReviews": "UNREVIEWED",
+        "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+      },
+      {
+        "id": "EU-007",
+        "status": "passed-current-producer-bound-product-closure",
+        "producerBoundArtifactsVerified": 10,
+        "product": {
+          "path": "products/EU-007-fc2f9e002f278cf5-1.json",
+          "bytes": 9934,
+          "sha256": "sha256:cb6ba9bd5c3945fd3d07d6bfaecad6ca38d1eb67edd187a4cc802e1be4a6e331"
+        },
+        "binding": {
+          "inputSha256": "sha256:fc2f9e002f278cf5e7dd8ecbc051a4778d4303108833e7c402bb1ed0c099940b",
+          "outputSha256": "sha256:01a008b76eb7f357d3087d8478b43a2991908f9c80467abcf267fdd4afa61051",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 708,
+        "previewErrors": 0,
+        "previewWarnings": 36,
+        "declaredPhysicalHolds": 21,
+        "encodedEvidenceImages": 58,
+        "wholeReviews": "UNREVIEWED",
+        "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+      },
+      {
+        "id": "EU-008",
+        "status": "passed-current-producer-bound-product-closure",
+        "producerBoundArtifactsVerified": 10,
+        "product": {
+          "path": "products/EU-008-b0c1f62397413673-1.json",
+          "bytes": 9958,
+          "sha256": "sha256:549a17cc4dfd3ab1fdde1b4ff451ea9b15bf18645442a3a1bbad6e8109d761ab"
+        },
+        "binding": {
+          "inputSha256": "sha256:b0c1f62397413673b2231bcf64ce238efdc76cb266e13ea2f62a8db344d88ad0",
+          "outputSha256": "sha256:44b89ce96140210e0677a7610ef06b76c7d4847f7cee5211e1bd5f8cec3b818e",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 579,
+        "previewErrors": 0,
+        "previewWarnings": 33,
+        "declaredPhysicalHolds": 17,
+        "encodedEvidenceImages": 54,
+        "wholeReviews": "UNREVIEWED",
+        "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+      },
+      {
+        "id": "EU-009",
+        "status": "passed-current-producer-bound-product-closure",
+        "producerBoundArtifactsVerified": 10,
+        "product": {
+          "path": "products/EU-009-485175aca8bab6f1-1.json",
+          "bytes": 9933,
+          "sha256": "sha256:cfb8ff08de076ee84492551678bf7331c936f0152f9f9aa31345ac1ca5e20413"
+        },
+        "binding": {
+          "inputSha256": "sha256:485175aca8bab6f13b5336fc3dc480823b93e11c69e6fae8a506ee4c360b65bf",
+          "outputSha256": "sha256:5f7f9d2a3924f194d800d2bbff61cc48d3dd7ab1577e24e44f8aa6056bf805cb",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 596,
+        "previewErrors": 0,
+        "previewWarnings": 38,
+        "declaredPhysicalHolds": 19,
+        "encodedEvidenceImages": 57,
+        "wholeReviews": "UNREVIEWED",
+        "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+      },
+      {
+        "id": "EU-010",
+        "status": "passed-current-producer-bound-product-closure",
+        "producerBoundArtifactsVerified": 10,
+        "product": {
+          "path": "products/EU-010-a88dc10f1a0c9517-1.json",
+          "bytes": 9919,
+          "sha256": "sha256:cb581251c15abe41eeba7fa85d9437b8687ca6cdc3568461fa9d925d234bc540"
+        },
+        "binding": {
+          "inputSha256": "sha256:a88dc10f1a0c95170c1a54972e6eef6727669e29ee58246026993cf1cd061dde",
+          "outputSha256": "sha256:d0bb64e9be3be90af9857fc5ace4d30c1c31b4f919551be60a165970bd0288bc",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 627,
+        "previewErrors": 0,
+        "previewWarnings": 36,
+        "declaredPhysicalHolds": 20,
+        "encodedEvidenceImages": 58,
+        "wholeReviews": "UNREVIEWED",
+        "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+      }
+    ],
+    "decodes": [
+      {
+        "id": "EU-001",
+        "status": "passed-complete-portable-decode-and-selected-reference-parity",
+        "product": {
+          "path": "products/EU-001-ffd04439aac4a91d-1.json",
+          "bytes": 9827,
+          "sha256": "sha256:b5aa43cb371ba4a6bc836efeaf2a07f439a877c18091040a6fb0d5397d63eeb7"
+        },
+        "binding": {
+          "inputSha256": "sha256:ffd04439aac4a91d9d4319a7c7a9b8e29c34cdfddb3149eedd0ef9fb6bbfa333",
+          "outputSha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 610,
+        "rgbaFrameHashesExactAgainstSelectedDelivery": true,
+        "completePcmExactAgainstSelectedDelivery": true,
+        "originalWholeAACReferenceParityByAuthenticatedPriorReceipt": true,
+        "priorReceipt": {
+          "path": "/private/tmp/still-shift-ms3-holds61-EU001-current-encoded1.json",
+          "bytes": 1846,
+          "sha256": "sha256:22a9e31fc6bc1dabb1d0b4956e2684a98e7f763bdc58774ed2470ea60331a4fe"
+        },
+        "priorMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/items/EU-001/1/output.mp4",
+          "bytes": 1321056,
+          "sha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e"
+        },
+        "portableMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/items/EU-001/1/output.mp4",
+          "bytes": 1321056,
+          "sha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-001/prior-decoded.f32",
+            "bytes": 7815168,
+            "sha256": "sha256:b9bc1c8bca52d9ac6b9dba7fe2cd87103f4ce56b76d56c03c0900a5fc5137989"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-001/portable-decoded.f32",
+            "bytes": 7815168,
+            "sha256": "sha256:b9bc1c8bca52d9ac6b9dba7fe2cd87103f4ce56b76d56c03c0900a5fc5137989"
+          }
+        ],
+        "wholeReviews": "UNREVIEWED",
+        "scope": "All RGBA frames and final PCM decoded independently. Prior original-whole AAC parity is reused only after rehashing its exact movie and receipt. No encoded glyph, normal-speed viewing, listening or pilot acceptance."
+      },
+      {
+        "id": "EU-002",
+        "status": "passed-complete-portable-decode-and-selected-reference-parity",
+        "product": {
+          "path": "products/EU-002-2ef5c70553bcab97-1.json",
+          "bytes": 9885,
+          "sha256": "sha256:b8e0085937da9b03ec1e40d6da802ea43b872f769f99fbaeb6efa1a8918193cc"
+        },
+        "binding": {
+          "inputSha256": "sha256:2ef5c70553bcab978ebfb8b41cea02c509355425b2c4b64d5cd192fba79dc5f2",
+          "outputSha256": "sha256:f8c223632b6d5054727998958163e84815bfe9a8698fbb37c0b99064da6b61ab",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 588,
+        "rgbaFrameHashesExactAgainstSelectedDelivery": true,
+        "completePcmExactAgainstSelectedDelivery": true,
+        "originalWholeAACReferenceParityByAuthenticatedPriorReceipt": true,
+        "priorReceipt": {
+          "path": "/private/tmp/still-shift-ms3-corrections66-EU-002-encoded1.json",
+          "bytes": 2968,
+          "sha256": "sha256:cc1f003c11a3d9008560a293fb2f59bcaa3ddf9033bc85537aa7bffb6eee034a"
+        },
+        "priorMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-corrections66/items/EU-002/1/output.mp4",
+          "bytes": 1607349,
+          "sha256": "sha256:f8c223632b6d5054727998958163e84815bfe9a8698fbb37c0b99064da6b61ab"
+        },
+        "portableMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/items/EU-002/1/output.mp4",
+          "bytes": 1607349,
+          "sha256": "sha256:f8c223632b6d5054727998958163e84815bfe9a8698fbb37c0b99064da6b61ab"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-002/prior-decoded.f32",
+            "bytes": 7528448,
+            "sha256": "sha256:7e65716e01ddeb237c168c3cbfc5d2f58de1f12df7da40e32a27d98c47563d39"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-002/portable-decoded.f32",
+            "bytes": 7528448,
+            "sha256": "sha256:7e65716e01ddeb237c168c3cbfc5d2f58de1f12df7da40e32a27d98c47563d39"
+          }
+        ],
+        "wholeReviews": "UNREVIEWED",
+        "scope": "All RGBA frames and final PCM decoded independently. Prior original-whole AAC parity is reused only after rehashing its exact movie and receipt. No encoded glyph, normal-speed viewing, listening or pilot acceptance."
+      },
+      {
+        "id": "EU-003",
+        "status": "passed-complete-portable-decode-and-selected-reference-parity",
+        "product": {
+          "path": "products/EU-003-ea0d98cfc426847f-1.json",
+          "bytes": 9930,
+          "sha256": "sha256:3d80b066a61a6d9b68d430035ec0959bb9bf2b85cef3c1e743649c2f1ca7bed6"
+        },
+        "binding": {
+          "inputSha256": "sha256:ea0d98cfc426847fe5e51f9d4bb2be8642644b2259f16b50832bd5615ca3737a",
+          "outputSha256": "sha256:aa7039b505d2155700672a25a2f484114035352f33ccec480f673cb869d47c3b",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 588,
+        "rgbaFrameHashesExactAgainstSelectedDelivery": true,
+        "completePcmExactAgainstSelectedDelivery": true,
+        "originalWholeAACReferenceParityByAuthenticatedPriorReceipt": true,
+        "priorReceipt": {
+          "path": "/private/tmp/still-shift-ms3-holds61-EU003-current-encoded1.json",
+          "bytes": 1842,
+          "sha256": "sha256:c67dad217bcad51c038c5723dc33dd86e95256c9d1a23d8965e0a3c65a096aa7"
+        },
+        "priorMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/items/EU-003/1/output.mp4",
+          "bytes": 990990,
+          "sha256": "sha256:aa7039b505d2155700672a25a2f484114035352f33ccec480f673cb869d47c3b"
+        },
+        "portableMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/items/EU-003/1/output.mp4",
+          "bytes": 990990,
+          "sha256": "sha256:aa7039b505d2155700672a25a2f484114035352f33ccec480f673cb869d47c3b"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-003/prior-decoded.f32",
+            "bytes": 7528448,
+            "sha256": "sha256:147d32349d7daa3c74bb1a4f107a4c20d456206529ce224d4a37251ee0fe4f48"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-003/portable-decoded.f32",
+            "bytes": 7528448,
+            "sha256": "sha256:147d32349d7daa3c74bb1a4f107a4c20d456206529ce224d4a37251ee0fe4f48"
+          }
+        ],
+        "wholeReviews": "UNREVIEWED",
+        "scope": "All RGBA frames and final PCM decoded independently. Prior original-whole AAC parity is reused only after rehashing its exact movie and receipt. No encoded glyph, normal-speed viewing, listening or pilot acceptance."
+      },
+      {
+        "id": "EU-004",
+        "status": "passed-complete-portable-decode-and-selected-reference-parity",
+        "product": {
+          "path": "products/EU-004-3792a8f0932127df-1.json",
+          "bytes": 9938,
+          "sha256": "sha256:941daff29e23188b01445f9318b4243fbc3c58ee5850b9a738a38fd29117ce5d"
+        },
+        "binding": {
+          "inputSha256": "sha256:3792a8f0932127df1c0f027accc133b6a2160089afd463c035d7780a32bf97cc",
+          "outputSha256": "sha256:f2b6b6ffb0c2077ffbe9ce7c4b50ce5e2da71b275ac6164cf625ba254cdab39d",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 653,
+        "rgbaFrameHashesExactAgainstSelectedDelivery": true,
+        "completePcmExactAgainstSelectedDelivery": true,
+        "originalWholeAACReferenceParityByAuthenticatedPriorReceipt": true,
+        "priorReceipt": {
+          "path": "/private/tmp/still-shift-ms3-holds61-EU004-current-encoded1.json",
+          "bytes": 1895,
+          "sha256": "sha256:c1f9d16ac726cb0fa96ca49d8ec8133bee6a04f2987ba3e2007a9e4171c83fbf"
+        },
+        "priorMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/items/EU-004/1/output.mp4",
+          "bytes": 2809132,
+          "sha256": "sha256:f2b6b6ffb0c2077ffbe9ce7c4b50ce5e2da71b275ac6164cf625ba254cdab39d"
+        },
+        "portableMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/items/EU-004/1/output.mp4",
+          "bytes": 2809132,
+          "sha256": "sha256:f2b6b6ffb0c2077ffbe9ce7c4b50ce5e2da71b275ac6164cf625ba254cdab39d"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-004/prior-decoded.f32",
+            "bytes": 8364032,
+            "sha256": "sha256:7de7cc01d3145f39c37c6a6042bb8bd518c74fc8287ff20be3bd0deabf1a87eb"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-004/portable-decoded.f32",
+            "bytes": 8364032,
+            "sha256": "sha256:7de7cc01d3145f39c37c6a6042bb8bd518c74fc8287ff20be3bd0deabf1a87eb"
+          }
+        ],
+        "wholeReviews": "UNREVIEWED",
+        "scope": "All RGBA frames and final PCM decoded independently. Prior original-whole AAC parity is reused only after rehashing its exact movie and receipt. No encoded glyph, normal-speed viewing, listening or pilot acceptance."
+      },
+      {
+        "id": "EU-005",
+        "status": "passed-complete-portable-decode-and-selected-reference-parity",
+        "product": {
+          "path": "products/EU-005-765e4108ec32dc71-1.json",
+          "bytes": 9948,
+          "sha256": "sha256:615366a4af2bf69bd1c491340806d594b69ce5380b70a49d38f465262742eb7a"
+        },
+        "binding": {
+          "inputSha256": "sha256:765e4108ec32dc7114c1da6c9ccc9e10c96f091de74b2eeece6498382d3a73bd",
+          "outputSha256": "sha256:887d993a18e4165d4e6cd016e2e429f0e6ea8dd80c9e82ca885a3bad5edfb3d5",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 598,
+        "rgbaFrameHashesExactAgainstSelectedDelivery": true,
+        "completePcmExactAgainstSelectedDelivery": true,
+        "originalWholeAACReferenceParityByAuthenticatedPriorReceipt": true,
+        "priorReceipt": {
+          "path": "/private/tmp/still-shift-ms3-holds61-EU005-current-encoded1.json",
+          "bytes": 1846,
+          "sha256": "sha256:4cc9d5e1e04246337b7dc8701f4033094e8a64edc214110824e45aa7966385b9"
+        },
+        "priorMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/items/EU-005/1/output.mp4",
+          "bytes": 1745077,
+          "sha256": "sha256:887d993a18e4165d4e6cd016e2e429f0e6ea8dd80c9e82ca885a3bad5edfb3d5"
+        },
+        "portableMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/items/EU-005/1/output.mp4",
+          "bytes": 1745077,
+          "sha256": "sha256:887d993a18e4165d4e6cd016e2e429f0e6ea8dd80c9e82ca885a3bad5edfb3d5"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-005/prior-decoded.f32",
+            "bytes": 7659520,
+            "sha256": "sha256:8aca8931847b048b9466a06568858166cc8741a5efeace90d69ab49049608246"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-005/portable-decoded.f32",
+            "bytes": 7659520,
+            "sha256": "sha256:8aca8931847b048b9466a06568858166cc8741a5efeace90d69ab49049608246"
+          }
+        ],
+        "wholeReviews": "UNREVIEWED",
+        "scope": "All RGBA frames and final PCM decoded independently. Prior original-whole AAC parity is reused only after rehashing its exact movie and receipt. No encoded glyph, normal-speed viewing, listening or pilot acceptance."
+      },
+      {
+        "id": "EU-006",
+        "status": "passed-complete-portable-decode-and-selected-reference-parity",
+        "product": {
+          "path": "products/EU-006-ea24cedea45bd0c1-1.json",
+          "bytes": 9958,
+          "sha256": "sha256:e9326c1164baa79ed028b2e61afe3abc96ec3ba1b46c4393c4dc7ef617f3fbba"
+        },
+        "binding": {
+          "inputSha256": "sha256:ea24cedea45bd0c1317c0e3727fa4e6346373507b0147b969e5a20b2bb4fd8fd",
+          "outputSha256": "sha256:6b3fbd3e784cbc68d41afd4663e1be78a45d554a2500d6c0732ebc58ac32f9e7",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 634,
+        "rgbaFrameHashesExactAgainstSelectedDelivery": true,
+        "completePcmExactAgainstSelectedDelivery": true,
+        "originalWholeAACReferenceParityByAuthenticatedPriorReceipt": true,
+        "priorReceipt": {
+          "path": "/private/tmp/still-shift-ms3-holds61-EU006-current-encoded1.json",
+          "bytes": 1847,
+          "sha256": "sha256:d4dd5beed687c21daf11adcd59d521f55ef18c93571088c6167913b365907461"
+        },
+        "priorMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/items/EU-006/1/output.mp4",
+          "bytes": 1253872,
+          "sha256": "sha256:6b3fbd3e784cbc68d41afd4663e1be78a45d554a2500d6c0732ebc58ac32f9e7"
+        },
+        "portableMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/items/EU-006/1/output.mp4",
+          "bytes": 1253872,
+          "sha256": "sha256:6b3fbd3e784cbc68d41afd4663e1be78a45d554a2500d6c0732ebc58ac32f9e7"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-006/prior-decoded.f32",
+            "bytes": 8118272,
+            "sha256": "sha256:b947ee2daca22c3ca7e10fe36e1a83d8ec6b4502017ef0e90a3fc7a44812e69a"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-006/portable-decoded.f32",
+            "bytes": 8118272,
+            "sha256": "sha256:b947ee2daca22c3ca7e10fe36e1a83d8ec6b4502017ef0e90a3fc7a44812e69a"
+          }
+        ],
+        "wholeReviews": "UNREVIEWED",
+        "scope": "All RGBA frames and final PCM decoded independently. Prior original-whole AAC parity is reused only after rehashing its exact movie and receipt. No encoded glyph, normal-speed viewing, listening or pilot acceptance."
+      },
+      {
+        "id": "EU-007",
+        "status": "passed-complete-portable-decode-and-selected-reference-parity",
+        "product": {
+          "path": "products/EU-007-fc2f9e002f278cf5-1.json",
+          "bytes": 9934,
+          "sha256": "sha256:cb6ba9bd5c3945fd3d07d6bfaecad6ca38d1eb67edd187a4cc802e1be4a6e331"
+        },
+        "binding": {
+          "inputSha256": "sha256:fc2f9e002f278cf5e7dd8ecbc051a4778d4303108833e7c402bb1ed0c099940b",
+          "outputSha256": "sha256:01a008b76eb7f357d3087d8478b43a2991908f9c80467abcf267fdd4afa61051",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 708,
+        "rgbaFrameHashesExactAgainstSelectedDelivery": true,
+        "completePcmExactAgainstSelectedDelivery": true,
+        "originalWholeAACReferenceParityByAuthenticatedPriorReceipt": true,
+        "priorReceipt": {
+          "path": "/private/tmp/still-shift-ms3-corrections66-EU-007-encoded1.json",
+          "bytes": 6101,
+          "sha256": "sha256:c19568a2aafdeb6e94af6e0836029937f2c32f13705caaf76559d8b91db6845d"
+        },
+        "priorMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-corrections66/items/EU-007/1/output.mp4",
+          "bytes": 2010733,
+          "sha256": "sha256:01a008b76eb7f357d3087d8478b43a2991908f9c80467abcf267fdd4afa61051"
+        },
+        "portableMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/items/EU-007/1/output.mp4",
+          "bytes": 2010733,
+          "sha256": "sha256:01a008b76eb7f357d3087d8478b43a2991908f9c80467abcf267fdd4afa61051"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-007/prior-decoded.f32",
+            "bytes": 9068544,
+            "sha256": "sha256:edc077081c85137fbbed5dbdf27692284126fdf96a4c86362def3ba59f127a0b"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-007/portable-decoded.f32",
+            "bytes": 9068544,
+            "sha256": "sha256:edc077081c85137fbbed5dbdf27692284126fdf96a4c86362def3ba59f127a0b"
+          }
+        ],
+        "wholeReviews": "UNREVIEWED",
+        "scope": "All RGBA frames and final PCM decoded independently. Prior original-whole AAC parity is reused only after rehashing its exact movie and receipt. No encoded glyph, normal-speed viewing, listening or pilot acceptance."
+      },
+      {
+        "id": "EU-008",
+        "status": "passed-complete-portable-decode-and-selected-reference-parity",
+        "product": {
+          "path": "products/EU-008-b0c1f62397413673-1.json",
+          "bytes": 9958,
+          "sha256": "sha256:549a17cc4dfd3ab1fdde1b4ff451ea9b15bf18645442a3a1bbad6e8109d761ab"
+        },
+        "binding": {
+          "inputSha256": "sha256:b0c1f62397413673b2231bcf64ce238efdc76cb266e13ea2f62a8db344d88ad0",
+          "outputSha256": "sha256:44b89ce96140210e0677a7610ef06b76c7d4847f7cee5211e1bd5f8cec3b818e",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 579,
+        "rgbaFrameHashesExactAgainstSelectedDelivery": true,
+        "completePcmExactAgainstSelectedDelivery": true,
+        "originalWholeAACReferenceParityByAuthenticatedPriorReceipt": true,
+        "priorReceipt": {
+          "path": "/private/tmp/still-shift-ms3-holds61-EU008-current-encoded1.json",
+          "bytes": 1894,
+          "sha256": "sha256:1be73e9ba8f8d9674ae54af154ab7b32951c48d50adee75b3bc6e426c196cd5c"
+        },
+        "priorMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/items/EU-008/1/output.mp4",
+          "bytes": 1401763,
+          "sha256": "sha256:44b89ce96140210e0677a7610ef06b76c7d4847f7cee5211e1bd5f8cec3b818e"
+        },
+        "portableMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/items/EU-008/1/output.mp4",
+          "bytes": 1401763,
+          "sha256": "sha256:44b89ce96140210e0677a7610ef06b76c7d4847f7cee5211e1bd5f8cec3b818e"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-008/prior-decoded.f32",
+            "bytes": 7413760,
+            "sha256": "sha256:6a0fd4adc5fabdfd73b7f70cc5b642cbbfde022c607b7d16aba0c7d002a1a065"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-008/portable-decoded.f32",
+            "bytes": 7413760,
+            "sha256": "sha256:6a0fd4adc5fabdfd73b7f70cc5b642cbbfde022c607b7d16aba0c7d002a1a065"
+          }
+        ],
+        "wholeReviews": "UNREVIEWED",
+        "scope": "All RGBA frames and final PCM decoded independently. Prior original-whole AAC parity is reused only after rehashing its exact movie and receipt. No encoded glyph, normal-speed viewing, listening or pilot acceptance."
+      },
+      {
+        "id": "EU-009",
+        "status": "passed-complete-portable-decode-and-selected-reference-parity",
+        "product": {
+          "path": "products/EU-009-485175aca8bab6f1-1.json",
+          "bytes": 9933,
+          "sha256": "sha256:cfb8ff08de076ee84492551678bf7331c936f0152f9f9aa31345ac1ca5e20413"
+        },
+        "binding": {
+          "inputSha256": "sha256:485175aca8bab6f13b5336fc3dc480823b93e11c69e6fae8a506ee4c360b65bf",
+          "outputSha256": "sha256:5f7f9d2a3924f194d800d2bbff61cc48d3dd7ab1577e24e44f8aa6056bf805cb",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 596,
+        "rgbaFrameHashesExactAgainstSelectedDelivery": true,
+        "completePcmExactAgainstSelectedDelivery": true,
+        "originalWholeAACReferenceParityByAuthenticatedPriorReceipt": true,
+        "priorReceipt": {
+          "path": "/private/tmp/still-shift-ms3-holds61-EU009-current-encoded1.json",
+          "bytes": 1847,
+          "sha256": "sha256:92293b26f03967adaf003a3101870d919df5195955b7883c0388565f4179e3af"
+        },
+        "priorMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/items/EU-009/1/output.mp4",
+          "bytes": 1072677,
+          "sha256": "sha256:5f7f9d2a3924f194d800d2bbff61cc48d3dd7ab1577e24e44f8aa6056bf805cb"
+        },
+        "portableMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/items/EU-009/1/output.mp4",
+          "bytes": 1072677,
+          "sha256": "sha256:5f7f9d2a3924f194d800d2bbff61cc48d3dd7ab1577e24e44f8aa6056bf805cb"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-009/prior-decoded.f32",
+            "bytes": 7634944,
+            "sha256": "sha256:9cae4036fca29512e315280f4c6d5afbe925c73428e1498f6460d2ace3a393b8"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-009/portable-decoded.f32",
+            "bytes": 7634944,
+            "sha256": "sha256:9cae4036fca29512e315280f4c6d5afbe925c73428e1498f6460d2ace3a393b8"
+          }
+        ],
+        "wholeReviews": "UNREVIEWED",
+        "scope": "All RGBA frames and final PCM decoded independently. Prior original-whole AAC parity is reused only after rehashing its exact movie and receipt. No encoded glyph, normal-speed viewing, listening or pilot acceptance."
+      },
+      {
+        "id": "EU-010",
+        "status": "passed-complete-portable-decode-and-selected-reference-parity",
+        "product": {
+          "path": "products/EU-010-a88dc10f1a0c9517-1.json",
+          "bytes": 9919,
+          "sha256": "sha256:cb581251c15abe41eeba7fa85d9437b8687ca6cdc3568461fa9d925d234bc540"
+        },
+        "binding": {
+          "inputSha256": "sha256:a88dc10f1a0c95170c1a54972e6eef6727669e29ee58246026993cf1cd061dde",
+          "outputSha256": "sha256:d0bb64e9be3be90af9857fc5ace4d30c1c31b4f919551be60a165970bd0288bc",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 627,
+        "rgbaFrameHashesExactAgainstSelectedDelivery": true,
+        "completePcmExactAgainstSelectedDelivery": true,
+        "originalWholeAACReferenceParityByAuthenticatedPriorReceipt": true,
+        "priorReceipt": {
+          "path": "/private/tmp/still-shift-ms3-holds61-EU010-current-encoded1.json",
+          "bytes": 1847,
+          "sha256": "sha256:c74f89394011e8d82a4a6805faef793e9c2597768a0a3935f1e89fb742d70acf"
+        },
+        "priorMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/items/EU-010/1/output.mp4",
+          "bytes": 1553861,
+          "sha256": "sha256:d0bb64e9be3be90af9857fc5ace4d30c1c31b4f919551be60a165970bd0288bc"
+        },
+        "portableMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/items/EU-010/1/output.mp4",
+          "bytes": 1553861,
+          "sha256": "sha256:d0bb64e9be3be90af9857fc5ace4d30c1c31b4f919551be60a165970bd0288bc"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-010/prior-decoded.f32",
+            "bytes": 8028160,
+            "sha256": "sha256:17f3ae3a4b0289b4bc69c252ff4087a8a42be1bf0aab7b205b52cd212ebc8a89"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-portable68/EU-010/portable-decoded.f32",
+            "bytes": 8028160,
+            "sha256": "sha256:17f3ae3a4b0289b4bc69c252ff4087a8a42be1bf0aab7b205b52cd212ebc8a89"
+          }
+        ],
+        "wholeReviews": "UNREVIEWED",
+        "scope": "All RGBA frames and final PCM decoded independently. Prior original-whole AAC parity is reused only after rehashing its exact movie and receipt. No encoded glyph, normal-speed viewing, listening or pilot acceptance."
+      }
+    ],
+    "nativeAudits": [
+      {
+        "status": "passed-available-native-artifacts",
+        "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+        "queueId": "actual-first-ten-portable67",
+        "rows": [
+          {
+            "id": "EU-001",
+            "statusAtAudit": "passed",
+            "frames": 610,
+            "proofHolds": 5,
+            "pinChecks": 2440,
+            "uniquePinsVerified": 738,
+            "activeLabelFrames": 529,
+            "freshNativeRenders": 0,
+            "reusedNativeFrames": 610,
+            "completePhysicalProofAndGlobalFrameClockPassed": true
+          },
+          {
+            "id": "EU-002",
+            "statusAtAudit": "passed",
+            "frames": 588,
+            "proofHolds": 5,
+            "pinChecks": 2352,
+            "uniquePinsVerified": 838,
+            "activeLabelFrames": 344,
+            "freshNativeRenders": 0,
+            "reusedNativeFrames": 588,
+            "completePhysicalProofAndGlobalFrameClockPassed": true
+          },
+          {
+            "id": "EU-003",
+            "statusAtAudit": "passed",
+            "frames": 588,
+            "proofHolds": 7,
+            "pinChecks": 2352,
+            "uniquePinsVerified": 662,
+            "activeLabelFrames": 378,
+            "freshNativeRenders": 0,
+            "reusedNativeFrames": 588,
+            "completePhysicalProofAndGlobalFrameClockPassed": true
+          },
+          {
+            "id": "EU-004",
+            "statusAtAudit": "passed",
+            "frames": 653,
+            "proofHolds": 5,
+            "pinChecks": 2612,
+            "uniquePinsVerified": 985,
+            "activeLabelFrames": 363,
+            "freshNativeRenders": 0,
+            "reusedNativeFrames": 653,
+            "completePhysicalProofAndGlobalFrameClockPassed": true
+          },
+          {
+            "id": "EU-005",
+            "statusAtAudit": "passed",
+            "frames": 598,
+            "proofHolds": 5,
+            "pinChecks": 2392,
+            "uniquePinsVerified": 772,
+            "activeLabelFrames": 360,
+            "freshNativeRenders": 0,
+            "reusedNativeFrames": 598,
+            "completePhysicalProofAndGlobalFrameClockPassed": true
+          }
+        ],
+        "skipped": [],
+        "scope": "Current saved native pins, complete physical proof metadata, actual controller phases, absolute sequence frame clocks and source callout copy/projection. Not surface contact, encoded glyph, full playback/listening or pilot acceptance."
+      },
+      {
+        "status": "passed-available-native-artifacts",
+        "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+        "queueId": "actual-first-ten-portable67",
+        "rows": [
+          {
+            "id": "EU-006",
+            "statusAtAudit": "passed",
+            "frames": 634,
+            "proofHolds": 8,
+            "pinChecks": 2536,
+            "uniquePinsVerified": 747,
+            "activeLabelFrames": 339,
+            "freshNativeRenders": 0,
+            "reusedNativeFrames": 634,
+            "completePhysicalProofAndGlobalFrameClockPassed": true
+          }
+        ],
+        "skipped": [],
+        "scope": "Current saved native pins, complete physical proof metadata, actual controller phases, absolute sequence frame clocks and source callout copy/projection. Not surface contact, encoded glyph, full playback/listening or pilot acceptance."
+      },
+      {
+        "status": "passed-available-native-artifacts",
+        "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+        "queueId": "actual-first-ten-portable67",
+        "rows": [
+          {
+            "id": "EU-007",
+            "statusAtAudit": "passed",
+            "frames": 708,
+            "proofHolds": 7,
+            "pinChecks": 2832,
+            "uniquePinsVerified": 927,
+            "activeLabelFrames": 485,
+            "freshNativeRenders": 0,
+            "reusedNativeFrames": 708,
+            "completePhysicalProofAndGlobalFrameClockPassed": true
+          }
+        ],
+        "skipped": [],
+        "scope": "Current saved native pins, complete physical proof metadata, actual controller phases, absolute sequence frame clocks and source callout copy/projection. Not surface contact, encoded glyph, full playback/listening or pilot acceptance."
+      },
+      {
+        "status": "passed-available-native-artifacts",
+        "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+        "queueId": "actual-first-ten-portable67",
+        "rows": [
+          {
+            "id": "EU-008",
+            "statusAtAudit": "passed",
+            "frames": 579,
+            "proofHolds": 5,
+            "pinChecks": 2316,
+            "uniquePinsVerified": 699,
+            "activeLabelFrames": 557,
+            "freshNativeRenders": 0,
+            "reusedNativeFrames": 579,
+            "completePhysicalProofAndGlobalFrameClockPassed": true
+          }
+        ],
+        "skipped": [],
+        "scope": "Current saved native pins, complete physical proof metadata, actual controller phases, absolute sequence frame clocks and source callout copy/projection. Not surface contact, encoded glyph, full playback/listening or pilot acceptance."
+      },
+      {
+        "status": "passed-available-native-artifacts",
+        "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+        "queueId": "actual-first-ten-portable67",
+        "rows": [
+          {
+            "id": "EU-009",
+            "statusAtAudit": "passed",
+            "frames": 596,
+            "proofHolds": 7,
+            "pinChecks": 2384,
+            "uniquePinsVerified": 705,
+            "activeLabelFrames": 412,
+            "freshNativeRenders": 0,
+            "reusedNativeFrames": 596,
+            "completePhysicalProofAndGlobalFrameClockPassed": true
+          },
+          {
+            "id": "EU-010",
+            "statusAtAudit": "passed",
+            "frames": 627,
+            "proofHolds": 6,
+            "pinChecks": 2508,
+            "uniquePinsVerified": 747,
+            "activeLabelFrames": 490,
+            "freshNativeRenders": 0,
+            "reusedNativeFrames": 627,
+            "completePhysicalProofAndGlobalFrameClockPassed": true
+          }
+        ],
+        "skipped": [],
+        "scope": "Current saved native pins, complete physical proof metadata, actual controller phases, absolute sequence frame clocks and source callout copy/projection. Not surface contact, encoded glyph, full playback/listening or pilot acceptance."
+      }
+    ]
+  },
+  "cohortMetricQualification": "Raw frozen-source reports count successful initial attempts in this repeat lifecycle. This run follows earlier repairs and does not establish original pilot first-pass achievement. Current provenance summarizer leaves unclassified historical pilot data unverified; tokens remain null."
+}

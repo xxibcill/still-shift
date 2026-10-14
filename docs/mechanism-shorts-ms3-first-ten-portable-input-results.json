@@ -672,5 +672,12 @@
   "installedConsumerReview": "UNREVIEWED",
   "wholeMotionListening": "UNREVIEWED",
   "acceptedPilot": 0,
-  "publication": false
+  "publication": false,
+  "currentLifecycle": {
+    "record": "mechanism-shorts-ms3-first-ten-portable-lifecycle-results.json",
+    "status": "passed-terminal-run-report-resume-all-ten-relocated-portable-inputs",
+    "completedAtCapture": 10,
+    "wholeReviews": "UNREVIEWED",
+    "scope": "Frozen fc4 source completes relocated render/report/resume. All10 independent artifacts/frame/audio/native audits pass; current enhanced producer and installed package remain separate."
+  }
 }

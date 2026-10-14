@@ -43,8 +43,29 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS3 isolated review repairs (2026-10-15):** `codex/ms3-review-fixes` starts
-  at exact `d45f3f4f`; frozen original portable68 lifecycle is terminal on the milestone branch. Native
+- **MS3 current all-ten lifecycle running (2026-10-15):** exact source `5a91ad91`,
+  runtime1090f97c/profile1dd0;2,788 source inputs/122,331,596B held. Native builder
+  admits the same actual EU001–EU010 under current bindings after byte-verifying
+  110 copied portable files and7,774 cache files/3,125,684,851B. New run/report/resume/
+  all-ten handoff wrapper is live, unified42093;107 declared files and354 prior
+  input/product/artifact/journal files guarded. First episode export is running;
+  no current episode completion claimed at this capture. Full receiving/installed/
+  software and whole factual/mechanical/glyph/motion/listening remain open.
+  Original lifecycle remains terminal and historical products retain bindings.
+  [Current lifecycle capture](./mechanism-shorts-ms3-current-first-ten-lifecycle-results.json).
+
+- **MS3 fourth QA state (2026-10-15):** native and bridge dimension reports now
+  retain explicit artifact-bound not-applicable decisions, separate counts and
+  stale-decision retirement. Technical pass and zero mechanical failures still
+  required; actual pilot decisions stay unfinished. Red2/green48 scoped tests
+  and types pass; both independent reviews find no concrete defect. Combined
+  fast4,619/459 passes77.15s; fresh current native/CLI/installed proof remains next.
+  [Applicability contract and checks](./mechanism-shorts-ms3-four-state-qa-results.json).
+
+- **MS3 integrated review repairs (2026-10-15):** `codex/ms3-review-fixes` starts
+  at exact `d45f3f4f`; three reviewed commits are now integrated on
+  `codex/mechanism-ms3` through `c935e11d`. Frozen original portable68 lifecycle
+  is terminal. Native
   compact handoff now authenticates source/clock/artifact closure and final PCM,
   refreshes current resume paths after relocation and preserves unfinished review.
   Scoped30 units/6 fixture-runtime tests and fast4,596 tests pass in stages;
@@ -94,8 +115,17 @@ still hold before relying on them.
   Source implementation not included; fresh render/installed consumer handoff
   and whole review remain open. Composite review selection has eight retained
   cohort61 products plus two corrections (0 preview errors/343 warnings/542 images).
-  Eight old bindings name retired paths and need canonical/portable rebinding
-  before a fresh all-ten lifecycle; no historical identity relabelled.
+  All-ten portable68 run5212.01s/report396.03s/resume394.72s terminal0;
+  106 declared files/137 prior files exact and resume rows unchanged. All ten seal.
+  Independent6,181 full RGBA/whole PCM frames,100 product pins and24,724 native
+  pins pass;0 preview errors/343 warnings/542 images/60 proof shots retained.
+  Historical identities preserved; this repeat does not prove pilot first-pass.
+  Isolated3a7dcd69 repairs native compact handoff (fast4,596 pass); first-pass
+  provenance/recovery has73 scoped tests, fast4,611 and14 fixture-runtime checks
+  pass in stages; final refresh4,611/458 passes and018c2540 is committed/pushed.
+  Native shot/event/phone/crop evidence is being completed in isolation; copied
+  actual EU008 helper proof passes with102 images/exact PCM and no new native draw.
+  Current enhanced producer/relocated/installed and final gates remain open.
   Frozen source4b58f49b/runtimefc4cc2ae/profile1dd0 unchanged; earlier fast4,594/
   runtime271/integration324/depth14/browser smoke pass. Whole factual/mechanical/
   normal-speed/listening, broader faults, complete portable/installed handoff,
@@ -290,6 +320,37 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Start the integrated actual first-ten lifecycle
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` (source `5a91ad91`).
+- **Done:** combined fast4,619/459 passes77.15s; reviewed four-state QA repair
+  committed/pushed. Draft PR58 now reports terminal earlier all-ten audits and
+  integrated source repairs. Native builder creates fresh runtime1090f97c queue.
+- **Results:**110 copied input files and7,774 cache files rehash exact. Current
+  run/report/resume/ten handoffs is live; first export running, no new completion
+  claimed. Exact2,788 source inputs and107 declared/354 prior files guarded.
+- **Open / next:** collect actual wrapper terminal exit before any source mutation;
+  independent new evidence/pixels/PCM, full receiving/installed and software gates.
+  Whole pilot accepted0/10 and tokensnull; original histories remain untouched.
+- **Records:** [current lifecycle](./mechanism-shorts-ms3-current-first-ten-lifecycle-results.json),
+  [earlier terminal all-ten](./mechanism-shorts-ms3-first-ten-portable-lifecycle-results.json),
+  [PR58](https://github.com/xxibcill/still-shift/pull/58).
+
+### 2026-10-15 — Integrate review repairs and complete four-state QA contract
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` (from `f6613d89`).
+- **Done:** isolated native handoff, first-pass provenance and encoded-review
+  commits integrated as `a37e453c`, `751448c3`, `c935e11d`; development-log conflict
+  preserves terminal all-ten lifecycle and all isolated failed/pass evidence.
+  QA now records explicit evidence-bound not-applicable decisions and counts.
+- **Results:** fourth-state regression fails2 before repair;48 scoped tests/types
+  pass afterward. Separate Standards/Spec reviews find no concrete defect.
+  Combined fast4,619/459 passes77.15s. Actual pilot accepted0/10; tokens remainnull.
+- **Open / next:** fresh current native/CLI/receiving/installed proofs, full software
+  gates and whole factual/mechanical/glyph/motion/listening review. No paid spend.
+- **Records:** [four-state QA evidence](./mechanism-shorts-ms3-four-state-qa-results.json),
+  [review](./mechanism-shorts-ms3-code-review.md).
 
 ### 2026-10-15 — Native final-file review package and anchor compatibility repair
 
@@ -11062,3 +11123,31 @@ still-shift --json` returns `[]`. The verified local archive hash still matches.
 - **Records:** [CE4b completion record](./composition-engine-plan.md#ce4b-completion-record-2026-10-03),
   [feasibility record](./composition-ce4b-feasibility.md). Earlier history is
   in the milestone plans and `git log`.
+
+### 2026-10-15 — All-ten relocated portable lifecycle terminal
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `be630da0`.
+- **Terminal:** original75382 actually exits0; run5212.01s/report396.03s/
+  resume394.72s, all ten pass.106 declared files/137 prior files exact;
+  resume rows unchanged. Source2,778 files/122,205,150B remains held.
+- **Audit:**6,181 full RGBA/whole narration PCM frames,100 product pins and24,724
+  native pins pass;0 preview errors/343 warnings/542 images/60 proof shots.
+- **Open:** current enhanced producer/installed/final gates and whole reviews.
+  Native review package underway in isolation; no original identities relabelled.
+  Repeat success does not establish original first-pass or savings targets.
+- **Records:** [Terminal lifecycle and complete audits](./mechanism-shorts-ms3-first-ten-portable-lifecycle-results.json).
+
+### 2026-10-15 — Relocated first-ten lifecycle and isolated review repairs
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `d45f3f4f`.
+- **Live:** original portable68 run/report/resume75382 confirmed live; first eight
+  seal, curved tape blade running. Seven independently audited. All106 declared files and137 prior files guarded.
+- **Results:** independent4,379 full RGBA/whole PCM frames,70 product pins and
+  17,516 native pins pass. Preview0 errors/remaining warnings retained. No new
+  native captures; complete report/resume/remaining outputs unrun at capture.
+- **Isolation:** native handoff fix3a7dcd69 fast4,596 pass. First-pass provenance
+  and two reproduced recovery gaps repaired;73 scoped tests/types pass, fast4,611/14 fixture-runtime checks pass in stages; final refresh4,611/458
+  passes and018c2540 is committed/pushed. Source integration waits for frozen lifecycle terminal.
+- **Open:** current full gates/installed handoff/whole reviews; accepted0/10,
+  tokens null. No new spend, publish, merge or Actions.
+- **Records:** [Portable lifecycle and partial audits](./mechanism-shorts-ms3-first-ten-portable-lifecycle-results.json).

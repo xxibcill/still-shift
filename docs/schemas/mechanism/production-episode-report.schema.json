@@ -236,7 +236,7 @@
           },
           "status": {
             "type": "string",
-            "enum": ["passed", "failed", "unreviewed"]
+            "enum": ["passed", "failed", "unreviewed", "not-applicable"]
           },
           "binding": {
             "type": "object",

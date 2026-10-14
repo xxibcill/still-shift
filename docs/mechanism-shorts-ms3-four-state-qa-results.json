@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "ms3-four-state-qa-results-1",
+  "date": "2026-10-15",
+  "branch": "codex/mechanism-ms3",
+  "baseCommit": "c935e11d",
+  "status": "implemented-independent-review-current-combined-fast-passed",
+  "requirement": "Plan1362: each QA dimension has separate pass/fail/not-reviewed/not-applicable state and evidence method.",
+  "changes": [
+    "Shared four-state QA enum across episode/disposition/bundle/handoff declarations",
+    "Explicit not-applicable method, no evaluated interval, bound output identity, retained applicability evidence, agent/human reviewer and nonblank explanation",
+    "Changed bindings retain raw decisions but retire current applicability to unreviewed",
+    "Separate notApplicable cohort count defaults0 for older retained count objects",
+    "Readiness still requires technical pass and zero unresolved mechanical failures; other dimensions require pass or an explicit artifact-bound applicability decision",
+    "No actual pilot dimension promoted and no attempt/intervention history rewritten"
+  ],
+  "checks": {
+    "red1": {
+      "actualExitCode": 1,
+      "passed": 32,
+      "failed": 2,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review71-qa-red1.log",
+        "bytes": 11025,
+        "sha256": "sha256:cf074a5c5766a974c31bc4fcdc859bec909a7f2f35a16dd1d6051392a2db1251"
+      },
+      "reason": "Required fourth state rejected by three-state episode schema"
+    },
+    "green1": {
+      "actualExitCode": 0,
+      "tests": 48,
+      "files": 4,
+      "seconds": 3.31,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review71-qa-green1.log",
+        "bytes": 537,
+        "sha256": "sha256:2b17296165e57a02f25212bab79f4c83907c95634212dcf2c70bca305fe7f5b1"
+      },
+      "scope": "Artifact-bound QA, stale/partial intervals, applicability evidence, report-file validation, native compact handoff and fixture report/schema CLI"
+    },
+    "types1": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review71-types1.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    "fast1": {
+      "actualExitCode": 0,
+      "tests": 4619,
+      "files": 459,
+      "seconds": 77.15,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review71-fast1.log",
+        "bytes": 46439,
+        "sha256": "sha256:ed45e09c0a65af1069db4d10ce0f627aee74fbe65131c32819244446f41c245c"
+      },
+      "scope": "Combined integrated handoff/provenance/native encoded-review/four-state source"
+    }
+  },
+  "independentReview": {
+    "standards": "No concrete documented-standard defect or actionable maintenance smell. Shared state and evidence/readiness controls align. Read-only inspection.",
+    "spec": "No concrete staged defect. State propagates through all six-dimension public reports/handoffs; remaining three-state schemas govern sampled assertion execution. Read-only inspection."
+  },
+  "qualification": {
+    "actualPilotAccepted": 0,
+    "actualPilotReviewStatesUnchanged": true,
+    "wholeReviews": "UNREVIEWED",
+    "freshNativeReceivingInstalled": "open",
+    "newSpending": false,
+    "historicalSourceAndProductBindingsRetained": true
+  }
+}

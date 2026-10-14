@@ -61,3 +61,17 @@ Scoped23 tests/6 files pass. The first attempted schema access failed because
 callouts are defaulted; unwrap repair and failed stages remain in the
 [native encoded-review evidence](./mechanism-shorts-ms3-native-encoded-review-results.json).
 Full current native producer/CLI/installed and whole review remain open.
+
+## Four-state QA followup (2026-10-15)
+
+**Standards:** no concrete documented-standard defect or actionable smell found.
+The shared state, artifact-specific applicability evidence, stale retirement and
+readiness controls align; original histories and pilot decisions are preserved.
+
+**Spec:** no concrete staged defect found. The fourth dimension state propagates
+through episode/cohort/bundle/handoff reports. Remaining three-state enums describe
+sampled assertion execution rather than six-dimension applicability.
+
+Both reviews are read-only. Two regressions reproduce the missing state before
+repair;48 scoped tests and TypeScript checks pass afterward. Full current producer
+and whole pilot proof remain open. [Contract/evidence](./mechanism-shorts-ms3-four-state-qa-results.json).

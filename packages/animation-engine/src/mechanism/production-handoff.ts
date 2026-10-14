@@ -1,12 +1,13 @@
 import { z } from "zod";
 import {
   MechanismProductionBindingSchema,
+  MechanismProductionQAStatusSchema,
   MECHANISM_QA_DIMENSIONS,
 } from "./production-report.ts";
 import { MechanismProductionOwnedFileSchema } from "./production-queue-contract.ts";
 import { MechanismCueCompilationSchema } from "./cue-lifecycle.ts";
 export const MECHANISM_PRODUCTION_HANDOFF_LIMITS = { bytes: 32768 } as const;
-const status = z.enum(["passed", "failed", "unreviewed"]);
+const status = MechanismProductionQAStatusSchema;
 const validGenerationSnapshot = (handoff: {
   sourceStatus: string;
   reviewedReady: boolean;

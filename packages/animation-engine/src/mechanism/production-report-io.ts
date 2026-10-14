@@ -32,6 +32,7 @@ import {
   productionReportAttempts,
 } from "./production-queue-validation.ts";
 import {
+  MechanismProductionQAStatusSchema,
   createUnreviewedMechanismQA,
   inspectMechanismProductionDisposition,
   MechanismProductionEpisodeReportVersionsSchema as MechanismProductionEpisodeReportSchema,
@@ -106,7 +107,7 @@ const reportFailure = z
       .max(8),
   })
   .strict();
-const dispositionStatus = z.enum(["passed", "failed", "unreviewed"]);
+const dispositionStatus = MechanismProductionQAStatusSchema;
 const dimension = z.enum(MECHANISM_QA_DIMENSIONS);
 export const MechanismProductionReportBundleSchema = z
   .object({
