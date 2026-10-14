@@ -290,6 +290,9 @@ still hold before relying on them.
   corrected audit verifies exact corresponding source lock. Initial isolation
   blocks setuid system ps; copied binary is killed/not used. Fixed system ps-only
   exception passes; actual Node/pinned Python retain5 original-root read denials.
+- **Tracker:** reconcile current run/report/resume,4 verified handoffs and latest
+  installed85 proof. First-pass10% is measured and fails90%; only paired token
+  savings are unverified. Historical engineering rows retain their own cohort.
 - **Open / next:** latest installed86 admits all10/6,181 frames and prepares E1
   /610 native frames. Guard correctly blocks it while primary58827 stays live.
   Earlier79/82 stay unexecuted. Integration/fresh full runtime/render/package and
