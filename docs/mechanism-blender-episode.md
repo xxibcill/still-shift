@@ -184,3 +184,51 @@ labels/highlights and resolved holds still need implementation/review before the
 whole products. Same-material cut faces can remain unclear despite correct source
 geometry, camera projection and render flags; those numeric checks do not approve
 physical contact or pixel readability.
+
+## Native causal annotations
+
+A shot may declare `highlights`, a record from saved surface-part names to opaque
+`#RRGGBB` colors. A native job admits at most32 highlighted parts per frame and
+32 distinct colors across the job. These are temporary annotation materials;
+original material slots/links return before every state and the source master is
+never saved. Geometry and native drivers remain; a highlight does not transfer
+Blender shader graphs into the receiving composition.
+
+An episode may declare up to64 `callouts`, at most four simultaneously and4,096
+active label-frame samples in total. Each names its `id`, `text`, owning `shot`,
+saved `anchor` or surface part, rendered `part`, exclusive frame interval,
+normalized label `position`, and `color`. Optional `controlRanges` admits up to
+8 source controls with ordered `min`/`max`. Compilation rejects unknown or
+out-of-range phase declarations and labels crossing their source shot or naming
+an explicitly hidden part.
+
+The producer queries saved object origins or actual evaluated surface bounds
+centers, then records world coordinates, same-camera pixels/depth and an in-frame
+flag. Surface bounds centers are targeting aids, rather than measured contact
+points. State keys include queried names and highlights. The receiving label and
+leader use those authenticated same-state samples, with editable native text.
+Missing/outside-frame targets or unrendered declared parts fail composition;
+projection and render flags still do not prove actual occlusion or readability.
+
+`readBlenderEpisodeAnchorFrames` authenticates the producer/map and current
+observation hashes, returning `{ frames, release }`. Call `release()` after
+composition; all verification/data reservations live in its child owner. Pass
+`frames` as the third argument to `composeBlenderEpisode` when callouts exist.
+Matching query/highlight/pose inputs permit label text/placement edits with no
+new Blender captures. Export and fresh verification rebuild the labels from
+current observations. Native export and QA share `receiver-cache` inside each
+owned attempt directory, retaining the8GiB media-cache quota without borrowing
+unrelated shared cache contents.
+
+The native regression checks decoded red/blue pixels, default material
+restoration, shared mesh data, actual anchor kinds and untouched saved source.
+Whole factual, surface-contact, encoded text, continuous and listening reviews
+remain separate requirements.
+
+The receiving worker evicts oldest retained complete root pixels before adding a
+new root that would exceed its fixed byte bound. Checksum/dimension validation,
+standalone oversize rejection and the4,096 distinct-root metadata ceiling remain.
+Revisited roots can restore their current authenticated pixels from the owned
+exchange. Public `verifyMechanismPackageArtifacts` forwards its declared
+`signal`/`route` only; direct `verifyNativeMechanismPackageArtifacts` additionally
+admits an explicit `cacheDirectory`.

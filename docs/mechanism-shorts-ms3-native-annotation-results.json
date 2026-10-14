@@ -1,0 +1,656 @@
+{
+  "schemaVersion": "ms3-native-causal-annotation-results-1",
+  "date": "2026-10-14",
+  "ownerSelection": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+  "annotationImplementationCommit": "d9d95240adabb482caea9a8d2eb1e9a70b7e5716",
+  "nativeProfileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+  "annotationSoftware": {
+    "pin": {
+      "path": "/private/tmp/still-shift-ms3-blender45-gate2-receipt.json",
+      "bytes": 2361,
+      "sha256": "sha256:482a413c6b99437247b98bc2c821773d19bb0a45d3fd18655bbb5056680bd5ae"
+    },
+    "result": {
+      "steps": [
+        {
+          "name": "python",
+          "argv": [
+            "uv",
+            "run",
+            "--no-sync",
+            "ruff",
+            "check",
+            "packages/animation-engine/src/blender-capture-worker.py",
+            "tests/fixtures/blender-driver-regression.py",
+            "tests/fixtures/blender-shot-regression.py"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 0.2644274171907455
+        },
+        {
+          "name": "python-format",
+          "argv": [
+            "uv",
+            "run",
+            "--no-sync",
+            "ruff",
+            "format",
+            "--check",
+            "packages/animation-engine/src/blender-capture-worker.py",
+            "tests/fixtures/blender-driver-regression.py",
+            "tests/fixtures/blender-shot-regression.py"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 0.18975720810703933
+        },
+        {
+          "name": "driver-regression",
+          "argv": [
+            "/Applications/Blender.app/Contents/MacOS/Blender",
+            "--background",
+            "--factory-startup",
+            "--python-exit-code",
+            "1",
+            "--python",
+            "tests/fixtures/blender-driver-regression.py"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 0.6665617919061333
+        },
+        {
+          "name": "shot-regression",
+          "argv": [
+            "/Applications/Blender.app/Contents/MacOS/Blender",
+            "--background",
+            "--factory-startup",
+            "--python-exit-code",
+            "1",
+            "--python",
+            "tests/fixtures/blender-shot-regression.py"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 0.9978507501073182
+        },
+        {
+          "name": "fast",
+          "argv": ["pnpm", "check:fast"],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 146.6955699159298
+        },
+        {
+          "name": "runtime",
+          "argv": [
+            "pnpm",
+            "exec",
+            "vitest",
+            "run",
+            "tests/runtime/blender-production-cli.test.ts",
+            "tests/runtime/blender-episode-inputs.test.ts",
+            "tests/runtime/blender-production-backend-admission.test.ts",
+            "tests/runtime/blender-capture-admission.test.ts",
+            "--maxWorkers=2",
+            "--no-file-parallelism"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 5.624673291109502
+        }
+      ],
+      "actualExitCode": 0
+    }
+  },
+  "scouts": [
+    {
+      "pin": {
+        "path": "/private/tmp/still-shift-ms3-blender45-scout1-receipt.json",
+        "bytes": 161,
+        "sha256": "sha256:bdb93a0a7f4fbe63284eec899c02fbce105cd8a1455e87e8790cfc777522cdaf"
+      },
+      "result": {
+        "actualExitCode": 0,
+        "heldEngineInputsExitCode": 0,
+        "heldPrivateInputFiles": 241,
+        "privateInputBytesUnchanged": true,
+        "seconds": 63.88416124996729
+      }
+    },
+    {
+      "pin": {
+        "path": "/private/tmp/still-shift-ms3-blender45-scout2-receipt.json",
+        "bytes": 162,
+        "sha256": "sha256:aec944e5c0cdf1a5cb162de6921efcc64e280df515660ba656f76837501e8eca"
+      },
+      "result": {
+        "actualExitCode": 0,
+        "heldEngineInputsExitCode": 0,
+        "heldPrivateInputFiles": 251,
+        "privateInputBytesUnchanged": true,
+        "seconds": 14.181805750122294
+      }
+    }
+  ],
+  "completeCapturedAnnotationAudit": {
+    "pin": {
+      "path": "/private/tmp/still-shift-ms3-blender45-annotation-audit1.json",
+      "bytes": 846,
+      "sha256": "sha256:ea42eeecffcec4d487a19a80904e5d10931dd0128b5772135364ad6446939a5b"
+    },
+    "result": {
+      "status": "passed",
+      "mappedPinChecks": 5044,
+      "activeLabelSamples": 829,
+      "rows": [
+        {
+          "id": "EU-006",
+          "frames": 634,
+          "labels": 5,
+          "originalAssetAndAudioExact": true,
+          "zeroFreshNativeRenders": true,
+          "completeProjectionPhaseAndLeaderChecks": true,
+          "wholePhysicalGlyphContinuousListeningReview": "UNREVIEWED"
+        },
+        {
+          "id": "EU-010",
+          "frames": 627,
+          "labels": 4,
+          "originalAssetAndAudioExact": true,
+          "zeroFreshNativeRenders": true,
+          "completeProjectionPhaseAndLeaderChecks": true,
+          "wholePhysicalGlyphContinuousListeningReview": "UNREVIEWED"
+        }
+      ],
+      "scope": "Current native capture pins/highlight assignment/projection records and saved text/leader phase bindings; no surface contact, all-frame encoded glyph, continuous or listening approval."
+    }
+  },
+  "priorWholeAttempts": [
+    {
+      "pin": {
+        "path": "/private/tmp/still-shift-ms3-blender45-whole1-receipt.json",
+        "bytes": 189,
+        "sha256": "sha256:bfb065457c6f2c79ed97b6a7d48ebf24447ef1e7279419c043133e951d55199e"
+      },
+      "result": {
+        "steps": [
+          {
+            "step": "queue",
+            "actualExitCode": 2,
+            "heldEngineInputsExitCode": 0,
+            "privateInputsExact": true,
+            "seconds": 2.393801083089784
+          }
+        ]
+      }
+    },
+    {
+      "pin": {
+        "path": "/private/tmp/still-shift-ms3-blender45-whole2-receipt.json",
+        "bytes": 614,
+        "sha256": "sha256:e57a28633386355a6bbb849c0619dd69942e6935551fda52b6f18c1736dd5b4e"
+      },
+      "result": {
+        "steps": [
+          {
+            "step": "queue",
+            "actualExitCode": 0,
+            "heldEngineInputsExitCode": 0,
+            "privateInputsExact": true,
+            "seconds": 3.02612491697073
+          },
+          {
+            "step": "run",
+            "actualExitCode": 1,
+            "heldEngineInputsExitCode": 0,
+            "privateInputsExact": true,
+            "seconds": 585.1654495419934
+          }
+        ],
+        "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-annotations2-cli.json",
+        "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output"
+      }
+    },
+    {
+      "pin": {
+        "path": "/private/tmp/still-shift-ms3-blender45-whole3-receipt.json",
+        "bytes": 611,
+        "sha256": "sha256:9c5c955258847c367fb1520463064a2a8684e50850a43abeadfd87b02ba0a067"
+      },
+      "result": {
+        "steps": [
+          {
+            "step": "queue",
+            "actualExitCode": 0,
+            "heldEngineInputsExitCode": 0,
+            "privateInputsExact": true,
+            "seconds": 3.125115792034194
+          },
+          {
+            "step": "run",
+            "actualExitCode": 1,
+            "heldEngineInputsExitCode": 0,
+            "privateInputsExact": true,
+            "seconds": 809.3011008750182
+          }
+        ],
+        "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-annotations3.json",
+        "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "id": "EU-006",
+      "frames": 634,
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "originalRecordingSeconds": 21.12,
+      "capturedMap": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/items/EU-006/1/native-plates.json",
+        "bytes": 683815,
+        "sha256": "sha256:4de089becad0d502eb143c20340290f828171ef5705a3dcac1f7af170e6bd558"
+      },
+      "freshNativeRenders": 91,
+      "reusedOutputFrames": 543,
+      "labels": 5,
+      "activeLabelFrames": 339,
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-annotations2/EU-006/plan.json",
+        "bytes": 8359,
+        "sha256": "sha256:53528b68010c89d16110914288cf8289d671c279aed77319437bd66cf9aa532a"
+      },
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-annotations2/EU-006/source.json",
+        "bytes": 2153,
+        "sha256": "sha256:2dacc5b19e08e332d600d52ab6454824e805644e0c754ada4eff615a8a9075ca"
+      }
+    },
+    {
+      "id": "EU-010",
+      "frames": 627,
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "originalRecordingSeconds": 20.88,
+      "capturedMap": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/items/EU-010/1/native-plates.json",
+        "bytes": 676710,
+        "sha256": "sha256:af31f3128a74ac6b958f5258391cfcb1250ccb903fa04b16a1d5fddfbe0b08a5"
+      },
+      "freshNativeRenders": 103,
+      "reusedOutputFrames": 524,
+      "labels": 4,
+      "activeLabelFrames": 490,
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-annotations2/EU-010/plan.json",
+        "bytes": 8369,
+        "sha256": "sha256:3efbc2131fb9a048f0aca0c927733e3a11c1d53105facabccb02f8ece0cb569a"
+      },
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-annotations2/EU-010/source.json",
+        "bytes": 2042,
+        "sha256": "sha256:fb764f1ed61fd8da169b449f9e188e15ee084498112fa36d5d020bf09633eaf0"
+      }
+    }
+  ],
+  "acceptedPilot": 0,
+  "pilotDenominator": 10,
+  "routineTokenMeasurements": null,
+  "wholeReview": "UNREVIEWED",
+  "status": "annotation-bindings-and-bounded-cache-software-verified-in-stages-whole-HD-retry-in-flight",
+  "implementation": {
+    "highlights": "Bounded temporary opaque material palette; object-linked slots and shared source data restored, never saving native masters. Actual assigned colors and queried anchors enter native keys.",
+    "callouts": "Bounded editable text, panels and same-state held-key leaders. Native origin or evaluated bounds center records are authenticated; declared rendered part and in-frame target are required at each active frame. Source control ranges bind label phase.",
+    "ownership": "Projection loading uses a child memory owner; native receiving/QA caches live inside the owned attempt directory with the original 8GiB quota.",
+    "limits": {
+      "highlightedPartsPerFrame": 32,
+      "distinctHighlightColorsPerJob": 32,
+      "queriedAnchorsPerFrame": 64,
+      "calloutsPerEpisode": 64,
+      "simultaneousCallouts": 4,
+      "activeLabelFrames": 4096
+    },
+    "scope": "Projected origins/bounds centers are targeting aids; flags are not occlusion evidence and labels are not surface-contact proof."
+  },
+  "cacheRepair": {
+    "status": "verified-in-stages",
+    "reason": "Both whole HD export retries failed when retained root pixels exceeded the original worker bound.",
+    "behavior": "Evict oldest retained roots before admitting a new root; preserve byte/entry limits, exact pixel checksums and standalone oversize rejection. Public package verifier forwards only its declared signal/route; direct native verification keeps its explicit cache control.",
+    "regressionRed": {
+      "path": "/private/tmp/still-shift-ms3-blender46-cache-red1.log",
+      "actualExitCode": 1,
+      "tests": 5,
+      "failed": 1
+    },
+    "regressionGreen": {
+      "path": "/private/tmp/still-shift-ms3-blender46-cache-green1.log",
+      "actualExitCode": 0,
+      "tests": 5
+    },
+    "gates": [
+      {
+        "steps": [
+          {
+            "step": "fast",
+            "argv": ["pnpm", "check:fast"],
+            "actualExitCode": 1,
+            "holdExitCode": 0,
+            "seconds": 56.19025545800105
+          }
+        ]
+      },
+      {
+        "steps": [
+          {
+            "step": "fast",
+            "argv": ["pnpm", "check:fast"],
+            "actualExitCode": 0,
+            "holdExitCode": 0,
+            "seconds": 155.40120258391835
+          },
+          {
+            "step": "runtime",
+            "argv": ["pnpm", "check:runtime"],
+            "actualExitCode": 1,
+            "holdExitCode": 0,
+            "seconds": 544.064798124833
+          }
+        ]
+      },
+      {
+        "steps": [
+          {
+            "step": "fast",
+            "argv": ["pnpm", "check:fast"],
+            "actualExitCode": 0,
+            "holdExitCode": 0,
+            "seconds": 147.7312371248845
+          },
+          {
+            "step": "runtime",
+            "argv": ["pnpm", "check:runtime"],
+            "actualExitCode": 1,
+            "holdExitCode": 0,
+            "seconds": 491.2940197091084
+          }
+        ]
+      }
+    ],
+    "sourceCommit": "4679b8a835e51a1f2d5e9c8ac49ec099b894a1a8",
+    "continuation": {
+      "pin": {
+        "path": "/private/tmp/still-shift-ms3-blender46-continuation1-receipt.json",
+        "bytes": 1681,
+        "sha256": "sha256:7347f1bd347d2899e330fda170f14ec33052b6d702d871867dccdc0192758456"
+      },
+      "result": {
+        "context": "Same source as gate3; actual shared cache missing-manifest diagnostic retained. Continue failed preview files and unrun stages using fresh owned media caches, with limits unchanged.",
+        "steps": [
+          {
+            "step": "preview-retry",
+            "argv": [
+              "pnpm",
+              "exec",
+              "vitest",
+              "run",
+              "tests/integration/composition-preview.test.ts",
+              "tests/integration/passage-native-media.test.ts",
+              "--maxWorkers=2",
+              "--no-file-parallelism"
+            ],
+            "actualExitCode": 0,
+            "holdExitCode": 0,
+            "ownedCache": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-cache46-preview-retry-6iqvjrwn",
+            "seconds": 27.839592000003904
+          },
+          {
+            "step": "depth",
+            "argv": ["pnpm", "test:depth"],
+            "actualExitCode": 0,
+            "holdExitCode": 0,
+            "ownedCache": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-cache46-depth-sqyvi7c8",
+            "seconds": 1.3800802500918508
+          },
+          {
+            "step": "smoke",
+            "argv": ["pnpm", "test:browser:smoke"],
+            "actualExitCode": 0,
+            "holdExitCode": 0,
+            "ownedCache": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-cache46-smoke-kf380bs_",
+            "seconds": 35.16329575004056
+          },
+          {
+            "step": "surfaces",
+            "argv": ["pnpm", "test:browser:composition-surfaces"],
+            "actualExitCode": 0,
+            "holdExitCode": 0,
+            "ownedCache": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-cache46-surfaces-02fftsh9",
+            "seconds": 50.77500816597603
+          }
+        ],
+        "actualExitCode": 0
+      }
+    },
+    "sharedCacheDiagnosis": {
+      "failedGuard": {
+        "path": "/private/tmp/still-shift-ms3-blender46-preview-corrupt2.json",
+        "bytes": 1105,
+        "sha256": "sha256:5728517dfe9856d36a0421e978acdcd04286c59844ca9ac3db7c850f278f1666"
+      },
+      "freshOwnedCache": {
+        "path": "/private/tmp/still-shift-ms3-blender46-preview-fresh1.json",
+        "bytes": 299,
+        "sha256": "sha256:e400bb8c842b5e889a6ec6966aa85f21710d0b68d7e55085e23acbc1034160df"
+      },
+      "sharedCacheRemovedOrLimitsChanged": false
+    },
+    "coverage": {
+      "fastTests": 4589,
+      "fastFiles": 457,
+      "runtimeTests": 271,
+      "runtimeFiles": 52,
+      "integrationTests": 324,
+      "integrationFiles": 59,
+      "integrationMethod": "Gate3 retains321 pass/3 fail;301 cases outside the two failed files pass there. All23 cases in the two owning files pass on fresh owned caches with source inputs unchanged.",
+      "depthTests": 14,
+      "browserSmokeActualExitCode": 0,
+      "surfaceCases": 144,
+      "surfaceFrameChecks": 8000,
+      "rootProtectionCases": 14,
+      "completedInStages": true,
+      "aggregateRuntimeActualExitCode": 1,
+      "continuationActualExitCode": 0
+    }
+  },
+  "allTenAnnotationDrafts": {
+    "preflight": {
+      "status": "passed",
+      "scope": "Source admission and absolute compilation only; native projection/visibility and encoded review pending.",
+      "rows": [
+        {
+          "id": "EU-001",
+          "frames": 610,
+          "callouts": 4,
+          "activeLabelFrames": 529
+        },
+        {
+          "id": "EU-002",
+          "frames": 588,
+          "callouts": 3,
+          "activeLabelFrames": 344
+        },
+        {
+          "id": "EU-003",
+          "frames": 588,
+          "callouts": 5,
+          "activeLabelFrames": 378
+        },
+        {
+          "id": "EU-004",
+          "frames": 653,
+          "callouts": 3,
+          "activeLabelFrames": 363
+        },
+        {
+          "id": "EU-005",
+          "frames": 598,
+          "callouts": 3,
+          "activeLabelFrames": 360
+        },
+        {
+          "id": "EU-006",
+          "frames": 634,
+          "callouts": 5,
+          "activeLabelFrames": 339
+        },
+        {
+          "id": "EU-007",
+          "frames": 708,
+          "callouts": 5,
+          "activeLabelFrames": 485
+        },
+        {
+          "id": "EU-008",
+          "frames": 579,
+          "callouts": 4,
+          "activeLabelFrames": 557
+        },
+        {
+          "id": "EU-009",
+          "frames": 596,
+          "callouts": 6,
+          "activeLabelFrames": 412
+        },
+        {
+          "id": "EU-010",
+          "frames": 627,
+          "callouts": 4,
+          "activeLabelFrames": 490
+        }
+      ],
+      "totalFrames": 6181,
+      "totalLabels": 42
+    },
+    "projects": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/projects-annotations3-cli.json",
+    "status": "Eight new drafts await native projection/visibility and encoded review; EU006/010 subset uses its retained inputs. Original voice, speech and motion clocks unchanged.",
+    "originalMasterAndWholeVoiceAudit": {
+      "pin": {
+        "path": "/private/tmp/still-shift-ms3-blender46-originals-all10.json",
+        "bytes": 1476,
+        "sha256": "sha256:bcaee95500b3f1cb96bc8ee08d5a9ab57ea34681c4e2bca09474bf757e52adf5"
+      },
+      "result": {
+        "status": "passed",
+        "rows": [
+          {
+            "id": "EU-001",
+            "originalNativeMasterAndWholeVoiceExact": true,
+            "speechAndControlClocksExact": true
+          },
+          {
+            "id": "EU-002",
+            "originalNativeMasterAndWholeVoiceExact": true,
+            "speechAndControlClocksExact": true
+          },
+          {
+            "id": "EU-003",
+            "originalNativeMasterAndWholeVoiceExact": true,
+            "speechAndControlClocksExact": true
+          },
+          {
+            "id": "EU-004",
+            "originalNativeMasterAndWholeVoiceExact": true,
+            "speechAndControlClocksExact": true
+          },
+          {
+            "id": "EU-005",
+            "originalNativeMasterAndWholeVoiceExact": true,
+            "speechAndControlClocksExact": true
+          },
+          {
+            "id": "EU-006",
+            "originalNativeMasterAndWholeVoiceExact": true,
+            "speechAndControlClocksExact": true
+          },
+          {
+            "id": "EU-007",
+            "originalNativeMasterAndWholeVoiceExact": true,
+            "speechAndControlClocksExact": true
+          },
+          {
+            "id": "EU-008",
+            "originalNativeMasterAndWholeVoiceExact": true,
+            "speechAndControlClocksExact": true
+          },
+          {
+            "id": "EU-009",
+            "originalNativeMasterAndWholeVoiceExact": true,
+            "speechAndControlClocksExact": true
+          },
+          {
+            "id": "EU-010",
+            "originalNativeMasterAndWholeVoiceExact": true,
+            "speechAndControlClocksExact": true
+          }
+        ],
+        "scope": "Pinned native master/audio bytes and whole authored clock preservation; no encoded/listening/contact approval."
+      }
+    }
+  },
+  "retainedFailures": [
+    "Incorrect endpoint test assertion, corrected without weakening native endpoint checks.",
+    "Projection loader retained a 64MiB foreign reservation; repaired with an owned child and verified cleanup.",
+    "Interrupted build attempt lacks its terminal receipt; later held gates supply current source validation.",
+    "Original projects declaration omitted required batch id; strict CLI rejected before native submission.",
+    "Can macro flexing-flange anchor outside the frame; rejected view retained and source-world-target calibration repaired framing.",
+    "Shared receiving-cache 8GiB quota rejected both initial exports; owned per-attempt cache fixes sharing without changing quota.",
+    "Both owned-cache exports then hit root worker pixel capacity; transactions retained maps/compositions and removed partial movies.",
+    "Cache-repair fast lint failed on one unused test argument; corrected.",
+    "Full runtime gate exposed the public package verifier forwarding an unsupported cache setting; correction verification in flight.",
+    "The unchanged-source full integration rerun retains three missing-preview failures from an old shared audio cache missing its manifest. Exact guard diagnosis and fresh owned-cache success retained;23 owning cases then pass, with shared bytes and quotas intact."
+  ],
+  "remaining": [
+    "Encoded whole HD products/report/resume for this two-episode subset.",
+    "Native scouts and causal visibility/encoded review for the other eight annotation drafts, then whole HD products for all ten.",
+    "Resolved hold purposes, native phone/contact/crop/audio review evidence and fresh-session handoff.",
+    "Broader physical label-state, event-order, contact and fault/coverage checks.",
+    "Whole factual/mechanical/encoded-glyph/continuous/listening and original E06/E10 reviews.",
+    "Comparable routine effort and final full software/benchmark/archive/installed-package gates."
+  ],
+  "cacheImplementationCommit": "4679b8a835e51a1f2d5e9c8ac49ec099b894a1a8",
+  "runtimeCodeSha256": "sha256:db4e4d9a560eb4fe1f0fdd4e98bf76e467ce70226adebcda5af86c0b55a826d8",
+  "sourceInventory": {
+    "path": "/private/tmp/still-shift-ms3-blender46-inputs3.json",
+    "files": 2777,
+    "bytes": 122189105,
+    "postCommitStatus": "passed"
+  },
+  "wholeHDCurrentRetry": {
+    "sourceCommit": "4679b8a835e51a1f2d5e9c8ac49ec099b894a1a8",
+    "runtimeCodeSha256": "sha256:db4e4d9a560eb4fe1f0fdd4e98bf76e467ce70226adebcda5af86c0b55a826d8",
+    "manifest": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-annotations4.json",
+      "bytes": 7028,
+      "sha256": "sha256:b19801bcf4eac0d64cd9ced18c48a57ee8f66988fec14478f8b24c920fdc1e7c"
+    },
+    "queueCreation": {
+      "steps": [
+        {
+          "step": "queue",
+          "actualExitCode": 0,
+          "heldEngineInputsExitCode": 0,
+          "privateInputsExact": true,
+          "seconds": 2.6663753751199692
+        }
+      ],
+      "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-annotations4.json",
+      "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output"
+    },
+    "status": "run/report/resume in flight; terminal completion and encoded audit required",
+    "acceptedPilot": 0
+  }
+}

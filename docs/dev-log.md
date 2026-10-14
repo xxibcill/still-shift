@@ -87,7 +87,27 @@ still hold before relying on them.
   current producer pass. Failed preflights, rejected frozen scouts and the diagnostic
   exception remain recorded. Whole reviews remain unreviewed; accepted coverage is
   0/10 and paired routine effort is null.
-  **Next:** causal annotations/resolved holds and review evidence/handoff; HD products for all ten
+  **Current annotation slice:** `d9d95240` adds bounded temporary highlights,
+  captured object-origin/part-center queries, editable labels/leaders, phase ranges
+  and child-owner cleanup. Fast4,587/457, native runtime12/four files, Python and
+  both native regressions pass on2,777 exact inputs/122,185,321 bytes. Two actual
+  whole HD native captures (EU-006/634 and EU-010/627 frames) retain the original
+  recordings. First export attempts fail on the shared receiving-cache quota;
+  the verified fix gives each attempt an owned cache with the quota intact. Current
+  runtime `e2b8`, producer `1dd0`; retries reuse all1,261 native frames and then
+  fail at the root pixel-cache bound. Independent5,044 pins/829 label-frame
+  projections, phase ranges and leaders verify. Source `4679b8a8` bounds retained
+  root pixels by eviction and confines public package-verifier settings. Fast4,589/
+  457, runtime271/52, integration324/59, depth14, smoke and144 browser cache cases/
+  8,000 frames pass in recorded stages. Three old shared-cache fixture failures
+  retain their missing-manifest guard;23 owning cases pass on fresh owned caches.
+  All2,777 source inputs/122,189,105 bytes stay exact after commit. Current runtime
+  `db4e`/native profile `1dd0`; whole HD attempt3 is running with retained native
+  states. All-ten drafts compile6,181 frames/42 labels with original masters,
+  narration/speech/motion clocks exact; eight new native scouts remain. Full HD
+  terminal exports/reports/encoded inspection remain in flight; accepted stays0/10.
+  [Annotation evidence](./mechanism-shorts-ms3-native-annotation-results.json).
+  **Next:** remaining causal annotations/resolved holds and review evidence/handoff; HD products for all ten
   with object-specific cues and factual bindings; broader faults/events/contact/coverage;
   whole factual/mechanical/glyph/continuous/listening and original E06/E10 reviews;
   comparable effort; final full software/benchmark/archive/installed-package gates.
@@ -280,6 +300,43 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Bound receiving root pixels and package-verifier controls
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; source `4679b8a8`, from `d9d95240`.
+- **Done:** Evict oldest retained root pixels within the original byte/entry bounds;
+  preserve exact restored pixels, oversize rejection and public option ownership.
+- **Verified in stages:** Fast4,589/457, runtime271/52, integration324/59, depth14,
+  smoke and144 cache browser cases/8,000 frames. Source2,777/122,189,105B stays exact.
+- **Retained:** Real cache-capacity red/green, unused test argument, unsupported
+  wrapper forwarding and three missing-manifest shared-cache fixture failures.
+  The23 owning cases pass on fresh caches; shared cache and quotas remain intact.
+- **Actual / next:** Whole HD EU-006/EU-010 attempt3 runs on `db4e`/`1dd0`;
+  complete export/report/resume and encoded label/audio checks remain. All-ten
+  drafts compile6,181 frames/42 labels; eight new native scouts remain. Pilot0/10.
+- **Records:** [Annotation and cache evidence](./mechanism-shorts-ms3-native-annotation-results.json),
+  [acceptance](./mechanism-shorts-ms3-acceptance.md).
+
+### 2026-10-14 — Bind native causal annotations to captured states (in flight)
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; source `d9d95240`, from `b8f09d98`.
+- **Done:** Bounded part highlights, same-state origins/bounds-center projections,
+  editable label/leader layers, source-control phase checks and owned receiving cache.
+- **Verified:** Fast4,587/457, native runtime12/four files, Python and both native
+  regressions; decoded highlight pixels and original shared materials checked.
+  All2,777 inputs/122,185,321 bytes remain exact after commit.
+- **Actual / in flight:** Whole634/627-frame HD captures for actual EU-006/EU-010;
+  original recordings unchanged. Independent5,044 pins/829 active label frames
+  verify; retries reuse all native frames but hit the root pixel-cache bound.
+  Bounded eviction and public-package option ownership repair are in verification.
+  All-ten annotation drafts compile6,181 frames/42 labels; eight new scouts pending.
+- **Retained:** Endpoint expectation failure, child-owner64MiB leak and corrected
+  cleanup, missing batch ID, offscreen flange target and shared-cache export failures.
+- **Next:** Complete encoded/report/resume proof and label/audio audit; then all-ten
+  annotations/holds/handoff/whole/fault/effort/final gates. Accepted coverage:0/10.
+- **Records:** [Annotation evidence](./mechanism-shorts-ms3-native-annotation-results.json),
+  [native guide](./mechanism-blender-episode.md),
+  [framing history](./mechanism-shorts-ms3-native-framing-results.json).
 
 ### 2026-10-14 — Frame native shots and expose saved cutaways
 

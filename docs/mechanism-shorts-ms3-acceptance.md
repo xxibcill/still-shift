@@ -191,3 +191,23 @@ all encoded glyphs, whole motion/listening/factual/mechanical acceptance, native
 phone/contact/crop/audio handoff, HD all-ten delivery, broader faults/coverage or
 final gates. These cases remain one distinct engineering episode; accepted coverage
 is 0/10 and comparable routine token measurements are unavailable.
+
+[Native causal annotations](./mechanism-shorts-ms3-native-annotation-results.json)
+on `d9d95240` bind temporary surface highlights, captured origins/bounds centers,
+editable labels/leaders and requested control-phase ranges. Actual whole EU-006/
+EU-010 captures contain1,261 HD frame states; independent5,044 pins and829 active
+label frames verify. Source masters, whole original recordings and speech clocks
+stay exact. Initial shared-cache failures and later root pixel-capacity failures
+remain retained; bounded eviction and public-package option ownership repair are
+in verification. All-ten annotation drafts now compile6,181 frames and42 labels,
+with eight new native projection/visibility scouts pending. No whole HD export,
+encoded label/continuous/listening approval or accepted coverage follows yet.
+
+The receiving repair on `4679b8a8` passes fast4,589/457, runtime271/52,
+integration324/59, depth14, smoke and144 browser cache cases/8,000 frames in
+recorded stages. Failed aggregate runs remain: one public option-forwarding
+failure and three old shared audio-cache missing-manifest fixture failures.
+Unchanged-source owning-file replay passes23 cases using fresh caches; no shared
+cache deletion or quota change occurs. All2,777 source inputs stay exact after
+commit. The current `db4e`/`1dd0` whole HD attempt3 is in flight; source/software
+checks do not establish terminal export or pilot/whole acceptance.
