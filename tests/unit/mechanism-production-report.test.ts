@@ -67,6 +67,67 @@ describe("artifact-bound production QA", () => {
     expect(result.reviewedReady).toBe(false);
     expect(Object.values(result.statuses)).toEqual(Array(6).fill("unreviewed"));
   });
+  it("retains artifact-bound not-applicable decisions without fabricating an interval", () => {
+    const value = reviewed();
+    const qa = value.qa.find((q) => q.dimension === "listening")!;
+    Object.assign(qa, {
+      status: "not-applicable",
+      method: "not-applicable",
+      evaluatedInterval: null,
+      explanation:
+        "Fixture has no audible content; retained applicability evidence names this exact output.",
+    });
+    const result = inspectMechanismProductionDisposition(value);
+    expect(result.statuses.listening).toBe("not-applicable");
+    expect(result.reviewedReady).toBe(true);
+    expect(
+      summarizeMechanismProductionCohort([value]).reviewCounts.listening,
+    ).toEqual({ passed: 0, failed: 0, unreviewed: 0, notApplicable: 1 });
+    for (const patch of [
+      { method: "not-reviewed" },
+      { evidence: [] },
+      { reviewer: null },
+      { reviewer: { kind: "automated", id: "encoder" } },
+      { binding: { ...binding, outputSha256: null } },
+      {
+        evaluatedInterval: {
+          unit: "source-sample",
+          start: 0,
+          endExclusive: 96000,
+        },
+      },
+      { explanation: "   " },
+    ])
+      expect(
+        MechanismProductionQASchema.safeParse({ ...qa, ...patch }).success,
+      ).toBe(false);
+    value.binding.outputSha256 = hash("f");
+    expect(
+      inspectMechanismProductionDisposition(value).statuses.listening,
+    ).toBe("unreviewed");
+    expect(qa.status).toBe("not-applicable");
+  });
+  it("requires technical pass and zero mechanical failures even with applicability decisions", () => {
+    const value = reviewed();
+    Object.assign(value.qa[0]!, {
+      status: "not-applicable",
+      method: "not-applicable",
+      evaluatedInterval: null,
+    });
+    expect(inspectMechanismProductionDisposition(value).reviewedReady).toBe(
+      false,
+    );
+    Object.assign(value.qa[0]!, reviewed().qa[0]);
+    Object.assign(value.qa.find((q) => q.dimension === "mechanical")!, {
+      status: "not-applicable",
+      method: "not-applicable",
+      evaluatedInterval: null,
+    });
+    value.unresolvedMechanicalFailures = 1;
+    expect(inspectMechanismProductionDisposition(value).reviewedReady).toBe(
+      false,
+    );
+  });
   it.each([
     "inputSha256",
     "outputSha256",

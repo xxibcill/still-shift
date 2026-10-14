@@ -19,7 +19,15 @@ export const MECHANISM_QA_DIMENSIONS = [
   "factual",
 ] as const;
 export type MechanismQADimension = (typeof MECHANISM_QA_DIMENSIONS)[number];
-const status = z.enum(["passed", "failed", "unreviewed"]);
+export const MechanismProductionQAStatusSchema = z.enum([
+  "passed",
+  "failed",
+  "unreviewed",
+  "not-applicable",
+]);
+export type MechanismProductionQAStatus = z.infer<
+  typeof MechanismProductionQAStatusSchema
+>;
 const measurement = z.number().finite().nonnegative().nullable();
 const tokenCount = z
   .number()
@@ -47,7 +55,7 @@ export type MechanismProductionBinding = z.infer<
 export const MechanismProductionQASchema = z
   .object({
     dimension: z.enum(MECHANISM_QA_DIMENSIONS),
-    status,
+    status: MechanismProductionQAStatusSchema,
     binding: MechanismProductionBindingSchema,
     method: z.string().min(1).max(256),
     evaluatedInterval: z
@@ -84,6 +92,19 @@ export const MechanismProductionQASchema = z
       )
         reject(
           "Unreviewed QA must not carry an evaluated interval or completed-review evidence",
+        );
+    } else if (review.status === "not-applicable") {
+      if (
+        review.method !== "not-applicable" ||
+        review.evaluatedInterval !== null ||
+        !review.binding.outputSha256 ||
+        !review.evidence.length ||
+        !review.reviewer ||
+        review.reviewer.kind === "automated" ||
+        !review.explanation.trim()
+      )
+        reject(
+          "Not-applicable QA requires artifact-bound applicability evidence, an agent/human reviewer and explanation, without an evaluated interval",
         );
     } else {
       if (
@@ -294,7 +315,7 @@ export function createUnreviewedMechanismQA(
 
 export type MechanismProductionDisposition = {
   reviewedReady: boolean;
-  statuses: Record<MechanismQADimension, "passed" | "failed" | "unreviewed">;
+  statuses: Record<MechanismQADimension, MechanismProductionQAStatus>;
   staleDimensions: MechanismQADimension[];
   incompleteDimensions: MechanismQADimension[];
 };
@@ -333,7 +354,10 @@ export function inspectMechanismProductionDisposition(
     reviewedReady:
       report.binding.outputSha256 !== null &&
       report.unresolvedMechanicalFailures === 0 &&
-      MECHANISM_QA_DIMENSIONS.every((d) => statuses[d] === "passed"),
+      statuses.technical === "passed" &&
+      MECHANISM_QA_DIMENSIONS.every(
+        (d) => statuses[d] === "passed" || statuses[d] === "not-applicable",
+      ),
     statuses,
     staleDimensions,
     incompleteDimensions,
@@ -362,6 +386,7 @@ const reviewCount = z
     passed: z.number().int().nonnegative().max(300),
     failed: z.number().int().nonnegative().max(300),
     unreviewed: z.number().int().nonnegative().max(300),
+    notApplicable: z.number().int().nonnegative().max(300).default(0),
   })
   .strict();
 const durationSummary = z
@@ -468,12 +493,17 @@ export function summarizeMechanismProductionCohort(
   const reviewCounts = Object.fromEntries(
     MECHANISM_QA_DIMENSIONS.map((d) => [
       d,
-      { passed: 0, failed: 0, unreviewed: 0 },
+      { passed: 0, failed: 0, unreviewed: 0, notApplicable: 0 },
     ]),
   ) as MechanismProductionCohortReport["reviewCounts"];
   const dispositions = reports.map(inspectMechanismProductionDisposition);
   dispositions.forEach((d) =>
-    MECHANISM_QA_DIMENSIONS.forEach((k) => reviewCounts[k][d.statuses[k]]++),
+    MECHANISM_QA_DIMENSIONS.forEach(
+      (k) =>
+        reviewCounts[k][
+          d.statuses[k] === "not-applicable" ? "notApplicable" : d.statuses[k]
+        ]++,
+    ),
   );
   const attempted = reports.filter((r) => r.attempts.length).length;
   const firstCompleted = reports.filter(

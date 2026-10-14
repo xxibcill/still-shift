@@ -217,7 +217,7 @@
                 },
                 "status": {
                   "type": "string",
-                  "enum": ["passed", "failed", "unreviewed"]
+                  "enum": ["passed", "failed", "unreviewed", "not-applicable"]
                 },
                 "binding": {
                   "type": "object",
@@ -642,7 +642,12 @@
                         },
                         "status": {
                           "type": "string",
-                          "enum": ["passed", "failed", "unreviewed"]
+                          "enum": [
+                            "passed",
+                            "failed",
+                            "unreviewed",
+                            "not-applicable"
+                          ]
                         },
                         "binding": {
                           "type": "object",
@@ -1181,7 +1186,12 @@
                         },
                         "status": {
                           "type": "string",
-                          "enum": ["passed", "failed", "unreviewed"]
+                          "enum": [
+                            "passed",
+                            "failed",
+                            "unreviewed",
+                            "not-applicable"
+                          ]
                         },
                         "binding": {
                           "type": "object",
@@ -1436,27 +1446,27 @@
                 "properties": {
                   "technical": {
                     "type": "string",
-                    "enum": ["passed", "failed", "unreviewed"]
+                    "enum": ["passed", "failed", "unreviewed", "not-applicable"]
                   },
                   "mechanical": {
                     "type": "string",
-                    "enum": ["passed", "failed", "unreviewed"]
+                    "enum": ["passed", "failed", "unreviewed", "not-applicable"]
                   },
                   "sampled-visual": {
                     "type": "string",
-                    "enum": ["passed", "failed", "unreviewed"]
+                    "enum": ["passed", "failed", "unreviewed", "not-applicable"]
                   },
                   "continuous-motion": {
                     "type": "string",
-                    "enum": ["passed", "failed", "unreviewed"]
+                    "enum": ["passed", "failed", "unreviewed", "not-applicable"]
                   },
                   "listening": {
                     "type": "string",
-                    "enum": ["passed", "failed", "unreviewed"]
+                    "enum": ["passed", "failed", "unreviewed", "not-applicable"]
                   },
                   "factual": {
                     "type": "string",
-                    "enum": ["passed", "failed", "unreviewed"]
+                    "enum": ["passed", "failed", "unreviewed", "not-applicable"]
                   }
                 },
                 "required": [
@@ -1621,9 +1631,15 @@
                   "type": "integer",
                   "minimum": 0,
                   "maximum": 300
+                },
+                "notApplicable": {
+                  "default": 0,
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 300
                 }
               },
-              "required": ["passed", "failed", "unreviewed"],
+              "required": ["passed", "failed", "unreviewed", "notApplicable"],
               "additionalProperties": false
             },
             "mechanical": {
@@ -1635,9 +1651,15 @@
                   "type": "integer",
                   "minimum": 0,
                   "maximum": 300
+                },
+                "notApplicable": {
+                  "default": 0,
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 300
                 }
               },
-              "required": ["passed", "failed", "unreviewed"],
+              "required": ["passed", "failed", "unreviewed", "notApplicable"],
               "additionalProperties": false
             },
             "sampled-visual": {
@@ -1649,9 +1671,15 @@
                   "type": "integer",
                   "minimum": 0,
                   "maximum": 300
+                },
+                "notApplicable": {
+                  "default": 0,
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 300
                 }
               },
-              "required": ["passed", "failed", "unreviewed"],
+              "required": ["passed", "failed", "unreviewed", "notApplicable"],
               "additionalProperties": false
             },
             "continuous-motion": {
@@ -1663,9 +1691,15 @@
                   "type": "integer",
                   "minimum": 0,
                   "maximum": 300
+                },
+                "notApplicable": {
+                  "default": 0,
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 300
                 }
               },
-              "required": ["passed", "failed", "unreviewed"],
+              "required": ["passed", "failed", "unreviewed", "notApplicable"],
               "additionalProperties": false
             },
             "listening": {
@@ -1677,9 +1711,15 @@
                   "type": "integer",
                   "minimum": 0,
                   "maximum": 300
+                },
+                "notApplicable": {
+                  "default": 0,
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 300
                 }
               },
-              "required": ["passed", "failed", "unreviewed"],
+              "required": ["passed", "failed", "unreviewed", "notApplicable"],
               "additionalProperties": false
             },
             "factual": {
@@ -1691,9 +1731,15 @@
                   "type": "integer",
                   "minimum": 0,
                   "maximum": 300
+                },
+                "notApplicable": {
+                  "default": 0,
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 300
                 }
               },
-              "required": ["passed", "failed", "unreviewed"],
+              "required": ["passed", "failed", "unreviewed", "notApplicable"],
               "additionalProperties": false
             }
           },

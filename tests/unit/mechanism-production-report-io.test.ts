@@ -132,6 +132,7 @@ describe("durable production episode and cohort reports", () => {
       passed: 0,
       failed: 0,
       unreviewed: 2,
+      notApplicable: 0,
     });
   });
   it("reports altered output independently while still verifying the other selected episode", async () => {

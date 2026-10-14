@@ -14,7 +14,13 @@ An episode report names its question, family/design, input/output/code/profile
 hashes and output-frame/source-sample clocks. It retains contiguous original
 attempt numbers and passed/failed/cancelled/interrupted outcomes. Six separate
 QA dimensions record method, evaluated interval, evidence artifacts and reviewer
-kind. An unreviewed dimension has no fabricated interval or completed-review
+kind. States are passed, failed, unreviewed and not-applicable. A not-applicable
+decision requires the exact output identity, retained applicability evidence, an
+agent or human reviewer and a nonblank explanation, with method not-applicable
+and no evaluated interval. It is counted separately and becomes unreviewed after
+any binding changes. Technical pass and zero unresolved mechanical failures remain
+required for readiness. Applicable dimensions still need their own completed reviews.
+An unreviewed dimension has no fabricated interval or completed-review
 metadata. Automated checks cannot declare continuous playback, listening or
 factual review passed.
 

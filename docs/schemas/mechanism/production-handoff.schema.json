@@ -264,27 +264,27 @@
           "properties": {
             "technical": {
               "type": "string",
-              "enum": ["passed", "failed", "unreviewed"]
+              "enum": ["passed", "failed", "unreviewed", "not-applicable"]
             },
             "mechanical": {
               "type": "string",
-              "enum": ["passed", "failed", "unreviewed"]
+              "enum": ["passed", "failed", "unreviewed", "not-applicable"]
             },
             "sampled-visual": {
               "type": "string",
-              "enum": ["passed", "failed", "unreviewed"]
+              "enum": ["passed", "failed", "unreviewed", "not-applicable"]
             },
             "continuous-motion": {
               "type": "string",
-              "enum": ["passed", "failed", "unreviewed"]
+              "enum": ["passed", "failed", "unreviewed", "not-applicable"]
             },
             "listening": {
               "type": "string",
-              "enum": ["passed", "failed", "unreviewed"]
+              "enum": ["passed", "failed", "unreviewed", "not-applicable"]
             },
             "factual": {
               "type": "string",
-              "enum": ["passed", "failed", "unreviewed"]
+              "enum": ["passed", "failed", "unreviewed", "not-applicable"]
             }
           },
           "required": [
@@ -599,27 +599,27 @@
           "properties": {
             "technical": {
               "type": "string",
-              "enum": ["passed", "failed", "unreviewed"]
+              "enum": ["passed", "failed", "unreviewed", "not-applicable"]
             },
             "mechanical": {
               "type": "string",
-              "enum": ["passed", "failed", "unreviewed"]
+              "enum": ["passed", "failed", "unreviewed", "not-applicable"]
             },
             "sampled-visual": {
               "type": "string",
-              "enum": ["passed", "failed", "unreviewed"]
+              "enum": ["passed", "failed", "unreviewed", "not-applicable"]
             },
             "continuous-motion": {
               "type": "string",
-              "enum": ["passed", "failed", "unreviewed"]
+              "enum": ["passed", "failed", "unreviewed", "not-applicable"]
             },
             "listening": {
               "type": "string",
-              "enum": ["passed", "failed", "unreviewed"]
+              "enum": ["passed", "failed", "unreviewed", "not-applicable"]
             },
             "factual": {
               "type": "string",
-              "enum": ["passed", "failed", "unreviewed"]
+              "enum": ["passed", "failed", "unreviewed", "not-applicable"]
             }
           },
           "required": [

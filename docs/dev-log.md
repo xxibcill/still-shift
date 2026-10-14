@@ -43,8 +43,18 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS3 isolated review repairs (2026-10-15):** `codex/ms3-review-fixes` starts
-  at exact `d45f3f4f`; frozen original portable68 lifecycle is terminal on the milestone branch. Native
+- **MS3 fourth QA state (2026-10-15):** native and bridge dimension reports now
+  retain explicit artifact-bound not-applicable decisions, separate counts and
+  stale-decision retirement. Technical pass and zero mechanical failures still
+  required; actual pilot decisions stay unfinished. Red2/green48 scoped tests
+  and types pass; both independent reviews find no concrete defect. Combined
+  fast4,619/459 passes77.15s; fresh current native/CLI/installed proof remains next.
+  [Applicability contract and checks](./mechanism-shorts-ms3-four-state-qa-results.json).
+
+- **MS3 integrated review repairs (2026-10-15):** `codex/ms3-review-fixes` starts
+  at exact `d45f3f4f`; three reviewed commits are now integrated on
+  `codex/mechanism-ms3` through `c935e11d`. Frozen original portable68 lifecycle
+  is terminal. Native
   compact handoff now authenticates source/clock/artifact closure and final PCM,
   refreshes current resume paths after relocation and preserves unfinished review.
   Scoped30 units/6 fixture-runtime tests and fast4,596 tests pass in stages;
@@ -299,6 +309,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Integrate review repairs and complete four-state QA contract
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` (from `f6613d89`).
+- **Done:** isolated native handoff, first-pass provenance and encoded-review
+  commits integrated as `a37e453c`, `751448c3`, `c935e11d`; development-log conflict
+  preserves terminal all-ten lifecycle and all isolated failed/pass evidence.
+  QA now records explicit evidence-bound not-applicable decisions and counts.
+- **Results:** fourth-state regression fails2 before repair;48 scoped tests/types
+  pass afterward. Separate Standards/Spec reviews find no concrete defect.
+  Combined fast4,619/459 passes77.15s. Actual pilot accepted0/10; tokens remainnull.
+- **Open / next:** fresh current native/CLI/receiving/installed proofs, full software
+  gates and whole factual/mechanical/glyph/motion/listening review. No paid spend.
+- **Records:** [four-state QA evidence](./mechanism-shorts-ms3-four-state-qa-results.json),
+  [review](./mechanism-shorts-ms3-code-review.md).
 
 ### 2026-10-15 — Native final-file review package and anchor compatibility repair
 
