@@ -113,8 +113,17 @@ still hold before relying on them.
   873 active-label frames, zero fresh native captures. EU002 now also seals:
   actual588-frame QA0 errors/27 warnings,12 declared physical holds; complete
   decoded RGBA equals repaired H3 and original whole AAC parity passes. EU003
-  is exporting, seven later items pending. This closes the actual EU001 QA quota failure, not all
-  cohort or whole-review acceptance. Failed IPC audit remains; direct import works.
+  now also seals with actual588-frame QA0 errors/37 warnings and complete H3
+  RGBA/original AAC parity. EU004 seals653 frames: QA0 errors/28 warnings;
+  independent75,095 actual part/frame comparisons preserve original geometry/
+  controls and locked cameras over the entire clip. Complete video/AAC decode
+  passes; repaired picture changes0–401/450–653. Unchanged cup native pixels have
+  measured differences (max1 RGBA unit at three samples), not blanket equality.
+  Fifteen actual encoded phone/cut frames are viewed: guide/tooth labels readable,
+  fixed views preserve recognition. Current native audit covers2,439 frames/
+  9,756 pins/1,614 active-label frames. EU005 has finished technical export, EU006
+  is running; later output audits/whole acceptance remain. This closes the actual
+  EU001 QA quota failure, not all cohort or whole-review acceptance. Failed IPC audit remains; direct import works.
   **Next:** re-poll11682; complete new run/report/resume and
   independent native/encoded audio/picture audits. Broader physical label/event/
   intersection/mount faults, native handoff, whole factual/mechanical/encoded
@@ -309,6 +318,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Complete zipper geometry/cameras and two more sealed exports
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `9c6d22dc`.
+- **Done:** Current EU003 seals588 frames, QA0 errors/37 warnings; whole decoded
+  RGBA equals repaired H3, original AAC parity exact. EU004 seals653 frames,
+  QA0 errors/28 warnings; all75,095 original physical part/frame records and
+  controls match, every locked native shot camera stable. Video/AAC fully decode.
+- **Image evidence:** Fifteen encoded zipper phone/cut frames actually inspected.
+  Fixed guide/whole views preserve recognition and readable divider/cup labels.
+  Repaired encoded changes0–401/450–653; unchanged cup native pixels differ
+  (sampled maxRGBA1), so no blanket outside-window pixel equality is claimed.
+- **Live / next:** Original wrapper11682 continues; EU005 technical completion,
+  EU006 running. Full/audiovisual/glyph/contact reviews and later output audits
+  remain; source held, accepted0/10. Native audit2,439 frames/9,756pins/1,614labels.
+- **Records:** [Current sealed output and full zipper scope](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json).
 
 ### 2026-10-14 — First sealed export passes the repaired production quota path
 
