@@ -93,10 +93,18 @@ still hold before relying on them.
   frames are inspected; fixed root/38 actual tongue shapes and spring-wire target
   support the scoped repairs. Lossy decode changes extend to132–382 / 227–283;
   source repair windows stay132–319 / 235–283. Old/new spring source pixels match.
-  EU-006 six-leaf flags pass1,482 checks, preserving visible insertion406–427;
-  its export and complete repair report/resume remain live. Seven neighbor seals
-  still match exactly. QA and all whole approvals remain open.
+  EU-006 leaf flags pass1,482 checks and its634-frame output now fully decodes /
+  preserves original AAC parity. Six encoded staging views show unused paper
+  absent and insertion visible; the clip sits too high after removal. Separate
+  bounds-derived framing candidate (scale4.07317 / shiftY0.22343) passes admission,
+  preserves all other inputs, and needs actual capture/encoded review. Repair run
+  exits0 in1,783.40s; report/resume finish387.58s / 380.32s, exact inputs and seven
+  neighbors. Read-only Blender projection confirms centered[.5,.4] bounds with
+  zero renders/source changes. Framing-only revision2 now runs; nine current
+  rows/seals stay exact at start. Its captures/encoded review and terminal checks
+  remain in flight. QA and all whole approvals remain open.
   [Current repaired export evidence](./mechanism-shorts-ms3-first-ten-scoped-repair-results.json).
+  [Binder staging/framing](./mechanism-shorts-ms3-binder-staging-framing-results.json).
   No engine edits while repaired exports run.
   [Lifecycle/repair start](./mechanism-shorts-ms3-first-ten-hd-lifecycle-repair-results.json).
   **Next:** complete repair renders/audits and resolved holds/staging; native
@@ -293,6 +301,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Verify binder cleanup output and locate remaining framing issue
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; engine/voices/masters stay exact.
+- **Done:** Repair run exits0 / 1,783.40s. All three repaired movies now fully
+  decode1,810 frames and preserve original AAC parity; seven neighbors stay exact.
+- **Viewed:** Six binder staging frames confirm unused paper removed/insertion kept.
+  Clip sits too high afterward. Native changes0–113/293–406; lossy encoded changes
+  extend0–160/287–634, retained without outside-window decoded equality claims.
+- **Prepared:** Current bounds derive scale4.07317 / shiftY0.22343 for two early
+  views; all other inputs unchanged. Pure admission passes; no capture/approval yet.
+- **Lifecycle:** Three-repair report/resume finish387.58s / 380.32s, exact inputs.
+  Read-only Blender projection verifies centered [.5,.4] bounds; zero renders/saves.
+  Framing-only revision2 is live with nine current rows/seals exact at start.
+- **Open:** Binder QA still19 static errors / 18 warnings / 57 images. Actual camera
+  capture/encoded/terminal checks and all whole/fault/handoff/effort/final requirements.
+- **Records:** [Binder staging/framing evidence](./mechanism-shorts-ms3-binder-staging-framing-results.json).
+  Pilot0/10; no live revision1 edits or finding suppression.
 
 ### 2026-10-14 — Verify repaired cable-tie timing and clothespeg pointer outputs
 

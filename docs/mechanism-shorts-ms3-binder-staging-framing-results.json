@@ -1,0 +1,298 @@
+{
+  "schemaVersion": "ms3-binder-staging-encoded-framing-candidate-results-1",
+  "date": "2026-10-14",
+  "status": "all-three-repair-exports-checked-binder-early-framing-candidate-preflighted",
+  "sourceCommit": "4679b8a835e51a1f2d5e9c8ac49ec099b894a1a8",
+  "runtimeCodeSha256": "sha256:db4e4d9a560eb4fe1f0fdd4e98bf76e467ce70226adebcda5af86c0b55a826d8",
+  "nativeProfileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+  "heldSource": {
+    "status": "exact",
+    "files": 2777,
+    "bytes": 122189105
+  },
+  "repairRun": {
+    "receiptAtCheckpoint": {
+      "steps": [
+        {
+          "step": "queue",
+          "actualExitCode": 0,
+          "heldEngineInputsExitCode": 0,
+          "privateInputsExact": true,
+          "seconds": 3.2860094159841537
+        },
+        {
+          "step": "run",
+          "actualExitCode": 0,
+          "heldEngineInputsExitCode": 0,
+          "privateInputsExact": true,
+          "seconds": 1783.40409529116
+        },
+        {
+          "step": "report",
+          "actualExitCode": 0,
+          "heldEngineInputsExitCode": 0,
+          "privateInputsExact": true,
+          "seconds": 387.57734416704625
+        }
+      ],
+      "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-repairs53.json",
+      "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47",
+      "state": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/state-repairs53.json",
+      "report": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/report-repairs53.json",
+      "rows": [
+        {
+          "id": "EU-001",
+          "status": "passed",
+          "product": {
+            "path": "products/EU-001-00c45963c001ab77-1.json",
+            "bytes": 9125,
+            "sha256": "sha256:10bcd7fc5e4da98bf80040ffdb392a5c34da30b32319a7fad5c5a708d972a92b"
+          }
+        },
+        {
+          "id": "EU-002",
+          "status": "passed",
+          "product": {
+            "path": "products/EU-002-2288f3bfd554cfda-2.json",
+            "bytes": 9471,
+            "sha256": "sha256:41c5a92a56eae94b823de159df3c9a85c599994d07b6b87bca39aecd5466c1b6"
+          }
+        },
+        {
+          "id": "EU-003",
+          "status": "passed",
+          "product": {
+            "path": "products/EU-003-8f61a5ff50cdb98d-2.json",
+            "bytes": 9500,
+            "sha256": "sha256:c091d7b470ed62b50dde1d77d49596abf3eb0d9266647655ce939025c27b73b4"
+          }
+        },
+        {
+          "id": "EU-004",
+          "status": "passed",
+          "product": {
+            "path": "products/EU-004-d7f67568e2dde8d2-1.json",
+            "bytes": 9244,
+            "sha256": "sha256:1d80a691c16d137fb69e75d091e4f643eaed1f00481a03da027af1f905dea6a7"
+          }
+        },
+        {
+          "id": "EU-005",
+          "status": "passed",
+          "product": {
+            "path": "products/EU-005-0815d5825e366ea1-1.json",
+            "bytes": 9254,
+            "sha256": "sha256:24f48e8b26a353cb1037739f5cb60067b3cd453e19a3974d192c90c41ec8831c"
+          }
+        },
+        {
+          "id": "EU-006",
+          "status": "passed",
+          "product": {
+            "path": "products/EU-006-3ac5ea0309e043ad-2.json",
+            "bytes": 9541,
+            "sha256": "sha256:8efa9e0395bcaa94d937801c048c851bb2cd24c76e3b7a76ccfb4404e5c78359"
+          }
+        },
+        {
+          "id": "EU-007",
+          "status": "passed",
+          "product": {
+            "path": "products/EU-007-e0286a4373805c8f-1.json",
+            "bytes": 9240,
+            "sha256": "sha256:0f6aa8287e771d00815d72d5429d5597ae947aacae0db5e9c44a2c87605154bf"
+          }
+        },
+        {
+          "id": "EU-008",
+          "status": "passed",
+          "product": {
+            "path": "products/EU-008-edc6908b07626560-1.json",
+            "bytes": 9268,
+            "sha256": "sha256:42c1027c55d51e02dbe3c395d95b3efb59e5e459dc46aaefdea80568b3cda24f"
+          }
+        },
+        {
+          "id": "EU-009",
+          "status": "passed",
+          "product": {
+            "path": "products/EU-009-4f70fded93394488-1.json",
+            "bytes": 9239,
+            "sha256": "sha256:d8a0530f4ab3086eed1ade3dc6b8773530172eaec380c87ff22661783fc27da4"
+          }
+        },
+        {
+          "id": "EU-010",
+          "status": "passed",
+          "product": {
+            "path": "products/EU-010-df0414ee2e44dd3e-1.json",
+            "bytes": 9215,
+            "sha256": "sha256:ee1d47b8a65d1e6fa0c5a399bcebda2b569de3511760ae24bb9c81302f7eb185"
+          }
+        }
+      ],
+      "acceptedPilot": 0,
+      "wholeReview": "UNREVIEWED",
+      "unchangedNeighborsExact": 7
+    },
+    "runExitCode": 0,
+    "runSeconds": 1783.40409529116,
+    "sevenUnchangedRowsAndSealsExact": true,
+    "reportResume": "terminal; queue/run/report/resume all actual0, exact inputs and seven neighbors",
+    "terminalReceipt": {
+      "path": "/private/tmp/still-shift-ms3-blender53-whole-repairs1-receipt.json",
+      "bytes": 3963,
+      "sha256": "sha256:1cbcc8c16ae81bc9b0e9f9f6378cb2cfbbc6fabd7b6bce9a371c376cb4f83355"
+    }
+  },
+  "binderAttempt2": {
+    "video": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-006/2/output.mp4",
+      "bytes": 1199937,
+      "sha256": "sha256:8d8e50850b8641d29c42159b02128a28d4d053ce7d0488ed715966c8691fcf17"
+    },
+    "product": {
+      "path": "products/EU-006-3ac5ea0309e043ad-2.json",
+      "bytes": 9541,
+      "sha256": "sha256:8efa9e0395bcaa94d937801c048c851bb2cd24c76e3b7a76ccfb4404e5c78359"
+    },
+    "wholeOriginalAACParity": true,
+    "fullEncodedRGBAFrames": 634,
+    "encodedAudit": {
+      "path": "/private/tmp/still-shift-ms3-blender55-encoded-audit3.json",
+      "bytes": 11867,
+      "sha256": "sha256:3802702908ae8b88d9f6eda1ea28991b83ff183ce30c01c589796d4d33e54c3c"
+    },
+    "diffRecord": {
+      "path": "/private/tmp/still-shift-ms3-blender55-encoded-diff3.json",
+      "bytes": 1051,
+      "sha256": "sha256:7be34d2cff8b23bc10eaf0f91c20228422bec9089e1460bb77e932ef262e0b90"
+    },
+    "nativePlateChangedSpans": [
+      [0, 113],
+      [293, 406]
+    ],
+    "encodedChangedSpans": [
+      [0, 160],
+      [287, 634]
+    ],
+    "encodedDifferenceFramesOutsideNativeIntervals": 281,
+    "phoneSheet": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-repairs55/EU-006/staging-frames.png",
+      "bytes": 167707,
+      "sha256": "sha256:a510137a40386ef36e745803185188546f4113d4325e31a57c1517f7b8f9e9c5"
+    },
+    "inspectedFrames": [56, 359, 405, 406, 414, 426],
+    "observed": "Paper is absent in recognition/closed-return and appears at the existing insertion beat. Removing it leaves the clip too high in these early views; framing remains a located staging issue.",
+    "qa": {
+      "artifact": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-006/2/qa-rendered-visual.json",
+        "bytes": 64164,
+        "sha256": "sha256:fbe1233d32e1c88a51996b26c2fd78a9afc9265344c402181c58094256f3b0c9"
+      },
+      "status": "failed",
+      "counts": {
+        "outside-safe-area:warning": 8,
+        "reading-time:warning": 10,
+        "frozen-pixels:error": 19
+      },
+      "images": 57
+    }
+  },
+  "nextFramingCandidate": {
+    "record": {
+      "path": "/private/tmp/still-shift-ms3-blender56-binder-camera1.json",
+      "bytes": 1053,
+      "sha256": "sha256:f2962d7ca568dca85b279dcc1feeb0445e5b2a16aef5fd15fcbb8ad8dbeef890"
+    },
+    "preflight": {
+      "path": "/private/tmp/still-shift-ms3-blender56-camera-preflight1.json",
+      "bytes": 324,
+      "sha256": "sha256:c7a4c0aa9be425c6732d7e39609d477849f5c32fbb84296e199e447b6999cc96"
+    },
+    "plan": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-camera-repair56/EU-006/plan.json",
+      "bytes": 9513,
+      "sha256": "sha256:8bc0178a528e10c785b5e70f728ea8cb7b567ab67d09ba72cfb98cd273669f77"
+    },
+    "source": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-camera-repair56/EU-006/source.json",
+      "bytes": 2153,
+      "sha256": "sha256:2dacc5b19e08e332d600d52ab6454824e805644e0c754ada4eff615a8a9075ca"
+    },
+    "framing": {
+      "orthoScale": 4.073168129215669,
+      "shiftX": 0,
+      "shiftY": 0.2234302898749887
+    },
+    "intervals": [
+      [0, 113],
+      [293, 406]
+    ],
+    "targetViewportCenter": [0.5, 0.4],
+    "maxProjectedWidthFraction": 0.86,
+    "maxProjectedHeightFraction": 0.5,
+    "derivation": "Actual current body/handle bounds across all target states, in the captured orthonormal camera basis; standard vertical orthographic framing assumption.",
+    "unchanged": "Original master/voice/speech/control/source-frame/visibility/callouts and all other shots",
+    "status": "passed-pure-source-admission",
+    "required": "Actual rendered visibility/encoded staging and boundary/whole playback review; read-only native projection has passed.",
+    "actualProjection": {
+      "record": {
+        "path": "/private/tmp/still-shift-ms3-blender56-camera-calibrate1.json",
+        "bytes": 683,
+        "sha256": "sha256:9324740cd40b5c0e8b964d1e1c4acf8ddb09868dc18edfa79d88d3093d899269"
+      },
+      "result": {
+        "status": "passed-actual-Blender-camera-projection",
+        "frames": 226,
+        "projectedBoundsNormalized": [
+          0.070000059902668, 0.9300000071525574, 0.16921275854110718,
+          0.6307872235774994
+        ],
+        "projectedBoundsPixel": [
+          75.60006469488144, 1004.400007724762, 324.8884963989258,
+          1211.1114692687988
+        ],
+        "projectedBoundsCenter": [0.5000000335276127, 0.3999999910593033],
+        "sourceMasterExact": true,
+        "nativeRenderCalls": 0,
+        "scope": "Read-only actual Blender world-to-camera projection of authenticated current body/handle bounds using the tested framing function. No rendered visibility, material/glyph or encoded/playback approval."
+      }
+    }
+  },
+  "allThreeRepairedExportScope": {
+    "frames": 1810,
+    "fullOriginalAACReferenceParity": true,
+    "fullEncodedRGBADecodeToEOF": true,
+    "sampledViewsInspected": 15,
+    "scope": "Six return, three pointer, six binder staging frames; no full glyph/contact/continuous/listening or pilot acceptance."
+  },
+  "acceptedPilot": 0,
+  "routineTokenMeasurements": null,
+  "wholeReview": "UNREVIEWED",
+  "remaining": [
+    "Original three-repair lifecycle complete; current camera revision needs its own terminal run/report/resume.",
+    "Capture/encode/review the binder framing correction.",
+    "Native hold-purpose/paint/phase validation; broader physical/fault/contact/coverage/handoff/whole reviews/effort and final software/package gates."
+  ],
+  "currentCameraRevision": {
+    "revision": 2,
+    "manifest": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-camera56.json",
+      "bytes": 32671,
+      "sha256": "sha256:6c7a933e882e74120b3cead6c17e8170b7a25f83ebfadc0f0ce498573d503577"
+    },
+    "projects": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/projects-all10-camera56-cli.json",
+      "bytes": 2347,
+      "sha256": "sha256:3e2d1dd163a8f38004e571eb49ac3eb54c4888ef56f6282ec3e60ad9a5f87e64"
+    },
+    "executor": {
+      "path": "/private/tmp/still-shift-ms3-blender56-whole-camera1.py",
+      "bytes": 3967,
+      "sha256": "sha256:70b1d2b03c14fee84efc788cac39d316ad44437824f6a2a43096a0db25c251bb"
+    },
+    "nineUnchangedRowsAndSealsExactAtStart": true,
+    "status": "confirmed live; current capture/export/report/resume and decoded review required"
+  }
+}

@@ -342,3 +342,24 @@ no outside-window encoded equality is claimed. QA remains failed (12 / 20 static
 errors). Binder leaf flags pass1,482 checks with insertion visible406–427, while its
 export, full current report/resume and encoded staging remain live. Seven original
 seals stay exact; all whole/fault/handoff/effort/final requirements and pilot0/10 remain.
+
+[Binder staging output and framing candidate](./mechanism-shorts-ms3-binder-staging-framing-results.json)
+now verify all three repaired exports (1,810 complete encoded frames / original
+whole AAC reference parity) and actual repair-run exit0 / 1,783.40s. Six binder
+staging views show unused paper hidden/insertion kept, but the isolated clip sits
+too high afterward. A separate current-bounds camera candidate (scale4.07317 /
+shiftY0.22343) passes pure admission with other inputs exact; actual projection,
+visibility, encoded staging/boundary and whole playback remain required. Binder
+QA still19 static errors / 18 warnings / 57 images. Its lossy encoded changes extend
+beyond native0–113/293–406 to0–160/287–634, and those spans remain retained. Seven
+neighbor seals remain exact; current report/resume, whole/fault/handoff/effort/final
+gates and accepted pilot0/10 remain open. Live revision1 inputs are unchanged.
+
+The three-input repair lifecycle now finishes report387.58s / resume380.32s with
+all steps actual0, exact inputs and seven unchanged neighbors. A read-only actual
+Blender projection check verifies the framing candidate’s body/handle bounds at
+center[.5,.4], within horizontal .07–.93 / vertical .169–.631 across226 target frames;
+source master stays exact and no renders occur. Framing-only exact-CAS revision2
+now runs with nine current rows/seals exact at start. Actual rendered/encoded
+staging, its terminal lifecycle, whole/fault/handoff/effort/final gates and pilot0/10
+remain open. [Current framing evidence](./mechanism-shorts-ms3-binder-staging-framing-results.json).
