@@ -1,7 +1,7 @@
 {
   "schemaVersion": "ms3-first-ten-camera-cut-review-1",
-  "date": "2026-10-14",
-  "status": "encoded-cut-issue-located-scoped-candidate-guard-passed",
+  "date": "2026-10-15",
+  "status": "guarded-correction-canonical-recovery-running",
   "episode": "EU-002",
   "currentBinding": {
     "inputSha256": "sha256:e818cdec3f36b2218191d4c08fbf5bb6a4ae9c14522550579f0d0782513af598",
@@ -96,208 +96,409 @@
     ],
     "liveInputFilesChanged": false,
     "cameraGuard": {
-      "status": "PASS",
-      "frames": 588,
-      "receipt": {
-        "episode": "EU-002",
-        "sourceAssetSha256": "sha256:4fcbdee97d011ee9743aa9db33e40d24bfc744f1c479e71a95a5eb2e5a842765",
-        "sourceBytesUnchanged": true,
-        "newNativeRenders": 0,
-        "jobSha256": "sha256:924f94ff98dd111bb8f494312b0589b0aff31e7b2317f65ef7b0a6fdd51f6ef2",
-        "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
-        "helperSha256": "sha256:f3539c0b73b10e881ad292ad2aafed8ca40878c1a6d2ead73805bee77ef56377",
-        "adapterSha256": "sha256:d0dc47fdb121addfea982a8491b171f88f1e978598c2493990fad35c4a310ff6",
-        "reports": [
-          {
-            "id": "shot-00",
-            "verdict": "PASS",
-            "frames": [0, 131],
-            "sample_count": 132,
-            "tolerances": {
-              "camera_matrix": 1e-6,
-              "projection": 1e-6,
-              "anchor_world": 1e-6,
-              "anchor_pixels": 1.0,
-              "reference_scale_ratio": 0.001
-            },
-            "worst": {
-              "camera_matrix": {
-                "value": 0.0,
-                "frame": 0
-              },
-              "projection": {
-                "value": 0.0,
-                "frame": 0
-              },
-              "anchor_world": {
-                "value": 0.0,
-                "frame": 0
-              },
-              "anchor_pixels": {
-                "value": 0.0,
-                "frame": 0
-              },
-              "reference_scale_ratio": {
-                "value": 0.0,
-                "frame": 0
-              }
-            },
-            "failures": [],
-            "scope": "Actual evaluated locked camera and declared fixed-reference invariants only; not framing, visibility, planned movement or continuous playback."
+      "episode": "EU-002",
+      "sourceAssetSha256": "sha256:4fcbdee97d011ee9743aa9db33e40d24bfc744f1c479e71a95a5eb2e5a842765",
+      "sourceBytesUnchanged": true,
+      "newNativeRenders": 0,
+      "jobSha256": "sha256:924f94ff98dd111bb8f494312b0589b0aff31e7b2317f65ef7b0a6fdd51f6ef2",
+      "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
+      "helperSha256": "sha256:f3539c0b73b10e881ad292ad2aafed8ca40878c1a6d2ead73805bee77ef56377",
+      "adapterSha256": "sha256:2ca15184062c76d4a43d38a969d7ee961549b59a6b5eb5163d7e5b721c43b7a7",
+      "reports": [
+        {
+          "id": "shot-00",
+          "verdict": "PASS",
+          "frames": [0, 131],
+          "sample_count": 132,
+          "tolerances": {
+            "camera_matrix": 1e-6,
+            "projection": 1e-6,
+            "anchor_world": 1e-6,
+            "anchor_pixels": 1.0,
+            "reference_scale_ratio": 0.001
           },
-          {
-            "id": "shot-01",
-            "verdict": "PASS",
-            "frames": [132, 268],
-            "sample_count": 137,
-            "tolerances": {
-              "camera_matrix": 1e-6,
-              "projection": 1e-6,
-              "anchor_world": 1e-6,
-              "anchor_pixels": 1.0,
-              "reference_scale_ratio": 0.001
+          "worst": {
+            "camera_matrix": {
+              "value": 0.0,
+              "frame": 0
             },
-            "worst": {
-              "camera_matrix": {
-                "value": 0.0,
-                "frame": 132
-              },
-              "projection": {
-                "value": 0.0,
-                "frame": 132
-              },
-              "anchor_world": {
-                "value": 0.0,
-                "frame": 132
-              },
-              "anchor_pixels": {
-                "value": 0.0,
-                "frame": 132
-              },
-              "reference_scale_ratio": {
-                "value": 0.0,
-                "frame": 132
-              }
+            "projection": {
+              "value": 0.0,
+              "frame": 0
             },
-            "failures": [],
-            "scope": "Actual evaluated locked camera and declared fixed-reference invariants only; not framing, visibility, planned movement or continuous playback."
+            "anchor_world": {
+              "value": 0.0,
+              "frame": 0
+            },
+            "anchor_pixels": {
+              "value": 0.0,
+              "frame": 0
+            },
+            "reference_scale_ratio": {
+              "value": 0.0,
+              "frame": 0
+            }
           },
-          {
-            "id": "shot-02",
-            "verdict": "PASS",
-            "frames": [269, 373],
-            "sample_count": 105,
-            "tolerances": {
-              "camera_matrix": 1e-6,
-              "projection": 1e-6,
-              "anchor_world": 1e-6,
-              "anchor_pixels": 1.0,
-              "reference_scale_ratio": 0.001
-            },
-            "worst": {
-              "camera_matrix": {
-                "value": 0.0,
-                "frame": 269
-              },
-              "projection": {
-                "value": 0.0,
-                "frame": 269
-              },
-              "anchor_world": {
-                "value": 0.0,
-                "frame": 269
-              },
-              "anchor_pixels": {
-                "value": 0.0,
-                "frame": 269
-              },
-              "reference_scale_ratio": {
-                "value": 0.0,
-                "frame": 269
-              }
-            },
-            "failures": [],
-            "scope": "Actual evaluated locked camera and declared fixed-reference invariants only; not framing, visibility, planned movement or continuous playback."
+          "failures": [],
+          "scope": "Actual evaluated locked camera and declared fixed-reference invariants only; not framing, visibility, planned movement or continuous playback."
+        },
+        {
+          "id": "shot-01",
+          "verdict": "PASS",
+          "frames": [132, 268],
+          "sample_count": 137,
+          "tolerances": {
+            "camera_matrix": 1e-6,
+            "projection": 1e-6,
+            "anchor_world": 1e-6,
+            "anchor_pixels": 1.0,
+            "reference_scale_ratio": 0.001
           },
-          {
-            "id": "shot-03",
-            "verdict": "PASS",
-            "frames": [374, 475],
-            "sample_count": 102,
-            "tolerances": {
-              "camera_matrix": 1e-6,
-              "projection": 1e-6,
-              "anchor_world": 1e-6,
-              "anchor_pixels": 1.0,
-              "reference_scale_ratio": 0.001
+          "worst": {
+            "camera_matrix": {
+              "value": 0.0,
+              "frame": 132
             },
-            "worst": {
-              "camera_matrix": {
-                "value": 0.0,
-                "frame": 374
-              },
-              "projection": {
-                "value": 0.0,
-                "frame": 374
-              },
-              "anchor_world": {
-                "value": 0.0,
-                "frame": 374
-              },
-              "anchor_pixels": {
-                "value": 0.0,
-                "frame": 374
-              },
-              "reference_scale_ratio": {
-                "value": 0.0,
-                "frame": 374
-              }
+            "projection": {
+              "value": 0.0,
+              "frame": 132
             },
-            "failures": [],
-            "scope": "Actual evaluated locked camera and declared fixed-reference invariants only; not framing, visibility, planned movement or continuous playback."
+            "anchor_world": {
+              "value": 0.0,
+              "frame": 132
+            },
+            "anchor_pixels": {
+              "value": 0.0,
+              "frame": 132
+            },
+            "reference_scale_ratio": {
+              "value": 0.0,
+              "frame": 132
+            }
           },
-          {
-            "id": "shot-04",
-            "verdict": "PASS",
-            "frames": [476, 587],
-            "sample_count": 112,
-            "tolerances": {
-              "camera_matrix": 1e-6,
-              "projection": 1e-6,
-              "anchor_world": 1e-6,
-              "anchor_pixels": 1.0,
-              "reference_scale_ratio": 0.001
+          "failures": [],
+          "scope": "Actual evaluated locked camera and declared fixed-reference invariants only; not framing, visibility, planned movement or continuous playback."
+        },
+        {
+          "id": "shot-02",
+          "verdict": "PASS",
+          "frames": [269, 373],
+          "sample_count": 105,
+          "tolerances": {
+            "camera_matrix": 1e-6,
+            "projection": 1e-6,
+            "anchor_world": 1e-6,
+            "anchor_pixels": 1.0,
+            "reference_scale_ratio": 0.001
+          },
+          "worst": {
+            "camera_matrix": {
+              "value": 0.0,
+              "frame": 269
             },
-            "worst": {
-              "camera_matrix": {
-                "value": 0.0,
-                "frame": 476
-              },
-              "projection": {
-                "value": 0.0,
-                "frame": 476
-              },
-              "anchor_world": {
-                "value": 0.0,
-                "frame": 476
-              },
-              "anchor_pixels": {
-                "value": 0.0,
-                "frame": 476
-              },
-              "reference_scale_ratio": {
-                "value": 0.0,
-                "frame": 476
-              }
+            "projection": {
+              "value": 0.0,
+              "frame": 269
             },
-            "failures": [],
-            "scope": "Actual evaluated locked camera and declared fixed-reference invariants only; not framing, visibility, planned movement or continuous playback."
-          }
-        ]
-      }
+            "anchor_world": {
+              "value": 0.0,
+              "frame": 269
+            },
+            "anchor_pixels": {
+              "value": 0.0,
+              "frame": 269
+            },
+            "reference_scale_ratio": {
+              "value": 0.0,
+              "frame": 269
+            }
+          },
+          "failures": [],
+          "scope": "Actual evaluated locked camera and declared fixed-reference invariants only; not framing, visibility, planned movement or continuous playback."
+        },
+        {
+          "id": "shot-03",
+          "verdict": "PASS",
+          "frames": [374, 475],
+          "sample_count": 102,
+          "tolerances": {
+            "camera_matrix": 1e-6,
+            "projection": 1e-6,
+            "anchor_world": 1e-6,
+            "anchor_pixels": 1.0,
+            "reference_scale_ratio": 0.001
+          },
+          "worst": {
+            "camera_matrix": {
+              "value": 0.0,
+              "frame": 374
+            },
+            "projection": {
+              "value": 0.0,
+              "frame": 374
+            },
+            "anchor_world": {
+              "value": 0.0,
+              "frame": 374
+            },
+            "anchor_pixels": {
+              "value": 0.0,
+              "frame": 374
+            },
+            "reference_scale_ratio": {
+              "value": 0.0,
+              "frame": 374
+            }
+          },
+          "failures": [],
+          "scope": "Actual evaluated locked camera and declared fixed-reference invariants only; not framing, visibility, planned movement or continuous playback."
+        },
+        {
+          "id": "shot-04",
+          "verdict": "PASS",
+          "frames": [476, 587],
+          "sample_count": 112,
+          "tolerances": {
+            "camera_matrix": 1e-6,
+            "projection": 1e-6,
+            "anchor_world": 1e-6,
+            "anchor_pixels": 1.0,
+            "reference_scale_ratio": 0.001
+          },
+          "worst": {
+            "camera_matrix": {
+              "value": 0.0,
+              "frame": 476
+            },
+            "projection": {
+              "value": 0.0,
+              "frame": 476
+            },
+            "anchor_world": {
+              "value": 0.0,
+              "frame": 476
+            },
+            "anchor_pixels": {
+              "value": 0.0,
+              "frame": 476
+            },
+            "reference_scale_ratio": {
+              "value": 0.0,
+              "frame": 476
+            }
+          },
+          "failures": [],
+          "scope": "Actual evaluated locked camera and declared fixed-reference invariants only; not framing, visibility, planned movement or continuous playback."
+        }
+      ]
     },
-    "renderedScouts": "NOT RUN",
-    "dependentRender": "NOT STARTED",
+    "renderedScouts": {
+      "id": "EU-002",
+      "frames": [
+        {
+          "originalFrame": 268,
+          "nativeIndex": 0,
+          "image": {
+            "path": "scouts-repairs65/EU-002/plates/frames/frame-000000.png",
+            "bytes": 1272801,
+            "sha256": "sha256:a4e3cd1b6961c86388c1ab84754c613590486f3f89d426b4cee2255b1bc181bd"
+          },
+          "observation": {
+            "path": "blender-cache/captures/cccf509b-d927-41da-a9f0-ee446a399e32/frames/frame-000134.json",
+            "bytes": 7411,
+            "sha256": "sha256:da7924f096fb258f2b5c537e9c3dcd945013d921f954a13a63dc8add9d82b48c"
+          },
+          "physicalPartsOriginalExact": true,
+          "controls": {
+            "manual": 1,
+            "tighten": 0.6136363636363636,
+            "reverse": 0,
+            "reveal": 1,
+            "context": 0
+          },
+          "anchors": {
+            "anchor.tip": {
+              "kind": "object-origin",
+              "world": [0, -0.03028222732245922, 0.009252902120351791],
+              "pixel": [526.9347560405731, 903.7221908569336],
+              "depth": 1.0090762376785278,
+              "inFrame": true
+            }
+          }
+        },
+        {
+          "originalFrame": 269,
+          "nativeIndex": 1,
+          "image": {
+            "path": "scouts-repairs65/EU-002/plates/frames/frame-000001.png",
+            "bytes": 1274441,
+            "sha256": "sha256:3888c88265e018278b693e11d0d282811a8b56bea5d712dde55c800e748baeb6"
+          },
+          "observation": {
+            "path": "blender-cache/captures/3a6973fc-3811-4340-9ebe-b3f2537f4f24/frames/frame-000000.json",
+            "bytes": 7408,
+            "sha256": "sha256:9964c50742d66381bdccb3365a25b2d51b40598134fb3efb9678d075373ca0dc"
+          },
+          "physicalPartsOriginalExact": true,
+          "controls": {
+            "manual": 1,
+            "tighten": 0.6212121212121212,
+            "reverse": 0,
+            "reveal": 1,
+            "context": 0
+          },
+          "anchors": {
+            "anchor.root": {
+              "kind": "object-origin",
+              "world": [-0.1076701357960701, 0, 0.11944655328989029],
+              "pixel": [303.060919046402, 521.315803527832],
+              "depth": 1.055425763130188,
+              "inFrame": true
+            }
+          }
+        },
+        {
+          "originalFrame": 293,
+          "nativeIndex": 2,
+          "image": {
+            "path": "scouts-repairs65/EU-002/plates/frames/frame-000002.png",
+            "bytes": 1268980,
+            "sha256": "sha256:075912a9c1eb09bba5a860e1afd9d6e0d31adfb6daa11bee4aa3f20b30cc638b"
+          },
+          "observation": {
+            "path": "blender-cache/captures/3a6973fc-3811-4340-9ebe-b3f2537f4f24/frames/frame-000001.json",
+            "bytes": 7406,
+            "sha256": "sha256:f8a2eb8992b0e47bae21650a0c2a2db5262904eaea044ba6e8531e8f11188280"
+          },
+          "physicalPartsOriginalExact": true,
+          "controls": {
+            "manual": 1,
+            "tighten": 0.803030303030303,
+            "reverse": 0,
+            "reveal": 1,
+            "context": 0
+          },
+          "anchors": {
+            "anchor.root": {
+              "kind": "object-origin",
+              "world": [-0.1076701357960701, 0, 0.11944655328989029],
+              "pixel": [303.060919046402, 521.315803527832],
+              "depth": 1.055425763130188,
+              "inFrame": true
+            }
+          }
+        },
+        {
+          "originalFrame": 319,
+          "nativeIndex": 3,
+          "image": {
+            "path": "scouts-repairs65/EU-002/plates/frames/frame-000003.png",
+            "bytes": 1271268,
+            "sha256": "sha256:d4b85a15345572b8bf9036c1875e3f66205200f4e5a04976b0971ef104c48707"
+          },
+          "observation": {
+            "path": "blender-cache/captures/3a6973fc-3811-4340-9ebe-b3f2537f4f24/frames/frame-000002.json",
+            "bytes": 7373,
+            "sha256": "sha256:48c22a293163cc4de85f1bffcc90ab56fee0f6b433898026c9354e638468abc8"
+          },
+          "physicalPartsOriginalExact": true,
+          "controls": {
+            "manual": 1,
+            "tighten": 1,
+            "reverse": 0,
+            "reveal": 1,
+            "context": 0
+          },
+          "anchors": {
+            "anchor.root": {
+              "kind": "object-origin",
+              "world": [-0.1076701357960701, 0, 0.11944655328989029],
+              "pixel": [303.060919046402, 521.315803527832],
+              "depth": 1.055425763130188,
+              "inFrame": true
+            }
+          }
+        },
+        {
+          "originalFrame": 373,
+          "nativeIndex": 4,
+          "image": {
+            "path": "scouts-repairs65/EU-002/plates/frames/frame-000004.png",
+            "bytes": 1271268,
+            "sha256": "sha256:d4b85a15345572b8bf9036c1875e3f66205200f4e5a04976b0971ef104c48707"
+          },
+          "observation": {
+            "path": "blender-cache/captures/3a6973fc-3811-4340-9ebe-b3f2537f4f24/frames/frame-000002.json",
+            "bytes": 7373,
+            "sha256": "sha256:48c22a293163cc4de85f1bffcc90ab56fee0f6b433898026c9354e638468abc8"
+          },
+          "physicalPartsOriginalExact": true,
+          "controls": {
+            "manual": 1,
+            "tighten": 1,
+            "reverse": 0,
+            "reveal": 1,
+            "context": 0
+          },
+          "anchors": {
+            "anchor.root": {
+              "kind": "object-origin",
+              "world": [-0.1076701357960701, 0, 0.11944655328989029],
+              "pixel": [303.060919046402, 521.315803527832],
+              "depth": 1.055425763130188,
+              "inFrame": true
+            }
+          }
+        },
+        {
+          "originalFrame": 374,
+          "nativeIndex": 5,
+          "image": {
+            "path": "scouts-repairs65/EU-002/plates/frames/frame-000005.png",
+            "bytes": 1625843,
+            "sha256": "sha256:5071e3060b806b048cd691398aab0ccdd21abdb86fe51311d2831ad5b6f43304"
+          },
+          "observation": {
+            "path": "blender-cache/captures/9fa1a42b-b0b1-4a3d-bbbf-07bbec69219f/frames/frame-000005.json",
+            "bytes": 7388,
+            "sha256": "sha256:38da2bb734d81c3455c401d4ab7f795a8fbeb239dcfe37c7f273a163a5c7da81"
+          },
+          "physicalPartsOriginalExact": true,
+          "controls": {
+            "manual": 1,
+            "tighten": 1,
+            "reverse": 0,
+            "reveal": 1,
+            "context": 0
+          },
+          "anchors": {
+            "anchor.tip": {
+              "kind": "object-origin",
+              "world": [0, -0.03028222732245922, 0.009252917021512985],
+              "pixel": [664.7874140739441, 972.934398651123],
+              "depth": 0.9790388345718384,
+              "inFrame": true
+            }
+          }
+        }
+      ],
+      "freshNativeRenders": 3,
+      "reusedNativeFrames": 3,
+      "sourceAssetSha256": "sha256:4fcbdee97d011ee9743aa9db33e40d24bfc744f1c479e71a95a5eb2e5a842765",
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-holds65-scout1.json",
+        "bytes": 18637,
+        "sha256": "sha256:999dba7c884ba659afaeb066d86be06942f5acad5f18428eeb607857a420a693"
+      },
+      "actualPhoneSheetViewed": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/correction-phone-review65/EU-002-sheet.png",
+        "bytes": 357931,
+        "sha256": "sha256:29cd479002655c39f2006e1605dd6b4a92375ba0a390d530085e611aed71b92c"
+      },
+      "selectedViewFinding": "Passage view remains continuous across268/269 and through319 return in selected native images.",
+      "scope": "Six selected clean native images; complete encoded playback/labels still required."
+    },
+    "dependentRender": "running-canonical-recovery-cohort66",
     "wholeReviews": "UNREVIEWED",
     "pilotAcceptance": 0,
     "candidateCompile": {
@@ -376,14 +577,14 @@
     }
   },
   "guardAdapter": {
-    "path": "/private/tmp/still-shift-ms3-holds62-camera-guard1.py",
-    "bytes": 3652,
-    "sha256": "sha256:d0dc47fdb121addfea982a8491b171f88f1e978598c2493990fad35c4a310ff6"
+    "path": "/private/tmp/still-shift-ms3-holds62-camera-guard2.py",
+    "bytes": 3722,
+    "sha256": "sha256:2ca15184062c76d4a43d38a969d7ee961549b59a6b5eb5163d7e5b721c43b7a7"
   },
   "boundaryAdapter": {
-    "path": "/private/tmp/still-shift-ms3-holds62-camera-boundary1.py",
-    "bytes": 3529,
-    "sha256": "sha256:3cdfd0c9d1bfbfd0e71f45d00ab18d87d84bea3de1fb085feb6ba7e732e3cfeb"
+    "path": "/private/tmp/still-shift-ms3-holds62-camera-boundary2.py",
+    "bytes": 3599,
+    "sha256": "sha256:693bd0dcc1818f887d6f2bffda69b11c6c93080abe57a183f78d5368b448b5a0"
   },
   "candidateJob": {
     "path": "/private/tmp/still-shift-ms3-holds62-EU-002-job1.json",
@@ -391,8 +592,101 @@
     "sha256": "sha256:924f94ff98dd111bb8f494312b0589b0aff31e7b2317f65ef7b0a6fdd51f6ef2"
   },
   "liveInputFilesChanged": false,
-  "newNativeRenders": 0,
-  "renderedRepair": "NOT STARTED",
+  "newNativeRenders": 3,
+  "renderedRepair": "Separate two-episode canonical-path correction cohort running",
   "wholeReviews": "UNREVIEWED",
-  "acceptedPilot": 0
+  "acceptedPilot": 0,
+  "retainedPrePrepareAdapters": {
+    "guard": {
+      "path": "/private/tmp/still-shift-ms3-holds62-camera-guard1.py",
+      "bytes": 3652,
+      "sha256": "sha256:d0dc47fdb121addfea982a8491b171f88f1e978598c2493990fad35c4a310ff6"
+    },
+    "boundary": {
+      "path": "/private/tmp/still-shift-ms3-holds62-camera-boundary1.py",
+      "bytes": 3529,
+      "sha256": "sha256:3cdfd0c9d1bfbfd0e71f45d00ab18d87d84bea3de1fb085feb6ba7e732e3cfeb"
+    },
+    "qualification": "Earlier adapters did not call prepare_controller; retained as preliminary camera-only evidence, superseded by exact-preparation guards."
+  },
+  "retainedFailedRevision": {
+    "status": "failed-attempt-preserved",
+    "cliRunExitCode": 0,
+    "wrapperExitCode": 1,
+    "reportResume": "NOT RUN",
+    "completeEpisodeSuccess": false,
+    "journal": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/failed-corrections65-state.json",
+    "causes": [
+      "EU002 hand-authored revised dependencies not ordered like readBlenderEpisode expected inputs; execution rejects complete input-set equality.",
+      "Concurrent retirement of original objects compatibility paths caused missing model dependencies during neighbor verification and later private hold."
+    ],
+    "priorProductsAndMediaRetained": true,
+    "noNewRender": true,
+    "qualification": "CLI0 is a finished queue result, not per-item success; private postcheck raises before wrapper step receipt. Existing revision0 terminal evidence remains historical.",
+    "recovery": "Native queue command builds bounded EU002/EU007 correction cohort with byte-exact canonical moved models; preserve failed revision1 and other eight baseline products.",
+    "receiptPin": {
+      "path": "/private/tmp/still-shift-ms3-corrections65-failure1.json",
+      "bytes": 1054,
+      "sha256": "sha256:989662f50699368f402bd5d5580cfe569bb9a942bfc0db384a3ea87417d4df40"
+    }
+  },
+  "canonicalRecovery": {
+    "id": "actual-first-ten-scoped-corrections66",
+    "episodes": ["EU-002", "EU-007"],
+    "execution": "run-live-report-resume-pending",
+    "manifest": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-corrections66.json",
+      "bytes": 6997,
+      "sha256": "sha256:6f3b23dccaae1319c496255dec4f882852a76171fb1071a23ad5593a0ace5a9e"
+    },
+    "projects": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/projects-corrections66-cli.json",
+      "bytes": 683,
+      "sha256": "sha256:46fcc23f6f999558ff31b5382799ffee0087ef5699f0ae9fbd37dfa80d28cecc"
+    },
+    "queueBuilderReceipt": {
+      "path": "/private/tmp/still-shift-ms3-corrections66-queue1.log",
+      "bytes": 1025,
+      "sha256": "sha256:9576745ee79f5eb3ff148d2a3cd04c345eef38982f9db42f5eec688e59352d81"
+    },
+    "wrapper": {
+      "path": "/private/tmp/still-shift-ms3-corrections66-whole1.py",
+      "bytes": 4734,
+      "sha256": "sha256:971c511f22bf2a187522c794bfc05b26c5add39d8dda505321f4a05897c95951"
+    },
+    "receiptPath": "/private/tmp/still-shift-ms3-corrections66-whole1-receipt.json",
+    "sessionId": 53999,
+    "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-corrections66",
+    "inputsAndProtectedInventory": {
+      "path": "/private/tmp/still-shift-ms3-corrections66-inputs1.json",
+      "bytes": 36500,
+      "sha256": "sha256:2061288a92770c1d5216d4b60927678d953f2c6796158f95b7e3461fdaa1026e"
+    },
+    "cacheImport": {
+      "status": "passed",
+      "source": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/blender-cache",
+      "destination": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-corrections66/blender-cache",
+      "files": 7001,
+      "bytes": 2816954354,
+      "seconds": 6.142863415880129,
+      "allCopiedBytesExact": true,
+      "method": "APFS copy-on-write; no symlinks or quotas changed",
+      "originalJournalAndSealedDeliveriesUntouched": true
+    },
+    "guards": [
+      {
+        "path": "/private/tmp/still-shift-ms3-corrections66-EU-002-camera-guard2.json",
+        "bytes": 5398,
+        "sha256": "sha256:bb7d153e0f5bcae626174c2da1f97fcc1e6c9deb3f804a715fd12935d6113496"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-corrections66-EU-007-camera-guard4.json",
+        "bytes": 13701,
+        "sha256": "sha256:1c4612eea776046fefc9e24ece770d6931aa8bace99a1c02862db4570daef168"
+      }
+    ],
+    "scope": "Separate bounded two-episode correction queue, native builder creates exact sorted complete inputs. All ten baseline products and artifact bytes plus original/canceled/failed journals guarded. Canonical model bytes equal original; external objects compatibility paths remain retired.",
+    "wholeReviews": "UNREVIEWED",
+    "acceptedPilot": 0
+  }
 }

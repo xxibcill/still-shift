@@ -1,0 +1,764 @@
+{
+  "schemaVersion": "mechanism-ms3-first-ten-buckle-review-1",
+  "date": "2026-10-15",
+  "status": "guarded-correction-canonical-recovery-running",
+  "episode": "EU-007",
+  "episodeSelection": "Actual Everyday Unlocked first ten; existing complete Alden Eleven v4 at1x",
+  "originalTimingCandidate": {
+    "status": "prepared-spoken-bend-and-arm-pointer-candidate",
+    "episode": "EU-007",
+    "observedIssue": {
+      "encodedPhoneFrames": 18,
+      "originalInsertionBeginsFrame": 264,
+      "spokenBendBeginsSeconds": 7.62,
+      "spokenInwardEndsSeconds": 8.44,
+      "noInsertionDuringFrames": [164, 264],
+      "timingEvidence": [
+        {
+          "text": " bend",
+          "start": 7.62,
+          "end": 7.92,
+          "probability": 0.9977377653121948
+        },
+        {
+          "text": " inward",
+          "start": 7.92,
+          "end": 8.44,
+          "probability": 0.9985131621360779
+        },
+        {
+          "text": " as",
+          "start": 8.44,
+          "end": 8.66,
+          "probability": 0.9977758526802063
+        },
+        {
+          "text": " the",
+          "start": 8.66,
+          "end": 8.8,
+          "probability": 0.9984779953956604
+        },
+        {
+          "text": " halves",
+          "start": 8.8,
+          "end": 9.06,
+          "probability": 0.977082371711731
+        },
+        {
+          "text": " join.",
+          "start": 9.06,
+          "end": 9.4,
+          "probability": 0.9963207244873047
+        },
+        {
+          "text": " Then,",
+          "start": 10.0,
+          "end": 10.14,
+          "probability": 0.9963731169700623
+        },
+        {
+          "text": " their",
+          "start": 10.26,
+          "end": 10.48,
+          "probability": 0.9190653562545776
+        },
+        {
+          "text": " raised",
+          "start": 10.48,
+          "end": 10.78,
+          "probability": 0.99912029504776
+        },
+        {
+          "text": " edges",
+          "start": 10.78,
+          "end": 11.14,
+          "probability": 0.9973704814910889
+        },
+        {
+          "text": " spring",
+          "start": 11.14,
+          "end": 11.5,
+          "probability": 0.9954736828804016
+        },
+        {
+          "text": " outward",
+          "start": 11.5,
+          "end": 11.94,
+          "probability": 0.9756701588630676
+        },
+        {
+          "text": " behind",
+          "start": 11.94,
+          "end": 12.32,
+          "probability": 0.9888375997543335
+        }
+      ],
+      "method": "Existing source-bound offline word times, actual native control records and selected encoded pictures."
+    },
+    "pointerIssue": {
+      "originalAnchor": "anchor.actuator_contact",
+      "anchorOwner": "female.actuator_pad.1",
+      "declaredLabelPart": "male.arm.1",
+      "replacement": "anchor.arm_root",
+      "replacementOwner": "male plug; located at the right arm root",
+      "scope": "Original leader points at the female actuator contact rather than a member attached to the male arm; new visible projection/occlusion still requires scout review."
+    },
+    "candidate": {
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/repair-spoken-bend64/EU-007/source.json",
+        "bytes": 2269,
+        "sha256": "sha256:47b854f51c4452e18274fc31541c394b7ead1c3334c5d8a5902ada34073792a8"
+      },
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/repair-spoken-bend64/EU-007/plan.json",
+        "bytes": 9707,
+        "sha256": "sha256:0c52e5d5dd42644d7c44289706e1100ae6f2a0e6867cd7d1de76919b9dc650ef"
+      },
+      "qa": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/repair-spoken-bend64/EU-007/qa.json",
+        "bytes": 7340,
+        "sha256": "sha256:4b6590dac9a051dfd08f68ce6ed680c82b8d433dce547a6a891069d49a2a6d1f"
+      },
+      "originalReviewQA": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/repair-spoken-bend64/EU-007/qa-review-original.json",
+        "bytes": 7340,
+        "sha256": "sha256:fd4e0ce1b8c2b1f90e4f95648dc17a956cb96bbd449f7d2bb4a8611875345493"
+      },
+      "insertTrack": [
+        {
+          "frame": 0,
+          "value": 1,
+          "interpolation": "hold"
+        },
+        {
+          "frame": 164,
+          "value": 0,
+          "interpolation": "hold"
+        },
+        {
+          "frame": 196,
+          "value": 0,
+          "interpolation": "linear"
+        },
+        {
+          "frame": 253,
+          "value": 0.96,
+          "interpolation": "hold"
+        },
+        {
+          "frame": 334,
+          "value": 0.96,
+          "interpolation": "linear"
+        },
+        {
+          "frame": 359,
+          "value": 1,
+          "interpolation": "hold"
+        }
+      ],
+      "onlyChangedController": "plug.insert",
+      "changedControlFrames": [196, 359],
+      "speechAudioSourceFrameAndCameraClockExact": true,
+      "changes": [
+        "retime insertion inward flex and outward recovery to existing words",
+        "highlight both male arms in insertion view",
+        "bind both Flexible arm leaders to an existing male-arm root anchor",
+        "add spoken local-mesh deformation assertion and retime settled-state interval"
+      ]
+    },
+    "sourceRecipe": {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-007/v002/source/buckle.py",
+      "bytes": 7620,
+      "sha256": "sha256:800eb508be419f6dadac14554123b5f9eb83f4f331dc484043a701b9cb919420"
+    },
+    "localMeshHashMeaning": "Native worker hashes evaluated mesh.vertices[].co in object-local space separately from worldMatrix; shape change is independent of rigid plug translation.",
+    "liveInputsChanged": false,
+    "sourceAssetChanged": false,
+    "renderedCandidate": "NOT STARTED",
+    "wholeReviews": "UNREVIEWED",
+    "acceptedPilot": 0
+  },
+  "retainedIndependentOriginalReview": {
+    "status": "located-spoken-bend-failure-in-current-retained-output",
+    "binding": {
+      "inputSha256": "sha256:a472a16f03ff027463532d14dedb1bfae897776d3b8c0cbf1f19898a598a2dc9",
+      "outputSha256": "sha256:c7790721f325b0b584ce9c1be70111cb9f4b4d469a2b87b8818401de673fdc95",
+      "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+      "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+    },
+    "failures": 75,
+    "groups": 3,
+    "artifacts": [
+      {
+        "path": "independent-spoken-review64/EU-007/qa-program.json",
+        "bytes": 8018,
+        "sha256": "sha256:e7bc233f9563576143b98b7714b3fc3e72dab5dd0c5b36c7ebdd40700953a48e"
+      },
+      {
+        "path": "independent-spoken-review64/EU-007/qa-warnings.json",
+        "bytes": 3706,
+        "sha256": "sha256:e00fff3066a96aa7a13f6e1d8f94db7d05aba6331428a65cb94f034f914c08d2"
+      },
+      {
+        "path": "independent-spoken-review64/EU-007/qa-warning-groups.json",
+        "bytes": 6004,
+        "sha256": "sha256:74a318c1138710c009856576a5927dbf56d7c97369b88df4c1e36ec959b45c50"
+      },
+      {
+        "path": "independent-spoken-review64/EU-007/qa-facts.json",
+        "bytes": 453922,
+        "sha256": "sha256:5b0d874ab3f0b2888183c8f241ccf4f454a97cd46925e95ea404e2490306a048"
+      }
+    ],
+    "scope": "Source-word-derived sampled control/local-mesh deformation assertions over229\u2013254. Current delivery seal/journal unchanged; no whole listening/contact acceptance.",
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-holds64-EU007-original-qa1.json",
+      "bytes": 1479,
+      "sha256": "sha256:3a5ec62f9d3a68600756aae5f02d627e03cdd2256e355070f98ab18fdda259c4"
+    }
+  },
+  "originalPointerEnvelopeReview": {
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-holds64-EU007-anchor-bounds1.json",
+      "bytes": 1836,
+      "sha256": "sha256:215a8a4f83bb6f55b4380432731f657e1c4cb7f7b8805a81ce0024138a207501"
+    },
+    "finding": "Female-actuator anchor is outside declared male arm envelope during all163 part-00 frames, minimum distance at264 greater than1.15 source units. AABB outside is conclusive; AABB inside is not a surface/occlusion proof."
+  },
+  "retainedFailures": [
+    {
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-holds64-EU007-camera-guard1.log",
+        "bytes": 1153,
+        "sha256": "sha256:93f20360ef41a8df72e6d0abdc334f732fcc945bb9cf3e18c2772a12e366875e"
+      },
+      "cause": "Preliminary adapter omitted prepare_controller; failed spoken mesh assertion at229 despite Blender exit0. Corrected exact-preparation adapters and actual receipt required."
+    },
+    {
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-holds64-EU007-original-qa1.log",
+        "bytes": 651,
+        "sha256": "sha256:88dfe1eb03cce75439b9b27ba6168b6a1dfd2072de79880470f2e310b0e59644"
+      },
+      "cause": "Initial independent QA attempt lacked output parent; corrected qa2 run produced75 located failures."
+    }
+  ],
+  "rejectedRootPointer": {
+    "scoutReceipt": {
+      "path": "/private/tmp/still-shift-ms3-holds65-scout1.json",
+      "bytes": 18637,
+      "sha256": "sha256:999dba7c884ba659afaeb066d86be06942f5acad5f18428eeb607857a420a693"
+    },
+    "actualPhoneSheetViewed": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/correction-phone-review65/EU-007-sheet.png",
+      "bytes": 609427,
+      "sha256": "sha256:14b2f9ad09c71317d2ae0a2e2f8347f3312b2f5cfdf5a15e1f355102b7f24255"
+    },
+    "cause": "arm_root marker appears on rigid front junction/crossbar instead of clearly visible flexing arm; not adopted."
+  },
+  "surfaceCandidate": {
+    "buildReceipt": {
+      "status": "saved-anchor-only-derivative",
+      "originalAsset": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/05 Asset Library/objects/OBJ-EU-007/v002/asset.blend",
+      "originalAssetSha256": "sha256:5e003f0e5845e9284eaaefd6f25c3d34acd05f5c8d46e82e3acca8b96296c30f",
+      "originalBytesUnchanged": true,
+      "derivative": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/repair-spoken-bend64-v2/EU-007/asset-arm-anchor.blend",
+      "derivativeBytes": 158911,
+      "derivativeSha256": "sha256:bc7ffbe4b8e629c80f5714a7b87ad679235d553d82f8b292c07da27307eb16b7",
+      "physicalPartsBeforeAfterExact": true,
+      "physicalParts": 40,
+      "anchor": "anchor.male_arm_surface65",
+      "parent": "male.arm.1",
+      "parentType": "VERTEX",
+      "vertexIndex": 50,
+      "sourceCodeSha256": "sha256:1e0d20eac9a067571dd1882e9f3d1f7cc185df75e84da774d8e629124460fd2b",
+      "scope": "Only a deformed-mesh vertex parented annotation Empty added; original asset/physical geometry untouched. Fresh reload/state/visibility checks required."
+    },
+    "buildReceiptPin": {
+      "path": "/private/tmp/still-shift-ms3-holds65-EU007-build-anchor1.json",
+      "bytes": 1051,
+      "sha256": "sha256:95e4e6cf74b0508f2bc279f8fd86ee695ea135982791a93259688b02db8b3b94"
+    },
+    "buildScript": {
+      "path": "/private/tmp/still-shift-ms3-holds65-EU007-build-anchor1.py",
+      "bytes": 2378,
+      "sha256": "sha256:1e0d20eac9a067571dd1882e9f3d1f7cc185df75e84da774d8e629124460fd2b"
+    },
+    "source": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/repair-spoken-bend64-v2/EU-007/source.json",
+      "bytes": 2303,
+      "sha256": "sha256:5e624eedfdd9bf9f532874f5c478fdebd011de59bdba423eb378d6f0547ad910"
+    },
+    "plan": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/repair-spoken-bend64-v2/EU-007/plan.json",
+      "bytes": 9727,
+      "sha256": "sha256:5934083dcec23215596f3467cc01d6597b0becd3759ff1e98e60bc3400237898"
+    },
+    "qa": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/repair-spoken-bend64-v2/EU-007/qa.json",
+      "bytes": 7340,
+      "sha256": "sha256:4b6590dac9a051dfd08f68ce6ed680c82b8d433dce547a6a891069d49a2a6d1f"
+    },
+    "annotationOnly": "Vertex50-parented Empty follows evaluated male.arm.1 surface. No physical geometry changes. Original library asset/pointers remain unchanged.",
+    "freshReloadGuard": {
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-holds65-EU-007-camera-guard4.json",
+        "bytes": 13701,
+        "sha256": "sha256:4c1482f5ba2cfdd5b6a0f21ccbe5bb200912a62208c2bd608e4489f7caf6016e"
+      },
+      "adapter": {
+        "path": "/private/tmp/still-shift-ms3-holds65-camera-guard4.py",
+        "bytes": 8096,
+        "sha256": "sha256:b0e2ad0c03557c69adc3e1831415b61905d615b29246a28a7c6ed79c7bde5fd6"
+      },
+      "cameraShots": 7,
+      "cameraFrames": 708,
+      "physicalParityFrames": 708,
+      "vertexSurfaceFrames": 272,
+      "vertexSurfaceMaxError": 0.0,
+      "spokenLocalMeshChecks": 50,
+      "controlContractFrames": 708,
+      "originalBytesUnchanged": true,
+      "scope": "All physical part dictionaries equal original at matching candidate controls; actual evaluated vertex follows in all272 active label frames; no whole surface occlusion/force/contact/listening approval."
+    },
+    "actualNativeScouts": {
+      "id": "EU-007",
+      "frames": [
+        {
+          "originalFrame": 229,
+          "nativeIndex": 0,
+          "image": {
+            "path": "scouts-buckle-surface65/EU-007/plates/frames/frame-000000.png",
+            "bytes": 1074032,
+            "sha256": "sha256:d248b4a431236ea6429ae95b83c5e4fb593f2214a69d9b4db4305a42c3d96b4d"
+          },
+          "observation": {
+            "path": "blender-cache/captures/78298301-48d2-429f-b7cf-ac19ac9ba466/frames/frame-000000.json",
+            "bytes": 36145,
+            "sha256": "sha256:1c262b11d8c42011713ce88eca0f3c4f68812d942a249c12afe828a57cb84a5a"
+          },
+          "physicalPartsOriginalExact": false,
+          "controls": {
+            "plug.insert": 0.5557894736842105,
+            "actuators.squeeze": 0,
+            "plug.withdraw": 0,
+            "pull_probe": 0
+          },
+          "anchors": {}
+        },
+        {
+          "originalFrame": 253,
+          "nativeIndex": 1,
+          "image": {
+            "path": "scouts-buckle-surface65/EU-007/plates/frames/frame-000001.png",
+            "bytes": 1031959,
+            "sha256": "sha256:101ac9652996f6eb0b16c0dbb556730d0745cf9e38afe876d58163b638b13ef2"
+          },
+          "observation": {
+            "path": "blender-cache/captures/78298301-48d2-429f-b7cf-ac19ac9ba466/frames/frame-000001.json",
+            "bytes": 36146,
+            "sha256": "sha256:3e44ff7cd8aa4c0c85f2cebf586e3519c0ac063640fc5b2d7effd7181a862f69"
+          },
+          "physicalPartsOriginalExact": false,
+          "controls": {
+            "plug.insert": 0.96,
+            "actuators.squeeze": 0,
+            "plug.withdraw": 0,
+            "pull_probe": 0
+          },
+          "anchors": {}
+        },
+        {
+          "originalFrame": 334,
+          "nativeIndex": 2,
+          "image": {
+            "path": "scouts-buckle-surface65/EU-007/plates/frames/frame-000002.png",
+            "bytes": 1051672,
+            "sha256": "sha256:bea18e329c8cfe517760c11b928f9180a61bd219d73399f601aefeee690ba8d8"
+          },
+          "observation": {
+            "path": "blender-cache/captures/78298301-48d2-429f-b7cf-ac19ac9ba466/frames/frame-000002.json",
+            "bytes": 36460,
+            "sha256": "sha256:9bae901a51c579780f69568c6f29971a254640eff17b2b78d4d9d9234fde2c7a"
+          },
+          "physicalPartsOriginalExact": false,
+          "controls": {
+            "plug.insert": 0.96,
+            "actuators.squeeze": 0,
+            "plug.withdraw": 0,
+            "pull_probe": 0
+          },
+          "anchors": {
+            "anchor.male_arm_surface65": {
+              "kind": "object-origin",
+              "world": [
+                0.381788432598114, 0.527999997138977, 0.05999999865889549
+              ],
+              "pixel": [593.8789916038513, 878.9086532592773],
+              "depth": 7.188236236572266,
+              "inFrame": true
+            }
+          }
+        },
+        {
+          "originalFrame": 342,
+          "nativeIndex": 3,
+          "image": {
+            "path": "scouts-buckle-surface65/EU-007/plates/frames/frame-000003.png",
+            "bytes": 1051835,
+            "sha256": "sha256:2bd1a8d35eab65fd95a12c47d9bcedf7c9a11d80987bc6d3fe43a6a944194bd3"
+          },
+          "observation": {
+            "path": "blender-cache/captures/78298301-48d2-429f-b7cf-ac19ac9ba466/frames/frame-000003.json",
+            "bytes": 36459,
+            "sha256": "sha256:67321f0fe541d65564f0df5db044822da18f8f8572cb64707cc94c8f241ebae1"
+          },
+          "physicalPartsOriginalExact": false,
+          "controls": {
+            "plug.insert": 0.9728,
+            "actuators.squeeze": 0,
+            "plug.withdraw": 0,
+            "pull_probe": 0
+          },
+          "anchors": {
+            "anchor.male_arm_surface65": {
+              "kind": "object-origin",
+              "world": [
+                0.5398882031440735, 0.5510400533676147, 0.05999999865889549
+              ],
+              "pixel": [637.7629137039185, 891.6703033447266],
+              "depth": 7.140079021453857,
+              "inFrame": true
+            }
+          }
+        },
+        {
+          "originalFrame": 359,
+          "nativeIndex": 4,
+          "image": {
+            "path": "scouts-buckle-surface65/EU-007/plates/frames/frame-000004.png",
+            "bytes": 1045583,
+            "sha256": "sha256:a11d984d776de37e137049849ec6ce7978d0ddd8d7008c8451d6cc84c66378af"
+          },
+          "observation": {
+            "path": "blender-cache/captures/78298301-48d2-429f-b7cf-ac19ac9ba466/frames/frame-000004.json",
+            "bytes": 36167,
+            "sha256": "sha256:866286d37a107e8b15a8bda67db8433364c466c699f60d438ef0a60e84ed6763"
+          },
+          "physicalPartsOriginalExact": true,
+          "controls": {
+            "plug.insert": 1,
+            "actuators.squeeze": 0,
+            "plug.withdraw": 0,
+            "pull_probe": 0
+          },
+          "anchors": {
+            "anchor.male_arm_surface65": {
+              "kind": "object-origin",
+              "world": [
+                0.5398882031440735, 0.6000000238418579, 0.05999999865889549
+              ],
+              "pixel": [645.5474781990051, 883.4243774414062],
+              "depth": 7.1711955070495605,
+              "inFrame": true
+            }
+          }
+        },
+        {
+          "originalFrame": 502,
+          "nativeIndex": 5,
+          "image": {
+            "path": "scouts-buckle-surface65/EU-007/plates/frames/frame-000005.png",
+            "bytes": 954048,
+            "sha256": "sha256:19b1772cdbcc127649bcd016ebfe72593d3a26778108395fcd806808ffe2c462"
+          },
+          "observation": {
+            "path": "blender-cache/captures/78298301-48d2-429f-b7cf-ac19ac9ba466/frames/frame-000005.json",
+            "bytes": 36204,
+            "sha256": "sha256:94721a6f0ef372731888bf979ee773b574e794b71d21ee185a644d2f1bd5c36c"
+          },
+          "physicalPartsOriginalExact": true,
+          "controls": {
+            "plug.insert": 1,
+            "actuators.squeeze": 0,
+            "plug.withdraw": 0,
+            "pull_probe": 0
+          },
+          "anchors": {
+            "anchor.male_arm_surface65": {
+              "kind": "object-origin",
+              "world": [
+                0.5398882031440735, 0.6000000238418579, 0.05999999865889549
+              ],
+              "pixel": [753.97944688797, 748.6056518554688],
+              "depth": 19.974899291992188,
+              "inFrame": true
+            }
+          }
+        },
+        {
+          "originalFrame": 526,
+          "nativeIndex": 6,
+          "image": {
+            "path": "scouts-buckle-surface65/EU-007/plates/frames/frame-000006.png",
+            "bytes": 950913,
+            "sha256": "sha256:6a25b0d377be271bd96d404ad98cb64b52478ccd3dc54ef395adbac3fd1b2053"
+          },
+          "observation": {
+            "path": "blender-cache/captures/78298301-48d2-429f-b7cf-ac19ac9ba466/frames/frame-000006.json",
+            "bytes": 36231,
+            "sha256": "sha256:3cfdce82031119bbf8f0fa2379b752f6760b9a8822c79a12d2b1392c47bca1b6"
+          },
+          "physicalPartsOriginalExact": true,
+          "controls": {
+            "plug.insert": 1,
+            "actuators.squeeze": 1,
+            "plug.withdraw": 0,
+            "pull_probe": 0
+          },
+          "anchors": {
+            "anchor.male_arm_surface65": {
+              "kind": "object-origin",
+              "world": [
+                0.34575316309928894, 0.6000000238418579, 0.05999999865889549
+              ],
+              "pixel": [710.375611782074, 729.4561386108398],
+              "depth": 20.051023483276367,
+              "inFrame": true
+            }
+          }
+        },
+        {
+          "originalFrame": 610,
+          "nativeIndex": 7,
+          "image": {
+            "path": "scouts-buckle-surface65/EU-007/plates/frames/frame-000007.png",
+            "bytes": 950913,
+            "sha256": "sha256:6a25b0d377be271bd96d404ad98cb64b52478ccd3dc54ef395adbac3fd1b2053"
+          },
+          "observation": {
+            "path": "blender-cache/captures/78298301-48d2-429f-b7cf-ac19ac9ba466/frames/frame-000006.json",
+            "bytes": 36231,
+            "sha256": "sha256:3cfdce82031119bbf8f0fa2379b752f6760b9a8822c79a12d2b1392c47bca1b6"
+          },
+          "physicalPartsOriginalExact": true,
+          "controls": {
+            "plug.insert": 1,
+            "actuators.squeeze": 1,
+            "plug.withdraw": 0,
+            "pull_probe": 0
+          },
+          "anchors": {
+            "anchor.male_arm_surface65": {
+              "kind": "object-origin",
+              "world": [
+                0.34575316309928894, 0.6000000238418579, 0.05999999865889549
+              ],
+              "pixel": [710.375611782074, 729.4561386108398],
+              "depth": 20.051023483276367,
+              "inFrame": true
+            }
+          }
+        },
+        {
+          "originalFrame": 611,
+          "nativeIndex": 8,
+          "image": {
+            "path": "scouts-buckle-surface65/EU-007/plates/frames/frame-000008.png",
+            "bytes": 2662874,
+            "sha256": "sha256:80d2740d5f3695e6d0862b9b62773c025006cb2bb0fda712984892b9359b7a65"
+          },
+          "observation": {
+            "path": "blender-cache/captures/78298301-48d2-429f-b7cf-ac19ac9ba466/frames/frame-000007.json",
+            "bytes": 36079,
+            "sha256": "sha256:d05ceeb6e1407a55aa9bc43f7e15aff40f8073bd63920c6979e1c82d8048f249"
+          },
+          "physicalPartsOriginalExact": true,
+          "controls": {
+            "plug.insert": 1,
+            "actuators.squeeze": 1,
+            "plug.withdraw": 0,
+            "pull_probe": 0
+          },
+          "anchors": {
+            "male.abutment.1.1": {
+              "kind": "evaluated-bounds-center",
+              "world": [
+                0.2697869539260864, 1.3250000476837158, 0.12000000476837158
+              ],
+              "pixel": [309.3273103237152, 134.39998626708984],
+              "depth": 3.880000114440918,
+              "inFrame": true
+            }
+          }
+        }
+      ],
+      "freshNativeRenders": 8,
+      "reusedNativeFrames": 1,
+      "sourceAssetSha256": "sha256:bc7ffbe4b8e629c80f5714a7b87ad679235d553d82f8b292c07da27307eb16b7",
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-holds65-scout2.json",
+        "bytes": 11258,
+        "sha256": "sha256:320c2b1bc81a985a503e752d432a6eeadc7890d8df6dd44cf412bf100740e31b"
+      },
+      "actualPhoneSheetViewed": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/correction-phone-review65/EU-007-surface-sheet.png",
+        "bytes": 490118,
+        "sha256": "sha256:602b94569df9b7792446eb2d585f0ff743dcfd6e771fea2ddd847f1c70f51302"
+      },
+      "finding": "Selected229/253 insertion flex and334/342 recovery shown. Surface pointer rings visibly land on arm at334/342/359/502/526/610; full encoded captions and normal-speed listening still required."
+    }
+  },
+  "fullExport": {
+    "manifest": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-corrections65-r1.json",
+      "bytes": 37468,
+      "sha256": "sha256:56d7586ee94bab0e5efb2858ac7cac965788c998743b039cda559afaf22c2656"
+    },
+    "execution": "revision1-failed-preserved",
+    "receiptPath": "/private/tmp/still-shift-ms3-corrections65-whole1-receipt.json",
+    "recovery": {
+      "id": "actual-first-ten-scoped-corrections66",
+      "episodes": ["EU-002", "EU-007"],
+      "execution": "run-live-report-resume-pending",
+      "manifest": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-corrections66.json",
+        "bytes": 6997,
+        "sha256": "sha256:6f3b23dccaae1319c496255dec4f882852a76171fb1071a23ad5593a0ace5a9e"
+      },
+      "projects": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/projects-corrections66-cli.json",
+        "bytes": 683,
+        "sha256": "sha256:46fcc23f6f999558ff31b5382799ffee0087ef5699f0ae9fbd37dfa80d28cecc"
+      },
+      "queueBuilderReceipt": {
+        "path": "/private/tmp/still-shift-ms3-corrections66-queue1.log",
+        "bytes": 1025,
+        "sha256": "sha256:9576745ee79f5eb3ff148d2a3cd04c345eef38982f9db42f5eec688e59352d81"
+      },
+      "wrapper": {
+        "path": "/private/tmp/still-shift-ms3-corrections66-whole1.py",
+        "bytes": 4734,
+        "sha256": "sha256:971c511f22bf2a187522c794bfc05b26c5add39d8dda505321f4a05897c95951"
+      },
+      "receiptPath": "/private/tmp/still-shift-ms3-corrections66-whole1-receipt.json",
+      "sessionId": 53999,
+      "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-corrections66",
+      "inputsAndProtectedInventory": {
+        "path": "/private/tmp/still-shift-ms3-corrections66-inputs1.json",
+        "bytes": 36500,
+        "sha256": "sha256:2061288a92770c1d5216d4b60927678d953f2c6796158f95b7e3461fdaa1026e"
+      },
+      "cacheImport": {
+        "status": "passed",
+        "source": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/blender-cache",
+        "destination": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-corrections66/blender-cache",
+        "files": 7001,
+        "bytes": 2816954354,
+        "seconds": 6.142863415880129,
+        "allCopiedBytesExact": true,
+        "method": "APFS copy-on-write; no symlinks or quotas changed",
+        "originalJournalAndSealedDeliveriesUntouched": true
+      },
+      "guards": [
+        {
+          "path": "/private/tmp/still-shift-ms3-corrections66-EU-002-camera-guard2.json",
+          "bytes": 5398,
+          "sha256": "sha256:bb7d153e0f5bcae626174c2da1f97fcc1e6c9deb3f804a715fd12935d6113496"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-corrections66-EU-007-camera-guard4.json",
+          "bytes": 13701,
+          "sha256": "sha256:1c4612eea776046fefc9e24ece770d6931aa8bace99a1c02862db4570daef168"
+        }
+      ],
+      "scope": "Separate bounded two-episode correction queue, native builder creates exact sorted complete inputs. All ten baseline products and artifact bytes plus original/canceled/failed journals guarded. Canonical model bytes equal original; external objects compatibility paths remain retired.",
+      "wholeReviews": "UNREVIEWED",
+      "acceptedPilot": 0
+    }
+  },
+  "wholeReviews": "UNREVIEWED",
+  "acceptedPilot": 0,
+  "paidGeneration": false,
+  "publication": false,
+  "retainedFailedRevision": {
+    "status": "failed-attempt-preserved",
+    "cliRunExitCode": 0,
+    "wrapperExitCode": 1,
+    "reportResume": "NOT RUN",
+    "completeEpisodeSuccess": false,
+    "journal": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/failed-corrections65-state.json",
+    "causes": [
+      "EU002 hand-authored revised dependencies not ordered like readBlenderEpisode expected inputs; execution rejects complete input-set equality.",
+      "Concurrent retirement of original objects compatibility paths caused missing model dependencies during neighbor verification and later private hold."
+    ],
+    "priorProductsAndMediaRetained": true,
+    "noNewRender": true,
+    "qualification": "CLI0 is a finished queue result, not per-item success; private postcheck raises before wrapper step receipt. Existing revision0 terminal evidence remains historical.",
+    "recovery": "Native queue command builds bounded EU002/EU007 correction cohort with byte-exact canonical moved models; preserve failed revision1 and other eight baseline products.",
+    "receiptPin": {
+      "path": "/private/tmp/still-shift-ms3-corrections65-failure1.json",
+      "bytes": 1054,
+      "sha256": "sha256:989662f50699368f402bd5d5580cfe569bb9a942bfc0db384a3ea87417d4df40"
+    }
+  },
+  "canonicalRecovery": {
+    "id": "actual-first-ten-scoped-corrections66",
+    "episodes": ["EU-002", "EU-007"],
+    "execution": "run-live-report-resume-pending",
+    "manifest": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-corrections66.json",
+      "bytes": 6997,
+      "sha256": "sha256:6f3b23dccaae1319c496255dec4f882852a76171fb1071a23ad5593a0ace5a9e"
+    },
+    "projects": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/projects-corrections66-cli.json",
+      "bytes": 683,
+      "sha256": "sha256:46fcc23f6f999558ff31b5382799ffee0087ef5699f0ae9fbd37dfa80d28cecc"
+    },
+    "queueBuilderReceipt": {
+      "path": "/private/tmp/still-shift-ms3-corrections66-queue1.log",
+      "bytes": 1025,
+      "sha256": "sha256:9576745ee79f5eb3ff148d2a3cd04c345eef38982f9db42f5eec688e59352d81"
+    },
+    "wrapper": {
+      "path": "/private/tmp/still-shift-ms3-corrections66-whole1.py",
+      "bytes": 4734,
+      "sha256": "sha256:971c511f22bf2a187522c794bfc05b26c5add39d8dda505321f4a05897c95951"
+    },
+    "receiptPath": "/private/tmp/still-shift-ms3-corrections66-whole1-receipt.json",
+    "sessionId": 53999,
+    "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-corrections66",
+    "inputsAndProtectedInventory": {
+      "path": "/private/tmp/still-shift-ms3-corrections66-inputs1.json",
+      "bytes": 36500,
+      "sha256": "sha256:2061288a92770c1d5216d4b60927678d953f2c6796158f95b7e3461fdaa1026e"
+    },
+    "cacheImport": {
+      "status": "passed",
+      "source": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/blender-cache",
+      "destination": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-corrections66/blender-cache",
+      "files": 7001,
+      "bytes": 2816954354,
+      "seconds": 6.142863415880129,
+      "allCopiedBytesExact": true,
+      "method": "APFS copy-on-write; no symlinks or quotas changed",
+      "originalJournalAndSealedDeliveriesUntouched": true
+    },
+    "guards": [
+      {
+        "path": "/private/tmp/still-shift-ms3-corrections66-EU-002-camera-guard2.json",
+        "bytes": 5398,
+        "sha256": "sha256:bb7d153e0f5bcae626174c2da1f97fcc1e6c9deb3f804a715fd12935d6113496"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-corrections66-EU-007-camera-guard4.json",
+        "bytes": 13701,
+        "sha256": "sha256:1c4612eea776046fefc9e24ece770d6931aa8bace99a1c02862db4570daef168"
+      }
+    ],
+    "scope": "Separate bounded two-episode correction queue, native builder creates exact sorted complete inputs. All ten baseline products and artifact bytes plus original/canceled/failed journals guarded. Canonical model bytes equal original; external objects compatibility paths remain retired.",
+    "wholeReviews": "UNREVIEWED",
+    "acceptedPilot": 0
+  }
+}

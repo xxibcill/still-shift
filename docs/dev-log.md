@@ -43,66 +43,39 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS3 in progress (2026-10-14):** `codex/mechanism-ms3`,
+- **MS3 in progress (2026-10-15):** `codex/mechanism-ms3`,
   [draft PR #58](https://github.com/xxibcill/still-shift/pull/58) targets main.
-  Pilot uses actual Everyday Unlocked EU001–EU010 and complete existing Alden
-  recordings at1×. The old seven-recording intake is closed.
-  Original H3 media/journal, source bindings and failed/canceled attempts retained.
-  Original masters/assets/pointers unchanged.
-  **Cohort60 terminal:** wrapper11682 exits1 after5415.13s; nine products seal,
-  EU007 fails delivery verification after its rendered QA passes. All6181 saved
-  frames pass complete native clocks/proofs,24724 pins and4257 active label frames.
-  All ten movies fully decode and retain original whole AAC parity. Eight full
-  RGBA streams equal repaired H3; zipper/latch camera repairs differ. Complete
-  geometry/control parity and locked cameras pass for both; selected15 zipper/
-  12 latch encoded phone frames actually inspected. Saved QA has0 preview errors,
-  340 warnings and537 encoded evidence images; whole reviews remain open.
-  **EU007 capacity repair:** actual verifier reproduces21649-byte shortfall.
-  Completed map authentication retains64MiB. Scoped scratch disposal on every exit
-  keeps512MiB quota/QA thresholds unchanged. Red regression9pass/1fail; fixed
-  targeted24/4 pass. Actual708-frame visual replay under256MiB caller reservations
-  passes0 errors/33 warnings, zero native calls; original output binding unchanged.
-  Preliminary type-only import/frozen-identity replay failures retained. Fast4,594/457 and schema/boundary/format/lint/types pass. Complete runtime
-  tier passes actual0 in546.19s: runtime271/52, integration324/59, depth14 and
-  browser smoke; held2,778 inputs/122,205,150B stay exact. Repair source4b58f49b,
-  runtimefc4cc2ae, unchanged native profile1dd0.
-  Cohort60 report/resume unrun after terminal failure; old products not relabelled.
-  **Fresh cohort61 live:** actual-first-ten-native-purpose61, wrapper71417,
-  output-purpose61, queue-holds61.json. Exact COW cache import6,935 files /
-  2,795,500,494B; same53 candidate/camera inputs/6,533,750B and ten episode rows.
-  Complete refreshed audit verifies107 declared dependencies/130,470,362B and
-  111 declared-plus-candidate files/132,527,805B. The original53 hold remains
-  scoped to candidate revisions/changed-camera inputs, not all audio/model files.
-  Original H3/canceled59/failed60 journals held separately. No source edits until
-  run/report/resume is terminal.
-  **First six fresh completions:** EU001–EU006 seal onfc4cc2ae; independent
-  artifact pins/full RGBA/original whole AAC parity pass. EU004653 frames equal
-  prior camera-repaired purpose60; other five streams equal repaired H3. Preview
-  QA0 errors and37/27/37/28/34/37 warnings. Current native audit coversEU001–EU006:
-  3,671 frames/14,684 pins/2,313 active-label frames, zero fresh native captures.
-  Fifteen actual keyhole encoded phone frames show readable entry/slot/head
-  labels and the retained/released geometry in selected views. Whole reviews
-  remain open; original wrapper71417 continuesEU007 export.
-  **Located EU002 cut repair:** Sixteen encoded phone frames reveal camera
-  reorientation at269 during tongue return. Separate shot02 candidate retains
-  passage view over269–374; all control/speech/audio/shot clocks unchanged.
-  Actual588-frame/five-shot camera guard and exact268/269 head/root/camera
-  boundary pass, zero renders/original source bytes unchanged. Actual scouts and
-  encoded repair remain unrun; original frozen batch continuesEU007 export.
-  [Cut review and candidate](./mechanism-shorts-ms3-first-ten-camera-cut-review-results.json).
-  **Script source review:** all ten frozen spoken explanations compared with fresh
-  primary text; design boundaries/inferences and rendered witnesses recorded.
-  No whole rendered factual/mechanical/AV acceptance follows.
-  [Claim review](./mechanism-shorts-ms3-first-ten-claim-review-results.json).
-  **Next:** poll71417; complete fresh lifecycle and independent current outputs. Whole factual/mechanical/encoded glyph/continuous/
-  listening and original E06/E10 reviews, broader physical faults, native portable
-  handoff, comparable effort and full software/benchmark/archive/installed gates
-  remain. Accepted0/10; paired routine telemetry null. Actions disabled;
-  no paid generation/merge/publication.
-  [Pilot brief](./mechanism-shorts-ms3-pilot-brief.md),
-  [current evidence](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json),
-  [complete acceptance](./mechanism-shorts-ms3-acceptance.md),
-  [production plan](./mechanism-shorts-production-plan.md).
+  Actual Everyday Unlocked EU001–EU010 use complete existing Alden takes at1×;
+  obsolete missing-seven intake closed. Cohort61 run5208.05s/report382.27s/
+  resume388.31s finish actual0, all ten current-source products seal on attempt1.
+  Independent full RGBA/original AAC checks pass all ten; zipper/latch compare
+  against prior camera-repaired output, eight against repaired H3. All6,181
+  native frames/24,724 mapped pins/4,257 active-label frames verify. Scoped preview
+  QA0 errors/340 warnings/537 images is not whole acceptance.
+  Source4b58f49b/runtimefc4cc2ae/native profile1dd0 remain held exact; memory fix
+  fast4,594/runtime271/integration324/depth14/browser smoke passed previously.
+  **Located review defects:** EU002 changes view during return; EU007 stays
+  unbent during spoken inward-bend claim (75 independent located failures), and
+  its old leader points outside the named arm. Preliminary guard failure and
+  visually ambiguous root-pointer candidate retained/rejected.
+  **Scoped repairs:** initial revision1 fails: hand-authored EU002 dependency
+  ordering differs, then original `objects/` aliases retire during verification.
+  Seven neighbor rows fail missing files and retain prior products. No rollback.
+  All28 moved dependencies rehash exact under canonical `models/` paths.
+  Native builder now creates separate EU002/EU007 recovery cohort66, wrapper53999,
+  with unchanged runtime/profile and guarded all-ten prior artifacts/journals.
+  Exact preparation guards pass588/708 frames; buckle
+  private annotation-only derivative preserves all708 physical part dictionaries
+  and follows evaluated surface exactly across272 active label frames. Six tie/
+  nine final buckle native phone frames actually inspected. All prior product/media
+  bytes and original/canceled/failed journals
+  must remain exact; originals/history/assets/pointers preserved. Full corrected
+  encoded review, continuous/listening/mechanical/factual acceptance, portable
+  handoff/effort/fault/final gates remain open; accepted0/10, effort tokens null.
+  No new ElevenLabs spend, publication, merge or GitHub Actions.
+  [Terminal cohort and revision](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json),
+  [tie cut](./mechanism-shorts-ms3-first-ten-camera-cut-review-results.json),
+  [buckle timing/pointer](./mechanism-shorts-ms3-first-ten-buckle-review-results.json).
 
 - **MS2 software checkpoint delivered (2026-10-13):** `codex/mechanism-ms2`
   carries exact MS1N `bf30a253` ([PR #56](https://github.com/xxibcill/still-shift/pull/56));
@@ -289,6 +262,29 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — All ten current exports and source-timed buckle repairs
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` from `d7d01969`.
+- **Done:** cohort61 run/report/resume terminal0; all ten products, full RGBA /
+  original AAC and6,181 native frame clocks/proofs independently verified.
+- **Review:** selected actual encoded phone frames locate tie cut and buckle
+  late bend/foreign pointer. Independent buckle QA reports75 failures; current
+  delivery seal does not establish spoken mechanical acceptance.
+- **Repair:** exact worker preparation guards, candidate states and phone scouts
+  pass. Root pointer rejected as visually ambiguous; vertex surface Empty keeps
+  physical708-frame parity and exact272-frame arm attachment. Initial revision1 fails dependency ordering and concurrently retired
+  model aliases. Seven neighbor rows fail and retain prior products. All28 moved
+  dependencies rehash exact. Native builder creates separate canonical-path
+  correction cohort66; all prior artifacts and failed journals are guarded.
+- **Retained setup failure:** first canonical compiler helper used an incorrect
+  script filename; corrected source compiles both588/708 frames, fresh guards
+  pass. Cache import7,001 files/2,816,954,354B exact.
+- **Open:** complete corrected outputs/AV/whole reviews and remaining production
+  acceptance gates; accepted0/10. No new spend, merge, publish or Actions.
+- **Records:** [terminal/source evidence](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json),
+  [buckle review](./mechanism-shorts-ms3-first-ten-buckle-review-results.json),
+  [cable-tie cut](./mechanism-shorts-ms3-first-ten-camera-cut-review-results.json).
 
 ### 2026-10-14 — Zipper/keyhole/binder current exports and keyhole review
 

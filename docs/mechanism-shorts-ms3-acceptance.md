@@ -407,3 +407,35 @@ current encoded phone frames are actually inspected; candidate native scouts,
 encoded repair and normal-speed review remain required. Current EU001/EU002/EU003
 products have independent whole RGBA/original AAC parity, but this located issue
 and all whole reviews prevent pilot acceptance.
+
+Cohort61 revision0 now finishes run5208.05s/report382.27s/resume388.31s with
+actual0 and ten current-source sealed products. All full RGBA/original AAC streams
+and6,181 native frames/24,724 mapped pins/4,257 active-label frames independently
+verify. Scoped QA0 errors/340 warnings/537 images remains separate from whole
+acceptance. [Terminal evidence](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json).
+
+Actual buckle phone review finds the arms unbent during the inward-bend words;
+independent source-word QA locates75 failures. The retained arm leader targets a
+female-actuator Empty outside the declared male arm. A root-pointer candidate is
+visually ambiguous in actual native scouts and is rejected. The final private
+vertex-parented annotation Empty follows the evaluated arm exactly across272
+active label frames and preserves708-frame physical-part parity against the
+original at matching controls. Original source/model/pointers remain unchanged.
+Exact-preparation guards and selected six tie/nine buckle phone images pass;
+same-cohort revision1 now exports only those two revisions with eight rows held
+exact. Full corrected encoded/continuous/listening/contact review remains open,
+as do broader production gates and accepted0/10.
+[Buckle repair evidence](./mechanism-shorts-ms3-first-ten-buckle-review-results.json).
+
+The initial scoped revision1 does **not** satisfy the eight-exact-row guard:
+EU002 dependency order was not regenerated through the native input builder;
+then the external `objects/` compatibility names retired during verification.
+Seven neighbors fail missing dependencies while retaining their prior sealed
+products and media. The wrapper terminates1 before report/resume. CLI run0
+records terminal per-item failures and does not mean success. All28 missing
+model dependencies are found byte-exact under canonical `models/` paths.
+No external aliases or failed journals are restored. The native queue builder
+now creates a separate bounded EU002/EU007 correction cohort66 with exact
+complete sorted inputs and fresh canonical-path guards. All prior all-ten
+product/artifact bytes and original/canceled/failed journals are protected;
+whole acceptance remains open. [Failure and recovery](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json).
