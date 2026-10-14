@@ -7,7 +7,10 @@ import type {
   Surface,
 } from "../../packages/renderer-core/src/composition/render/backend.ts";
 import { ManagedMemory } from "../../packages/renderer-core/src/managed-memory.ts";
-import { withManagedMemory } from "../../packages/renderer-core/src/managed-memory-context.ts";
+import {
+  allocateRenderPixels,
+  withManagedMemory,
+} from "../../packages/renderer-core/src/managed-memory-context.ts";
 import { releaseRenderMetadata } from "../../packages/renderer-core/src/managed-metadata.ts";
 
 const scopeKey = "sha256:" + "a".repeat(64);
@@ -136,6 +139,93 @@ it("denies root identity metadata before exchange claims or native pixel work", 
     expect(memory.statistics.reservations).toBe(1);
     cache.dispose();
     expect(memory.statistics.current.metadata).toBe(0);
+    memory.dispose();
+  });
+});
+
+it("evicts old root pixels within a fixed budget and restores revisited roots exactly", async () => {
+  const memory = new ManagedMemory({ pixels: 64, metadata: 65536 });
+  await withManagedMemory(memory, async () => {
+    let claims = 0;
+    let restored: number[] = [];
+    const backings: Uint8Array[] = [];
+    const backend = identityBackend();
+    backend.rootPixels!.restore = (_target, pixels) => {
+      restored = [...pixels.bytes];
+    };
+    const cache = new CompositionRootCache(backend, {
+      scopeKey,
+      byteLimit: 48,
+      exchange: {
+        async claim() {
+          claims++;
+          const bytes = allocateRenderPixels(
+            16,
+            () => new Uint8Array(16).fill(claims),
+            true,
+          );
+          backings.push(bytes);
+          return {
+            kind: "hit",
+            bytes,
+            checksum:
+              "sha256:" + createHash("sha256").update(bytes).digest("hex"),
+          };
+        },
+        publish: unexpected,
+      },
+    });
+    try {
+      for (const [index, id] of [
+        "first",
+        "second",
+        "third",
+        "fourth",
+        "first",
+      ].entries()) {
+        memory.beginScratch();
+        const current = { ...graph, root: { ...graph.root, id } };
+        await cache.prepare(current, { width: 2, height: 2 });
+        backend.renderRoot!(
+          current.root,
+          { width: 2, height: 2 },
+          unexpected,
+          "frame",
+        );
+        expect(restored).toEqual(new Array(16).fill(index + 1));
+        const snapshot = cache.statistics;
+        expect(snapshot.retainedBytes).toBeLessThanOrEqual(32);
+        releaseRenderMetadata(snapshot);
+        memory.endScratch();
+        expect(memory.statistics.current.pixels).toBeLessThanOrEqual(32);
+      }
+      expect(claims).toBe(5);
+      expect(backings.slice(0, 3).map((bytes) => bytes.byteLength)).toEqual([
+        0, 0, 0,
+      ]);
+    } finally {
+      cache.dispose();
+    }
+    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 0 });
+    memory.dispose();
+  });
+});
+it("rejects a root that cannot fit by itself before claiming pixels", async () => {
+  const memory = new ManagedMemory({ pixels: 64, metadata: 16384 });
+  await withManagedMemory(memory, async () => {
+    const cache = new CompositionRootCache(identityBackend(), {
+      scopeKey,
+      byteLimit: 31,
+      exchange: { claim: unexpected, publish: unexpected },
+    });
+    try {
+      await expect(
+        cache.prepare(graph, { width: 2, height: 2 }),
+      ).rejects.toThrow("worker byte/entry bound");
+    } finally {
+      cache.dispose();
+    }
+    expect(memory.statistics.current).toEqual({ pixels: 0, metadata: 0 });
     memory.dispose();
   });
 });
