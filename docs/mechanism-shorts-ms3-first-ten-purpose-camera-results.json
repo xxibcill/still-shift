@@ -351,6 +351,10 @@
     {
       "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/camera-phone-review59/EU-008-sheet-0.png",
       "result": "Initial fixed-camera pixel crop rejected; corrected via actual Blender projection and new native samples."
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-holds60-native-audit1.log",
+      "result": "tsx CLI local IPC socket denied by sandbox; successful read-only audit uses node --import tsx, no policy/control bypass."
     }
   ],
   "newCohort": {
@@ -608,6 +612,153 @@
     "receipt": "/private/tmp/still-shift-ms3-holds60-whole1-receipt.json",
     "sessionId": 11682,
     "execution": "run-live-report-resume-pending",
-    "originalH3AndCanceled59Preserved": true
+    "originalH3AndCanceled59Preserved": true,
+    "currentRows": [
+      {
+        "id": "EU-001",
+        "status": "passed",
+        "stage": "native-blender-rendered-visual-qa"
+      },
+      {
+        "id": "EU-002",
+        "status": "running",
+        "stage": "native-blender-composition-export"
+      },
+      {
+        "id": "EU-003",
+        "status": "pending",
+        "stage": null
+      },
+      {
+        "id": "EU-004",
+        "status": "pending",
+        "stage": null
+      },
+      {
+        "id": "EU-005",
+        "status": "pending",
+        "stage": null
+      },
+      {
+        "id": "EU-006",
+        "status": "pending",
+        "stage": null
+      },
+      {
+        "id": "EU-007",
+        "status": "pending",
+        "stage": null
+      },
+      {
+        "id": "EU-008",
+        "status": "pending",
+        "stage": null
+      },
+      {
+        "id": "EU-009",
+        "status": "pending",
+        "stage": null
+      },
+      {
+        "id": "EU-010",
+        "status": "pending",
+        "stage": null
+      }
+    ],
+    "firstSealedEpisode": {
+      "id": "EU-001",
+      "product": {
+        "path": "products/EU-001-8c2f91ed26857383-1.json",
+        "bytes": 9819,
+        "sha256": "sha256:06a76bbb85ce778c62223d0098c433e0dc1c7828cd6cec325d7533bab9a13d26"
+      },
+      "binding": {
+        "inputSha256": "sha256:8c2f91ed2685738388bd3869a46e1cd4e9476141663d96781ee0200e52c35dba",
+        "outputSha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e",
+        "codeSha256": "sha256:abe3c9335f6144e8d2ef466e41e4c83fbcac0ea8d2fcd4df5ea0b497aacf97a8",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      "frames": 610,
+      "qualityStatus": "passed",
+      "errors": 0,
+      "warnings": 37,
+      "declaredPhysicalHoldClassifications": 21,
+      "actualProductionQuotaFailureResolvedForThisEpisode": true,
+      "independentEncodedAudit": {
+        "product": {
+          "path": "products/EU-001-8c2f91ed26857383-1.json",
+          "bytes": 9819,
+          "sha256": "sha256:06a76bbb85ce778c62223d0098c433e0dc1c7828cd6cec325d7533bab9a13d26"
+        },
+        "runtimeSha256": "sha256:abe3c9335f6144e8d2ef466e41e4c83fbcac0ea8d2fcd4df5ea0b497aacf97a8",
+        "status": "passed-scoped-retained-export-decode",
+        "frames": 610,
+        "sourceSamples": 975360,
+        "frameTailPaddingSamples": 640,
+        "changedRgbaFrames": [],
+        "rgbaFrameHashesExactAgainstH3": true,
+        "originalWholeAACReferenceParity": true,
+        "oldMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-001/1/output.mp4",
+          "bytes": 1321056,
+          "sha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e"
+        },
+        "retainedPurposeMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose60/items/EU-001/1/output.mp4",
+          "bytes": 1321056,
+          "sha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose60/EU-001/purpose-decoded.f32",
+            "bytes": 7815168,
+            "sha256": "sha256:b9bc1c8bca52d9ac6b9dba7fe2cd87103f4ce56b76d56c03c0900a5fc5137989"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose60/EU-001/reference-decoded.f32",
+            "bytes": 7815168,
+            "sha256": "sha256:b9bc1c8bca52d9ac6b9dba7fe2cd87103f4ce56b76d56c03c0900a5fc5137989"
+          }
+        ],
+        "scope": "Current abe producer-bound export, full RGBA decode and original whole AAC reference. No full encoded glyph, playback, listening or pilot acceptance."
+      },
+      "scope": "Current producer-bound sealed export and actual all-frame rendered QA. Full factual/mechanical/encoded glyph/normal-speed playback/listening and pilot acceptance remain unreviewed."
+    },
+    "currentNativeAudit": {
+      "artifact": {
+        "path": "/private/tmp/still-shift-ms3-holds60-native-audit2.json",
+        "bytes": 1714,
+        "sha256": "sha256:ae4f17775bdcbc966ce00f205b3b866a4ba40f5c7c4d77990d515a4d8b8e8cc4"
+      },
+      "rows": [
+        {
+          "id": "EU-001",
+          "statusAtAudit": "passed",
+          "frames": 610,
+          "proofHolds": 5,
+          "pinChecks": 2440,
+          "uniquePinsVerified": 738,
+          "activeLabelFrames": 529,
+          "freshNativeRenders": 0,
+          "reusedNativeFrames": 610,
+          "completePhysicalProofAndGlobalFrameClockPassed": true
+        },
+        {
+          "id": "EU-002",
+          "statusAtAudit": "running",
+          "frames": 588,
+          "proofHolds": 5,
+          "pinChecks": 2352,
+          "uniquePinsVerified": 834,
+          "activeLabelFrames": 344,
+          "freshNativeRenders": 0,
+          "reusedNativeFrames": 588,
+          "completePhysicalProofAndGlobalFrameClockPassed": true
+        }
+      ],
+      "frames": 1198,
+      "pinChecks": 4792,
+      "activeLabelFrames": 873
+    }
   }
 }

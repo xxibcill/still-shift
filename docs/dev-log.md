@@ -106,6 +106,13 @@ still hold before relying on them.
   (6,533,750 bytes) held. Retained unsealed EU001 movie independently decodes all610
   RGBA frames identical to H3 and preserves complete original AAC reference parity;
   this does not become a current-source product seal or whole acceptance.
+  **Current EU001 completion:** sealed current `abe3c933` export finishes actual
+  rendered QA with0 errors/37 warnings (21 declared physical holds). Complete610
+  RGBA decode equals H3; original whole AAC reference parity passes. EU001/EU002
+  native audits check1,198 global frame clocks/complete proof rows,4,792 pins and
+  873 active-label frames, zero fresh native captures. EU002 is exporting; eight
+  later items pending. This closes the actual EU001 QA quota failure, not all
+  cohort or whole-review acceptance. Failed IPC audit remains; direct import works.
   **Next:** re-poll11682; complete new run/report/resume and
   independent native/encoded audio/picture audits. Broader physical label/event/
   intersection/mount faults, native handoff, whole factual/mechanical/encoded
@@ -300,6 +307,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — First sealed export passes the repaired production quota path
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `a8a704fe`.
+- **Done:** Current-source EU001 seals successfully on`abe3c933`; actual610-frame
+  rendered pixel/glyph QA has0 errors/37 warnings,21 declared physical holds.
+  Independent complete RGBA decode equals H3 and whole original AAC parity passes.
+  New product binding/pins are rehashed; historical/failed exports stay separate.
+- **Native audit:** EU001/EU002 check1,198 complete physical proof/global clock
+  frames,4,792 pins and873 active-label frames, zero new native captures.
+- **Live / next:** EU002 exporting in cohort60, wrapper11682 live. Continue its
+  original process; all-ten run/report/resume and remaining output audits pending.
+  Source held; no edits while frozen lifecycle is live. Full reviews/acceptance0/10.
+- **Retained:** Sandbox denies tsx CLI IPC socket; direct node import succeeds.
+- **Records:** [Current completion and source-scoped evidence](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json).
 
 ### 2026-10-14 — Verified memory fix and separate all-ten retry
 
