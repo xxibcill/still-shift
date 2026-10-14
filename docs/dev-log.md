@@ -45,104 +45,42 @@ still hold before relying on them.
 
 - **MS3 in progress (2026-10-14):** `codex/mechanism-ms3`,
   [draft PR #58](https://github.com/xxibcill/still-shift/pull/58) targets main.
-  The active pilot is Everyday Unlocked actual EU-001–EU-010. The earlier request
-  for seven recordings is closed. All ten existing Alden takes, timings and catalog
-  native assets were located; old Alex products retain their original bindings.
+  Active pilot: actual Everyday Unlocked EU-001–EU-010, original complete Alden
+  recordings at 1×. The seven-recording request is closed. Source `4679b8a8`, runtime
+  `db4e`, native profile `1dd0`; all 2,777 inputs / 122,189,105 bytes remain held.
   [Pilot brief](./mechanism-shorts-ms3-pilot-brief.md),
-  [full acceptance and scope](./mechanism-shorts-ms3-acceptance.md).
-  Durable serial queues, pinned inputs, CAS revisions/retries, preserved history,
-  current reports and the legacy native QA/evidence/recovery workflow are implemented.
-  Shared Blender capture and whole-recording compilation preserve native geometry,
-  drivers, materials, cameras and controls with authenticated state caches.
-  Explicit CLI routing and version 2 products retain the legacy default.
-  [Native numeric QA](./mechanism-shorts-ms3-blender-qa-results.json) retains located
-  missing/range findings, grouped peaks and current export-bound replay.
-  [Rendered native QA](./mechanism-shorts-ms3-blender-visual-results.json) now checks
-  every output frame using cached preview pixels and measured glyphs, compares
-  captions/audio intervals against the pinned plan, and retains exact encoded PNGs.
-  Default and numeric-plan products expose the current visual evidence in reports.
-  [All-ten native scouts](./mechanism-shorts-ms3-first-ten-scout-results.json)
-  bind whole existing recordings, exact-copy captions and object-specific controls
-  to 1080×1920/30fps plans (6,181 frames). Phone proofs exposed a producer bug:
-  clearing controller animation removed native derived drivers. Source `4999692b`
-  preserves them and unrelated clock channels, overriding only declared keyed
-  inputs in copied active/NLA actions. The actual native regression checks ten
-  forward/repeated/reverse states; all ten assets now show sampled geometric change.
-  [Native framing](./mechanism-shorts-ms3-native-framing-results.json) adds bounded
-  per-shot native scale/lens/shifts, source projection resets and saved cutaway
-  show/hide overrides. Native keys and observation checks bind their actual values.
-  Source `0e23b873`, runtime `fe10`, native profile `effb`; 4,582 fast tests/456 files,
-  12 affected runtime checks/four files and both native regressions pass. All 2,775
-  held inputs (122,154,520 bytes) remain exact after commit. The 59-shot scaffold
-  captures entry/mid/exit (177 states): initial 89 renders, then scoped 9/5/2 fresh
-  renders with 168/172/175 reused outputs. Independent 708 pins/177 copies and 327
-  requested render flags match; all ten midpoint overviews and ten targeted triplets
-  were viewed. Main framing improves, but causal contacts need part/anchor-bound
-  labels/highlights. One isolated hardware render confirms the tab's cut faces render
-  but blend visually; camera/flag checks do not approve visibility. Full HD products
-  have not run; original masters/audio remain unchanged. Failed build/sheet helpers
-  and each insufficient camera revision remain retained.
-  Prior rendered-QA zipper/default/numeric/fault proofs retain their `2695/a515`
-  bindings and complete picture/audio/capture evidence. They do not establish a
-  current producer pass. Failed preflights, rejected frozen scouts and the diagnostic
-  exception remain recorded. Whole reviews remain unreviewed; accepted coverage is
-  0/10 and paired routine effort is null.
-  **Current annotation slice:** `d9d95240` adds bounded temporary highlights,
-  captured object-origin/part-center queries, editable labels/leaders, phase ranges
-  and child-owner cleanup. Fast4,587/457, native runtime12/four files, Python and
-  both native regressions pass on2,777 exact inputs/122,185,321 bytes. Two actual
-  whole HD native captures (EU-006/634 and EU-010/627 frames) retain the original
-  recordings. First export attempts fail on the shared receiving-cache quota;
-  the verified fix gives each attempt an owned cache with the quota intact. Current
-  runtime `e2b8`, producer `1dd0`; retries reuse all1,261 native frames and then
-  fail at the root pixel-cache bound. Independent5,044 pins/829 label-frame
-  projections, phase ranges and leaders verify. Source `4679b8a8` bounds retained
-  root pixels by eviction and confines public package-verifier settings. Fast4,589/
-  457, runtime271/52, integration324/59, depth14, smoke and144 browser cache cases/
-  8,000 frames pass in recorded stages. Three old shared-cache fixture failures
-  retain their missing-manifest guard;23 owning cases pass on fresh owned caches.
-  All2,777 source inputs/122,189,105 bytes stay exact after commit. Current runtime
-  `db4e`/native profile `1dd0`; two whole HD attempt3 drafts now complete
-  queue/run/report/resume with zero new native renders/1,261 reused states.
-  Full current5,044 pins/829 label samples and independent whole AAC reference
-  parity pass; only640/960 samples of video-frame quantization tail are added by
-  the ordinary mixed output clock. Seven phone frames are inspected. All-ten
-  drafts compile6,181 frames/42 labels with original masters,
-  narration/speech/motion clocks exact; eight new native scouts remain. Full HD
-  current reviews remain open; QA retains39 frozen-pixel errors/115 images.
-  Two binder leaders target hollow bounds-center space; saved fold-anchor repair
-  and leaf-paper cleanup pass9 native scouts, target-to-cyan-pixel distance0.5–1.6px.
-  Attempt4 now completes queue/run/report/resume with28 new/606 reused native
-  frames and the exact unchanged can neighbor. Current5,044 pins/829 active labels
-  and independent full AAC reference parity pass. Two repaired encoded phone frames
-  now meet the visible fold and omit unused paper. The Empty-container trial and
-  prior hollow-target outputs remain retained. Whole reviews/accepted coverage0/10.
-  [Annotation evidence](./mechanism-shorts-ms3-native-annotation-results.json).
-  **Remaining-eight annotation proof:** Native collection discovery corrects the
-  outside clothespeg marker. All eight revised scout sets pass138 states/552 pins/
-  99 active label samples. Initial pass59 fresh/79 reused; scoped repairs15 fresh/
-  123 reused. Shared compositor generates138 sampled pose frames, then93 affected
-  frames with no new native submissions. All29 initial and20 corrected phone
-  midpoints are inspected; hook crop, spring/arm targets, tail identification and
-  blade state/contrast improve. Masters/whole voices/speech/control clocks stay exact.
-  A two-to-ten queue revision is correctly rejected. Separate `actual-first-ten-full-HD47`
-  starts on an exact1,851-file/653,583,036B native-cache copy; original two-item journal
-  and deliveries remain intact. Full batch is in flight; code/source holds stay exact.
-  [All-eight annotation proof](./mechanism-shorts-ms3-first-ten-annotation-scout-results.json).
-  **Full-ten HD progress:** EU-001 transaction completes610 frames (113 new/497
-  reused native states). Independent2,440 pins/529 active label bindings and full
-  original AAC reference parity pass. Five encoded phone midpoints are inspected.
-  QA remains failed:21 static-frame errors,11 reading-time/5 inset warnings,59
-  evidence images. Remaining nine stages and full run/report/resume remain live;
-  source stays2,777 files/122,189,105 bytes exact. These checks do not admit the pilot.
-  [Full-ten progress](./mechanism-shorts-ms3-first-ten-hd-progress-results.json).
-  **Next:** remaining causal annotations/resolved holds and review evidence/handoff; HD products for all ten
-  with object-specific cues and factual bindings; broader faults/events/contact/coverage;
+  [complete acceptance and outstanding work](./mechanism-shorts-ms3-acceptance.md).
+  Durable native queues, current QA, part/anchor annotations and bounded caches
+  are implemented. Fast 4,589 / runtime 271 / integration 324 / depth 14 / browser
+  smoke and 144 cache cases pass in recorded stages. Three old shared audio-cache
+  failures remain; 23 owning cases pass on fresh caches without source/quota changes.
+  [Annotation/cache source and failures](./mechanism-shorts-ms3-native-annotation-results.json).
+  All ten plans compile 6,181 HD frames / 59 shots / 42 labels. Original masters,
+  recordings and speech remain exact. Eight remaining scouts authenticate 138
+  states / 552 pins / 99 labels; 29 initial and 20 repaired phone samples are viewed.
+  [Scout repairs and rejected attempts](./mechanism-shorts-ms3-first-ten-annotation-scout-results.json).
+  **Live batch:** `actual-first-ten-full-HD47`, private `output-all10-47` root.
+  It preserves the old two-item trial and uses an exact native-cache copy.
+  EU-001 and EU-002 transactions complete 610 + 588 frames. Independent 4,792
+  pins / 873 active labels, complete original AAC reference parity and full encoded
+  RGBA decode to EOF pass. Five encoded phone midpoints per episode are inspected.
+  QA remains failed: EU-001 has 21 static errors / 16 warnings / 59 images;
+  EU-002 has 17 static errors / 15 warnings / 50 images. Full remaining eight stages
+  and cohort report/resume are pending; no engine edits while the batch runs.
+  [EU-001 checks](./mechanism-shorts-ms3-first-ten-hd-progress-results.json),
+  [EU-002 checks and source diagram](./mechanism-shorts-ms3-first-ten-hd-EU002-results.json).
+  **Located repair:** EU-002 tongue settles at frame 170, before the return line
+  at frames 268–319. Separate `inputs-cue-repair49` retimes only `tighten` to peak
+  at 253 / settle at 319. Pure admission passes; capture/export/event/playback
+  review remains pending. Live inputs and complete narration stay unchanged.
+  **Next:** remaining HD audits, cue repair and resolved holds/staging; native
+  contact/phone/audio handoff; broader physical label/event/intersection/mount faults;
   whole factual/mechanical/glyph/continuous/listening and original E06/E10 reviews;
-  comparable effort; final full software/benchmark/archive/installed-package gates.
+  comparable effort and final full software/benchmark/archive/installed gates.
+  Accepted pilot remains 0/10; paired routine telemetry is null. Historical source
+  bindings/rejected attempts remain intact; no merge, publication or paid generation.
   [Production plan](./mechanism-shorts-production-plan.md),
-  [native workflow](./mechanism-blender-episode.md),
-  [capabilities](./mechanism-production-capabilities.md).
+  [native workflow](./mechanism-blender-episode.md).
 
 - **MS2 software checkpoint delivered (2026-10-13):** `codex/mechanism-ms2`
   carries exact MS1N `bf30a253` ([PR #56](https://github.com/xxibcill/still-shift/pull/56));
@@ -329,6 +267,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Verify cable-tie HD output and locate a tongue-return cue repair
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; source `4679b8a8` stays held.
+- **Done:** EU-002 / 588 frames, 84 fresh / 504 reused native states. Combined first
+  two deliveries: 4,792 pins / 873 active labels, full original AAC parity and
+  independent encoded RGBA decode to EOF pass; five EU-002 phone midpoints viewed.
+- **Found:** Tongue settles at frame 170, before the spoken return at 268–319.
+  Separate candidate retimes only `tighten`; pure source/schema admission passes.
+  Actual repaired capture/export and event/playback review remain pending.
+- **Sources:** Primary maker text and actual outside-serrated diagram inspected;
+  source support is separate from dimensional/contact or whole audiovisual review.
+- **Open:** EU-002 QA retains 17 static errors / 15 warnings / 50 images. Eight
+  remaining batch stages and full report/resume remain live; pilot acceptance 0/10.
+- **Records:** [EU-002 output, sources and candidate](./mechanism-shorts-ms3-first-ten-hd-EU002-results.json).
 
 ### 2026-10-14 — Verify the first full-cohort HD delivery
 

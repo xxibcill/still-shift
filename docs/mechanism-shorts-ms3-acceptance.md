@@ -253,3 +253,16 @@ Its QA still fails with21 stationary-pixel errors,11 reading-time/5 inset warnin
 and59 evidence images. Remaining nine episodes and complete cohort run/report/resume
 remain in flight. Whole reviews and accepted pilot0/10 remain unchanged; queue
 completion, original-audio parity and sampled images are separate evidence scopes.
+
+[EU-002 HD evidence](./mechanism-shorts-ms3-first-ten-hd-EU002-results.json) records
+588 frames (84 fresh / 504 reused), original whole AAC reference parity and five
+inspected encoded phone samples. The first two deliveries independently decode
+all 1,198 encoded RGBA frames through EOF. Combined native checks verify 4,792
+pins / 873 active label samples. EU-002 QA retains 17 static errors, 15 warnings
+and 50 images. Primary maker text and the actual outside-serrated diagram support
+the selected plastic-pawl construction, without dimensional or contact approval.
+Timing inspection finds recovery completed at frame 170 before its spoken cue
+at frames 268–319. A separate candidate retimes only `tighten`; pure admission
+passes, but repaired native capture, encoded event alignment and playback remain.
+The unchanged live cohort continues its remaining eight episodes. Whole reviews,
+resolved holds, broader faults/coverage/effort/final gates and pilot 0/10 remain open.
