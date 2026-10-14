@@ -1,7 +1,7 @@
 {
   "schemaVersion": "ms3-first-ten-complete-HD-export-results-1",
   "date": "2026-10-14",
-  "status": "ten-exports-and-independent-byte-picture-audio-checks-pass-full-report-resume-pending",
+  "status": "ten-exports-and-independent-checks-pass-terminal-run-report-resume-verified",
   "sourceCommit": "4679b8a835e51a1f2d5e9c8ac49ec099b894a1a8",
   "runtimeCodeSha256": "sha256:db4e4d9a560eb4fe1f0fdd4e98bf76e467ce70226adebcda5af86c0b55a826d8",
   "nativeProfileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
@@ -25,7 +25,12 @@
     },
     "runExitCode": 0,
     "runSeconds": 6062.666816707933,
-    "reportResume": "in flight; terminal receipt required before any repair execution"
+    "reportResume": "terminal; queue/run/report/resume all actual0 with exact inputs",
+    "terminalReceipt": {
+      "path": "/private/tmp/still-shift-ms3-blender47-whole-new1-receipt.json",
+      "bytes": 3935,
+      "sha256": "sha256:2b3028c827ddc87477cbf8113380da41e076b87db2d3102d36063ed3c6a053b9"
+    }
   },
   "nativeAudit": {
     "record": {
@@ -601,7 +606,7 @@
   "routineTokenMeasurements": null,
   "wholeReview": "UNREVIEWED",
   "remaining": [
-    "Terminal full-cohort report/resume and source hold.",
+    "Original lifecycle complete; current repair revision requires its own terminal run/report/resume and source hold.",
     "Actual repaired capture/export/encoded event/visibility/staging review.",
     "Resolved native holds and staging/contact/fault/handoff/whole reviews.",
     "Comparable effort and final full software/benchmark/archive/installed-package gates."

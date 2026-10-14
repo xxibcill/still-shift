@@ -66,8 +66,8 @@ still hold before relying on them.
   exact. Independent 24,724 pins / 4,257 active labels, complete original AAC parity
   and all 6,181 encoded RGBA frames through EOF pass. Ten phone midpoint sheets /
   59 selected encoded frames are inspected. QA remains failed: 183 static errors /
-  161 warnings / 543 evidence images. Full report/resume are still in flight;
-  no engine edits or repair execution until their terminal receipt. Primary texts
+  161 warnings / 543 evidence images. Full report/resume now finish actual0 in
+  460.13s / 384.10s, inputs exact; resume adds no attempt. Primary texts
   support selected constructions; full contact/glyph/continuous/listening stay open.
   [Complete first-ten export checks](./mechanism-shorts-ms3-first-ten-complete-hd-export-results.json).
   **Located repair:** EU-002 tongue settles at frame 170, before the return line
@@ -83,9 +83,16 @@ still hold before relying on them.
   passes; capture/encoded staging and boundary/playback review remain. No voice,
   control, frame-clock, camera or other callout changes.
   Same-ten `projects-all10-repairs53-cli.json` compiles 6,181 frames / 42 labels.
-  Prepared executor requires terminal original run/report/resume and unchanged
-  seven neighbors before it can promote the three-input exact-CAS revision.
-  **Next:** terminal cohort verification, actual repairs, cue repair and resolved holds/staging; native
+  Original lifecycle is terminal. Exact-CAS repair revision1 now runs the three
+  changed inputs; seven original rows/product seals remain identical at start.
+  All183 frozen windows have identical native observations/PNGs, but no hold
+  purpose, paint/event, encoded or whole acceptance follows from that equality.
+  Repaired EU-002 captures588 frames (185 fresh / 403 reused), independently
+  verifies2,352 pins / 344 labels. Return-window root stays fixed while38 actual
+  pawl position hashes change; its export/encoded event review remains in flight.
+  No engine edits while repaired exports run.
+  [Lifecycle/repair start](./mechanism-shorts-ms3-first-ten-hd-lifecycle-repair-results.json).
+  **Next:** complete repair renders/audits and resolved holds/staging; native
   contact/phone/audio handoff; broader physical label/event/intersection/mount faults;
   whole factual/mechanical/glyph/continuous/listening and original E06/E10 reviews;
   comparable effort and final full software/benchmark/archive/installed gates.
@@ -279,6 +286,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Close original full lifecycle and start scoped repair revision
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; source `4679b8a8` stays held.
+- **Done:** Original queue/run/report/resume actually exit0, inputs exact. Report
+  460.13s / resume384.10s; all ten sealed rows stay identical across resume.
+- **Evidence:** All183 located frozen windows have exact native observation/PNG
+  identity. These are hold candidates; purpose/paint/events/review remain unresolved.
+- **In flight:** Same-ten revision1 changes only EU-002/EU-003/EU-006. Creation
+  passes; EU-002 capture runs. Seven original rows/seals remain exact at start.
+- **Current capture:** EU-002 / 588 frames,185 fresh / 403 reused;2,352 pins / 344
+  labels verify. Root stays fixed across return cue while38 actual pawl shapes vary.
+  Export and encoded event/contact/continuous review remain in flight.
+- **Next:** Repaired capture/export/report/resume and independent byte/event/target/
+  staging checks; holds/whole/fault/handoff/effort/final gates. Pilot0/10.
+- **Records:** [Terminal original lifecycle and repair start](./mechanism-shorts-ms3-first-ten-hd-lifecycle-repair-results.json).
 
 ### 2026-10-14 — Complete first-ten HD exports and independent whole-byte checks
 

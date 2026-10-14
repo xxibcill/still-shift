@@ -319,3 +319,13 @@ A prepared same-ten three-input revision passes pure compilation; execution requ
 the original terminal receipt and preserves seven unchanged neighbors. Actual repair
 renders/encoded reviews, native holds/staging/fault/handoff/whole reviews/effort/final
 gates remain open. Accepted pilot remains0/10; the full objective is not complete.
+
+[Terminal original lifecycle and repair revision](./mechanism-shorts-ms3-first-ten-hd-lifecycle-repair-results.json)
+now records actual queue/run/report/resume0, exact inputs and identical sealed rows
+across resume. Report460.13s / resume384.10s are retained separately. All183 frozen
+windows have identical authenticated native observations/PNGs; this does not approve
+purpose, paint, event timing or any whole review, and no QA finding is suppressed.
+The same selected ten IDs accept exact-CAS revision1 for EU-002/EU-003/EU-006; seven
+original rows/seals remain exact at start. The repair run is live and needs its own
+capture/export/report/resume and independent encoded/target/event/staging checks.
+All whole/fault/handoff/effort/final requirements and accepted pilot0/10 remain open.
