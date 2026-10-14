@@ -2111,13 +2111,13 @@
       },
       {
         "id": "EU-007",
-        "status": "running",
-        "stage": "native-blender-composition-export"
+        "status": "passed",
+        "stage": "native-blender-rendered-visual-qa"
       },
       {
         "id": "EU-008",
-        "status": "pending",
-        "stage": null
+        "status": "running",
+        "stage": "native-blender-composition-export"
       },
       {
         "id": "EU-009",
@@ -2411,6 +2411,70 @@
         "The side view supports the visible retention explanation; exact surface contact, full motion/encoded glyph/factual/listening reviews remain open."
       ],
       "scope": "Selected actual encoded phone frames and cut endpoints only."
+    },
+    "sixthSealedEpisode": {
+      "productAudit": {
+        "id": "EU-006",
+        "status": "passed-current-producer-bound-product-closure",
+        "producerBoundArtifactsVerified": 10,
+        "product": {
+          "path": "products/EU-006-ac788c824e383833-1.json",
+          "bytes": 9962,
+          "sha256": "sha256:65a4445ad47fec9d0e08c40c17ea772939e518ecc81bdc552b06a0bab6bdf917"
+        },
+        "binding": {
+          "inputSha256": "sha256:ac788c824e383833e2855bfeb1edee57c17ba665bf17839a51160a944c166164",
+          "outputSha256": "sha256:6b3fbd3e784cbc68d41afd4663e1be78a45d554a2500d6c0732ebc58ac32f9e7",
+          "codeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 634,
+        "previewErrors": 0,
+        "previewWarnings": 37,
+        "declaredPhysicalHolds": 19,
+        "encodedEvidenceImages": 57,
+        "wholeReviews": "UNREVIEWED",
+        "scope": "Current saved product/artifact pins independently rehashed. Scoped rendered QA, no whole pilot acceptance."
+      },
+      "completeEncodedAudit": {
+        "product": {
+          "path": "products/EU-006-ac788c824e383833-1.json",
+          "bytes": 9962,
+          "sha256": "sha256:65a4445ad47fec9d0e08c40c17ea772939e518ecc81bdc552b06a0bab6bdf917"
+        },
+        "runtimeSha256": "sha256:fc4cc2ae8c3751405c10f245d88a544104ca41490fa21dd0eed2acf96d77ddf6",
+        "status": "passed-scoped-retained-export-decode",
+        "frames": 634,
+        "sourceSamples": 1013760,
+        "frameTailPaddingSamples": 640,
+        "changedRgbaFrames": [],
+        "rgbaFrameHashesExactAgainstH3": true,
+        "originalWholeAACReferenceParity": true,
+        "oldMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-006/3/output.mp4",
+          "bytes": 1253872,
+          "sha256": "sha256:6b3fbd3e784cbc68d41afd4663e1be78a45d554a2500d6c0732ebc58ac32f9e7"
+        },
+        "retainedPurposeMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose61/items/EU-006/1/output.mp4",
+          "bytes": 1253872,
+          "sha256": "sha256:6b3fbd3e784cbc68d41afd4663e1be78a45d554a2500d6c0732ebc58ac32f9e7"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose61/EU-006/purpose-decoded.f32",
+            "bytes": 8118272,
+            "sha256": "sha256:b947ee2daca22c3ca7e10fe36e1a83d8ec6b4502017ef0e90a3fc7a44812e69a"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose61/EU-006/reference-decoded.f32",
+            "bytes": 8118272,
+            "sha256": "sha256:b947ee2daca22c3ca7e10fe36e1a83d8ec6b4502017ef0e90a3fc7a44812e69a"
+          }
+        ],
+        "scope": "Current fc4 producer-bound export, full RGBA decode and original whole AAC reference. No full encoded glyph, playback, listening or pilot acceptance."
+      },
+      "wholeReviews": "UNREVIEWED"
     }
   }
 }
