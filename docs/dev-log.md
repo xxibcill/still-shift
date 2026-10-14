@@ -44,13 +44,13 @@ still hold before relying on them.
 ## Current state
 
 - **PR #52 review fixes (2026-10-14):** three P2 findings are posted inline at
-  reviewed head `a204cde0`. Displayed-copy case handling is repaired locally;
-  panel/proof-region coverage and discarded-cutout occlusion remain in flight.
-  Seven new regressions and all 50 focused semantic/reading/font tests pass, as
-  does the type check. An initial implementation/type failure and invalid system
-  fixture are retained in the results. The PR log formatting is repaired with
-  this update. One finding is committed per slice; push waits for the final fix
-  and verification. [Fix records](./pr-52-fix-results.json).
+  reviewed head `a204cde0`. Displayed-copy case handling is committed at `1925af45`;
+  panel/proof-region coverage and the exposed E01 default layouts are repaired.
+  All 50 focused case/reading/font and 14 overlay tests pass; type checks and
+  both 61-frame portrait anchor controls pass. Discarded-cutout occlusion remains
+  in flight. Initial failures and baseline negatives are retained. The PR log
+  formatting is repaired. Push waits for the final fix and verification.
+  [Fix records](./pr-52-fix-results.json).
 
 - **MS1 software complete in stages (2026-10-10):** `codex/mechanism-ms1` carries
   exact MS0 prerequisite `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51)
@@ -212,6 +212,25 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Protect proof regions from overlay panels
+
+- **Agent / branch:** Codex on `codex/pr-52-review-fixes` after `1925af45`.
+- **Done:** label/caption panel dimensions are shared by emitted geometry and
+  layout checks; panel footprints now participate in protection, clipping and
+  other-overlay exclusions while their own text remains permitted.
+- **Checks:** all four regressions fail before the fix; all 13 overlay tests and
+  TypeScript pass afterward. Both 61-frame portrait controls pass with stable
+  reverse seeks and transformed endpoints; no new human acceptance claim.
+- **E01 follow-up:** fresh checking exposed caption-panel coverage and OUTSIDE
+  panel clipping in the retained example. Narrower inset captions and a 20-pixel
+  inward label repair preserve supplied copy/timing. Fresh pinned-font measurement
+  passes all 696 retained sidecar frames and all seven holds; no new 3D capture,
+  encode or human acceptance. These repairs stay in this finding's commit.
+- **Next:** complete the cutout slice, refresh local gates after the default-layout
+  repair, and push all three commits after the final slice.
+- **Records:** [fix results](./pr-52-fix-results.json),
+  [panel comment](https://github.com/xxibcill/still-shift/pull/52#discussion_r4266537129).
 
 ### 2026-10-14 — Repair PR #52 displayed-copy case handling
 

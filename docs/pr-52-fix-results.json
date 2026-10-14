@@ -25,13 +25,39 @@
           "/private/tmp/pr52-fix-case-green-2.log",
           "/private/tmp/pr52-fix-case-build-2.log"
         ]
-      }
+      },
+      "commit": "1925af45"
     },
     {
       "id": "protected-panel",
       "commentId": 4266537129,
       "commentUrl": "https://github.com/xxibcill/still-shift/pull/52#discussion_r4266537129",
-      "status": "pending"
+      "status": "fixed-locally",
+      "implementation": "Shared label/caption panel layouts feed both emitted rectangles and footprint checks. Checks include panel protection, clipping and cross-overlay collisions; a panel does not collide with its own text/qualification. Default E01 captions use a narrower inset text/background region, and OUTSIDE moves 20 pixels inward; supplied copy, timing and physical plate inputs are preserved.",
+      "verification": {
+        "regressionTests": 5,
+        "focusedTestsPassed": 14,
+        "typeCheck": "passed",
+        "portraitBrowser": "passed; both 61-frame original/corrected anchor controls preserve reverse seeks and transformed endpoints",
+        "logs": [
+          "/private/tmp/pr52-fix-panel-red.log",
+          "/private/tmp/pr52-fix-panel-green.log",
+          "/private/tmp/pr52-fix-panel-build.log",
+          "/private/tmp/pr52-fix-panel-portrait.log",
+          "/private/tmp/pr52-panel-e01-recheck.json",
+          "/private/tmp/pr52-fix-panel-defaults.log",
+          "/private/tmp/pr52-fix-panel-defaults-build.log",
+          "/private/tmp/pr52-panel-e01-font-review.log"
+        ],
+        "retainedE01": {
+          "frames": 696,
+          "layoutAccepted": true,
+          "findings": 0,
+          "holds": [72, 71, 76, 69, 41, 41, 64],
+          "measurement": "Fresh pinned-font text measurement against retained real sidecars; no new 3D capture or final encode.",
+          "evidence": "/private/tmp/pr52-panel-e01-font-review.json"
+        }
+      }
     },
     {
       "id": "cutout-visibility",
@@ -43,13 +69,37 @@
   "retainedFailures": [
     "Initial sandboxed worktree dependency installation was denied; the authorized rerun reused all locked dependencies.",
     "Case regression baseline: six expected assertion failures and one invalid system-text fixture. The fixture referenced removed font assets; corrected before the green run.",
-    "First case implementation run found a duplicate local variable and exact-optional-property type issue; corrected before the 50-test and type-check pass."
+    "First case implementation run found a duplicate local variable and exact-optional-property type issue; corrected before the 50-test and type-check pass.",
+    "Panel baseline: all four new regressions fail before the fix; all 13 overlay tests pass after it.",
+    "Checking the retained E01 with panel footprints exposed caption coverage at frames 346..397 and 6.4 pixels of OUTSIDE panel clipping. Default layouts were repaired within the same panel finding; fresh pinned-font measurement passes all 696 retained sidecar frames.",
+    "The first standalone E01 recheck selected aliases from the primary checkout; rerunning from the fix worktree corrected the review-helper import context.",
+    "Initial runtime tier passed all 151 runtime tests, then 36 tests in four soundtrack-dependent integration suites failed for the missing worktree audio runtime. All 53 tests in those suites, 14 Python tests and browser smoke pass in the corrected continuation; the initial aggregate remains failed."
   ],
   "verification": {
     "aggregateFast": "pending",
     "runtime": "pending",
     "browser": "pending",
-    "originalReviewFast": "failed at docs/dev-log.md formatting; formatting repaired with the first fix log update"
+    "originalReviewFast": "failed at docs/dev-log.md formatting; formatting repaired with the first fix log update",
+    "firstFastPass": {
+      "status": "passed",
+      "unitTests": 3784,
+      "scope": "Before the additional E01 default-layout repair; refreshed fast verification remains required."
+    },
+    "firstRuntimeAttempt": {
+      "status": "failed",
+      "runtimeTestsPassed": 151,
+      "integrationPassed": 282,
+      "integrationFailed": 36,
+      "reason": "New worktree lacked its separately installed soundtrack runtime; no code regression inferred."
+    },
+    "runtimeContinuation": {
+      "status": "passed",
+      "rerunTests": 53,
+      "uniqueIntegrationTotal": 318,
+      "depthTests": 14,
+      "browserSmoke": "passed",
+      "environment": "Existing pinned Python 3.12.11, DawDreamer 0.9.0, NumPy 2.3.3 and SciPy 1.16.2 selected explicitly."
+    }
   },
   "limits": [
     "No paid generation, publication, merge, new full E01 production run or human visual/listening acceptance."
