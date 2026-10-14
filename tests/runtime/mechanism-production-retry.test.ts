@@ -15,6 +15,7 @@ import {
   retryMechanismProductionQueue,
   MechanismProductionRetrySchema,
   MechanismProductionTransientError,
+  readMechanismProductionReports,
 } from "@still-shift/animation-engine";
 import { mechanismPackHash } from "../../packages/animation-engine/src/mechanism/pack-support.ts";
 import {
@@ -42,6 +43,100 @@ async function retryRequest(
   return path;
 }
 describe("bounded targeted production retries", () => {
+  it("does not copy an earlier planned edit into retry-only recovery provenance", async () => {
+    const f = await fixture();
+    let broken = true;
+    const worker = executor(async (item, context) => {
+      if (item.id === "E02" && broken) throw Error("seeded neighbor failure");
+      return product(item, context);
+    });
+    try {
+      f.manifest.items.reverse();
+      await writeFile(f.path, JSON.stringify(f.manifest));
+      const controller = new AbortController();
+      const admitted = await runMechanismProductionQueue(
+        f.path,
+        f.output,
+        executor(async () => {
+          controller.abort(Error("Pause before E01's first execution"));
+          throw Error("Cancelled neighbor");
+        }),
+        { signal: controller.signal },
+      );
+      expect(
+        admitted.rows.find((row) => row.id === "E01")!.attempts,
+      ).toHaveLength(0);
+      const baseHash = mechanismPackHash(f.manifest);
+      await writeFile(join(f.root, "cues2.json"), "{}");
+      const edited = f.manifest.items.find((item) => item.id === "E01")!;
+      edited.cuePath = "cues2.json";
+      edited.inputs = [
+        edited.inputs[0]!,
+        { path: "cues2.json", bytes: 2, sha256: hash("{}") },
+      ];
+      f.manifest.revision = 1;
+      f.manifest.baseHash = baseHash;
+      f.manifest.revisionChanges = [
+        {
+          id: "E01",
+          kind: "planned-edit",
+          reason: "Edit before first execution",
+        },
+      ];
+      await writeFile(f.path, JSON.stringify(f.manifest));
+      const initial = await runMechanismProductionQueue(
+        f.path,
+        f.output,
+        worker,
+      );
+      expect(initial.rows.map((row) => row.status)).toEqual([
+        "failed",
+        "passed",
+      ]);
+      const sealed = JSON.parse(
+        await readFile(
+          join(
+            f.output,
+            initial.rows.find((row) => row.id === "E01")!.product!.path,
+          ),
+          "utf8",
+        ),
+      );
+      await writeFile(
+        join(f.output, sealed.artifacts[0].path),
+        "corrupt cached output",
+      );
+      const request = await retryRequest(f, ["E02"], 1);
+      await retryMechanismProductionQueue(f.path, f.output, request);
+      broken = false;
+      const recovered = await runMechanismProductionQueue(
+        f.path,
+        f.output,
+        worker,
+      );
+      const reports = await readMechanismProductionReports(
+        f.path,
+        f.output,
+        worker,
+      );
+      const recoveredNeighbor = recovered.rows.find((row) => row.id === "E01")!;
+      expect(
+        recoveredNeighbor.attempts.map((attempt) => attempt.provenance!.kind),
+      ).toEqual(["initial", "recovery"]);
+      expect(
+        reports.cohort.rows.find((row) => row.id === "E01")!.firstPass,
+      ).toBe("failed");
+      expect(
+        recoveredNeighbor.interventions?.map((event) => event.kind),
+      ).toEqual(["recovery"]);
+      expect(JSON.parse(await readFile(f.path, "utf8"))).not.toHaveProperty(
+        "revisionChanges",
+      );
+      expect(reports.cohort.firstPassTechnical.rate).toBe(0);
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
   it("retains journal bytes and manifest ancestry, then repairs one permanent failure while reusing its completed neighbor", async () => {
     const f = await fixture();
     let broken = true,

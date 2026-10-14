@@ -1,6 +1,6 @@
 {
   "schemaVersion": "ms3-whole-review-results-1",
-  "capturedUtc": "2026-10-14T23:19:30.814489+00:00",
+  "capturedUtc": "2026-10-14T23:24:56.728135+00:00",
   "review": {
     "base": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
     "head": "9f43a67a4632c30474ced8214d10bac8fe0095a2",
@@ -14,7 +14,7 @@
       "findings": 1,
       "priority": "P2",
       "issue": "Retry-only manifests copy revisionChanges; a stale planned-edit on an unchanged neighbor can mask subsequent cache recovery in first-pass metrics.",
-      "status": "repair-pending"
+      "status": "repaired-isolated-runtime-and-fast-passed"
     },
     "limits": "Read-only two-axis source/test review; no renderer, asset work, paid generation or whole-review acceptance."
   },
@@ -54,13 +54,78 @@
       "testsPassed": 52,
       "seconds": 17.05,
       "log": "/private/tmp/still-shift-ms3-review84-runtime-tier1.log"
-    }
+    },
+    "commit": "10cb84a4"
   },
   "open": [
-    "Full fast/runtime gates after subsequent repair",
-    "Independent review of repairs",
+    "Independent Spec review of repairs",
     "Integration only after producer session58827 terminates",
-    "Fresh current package/render proofs after source integration",
+    "Fresh full runtime/software/package/installed/render gates on integrated source",
     "Whole factual/mechanical/motion/glyph/listening/human reviews"
-  ]
+  ],
+  "retryProvenanceRepair": {
+    "behavior": [
+      "Targeted retry publication clears revision-specific change declarations",
+      "Unchanged-request planned edits introduce no new intervention boundary",
+      "Same-request repair/manual recovery and genuine changed-request planned edits remain retained"
+    ],
+    "regressions": [
+      "Admit journal through actual cancellation with E01 unattempted; edit inputs, succeed E01/fail E02, corrupt E01 cache, then retry E02 only",
+      "Declare planned edit without changing request and corrupt cached output; preserve recovery and failed first-pass classification"
+    ],
+    "red1": {
+      "actualExitCode": 1,
+      "testsFailed": 2,
+      "testsPassed": 32,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review84-provenance-red1.log",
+        "bytes": 6447,
+        "sha256": "sha256:53c12c9c9ed8d9fefb0e422fb05180da714ba27025fdc4843e7885a5bd86269e"
+      },
+      "fixtureFailure": "One fixture attempted revision1 without its required prior journal. No source fix applied; corrected via real cancellation admission."
+    },
+    "red2": {
+      "actualExitCode": 1,
+      "testsFailed": 2,
+      "testsPassed": 32,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review84-provenance-red2.log",
+        "bytes": 6492,
+        "sha256": "sha256:4d557476ce5dc2ded0608c6c35044287cfa1a4b635f7205ce7dcf8674fd91a8f"
+      },
+      "actualDefect": "Both real recovery cases reported firstPass passed before the fix"
+    },
+    "green1": {
+      "actualExitCode": 0,
+      "testsPassed": 54,
+      "filesPassed": 5,
+      "seconds": 16.39,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review84-provenance-green1.log",
+        "bytes": 1212,
+        "sha256": "sha256:cd9c98a4b0175d7fffa37b184d7db32e9667de91850b698e740879fb4d2c1c1e"
+      }
+    },
+    "fast1": {
+      "command": "pnpm check:fast",
+      "actualExitCode": 0,
+      "testsPassed": 4582,
+      "filesPassed": 455,
+      "unitStageSeconds": 86.94,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review84-fast1.log",
+        "bytes": 47662,
+        "sha256": "sha256:a6347bcd6f513c90d2938e37420b793548a9720b249e560638e99ad18626099b"
+      },
+      "scope": "All fast stages on unchanged final source/test tree. Runtime scenarios are checked separately, not removed."
+    },
+    "repairReview": {
+      "standards": {
+        "actionableFindings": 0,
+        "method": "Independent read-only review of exact100% moves and final four-file working diff"
+      },
+      "spec": "pending"
+    }
+  },
+  "sourceBeforeIntegration": "Live producer1090 remains frozen; latest repair changes its future identity. Archive81 and prepared installed82 retain their earlier8e11 snapshot and do not prove this new repair."
 }

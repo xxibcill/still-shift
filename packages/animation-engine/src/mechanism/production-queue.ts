@@ -151,7 +151,11 @@ function reconcile(
     const declaredChange = queue.revisionChanges?.find(
       (change) => change.id === item.id,
     );
-    if ((declaredChange || row.requestHash !== next) && row.attempts.length) {
+    if (
+      (row.requestHash !== next ||
+        (declaredChange && declaredChange.kind !== "planned-edit")) &&
+      row.attempts.length
+    ) {
       (row.interventions ??= []).push({
         afterAttempt: row.attempts.length,
         kind: declaredChange?.kind ?? "unknown",

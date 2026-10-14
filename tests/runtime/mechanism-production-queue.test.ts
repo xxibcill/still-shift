@@ -198,6 +198,48 @@ describe("durable production queue", () => {
       await rm(f.root, { recursive: true, force: true });
     }
   });
+  it("ignores a planned-edit declaration on an unchanged request before cache recovery", async () => {
+    const f = await fixture();
+    const worker = executor();
+    try {
+      const initial = await runMechanismProductionQueue(
+        f.path,
+        f.output,
+        worker,
+      );
+      f.manifest.baseHash = mechanismPackHash(f.manifest);
+      f.manifest.revision = 1;
+      f.manifest.revisionChanges = [
+        { id: "E01", kind: "planned-edit", reason: "No actual request edit" },
+      ];
+      await writeFile(f.path, JSON.stringify(f.manifest));
+      const sealed = JSON.parse(
+        await readFile(join(f.output, initial.rows[0]!.product!.path), "utf8"),
+      );
+      await writeFile(
+        join(f.output, sealed.artifacts[0].path),
+        "corrupt cached output",
+      );
+      const recovered = await runMechanismProductionQueue(
+        f.path,
+        f.output,
+        worker,
+      );
+      const reports = await readMechanismProductionReports(
+        f.path,
+        f.output,
+        worker,
+      );
+      expect(reports.cohort.rows[0]!.firstPass).toBe("failed");
+      expect(
+        recovered.rows[0]!.interventions?.map((event) => event.kind),
+      ).toEqual(["recovery"]);
+      expect(recovered.rows[0]!.attempts[1]!.provenance!.kind).toBe("recovery");
+      expect(recovered.rows[1]).toEqual(initial.rows[1]);
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
   it("records a declared same-request manual recovery without another execution", async () => {
     const f = await fixture();
     let calls = 0;

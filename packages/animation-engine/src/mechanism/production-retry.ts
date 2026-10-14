@@ -179,6 +179,7 @@ export async function retryMechanismProductionQueue(
       revision: queue.revision + 1,
       baseHash: hash,
       retryFailedIds: request.value.episodes,
+      revisionChanges: undefined,
     });
     const previousArchive = await archiveManifest(queue, root, owner),
       nextArchive = await archiveManifest(next, root, owner);
