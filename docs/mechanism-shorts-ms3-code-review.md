@@ -75,3 +75,22 @@ sampled assertion execution rather than six-dimension applicability.
 Both reviews are read-only. Two regressions reproduce the missing state before
 repair;48 scoped tests and TypeScript checks pass afterward. Full current producer
 and whole pilot proof remain open. [Contract/evidence](./mechanism-shorts-ms3-four-state-qa-results.json).
+
+## Broad final review and native coverage repair (2026-10-15)
+
+**Standards:** fixed76dd8971…37830037 review found no new hard violation; prior
+optional chronology duplication remains deferred. The coverage followup found P2
+mutable audit publication and P3 report-order mismatch. Both are repaired and
+independently confirmed; no remaining concrete defect in those fixes.
+
+**Spec:** broad review found missing revised native registry/coverage admission and
+partial actual intersection/moving-mount/physical-label-state fault proof. Coverage
+source now admits the actual ten, exact source/controller/plan/selected-narration
+identities and declared library totals. Followup P2 narration binding/publication
+findings reproduce in scoped admission where applicable and are repaired; final
+read-only followup confirms closure. Physical fault proof remains open.
+
+Actual auditor returns10 selected/0 supported,8 reuse/2 asset revisions/0 new rig
+types; current E1 verifies, nine retained failures stay unavailable. This is an
+actual auditor proof over a failed production cohort, not all-ten production
+success. [Checks/failures/limits](./mechanism-shorts-ms3-native-coverage-review-results.json).

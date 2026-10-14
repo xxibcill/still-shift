@@ -20,10 +20,12 @@ import {
   mechanismProductionCapabilityMarkdown,
 } from "../packages/animation-engine/src/mechanism/production-registry.ts";
 import { mediaCapabilityMarkdown } from "../tools/still-shift-cli/src/media-capabilities.ts";
+import { NativeCoverageBoardSchema } from "./mechanism/native-coverage-board.ts";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const schemas = {
   ...mechanismFamilySchemas,
   ...mechanismProductionSchemas,
+  "native-coverage-board": NativeCoverageBoardSchema,
   geometry: MechanismGeometrySchema,
   scene: MechanismSceneSchema,
   episode: MechanismEpisodeSchema,

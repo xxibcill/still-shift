@@ -43,6 +43,19 @@ still hold before relying on them.
 
 ## Current state
 
+- **MS3 native coverage repair qualified in isolation (2026-10-15):** source/schema/
+  actual native board now reconciles the ten selected rows, pinned whole narration/
+  original1x clock/format, source/controllers and declared asset/rig work. Independent
+  narration/publication/order findings repaired after red2;18 focused/3 files/types
+  and final fast4,628/460 pass. Actual complete auditor returns10 selected/0 supported,
+  8 reuse/2 asset revisions/0 new rig types; fresh E1 verifies, nine failed rows stay
+  unavailable. Failed r0 manifest/journal unchanged. Initial OS ps denial retained.
+  Current72 is terminal failed after37 copied inputs disappeared;111 restored copies
+  and durable backup retain all exact bytes. Integration and bounded retry next;
+  successful current full lifecycle/receiving/installed/software and real fault/
+  whole review remain open. No paid generation or positive acceptance.
+  [Native cohort audit](./mechanism-shorts-ms3-native-coverage-review-results.json).
+
 - **MS3 current all-ten lifecycle running (2026-10-15):** exact source `5a91ad91`,
   runtime1090f97c/profile1dd0;2,788 source inputs/122,331,596B held. Native builder
   admits the same actual EU001–EU010 under current bindings after byte-verifying
@@ -320,6 +333,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Native selected-cohort coverage and actual failed-state audit
+
+- **Agent / branch:** Codex on `codex/ms3-review-fixes` (from87dbe002).
+- **Done:** generic native registry/board, frozen narration/clock/format admission,
+  exact channel order, distinct asset/rig totals and immutable bounded audit reports.
+- **Results:**18 focused tests/types and fast4,628/460 pass in stages. Actual auditor
+  handles all ten restored source/plan/narration bindings: support0, reuse8, asset
+  revisions2, new rig types0; one current E1 verifies and nine failed rows remain
+  unavailable. Failed journal/manifest bytes unchanged; no generation or repair.
+- **Rejected:** family/index fixtures, omitted order guard and review narration/order
+  regressions retained; output overwrite risk repaired. OS ps denial corrected by
+  existing approved process-inspection route. No source defect inferred from input loss.
+- **Open / next:** integrate qualified repair, bounded nine-row retry, full receiving/
+  installed/software, real intersection/mount/physical-label and whole reviews.
+- **Records:** [coverage evidence](./mechanism-shorts-ms3-native-coverage-review-results.json),
+  [native board/command](./mechanism-native-coverage.md).
 
 ### 2026-10-15 — Start the integrated actual first-ten lifecycle
 
