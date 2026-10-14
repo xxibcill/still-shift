@@ -120,6 +120,11 @@
           "EU-009": "passed",
           "EU-010": "passed"
         }
+      },
+      {
+        "step": "handoff-EU-001",
+        "actualExitCode": 0,
+        "seconds": 472.3268800410442
       }
     ],
     "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/queue-current72.json",
@@ -1446,5 +1451,75 @@
       },
       "cause": "Helper assumed resume would keep the raw journal byte identity. Resume changes updatedUtc only; exact retained report-time journal snapshot matches the published hash. Corrected audit authenticates it and verifies other journal fields remain exact."
     }
+  },
+  "independentCurrentCliHandoffs": [
+    {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-001-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:25572b2c892e7f9de1a911c5c583d3d34006e8b239661b7a05e6373e54db6886"
+      },
+      "result": {
+        "status": "passed-independent-current-cli-handoff",
+        "id": "EU-001",
+        "handoff": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/handoff-recovery74-EU-001.json",
+          "bytes": 4212,
+          "sha256": "sha256:057eea0a7f66860522922fe0d1397b8a21cb62a874649c0485ef0344a3e9bb0b"
+        },
+        "assetPinsVerified": 8,
+        "binding": {
+          "inputSha256": "sha256:daefc3cc7faa98699f15011508143afc79b5080d09231b264fd4bec066810878",
+          "outputSha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e",
+          "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "currentAbsoluteResumePathsVerified": true,
+        "sourceAndWholeNarrationInputsVerified": true,
+        "qa": {
+          "technical": "passed",
+          "mechanical": "unreviewed",
+          "sampled-visual": "passed",
+          "continuous-motion": "unreviewed",
+          "listening": "unreviewed",
+          "factual": "unreviewed"
+        },
+        "reviewedReady": false,
+        "scope": "Fresh current CLI packet, exact source/clock/product asset closure and current resume paths verified. Existing complete encoded audit remains separately bound; no new renderer or whole acceptance."
+      }
+    }
+  ],
+  "milestoneCoordinationVerified": {
+    "allFivePRsAttached": true,
+    "baseBranch": "main",
+    "ms0": {
+      "pullRequest": 51,
+      "state": "MERGED",
+      "mergeCommit": "57967fa6497249d75e740ba837b8e2687cc81a98"
+    },
+    "ms1": {
+      "pullRequest": 52,
+      "state": "MERGED",
+      "mergeCommit": "b376514285e4819bdd14361e3467ecf085cf0b9d"
+    },
+    "ms1n": {
+      "pullRequest": 56,
+      "state": "OPEN",
+      "head": "c158205815af8fe8f05e769c104328b168ae7bd0"
+    },
+    "ms2": {
+      "pullRequest": 57,
+      "state": "OPEN",
+      "head": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e"
+    },
+    "ms3": {
+      "pullRequest": 58,
+      "state": "OPEN",
+      "sourceFreeze": "3df62a55"
+    },
+    "githubActionsEnabled": false,
+    "workflowFiles": 0,
+    "PRBodyUpdateRetainedFailure": "gh pr edit failed on deprecated GraphQL projectCards; structured REST body update succeeds."
   }
 }
