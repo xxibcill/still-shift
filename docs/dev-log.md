@@ -46,9 +46,9 @@ still hold before relying on them.
 - **MS3 bounded recovery live (2026-10-15):** coverage repair integrated at
   `3df62a55`; producer runtime `1090f97c` and profile `1dd0` remain exact.
   Revision 1 selects only nine failed jobs. Unified session 58827 is live:
-  E1–E8 are sealed and independently verified; EU-009 is running. EU-010
-  awaits retry. Eight products verify 4,958 frames, 104 root artifacts and
-  869 review images, including exact prior whole picture/audio parity. All 2,792 source files remain exact; 107 current
+  E1–E9 are sealed and independently verified; EU-010 is running. Nine products
+  verify 5,554 frames, 117 root artifacts and 979 review images, including exact
+  prior whole picture/audio parity. All 2,792 source files remain exact; 107 current
   and 1,221 prior/E1 files are guarded. Original failed attempts are preserved.
   E2 verifies 13 root artifacts, 90 review images, 2,352 native pins and 588 frames;
   its movie matches prior complete picture/audio evidence. The wrong physical
@@ -360,6 +360,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Verify ninth episode and prepare fresh installed lifecycle
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; live producer unchanged.
+- **Results:** EU009 adds596 frames /13 root artifacts /110 review images /
+  2,384 native pins with exact prior complete movie parity. Nine products verified;
+  EU010 is running, terminal lifecycle still pending.
+- **Prepared:** installed one-episode manifest and386 exact cache files /194,102,281B;
+  original-path denial retained, no old queue/products copied and no renderer run.
+- **Retained:** initial helper assumed a map instead of an array, before any copy;
+  corrected copy passes. Renderer admission properly rejects the live primary.
+- **Open / next:** collect terminal primary lifecycle, serial GPU/installed/fault
+  checks and integrate isolated reviewed fixes only after source freeze ends.
+- **Records:** [recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json),
+  [package preparation](./mechanism-shorts-ms3-package-portability-results.json).
 
 ### 2026-10-15 — Verify eight current episodes and isolated installed receiving
 

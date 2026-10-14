@@ -2,7 +2,7 @@
   "schemaVersion": "ms3-current-first-ten-bounded-recovery-results-1",
   "date": "2026-10-15",
   "status": "running-bounded-nine-job-retry-after-exact-input-restoration",
-  "capturedAt": "2026-10-14T22:29:34.986279+00:00",
+  "capturedAt": "2026-10-14T22:41:29.474443+00:00",
   "sourceCommit": "3df62a5598dc46e021ee2c51b173ba33a38d2af6",
   "runtimeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
   "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
@@ -74,9 +74,9 @@
   },
   "stateAtCapture": {
     "file": {
-      "path": "/private/tmp/still-shift-ms3-progress78-state1.json",
-      "bytes": 18632,
-      "sha256": "sha256:0e0f65a8d85b9866ff5e1eaf036f1dbfe1c342da9c2832709c86737a5de1585c"
+      "path": "/private/tmp/still-shift-ms3-progress79-state1.json",
+      "bytes": 19401,
+      "sha256": "sha256:f31bf3d345f197cbbb878dafb713ae4cdf7918a6994ee770a46e0ce0c077d7fc"
     },
     "statuses": {
       "EU-001": "passed",
@@ -87,20 +87,8 @@
       "EU-006": "passed",
       "EU-007": "passed",
       "EU-008": "passed",
-      "EU-009": "running",
-      "EU-010": "failed"
-    },
-    "attemptKinds": {
-      "EU-001": null,
-      "EU-002": null,
-      "EU-003": null,
-      "EU-004": null,
-      "EU-005": null,
-      "EU-006": null,
-      "EU-007": null,
-      "EU-008": null,
-      "EU-009": null,
-      "EU-010": null
+      "EU-009": "passed",
+      "EU-010": "running"
     }
   },
   "qualification": {
@@ -434,6 +422,40 @@
             "reason": "First submitted job in this retained queue journal",
             "failureOrigin": "unknown"
           }
+        }
+      }
+    },
+    {
+      "capturedAt": "2026-10-14T22:29:34.986279+00:00",
+      "stateAtCapture": {
+        "file": {
+          "path": "/private/tmp/still-shift-ms3-progress78-state1.json",
+          "bytes": 18632,
+          "sha256": "sha256:0e0f65a8d85b9866ff5e1eaf036f1dbfe1c342da9c2832709c86737a5de1585c"
+        },
+        "statuses": {
+          "EU-001": "passed",
+          "EU-002": "passed",
+          "EU-003": "passed",
+          "EU-004": "passed",
+          "EU-005": "passed",
+          "EU-006": "passed",
+          "EU-007": "passed",
+          "EU-008": "passed",
+          "EU-009": "running",
+          "EU-010": "failed"
+        },
+        "attemptKinds": {
+          "EU-001": null,
+          "EU-002": null,
+          "EU-003": null,
+          "EU-004": null,
+          "EU-005": null,
+          "EU-006": null,
+          "EU-007": null,
+          "EU-008": null,
+          "EU-009": null,
+          "EU-010": null
         }
       }
     }
@@ -806,6 +828,52 @@
         },
         "scope": "Independent root/nested file pins, PNG shapes, shared exact PCM metadata and handoff closure. Complete RGBA/PCM and original narration parity reused after exact movie and prior receipt/media rehash. Native pin proof, image pixel transforms and full PCM WAV independently rechecked separately; no whole glyph/playback/listening/factual/mechanical or pilot approval."
       }
+    },
+    {
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-current72-EU009-product-audit1.json",
+        "bytes": 1811,
+        "sha256": "sha256:87d9c53e7781a208804812a0037b3ca6b20bf0acfe52d54c408d02a350315d0a"
+      },
+      "result": {
+        "id": "EU-009",
+        "status": "passed-current-integrated-native-product-review-closure",
+        "rootArtifactsVerified": 13,
+        "reviewImagesVerified": 110,
+        "reviewSamples": 91,
+        "reviewShots": 7,
+        "cropExceptions": 2,
+        "product": {
+          "path": "products/EU-009-7bdfa3183b90e315-2.json",
+          "bytes": 11412,
+          "sha256": "sha256:bded60952a11374e6a03c20efd834cbf7e82a0a061bc12704517a7ceea7771ba"
+        },
+        "binding": {
+          "inputSha256": "sha256:7bdfa3183b90e3153f581b65fb2243705c5d7f9207983dc6278d8d44c0c1f217",
+          "outputSha256": "sha256:5f7f9d2a3924f194d800d2bbff61cc48d3dd7ab1577e24e44f8aa6056bf805cb",
+          "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "frames": 596,
+        "previewErrors": 0,
+        "previewWarnings": 38,
+        "historicalEncodedReceipt": {
+          "path": "/private/tmp/still-shift-ms3-portable68-EU-009-encoded1.json",
+          "bytes": 2502,
+          "sha256": "sha256:b9bf302b2e37a0e864862906a7c4382fa12997b9ce7b5da2e578f5e93cbedc35"
+        },
+        "currentMovieExactAgainstFullyAuditedPortableMovie": true,
+        "completeRGBAAndPCMParityByAuthenticatedExactMovie": true,
+        "currentWholeReviewStates": {
+          "technical": "passed",
+          "mechanical": "unreviewed",
+          "sampled-visual": "passed",
+          "continuous-motion": "unreviewed",
+          "listening": "unreviewed",
+          "factual": "unreviewed"
+        },
+        "scope": "Independent root/nested file pins, PNG shapes, shared exact PCM metadata and handoff closure. Complete RGBA/PCM and original narration parity reused after exact movie and prior receipt/media rehash. Native pin proof, image pixel transforms and full PCM WAV independently rechecked separately; no whole glyph/playback/listening/factual/mechanical or pilot approval."
+      }
     }
   ],
   "independentEU002NativeProof": {
@@ -935,11 +1003,11 @@
     "actualExitCode": 0
   },
   "independentCompletedSummary": {
-    "episodes": 8,
-    "frames": 4958,
-    "rootArtifacts": 104,
-    "reviewImages": 869,
-    "reviewSamples": 747,
+    "episodes": 9,
+    "frames": 5554,
+    "rootArtifacts": 117,
+    "reviewImages": 979,
+    "reviewSamples": 838,
     "allCompleteMovieParity": true,
     "wholeReviews": "unreviewed"
   },
@@ -1025,6 +1093,36 @@
           "activeLabelFrames": 557,
           "freshNativeRenders": 0,
           "reusedNativeFrames": 579,
+          "completePhysicalProofAndGlobalFrameClockPassed": true
+        }
+      ],
+      "skipped": [],
+      "scope": "Current saved native pins, complete physical proof metadata, actual controller phases, absolute sequence frame clocks and source callout copy/projection. Not surface contact, encoded glyph, full playback/listening or pilot acceptance."
+    },
+    "actualExitCode": 0
+  },
+  "independentEU009NativeProof": {
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-current72-native-audit-EU009-1.json",
+      "bytes": 889,
+      "sha256": "sha256:c53c39485cb0fb9fcea31159159ba68ceb48e552918ce83039d9f54f0b643f5a"
+    },
+    "result": {
+      "status": "passed-available-native-artifacts",
+      "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+      "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+      "queueId": "actual-first-ten-current72",
+      "rows": [
+        {
+          "id": "EU-009",
+          "statusAtAudit": "passed",
+          "frames": 596,
+          "proofHolds": 7,
+          "pinChecks": 2384,
+          "uniquePinsVerified": 705,
+          "activeLabelFrames": 412,
+          "freshNativeRenders": 0,
+          "reusedNativeFrames": 596,
           "completePhysicalProofAndGlobalFrameClockPassed": true
         }
       ],
