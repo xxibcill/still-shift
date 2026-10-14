@@ -1,8 +1,8 @@
 {
   "schemaVersion": "ms3-current-first-ten-bounded-recovery-results-1",
   "date": "2026-10-15",
-  "status": "all-ten-run-report-resume-passed-3-handoffs-verified-producer-live",
-  "capturedAt": "2026-10-14T23:26:02.861168+00:00",
+  "status": "all-ten-run-report-resume-passed-4-handoffs-verified-producer-live",
+  "capturedAt": "2026-10-14T23:38:07.409422+00:00",
   "sourceCommit": "3df62a5598dc46e021ee2c51b173ba33a38d2af6",
   "runtimeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
   "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
@@ -135,6 +135,11 @@
         "step": "handoff-EU-003",
         "actualExitCode": 0,
         "seconds": 482.6809372920543
+      },
+      {
+        "step": "handoff-EU-004",
+        "actualExitCode": 0,
+        "seconds": 474.54594408301637
       }
     ],
     "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/queue-current72.json",
@@ -1570,6 +1575,42 @@
         "reviewedReady": false,
         "scope": "Fresh current CLI packet, exact source/clock/product asset closure and current resume paths verified. Existing complete encoded audit remains separately bound; no new renderer or whole acceptance."
       }
+    },
+    {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-004-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:322caff7f47c7b132ed2be8fd7e3c8b27cc5a06d6ec048346328e14d93e08fa1"
+      },
+      "result": {
+        "status": "passed-independent-current-cli-handoff",
+        "id": "EU-004",
+        "handoff": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/handoff-recovery74-EU-004.json",
+          "bytes": 4317,
+          "sha256": "sha256:6f2b09b11bda0ee5d3a6c181c088b085bd5ce9e8b5fad2c0d98e7e500b3fe8cf"
+        },
+        "assetPinsVerified": 8,
+        "binding": {
+          "inputSha256": "sha256:441f8ba84677d6eca4ab400477d1631a771055c5e3e43f7c1f843a1a67ac9845",
+          "outputSha256": "sha256:f2b6b6ffb0c2077ffbe9ce7c4b50ce5e2da71b275ac6164cf625ba254cdab39d",
+          "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "currentAbsoluteResumePathsVerified": true,
+        "sourceAndWholeNarrationInputsVerified": true,
+        "qa": {
+          "technical": "passed",
+          "mechanical": "unreviewed",
+          "sampled-visual": "passed",
+          "continuous-motion": "unreviewed",
+          "listening": "unreviewed",
+          "factual": "unreviewed"
+        },
+        "reviewedReady": false,
+        "scope": "Fresh current CLI packet, exact source/clock/product asset closure and current resume paths verified. Existing complete encoded audit remains separately bound; no new renderer or whole acceptance."
+      }
     }
   ],
   "milestoneCoordinationVerified": {
@@ -1638,6 +1679,16 @@
     "specFindings": 0,
     "evidence": "docs/mechanism-shorts-ms3-whole-review84-results.json",
     "status": "qualified-isolated-not-integrated-while-primary-live",
-    "packageScope": "Archive81/prepared82 prove earlier8e11 source, not the new retry repair. Refresh current package and installed lifecycle after integration."
+    "packageScope": "Archive85 proves current isolated e231/source452 repair. Installed86 is prepared and guard-blocked while primary58827 lives; integration and full current installed/runtime/render gates remain open."
+  },
+  "latestPackage85": {
+    "archive": "sha256:62706c09c60929fdd8f1855a3cf5cc89a4020e6f6b0ccacb95845fffee07539b",
+    "runtime": "sha256:89697163351852f877b47e300aff9f29f4c899b4e40f7275da61e95e2ec7c8f7",
+    "sourceControls": 13,
+    "publicRetryControlsBothVersions": 4,
+    "strictTypesAndDiscovery": "passed",
+    "preparedInstalled86": "not-run-guard-blocked-while-primary-live",
+    "evidence": "docs/mechanism-shorts-ms3-package-portability-results.json",
+    "fixedSystemPsExceptionDisclosed": true
   }
 }
