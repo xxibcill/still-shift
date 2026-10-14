@@ -49,7 +49,10 @@ still hold before relying on them.
   and fast3,935/381 pass. Both independent reviews have no findings. Retain the
   failed legacy expectation, locator typo and unchanged rerun. Fresh GPU proof
   and required runtime/render gates await the serial MS3 producer terminal;
-  the second located source-diagnostic finding is still open. No merge or
+  the second located source-diagnostic finding is repaired too. Six actual
+  filesystem checks and refreshed fast3,935/381 pass. Both final review axes
+  have zero findings; long-key and raw mismatch-path review defects are retained
+  with their repairs. Existing PR head remains untouched pending runtime gates. No merge or
   acceptance. [Repair evidence](./pr-56-fix-results.json).
 
 - **PR #56 conflicts resolved (2026-10-15):** merge `main` `b3765142` into
@@ -267,6 +270,19 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Preserve located native source diagnostics
+
+- **Agent / branch:** Codex on `codex/ms1n-review-fixes`, after `42397d3f`.
+- **Scope:** second P2 from PR #56 review; selected-schema fields/codes are retained
+  separately from real format mismatches, with existing bounded redaction.
+- **Results:** initial red3/1, corrected4, long-key red1/4, corrected5 and final6
+  actual-filesystem cases; final fast3,935/381 passes. Final Standards0 / Spec0.
+- **Retained review defects:** oversized unsupported keys and raw mismatch source
+  path; both repaired with located/sanitized controls. Intermediate passes remain.
+- **Open / next:** serial fresh GPU and required runtime/render gates; verify PR56
+  head before fast-forward, then port both fixes to the later MS3 source formats.
+- **Records:** [repair evidence](./pr-56-fix-results.json).
 
 ### 2026-10-15 — Match native mask visibility to GPU uniform precision
 

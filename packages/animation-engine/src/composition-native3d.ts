@@ -3,7 +3,9 @@ import { readFile, stat } from "node:fs/promises";
 import { resolve } from "node:path";
 import {
   CompositionPreparedNative3DSchema,
-  Native3DSourceSchema,
+  MechanismSceneSchema,
+  SolidSceneSchema,
+  sanitizeDiagnosticText,
   type Composition,
   type CompositionPreparedNative3D,
   type NativeAppearanceCodeIdentity,
@@ -66,13 +68,45 @@ export async function prepareCompositionNative3D(
         path: `assets.${asset.id}`,
       });
     }
-    const parsed = Native3DSourceSchema.safeParse(value);
-    if (!parsed.success || parsed.data.schemaVersion !== asset.format)
+    const schemaVersion =
+      typeof value === "object" && value !== null && "schemaVersion" in value
+        ? value.schemaVersion
+        : undefined;
+    if (schemaVersion !== asset.format)
       passageError(
         "comp-native3d-source",
         "Native source does not match its declared format",
-        { path: `assets.${asset.id}.format` },
+        {
+          path: sanitizeDiagnosticText(`assets.${asset.id}.format`),
+          sourcePath: sanitizeDiagnosticText(path),
+        },
       );
+    const schema =
+      asset.format === "solid-scene-1"
+        ? SolidSceneSchema
+        : MechanismSceneSchema;
+    const parsed = schema.safeParse(value);
+    if (!parsed.success) {
+      const issue = parsed.error.issues[0]!;
+      const field = [
+        "assets",
+        asset.id,
+        ...issue.path,
+        ...(issue.code === "unrecognized_keys" ? issue.keys.slice(0, 1) : []),
+      ].join(".");
+      const diagnosticCode =
+        issue.code === "custom" ? issue.params?.diagnosticCode : undefined;
+      passageError(
+        typeof diagnosticCode === "string"
+          ? diagnosticCode
+          : "comp-native3d-source",
+        sanitizeDiagnosticText(issue.message),
+        {
+          path: sanitizeDiagnosticText(field),
+          sourcePath: sanitizeDiagnosticText(path),
+        },
+      );
+    }
     transport.assets[asset.id] = { sourceSha256, source: parsed.data };
     assetPaths[asset.id] = path;
   }
