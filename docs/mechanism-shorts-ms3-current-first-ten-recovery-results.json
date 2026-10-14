@@ -1,8 +1,8 @@
 {
   "schemaVersion": "ms3-current-first-ten-bounded-recovery-results-1",
   "date": "2026-10-15",
-  "status": "all-ten-run-passed-report-resume-ten-handoffs-still-in-progress",
-  "capturedAt": "2026-10-14T22:46:51.061540+00:00",
+  "status": "all-ten-run-report-resume-passed-3-handoffs-verified-producer-live",
+  "capturedAt": "2026-10-14T23:26:02.861168+00:00",
   "sourceCommit": "3df62a5598dc46e021ee2c51b173ba33a38d2af6",
   "runtimeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
   "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
@@ -125,6 +125,16 @@
         "step": "handoff-EU-001",
         "actualExitCode": 0,
         "seconds": 472.3268800410442
+      },
+      {
+        "step": "handoff-EU-002",
+        "actualExitCode": 0,
+        "seconds": 469.46268304088153
+      },
+      {
+        "step": "handoff-EU-003",
+        "actualExitCode": 0,
+        "seconds": 482.6809372920543
       }
     ],
     "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/queue-current72.json",
@@ -1488,6 +1498,78 @@
         "reviewedReady": false,
         "scope": "Fresh current CLI packet, exact source/clock/product asset closure and current resume paths verified. Existing complete encoded audit remains separately bound; no new renderer or whole acceptance."
       }
+    },
+    {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-002-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:e4edfc2b6402a3f63ff40d75bcd1c3fa639e4f3f5f08c282118f6efe42455352"
+      },
+      "result": {
+        "status": "passed-independent-current-cli-handoff",
+        "id": "EU-002",
+        "handoff": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/handoff-recovery74-EU-002.json",
+          "bytes": 4261,
+          "sha256": "sha256:c954425e6b5b0c5cc6bf03af0fb209842c5c6046b75491f0b3359e2eaa247fa2"
+        },
+        "assetPinsVerified": 8,
+        "binding": {
+          "inputSha256": "sha256:9adfbd99e697423ce12ca38f5065f8658eaf83a2d9d2e28ad409bdca42d9bfcb",
+          "outputSha256": "sha256:f8c223632b6d5054727998958163e84815bfe9a8698fbb37c0b99064da6b61ab",
+          "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "currentAbsoluteResumePathsVerified": true,
+        "sourceAndWholeNarrationInputsVerified": true,
+        "qa": {
+          "technical": "passed",
+          "mechanical": "unreviewed",
+          "sampled-visual": "passed",
+          "continuous-motion": "unreviewed",
+          "listening": "unreviewed",
+          "factual": "unreviewed"
+        },
+        "reviewedReady": false,
+        "scope": "Fresh current CLI packet, exact source/clock/product asset closure and current resume paths verified. Existing complete encoded audit remains separately bound; no new renderer or whole acceptance."
+      }
+    },
+    {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-003-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:d0938b15c11cb9773e736d32943e807e694b5505a21d0667bff92c9201756f23"
+      },
+      "result": {
+        "status": "passed-independent-current-cli-handoff",
+        "id": "EU-003",
+        "handoff": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/handoff-recovery74-EU-003.json",
+          "bytes": 4310,
+          "sha256": "sha256:d0eecfad3f6cf3a5cdef624251b636c49356591c431d964844b81520d6a58252"
+        },
+        "assetPinsVerified": 8,
+        "binding": {
+          "inputSha256": "sha256:5ab71f097c8d34f3b4b9eeceea2f8f67b5a4a13cb34485314ca2f7d1889a2c5c",
+          "outputSha256": "sha256:aa7039b505d2155700672a25a2f484114035352f33ccec480f673cb869d47c3b",
+          "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "currentAbsoluteResumePathsVerified": true,
+        "sourceAndWholeNarrationInputsVerified": true,
+        "qa": {
+          "technical": "passed",
+          "mechanical": "unreviewed",
+          "sampled-visual": "passed",
+          "continuous-motion": "unreviewed",
+          "listening": "unreviewed",
+          "factual": "unreviewed"
+        },
+        "reviewedReady": false,
+        "scope": "Fresh current CLI packet, exact source/clock/product asset closure and current resume paths verified. Existing complete encoded audit remains separately bound; no new renderer or whole acceptance."
+      }
     }
   ],
   "milestoneCoordinationVerified": {
@@ -1521,5 +1603,41 @@
     "githubActionsEnabled": false,
     "workflowFiles": 0,
     "PRBodyUpdateRetainedFailure": "gh pr edit failed on deprecated GraphQL projectCards; structured REST body update succeeds."
+  },
+  "handoffAuditFollower": {
+    "unifiedSession": 26381,
+    "statusAtCapture": "following-existing-producer",
+    "verifiedAtCapture": 3,
+    "helper": {
+      "path": "/private/tmp/still-shift-ms3-recovery84-handoff-follower1.py",
+      "bytes": 2682,
+      "sha256": "sha256:407ff5f11a70f2c4217efc1c40fac85fd94ba7f7c674764fe0908d1110813ab9"
+    },
+    "snapshot": {
+      "path": "/private/tmp/still-shift-ms3-progress84-follower1.json",
+      "bytes": 4559,
+      "sha256": "sha256:66ebb131fc646b28fce47bfe3194de3f4617d2e1eb6bb2f74f0fd2e56d5a6fdc"
+    },
+    "scope": "CPU-only audit follower on existing producer packets; no rendering or acceptance. Primary58827 must be checked through its actual unified handle before integration."
+  },
+  "pendingWholeReviewRepairs": {
+    "sourceWorktree": "/Users/jjae/.codex/worktrees/ms3-review-fixes/still-shift",
+    "runtimeTierCommit": "10cb84a4",
+    "retryProvenanceCommit": "e231440e",
+    "fast": {
+      "actualExitCode": 0,
+      "tests": 4582,
+      "files": 455
+    },
+    "runtime": {
+      "actualExitCode": 0,
+      "tests": 54,
+      "files": 5
+    },
+    "standardsFindings": 0,
+    "specFindings": 0,
+    "evidence": "docs/mechanism-shorts-ms3-whole-review84-results.json",
+    "status": "qualified-isolated-not-integrated-while-primary-live",
+    "packageScope": "Archive81/prepared82 prove earlier8e11 source, not the new retry repair. Refresh current package and installed lifecycle after integration."
   }
 }

@@ -50,9 +50,10 @@ still hold before relying on them.
   picture/PCM/original narration parity holds. Preview0 errors/343 warnings.
   Report also exits0 in472.55s; independent product/journal/count/percentile
   reconciliation passes. First-pass1/10 (10%) fails90% target, savings null.
-  Resume exits0 in466.21s with unchanged episode rows. First compact handoff
-  exits0 in472.33s; independent packet/resume/source/8-asset closure audit passes.
-  Unified58827 continues remaining nine handoffs; do not start another renderer
+  Resume exits0 in466.21s with unchanged episode rows. First3 compact handoffs
+  pass independent packet/resume/source/8-asset closure audits. CPU-only follower
+  26381 audits new sealed packets automatically; primary58827 remains live.
+  Unified58827 continues remaining7 handoffs; do not start another renderer
   or integrate source until its actual terminal. Original attempts remain exact;
   all2,792 source files,107 inputs and1,221 prior/E1 files are guarded.
   Durable ignored `benchmarks/results/ms3-actual-first-ten-review80/index.md` links
@@ -65,7 +66,12 @@ still hold before relying on them.
   fresh GPU/runtime pending. Archive77 does not include the later policy fixes.
   Current private archive81 /compiled runtimeebc2 verifies2,573 members and13
   public installed source controls plus strict types/discovery; updated installed82
-  lifecycle is prepared, earlier79 remains unexecuted. Physical fault budget guard
+  lifecycle is prepared, earlier79 remains unexecuted. New isolated whole-review
+  repairs10cb84a4/e231440e move5 process-spawning suites to runtime and prevent
+  stale planned edits from masking retry recovery. Green54/5, fast4,582/455 and
+  Standards0/Spec0 pass; retainedred1 fixture correction/red2 actual failures.
+  Archive81/prepared82 prove older8e11 source; latest package/lifecycle must refresh.
+  Physical fault budget guard
   blocks four pending captures; explicit revised allowance is requested/pending.
   Upstream MS1N private83 also verifies1,956 members and9 installed source
   controls/strict types; GPU/runtime pending. All five PRs are attached and target
@@ -366,6 +372,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Actual first ten retained; whole review repairs verified
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; repairs isolated separately.
+- **Done:** confirm actual EU001–EU010 and complete existing normal1× narration;
+  no more audio files needed. Independent compact handoffs pass3/10; CPU-only
+  follower26381 checks newly sealed packets while primary58827 stays live/frozen.
+- **Results:** isolated10cb84a4/e231440e fix runtime tier and stale retry edit
+  provenance;54 runtime/5 files and4,582 unit/455 files pass. Standards0/Spec0.
+  Retain initial invalid-fixture failure and corrected real red regressions.
+- **Open / next:** finish original handoffs before integrating repairs; refresh
+  current package/installed/runtime/render gates. Archive81 belongs to older code.
+  Whole audiovisual acceptance and pending physical-fault allowance stay open.
+- **Records:** [Whole review](./mechanism-shorts-ms3-whole-review84-results.json),
+  [recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json),
+  [ten local videos](../benchmarks/results/ms3-actual-first-ten-review80/index.md).
 
 ### 2026-10-15 — Verify resume, first compact handoff and upstream installed repair
 
