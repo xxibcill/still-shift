@@ -48,8 +48,7 @@ still hold before relying on them.
   Retry clears stale revision changes; unchanged planned edits cannot mask cache
   recovery, while real planned edits/manual recovery remain covered. Red1 includes
   an invalid missing-journal fixture; correctedred2 proves both false successes;
-  green54/5 and final fast4,582/455 pass (unit stage86.94s). Standards re-review0;
-  Spec pending. Producer58827/runtime1090 and actual ten whole1× takes remain
+  green54/5 and final fast4,582/455 pass (unit stage86.94s). Standards0 / Spec0 on final diff. Producer58827/runtime1090 and actual ten whole1× takes remain
   untouched. Archive81/prepared82 qualify older8e11 source, not this new change.
   Integration/fresh runtime/package/render and whole reviews remain open.
   [Whole review and repairs](./mechanism-shorts-ms3-whole-review84-results.json).
@@ -380,7 +379,7 @@ still hold before relying on them.
   fast4,582/455 pass. Genuine input edits and same-request manual recovery retain
   their existing regression coverage. Initial missing-journal fixture failure is
   preserved; no production acceptance, source integration or renderer activity.
-- **Open / next:** independent Spec re-review; final current package/runtime/
+- **Open / next:** both independent reviews find0 defects; final current package/runtime/
   render gates after producer58827 becomes terminal. Archive81 is earlier source.
 - **Records:** [Whole review](./mechanism-shorts-ms3-whole-review84-results.json).
 

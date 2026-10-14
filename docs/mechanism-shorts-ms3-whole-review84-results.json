@@ -58,7 +58,6 @@
     "commit": "10cb84a4"
   },
   "open": [
-    "Independent Spec review of repairs",
     "Integration only after producer session58827 terminates",
     "Fresh full runtime/software/package/installed/render gates on integrated source",
     "Whole factual/mechanical/motion/glyph/listening/human reviews"
@@ -124,8 +123,12 @@
         "actionableFindings": 0,
         "method": "Independent read-only review of exact100% moves and final four-file working diff"
       },
-      "spec": "pending"
-    }
+      "spec": {
+        "actionableFindings": 0,
+        "method": "Independent read-only review of exact final four-file diff and both regressions; history, genuine edits and manual recovery preserved"
+      }
+    },
+    "commit": "e231440e"
   },
   "sourceBeforeIntegration": "Live producer1090 remains frozen; latest repair changes its future identity. Archive81 and prepared installed82 retain their earlier8e11 snapshot and do not prove this new repair."
 }
