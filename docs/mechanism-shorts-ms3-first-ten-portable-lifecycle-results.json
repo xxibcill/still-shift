@@ -689,8 +689,8 @@
     "firstPassCommit": "018c2540"
   },
   "open": [
-    "Remaining three portable outputs plus terminal report and no-extra-attempt resume",
-    "Independent remaining frame/native/audio audits",
+    "Remaining two portable outputs plus terminal report and no-extra-attempt resume",
+    "Independent EU008\u2013EU010 frame/native/audio audits",
     "Integrate isolated repairs after the frozen lifecycle terminates",
     "Actual current native/relocated/installed handoff and full software/benchmark/archive/installed gates",
     "Whole factual/mechanical/glyph/normal-speed/listening review and paired effort"
@@ -720,6 +720,27 @@
         "EU-007": "passed",
         "EU-008": "running",
         "EU-009": "pending",
+        "EU-010": "pending"
+      }
+    },
+    {
+      "capturedAt": "2026-10-14T19:16:34.665438+00:00",
+      "processConfirmedLiveThisTurn": true,
+      "state": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-portable68/queue-state.json",
+        "bytes": 9534,
+        "sha256": "sha256:e22603aeb942b3133591ce4bb3c66bcaf5f7d5571149741f4c53cd1a419c657d"
+      },
+      "statuses": {
+        "EU-001": "passed",
+        "EU-002": "passed",
+        "EU-003": "passed",
+        "EU-004": "passed",
+        "EU-005": "passed",
+        "EU-006": "passed",
+        "EU-007": "passed",
+        "EU-008": "passed",
+        "EU-009": "running",
         "EU-010": "pending"
       }
     }

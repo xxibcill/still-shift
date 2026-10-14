@@ -72,9 +72,9 @@ still hold before relying on them.
   cohort61 products plus two corrections (0 preview errors/343 warnings/542 images).
   All-ten portable68 run/report/resume now uses the relocated canonical bundle,
   preserving106 declared files and137 prior artifact/journal files. Run is live;
-  first seven seal. Independent4,379 RGBA frames/whole PCM match selected deliveries,
+  first eight seal; seven independently audited. Independent4,379 RGBA frames/whole PCM match selected deliveries,
   70 product pins and17,516 native pins pass with0 new native captures. Terminal
-  report/resume and remaining three audits pending; historical identities retained.
+  report/resume, remaining two outputs and three audits pending; identities retained.
   Isolated3a7dcd69 repairs native compact handoff (fast4,596 pass); first-pass
   provenance/recovery has73 scoped tests, fast4,611 and14 fixture-runtime checks
   pass in stages; final refresh4,611/458 passes and018c2540 is committed/pushed.
@@ -277,8 +277,8 @@ still hold before relying on them.
 ### 2026-10-15 — Relocated first-ten lifecycle and isolated review repairs
 
 - **Agent / branch:** Codex on `codex/mechanism-ms3`, from `d45f3f4f`.
-- **Live:** original portable68 run/report/resume75382 confirmed live; first seven
-  seal, door latch running. All106 declared files and137 prior files guarded.
+- **Live:** original portable68 run/report/resume75382 confirmed live; first eight
+  seal, curved tape blade running. Seven independently audited. All106 declared files and137 prior files guarded.
 - **Results:** independent4,379 full RGBA/whole PCM frames,70 product pins and
   17,516 native pins pass. Preview0 errors/remaining warnings retained. No new
   native captures; complete report/resume/remaining outputs unrun at capture.
