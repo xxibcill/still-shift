@@ -306,3 +306,16 @@ encoded/boundary/playback review remains. First-seven QA retains 127 static erro
 110 warnings / 374 images. Available native maps extend through EU-008; remaining
 encoded audits, cohort report/resume and prepared repairs stay open, along with
 whole reviews/broader faults/handoff/effort/final gates. Accepted pilot remains 0/10.
+
+[Complete first-ten HD exports](./mechanism-shorts-ms3-first-ten-complete-hd-export-results.json)
+now retain an actual full-run exit0 in 6,062.67s: 6,181 frames / 1,078 fresh /
+5,103 reused native states. Independent 24,724 pins / 4,257 active label bindings,
+whole-original AAC reference parity and every encoded RGBA frame through EOF pass.
+Ten phone midpoint sheets / 59 selected frames are inspected. Primary text supports
+the selected latch closing stroke, conventional curved blade and first can-lid
+embodiment, without whole material/contact or audiovisual approval. QA still fails
+with 183 static errors / 161 warnings / 543 images. Full report/resume remain live.
+A prepared same-ten three-input revision passes pure compilation; execution requires
+the original terminal receipt and preserves seven unchanged neighbors. Actual repair
+renders/encoded reviews, native holds/staging/fault/handoff/whole reviews/effort/final
+gates remain open. Accepted pilot remains0/10; the full objective is not complete.

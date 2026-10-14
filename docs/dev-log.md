@@ -61,19 +61,15 @@ still hold before relying on them.
   [Scout repairs and rejected attempts](./mechanism-shorts-ms3-first-ten-annotation-scout-results.json).
   **Live batch:** `actual-first-ten-full-HD47`, private `output-all10-47` root.
   It preserves the old two-item trial and uses an exact native-cache copy.
-  EU-001–EU-007 transactions complete 4,379 frames. Independent 17,516 native
-  pins / 2,798 active labels, original whole AAC parity and full encoded RGBA decode
-  through EOF pass. Seven per-episode phone sheets (41 selected frames) are inspected.
-  Available capture checks extend through EU-008: 19,832 pins / 3,355 label samples.
-  First-seven QA remains failed: 127 static errors / 110 warnings / 374 images.
-  Remaining encoded audits, batch stages and full report/resume are pending;
-  no engine edits while the batch runs. Source text supports the selected designs,
-  leaving whole contact, encoded glyph, continuous and listening reviews open.
-  [First HD checks](./mechanism-shorts-ms3-first-ten-hd-progress-results.json),
-  [cable-tie cues](./mechanism-shorts-ms3-first-ten-hd-EU002-results.json),
-  [clothespeg pointer](./mechanism-shorts-ms3-first-ten-hd-EU003-results.json),
-  [zipper/keyhole](./mechanism-shorts-ms3-first-ten-hd-EU004-EU005-results.json),
-  [binder/buckle](./mechanism-shorts-ms3-first-ten-hd-EU006-EU007-results.json).
+  All ten HD transactions complete 6,181 frames: 1,078 fresh / 5,103 reused
+  native states. Full run actually exits 0 in 6,062.67s; source/private inputs stay
+  exact. Independent 24,724 pins / 4,257 active labels, complete original AAC parity
+  and all 6,181 encoded RGBA frames through EOF pass. Ten phone midpoint sheets /
+  59 selected encoded frames are inspected. QA remains failed: 183 static errors /
+  161 warnings / 543 evidence images. Full report/resume are still in flight;
+  no engine edits or repair execution until their terminal receipt. Primary texts
+  support selected constructions; full contact/glyph/continuous/listening stay open.
+  [Complete first-ten export checks](./mechanism-shorts-ms3-first-ten-complete-hd-export-results.json).
   **Located repair:** EU-002 tongue settles at frame 170, before the return line
   at frames 268–319. Separate `inputs-cue-repair49` retimes only `tighten` to peak
   at 253 / settle at 319. Pure admission passes; capture/export/event/playback
@@ -86,7 +82,10 @@ still hold before relying on them.
   and closed-return, preserving insertion from406 via a separate shot. Pure admission
   passes; capture/encoded staging and boundary/playback review remain. No voice,
   control, frame-clock, camera or other callout changes.
-  **Next:** remaining HD audits, cue repair and resolved holds/staging; native
+  Same-ten `projects-all10-repairs53-cli.json` compiles 6,181 frames / 42 labels.
+  Prepared executor requires terminal original run/report/resume and unchanged
+  seven neighbors before it can promote the three-input exact-CAS revision.
+  **Next:** terminal cohort verification, actual repairs, cue repair and resolved holds/staging; native
   contact/phone/audio handoff; broader physical label/event/intersection/mount faults;
   whole factual/mechanical/glyph/continuous/listening and original E06/E10 reviews;
   comparable effort and final full software/benchmark/archive/installed gates.
@@ -280,6 +279,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Complete first-ten HD exports and independent whole-byte checks
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; source `4679b8a8` stays exact.
+- **Done:** Full run exits 0 / 6,062.67s; ten deliveries / 6,181 frames, 1,078 new /
+  5,103 reused native states. Independent 24,724 pins / 4,257 label bindings,
+  original whole AAC reference parity and every encoded RGBA frame through EOF pass.
+- **Viewed:** All ten phone midpoint sheets / 59 encoded frames; additional source
+  text supports closing latch, conventional curved blade and retained can-tab design.
+- **Open:** QA retains 183 static errors / 161 warnings / 543 images. Full report /
+  resume remain live; whole factual/mechanical/glyph/continuous/listening remain open.
+- **Prepared:** Same-ten three-input repair revision compiles; executor requires
+  terminal original run/report/resume and seven exact unchanged neighbors.
+- **Records:** [Complete export evidence](./mechanism-shorts-ms3-first-ten-complete-hd-export-results.json).
+  Pilot acceptance 0/10, routine telemetry null; no engine/live-input changes.
 
 ### 2026-10-14 — Verify binder/buckle HD and prepare binder staging cleanup
 
