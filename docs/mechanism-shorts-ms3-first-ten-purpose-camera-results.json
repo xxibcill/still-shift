@@ -621,18 +621,18 @@
       },
       {
         "id": "EU-002",
-        "status": "running",
-        "stage": "native-blender-composition-export"
+        "status": "passed",
+        "stage": "native-blender-rendered-visual-qa"
       },
       {
         "id": "EU-003",
-        "status": "pending",
-        "stage": null
+        "status": "passed",
+        "stage": "native-blender-rendered-visual-qa"
       },
       {
         "id": "EU-004",
-        "status": "pending",
-        "stage": null
+        "status": "running",
+        "stage": "blender-native-plates"
       },
       {
         "id": "EU-005",
@@ -759,6 +759,64 @@
       "frames": 1198,
       "pinChecks": 4792,
       "activeLabelFrames": 873
+    },
+    "secondSealedEpisode": {
+      "id": "EU-002",
+      "product": {
+        "path": "products/EU-002-d1d16e6e22eea4f0-1.json",
+        "bytes": 9880,
+        "sha256": "sha256:50f3d2901491ac8db9513467d29dd7c4672504ce3505afc6df367b90d8434c09"
+      },
+      "binding": {
+        "inputSha256": "sha256:d1d16e6e22eea4f0796ab6bc474d4840cf94c9a5439af9d5e9a75c80de962ab1",
+        "outputSha256": "sha256:a7c57e576bb9ada2617ebb5d8051bd0eb0c5ccc0526373c01e6a405b10ceb4e9",
+        "codeSha256": "sha256:abe3c9335f6144e8d2ef466e41e4c83fbcac0ea8d2fcd4df5ea0b497aacf97a8",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      "frames": 588,
+      "qualityStatus": "passed",
+      "errors": 0,
+      "warnings": 27,
+      "declaredPhysicalHoldClassifications": 12,
+      "independentEncodedAudit": {
+        "product": {
+          "path": "products/EU-002-d1d16e6e22eea4f0-1.json",
+          "bytes": 9880,
+          "sha256": "sha256:50f3d2901491ac8db9513467d29dd7c4672504ce3505afc6df367b90d8434c09"
+        },
+        "runtimeSha256": "sha256:abe3c9335f6144e8d2ef466e41e4c83fbcac0ea8d2fcd4df5ea0b497aacf97a8",
+        "status": "passed-scoped-retained-export-decode",
+        "frames": 588,
+        "sourceSamples": 940800,
+        "frameTailPaddingSamples": 0,
+        "changedRgbaFrames": [],
+        "rgbaFrameHashesExactAgainstH3": true,
+        "originalWholeAACReferenceParity": true,
+        "oldMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-002/2/output.mp4",
+          "bytes": 1678960,
+          "sha256": "sha256:a7c57e576bb9ada2617ebb5d8051bd0eb0c5ccc0526373c01e6a405b10ceb4e9"
+        },
+        "retainedPurposeMovie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose60/items/EU-002/1/output.mp4",
+          "bytes": 1678960,
+          "sha256": "sha256:a7c57e576bb9ada2617ebb5d8051bd0eb0c5ccc0526373c01e6a405b10ceb4e9"
+        },
+        "audio": [
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose60/EU-002/purpose-decoded.f32",
+            "bytes": 7528448,
+            "sha256": "sha256:7e65716e01ddeb237c168c3cbfc5d2f58de1f12df7da40e32a27d98c47563d39"
+          },
+          {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-purpose60/EU-002/reference-decoded.f32",
+            "bytes": 7528448,
+            "sha256": "sha256:7e65716e01ddeb237c168c3cbfc5d2f58de1f12df7da40e32a27d98c47563d39"
+          }
+        ],
+        "scope": "Current abe producer-bound export, full RGBA decode and original whole AAC reference. No full encoded glyph, playback, listening or pilot acceptance."
+      },
+      "scope": "Current sealed export and actual rendered QA. Whole factual/mechanical/encoded glyph/playback/listening and pilot acceptance remain open."
     }
   }
 }

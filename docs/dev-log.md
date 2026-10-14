@@ -110,8 +110,10 @@ still hold before relying on them.
   rendered QA with0 errors/37 warnings (21 declared physical holds). Complete610
   RGBA decode equals H3; original whole AAC reference parity passes. EU001/EU002
   native audits check1,198 global frame clocks/complete proof rows,4,792 pins and
-  873 active-label frames, zero fresh native captures. EU002 is exporting; eight
-  later items pending. This closes the actual EU001 QA quota failure, not all
+  873 active-label frames, zero fresh native captures. EU002 now also seals:
+  actual588-frame QA0 errors/27 warnings,12 declared physical holds; complete
+  decoded RGBA equals repaired H3 and original whole AAC parity passes. EU003
+  is exporting, seven later items pending. This closes the actual EU001 QA quota failure, not all
   cohort or whole-review acceptance. Failed IPC audit remains; direct import works.
   **Next:** re-poll11682; complete new run/report/resume and
   independent native/encoded audio/picture audits. Broader physical label/event/
@@ -317,7 +319,10 @@ still hold before relying on them.
   New product binding/pins are rehashed; historical/failed exports stay separate.
 - **Native audit:** EU001/EU002 check1,198 complete physical proof/global clock
   frames,4,792 pins and873 active-label frames, zero new native captures.
-- **Live / next:** EU002 exporting in cohort60, wrapper11682 live. Continue its
+- **Second completion:** Current EU002 seals; actual588-frame QA0 errors/27
+  warnings,12 declared holds. Full RGBA equals repaired H3 and whole AAC parity
+  passes. Both new product bindings rehashed; no pilot acceptance inferred.
+- **Live / next:** EU003 exporting in cohort60, wrapper11682 live. Continue its
   original process; all-ten run/report/resume and remaining output audits pending.
   Source held; no edits while frozen lifecycle is live. Full reviews/acceptance0/10.
 - **Retained:** Sandbox denies tsx CLI IPC socket; direct node import succeeds.
