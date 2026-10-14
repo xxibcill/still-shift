@@ -183,7 +183,8 @@
           "path": "/private/tmp/still-shift-ms1n-review78-diagnostic-final-fast1.log",
           "bytes": 31967,
           "sha256": "sha256:5ee23599852c4aa63db086b3bf5bac7005caf8a52a06a73723709a912c2cec69"
-        }
+        },
+        "seconds": 48.16
       }
     ],
     "independentReviews": {
@@ -211,5 +212,24 @@
       "Synthetic-bearer mismatch filename"
     ]
   },
-  "scope": "Local reversible source repair. No merge, publication, ElevenLabs spending or human production acceptance. Full required runtime/render checks remain pending."
+  "scope": "Local reversible source repair. No merge, publication, ElevenLabs spending or human production acceptance. Full required runtime/render checks remain pending.",
+  "runtimePreparation": {
+    "python": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-review80-python-setup1.log",
+        "bytes": 1216,
+        "sha256": "sha256:e1b8925b657574c9911bb08a6057f5c9bdebb7cecfc203cab2716047dd974a86"
+      }
+    },
+    "toolchain": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-review80-toolchain1.log",
+        "bytes": 242,
+        "sha256": "sha256:6801dfaa3e3deb753611ef4c67d47d081411cc02e9ef18b9c2730d946c0a72e6"
+      }
+    },
+    "scope": "Locked offline isolated .venv, editable depth worker points only to this worktree; primary environment untouched. Node22.23.1/pnpm10.29.3/Python3.12.11/Chromium1234/FFmpeg8.0.1 verified. No browser/render group run."
+  }
 }

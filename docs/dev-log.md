@@ -52,7 +52,8 @@ still hold before relying on them.
   the second located source-diagnostic finding is repaired too. Six actual
   filesystem checks and refreshed fast3,935/381 pass. Both final review axes
   have zero findings; long-key and raw mismatch-path review defects are retained
-  with their repairs. Existing PR head remains untouched pending runtime gates. No merge or
+  with their repairs. Locked offline isolated Python setup and pinned toolchain pass; primary
+  environment untouched. Existing PR head remains unchanged pending runtime gates. No merge or
   acceptance. [Repair evidence](./pr-56-fix-results.json).
 
 - **PR #56 conflicts resolved (2026-10-15):** merge `main` `b3765142` into
