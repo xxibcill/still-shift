@@ -69,7 +69,8 @@ function trace(
     prefix: string[] = [],
     suffix: string[] = [];
   let calls = 0,
-    pendingHash = "";
+    pendingHash = "",
+    suffixCursor = 0;
   const record = (key: string) => {
     if (collect) {
       pendingHash += key + "\0";
@@ -79,8 +80,11 @@ function trace(
       }
       counts[key] = (counts[key] ?? 0) + 1;
       if (prefix.length < 32) prefix.push(key);
-      if (suffix.length === 32) suffix.shift();
-      suffix.push(key);
+      if (suffix.length < 32) suffix.push(key);
+      else {
+        suffix[suffixCursor] = key;
+        suffixCursor = (suffixCursor + 1) % 32;
+      }
     }
     const index = calls++;
     before?.(key, index);
@@ -123,7 +127,7 @@ function trace(
       sha256: hash.update(pendingHash).digest("hex"),
       counts,
       prefix,
-      suffix,
+      suffix: [...suffix.slice(suffixCursor), ...suffix.slice(0, suffixCursor)],
     }),
   };
 }

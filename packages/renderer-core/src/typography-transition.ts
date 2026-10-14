@@ -3,6 +3,19 @@ import type { ShapedLayout } from "./shaped-text.ts";
 import type { TextNode } from "./typography-style.ts";
 import { easeMotion } from "./motion-easing.ts";
 
+type DisplayedTextNode = Pick<
+  TextNode,
+  "text" | "states" | "transition" | "transitions" | "locale"
+>;
+
+/** The replacement raster enters after the correction's strike phase. */
+export function correctionReplacementStart(event: {
+  start: number;
+  duration: number;
+}): number {
+  return event.start + Math.floor(event.duration / 2);
+}
+
 export function commonClusters(a: string[], b: string[]): [number, number][] {
   const rows = Array.from(
     { length: a.length + 1 },
@@ -31,12 +44,16 @@ export function reserveCountWidth(layouts: Iterable<ShapedLayout>) {
   const maxWidth = Math.max(...values.map((layout) => layout.width));
   for (const layout of values) layout.width = maxWidth;
 }
-export function activeTextTransition(node: TextNode, frame: number) {
+export function activeTextTransition(node: DisplayedTextNode, frame: number) {
   return (node.transitions ?? (node.transition ? [node.transition] : [])).find(
     (t) => frame >= t.window.start && frame < t.window.end,
   );
 }
-export function textStateAtFrame(node: TextNode, frame: number, state: number) {
+export function textStateAtFrame(
+  node: DisplayedTextNode,
+  frame: number,
+  state: number,
+) {
   let resolved = state;
   for (const t of node.transitions ??
     (node.transition ? [node.transition] : [])) {
@@ -46,7 +63,11 @@ export function textStateAtFrame(node: TextNode, frame: number, state: number) {
   return Math.round(resolved);
 }
 /** The text shown outside an active transition, including a finished count. */
-export function settledText(node: TextNode, frame: number, state: number) {
+export function settledText(
+  node: DisplayedTextNode,
+  frame: number,
+  state: number,
+) {
   const completed = (
     node.transitions ?? (node.transition ? [node.transition] : [])
   )
@@ -57,7 +78,7 @@ export function settledText(node: TextNode, frame: number, state: number) {
     : (node.states?.[textStateAtFrame(node, frame, state)] ?? node.text);
 }
 export function resolveDisplayedText(
-  node: TextNode,
+  node: DisplayedTextNode,
   frame: number,
   state: number,
 ):
@@ -88,7 +109,11 @@ export function transitionProgress(t: TextTransition, frame: number) {
     t.easing ?? "in-out-cubic",
   );
 }
-export function countText(node: TextNode, t: TextTransition, frame: number) {
+export function countText(
+  node: DisplayedTextNode,
+  t: TextTransition,
+  frame: number,
+) {
   const from = Number(node.states![t.fromState ?? 0]!.replaceAll(",", "")),
     to = Number(node.states![t.toState ?? 1]!.replaceAll(",", ""));
   return new Intl.NumberFormat(node.locale ?? "en", {

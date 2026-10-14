@@ -1,4 +1,15 @@
 import {
+  failureDiagnostic,
+  sanitizeDiagnosticText,
+  sanitizeDiagnosticContext,
+} from "./failure-diagnostics.ts";
+export {
+  failureDiagnostic,
+  sanitizeDiagnosticText,
+  sanitizeDiagnosticContext,
+} from "./failure-diagnostics.ts";
+export type { FailureCause, FailureDiagnostic } from "./failure-diagnostics.ts";
+import {
   AnimationRequestSchema,
   type AnimationErrorCode,
   type AnimationFailure,
@@ -28,8 +39,13 @@ export class AnimationEngineError extends Error {
       status: "failed",
       error: {
         code: this.code,
-        message: this.message,
-        ...(this.context === undefined ? {} : { context: this.context }),
+        message: sanitizeDiagnosticText(this.message),
+        ...(this.context === undefined
+          ? {}
+          : { context: sanitizeDiagnosticContext(this.context) }),
+        ...(this.cause !== undefined || this.context?.stage !== undefined
+          ? { diagnostic: failureDiagnostic(this) }
+          : {}),
       },
     };
   }

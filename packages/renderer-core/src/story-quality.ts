@@ -1,6 +1,12 @@
+import { analyzeCompositionSemantics } from "./composition/semantic-quality.ts";
+import { classifyPhysicalProofHolds } from "./composition/physical-proof-quality.ts";
 import type { Composition } from "@still-shift/scene-contract";
 import { analyzeCompositionStillness } from "./story-continuous-quality.ts";
-import { analyzeCompositionTypography } from "./typography-quality.ts";
+import {
+  analyzeCompositionTypography,
+  analyzeDeclaredCompositionReading,
+  analyzeCompositionSpeechCaptions,
+} from "./typography-quality.ts";
 import {
   layerQualityTracks,
   sampleCompositionQuality,
@@ -324,11 +330,19 @@ export function analyzeStoryQuality(
 
 export {
   CompositionQualityPolicySchema,
+  CompositionSemanticAssociationSchema,
+  CompositionReadingMemberSchema,
   MOTION_LINT_CODES,
   type CompositionQualityPolicy,
+  type CompositionSemanticAssociation,
   type MotionLintDiagnostic,
   type MotionLintCode,
 } from "./composition/quality-policy.ts";
+
+export type {
+  SemanticAssociationAssessment,
+  SemanticViolationInterval,
+} from "./composition/semantic-quality.ts";
 
 /** Advisory composition craft report. Evaluation, contracts and rendered output never depend on lint. */
 export function analyzeCompositionQuality(
@@ -337,7 +351,14 @@ export function analyzeCompositionQuality(
 ) {
   const resolved = resolveCompositionQualityPolicy(comp, policy);
   const frames = sampleCompositionQuality(comp, resolved.evaluation);
+  const semantic = analyzeCompositionSemantics(frames, comp.fps, resolved);
+  const readingDeclarations = analyzeDeclaredCompositionReading(
+    frames,
+    comp.fps,
+    resolved,
+  ).windows;
   const diagnostics: MotionLintDiagnostic[] = [
+    ...semantic.diagnostics,
     ...analyzeCompositionStillness(
       frames.map((f) => f.signature),
       resolved,
@@ -412,6 +433,39 @@ export function analyzeCompositionQuality(
       : []),
     "Coverage lint measures geometry; image alpha and arbitrary mask coverage require the renderer's asset coverage validation.",
   ];
+  if (readingDeclarations.length)
+    for (const diagnostic of diagnostics) {
+      if (
+        diagnostic.code !== "frozen-run" &&
+        diagnostic.code !== "frozen-pixels"
+      )
+        continue;
+      const start = Math.max(0, diagnostic.frames[0] - 1);
+      const end = diagnostic.frames[1] + 1;
+      const purposes = readingDeclarations.filter((declaration) =>
+        declaration.readableIntervals.some(
+          (interval) => interval.start <= start && interval.end >= end,
+        ),
+      );
+      diagnostic.readingPurposes = purposes.map((declaration) => ({
+        id: declaration.id,
+        purpose: declaration.purpose,
+      }));
+      // A declared reading hold cannot excuse frozen pixels while other paint state should move.
+      const stillPaintState = frames
+        .slice(start, end)
+        .every((frame) => frame.signature === frames[start]!.signature);
+      if (purposes.length && stillPaintState) {
+        diagnostic.rawSeverity = diagnostic.severity;
+        diagnostic.severity = "warning";
+        diagnostic.classification = "declared-reading-hold";
+      }
+    }
+  const physicalProofHolds = classifyPhysicalProofHolds(
+    frames,
+    resolved,
+    diagnostics,
+  );
   diagnostics.sort(
     (a, b) =>
       a.frames[0] - b.frames[0] ||
@@ -433,6 +487,37 @@ export function analyzeCompositionQuality(
       textBounds: !!resolved.evaluation.textBounds,
     },
     diagnostics,
+    semantic: {
+      version: "composition-semantic-context-1" as const,
+      status: semantic.status,
+      profile: semantic.profile,
+      associations: semantic.associations,
+      policy: {
+        version: "composition-semantic-context-policy-1" as const,
+        profile: resolved.semanticProfile,
+        readingOpacity: resolved.readingOpacity,
+        readingReveal: resolved.readingReveal,
+        associations: resolved.semanticAssociations ?? [],
+      },
+      method: "declared-copy-and-measured-layer-context" as const,
+      factualTruth: "unassessed" as const,
+      renderedGlyphReadability: "requires-encoded-review" as const,
+    },
+    ...(readingDeclarations.length ? { readingDeclarations } : {}),
+    ...(physicalProofHolds.length ? { physicalProofHolds } : {}),
+    ...(resolved.speechCaptions?.length
+      ? {
+          speechCaptions: analyzeCompositionSpeechCaptions(
+            frames,
+            comp.fps,
+            resolved,
+          ).windows,
+        }
+      : {}),
     limitations,
   };
 }
+
+export type CompositionQualityReport = ReturnType<
+  typeof analyzeCompositionQuality
+>;

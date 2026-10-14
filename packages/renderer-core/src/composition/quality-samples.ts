@@ -1,9 +1,13 @@
 import type {
   Composition,
   CompositionLayer,
+  PreparedNode,
+  TextEvent,
+  TextStyle,
 } from "@still-shift/scene-contract";
 import { multiplyMatrix, type Matrix } from "../node-transform.ts";
 import { evaluateComp } from "./evaluate/index.ts";
+import { rgba } from "./evaluate/sample.ts";
 import { readProperty } from "./evaluate/properties.ts";
 import { identity, projectBounds } from "./evaluate/geometry.ts";
 import type {
@@ -26,7 +30,18 @@ import {
 } from "./projective-quality.ts";
 import { receiverLightingState } from "./quality-lighting.ts";
 import { passageError } from "../passage-diagnostics.ts";
+import { typographySourceFrame } from "./typography-source-frame.ts";
+import { resolveTextEvents } from "../typography-events.ts";
+import {
+  correctionReplacementStart,
+  resolveDisplayedText,
+} from "../typography-transition.ts";
 import { typographyClock } from "./render/text-clock.ts";
+import {
+  caseText,
+  resolvedTextStyle,
+  type TextNode,
+} from "../typography-style.ts";
 
 export type CompositionQualitySample = {
   id: string;
@@ -47,10 +62,17 @@ export type CompositionQualitySample = {
   onScreen: boolean;
   /** Includes group modifiers that affect an on-screen descendant. */
   contributesPaint: boolean;
+  /** Exact single displayed copy; absent while distinct copies transition. */
   text?: string;
+  /** Candidate copies during a partial or mixed text transition. */
+  textCopies?: string[];
   role?: "heading" | "label" | "qualification" | "body";
   signature: string;
   textClock?: number;
+  /** Glyph coverage clock excluding opaque color-only animators, for explicit reading declarations. */
+  readingClock?: number;
+  readingPose?: string;
+  fullyOnScreen?: boolean;
   scale: [number, number];
   homography?: Homography;
   velocityPoints?: number[];
@@ -79,25 +101,231 @@ const indexed = (values: unknown, state: EvaluatedLayer) =>
         )
       ]
     : undefined;
-function providerText(state: EvaluatedLayer) {
-  if (state.layer.type !== "provider") return undefined;
-  const params = state.layer.params,
-    node = object(params.node);
-  if (node.type !== "text" || typeof node.text !== "string") return undefined;
-  const sample = object(indexed(params.samples, state));
-  const states = Array.isArray(node.states) ? node.states : undefined;
-  const numeric = indexed(object(params.numeric).samples, state);
-  return {
-    text:
-      typeof numeric === "string"
-        ? numeric
-        : String(
-            states?.[Number(sample.state ?? state.state ?? 0)] ?? node.text,
+type TextCopy = { text?: string; textCopies?: string[] };
+
+function combinedTextCopies(copies: readonly string[]): TextCopy {
+  const distinct = [...new Set(copies)];
+  return distinct.length === 1
+    ? { text: distinct[0]! }
+    : { textCopies: distinct };
+}
+
+function shapedCopyCase(
+  node: TextNode,
+  text: string,
+  styles: Record<string, TextStyle>,
+): string {
+  const base = resolvedTextStyle(node, styles);
+  const changesCase = (style: TextStyle) =>
+    style.case === "upper" || style.case === "lower";
+  if (
+    !changesCase(base) &&
+    !node.spans?.some((span) =>
+      changesCase(resolvedTextStyle(node, styles, span.style)),
+    )
+  )
+    return text;
+  const locale = node.locale ?? node.textBox?.locale ?? "en";
+  return [
+    ...new Intl.Segmenter(locale, { granularity: "grapheme" }).segment(text),
+  ]
+    .map((segment, index) => {
+      const span = node.spans?.find(
+        (span) => index >= span.start && index < span.end,
+      );
+      return caseText(
+        segment.segment,
+        resolvedTextStyle(node, styles, span?.style),
+        locale,
+      );
+    })
+    .join("");
+}
+function shapedCopyCases(
+  copy: TextCopy,
+  node: TextNode,
+  styles: Record<string, TextStyle>,
+): TextCopy {
+  // Keep partial-copy evidence even when case conversion makes its endpoints equal.
+  return copy.text === undefined
+    ? {
+        textCopies: (copy.textCopies ?? []).map((text) =>
+          shapedCopyCase(node, text, styles),
+        ),
+      }
+    : { text: shapedCopyCase(node, copy.text, styles) };
+}
+
+function displayedTextCopies(
+  node: Parameters<typeof resolveDisplayedText>[0],
+  frame: number,
+  state: number,
+): string[] {
+  const displayed = resolveDisplayedText(node, frame, state);
+  if (displayed.kind === "single") return [displayed.text];
+  if (displayed.transition.kind === "roll")
+    return frame === displayed.transition.window.start
+      ? [displayed.fromText]
+      : [displayed.fromText, displayed.toText];
+  if (displayed.progress === 0) return [displayed.fromText];
+  if (displayed.progress === 1) return [displayed.toText];
+  return [displayed.fromText, displayed.toText];
+}
+
+/** A span correction adds artwork; it does not replace the full logical phrase. */
+function withCorrectionArtwork(
+  copy: TextCopy,
+  frame: number,
+  events: readonly {
+    start: number;
+    duration: number;
+    replacement?: string | undefined;
+    color?: string | undefined;
+  }[],
+): TextCopy {
+  const active = events.filter(
+    (event) =>
+      frame > correctionReplacementStart(event) &&
+      (!event.color || rgba(event.color)[3] > 0),
+  );
+  return active.length
+    ? {
+        textCopies: [
+          ...(copy.text === undefined ? (copy.textCopies ?? []) : [copy.text]),
+          ...active.flatMap((event) =>
+            event.replacement === undefined ? [] : [event.replacement],
           ),
+        ],
+      }
+    : copy;
+}
+
+/** Use the same local time and display resolver as the prepared text drawer. */
+function nativeText(comp: Composition, state: EvaluatedLayer) {
+  const layer = state.layer;
+  if (layer.type !== "text") return undefined;
+  const fontAsset =
+    (layer.style ? comp.textStyles?.[layer.style]?.fontAsset : undefined) ??
+    layer.fontAsset;
+  const typed = comp.assets.some(
+    (asset) => asset.id === fontAsset && asset.type === "font",
+  );
+  const copies = (index: number): string[] => {
+    if (!typed) return [layer.states?.[index] ?? layer.text];
+    return displayedTextCopies(layer, state.time, index);
+  };
+  const mix = state.stateMix ?? 1;
+  const current = copies(state.state ?? 0);
+  const prior = copies(state.stateFrom ?? state.state ?? 0);
+  const node = layer as TextNode;
+  const styles = comp.textStyles ?? {};
+  const copy = combinedTextCopies(
+    mix === 0 ? prior : mix === 1 ? current : [...prior, ...current],
+  );
+  return {
+    ...withCorrectionArtwork(
+      typed ? shapedCopyCases(copy, node, styles) : copy,
+      state.time,
+      typed
+        ? (layer.corrections ?? []).map((correction) => ({
+            ...correction,
+            duration: correction.end - correction.start,
+            replacement: shapedCopyCase(
+              { ...node, spans: undefined },
+              correction.replacement,
+              styles,
+            ),
+          }))
+        : [],
+    ),
+    role: layer.textRole,
+    reveal: state.reveal ?? 1,
+  };
+}
+
+function providerText(state: EvaluatedLayer) {
+  const layer = state.layer;
+  if (layer.type !== "provider") return undefined;
+  const typed = [
+    "component.typography@1.0.0",
+    "component.typography@1.1.0",
+  ].includes(layer.provider);
+  const story = layer.provider === "story.text@1.0.0";
+  const commerce = /^commerce\.text@1\.[0-3]\.0$/.test(layer.provider);
+  if (!typed && !story && !commerce) return undefined;
+  const params = layer.params;
+  const node = object(params.node);
+  if (node.type !== "text" || typeof node.text !== "string") return undefined;
+  const sourceTime = state.sampleIndex === undefined ? undefined : state.time;
+  const frame = typed
+    ? typographySourceFrame(
+        state.sampleIndex ?? state.time,
+        Number(params.frameCount),
+        sourceTime,
+      )
+    : Math.max(0, Math.floor(state.sampleIndex ?? state.time));
+  const sampleState = { ...state, sampleIndex: frame };
+  const sample = object(indexed(params.samples, sampleState));
+  const states = Array.isArray(node.states) ? node.states : undefined;
+  const numeric = indexed(object(params.numeric).samples, sampleState);
+  const contentState =
+    !story && (layer.state !== undefined || layer.stateFrom !== undefined)
+      ? state.state
+      : undefined;
+  const copyAtState = (index: number): string[] => {
+    const text = typeof numeric === "string" ? numeric : node.text;
+    return typed
+      ? displayedTextCopies(
+          { ...node, text } as Parameters<typeof resolveDisplayedText>[0],
+          sourceTime ?? frame,
+          index,
+        )
+      : [
+          typeof numeric === "string"
+            ? numeric
+            : String(states?.[index] ?? text),
+        ];
+  };
+  const current = copyAtState(Number(contentState ?? sample.state ?? 0));
+  const prior = story
+    ? current
+    : copyAtState(state.stateFrom ?? state.state ?? 0);
+  const mix = state.stateMix ?? 1;
+  const styles = (params.textStyles ?? {}) as Record<string, TextStyle>;
+  const copy = combinedTextCopies(
+    mix === 0 ? prior : mix === 1 ? current : [...prior, ...current],
+  );
+  return {
+    ...withCorrectionArtwork(
+      typed ? shapedCopyCases(copy, node as TextNode, styles) : copy,
+      sourceTime ?? frame,
+      typed
+        ? resolveTextEvents({
+            nodes: [node as PreparedNode],
+            fps: Number(params.fps),
+            frameCount: Number(params.frameCount),
+            textEvents: params.textEvents as TextEvent[] | undefined,
+          })
+            .filter((event) => event.verb === "correct")
+            .map((event) => ({
+              ...event,
+              ...(event.replacement === undefined
+                ? {}
+                : {
+                    replacement: shapedCopyCase(
+                      { ...(node as TextNode), spans: undefined },
+                      event.replacement,
+                      styles,
+                    ),
+                  }),
+            }))
+        : [],
+    ),
     role: node.textRole as CompositionQualitySample["role"],
     reveal: typeof sample.reveal === "number" ? sample.reveal : 1,
   };
 }
+
 export function intersectBounds(a: Bounds, b: Bounds): Bounds {
   return {
     left: Math.max(a.left, b.left),
@@ -219,14 +447,7 @@ export function compositionQualityFrame(
       const onScreen =
         visible &&
         (!clippedBounds || hasArea(intersectBounds(clippedBounds, viewport)));
-      const text =
-        layer.type === "text"
-          ? {
-              text: state.text ?? layer.text,
-              role: layer.textRole,
-              reveal: state.reveal ?? 1,
-            }
-          : providerText(state);
+      const text = nativeText(comp, state) ?? providerText(state);
       const content =
         layer.type === "provider"
           ? [
@@ -234,6 +455,36 @@ export function compositionQualityFrame(
               indexed(object(layer.params.geometry).samples, state),
               indexed(object(layer.params.numeric).samples, state),
             ]
+          : undefined;
+      const scopeAnimators =
+        scope === tree
+          ? (comp.textAnimators ?? [])
+          : (comp.precomps?.find((precomp) => precomp.id === scope.id)
+              ?.textAnimators ?? []);
+      const opaqueColorOnly = (animator: (typeof scopeAnimators)[number]) => {
+        const entries = [
+          ...Object.entries(animator.from),
+          ...Object.entries(animator.to ?? {}),
+        ];
+        return (
+          (!animator.mask || animator.mask === "none") &&
+          entries.length > 0 &&
+          entries.every(
+            ([key, value]) =>
+              ["color", "fill", "stroke"].includes(key) &&
+              typeof value === "string" &&
+              /^#[0-9a-f]{6}(?:ff)?$/i.test(value),
+          )
+        );
+      };
+      const readingClock =
+        layer.type === "text"
+          ? typographyClock(
+              layer,
+              scopeAnimators.filter((animator) => !opaqueColorOnly(animator)),
+              layer.corrections ?? [],
+              comp.signals ?? [],
+            )(state.time)
           : undefined;
       const clock =
         layer.type === "text"
@@ -264,6 +515,17 @@ export function compositionQualityFrame(
         reveal: text?.reveal ?? state.reveal ?? 1,
         visible,
         onScreen,
+        fullyOnScreen:
+          !!bounds &&
+          !!clippedBounds &&
+          bounds.left >= 0 &&
+          bounds.top >= 0 &&
+          bounds.right <= comp.width &&
+          bounds.bottom <= comp.height &&
+          bounds.left === clippedBounds.left &&
+          bounds.right === clippedBounds.right &&
+          bounds.top === clippedBounds.top &&
+          bounds.bottom === clippedBounds.bottom,
         contributesPaint: onScreen,
         scale: homography
           ? (homographicScale(homography, [
@@ -289,9 +551,23 @@ export function compositionQualityFrame(
         ...(state.layer.coverage === "required"
           ? { ownerViewport: { width: scope.width, height: scope.height } }
           : {}),
-        ...(text?.text ? { text: text.text } : {}),
+        ...(text?.text !== undefined ? { text: text.text } : {}),
+        ...(text?.textCopies ? { textCopies: text.textCopies } : {}),
         ...(text?.role ? { role: text.role } : {}),
         ...(clock === undefined ? {} : { textClock: clock }),
+        ...(readingClock === undefined
+          ? {}
+          : {
+              readingClock,
+              readingPose: JSON.stringify([
+                state.masks,
+                effects,
+                state.state,
+                state.stateFrom,
+                state.stateMix,
+                state.reveal,
+              ]),
+            }),
         signature: JSON.stringify([
           id,
           matrix,
@@ -302,9 +578,13 @@ export function compositionQualityFrame(
           state.stateMix,
           state.reveal,
           text?.text,
+          ...(text?.textCopies ? [text.textCopies] : []),
           state.masks,
           effects,
           content,
+          ...(state.media?.pair
+            ? [[state.media.asset, state.media.sourceHash, state.media.pair]]
+            : []),
           clock,
           ...(state.depthMotion ? [state.depthMotion] : []),
           ...(state.imagePlane ? [state.imagePlane] : []),

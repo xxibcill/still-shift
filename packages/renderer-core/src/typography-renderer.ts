@@ -32,6 +32,7 @@ import {
   retypedClusters,
   reserveCountWidth,
   resolveDisplayedText,
+  correctionReplacementStart,
   transitionSlideLimit,
 } from "./typography-transition.ts";
 import { drawTextDecorations } from "./typography-decorations.ts";
@@ -449,7 +450,7 @@ export function prepareTypography(
       entries.push({
         node: replacement,
         raster,
-        start: event.start + Math.floor(event.duration / 2),
+        start: correctionReplacementStart(event),
         end: event.end,
         x: box.x,
         y:
@@ -889,13 +890,13 @@ function drawRaster(
         ),
       );
       const x = box.x - node.fontSize,
-        y = vertical ? line.baseline - raster.layout.ascent : raster.top;
+        y = vertical ? line.baseline - line.ascent : raster.top;
       const right =
         progress >= 1
           ? box.x + box.width + node.fontSize
           : box.x + box.width * progress;
       const bottom = vertical
-        ? line.baseline + raster.layout.descent
+        ? line.baseline + line.descent
         : raster.top + raster.canvas.height;
       if (progress <= 0) mask.clearRect(left, top, width, height);
       else {
