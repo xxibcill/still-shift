@@ -329,3 +329,16 @@ The same selected ten IDs accept exact-CAS revision1 for EU-002/EU-003/EU-006; s
 original rows/seals remain exact at start. The repair run is live and needs its own
 capture/export/report/resume and independent encoded/target/event/staging checks.
 All whole/fault/handoff/effort/final requirements and accepted pilot0/10 remain open.
+
+[Current repaired exports](./mechanism-shorts-ms3-first-ten-scoped-repair-results.json)
+now authenticate all three revised captures (1,810 frames / 7,240 pins / 1,061 labels,
+211 fresh / 1,599 reused). Cable-tie and clothespeg attempt2 each fully decode588
+frames and preserve original whole AAC reference parity. Six return-cue frames and
+three corrected-pointer frames are inspected; the root remains fixed while38 actual
+pawl shapes vary, and the spring leader meets visible wire. Native spring PNG bytes
+differ, but decoded source pixels match throughout its constant close-up. Lossy
+encoded differences extend to132–382 / 227–283, beyond source132–319 / 235–283;
+no outside-window encoded equality is claimed. QA remains failed (12 / 20 static
+errors). Binder leaf flags pass1,482 checks with insertion visible406–427, while its
+export, full current report/resume and encoded staging remain live. Seven original
+seals stay exact; all whole/fault/handoff/effort/final requirements and pilot0/10 remain.

@@ -87,9 +87,16 @@ still hold before relying on them.
   changed inputs; seven original rows/product seals remain identical at start.
   All183 frozen windows have identical native observations/PNGs, but no hold
   purpose, paint/event, encoded or whole acceptance follows from that equality.
-  Repaired EU-002 captures588 frames (185 fresh / 403 reused), independently
-  verifies2,352 pins / 344 labels. Return-window root stays fixed while38 actual
-  pawl position hashes change; its export/encoded event review remains in flight.
+  All three revised captures now verify 1,810 frames / 7,240 pins / 1,061 labels,
+  with 211 fresh / 1,599 reused states. EU-002/EU-003 attempt2 exports fully decode
+  and preserve original AAC parity. Six return frames and three corrected-pointer
+  frames are inspected; fixed root/38 actual tongue shapes and spring-wire target
+  support the scoped repairs. Lossy decode changes extend to132–382 / 227–283;
+  source repair windows stay132–319 / 235–283. Old/new spring source pixels match.
+  EU-006 six-leaf flags pass1,482 checks, preserving visible insertion406–427;
+  its export and complete repair report/resume remain live. Seven neighbor seals
+  still match exactly. QA and all whole approvals remain open.
+  [Current repaired export evidence](./mechanism-shorts-ms3-first-ten-scoped-repair-results.json).
   No engine edits while repaired exports run.
   [Lifecycle/repair start](./mechanism-shorts-ms3-first-ten-hd-lifecycle-repair-results.json).
   **Next:** complete repair renders/audits and resolved holds/staging; native
@@ -286,6 +293,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Verify repaired cable-tie timing and clothespeg pointer outputs
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; engine source stays held.
+- **Done:** Current three captures / 1,810 frames / 7,240 pins / 1,061 labels,
+  211 fresh / 1,599 reused states. Two repaired movies fully decode588 frames each
+  and preserve complete original AAC parity; six return / three pointer views inspected.
+- **Observed:** Fixed tongue root and38 actual shapes through the return cue; spring
+  pointer meets wire. Old/new native spring pixels match despite PNG-byte differences.
+- **Retained:** Lossy encoded differences extend beyond source windows to132–382 /
+  227–283. EU-002 QA still12 static errors / 15 warnings; EU-00320 / 17.
+- **In flight:** Binder export; actual six-leaf flags pass1,482 checks and keep
+  insertion visible. Repair report/resume and whole reviews remain; seven seals exact.
+- **Records:** [Scoped repair output and propagation](./mechanism-shorts-ms3-first-ten-scoped-repair-results.json).
+  Pilot0/10; no source/voice/master edits or QA suppression.
 
 ### 2026-10-14 — Close original full lifecycle and start scoped repair revision
 
