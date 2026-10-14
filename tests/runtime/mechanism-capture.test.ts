@@ -478,7 +478,7 @@ describe("first-party mechanism plate capture", () => {
   });
 });
 
-describe("cutout anchor visibility", () => {
+describe("anchor surface visibility", () => {
   function cutoutScene(opacity: number, grouped: boolean) {
     const source = createTapeHookScene();
     source.parts.forEach((part) => {
@@ -611,5 +611,79 @@ describe("cutout anchor visibility", () => {
       "float-cutoff",
     );
     expect(roundedBoundary.anchor.visibility).toBe("occluded");
+  }, 120_000);
+
+  function nearClippedScene(offAxis: boolean) {
+    const source = cutoutScene(1, false);
+    source.camera.near = 1;
+    const cameraY = offAxis ? -0.45 : 1.25;
+    source.camera.position[1] = cameraY;
+    source.camera.target[1] = cameraY;
+    const depth = offAxis ? 0.98 : 0.25;
+    const blocker = source.parts.find((part) => part.id === "cutout")!;
+    blocker.transform!.position = [
+      -6 + depth,
+      cameraY + (depth * (1.25 - cameraY)) / 5.82,
+      0.3,
+    ];
+    blocker.transform!.scale = offAxis ? [0.02, 0.02, 0.02] : [0.2, 1, 1];
+    source.lights.forEach((light) => {
+      light.castShadow = false;
+    });
+    return source;
+  }
+
+  it.each([false, true])(
+    "ignores near-clipped surfaces using camera depth (off-axis target: %s)",
+    async (offAxis) => {
+      const source = nearClippedScene(offAxis);
+      const clipped = await captureCutout(source, `near-clipped-${offAxis}`);
+      const hidden = await captureCutout(source, `near-hidden-${offAxis}`, [
+        "cutout",
+      ]);
+      expect(clipped.result.frames[0]!.sha256).toBe(
+        hidden.result.frames[0]!.sha256,
+      );
+      expect(hidden.anchor.visibility).toBe("visible");
+      expect(clipped.anchor.visibility).toBe("visible");
+      expect(
+        clipped.sidecar.frames[0]!.protectedRegions.some(
+          (region) => region.id === "front-face",
+        ),
+      ).toBe(true);
+    },
+    120_000,
+  );
+
+  it("keeps an in-view occluder after skipping a near-clipped surface", async () => {
+    const source = nearClippedScene(false);
+    source.parts.push({
+      ...structuredClone(source.parts.find((part) => part.id === "cutout")!),
+      id: "in-view-blocker",
+      transform: {
+        position: [-2, 1.25, 0.3],
+        rotation: [0, 0, 0],
+        scale: [1, 1, 1],
+        pivot: [0, 0, 0],
+      },
+    });
+    source.geometry.meshes.push({
+      ...structuredClone(
+        source.geometry.meshes.find((mesh) => mesh.id === "cutout")!,
+      ),
+      id: "in-view-blocker",
+      partId: "in-view-blocker",
+    });
+    source.geometrySha256 = canonicalMechanismHash(source.geometry);
+    const blocked = await captureCutout(source, "near-and-in-view");
+    const hidden = await captureCutout(source, "both-blockers-hidden", [
+      "cutout",
+      "in-view-blocker",
+    ]);
+    expect(blocked.anchor.visibility).toBe("occluded");
+    expect(hidden.anchor.visibility).toBe("visible");
+    expect(blocked.result.frames[0]!.sha256).not.toBe(
+      hidden.result.frames[0]!.sha256,
+    );
   }, 120_000);
 });

@@ -43,6 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #52 second review fixes (2026-10-14):** both new P2 findings are posted
+  inline on reviewed head `15c4bd53`. The first slice filters camera-clipped
+  raycast surfaces using camera-space depth; all 14 capture tests and type checks
+  pass, including centered/off-axis regressions and a visible-blocker control.
+  The two original regression failures are retained. Shot rig/part preflight
+  validation remains the second slice. One commit per finding; push both only
+  after that final slice is verified. Primary checkout edits are preserved.
+  [Re-review](./pr-52-rereview-results.json),
+  [fix evidence](./pr-52-rereview-fix-results.json).
+
 - **PR #52 review fixes complete (2026-10-14):** three inline P2 findings are
   repaired in one commit each: case handling `1925af45`, panel protection/default
   E01 layouts `1f9efb37`, and the cutout fix in the containing final slice. Fresh
@@ -218,6 +228,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Fix camera-clipped anchor visibility after PR #52 re-review
+
+- **Agent / branch:** Codex on `codex/pr52-clipping-preflight-fixes`, from
+  reviewed PR head `15c4bd53`; managed isolated worktree.
+- **Done:** posted both new P2 findings inline; filter raycast intersections by
+  camera-space near/far clipping while retaining later visible occluders.
+- **Results:** two new centered/off-axis regressions fail before the fix; all
+  14 capture tests and TypeScript build pass afterward. Locked offline dependency
+  installation succeeds. Existing cutout/material-group/cancellation checks pass.
+- **Open / next:** fix shot rig/part preflight in its own second commit; push both
+  fixes only after that slice. No full E01 encode or human acceptance inferred.
+- **Records:** [review](./pr-52-rereview-results.json),
+  [fix evidence](./pr-52-rereview-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/52#discussion_r4267137457).
 
 ### 2026-10-14 — Repair discarded-cutout anchor visibility; finish PR #52 fixes
 

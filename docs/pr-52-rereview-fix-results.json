@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "still-shift-pr-fixes-1",
+  "date": "2026-10-14",
+  "timezone": "Asia/Bangkok",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/52",
+  "reviewedHead": "15c4bd537ba035d8b16653a11fb79dbd397b4a17",
+  "branch": "codex/pr52-clipping-preflight-fixes",
+  "reviewId": 5513478797,
+  "pushPolicy": "One commit per finding; push both commits together only after the second and final finding commit.",
+  "findings": [
+    {
+      "id": "camera-clipped-occluder",
+      "commentId": 4267137457,
+      "commentUrl": "https://github.com/xxibcill/still-shift/pull/52#discussion_r4267137457",
+      "status": "fixed-in-containing-slice",
+      "implementation": "Filter opaque ray intersections using perpendicular camera-space depth and the active near/far clip planes. Preserve material-group/cutout handling and continue to later visible blockers. Browser source identity automatically invalidates old captures.",
+      "verification": {
+        "regressionTests": 3,
+        "baseline": "Two centered/off-axis cases fail before the fix; positive in-view blocker control passes.",
+        "captureTests": 14,
+        "captureStatus": "passed",
+        "typeCheck": "passed"
+      },
+      "commit": "Containing first finding commit"
+    },
+    {
+      "id": "shot-reference-preflight",
+      "commentId": 4267137464,
+      "commentUrl": "https://github.com/xxibcill/still-shift/pull/52#discussion_r4267137464",
+      "status": "pending-second-slice"
+    }
+  ],
+  "retainedFailures": [
+    "Two new camera-clipping regressions reproduce erroneous occlusion before the fix; retained red log."
+  ],
+  "delivery": {
+    "status": "not-pushed",
+    "target": "origin/codex/mechanism-ms1",
+    "expectedRemoteHead": "15c4bd537ba035d8b16653a11fb79dbd397b4a17"
+  },
+  "limits": [
+    "No paid generation, publication, merge, new full E01 production run or human visual/listening acceptance."
+  ],
+  "evidence": [
+    {
+      "path": "/private/tmp/pr52-rereview-fixes-install.log",
+      "bytes": 728,
+      "sha256": "631c9f8089b547729bb5b10fd488a8835a5e8ae8e70752ea93e85f76a7faf4bb"
+    },
+    {
+      "path": "/private/tmp/pr52-fix-clipping-red.log",
+      "bytes": 3739,
+      "sha256": "fd47dbd463939a7299e43e4a088533e697daca40bf8b03c3ae88dcd7114a5a89"
+    },
+    {
+      "path": "/private/tmp/pr52-fix-clipping-green.log",
+      "bytes": 2331,
+      "sha256": "54a03c7c78240418c082395f182f1d67a6a127ccee4fe107513a3e1fc80b274a"
+    },
+    {
+      "path": "/private/tmp/pr52-fix-clipping-build.log",
+      "bytes": 108,
+      "sha256": "800df4ef1c5d3a5a4d2be27953c60ad4427cbd9c7aa2ff0b338c52fd085353ec"
+    }
+  ]
+}

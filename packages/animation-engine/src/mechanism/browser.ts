@@ -188,6 +188,15 @@ export async function createMechanismPlateRenderer(
     meshes.push(mesh);
   }
   const raycaster = new Raycaster();
+  const cameraSpaceHit = new Vector3();
+  function occludesWithinClipPlanes(hit: Intersection): boolean {
+    if (!occludesAnchor(hit)) return false;
+    // Camera clipping uses perpendicular depth, not an off-axis ray's distance.
+    const depth = -cameraSpaceHit
+      .copy(hit.point)
+      .applyMatrix4(camera.matrixWorldInverse).z;
+    return depth >= camera.near && depth <= camera.far;
+  }
   function render(frame: EvaluatedFrame) {
     for (const [id, part] of parts) {
       part.matrix.fromArray(frame.parts[id]!.localMatrix);
@@ -256,7 +265,7 @@ export async function createMechanismPlateRenderer(
           );
           const first = raycaster
             .intersectObjects(meshes, false)
-            .find(occludesAnchor);
+            .find(occludesWithinClipPlanes);
           if (first && first.distance < distance - 0.0001)
             visibility = "occluded";
         }
