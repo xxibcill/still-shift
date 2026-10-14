@@ -675,9 +675,9 @@
   "publication": false,
   "currentLifecycle": {
     "record": "mechanism-shorts-ms3-first-ten-portable-lifecycle-results.json",
-    "status": "running-frozen-all-ten-portable-lifecycle",
-    "completedAtCapture": 7,
+    "status": "passed-terminal-run-report-resume-all-ten-relocated-portable-inputs",
+    "completedAtCapture": 10,
     "wholeReviews": "UNREVIEWED",
-    "scope": "Fresh relocated render lifecycle in progress; original input-admission results retain their exact prior scope."
+    "scope": "Frozen fc4 source completes relocated render/report/resume. All10 independent artifacts/frame/audio/native audits pass; current enhanced producer and installed package remain separate."
   }
 }

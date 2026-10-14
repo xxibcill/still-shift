@@ -70,15 +70,17 @@ still hold before relying on them.
   Source implementation not included; fresh render/installed consumer handoff
   and whole review remain open. Composite review selection has eight retained
   cohort61 products plus two corrections (0 preview errors/343 warnings/542 images).
-  All-ten portable68 run/report/resume now uses the relocated canonical bundle,
-  preserving106 declared files and137 prior artifact/journal files. Run is live;
-  first eight seal; seven independently audited. Independent4,379 RGBA frames/whole PCM match selected deliveries,
-  70 product pins and17,516 native pins pass with0 new native captures. Terminal
-  report/resume, remaining two outputs and three audits pending; identities retained.
+  All-ten portable68 run5212.01s/report396.03s/resume394.72s terminal0;
+  106 declared files/137 prior files exact and resume rows unchanged. All ten seal.
+  Independent6,181 full RGBA/whole PCM frames,100 product pins and24,724 native
+  pins pass;0 preview errors/343 warnings/542 images/60 proof shots retained.
+  Historical identities preserved; this repeat does not prove pilot first-pass.
   Isolated3a7dcd69 repairs native compact handoff (fast4,596 pass); first-pass
   provenance/recovery has73 scoped tests, fast4,611 and14 fixture-runtime checks
   pass in stages; final refresh4,611/458 passes and018c2540 is committed/pushed.
-  Original live runtime remains frozen pending lifecycle completion.
+  Native shot/event/phone/crop evidence is being completed in isolation; copied
+  actual EU008 helper proof passes with102 images/exact PCM and no new native draw.
+  Current enhanced producer/relocated/installed and final gates remain open.
   Frozen source4b58f49b/runtimefc4cc2ae/profile1dd0 unchanged; earlier fast4,594/
   runtime271/integration324/depth14/browser smoke pass. Whole factual/mechanical/
   normal-speed/listening, broader faults, complete portable/installed handoff,
@@ -273,6 +275,19 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — All-ten relocated portable lifecycle terminal
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `be630da0`.
+- **Terminal:** original75382 actually exits0; run5212.01s/report396.03s/
+  resume394.72s, all ten pass.106 declared files/137 prior files exact;
+  resume rows unchanged. Source2,778 files/122,205,150B remains held.
+- **Audit:**6,181 full RGBA/whole narration PCM frames,100 product pins and24,724
+  native pins pass;0 preview errors/343 warnings/542 images/60 proof shots.
+- **Open:** current enhanced producer/installed/final gates and whole reviews.
+  Native review package underway in isolation; no original identities relabelled.
+  Repeat success does not establish original first-pass or savings targets.
+- **Records:** [Terminal lifecycle and complete audits](./mechanism-shorts-ms3-first-ten-portable-lifecycle-results.json).
 
 ### 2026-10-15 — Relocated first-ten lifecycle and isolated review repairs
 
