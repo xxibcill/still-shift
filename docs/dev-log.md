@@ -376,6 +376,8 @@ still hold before relying on them.
   revised $10/35M allowance requested, pending. No dependent fault command started.
 - **Open / next:**58827 resume/ten handoffs, source integration and serial GPU/full/
   installed gates; four physical fault images and whole reviews remain.
+- **Plan:** reconcile actual PR51/52 merges, attached five-milestone sequence,
+  MS1N/MS2 staged checkpoints and current MS3 status. Frozen ROADMAP awaits terminal.
 - **Records:** [recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json),
   [current package](./mechanism-shorts-ms3-native-source-review-results.json),
   [fault guard](./mechanism-shorts-ms3-physical-fault-preparation-results.json).
