@@ -43,6 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #56 review repair in progress (2026-10-15):** isolated from exact
+  `c1582058`. Both physical and actual Three mask queries now compare Float32
+  uniforms. Four red boundary checks reproduce the defect; final focused14/2
+  and fast3,935/381 pass. Both independent reviews have no findings. Retain the
+  failed legacy expectation, locator typo and unchanged rerun. Fresh GPU proof
+  and required runtime/render gates await the serial MS3 producer terminal;
+  the second located source-diagnostic finding is still open. No merge or
+  acceptance. [Repair evidence](./pr-56-fix-results.json).
+
 - **PR #56 conflicts resolved (2026-10-15):** merge `main` `b3765142` into
   native head `bf30a253`, preserving shared Three rendering, all five MS1 review
   fixes, native bindings/paint inspection and both development histories.
@@ -258,6 +267,18 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Match native mask visibility to GPU uniform precision
+
+- **Agent / branch:** Codex on `codex/ms1n-review-fixes`, from `c1582058`.
+- **Scope:** first P2 from PR #56's independent review.
+- **Done:** Float32 comparisons in both visibility routes, with independent
+  explicit boundary/control expectations and retained full-scan reference.
+- **Results:** red4; corrected focused14/2 and full fast3,935/381 pass51.18s;
+  Standards0 / Spec0. The failed legacy expectation and unchanged rerun remain.
+- **Open / next:** actual repaired GPU boundary proof, located source diagnostics,
+  required runtime/render gates and safe fast-forward of existing PR #56.
+- **Records:** [review repair evidence](./pr-56-fix-results.json).
 
 ### 2026-10-15 — Resolve native 3D PR #56 conflicts
 

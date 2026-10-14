@@ -63,7 +63,10 @@ export function observeNativeThreeWorld(
               ? candidate.object.material[candidate.face?.materialIndex ?? 0]
               : candidate.object.material
           ) as MeshStandardMaterial;
-          if (material.alphaTest > 0 && material.opacity < material.alphaTest)
+          if (
+            material.alphaTest > 0 &&
+            Math.fround(material.opacity) < Math.fround(material.alphaTest)
+          )
             return false;
           const hitDepth = -candidate.point
             .clone()

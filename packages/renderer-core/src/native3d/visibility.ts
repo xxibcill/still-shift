@@ -47,7 +47,8 @@ function triangleDistance(
   return distance >= 0 && Number.isFinite(distance) ? distance : null;
 }
 const materialSurvives = (material: DeepReadonly<MechanismMaterial>) =>
-  material.alphaMode !== "mask" || material.opacity >= material.alphaCutoff;
+  material.alphaMode !== "mask" ||
+  Math.fround(material.opacity) >= Math.fround(material.alphaCutoff);
 
 /** Physical catalogue only: floors and anchor-owning parts participate, graphics do not. */
 export function nativeScreenAnchors(

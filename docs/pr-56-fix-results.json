@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "pull-request-fix-evidence-1",
+  "date": "2026-10-15",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/56",
+  "baseHead": "c158205815af8fe8f05e769c104328b168ae7bd0",
+  "status": "mask-source-unit-fast-qualified-fresh-gpu-and-source-diagnostics-open",
+  "maskPrecision": {
+    "problem": "JavaScript double comparisons disagree with shader Float32 mask uniforms at the boundary, admitting a rear anchor through a rendered occluder.",
+    "repair": "Round both opacity and alpha cutoff with Math.fround in expected physical and actual Three queries. Preserve the actual positive-alpha-test gate.",
+    "regressions": [
+      "0.499999999 / 0.5 remains occluded",
+      "0.5 / 0.500000001 remains occluded",
+      "0.49 / 0.5 is visible"
+    ],
+    "reference": "Frozen full triangle scan stays independent; its mask predicate and one legacy expected result now follow GPU uniform precision.",
+    "focusedRuns": [
+      {
+        "id": "red1",
+        "actualExitCode": 1,
+        "passed": 10,
+        "failed": 4,
+        "files": 2,
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-review78-mask-red1.log",
+          "bytes": 4420,
+          "sha256": "sha256:c8cfba0b9333a6aa97ba64fbd378e3251dc8616dee097339a112558cf54539ad"
+        }
+      },
+      {
+        "id": "green1",
+        "actualExitCode": 1,
+        "passed": 13,
+        "failed": 1,
+        "files": 2,
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-review78-mask-green1.log",
+          "bytes": 2174,
+          "sha256": "sha256:976eb825f4d713041ea5a16aca831317782d390135373d8434be3e8cd5d0c16b"
+        }
+      },
+      {
+        "id": "green2",
+        "actualExitCode": 1,
+        "passed": 13,
+        "failed": 1,
+        "files": 2,
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-review78-mask-green2.log",
+          "bytes": 2174,
+          "sha256": "sha256:99aefd8565ba3531a9000016464bbaf51d5fab3e6ddaa7f369501ac65e7beabf"
+        }
+      },
+      {
+        "id": "green3",
+        "actualExitCode": 0,
+        "passed": 14,
+        "failed": 0,
+        "files": 2,
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-review78-mask-green3.log",
+          "bytes": 379,
+          "sha256": "sha256:155228ad07d2b69775aaa0bb135536c9c9f5c27bfcf3ff69d04093b2c2072f48"
+        }
+      }
+    ],
+    "retainedHelperFailure": "A locator typo looked for second-group instead of second-behind; patch assertion failed without writes, and green2 unnecessarily repeated unchanged source. Both failing logs remain.",
+    "fast": {
+      "actualExitCode": 0,
+      "tests": 3935,
+      "files": 381,
+      "seconds": 51.18,
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-review78-mask-fast1.log",
+        "bytes": 32843,
+        "sha256": "sha256:ab91408564a96b5c45d82379d8b2094e4e4021ee2e803e5b6d105f27d2d7f436"
+      }
+    },
+    "independentReviews": {
+      "Standards": {
+        "agent": "/root/ms3_standards69",
+        "findings": []
+      },
+      "Spec": {
+        "agent": "/root/ms3_spec69",
+        "findings": []
+      }
+    },
+    "freshGPU": "pending until the serial current MS3 producer group is terminal; prior review GPU reproduction is not a repaired-render proof"
+  },
+  "sourceDiagnostics": {
+    "status": "open",
+    "problem": "Selected-schema failures currently collapse into a misleading declared-format diagnostic."
+  },
+  "scope": "Local reversible source repair. No merge, publication, ElevenLabs spending or human production acceptance. Full required runtime/render checks remain pending."
+}
