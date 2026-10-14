@@ -112,8 +112,11 @@ still hold before relying on them.
   current reviews remain open; QA retains39 frozen-pixel errors/115 images.
   Two binder leaders target hollow bounds-center space; saved fold-anchor repair
   and leaf-paper cleanup pass9 native scouts, target-to-cyan-pixel distance0.5–1.6px.
-  Attempt4 is exporting with28 new/606 reused native frames and unchanged can
-  neighbor. An Empty-container hide trial is rejected and retained. Accepted0/10.
+  Attempt4 now completes queue/run/report/resume with28 new/606 reused native
+  frames and the exact unchanged can neighbor. Current5,044 pins/829 active labels
+  and independent full AAC reference parity pass. Two repaired encoded phone frames
+  now meet the visible fold and omit unused paper. The Empty-container trial and
+  prior hollow-target outputs remain retained. Whole reviews/accepted coverage0/10.
   [Annotation evidence](./mechanism-shorts-ms3-native-annotation-results.json).
   **Next:** remaining causal annotations/resolved holds and review evidence/handoff; HD products for all ten
   with object-specific cues and factual bindings; broader faults/events/contact/coverage;
@@ -324,8 +327,10 @@ still hold before relying on them.
   Independent full original AAC reference parity passes. Seven phone stills inspected.
 - **Open / repair:** QA retains39 frozen-pixel errors/115 images. Two binder bounds-
   center targets land in hollow space; saved fold target/leaf-paper cleanup passes9
-  native scouts and0.5–1.6px cyan-surface proximity. Attempt4 runs with28 new/606 reused
-  native states; can neighbor stays unchanged. Empty-parent hide failure retained.
+  native scouts and0.5–1.6px cyan-surface proximity. Attempt4 completes real
+  queue/run/report/resume, current5,044 pins/829 labels and full AAC reference parity,
+  with28 new/606 reused native states and exact can neighbor unchanged. Two corrected
+  encoded phone frames are inspected. Empty-parent failure/prior outputs retained.
   All-ten drafts compile6,181 frames/42 labels; eight new scouts remain. Pilot0/10.
 - **Records:** [Annotation and cache evidence](./mechanism-shorts-ms3-native-annotation-results.json),
   [acceptance](./mechanism-shorts-ms3-acceptance.md).

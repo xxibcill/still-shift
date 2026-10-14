@@ -223,3 +223,11 @@ space; the saved fold-anchor/leaf-paper repair passes9 native scouts with sample
 with28 new/606 reused native frames and unchanged can neighbor. The rejected
 Empty-container hide request is retained as an authoring error. These facts do
 not admit whole reviews, the other eight HD products or accepted pilot coverage.
+
+Binder attempt4 now completes actual queue/run/report/resume with28 new/606
+reused native frames and the exact unchanged can attempt3/product seal. Current
+5,044 pins/829 labels and complete original AAC reference parity pass; two revised
+encoded phone frames confirm the leaders meet the cyan fold and unused paper is
+absent. Earlier hollow-target outputs and the Empty-container failure remain.
+Stationary-purpose QA, native handoff, the other eight scouts/HD products, whole
+reviews, broader faults/effort and final gates remain open; accepted pilot0/10.

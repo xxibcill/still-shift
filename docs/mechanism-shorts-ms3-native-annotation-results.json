@@ -301,7 +301,7 @@
   "pilotDenominator": 10,
   "routineTokenMeasurements": null,
   "wholeReview": "UNREVIEWED",
-  "status": "two-whole-HD-drafts-exported-and-verified-binder-phone-target-repair-in-flight",
+  "status": "two-current-whole-HD-drafts-and-binder-target-repair-verified-whole-pilot-reviews-open",
   "implementation": {
     "highlights": "Bounded temporary opaque material palette; object-linked slots and shared source data restored, never saving native masters. Actual assigned colors and queried anchors enter native keys.",
     "callouts": "Bounded editable text, panels and same-state held-key leaders. Native origin or evaluated bounds center records are authenticated; declared rendered part and in-frame target are required at each active frame. Source control ranges bind label phase.",
@@ -599,7 +599,8 @@
         ],
         "scope": "Pinned native master/audio bytes and whole authored clock preservation; no encoded/listening/contact approval."
       }
-    }
+    },
+    "currentProjects": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/projects-all10-annotations6-cli.json"
   },
   "retainedFailures": [
     "Incorrect endpoint test assertion, corrected without weakening native endpoint checks.",
@@ -614,7 +615,7 @@
     "The unchanged-source full integration rerun retains three missing-preview failures from an old shared audio cache missing its manifest. Exact guard diagnosis and fresh owned-cache success retained;23 owning cases then pass, with shared bytes and quotas intact."
   ],
   "remaining": [
-    "Complete binder target-repair whole export/report/resume and current encoded conformity.",
+    "Resolve native hold purposes/staging and review evidence; other eight native scouts and full HD products.",
     "Native scouts and causal visibility/encoded review for the other eight annotation drafts, then whole HD products for all ten.",
     "Resolved hold purposes, native phone/contact/crop/audio review evidence and fresh-session handoff.",
     "Broader physical label-state, event-order, contact and fault/coverage checks.",
@@ -1077,7 +1078,7 @@
     }
   },
   "binderTargetRepair": {
-    "status": "revised whole export in flight",
+    "status": "whole-repair-queue-run-report-resume-verified",
     "source": "inputs-annotations6/EU-006/plan.json",
     "change": "Only two target names change to saved anchor.back; unused paper is hidden by its six actual surface names in three close-ups. Whole original narration, speech and control clocks remain unchanged.",
     "rejectedTrial": "Empty paper container is not a recorded renderable surface and does not hide its children; native visibility replay rejected that request. Original failed log retained. This was an authoring member-selection error, not a visibility-driver defect.",
@@ -1146,7 +1147,302 @@
     "attempt": 4,
     "newNativeRenders": 28,
     "reusedNativeFrames": 606,
-    "canNeighbor": "Attempt3/product unchanged; not resubmitted for rendering.",
-    "requiredNext": "Terminal run/report/resume, current full label binding and encoded target/audio conformity."
+    "canNeighbor": "Exact attempt3/product seal remains unchanged after real run/report/resume.",
+    "requiredNext": "Resolve purpose/staging QA and native review/handoff; other eight native scouts and HD products, whole reviews, broader faults/effort/final gates.",
+    "receipt": {
+      "pin": {
+        "path": "/private/tmp/still-shift-ms3-blender46-whole2-receipt.json",
+        "bytes": 1834,
+        "sha256": "sha256:a10b54161f36db4d9b7bb211e52b8d2ec3a0b1616baa56a5af9e68cea0133309"
+      },
+      "result": {
+        "steps": [
+          {
+            "step": "queue",
+            "actualExitCode": 0,
+            "heldEngineInputsExitCode": 0,
+            "privateInputsExact": true,
+            "seconds": 3.0629481659270823
+          },
+          {
+            "step": "run",
+            "actualExitCode": 0,
+            "heldEngineInputsExitCode": 0,
+            "privateInputsExact": true,
+            "seconds": 572.52708583395
+          },
+          {
+            "step": "report",
+            "actualExitCode": 0,
+            "heldEngineInputsExitCode": 0,
+            "privateInputsExact": true,
+            "seconds": 76.88006970915012
+          },
+          {
+            "step": "resume",
+            "actualExitCode": 0,
+            "heldEngineInputsExitCode": 0,
+            "privateInputsExact": true,
+            "seconds": 77.21928362501785
+          }
+        ],
+        "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-annotations7.json",
+        "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output",
+        "state": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/state-annotations7.json",
+        "report": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/report-annotations7.json",
+        "rows": [
+          {
+            "id": "EU-006",
+            "status": "passed",
+            "product": {
+              "path": "products/EU-006-3f50b143a78b81cc-4.json",
+              "bytes": 11604,
+              "sha256": "sha256:a2fdc3355eda6c2b8639e79fc1136c1169b6b064ba84f3a0baec6fa33445496f"
+            }
+          },
+          {
+            "id": "EU-010",
+            "status": "passed",
+            "product": {
+              "path": "products/EU-010-df0414ee2e44dd3e-3.json",
+              "bytes": 11296,
+              "sha256": "sha256:e34f74a4634086833fcc48a8473f388df98c43c340a8b16d8c4f0e443edba3e8"
+            }
+          }
+        ],
+        "acceptedPilot": 0,
+        "wholeReview": "UNREVIEWED",
+        "actualExitCode": 0
+      }
+    },
+    "encodedPhoneReview": {
+      "status": "two-corrected-frames-inspected",
+      "frames": [136, 182],
+      "finding": "Both leaders now meet the visible cyan fold; unused paper is absent in those close-ups. Other original seven phone samples remain retained. No whole/continuous/listening approval."
+    },
+    "currentAnnotationAudit": {
+      "pin": {
+        "path": "/private/tmp/still-shift-ms3-blender46-annotation-audit3.json",
+        "bytes": 899,
+        "sha256": "sha256:dc76ede8c6c7472008dda653688506684d3eee3d7c506f5d226f7a5bcad69f5d"
+      },
+      "result": {
+        "status": "passed",
+        "mappedPinChecks": 5044,
+        "activeLabelSamples": 829,
+        "rows": [
+          {
+            "id": "EU-006",
+            "frames": 634,
+            "labels": 5,
+            "originalAssetAndAudioExact": true,
+            "freshNativeRenders": 28,
+            "reusedNativeFrames": 606,
+            "completeProjectionPhaseAndLeaderChecks": true,
+            "wholePhysicalGlyphContinuousListeningReview": "UNREVIEWED"
+          },
+          {
+            "id": "EU-010",
+            "frames": 627,
+            "labels": 4,
+            "originalAssetAndAudioExact": true,
+            "freshNativeRenders": 0,
+            "reusedNativeFrames": 627,
+            "completeProjectionPhaseAndLeaderChecks": true,
+            "wholePhysicalGlyphContinuousListeningReview": "UNREVIEWED"
+          }
+        ],
+        "scope": "Current native capture pins/highlight assignment/projection records and saved text/leader phase bindings; no surface contact, all-frame encoded glyph, continuous or listening approval."
+      }
+    },
+    "currentEncodedAudit": {
+      "pin": {
+        "path": "/private/tmp/still-shift-ms3-blender46-encoded-audit2.json",
+        "bytes": 7786,
+        "sha256": "sha256:1d39351541dffe7f41f877db7cf664cf9b7a721114bfdcc6b4138a532bf06492"
+      },
+      "result": {
+        "status": "passed",
+        "scope": "Complete encoded stream facts, original whole narration at 1x versus an independent pinned AAC reference, selected encoded phone images. This is not listening, continuous viewing or all-frame encoded glyph approval.",
+        "rows": [
+          {
+            "id": "EU-006",
+            "movie": {
+              "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/items/EU-006/4/output.mp4",
+              "bytes": 1277032,
+              "sha256": "sha256:89d0881e1de9f8a1f2e9b3b716a0382f097988d62599c4c9d07f5ababbe06f28"
+            },
+            "frames": 634,
+            "wholeSourceSamples": 1013760,
+            "mixedVideoClockSamples": 1014400,
+            "frameQuantizationTailSamples": 640,
+            "independentWholeAACDecodedParity": true,
+            "decoded": [
+              {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations7/EU-006/encoded.f32",
+                "bytes": 8118272,
+                "sha256": "sha256:b947ee2daca22c3ca7e10fe36e1a83d8ec6b4502017ef0e90a3fc7a44812e69a"
+              },
+              {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations7/EU-006/reference.f32",
+                "bytes": 8118272,
+                "sha256": "sha256:b947ee2daca22c3ca7e10fe36e1a83d8ec6b4502017ef0e90a3fc7a44812e69a"
+              }
+            ],
+            "images": [
+              {
+                "sourceFrame": 136,
+                "seconds": 4.533333333333333,
+                "native": {
+                  "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations7/EU-006/native-00.png",
+                  "bytes": 273818,
+                  "sha256": "sha256:4da446ed6a8498a35473ffecdffae0aa64ac8d8ac743fa5b7c1cb0b26937ff47"
+                },
+                "phone": {
+                  "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations7/EU-006/phone-000136.png",
+                  "bytes": 52845,
+                  "sha256": "sha256:a4f0dc558f8a18f6d4cb200e054eb254a6a605bd4b92556fcb5c06192c4261e4"
+                }
+              },
+              {
+                "sourceFrame": 182,
+                "seconds": 6.066666666666666,
+                "native": {
+                  "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations7/EU-006/native-01.png",
+                  "bytes": 317278,
+                  "sha256": "sha256:475de4d06a859da30a35c7deb8a053291ca5f05702a9ad81875fd3ff64b960cc"
+                },
+                "phone": {
+                  "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations7/EU-006/phone-000182.png",
+                  "bytes": 62007,
+                  "sha256": "sha256:f55e38ac15a9f69991dfd268079e5f9ae36be4892712ae04b1fec9141383106a"
+                }
+              },
+              {
+                "sourceFrame": 248,
+                "seconds": 8.266666666666667,
+                "native": {
+                  "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations7/EU-006/native-02.png",
+                  "bytes": 248298,
+                  "sha256": "sha256:30344075f55aa85b768ff7570ee6ef53a3f76bcd24722bbd529516b4e52b5a4b"
+                },
+                "phone": {
+                  "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations7/EU-006/phone-000248.png",
+                  "bytes": 54518,
+                  "sha256": "sha256:b17e69a6f77306833d4650a0a64095b63d678a3fc4acf074ae0f31a9c39ca557"
+                }
+              },
+              {
+                "sourceFrame": 483,
+                "seconds": 16.1,
+                "native": {
+                  "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations7/EU-006/native-03.png",
+                  "bytes": 541046,
+                  "sha256": "sha256:9381b2677af581792e5be3f04f2378f832c79978948e9a14d607c68e84867a86"
+                },
+                "phone": {
+                  "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations7/EU-006/phone-000483.png",
+                  "bytes": 103412,
+                  "sha256": "sha256:d85e67a104a8a86c36aef9f0a86fe7368a993138515b7b831c23367b5885c596"
+                }
+              }
+            ],
+            "wholeGlyphContinuousListeningReview": "UNREVIEWED"
+          },
+          {
+            "id": "EU-010",
+            "movie": {
+              "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/items/EU-010/3/output.mp4",
+              "bytes": 1553861,
+              "sha256": "sha256:d0bb64e9be3be90af9857fc5ace4d30c1c31b4f919551be60a165970bd0288bc"
+            },
+            "frames": 627,
+            "wholeSourceSamples": 1002240,
+            "mixedVideoClockSamples": 1003200,
+            "frameQuantizationTailSamples": 960,
+            "independentWholeAACDecodedParity": true,
+            "decoded": [
+              {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations7/EU-010/encoded.f32",
+                "bytes": 8028160,
+                "sha256": "sha256:17f3ae3a4b0289b4bc69c252ff4087a8a42be1bf0aab7b205b52cd212ebc8a89"
+              },
+              {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations7/EU-010/reference.f32",
+                "bytes": 8028160,
+                "sha256": "sha256:17f3ae3a4b0289b4bc69c252ff4087a8a42be1bf0aab7b205b52cd212ebc8a89"
+              }
+            ],
+            "images": [
+              {
+                "sourceFrame": 173,
+                "seconds": 5.766666666666667,
+                "native": {
+                  "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations7/EU-010/native-00.png",
+                  "bytes": 1123894,
+                  "sha256": "sha256:ab54cfcaa1d0162cedef840ee49984bfe4b5a3560444a81079c90ba828c4458f"
+                },
+                "phone": {
+                  "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations7/EU-010/phone-000173.png",
+                  "bytes": 202035,
+                  "sha256": "sha256:4bdb58220382a827035e895b0f7a73152c7d203e89c5ab44dd7258789cd67fba"
+                }
+              },
+              {
+                "sourceFrame": 279,
+                "seconds": 9.3,
+                "native": {
+                  "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations7/EU-010/native-01.png",
+                  "bytes": 240422,
+                  "sha256": "sha256:d6aa7f392b2b3fb9c9f78c4cc23bc44070cfc8473a7963a4823f8f2e99c50a76"
+                },
+                "phone": {
+                  "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations7/EU-010/phone-000279.png",
+                  "bytes": 50183,
+                  "sha256": "sha256:bad496e9fb8784c2ca46488938c02480619ed5268c1ba8bfabc0e8ab91a4c385"
+                }
+              },
+              {
+                "sourceFrame": 510,
+                "seconds": 17.0,
+                "native": {
+                  "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations7/EU-010/native-02.png",
+                  "bytes": 751987,
+                  "sha256": "sha256:3be565a2dabe24fb6cbb1a59e51b6ec0d80ab309ee6d1d9ae9eaaa7a36316ffb"
+                },
+                "phone": {
+                  "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-annotations7/EU-010/phone-000510.png",
+                  "bytes": 146663,
+                  "sha256": "sha256:3919ac89e66bbce45a4972da600f944beaeca5f1b43ce9d344f2eb216f66484f"
+                }
+              }
+            ],
+            "wholeGlyphContinuousListeningReview": "UNREVIEWED"
+          }
+        ]
+      }
+    }
+  },
+  "currentRenderedQA": {
+    "EU-006": {
+      "attempt": 4,
+      "qualityStatus": "failed",
+      "severityCounts": {
+        "warning": 17,
+        "error": 19
+      },
+      "codeCounts": {
+        "outside-safe-area": 7,
+        "reading-time": 10,
+        "frozen-pixels": 19
+      },
+      "images": 57
+    },
+    "EU-010": {
+      "errors": 20,
+      "warnings": 16,
+      "errorCode": "frozen-pixels",
+      "images": 58
+    }
   }
 }
