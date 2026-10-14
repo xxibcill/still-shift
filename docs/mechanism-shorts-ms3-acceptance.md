@@ -525,3 +525,15 @@ remain open. Offline type-tool metadata failure and pinned fetch are retained.
 EU005 independently verifies 598 frames, 13 root artifacts, 115 review images and
 2,392 native pins, with complete prior movie parity. E1–E5 total 3,037 frame
 bindings, 65 root artifacts and 519 review images; full recovery is still live.
+
+EU006–EU008 independently verify another 1,921 frame bindings, 39 root artifacts,
+350 review images and 7,684 native pins. Eight current episodes now verify 4,958
+frames / 104 root artifacts / 869 review images, with exact prior full picture and
+original narration parity. Recovery remains live; no whole acceptance is inferred.
+
+Installed isolated E1 receiving verifies 1,002 copied files, 610 native frames,
+113 fully decoded review PNGs and 7,815,168 complete PCM bytes while original
+repository/bundle paths are denied. Original producer1090 and installed receiverd734
+stay distinct. The initial omitted sequence sidecar failed; exact closure repair
+passes. Fresh installed production/export/report/resume/handoff creation remains open.
+[Receiving proof and retained failure](./mechanism-shorts-ms3-package-portability-results.json).

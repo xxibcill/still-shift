@@ -46,8 +46,9 @@ still hold before relying on them.
 - **MS3 bounded recovery live (2026-10-15):** coverage repair integrated at
   `3df62a55`; producer runtime `1090f97c` and profile `1dd0` remain exact.
   Revision 1 selects only nine failed jobs. Unified session 58827 is live:
-  E1–E5 are sealed and independently verified; EU-006 is running. The remaining
-  failed rows await their retry. All 2,792 source files remain exact; 107 current
+  E1–E8 are sealed and independently verified; EU-009 is running. EU-010
+  awaits retry. Eight products verify 4,958 frames, 104 root artifacts and
+  869 review images, including exact prior whole picture/audio parity. All 2,792 source files remain exact; 107 current
   and 1,221 prior/E1 files are guarded. Original failed attempts are preserved.
   E2 verifies 13 root artifacts, 90 review images, 2,352 native pins and 588 frames;
   its movie matches prior complete picture/audio evidence. The wrong physical
@@ -55,7 +56,9 @@ still hold before relying on them.
   The failed helper's frame-field assumption and corrected run are retained.
   Collect terminal lifecycle before source changes. Receiving, installed-package,
   full software, actual mount/intersection fault output and whole reviews remain
-  open. Accepted pilot: 0/10; paired authoring tokens are unavailable.
+  open. Installed isolated E1 snapshot receiving now verifies 1,002 files,
+  610 native frames, 113 decoded PNGs and complete PCM under original-path
+  denial; initial missing sequence-sidecar copy failure remains retained. Accepted pilot: 0/10; paired authoring tokens are unavailable.
   Actual geometry fault derivatives now prove 0.3 fixed-board drift and wall/hook
   shared strict interior penetration; four phone captures await terminal session.
   [Current bounded recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json).
@@ -357,6 +360,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Verify eight current episodes and isolated installed receiving
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; producer stays `3df62a55`.
+- **Done:** independent EU006–EU008 product/native checks; eight complete movies
+  retain exact prior whole picture/original narration evidence. Recovery still live.
+- **Results:** eight products / 4,958 frames / 104 root artifacts / 869 review
+  images. Installed receiver checks 1,002 copied files, 610 native frames,
+  113 decoded PNGs and complete PCM with original source paths denied.
+- **Retained failure:** first receiving copy omitted sequence.json; public checker
+  rejected it. Exact sidecar added; corrected reader actually exits0.
+- **Open / next:** terminal run/report/resume/ten handoffs, fresh installed
+  production, full gates, physical fault images and whole production reviews.
+- **Records:** [recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json),
+  [installed receiving](./mechanism-shorts-ms3-package-portability-results.json).
 
 ### 2026-10-15 — Verify recovered zipper; qualify declaration repair in isolation
 
