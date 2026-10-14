@@ -1,0 +1,448 @@
+{
+  "schemaVersion": "ms3-first-ten-purpose-camera-results-1",
+  "date": "2026-10-14",
+  "status": "camera-and-eight-episode-preflight-passed-current-cohort-running",
+  "source": {
+    "runtimeSha256": "sha256:c7cde29700a9db643776cbb9faa7a96cc4d931f8281abcfaf96dd85a9d75f45b",
+    "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+    "heldSourceFiles": 2778,
+    "heldSourceBytes": 122203611,
+    "sourceInventory": {
+      "path": "/private/tmp/still-shift-ms3-holds58-inputs1.json",
+      "bytes": 474617,
+      "sha256": "sha256:a282fe90eb59e4eaa95edb601e4d706730ec8130e01c4f00a4a4f158af10585b"
+    },
+    "privateInputs": {
+      "path": "/private/tmp/still-shift-ms3-holds59-private-inputs1.json",
+      "bytes": 20199,
+      "sha256": "sha256:95b28437e4892a892694b57d249bab9b64db63fd6f80d098ffefc0e0a34c5a04"
+    }
+  },
+  "pilot": {
+    "selection": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+    "episodes": "Actual Everyday Unlocked EU001\u2013EU010",
+    "narration": "Original complete Alden takes at 1x; no generation, trimming or timing changes",
+    "accepted": 0,
+    "pairedRoutineTelemetry": null
+  },
+  "authored": {
+    "purposes": 60,
+    "frames": 6181,
+    "stateAndStagingPrograms": 39,
+    "projects": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/projects-all10-holds59-v6-cli.json",
+      "bytes": 3048,
+      "sha256": "sha256:9adfd218aa7fdc3ffd7372e21cbd0df982780de0df07349191ec4d1990abaa96"
+    },
+    "controllerAndSpeechTracksExact": true,
+    "originalLibraryAssetsAndProductionPointersUnchanged": true
+  },
+  "preflightEight": {
+    "episodes": 8,
+    "frames": 4949,
+    "purposes": 50,
+    "registeredActualComparisons": 11625,
+    "sourceClocksAndLockedCamerasPassed": true,
+    "scope": "Actual original native closures, absolute sequence clocks, locked cameras and declared sampled fixed-reference/controller/staging ranges. No current-source export, whole mechanical/contact, factual, encoded-glyph, continuous or listening acceptance.",
+    "rows": [
+      {
+        "id": "EU-001",
+        "frames": 610,
+        "shots": 5,
+        "proofHolds": 5,
+        "sourceClockFramesChecked": 610,
+        "lockedCameraFramesChecked": 610,
+        "registeredPrograms": 3,
+        "independentActualComparisons": 764,
+        "layers": 42,
+        "prospectiveCapacityBytes": 107036672,
+        "nativeRequestsUnchanged": true,
+        "authenticatedCompletePhysicalFrameEvidence": true,
+        "newNativeRenders": 0
+      },
+      {
+        "id": "EU-002",
+        "frames": 588,
+        "shots": 5,
+        "proofHolds": 5,
+        "sourceClockFramesChecked": 588,
+        "lockedCameraFramesChecked": 588,
+        "registeredPrograms": 3,
+        "independentActualComparisons": 723,
+        "layers": 37,
+        "prospectiveCapacityBytes": 91209728,
+        "nativeRequestsUnchanged": true,
+        "authenticatedCompletePhysicalFrameEvidence": true,
+        "newNativeRenders": 0
+      },
+      {
+        "id": "EU-003",
+        "frames": 588,
+        "shots": 7,
+        "proofHolds": 7,
+        "sourceClockFramesChecked": 588,
+        "lockedCameraFramesChecked": 588,
+        "registeredPrograms": 3,
+        "independentActualComparisons": 1424,
+        "layers": 45,
+        "prospectiveCapacityBytes": 110477312,
+        "nativeRequestsUnchanged": true,
+        "authenticatedCompletePhysicalFrameEvidence": true,
+        "newNativeRenders": 0
+      },
+      {
+        "id": "EU-005",
+        "frames": 598,
+        "shots": 5,
+        "proofHolds": 5,
+        "sourceClockFramesChecked": 598,
+        "lockedCameraFramesChecked": 598,
+        "registeredPrograms": 5,
+        "independentActualComparisons": 1387,
+        "layers": 35,
+        "prospectiveCapacityBytes": 87826432,
+        "nativeRequestsUnchanged": true,
+        "authenticatedCompletePhysicalFrameEvidence": true,
+        "newNativeRenders": 0
+      },
+      {
+        "id": "EU-006",
+        "frames": 634,
+        "shots": 8,
+        "proofHolds": 8,
+        "sourceClockFramesChecked": 634,
+        "lockedCameraFramesChecked": 634,
+        "registeredPrograms": 7,
+        "independentActualComparisons": 4108,
+        "layers": 46,
+        "prospectiveCapacityBytes": 121552896,
+        "nativeRequestsUnchanged": true,
+        "authenticatedCompletePhysicalFrameEvidence": true,
+        "newNativeRenders": 0
+      },
+      {
+        "id": "EU-007",
+        "frames": 708,
+        "shots": 7,
+        "proofHolds": 7,
+        "sourceClockFramesChecked": 708,
+        "lockedCameraFramesChecked": 708,
+        "registeredPrograms": 4,
+        "independentActualComparisons": 1410,
+        "layers": 47,
+        "prospectiveCapacityBytes": 138395648,
+        "nativeRequestsUnchanged": true,
+        "authenticatedCompletePhysicalFrameEvidence": true,
+        "newNativeRenders": 0
+      },
+      {
+        "id": "EU-009",
+        "frames": 596,
+        "shots": 7,
+        "proofHolds": 7,
+        "sourceClockFramesChecked": 596,
+        "lockedCameraFramesChecked": 596,
+        "registeredPrograms": 4,
+        "independentActualComparisons": 846,
+        "layers": 50,
+        "prospectiveCapacityBytes": 124157952,
+        "nativeRequestsUnchanged": true,
+        "authenticatedCompletePhysicalFrameEvidence": true,
+        "newNativeRenders": 0
+      },
+      {
+        "id": "EU-010",
+        "frames": 627,
+        "shots": 6,
+        "proofHolds": 6,
+        "sourceClockFramesChecked": 627,
+        "lockedCameraFramesChecked": 627,
+        "registeredPrograms": 4,
+        "independentActualComparisons": 963,
+        "layers": 41,
+        "prospectiveCapacityBytes": 107393024,
+        "nativeRequestsUnchanged": true,
+        "authenticatedCompletePhysicalFrameEvidence": true,
+        "newNativeRenders": 0
+      }
+    ],
+    "artifact": {
+      "path": "/private/tmp/still-shift-ms3-holds59-preflight3-eight.json",
+      "bytes": 4219,
+      "sha256": "sha256:7517c2fe05db86932e4985df337237377a64ff05a5a7cbb834cc9bfd1db2c224"
+    }
+  },
+  "cameraRepairs": {
+    "failures": [
+      {
+        "id": "EU-004",
+        "shot": "recognition",
+        "framing": null,
+        "worst": {
+          "orthoScale": [5.288413047790527, 146]
+        }
+      },
+      {
+        "id": "EU-004",
+        "shot": "guide-join",
+        "framing": {
+          "orthoScale": 6.2,
+          "shiftY": -0.08
+        },
+        "worst": {
+          "worldMatrix": [3.3100000619888306, 397]
+        }
+      },
+      {
+        "id": "EU-004",
+        "shot": "guide-reverse",
+        "framing": {
+          "orthoScale": 6.2,
+          "shiftY": -0.08
+        },
+        "worst": {
+          "worldMatrix": [3.3100000619888306, 580]
+        }
+      },
+      {
+        "id": "EU-008",
+        "shot": "shot-02",
+        "framing": {
+          "orthoScale": 2.5,
+          "shiftY": -0.08
+        },
+        "worst": {
+          "worldMatrix": [0.2999999523162842, 338]
+        }
+      }
+    ],
+    "zipper": {
+      "newUnanimatedCameras": 2,
+      "derivative": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-proof-purpose59-v4/EU-004/asset-camera.blend",
+        "bytes": 2014123,
+        "sha256": "sha256:322587868049c245052635eb0c58db3a09e5dbf16ff8fe34efca6d1ffe2de593"
+      },
+      "originalMasterBytesUnchanged": true,
+      "defaultEvaluatedGeometryAndOriginalControlsExact": true,
+      "fixedWholeAndGuideViews": "Single full-action envelope; same guide pose/framing for forward and reverse; payoff uses the same whole view as recognition.",
+      "fullNativeGuard": {
+        "frames": 653,
+        "allFiveShotsPassed": true,
+        "artifact": {
+          "path": "/private/tmp/still-shift-ms3-holds59-EU-004-camera-guard5.json",
+          "bytes": 5413,
+          "sha256": "sha256:7df8014d4456c01b04f8e90dabf1e36ab4597980e9ca6c0e30a5327551970f03"
+        }
+      }
+    },
+    "latch": {
+      "frames": 579,
+      "allFiveShotsPassed": true,
+      "artifact": {
+        "path": "/private/tmp/still-shift-ms3-holds59-EU-008-camera-guard6.json",
+        "bytes": 5396,
+        "sha256": "sha256:1da433719c63e5c38ecf4cb7f8fbc3abbb723db8d2196b58b99ecc32034554ad"
+      },
+      "projection": {
+        "status": "passed-scoped-actual-Blender-projection",
+        "framing": {
+          "orthoScale": 2.2028770557669706,
+          "shiftX": -0.08656404208243121,
+          "shiftY": 0.12595620155334475
+        },
+        "projectedBoundsUpwardsY": [
+          [0.07000000029802322, 0.9300000071525574],
+          [0.37198999524116516, 0.8280099630355835]
+        ],
+        "targetCenter": [0.5, 0.6],
+        "projectionShiftResponse": [
+          [-1.7777775637805462, 0.0],
+          [0.0, -1.0]
+        ],
+        "pointCount": 4067,
+        "sourceBytesUnchanged": true,
+        "newNativeRenders": 0,
+        "scope": "All original rendered primary-part bounds/anchors across83 frames, projected through the actual saved camera; no contact/occlusion/playback acceptance."
+      },
+      "actualImageRepair": "The first fixed-camera candidate cropped the spring seat. Actual camera calibration corrected horizontal shift sensitivity (-1.7778); all corrected primary bounds fit x0.07\u20130.93. Corrected native phone images keep the spring and gold seat visible."
+    },
+    "wholePlayback": "UNREVIEWED; conservative fixed treatment retained"
+  },
+  "actualScouts": {
+    "sampledStates": 25,
+    "freshNativeRenders": 12,
+    "reusedNativeFrames": 13,
+    "actualRenderedPartsEqualOriginal": true,
+    "sourceControlsCameraFramingAndAnchorChecksPassed": true,
+    "first": {
+      "path": "/private/tmp/still-shift-ms3-holds59-scout1.json",
+      "bytes": 10994,
+      "sha256": "sha256:353d2d89bc9324efc35b6303f67af3e990ffeeb5b79cd242286b8c266bea9828"
+    },
+    "correctedLatch": {
+      "path": "/private/tmp/still-shift-ms3-holds59-scout2.json",
+      "bytes": 3306,
+      "sha256": "sha256:8ef1ca917171e6a37483dbba5b2ab5ac45776df45c5a6012bc7aa3fc8c57b7fb"
+    },
+    "phoneReview": {
+      "sheetsActuallyViewed": 4,
+      "zipperFrames": 15,
+      "initialLatchFrames": 5,
+      "correctedLatchFrames": 5,
+      "findings": [
+        "Fixed zipper overview and guide views preserve object recognition and expose the channel/engaged teeth in sampled states.",
+        "The first latch fixed-view crop failed at the right spring seat; corrected projected shift keeps that seat visible.",
+        "Whole encoded labels, actual normal-speed transitions, contact/factual and listening review remain open."
+      ],
+      "sheets": [
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/camera-phone-review59/EU-004-sheet-0.png",
+          "bytes": 540545,
+          "sha256": "sha256:17d8f4f201bec32812e9a5f796b3777569e14f13d5dc42c137ce7e8358399bc3"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/camera-phone-review59/EU-004-sheet-1.png",
+          "bytes": 288449,
+          "sha256": "sha256:656c0a0da1185c02925ecb2f8ca276444e515bbc20d3315aaac3f31d3af055fe"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/camera-phone-review59/EU-008-corrected-sheet-0.png",
+          "bytes": 485877,
+          "sha256": "sha256:6221395993f9cac08d55b2f98d4ae70bbbfb43bc96b4338307e6a19927da3244"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/camera-phone-review59/EU-008-sheet-0.png",
+          "bytes": 461238,
+          "sha256": "sha256:6eaff5a8ab0f972b52d9c601babc4737e26e0e592e97e3d62584146a03ce5c55"
+        }
+      ]
+    }
+  },
+  "retainedAttempts": [
+    {
+      "path": "/private/tmp/still-shift-ms3-holds59-preflight1.log",
+      "result": "Failed EU001 fixed reference: housing moves0.18 relative to the hook. Revised only the declared reference to the stationary measuring edge; tolerance1e-6 unchanged."
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-holds59-preflight2.log",
+      "result": "Failed locked-camera assumption: zipper scale/follow and latch spring follow. Four complete native intervals required actual repairs."
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-holds59-EU-004-camera-guard1.log",
+      "result": "Adapter wrongly looked for global cameras in the asset collection; corrected to renderer global lookup."
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-holds59-EU-004-camera-guard2.log",
+      "result": "Animated zipper projection correctly rejects an override. Separate unanimated camera copies retain the original asset."
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-holds59-EU-004-camera-guard3.log",
+      "result": "Read-only viewport geometry at first moving frame99 differs from original render observations."
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-holds59-EU-004-camera-guard4.log",
+      "result": "Same viewport difference remains after complete material/visibility update. Actual jaw matrix matches prior frame98; actual later render observations at all20 selected states match originals. Retain viewport limitation, do not relax physical equality."
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-holds59-EU-004-geometry-diff4.json",
+      "result": "Complete first-failure geometry differences retained."
+    },
+    {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/camera-phone-review59/EU-008-sheet-0.png",
+      "result": "Initial fixed-camera pixel crop rejected; corrected via actual Blender projection and new native samples."
+    }
+  ],
+  "newCohort": {
+    "id": "actual-first-ten-native-purpose59",
+    "manifest": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-holds59.json",
+      "bytes": 37224,
+      "sha256": "sha256:f646df96441cee8dba3af034786d48008989ef7d578b838807ae699f3f5d828e"
+    },
+    "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose59",
+    "cacheImport": {
+      "status": "passed",
+      "source": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/blender-cache",
+      "destination": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-purpose59/blender-cache",
+      "files": 5841,
+      "bytes": 2358130288,
+      "seconds": 5.266300083138049,
+      "allCopiedBytesExact": true,
+      "method": "APFS copy-on-write; no symlinks or quotas changed",
+      "originalJournalAndSealedDeliveriesUntouched": true
+    },
+    "wrapper": "/private/tmp/still-shift-ms3-holds59-whole1.py",
+    "receipt": "/private/tmp/still-shift-ms3-holds59-whole1-receipt.json",
+    "sessionId": 90896,
+    "stateAtRecord": [
+      {
+        "id": "EU-001",
+        "status": "running",
+        "attempts": 1
+      },
+      {
+        "id": "EU-002",
+        "status": "pending",
+        "attempts": 0
+      },
+      {
+        "id": "EU-003",
+        "status": "pending",
+        "attempts": 0
+      },
+      {
+        "id": "EU-004",
+        "status": "pending",
+        "attempts": 0
+      },
+      {
+        "id": "EU-005",
+        "status": "pending",
+        "attempts": 0
+      },
+      {
+        "id": "EU-006",
+        "status": "pending",
+        "attempts": 0
+      },
+      {
+        "id": "EU-007",
+        "status": "pending",
+        "attempts": 0
+      },
+      {
+        "id": "EU-008",
+        "status": "pending",
+        "attempts": 0
+      },
+      {
+        "id": "EU-009",
+        "status": "pending",
+        "attempts": 0
+      },
+      {
+        "id": "EU-010",
+        "status": "pending",
+        "attempts": 0
+      }
+    ],
+    "runReportResume": "Run live; report/resume not started. Re-poll the confirmed live handle; do not restart on observation timeout."
+  },
+  "originalCohort": {
+    "id": "actual-first-ten-full-HD47",
+    "revision": 2,
+    "journalExact": true,
+    "deliveredFrames": 6181,
+    "qa": "178 frozen errors / 162 warnings / 537 images retained with original binding",
+    "wholeReviews": "UNREVIEWED"
+  },
+  "remaining": [
+    "Finish current-source run/report/resume and independent native/encoded audio/picture checks",
+    "Broader physical label/event/intersection/mount fault coverage",
+    "Native editable/portable handoff and whole factual/mechanical/encoded glyph/continuous/listening plus original E06/E10 reviews",
+    "Comparable paired effort and final full software/benchmark/archive/installed-package gates"
+  ],
+  "paidGeneration": "None",
+  "publication": "No merge or publication"
+}

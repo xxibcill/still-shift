@@ -73,8 +73,26 @@ still hold before relying on them.
   Original H3 journal remains exact; no purpose is saved to pilot inputs yet.
   [Native hold evidence](./mechanism-shorts-ms3-native-hold-results.json),
   [native workflow](./mechanism-blender-episode.md).
-  **Next:** author whole-cohort purpose/phase/staging evidence and rebind
-  current-source exports/QA. Broader physical label/event/
+  **Current-source cohort live:** `actual-first-ten-native-purpose59` in
+  `output-purpose59`; manifest `queue-holds59.json`, wrapper session90896.
+  Sixty purposes and39 sampled state/staging programs preserve all original
+  narration, speech and control tracks. Eight unchanged-camera episodes pass
+  4,949 frame clocks/camera checks and11,625 actual state comparisons. Preflight
+  catches the moving tape housing reference, zipper auto-zoom/follow and latch
+  spring follow. Separate zipper camera-only derivative adds two unanimated views;
+  masters, original geometry/control data and production pointers stay unchanged.
+  Shared guards pass all653 zipper/579 latch frames. Twenty-five selected native
+  states match original rendered physical parts (12 fresh/13 reused); four phone
+  sheets are actually viewed. The initial latch spring-seat crop is rejected and
+  corrected using actual projection shift sensitivity; corrected seat is visible.
+  Viewport-only geometry comparison lags at frame99 and remains retained; actual
+  render observations match the originals. Copy-on-write cache import5,841 files /
+  2,358,130,288 bytes is exact. Run is live; report/resume and fresh whole output
+  audits have not completed. Engine/private inputs held; original H3 journal exact.
+  [Purpose/camera evidence and live handles](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json).
+  **Next:** re-poll90896 (do not restart on timeout); complete current-source
+  run/report/resume and independent native/encoded audio/picture audits. No engine
+  source edits while this frozen job is live. Broader physical label/event/
   intersection/mount faults, native handoff, whole factual/mechanical/encoded
   glyph/continuous/listening and original E06/E10 reviews, comparable effort and
   final full software/benchmark/archive/installed gates remain. Accepted pilot is
@@ -267,6 +285,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — First-ten purposes, fixed cameras and current-source queue
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `dc77a741`.
+- **Done:** Author60 purposes /39 sampled state/staging programs for actual
+  EU001–EU010. Eight episodes pass4,949 source clocks/locked cameras and11,625
+  state comparisons. Camera preflight locates zipper zoom/follow and latch follow.
+- **Repair:** Add two unanimated camera copies in a separate zipper asset; all
+  original master bytes/controls/default geometry stay exact. Fixed full-action
+  views pass shared guards over653/579 frames. Actual25 native states match original
+  rendered physical parts; four phone sheets viewed. Correct the spring-seat crop
+  through actual Blender projection. Viewport lag/rejected candidates remain.
+- **Live / next:** Separate current-source ten-item queue is running in
+  `output-purpose59`, wrapper90896; exact5,841-file COW native-cache import,
+  2,778 engine inputs and51 private dependencies held, original H3 journal exact.
+  Await run/report/resume and full audits; no engine changes during the live batch.
+- **Records:** [Purpose/camera evidence](./mechanism-shorts-ms3-first-ten-purpose-camera-results.json).
+  Acceptance0/10, full reviews/effort/final gates open; no spending/publication.
 
 ### 2026-10-14 — Native authored hold evidence and whole-sequence shot clocks
 
