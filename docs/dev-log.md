@@ -46,7 +46,7 @@ still hold before relying on them.
 - **MS3 bounded recovery live (2026-10-15):** coverage repair integrated at
   `3df62a55`; producer runtime `1090f97c` and profile `1dd0` remain exact.
   Revision 1 selects only nine failed jobs. Unified session 58827 is live:
-  E1/E2/E3 are sealed and independently verified; E4 is running. The remaining
+  E1–E5 are sealed and independently verified; EU-006 is running. The remaining
   failed rows await their retry. All 2,792 source files remain exact; 107 current
   and 1,221 prior/E1 files are guarded. Original failed attempts are preserved.
   E2 verifies 13 root artifacts, 90 review images, 2,352 native pins and 588 frames;
@@ -59,6 +59,11 @@ still hold before relying on them.
   Actual geometry fault derivatives now prove 0.3 fixed-board drift and wall/hook
   shared strict interior penetration; four phone captures await terminal session.
   [Current bounded recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json).
+  Actual package build failed declaration emit. Isolated `20e1afe2` fixes it with
+  byte-identical erased JS; fast 4,628/460, private archive, installed public/type
+  checks and copied all-ten admission pass under denied original-source access.
+  Compiled runtime `d7345fb9` stays distinct. Integrate after terminal 58827.
+  [Package evidence](./mechanism-shorts-ms3-package-portability-results.json).
 
 - **MS3 native coverage repair qualified in isolation (2026-10-15):** source/schema/
   actual native board now reconciles the ten selected rows, pinned whole narration/
@@ -352,6 +357,27 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Verify recovered zipper; qualify declaration repair in isolation
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; live source remains frozen.
+- **Results:** EU004 verifies 653 frames, 13 root artifacts, 97 review images and
+  2,612 native pins; movie bytes match authenticated prior complete RGBA/PCM.
+  EU005 adds 598 frames, 13 root artifacts, 115 review images and 2,392 native pins.
+  Session 58827 is live, EU-006 running. Original r0 attempt prefixes stay exact.
+- **Package failure / repair:** actual emit fails TS2742/TS7056. Isolated code
+  `20e1afe2` names the existing Composition return type, with erased JS unchanged.
+  Both review axes have zero findings; isolated fast 4,628/460, archive/offline
+  install, strict public type consumer/API/discovery and all-ten copied input
+  admission pass while original source directories are denied. Compiled runtime
+  `d7345fb9` is separate from producer `1090f97c`; no rebinding or rendering.
+- **Retained failures:** package emit; missing offline dev-tool metadata followed
+  by pinned fetch. Previous generated package is preserved. No paid generation.
+- **Open / next:** integrate isolated `0491e622` after terminal lifecycle, complete
+  actual installed/receiving export/handoff and full gates; physical fault images
+  and whole reviews remain. Pilot acceptance 0/10; paired tokens unavailable.
+- **Records:** [package portability](./mechanism-shorts-ms3-package-portability-results.json),
+  [recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json).
 
 ### 2026-10-15 — Prove physical fault geometry and recovered clothespeg
 

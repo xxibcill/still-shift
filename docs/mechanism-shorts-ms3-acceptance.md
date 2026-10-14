@@ -509,3 +509,19 @@ convex assumption and misleading Blender exit 0 remain visible. Four admitted
 phone captures await the main lifecycle’s terminal receipt. Actual faulty images,
 image review and native captured-selector replay remain open.
 [Physical fault preparation](./mechanism-shorts-ms3-physical-fault-preparation-results.json).
+
+EU004 independently verifies 653 frames, 13 root artifacts, 97 review images and
+2,612 native pins, with exact prior complete movie parity. The recovery remains
+live. Actual package compilation then fails declaration serialization TS2742/
+TS7056. Isolated source `20e1afe2` explicitly names the existing Composition type;
+erased runtime JS remains exact. Both review axes have zero findings; fast
+4,628/460, private archive/offline install, strict installed type/public API and
+all-ten copied input admission pass under denied original-source access. Compiled
+runtime `d7345fb9` is separately bound. The fix awaits live lifecycle terminal
+before integration; actual installed export/report/resume/handoff and full gates
+remain open. Offline type-tool metadata failure and pinned fetch are retained.
+[Package portability proof](./mechanism-shorts-ms3-package-portability-results.json).
+
+EU005 independently verifies 598 frames, 13 root artifacts, 115 review images and
+2,392 native pins, with complete prior movie parity. E1–E5 total 3,037 frame
+bindings, 65 root artifacts and 519 review images; full recovery is still live.
