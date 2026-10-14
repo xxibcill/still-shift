@@ -44,12 +44,15 @@ still hold before relying on them.
 ## Current state
 
 - **PR #52 second review fixes (2026-10-14):** both new P2 findings are posted
-  inline on reviewed head `15c4bd53`. The first slice filters camera-clipped
-  raycast surfaces using camera-space depth; all 14 capture tests and type checks
-  pass, including centered/off-axis regressions and a visible-blocker control.
-  The two original regression failures are retained. Shot rig/part preflight
-  validation remains the second slice. One commit per finding; push both only
-  after that final slice is verified. Primary checkout edits are preserved.
+  inline on reviewed head `15c4bd53` and repaired in separate slices. Camera-space
+  clipping is committed as `b1ebafa4`; this final slice validates every shot's rig
+  writers and hidden parts during shared read-only preflight. Fast checks pass
+  3,785 units; the complete runtime tier passes 156 runtime (including 71
+  mechanism), 318 integration and 14 Python tests plus browser smoke. Both
+  independent fix reviews have no actionable defects. Original regression and
+  offline Python setup failures are retained. One commit per finding and one
+  combined final push to PR #52; owner merge and human acceptance remain pending.
+  Primary checkout edits and its Python environment are preserved.
   [Re-review](./pr-52-rereview-results.json),
   [fix evidence](./pr-52-rereview-fix-results.json).
 
@@ -228,6 +231,26 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-14 — Fix all-shot rig and part preflight in PR #52's final slice
+
+- **Agent / branch:** Codex on `codex/pr52-clipping-preflight-fixes`; first fix
+  `b1ebafa4` covers camera clipping, this separate final slice covers preflight.
+- **Done:** shared inspection aggregates located invalid rig/part references;
+  `deps`, load, CLI validate and prepare reject final-shot errors before capture.
+- **Results:** three preflight assertions fail before the fix; all 24 focused
+  CLI/dependency/project tests pass. Fast gate passes 3,785 units; runtime gate
+  passes 156 runtime, 318 integration and 14 Python tests plus browser smoke.
+  Both independent fix reviews have no actionable findings; verified inputs stay
+  unchanged. Final-shot negatives preserve source snapshots and capture no files.
+- **Retained:** initial offline Python setup lacked the cached Ruff wheel; a
+  separate clone of the pinned environment synchronizes offline and completes
+  verification without altering the primary editable package.
+- **Delivery / limits:** two finding-specific commits share one final push to
+  PR #52. Owner merge and human review remain pending; no full E01 encode or
+  release gate, publication or paid generation.
+- **Records:** [fix evidence](./pr-52-rereview-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/52#discussion_r4267137464).
 
 ### 2026-10-14 — Fix camera-clipped anchor visibility after PR #52 re-review
 

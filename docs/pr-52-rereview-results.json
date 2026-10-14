@@ -109,7 +109,7 @@
     "No production-code changes, GitHub comments/review, commit, merge, publication or paid generation.",
     "Primary checkout changes are limited to this review record and a minimal development-log update; prior unrelated edits preserved."
   ],
-  "recommendation": "Address both Spec findings before merging. Standards has zero findings; Spec has two findings with worst severity P2.",
+  "recommendation": "Both reproduced Spec defects are fixed. Independent fix reviews have no actionable defects; owner merge decision and human acceptance remain pending.",
   "evidence": [
     {
       "path": "/private/tmp/still-shift-pr52-rereview.diff",
@@ -176,5 +176,15 @@
       "bytes": 15041,
       "sha256": "f2e80de564d29dec5a571880e70f9faa7ba5bf538dc4cf62e1e802e99a4d971b"
     }
-  ]
+  ],
+  "initialRecommendation": "Address both Spec findings before merging. Standards has zero findings; Spec has two findings with worst severity P2.",
+  "remediation": {
+    "reviewId": 5513478797,
+    "status": "both-fixed-for-one-final-push",
+    "record": "docs/pr-52-rereview-fix-results.json",
+    "firstFindingCommit": "b1ebafa4516e6b7f0e33dcc678c81e5f23012bfb",
+    "secondFindingCommit": "Containing final finding commit",
+    "fast": "passed",
+    "runtime": "passed"
+  }
 }
