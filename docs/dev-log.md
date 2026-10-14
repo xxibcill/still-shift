@@ -50,7 +50,10 @@ still hold before relying on them.
   A source-only private-copy apply rehearses19 paths/14 target files, matching
   exactly20e1/8e11/10cb/e231 with no live source/index changes. Full runtime and
   toolchain checks actually launch browsers, so they remain queued behind58827.
-  Integration/full GPU/software/package and whole acceptance stay open.
+  Integration/full GPU/software/package and whole acceptance stay open. Prepared
+  upstream MS1N probe88 now retains4 PNGs and failed pixel results, checks complete
+  RGBA controls and guards browser launch; syntax0/expected admission refusal1.
+  Actual repaired GPU evidence remains open; MS1N source/head403 stay untouched.
   [Current CPU and integration proof](./mechanism-shorts-ms3-whole-review84-results.json).
 
 - **MS3 latest installed package85 checked (2026-10-15):** codee231/source452b
@@ -71,10 +74,10 @@ still hold before relying on them.
   picture/PCM/original narration parity holds. Preview0 errors/343 warnings.
   Report also exits0 in472.55s; independent product/journal/count/percentile
   reconciliation passes. First-pass1/10 (10%) fails90% target, savings null.
-  Resume exits0 in466.21s with unchanged episode rows. First6 compact handoffs
+  Resume exits0 in466.21s with unchanged episode rows. First7 compact handoffs
   pass independent packet/resume/source/8-asset closure audits. CPU-only follower
   26381 audits new sealed packets automatically; primary58827 remains live.
-  Unified58827 continues remaining4 handoffs; do not start another renderer
+  Unified58827 continues remaining3 handoffs; do not start another renderer
   or integrate source until its actual terminal. Original attempts remain exact;
   all2,792 source files,107 inputs and1,221 prior/E1 files are guarded.
   Durable ignored `benchmarks/results/ms3-actual-first-ten-review80/index.md` links
@@ -288,6 +291,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Prepare retained MS1N GPU regression evidence
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; upstream MS1N source403
+  remains unchanged. The previous goal turn progressed; this turn also verified
+  producer58827 live through its handle with a50s poll.
+- **Done:** stage a safer4-case128px mask probe: retain actual PNGs/result before
+  pass/fail assertion, check complete-image equality/discard controls and preserve
+  browser cleanup on launch failure. Final syntax transpilation passes.
+- **Guard:** actual execution refuses before server/browser/output creation while
+  primary58827 is live (expected1). No repaired GPU pass is inferred.
+- **Progress:** EU007 handoff also passes independent8-asset/source/clock/resume
+  audit;7/10 verified, remaining3 continue in primary58827. No source integration.
+- **Open / next:** run this probe after primary terminal, then remaining current
+  runtime/render/package gates. No episode/Blender asset work or paid generation.
+- **Records:** [Prepared upstream probe](./mechanism-shorts-ms3-whole-review84-results.json).
 
 ### 2026-10-15 — MS3 CPU-only gate and exact integration preflight
 

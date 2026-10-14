@@ -265,5 +265,37 @@
       "otherFullSoftwarePackageRenderGates": "open"
     },
     "qualification": "CPU-only setup/depth14/Python formatting+lint/soundtrack lint and private source-only integration rehearsal pass. No browser/native/render group, live integration, spending, publishing or whole pilot acceptance."
+  },
+  "preparedUpstreamMaskProbe88": {
+    "status": "prepared-not-rendered",
+    "sourceWorktree": "/Users/jjae/.codex/worktrees/ms1n-review-fixes/still-shift",
+    "expectedSourceHead": "40330672",
+    "script": {
+      "path": "/private/tmp/still-shift-ms1n-review88-mask-browser1.mts",
+      "bytes": 6496,
+      "sha256": "sha256:4b66ac96c6e523a36aae6ca443c96f0dbb45a592aab893abddabe6dbec2c6caa"
+    },
+    "cases": 4,
+    "dimensions": [128, 128],
+    "expectedVisibility": ["occluded", "occluded", "occluded", "visible"],
+    "actualPixelImagesExpected": 4,
+    "completeRgbaControls": [
+      "equal-cutoff",
+      "rounded-opacity-equals-control",
+      "rounded-cutoff-equals-control",
+      "discarded-case-differs-and-is-all-white"
+    ],
+    "failureEvidence": "Write all4 PNGs and result before asserting outcome; browser cleanup also covers launch failure.",
+    "syntax": {
+      "actualExitCode": 0,
+      "receipt": "/private/tmp/still-shift-ms1n-review88-mask-parse2.json"
+    },
+    "admissionGuard": {
+      "actualExitCode": 1,
+      "expected": true,
+      "log": "/private/tmp/still-shift-ms1n-review88-mask-admission-block1.log",
+      "phase": "Before Vite server/browser/output-directory creation"
+    },
+    "scope": "Prepared software regression fixture only; actual fresh GPU proof remains open. No Blender asset work, episode render, paid generation, source change or human acceptance."
   }
 }
