@@ -43,6 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
+- **MS3 CPU gates and integration rehearsal (2026-10-15):** isolated26c4/codee231
+  now owns a locked offline Python3.12.11 environment pointing only to its own
+  service source. Depth14, Python format/lint and soundtrack lint pass;12 existing
+  configuration/editable-path files in the primary/main/MS1N venvs remain exact.
+  A source-only private-copy apply rehearses19 paths/14 target files, matching
+  exactly20e1/8e11/10cb/e231 with no live source/index changes. Full runtime and
+  toolchain checks actually launch browsers, so they remain queued behind58827.
+  Integration/full GPU/software/package and whole acceptance stay open.
+  [Current CPU and integration proof](./mechanism-shorts-ms3-whole-review84-results.json).
+
 - **MS3 latest installed package85 checked (2026-10-15):** codee231/source452b
   builds and installs privately;2,573 archive members,13 source controls,4 actual
   retry/cache/real-lock controls, strict public types and discovery pass in stages.
@@ -251,6 +261,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — MS3 CPU-only gate and exact integration preflight
+
+- **Agent / branch:** Codex; isolated `26c4a074` / source codee231.
+- **Done:** locked offline isolated Python environment, exact own editable path;
+  14 CPU worker tests, Python format/lint and soundtrack lint pass. All12 other
+  venv configuration/editable files remain byte-exact.
+- **Preflight:** only the four reviewed repair commits account for19 source/test
+  paths. Applying their aggregate to standalone copies matches all14 resulting
+  target files/deletions exactly; main source/index remain unchanged.
+- **Open / next:** primary58827 is live. Full runtime/toolchain include actual
+  browsers; integrate source and run full gates only after actual terminal.
+  No renderer, new source change, asset work or spending in this slice.
+- **Records:** [CPU/integration qualification](./mechanism-shorts-ms3-whole-review84-results.json).
 
 ### 2026-10-15 — Latest installed MS3 repairs and process isolation
 
