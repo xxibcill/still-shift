@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "ms3-current-first-ten-lifecycle-results-1",
+  "date": "2026-10-15",
+  "status": "running-current-integrated-producer-first-ten",
+  "capturedAt": "2026-10-14T20:21:07.402946+00:00",
+  "sourceCommit": "5a91ad91121754c68e752d3709d1e79156a32d29",
+  "runtimeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+  "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+  "unifiedSession": 42093,
+  "sourceHold": {
+    "files": 2788,
+    "bytes": 122331596,
+    "inventory": {
+      "path": "/private/tmp/still-shift-ms3-current72-source-inputs1.json",
+      "bytes": 476455,
+      "sha256": "sha256:a81bbe2afe3a7546a37bd1e5c9b13465f521cceaa5cde8ceef895bb957d268c2"
+    },
+    "actualCheckExitCode": 0
+  },
+  "preparation": {
+    "status": "prepared",
+    "actualExitCode": 0,
+    "sourceCommit": "5a91ad91121754c68e752d3709d1e79156a32d29",
+    "bundle": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72",
+    "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/queue-current72.json",
+    "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72",
+    "inputsCopy": {
+      "files": 110,
+      "bytes": 130572093,
+      "allCopiedBytesExact": true
+    },
+    "cacheCopy": {
+      "files": 7774,
+      "bytes": 3125684851,
+      "allCopiedBytesExact": true
+    },
+    "seconds": 10.234933875035495,
+    "scope": "Current integrated source, same selected actual EU001\u2013EU010 whole existing narration at1x; APFS copies retain originals, current builder creates new runtime binding. Historical products and journals not relabelled. No spend or whole acceptance."
+  },
+  "preparationReceipt": {
+    "path": "/private/tmp/still-shift-ms3-current72-prepare1.json",
+    "bytes": 1033,
+    "sha256": "sha256:38fa34e45b7dd9c04c2c41d0677c95fb272d69f8b3e525ca9b9ff557981e35b6"
+  },
+  "manifest": {
+    "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/queue-current72.json",
+    "bytes": 32166,
+    "sha256": "sha256:dc447717fc20f649dd0c16fa7b1dbe4ad972796fa805ba8c45da1c7512e8f9c2"
+  },
+  "wrapper": {
+    "path": "/private/tmp/still-shift-ms3-current72-whole1.py",
+    "bytes": 5341,
+    "sha256": "sha256:ebbca6b24b2b78c8b2a00bd1c18ee00c0ca0b09714de176a78d38073fd6982ce"
+  },
+  "wrapperReceiptAtCapture": {
+    "steps": [],
+    "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/queue-current72.json",
+    "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72",
+    "sourceCommit": "5a91ad91121754c68e752d3709d1e79156a32d29",
+    "runtimeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+    "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+    "scope": "Fresh current integrated source over copied portable actual EU001\u2013EU010, all whole existing Alden takes1x. Cache reuse remains explicitly admitted, historical products/journals not rebound. This repeated lifecycle does not qualify original pilot first-pass or savings.",
+    "acceptedPilot": 0,
+    "wholeReviews": "UNREVIEWED",
+    "declaredInputFiles": 107,
+    "protectedPriorFiles": 354
+  },
+  "stateAtCapture": {
+    "file": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/queue-state.json",
+      "bytes": 4556,
+      "sha256": "sha256:93183c94dc77ed4c412a4055cd022da889ae83f7afebb3e93ffadfa804a447da"
+    },
+    "statuses": {
+      "EU-001": "running",
+      "EU-002": "pending",
+      "EU-003": "pending",
+      "EU-004": "pending",
+      "EU-005": "pending",
+      "EU-006": "pending",
+      "EU-007": "pending",
+      "EU-008": "pending",
+      "EU-009": "pending",
+      "EU-010": "pending"
+    }
+  },
+  "qualification": {
+    "actualPilotAccepted": 0,
+    "wholeReview": "UNREVIEWED",
+    "pairedRoutineTokens": null,
+    "currentNativeRunReportResumeHandoffs": "in-progress-not-terminal",
+    "fullRelocatedReceivingInstalledFullGates": "open",
+    "repeatedLifecycleDoesNotEstablishOriginalFirstPassOrSavings": true,
+    "historicalProductsJournalsAndSourceBindingsPreserved": true,
+    "newSpending": false
+  }
+}

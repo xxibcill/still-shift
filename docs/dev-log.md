@@ -43,6 +43,17 @@ still hold before relying on them.
 
 ## Current state
 
+- **MS3 current all-ten lifecycle running (2026-10-15):** exact source `5a91ad91`,
+  runtime1090f97c/profile1dd0;2,788 source inputs/122,331,596B held. Native builder
+  admits the same actual EU001–EU010 under current bindings after byte-verifying
+  110 copied portable files and7,774 cache files/3,125,684,851B. New run/report/resume/
+  all-ten handoff wrapper is live, unified42093;107 declared files and354 prior
+  input/product/artifact/journal files guarded. First episode export is running;
+  no current episode completion claimed at this capture. Full receiving/installed/
+  software and whole factual/mechanical/glyph/motion/listening remain open.
+  Original lifecycle remains terminal and historical products retain bindings.
+  [Current lifecycle capture](./mechanism-shorts-ms3-current-first-ten-lifecycle-results.json).
+
 - **MS3 fourth QA state (2026-10-15):** native and bridge dimension reports now
   retain explicit artifact-bound not-applicable decisions, separate counts and
   stale-decision retirement. Technical pass and zero mechanical failures still
@@ -309,6 +320,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Start the integrated actual first-ten lifecycle
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` (source `5a91ad91`).
+- **Done:** combined fast4,619/459 passes77.15s; reviewed four-state QA repair
+  committed/pushed. Draft PR58 now reports terminal earlier all-ten audits and
+  integrated source repairs. Native builder creates fresh runtime1090f97c queue.
+- **Results:**110 copied input files and7,774 cache files rehash exact. Current
+  run/report/resume/ten handoffs is live; first export running, no new completion
+  claimed. Exact2,788 source inputs and107 declared/354 prior files guarded.
+- **Open / next:** collect actual wrapper terminal exit before any source mutation;
+  independent new evidence/pixels/PCM, full receiving/installed and software gates.
+  Whole pilot accepted0/10 and tokensnull; original histories remain untouched.
+- **Records:** [current lifecycle](./mechanism-shorts-ms3-current-first-ten-lifecycle-results.json),
+  [earlier terminal all-ten](./mechanism-shorts-ms3-first-ten-portable-lifecycle-results.json),
+  [PR58](https://github.com/xxibcill/still-shift/pull/58).
 
 ### 2026-10-15 — Integrate review repairs and complete four-state QA contract
 
