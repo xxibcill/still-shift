@@ -151,6 +151,7 @@ bounded exact-CAS batch without constructing either producer.
 pnpm still-shift production queue --projects projects.json --manifest queue.json --backend blender-native --blender-executable /Applications/Blender.app/Contents/MacOS/Blender
 pnpm still-shift production run --manifest queue.json --output-dir output --blender-executable /Applications/Blender.app/Contents/MacOS/Blender
 pnpm still-shift production report --manifest queue.json --output-dir output --blender-executable /Applications/Blender.app/Contents/MacOS/Blender --report fresh-report.json
+pnpm still-shift production handoff --manifest queue.json --output-dir output --episode EU-001 --blender-executable /Applications/Blender.app/Contents/MacOS/Blender --report fresh-handoff.json
 ```
 
 `production discover` exposes both candidate backends and their actual limits.
@@ -158,7 +159,11 @@ pnpm still-shift production report --manifest queue.json --output-dir output --b
 selectors emit the same strict source/plan/capture/map/queue/product/report
 contracts used by the runtime. These declarations establish technical routing;
 they supply no supported-pack, whole-review or pilot qualification. Native
-handoff generation remains pending and returns a missing-artifact exception.
+products retain a bounded version-2 handoff with compilation metadata, pinned
+artifacts and WAV audio matching the complete final decoded PCM. The handoff
+command verifies the current product and refreshes resume paths from the current
+manifest, including after relocation. A generation snapshot retains unfinished
+review states; it does not grant whole visual, motion, listening or pilot approval.
 
 Every native product now runs rendered QA with all output frames, actual cached-
 sequence preview pixels and measured glyph bounds. The pinned source plan supplies

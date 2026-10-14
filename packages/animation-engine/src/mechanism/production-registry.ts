@@ -25,7 +25,7 @@ import {
   MECHANISM_PRODUCTION_EVIDENCE_LIMITS,
 } from "./production-evidence-contract.ts";
 import {
-  MechanismProductionHandoffSchema,
+  MechanismProductionHandoffVersionsSchema,
   MECHANISM_PRODUCTION_HANDOFF_LIMITS,
 } from "./production-handoff.ts";
 import {
@@ -75,7 +75,7 @@ export const mechanismProductionSchemas = {
   "production-qa-program": MechanismProductionQAProgramSchema,
   "production-qa-facts": MechanismProductionQAFactsSchema,
   "production-evidence": MechanismProductionEvidenceSchema,
-  "production-handoff": MechanismProductionHandoffSchema,
+  "production-handoff": MechanismProductionHandoffVersionsSchema,
   "production-report-bundle": MechanismProductionReportBundleSchema,
   "production-queue": MechanismProductionQueueSchema,
   "production-queue-state": MechanismProductionQueueStateSchema,
@@ -126,7 +126,15 @@ export function inspectMechanismProductionCapabilities() {
     },
     reports: MECHANISM_PRODUCTION_REPORT_LIMITS,
     evidence: MECHANISM_PRODUCTION_EVIDENCE_LIMITS,
-    handoff: MECHANISM_PRODUCTION_HANDOFF_LIMITS,
+    handoff: {
+      ...MECHANISM_PRODUCTION_HANDOFF_LIMITS,
+      versions: [
+        "mechanism-production-handoff-1",
+        "mechanism-production-handoff-2",
+      ],
+      backends: ["three-native", "blender-native"],
+      audio: "unmodified-final-decoded-PCM",
+    },
     response: MECHANISM_RESPONSE_LIMITS,
     semantics: MECHANISM_SEMANTIC_LIMITS,
     operationalQA: MECHANISM_PRODUCTION_QA_LIMITS,
@@ -199,7 +207,7 @@ export function inspectMechanismProductionCapabilities() {
         badFrames: "exact-RGBA-from-bound-encoded-output",
         wholeEncodedGlyphApproval: "separate-review",
       },
-      pending: ["native-review-evidence-handoff", "whole-pilot-review"],
+      pending: ["whole-encoded-glyph-review", "whole-pilot-review"],
     },
     nativeExecutor: {
       families: ["tape-hook", "cable-tie", "clothespeg"],
@@ -294,9 +302,11 @@ and measured glyphs. It allows ${c.nativeBlenderExecutor.renderedQA.limits.layer
 layer-frames, ${c.nativeBlenderExecutor.renderedQA.limits.reportBytes} report bytes and
 ${c.nativeBlenderExecutor.renderedQA.limits.badFrames} exact encoded bad-frame PNGs.
 Bad-frame image hashes are checked against the bound video on fresh replay.
-All-frame encoded-glyph review, native review evidence/handoff and whole pilot
-acceptance remain pending.
-The handoff command retains its original Three.js scope.
+The handoff command supports both production backends. Native version-2 packets
+retain bounded source/compilation metadata, current artifact references and exact
+final decoded PCM. Receiving refreshes resume paths from the current manifest;
+generation snapshots preserve unfinished review states. All-frame encoded-glyph
+review and whole pilot acceptance remain pending.
 
 The three-family native production profile is ${c.nativeExecutor.profile.backend} with\n${c.nativeExecutor.profile.transport} transport. The three pack families remain\ncandidates. Operational QA replays original output-frame scalars and current cue timeline checks,
 retains raw warnings and exact grouped peaks, and links immutable facts in reports and

@@ -79,9 +79,11 @@ and measured glyphs. It allows 100000
 layer-frames, 8388608 report bytes and
 512 exact encoded bad-frame PNGs.
 Bad-frame image hashes are checked against the bound video on fresh replay.
-All-frame encoded-glyph review, native review evidence/handoff and whole pilot
-acceptance remain pending.
-The handoff command retains its original Three.js scope.
+The handoff command supports both production backends. Native version-2 packets
+retain bounded source/compilation metadata, current artifact references and exact
+final decoded PCM. Receiving refreshes resume paths from the current manifest;
+generation snapshots preserve unfinished review states. All-frame encoded-glyph
+review and whole pilot acceptance remain pending.
 
 The three-family native production profile is webgl2 with
 raw_rgba transport. The three pack families remain

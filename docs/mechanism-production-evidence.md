@@ -42,7 +42,11 @@ pnpm still-shift production handoff \
 ```
 
 The command requires a current verified selected product and emits a fresh
-`mechanism-production-handoff-1` file with current effective QA statuses. The full
+backend-specific `mechanism-production-handoff-1` (Three.js) or
+`mechanism-production-handoff-2` (Blender) file with current effective QA statuses.
+The native packet records the original source clock, current artifact closure and
+complete final decoded PCM; current manifest paths replace historical resume
+locations after relocation. The full
 handoff stays within32,768 bytes. Use its recorded source revision/project hash
 for a scoped cue patch, and retain current-artifact review gaps. The generated
 [capability reference](./mechanism-production-capabilities.md) and discovery use

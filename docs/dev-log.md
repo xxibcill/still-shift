@@ -43,6 +43,18 @@ still hold before relying on them.
 
 ## Current state
 
+- **MS3 isolated review repairs (2026-10-15):** `codex/ms3-review-fixes` starts
+  at exact `d45f3f4f`; frozen original source remains live for portable68. Native
+  compact handoff now authenticates source/clock/artifact closure and final PCM,
+  refreshes current resume paths after relocation and preserves unfinished review.
+  Scoped30 units/6 fixture-runtime tests and fast4,596 tests pass in stages;
+  parser/type/realpath/lint failures retained. Copied actual EU002 media verifies
+  PCM and rejects re-signed clock/audio mutations without a fresh export.
+  Current native/relocated/installed producer proofs and final gates remain open.
+  Independent review also found first-pass repair/recovery classification missing;
+  that finding stays open. No new spend or acceptance.
+  [Review, checks and limits](./mechanism-shorts-ms3-native-handoff-review-results.json).
+
 - **MS3 in progress (2026-10-15):** `codex/mechanism-ms3`,
   [draft PR #58](https://github.com/xxibcill/still-shift/pull/58) targets main.
   Actual Everyday Unlocked EU001–EU010 use complete existing Alden takes at1×;
@@ -266,6 +278,18 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Native compact handoff review repair
+
+- **Agent / branch:** Codex on `codex/ms3-review-fixes`, from `d45f3f4f`.
+- **Done:** version-2 native generation packet, source/clock/asset/final-PCM
+  authentication and current-manifest resume paths; legacy packet preserved.
+- **Results:** scoped30 units/6 fixture-runtime checks and fast4,596 tests pass;
+  actual retained EU002 PCM/clock mutation controls pass with no new render.
+- **Retained:** red tests, parser/type/canonical-path and type-import failures.
+- **Open:** actual current/relocated/installed handoff, full gates, first-pass
+  classification, whole ten-episode reviews. Portable68 continues unchanged.
+- **Records:** [Independent review and source evidence](./mechanism-shorts-ms3-native-handoff-review-results.json).
 
 ### 2026-10-15 — Corrected tie/buckle deliveries and portable first-ten inputs
 

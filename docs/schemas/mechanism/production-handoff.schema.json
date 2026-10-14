@@ -1,256 +1,640 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "schemaVersion": {
-      "type": "string",
-      "const": "mechanism-production-handoff-1"
-    },
-    "id": { "type": "string", "minLength": 1, "maxLength": 80 },
-    "question": { "type": "string", "minLength": 1, "maxLength": 512 },
-    "family": {
-      "type": "string",
-      "enum": ["tape-hook", "cable-tie", "clothespeg"]
-    },
-    "designVariant": { "type": "string", "minLength": 1, "maxLength": 256 },
-    "binding": {
-      "type": "object",
-      "properties": {
-        "inputSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
-        "outputSha256": {
-          "anyOf": [
-            { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
-            { "type": "null" }
-          ]
-        },
-        "codeSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
-        "profileSha256": {
-          "type": "string",
-          "pattern": "^sha256:[a-f0-9]{64}$"
-        }
-      },
-      "required": [
-        "inputSha256",
-        "outputSha256",
-        "codeSha256",
-        "profileSha256"
-      ],
-      "additionalProperties": false
-    },
-    "sourceStatus": {
-      "type": "string",
-      "enum": ["generation-snapshot", "current-verified"]
-    },
-    "compilation": {
+  "anyOf": [
+    {
       "type": "object",
       "properties": {
         "schemaVersion": {
           "type": "string",
-          "const": "mechanism-cue-compilation-1"
+          "const": "mechanism-production-handoff-1"
         },
+        "id": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "question": { "type": "string", "minLength": 1, "maxLength": 512 },
         "family": {
+          "type": "string",
+          "enum": ["tape-hook", "cable-tie", "clothespeg"]
+        },
+        "designVariant": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "binding": {
           "type": "object",
           "properties": {
-            "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
-            "revision": {
-              "type": "integer",
-              "minimum": 0,
-              "maximum": 2147483647
+            "inputSha256": {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
             },
-            "projectHash": {
+            "outputSha256": {
+              "anyOf": [
+                { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+                { "type": "null" }
+              ]
+            },
+            "codeSha256": {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            },
+            "profileSha256": {
               "type": "string",
               "pattern": "^sha256:[a-f0-9]{64}$"
             }
           },
-          "required": ["path", "revision", "projectHash"],
+          "required": [
+            "inputSha256",
+            "outputSha256",
+            "codeSha256",
+            "profileSha256"
+          ],
           "additionalProperties": false
         },
-        "cue": {
+        "sourceStatus": {
+          "type": "string",
+          "enum": ["generation-snapshot", "current-verified"]
+        },
+        "compilation": {
           "type": "object",
           "properties": {
-            "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
-            "revision": {
-              "type": "integer",
-              "minimum": 0,
-              "maximum": 2147483647
-            },
-            "projectHash": {
+            "schemaVersion": {
               "type": "string",
-              "pattern": "^sha256:[a-f0-9]{64}$"
+              "const": "mechanism-cue-compilation-1"
+            },
+            "family": {
+              "type": "object",
+              "properties": {
+                "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+                "revision": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 2147483647
+                },
+                "projectHash": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": ["path", "revision", "projectHash"],
+              "additionalProperties": false
+            },
+            "cue": {
+              "type": "object",
+              "properties": {
+                "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+                "revision": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 2147483647
+                },
+                "projectHash": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": ["path", "revision", "projectHash"],
+              "additionalProperties": false
+            },
+            "composition": {
+              "type": "object",
+              "properties": {
+                "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": ["path", "sha256"],
+              "additionalProperties": false
+            },
+            "frameCount": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 108000
+            },
+            "fps": { "type": "integer", "minimum": 1, "maximum": 60 },
+            "width": { "type": "integer", "minimum": 16, "maximum": 8192 },
+            "height": { "type": "integer", "minimum": 16, "maximum": 8192 }
+          },
+          "required": [
+            "schemaVersion",
+            "family",
+            "cue",
+            "composition",
+            "frameCount",
+            "fps",
+            "width",
+            "height"
+          ],
+          "additionalProperties": false
+        },
+        "resume": {
+          "type": "object",
+          "properties": {
+            "manifestPath": {
+              "anyOf": [
+                { "type": "string", "maxLength": 2048 },
+                { "type": "null" }
+              ]
+            },
+            "outputDirectory": { "type": "string", "maxLength": 2048 },
+            "familyPath": { "type": "string", "maxLength": 2048 },
+            "cuePath": { "type": "string", "maxLength": 2048 }
+          },
+          "required": [
+            "manifestPath",
+            "outputDirectory",
+            "familyPath",
+            "cuePath"
+          ],
+          "additionalProperties": false
+        },
+        "assets": {
+          "type": "object",
+          "properties": {
+            "video": {
+              "type": "object",
+              "properties": {
+                "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 536870912
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": ["path", "bytes", "sha256"],
+              "additionalProperties": false
+            },
+            "audio": {
+              "type": "object",
+              "properties": {
+                "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 536870912
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": ["path", "bytes", "sha256"],
+              "additionalProperties": false
+            },
+            "evidence": {
+              "type": "object",
+              "properties": {
+                "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 536870912
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": ["path", "bytes", "sha256"],
+              "additionalProperties": false
+            },
+            "decodedReport": {
+              "type": "object",
+              "properties": {
+                "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 536870912
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": ["path", "bytes", "sha256"],
+              "additionalProperties": false
+            },
+            "qualityReport": {
+              "type": "object",
+              "properties": {
+                "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 536870912
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": ["path", "bytes", "sha256"],
+              "additionalProperties": false
             }
           },
-          "required": ["path", "revision", "projectHash"],
+          "required": ["video", "audio", "evidence", "decodedReport"],
           "additionalProperties": false
         },
-        "composition": {
+        "summary": {
           "type": "object",
           "properties": {
-            "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
-            "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+            "shots": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 64
+            },
+            "sampledFrames": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 512
+            },
+            "images": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 1024
+            },
+            "cropExceptions": { "type": "integer", "minimum": 0, "maximum": 64 }
           },
-          "required": ["path", "sha256"],
+          "required": ["shots", "sampledFrames", "images", "cropExceptions"],
           "additionalProperties": false
         },
-        "frameCount": { "type": "integer", "minimum": 1, "maximum": 108000 },
-        "fps": { "type": "integer", "minimum": 1, "maximum": 60 },
-        "width": { "type": "integer", "minimum": 16, "maximum": 8192 },
-        "height": { "type": "integer", "minimum": 16, "maximum": 8192 }
+        "qa": {
+          "type": "object",
+          "properties": {
+            "technical": {
+              "type": "string",
+              "enum": ["passed", "failed", "unreviewed"]
+            },
+            "mechanical": {
+              "type": "string",
+              "enum": ["passed", "failed", "unreviewed"]
+            },
+            "sampled-visual": {
+              "type": "string",
+              "enum": ["passed", "failed", "unreviewed"]
+            },
+            "continuous-motion": {
+              "type": "string",
+              "enum": ["passed", "failed", "unreviewed"]
+            },
+            "listening": {
+              "type": "string",
+              "enum": ["passed", "failed", "unreviewed"]
+            },
+            "factual": {
+              "type": "string",
+              "enum": ["passed", "failed", "unreviewed"]
+            }
+          },
+          "required": [
+            "technical",
+            "mechanical",
+            "sampled-visual",
+            "continuous-motion",
+            "listening",
+            "factual"
+          ],
+          "additionalProperties": false
+        },
+        "reviewedReady": { "type": "boolean" },
+        "nextAction": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "qualification": { "type": "string", "maxLength": 2048 }
       },
       "required": [
         "schemaVersion",
+        "id",
+        "question",
         "family",
-        "cue",
-        "composition",
-        "frameCount",
-        "fps",
-        "width",
-        "height"
+        "designVariant",
+        "binding",
+        "sourceStatus",
+        "compilation",
+        "resume",
+        "assets",
+        "summary",
+        "qa",
+        "reviewedReady",
+        "nextAction",
+        "qualification"
       ],
       "additionalProperties": false
     },
-    "resume": {
+    {
       "type": "object",
       "properties": {
-        "manifestPath": {
-          "anyOf": [{ "type": "string", "maxLength": 2048 }, { "type": "null" }]
+        "schemaVersion": {
+          "type": "string",
+          "const": "mechanism-production-handoff-2"
         },
-        "outputDirectory": { "type": "string", "maxLength": 2048 },
-        "familyPath": { "type": "string", "maxLength": 2048 },
-        "cuePath": { "type": "string", "maxLength": 2048 }
-      },
-      "required": ["manifestPath", "outputDirectory", "familyPath", "cuePath"],
-      "additionalProperties": false
-    },
-    "assets": {
-      "type": "object",
-      "properties": {
-        "video": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "question": { "type": "string", "minLength": 1, "maxLength": 512 },
+        "family": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9.-]{0,127}$"
+        },
+        "designVariant": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "binding": {
           "type": "object",
           "properties": {
-            "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
-            "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
-            "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+            "inputSha256": {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            },
+            "outputSha256": {
+              "anyOf": [
+                { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+                { "type": "null" }
+              ]
+            },
+            "codeSha256": {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            },
+            "profileSha256": {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            }
           },
-          "required": ["path", "bytes", "sha256"],
+          "required": [
+            "inputSha256",
+            "outputSha256",
+            "codeSha256",
+            "profileSha256"
+          ],
           "additionalProperties": false
         },
-        "audio": {
+        "sourceStatus": {
+          "type": "string",
+          "enum": ["generation-snapshot", "current-verified"]
+        },
+        "compilation": {
           "type": "object",
           "properties": {
-            "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
-            "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
-            "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+            "frameCount": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 2000
+            },
+            "width": { "type": "integer", "minimum": 16, "maximum": 4096 },
+            "height": { "type": "integer", "minimum": 16, "maximum": 4096 },
+            "fps": { "type": "integer", "exclusiveMinimum": 0, "maximum": 60 },
+            "sourceSamples": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 172800000
+            },
+            "sourceAssetSha256": {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            }
           },
-          "required": ["path", "bytes", "sha256"],
+          "required": [
+            "frameCount",
+            "width",
+            "height",
+            "fps",
+            "sourceSamples",
+            "sourceAssetSha256"
+          ],
           "additionalProperties": false
         },
-        "evidence": {
+        "resume": {
           "type": "object",
           "properties": {
-            "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
-            "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
-            "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+            "manifestPath": {
+              "anyOf": [
+                { "type": "string", "maxLength": 2048 },
+                { "type": "null" }
+              ]
+            },
+            "outputDirectory": { "type": "string", "maxLength": 2048 },
+            "familyPath": { "type": "string", "maxLength": 2048 },
+            "cuePath": { "type": "string", "maxLength": 2048 },
+            "qaPath": { "type": "string", "minLength": 1, "maxLength": 2048 }
           },
-          "required": ["path", "bytes", "sha256"],
+          "required": [
+            "manifestPath",
+            "outputDirectory",
+            "familyPath",
+            "cuePath"
+          ],
           "additionalProperties": false
         },
-        "decodedReport": {
+        "assets": {
           "type": "object",
           "properties": {
-            "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
-            "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
-            "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+            "video": {
+              "type": "object",
+              "properties": {
+                "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 536870912
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": ["path", "bytes", "sha256"],
+              "additionalProperties": false
+            },
+            "audio": {
+              "type": "object",
+              "properties": {
+                "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 536870912
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": ["path", "bytes", "sha256"],
+              "additionalProperties": false
+            },
+            "evidence": {
+              "type": "object",
+              "properties": {
+                "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 536870912
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": ["path", "bytes", "sha256"],
+              "additionalProperties": false
+            },
+            "decodedReport": {
+              "type": "object",
+              "properties": {
+                "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 536870912
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": ["path", "bytes", "sha256"],
+              "additionalProperties": false
+            },
+            "qualityReport": {
+              "type": "object",
+              "properties": {
+                "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 536870912
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": ["path", "bytes", "sha256"],
+              "additionalProperties": false
+            },
+            "composition": {
+              "type": "object",
+              "properties": {
+                "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 536870912
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": ["path", "bytes", "sha256"],
+              "additionalProperties": false
+            },
+            "nativePlates": {
+              "type": "object",
+              "properties": {
+                "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 536870912
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": ["path", "bytes", "sha256"],
+              "additionalProperties": false
+            }
           },
-          "required": ["path", "bytes", "sha256"],
+          "required": [
+            "video",
+            "audio",
+            "evidence",
+            "decodedReport",
+            "composition",
+            "nativePlates"
+          ],
           "additionalProperties": false
         },
-        "qualityReport": {
+        "summary": {
           "type": "object",
           "properties": {
-            "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
-            "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
-            "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+            "shots": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 128
+            },
+            "sampledFrames": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 512
+            },
+            "images": { "type": "integer", "minimum": 0, "maximum": 512 },
+            "cropExceptions": { "type": "integer", "minimum": 0, "maximum": 64 }
           },
-          "required": ["path", "bytes", "sha256"],
+          "required": ["shots", "sampledFrames", "images", "cropExceptions"],
           "additionalProperties": false
-        }
-      },
-      "required": ["video", "audio", "evidence", "decodedReport"],
-      "additionalProperties": false
-    },
-    "summary": {
-      "type": "object",
-      "properties": {
-        "shots": { "type": "integer", "exclusiveMinimum": 0, "maximum": 64 },
-        "sampledFrames": {
-          "type": "integer",
-          "exclusiveMinimum": 0,
-          "maximum": 512
         },
-        "images": { "type": "integer", "exclusiveMinimum": 0, "maximum": 1024 },
-        "cropExceptions": { "type": "integer", "minimum": 0, "maximum": 64 }
-      },
-      "required": ["shots", "sampledFrames", "images", "cropExceptions"],
-      "additionalProperties": false
-    },
-    "qa": {
-      "type": "object",
-      "properties": {
-        "technical": {
-          "type": "string",
-          "enum": ["passed", "failed", "unreviewed"]
+        "qa": {
+          "type": "object",
+          "properties": {
+            "technical": {
+              "type": "string",
+              "enum": ["passed", "failed", "unreviewed"]
+            },
+            "mechanical": {
+              "type": "string",
+              "enum": ["passed", "failed", "unreviewed"]
+            },
+            "sampled-visual": {
+              "type": "string",
+              "enum": ["passed", "failed", "unreviewed"]
+            },
+            "continuous-motion": {
+              "type": "string",
+              "enum": ["passed", "failed", "unreviewed"]
+            },
+            "listening": {
+              "type": "string",
+              "enum": ["passed", "failed", "unreviewed"]
+            },
+            "factual": {
+              "type": "string",
+              "enum": ["passed", "failed", "unreviewed"]
+            }
+          },
+          "required": [
+            "technical",
+            "mechanical",
+            "sampled-visual",
+            "continuous-motion",
+            "listening",
+            "factual"
+          ],
+          "additionalProperties": false
         },
-        "mechanical": {
-          "type": "string",
-          "enum": ["passed", "failed", "unreviewed"]
-        },
-        "sampled-visual": {
-          "type": "string",
-          "enum": ["passed", "failed", "unreviewed"]
-        },
-        "continuous-motion": {
-          "type": "string",
-          "enum": ["passed", "failed", "unreviewed"]
-        },
-        "listening": {
-          "type": "string",
-          "enum": ["passed", "failed", "unreviewed"]
-        },
-        "factual": {
-          "type": "string",
-          "enum": ["passed", "failed", "unreviewed"]
-        }
+        "reviewedReady": { "type": "boolean" },
+        "nextAction": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "qualification": { "type": "string", "maxLength": 2048 },
+        "backend": { "type": "string", "const": "blender-native" }
       },
       "required": [
-        "technical",
-        "mechanical",
-        "sampled-visual",
-        "continuous-motion",
-        "listening",
-        "factual"
+        "schemaVersion",
+        "id",
+        "question",
+        "family",
+        "designVariant",
+        "binding",
+        "sourceStatus",
+        "compilation",
+        "resume",
+        "assets",
+        "summary",
+        "qa",
+        "reviewedReady",
+        "nextAction",
+        "qualification",
+        "backend"
       ],
       "additionalProperties": false
-    },
-    "reviewedReady": { "type": "boolean" },
-    "nextAction": { "type": "string", "minLength": 1, "maxLength": 2048 },
-    "qualification": { "type": "string", "maxLength": 2048 }
-  },
-  "required": [
-    "schemaVersion",
-    "id",
-    "question",
-    "family",
-    "designVariant",
-    "binding",
-    "sourceStatus",
-    "compilation",
-    "resume",
-    "assets",
-    "summary",
-    "qa",
-    "reviewedReady",
-    "nextAction",
-    "qualification"
-  ],
-  "additionalProperties": false
+    }
+  ]
 }

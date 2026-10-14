@@ -1,3 +1,7 @@
+import {
+  buildBlenderProductionHandoff,
+  checkBlenderProductionHandoff,
+} from "./blender-production-handoff.ts";
 import { dirname, join, relative } from "node:path";
 import { z } from "zod";
 import {
@@ -334,6 +338,42 @@ export async function createBlenderProductionExecutor(options: {
         explanation:
           "Current input pins, native capture/control/camera mapping and whole decoded output clocks verified. Mechanics, sampled/encoded readability, factual, continuous motion and listening remain separate.",
       };
+      artifacts.push(
+        ...(await buildBlenderProductionHandoff({
+          compiled,
+          episode: {
+            id: item.id,
+            question: item.question,
+            family: item.family,
+            designVariant: item.designVariant,
+          },
+          binding,
+          qa,
+          outputRoot: context.outputRoot,
+          directory: join(context.attemptDirectory, "review"),
+          decoded,
+          resume: {
+            manifestPath: context.manifestPath ?? null,
+            outputDirectory: context.outputRoot,
+            familyPath: join(context.manifestDirectory, item.familyPath),
+            cuePath: join(context.manifestDirectory, item.cuePath),
+            ...(item.qaPath
+              ? { qaPath: join(context.manifestDirectory, item.qaPath) }
+              : {}),
+          },
+          assets: {
+            video: artifacts[2]!,
+            evidence: visual.artifact,
+            decodedReport: artifacts[3]!,
+            composition: artifacts[1]!,
+            nativePlates: artifacts[0]!,
+            ...(quality ? { qualityReport: quality.factsPin } : {}),
+          },
+          images: visual.report.images,
+          owner: context.nodeMemory,
+          signal: context.signal,
+        })),
+      );
       return BlenderProductionQueueProductSchema.parse({
         schemaVersion: "mechanism-production-queue-product-2",
         requestHash: context.requestHash,
@@ -568,6 +608,51 @@ export async function createBlenderProductionExecutor(options: {
           context.nodeMemory,
           context.signal,
         );
+        const handoff = product.artifacts.find((file) =>
+          file.path.endsWith("/review/handoff.json"),
+        );
+        if (!handoff)
+          throw Error("Native Blender product lacks its compact handoff");
+        await checkBlenderProductionHandoff({
+          compiled,
+          episode: {
+            id: item.id,
+            question: item.question,
+            family: item.family,
+            designVariant: item.designVariant,
+          },
+          binding: product.report.binding,
+          qa: product.report.qa,
+          outputRoot: context.outputRoot,
+          handoff,
+          artifacts: product.artifacts,
+          decoded,
+          assets: {
+            video: product.artifacts.find((file) =>
+              file.path.endsWith("/output.mp4"),
+            )!,
+            evidence: visual.artifact,
+            decodedReport: product.artifacts.find((file) =>
+              file.path.endsWith("/decoded-output.json"),
+            )!,
+            composition: product.artifacts.find((file) =>
+              file.path.endsWith("/composition.json"),
+            )!,
+            nativePlates: product.artifacts.find((file) =>
+              file.path.endsWith("/native-plates.json"),
+            )!,
+            ...(nativeQA
+              ? {
+                  qualityReport: product.artifacts.find((file) =>
+                    file.path.endsWith("/qa-facts.json"),
+                  )!,
+                }
+              : {}),
+          },
+          images: visual.report.images,
+          owner: context.nodeMemory,
+          signal: context.signal,
+        });
         if (
           mechanismPackHash(decoded.video) !==
             mechanismPackHash(proof.value.video) ||
