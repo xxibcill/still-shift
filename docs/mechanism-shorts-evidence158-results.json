@@ -1,0 +1,109 @@
+{
+  "schemaVersion": "mechanism-shorts-ms0-and-retained-evidence158-1",
+  "capturedUtc": "2026-10-15T21:59:15.438170+00:00",
+  "status": "fresh-input-document-and-selected-retention-audits-passed-with-six-qualified-gaps",
+  "actualExitCodes": [0, 0],
+  "ms0": {
+    "dependencies": 27,
+    "zipPayloadMembers": 25,
+    "selfExcludedManifestAdditionalFile": true,
+    "archiveOriginalPairs": 13,
+    "fontAndLicensePins": 2,
+    "baselineAnchors": 4,
+    "sourceRecord": {
+      "path": "/private/tmp/still-shift-ms3-ms0-revalidation158-results1.json",
+      "bytes": 24084,
+      "sha256": "sha256:b3bdf0a052fdaffa073883cd2eb04fe874f32d7f82000e13cacfdbccf85b6002"
+    }
+  },
+  "retainedHistoricalPins": {
+    "presentExact": 24,
+    "unavailableAtRecordedPaths": 6,
+    "rawBytesReconstructed": false,
+    "alternativeSearchIn158": "not repeated; original114 search remains historical",
+    "record": {
+      "path": "/private/tmp/still-shift-ms3-retained-acceptance158-results1.json",
+      "bytes": 15225,
+      "sha256": "sha256:234ac6a7005d3dd55d048a80922f0af9cab3d7314ba7705c2e97dadc3408a879"
+    }
+  },
+  "copies": [
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-ms0-audit158.py",
+        "bytes": 5587,
+        "sha256": "sha256:80f9bad72d132509fd147ab9393ce051c0f152bd7a70c721035bdb6579889d47"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-evidence158/still-shift-ms3-ms0-audit158.py",
+        "bytes": 5587,
+        "sha256": "sha256:80f9bad72d132509fd147ab9393ce051c0f152bd7a70c721035bdb6579889d47"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-retention-audit158.py",
+        "bytes": 6038,
+        "sha256": "sha256:68f04364c728bb9d8d65934681c91c113601aa294d82f0372dea4a1dc5608488"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-evidence158/still-shift-ms3-retention-audit158.py",
+        "bytes": 6038,
+        "sha256": "sha256:68f04364c728bb9d8d65934681c91c113601aa294d82f0372dea4a1dc5608488"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-ms0-revalidation158-results1.json",
+        "bytes": 24084,
+        "sha256": "sha256:b3bdf0a052fdaffa073883cd2eb04fe874f32d7f82000e13cacfdbccf85b6002"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-evidence158/still-shift-ms3-ms0-revalidation158-results1.json",
+        "bytes": 24084,
+        "sha256": "sha256:b3bdf0a052fdaffa073883cd2eb04fe874f32d7f82000e13cacfdbccf85b6002"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-retained-acceptance158-results1.json",
+        "bytes": 15225,
+        "sha256": "sha256:234ac6a7005d3dd55d048a80922f0af9cab3d7314ba7705c2e97dadc3408a879"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-evidence158/still-shift-ms3-retained-acceptance158-results1.json",
+        "bytes": 15225,
+        "sha256": "sha256:234ac6a7005d3dd55d048a80922f0af9cab3d7314ba7705c2e97dadc3408a879"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-evidence158-actual-terminals.json",
+        "bytes": 1104,
+        "sha256": "sha256:6acf70159592afa932896610e865605ddd3aad66165a0a7a852c6566e937f490"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-evidence158/still-shift-ms3-evidence158-actual-terminals.json",
+        "bytes": 1104,
+        "sha256": "sha256:6acf70159592afa932896610e865605ddd3aad66165a0a7a852c6566e937f490"
+      },
+      "exact": true
+    }
+  ],
+  "currentQualification": "Current0da code has fast143/stagedruntime146/eightbrowser144/package145; freshactual-ten151 is still running. Historical full119 stays1c and original149 completion stays earlier archive.",
+  "wholeProductAcceptance": false,
+  "limits": [
+    "Read-only source/archive/document/pin audit, no rendered correctness or human acceptance.",
+    "Composition release-to-preMS0 git comparison remains explicitly historical, not a currentmain/runtime equality claim.",
+    "Six older MS1/MS1Nraw paths remain unavailable; committed historical results are preserved without reconstruction/current-pass claims."
+  ],
+  "durableIndex": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-evidence158/index.json",
+    "bytes": 4578,
+    "sha256": "sha256:ce2a3666158c886a8ce0e30408cfadfa9caf6e9073faa720ee2e4826ce191e92"
+  }
+}

@@ -107,6 +107,18 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-10-16 — Reauthenticate frozen inputs and qualified older evidence158
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3-upstream143`, from1ca0f955.
+- **Results:** read-only audits both actual0:27original dependencies,25ZIPpayloads
+  plus manifest,13archive/original pairs,2font/license pins and4baseline anchors.
+  All24available historical pins exact;6olderMS1/MS1Npaths remain unavailable.
+- **Scope:** historical release-to-preMS0 git comparison only, no currentmain
+  source equality, new alternate-path search, reconstruction, rendering or approval.
+- **Open:** actual current151 production and independent154 audits continue;
+  this static evidence is input to the final49/26/21 scoped reconciliation.
+- **Records:** [Evidence158](./mechanism-shorts-evidence158-results.json).
+
 ### 2026-10-16 — Qualify fresh package and start current-identity actual-ten151
 
 - **Agent / branch:** Codex on `codex/mechanism-ms3-upstream143`, package ef9db6e5.
