@@ -1,5 +1,13 @@
 # MS3 acceptance tracker
 
+The same live full119 now passes all176 frozen baselines/36,061frames and has
+advanced into mechanism cue-edit checks. Units4,594/runtime346/integration324 remain
+passed;19 explicitly reported existing WebGL timing deferrals stay retained and
+are not timing acceptance. Exact log prefix/live-tool/running receipt records are
+retained locally, with all2793 inputs exact before/after. Complete gate/benchmark,
+current package/all10/6,181/EU008 repair and whole reviews remain pending.
+[Actual baseline checkpoint124](./mechanism-shorts-ms3-baseline124-checkpoint-results.json).
+
 Within live full119, the normal unmodified story group now passes69cases/
 14,086frames/14 repeated byte-identical export pairs, with pixel failures0 and
 maximum measured delta2. Maximum ratio1.240453 stays under unchanged1.25;

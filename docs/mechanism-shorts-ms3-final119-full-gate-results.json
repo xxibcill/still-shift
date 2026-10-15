@@ -144,5 +144,13 @@
     "calibrationPanRatio": 1.2226926333624126,
     "limitUnchanged": 1.25,
     "fullRemainsLiveAndUnpassed": true
+  },
+  "latestBaselineCheckpoint124": {
+    "record": "./mechanism-shorts-ms3-baseline124-checkpoint-results.json",
+    "items": 176,
+    "frames": 36061,
+    "observedScriptHeadersAtCapture": 100,
+    "timingDeferralsRetained": 19,
+    "fullRemainsLiveAndUnpassed": true
   }
 }

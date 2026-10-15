@@ -54,6 +54,13 @@ still hold before relying on them.
   Whole current package/all10/6181/EU008 repair still follow genuine complete0.
   [Preparation](./mechanism-shorts-ms3-final119-full-gate-results.json).
 
+- **Frozen full-run baseline checkpoint124 (2026-10-15):** same live71989 now
+  passes176 frozen items/36,061frames, with4,594 units/346 runtime/324 integration.
+  Mechanism cue edits have started;19 existing WebGL timing deferrals remain
+  retained. All2793 inputs exact before/after; exact raw prefix/live observation/
+  running receipt retained. Complete gate, benchmark/current package/all10 proof
+  remain unpassed. [Actual checkpoint](./mechanism-shorts-ms3-baseline124-checkpoint-results.json).
+
 - **Normal full-run story checkpoint123 (2026-10-15):** within the same live71989,
   all69 normal story cases/14,086 frames/14 repeated export pairs pass. Maximum
   ratio1.240453/calibration-pan1.222693 remain under unchanged1.25; pixel failures0,
@@ -366,6 +373,19 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Retain complete frozen-baseline checkpoint inside live full119
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `d0836524`.
+- **Results:** all176 frozen baseline rows/36,061 frames report ok; unmodified full
+  advances through native/typography/portrait/pack/cycle checks into cue edits.
+  Units4,594/runtime346/integration324 pass;19 existing WebGL timing deferrals stay
+  explicit. All2793 held inputs remain exact before/after.
+- **Retained:** exact raw log prefix, actual live-tool observation, running receipt
+  and collecting helper; all176 baseline rows and deferral list retained locally.
+- **Open / next:** same full71989 must finish all remaining groups and benchmark;
+  no complete/package/installed/human pass inferred or failed history relabeled.
+- **Records:** [Checkpoint124](./mechanism-shorts-ms3-baseline124-checkpoint-results.json).
 
 ### 2026-10-15 — Pass normal story checkpoint inside live full119
 

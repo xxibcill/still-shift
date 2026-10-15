@@ -1119,7 +1119,10 @@
     "toolchainPreflight": 0,
     "latestStoryCheckpoint": "./mechanism-shorts-ms3-story123-checkpoint-results.json",
     "storyCasesPassed": 69,
-    "completeGatePassed": false
+    "completeGatePassed": false,
+    "latestBaselineCheckpoint": "./mechanism-shorts-ms3-baseline124-checkpoint-results.json",
+    "frozenBaselineItemsPassed": 176,
+    "frozenBaselineFramesPassed": 36061
   },
   "currentOwnerDecisions120": "./mechanism-shorts-ms3-owner-decisions120-results.json"
 }
