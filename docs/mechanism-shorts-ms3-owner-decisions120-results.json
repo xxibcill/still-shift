@@ -52,7 +52,7 @@
   },
   "publicPrDescriptionDecision": {
     "humanReply": "Approve this public PR description update",
-    "status": "approved-update-pending",
+    "status": "updated-and-exactly-read-back",
     "repository": "xxibcill/still-shift",
     "repositoryVisibility": "public",
     "prNumber": 58,
@@ -65,7 +65,32 @@
     "accuracyRefreshRequired": "Replace now-terminal failed full113 live claim with actual failure113, complete owning118 scoped pass and active unpassed full119; record the explicitly approved pilot runtime scope.",
     "priorAutomaticReviewRejectionsRetained": true,
     "samePurposeBuiltToolRequired": true,
-    "remoteBodyUpdated": false
+    "remoteBodyUpdated": true,
+    "execution": {
+      "status": "updated-and-exactly-read-back",
+      "repository": "xxibcill/still-shift",
+      "prNumber": 58,
+      "verifiedUtc": "2026-10-15T10:37:54.266912+00:00",
+      "remoteUpdatedAt": "2026-10-15T10:36:33Z",
+      "headShaAtReadback": "ae114c1d56ee4234cc122747df39c1e3267f9723",
+      "state": "open",
+      "draft": false,
+      "base": "main",
+      "exactExpectedBodyReadback": true,
+      "publishedBody": {
+        "path": "/private/tmp/still-shift-ms3-pr58-description120-published.md",
+        "bytes": 5186,
+        "sha256": "sha256:9dbfbd89c847c117bccf1720ab55319bab3fc74a9620bf490a0b17a279e2b7ad"
+      },
+      "method": "Same purpose-built github_update_pull_request tool, independently followed by github_get_pr_info.",
+      "approvedDraftPreservedExactly": true,
+      "onlyAddedText": "Historical snapshot label and direction to the already-linked current acceptance tracker; no additional metrics or architecture disclosures.",
+      "newerExpandedDraftNotPublished": "/private/tmp/still-shift-ms3-pr58-description120.md",
+      "expandedDraftRejection": "Automatic approval review rejected the materially refreshed body because additional/current public metrics and architecture disclosures were not specifically approved in the prepared114 draft.",
+      "saferAlternativeSucceeded": true,
+      "indirectExecutionUsed": false,
+      "remainingPublicDescriptionApprovalNeeded": false
+    }
   },
   "currentFull": {
     "record": "./mechanism-shorts-ms3-final119-full-gate-results.json",

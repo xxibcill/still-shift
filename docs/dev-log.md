@@ -97,9 +97,11 @@ still hold before relying on them.
   All2793 held source inputs remain exact. No new render/spending or source edit.
   [Acceptance audit](./mechanism-shorts-acceptance-audit114-results.json).
   Audit commit30f2cf00 is pushed. Owner has explicitly approved the public PR58
-  description refresh after the two retained automatic-review rejections. The
-  approved update is pending same-tool execution with accurate113/118/119 status;
-  remote body is unchanged at this recording. [Owner approval](./mechanism-shorts-ms3-owner-decisions120-results.json).
+  description refresh after the two retained automatic-review rejections.
+  An expanded current-status body is separately rejected; exact approved draft
+  plus a historical-snapshot label succeeds through the same purpose-built tool,
+  with exact readback on pushedae114c1d. Linked current tracker retains113/118/119.
+  No additional public-description approval remains. [Owner approval/result](./mechanism-shorts-ms3-owner-decisions120-results.json).
 
 - **MS3 actual first ten and final source (2026-10-15):** actual EU001–EU010
   original3df/runtime1090 lifecycle completes all13 stages and10 independent
@@ -355,8 +357,13 @@ still hold before relying on them.
   original audit pins/statuses remain captured alongside the current resolution.
 - **Running:** full119 actual71989/source1c9f,2,793 held inputs, pinned preflight0;
   launch evidence is retained locally. No full/package/product pass inferred.
-- **Open / next:** push completed documentation, update/read back PR58 accurately,
-  then retain actual full119 terminal before standard package/current all10 proof.
+- **Public result:** commit ae114c1d and all prior local slices are pushed.
+  Expanded refresh is rejected for added disclosures beyond the approved draft;
+  exact approved body with historical label succeeds and exact readback matches.
+  PR58 stays open/main/draftfalse; no merge or publication.
+- **Open / next:** retain actual full119 terminal before standard package/current
+  all10 proof; live run has4,594 unit/346 runtime/324 integration passes and has
+  entered browser checks. Held2793 inputs remain exact.
 - **Records:** [Owner120](./mechanism-shorts-ms3-owner-decisions120-results.json),
   [live119](./mechanism-shorts-ms3-final119-full-gate-results.json).
 
