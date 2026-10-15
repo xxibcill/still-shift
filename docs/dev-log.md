@@ -44,11 +44,10 @@ still hold before relying on them.
 ## Current state
 
 - **PR #57 second-round repairs in flight (2026-10-15):** all three findings
-  are inline in review `5528931598` before implementation. Journal manifest/shard
-  reads now use nonblocking regular descriptors with existing byte limits;
-  both FIFO regressions fail before repair and all 31 focused checks pass after.
-  Opaque PBR preview resources and source3 async dispatch are next. Each finding
-  gets its own commit; all three will be pushed together after required checks.
+  are inline before implementation. Journal fix `dec445f6` passes 31 focused
+  checks; opaque PBR serving now passes actual original/edited HTTP bytes,
+  Content-Length and ownership/release negatives. Source3 async dispatch is next.
+  One finding per commit; one final push after required verification.
   [Repair evidence](./pr-57-rereview-fix-results.json).
 
 - **PR #57 review repairs verified (2026-10-15):** both P2 findings were posted
@@ -262,6 +261,17 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Fix PR #57 opaque PBR preview resources
+
+- **Agent / branch:** Codex on isolated `codex/pr57-rereview-fixes`.
+- **Done:** serve captured opaque PBR binaries from both original and edited CLI
+  previews, preserving revision/capture ownership and returning exact Content-Length.
+- **Results:** real HTTP regression fails with404 before repair and passes after;
+  checks exact bytes/type/length, invalid routes and capture release behavior.
+  Journal fix `dec445f6` is committed; both finding commits remain local.
+- **Open / next:** source3 async preview, required checks and one final push.
+- **Records:** [Repair evidence](./pr-57-rereview-fix-results.json).
 
 ### 2026-10-15 — Fix PR #57 observation-journal file admission
 

@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { createReadStream } from "node:fs";
-import { readFile, realpath } from "node:fs/promises";
+import { readFile, realpath, stat } from "node:fs/promises";
 import { createServer as createSocketServer } from "node:net";
 import { dirname, resolve } from "node:path";
 import { pipeline } from "node:stream/promises";
@@ -746,14 +746,24 @@ export async function createProgramPreview(
               ? prepared?.paths
               : undefined;
         const path = paths?.[id];
-        if ((id.startsWith("__media:") || id === "__audio:mix") && path) {
+        if (
+          (id.startsWith("__media:") ||
+            id === "__audio:mix" ||
+            /^native-pbr\/[a-f0-9]{64}$/.test(id)) &&
+          path
+        ) {
           response.setHeader(
             "Content-Type",
-            id === "__audio:mix" ? "audio/wav" : "image/png",
+            id.startsWith("native-pbr/")
+              ? "application/octet-stream"
+              : id === "__audio:mix"
+                ? "audio/wav"
+                : "image/png",
           );
-          void pipeline(createReadStream(path), response).catch(() =>
-            response.destroy(),
-          );
+          void (async () => {
+            response.setHeader("Content-Length", (await stat(path)).size);
+            await pipeline(createReadStream(path), response);
+          })().catch(() => response.destroy());
           return;
         }
         if (!asset || !("bytes" in asset)) {
