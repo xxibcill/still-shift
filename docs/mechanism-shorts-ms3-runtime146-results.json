@@ -1,0 +1,356 @@
+{
+  "schemaVersion": "mechanism-shorts-ms3-runtime146-1",
+  "capturedUtc": "2026-10-15T20:34:11.153036+00:00",
+  "status": "complete-runtime-tier-in-recorded-stages-original-aggregate1",
+  "candidateCodeCommit": "0da1f1dd25edb1bc4096a2c5e4a4364481518404",
+  "selectedInputsExact": true,
+  "selectedInputs": 2798,
+  "originalAggregateActualExitCode": 1,
+  "originalAggregateRuntime": {
+    "tests": 368,
+    "files": 63,
+    "passed": true
+  },
+  "originalIntegration": {
+    "passed": 325,
+    "failed": 2,
+    "total": 327,
+    "passedFiles": 60,
+    "failedFiles": 1
+  },
+  "stagedCompletion": {
+    "version": "ms3-recorded-runtime-completion146-1",
+    "status": "complete-runtime-tier-in-recorded-stages-original-aggregate1",
+    "sourceCommit": "0da1f1dd25edb1bc4096a2c5e4a4364481518404",
+    "startedUtc": "2026-10-15T20:27:40.310386+00:00",
+    "retainedOriginalAggregate": {
+      "version": "ms3-isolated-candidate-verification-1",
+      "phase": "runtime",
+      "started": "2026-10-15T20:14:12.941872+00:00",
+      "repository": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift",
+      "baseCommit": "6e1ad86f78da242c1ef88100383173b0d78c4aca",
+      "stages": [
+        {
+          "stage": "check-runtime",
+          "command": ["pnpm", "check:runtime"],
+          "actualExitCode": 1,
+          "seconds": 674.4844868329819,
+          "log": {
+            "path": "/private/tmp/still-shift-ms3-candidate143/check-runtime.log",
+            "bytes": 49325,
+            "sha256": "sha256:9b8ac423cf6552e3da4d9c70d66f839c8ba5d81cc7ed26b7d3224e3360cabdb0"
+          }
+        }
+      ],
+      "status": "failed",
+      "setupFailureRetained": {
+        "action": "first offline dependency installation",
+        "actualToolExitCode": 127,
+        "reason": "Overrestricted PATH omitted existing pnpm directory; no install started. Retry preserved PATH, offline lock installation actual0 with178reused/0downloaded."
+      },
+      "actualExitCode": 1
+    },
+    "originalActualTerminal": {
+      "sessionId": 49004,
+      "actualToolResult": {
+        "chunk_id": "da08bf",
+        "wall_time_seconds": 1.195955792,
+        "exit_code": 1,
+        "original_token_count": 75,
+        "output": "{\"stage\": \"check-runtime\", \"command\": [\"pnpm\", \"check:runtime\"], \"actualExitCode\": 1, \"seconds\": 674.4844868329819, \"log\": {\"path\": \"/private/tmp/still-shift-ms3-candidate143/check-runtime.log\", \"bytes\": 49325, \"sha256\": \"sha256:9b8ac423cf6552e3da4d9c70d66f839c8ba5d81cc7ed26b7d3224e3360cabdb0\"}}\n"
+      },
+      "qualification": "Actual unified terminal for candidate143 runtime wrapper; individual aggregate exit/log pin retained separately."
+    },
+    "originalFailureCases": [
+      "tests/integration/depth-worker-protocol.test.ts > Python depth worker response contract > shares fake preparation and cache-hit results with both consumers",
+      "tests/integration/depth-worker-protocol.test.ts > Python depth worker response contract > validates normalization without depth and its cache hit"
+    ],
+    "stages": [
+      {
+        "stage": "protocol-file",
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/integration/depth-worker-protocol.test.ts",
+          "--maxWorkers=2",
+          "--no-file-parallelism"
+        ],
+        "actualExitCode": 0,
+        "seconds": 2.2429292080923915,
+        "log": {
+          "path": "/private/tmp/still-shift-ms3-runtime146/protocol-file.log",
+          "bytes": 452,
+          "sha256": "sha256:070c614570e4496e3a0857abae68ac33f4b6ce44d6917f04b224af23d724d8b7"
+        }
+      },
+      {
+        "stage": "python",
+        "command": ["pnpm", "test:depth"],
+        "actualExitCode": 0,
+        "seconds": 0.6356150000356138,
+        "log": {
+          "path": "/private/tmp/still-shift-ms3-runtime146/python.log",
+          "bytes": 303,
+          "sha256": "sha256:3c62953ad97568e76e81f2640bf349d885820c1977bcea4841c56a2bc440ac32"
+        }
+      },
+      {
+        "stage": "browser-smoke",
+        "command": ["pnpm", "test:browser:smoke"],
+        "actualExitCode": 0,
+        "seconds": 35.82256787503138,
+        "log": {
+          "path": "/private/tmp/still-shift-ms3-runtime146/browser-smoke.log",
+          "bytes": 2195,
+          "sha256": "sha256:e8daac7cab33dbe30bb7c7a6c914699c0abf346453ea303a3f1e8b98b296eb3b"
+        }
+      }
+    ],
+    "qualification": "Original check:runtime stays actual1. Only complete unchanged failing owning file is rerun, followed by unexecuted Python and smoke suffix. Original5000ms deadlines/assertions unchanged; cause unproven.",
+    "actualExitCode": 0,
+    "selectedInputsExact": true,
+    "runtimeTests": 368,
+    "runtimeFiles": 63,
+    "distinctIntegrationTests": 327,
+    "integrationFiles": 61,
+    "protocolFileTests": 5,
+    "pythonTests": 14,
+    "finishedUtc": "2026-10-15T20:28:19.867328+00:00"
+  },
+  "independentReviews": {
+    "fixedBase": "6e1ad86f78da242c1ef88100383173b0d78c4aca",
+    "candidateCodeCommit": "0da1f1dd25edb1bc4096a2c5e4a4364481518404",
+    "standards": {
+      "agent": "/root/ms3_standards69",
+      "actionableFindings": 0,
+      "summary": "No Standards findings. The integration preserves bounded reads, cancellation, cleanup and protocol-specific coverage, with tests in the appropriate tiers. Read-only inspection; no tests, edits, rendering or process interruption. Running verification remains separate."
+    },
+    "spec": {
+      "agent": "/root/ms3_spec69",
+      "actionableFindings": 0,
+      "summary": "No actionable Spec findings in the candidate diff. Validator collapse/matte boundaries, shared v1/v2 journal admission, bounded cancellable cue lifecycle, camera-up rejection, owned opaque resource routes and source3 serialized async Lab path appear implemented. Read-only source/test inspection only; no suite or new render/package qualification by the reviewer."
+    },
+    "scope": "Applied code-review skill Standards/Spec axes over the complete integration delta. No human visual/listening/physical acceptance."
+  },
+  "updatedIsolationControls": {
+    "status": "passed-combined-original-root-and-cache-only-os-controls",
+    "deniedRoots": 14,
+    "nodeReadAndMetadataDenied": true,
+    "pythonMetadataDenied": true,
+    "exactFreshCaptureWorkerStageDenied": true,
+    "nodeDescendantGuardInherited": true,
+    "ordinaryAndExistingCacheWorkerAllowed": true,
+    "fixedSystemPsIdentityAllowed": true,
+    "fixedSystemPsException": "/bin/ps only, process-exec with no-sandbox; Node and Python restrictions independently verified",
+    "profile": "/private/tmp/still-shift-ms3-postgate145-isolation.sb",
+    "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
+    "nativeBlenderLaunched": false,
+    "newNativeCaptures": 0,
+    "newEpisodeExports": 0,
+    "scope": "Actual OS isolation controls only. All-ten cache content copy and installed runtime replay remain unproved."
+  },
+  "retained": [
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-candidate143/runtime-results.json",
+        "bytes": 1019,
+        "sha256": "sha256:a8daffb22dca2d9c9158548481c66e814c4f28e691a1e052c0b9b29e2608e3dd"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/followup146/00-runtime-results.json",
+        "bytes": 1019,
+        "sha256": "sha256:a8daffb22dca2d9c9158548481c66e814c4f28e691a1e052c0b9b29e2608e3dd"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-candidate143/runtime-actual-terminal.json",
+        "bytes": 600,
+        "sha256": "sha256:5b61eb1af02f699fa29a99c6361eec51c0aeca1c55418ea34a336b6a1cceaa27"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/followup146/01-runtime-actual-terminal.json",
+        "bytes": 600,
+        "sha256": "sha256:5b61eb1af02f699fa29a99c6361eec51c0aeca1c55418ea34a336b6a1cceaa27"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-candidate143/check-runtime.log",
+        "bytes": 49325,
+        "sha256": "sha256:9b8ac423cf6552e3da4d9c70d66f839c8ba5d81cc7ed26b7d3224e3360cabdb0"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/followup146/02-check-runtime.log",
+        "bytes": 49325,
+        "sha256": "sha256:9b8ac423cf6552e3da4d9c70d66f839c8ba5d81cc7ed26b7d3224e3360cabdb0"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-runtime146/results.json",
+        "bytes": 4204,
+        "sha256": "sha256:f9765ffe21c91125f3ffa065bf00abd88bde7dc4d102eff9cb22c762682e7446"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/followup146/03-results.json",
+        "bytes": 4204,
+        "sha256": "sha256:f9765ffe21c91125f3ffa065bf00abd88bde7dc4d102eff9cb22c762682e7446"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-runtime146/actual-terminal.json",
+        "bytes": 335,
+        "sha256": "sha256:f94b333445a6a1fa4fd256ecd5638be59e776e7214ecabf2fe952fe476f03251"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/followup146/04-actual-terminal.json",
+        "bytes": 335,
+        "sha256": "sha256:f94b333445a6a1fa4fd256ecd5638be59e776e7214ecabf2fe952fe476f03251"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-runtime146/protocol-file.log",
+        "bytes": 452,
+        "sha256": "sha256:070c614570e4496e3a0857abae68ac33f4b6ce44d6917f04b224af23d724d8b7"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/followup146/05-protocol-file.log",
+        "bytes": 452,
+        "sha256": "sha256:070c614570e4496e3a0857abae68ac33f4b6ce44d6917f04b224af23d724d8b7"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-runtime146/python.log",
+        "bytes": 303,
+        "sha256": "sha256:3c62953ad97568e76e81f2640bf349d885820c1977bcea4841c56a2bc440ac32"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/followup146/06-python.log",
+        "bytes": 303,
+        "sha256": "sha256:3c62953ad97568e76e81f2640bf349d885820c1977bcea4841c56a2bc440ac32"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-runtime146/browser-smoke.log",
+        "bytes": 2195,
+        "sha256": "sha256:e8daac7cab33dbe30bb7c7a6c914699c0abf346453ea303a3f1e8b98b296eb3b"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/followup146/07-browser-smoke.log",
+        "bytes": 2195,
+        "sha256": "sha256:e8daac7cab33dbe30bb7c7a6c914699c0abf346453ea303a3f1e8b98b296eb3b"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-runtime146-complete.py",
+        "bytes": 3270,
+        "sha256": "sha256:351720b74c267614a4d8bf4c04ca278ba33e53a0394005e5e3fb0f2a44848b4e"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/followup146/08-still-shift-ms3-runtime146-complete.py",
+        "bytes": 3270,
+        "sha256": "sha256:351720b74c267614a4d8bf4c04ca278ba33e53a0394005e5e3fb0f2a44848b4e"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-review146.json",
+        "bytes": 1109,
+        "sha256": "sha256:84e155545d0e41347a04f5758df7dc5d419345811d07c3db2ac9c0a9f1f7e5c6"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/followup146/09-still-shift-ms3-review146.json",
+        "bytes": 1109,
+        "sha256": "sha256:84e155545d0e41347a04f5758df7dc5d419345811d07c3db2ac9c0a9f1f7e5c6"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-postgate145-isolation.sb",
+        "bytes": 1485,
+        "sha256": "sha256:4d1126975cbee812ea3e42abe49bd11803e5e8bacf695fe15d986d29493ddb2e"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/followup146/10-still-shift-ms3-postgate145-isolation.sb",
+        "bytes": 1485,
+        "sha256": "sha256:4d1126975cbee812ea3e42abe49bd11803e5e8bacf695fe15d986d29493ddb2e"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-postgate145-isolation-probe.mjs",
+        "bytes": 3380,
+        "sha256": "sha256:f77615b15355eb47442f2a6f3b13fc0dce46e6eb2af303ad802a96e513cecb6a"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/followup146/11-still-shift-ms3-postgate145-isolation-probe.mjs",
+        "bytes": 3380,
+        "sha256": "sha256:f77615b15355eb47442f2a6f3b13fc0dce46e6eb2af303ad802a96e513cecb6a"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-postgate145-isolation-probe-input1.json",
+        "bytes": 1602,
+        "sha256": "sha256:6a0a848360cab167532699167d39dceb84271c2d7b4d968c0f5e180f6639a19b"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/followup146/12-still-shift-ms3-postgate145-isolation-probe-input1.json",
+        "bytes": 1602,
+        "sha256": "sha256:6a0a848360cab167532699167d39dceb84271c2d7b4d968c0f5e180f6639a19b"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-postgate145-isolation-probe1.json",
+        "bytes": 838,
+        "sha256": "sha256:1543805040214d5122cbd0307ddd5983bcce72495037426709b90f1b0705bc7f"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/followup146/13-still-shift-ms3-postgate145-isolation-probe1.json",
+        "bytes": 838,
+        "sha256": "sha256:1543805040214d5122cbd0307ddd5983bcce72495037426709b90f1b0705bc7f"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-postgate145-isolation-actual-terminal.json",
+        "bytes": 297,
+        "sha256": "sha256:1f36016199a188c794247a8fa753e954c7fe86ac2337cceb7a93319e2c09ff98"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/followup146/14-still-shift-ms3-postgate145-isolation-actual-terminal.json",
+        "bytes": 297,
+        "sha256": "sha256:1f36016199a188c794247a8fa753e954c7fe86ac2337cceb7a93319e2c09ff98"
+      },
+      "exact": true
+    }
+  ],
+  "limits": [
+    "Original check:runtime aggregate remains actual1. Complete unchanged owning file5 passes on rerun, giving327 distinct integration passes; Python14/smoke suffix passes separately. Original5000ms deadlines and assertions unchanged; cause unproven.",
+    "Actual146 and isolation145 terminal records explicitly retain observed metadata subsets rather than claiming full raw tool output serialization. Individual complete stdout logs and hashes are retained.",
+    "Eight affected browser groups remain running. No new full, installed-package or whole-video acceptance claim."
+  ]
+}

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "mechanism-shorts-ms3-upstream143-1",
   "capturedUtc": "2026-10-15T20:14:57.861952+00:00",
-  "status": "isolated-integration-fast-passed-runtime-running-not-current-pilot-requalification",
+  "status": "isolated-integration-fast-and-staged-runtime-qualified-affected-browser-running",
   "candidateBranch": "codex/mechanism-ms3-upstream143",
   "baseCommit": "6e1ad86f78da242c1ef88100383173b0d78c4aca",
   "upstream": {
@@ -79,11 +79,29 @@
     "selectedInputBytes": 122451390,
     "changedAfterCapturedSnapshot": [],
     "runtime": {
-      "status": "running",
-      "sessionId": 49004,
-      "receipt": "/private/tmp/still-shift-ms3-candidate143/runtime-results.json"
+      "originalAggregateActualExitCode": 1,
+      "stagedCompletionActualExitCode": 0,
+      "record": "./mechanism-shorts-ms3-runtime146-results.json",
+      "runtimeTests": 368,
+      "distinctIntegrationTests": 327,
+      "pythonTests": 14,
+      "browserSmokePassed": true
     },
-    "independentReviews": "running; Standards and Spec axes required by applied code-review skill"
+    "independentReviews": {
+      "fixedBase": "6e1ad86f78da242c1ef88100383173b0d78c4aca",
+      "candidateCodeCommit": "0da1f1dd25edb1bc4096a2c5e4a4364481518404",
+      "standards": {
+        "agent": "/root/ms3_standards69",
+        "actionableFindings": 0,
+        "summary": "No Standards findings. The integration preserves bounded reads, cancellation, cleanup and protocol-specific coverage, with tests in the appropriate tiers. Read-only inspection; no tests, edits, rendering or process interruption. Running verification remains separate."
+      },
+      "spec": {
+        "agent": "/root/ms3_spec69",
+        "actionableFindings": 0,
+        "summary": "No actionable Spec findings in the candidate diff. Validator collapse/matte boundaries, shared v1/v2 journal admission, bounded cancellable cue lifecycle, camera-up rejection, owned opaque resource routes and source3 serialized async Lab path appear implemented. Read-only source/test inspection only; no suite or new render/package qualification by the reviewer."
+      },
+      "scope": "Applied code-review skill Standards/Spec axes over the complete integration delta. No human visual/listening/physical acceptance."
+    }
   },
   "retained": [
     {
@@ -165,5 +183,6 @@
     "No fresh full/package/receiving proof for this updated candidate yet. Earlier full119/package121/current139 evidence keeps earlier source/archive bindings.",
     "No merge, publication, baseline regeneration, ElevenLabs spending, or human acceptance.",
     "First offline dependency setup exited127 because pnpm was omitted from PATH; corrected offline retry0 with178reused/0downloaded."
-  ]
+  ],
+  "candidateCodeCommit": "0da1f1dd25edb1bc4096a2c5e4a4364481518404"
 }

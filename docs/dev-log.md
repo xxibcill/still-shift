@@ -47,7 +47,9 @@ still hold before relying on them.
   validation and PR57 bounded/cancellable reads, camera, opaque-PBR and async-Lab
   repairs. Original sink facade uses the repaired shared journal core; both
   original and source3 FIFO regressions retained. No old full/package/pilot result
-  is rebound to these changes. Candidate fast0/4,608 unit tests; runtime49004 and two-axis review running. Original56598 continues
+  is rebound to these changes. Candidate fast0/4,608 unit tests; runtime tier completes in recorded stages
+  (original aggregate1, unchanged owning file/suffix0), both review axes0 findings.
+  Eight affected browser groups running. Original56598 continues
   unchanged in mechanism-ms0. Primary checkout untouched.
 
 - **All10 current final products independently audited (2026-10-16):** actual
@@ -104,6 +106,20 @@ still hold before relying on them.
   all 10 current review videos and retain all remaining whole/owner review gates.
 
 ## Entries
+
+### 2026-10-16 — Complete scoped runtime qualification in recorded stages146
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3-upstream143`, code0da1f1dd.
+- **Results:**368 runtime tests pass; original integration325/327 passes,2 existing
+  protocol cases time out at unchanged5000ms, actual aggregate1 retained. Complete
+  unchanged owning file5 passes; skipped Python14/browser smoke pass separately.
+- **Reviews:** Standards0/Spec0 actionable findings; read-only, no product approval.
+  Actual updated isolation controls deny14 original/source/module roots and fresh
+  capture staging, including descendant checks. No native capture/export.
+- **Open:** eight affected browser groups running; fresh package/current-runtime
+  checks pending. No fresh full gate claim; original119 binding remains.
+- **Records:** [Runtime146](./mechanism-shorts-ms3-runtime146-results.json),
+  [integration143](./mechanism-shorts-ms3-upstream143-results.json).
 
 ### 2026-10-16 — Prepare isolated integration of newer prerequisite fixes143
 
