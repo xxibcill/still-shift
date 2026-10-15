@@ -1,0 +1,158 @@
+{
+  "schemaVersion": "ms3-final-public-delivery165-1",
+  "capturedUtc": "2026-10-15T23:46:33.466921+00:00",
+  "status": "verified-public-technical-delivery-checkpoint-whole-pilot-review-open",
+  "deliveredCommit": "276e76f69d73352fc9e027e3c72fea0435836eb7",
+  "sourceCodeCommit": "0da1f1dd25edb1bc4096a2c5e4a4364481518404",
+  "packageCheckpoint": "ef9db6e50f83745624af51c43c7abe583b162759",
+  "pushActualExitCode": 0,
+  "remoteBranchReadbackExact": true,
+  "pullRequests": [
+    {
+      "number": 51,
+      "url": "https://github.com/xxibcill/still-shift/pull/51",
+      "title": "MS0: audit mechanism inputs and composition baseline",
+      "state": "closed",
+      "merged": true,
+      "head": "codex/mechanism-ms0",
+      "head_sha": "7f246979f7ee7ac13138a55883b1e6468feff6c2",
+      "base": "main",
+      "base_sha": "3fab0162c51ca3b29fcefc2ecdbda0e475f985c9",
+      "mergeable": false,
+      "bodySha256": "sha256:b9086496153e365260294c3b0f0e9cf88b065bc3d7ec1df94288d4b1838201c2"
+    },
+    {
+      "number": 52,
+      "url": "https://github.com/xxibcill/still-shift/pull/52",
+      "title": "feat(mechanism): add supported MS1 bridge and portable E01",
+      "state": "closed",
+      "merged": true,
+      "head": "codex/mechanism-ms1",
+      "head_sha": "6dae12cd681952db08b94d8d020b9ba78bc3e595",
+      "base": "main",
+      "base_sha": "57967fa6497249d75e740ba837b8e2687cc81a98",
+      "mergeable": false,
+      "bodySha256": "sha256:f58e1f47809d8bf37e1f3628562adce25266e01d0833df2737270ae9a801a62b"
+    },
+    {
+      "number": 56,
+      "url": "https://github.com/xxibcill/still-shift/pull/56",
+      "title": "feat(mechanism): add native 3D composition and portable E01",
+      "state": "open",
+      "merged": false,
+      "head": "codex/mechanism-ms1n",
+      "head_sha": "0bda0b62278971ed93ee0fdc0bc1e4ec6a8973b5",
+      "base": "main",
+      "base_sha": "b376514285e4819bdd14361e3467ecf085cf0b9d",
+      "mergeable": true,
+      "bodySha256": "sha256:6873e325c523bab7e03836eccce02c3fb6f85de7699b22671961ee8159a7b4f6"
+    },
+    {
+      "number": 57,
+      "url": "https://github.com/xxibcill/still-shift/pull/57",
+      "title": "Add reusable mechanism packs and saved cue lifecycle",
+      "state": "open",
+      "merged": false,
+      "head": "codex/mechanism-ms2",
+      "head_sha": "36fc04ea76ce0cc4e731bd5204ac505a06c260f5",
+      "base": "main",
+      "base_sha": "b376514285e4819bdd14361e3467ecf085cf0b9d",
+      "mergeable": true,
+      "bodySha256": "sha256:c60907e51bb5b3981c5ece208940bdccb4a6873341a1dd2077d21690f64b3356"
+    },
+    {
+      "number": 58,
+      "url": "https://github.com/xxibcill/still-shift/pull/58",
+      "title": "feat(ms3): add production lifecycle and actual Everyday Unlocked first-ten pilot",
+      "state": "open",
+      "merged": false,
+      "head": "codex/mechanism-ms3",
+      "head_sha": "276e76f69d73352fc9e027e3c72fea0435836eb7",
+      "base": "main",
+      "base_sha": "b376514285e4819bdd14361e3467ecf085cf0b9d",
+      "mergeable": true,
+      "bodySha256": "sha256:9dbfbd89c847c117bccf1720ab55319bab3fc74a9620bf490a0b17a279e2b7ad"
+    }
+  ],
+  "allFivePullRequestsAttached": true,
+  "actionsEnabled": false,
+  "approvedHistoricalPr58DescriptionUnchanged": true,
+  "currentRuntimeRecord": "./mechanism-shorts-ms3-current160-results.json",
+  "deliveryRecord": "./mechanism-shorts-ms3-delivery161-results.json",
+  "finiteReconciliation": "./mechanism-shorts-acceptance-reconciliation162-results.json",
+  "sourceHold": {
+    "status": "passed",
+    "files": 2798,
+    "bytes": 122451390,
+    "membershipAndBytesExact": true
+  },
+  "scope": "This receipt authenticates delivered checkpoint276e76f6 before this later documentation-only receipt commit. Technical code/runtime/archive identities stay unchanged. No PR merge, npm/video publication or human acceptance is claimed.",
+  "originalPilot": {
+    "firstPassPassed": 1,
+    "selected": 10,
+    "failedAttempts": 9,
+    "pairedTokenSavings": null,
+    "accepted": 0
+  },
+  "currentReviewIndex": "../benchmarks/results/ms3-current-review161/index.md",
+  "wholeReviewOrHumanAcceptance": false,
+  "retainedCopies": [
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-delivery165-inputs.json",
+        "bytes": 33368,
+        "sha256": "sha256:59670c1da92f6bccec88200c3ff08f758705525cc79638e24b64077855e21c7a"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-delivery165/000-still-shift-ms3-delivery165-inputs.json",
+        "bytes": 33368,
+        "sha256": "sha256:59670c1da92f6bccec88200c3ff08f758705525cc79638e24b64077855e21c7a"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-remote163-before.json",
+        "bytes": 11158,
+        "sha256": "sha256:79789c9b4dfe4f20c75f83f3106710241ac1a10ba0feb39ceb8bb3ae296d843c"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-delivery165/001-still-shift-ms3-remote163-before.json",
+        "bytes": 11158,
+        "sha256": "sha256:79789c9b4dfe4f20c75f83f3106710241ac1a10ba0feb39ceb8bb3ae296d843c"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-remote163-actions.json",
+        "bytes": 396,
+        "sha256": "sha256:3e3077b609923d2d46b32913f827cb2c575561335e629413730ebb42fc9d28c5"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-delivery165/002-still-shift-ms3-remote163-actions.json",
+        "bytes": 396,
+        "sha256": "sha256:3e3077b609923d2d46b32913f827cb2c575561335e629413730ebb42fc9d28c5"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-record-delivery165.py",
+        "bytes": 5431,
+        "sha256": "sha256:761e4861f0b03e74d0b3eebc3fe48f72f95344c2d56ca082b279a50a6cdbb1b2"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-delivery165/003-still-shift-ms3-record-delivery165.py",
+        "bytes": 5431,
+        "sha256": "sha256:761e4861f0b03e74d0b3eebc3fe48f72f95344c2d56ca082b279a50a6cdbb1b2"
+      },
+      "exact": true
+    }
+  ],
+  "durableIndex": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-delivery165/index.json",
+    "bytes": 6343,
+    "sha256": "sha256:7dbcfe88a50f7396961fdeaed8d1a0def52de3bbea990fdcb8540f6f4ad32b11"
+  }
+}

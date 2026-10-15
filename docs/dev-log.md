@@ -67,11 +67,28 @@ still hold before relying on them.
   runtime staged completions, six older missing raw paths and19 timing deferrals
   remain explicit. Packs candidate; finer Thai unadopted. MS4 scale/diversity remains
   future. Approved PR58 body114 is already public and stays a historical snapshot.
-- **Remote delivery:** final current metadata push/readback remains to record.
-  MS0/MS1 owner-merged; PR56/57/58 status refreshed separately. Preserve primary
-  checkout edits and ignored original evidence. No GitHub PR merge or Actions.
+- **Remote delivery verified:** checkpoint276e76f6 pushed/read back exactly on
+  PR58; all five milestone PRs attached. MS0/MS1 owner-merged; PR56/57/58 open and
+  mergeable at capture. Actions disabled; approved historical PR58 body unchanged.
+  This later receipt adds metadata only. Primary edits and ignored pilot evidence
+  preserved; no PR merge, package/video publication or human acceptance inferred.
+  [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-10-16 — Verify final public MS3 technical delivery165
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3-upstream143`.
+- **Delivery:** normal fast-forward push to existing PR58 at276e76f6, actual0;
+  Git/remote/GitHub heads match. Five attached PRs confirmed;51/52 merged by owner,
+  56/57/58 open/mergeable. Actions disabled; approved PR58 description unchanged.
+- **Scope:** this receipt is later metadata only; tested code0da/packageef9 and
+  all2,798 selected inputs stay exact. No PR merge, npm/video publish or paid TTS.
+- **Open product gates:** whole factual/mechanical/glyph/motion/listening and owner
+  review; original1/10/nine failures/null savings, candidate packs/Thai/retention
+  gaps/timing deferrals remain explicit in the finite162 reconciliation.
+- **Records:** [Delivery165](./mechanism-shorts-ms3-delivery165-results.json),
+  [ten current videos](../benchmarks/results/ms3-current-review161/index.md).
 
 ### 2026-10-16 — Complete current actual-ten runtime and finite reconciliation
 
