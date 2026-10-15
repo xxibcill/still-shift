@@ -106,6 +106,16 @@ against retained real data. The failed run is never relabeled as passed. Old
 complete final full remains mandatory before package/current all-ten execution.
 [Recovery assertion correction](./mechanism-shorts-ms3-repair110-results.json).
 
+Repair110 focused checks now exit0:34 provenance/11 retry tests, real retained-data
+classifier replay and benchmark418 samples. Current visual109 controls pass180
+decoded frames with4 agent-inspected encoded stills; compiler111 rejects wrong
+physical label state239 with original authenticated native witnesses. The14-case
+fault matrix keeps method/artifact/source scopes explicit. Complete full113 is
+prepared on both corrected assertions, without skipping any suite or rewriting
+the previous failures. It remains unpassed until actual full terminal0.
+[Complete final gate113](./mechanism-shorts-ms3-final113-full-gate-results.json),
+[current fault coverage111](./mechanism-shorts-ms3-fault-coverage111-results.json).
+
 The four actual geometry fault images are now captured and agent-inspected104.
 Two disposable EU001 assets produce located failures at64/159 (moving fixed mount)
 and266 (wall/hook penetration), using current code a7bc0e5b/profile1dd05300.

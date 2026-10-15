@@ -61,13 +61,13 @@ still hold before relying on them.
   count0 differs from expected2. Repair110 changes only this test; focused34
   provenance/11 retry cases, real-data classifier replay and benchmark now pass.
   Current visual109 controls180 frames/4 inspected stills and compiler111 physical
-  label-state admission also pass with0 new native captures. A complete final full remains mandatory;
+  label-state admission also pass with0 new native captures. Complete final113 is prepared after these focused checks;
   no failed aggregate is relabeled.
   Original pilot
   first-pass1/10/nine failures/null paired tokens and accepted0 remain retained.
   [Terminal](./mechanism-shorts-ms3-first-ten-terminal90-results.json),
   [integration](./mechanism-shorts-ms3-prerequisite-integration89-results.json),
-  [current full attempt](./mechanism-shorts-ms3-final91-full-gate-results.json),
+  [retained failed full91](./mechanism-shorts-ms3-final91-full-gate-results.json),
   [PR/Actions and exact live command-prefix audit](./mechanism-shorts-ms3-repository95-results.json).
 
 - **Current remaining MS3 gates (2026-10-15):** final integrated-source full
@@ -87,7 +87,7 @@ still hold before relying on them.
   all ten/6181 scope, isolation/cache/history and EU008 repair obligations.
   Source CLI discovery remains0/32 items. Guide/source pin comparison107 captured
   15 exact before this expected one-test follow-up; installed parity stays open.
-  [Active repair and required-full path](./mechanism-shorts-ms3-repair110-results.json).
+  [Active required complete full113](./mechanism-shorts-ms3-final113-full-gate-results.json).
   The future package wrapper additionally freezes the entire clean checkout/HEAD,
   including archived Markdown guides, until its actual terminal. Three user guides96
   now match current CLI/native QA/handoff/relocation/reuse/provenance behavior;
@@ -288,6 +288,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Prepare unmodified complete final gate on both corrected assertions113
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` aftercfb24587.
+- **Ready:** actual focused1100/45 tests/replay/benchmark; current2D visual1090
+  with180 decoded frames/4 inspected stills; current wrong-state compiler1110.
+  Only2 browser assertion files differ from failed full91, all production/other
+  held bytes exact. Both actual failed aggregates and recovery1051 remain retained.
+- **Next:** clean-start complete pnpm check:all after pinned preflight, fresh cache
+  and2793-input hold. Prior full took about6h before the recovery suffix; this may
+  take longer. No parallel render group. No full/package/pilot pass inferred.
+- **Scope:** mandatory complete software gate before current archive/all-ten
+  installed lifecycle; no shrinking to staged or one-episode proof.
+- **Records:** [complete final gate113](./mechanism-shorts-ms3-final113-full-gate-results.json).
 
 ### 2026-10-15 — Verify focused metrics and refresh current fault evidence111
 

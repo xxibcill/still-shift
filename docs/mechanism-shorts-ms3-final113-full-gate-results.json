@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "ms3-complete-final-full-gate-1",
+  "capturedUtc": "2026-10-15T08:31:42.894373+00:00",
+  "status": "prepared-required-complete-full-not-yet-started",
+  "sourceBeforeDocs": "cfb24587",
+  "runner": {
+    "path": "/private/tmp/still-shift-ms3-final113-full1.py",
+    "bytes": 5733,
+    "sha256": "sha256:19fd38fc0df3d8a27a27f319f1fe7316499285c0f38b9e11ed4b83d4a3dfd086"
+  },
+  "command": ["pnpm", "check:all"],
+  "launchCommand": [
+    "python3",
+    "/private/tmp/still-shift-ms3-final113-full1.py",
+    "--focused-admission",
+    "/private/tmp/still-shift-ms3-repair110-terminal1.json"
+  ],
+  "rawReceipt": "/private/tmp/still-shift-ms3-final113-full1.json",
+  "rawLog": "/private/tmp/still-shift-ms3-final113-full1.log",
+  "futureSourceInventory": "/private/tmp/still-shift-ms3-final113-source-inputs1.json",
+  "currentSourceInputs": {
+    "path": "/private/tmp/still-shift-ms3-repair110-source-inputs1.json",
+    "bytes": 477326,
+    "sha256": "sha256:15c30dfbd59d8b15735a9faf725d25d8617f38da086676d5e3263c1471265552"
+  },
+  "sourceFiles": 2793,
+  "sourceBytes": 122415742,
+  "changedSinceFailedFull91": [
+    "tests/browser/mechanism-production-native.ts",
+    "tests/browser/mechanism-production-recovery.ts"
+  ],
+  "productionAndAllOtherInputsUnchanged": true,
+  "prerequisites": {
+    "focused110ObservedSession": 73424,
+    "focusedActualExitCode": 0,
+    "focusedStages": 7,
+    "provenanceTests": 34,
+    "retryTests": 11,
+    "benchmarkSamples": 418,
+    "focusedReceipt": {
+      "path": "/private/tmp/still-shift-ms3-repair110-focused1.json",
+      "bytes": 4451,
+      "sha256": "sha256:119ab9922a1156ff851dbd9db338dd326c631aad95dd3c73afb8763188419a50"
+    },
+    "visual109ActualExitCode": 0,
+    "visualReceipt": {
+      "path": "/private/tmp/still-shift-ms3-visual109-run2.json",
+      "bytes": 1460,
+      "sha256": "sha256:06c272d3328af41858354855d77791266b1846b5735f2959cdb1f9dbf79a7623"
+    },
+    "currentCompiler111": {
+      "path": "/private/tmp/still-shift-ms3-physical-label-state111-result1.json",
+      "bytes": 6273,
+      "sha256": "sha256:ddb6817488af786b551ac58619fb5dc96858eee75e5cabcdde9cf6577f8f2e01"
+    },
+    "faultMatrix111": {
+      "path": "/private/tmp/still-shift-ms3-fault111-review1.json",
+      "bytes": 21542,
+      "sha256": "sha256:182474f8690165392c6e8916605ac7a84463b4255cfbdd9fd6e8c80df864fc36"
+    }
+  },
+  "expectedCompute": "Previous full91 took21672s/about6h and did not reach the recovery/benchmark suffix. Complete final run may take longer; no fixed ETA.",
+  "verificationPolicy": "Run the unmodified complete gate after focused fixes, with pinned toolchain preflight, clean starting checkout, current source hold and fresh isolated media cache. No simultaneous render/export/benchmark group; do not substitute staged coverage for complete success.",
+  "frozen": "All2793 selected source/root/ROADMAP inputs until actual terminal. Milestone evidence/dev-log may be updated; whole checkout/HEAD freezes separately during the later package gate.",
+  "priorFailuresRetained": [
+    "./mechanism-shorts-ms3-final90-full-gate-results.json",
+    "./mechanism-shorts-ms3-final91-full-gate-results.json",
+    "./mechanism-shorts-ms3-repair110-results.json"
+  ],
+  "packageAndInstalled": "Pending actual successful complete full113 terminal/source hold. Old93/102/106/108 preparations remain unexecuted; bind the later package runner directly to the actual successful current full receipt. Preserve all10 episodes/6181 frames, original metrics and EU008 two-label repair.",
+  "scope": "Complete software/benchmark only. Original first-pass1/10, nine failures, null paired tokens and accepted0/10 retained. Whole reviews, current archive/installed proof and human acceptance remain separate.",
+  "acceptedPilot": 0,
+  "retainedBookkeepingFailure": {
+    "actualExitCode": 1,
+    "scope": "Docs helper expected a literal line break before required-full phrase; existing prose had it on the preceding line. Source/full command unchanged and not started. Partial docs preserved, Current state corrected in place.",
+    "helper": {
+      "path": "/private/tmp/still-shift-ms3-final113-docs1.py",
+      "bytes": 6331,
+      "sha256": "sha256:33b1aa470d025cb2eab025b1953ad63222d331dc505aff6254068a929ca62900"
+    }
+  }
+}
