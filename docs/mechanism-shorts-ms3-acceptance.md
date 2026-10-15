@@ -6,36 +6,46 @@ was opened/attached. Only roadmap/log prose differs at integration; the owner's
 MS0 merge is retained. This tracker preserves the
 [approved MS3 scope](./mechanism-shorts-production-plan.md#ms3-production-lifecycle-and-ten-episode-pilot).
 
-Current2026-10-15 evidence binds the actual EU001–EU010 to frozen producer
-`3df62a55` / runtime1090 / profile1dd0. The bounded all-ten run, report and resume
-actually exit0. Independent checks cover6,181 frames,130 root artifacts,1,084
-review images,24,724 native pins and exact original narration parity. The local
-review index is `benchmarks/results/ms3-actual-first-ten-review80/index.md`.
-Seven compact handoffs (EU001–EU007) pass independent source/clock/resume/asset
-closure checks. Unified58827 continues the remaining three handoffs; CPU-only
-follower26381 audits newly sealed packets. No other renderer group or source
-integration may start until the producer actually terminates.
+Current2026-10-15 episode evidence binds actual EU001–EU010 to original producer
+`3df62a55` / runtime1090 / profile1dd0. All13 lifecycle stages actually exit0:
+bounded all-ten run, report, resume and ten compact handoffs. Independent packet
+checks cover each source/clock/current-resume/eight-artifact closure. Both original
+producer58827 and audit follower26381 have actual terminal0; their source freeze
+ended before integration. Independent products retain6,181 frames,130 root
+artifacts,1,084 review images,24,724 native pins and exact complete original Alden
+narration at1×. The local review index is
+`benchmarks/results/ms3-actual-first-ten-review80/index.md`.
+[Terminal evidence](./mechanism-shorts-ms3-first-ten-terminal90-results.json).
 
-The actual report reconciles first-pass technical completion at1/10 (10%), below
-the90% target, with nine original failures preserved. Token savings remain null
-without comparable paired measurements. Technical and sampled-visual pass10 each;
-mechanical, factual, continuous-motion and listening remain unreviewed10 each,
-with0 reviewed-ready/accepted. Render p50/p95 are474.63/574.84s, separate from
-absent setup/routine measurements.
-[Current authoritative evidence](./mechanism-shorts-ms3-current-first-ten-recovery-results.json).
+The original report measures first-pass technical completion1/10 (10%), below90%,
+with nine original failures preserved. Comparable paired token savings remain
+null. Technical/sampled-visual pass10 each; mechanical/factual/continuous/listening
+remain unreviewed10 each, with0 reviewed-ready/accepted. Render p50/p95 are
+474.63/574.84s, separate from absent setup/routine measurements.
+[Original product/cohort evidence](./mechanism-shorts-ms3-current-first-ten-recovery-results.json).
 
-Isolated source repairs20e1/8e11/10cb/e231 await integration after terminal58827.
-The latest private archive85 binds source452b/codee231 and compiled runtime8969,
-separate from1090/d734/ebc2. Build/pack, all2,573 member hashes, offline install,
-13 public source controls,4 actual retry/cache/real-lock controls across both queue
-versions, strict installed types and discovery pass in recorded stages. Actual
-Node and pinned Python retain5 original-root file denials; a disclosed fixed
-system ps-only exception permits the required process identity check. Initial
-audit/isolation failures and rejected-copy probes remain recorded. Fresh
-installed lifecycle86 is prepared and guard-blocked while primary is live;
-earlier79/82 remain unexecuted. Full current software/package/render gates stay
-open. [Latest package proof](./mechanism-shorts-ms3-package-portability-results.json),
-[whole review and isolated repairs](./mechanism-shorts-ms3-whole-review84-results.json).
+Reviewed source repairs20e1/8e11/10cb/e231 are integrated with current mainb376,
+native796375b7 and reusable repair/package evidence8b7374ed. Current full91 runs
+serially as42543 on held3749618d:2,793 inputs/122,415,262B and a fresh isolated media
+cache. It has not passed. Full90 failed five cue checks at an old empty cache
+entry, with all original inputs exact; unchanged affected5 plus corrupt-fallback
+control pass6/2 on a fresh cache. Original default cache remains rejected and
+preserved. No production/test code changed; only roadmap status prose differs
+between these full attempts. No parallel browser/native/export group is permitted
+while42543 lives. [Current full attempt](./mechanism-shorts-ms3-final91-full-gate-results.json),
+[failed attempt/cache preflight](./mechanism-shorts-ms3-final91-cache-preflight-results.json).
+
+Historical private archive85 binds source452b/codee231 and compiled runtime8969.
+Its2,573 members,13 source controls,4 retry/cache/real-lock controls, strict types
+and discovery retain those earlier bindings, including the disclosed fixed-system
+ps exception and initial failures. Prepared installed86 remains unexecuted and
+belongs to that older source. Current MS3 needs a fresh archive/installed lifecycle
+after the full gate;85/86 are not current merged-source evidence. Upstream MS2
+current affected package91 passes2,368 installed files/971 corresponding sources/
+13 native API controls and strict types/discovery on committede44 with original
+roots denied. [MS3 package history](./mechanism-shorts-ms3-package-portability-results.json),
+[MS2 current affected package](./mechanism-shorts-ms2-current-package91-results.json),
+[repair/integration history](./mechanism-shorts-ms3-whole-review84-results.json).
 
 Four actual geometry fault images remain open. Their existing work-budget guard
 returns2; a revised allowance was requested and is pending. Other software work

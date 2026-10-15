@@ -238,6 +238,19 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-10-15 — Correct stale milestone summaries while full91 runs
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; source remains held3749618d.
+- **Done:** MS3 tracker now says10 handoffs/actual terminal0 and integrated repairs;
+  full91/42543 is current, while90 failure and85/86 older-source scope remain clear.
+  MS2 matrix/prelude explicitly date historical slice open states and link current
+  affected repair/package qualification. All historical evidence/checklists retained.
+- **Results:** three milestone-prose files formatted; current2,793-file source hold
+  remains exact. No production/schema/ROADMAP change or new renderer group.
+- **Open:** actual current full91 terminal, current MS3 archive/installed and whole/
+  fault-budget gates; no acceptance or target achievement inferred.
+- **Records:** [Documentation reconciliation](./mechanism-shorts-ms3-documentation-reconciliation91-results.json).
+
 ### 2026-10-15 — Start complete current matrix with proven isolated media cache
 
 - **Agent / branch:** Codex on `codex/mechanism-ms3`, held source3749618d.

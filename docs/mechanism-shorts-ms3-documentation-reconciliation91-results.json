@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "ms3-documentation-reconciliation-1",
+  "capturedUtc": "2026-10-15T01:14:26.725934+00:00",
+  "status": "stale-current-summaries-corrected-history-preserved",
+  "sourceHeldBySession": 42543,
+  "heldSourceCommit": "3749618d64dfa35a57b2e4f34da5b6722ac9c089",
+  "changes": [
+    {
+      "path": "docs/mechanism-shorts-ms3-acceptance.md",
+      "beforeSha256": "dd02d94dfd86e65643adcfa612340aa29a28357b9ff103b60182acb9be260370",
+      "afterSha256": "013905955d03568965269c7b8379b038f09287ffb0395b0738792313e0925479"
+    },
+    {
+      "path": "docs/mechanism-shorts-ms2-acceptance.md",
+      "beforeSha256": "215443ce53929773b8234d39e217e1f2ddd06a85746577cba107782f2dfab965",
+      "afterSha256": "3049c9e0984a6af1ee36065905d928f7e496149366df12d2bc6e6e04e34dc38c"
+    },
+    {
+      "path": "docs/mechanism-shorts-production-plan.md",
+      "beforeSha256": "a1db8f681dda8c1f6ab0eacef9e5e96e88c516e2caf76befc1449cac3b3716cf",
+      "afterSha256": "a5a6b11b81d197121cc4e73b3b3691387a00b9b56ac691ef45072130faf1cc8d"
+    }
+  ],
+  "corrections": [
+    "All ten handoffs and both actual terminal handles are complete, not7/live58827",
+    "Reviewed repairs are integrated, not awaiting original producer termination",
+    "42543/full91 is current and running; failed full90 and fresh-cache controls remain retained",
+    "Archive85/prepared86 are earlier-source history, not current merged-source evidence",
+    "MS2 original matrix and slice67\u201369 historical open statements are explicitly dated; later repair/package qualification is linked"
+  ],
+  "scope": "Milestone prose only; no source/root/ROADMAP/schema or acceptance checkbox changed. Does not close whole reviews or final current gates."
+}
