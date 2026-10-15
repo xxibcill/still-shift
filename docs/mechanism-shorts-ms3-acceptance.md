@@ -79,12 +79,14 @@ the still-running raw full receipt. No package, receiver or render is started.
 [Active serial preparation and controls](./mechanism-shorts-ms3-installed102-preparation-results.json).
 
 Four actual geometry fault images remain open. The owner explicitly approved
-revised total10 USD-equivalent/35 million tokens. The same ledger baseline and
-prices are retained; live conservative totals are36.328462 USD-equivalent/
-155,609,754 tokens, including intervening unrelated software work. The batch still
-fails budget admission; total50/200 million is requested and pending. No new
-asset work or paid generation started. Software verification continues separately.
-[Allowance and live accounting](./mechanism-shorts-ms3-work-allowance98-results.json),
+revised total50 USD-equivalent/200 million tokens for the same two EU001 assets
+and four phone frames. The existing baseline, prices and all usage are retained;
+recorded live totals41.112124 USD-equivalent/173,950,247 tokens admit the bounded
+batch with an80% checkpoint warning. After successful full42543 terminal, use the
+first serial render slot and recheck this same ledger before/after the batch.
+Current accounting includes intervening unrelated software work; it is not an
+asset-only cost or provider bill. No new asset command or paid generation started.
+[Current approval and live accounting](./mechanism-shorts-ms3-work-allowance103-results.json),
 [physical fault preparation](./mechanism-shorts-ms3-physical-fault-preparation-results.json).
 
 The table retains the original staged engineering evidence. Source identities and

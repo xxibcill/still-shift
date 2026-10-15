@@ -99,11 +99,12 @@ still hold before relying on them.
   refusal controls pass; receiver/package/replay remain unexecuted.
   [Serial controls](./mechanism-shorts-ms3-installed102-preparation-results.json).
   [Preparation controls](./mechanism-shorts-ms3-installed-preparation93-results.json),
-  [Current installed scope](./mechanism-shorts-ms3-current-installed-scope92-results.json). Physical fault captures stay
-  budget-blocked after explicit total10/35M approval: unchanged conservative ledger
-  now36.328462 USD-equivalent/155,609,754 tokens including later unrelated software
-  work. Approval recorded without resetting usage; same-batch total50/200M request
-  is pending. [Allowance](./mechanism-shorts-ms3-work-allowance98-results.json). No audio files
+  [Current installed scope](./mechanism-shorts-ms3-current-installed-scope92-results.json). Physical fault captures now have
+  explicit total50/200M approval103: same conservative ledger admits173,950,247
+  tokens/41.112124 USD-equivalent with WARN. All original usage/prices retained;
+  recheck before/after the same four-image batch in the first successful post-full
+  serial slot. No new asset command started.
+  [Allowance](./mechanism-shorts-ms3-work-allowance103-results.json). No audio files
   are missing and no paid generation is approved. Review copies remain byte-exact
   after integration at `benchmarks/results/ms3-actual-first-ten-review80/index.md`.
   [Package history](./mechanism-shorts-ms3-package-portability-results.json),
@@ -277,6 +278,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Record approved total50/200M for the same four fault images103
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` after225e062a.
+- **Scope:** apply the human's explicit revised total allowance to the same
+  two prepared EU001 derivatives/four phone frames, inspection and results.
+- **Results:** existing ledger retains its baseline, prices and all usage;
+  live173,950,247 tokens/41.112124 USD-equivalent admits the bounded batch with
+  WARN. Historical5/5M and10/35M decisions/blocked observations are retained.
+- **Open / next:** successful actual full42543 terminal, fresh same-ledger check,
+  truthful current runtime binding, then the four captures in the first serial
+  slot before long installed checks. No capture started and no ElevenLabs spending
+  approved. This is internal API-equivalent accounting, not an exact bill.
+- **Records:** [approval103](./mechanism-shorts-ms3-work-allowance103-results.json).
 
 ### 2026-10-15 — Prepare supported installed repair revision before final handoffs102
 

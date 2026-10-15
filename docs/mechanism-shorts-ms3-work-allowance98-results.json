@@ -100,5 +100,9 @@
   "acceptedPilot": 0,
   "providerBillingCap": false,
   "elevenLabsSpendingApproved": false,
-  "next": "Await full42543 actual terminal and a sufficient explicit work allowance before guarded captures; current capture helper also needs truthful final runtime identity before execution."
+  "next": "Await full42543 actual terminal and a sufficient explicit work allowance before guarded captures; current capture helper also needs truthful final runtime identity before execution.",
+  "laterDecision": {
+    "record": "./mechanism-shorts-ms3-work-allowance103-results.json",
+    "effect": "Historical10/35M blocked observation retained. Human subsequently approved total50/200M for the same batch; record103 contains the admitted live observation."
+  }
 }
