@@ -59,7 +59,7 @@
     },
     {
       "finding": "pbr-preview-resources",
-      "status": "implemented and HTTP verification passed; included in this slice",
+      "status": "committed and HTTP verification passed",
       "behavior": "CLI preview serves verified opaque native-pbr resources using their source/capture ownership, octet-stream type and exact Content-Length. Released captures, invalid revisions, unknown resources and wrong capture owners still return404.",
       "regressionBefore": {
         "tests": 1,
@@ -88,23 +88,259 @@
           "path": "tests/integration/composition-pbr-preview.test.ts",
           "sha256": "82bf545b69791d33d7ec55f001cba20d20c7da34de67f9726bd897193a04f699"
         }
-      ]
+      ],
+      "commit": "e9b4caea6fa8903379b7094ace24ecae4b8548a8"
+    },
+    {
+      "finding": "source3-async-preview",
+      "status": "verified; included in this final repair commit",
+      "behavior": "Lab routes source2 and source3 through serialized prepareFrame plus renderCompositionFrameAsync; original synchronous formats retain their existing route.",
+      "regressionBefore": {
+        "tests": 2,
+        "failed": 2,
+        "exitCode": 1,
+        "log": "/private/tmp/pr57-rereview-fix3-red.log",
+        "failure": "Both real Lab previews fail initial drawing with Source2/source3 frames require asynchronous completion."
+      },
+      "regressionAfter": {
+        "tests": 2,
+        "files": 1,
+        "exitCode": 0,
+        "log": "/private/tmp/pr57-rereview-fix3-green.log",
+        "coverage": [
+          "Textured and untextured source3-only actual Chromium previews",
+          "Changing source poses and exact forward/reverse/random PNG equality",
+          "Rapid latest-seek handling",
+          "Actual material edits, new prepared capture and repeated seeks"
+        ]
+      },
+      "postimages": [
+        {
+          "path": "apps/lab/src/composition.ts",
+          "sha256": "18808b49e722b82eb267196dd78e37b7583ea5af645f835af97fdbf9bbf56c5c"
+        },
+        {
+          "path": "tests/integration/composition-pbr-lab.test.ts",
+          "sha256": "aef9082192dc6e04fea52aadc93915573021ff90a3b76976c96ad5959271d3e1"
+        }
+      ],
+      "commit": "included in this final repair commit; see Git history and inline delivery reply"
     }
   ],
   "remaining": [
-    "Source3 asynchronous Lab dispatch",
-    "Required fast/runtime/browser verification",
-    "Final independent review and one final push"
+    "Single final fast-forward push",
+    "Commit-linked inline replies and thread resolution",
+    "Owner merge decision and human production acceptance"
   ],
   "setup": {
     "node": "22.23.1",
     "pnpm": "10.29.3",
     "dependencies": "pnpm install --offline --frozen-lockfile passes; exact locked dependencies reused.",
-    "python": "uv sync --offline --frozen passes; pinned3.12.11 and39 locked packages"
+    "python": "uv sync --offline --frozen passes; pinned3.12.11 and39 locked packages",
+    "soundtrack": "UV_OFFLINE=1 pnpm soundtrack:setup passes; hash-locked DawDreamer0.9.0, NumPy2.3.3, SciPy1.16.2"
   },
   "limits": [
     "No npm publication or ElevenLabs spending",
     "Human visual/listening/physical acceptance remains separate",
     "Historical full/package qualification keeps its original source and archive bindings"
+  ],
+  "verification": {
+    "checkFast": {
+      "exitCode": 0,
+      "unitTests": 4383,
+      "files": 429,
+      "log": "/private/tmp/pr57-rereview-fix-check-fast.log"
+    },
+    "checkRuntime": {
+      "status": "Complete tier passed in separately recorded stages; initial aggregate remains failed.",
+      "exitCode": 1,
+      "runtimeTests": 276,
+      "runtimeFiles": 43,
+      "integrationPassed": 322,
+      "integrationFailed": 3,
+      "integrationTotal": 325,
+      "integrationFilesPassed": 58,
+      "integrationFilesFailed": 1,
+      "log": "/private/tmp/pr57-rereview-fix-check-runtime.log",
+      "failures": [
+        {
+          "file": "tests/integration/depth-worker-protocol.test.ts",
+          "case": "shares fake preparation and cache-hit results with both consumers",
+          "reason": "Unchanged5000ms timeout; root cause unproven."
+        },
+        {
+          "file": "tests/integration/depth-worker-protocol.test.ts",
+          "case": "validates normalization without depth and its cache hit",
+          "reason": "Unchanged5000ms timeout; root cause unproven."
+        },
+        {
+          "file": "tests/integration/depth-worker-protocol.test.ts",
+          "case": "preserves input failure codes for prepare",
+          "reason": "Unchanged5000ms timeout; root cause unproven."
+        }
+      ],
+      "retention": "Original failing aggregate is retained; any passing owning-file rerun and deferred suffix will be recorded as separate stages.",
+      "completion": "276 runtime pass; initial integration322 pass/3 timeout; unchanged owning file5 pass on rerun gives325 distinct integration passes; Python14 and smoke suffix pass."
+    },
+    "inputs": {
+      "path": "/private/tmp/pr57-rereview-fix-inputs.json",
+      "files": 2609,
+      "scope": "All tracked nondocumentation inputs, including newly staged source3 regression and all source/test/config/assets.",
+      "sha256": "d7062aafece177a32c40d45a09200338b480b3afe19761197de62ce1df061ea4",
+      "finalVerifiedFiles": 2609,
+      "mismatches": []
+    },
+    "protocolRerun": {
+      "exitCode": 0,
+      "tests": 5,
+      "files": 1,
+      "log": "/private/tmp/pr57-rereview-fix-protocol-rerun.log",
+      "limits": "Original5000ms timeouts and assertions unchanged."
+    },
+    "distinctIntegrationTests": 325,
+    "pythonTests": {
+      "exitCode": 0,
+      "tests": 14,
+      "log": "/private/tmp/pr57-rereview-fix-python-tests.log"
+    },
+    "browserSmoke": {
+      "exitCode": 0,
+      "log": "/private/tmp/pr57-rereview-fix-smoke.log"
+    },
+    "affectedBrowser": {
+      "exitCode": 0,
+      "sequential": true,
+      "source2Export": {
+        "directory": "/private/tmp/still-shift-ms2-normal-export2-EHguN2",
+        "exports": 2,
+        "framesPerExport": 6,
+        "passesPerExport": 36,
+        "unusedFrames": 1,
+        "repeatedOutputSha256": "sha256:3e839c201f2bcc25f466fc84db62f4d722112e4bcd5a493df0efa12f8a41508d",
+        "httpFaultControls": "passed",
+        "log": "/private/tmp/pr57-rereview-fix-export-v2.log"
+      },
+      "source3Export": {
+        "directory": "/private/tmp/still-shift-ms2-normal-export3-ecd9S4",
+        "exports": 2,
+        "framesPerExport": 11,
+        "passesPerExport": 11,
+        "unusedFrames": 1,
+        "repeatedOutputSha256": "sha256:bdfa9d0aff02c19a75811ee545e23e2a20f4dfd7e1ba8e2bee5ffecaea716d38",
+        "log": "/private/tmp/pr57-rereview-fix-export-v3.log"
+      },
+      "existingLabInspector": {
+        "directory": "/private/tmp/still-shift-ms2-lab2-z1AWhk",
+        "records": 20,
+        "log": "/private/tmp/pr57-rereview-fix-inspector-v2.log"
+      },
+      "nativeDepth": {
+        "directory": "/private/tmp/still-shift-ms1n-native-depth-2M5nVh",
+        "completion": {
+          "status": "passed",
+          "depthCases": 14,
+          "compositionIntegrationCases": 6,
+          "cancellationDirectory": "/private/tmp/still-shift-native-export-cancel-UuoNMi"
+        },
+        "log": "/private/tmp/pr57-rereview-fix-native-depth.log"
+      }
+    },
+    "notRun": [
+      "Fresh full render/frozen-baseline/benchmark release gate",
+      "Installed-package requalification",
+      "Human visual/listening/physical acceptance"
+    ],
+    "logs": [
+      {
+        "path": "/private/tmp/pr57-rereview-fix-setup.log",
+        "sha256": "9660b0eafe2a402db0fd265b86afcd1bcca1b7a5d807a9c9f33aff27187e0a99"
+      },
+      {
+        "path": "/private/tmp/pr57-rereview-fix-python-setup.log",
+        "sha256": "ee1fcbff61e6db024a7fa448cd40dafaf601fe67f1938dc8be366921783e9c01"
+      },
+      {
+        "path": "/private/tmp/pr57-rereview-fix-soundtrack-setup.log",
+        "sha256": "6dc61bd9f4afd248162d2af5f86e5db59b9165475f2b9362067be5dd2c32df29"
+      },
+      {
+        "path": "/private/tmp/pr57-rereview-fix1-red.log",
+        "sha256": "5318fcef41e5cdc5ef596672d56091dd37c0ac91788b73726ed7a1729d2a7ae5"
+      },
+      {
+        "path": "/private/tmp/pr57-rereview-fix1-green.log",
+        "sha256": "20fae314fca27d93d9e662de3b00fe14b9969309f5f02a340611c631481a1cac"
+      },
+      {
+        "path": "/private/tmp/pr57-rereview-fix2-red.log",
+        "sha256": "f16c509fceaf182d7c30485534247e31ace09e99aa41a321171878f62f631a05"
+      },
+      {
+        "path": "/private/tmp/pr57-rereview-fix2-green.log",
+        "sha256": "4ba3c7934f5cb2771899da3a549b3d84ac0af3184b8929448e09d9816ddf0c03"
+      },
+      {
+        "path": "/private/tmp/pr57-rereview-fix3-red.log",
+        "sha256": "4eaae5b3df2af1bc2b0f7992ac99d9fa2d1ec6192e6f49f76863492a8a51251b"
+      },
+      {
+        "path": "/private/tmp/pr57-rereview-fix3-green.log",
+        "sha256": "141e0e03b2f5b0bf6a47f2638bc1dd925580a393bd7c2dd69006327087b351ad"
+      },
+      {
+        "path": "/private/tmp/pr57-rereview-fix-check-fast.log",
+        "sha256": "94e9b470b2c93795fd04cd06b866d60f971456cbb7d35d9f835c40d5b621d068"
+      },
+      {
+        "path": "/private/tmp/pr57-rereview-fix-check-runtime.log",
+        "sha256": "1ff0f2f2ae0fb6a6c3c451d42aeba3a9ba3accc4cc40afabd8ddb71bd666e7b8"
+      },
+      {
+        "path": "/private/tmp/pr57-rereview-fix-protocol-rerun.log",
+        "sha256": "f212c481fa37fd07091031ecc9727ff682ad3aaece10d8989ff92b6064d46dfa"
+      },
+      {
+        "path": "/private/tmp/pr57-rereview-fix-python-tests.log",
+        "sha256": "2ef3437081207d2a01153a549170dfb9a1f11976ee1d9aff317b74d414c48c61"
+      },
+      {
+        "path": "/private/tmp/pr57-rereview-fix-smoke.log",
+        "sha256": "226bcf933dbed473d84e5ce5ad62bda686d15f15a80942b11b1219d803440f6e"
+      },
+      {
+        "path": "/private/tmp/pr57-rereview-fix-export-v2.log",
+        "sha256": "f8ab500e4b144ba0ae2f60877685748b6fc074f08da15b534b244a1ea76bcb6c"
+      },
+      {
+        "path": "/private/tmp/pr57-rereview-fix-export-v3.log",
+        "sha256": "3d0c22086f361c092804c9487fff07855dcdee8f130d9d6718b0fb470d9f5d3c"
+      },
+      {
+        "path": "/private/tmp/pr57-rereview-fix-inspector-v2.log",
+        "sha256": "b33540c2f7ebe20a2f6e6e2bf76dc445dc2b218ef581566a31e898e547357022"
+      },
+      {
+        "path": "/private/tmp/pr57-rereview-fix-native-depth.log",
+        "sha256": "221f5b4e4df0eb7d2c161b6d9c96d849232fbefebcaecde246ea3556293980f4"
+      }
+    ]
+  },
+  "independentReviews": {
+    "Standards": 0,
+    "Spec": 0,
+    "scope": "Full repair delta from56fb5168 including staged third repair; both reviewers report all three contracts satisfied and no additional actionable defects."
+  },
+  "delivery": {
+    "status": "Ready for one final push after this final finding commit; actual delivery will be recorded in inline replies.",
+    "targetBranch": "codex/mechanism-ms2",
+    "expectedRemoteHead": "56fb516831b4a4211288ea5036a4f2a6fee3f60a",
+    "policy": "Exactly three finding commits, no intermediate pushes, no force push.",
+    "primaryCheckout": "Unrelated edits preserved; final delivery receipt copied back separately."
+  },
+  "retainedFailures": [
+    "Both journal FIFO regressions failed before repair with bounded child timeout/SIGKILL/reaping.",
+    "PBR HTTP regression failed404 before repair.",
+    "Both actual Lab regressions failed synchronous-source3 completion before repair.",
+    "Required runtime aggregate failed on three original5000ms depth-worker protocol timeouts of unproven cause. Unchanged complete owning file passes all5 on rerun; suffix completed separately."
   ]
 }

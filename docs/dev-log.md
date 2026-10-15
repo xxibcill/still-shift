@@ -43,24 +43,22 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #57 second-round repairs in flight (2026-10-15):** all three findings
-  are inline before implementation. Journal fix `dec445f6` passes 31 focused
-  checks; opaque PBR serving now passes actual original/edited HTTP bytes,
-  Content-Length and ownership/release negatives. Source3 async dispatch is next.
-  One finding per commit; one final push after required verification.
-  [Repair evidence](./pr-57-rereview-fix-results.json).
+- **PR #57 second-round repairs verified (2026-10-15):** all three findings
+  were posted inline before implementation. Separate commits `dec445f6` (journal
+  admission), `e9b4caea` (PBR delivery) and the final source3 async slice are ready
+  for one final fast-forward push. All original regressions now pass; independent
+  Standards/Spec reviews are 0/0. Fast 4,383 units, runtime 276, distinct integration
+  325, Python 14 and smoke pass in recorded stages. Three unproven protocol
+  timeouts remain retained with the unchanged five-case passing rerun. Repeated
+  native2/native3 exports, 20 Lab inspector controls, depth 14/composition 6 and
+  actual export cancellation pass. All 2,609 verification inputs match.
+  [Repair and verification evidence](./pr-57-rereview-fix-results.json).
 
-- **PR #57 review repairs verified (2026-10-15):** both P2 findings were posted
-  inline before implementation. Camera repair `ccd976ee` rejects unsupported cue
-  `up`; the separate snapshot repair uses regular, bounded, cancellable saved
-  input reads and shares compiled-root validation with the caller Node owner.
-  Independent Standards/Spec reviews report 0/0. Fast 4,383 units, runtime 274,
-  distinct integration 322, Python 14, browser smoke and both affected browser
-  proofs pass in recorded stages; failed attempts and reruns remain retained.
-  All 2,615 verification inputs match. Both commits are ready for one final
-  fast-forward push to PR #57, followed by inline delivery replies. Historical
-  full/package/archive bindings and human acceptance remain separate.
-  [Fix evidence](./pr-57-fix-results.json).
+- **PR #57 first repair batch delivered (2026-10-15):** camera `up` repair
+  `ccd976ee` and bounded cue-snapshot repair `56fb5168` remain intact and both prior
+  inline threads are resolved. Their original staged checks/archive bindings remain
+  recorded in [first repair evidence](./pr-57-fix-results.json); the second-round
+  repairs and fresh source binding are recorded above.
 
 - **MS2 current prerequisite/native repairs prepared (2026-10-15):** isolated
   repair branch starts from actual PR57 head495fb2c0, merging MS1N40330672/current
@@ -261,6 +259,23 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Fix PR #57 source3 Lab dispatch and verify all three repairs
+
+- **Agent / branch:** Codex on isolated `codex/pr57-rereview-fixes`, from `56fb5168`.
+- **Done:** source3 joins source2 in the serialized asynchronous Lab draw path.
+  Textured/untextured real browser regressions fail before repair, then pass through
+  motion, reverse/random/rapid seeks and material edits. Each finding has one commit;
+  journal `dec445f6` and PBR resource `e9b4caea` precede this final slice.
+- **Results:** independent reviews 0/0; fast 4,383 units and all 2,609 pinned inputs
+  match. Runtime 276, distinct integration 325, Python 14 and smoke pass in stages.
+  Both repeated native export protocols, 20 existing inspector controls, native
+  depth 14/composition 6 and actual export cancellation pass.
+- **Retained:** three original 5s protocol timeouts and passing unchanged five-case
+  rerun; all three pre-repair regression failures. No threshold/assertion changes.
+- **Open / next:** one final fast-forward push and commit-linked inline replies;
+  merge and human production acceptance remain separate. Primary edits preserved.
+- **Records:** [Repair evidence](./pr-57-rereview-fix-results.json).
 
 ### 2026-10-15 — Fix PR #57 opaque PBR preview resources
 

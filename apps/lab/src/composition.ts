@@ -547,17 +547,19 @@ async function load(
         (d) => `${d.code} ${d.path}: ${d.message}`,
       ),
     };
-    const source2 = result.composition.assets.some(
+    const requiresAsyncNative = result.composition.assets.some(
       (asset) =>
-        asset.type === "native3d" && asset.format === "mechanism-scene-2",
+        asset.type === "native3d" &&
+        (asset.format === "mechanism-scene-2" ||
+          asset.format === "mechanism-scene-3"),
     );
     ownership.renderer(
       {
-        ...(!source2 && (resources.media || resources.native3D)
+        ...(!requiresAsyncNative && (resources.media || resources.native3D)
           ? { prepareFrame: (frame: number) => renderer.prepareFrame(frame) }
           : {}),
         renderFrame(frame: number) {
-          if (source2)
+          if (requiresAsyncNative)
             return (async () => {
               await renderer.prepareFrame(frame);
               snapshot.report = await renderCompositionFrameAsync(
