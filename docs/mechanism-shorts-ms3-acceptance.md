@@ -78,16 +78,16 @@ admission refusals pass, including an in-memory false terminal claim rejected by
 the still-running raw full receipt. No package, receiver or render is started.
 [Active serial preparation and controls](./mechanism-shorts-ms3-installed102-preparation-results.json).
 
-Four actual geometry fault images remain open. The owner explicitly approved
-revised total50 USD-equivalent/200 million tokens for the same two EU001 assets
-and four phone frames. The existing baseline, prices and all usage are retained;
-recorded live totals41.112124 USD-equivalent/173,950,247 tokens admit the bounded
-batch with an80% checkpoint warning. After successful full42543 terminal, use the
-first serial render slot and recheck this same ledger before/after the batch.
-Current accounting includes intervening unrelated software work; it is not an
-asset-only cost or provider bill. No new asset command or paid generation started.
-[Current approval and live accounting](./mechanism-shorts-ms3-work-allowance103-results.json),
-[physical fault preparation](./mechanism-shorts-ms3-physical-fault-preparation-results.json).
+The four actual geometry fault images are now captured and agent-inspected104.
+Two disposable EU001 assets produce located failures at64/159 (moving fixed mount)
+and266 (wall/hook penetration), using current code a7bc0e5b/profile1dd05300.
+The original asset and worker stay exact. The approved same-ledger total50/200M
+admitted capture and completion; all usage/prices are retained. Actual phone
+stills support these sparse witnesses; whole encoded/mechanical/continuous/
+factual/listening and human acceptance remain open. Full91 separately exits1
+on a stale first-pass test assertion; no full/software pass is inferred.
+[Actual images, measurements and review](./mechanism-shorts-ms3-physical-fault104-results.json),
+[approval history](./mechanism-shorts-ms3-work-allowance103-results.json).
 
 The table retains the original staged engineering evidence. Source identities and
 historical cohorts stay attached to those results; their passes do not transfer

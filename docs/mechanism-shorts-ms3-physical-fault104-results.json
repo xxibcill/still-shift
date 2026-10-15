@@ -1,0 +1,221 @@
+{
+  "schemaVersion": "ms3-physical-fault-native-image-results-1",
+  "capturedUtc": "2026-10-15T07:14:55.828080+00:00",
+  "status": "passed-four-actual-native-diagnostic-captures-and-agent-image-inspection",
+  "selectionId": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+  "preparedAssets": 2,
+  "actualImages": 4,
+  "dimensions": [360, 640],
+  "samples": 16,
+  "currentIdentity": {
+    "codeSha256": "sha256:a7bc0e5bb12ee0d0f94318c94918432a6dda2bf6bdfbb44252d9520170743551",
+    "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+    "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733"
+  },
+  "locatedFindings": [
+    {
+      "kind": "moving-mount",
+      "assertions": [
+        {
+          "id": "actual-moving-mount",
+          "domain": "mechanical",
+          "method": "sampled-numeric-range",
+          "status": "failed",
+          "checkedSamples": 3,
+          "completeOutputFrameCoverage": false,
+          "findings": [
+            {
+              "code": "semantic-range-failed",
+              "assertion": "actual-moving-mount",
+              "frame": 64,
+              "rig": "control.EU-001",
+              "parts": ["context.pullBoard"],
+              "relationship": "fixed-reference",
+              "measurement": "fixed-mount",
+              "measured": 0.29999998211860657,
+              "expectedRange": [0, 1e-6],
+              "unit": "matrix-component",
+              "sampleIndex": 1
+            },
+            {
+              "code": "semantic-range-failed",
+              "assertion": "actual-moving-mount",
+              "frame": 159,
+              "rig": "control.EU-001",
+              "parts": ["context.pullBoard"],
+              "relationship": "fixed-reference",
+              "measurement": "fixed-mount",
+              "measured": 0.29999998211860657,
+              "expectedRange": [0, 1e-6],
+              "unit": "matrix-component",
+              "sampleIndex": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "intersection",
+      "assertions": [
+        {
+          "id": "actual-intersection",
+          "domain": "collision",
+          "method": "sampled-numeric-range",
+          "status": "failed",
+          "checkedSamples": 1,
+          "completeOutputFrameCoverage": false,
+          "findings": [
+            {
+              "code": "semantic-range-failed",
+              "assertion": "actual-intersection",
+              "frame": 266,
+              "rig": "control.EU-001",
+              "parts": ["context.pushWall", "hook.contactFace"],
+              "relationship": "forbidden-penetration",
+              "measurement": "wall-hook-x-gap",
+              "measured": -0.0899999737739563,
+              "expectedRange": [0, 1000000],
+              "unit": "native-unit",
+              "sampleIndex": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "imageInspection": {
+    "imagesViewed": 4,
+    "notes": [
+      {
+        "kind": "moving-mount",
+        "framesViewed": [0, 64, 159],
+        "observation": "Recognition baseline0 and fault64 show board/hook displacement relative to the housing. Side159 shows the cyan hook face beside the wood board. Measured fixed-reference drift0.29999998211860657 locates64/159. A still does not prove continuous motion."
+      },
+      {
+        "kind": "intersection",
+        "framesViewed": [266],
+        "observation": "Side266 shows the cyan-highlighted hook and surrounding wall occupying the same contact region. Flat image alone does not quantify penetration; authenticated native bounds gap-0.0899999737739563 is backed by the previously measured closed/oriented-surface interior-point witness."
+      }
+    ],
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-physical-faults76/capture104-image-review1.json",
+      "bytes": 3609,
+      "sha256": "sha256:2d36245bc85b01cf995c171d2325859a0b1763041841b6fe1dd279645db61004"
+    }
+  },
+  "captureResult": {
+    "path": "/private/tmp/still-shift-ms3-physical-faults76/capture-and-audit104.json",
+    "bytes": 17782,
+    "sha256": "sha256:404f0c7725a6f113412a2ae4ecb795872112693f93e4cef87085a2973790adce"
+  },
+  "actualRun": {
+    "path": "/private/tmp/still-shift-ms3-physical-faults76/capture104-run1.json",
+    "bytes": 3907,
+    "sha256": "sha256:b6bf3f0781261af47f191d1bc3cee3a5a8a06de005e9974ff53725123a01e180"
+  },
+  "budgetAtBatchCompletion": {
+    "status": "WARN",
+    "asset": "MS3-EU001-physical-fault-derivatives",
+    "tokens": {
+      "input_tokens": 197162155,
+      "cached_input_tokens": 193846784,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 813288,
+      "reasoning_output_tokens": 441560,
+      "total_tokens": 197975443
+    },
+    "requests": 1014,
+    "standard_equivalent_usd": 44.351821,
+    "max_usd": 50.0,
+    "max_tokens": 200000000,
+    "budget_fraction": 0.989877,
+    "reserve_usd": 0,
+    "reserve_tokens": 0,
+    "models": ["gpt-6.1-sol"],
+    "latest_input_tokens": 164557,
+    "last_usage_timestamp": "2026-10-15T07:12:44.883Z",
+    "warnings": [
+      "80% budget checkpoint: preserve handoff and finish only bounded remaining work",
+      "Large context: compact the working record before the next substantial batch"
+    ],
+    "basis": "Standard API-equivalent only; actual tier/bill, fees and taxes unavailable",
+    "enforcement": "command admission only; no desktop model-request interception"
+  },
+  "budgetReceipt": {
+    "path": "/private/tmp/still-shift-ms3-physical-faults76/capture104-completion-budget1.json",
+    "bytes": 959,
+    "sha256": "sha256:3e04a981666d89acf032eca8be7ac83522987c428a0b07572b7e41460b98f184"
+  },
+  "approval": "./mechanism-shorts-ms3-work-allowance103-results.json",
+  "noBaselineResetOrUsageExclusions": true,
+  "originalAssetAndWorkerExact": true,
+  "originalPreparation": "./mechanism-shorts-ms3-physical-fault-preparation-results.json",
+  "serialAdmission": {
+    "path": "/private/tmp/still-shift-ms3-physical-faults76/terminal-failure104-admission.json",
+    "bytes": 1274,
+    "sha256": "sha256:f9832eec67e7337be02a896297704bbb1ceaf1cb7f99b6ed3515a5aa18dceedd"
+  },
+  "fullSoftwareStatus": "FAILED retained; actual terminal1 frees the serial slot only. Exact stale metric assertion and3/3 current verified products were inspected before this bounded diagnostic admission. No terminal0 receipt created; old strict103 helpers remain unchanged/unexecuted.",
+  "reviewIndex": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-physical-fault104/index.md",
+  "reviewCopies": [
+    {
+      "kind": "moving-mount",
+      "frame": 0,
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-physical-faults76/moving-mount-capture1/frames/frame-000000.png",
+        "bytes": 138578,
+        "sha256": "sha256:b3b55675ae1be76ff8a9a77a3e6fd6519aeb77f452e9a35062822b0e11c6f068"
+      },
+      "reviewCopy": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-physical-fault104/moving-mount-frame-000.png",
+        "bytes": 138578,
+        "sha256": "sha256:b3b55675ae1be76ff8a9a77a3e6fd6519aeb77f452e9a35062822b0e11c6f068"
+      }
+    },
+    {
+      "kind": "moving-mount",
+      "frame": 64,
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-physical-faults76/moving-mount-capture1/frames/frame-000001.png",
+        "bytes": 137495,
+        "sha256": "sha256:a13c974b21918a75fcc6c0b0bc9523067039e6899a65a280d72406cf5ff6e5ee"
+      },
+      "reviewCopy": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-physical-fault104/moving-mount-frame-064.png",
+        "bytes": 137495,
+        "sha256": "sha256:a13c974b21918a75fcc6c0b0bc9523067039e6899a65a280d72406cf5ff6e5ee"
+      }
+    },
+    {
+      "kind": "moving-mount",
+      "frame": 159,
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-physical-faults76/moving-mount-capture1/frames/frame-000002.png",
+        "bytes": 229830,
+        "sha256": "sha256:e8532eb18b4810827ed3ffee77f2f2249555076c576f299d5cf602536f4c4af8"
+      },
+      "reviewCopy": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-physical-fault104/moving-mount-frame-159.png",
+        "bytes": 229830,
+        "sha256": "sha256:e8532eb18b4810827ed3ffee77f2f2249555076c576f299d5cf602536f4c4af8"
+      }
+    },
+    {
+      "kind": "intersection",
+      "frame": 266,
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-physical-faults76/intersection-capture1/frames/frame-000000.png",
+        "bytes": 208164,
+        "sha256": "sha256:3ddb483fbb86ff172b908eb12b98792537f82988367f73d992905abb63ce9fc1"
+      },
+      "reviewCopy": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-physical-fault104/intersection-frame-266.png",
+        "bytes": 208164,
+        "sha256": "sha256:3ddb483fbb86ff172b908eb12b98792537f82988367f73d992905abb63ce9fc1"
+      }
+    }
+  ],
+  "wholeReviews": "unreviewed",
+  "acceptedPilot": 0,
+  "elevenLabsSpent": false
+}

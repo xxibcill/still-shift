@@ -47,19 +47,15 @@ still hold before relying on them.
   original3df/runtime1090 lifecycle completes all13 stages and10 independent
   handoff audits, with both real terminal handles0. Saved videos preserve complete
   existing Alden narration at1×;6,181 frames/1,084 review images/24,724 native pins.
-  Source is now reconciled with mainb376, delivered native796375b7 and MS2e44b40de;
-  scoped73/6 and fast4,594/455 qualify unchanged code. Full90 actually exits1 on789109ad after4,594 units and341/346 runtime
-  passes: five cue tests reject an old empty audio cache entry. Source2,793 inputs
-  stay exact. Same-fixture fresh-cache probe and owning5+corrupt-fallback control6
-  pass unchanged; existing cache preserved. Full91 runs as42543 on3749618d with a newly empty isolated cache
-  after successful MS2 private package91 qualification. Current observed prefix
-  passes4,594 units/346 runtime/324 integration/depth14, including all5 prior cue
-  failures. Cinematic adapter now completes46 rows/5,520 forward and reverse
-  reference frames/46 repeated-export cases;18 existing WebGL timing deferrals
-  remain. Exact launched prefix81/116 reaches composition depth; no completion
-  percentage or passed-suite total inferred. The serial browser/render matrix is active. No full/benchmark pass inferred. Original
-  products and failed first attempts retain their original identities; accepted0/10,
-  measured first-pass10% below90% and paired savings null.
+  Source is reconciled with mainb376, delivered native796375b7 and MS2e44b40de.
+  Scoped73/6 and fast4,594/455 pass. Failed full90 cache receipt is retained;
+  fresh-cache full91 actually exits1 after21672s with2,793 inputs exact. Units4,594,
+  runtime346, integration324/Python14 and complete browser prefix through cache
+  lifetime pass, including frozen176 baselines. Native production then fails a
+  stale metric assertion: an unclassified caption revision makes1/3 first passes
+  unverified, so actual clean count2 differs from expected3.3/3 current products
+  verify. Recovery/benchmark suffix not run; no full pass claimed. Original pilot
+  first-pass1/10/nine failures/null paired tokens and accepted0 remain retained.
   [Terminal](./mechanism-shorts-ms3-first-ten-terminal90-results.json),
   [integration](./mechanism-shorts-ms3-prerequisite-integration89-results.json),
   [current full attempt](./mechanism-shorts-ms3-final91-full-gate-results.json),
@@ -99,12 +95,12 @@ still hold before relying on them.
   refusal controls pass; receiver/package/replay remain unexecuted.
   [Serial controls](./mechanism-shorts-ms3-installed102-preparation-results.json).
   [Preparation controls](./mechanism-shorts-ms3-installed-preparation93-results.json),
-  [Current installed scope](./mechanism-shorts-ms3-current-installed-scope92-results.json). Physical fault captures now have
-  explicit total50/200M approval103: same conservative ledger admits173,950,247
-  tokens/41.112124 USD-equivalent with WARN. All original usage/prices retained;
-  recheck before/after the same four-image batch in the first successful post-full
-  serial slot. No new asset command started.
-  [Allowance](./mechanism-shorts-ms3-work-allowance103-results.json). No audio files
+  [Current installed scope](./mechanism-shorts-ms3-current-installed-scope92-results.json). Physical fault104 now completes the approved
+  two-asset/four-image batch with all4 actually inspected; failures locate64/159/266.
+  Current runtime/profile bind authentic observations; original asset/worker exact.
+  Completion stays within50/200M without resetting/excluding usage. Full failure
+  remains separate; no more diagnostic asset work is planned.
+  [Actual fault witnesses](./mechanism-shorts-ms3-physical-fault104-results.json). No audio files
   are missing and no paid generation is approved. Review copies remain byte-exact
   after integration at `benchmarks/results/ms3-actual-first-ten-review80/index.md`.
   [Package history](./mechanism-shorts-ms3-package-portability-results.json),
@@ -279,6 +275,23 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-10-15 — Capture and inspect the approved four physical fault images104
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` after9cc62f6f.
+- **Results:** actual full42543 exits1 after21672s; held2,793 inputs exact.
+  Native products3/3 verify, but an unclassified caption edit makes first-pass
+  count2/unverified1, exposing a stale expected3 assertion. Full failure retained;
+  production-recovery/benchmark suffix stays open.
+- **Diagnostic batch:** same approved2 assets/4 phone images capture with actual0;
+  current runtime a7bc0e5b/profile1dd binds failures64/159/266. Agent inspected all4;
+  durable copies are byte-exact and original asset/worker stay exact. Same persistent
+  budget admits capture and completed inspection/recording below50/200M; no reset.
+- **Open / next:** correct stale test, run its owning group and unrun suffix with
+  honest staged qualification. No full, whole review, pilot or human pass inferred;
+  no further diagnostic asset work or ElevenLabs spending.
+- **Records:** [fault104](./mechanism-shorts-ms3-physical-fault104-results.json),
+  [failed full91](./mechanism-shorts-ms3-final91-full-gate-results.json).
+
 ### 2026-10-15 — Record approved total50/200M for the same four fault images103
 
 - **Agent / branch:** Codex on `codex/mechanism-ms3` after225e062a.
@@ -314,7 +327,7 @@ still hold before relying on them.
 
 - **Agent / branch:** Codex on `codex/mechanism-ms3` fromf1498393.
 - **Results:** actual42543 remains live. Cinematic correctness46 rows/5,520 forward
-  and reverse reference frames passes, maximum pixel delta1;23 required Canvas
+  and reverse reference frames passes, maximum pixel delta2;23 required Canvas
   timing rows and46 repeated-export/relocation/overwrite cases complete.18 existing
   CE6-P WebGL timing deferrals retained, with no WebGL performance pass inferred.
 - **Open / next:** exact package-script prefix81/116 reaches composition depth;

@@ -436,5 +436,6 @@
     "imagesCaptured": 0,
     "revisedRequest": "Total50 USD-equivalent /200 million tokens asked; reply pending. Same four-frame scope, no ElevenLabs spending."
   },
-  "currentWorkAllowance": "./mechanism-shorts-ms3-work-allowance103-results.json"
+  "currentWorkAllowance": "./mechanism-shorts-ms3-work-allowance103-results.json",
+  "completedNativeImages": "./mechanism-shorts-ms3-physical-fault104-results.json"
 }

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "ms3-final-full-gate-1",
   "capturedUtc": "2026-10-15T01:09:59.263766+00:00",
-  "status": "running-not-passed",
+  "status": "failed-native-production-stale-first-pass-expectation",
   "sourceCommit": "3749618d64dfa35a57b2e4f34da5b6722ac9c089",
   "unifiedSession": 42543,
   "command": ["pnpm", "check:all"],
@@ -249,5 +249,28 @@
         "sha256": "sha256:1314fd8d05f33386793f476256fde0d7adb525a822f49485dcd032bc2ea3ce81"
       }
     }
-  ]
+  ],
+  "terminal": {
+    "actualObservedUnifiedExitCode": 1,
+    "rawReceipt": {
+      "path": "/private/tmp/still-shift-ms3-final91-full1.json",
+      "bytes": 1421,
+      "sha256": "sha256:2802571c3e391e6975132045201441ede682aa63657ced6a01656cd4bf446a82"
+    },
+    "sourceInputsExact": true,
+    "sourceHoldActualExitCode": 0,
+    "elapsedSeconds": 21672.060231375042,
+    "observedScriptHeaders": 114,
+    "exactExpectedPreorderPrefix": true,
+    "baselineItems": 176,
+    "baselineFrames": 36061,
+    "remainingNotRun": [
+      "test:browser:mechanism-production-recovery",
+      "benchmark"
+    ],
+    "failure": "tests/browser/mechanism-production-native.ts:384 expected3 clean first passes; actual2 plus1 unverified because S1 caption revision lacks classification. All3 current products independently verify.",
+    "staleAssertionDoesNotChangeOriginalPilotMetrics": true,
+    "failedArtifactsRoot": "/private/tmp/still-shift-ms3-production-native-MBtvGa",
+    "softwareOrBenchmarkPassInferred": false
+  }
 }
