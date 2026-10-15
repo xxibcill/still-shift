@@ -1,7 +1,7 @@
 {
   "schemaVersion": "ms3-complete-final-full-gate-1",
   "capturedUtc": "2026-10-15T08:31:42.894373+00:00",
-  "status": "prepared-required-complete-full-not-yet-started",
+  "status": "running-required-complete-full-not-passed",
   "sourceBeforeDocs": "cfb24587",
   "runner": {
     "path": "/private/tmp/still-shift-ms3-final113-full1.py",
@@ -78,5 +78,40 @@
       "bytes": 6331,
       "sha256": "sha256:33b1aa470d025cb2eab025b1953ad63222d331dc505aff6254068a929ca62900"
     }
-  }
+  },
+  "sourceCommit": "1b21c86ed957d7aa5bae3bb581040711a01eef7d",
+  "unifiedSession": 8967,
+  "sourceInventory": {
+    "path": "/private/tmp/still-shift-ms3-final113-source-inputs1.json",
+    "bytes": 477326,
+    "sha256": "sha256:1f23134b5b2d1492f51f02865e9222639c49002a7416ec98a5a39069c843c99f"
+  },
+  "toolchainPreflight": {
+    "actualExitCode": 0,
+    "log": {
+      "path": "/private/tmp/still-shift-ms3-final113-toolchain1.log",
+      "bytes": 238,
+      "sha256": "sha256:3ad3e8695b8ffa18ae57b07d1c45db12e5120b82d71ffeceb0845c7eef4c0929"
+    }
+  },
+  "progressSnapshots": [
+    {
+      "observedUtc": "2026-10-15T08:38:22.377193+00:00",
+      "actualObservedUnifiedSession": 8967,
+      "observedState": "live-returned-by-write_stdin",
+      "expectedScriptInvocations": 116,
+      "observedScriptInvocations": 13,
+      "exactExpectedPreorderPrefix": true,
+      "latestGroup": "test:runtime",
+      "units": 4594,
+      "unitFiles": 455,
+      "toolchainActualExitCode": 0,
+      "immutableLogPrefix": {
+        "path": "/private/tmp/still-shift-ms3-final113-progress1.log",
+        "bytes": 57118,
+        "sha256": "sha256:48ef1773912d848cea2d8ac67c7555f166c63eed4857b29eb5f45da08f8ad10f"
+      },
+      "scope": "Header counts include aliases and are not completion percentages or passed-suite totals. Complete full/benchmark remain unpassed."
+    }
+  ]
 }

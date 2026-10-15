@@ -61,7 +61,7 @@ still hold before relying on them.
   count0 differs from expected2. Repair110 changes only this test; focused34
   provenance/11 retry cases, real-data classifier replay and benchmark now pass.
   Current visual109 controls180 frames/4 inspected stills and compiler111 physical
-  label-state admission also pass with0 new native captures. Complete final113 is prepared after these focused checks;
+  label-state admission also pass with0 new native captures. Complete final113 now runs as8967 on1b21c86e after these focused checks;
   no failed aggregate is relabeled.
   Original pilot
   first-pass1/10/nine failures/null paired tokens and accepted0 remain retained.
@@ -296,8 +296,9 @@ still hold before relying on them.
   with180 decoded frames/4 inspected stills; current wrong-state compiler1110.
   Only2 browser assertion files differ from failed full91, all production/other
   held bytes exact. Both actual failed aggregates and recovery1051 remain retained.
-- **Next:** clean-start complete pnpm check:all after pinned preflight, fresh cache
-  and2793-input hold. Prior full took about6h before the recovery suffix; this may
+- **Running:** actual8967/source1b21c86e starts clean with2793 inputs held and
+  fresh cache; pinned preflight0 and4594 units pass. Complete runtime/render/
+  benchmark still live and unpassed. Prior full took about6h before the recovery suffix; this may
   take longer. No parallel render group. No full/package/pilot pass inferred.
 - **Scope:** mandatory complete software gate before current archive/all-ten
   installed lifecycle; no shrinking to staged or one-episode proof.
