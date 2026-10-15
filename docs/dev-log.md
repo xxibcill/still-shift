@@ -50,7 +50,7 @@ still hold before relying on them.
   clipping and all-shot reference fixes. Standards0/Spec0; focused73/6 and fast
   4,594/455 pass. Original producer58827/runtime1090 has completed all13 stages;
   no new renderer group. Archive85/prepared86 qualify earlier source only.
-  Current full/runtime/package gates, MS2 prerequisite repairs and whole reviews
+  Integrated at a88abccb; current full/runtime/package gates, MS2 repairs and whole reviews
   remain open. [Integration evidence](./mechanism-shorts-ms3-prerequisite-integration89-results.json).
 
 - **MS3 CPU gates and integration rehearsal (2026-10-15):** isolated26c4/codee231
@@ -84,8 +84,8 @@ still hold before relying on them.
   proofs retain6,181 frames/1,084 review images/24,724 native pins; preview0 errors
   and343 warnings. Complete existing Alden takes play at1×. Whole reviews remain
   open, accepted0/10, first-pass10% fails90% target and paired savings stay null.
-  Current-main prerequisites are reconciled in isolated89af0d13; source integration
-  and final full/package/installed gates remain. Initial MS1N mask probe failed a
+  Current-main prerequisites are reconciled in isolated89af0d13; source integration passed by fast-forward at a88abccb.
+  Final full/package/installed gates remain. Initial MS1N mask probe failed a
   white-background fixture assumption; corrected actual4-case GPU proof passes
   on403, with all original images/results retained. Its runtime/depth group3591
   is running serially. Physical fault budget approval remains pending.
@@ -278,6 +278,19 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Integrate reviewed prerequisites after actual producer terminal
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, fast-forwardadbb256c→a88abccb.
+- **Done:** current-main/MS1 and MS1N review ancestry, four-format/PBR native fixes,
+  runtime tier/retry provenance repairs and current evidence/ROADMAP integrated.
+- **Results:** final original2,792-file source hold0 immediately before integration;
+  original producer/follower actual0 and13 stages/10 audits verified first.
+- **Limits:** original ten products retain3df/runtime1090. Historical package85/
+  prepared86 do not qualify integrated source. MS1N runtime/depth3591 is active;
+  current MS3 full software/benchmark/package checks must follow serially.
+- **Open:** MS2 shared repair delivery and whole visual/listening/factual reviews.
+- **Records:** [Integration](./mechanism-shorts-ms3-prerequisite-integration89-results.json).
 
 ### 2026-10-15 — All ten actual episode lifecycle handoffs completed
 

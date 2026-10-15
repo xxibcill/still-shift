@@ -149,7 +149,7 @@
     "preflight87": "Four narrow repair commits only; superseded for final integration planning."
   },
   "open": [
-    "Original58827 actual terminal required before any new browser/native render/export group",
+    "Original58827 and follower26381 actually exited0; fresh renderer groups run serially (MS1N3591 active).",
     "Current merged full pnpm check and required serial benchmark/package/installed gates",
     "MS2 shared prerequisites and Float32/located diagnostics repairs",
     "Whole factual/mechanical/glyph/continuous/listening/human reviews; accepted0/10"
@@ -189,5 +189,17 @@
       }
     ],
     "scope": "All merged source/test bytes are identical to isolated e9be5d82; reconciliation changes documentation only. ROADMAP is reconciled only in this idle checkout before final source verification. Main producer retains its held ROADMAP."
+  },
+  "liveIntegration": {
+    "actualExitCode": 0,
+    "method": "fast-forward-only-after-actual-producer-and-follower-terminal",
+    "from": "adbb256ca9e173f4134ec30ecc333c66055b8db7",
+    "to": "a88abccbf8b66514252025ac985a458454547455",
+    "requiredMainAncestor": "b376514285e4819bdd14361e3467ecf085cf0b9d",
+    "originalSourceHoldBeforeIntegration": 0,
+    "oldProducerSource": "3df62a5598dc46e021ee2c51b173ba33a38d2af6",
+    "oldProductsRetainRuntime": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+    "freshCurrentFullGates": "pending-serial-after-ms1n3591",
+    "primaryUserCheckout": "untouched"
   }
 }

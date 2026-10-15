@@ -1389,7 +1389,7 @@
     "declaration": "20e1afe2",
     "laterNativePolicies": "8e11e6b8",
     "worktree": "/Users/jjae/.codex/worktrees/ms3-review-fixes/still-shift",
-    "status": "qualified-in-isolation-with-current-main-prerequisites-ready-for-source-integration",
+    "status": "integrated-after-terminal-in-a88abccb; fresh current full gates pending",
     "evidence": "docs/mechanism-shorts-ms3-native-source-review-results.json",
     "originalProducerRuntimeNotRebound": true
   },
@@ -1932,7 +1932,7 @@
     "standardsFindings": 0,
     "specFindings": 0,
     "evidence": "docs/mechanism-shorts-ms3-whole-review84-results.json",
-    "status": "qualified-in-isolation-with-prerequisites; final-integrated-full-gates-open",
+    "status": "integrated-after-terminal-in-a88abccb; fresh current full gates pending",
     "packageScope": "Package85 and unexecuted prepared86 bind earlier source452b/codee231 only; final integrated source requires a fresh package."
   },
   "latestPackage85": {
@@ -1946,5 +1946,17 @@
     "fixedSystemPsExceptionDisclosed": true
   },
   "cpu87Qualification": "docs/mechanism-shorts-ms3-whole-review84-results.json",
-  "terminalEvidence": "./mechanism-shorts-ms3-first-ten-terminal90-results.json"
+  "terminalEvidence": "./mechanism-shorts-ms3-first-ten-terminal90-results.json",
+  "currentSourceIntegration": {
+    "actualExitCode": 0,
+    "method": "fast-forward-only-after-actual-producer-and-follower-terminal",
+    "from": "adbb256ca9e173f4134ec30ecc333c66055b8db7",
+    "to": "a88abccbf8b66514252025ac985a458454547455",
+    "requiredMainAncestor": "b376514285e4819bdd14361e3467ecf085cf0b9d",
+    "originalSourceHoldBeforeIntegration": 0,
+    "oldProducerSource": "3df62a5598dc46e021ee2c51b173ba33a38d2af6",
+    "oldProductsRetainRuntime": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+    "freshCurrentFullGates": "pending-serial-after-ms1n3591",
+    "primaryUserCheckout": "untouched"
+  }
 }
