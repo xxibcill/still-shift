@@ -480,6 +480,18 @@ export function compileMechanismNarratedCycle(
         ["cues", index, "camera"],
         timing.startFrame,
       );
+    if (
+      cue.camera &&
+      cue.camera.up.some(
+        (value, axis) => value !== instance.scene.camera.up[axis],
+      )
+    )
+      fail(
+        "mechanism-cue-camera",
+        "Cue camera tracks retain the scene up vector",
+        ["cues", index, "camera", "up"],
+        timing.startFrame,
+      );
     camera = cue.camera ?? camera;
     cameraKeys.push({
       frame: timing.startFrame,

@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "pull-request-fixes-1",
+  "date": "2026-10-15",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/57",
+  "reviewedHead": "8b7374ed218536ba15e531da6a61ce0cf0ff9395",
+  "branch": "codex/pr57-review-fixes",
+  "deliveryPolicy": "One commit per finding; push both together after final verification.",
+  "inlineComments": [
+    {
+      "finding": "camera-up",
+      "reviewId": 5528281176,
+      "commentId": 4279165322,
+      "threadId": "PRRT_kwDOUNeEOM6soF9N",
+      "url": "https://github.com/xxibcill/still-shift/pull/57#discussion_r4279165322"
+    },
+    {
+      "finding": "snapshot-admission",
+      "reviewId": 5528281176,
+      "commentId": 4279165327,
+      "threadId": "PRRT_kwDOUNeEOM6soF9Q",
+      "url": "https://github.com/xxibcill/still-shift/pull/57#discussion_r4279165327"
+    }
+  ],
+  "fixes": [
+    {
+      "finding": "camera-up",
+      "behavior": "Reject cue camera up vectors that cannot be serialized through the existing fixed-up camera-key contract. Located mechanism-cue-camera diagnostic at cues[index].camera.up; source up and valid cut/transition behavior remain supported.",
+      "regressionBefore": {
+        "command": "pnpm exec vitest run tests/unit/mechanism-narrated-cycle.test.ts --maxWorkers=4",
+        "exitCode": 1,
+        "failed": 2,
+        "passed": 13,
+        "log": "/private/tmp/pr57-fix1-red.log",
+        "failure": "Both cut and transition accepted incompatible up instead of throwing the expected located error."
+      },
+      "regressionAfter": {
+        "command": "pnpm exec vitest run tests/unit/mechanism-narrated-cycle.test.ts tests/unit/mechanism-cue-authoring.test.ts --maxWorkers=4",
+        "exitCode": 0,
+        "passed": 22,
+        "files": 2,
+        "log": "/private/tmp/pr57-fix1-green.log"
+      },
+      "postimages": [
+        {
+          "path": "packages/animation-engine/src/mechanism/narrated-cycle.ts",
+          "sha256": "536ca816bec6dad040087cb0fa8c2970be61a5ff40cbf480911f6ee50eb8882e"
+        },
+        {
+          "path": "tests/unit/mechanism-narrated-cycle.test.ts",
+          "sha256": "61cf3e88e9f8f70c268e32d8f2adebab256b64a67112a6f0d0d77dfa436a462f"
+        }
+      ]
+    },
+    {
+      "finding": "snapshot-admission",
+      "status": "pending separate fix"
+    }
+  ],
+  "setup": {
+    "worktree": "/Users/jjae/.codex/worktrees/pr57-review-fixes/still-shift",
+    "source": "Managed isolated worktree at reviewed PR head",
+    "dependencies": "pnpm10.29.3 install --offline --frozen-lockfile;178 packages reused,0 downloaded",
+    "node": "22.23.1"
+  },
+  "remaining": [
+    "Snapshot-read repair and regressions",
+    "Final local fast/runtime and affected browser verification",
+    "Independent fix reviews",
+    "Single final push and remote-head confirmation"
+  ],
+  "limits": [
+    "Historical full70/package73/installed76/affected91 retain original source/archive bindings",
+    "No npm publication or ElevenLabs spending",
+    "Human visual/listening/physical acceptance remains separate"
+  ]
+}

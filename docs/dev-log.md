@@ -43,6 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #57 camera review repair (2026-10-15):** both P2 findings are posted
+  inline on reviewed head `8b7374ed`. Cue cameras now reject an `up` vector that
+  cannot be represented by the existing camera keys, with a cue-located error.
+  Cut/transition regressions fail on the reviewed source and pass after repair.
+  Snapshot-read cancellation is the next separate fix; final verification and
+  the single push remain pending. Existing full/package evidence keeps its
+  original source/archive identity; no fresh production acceptance.
+  [Fix evidence](./pr-57-fix-results.json).
+
 - **MS2 current prerequisite/native repairs prepared (2026-10-15):** isolated
   repair branch starts from actual PR57 head495fb2c0, merging MS1N40330672/current
   mainb376 ancestry. Four conflicts retain versioned four-format/PBR admission,
@@ -242,6 +251,17 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Reject unsupported cue camera roll in PR #57
+
+- **Agent / branch:** Codex on `codex/pr57-review-fixes`, from reviewed `8b7374ed`.
+- **Done:** posted both findings inline; reject incompatible cue camera `up` at
+  `cues.<index>.camera.up`, preserving the existing camera-key contract.
+- **Results:** both cut/transition regressions fail before the repair; focused
+  narrated-cycle and cue-authoring checks pass after it.
+- **Open / next:** fix snapshot admission/cancellation in a separate commit,
+  run final local gates, then push both commits once.
+- **Records:** [Fix evidence](./pr-57-fix-results.json).
 
 ### 2026-10-15 — Qualify current MS2 private package after review repairs
 
