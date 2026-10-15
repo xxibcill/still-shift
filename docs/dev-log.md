@@ -49,11 +49,12 @@ still hold before relying on them.
   existing Alden narration at1×;6,181 frames/1,084 review images/24,724 native pins.
   Source is now reconciled with mainb376, delivered native796375b7 and MS2e44b40de;
   scoped73/6 and fast4,594/455 qualify unchanged code. Current full90 software/
-  benchmark verification is prepared to follow all prior serial groups. Original
+  benchmark attempt runs as29678 on789109ad after all prior serial groups ended. Original
   products and failed first attempts retain their original identities; accepted0/10,
   measured first-pass10% below90% and paired savings null.
   [Terminal](./mechanism-shorts-ms3-first-ten-terminal90-results.json),
-  [integration](./mechanism-shorts-ms3-prerequisite-integration89-results.json).
+  [integration](./mechanism-shorts-ms3-prerequisite-integration89-results.json),
+  [current full attempt](./mechanism-shorts-ms3-final90-full-gate-results.json).
 
 - **Current remaining MS3 gates (2026-10-15):** final integrated-source full
   software/benchmark/archive/installed checks and whole factual/mechanical/glyph/
@@ -232,6 +233,18 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Start final integrated MS3 full software and benchmark gate
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, held source789109ad.
+- **Running:** actual `pnpm check:all` in unified29678 after both original lifecycle
+  handles and all native/MS2 runtime groups actually terminate.2,793 inputs/
+  122,415,234 bytes are frozen; no parallel browser/native/export group.
+- **Limits:** running is not passed. Current archive/installed and whole reviews
+  remain open; prior products retain3df/runtime1090 and first-pass10%/pairednull.
+- **Next:** get29678 actual terminal, verify held inputs and retain any failures;
+  then fresh current package/installed checks. Physical fault budget still pending.
+- **Records:** [Current full attempt](./mechanism-shorts-ms3-final90-full-gate-results.json).
 
 ### 2026-10-15 — Reconcile delivered MS2 repairs before final pilot source freeze
 

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "ms3-final-full-gate-1",
+  "capturedUtc": "2026-10-15T00:51:06.655727+00:00",
+  "status": "running-not-passed",
+  "sourceCommit": "789109ad294dd3e77abc7a786d3d5f04cbf16be9",
+  "unifiedSession": 29678,
+  "sourceInventory": {
+    "path": "/private/tmp/still-shift-ms3-final90-source-inputs1.json",
+    "bytes": 477326,
+    "sha256": "sha256:1b3a04240300f1ef6aae9abca9790d14c66a8000db528f69f8612b2b2ffd0f14",
+    "files": 2793,
+    "sourceBytes": 122415234
+  },
+  "command": ["pnpm", "check:all"],
+  "runner": "/private/tmp/still-shift-ms3-final90-full1.py",
+  "liveReceipt": "/private/tmp/still-shift-ms3-final90-full1.json",
+  "log": "/private/tmp/still-shift-ms3-final90-full1.log",
+  "prerequisites": {
+    "originalFirstTenActualTerminalExitCode": 0,
+    "originalFirstTenStages": 13,
+    "originalTenIndependentHandoffs": 10,
+    "nativeDelivered": "796375b79b1709c1cad30837a5603f91d33d7697",
+    "ms2Delivered": "e44b40deff31355ddf100b4aa604803224bba402",
+    "upstreamRuntimeQualification": "Passed in retained recorded stages, with original failed aggregates preserved."
+  },
+  "frozen": "Packages, worker, tests, scripts, root inputs and ROADMAP remain unchanged while29678 lives. No other browser/native-render/video-export group. Milestone evidence and dev-log are excluded from held source.",
+  "scope": "New full integrated software/benchmark attempt. No success, package/installed pass, original-product rebinding, whole review or human acceptance claimed.",
+  "open": [
+    "Full command actual terminal and source-hold check",
+    "Current MS2 and MS3 package/installed qualification",
+    "Whole factual/mechanical/glyph/continuous/listening/human review",
+    "Budget-gated physical fault captures; first-pass10% target miss and null paired savings remain"
+  ]
+}
