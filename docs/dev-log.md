@@ -43,83 +43,39 @@ still hold before relying on them.
 
 ## Current state
 
-- **MS3 prerequisite merge reviewed in isolation (2026-10-15):** merged current
-  main/MS1 and MS1N repair ancestry40330672 into isolated659e5b76. Five conflicts
-  preserve later four-format/PBR admission, Float32 visibility, located diagnostics
-  and versioned catalogue resolution while adding upstream displayed-copy, panel,
-  clipping and all-shot reference fixes. Standards0/Spec0; focused73/6 and fast
-  4,594/455 pass. Original producer58827/runtime1090 has completed all13 stages;
-  no new renderer group. Archive85/prepared86 qualify earlier source only.
-  Integrated at a88abccb; current full/runtime/package gates, MS2 repairs and whole reviews
-  remain open. [Integration evidence](./mechanism-shorts-ms3-prerequisite-integration89-results.json).
-
-- **MS3 CPU gates and integration rehearsal (2026-10-15):** isolated26c4/codee231
-  now owns a locked offline Python3.12.11 environment pointing only to its own
-  service source. Depth14, Python format/lint and soundtrack lint pass;12 existing
-  configuration/editable-path files in the primary/main/MS1N venvs remain exact.
-  A source-only private-copy apply rehearses19 paths/14 target files, matching
-  exactly20e1/8e11/10cb/e231 with no live source/index changes. Full runtime and
-  toolchain checks actually launch browsers and must remain serial.
-  Integration/full GPU/software/package and whole acceptance stay open. Prepared
-  upstream MS1N probe88 now retains4 PNGs and failed pixel results, checks complete
-  RGBA controls and guards browser launch; syntax0/expected admission refusal1.
-  Actual repaired GPU evidence remains open; MS1N source/head403 stay untouched.
-  [Current CPU and integration proof](./mechanism-shorts-ms3-whole-review84-results.json).
-
-- **MS3 latest installed package85 checked (2026-10-15):** codee231/source452b
-  builds and installs privately;2,573 archive members,13 source controls,4 actual
-  retry/cache/real-lock controls, strict public types and discovery pass in stages.
-  Runtime8969/profile1dd0 stays separately bound. Initial root-lock set audit and
-  process-isolation failures are retained; only fixed system ps gets a disclosed
-  sandbox exception. Actual Node/pinned Python keep5 original-root read denials.
-  Latest installed86 is prepared for E1/610 frames; all-ten6,181-frame admission
-  passes. No installed renderer started; obsolete86 retains its earlier source. Earlier
-  79/82 are unexecuted; full current package/runtime/render/whole gates remain open.
-  [Package evidence](./mechanism-shorts-ms3-package-portability-results.json).
-
-- **MS3 actual first ten lifecycle complete (2026-10-15):** producer58827 and
-  independent follower26381 both actually exit0. All13 original-runtime stages
-  pass: run/report/resume and10 handoffs; all10 packet closure audits pass.
-  All original failures/successes remain exact. Independent product/narration
-  proofs retain6,181 frames/1,084 review images/24,724 native pins; preview0 errors
-  and343 warnings. Complete existing Alden takes play at1×. Whole reviews remain
-  open, accepted0/10, first-pass10% fails90% target and paired savings stay null.
-  Current-main prerequisites are reconciled in isolated89af0d13; source integration passed by fast-forward at a88abccb.
-  Final full/package/installed gates remain. Initial MS1N mask probe failed a
-  white-background fixture assumption; corrected actual4-case GPU proof passes
-  on403, with all original images/results retained. Its runtime/depth group3591
-  is running serially. Physical fault budget approval remains pending.
-  [Terminal proof](./mechanism-shorts-ms3-first-ten-terminal90-results.json),
+- **MS3 actual first ten and final source (2026-10-15):** actual EU001–EU010
+  original3df/runtime1090 lifecycle completes all13 stages and10 independent
+  handoff audits, with both real terminal handles0. Saved videos preserve complete
+  existing Alden narration at1×;6,181 frames/1,084 review images/24,724 native pins.
+  Source is now reconciled with mainb376, delivered native796375b7 and MS2e44b40de;
+  scoped73/6 and fast4,594/455 qualify unchanged code. Current full90 software/
+  benchmark verification is prepared to follow all prior serial groups. Original
+  products and failed first attempts retain their original identities; accepted0/10,
+  measured first-pass10% below90% and paired savings null.
+  [Terminal](./mechanism-shorts-ms3-first-ten-terminal90-results.json),
   [integration](./mechanism-shorts-ms3-prerequisite-integration89-results.json).
 
-- **MS2 software checkpoint delivered (2026-10-13):** `codex/mechanism-ms2`
-  carries exact MS1N `bf30a253` ([PR #56](https://github.com/xxibcill/still-shift/pull/56));
-  [MS2 PR #57](https://github.com/xxibcill/still-shift/pull/57) is open as a draft
-  against main and attached; actual MS3 pilot continues above. Full70 actual0/all102 groups on963d3991,
-  unit4363/runtime243/integration322/depth14 and frozen176/36061 in262.12s pass;
-  no-op benchmark547 samples/mean0.9149ms. Erased declaration repair6e3ed5ca
-  passes fast/declarations; three edited modules emit identical JavaScript and
-  2641 unaffected inputs stay exact. Package73 actual0/28 checks; retained archive
-  `1adb9bc4f88a3de7e6be8ac91ea77efbd4f6ec7ce964f8cca495fdfcfc27d86e`
-  binds6e3ed5ca, distinct from later evidence prose. Source audit2367 members/970
-  sources and installed76 actual0/13 exports/independent574 decoded frames pass.
-  All2367 installed files/26 immutable inputs match; caption edits change picture
-  with unchanged decoded audio and0 fresh native submissions. Failed/stopped
-  attempts, timing deferrals, consumer enum/setuid-ps/stale-fixture failures and
-  world61 missing historical terminal remain retained; live-libproc exception is
-  explicitly preflighted. Pack disposition stays candidate3/supported0,
-  validated coverage0/10/accepted pilot0. Genuine66 retains its separate binding;
-  final consumer uses engineering PCM. Whole glyph/continuous/listening/factual/
-  material/hardware/portrait/human review remains unreviewed; finer Thai unadopted.
-  Its historical engineering scope proposed five assets/two behaviors and ten
-  questions; MS3 now uses the actual first-ten selection above. No spending,
-  publication/merge, Actions or private-media redistribution.
-  [Completion](./mechanism-shorts-ms2-completion.md),
-  [acceptance](./mechanism-shorts-ms2-acceptance.md),
-  [final installed](./mechanism-shorts-ms2-final-installed-results.json),
-  [disposition](./mechanism-shorts-ms2-pack-disposition.json),
-  [full history](./mechanism-shorts-ms2-full-gate-results.json),
-  [ordered plan](./mechanism-shorts-production-plan.md).
+- **Current remaining MS3 gates (2026-10-15):** final integrated-source full
+  software/benchmark/archive/installed checks and whole factual/mechanical/glyph/
+  normal-speed/listening review remain. Archive85 and unexecuted prepared86 bind
+  earlier source452b/codee231; no evidence transfer. Physical fault captures stay
+  blocked by the previously requested revised Creator work budget. No audio files
+  are missing and no paid generation is approved. Review copies remain byte-exact
+  after integration at `benchmarks/results/ms3-actual-first-ten-review80/index.md`.
+  [Package history](./mechanism-shorts-ms3-package-portability-results.json),
+  [whole review](./mechanism-shorts-ms3-whole-review84-results.json).
+
+- **MS2 current review repairs delivered (2026-10-15):** draft PR57 safely
+  advances495fb2c0→e44b40de with exact delivered native796375b7 ancestry. Four-format/
+  PBR/capacity/version contracts remain; focused73/6, fast4,381/429 and both
+  independent reviews pass. Current260 runtime/distinct322 integration/depth14/
+  smoke and native depth14/composition5/mask4 complete in stages. Aggregate1 with2
+  unproven5000ms protocol timeouts remains; unchanged owning5 cases and suffix0,
+  source1,996 exact. Current MS2 package/installed qualification remains open;
+  historical full70/package73/installed76 retain identities. Packs candidate3,
+  supported0 and accepted0; active MS3 uses actual first ten, with no new media request.
+  [Current repair](./mechanism-shorts-ms2-current-prerequisite-repair90-results.json),
+  [historical checkpoint](./mechanism-shorts-ms2-completion.md).
 
 - **MS1N review repairs delivered (2026-10-15):** existing PR56 safely advances
   c1582058→796375b7; current-main/MS1 ancestry and both source403 review repairs
@@ -276,6 +232,47 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Reconcile delivered MS2 repairs before final pilot source freeze
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, parents6db47ab0/e44b40de.
+- **Done:** carry exact delivered MS2/native ancestry and staged current verification;
+  resolve only documentation conflicts, retaining both dated histories.
+- **Results:** production/test bytes match the already-reviewed source; MS2 scoped/
+  fast and runtime/native proofs remain separately bound to testedc926e467.
+- **Retained:**2 protocol timeouts/aggregate1; unchanged owning5 rerun and suffix0.
+  Atomic public push0 followed by stale immediate PR PATCH head495; later no-cache
+  GET and both git refs verifye44, without another push or body rewrite.
+- **Open:** current MS2 package proof and final MS3 full90 software/benchmark,
+  archive/installed and whole review. Original first-pass10% target miss retained.
+- **Records:** [MS2 repair](./mechanism-shorts-ms2-current-prerequisite-repair90-results.json),
+  [whole-review coordination](./mechanism-shorts-ms3-whole-review84-results.json).
+
+### 2026-10-15 — Qualify current MS2 runtime and exact native prerequisite
+
+- **Agent / branch:** Codex on `codex/ms2-review-fixes`; tested sourcec926e467.
+- **Results:**260 runtime/distinct322 integration/depth14/smoke, native depth14/
+  composition5 and4 actual Float32 GPU controls complete in recorded stages.
+- **Retained:** aggregate1 with2 depth protocol5000ms timeouts of unproven cause;
+  owning five-case file passes unchanged and suffix0, all1,996 source inputs exact.
+- **Done:** carry exact delivered native PR56 head796375b7 through docs-only merge;
+  preserve MS2 source/test bytes and both dated histories. No renderer group overlaps.
+- **Open:** fresh current package/installed qualification and whole production
+  acceptance; historical full/archive proofs keep original bindings.
+- **Records:** [Current repair](./mechanism-shorts-ms2-current-prerequisite-repair90-results.json).
+
+### 2026-10-15 — Reconcile current MS2 prerequisites and native policies
+
+- **Agent / branch:** Codex on `codex/ms2-review-fixes`, parents495fb2c0/40330672.
+- **Done:** four conflicts preserve MS2 four-format/PBR/version/capacity contracts;
+  current-main/MS1 fixes and reviewed Float32/located diagnostics are incorporated.
+- **Results:** focused73/6 and fast4381/429 pass with source exact;
+  Standards0/Spec0. Own locked Node/Python dependencies installed offline.
+- **Retained:** initial merge conflict exit1; previous full/archive/installed proofs
+  remain bound to original sources, with no pass transferred to this merge.
+- **Open:** fresh affected runtime/render/package qualification before PR57 update;
+  whole production reviews remain open. Other renderer groups remain serial.
+- **Records:** [Repair evidence](./mechanism-shorts-ms2-current-prerequisite-repair90-results.json).
 
 ### 2026-10-15 — Carry delivered native repair evidence into the MS3 pilot
 

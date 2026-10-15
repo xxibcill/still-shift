@@ -6,8 +6,8 @@
 `main`; MS0/MS1 review repairs are integrated at `b3765142`. Published `0.1.1` source is preserved by `production`
 and `v0.1.1` at `73c01fa7`; fixed `v0.1.0` retains `db28a938`.
 
-**Current work:** MS0/MS1 are merged. MS1N/MS2 software checkpoints retain
-recorded staged verification; current review repairs need refreshed affected gates.
+**Current work:** MS0/MS1 are merged. MS1N/MS2 review repairs retain
+current verification in recorded stages; current MS2 package qualification is open.
 MS3 uses Everyday Unlocked’s actual EU-001–EU-010 with complete existing Alden
 narration at1×. Ten saved outputs verify independently; final integrated-source
 software/package gates and whole visual/listening reviews remain open.
@@ -101,8 +101,9 @@ human visual/listening acceptance remain separate.
 branches targeting main. [Native completion](./docs/mechanism-shorts-ms1n-completion.md)
 and [MS2 completion](./docs/mechanism-shorts-ms2-completion.md) preserve their original
 source and full-gate histories. Current Float32 visibility/source-diagnostic
-repairs and current-main prerequisites require refreshed affected verification;
-older archives and full renders do not qualify newer code.
+repairs and current-main prerequisites have affected verification in recorded
+stages. Current MS2 package and final MS3 full gates remain open; older archives
+and full renders retain their original source bindings.
 
 The active [MS3 acceptance tracker](./docs/mechanism-shorts-ms3-acceptance.md)
 uses actual EU-001–EU-010, selection `ms3-everyday-unlocked-first-ten-2026-10-14-v2`.

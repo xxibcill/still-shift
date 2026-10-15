@@ -7,7 +7,8 @@ amendments remain incorporated.
 **Start:** after the current [composition engine plan](./composition-engine-plan.md)
 is complete under its approved scope and acceptance rules.
 **Implementation owner and branch:** Codex on `codex/mechanism-ms3`, carrying
-MS2 `495fb2c0` through integration `76dd8971`. Each milestone has its own attached
+delivered MS2 repair `e44b40de`, exact native repair `796375b7` and current
+main `b3765142` through the recorded pilot integrations. Each milestone has its own attached
 PR targeting `main`: [MS0 #51](https://github.com/xxibcill/still-shift/pull/51) and
 [MS1 #52](https://github.com/xxibcill/still-shift/pull/52) are merged;
 [MS1N #56](https://github.com/xxibcill/still-shift/pull/56),

@@ -58,9 +58,9 @@
     "commit": "10cb84a4"
   },
   "open": [
-    "Fresh full runtime/software/benchmark/package/installed/render gates on integrated source",
-    "MS2 shared prerequisite/source repair delivery",
-    "Whole factual/mechanical/motion/glyph/listening/human reviews"
+    "Final current MS3 full90 software/benchmark/archive/installed gates",
+    "Current MS2 package/installed qualification",
+    "Whole factual/mechanical/glyph/continuous/listening/human reviews and budget-gated fault proofs"
   ],
   "retryProvenanceRepair": {
     "behavior": [
@@ -356,5 +356,33 @@
       "state": "open"
     },
     "scope": "Current affected upstream repair gates complete in stages. Original MS3 products and upcoming MS3 full gates retain separate bindings."
+  },
+  "currentUpstreamMs2Runtime90": {
+    "record": "./mechanism-shorts-ms2-current-prerequisite-repair90-results.json",
+    "testedSource": "c926e467e627db61ed5ac891fbf12cedacb318e8",
+    "deliveredHead": "e44b40deff31355ddf100b4aa604803224bba402",
+    "runtime": 260,
+    "distinctIntegration": 322,
+    "depth": 14,
+    "smoke": "passed",
+    "nativeDepth": 14,
+    "nativeCompositionIntegration": 5,
+    "mask": 4,
+    "initialAggregateExitCode": 1,
+    "unchangedOwningFileTests": 5,
+    "continuationActualExitCode": 0,
+    "delivery": {
+      "actualExitCode": 0,
+      "head": "e44b40deff31355ddf100b4aa604803224bba402",
+      "from": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
+      "nativePrerequisite": "796375b79b1709c1cad30837a5603f91d33d7697",
+      "atomicNonForcedPush": 0,
+      "pr": "https://github.com/xxibcill/still-shift/pull/57",
+      "draft": true,
+      "currentPackageQualification": "open",
+      "retainedInitialReadRace": "Atomic git push succeeded0 and local alias advanced; immediate PATCH response still exposed old PR head495. Initial wrapper assertion1 retained, no repush/body rewrite. Later no-cache GET and both git refs verify exact e44."
+    },
+    "sourceMergeScope": "All source/test bytes already match reviewed pilot repair; this merge changes documentation only.",
+    "currentMs2Package": "open"
   }
 }
