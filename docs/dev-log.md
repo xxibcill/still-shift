@@ -43,6 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #57 second-round repairs in flight (2026-10-15):** all three findings
+  are inline in review `5528931598` before implementation. Journal manifest/shard
+  reads now use nonblocking regular descriptors with existing byte limits;
+  both FIFO regressions fail before repair and all 31 focused checks pass after.
+  Opaque PBR preview resources and source3 async dispatch are next. Each finding
+  gets its own commit; all three will be pushed together after required checks.
+  [Repair evidence](./pr-57-rereview-fix-results.json).
+
 - **PR #57 review repairs verified (2026-10-15):** both P2 findings were posted
   inline before implementation. Camera repair `ccd976ee` rejects unsupported cue
   `up`; the separate snapshot repair uses regular, bounded, cancellable saved
@@ -254,6 +262,17 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Fix PR #57 observation-journal file admission
+
+- **Agent / branch:** Codex on isolated `codex/pr57-rereview-fixes`, from `56fb5168`.
+- **Done:** posted all three inline findings first; repaired nonblocking regular
+  manifest/shard admission while retaining streaming limits and descriptor cleanup.
+- **Results:** both bounded FIFO probes fail before repair; 29 journal units and
+  both runtime regressions pass afterward. Child timeout cleanup is retained.
+- **Open / next:** repair both Lab findings, run required checks, and push all
+  three finding commits together. Primary checkout edits remain preserved.
+- **Records:** [Repair evidence](./pr-57-rereview-fix-results.json).
 
 ### 2026-10-15 — Bound and cancel saved cue snapshot validation in PR #57
 

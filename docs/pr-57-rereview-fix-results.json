@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "pull-request-fixes-1",
+  "date": "2026-10-15",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/57",
+  "reviewedHead": "56fb516831b4a4211288ea5036a4f2a6fee3f60a",
+  "branch": "codex/pr57-rereview-fixes",
+  "deliveryPolicy": "One finding per commit; push all three together after final verification.",
+  "inlineReview": {
+    "reviewId": 5528931598,
+    "comments": [
+      {
+        "finding": "journal-admission",
+        "commentId": 4279689419,
+        "threadId": "PRRT_kwDOUNeEOM6spTe4"
+      },
+      {
+        "finding": "pbr-preview-resources",
+        "commentId": 4279689423,
+        "threadId": "PRRT_kwDOUNeEOM6spTe7"
+      },
+      {
+        "finding": "source3-async-preview",
+        "commentId": 4279689427,
+        "threadId": "PRRT_kwDOUNeEOM6spTe-"
+      }
+    ]
+  },
+  "fixes": [
+    {
+      "finding": "journal-admission",
+      "status": "implemented and focused verification passed; included in this slice",
+      "behavior": "Both observation manifest and shard reads open nonblocking descriptors, require regular files and admit file size before retaining the existing bounded streaming path. Descriptor finally cleanup and original abort reasons remain preserved.",
+      "regressionBefore": {
+        "tests": 2,
+        "failed": 2,
+        "exitCode": 1,
+        "log": "/private/tmp/pr57-rereview-fix1-red.log",
+        "note": "Both FIFO child probes time out; parent SIGKILLs and reaps each child."
+      },
+      "regressionAfter": {
+        "tests": 31,
+        "unitTests": 29,
+        "runtimeTests": 2,
+        "files": 4,
+        "exitCode": 0,
+        "log": "/private/tmp/pr57-rereview-fix1-green.log"
+      },
+      "postimages": [
+        {
+          "path": "packages/execution-runtime/src/native-observation-journal.ts",
+          "sha256": "a97c905724878809e9be932d91be1db2d0b84535b9eef12cafd39359fada8535"
+        },
+        {
+          "path": "tests/runtime/native-observation-file-admission.test.ts",
+          "sha256": "34fc16ce80bf248691140bfcfbcf551c827fac65b6084b2fde3c3f78fc69300d"
+        }
+      ]
+    }
+  ],
+  "remaining": [
+    "PBR preview resource delivery",
+    "Source3 asynchronous Lab dispatch",
+    "Required fast/runtime/browser verification",
+    "Final independent review and one final push"
+  ],
+  "setup": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "dependencies": "pnpm install --offline --frozen-lockfile passes; exact locked dependencies reused."
+  },
+  "limits": [
+    "No npm publication or ElevenLabs spending",
+    "Human visual/listening/physical acceptance remains separate",
+    "Historical full/package qualification keeps its original source and archive bindings"
+  ]
+}
