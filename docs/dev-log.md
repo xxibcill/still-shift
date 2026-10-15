@@ -43,6 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
+- **Installed progress134 (2026-10-16):** 6 sealed current outputs independently
+  pass every decoded RGBA/PCM/original narration, review-image pixel/transform and
+  public native control/physical/global-clock check. Fresh native0; EU-007 active.
+  Main56598/audit44813 remain running; no all-ten/EU008/final-handoff or whole pass.
+  Audit128 loader failure and first129 syntax draft failure retained; corrected
+  actual native1290. Exact raw positive/negative snapshots retained locally.
+  [Current installed127](./mechanism-shorts-ms3-installed127-results.json).
+
 - **Installed progress133 (2026-10-16):** 3 sealed current outputs independently
   pass every decoded RGBA/PCM/original narration, review-image pixel/transform and
   public native control/physical/global-clock check. Fresh native0; EU-004 active.
@@ -380,6 +388,18 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-16 — Retain installed progress and independent audits134
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, frome8245a9d.
+- **Done:** 6 actual sealed outputs pass complete independent RGBA/PCM/original
+  narration, review-pixel/transform and installed public native-clock/control checks.
+- **Retained failures:** audit128 loader path and first129 plain-JS syntax draft;
+  corrected native129 actual0 under unchanged denial profile. Main unaffected.
+- **Results:**2793 source inputs exact; 41 positive/negative raw snapshots retained.
+- **Next:** main56598/audit44813 running, EU-007 active; all10/6181, EU008 bounded
+  repair/final handoffs and whole reviews remain required.
+- **Records:** [installed127 checkpoint134](./mechanism-shorts-ms3-installed127-results.json).
 
 ### 2026-10-16 — Retain installed progress and independent audits133
 

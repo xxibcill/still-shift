@@ -1186,8 +1186,15 @@
     "repair": "EU008 two callout texts, then final report/resume/ten handoffs",
     "wholeReviewsOrPilotAcceptance": false,
     "record": "./mechanism-shorts-ms3-installed127-results.json",
-    "completedOutputs": ["EU-001", "EU-002", "EU-003"],
-    "independentProductAudits": 3,
+    "completedOutputs": [
+      "EU-001",
+      "EU-002",
+      "EU-003",
+      "EU-004",
+      "EU-005",
+      "EU-006"
+    ],
+    "independentProductAudits": 6,
     "completeLifecyclePassed": false
   },
   "currentInstalledCapabilities": {
