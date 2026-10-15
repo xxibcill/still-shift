@@ -6,7 +6,10 @@ MS1N403/current mainb376 and preserves four-format/PBR admission, Float32 mask
 visibility and located native diagnostics. Focused/fast and independent reviews
 pass. Current runtime260/distinct integration322/depth14/smoke and native
 controls complete in recorded stages, retaining2 original protocol timeouts.
-Current package/installed qualification remains open.
+Current affected private archive91 builds/installs on committede44;2,368 members/
+971 corresponding sources and13 installed native API controls, strict public types
+and discovery pass with original roots denied. No new full installed render matrix
+or product acceptance is inferred. [Package proof](./mechanism-shorts-ms2-current-package91-results.json).
 [Current repair evidence](./mechanism-shorts-ms2-current-prerequisite-repair90-results.json).
 
 2026-10-13. Reusable mechanism-family and saved cue software is delivered in

@@ -52,7 +52,7 @@ still hold before relying on them.
   passes: five cue tests reject an old empty audio cache entry. Source2,793 inputs
   stay exact. Same-fixture fresh-cache probe and owning5+corrupt-fallback control6
   pass unchanged; existing cache preserved. New full91 with a fresh isolated cache
-  follows the running MS2 private package52505. Original
+  follows successful MS2 private package91 qualification. Original
   products and failed first attempts retain their original identities; accepted0/10,
   measured first-pass10% below90% and paired savings null.
   [Terminal](./mechanism-shorts-ms3-first-ten-terminal90-results.json),
@@ -75,7 +75,8 @@ still hold before relying on them.
   independent reviews pass. Current260 runtime/distinct322 integration/depth14/
   smoke and native depth14/composition5/mask4 complete in stages. Aggregate1 with2
   unproven5000ms protocol timeouts remains; unchanged owning5 cases and suffix0,
-  source1,996 exact. Current MS2 package/installed qualification remains open;
+  source1,996 exact. Current affected MS2 package91 passes2,368 installed file checks/13 native
+  diagnostic controls, strict types and discovery with original roots denied;
   historical full70/package73/installed76 retain identities. Packs candidate3,
   supported0 and accepted0; active MS3 uses actual first ten, with no new media request.
   [Current repair](./mechanism-shorts-ms2-current-prerequisite-repair90-results.json),
@@ -236,6 +237,34 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Carry qualified MS2 archive into final pilot verification
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, parents30ee341e/8b7374ed.
+- **Done:** import current MS2 affected-package proof: archive06748df2,2,368 exact
+  members/installed files,971 corresponding sources,13 native controls/types/discovery.
+- **Results:** docs-only upstream merge; archive retains committede44 source binding.
+  Final roadmap now reports affected package qualification. Only ROADMAP prose
+  differs among2,793 held inputs from failed90; production/tests remain exact.
+- **Next:** unchanged complete full91 with a fresh isolated cache, after6/2 owning
+  and corrupt-cache controls pass. Previous complete matrix took5h35m local compute.
+- **Open:** current MS3 archive/installed and whole reviews/fault-budget gate;
+  original failed runs, first-pass10% and pairednull remain preserved.
+- **Records:** [MS2 package](./mechanism-shorts-ms2-current-package91-results.json),
+  [cache preflight](./mechanism-shorts-ms3-final91-cache-preflight-results.json).
+
+### 2026-10-15 — Qualify current MS2 private package after review repairs
+
+- **Agent / branch:** Codex on `codex/ms2-review-fixes`; archive sourcee44b40de.
+- **Done:** private build/pack/offline install, exact2,368 archive and installed
+  files,971 corresponding source matches,13 actual public native API controls,
+  strict declarations and CLI discovery, with original source/old consumers denied.
+- **Results:** seven stages actually exit0; retained5,037,480-byte archive SHA256
+  `06748df2364a30a2bea0c5b89d081415e6cdbf16d353b06cf0862a4bef087185`.
+- **Limits:** affected installed qualification, no fresh full installed render
+  matrix/release or whole acceptance. All earlier full/archive proofs keep bindings.
+- **Open:** final integrated MS3 gates and whole product reviews/fault-budget gate.
+- **Records:** [Current package](./mechanism-shorts-ms2-current-package91-results.json).
 
 ### 2026-10-15 — Diagnose full-gate cache failure without weakening validation
 

@@ -7,7 +7,7 @@
 and `v0.1.1` at `73c01fa7`; fixed `v0.1.0` retains `db28a938`.
 
 **Current work:** MS0/MS1 are merged. MS1N/MS2 review repairs retain
-current verification in recorded stages; current MS2 package qualification is open.
+current verification in recorded stages and affected private package qualification.
 MS3 uses Everyday Unlocked’s actual EU-001–EU-010 with complete existing Alden
 narration at1×. Ten saved outputs verify independently; final integrated-source
 software/package gates and whole visual/listening reviews remain open.
@@ -102,7 +102,8 @@ branches targeting main. [Native completion](./docs/mechanism-shorts-ms1n-comple
 and [MS2 completion](./docs/mechanism-shorts-ms2-completion.md) preserve their original
 source and full-gate histories. Current Float32 visibility/source-diagnostic
 repairs and current-main prerequisites have affected verification in recorded
-stages. Current MS2 package and final MS3 full gates remain open; older archives
+stages. Current affected MS2 archive/installed checks pass; final MS3 full gates
+remain open. Older archives
 and full renders retain their original source bindings.
 
 The active [MS3 acceptance tracker](./docs/mechanism-shorts-ms3-acceptance.md)

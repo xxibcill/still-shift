@@ -58,9 +58,8 @@
     "commit": "10cb84a4"
   },
   "open": [
-    "Final current MS3 full90 software/benchmark/archive/installed gates",
-    "Current MS2 package/installed qualification",
-    "Whole factual/mechanical/glyph/continuous/listening/human reviews and budget-gated fault proofs"
+    "Final current MS3 complete software/benchmark attempt91 with fresh isolated cache, then archive/installed gates",
+    "Whole factual/mechanical/glyph/continuous/listening/human review and budget-gated fault proofs"
   ],
   "retryProvenanceRepair": {
     "behavior": [
@@ -383,6 +382,16 @@
       "retainedInitialReadRace": "Atomic git push succeeded0 and local alias advanced; immediate PATCH response still exposed old PR head495. Initial wrapper assertion1 retained, no repush/body rewrite. Later no-cache GET and both git refs verify exact e44."
     },
     "sourceMergeScope": "All source/test bytes already match reviewed pilot repair; this merge changes documentation only.",
-    "currentMs2Package": "open"
+    "currentMs2Package": "Affected package91 passed on e44, evidence delivery8b7374ed; no fresh full installed render matrix."
+  },
+  "currentUpstreamMs2Package91": {
+    "record": "./mechanism-shorts-ms2-current-package91-results.json",
+    "evidenceHead": "8b7374ed218536ba15e531da6a61ce0cf0ff9395",
+    "archiveSource": "e44b40deff31355ddf100b4aa604803224bba402",
+    "actualExitCode": 0,
+    "members": 2368,
+    "correspondingSources": 971,
+    "installedCases": 13,
+    "scope": "Affected private installed APIs/types/discovery; historical full installed render proofs remain separately bound."
   }
 }
