@@ -50,7 +50,9 @@ still hold before relying on them.
   Eight actual phone images viewed.47 outside-label encoded frames differ by
   max10/255 RGB, mean0.003892; sampled phone pairs show no visible regression.
   Whole review stays open; failed audit128/syntax129/measurement138 are retained.
-  Main56598 final report/resume/ten handoffs still require actual terminal.
+  All16 CLI stages0; original56598 bookkeeping1 is retained. Corrected149
+  postflight6576 exits0 for10 CLI packets and complete closures, in recorded stages.
+  [Completion149](./mechanism-shorts-ms3-complete-installed149-results.json).
   [Final-product139](./mechanism-shorts-ms3-final-products139-results.json),
   [ten current review videos](../benchmarks/results/ms3-current-installed-review135/index.md).
 
@@ -87,16 +89,34 @@ still hold before relying on them.
   [completed fault batch104](./mechanism-shorts-ms3-physical-fault104-results.json).
 
 - **Upstream/evidence boundaries:** MS0/MS1 owner-merged; MS1N PR56/MS2 PR57/MS3
-  PR58 remain open, with delivered repairs integrated here. Current main/native/MS2
+  PR58 remain open; earlier delivered repairs are integrated here. Current main/native/MS2
   bindings and failed/staged histories stay distinct. Audit114 covers49 deliverables/
   26 clauses/21 traceability rows:24 selected older raw pins match;6 MS1/MS1N
   temporary paths are unavailable, historical committed results retained without
   reconstructed/fresh-pass claims. [Acceptance audit114](./mechanism-shorts-acceptance-audit114-results.json).
   Preserve primary checkout edits; keep Actions disabled. No merge or publication
-  is authorized. Complete current handoffs, inspect EU008 encoded samples, deliver
-  all 10 current review videos and retain all remaining whole/owner review gates.
+  is authorized. Current handoffs, EU008 sample inspection and all10 review videos
+  are delivered. Newer prerequisite fixes are under
+  isolated candidate143 verification; complete its package/runtime follow-up and
+  final reconciliation, preserving remaining whole/owner review gates.
 
 ## Entries
+
+### 2026-10-16 — Close original installed CLI evidence in recorded stages149/150
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from6e1ad86f.
+- **Results:** all16 actual CLI commands0, including10 current handoffs. Original
+  wrapper56598 then exits1 on its wrong final `products/native-plates.json` path.
+  Corrected standalone postflight6576 exits0;10 packets/all original products/
+  2,573 installed members/115 inputs/5,223 native files independently verify.
+- **Retention:**20,889 regular files/16.91GB logical/4.39GB unique bytes preserved
+  with independent original inodes; internal immutable duplicates share links.
+- **Scope:** no CLI/export/capture repeated, no uninterrupted wrapper0 or another
+  relocation proof claimed. Guarded140/142 finisher refuses original1 and is retained.
+- **Open:** isolated newer-upstream candidate checks and finite reconciliation;
+  whole/owner reviews remain pending, original pilot metrics unchanged.
+- **Records:** [Staged149](./mechanism-shorts-ms3-complete-installed149-results.json),
+  [backup150](./mechanism-shorts-ms3-project150-results.json).
 
 ### 2026-10-16 — Verify ten current final products and deliver review videos139
 
