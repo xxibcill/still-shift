@@ -331,6 +331,30 @@
     "sourceCommit": "40330672db000720b551abd0f7157f4a6751736b",
     "visibility": ["occluded", "occluded", "occluded", "visible"],
     "nonBackgroundPixels": [1056, 1056, 1056, 0],
-    "scope": "Four128x128 native WebGL2 frames, full RGBA controls and retained PNGs; no episode acceptance. Affected runtime/depth group3591 is running separately."
+    "scope": "Four128x128 native WebGL2 frames and complete RGBA controls; upstream runtime/depth continuation27428 actually exits0, retained separately."
+  },
+  "currentUpstreamRuntime90": {
+    "record": "./pr-56-current-runtime90-results.json",
+    "verifiedSource": "40330672db000720b551abd0f7157f4a6751736b",
+    "deliveredHead": "796375b79b1709c1cad30837a5603f91d33d7697",
+    "runtime": 191,
+    "distinctIntegration": 321,
+    "depth": 14,
+    "smoke": "passed",
+    "nativeDepth": 14,
+    "compositionIntegration": 5,
+    "mask": 4,
+    "initialAggregateExitCode": 1,
+    "continuationActualExitCode": 0,
+    "delivery": {
+      "actualExitCode": 0,
+      "publicPushAlreadySucceeded": true,
+      "head": "796375b79b1709c1cad30837a5603f91d33d7697",
+      "localAliasFrom": "bf30a2533c516bec0dcbfa3fd2c1c676babf477f",
+      "retainedBookkeepingFailure": "Initial wrapper exited1 only after actual atomic remote push0 and both remote refs verified; local update-ref CAS expected remote-oldc158 but actual local alias was olderbf30. Corrected only local alias after ancestry/no-checkout/remote validation. No second remote push or force used.",
+      "pr": "https://github.com/xxibcill/still-shift/pull/56",
+      "state": "open"
+    },
+    "scope": "Current affected upstream repair gates complete in stages. Original MS3 products and upcoming MS3 full gates retain separate bindings."
   }
 }
