@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "ms2-current-private-package-1",
+  "status": "passed-current-ms2-private-package-affected-installed-qualification",
+  "sourceCommit": "e44b40deff31355ddf100b4aa604803224bba402",
+  "consumer": "/private/tmp/still-shift-ms2-package91-consumer",
+  "stages": [
+    {
+      "stage": "build",
+      "actualExitCode": 0,
+      "seconds": 11.068625166080892,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-package91-build1.log",
+        "bytes": 214,
+        "sha256": "sha256:7ab7d19e8ac297d04e83d0e3b0e58ac2802eb35afd0be5a7a760b469cce4f9f0"
+      }
+    },
+    {
+      "stage": "pack",
+      "actualExitCode": 0,
+      "seconds": 1.777356790844351,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-package91-pack1.log",
+        "bytes": 314116,
+        "sha256": "sha256:8f77004a247c579d434ffb7520a597a0d701ed0076dcf5d5415e395fa04a0738"
+      }
+    },
+    {
+      "stage": "install",
+      "actualExitCode": 0,
+      "seconds": 1.2281469588633627,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-package91-install1.log",
+        "bytes": 237,
+        "sha256": "sha256:a57f1bc1a9eabf050d4e94d91e086b2a29575751dd67619cabb304149790b7ce"
+      }
+    },
+    {
+      "stage": "devtools",
+      "actualExitCode": 0,
+      "seconds": 0.6797189998906106,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-package91-devtools1.log",
+        "bytes": 278,
+        "sha256": "sha256:7ecde80972d376f7b537e2b86d75f5e49a8313213b38be01e0073275d6f13c03"
+      }
+    },
+    {
+      "stage": "installed-diagnostics",
+      "actualExitCode": 0,
+      "seconds": 1.607124875066802,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-package91-installed-diagnostics1.log",
+        "bytes": 176,
+        "sha256": "sha256:5f721532bf1a79e188a8d692d1dd9a8fbe10bd7a8567ca8766e868d9a9dda044"
+      }
+    },
+    {
+      "stage": "installed-types",
+      "actualExitCode": 0,
+      "seconds": 10.832775832852349,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-package91-installed-types1.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "stage": "installed-discovery",
+      "actualExitCode": 0,
+      "seconds": 0.8210099160205573,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-package91-installed-discovery1.log",
+        "bytes": 6156,
+        "sha256": "sha256:5f9c24122bd11803e9bb3c09d47a578c20f24422a32893e3f2ff9c6ccbe8d16b"
+      }
+    }
+  ],
+  "scope": "Current affected private build/archive/installed native API/types/discovery qualification. No renderer, publication or whole production acceptance.",
+  "archive": {
+    "path": "/private/tmp/still-shift-ms2-package91/still-shift-0.1.1.tgz",
+    "bytes": 5037480,
+    "sha256": "sha256:06748df2364a30a2bea0c5b89d081415e6cdbf16d353b06cf0862a4bef087185"
+  },
+  "memberAudit": {
+    "path": "/private/tmp/still-shift-ms2-package91-members1.json",
+    "bytes": 463307,
+    "sha256": "sha256:8f48411ec1b3bc3428080af3a586b3a45faaf88900d423bf866a69797e355beb"
+  },
+  "memberCount": 2368,
+  "correspondingSourceFiles": 971,
+  "actualExitCode": 0,
+  "diagnostics": {
+    "path": "/private/tmp/still-shift-ms2-package91-installed-diagnostics1.json",
+    "bytes": 85735,
+    "sha256": "sha256:bb934570495c08376e335a4a16064df51f0ac77bd2d5c844b8ef12a973cb41d5"
+  },
+  "diagnosticCases": 13,
+  "independentFixtureFiles": 14,
+  "installedFilesExact": 2368,
+  "originalRootsDenied": [
+    "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift",
+    "/Users/jjae/.codex/worktrees/ms3-review-fixes/still-shift",
+    "/Users/jjae/.codex/worktrees/ms1n-review-fixes/still-shift",
+    "/Users/jjae/.codex/worktrees/ms2-review-fixes/still-shift",
+    "/Users/jjae/Documents/playground/still-shift",
+    "/Users/jjae/Documents/obsidian/ai-business",
+    "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie",
+    "/private/tmp/still-shift-ms3-package85-consumer",
+    "/private/tmp/still-shift-ms3-package81-consumer",
+    "/private/tmp/still-shift-ms1n-package83-consumer"
+  ],
+  "durableArchive": {
+    "path": "/Users/jjae/.codex/worktrees/ms2-review-fixes/still-shift/benchmarks/results/ms2-package91/still-shift-0.1.1.tgz",
+    "bytes": 5037480,
+    "sha256": "sha256:06748df2364a30a2bea0c5b89d081415e6cdbf16d353b06cf0862a4bef087185"
+  },
+  "qualification": "Affected private archive/build/installed-API/types/discovery checks on committed e44 source. No fresh full installed render matrix, npm release, whole product review or human acceptance. Historical package73/installed76 remain bound to their originals.",
+  "memberPolicy": "All2368 packed files equal dist output and all installed copies equal archive. Only rootpnpm-lock.yaml is npm-excluded; exact lock remains atsource/pnpm-lock.yaml.971 existing corresponding source files match committed checkout."
+}

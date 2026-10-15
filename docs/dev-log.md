@@ -53,7 +53,9 @@ still hold before relying on them.
   retain original bindings. Current runtime260/distinct integration322/depth14/smoke and native depth14/
   composition5/mask4 complete in recorded stages. Two unproven protocol timeouts
   remain retained; unchanged five-case rerun and suffix pass,1,996 inputs exact.
-  Current package/installed qualification remains open.
+  Current affected private package91/2,368 installed files/13 diagnostics, strict
+  types and discovery now pass on committede44 with original roots denied.
+  [Package proof](./mechanism-shorts-ms2-current-package91-results.json).
   [Repair evidence](./mechanism-shorts-ms2-current-prerequisite-repair90-results.json).
 
 - **MS2 software checkpoint delivered (2026-10-13):** `codex/mechanism-ms2`
@@ -240,6 +242,19 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Qualify current MS2 private package after review repairs
+
+- **Agent / branch:** Codex on `codex/ms2-review-fixes`; archive sourcee44b40de.
+- **Done:** private build/pack/offline install, exact2,368 archive and installed
+  files,971 corresponding source matches,13 actual public native API controls,
+  strict declarations and CLI discovery, with original source/old consumers denied.
+- **Results:** seven stages actually exit0; retained5,037,480-byte archive SHA256
+  `06748df2364a30a2bea0c5b89d081415e6cdbf16d353b06cf0862a4bef087185`.
+- **Limits:** affected installed qualification, no fresh full installed render
+  matrix/release or whole acceptance. All earlier full/archive proofs keep bindings.
+- **Open:** final integrated MS3 gates and whole product reviews/fault-budget gate.
+- **Records:** [Current package](./mechanism-shorts-ms2-current-package91-results.json).
 
 ### 2026-10-15 — Qualify current MS2 runtime and exact native prerequisite
 

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "ms2-current-prerequisite-repair-1",
   "capturedUtc": "2026-10-15T00:33:29.034231+00:00",
-  "status": "current-review-gates-complete-in-recorded-stages-package-open",
+  "status": "current-review-repairs-qualified-with-affected-private-package",
   "preparedIntegration": {
     "status": "prepared-unverified-ms2-upstream-and-shared-native-repair",
     "base": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
@@ -113,8 +113,8 @@
   },
   "historicalBindings": "MS2 full70/package73/installed76 retain original963d/6e3 source and archived identities. They do not qualify this merge.",
   "open": [
-    "Fresh current MS2 package/installed qualification; historical package73/installed76 remain separately bound",
-    "Whole production reviews and final integrated MS3 gates"
+    "Whole factual/mechanical/material/glyph/motion/listening/production acceptance",
+    "Final integrated MS3 full software/benchmark/archive/installed and fault verification"
   ],
   "mainMs3Source": "f0675c5e in separate checkout; original ten products retain3df/runtime1090; no simultaneous renderer group.",
   "currentRuntime": {
@@ -266,5 +266,22 @@
     "mergeAttemptExitCode": 1,
     "conflicts": ["docs/dev-log.md"],
     "scope": "Native delivery merge changes documentation only; all production source/tests identical to testedc926. Retain own MS2 evidence and unique native dated entry."
+  },
+  "currentPrivatePackage": {
+    "record": "./mechanism-shorts-ms2-current-package91-results.json",
+    "archive": {
+      "path": "/private/tmp/still-shift-ms2-package91/still-shift-0.1.1.tgz",
+      "bytes": 5037480,
+      "sha256": "sha256:06748df2364a30a2bea0c5b89d081415e6cdbf16d353b06cf0862a4bef087185"
+    },
+    "sourceCommit": "e44b40deff31355ddf100b4aa604803224bba402",
+    "members": 2368,
+    "correspondingSourceFiles": 971,
+    "installedDiagnosticCases": 13,
+    "strictTypes": "passed",
+    "discovery": "passed",
+    "originalRootsDenied": true,
+    "actualExitCode": 0,
+    "scope": "Affected installed API qualification; no fresh full installed render matrix or product acceptance."
   }
 }
