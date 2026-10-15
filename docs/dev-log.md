@@ -74,6 +74,8 @@ still hold before relying on them.
   before creating a receiver. Binary hash/copy/current replay remain open.
   Standard offline package matrix and all-ten current lifecycle runners94 are
   prepared with tested terminal-admission refusals; actual execution is pending.
+  The future package wrapper additionally freezes the entire clean checkout/HEAD,
+  including archived Markdown guides, until its actual terminal.
   [Preparation controls](./mechanism-shorts-ms3-installed-preparation93-results.json),
   [Current installed scope](./mechanism-shorts-ms3-current-installed-scope92-results.json). Physical fault captures stay
   blocked by the previously requested revised Creator work budget. No audio files
@@ -260,6 +262,8 @@ still hold before relying on them.
 - **Results:** Python syntax and actual nonterminal admission negatives pass;
   no package build, receiver, production queue or renderer starts. Lifecycle
   uses pinned copied historical clocks only as references and retains pilot metrics.
+  Final package wrapper also holds the whole clean checkout/HEAD (including shipped
+  Markdown), with its earlier draft retained exactly and final admission negative0.
 - **Open / next:** actual42543 remains live. Run serial package/archive/copy/current
   lifecycle only after observed terminal0 and held-input check; whole reviews remain.
 - **Records:** [runner94 scope and controls](./mechanism-shorts-ms3-post-full-runner94-results.json),

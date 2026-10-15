@@ -22,14 +22,14 @@
   "packageRunner": {
     "script": {
       "path": "/private/tmp/still-shift-ms3-package93-prepare1.py",
-      "bytes": 12022,
-      "sha256": "sha256:cee8c2f88b658b0377883159a064c7c172100e626b2f26263a6a880648f9ebd7"
+      "bytes": 12499,
+      "sha256": "sha256:197aee62c9514ba9826a29b070761dd2b4c4b85d81cdc1e79fff13ff9ec89cc1"
     },
     "syntax": "Python AST parse passed",
     "negative": {
-      "path": "/private/tmp/still-shift-ms3-package93-prepare-controls1.json",
-      "bytes": 489,
-      "sha256": "sha256:fbbc46df2776d479b77d19d7863bb1ea2aa927d4687b35fba3ec1651cd017ffa"
+      "path": "/private/tmp/still-shift-ms3-package93-prepare-controls2.json",
+      "bytes": 534,
+      "sha256": "sha256:4e282fd4cb8e62cf13ee2a66f4b07523cd3b7c5b1365ade14b4ab954ce2a87df"
     },
     "expectedBlockedChildExitCode": 1,
     "actualNegativeControllerExitCode": 0,
@@ -48,7 +48,19 @@
       "new archive",
       "receiving install",
       "installed public controls"
-    ]
+    ],
+    "previousPreparedScript": {
+      "path": "/private/tmp/still-shift-ms3-package93-prepare-original94.py",
+      "bytes": 12022,
+      "sha256": "sha256:cee8c2f88b658b0377883159a064c7c172100e626b2f26263a6a880648f9ebd7"
+    },
+    "previousNegative": {
+      "path": "/private/tmp/still-shift-ms3-package93-prepare-controls1.json",
+      "bytes": 489,
+      "sha256": "sha256:fbbc46df2776d479b77d19d7863bb1ea2aa927d4687b35fba3ec1651cd017ffa"
+    },
+    "checkoutHold": "At admission, after every actual package stage and before final success require exact captured Git HEAD and entirely clean checkout, plus full runtime/input inventory equality. No Markdown/dev-log/other tracked mutations while the package wrapper lives. Preserve final archive guide/source identity; docs can be updated after terminal.",
+    "holdRefinementSource": "352bff54cd05da00c0e6a01025e6158fc6a805d4"
   },
   "allTenRunner": {
     "script": {
@@ -96,5 +108,6 @@
     "paidVoiceGeneration": 0,
     "heldInputsExact": 2793
   },
-  "remaining": "Full42543 is still live; all package/lifecycle work is unexecuted. Physical fault budget and whole product/human review remain separate gates."
+  "remaining": "Full42543 is still live; all package/lifecycle work is unexecuted. Physical fault budget and whole product/human review remain separate gates.",
+  "lastPreparedUtc": "2026-10-15T02:04:54.622321+00:00"
 }
