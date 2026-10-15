@@ -43,6 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
+- **Upstream candidate143 (2026-10-16):** isolated from6e1ad86f; carries newer PR56
+  validation and PR57 bounded/cancellable reads, camera, opaque-PBR and async-Lab
+  repairs. Original sink facade uses the repaired shared journal core; both
+  original and source3 FIFO regressions retained. No old full/package/pilot result
+  is rebound to these changes. Candidate fast0/4,608 unit tests; runtime49004 and two-axis review running. Original56598 continues
+  unchanged in mechanism-ms0. Primary checkout untouched.
+
 - **All10 current final products independently audited (2026-10-16):** actual
   auditor44813 exits0 for6,181 frames/130 root artifacts/1,084 review images/24,724
   native pins, with complete original narration and zero new native renders.
@@ -97,6 +104,19 @@ still hold before relying on them.
   all 10 current review videos and retain all remaining whole/owner review gates.
 
 ## Entries
+
+### 2026-10-16 — Prepare isolated integration of newer prerequisite fixes143
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3-upstream143`, from6e1ad86f.
+- **Change:** three-way integrate PR56 796375b7→0bda0b62 validator/tests and PR57
+  8b7374ed→36fc04ea production/tests/docs; no conflicts. Keep MS3 changes.
+- **Observation reads:** the shared journal repair covers both protocol versions;
+  keep both upstream runtime regression fixtures under distinct filenames.
+- **Validation:** fast0/4,608 unit tests; runtime49004/two-axis review running.
+  [Candidate143](./mechanism-shorts-ms3-upstream143-results.json). Historical full119/package121/all-ten receiving evidence
+  keeps its exact earlier source/archive binding. Original main56598 still running.
+- **Open:** complete local verification before advancing the milestone branch;
+  human whole-video acceptance remains pending. No merge, publication or spending.
 
 ### 2026-10-16 — Verify ten current final products and deliver review videos139
 

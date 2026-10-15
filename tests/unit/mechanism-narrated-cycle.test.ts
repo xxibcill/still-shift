@@ -241,6 +241,24 @@ describe("supplied narration cue compiler", () => {
       failure(() => compileMechanismNarratedCycle(instance, planes)).code,
     ).toBe("mechanism-cue-camera");
   });
+  it.each(["cut", "transition"] as const)(
+    "rejects an unserializable camera up override for a %s",
+    (editing) => {
+      const { instance, document } = narratedCycleFixture();
+      document.cues[0]!.editing = editing;
+      document.cues[0]!.camera = {
+        ...instance.scene.camera,
+        up: [0, -1, 0],
+      };
+      expect(
+        failure(() => compileMechanismNarratedCycle(instance, document)),
+      ).toMatchObject({
+        code: "mechanism-cue-camera",
+        path: ["cues", 0, "camera", "up"],
+        frame: 0,
+      });
+    },
+  );
   it("rejects cue and motion references outside the recording, overlaps and duplicate writers", () => {
     const { instance, document } = narratedCycleFixture();
     const bounds = structuredClone(document);

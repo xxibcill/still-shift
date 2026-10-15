@@ -1,0 +1,169 @@
+{
+  "schemaVersion": "mechanism-shorts-ms3-upstream143-1",
+  "capturedUtc": "2026-10-15T20:14:57.861952+00:00",
+  "status": "isolated-integration-fast-passed-runtime-running-not-current-pilot-requalification",
+  "candidateBranch": "codex/mechanism-ms3-upstream143",
+  "baseCommit": "6e1ad86f78da242c1ef88100383173b0d78c4aca",
+  "upstream": {
+    "nativePrior": "796375b79b1709c1cad30837a5603f91d33d7697",
+    "nativeCurrent": "0bda0b62278971ed93ee0fdc0bc1e4ec6a8973b5",
+    "mechanismPrior": "8b7374ed218536ba15e531da6a61ce0cf0ff9395",
+    "mechanismCurrent": "36fc04ea76ce0cc4e731bd5204ac505a06c260f5"
+  },
+  "method": "Three-way apply selected production/tests/three user docs; all clean. Keep existing MS3 patches. Native sink is already a facade over the common journal, so use MS2 journal fix for both protocols and retain upstream original-protocol runtime fixture separately. Upstream dev logs/verification receipts remain historical, not merged as current claims.",
+  "verification": {
+    "fast": {
+      "version": "ms3-isolated-candidate-verification-1",
+      "phase": "fast",
+      "started": "2026-10-15T20:10:43.808102+00:00",
+      "repository": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift",
+      "baseCommit": "6e1ad86f78da242c1ef88100383173b0d78c4aca",
+      "stages": [
+        {
+          "stage": "python-setup",
+          "command": ["uv", "sync", "--offline", "--frozen"],
+          "actualExitCode": 0,
+          "seconds": 0.7952825829852372,
+          "log": {
+            "path": "/private/tmp/still-shift-ms3-candidate143/python-setup.log",
+            "bytes": 1203,
+            "sha256": "sha256:9694ea23eb4e8e1d2a6bee7d73889fecff8891b31a36739b541196002b35db3e"
+          }
+        },
+        {
+          "stage": "soundtrack-setup",
+          "command": ["pnpm", "soundtrack:setup"],
+          "actualExitCode": 0,
+          "seconds": 0.2862507910467684,
+          "log": {
+            "path": "/private/tmp/still-shift-ms3-candidate143/soundtrack-setup.log",
+            "bytes": 723,
+            "sha256": "sha256:dc35ec9731c8137d6db84c793e23a52aa8c9dffedb061a3b50c67ee0b46e5065"
+          }
+        },
+        {
+          "stage": "check-fast",
+          "command": ["pnpm", "check:fast"],
+          "actualExitCode": 0,
+          "seconds": 170.83302587503567,
+          "log": {
+            "path": "/private/tmp/still-shift-ms3-candidate143/check-fast.log",
+            "bytes": 48003,
+            "sha256": "sha256:2ba237a887b56744f69189a43ec77529badc5e5395aee37a9ae280d5ad841078"
+          }
+        }
+      ],
+      "status": "passed-scoped-fast",
+      "setupFailureRetained": {
+        "action": "first offline dependency installation",
+        "actualToolExitCode": 127,
+        "reason": "Overrestricted PATH omitted existing pnpm directory; no install started. Retry preserved PATH, offline lock installation actual0 with178reused/0downloaded."
+      },
+      "actualExitCode": 0,
+      "finished": "2026-10-15T20:13:35.751153+00:00"
+    },
+    "actualWrapperTerminal": {
+      "sessionId": 18842,
+      "actualToolResult": {
+        "chunk_id": "df2d8f",
+        "wall_time_seconds": 6e-6,
+        "exit_code": 0,
+        "original_token_count": 99,
+        "output": "{\"stage\": \"check-fast\", \"command\": [\"pnpm\", \"check:fast\"], \"actualExitCode\": 0, \"seconds\": 170.83302587503567, \"log\": {\"path\": \"/private/tmp/still-shift-ms3-candidate143/check-fast.log\", \"bytes\": 48003, \"sha256\": \"sha256:2ba237a887b56744f69189a43ec77529badc5e5395aee37a9ae280d5ad841078\"}}\n{\"status\": \"passed-scoped-fast\", \"receipt\": \"/private/tmp/still-shift-ms3-candidate143/fast-results.json\"}\n"
+      },
+      "qualification": "Actual unified exec terminal0 for the fast-phase wrapper; individual setup and fast subprocess exits/log pins in fast-results.json."
+    },
+    "unitFiles": 455,
+    "unitTests": 4608,
+    "selectedInputFiles": 2798,
+    "selectedInputBytes": 122451390,
+    "changedAfterCapturedSnapshot": [],
+    "runtime": {
+      "status": "running",
+      "sessionId": 49004,
+      "receipt": "/private/tmp/still-shift-ms3-candidate143/runtime-results.json"
+    },
+    "independentReviews": "running; Standards and Spec axes required by applied code-review skill"
+  },
+  "retained": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/inputs-before.json",
+      "bytes": 478243,
+      "sha256": "sha256:be2634d81c1e78ff53d6ab90acd1be088be733d6204411dd1fbcae9c3ca43641"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/fast-results.json",
+      "bytes": 1894,
+      "sha256": "sha256:18cb84454fa663d14030bfe227e4daefae23735d9178d6bf90a0c304932bd079"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/fast-actual-terminal.json",
+      "bytes": 724,
+      "sha256": "sha256:df9a36e69ef4acce7048a673fabe0081296b960a6cd0e2d225402dffcf43c684"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/check-fast.log",
+      "bytes": 48003,
+      "sha256": "sha256:2ba237a887b56744f69189a43ec77529badc5e5395aee37a9ae280d5ad841078"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/python-setup.log",
+      "bytes": 1203,
+      "sha256": "sha256:9694ea23eb4e8e1d2a6bee7d73889fecff8891b31a36739b541196002b35db3e"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/soundtrack-setup.log",
+      "bytes": 723,
+      "sha256": "sha256:dc35ec9731c8137d6db84c793e23a52aa8c9dffedb061a3b50c67ee0b46e5065"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/still-shift-ms3-upstream143-native.patch",
+      "bytes": 11712,
+      "sha256": "sha256:32ff2cda1e4f8cec2c37b7fb19d33d574c40db08b8e2342a17372d46571a8d0e"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/still-shift-ms3-upstream143-mechanism.patch",
+      "bytes": 47412,
+      "sha256": "sha256:4538483f2ff1e142a303c2af35afcf73e7b43139d6954a5b06b02c980c1b4b35"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/still-shift-ms3-upstream143-v1-test.ts",
+      "bytes": 5362,
+      "sha256": "sha256:c6c019e0676f1b8a010d26bc661a1c963b1d9ccbf540dcfc835b527ee7198e58"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/still-shift-ms3-upstream143-patches.json",
+      "bytes": 1909,
+      "sha256": "sha256:280d13ab28817f3f36f897aa7406b5c33a3802a46a3245b4c2b9905c0aef271c"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/still-shift-ms3-candidate143-verify.py",
+      "bytes": 2445,
+      "sha256": "sha256:a97dac772032b0b1583f3e5ade5f7b912ee7cf3dd344124fac3e515baefd799a"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/pr-56-second-review-fix-results.json",
+      "bytes": 10586,
+      "sha256": "sha256:97507bbee9c453ea8a21b3da860684ffb6036327e60ada457a5a60442b7bd468",
+      "sourceCommit": "0bda0b62"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/pr-57-fix-results.json",
+      "bytes": 23534,
+      "sha256": "sha256:5bf623a6b1482ea195fe37999cb15b47cf5abfaec8304797b4dd10e4e4b2d027",
+      "sourceCommit": "36fc04ea"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-upstream143/pr-57-rereview-fix-results.json",
+      "bytes": 14225,
+      "sha256": "sha256:706c55f18aa156fe3628102438d4df0189b21dbc893a3bc5ccbfd52657a579d2",
+      "sourceCommit": "36fc04ea"
+    }
+  ],
+  "originalPilot": "Original56598 handoffs continue in separate mechanism-ms0 checkout with exact1c selected map; no source or product mutations there. Ten current review135 videos stay byte-exact and human review pending.",
+  "limits": [
+    "No fresh full/package/receiving proof for this updated candidate yet. Earlier full119/package121/current139 evidence keeps earlier source/archive bindings.",
+    "No merge, publication, baseline regeneration, ElevenLabs spending, or human acceptance.",
+    "First offline dependency setup exited127 because pnpm was omitted from PATH; corrected offline retry0 with178reused/0downloaded."
+  ]
+}

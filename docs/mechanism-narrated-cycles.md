@@ -43,7 +43,8 @@ All five tracks use the same resolved map:
 
 - **Picture:** one native world, cue-driven controls and camera keys. Cut/hold/
   transition choices remain authored; a held pose cannot silently change. Camera
-  near/far planes remain the scene's planes and incompatible changes are rejected.
+  near/far planes and up vector remain the scene's values; incompatible changes
+  are rejected at the authored camera field.
 - **Annotations:** screen labels and declared tabs, open callouts, brackets, arrows
   or restrained outline highlights appear within the cue window. Omitted style
   preserves the original filled tab and leader. Unknown anchors and starts outside

@@ -1,3 +1,4 @@
+import { readCompositionDocument } from "../composition-document-read.ts";
 import { z } from "zod";
 import { mkdir, mkdtemp, readFile, rm, open } from "node:fs/promises";
 import { constants } from "node:fs";
@@ -49,9 +50,13 @@ function failure(code: string, message: string, location: string): never {
       "Compile the current family/cue revision into a fresh directory, then render/check that snapshot.",
   });
 }
-async function current(familyPath: string, cuePath: string) {
-  const family = await readMechanismFamilyAuthoring(familyPath),
-    cue = await readMechanismCueAuthoring(family.instance, cuePath);
+async function current(
+  familyPath: string,
+  cuePath: string,
+  signal?: AbortSignal,
+) {
+  const family = await readMechanismFamilyAuthoring(familyPath, { signal }),
+    cue = await readMechanismCueAuthoring(family.instance, cuePath, { signal });
   const composition = CompositionSchema.parse({
     ...cue.compiled.composition,
     assets: cue.compiled.composition.assets.map((asset) => ({
@@ -105,7 +110,7 @@ export async function compileMechanismCueProject(
   } = {},
 ) {
   options.signal?.throwIfAborted();
-  const value = await current(familyPath, cuePath),
+  const value = await current(familyPath, cuePath, options.signal),
     scratch = await mkdtemp(join(tmpdir(), "still-shift-cue-compile-")),
     memory = new CompositionNodeMemory(options.nodeMemory);
   try {
@@ -133,7 +138,7 @@ export async function compileMechanismCueProject(
     });
     assertPins(
       receipt,
-      await current(familyPath, cuePath),
+      await current(familyPath, cuePath, options.signal),
       familyPath,
       cuePath,
     );
@@ -161,60 +166,77 @@ export async function readMechanismCueCompilation(
   familyPath: string,
   cuePath: string,
   preparedDirectory: string,
+  options: {
+    signal?: AbortSignal | undefined;
+    nodeMemory?: CompositionNodeMemory;
+  } = {},
 ) {
-  const receiptPath = join(resolve(preparedDirectory), "cue-compilation.json"),
-    input = await readMechanismJson(receiptPath);
-  if (
-    input &&
-    typeof input === "object" &&
-    "schemaVersion" in input &&
-    input.schemaVersion !== "mechanism-cue-compilation-1"
-  )
-    failure(
-      "mechanism-version",
-      `Unsupported cue compilation version ${String(input.schemaVersion).slice(0, 128)}; expected mechanism-cue-compilation-1`,
-      "schemaVersion",
+  options.signal?.throwIfAborted();
+  const owner = new CompositionNodeMemory(options.nodeMemory);
+  try {
+    const receiptPath = join(
+        resolve(preparedDirectory),
+        "cue-compilation.json",
+      ),
+      input = await readMechanismJson(receiptPath, options);
+    if (
+      input &&
+      typeof input === "object" &&
+      "schemaVersion" in input &&
+      input.schemaVersion !== "mechanism-cue-compilation-1"
+    )
+      failure(
+        "mechanism-version",
+        `Unsupported cue compilation version ${String(input.schemaVersion).slice(0, 128)}; expected mechanism-cue-compilation-1`,
+        "schemaVersion",
+      );
+    options.signal?.throwIfAborted();
+    const receipt = MechanismCueCompilationSchema.parse(input),
+      value = await current(familyPath, cuePath, options.signal);
+    options.signal?.throwIfAborted();
+    assertPins(receipt, value, familyPath, cuePath);
+    if (
+      receipt.composition.path !==
+      join(resolve(preparedDirectory), "composition.json")
+    )
+      failure(
+        "mechanism-compilation-path",
+        "Compilation must name its sibling composition",
+        "composition/path",
+      );
+    const { result, checksum } = await readCompositionDocument(
+      receipt.composition.path,
+      owner,
+      options.signal,
     );
-  const receipt = MechanismCueCompilationSchema.parse(input),
-    value = await current(familyPath, cuePath);
-  assertPins(receipt, value, familyPath, cuePath);
-  if (
-    receipt.composition.path !==
-    join(resolve(preparedDirectory), "composition.json")
-  )
-    failure(
-      "mechanism-compilation-path",
-      "Compilation must name its sibling composition",
-      "composition/path",
-    );
-  const bytes = await readFile(receipt.composition.path);
-  if (mechanismHash(bytes) !== receipt.composition.sha256)
-    failure(
-      "mechanism-compilation-hash",
-      "Compiled composition bytes changed",
-      "composition/sha256",
-    );
-  const document = CompositionSchema.parse(
-    JSON.parse(bytes.toString("utf8")) as unknown,
-  );
-  if (mechanismPackHash(document) !== mechanismPackHash(value.composition))
-    failure(
-      "mechanism-compilation-content",
-      "Compiled composition differs from the current cue semantics",
-      "composition",
-    );
-  if (
-    receipt.frameCount !== document.frameCount ||
-    receipt.fps !== document.fps ||
-    receipt.width !== document.width ||
-    receipt.height !== document.height
-  )
-    failure(
-      "mechanism-compilation-facts",
-      "Compiled output facts changed",
-      "frameCount/fps/width/height",
-    );
-  return { receipt, receiptPath };
+    if (checksum !== receipt.composition.sha256)
+      failure(
+        "mechanism-compilation-hash",
+        "Compiled composition bytes changed",
+        "composition/sha256",
+      );
+    const document = result.composition;
+    if (mechanismPackHash(document) !== mechanismPackHash(value.composition))
+      failure(
+        "mechanism-compilation-content",
+        "Compiled composition differs from the current cue semantics",
+        "composition",
+      );
+    if (
+      receipt.frameCount !== document.frameCount ||
+      receipt.fps !== document.fps ||
+      receipt.width !== document.width ||
+      receipt.height !== document.height
+    )
+      failure(
+        "mechanism-compilation-facts",
+        "Compiled output facts changed",
+        "frameCount/fps/width/height",
+      );
+    return { receipt, receiptPath };
+  } finally {
+    owner.dispose();
+  }
 }
 export async function renderMechanismCueProject(
   familyPath: string,
@@ -227,6 +249,7 @@ export async function renderMechanismCueProject(
       familyPath,
       cuePath,
       preparedDirectory,
+      options,
     ),
     directory = resolve(outputDirectory);
   options.signal?.throwIfAborted();
@@ -239,7 +262,12 @@ export async function renderMechanismCueProject(
     transport: "raw_rgba",
     signal: options.signal,
     validateNativeSourceEdges: async () => {
-      await readMechanismCueCompilation(familyPath, cuePath, preparedDirectory);
+      await readMechanismCueCompilation(
+        familyPath,
+        cuePath,
+        preparedDirectory,
+        options,
+      );
     },
   });
   return {
@@ -336,6 +364,7 @@ export async function checkMechanismCueOutput(
       familyPath,
       cuePath,
       preparedDirectory,
+      options,
     ),
     actualPath = resolve(outputPath),
     render = outputResult.parse(
@@ -441,7 +470,10 @@ export async function checkMechanismCueOutput(
         transport: "raw_rgba",
       },
     });
-    await readMechanismCueCompilation(familyPath, cuePath, preparedDirectory);
+    await readMechanismCueCompilation(familyPath, cuePath, preparedDirectory, {
+      signal: options.signal,
+      nodeMemory: owner,
+    });
     if (
       (await hashFile(actualPath, options.signal)) !== render.checksums.output
     )

@@ -45,8 +45,11 @@ bytes and replays the original evidence. Changes to those files reject the cache
 These methods accept optional `{ signal, nodeMemory }`. A supplied
 `CompositionNodeMemory` shares the existing allowance with the caller; each call
 retires its local leases and preserves unrelated caller reservations. Cancellation keeps the original
-abort reason and removes failed owned output. Whole descendant/resource/lifetime
-acceptance remains a separate gate.
+abort reason and removes failed owned output. Compilation receipts, family/cue
+metadata and pinned native sources use bounded, nonblocking regular-file reads;
+compiled compositions also share the caller's Node allowance during validation.
+Validation retires its local storage on success, failure or cancellation.
+Whole descendant/resource/lifetime acceptance remains a separate gate.
 
 After a [source-pinned cue edit](./mechanism-cue-authoring.md), compile into a fresh
 directory and pass that new compilation with the original plate directory.

@@ -248,9 +248,12 @@ export function applyMechanismFamilyPatch(input: unknown, request: unknown) {
       "Regenerate the pinned scene asset and recompile/recheck dependent cue documents before rendering.",
   });
 }
-export async function readMechanismFamilyAuthoring(path: string) {
+export async function readMechanismFamilyAuthoring(
+  path: string,
+  options: { signal?: AbortSignal | undefined } = {},
+) {
   return inspectMechanismFamilyAuthoring(
-    await readMechanismJson(resolve(path)),
+    await readMechanismJson(resolve(path), options),
   );
 }
 /** Existing artifact lock and same-filesystem atomic publication protect CAS and fresh saves. */
