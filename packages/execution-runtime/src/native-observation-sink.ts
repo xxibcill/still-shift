@@ -1,5 +1,5 @@
 import { createHash, type Hash } from "node:crypto";
-import { createReadStream } from "node:fs";
+import { constants } from "node:fs";
 import { open, rm, writeFile, type FileHandle } from "node:fs/promises";
 import { basename, dirname, join, resolve } from "node:path";
 import { setImmediate as yieldEventLoop } from "node:timers/promises";
@@ -595,6 +595,33 @@ export class NativeObservationSink {
   }
 }
 
+/** Open without waiting on special files, then stream only an admitted owned descriptor. */
+async function* readObservationBytes(
+  path: string,
+  maximumBytes: number,
+  signal?: AbortSignal,
+) {
+  signal?.throwIfAborted();
+  const file = await open(
+    path,
+    constants.O_RDONLY | (constants.O_NONBLOCK ?? 0),
+  );
+  try {
+    const info = await file.stat();
+    signal?.throwIfAborted();
+    if (!info.isFile()) protocol("Observation artifact must be a regular file");
+    if (info.size > maximumBytes)
+      protocol("Observation artifact exceeds its byte admission");
+    yield* file.createReadStream({
+      autoClose: false,
+      highWaterMark: 65536,
+      signal,
+    });
+  } finally {
+    await file.close();
+  }
+}
+
 /** Rechecks actual retained rows without retaining a movie's observations in memory. */
 export async function verifyNativeObservationClosure(options: {
   closure: NativeObservationClosure;
@@ -630,10 +657,11 @@ export async function verifyNativeObservationClosure(options: {
   try {
     const manifestBuffer = Buffer.alloc(limits.packetBytes);
     let manifestBytes = 0;
-    for await (const value of createReadStream(options.closure.manifestPath, {
-      highWaterMark: 65536,
-      signal: options.signal,
-    })) {
+    for await (const value of readObservationBytes(
+      options.closure.manifestPath,
+      limits.packetBytes,
+      options.signal,
+    )) {
       const bytes = value as Buffer;
       if (manifestBytes + bytes.length > manifestBuffer.length)
         protocol("Observation manifest exceeds its byte admission");
@@ -692,10 +720,11 @@ export async function verifyNativeObservationClosure(options: {
       let shardBytes = 0,
         shardFrames = 0,
         lineBytes = 0;
-      for await (const value of createReadStream(path, {
-        highWaterMark: 65536,
-        signal: options.signal,
-      })) {
+      for await (const value of readObservationBytes(
+        path,
+        Math.min(artifact.byteLength, limits.totalBytes - byteLength),
+        options.signal,
+      )) {
         const bytes = value as Buffer;
         shardBytes += bytes.length;
         if (

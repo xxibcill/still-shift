@@ -43,13 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #56 second-review fixes in progress (2026-10-15):** all three P2
-  findings are inline on GitHub. Collapsed native scopes now fail at the instance
-  field; isolated native surfaces inside ordinary collapsed wrappers remain legal.
-  The original three failing admission regressions and passing controls are
-  retained. Direct native-controller matte references now also fail at the consuming field;
-  cancellable journal reads remain pending. Each
-  finding receives its own commit; push waits for the complete verified batch.
+- **PR #56 second-review fixes qualified (2026-10-15):** three inline P2
+  findings have separate repair commits: reject collapsed native scopes, reject
+  direct controller mattes, and admit only regular observation files through owned
+  nonblocking descriptors. Fast 3,947/381 and independent reviews 0/0 pass.
+  Runtime completes in recorded stages: 197 runtime, distinct 321 integration,
+  14 Python and smoke. Three initial 5-second depth-protocol timeouts remain
+  retained; the unchanged five-case rerun passes. Native depth 14, composition 5,
+  actual export cancellation and six rendered placement/matte controls pass.
+  All 2,776 verification inputs match. Batch is ready for the authorized single
+  final push; owner merge and human acceptance remain pending.
   [Fix evidence](./pr-56-second-review-fix-results.json).
 
 - **PR #56 current review repairs qualified (2026-10-15):** source40330672
@@ -286,14 +289,17 @@ still hold before relying on them.
 
 - **Agent / branch:** Codex on isolated `codex/pr56-second-review-fixes`, from
   `796375b7`; unrelated primary checkout edits preserved.
-- **Done:** posted all three inline findings before repair. First slice rejects
-  collapsed native scopes with located diagnostics and preserves isolated wrappers
-  (`c04f4652`). Second slice rejects direct native-controller matte sources;
-  ordinary and isolated-precomp matte sources remain legal.
-- **Results:** original admission run fails 3/10 cases as expected; focused green
-  checks pass all 153 tests. Matte regression starts with 5 expected failures;
-  its focused green run passes all 160 tests. Full verification follows all repairs.
-- **Open / next:** journal fix and full verification; one commit per finding, one final push.
+- **Done:** posted all three findings inline before repair. Separate commits fix
+  collapsed scopes (`c04f4652`), direct controller mattes (`d9644040`) and observation
+  FIFO admission (final commit). Isolated surfaces and regular symlinks remain valid.
+- **Results:** fast 3,947/381; staged runtime 197, distinct integration 321,
+  Python 14 and smoke; native depth 14, composition 5 and actual cancellation.
+  Six real WebGL controls retain full RGBA; three invalid inputs reject.
+  Independent Standards 0 / Spec 0; all 2,776 verification inputs exact.
+- **Retained failures:** original red regressions, initial fixture syntax/type
+  errors and three unproven 5-second protocol timeouts; unchanged five-case rerun passes.
+- **Open / next:** one final push of the three repair commits; owner merge pending.
+  No refreshed release/E01 gate or human visual/listening acceptance.
 - **Records:** [Fix and verification receipt](./pr-56-second-review-fix-results.json).
 
 ### 2026-10-15 — Qualify current native review repairs in recorded stages

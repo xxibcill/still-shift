@@ -31,13 +31,13 @@
         "tests": 10,
         "failed": 3,
         "passed": 7,
-        "log": "/private/tmp/pr56-fix-collapse-red.log"
+        "log": "benchmarks/results/pr-56-second-review-fixes-20261015/pr56-fix-collapse-red.log"
       },
       "focusedGreen": {
         "exitCode": 0,
         "files": 3,
         "tests": 153,
-        "log": "/private/tmp/pr56-fix-collapse-green.log"
+        "log": "benchmarks/results/pr-56-second-review-fixes-20261015/pr56-fix-collapse-green.log"
       },
       "commit": "c04f4652"
     },
@@ -49,22 +49,203 @@
         "tests": 17,
         "failed": 5,
         "passed": 12,
-        "log": "/private/tmp/pr56-fix-matte-red.log"
+        "log": "benchmarks/results/pr-56-second-review-fixes-20261015/pr56-fix-matte-red.log"
       },
       "focusedGreen": {
         "exitCode": 0,
         "files": 3,
         "tests": 160,
-        "log": "/private/tmp/pr56-fix-matte-green.log"
-      }
+        "log": "benchmarks/results/pr-56-second-review-fixes-20261015/pr56-fix-matte-green.log"
+      },
+      "commit": "d9644040"
+    },
+    {
+      "finding": "observation FIFO admission",
+      "status": "implemented",
+      "behavior": "Open nonblocking, admit regular descriptor type and initial size, stream with the original signal, and close the owned descriptor in finally. Regular symlink locators remain compatible.",
+      "regressionRed": {
+        "tests": 4,
+        "failed": 4,
+        "log": "benchmarks/results/pr-56-second-review-fixes-20261015/pr56-fix-journal-red.log",
+        "boundedCleanup": "Every blocked child was killed by its existing 4-second harness timeout."
+      },
+      "focusedGreen": {
+        "unitTests": 9,
+        "runtimeTests": 6,
+        "logs": [
+          "benchmarks/results/pr-56-second-review-fixes-20261015/pr56-fix-journal-unit-green.log",
+          "benchmarks/results/pr-56-second-review-fixes-20261015/pr56-fix-journal-runtime-green.log"
+        ]
+      },
+      "commitTitle": "fix(runtime): reject nonregular observation artifacts"
     }
   ],
-  "verification": {},
+  "verification": {
+    "environment": {
+      "node": "22.23.1",
+      "pnpm": "10.29.3",
+      "python": "3.12.11",
+      "setup": "Pinned Python and soundtrack environments installed offline from locked requirements.",
+      "logs": [
+        "benchmarks/results/pr-56-second-review-fixes-20261015/pr56-fix-python-setup.log",
+        "benchmarks/results/pr-56-second-review-fixes-20261015/pr56-fix-soundtrack-setup.log"
+      ]
+    },
+    "fast": {
+      "command": "pnpm check:fast",
+      "exitCode": 0,
+      "unitFiles": 381,
+      "unitTests": 3947,
+      "log": "benchmarks/results/pr-56-second-review-fixes-20261015/pr56-fix-check-fast-rerun.log",
+      "history": "Initial aggregate stopped at TypeScript on the new test fixture; the complete rerun passes after preserving the pinned Three version as a literal."
+    },
+    "independentReview": {
+      "range": "796375b7...08f4b033",
+      "standardsFindings": 0,
+      "specFindings": 0,
+      "subsequentChange": "Regression fixture version annotation only; no production code changed after review."
+    },
+    "contentBinding": {
+      "files": 2776,
+      "changedAfterVerification": [],
+      "changeAfterInitialFailedFast": [
+        "tests/runtime/native-observation-file-admission.test.ts"
+      ],
+      "manifestSha256": "28867efabadb2e4007280ccdcefa3555b885760bd5272915c7e904084dfc36fe",
+      "excluded": [
+        "docs/dev-log.md",
+        "docs/pr-56-second-review-fix-results.json"
+      ]
+    },
+    "runtime": {
+      "command": "pnpm check:runtime",
+      "initialExitCode": 1,
+      "runtimeFiles": 29,
+      "runtimeTestsPassed": 197,
+      "initialIntegration": {
+        "files": 56,
+        "tests": 321,
+        "passed": 318,
+        "failed": 3
+      },
+      "unchangedAffectedRerun": {
+        "command": "pnpm exec vitest run tests/integration/depth-worker-protocol.test.ts --maxWorkers=2 --no-file-parallelism",
+        "exitCode": 0,
+        "testsPassed": 5,
+        "log": "benchmarks/results/pr-56-second-review-fixes-20261015/pr56-fix-depth-protocol-rerun.log"
+      },
+      "distinctIntegrationTestsPassingAcrossRuns": 321,
+      "suffix": {
+        "exitCode": 0,
+        "pythonTestsPassed": 14,
+        "browserSmoke": "passed",
+        "log": "benchmarks/results/pr-56-second-review-fixes-20261015/pr56-fix-runtime-suffix.log"
+      },
+      "qualification": "Completed in recorded stages. No uninterrupted aggregate pass; the three original 5-second protocol timeouts remain retained with no proven cause. No source edits or timeout increases for the passing rerun.",
+      "log": "benchmarks/results/pr-56-second-review-fixes-20261015/pr56-fix-check-runtime.log"
+    },
+    "nativeBrowser": {
+      "command": "pnpm test:browser:native3d-depth",
+      "exitCode": 0,
+      "depthCases": 14,
+      "compositionCases": 5,
+      "actualExportCancellation": "passed; all six child processes exit, server closes and owned output is cleaned",
+      "log": "benchmarks/results/pr-56-second-review-fixes-20261015/pr56-fix-native-browser.log",
+      "reports": "benchmarks/results/pr-56-second-review-fixes-20261015/native-depth",
+      "cancellation": "benchmarks/results/pr-56-second-review-fixes-20261015/native-cancellation"
+    },
+    "repairBrowserControls": {
+      "exitCode": 0,
+      "rejectedInvalidCases": 3,
+      "renderedValidCases": 6,
+      "behavior": "Isolated surfaces and ordinary collapsed wrappers preserve native x placement; isolated native precomp matte renders red through the native surface. All valid controls produce one native observation and no render diagnostics.",
+      "controls": [
+        {
+          "id": "collapse-false-x0",
+          "pixelSha256": "sha256:21e7231f4348fbd843d85fbd4c42a7ab49a540d8e0e5f7746567aca228f09075",
+          "litColorChannels": 3168,
+          "observations": 1,
+          "valid": true
+        },
+        {
+          "id": "collapse-false-x20",
+          "pixelSha256": "sha256:59a4dcf2d9d49733c514e9fdebe7233a0b26b92f5f967d3460440bea38f12afe",
+          "litColorChannels": 3168,
+          "observations": 1,
+          "valid": true
+        },
+        {
+          "id": "collapse-true-x0",
+          "valid": false
+        },
+        {
+          "id": "collapse-true-x20",
+          "valid": false
+        },
+        {
+          "id": "matte",
+          "valid": false
+        },
+        {
+          "id": "native-control",
+          "pixelSha256": "sha256:21e7231f4348fbd843d85fbd4c42a7ab49a540d8e0e5f7746567aca228f09075",
+          "litColorChannels": 3168,
+          "observations": 1,
+          "valid": true
+        },
+        {
+          "id": "collapsed-wrapper-x0",
+          "pixelSha256": "sha256:21e7231f4348fbd843d85fbd4c42a7ab49a540d8e0e5f7746567aca228f09075",
+          "litColorChannels": 3168,
+          "observations": 1,
+          "valid": true
+        },
+        {
+          "id": "collapsed-wrapper-x20",
+          "pixelSha256": "sha256:59a4dcf2d9d49733c514e9fdebe7233a0b26b92f5f967d3460440bea38f12afe",
+          "litColorChannels": 3168,
+          "observations": 1,
+          "valid": true
+        },
+        {
+          "id": "isolated-matte",
+          "pixelSha256": "sha256:f61b86a177e91c4b91abd740bf2372d2bb764ebc96c5fe3c5df4b56b7fb55ae7",
+          "litColorChannels": 1056,
+          "observations": 1,
+          "valid": true
+        }
+      ],
+      "report": "benchmarks/results/pr-56-second-review-fixes-20261015/graph-browser/report.json",
+      "log": "benchmarks/results/pr-56-second-review-fixes-20261015/pr56-fix-graph-browser.log"
+    }
+  },
   "delivery": {
-    "push": "pending final batch",
+    "plan": "Three separate finding commits; one final fast-forward push to codex/mechanism-ms1n after finalizing this receipt. Final remote SHA and thread resolutions are recorded in the local delivery copy.",
     "ownerMerge": "pending"
   },
   "limits": [
     "No release publication or human visual/listening acceptance. Earlier full/E01/archive evidence retains original bindings."
-  ]
+  ],
+  "retainedFailures": [
+    {
+      "stage": "journal regression harness setup",
+      "result": "Initial new fixture had a syntax error, before tests collected; corrected the fixture and ran the actual four failing cases before changing production code.",
+      "log": "benchmarks/results/pr-56-second-review-fixes-20261015/pr56-fix-journal-red-harness.log"
+    },
+    {
+      "stage": "initial check:fast",
+      "result": "TypeScript TS2322 in the new FIFO fixture: threeRuntime.version widened to string. Added as const to preserve the pinned literal, then reran the complete fast gate successfully. No production change.",
+      "log": "benchmarks/results/pr-56-second-review-fixes-20261015/pr56-fix-check-fast.log"
+    },
+    {
+      "stage": "initial check:runtime integration",
+      "result": "Three unchanged depth-worker protocol cases timed out at 5000 ms; 318 of 321 cases passed. Full unchanged five-case rerun passes, then Python and smoke suffix pass. Timeout cause remains unproven.",
+      "log": "benchmarks/results/pr-56-second-review-fixes-20261015/pr56-fix-check-runtime.log"
+    },
+    {
+      "stage": "receipt input-binding comparison",
+      "result": "Initial receipt script compared object-valued original manifest entries against string-valued rerun entries. It stopped before writing. Comparing their sha256 values confirms only the intentional fixture type correction before rerun and no changes after verification."
+    }
+  ],
+  "retainedEvidenceRoot": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/pr-56-second-review-fixes-20261015"
 }
