@@ -64,7 +64,12 @@ still hold before relying on them.
 - **Current remaining MS3 gates (2026-10-15):** final integrated-source full
   software/benchmark/archive/installed checks and whole factual/mechanical/glyph/
   normal-speed/listening review remain. Archive85 and unexecuted prepared86 bind
-  earlier source452b/codee231; no evidence transfer. Physical fault captures stay
+  earlier source452b/codee231; no evidence transfer. Current installed proof must
+  cover all10 episodes/6,181 frames. Runtime identity gates reject relabeling old
+  products; prepared86 one-episode scope is insufficient. Cache-only guard controls
+  pass;1,571 expected keys/34 captures are metadata-admitted, full content closure
+  and actual installed validation remain.
+  [Current installed scope](./mechanism-shorts-ms3-current-installed-scope92-results.json). Physical fault captures stay
   blocked by the previously requested revised Creator work budget. No audio files
   are missing and no paid generation is approved. Review copies remain byte-exact
   after integration at `benchmarks/results/ms3-actual-first-ten-review80/index.md`.
@@ -239,6 +244,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Require all-ten current installed validation after the full gate
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, held3749618d unchanged.
+- **Audit:** queue/visual verification requires current executor code/profile;
+  original3df/1090 outputs cannot qualify a new installed runtime by relabeling.
+  Final installed scope is actual10/6,181 frames, superseding unexecuted86/E1 scope.
+- **Evidence:** compiler JS9,487B equal and11 native dependencies exact; metadata
+  hashes1,707 plus3,142 file-size checks admit1,571 requested keys/34 captures.
+  This is not binary-content closure or actual current cache replay.
+- **Guard:** OS blocks exact worker staging before fresh Blender launch; existing
+  cache/ordinary scratch and descendant controls pass. Retain initial nested-sandbox71
+  and corrected outside-parent0; no Blender/episode/voice generation was started.
+- **Open:** after actual42543 terminal, current archive and independent all-ten
+  cache-only run/report/resume/handoffs; preserve original first-pass10%/pairednull.
+- **Records:** [Installed scope and controls](./mechanism-shorts-ms3-current-installed-scope92-results.json).
 
 ### 2026-10-15 — Full91 clears the prior cache failures under unchanged tests
 

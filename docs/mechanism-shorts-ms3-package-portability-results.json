@@ -688,5 +688,13 @@
     "source": "e9be5d82 plus live evidence integration in progress",
     "status": "focused73-and-fast4594-passed; full integrated source gates open",
     "olderInstalledEvidence": "Package85 and prepared86 retain source452b/codee231 bindings; no earlier archive evidence transfers to this merge."
+  },
+  "finalCurrentInstalledScope92": {
+    "record": "./mechanism-shorts-ms3-current-installed-scope92-results.json",
+    "episodes": 10,
+    "frames": 6181,
+    "requiredNativeKeys": 1571,
+    "status": "prepared-scope-not-executed; wait-for42543-actual-terminal",
+    "qualification": "Prepared86 is one episode/older source. Final installed proof must cover actual first ten under current installed runtime. Original first-pass/whole review counts remain separate."
   }
 }
