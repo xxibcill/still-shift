@@ -1008,7 +1008,12 @@
       "./mechanism-shorts-ms3-current-first-ten-recovery-results.json",
       "./mechanism-shorts-ms3-native-coverage-board.json",
       "./mechanism-shorts-ms3-current-installed-scope92-results.json"
-    ]
+    ],
+    "factualInputPreflight": {
+      "record": "./mechanism-shorts-ms3-factual-input100-results.json",
+      "episodes": 10,
+      "scope": "Actual pinned speech/callout input consistency with primary descriptions and explicit selected-construction/inference limits; whole artifact factual/mechanical reviews remain unreviewed."
+    }
   },
   "resultsIndexReconciliation": {
     "record": "./mechanism-shorts-requirement-inventory99-results.json",

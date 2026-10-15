@@ -82,7 +82,11 @@ still hold before relying on them.
   Results index99 now records actual first-pass1/10 and all-ten original metrics;
   previous unmeasured/historical rows remain retained. All49 required deliverable
   locators are inventoried; final acceptance-clause reconciliation remains open.
-  [Inventory](./mechanism-shorts-requirement-inventory99-results.json).
+  [Inventory](./mechanism-shorts-requirement-inventory99-results.json). Factual-input100
+  checks all10 actual pinned speech/callout plans against9 fresh primary web texts
+  and1 saved primary HTML; source consistency is supported within declared limits.
+  Whole factual/mechanical/listening and human acceptance stay open.
+  [Source limits](./mechanism-shorts-ms3-factual-input100-results.json).
   [Preparation controls](./mechanism-shorts-ms3-installed-preparation93-results.json),
   [Current installed scope](./mechanism-shorts-ms3-current-installed-scope92-results.json). Physical fault captures stay
   budget-blocked after explicit total10/35M approval: unchanged conservative ledger
@@ -262,6 +266,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Check actual-ten spoken/callout inputs against primary sources100
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` from9336d3b0.
+- **Scope:** read pinned actual speech/callout copy for EU001–EU010 and primary
+  descriptions of each selected mechanism while full42543 remains live.
+- **Results:**114 speech segments/42 callout entries read;9 primary web texts and
+  1 actual saved patent HTML support10 input comparisons with explicit construction/
+  inference limits.15 static copy/pin/boundary checks pass; direct peg web errors
+  retained. Fresh patent titles are corrected in this scoped record only.
+- **Open / next:** no product QA seal promoted. Current full/archive/all-ten
+  installed proof, rendered contact/leader/glyph/factual/AV/listening/human reviews
+  and budget-gated fault images remain. No render, synthesis or source edits.
+- **Records:** [factual-input scope and source locators](./mechanism-shorts-ms3-factual-input100-results.json).
 
 ### 2026-10-15 — Reconcile actual-first-ten results and inventory49 requirements99
 

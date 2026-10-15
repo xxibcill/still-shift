@@ -1,0 +1,1466 @@
+{
+  "schemaVersion": "ms3-actual-ten-factual-input-preflight-1",
+  "capturedUtc": "2026-10-15T03:51:14.617719+00:00",
+  "status": "completed-scoped-source-consistency-preflight-ten-inputs-whole-review-open",
+  "sourceBeforeDocs": "9336d3b0",
+  "selection": {
+    "id": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+    "selectedEpisodeIds": [
+      "EU-001",
+      "EU-002",
+      "EU-003",
+      "EU-004",
+      "EU-005",
+      "EU-006",
+      "EU-007",
+      "EU-008",
+      "EU-009",
+      "EU-010"
+    ],
+    "sha256": "sha256:8c5f378389d595c83fdcf3ff1cd41bd2d57d64b3a622c953013cffe39d001471"
+  },
+  "originalProducerSource": "3df62a5598dc46e021ee2c51b173ba33a38d2af6",
+  "originalRuntimeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+  "queue": {
+    "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/queue-current72.json",
+    "bytes": 32387,
+    "sha256": "sha256:f5529b40b39ab35563d26694c3a633274b9d6e89aa70d68ea438c956ee30fc35"
+  },
+  "selectionFile": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-shorts-ms3-pilot-selection.json",
+    "bytes": 48736,
+    "sha256": "sha256:004f378e3380905fb5ac7ce213f83e2753c7dedf579d841cedaa0994f5c73b64"
+  },
+  "originalNarrationAndDecodeEvidence": "./mechanism-shorts-ms3-first-ten-terminal90-results.json",
+  "scope": "Agent read actual authored speech segments and callout copy from all10 pinned original-producer plans and compared them with primary mechanism descriptions for their selected constructions. This establishes input-copy/source consistency only, not physical assembly correctness, actual spoken performance, final encoded label/leader truth, full factual review, portability or human acceptance. No product QA seals are changed or transferred to a new runtime.",
+  "summary": {
+    "episodes": 10,
+    "freshPrimaryWebText": 9,
+    "savedPrimaryHtmlActuallyRead": 1,
+    "spokenSegmentsRead": 114,
+    "calloutCopyEntriesRead": 42,
+    "inputConsistencySupportedWithLimits": 10,
+    "wholeFactualPassesAdded": 0,
+    "acceptedPilot": 0,
+    "newRenderingOrSynthesis": 0
+  },
+  "rows": [
+    {
+      "id": "EU-001",
+      "question": "Why does the hook on a tape measure move?",
+      "selectedDesign": "Existing unbranded conceptual floating hook",
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-001/plan.json",
+        "bytes": 7801,
+        "sha256": "sha256:d2000d4249344e305fcb2ce4fe6d14082e42032d7f41cd4276d0d8dc92b0e092"
+      },
+      "source": {
+        "url": "https://support.stanleytools.com/hc/en-us/articles/360012682938-Why-does-the-hook-on-the-end-of-the-Stanley-tape-rule-move",
+        "observedTitle": "Why does the hook on the end of the Stanley tape rule move?",
+        "accessedOn": "2026-10-15",
+        "method": "fresh-primary-web-text-read",
+        "locator": "Explanatory paragraphs on travel, outside and inside measurement.",
+        "directQuotationWords": 0
+      },
+      "spokenSegmentsRead": [
+        {
+          "id": "sentence-00",
+          "text": "Why does this tape-measure hook slide?",
+          "startSample": 0,
+          "endSampleExclusive": 96000
+        },
+        {
+          "id": "sentence-01",
+          "text": "Wouldn’t that mess up the measurement?",
+          "startSample": 128640,
+          "endSampleExclusive": 184320
+        },
+        {
+          "id": "sentence-02",
+          "text": "Hook it over an edge, and you’re",
+          "startSample": 213120,
+          "endSampleExclusive": 279360
+        },
+        {
+          "id": "sentence-03",
+          "text": "measuring from its INSIDE face.",
+          "startSample": 279360,
+          "endSampleExclusive": 359040
+        },
+        {
+          "id": "sentence-04",
+          "text": "Push it against a wall, and you",
+          "startSample": 382080,
+          "endSampleExclusive": 449280
+        },
+        {
+          "id": "sentence-05",
+          "text": "use its OUTSIDE face.",
+          "startSample": 449280,
+          "endSampleExclusive": 510720
+        },
+        {
+          "id": "sentence-06",
+          "text": "Those faces are a thickness of metal",
+          "startSample": 535680,
+          "endSampleExclusive": 619200
+        },
+        {
+          "id": "sentence-07",
+          "text": "apart.",
+          "startSample": 619200,
+          "endSampleExclusive": 641280
+        },
+        {
+          "id": "sentence-08",
+          "text": "So the hook slides by that SAME",
+          "startSample": 655680,
+          "endSampleExclusive": 744960
+        },
+        {
+          "id": "sentence-09",
+          "text": "distance.",
+          "startSample": 744960,
+          "endSampleExclusive": 766080
+        },
+        {
+          "id": "sentence-10",
+          "text": "That tiny movement keeps the hook’s own",
+          "startSample": 792000,
+          "endSampleExclusive": 888960
+        },
+        {
+          "id": "sentence-11",
+          "text": "thickness out of your measurement.",
+          "startSample": 888960,
+          "endSampleExclusive": 956160
+        }
+      ],
+      "calloutCopyRead": [
+        {
+          "id": "part-00",
+          "text": "Inside face",
+          "part": "hook.contactFace",
+          "anchor": "anchor.hookInner",
+          "start": 133,
+          "endExclusive": 239
+        },
+        {
+          "id": "part-01",
+          "text": "Outside face",
+          "part": "hook.contactFace",
+          "anchor": "anchor.hookOuter",
+          "start": 239,
+          "endExclusive": 340
+        },
+        {
+          "id": "part-02",
+          "text": "Slotted flange",
+          "part": "hook.slottedFlange",
+          "anchor": "anchor.flange",
+          "start": 340,
+          "endExclusive": 501
+        },
+        {
+          "id": "part-03",
+          "text": "Fixed rivet",
+          "part": "blade.rivetCap.0",
+          "anchor": "anchor.rivet.0",
+          "start": 340,
+          "endExclusive": 501
+        }
+      ],
+      "scriptAndCaptionSourceConsistency": "supported-with-declared-construction-and-inference-limits",
+      "supportedClaims": [
+        "Hook travel compensates for its thickness.",
+        "Pulling an edge and pushing a wall select opposite contact faces.",
+        "The copy describes the thickness offset rather than claiming a measured manufacturing tolerance."
+      ],
+      "explicitInferences": [
+        "Face names follow the declared selected hook construction; actual rendered leader destinations still need inspection."
+      ],
+      "limits": "Floating-hook tape rule; no universal claim for every end fitting or quantitative accuracy certification.",
+      "geometryAndLeaderDenotation": "unreviewed-in-this-preflight",
+      "wholeFactualStatus": "unreviewed",
+      "wholeMechanicalStatus": "unreviewed",
+      "listening": "unreviewed",
+      "humanAcceptance": false
+    },
+    {
+      "id": "EU-002",
+      "question": "Why does a cable tie tighten but resist pulling backward?",
+      "selectedDesign": "one-piece outside-serrated nylon cable tie with integral rooted plastic tongue",
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-002/plan.json",
+        "bytes": 6769,
+        "sha256": "sha256:7cc810421a37725bd44cdb1e64b5a98b779a73b5ca01461a94ba2e6de2ccc73a"
+      },
+      "source": {
+        "url": "https://www.hellermanntyton.com/competences/cable-ties-and-fixings",
+        "observedTitle": "Cable ties for industry",
+        "accessedOn": "2026-10-15",
+        "method": "fresh-primary-web-text-read",
+        "locator": "FAQ: How does a cable tie fastener work? and Cable ties with plastic pawls.",
+        "directQuotationWords": 0
+      },
+      "spokenSegmentsRead": [
+        {
+          "id": "sentence-00",
+          "text": "A zip tie slides tighter.",
+          "startSample": 0,
+          "endSampleExclusive": 79680
+        },
+        {
+          "id": "sentence-01",
+          "text": "So why won’t it slide BACK?",
+          "startSample": 100800,
+          "endSampleExclusive": 183360
+        },
+        {
+          "id": "sentence-02",
+          "text": "Inside the head, each passing tooth bends",
+          "startSample": 211200,
+          "endSampleExclusive": 314880
+        },
+        {
+          "id": "sentence-03",
+          "text": "a little plastic tongue out of the",
+          "startSample": 314880,
+          "endSampleExclusive": 392640
+        },
+        {
+          "id": "sentence-04",
+          "text": "way.",
+          "startSample": 392640,
+          "endSampleExclusive": 405120
+        },
+        {
+          "id": "sentence-05",
+          "text": "The tongue springs into the next gap,",
+          "startSample": 428160,
+          "endSampleExclusive": 509760
+        },
+        {
+          "id": "sentence-06",
+          "text": "ready for another tooth.",
+          "startSample": 519360,
+          "endSampleExclusive": 572160
+        },
+        {
+          "id": "sentence-07",
+          "text": "But reverse direction, and a tooth catches",
+          "startSample": 588480,
+          "endSampleExclusive": 696000
+        },
+        {
+          "id": "sentence-08",
+          "text": "against that tongue.",
+          "startSample": 696000,
+          "endSampleExclusive": 735360
+        },
+        {
+          "id": "sentence-09",
+          "text": "The same contact that lets the tie",
+          "startSample": 755520,
+          "endSampleExclusive": 837120
+        },
+        {
+          "id": "sentence-10",
+          "text": "tighten stops it opening back up.",
+          "startSample": 837120,
+          "endSampleExclusive": 924480
+        }
+      ],
+      "calloutCopyRead": [
+        {
+          "id": "part-00",
+          "text": "Flexible tongue",
+          "part": "tie.pawl",
+          "anchor": "anchor.tip",
+          "start": 132,
+          "endExclusive": 269
+        },
+        {
+          "id": "part-01",
+          "text": "Fixed tongue root",
+          "part": "tie.pawl",
+          "anchor": "anchor.root",
+          "start": 269,
+          "endExclusive": 374
+        },
+        {
+          "id": "part-02",
+          "text": "Tongue / tooth",
+          "part": "tie.pawl",
+          "anchor": "anchor.tip",
+          "start": 374,
+          "endExclusive": 476
+        }
+      ],
+      "scriptAndCaptionSourceConsistency": "supported-with-declared-construction-and-inference-limits",
+      "supportedClaims": [
+        "A flexible tongue engages strap serrations and resists reverse withdrawal.",
+        "For the described one-piece tie the tongue is integral with the head.",
+        "The passing-tooth and return explanation is consistent with this flexible positive-locking construction."
+      ],
+      "explicitInferences": [
+        "Elastic return into successive serrations is an inference from the flexible integral pawl; no force or fatigue calculation is claimed."
+      ],
+      "limits": "Selected outside-serrated plastic-pawl tie; exclude toothless KR pins, steel balls and releasable variants.",
+      "geometryAndLeaderDenotation": "unreviewed-in-this-preflight",
+      "wholeFactualStatus": "unreviewed",
+      "wholeMechanicalStatus": "unreviewed",
+      "listening": "unreviewed",
+      "humanAcceptance": false
+    },
+    {
+      "id": "EU-003",
+      "question": "Why does squeezing one end of a clothespeg open the other?",
+      "selectedDesign": "Conventional wooden two-arm peg around US4063333A Fig7; reconstructed seated normal state, excluding improved retention parts",
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-003/plan.json",
+        "bytes": 8244,
+        "sha256": "sha256:70f01fef3578957bb69e5ec9e8c3003868d1cf65eb2d717261bb529a60758d83"
+      },
+      "source": {
+        "url": "https://patents.google.com/patent/US4063333A/en",
+        "observedTitle": "US4063333A — Clothespin",
+        "accessedOn": "2026-10-15",
+        "method": "actual-existing-primary-html-read-after-two-web-open-internal-errors",
+        "locator": "Saved primary HTML: conventional clothespin61/members64,65/spring66; FIG.7 description and spring seating paragraphs.",
+        "directQuotationWords": 0,
+        "savedPrimaryHtml": {
+          "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E03 Clothespeg/references/patent-US4063333A.html",
+          "bytes": 294343,
+          "sha256": "sha256:aac92f7591919be238626c0961e6662596a94868b6c0e6a07f1b538eaaa5672e"
+        },
+        "webLimit": "Direct /en and locale-free opens returned Internal Error. Search retrieved the improved invention abstract; the conventional mechanism was actually read in the saved primary HTML, not inferred from that search abstract."
+      },
+      "spokenSegmentsRead": [
+        {
+          "id": "sentence-00",
+          "text": "Let go of this clothespeg.",
+          "startSample": 0,
+          "endSampleExclusive": 67200
+        },
+        {
+          "id": "sentence-01",
+          "text": "It’s STILL squeezing.",
+          "startSample": 90240,
+          "endSampleExclusive": 136320
+        },
+        {
+          "id": "sentence-02",
+          "text": "Squeeze the handles, and the wooden arms",
+          "startSample": 175680,
+          "endSampleExclusive": 259200
+        },
+        {
+          "id": "sentence-03",
+          "text": "rock around their middle, opening the jaws",
+          "startSample": 259200,
+          "endSampleExclusive": 361920
+        },
+        {
+          "id": "sentence-04",
+          "text": "and loading the metal spring.",
+          "startSample": 361920,
+          "endSampleExclusive": 428160
+        },
+        {
+          "id": "sentence-05",
+          "text": "Release them, and the spring closes the",
+          "startSample": 452160,
+          "endSampleExclusive": 544320
+        },
+        {
+          "id": "sentence-06",
+          "text": "jaws again.",
+          "startSample": 544320,
+          "endSampleExclusive": 571200
+        },
+        {
+          "id": "sentence-07",
+          "text": "But the fabric keeps them slightly apart,",
+          "startSample": 589440,
+          "endSampleExclusive": 678720
+        },
+        {
+          "id": "sentence-08",
+          "text": "so the spring stays loaded.",
+          "startSample": 678720,
+          "endSampleExclusive": 754560
+        },
+        {
+          "id": "sentence-09",
+          "text": "Your HAND has stopped squeezing.",
+          "startSample": 780480,
+          "endSampleExclusive": 852480
+        },
+        {
+          "id": "sentence-10",
+          "text": "The SPRING hasn’t.",
+          "startSample": 874560,
+          "endSampleExclusive": 923520
+        }
+      ],
+      "calloutCopyRead": [
+        {
+          "id": "part-00",
+          "text": "Handle",
+          "part": "peg.armA",
+          "anchor": "anchor.A.handle",
+          "start": 110,
+          "endExclusive": 235
+        },
+        {
+          "id": "part-01",
+          "text": "Metal spring",
+          "part": "peg.spring",
+          "anchor": "anchor.A.outer_leg_recess",
+          "start": 235,
+          "endExclusive": 283
+        },
+        {
+          "id": "part-02",
+          "text": "Metal spring",
+          "part": "peg.spring",
+          "anchor": "peg.spring",
+          "start": 283,
+          "endExclusive": 376
+        },
+        {
+          "id": "part-03",
+          "text": "Fabric",
+          "part": "fabric.fold",
+          "anchor": "fabric.fold",
+          "start": 376,
+          "endExclusive": 441
+        },
+        {
+          "id": "part-04",
+          "text": "Metal spring",
+          "part": "peg.spring",
+          "anchor": "anchor.B.outer_leg_recess",
+          "start": 441,
+          "endExclusive": 488
+        }
+      ],
+      "scriptAndCaptionSourceConsistency": "supported-with-declared-construction-and-inference-limits",
+      "supportedClaims": [
+        "Manually pressing the rear portions overcomes the spring and opens the gripping jaws.",
+        "The conventional construction has a metal coiled spring seated between the two arms with ends retained in outer recesses.",
+        "The script consistently distinguishes continued spring grip from the removed hand force."
+      ],
+      "explicitInferences": [
+        "Residual spring load while fabric holds the jaws apart is an elastic-mechanism inference, not a calibrated holding-force result."
+      ],
+      "limits": "Conventional spring peg only. FIG.7 is explicitly an unstable failure pose; do not copy it as the operating pose or adopt the improved clips/pin construction.",
+      "geometryAndLeaderDenotation": "unreviewed-in-this-preflight",
+      "wholeFactualStatus": "unreviewed",
+      "wholeMechanicalStatus": "unreviewed",
+      "listening": "unreviewed",
+      "humanAcceptance": false
+    },
+    {
+      "id": "EU-004",
+      "question": "How does a zipper join its teeth?",
+      "selectedDesign": "US1219881A metal-element zipper: identical staggered projection/recess members with a diverging-channel slider; YKK general tunnel explanation as corroboration.",
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-004/plan.json",
+        "bytes": 7545,
+        "sha256": "sha256:95993c10af0537148ce6cbaeb27881411d3b62c6c839b870daaad5f6ba3bcb13"
+      },
+      "source": {
+        "url": "https://patents.google.com/patent/US1219881A/en",
+        "observedTitle": "US1219881A — Separable fastener",
+        "accessedOn": "2026-10-15",
+        "method": "fresh-primary-web-text-read",
+        "locator": "Description of locking projection10/recess11, slider6/tongue, Y-shaped channels; claims on direction-dependent joining/separation.",
+        "directQuotationWords": 0
+      },
+      "spokenSegmentsRead": [
+        {
+          "id": "sentence-00",
+          "text": "One zipper slider.",
+          "startSample": 0,
+          "endSampleExclusive": 60480
+        },
+        {
+          "id": "sentence-01",
+          "text": "Two opposite jobs.",
+          "startSample": 82560,
+          "endSampleExclusive": 138240
+        },
+        {
+          "id": "sentence-02",
+          "text": "Pull it one way, and the",
+          "startSample": 155520,
+          "endSampleExclusive": 216960
+        },
+        {
+          "id": "sentence-03",
+          "text": "teeth join.",
+          "startSample": 216960,
+          "endSampleExclusive": 246720
+        },
+        {
+          "id": "sentence-04",
+          "text": "Pull it back, and they separate.",
+          "startSample": 263040,
+          "endSampleExclusive": 335040
+        },
+        {
+          "id": "sentence-05",
+          "text": "Inside is a Y-shaped channel.",
+          "startSample": 375360,
+          "endSampleExclusive": 444480
+        },
+        {
+          "id": "sentence-06",
+          "text": "It guides the two rows together,",
+          "startSample": 466560,
+          "endSampleExclusive": 537600
+        },
+        {
+          "id": "sentence-07",
+          "text": "lining up matching bumps and hollows",
+          "startSample": 550080,
+          "endSampleExclusive": 639360
+        },
+        {
+          "id": "sentence-08",
+          "text": "so the metal teeth interlock.",
+          "startSample": 639360,
+          "endSampleExclusive": 709440
+        },
+        {
+          "id": "sentence-09",
+          "text": "Reverse the slider, and its divider",
+          "startSample": 734400,
+          "endSampleExclusive": 816000
+        },
+        {
+          "id": "sentence-10",
+          "text": "guides those teeth apart into the",
+          "startSample": 816000,
+          "endSampleExclusive": 895680
+        },
+        {
+          "id": "sentence-11",
+          "text": "two branches.",
+          "startSample": 895680,
+          "endSampleExclusive": 927360
+        },
+        {
+          "id": "sentence-12",
+          "text": "Same channel, opposite journey.",
+          "startSample": 957120,
+          "endSampleExclusive": 1030080
+        }
+      ],
+      "calloutCopyRead": [
+        {
+          "id": "part-00",
+          "text": "Y-channel divider",
+          "part": "slider.tongue",
+          "anchor": "slider.tongue",
+          "start": 235,
+          "endExclusive": 401
+        },
+        {
+          "id": "part-01",
+          "text": "Tooth cup",
+          "part": "cup.-1.5",
+          "anchor": "cup.-1.5",
+          "start": 401,
+          "endExclusive": 459
+        },
+        {
+          "id": "part-02",
+          "text": "Y-channel divider",
+          "part": "slider.tongue",
+          "anchor": "slider.tongue",
+          "start": 459,
+          "endExclusive": 598
+        }
+      ],
+      "scriptAndCaptionSourceConsistency": "supported-with-declared-construction-and-inference-limits",
+      "supportedClaims": [
+        "Metal elements interlock through corresponding projections and recesses.",
+        "The slider guides the two rows together in one direction and separates them in the other.",
+        "The divider and branching channel explanation matches the selected metal-element construction."
+      ],
+      "explicitInferences": [],
+      "limits": "Metal cup-element zipper, not every coil/molded or reverse-coil design; no inter-element collision freedom established.",
+      "geometryAndLeaderDenotation": "unreviewed-in-this-preflight",
+      "wholeFactualStatus": "unreviewed",
+      "wholeMechanicalStatus": "unreviewed",
+      "listening": "unreviewed",
+      "humanAcceptance": false
+    },
+    {
+      "id": "EU-005",
+      "question": "How does a keyhole mounting slot hold a screw?",
+      "selectedDesign": "Conventional keyhole slot disclosed in EP1817988A1 background: enlarged entry then narrower shank track, without the invention’s additional snap neck.",
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-005/plan.json",
+        "bytes": 7118,
+        "sha256": "sha256:effb133a6c010cac1c9c4b86c899eb1f803e294f5f1bc3f8f73accf60526451a"
+      },
+      "source": {
+        "url": "https://patents.google.com/patent/EP1817988A1/en",
+        "observedTitle": "EP1817988A1 — Picture frame fixings",
+        "accessedOn": "2026-10-15",
+        "method": "fresh-primary-web-text-read",
+        "locator": "Description of head19/shank18, larger portion22/narrow portion23; separate neck24 snap-fit discussion.",
+        "directQuotationWords": 0
+      },
+      "spokenSegmentsRead": [
+        {
+          "id": "sentence-00",
+          "text": "This hole lets a screw head through.",
+          "startSample": 0,
+          "endSampleExclusive": 87360
+        },
+        {
+          "id": "sentence-01",
+          "text": "Then a short slide traps it.",
+          "startSample": 107520,
+          "endSampleExclusive": 197760
+        },
+        {
+          "id": "sentence-02",
+          "text": "The head enters through the wide opening.",
+          "startSample": 214080,
+          "endSampleExclusive": 298560
+        },
+        {
+          "id": "sentence-03",
+          "text": "Slide the plate, and the screw’s thinner",
+          "startSample": 323520,
+          "endSampleExclusive": 405120
+        },
+        {
+          "id": "sentence-04",
+          "text": "shaft moves into the narrow slot.",
+          "startSample": 405120,
+          "endSampleExclusive": 494400
+        },
+        {
+          "id": "sentence-05",
+          "text": "Now the wider head overlaps the edges.",
+          "startSample": 521280,
+          "endSampleExclusive": 620160
+        },
+        {
+          "id": "sentence-06",
+          "text": "Pull straight outward?",
+          "startSample": 645120,
+          "endSampleExclusive": 688320
+        },
+        {
+          "id": "sentence-07",
+          "text": "The head blocks the plate.",
+          "startSample": 710400,
+          "endSampleExclusive": 764160
+        },
+        {
+          "id": "sentence-08",
+          "text": "Slide it BACK to the wide opening,",
+          "startSample": 795840,
+          "endSampleExclusive": 859200
+        },
+        {
+          "id": "sentence-09",
+          "text": "and the head can pass through again.",
+          "startSample": 859200,
+          "endSampleExclusive": 941760
+        }
+      ],
+      "calloutCopyRead": [
+        {
+          "id": "part-00",
+          "text": "Wide entry",
+          "part": "plate",
+          "anchor": "anchor.entry",
+          "start": 137,
+          "endExclusive": 202
+        },
+        {
+          "id": "part-01",
+          "text": "Narrow slot",
+          "part": "plate",
+          "anchor": "anchor.retaining_lip",
+          "start": 202,
+          "endExclusive": 346
+        },
+        {
+          "id": "part-02",
+          "text": "Wider head",
+          "part": "screw.head",
+          "anchor": "screw.head",
+          "start": 346,
+          "endExclusive": 497
+        }
+      ],
+      "scriptAndCaptionSourceConsistency": "supported-with-declared-construction-and-inference-limits",
+      "supportedClaims": [
+        "The larger opening admits the head; the narrower section can admit the shank while excluding that head.",
+        "Transverse movement positions the shank within the narrow section and head overlap prevents direct axial pull-through.",
+        "The script does not promise resistance to sliding back toward the entry."
+      ],
+      "explicitInferences": [
+        "Simple reverse release follows from the selected plain, unlatched slot geometry. The cited patent also describes a restrictive snap-fit neck that is explicitly excluded here."
+      ],
+      "limits": "Plain keyhole-slot principle only; exclude the patent neck/snap-fit, washers or detents and unverified load/security ratings.",
+      "geometryAndLeaderDenotation": "unreviewed-in-this-preflight",
+      "wholeFactualStatus": "unreviewed",
+      "wholeMechanicalStatus": "unreviewed",
+      "listening": "unreviewed",
+      "humanAcceptance": false
+    },
+    {
+      "id": "EU-006",
+      "question": "Why do binder-clip handles make the jaws open?",
+      "selectedDesign": "US1139627A continuous triangular sheet-steel binder, integral rolled jaw journals and body-bearing wire levers; authored U-handle proportions, clamping action only",
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-006/plan.json",
+        "bytes": 10091,
+        "sha256": "sha256:922e2891e7bb82a4f222712acc4950507b7591d7af00ca00d6d78a7a17d6aa56"
+      },
+      "source": {
+        "url": "https://patents.google.com/patent/US1139627A/en",
+        "observedTitle": "US1139627A — Paper-binding clip",
+        "accessedOn": "2026-10-15",
+        "method": "fresh-primary-web-text-read",
+        "locator": "Description of resilient sheet-metal body, spring-steel sidesA/B and back; operating handles/leversD and fulcrum.",
+        "directQuotationWords": 0
+      },
+      "spokenSegmentsRead": [
+        {
+          "id": "sentence-00",
+          "text": "Where’s the spring in this binder clip?",
+          "startSample": 0,
+          "endSampleExclusive": 91200
+        },
+        {
+          "id": "sentence-01",
+          "text": "You’re looking at it.",
+          "startSample": 119040,
+          "endSampleExclusive": 164160
+        },
+        {
+          "id": "sentence-02",
+          "text": "The folded steel BODY.",
+          "startSample": 176640,
+          "endSampleExclusive": 232320
+        },
+        {
+          "id": "sentence-03",
+          "text": "Squeeze the wire handles, and they act",
+          "startSample": 256320,
+          "endSampleExclusive": 344640
+        },
+        {
+          "id": "sentence-04",
+          "text": "as levers, bending that body open.",
+          "startSample": 344640,
+          "endSampleExclusive": 446400
+        },
+        {
+          "id": "sentence-05",
+          "text": "Let go, and the steel pushes back",
+          "startSample": 468480,
+          "endSampleExclusive": 565440
+        },
+        {
+          "id": "sentence-06",
+          "text": "toward its original shape.",
+          "startSample": 565440,
+          "endSampleExclusive": 624000
+        },
+        {
+          "id": "sentence-07",
+          "text": "Paper keeps the jaws apart and the",
+          "startSample": 648960,
+          "endSampleExclusive": 730560
+        },
+        {
+          "id": "sentence-08",
+          "text": "body slightly bent, so it keeps pressing.",
+          "startSample": 730560,
+          "endSampleExclusive": 834240
+        },
+        {
+          "id": "sentence-09",
+          "text": "The handles give you leverage.",
+          "startSample": 859200,
+          "endSampleExclusive": 915840
+        },
+        {
+          "id": "sentence-10",
+          "text": "The BODY supplies the grip.",
+          "startSample": 937920,
+          "endSampleExclusive": 999360
+        }
+      ],
+      "calloutCopyRead": [
+        {
+          "id": "spring-body",
+          "text": "Spring body",
+          "part": "body",
+          "anchor": "anchor.back",
+          "start": 113,
+          "endExclusive": 160
+        },
+        {
+          "id": "lever",
+          "text": "Handle",
+          "part": "handleB.wire",
+          "anchor": "handleB.wire",
+          "start": 160,
+          "endExclusive": 205
+        },
+        {
+          "id": "flexing-body",
+          "text": "Flexing steel",
+          "part": "body",
+          "anchor": "anchor.back",
+          "start": 160,
+          "endExclusive": 205
+        },
+        {
+          "id": "bearing",
+          "text": "Handle bearing",
+          "part": "inspection.section.handleB.wire",
+          "anchor": "anchor.handleB.journal",
+          "start": 205,
+          "endExclusive": 293
+        },
+        {
+          "id": "grip",
+          "text": "Gripping edge",
+          "part": "body",
+          "anchor": "anchor.gripping_edge.right",
+          "start": 427,
+          "endExclusive": 541
+        }
+      ],
+      "scriptAndCaptionSourceConsistency": "supported-with-declared-construction-and-inference-limits",
+      "supportedClaims": [
+        "The folded spring-steel body supplies resilient jaw force.",
+        "The wire handles operate as levers against the body to spread the gripping edges.",
+        "The copy attributes leverage to the handles and grip to the body rather than inventing a separate coil spring."
+      ],
+      "explicitInferences": [
+        "Continued pressure when paper holds the body away from its unloaded form is an elastic-mechanism inference; no force or material-grade measurement."
+      ],
+      "limits": "Selected conventional spring-steel binder clip; do not infer every clip has identical bearings, force or steel specification.",
+      "geometryAndLeaderDenotation": "unreviewed-in-this-preflight",
+      "wholeFactualStatus": "unreviewed",
+      "wholeMechanicalStatus": "unreviewed",
+      "listening": "unreviewed",
+      "humanAcceptance": false
+    },
+    {
+      "id": "EU-007",
+      "question": "How does a side-release buckle lock and release?",
+      "selectedDesign": "US5546642A improved side-release buckle embodiment with resilient male arms, upper/lower abutments and female release actuators.",
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-007/plan.json",
+        "bytes": 9643,
+        "sha256": "sha256:ad95677859ee871c3fb6b7670ee6bd89a914cbfd257d120d1ca3ed9728b52ebe"
+      },
+      "source": {
+        "url": "https://patents.google.com/patent/US5546642A/en",
+        "observedTitle": "US5546642A — Side-release buckle fastener",
+        "accessedOn": "2026-10-15",
+        "method": "fresh-primary-web-text-read",
+        "locator": "Arms24/abutments38,40; retaining surfaces60; side actuators66; coupling/uncoupling description.",
+        "directQuotationWords": 0
+      },
+      "spokenSegmentsRead": [
+        {
+          "id": "sentence-00",
+          "text": "Pull this buckle, and it holds.",
+          "startSample": 0,
+          "endSampleExclusive": 84480
+        },
+        {
+          "id": "sentence-01",
+          "text": "Squeeze the sides, and it opens.",
+          "startSample": 118080,
+          "endSampleExclusive": 183360
+        },
+        {
+          "id": "sentence-02",
+          "text": "What changed?",
+          "startSample": 212160,
+          "endSampleExclusive": 231360
+        },
+        {
+          "id": "sentence-03",
+          "text": "In this version, two flexible arms bend",
+          "startSample": 263040,
+          "endSampleExclusive": 380160
+        },
+        {
+          "id": "sentence-04",
+          "text": "inward as the halves join.",
+          "startSample": 380160,
+          "endSampleExclusive": 451200
+        },
+        {
+          "id": "sentence-05",
+          "text": "Then their raised edges spring outward behind",
+          "startSample": 480000,
+          "endSampleExclusive": 591360
+        },
+        {
+          "id": "sentence-06",
+          "text": "stops inside the housing.",
+          "startSample": 591360,
+          "endSampleExclusive": 659520
+        },
+        {
+          "id": "sentence-07",
+          "text": "Pulling presses those edges against the stops.",
+          "startSample": 682560,
+          "endSampleExclusive": 781440
+        },
+        {
+          "id": "sentence-08",
+          "text": "Squeeze BOTH side buttons, and the arms",
+          "startSample": 802560,
+          "endSampleExclusive": 905280
+        },
+        {
+          "id": "sentence-09",
+          "text": "bend inward again.",
+          "startSample": 905280,
+          "endSampleExclusive": 952320
+        },
+        {
+          "id": "sentence-10",
+          "text": "Their edges clear the stops.",
+          "startSample": 972480,
+          "endSampleExclusive": 1033920
+        },
+        {
+          "id": "sentence-11",
+          "text": "Now the halves can separate.",
+          "startSample": 1057920,
+          "endSampleExclusive": 1112640
+        }
+      ],
+      "calloutCopyRead": [
+        {
+          "id": "part-00",
+          "text": "Flexible arm",
+          "part": "male.arm.1",
+          "anchor": "anchor.male_arm_surface65",
+          "start": 264,
+          "endExclusive": 427
+        },
+        {
+          "id": "part-01",
+          "text": "Raised edge",
+          "part": "male.abutment.1.1",
+          "anchor": "male.abutment.1.1",
+          "start": 427,
+          "endExclusive": 502
+        },
+        {
+          "id": "part-02",
+          "text": "Fixed stop",
+          "part": "female.ramp.1.1",
+          "anchor": "female.ramp.1.1",
+          "start": 427,
+          "endExclusive": 502
+        },
+        {
+          "id": "part-03",
+          "text": "Flexible arm",
+          "part": "male.arm.1",
+          "anchor": "anchor.male_arm_surface65",
+          "start": 502,
+          "endExclusive": 611
+        },
+        {
+          "id": "part-04",
+          "text": "Raised edge",
+          "part": "male.abutment.1.1",
+          "anchor": "male.abutment.1.1",
+          "start": 611,
+          "endExclusive": 674
+        }
+      ],
+      "scriptAndCaptionSourceConsistency": "supported-with-declared-construction-and-inference-limits",
+      "supportedClaims": [
+        "Insertion flexes the male arms until retaining and abutment surfaces engage.",
+        "Withdrawal loads those retaining contacts.",
+        "Side actuators move the arms inward until the abutments clear and the halves can separate."
+      ],
+      "explicitInferences": [],
+      "limits": "The script explicitly limits this to the selected version with female side actuators; exclude a universal claim about all side-release buckles.",
+      "geometryAndLeaderDenotation": "unreviewed-in-this-preflight",
+      "wholeFactualStatus": "unreviewed",
+      "wholeMechanicalStatus": "unreviewed",
+      "listening": "unreviewed",
+      "humanAcceptance": false
+    },
+    {
+      "id": "EU-008",
+      "question": "Why does a door latch retract and spring back?",
+      "selectedDesign": "US10837199B2 latch550 closing subassembly, Figs16–18: cam face556, spring570 and fixed boss572; show the closing stroke rather than the separate deadlocking system.",
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-008/plan.json",
+        "bytes": 7023,
+        "sha256": "sha256:03bdfc70f4396df6e82da1a3d7161df200d307042f2196c95c4947bbd78d2204"
+      },
+      "source": {
+        "url": "https://patents.google.com/patent/US10837199B2/en",
+        "observedTitle": "US10837199B2 — Cylindrical latch bolt assembly having beveled blocking surface",
+        "accessedOn": "2026-10-15",
+        "method": "fresh-primary-web-text-read",
+        "locator": "FIGS.16A/16B: inclined closing cam556; bolt550; bolt spring570 and fixed boss572.",
+        "directQuotationWords": 0
+      },
+      "spokenSegmentsRead": [
+        {
+          "id": "sentence-00",
+          "text": "You push this door shut without turning",
+          "startSample": 0,
+          "endSampleExclusive": 96000
+        },
+        {
+          "id": "sentence-01",
+          "text": "the handle.",
+          "startSample": 96000,
+          "endSampleExclusive": 120960
+        },
+        {
+          "id": "sentence-02",
+          "text": "So what moves the latch?",
+          "startSample": 142080,
+          "endSampleExclusive": 203520
+        },
+        {
+          "id": "sentence-03",
+          "text": "Its sloping face hits the metal plate",
+          "startSample": 228480,
+          "endSampleExclusive": 323520
+        },
+        {
+          "id": "sentence-04",
+          "text": "on the frame.",
+          "startSample": 323520,
+          "endSampleExclusive": 352320
+        },
+        {
+          "id": "sentence-05",
+          "text": "That contact pushes the bolt back into",
+          "startSample": 372480,
+          "endSampleExclusive": 469440
+        },
+        {
+          "id": "sentence-06",
+          "text": "the door, compressing its spring.",
+          "startSample": 469440,
+          "endSampleExclusive": 545280
+        },
+        {
+          "id": "sentence-07",
+          "text": "Then the bolt reaches the plate’s opening.",
+          "startSample": 564480,
+          "endSampleExclusive": 660480
+        },
+        {
+          "id": "sentence-08",
+          "text": "There’s room to move OUT again.",
+          "startSample": 682560,
+          "endSampleExclusive": 737280
+        },
+        {
+          "id": "sentence-09",
+          "text": "The spring pushes the bolt into that",
+          "startSample": 756480,
+          "endSampleExclusive": 840000
+        },
+        {
+          "id": "sentence-10",
+          "text": "opening, catching the door shut.",
+          "startSample": 840000,
+          "endSampleExclusive": 914880
+        }
+      ],
+      "calloutCopyRead": [
+        {
+          "id": "part-00",
+          "text": "Sloping face",
+          "part": "bevelled_nose",
+          "anchor": "anchor.cam_face",
+          "start": 147,
+          "endExclusive": 311
+        },
+        {
+          "id": "part-01",
+          "text": "Strike plate",
+          "part": "strike",
+          "anchor": "anchor.strike_edge",
+          "start": 147,
+          "endExclusive": 311
+        },
+        {
+          "id": "part-02",
+          "text": "Bolt tail",
+          "part": "tail",
+          "anchor": "tail",
+          "start": 311,
+          "endExclusive": 394
+        },
+        {
+          "id": "part-03",
+          "text": "Bolt tail",
+          "part": "tail",
+          "anchor": "tail",
+          "start": 433,
+          "endExclusive": 579
+        }
+      ],
+      "scriptAndCaptionSourceConsistency": "supported-with-declared-construction-and-inference-limits",
+      "supportedClaims": [
+        "The inclined closing cam contacts the strike while the door closes and retracts the bolt.",
+        "The bolt spring reacts against a fixed boss and biases the bolt outward.",
+        "Extension into the strike opening provides the described catch."
+      ],
+      "explicitInferences": [
+        "Spring compression/release while the strike constrains and then clears the bolt follows from that documented arrangement."
+      ],
+      "limits": "Ordinary closing-cam explanation only; distinguish it from the patent blocking surface560 and deadlatch trigger/security features. No locking/security certification.",
+      "geometryAndLeaderDenotation": "unreviewed-in-this-preflight",
+      "wholeFactualStatus": "unreviewed",
+      "wholeMechanicalStatus": "unreviewed",
+      "listening": "unreviewed",
+      "humanAcceptance": false
+    },
+    {
+      "id": "EU-009",
+      "question": "Why is a tape-measure blade curved?",
+      "selectedDesign": "Conventional transverse curved blade in WO2020159114A1 background Fig.2; explicit flattening comparison and authored exposed teaching mandrel",
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-009/plan.json",
+        "bytes": 9558,
+        "sha256": "sha256:8d11170df6508abef0bb6e45fc0b2c59c292a37e9b73376a0dd5c015589d1fa6"
+      },
+      "source": {
+        "url": "https://patents.google.com/patent/WO2020159114A1/en",
+        "observedTitle": "WO2020159114A1 — Blade for tape measure",
+        "accessedOn": "2026-10-15",
+        "method": "fresh-primary-web-text-read",
+        "locator": "Translated background, conventional blade1/FIG.2: transverse curved profile, self-weight bending and flattening onto bobbin3.",
+        "directQuotationWords": 0
+      },
+      "spokenSegmentsRead": [
+        {
+          "id": "sentence-00",
+          "text": "This tape-measure blade changes shape to do",
+          "startSample": 0,
+          "endSampleExclusive": 105600
+        },
+        {
+          "id": "sentence-01",
+          "text": "two jobs.",
+          "startSample": 105600,
+          "endSampleExclusive": 141120
+        },
+        {
+          "id": "sentence-02",
+          "text": "Look ACROSS its width.",
+          "startSample": 166080,
+          "endSampleExclusive": 208320
+        },
+        {
+          "id": "sentence-03",
+          "text": "That shallow curve helps the strip resist",
+          "startSample": 229440,
+          "endSampleExclusive": 326400
+        },
+        {
+          "id": "sentence-04",
+          "text": "drooping along its length.",
+          "startSample": 326400,
+          "endSampleExclusive": 388800
+        },
+        {
+          "id": "sentence-05",
+          "text": "But watch what happens as it winds",
+          "startSample": 408000,
+          "endSampleExclusive": 486720
+        },
+        {
+          "id": "sentence-06",
+          "text": "onto the reel.",
+          "startSample": 486720,
+          "endSampleExclusive": 520320
+        },
+        {
+          "id": "sentence-07",
+          "text": "The side-to-side curve flattens, letting the blade",
+          "startSample": 543360,
+          "endSampleExclusive": 661440
+        },
+        {
+          "id": "sentence-08",
+          "text": "bend around the spool.",
+          "startSample": 661440,
+          "endSampleExclusive": 716160
+        },
+        {
+          "id": "sentence-09",
+          "text": "Curved across its width for support.",
+          "startSample": 744960,
+          "endSampleExclusive": 821760
+        },
+        {
+          "id": "sentence-10",
+          "text": "Flattened across its width so it can",
+          "startSample": 849600,
+          "endSampleExclusive": 920640
+        },
+        {
+          "id": "sentence-11",
+          "text": "roll up.",
+          "startSample": 920640,
+          "endSampleExclusive": 940800
+        }
+      ],
+      "calloutCopyRead": [
+        {
+          "id": "part-00",
+          "text": "Curved blade",
+          "part": "blade",
+          "anchor": "anchor.width_section",
+          "start": 104,
+          "endExclusive": 193
+        },
+        {
+          "id": "part-01",
+          "text": "Flat comparison",
+          "part": "inspection.flat_profile",
+          "anchor": "inspection.flat_profile",
+          "start": 104,
+          "endExclusive": 193
+        },
+        {
+          "id": "part-02",
+          "text": "Blade profile",
+          "part": "blade",
+          "anchor": "anchor.width_section",
+          "start": 362,
+          "endExclusive": 413
+        },
+        {
+          "id": "part-03",
+          "text": "Reel",
+          "part": "reel.drum",
+          "anchor": "reel.drum",
+          "start": 413,
+          "endExclusive": 466
+        },
+        {
+          "id": "part-04",
+          "text": "Flat comparison",
+          "part": "inspection.flat_profile",
+          "anchor": "inspection.flat_profile",
+          "start": 466,
+          "endExclusive": 546
+        },
+        {
+          "id": "part-05",
+          "text": "Reel",
+          "part": "reel.drum",
+          "anchor": "reel.drum",
+          "start": 546,
+          "endExclusive": 596
+        }
+      ],
+      "scriptAndCaptionSourceConsistency": "supported-with-declared-construction-and-inference-limits",
+      "supportedClaims": [
+        "Transverse curvature helps the extended blade resist lengthwise droop.",
+        "That transverse profile flattens as the blade is wound onto its bobbin.",
+        "The script remains qualitative and gives no stiffness ratio or standout-length claim."
+      ],
+      "explicitInferences": [],
+      "limits": "Conventional curved blade described in the background; exclude the proposed grooves/multiple-curvature improvements. English source is a Korean machine translation.",
+      "geometryAndLeaderDenotation": "unreviewed-in-this-preflight",
+      "wholeFactualStatus": "unreviewed",
+      "wholeMechanicalStatus": "unreviewed",
+      "listening": "unreviewed",
+      "humanAcceptance": false
+    },
+    {
+      "id": "EU-010",
+      "question": "How does a soda-can tab open the scored panel?",
+      "selectedDesign": "US6575684B2 first stay-on lid embodiment: tab42/44, rivet16, bendable flange46, tongue17 and score58 ending in hinge19.",
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-010/plan.json",
+        "bytes": 8794,
+        "sha256": "sha256:ff96d721f4bf30d178029da19fddc35c49120c4ec00a79db8698c5710ad44968"
+      },
+      "source": {
+        "url": "https://patents.google.com/patent/US6575684B2/en",
+        "observedTitle": "US6575684B2 — Die for stay-on-tab",
+        "accessedOn": "2026-10-15",
+        "method": "fresh-primary-web-text-read",
+        "locator": "Flange46/rivet16 and forward bending region; tab heel44/nose42; score18 head60/tail62 and retained hinge19; opening description.",
+        "directQuotationWords": 0
+      },
+      "spokenSegmentsRead": [
+        {
+          "id": "sentence-00",
+          "text": "Lift this can tab, and its nose",
+          "startSample": 0,
+          "endSampleExclusive": 98880
+        },
+        {
+          "id": "sentence-01",
+          "text": "pushes DOWN.",
+          "startSample": 98880,
+          "endSampleExclusive": 135360
+        },
+        {
+          "id": "sentence-02",
+          "text": "In this design, the rivet holds a",
+          "startSample": 164160,
+          "endSampleExclusive": 249600
+        },
+        {
+          "id": "sentence-03",
+          "text": "thin metal attachment.",
+          "startSample": 249600,
+          "endSampleExclusive": 303360
+        },
+        {
+          "id": "sentence-04",
+          "text": "That attachment bends as the tab tilts,",
+          "startSample": 324480,
+          "endSampleExclusive": 434880
+        },
+        {
+          "id": "sentence-05",
+          "text": "letting the nose press the panel below.",
+          "startSample": 444480,
+          "endSampleExclusive": 528000
+        },
+        {
+          "id": "sentence-06",
+          "text": "The panel opens along a weakened line.",
+          "startSample": 555840,
+          "endSampleExclusive": 647040
+        },
+        {
+          "id": "sentence-07",
+          "text": "But look—the line stops short.",
+          "startSample": 669120,
+          "endSampleExclusive": 752640
+        },
+        {
+          "id": "sentence-08",
+          "text": "That remaining strip acts as a hinge,",
+          "startSample": 777600,
+          "endSampleExclusive": 873600
+        },
+        {
+          "id": "sentence-09",
+          "text": "keeping the panel attached as it folds",
+          "startSample": 885120,
+          "endSampleExclusive": 968640
+        },
+        {
+          "id": "sentence-10",
+          "text": "inward.",
+          "startSample": 968640,
+          "endSampleExclusive": 986880
+        }
+      ],
+      "calloutCopyRead": [
+        {
+          "id": "rivet",
+          "text": "Rivet",
+          "part": "rivet16.head",
+          "anchor": "rivet16.head",
+          "start": 136,
+          "endExclusive": 210
+        },
+        {
+          "id": "retained-rivet",
+          "text": "Rivet",
+          "part": "inspection.section.rivet16.head",
+          "anchor": "inspection.section.rivet16.head",
+          "start": 210,
+          "endExclusive": 350
+        },
+        {
+          "id": "flexing-flange",
+          "text": "Flexing metal",
+          "part": "inspection.section.tab.flex_flange46",
+          "anchor": "inspection.section.tab.flex_flange46",
+          "start": 210,
+          "endExclusive": 350
+        },
+        {
+          "id": "retained-hinge",
+          "text": "Hinge",
+          "part": "tongue.hinge19",
+          "anchor": "anchor.hinge19",
+          "start": 443,
+          "endExclusive": 579
+        }
+      ],
+      "scriptAndCaptionSourceConsistency": "supported-with-declared-construction-and-inference-limits",
+      "supportedClaims": [
+        "The rivet clamps the tab flange while a nearby flange portion can bend as the tab tilts.",
+        "Lifting the heel drives the nose against the panel and opens the score.",
+        "Material between the score ends remains a bending hinge retaining the opening tongue."
+      ],
+      "explicitInferences": [],
+      "limits": "The script explicitly limits this to the selected retained-flange stay-on-tab design. Do not describe the rivet as a free pin hinge or infer all can ends use identical geometry.",
+      "geometryAndLeaderDenotation": "unreviewed-in-this-preflight",
+      "wholeFactualStatus": "unreviewed",
+      "wholeMechanicalStatus": "unreviewed",
+      "listening": "unreviewed",
+      "humanAcceptance": false
+    }
+  ],
+  "sourceMetadataCorrection": "Fresh primary titles are retained here for EP1817988A1 (Picture frame fixings), US1139627A (Paper-binding clip), WO2020159114A1 (Blade for tape measure) and US6575684B2 (Die for stay-on-tab). Frozen selection identity and original source records remain unchanged.",
+  "remaining": [
+    "Current full91 actual terminal, current archive/all-ten installed validation and independent complete picture/audio proof.",
+    "Actual rendered geometry/contact/leader/factual review, encoded glyph readability, continuous audiovisual/listening and human review remain open.",
+    "The four prepared fault images retain their independent persistent budget gate."
+  ],
+  "staticVerification": {
+    "actualExitCode": 0,
+    "checksPassed": 15,
+    "checksTotal": 15,
+    "pins": [
+      {
+        "path": "/private/tmp/still-shift-ms3-factual100/static-check1.json",
+        "bytes": 1005,
+        "sha256": "sha256:92dba93e41605347d93451fdb65f7079e92587c9cfe6d17f6e5478c12fc4ff9f"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-factual100-static1.py",
+        "bytes": 3519,
+        "sha256": "sha256:7081f73b63643ff96a7fe9679a04f3377a2e754fcc44cfb9b08d1ab369479af5"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-factual100-record1.py",
+        "bytes": 14715,
+        "sha256": "sha256:3b708b7dc7b73e885b5272d116a9a989c9ec61a89320a4fc939340a8b464d496"
+      }
+    ],
+    "agentSourceJudgmentNotAutomated": true
+  }
+}

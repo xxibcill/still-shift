@@ -47,6 +47,15 @@ roots denied. [MS3 package history](./mechanism-shorts-ms3-package-portability-r
 [MS2 current affected package](./mechanism-shorts-ms2-current-package91-results.json),
 [repair/integration history](./mechanism-shorts-ms3-whole-review84-results.json).
 
+A scoped factual-input preflight100 now reads all10 pinned plans' actual speech
+segments and callout copy against primary mechanism descriptions:9 fresh web
+texts and1 saved primary patent HTML after direct web errors. All10 input-copy
+comparisons are supported within declared construction/inference limits, including
+the plain keyhole slot, metal cup-element zipper, female-actuated buckle,
+conventional tape blade and retained-flange can tab. This does not change any
+artifact-specific factual/mechanical/listening review or human acceptance.
+[Exact input/source limits](./mechanism-shorts-ms3-factual-input100-results.json).
+
 Four actual geometry fault images remain open. The owner explicitly approved
 revised total10 USD-equivalent/35 million tokens. The same ledger baseline and
 prices are retained; live conservative totals are36.328462 USD-equivalent/
