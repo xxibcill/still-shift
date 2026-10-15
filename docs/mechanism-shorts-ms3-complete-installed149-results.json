@@ -1,0 +1,1152 @@
+{
+  "schemaVersion": "ms3-complete-installed-lifecycle149-1",
+  "recordedUtc": "2026-10-15T20:49:04.310688+00:00",
+  "status": "complete-sixteen-cli-calls-and-corrected-postflight-in-recorded-stages-original-wrapper1",
+  "originalMainActualSession": 56598,
+  "originalMainActualToolExitCode": 1,
+  "postflightAssertionsPassed": true,
+  "actualToolExitCode": 0,
+  "originalMainActualTerminal": {
+    "path": "/private/tmp/still-shift-ms3-installed121-terminal127.json",
+    "bytes": 1873,
+    "sha256": "sha256:8ddb535f9fa571500412ff8f24b280945b99508a3f9df2526d3aabe3030007a0"
+  },
+  "correctedNativeMapChecks": [
+    {
+      "id": "EU-001",
+      "mapping": {
+        "path": "items/EU-001/1/native-plates.json",
+        "bytes": 658178,
+        "sha256": "sha256:2201b14922cc29992a7f33e710f8699c237e8baaab1ee6841077d23a7913cb39"
+      },
+      "frames": 610,
+      "freshNativeRenders": 0
+    },
+    {
+      "id": "EU-002",
+      "mapping": {
+        "path": "items/EU-002/1/native-plates.json",
+        "bytes": 633864,
+        "sha256": "sha256:fd2dfb35f98cb71993f1e2ab8128ecb6a17357b049dfd06fc570a24874d15e2c"
+      },
+      "frames": 588,
+      "freshNativeRenders": 0
+    },
+    {
+      "id": "EU-003",
+      "mapping": {
+        "path": "items/EU-003/1/native-plates.json",
+        "bytes": 633272,
+        "sha256": "sha256:117bcc74212e4777ea3a04514b2e0d1670b0d50e981cf6b31fa0a67c5d216141"
+      },
+      "frames": 588,
+      "freshNativeRenders": 0
+    },
+    {
+      "id": "EU-004",
+      "mapping": {
+        "path": "items/EU-004/1/native-plates.json",
+        "bytes": 705862,
+        "sha256": "sha256:3963dab7d2653c3f5c42413a558af67cfeb53c19692e0cc406909f2609556538"
+      },
+      "frames": 653,
+      "freshNativeRenders": 0
+    },
+    {
+      "id": "EU-005",
+      "mapping": {
+        "path": "items/EU-005/1/native-plates.json",
+        "bytes": 644418,
+        "sha256": "sha256:31d4d950a41c51e08b56daef29f8482fd24a355cd6444d5bf36f73d81def6d40"
+      },
+      "frames": 598,
+      "freshNativeRenders": 0
+    },
+    {
+      "id": "EU-006",
+      "mapping": {
+        "path": "items/EU-006/1/native-plates.json",
+        "bytes": 683769,
+        "sha256": "sha256:27d1e85f931b22a74b3bc3b508dc43846dc8d413bc77243fef7b047aeca5e6b6"
+      },
+      "frames": 634,
+      "freshNativeRenders": 0
+    },
+    {
+      "id": "EU-007",
+      "mapping": {
+        "path": "items/EU-007/1/native-plates.json",
+        "bytes": 764336,
+        "sha256": "sha256:c9b489a909b319f7a59ee5970fd3c15fdf5367f5c9d709d431046cde3a45a34e"
+      },
+      "frames": 708,
+      "freshNativeRenders": 0
+    },
+    {
+      "id": "EU-008",
+      "mapping": {
+        "path": "items/EU-008/2/native-plates.json",
+        "bytes": 624378,
+        "sha256": "sha256:366c491aeb86286395ca3982a82237bccf6585b69a0d5592007c407ac27d8b7d"
+      },
+      "frames": 579,
+      "freshNativeRenders": 0
+    },
+    {
+      "id": "EU-009",
+      "mapping": {
+        "path": "items/EU-009/1/native-plates.json",
+        "bytes": 642536,
+        "sha256": "sha256:a3243a68ec46fa8c8b4aec49ab323a9738ee08175a89a5501e4314e551352561"
+      },
+      "frames": 596,
+      "freshNativeRenders": 0
+    },
+    {
+      "id": "EU-010",
+      "mapping": {
+        "path": "items/EU-010/1/native-plates.json",
+        "bytes": 676491,
+        "sha256": "sha256:f088201d050b55fa84d3dd94930db1f539fe40200e17cb55e8847d269c4a8b4d"
+      },
+      "frames": 627,
+      "freshNativeRenders": 0
+    }
+  ],
+  "runtimeReceipt": {
+    "path": "/private/tmp/still-shift-ms3-package93-lifecycle121.json",
+    "bytes": 17003,
+    "sha256": "sha256:e46b25883d72cb5e45ae436e38204edb1b46790d8f903acd97ecd9dd33e2ccb5"
+  },
+  "fullVerifiedSource": "1c9f7d1413bdeb9c78cee72ccd328c4badd46c41",
+  "packageSource": "1dbee06a67813ad14c06315798782dcc9318e3ff",
+  "identity": {
+    "codeSha256": "sha256:cbe5e7fbf14ad62980ba3e97f9325223b054cd502bbef10b4bbdaf795291400b",
+    "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+    "profile": {
+      "backend": "blender-native",
+      "blenderExecutableSha256": "sha256:f5c1f2a0c0bca3389ec772d355242b700975ea84e66cbb3f5257a7bce8e5adeb",
+      "blenderVersion": "Blender 5.2.2 LTS\n\tbuild date: 2026-09-15\n\tbuild time: 01:49:19\n\tbuild commit date: 2026-09-14\n\tbuild commit time: 15:14\n\tbuild hash: d13f752e3b9c\n\tbuild branch: blender-v5.2-release\n\tbuild platform: Darwin\n\tbuild type: Release\n\tbuild c flags:  -Wall -Werror=implicit-function-declaration -Werror=return-type -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wstrict-prototypes -Wmissing-prototypes -Wunused-parameter -Wundef -Wundef-prefix -Werror=unguarded-availability-new  -mmacosx-version-min=11.2  -std=gnu11  -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild c++ flags:  -Wall -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wno-overloaded-virtual -Wno-sign-compare -Wno-invalid-offsetof -Wno-suggest-override -Wundef -Wundef-prefix -Wunused-parameter -Wmismatched-tags -Werror=unguarded-availability-new  -mmacosx-version-min=11.2 -ftemplate-depth=1024   -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild link flags: -fexceptions -framework CoreServices -framework Foundation -framework IOKit -framework AppKit -framework Cocoa -framework Carbon -framework AudioUnit -framework AudioToolbox -framework CoreAudio -framework Metal -framework QuartzCore -framework CoreImage -framework OpenGL -framework Accelerate -liconv -Xlinker -no_warn_duplicate_libraries\n\tbuild system: CMake",
+      "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
+      "receiverProfileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+    }
+  },
+  "archive": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package93/still-shift-0.1.1.tgz",
+    "bytes": 5469724,
+    "sha256": "sha256:83504d2118a18bce38336367d058a9c4b874a5b2f933478addefd42838ce20ec"
+  },
+  "episodes": 10,
+  "frames": 6181,
+  "queueCommands": 2,
+  "lifecycleCommands": 14,
+  "all16StagesActual0": true,
+  "stages": [
+    {
+      "stage": "queue-initial",
+      "actualExitCode": 0,
+      "seconds": 2.0028946248348802,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-queue-initial1.log",
+        "bytes": 964,
+        "sha256": "sha256:d9f156d9d76a7bd89870c6d66ddeb0d207c61a3e3f806c9fe8dee7cd87757581"
+      }
+    },
+    {
+      "stage": "run-initial",
+      "actualExitCode": 0,
+      "seconds": 5821.987425833009,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-run-initial1.log",
+        "bytes": 3591,
+        "sha256": "sha256:07a3ee1714c8b101025fc721acb9175d88ec0e8b5a3b65098b24e67fd86632b7"
+      }
+    },
+    {
+      "stage": "queue-label-discovery",
+      "actualExitCode": 0,
+      "seconds": 1.7998387920670211,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-queue-label-discovery1.log",
+        "bytes": 970,
+        "sha256": "sha256:cc2e8240b8d10a2d662255818b57ab279db17917b0d5f2adf59ccac160899c98"
+      }
+    },
+    {
+      "stage": "run-label-repair",
+      "actualExitCode": 0,
+      "seconds": 960.7100613748189,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-run-label-repair1.log",
+        "bytes": 3596,
+        "sha256": "sha256:e45f16deded87b69f2cba650d1610d59bddf2b5962879532a3d4499ca7bf785a"
+      }
+    },
+    {
+      "stage": "report",
+      "actualExitCode": 0,
+      "seconds": 492.6394792080391,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-report1.log",
+        "bytes": 8268,
+        "sha256": "sha256:394bb881b0d4bbb9fd1ca2116441872d238ad868ee295cdbcacd20124820cc88"
+      },
+      "heldInitialAndFinalProductsExact": true,
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-report1.json",
+        "bytes": 163034,
+        "sha256": "sha256:55b105ca17ea88c42753c5b49ef06848bb6c50e351966f7072e11601c15f30d4"
+      }
+    },
+    {
+      "stage": "resume",
+      "actualExitCode": 0,
+      "seconds": 519.5116090830415,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-resume1.log",
+        "bytes": 3586,
+        "sha256": "sha256:0ea0d3375228c271a7635fd482d4df88ca095ad1026adb5f440aec218ac6fbff"
+      },
+      "heldInitialAndFinalProductsExact": true,
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-resume1.json",
+        "bytes": 13054,
+        "sha256": "sha256:413f4b5263e2e6f0417f1ab6b5e2869758d0921aaf132e85662fd414e9b99691"
+      }
+    },
+    {
+      "stage": "handoff-EU-001",
+      "actualExitCode": 0,
+      "seconds": 485.06899766693823,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0011.log",
+        "bytes": 1975,
+        "sha256": "sha256:b2a62a1e76820b19669e82d7c9c72b5ed57acd507eacbce19f9795e5af57eab7"
+      },
+      "heldInitialAndFinalProductsExact": true,
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0011.json",
+        "bytes": 3947,
+        "sha256": "sha256:8586e0e64a1981973c806630b88800e9ec4106e8fd0470f6a93668f8d84a1572"
+      }
+    },
+    {
+      "stage": "handoff-EU-002",
+      "actualExitCode": 0,
+      "seconds": 476.3587742908858,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0021.log",
+        "bytes": 1974,
+        "sha256": "sha256:8ae44ed4bd51f75c147276a89d60882d42f951a268d8fa6ee3b14ca6c36b1f51"
+      },
+      "heldInitialAndFinalProductsExact": true,
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0021.json",
+        "bytes": 3996,
+        "sha256": "sha256:261fc60914b9db1d0ebe3ea5cf1964ccd31571efeb3f9e48b629d1d6d81e9088"
+      }
+    },
+    {
+      "stage": "handoff-EU-003",
+      "actualExitCode": 0,
+      "seconds": 472.9847701669205,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0031.log",
+        "bytes": 1974,
+        "sha256": "sha256:86f93ef3a85f13583ff615d0cd1f6c8dcbe7f4241d4e6899b88cea5fe172370f"
+      },
+      "heldInitialAndFinalProductsExact": true,
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0031.json",
+        "bytes": 4045,
+        "sha256": "sha256:462ea9388cc5b2f23ddbc38e28df3f52ce9a1717e37cdf1ac527c2439a406a63"
+      }
+    },
+    {
+      "stage": "handoff-EU-004",
+      "actualExitCode": 0,
+      "seconds": 477.4161433330737,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0041.log",
+        "bytes": 1974,
+        "sha256": "sha256:04a374b8fbe759ed5aaefcd36645e784d3ad67b16efabc64cac0ea26b3579d53"
+      },
+      "heldInitialAndFinalProductsExact": true,
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0041.json",
+        "bytes": 4052,
+        "sha256": "sha256:1318b10506de6dcc4cc88c027e907538b4c24d49dcf0b3f1d656c22e29d7931e"
+      }
+    },
+    {
+      "stage": "handoff-EU-005",
+      "actualExitCode": 0,
+      "seconds": 472.57859116699547,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0051.log",
+        "bytes": 1975,
+        "sha256": "sha256:26af2f7ce416f83ee8459f086f6039424892f753bd7f590e729b1c22e0556ec6"
+      },
+      "heldInitialAndFinalProductsExact": true,
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0051.json",
+        "bytes": 4064,
+        "sha256": "sha256:fd7d2f2ead40475187649a86bc3675f608f57e7e1446f6946df362eedc9c2bd9"
+      }
+    },
+    {
+      "stage": "handoff-EU-006",
+      "actualExitCode": 0,
+      "seconds": 477.08584358380176,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0061.log",
+        "bytes": 1976,
+        "sha256": "sha256:a3116ecc1808d5dfc144ac7dff982f203f548ca8abb13f6d6b7846ca52fb1658"
+      },
+      "heldInitialAndFinalProductsExact": true,
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0061.json",
+        "bytes": 4075,
+        "sha256": "sha256:9f5396239984ef3adbd46f78a2082f7e4ea67ba2bb6de851d84084128defaa23"
+      }
+    },
+    {
+      "stage": "handoff-EU-007",
+      "actualExitCode": 0,
+      "seconds": 524.8074164590798,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0071.log",
+        "bytes": 1976,
+        "sha256": "sha256:cf920a3df11a044e951ad794d765ef6b481452c69639a2960e101662424839be"
+      },
+      "heldInitialAndFinalProductsExact": true,
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0071.json",
+        "bytes": 4051,
+        "sha256": "sha256:090e7c314648527a6ede83b3376e3b4e83baaa178fc9e3829f97a3645051f7e5"
+      }
+    },
+    {
+      "stage": "handoff-EU-008",
+      "actualExitCode": 0,
+      "seconds": 507.50567225017585,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0081.log",
+        "bytes": 1975,
+        "sha256": "sha256:42cf355f1818f2239c3f7d78edd7a4d788f057443a86d791d6469848f8fd6462"
+      },
+      "heldInitialAndFinalProductsExact": true,
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0081.json",
+        "bytes": 4095,
+        "sha256": "sha256:f62797cc6e0bbb2000c3cdb9bc9fd35d6ac298323d58ed472c84702b66813681"
+      }
+    },
+    {
+      "stage": "handoff-EU-009",
+      "actualExitCode": 0,
+      "seconds": 515.5581817079801,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0091.log",
+        "bytes": 1975,
+        "sha256": "sha256:8ffbabd41b9920606c0e5520025289dbb78bab8facba795bbf30bf08a8abef94"
+      },
+      "heldInitialAndFinalProductsExact": true,
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0091.json",
+        "bytes": 4046,
+        "sha256": "sha256:f9970074eed14ea5f66147baa37237908009e98e9bee94c12903bfe96b3b2b1d"
+      }
+    },
+    {
+      "stage": "handoff-EU-010",
+      "actualExitCode": 0,
+      "seconds": 497.25728329108097,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0101.log",
+        "bytes": 1975,
+        "sha256": "sha256:6df1b70d7cf0334273070d4ef67a21e84508b53c614c51771f497298a632cbc6"
+      },
+      "heldInitialAndFinalProductsExact": true,
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0101.json",
+        "bytes": 4034,
+        "sha256": "sha256:bc29d99bde96fbb6e8c452f18619279ae62c55e73e72f6d7e64beb9dd7daa15f"
+      }
+    }
+  ],
+  "newNativeRenders": 0,
+  "reusedFinalOutputFrames": 6181,
+  "nineNeighborsExact": true,
+  "oldTargetAttemptAndProductRetained": true,
+  "allTenFinalCliPacketsIndependentlyVerified": [
+    {
+      "id": "EU-001",
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0011.json",
+        "bytes": 3947,
+        "sha256": "sha256:8586e0e64a1981973c806630b88800e9ec4106e8fd0470f6a93668f8d84a1572"
+      },
+      "product": {
+        "path": "products/EU-001-9bc0476e8f724276-1.json",
+        "bytes": 10640,
+        "sha256": "sha256:fd82ae3835075325df43b7d9791ac28c102193c9e6ae30d4de6a7bcf559d2d90"
+      },
+      "currentResumeExact": true,
+      "allAssetsInCurrentProduct": true,
+      "wholeReviewPassed": false
+    },
+    {
+      "id": "EU-002",
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0021.json",
+        "bytes": 3996,
+        "sha256": "sha256:261fc60914b9db1d0ebe3ea5cf1964ccd31571efeb3f9e48b629d1d6d81e9088"
+      },
+      "product": {
+        "path": "products/EU-002-7f56e6adc45c6659-1.json",
+        "bytes": 10695,
+        "sha256": "sha256:447e3ee3e4b0a0f76e297ab7db0ec9f9d5adb56f292293da29bfa4cd4c5d6132"
+      },
+      "currentResumeExact": true,
+      "allAssetsInCurrentProduct": true,
+      "wholeReviewPassed": false
+    },
+    {
+      "id": "EU-003",
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0031.json",
+        "bytes": 4045,
+        "sha256": "sha256:462ea9388cc5b2f23ddbc38e28df3f52ce9a1717e37cdf1ac527c2439a406a63"
+      },
+      "product": {
+        "path": "products/EU-003-cf09fb646fac6938-1.json",
+        "bytes": 10746,
+        "sha256": "sha256:2e658882d62697c09259abb98af730900b86a0f6324beb538bb7a5f2bd7964c9"
+      },
+      "currentResumeExact": true,
+      "allAssetsInCurrentProduct": true,
+      "wholeReviewPassed": false
+    },
+    {
+      "id": "EU-004",
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0041.json",
+        "bytes": 4052,
+        "sha256": "sha256:1318b10506de6dcc4cc88c027e907538b4c24d49dcf0b3f1d656c22e29d7931e"
+      },
+      "product": {
+        "path": "products/EU-004-68d333f9432794c1-1.json",
+        "bytes": 10751,
+        "sha256": "sha256:5e4c561466fb0b801b95f3dca4a7b0022495a21c28b853874de440cf23fb686b"
+      },
+      "currentResumeExact": true,
+      "allAssetsInCurrentProduct": true,
+      "wholeReviewPassed": false
+    },
+    {
+      "id": "EU-005",
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0051.json",
+        "bytes": 4064,
+        "sha256": "sha256:fd7d2f2ead40475187649a86bc3675f608f57e7e1446f6946df362eedc9c2bd9"
+      },
+      "product": {
+        "path": "products/EU-005-ec90302d918b2d92-1.json",
+        "bytes": 10762,
+        "sha256": "sha256:d141d144176a673af9eddb34fc248b42f35302bd427f0c007a0d82c0fc7ff980"
+      },
+      "currentResumeExact": true,
+      "allAssetsInCurrentProduct": true,
+      "wholeReviewPassed": false
+    },
+    {
+      "id": "EU-006",
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0061.json",
+        "bytes": 4075,
+        "sha256": "sha256:9f5396239984ef3adbd46f78a2082f7e4ea67ba2bb6de851d84084128defaa23"
+      },
+      "product": {
+        "path": "products/EU-006-f8ab6816dc62611c-1.json",
+        "bytes": 10774,
+        "sha256": "sha256:f1d1229b0a605791e432474e2d028c68892ed8010a712f3152d95c8dfbfc7622"
+      },
+      "currentResumeExact": true,
+      "allAssetsInCurrentProduct": true,
+      "wholeReviewPassed": false
+    },
+    {
+      "id": "EU-007",
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0071.json",
+        "bytes": 4051,
+        "sha256": "sha256:090e7c314648527a6ede83b3376e3b4e83baaa178fc9e3829f97a3645051f7e5"
+      },
+      "product": {
+        "path": "products/EU-007-e968ebd46854ddfa-1.json",
+        "bytes": 10748,
+        "sha256": "sha256:740d1d07cd90795864319298f30866d26920b9633884836ecf759c3ab46f0c2b"
+      },
+      "currentResumeExact": true,
+      "allAssetsInCurrentProduct": true,
+      "wholeReviewPassed": false
+    },
+    {
+      "id": "EU-008",
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0081.json",
+        "bytes": 4095,
+        "sha256": "sha256:f62797cc6e0bbb2000c3cdb9bc9fd35d6ac298323d58ed472c84702b66813681"
+      },
+      "product": {
+        "path": "products/EU-008-0cf2bedb56a4227c-2.json",
+        "bytes": 11671,
+        "sha256": "sha256:6fa76187b1390afb5ad76fbde7b8973f8233aab5fb877d6603f9f72a739cb80d"
+      },
+      "currentResumeExact": true,
+      "allAssetsInCurrentProduct": true,
+      "wholeReviewPassed": false
+    },
+    {
+      "id": "EU-009",
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0091.json",
+        "bytes": 4046,
+        "sha256": "sha256:f9970074eed14ea5f66147baa37237908009e98e9bee94c12903bfe96b3b2b1d"
+      },
+      "product": {
+        "path": "products/EU-009-c362c89d10aca613-1.json",
+        "bytes": 10746,
+        "sha256": "sha256:d9704c5f6adf2eb0319c8912c8cd98988e7fc7827f1bd1208e865818b5b99e69"
+      },
+      "currentResumeExact": true,
+      "allAssetsInCurrentProduct": true,
+      "wholeReviewPassed": false
+    },
+    {
+      "id": "EU-010",
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0101.json",
+        "bytes": 4034,
+        "sha256": "sha256:bc29d99bde96fbb6e8c452f18619279ae62c55e73e72f6d7e64beb9dd7daa15f"
+      },
+      "product": {
+        "path": "products/EU-010-6cca2b705627a8aa-1.json",
+        "bytes": 10732,
+        "sha256": "sha256:00f3d54c708d3359b3e7dced05c57b217417bc3c711aa5d4687bf99e32ea4c84"
+      },
+      "currentResumeExact": true,
+      "allAssetsInCurrentProduct": true,
+      "wholeReviewPassed": false
+    }
+  ],
+  "installedArchiveFilesIndependentlyRehashed": 2573,
+  "originalInputFilesIndependentlyRehashed": 115,
+  "completeNativeFilesIndependentlyRehashed": 5223,
+  "finalManifestInputsAndOrchestrationExact": true,
+  "independentProductAudit": "./mechanism-shorts-ms3-final-products139-results.json",
+  "receivingFirstPass": {
+    "completed": 10,
+    "passed": 9,
+    "rate": 0.9,
+    "unverified": 0,
+    "targetSatisfied": true
+  },
+  "receivingFirstPassQualification": "Separate installed receiving/repair phase; never resets or replaces original pilot first-pass1/10/nine failures/null paired tokens.",
+  "originalPilot": {
+    "firstPassPassed": 1,
+    "denominator": 10,
+    "failedAttempts": 9,
+    "pairedTokens": null,
+    "reviewedReady": 0,
+    "supported": 0,
+    "accepted": 0
+  },
+  "wholeReviewOrHumanAcceptance": false,
+  "completeInstalledLifecyclePassed": true,
+  "retainedCopies": [
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-installed121-terminal127.json",
+        "bytes": 1873,
+        "sha256": "sha256:8ddb535f9fa571500412ff8f24b280945b99508a3f9df2526d3aabe3030007a0"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/000-still-shift-ms3-installed121-terminal127.json",
+        "bytes": 1873,
+        "sha256": "sha256:8ddb535f9fa571500412ff8f24b280945b99508a3f9df2526d3aabe3030007a0"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-lifecycle121.json",
+        "bytes": 17003,
+        "sha256": "sha256:e46b25883d72cb5e45ae436e38204edb1b46790d8f903acd97ecd9dd33e2ccb5"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/001-still-shift-ms3-package93-lifecycle121.json",
+        "bytes": 17003,
+        "sha256": "sha256:e46b25883d72cb5e45ae436e38204edb1b46790d8f903acd97ecd9dd33e2ccb5"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-149-final-state1.json",
+        "bytes": 13054,
+        "sha256": "sha256:413f4b5263e2e6f0417f1ab6b5e2869758d0921aaf132e85662fd414e9b99691"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/002-still-shift-ms3-package93-149-final-state1.json",
+        "bytes": 13054,
+        "sha256": "sha256:413f4b5263e2e6f0417f1ab6b5e2869758d0921aaf132e85662fd414e9b99691"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-consumer/receive-inputs93/queue-installed93-label101.json",
+        "bytes": 32547,
+        "sha256": "sha256:6e90aa68926a0c8896e6c536101be11c89e96ed5744371d2bf4a3373bd5ed4ab"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/003-queue-installed93-label101.json",
+        "bytes": 32547,
+        "sha256": "sha256:6e90aa68926a0c8896e6c536101be11c89e96ed5744371d2bf4a3373bd5ed4ab"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-retain-installed149.py",
+        "bytes": 10613,
+        "sha256": "sha256:334a4d7b441b64dffb158c2d7efbc6e5a84eeb13ff32602d78a7939c3fe41223"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/004-still-shift-ms3-retain-installed149.py",
+        "bytes": 10613,
+        "sha256": "sha256:334a4d7b441b64dffb158c2d7efbc6e5a84eeb13ff32602d78a7939c3fe41223"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-retain-lifecycle140.py",
+        "bytes": 8964,
+        "sha256": "sha256:0cdf692915b2a6d6c0671624666914aefd8f804b3b7eae7bbd0eee51c343d544"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/005-still-shift-ms3-retain-lifecycle140.py",
+        "bytes": 8964,
+        "sha256": "sha256:0cdf692915b2a6d6c0671624666914aefd8f804b3b7eae7bbd0eee51c343d544"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-retain-project142.py",
+        "bytes": 4618,
+        "sha256": "sha256:dca4119d98e2728bcd6249d6397b62d8f180a40518f6010c60dae443fe75328e"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/006-still-shift-ms3-retain-project142.py",
+        "bytes": 4618,
+        "sha256": "sha256:dca4119d98e2728bcd6249d6397b62d8f180a40518f6010c60dae443fe75328e"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-finish-old140-142.py",
+        "bytes": 1780,
+        "sha256": "sha256:44120c4b4c3b90c7de1ea33b2bf64d58d72dc97ed94b1f6f5f567d9eceabb57a"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/007-still-shift-ms3-finish-old140-142.py",
+        "bytes": 1780,
+        "sha256": "sha256:44120c4b4c3b90c7de1ea33b2bf64d58d72dc97ed94b1f6f5f567d9eceabb57a"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-finish-old140-142.json",
+        "bytes": 205,
+        "sha256": "sha256:305fa6e059b4d56fde9ee0a3e1f5aa3dc1ab7888f3ea4308ff112f46670f4a9f"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/008-still-shift-ms3-finish-old140-142.json",
+        "bytes": 205,
+        "sha256": "sha256:305fa6e059b4d56fde9ee0a3e1f5aa3dc1ab7888f3ea4308ff112f46670f4a9f"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package121-lifecycle1.py",
+        "bytes": 18380,
+        "sha256": "sha256:bf1c4e0cc1e0429312548c57d73ae2b2b0951f484f7fbd10a66f7847c65830f1"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/009-still-shift-ms3-package121-lifecycle1.py",
+        "bytes": 18380,
+        "sha256": "sha256:bf1c4e0cc1e0429312548c57d73ae2b2b0951f484f7fbd10a66f7847c65830f1"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package121-lifecycle-base1.py",
+        "bytes": 11198,
+        "sha256": "sha256:fcc766a74b96e14b88fbe791e3c31890a132707b4a0dab0624b435d0007f38ef"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/010-still-shift-ms3-package121-lifecycle-base1.py",
+        "bytes": 11198,
+        "sha256": "sha256:fcc766a74b96e14b88fbe791e3c31890a132707b4a0dab0624b435d0007f38ef"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0011.json",
+        "bytes": 3947,
+        "sha256": "sha256:8586e0e64a1981973c806630b88800e9ec4106e8fd0470f6a93668f8d84a1572"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/011-still-shift-ms3-package93-121-handoff-EU-0011.json",
+        "bytes": 3947,
+        "sha256": "sha256:8586e0e64a1981973c806630b88800e9ec4106e8fd0470f6a93668f8d84a1572"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0021.json",
+        "bytes": 3996,
+        "sha256": "sha256:261fc60914b9db1d0ebe3ea5cf1964ccd31571efeb3f9e48b629d1d6d81e9088"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/012-still-shift-ms3-package93-121-handoff-EU-0021.json",
+        "bytes": 3996,
+        "sha256": "sha256:261fc60914b9db1d0ebe3ea5cf1964ccd31571efeb3f9e48b629d1d6d81e9088"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0031.json",
+        "bytes": 4045,
+        "sha256": "sha256:462ea9388cc5b2f23ddbc38e28df3f52ce9a1717e37cdf1ac527c2439a406a63"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/013-still-shift-ms3-package93-121-handoff-EU-0031.json",
+        "bytes": 4045,
+        "sha256": "sha256:462ea9388cc5b2f23ddbc38e28df3f52ce9a1717e37cdf1ac527c2439a406a63"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0041.json",
+        "bytes": 4052,
+        "sha256": "sha256:1318b10506de6dcc4cc88c027e907538b4c24d49dcf0b3f1d656c22e29d7931e"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/014-still-shift-ms3-package93-121-handoff-EU-0041.json",
+        "bytes": 4052,
+        "sha256": "sha256:1318b10506de6dcc4cc88c027e907538b4c24d49dcf0b3f1d656c22e29d7931e"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0051.json",
+        "bytes": 4064,
+        "sha256": "sha256:fd7d2f2ead40475187649a86bc3675f608f57e7e1446f6946df362eedc9c2bd9"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/015-still-shift-ms3-package93-121-handoff-EU-0051.json",
+        "bytes": 4064,
+        "sha256": "sha256:fd7d2f2ead40475187649a86bc3675f608f57e7e1446f6946df362eedc9c2bd9"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0061.json",
+        "bytes": 4075,
+        "sha256": "sha256:9f5396239984ef3adbd46f78a2082f7e4ea67ba2bb6de851d84084128defaa23"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/016-still-shift-ms3-package93-121-handoff-EU-0061.json",
+        "bytes": 4075,
+        "sha256": "sha256:9f5396239984ef3adbd46f78a2082f7e4ea67ba2bb6de851d84084128defaa23"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0071.json",
+        "bytes": 4051,
+        "sha256": "sha256:090e7c314648527a6ede83b3376e3b4e83baaa178fc9e3829f97a3645051f7e5"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/017-still-shift-ms3-package93-121-handoff-EU-0071.json",
+        "bytes": 4051,
+        "sha256": "sha256:090e7c314648527a6ede83b3376e3b4e83baaa178fc9e3829f97a3645051f7e5"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0081.json",
+        "bytes": 4095,
+        "sha256": "sha256:f62797cc6e0bbb2000c3cdb9bc9fd35d6ac298323d58ed472c84702b66813681"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/018-still-shift-ms3-package93-121-handoff-EU-0081.json",
+        "bytes": 4095,
+        "sha256": "sha256:f62797cc6e0bbb2000c3cdb9bc9fd35d6ac298323d58ed472c84702b66813681"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0091.json",
+        "bytes": 4046,
+        "sha256": "sha256:f9970074eed14ea5f66147baa37237908009e98e9bee94c12903bfe96b3b2b1d"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/019-still-shift-ms3-package93-121-handoff-EU-0091.json",
+        "bytes": 4046,
+        "sha256": "sha256:f9970074eed14ea5f66147baa37237908009e98e9bee94c12903bfe96b3b2b1d"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0101.json",
+        "bytes": 4034,
+        "sha256": "sha256:bc29d99bde96fbb6e8c452f18619279ae62c55e73e72f6d7e64beb9dd7daa15f"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/020-still-shift-ms3-package93-121-handoff-EU-0101.json",
+        "bytes": 4034,
+        "sha256": "sha256:bc29d99bde96fbb6e8c452f18619279ae62c55e73e72f6d7e64beb9dd7daa15f"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-queue-initial1.log",
+        "bytes": 964,
+        "sha256": "sha256:d9f156d9d76a7bd89870c6d66ddeb0d207c61a3e3f806c9fe8dee7cd87757581"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/021-still-shift-ms3-package93-121-queue-initial1.log",
+        "bytes": 964,
+        "sha256": "sha256:d9f156d9d76a7bd89870c6d66ddeb0d207c61a3e3f806c9fe8dee7cd87757581"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-run-initial1.log",
+        "bytes": 3591,
+        "sha256": "sha256:07a3ee1714c8b101025fc721acb9175d88ec0e8b5a3b65098b24e67fd86632b7"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/022-still-shift-ms3-package93-121-run-initial1.log",
+        "bytes": 3591,
+        "sha256": "sha256:07a3ee1714c8b101025fc721acb9175d88ec0e8b5a3b65098b24e67fd86632b7"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-queue-label-discovery1.log",
+        "bytes": 970,
+        "sha256": "sha256:cc2e8240b8d10a2d662255818b57ab279db17917b0d5f2adf59ccac160899c98"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/023-still-shift-ms3-package93-121-queue-label-discovery1.log",
+        "bytes": 970,
+        "sha256": "sha256:cc2e8240b8d10a2d662255818b57ab279db17917b0d5f2adf59ccac160899c98"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-run-label-repair1.log",
+        "bytes": 3596,
+        "sha256": "sha256:e45f16deded87b69f2cba650d1610d59bddf2b5962879532a3d4499ca7bf785a"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/024-still-shift-ms3-package93-121-run-label-repair1.log",
+        "bytes": 3596,
+        "sha256": "sha256:e45f16deded87b69f2cba650d1610d59bddf2b5962879532a3d4499ca7bf785a"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-report1.log",
+        "bytes": 8268,
+        "sha256": "sha256:394bb881b0d4bbb9fd1ca2116441872d238ad868ee295cdbcacd20124820cc88"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/025-still-shift-ms3-package93-121-report1.log",
+        "bytes": 8268,
+        "sha256": "sha256:394bb881b0d4bbb9fd1ca2116441872d238ad868ee295cdbcacd20124820cc88"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-report1.json",
+        "bytes": 163034,
+        "sha256": "sha256:55b105ca17ea88c42753c5b49ef06848bb6c50e351966f7072e11601c15f30d4"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/026-still-shift-ms3-package93-121-report1.json",
+        "bytes": 163034,
+        "sha256": "sha256:55b105ca17ea88c42753c5b49ef06848bb6c50e351966f7072e11601c15f30d4"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-resume1.log",
+        "bytes": 3586,
+        "sha256": "sha256:0ea0d3375228c271a7635fd482d4df88ca095ad1026adb5f440aec218ac6fbff"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/027-still-shift-ms3-package93-121-resume1.log",
+        "bytes": 3586,
+        "sha256": "sha256:0ea0d3375228c271a7635fd482d4df88ca095ad1026adb5f440aec218ac6fbff"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-resume1.json",
+        "bytes": 13054,
+        "sha256": "sha256:413f4b5263e2e6f0417f1ab6b5e2869758d0921aaf132e85662fd414e9b99691"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/028-still-shift-ms3-package93-121-resume1.json",
+        "bytes": 13054,
+        "sha256": "sha256:413f4b5263e2e6f0417f1ab6b5e2869758d0921aaf132e85662fd414e9b99691"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0011.log",
+        "bytes": 1975,
+        "sha256": "sha256:b2a62a1e76820b19669e82d7c9c72b5ed57acd507eacbce19f9795e5af57eab7"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/029-still-shift-ms3-package93-121-handoff-EU-0011.log",
+        "bytes": 1975,
+        "sha256": "sha256:b2a62a1e76820b19669e82d7c9c72b5ed57acd507eacbce19f9795e5af57eab7"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0021.log",
+        "bytes": 1974,
+        "sha256": "sha256:8ae44ed4bd51f75c147276a89d60882d42f951a268d8fa6ee3b14ca6c36b1f51"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/030-still-shift-ms3-package93-121-handoff-EU-0021.log",
+        "bytes": 1974,
+        "sha256": "sha256:8ae44ed4bd51f75c147276a89d60882d42f951a268d8fa6ee3b14ca6c36b1f51"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0031.log",
+        "bytes": 1974,
+        "sha256": "sha256:86f93ef3a85f13583ff615d0cd1f6c8dcbe7f4241d4e6899b88cea5fe172370f"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/031-still-shift-ms3-package93-121-handoff-EU-0031.log",
+        "bytes": 1974,
+        "sha256": "sha256:86f93ef3a85f13583ff615d0cd1f6c8dcbe7f4241d4e6899b88cea5fe172370f"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0041.log",
+        "bytes": 1974,
+        "sha256": "sha256:04a374b8fbe759ed5aaefcd36645e784d3ad67b16efabc64cac0ea26b3579d53"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/032-still-shift-ms3-package93-121-handoff-EU-0041.log",
+        "bytes": 1974,
+        "sha256": "sha256:04a374b8fbe759ed5aaefcd36645e784d3ad67b16efabc64cac0ea26b3579d53"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0051.log",
+        "bytes": 1975,
+        "sha256": "sha256:26af2f7ce416f83ee8459f086f6039424892f753bd7f590e729b1c22e0556ec6"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/033-still-shift-ms3-package93-121-handoff-EU-0051.log",
+        "bytes": 1975,
+        "sha256": "sha256:26af2f7ce416f83ee8459f086f6039424892f753bd7f590e729b1c22e0556ec6"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0061.log",
+        "bytes": 1976,
+        "sha256": "sha256:a3116ecc1808d5dfc144ac7dff982f203f548ca8abb13f6d6b7846ca52fb1658"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/034-still-shift-ms3-package93-121-handoff-EU-0061.log",
+        "bytes": 1976,
+        "sha256": "sha256:a3116ecc1808d5dfc144ac7dff982f203f548ca8abb13f6d6b7846ca52fb1658"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0071.log",
+        "bytes": 1976,
+        "sha256": "sha256:cf920a3df11a044e951ad794d765ef6b481452c69639a2960e101662424839be"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/035-still-shift-ms3-package93-121-handoff-EU-0071.log",
+        "bytes": 1976,
+        "sha256": "sha256:cf920a3df11a044e951ad794d765ef6b481452c69639a2960e101662424839be"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0081.log",
+        "bytes": 1975,
+        "sha256": "sha256:42cf355f1818f2239c3f7d78edd7a4d788f057443a86d791d6469848f8fd6462"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/036-still-shift-ms3-package93-121-handoff-EU-0081.log",
+        "bytes": 1975,
+        "sha256": "sha256:42cf355f1818f2239c3f7d78edd7a4d788f057443a86d791d6469848f8fd6462"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0091.log",
+        "bytes": 1975,
+        "sha256": "sha256:8ffbabd41b9920606c0e5520025289dbb78bab8facba795bbf30bf08a8abef94"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/037-still-shift-ms3-package93-121-handoff-EU-0091.log",
+        "bytes": 1975,
+        "sha256": "sha256:8ffbabd41b9920606c0e5520025289dbb78bab8facba795bbf30bf08a8abef94"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-handoff-EU-0101.log",
+        "bytes": 1975,
+        "sha256": "sha256:6df1b70d7cf0334273070d4ef67a21e84508b53c614c51771f497298a632cbc6"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/038-still-shift-ms3-package93-121-handoff-EU-0101.log",
+        "bytes": 1975,
+        "sha256": "sha256:6df1b70d7cf0334273070d4ef67a21e84508b53c614c51771f497298a632cbc6"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-initial-state1.json",
+        "bytes": 11856,
+        "sha256": "sha256:376b631d2e650d4e6cbacc8b9e90e25dd709c84334ccec7f602cba62a1ba439d"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/039-still-shift-ms3-package93-121-initial-state1.json",
+        "bytes": 11856,
+        "sha256": "sha256:376b631d2e650d4e6cbacc8b9e90e25dd709c84334ccec7f602cba62a1ba439d"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-run-initial1.json",
+        "bytes": 11856,
+        "sha256": "sha256:5abc803595c622e5447661c2fc595350446929718f6cf4276997296239edef89"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/040-still-shift-ms3-package93-121-run-initial1.json",
+        "bytes": 11856,
+        "sha256": "sha256:5abc803595c622e5447661c2fc595350446929718f6cf4276997296239edef89"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-121-run-label-repair1.json",
+        "bytes": 13054,
+        "sha256": "sha256:435e296713f38211456228bbfbd0a36dfc206c8fee4f02f641399a54bc8baf19"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/041-still-shift-ms3-package93-121-run-label-repair1.json",
+        "bytes": 13054,
+        "sha256": "sha256:435e296713f38211456228bbfbd0a36dfc206c8fee4f02f641399a54bc8baf19"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-installed129-audit-terminal1.json",
+        "bytes": 1539,
+        "sha256": "sha256:d58e9a9fac88a7f6fb6f3113872f29af283f6c594dda782053a606f8a77e65da"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/042-still-shift-ms3-installed129-audit-terminal1.json",
+        "bytes": 1539,
+        "sha256": "sha256:d58e9a9fac88a7f6fb6f3113872f29af283f6c594dda782053a606f8a77e65da"
+      },
+      "exact": true
+    }
+  ],
+  "qualification": "All16 serial CLI commands exited0. Original wrapper56598 remains actual1 after its final wrong products/native-plates.json bookkeeping path. This separate corrected postflight resolves each current map through its sealed product artifact pin, audits10 CLI packets and rehashes complete installed/input/native/original-product closures. No CLI, export or capture was repeated. Completion is in recorded stages, never an uninterrupted wrapper0. Whole dimensions remain unreviewed.",
+  "durableIndex": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/index.json",
+    "bytes": 46597,
+    "sha256": "sha256:625d411b9387df15d1992d6a6b77af771b4797cb6e46b2d165d9dbcecc1183e9"
+  },
+  "postflightActualToolExitCode": 0,
+  "postflightActualTerminal": {
+    "original": {
+      "path": "/private/tmp/still-shift-ms3-installed149-actual-terminal.json",
+      "bytes": 542,
+      "sha256": "sha256:aabe8b65234b13e30e4e63719a4da4f4245cfe5528aef529b20e9467ca934757"
+    },
+    "retained": {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-complete-installed149/actual-postflight-terminal.json",
+      "bytes": 542,
+      "sha256": "sha256:aabe8b65234b13e30e4e63719a4da4f4245cfe5528aef529b20e9467ca934757"
+    },
+    "exact": true
+  },
+  "actualToolExitCodeScope": "Corrected standalone postflight6576 only. Original wrapper56598 remains actual1.",
+  "uninterruptedOriginalWrapperPassed": false,
+  "immutableProjectSnapshot": "./mechanism-shorts-ms3-project150-results.json"
+}

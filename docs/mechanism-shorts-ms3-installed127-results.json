@@ -1,20 +1,10 @@
 {
   "schemaVersion": "ms3-current-installed127-lifecycle-1",
   "recordedUtc": "2026-10-15T18:57:20.521337+00:00",
-  "status": "running-current-installed-all-ten-lifecycle-not-passed",
+  "status": "all-sixteen-installed-cli-calls-and-corrected-postflight-complete-in-recorded-stages-original-wrapper1",
   "actualLifecycleSession": 56598,
   "actualAuditSession": 44813,
-  "observedNonterminalMain": {
-    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-installed127-progress137/observed-live-main.json",
-    "bytes": 130,
-    "sha256": "sha256:e25ddd1d36ea97b84db8c38690f79bfec01fa63800a77a1af9ae8b20550c470c"
-  },
-  "observedNonterminalAudit": {
-    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-installed127-progress137/observed-live-audit.json",
-    "bytes": 132,
-    "sha256": "sha256:1cae5191b0bea9860ed5fd2496943eb9710b5f6d5281ed2cd411b9954acb6b2d"
-  },
-  "observationScope": "Actual nonterminal unified-tool observations retained; these are completed observer snapshots, not fresh terminal claims. Main observer2213 remains active; audit observer2220 is active. Running raw receipts and current sealed products independently checked at capture.",
+  "observationScope": "Actual56598 terminal1 after all16 serial CLI commands0; actual6576 corrected standalone bookkeeping/packet/closure postflight0. No CLI/export/capture repeated, no uninterrupted original0 claimed.",
   "sourcePackage": "./mechanism-shorts-ms3-package126-results.json",
   "installedCapabilities": "./mechanism-shorts-ms3-installed131-capability-results.json",
   "requiredEpisodes": 10,
@@ -833,7 +823,7 @@
       "exact": true
     }
   ],
-  "qualification": "Actual independent auditor44813 now exits0 for all10 current final products, including EU008 revised labels. Current-bound RGBA/PCM, original narration, images and native control/physical/global-clock checks pass. Earlier137 running observations/raw snapshots remain dated capture evidence. Main56598 complete final report/resume/ten-handoff terminal and whole/owner review remain pending; no whole acceptance inferred.",
+  "qualification": "All10 final139 picture/audio/native audits0 and all10 CLI packet audits1490 are complete. Original main56598 remains1 only for the proven wrong final map path. Standalone postflight6576 resolves sealed map artifact refs and verifies complete originals/package/input/native closures. Whole and human reviews remain unreviewed.",
   "previousProgressIndex": {
     "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-installed127-progress134/index.json",
     "bytes": 26264,
@@ -884,7 +874,7 @@
   },
   "lastProductAuditUtc": "2026-10-15T19:19:20.728026+00:00",
   "labelRepairPendingAt137Capture": true,
-  "remaining": "Actual main56598 repair-command closure/final report/resume/ten handoffs and complete terminal; whole and owner review remain open.",
+  "remaining": "Whole/owner reviews remain open. Separate isolated newer-prerequisite candidate143 still needs its final affected/package/runtime follow-up; original receiving commands and independent data audits are complete in recorded stages.",
   "allAuditedOriginalPictureParityAt137Capture": true,
   "allTenCurrentBoundRgbaPcmChecksPass": true,
   "allTenOriginalWholeNarrationParityPass": true,
@@ -892,5 +882,22 @@
     "unchangedEpisodes": 9,
     "EU008": "Two source label strings revised; measured encoded changes and narrow sample inspection in final-products139."
   },
-  "qualificationAt137Capture": "Running checkpoint; completed product pixel/audio/native audits only. No all-ten terminal, EU008 repair/final ten handoffs, whole review or pilot acceptance inferred."
+  "qualificationAt137Capture": "Running checkpoint; completed product pixel/audio/native audits only. No all-ten terminal, EU008 repair/final ten handoffs, whole review or pilot acceptance inferred.",
+  "actualLifecycleToolExitCode": 1,
+  "completeLifecyclePassedScope": "Original single outer56598 wrapper; its final wrong-path bookkeeping failed after all16 CLI commands0.",
+  "completeCliLifecycleAndPostflightPassedInRecordedStages": true,
+  "correctedPostflightActualToolExitCode": 0,
+  "completeStagedRecord": "./mechanism-shorts-ms3-complete-installed149-results.json",
+  "immutableProjectSnapshot": "./mechanism-shorts-ms3-project150-results.json",
+  "observedNonterminalMainAtEarlierCapture": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-installed127-progress137/observed-live-main.json",
+    "bytes": 130,
+    "sha256": "sha256:e25ddd1d36ea97b84db8c38690f79bfec01fa63800a77a1af9ae8b20550c470c"
+  },
+  "observedNonterminalAuditAtEarlierCapture": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-installed127-progress137/observed-live-audit.json",
+    "bytes": 132,
+    "sha256": "sha256:1cae5191b0bea9860ed5fd2496943eb9710b5f6d5281ed2cd411b9954acb6b2d"
+  },
+  "qualificationAt139Capture": "Actual independent auditor44813 now exits0 for all10 current final products, including EU008 revised labels. Current-bound RGBA/PCM, original narration, images and native control/physical/global-clock checks pass. Earlier137 running observations/raw snapshots remain dated capture evidence. Main56598 complete final report/resume/ten-handoff terminal and whole/owner review remain pending; no whole acceptance inferred."
 }

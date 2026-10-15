@@ -1,5 +1,25 @@
 # MS3 acceptance tracker
 
+2026-10-16 — all16 original installed CLI stages pass, including ten handoffs.
+Original wrapper56598 then exits1 on a proven bookkeeping error: it looks under
+`products/native-plates.json`. Corrected standalone postflight6576 exits0, resolving
+maps through sealed artifact pins and independently verifying all10 refreshed
+handoff packets,2,573 installed members/115 inputs/5,223 native files and original
+products. No CLI call, export or native capture was repeated. Completion is in
+recorded stages; original wrapper1 is retained. [Staged completion149](./mechanism-shorts-ms3-complete-installed149-results.json).
+
+A durable immutable project copy preserves20,889 regular files/16,909,710,619 logical
+bytes, with4,385,935,468 unique-content bytes independently copied; identical files
+share links only within the new snapshot. It includes editable models, whole
+narration, cache, output and the exact old verified archive. This is a recovery copy,
+not another executed relocation proof. [Snapshot150](./mechanism-shorts-ms3-project150-results.json).
+
+Newer upstream fixes are being qualified separately in an isolated candidate;
+current complete full119/package121 bindings are unchanged. Whole factual,
+mechanical, glyph, normal-speed/listening and owner reviews remain open. Original
+first-pass1/10/nine failures/null paired tokens and accepted0 remain unchanged.
+Statements below are dated capture history, including earlier live-state text.
+
 All10 current installed final products now pass independent complete picture/audio/
 original narration, review-image and native control/physical/global-clock audits.
 Actual auditor44813 exits0:6,181 frames,130 root artifacts,1,084 images,24,724 native

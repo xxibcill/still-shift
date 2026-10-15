@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "ms3-current-project-immutable-snapshot150-1",
+  "recordedUtc": "2026-10-15T20:50:40.923922+00:00",
+  "status": "retained-exact-current-data-and-verified-package-snapshot-not-a-new-runtime-proof",
+  "fileCount": 20889,
+  "logicalBytes": 16909710619,
+  "uniqueContentBytes": 4385935468,
+  "uniqueFiles": 8279,
+  "archive": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package93/still-shift-0.1.1.tgz",
+    "bytes": 5469724,
+    "sha256": "sha256:83504d2118a18bce38336367d058a9c4b874a5b2f933478addefd42838ce20ec"
+  },
+  "allFilesIndependentOfOriginalInodes": true,
+  "internalHardlinks": "Identical immutable byte content shares inodes only inside this snapshot; no link points to the live consumer or original project.",
+  "actualLifecycleProof": "../ms3-complete-installed149/index.json",
+  "qualification": "Immutable recovery/evidence snapshot. Existing absolute paths in authentic historical metadata stay unchanged. This copy is not claimed as another executed relocation test; live isolated execution is proved separately: all16 CLI calls0, original wrapper bookkeeping1 and corrected standalone postflight1490, in recorded stages. Make a working copy before editing snapshot files.",
+  "durableIndex": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-current-project150/index.json",
+    "bytes": 8298072,
+    "sha256": "sha256:412af1c2ecda282f81c26d838063ee36d2315898cc12a511ea3391d02a1518af"
+  },
+  "actualTerminal": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-current-project150/actual-terminal.json",
+    "bytes": 574,
+    "sha256": "sha256:4168d3e7e3f4f7dc7573b200a4f3d5e168a199533be5402810e2b008b867c476"
+  },
+  "actualToolExitCode": 0,
+  "sourceSnapshotQualification": "Independent immutable data/evidence copy after all16 installed CLI commands0 and corrected149 postflight0. Original56598 bookkeeping failure1 remains retained. No new rendering or executed second relocation is claimed."
+}

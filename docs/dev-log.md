@@ -43,70 +43,81 @@ still hold before relying on them.
 
 ## Current state
 
-- **Upstream candidate143 (2026-10-16):** isolated from6e1ad86f; carries newer PR56
-  validation and PR57 bounded/cancellable reads, camera, opaque-PBR and async-Lab
-  repairs. Original sink facade uses the repaired shared journal core; both
-  original and source3 FIFO regressions retained. No old full/package/pilot result
-  is rebound to these changes. Candidate fast0/4,608 unit tests; runtime tier completes in recorded stages
-  (original aggregate1, unchanged owning file/suffix0), both review axes0 findings.
-  Eight affected browser groups pass; fresh package/updated-runtime checks next.
-  Original56598 continues
-  unchanged in mechanism-ms0. Primary checkout untouched.
+- **Current code checkpoint:** newer PR56/57 repairs are integrated as0da1f1dd
+  in this isolated MS3 candidate. Fast tier0/4,608unit tests; runtime368 pass,
+  original integration325/327 passes with two unchanged5000ms timeouts retained.
+  Complete unchanged owning file5/Python14/smoke suffix pass separately. Both
+  review axes0 findings. All8 owning browser groups pass, including native5outputs/
+  300frames and15-stage recovery. Selected2,798inputs/122,451,390B stay exact.
+  [Integration143](./mechanism-shorts-ms3-upstream143-results.json),
+  [runtime146](./mechanism-shorts-ms3-runtime146-results.json),
+  [affected144](./mechanism-shorts-ms3-affected144-results.json).
 
-- **All10 current final products independently audited (2026-10-16):** actual
-  auditor44813 exits0 for6,181 frames/130 root artifacts/1,084 review images/24,724
-  native pins, with complete original narration and zero new native renders.
-  EU008 changes only two labels; all native references/nine neighbors exact.
-  Eight actual phone images viewed.47 outside-label encoded frames differ by
-  max10/255 RGB, mean0.003892; sampled phone pairs show no visible regression.
-  Whole review stays open; failed audit128/syntax129/measurement138 are retained.
-  Main56598 final report/resume/ten handoffs still require actual terminal.
-  [Final-product139](./mechanism-shorts-ms3-final-products139-results.json),
-  [ten current review videos](../benchmarks/results/ms3-current-installed-review135/index.md).
+- **Next/current qualification:** fresh package145 is next; freeze this whole
+  checkout/HEAD through its actual terminal. Conservative runtime identity hashes
+  all5 packages, so older products become stale when code changes. Negative147
+  admission/current-native-key preflight and a fresh actual-ten queue151 follow.
+  Complete current inputs/native cache are independently copied:5,344files/
+  2,207,383,198B, including correctedEU8cue.15-locator OS controls pass; old receiving
+  project, old modules/originals denied and fresh capture staging blocked. Native
+  producer profile/frames and whole original Alden narration are reused; new2D
+  outputs still required. Do not relabel older products or reset original metrics.
 
-- **Complete software and package gates pass:** full119 (session71989) exits0 on
-  held1c9f7d14, all 2,793 selected inputs exact;4,594 unit/346 runtime/324 integration/
-  14 Python tests and176 frozen baselines/36,061frames. No-op benchmark1180.39Hz/
-  591samples;19 existing WebGL timing deferrals retained. Earlier90/91/105/113
-  failures keep their actual results. [Complete terminal125](./mechanism-shorts-ms3-full125-terminal-results.json).
-  Standard package session52914 exits0 on1dbee06a and passes27 checks, 2,573 exact installed members/
-  1,051 sources,13 diagnostics/4 retry controls/types/discovery. Complete115 inputs/
-  5,223 native files are independently copied/hash verified:2,207,274,134B.
-  [Package/copy126](./mechanism-shorts-ms3-package126-results.json).
+- **Original actual-ten evidence complete in recorded stages:** all16 CLI stages0
+  including10 handoffs. Original56598 wrapper exits1 on a wrong final map path;
+  corrected standalone6576 postflight exits0.10 fresh-resume packets/2,573members/
+  115original inputs/5,223native files/original products independently verify.
+  [Staged149](./mechanism-shorts-ms3-complete-installed149-results.json).
+  Independent139 fullRGBA/PCM/original narration/PNG/native audits pass6,181frames/
+  130root artifacts/1,084images/24,724pins. EightEU8phone images actually viewed;
+  outside-label47encoded differences remain quantified, whole acceptance open.
 
-- **Installed capabilities/docs agree:** complete14,140B discovery is byte-exact
-  to rehashed source107, with 32 compact items/no truncation, including media limits.
-  Generated reference/25 schema references/3 reviewed guides match. Initial130
-  schema-location and136 recorder-field probes retain their failures; corrected
-  comparisons pass separately. Audit128's loader failure/first129 syntax draft
-  are also retained; corrected public-module native audits pass under the same
-  denial profile. [Installed parity131/136](./mechanism-shorts-ms3-installed131-capability-results.json).
+- **Durable original review package:** [ten review135 videos](../benchmarks/results/ms3-current-installed-review135/index.md)
+  are delivered. [Snapshot150](./mechanism-shorts-ms3-project150-results.json)
+  preserves20,889files/16.91GB logical/4.39GB unique content with independent original
+  inodes; duplicates share links only inside the immutable snapshot. No another
+  executed relocation proof or new rendering is inferred from that backup.
 
-- **Pilot product gates remain open:** original3df/runtime1090 first-pass1/10,
-  nine failures, render p50/p95 474.63/574.84s, comparable paired tokens null.
-  Current receiving validation does not reset those metrics. Whole mechanical,
-  factual, encoded-glyph, normal-speed motion/listening and owner acceptance remain
-  unreviewed; reviewed-ready/supported/accepted0. [Acceptance](./mechanism-shorts-ms3-acceptance.md).
+- **Base verification stays bound to earlier code:** complete full119 actual0 on
+  1c9f7d14:4,594unit/346runtime/324integration/14Python,176baselines/36,061frames;
+  no-op1180.39Hz/591samples,19existing WebGL timing deferrals retained. Package121
+  actual0 on1dbee06a:27checks/2,573members/1,051sources/13diagnostics/4retry controls.
+  [Full125](./mechanism-shorts-ms3-full125-terminal-results.json),
+  [package126](./mechanism-shorts-ms3-package126-results.json).
+  New0da scoped follow-up does not claim a fresh complete full gate. Old failures
+  90/91/105/113 and current runtime143/original wrapper121 remain retained.
 
-- **Owner decisions resolved:** Blender is allowed for this pilot using saved
-  models directly; core/default Three remains Blender-free. PR58's exact approved
-  description plus historical-snapshot label was published with exact readback;
-  no description approval remains. Two EU001 fault assets/four images104 completed
-  within the approved50/200M allowance; no further diagnostic asset work or new
-  ElevenLabs generation. [Decisions120](./mechanism-shorts-ms3-owner-decisions120-results.json),
-  [completed fault batch104](./mechanism-shorts-ms3-physical-fault104-results.json).
+- **Product/owner gates:** original first-pass1/10/nine failures, original render
+  p50/p95 474.63/574.84s, paired routine tokens/savings null. New receiving phases
+  never replace that denominator. Whole factual/mechanical/glyph/normal-speed/
+  listening and owner reviews remain pending; reviewed-ready/supported/accepted0.
+  [Acceptance](./mechanism-shorts-ms3-acceptance.md). User review question pending.
+  Owner explicitly permits saved Blender models for this pilot; core/default Three
+  remains Blender-free. Exact approved PR58 description114 plus historical label
+  is published; no description approval remains. Diagnostic104 twoEU1assets/four
+  images closed within approved50/200M; no further diagnostic work or ElevenLabs
+  generation. [Decisions120](./mechanism-shorts-ms3-owner-decisions120-results.json).
 
-- **Upstream/evidence boundaries:** MS0/MS1 owner-merged; MS1N PR56/MS2 PR57/MS3
-  PR58 remain open, with delivered repairs integrated here. Current main/native/MS2
-  bindings and failed/staged histories stay distinct. Audit114 covers49 deliverables/
-  26 clauses/21 traceability rows:24 selected older raw pins match;6 MS1/MS1N
-  temporary paths are unavailable, historical committed results retained without
-  reconstructed/fresh-pass claims. [Acceptance audit114](./mechanism-shorts-acceptance-audit114-results.json).
-  Preserve primary checkout edits; keep Actions disabled. No merge or publication
-  is authorized. Complete current handoffs, inspect EU008 encoded samples, deliver
-  all 10 current review videos and retain all remaining whole/owner review gates.
+- **Delivery/retention:** MS0/MS1 owner-merged; PR56/57/58 open at last read. Current
+  source carries0bda0b62/36fc04ea repairs; original PR58 head93848c4c contains149/150
+  documentation. Preserve primary checkout edits, keep Actions disabled; no GitHub
+  PR merge or publication. Audit114 reconciles49rows/26clauses/21traceability,
+  with24older raw pins exact and6older MS1/MS1Npaths unavailable. Retain that gap
+  and complete final reconciliation after current package/actual-ten qualification.
 
 ## Entries
+
+### 2026-10-16 — Combine verified code and receiving documentation checkpoint
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3-upstream143`.
+- **Done:** combine our candidate144/146 evidence and original93848c4c149/150
+  documentation; preserve both histories/entries. Only development-log conflict.
+- **Source:** production/tests unchanged from verified0da selected snapshot;
+  fresh package145 will freeze this combined clean HEAD through its actual end.
+- **Next:** current identity rejects old products by design; preflight147 then
+  fresh queue151/2D outputs use complete copied native cache and original audio.
+- **Limits:** old full/archive/receiving evidence retains its source binding;
+  original wrapper1, staged runtime1 and whole/owner gates remain explicit.
 
 ### 2026-10-16 — Verify eight owning browser groups for upstream integration144
 
@@ -118,6 +129,22 @@ still hold before relying on them.
   staged runtime146 retains its original aggregate1. No new whole review claim.
 - **Next:** fresh installed package then updated-runtime report over existing ten.
 - **Records:** [Affected144](./mechanism-shorts-ms3-affected144-results.json).
+
+### 2026-10-16 — Close original installed CLI evidence in recorded stages149/150
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from6e1ad86f.
+- **Results:** all16 actual CLI commands0, including10 current handoffs. Original
+  wrapper56598 then exits1 on its wrong final `products/native-plates.json` path.
+  Corrected standalone postflight6576 exits0;10 packets/all original products/
+  2,573 installed members/115 inputs/5,223 native files independently verify.
+- **Retention:**20,889 regular files/16.91GB logical/4.39GB unique bytes preserved
+  with independent original inodes; internal immutable duplicates share links.
+- **Scope:** no CLI/export/capture repeated, no uninterrupted wrapper0 or another
+  relocation proof claimed. Guarded140/142 finisher refuses original1 and is retained.
+- **Open:** isolated newer-upstream candidate checks and finite reconciliation;
+  whole/owner reviews remain pending, original pilot metrics unchanged.
+- **Records:** [Staged149](./mechanism-shorts-ms3-complete-installed149-results.json),
+  [backup150](./mechanism-shorts-ms3-project150-results.json).
 
 ### 2026-10-16 — Complete scoped runtime qualification in recorded stages146
 

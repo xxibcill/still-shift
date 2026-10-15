@@ -3,7 +3,7 @@
   "milestone": "MS3",
   "date": "2026-10-16",
   "branch": "codex/mechanism-ms3",
-  "status": "in-progress-owner-selected-channel-first-ten",
+  "status": "original-installed-pilot-technical-evidence-complete-in-recorded-stages-upstream-followups-and-product-review-open",
   "baseMain": "57967fa6497249d75e740ba837b8e2687cc81a98",
   "ms2Prerequisite": {
     "commit": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
@@ -753,10 +753,9 @@
     }
   },
   "remaining": [
-    "Finish actual main56598 final repair-command closure/report/resume/all ten current CLI handoffs and its real terminal on the verified archive/source. Independent final-product audits now actually pass all10/6181 and do not substitute for that lifecycle terminal.",
-    "After those commands complete, independently reconcile all ten current CLI handoff packets against the final manifest, current product/artifact bindings and refreshed receiving resume paths. Sealed product/evidence/audio/native audits are already complete.",
-    "Complete or retain genuine whole factual/design, mechanical, encoded-glyph, normal-speed motion/listening and owner review. Ten current videos, including revised EU008, are available in review135; feedback requested. Original first-pass1/10/nine failures/null paired tokens and reviewed-ready/supported/accepted0 remain unchanged.",
-    "Reconcile all49 deliverables/26 cross-cutting clauses/21 traceability rows with final full125/package126/capability131+136/product139/current lifecycle evidence, preserving old staged/failed qualifications, unavailable six older raw paths, existing19 timing deferrals and unmet/unmeasured pilot targets."
+    "Finish isolated newer-prerequisite candidate143 affected browser/package and updated installed-runtime follow-up before delivering its source to PR58. Original full119 remains earlier-source evidence; retain scoped follow-up qualifications.",
+    "Reconcile49 deliverables/26 cross-cutting clauses/21 traceability rows against final evidence, preserving original56598 bookkeeping1/corrected1490, staged runtime146, six older raw-path gaps,19 timing deferrals and unmet/unmeasured targets.",
+    "Whole factual/design/mechanical/encoded-glyph/normal-speed/listening and owner review remain open on review135. Original first-pass1/10/nine failures/null paired tokens and reviewed-ready/supported/accepted0 remain unchanged."
   ],
   "qualification": "MS2 software checkpoint and its exact private archive remain historical prerequisites. New MS3 source is not qualified by relabelling MS2 full/installed gates. Structural model caps do not by themselves certify lifecycle I/O/managed-memory admission or review execution.",
   "committedNativeSource": "efa5057440c1c95a7ac7aa263cc48f50d9a2c41b",
@@ -1175,38 +1174,12 @@
     "allCopiedHashesVerified": true
   },
   "currentInstalledLifecycle": {
-    "session": 56598,
-    "status": "running-unpassed",
-    "sourcePackage": "./mechanism-shorts-ms3-package126-results.json",
-    "episodes": 10,
-    "frames": 6181,
-    "nativePolicy": "copied-cache-only; original roots and fresh-worker staging denied",
-    "repair": "EU008 two callout texts, then final report/resume/ten handoffs",
-    "wholeReviewsOrPilotAcceptance": false,
-    "record": "./mechanism-shorts-ms3-installed127-results.json",
-    "completedOutputs": [
-      "EU-001",
-      "EU-002",
-      "EU-003",
-      "EU-004",
-      "EU-005",
-      "EU-006",
-      "EU-007",
-      "EU-008",
-      "EU-009",
-      "EU-010"
-    ],
-    "independentProductAudits": 10,
-    "completeLifecyclePassed": false,
-    "initialAllTenCheckpoint": {
-      "actualRunExitCode": 0,
-      "frames": 6181,
-      "seconds": 5821.987425833009,
-      "newNativeRenders": 0,
-      "finalLabelRepairPassed": false
-    },
-    "finalProductRecord": "./mechanism-shorts-ms3-final-products139-results.json",
-    "labelRepairProductAndSampleChecksPassed": true
+    "status": "all16-cli0-and-corrected-postflight0-in-recorded-stages-original-wrapper1",
+    "record": "./mechanism-shorts-ms3-complete-installed149-results.json",
+    "originalMainActualToolExitCode": 1,
+    "postflightActualToolExitCode": 0,
+    "allTenFinalHandoffPacketsVerified": true,
+    "wholeReviewOrHumanAcceptance": false
   },
   "currentInstalledCapabilities": {
     "record": "./mechanism-shorts-ms3-installed131-capability-results.json",
@@ -1235,5 +1208,19 @@
     "After the initial current all-ten installed run checkpoint, execute and inspect the prepared EU008 two-label Spring assembly copy revision through the supported CAS revision lifecycle before final report/resume/ten handoffs. Prove actual native reuse, exact complete original narration and affected encoded picture; preserve original products, neighbors, first-pass1/10 and review boundaries.",
     "Complete whole factual/design, mechanical, encoded glyph/readability, normal-speed continuous motion and listening review; keep unsupported, unreviewed and human acceptance explicit. Current reviewed-ready/supported/accepted0/10.",
     "Reconcile all49 MS0-MS3 deliverables and their acceptance clauses against their exact source/evidence identities, current installed capability discovery and guides. Preserve candidate pack/finer Thai limits, prior failures and open upstream PRs; no routine merge, publishing or inferred human acceptance."
-  ]
+  ],
+  "remainingBeforeComplete149": [
+    "Finish actual main56598 final repair-command closure/report/resume/all ten current CLI handoffs and its real terminal on the verified archive/source. Independent final-product audits now actually pass all10/6181 and do not substitute for that lifecycle terminal.",
+    "After those commands complete, independently reconcile all ten current CLI handoff packets against the final manifest, current product/artifact bindings and refreshed receiving resume paths. Sealed product/evidence/audio/native audits are already complete.",
+    "Complete or retain genuine whole factual/design, mechanical, encoded-glyph, normal-speed motion/listening and owner review. Ten current videos, including revised EU008, are available in review135; feedback requested. Original first-pass1/10/nine failures/null paired tokens and reviewed-ready/supported/accepted0 remain unchanged.",
+    "Reconcile all49 deliverables/26 cross-cutting clauses/21 traceability rows with final full125/package126/capability131+136/product139/current lifecycle evidence, preserving old staged/failed qualifications, unavailable six older raw paths, existing19 timing deferrals and unmet/unmeasured pilot targets."
+  ],
+  "currentProjectSnapshot150": {
+    "record": "./mechanism-shorts-ms3-project150-results.json",
+    "fileCount": 20889,
+    "logicalBytes": 16909710619,
+    "uniqueContentBytes": 4385935468,
+    "independentOriginalInodes": true,
+    "isAnotherExecutedRelocationProof": false
+  }
 }
