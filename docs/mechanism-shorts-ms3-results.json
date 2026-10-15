@@ -1192,10 +1192,20 @@
       "EU-003",
       "EU-004",
       "EU-005",
-      "EU-006"
+      "EU-006",
+      "EU-007",
+      "EU-009",
+      "EU-010"
     ],
-    "independentProductAudits": 6,
-    "completeLifecyclePassed": false
+    "independentProductAudits": 9,
+    "completeLifecyclePassed": false,
+    "initialAllTenCheckpoint": {
+      "actualRunExitCode": 0,
+      "frames": 6181,
+      "seconds": 5821.987425833009,
+      "newNativeRenders": 0,
+      "finalLabelRepairPassed": false
+    }
   },
   "currentInstalledCapabilities": {
     "record": "./mechanism-shorts-ms3-installed131-capability-results.json",
@@ -1205,6 +1215,10 @@
     "productionSchemaReferences": 25,
     "proseGuidesExact": 3,
     "schemaReferenceLocation": "held source checkout, not bundled archive members",
-    "retainedFailedProbe130": true
+    "retainedFailedProbe130": true,
+    "completeSource107PayloadByteExact": true,
+    "completeReportBytes": 14140,
+    "compactItems": 32,
+    "compactTruncated": false
   }
 }

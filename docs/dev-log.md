@@ -43,351 +43,71 @@ still hold before relying on them.
 
 ## Current state
 
-- **Installed progress134 (2026-10-16):** 6 sealed current outputs independently
-  pass every decoded RGBA/PCM/original narration, review-image pixel/transform and
-  public native control/physical/global-clock check. Fresh native0; EU-007 active.
-  Main56598/audit44813 remain running; no all-ten/EU008/final-handoff or whole pass.
-  Audit128 loader failure and first129 syntax draft failure retained; corrected
-  actual native1290. Exact raw positive/negative snapshots retained locally.
-  [Current installed127](./mechanism-shorts-ms3-installed127-results.json).
+- **Actual first ten, current installed workflow (2026-10-16):** all 10 initial
+  EU001–EU010 exports pass:6,181 frames, zero new native renders,5821.99s.
+  Nine final products independently pass complete RGBA/PCM/original narration,
+  review-image transforms and public native control/physical/global-clock checks.
+  Main56598 is rendering the bounded EU008 two-label repair; auditor44813 awaits
+  that final product. Final report/resume/ten handoffs and actual terminal remain.
+  [Current installed127/checkpoint137](./mechanism-shorts-ms3-installed127-results.json).
 
-- **Installed progress133 (2026-10-16):** 3 sealed current outputs independently
-  pass every decoded RGBA/PCM/original narration, review-image pixel/transform and
-  public native control/physical/global-clock check. Fresh native0; EU-004 active.
-  Main56598/audit44813 remain running; no all-ten/EU008/final-handoff or whole pass.
-  Audit128 loader failure and first129 syntax draft failure retained; corrected
-  actual native1290. Exact raw positive/negative snapshots retained locally.
-  [Current installed127](./mechanism-shorts-ms3-installed127-results.json).
-
-- **Current installed docs/capability parity passed (2026-10-16):** actual131
-  exits0; installed public production/media registry agrees with CLI discovery,
-  generated reference matches,25 schemas match held source references and3
-  shipped prose guides keep reviewed96 pins. Initial130 probe fails on an assumed
-  bundled schema path; retained separately, no product or all-ten failure inferred.
-  All2793 source inputs remain exact. [Installed parity131](./mechanism-shorts-ms3-installed131-capability-results.json).
-
-- **Current package/copy passed; installed all-ten live (2026-10-16):** actual
-  package52914 exits0 on1dbee06a:27 standard checks,2,573 exact installed members/
-  1,051 sources,13 diagnostics/4 retry controls/strict types/discovery pass.
-  Complete115-input/5,223-native-file closure copied/hash verified:5,338 files/
-  2,207,274,134B,34 full captures. Installed all10/6,181/EU008 repair lifecycle
-  now runs as56598 under original-root/fresh-worker denials. Its terminal and
-  independent final decode/native/packet audits remain pending. Whole reviews and
-  original first-pass1/10/nine failures/null tokens/accepted0 stay explicit.
+- **Complete software and package gates pass:** full119 (session71989) exits0 on
+  held1c9f7d14, all 2,793 selected inputs exact;4,594 unit/346 runtime/324 integration/
+  14 Python tests and176 frozen baselines/36,061frames. No-op benchmark1180.39Hz/
+  591samples;19 existing WebGL timing deferrals retained. Earlier90/91/105/113
+  failures keep their actual results. [Complete terminal125](./mechanism-shorts-ms3-full125-terminal-results.json).
+  Standard package session52914 exits0 on1dbee06a and passes27 checks, 2,573 exact installed members/
+  1,051 sources,13 diagnostics/4 retry controls/types/discovery. Complete115 inputs/
+  5,223 native files are independently copied/hash verified:2,207,274,134B.
   [Package/copy126](./mechanism-shorts-ms3-package126-results.json).
 
-- **Required complete full119 passed (2026-10-16 local):** actual71989 exits0
-  after24,311.28s on1c9f7d14; all2793 inputs/122,415,742B exact. Unit4594,
-  runtime346/integration324/Python14, frozen176/36061, normal story69/14086/14
-  pairs, native5products/300frames and recovery15stages/10products pass. Benchmark
-  no-op1180.39Hz/591samples;19 existing WebGL timing deferrals stay open.
-  All prior failed90/91/105/113 results retained; no timing-cause claim.
-  Twelve exact raw terminal files retained. Standard package/copy now pass; independent
-  all10/6181/EU008 repair is live and whole reviews still follow. Original1/10 first-pass,
-  nine failures/null paired tokens/accepted0 unchanged.
-  [Actual terminal125](./mechanism-shorts-ms3-full125-terminal-results.json).
+- **Installed capabilities/docs agree:** complete14,140B discovery is byte-exact
+  to rehashed source107, with 32 compact items/no truncation, including media limits.
+  Generated reference/25 schema references/3 reviewed guides match. Initial130
+  schema-location and136 recorder-field probes retain their failures; corrected
+  comparisons pass separately. Audit128's loader failure/first129 syntax draft
+  are also retained; corrected public-module native audits pass under the same
+  denial profile. [Installed parity131/136](./mechanism-shorts-ms3-installed131-capability-results.json).
 
-- **Installed preparation121 (2026-10-15 capture):** direct actual full119
-  admission and three actual-live refusal controls remain retained. Package and
-  complete copy have since passed; all-ten lifecycle56598 is now active. Scope
-  remains all10/6,181, complete5,223-file native closure,12-root denials/worker
-  block and EU008 repair. No whole review pass inferred.
-  [Preparation](./mechanism-shorts-ms3-installed121-preparation-results.json).
+- **Pilot product gates remain open:** original3df/runtime1090 first-pass1/10,
+  nine failures, render p50/p95 474.63/574.84s, comparable paired tokens null.
+  Current receiving validation does not reset those metrics. Whole mechanical,
+  factual, encoded-glyph, normal-speed motion/listening and owner acceptance remain
+  unreviewed; reviewed-ready/supported/accepted0. [Acceptance](./mechanism-shorts-ms3-acceptance.md).
 
-- **Actual full113 failure/owning118 (2026-10-15):** real8967 exits1 after
-  4984.34s; source2793/122,415,742B exact. Canvas story/calibration-pan timing
-  ratio1.251626897572802 exceeds unchanged1.25, with pixel failures0/maxDelta1.
-  Unit4594/runtime346/integration324 and browser prefix through passage authoring
-  pass; later matrix/benchmark/native-recovery suffix is not reached. Prior
-  identical fixture passes remain; timing cause is unproven. Whole owning118
-  subsequently exits0 on unchanged2793 inputs:69cases/14086frames/14export pairs,
-  ratio maximum1.224535 under unchanged1.25, pixel failures0/maxDelta2.
-  New completefull119 remains required before archive/all10 installed/EU008 proof.
-  Full terminal log/receipt/actual tool result retained locally. No source or
-  threshold changes, staging substitute, new Blender asset work or paid generation.
-  [Failure/diagnostic](./mechanism-shorts-ms3-story118-results.json).
+- **Owner decisions resolved:** Blender is allowed for this pilot using saved
+  models directly; core/default Three remains Blender-free. PR58's exact approved
+  description plus historical-snapshot label was published with exact readback;
+  no description approval remains. Two EU001 fault assets/four images104 completed
+  within the approved50/200M allowance; no further diagnostic asset work or new
+  ElevenLabs generation. [Decisions120](./mechanism-shorts-ms3-owner-decisions120-results.json),
+  [completed fault batch104](./mechanism-shorts-ms3-physical-fault104-results.json).
 
-- **Local gate-evidence retention117 (2026-10-15):**10 exact current-run
-  copies/6,543,995B retained under ignored `benchmarks/results/ms3-final113-gate`:
-  runner, source inventory, pinned toolchain, earlier prefixes, observer/wait
-  records, current immutable prefix3 and a running-receipt snapshot. All2793
-  held inputs match before/after. Prefix3 reaches WebGL export,65 observed script
-  headers matching116 required invocations. This was a live snapshot, not a
-  pass/percentage. Actual full113 later exits1; final log/receipt/tool exit are
-  now retained under118. No new renderer/Blender/paid generation or external write.
-  [Local record](./mechanism-shorts-ms3-log-retention117-results.json).
-
-- **Portability115 and owner resolution120 (2026-10-15):** the read-only audit
-  retains20 pinned plans/sources,10 episodes/6,181 frames,30 controls and60 shots.
-  Owner explicitly allows Blender for this pilot and direct saved-model use;
-  the plan/brief now carry that exception. Core/default Three stays Blender-free.
-  Installed all-ten and editing/relocation proof remain required. No conversion,
-  new asset/render or paid generation. [Decision](./mechanism-shorts-ms3-owner-decisions120-results.json),
-  [original scope audit](./mechanism-shorts-ms3-portability115-results.json).
-
-- **Acceptance reconciliation114 (2026-10-15):**49 deliverable scopes/26 broader
-  clauses/21 traceability rows reviewed. Fresh MS0 originals27/archive payloads25
-  plus manifest/source-copy pairs13 all match.24 selected retained raw pins match;
-  6 older MS1/MS1N temporary paths are unavailable, with committed historical
-  results retained and no fresh-pass inference. Owner120 now explicitly permits Blender for
-  this pilot and direct saved-model use, recorded as a dated plan amendment.
-  Default Three route remains Blender-free.
-  Full113 actual8967 now exits1 at Canvas timing; units4594/runtime346/integration324 pass,
-  browser/recovery/benchmark/current archive/all10 installed gates stay open.
-  All2793 held source inputs remain exact. No new render/spending or source edit.
-  [Acceptance audit](./mechanism-shorts-acceptance-audit114-results.json).
-  Audit commit30f2cf00 is pushed. Owner has explicitly approved the public PR58
-  description refresh after the two retained automatic-review rejections.
-  An expanded current-status body is separately rejected; exact approved draft
-  plus a historical-snapshot label succeeds through the same purpose-built tool,
-  with exact readback on pushedae114c1d. Linked current tracker retains113/118/119.
-  No additional public-description approval remains. [Owner approval/result](./mechanism-shorts-ms3-owner-decisions120-results.json).
-
-- **MS3 actual first ten and final source (2026-10-15):** actual EU001–EU010
-  original3df/runtime1090 lifecycle completes all13 stages and10 independent
-  handoff audits, with both real terminal handles0. Saved videos preserve complete
-  existing Alden narration at1×;6,181 frames/1,084 review images/24,724 native pins.
-  Source is reconciled with mainb376, delivered native796375b7 and MS2e44b40de.
-  Scoped73/6 and fast4,594/455 pass. Failed full90 cache receipt is retained;
-  fresh-cache full91 actually exits1 after21672s with2,793 inputs exact. Units4,594,
-  runtime346, integration324/Python14 and complete browser prefix through cache
-  lifetime pass, including frozen176 baselines. Native production then fails a
-  stale metric assertion: an unclassified caption revision makes1/3 first passes
-  unverified, so actual clean count2 differs from expected3.3/3 current products
-  verify. Test-only repair105 now requires clean2/unverified1 with rate/target null;
-  focused format/lint/build and complete owning native group pass. Actual53131
-  then exits1 after recovery1791.92s on a second stale assertion: all3 current
-  products verify, but all rows have recovery interventions, so clean first-pass
-  count0 differs from expected2. Repair110 changes only this test; focused34
-  provenance/11 retry cases, real-data classifier replay and benchmark now pass.
-  Current visual109 controls180 frames/4 inspected stills and compiler111 physical
-  label-state admission also pass with0 new native captures. Complete final113 subsequently exits1 as8967 on1b21c86e at Canvas calibration timing;
-  no failed aggregate is relabeled.
-  Original pilot
-  first-pass1/10/nine failures/null paired tokens and accepted0 remain retained.
-  [Terminal](./mechanism-shorts-ms3-first-ten-terminal90-results.json),
-  [integration](./mechanism-shorts-ms3-prerequisite-integration89-results.json),
-  [retained failed full91](./mechanism-shorts-ms3-final91-full-gate-results.json),
-  [PR/Actions and exact live command-prefix audit](./mechanism-shorts-ms3-repository95-results.json).
-
-- **Current remaining MS3 gates (2026-10-15):** final integrated-source full
-  software/benchmark/archive/installed checks and whole factual/mechanical/glyph/
-  normal-speed/listening review remain. Archive85 and unexecuted prepared86 bind
-  earlier source452b/codee231; no evidence transfer. Current installed proof must
-  cover all10 episodes/6,181 frames. Runtime identity gates reject relabeling old
-  products; prepared86 one-episode scope is insufficient. Cache-only guard controls
-  pass;1,571 expected keys/34 captures are metadata-admitted, full content closure
-  and actual installed validation remain. Complete closure93 now accounts5,223 files/2,076,631,320B
-  across34 full capture directories/1,758 stored frames. Combined12-root OS denials
-  and fresh-capture staging block pass from neutral cwd; pre-terminal copy refuses
-  before creating a receiver. Binary hash/copy/current replay remain open.
-  Current package work remains blocked on a complete final full0. Unexecuted
-  107/108 preparations depend on1050 and are now superseded after its actual1.
-  Repair110 checks the corrected recovery expectation before a new full; keep
-  all ten/6181 scope, isolation/cache/history and EU008 repair obligations.
-  Source CLI discovery remains0/32 items. Guide/source pin comparison107 captured
-  15 exact before this expected one-test follow-up; installed parity stays open.
-  [Retained failed complete full113](./mechanism-shorts-ms3-final113-full-gate-results.json).
-  The future package wrapper additionally freezes the entire clean checkout/HEAD,
-  including archived Markdown guides, until its actual terminal. Three user guides96
-  now match current CLI/native QA/handoff/relocation/reuse/provenance behavior;
-  static15-link/13-command checks pass. Final installed capability comparison stays open.
-  Results index99 now records actual first-pass1/10 and all-ten original metrics;
-  previous unmeasured/historical rows remain retained. All49 required deliverable
-  locators are inventoried; final acceptance-clause reconciliation remains open.
-  [Inventory](./mechanism-shorts-requirement-inventory99-results.json). Factual-input100
-  checks all10 actual pinned speech/callout plans against9 fresh primary web texts
-  and1 saved primary HTML; source consistency is supported within declared limits.
-  Whole factual/mechanical/listening and human acceptance stay open.
-  [Source limits](./mechanism-shorts-ms3-factual-input100-results.json). Agent phone
-  inspection101 covers60 existing samples/10 episodes; an assembly-level EU008
-  label revision is prepared but unrendered. Four additional intervals need
-  continuous/contact/leader review; no whole dimension promoted.
-  [Phone findings](./mechanism-shorts-ms3-phone101-review-results.json). Active installed102
-  preparation adds a bounded repair revision before final report/resume/10 handoffs:
-  2 queue/14 lifecycle commands, same full10/6,181 scope. Syntax/two terminal
-  refusal controls pass; receiver/package/replay remain unexecuted.
-  [Serial controls](./mechanism-shorts-ms3-installed102-preparation-results.json).
-  [Preparation controls](./mechanism-shorts-ms3-installed-preparation93-results.json),
-  [Current installed scope](./mechanism-shorts-ms3-current-installed-scope92-results.json). Physical fault104 now completes the approved
-  two-asset/four-image batch with all4 actually inspected; failures locate64/159/266.
-  Current runtime/profile bind authentic observations; original asset/worker exact.
-  Completion stays within50/200M without resetting/excluding usage. Full failure
-  remains separate; no more diagnostic asset work is planned.
-  [Actual fault witnesses](./mechanism-shorts-ms3-physical-fault104-results.json). No audio files
-  are missing and no paid generation is approved. Review copies remain byte-exact
-  after integration at `benchmarks/results/ms3-actual-first-ten-review80/index.md`.
-  [Package history](./mechanism-shorts-ms3-package-portability-results.json),
-  [whole review](./mechanism-shorts-ms3-whole-review84-results.json).
-
-- **MS2 current review repairs delivered (2026-10-15):** draft PR57 safely
-  advances495fb2c0→e44b40de with exact delivered native796375b7 ancestry. Four-format/
-  PBR/capacity/version contracts remain; focused73/6, fast4,381/429 and both
-  independent reviews pass. Current260 runtime/distinct322 integration/depth14/
-  smoke and native depth14/composition5/mask4 complete in stages. Aggregate1 with2
-  unproven5000ms protocol timeouts remains; unchanged owning5 cases and suffix0,
-  source1,996 exact. Current affected MS2 package91 passes2,368 installed file checks/13 native
-  diagnostic controls, strict types and discovery with original roots denied;
-  historical full70/package73/installed76 retain identities. Packs candidate3,
-  supported0 and accepted0; active MS3 uses actual first ten, with no new media request.
-  [Current repair](./mechanism-shorts-ms2-current-prerequisite-repair90-results.json),
-  [historical checkpoint](./mechanism-shorts-ms2-completion.md).
-
-- **MS1N review repairs delivered (2026-10-15):** existing PR56 safely advances
-  c1582058→796375b7; current-main/MS1 ancestry and both source403 review repairs
-  are retained. Fast3,935/381 and independent Standards0/Spec0; staged current
-  verification passes191 runtime/distinct321 integration/depth14/smoke plus native
-  depth14/composition5 and4 complete-RGBA mask controls. Missing soundtrack runtime,
-  3 unproven depth timeouts and white-background probe assumption remain retained;
-  source1,725 exact, corrected setup/58 affected tests/suffix pass. Archive83 and
-  earlier full/E01 proofs keep bindings. Public atomic push0; stale local alias
-  CAS correction follows ancestry/no-checkout/remote verification, no second push.
-  PR56 remains open; no publication or human acceptance.
-  [Current proof](./pr-56-current-runtime90-results.json),
-  [repair details](./pr-56-fix-results.json).
-
-- **MS1 software complete in stages (2026-10-10):** `codex/mechanism-ms1` carries
-  exact MS0 prerequisite `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51)
-  was separately merged by the owner into main at57967fa6. All 76 original required groups completed on unchanged
-  `09ce824b` production/test inputs: attempt 3 passes initial checks and 61 groups,
-  then fails required Canvas timing 1.351 > 1.25 with exact pixels; the unchanged
-  strict matrix and 15-command suffix actually exit 0. Final 176 baselines/36,061
-  frames pass in 267.68s. Earlier failed aggregates, focused reruns, unproven timing
-  cause and 29 intentional mask-baseline changes remain retained. The b4f0119d
-  archive passes 26 offline checks and both OS-denied installed696-frame E01
-  exports, each reusing all plates with 0 new 3D captures. Fresh 24-case typography
-  controls/negatives pass; E01 remains legacy/semantically unassessed. Consumer
-  libproc exception, customer-media redistribution and human review limits remain.
-  [MS1 PR #52](https://github.com/xxibcill/still-shift/pull/52) is merged into
-  `main` atb3765142; recorded native/reusable repairs continue separately.
-  Original checkout edits are preserved. [Completion](./mechanism-shorts-ms1-completion.md),
-  [results](./mechanism-shorts-ms1-results.json), [gate history](./mechanism-shorts-ms1-full-gate-results.json).
-
-- **MS0 audit complete (2026-10-09):** `codex/mechanism-ms0` audit is committed
-  at `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51) was
-  separately merged by the owner into main at57967fa6 on2026-10-12T17:13:23Z.
-  Original E01 inputs:27 dependencies,25 ZIP identities and13 original-copy
-  receipts match; actual Plex static cut/copy coverage passes. Rubric, protocol,
-  boundaries and budgets are frozen. Historical Arial/GPU identities, public
-  customer-media redistribution and human review remain limited.
-  [Results](./mechanism-shorts-ms0-results.json),
-  [baseline protocol](./mechanism-shorts-ms0-baseline.md),
-  [ordered plan](./mechanism-shorts-production-plan.md).
-
-- **Documentation patch 0.1.1 published (2026-10-10):** npm `latest` is `0.1.1`.
-  The public archive matches the verified archive byte for byte (SHA-256
-  `5cf82c0379f3a78e5b91b96200b5f9b5816cbf8975f860a3deda40fe96fa8ac5`).
-  All 733 shipped source files match `73c01fa7`; `production` and fixed annotated
-  `v0.1.1` now point there. PR #53 integrated the candidate into `main`; release
-  promotion #54 preserved ancestry by fast-forward. Local release verification
-  passed in stages: 3,666 units, 85 runtime, 318 integration, 14 depth, all 69
-  browser commands, 176 frozen baselines / 36,061 frames, and 27 online package
-  checks; production audit reports zero known vulnerabilities. Initial setup
-  failure, interrupted rerun, authentication failure and stale registry reads are
-  retained. Owner completed npm browser publication authentication. Existing
-  WebGL timing deferrals, no-op benchmark limits and separate human visual/listening
-  acceptance remain unchanged. Unrelated checkout edits are preserved.
-  [Release records](./npm-release-results.json),
-  [promotion #54](https://github.com/xxibcill/still-shift/pull/54).
-
-- **Development/release branches established (2026-10-09):** `production` and
-  annotated `v0.1.0` are pushed at `db28a938`, containing the source for the
-  published release. `main` remains the default development branch and receives
-  the documentation completion record afterward. Feature PRs target `main`;
-  release promotions and hotfixes target `production`, and hotfixes return to
-  `main`. All 591 packaged source files match the committed tag. Fresh
-  `pnpm check:fast` passes all 3,664 units; Actions remain disabled. Unrelated
-  research files and their local log entries remain uncommitted.
-  [Contribution guide](../CONTRIBUTING.md), [agent rules](../AGENTS.md),
-  [release flow](./npm-release-plan.md#development-and-release-branches),
-  [setup results](./release-branch-setup-results.json).
-
-- **npm release published and verified (2026-10-09):** one public
-  `still-shift@0.1.0` archive is built from the public root manifest and six
-  private internal workspaces. The owner confirmed one public npm package;
-  root pnpm publication targets `dist/npm` and builds it before packing.
-  Owner selected GPL-3.0-only and soundtrack support with a separately installed
-  audio runtime. JavaScript/declarations, CLI setup, runtime assets, license and
-  corresponding source are included. All 26 final installed-package checks pass,
-  including browser/depth/audio setup, both render backends, preview and source rebuild.
-  All required software checks passed in stages, including 3,664 units and 176 frozen baselines.
-  Patched `image-size` to 2.0.4; the locked production audit reports zero known
-  vulnerabilities. A panel timing outlier passed focused and complete-suite reruns
-  without threshold changes; the continuation's browser-installer bug is repaired.
-  Failed runs and the final archive checksum are preserved. The owner confirmed
-  catalog authorship; it is included under GPL-3.0-only. The owner published
-  `0.1.0`; the public registry tags it `latest`. Its downloaded archive is byte-for-byte
-  identical to the tested candidate, with matching registry integrity. The release
-  source is committed at `db28a938`, preserved by `production` and annotated
-  `v0.1.0`. [Git setup results](./release-branch-setup-results.json).
-  [npm release plan](./npm-release-plan.md), [results](./npm-release-results.json).
-
-- **Earlier private-local production preparation (2026-10-09):** candidate
-  source remains `bd0197cd`. Pinned toolchain, 85 runtime / 14 depth / 48 audio
-  integration tests and Lab/export smoke checks pass. The local soundtrack runtime
-  is installed; four native puppet exports preserve complete encoded and decoded
-  output within each backend across one/four workers and cache off/on. Release
-  packet, measured results and operating/rollback proposal are available.
-  The npm verification above supersedes this earlier software checkpoint;
-  real-project human production review remains pending.
-  [Release preparation](./production-release-preparation.md),
-  [results](./production-release-results.json).
-
-- **Core composition features merged (2026-10-09):** core source baseline is `bd0197cd`
-  (PR #50 / CE14), following CE15 PR #49 at `43d57709`. All 21 core feature
-  tracker entries are complete, including native media, mesh deformation, output
-  formats, caching, parallel rendering and soundtrack projects. PR #50's stack,
-  scale, collapse, diagnostics and conflict repairs are merged; its owner merge
-  is no longer pending. [CE14 records](./composition-ce14-plan.md),
-  [CE15 records](./composition-ce15-plan.md).
-
-- **Readiness verified with limits (2026-10-09):** completion checkpoints are
-  ancestors of `main`; saved CE14/CE15 full-gate logs match their recorded hashes.
-  Fresh schema/boundaries/format/lint/build and all 3,662 units pass in stages.
-  Missing locked `earcut` packages were installed offline; two sandbox-blocked
-  process-lock tests pass on a focused rerun outside the sandbox. No new full
-  `pnpm check` or uninterrupted `check:fast` pass is claimed.
-  [Readiness review](./composition-engine-plan.md#readiness-review--2026-10-09).
-
-- **CE5-X blocked at the approved audit stop:** A2/A3/A8/B3/B4 migration has not
-  started. Owner Q9 must resolve additional component motion providers, product
-  attachments and multi-vertex annotation scope/contracts. Remaining CE5-X scope,
-  sequence and A1 baseline regeneration still need decisions. PR #46 merged the
-  audit/preparation only. [Audit evidence](./composition-ce5x-results.json).
-
-- **Follow-ups remain:** CE6-P is owner-paused and deferred; strict timing/native
-  2× acceptance remains incomplete. CE9-F1 retains runtime expression-sugar work.
-  CE8-L-F has isolated cast-shadow preparation; production integration/acceptance
-  and advanced surface shading remain outstanding. CE16 technical completion
-  does not include human listening. The owner selected a separately installed
-  soundtrack runtime for npm; backend binaries are not bundled.
-  [Composition plan](./composition-engine-plan.md).
-
-- **Retired corpus requirement removed (2026-10-09):** owner explicitly requested
-  “discard requirement of retired corpus.” `pnpm check:all` now runs
-  `pnpm check && pnpm benchmark`; all software checks remain. Standalone
-  `corpus:check` and archived evidence remain historical and do not block release.
-  The updated release-script regression fails before the command change and passes
-  afterward (2 tests). The named mechanism-production/authoring records are still
-  absent; production inputs/review remain separate. Final npm technical verification
-  is complete in stages.
-  [Release decision](./production-release-preparation.md#retired-corpus-requirement-removed).
-
-- **Continuation:** npm release readiness and publication verification are complete. One public package
-  and GPLv3/separate-audio-runtime decisions supersede the provisional private-local
-  target. Technical verification is complete; catalog authorship is confirmed,
-  and the owner published the tested `0.1.0` archive. Earlier placeholder and empty
-  staged-list observations remain historical evidence. The branch policy is
-  implemented; the committed release, `production` and annotated `v0.1.0` are
-  pushed. Manual publication and registry verification records are in the npm release plan.
-  Separate real-project visual/listening acceptance is not
-  established by software tests. This session verified the owner's npm publication;
-  branch setup performs no npm publication, activation or scheduled work.
-  GitHub Actions remain prohibited; no workflow files were added and remote
-  settings were not changed. Software checks ran locally; publication verification
-  used read-only public npm registry access.
+- **Upstream/evidence boundaries:** MS0/MS1 owner-merged; MS1N PR56/MS2 PR57/MS3
+  PR58 remain open, with delivered repairs integrated here. Current main/native/MS2
+  bindings and failed/staged histories stay distinct. Audit114 covers49 deliverables/
+  26 clauses/21 traceability rows:24 selected older raw pins match;6 MS1/MS1N
+  temporary paths are unavailable, historical committed results retained without
+  reconstructed/fresh-pass claims. [Acceptance audit114](./mechanism-shorts-acceptance-audit114-results.json).
+  Preserve primary checkout edits; keep Actions disabled. No merge or publication
+  is authorized. Complete current handoffs, inspect EU008 encoded samples, deliver
+  all 10 current review videos and retain all remaining whole/owner review gates.
 
 ## Entries
+
+### 2026-10-16 — Retain installed progress and independent audits137
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from755f9f47.
+- **Done:** all10 initial exports actually pass as one CLI run (5821.99s),
+  6,181 reused frames/new native0;9 actual sealed final outputs pass complete independent RGBA/PCM/original
+  narration, review-pixel/transform and installed public native-clock/control checks.
+- **Retained failures:** audit128 loader path and first129 plain-JS syntax draft;
+  corrected native129 actual0 under unchanged denial profile. Main unaffected.
+- **Results:** complete installed/source discovery14140B/32 items exactly matches;
+  initial recorder-field lookup failure retained.2793 source inputs exact; 59 positive/negative raw snapshots retained.
+- **Next:** main56598/audit44813 running, EU-008 active; all10/6181, EU008 bounded
+  repair/final handoffs and whole reviews remain required.
+- **Records:** [installed127 checkpoint137](./mechanism-shorts-ms3-installed127-results.json).
 
 ### 2026-10-16 — Retain installed progress and independent audits134
 

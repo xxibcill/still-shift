@@ -379,5 +379,19 @@
     "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-installed131-capabilities/index.json",
     "bytes": 16896,
     "sha256": "sha256:6b191f21d36b8c9e4e4cbded27470071c9618dd6c0e5dfded90ca94c5e5d49e1"
+  },
+  "completeSource107DiscoveryParity136": {
+    "comparison": {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-installed131-capabilities/comparison136/index.json",
+      "bytes": 3627,
+      "sha256": "sha256:45f708c4a7ba77548645ae4a30cfd3d015be29e0938b45dcbbd827aa0c413080"
+    },
+    "completeBytesExact": 14140,
+    "compactItems": 32,
+    "compactTruncated": false,
+    "installedActualDiscoveryExitCode": 0,
+    "recordedSource107ActualExitCode": 0,
+    "generalMediaImportRenderLimitsIncluded": true,
+    "recorderPreparationFieldLookupFailureRetained": true
   }
 }

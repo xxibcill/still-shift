@@ -40,10 +40,18 @@ failures, null paired tokens and reviewed-ready/accepted0 remain unchanged.
 [Actual package and complete copy126](./mechanism-shorts-ms3-package126-results.json),
 [prepared scope and controls](./mechanism-shorts-ms3-installed121-preparation-results.json).
 
+All10 initial current installed exports now pass in one actual CLI run:
+6,181 frames/5821.99s and zero new native renders. Nine final products already
+pass independent complete picture/audio/native audits; EU008's two-label repair
+is rendering before its final audit. Final report/resume/ten handoffs and real
+aggregate terminal remain pending. [Initial ten/checkpoint137](./mechanism-shorts-ms3-installed127-results.json).
+
 Current installed capability/doc audit131 passes: public production registry and
 installed media discovery exactly match the actual installed CLI output. Generated
 formatted Markdown matches the shipped reference; all25 production schemas match
-the held source references and all3 prose guides retain their reviewed96 pins.
+the held source references and all3 prose guides retain their reviewed96 pins. Complete installed discovery
+also matches the rehashed source107 output byte-for-byte:14,140B,32 compact items
+and no truncation, including the general media/import/render limits.
 The schema JSON reference files are not bundled archive members. The initial130
 probe assumed that location and failed; its raw helper/actual terminal are retained,
 and the corrected source-reference comparison passes separately. No package files
