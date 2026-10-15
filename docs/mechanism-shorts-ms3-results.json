@@ -3,7 +3,7 @@
   "milestone": "MS3",
   "date": "2026-10-16",
   "branch": "codex/mechanism-ms3",
-  "status": "original-installed-pilot-technical-evidence-complete-in-recorded-stages-upstream-followups-and-product-review-open",
+  "status": "current-upstream-code-and-package-qualified-fresh-identity-actual-ten151-running",
   "baseMain": "57967fa6497249d75e740ba837b8e2687cc81a98",
   "ms2Prerequisite": {
     "commit": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
@@ -753,9 +753,9 @@
     }
   },
   "remaining": [
-    "Finish isolated newer-prerequisite candidate143 affected browser/package and updated installed-runtime follow-up before delivering its source to PR58. Original full119 remains earlier-source evidence; retain scoped follow-up qualifications.",
-    "Reconcile49 deliverables/26 cross-cutting clauses/21 traceability rows against final evidence, preserving original56598 bookkeeping1/corrected1490, staged runtime146, six older raw-path gaps,19 timing deferrals and unmet/unmeasured targets.",
-    "Whole factual/design/mechanical/encoded-glyph/normal-speed/listening and owner review remain open on review135. Original first-pass1/10/nine failures/null paired tokens and reviewed-ready/supported/accepted0 remain unchanged."
+    "Finish actual new-identity151 ten exports/report/resume/EU008handoff and independent154 all-frame/audio/native/ten sealed packet audits. Updated package correctly marks old products stale; original149/150 proof stays earlier-archive evidence.",
+    "Reconcile49deliverables/26clauses/21traceability with final current source/archive evidence, preserving failed/staged histories,6olderraw-path gaps,19timing deferrals and original unmet/unmeasured pilot targets.",
+    "Whole factual/mechanical/glyph/normal-speed/listening and owner reviews remain open. Original first-pass1/10/nine failures/null paired tokens and reviewed-ready/supported/accepted0 stay unchanged."
   ],
   "qualification": "MS2 software checkpoint and its exact private archive remain historical prerequisites. New MS3 source is not qualified by relabelling MS2 full/installed gates. Structural model caps do not by themselves certify lifecycle I/O/managed-memory admission or review execution.",
   "committedNativeSource": "efa5057440c1c95a7ac7aa263cc48f50d9a2c41b",
@@ -1159,19 +1159,16 @@
     "cause": "unproven"
   },
   "currentPackage": {
-    "record": "./mechanism-shorts-ms3-package126-results.json",
-    "actualSession": 52914,
-    "actualExitCode": 0,
-    "sourceCommit": "1dbee06a67813ad14c06315798782dcc9318e3ff",
-    "standardChecks": 27,
-    "members": 2573,
-    "correspondingSources": 1051,
-    "nativeDiagnosticControls": 13,
-    "retryControls": 4,
-    "nativeClosureFiles": 5223,
-    "inputFiles": 115,
-    "copiedBytes": 2207274134,
-    "allCopiedHashesVerified": true
+    "status": "passed-current-private-package-scoped-upstream-followup",
+    "record": "./mechanism-shorts-ms3-package145-results.json",
+    "sourceCommit": "ef9db6e50f83745624af51c43c7abe583b162759",
+    "archive": {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-package145/still-shift-0.1.1.tgz",
+      "bytes": 5469414,
+      "sha256": "sha256:4f41bd80ddf63837fba98206c2d961e40c0a5314b5d02470c2e6905b2266325f"
+    },
+    "historicalCompleteFullSource": "1c9f7d1413bdeb9c78cee72ccd328c4badd46c41",
+    "currentFullScope": "fast143, recorded runtime146, eight owning browser144, unchanged package145; no fresh complete full gate"
   },
   "currentInstalledLifecycle": {
     "status": "all16-cli0-and-corrected-postflight0-in-recorded-stages-original-wrapper1",
@@ -1222,5 +1219,32 @@
     "uniqueContentBytes": 4385935468,
     "independentOriginalInodes": true,
     "isAnotherExecutedRelocationProof": false
-  }
+  },
+  "previousCompletePackage126": {
+    "record": "./mechanism-shorts-ms3-package126-results.json",
+    "actualSession": 52914,
+    "actualExitCode": 0,
+    "sourceCommit": "1dbee06a67813ad14c06315798782dcc9318e3ff",
+    "standardChecks": 27,
+    "members": 2573,
+    "correspondingSources": 1051,
+    "nativeDiagnosticControls": 13,
+    "retryControls": 4,
+    "nativeClosureFiles": 5223,
+    "inputFiles": 115,
+    "copiedBytes": 2207274134,
+    "allCopiedHashesVerified": true
+  },
+  "currentIdentityPilot151": {
+    "status": "running",
+    "record": "./mechanism-shorts-ms3-current151-preparation-results.json",
+    "actualSession": 14257,
+    "currentQueueActualExitCode": 0,
+    "sourcePackage": "ef9db6e50f83745624af51c43c7abe583b162759"
+  },
+  "remainingBeforeFresh151": [
+    "Finish isolated newer-prerequisite candidate143 affected browser/package and updated installed-runtime follow-up before delivering its source to PR58. Original full119 remains earlier-source evidence; retain scoped follow-up qualifications.",
+    "Reconcile49 deliverables/26 cross-cutting clauses/21 traceability rows against final evidence, preserving original56598 bookkeeping1/corrected1490, staged runtime146, six older raw-path gaps,19 timing deferrals and unmet/unmeasured targets.",
+    "Whole factual/design/mechanical/encoded-glyph/normal-speed/listening and owner review remain open on review135. Original first-pass1/10/nine failures/null paired tokens and reviewed-ready/supported/accepted0 remain unchanged."
+  ]
 }

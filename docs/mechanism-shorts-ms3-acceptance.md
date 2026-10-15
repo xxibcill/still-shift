@@ -1,5 +1,20 @@
 # MS3 acceptance tracker
 
+2026-10-16 — current upstream repairs pass fast143, recorded runtime146,
+all8 owning browser groups144 and fresh package145:27standard checks,2,573members/
+1,051sources,13diagnostics/4retry controls/public types/discovery. Whole clean
+package checkpoint is ef9db6e5, with selected0da code bytes unchanged. Full119
+retains original1c source binding; this is a scoped follow-up qualification.
+[Current package145](./mechanism-shorts-ms3-package145-results.json).
+
+The global runtime identity hashes all5 packages, so the updated package correctly
+marks all10 earlier products stale and currentQA unreviewed. Negative147 and public
+native-key/control/clock preflight pass all6,181frames; producer profile is unchanged.
+Fresh queue151 is running with exact copied final cues, whole Alden narration1× and
+complete native cache.15-locator controls deny the entire old receiving project,
+old modules/originals and fresh-capture staging. New2D exports and independent
+current154 audits remain required. [Current151 preparation](./mechanism-shorts-ms3-current151-preparation-results.json).
+
 2026-10-16 — all16 original installed CLI stages pass, including ten handoffs.
 Original wrapper56598 then exits1 on a proven bookkeeping error: it looks under
 `products/native-plates.json`. Corrected standalone postflight6576 exits0, resolving

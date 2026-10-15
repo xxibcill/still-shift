@@ -53,15 +53,16 @@ still hold before relying on them.
   [runtime146](./mechanism-shorts-ms3-runtime146-results.json),
   [affected144](./mechanism-shorts-ms3-affected144-results.json).
 
-- **Next/current qualification:** fresh package145 is next; freeze this whole
-  checkout/HEAD through its actual terminal. Conservative runtime identity hashes
-  all5 packages, so older products become stale when code changes. Negative147
-  admission/current-native-key preflight and a fresh actual-ten queue151 follow.
-  Complete current inputs/native cache are independently copied:5,344files/
-  2,207,383,198B, including correctedEU8cue.15-locator OS controls pass; old receiving
-  project, old modules/originals denied and fresh capture staging blocked. Native
-  producer profile/frames and whole original Alden narration are reused; new2D
-  outputs still required. Do not relabel older products or reset original metrics.
+- **Current qualification/run:** fresh package145 actually exits0 as2552 on frozen
+  ef9db6e5:27checks/2,573members/1,051sources/13diagnostics/4retry controls/types/
+  discovery. [Package145](./mechanism-shorts-ms3-package145-results.json).
+  Conservative code identity makes old products stale; expected147 stale/QA reset
+  and6,181 current native-key/control/clock checks pass. Complete5,344file/2.207GB
+  current input/cache copy and15-locator controls pass. New identity151 queue0;
+  actual producer14257 now exports10 genuine episodes using cached native frames
+  and whole original Alden1×. New outputs/current154 audits still pending. Source
+  snapshot stays2,798/122,451,390B; no further code changes during this run.
+  [Current151](./mechanism-shorts-ms3-current151-preparation-results.json).
 
 - **Original actual-ten evidence complete in recorded stages:** all16 CLI stages0
   including10 handoffs. Original56598 wrapper exits1 on a wrong final map path;
@@ -75,8 +76,7 @@ still hold before relying on them.
 - **Durable original review package:** [ten review135 videos](../benchmarks/results/ms3-current-installed-review135/index.md)
   are delivered. [Snapshot150](./mechanism-shorts-ms3-project150-results.json)
   preserves20,889files/16.91GB logical/4.39GB unique content with independent original
-  inodes; duplicates share links only inside the immutable snapshot. No another
-  executed relocation proof or new rendering is inferred from that backup.
+  inodes; duplicates share links only inside the immutable snapshot. Runtime qualification stays in staged149; this backup records only copying.
 
 - **Base verification stays bound to earlier code:** complete full119 actual0 on
   1c9f7d14:4,594unit/346runtime/324integration/14Python,176baselines/36,061frames;
@@ -106,6 +106,21 @@ still hold before relying on them.
   and complete final reconciliation after current package/actual-ten qualification.
 
 ## Entries
+
+### 2026-10-16 — Qualify fresh package and start current-identity actual-ten151
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3-upstream143`, package ef9db6e5.
+- **Results:** actual package2552 exits0:27checks/2,573members/1,051sources,13native
+  diagnostics/4retry controls/types/discovery. Full clean HEAD held throughout.
+- **Identity:** newer code correctly resets all10 old currentQA to unreviewed;
+  negative147/public native-key/control/clock preflight0, producer profile unchanged.
+- **Run:** complete current data/cache copied5,344files/2.207GB and15-locator OS
+  controls0. Queue151actual0; producer14257 exports10 genuine final-cue episodes.
+  No fresh native capture can stage. Original first-pass denominator remains1/10.
+- **Open:** actual positive151 completion, independent154 current product/packet
+  audits and finite reconciliation; whole/owner reviews remain pending.
+- **Records:** [Package145](./mechanism-shorts-ms3-package145-results.json),
+  [preflight/copy/current151](./mechanism-shorts-ms3-current151-preparation-results.json).
 
 ### 2026-10-16 — Combine verified code and receiving documentation checkpoint
 

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "mechanism-shorts-ms3-upstream143-1",
   "capturedUtc": "2026-10-15T20:14:57.861952+00:00",
-  "status": "isolated-upstream-repairs-fast-staged-runtime-eight-owning-browser-qualified-package-pending",
+  "status": "scoped-current-software-and-package-qualified-current-identity-actual-ten151-running",
   "candidateBranch": "codex/mechanism-ms3-upstream143",
   "baseCommit": "6e1ad86f78da242c1ef88100383173b0d78c4aca",
   "upstream": {
@@ -106,6 +106,13 @@
       "actualToolExitCode": 0,
       "groups": 8,
       "record": "./mechanism-shorts-ms3-affected144-results.json"
+    },
+    "package": {
+      "actualToolExitCode": 0,
+      "record": "./mechanism-shorts-ms3-package145-results.json",
+      "source": "ef9db6e50f83745624af51c43c7abe583b162759",
+      "members": 2573,
+      "correspondingSources": 1051
     }
   },
   "retained": [
@@ -189,5 +196,6 @@
     "No merge, publication, baseline regeneration, ElevenLabs spending, or human acceptance.",
     "First offline dependency setup exited127 because pnpm was omitted from PATH; corrected offline retry0 with178reused/0downloaded."
   ],
-  "candidateCodeCommit": "0da1f1dd25edb1bc4096a2c5e4a4364481518404"
+  "candidateCodeCommit": "0da1f1dd25edb1bc4096a2c5e4a4364481518404",
+  "currentIdentityPilot": "./mechanism-shorts-ms3-current151-preparation-results.json"
 }
