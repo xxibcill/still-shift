@@ -4,8 +4,9 @@ runMechanismProductionQueue(manifestPath, outputDirectory, executor, options) is
 public from the engine. `createMechanismProductionNativeExecutor()` builds a
 real shared renderer adapter; its `createQueue(id, projects, manifestDirectory)`
 snapshots every current source/media dependency and actual code/profile identity.
-The [report CLI](./mechanism-production-report-command.md) is verified; queue
-execution uses the public API. Generic fixtures prove scheduling mechanics;
+The production CLI exposes queue creation, execution/resume, targeted retry,
+reporting and compact handoffs; see the commands below and the
+[report guide](./mechanism-production-report-command.md). Generic fixtures prove scheduling mechanics;
 [the native proof](./mechanism-shorts-ms3-native-executor-results.json) separately
 retains actual three-family capture, cache reuse, caption revision and full decode.
 These engineering inputs supply no fact, human review or pilot acceptance.
@@ -44,19 +45,29 @@ through per-attempt and verification children. Mutable/returned state reserves
 Foreign leases survive and attempt storage retires. Standalone return data is
 caller-owned. No physical RSS or disk power-loss guarantee is claimed.
 
-Relative generic locator relocation passes; real native receipt relocation and
-invalidation remain for adapter proof. The actual SIGKILL fixture kills a queue
-owner blocked in filesystem execution, not a native encoder.
-[Evidence](./mechanism-shorts-ms3-queue-results.json) retains methods/failures;
-[MS3 acceptance](./mechanism-shorts-ms3-acceptance.md) preserves all original
-workstreams and the ten questions/five assets/two behaviors.
+Relative dependencies and owned artifact paths survive relocation in the queue
+controller. Three-native compilation receipts retain authenticated absolute
+locators: reporting a moved product marks it stale, and `production run` can
+perform bounded recovery with fresh validation and retained history. Recovery
+preserves old receipts and validates a current product. The
+[real CLI recovery proof](./mechanism-shorts-ms3-native-recovery-results.json)
+records that route. The original generic SIGKILL fixture kills a queue owner
+blocked in filesystem execution; it does not establish native encoder recovery.
+[Queue evidence](./mechanism-shorts-ms3-queue-results.json) retains its scope.
+[MS3 acceptance](./mechanism-shorts-ms3-acceptance.md) follows the owner's actual
+EU-001–EU-010 selection; the earlier questions/five-asset/two-behavior cohort
+remains historical engineering evidence.
 
 The native adapter measures original worker/aggregate submission counters, verifies
 retained original captures, renders cached overlays/audio and fully decodes RGBA
 and float32 PCM through bounded streams. Technical QA binds the actual output,
-inputs, runtime code/profile and clocks; the other five dimensions stay unreviewed.
-Caption-only revision reuses plates with zero new native submissions. Native
-receipt locators currently reject relocation; supporting relocation is still open.
+inputs, runtime code/profile and clocks. Registered and measured-preview failures
+retain their own QA dimensions; passing technical checks leaves whole factual,
+mechanical, visual, motion and listening review separate. Caption-only revision
+reuses matching plates with zero new native submissions. Three-native relocation
+uses the stale-report/recovery path described above. Blender-native verification
+uses its version-2 content bindings and refreshes compact handoff resume paths
+from the receiving manifest.
 
 ## Declarative queue and command execution
 
@@ -155,7 +166,12 @@ folder are canonicalized before binding and immutable publication.
 The [native episode guide](./mechanism-blender-episode.md) documents source/plan
 fields and the CLI commands. The shared [generated capability reference](./mechanism-production-capabilities.md)
 and `production discover/schema` expose the same implemented limits and candidate
-qualification. Native QA-plan/grouped-warning/evidence/handoff work remains open.
+qualification. Optional native QA plans retain registered numeric findings and
+grouped warning peaks. Encoded review evidence includes phone/shot/contact samples
+and complete decoded review audio; compact version-2 handoffs preserve current
+bindings and unfinished review statuses. These technical artifacts are implemented;
+whole factual/mechanical/encoded-glyph/continuous-motion/listening review and pilot
+acceptance require their separate evidence.
 
 ## First-pass provenance
 
@@ -183,7 +199,11 @@ A revised manifest may declare `revisionChanges` for selected IDs:
 The manifest hash authenticates the declared reason. Use `planned-edit` for new
 editorial work, `repair` for correcting the submitted job, or `manual-recovery`
 when manual intervention was needed. A planned edit starts separate work for this
-metric; later failures/retries in that edit remain visible in the failure totals.
+metric only when the submitted request actually changes; later failures/retries
+in that edit remain visible in the failure totals. A `planned-edit` declaration
+on an unchanged request cannot hide cache recovery or a failed first pass.
+Targeted retry clears revision-specific change declarations from its new manifest,
+while retaining them in the archived history.
 The runner records same-request retries and invalid-product `recovery` itself.
 It also retains bounded `interventions` in chronological attempt order, so a
 same-request manual recovery or exhausted cache recovery affects first-pass

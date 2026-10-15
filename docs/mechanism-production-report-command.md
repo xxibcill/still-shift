@@ -9,6 +9,21 @@ pnpm still-shift production report \
   --report /absolute/path/fresh-report.json
 ```
 
+This example uses the default Three-native queue. A Blender-native version-2
+manifest requires the same explicit host executable/profile used to create it:
+
+```sh
+pnpm still-shift production report \
+  --manifest /absolute/path/queue.json \
+  --output-dir /absolute/path/queue-output \
+  --blender-executable /absolute/host/Blender \
+  --report /absolute/path/fresh-report.json
+```
+
+The manifest selects the backend. An optional `--backend` must agree with its
+version. The report command verifies existing products and performs no new native
+capture or episode export.
+
 The compact JSON response includes episode rows and cohort categories: first-pass
 technical completion, failures, authoring availability, setup/routine/render
 p50/p95 and each QA dimension's review counts. It stays within32,768 bytes and100

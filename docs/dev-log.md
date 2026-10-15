@@ -76,7 +76,9 @@ still hold before relying on them.
   Standard offline package matrix and all-ten current lifecycle runners94 are
   prepared with tested terminal-admission refusals; actual execution is pending.
   The future package wrapper additionally freezes the entire clean checkout/HEAD,
-  including archived Markdown guides, until its actual terminal.
+  including archived Markdown guides, until its actual terminal. Three user guides96
+  now match current CLI/native QA/handoff/relocation/reuse/provenance behavior;
+  static15-link/13-command checks pass. Final installed capability comparison stays open.
   [Preparation controls](./mechanism-shorts-ms3-installed-preparation93-results.json),
   [Current installed scope](./mechanism-shorts-ms3-current-installed-scope92-results.json). Physical fault captures stay
   blocked by the previously requested revised Creator work budget. No audio files
@@ -253,6 +255,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Reconcile production guides with implemented lifecycle
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` from `3da63708`.
+- **Done:** corrected three non-generated guides: CLI execution, native QA/review
+  artifacts/handoffs, Three relocation recovery versus Blender resume refresh,
+  profile/key-based native reuse, actual first-ten history and genuine planned edits.
+  Added the required explicit Blender executable to the version2 report example.
+- **Results:** current source/test inspection, Prettier/whitespace and static15 local
+  links/13 command examples pass. Runtime/code/schema/generated capabilities unchanged;
+  full42543 remains live and no competing render/paid generation was started.
+- **Open / next:** final full/benchmark and exact installed capability/all-ten proof;
+  whole/fault/human gates remain. Guide corrections do not transfer product acceptance.
+- **Records:** [guide96 evidence](./mechanism-shorts-ms3-guide96-results.json),
+  [current acceptance](./mechanism-shorts-ms3-acceptance.md).
 
 ### 2026-10-15 — Verify milestone PR delivery and live full command coverage
 

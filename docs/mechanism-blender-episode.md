@@ -119,24 +119,32 @@ All numeric samples and located findings remain accessible. Consecutive failure
 runs retain their actual peak frame and image; grouped warnings retain raw peak
 ownership. Report verification recomputes these artifacts against the current
 inputs/export without another Blender render. Comparison and retained-data limits
-apply before reads/execution and serialization. Native review evidence and handoff
-remain pending.
+apply before reads/execution and serialization. Native review evidence and
+version-2 handoffs are implemented; see
+[encoded native review package](#encoded-native-review-package) and the CLI below.
+Their verification preserves unfinished review states.
 
 Limits are1MiB per source/plan,2,000 output frames,128 shots,256 speech cues,
 256 keys per track,64 controls,4,096px per dimension and8,388,608 pixels. Sampling
 also has a prospective expanded-track budget. Bounded adapters contend within
-the caller's Node allowance; Blender has separate host resource use. The current
-receiving proof is a saved composition in its owning folder; relocated/isolated
-content needs its own verification.
+the caller's Node allowance; Blender has separate host resource use. The saved
+composition and review package retain pinned content identities. Relocated
+content requires current input/output/runtime/profile verification; handoff resume
+paths come from the receiving manifest. Final installed-package qualification is
+separate from source-checkout execution.
 
 The [source-bound evidence](./mechanism-shorts-ms3-blender-episode-results.json)
 retains the actual full Alden zipper engineering draft, cache/font/caption repairs
 and failed checks. Its320×568 draft supplies no1080×1920 production, whole glyph,
 mechanical/contact, factual, continuous-motion or listening acceptance. Current
 pilot admission remains0/10. [All ten HD plans and phone scouts](./mechanism-shorts-ms3-first-ten-scout-results.json)
-now exist; framing/contact staging, whole products/reviews and final gates remain.
-Current producer changes invalidate prior producer-bound captures; historical
-products keep their original binding.
+retain their sampled scope. The subsequent
+[actual first-ten lifecycle](./mechanism-shorts-ms3-first-ten-terminal90-results.json)
+completed run/report/resume and ten handoffs on its recorded original producer;
+whole reviews and final integrated-package gates remain separate. Runtime identity
+changes require fresh current product/QA validation. Matching native states can
+still reuse sealed captures when their dependency keys and producer profile agree;
+historical products keep their original binding.
 
 ## Production CLI
 
@@ -199,14 +207,15 @@ Rendered QA is admitted before native capture: at most 100,000 layer-frames and
 256 MiB of prospective quality capacity. Reports are bounded to 8 MiB, 2,048 warning
 rows and 512 endpoint images. Measured sampled-visual status does not establish
 all-frame encoded-glyph, factual, mechanical, continuous or listening acceptance.
-Full phone overviews, shot/contact crops, audio review and native handoff integration
-remain separate work.
+The encoded review package below supplies phone overviews, shot/contact crops,
+complete decoded review audio and native handoff integration. Producing those
+artifacts does not perform listening or continuous audiovisual review.
 
 [Current native framing proof](./mechanism-shorts-ms3-native-framing-results.json)
-retains all ten 59-shot/177-state HD scouts and scoped camera repairs. Causal
-labels/highlights and resolved holds still need implementation/review before the
-whole products. Same-material cut faces can remain unclear despite correct source
-geometry, camera projection and render flags; those numeric checks do not approve
+retains all ten 59-shot/177-state HD scouts and scoped camera repairs. Later
+whole products retain their own annotation/hold and output bindings; the scout
+images alone do not approve those products. Same-material cut faces can remain
+unclear despite correct source geometry, camera projection and render flags; those numeric checks do not approve
 physical contact or pixel readability.
 
 ## Native causal annotations
