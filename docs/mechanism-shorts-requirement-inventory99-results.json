@@ -1,0 +1,523 @@
+{
+  "schemaVersion": "mechanism-shorts-required-deliverable-inventory-1",
+  "capturedUtc": "2026-10-15T03:41:31.757970+00:00",
+  "status": "all49-deliverable-locators-inventoried-final-reconciliation-open",
+  "sourceBeforeDocs": "f5977c0194bb52b41b18316803d7dcbb238cf254",
+  "heldRuntimeSource": "3749618d64dfa35a57b2e4f34da5b6722ac9c089",
+  "approvedPlan": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-shorts-production-plan.md",
+    "bytes": 115106,
+    "sha256": "sha256:a5a6b11b81d197121cc4e73b3b3691387a00b9b56ac691ef45072130faf1cc8d"
+  },
+  "milestoneCounts": {
+    "MS0": 7,
+    "MS1": 13,
+    "MS1N": 7,
+    "MS2": 14,
+    "MS3": 8
+  },
+  "totalRequirements": 49,
+  "planChecked": 32,
+  "planUnchecked": 17,
+  "rows": [
+    {
+      "id": "MS0-01",
+      "milestone": "MS0",
+      "planLine": 472,
+      "requirement": "Audit the final CE13/CE15/CE16 media, alpha, caching, worker and audio APIs. Replace obsolete assumptions in this plan and identify existing equivalent features before adding code.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms0-results.json",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS0-02",
+      "milestone": "MS0",
+      "planLine": 475,
+      "requirement": "Recover E01 inputs; inventory hashes, licensing/provenance, fonts, original audio, captions/cues, scene parameters and dependency versions. Resolve the contact-state terminology and document model simplifications.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms0-results.json",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS0-03",
+      "milestone": "MS0",
+      "planLine": 478,
+      "requirement": "Extend that inventory with exact-copy font coverage and actual cut/axis identity; hashes/loading alone are insufficient. Audit completed typography capabilities and identify valid routes for mask, count-fit, Thai and portrait probes before classifying any source-audited risk as a rendering defect.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms0-results.json",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS0-04",
+      "milestone": "MS0",
+      "planLine": 482,
+      "requirement": "Freeze a shot/label/event reference from the delivered v008 evidence. Record its current creative-review limitations separately from technical results.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms0-results.json",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS0-05",
+      "milestone": "MS0",
+      "planLine": 484,
+      "requirement": "Define a visual rubric: recognizable object, solid side faces, real slots, readable blade curvature, bevel highlights, material separation, contact shadow, visible causal contact, stable camera framing and readable captions.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms0-results.json",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS0-06",
+      "milestone": "MS0",
+      "planLine": 487,
+      "requirement": "Establish comparable baseline tasks and telemetry collection before claiming token or labor savings. Record missing token telemetry as null.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms0-results.json",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS0-07",
+      "milestone": "MS0",
+      "planLine": 489,
+      "requirement": "Select the first package boundaries, resource budgets and proposed import subset. Estimate work by milestone after this audit; retain no deadline until based on implementation evidence.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms0-results.json",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS1-01",
+      "milestone": "MS1",
+      "planLine": 520,
+      "requirement": "Implement the first-party Three.js preparation module and shared runtime integration. Remove episode-owned HTTP servers, screenshot loops, SVG label code and FFmpeg assembly from the authored episode.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms1-completion.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS1-02",
+      "milestone": "MS1",
+      "planLine": 523,
+      "requirement": "Reconstruct solid hook/flange geometry with through-slots, curved blade, stationary blade-mounted rivets, recognizable housing and contact surfaces. Preserve the distinction between geometry, material styling and mechanism state.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms1-completion.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS1-03",
+      "milestone": "MS1",
+      "planLine": 526,
+      "requirement": "Prove PBR materials, environment reflections, bevel highlights, contact shadows, color/alpha handling and the supported export profile on a short representative shot before paying for full renders.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms1-completion.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS1-04",
+      "milestone": "MS1",
+      "planLine": 529,
+      "requirement": "Emit clean frames and named anchor/visibility metadata. Compile all seven roles\u2014PULL, PUSH, THICKNESS, TRAVEL, INSIDE, OUTSIDE and SLIDES\u2014through native typography/shapes, with the actual meaning resolved in MS0. Preserve separate captions, no persistent brand/sentence headers, and enlarged-view qualifiers.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms1-completion.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS1-05",
+      "milestone": "MS1",
+      "planLine": 533,
+      "requirement": "Add shared exact-copy coverage/cut validation for native overlays, with explicit fallback/strict-profile behavior and legacy compatibility. Preserve the Plex-only Thai negative and Noto control. Reuse existing font preparation.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms1-completion.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS1-06",
+      "milestone": "MS1",
+      "planLine": 536,
+      "requirement": "Declare complete value/unit/qualification groups, intact phrase treatments and purposeful reading intervals in the portable authoring/review contract. Extend existing CE12 policy without suppressing real opacity/velocity faults or changing unannotated defaults. Test faint qualifications and color-only emphasis; do not pad or slow narration or add filler motion to pass lint.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms1-completion.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS1-07",
+      "milestone": "MS1",
+      "planLine": 541,
+      "requirement": "Reproduce base-36/inline-96 masks before proposing a renderer repair. Add a lost-label/leader portrait negative and corrected control to the existing anchor tests; verify actual semantic target, transformed endpoint and clearance.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms1-completion.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS1-08",
+      "milestone": "MS1",
+      "planLine": 544,
+      "requirement": "Implement load/validate/compile/render/check/save/reload/patch/package using supported CLI/API paths and supplied audio. Include compact JSON receipts and sanitized cause chains from the first vertical slice.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms1-completion.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS1-09",
+      "milestone": "MS1",
+      "planLine": 547,
+      "requirement": "Publish the minimum episode/component JSON Schemas and version discovery. Enforce documented item/byte response limits, located unsupported-version errors and access to complete reports under the episode interface contract.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms1-completion.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS1-10",
+      "milestone": "MS1",
+      "planLine": 550,
+      "requirement": "Deliver the manifest, dependency dry run, runtime installation instructions and sanitized error contract defined under portable projects and diagnostics.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms1-completion.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS1-11",
+      "milestone": "MS1",
+      "planLine": 552,
+      "requirement": "Deliver a bridge callout-overlap fixture and the supported detection, scoped patch, affected-output render and final-file recheck path. Include a compact project summary sufficient for a fresh agent session to complete the repair.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms1-completion.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS1-12",
+      "milestone": "MS1",
+      "planLine": 555,
+      "requirement": "Detect invalid anchor, stale sidecar, wrong travel, moving rivet and contact gap with part/property and first failing interval. Provide an independent analytic expectation rather than comparing the evaluator to itself.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms1-completion.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS1-13",
+      "milestone": "MS1",
+      "planLine": 558,
+      "requirement": "Instrument stage times, render work and cache receipts immediately so later savings claims have a baseline.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms1-completion.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS1N-01",
+      "milestone": "MS1N",
+      "planLine": 624,
+      "requirement": "Audit the bridge contracts and define the supported native subset: bounded primitives and/or indexed meshes, normals, material slots, rigid hierarchy, units, pivots, transforms, asset hashes and topology/resource limits. Use a documented import subset where needed; reject unsupported data explicitly.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./pr-56-current-runtime90-results.json",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS1N-02",
+      "milestone": "MS1N",
+      "planLine": 628,
+      "requirement": "Extend `composition-1`, pure evaluation, the shared graph and WebGL2 together. Reuse camera and rig evaluation across bridge/native paths. Define how a projected label stays screen-pinned and how an authored 3D graphic shares mesh depth; never infer those roles from draw order alone.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./pr-56-current-runtime90-results.json",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS1N-03",
+      "milestone": "MS1N",
+      "planLine": 632,
+      "requirement": "Specify opaque depth testing, alpha/cutout and the supported transparency subset, camera clipping, normal transforms, color/alpha and motion-blur clocks. Verify only declared mixed-layer combinations; unsupported backends and transparency cases fail with located diagnostics rather than flattened output.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./pr-56-current-runtime90-results.json",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS1N-04",
+      "milestone": "MS1N",
+      "planLine": 636,
+      "requirement": "Reuse the established bridge material/profile subset needed by the native proof, with explicit capability and appearance checks. Map overlap with solid geometry and CE8-L-F in the owning plan. A bridge reflection or shadow does not establish full native shading acceptance or complete CE8-L-F.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./pr-56-current-runtime90-results.json",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS1N-05",
+      "milestone": "MS1N",
+      "planLine": 640,
+      "requirement": "Expose native mesh authoring, camera/material controls and inspection through the builder, CLI and Lab. Preserve saved projects, assets, narration, fonts, cache identity, scoped edits and clean-location delivery.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./pr-56-current-runtime90-results.json",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS1N-06",
+      "milestone": "MS1N",
+      "planLine": 643,
+      "requirement": "Deliver a native version of the E01 mechanism proof plus an independent mixed mesh/graphic occlusion fixture. Record the supported bridge/native comparison policy before implementation. Compare geometry, clocks, anchors and material appearance independently; retain differences and unsupported features.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./pr-56-current-runtime90-results.json",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS1N-07",
+      "milestone": "MS1N",
+      "planLine": 647,
+      "requirement": "Profile representative native scenes under the supported software renderer before broad expansion. Record actual timings, memory, source edits and cache invalidation; preserve all existing composition baselines.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./pr-56-current-runtime90-results.json",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS2-01",
+      "milestone": "MS2",
+      "planLine": 715,
+      "requirement": "Create tape-hook slider, cable-tie ratchet/pawl and clothespeg hinge/spring packs by extending the accepted MS1/MS1N contracts. Each declares immutable IDs, version/hash, parts, hierarchy, units, bounds, pivots, anchors, material slots, named camera targets, parameter ranges, factual variant, level of detail, compatibility, thumbnail, neutral pose and diagnostic views. Declare the supported detail level even when only one exists; automatic detail generation is outside this requirement. Metadata inspection returns targets/detail and compatibility without mesh or texture bytes.",
+      "planDeclaredChecked": false,
+      "evidenceIndex": "./mechanism-shorts-ms2-acceptance.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS2-02",
+      "milestone": "MS2",
+      "planLine": 723,
+      "requirement": "Extend the shared geometry library with bounded rounded boxes, cylinders, toruses, extruded profiles with holes, swept ribbons, coils and simple bevels. Use validated imported meshes where these are insufficient; set topology and memory limits explicitly.",
+      "planDeclaredChecked": false,
+      "evidenceIndex": "./mechanism-shorts-ms2-acceptance.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS2-03",
+      "milestone": "MS2",
+      "planLine": 727,
+      "requirement": "Extend the shared importer to the documented glTF/GLB subset: named rigid hierarchy, baked transforms, normals, UVs, base color, metalness, roughness, normal maps and texture color spaces. Validate extensions and local dependencies. Reject unsupported skins, morphs, animations, compression or material features unless explicitly added with tests; never silently flatten a model's required mechanism behavior. Eighteenth slice adds the named/baked rigid import IR, local dependency validation and exact encoded PBR roles with current software evidence. Nineteenth slice adds pinned PNG/JPEG RGBA preparation, explicit native PBR/ tangent resource ownership, shared pre-decode allocation admission and actual indexed-draw/mip0 GPU component proof. Twentieth slice adds rigid source3 shared-world execution; twenty-first adds composition source/binary HTTP, frame3, preview and static PBR styles. Twenty-second verifies all used GPU mip storage/bytes/transfer with independent current-environment derivation, sampler/LOD controls, foreign-state restoration and bounded scratch. Twenty-third adds standalone strict frame3 observations: actual rigid draw coverage, GPU matrices/bytes/mips, measured Three world/anchors and independent validation. Twenty-fourth slice repairs current strict gates without changing original budgets or frozen gradient oracles: fast42 passes 4,177 units, Node44 passes ten owning checks, and fresh source3/native2 browser groups pass. Earlier failures remain in the [strict-gate history](./mechanism-shorts-ms2-strict-gates-results.json). Twenty-fifth slice adds the strict output3 envelope and ordered async collector beside the original output2 parser. Current fast/owning Node and native2 composition/export checks pass; [collector evidence](./mechanism-shorts-ms2-output3-collector-results.json) retains test-ownership/type failures. Source3 collection/export stays rejected. Twenty-sixth slice adds incremental conservative output3 capacity and fresh actual GPU receipt-to-collector bounds. All eight packets fit 28,165B admission; current units/Node/browser checks finish in stages with the original failed timeout retained in [capacity evidence](./mechanism-shorts-ms2-output3-capacity-results.json). Twenty-seventh slice integrates asynchronous output3 composition collection with independent GPU receipt validation and separately admitted world artwork sharing physical depth. Current normal fast/Node, eight standalone controls, six source3 seeks/two artwork controls and all six native2 groups pass on held inputs; [composition evidence](./mechanism-shorts-ms2-output3-composition-results.json) retains type failures and qualified lost receipts. Authenticated source3 export, installed and whole-world proof remain pending. Twenty-eighth slice adds strict execution3 and the awaited journal/replay boundary. Two repeated actual one-frame raw journals replay with five forgeries rejected under the unchanged default replay quota; normal fast/Node/native2 groups pass on held inputs. [Journal evidence](./mechanism-shorts-ms2-output3-journal-results.json) retains type/key/quota/helper failures. Normal source3 producer/export dispatch is now implemented in the twenty-ninth slice: two actual11-frame authenticated source3 MP4 exports and unused-source3 output pass with current fast/Node/native2/primitive regressions on held inputs. [Normal export evidence](./mechanism-shorts-ms2-output3-export-results.json) retains command/type failures. Thirtieth slice adds actual mixed fractional frame1/frame2/frame3 export: six output frames/54 actual passes, authenticated packet/pixel bodies, independent retained-row replay and seven real endpoint rejection controls. Normal fast and owning mixed proof pass on held test inputs with unchanged production. [Mixed evidence](./mechanism-shorts-ms2-output3-mixed-results.json) retains the invalid overlapping fixture and correction preserving the rule. Thirty-first slice bounds raw source admission at the original32MiB ceiling using a regular descriptor, exact backing store plus growth sentinel and cancellation/final-stat cleanup. Node PBR verification hashes actual binary bodies through64KiB scratch; the original retaining API stays compatible. Current fast/Node and normal/mixed source3/native2 export groups pass on held inputs. [Admission evidence](./mechanism-shorts-ms2-source-admission-results.json) retains new build/lint failures. Aggregate parsed-source/world/body/replay remain pending. Thirty-second slice verifies a fresh local archive at b4fc65ed: maintained28 checks, four installed public exports/34 frames/130 passes with checkout/source access denied, independent receipt replay and scoped negatives. Exact audit matches928 copied Git source and2,275 total members. [Installed evidence](./mechanism-shorts-ms2-installed-source3-results.json) retains harness/ auditor failures and pins execution to that pre-documentation source. Whole quotas, remaining MS2 criteria/full gates and final archive refresh remain. Thirty-third slice repairs shared world constructor/temporary/destructor ownership without changing admission or render math. Six focused failure controls, fast4 with4,204 units and live source3/normal/mixed/native2/depth groups pass on held inputs. Two normal MP4s and six mixed raw HTTP bodies exactly preserve the preceding renders. [Ownership evidence](./mechanism-shorts-ms2-world-ownership-results.json) separates application-visible retirement from unproven driver internals and keeps aggregate/full/installed refresh requirements open. Thirty-fourth slice retires nested PBR owners/private typed backings and preserves source3 setup failure through cleanup, without changing source schemas/render math. Focused 16 controls, fast16 with 4,208 units and six owning PBR GPU/export groups pass on held inputs; normal MP4/mixed HTTP pixels exactly preserve slice33. [Nested evidence](./mechanism-shorts-ms2-pbr-ownership-results.json) retains lint failure. Source/preparation admission against 512 MiB Node allowance and whole world/body/replay/full/final-installed acceptance remain open; thirty-fifth slice bounds JSON ingestion before body/decode and JSON.parse under the unchanged 512 MiB allowance, with accumulated native entries and actual dense/padded/large-valid controls. Fast24 with 4,213 units and scoped Node/PBR/native2 groups pass on held inputs24. [JSON ingestion evidence](./mechanism-shorts-ms2-json-source-admission-results.json) retains failures and distinguishes this foundation from retained catalogue/ variant, source/result coexistence and full aggregate acceptance; thirty-sixth slice shares native ingestion/admitted catalogue, result/RPC and concurrent revalidation under one unchanged Node allowance. Six new unit/two filesystem controls, fast15 with 4,219 units and current Node/PBR/native2 groups pass on held inputs15, preserving prior MP4/raw pixel bytes. [Node owner evidence](./mechanism-shorts-ms2-node-owner-results.json) retains failures and pre-publication telemetry limits. Root I/O/text/serialization, remaining producers, whole world/body/replay/full/installed acceptance stay open; thirty-seventh slice admits root descriptor/body/text/parser and scene JSON/ UTF-8 encoding under the shared Node allowance, with scoped rollback and actual backing cleanup. Fast20 with 4,223 units, Node21 with 30 checks and current PBR/native2 groups pass on held inputs20, preserving prior video/pixels. [Root I/O evidence](./mechanism-shorts-ms2-root-io-results.json) retains actual lint/unit failures. Semantic validation/report and remaining producers, lifetime/whole world/body/replay/full/installed requirements stay open; this criterion stays unchecked. See the [import API](./rigid-gltf-import.md) and [retained results](./mechanism-shorts-ms2-results.json).",
+      "planDeclaredChecked": false,
+      "evidenceIndex": "./mechanism-shorts-ms2-acceptance.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS2-04",
+      "milestone": "MS2",
+      "planLine": 827,
+      "requirement": "Implement slider hard stops, hinge/lever, deterministic spring return and ratchet/pawl controls. These are explanatory animation rigs, not a general physics solver. Keep gears, cams and flexible-strip behaviors demand-driven.",
+      "planDeclaredChecked": false,
+      "evidenceIndex": "./mechanism-shorts-ms2-acceptance.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS2-05",
+      "milestone": "MS2",
+      "planLine": 830,
+      "requirement": "Derive this tape-hook model's travel from hook thickness. Keep rivets attached to the blade and contact relationships valid when the reference frame moves. Reject conflicting property writers and out-of-range controls at compile time.",
+      "planDeclaredChecked": false,
+      "evidenceIndex": "./mechanism-shorts-ms2-acceptance.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS2-06",
+      "milestone": "MS2",
+      "planLine": 833,
+      "requirement": "Declare legal state transitions, required relationships and mechanism-specific event-order assertions. Reject invalid authored transitions; resolve timed failures to the rig, parts, relationship and first failing interval. Evaluate valid states without dependence on playback history; MS3 integrates these results into unified QA. Slice38 adds a versioned authored state/transition/event contract, required relationship and narrowed signed-gap contact checks with located first failure. All output/event samples and requested fractional seeks use pure evaluation; seven new controls cover all three candidates. Four live family dimension cycles compile 96 frames and reuse controls through 40 previews/eight exports. [Timeline evidence](./mechanism-shorts-ms2-pack-timeline-results.json) retains build/identity failures; [API](./mechanism-pack-timelines.md) separates discrete state checks from continuous-time and unified production QA. This criterion remains unchecked pending the complete family/production acceptance.",
+      "planDeclaredChecked": false,
+      "evidenceIndex": "./mechanism-shorts-ms2-acceptance.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS2-07",
+      "milestone": "MS2",
+      "planLine": 847,
+      "requirement": "Add recognition, contact approach, macro, aligned comparison, controlled orbit and return recipes. Frame actual target bounds using lens/view direction and reserved overlay regions. Check near planes and camera intersections; retain authored overrides when automatic framing obscures the decisive surface. Declare the target relationship and motion intent. Keep cut/hold/transition choices independent of the camera recipe; verify endpoints and intermediate framing, and distinguish intentional cuts from unintended camera jumps. Software scope: slice17 verifies all six recipes/three candidates/default and larger sizes, every frame of the24-frame native fixtures and repeated exports. Current producer refresh retains staged source12 capture/source13 replay evidence; longer timelines/import/human acceptance remain separate. See [MS2 results](./mechanism-shorts-ms2-results.json).",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms2-acceptance.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS2-08",
+      "milestone": "MS2",
+      "planLine": 859,
+      "requirement": "Support screen-pinned labels with moving leaders, world text and surface markings through explicit supported routes. Use deterministic layout candidates and tie-breaking, label-to-label exclusions, protected contact regions, caption exclusion and safe areas. Resolve competing labels by declared deterministic priority while preserving authored locks; return a located failure if no valid layout exists. Derive temporal stabilization from the timeline or a deterministic prepass so hysteresis never makes random seeking depend on prior playback. Slice44 adds cue-wide constant screen-label placement, authored locks, priority/stable IDs and bounded backtracking, with safe/caption/label exclusions and streamed integer-frame contact projections. Three families/two edited stages pass 360 actually visible/font-measured frames, 1,080 forward/reverse/ shuffled draws and 12 exports/720 independent final native frames. Fast10 passes 4,270 units and 38 runtime checks; six receipts match exact snapshots. [Layout evidence](./mechanism-shorts-ms2-cue-layout-results.json) retains a deliberately stopped hidden-label proof and failed checks; [API](./mechanism-cue-layout.md) separates conservative envelopes from encoded/continuous/broader route QA. Slice55 adds an explicit part-local world-text route with bounded pinned-font boxes and actual glyph overflow failures. Shared evaluator60 inherits physical part/ancestor visibility; stable-ID/CAS world edits require native invalidation. Final fast6 passes4,320 units/424 files. Three families/two ink stages pass360 previews/1,080 seeks/six native exports/360 final frames and18 hidden/omitted controls. Independent retained/decode/sample-clock/control-source audits pass; all12 sampled PNGs are agent-viewed. Failed color, required-shape control, type and format attempts remain in [world-text evidence](./mechanism-shorts-ms2-world-annotation-results.json). A world plane does not validate a mesh surface or broader world layout. Slice56 adds explicit rigid indexed-triangle marking, Float32 face/basis placement, guarded-box/opaque/unit-scale/precision admission and complete variant CAS replacement. A real pinned Three cold/warm sorting negative leads to stable physical/artwork depth ties with depth tests/writes active. Final fast11 passes4,331 units/425 files. Native2/current source audit9 passes depth14/six composition/cancellation/70 readbacks/30 exact pairs. Surface9 passes360 previews/1,080 seeks/six exports/360 native frames/18 controls; independent audit2 verifies24 triangle-box quads/360 matrices and colored ink in every encoded frame. Fresh default world1/audit1 preserves all360 preview/decoded frames and six audio/encoded bodies against slice55. All24 original surface/world PNGs agent-viewed; held2,611 inputs/120,444,661B unchanged. Actual font/safe-area, encoded ink,16-ULP/cold-seek and decoder failures remain in [surface evidence](./mechanism-shorts-ms2-surface-marking-results.json). Broader layout/encoded glyph-copy/readability and human review stay open. This expanded criterion remains unchecked.",
+      "planDeclaredChecked": false,
+      "evidenceIndex": "./mechanism-shorts-ms2-acceptance.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS2-09",
+      "milestone": "MS2",
+      "planLine": 900,
+      "requirement": "Add tabs, open callouts, brackets, arrows and restrained highlights with explicit hidden/offscreen behavior and authored locks. A true surface marking is part of the 3D plate and invalidates it; ordinary label edits do not. Slice53 adds shared composition-native multi-anchor straight paths and screen-tangent arrowheads with all-anchor visibility and early reference admission. Its diagnostic controls are recorded separately from cue recipes, real surface/world authoring, plate reuse and encoded/human acceptance in [annotation evidence](./mechanism-shorts-ms2-annotation-results.json). Slice54 wires all five screen recipes with optional bounded style/visibility schemas, authored locks and identity multi-anchor groups. Exact legacy tab output remains preserved. Final fast2 passes 4,313 units/423 files; native depth/composition/cancellation and fresh style browser4 pass on held inputs. Three families/five styles verify 180 preview frames/540 seeks and six native exports/360 independently replayed final frames, with decoded video/audio, dependency and retained PNG audits. The centered-group, cable framing and mismatched arrow ink failures are repaired and retained in [style evidence](./mechanism-shorts-ms2-annotation-style-results.json). Slices55/56 cover bounded world/surface binding and actual invalidation. Slice57 verifies the internal native-picture partition and integer-held lowering of all five screen styles, including group/hidden semantics. Final fast1 passes4,344 units/427 files; held2,615 inputs unchanged. These are pure data tests; no authenticated plate or cached export is claimed. [Foundation evidence](./mechanism-shorts-ms2-native-plate-reuse-results.json) retains all failed attempts. Slice58 captures native-only PNG16 plates with copied dependencies and original source/native closure replay. Caption/gain preserve the180 frames;28 artifact/3 PNG/3 camera controls reject changes. Independent hierarchy/camera/hash/decode and actual live cancellation pass; final fast1 passes4,344 units/427 files on unchanged2,620 inputs. Original capture observations are not relabelled as fresh reused draws. [Capture evidence](./mechanism-shorts-ms2-native-plate-capture-results.json) retains failures. Slice59 adds actual current-cue overlays/audio onto original verified plates, a separate reuse receipt and measured zero new native submissions. Render3:3 families/five styles/6 stages;6 direct/12 cached exports/720 ordinary image deliveries;360 preview pairs/maxRGB1 within fixed2/720 cached seeks. Repeated encoded/decoded output and current audio match;3 gain edits change PCM. All60 altered fact/counter controls/3 stale/3 pre-aborts reject. Audit3 matches 57 pins/180 original PNG+journal/900 decoded frames/1,260 hierarchy pairs/ 180 camera triples. All30 original sampled PNGs agent-viewed. Nested Node ownership is repaired; final fast2 passes4,346 units/427 files on2,624 unchanged inputs. [Export evidence](./mechanism-shorts-ms2-native-plate-export-results.json) retains failed attempts and lossy encoded diagnostics. Internal modules only; public API/CLI, actual world/surface cache breadth, full99/resources/installed/ pack admission and broader encoded/human acceptance keep this criterion unchecked. Slice61 adds actual world/surface plate reuse across all three families with admitted240x136/1440x816 pictures. Six retained cases verify360 preview pairs within fixedRGB2/max1,720 seeks,12 native-ink invalidations and unchanged RGB8/min8 preview/RGB28/min3 encoded guards;30 sampled PNGs are agent-viewed. The producer reports passed but its truncated root terminal is unverified. Owned independent audit1 checks114 fact pins,360 PNG16 frames recovered to original native RGBA transport hashes,2,520 hierarchy/360 camera triples, 720 MP4 decoded frames and18 complete PCM streams. Failed ordinary fast1 and isolated style timeouts are retained. Separately located family cases preserve every assertion and5s per-case; tape keeps30s. Complete one-worker fast-tier2 passes4,348 units/427 files on held2,627 inputs/120,587,636B. No production or browser change follows the owning render/audit. [World/surface cache evidence](./mechanism-shorts-ms2-world-plate-export-results.json) separates artifact completion from the lost producer terminal. The registered full matrix is100 and must own a fresh terminal; public API/CLI/in-flight, whole resources/final installed/pack/genuine speech and broader encoded/human acceptance remain required. The expanded annotation criterion stays unchecked. Slice62 exposes the verified cache lifecycle at the existing public engine root with strict receipt schemas/constants/types and bounded CLI/discovery. Owned actual API/CLI consumer capture60/export4 verifies240 image calls and zero fresh native export submissions; label/gain edits preserve original plates, current checks pass and old compilation/output checks reject. Independent audit1 verifies33 fact pins/60 original PNG16 transport identities/660 hierarchy pairs/ 60 camera triples/240 decoded MP4 frames/four complete PCM streams. All10 sampled PNGs are agent-viewed;120 preview pairs/max1 remain within fixedRGB2. Fast-tier1 one-worker passes4,348 units/427 files; runtime22/three files pass on held2,631 unchanged inputs/120,619,011B. [Public cache evidence](./mechanism-shorts-ms2-public-cue-cache-results.json) retains the root-red and audit/format qualifications. Full101, final installed consumer, in-flight edits/cancellation and whole resource/lifetime gates remain required alongside genuine speech/encoded readability/pack/human acceptance. Slice63 shares cached render/check with the existing caller Node owner and verifies real complete worker-upload-triggered cue/audio/consumed-plate changes plus two live cancels. Final producer5 owns exit0 for3 rejections/246 complete uploads/one60-frame recovery with measured fresh native0/four quota controls. Original71 plate files and caller output remain exact; local leases retire while a foreign lease survives calls and retires on root disposal. Normal declared high water285,155,818B stays under unchanged512MiB; separate sampled physical RSS is not that allowance. Post-settlement observed descendant waits ~28ms remain under existing2s. Owned audit2 verifies90 pins/60 native PNG transport identities/660 hierarchy pairs/60 cameras/60 recovery decoded frames/full PCM; the proper first-upload viewing PNG matches prior preview everyRGBA byte. Fast-tier1(one worker) passes4,348 units/427 files on held2,632 unchanged inputs. [Lifetime evidence](./mechanism-shorts-ms2-cue-cache-lifetime-results.json) retains failed observers/diagnostic/abort/view-row attempts. Whole application/ source/driver resource/replay admission and full102/final installed/pack/genuine speech/broader encoded/human acceptance keep this criterion unchecked.",
+      "planDeclaredChecked": false,
+      "evidenceIndex": "./mechanism-shorts-ms2-acceptance.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS2-10",
+      "milestone": "MS2",
+      "planLine": 988,
+      "requirement": "Compile semantic contact/release/return events from supplied narration cues into all picture, annotation, caption and sound tracks. Reject overfull shots, out-of-recording cues and insufficient reading/action time. Do not stretch speech or insert filler silence to satisfy a rigid shot template. Slice60 separately measures four existing spoken takes at actual48k clocks (938,458/1,032,081/1,027,623/1,105,642 mono frames) with complete source/RIFF/ PCM/normalized re-decode audits. Supplied13 visual cue endpoints fit; rounded final words need15/9 sample authoring clamps and peg's final visual end+1 sample. The revised-copy hook is3.483s shorter. Canonical clips stay outsideGit; [sample-clock evidence](./mechanism-shorts-ms2-spoken-sample-clock-results.json) does not infer genuine cue/native, listening, factual or pilot acceptance. Slice39 adds the versioned supplied-PCM cue compiler for all five tracks, relative motion references and unchanged narration sample count/clock. Source and visible reading/action holds, including frame quantization, fail with located diagnostics. All three candidates/two synthetic takes verify 12 repeated actual exports/900 final native frames with independent replay and complete decoded video/audio comparison. [Cue evidence](./mechanism-shorts-ms2-narrated-cycle-results.json) retains type/font/driver failures and intentionally stopped fast8; [API](./mechanism-narrated-cycles.md) records quantization and separates engineering PCM from genuine spoken-input/ human acceptance. Full rendered readability and pilot acceptance remain open. [Slice52 recovered inputs](./mechanism-shorts-ms2-spoken-input-results.json) pins existing unpaced spoken takes and supplied timed transcripts for all three families: four audio hashes and thirteen word-range/shot associations match retained receipts. A tape-hook replacement is recorded 3.482993s shorter with revised copy; it requires fresh caption/cue compilation. Two rounded transcript endpoints slightly overrun receipt durations; actual decoded sample bounds must govern authoring. No new synthesis, spending, successful genuine-speech render or owner acceptance is claimed. That is the historical slice52 scope. Slice64 now authors all247 supplied words/20 semantic windows for four whole48k takes, including the revised-copy hook at587 frames versus legacy692. Only measured final-word15/9 sample clamps and peg's visual-end+1 are applied to authoring; source audio stays byte-exact. Concise explanatory captions fit unchanged18 graphemes/s; original overfull final hook/tie clauses and source/action/engaged reverse/product release controls reject. Owned native1 verifies8 repeated exports/5,136 native frames; complete bodies/decoded frames/PCM repeat. Owned audit1 verifies60 pins/41,028 hierarchy pairs/5,136 cameras/decoded frames;44 viewed frame pixels match it. Ordinary fast1 passes4,353 units/428 files on held2,637 inputs. The post-native32B test change only removes unused import/rest-sibling names; production/authoring/media remain fixed. [Genuine cue evidence](./mechanism-shorts-ms2-genuine-spoken-cue-results.json) retains prototype/type/lint failures and the lost prototype2 terminal. Contact labels hide under current occlusion policy; wide hook travel is subtle. Actual closeups/annotation/continuous/encoded/factual/listening/portrait/pack acceptance and whole resources/current full/final gates remain open; no human acceptance follows from this engineering proof. The private opt-in group does not make the portable full102 depend on private media. Slice65 supplements frozen E06 source access with an owned official USPTO 22-page patent scan and visual reading of complete relevant pages1/3/10/11/12, including Fig8\u201311 and printed columns7\u20139. The specific illustrated load-seating embodiment supports the question; source/selection hashes still match slice50. [Primary-source admission](./mechanism-shorts-ms2-e06-primary-admission-results.json) retains failed full-page fetches and unavailable text extraction. It changes no code or frozen board and admits no universal tie, force magnitude, factual asset, new behavior, continuous native, supported pack or episode coverage. Slice66 implements a bounded presentation pass on all20 genuine windows: stationary named cuts/holds reserve caption/callout space; existing visible anchors expose hook faces, pawl tip and peg spring seat. Native temporal samples diagnose held-state interpolation opening the peg during intro; public CAS moves its one-second opening to frames107\u2013137 of its spoken cue, retaining release312/stop and all whole audio/captions/word/sample windows. All16 original pre-revision bodies match slice64. Preflight4 checks2568 frames (2426 visible/142 intentional contact occlusions) and independent peg angles; native previews80 captures/encoded first-hook19 samples are agent-viewed. Ordinary fast3 passes4353 units/428 files on held2638 inputs. Owned native1 now exits0:8 exports/5136 native frames and complete repeated encoded/video/PCM identity. Independent audit1 exits0:64 pins/41028 hierarchy pairs/5136 camera and decoded frames/1286 peg angles/1064 hook matrices from compensation onset (734 within compensation windows). All79 selected final-first frames are agent-viewed; prior first-hook19 pixels match exactly. All2568 prior decoded pictures change while complete old/new AAC PCM stays exact. Source hold3 remains unchanged. [Presentation evidence](./mechanism-shorts-ms2-spoken-presentation-results.json) preserves clipping/EEXIST/type/format/lint failures and the superseded timing. Hidden cloth/initial jaw contacts remain physically hidden; current full, final archive/installed/pack/coverage/human/portrait gates stay open.",
+      "planDeclaredChecked": false,
+      "evidenceIndex": "./mechanism-shorts-ms2-acceptance.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS2-11",
+      "milestone": "MS2",
+      "planLine": 1062,
+      "requirement": "Expose registry-derived discovery, per-component schema/parameter help, small examples, asset metadata and stable revision-aware editing. Publish versioned JSON Schemas for the expanded contracts and retain MS1 response budgets, complete-report access and unsupported-version diagnostics. Slice40 derives family discovery, help/examples and immutable asset metadata from the actual three generator schemas; shared expanded CLI and published schemas keep existing response limits and full-report pagination access. Fast4 passes 4,249 units and 19 CLI regressions on held inputs; actual persisted three-family/pagination/six schema exports pass. [Registry evidence](./mechanism-shorts-ms2-family-registry-results.json) retains the test type failure and [API](./mechanism-family-registry.md) describes the contract. This item remains unchecked pending saved revision-aware family/cue editing and complete expanded acceptance. Slice41 adds saved family authoring with pinned pack/project identities, scoped generator-input edits and atomic revision/hash CAS under the existing artifact lock. Fast5 passes 4,256 units and 26 filesystem/CLI checks; actual three-family CLI edits/resume retain exact source bytes and stale-write preservation. [Authoring evidence](./mechanism-shorts-ms2-family-authoring-results.json) retains the fixture type failure; [API](./mechanism-family-authoring.md) declares dependent regeneration rather than claiming it occurred. Cue editing, dependency-aware render/check and complete expanded acceptance remain open. Slice42 adds source-pinned saved cue editing with stable targets, revision/hash CAS, media/clock invariants and full semantic recompile before atomic writes. Fast7 passes 4,263 units and 33 filesystem/CLI checks; three-family actual caption revisions verify 12 repeated exports/720 independently replayed native frames, changed decoded video and preserved complete decoded/source audio. [Cue edit evidence](./mechanism-shorts-ms2-cue-authoring-results.json) retains two build failures; [API](./mechanism-cue-authoring.md) separates required cache refresh from completed rerender. Dependency-aware rendering/check and complete expanded acceptance remain open. Slice43 adds revision-bound saved family/cue compilation, actual media loading, normal native export and output checking with encoded identity/video facts and independent native observation replay. Fast8 passes 4,263 units and 38 runtime checks; 12 three-family exports/720 frames plus four actual CLI routes and one further export/60 frames pass. [Lifecycle evidence](./mechanism-shorts-ms2-cue-lifecycle-results.json) retains failed import/build/boundary runs; [API](./mechanism-cue-lifecycle.md) declares whole-cycle rerender. Selective shot reuse and complete expanded acceptance remain open.",
+      "planDeclaredChecked": false,
+      "evidenceIndex": "./mechanism-shorts-ms2-acceptance.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS2-12",
+      "milestone": "MS2",
+      "planLine": 1099,
+      "requirement": "Create the topic-to-family coverage board during family selection under the coverage contract above. Classify all proposed pilot candidates and record support criteria, selected distinct-episode denominator and new-asset/new-rig counts before handing the selection to MS3. Slice50 freezes ten causal questions with immutable base references, views/capabilities, work and overlap: five existing targets, three new-asset/existing-rig routes and two behavior routes. Five episodes require assets and two require behavior extensions; admitted new assets/rigs remain zero. Validated coverage is 0/10; all packs are candidates. [Board](./mechanism-topic-family-coverage.md) and [evidence](./mechanism-shorts-ms2-coverage-results.json) retain the failed fixture/rerun, seven focused tests, independent hash/accounting audit and fast1 4,293 units/421 files. Only board creation is complete; positive support admission, pack validation and MS3 production remain open.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms2-acceptance.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS2-13",
+      "milestone": "MS2",
+      "planLine": 1112,
+      "requirement": "Expose explicit genuine-weight versus outline treatment and units, retaining legacy automatic behavior with resolved-route diagnostics. Reuse MS1 font identity; generalize quantity/phrase helpers only where repeated authoring friction warrants it. Slices45/46 provide explicit treatments, pure receipts and located unavailable genuine requests. Exact MS1 variable/static/max/mixed font controls preserve complete historical/current/explicit output parity; positive mixed headroom/clamping, actual compiled/posed units, release/end, all-frame reverse/shuffled seeks and encoded natural English gaps pass on WebGL2 and Canvas2D native text. [API](./mechanism-text-weight-treatments.md), [initial API evidence](./mechanism-shorts-ms2-text-weight-results.json) and [native render evidence](./mechanism-shorts-ms2-text-weight-render-results.json). This is scoped software/native acceptance; production human review and the separate count+fit/Thai risks remain required.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms2-acceptance.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS2-14",
+      "milestone": "MS2",
+      "planLine": 1125,
+      "requirement": "Before adopting count+fit or finer Thai motion, run the scoped reproductions in the [typography risk table](./typography-motion-engine-plan.md#scoped-validation-of-source-audited-risks): generated two-decimal count values, all six Thai stress strings, independent versus intact poses, run boundaries and opt-in tracking versus zero. Record negative and positive results before scoping repairs. Existing numeric-binding fit rejection and ordinary tracking defaults remain compatible. [Slice47](./mechanism-shorts-ms2-count-fit-results.json) reproduces and repairs the permitted shared-fit count route: narrow 96 \u2192 38 px fits all 63 strings, with unchanged wide/no-fit controls, stable bounds, real native exports and preserved 10,000-string/numeric-binding guards. Count-fit software scope is closed; this combined item remains open for all Thai/production-copy probes. [Slice48 preflight](./mechanism-shorts-ms2-thai-preflight-results.json) saves all six strings plus production copy in 128 valid native compositions, with strict font coverage, loaded layouts, 3,072 pose frames and compatible default/ explicit-zero controls. Native consecutive encoded/reduced inspection and supported-unit findings remain required; this checkbox remains open. [Slice49 native packet](./mechanism-shorts-ms2-thai-native-results.json) adds all 128 cases/142 streams, complete first-clip decode, native/320/360 consecutive sheets and all-frame native seek proof. Seventy lossless settled comparisons match exactly; seventeen sampled visual artifacts do not certify all matrix cells. Remaining mark/overlap/gap disposition and supported-unit findings keep this item open; active partial quantity states are not certified. [Slice51 sampled review](./mechanism-shorts-ms2-thai-review-results.json) inspects all114 distinct cells at frames8/18 and three sizes (42 overviews, 684 displayed samples). Settled copy/marks remain present in those samples. Located negatives include a lone leading-vowel retype prefix, a USB-C split under a size boundary, and a499/\u0e1a\u0e32\u0e17 split under optical tracking. Active retype/opacity are not complete reading holds; finer Thai motion remains unadopted pending full-cell intermediate mark/overlap/gap disposition.",
+      "planDeclaredChecked": false,
+      "evidenceIndex": "./mechanism-shorts-ms2-acceptance.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS3-01",
+      "milestone": "MS3",
+      "planLine": 1195,
+      "requirement": "Complete durable queue manifests, per-item receipts, dependency-aware caches, cancellation, restart, bounded retries and independent item failure handling. Reuse the completed CE15 workers and output publication primitives.",
+      "planDeclaredChecked": false,
+      "evidenceIndex": "./mechanism-shorts-ms3-acceptance.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS3-02",
+      "milestone": "MS3",
+      "planLine": 1198,
+      "requirement": "Complete the unified QA report with separate technical, mechanical, sampled visual, continuous-motion and listening results. Each result records method, evaluated interval, evidence and artifact identity; unreviewed is not pass.",
+      "planDeclaredChecked": false,
+      "evidenceIndex": "./mechanism-shorts-ms3-acceptance.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS3-03",
+      "milestone": "MS3",
+      "planLine": 1201,
+      "requirement": "Add custom registered semantic assertions with bounded execution and structured results. Distinguish analytic, sampled and continuous collision methods. Include the MS2 transition and event-order assertions in the unified report. Group inherited motion warnings by controlling rig, event and interval, retaining maximum measured change with units, affected child/part references, raw details and bad-frame links.",
+      "planDeclaredChecked": false,
+      "evidenceIndex": "./mechanism-shorts-ms3-acceptance.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS3-04",
+      "milestone": "MS3",
+      "planLine": 1207,
+      "requirement": "Generate phone-size overviews, shot entry/mid/exit images, contact/cut samples, useful crops, full-decode/audio reports and compact fresh-session handoffs.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms3-acceptance.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS3-05",
+      "milestone": "MS3",
+      "planLine": 1209,
+      "requirement": "Exercise scoped repairs, stale-revision rejection and affected-shot rerendering. Prevent a changed asset from retaining a prior reviewed-ready state. Run the MS1 overlap detection/patch/render/recheck path automatically without GUI interaction or routine creator decisions. Preserve a bounded recovery policy and report unresolved factual/creative judgments as exceptions.",
+      "planDeclaredChecked": false,
+      "evidenceIndex": "./mechanism-shorts-ms3-acceptance.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS3-06",
+      "milestone": "MS3",
+      "planLine": 1214,
+      "requirement": "Run Everyday Unlocked\u2019s actual EU-001\u2013EU-010 episodes, selected explicitly by the owner on2026-10-14 in the [revised pilot brief](./mechanism-shorts-ms3-pilot-brief.md). Supply a question, fact evidence, design variant and visual proof for each. Reuse existing whole Alden recordings and native assets with current bindings. Maintain routing, new-asset/new-rig work and coverage against the revised ten-episode denominator. Preserve the former three-family board and extension proofs as history; update broader registry/coverage admission for this cohort.",
+      "planDeclaredChecked": false,
+      "evidenceIndex": "./mechanism-shorts-ms3-acceptance.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS3-07",
+      "milestone": "MS3",
+      "planLine": 1221,
+      "requirement": "Repair stale documentation about media and 3D artwork against the completed implementation. Generate concise capability references from registries/schema; document supported imports, batch scope and preview/export limits, and expose those same implemented limits in machine-readable capability discovery.",
+      "planDeclaredChecked": false,
+      "evidenceIndex": "./mechanism-shorts-ms3-acceptance.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    },
+    {
+      "id": "MS3-08",
+      "milestone": "MS3",
+      "planLine": 1225,
+      "requirement": "Deliver one documented report command that emits a small episode report and cohort summary with p50/p95 durations, first-pass technical success, repeated failures and unresolved review counts. Include individual rows, percentile method, measurement availability and separate setup versus routine effort. Keep response bodies within the published limits and link complete reports.",
+      "planDeclaredChecked": true,
+      "evidenceIndex": "./mechanism-shorts-ms3-acceptance.md",
+      "finalReconciliation": "pending-exact-evidence-and-acceptance-clause-review; checked planning box is not current full/product/owner acceptance"
+    }
+  ],
+  "originalPilotEvidence": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-shorts-ms3-first-ten-terminal90-results.json",
+    "bytes": 23925,
+    "sha256": "sha256:95ad20d261562f528b8ab3a933a864faa7303b291b6eeb5f9c1bf00342e33ea1"
+  },
+  "actualReportAudit": {
+    "path": "/private/tmp/still-shift-ms3-recovery82-report-audit2.json",
+    "bytes": 2495,
+    "sha256": "sha256:e3fee690cb60a052c618c5afa3f55409196cf4d3aeac24a404f7a466275f60f9"
+  },
+  "currentCoverageBoard": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-shorts-ms3-native-coverage-board.json",
+    "bytes": 9210,
+    "sha256": "sha256:807235cb4d036197356a31355e59ddd934974b31f77abeceb0c7a692eb71dac6"
+  },
+  "resultsBeforeCorrection": {
+    "path": "/private/tmp/still-shift-ms3-reconciliation99/ms3-results-before.json",
+    "bytes": 39019,
+    "sha256": "sha256:8a8da61e997e067debc560f4dd3350a29445a2e547f06d5c7edc59f565dd84e0"
+  },
+  "resultsCorrection": {
+    "firstPassWas": "unmeasured/null",
+    "firstPassNow": "measured1/10 (10%), below90% target; original9failed attempts preserved",
+    "historicalRemainingPreserved": true,
+    "activeCohortIds": [
+      "EU-001",
+      "EU-002",
+      "EU-003",
+      "EU-004",
+      "EU-005",
+      "EU-006",
+      "EU-007",
+      "EU-008",
+      "EU-009",
+      "EU-010"
+    ],
+    "wholeAndHumanReviewsClosed": false,
+    "newSoftwareOrRenderChecksRun": false
+  },
+  "qualification": "A coverage inventory and current results-index correction, not final acceptance. Full91 is still live; current final package/all-ten installed proof, fault images, complete acceptance-clause reconciliation and whole/human review remain open. No plan checkboxes or source inputs changed.",
+  "staticVerification": {
+    "actualExitCode": 0,
+    "checksPassed": 17,
+    "checksTotal": 17,
+    "inputs": [
+      {
+        "path": "/private/tmp/still-shift-ms3-reconciliation99/static-check1.json",
+        "bytes": 974,
+        "sha256": "sha256:2c1afb2b798592d2f8a0a24e04e2fd711012ab024e052a09c88a65ef09798bda"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-reconciliation99-static1.py",
+        "bytes": 3448,
+        "sha256": "sha256:c182d8a3d15cbacff7b39a4216fe8c375dbfe8c418df3526cd09d5e737b2ee4b"
+      }
+    ],
+    "newRenderOrSoftwareGate": false
+  }
+}

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "milestone": "MS3",
-  "date": "2026-10-14",
+  "date": "2026-10-15",
   "branch": "codex/mechanism-ms3",
   "status": "in-progress-owner-selected-channel-first-ten",
   "baseMain": "57967fa6497249d75e740ba837b8e2687cc81a98",
@@ -15,7 +15,7 @@
     "changedRelativeToMS2": ["ROADMAP.md", "docs/dev-log.md"],
     "runtimeSourceChanges": 0,
     "ms0OwnerMerge": "57967fa6497249d75e740ba837b8e2687cc81a98",
-    "retainedOwnerLogEntry": "2026-10-12 — Resolve MS0 PR #51 conflicts",
+    "retainedOwnerLogEntry": "2026-10-12 \u2014 Resolve MS0 PR #51 conflicts",
     "failedPREdit": "gh pr edit used deprecated projectCards GraphQL query; REST body PATCH actually succeeded."
   },
   "frozenSelection": {
@@ -732,8 +732,12 @@
     },
     "firstPassTechnical": {
       "target": 0.9,
-      "actual": null,
-      "status": "unmeasured"
+      "actual": 0.1,
+      "status": "measured-target-not-achieved",
+      "completed": 10,
+      "passed": 1,
+      "failedAttemptsRetained": 9,
+      "measurementSource": "Original producer3df/runtime1090. Receiving current-installed validation cannot reset this first-pass denominator."
     },
     "perEpisodeServerCaptureCode": {
       "target": 0,
@@ -749,12 +753,12 @@
     }
   },
   "remaining": [
-    "Actual CLI/OS interruption/cancellation/input corruption/missing audio/export collision/targeted retries/relocation and independent473-pin audit now pass on c474c9c5; retain exact bindings and any remaining worker/managed integration requirements.",
-    "Operational registered assertions/MS2 timeline/grouped warnings/report/handoff integration passes scoped controls, exact local tiers and actual native independent audits. Broader faults, analytic/continuous collision and actual whole reviews remain.",
-    "Original ten-pilot review artifacts; scoped/stale repairs/affected rerender and automatic MS1 overlap recovery preserving plates. Three-family evidence derivation, actual camera-cut extraction and fresh-session handoff are verified separately.",
-    "Original ten distinct question fixtures with actual factual/design/genuine speech/visual proof; five assets and two behaviors remain required and unadmitted.",
-    "One actual bounded episode/cohort report command and generated production schema/limit agreement are verified. Broader import/preview/export capability reconciliation, actual pilot measurements, final full/archive/installed and MS3 PR remain.",
-    "Retain candidate/owner reviews and finer Thai limits; no ElevenLabs spend without explicit project/batch/model/voice/takes/credits approval."
+    "Complete current final integrated-source pnpm check:all session42543 on held3749618d. Retain failed full90/cache diagnosis and existing WebGL timing deferrals; a live prefix is not a pass.",
+    "After actual full0, run the prepared standard offline package matrix, audit/install its exact archive, copy the complete independently hashed native closure, and execute a fresh current-installed queue/run/report/resume/ten-handoff lifecycle for all10 actual episodes. Original3df products and archive85/prepared86 are historical bindings.",
+    "Independently audit current ten receiving packets and complete encoded picture/original narration closure. Fresh receiving validation must not reset original first-pass1/10 or nine failed attempts, manufacture comparable paired tokens, or infer review acceptance.",
+    "Complete the four sparse actual fault images/captured selector replay and image inspection on two prepared EU001 assets only when the persistent work allowance admits the batch. Explicit total10/35M approval is recorded; live conservative usage exceeds it and requested total50/200M is pending. No ElevenLabs spending is approved.",
+    "Complete whole factual/design, mechanical, encoded glyph/readability, normal-speed continuous motion and listening review; keep unsupported, unreviewed and human acceptance explicit. Current reviewed-ready/supported/accepted0/10.",
+    "Reconcile all49 MS0-MS3 deliverables and their acceptance clauses against their exact source/evidence identities, current installed capability discovery and guides. Preserve candidate pack/finer Thai limits, prior failures and open upstream PRs; no routine merge, publishing or inferred human acceptance."
   ],
   "qualification": "MS2 software checkpoint and its exact private archive remain historical prerequisites. New MS3 source is not qualified by relabelling MS2 full/installed gates. Structural model caps do not by themselves certify lifecycle I/O/managed-memory admission or review execution.",
   "committedNativeSource": "efa5057440c1c95a7ac7aa263cc48f50d9a2c41b",
@@ -763,7 +767,7 @@
     "number": 58,
     "state": "open-draft",
     "base": "main",
-    "purpose": "MS3 in-progress review; original acceptance and pilot scope remains active"
+    "purpose": "MS3 in-progress review of actual Everyday Unlocked EU001-EU010; former engineering cohort retained as history."
   },
   "libraryExtensionProgress": {
     "requiredAssets": ["E02", "E05", "E06", "E09", "E10"],
@@ -810,5 +814,205 @@
   },
   "frozenSelectionStatus": "Historical three-family engineering cohort; active owner-selected pilot is currentPilotSelection",
   "requiredNewAssetsScope": "Historical extension plan and proofs retained; current pilot uses the native assets declared in currentPilotSelection",
-  "requiredNewBehaviorsScope": "Historical extension plan and proofs retained; current pilot bindings are tracked separately"
+  "requiredNewBehaviorsScope": "Historical extension plan and proofs retained; current pilot bindings are tracked separately",
+  "historicalRemainingAtPriorIndex": [
+    "Actual CLI/OS interruption/cancellation/input corruption/missing audio/export collision/targeted retries/relocation and independent473-pin audit now pass on c474c9c5; retain exact bindings and any remaining worker/managed integration requirements.",
+    "Operational registered assertions/MS2 timeline/grouped warnings/report/handoff integration passes scoped controls, exact local tiers and actual native independent audits. Broader faults, analytic/continuous collision and actual whole reviews remain.",
+    "Original ten-pilot review artifacts; scoped/stale repairs/affected rerender and automatic MS1 overlap recovery preserving plates. Three-family evidence derivation, actual camera-cut extraction and fresh-session handoff are verified separately.",
+    "Original ten distinct question fixtures with actual factual/design/genuine speech/visual proof; five assets and two behaviors remain required and unadmitted.",
+    "One actual bounded episode/cohort report command and generated production schema/limit agreement are verified. Broader import/preview/export capability reconciliation, actual pilot measurements, final full/archive/installed and MS3 PR remain.",
+    "Retain candidate/owner reviews and finer Thai limits; no ElevenLabs spend without explicit project/batch/model/voice/takes/credits approval."
+  ],
+  "historicalTargetMeasurementsAtPriorIndex": {
+    "routineMedianAuthoringTokenReduction": {
+      "target": 0.5,
+      "actual": null,
+      "status": "unverified-missing-comparable-telemetry"
+    },
+    "firstPassTechnical": {
+      "target": 0.9,
+      "actual": null,
+      "status": "unmeasured"
+    },
+    "perEpisodeServerCaptureCode": {
+      "target": 0,
+      "actual": null
+    },
+    "guiSetupRecovery": {
+      "target": 0,
+      "actual": null
+    },
+    "unresolvedMechanicalFailuresInReviewedReady": {
+      "target": 0,
+      "actual": null
+    }
+  },
+  "currentPilotProduction": {
+    "selection": {
+      "id": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+      "selectedEpisodeIds": [
+        "EU-001",
+        "EU-002",
+        "EU-003",
+        "EU-004",
+        "EU-005",
+        "EU-006",
+        "EU-007",
+        "EU-008",
+        "EU-009",
+        "EU-010"
+      ],
+      "sha256": "sha256:8c5f378389d595c83fdcf3ff1cd41bd2d57d64b3a622c953013cffe39d001471"
+    },
+    "episodes": [
+      {
+        "id": "EU-001",
+        "object": "Tape-measure end hook",
+        "question": "Why does the hook on a tape measure move?"
+      },
+      {
+        "id": "EU-002",
+        "object": "Cable tie",
+        "question": "Why does a cable tie tighten but resist pulling backward?"
+      },
+      {
+        "id": "EU-003",
+        "object": "Spring clothespeg",
+        "question": "Why does squeezing one end of a clothespeg open the other?"
+      },
+      {
+        "id": "EU-004",
+        "object": "Metal-tooth zipper",
+        "question": "How does a zipper join its teeth?"
+      },
+      {
+        "id": "EU-005",
+        "object": "Keyhole mounting slot",
+        "question": "How does a keyhole mounting slot hold a screw?"
+      },
+      {
+        "id": "EU-006",
+        "object": "Binder clip",
+        "question": "Why do binder-clip handles make the jaws open?"
+      },
+      {
+        "id": "EU-007",
+        "object": "Side-release buckle",
+        "question": "How does a side-release buckle lock and release?"
+      },
+      {
+        "id": "EU-008",
+        "object": "Door spring latch",
+        "question": "Why does a door latch retract and spring back?"
+      },
+      {
+        "id": "EU-009",
+        "object": "Curved tape-measure blade",
+        "question": "Why is a tape-measure blade curved?"
+      },
+      {
+        "id": "EU-010",
+        "object": "Stay-on can tab",
+        "question": "How does a soda-can tab open the scored panel?"
+      }
+    ],
+    "sourceCommit": "3df62a5598dc46e021ee2c51b173ba33a38d2af6",
+    "runtimeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+    "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+    "lifecycleStagesPassed": 13,
+    "independentHandoffPacketAudits": 10,
+    "frames": 6181,
+    "rootArtifacts": 130,
+    "reviewImages": 1084,
+    "nativePins": 24724,
+    "narration": "Existing complete Alden Eleven v4 recordings at original1x; no synthesis, stretching or inserted filler.",
+    "reviewCounts": {
+      "technical": {
+        "passed": 10,
+        "failed": 0,
+        "unreviewed": 0,
+        "notApplicable": 0
+      },
+      "mechanical": {
+        "passed": 0,
+        "failed": 0,
+        "unreviewed": 10,
+        "notApplicable": 0
+      },
+      "sampled-visual": {
+        "passed": 10,
+        "failed": 0,
+        "unreviewed": 0,
+        "notApplicable": 0
+      },
+      "continuous-motion": {
+        "passed": 0,
+        "failed": 0,
+        "unreviewed": 10,
+        "notApplicable": 0
+      },
+      "listening": {
+        "passed": 0,
+        "failed": 0,
+        "unreviewed": 10,
+        "notApplicable": 0
+      },
+      "factual": {
+        "passed": 0,
+        "failed": 0,
+        "unreviewed": 10,
+        "notApplicable": 0
+      }
+    },
+    "firstPassTechnical": {
+      "completed": 10,
+      "passed": 1,
+      "rate": 0.1,
+      "unverified": 0,
+      "targetSatisfied": false
+    },
+    "failures": {
+      "failedAttempts": 9,
+      "repeatedFailureEpisodes": 0,
+      "cancelled": 0,
+      "interrupted": 0,
+      "origins": {
+        "transient": 0,
+        "authored": 0,
+        "unknown": 9
+      }
+    },
+    "renderSeconds": {
+      "available": 10,
+      "p50": 474.63485874950004,
+      "p95": 574.8377828831498
+    },
+    "authoring": {
+      "comparablePairedTasks": 0,
+      "routineMedianTokens": null,
+      "baselineMedianTokens": null,
+      "savings": null,
+      "targetSatisfied": null
+    },
+    "routing": {
+      "existing-pack-rig": 8,
+      "new-asset-existing-rig": 2
+    },
+    "newRigTypes": 0,
+    "supported": 0,
+    "reviewedReady": 0,
+    "accepted": 0,
+    "currentIntegratedSourceQualification": "Original products keep their3df/runtime1090 binding. Current source374 full91 remains running; current archive/install/all-ten lifecycle and whole review remain open.",
+    "records": [
+      "./mechanism-shorts-ms3-first-ten-terminal90-results.json",
+      "./mechanism-shorts-ms3-current-first-ten-recovery-results.json",
+      "./mechanism-shorts-ms3-native-coverage-board.json",
+      "./mechanism-shorts-ms3-current-installed-scope92-results.json"
+    ]
+  },
+  "resultsIndexReconciliation": {
+    "record": "./mechanism-shorts-requirement-inventory99-results.json",
+    "historicalScope": "frozenSelection/requiredNewAssets/requiredNewBehaviors/candidateRouting/libraryExtensionProgress keep former engineering bindings; currentPilotSelection/currentPilotProduction describe the active actual-first-ten pilot.",
+    "originalEvidenceRelabeled": false
+  }
 }

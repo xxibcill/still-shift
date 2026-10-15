@@ -79,6 +79,10 @@ still hold before relying on them.
   including archived Markdown guides, until its actual terminal. Three user guides96
   now match current CLI/native QA/handoff/relocation/reuse/provenance behavior;
   static15-link/13-command checks pass. Final installed capability comparison stays open.
+  Results index99 now records actual first-pass1/10 and all-ten original metrics;
+  previous unmeasured/historical rows remain retained. All49 required deliverable
+  locators are inventoried; final acceptance-clause reconciliation remains open.
+  [Inventory](./mechanism-shorts-requirement-inventory99-results.json).
   [Preparation controls](./mechanism-shorts-ms3-installed-preparation93-results.json),
   [Current installed scope](./mechanism-shorts-ms3-current-installed-scope92-results.json). Physical fault captures stay
   budget-blocked after explicit total10/35M approval: unchanged conservative ledger
@@ -258,6 +262,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Reconcile actual-first-ten results and inventory49 requirements99
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` fromf5977c01.
+- **Scope:** correct stale top-level first-pass/remaining entries against the
+  original actual-ten terminal and independent report; preserve historical rows.
+- **Results:** actual1/10 first pass,9 retained failures, null paired tokens,
+  all13 lifecycle stages/10 packet audits and six review dimensions retain3df/1090.
+  Current source qualification stays separate.49 locators map7/13/7/14/8 by milestone;
+  17 static provenance/metadata checks pass. Live full prefix is exact75/116
+  launched aliases/groups, cinematic adapter active; not completion/passed totals.
+- **Open / next:** exact final acceptance-clause reconciliation; full42543, current
+  archive/all-ten installed validation, fault images and whole reviews remain open.
+- **Records:** [results](./mechanism-shorts-ms3-results.json),
+  [49-row inventory](./mechanism-shorts-requirement-inventory99-results.json).
 
 ### 2026-10-15 — Record explicit fault-batch allowance and live guard98
 

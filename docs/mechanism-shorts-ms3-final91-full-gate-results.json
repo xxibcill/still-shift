@@ -109,6 +109,34 @@
         "bytes": 33816,
         "sha256": "sha256:aa8ee7c65211919ec6652a7391a79b3a005f330a32a2f25cbdfec7ac5664be95"
       }
+    },
+    {
+      "observedUtc": "2026-10-15T03:42:24.048411+00:00",
+      "unifiedSession": 42543,
+      "status": "live-command-exact-prefix-cinematic-adapter-in-progress-not-terminal",
+      "sourceCommit": "3749618d64dfa35a57b2e4f34da5b6722ac9c089",
+      "expectedPackageScriptInvocations": 116,
+      "observedScriptInvocations": 75,
+      "exactExpectedPreorderPrefix": true,
+      "latestObservedGroup": "test:browser:composition-cinematic-adapter",
+      "nextPlannedGroups": [
+        "test:browser:composition-typography-adapter",
+        "test:browser:composition-provider-typography",
+        "test:browser:composition-program",
+        "test:browser:composition-inspector",
+        "test:browser:composition-builder"
+      ],
+      "immutableLogPrefix": {
+        "path": "/private/tmp/still-shift-ms3-final91-progress4.log",
+        "bytes": 3317744,
+        "sha256": "sha256:06f34361fdcf23e16f5f6cd120a7a594bb36d5629b8665c1124b34872faba22b"
+      },
+      "scope": "Launch/header counts include aliases; not passed-suite totals or a completion percentage. Completed preceding groups retain CE6-P WebGL timing deferrals; aggregate/benchmark remain open. Specific42543 independently observed live this turn. No concurrent build/render/export started.",
+      "rawCommandTreeSnapshot": {
+        "path": "/private/tmp/still-shift-ms3-final91-progress4.json",
+        "bytes": 34438,
+        "sha256": "sha256:0e7c7e5167cb515674b0964f304b1ccc3649f759460369c2595e79ca4d36f627"
+      }
     }
   ]
 }
