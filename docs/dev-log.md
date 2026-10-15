@@ -43,6 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
+- **Local gate-evidence retention117 (2026-10-15):**10 exact current-run
+  copies/6,543,995B retained under ignored `benchmarks/results/ms3-final113-gate`:
+  runner, source inventory, pinned toolchain, earlier prefixes, observer/wait
+  records, current immutable prefix3 and a running-receipt snapshot. All2793
+  held inputs match before/after. Prefix3 reaches WebGL export,65 observed script
+  headers matching116 required invocations. This is no pass/percentage; actual8967
+  remains live. Whole final logs/terminal receipts still need retention after the
+  actual result. No new renderer/Blender/paid generation or external write.
+  [Local record](./mechanism-shorts-ms3-log-retention117-results.json).
+
 - **Local portability scope115 (2026-10-15):**20 actual source/plan JSON files
   match declared pins across all10/6,181 frames:30 used scalar controls and60
   shot rows. Core Three production has3 registered family generators; those names
@@ -53,6 +63,9 @@ still hold before relying on them.
   still returns live after a50s bounded wait; all2793 held inputs exact. This
   local scope audit and PR-approval follow-up are not pushed.
   [Local evidence](./mechanism-shorts-ms3-portability115-results.json).
+  Latest verified wait116 at09:38UTC confirms the same8967 handle live after50s;
+  current61 observed script headers match the required116-invocation preorder
+  prefix. This is neither a pass count nor a completion percentage.
 
 - **Acceptance reconciliation114 (2026-10-15):**49 deliverable scopes/26 broader
   clauses/21 traceability rows reviewed. Fresh MS0 originals27/archive payloads25
@@ -318,6 +331,23 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-10-15 — Preserve current full-run raw evidence locally117
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` after localed05b532.
+- **Previous turn:** verified wait116; same live8967, no terminal/source change.
+- **Done:**10 byte-exact raw/helper copies and immutable prefix3,6,543,995B,
+  retained outside temporary storage in the ignored local results directory.
+  This addresses future current-run retention;6 unavailable older paths stay open.
+- **Validation:** every copied body exact, previous prefixes retained exactly,
+  required command preorder65/116 exact, source hold2793 before/after0. No pass
+  count or full/benchmark completion inferred; the running-receipt copy is dated.
+- **Running:** full113 actual8967 remains live after bounded tool waits. WebGL,
+  camera/lighting prefix progressed to WebGL export; no parallel render group.
+- **Local only:** full package/all10 installed work stays after actual full0;
+  portability choice and rejected public PR-description approval remain pending.
+  No external metadata retry/push or new asset/render/generation work.
+- **Record:** [retention117](./mechanism-shorts-ms3-log-retention117-results.json).
+
 ### 2026-10-15 — Inspect actual-ten portability scope while full gate runs115
 
 - **Agent / branch:** Codex on `codex/mechanism-ms3` after30f2cf00.
@@ -333,6 +363,9 @@ still hold before relying on them.
   all-ten receiving remain after genuine completefull0 and portability resolution.
 - **Local only:** public description text is prepared and approval pending; no
   indirect external write. This audit/follow-up stays unpushed.
+- **Verified wait116:** same8967 live at09:38UTC after50s; required command
+  prefix61/116 exact, source2793 exact. Current turn is a verified wait, no new
+  tests/render/metadata-publication. Local raw handoff: `/private/tmp/still-shift-ms3-full113-verifiedwait116.json`.
 - **Record:** [portability115](./mechanism-shorts-ms3-portability115-results.json).
 
 ### 2026-10-15 — Reconcile acceptance scopes and evidence availability114

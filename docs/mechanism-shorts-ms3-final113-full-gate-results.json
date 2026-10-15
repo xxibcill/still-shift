@@ -131,6 +131,34 @@
         "sha256": "sha256:983a099e848c3371cf42da4fd6acc080b2fab5f161a5c8246d926e78746a7475"
       },
       "scope": "Header count includes aliases; not a completion percentage or passed suite count. Full and benchmark not passed."
+    },
+    {
+      "observedUtc": "2026-10-15T09:45:11.416579+00:00",
+      "actualObservedUnifiedSession": 8967,
+      "observedState": "live-returned-by-write_stdin-before-local-retention",
+      "expectedScriptInvocations": 116,
+      "observedPackageHeaders": 65,
+      "exactExpectedPreorderPrefix": true,
+      "latestGroup": "test:browser:composition-webgl-export",
+      "immutableLogPrefix": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final113-gate/progress3.log",
+        "bytes": 3119958,
+        "sha256": "sha256:77d2439df7ca852c719fddd62756bd14e633f33057b8dd343cb63a211f1bcb98"
+      },
+      "sourceHoldBeforeAndAfter": 0,
+      "scope": "Local ignored exact snapshot; not a terminal log or whole full/benchmark pass. Header counts include aliases."
     }
-  ]
+  ],
+  "localRetainedCurrentGateEvidence": {
+    "record": "./mechanism-shorts-ms3-log-retention117-results.json",
+    "index": {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final113-gate/index.json",
+      "bytes": 5657,
+      "sha256": "sha256:cfd8adf9fdee43913c20dd986e99a964ac6ed782d05cb4a7988ff5c6aa72db1d"
+    },
+    "exactCopies": 10,
+    "bytes": 6543995,
+    "wholeFullGatePassed": false,
+    "qualification": "The copied receipt is a dated running snapshot. Actual terminal is still required. Keep final terminal log/receipts in this local folder after observing the genuine producer result."
+  }
 }
