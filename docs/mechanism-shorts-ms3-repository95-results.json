@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "mechanism-milestone-public-state-and-live-full-prefix-audit-1",
+  "capturedUtc": "2026-10-15T02:10:31.658522+00:00",
+  "status": "public-milestone-delivery-invariants-verified-full-gate-still-live",
+  "sourceCommitAtObservation": "8387eaa0cd199d95f4e1954250149cd70418b0bf",
+  "milestonePullRequests": [
+    {
+      "number": 51,
+      "url": "https://github.com/xxibcill/still-shift/pull/51",
+      "title": "MS0: audit mechanism inputs and composition baseline",
+      "branch": "codex/mechanism-ms0",
+      "head": "7f246979f7ee7ac13138a55883b1e6468feff6c2",
+      "base": "main",
+      "state": "closed",
+      "draft": false,
+      "merged": true,
+      "attached": true
+    },
+    {
+      "number": 52,
+      "url": "https://github.com/xxibcill/still-shift/pull/52",
+      "title": "feat(mechanism): add supported MS1 bridge and portable E01",
+      "branch": "codex/mechanism-ms1",
+      "head": "6dae12cd681952db08b94d8d020b9ba78bc3e595",
+      "base": "main",
+      "state": "closed",
+      "draft": false,
+      "merged": true,
+      "attached": true
+    },
+    {
+      "number": 56,
+      "url": "https://github.com/xxibcill/still-shift/pull/56",
+      "title": "feat(mechanism): add native 3D composition and portable E01",
+      "branch": "codex/mechanism-ms1n",
+      "head": "796375b79b1709c1cad30837a5603f91d33d7697",
+      "base": "main",
+      "state": "open",
+      "draft": false,
+      "merged": false,
+      "attached": true
+    },
+    {
+      "number": 57,
+      "url": "https://github.com/xxibcill/still-shift/pull/57",
+      "title": "Add reusable mechanism packs and saved cue lifecycle",
+      "branch": "codex/mechanism-ms2",
+      "head": "8b7374ed218536ba15e531da6a61ce0cf0ff9395",
+      "base": "main",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "attached": true
+    },
+    {
+      "number": 58,
+      "url": "https://github.com/xxibcill/still-shift/pull/58",
+      "title": "feat(ms3): add production lifecycle and actual Everyday Unlocked first-ten pilot",
+      "branch": "codex/mechanism-ms3",
+      "head": "8387eaa0cd199d95f4e1954250149cd70418b0bf",
+      "base": "main",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "attached": true
+    }
+  ],
+  "rawPRState": {
+    "path": "/private/tmp/still-shift-ms3-repository95-prs1.json",
+    "bytes": 34729,
+    "sha256": "sha256:812357d56986d49b7174d82cb43e6eef494f7f453d855daa1323f3fc8a0c2a68"
+  },
+  "rawAttachments": {
+    "path": "/private/tmp/still-shift-ms3-repository95-attachments1.json",
+    "bytes": 3198,
+    "sha256": "sha256:6678b7ceb2d52aedd8e038aa850e2825b8ead43cb37cbd27183121c2801cefec"
+  },
+  "githubActions": {
+    "rawAPI": {
+      "path": "/private/tmp/still-shift-ms3-repository95-actions1.json",
+      "bytes": 46,
+      "sha256": "sha256:32700f5e09febdcc97d40b65c42a1c4b981b4b96af6eb1b8e87c932aba0a71ca"
+    },
+    "enabled": false,
+    "trackedWorkflowFiles": [],
+    "settingsChanged": false
+  },
+  "ms3Description": {
+    "updatedVia": "Structured GitHub update_pull_request body argument; no comment/review/message/merge",
+    "head": "8387eaa0cd199d95f4e1954250149cd70418b0bf",
+    "draft": true,
+    "decision": "Make final current installed validation explicitly all10/6,181 frames. Historical prepared86 one-episode scope is insufficient. Standard offline package matrix must qualify the exact archive consumed by the receiving lifecycle.",
+    "qualification": "All copies/builds/installed runs remain unexecuted; tested OS and admission controls are preparatory evidence only. Original pilot10% first-pass/null tokens/accepted0 remain."
+  },
+  "fullCommandCoverage": {
+    "rawSnapshot": {
+      "path": "/private/tmp/still-shift-ms3-final91-progress3.json",
+      "bytes": 33816,
+      "sha256": "sha256:aa8ee7c65211919ec6652a7391a79b3a005f330a32a2f25cbdfec7ac5664be95"
+    },
+    "heldSource": "3749618d64dfa35a57b2e4f34da5b6722ac9c089",
+    "unifiedSession": 42543,
+    "expectedScriptInvocations": 116,
+    "observedScriptInvocations": 63,
+    "exactRequiredPreorderPrefix": true,
+    "latestObservedGroup": "test:browser:composition-lighting",
+    "immutableLogPrefix": {
+      "path": "/private/tmp/still-shift-ms3-final91-progress3.log",
+      "bytes": 3082142,
+      "sha256": "sha256:dd33fef6d7d7928c0395d76d7838f035faa08ffcc58633cb0222bf750fa0cb1c"
+    },
+    "qualification": "Counts include parent aliases and do not represent a completion percentage or passed-suite total. Latest group is only launched; aggregate/benchmark remain unpassed. Actual specific42543 handle was independently polled live this turn."
+  },
+  "limits": [
+    "Current metadata and explicit PR attachment invariants only; does not prove every requirement or historical sequencing by itself",
+    "Live full prefix is not a successful aggregate/benchmark; no competing group launched",
+    "Post-full package wrapper must hold entire clean checkout/HEAD including shipped Markdown until terminal",
+    "Current final archive/all-ten installed lifecycle/fault and whole product/human review gates remain open",
+    "No publication, PR merge, GitHub Actions change or paid voice generation"
+  ]
+}

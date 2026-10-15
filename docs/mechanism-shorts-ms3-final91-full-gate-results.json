@@ -81,6 +81,34 @@
         "sha256": "sha256:32e59dd5fd1907acfbde7f58cc9a356e1103f9c1e711ee2c4200910ba0951bd6"
       },
       "scope": "Observed prefix only; remaining complete render matrix/benchmark and actual full terminal stay open."
+    },
+    {
+      "observedUtc": "2026-10-15T02:09:21.539989+00:00",
+      "unifiedSession": 42543,
+      "status": "live-full-command-exact-preorder-prefix-not-terminal",
+      "sourceCommit": "3749618d64dfa35a57b2e4f34da5b6722ac9c089",
+      "expectedPackageScriptInvocations": 116,
+      "observedScriptInvocations": 63,
+      "exactExpectedPreorderPrefix": true,
+      "latestObservedGroup": "test:browser:composition-lighting",
+      "nextPlannedGroups": [
+        "test:browser:composition-shapes",
+        "test:browser:composition-webgl-export",
+        "test:browser:composition-exposure",
+        "test:browser:composition-effects",
+        "test:browser:composition-mesh"
+      ],
+      "immutableLogPrefix": {
+        "path": "/private/tmp/still-shift-ms3-final91-progress3.log",
+        "bytes": 3082142,
+        "sha256": "sha256:dd33fef6d7d7928c0395d76d7838f035faa08ffcc58633cb0222bf750fa0cb1c"
+      },
+      "qualification": "Counts include parent aliases and do not represent a completion percentage or passed-suite total. Latest group is only launched; aggregate/benchmark remain unpassed. Actual specific42543 handle was independently polled live this turn.",
+      "rawCommandTreeSnapshot": {
+        "path": "/private/tmp/still-shift-ms3-final91-progress3.json",
+        "bytes": 33816,
+        "sha256": "sha256:aa8ee7c65211919ec6652a7391a79b3a005f330a32a2f25cbdfec7ac5664be95"
+      }
     }
   ]
 }

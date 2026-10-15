@@ -59,7 +59,8 @@ still hold before relying on them.
   measured first-pass10% below90% and paired savings null.
   [Terminal](./mechanism-shorts-ms3-first-ten-terminal90-results.json),
   [integration](./mechanism-shorts-ms3-prerequisite-integration89-results.json),
-  [current full attempt](./mechanism-shorts-ms3-final91-full-gate-results.json).
+  [current full attempt](./mechanism-shorts-ms3-final91-full-gate-results.json),
+  [PR/Actions and exact live command-prefix audit](./mechanism-shorts-ms3-repository95-results.json).
 
 - **Current remaining MS3 gates (2026-10-15):** final integrated-source full
   software/benchmark/archive/installed checks and whole factual/mechanical/glyph/
@@ -252,6 +253,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Verify milestone PR delivery and live full command coverage
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` from `8387eaa0`.
+- **Done:** fresh API reads confirm five distinct milestone PR branches targetmain
+  and allfive are attached. MS0/MS1 merged; native7963/MS28b73 and MS38387 remain
+  open. Updated MS3 draft description with required current all-ten installed scope.
+- **Results:** repository Actions API remains `enabled:false`, tracked workflows0.
+  Specific full42543 is live; immutable3.08MB log/tree snapshot follows exactly the
+  required63/116 script-invocation prefix, latestlighting. Counts include parent
+  aliases and are not completed-suite totals or a completion percentage.
+- **Open / next:** actual full/benchmark terminal, exact final package/all-ten
+  receiving proof and remaining fault/whole/human gates. No merge/publication.
+- **Records:** [public-state audit95](./mechanism-shorts-ms3-repository95-results.json),
+  [running full91](./mechanism-shorts-ms3-final91-full-gate-results.json).
 
 ### 2026-10-15 — Prepare serial final package matrix and all-ten receiving lifecycle
 
