@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "pull-request-fix-results-1",
+  "date": "2026-10-15",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/56",
+  "startingHead": "796375b79b1709c1cad30837a5603f91d33d7697",
+  "branch": "codex/pr56-second-review-fixes",
+  "reviewId": 5532547370,
+  "comments": [
+    {
+      "finding": "collapsed native precomp placement",
+      "id": 4282526383,
+      "threadId": "PRRT_kwDOUNeEOM6swJ4m"
+    },
+    {
+      "finding": "native controller matte source",
+      "id": 4282526389,
+      "threadId": "PRRT_kwDOUNeEOM6swJ4s"
+    },
+    {
+      "finding": "observation FIFO admission",
+      "id": 4282526395,
+      "threadId": "PRRT_kwDOUNeEOM6swJ4v"
+    }
+  ],
+  "repairs": [
+    {
+      "finding": "collapsed native precomp placement",
+      "status": "implemented",
+      "behavior": "Reject collapseTransforms on an instance whose immediate scope owns native controllers. Keep isolated native surfaces valid inside ordinary collapsed wrappers.",
+      "regressionRed": {
+        "tests": 10,
+        "failed": 3,
+        "passed": 7,
+        "log": "/private/tmp/pr56-fix-collapse-red.log"
+      },
+      "focusedGreen": {
+        "exitCode": 0,
+        "files": 3,
+        "tests": 153,
+        "log": "/private/tmp/pr56-fix-collapse-green.log"
+      }
+    }
+  ],
+  "verification": {},
+  "delivery": {
+    "push": "pending final batch",
+    "ownerMerge": "pending"
+  },
+  "limits": [
+    "No release publication or human visual/listening acceptance. Earlier full/E01/archive evidence retains original bindings."
+  ]
+}

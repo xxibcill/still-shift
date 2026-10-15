@@ -43,6 +43,14 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #56 second-review fixes in progress (2026-10-15):** all three P2
+  findings are inline on GitHub. Collapsed native scopes now fail at the instance
+  field; isolated native surfaces inside ordinary collapsed wrappers remain legal.
+  The original three failing admission regressions and passing controls are
+  retained. Matte admission and cancellable journal reads remain pending. Each
+  finding receives its own commit; push waits for the complete verified batch.
+  [Fix evidence](./pr-56-second-review-fix-results.json).
+
 - **PR #56 current review repairs qualified (2026-10-15):** source40330672
   retains both Float32 cutout visibility and located/sanitized source diagnostics.
   Fast3,935/381 and both independent reviews pass. Current runtime verification
@@ -272,6 +280,17 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Repair PR #56 second-review findings
+
+- **Agent / branch:** Codex on isolated `codex/pr56-second-review-fixes`, from
+  `796375b7`; unrelated primary checkout edits preserved.
+- **Done:** posted all three inline findings before repair. First slice rejects
+  collapsed native scopes with located diagnostics and preserves isolated wrappers.
+- **Results:** original admission run fails 3/10 cases as expected; focused green
+  checks pass all 153 tests. Full verification follows all repairs.
+- **Open / next:** matte and journal fixes; one commit per finding, one final push.
+- **Records:** [Fix and verification receipt](./pr-56-second-review-fix-results.json).
 
 ### 2026-10-15 — Qualify current native review repairs in recorded stages
 

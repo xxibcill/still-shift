@@ -18,6 +18,19 @@ export function checkNative3DScope(
   assets: Map<string, CompositionAsset>,
   fail: IssueReporter,
 ): void {
+  for (const [index, layer] of scope.layers.entries())
+    if (
+      layer.type === "precomp" &&
+      layer.collapseTransforms &&
+      comp.precomps
+        ?.find((definition) => definition.id === layer.comp)
+        ?.layers.some((child) => child.type === "native3d")
+    )
+      fail(
+        "comp-native3d-scope",
+        [...base, "layers", index, "collapseTransforms"],
+        "Native worlds require an isolated precomp surface; disable collapseTransforms on this instance",
+      );
   const byId = new Map(scope.layers.map((layer) => [layer.id, layer]));
   const controllers = scope.layers.filter((layer) => layer.type === "native3d");
   if (
