@@ -38,6 +38,24 @@
         "files": 3,
         "tests": 153,
         "log": "/private/tmp/pr56-fix-collapse-green.log"
+      },
+      "commit": "c04f4652"
+    },
+    {
+      "finding": "native controller matte source",
+      "status": "implemented",
+      "behavior": "Reject incoming direct-controller matte references at the consuming layer; ordinary sources and finished isolated native precomps remain supported.",
+      "regressionRed": {
+        "tests": 17,
+        "failed": 5,
+        "passed": 12,
+        "log": "/private/tmp/pr56-fix-matte-red.log"
+      },
+      "focusedGreen": {
+        "exitCode": 0,
+        "files": 3,
+        "tests": 160,
+        "log": "/private/tmp/pr56-fix-matte-green.log"
       }
     }
   ],

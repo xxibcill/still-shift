@@ -47,7 +47,8 @@ still hold before relying on them.
   findings are inline on GitHub. Collapsed native scopes now fail at the instance
   field; isolated native surfaces inside ordinary collapsed wrappers remain legal.
   The original three failing admission regressions and passing controls are
-  retained. Matte admission and cancellable journal reads remain pending. Each
+  retained. Direct native-controller matte references now also fail at the consuming field;
+  cancellable journal reads remain pending. Each
   finding receives its own commit; push waits for the complete verified batch.
   [Fix evidence](./pr-56-second-review-fix-results.json).
 
@@ -286,10 +287,13 @@ still hold before relying on them.
 - **Agent / branch:** Codex on isolated `codex/pr56-second-review-fixes`, from
   `796375b7`; unrelated primary checkout edits preserved.
 - **Done:** posted all three inline findings before repair. First slice rejects
-  collapsed native scopes with located diagnostics and preserves isolated wrappers.
+  collapsed native scopes with located diagnostics and preserves isolated wrappers
+  (`c04f4652`). Second slice rejects direct native-controller matte sources;
+  ordinary and isolated-precomp matte sources remain legal.
 - **Results:** original admission run fails 3/10 cases as expected; focused green
-  checks pass all 153 tests. Full verification follows all repairs.
-- **Open / next:** matte and journal fixes; one commit per finding, one final push.
+  checks pass all 153 tests. Matte regression starts with 5 expected failures;
+  its focused green run passes all 160 tests. Full verification follows all repairs.
+- **Open / next:** journal fix and full verification; one commit per finding, one final push.
 - **Records:** [Fix and verification receipt](./pr-56-second-review-fix-results.json).
 
 ### 2026-10-15 — Qualify current native review repairs in recorded stages

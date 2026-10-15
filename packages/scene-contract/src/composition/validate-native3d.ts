@@ -148,6 +148,15 @@ export function checkNative3DScope(
     const path = pathOf(layer),
       binding = layer.native3D;
     if (
+      layer.trackMatte &&
+      byId.get(layer.trackMatte.layer)?.type === "native3d"
+    )
+      fail(
+        "comp-native3d-controller-style",
+        [...path, "trackMatte", "layer"],
+        "Native controllers cannot be direct matte sources; use an isolated precomp surface",
+      );
+    if (
       layer.overlayAfter !== undefined &&
       byId.get(layer.overlayAfter)?.type !== "native3d"
     )

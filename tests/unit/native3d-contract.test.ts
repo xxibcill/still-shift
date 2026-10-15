@@ -200,3 +200,82 @@ describe("native precomp isolation admission", () => {
     expect(result.ok).toBe(true);
   });
 });
+
+describe("native controller matte-source admission", () => {
+  const paint = (layer: string, mode = "alpha") => ({
+    id: "paint",
+    type: "solid",
+    size: [320, 180],
+    color: "#ff0000",
+    trackMatte: { layer, mode },
+  });
+  it.each(["alpha", "alpha-inverted", "luma", "luma-inverted"])(
+    "rejects a direct native %s matte at the consuming reference",
+    (mode) => {
+      const result = validateComposition(
+        composition([controller(), paint("world", mode)]),
+      );
+      expect(result.ok).toBe(false);
+      expect(result.diagnostics).toContainEqual(
+        expect.objectContaining({
+          code: "comp-native3d-controller-style",
+          path: "layers[1].trackMatte.layer",
+          severity: "error",
+        }),
+      );
+    },
+  );
+  it("locates a direct native matte inside a precomp", () => {
+    const result = validateComposition({
+      ...composition([{ id: "instance", type: "precomp", comp: "inner" }]),
+      precomps: [
+        {
+          id: "inner",
+          width: 320,
+          height: 180,
+          fps: 30,
+          frameCount: 300,
+          layers: [controller(), paint("world")],
+        },
+      ],
+    });
+    expect(result.ok).toBe(false);
+    expect(result.diagnostics).toContainEqual(
+      expect.objectContaining({
+        code: "comp-native3d-controller-style",
+        path: "precomps[0].layers[1].trackMatte.layer",
+      }),
+    );
+  });
+  it("preserves ordinary matte sources alongside a native controller", () => {
+    expect(
+      validateComposition(
+        composition([
+          { id: "mask", type: "solid", size: [40, 40], color: "#ffffff" },
+          paint("mask"),
+          controller(),
+        ]),
+      ).ok,
+    ).toBe(true);
+  });
+  it("preserves finished isolated native precomps as matte surfaces", () => {
+    expect(
+      validateComposition({
+        ...composition([
+          { id: "mask", type: "precomp", comp: "inner" },
+          paint("mask"),
+        ]),
+        precomps: [
+          {
+            id: "inner",
+            width: 320,
+            height: 180,
+            fps: 30,
+            frameCount: 300,
+            layers: [controller()],
+          },
+        ],
+      }).ok,
+    ).toBe(true);
+  });
+});
