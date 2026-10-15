@@ -753,12 +753,10 @@
     }
   },
   "remaining": [
-    "Complete current installed all10/6181/EU008 repair lifecycle56598, then independently audit the final ten packet/native/decoded picture/original narration closures. Complete full119, standard package121 and full closure copy now pass; preserve19 existing timing deferrals and all prior failures.",
-    "After actual full0, run the prepared standard offline package matrix, audit/install its exact archive, copy the complete independently hashed native closure, and execute a fresh current-installed queue/run/report/resume/ten-handoff lifecycle for all10 actual episodes. Original3df products and archive85/prepared86 are historical bindings.",
-    "Independently audit current ten receiving packets and complete encoded picture/original narration closure. Fresh receiving validation must not reset original first-pass1/10 or nine failed attempts, manufacture comparable paired tokens, or infer review acceptance.",
-    "After the initial current all-ten installed run checkpoint, execute and inspect the prepared EU008 two-label Spring assembly copy revision through the supported CAS revision lifecycle before final report/resume/ten handoffs. Prove actual native reuse, exact complete original narration and affected encoded picture; preserve original products, neighbors, first-pass1/10 and review boundaries.",
-    "Complete whole factual/design, mechanical, encoded glyph/readability, normal-speed continuous motion and listening review; keep unsupported, unreviewed and human acceptance explicit. Current reviewed-ready/supported/accepted0/10.",
-    "Reconcile all49 MS0-MS3 deliverables and their acceptance clauses against their exact source/evidence identities, current installed capability discovery and guides. Preserve candidate pack/finer Thai limits, prior failures and open upstream PRs; no routine merge, publishing or inferred human acceptance."
+    "Finish actual main56598 final repair-command closure/report/resume/all ten current CLI handoffs and its real terminal on the verified archive/source. Independent final-product audits now actually pass all10/6181 and do not substitute for that lifecycle terminal.",
+    "After those commands complete, independently reconcile all ten current CLI handoff packets against the final manifest, current product/artifact bindings and refreshed receiving resume paths. Sealed product/evidence/audio/native audits are already complete.",
+    "Complete or retain genuine whole factual/design, mechanical, encoded-glyph, normal-speed motion/listening and owner review. Ten current videos, including revised EU008, are available in review135; feedback requested. Original first-pass1/10/nine failures/null paired tokens and reviewed-ready/supported/accepted0 remain unchanged.",
+    "Reconcile all49 deliverables/26 cross-cutting clauses/21 traceability rows with final full125/package126/capability131+136/product139/current lifecycle evidence, preserving old staged/failed qualifications, unavailable six older raw paths, existing19 timing deferrals and unmet/unmeasured pilot targets."
   ],
   "qualification": "MS2 software checkpoint and its exact private archive remain historical prerequisites. New MS3 source is not qualified by relabelling MS2 full/installed gates. Structural model caps do not by themselves certify lifecycle I/O/managed-memory admission or review execution.",
   "committedNativeSource": "efa5057440c1c95a7ac7aa263cc48f50d9a2c41b",
@@ -1003,7 +1001,7 @@
     "supported": 0,
     "reviewedReady": 0,
     "accepted": 0,
-    "currentIntegratedSourceQualification": "Original products retain3df/runtime1090. Complete full119 and standard package121 now pass; complete5338-file copied closure hashes verify. Independent installed56598 all10/6181/EU008 lifecycle and whole reviews remain pending. Original first-pass1/10/nine failures/null paired tokens/accepted0 stay unchanged.",
+    "currentIntegratedSourceQualification": "Original products retain3df/runtime1090 and original1/10/nine failures/null paired tokens/accepted0. Current full119, exact package121, full closure copy and independent all10/6181 final-product audits now pass on the integrated source. Main56598 final report/resume/ten-handoff terminal and whole/owner review remain pending; current review135 videos include the scoped EU008 label repair.",
     "records": [
       "./mechanism-shorts-ms3-first-ten-terminal90-results.json",
       "./mechanism-shorts-ms3-current-first-ten-recovery-results.json",
@@ -1045,7 +1043,7 @@
   ],
   "activeRequiredFullPreparation": "./mechanism-shorts-ms3-final119-full-gate-results.json",
   "verificationHistoryScope": "The verification array retains dated historical checkpoints and their exact code/artifact bindings; old pending statements are not current implementation status. ActiveRequiredFullPreparation/currentPilotProduction/current completed proof pointers state the present gates.",
-  "currentPackageGate": "Standard package121 actual52914 terminal0;27 checks, exact2573-member archive/1051 sources,13 diagnostics/4 retry controls/strict types/discovery pass. Complete5338-file/2207274134B copy and hashes pass. Independent all10/6181/EU008 repair lifecycle is live as56598; no terminal or whole-review pass inferred.",
+  "currentPackageGate": "Complete full119, standard package121, full closure copy and all10 final-product audits pass. Main56598 final lifecycle/report/resume/ten-handoff terminal remains pending. Original1/10 first-pass/nine failures/null paired tokens and whole/owner gates unchanged.",
   "currentFaultScenarioCoverage": "./mechanism-shorts-ms3-fault-coverage111-results.json",
   "acceptanceReconciliation114": {
     "record": "./mechanism-shorts-acceptance-audit114-results.json",
@@ -1194,10 +1192,11 @@
       "EU-005",
       "EU-006",
       "EU-007",
+      "EU-008",
       "EU-009",
       "EU-010"
     ],
-    "independentProductAudits": 9,
+    "independentProductAudits": 10,
     "completeLifecyclePassed": false,
     "initialAllTenCheckpoint": {
       "actualRunExitCode": 0,
@@ -1205,7 +1204,9 @@
       "seconds": 5821.987425833009,
       "newNativeRenders": 0,
       "finalLabelRepairPassed": false
-    }
+    },
+    "finalProductRecord": "./mechanism-shorts-ms3-final-products139-results.json",
+    "labelRepairProductAndSampleChecksPassed": true
   },
   "currentInstalledCapabilities": {
     "record": "./mechanism-shorts-ms3-installed131-capability-results.json",
@@ -1220,5 +1221,19 @@
     "completeReportBytes": 14140,
     "compactItems": 32,
     "compactTruncated": false
-  }
+  },
+  "currentReviewVideos": {
+    "index": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-current-installed-review135/index.md",
+    "episodes": 10,
+    "source": "current installed final products including EU008 two-label repair",
+    "wholeReviewOrOwnerApproval": false
+  },
+  "remainingBeforeFinalProductAudits139": [
+    "Complete current installed all10/6181/EU008 repair lifecycle56598, then independently audit the final ten packet/native/decoded picture/original narration closures. Complete full119, standard package121 and full closure copy now pass; preserve19 existing timing deferrals and all prior failures.",
+    "After actual full0, run the prepared standard offline package matrix, audit/install its exact archive, copy the complete independently hashed native closure, and execute a fresh current-installed queue/run/report/resume/ten-handoff lifecycle for all10 actual episodes. Original3df products and archive85/prepared86 are historical bindings.",
+    "Independently audit current ten receiving packets and complete encoded picture/original narration closure. Fresh receiving validation must not reset original first-pass1/10 or nine failed attempts, manufacture comparable paired tokens, or infer review acceptance.",
+    "After the initial current all-ten installed run checkpoint, execute and inspect the prepared EU008 two-label Spring assembly copy revision through the supported CAS revision lifecycle before final report/resume/ten handoffs. Prove actual native reuse, exact complete original narration and affected encoded picture; preserve original products, neighbors, first-pass1/10 and review boundaries.",
+    "Complete whole factual/design, mechanical, encoded glyph/readability, normal-speed continuous motion and listening review; keep unsupported, unreviewed and human acceptance explicit. Current reviewed-ready/supported/accepted0/10.",
+    "Reconcile all49 MS0-MS3 deliverables and their acceptance clauses against their exact source/evidence identities, current installed capability discovery and guides. Preserve candidate pack/finer Thai limits, prior failures and open upstream PRs; no routine merge, publishing or inferred human acceptance."
+  ]
 }

@@ -1,5 +1,21 @@
 # MS3 acceptance tracker
 
+All10 current installed final products now pass independent complete picture/audio/
+original narration, review-image and native control/physical/global-clock audits.
+Actual auditor44813 exits0:6,181 frames,130 root artifacts,1,084 images,24,724 native
+references, new native0. EU008's two-label repair preserves original products and
+all9 neighbors/native frames. Eight actual encoded phone images were inspected;
+47 outside-label frames have maxRGB10/mean0.003892 differences and sampled pairs
+show unchanged visible content. Encoder-only causality and whole acceptance remain
+open. [Final products139](./mechanism-shorts-ms3-final-products139-results.json).
+
+The [ten current review videos](../benchmarks/results/ms3-current-installed-review135/index.md)
+are byte-exact independent copies, including revised EU008. Whole factual/mechanical/
+glyph/normal-speed/listening and owner review remain pending. Main56598 still
+needs actual final report/resume/ten handoffs and its real complete terminal.
+Original first-pass1/10, nine failures, missing paired tokens and accepted0 stay
+unchanged. Earlier statements below are dated capture history.
+
 2026-10-16 (local): the complete unmodified `pnpm check:all` run119 actually
 exits0 as71989 after24,311.28s. All2,793 selected inputs/122,415,742B remain
 exact to source1c9f7d14. The actual tool terminal, complete raw log/receipt,

@@ -43,13 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
-- **Actual first ten, current installed workflow (2026-10-16):** all 10 initial
-  EU001–EU010 exports pass:6,181 frames, zero new native renders,5821.99s.
-  Nine final products independently pass complete RGBA/PCM/original narration,
-  review-image transforms and public native control/physical/global-clock checks.
-  Main56598 is rendering the bounded EU008 two-label repair; auditor44813 awaits
-  that final product. Final report/resume/ten handoffs and actual terminal remain.
-  [Current installed127/checkpoint137](./mechanism-shorts-ms3-installed127-results.json).
+- **All10 current final products independently audited (2026-10-16):** actual
+  auditor44813 exits0 for6,181 frames/130 root artifacts/1,084 review images/24,724
+  native pins, with complete original narration and zero new native renders.
+  EU008 changes only two labels; all native references/nine neighbors exact.
+  Eight actual phone images viewed.47 outside-label encoded frames differ by
+  max10/255 RGB, mean0.003892; sampled phone pairs show no visible regression.
+  Whole review stays open; failed audit128/syntax129/measurement138 are retained.
+  Main56598 final report/resume/ten handoffs still require actual terminal.
+  [Final-product139](./mechanism-shorts-ms3-final-products139-results.json),
+  [ten current review videos](../benchmarks/results/ms3-current-installed-review135/index.md).
 
 - **Complete software and package gates pass:** full119 (session71989) exits0 on
   held1c9f7d14, all 2,793 selected inputs exact;4,594 unit/346 runtime/324 integration/
@@ -94,6 +97,21 @@ still hold before relying on them.
   all 10 current review videos and retain all remaining whole/owner review gates.
 
 ## Entries
+
+### 2026-10-16 — Verify ten current final products and deliver review videos139
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from8e952163.
+- **Done:** actual independent auditor44813 exits0;10 products/6,181 frames,130 root
+  artifacts/1,084 images/24,724 native pins and complete original narration verify.
+- **EU008:** only2 text fields change; source/native/nine neighbors exact. Eight
+  phone images actually viewed;47 outside frames maxRGB10/mean0.003892, sampled
+  pairs show unchanged visible content. Encoder-only/whole acceptance not inferred.
+- **Retained failures:**128 loader,129 first JS syntax and138 wrong movie-path
+  measurement. Corrected public audit/measurement passes retain their exact sources.
+- **Delivered:**10 byte-exact independent current video copies and review index;
+  owner watch/listen/content feedback requested. Original1/10/null tokens unchanged.
+- **Next:** main56598 actual final report/resume/ten-handoff terminal and whole/owner
+  gates remain open. [Product139](./mechanism-shorts-ms3-final-products139-results.json).
 
 ### 2026-10-16 — Retain installed progress and independent audits137
 
