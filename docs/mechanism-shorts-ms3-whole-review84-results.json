@@ -58,8 +58,8 @@
     "commit": "10cb84a4"
   },
   "open": [
-    "Integration only after producer session58827 terminates",
-    "Fresh full runtime/software/package/installed/render gates on integrated source",
+    "Fresh full runtime/software/benchmark/package/installed/render gates on integrated source",
+    "MS2 shared prerequisite/source repair delivery",
     "Whole factual/mechanical/motion/glyph/listening/human reviews"
   ],
   "retryProvenanceRepair": {
@@ -300,8 +300,37 @@
   },
   "currentPrerequisiteMergeQualification": {
     "record": "./mechanism-shorts-ms3-prerequisite-integration89-results.json",
-    "source": "e9be5d82 plus live evidence integration in progress",
+    "source": "89af0d13; code equivalent to reviewed e9be5d82",
     "status": "focused73-and-fast4594-passed; full integrated source gates open",
     "olderInstalledEvidence": "Package85 and prepared86 retain source452b/codee231 bindings; no earlier archive evidence transfers to this merge."
+  },
+  "originalProducerTerminal": {
+    "record": "./mechanism-shorts-ms3-first-ten-terminal90-results.json",
+    "actualExitCode": 0,
+    "stages": 13,
+    "handoffsVerified": 10
+  },
+  "currentUpstreamMaskProbe90": {
+    "firstAttempt": {
+      "path": "/private/tmp/still-shift-ms1n-review90-mask-browser1-run.json",
+      "bytes": 622,
+      "sha256": "sha256:474410d8c0b7ad933f55d3f58ba31317b382a94112759f90659b0cd9c35ae273"
+    },
+    "firstFailure": "Incorrect all-white fixture assumption; all four actual visibility cases and complete-pixel relationships passed. All images retained.",
+    "correctedRun": {
+      "path": "/private/tmp/still-shift-ms1n-review90-mask-browser2-run.json",
+      "bytes": 1006,
+      "sha256": "sha256:0bc81890c05fcba3319e093ccde1940d8056a9a475db1fc89e1fc40428f21441"
+    },
+    "actualExitCode": 0,
+    "actualResult": {
+      "path": "/private/tmp/still-shift-ms1n-review90-mask-browser2/result.json",
+      "bytes": 73712,
+      "sha256": "sha256:e6c9d3821164cb9e7f9932bacdb4e9e9ac29f03a75e89009b86823b87147ffc8"
+    },
+    "sourceCommit": "40330672db000720b551abd0f7157f4a6751736b",
+    "visibility": ["occluded", "occluded", "occluded", "visible"],
+    "nonBackgroundPixels": [1056, 1056, 1056, 0],
+    "scope": "Four128x128 native WebGL2 frames, full RGBA controls and retained PNGs; no episode acceptance. Affected runtime/depth group3591 is running separately."
   }
 }

@@ -1,0 +1,545 @@
+{
+  "schemaVersion": "ms3-first-ten-terminal-1",
+  "capturedUtc": "2026-10-15T00:23:15.516073+00:00",
+  "status": "all-ten-original-narration-run-report-resume-and-handoffs-passed",
+  "selectionId": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+  "selectionSha256": "8c5f378389d595c83fdcf3ff1cd41bd2d57d64b3a622c953013cffe39d001471",
+  "producerSource": "3df62a5598dc46e021ee2c51b173ba33a38d2af6",
+  "runtimeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+  "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+  "primary": {
+    "unifiedSession": 58827,
+    "actualTerminalExitCode": 0,
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-recovery74-whole1-receipt.json",
+      "bytes": 3634,
+      "sha256": "sha256:9ff95089f3715a697f999db95de01ab1f05e7b5ab056903af329968c3bc8a256"
+    },
+    "result": {
+      "steps": [
+        {
+          "step": "run",
+          "actualExitCode": 0,
+          "seconds": 4829.512918082997,
+          "currentSourceExact": true,
+          "declaredInputsExact": true,
+          "priorFilesExact": true,
+          "episodeStatuses": {
+            "EU-001": "passed",
+            "EU-002": "passed",
+            "EU-003": "passed",
+            "EU-004": "passed",
+            "EU-005": "passed",
+            "EU-006": "passed",
+            "EU-007": "passed",
+            "EU-008": "passed",
+            "EU-009": "passed",
+            "EU-010": "passed"
+          }
+        },
+        {
+          "step": "report",
+          "actualExitCode": 0,
+          "seconds": 472.55409504217096,
+          "currentSourceExact": true,
+          "declaredInputsExact": true,
+          "priorFilesExact": true,
+          "episodeStatuses": {
+            "EU-001": "passed",
+            "EU-002": "passed",
+            "EU-003": "passed",
+            "EU-004": "passed",
+            "EU-005": "passed",
+            "EU-006": "passed",
+            "EU-007": "passed",
+            "EU-008": "passed",
+            "EU-009": "passed",
+            "EU-010": "passed"
+          }
+        },
+        {
+          "step": "resume",
+          "actualExitCode": 0,
+          "seconds": 466.20870516612194,
+          "currentSourceExact": true,
+          "declaredInputsExact": true,
+          "priorFilesExact": true,
+          "episodeStatuses": {
+            "EU-001": "passed",
+            "EU-002": "passed",
+            "EU-003": "passed",
+            "EU-004": "passed",
+            "EU-005": "passed",
+            "EU-006": "passed",
+            "EU-007": "passed",
+            "EU-008": "passed",
+            "EU-009": "passed",
+            "EU-010": "passed"
+          }
+        },
+        {
+          "step": "handoff-EU-001",
+          "actualExitCode": 0,
+          "seconds": 472.3268800410442
+        },
+        {
+          "step": "handoff-EU-002",
+          "actualExitCode": 0,
+          "seconds": 469.46268304088153
+        },
+        {
+          "step": "handoff-EU-003",
+          "actualExitCode": 0,
+          "seconds": 482.6809372920543
+        },
+        {
+          "step": "handoff-EU-004",
+          "actualExitCode": 0,
+          "seconds": 474.54594408301637
+        },
+        {
+          "step": "handoff-EU-005",
+          "actualExitCode": 0,
+          "seconds": 468.2470337499399
+        },
+        {
+          "step": "handoff-EU-006",
+          "actualExitCode": 0,
+          "seconds": 471.3106762501411
+        },
+        {
+          "step": "handoff-EU-007",
+          "actualExitCode": 0,
+          "seconds": 470.114812792046
+        },
+        {
+          "step": "handoff-EU-008",
+          "actualExitCode": 0,
+          "seconds": 473.3055902500637
+        },
+        {
+          "step": "handoff-EU-009",
+          "actualExitCode": 0,
+          "seconds": 466.34552337485366
+        },
+        {
+          "step": "handoff-EU-010",
+          "actualExitCode": 0,
+          "seconds": 487.3640998341143
+        }
+      ],
+      "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/queue-current72.json",
+      "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72",
+      "sourceCommit": "3df62a55",
+      "runtimeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+      "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+      "scope": "Bounded revision1 retry of9 failed jobs after restoring exact disappeared input bytes. Existing E1 is verified and retained. Same runtime/profile and whole original Alden takes1x. All original failed attempts retained; no first-pass success or savings inferred.",
+      "acceptedPilot": 0,
+      "wholeReviews": "UNREVIEWED",
+      "declaredInputFiles": 107,
+      "protectedPriorFiles": 1221,
+      "resumeRowsExact": true,
+      "originalFailedAndSuccessfulAttemptsExact": true,
+      "actualExitCode": 0
+    }
+  },
+  "follower": {
+    "unifiedSession": 26381,
+    "actualTerminalExitCode": 0,
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-recovery84-handoff-follower1.json",
+      "bytes": 14560,
+      "sha256": "sha256:676fbbeb1c8440a6dc4edf6c423fa5dbf229f34d7d05495564b27aecfde41116"
+    },
+    "verifiedEpisodes": 10
+  },
+  "originalSourceInputs": {
+    "files": 2792,
+    "bytes": 122374188,
+    "lastActualHoldCheckExitCode": 0,
+    "inventory": {
+      "path": "/private/tmp/still-shift-ms3-recovery74-source-inputs1.json",
+      "bytes": 477140,
+      "sha256": "sha256:7c69f187e455df2410946b647207ead706433e8908302f448f4d8de89d447f41"
+    }
+  },
+  "packetAudits": [
+    {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-001-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:25572b2c892e7f9de1a911c5c583d3d34006e8b239661b7a05e6373e54db6886"
+      },
+      "result": {
+        "status": "passed-independent-current-cli-handoff",
+        "id": "EU-001",
+        "handoff": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/handoff-recovery74-EU-001.json",
+          "bytes": 4212,
+          "sha256": "sha256:057eea0a7f66860522922fe0d1397b8a21cb62a874649c0485ef0344a3e9bb0b"
+        },
+        "assetPinsVerified": 8,
+        "binding": {
+          "inputSha256": "sha256:daefc3cc7faa98699f15011508143afc79b5080d09231b264fd4bec066810878",
+          "outputSha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e",
+          "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "currentAbsoluteResumePathsVerified": true,
+        "sourceAndWholeNarrationInputsVerified": true,
+        "qa": {
+          "technical": "passed",
+          "mechanical": "unreviewed",
+          "sampled-visual": "passed",
+          "continuous-motion": "unreviewed",
+          "listening": "unreviewed",
+          "factual": "unreviewed"
+        },
+        "reviewedReady": false,
+        "scope": "Fresh current CLI packet, exact source/clock/product asset closure and current resume paths verified. Existing complete encoded audit remains separately bound; no new renderer or whole acceptance."
+      }
+    },
+    {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-002-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:e4edfc2b6402a3f63ff40d75bcd1c3fa639e4f3f5f08c282118f6efe42455352"
+      },
+      "result": {
+        "status": "passed-independent-current-cli-handoff",
+        "id": "EU-002",
+        "handoff": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/handoff-recovery74-EU-002.json",
+          "bytes": 4261,
+          "sha256": "sha256:c954425e6b5b0c5cc6bf03af0fb209842c5c6046b75491f0b3359e2eaa247fa2"
+        },
+        "assetPinsVerified": 8,
+        "binding": {
+          "inputSha256": "sha256:9adfbd99e697423ce12ca38f5065f8658eaf83a2d9d2e28ad409bdca42d9bfcb",
+          "outputSha256": "sha256:f8c223632b6d5054727998958163e84815bfe9a8698fbb37c0b99064da6b61ab",
+          "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "currentAbsoluteResumePathsVerified": true,
+        "sourceAndWholeNarrationInputsVerified": true,
+        "qa": {
+          "technical": "passed",
+          "mechanical": "unreviewed",
+          "sampled-visual": "passed",
+          "continuous-motion": "unreviewed",
+          "listening": "unreviewed",
+          "factual": "unreviewed"
+        },
+        "reviewedReady": false,
+        "scope": "Fresh current CLI packet, exact source/clock/product asset closure and current resume paths verified. Existing complete encoded audit remains separately bound; no new renderer or whole acceptance."
+      }
+    },
+    {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-003-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:d0938b15c11cb9773e736d32943e807e694b5505a21d0667bff92c9201756f23"
+      },
+      "result": {
+        "status": "passed-independent-current-cli-handoff",
+        "id": "EU-003",
+        "handoff": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/handoff-recovery74-EU-003.json",
+          "bytes": 4310,
+          "sha256": "sha256:d0eecfad3f6cf3a5cdef624251b636c49356591c431d964844b81520d6a58252"
+        },
+        "assetPinsVerified": 8,
+        "binding": {
+          "inputSha256": "sha256:5ab71f097c8d34f3b4b9eeceea2f8f67b5a4a13cb34485314ca2f7d1889a2c5c",
+          "outputSha256": "sha256:aa7039b505d2155700672a25a2f484114035352f33ccec480f673cb869d47c3b",
+          "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "currentAbsoluteResumePathsVerified": true,
+        "sourceAndWholeNarrationInputsVerified": true,
+        "qa": {
+          "technical": "passed",
+          "mechanical": "unreviewed",
+          "sampled-visual": "passed",
+          "continuous-motion": "unreviewed",
+          "listening": "unreviewed",
+          "factual": "unreviewed"
+        },
+        "reviewedReady": false,
+        "scope": "Fresh current CLI packet, exact source/clock/product asset closure and current resume paths verified. Existing complete encoded audit remains separately bound; no new renderer or whole acceptance."
+      }
+    },
+    {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-004-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:322caff7f47c7b132ed2be8fd7e3c8b27cc5a06d6ec048346328e14d93e08fa1"
+      },
+      "result": {
+        "status": "passed-independent-current-cli-handoff",
+        "id": "EU-004",
+        "handoff": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/handoff-recovery74-EU-004.json",
+          "bytes": 4317,
+          "sha256": "sha256:6f2b09b11bda0ee5d3a6c181c088b085bd5ce9e8b5fad2c0d98e7e500b3fe8cf"
+        },
+        "assetPinsVerified": 8,
+        "binding": {
+          "inputSha256": "sha256:441f8ba84677d6eca4ab400477d1631a771055c5e3e43f7c1f843a1a67ac9845",
+          "outputSha256": "sha256:f2b6b6ffb0c2077ffbe9ce7c4b50ce5e2da71b275ac6164cf625ba254cdab39d",
+          "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "currentAbsoluteResumePathsVerified": true,
+        "sourceAndWholeNarrationInputsVerified": true,
+        "qa": {
+          "technical": "passed",
+          "mechanical": "unreviewed",
+          "sampled-visual": "passed",
+          "continuous-motion": "unreviewed",
+          "listening": "unreviewed",
+          "factual": "unreviewed"
+        },
+        "reviewedReady": false,
+        "scope": "Fresh current CLI packet, exact source/clock/product asset closure and current resume paths verified. Existing complete encoded audit remains separately bound; no new renderer or whole acceptance."
+      }
+    },
+    {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-005-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:d5b2f80b89e428684d19c5fe95efd9372f0add09e01b9b8e2c5837351d27b71f"
+      },
+      "result": {
+        "status": "passed-independent-current-cli-handoff",
+        "id": "EU-005",
+        "handoff": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/handoff-recovery74-EU-005.json",
+          "bytes": 4329,
+          "sha256": "sha256:39e68f35aff25399c377fa7096c9ec0bbda788b71d378f92270a44f305017cab"
+        },
+        "assetPinsVerified": 8,
+        "binding": {
+          "inputSha256": "sha256:7b4da0ec4d3f377bba43874677259177daa08b6615406c4eb92b9b6de8b5129e",
+          "outputSha256": "sha256:887d993a18e4165d4e6cd016e2e429f0e6ea8dd80c9e82ca885a3bad5edfb3d5",
+          "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "currentAbsoluteResumePathsVerified": true,
+        "sourceAndWholeNarrationInputsVerified": true,
+        "qa": {
+          "technical": "passed",
+          "mechanical": "unreviewed",
+          "sampled-visual": "passed",
+          "continuous-motion": "unreviewed",
+          "listening": "unreviewed",
+          "factual": "unreviewed"
+        },
+        "reviewedReady": false,
+        "scope": "Fresh current CLI packet, exact source/clock/product asset closure and current resume paths verified. Existing complete encoded audit remains separately bound; no new renderer or whole acceptance."
+      }
+    },
+    {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-006-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:b8263da680153cbdc149b8bb5ebce5c7b7763de9d6ee482271001d3a90ac213b"
+      },
+      "result": {
+        "status": "passed-independent-current-cli-handoff",
+        "id": "EU-006",
+        "handoff": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/handoff-recovery74-EU-006.json",
+          "bytes": 4340,
+          "sha256": "sha256:8fb6f6b33e37624ef5b4e195125fa446a6a29224279a7b56df92c036322a56b7"
+        },
+        "assetPinsVerified": 8,
+        "binding": {
+          "inputSha256": "sha256:4d07b63ded1bc4db81d62138b2a7e5c36ef8dcbf548f044f52877059ee4785ad",
+          "outputSha256": "sha256:6b3fbd3e784cbc68d41afd4663e1be78a45d554a2500d6c0732ebc58ac32f9e7",
+          "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "currentAbsoluteResumePathsVerified": true,
+        "sourceAndWholeNarrationInputsVerified": true,
+        "qa": {
+          "technical": "passed",
+          "mechanical": "unreviewed",
+          "sampled-visual": "passed",
+          "continuous-motion": "unreviewed",
+          "listening": "unreviewed",
+          "factual": "unreviewed"
+        },
+        "reviewedReady": false,
+        "scope": "Fresh current CLI packet, exact source/clock/product asset closure and current resume paths verified. Existing complete encoded audit remains separately bound; no new renderer or whole acceptance."
+      }
+    },
+    {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-007-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:66ab68e44a89401dc2b3f3ede2654b4f01ae1034a2e12cb71b5a3c47ea978ecc"
+      },
+      "result": {
+        "status": "passed-independent-current-cli-handoff",
+        "id": "EU-007",
+        "handoff": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/handoff-recovery74-EU-007.json",
+          "bytes": 4316,
+          "sha256": "sha256:54ad7e5d3f996db07d1f13a103d83cb5308be2ae87960f2bc14e670e9ed095c6"
+        },
+        "assetPinsVerified": 8,
+        "binding": {
+          "inputSha256": "sha256:87d2ac50720a201fbaf5d18b03521d83adf00d265d44d3d5dc2f70eb3fc42cf4",
+          "outputSha256": "sha256:01a008b76eb7f357d3087d8478b43a2991908f9c80467abcf267fdd4afa61051",
+          "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "currentAbsoluteResumePathsVerified": true,
+        "sourceAndWholeNarrationInputsVerified": true,
+        "qa": {
+          "technical": "passed",
+          "mechanical": "unreviewed",
+          "sampled-visual": "passed",
+          "continuous-motion": "unreviewed",
+          "listening": "unreviewed",
+          "factual": "unreviewed"
+        },
+        "reviewedReady": false,
+        "scope": "Fresh current CLI packet, exact source/clock/product asset closure and current resume paths verified. Existing complete encoded audit remains separately bound; no new renderer or whole acceptance."
+      }
+    },
+    {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-008-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:cb74c6f85c1d64f87245b619085364153f0b9b5baac06fa2b0ac07bd197e9af2"
+      },
+      "result": {
+        "status": "passed-independent-current-cli-handoff",
+        "id": "EU-008",
+        "handoff": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/handoff-recovery74-EU-008.json",
+          "bytes": 4342,
+          "sha256": "sha256:0977c1bd2324ece19686b635a150d692316ed30f767fb2427552f1dcb08d4231"
+        },
+        "assetPinsVerified": 8,
+        "binding": {
+          "inputSha256": "sha256:962caf1e111620b9657cc52ec7d1840b01d9b417403d850295785634385c44a1",
+          "outputSha256": "sha256:44b89ce96140210e0677a7610ef06b76c7d4847f7cee5211e1bd5f8cec3b818e",
+          "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "currentAbsoluteResumePathsVerified": true,
+        "sourceAndWholeNarrationInputsVerified": true,
+        "qa": {
+          "technical": "passed",
+          "mechanical": "unreviewed",
+          "sampled-visual": "passed",
+          "continuous-motion": "unreviewed",
+          "listening": "unreviewed",
+          "factual": "unreviewed"
+        },
+        "reviewedReady": false,
+        "scope": "Fresh current CLI packet, exact source/clock/product asset closure and current resume paths verified. Existing complete encoded audit remains separately bound; no new renderer or whole acceptance."
+      }
+    },
+    {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-009-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:a8b93c45ea36d9220f358db20b52bde795239bfd21f081360f43777d3f3c314f"
+      },
+      "result": {
+        "status": "passed-independent-current-cli-handoff",
+        "id": "EU-009",
+        "handoff": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/handoff-recovery74-EU-009.json",
+          "bytes": 4311,
+          "sha256": "sha256:8050d36ec1308fe348480ab11950d4bff0d1010d5b1f8887da335f00f7f13978"
+        },
+        "assetPinsVerified": 8,
+        "binding": {
+          "inputSha256": "sha256:7bdfa3183b90e3153f581b65fb2243705c5d7f9207983dc6278d8d44c0c1f217",
+          "outputSha256": "sha256:5f7f9d2a3924f194d800d2bbff61cc48d3dd7ab1577e24e44f8aa6056bf805cb",
+          "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "currentAbsoluteResumePathsVerified": true,
+        "sourceAndWholeNarrationInputsVerified": true,
+        "qa": {
+          "technical": "passed",
+          "mechanical": "unreviewed",
+          "sampled-visual": "passed",
+          "continuous-motion": "unreviewed",
+          "listening": "unreviewed",
+          "factual": "unreviewed"
+        },
+        "reviewedReady": false,
+        "scope": "Fresh current CLI packet, exact source/clock/product asset closure and current resume paths verified. Existing complete encoded audit remains separately bound; no new renderer or whole acceptance."
+      }
+    },
+    {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-010-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:8596a490ab58290b4c019f76855b4b9d54ac946b20870e043577ada62114fee8"
+      },
+      "result": {
+        "status": "passed-independent-current-cli-handoff",
+        "id": "EU-010",
+        "handoff": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/handoff-recovery74-EU-010.json",
+          "bytes": 4299,
+          "sha256": "sha256:0fdd29309a521771937934b71490ee3ba36e219792c78c663ed1da7a78ec5efe"
+        },
+        "assetPinsVerified": 8,
+        "binding": {
+          "inputSha256": "sha256:774a41ba70e3a3f226d3f217514cb701cb320f232ec97745ca4edfca9ed53b49",
+          "outputSha256": "sha256:d0bb64e9be3be90af9857fc5ace4d30c1c31b4f919551be60a165970bd0288bc",
+          "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "currentAbsoluteResumePathsVerified": true,
+        "sourceAndWholeNarrationInputsVerified": true,
+        "qa": {
+          "technical": "passed",
+          "mechanical": "unreviewed",
+          "sampled-visual": "passed",
+          "continuous-motion": "unreviewed",
+          "listening": "unreviewed",
+          "factual": "unreviewed"
+        },
+        "reviewedReady": false,
+        "scope": "Fresh current CLI packet, exact source/clock/product asset closure and current resume paths verified. Existing complete encoded audit remains separately bound; no new renderer or whole acceptance."
+      }
+    }
+  ],
+  "reviewDelivery": "benchmarks/results/ms3-actual-first-ten-review80/index.md",
+  "narration": "Complete existing Alden takes at original1x; word timings and original audio retained. No missing-seven request or paid generation.",
+  "qualifications": {
+    "accepted": 0,
+    "reviewedReady": 0,
+    "firstPass": {
+      "passed": 1,
+      "total": 10,
+      "rate": 0.1,
+      "target": 0.9,
+      "status": "not-achieved"
+    },
+    "comparablePairedTokens": null,
+    "wholeReviews": "Factual/mechanical/glyph/continuous-motion/listening/human remain open",
+    "sourceBinding": "This terminal evidence qualifies original3df/runtime1090 only. Integrated repairs/current-main require fresh full software/package/installed gates.",
+    "spending": false
+  }
+}
