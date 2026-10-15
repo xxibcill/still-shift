@@ -1336,5 +1336,14 @@
       "sha256": "sha256:4f41bd80ddf63837fba98206c2d961e40c0a5314b5d02470c2e6905b2266325f"
     },
     "isAnotherExecutedRelocationProof": false
+  },
+  "finalPublicDelivery": {
+    "record": "./mechanism-shorts-ms3-delivery165-results.json",
+    "verifiedTechnicalCheckpoint": "276e76f69d73352fc9e027e3c72fea0435836eb7",
+    "verifiedReceiptCheckpoint": "145c348e65fdea4ed1d426a853d53fe6ef2d11fd",
+    "allFivePullRequestsAttached": true,
+    "actionsEnabled": false,
+    "approvedDescriptionUnchanged": true,
+    "laterChanges": "Documentation-only reconciliation pointers; code/package/products remain exact."
   }
 }

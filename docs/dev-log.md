@@ -82,6 +82,8 @@ still hold before relying on them.
 - **Delivery:** normal fast-forward push to existing PR58 at276e76f6, actual0;
   Git/remote/GitHub heads match. Five attached PRs confirmed;51/52 merged by owner,
   56/57/58 open/mergeable. Actions disabled; approved PR58 description unchanged.
+- **Pointers:** final162 delivery clause/main results link verified165; receipt-only
+  145c348e is also pushed/read back. This pointer closure changes documentation only.
 - **Scope:** this receipt is later metadata only; tested code0da/packageef9 and
   all2,798 selected inputs stay exact. No PR merge, npm/video publish or paid TTS.
 - **Open product gates:** whole factual/mechanical/glyph/motion/listening and owner

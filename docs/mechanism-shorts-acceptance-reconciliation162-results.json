@@ -926,8 +926,8 @@
     {
       "id": "AC-DELIVERY",
       "requirement": "Five separate branches/attached PRs and no Actions/publication/merge inference",
-      "status": "five-pr-deliveries-current-final-push-pending",
-      "evidenceAndLimits": "Separate branches/attached PRs51,52,56,57,58 retain delivery history. Current final metadata/source push and fresh remote readback are recorded separately after162. No GitHub PR merge,Actions,publication or owner approval is inferred; approved historical PR58 body114 stays unchanged.",
+      "status": "five-pr-deliveries-and-final-public-readback-verified",
+      "evidenceAndLimits": "Separate branches/attached PRs51/52/56/57/58 confirmed in165. Owner merged51/52;56/57/58 open/mergeable at capture. Public checkpoint276e76f6 and receipt-only145c348e push/readbacks actual0; all selected tested source remains exact. Actions disabled; approved PR58 historical body unchanged. No PR merge, package/video publication or owner acceptance inferred.",
       "historicalAudit114": {
         "id": "AC-DELIVERY",
         "requirement": "Five separate branches/attached PRs and no Actions/publication/merge inference",
@@ -1130,7 +1130,7 @@
     "SS06 sound extensions"
   ],
   "publication": false,
-  "finalRemoteDeliveryRecordPending": true,
+  "finalRemoteDeliveryRecordPending": false,
   "methodProgram": {
     "path": "/private/tmp/still-shift-ms3-reconcile162.py",
     "bytes": 19735,
@@ -1228,5 +1228,7 @@
       },
       "exact": true
     }
-  ]
+  ],
+  "finalRemoteDeliveryRecord": "./mechanism-shorts-ms3-delivery165-results.json",
+  "deliveryResolution": "Resolved after original162 capture by actual verified public checkpoint276e76f6 and subsequent receipt-only145c348e; no tested code/package/product change."
 }
