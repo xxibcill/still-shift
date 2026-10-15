@@ -288,8 +288,9 @@ still hold before relying on them.
   live173,950,247 tokens/41.112124 USD-equivalent admits the bounded batch with
   WARN. Historical5/5M and10/35M decisions/blocked observations are retained.
 - **Open / next:** successful actual full42543 terminal, fresh same-ledger check,
-  truthful current runtime binding, then the four captures in the first serial
-  slot before long installed checks. No capture started and no ElevenLabs spending
+  current-identity helper then the four captures in the first serial slot before
+  long installed checks. Helper syntax and actual pre-terminal refusal pass with
+  no capture/native identity command started. No ElevenLabs spending
   approved. This is internal API-equivalent accounting, not an exact bill.
 - **Records:** [approval103](./mechanism-shorts-ms3-work-allowance103-results.json).
 
