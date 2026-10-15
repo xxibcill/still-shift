@@ -68,7 +68,11 @@ still hold before relying on them.
   cover all10 episodes/6,181 frames. Runtime identity gates reject relabeling old
   products; prepared86 one-episode scope is insufficient. Cache-only guard controls
   pass;1,571 expected keys/34 captures are metadata-admitted, full content closure
-  and actual installed validation remain.
+  and actual installed validation remain. Complete closure93 now accounts5,223 files/2,076,631,320B
+  across34 full capture directories/1,758 stored frames. Combined12-root OS denials
+  and fresh-capture staging block pass from neutral cwd; pre-terminal copy refuses
+  before creating a receiver. Binary hash/copy/current replay remain open.
+  [Preparation controls](./mechanism-shorts-ms3-installed-preparation93-results.json),
   [Current installed scope](./mechanism-shorts-ms3-current-installed-scope92-results.json). Physical fault captures stay
   blocked by the previously requested revised Creator work budget. No audio files
   are missing and no paid generation is approved. Review copies remain byte-exact
@@ -244,6 +248,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Final all-ten native closure and combined isolation prepared
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` from `f4846b0c`.
+- **Done:** enumerated exact full34-capture closure:5,223 expected files/2.077GB,
+  including1,758 stored frames for6,181 requested output frames. Added a guarded
+  post-terminal copy runner; binary hashes/copies have not run.
+- **Results:** actual combined12-root Node/Python denials, fixed-ps identity and
+  exact fresh-capture worker-stage block pass. Nonterminal copy negative refuses
+  before creating any receiver; no native capture, episode export or spending.
+- **Rejected / do not repeat:** initial probe inherited denied original cwd and
+  failed descendant `uv_cwd`; unchanged probe succeeds from neutral `/private/tmp`.
+- **Open / next:** full42543 is confirmed live; keep held inputs frozen and wait
+  for actual terminal before fresh archive/copy/current all-ten installed replay.
+- **Records:** [preparation93](./mechanism-shorts-ms3-installed-preparation93-results.json),
+  [required current scope92](./mechanism-shorts-ms3-current-installed-scope92-results.json).
 
 ### 2026-10-15 — Require all-ten current installed validation after the full gate
 

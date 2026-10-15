@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "ms3-final-installed-preparation-controls-1",
+  "capturedUtc": "2026-10-15T01:51:26.759875+00:00",
+  "status": "complete-declared-closure-and-combined-os-controls-prepared-not-production-validated",
+  "heldSourceCommit": "3749618d64dfa35a57b2e4f34da5b6722ac9c089",
+  "activeFullSession": 42543,
+  "priorScope": "./mechanism-shorts-ms3-current-installed-scope92-results.json",
+  "selectionId": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+  "episodeIds": [
+    "EU-001",
+    "EU-002",
+    "EU-003",
+    "EU-004",
+    "EU-005",
+    "EU-006",
+    "EU-007",
+    "EU-008",
+    "EU-009",
+    "EU-010"
+  ],
+  "completeNativeClosure": {
+    "plan": {
+      "path": "/private/tmp/still-shift-ms3-postgate93-cache-copy-plan1.json",
+      "bytes": 1139065,
+      "sha256": "sha256:56793541064be396a205b747ddb349e1803d20720ddca59fb51137c2a3e488fc"
+    },
+    "outputFrames": 6181,
+    "requiredIndexKeys": 1571,
+    "selectedCaptureDirectories": 34,
+    "completeCaptureFrames": 1758,
+    "files": 5223,
+    "bytes": 2076631320,
+    "inputFiles": 115,
+    "inputBytes": 130642814,
+    "expectedPinsAndRegularSizesVerified": true,
+    "binaryContentHashesVerified": false,
+    "independentCopyExecuted": false,
+    "qualification": "Includes every declared frame in all34 selected captures, beyond just1,571 requested unique keys. Expected SHA/size closure and exact file coverage are admitted; full binary content verification/copy remains post-terminal work."
+  },
+  "copyRunner": {
+    "script": {
+      "path": "/private/tmp/still-shift-ms3-postgate93-cache-copy1.py",
+      "bytes": 8957,
+      "sha256": "sha256:66d7bad4799607772fcd48a21bea6aa091d752892718e828bccc76282297b55f"
+    },
+    "syntax": "Python AST parse passed",
+    "admissionNegative": {
+      "path": "/private/tmp/still-shift-ms3-postgate93-copy-admission-negative1.json",
+      "bytes": 366,
+      "sha256": "sha256:53583c1f97b1ad73284d4f88a1d191a2c0224b6b69e60c559935f296df610e31"
+    },
+    "expectedBlockedChildExitCode": 1,
+    "receivingConsumerCreated": false,
+    "copyReceiptCreated": false,
+    "guard": "Require actual session42543 terminal admission plus aggregate/sourceHold actual0 and exact held source before opening any receiving destination. Never execute from running-only receipt."
+  },
+  "combinedIsolation": {
+    "profile": {
+      "path": "/private/tmp/still-shift-ms3-postgate93-isolation.sb",
+      "bytes": 1299,
+      "sha256": "sha256:ea1453e7d62fd060efe830a75845dd7ac6597ca072804862fd4601e1a0758e68"
+    },
+    "probe": {
+      "path": "/private/tmp/still-shift-ms3-postgate93-isolation-probe.mjs",
+      "bytes": 3377,
+      "sha256": "sha256:7c901a7dd3da69d289c600ba81cdd5a6492ebcf266026e6d28fa7d850c9b80f8"
+    },
+    "probeSyntax": "Node22.23.1 --check passed",
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-postgate93-isolation-probe1.json",
+      "bytes": 837,
+      "sha256": "sha256:d718b7ed415130ab483160bc291f2e948d15ff96042ea39ad9851c649fab7290"
+    },
+    "result": {
+      "status": "passed-combined-original-root-and-cache-only-os-controls",
+      "deniedRoots": 12,
+      "nodeReadAndMetadataDenied": true,
+      "pythonMetadataDenied": true,
+      "exactFreshCaptureWorkerStageDenied": true,
+      "nodeDescendantGuardInherited": true,
+      "ordinaryAndExistingCacheWorkerAllowed": true,
+      "fixedSystemPsIdentityAllowed": true,
+      "fixedSystemPsException": "/bin/ps only, process-exec with no-sandbox; Node and Python restrictions independently verified",
+      "profile": "/private/tmp/still-shift-ms3-postgate93-isolation.sb",
+      "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
+      "nativeBlenderLaunched": false,
+      "newNativeCaptures": 0,
+      "newEpisodeExports": 0,
+      "scope": "Actual OS isolation controls only. All-ten cache content copy and installed runtime replay remain unproved."
+    },
+    "initialAttempt": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-postgate93-isolation-probe1.log",
+        "bytes": 1062,
+        "sha256": "sha256:257587adb7619d23422161cd5c754fb19e501665631e5a83b1dc49f7f770f24f"
+      },
+      "cause": "Probe inherited original checkout cwd. Original-root denial correctly prevented descendant Node eval uv_cwd. No production/build/capture executed."
+    },
+    "correctedAttempt": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-postgate93-isolation-probe2.log",
+        "bytes": 776,
+        "sha256": "sha256:5d05d67554cacb383d8e6380b13ec99f5fa40c6b6eec445e9346d6d11e2199a1"
+      },
+      "change": "Unchanged probe/profile run from neutral /private/tmp; production runner must use independent consumer cwd."
+    },
+    "qualification": "Actual original-root/capture-staging OS controls only. Fixed /bin/ps no-sandbox exception remains explicit. Node and Python denials checked independently; no blanket all-descendant isolation claim."
+  },
+  "next": [
+    "Observe actual42543 terminal0 and final held-input check",
+    "Build fresh current private archive and clean independent installed consumer93; audit members/corresponding sources/public APIs/types/capabilities",
+    "Execute exact2.08GB native closure and130.64MB input copies with full expected hashes and independent regular files",
+    "Use combined profile from independent consumer cwd, admit actual installed current runtime/profile, run all10/current6,181 output frames with zero fresh native captures",
+    "Complete current run/report/resume/10handoffs and independent complete output/audio/current identity audits; keep original first-pass/history separate"
+  ],
+  "unchangedGates": {
+    "originalFirstPass": "1/10;90% target not achieved",
+    "pairedRoutineTokens": null,
+    "acceptedPilot": 0,
+    "wholeFactualMechanicalGlyphContinuousListeningReview": "open",
+    "physicalFaultCaptureBudget": "pending Creator revised amount"
+  },
+  "renderWork": {
+    "newNativeCaptures": 0,
+    "episodeExports": 0,
+    "paidVoiceGeneration": 0,
+    "scope": "Small metadata planning, syntax checks, OS file/process probes and a pre-terminal copy rejection. Current full42543 remains the sole rendering matrix."
+  }
+}

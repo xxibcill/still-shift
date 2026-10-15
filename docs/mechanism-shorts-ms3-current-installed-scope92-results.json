@@ -200,5 +200,6 @@
     "newEpisodeExports": 0,
     "newVoiceGeneration": 0,
     "scope": "Read-only runtime audit, small metadata/presence checks and OS guard probes only; current complete matrix remains the sole active renderer group."
-  }
+  },
+  "laterCompleteClosureAndCombinedControls": "./mechanism-shorts-ms3-installed-preparation93-results.json"
 }
