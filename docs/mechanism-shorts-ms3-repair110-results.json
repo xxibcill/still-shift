@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "ms3-conservative-recovery-assertion-repair-1",
+  "capturedUtc": "2026-10-15T08:15:23.603121+00:00",
+  "status": "second-stale-browser-expectation-corrected-focused-checks-prepared-not-started",
+  "sourceBeforeDocs": "d7a6aaf5",
+  "originalFocusedRuntime105": {
+    "path": "/private/tmp/still-shift-ms3-repair105-runtime1.json",
+    "bytes": 3759,
+    "sha256": "sha256:fb733f49d71ecf97447dd9e5a884ffc3db979ea3653f968ecead0409574aa6d0"
+  },
+  "actualTerminal": {
+    "sessionId": 53131,
+    "observedActualExitCode": 1,
+    "owningNativeGroup": 0,
+    "recoveryGroup": 1,
+    "recoverySeconds": 1791.9186073341407,
+    "allRecordedSourceHoldsExact": true,
+    "benchmark": "not reached"
+  },
+  "failure": {
+    "path": "/private/tmp/still-shift-ms3-native-relocated-OUtue0/failure.json",
+    "bytes": 4957,
+    "sha256": "sha256:a77ef4bb35c6a87aff97aeeb36a763e4baa0410f0a19e624ebec331ecff7abdf"
+  },
+  "currentReport": {
+    "path": "/private/tmp/still-shift-ms3-native-relocated-OUtue0/final-current-report.json",
+    "bytes": 55799,
+    "sha256": "sha256:d2f3264fe8cb765503a50aad144435e8038b8efb263d821f15434ae0b13c2d8e"
+  },
+  "currentJournal": {
+    "path": "/private/tmp/still-shift-ms3-native-relocated-OUtue0/output/queue-state.json",
+    "bytes": 15387,
+    "sha256": "sha256:33684931b531bc8bf9885cf4c19a0a9d9abe74e9f69550c50279f0473815c94b"
+  },
+  "observedFacts": {
+    "currentProductsVerified": 3,
+    "reviewedReady": 0,
+    "retainedProducts": 10,
+    "recordedCheckpoints": 15,
+    "failedAttempts": 3,
+    "cancelled": 1,
+    "interrupted": 1,
+    "firstPassTechnical": {
+      "completed": 3,
+      "passed": 0,
+      "rate": 0,
+      "unverified": 0,
+      "targetSatisfied": false
+    }
+  },
+  "diagnosis": "Stale expected clean first-pass2 at recovery browser:469. All3 rows have retained recovery interventions, so current classifier/explicit existing unit policy requires clean0/rate0/target false. Actual interruption, retry, export failure and relocation actions complete before the metric assertion; failure remains a failure.",
+  "change": "Only recovery browser expected metrics/type shape; require completed3/passed0/rate0/unverified0/target false. Production code, provenance policy, thresholds, failures, attempts and review gates unchanged.",
+  "testBefore": {
+    "path": "/private/tmp/still-shift-ms3-repair110-recovery-before.ts",
+    "bytes": 16736,
+    "sha256": "sha256:de7b879b160f38ed487efc525d80d29aec37107e5dcddcfc6939b2bc6783fae2"
+  },
+  "testAfter": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/browser/mechanism-production-recovery.ts",
+    "bytes": 16932,
+    "sha256": "sha256:71e7d1e26d674f2bc51a0cf6a4a56078e5385044d8be5cdc0c1448a570078cec"
+  },
+  "existingPolicyTest": "tests/unit/mechanism-production-report.test.ts:301 classifies recovery as0/false",
+  "focusedReader": {
+    "path": "/private/tmp/still-shift-ms3-repair110-provenance1.mts",
+    "bytes": 2499,
+    "sha256": "sha256:ade8323ef395ab21a4fe4c1f4d50f7c887178bf5701ee5cda936c6eae6446a8b"
+  },
+  "focusedRunner": {
+    "path": "/private/tmp/still-shift-ms3-repair110-focused1.py",
+    "bytes": 3825,
+    "sha256": "sha256:21c4c4193231b7bc9326a91aa4e5eb069f77ac709699f614376d7a7935378082"
+  },
+  "plannedFocusedChecks": [
+    "format/lint/types",
+    "existing provenance unit cases",
+    "existing retry runtime cases",
+    "current classifier against retained actual recovery report/journal and post-failure product counts",
+    "previously unrun benchmark"
+  ],
+  "qualification": "The retained-data replay will validate the expectation, not relabel the failed browser run as passed. The next complete full must reexecute the entire recovery workflow and all other required suites. No mandatory full/archive/installed/pilot/human gate is waived.",
+  "next": "After actual focused0, refresh the existing2D clipping/short-hold software controls, inspect their saved stills and run one complete required final full on both corrected browser tests. Activate package/current all-ten lifecycle only after actual complete full0.",
+  "oldPreparationDisposition": "Unexecuted107/108/109-wrapper preparations depend on impossible105 terminal0; retained as history, not executable current workflow. Keep the proven1092D control helper as input only; a new outer admission must use the actual new focused result.",
+  "sourceDeltaFromFull91": "Exactly2 browser assertion files; all production/other held bytes unchanged, verified by the next2793-file inventory.",
+  "acceptedPilot": 0
+}

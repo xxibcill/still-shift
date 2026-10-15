@@ -56,9 +56,12 @@ still hold before relying on them.
   unverified, so actual clean count2 differs from expected3.3/3 current products
   verify. Test-only repair105 now requires clean2/unverified1 with rate/target null;
   focused format/lint/build and complete owning native group pass. Actual53131
-  recovery/benchmark are still running/pending. Required-full audit107 preserves
-  the plan's complete passing gate: after genuine53131 terminal0, run full107;
-  previous full took about6h. No uninterrupted or complete full pass claimed. Original pilot
+  then exits1 after recovery1791.92s on a second stale assertion: all3 current
+  products verify, but all rows have recovery interventions, so clean first-pass
+  count0 differs from expected2. Repair110 changes only this test and prepares
+  focused policy/retained-data checks. A complete final full remains mandatory;
+  no failed aggregate is relabeled.
+  Original pilot
   first-pass1/10/nine failures/null paired tokens and accepted0 remain retained.
   [Terminal](./mechanism-shorts-ms3-first-ten-terminal90-results.json),
   [integration](./mechanism-shorts-ms3-prerequisite-integration89-results.json),
@@ -76,12 +79,13 @@ still hold before relying on them.
   across34 full capture directories/1,758 stored frames. Combined12-root OS denials
   and fresh-capture staging block pass from neutral cwd; pre-terminal copy refuses
   before creating a receiver. Binary hash/copy/current replay remain open.
-  Package108 successors require both focused1050 and complete full1070 with
-  current holds/coverage/baselines/benchmark, retaining90/91 failures. Staged-only
-  preparation106 is historical and insufficient for milestone acceptance; all
-  old runners remain unexecuted. Current source CLI discovery passes32 items;
-  15 guide/source pins exact, installed parity still open.
-  [Required full and package preparation](./mechanism-shorts-ms3-final107-preparation-results.json).
+  Current package work remains blocked on a complete final full0. Unexecuted
+  107/108 preparations depend on1050 and are now superseded after its actual1.
+  Repair110 checks the corrected recovery expectation before a new full; keep
+  all ten/6181 scope, isolation/cache/history and EU008 repair obligations.
+  Source CLI discovery remains0/32 items. Guide/source pin comparison107 captured
+  15 exact before this expected one-test follow-up; installed parity stays open.
+  [Active repair and required-full path](./mechanism-shorts-ms3-repair110-results.json).
   The future package wrapper additionally freezes the entire clean checkout/HEAD,
   including archived Markdown guides, until its actual terminal. Three user guides96
   now match current CLI/native QA/handoff/relocation/reuse/provenance behavior;
@@ -282,6 +286,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Correct second stale recovery metric without forgiving recovery110
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` afterd7a6aaf5.
+- **Red:** actual53131 exits1; native owning0/1092.59s, recovery1/1791.92s,
+  source exact throughout.15 real checkpoints complete and3 relocated products
+  verify;10 products and3 failures/1 cancellation/1 interruption remain.
+- **Change:** stale expected clean2 becomes full completed3/clean0/rate0/
+  unverified0/target false, consistent with retained recovery interventions and
+  existing unit policy. Production code/thresholds/history remain unchanged.
+- **Next:** focused format/lint/types, provenance/retry tests and current classifier
+  replay against retained real data, then current2D controls and a complete required
+  full. Replay cannot turn the failed browser run into a pass. Old107/108 admissions
+  requiring1050 are superseded/unexecuted; no package/whole/pilot pass inferred.
+- **Records:** [repair110 and exact failed artifacts](./mechanism-shorts-ms3-repair110-results.json).
 
 ### 2026-10-15 — Preserve required complete full gate before package acceptance107
 

@@ -454,7 +454,13 @@ try {
         cancelled: number;
         interrupted: number;
       };
-      firstPassTechnical: { passed: number; targetSatisfied: boolean };
+      firstPassTechnical: {
+        completed: number;
+        passed: number;
+        rate: number | null;
+        unverified: number;
+        targetSatisfied: boolean | null;
+      };
       reviewedReady: number;
     };
   }>(join(root, "final-current-report.json"));
@@ -466,8 +472,14 @@ try {
   assert.equal(finalReport.cohort.failures.failedAttempts, 3);
   assert.equal(finalReport.cohort.failures.cancelled, 1);
   assert.equal(finalReport.cohort.failures.interrupted, 1);
-  assert.equal(finalReport.cohort.firstPassTechnical.passed, 2);
-  assert.equal(finalReport.cohort.firstPassTechnical.targetSatisfied, false);
+  // Relocation recovery cannot preserve clean first-pass credit.
+  assert.deepEqual(finalReport.cohort.firstPassTechnical, {
+    completed: 3,
+    passed: 0,
+    rate: 0,
+    unverified: 0,
+    targetSatisfied: false,
+  });
   assert.equal(finalReport.cohort.reviewedReady, 0);
   const products = await readdir(join(output(), "products"));
   assert.equal(products.length, 10);

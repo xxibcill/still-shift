@@ -97,6 +97,15 @@ discovery passes with32 compact items, and15 guide/source pins remain exact;
 current installed parity is still open.
 [Required full and package prerequisites](./mechanism-shorts-ms3-final107-preparation-results.json).
 
+Focused105 subsequently exits1 in recovery at a second stale metric assertion.
+All3 relocated current products verify and10 products/15 checkpoints remain, but
+all rows required recovery, so clean first-pass credit is0 rather than expected2.
+Repair110 changes only this browser expectation and validates the existing policy
+against retained real data. The failed run is never relabeled as passed. Old
+107/108 admissions requiring1050 are retained unexecuted and superseded. A new
+complete final full remains mandatory before package/current all-ten execution.
+[Recovery assertion correction](./mechanism-shorts-ms3-repair110-results.json).
+
 The four actual geometry fault images are now captured and agent-inspected104.
 Two disposable EU001 assets produce located failures at64/159 (moving fixed mount)
 and266 (wall/hook penetration), using current code a7bc0e5b/profile1dd05300.
