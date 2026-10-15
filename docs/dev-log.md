@@ -49,7 +49,8 @@ still hold before relying on them.
   original and source3 FIFO regressions retained. No old full/package/pilot result
   is rebound to these changes. Candidate fast0/4,608 unit tests; runtime tier completes in recorded stages
   (original aggregate1, unchanged owning file/suffix0), both review axes0 findings.
-  Eight affected browser groups running. Original56598 continues
+  Eight affected browser groups pass; fresh package/updated-runtime checks next.
+  Original56598 continues
   unchanged in mechanism-ms0. Primary checkout untouched.
 
 - **All10 current final products independently audited (2026-10-16):** actual
@@ -106,6 +107,17 @@ still hold before relying on them.
   all 10 current review videos and retain all remaining whole/owner review gates.
 
 ## Entries
+
+### 2026-10-16 — Verify eight owning browser groups for upstream integration144
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3-upstream143`, code0da1f1dd.
+- **Results:** native depth/PBR/mixed export, cue lifecycle/plate export/cache
+  lifetime and production native/recovery all actual0, sequentially. Complete
+  selected membership/bytes exact:2,798inputs/122,451,390B. Raw logs/trees retained.
+- **Scope:** plan rule4 scoped follow-up; old full119 retains original binding,
+  staged runtime146 retains its original aggregate1. No new whole review claim.
+- **Next:** fresh installed package then updated-runtime report over existing ten.
+- **Records:** [Affected144](./mechanism-shorts-ms3-affected144-results.json).
 
 ### 2026-10-16 — Complete scoped runtime qualification in recorded stages146
 
