@@ -326,6 +326,7 @@ async function verifySource(
   instance: MechanismPackInstanceSource,
   document: ReturnType<typeof inspectMechanismCueAuthoring>["document"],
   directory: string,
+  signal?: AbortSignal,
 ) {
   const path = resolve(directory, document.source.path),
     admission = new NativeSourceAdmission(),
@@ -334,6 +335,7 @@ async function verifySource(
   try {
     bytes = await readBoundedSourceBytes(path, {
       maximumBytes: 33554432,
+      signal,
       admit: stage.admitBody,
       reject: (reason) =>
         failure(
@@ -384,12 +386,18 @@ async function verifySource(
 export async function readMechanismCueAuthoring(
   instance: MechanismPackInstanceSource,
   path: string,
+  options: { signal?: AbortSignal | undefined } = {},
 ): Promise<MechanismCueAuthoringInspection> {
   const result = inspectMechanismCueAuthoring(
     instance,
-    await readMechanismJson(resolve(path)),
+    await readMechanismJson(resolve(path), options),
   );
-  await verifySource(instance, result.document, dirname(resolve(path)));
+  await verifySource(
+    instance,
+    result.document,
+    dirname(resolve(path)),
+    options.signal,
+  );
   return result;
 }
 export async function saveMechanismCueAuthoring(

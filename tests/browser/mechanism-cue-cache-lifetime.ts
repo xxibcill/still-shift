@@ -617,7 +617,12 @@ try {
         failure = error;
       }
       assert(
-        failure instanceof Error && /quota|allowance/i.test(failure.message),
+        (failure instanceof AnimationEngineError &&
+          failure.code === "SCENE_INVALID" &&
+          failure.message ===
+            "Composition source exceeds its available Node capacity") ||
+          (failure instanceof Error &&
+            /quota|allowance/i.test(failure.message)),
       );
       assert.equal(owner.availableBytes, bounds.remainingBudgetBytes);
       assert.equal(pressure.active, true);

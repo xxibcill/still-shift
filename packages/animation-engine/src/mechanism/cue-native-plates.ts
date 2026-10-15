@@ -154,6 +154,7 @@ async function currentPicture(
     familyPath,
     cuePath,
     preparedDirectory,
+    { signal, nodeMemory: owner },
   );
   const body = await cuePlateFile(compilation.receipt.composition.path, owner, {
     signal,

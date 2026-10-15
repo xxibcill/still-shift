@@ -43,13 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #57 camera review repair (2026-10-15):** both P2 findings are posted
-  inline on reviewed head `8b7374ed`. Cue cameras now reject an `up` vector that
-  cannot be represented by the existing camera keys, with a cue-located error.
-  Cut/transition regressions fail on the reviewed source and pass after repair.
-  Snapshot-read cancellation is the next separate fix; final verification and
-  the single push remain pending. Existing full/package evidence keeps its
-  original source/archive identity; no fresh production acceptance.
+- **PR #57 review repairs verified (2026-10-15):** both P2 findings were posted
+  inline before implementation. Camera repair `ccd976ee` rejects unsupported cue
+  `up`; the separate snapshot repair uses regular, bounded, cancellable saved
+  input reads and shares compiled-root validation with the caller Node owner.
+  Independent Standards/Spec reviews report 0/0. Fast 4,383 units, runtime 274,
+  distinct integration 322, Python 14, browser smoke and both affected browser
+  proofs pass in recorded stages; failed attempts and reruns remain retained.
+  All 2,615 verification inputs match. Both commits are ready for one final
+  fast-forward push to PR #57, followed by inline delivery replies. Historical
+  full/package/archive bindings and human acceptance remain separate.
   [Fix evidence](./pr-57-fix-results.json).
 
 - **MS2 current prerequisite/native repairs prepared (2026-10-15):** isolated
@@ -251,6 +254,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Bound and cancel saved cue snapshot validation in PR #57
+
+- **Agent / branch:** Codex on `codex/pr57-review-fixes`, after `ccd976ee`.
+- **Done:** reuse bounded regular-file readers for saved inputs, forward abort
+  signals and the caller Node owner, and retire only local validation leases.
+- **Results:** final admission regression fails 13/14 cases before repair and
+  passes all 14 after it; related tests pass 21/3. Fast 4,383, runtime 274,
+  distinct integration 322, Python 14, smoke and both affected browser proofs pass
+  in stages; two independent final fix reviews report no findings.
+- **Retained:** missing soundtrack setup, two unproven depth-protocol timeouts,
+  initial regression instrumentation errors and shared-temp inventory failure;
+  unchanged owning reruns and isolated-temp cache proof pass. No gate weakened.
+- **Open / next:** commit this second finding and push both fixes together;
+  owner merge and human acceptance remain separate.
+- **Records:** [Fix evidence](./pr-57-fix-results.json).
 
 ### 2026-10-15 — Reject unsupported cue camera roll in PR #57
 

@@ -49,28 +49,489 @@
           "path": "tests/unit/mechanism-narrated-cycle.test.ts",
           "sha256": "61cf3e88e9f8f70c268e32d8f2adebab256b64a67112a6f0d0d77dfa436a462f"
         }
-      ]
+      ],
+      "commit": "ccd976ee18731899671b1dc8dbc864a5918b9e96"
     },
     {
       "finding": "snapshot-admission",
-      "status": "pending separate fix"
+      "status": "fixed and verified",
+      "behavior": "Saved metadata uses bounded nonblocking regular-file descriptors with the existing32MiB ceiling. Cancellation passes through receipt, family, cue and pinned native source reads. Compiled composition validation uses the existing root reader in a child of the caller Node owner and retires its local leases on every exit. Native/cache current and final revalidation forward the same owner and signal.",
+      "regressionBefore": {
+        "source": "ccd976ee (camera repair present; old snapshot reader)",
+        "exitCode": 1,
+        "tests": 14,
+        "failed": 13,
+        "passed": 1,
+        "log": "/private/tmp/pr57-fix2-expanded-red.log",
+        "note": "The native-scene FIFO was already guarded; the other13 cases fail. FIFO probes use timed child processes with SIGKILL and reaping."
+      },
+      "regressionAfter": {
+        "exitCode": 0,
+        "passed": 21,
+        "files": 3,
+        "newAdmissionCases": 14,
+        "log": "/private/tmp/pr57-fix2-green-final.log"
+      },
+      "coverage": [
+        "Public FIFO rejection at composition, compilation receipt, family, cue and pinned scene inputs",
+        "Error and null in-flight abort identity during root reads",
+        "In-flight cancellation during each earlier saved-input read",
+        "Shared remaining capacity before root body allocation",
+        "Repeated successful validation retires local storage and preserves foreign caller leases",
+        "Pre-abort precedes any input open",
+        "Existing stale revision, tampering, real-media and file-ownership controls"
+      ],
+      "browserAssertionQualification": "The existing shared-budget browser assertion now also recognizes the exact existing AnimationEngineError/SCENE_INVALID capacity message raised by earlier root admission. The65535-byte budget and cleanup/lease checks stay unchanged. Scoped Prettier, ESLint and TypeScript checks pass after this assertion-only follow-up.",
+      "postimages": [
+        {
+          "path": "packages/animation-engine/src/mechanism/io.ts",
+          "sha256": "af129034320f04b39e15eb8916fcf238f0e7e7ca9b2e2063a57979b8fbd0136f"
+        },
+        {
+          "path": "packages/animation-engine/src/mechanism/family-authoring.ts",
+          "sha256": "7ee52b9d0ae493a160cfbb26e8de5b4051bdba5c987b382a46e2d847ac2ad904"
+        },
+        {
+          "path": "packages/animation-engine/src/mechanism/cue-authoring.ts",
+          "sha256": "f0e0ee4a00fc35eeae853d5e43d11401a9861248bc43604cc182ca25c353ab8a"
+        },
+        {
+          "path": "packages/animation-engine/src/mechanism/cue-lifecycle.ts",
+          "sha256": "b3f5d85a5f0de1365843a51f75048b43026a942426742285bcb17f8c12271cbd"
+        },
+        {
+          "path": "packages/animation-engine/src/mechanism/cue-native-plates.ts",
+          "sha256": "cc46dd2e1438b2c3829282165010896db71b005e7bc44ba92577befd58605a70"
+        },
+        {
+          "path": "packages/animation-engine/src/mechanism/cue-plate-lifecycle.ts",
+          "sha256": "2288411d123001c7ac937be06150e3f1894f582084dd4ce46094ed7e95761d3d"
+        },
+        {
+          "path": "tests/runtime/mechanism-cue-compilation-admission.test.ts",
+          "sha256": "a145355acedf8e91768ff4bcd1ec8b55146d2f5acac091e3eb7cd02a0ba2f377"
+        },
+        {
+          "path": "tests/browser/mechanism-cue-cache-lifetime.ts",
+          "sha256": "5f8b7863fc96755ea42edb86a40a625f2e07ebf635b6c3fbb97dab439deaae30"
+        }
+      ],
+      "commit": "The commit containing this final verification record"
     }
   ],
   "setup": {
     "worktree": "/Users/jjae/.codex/worktrees/pr57-review-fixes/still-shift",
     "source": "Managed isolated worktree at reviewed PR head",
     "dependencies": "pnpm10.29.3 install --offline --frozen-lockfile;178 packages reused,0 downloaded",
-    "node": "22.23.1"
+    "node": "22.23.1",
+    "python": "uv sync --offline --frozen: pinned3.12.11,39 packages from cache; log/private/tmp/pr57-python-setup.log",
+    "soundtrack": "UV_OFFLINE=1 pnpm soundtrack:setup: repository --require-hashes lock; DawDreamer0.9.0, NumPy2.3.3, SciPy1.16.2 installed; log/private/tmp/pr57-soundtrack-setup.log"
   },
   "remaining": [
-    "Snapshot-read repair and regressions",
-    "Final local fast/runtime and affected browser verification",
-    "Independent fix reviews",
-    "Single final push and remote-head confirmation"
+    "Owner merge decision and human production acceptance remain separate"
   ],
   "limits": [
     "Historical full70/package73/installed76/affected91 retain original source/archive bindings",
     "No npm publication or ElevenLabs spending",
     "Human visual/listening/physical acceptance remains separate"
-  ]
+  ],
+  "independentReviews": {
+    "initialFixReview": {
+      "Standards": 0,
+      "Spec": 1,
+      "finding": "The earlier compilation receipt still blocked on FIFO; extended this same second repair to all saved input edges."
+    },
+    "expandedFixReview": {
+      "Standards": 0,
+      "Spec": 0,
+      "confirmation": "Spec reviewer independently reran the receipt-FIFO case; it rejects normally. Both reviewers examined the expanded source and14-case admission matrix."
+    }
+  },
+  "verification": {
+    "checkFast": {
+      "exitCode": 0,
+      "unitTests": 4383,
+      "files": 429,
+      "log": "/private/tmp/pr57-check-fast.log"
+    },
+    "runtimeTier": {
+      "status": "complete in separately recorded stages; initial aggregate remains failed",
+      "initialAggregate": {
+        "command": "pnpm check:runtime",
+        "exitCode": 1,
+        "runtimeTests": 274,
+        "runtimeFiles": 42,
+        "integrationPassed": 284,
+        "integrationFailed": 38,
+        "integrationFilesPassed": 52,
+        "integrationFilesFailed": 5,
+        "log": "/private/tmp/pr57-check-runtime.log"
+      },
+      "failureClassification": {
+        "missingSoundtrackRuntime": 36,
+        "depthProtocol5000msTimeouts": 2,
+        "timeoutCause": "Unproven; same file/cases occur in earlier PR evidence. Timeouts and assertions remain unchanged."
+      },
+      "integrationRecovery": {
+        "command": "pnpm exec vitest run tests/integration/depth-worker-protocol.test.ts tests/integration/soundtrack.test.ts tests/integration/passage-native-audio.test.ts tests/integration/passage-audio.test.ts tests/integration/soundtrack-api.test.ts --maxWorkers=2 --no-file-parallelism",
+        "exitCode": 0,
+        "tests": 58,
+        "files": 5,
+        "log": "/private/tmp/pr57-integration-recovery.log",
+        "distinctIntegrationTestsQualifiedAcrossStages": 322,
+        "distinctIntegrationFiles": 57
+      },
+      "python": {
+        "command": "pnpm test:depth",
+        "exitCode": 0,
+        "tests": 14,
+        "log": "/private/tmp/pr57-depth-tests.log"
+      },
+      "smoke": {
+        "command": "pnpm test:browser:smoke",
+        "exitCode": 0,
+        "log": "/private/tmp/pr57-browser-smoke.log"
+      }
+    },
+    "narratedCycles": {
+      "status": "passed",
+      "log": "/private/tmp/pr57-narrated-browser.log",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-narrated-cycles-hKnmkb",
+        "status": "passed",
+        "families": 3,
+        "takesPerFamily": 2,
+        "exports": 12,
+        "observedOutputFrames": 900,
+        "compiledOutputFrames": 450,
+        "syntheticAudio": true
+      }
+    },
+    "cacheLifetime": {
+      "status": "passed",
+      "log": "/private/tmp/pr57-cache-lifetime-browser-isolated.log",
+      "result": {
+        "status": "passed",
+        "directory": "/private/tmp/still-shift-ms2-cue-cache-lifetime-pVNTwn"
+      },
+      "isolation": {
+        "TMPDIR": "/private/tmp/pr57-cache-proof-tmp-pkzgoa24",
+        "purpose": "Isolate this proof and exporter children from concurrent unrelated global temporary export caches; original assertions and budgets unchanged",
+        "startedAtEpoch": 1792042264.8279412
+      },
+      "isolationReview": "Independent Standards reviewer confirmed cache creation and inspection both use os.tmpdir(); PID-based descendants,2s cleanup,65535-byte pressure and artifact assertions stay unchanged.",
+      "report": {
+        "path": "/private/tmp/still-shift-ms2-cue-cache-lifetime-pVNTwn/run.json",
+        "sha256": "1e56abbf8a921fd5b3707ab0be8fbaaaa0c859498a2aa847f891233a3bcd77c8",
+        "bounds": {
+          "frameBytes": 130560,
+          "processes": 128,
+          "processListingBytes": 262144,
+          "deadlineMs": 90000,
+          "cleanupMs": 2000,
+          "remainingBudgetBytes": 65535
+        },
+        "scope": "Actual cached API calls, complete real worker HTTP upload observations, in-flight source edits/cancellation, owned artifacts/process exits and declared shared Node capacity/lease retirement. No synthetic frame, response, timer-triggered control, whole physical RSS threshold or driver-internal lifetime claim.",
+        "cases": [
+          {
+            "name": "cue-label-edit",
+            "status": "passed",
+            "completedUploads": 60,
+            "preservedAbortReason": null,
+            "ownedOutputDirectoryAbsent": true,
+            "cleanupWaitMs": 0.1300830000109272,
+            "survivors": [],
+            "newExportViteCachesAbsent": true
+          },
+          {
+            "name": "current-audio-edit",
+            "status": "passed",
+            "completedUploads": 60,
+            "preservedAbortReason": null,
+            "ownedOutputDirectoryAbsent": true,
+            "cleanupWaitMs": 0.14416699999128468,
+            "survivors": [],
+            "newExportViteCachesAbsent": true
+          },
+          {
+            "name": "consumed-original-plate-edit",
+            "status": "passed",
+            "completedUploads": 60,
+            "preservedAbortReason": null,
+            "ownedOutputDirectoryAbsent": true,
+            "cleanupWaitMs": 0.0327499999984866,
+            "survivors": [],
+            "newExportViteCachesAbsent": true
+          },
+          {
+            "name": "cancel-first",
+            "status": "passed",
+            "completedUploads": 1,
+            "preservedAbortReason": true,
+            "ownedOutputDirectoryAbsent": true,
+            "cleanupWaitMs": 0.03087499999674037,
+            "survivors": [],
+            "newExportViteCachesAbsent": true
+          },
+          {
+            "name": "cancel-repeat",
+            "status": "passed",
+            "completedUploads": 3,
+            "preservedAbortReason": true,
+            "ownedOutputDirectoryAbsent": true,
+            "cleanupWaitMs": 26.624958000000333,
+            "survivors": [],
+            "newExportViteCachesAbsent": true
+          },
+          {
+            "name": "recovery",
+            "status": "passed",
+            "completedUploads": 60,
+            "preservedAbortReason": null,
+            "cleanupWaitMs": 0.0644169999868609,
+            "survivors": [],
+            "newExportViteCachesAbsent": true
+          }
+        ],
+        "sharedQuotaRejections": [
+          {
+            "name": "capture",
+            "failure": {
+              "name": "AnimationEngineError",
+              "message": "Composition source exceeds its available Node capacity"
+            },
+            "remainingBudgetBytes": 65535
+          },
+          {
+            "name": "original-check",
+            "failure": {
+              "name": "Error",
+              "message": "Composition managed metadata exceed their aggregate worker quota"
+            },
+            "remainingBudgetBytes": 65535
+          },
+          {
+            "name": "cached-render",
+            "failure": {
+              "name": "AnimationEngineError",
+              "message": "Composition source exceeds its available Node capacity"
+            },
+            "remainingBudgetBytes": 65535
+          },
+          {
+            "name": "cached-output-check",
+            "failure": {
+              "name": "Error",
+              "message": "Composition managed metadata exceed their aggregate worker quota"
+            },
+            "remainingBudgetBytes": 65535
+          }
+        ],
+        "allOriginalPlateBytesUnchanged": true,
+        "allActualFirstWorkerFramesIdentical": true,
+        "finalSharedNodeBeforeDisposal": {
+          "scope": "composition-node-source-and-result-capacity",
+          "limits": {
+            "pixels": 1,
+            "metadata": 536870911
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 1024
+          },
+          "peak": {
+            "pixels": 0,
+            "metadata": 536805376
+          },
+          "reservations": 1,
+          "limitBytes": 536870912
+        },
+        "finalSharedNodeAfterDisposal": {
+          "scope": "composition-node-source-and-result-capacity",
+          "limits": {
+            "pixels": 1,
+            "metadata": 536870911
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 0,
+            "metadata": 536805376
+          },
+          "reservations": 0,
+          "limitBytes": 536870912
+        }
+      }
+    },
+    "frozenInputs": {
+      "count": 2615,
+      "bytes": 120267897,
+      "manifestSha256": "0798953576dc75454c39d1617750c4cc3a35cab39f0c48d6730c45f5f8f7cfb0",
+      "manifest": "/private/tmp/pr57-fix-verification-inputs.json",
+      "scope": "All tracked non-documentation files plus the new admission regression; dependency/build caches excluded",
+      "changedFiles": [],
+      "postFastQualification": {
+        "path": "tests/browser/mechanism-cue-cache-lifetime.ts",
+        "priorSha256": "1ae2c997b2c5a8c89a56b9d96a308462f5f22a62177c8a08f74ec7f2fb618ac6",
+        "reason": "Accept the exact existing early root-capacity diagnostic alongside prior quota/allowance failures; no resource limit or cleanup assertion changed. Scoped formatting/lint/type checks follow."
+      }
+    }
+  },
+  "retainedAttempts": [
+    {
+      "log": "/private/tmp/pr57-fix1-red.log",
+      "sha256": "aa74b3cf0ea33d8469df8f9c801ad5d39943e0790f9d2417b3bc459d7cdce5c5",
+      "exitCode": 1,
+      "description": "Expected red: camera cut/transition negatives both fail on reviewed source;13 existing cases pass.",
+      "summaries": [
+        " Test Files  1 failed (1)",
+        "      Tests  2 failed | 13 passed (15)",
+        "   Duration  5.12s (transform 481ms, setup 0ms, collect 912ms, tests 4.07s, environment 0ms, prepare 32ms)"
+      ]
+    },
+    {
+      "log": "/private/tmp/pr57-fix1-green.log",
+      "sha256": "bfe195ed68c264a0118388a04c1355ae21bf15d26b27c333d7b262e94f087cc9",
+      "exitCode": 0,
+      "description": "Camera repair:22 focused tests pass.",
+      "summaries": [
+        " Test Files  2 passed (2)",
+        "      Tests  22 passed (22)",
+        "   Duration  5.18s (transform 602ms, setup 0ms, collect 2.12s, tests 7.42s, environment 0ms, prepare 67ms)"
+      ]
+    },
+    {
+      "log": "/private/tmp/pr57-fix2-red.log",
+      "sha256": "1e866068c7cb308baa9eb99ddd483a068e1804a843c81bfcc05cc944ca23939f",
+      "exitCode": 1,
+      "description": "Initial six-case old-reader regression run fails; final expanded red run below supersedes its test instrumentation.",
+      "summaries": [
+        " Test Files  1 failed (1)",
+        "      Tests  6 failed (6)",
+        "   Duration  12.51s (transform 1.34s, setup 0ms, collect 2.31s, tests 10.06s, environment 0ms, prepare 32ms)"
+      ]
+    },
+    {
+      "log": "/private/tmp/pr57-fix2-green.log",
+      "sha256": "d79c0756860ad21c796550d875534aee5b4c982af9d44f2f7f2e57446be70256",
+      "exitCode": 1,
+      "description": "Initial root-only repair passes FIFO/capacity/pre-abort and existing controls; three read-hook tests fail because the monitor missed macOS /var to /private/var canonicalization. Corrected monitor to realpath.",
+      "summaries": [
+        " Test Files  1 failed | 2 passed (3)",
+        "      Tests  3 failed | 10 passed (13)",
+        "   Duration  29.45s (transform 1.44s, setup 0ms, collect 3.43s, tests 25.63s, environment 0ms, prepare 91ms)"
+      ]
+    },
+    {
+      "log": "/private/tmp/pr57-fix2-green-rerun.log",
+      "sha256": "4348832708a94fce052aee18bf118acd97e46530d8729bc31048046884b98f5f",
+      "exitCode": 1,
+      "description": "First expanded repair exposed missing family options binding and pinned-source signal forwarding; corrected both without weakening tests.",
+      "summaries": [
+        " Test Files  2 failed | 1 passed (3)",
+        "      Tests  5 failed | 2 passed | 14 skipped (21)",
+        "   Duration  10.06s (transform 1.38s, setup 0ms, collect 3.20s, tests 6.52s, environment 0ms, prepare 81ms)"
+      ]
+    },
+    {
+      "log": "/private/tmp/pr57-fix2-expanded-red.log",
+      "sha256": "e61a37116c885af0bb225f67cee15f94c14ca88a44e8f0273020a38d19c3c650",
+      "exitCode": 1,
+      "description": "Final fourteen-case matrix against old reader:13 fail,1 already-protected native FIFO passes.",
+      "summaries": [
+        " Test Files  1 failed (1)",
+        "      Tests  13 failed | 1 passed (14)",
+        "   Duration  30.33s (transform 1.03s, setup 0ms, collect 2.01s, tests 28.13s, environment 0ms, prepare 33ms)"
+      ]
+    },
+    {
+      "log": "/private/tmp/pr57-fix2-green-final.log",
+      "sha256": "1409108a51bd86935df77d7a4bd08c851a235e4bfde003ed5bacfcf558cfff87",
+      "exitCode": 0,
+      "description": "Expanded repair and owning compilation/file tests:21 pass.",
+      "summaries": [
+        " Test Files  3 passed (3)",
+        "      Tests  21 passed (21)",
+        "   Duration  34.02s (transform 1.39s, setup 0ms, collect 3.36s, tests 30.29s, environment 0ms, prepare 91ms)"
+      ]
+    },
+    {
+      "log": "/private/tmp/pr57-check-fast.log",
+      "sha256": "29310dcf3eea4cdfb354032961ca92e7f772edaa69b75c270c46c24344e0ab67",
+      "exitCode": 0,
+      "description": "Required fast gate passes4383 units/429 files, schema, boundaries, format, lint and types.",
+      "summaries": [
+        " Test Files  429 passed (429)",
+        "      Tests  4383 passed (4383)",
+        "   Duration  82.61s (transform 5.34s, setup 0ms, collect 136.12s, tests 134.89s, environment 41ms, prepare 15.94s)"
+      ]
+    },
+    {
+      "log": "/private/tmp/pr57-check-runtime.log",
+      "sha256": "d82d74da49caae855a765392e121466e2f5d9f846b146e70a833144b2e5e4a2c",
+      "exitCode": 1,
+      "description": "Initial full runtime attempt:274 runtime pass; integration284 pass/38 fail. Missing separate soundtrack environment and two unproven5s depth-protocol timeouts retained.",
+      "summaries": [
+        " Test Files  42 passed (42)",
+        "      Tests  274 passed (274)",
+        "   Duration  187.36s (transform 1.62s, setup 0ms, collect 16.73s, tests 165.15s, environment 3ms, prepare 1.06s)",
+        " Test Files  5 failed | 52 passed (57)",
+        "      Tests  38 failed | 284 passed (322)",
+        "   Duration  352.05s (transform 1.73s, setup 0ms, collect 28.95s, tests 316.89s, environment 4ms, prepare 1.49s)"
+      ]
+    },
+    {
+      "log": "/private/tmp/pr57-integration-recovery.log",
+      "sha256": "1792ab1c12206c42055810705e0b49437171f1a47c7f0fdc1f535fa222f33980",
+      "exitCode": 0,
+      "description": "All58 cases in the five failed integration files pass after pinned audio setup; distinct integration qualification322.",
+      "summaries": [
+        " Test Files  5 passed (5)",
+        "      Tests  58 passed (58)",
+        "   Duration  70.29s (transform 1.50s, setup 0ms, collect 4.51s, tests 65.20s, environment 0ms, prepare 133ms)"
+      ]
+    },
+    {
+      "log": "/private/tmp/pr57-cache-lifetime-browser.log",
+      "sha256": "7b9aa101e1706a12e2800789dec92c203df2c459b9777db8a7c7eb6172d20436",
+      "exitCode": 1,
+      "description": "Initial cache proof failed its global temporary-directory inventory assertion with one unexpected export cache while another worktree export proof was active. Retained initial artifact; rerun scopes only TMPDIR, preserving every owning assertion and budget.",
+      "summaries": []
+    },
+    {
+      "log": "/private/tmp/pr57-narrated-browser.log",
+      "sha256": "00d9b2b13a0432d96ff34bee0047898462045d490f96fff02ab85231f02f1a5a",
+      "exitCode": 0,
+      "description": "Completed affected verification.",
+      "summaries": []
+    },
+    {
+      "log": "/private/tmp/pr57-cache-lifetime-browser-isolated.log",
+      "sha256": "ff84bfbb096dd588b48f377fb7f8f05400a68036aee8a4f380089620da04bb3f",
+      "exitCode": 0,
+      "description": "Completed affected verification.",
+      "summaries": []
+    },
+    {
+      "log": "/private/tmp/pr57-depth-tests.log",
+      "sha256": "62be68c152bc3a517562462e6877ade6eaa01ce69ef15c0eb51e3d91137f59e2",
+      "exitCode": 0,
+      "description": "Completed affected verification.",
+      "summaries": []
+    },
+    {
+      "log": "/private/tmp/pr57-browser-smoke.log",
+      "sha256": "029b39a76a42607b0d051bac4bf77cfbac6e9bf2d15282696482e93d0eecbe91",
+      "exitCode": 0,
+      "description": "Completed affected verification.",
+      "summaries": []
+    }
+  ],
+  "delivery": {
+    "commits": "Camera repair ccd976ee, followed by the snapshot-admission commit containing this record.",
+    "pushPolicy": "One final fast-forward push containing both fixes.",
+    "confirmationLocation": "The two original inline review threads carry repair commit links and delivery confirmation after the push; the primary checkout mirrors the exact remote-head receipt."
+  }
 }

@@ -195,6 +195,7 @@ async function current(context: Context) {
     familyPath,
     cuePath,
     preparedDirectory,
+    { signal, nodeMemory: owner },
   );
   const currentCompilation = await cuePlateFile(
     compilation.receiptPath,
@@ -272,6 +273,7 @@ async function current(context: Context) {
     familyPath,
     cuePath,
     preparedDirectory,
+    { signal, nodeMemory: owner },
   );
   if (
     mechanismPackHash(finalCompilation.receipt) !==
@@ -592,6 +594,7 @@ async function verify(receipt: Receipt, outputPath: string, context: Context) {
     context.familyPath,
     context.cuePath,
     context.preparedDirectory,
+    { signal, nodeMemory: owner },
   );
   if (mechanismPackHash(final.receipt) !== mechanismPackHash(compilation))
     failure(
