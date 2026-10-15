@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "ms3-staged-stale-native-assertion-repair-1",
+  "capturedUtc": "2026-10-15T07:18:03.647162+00:00",
+  "status": "test-assertion-corrected-owning-and-suffix-not-yet-run",
+  "sourceBeforeRepair": "591c85fb",
+  "failureRecord": "./mechanism-shorts-ms3-final91-full-gate-results.json",
+  "actualRed": "Original full42543 actual1 at native-production:384 expected3, actual2. Retained native report verifies3 current products; S1 unclassified caption revision is unverified and rate/target null.",
+  "change": "Replace stale passed3 assertion with complete completed3/passed2/unverified1/rate null/target null requirement and identify S1 as unverified. Production code, rules, thresholds and fixture classifications unchanged.",
+  "testBefore": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/browser/mechanism-production-native.ts",
+    "bytes": 21737,
+    "sha256": "sha256:b1c9842fac8225132557a58052ef68ce8b10c81893ad8ae47e7d97453bd813c2"
+  },
+  "testAfter": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/browser/mechanism-production-native.ts",
+    "bytes": 22021,
+    "sha256": "sha256:ab7646587853072b9c4c36e7ab0b17dddb8869faa167ed8548b6e01ff6c1a7df"
+  },
+  "runner": {
+    "path": "/private/tmp/still-shift-ms3-repair105-runtime1.py",
+    "bytes": 3930,
+    "sha256": "sha256:b1027b3abdf9109302d661b63973332340165b9d27641bd5af475bb1d929e615"
+  },
+  "plannedStages": [
+    "focused formatting",
+    "focused lint",
+    "build/types",
+    "full owning native-production group",
+    "previously unrun production-recovery group",
+    "previously unrun benchmark"
+  ],
+  "scope": "Only one held browser test changes. After actual staged0, verify source identity/delta and complete original script coverage. Original aggregate1 remains; no uninterrupted full pass claimed.",
+  "runtimeReceipt": "/private/tmp/still-shift-ms3-repair105-runtime1.json",
+  "sourceHold": "New2793-file inventory held through every command; compare original and require only the named test differs.",
+  "actualRerunStarted": false,
+  "packageAndAllTenCurrentInstalled": "pending",
+  "acceptedPilot": 0
+}

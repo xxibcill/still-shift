@@ -54,7 +54,8 @@ still hold before relying on them.
   lifetime pass, including frozen176 baselines. Native production then fails a
   stale metric assertion: an unclassified caption revision makes1/3 first passes
   unverified, so actual clean count2 differs from expected3.3/3 current products
-  verify. Recovery/benchmark suffix not run; no full pass claimed. Original pilot
+  verify. Test-only repair105 now requires clean2/unverified1 with rate/target null;
+  owning native/recovery/benchmark stages are prepared, not yet passed. No full pass claimed. Original pilot
   first-pass1/10/nine failures/null paired tokens and accepted0 remain retained.
   [Terminal](./mechanism-shorts-ms3-first-ten-terminal90-results.json),
   [integration](./mechanism-shorts-ms3-prerequisite-integration89-results.json),
@@ -274,6 +275,19 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Correct stale native first-pass assertion and prepare staged completion105
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` after591c85fb.
+- **Change:** require completed3/clean2/unverified1 with rate/target null and S1
+  explicitly unverified after its unclassified caption revision. No production
+  code, metric policy, thresholds or fixture classifications change.
+- **Red:** actual full42543 fails the old expected3 assertion; current product3/3
+  verification and unknown revision history confirm the conservative result.
+- **Next:** focused format/lint/build, owning native-production group, previously
+  unrun recovery/benchmark suffix, all serial with a new source hold. Require only
+  this one test differs from the held full source; retain the original aggregate1.
+- **Records:** [repair105](./mechanism-shorts-ms3-repair105-results.json).
 
 ### 2026-10-15 — Capture and inspect the approved four physical fault images104
 

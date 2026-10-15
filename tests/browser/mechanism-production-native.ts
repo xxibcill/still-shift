@@ -381,7 +381,18 @@ try {
     JSON.parse(await readFile(completePath, "utf8")),
   );
   assert.equal(complete.episodes.length, 3);
-  assert.equal(complete.cohort.firstPassTechnical.passed, 3);
+  // An unclassified caption revision preserves an unverified first-pass result.
+  assert.deepEqual(complete.cohort.firstPassTechnical, {
+    completed: 3,
+    passed: 2,
+    rate: null,
+    unverified: 1,
+    targetSatisfied: null,
+  });
+  assert.equal(
+    complete.cohort.rows.find((row) => row.id === "S1")?.firstPass,
+    "unverified",
+  );
   assert.equal(complete.cohort.durations.routineSeconds.available, 3);
   assert.equal(complete.cohort.authoring.savings, null);
   assert.equal(executions, 4);
