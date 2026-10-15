@@ -1,6 +1,6 @@
 {
   "schemaVersion": "ms3-complete-full119-preparation-1",
-  "status": "running-required-complete-full-not-passed",
+  "status": "passed-required-complete-software-and-benchmark-existing-deferrals-retained",
   "runner": {
     "path": "/private/tmp/still-shift-ms3-final119-full1.py",
     "bytes": 7417,
@@ -132,7 +132,6 @@
     ],
     "qualification": "Actual live full; no terminal, full, benchmark, package or pilot pass inferred."
   },
-  "freeze": "All2793 selected source/root/ROADMAP inputs plus prepared guard/selection remain immutable until actual terminal; excluded milestone evidence/dev-log may update. No competing browser/export/benchmark group.",
   "latestCompletedStoryCheckpoint123": {
     "record": "./mechanism-shorts-ms3-story123-checkpoint-results.json",
     "cases": 69,
@@ -152,5 +151,19 @@
     "observedScriptHeadersAtCapture": 100,
     "timingDeferralsRetained": 19,
     "fullRemainsLiveAndUnpassed": true
-  }
+  },
+  "actualTerminalResult": {
+    "record": "./mechanism-shorts-ms3-full125-terminal-results.json",
+    "actualToolExitCode": 0,
+    "sourceHoldActualExitCode": 0,
+    "seconds": 24311.279254041146,
+    "allRequiredScriptInvocations": 116,
+    "frozenBaselineItems": 176,
+    "frozenBaselineFrames": 36061,
+    "retainedRawFiles": 12,
+    "retainedTimingDeferrals": 19,
+    "packageAndPilotAcceptance": false
+  },
+  "freezeAtCapture": "All2793 selected source/root/ROADMAP inputs plus prepared guard/selection remain immutable until actual terminal; excluded milestone evidence/dev-log may update. No competing browser/export/benchmark group.",
+  "freeze": "Required full terminated0 with all2793 selected inputs exact. Package121 next freezes its entire clean checkout/HEAD including guides. Current source admission remains required for package and receiving lifecycle."
 }

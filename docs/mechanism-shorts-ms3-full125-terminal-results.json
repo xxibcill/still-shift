@@ -1,0 +1,410 @@
+{
+  "schemaVersion": "ms3-complete-required-full119-terminal125-1",
+  "recordedUtc": "2026-10-15T17:07:25.729909+00:00",
+  "status": "passed-required-complete-software-and-benchmark; existing-deferrals-retained",
+  "session": 71989,
+  "actualToolExitCode": 0,
+  "aggregateActualExitCode": 0,
+  "sourceHoldActualExitCode": 0,
+  "sourceCommit": "1c9f7d1413bdeb9c78cee72ccd328c4badd46c41",
+  "documentationHeadAtCapture": "f3c1ae106c57aa1d5154171dc76ace6b0af397aa",
+  "sourceFiles": 2793,
+  "sourceBytes": 122415742,
+  "sourceInputsExact": true,
+  "sourceGuard": {
+    "path": "/private/tmp/still-shift-ms3-final119-hold.py",
+    "bytes": 1398,
+    "sha256": "sha256:e74c259aea3edc613e16c998e3364b740045aca0adc744a99018873e40d1f7de"
+  },
+  "durableSourceSelection": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/source-selection-seed.json",
+    "bytes": 477326,
+    "sha256": "sha256:1f23134b5b2d1492f51f02865e9222639c49002a7416ec98a5a39069c843c99f"
+  },
+  "command": ["pnpm", "check:all"],
+  "seconds": 24311.279254041146,
+  "actualTerminal": {
+    "path": "/private/tmp/still-shift-ms3-final119-terminal1.json",
+    "bytes": 5337,
+    "sha256": "sha256:f43123e35d6aa075c023c71c0ce13260ea4059eb1c8f364d102eda968feb57ee"
+  },
+  "completeRuntimeReceipt": {
+    "path": "/private/tmp/still-shift-ms3-final119-full1.json",
+    "bytes": 4489,
+    "sha256": "sha256:fba6d5ff36734b4415bae4878e263186cff365329b55e7cdfe4e4b7dadcd4460"
+  },
+  "toolchainPreflight": {
+    "actualExitCode": 0,
+    "log": {
+      "path": "/private/tmp/still-shift-ms3-final119-toolchain1.log",
+      "bytes": 238,
+      "sha256": "sha256:3ad3e8695b8ffa18ae57b07d1c45db12e5120b82d71ffeceb0845c7eef4c0929"
+    }
+  },
+  "scriptInvocations": 116,
+  "exactCompleteRequiredPreorder": true,
+  "headerQualification": "Aliases included; command count is not a suite/test count.",
+  "vitestSummaries": [
+    {
+      "files": 455,
+      "passedTests": 4594,
+      "totalTests": 4594
+    },
+    {
+      "files": 60,
+      "passedTests": 346,
+      "totalTests": 346
+    },
+    {
+      "files": 59,
+      "passedTests": 324,
+      "totalTests": 324
+    }
+  ],
+  "frozenBaselines": {
+    "items": 176,
+    "frames": 36061,
+    "regenerated": false
+  },
+  "measuredBenchmarkRows": [
+    {
+      "raw": "   \u00b7 deterministic end-to-end request  1,180.39  0.7135  3.0461  0.8472  0.8551  1.1768  1.9948  3.0461  \u00b11.50%      591",
+      "hz": 1180.39,
+      "minimumMs": 0.7135,
+      "maximumMs": 3.0461,
+      "meanMs": 0.8472,
+      "p75Ms": 0.8551,
+      "p99Ms": 1.1768,
+      "p995Ms": 1.9948,
+      "p999Ms": 3.0461,
+      "relativeMarginPercent": 1.5,
+      "samples": 591
+    }
+  ],
+  "existingWebglTimingDeferrals": [
+    {
+      "case": "cinematic/threshold-push",
+      "ratio": 2.0570537405969147
+    },
+    {
+      "case": "cinematic/threshold-push/effects-grain",
+      "ratio": 2.117727966042248
+    },
+    {
+      "case": "cinematic/threshold-push/effects-glow",
+      "ratio": 2.432872830926334
+    },
+    {
+      "case": "cinematic/threshold-push/effects-directional",
+      "ratio": 2.190201397877707
+    },
+    {
+      "case": "cinematic/threshold-push/effects-focus",
+      "ratio": 2.54674922736658
+    },
+    {
+      "case": "cinematic/threshold-push/effects-sweep",
+      "ratio": 1.7028329148726844
+    },
+    {
+      "case": "cinematic/threshold-push/effects-active-stack",
+      "ratio": 1.6749131944114026
+    },
+    {
+      "case": "cinematic/threshold-push-alternate",
+      "ratio": 2.0212212577752937
+    },
+    {
+      "case": "cinematic/lateral-track",
+      "ratio": 2.0785070813409523
+    },
+    {
+      "case": "cinematic/lateral-track-alternate",
+      "ratio": 2.1097182809686976
+    },
+    {
+      "case": "cinematic/rising-vista",
+      "ratio": 1.7555445037248325
+    },
+    {
+      "case": "cinematic/detail-to-world",
+      "ratio": 1.6468310333400435
+    },
+    {
+      "case": "cinematic/curved-approach",
+      "ratio": 1.8653093209161054
+    },
+    {
+      "case": "cinematic/dolly-zoom-tension",
+      "ratio": 1.322321340176556
+    },
+    {
+      "case": "cinematic/dolly-zoom-tension-alternate",
+      "ratio": 1.3453680717215373
+    },
+    {
+      "case": "cinematic/layered-parallax",
+      "ratio": 2.1437827832948586
+    },
+    {
+      "case": "cinematic/layered-parallax-alternate",
+      "ratio": 2.093914421515326
+    },
+    {
+      "case": "cinematic/vertical-rising-vista",
+      "ratio": 1.7451073540910873
+    },
+    {
+      "case": "legacy/crisis-fracture",
+      "ratio": 1.5416282226674916
+    }
+  ],
+  "benchmarkScope": "Unmodified benchmarks/noop.bench.ts > v0.1 no-op engine dispatch benchmark. Positive measured samples do not establish full3D/pilot throughput, costs or token savings.",
+  "performanceQualification": "Existing explicitly reported CE6-P WebGL timing deferrals remain open. Whole native2x/universal timing acceptance is not inferred from command0.",
+  "engineeringProductionAndRecovery": {
+    "native": {
+      "summary": {
+        "status": "passed",
+        "directory": "/private/tmp/still-shift-ms3-production-native-U6LTOz",
+        "executions": 5,
+        "outputs": 5
+      },
+      "rawRun": {
+        "path": "/private/tmp/still-shift-ms3-production-native-U6LTOz/run.json",
+        "bytes": 10791,
+        "sha256": "sha256:e66e7ea3abb2c7e078ad3551e949137e48652569207823d9b58465d74ea0a0db"
+      },
+      "recordedStages": 8,
+      "qualification": "Real shared native/cached pipeline and full decode/zero-new-caption-native work; no genuine narration/factual/visual/listening/pilot/human acceptance."
+    },
+    "recovery": {
+      "summary": {
+        "status": "passed",
+        "root": "/private/tmp/still-shift-ms3-native-relocated-zEonTL",
+        "products": 10,
+        "native": 360
+      },
+      "rawRun": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-zEonTL/run.json",
+        "bytes": 4965,
+        "sha256": "sha256:4653def8244dfb59d2424f85891e412281faed5ab601933696479dd25cdc144a"
+      },
+      "recordedStages": 15,
+      "qualification": "Actual CLI/OS lifecycle and technical fault evidence with synthetic engineering PCM. Independent decode/image/history audit and all whole reviews/pilot acceptance remain separate."
+    }
+  },
+  "engineeringQualification": "Synthetic engineering PCM/native/CLI fault fixtures; no genuine narration or actual-first-ten product/whole review acceptance.",
+  "retainedPriorFailures": {
+    "retainedFailedFull91": {
+      "path": "/private/tmp/still-shift-ms3-final91-full1.json",
+      "bytes": 1421,
+      "sha256": "sha256:2802571c3e391e6975132045201441ede682aa63657ced6a01656cd4bf446a82"
+    },
+    "retainedFailedOwningSuffix105": {
+      "path": "/private/tmp/still-shift-ms3-repair105-runtime1.json",
+      "bytes": 3759,
+      "sha256": "sha256:fb733f49d71ecf97447dd9e5a884ffc3db979ea3653f968ecead0409574aa6d0"
+    },
+    "retainedFailedFull113": {
+      "path": "/private/tmp/still-shift-ms3-final113-full1.json",
+      "bytes": 3045,
+      "sha256": "sha256:1d43e7f7238478d3a50aa96390640a1eafa8dc419ab357081c389655ed8856ea"
+    }
+  },
+  "retainedCopies": [
+    {
+      "role": "result",
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-final119-full1.json",
+        "bytes": 4489,
+        "sha256": "sha256:fba6d5ff36734b4415bae4878e263186cff365329b55e7cdfe4e4b7dadcd4460"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/terminal125-result.json",
+        "bytes": 4489,
+        "sha256": "sha256:fba6d5ff36734b4415bae4878e263186cff365329b55e7cdfe4e4b7dadcd4460"
+      },
+      "exact": true
+    },
+    {
+      "role": "log",
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-final119-full1.log",
+        "bytes": 3440834,
+        "sha256": "sha256:7fcc3923e1c019d1e36de7b20b873192c21593878c9b28d9d8a7b6c9293dd675"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/terminal125-log.log",
+        "bytes": 3440834,
+        "sha256": "sha256:7fcc3923e1c019d1e36de7b20b873192c21593878c9b28d9d8a7b6c9293dd675"
+      },
+      "exact": true
+    },
+    {
+      "role": "inputs",
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-final119-source-inputs1.json",
+        "bytes": 477326,
+        "sha256": "sha256:9d3a776ad25d913c64537d8a06b065ead299037ddc9b977f777e8ddcbac16a59"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/terminal125-inputs.json",
+        "bytes": 477326,
+        "sha256": "sha256:9d3a776ad25d913c64537d8a06b065ead299037ddc9b977f777e8ddcbac16a59"
+      },
+      "exact": true
+    },
+    {
+      "role": "actual-terminal",
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-final119-terminal1.json",
+        "bytes": 5337,
+        "sha256": "sha256:f43123e35d6aa075c023c71c0ce13260ea4059eb1c8f364d102eda968feb57ee"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/terminal125-actual-terminal.json",
+        "bytes": 5337,
+        "sha256": "sha256:f43123e35d6aa075c023c71c0ce13260ea4059eb1c8f364d102eda968feb57ee"
+      },
+      "exact": true
+    },
+    {
+      "role": "runner",
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-final119-full1.py",
+        "bytes": 7417,
+        "sha256": "sha256:69e068edaadc3c5fdbb22999efa9dcd3a5e9bbb634645da92edfb1d9d39d0ae9"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/terminal125-runner.py",
+        "bytes": 7417,
+        "sha256": "sha256:69e068edaadc3c5fdbb22999efa9dcd3a5e9bbb634645da92edfb1d9d39d0ae9"
+      },
+      "exact": true
+    },
+    {
+      "role": "guard",
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-final119-hold.py",
+        "bytes": 1398,
+        "sha256": "sha256:e74c259aea3edc613e16c998e3364b740045aca0adc744a99018873e40d1f7de"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/terminal125-guard.py",
+        "bytes": 1398,
+        "sha256": "sha256:e74c259aea3edc613e16c998e3364b740045aca0adc744a99018873e40d1f7de"
+      },
+      "exact": true
+    },
+    {
+      "role": "selection",
+      "original": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/source-selection-seed.json",
+        "bytes": 477326,
+        "sha256": "sha256:1f23134b5b2d1492f51f02865e9222639c49002a7416ec98a5a39069c843c99f"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/terminal125-selection.json",
+        "bytes": 477326,
+        "sha256": "sha256:1f23134b5b2d1492f51f02865e9222639c49002a7416ec98a5a39069c843c99f"
+      },
+      "exact": true
+    },
+    {
+      "role": "toolchain",
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-final119-toolchain1.log",
+        "bytes": 238,
+        "sha256": "sha256:3ad3e8695b8ffa18ae57b07d1c45db12e5120b82d71ffeceb0845c7eef4c0929"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/terminal125-toolchain.log",
+        "bytes": 238,
+        "sha256": "sha256:3ad3e8695b8ffa18ae57b07d1c45db12e5120b82d71ffeceb0845c7eef4c0929"
+      },
+      "exact": true
+    },
+    {
+      "role": "admission-guard",
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-complete119-admission121.py",
+        "bytes": 5042,
+        "sha256": "sha256:ea9129a13442c7682c51092cb7a70045982be5b0a51d2cc92234d7b53c641e9e"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/terminal125-admission-guard.py",
+        "bytes": 5042,
+        "sha256": "sha256:ea9129a13442c7682c51092cb7a70045982be5b0a51d2cc92234d7b53c641e9e"
+      },
+      "exact": true
+    },
+    {
+      "role": "collector",
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-retain-full125.py",
+        "bytes": 9751,
+        "sha256": "sha256:d636ee89946e650a019472d908659c4d0a1330c8e235dad27586295e172c60bd"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/terminal125-collector.py",
+        "bytes": 9751,
+        "sha256": "sha256:d636ee89946e650a019472d908659c4d0a1330c8e235dad27586295e172c60bd"
+      },
+      "exact": true
+    },
+    {
+      "role": "native-run",
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-production-native-U6LTOz/run.json",
+        "bytes": 10791,
+        "sha256": "sha256:e66e7ea3abb2c7e078ad3551e949137e48652569207823d9b58465d74ea0a0db"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/terminal125-native-run.json",
+        "bytes": 10791,
+        "sha256": "sha256:e66e7ea3abb2c7e078ad3551e949137e48652569207823d9b58465d74ea0a0db"
+      },
+      "exact": true
+    },
+    {
+      "role": "recovery-run",
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-zEonTL/run.json",
+        "bytes": 4965,
+        "sha256": "sha256:4653def8244dfb59d2424f85891e412281faed5ab601933696479dd25cdc144a"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/terminal125-recovery-run.json",
+        "bytes": 4965,
+        "sha256": "sha256:4653def8244dfb59d2424f85891e412281faed5ab601933696479dd25cdc144a"
+      },
+      "exact": true
+    }
+  ],
+  "postRetentionSourceHold": {
+    "actualExitCode": 0,
+    "output": {
+      "status": "passed",
+      "mode": "check",
+      "files": 2793,
+      "bytes": 122415742
+    }
+  },
+  "completeSoftwareGatePassed": true,
+  "packageAndCurrentInstalledAllTenPassed": false,
+  "wholePilotOrHumanAcceptance": false,
+  "goalComplete": false,
+  "originalPilot": {
+    "firstPassPassed": 1,
+    "denominator": 10,
+    "pairedTokens": null,
+    "reviewedReady": 0,
+    "accepted": 0
+  },
+  "next": "Format/commit the completed software record, then run standard package121 on an entirely clean frozen checkout. Copy/hash the complete closure and execute the independent all10/6181/EU008 repair lifecycle; preserve all original history and whole-review gates.",
+  "durableIndex": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/full119-terminal125-index.json",
+    "bytes": 37487,
+    "sha256": "sha256:4197cce182b1deb1c7815ca8f6e4a57c7fec70716215470bf9f06b7912fec817"
+  }
+}

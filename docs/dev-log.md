@@ -43,38 +43,23 @@ still hold before relying on them.
 
 ## Current state
 
-- **Required complete full119 running (2026-10-15):** actual owning860060
-  passes69cases/14,086frames/14repeated export pairs, all2793 inputs exact.
-  Calibration-pan1.199921/max ratio1.224535 under unchanged1.25; pixel failures0,
-  max measured delta2. No production/test/threshold change or timing-cause
-  explanation. New unmodified full119 is live as71989 on1c9f7d14,2793 held inputs,
-  pinned preflight0/fresh empty cache. Complete result remains unpassed; expect several hours,
-  no fixed ETA. All prior failures stay retained. The source guard changes only
-  its selection-metadata lookup to an exact durable copy; comparison control0.
-  Whole current package/all10/6181/EU008 repair still follow genuine complete0.
-  [Preparation](./mechanism-shorts-ms3-final119-full-gate-results.json).
-
-- **Frozen full-run baseline checkpoint124 (2026-10-15):** same live71989 now
-  passes176 frozen items/36,061frames, with4,594 units/346 runtime/324 integration.
-  Mechanism cue edits have started;19 existing WebGL timing deferrals remain
-  retained. All2793 inputs exact before/after; exact raw prefix/live observation/
-  running receipt retained. Complete gate, benchmark/current package/all10 proof
-  remain unpassed. [Actual checkpoint](./mechanism-shorts-ms3-baseline124-checkpoint-results.json).
-
-- **Normal full-run story checkpoint123 (2026-10-15):** within the same live71989,
-  all69 normal story cases/14,086 frames/14 repeated export pairs pass. Maximum
-  ratio1.240453/calibration-pan1.222693 remain under unchanged1.25; pixel failures0,
-  maximum measured delta2. All2793 inputs exact before/after; raw prefix/live tool/
-  guard retained. Commerce-adapter has started. Full119 remains unpassed and113
-  stays failed; no source/threshold change or timing-cause claim.
-  [Actual checkpoint](./mechanism-shorts-ms3-story123-checkpoint-results.json).
+- **Required complete full119 passed (2026-10-16 local):** actual71989 exits0
+  after24,311.28s on1c9f7d14; all2793 inputs/122,415,742B exact. Unit4594,
+  runtime346/integration324/Python14, frozen176/36061, normal story69/14086/14
+  pairs, native5products/300frames and recovery15stages/10products pass. Benchmark
+  no-op1180.39Hz/591samples;19 existing WebGL timing deferrals stay open.
+  All prior failed90/91/105/113 results retained; no timing-cause claim.
+  Twelve exact raw terminal files retained. Current standard package, independent
+  all10/6181/EU008 repair and whole reviews still follow. Original1/10 first-pass,
+  nine failures/null paired tokens/accepted0 unchanged.
+  [Actual terminal125](./mechanism-shorts-ms3-full125-terminal-results.json).
 
 - **Installed preparation121 (2026-10-15):** new direct actual full119 admission
   replaces old impossible failed91/105/107 requirements. Syntax passes; package,
   cache-copy and all-ten lifecycle guards each reject the actual live71989 result
   before side effects. Standard package matrix, exact archive, all10/6,181,
   full5,223-file cache closure,12-root denials/worker block and EU008 repair remain.
-  No runtime package/copy/lifecycle started; exact helpers retained locally.
+  Actual complete119 now passes; no runtime package/copy/lifecycle started yet. Entire clean checkout/HEAD freezes during package; exact helpers retained locally.
   Fresh read-only122 confirms the exact complete closure metadata/sizes,115 inputs
   and14 installed-diagnostic fixture files remain available; binary hashes/copy
   and real execution stay pending. [Preparation/readiness](./mechanism-shorts-ms3-installed121-preparation-results.json).
@@ -373,6 +358,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-16 — Complete required full119 and retain actual terminal125
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, verified source1c9f7d14.
+- **Done:** actual complete71989 exits0 after24,311.28s; all2793 held inputs exact.
+- **Results:** unit4594/runtime346/integration324/Python14; all176 frozen baselines/
+  36,061frames, normal story69/14,086/14pairs, native5products/300frames and
+  recovery15stages/10products pass. Benchmark no-op1180.39Hz/591samples.
+- **Retained limits:**19 existing WebGL timing deferrals, prior actual failures,
+  original pilot1/10/nine failures/null paired tokens/accepted0. No whole acceptance.
+- **Next:** clean frozen standard package121, exact archive install/full content
+  copy and independent all10/6181/EU008 repair lifecycle; whole review still open.
+- **Records:** [actual terminal125](./mechanism-shorts-ms3-full125-terminal-results.json),
+  [run119](./mechanism-shorts-ms3-final119-full-gate-results.json).
 
 ### 2026-10-15 — Retain complete frozen-baseline checkpoint inside live full119
 

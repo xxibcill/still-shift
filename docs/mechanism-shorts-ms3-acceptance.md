@@ -1,51 +1,40 @@
 # MS3 acceptance tracker
 
-The same live full119 now passes all176 frozen baselines/36,061frames and has
-advanced into mechanism cue-edit checks. Units4,594/runtime346/integration324 remain
-passed;19 explicitly reported existing WebGL timing deferrals stay retained and
-are not timing acceptance. Exact log prefix/live-tool/running receipt records are
-retained locally, with all2793 inputs exact before/after. Complete gate/benchmark,
-current package/all10/6,181/EU008 repair and whole reviews remain pending.
-[Actual baseline checkpoint124](./mechanism-shorts-ms3-baseline124-checkpoint-results.json).
+2026-10-16 (local): the complete unmodified `pnpm check:all` run119 actually
+exits0 as71989 after24,311.28s. All2,793 selected inputs/122,415,742B remain
+exact to source1c9f7d14. The actual tool terminal, complete raw log/receipt,
+source inventory and production/recovery receipts are retained locally.
 
-Within live full119, the normal unmodified story group now passes69cases/
-14,086frames/14 repeated byte-identical export pairs, with pixel failures0 and
-maximum measured delta2. Maximum ratio1.240453 stays under unchanged1.25;
-calibration-pan is1.222693. The next required commerce-adapter group has started.
-All2793 held inputs match before/after; exact live-tool/log-prefix/guard records
-are retained locally. This is a completed group inside the still-unpassed full,
-with no profiled/staged substitute or timing-cause claim. Full113 remains failed.
-[Actual full-run checkpoint123](./mechanism-shorts-ms3-story123-checkpoint-results.json).
+The run includes4,594 unit tests,346 runtime tests,324 integration tests and14
+Python tests; all176 frozen baselines/36,061 frames pass without regeneration.
+The normal story matrix passes69 cases/14,086 frames/14 repeated byte-identical
+export pairs. Native production passes5 executions/5 outputs/300 decoded frames;
+recovery passes all15 stages/10 products. These last fixtures use synthetic
+engineering PCM and do not establish actual-pilot or whole review acceptance.
+The116 script invocations include aliases and are not a suite count.
 
-Earlier owning diagnostic118 (2026-10-15): actual86006 exits0 for the profiled Canvas
-story matrix:69cases/14,086frames/14repeated export pairs. Maximum ratio1.224535
-stays under unchanged1.25; pixel failures0, maximum measured delta2.
-Calibration-pan is1.199921. All2793 inputs remain exact, no source/threshold
-changes. This neither explains historical timing nor passes full113. A new
-unmodified completefull119 is now live as71989 on1c9f7d14 with2793 inputs held
-and pinned preflight0. It remains unpassed, may take several hours and stays
-mandatory before current archive/all10 installed proof.
-[Owning diagnostics](./mechanism-shorts-ms3-story118-results.json),
-[required full119](./mechanism-shorts-ms3-final119-full-gate-results.json).
+The no-op dispatch benchmark measures1,180.39Hz over591 samples. This is the
+existing no-op benchmark, not full3D/pilot throughput, costs or token savings.
+The19 existing CE6-P WebGL timing deferrals stay open. Earlier full90/91/113
+and owning105 failures retain their original results; timing cause remains
+unproven. [Actual complete terminal125](./mechanism-shorts-ms3-full125-terminal-results.json),
+[run119 history and checkpoints](./mechanism-shorts-ms3-final119-full-gate-results.json).
 
-Current installed preparation121 now binds directly to future actual complete
-full119 success, replacing the impossible old failed-run admission requirements.
-Package, full-cache-copy and all-ten lifecycle guards each refuse the actual live
-receipt before creating destinations. Standard package/archive/source checks,
-all10/6,181 frames,12-root denials, blocked fresh-worker staging and the bounded
-EU008 two-label repair remain. No package/copy/lifecycle execution has started.
+Standard package121 is next. Its whole clean checkout/HEAD, including archived
+guides, stays frozen until the real package terminal. Exact archive audit/install,
+full115-input/5,223-native-file content hash/copy, independent all10/6,181-frame
+lifecycle, bounded EU008 two-label repair before final report/resume/ten handoffs,
+and whole reviews remain required. The prior live-refusal controls are retained;
+no receiving run has started. Original first-pass1/10, nine failures, null paired
+tokens and reviewed-ready/accepted0 remain unchanged.
 [Prepared controls and exact retained helpers](./mechanism-shorts-ms3-installed121-preparation-results.json).
 
-Retained complete attempt113 (2026-10-15) actually exits1 as8967 after4984.34s.
-Canvas story/calibration-pan has ratio1.251626897572802 above unchanged1.25;
-pixel failures are empty/maxDelta1. All2793 held inputs match. Units4594,
-runtime346/integration324 and the browser prefix through passage authoring pass;
-story matrix stops and later groups/benchmark are not reached. Whole owning
-story118 subsequently passes with existing --profile/--keep-going flags,
-all normal checks/exports and1.25 unchanged. This scoped pass does not relabel
-full113; timing cause remains unproven, with no code/threshold change. A subsequent complete successful full is still required
-before current archive/all10 installed proof. Dated earlier launch descriptions
-below remain history. [Failure/diagnostic118](./mechanism-shorts-ms3-story118-results.json).
+Earlier checkpoints123/124 are dated live snapshots within the now-completed
+run. Whole owning118 is a separate profiled diagnostic; actual full113 remains
+failed at the unchanged1.25 timing limit. They do not replace the actual119 pass.
+[Normal story checkpoint123](./mechanism-shorts-ms3-story123-checkpoint-results.json),
+[frozen baseline checkpoint124](./mechanism-shorts-ms3-baseline124-checkpoint-results.json),
+[retained failure and diagnostic118](./mechanism-shorts-ms3-story118-results.json).
 
 The49 deliverable scopes,26 cross-cutting acceptance clauses and21 SS/A traceability
 rows are reconciled in the [acceptance audit114](./mechanism-shorts-acceptance-audit114-results.json).
