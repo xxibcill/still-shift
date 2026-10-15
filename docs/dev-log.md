@@ -51,13 +51,13 @@ still hold before relying on them.
   scoped73/6 and fast4,594/455 qualify unchanged code. Full90 actually exits1 on789109ad after4,594 units and341/346 runtime
   passes: five cue tests reject an old empty audio cache entry. Source2,793 inputs
   stay exact. Same-fixture fresh-cache probe and owning5+corrupt-fallback control6
-  pass unchanged; existing cache preserved. New full91 with a fresh isolated cache
-  follows successful MS2 private package91 qualification. Original
+  pass unchanged; existing cache preserved. Full91 runs as42543 on3749618d with a newly empty isolated cache
+  after successful MS2 private package91 qualification. Original
   products and failed first attempts retain their original identities; accepted0/10,
   measured first-pass10% below90% and paired savings null.
   [Terminal](./mechanism-shorts-ms3-first-ten-terminal90-results.json),
   [integration](./mechanism-shorts-ms3-prerequisite-integration89-results.json),
-  [current full attempt](./mechanism-shorts-ms3-final90-full-gate-results.json).
+  [current full attempt](./mechanism-shorts-ms3-final91-full-gate-results.json).
 
 - **Current remaining MS3 gates (2026-10-15):** final integrated-source full
   software/benchmark/archive/installed checks and whole factual/mechanical/glyph/
@@ -237,6 +237,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Start complete current matrix with proven isolated media cache
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, held source3749618d.
+- **Running:** unchanged complete `pnpm check:all` in specific unified42543;
+  2,793 inputs/122,415,262B frozen, fresh empty process-scoped media cache.
+- **Preflight:** same fixture/control6 passes while old empty cache entry remains
+  rejected/preserved. Failed full90 and its source-exact proof remain retained.
+- **Source:** only ROADMAP status prose differs from90; all other2,792 inputs exact.
+  Current MS2 affected archive/installed qualification is delivered at8b7374ed.
+- **Limits:** running is not passed; prior complete matrix5h35m. No other native/
+  browser/export group, package build or benchmark competes with this full run.
+- **Next:** actual42543 terminal and frozen-source check, then current MS3 archive/
+  installed checks and remaining whole/fault-budget gates; no acceptance inferred.
+- **Records:** [Current full attempt](./mechanism-shorts-ms3-final91-full-gate-results.json).
 
 ### 2026-10-15 — Carry qualified MS2 archive into final pilot verification
 
