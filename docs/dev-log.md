@@ -58,8 +58,10 @@ still hold before relying on them.
   focused format/lint/build and complete owning native group pass. Actual53131
   then exits1 after recovery1791.92s on a second stale assertion: all3 current
   products verify, but all rows have recovery interventions, so clean first-pass
-  count0 differs from expected2. Repair110 changes only this test and prepares
-  focused policy/retained-data checks. A complete final full remains mandatory;
+  count0 differs from expected2. Repair110 changes only this test; focused34
+  provenance/11 retry cases, real-data classifier replay and benchmark now pass.
+  Current visual109 controls180 frames/4 inspected stills and compiler111 physical
+  label-state admission also pass with0 new native captures. A complete final full remains mandatory;
   no failed aggregate is relabeled.
   Original pilot
   first-pass1/10/nine failures/null paired tokens and accepted0 remain retained.
@@ -286,6 +288,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Verify focused metrics and refresh current fault evidence111
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` afterc76283da.
+- **Results:** actual73424 exits0: format/lint/types,34 provenance tests/11 retry
+  cases, current classifier against retained real recovery data and benchmark418
+  samples. Prior105 recovery1 remains1; replay does not qualify a whole rerun.
+- **Faults:** current visual1090 verifies3 movies/180 decoded frames/exact shared
+  PCM and4 actual encoded still inspections. Clipping and0.1s hold failures locate
+  frames0–14. Compiler111 rejects wrong physical label state239 with original
+  authenticated239/266 native witnesses; original binding1090 stays original.
+- **Audit:**14 required fault/recovery cases now have precise method/source scopes,
+  all15 actual recovery checkpoints authenticate after relocation. Only2 browser
+  assertions differ from full91; all production/other source bytes exact.
+- **Next:** required complete final full on corrected tests before package/all-ten
+  installed work. Whole review, pilot metrics/acceptance and human gates stay open.
+- **Records:** [fault coverage111](./mechanism-shorts-ms3-fault-coverage111-results.json),
+  [focused110](./mechanism-shorts-ms3-repair110-results.json).
 
 ### 2026-10-15 — Correct second stale recovery metric without forgiving recovery110
 

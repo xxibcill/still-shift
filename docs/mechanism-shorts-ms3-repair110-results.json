@@ -1,7 +1,7 @@
 {
   "schemaVersion": "ms3-conservative-recovery-assertion-repair-1",
   "capturedUtc": "2026-10-15T08:15:23.603121+00:00",
-  "status": "second-stale-browser-expectation-corrected-focused-checks-prepared-not-started",
+  "status": "focused-checks-and-real-data-replay-passed-complete-browser-full-still-required",
   "sourceBeforeDocs": "d7a6aaf5",
   "originalFocusedRuntime105": {
     "path": "/private/tmp/still-shift-ms3-repair105-runtime1.json",
@@ -82,5 +82,16 @@
   "next": "After actual focused0, refresh the existing2D clipping/short-hold software controls, inspect their saved stills and run one complete required final full on both corrected browser tests. Activate package/current all-ten lifecycle only after actual complete full0.",
   "oldPreparationDisposition": "Unexecuted107/108/109-wrapper preparations depend on impossible105 terminal0; retained as history, not executable current workflow. Keep the proven1092D control helper as input only; a new outer admission must use the actual new focused result.",
   "sourceDeltaFromFull91": "Exactly2 browser assertion files; all production/other held bytes unchanged, verified by the next2793-file inventory.",
-  "acceptedPilot": 0
+  "acceptedPilot": 0,
+  "focusedActualObservedSession": 73424,
+  "focusedActualExitCode": 0,
+  "focusedReceipt": {
+    "path": "/private/tmp/still-shift-ms3-repair110-focused1.json",
+    "bytes": 4451,
+    "sha256": "sha256:119ab9922a1156ff851dbd9db338dd326c631aad95dd3c73afb8763188419a50"
+  },
+  "existingProvenanceTests": 34,
+  "existingRetryTests": 11,
+  "benchmark": "actual0/418 measured samples; standalone only",
+  "faultCoverage": "./mechanism-shorts-ms3-fault-coverage111-results.json"
 }
