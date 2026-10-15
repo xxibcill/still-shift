@@ -78,6 +78,15 @@ admission refusals pass, including an in-memory false terminal claim rejected by
 the still-running raw full receipt. No package, receiver or render is started.
 [Active serial preparation and controls](./mechanism-shorts-ms3-installed102-preparation-results.json).
 
+After actual full91 fails the stale first-pass assertion, repair105 changes only
+that browser expectation. Format/lint/build pass; actual owning/suffix session53131
+is running. Successor106 guards require its genuine terminal0, all6 stages0,
+exact one-test source delta and complete combined original script coverage while
+retaining original42543 exit1. The full all-ten/repair/16-command102 scope stays
+required. Both pre-terminal refusal controls pass; actual package/copy/installed
+execution remains pending.
+[Staged qualification guards](./mechanism-shorts-ms3-installed106-preparation-results.json).
+
 The four actual geometry fault images are now captured and agent-inspected104.
 Two disposable EU001 assets produce located failures at64/159 (moving fixed mount)
 and266 (wall/hook penetration), using current code a7bc0e5b/profile1dd05300.

@@ -1031,5 +1031,7 @@
     "originalEvidenceRelabeled": false
   },
   "currentPhysicalFaultWorkAllowance": "./mechanism-shorts-ms3-work-allowance103-results.json",
-  "completedPhysicalFaultImages": "./mechanism-shorts-ms3-physical-fault104-results.json"
+  "completedPhysicalFaultImages": "./mechanism-shorts-ms3-physical-fault104-results.json",
+  "activeStagedRepair": "./mechanism-shorts-ms3-repair105-results.json",
+  "activeInstalledPreparation": "./mechanism-shorts-ms3-installed106-preparation-results.json"
 }

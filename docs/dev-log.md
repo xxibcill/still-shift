@@ -55,7 +55,8 @@ still hold before relying on them.
   stale metric assertion: an unclassified caption revision makes1/3 first passes
   unverified, so actual clean count2 differs from expected3.3/3 current products
   verify. Test-only repair105 now requires clean2/unverified1 with rate/target null;
-  owning native/recovery/benchmark stages are prepared, not yet passed. No full pass claimed. Original pilot
+  focused format/lint/build pass; actual owning/suffix session53131 is running.
+  No uninterrupted full pass claimed. Original pilot
   first-pass1/10/nine failures/null paired tokens and accepted0 remain retained.
   [Terminal](./mechanism-shorts-ms3-first-ten-terminal90-results.json),
   [integration](./mechanism-shorts-ms3-prerequisite-integration89-results.json),
@@ -73,8 +74,10 @@ still hold before relying on them.
   across34 full capture directories/1,758 stored frames. Combined12-root OS denials
   and fresh-capture staging block pass from neutral cwd; pre-terminal copy refuses
   before creating a receiver. Binary hash/copy/current replay remain open.
-  Standard offline package matrix and all-ten current lifecycle runners94 are
-  prepared with tested terminal-admission refusals; actual execution is pending.
+  Successor106 package/copy/all-ten runners require actual staged53131 terminal0,
+  all6 stages0 and exact one-test delta, retaining42543 aggregate1. Two actual
+  pre-terminal refusals pass; old93/102 runners remain unchanged/unexecuted.
+  [Active staged guard preparation](./mechanism-shorts-ms3-installed106-preparation-results.json).
   The future package wrapper additionally freezes the entire clean checkout/HEAD,
   including archived Markdown guides, until its actual terminal. Three user guides96
   now match current CLI/native QA/handoff/relocation/reuse/provenance behavior;
@@ -275,6 +278,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Prepare truthful staged-qualified package and all-ten guards106
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` after726b92f0.
+- **Results:** repair105 format/lint/build pass, owning/suffix53131 running.
+  New guards require its actual terminal0, all6 current stages0 and exact one-test
+  delta; original full42543 remains1. Complete combined116-script coverage,
+  frozen176 baselines/36061 frames and actual benchmark samples are required.
+- **Controls:** all5 successor modules parse;2 actual refusals reject nonterminal
+  file and false terminal claim via stdin. No fake success file, consumer, archive,
+  copied output or installed lifecycle receipt created.
+- **Scope:** full10/6181, original pilot history, isolation, cache closure and
+  bounded EU008 repair remain unchanged. Prior93/102 runners retained unexecuted.
+- **Next:** observe actual53131 terminal, audit/commit evidence before the future
+  package wrapper freezes the whole checkout/HEAD.
+- **Records:** [successor106 guards](./mechanism-shorts-ms3-installed106-preparation-results.json).
 
 ### 2026-10-15 — Correct stale native first-pass assertion and prepare staged completion105
 
