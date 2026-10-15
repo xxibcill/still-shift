@@ -54,7 +54,10 @@ still hold before relying on them.
   pass unchanged; existing cache preserved. Full91 runs as42543 on3749618d with a newly empty isolated cache
   after successful MS2 private package91 qualification. Current observed prefix
   passes4,594 units/346 runtime/324 integration/depth14, including all5 prior cue
-  failures; the serial browser/render matrix is active. No full/benchmark pass inferred. Original
+  failures. Cinematic adapter now completes46 rows/5,520 forward and reverse
+  reference frames/46 repeated-export cases;18 existing WebGL timing deferrals
+  remain. Exact launched prefix81/116 reaches composition depth; no completion
+  percentage or passed-suite total inferred. The serial browser/render matrix is active. No full/benchmark pass inferred. Original
   products and failed first attempts retain their original identities; accepted0/10,
   measured first-pass10% below90% and paired savings null.
   [Terminal](./mechanism-shorts-ms3-first-ten-terminal90-results.json),
@@ -270,6 +273,19 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Audit completed cinematic group in live full91 prefix5
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` fromf1498393.
+- **Results:** actual42543 remains live. Cinematic correctness46 rows/5,520 forward
+  and reverse reference frames passes, maximum pixel delta1;23 required Canvas
+  timing rows and46 repeated-export/relocation/overwrite cases complete.18 existing
+  CE6-P WebGL timing deferrals retained, with no WebGL performance pass inferred.
+- **Open / next:** exact package-script prefix81/116 reaches composition depth;
+  counts include aliases, not completion percentages. Full aggregate/benchmark,
+  current archive/all-ten installed checks, prepared label repair and whole reviews
+  remain open. No competing renderer or source change.
+- **Records:** [immutable live prefix5 and group audit](./mechanism-shorts-ms3-final91-full-gate-results.json).
 
 ### 2026-10-15 — Inspect60 actual phone frames and prepare latch copy repair101
 

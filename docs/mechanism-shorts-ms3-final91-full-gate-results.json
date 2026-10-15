@@ -137,6 +137,117 @@
         "bytes": 34438,
         "sha256": "sha256:0e7c7e5167cb515674b0964f304b1ccc3649f759460369c2595e79ca4d36f627"
       }
+    },
+    {
+      "observedUtc": "2026-10-15T04:17:50.532559+00:00",
+      "unifiedSession": 42543,
+      "status": "live-exact-full-command-prefix-cinematic-group-complete-not-full-terminal",
+      "sourceCommit": "3749618d64dfa35a57b2e4f34da5b6722ac9c089",
+      "expectedPackageScriptInvocations": 116,
+      "observedScriptInvocations": 81,
+      "exactExpectedPreorderPrefix": true,
+      "latestObservedGroup": "test:browser:composition-depth",
+      "nextPlannedGroups": [
+        "test:browser:native3d-depth",
+        "test:browser:native3d-pbr-resources",
+        "test:browser:native3d-pbr-world",
+        "test:browser:native3d-pbr-observation",
+        "test:browser:native3d-pbr-composition"
+      ],
+      "completedCinematicAdapter": {
+        "rows": 46,
+        "forwardReferenceFrames": 5520,
+        "reverseReferenceFrames": 5520,
+        "maximumPixelDelta": 2,
+        "requiredCanvasTimingRowsPassed": 23,
+        "twoByteIdenticalExportsRelocationOverwriteCases": 46,
+        "existingCE6PWebGLTimingDeferrals": [
+          {
+            "fixture": "cinematic/threshold-push",
+            "ratio": 2.0581648335006437
+          },
+          {
+            "fixture": "cinematic/threshold-push/effects-grain",
+            "ratio": 2.0901940219390576
+          },
+          {
+            "fixture": "cinematic/threshold-push/effects-glow",
+            "ratio": 2.47226029070764
+          },
+          {
+            "fixture": "cinematic/threshold-push/effects-directional",
+            "ratio": 2.190969467668532
+          },
+          {
+            "fixture": "cinematic/threshold-push/effects-focus",
+            "ratio": 2.5263052074274572
+          },
+          {
+            "fixture": "cinematic/threshold-push/effects-sweep",
+            "ratio": 1.697906507245336
+          },
+          {
+            "fixture": "cinematic/threshold-push/effects-active-stack",
+            "ratio": 1.5525174429900745
+          },
+          {
+            "fixture": "cinematic/threshold-push-alternate",
+            "ratio": 2.062468286656648
+          },
+          {
+            "fixture": "cinematic/lateral-track",
+            "ratio": 2.0980031511729083
+          },
+          {
+            "fixture": "cinematic/lateral-track-alternate",
+            "ratio": 2.084086796622924
+          },
+          {
+            "fixture": "cinematic/rising-vista",
+            "ratio": 1.7842515120715559
+          },
+          {
+            "fixture": "cinematic/detail-to-world",
+            "ratio": 1.6144593222322146
+          },
+          {
+            "fixture": "cinematic/curved-approach",
+            "ratio": 1.856929472351517
+          },
+          {
+            "fixture": "cinematic/dolly-zoom-tension",
+            "ratio": 1.3254554401236516
+          },
+          {
+            "fixture": "cinematic/dolly-zoom-tension-alternate",
+            "ratio": 1.34259450389991
+          },
+          {
+            "fixture": "cinematic/layered-parallax",
+            "ratio": 2.129204812699139
+          },
+          {
+            "fixture": "cinematic/layered-parallax-alternate",
+            "ratio": 2.1312697933742304
+          },
+          {
+            "fixture": "cinematic/vertical-rising-vista",
+            "ratio": 1.7222374537697338
+          }
+        ],
+        "webglPerformancePassInferred": false
+      },
+      "immutableLogPrefix": {
+        "path": "/private/tmp/still-shift-ms3-final91-progress5.log",
+        "bytes": 3347916,
+        "sha256": "sha256:b825ce40d8ab735f54c4d2d91b4ac24dc610d7f9ec3bf78d0424b96394e2b664"
+      },
+      "qualification": "Observed header counts include aliases and are not completion percentages or passed-suite totals. The cinematic group completed correctness/required Canvas timing/export controls;18 existing WebGL timing deferrals remain. Specific42543 confirmed live; full aggregate/benchmark/archive/installed/whole reviews remain open.",
+      "rawSnapshot": {
+        "path": "/private/tmp/still-shift-ms3-final91-progress5.json",
+        "bytes": 14349,
+        "sha256": "sha256:1314fd8d05f33386793f476256fde0d7adb525a822f49485dcd032bc2ea3ce81"
+      }
     }
   ]
 }
