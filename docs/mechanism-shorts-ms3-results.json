@@ -1185,5 +1185,15 @@
     "nativePolicy": "copied-cache-only; original roots and fresh-worker staging denied",
     "repair": "EU008 two callout texts, then final report/resume/ten handoffs",
     "wholeReviewsOrPilotAcceptance": false
+  },
+  "currentInstalledCapabilities": {
+    "record": "./mechanism-shorts-ms3-installed131-capability-results.json",
+    "actualExitCode": 0,
+    "productionAndMediaDiscoveryExact": true,
+    "formattedGeneratedReferenceExact": true,
+    "productionSchemaReferences": 25,
+    "proseGuidesExact": 3,
+    "schemaReferenceLocation": "held source checkout, not bundled archive members",
+    "retainedFailedProbe130": true
   }
 }

@@ -188,5 +188,13 @@
     "Static link/flag checks and source/test inspection only; no fresh software/export/installed/whole review pass",
     "The existing required full command remains live; source-hold and current final package/discovery comparisons remain required",
     "All original pilot failures/10% first-pass/null token measurements/accepted0 remain unchanged"
-  ]
+  ],
+  "currentInstalledParity131": {
+    "record": "./mechanism-shorts-ms3-installed131-capability-results.json",
+    "actualExitCode": 0,
+    "generatedCapabilitiesAndDiscoveryExact": true,
+    "productionSchemasMatched": 25,
+    "reviewedGuidesMatched": 3,
+    "qualification": "Original96 capture and static-only results retain their historical bindings. New131 uses actual current installed public registry and source-held schema references; it does not complete all-ten or whole review."
+  }
 }

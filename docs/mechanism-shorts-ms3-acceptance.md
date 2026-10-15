@@ -40,6 +40,15 @@ failures, null paired tokens and reviewed-ready/accepted0 remain unchanged.
 [Actual package and complete copy126](./mechanism-shorts-ms3-package126-results.json),
 [prepared scope and controls](./mechanism-shorts-ms3-installed121-preparation-results.json).
 
+Current installed capability/doc audit131 passes: public production registry and
+installed media discovery exactly match the actual installed CLI output. Generated
+formatted Markdown matches the shipped reference; all25 production schemas match
+the held source references and all3 prose guides retain their reviewed96 pins.
+The schema JSON reference files are not bundled archive members. The initial130
+probe assumed that location and failed; its raw helper/actual terminal are retained,
+and the corrected source-reference comparison passes separately. No package files
+or guides changed. [Installed parity131](./mechanism-shorts-ms3-installed131-capability-results.json).
+
 Earlier checkpoints123/124 are dated live snapshots within the now-completed
 run. Whole owning118 is a separate profiled diagnostic; actual full113 remains
 failed at the unchanged1.25 timing limit. They do not replace the actual119 pass.

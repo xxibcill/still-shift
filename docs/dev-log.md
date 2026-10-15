@@ -43,6 +43,13 @@ still hold before relying on them.
 
 ## Current state
 
+- **Current installed docs/capability parity passed (2026-10-16):** actual131
+  exits0; installed public production/media registry agrees with CLI discovery,
+  generated reference matches,25 schemas match held source references and3
+  shipped prose guides keep reviewed96 pins. Initial130 probe fails on an assumed
+  bundled schema path; retained separately, no product or all-ten failure inferred.
+  All2793 source inputs remain exact. [Installed parity131](./mechanism-shorts-ms3-installed131-capability-results.json).
+
 - **Current package/copy passed; installed all-ten live (2026-10-16):** actual
   package52914 exits0 on1dbee06a:27 standard checks,2,573 exact installed members/
   1,051 sources,13 diagnostics/4 retry controls/strict types/discovery pass.
@@ -365,6 +372,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-16 — Verify current installed capability and guide parity131
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from81789cb4.
+- **Done:** actual131 exits0: installed production/media discovery and formatted
+  reference agree;25 schemas match held source references;3 reviewed guides exact.
+- **Retained failure:** initial130 assumes schema JSON is bundled; actual1/location
+  error retained. Corrected comparison explicitly reads committed source references.
+- **Results:** seven raw/helper copies retained locally;2793 source inputs exact.
+  No archive, source, guides, policies or thresholds changed.
+- **Next:** installed lifecycle56598 and independent current-product audits129
+  remain live. EU001 pixel/audio/native checks pass; prior audit-loader128 failure
+  and its corrected public-module native129 success remain retained. Whole reviews open.
+- **Records:** [installed parity131](./mechanism-shorts-ms3-installed131-capability-results.json).
 
 ### 2026-10-16 — Pass exact package and complete closure copy126
 
