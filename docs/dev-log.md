@@ -53,16 +53,15 @@ still hold before relying on them.
   [runtime146](./mechanism-shorts-ms3-runtime146-results.json),
   [affected144](./mechanism-shorts-ms3-affected144-results.json).
 
-- **Current qualification/run:** fresh package145 actually exits0 as2552 on frozen
-  ef9db6e5:27checks/2,573members/1,051sources/13diagnostics/4retry controls/types/
-  discovery. [Package145](./mechanism-shorts-ms3-package145-results.json).
-  Conservative code identity makes old products stale; expected147 stale/QA reset
-  and6,181 current native-key/control/clock checks pass. Complete5,344file/2.207GB
-  current input/cache copy and15-locator controls pass. New identity151 queue0;
-  actual producer14257 now exports10 genuine episodes using cached native frames
-  and whole original Alden1×. New outputs/current154 audits still pending. Source
-  snapshot stays2,798/122,451,390B; no further code changes during this run.
-  [Current151](./mechanism-shorts-ms3-current151-preparation-results.json).
+- **Current actual-ten exports/audits:** fresh installed145 run exits0 after5,478.39s;
+  all10 current videos/6,181frames and original Alden1× pass independent complete
+  picture/audio/PNG/native audits in recorded stages157, and all10 MP4s are byte-exact
+  to the prior final drafts. Native153 profile remains exact;zero fresh captures.
+  Original154 wrapper1 follows denied nested sandbox_apply before Node; unchanged
+  native1550 under the same profile and corrected summary1570 pass. Preparation156
+  TypeError1 stays retained. Actual151 report/resume/oneEU008handoff still running;
+  final driver terminal/durable current delivery/finite reconciliation remain.
+  [Current audit157](./mechanism-shorts-ms3-current157-audits-results.json).
 
 - **Original actual-ten evidence complete in recorded stages:** all16 CLI stages0
   including10 handoffs. Original56598 wrapper exits1 on a wrong final map path;
@@ -106,6 +105,19 @@ still hold before relying on them.
   and complete final reconciliation after current package/actual-ten qualification.
 
 ## Entries
+
+### 2026-10-16 — Verify all current ten outputs in recorded stages157
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3-upstream143`, source0da1f1dd.
+- **Results:** actual all-ten CLI run0/5,478.39s; independent fullRGBA/PCM/original
+  narration and native proofs pass6,181frames/1,084images/24,724pins. All10 encoded
+  movies are byte-exact to prior final drafts;zero fresh native captures.
+- **Retained failures:** original154 wrapper1/native sandbox launch71 before Node;
+  unchanged same-profile native1550; summary helper156TypeError1/corrected1570.
+  No source, product, isolation policy, threshold or completed pixel audit changed.
+- **Open:** actual151 final read-only CLI phases/driver terminal, current durable
+  delivery/finite reconciliation; whole/owner reviews and original1/10/null targets.
+- **Records:** [Current independent audit157](./mechanism-shorts-ms3-current157-audits-results.json).
 
 ### 2026-10-16 — Reauthenticate frozen inputs and qualified older evidence158
 

@@ -1,0 +1,758 @@
+{
+  "schemaVersion": "ms3-current-independent-audit157-retention-1",
+  "capturedUtc": "2026-10-15T23:24:16.389944+00:00",
+  "status": "current-ten-exports-and-independent-audits-passed-in-recorded-stages-final-cli-phases-running",
+  "sourceCodeCommit": "0da1f1dd25edb1bc4096a2c5e4a4364481518404",
+  "sourceIdentity": {
+    "codeSha256": "sha256:6ec6096e62ac78fe326bd895e15d222597f83abf9b4d7a910de6e5fdb54e37b1",
+    "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+    "profile": {
+      "backend": "blender-native",
+      "blenderExecutableSha256": "sha256:f5c1f2a0c0bca3389ec772d355242b700975ea84e66cbb3f5257a7bce8e5adeb",
+      "blenderVersion": "Blender 5.2.2 LTS\n\tbuild date: 2026-09-15\n\tbuild time: 01:49:19\n\tbuild commit date: 2026-09-14\n\tbuild commit time: 15:14\n\tbuild hash: d13f752e3b9c\n\tbuild branch: blender-v5.2-release\n\tbuild platform: Darwin\n\tbuild type: Release\n\tbuild c flags:  -Wall -Werror=implicit-function-declaration -Werror=return-type -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wstrict-prototypes -Wmissing-prototypes -Wunused-parameter -Wundef -Wundef-prefix -Werror=unguarded-availability-new  -mmacosx-version-min=11.2  -std=gnu11  -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild c++ flags:  -Wall -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wno-overloaded-virtual -Wno-sign-compare -Wno-invalid-offsetof -Wno-suggest-override -Wundef -Wundef-prefix -Wunused-parameter -Wmismatched-tags -Werror=unguarded-availability-new  -mmacosx-version-min=11.2 -ftemplate-depth=1024   -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild link flags: -fexceptions -framework CoreServices -framework Foundation -framework IOKit -framework AppKit -framework Cocoa -framework Carbon -framework AudioUnit -framework AudioToolbox -framework CoreAudio -framework Metal -framework QuartzCore -framework CoreImage -framework OpenGL -framework Accelerate -liconv -Xlinker -no_warn_duplicate_libraries\n\tbuild system: CMake",
+      "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
+      "receiverProfileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+    }
+  },
+  "episodes": 10,
+  "frames": 6181,
+  "rootArtifacts": 130,
+  "reviewImages": 1084,
+  "nativePins": 24724,
+  "allEncodedMoviesByteExactToPriorFinal": true,
+  "completeRgbaPcmAndOriginalNarrationParity": true,
+  "newNativeCaptures": 0,
+  "original154AggregateActualExitCode": 1,
+  "originalNativeLaunchActualExitCode": 71,
+  "native155FollowupActualExitCode": 0,
+  "collector156PreparationActualExitCode": 1,
+  "collector157ActualExitCode": 0,
+  "qualification": "Original154 all ten pixel/PCM audits pass; nested sandbox_apply denied before Node. Unchanged native program with identical15-locator profile passes155 using host permission to apply that same sandbox. Collector156 fails on a string/dict field lookup before writing a result; corrected157 passes. All failed methods/results remain. No source/product/threshold change or completed pixel rerun.",
+  "actualCliRun": {
+    "stage": "run",
+    "actualExitCode": 0,
+    "seconds": 5478.393730249954,
+    "log": {
+      "path": "/private/tmp/still-shift-ms3-current151/run.log",
+      "bytes": 3580,
+      "sha256": "sha256:1cdb8a3aff115ae88199136677ca659299e22b0eddab960016c54d0d2e7dede8"
+    },
+    "report": {
+      "path": "/private/tmp/still-shift-ms3-current151/run.json",
+      "bytes": 11843,
+      "sha256": "sha256:be79ac4b1da175f9232ffd64640381b36084e47178d3320a4b8b94bb2c9a4bd8"
+    }
+  },
+  "complete151DriverPassed": false,
+  "remainingAtCapture": "Actual151 final report/resume/oneEU008CLI handoff and final driver terminal, then durable current project/video delivery and finite reconciliation.",
+  "sourceHold": {
+    "status": "passed",
+    "files": 2798,
+    "bytes": 122451390,
+    "membershipAndBytesExact": true
+  },
+  "retainedCopies": [
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit/EU-004-attempt1-frame-hashes.json",
+        "bytes": 48976,
+        "sha256": "sha256:aa3d9c893d8e3891330b798ea87c481fee0db55c307803b0207acede858ae2d4"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/000-EU-004-attempt1-frame-hashes.json",
+        "bytes": 48976,
+        "sha256": "sha256:aa3d9c893d8e3891330b798ea87c481fee0db55c307803b0207acede858ae2d4"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit/EU-008-attempt1-frame-hashes.json",
+        "bytes": 43426,
+        "sha256": "sha256:ebca904d5beebaa9e0bb84ce2eca83181c6b2cb7a8e4e2a9a9eea53825e3c2fd"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/001-EU-008-attempt1-frame-hashes.json",
+        "bytes": 43426,
+        "sha256": "sha256:ebca904d5beebaa9e0bb84ce2eca83181c6b2cb7a8e4e2a9a9eea53825e3c2fd"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit/native-all-ten.json",
+        "bytes": 4371,
+        "sha256": "sha256:66d2f76d2ee4e1414aa7a54e5dd583488b32d2a1de0bda9662b23095cba46500"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/002-native-all-ten.json",
+        "bytes": 4371,
+        "sha256": "sha256:66d2f76d2ee4e1414aa7a54e5dd583488b32d2a1de0bda9662b23095cba46500"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit/EU-004-attempt1.json",
+        "bytes": 2954,
+        "sha256": "sha256:900cf069d0be0d17a5884e90eafdc0a8963e3526874ab2393bb75eb360579634"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/003-EU-004-attempt1.json",
+        "bytes": 2954,
+        "sha256": "sha256:900cf069d0be0d17a5884e90eafdc0a8963e3526874ab2393bb75eb360579634"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit/EU-003-attempt1.json",
+        "bytes": 2955,
+        "sha256": "sha256:54ff28410f69d186c23561c2fa6b72647b0e0ad816004f2264c7b6fef90353cd"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/004-EU-003-attempt1.json",
+        "bytes": 2955,
+        "sha256": "sha256:54ff28410f69d186c23561c2fa6b72647b0e0ad816004f2264c7b6fef90353cd"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit/EU-010-attempt1.json",
+        "bytes": 2955,
+        "sha256": "sha256:1baefc48ef61e4530335a94fa23b4bd2f72339eeac36fb41870dbe3270d434b0"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/005-EU-010-attempt1.json",
+        "bytes": 2955,
+        "sha256": "sha256:1baefc48ef61e4530335a94fa23b4bd2f72339eeac36fb41870dbe3270d434b0"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit/EU-007-attempt1.json",
+        "bytes": 2956,
+        "sha256": "sha256:4f0d4e14a5beef91f281c9238da6ca62757802bd241744416fb8631310046c09"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/006-EU-007-attempt1.json",
+        "bytes": 2956,
+        "sha256": "sha256:4f0d4e14a5beef91f281c9238da6ca62757802bd241744416fb8631310046c09"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit/EU-003-attempt1-frame-hashes.json",
+        "bytes": 44101,
+        "sha256": "sha256:a024d0b151873b9d63f4c7a78e67e550d6cc4a07069bc1788793bf5d4472d974"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/007-EU-003-attempt1-frame-hashes.json",
+        "bytes": 44101,
+        "sha256": "sha256:a024d0b151873b9d63f4c7a78e67e550d6cc4a07069bc1788793bf5d4472d974"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit/EU-002-attempt1-frame-hashes.json",
+        "bytes": 44101,
+        "sha256": "sha256:e9d3921a3b0ea43fe6861346ecec4abda354e6ee73a359d97c4fcd8b258d3ca7"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/008-EU-002-attempt1-frame-hashes.json",
+        "bytes": 44101,
+        "sha256": "sha256:e9d3921a3b0ea43fe6861346ecec4abda354e6ee73a359d97c4fcd8b258d3ca7"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit/EU-009-attempt1.json",
+        "bytes": 2955,
+        "sha256": "sha256:4d6daec17934d5316b3b66a2bc7142ee164c2e0058eddcf38efbce15e3daa5c3"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/009-EU-009-attempt1.json",
+        "bytes": 2955,
+        "sha256": "sha256:4d6daec17934d5316b3b66a2bc7142ee164c2e0058eddcf38efbce15e3daa5c3"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit/EU-005-attempt1-frame-hashes.json",
+        "bytes": 44851,
+        "sha256": "sha256:7e7691a483f602998ebbe8bd8e4d76e1adca9cf7296db59117c4d0ee8c9a3f84"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/010-EU-005-attempt1-frame-hashes.json",
+        "bytes": 44851,
+        "sha256": "sha256:7e7691a483f602998ebbe8bd8e4d76e1adca9cf7296db59117c4d0ee8c9a3f84"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit/EU-009-attempt1-frame-hashes.json",
+        "bytes": 44701,
+        "sha256": "sha256:b553de42596e3c2616e77eb6327fc08500d6813c73205bd7c7322ee4a3e097c0"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/011-EU-009-attempt1-frame-hashes.json",
+        "bytes": 44701,
+        "sha256": "sha256:b553de42596e3c2616e77eb6327fc08500d6813c73205bd7c7322ee4a3e097c0"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit/EU-007-attempt1-frame-hashes.json",
+        "bytes": 53101,
+        "sha256": "sha256:5cf9f4632fd106e004fea5f8152470038b4da8c13e485864937292d579179ab4"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/012-EU-007-attempt1-frame-hashes.json",
+        "bytes": 53101,
+        "sha256": "sha256:5cf9f4632fd106e004fea5f8152470038b4da8c13e485864937292d579179ab4"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit/EU-008-attempt1.json",
+        "bytes": 2956,
+        "sha256": "sha256:b44127efd2750e60bfb73b0c6d1b61d6da45eae4752a7c01c305201bd32b4a4f"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/013-EU-008-attempt1.json",
+        "bytes": 2956,
+        "sha256": "sha256:b44127efd2750e60bfb73b0c6d1b61d6da45eae4752a7c01c305201bd32b4a4f"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit/EU-006-attempt1-frame-hashes.json",
+        "bytes": 47551,
+        "sha256": "sha256:35a1d85d16eeb511df76775626516a825f703f0a5495b9a88d099b2759fcf206"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/014-EU-006-attempt1-frame-hashes.json",
+        "bytes": 47551,
+        "sha256": "sha256:35a1d85d16eeb511df76775626516a825f703f0a5495b9a88d099b2759fcf206"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit/EU-006-attempt1.json",
+        "bytes": 2955,
+        "sha256": "sha256:43a86e0e122aa406b960b124536eb943016e901fb189cb40dc31718952d2f642"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/015-EU-006-attempt1.json",
+        "bytes": 2955,
+        "sha256": "sha256:43a86e0e122aa406b960b124536eb943016e901fb189cb40dc31718952d2f642"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit/EU-010-attempt1-frame-hashes.json",
+        "bytes": 47026,
+        "sha256": "sha256:81c24514ae77b3004d681a989f1b914586d6eacba705407e2c668567eea904a8"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/016-EU-010-attempt1-frame-hashes.json",
+        "bytes": 47026,
+        "sha256": "sha256:81c24514ae77b3004d681a989f1b914586d6eacba705407e2c668567eea904a8"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit/EU-002-attempt1.json",
+        "bytes": 2954,
+        "sha256": "sha256:6d379ea9977b6dad04dec3370aaa175d88575c9526aea6a398cc2db42a4cf779"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/017-EU-002-attempt1.json",
+        "bytes": 2954,
+        "sha256": "sha256:6d379ea9977b6dad04dec3370aaa175d88575c9526aea6a398cc2db42a4cf779"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit/EU-005-attempt1.json",
+        "bytes": 2956,
+        "sha256": "sha256:7d3554787f62ac4a2c968a987a77af2c223afcd9f9e048257b9ba2b355b50b6c"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/018-EU-005-attempt1.json",
+        "bytes": 2956,
+        "sha256": "sha256:7d3554787f62ac4a2c968a987a77af2c223afcd9f9e048257b9ba2b355b50b6c"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit/EU-001-attempt1.json",
+        "bytes": 2962,
+        "sha256": "sha256:fab1705afc11a7cfead07f66fbfa3fb6f756488a68ef61f175df02dda0fffd6a"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/019-EU-001-attempt1.json",
+        "bytes": 2962,
+        "sha256": "sha256:fab1705afc11a7cfead07f66fbfa3fb6f756488a68ef61f175df02dda0fffd6a"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit/EU-001-attempt1-frame-hashes.json",
+        "bytes": 45751,
+        "sha256": "sha256:2f73a58425d62f65cdc22caeb04078892b210ba86ac4352dcf89cab68533d454"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/020-EU-001-attempt1-frame-hashes.json",
+        "bytes": 45751,
+        "sha256": "sha256:2f73a58425d62f65cdc22caeb04078892b210ba86ac4352dcf89cab68533d454"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-logs/pixels-EU-009.log",
+        "bytes": 192,
+        "sha256": "sha256:a298b6ff77e26d6e5a8a6a61cc5b66b0ab755a8148f55c05ba246c30b5de8387"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/021-pixels-EU-009.log",
+        "bytes": 192,
+        "sha256": "sha256:a298b6ff77e26d6e5a8a6a61cc5b66b0ab755a8148f55c05ba246c30b5de8387"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-logs/pixels-EU-008.log",
+        "bytes": 192,
+        "sha256": "sha256:618fa5435dea820fb2d91410cbc0b3c60b668762554950016cf11a7620aa0df8"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/022-pixels-EU-008.log",
+        "bytes": 192,
+        "sha256": "sha256:618fa5435dea820fb2d91410cbc0b3c60b668762554950016cf11a7620aa0df8"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-logs/pixels-EU-003.log",
+        "bytes": 192,
+        "sha256": "sha256:0d8fd5b3fb9e12c634cefa28ba86f9ca3ebb928f8464b0ba57c315ed57cffa00"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/023-pixels-EU-003.log",
+        "bytes": 192,
+        "sha256": "sha256:0d8fd5b3fb9e12c634cefa28ba86f9ca3ebb928f8464b0ba57c315ed57cffa00"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-logs/pixels-EU-002.log",
+        "bytes": 191,
+        "sha256": "sha256:9ef695405c8adb8e5d6d79941ea3e1959ce852b8d7a1b18136b0787c59e79d99"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/024-pixels-EU-002.log",
+        "bytes": 191,
+        "sha256": "sha256:9ef695405c8adb8e5d6d79941ea3e1959ce852b8d7a1b18136b0787c59e79d99"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-logs/pixels-EU-005.log",
+        "bytes": 192,
+        "sha256": "sha256:805300f1e4a60c1e0cd982dbf90d653a28b0797592f9e42f0b225a201381f8be"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/025-pixels-EU-005.log",
+        "bytes": 192,
+        "sha256": "sha256:805300f1e4a60c1e0cd982dbf90d653a28b0797592f9e42f0b225a201381f8be"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-logs/pixels-EU-010.log",
+        "bytes": 192,
+        "sha256": "sha256:f62d31a514c2d36cd2b91d7097102bb72bd1c87ebbf1cc4b590e5665e9e99914"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/026-pixels-EU-010.log",
+        "bytes": 192,
+        "sha256": "sha256:f62d31a514c2d36cd2b91d7097102bb72bd1c87ebbf1cc4b590e5665e9e99914"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-logs/pixels-EU-004.log",
+        "bytes": 191,
+        "sha256": "sha256:735bc80973c1d6dda14b5bcb7be862fb1050bcf032bf497b1bb5bfbfdf038d39"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/027-pixels-EU-004.log",
+        "bytes": 191,
+        "sha256": "sha256:735bc80973c1d6dda14b5bcb7be862fb1050bcf032bf497b1bb5bfbfdf038d39"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-logs/pixels-EU-006.log",
+        "bytes": 192,
+        "sha256": "sha256:9d759e018096a93436c5b6b5b1922f89ce200dfc50a3c57892f04e7f769e6886"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/028-pixels-EU-006.log",
+        "bytes": 192,
+        "sha256": "sha256:9d759e018096a93436c5b6b5b1922f89ce200dfc50a3c57892f04e7f769e6886"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-logs/pixels-EU-007.log",
+        "bytes": 192,
+        "sha256": "sha256:e9ca0bcd532fc4149b23adbd32c8d82151842f15f142d53cdf53833f4d004bfd"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/029-pixels-EU-007.log",
+        "bytes": 192,
+        "sha256": "sha256:e9ca0bcd532fc4149b23adbd32c8d82151842f15f142d53cdf53833f4d004bfd"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-logs/native-all-ten.log",
+        "bytes": 53,
+        "sha256": "sha256:d34a4e4359a4dc36526cf5b363da32f7b7594a3a09eea17cbdfd6425b052d93e"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/030-native-all-ten.log",
+        "bytes": 53,
+        "sha256": "sha256:d34a4e4359a4dc36526cf5b363da32f7b7594a3a09eea17cbdfd6425b052d93e"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-results.json",
+        "bytes": 7935,
+        "sha256": "sha256:4a88d05141778dbed6aa17e03ddb3f1a817b37492a1de19193ec8455d73b64e6"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/031-still-shift-ms3-current154-results.json",
+        "bytes": 7935,
+        "sha256": "sha256:4a88d05141778dbed6aa17e03ddb3f1a817b37492a1de19193ec8455d73b64e6"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-actual-terminal.json",
+        "bytes": 3398,
+        "sha256": "sha256:8dffb5fa21e00c10c37e6332a5bd63a41601031feb39b05e3c01c6b7ce73beac"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/032-still-shift-ms3-current154-actual-terminal.json",
+        "bytes": 3398,
+        "sha256": "sha256:8dffb5fa21e00c10c37e6332a5bd63a41601031feb39b05e3c01c6b7ce73beac"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current155-actual-terminal.json",
+        "bytes": 1370,
+        "sha256": "sha256:ea212265f6e6cc33d9b28510331f76d0d1ad931164d0e30a47ddc1d594a425a7"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/033-still-shift-ms3-current155-actual-terminal.json",
+        "bytes": 1370,
+        "sha256": "sha256:ea212265f6e6cc33d9b28510331f76d0d1ad931164d0e30a47ddc1d594a425a7"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current155-native.log",
+        "bytes": 2780,
+        "sha256": "sha256:d80b0552fdf1ce657843be7f5d05fa4c8b0ded225d494b2c2def3feb00b3045c"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/034-still-shift-ms3-current155-native.log",
+        "bytes": 2780,
+        "sha256": "sha256:d80b0552fdf1ce657843be7f5d05fa4c8b0ded225d494b2c2def3feb00b3045c"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current156-actual-terminal.json",
+        "bytes": 571,
+        "sha256": "sha256:ae2cdd40e330160febac80e729ef7d80f2f36ceee336d8cc64ff72c81e533349"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/035-still-shift-ms3-current156-actual-terminal.json",
+        "bytes": 571,
+        "sha256": "sha256:ae2cdd40e330160febac80e729ef7d80f2f36ceee336d8cc64ff72c81e533349"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current157-results.json",
+        "bytes": 12061,
+        "sha256": "sha256:b5c61b6abe2a003305b17cd93c6d00049445a4a6717b99989fd49cff912d9639"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/036-still-shift-ms3-current157-results.json",
+        "bytes": 12061,
+        "sha256": "sha256:b5c61b6abe2a003305b17cd93c6d00049445a4a6717b99989fd49cff912d9639"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current157-actual-terminal.json",
+        "bytes": 821,
+        "sha256": "sha256:eac8aef8d8dced6dcbe7593cb8fcb85cd999f9dc299967e8c307b4bad5978e4f"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/037-still-shift-ms3-current157-actual-terminal.json",
+        "bytes": 821,
+        "sha256": "sha256:eac8aef8d8dced6dcbe7593cb8fcb85cd999f9dc299967e8c307b4bad5978e4f"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit-one.py",
+        "bytes": 13345,
+        "sha256": "sha256:e1edb59c00af9be75af7282ac9120ace37b442a2e00fb43483ee5e366211bbe9"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/038-still-shift-ms3-current154-audit-one.py",
+        "bytes": 13345,
+        "sha256": "sha256:e1edb59c00af9be75af7282ac9120ace37b442a2e00fb43483ee5e366211bbe9"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-audit-run.py",
+        "bytes": 6637,
+        "sha256": "sha256:6435b8c8e136903815858ad3545fe416a7f789d6d8edac29f6ffb7fb7c5d5069"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/039-still-shift-ms3-current154-audit-run.py",
+        "bytes": 6637,
+        "sha256": "sha256:6435b8c8e136903815858ad3545fe416a7f789d6d8edac29f6ffb7fb7c5d5069"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-native.mjs",
+        "bytes": 5482,
+        "sha256": "sha256:3d3a34818513be90645badf7090d741d09f36cd562e4d952860b2dfbefc07de4"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/040-still-shift-ms3-current154-native.mjs",
+        "bytes": 5482,
+        "sha256": "sha256:3d3a34818513be90645badf7090d741d09f36cd562e4d952860b2dfbefc07de4"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-early-EU001.py",
+        "bytes": 13351,
+        "sha256": "sha256:dc44ceadd14c37599c288fc4e829b27c34832fdd1dbc506e0b29e163c35d3f34"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/041-still-shift-ms3-current154-early-EU001.py",
+        "bytes": 13351,
+        "sha256": "sha256:dc44ceadd14c37599c288fc4e829b27c34832fdd1dbc506e0b29e163c35d3f34"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current154-early-EU001-actual-terminal.json",
+        "bytes": 878,
+        "sha256": "sha256:237b3465459c536e413010cce5e025bc4c65c937fec641dc4f2d92fc8e5924c5"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/042-still-shift-ms3-current154-early-EU001-actual-terminal.json",
+        "bytes": 878,
+        "sha256": "sha256:237b3465459c536e413010cce5e025bc4c65c937fec641dc4f2d92fc8e5924c5"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-reconcile-audits156.py",
+        "bytes": 5739,
+        "sha256": "sha256:cb3c285dce091e3f05e3e2e3a6b51cb55ba084aa6dd48bb5f57bb911a80c3c42"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/043-still-shift-ms3-reconcile-audits156.py",
+        "bytes": 5739,
+        "sha256": "sha256:cb3c285dce091e3f05e3e2e3a6b51cb55ba084aa6dd48bb5f57bb911a80c3c42"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-reconcile-audits157.py",
+        "bytes": 5912,
+        "sha256": "sha256:d81bc65edcc34c9701da932d3797404380a87e9a80b2c858d70e14979cf13f8c"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/044-still-shift-ms3-reconcile-audits157.py",
+        "bytes": 5912,
+        "sha256": "sha256:d81bc65edcc34c9701da932d3797404380a87e9a80b2c858d70e14979cf13f8c"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-postgate153-isolation.sb",
+        "bytes": 1564,
+        "sha256": "sha256:2f5ca0a68080639c5be33e046f819e7da49029b852db85b4a5a95fcf2dc40c50"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/045-still-shift-ms3-postgate153-isolation.sb",
+        "bytes": 1564,
+        "sha256": "sha256:2f5ca0a68080639c5be33e046f819e7da49029b852db85b4a5a95fcf2dc40c50"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-postgate153-isolation-probe1.json",
+        "bytes": 838,
+        "sha256": "sha256:21eff049ac2fb24e9f6e59060158865e6685cf9c2f5b17bb3e4b937a5a24fb11"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/046-still-shift-ms3-postgate153-isolation-probe1.json",
+        "bytes": 838,
+        "sha256": "sha256:21eff049ac2fb24e9f6e59060158865e6685cf9c2f5b17bb3e4b937a5a24fb11"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-postgate153-isolation-actual-terminal.json",
+        "bytes": 1079,
+        "sha256": "sha256:7aa27e8490a737d3dba713e80a49f444123d5313ed39930146c2f015e588a031"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/047-still-shift-ms3-postgate153-isolation-actual-terminal.json",
+        "bytes": 1079,
+        "sha256": "sha256:7aa27e8490a737d3dba713e80a49f444123d5313ed39930146c2f015e588a031"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-candidate143-source-hold.py",
+        "bytes": 930,
+        "sha256": "sha256:a10a0450a1af6d0ce9d1df9155cd7ab84b554ec8b79acc078acc95add97f68eb"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/048-still-shift-ms3-candidate143-source-hold.py",
+        "bytes": 930,
+        "sha256": "sha256:a10a0450a1af6d0ce9d1df9155cd7ab84b554ec8b79acc078acc95add97f68eb"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current151/after-run-state.json",
+        "bytes": 11843,
+        "sha256": "sha256:5eac5048a33939570c9a4554d8811fe4cac08b475c1a2fdd5fc53880ae01452c"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/049-after-run-state.json",
+        "bytes": 11843,
+        "sha256": "sha256:5eac5048a33939570c9a4554d8811fe4cac08b475c1a2fdd5fc53880ae01452c"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current151/run.json",
+        "bytes": 11843,
+        "sha256": "sha256:be79ac4b1da175f9232ffd64640381b36084e47178d3320a4b8b94bb2c9a4bd8"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/050-run.json",
+        "bytes": 11843,
+        "sha256": "sha256:be79ac4b1da175f9232ffd64640381b36084e47178d3320a4b8b94bb2c9a4bd8"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current151/run.log",
+        "bytes": 3580,
+        "sha256": "sha256:1cdb8a3aff115ae88199136677ca659299e22b0eddab960016c54d0d2e7dede8"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/051-run.log",
+        "bytes": 3580,
+        "sha256": "sha256:1cdb8a3aff115ae88199136677ca659299e22b0eddab960016c54d0d2e7dede8"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-retain-audit157.py",
+        "bytes": 5929,
+        "sha256": "sha256:5c5681a6124660367db04565b28e3b07bca22cc065787cfd25ad92a66ba298b9"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/052-still-shift-ms3-retain-audit157.py",
+        "bytes": 5929,
+        "sha256": "sha256:5c5681a6124660367db04565b28e3b07bca22cc065787cfd25ad92a66ba298b9"
+      },
+      "exact": true
+    }
+  ],
+  "wholeReviewOrHumanAcceptance": false,
+  "originalPilot": {
+    "firstPassPassed": 1,
+    "denominator": 10,
+    "failedAttempts": 9,
+    "pairedTokens": null,
+    "accepted": 0
+  },
+  "durableIndex": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-audit157/index.json",
+    "bytes": 33566,
+    "sha256": "sha256:80a67f74217e7ba04b8f2ff709c66ca5ef4312134bf401e4ea7ed0bdacff7e7d"
+  }
+}
