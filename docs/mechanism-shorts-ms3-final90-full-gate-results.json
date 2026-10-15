@@ -1,7 +1,7 @@
 {
   "schemaVersion": "ms3-final-full-gate-1",
   "capturedUtc": "2026-10-15T00:51:06.655727+00:00",
-  "status": "running-not-passed",
+  "status": "failed-runtime-five-cache-provenance-checks-source-exact",
   "sourceCommit": "789109ad294dd3e77abc7a786d3d5f04cbf16be9",
   "unifiedSession": 29678,
   "sourceInventory": {
@@ -30,5 +30,37 @@
     "Current MS2 and MS3 package/installed qualification",
     "Whole factual/mechanical/glyph/continuous/listening/human review",
     "Budget-gated physical fault captures; first-pass10% target miss and null paired savings remain"
-  ]
+  ],
+  "terminalObservedUtc": "2026-10-15T01:03:50.000610+00:00",
+  "actualResult": {
+    "status": "failed-final-integrated-full-software-or-source-hold",
+    "sourceCommit": "789109ad294dd3e77abc7a786d3d5f04cbf16be9",
+    "sourceInventory": "/private/tmp/still-shift-ms3-final90-source-inputs1.json",
+    "sourceFiles": 2793,
+    "selectionId": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+    "command": ["pnpm", "check:all"],
+    "log": {
+      "path": "/private/tmp/still-shift-ms3-final90-full1.log",
+      "bytes": 74765,
+      "sha256": "sha256:724b1d874a54297d5eb23af314ebeadff47daf9f7ad0f5498231196af19e9e42"
+    },
+    "scope": "Fresh final integrated source full software/benchmark gate. Original ten products remain separately bound to3df/runtime1090; no package, whole review or human acceptance inferred.",
+    "acceptedPilot": 0,
+    "upstreamVerification": "Native and reusable review gates completed in recorded stages; original failed aggregate receipts retained. This new full gate has its own independent status.",
+    "actualExitCode": 1,
+    "aggregateActualExitCode": 1,
+    "sourceHoldActualExitCode": 0,
+    "sourceInputsExact": true,
+    "seconds": 327.3760875421576
+  },
+  "prefix": {
+    "unitFiles": 455,
+    "units": 4594,
+    "runtimeFilesPassed": 59,
+    "runtimeFilesFailed": 1,
+    "runtimeTestsPassed": 341,
+    "runtimeTestsFailed": 5
+  },
+  "cacheDiagnosis": "./mechanism-shorts-ms3-final91-cache-preflight-results.json",
+  "next": "Fresh isolated-cache complete attempt91 after current MS2 private package check."
 }

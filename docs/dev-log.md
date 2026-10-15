@@ -48,8 +48,11 @@ still hold before relying on them.
   handoff audits, with both real terminal handles0. Saved videos preserve complete
   existing Alden narration at1×;6,181 frames/1,084 review images/24,724 native pins.
   Source is now reconciled with mainb376, delivered native796375b7 and MS2e44b40de;
-  scoped73/6 and fast4,594/455 qualify unchanged code. Current full90 software/
-  benchmark attempt runs as29678 on789109ad after all prior serial groups ended. Original
+  scoped73/6 and fast4,594/455 qualify unchanged code. Full90 actually exits1 on789109ad after4,594 units and341/346 runtime
+  passes: five cue tests reject an old empty audio cache entry. Source2,793 inputs
+  stay exact. Same-fixture fresh-cache probe and owning5+corrupt-fallback control6
+  pass unchanged; existing cache preserved. New full91 with a fresh isolated cache
+  follows the running MS2 private package52505. Original
   products and failed first attempts retain their original identities; accepted0/10,
   measured first-pass10% below90% and paired savings null.
   [Terminal](./mechanism-shorts-ms3-first-ten-terminal90-results.json),
@@ -233,6 +236,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Diagnose full-gate cache failure without weakening validation
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; production source unchanged.
+- **Retained:** full90 actual1 after4,594 units/runtime341 pass+5 fail,327.38s;
+  all2,793 held inputs exact. Integration/render matrix/benchmark remain unreached.
+- **Evidence:** same fixture fails at an existing empty hash-entry/absent manifest,
+  then compiles60 frames with a fresh owned cache. Complete old-cache inventory
+  finds169 empty entries/456; removal cause unproven. Existing cache is preserved.
+- **Results:** unchanged five affected tests plus independent corrupt-fallback
+  control pass6/2. No code, validation policy, test or threshold was altered.
+- **Next:** finish MS2 private package52505, then full91 with a new isolated cache;
+  historical complete matrix took5h35m local compute. Whole/pilot reviews remain open.
+- **Records:** [Cache preflight](./mechanism-shorts-ms3-final91-cache-preflight-results.json),
+  [failed full attempt](./mechanism-shorts-ms3-final90-full-gate-results.json).
 
 ### 2026-10-15 — Start final integrated MS3 full software and benchmark gate
 

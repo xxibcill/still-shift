@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "ms3-current-cache-preflight-1",
+  "capturedUtc": "2026-10-15T01:03:50.000610+00:00",
+  "status": "unchanged-source-fresh-cache-controls-passed-new-full-attempt-pending",
+  "failedFullAttempt": {
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-final90-full1.json",
+      "bytes": 1090,
+      "sha256": "sha256:a3f0aa62c9f75acac0bad5211de89587719d58e1e652e3b95a9b9dc04413c84c"
+    },
+    "sourceCommit": "789109ad294dd3e77abc7a786d3d5f04cbf16be9",
+    "actualExitCode": 1,
+    "sourceInputsExact": true,
+    "seconds": 327.3760875421576,
+    "units": 4594,
+    "runtimePassed": 341,
+    "runtimeFailed": 5,
+    "unreached": "Integration/depth/browser matrix/benchmark did not run after failed runtime."
+  },
+  "controlledProbe": {
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-final91-cue-cache-probe1.json",
+      "bytes": 1558,
+      "sha256": "sha256:1831cca105216e32b82c1a159f3b98a00ea89f309fe8719aa2327d5f27536429"
+    },
+    "result": {
+      "root": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-final91-cue-cache-zP2Fkh",
+      "results": [
+        {
+          "cache": "existing-default",
+          "status": "failed",
+          "message": "Audio cache manifest is missing",
+          "diagnostics": [
+            {
+              "code": "comp-media-provenance",
+              "severity": "error",
+              "message": "Audio cache manifest is missing",
+              "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-composition-media/e883540d905d977581252ffeb8dc6375deb025a642daeb045ed52499b1b5fe34/52318b18c6682346ba3362578508725a3757bc2602f585240229dc296ecd06aa/manifest.json"
+            }
+          ],
+          "directory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-composition-media/e883540d905d977581252ffeb8dc6375deb025a642daeb045ed52499b1b5fe34/52318b18c6682346ba3362578508725a3757bc2602f585240229dc296ecd06aa",
+          "existingNames": [],
+          "directoryStat": {
+            "mtimeMs": 1792010109952.3167,
+            "birthtimeMs": 1791731559510.0095
+          }
+        },
+        {
+          "cache": "fresh-owned-cache",
+          "status": "passed",
+          "frameCount": 60,
+          "receiptPath": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-final91-cue-cache-zP2Fkh/fresh-output/cue-compilation.json"
+        }
+      ],
+      "sameSourceAndFixture": true,
+      "scope": "Actual cue compilation against unchanged source/fixture: existing cache versus isolated fresh cache. Existing bad cache is not modified, removed or bypassed in product code. No episode render or production acceptance."
+    },
+    "actualExitCode": 0
+  },
+  "cacheInventory": {
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-final91-existing-cache-inventory2.json",
+      "bytes": 519851,
+      "sha256": "sha256:a30523ee67452d2afee2cfac39e9734b909e96e4dd231ee115023d9b31f2d5dd"
+    },
+    "entries": 456,
+    "emptyEntries": 169,
+    "scope": "Complete hash-entry enumeration; the earlier inventory1 selected only directories already containing source.f32 and therefore could not detect empty entries."
+  },
+  "focused": {
+    "actualExitCode": 0,
+    "seconds": 22.64163091685623,
+    "log": {
+      "path": "/private/tmp/still-shift-ms3-final91-cue-cache-focused1.log",
+      "bytes": 1111,
+      "sha256": "sha256:200573e2ed706a88ff40dd15f2b68d644ce9bcb28e3e72e568f4f7b470f13def"
+    },
+    "freshCache": "/private/tmp/still-shift-ms3-final91-focused-media-cache1",
+    "oldCacheEntries": 456,
+    "emptyEntries": 169,
+    "oldFailedEntryUnchanged": true,
+    "sourceChange": false,
+    "scope": "Unchanged five failing cue tests plus independent corrupt-fallback rejection/explicit-cache control. Existing default cache preserved."
+  },
+  "focusedCounts": {
+    "files": 2,
+    "tests": 6,
+    "scope": "All five failing cue compilation checks plus explicit-cache/corrupt-fallback validation control."
+  },
+  "sourceOrPolicyChanged": false,
+  "existingDefaultCache": "Preserved; the failing entry was empty before/after and remains rejected. Removal cause is unproven.",
+  "nextFullAttempt": "Run unchanged complete pnpm check:all with a newly empty process-scoped STILL_SHIFT_COMPOSITION_MEDIA_CACHE; no tests or thresholds skipped/changed. Wait for current MS2 private package52505 first.",
+  "expectedCompute": {
+    "basis": "Historical full70 actual2026-10-12T11:50:31.865652Z through17:25:47.884237Z",
+    "observedHours": 5.587782940277778,
+    "qualification": "Current larger matrix can take comparably long; no completion time promised."
+  },
+  "acceptance": "No full software/package/pilot/human pass inferred; original ten products retain3df/runtime1090."
+}
