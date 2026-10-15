@@ -1,6 +1,6 @@
 # Mechanism Shorts production plan
 
-**Created:** 2026-10-07. **Status:** active; MS0/MS1 merged; MS1N/MS2 software verified in stages; MS3 actual first ten in final verification; product review pending (2026-10-15).
+**Created:** 2026-10-07. **Status:** MS0–MS3 technical implementation delivered; actual first-ten current installed outputs verified; pilot targets and product/owner review remain open (2026-10-16).
 **Updated:** 2026-10-15 — reconcile milestone PRs, recorded software checkpoints
 and actual EU001–EU010 production evidence. The approved sequence and feedback
 amendments remain incorporated.
@@ -461,16 +461,16 @@ MS0 audit is complete under the owner's implementation request on 2026-10-09. MS
 MS1. MS4B remains conditional for explanation views and further native extensions,
 with its decision recorded after the pilot. Audit/code completion and product review remain separate evidence.
 
-| ID   | Deliverable                                              | Depends on                                    | Status                                                      | Completion record                                                                            |
-| ---- | -------------------------------------------------------- | --------------------------------------------- | ----------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| MS0  | Completed-composition audit and E01 baseline             | Composition completion gate                   | `[x]`                                                       | [MS0 evidence](./mechanism-shorts-ms0-results.json)                                          |
-| MS1  | Supported bridge and portable E01                        | MS0                                           | Software verified in stages; human review pending           | [Completion](./mechanism-shorts-ms1-completion.md)                                           |
-| MS1N | Native 3D composition using shared scene and assets      | MS1                                           | Software verified in stages; current review repairs pending | [Design](./mechanism-shorts-ms1n-design.md), [results](./mechanism-shorts-ms1n-results.json) |
-| MS2  | Reusable packs, rigs, shots, labels and cue-driven edits | MS1N                                          | Software verified in stages; pack review pending            | [Completion](./mechanism-shorts-ms2-completion.md)                                           |
-| MS3  | Episode lifecycle and ten-episode pilot                  | MS2                                           | Ten actual outputs verified; final gates/reviews open       | [Acceptance](./mechanism-shorts-ms3-acceptance.md)                                           |
-| MS4A | Queue stress and recovery at 300 jobs                    | MS3                                           | `[ ]`                                                       | Pending                                                                                      |
-| MS4B | Required explanation views and native extensions         | MS3 and a recorded coverage need              | `[ ]` conditional                                           | Pending                                                                                      |
-| MS4C | Diverse 30-episode cohort and capacity decision          | MS4A; MS4B when required by selected episodes | `[ ]`                                                       | Pending                                                                                      |
+| ID   | Deliverable                                              | Depends on                                    | Status                                                                | Completion record                                                                            |
+| ---- | -------------------------------------------------------- | --------------------------------------------- | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| MS0  | Completed-composition audit and E01 baseline             | Composition completion gate                   | `[x]`                                                                 | [MS0 evidence](./mechanism-shorts-ms0-results.json)                                          |
+| MS1  | Supported bridge and portable E01                        | MS0                                           | Software verified in stages; human review pending                     | [Completion](./mechanism-shorts-ms1-completion.md)                                           |
+| MS1N | Native 3D composition using shared scene and assets      | MS1                                           | Software verified in stages; current review repairs pending           | [Design](./mechanism-shorts-ms1n-design.md), [results](./mechanism-shorts-ms1n-results.json) |
+| MS2  | Reusable packs, rigs, shots, labels and cue-driven edits | MS1N                                          | Software verified in stages; pack review pending                      | [Completion](./mechanism-shorts-ms2-completion.md)                                           |
+| MS3  | Episode lifecycle and ten-episode pilot                  | MS2                                           | Current ten outputs verified; technical delivery; product review open | [Acceptance](./mechanism-shorts-ms3-acceptance.md)                                           |
+| MS4A | Queue stress and recovery at 300 jobs                    | MS3                                           | `[ ]`                                                                 | Pending                                                                                      |
+| MS4B | Required explanation views and native extensions         | MS3 and a recorded coverage need              | `[ ]` conditional                                                     | Pending                                                                                      |
+| MS4C | Diverse 30-episode cohort and capacity decision          | MS4A; MS4B when required by selected episodes | `[ ]`                                                                 | Pending                                                                                      |
 
 ### MS0 Baseline and dependency audit
 
@@ -697,6 +697,11 @@ CE6-P or CE8-L-F.
 
 ### MS2 Reusable mechanism families and authoring
 
+Implementation checkboxes record delivered code and scoped software evidence.
+The three family packs remain candidates; supported/accepted status is not implied.
+The combined finer Thai item below stays open for its declared intermediate findings;
+that motion policy remains unadopted. See [current reconciliation162](./mechanism-shorts-acceptance-reconciliation162-results.json).
+
 **Outcome:** E01 becomes one consumer of reusable interfaces. Three distinct
 mechanism families establish whether the architecture transfers.
 The [finite14-row reconciliation](./mechanism-shorts-ms2-acceptance.md) maps these
@@ -725,7 +730,7 @@ retains all failures and independently pins56 frames/134 pass associations and
 Node/worker retirement. Declared peaks and measured RSS do not establish a
 physical/driver ceiling; final full/archive/installed and pack/human gates remain.
 
-- [ ] Create tape-hook slider, cable-tie ratchet/pawl and clothespeg hinge/spring
+- [x] Create tape-hook slider, cable-tie ratchet/pawl and clothespeg hinge/spring
       packs by extending the accepted MS1/MS1N contracts. Each declares immutable
       IDs, version/hash, parts, hierarchy, units,
       bounds, pivots, anchors, material slots, named camera targets, parameter ranges,
@@ -733,11 +738,11 @@ physical/driver ceiling; final full/archive/installed and pack/human gates remai
       diagnostic views. Declare the supported detail level even when only one exists;
       automatic detail generation is outside this requirement. Metadata inspection
       returns targets/detail and compatibility without mesh or texture bytes.
-- [ ] Extend the shared geometry library with bounded rounded boxes, cylinders,
+- [x] Extend the shared geometry library with bounded rounded boxes, cylinders,
       toruses, extruded profiles with
       holes, swept ribbons, coils and simple bevels. Use validated imported meshes
       where these are insufficient; set topology and memory limits explicitly.
-- [ ] Extend the shared importer to the documented glTF/GLB subset: named rigid
+- [x] Extend the shared importer to the documented glTF/GLB subset: named rigid
       hierarchy, baked transforms,
       normals, UVs, base color, metalness, roughness, normal maps and texture color
       spaces. Validate extensions and local dependencies. Reject unsupported skins,
@@ -837,13 +842,13 @@ physical/driver ceiling; final full/archive/installed and pack/human gates remai
       lifetime/whole world/body/replay/full/installed requirements stay open;
       this criterion stays unchecked. See the [import API](./rigid-gltf-import.md) and
       [retained results](./mechanism-shorts-ms2-results.json).
-- [ ] Implement slider hard stops, hinge/lever, deterministic spring return and
+- [x] Implement slider hard stops, hinge/lever, deterministic spring return and
       ratchet/pawl controls. These are explanatory animation rigs, not a general
       physics solver. Keep gears, cams and flexible-strip behaviors demand-driven.
-- [ ] Derive this tape-hook model's travel from hook thickness. Keep rivets attached
+- [x] Derive this tape-hook model's travel from hook thickness. Keep rivets attached
       to the blade and contact relationships valid when the reference frame moves.
       Reject conflicting property writers and out-of-range controls at compile time.
-- [ ] Declare legal state transitions, required relationships and mechanism-specific
+- [x] Declare legal state transitions, required relationships and mechanism-specific
       event-order assertions. Reject invalid authored transitions; resolve timed
       failures to the rig, parts, relationship and first failing interval. Evaluate
       valid states without dependence on playback history; MS3 integrates these
@@ -869,7 +874,7 @@ physical/driver ceiling; final full/archive/installed and pack/human gates remai
       Current producer refresh retains staged source12 capture/source13 replay
       evidence; longer timelines/import/human acceptance remain separate. See
       [MS2 results](./mechanism-shorts-ms2-results.json).
-- [ ] Support screen-pinned labels with moving leaders, world text and surface
+- [x] Support screen-pinned labels with moving leaders, world text and surface
       markings through explicit supported routes. Use deterministic layout candidates
       and tie-breaking, label-to-label exclusions, protected contact regions,
       caption exclusion and safe areas. Resolve competing labels by declared
@@ -910,7 +915,7 @@ physical/driver ceiling; final full/archive/installed and pack/human gates remai
       failures remain in [surface evidence](./mechanism-shorts-ms2-surface-marking-results.json).
       Broader layout/encoded glyph-copy/readability and human review stay open.
       This expanded criterion remains unchecked.
-- [ ] Add tabs, open callouts, brackets, arrows and restrained highlights with
+- [x] Add tabs, open callouts, brackets, arrows and restrained highlights with
       explicit hidden/offscreen behavior and authored locks. A true surface marking
       is part of the 3D plate and invalidates it; ordinary label edits do not.
       Slice53 adds shared composition-native multi-anchor straight paths and
@@ -998,7 +1003,7 @@ physical/driver ceiling; final full/archive/installed and pack/human gates remai
       retains failed observers/diagnostic/abort/view-row attempts. Whole application/
       source/driver resource/replay admission and full102/final installed/pack/genuine
       speech/broader encoded/human acceptance keep this criterion unchecked.
-- [ ] Compile semantic contact/release/return events from supplied narration cues
+- [x] Compile semantic contact/release/return events from supplied narration cues
       into all picture, annotation, caption and sound tracks. Reject overfull shots,
       out-of-recording cues and insufficient reading/action time. Do not stretch
       speech or insert filler silence to satisfy a rigid shot template.
@@ -1072,7 +1077,7 @@ physical/driver ceiling; final full/archive/installed and pack/human gates remai
       preserves clipping/EEXIST/type/format/lint failures and the superseded timing.
       Hidden cloth/initial jaw contacts remain physically hidden; current full,
       final archive/installed/pack/coverage/human/portrait gates stay open.
-- [ ] Expose registry-derived discovery, per-component schema/parameter help,
+- [x] Expose registry-derived discovery, per-component schema/parameter help,
       small examples, asset metadata and stable revision-aware editing. Publish
       versioned JSON Schemas for the expanded contracts and retain MS1 response
       budgets, complete-report access and unsupported-version diagnostics.
@@ -1205,13 +1210,13 @@ groups and complete the milestone gate. Deliver pack and compatibility documenta
 **Outcome:** a reliable episode workflow and measured evidence from ten distinct
 explanations, not ten recolors or camera substitutions of E01.
 
-- [ ] Complete durable queue manifests, per-item receipts, dependency-aware caches,
+- [x] Complete durable queue manifests, per-item receipts, dependency-aware caches,
       cancellation, restart, bounded retries and independent item failure handling.
       Reuse the completed CE15 workers and output publication primitives.
-- [ ] Complete the unified QA report with separate technical, mechanical, sampled
+- [x] Complete the unified QA report with separate technical, mechanical, sampled
       visual, continuous-motion and listening results. Each result records method,
       evaluated interval, evidence and artifact identity; unreviewed is not pass.
-- [ ] Add custom registered semantic assertions with bounded execution and structured
+- [x] Add custom registered semantic assertions with bounded execution and structured
       results. Distinguish analytic, sampled and continuous collision methods.
       Include the MS2 transition and event-order assertions in the unified report.
       Group inherited motion warnings by controlling rig, event and interval,
@@ -1219,19 +1224,19 @@ explanations, not ten recolors or camera substitutions of E01.
       raw details and bad-frame links.
 - [x] Generate phone-size overviews, shot entry/mid/exit images, contact/cut samples,
       useful crops, full-decode/audio reports and compact fresh-session handoffs.
-- [ ] Exercise scoped repairs, stale-revision rejection and affected-shot rerendering.
+- [x] Exercise scoped repairs, stale-revision rejection and affected-shot rerendering.
       Prevent a changed asset from retaining a prior reviewed-ready state.
       Run the MS1 overlap detection/patch/render/recheck path automatically without
       GUI interaction or routine creator decisions. Preserve a bounded recovery
       policy and report unresolved factual/creative judgments as exceptions.
-- [ ] Run Everyday Unlocked’s actual EU-001–EU-010 episodes, selected explicitly
+- [x] Run Everyday Unlocked’s actual EU-001–EU-010 episodes, selected explicitly
       by the owner on2026-10-14 in the [revised pilot brief](./mechanism-shorts-ms3-pilot-brief.md).
       Supply a question, fact evidence, design variant and visual proof for each.
       Reuse existing whole Alden recordings and native assets with current bindings.
       Maintain routing, new-asset/new-rig work and coverage against the revised
       ten-episode denominator. Preserve the former three-family board and extension
       proofs as history; update broader registry/coverage admission for this cohort.
-- [ ] Repair stale documentation about media and 3D artwork against the completed
+- [x] Repair stale documentation about media and 3D artwork against the completed
       implementation. Generate concise capability references from registries/schema;
       document supported imports, batch scope and preview/export limits, and expose
       those same implemented limits in machine-readable capability discovery.
@@ -1240,6 +1245,13 @@ explanations, not ten recolors or camera substitutions of E01.
       failures and unresolved review counts. Include individual rows, percentile
       method, measurement availability and separate setup versus routine effort.
       Keep response bodies within the published limits and link complete reports.
+
+Implementation checkboxes above record code and current runtime delivery. The
+[finite162 reconciliation](./mechanism-shorts-acceptance-reconciliation162-results.json)
+and [current160 proof](./mechanism-shorts-ms3-current160-results.json) retain exact
+source/method scopes. Original first-pass1/10 is below target, comparable token
+savings are null, and whole/owner review remains pending. These checkboxes do not
+mark pilot product acceptance or any candidate pack supported.
 
 **Acceptance:** proposed pilot targets are at least 50% lower median routine
 authoring tokens against comparable measured baseline tasks, at least 90% first-pass

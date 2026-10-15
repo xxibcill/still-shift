@@ -1,19 +1,53 @@
 # MS3 acceptance tracker
 
-2026-10-16 — current upstream repairs pass fast143, recorded runtime146,
-all8 owning browser groups144 and fresh package145:27standard checks,2,573members/
-1,051sources,13diagnostics/4retry controls/public types/discovery. Whole clean
-package checkpoint is ef9db6e5, with selected0da code bytes unchanged. Full119
-retains original1c source binding; this is a scoped follow-up qualification.
-[Current package145](./mechanism-shorts-ms3-package145-results.json).
+2026-10-16 — technical implementation is delivered; pilot product acceptance and
+owner watching/listening review remain open. Current installed package145 actually
+completes queue, all-ten export, report, resume and one EU008 CLI handoff. Independent
+audits verify all ten sealed handoff snapshots, 6,181 complete picture/audio frames,
+130 root artifacts, 1,084 review images and 24,724 native references. Independent
+audits complete in recorded stages157: all ten pixel/audio checks0; original154
+aggregate1 follows a denied nested sandbox launch before Node, then the identical
+native check/profile passes155. Summary helper156TypeError1 and corrected1570 remain
+retained. No source, product, threshold or completed pixel check changed. Whole original
+Alden narration stays at 1× and all native frames are reused, with no new capture.
+[Current runtime and independent closure160](./mechanism-shorts-ms3-current160-results.json).
 
-The global runtime identity hashes all5 packages, so the updated package correctly
-marks all10 earlier products stale and currentQA unreviewed. Negative147 and public
-native-key/control/clock preflight pass all6,181frames; producer profile is unchanged.
-Fresh queue151 is running with exact copied final cues, whole Alden narration1× and
-complete native cache.15-locator controls deny the entire old receiving project,
-old modules/originals and fresh-capture staging. New2D exports and independent
-current154 audits remain required. [Current151 preparation](./mechanism-shorts-ms3-current151-preparation-results.json).
+The [ten current videos](../benchmarks/results/ms3-current-review161/index.md) and
+[saved project/archive](./mechanism-shorts-ms3-delivery161-results.json) are retained
+outside temporary folders. They use the actual EU001–EU010 saved models and final
+cues, including EU008's two corrected “Spring assembly” labels. This recovery copy
+preserves authentic metadata paths; it is not another executed relocation test.
+Whole factual/design, mechanical, encoded-glyph/readability, normal-speed motion,
+listening and owner review remain pending. Reviewed-ready/supported/accepted stay 0.
+
+Original first-pass completion remains **1/10 (10%)**, below the 90% target, with
+nine failures retained. Comparable routine authoring-token savings stay **null**;
+the 50% target is unverified. Current receiving151 is a separate code-identity phase
+and cannot reset those pilot measurements. Owner120 permits Blender for this pilot;
+core/default Three remains Blender-free. No ElevenLabs generation was performed.
+
+The [finite reconciliation162](./mechanism-shorts-acceptance-reconciliation162-results.json)
+accounts for all 49 deliverable scopes, 26 acceptance clauses and 21 traceability
+rows. Complete full119 retains source1c; newer0da PR repairs pass fast143, staged
+runtime146, all eight owning144 groups and fresh package145. Renderer/motion/frozen
+baseline trees and 17 Blender-specific files are unchanged. This is scoped followup
+qualification under plan rule4, with no fresh entire full-gate claim. Conservative
+runtime identity correctly invalidated earlier products147 and required the new151
+exports. Fifteen-locator controls deny original/old receiving data and fresh-capture
+staging during current production; external reference pixel audits have their own
+declared method outside that profile.
+
+Original wrapper56598 remains exit1 after all16 CLI calls0; corrected149 postflight
+is separately0. Earlier149 ten actual CLI handoffs remain earlier-archive evidence;
+current160 proves one new CLI handoff and ten independently bound sealed snapshots.
+Initial143 two protocol timeouts and complete unchanged146 rerun remain recorded
+in stages. Fresh158 retains 24 exact older raw pins and six unavailable MS1/MS1N
+paths; committed history remains. Nineteen existing timing deferrals, candidate
+family-pack status and unadopted finer Thai motion stay explicit. MS4 300-job scale,
+conditional native extensions and 30-episode diversity remain future work.
+
+All text below is dated capture history. Its former live-state statements retain
+their original sources and do not override the current summary or162 reconciliation.
 
 2026-10-16 — all16 original installed CLI stages pass, including ten handoffs.
 Original wrapper56598 then exits1 on a proven bookkeeping error: it looks under

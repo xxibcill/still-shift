@@ -1,0 +1,1232 @@
+{
+  "schemaVersion": "mechanism-shorts-current-acceptance-reconciliation162-1",
+  "capturedUtc": "2026-10-15T23:44:02.336225+00:00",
+  "status": "49-deliverable-scopes-26-clauses-21-traceability-reconciled-technical-delivery-product-targets-and-review-open",
+  "method": "Finite reconciliation of original114 rows and exact current160 runtime/staged154-155-157 audits,145 archive,161 delivered data/videos,143/146/144 scoped PR-followup checks and158 static/availability audits. Historical source bindings and method limits preserved. No new generation, whole review or full gate is inferred.",
+  "sourceCodeCommit": "0da1f1dd25edb1bc4096a2c5e4a4364481518404",
+  "packageCheckpoint": "ef9db6e50f83745624af51c43c7abe583b162759",
+  "runtimeIdentity": {
+    "codeSha256": "sha256:6ec6096e62ac78fe326bd895e15d222597f83abf9b4d7a910de6e5fdb54e37b1",
+    "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+    "profile": {
+      "backend": "blender-native",
+      "blenderExecutableSha256": "sha256:f5c1f2a0c0bca3389ec772d355242b700975ea84e66cbb3f5257a7bce8e5adeb",
+      "blenderVersion": "Blender 5.2.2 LTS\n\tbuild date: 2026-09-15\n\tbuild time: 01:49:19\n\tbuild commit date: 2026-09-14\n\tbuild commit time: 15:14\n\tbuild hash: d13f752e3b9c\n\tbuild branch: blender-v5.2-release\n\tbuild platform: Darwin\n\tbuild type: Release\n\tbuild c flags:  -Wall -Werror=implicit-function-declaration -Werror=return-type -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wstrict-prototypes -Wmissing-prototypes -Wunused-parameter -Wundef -Wundef-prefix -Werror=unguarded-availability-new  -mmacosx-version-min=11.2  -std=gnu11  -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild c++ flags:  -Wall -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wno-overloaded-virtual -Wno-sign-compare -Wno-invalid-offsetof -Wno-suggest-override -Wundef -Wundef-prefix -Wunused-parameter -Wmismatched-tags -Werror=unguarded-availability-new  -mmacosx-version-min=11.2 -ftemplate-depth=1024   -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild link flags: -fexceptions -framework CoreServices -framework Foundation -framework IOKit -framework AppKit -framework Cocoa -framework Carbon -framework AudioUnit -framework AudioToolbox -framework CoreAudio -framework Metal -framework QuartzCore -framework CoreImage -framework OpenGL -framework Accelerate -liconv -Xlinker -no_warn_duplicate_libraries\n\tbuild system: CMake",
+      "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
+      "receiverProfileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+    }
+  },
+  "sourceHold": {
+    "status": "passed",
+    "files": 2798,
+    "bytes": 122451390,
+    "membershipAndBytesExact": true
+  },
+  "milestoneCounts": {
+    "MS0": 7,
+    "MS1": 13,
+    "MS1N": 7,
+    "MS2": 14,
+    "MS3": 8
+  },
+  "deliverableRows": [
+    {
+      "id": "MS0-01",
+      "planLineAtInventory99": 472,
+      "title": "Final media/alpha/cache/worker/audio API and ownership audit",
+      "evidence": ["./mechanism-shorts-ms0-api-audit.json"],
+      "reconciliation": "Original API audit retained. Fresh158 compares fixed release to historical pre-MS0e6eb source with four documentation differences; no current-main equality claim.",
+      "verificationScope": "fresh-input-document-audit114",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Original API audit retained; original release-to-main comparison freshly confirms only four documentation paths differ."
+    },
+    {
+      "id": "MS0-02",
+      "planLineAtInventory99": 475,
+      "title": "Recovered input/provenance/contact terminology inventory",
+      "evidence": [
+        "./mechanism-shorts-ms0-inputs.json",
+        "./mechanism-shorts-evidence158-results.json"
+      ],
+      "reconciliation": "Freshly authenticated all27 original dependencies,25 ZIP payload members plus its manifest,13 archive/original pairs and both external inputs.",
+      "verificationScope": "fresh-input-document-audit114",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Freshly authenticated all27 original dependencies,25 ZIP payload members plus its manifest,13 archive/original pairs and both external inputs."
+    },
+    {
+      "id": "MS0-03",
+      "planLineAtInventory99": 478,
+      "title": "Exact copy/font cut and typography probe disposition",
+      "evidence": [
+        "./mechanism-shorts-ms0-typography-audit.json",
+        "./mechanism-shorts-ms0-inputs.json",
+        "./mechanism-shorts-evidence158-results.json"
+      ],
+      "reconciliation": "Static Plex weight600/cmap declarations and repository font/license pins rechecked; historical Arial resolution/GPU and rendered readability remain limited.",
+      "verificationScope": "fresh-input-document-audit114",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Static Plex weight600/cmap declarations and repository font/license pins rechecked; historical Arial resolution/GPU and rendered readability remain limited."
+    },
+    {
+      "id": "MS0-04",
+      "planLineAtInventory99": 482,
+      "title": "Nine-shot label/event reference",
+      "evidence": [
+        "./mechanism-shorts-ms0-inputs.json",
+        "./mechanism-shorts-evidence158-results.json"
+      ],
+      "reconciliation": "Frozen shot/event/contact reference remains explicit; old anchor names do not establish corrected contact semantics.",
+      "verificationScope": "fresh-input-document-audit114",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Frozen shot/event/contact reference remains explicit; old anchor names do not establish corrected contact semantics."
+    },
+    {
+      "id": "MS0-05",
+      "planLineAtInventory99": 484,
+      "title": "Visual and causal rubric",
+      "evidence": [
+        "./mechanism-shorts-ms0-baseline.md",
+        "./mechanism-shorts-evidence158-results.json"
+      ],
+      "reconciliation": "Named rubric anchor present; rubric definition is not a successful visual review.",
+      "verificationScope": "fresh-input-document-audit114",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Named rubric anchor present; rubric definition is not a successful visual review."
+    },
+    {
+      "id": "MS0-06",
+      "planLineAtInventory99": 487,
+      "title": "Comparable measurement protocol",
+      "evidence": [
+        "./mechanism-shorts-ms0-baseline.md",
+        "./mechanism-shorts-evidence158-results.json"
+      ],
+      "reconciliation": "Named paired-task protocol present; unavailable tokens, labor and savings remain null.",
+      "verificationScope": "fresh-input-document-audit114",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Named paired-task protocol present; unavailable tokens, labor and savings remain null."
+    },
+    {
+      "id": "MS0-07",
+      "planLineAtInventory99": 489,
+      "title": "Boundaries, budgets and implementation estimates",
+      "evidence": [
+        "./mechanism-shorts-ms0-baseline.md",
+        "./mechanism-shorts-evidence158-results.json"
+      ],
+      "reconciliation": "Named boundaries and estimates anchors present, provisional resource limits distinguished from measurements, no invented deadline.",
+      "verificationScope": "fresh-input-document-audit114",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Named boundaries and estimates anchors present, provisional resource limits distinguished from measurements, no invented deadline."
+    },
+    {
+      "id": "MS1-01",
+      "planLineAtInventory99": 520,
+      "title": "Shared Three bridge and episode lifecycle",
+      "evidence": [
+        "./mechanism-shorts-ms1-capture-results.json",
+        "./mechanism-shorts-ms1-installed-e01-results.json"
+      ],
+      "reconciliation": "Shared capture removes episode-owned servers/screenshots/SVG/FFmpeg orchestration.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Shared capture removes episode-owned servers/screenshots/SVG/FFmpeg orchestration."
+    },
+    {
+      "id": "MS1-02",
+      "planLineAtInventory99": 523,
+      "title": "Solid tape geometry and independent relationships",
+      "evidence": ["./mechanism-shorts-ms1-capture-results.json"],
+      "reconciliation": "Historical696-frame independent geometry/contacts and moving-rivet/wrong-travel controls.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Historical696-frame independent geometry/contacts and moving-rivet/wrong-travel controls."
+    },
+    {
+      "id": "MS1-03",
+      "planLineAtInventory99": 526,
+      "title": "Declared bridge appearance/color/alpha",
+      "evidence": ["./mechanism-shorts-ms1-capture-results.json"],
+      "reconciliation": "Representative short export and appearance/alpha controls; native shading remains a separate profile.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Representative short export and appearance/alpha controls; native shading remains a separate profile."
+    },
+    {
+      "id": "MS1-04",
+      "planLineAtInventory99": 529,
+      "title": "Clean frames, named visibility and seven native roles",
+      "evidence": ["./mechanism-shorts-ms1-overlay-results.json"],
+      "reconciliation": "Historical roles/qualifiers and native captions are separate from clean3D; sampled text evidence is not whole glyph approval.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Historical roles/qualifiers and native captions are separate from clean3D; sampled text evidence is not whole glyph approval."
+    },
+    {
+      "id": "MS1-05",
+      "planLineAtInventory99": 533,
+      "title": "Font/cut/coverage and fallback contract",
+      "evidence": ["./mechanism-shorts-ms1-semantic-typography-results.json"],
+      "reconciliation": "Strict/legacy and Plex Thai negative/Noto control remain explicit.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Strict/legacy and Plex Thai negative/Noto control remain explicit."
+    },
+    {
+      "id": "MS1-06",
+      "planLineAtInventory99": 536,
+      "title": "Semantic units/phrases and reading intervals",
+      "evidence": ["./mechanism-shorts-ms1-semantic-display-results.json"],
+      "reconciliation": "Declared groups and intervals with negatives; E01 legacy semantic state remains unassessed.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Declared groups and intervals with negatives; E01 legacy semantic state remains unassessed."
+    },
+    {
+      "id": "MS1-07",
+      "planLineAtInventory99": 541,
+      "title": "Mask and portrait target controls",
+      "evidence": ["./mechanism-shorts-ms1-semantic-typography-results.json"],
+      "reconciliation": "Reproduced masks and portrait target/leader negative controls; historical29-frame baseline migration remains declared.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Reproduced masks and portrait target/leader negative controls; historical29-frame baseline migration remains declared."
+    },
+    {
+      "id": "MS1-08",
+      "planLineAtInventory99": 544,
+      "title": "Complete public command lifecycle and audio",
+      "evidence": [
+        "./mechanism-shorts-ms1-api-results.json",
+        "./mechanism-shorts-ms1-installed-e01-results.json"
+      ],
+      "reconciliation": "Historical installed696-frame baseline/edit decode and audio checks; no continuous listening claim.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Historical installed696-frame baseline/edit decode and audio checks; no continuous listening claim."
+    },
+    {
+      "id": "MS1-09",
+      "planLineAtInventory99": 547,
+      "title": "Versioned schemas and bounded reports",
+      "evidence": [
+        "./mechanism-shorts-ms1-api-results.json",
+        "./mechanism-shorts-ms1-dependency-results.json"
+      ],
+      "reconciliation": "Seven initial schemas;32KiB/100 item receipts and16KiB/32 operation patches with full-report access.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Seven initial schemas;32KiB/100 item receipts and16KiB/32 operation patches with full-report access."
+    },
+    {
+      "id": "MS1-10",
+      "planLineAtInventory99": 550,
+      "title": "Manifest, dependency dry run and isolated install",
+      "evidence": [
+        "./mechanism-shorts-ms1-dependency-results.json",
+        "./mechanism-shorts-ms1-installed-e01-results.json"
+      ],
+      "reconciliation": "Historical OS-denied load/edit/save/reload/export and disclosed consumer Darwin process adapter; selected original raw paths now unavailable.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Historical OS-denied load/edit/save/reload/export and disclosed consumer Darwin process adapter; selected original raw paths now unavailable."
+    },
+    {
+      "id": "MS1-11",
+      "planLineAtInventory99": 552,
+      "title": "Final-frame overlap repair and session handoff",
+      "evidence": [
+        "./mechanism-shorts-ms1-repair-results.json",
+        "./mechanism-shorts-ms3-repair-results.json"
+      ],
+      "reconciliation": "Freshly authenticated later actual one-patch/one-export bridge recovery and final recheck:696 plates exact,0new3D,69readable frames,stale request rejected.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Freshly authenticated later actual one-patch/one-export bridge recovery and final recheck:696 plates exact,0new3D,69readable frames,stale request rejected."
+    },
+    {
+      "id": "MS1-12",
+      "planLineAtInventory99": 555,
+      "title": "Located independent mechanical negatives",
+      "evidence": ["./mechanism-shorts-ms1-capture-results.json"],
+      "reconciliation": "Independent expectations cover invalid anchor/stale sidecar/travel/mount/contact gap; current diagnostic matrix adds native sparse witnesses.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Independent expectations cover invalid anchor/stale sidecar/travel/mount/contact gap; current diagnostic matrix adds native sparse witnesses."
+    },
+    {
+      "id": "MS1-13",
+      "planLineAtInventory99": 558,
+      "title": "Measured stages/work/cache",
+      "evidence": [
+        "./mechanism-shorts-ms1-results.json",
+        "./mechanism-shorts-ms1-installed-e01-results.json"
+      ],
+      "reconciliation": "Fresh render versus reused plate counts retained; measured worker/elapsed/resource scopes remain separate.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Fresh render versus reused plate counts retained; measured worker/elapsed/resource scopes remain separate."
+    },
+    {
+      "id": "MS1N-01",
+      "planLineAtInventory99": 624,
+      "title": "Bounded shared mesh/asset subset",
+      "evidence": ["./mechanism-shorts-ms1n-design.md"],
+      "reconciliation": "Indexed rigid meshes, topology/resources, normals/materials/hash conventions and explicit unsupported cases.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Indexed rigid meshes, topology/resources, normals/materials/hash conventions and explicit unsupported cases."
+    },
+    {
+      "id": "MS1N-02",
+      "planLineAtInventory99": 628,
+      "title": "Pure native evaluation, graph and WebGL2",
+      "evidence": ["./mechanism-shorts-ms1n-results.json"],
+      "reconciliation": "Shared camera/rig state with independent mesh/depth graphics; screen-pinned and depth graphics have explicit roles.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Shared camera/rig state with independent mesh/depth graphics; screen-pinned and depth graphics have explicit roles."
+    },
+    {
+      "id": "MS1N-03",
+      "planLineAtInventory99": 632,
+      "title": "Depth/color/alpha/clipping/clock policies",
+      "evidence": [
+        "./mechanism-shorts-ms1n-design.md",
+        "./mechanism-shorts-ms1n-results.json"
+      ],
+      "reconciliation": "Declared mixed combinations; unsupported Canvas/transparency fail rather than flatten.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Declared mixed combinations; unsupported Canvas/transparency fail rather than flatten."
+    },
+    {
+      "id": "MS1N-04",
+      "planLineAtInventory99": 636,
+      "title": "Explicit native appearance profile",
+      "evidence": ["./mechanism-shorts-ms1n-results.json"],
+      "reconciliation": "Independent native depth/material proofs and bridge comparison; no full CE8-L-F or cross-driver pixel acceptance.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Independent native depth/material proofs and bridge comparison; no full CE8-L-F or cross-driver pixel acceptance."
+    },
+    {
+      "id": "MS1N-05",
+      "planLineAtInventory99": 640,
+      "title": "Builder/CLI/Lab and portable native lifecycle",
+      "evidence": [
+        "./mechanism-shorts-ms1n-results.json",
+        "./pr-56-current-runtime90-results.json"
+      ],
+      "reconciliation": "Historical saved edit/load/export/relocation proof retained; current0da affected depth/PBR/mixed/async Lab/preview/cancellation controls144 pass with original source boundaries explicit.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Saved edit/load/export/relocation proof is historical; current affected repair checks retain separate403 source binding."
+    },
+    {
+      "id": "MS1N-06",
+      "planLineAtInventory99": 643,
+      "title": "Native E01 and independent occlusion fixture",
+      "evidence": ["./mechanism-shorts-ms1n-results.json"],
+      "reconciliation": "Historical native696-frame/camera/anchor proof and independent mixed depth fixture; continuous listening/human unresolved.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Historical native696-frame/camera/anchor proof and independent mixed depth fixture; continuous listening/human unresolved."
+    },
+    {
+      "id": "MS1N-07",
+      "planLineAtInventory99": 647,
+      "title": "Profile, resources and frozen composition baselines",
+      "evidence": ["./mechanism-shorts-ms1n-results.json"],
+      "reconciliation": "Historical77 groups complete in stages; older raw suffix/audit/input paths unavailable158. Complete full119 on1c and appropriate current0da affected qualification remain separate; no fresh entire full claimed.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Historical77 groups complete in stages; raw suffix/audit/input paths now unavailable, committed outcomes remain. Current final gate113 independent/pending."
+    },
+    {
+      "id": "MS2-01",
+      "planLineAtInventory99": 715,
+      "title": "Versioned families and inspectable metadata",
+      "evidence": [
+        "./mechanism-shorts-ms2-acceptance.md",
+        "./mechanism-shorts-ms2-pack-disposition.json"
+      ],
+      "reconciliation": "Three candidate families/two variants/targets/detail/provenance; candidate status remains, supported packs0.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Three candidate families/two variants/targets/detail/provenance; candidate status remains, supported packs0."
+    },
+    {
+      "id": "MS2-02",
+      "planLineAtInventory99": 723,
+      "title": "Bounded reusable geometry",
+      "evidence": ["./mechanism-shorts-ms2-results.json"],
+      "reconciliation": "Rounded/extruded/ribbon/coil/bevel primitives with fixed topology/memory limits and negative admission.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Rounded/extruded/ribbon/coil/bevel primitives with fixed topology/memory limits and negative admission."
+    },
+    {
+      "id": "MS2-03",
+      "planLineAtInventory99": 727,
+      "title": "Strict rigid glTF/GLB and PBR imports",
+      "evidence": [
+        "./rigid-gltf-import.md",
+        "./native-pbr-resources.md",
+        "./mechanism-shorts-ms2-acceptance.md"
+      ],
+      "reconciliation": "Named rigid/baked hierarchy/local assets and PBR subset; unsupported skins/morphs/animation/compression reject. Declared ownership/quota proof does not certify opaque driver memory.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Named rigid/baked hierarchy/local assets and PBR subset; unsupported skins/morphs/animation/compression reject. Declared ownership/quota proof does not certify opaque driver memory."
+    },
+    {
+      "id": "MS2-04",
+      "planLineAtInventory99": 827,
+      "title": "Pure slider/hinge/spring/ratchet controls",
+      "evidence": ["./mechanism-shorts-ms2-results.json"],
+      "reconciliation": "Bounded explanatory controls/hard stops and independent replay; no general dynamics or calibrated force solver.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Bounded explanatory controls/hard stops and independent replay; no general dynamics or calibrated force solver."
+    },
+    {
+      "id": "MS2-05",
+      "planLineAtInventory99": 830,
+      "title": "Thickness travel/fixed mounts/moving reference",
+      "evidence": ["./mechanism-shorts-ms2-spoken-presentation-results.json"],
+      "reconciliation": "Located writer/range/contact negatives; genuine independent observed0.18 travel and fixed rivets keep their original66 binding.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Located writer/range/contact negatives; genuine independent observed0.18 travel and fixed rivets keep their original66 binding."
+    },
+    {
+      "id": "MS2-06",
+      "planLineAtInventory99": 833,
+      "title": "Legal transitions/events and located intervals",
+      "evidence": [
+        "./mechanism-pack-timelines.md",
+        "./mechanism-shorts-ms3-fault-coverage111-results.json"
+      ],
+      "reconciliation": "Pure legal states and invalid transition/event-order fixtures retain located witnesses; current fast143/runtime146 and full owning recovery144 pass. No invalid final movie is invented.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Pure states and invalid transition/event-order fixtures; current unchanged code covered by passed unit prefix. Full recovery group remains pending."
+    },
+    {
+      "id": "MS2-07",
+      "planLineAtInventory99": 847,
+      "title": "Six target-aware camera recipes",
+      "evidence": ["./mechanism-shorts-ms2-results.json"],
+      "reconciliation": "Default/larger-model approach/hold/return and explicit cut/motion intent; author overrides preserved.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Default/larger-model approach/hold/return and explicit cut/motion intent; author overrides preserved."
+    },
+    {
+      "id": "MS2-08",
+      "planLineAtInventory99": 859,
+      "title": "Deterministic screen/world/surface label layout",
+      "evidence": [
+        "./mechanism-shorts-ms2-cue-layout-results.json",
+        "./mechanism-shorts-ms2-world-annotation-results.json",
+        "./mechanism-shorts-ms2-surface-marking-results.json"
+      ],
+      "reconciliation": "Explicit routes, candidates/priorities/locks and temporal seek determinism; whole encoded glyph/continuous human remain separate.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Explicit routes, candidates/priorities/locks and temporal seek determinism; whole encoded glyph/continuous human remain separate."
+    },
+    {
+      "id": "MS2-09",
+      "planLineAtInventory99": 900,
+      "title": "Five annotation styles and picture invalidation",
+      "evidence": [
+        "./mechanism-shorts-ms2-annotation-style-results.json",
+        "./mechanism-shorts-ms2-cue-cache-lifetime-results.json"
+      ],
+      "reconciliation": "Hidden/offscreen groups and true picture markings; actual authenticated plate reuse and live edit/cancel/cache controls with0fresh native.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Hidden/offscreen groups and true picture markings; actual authenticated plate reuse and live edit/cancel/cache controls with0fresh native."
+    },
+    {
+      "id": "MS2-10",
+      "planLineAtInventory99": 988,
+      "title": "Whole supplied speech/event compilation",
+      "evidence": [
+        "./mechanism-shorts-ms2-genuine-spoken-cue-results.json",
+        "./mechanism-shorts-ms2-spoken-presentation-results.json"
+      ],
+      "reconciliation": "Four whole48k recordings/247 words/20windows; shorter copy has own recompilation, measured end clamps only. No stretched speech/filler.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Four whole48k recordings/247 words/20windows; shorter copy has own recompilation, measured end clamps only. No stretched speech/filler."
+    },
+    {
+      "id": "MS2-11",
+      "planLineAtInventory99": 1062,
+      "title": "Expanded registry/schema/help and CAS edits",
+      "evidence": [
+        "./mechanism-shorts-ms2-family-registry-results.json",
+        "./mechanism-shorts-ms2-family-authoring-results.json",
+        "./mechanism-shorts-ms2-cue-authoring-results.json",
+        "./mechanism-shorts-ms2-cue-lifecycle-results.json"
+      ],
+      "reconciliation": "Bounded registry-derived discovery and atomic revision edits; source/clock invariants and unsupported versions retained.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Bounded registry-derived discovery and atomic revision edits; source/clock invariants and unsupported versions retained."
+    },
+    {
+      "id": "MS2-12",
+      "planLineAtInventory99": 1099,
+      "title": "Coverage board and denominator",
+      "evidence": [
+        "./mechanism-shorts-ms2-coverage-results.json",
+        "./mechanism-shorts-ms3-native-coverage-board.json"
+      ],
+      "reconciliation": "Historical board retained; actual-first-ten selection is a distinct explicit revision. Current10 denominator/routes8reuse+2asset revisions,0newrig types; supported0.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Historical board retained; actual-first-ten selection is a distinct explicit revision. Current10 denominator/routes8reuse+2asset revisions,0newrig types; supported0."
+    },
+    {
+      "id": "MS2-13",
+      "planLineAtInventory99": 1112,
+      "title": "Genuine weight/outline/units",
+      "evidence": ["./mechanism-shorts-ms2-text-weight-render-results.json"],
+      "reconciliation": "Explicit treatment, cut/availability negatives and all-frame native seeks; legacy route preserved.",
+      "verificationScope": "historical-software-evidence-with-current-affected-followups",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Explicit treatment, cut/availability negatives and all-frame native seeks; legacy route preserved."
+    },
+    {
+      "id": "MS2-14",
+      "planLineAtInventory99": 1125,
+      "title": "Count-fit and Thai reproduction before adoption",
+      "evidence": [
+        "./mechanism-shorts-ms2-count-fit-results.json",
+        "./mechanism-shorts-ms2-thai-review-results.json"
+      ],
+      "reconciliation": "63 count strings and128 Thai cases/142streams;114cells sampled. Finer Thai motion unadopted; leading-vowel/USB-C/499-baht split and intermediate mark/gap findings remain open.",
+      "verificationScope": "reproduction-delivered-finer-thai-unadopted-open-intermediate-findings",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "63 count strings and128 Thai cases/142streams;114cells sampled. Finer Thai motion unadopted; leading-vowel/USB-C/499-baht split and intermediate mark/gap findings remain open."
+    },
+    {
+      "id": "MS3-01",
+      "planLineAtInventory99": 1195,
+      "title": "Durable queue/cache/cancel/restart/retry",
+      "evidence": [
+        "./mechanism-shorts-ms3-queue-results.json",
+        "./mechanism-shorts-ms3-native-recovery-results.json",
+        "./mechanism-shorts-ms3-repair110-results.json",
+        "./mechanism-shorts-ms3-current160-results.json",
+        "./mechanism-shorts-ms3-delivery161-results.json"
+      ],
+      "reconciliation": "Current functional queue/cache/cancel/restart/retry software passes368 runtime tests and eight144 groups, including15-stage recovery/ten products. Original failed105/143 runs and staged146 completion remain explicit;300-job scale stays MS4A.",
+      "verificationScope": "technical-implementation-delivered-current-scoped-qualification-product-review-open",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Controller/native actual OS proofs retained; current recovery105 executed15checkpoints but assertion failed. Focused34 provenance+11retry pass; whole corrected group reruns inside113."
+    },
+    {
+      "id": "MS3-02",
+      "planLineAtInventory99": 1198,
+      "title": "Artifact-specific independent QA dimensions",
+      "evidence": [
+        "./mechanism-shorts-ms3-qa-results.json",
+        "./mechanism-shorts-ms3-blender-qa-results.json",
+        "./mechanism-shorts-ms3-first-ten-terminal90-results.json",
+        "./mechanism-shorts-ms3-current160-results.json",
+        "./mechanism-shorts-ms3-delivery161-results.json"
+      ],
+      "reconciliation": "Six independent artifact-bound QA dimensions are implemented. Current160 verifies all ten bindings; technical/sample evidence does not promote four whole dimensions or owner review. Reviewed-ready/supported/accepted0.",
+      "verificationScope": "technical-implementation-delivered-current-scoped-qualification-product-review-open",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Six separate dimension statuses/bindings/methods; technical and sampled visual cannot promote factual/mechanical/continuous/listening."
+    },
+    {
+      "id": "MS3-03",
+      "planLineAtInventory99": 1201,
+      "title": "Bounded semantics and grouped peaks",
+      "evidence": [
+        "./mechanism-shorts-ms3-semantic-results.json",
+        "./mechanism-shorts-ms3-fault-coverage111-results.json",
+        "./mechanism-shorts-ms3-current160-results.json",
+        "./mechanism-shorts-ms3-delivery161-results.json"
+      ],
+      "reconciliation": "Registered bounded semantics/transition/event assertions and grouped measured peaks retain raw units/parts/interval witnesses. Current fast143/runtime146/recovery144 pass. Analytic/sampled diagnostics do not become continuous collision certification.",
+      "verificationScope": "technical-implementation-delivered-current-scoped-qualification-product-review-open",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Registered bounded scalar and transition/event checks; measured grouped peaks retain raw/part/unit/interval evidence. Native sparse geometry diagnostics are sampled, not continuous collision."
+    },
+    {
+      "id": "MS3-04",
+      "planLineAtInventory99": 1207,
+      "title": "Phone/cut/contact/crop/decode/handoffs",
+      "evidence": [
+        "./mechanism-shorts-ms3-first-ten-terminal90-results.json",
+        "./mechanism-shorts-ms3-phone101-review-results.json",
+        "./mechanism-shorts-ms3-current160-results.json",
+        "./mechanism-shorts-ms3-delivery161-results.json"
+      ],
+      "reconciliation": "Current151/154/160 verify6,181frames/130root artifacts/1,084review images/24,724native pins, completeRGBA/PCM/original narration and ten sealed snapshots. Five new CLI calls include oneEU008handoff; earlier149 separately proves ten actual CLI handoffs. Actual reviewed stills retain historical scope; whole review pending.",
+      "verificationScope": "technical-implementation-delivered-current-scoped-qualification-product-review-open",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Original all-ten6,181frames/1,084review images/10independent handoffs;60phone PNGs actually viewed. Current installed binding still pending."
+    },
+    {
+      "id": "MS3-05",
+      "planLineAtInventory99": 1209,
+      "title": "Automatic/scoped repairs and current review invalidation",
+      "evidence": [
+        "./mechanism-shorts-ms3-repair-results.json",
+        "./mechanism-shorts-ms3-first-ten-scoped-repair-results.json",
+        "./mechanism-shorts-ms3-installed102-preparation-results.json",
+        "./mechanism-shorts-ms3-current160-results.json",
+        "./mechanism-shorts-ms3-delivery161-results.json"
+      ],
+      "reconciliation": "Historical one-patch bridge automatic repair and earlier-archive EU008 two-label CAS repair149 preserve native frames/nine neighbors/original failures. Current147 proves stale QA invalidation and151 re-exports final repaired cues. No original failed wrapper or encoder difference is hidden.",
+      "verificationScope": "technical-implementation-delivered-current-scoped-qualification-product-review-open",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Actual original bridge automatic overlap repair authenticated. EU008 two-label current installed repair prepared only; exact CAS/run with repair provenance and nine unchanged neighbors still required."
+    },
+    {
+      "id": "MS3-06",
+      "planLineAtInventory99": 1214,
+      "title": "Actual EU001-EU010 pilot and routing",
+      "evidence": [
+        "./mechanism-shorts-ms3-pilot-selection.json",
+        "./mechanism-shorts-ms3-native-coverage-board.json",
+        "./mechanism-shorts-ms3-first-ten-terminal90-results.json",
+        "./mechanism-shorts-ms3-factual-input100-results.json",
+        "./mechanism-shorts-ms3-current160-results.json",
+        "./mechanism-shorts-ms3-delivery161-results.json"
+      ],
+      "reconciliation": "Actual EU001-EU010 final cues/saved models/whole Alden1x exported under current145 runtime with15-locator denial and zero new captures. Independent154 complete picture/audio/native checks and durable161 delivery pass. Owner120 allows Blender for pilot;8reuse/2asset revisions/0newrigtypes, supported/accepted0.",
+      "verificationScope": "technical-implementation-delivered-current-scoped-qualification-product-review-open",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "All10 original products/whole Alden1x inputs verified under3df/runtime1090. Optional Blender route creates unresolved original-plan dependency boundary. Full current installed all10/6,181 and whole reviews remain; accepted0."
+    },
+    {
+      "id": "MS3-07",
+      "planLineAtInventory99": 1221,
+      "title": "Current docs/capabilities/import/batch/render limits",
+      "evidence": [
+        "./mechanism-production-capabilities.md",
+        "./mechanism-shorts-ms3-guide96-results.json",
+        "./mechanism-shorts-ms3-current160-results.json",
+        "./mechanism-shorts-ms3-delivery161-results.json"
+      ],
+      "reconciliation": "Current package145 types/discovery and131/136/147 complete payload/registry/generated reference/25 source-schema/three-guide parity retain explicit scopes and response limits. Current documentation uses162 reconciliation; older live snapshots remain dated history.",
+      "verificationScope": "technical-implementation-delivered-current-scoped-qualification-product-review-open",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Registry-generated docs and source CLI32items verified; exact final archive/installed parity pending. Historical dated scope text must stay distinguishable from current status."
+    },
+    {
+      "id": "MS3-08",
+      "planLineAtInventory99": 1225,
+      "title": "One report command and honest metrics",
+      "evidence": [
+        "./mechanism-shorts-ms3-report-command-results.json",
+        "./mechanism-shorts-ms3-first-ten-terminal90-results.json",
+        "./mechanism-shorts-ms3-current160-results.json",
+        "./mechanism-shorts-ms3-delivery161-results.json"
+      ],
+      "reconciliation": "Current one-command report and160 independent bindings/rows/nulls reconcile receiving151 separately from original1/10/nine failures. Percentiles/render/setup/routine measurements remain distinct; no fabricated comparable tokens or pilot acceptance.",
+      "verificationScope": "technical-implementation-delivered-current-scoped-qualification-product-review-open",
+      "wholeProductAcceptance": false,
+      "historicalReconciliation114": "Original one-command episode/cohort reports independently recomputed. Original first-pass1/10,9failures,linear percentile method and null paired tokens/setup/routine preserved; current installed report pending."
+    }
+  ],
+  "acceptanceClauses": [
+    {
+      "id": "AC-BOUNDARY",
+      "requirement": "Core/default runtime remains Blender-free; documented Blender runtime allowed for actual EU001\u2013EU010 pilot by explicit owner amendment120.",
+      "status": "owner-pilot-amendment-and-current-runtime-proved",
+      "evidenceAndLimits": "Owner120 permits direct saved Blender models for this pilot. Current package145 and isolated151/154/160 prove that documented route; core/default Three remains Blender-free. No arbitrary Blender shader/rig conversion or product acceptance is claimed.",
+      "historicalAuditStatus": "unresolved-plan-conformance",
+      "historicalRequirement": "No Blender runtime dependency",
+      "ownerResolution": "./mechanism-shorts-ms3-owner-decisions120-results.json",
+      "historicalAudit114": {
+        "id": "AC-BOUNDARY",
+        "requirement": "Core/default runtime remains Blender-free; documented Blender runtime allowed for actual EU001\u2013EU010 pilot by explicit owner amendment120.",
+        "status": "owner-pilot-exception-recorded; runtime-proof-still-required",
+        "evidenceAndLimits": "Owner explicitly permits direct saved Blender masters for this pilot. Default three-native contract and no mandatory Blender npm dependency remain. This resolves the architecture question without granting current installed, arbitrary-editing or product acceptance.",
+        "historicalAuditStatus": "unresolved-plan-conformance",
+        "historicalRequirement": "No Blender runtime dependency",
+        "ownerResolution": "./mechanism-shorts-ms3-owner-decisions120-results.json"
+      }
+    },
+    {
+      "id": "AC-ARCH",
+      "requirement": "Shared bounded contracts/scene/rig/composition ownership",
+      "status": "software-delivered-with-declared-subsets",
+      "evidenceAndLimits": "Shared contracts, scene, rig and composition ownership retain historical full qualification. Current0da review repairs pass fast143, staged runtime146, eight owning144 groups and package145; optional Blender producer remains a separate subset.",
+      "historicalAudit114": {
+        "id": "AC-ARCH",
+        "requirement": "Shared bounded contracts/scene/rig/composition ownership",
+        "status": "software-evidence-retained",
+        "evidenceAndLimits": "Core Three/native shared scene and strict imports have historical software evidence. Optional Blender producer does not transfer .blend shaders/rigs as native meshes and stays candidate."
+      }
+    },
+    {
+      "id": "AC-BRIDGE",
+      "requirement": "Clean pixels, pinned sidecars, visibility and color/alpha",
+      "status": "historical-bridge-proof-retained",
+      "evidenceAndLimits": "Bridge clean pixels/sidecars/color-alpha and696-frame closure keep their original identities. Current renderer/motion/Blender-specific source is exact per159; no cross-GPU exact-v008 or fresh whole bridge review is claimed.",
+      "historicalAudit114": {
+        "id": "AC-BRIDGE",
+        "requirement": "Clean pixels, pinned sidecars, visibility and color/alpha",
+        "status": "software-evidence-retained",
+        "evidenceAndLimits": "MS1 bridge profile and696-frame closure/controls retain historical identity; no cross-GPU exact-v008 claim."
+      }
+    },
+    {
+      "id": "AC-PURE",
+      "requirement": "Deterministic seeks, controls, camera/anchor and independent relationships",
+      "status": "software-controls-passed-whole-mechanics-open",
+      "evidenceAndLimits": "Historical independent geometry/seek/depth controls plus current native6,181 key/control/physical/global-clock checks pass. Sparse geometry evidence does not establish continuous collision freedom or whole mechanical correctness.",
+      "historicalAudit114": {
+        "id": "AC-PURE",
+        "requirement": "Deterministic seeks, controls, camera/anchor and independent relationships",
+        "status": "software-evidence-retained",
+        "evidenceAndLimits": "Core families and native depth fixtures independently evaluated. Actual10 whole mechanical reviews remain unreviewed."
+      }
+    },
+    {
+      "id": "AC-SCHEMA",
+      "requirement": "Versioned schemas, located unsupported cases, numeric response limits/full access",
+      "status": "current-package-and-capability-parity-passed",
+      "evidenceAndLimits": "Package145 public types/discovery and installed schemas/registry controls pass. Capability131/136 full payload matches current145 discovery in147:32 compact items/14,140B,25 held-source schema references and three96-pinned guides. Schema reference JSONs are not bundled members.",
+      "historicalAudit114": {
+        "id": "AC-SCHEMA",
+        "requirement": "Versioned schemas, located unsupported cases, numeric response limits/full access",
+        "status": "current-source-controls-passed-final-installed-pending",
+        "evidenceAndLimits": "Source registry32 compactitems/guide comparison and passed focused/runtime prefixes; verify exact installed final archive after full113."
+      }
+    },
+    {
+      "id": "AC-CAS",
+      "requirement": "Atomic scoped edits, stale rejection, affected outputs and history",
+      "status": "scoped-repair-proved-in-declared-bindings",
+      "evidenceAndLimits": "Historical automatic bridge overlap repair authenticates one patch/export,696 unchanged plates,zero fresh3D and69 readable frames. Earlier-archive EU008 two-label CAS repair149 preserves nine neighbors/native frames and original attempts. New code147 correctly resets stale QA;151 uses final repaired cues. No ten new repair CLI calls are invented.",
+      "historicalAudit114": {
+        "id": "AC-CAS",
+        "requirement": "Atomic scoped edits, stale rejection, affected outputs and history",
+        "status": "bridge-proved-current-pilot-repair-pending",
+        "evidenceAndLimits": "Actual one-patch bridge repair is authenticated; EU008 current installed two-label repair remains unexecuted."
+      }
+    },
+    {
+      "id": "AC-DEPS",
+      "requirement": "Read-only dependency dry run before/after delivery",
+      "status": "current-package-and-input-closure-passed",
+      "evidenceAndLimits": "Package145 standard27 checks plus13 isolated diagnostics/four retry-cache-lock controls/types/discovery pass. All2,573 installed members and5,344 copied input/native files rehash in160. Standard source-comparison checks and additional OS-denied controls have different declared methods; offline network vulnerability audit was not run.",
+      "historicalAudit114": {
+        "id": "AC-DEPS",
+        "requirement": "Read-only dependency dry run before/after delivery",
+        "status": "historical-proof-retained-current-package-pending",
+        "evidenceAndLimits": "Prior public dependency fixtures and OS-denied proofs recorded; final current installed inputs/dry run must match source/manifest."
+      }
+    },
+    {
+      "id": "AC-PORTABLE",
+      "requirement": "Isolated documented runtime only, originals/caches/fonts denied, relocate/edit/save/reload/export/check",
+      "status": "current-isolated-runtime-and-product-closure-passed",
+      "evidenceAndLimits": "Current151 actually completes five CLI calls:queue,all-ten run,report,resume and one EU008 handoff.15-locator153 denies entire old receiving project/old modules/originals and fresh-capture staging; current154 independently audits all ten products and160 checks ten sealed snapshots. Earlier149 separately retains ten actual CLI handoffs. Snapshot161 is a recovery copy, not another executed relocation. Whole reviews remain open.",
+      "historicalAudit114": {
+        "id": "AC-PORTABLE",
+        "requirement": "Isolated documented runtime only, originals/caches/fonts denied, relocate/edit/save/reload/export/check",
+        "status": "current-all-ten-proof-pending",
+        "evidenceAndLimits": "Prepared12-root denials pass. Whole current archive and all10 current replay remain unexecuted. Owner120 explicitly permits the documented Blender runtime for this pilot; all other isolation/edit/save/reload/export/check obligations remain."
+      }
+    },
+    {
+      "id": "AC-DIAG",
+      "requirement": "Sanitized code/stage/path/causes/next action with no secrets",
+      "status": "current-located-diagnostic-controls-passed",
+      "evidenceAndLimits": "Current package145 thirteen native format diagnostics, bounded public responses and current owning native/depth/PBR/cancellation/admission controls pass. Unsupported cases retain located stage/path/cause/next-action evidence; no silent flattening or product approval.",
+      "historicalAudit114": {
+        "id": "AC-DIAG",
+        "requirement": "Sanitized code/stage/path/causes/next action with no secrets",
+        "status": "current-affected-controls-passed",
+        "evidenceAndLimits": "Current native four-format located diagnostic controls passed; complete final package still pending."
+      }
+    },
+    {
+      "id": "AC-CACHE",
+      "requirement": "Identity by actual dependencies, atomic validated receipts, corrupt rejection and retained deliveries",
+      "status": "current-identity-recovery-and-native-reuse-passed",
+      "evidenceAndLimits": "Current0da code epoch correctly makes old products stale147 while profile/native frame keys stay unchanged. Fresh151 exports use6,181 cached native frames with zero new capture. All eight144 groups pass including corrupt/cache/lock/cancel/relocation15-stage recovery. Original105 failure and all earlier source bindings remain retained.",
+      "historicalAudit114": {
+        "id": "AC-CACHE",
+        "requirement": "Identity by actual dependencies, atomic validated receipts, corrupt rejection and retained deliveries",
+        "status": "software-evidence-retained-current-full-running",
+        "evidenceAndLimits": "Historical actual cache/edit/cancel controls retained. Current focused11 retry and failed recovery105 checkpoints are scoped, not a whole browser pass."
+      }
+    },
+    {
+      "id": "AC-REVIEW",
+      "requirement": "Current-artifact review binding and changed-artifact invalidation",
+      "status": "artifact-binding-implemented-whole-statuses-unreviewed",
+      "evidenceAndLimits": "Current report160 binds six independent dimensions to exact artifacts. Technical/sample statuses cannot promote factual/mechanical/continuous/listening; all whole and owner reviews remain pending, reviewed-ready/supported/accepted0. Changed runtime identity resets earlier QA147.",
+      "historicalAudit114": {
+        "id": "AC-REVIEW",
+        "requirement": "Current-artifact review binding and changed-artifact invalidation",
+        "status": "implemented-status-honest",
+        "evidenceAndLimits": "Original10 technical/sample visual pass, all10 mechanical/factual/continuous/listening unreviewed, reviewed-ready0. Do not promote a prior binding."
+      }
+    },
+    {
+      "id": "AC-QUEUE",
+      "requirement": "Independent items, cleanup, bounded classified transient retries",
+      "status": "current-owning-functional-recovery-passed",
+      "evidenceAndLimits": "Current368 runtime tests and eight144 browser groups include actual fifteen-stage recovery with ten products. Initial143 two5000ms protocol timeouts and complete unchanged five-case rerun146 remain recorded in stages; original105 recovery assertion failure is not relabeled.",
+      "historicalAudit114": {
+        "id": "AC-QUEUE",
+        "requirement": "Independent items, cleanup, bounded classified transient retries",
+        "status": "current-focused-passed-whole-recovery-pending",
+        "evidenceAndLimits": "Current34 provenance/11 retry cases pass; all15 recovery105 actions retained inside failedtest; corrected full113 still running."
+      }
+    },
+    {
+      "id": "AC-COVERAGE",
+      "requirement": "Frozen distinct cohort, routes and actual extension accounting",
+      "status": "actual-ten-routes-reconciled-supported-zero",
+      "evidenceAndLimits": "Frozen actual EU001-EU010 selectionv2/8c5f replaces the earlier engineering board explicitly. Ten distinct explanations,8 reused assets/2 asset revisions/0 new rig types reconcile. Technical exports do not qualify supported packs or episodes; supported/accepted0.",
+      "historicalAudit114": {
+        "id": "AC-COVERAGE",
+        "requirement": "Frozen distinct cohort, routes and actual extension accounting",
+        "status": "actual-selection-reconciled-supported-zero",
+        "evidenceAndLimits": "Actual EU001-EU010 selection8c5f... replaces former engineering board explicitly.8reuse/2asset revisions/0newrig types;0/10supported,0accepted."
+      }
+    },
+    {
+      "id": "AC-VOICE",
+      "requirement": "Whole supplied narration1x with own sample-clock cues, no filler/stretch",
+      "status": "current-complete-original-narration-parity-passed",
+      "evidenceAndLimits": "Current154 independently decodes complete PCM and authenticates original whole AAC-reference chain for all ten actual Alden recordings at1x. Timings use original sample clocks; no filler/stretch or paid generation. Complete listening review remains unreviewed.",
+      "historicalAudit114": {
+        "id": "AC-VOICE",
+        "requirement": "Whole supplied narration1x with own sample-clock cues, no filler/stretch",
+        "status": "original-ten-proved-current-receiver-pending",
+        "evidenceAndLimits": "All existing Alden takes/source clocks and decoded PCM independently checked at original binding; no paid generation."
+      }
+    },
+    {
+      "id": "AC-MS1-HOLDS",
+      "requirement": "696frames/1080x1920/30fps, seven roles>=30readable frames, final RGBA/audio/terminal checks",
+      "status": "historical-software-proof-with-availability-limit",
+      "evidenceAndLimits": "Historical696frames/1080x1920/30fps and seven roles with at least30 readable frames retain their own evidence, as do legacy29-frame baseline migration and final RGBA/audio checks. Six older selected MS1/MS1N raw paths remain unavailable158; committed results survive. No fresh human listening/whole-glyph acceptance.",
+      "historicalAudit114": {
+        "id": "AC-MS1-HOLDS",
+        "requirement": "696frames/1080x1920/30fps, seven roles>=30readable frames, final RGBA/audio/terminal checks",
+        "status": "historical-software-proof-retained",
+        "evidenceAndLimits": "Committed b4f installed result and later actual bridge repair preserved. Selected original raw archive/proof temporary paths unavailable, not freshly reauthenticated."
+      }
+    },
+    {
+      "id": "AC-MS1N-DEPTH",
+      "requirement": "Shared native E01 and independent mixed depth/profile/preview/export proof",
+      "status": "historical-native-proof-plus-current-owning-checks",
+      "evidenceAndLimits": "Historical native E01/shared mixed depth/profile proof and77-group staged qualification retain their original source boundaries. Fresh144 native depth/PBR/mixed/async Lab/cancellation controls qualify affected0da changes. Missing older suffix/audit inventories remain declared; no new whole E01/human acceptance is claimed.",
+      "historicalAudit114": {
+        "id": "AC-MS1N-DEPTH",
+        "requirement": "Shared native E01 and independent mixed depth/profile/preview/export proof",
+        "status": "historical-proof-current-affected-followup",
+        "evidenceAndLimits": "Current403 repairs have owning native controls; historical full/render source identities retained. Selected a387 raw suffix/audit/inventory paths unavailable."
+      }
+    },
+    {
+      "id": "AC-MS2-IMPORT",
+      "requirement": "Strict GLB/PBR/geometry/resource/rig/camera/annotations/cue/Thai scope",
+      "status": "software-delivered-with-candidate-and-thai-limits",
+      "evidenceAndLimits": "Strict rigid GLB/PBR/resources/geometry/rig/camera/annotations/cues are software-qualified in historical complete full70 and current affected followups. Three family packs stay candidate/supported0. Bounded controls are explanatory, not a calibrated force/dynamics solver. Count-fit scope is closed; finer Thai motion remains unadopted with located intermediate-mark/gap findings.",
+      "historicalAudit114": {
+        "id": "AC-MS2-IMPORT",
+        "requirement": "Strict GLB/PBR/geometry/resource/rig/camera/annotations/cue/Thai scope",
+        "status": "software-delivered-with-declared-limits",
+        "evidenceAndLimits": "Historical complete full70 and currente44 affected archive exact receipts authenticate; finer Thai unadopted; packs candidate, no factual/material/human approval."
+      }
+    },
+    {
+      "id": "AC-MS3-FAULTS",
+      "requirement": "Fourteen specified fault/recovery scenarios with located evidence",
+      "status": "fourteen-scenarios-mapped-and-owning-followups-passed",
+      "evidenceAndLimits": "Fourteen required faults are method-scoped in111:four native diagnostic images104,180 decoded2D frames/four viewed stills109, compiler111 wrong-state rejection and historical actual bridge CAS. Current144 closes owning recovery group with15 stages. Seeded stills/fixtures do not establish whole pilot correctness.",
+      "historicalAudit114": {
+        "id": "AC-MS3-FAULTS",
+        "requirement": "Fourteen specified fault/recovery scenarios with located evidence",
+        "status": "scoped-matrix-complete-current-full-pending",
+        "evidenceAndLimits": "Native104 actual4images, current2D109 actual180decodedframes/4viewed stills, compiler111 wrongstate, current unit/retry controls and retained real recovery actions. None establishes whole clip correctness."
+      }
+    },
+    {
+      "id": "AC-MS3-REPORT",
+      "requirement": "One bounded invocation emits episode/cohort, raw rows, percentiles/failures/reviews/availability",
+      "status": "current-one-invocation-episode-cohort-report-passed",
+      "evidenceAndLimits": "Current151 report invocation emits episode and cohort data;160 verifies ten current bindings/rows/null savings and unchanged resumed rows. Original first-pass1/10,nine failures and linear percentile/measurement availability remain separate. Receiving151 is a new code-identity phase and never replaces the original denominator.",
+      "historicalAudit114": {
+        "id": "AC-MS3-REPORT",
+        "requirement": "One bounded invocation emits episode/cohort, raw rows, percentiles/failures/reviews/availability",
+        "status": "original-report-proved-current-report-pending",
+        "evidenceAndLimits": "Original ten report and small engineering control independently recomputed. Renderp50/95 separate from unavailable setup/routine/token measurements."
+      }
+    },
+    {
+      "id": "AC-FIRSTPASS",
+      "requirement": ">=90% first submitted job success without repair/retry/recovery",
+      "status": "not-achieved-original-pilot",
+      "evidenceAndLimits": "Original first submitted job success1/10=10%,below90%;nine failed attempts remain. Fresh receiving phase success does not reset the original pilot result.",
+      "historicalAudit114": {
+        "id": "AC-FIRSTPASS",
+        "requirement": ">=90% first submitted job success without repair/retry/recovery",
+        "status": "not-achieved-original-pilot",
+        "evidenceAndLimits": "Original1/10=10%,nine failures retained. Receiving reruns are a separate cohort and cannot rewrite the original first pass."
+      }
+    },
+    {
+      "id": "AC-SAVINGS",
+      "requirement": ">=50% lower comparable median routine authoring tokens",
+      "status": "unverified-missing-comparable-paired-telemetry",
+      "evidenceAndLimits": "Comparable observed baseline/routine authoring-token pairs are unavailable. Savings remain null; the >=50% target is unverified. Render timings and cumulative session tokens are not substituted.",
+      "historicalAudit114": {
+        "id": "AC-SAVINGS",
+        "requirement": ">=50% lower comparable median routine authoring tokens",
+        "status": "unverified-missing-paired-telemetry",
+        "evidenceAndLimits": "No comparable observed paired tokens; savings remains null, no fabricated estimates."
+      }
+    },
+    {
+      "id": "AC-REVIEWEDREADY",
+      "requirement": "Zero unresolved mechanics in reviewed-ready outputs and whole appropriate reviews",
+      "status": "whole-and-owner-reviews-pending",
+      "evidenceAndLimits": "Reviewed-ready/supported/accepted0. Zero reviewed-ready unresolved mechanics does not prove successful pilot acceptance. Whole factual/design/mechanical/encoded-glyph/normal-speed motion/listening judgments and owner feedback remain pending on delivered161 videos.",
+      "historicalAudit114": {
+        "id": "AC-REVIEWEDREADY",
+        "requirement": "Zero unresolved mechanics in reviewed-ready outputs and whole appropriate reviews",
+        "status": "whole-reviews-open",
+        "evidenceAndLimits": "Reviewed-ready0 does not establish successful mechanical pilot acceptance. Whole factual/mechanical/glyph/continuous/listening and human judgments remain explicit."
+      }
+    },
+    {
+      "id": "AC-FULL",
+      "requirement": "Complete final pnpm check gate with unchanged thresholds/baselines/serial performance",
+      "status": "complete-historical-full-plus-current-scoped-pr-followups",
+      "evidenceAndLimits": "Complete unchanged full119 actually exits0 on1c/2,793inputs:4,594unit/346runtime/324integration/14Python,176 frozen baselines/36,061frames and69-story matrix. New0da scoped PR repairs qualify under plan verification rule4 with fast143/staged146/eight144/package145/current151-154-160.159 proves renderer-core,motion-builder,frozen-baseline trees and17 Blender files exact. Conservative global identity still required new151 exports. No fresh entire full gate is claimed;19 existing timing deferrals and original failures remain.",
+      "historicalAudit114": {
+        "id": "AC-FULL",
+        "requirement": "Complete final pnpm check gate with unchanged thresholds/baselines/serial performance",
+        "status": "running-unpassed",
+        "evidenceAndLimits": "Actual8967 runs completecheck:all on1b21/2793inputs; prior full90/full91/105 failures retained. Package work awaits genuine complete0."
+      }
+    },
+    {
+      "id": "AC-DELIVERY",
+      "requirement": "Five separate branches/attached PRs and no Actions/publication/merge inference",
+      "status": "five-pr-deliveries-current-final-push-pending",
+      "evidenceAndLimits": "Separate branches/attached PRs51,52,56,57,58 retain delivery history. Current final metadata/source push and fresh remote readback are recorded separately after162. No GitHub PR merge,Actions,publication or owner approval is inferred; approved historical PR58 body114 stays unchanged.",
+      "historicalAudit114": {
+        "id": "AC-DELIVERY",
+        "requirement": "Five separate branches/attached PRs and no Actions/publication/merge inference",
+        "status": "historical-PR-delivery-retained-final-remote-refresh-pending",
+        "evidenceAndLimits": "Five PRs attached; owner merged51/52 separately,56/57/58 open at prior verified snapshot. No new PR creation/merge/publish/Actions action in audit114."
+      }
+    },
+    {
+      "id": "AC-RETENTION",
+      "requirement": "Failure/rerun/source/pin/limit evidence remains inspectable",
+      "status": "current-evidence-durable-older-six-path-gap",
+      "evidenceAndLimits": "Fresh158 authenticates24 selected historical raw pins;6older MS1/MS1N paths unavailable with committed results retained and no reconstruction. Current run/audits160 and current immutable project161 retain original attempts/logs/products/verified archive. Original wrapper56598 stays1 with corrected149postflight0 in recorded stages.",
+      "historicalAudit114": {
+        "id": "AC-RETENTION",
+        "requirement": "Failure/rerun/source/pin/limit evidence remains inspectable",
+        "status": "qualified-availability-gap",
+        "evidenceAndLimits": "24selected raw pins fresh-exact;6older MS1/MS1N temporary paths unavailable. Committed historical results remain; no recreation or current-pass inference."
+      }
+    },
+    {
+      "id": "AC-MS4",
+      "requirement": "300-job stress, explanation extensions and30-episode diversity",
+      "status": "outside-approved-ms0-through-ms3-implementation-scope",
+      "evidenceAndLimits": "MS4A300-job scale,MS4B conditional explanation extensions andMS4C30-episode diversity/capacity remain future work. SS06 and300-job SS09 portions are not claimed by this ten-episode implementation.",
+      "historicalAudit114": {
+        "id": "AC-MS4",
+        "requirement": "300-job stress, explanation extensions and30-episode diversity",
+        "status": "outside-MS0-through-MS3-scope",
+        "evidenceAndLimits": "MS4A/4B/4C remain future stages. SS06 and the300-job part ofSS09 are not silently claimed by current10-episode work."
+      }
+    }
+  ],
+  "traceability": {
+    "SS01": ["AC-BRIDGE", "AC-MS1N-DEPTH", "AC-MS2-IMPORT", "AC-PORTABLE"],
+    "SS02": ["MS2-01", "MS2-02", "MS2-03"],
+    "SS03": ["MS2-04", "MS2-05", "MS2-06", "MS3-03"],
+    "SS04": ["MS2-07"],
+    "SS05": ["MS1-04", "MS1-07", "MS2-08", "MS2-09"],
+    "SS06": ["AC-MS4"],
+    "SS07": ["MS2-10", "AC-VOICE"],
+    "SS08": ["AC-SCHEMA", "AC-CAS", "MS3-05"],
+    "SS09": ["MS3-01", "AC-QUEUE", "AC-MS4"],
+    "SS10": ["MS3-02", "MS3-03", "AC-MS3-FAULTS", "AC-REVIEWEDREADY"],
+    "SS11": ["AC-DEPS", "AC-DIAG", "AC-PORTABLE"],
+    "SS12": ["MS0-06", "MS1-13", "MS3-07", "MS3-08", "AC-SAVINGS"],
+    "A1": ["AC-DEPS", "AC-DIAG", "AC-PORTABLE"],
+    "A2": ["MS2-01"],
+    "A3": ["MS2-06", "MS3-03"],
+    "A4": ["MS2-07"],
+    "A5": ["MS2-08", "MS2-09"],
+    "A6": ["AC-SCHEMA"],
+    "A7": ["AC-CAS", "MS3-03", "MS3-05"],
+    "A8": ["MS3-07", "MS3-08", "AC-MS3-REPORT"],
+    "A9": ["AC-COVERAGE", "MS2-12", "MS3-06"]
+  },
+  "currentIndependentAuditCompletion": {
+    "original154AggregateActualExitCode": 1,
+    "originalNativeLaunchExitCode": 71,
+    "native155FollowupActualExitCode": 0,
+    "collector156PreparationActualExitCode": 1,
+    "collector157ActualExitCode": 0,
+    "qualification": "All ten current pixel/PCM checks0; original154 wrapper1 after OS denied nested sandbox_apply before Node. Identical native program/profile passes155 under host permission, staged157 validation0. Original156 summary helperTypeError1 retained; only failure-field access corrected. No source/product/threshold change or pixel rerun."
+  },
+  "currentEvidence": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/docs/mechanism-shorts-ms3-current157-audits-results.json",
+      "bytes": 33821,
+      "sha256": "sha256:6d3e691214f9a2e582d712598beaf4281ae2740f6251e0535ce47586846fa035"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/docs/mechanism-shorts-ms3-current160-results.json",
+      "bytes": 120127,
+      "sha256": "sha256:77ff56fd87ce65b8f96edc6957f2069c71bc0fd632c39de73e957ee9f6f915f6"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/docs/mechanism-shorts-ms3-delivery161-results.json",
+      "bytes": 2043,
+      "sha256": "sha256:898ff2352ad8c359eb2053f57b4ab2ff9c10950bf959d7e112672271a83c8ac2"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/docs/mechanism-shorts-ms3-package145-results.json",
+      "bytes": 20068,
+      "sha256": "sha256:df4b4b3846fc0e7aec25d664106e04d89436d6505245d85e23867bd8817162a4"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/docs/mechanism-shorts-ms3-upstream143-results.json",
+      "bytes": 10580,
+      "sha256": "sha256:a20ca6821687e18637c31ca29c03559e730a4da90c174432277e0a97bfa51c13"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/docs/mechanism-shorts-ms3-runtime146-results.json",
+      "bytes": 16052,
+      "sha256": "sha256:acb3f7f6355989060c8278b81692de34d6eccb621a084661b7bac90f273bf9a5"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/docs/mechanism-shorts-ms3-affected144-results.json",
+      "bytes": 15228,
+      "sha256": "sha256:760febb26775e239524df36b49cc106c83e7737d1eb61fa9b9fb585719c0d1fa"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/docs/mechanism-shorts-evidence158-results.json",
+      "bytes": 4823,
+      "sha256": "sha256:95ad66744ed2f045aa18fda549603ddb0e3dcafb504369698c08eb6de5b1d5fd"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/docs/mechanism-shorts-ms3-full125-terminal-results.json",
+      "bytes": 14940,
+      "sha256": "sha256:024ab9487919f153cebdeb3f1b82811cfb5d216c76a4560a28577de9d78c6e31"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/docs/mechanism-shorts-ms3-complete-installed149-results.json",
+      "bytes": 47687,
+      "sha256": "sha256:582aa03aca556b1100a6fa41e02d83c876a4beab439998400e2ce08608769950"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/docs/mechanism-shorts-ms3-owner-decisions120-results.json",
+      "bytes": 4905,
+      "sha256": "sha256:d603c77f0b319845df8ff7cb737ed18d0d0162701b38a57cb187d994394a7e42"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/docs/mechanism-shorts-ms3-installed131-capability-results.json",
+      "bytes": 17774,
+      "sha256": "sha256:2b31f61fa0e46bb9de5202c3af6f78464c9217c53d60ff44693b419102ad2b45"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/docs/mechanism-shorts-ms3-fault-coverage111-results.json",
+      "bytes": 21278,
+      "sha256": "sha256:c9ab77d8dfdc08c25550da72fcc77952328a4beea3357e47efbb7e3839760ca8"
+    }
+  ],
+  "previousAudit114": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/docs/mechanism-shorts-acceptance-audit114-results.json",
+    "bytes": 57378,
+    "sha256": "sha256:c29bd14c128b560d746524b6b3b29b3021a1ba6efec246edbbe146f6ba793e16"
+  },
+  "delta159": {
+    "schemaVersion": "scoped-delta159-revalidation-1",
+    "capturedUtc": "2026-10-15T22:21:36.107677+00:00",
+    "result": {
+      "path": "/private/tmp/still-shift-ms3-delta159-results.json",
+      "bytes": 7182,
+      "sha256": "sha256:4b475444f5adba05f3961a4f42d07599448355aa29943929c40ac90477d1ec2a"
+    },
+    "productionFiles": 11,
+    "testFiles": 8,
+    "exactBlenderFiles": 17,
+    "guard": {
+      "status": "passed",
+      "files": 2798,
+      "bytes": 122451390,
+      "membershipAndBytesExact": true
+    },
+    "qualification": "Fresh revalidation of existing read-only delta159 record. Original tool result was truncated; this receipt does not reconstruct its terminal. No new software suite or full-gate claim."
+  },
+  "technicalImplementationDelivered": true,
+  "pilotProductAcceptance": false,
+  "wholeReviewOrHumanAcceptance": false,
+  "unmetTargets": {
+    "originalFirstPass": {
+      "passed": 1,
+      "selected": 10,
+      "rate": 0.1,
+      "target": 0.9,
+      "failedAttempts": 9,
+      "achieved": false
+    },
+    "comparableRoutineTokenSavings": {
+      "value": null,
+      "target": 0.5,
+      "verified": false
+    }
+  },
+  "remainingProductReview": [
+    "whole factual/design variant review",
+    "whole mechanical correctness",
+    "whole encoded glyph/readability",
+    "continuous motion at normal speed",
+    "complete listening and audiovisual review",
+    "owner feedback/approval on exact delivered videos"
+  ],
+  "reviewIndex": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current-review161/index.md",
+    "bytes": 3303,
+    "sha256": "sha256:38085030ae83efee3006a8f9f341401b70c3e39464a920c21402bfe4db8d392d"
+  },
+  "retainedLimits": [
+    "original154 aggregate1/native-launch71 before Node; same-profile native1550; summary helper156TypeError1/corrected1570; no source or product changes",
+    "six older selected MS1/MS1N raw paths unavailable;24 exact in158",
+    "nineteen existing CE6-P timing deferrals",
+    "candidate family packs/supported0",
+    "finer Thai motion unadopted; intermediate mark/overlap/gap findings open",
+    "original runtime143 aggregate1 with staged146 owning rerun0",
+    "original56598 wrapper1 with all16 CLI0 and corrected149postflight0",
+    "current CLIhandoff count1 plus10 independently checked sealed snapshots; earlier149tenCLI separate"
+  ],
+  "futureScope": [
+    "MS4A300-job stress",
+    "MS4B conditional native explanation extensions",
+    "MS4C30-episode diversity/capacity",
+    "SS06 sound extensions"
+  ],
+  "publication": false,
+  "finalRemoteDeliveryRecordPending": true,
+  "methodProgram": {
+    "path": "/private/tmp/still-shift-ms3-reconcile162.py",
+    "bytes": 19735,
+    "sha256": "sha256:ccb8ec9ad21c2d884e451061bb4a5e3c6e06c9cd1d4fbb30892dd9e73c4b0674"
+  },
+  "retainedMethodsAndActualTerminals": [
+    {
+      "source": {
+        "path": "/private/tmp/still-shift-ms3-delta159-results.json",
+        "bytes": 7182,
+        "sha256": "sha256:4b475444f5adba05f3961a4f42d07599448355aa29943929c40ac90477d1ec2a"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-reconciliation162/still-shift-ms3-delta159-results.json",
+        "bytes": 7182,
+        "sha256": "sha256:4b475444f5adba05f3961a4f42d07599448355aa29943929c40ac90477d1ec2a"
+      },
+      "exact": true
+    },
+    {
+      "source": {
+        "path": "/private/tmp/still-shift-ms3-delta159-revalidated.json",
+        "bytes": 698,
+        "sha256": "sha256:436acc151eaa0d3e6dd0a86867fc26bbb652f63356bb81a8b87572091788b121"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-reconciliation162/still-shift-ms3-delta159-revalidated.json",
+        "bytes": 698,
+        "sha256": "sha256:436acc151eaa0d3e6dd0a86867fc26bbb652f63356bb81a8b87572091788b121"
+      },
+      "exact": true
+    },
+    {
+      "source": {
+        "path": "/private/tmp/still-shift-ms3-current160-actual-terminal.json",
+        "bytes": 1297,
+        "sha256": "sha256:a9a8f54565f9cc1ec8bd35e456e4ccc57a17497ee7c0bf08ef765d307b764fb9"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-reconciliation162/still-shift-ms3-current160-actual-terminal.json",
+        "bytes": 1297,
+        "sha256": "sha256:a9a8f54565f9cc1ec8bd35e456e4ccc57a17497ee7c0bf08ef765d307b764fb9"
+      },
+      "exact": true
+    },
+    {
+      "source": {
+        "path": "/private/tmp/still-shift-ms3-current161-actual-terminal.json",
+        "bytes": 3716,
+        "sha256": "sha256:241d96e1befa288f974540091f46c05a225973efd72d0645699c48518061127d"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-reconciliation162/still-shift-ms3-current161-actual-terminal.json",
+        "bytes": 3716,
+        "sha256": "sha256:241d96e1befa288f974540091f46c05a225973efd72d0645699c48518061127d"
+      },
+      "exact": true
+    },
+    {
+      "source": {
+        "path": "/private/tmp/still-shift-ms3-deliver161.py",
+        "bytes": 6936,
+        "sha256": "sha256:e9aaf8e91b9cb671e4e2f0065880e47b2c99e0a3298702e1aca00fe9040879c2"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-reconciliation162/still-shift-ms3-deliver161.py",
+        "bytes": 6936,
+        "sha256": "sha256:e9aaf8e91b9cb671e4e2f0065880e47b2c99e0a3298702e1aca00fe9040879c2"
+      },
+      "exact": true
+    },
+    {
+      "source": {
+        "path": "/private/tmp/still-shift-ms3-reconcile162.py",
+        "bytes": 19735,
+        "sha256": "sha256:ccb8ec9ad21c2d884e451061bb4a5e3c6e06c9cd1d4fbb30892dd9e73c4b0674"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-reconciliation162/still-shift-ms3-reconcile162.py",
+        "bytes": 19735,
+        "sha256": "sha256:ccb8ec9ad21c2d884e451061bb4a5e3c6e06c9cd1d4fbb30892dd9e73c4b0674"
+      },
+      "exact": true
+    },
+    {
+      "source": {
+        "path": "/private/tmp/still-shift-ms3-finish-docs164.py",
+        "bytes": 13779,
+        "sha256": "sha256:0a69d58134976b0cf7cbdae431b9e53210d4a948804ec1be5752855feebedb3c"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-reconciliation162/still-shift-ms3-finish-docs164.py",
+        "bytes": 13779,
+        "sha256": "sha256:0a69d58134976b0cf7cbdae431b9e53210d4a948804ec1be5752855feebedb3c"
+      },
+      "exact": true
+    }
+  ]
+}

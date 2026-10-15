@@ -43,68 +43,53 @@ still hold before relying on them.
 
 ## Current state
 
-- **Current code checkpoint:** newer PR56/57 repairs are integrated as0da1f1dd
-  in this isolated MS3 candidate. Fast tier0/4,608unit tests; runtime368 pass,
-  original integration325/327 passes with two unchanged5000ms timeouts retained.
-  Complete unchanged owning file5/Python14/smoke suffix pass separately. Both
-  review axes0 findings. All8 owning browser groups pass, including native5outputs/
-  300frames and15-stage recovery. Selected2,798inputs/122,451,390B stay exact.
-  [Integration143](./mechanism-shorts-ms3-upstream143-results.json),
-  [runtime146](./mechanism-shorts-ms3-runtime146-results.json),
-  [affected144](./mechanism-shorts-ms3-affected144-results.json).
-
-- **Current actual-ten exports/audits:** fresh installed145 run exits0 after5,478.39s;
-  all10 current videos/6,181frames and original Alden1× pass independent complete
-  picture/audio/PNG/native audits in recorded stages157, and all10 MP4s are byte-exact
-  to the prior final drafts. Native153 profile remains exact;zero fresh captures.
-  Original154 wrapper1 follows denied nested sandbox_apply before Node; unchanged
-  native1550 under the same profile and corrected summary1570 pass. Preparation156
-  TypeError1 stays retained. Actual151 report/resume/oneEU008handoff still running;
-  final driver terminal/durable current delivery/finite reconciliation remain.
-  [Current audit157](./mechanism-shorts-ms3-current157-audits-results.json).
-
-- **Original actual-ten evidence complete in recorded stages:** all16 CLI stages0
-  including10 handoffs. Original56598 wrapper exits1 on a wrong final map path;
-  corrected standalone6576 postflight exits0.10 fresh-resume packets/2,573members/
-  115original inputs/5,223native files/original products independently verify.
-  [Staged149](./mechanism-shorts-ms3-complete-installed149-results.json).
-  Independent139 fullRGBA/PCM/original narration/PNG/native audits pass6,181frames/
-  130root artifacts/1,084images/24,724pins. EightEU8phone images actually viewed;
-  outside-label47encoded differences remain quantified, whole acceptance open.
-
-- **Durable original review package:** [ten review135 videos](../benchmarks/results/ms3-current-installed-review135/index.md)
-  are delivered. [Snapshot150](./mechanism-shorts-ms3-project150-results.json)
-  preserves20,889files/16.91GB logical/4.39GB unique content with independent original
-  inodes; duplicates share links only inside the immutable snapshot. Runtime qualification stays in staged149; this backup records only copying.
-
-- **Base verification stays bound to earlier code:** complete full119 actual0 on
-  1c9f7d14:4,594unit/346runtime/324integration/14Python,176baselines/36,061frames;
-  no-op1180.39Hz/591samples,19existing WebGL timing deferrals retained. Package121
-  actual0 on1dbee06a:27checks/2,573members/1,051sources/13diagnostics/4retry controls.
-  [Full125](./mechanism-shorts-ms3-full125-terminal-results.json),
-  [package126](./mechanism-shorts-ms3-package126-results.json).
-  New0da scoped follow-up does not claim a fresh complete full gate. Old failures
-  90/91/105/113 and current runtime143/original wrapper121 remain retained.
-
-- **Product/owner gates:** original first-pass1/10/nine failures, original render
-  p50/p95 474.63/574.84s, paired routine tokens/savings null. New receiving phases
-  never replace that denominator. Whole factual/mechanical/glyph/normal-speed/
-  listening and owner reviews remain pending; reviewed-ready/supported/accepted0.
-  [Acceptance](./mechanism-shorts-ms3-acceptance.md). User review question pending.
-  Owner explicitly permits saved Blender models for this pilot; core/default Three
-  remains Blender-free. Exact approved PR58 description114 plus historical label
-  is published; no description approval remains. Diagnostic104 twoEU1assets/four
-  images closed within approved50/200M; no further diagnostic work or ElevenLabs
-  generation. [Decisions120](./mechanism-shorts-ms3-owner-decisions120-results.json).
-
-- **Delivery/retention:** MS0/MS1 owner-merged; PR56/57/58 open at last read. Current
-  source carries0bda0b62/36fc04ea repairs; original PR58 head93848c4c contains149/150
-  documentation. Preserve primary checkout edits, keep Actions disabled; no GitHub
-  PR merge or publication. Audit114 reconciles49rows/26clauses/21traceability,
-  with24older raw pins exact and6older MS1/MS1Npaths unavailable. Retain that gap
-  and complete final reconciliation after current package/actual-ten qualification.
+- **MS0–MS3 technical implementation delivered:** current source0da1f1dd includes
+  upstream PR56/57 repairs. Fast143 passes4,608 units; runtime368 and staged146
+  owning5/Python14/smoke pass with original two protocol timeouts retained. Eight
+  owning144 browser groups pass, including15-stage recovery. Package145 actual0
+  passes27 checks/2,573 members/1,051 sources/13 diagnostics/four retry controls.
+  Complete full119 keeps its earlier1c source binding; current qualification is
+  scoped PR followup, with no fresh entire full-gate claim.
+- **Actual first ten current outputs:** producer14257 actual0 finishes five CLI
+  calls, including all-ten export/report/resume and one EU008 handoff. Independent
+  current audits in recorded stages157 verify6,181 frames/130 artifacts/1,084 images/24,724 native pins,
+  complete original Alden1× and zero new captures. All ten sealed snapshots bind
+  current products/resume paths. Earlier149 separately retains ten CLI handoffs.
+  [Current160](./mechanism-shorts-ms3-current160-results.json).
+- **Delivery/review:** [ten current videos](../benchmarks/results/ms3-current-review161/index.md)
+  and [saved current project/archive161](./mechanism-shorts-ms3-delivery161-results.json)
+  retained outside temp. Whole factual/mechanical/glyph/normal-speed/listening and
+  owner reviews pending; reviewed-ready/supported/accepted0. Original first-pass
+  remains1/10/nine failures; comparable token savings null. Blender permitted for
+  pilot; core/default Three Blender-free. No ElevenLabs spending or publication.
+- **Finite evidence:** [162](./mechanism-shorts-acceptance-reconciliation162-results.json)
+  reconciles49 rows/26 clauses/21 traceability. Original56598 wrapper1/corrected1490,
+  runtime staged completions, six older missing raw paths and19 timing deferrals
+  remain explicit. Packs candidate; finer Thai unadopted. MS4 scale/diversity remains
+  future. Approved PR58 body114 is already public and stays a historical snapshot.
+- **Remote delivery:** final current metadata push/readback remains to record.
+  MS0/MS1 owner-merged; PR56/57/58 status refreshed separately. Preserve primary
+  checkout edits and ignored original evidence. No GitHub PR merge or Actions.
 
 ## Entries
+
+### 2026-10-16 — Complete current actual-ten runtime and finite reconciliation
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3-upstream143`, source0da1f1dd.
+- **Results:** current151 actual0; five CLI calls and independent ten-product
+  picture/PCM/original-narration/native audits pass6,181 frames. One actual current
+  EU008 CLI handoff plus ten bound sealed snapshots; earlier tenCLI evidence stays
+  separate. No fresh Blender captures or ElevenLabs generation.
+- **Delivery:** current saved project/archive and ten video links retained161;
+  finite162 reconciles49 deliverables/26 clauses/21 traceability with exact scopes.
+- **Staged audits:** original154 wrapper1/native launch71 before Node; unchanged
+  native1550 under same15-root profile; summary helper156TypeError1/corrected1570
+  retained. Completed pixels/products were not rerun or changed.
+- **Limits:** original1/10/nine failures/null tokens; whole and owner review pending,
+  reviewed-ready/supported/accepted0; six older raw gaps/19 timing deferrals retained.
+- **Records:** [current160](./mechanism-shorts-ms3-current160-results.json),
+  [delivery161](./mechanism-shorts-ms3-delivery161-results.json),
+  [reconciliation162](./mechanism-shorts-acceptance-reconciliation162-results.json).
 
 ### 2026-10-16 — Verify all current ten outputs in recorded stages157
 

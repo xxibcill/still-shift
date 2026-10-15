@@ -3,7 +3,7 @@
   "milestone": "MS3",
   "date": "2026-10-16",
   "branch": "codex/mechanism-ms3",
-  "status": "current-upstream-code-and-package-qualified-fresh-identity-actual-ten151-running",
+  "status": "technical-implementation-delivered-current-pilot-products-verified-whole-and-owner-acceptance-pending",
   "baseMain": "57967fa6497249d75e740ba837b8e2687cc81a98",
   "ms2Prerequisite": {
     "commit": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
@@ -753,11 +753,11 @@
     }
   },
   "remaining": [
-    "Finish actual new-identity151 ten exports/report/resume/EU008handoff and independent154 all-frame/audio/native/ten sealed packet audits. Updated package correctly marks old products stale; original149/150 proof stays earlier-archive evidence.",
-    "Reconcile49deliverables/26clauses/21traceability with final current source/archive evidence, preserving failed/staged histories,6olderraw-path gaps,19timing deferrals and original unmet/unmeasured pilot targets.",
-    "Whole factual/mechanical/glyph/normal-speed/listening and owner reviews remain open. Original first-pass1/10/nine failures/null paired tokens and reviewed-ready/supported/accepted0 stay unchanged."
+    "Whole factual/design, mechanical, encoded-glyph/readability, normal-speed motion/listening and owner review on exact delivered161 videos. Reviewed-ready/supported/accepted remain0.",
+    "Original90% first-pass target was not achieved:1/10,with nine failures retained. Comparable50% authoring-token savings remain unverified/null; receiving151 never rewrites that denominator.",
+    "Six older selected MS1/MS1N raw paths unavailable;19 existing timing deferrals, candidate packs and finer Thai adoption limits remain declared. MS4 scale/diversity/sound extensions are future scope."
   ],
-  "qualification": "MS2 software checkpoint and its exact private archive remain historical prerequisites. New MS3 source is not qualified by relabelling MS2 full/installed gates. Structural model caps do not by themselves certify lifecycle I/O/managed-memory admission or review execution.",
+  "qualification": "Current technical implementation is delivered with complete historical full119 and appropriate current0da scoped PR followups143/146/144/package145/actual151-154-160. No fresh entire full gate, whole review, owner approval, merge or publication is inferred. Finite162 reconciliation supersedes older dated live-state pointers.",
   "committedNativeSource": "efa5057440c1c95a7ac7aa263cc48f50d9a2c41b",
   "pullRequest": {
     "url": "https://github.com/xxibcill/still-shift/pull/58",
@@ -845,7 +845,126 @@
       "actual": null
     }
   },
-  "currentPilotProduction": {
+  "resultsIndexReconciliation": {
+    "record": "./mechanism-shorts-requirement-inventory99-results.json",
+    "historicalScope": "frozenSelection/requiredNewAssets/requiredNewBehaviors/candidateRouting/libraryExtensionProgress keep former engineering bindings; currentPilotSelection/currentPilotProduction describe the active actual-first-ten pilot.",
+    "originalEvidenceRelabeled": false
+  },
+  "currentPhysicalFaultWorkAllowance": "./mechanism-shorts-ms3-work-allowance103-results.json",
+  "completedPhysicalFaultImages": "./mechanism-shorts-ms3-physical-fault104-results.json",
+  "verificationHistoryScope": "The verification array retains dated historical checkpoints and their exact code/artifact bindings; old pending statements are not current implementation status. ActiveRequiredFullPreparation/currentPilotProduction/current completed proof pointers state the present gates.",
+  "currentFaultScenarioCoverage": "./mechanism-shorts-ms3-fault-coverage111-results.json",
+  "latestCompleteFull": {
+    "record": "./mechanism-shorts-ms3-full125-terminal-results.json",
+    "session": 71989,
+    "actualExitCode": 0,
+    "seconds": 24311.279254041146,
+    "sourceCommit": "1c9f7d1413bdeb9c78cee72ccd328c4badd46c41",
+    "sourceHold": 0,
+    "selectedInputsExact": 2793,
+    "scriptInvocationsIncludingAliases": 116,
+    "unitTests": 4594,
+    "runtimeTests": 346,
+    "integrationTests": 324,
+    "pythonTests": 14,
+    "frozenBaselines": 176,
+    "frozenBaselineFrames": 36061,
+    "benchmark": {
+      "raw": "   \u00b7 deterministic end-to-end request  1,180.39  0.7135  3.0461  0.8472  0.8551  1.1768  1.9948  3.0461  \u00b11.50%      591",
+      "hz": 1180.39,
+      "minimumMs": 0.7135,
+      "maximumMs": 3.0461,
+      "meanMs": 0.8472,
+      "p75Ms": 0.8551,
+      "p99Ms": 1.1768,
+      "p995Ms": 1.9948,
+      "p999Ms": 3.0461,
+      "relativeMarginPercent": 1.5,
+      "samples": 591
+    },
+    "benchmarkScope": "Unmodified benchmarks/noop.bench.ts > v0.1 no-op engine dispatch benchmark. Positive measured samples do not establish full3D/pilot throughput, costs or token savings.",
+    "existingWebglTimingDeferrals": 19,
+    "wholeOrPilotAcceptance": false
+  },
+  "currentOwningStory118": {
+    "record": "./mechanism-shorts-ms3-story118-results.json",
+    "actualSession": 86006,
+    "actualExitCode": 0,
+    "sourceHold": 0,
+    "cases": 69,
+    "frames": 14086,
+    "repeatedExportPairs": 14,
+    "maximumTimingRatio": 1.2245349816930802,
+    "unchangedLimit": 1.25,
+    "maximumPixelDelta": 2,
+    "sourceChanges": 0,
+    "scope": "Profiled complete owning matrix; no full-gate or cause-closure claim."
+  },
+  "currentOwnerDecisions120": "./mechanism-shorts-ms3-owner-decisions120-results.json",
+  "previousCompleteFull113": {
+    "record": "./mechanism-shorts-ms3-final113-full-gate-results.json",
+    "session": 8967,
+    "actualExitCode": 1,
+    "seconds": 4984.338336915942,
+    "sourceHold": 0,
+    "failedScript": "test:browser:composition-story-fixtures",
+    "failedCase": "story/calibration-pan",
+    "timingRatio": 1.251626897572802,
+    "unchangedLimit": 1.25,
+    "pixelFailures": 0,
+    "maxDelta": 1,
+    "cause": "unproven"
+  },
+  "currentPackage": {
+    "status": "passed-current-private-package-scoped-upstream-followup",
+    "record": "./mechanism-shorts-ms3-package145-results.json",
+    "sourceCommit": "ef9db6e50f83745624af51c43c7abe583b162759",
+    "archive": {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-package145/still-shift-0.1.1.tgz",
+      "bytes": 5469414,
+      "sha256": "sha256:4f41bd80ddf63837fba98206c2d961e40c0a5314b5d02470c2e6905b2266325f"
+    },
+    "historicalCompleteFullSource": "1c9f7d1413bdeb9c78cee72ccd328c4badd46c41",
+    "currentFullScope": "fast143, recorded runtime146, eight owning browser144, unchanged package145; no fresh complete full gate"
+  },
+  "currentInstalledCapabilities": {
+    "record": "./mechanism-shorts-ms3-installed131-capability-results.json",
+    "actualExitCode": 0,
+    "productionAndMediaDiscoveryExact": true,
+    "formattedGeneratedReferenceExact": true,
+    "productionSchemaReferences": 25,
+    "proseGuidesExact": 3,
+    "schemaReferenceLocation": "held source checkout, not bundled archive members",
+    "retainedFailedProbe130": true,
+    "completeSource107PayloadByteExact": true,
+    "completeReportBytes": 14140,
+    "compactItems": 32,
+    "compactTruncated": false
+  },
+  "currentProjectSnapshot150": {
+    "record": "./mechanism-shorts-ms3-project150-results.json",
+    "fileCount": 20889,
+    "logicalBytes": 16909710619,
+    "uniqueContentBytes": 4385935468,
+    "independentOriginalInodes": true,
+    "isAnotherExecutedRelocationProof": false
+  },
+  "previousCompletePackage126": {
+    "record": "./mechanism-shorts-ms3-package126-results.json",
+    "actualSession": 52914,
+    "actualExitCode": 0,
+    "sourceCommit": "1dbee06a67813ad14c06315798782dcc9318e3ff",
+    "standardChecks": 27,
+    "members": 2573,
+    "correspondingSources": 1051,
+    "nativeDiagnosticControls": 13,
+    "retryControls": 4,
+    "nativeClosureFiles": 5223,
+    "inputFiles": 115,
+    "copiedBytes": 2207274134,
+    "allCopiedHashesVerified": true
+  },
+  "historical_currentPilotProduction": {
     "selection": {
       "id": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
       "selectedEpisodeIds": [
@@ -1022,16 +1141,9 @@
     },
     "activeInstalledPreparation": "./mechanism-shorts-ms3-installed121-preparation-results.json"
   },
-  "resultsIndexReconciliation": {
-    "record": "./mechanism-shorts-requirement-inventory99-results.json",
-    "historicalScope": "frozenSelection/requiredNewAssets/requiredNewBehaviors/candidateRouting/libraryExtensionProgress keep former engineering bindings; currentPilotSelection/currentPilotProduction describe the active actual-first-ten pilot.",
-    "originalEvidenceRelabeled": false
-  },
-  "currentPhysicalFaultWorkAllowance": "./mechanism-shorts-ms3-work-allowance103-results.json",
-  "completedPhysicalFaultImages": "./mechanism-shorts-ms3-physical-fault104-results.json",
-  "activeStagedRepair": "./mechanism-shorts-ms3-repair110-results.json",
-  "activeInstalledPreparation": "./mechanism-shorts-ms3-installed121-preparation-results.json",
-  "remainingBeforeRequiredFull107": [
+  "historical_activeStagedRepair": "./mechanism-shorts-ms3-repair110-results.json",
+  "historical_activeInstalledPreparation": "./mechanism-shorts-ms3-installed121-preparation-results.json",
+  "historical_remainingBeforeRequiredFull107": [
     "Complete current final integrated-source pnpm check:all session42543 on held3749618d. Retain failed full90/cache diagnosis and existing WebGL timing deferrals; a live prefix is not a pass.",
     "After actual full0, run the prepared standard offline package matrix, audit/install its exact archive, copy the complete independently hashed native closure, and execute a fresh current-installed queue/run/report/resume/ten-handoff lifecycle for all10 actual episodes. Original3df products and archive85/prepared86 are historical bindings.",
     "Independently audit current ten receiving packets and complete encoded picture/original narration closure. Fresh receiving validation must not reset original first-pass1/10 or nine failed attempts, manufacture comparable paired tokens, or infer review acceptance.",
@@ -1040,11 +1152,9 @@
     "Complete whole factual/design, mechanical, encoded glyph/readability, normal-speed continuous motion and listening review; keep unsupported, unreviewed and human acceptance explicit. Current reviewed-ready/supported/accepted0/10.",
     "Reconcile all49 MS0-MS3 deliverables and their acceptance clauses against their exact source/evidence identities, current installed capability discovery and guides. Preserve candidate pack/finer Thai limits, prior failures and open upstream PRs; no routine merge, publishing or inferred human acceptance."
   ],
-  "activeRequiredFullPreparation": "./mechanism-shorts-ms3-final119-full-gate-results.json",
-  "verificationHistoryScope": "The verification array retains dated historical checkpoints and their exact code/artifact bindings; old pending statements are not current implementation status. ActiveRequiredFullPreparation/currentPilotProduction/current completed proof pointers state the present gates.",
-  "currentPackageGate": "Complete full119, standard package121, full closure copy and all10 final-product audits pass. Main56598 final lifecycle/report/resume/ten-handoff terminal remains pending. Original1/10 first-pass/nine failures/null paired tokens and whole/owner gates unchanged.",
-  "currentFaultScenarioCoverage": "./mechanism-shorts-ms3-fault-coverage111-results.json",
-  "acceptanceReconciliation114": {
+  "historical_activeRequiredFullPreparation": "./mechanism-shorts-ms3-final119-full-gate-results.json",
+  "historical_currentPackageGate": "Complete full119, standard package121, full closure copy and all10 final-product audits pass. Main56598 final lifecycle/report/resume/ten-handoff terminal remains pending. Original1/10 first-pass/nine failures/null paired tokens and whole/owner gates unchanged.",
+  "historical_acceptanceReconciliation114": {
     "record": "./mechanism-shorts-acceptance-audit114-results.json",
     "rows": 49,
     "crossCuttingClauses": 26,
@@ -1078,54 +1188,8 @@
       "sourceCommit": "1b21c86ed957d7aa5bae3bb581040711a01eef7d"
     }
   },
-  "latestCompleteFull": {
-    "record": "./mechanism-shorts-ms3-full125-terminal-results.json",
-    "session": 71989,
-    "actualExitCode": 0,
-    "seconds": 24311.279254041146,
-    "sourceCommit": "1c9f7d1413bdeb9c78cee72ccd328c4badd46c41",
-    "sourceHold": 0,
-    "selectedInputsExact": 2793,
-    "scriptInvocationsIncludingAliases": 116,
-    "unitTests": 4594,
-    "runtimeTests": 346,
-    "integrationTests": 324,
-    "pythonTests": 14,
-    "frozenBaselines": 176,
-    "frozenBaselineFrames": 36061,
-    "benchmark": {
-      "raw": "   \u00b7 deterministic end-to-end request  1,180.39  0.7135  3.0461  0.8472  0.8551  1.1768  1.9948  3.0461  \u00b11.50%      591",
-      "hz": 1180.39,
-      "minimumMs": 0.7135,
-      "maximumMs": 3.0461,
-      "meanMs": 0.8472,
-      "p75Ms": 0.8551,
-      "p99Ms": 1.1768,
-      "p995Ms": 1.9948,
-      "p999Ms": 3.0461,
-      "relativeMarginPercent": 1.5,
-      "samples": 591
-    },
-    "benchmarkScope": "Unmodified benchmarks/noop.bench.ts > v0.1 no-op engine dispatch benchmark. Positive measured samples do not establish full3D/pilot throughput, costs or token savings.",
-    "existingWebglTimingDeferrals": 19,
-    "wholeOrPilotAcceptance": false
-  },
-  "activeOwningDiagnostic": null,
-  "currentOwningStory118": {
-    "record": "./mechanism-shorts-ms3-story118-results.json",
-    "actualSession": 86006,
-    "actualExitCode": 0,
-    "sourceHold": 0,
-    "cases": 69,
-    "frames": 14086,
-    "repeatedExportPairs": 14,
-    "maximumTimingRatio": 1.2245349816930802,
-    "unchangedLimit": 1.25,
-    "maximumPixelDelta": 2,
-    "sourceChanges": 0,
-    "scope": "Profiled complete owning matrix; no full-gate or cause-closure claim."
-  },
-  "currentActiveFull": {
+  "historical_activeOwningDiagnostic": null,
+  "historical_currentActiveFull": {
     "record": "./mechanism-shorts-ms3-final119-full-gate-results.json",
     "session": 71989,
     "status": "completed-actual-terminal0",
@@ -1143,34 +1207,7 @@
     "sourceHold": 0,
     "terminalRecord": "./mechanism-shorts-ms3-full125-terminal-results.json"
   },
-  "currentOwnerDecisions120": "./mechanism-shorts-ms3-owner-decisions120-results.json",
-  "previousCompleteFull113": {
-    "record": "./mechanism-shorts-ms3-final113-full-gate-results.json",
-    "session": 8967,
-    "actualExitCode": 1,
-    "seconds": 4984.338336915942,
-    "sourceHold": 0,
-    "failedScript": "test:browser:composition-story-fixtures",
-    "failedCase": "story/calibration-pan",
-    "timingRatio": 1.251626897572802,
-    "unchangedLimit": 1.25,
-    "pixelFailures": 0,
-    "maxDelta": 1,
-    "cause": "unproven"
-  },
-  "currentPackage": {
-    "status": "passed-current-private-package-scoped-upstream-followup",
-    "record": "./mechanism-shorts-ms3-package145-results.json",
-    "sourceCommit": "ef9db6e50f83745624af51c43c7abe583b162759",
-    "archive": {
-      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-package145/still-shift-0.1.1.tgz",
-      "bytes": 5469414,
-      "sha256": "sha256:4f41bd80ddf63837fba98206c2d961e40c0a5314b5d02470c2e6905b2266325f"
-    },
-    "historicalCompleteFullSource": "1c9f7d1413bdeb9c78cee72ccd328c4badd46c41",
-    "currentFullScope": "fast143, recorded runtime146, eight owning browser144, unchanged package145; no fresh complete full gate"
-  },
-  "currentInstalledLifecycle": {
+  "historical_currentInstalledLifecycle": {
     "status": "all16-cli0-and-corrected-postflight0-in-recorded-stages-original-wrapper1",
     "record": "./mechanism-shorts-ms3-complete-installed149-results.json",
     "originalMainActualToolExitCode": 1,
@@ -1178,27 +1215,13 @@
     "allTenFinalHandoffPacketsVerified": true,
     "wholeReviewOrHumanAcceptance": false
   },
-  "currentInstalledCapabilities": {
-    "record": "./mechanism-shorts-ms3-installed131-capability-results.json",
-    "actualExitCode": 0,
-    "productionAndMediaDiscoveryExact": true,
-    "formattedGeneratedReferenceExact": true,
-    "productionSchemaReferences": 25,
-    "proseGuidesExact": 3,
-    "schemaReferenceLocation": "held source checkout, not bundled archive members",
-    "retainedFailedProbe130": true,
-    "completeSource107PayloadByteExact": true,
-    "completeReportBytes": 14140,
-    "compactItems": 32,
-    "compactTruncated": false
-  },
-  "currentReviewVideos": {
+  "historical_currentReviewVideos": {
     "index": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-current-installed-review135/index.md",
     "episodes": 10,
     "source": "current installed final products including EU008 two-label repair",
     "wholeReviewOrOwnerApproval": false
   },
-  "remainingBeforeFinalProductAudits139": [
+  "historical_remainingBeforeFinalProductAudits139": [
     "Complete current installed all10/6181/EU008 repair lifecycle56598, then independently audit the final ten packet/native/decoded picture/original narration closures. Complete full119, standard package121 and full closure copy now pass; preserve19 existing timing deferrals and all prior failures.",
     "After actual full0, run the prepared standard offline package matrix, audit/install its exact archive, copy the complete independently hashed native closure, and execute a fresh current-installed queue/run/report/resume/ten-handoff lifecycle for all10 actual episodes. Original3df products and archive85/prepared86 are historical bindings.",
     "Independently audit current ten receiving packets and complete encoded picture/original narration closure. Fresh receiving validation must not reset original first-pass1/10 or nine failed attempts, manufacture comparable paired tokens, or infer review acceptance.",
@@ -1206,45 +1229,112 @@
     "Complete whole factual/design, mechanical, encoded glyph/readability, normal-speed continuous motion and listening review; keep unsupported, unreviewed and human acceptance explicit. Current reviewed-ready/supported/accepted0/10.",
     "Reconcile all49 MS0-MS3 deliverables and their acceptance clauses against their exact source/evidence identities, current installed capability discovery and guides. Preserve candidate pack/finer Thai limits, prior failures and open upstream PRs; no routine merge, publishing or inferred human acceptance."
   ],
-  "remainingBeforeComplete149": [
+  "historical_remainingBeforeComplete149": [
     "Finish actual main56598 final repair-command closure/report/resume/all ten current CLI handoffs and its real terminal on the verified archive/source. Independent final-product audits now actually pass all10/6181 and do not substitute for that lifecycle terminal.",
     "After those commands complete, independently reconcile all ten current CLI handoff packets against the final manifest, current product/artifact bindings and refreshed receiving resume paths. Sealed product/evidence/audio/native audits are already complete.",
     "Complete or retain genuine whole factual/design, mechanical, encoded-glyph, normal-speed motion/listening and owner review. Ten current videos, including revised EU008, are available in review135; feedback requested. Original first-pass1/10/nine failures/null paired tokens and reviewed-ready/supported/accepted0 remain unchanged.",
     "Reconcile all49 deliverables/26 cross-cutting clauses/21 traceability rows with final full125/package126/capability131+136/product139/current lifecycle evidence, preserving old staged/failed qualifications, unavailable six older raw paths, existing19 timing deferrals and unmet/unmeasured pilot targets."
   ],
-  "currentProjectSnapshot150": {
-    "record": "./mechanism-shorts-ms3-project150-results.json",
-    "fileCount": 20889,
-    "logicalBytes": 16909710619,
-    "uniqueContentBytes": 4385935468,
-    "independentOriginalInodes": true,
-    "isAnotherExecutedRelocationProof": false
-  },
-  "previousCompletePackage126": {
-    "record": "./mechanism-shorts-ms3-package126-results.json",
-    "actualSession": 52914,
-    "actualExitCode": 0,
-    "sourceCommit": "1dbee06a67813ad14c06315798782dcc9318e3ff",
-    "standardChecks": 27,
-    "members": 2573,
-    "correspondingSources": 1051,
-    "nativeDiagnosticControls": 13,
-    "retryControls": 4,
-    "nativeClosureFiles": 5223,
-    "inputFiles": 115,
-    "copiedBytes": 2207274134,
-    "allCopiedHashesVerified": true
-  },
-  "currentIdentityPilot151": {
+  "historical_currentIdentityPilot151": {
     "status": "running",
     "record": "./mechanism-shorts-ms3-current151-preparation-results.json",
     "actualSession": 14257,
     "currentQueueActualExitCode": 0,
     "sourcePackage": "ef9db6e50f83745624af51c43c7abe583b162759"
   },
-  "remainingBeforeFresh151": [
+  "historical_remainingBeforeFresh151": [
     "Finish isolated newer-prerequisite candidate143 affected browser/package and updated installed-runtime follow-up before delivering its source to PR58. Original full119 remains earlier-source evidence; retain scoped follow-up qualifications.",
     "Reconcile49 deliverables/26 cross-cutting clauses/21 traceability rows against final evidence, preserving original56598 bookkeeping1/corrected1490, staged runtime146, six older raw-path gaps,19 timing deferrals and unmet/unmeasured targets.",
     "Whole factual/design/mechanical/encoded-glyph/normal-speed/listening and owner review remain open on review135. Original first-pass1/10/nine failures/null paired tokens and reviewed-ready/supported/accepted0 remain unchanged."
-  ]
+  ],
+  "currentPackageGate": "Current package145 actual0 and current151-154-160 runtime/product closure pass in their declared scopes. Complete historical full119 retains1c binding; current0da scoped followups143/146/144 apply. Whole and owner review remain pending.",
+  "currentPilotProduction": {
+    "record": "./mechanism-shorts-ms3-current160-results.json",
+    "runtimeIdentity": {
+      "codeSha256": "sha256:6ec6096e62ac78fe326bd895e15d222597f83abf9b4d7a910de6e5fdb54e37b1",
+      "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+      "profile": {
+        "backend": "blender-native",
+        "blenderExecutableSha256": "sha256:f5c1f2a0c0bca3389ec772d355242b700975ea84e66cbb3f5257a7bce8e5adeb",
+        "blenderVersion": "Blender 5.2.2 LTS\n\tbuild date: 2026-09-15\n\tbuild time: 01:49:19\n\tbuild commit date: 2026-09-14\n\tbuild commit time: 15:14\n\tbuild hash: d13f752e3b9c\n\tbuild branch: blender-v5.2-release\n\tbuild platform: Darwin\n\tbuild type: Release\n\tbuild c flags:  -Wall -Werror=implicit-function-declaration -Werror=return-type -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wstrict-prototypes -Wmissing-prototypes -Wunused-parameter -Wundef -Wundef-prefix -Werror=unguarded-availability-new  -mmacosx-version-min=11.2  -std=gnu11  -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild c++ flags:  -Wall -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wno-overloaded-virtual -Wno-sign-compare -Wno-invalid-offsetof -Wno-suggest-override -Wundef -Wundef-prefix -Wunused-parameter -Wmismatched-tags -Werror=unguarded-availability-new  -mmacosx-version-min=11.2 -ftemplate-depth=1024   -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild link flags: -fexceptions -framework CoreServices -framework Foundation -framework IOKit -framework AppKit -framework Cocoa -framework Carbon -framework AudioUnit -framework AudioToolbox -framework CoreAudio -framework Metal -framework QuartzCore -framework CoreImage -framework OpenGL -framework Accelerate -liconv -Xlinker -no_warn_duplicate_libraries\n\tbuild system: CMake",
+        "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
+        "receiverProfileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+      }
+    },
+    "currentReceivingPhase": {
+      "completed": 10,
+      "passed": 10,
+      "rate": 1,
+      "unverified": 0,
+      "targetSatisfied": true
+    },
+    "originalPilotMetrics": {
+      "firstPassPassed": 1,
+      "denominator": 10,
+      "failedAttempts": 9,
+      "pairedTokens": null,
+      "accepted": 0
+    },
+    "wholeReviewOrHumanAcceptance": false
+  },
+  "currentInstalledLifecycle": {
+    "record": "./mechanism-shorts-ms3-current160-results.json",
+    "actualSession": 14257,
+    "actualExitCode": 0,
+    "episodes": 10,
+    "frames": 6181,
+    "cliCalls": 5,
+    "currentCliHandoffs": 1,
+    "independentlyVerifiedSealedSnapshots": 10,
+    "currentRuntimeIdentity": {
+      "codeSha256": "sha256:6ec6096e62ac78fe326bd895e15d222597f83abf9b4d7a910de6e5fdb54e37b1",
+      "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+      "profile": {
+        "backend": "blender-native",
+        "blenderExecutableSha256": "sha256:f5c1f2a0c0bca3389ec772d355242b700975ea84e66cbb3f5257a7bce8e5adeb",
+        "blenderVersion": "Blender 5.2.2 LTS\n\tbuild date: 2026-09-15\n\tbuild time: 01:49:19\n\tbuild commit date: 2026-09-14\n\tbuild commit time: 15:14\n\tbuild hash: d13f752e3b9c\n\tbuild branch: blender-v5.2-release\n\tbuild platform: Darwin\n\tbuild type: Release\n\tbuild c flags:  -Wall -Werror=implicit-function-declaration -Werror=return-type -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wstrict-prototypes -Wmissing-prototypes -Wunused-parameter -Wundef -Wundef-prefix -Werror=unguarded-availability-new  -mmacosx-version-min=11.2  -std=gnu11  -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild c++ flags:  -Wall -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wno-overloaded-virtual -Wno-sign-compare -Wno-invalid-offsetof -Wno-suggest-override -Wundef -Wundef-prefix -Wunused-parameter -Wmismatched-tags -Werror=unguarded-availability-new  -mmacosx-version-min=11.2 -ftemplate-depth=1024   -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild link flags: -fexceptions -framework CoreServices -framework Foundation -framework IOKit -framework AppKit -framework Cocoa -framework Carbon -framework AudioUnit -framework AudioToolbox -framework CoreAudio -framework Metal -framework QuartzCore -framework CoreImage -framework OpenGL -framework Accelerate -liconv -Xlinker -no_warn_duplicate_libraries\n\tbuild system: CMake",
+        "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
+        "receiverProfileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+      }
+    },
+    "wholeReviewOrHumanAcceptance": false
+  },
+  "currentReviewVideos": {
+    "record": "./mechanism-shorts-ms3-delivery161-results.json",
+    "index": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current-review161/index.md",
+    "episodes": 10,
+    "source": "Exact actual current151 outputs in independently copied snapshot161",
+    "wholeReviewOrOwnerApproval": false
+  },
+  "currentIdentityPilot151": {
+    "status": "passed-separate-current-identity-receiving-phase",
+    "record": "./mechanism-shorts-ms3-current160-results.json",
+    "actualSession": 14257,
+    "actualExitCode": 0,
+    "sourcePackage": "ef9db6e50f83745624af51c43c7abe583b162759",
+    "doesNotResetOriginalPilotMetrics": true
+  },
+  "currentAcceptanceReconciliation": {
+    "record": "./mechanism-shorts-acceptance-reconciliation162-results.json",
+    "deliverables": 49,
+    "acceptanceClauses": 26,
+    "traceabilityRows": 21,
+    "technicalImplementationDelivered": true,
+    "pilotProductAcceptance": false
+  },
+  "currentProjectSnapshot": {
+    "record": "./mechanism-shorts-ms3-delivery161-results.json",
+    "status": "retained-exact-current151-data-and-verified-package-not-another-executed-relocation",
+    "fileCount": 19555,
+    "logicalBytes": 15662571517,
+    "uniqueContentBytes": 4359019374,
+    "uniqueFiles": 8216,
+    "allFilesIndependentOfOriginalInodes": true,
+    "archive": {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current-project161/still-shift-0.1.1.tgz",
+      "bytes": 5469414,
+      "sha256": "sha256:4f41bd80ddf63837fba98206c2d961e40c0a5314b5d02470c2e6905b2266325f"
+    },
+    "isAnotherExecutedRelocationProof": false
+  }
 }
