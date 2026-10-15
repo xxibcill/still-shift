@@ -52,7 +52,9 @@ still hold before relying on them.
   passes: five cue tests reject an old empty audio cache entry. Source2,793 inputs
   stay exact. Same-fixture fresh-cache probe and owning5+corrupt-fallback control6
   pass unchanged; existing cache preserved. Full91 runs as42543 on3749618d with a newly empty isolated cache
-  after successful MS2 private package91 qualification. Original
+  after successful MS2 private package91 qualification. Current observed prefix
+  passes4,594 units/346 runtime, including all5 prior cue failures; integration is
+  in progress, with no full or benchmark pass inferred. Original
   products and failed first attempts retain their original identities; accepted0/10,
   measured first-pass10% below90% and paired savings null.
   [Terminal](./mechanism-shorts-ms3-first-ten-terminal90-results.json),
@@ -237,6 +239,18 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Full91 clears the prior cache failures under unchanged tests
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, live held source3749618d.
+- **Observed:**4,594 units/455 files and346 runtime/60 files pass, including the
+  five previous cue failures. New isolated media cache resolves the diagnosed
+  setup problem while the original empty cache entry remains preserved/rejected.
+- **Evidence:** immutable raw log prefix and dated snapshot retained; integration
+  is in progress. This is no full aggregate/render matrix/benchmark pass.
+- **Open:** get actual42543 terminal and final source hold, then current MS3 package/
+  installed and whole/fault-budget gates. No other renderer group or code change.
+- **Records:** [Live full attempt](./mechanism-shorts-ms3-final91-full-gate-results.json).
 
 ### 2026-10-15 — Correct stale milestone summaries while full91 runs
 

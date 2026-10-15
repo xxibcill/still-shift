@@ -40,5 +40,25 @@
   },
   "frozen": "All held source/root/ROADMAP inputs until actual42543 terminal. No parallel browser/native-render/video-export group. Milestone evidence/dev-log excluded.",
   "expectedCompute": "Prior complete matrix5h35m; current larger matrix can take comparably long. No completion time promised.",
-  "scope": "Full current software/benchmark only. Running is not pass. Original ten products retain3df/runtime1090, first-pass10% and null paired tokens; archive/installed/whole/human/fault gates remain."
+  "scope": "Full current software/benchmark only. Running is not pass. Original ten products retain3df/runtime1090, first-pass10% and null paired tokens; archive/installed/whole/human/fault gates remain.",
+  "progressSnapshots": [
+    {
+      "observedUtc": "2026-10-15T01:19:51.713968+00:00",
+      "sourceCommit": "3749618d64dfa35a57b2e4f34da5b6722ac9c089",
+      "unifiedSession": 42543,
+      "status": "live-full-command-prefix-passed-integration-in-progress",
+      "observedUnits": 4594,
+      "observedUnitFiles": 455,
+      "observedRuntime": 346,
+      "observedRuntimeFiles": 60,
+      "previouslyFailedCueChecks": 5,
+      "previouslyFailedCueChecksNow": "passed unchanged in full run with fresh isolated cache",
+      "immutableLogPrefix": {
+        "path": "/private/tmp/still-shift-ms3-final91-progress1.log",
+        "bytes": 89846,
+        "sha256": "sha256:d05e32c1dc778b67d84970fbfaed5a38b8fc97b57ef2b3490f7f60dab0b0a8fc"
+      },
+      "qualification": "Observed prefix only. Full aggregate/render matrix/benchmark not passed or completed."
+    }
+  ]
 }
