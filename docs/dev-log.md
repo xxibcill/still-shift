@@ -43,6 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
+- **MS3 prerequisite merge reviewed in isolation (2026-10-15):** merged current
+  main/MS1 and MS1N repair ancestry40330672 into isolated659e5b76. Five conflicts
+  preserve later four-format/PBR admission, Float32 visibility, located diagnostics
+  and versioned catalogue resolution while adding upstream displayed-copy, panel,
+  clipping and all-shot reference fixes. Standards0/Spec0; focused73/6 and fast
+  4,594/455 pass. Original producer58827/runtime1090 remains unchanged and live;
+  no new renderer group. Archive85/prepared86 qualify earlier source only.
+  Current full/runtime/package gates, MS2 prerequisite repairs and whole reviews
+  remain open. [Integration evidence](./mechanism-shorts-ms3-prerequisite-integration89-results.json).
+
 - **MS3 CPU gates and integration rehearsal (2026-10-15):** isolated26c4/codee231
   now owns a locked offline Python3.12.11 environment pointing only to its own
   service source. Depth14, Python format/lint and soundtrack lint pass;12 existing
@@ -261,6 +271,18 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Reconcile current MS1 prerequisites in idle MS3 repair
+
+- **Agent / branch:** Codex on `codex/ms3-review-fixes`, parents659e5b76/40330672.
+- **Done:** five merge conflicts resolved, retaining MS2/MS3 contracts and current
+  main/MS1 repairs; both independent review axes report no findings.
+- **Results:** focused73/6 and fast4,594/455 pass; no GPU/runtime/whole gate claimed.
+- **Retained:** initial conflict exit1; preflight87 is narrower than this merge.
+  Archive85/prepared86 remain bound to their earlier source, with no evidence transfer.
+- **Open:** preserve live58827 source until terminal, then current full/package
+  verification and stacked MS2 repairs; actual EU001–EU010 whole reviews stay open.
+- **Records:** [Prerequisite integration](./mechanism-shorts-ms3-prerequisite-integration89-results.json).
 
 ### 2026-10-15 — MS3 CPU-only gate and exact integration preflight
 

@@ -1,0 +1,159 @@
+{
+  "schemaVersion": "still-shift-pr-fixes-1",
+  "date": "2026-10-14",
+  "timezone": "Asia/Bangkok",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/52",
+  "reviewedHead": "15c4bd537ba035d8b16653a11fb79dbd397b4a17",
+  "branch": "codex/pr52-clipping-preflight-fixes",
+  "reviewId": 5513478797,
+  "pushPolicy": "One commit per finding; push both commits together only after the second and final finding commit.",
+  "findings": [
+    {
+      "id": "camera-clipped-occluder",
+      "commentId": 4267137457,
+      "commentUrl": "https://github.com/xxibcill/still-shift/pull/52#discussion_r4267137457",
+      "status": "committed-awaiting-combined-push",
+      "implementation": "Filter opaque ray intersections using perpendicular camera-space depth and the active near/far clip planes. Preserve material-group/cutout handling and continue to later visible blockers. Browser source identity automatically invalidates old captures.",
+      "verification": {
+        "regressionTests": 3,
+        "baseline": "Two centered/off-axis cases fail before the fix; positive in-view blocker control passes.",
+        "captureTests": 14,
+        "captureStatus": "passed",
+        "typeCheck": "passed"
+      },
+      "commit": "b1ebafa4516e6b7f0e33dcc678c81e5f23012bfb"
+    },
+    {
+      "id": "shot-reference-preflight",
+      "commentId": 4267137464,
+      "commentUrl": "https://github.com/xxibcill/still-shift/pull/52#discussion_r4267137464",
+      "status": "fixed-in-containing-final-slice",
+      "implementation": "Shared read-only scene inspection checks every shot control rig and hidden part against the loaded scene. Preserve all independent findings with stable diagnostic codes and shot/property paths; loader, deps, CLI validate and preparation share the same early rejection.",
+      "verification": {
+        "newRegressionTests": 2,
+        "expandedAggregationTest": 1,
+        "baseline": "Both final-shot controls and the expanded mixed geometry/anchor/rig/part fixture fail before the fix (three assertion failures).",
+        "focusedTests": 24,
+        "focusedStatus": "passed",
+        "sourcePreservation": "Both final-shot negative cases leave the preparation directory empty and source byte/size/mtime snapshots unchanged."
+      },
+      "commit": "Containing second and final finding commit"
+    }
+  ],
+  "retainedFailures": [
+    "Two new camera-clipping regressions reproduce erroneous occlusion before the fix; retained red log.",
+    "Preflight baseline retains three expected failures: the expanded independent-finding fixture and the two final-shot rig/part controls.",
+    "Initial uv sync --frozen --offline failed because the Ruff wheel was unavailable in the local cache. Cloning the existing pinned primary environment into this worktree and resynchronizing its editable package offline succeeded; the primary environment was not modified."
+  ],
+  "delivery": {
+    "status": "verified-for-one-final-push-after-second-commit",
+    "target": "origin/codex/mechanism-ms1",
+    "expectedRemoteHead": "15c4bd537ba035d8b16653a11fb79dbd397b4a17",
+    "findingCommits": 2,
+    "mergeDecision": "Owner review pending"
+  },
+  "limits": [
+    "No paid generation, publication, merge, new full E01 production run or human visual/listening acceptance."
+  ],
+  "evidence": [
+    {
+      "path": "/private/tmp/pr52-rereview-fixes-install.log",
+      "bytes": 728,
+      "sha256": "631c9f8089b547729bb5b10fd488a8835a5e8ae8e70752ea93e85f76a7faf4bb"
+    },
+    {
+      "path": "/private/tmp/pr52-fix-clipping-red.log",
+      "bytes": 3739,
+      "sha256": "fd47dbd463939a7299e43e4a088533e697daca40bf8b03c3ae88dcd7114a5a89"
+    },
+    {
+      "path": "/private/tmp/pr52-fix-clipping-green.log",
+      "bytes": 2331,
+      "sha256": "54a03c7c78240418c082395f182f1d67a6a127ccee4fe107513a3e1fc80b274a"
+    },
+    {
+      "path": "/private/tmp/pr52-fix-clipping-build.log",
+      "bytes": 108,
+      "sha256": "800df4ef1c5d3a5a4d2be27953c60ad4427cbd9c7aa2ff0b338c52fd085353ec"
+    },
+    {
+      "path": "/private/tmp/pr52-fix-preflight-red.log",
+      "bytes": 3888,
+      "sha256": "9c97e11136c845040820ecc5d76f65a78ea6eeabfa8f4ca60fd7f1f765101ec9"
+    },
+    {
+      "path": "/private/tmp/pr52-fix-preflight-green.log",
+      "bytes": 1841,
+      "sha256": "fb8f0409e8700817ecca4c2ac86a7b29a271a3a14237bb3f32f37cc5945333c5"
+    },
+    {
+      "path": "/private/tmp/pr52-rereview-fixes-python-setup.log",
+      "bytes": 479,
+      "sha256": "eb24ccc29a3eec36890f1ea2a5e312250384f99aba93ec92e700daec5d64197a"
+    },
+    {
+      "path": "/private/tmp/pr52-rereview-fixes-python-setup-rerun.log",
+      "bytes": 514,
+      "sha256": "8b1d82290779dc15505ce503ade1632359ee7c10370cda9f59547f80bf44f314"
+    },
+    {
+      "path": "/private/tmp/pr52-rereview-fixes-fast.log",
+      "bytes": 28400,
+      "sha256": "e30d318116fa5589c6b1d446f2512d7c7dfe9dc63528445ba51c57e60c93ccba"
+    },
+    {
+      "path": "/private/tmp/pr52-rereview-fixes-runtime.log",
+      "bytes": 35068,
+      "sha256": "9fcf82d96312afe455e634a7324817db294ada8aed6a8129b4d1464e5845bea9"
+    }
+  ],
+  "verification": {
+    "aggregateFast": {
+      "status": "passed",
+      "command": "pnpm check:fast",
+      "unitTests": 3785,
+      "unitFiles": 357
+    },
+    "aggregateRuntime": {
+      "status": "passed",
+      "command": "pnpm check:runtime",
+      "runtimeTests": 156,
+      "runtimeFiles": 22,
+      "integrationTests": 318,
+      "integrationFiles": 54,
+      "pythonTests": 14,
+      "browserSmoke": "passed",
+      "mechanismTestsIncluded": 71,
+      "continuationRequired": false
+    },
+    "independentReview": {
+      "standards": "No actionable defects",
+      "spec": "Both findings fixed; no actionable defects",
+      "scope": "Both code and regression-test diffs; read-only independent reviews"
+    },
+    "sourceAndTestHashes": {
+      "packages/animation-engine/src/mechanism/browser.ts": "543c1e60597c28d5c4dbf130717d277e3a0921e27529f210568c7f5b18f24423",
+      "packages/animation-engine/src/mechanism/io.ts": "f0a82f1a357ae1886f831c57e24965dda0ddfc2f611873a246295fc4dbc0d07e",
+      "tests/runtime/mechanism-capture.test.ts": "050e87bd980567cc79d2281e92d330c0db39a4d8f1df47c64294b9c575800971",
+      "tests/runtime/mechanism-dependencies.test.ts": "1dac07383696e1c8569eb512c66325ca083840a462969b290dc8927fefe6109c"
+    },
+    "toolchain": {
+      "node": "22.23.1",
+      "pnpm": "10.29.3",
+      "python": "3.12.11",
+      "playwright": "1.62.1",
+      "chromiumRevision": "1234",
+      "ffmpeg": "8.0.1"
+    },
+    "pythonEnvironment": {
+      "depth": "Isolated APFS clone resynchronized to worktree source with locked packages",
+      "soundtrack": "Existing pinned primary soundtrack runtime selected explicitly",
+      "soundtrackVersions": {
+        "dawdreamer": "0.9.0",
+        "numpy": "2.3.3",
+        "scipy": "1.16.2"
+      },
+      "primaryEditablePackagePreserved": true
+    }
+  }
+}

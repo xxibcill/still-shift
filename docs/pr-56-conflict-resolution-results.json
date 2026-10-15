@@ -1,0 +1,201 @@
+{
+  "schemaVersion": "pr-conflict-resolution-1",
+  "date": "2026-10-15",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/56",
+  "branch": "codex/mechanism-ms1n",
+  "originalHead": "bf30a2533c516bec0dcbfa3fd2c1c676babf477f",
+  "mergedMain": "b376514285e4819bdd14361e3467ecf085cf0b9d",
+  "mergeBase": "13b62b842c6d5a14ad9c1ed4ab045e568860be2c",
+  "prerequisites": {
+    "51": "merged at 57967fa6",
+    "52": "merged at b3765142, including all five review fixes through 6dae12cd"
+  },
+  "resolutions": {
+    "packages/animation-engine/src/mechanism/browser.ts": "Keep shared native Three world and inherited visibility; preserve float-uniform cutout filtering and camera-space near/far clipping from main. Remove duplicate pre-refactor world/texture helpers.",
+    "packages/animation-engine/src/mechanism/overlays.ts": "Keep common panel layouts and protected-region checks from main; retain optional sidecars and live native anchor binding from MS1N.",
+    "packages/renderer-core/src/composition/quality-samples.ts": "Retain both native paint-state inspection and shaped-case semantic copy helpers.",
+    "docs/dev-log.md": "Combine both histories, update merged prerequisite status and add this session record.",
+    "tests/runtime/mechanism-dependencies.test.ts": "Require ENOENT for the preparation directory after invalid-shot preflight. Native route selection now validates before any directory creation; both exact diagnostics and unchanged source snapshots remain asserted."
+  },
+  "verifiedInputs": {
+    "method": "Sorted path/byte-length/SHA-256 aggregate for tracked apps, packages, scripts, tests, tools and services plus root build/lock manifests; before/after unchanged",
+    "files": 1689,
+    "bytes": 39226319,
+    "sha256": "28d89c5386a3c384fd5ee6804cb1748820d05956b3b242a16727ed6a2cf07af7"
+  },
+  "resolvedSourceSha256": {
+    "packages/animation-engine/src/mechanism/browser.ts": "ede258d301f1a78f05d47f5cb95fa4e116a59cf832971f8de2680d1487806a03",
+    "packages/animation-engine/src/mechanism/overlays.ts": "fa06ca2e19fc6bcf1d863303af9fb2482b0fbb81ed3419a7248b21c3305d54be",
+    "packages/renderer-core/src/composition/quality-samples.ts": "355c62f7d6b632920ff0e95a0e672094e9d68a1b2c3a48e8d7906ed9629bbcef",
+    "tests/runtime/mechanism-dependencies.test.ts": "30b5acb8d68ef663b61d2c6c0d4c1ad90418a03702bc78ebc1c35a9cabfae2de"
+  },
+  "verification": [
+    {
+      "command": "pnpm check:fast (initial)",
+      "exitCode": 0,
+      "unitTests": 3929,
+      "log": "check-fast"
+    },
+    {
+      "command": "pnpm check:runtime (initial)",
+      "exitCode": 1,
+      "runtimeTestsPassed": 183,
+      "runtimeTestsFailed": 2,
+      "reason": "New main regressions expected an empty output directory; PR #56 rejects before directory creation. Integration/depth/smoke were not reached.",
+      "log": "check-runtime"
+    },
+    {
+      "command": "pnpm exec prettier --check tests/runtime/mechanism-dependencies.test.ts; pnpm exec vitest run tests/runtime/mechanism-dependencies.test.ts --maxWorkers=2 --no-file-parallelism",
+      "exitCode": 0,
+      "tests": 7,
+      "log": "dependencies-rerun"
+    },
+    {
+      "command": "pnpm check:fast (final)",
+      "exitCode": 0,
+      "unitTests": 3929,
+      "unitFiles": 381,
+      "log": "check-fast-final"
+    },
+    {
+      "command": "pnpm check:runtime (after preflight test repair)",
+      "exitCode": 1,
+      "runtimeTests": 185,
+      "integrationTestsPassed": 319,
+      "integrationTestsFailed": 2,
+      "vitestSummaries": [
+        "Test Files  27 passed (27)",
+        "Tests  185 passed (185)",
+        "Tests 2 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+        "Test Files  1 failed | 55 passed (56)",
+        "Tests  2 failed | 319 passed (321)"
+      ],
+      "reason": "Two unchanged depth-worker-protocol cases exceeded the existing 5000ms budget in the fresh isolated environment. Python/depth/browser-smoke suffix was not reached.",
+      "log": "check-runtime-final"
+    },
+    {
+      "command": "pnpm exec vitest run tests/integration/depth-worker-protocol.test.ts --maxWorkers=2 --no-file-parallelism",
+      "exitCode": 0,
+      "tests": 5,
+      "testMilliseconds": 1527,
+      "sourceChanges": "none",
+      "limits": "Startup/cache timing is consistent with the unchanged fast rerun; the exact original timeout cause remains unproven. No assertions or timing limits changed.",
+      "log": "depth-protocol-rerun"
+    },
+    {
+      "command": "pnpm test:depth",
+      "exitCode": 0,
+      "tests": 14,
+      "log": "python-depth"
+    },
+    {
+      "command": "pnpm test:browser:smoke",
+      "exitCode": 0,
+      "log": "browser-smoke"
+    },
+    {
+      "command": "pnpm test:browser:native3d-depth",
+      "exitCode": 0,
+      "report": {
+        "status": "passed",
+        "depthCases": 14,
+        "compositionIntegrationCases": 5,
+        "cancellationDirectory": "/private/tmp/still-shift-native-export-cancel-Ywtsgp"
+      },
+      "directory": "/private/tmp/still-shift-ms1n-native-depth-IzRrJe",
+      "log": "native-depth"
+    },
+    {
+      "command": "runMechanismSemanticTypographyProof({outputDirectory: /private/tmp/pr56-semantic-proof})",
+      "exitCode": 0,
+      "cases": 24,
+      "basis": "hermetic-authored-contract",
+      "directory": "/private/tmp/pr56-semantic-proof",
+      "log": "semantic-typography"
+    },
+    {
+      "command": "git diff --check and unmerged-index/conflict-marker checks",
+      "exitCode": 0
+    }
+  ],
+  "logs": {
+    "check-fast": {
+      "path": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/pr-56-conflict-resolution-20261015/check-fast.log",
+      "sha256": "4bf43af4086ff9e545b4337faf1e9f27c492a2eccf13f9aea0109bfef9e3f7cf"
+    },
+    "check-runtime": {
+      "path": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/pr-56-conflict-resolution-20261015/check-runtime.log",
+      "sha256": "72b5ab713ad89b5ed06af3ff81aa1b4a6b50072d5994a9ae900a2a2977fa5525"
+    },
+    "dependencies-rerun": {
+      "path": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/pr-56-conflict-resolution-20261015/dependencies-rerun.log",
+      "sha256": "89937f916c042cc2116014a63aac1e44b98dfaac5d31b55457b516590afbae52"
+    },
+    "check-fast-final": {
+      "path": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/pr-56-conflict-resolution-20261015/check-fast-final.log",
+      "sha256": "dd55833206fb0465a8389b31139fe3e0a56f73381c3ec6200c7d46097e2e1236"
+    },
+    "check-runtime-final": {
+      "path": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/pr-56-conflict-resolution-20261015/check-runtime-final.log",
+      "sha256": "9649fd572d4fa8297df05e5b0bf7e188051e096f90be487cd63016a70fe91107"
+    },
+    "depth-protocol-rerun": {
+      "path": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/pr-56-conflict-resolution-20261015/depth-protocol-rerun.log",
+      "sha256": "f91c10390f1ed49a7e1278df15b7c195d83808c40c88d982f16dbe3ab1145f56"
+    },
+    "python-depth": {
+      "path": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/pr-56-conflict-resolution-20261015/python-depth.log",
+      "sha256": "48cf2a501d14528a9e70122d93bfbffc8d2dcd1b0beac01a2760dc8745ba893e"
+    },
+    "browser-smoke": {
+      "path": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/pr-56-conflict-resolution-20261015/browser-smoke.log",
+      "sha256": "4fae19eb6e150d26da70f27095d1a5095ebcb428823cfc57709658c5168153ff"
+    },
+    "native-depth": {
+      "path": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/pr-56-conflict-resolution-20261015/native-depth.log",
+      "sha256": "33384d67e5ab3bb1c5bd472ba36da4d3ec2b1c9f5374d5d7c3a82d99ca087baf"
+    },
+    "semantic-typography": {
+      "path": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/pr-56-conflict-resolution-20261015/semantic-typography.log",
+      "sha256": "634bb63e85cecf42ee20cd54a3918f110819a785a6d00bd133d5cdb14431596d"
+    }
+  },
+  "toolchain": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "uv": "0.7.12",
+    "playwright": "1.62.1",
+    "chromiumRevision": "1234",
+    "chromiumVersion": "151.0.7922.34",
+    "ffmpeg": "8.0.1"
+  },
+  "environment": {
+    "javascriptInstall": "pnpm install --frozen-lockfile --offline; 178 cached packages, zero downloads",
+    "pythonInstall": "uv sync --frozen; isolated worktree .venv",
+    "soundtrackRuntime": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/composition-ce16/runtime/bin/python"
+  },
+  "verificationSummary": {
+    "status": "complete in recorded stages",
+    "unitTests": 3929,
+    "runtimeTests": 185,
+    "uniqueIntegrationTests": 321,
+    "integrationBasis": "319 original passes plus all five protocol cases on unchanged rerun, including both originally timed-out cases; three repeated passes are not counted twice",
+    "pythonTests": 14,
+    "browserSmoke": "passed",
+    "uninterruptedRuntimeAggregatePass": false
+  },
+  "limits": [
+    "Both runtime aggregate failures remain failed; scoped unchanged rerun and the actual remaining suffix complete all required groups in stages.",
+    "No fresh full 176-item baseline, benchmark/release gate, installed-package archive or full E01 re-encode in this conflict-resolution session. Historical receipts retain their original source identities.",
+    "Human visual/listening and cross-driver appearance acceptance remain pending as previously recorded."
+  ],
+  "delivery": {
+    "method": "Merge current main into the PR head, then fast-forward push HEAD to codex/mechanism-ms1n; preserve both histories",
+    "mainAndProduction": "unchanged by this task",
+    "publication": "none",
+    "githubActionsChanges": "none",
+    "elevenLabsSpending": "none",
+    "primaryWorkingTree": "unrelated edits preserved"
+  }
+}

@@ -302,7 +302,7 @@ export function createTapeHookShots(): MechanismShot[] {
     [640, 830],
     [670, 690],
     [640, 740],
-    [140, 740],
+    [160, 740],
     [660, 690],
     [0, 0],
   ];

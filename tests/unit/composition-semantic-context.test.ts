@@ -636,3 +636,143 @@ describe("semantic correction artwork", () => {
     );
   });
 });
+
+describe("semantic copy uses shaped case transforms", () => {
+  function styledFixture() {
+    const data = fixture();
+    const value = data.comp.layers[0]!;
+    if (value.type !== "text") throw new Error("Expected text");
+    value.text = "ß";
+    value.fontAsset = "plex";
+    value.style = "upper";
+    data.comp.assets = [
+      {
+        id: "plex",
+        type: "font",
+        path: "font.ttf",
+        sha256: "sha256:" + "a".repeat(64),
+        weight: "600",
+      },
+    ];
+    data.comp.textStyles = {
+      upper: { fontAsset: "plex", case: "upper" },
+      lower: { fontAsset: "plex", case: "lower" },
+    };
+    const declaration = {
+      id: "phrase",
+      purpose: "Read displayed copy",
+      start: 0,
+      end: 90,
+      members: [{ layer: "value", text: "SS", kind: "value" as const }],
+    };
+    data.policy.semanticAssociations = [{ ...declaration, kind: "phrase" }];
+    data.policy.readingDeclarations = [declaration];
+    return { ...data, value, declaration };
+  }
+  it("accepts shaped uppercase copy and rejects the untransformed source in semantic and reading checks", () => {
+    const { comp, policy, declaration } = styledFixture();
+    expect(
+      compositionQualityFrame(comp, 0, policy.evaluation).layers.get("value")
+        ?.text,
+    ).toBe("SS");
+    const accepted = analyzeCompositionQuality(comp, policy);
+    expect(accepted.semantic.status).toBe("passed");
+    expect(accepted.readingDeclarations?.[0]).toMatchObject({
+      eligible: true,
+      longestReadableFrames: 90,
+    });
+    declaration.members[0]!.text = "ß";
+    const rejected = analyzeCompositionQuality(comp, policy);
+    expect(semanticFindings(rejected)).toContainEqual(
+      expect.objectContaining({
+        code: "semantic-copy-changed",
+        frames: [0, 89],
+      }),
+    );
+    expect(rejected.readingDeclarations?.[0]?.eligible).toBe(false);
+  });
+  it("resolves locale and span styles per source grapheme like the shaper", () => {
+    const { comp, policy, value, declaration } = styledFixture();
+    value.text = "iIß";
+    value.locale = "tr";
+    value.spans = [{ id: "lowercase", start: 1, end: 2, style: "lower" }];
+    declaration.members[0]!.text = "İıSS";
+    expect(
+      compositionQualityFrame(comp, 0, policy.evaluation).layers.get("value")
+        ?.text,
+    ).toBe("İıSS");
+    expect(analyzeCompositionQuality(comp, policy).semantic.status).toBe(
+      "passed",
+    );
+    value.text = "ΟΣ";
+    value.locale = "el";
+    value.style = "lower";
+    value.spans = [];
+    expect(
+      compositionQualityFrame(comp, 0, policy.evaluation).layers.get("value")
+        ?.text,
+    ).toBe("οσ");
+  });
+  it.each(["component.typography@1.0.0", "component.typography@1.1.0"])(
+    "uses %s provider styles rather than composition styles",
+    (provider) => {
+      const { comp, policy, value } = styledFixture();
+      comp.textStyles!.upper!.case = "lower";
+      comp.layers[0] = {
+        id: "value",
+        type: "provider",
+        provider,
+        assets: ["plex"],
+        bounds: [0, 0, 100, 48],
+        transform: { position: [140, 60] },
+        params: {
+          node: JSON.parse(JSON.stringify(value)),
+          frameCount: 90,
+          textStyles: { upper: { fontAsset: "plex", case: "upper" } },
+          samples: [{ state: 0, reveal: 1 }],
+        },
+      };
+      expect(
+        compositionQualityFrame(comp, 0, policy.evaluation).layers.get("value")
+          ?.text,
+      ).toBe("SS");
+      expect(analyzeCompositionQuality(comp, policy).semantic.status).toBe(
+        "passed",
+      );
+    },
+  );
+  it("keeps distinct partial transitions unassessed even when transformed endpoint strings match", () => {
+    const { comp, policy, value } = styledFixture();
+    value.states = ["ß", "ss"];
+    value.transition = { kind: "retype", window: { start: 0, end: 60 } };
+    const sample = compositionQualityFrame(
+      comp,
+      30,
+      policy.evaluation,
+    ).layers.get("value");
+    expect(sample?.text).toBeUndefined();
+    expect(sample?.textCopies).toEqual(["SS", "SS"]);
+  });
+  it("applies base case to replacement artwork without inheriting source span styles", () => {
+    const { comp, policy, value } = styledFixture();
+    value.text = "i";
+    value.spans = [{ start: 0, end: 1, style: "lower" }];
+    value.corrections = [{ start: 10, end: 30, replacement: "ß" }];
+    expect(
+      compositionQualityFrame(comp, 30, policy.evaluation).layers.get("value"),
+    ).toMatchObject({ textCopies: ["i", "SS"] });
+  });
+  it("preserves raw copy on system-font text that does not use typography shaping", () => {
+    const { comp, policy, value } = styledFixture();
+    value.fontAsset = undefined;
+    value.style = undefined;
+    expect(
+      compositionQualityFrame(comp, 0, policy.evaluation).layers.get("value")
+        ?.text,
+    ).toBe("ß");
+    expect(
+      compositionQualityFrame(comp, 30, policy.evaluation).layers.get("value")
+        ?.text,
+    ).toBe("ß");
+  });
+});
