@@ -159,5 +159,26 @@
     "python3 /private/tmp/still-shift-ms3-package121-run1.py --terminal-admission /private/tmp/still-shift-ms3-final119-terminal1.json",
     "python3 /private/tmp/still-shift-ms3-postgate121-cache-copy1.py --copy --consumer /private/tmp/still-shift-ms3-package93-consumer --terminal-admission /private/tmp/still-shift-ms3-final119-terminal1.json",
     "python3 /private/tmp/still-shift-ms3-package121-lifecycle1.py --terminal-admission /private/tmp/still-shift-ms3-final119-terminal1.json"
-  ]
+  ],
+  "currentReadiness122": {
+    "record": {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package121-preparation/current-readiness122.json",
+      "bytes": 1411,
+      "sha256": "sha256:d6e4f69d20618d16cfb6c3501d4f9056ed9e8d4fa74bf14e01dd7c45376207cb"
+    },
+    "status": "exact-existing-closure-metadata-and-size-readiness-not-binary-hash-or-installed-proof",
+    "closureEqualsPrepared93": true,
+    "episodes": 10,
+    "frames": 6181,
+    "inputFiles": 115,
+    "inputBytes": 130642814,
+    "nativeFiles": 5223,
+    "nativeBytes": 2076631320,
+    "selectedCaptureDirectories": 34,
+    "captureFrames": 1758,
+    "requiredIndexKeys": 1571,
+    "diagnosticFixtureFilesPresent": 14,
+    "newDestinationsCreated": false,
+    "binaryCacheHashAndCopyStillRequired": true
+  }
 }

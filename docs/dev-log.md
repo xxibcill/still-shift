@@ -60,7 +60,9 @@ still hold before relying on them.
   before side effects. Standard package matrix, exact archive, all10/6,181,
   full5,223-file cache closure,12-root denials/worker block and EU008 repair remain.
   No runtime package/copy/lifecycle started; exact helpers retained locally.
-  [Preparation](./mechanism-shorts-ms3-installed121-preparation-results.json).
+  Fresh read-only122 confirms the exact complete closure metadata/sizes,115 inputs
+  and14 installed-diagnostic fixture files remain available; binary hashes/copy
+  and real execution stay pending. [Preparation/readiness](./mechanism-shorts-ms3-installed121-preparation-results.json).
 
 - **Actual full113 failure/owning118 (2026-10-15):** real8967 exits1 after
   4984.34s; source2793/122,415,742B exact. Canvas story/calibration-pan timing
@@ -366,6 +368,9 @@ still hold before relying on them.
 - **Results:** syntax and three actual-live refusal controls pass before any new
   package/copy/lifecycle output;2,793 source inputs remain exact. Exact12 helper/
   preparation copies retained locally. Actual package/all10 execution not begun.
+  Read-only122 rechecks exact metadata/sizes for the full10/6181 closure plus115
+  inputs/14 diagnostic fixtures, with no binary-cache hashing/copy or new receiver.
+  Exact dated readiness receipt is retained locally; full119 remains live.
 - **Open / next:** await actual71989 terminal; retain full raw evidence, then run
   standard package and independent all10/6,181/EU008 repair only on genuine0.
 - **Records:** [Prepared121](./mechanism-shorts-ms3-installed121-preparation-results.json).
