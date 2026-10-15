@@ -43,6 +43,18 @@ still hold before relying on them.
 
 ## Current state
 
+- **Acceptance reconciliation114 (2026-10-15):**49 deliverable scopes/26 broader
+  clauses/21 traceability rows reviewed. Fresh MS0 originals27/archive payloads25
+  plus manifest/source-copy pairs13 all match.24 selected retained raw pins match;
+  6 older MS1/MS1N temporary paths are unavailable, with committed historical
+  results retained and no fresh-pass inference. Original no-Blender-runtime
+  boundary versus optional actual-first-ten Blender producer needs human
+  clarification; no amendment inferred. Default Three route remains separate.
+  Full113 actual8967 remains live; units4594/runtime346/integration324 pass,
+  browser/recovery/benchmark/current archive/all10 installed gates stay open.
+  All2793 held source inputs remain exact. No new render/spending or source edit.
+  [Acceptance audit](./mechanism-shorts-acceptance-audit114-results.json).
+
 - **MS3 actual first ten and final source (2026-10-15):** actual EU001–EU010
   original3df/runtime1090 lifecycle completes all13 stages and10 independent
   handoff audits, with both real terminal handles0. Saved videos preserve complete
@@ -288,6 +300,25 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Reconcile acceptance scopes and evidence availability114
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` after16f7e5ad.
+- **Audit:**49 deliverables,26 cross-cutting clauses and SS01–12/A1–9 mapped;
+  actual MS0 hash/ZIP/baseline comparison passes.24 raw pins exact;6 older
+  MS1/MS1N temporary paths unavailable after bounded alternate-copy search.
+- **Limits:** committed historical outcomes retained; no raw restoration/current
+  execution inferred. Original first-pass10%,null paired savings and whole/human
+  review gates remain. No Blender-runtime plan amendment is assumed; human
+  clarification is pending for the current optional pilot producer.
+- **Running:** actual8967 completefull113 remains live on held1b21; current
+  units4594/runtime346/integration324 pass. Immutable40-header log snapshot is
+  progress only, not a pass/percentage. No competing browser/export/benchmark.
+- **Validation:** targeted formatting/diff/75-entry/62-pin audit and source hold0.
+- **Next:** genuine complete terminal0, current exact archive/all10 installed
+  lifecycle/EU008 repair, independent current review; architecture choice unresolved.
+- **Records:** [audit114](./mechanism-shorts-acceptance-audit114-results.json),
+  [completefull113](./mechanism-shorts-ms3-final113-full-gate-results.json).
 
 ### 2026-10-15 — Prepare unmodified complete final gate on both corrected assertions113
 

@@ -1,0 +1,582 @@
+{
+  "schemaVersion": "mechanism-shorts-ms0-revalidation-114-1",
+  "capturedUtc": "2026-10-15T09:09:10.245931+00:00",
+  "method": "Read and hash original files, archive members and original/archive copy pairs; inspect declared cut/cmap and baseline anchors; git object comparison. No historical scripts or rendering executed.",
+  "sourceCommitAtAudit": "16f7e5ad43161f4376b7a82ef9aa21a482aa582c",
+  "originalDependencyCount": 27,
+  "originalDependencies": [
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/assets/narration-take-1.mp3",
+      "bytes": 395841,
+      "sha256": "eb220fdea230e0cff43e30034d78e6bc4832fc45e428b8bd6b8795edab8bab69"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/assets/narration-take-2.mp3",
+      "bytes": 386645,
+      "sha256": "dfc4bb322f2c14a9966e72677e4ac433039ee70eed5af21c92f932e6160800dd"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/assets/narration-take-3.mp3",
+      "bytes": 383720,
+      "sha256": "91ee58c45167ad472a5ad527a557cfc9d57316a29b6a03175dc8a44e7208c1dd"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/assets/narration-take-4.mp3",
+      "bytes": 395841,
+      "sha256": "cf4596250548fefcf82d81d84111868b4848865e0434e804061bd4488bc46693"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/assets/mix-v001.wav",
+      "bytes": 6681702,
+      "sha256": "93cf722caec63d04eb7388a7da2c315a747175d63a39d3f413c3b254da922eb7"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/assets/editorial-sfx.wav",
+      "bytes": 4454444,
+      "sha256": "02230347d4de3238a8e43c74faae2907e20facd45a1f82fde4ca49068e5c997b"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/assets/captions.json",
+      "bytes": 2986,
+      "sha256": "ab67257b0908174f4ca2bde5d0bdbc598c593ed136295f4db73a08eaae15af03"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/assets/transcription.json",
+      "bytes": 6982,
+      "sha256": "a4464b86ffceb27ccf8baf690a0662044757bb5233f7dabfe0be58c09ff2ea09"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/assets/sound-cues.json",
+      "bytes": 911,
+      "sha256": "f12ec67e9367115bba9b4241d63a28bf338b7aeb53ceb6e18cdb09e31422ce97"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/assets/plex-sans-semibold.ttf",
+      "bytes": 202632,
+      "sha256": "a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/receipts/narration.json",
+      "bytes": 2430,
+      "sha256": "21173ee94cbd18868f2de2300e0ccedfa20e9321056f479e5464682b1faa8cfe"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/receipts/transcription.json",
+      "bytes": 387,
+      "sha256": "e04f7871051515c3abaee91441e0dbe969f01c12cbc3fa3b9ebaf93bd3510445"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/Shot and Narration Map.csv",
+      "bytes": 829,
+      "sha256": "e7063ba71d667fe4fcccc6ab6a2e1adaccf42f5188336b07f4e0799cda74199f"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/Visual Revision v008.md",
+      "bytes": 2833,
+      "sha256": "de102d7c737bb5f8df016ca08350dfcf60117b4d76b1f9effe9b00563b45e9c4"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/Episode Brief.md",
+      "bytes": 3527,
+      "sha256": "ec5fa872ed87b7b94dc1cd0f3cd631416ec5304e5f21ab6be6d46170de56c5b0"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/Production Log.md",
+      "bytes": 6523,
+      "sha256": "f4727531ac197ac10cd21c88aa9ed89b802409a7fac31120d6576518a93bd2df"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/production.json",
+      "bytes": 6319,
+      "sha256": "927adac838b87c796f39ac22fd4af3e4b9a3a1a3f950b5aeb90ceca816a21d02"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/exports/speech-captions.srt",
+      "bytes": 953,
+      "sha256": "8b9328283fe18f7e44e9c957d15121a3443559bbdab7a9549755ab97dd036139"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/three-v008/render-checks.json",
+      "bytes": 263397,
+      "sha256": "b848a5e9f0c3341b6e2516a8ca5de39fed3f6713f45e8f818f9891692bbc2d8d"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/three-v008/pose-checks.json",
+      "bytes": 12054,
+      "sha256": "e73be2aaaff95f4263931bb666261b407c830f59c362d3798e2912590a4c36db"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/review/v008/checks.json",
+      "bytes": 1574,
+      "sha256": "4c5230d109fd9a2a351516dc76bbb4d5ad5636584da4bb719c3fdfd3b9901f67"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/exports/everyday-unlocked-tape-hook-v008.mp4",
+      "bytes": 4549762,
+      "sha256": "ca8bf292cf4dc7f4c5ede598cc1c2e5908177cda12474bef98fb387a778039b1"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/three-v008/scene.mjs",
+      "bytes": 9392,
+      "sha256": "51a51d2539cec41c74ca9bf452e04cf3634a2496cb8a9414ce525e1ad7d28113"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/three-v008/labels.mjs",
+      "bytes": 3713,
+      "sha256": "2f6302e99e09edaa00e3bdddcb83ebcf2d8781b7b2a65503b75767422dd19d06"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/three-v008/render.mjs",
+      "bytes": 2108,
+      "sha256": "ecfd351f10d9fba05db1befdfd9f6403af5ce575338398593d2a4b6ebe571651"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/three-v008/verify.py",
+      "bytes": 3561,
+      "sha256": "0ff74e3785fe647c12652865a647deee3446b03f771e0bbd30e9db690b76dd21"
+    },
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/three-v008/index.html",
+      "bytes": 1018,
+      "sha256": "c8854cf254bc3bbf89c7688be38a4bd7fa9d936e4d5e5cc585766c723006afd9"
+    }
+  ],
+  "externalSources": [
+    {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Still Shift Developer Feedback 2026-10-07.zip",
+      "bytes": 6490672,
+      "sha256": "3421233df90efff5bf658444b5743888e28e46e37bdb4859f937c79532f557f4"
+    },
+    {
+      "path": "/Users/jjae/.codex/attachments/856aef49-2ffc-4d2f-9b5a-37fcde319976/Pasted text.txt",
+      "bytes": 24586,
+      "sha256": "7e8977a1f90dd2c3ae03db3fb634459723976fd708618e894b0864b776a55ab1"
+    }
+  ],
+  "archivePayloadMemberCount": 25,
+  "archiveTotalFileCount": 26,
+  "archiveManifestPin": {
+    "path": "manifest.json",
+    "bytes": 4120,
+    "sha256": "969a19eb2fc586a3526c80ef446e242aebf93f5f8c2a537b220f33c454ec75c4"
+  },
+  "initialAuditCorrection": {
+    "retainedHelper": "/private/tmp/still-shift-ms3-requirement-audit114-failed1.py",
+    "actualExitCode": 1,
+    "cause": "Initial audit incorrectly expected the self-excluding payload manifest to enumerate itself; actual archive has 25 declared payload files plus manifest.json.",
+    "productionOrEvidenceChanged": false
+  },
+  "archiveMemberCount": 25,
+  "archiveMembers": [
+    {
+      "path": "Developer Brief.md",
+      "bytes": 24586,
+      "sha256": "7e8977a1f90dd2c3ae03db3fb634459723976fd708618e894b0864b776a55ab1"
+    },
+    {
+      "path": "Evidence.md",
+      "bytes": 7085,
+      "sha256": "a0904c2dcd7d9afd69fd42a4f3de80f651e792984f805830c686db857434d6d3"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2945,
+      "sha256": "37cd220892294e4b225f9af9bc8f325722e50a69576f150d64f5ffa513b47910"
+    },
+    {
+      "path": "Scale Model.md",
+      "bytes": 5063,
+      "sha256": "60155c07e82c95b424e6b461db120bfc052cdc6a326c17b1c02f40a5363f2710"
+    },
+    {
+      "path": "backlog.csv",
+      "bytes": 2245,
+      "sha256": "c808d2f0be93eb3f761a7b3e9f2b2e5949d4c2b1dc2027dd92fe4aeea89c188d"
+    },
+    {
+      "path": "benchmark-template.csv",
+      "bytes": 403,
+      "sha256": "be17f258611a263005006fe5036acdc2836b6662c1ac231c0cbe363400315996"
+    },
+    {
+      "path": "capacity_model.py",
+      "bytes": 1535,
+      "sha256": "e32f6e73c450a7cd912e3528f32d7c6f80e6121497bdfb56dd489e0e4d023e15"
+    },
+    {
+      "path": "episode.example.json",
+      "bytes": 4984,
+      "sha256": "34971aeb4ff9d844f8eb3d8e657d0daac6151497c9583336b2abc5319f17e7cb"
+    },
+    {
+      "path": "episode.schema.json",
+      "bytes": 5264,
+      "sha256": "09235777f541d2282a746c6e782111ca322ba4cd93218e06fdf495bc68bce51e"
+    },
+    {
+      "path": "evidence/QA-v008.md",
+      "bytes": 2476,
+      "sha256": "a77ef50e4141665d0f388a705941fefaced1a03a01fd82999a39258362f5db61"
+    },
+    {
+      "path": "evidence/Still-Shift-episode-notes.md",
+      "bytes": 3215,
+      "sha256": "632607a721a661121989e3c6115d63e7abd5d5858d37073292a61cbc73221012"
+    },
+    {
+      "path": "evidence/checks-v008.json",
+      "bytes": 1574,
+      "sha256": "4c5230d109fd9a2a351516dc76bbb4d5ad5636584da4bb719c3fdfd3b9901f67"
+    },
+    {
+      "path": "evidence/inspected-source-hashes.json",
+      "bytes": 1966,
+      "sha256": "cc4906b09c28bb1e893601537e5892571860a7800d2843d93045f216c2970cc3"
+    },
+    {
+      "path": "evidence/original-file-receipts.json",
+      "bytes": 3407,
+      "sha256": "8adfdab610316fe10c51e7dde116ebe349e63939063b1db8be36b69362900723"
+    },
+    {
+      "path": "evidence/original-source/index.html",
+      "bytes": 1018,
+      "sha256": "c8854cf254bc3bbf89c7688be38a4bd7fa9d936e4d5e5cc585766c723006afd9"
+    },
+    {
+      "path": "evidence/original-source/labels.mjs",
+      "bytes": 3713,
+      "sha256": "2f6302e99e09edaa00e3bdddcb83ebcf2d8781b7b2a65503b75767422dd19d06"
+    },
+    {
+      "path": "evidence/original-source/render.mjs",
+      "bytes": 2108,
+      "sha256": "ecfd351f10d9fba05db1befdfd9f6403af5ce575338398593d2a4b6ebe571651"
+    },
+    {
+      "path": "evidence/original-source/scene.mjs",
+      "bytes": 9392,
+      "sha256": "51a51d2539cec41c74ca9bf452e04cf3634a2496cb8a9414ce525e1ad7d28113"
+    },
+    {
+      "path": "evidence/original-source/verify.py",
+      "bytes": 3561,
+      "sha256": "0ff74e3785fe647c12652865a647deee3446b03f771e0bbd30e9db690b76dd21"
+    },
+    {
+      "path": "evidence/tape-hook-v006.mp4",
+      "bytes": 1169300,
+      "sha256": "ca196b7dc345791f91b6ddf6c365b56926ff450670e3e2a738ae50e91ae22219"
+    },
+    {
+      "path": "evidence/tape-hook-v008.mp4",
+      "bytes": 4549762,
+      "sha256": "ca8bf292cf4dc7f4c5ede598cc1c2e5908177cda12474bef98fb387a778039b1"
+    },
+    {
+      "path": "evidence/timeline-1.jpg",
+      "bytes": 349089,
+      "sha256": "de9d5141ed08fa6dfa9c1feefcdb51ca77117569a5e9eea0c4b77c62805174b3"
+    },
+    {
+      "path": "evidence/timeline-2.jpg",
+      "bytes": 357028,
+      "sha256": "96fd0e8573ed5ebe33dd046a37de98c1128dd6be1b2c2643656ed5d1b1540afb"
+    },
+    {
+      "path": "evidence/timeline-3.jpg",
+      "bytes": 255839,
+      "sha256": "95eef4f1e3f21e4443dfc27d486be172d199e125962af20c6a3f02bce2367925"
+    },
+    {
+      "path": "verification.json",
+      "bytes": 2876,
+      "sha256": "11369c82636b3b54d69b856d892070065186c759cc861c76cb6e671de31175e9"
+    }
+  ],
+  "sourceCopyCount": 13,
+  "sourceCopies": [
+    {
+      "original": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/exports/everyday-unlocked-tape-hook-v008.mp4",
+        "bytes": 4549762,
+        "sha256": "ca8bf292cf4dc7f4c5ede598cc1c2e5908177cda12474bef98fb387a778039b1"
+      },
+      "archiveMember": "evidence/tape-hook-v008.mp4",
+      "sameBytes": true
+    },
+    {
+      "original": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/exports/everyday-unlocked-tape-hook-v006.mp4",
+        "bytes": 1169300,
+        "sha256": "ca196b7dc345791f91b6ddf6c365b56926ff450670e3e2a738ae50e91ae22219"
+      },
+      "archiveMember": "evidence/tape-hook-v006.mp4",
+      "sameBytes": true
+    },
+    {
+      "original": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/review/v008/timeline-1.jpg",
+        "bytes": 349089,
+        "sha256": "de9d5141ed08fa6dfa9c1feefcdb51ca77117569a5e9eea0c4b77c62805174b3"
+      },
+      "archiveMember": "evidence/timeline-1.jpg",
+      "sameBytes": true
+    },
+    {
+      "original": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/review/v008/timeline-2.jpg",
+        "bytes": 357028,
+        "sha256": "96fd0e8573ed5ebe33dd046a37de98c1128dd6be1b2c2643656ed5d1b1540afb"
+      },
+      "archiveMember": "evidence/timeline-2.jpg",
+      "sameBytes": true
+    },
+    {
+      "original": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/review/v008/timeline-3.jpg",
+        "bytes": 255839,
+        "sha256": "95eef4f1e3f21e4443dfc27d486be172d199e125962af20c6a3f02bce2367925"
+      },
+      "archiveMember": "evidence/timeline-3.jpg",
+      "sameBytes": true
+    },
+    {
+      "original": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/review/v008/checks.json",
+        "bytes": 1574,
+        "sha256": "4c5230d109fd9a2a351516dc76bbb4d5ad5636584da4bb719c3fdfd3b9901f67"
+      },
+      "archiveMember": "evidence/checks-v008.json",
+      "sameBytes": true
+    },
+    {
+      "original": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/QA Report.md",
+        "bytes": 2476,
+        "sha256": "a77ef50e4141665d0f388a705941fefaced1a03a01fd82999a39258362f5db61"
+      },
+      "archiveMember": "evidence/QA-v008.md",
+      "sameBytes": true
+    },
+    {
+      "original": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/Still Shift Notes.md",
+        "bytes": 3215,
+        "sha256": "632607a721a661121989e3c6115d63e7abd5d5858d37073292a61cbc73221012"
+      },
+      "archiveMember": "evidence/Still-Shift-episode-notes.md",
+      "sameBytes": true
+    },
+    {
+      "original": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/three-v008/scene.mjs",
+        "bytes": 9392,
+        "sha256": "51a51d2539cec41c74ca9bf452e04cf3634a2496cb8a9414ce525e1ad7d28113"
+      },
+      "archiveMember": "evidence/original-source/scene.mjs",
+      "sameBytes": true
+    },
+    {
+      "original": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/three-v008/labels.mjs",
+        "bytes": 3713,
+        "sha256": "2f6302e99e09edaa00e3bdddcb83ebcf2d8781b7b2a65503b75767422dd19d06"
+      },
+      "archiveMember": "evidence/original-source/labels.mjs",
+      "sameBytes": true
+    },
+    {
+      "original": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/three-v008/render.mjs",
+        "bytes": 2108,
+        "sha256": "ecfd351f10d9fba05db1befdfd9f6403af5ce575338398593d2a4b6ebe571651"
+      },
+      "archiveMember": "evidence/original-source/render.mjs",
+      "sameBytes": true
+    },
+    {
+      "original": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/three-v008/verify.py",
+        "bytes": 3561,
+        "sha256": "0ff74e3785fe647c12652865a647deee3446b03f771e0bbd30e9db690b76dd21"
+      },
+      "archiveMember": "evidence/original-source/verify.py",
+      "sameBytes": true
+    },
+    {
+      "original": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/three-v008/index.html",
+        "bytes": 1018,
+        "sha256": "c8854cf254bc3bbf89c7688be38a4bd7fa9d936e4d5e5cc585766c723006afd9"
+      },
+      "archiveMember": "evidence/original-source/index.html",
+      "sameBytes": true
+    }
+  ],
+  "fontPins": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+      "bytes": 202632,
+      "sha256": "a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-LICENSE.txt",
+      "bytes": 4362,
+      "sha256": "d741e57d5f865e294df801f96b7b5161a88b211df65887e4358d271c9fc5fb4f"
+    }
+  ],
+  "fontDeclaration": {
+    "static": true,
+    "weight": 600,
+    "missingExactCopyCodePoints": [],
+    "coverageScope": "PASS_CMAP_ONLY",
+    "renderedTypographyClaim": false
+  },
+  "compositionCheckpoint": {
+    "releaseSource": "db28a938eeef63bee5626590359ed3e0b1293355",
+    "auditedMain": "e6eb7b06e3b5a042be2c1e2568a1a84cf9c041ad",
+    "tagUnchanged": true,
+    "changedPaths": [
+      "docs/dev-log.md",
+      "docs/npm-release-plan.md",
+      "docs/npm-release-results.json",
+      "docs/release-branch-setup-results.json"
+    ],
+    "runtimeSourceIdentical": true,
+    "freshFullGateClaim": false
+  },
+  "baselineAnchors": [
+    "Frozen visual and explanation rubric",
+    "Comparable baseline tasks and telemetry",
+    "Initial package and resource boundaries",
+    "Milestone work estimate and checkpoints"
+  ],
+  "artifactPins": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-shorts-production-plan.md",
+      "bytes": 115106,
+      "sha256": "a5a6b11b81d197121cc4e73b3b3691387a00b9b56ac691ef45072130faf1cc8d"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-shorts-ms0-results.json",
+      "bytes": 18877,
+      "sha256": "2d7c424d50adff373e0f494890d2cd76519ac82af384572c9d85740313fdbefd"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-shorts-ms0-inputs.json",
+      "bytes": 55359,
+      "sha256": "d6e355efc16ca1e38725d41d86563cdec51787dc3b9b6803c9529b3dfd0091a5"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-shorts-ms0-api-audit.json",
+      "bytes": 31663,
+      "sha256": "aa0e54c92133ed2ab8ca71e28daab00c5708dc0e50610f2f6245d1c54d0d1d03"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-shorts-ms0-typography-audit.json",
+      "bytes": 47930,
+      "sha256": "aa0983cb55afdc30932d9b4a052bb5c8a1f726c8750b836acaba4c67732982f2"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-shorts-ms0-baseline.md",
+      "bytes": 14103,
+      "sha256": "51715a5a8410a36920d9cd7e944db51d24f07082490618d4819b4525947a171b"
+    }
+  ],
+  "acceptanceRows": [
+    {
+      "id": "MS0-API",
+      "status": "delivered",
+      "evidence": "./mechanism-shorts-ms0-api-audit.json"
+    },
+    {
+      "id": "MS0-INPUTS",
+      "status": "delivered",
+      "evidence": "./mechanism-shorts-ms0-inputs.json",
+      "summary": "27 recovered dependencies; all 25 archive entries and 13 source-copy receipts pass; no audio/caption recovery blocker."
+    },
+    {
+      "id": "MS0-FONTS",
+      "status": "delivered",
+      "evidence": "./mechanism-shorts-ms0-typography-audit.json",
+      "summary": "Actual static Plex SemiBold cut and E01 exact-copy cmap coverage; Plex Thai negative and Noto control retained."
+    },
+    {
+      "id": "MS0-REFERENCE",
+      "status": "delivered",
+      "evidence": "./mechanism-shorts-ms0-inputs.json",
+      "summary": "Nine half-open shot ranges, seven label roles, events and cut-crossing captions frozen from original v008 source and historical 696-frame rows."
+    },
+    {
+      "id": "MS0-RUBRIC",
+      "status": "delivered",
+      "evidence": "./mechanism-shorts-ms0-baseline.md#frozen-visual-and-explanation-rubric"
+    },
+    {
+      "id": "MS0-MEASUREMENT",
+      "status": "delivered",
+      "evidence": "./mechanism-shorts-ms0-baseline.md#comparable-baseline-tasks-and-telemetry",
+      "tokens": null,
+      "activeCreatorMinutes": null,
+      "savings": null
+    },
+    {
+      "id": "MS0-BOUNDARIES",
+      "status": "delivered",
+      "evidence": "./mechanism-shorts-ms0-baseline.md#initial-package-and-resource-boundaries",
+      "budgets": "provisional admission limits; actual representative-scene costs unmeasured"
+    },
+    {
+      "id": "MS0-ESTIMATES",
+      "status": "delivered",
+      "evidence": "./mechanism-shorts-ms0-baseline.md#milestone-work-estimate-and-checkpoints",
+      "calendarDeadline": null
+    }
+  ],
+  "limitations": [
+    {
+      "id": "original-source-recovery",
+      "status": "RESOLVED",
+      "blocksExactE01Reconstruction": false,
+      "detail": "Original selected narration MP3, final WAV mix, effects WAV, font, captions, transcription, sound cues, scene sources and shot map recovered and hashed."
+    },
+    {
+      "id": "placeholder-inputs",
+      "status": "NOT_REAL_SOURCE_IDS",
+      "blocksExactE01Reconstruction": false,
+      "detail": "Do not invent narration.wav/word-cues.json from the design fixture; bind actual recovered inputs."
+    },
+    {
+      "id": "blade-font-identity",
+      "status": "HISTORICAL_RESOLVED_CUT_NOT_RECORDED",
+      "blocksExactPixelIdentityClaim": true,
+      "detail": "Unpinned system Arial600 contributes procedural tape digits. This does not block bridge/native contracts or E01 mechanics; explicit texture-font disposition and render comparison are required."
+    },
+    {
+      "id": "runtime-history",
+      "status": "EXACT_ORIGINAL_GPU_DRIVER_BROWSER_BUILD_CONTENTS_NOT_CAPTURED",
+      "blocksBitExactHistoricalGpuPixelClaim": true,
+      "detail": "Versions/source are known; hardware/backend/browser hashes are not historical receipts. New implementation must pin its own runtime and verify similarity/parity instead of inventing historical identity."
+    },
+    {
+      "id": "redistribution",
+      "status": "PUBLIC_MEDIA_REDISTRIBUTION_LICENSE_NOT_SUPPLIED",
+      "blocksAuthorizedLocalTechnicalWork": false,
+      "detail": "Keep customer originals outside Git. Portable customer handoff can include scoped licensed dependencies; public demo should use independent synthetic fixtures and existing OFL assets."
+    },
+    {
+      "id": "narration-license",
+      "status": "PROVENANCE_CAPTURED_ACCOUNT_TERMS_NOT_AUDITED",
+      "blocksLocalSourceConsumption": false,
+      "detail": "Original purchase generation receipt does not replace a provider/account licensing review for public redistribution."
+    },
+    {
+      "id": "continuous-review",
+      "status": "NOT_REVIEWED",
+      "blocksHumanProductionAcceptance": true,
+      "detail": "No continuous playback/listening or exact-output human acceptance can be inferred from decoded images/technical pass."
+    }
+  ],
+  "status": "passed-ms0-input-and-document-audit; no rendered or human acceptance inferred"
+}

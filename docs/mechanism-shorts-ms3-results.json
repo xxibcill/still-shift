@@ -1045,5 +1045,31 @@
   "activeRequiredFullPreparation": "./mechanism-shorts-ms3-final113-full-gate-results.json",
   "verificationHistoryScope": "The verification array retains dated historical checkpoints and their exact code/artifact bindings; old pending statements are not current implementation status. ActiveRequiredFullPreparation/currentPilotProduction/current completed proof pointers state the present gates.",
   "currentPackageGate": "Pending actual complete final full0. Old93/102/106/108 preparations remain unexecuted; retain full ten/6181 receiving scope and bounded EU008 repair.",
-  "currentFaultScenarioCoverage": "./mechanism-shorts-ms3-fault-coverage111-results.json"
+  "currentFaultScenarioCoverage": "./mechanism-shorts-ms3-fault-coverage111-results.json",
+  "acceptanceReconciliation114": {
+    "record": "./mechanism-shorts-acceptance-audit114-results.json",
+    "rows": 49,
+    "crossCuttingClauses": 26,
+    "traceabilityRows": 21,
+    "status": "reconciled-final-gates-open",
+    "freshMS0": {
+      "originalDependencies": 27,
+      "archivePayloadMembers": 25,
+      "archiveManifestAdditional": 1,
+      "sourceCopyPairs": 13
+    },
+    "retainedRawPins": {
+      "presentExact": 24,
+      "unavailableOlderTemporaryPaths": 6,
+      "historicalRecordsRemain": true
+    },
+    "architectureDecision": "pending-human-clarification; original no-Blender-runtime boundary not amended",
+    "actualCompleteFull": {
+      "session": 8967,
+      "status": "live-unpassed",
+      "sourceCommit": "1b21c86ed957d7aa5bae3bb581040711a01eef7d"
+    },
+    "allTenCurrentInstalledRequired": true,
+    "goalComplete": false
+  }
 }

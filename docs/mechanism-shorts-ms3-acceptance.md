@@ -1,5 +1,23 @@
 # MS3 acceptance tracker
 
+Latest2026-10-15: complete final113 is live as8967 on held1b21, after both
+conservative first-pass assertion repairs. Units4594/runtime346/integration324
+pass; complete browser/recovery/benchmark and current package/all-ten installed
+checks remain unpassed. Dated full91/105 launch descriptions below are retained
+history, followed by their actual failures and successors.
+
+The49 deliverable scopes,26 cross-cutting acceptance clauses and21 SS/A traceability
+rows are reconciled in the [acceptance audit114](./mechanism-shorts-acceptance-audit114-results.json).
+Fresh MS0 checks authenticate27 originals,25 ZIP payloads plus manifest and13
+original/archive pairs. Of30 selected older raw pins,24 match and6 MS1/MS1N
+temporary paths are unavailable; committed historical results remain, with no
+reconstructed bytes or fresh-pass inference. The original plan excludes a Blender
+runtime dependency; the current actual-first-ten candidate uses an optional
+Blender producer. The default Three route remains separate. A human clarification
+is pending; this audit does not amend the plan or replace all-ten editing/portability
+acceptance with a cached-picture-only claim. Original first-pass1/10, missing paired
+tokens, whole reviews and reviewed-ready0 remain explicit.
+
 2026-10-14. `codex/mechanism-ms3` starts from main57967fa6 and merges exact
 MS2495fb2c0 at76dd8971 after [MS2 PR #57](https://github.com/xxibcill/still-shift/pull/57)
 was opened/attached. Only roadmap/log prose differs at integration; the owner's

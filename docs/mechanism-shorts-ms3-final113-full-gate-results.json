@@ -112,6 +112,25 @@
         "sha256": "sha256:48ef1773912d848cea2d8ac67c7555f166c63eed4857b29eb5f45da08f8ad10f"
       },
       "scope": "Header counts include aliases and are not completion percentages or passed-suite totals. Complete full/benchmark remain unpassed."
+    },
+    {
+      "observedUtc": "2026-10-15T09:18:41.699938+00:00",
+      "actualObservedUnifiedSession": 8967,
+      "observedState": "live-returned-by-write_stdin",
+      "observedPackageHeaders": 40,
+      "latestGroup": "test:browser:reveal",
+      "units": 4594,
+      "unitFiles": 455,
+      "runtimeTests": 346,
+      "runtimeFiles": 60,
+      "integrationTests": 324,
+      "integrationFiles": 59,
+      "immutableLogPrefix": {
+        "path": "/private/tmp/still-shift-ms3-final113-progress2.log",
+        "bytes": 2871661,
+        "sha256": "sha256:983a099e848c3371cf42da4fd6acc080b2fab5f161a5c8246d926e78746a7475"
+      },
+      "scope": "Header count includes aliases; not a completion percentage or passed suite count. Full and benchmark not passed."
     }
   ]
 }
