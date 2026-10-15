@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "ms3-physical-fault-work-allowance-1",
+  "capturedUtc": "2026-10-15T03:37:33.747391+00:00",
+  "status": "explicit-revised-ceiling-recorded-live-ledger-still-blocked",
+  "selectionId": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+  "creatorApproval": {
+    "recordedAt": "2026-10-15T03:35:47.032043+00:00",
+    "authority": "Direct human reply to request_user_input_async call_1002675e52ea4a4cab6e8acfad2466e4 item0",
+    "exactReply": "Approve $10 / 35 million total",
+    "scope": "MS3 EU001 two already prepared fault-test assets; four deterministic 360x640 Blender phone frames, inspection and results; current gpt-6.1-sol settings; no ElevenLabs purchase.",
+    "oldCeiling": {
+      "max_usd": 5.0,
+      "max_tokens": 5000000
+    },
+    "approvedCeiling": {
+      "max_usd": 10.0,
+      "max_tokens": 35000000
+    },
+    "priorLedgerSha256": "030ddcc0ecf0fe3455dc273ae5f55dd669d98fe3f140f467c50a822116747767",
+    "attribution": "Retain complete original session segment including unrelated software work. Conservative operational accounting, not exact asset cost or bill.",
+    "ceilingApprovalDoesNotResetUsage": true
+  },
+  "actualLiveAccounting": {
+    "status": "BLOCKED",
+    "asset": "MS3-EU001-physical-fault-derivatives",
+    "tokens": {
+      "input_tokens": 154959868,
+      "cached_input_tokens": 152314880,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 649886,
+      "reasoning_output_tokens": 347718,
+      "total_tokens": 155609754
+    },
+    "requests": 723,
+    "standard_equivalent_usd": 36.328462,
+    "max_usd": 10.0,
+    "max_tokens": 35000000,
+    "budget_fraction": 4.445993,
+    "reserve_usd": 0,
+    "reserve_tokens": 0,
+    "models": ["gpt-6.1-sol"],
+    "latest_input_tokens": 72799,
+    "last_usage_timestamp": "2026-10-15T03:35:20.754Z",
+    "warnings": [
+      "80% budget checkpoint: preserve handoff and finish only bounded remaining work"
+    ],
+    "basis": "Standard API-equivalent only; actual tier/bill, fees and taxes unavailable",
+    "enforcement": "command admission only; no desktop model-request interception"
+  },
+  "baselineAndPricesPreserved": true,
+  "ledger": {
+    "path": "/private/tmp/still-shift-ms3-physical-faults76/usage-budget.json",
+    "bytes": 2062,
+    "sha256": "sha256:e9c3429bf5196c70ff6c212e86585d599ab3fe1ab8804559414e4153453cd244"
+  },
+  "priorLedger": {
+    "path": "/private/tmp/still-shift-ms3-physical-faults76/usage-budget-before-approval98.json",
+    "bytes": 1114,
+    "sha256": "sha256:030ddcc0ecf0fe3455dc273ae5f55dd669d98fe3f140f467c50a822116747767"
+  },
+  "decisionAndReport": {
+    "path": "/private/tmp/still-shift-ms3-physical-faults76/budget-approval98-record1.json",
+    "bytes": 1928,
+    "sha256": "sha256:5420810e0f55f32be60b8e006789f9bb274b6c0ad19b43c43b06ac27bf7a96f3"
+  },
+  "beforeMutationObservation": {
+    "path": "/private/tmp/still-shift-ms3-physical-faults76/budget-approval98-observation1.json",
+    "bytes": 2382,
+    "sha256": "sha256:e634c9a77fc469174bc53c8e1fd7cbe1e2aa1f765a208e578fafa8c0401db00f"
+  },
+  "recordingScript": {
+    "path": "/private/tmp/still-shift-ms3-budget98-record1.py",
+    "bytes": 1984,
+    "sha256": "sha256:c751c39fa8ffcec00758c9e85b891dbde50a09a4723b80dcc14acb0b4aa53a1c"
+  },
+  "accountingTool": {
+    "path": "/Users/jjae/Documents/obsidian/ai-business/tools/blender_budget.py",
+    "bytes": 13321,
+    "sha256": "sha256:190ddf105f5e4c9f7a9e8f5f19fd13cbd253d0295529ad9ad96e0d42322a965e"
+  },
+  "attributionLimit": "Conservative live entire root-session segment includes later unrelated software verification; not an exact asset-only cost, subscription bill or ElevenLabs credit purchase. Do not silently exclude/reset usage or reuse approval elsewhere.",
+  "requestedFurtherCeiling": {
+    "standardEquivalentUSD": 50,
+    "totalTokens": 200000000,
+    "status": "asked-pending-human-reply",
+    "requestToolCall": "call_request_user_input_async_same_turn_after_live_accounting",
+    "scope": "Same two prepared EU001 derivatives/four deterministic phone frames, inspection and results; no additional assets, views, paid generation or changed model."
+  },
+  "batch": {
+    "preparedAssetCount": 2,
+    "plannedImages": 4,
+    "dimensions": [360, 640],
+    "samples": 16,
+    "model": "gpt-6.1-sol",
+    "renderer": "Blender 5.2.2 LTS",
+    "substantiveAssetCommandsStarted": false,
+    "reason": "Current ledger exceeds approved total10/35M. Full software session42543 also remains live; no concurrent render group."
+  },
+  "originalPreparation": "./mechanism-shorts-ms3-physical-fault-preparation-results.json",
+  "acceptedPilot": 0,
+  "providerBillingCap": false,
+  "elevenLabsSpendingApproved": false,
+  "next": "Await full42543 actual terminal and a sufficient explicit work allowance before guarded captures; current capture helper also needs truthful final runtime identity before execution."
+}

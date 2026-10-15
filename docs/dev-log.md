@@ -81,7 +81,10 @@ still hold before relying on them.
   static15-link/13-command checks pass. Final installed capability comparison stays open.
   [Preparation controls](./mechanism-shorts-ms3-installed-preparation93-results.json),
   [Current installed scope](./mechanism-shorts-ms3-current-installed-scope92-results.json). Physical fault captures stay
-  blocked by the previously requested revised Creator work budget. No audio files
+  budget-blocked after explicit total10/35M approval: unchanged conservative ledger
+  now36.328462 USD-equivalent/155,609,754 tokens including later unrelated software
+  work. Approval recorded without resetting usage; same-batch total50/200M request
+  is pending. [Allowance](./mechanism-shorts-ms3-work-allowance98-results.json). No audio files
   are missing and no paid generation is approved. Review copies remain byte-exact
   after integration at `benchmarks/results/ms3-actual-first-ten-review80/index.md`.
   [Package history](./mechanism-shorts-ms3-package-portability-results.json),
@@ -255,6 +258,18 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Record explicit fault-batch allowance and live guard98
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` from5ea1b746.
+- **Scope:** record the human's explicit total10 USD-equivalent/35M allowance for
+  two prepared EU001 derivatives/four deterministic phone frames.
+- **Results:** same baseline/prices retained. Live conservative ledger36.328462/
+  155,609,754 tokens includes later unrelated software work, so admission remains
+  blocked. No captures or paid generation started; not an asset-only invoice.
+- **Open / next:** requested same-batch total50/200M, pending reply. Full42543
+  remains live; source2,793 files/122,415,262B exact. No concurrent render group.
+- **Records:** [allowance/live accounting](./mechanism-shorts-ms3-work-allowance98-results.json).
 
 ### 2026-10-15 — Reconcile production guides with implemented lifecycle
 

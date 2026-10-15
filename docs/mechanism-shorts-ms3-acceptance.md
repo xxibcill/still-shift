@@ -47,9 +47,14 @@ roots denied. [MS3 package history](./mechanism-shorts-ms3-package-portability-r
 [MS2 current affected package](./mechanism-shorts-ms2-current-package91-results.json),
 [repair/integration history](./mechanism-shorts-ms3-whole-review84-results.json).
 
-Four actual geometry fault images remain open. Their existing work-budget guard
-returns2; a revised allowance was requested and is pending. Other software work
-continues. [Physical fault preparation and guard](./mechanism-shorts-ms3-physical-fault-preparation-results.json).
+Four actual geometry fault images remain open. The owner explicitly approved
+revised total10 USD-equivalent/35 million tokens. The same ledger baseline and
+prices are retained; live conservative totals are36.328462 USD-equivalent/
+155,609,754 tokens, including intervening unrelated software work. The batch still
+fails budget admission; total50/200 million is requested and pending. No new
+asset work or paid generation started. Software verification continues separately.
+[Allowance and live accounting](./mechanism-shorts-ms3-work-allowance98-results.json),
+[physical fault preparation](./mechanism-shorts-ms3-physical-fault-preparation-results.json).
 
 The table retains the original staged engineering evidence. Source identities and
 historical cohorts stay attached to those results; their passes do not transfer

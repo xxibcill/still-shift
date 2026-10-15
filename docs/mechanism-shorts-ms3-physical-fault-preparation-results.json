@@ -424,5 +424,16 @@
     "creatorRequest": "Explicit revised total $10 API-equivalent /35 million tokens requested; no reply received, existing cap remains in force.",
     "rule": "Operations/Blender/Work Budget.md: Raising a ceiling requires the Creator's explicit revised amount; at100% stop substantive model work.",
     "dependentCommandsStarted": false
+  },
+  "budgetCheckpoint98": {
+    "record": "./mechanism-shorts-ms3-work-allowance98-results.json",
+    "explicitApprovedTotalUSD": 10,
+    "explicitApprovedTotalTokens": 35000000,
+    "priorUsageRetained": true,
+    "liveStatus": "BLOCKED",
+    "liveTotalTokens": 155609754,
+    "liveStandardEquivalentUSD": 36.328462,
+    "imagesCaptured": 0,
+    "revisedRequest": "Total50 USD-equivalent /200 million tokens asked; reply pending. Same four-frame scope, no ElevenLabs spending."
   }
 }
