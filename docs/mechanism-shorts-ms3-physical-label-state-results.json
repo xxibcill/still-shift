@@ -1,0 +1,197 @@
+{
+  "schemaVersion": "ms3-actual-physical-label-state-results-1",
+  "date": "2026-10-15",
+  "status": "passed-actual-native-label-state-admission-rejection",
+  "runtimeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+  "producerSourceCommit": "3df62a5598dc46e021ee2c51b173ba33a38d2af6",
+  "selectionId": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+  "checks": [
+    {
+      "attempt": 1,
+      "actualExitCode": 1,
+      "helper": {
+        "path": "/private/tmp/still-shift-ms3-physical-label-state75-1.mts",
+        "bytes": 4268,
+        "sha256": "sha256:24771a00b126a31836eb2789cf8c7d8d504acdf2eba23186ba9c58053a1567bc"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-physical-label-state75-1.log",
+        "bytes": 633,
+        "sha256": "sha256:715cc4b598b32c772e86966f65ea24fc6956056719ffbeef3a802150626c2f9b"
+      },
+      "seededPlan": {
+        "path": "/private/tmp/still-shift-ms3-physical-label-state75-plan1.json",
+        "bytes": 7788,
+        "sha256": "sha256:03f64e1bafbcf86af895a7436da3d95c698e5413bf80534bc2619fa0ef745407"
+      },
+      "reason": "Audit helper incorrectly expected observation.frame to equal final episode frame. Native observations use outputFrame within a deduplicated capture; final episode frame is bound by native map frame/captureFrame. The label compiler rejection itself was already the expected result; no original files changed."
+    },
+    {
+      "attempt": 2,
+      "actualExitCode": 0,
+      "helper": {
+        "path": "/private/tmp/still-shift-ms3-physical-label-state75-2.mts",
+        "bytes": 4321,
+        "sha256": "sha256:17225c9e31dc4fbe767f611a99631f8a3b3baf88e5847e2d2f081c3bc054b466"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-physical-label-state75-2.log",
+        "bytes": 206,
+        "sha256": "sha256:1d5af0648df033e77830b7f5d100198d19621bf321e941edc22401adbb9e7439"
+      },
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-physical-label-state75-result2.json",
+        "bytes": 5729,
+        "sha256": "sha256:f7285e55bb8aeb47307a6489fbdf3ab69c0c15ef349ba352463e3bb8e9fededb"
+      },
+      "result": {
+        "status": "passed-actual-native-label-state-admission-rejection",
+        "finding": "Error: Native callout part-00 is outside its declared control state at frame 239",
+        "source": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-001/source.json",
+          "bytes": 1922,
+          "sha256": "sha256:62b5caf854bdd6ba3006fb91506f250281938797f1b406a911c5d3d0b7f1e877"
+        },
+        "originalPlan": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-001/plan.json",
+          "bytes": 7801,
+          "sha256": "sha256:d2000d4249344e305fcb2ce4fe6d14082e42032d7f41cd4276d0d8dc92b0e092"
+        },
+        "seededPlan": {
+          "path": "/private/tmp/still-shift-ms3-physical-label-state75-plan2.json",
+          "bytes": 7788,
+          "sha256": "sha256:03f64e1bafbcf86af895a7436da3d95c698e5413bf80534bc2619fa0ef745407"
+        },
+        "originalProduct": {
+          "path": "products/EU-001-daefc3cc7faa9869-1.json",
+          "bytes": 10644,
+          "sha256": "sha256:12d114ee61c1a6f1d507c78429833edc250e45469ef2de55e89f3187e7575261"
+        },
+        "binding": {
+          "inputSha256": "sha256:daefc3cc7faa98699f15011508143afc79b5080d09231b264fd4bec066810878",
+          "outputSha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e",
+          "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "mutation": {
+          "calloutId": "part-00",
+          "text": "Inside face",
+          "part": "hook.contactFace",
+          "anchor": "anchor.hookInner",
+          "controlRanges": {
+            "measurement_mode": {
+              "min": 0,
+              "max": 0
+            }
+          },
+          "wrongInterval": {
+            "start": 239,
+            "endExclusive": 340
+          },
+          "change": "Move existing Inside face callout to the actual outside-measurement shot; preserve inside-state control declaration."
+        },
+        "witnesses": [
+          {
+            "frame": 239,
+            "captureFrame": 2,
+            "sourceFrame": 0,
+            "actualControls": {
+              "manual": 1,
+              "measurement_mode": 1,
+              "slide_fraction": 1,
+              "approach": 1
+            },
+            "image": {
+              "path": "items/EU-001/1/plates/frames/frame-000239.png",
+              "bytes": 1753390,
+              "sha256": "sha256:60d66a7bac78164169d589fbc8b7d9c75de9bf49bf610c58cb5e108a98ff8232"
+            },
+            "observation": {
+              "path": "blender-cache/captures/66b797cc-3863-426b-a827-8334d60d7882/frames/frame-000002.json",
+              "bytes": 92407,
+              "sha256": "sha256:c3c0d3917f59bb4ebf455fc39ebe6de742f6261f916dac021fa14413795a6778"
+            },
+            "part": {
+              "name": "hook.contactFace",
+              "visible": true,
+              "editorial": false,
+              "vertices": 96,
+              "triangles": 188,
+              "positionsSha256": "sha256:34c4beb764efba6a4c346ca6aaef4b69883c219b9f3e153eeb4c7ebab08985db",
+              "triangleIndicesSha256": "sha256:678209de7677551d3cdad546413805d6aa01b5a54e23f0a2d3884bbb5ea950e0",
+              "worldMatrix": [
+                1, 0, 0, 0.09000000357627869, 0, 1, 0, 0, 0, 0, 1,
+                1.2649999856948853, 0, 0, 0, 1
+              ],
+              "worldBounds": {
+                "min": [0, -1.0700000524520874, 0.4399999976158142],
+                "max": [
+                  0.18000000715255737, 1.0700000524520874, 2.0899999141693115
+                ]
+              }
+            }
+          },
+          {
+            "frame": 266,
+            "captureFrame": 3,
+            "sourceFrame": 0,
+            "actualControls": {
+              "manual": 1,
+              "measurement_mode": 1,
+              "slide_fraction": 0,
+              "approach": 1
+            },
+            "image": {
+              "path": "items/EU-001/1/plates/frames/frame-000266.png",
+              "bytes": 1733288,
+              "sha256": "sha256:a2b1a5148c4c8989fe918a7f725ea3a284d25b89b0c3189f208db220761616b2"
+            },
+            "observation": {
+              "path": "blender-cache/captures/66b797cc-3863-426b-a827-8334d60d7882/frames/frame-000003.json",
+              "bytes": 92447,
+              "sha256": "sha256:68cc35a73a44081ead8317866102f47743bee3810a3900cf76b61b76da8a12d0"
+            },
+            "part": {
+              "name": "hook.contactFace",
+              "visible": true,
+              "editorial": false,
+              "vertices": 96,
+              "triangles": 188,
+              "positionsSha256": "sha256:34c4beb764efba6a4c346ca6aaef4b69883c219b9f3e153eeb4c7ebab08985db",
+              "triangleIndicesSha256": "sha256:678209de7677551d3cdad546413805d6aa01b5a54e23f0a2d3884bbb5ea950e0",
+              "worldMatrix": [
+                1, 0, 0, 0.09000000357627869, 0, 1, 0, 0, 0, 0, 1,
+                1.2649999856948853, 0, 0, 0, 1
+              ],
+              "worldBounds": {
+                "min": [0, -1.0700000524520874, 0.4399999976158142],
+                "max": [
+                  0.18000000715255737, 1.0700000524520874, 2.0899999141693115
+                ]
+              }
+            }
+          }
+        ],
+        "newNativeRenders": 0,
+        "originalFilesModified": false,
+        "wholeMechanicalReview": "unreviewed",
+        "scope": "Real selected E1 source and original rendered native observations authenticate the opposite actual physical control state. The mutated production plan is rejected at exact frame239 before any new capture or export. This proves physical label-state admission with original affected-frame image/geometry evidence; it is not a rendered faulty movie or a whole mechanical acceptance."
+      }
+    }
+  ],
+  "sampledImageReview": {
+    "reviewer": "Codex",
+    "frame": 266,
+    "method": "actual-native-PNG-inspection",
+    "scope": "Inspected original rendered outside-state witness with hook metal adjacent to the vertical context face. Actual physical control and named hook bounds are pinned independently. No faulty final overlay was rendered or inspected."
+  },
+  "newNativeRenders": 0,
+  "qualification": {
+    "physicalStateAdmissionVerified": true,
+    "renderedFaultyMovieVerified": false,
+    "wholeMechanicalReview": "unreviewed",
+    "movingMountAndIntersectionActualFaultProof": "open",
+    "acceptedPilot": 0,
+    "originalPlanAssetAndProductsModified": false
+  }
+}

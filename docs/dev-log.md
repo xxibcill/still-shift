@@ -60,7 +60,10 @@ still hold before relying on them.
   A source-only private-copy apply rehearses19 paths/14 target files, matching
   exactly20e1/8e11/10cb/e231 with no live source/index changes. Full runtime and
   toolchain checks actually launch browsers, so they remain queued behind58827.
-  Integration/full GPU/software/package and whole acceptance stay open.
+  Integration/full GPU/software/package and whole acceptance stay open. Prepared
+  upstream MS1N probe88 now retains4 PNGs and failed pixel results, checks complete
+  RGBA controls and guards browser launch; syntax0/expected admission refusal1.
+  Actual repaired GPU evidence remains open; MS1N source/head403 stay untouched.
   [Current CPU and integration proof](./mechanism-shorts-ms3-whole-review84-results.json).
 
 - **MS3 latest installed package85 checked (2026-10-15):** codee231/source452b
@@ -74,16 +77,43 @@ still hold before relying on them.
   79/82 are unexecuted; full current package/runtime/render/whole gates remain open.
   [Package evidence](./mechanism-shorts-ms3-package-portability-results.json).
 
-- **MS3 whole review repairs qualified in isolation (2026-10-15):** runtime
-  tier commit10cb84a4 preserves all five moved suites byte-exactly;52/5 pass.
-  Retry clears stale revision changes; unchanged planned edits cannot mask cache
-  recovery, while real planned edits/manual recovery remain covered. Red1 includes
-  an invalid missing-journal fixture; correctedred2 proves both false successes;
-  green54/5 and final fast4,582/455 pass (unit stage86.94s). Standards0 / Spec0 on final diff. Producer58827/runtime1090 and actual ten whole1× takes remain
-  untouched. Archive85 now qualifies the current code through installed APIs;
-  fresh installed86 and full gates remain pending.
-  Integration/fresh runtime/package/render and whole reviews remain open.
-  [Whole review and repairs](./mechanism-shorts-ms3-whole-review84-results.json).
+- **MS3 all-ten run passed; lifecycle still live (2026-10-15):** frozen producer
+  `3df62a55` / runtime1090 / profile1dd0 remains exact. Bounded retry run actually
+  exits0 in4,829.51s. All ten products independently verify6,181 frames,130 root
+  artifacts,1,084 review images,928 samples and24,724 native pins; exact prior whole
+  picture/PCM/original narration parity holds. Preview0 errors/343 warnings.
+  Report also exits0 in472.55s; independent product/journal/count/percentile
+  reconciliation passes. First-pass1/10 (10%) fails90% target, savings null.
+  Resume exits0 in466.21s with unchanged episode rows. First7 compact handoffs
+  pass independent packet/resume/source/8-asset closure audits. CPU-only follower
+  26381 audits new sealed packets automatically; primary58827 remains live.
+  Unified58827 continues remaining3 handoffs; do not start another renderer
+  or integrate source until its actual terminal. Original attempts remain exact;
+  all2,792 source files,107 inputs and1,221 prior/E1 files are guarded.
+  Durable ignored `benchmarks/results/ms3-actual-first-ten-review80/index.md` links
+  ten independent exact MP4 copies. Whole factual/mechanical/glyph/normal-speed/
+  listening review remains open; accepted0/10, paired tokens null. Installed E1
+  receiving passes1,002 files/610 native frames/113 PNGs/full PCM with originals
+  denied. Fresh installed manifest/cache/guard are prepared, no renderer started.
+  Isolated20e1 declaration and8e11 native-policy fixes await integration; upstream
+  PR56 repairs42397d3f/2b7a4f20 are committed separately with focused/fast proof,
+  fresh GPU/runtime pending. Archive77 does not include the later policy fixes.
+  Current private archive81 /compiled runtimeebc2 verifies2,573 members and13
+  public installed source controls plus strict types/discovery; updated installed82
+  lifecycle is prepared, earlier79 remains unexecuted. New isolated whole-review
+  repairs10cb84a4/e231440e move5 process-spawning suites to runtime and prevent
+  stale planned edits from masking retry recovery. Green54/5, fast4,582/455 and
+  Standards0/Spec0 pass; retainedred1 fixture correction/red2 actual failures.
+  Archive81/prepared82 retain older8e11 source; current85/8969 now passes
+  affected installed API checks, and fresh installed86 remains prepared/not run.
+  Physical fault budget guard
+  blocks four pending captures; explicit revised allowance is requested/pending.
+  Upstream MS1N private83 also verifies1,956 members and9 installed source
+  controls/strict types; GPU/runtime pending. All five PRs are attached and target
+  main; PR51/52 merged,56/57/58 open. Actions disabled, no workflow files.
+  Full current software/benchmark/archive/installed gates and whole reviews remain open; no spending/publication/merge.
+  [Recovery and review delivery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json),
+  [package evidence](./mechanism-shorts-ms3-package-portability-results.json).
 
 - **MS2 software checkpoint delivered (2026-10-13):** `codex/mechanism-ms2`
   carries exact MS1N `bf30a253` ([PR #56](https://github.com/xxibcill/still-shift/pull/56));
@@ -284,37 +314,6 @@ still hold before relying on them.
   verification and stacked MS2 repairs; actual EU001–EU010 whole reviews stay open.
 - **Records:** [Prerequisite integration](./mechanism-shorts-ms3-prerequisite-integration89-results.json).
 
-### 2026-10-15 — MS3 CPU-only gate and exact integration preflight
-
-- **Agent / branch:** Codex; isolated `26c4a074` / source codee231.
-- **Done:** locked offline isolated Python environment, exact own editable path;
-  14 CPU worker tests, Python format/lint and soundtrack lint pass. All12 other
-  venv configuration/editable files remain byte-exact.
-- **Preflight:** only the four reviewed repair commits account for19 source/test
-  paths. Applying their aggregate to standalone copies matches all14 resulting
-  target files/deletions exactly; main source/index remain unchanged.
-- **Open / next:** primary58827 is live. Full runtime/toolchain include actual
-  browsers; integrate source and run full gates only after actual terminal.
-  No renderer, new source change, asset work or spending in this slice.
-- **Records:** [CPU/integration qualification](./mechanism-shorts-ms3-whole-review84-results.json).
-
-### 2026-10-15 — Latest installed MS3 repairs and process isolation
-
-- **Agent / branch:** Codex; private archive85 from isolated `452b8194`/codee231.
-- **Results:** build/pack,2,573 byte-exact members, offline install,13 public source
-  controls,4 real-lock/retry/cache controls across both queue versions, strict
-  public TypeScript and discovery pass in recorded stages. Compiled runtime8969
-  /profile1dd0 remains distinct from1090/ebc2. No renderer group ran.
-- **Retained:** first archive helper expected npm's excluded root pnpm lock;
-  corrected audit verifies exact corresponding source lock. Initial isolation
-  blocks setuid system ps; copied binary is killed/not used. Fixed system ps-only
-  exception passes; actual Node/pinned Python retain5 original-root read denials.
-- **Open / next:** latest installed86 admits all10/6,181 frames and prepares E1
-  /610 native frames. Guard correctly blocks it while primary58827 stays live.
-  Earlier79/82 stay unexecuted. Integration/fresh full runtime/render/package and
-  whole reviews remain open; no publication, paid generation or acceptance.
-- **Records:** [Latest package evidence](./mechanism-shorts-ms3-package-portability-results.json).
-
 ### 2026-10-15 — MS3 retry-only provenance cannot hide recovery
 
 - **Agent / branch:** Codex on `codex/ms3-review-fixes` from `10cb84a4`.
@@ -380,6 +379,229 @@ still hold before relying on them.
 - **Open / next:** integrate after live 58827 terminal; installed real export,
   report/resume/handoff, full software/benchmark/archive gate and whole pilot.
 - **Record:** [package portability](./mechanism-shorts-ms3-package-portability-results.json).
+
+### 2026-10-15 — Prepare retained MS1N GPU regression evidence
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; upstream MS1N source403
+  remains unchanged. The previous goal turn progressed; this turn also verified
+  producer58827 live through its handle with a50s poll.
+- **Done:** stage a safer4-case128px mask probe: retain actual PNGs/result before
+  pass/fail assertion, check complete-image equality/discard controls and preserve
+  browser cleanup on launch failure. Final syntax transpilation passes.
+- **Guard:** actual execution refuses before server/browser/output creation while
+  primary58827 is live (expected1). No repaired GPU pass is inferred.
+- **Progress:** EU007 handoff also passes independent8-asset/source/clock/resume
+  audit;7/10 verified, remaining3 continue in primary58827. No source integration.
+- **Open / next:** run this probe after primary terminal, then remaining current
+  runtime/render/package gates. No episode/Blender asset work or paid generation.
+- **Records:** [Prepared upstream probe](./mechanism-shorts-ms3-whole-review84-results.json).
+
+### 2026-10-15 — MS3 CPU-only gate and exact integration preflight
+
+- **Agent / branch:** Codex; isolated `26c4a074` / source codee231.
+- **Done:** locked offline isolated Python environment, exact own editable path;
+  14 CPU worker tests, Python format/lint and soundtrack lint pass. All12 other
+  venv configuration/editable files remain byte-exact.
+- **Preflight:** only the four reviewed repair commits account for19 source/test
+  paths. Applying their aggregate to standalone copies matches all14 resulting
+  target files/deletions exactly; main source/index remain unchanged.
+- **Progress:** sixth current compact handoff (EU006) also passes independent
+  closure checks; four remain in live producer58827, CPU follower26381.
+- **Open / next:** primary58827 is live. Full runtime/toolchain include actual
+  browsers; integrate source and run full gates only after actual terminal.
+  No renderer, new source change, asset work or spending in this slice.
+- **Records:** [CPU/integration qualification](./mechanism-shorts-ms3-whole-review84-results.json).
+
+### 2026-10-15 — Latest installed MS3 repairs and process isolation
+
+- **Agent / branch:** Codex; private archive85 from isolated `452b8194`/codee231.
+- **Results:** build/pack,2,573 byte-exact members, offline install,13 public source
+  controls,4 real-lock/retry/cache controls across both queue versions, strict
+  public TypeScript and discovery pass in recorded stages. Compiled runtime8969
+  /profile1dd0 remains distinct from1090/ebc2. No renderer group ran.
+- **Retained:** first archive helper expected npm's excluded root pnpm lock;
+  corrected audit verifies exact corresponding source lock. Initial isolation
+  blocks setuid system ps; copied binary is killed/not used. Fixed system ps-only
+  exception passes; actual Node/pinned Python retain5 original-root read denials.
+- **Tracker:** reconcile current run/report/resume,5 verified handoffs and latest
+  installed85 proof. First-pass10% is measured and fails90%; only paired token
+  savings are unverified. Historical engineering rows retain their own cohort.
+- **Open / next:** latest installed86 admits all10/6,181 frames and prepares E1
+  /610 native frames. Guard correctly blocks it while primary58827 stays live.
+  Earlier79/82 stay unexecuted. Integration/fresh full runtime/render/package and
+  whole reviews remain open; no publication, paid generation or acceptance.
+- **Records:** [Latest package evidence](./mechanism-shorts-ms3-package-portability-results.json).
+
+### 2026-10-15 — Actual first ten retained; whole review repairs verified
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; repairs isolated separately.
+- **Done:** confirm actual EU001–EU010 and complete existing normal1× narration;
+  no more audio files needed. Independent compact handoffs pass3/10; CPU-only
+  follower26381 checks newly sealed packets while primary58827 stays live/frozen.
+- **Results:** isolated10cb84a4/e231440e fix runtime tier and stale retry edit
+  provenance;54 runtime/5 files and4,582 unit/455 files pass. Standards0/Spec0.
+  Retain initial invalid-fixture failure and corrected real red regressions.
+  Initial main evidence push is generically rejected; unchanged remote is verified,
+  identical non-forced retry succeeds at0f5c3638. Cause unknown; failure retained.
+- **Open / next:** finish original handoffs before integrating repairs; refresh
+  current package/installed/runtime/render gates. Archive81 belongs to older code.
+  Whole audiovisual acceptance and pending physical-fault allowance stay open.
+- **Records:** [Whole review](./mechanism-shorts-ms3-whole-review84-results.json),
+  [recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json),
+  [ten local videos](../benchmarks/results/ms3-actual-first-ten-review80/index.md).
+
+### 2026-10-15 — Verify resume, first compact handoff and upstream installed repair
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; main producer still frozen.
+- **Results:** resume0 in466.21s, original rows exact; EU001 handoff0 in472.33s,
+  independent4,212-byte packet/current resume paths/source and8 asset pins pass.
+  Remaining nine handoffs still replay rendered QA; no other renderer started.
+- **Upstream:** MS1N isolated private83 matches1,956 members and passes9 public
+  installed source controls/strict types with originals denied. Fresh GPU/runtime
+  and existing-PR fast-forward remain pending; source repairs stay isolated.
+- **Coordination:** all five milestone PRs attached/main;51/52 merged,56/57/58 open.
+  Actions disabled/no workflows. Deprecated GraphQL body edit failed; REST succeeds.
+- **Open / next:** remaining handoffs, integration/ROADMAP, serial GPU/full/current
+  installed lifecycle, four fault images pending allowance and whole reviews.
+- **Records:** [current lifecycle and coordination](./mechanism-shorts-ms3-current-first-ten-recovery-results.json),
+  [isolated source/package checks](./mechanism-shorts-ms3-native-source-review-results.json).
+
+### 2026-10-15 — Reconcile actual cohort metrics and current installed contracts
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; frozen producer unchanged.
+- **Results:** all-ten report exits0 in472.55s; independent retained-journal/product
+  identities, six review counts and percentile arithmetic pass. First-pass1/10
+  fails90% target; savings null and whole reviews remain unreviewed. Initial audit
+  assumed unchanged raw journal after resume; retained snapshot proves only UTC changed.
+- **Package:** source8e11 archive81 verifies2,573 members /13 installed source
+  cases /strict types/discovery. Latest compiled lifecycle82 is prepared with exact
+  own inputs/cache and denials; older79 is preserved without execution.
+- **Limit:** fault-asset guard returns2 on conservative shared-session totals;
+  revised $10/35M allowance requested, pending. No dependent fault command started.
+- **Open / next:**58827 resume/ten handoffs, source integration and serial GPU/full/
+  installed gates; four physical fault images and whole reviews remain.
+- **Plan:** reconcile actual PR51/52 merges, attached five-milestone sequence,
+  MS1N/MS2 staged checkpoints and current MS3 status. Frozen ROADMAP awaits terminal.
+- **Records:** [recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json),
+  [current package](./mechanism-shorts-ms3-native-source-review-results.json),
+  [fault guard](./mechanism-shorts-ms3-physical-fault-preparation-results.json).
+
+### 2026-10-15 — Deliver actual first ten local review videos
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; frozen producer unchanged.
+- **Done:** all-ten bounded run exits0 in4,829.51s; independent complete outputs
+  verify6,181 frames,130 root artifacts,1,084 review images,24,724 native pins,
+  original narration parity and0 preview errors/343 retained warnings.
+- **Delivery:** ten exact independent MP4 copies and one local review index under
+  ignored benchmarks/results. First helper's wrong binding-field assumption failed
+  before copying; corrected reader passes. No media added to Git/publication.
+- **Open / next:**58827 still runs report/resume/ten handoffs; source/GPU/installed
+  renderer must wait. Source repairs qualified in isolation; whole reviews pending.
+- **Records:** [run, independent evidence and delivery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json).
+
+### 2026-10-15 — Verify ninth episode and prepare fresh installed lifecycle
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; live producer unchanged.
+- **Results:** EU009 adds596 frames /13 root artifacts /110 review images /
+  2,384 native pins with exact prior complete movie parity. Nine products verified;
+  EU010 is running, terminal lifecycle still pending.
+- **Prepared:** installed one-episode manifest and386 exact cache files /194,102,281B;
+  original-path denial retained, no old queue/products copied and no renderer run.
+- **Retained:** initial helper assumed a map instead of an array, before any copy;
+  corrected copy passes. Renderer admission properly rejects the live primary.
+- **Open / next:** collect terminal primary lifecycle, serial GPU/installed/fault
+  checks and integrate isolated reviewed fixes only after source freeze ends.
+- **Records:** [recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json),
+  [package preparation](./mechanism-shorts-ms3-package-portability-results.json).
+
+### 2026-10-15 — Verify eight current episodes and isolated installed receiving
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; producer stays `3df62a55`.
+- **Done:** independent EU006–EU008 product/native checks; eight complete movies
+  retain exact prior whole picture/original narration evidence. Recovery still live.
+- **Results:** eight products / 4,958 frames / 104 root artifacts / 869 review
+  images. Installed receiver checks 1,002 copied files, 610 native frames,
+  113 decoded PNGs and complete PCM with original source paths denied.
+- **Retained failure:** first receiving copy omitted sequence.json; public checker
+  rejected it. Exact sidecar added; corrected reader actually exits0.
+- **Open / next:** terminal run/report/resume/ten handoffs, fresh installed
+  production, full gates, physical fault images and whole production reviews.
+- **Records:** [recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json),
+  [installed receiving](./mechanism-shorts-ms3-package-portability-results.json).
+
+### 2026-10-15 — Verify recovered zipper; qualify declaration repair in isolation
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; live source remains frozen.
+- **Results:** EU004 verifies 653 frames, 13 root artifacts, 97 review images and
+  2,612 native pins; movie bytes match authenticated prior complete RGBA/PCM.
+  EU005 adds 598 frames, 13 root artifacts, 115 review images and 2,392 native pins.
+  Session 58827 is live, EU-006 running. Original r0 attempt prefixes stay exact.
+- **Package failure / repair:** actual emit fails TS2742/TS7056. Isolated code
+  `20e1afe2` names the existing Composition return type, with erased JS unchanged.
+  Both review axes have zero findings; isolated fast 4,628/460, archive/offline
+  install, strict public type consumer/API/discovery and all-ten copied input
+  admission pass while original source directories are denied. Compiled runtime
+  `d7345fb9` is separate from producer `1090f97c`; no rebinding or rendering.
+- **Retained failures:** package emit; missing offline dev-tool metadata followed
+  by pinned fetch. Previous generated package is preserved. No paid generation.
+- **Open / next:** integrate isolated `0491e622` after terminal lifecycle, complete
+  actual installed/receiving export/handoff and full gates; physical fault images
+  and whole reviews remain. Pilot acceptance 0/10; paired tokens unavailable.
+- **Records:** [package portability](./mechanism-shorts-ms3-package-portability-results.json),
+  [recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json).
+
+### 2026-10-15 — Prove physical fault geometry and recovered clothespeg
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; producer remains frozen.
+- **Results:** EU003 verifies 588 frames, 13 root artifacts, 104 review images and
+  2,352 native pins; complete movie parity reuses authenticated prior RGBA/PCM.
+  Session 58827 remains live, E4 running; original attempts stay exact.
+- **Fault preparation:** disposable fixed-board derivative moves 0.3 scene units
+  and passes fresh reload. Wall/hook derivative shares a strict interior point
+  in both actual closed oriented evaluated surfaces. Original source is exact.
+  Registered semantics locate findings at frames 159/266. Four native phone
+  captures are admitted but correctly blocked until the main renderer terminates.
+- **Retained failure:** exact convex assumption fails on bevel geometry; Blender
+  exits 0 despite assertion. New strategy uses winding with cube/torus controls
+  and explicit Python failure exit, without tolerance changes. Persistent budget
+  and compact handoff are retained; no fresh renders or positive acceptance.
+- **Open / next:** actual captured fault images/review and selector replay, current
+  terminal/receiving/installed/full software and whole reviews. Pilot 0/10.
+- **Records:** [fault preparation](./mechanism-shorts-ms3-physical-fault-preparation-results.json),
+  [recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json).
+
+### 2026-10-15 — Verify recovered cable tie and actual label-state admission
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`; producer frozen at `3df62a55`.
+- **Results:** EU002 sealed. All 13 root artifacts, 90 review images, 77 samples,
+  five shots, two crop exceptions, 2,352 native pins and 588 frame bindings verify.
+  Movie bytes match prior full RGBA/PCM/original narration evidence. No fresh
+  native renders or whole acceptance inferred.
+- **Fault:** moving the real E1 Inside face label to its outside-state shot,
+  preserving the inside control range, rejects at frame 239. Native observations
+  and images at 239/266 authenticate mode 1. Initial helper confused final and
+  deduplicated capture frame fields; failure and corrected exit 0 are retained.
+- **Open / next:** session 58827 live, E3 running, original attempt prefixes exact.
+  Finish terminal lifecycle, receiving/installed/full software, actual mount/
+  intersection fault output and whole reviews. Pilot acceptance remains 0/10.
+- **Records:** [recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json),
+  [label-state proof](./mechanism-shorts-ms3-physical-label-state-results.json).
+
+### 2026-10-15 — Integrate coverage and start exact bounded recovery
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` (source3df62a55).
+- **Done:** qualified native coverage repair integrated; log conflict retains failed
+  r0 run/restoration plus isolated tests/reviews. Native producer identity remains
+  exactly1090f97c/profile1dd0; no picture/capture runtime changes or old binding rewrite.
+- **Results:** source73 actual auditor passes10 selected/0 support,8 reuse/2 revisions/
+  0 new rig types.18 focused/3 files/types and current isolated fast4,628/460 pass.
+  Exact-CAS retry authorization selects nine failed jobs. Unified58827 live:
+  E1 retained, E2 retry executing, original failures/history preserved.
+- **Open / next:** hold2,792 source inputs/107 current/1,221 prior files and collect
+  actual terminal status; independent new products, full receiving/installed/
+  software, physical fault proof and whole reviews. Accepted0/10, tokensnull.
+- **Records:** [recovery](./mechanism-shorts-ms3-current-first-ten-recovery-results.json),
+  [native coverage](./mechanism-shorts-ms3-native-coverage-review-results.json).
 
 ### 2026-10-15 — Native selected-cohort coverage and actual failed-state audit
 
@@ -11228,3 +11450,18 @@ still-shift --json` returns `[]`. The verified local archive hash still matches.
 - **Open:** current full gates/installed handoff/whole reviews; accepted0/10,
   tokens null. No new spend, publish, merge or Actions.
 - **Records:** [Portable lifecycle and partial audits](./mechanism-shorts-ms3-first-ten-portable-lifecycle-results.json).
+
+### 2026-10-15 — Preserve current run failure and restore exact dependencies
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` (source5a91ad91 held).
+- **Results:** current run terminal1 in990.86s; E1 seals, nine others fail when37
+  copied dependencies vanish. Cause not established; source remains exact.
+  Independent E1 checks610frames/13 pins/113 images/2 exceptions/2,440 native pins;
+  movie exact against prior full picture/audio proof. Whole acceptance remains0/10.
+- **Recovery:**37 exact originals found;111 temporary copies restored, all107
+  current/354 prior files reverified;112-file durable ignored backup byte-exact.
+  Failed r0 state/manifest and all attempts retained. No retry yet.
+- **Open / next:** qualified native coverage source repair in isolated branch,
+  bounded9-row retry; full report/resume/handoff/receiving/installed/software gates,
+  real intersection/mount/physical-label fault proof and whole reviews.
+- **Records:** [current lifecycle/failure](./mechanism-shorts-ms3-current-first-ten-lifecycle-results.json).

@@ -1,5 +1,12 @@
 # MS1N implementation and completion record
 
+Current review qualification (2026-10-15): the staged completion below retains its
+original source bindings. PR #56 review repairs are prepared separately at
+`40330672`: Float32 cutout visibility and located native-source diagnostics,
+with focused/fast and affected installed API checks. Fresh repaired GPU/runtime
+checks remain pending behind the live MS3 producer; no historical render or full
+gate is relabeled. [Repair evidence](./pr-56-fix-results.json).
+
 2026-10-10. **Software complete in recorded stages; human visual/listening and creative acceptance remain pending.** The seven [plan requirements](./mechanism-shorts-production-plan.md#ms1n-native-3d-composition) map to evidence below. [Design](./mechanism-shorts-ms1n-design.md) freezes features/comparison policy; [results](./mechanism-shorts-ms1n-results.json) retain identities, commands and failed/rerun history.
 
 | Plan requirement                              | Implemented scope and observed evidence                                                                                                                                                                                                                                                                   |

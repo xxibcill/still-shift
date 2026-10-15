@@ -54,7 +54,10 @@ RSS or opaque driver storage.
 
 [MS2 PR #57](https://github.com/xxibcill/still-shift/pull/57) is open as a draft
 against `main` and attached to the task. MS3 begins on a separate branch carrying
-the exact MS2 prerequisite. MS3 retains its
-original queue/QA/report and ten-question pilot scope, including five assets and
-two behaviors. No milestone PR merge, npm publication, Actions or ElevenLabs
+the exact MS2 prerequisite. The five-asset/two-behavior ten-question cohort above is the historical MS2
+engineering checkpoint. The active MS3 pilot uses the owner-selected actual
+Everyday Unlocked EU-001–EU-010, complete existing Alden narration at1×, selection
+`ms3-everyday-unlocked-first-ten-2026-10-14-v2`. Its input and whole-review status
+is recorded in [MS3 acceptance](./mechanism-shorts-ms3-acceptance.md); historical
+MS2 evidence does not qualify those episode outputs. No milestone PR merge, npm publication, Actions or ElevenLabs
 spending is included.

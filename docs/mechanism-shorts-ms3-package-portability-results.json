@@ -1,7 +1,7 @@
 {
   "schemaVersion": "ms3-package-declaration-portability-results-1",
   "date": "2026-10-15",
-  "status": "passed-isolated-declaration-fix-private-pack-and-installed-input-admission",
+  "status": "passed-isolated-declaration-private-pack-input-admission-and-current-snapshot-receiving",
   "sourceCommit": "20e1afe2acb844afe15fae504bcb5a61651fdc61",
   "sourceBranch": "codex/ms3-review-fixes",
   "baseCommit": "a37038ef1f2af887735e5f055fc0a1944e119813",
@@ -262,6 +262,198 @@
     "acceptedPilot": 0,
     "pairedAuthoringTokens": null
   },
+  "installedSnapshotReceiving": {
+    "copiedClosure": {
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-package78-receiving-dependencies3.json",
+        "bytes": 200738,
+        "sha256": "sha256:30caa9d9249c5a4e0bb6488aa453a61ad6c2ad139dafb4832a9e601a1872527a"
+      },
+      "result": {
+        "status": "passed-complete-native-sequence-and-capture-receiving-copy",
+        "destination": "/private/tmp/still-shift-ms3-package77-consumer/received-EU001-78",
+        "captureReceipts": 3,
+        "files": 1002,
+        "bytes": 1093534646,
+        "originalProduct": {
+          "path": "products/EU-001-daefc3cc7faa9869-1.json",
+          "bytes": 10644,
+          "sha256": "sha256:12d114ee61c1a6f1d507c78429833edc250e45469ef2de55e89f3187e7575261"
+        },
+        "scope": "Adds sequence-order sidecar required by public native plate verification after initial reader rejected its absence. Existing failed reader/closure attempt retained."
+      },
+      "actualExitCode": 0
+    },
+    "initialReader": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package78-receiving-result1.log",
+        "bytes": 1750,
+        "sha256": "sha256:86ca9f7c07349092135215b0e5a5a61e095348ee86004045c42858178a0316e4"
+      },
+      "cause": "Copied closure omitted the native sequence-order sidecar; public checker rejected absence. Failure retained."
+    },
+    "correctedReader": {
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-package78-receiving-result2.json",
+        "bytes": 3445,
+        "sha256": "sha256:a62e0a04eb4577a3da9b77ddc8de9858c8e4767454faaca0db8221b92fc0ce28"
+      },
+      "result": {
+        "status": "passed-installed-isolated-current-snapshot-native-review-handoff-audio-receiving",
+        "originalProductBinding": {
+          "inputSha256": "sha256:daefc3cc7faa98699f15011508143afc79b5080d09231b264fd4bec066810878",
+          "outputSha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e",
+          "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "receiverIdentity": {
+          "codeSha256": "sha256:d7345fb9f9ec6a9526459a1693f39c9a013e5f00a9917d105c478d6b5201b81c",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+          "profile": {
+            "backend": "blender-native",
+            "blenderExecutableSha256": "sha256:f5c1f2a0c0bca3389ec772d355242b700975ea84e66cbb3f5257a7bce8e5adeb",
+            "blenderVersion": "Blender 5.2.2 LTS\n\tbuild date: 2026-09-15\n\tbuild time: 01:49:19\n\tbuild commit date: 2026-09-14\n\tbuild commit time: 15:14\n\tbuild hash: d13f752e3b9c\n\tbuild branch: blender-v5.2-release\n\tbuild platform: Darwin\n\tbuild type: Release\n\tbuild c flags:  -Wall -Werror=implicit-function-declaration -Werror=return-type -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wstrict-prototypes -Wmissing-prototypes -Wunused-parameter -Wundef -Wundef-prefix -Werror=unguarded-availability-new  -mmacosx-version-min=11.2  -std=gnu11  -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild c++ flags:  -Wall -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wno-overloaded-virtual -Wno-sign-compare -Wno-invalid-offsetof -Wno-suggest-override -Wundef -Wundef-prefix -Wunused-parameter -Wmismatched-tags -Werror=unguarded-availability-new  -mmacosx-version-min=11.2 -ftemplate-depth=1024   -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild link flags: -fexceptions -framework CoreServices -framework Foundation -framework IOKit -framework AppKit -framework Cocoa -framework Carbon -framework AudioUnit -framework AudioToolbox -framework CoreAudio -framework Metal -framework QuartzCore -framework CoreImage -framework OpenGL -framework Accelerate -liconv -Xlinker -no_warn_duplicate_libraries\n\tbuild system: CMake",
+            "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
+            "receiverProfileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+          }
+        },
+        "retainedOriginalProducerIdentity": true,
+        "filesVerified": 1002,
+        "captureReceipts": 3,
+        "nativeFrames": 610,
+        "nativePublicCheckerPassed": true,
+        "reviewImagesDecoded": 113,
+        "reviewSamples": 100,
+        "reviewPlanSourceAndClockExact": true,
+        "wholePcmBytes": 7815168,
+        "wholePcmSha256": "sha256:b9bc1c8bca52d9ac6b9dba7fe2cd87103f4ce56b76d56c03c0900a5fc5137989",
+        "handoffSchemaSourceClockStatusAndArtifactClosurePassed": true,
+        "originalSourceAccessDenied": true,
+        "newNativeRenders": 0,
+        "newBrowserExports": 0,
+        "wholeReviews": "unreviewed",
+        "scope": "Public installed native plate checker and review/handoff schemas plus independent actual PNG/whole PCM decode after complete independent relocation. Original producer binding remains source runtime1090f97c; receiver compiled runtime is distinct. Fresh installed production render/export/report/resume/handoff creation and whole acceptance are not performed."
+      },
+      "actualExitCode": 0
+    },
+    "correctedLog": {
+      "path": "/private/tmp/still-shift-ms3-package78-receiving-result2.log",
+      "bytes": 169,
+      "sha256": "sha256:75eae4831f0a2adbae701bb4c8228c4f219d460cd28f1da181a50d9f786c42d4"
+    },
+    "runner": {
+      "path": "/private/tmp/still-shift-ms3-package77-consumer/check-received2.mjs",
+      "bytes": 5501,
+      "sha256": "sha256:509fe996d4176b84175d9b675efd43a5572508aedb191d844e1f10c5e2cf7964"
+    },
+    "isolation": {
+      "path": "/private/tmp/still-shift-ms3-package77-isolation.sb",
+      "bytes": 473,
+      "sha256": "sha256:46789abab111d3287a25dc86ae984672aa4dda0b2f8191e6354820106de86077"
+    },
+    "scope": "Installed public native plate checker and review/handoff schemas plus independent review PNG/full PCM verification. Original source1090 product remains bound to its original identity; installed receiverd734 is distinct. Fresh installed export/report/resume/handoff creation remains open."
+  },
+  "preparedFreshInstalledLifecycle": {
+    "manifest": {
+      "path": "/private/tmp/still-shift-ms3-package77-consumer/receive-inputs1/queue-installed79.json",
+      "bytes": 3293,
+      "sha256": "sha256:945c93df08ed26379f8841f051b27f121cb7ca68cbfedf7be667f8d2878c4415"
+    },
+    "queueAdmissionActualExitCode": 0,
+    "queueAdmissionLog": {
+      "path": "/private/tmp/still-shift-ms3-package79-installed-queue1.log",
+      "bytes": 942,
+      "sha256": "sha256:ca990bf4bb49879851cf5d085cd88d96cb3611da9b1eb827080efb9b4a01507a"
+    },
+    "nativeCacheCopy": {
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-package79-warm-copy2.json",
+        "bytes": 83111,
+        "sha256": "sha256:1f8df900af7035941ed0d925346dd6a3fc946e1410fcb266c215cb9997c66578"
+      },
+      "files": 386,
+      "bytes": 194102281,
+      "existingNativeFrames": 610,
+      "actualExitCode": 0
+    },
+    "initialCopyFailure": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package79-warm-copy1.log",
+        "bytes": 279,
+        "sha256": "sha256:dc0c128349dc2476a33e3b4adf5e09142cf8d19adc72bd5c23c91495cd3a70c1"
+      },
+      "cause": "Helper assumed pins was a map; actual closure is an array. No destination created; corrected reader copied exact independent files."
+    },
+    "runner": {
+      "path": "/private/tmp/still-shift-ms3-package79-installed-lifecycle1.py",
+      "bytes": 3745,
+      "sha256": "sha256:3db11bda95bd190c8ec9b4e1452cdb3be26e8439969b159397421b52fc52e05e"
+    },
+    "renderAdmissionGuard": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package79-installed-admission-block1.log",
+        "bytes": 292,
+        "sha256": "sha256:070521a0dfe19f18e132981c56c9709ac5a277161f28e8b059a197ddbd74ca33"
+      },
+      "scope": "Expected refusal before primary lifecycle terminal, no renderer launched."
+    },
+    "status": "superseded-without-execution-by-current-package81-lifecycle82",
+    "scope": "Fresh one-episode compiled-runtime manifest, original source path denial and verified matching-profile warm native cache. Old queue/product/items absent; no binding rewriting or native/browser rendering."
+  },
+  "currentPackage81Preparation": {
+    "sourceCommit": "8e11e6b8",
+    "evidence": "docs/mechanism-shorts-ms3-native-source-review-results.json",
+    "consumer": "/private/tmp/still-shift-ms3-package81-consumer",
+    "copyReceipt": {
+      "path": "/private/tmp/still-shift-ms3-package82-prepare-copy1.json",
+      "bytes": 104413,
+      "sha256": "sha256:2f879b43453f25ee67deb04a07b3f829e7ad4c86d7cddc2d1b60c3ab5ef74feb"
+    },
+    "copiedInputFiles": 115,
+    "copiedInputBytes": 130642814,
+    "nativeCacheFiles": 386,
+    "nativeCacheBytes": 194102281,
+    "allTenAdmission": {
+      "actualExitCode": 0,
+      "manifest": {
+        "path": "/private/tmp/still-shift-ms3-package81-consumer/receive-inputs1/queue-installed82-all.json",
+        "bytes": 32166,
+        "sha256": "sha256:4d621ec5af03bce28b77900087e0e627d9f8be77d9e61b8ad16e38f5333a595d"
+      },
+      "episodes": 10,
+      "frames": 6181
+    },
+    "oneEpisodeAdmission": {
+      "actualExitCode": 0,
+      "manifest": {
+        "path": "/private/tmp/still-shift-ms3-package81-consumer/receive-inputs1/queue-installed82.json",
+        "bytes": 3293,
+        "sha256": "sha256:824ef11b688ec4ec8ec8391dc08dd537eb5ee140cc70007aa63bb9ffc44e290a"
+      },
+      "episodes": 1,
+      "frames": 610
+    },
+    "runtimeSha256": "sha256:ebc2d314a78f53bcc98acdd79ab6cdf4724e1f5f788dfb72cdd1506511a09c8d",
+    "runner": {
+      "path": "/private/tmp/still-shift-ms3-package82-installed-lifecycle1.py",
+      "bytes": 3759,
+      "sha256": "sha256:e75f6b546532375b1bc0a22b10fca12bfea7c897364164bb70bfe19d0eff7320"
+    },
+    "renderAdmissionGuard": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package82-installed-admission-block1.log",
+        "bytes": 292,
+        "sha256": "sha256:abfebbd97ac6c553fb052feefc7eb19d7ee5dd5e24d0523ed22bb12e8d75e2fb"
+      },
+      "scope": "Expected refusal before primary lifecycle terminal; zero renderers launched."
+    },
+    "status": "prepared-not-run",
+    "scope": "Uses current repaired archive81; original repository/Obsidian/bundle and earlier consumer77 roots denied. Earlier79 preparation remains preserved; no earlier installed job was executed or rebound."
+  },
   "latestReviewedPackage85": {
     "sourceCommit": "452b8194c2ab8ab4ef504969cd73c417fa02138a",
     "sourceCodeRepairCommit": "e231440e",
@@ -490,5 +682,11 @@
       "earlier79And82": "Retained unexecuted; superseded by latest85/8969 package and prepared86 lifecycle."
     },
     "qualification": "Current repaired private package build/archive/installation, all public source/retry controls, strict public TypeScript and discovery pass in recorded stages. No browser/render group, publication, integration, full package matrix or whole pilot acceptance."
+  },
+  "currentPrerequisiteMergeQualification": {
+    "record": "./mechanism-shorts-ms3-prerequisite-integration89-results.json",
+    "source": "e9be5d82 plus live evidence integration in progress",
+    "status": "focused73-and-fast4594-passed; full integrated source gates open",
+    "olderInstalledEvidence": "Package85 and prepared86 retain source452b/codee231 bindings; no earlier archive evidence transfers to this merge."
   }
 }

@@ -6,45 +6,74 @@ was opened/attached. Only roadmap/log prose differs at integration; the owner's
 MS0 merge is retained. This tracker preserves the
 [approved MS3 scope](./mechanism-shorts-production-plan.md#ms3-production-lifecycle-and-ten-episode-pilot).
 
-The2026-10-15 source review repairs are integrated through `5a91ad91`: authenticated
-native compact handoff, explicit first-pass repair/recovery provenance, native
-encoded phone/shot/cut/event/caption/anchor evidence, and separate four-state QA
-applicability decisions. Current combined fast4,619/459 and focused checks pass;
-failed stages and independent Standards/Spec findings are retained. The earlier
-relocated all-ten lifecycle is terminal with6,181 full RGBA/PCM frames,100 product
-pins and24,724 native pins independently verified. Fresh current runtime1090f97c
-run/report/resume/ten handoffs is running with exact source/prior-file guards.
-Current full receiving/installed/software gates and whole pilot reviews remain
-open. Accepted0/10 and paired tokensnull; repeated lifecycles do not establish
-original first-pass completion or savings. [Current lifecycle](./mechanism-shorts-ms3-current-first-ten-lifecycle-results.json),
-[native review](./mechanism-shorts-ms3-native-encoded-review-results.json),
-[applicability QA](./mechanism-shorts-ms3-four-state-qa-results.json).
+Current2026-10-15 evidence binds the actual EU001–EU010 to frozen producer
+`3df62a55` / runtime1090 / profile1dd0. The bounded all-ten run, report and resume
+actually exit0. Independent checks cover6,181 frames,130 root artifacts,1,084
+review images,24,724 native pins and exact original narration parity. The local
+review index is `benchmarks/results/ms3-actual-first-ten-review80/index.md`.
+Seven compact handoffs (EU001–EU007) pass independent source/clock/resume/asset
+closure checks. Unified58827 continues the remaining three handoffs; CPU-only
+follower26381 audits newly sealed packets. No other renderer group or source
+integration may start until the producer actually terminates.
 
-| Approved workstream                                            | Current evidence                                                                                                                                                                                                                                                                                                                                                                                                                                                  | Remaining                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| -------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Durable queue/caches/cancel/restart/retry/independent failures | Queue2 strict journals, sealed completions, retries/cancel/CAS/hash/relocation and actual SIGKILL fixture pass39 owning checks                                                                                                                                                                                                                                                                                                                                    | QA7 real adapter/quota/cache/revision proof passes; declarative queue/run passes37 scoped controls and real three-family input creation; current fast4448/runtime252/integration322/depth14/smoke pass; targeted retry48 scoped checks passes; current retry fast4458/runtime253/integration322/depth14/smoke pass; native10 actual CLI/OS faults/retry/relocation and independent473-pin audit pass on heldc474c9c5; remaining worker/managed integration and final gates stay open                             |
-| Unified QA with separate methods/intervals/evidence            | Report1 six dimensions/artifact binding; native3 technical full decode, five dimensions unreviewed;42 current owning controls                                                                                                                                                                                                                                                                                                                                     | QA7 pins plans, facts/raw/groups and failure/report/handoff links; QA7/native10 current native proofs and independent audits pass; broader faults and actual whole reviews remain                                                                                                                                                                                                                                                                                                                                |
-| Registered bounded semantics and grouped inherited warnings    | Semantic4 bounded registered scalar rules/located MS2 timeline wrapper and grouped raw peaks;21 checks,180 actual mount samples/3 seeded controls                                                                                                                                                                                                                                                                                                                 | QA7 current6080 fast/runtime/native and independent230-pin audit pass; quota preservation/five executions/program-history/current reports verified; analytic/continuous collision and broader faults/reviews remain                                                                                                                                                                                                                                                                                              |
-| Phone/shot/contact/cut/crops/full decode/audio/handoff         | Evidence6 actual four outputs/240 frames/108 verified images, exact PCM, independent188 pins and fresh current CLI handoff;57 checks + complete fast/runtime; separate actual cut60 frames/27 images/46 pins                                                                                                                                                                                                                                                      | Original pilot native1 queue/run/report on59ce0e5f actually exit0; E01/E03/E08 independent audits verify1,876 frames/scalar rows,94 images and exact review PCM. Fresh current042a public CLI checks now pass all three existing final videos/1,876 frames, with fresh byte-identical compositions/1,934 protected files unchanged/zero new3D; historical production seals are not relabeled. Three historical visual failures and all current whole reviews remain open; revised first-ten narration is located |
-| Scoped repairs and automatic MS1 overlap recovery              | Current report invalidates old reviews when binding changes                                                                                                                                                                                                                                                                                                                                                                                                       | Current pure-API/historical-measurement bounded candidate preflight and private current CLI seed pass; Currentbf302e91 real automatic recovery/fresh final check/independent696-plate proof passes: one candidate/patch/export, zero new3D, nine sidecars/seven dependencies/neighbors exact;82 affected decoded frames change and614 outside frames/full PCM stay exact. Original whole/pilot remains                                                                                                           |
-| Ten distinct explanations and extension work                   | Frozen selection and question/source board retained;0/10 validated; E02/E05/E09/E10 distinct candidates pass native and independent149-pin audits/default pixel parity; E05 fast4,472/runtime253/integration322/depth14/smoke/native180/trigger streams120; E09 fast4,467 and666 sampled jaw states; E10 native180/ideal720/pins151 on9ba; e4a full fast4,507/runtime253/integration322/depth14/smoke passes with stale-discovery failures retained; accepted0/10 | Five assets/two behaviors now have source-bound engineering evidence (including repaired E06 lower-rear hinge); ten current family packets and E01/E03/E08 portrait inputs are prepared. The owner-selected channel first ten now have existing narration/native inputs; current bindings, broader coverage and all whole factual/design/visual/continuous/listening reviews remain                                                                                                                              |
-| Capability/docs and one report command                         | Report5 one bounded report invocation, current artifact audit, twelve generated schemas/capability reference;54 owning checks                                                                                                                                                                                                                                                                                                                                     | Actual default/paged native CLI and fast/runtime tiers verified; Shared CLI discovery/generated import/batch/render/recovery limits now verified on7941b710 (fast4,539/449 + eight runtime); real pilot measurements and final gates/package/installed remain                                                                                                                                                                                                                                                    |
+The actual report reconciles first-pass technical completion at1/10 (10%), below
+the90% target, with nine original failures preserved. Token savings remain null
+without comparable paired measurements. Technical and sampled-visual pass10 each;
+mechanical, factual, continuous-motion and listening remain unreviewed10 each,
+with0 reviewed-ready/accepted. Render p50/p95 are474.63/574.84s, separate from
+absent setup/routine measurements.
+[Current authoritative evidence](./mechanism-shorts-ms3-current-first-ten-recovery-results.json).
+
+Isolated source repairs20e1/8e11/10cb/e231 await integration after terminal58827.
+The latest private archive85 binds source452b/codee231 and compiled runtime8969,
+separate from1090/d734/ebc2. Build/pack, all2,573 member hashes, offline install,
+13 public source controls,4 actual retry/cache/real-lock controls across both queue
+versions, strict installed types and discovery pass in recorded stages. Actual
+Node and pinned Python retain5 original-root file denials; a disclosed fixed
+system ps-only exception permits the required process identity check. Initial
+audit/isolation failures and rejected-copy probes remain recorded. Fresh
+installed lifecycle86 is prepared and guard-blocked while primary is live;
+earlier79/82 remain unexecuted. Full current software/package/render gates stay
+open. [Latest package proof](./mechanism-shorts-ms3-package-portability-results.json),
+[whole review and isolated repairs](./mechanism-shorts-ms3-whole-review84-results.json).
+
+Four actual geometry fault images remain open. Their existing work-budget guard
+returns2; a revised allowance was requested and is pending. Other software work
+continues. [Physical fault preparation and guard](./mechanism-shorts-ms3-physical-fault-preparation-results.json).
+
+The table retains the original staged engineering evidence. Source identities and
+historical cohorts stay attached to those results; their passes do not transfer
+whole acceptance to the actual first-ten pilot. Current qualification is above.
+
+| Approved workstream                                            | Current evidence                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Remaining                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Durable queue/caches/cancel/restart/retry/independent failures | Queue2 strict journals, sealed completions, retries/cancel/CAS/hash/relocation and actual SIGKILL fixture pass39 owning checks                                                                                                                                                                                                                                                                                                                                                                   | QA7 real adapter/quota/cache/revision proof passes; declarative queue/run passes37 scoped controls and real three-family input creation; current fast4448/runtime252/integration322/depth14/smoke pass; targeted retry48 scoped checks passes; current retry fast4458/runtime253/integration322/depth14/smoke pass; native10 actual CLI/OS faults/retry/relocation and independent473-pin audit pass on heldc474c9c5; remaining worker/managed integration and final gates stay open |
+| Unified QA with separate methods/intervals/evidence            | Report1 six dimensions/artifact binding; native3 technical full decode, five dimensions unreviewed;42 current owning controls                                                                                                                                                                                                                                                                                                                                                                    | QA7 pins plans, facts/raw/groups and failure/report/handoff links; QA7/native10 current native proofs and independent audits pass; broader faults and actual whole reviews remain                                                                                                                                                                                                                                                                                                    |
+| Registered bounded semantics and grouped inherited warnings    | Semantic4 bounded registered scalar rules/located MS2 timeline wrapper and grouped raw peaks;21 checks,180 actual mount samples/3 seeded controls                                                                                                                                                                                                                                                                                                                                                | QA7 current6080 fast/runtime/native and independent230-pin audit pass; quota preservation/five executions/program-history/current reports verified; analytic/continuous collision and broader faults/reviews remain                                                                                                                                                                                                                                                                  |
+| Phone/shot/contact/cut/crops/full decode/audio/handoff         | Historical engineering evidence: Evidence6 actual four outputs/240 frames/108 verified images, exact PCM, independent188 pins and fresh current CLI handoff;57 checks + complete fast/runtime; separate actual cut60 frames/27 images/46 pins                                                                                                                                                                                                                                                    | Actual first ten now have independent all-ten output/narration proofs and seven current compact handoffs. Remaining six handoffs, newest integrated-source full gates, encoded glyph/continuous-motion/listening/factual/mechanical/human review remain open; historical seals retain original bindings.                                                                                                                                                                             |
+| Scoped repairs and automatic MS1 overlap recovery              | Current report invalidates old reviews when binding changes                                                                                                                                                                                                                                                                                                                                                                                                                                      | Current pure-API/historical-measurement bounded candidate preflight and private current CLI seed pass; Currentbf302e91 real automatic recovery/fresh final check/independent696-plate proof passes: one candidate/patch/export, zero new3D, nine sidecars/seven dependencies/neighbors exact;82 affected decoded frames change and614 outside frames/full PCM stay exact. Original whole/pilot remains                                                                               |
+| Ten distinct explanations and extension work                   | Historical engineering cohort: Frozen selection and question/source board retained;0/10 validated; E02/E05/E09/E10 distinct candidates pass native and independent149-pin audits/default pixel parity; E05 fast4,472/runtime253/integration322/depth14/smoke/native180/trigger streams120; E09 fast4,467 and666 sampled jaw states; E10 native180/ideal720/pins151 on9ba; e4a full fast4,507/runtime253/integration322/depth14/smoke passes with stale-discovery failures retained; accepted0/10 | Actual owner-selected EU001–EU010 source/clock/format/asset admission and all-ten run/report/resume pass; native coverage reconciles8 reuse/2 asset revisions/0 new rig types, supported0/10 and accepted0/10. Current compact handoffs7/10; remaining full gates and whole factual/design/mechanical/glyph/motion/listening reviews stay open.                                                                                                                                      |
+| Capability/docs and one report command                         | Report5 one bounded report invocation, current artifact audit, twelve generated schemas/capability reference;54 owning checks                                                                                                                                                                                                                                                                                                                                                                    | Current report independently reconciles ten rows, actual render percentiles,10% first-pass, nine retained original failures, unfinished review counts and null setup/routine/token measurements. Latest installed85 discovery and strict public types pass; final integrated-source software/full package/render gates remain open.                                                                                                                                                  |
 
 The active owner-selected pilot is `ms3-everyday-unlocked-first-ten-2026-10-14-v2`, selection SHA
 `8c5f378389d595c83fdcf3ff1cd41bd2d57d64b3a622c953013cffe39d001471`. It contains actual channel EU-001–EU-010.
 All ten existing Alden recordings, observed word timings and native asset pins are
-located; current production/coverage/whole review remains0/10. The [selection record](./mechanism-shorts-ms3-pilot-selection.json)
+located and admitted; all ten current products verify. Supported and whole-reviewed
+counts remain0/10. The [selection record](./mechanism-shorts-ms3-pilot-selection.json)
 retains the prior cohort hash and discloses the change. The historical
 [three-family board](./mechanism-topic-family-coverage.md) and five-asset/two-behavior
 engineering proofs remain unchanged. Captions, filenames and encode success
 do not establish episode support or acceptance.
 
-Targets remain unmeasured:50% lower median routine authoring tokens against
-comparable paired baseline tasks,90% first-pass technical completion, zero
-per-episode server/capture code, zero GUI recovery and zero unresolved mechanical
-failures in reviewed-ready output. Missing token measurements staynull, rather
-than becoming zero cost or achieved savings. The report's percentile method is
-linear interpolation at(n−1)×p; setup and routine effort remain separate.
+The50% median routine-authoring-token reduction target remains unverified because
+comparable paired measurements are missing. First-pass completion is measured at
+1/10 (10%); the90% target is not achieved. Failed attempts and recovery remain in
+the denominator. Zero per-episode server/capture code and zero GUI recovery remain
+separate implementation criteria; zero unresolved mechanical failures is required
+before any output is reviewed-ready. No output is currently reviewed-ready.
+Missing token measurements staynull, rather than becoming zero cost or achieved
+savings. The report's percentile method is linear interpolation at(n−1)×p;
+setup and routine effort remain separate.
 
 Seed intersection, moving mount, clipped text, unreadable hold, wrong label state,
 illegal transition/event order, missing audio/export failure, interruption,
@@ -477,3 +506,65 @@ need explicit canonical/portable rebinding before a fresh all-ten lifecycle.
 Composite review selection has0 preview errors/343 warnings/542 images; accepted
 pilot0/10 and effort tokens null remain unchanged.
 [Portable input evidence](./mechanism-shorts-ms3-first-ten-portable-input-results.json).
+
+The current bounded recovery independently verifies EU002: 588 frames, 13 root
+artifacts, 90 review images and 2,352 native pins. Its movie bytes match prior
+full RGBA/PCM/original narration evidence. The current run is still live.
+[Recovery progress](./mechanism-shorts-ms3-current-first-ten-recovery-results.json).
+
+Moving the real E1 Inside face label to its opposite outside-state shot rejects
+at frame 239. Pinned native observations and images at 239/266 authenticate
+mode 1, source geometry and the affected frames. The initial helper's capture-frame
+assumption fails and is repaired. This qualifies physical-state admission with
+zero fresh renders; rendered faulty-overlay, actual moving-mount/intersection
+output and whole review requirements remain open.
+[Scoped actual label-state evidence](./mechanism-shorts-ms3-physical-label-state-results.json).
+
+EU003 now independently verifies 588 frame bindings, 13 root artifacts, 104 review
+images and 2,352 native pins, with exact prior complete movie parity. The main
+recovery remains live. Disposable actual fixed-mount and penetration derivatives
+now produce measured geometry findings at final frames 159/266. Fresh mount
+reload and independently tested closed-surface winding checks pass; the failed
+convex assumption and misleading Blender exit 0 remain visible. Four admitted
+phone captures await the main lifecycle’s terminal receipt. Actual faulty images,
+image review and native captured-selector replay remain open.
+[Physical fault preparation](./mechanism-shorts-ms3-physical-fault-preparation-results.json).
+
+EU004 independently verifies 653 frames, 13 root artifacts, 97 review images and
+2,612 native pins, with exact prior complete movie parity. The recovery remains
+live. Actual package compilation then fails declaration serialization TS2742/
+TS7056. Isolated source `20e1afe2` explicitly names the existing Composition type;
+erased runtime JS remains exact. Both review axes have zero findings; fast
+4,628/460, private archive/offline install, strict installed type/public API and
+all-ten copied input admission pass under denied original-source access. Compiled
+runtime `d7345fb9` is separately bound. The fix awaits live lifecycle terminal
+before integration; actual installed export/report/resume/handoff and full gates
+remain open. Offline type-tool metadata failure and pinned fetch are retained.
+[Package portability proof](./mechanism-shorts-ms3-package-portability-results.json).
+
+EU005 independently verifies 598 frames, 13 root artifacts, 115 review images and
+2,392 native pins, with complete prior movie parity. E1–E5 total 3,037 frame
+bindings, 65 root artifacts and 519 review images; full recovery is still live.
+
+EU006–EU008 independently verify another 1,921 frame bindings, 39 root artifacts,
+350 review images and 7,684 native pins. Eight current episodes now verify 4,958
+frames / 104 root artifacts / 869 review images, with exact prior full picture and
+original narration parity. Recovery remains live; no whole acceptance is inferred.
+
+Installed isolated E1 receiving verifies 1,002 copied files, 610 native frames,
+113 fully decoded review PNGs and 7,815,168 complete PCM bytes while original
+repository/bundle paths are denied. Original producer1090 and installed receiverd734
+stay distinct. The initial omitted sequence sidecar failed; exact closure repair
+passes. Fresh installed production/export/report/resume/handoff creation remains open.
+[Receiving proof and retained failure](./mechanism-shorts-ms3-package-portability-results.json).
+
+The current bounded all-ten run actually exits0 in4,829.51s. All ten outputs now
+independently verify6,181 frames,130 root artifacts,1,084 review images,928 samples
+and24,724 native pins with exact prior whole picture/original narration parity.
+Preview0 errors/343 warnings remain distinct from whole production acceptance.
+Ten exact independent local MP4 copies are available through the ignored review
+index at `benchmarks/results/ms3-actual-first-ten-review80/index.md`. The failed
+initial copy helper and corrected delivery are retained. Report/resume/ten handoffs
+remain in progress in58827; source integration, other renderer groups, full current
+gates, physical fault images and whole reviews stay open.
+[All-ten saved-output and delivery evidence](./mechanism-shorts-ms3-current-first-ten-recovery-results.json).

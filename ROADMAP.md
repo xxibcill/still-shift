@@ -1,14 +1,16 @@
 # Still Shift — Active roadmap
 
-**Updated:** 2026-10-12
+**Updated:** 2026-10-15
 
 **Current engineering:** all 21 core composition deliverables are merged on
-`main`, now at `3fab0162`. Published `0.1.1` source is preserved by `production`
+`main`; MS0/MS1 review repairs are integrated at `b3765142`. Published `0.1.1` source is preserved by `production`
 and `v0.1.1` at `73c01fa7`; fixed `v0.1.0` retains `db28a938`.
 
-**Current work:** MS0 has recovered and audited the original E01 inputs. Next is
-the supported MS1 Three.js bridge and portable mechanism Short, followed by
-required MS1N native 3D, MS2 reusable mechanisms and MS3 pilot.
+**Current work:** MS0/MS1 are merged. MS1N/MS2 software checkpoints retain
+recorded staged verification; current review repairs need refreshed affected gates.
+MS3 uses Everyday Unlocked’s actual EU-001–EU-010 with complete existing Alden
+narration at1×. Ten saved outputs verify independently; final integrated-source
+software/package gates and whole visual/listening reviews remain open.
 
 ## Product outcome
 
@@ -91,11 +93,26 @@ original E01 inputs and records current APIs, fonts, reference timing, rubric,
 measurement protocol and remaining limits. Implementation and artifact-specific
 human visual/listening acceptance remain separate.
 
-MS0 and MS1 have open PRs; [MS1N software verification](./docs/mechanism-shorts-ms1n-completion.md)
-now completes in recorded stages, including all77 local groups and unchanged176
-baselines/36,061 frames. Human playback/listening and appearance remain pending.
-The [native PR #56](https://github.com/xxibcill/still-shift/pull/56) is open; MS2 starts
-on its separate branch with the exact prerequisite commit and current main.
+[MS0 #51](https://github.com/xxibcill/still-shift/pull/51) and
+[MS1 #52](https://github.com/xxibcill/still-shift/pull/52) are merged.
+[MS1N #56](https://github.com/xxibcill/still-shift/pull/56),
+[MS2 #57](https://github.com/xxibcill/still-shift/pull/57) and
+[MS3 #58](https://github.com/xxibcill/still-shift/pull/58) remain open on separate
+branches targeting main. [Native completion](./docs/mechanism-shorts-ms1n-completion.md)
+and [MS2 completion](./docs/mechanism-shorts-ms2-completion.md) preserve their original
+source and full-gate histories. Current Float32 visibility/source-diagnostic
+repairs and current-main prerequisites require refreshed affected verification;
+older archives and full renders do not qualify newer code.
+
+The active [MS3 acceptance tracker](./docs/mechanism-shorts-ms3-acceptance.md)
+uses actual EU-001–EU-010, selection `ms3-everyday-unlocked-first-ten-2026-10-14-v2`.
+All ten existing recordings and word timings are located, so the earlier request
+for seven additional recordings is closed. Ten saved products pass independent
+picture/narration checks. Whole factual/mechanical/glyph/motion/listening reviews
+remain open, with accepted0/10. Measured first-pass completion is1/10 (10%); the90%
+target is not achieved. Paired authoring-token savings remain unmeasured/null.
+MS3 final integrated-source local software/benchmark/archive/installed gates are
+still required. This work includes no publication or inferred human acceptance.
 
 | Stage | Product proof                                                                       | Detailed scope                                                                                                  |
 | ----- | ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |

@@ -131,6 +131,27 @@
     "commit": "e231440e"
   },
   "sourceBeforeIntegration": "Live producer1090 remains frozen; latest repair changes its future identity. Archive81 and prepared installed82 retain their earlier8e11 snapshot and do not prove this new repair.",
+  "delivery": {
+    "isolatedBranch": "codex/ms3-review-fixes",
+    "isolatedHead": "452b8194",
+    "isolatedPushActualExitCode": 0,
+    "mainEvidenceHead": "0f5c3638baf9d14a83c51a645a262ded608346da",
+    "firstMainPush": {
+      "actualExitCode": 1,
+      "reportedReason": "remote rejected codex/mechanism-ms3 -> codex/mechanism-ms3 (failed)",
+      "cause": "Not established; no non-fast-forward diagnostic",
+      "remoteVerifiedUnchanged": "c911ca034f0436f14ccba42e4441302770a99408"
+    },
+    "identicalNonForcedRetry": {
+      "actualExitCode": 0,
+      "remoteExact": "0f5c3638baf9d14a83c51a645a262ded608346da",
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review84-main-push2.log",
+        "bytes": 113,
+        "sha256": "sha256:8f22569d2475ba2bfb1c8a8e2c78fc46658daeba79e38e6fe8a23ec2f6473c5c"
+      }
+    }
+  },
   "latestInstalledRepairProof": {
     "archive": {
       "path": "/private/tmp/still-shift-ms3-package85/still-shift-0.1.1.tgz",
@@ -244,5 +265,43 @@
       "otherFullSoftwarePackageRenderGates": "open"
     },
     "qualification": "CPU-only setup/depth14/Python formatting+lint/soundtrack lint and private source-only integration rehearsal pass. No browser/native/render group, live integration, spending, publishing or whole pilot acceptance."
+  },
+  "preparedUpstreamMaskProbe88": {
+    "status": "prepared-not-rendered",
+    "sourceWorktree": "/Users/jjae/.codex/worktrees/ms1n-review-fixes/still-shift",
+    "expectedSourceHead": "40330672",
+    "script": {
+      "path": "/private/tmp/still-shift-ms1n-review88-mask-browser1.mts",
+      "bytes": 6496,
+      "sha256": "sha256:4b66ac96c6e523a36aae6ca443c96f0dbb45a592aab893abddabe6dbec2c6caa"
+    },
+    "cases": 4,
+    "dimensions": [128, 128],
+    "expectedVisibility": ["occluded", "occluded", "occluded", "visible"],
+    "actualPixelImagesExpected": 4,
+    "completeRgbaControls": [
+      "equal-cutoff",
+      "rounded-opacity-equals-control",
+      "rounded-cutoff-equals-control",
+      "discarded-case-differs-and-is-all-white"
+    ],
+    "failureEvidence": "Write all4 PNGs and result before asserting outcome; browser cleanup also covers launch failure.",
+    "syntax": {
+      "actualExitCode": 0,
+      "receipt": "/private/tmp/still-shift-ms1n-review88-mask-parse2.json"
+    },
+    "admissionGuard": {
+      "actualExitCode": 1,
+      "expected": true,
+      "log": "/private/tmp/still-shift-ms1n-review88-mask-admission-block1.log",
+      "phase": "Before Vite server/browser/output-directory creation"
+    },
+    "scope": "Prepared software regression fixture only; actual fresh GPU proof remains open. No Blender asset work, episode render, paid generation, source change or human acceptance."
+  },
+  "currentPrerequisiteMergeQualification": {
+    "record": "./mechanism-shorts-ms3-prerequisite-integration89-results.json",
+    "source": "e9be5d82 plus live evidence integration in progress",
+    "status": "focused73-and-fast4594-passed; full integrated source gates open",
+    "olderInstalledEvidence": "Package85 and prepared86 retain source452b/codee231 bindings; no earlier archive evidence transfers to this merge."
   }
 }
