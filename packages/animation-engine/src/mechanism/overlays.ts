@@ -259,11 +259,19 @@ function labelTextLayer(
     },
   };
 }
-function labelPanel(
-  label: MechanismLabel,
-  shot: MechanismEpisode["shots"][number],
-  sidecar: MechanismSidecar | undefined,
-): CompositionLayer {
+function panelLayout(position: [number, number], size: [number, number]) {
+  return {
+    position,
+    size,
+    bounds: {
+      left: position[0] - size[0] / 2,
+      right: position[0] + size[0] / 2,
+      top: position[1] - size[1] / 2,
+      bottom: position[1] + size[1] / 2,
+    },
+  };
+}
+function labelPanelLayout(label: MechanismLabel) {
   const estimatedWidth = (text: string, size: number) =>
     [...new Intl.Segmenter("en", { granularity: "grapheme" }).segment(text)]
       .length *
@@ -278,6 +286,25 @@ function labelPanel(
     ) +
     label.fontSize * 1.2;
   const height = label.fontSize * (label.qualification ? 2.65 : 1.7);
+  return panelLayout(
+    [label.position[0], label.position[1] + height / 2 - label.fontSize * 0.2],
+    [width, height],
+  );
+}
+function captionPanelLayout(episode: MechanismEpisode) {
+  const position = captionPlacement(episode),
+    height = episode.output.height * 0.12;
+  return panelLayout(
+    [position[0], position[1] + height / 2 - 12],
+    [episode.output.width * 0.72, height],
+  );
+}
+function labelPanel(
+  label: MechanismLabel,
+  shot: MechanismEpisode["shots"][number],
+  sidecar: MechanismSidecar | undefined,
+): CompositionLayer {
+  const layout = labelPanelLayout(label);
   return {
     id: mechanismOverlayLayerId("panel", label.id),
     type: "shape",
@@ -285,10 +312,7 @@ function labelPanel(
     outPoint: label.readingInterval.endFrameExclusive,
     startFrame: shot.startFrame,
     transform: {
-      position: [
-        label.position[0],
-        label.position[1] + height / 2 - label.fontSize * 0.2,
-      ],
+      position: layout.position,
       opacity: sidecar
         ? discreteKeys(
             sidecar.frames.map((frame) =>
@@ -302,7 +326,7 @@ function labelPanel(
       {
         id: "panel",
         type: "rect",
-        size: [width, height],
+        size: layout.size,
         roundness: Math.min(14, label.fontSize * 0.25),
       },
       { id: "fill", type: "fill", color: "#101a29f5" },
@@ -317,19 +341,18 @@ function captionPanel(
   episode: MechanismEpisode,
   caption: MechanismEpisode["captions"][number],
 ): CompositionLayer {
-  const position = captionPlacement(episode),
-    height = episode.output.height * 0.12;
+  const layout = captionPanelLayout(episode);
   return {
     id: mechanismOverlayLayerId("caption-panel", caption.id),
     type: "shape",
     inPoint: caption.startFrame,
     outPoint: caption.endFrameExclusive,
-    transform: { position: [position[0], position[1] + height / 2 - 12] },
+    transform: { position: layout.position },
     contents: [
       {
         id: "panel",
         type: "rect",
-        size: [episode.output.width * 0.9, height],
+        size: layout.size,
         roundness: 14,
       },
       { id: "fill", type: "fill", color: "#0b1020eb" },
@@ -448,7 +471,7 @@ function captionPlacement(episode: MechanismEpisode): [number, number] {
   return [episode.output.width / 2, episode.output.height * 0.87];
 }
 function captionOrigin(episode: MechanismEpisode): [number, number] {
-  return [episode.output.width * 0.08, episode.output.height * 0.87];
+  return [episode.output.width * 0.17, episode.output.height * 0.87];
 }
 function captionSize(episode: MechanismEpisode) {
   return Math.max(24, Math.min(48, episode.output.width * 0.044));
@@ -478,7 +501,7 @@ function captionLayer(
     inPoint: caption.startFrame,
     outPoint: caption.endFrameExclusive,
     transform: { anchor: [0, 0], position: captionOrigin(episode) },
-    size: [episode.output.width * 0.84, episode.output.height * 0.1],
+    size: [episode.output.width * 0.66, episode.output.height * 0.1],
     textBox: { locale: "en", maxLines: 3, lineHeight: 1.2 },
     metadata: {
       mechanismCaption: caption.id,
@@ -1174,6 +1197,8 @@ export function checkMechanismOverlays(
         id: string;
         path: string;
         label?: string;
+        owner: string;
+        kind: "text" | "panel";
         measurement: "estimated" | "measured";
       }[] = [];
       shot.labels.forEach((label, labelIndex) => {
@@ -1184,7 +1209,7 @@ export function checkMechanismOverlays(
           return;
         const path = `shots.${shotIndex}.labels.${labelIndex}`;
         const state = displayState(label, row);
-        let readable = state.visible;
+        const readable = state.visible;
         if (!state.visible)
           add({
             code: "mechanism-label-visibility",
@@ -1196,7 +1221,16 @@ export function checkMechanismOverlays(
             label: label.id,
             measurement: "measured",
           });
-        if (state.shown)
+        if (state.shown) {
+          boxes.push({
+            bounds: labelPanelLayout(label).bounds,
+            id: label.id + ":panel",
+            owner: "label:" + label.id,
+            kind: "panel",
+            path: path + ".position",
+            label: label.id,
+            measurement: "measured",
+          });
           for (const qualification of label.qualification
             ? [false, true]
             : [false]) {
@@ -1213,28 +1247,13 @@ export function checkMechanismOverlays(
             boxes.push({
               ...box,
               id: label.id + (qualification ? ":qualification" : ""),
+              owner: "label:" + label.id,
+              kind: "text",
               path: path + ".position",
               label: label.id,
             });
-            const overflow = outside(
-              box.bounds,
-              episode.output.width,
-              episode.output.height,
-            );
-            if (overflow) {
-              readable = false;
-              add({
-                code: "mechanism-label-offscreen",
-                path: path + ".position",
-                message: "Active label extent leaves the output viewport",
-                frames: [frame, frame],
-                measured: overflow,
-                shot: shot.id,
-                label: label.id,
-                measurement: box.measurement,
-              });
-            }
           }
+        }
         eligibility.set(label.id, readable);
       });
       episode.captions.forEach((caption, index) => {
@@ -1247,28 +1266,54 @@ export function checkMechanismOverlays(
           caption.text,
           captionSize(episode),
           captionOrigin(episode),
-          episode.output.width * 0.84,
+          episode.output.width * 0.66,
         );
         if (box.measurement === "estimated") measurement = "estimated";
-        boxes.push({ ...box, id: caption.id, path: `captions.${index}.text` });
+        boxes.push(
+          {
+            ...box,
+            id: caption.id,
+            owner: "caption:" + caption.id,
+            kind: "text",
+            path: `captions.${index}.text`,
+          },
+          {
+            bounds: captionPanelLayout(episode).bounds,
+            id: caption.id + ":panel",
+            owner: "caption:" + caption.id,
+            kind: "panel",
+            path: `captions.${index}.text`,
+            measurement: "measured",
+          },
+        );
+      });
+      boxes.forEach((box, index) => {
         const overflow = outside(
           box.bounds,
           episode.output.width,
           episode.output.height,
         );
-        if (overflow)
+        if (overflow) {
+          if (box.label) eligibility.set(box.label, false);
           add({
-            code: "mechanism-caption-offscreen",
-            path: `captions.${index}.text`,
-            message: "Active caption extent leaves the output viewport",
+            code: box.label
+              ? "mechanism-label-offscreen"
+              : "mechanism-caption-offscreen",
+            path: box.path,
+            message: "Active native overlay extent leaves the output viewport",
             frames: [frame, frame],
             measured: overflow,
             shot: shot.id,
+            ...(box.label ? { label: box.label } : {}),
             measurement: box.measurement,
           });
-      });
-      boxes.forEach((box, index) => {
+        }
         for (const other of boxes.slice(index + 1)) {
+          if (
+            box.owner === other.owner &&
+            (box.kind === "panel" || other.kind === "panel")
+          )
+            continue;
           const overlap = intersects(box.bounds, other.bounds);
           if (overlap) {
             if (box.label) eligibility.set(box.label, false);
@@ -1276,7 +1321,7 @@ export function checkMechanismOverlays(
             add({
               code: "mechanism-label-overlap",
               path: box.path,
-              message: "Active native text extents overlap",
+              message: "Active native overlay extents overlap",
               frames: [frame, frame],
               measured: overlap,
               shot: shot.id,
@@ -1303,7 +1348,7 @@ export function checkMechanismOverlays(
             add({
               code: "mechanism-label-protected-region",
               path: box.path,
-              message: "Active text overlaps a protected proof region",
+              message: "Active overlay overlaps a protected proof region",
               frames: [frame, frame],
               measured: overlap,
               shot: shot.id,

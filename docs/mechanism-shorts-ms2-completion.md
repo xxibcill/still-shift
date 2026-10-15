@@ -1,5 +1,12 @@
 # MS2 software checkpoint
 
+Current review qualification (2026-10-15): the historical checkpoint below retains
+its original source/full/archive bindings. A current prerequisite repair merges
+MS1N403/current mainb376 and preserves four-format/PBR admission, Float32 mask
+visibility and located native diagnostics. Focused/fast and independent reviews
+pass; current affected runtime/package gates remain pending.
+[Current repair evidence](./mechanism-shorts-ms2-current-prerequisite-repair90-results.json).
+
 2026-10-13. Reusable mechanism-family and saved cue software is delivered in
 recorded stages on `codex/mechanism-ms2`, carrying exact MS1N `bf30a253`
 ([PR #56](https://github.com/xxibcill/still-shift/pull/56)). The three packs remain
@@ -54,7 +61,7 @@ RSS or opaque driver storage.
 
 [MS2 PR #57](https://github.com/xxibcill/still-shift/pull/57) is open as a draft
 against `main` and attached to the task. MS3 begins on a separate branch carrying
-the exact MS2 prerequisite. MS3 retains its
-original queue/QA/report and ten-question pilot scope, including five assets and
-two behaviors. No milestone PR merge, npm publication, Actions or ElevenLabs
+the exact MS2 prerequisite. The five-asset/two-behavior cohort is historical MS2 engineering evidence.
+Active MS3 uses the owner-selected actual Everyday Unlocked EU-001–EU-010 and
+complete existing Alden takes at1×; its output/review evidence stays separate. No milestone PR merge, npm publication, Actions or ElevenLabs
 spending is included.

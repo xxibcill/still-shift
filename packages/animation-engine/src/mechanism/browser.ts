@@ -1,4 +1,5 @@
-import { Raycaster, Vector2, Vector3, WebGLRenderer } from "three";
+import { Mesh, Raycaster, Vector2, Vector3, WebGLRenderer } from "three";
+import type { Intersection } from "three";
 import type { MechanismScene } from "@still-shift/scene-contract";
 import type { evaluateMechanismFrame } from "../../../renderer-core/src/mechanism/index.ts";
 import {
@@ -49,6 +50,15 @@ export async function createMechanismPlateRenderer(
   }
   const { world, camera, parts, meshes } = shared;
   const raycaster = new Raycaster();
+  const cameraSpaceHit = new Vector3();
+  function occludesWithinClipPlanes(hit: Intersection): boolean {
+    if (!occludesAnchor(hit)) return false;
+    // Camera clipping uses perpendicular depth, not an off-axis ray's distance.
+    const depth = -cameraSpaceHit
+      .copy(hit.point)
+      .applyMatrix4(camera.matrixWorldInverse).z;
+    return depth >= camera.near && depth <= camera.far;
+  }
   function render(frame: EvaluatedFrame) {
     shared.applyFrame(frame, options.width, options.height);
     for (const [id, part] of parts) {
@@ -104,7 +114,7 @@ export async function createMechanismPlateRenderer(
           );
           const first = raycaster
             .intersectObjects(meshes, false)
-            .find((hit) => visible(hit.object));
+            .find(occludesWithinClipPlanes);
           if (first && first.distance < distance - 0.0001)
             visibility = "occluded";
         }
@@ -124,4 +134,16 @@ export async function createMechanismPlateRenderer(
     png: () => canvas.toDataURL("image/png").split(",")[1]!,
     dispose,
   };
+}
+
+function occludesAnchor(hit: Intersection): boolean {
+  if (!(hit.object instanceof Mesh) || !visible(hit.object)) return false;
+  const material = Array.isArray(hit.object.material)
+    ? hit.object.material[hit.face?.materialIndex ?? 0]
+    : hit.object.material;
+  // Supported procedural maps are opaque; masks use the material's float uniforms.
+  return Boolean(
+    material?.visible &&
+      Math.fround(material.opacity) >= Math.fround(material.alphaTest),
+  );
 }

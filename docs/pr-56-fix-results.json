@@ -1,0 +1,301 @@
+{
+  "schemaVersion": "pull-request-fix-evidence-1",
+  "date": "2026-10-15",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/56",
+  "baseHead": "c158205815af8fe8f05e769c104328b168ae7bd0",
+  "status": "both-source-fixes-focused-and-fast-qualified-fresh-gpu-runtime-open",
+  "maskPrecision": {
+    "problem": "JavaScript double comparisons disagree with shader Float32 mask uniforms at the boundary, admitting a rear anchor through a rendered occluder.",
+    "repair": "Round both opacity and alpha cutoff with Math.fround in expected physical and actual Three queries. Preserve the actual positive-alpha-test gate.",
+    "regressions": [
+      "0.499999999 / 0.5 remains occluded",
+      "0.5 / 0.500000001 remains occluded",
+      "0.49 / 0.5 is visible"
+    ],
+    "reference": "Frozen full triangle scan stays independent; its mask predicate and one legacy expected result now follow GPU uniform precision.",
+    "focusedRuns": [
+      {
+        "id": "red1",
+        "actualExitCode": 1,
+        "passed": 10,
+        "failed": 4,
+        "files": 2,
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-review78-mask-red1.log",
+          "bytes": 4420,
+          "sha256": "sha256:c8cfba0b9333a6aa97ba64fbd378e3251dc8616dee097339a112558cf54539ad"
+        }
+      },
+      {
+        "id": "green1",
+        "actualExitCode": 1,
+        "passed": 13,
+        "failed": 1,
+        "files": 2,
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-review78-mask-green1.log",
+          "bytes": 2174,
+          "sha256": "sha256:976eb825f4d713041ea5a16aca831317782d390135373d8434be3e8cd5d0c16b"
+        }
+      },
+      {
+        "id": "green2",
+        "actualExitCode": 1,
+        "passed": 13,
+        "failed": 1,
+        "files": 2,
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-review78-mask-green2.log",
+          "bytes": 2174,
+          "sha256": "sha256:99aefd8565ba3531a9000016464bbaf51d5fab3e6ddaa7f369501ac65e7beabf"
+        }
+      },
+      {
+        "id": "green3",
+        "actualExitCode": 0,
+        "passed": 14,
+        "failed": 0,
+        "files": 2,
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-review78-mask-green3.log",
+          "bytes": 379,
+          "sha256": "sha256:155228ad07d2b69775aaa0bb135536c9c9f5c27bfcf3ff69d04093b2c2072f48"
+        }
+      }
+    ],
+    "retainedHelperFailure": "A locator typo looked for second-group instead of second-behind; patch assertion failed without writes, and green2 unnecessarily repeated unchanged source. Both failing logs remain.",
+    "fast": {
+      "actualExitCode": 0,
+      "tests": 3935,
+      "files": 381,
+      "seconds": 51.18,
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-review78-mask-fast1.log",
+        "bytes": 32843,
+        "sha256": "sha256:ab91408564a96b5c45d82379d8b2094e4e4021ee2e803e5b6d105f27d2d7f436"
+      }
+    },
+    "independentReviews": {
+      "Standards": {
+        "agent": "/root/ms3_standards69",
+        "findings": []
+      },
+      "Spec": {
+        "agent": "/root/ms3_spec69",
+        "findings": []
+      }
+    },
+    "freshGPU": "pending until the serial current MS3 producer group is terminal; prior review GPU reproduction is not a repaired-render proof",
+    "sourceCommit": "42397d3f"
+  },
+  "sourceDiagnostics": {
+    "status": "repaired-source-filesystem-and-fast-qualified",
+    "problem": "Failed source-schema parsing and genuine format mismatch were combined, losing actual material/topology paths and diagnostic codes.",
+    "repair": "Check actual schemaVersion against declaration, validate the selected existing schema, preserve first semantic code/location including unknown material child, and bound/redact all new message/location fields with the existing sanitizer.",
+    "focusedRuns": [
+      {
+        "id": "diagnostic-red1",
+        "actualExitCode": 1,
+        "passed": 1,
+        "failed": 3,
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-review78-diagnostic-red1.log",
+          "bytes": 4500,
+          "sha256": "sha256:90133c1175a91230d87a9f374a473e62a3169caeba5fbd0bc1fb1320d4c37e5b"
+        }
+      },
+      {
+        "id": "diagnostic-green1",
+        "actualExitCode": 0,
+        "passed": 4,
+        "failed": 0,
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-review78-diagnostic-green1.log",
+          "bytes": 326,
+          "sha256": "sha256:f95aee40d6b6e836bfefcaee459a56a116d35742c7b13189f08d7f7140e6bf0a"
+        }
+      },
+      {
+        "id": "diagnostic-bound-red1",
+        "actualExitCode": 1,
+        "passed": 4,
+        "failed": 1,
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-review78-diagnostic-bound-red1.log",
+          "bytes": 1737,
+          "sha256": "sha256:1421ba6fa84bfa8a992f2d580c238887c838fe484904b5e5e5e409b2764d2331"
+        }
+      },
+      {
+        "id": "diagnostic-bound-green1",
+        "actualExitCode": 0,
+        "passed": 5,
+        "failed": 0,
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-review78-diagnostic-bound-green1.log",
+          "bytes": 326,
+          "sha256": "sha256:85dbc58033764556526a319bf1679cffd2f960feca054ea2e7788bd9a5d5bbf0"
+        }
+      },
+      {
+        "id": "diagnostic-final-green1",
+        "actualExitCode": 0,
+        "passed": 6,
+        "failed": 0,
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-review78-diagnostic-final-green1.log",
+          "bytes": 326,
+          "sha256": "sha256:005b0a7593ae9cc1f7a04f614bd407517fde122bc6ae30391dab7702fafcc281"
+        }
+      }
+    ],
+    "fastRuns": [
+      {
+        "id": "diagnostic-fast1",
+        "actualExitCode": 0,
+        "tests": 3935,
+        "files": 381,
+        "seconds": 50.17,
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-review78-diagnostic-fast1.log",
+          "bytes": 32546,
+          "sha256": "sha256:82810c01d78499d29eb09be24b70bb08f772532f1d6b0a2e9baa99602dc9005b"
+        }
+      },
+      {
+        "id": "diagnostic-fast2",
+        "actualExitCode": 0,
+        "tests": 3935,
+        "files": 381,
+        "seconds": 48.25,
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-review78-diagnostic-fast2.log",
+          "bytes": 32224,
+          "sha256": "sha256:d6f96ca1f690d5733f9b908587ffce605f04287118d30d3f500cffc01851da0d"
+        }
+      },
+      {
+        "id": "diagnostic-final-fast1",
+        "actualExitCode": 0,
+        "tests": 3935,
+        "files": 381,
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-review78-diagnostic-final-fast1.log",
+          "bytes": 31967,
+          "sha256": "sha256:5ee23599852c4aa63db086b3bf5bac7005caf8a52a06a73723709a912c2cec69"
+        },
+        "seconds": 48.16
+      }
+    ],
+    "independentReviews": {
+      "Standards": {
+        "agent": "/root/ms3_standards69",
+        "initialFinding": "Raw format-mismatch sourcePath bypassed the new sanitizer; repaired and covered.",
+        "finalFindings": []
+      },
+      "Spec": {
+        "agent": "/root/ms3_spec69",
+        "initialFindings": [
+          "New raw issue messages and unknown-key paths were unbounded; long-key regression failed at 12057 characters before repair.",
+          "Genuine format-mismatch sourcePath still bypassed the sanitizer; repaired with actual synthetic-bearer filename control."
+        ],
+        "finalFindings": []
+      }
+    },
+    "checks": "Actual regular temporary source files, authored byte checksums, public source preparation and diagnostic transport; no mocked schema parser or renderer.",
+    "controls": [
+      "Unsupported clearcoat child",
+      "Out-of-range triangle topology code",
+      "Genuine format mismatch",
+      "Valid source preparation",
+      "Long/synthetic-bearer key",
+      "Synthetic-bearer mismatch filename"
+    ]
+  },
+  "scope": "Local reversible source repair. No merge, publication, ElevenLabs spending or human production acceptance. Full required runtime/render checks remain pending.",
+  "runtimePreparation": {
+    "python": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-review80-python-setup1.log",
+        "bytes": 1216,
+        "sha256": "sha256:e1b8925b657574c9911bb08a6057f5c9bdebb7cecfc203cab2716047dd974a86"
+      }
+    },
+    "toolchain": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-review80-toolchain1.log",
+        "bytes": 242,
+        "sha256": "sha256:6801dfaa3e3deb753611ef4c67d47d081411cc02e9ef18b9c2730d946c0a72e6"
+      }
+    },
+    "scope": "Locked offline isolated .venv, editable depth worker points only to this worktree; primary environment untouched. Node22.23.1/pnpm10.29.3/Python3.12.11/Chromium1234/FFmpeg8.0.1 verified. No browser/render group run."
+  },
+  "installedAffectedApiProof": {
+    "sourceCommit": "4ee86286",
+    "archive": {
+      "path": "/private/tmp/still-shift-ms1n-package83/still-shift-0.1.1.tgz",
+      "bytes": 4293945,
+      "sha256": "sha256:70a96d1f35aea915468000c1004d65f63790d4d74b236f0f56fdfd4244f5d91b"
+    },
+    "memberAudit": {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms1n-package83-members1.json",
+        "bytes": 476,
+        "sha256": "sha256:6d421ba528c9bdbfb7854be72885e82fea645fe43fd2e74b9b56f2418f30fd4a"
+      },
+      "files": 1956
+    },
+    "packageBuild": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-package83-build1.log",
+        "bytes": 216,
+        "sha256": "sha256:167d04c1a17ae9753499fe050669ff10590095cf52a9d837a34bf82275124e56"
+      }
+    },
+    "privatePack": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-package83-pack1.log",
+        "bytes": 257973,
+        "sha256": "sha256:d4d90cc97010b24dac43f784b60e915ca9f261b718c90cf1635f8455fa9a2fdf"
+      }
+    },
+    "offlineInstall": {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms1n-package83-install1.json",
+        "bytes": 483,
+        "sha256": "sha256:ae26004e2c5ca6a7b6ee9cf5cd2b982275f03622e337506b4e1f8e0f5164c151"
+      }
+    },
+    "publicSourceChecks": {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms1n-package83-installed-diagnostics1.json",
+        "bytes": 72298,
+        "sha256": "sha256:d53744d75815808efd2bfcf04cead5a4c87b0b2b5e6207f8095a41b21f4e7c5f"
+      },
+      "cases": 9,
+      "appearanceSha256": "sha256:66e15226f8600059d27dfc438dc5f38f51e23654f3e79db5fd4c5a9d69f9f662",
+      "sourceRootsDenied": true
+    },
+    "strictInstalledTypes": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms1n-package83-installed-types1.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "scope": "Actual affected installed APIs for both existing MS1N formats and located/sanitized failures. No fresh GPU, runtime/render tier, full legacy E01 rerender, release or publication inferred.",
+    "durableIgnoredArchiveCopy": {
+      "path": "/Users/jjae/.codex/worktrees/ms1n-review-fixes/still-shift/benchmarks/results/ms1n-package83/still-shift-0.1.1.tgz",
+      "bytes": 4293945,
+      "sha256": "sha256:70a96d1f35aea915468000c1004d65f63790d4d74b236f0f56fdfd4244f5d91b"
+    }
+  }
+}
