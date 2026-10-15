@@ -59,6 +59,28 @@
         "sha256": "sha256:d05e32c1dc778b67d84970fbfaed5a38b8fc97b57ef2b3490f7f60dab0b0a8fc"
       },
       "qualification": "Observed prefix only. Full aggregate/render matrix/benchmark not passed or completed."
+    },
+    {
+      "observedUtc": "2026-10-15T01:22:26.181142+00:00",
+      "unifiedSession": 42543,
+      "status": "live-browser-render-matrix-after-all-initial-tiers-passed",
+      "sourceCommit": "3749618d64dfa35a57b2e4f34da5b6722ac9c089",
+      "units": 4594,
+      "runtime": 346,
+      "integration": 324,
+      "python": 14,
+      "completedFirstBrowserGroups": [
+        "soundtrack",
+        "composition-media",
+        "composition-alpha"
+      ],
+      "latestObservedGroup": "composition-output",
+      "immutableLogPrefix": {
+        "path": "/private/tmp/still-shift-ms3-final91-progress2.log",
+        "bytes": 109974,
+        "sha256": "sha256:32e59dd5fd1907acfbde7f58cc9a356e1103f9c1e711ee2c4200910ba0951bd6"
+      },
+      "scope": "Observed prefix only; remaining complete render matrix/benchmark and actual full terminal stay open."
     }
   ]
 }
