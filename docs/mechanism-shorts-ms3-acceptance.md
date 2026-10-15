@@ -87,6 +87,16 @@ required. Both pre-terminal refusal controls pass; actual package/copy/installed
 execution remains pending.
 [Staged qualification guards](./mechanism-shorts-ms3-installed106-preparation-results.json).
 
+Required-full audit107 confirms that staged coverage cannot replace the plan's
+complete passing milestone gate. Owning105 now passes; recovery/benchmark remain
+live/pending. After genuine53131 terminal0, run complete full107 with pinned
+preflight/fresh cache; the previous attempt took about6h. Package108 successors
+require both focused1050 and complete1070 while retaining full90/91 failures.
+They preserve the full all-ten scope and remain unexecuted. Current source CLI
+discovery passes with32 compact items, and15 guide/source pins remain exact;
+current installed parity is still open.
+[Required full and package prerequisites](./mechanism-shorts-ms3-final107-preparation-results.json).
+
 The four actual geometry fault images are now captured and agent-inspected104.
 Two disposable EU001 assets produce located failures at64/159 (moving fixed mount)
 and266 (wall/hook penetration), using current code a7bc0e5b/profile1dd05300.
@@ -140,7 +150,7 @@ and affected-frame evidence. Code/encode success supplies no human acceptance.
 [Current native checks](./mechanism-shorts-ms3-current-native-results.json) retain the failed receipt-location attempt, corrected current checks and supplied-path lookup.
 
 [MS3 results](./mechanism-shorts-ms3-results.json) retains scoped runs and failures.
-[MS3 draft PR58](https://github.com/xxibcill/still-shift/pull/58) is open against main
+[MS3 PR58](https://github.com/xxibcill/still-shift/pull/58) is open against main
 and attached; the owner-selected pilot revision is recorded; software gates remain. No MS3 final full/archive/
 installed/pilot pass is claimed yet. Existing genuine takes may
 be reused; any new ElevenLabs spending needs the explicit project/batch/model/

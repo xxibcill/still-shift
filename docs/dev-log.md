@@ -55,8 +55,10 @@ still hold before relying on them.
   stale metric assertion: an unclassified caption revision makes1/3 first passes
   unverified, so actual clean count2 differs from expected3.3/3 current products
   verify. Test-only repair105 now requires clean2/unverified1 with rate/target null;
-  focused format/lint/build pass; actual owning/suffix session53131 is running.
-  No uninterrupted full pass claimed. Original pilot
+  focused format/lint/build and complete owning native group pass. Actual53131
+  recovery/benchmark are still running/pending. Required-full audit107 preserves
+  the plan's complete passing gate: after genuine53131 terminal0, run full107;
+  previous full took about6h. No uninterrupted or complete full pass claimed. Original pilot
   first-pass1/10/nine failures/null paired tokens and accepted0 remain retained.
   [Terminal](./mechanism-shorts-ms3-first-ten-terminal90-results.json),
   [integration](./mechanism-shorts-ms3-prerequisite-integration89-results.json),
@@ -74,10 +76,12 @@ still hold before relying on them.
   across34 full capture directories/1,758 stored frames. Combined12-root OS denials
   and fresh-capture staging block pass from neutral cwd; pre-terminal copy refuses
   before creating a receiver. Binary hash/copy/current replay remain open.
-  Successor106 package/copy/all-ten runners require actual staged53131 terminal0,
-  all6 stages0 and exact one-test delta, retaining42543 aggregate1. Two actual
-  pre-terminal refusals pass; old93/102 runners remain unchanged/unexecuted.
-  [Active staged guard preparation](./mechanism-shorts-ms3-installed106-preparation-results.json).
+  Package108 successors require both focused1050 and complete full1070 with
+  current holds/coverage/baselines/benchmark, retaining90/91 failures. Staged-only
+  preparation106 is historical and insufficient for milestone acceptance; all
+  old runners remain unexecuted. Current source CLI discovery passes32 items;
+  15 guide/source pins exact, installed parity still open.
+  [Required full and package preparation](./mechanism-shorts-ms3-final107-preparation-results.json).
   The future package wrapper additionally freezes the entire clean checkout/HEAD,
   including archived Markdown guides, until its actual terminal. Three user guides96
   now match current CLI/native QA/handoff/relocation/reuse/provenance behavior;
@@ -278,6 +282,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Preserve required complete full gate before package acceptance107
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` after7b85a7ab.
+- **Audit:** plan rule4 requires a complete passing final milestone gate; staged
+  repair coverage cannot replace it. Original42543 remains1. Owning105 now passes
+  in1092.59s with source exact; recovery/benchmark53131 still live/pending.
+- **Prepared:** complete full107 only after observed focused0, pinned preflight,
+  clean source and fresh isolated cache. Previous full cost21672s/about6h.
+  Package108 guards additionally require actual complete1070; same full ten/6181
+  scope. Old106 staged-only preparation is retained but not the execution path.
+- **Discovery:** actual current source CLI0/32 items/no truncation, correct limits;
+  15 guide/source pins exact. Installed parity and full/artifact acceptance open.
+- **Records:** [required full107/package108 preparation](./mechanism-shorts-ms3-final107-preparation-results.json).
 
 ### 2026-10-15 — Prepare truthful staged-qualified package and all-ten guards106
 
