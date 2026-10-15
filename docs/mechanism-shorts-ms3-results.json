@@ -1042,9 +1042,9 @@
     "Complete whole factual/design, mechanical, encoded glyph/readability, normal-speed continuous motion and listening review; keep unsupported, unreviewed and human acceptance explicit. Current reviewed-ready/supported/accepted0/10.",
     "Reconcile all49 MS0-MS3 deliverables and their acceptance clauses against their exact source/evidence identities, current installed capability discovery and guides. Preserve candidate pack/finer Thai limits, prior failures and open upstream PRs; no routine merge, publishing or inferred human acceptance."
   ],
-  "activeRequiredFullPreparation": "./mechanism-shorts-ms3-final113-full-gate-results.json",
+  "activeRequiredFullPreparation": null,
   "verificationHistoryScope": "The verification array retains dated historical checkpoints and their exact code/artifact bindings; old pending statements are not current implementation status. ActiveRequiredFullPreparation/currentPilotProduction/current completed proof pointers state the present gates.",
-  "currentPackageGate": "Pending actual complete final full0. Old93/102/106/108 preparations remain unexecuted; retain full ten/6181 receiving scope and bounded EU008 repair.",
+  "currentPackageGate": "Pending a new actual successful completefull0 after failed113. Whole owning story118 diagnostics first. Original93/102/106/108 wrappers remain unexecuted; retain all10/6181 and EU008 bounded repair.",
   "currentFaultScenarioCoverage": "./mechanism-shorts-ms3-fault-coverage111-results.json",
   "acceptanceReconciliation114": {
     "record": "./mechanism-shorts-acceptance-audit114-results.json",
@@ -1071,5 +1071,20 @@
     },
     "allTenCurrentInstalledRequired": true,
     "goalComplete": false
-  }
+  },
+  "latestCompleteFull": {
+    "record": "./mechanism-shorts-ms3-final113-full-gate-results.json",
+    "session": 8967,
+    "actualExitCode": 1,
+    "seconds": 4984.338336915942,
+    "sourceHold": 0,
+    "failedScript": "test:browser:composition-story-fixtures",
+    "failedCase": "story/calibration-pan",
+    "timingRatio": 1.251626897572802,
+    "unchangedLimit": 1.25,
+    "pixelFailures": 0,
+    "maxDelta": 1,
+    "cause": "unproven"
+  },
+  "activeOwningDiagnostic": "./mechanism-shorts-ms3-story118-results.json"
 }

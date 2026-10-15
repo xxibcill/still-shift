@@ -1,10 +1,15 @@
 # MS3 acceptance tracker
 
-Latest2026-10-15: complete final113 is live as8967 on held1b21, after both
-conservative first-pass assertion repairs. Units4594/runtime346/integration324
-pass; complete browser/recovery/benchmark and current package/all-ten installed
-checks remain unpassed. Dated full91/105 launch descriptions below are retained
-history, followed by their actual failures and successors.
+Latest2026-10-15: complete final113 actually exits1 as8967 after4984.34s.
+Canvas story/calibration-pan has ratio1.251626897572802 above unchanged1.25;
+pixel failures are empty/maxDelta1. All2793 held inputs match. Units4594,
+runtime346/integration324 and the browser prefix through passage authoring pass;
+story matrix stops and later groups/benchmark are not reached. Whole owning
+story118 diagnostics are prepared with existing --profile/--keep-going flags,
+all normal checks/exports and1.25 unchanged. Cause is unproven; no code/threshold
+change or pass inferred. A subsequent complete successful full is still required
+before current archive/all10 installed proof. Dated earlier launch descriptions
+below remain history. [Failure/diagnostic118](./mechanism-shorts-ms3-story118-results.json).
 
 The49 deliverable scopes,26 cross-cutting acceptance clauses and21 SS/A traceability
 rows are reconciled in the [acceptance audit114](./mechanism-shorts-acceptance-audit114-results.json).

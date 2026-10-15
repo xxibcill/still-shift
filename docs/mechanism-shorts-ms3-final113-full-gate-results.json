@@ -1,7 +1,7 @@
 {
   "schemaVersion": "ms3-complete-final-full-gate-1",
   "capturedUtc": "2026-10-15T08:31:42.894373+00:00",
-  "status": "running-required-complete-full-not-passed",
+  "status": "failed-actual-complete-full113-terminal1",
   "sourceBeforeDocs": "cfb24587",
   "runner": {
     "path": "/private/tmp/still-shift-ms3-final113-full1.py",
@@ -67,7 +67,7 @@
     "./mechanism-shorts-ms3-final91-full-gate-results.json",
     "./mechanism-shorts-ms3-repair110-results.json"
   ],
-  "packageAndInstalled": "Pending actual successful complete full113 terminal/source hold. Old93/102/106/108 preparations remain unexecuted; bind the later package runner directly to the actual successful current full receipt. Preserve all10 episodes/6181 frames, original metrics and EU008 two-label repair.",
+  "packageAndInstalled": "Full113 actually fails. Current archive/all10 installed remain pending a new successful complete full after owning story118 diagnostics. No staged or partial success substitute; all10/6181 and EU008 repair remain required.",
   "scope": "Complete software/benchmark only. Original first-pass1/10, nine failures, null paired tokens and accepted0/10 retained. Whole reviews, current archive/installed proof and human acceptance remain separate.",
   "acceptedPilot": 0,
   "retainedBookkeepingFailure": {
@@ -159,6 +159,51 @@
     "exactCopies": 10,
     "bytes": 6543995,
     "wholeFullGatePassed": false,
-    "qualification": "The copied receipt is a dated running snapshot. Actual terminal is still required. Keep final terminal log/receipts in this local folder after observing the genuine producer result."
-  }
+    "qualification": "The copied receipt is a dated running snapshot. Actual terminal is still required. Keep final terminal log/receipts in this local folder after observing the genuine producer result.",
+    "terminalRetention": "./mechanism-shorts-ms3-story118-results.json"
+  },
+  "actualObservedTerminal": {
+    "session": 8967,
+    "actualExitCode": 1,
+    "aggregateActualExitCode": 1,
+    "sourceHoldActualExitCode": 0,
+    "sourceInputsExact": true,
+    "seconds": 4984.338336915942,
+    "actualToolRecord": {
+      "path": "/private/tmp/still-shift-ms3-full113-terminal118.json",
+      "bytes": 3519,
+      "sha256": "sha256:9844cfd230ad757136425ee8bdf538c1cd1ee673cfe58c1fdded708667de01f1"
+    },
+    "rawReceipt": {
+      "path": "/private/tmp/still-shift-ms3-final113-full1.json",
+      "bytes": 3045,
+      "sha256": "sha256:1d43e7f7238478d3a50aa96390640a1eafa8dc419ab357081c389655ed8856ea"
+    },
+    "finalLog": {
+      "path": "/private/tmp/still-shift-ms3-final113-full1.log",
+      "bytes": 3211206,
+      "sha256": "sha256:1736ad9f6187e86ab4fcdd6c2e43c2ce11659087a55147a734365c56cb689e56"
+    },
+    "localTerminalIndex": {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final113-gate/terminal-index118.json",
+      "bytes": 3537,
+      "sha256": "sha256:a97c98c170c90ca2da2992118885426edb5857fa6231da28048efc0ecd82c4db"
+    },
+    "failure": {
+      "script": "test:browser:composition-story-fixtures",
+      "fixture": "story/calibration-pan",
+      "backend": "canvas2d",
+      "report": {
+        "maxDelta": 1,
+        "minPsnr": 82.7247284862714,
+        "failures": [],
+        "ratio": 1.251626897572802
+      },
+      "unchangedRatioLimit": 1.25,
+      "method": "render-and-readback timing ratio",
+      "cause": "unproven; no production/fixture/profile/threshold repair inferred"
+    },
+    "owningDiagnostic": "./mechanism-shorts-ms3-story118-results.json"
+  },
+  "packageAndInstalledAtLaunch": "Pending actual successful complete full113 terminal/source hold. Old93/102/106/108 preparations remain unexecuted; bind the later package runner directly to the actual successful current full receipt. Preserve all10 episodes/6181 frames, original metrics and EU008 two-label repair."
 }

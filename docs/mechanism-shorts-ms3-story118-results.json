@@ -1,0 +1,155 @@
+{
+  "schemaVersion": "ms3-story-full-failure-and-owning-diagnostic118-1",
+  "status": "actual-full113-failed-whole-owning-diagnostic-prepared-not-started",
+  "failedFull113": {
+    "schemaVersion": "ms3-full113-terminal-retention118-1",
+    "capturedUtc": "2026-10-15T10:01:48.234981+00:00",
+    "status": "actual-terminal1-retained-not-passed",
+    "unifiedSession": 8967,
+    "actualObservedExitCode": 1,
+    "aggregateActualExitCode": 1,
+    "sourceHoldActualExitCode": 0,
+    "sourceFilesExact": 2793,
+    "sourceBytes": 122415742,
+    "sourceCommit": "1b21c86ed957d7aa5bae3bb581040711a01eef7d",
+    "seconds": 4984.338336915942,
+    "logCopies": [
+      {
+        "source": "/private/tmp/still-shift-ms3-final113-full1.log",
+        "retained": {
+          "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final113-gate/full113-failed-final.log",
+          "bytes": 3211206,
+          "sha256": "sha256:1736ad9f6187e86ab4fcdd6c2e43c2ce11659087a55147a734365c56cb689e56"
+        },
+        "exact": true
+      },
+      {
+        "source": "/private/tmp/still-shift-ms3-final113-full1.json",
+        "retained": {
+          "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final113-gate/full113-failed-result.json",
+          "bytes": 3045,
+          "sha256": "sha256:1d43e7f7238478d3a50aa96390640a1eafa8dc419ab357081c389655ed8856ea"
+        },
+        "exact": true
+      },
+      {
+        "source": "/private/tmp/still-shift-ms3-full113-terminal118.json",
+        "retained": {
+          "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final113-gate/full113-observed-terminal118.json",
+          "bytes": 3519,
+          "sha256": "sha256:9844cfd230ad757136425ee8bdf538c1cd1ee673cfe58c1fdded708667de01f1"
+        },
+        "exact": true
+      },
+      {
+        "source": "/private/tmp/still-shift-ms3-retain-terminal118.py",
+        "retained": {
+          "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final113-gate/retain-terminal118.py",
+          "bytes": 3512,
+          "sha256": "sha256:0334eeb2ee56a61bf6006374ea5e73b295ee250379e2bcb64e0bcaabd3bd2c87"
+        },
+        "exact": true
+      }
+    ],
+    "failure": {
+      "script": "test:browser:composition-story-fixtures",
+      "fixture": "story/calibration-pan",
+      "backend": "canvas2d",
+      "report": {
+        "maxDelta": 1,
+        "minPsnr": 82.7247284862714,
+        "failures": [],
+        "ratio": 1.251626897572802
+      },
+      "unchangedRatioLimit": 1.25,
+      "method": "render-and-readback timing ratio",
+      "cause": "unproven; no production/fixture/profile/threshold repair inferred"
+    },
+    "priorSameFixture": [
+      {
+        "source": "/private/tmp/still-shift-ms3-final91-full1.log",
+        "record": {
+          "maxDelta": 1,
+          "minPsnr": 82.7247284862714,
+          "failures": [],
+          "ratio": 1.0667447255172937
+        }
+      },
+      {
+        "source": "/private/tmp/still-shift-ms2-final70-full1.log",
+        "record": {
+          "maxDelta": 1,
+          "minPsnr": 82.7247284862714,
+          "failures": [],
+          "ratio": 1.230379751926494
+        }
+      }
+    ],
+    "productionAndOtherInputsUnchangedFromFull91": true,
+    "requiredScriptPrefix": {
+      "headers": 73,
+      "requiredInvocations": 116,
+      "remainderNotReached": true,
+      "benchmarkReached": false,
+      "correctedNativeRecoveryGroupsReached": false
+    },
+    "upstreamPasses": {
+      "unit": 4594,
+      "runtime": 346,
+      "integration": 324
+    },
+    "next": "Run complete owning story matrix with existing --profile and --keep-going diagnostics, retaining timing/pixel gates and repeated exports; no whole/package/pilot pass inferred. New full gate still required.",
+    "newBlenderOrPaidGeneration": 0,
+    "externalWrites": 0
+  },
+  "terminalLocalIndex": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final113-gate/terminal-index118.json",
+    "bytes": 3537,
+    "sha256": "sha256:a97c98c170c90ca2da2992118885426edb5857fa6231da28048efc0ecd82c4db"
+  },
+  "actualTerminalRecord": {
+    "path": "/private/tmp/still-shift-ms3-full113-terminal118.json",
+    "bytes": 3519,
+    "sha256": "sha256:9844cfd230ad757136425ee8bdf538c1cd1ee673cfe58c1fdded708667de01f1"
+  },
+  "actualRawReceipt": {
+    "path": "/private/tmp/still-shift-ms3-final113-full1.json",
+    "bytes": 3045,
+    "sha256": "sha256:1d43e7f7238478d3a50aa96390640a1eafa8dc419ab357081c389655ed8856ea"
+  },
+  "owningDiagnostic": {
+    "status": "prepared-not-started",
+    "runner": {
+      "path": "/private/tmp/still-shift-ms3-story118-diagnostic1.py",
+      "bytes": 3937,
+      "sha256": "sha256:c26d4d10718629cc7fa8922ce04940370e7aa002c522c813958da3a85728fab6"
+    },
+    "command": [
+      "node",
+      "--import",
+      "tsx",
+      "tests/browser/composition-story-fixtures.ts",
+      "--profile",
+      "--keep-going"
+    ],
+    "futureReceipt": "/private/tmp/still-shift-ms3-story118-diagnostic1.json",
+    "futureLog": "/private/tmp/still-shift-ms3-story118-diagnostic1.log",
+    "futureSourceInventory": "/private/tmp/still-shift-ms3-story118-source-inputs1.json",
+    "actualExitCode": null,
+    "scope": "Whole existing owning Canvas story matrix; post-measurement diagnostics plus accumulated failures. No filtering or export skipping. Existing1.25 limit and pixel/seek/repeated-export checks remain; finish exits nonzero for any failure."
+  },
+  "failureCause": "unproven; original113 timing ratio1.251626897572802 exceeds1.25 while pixel failure list is empty/maxDelta1. Prior identical fixture pixel results retain ratios1.0667447255172937 and1.230379751926494; no environmental cause inferred.",
+  "codeChanges": 0,
+  "changedThresholds": false,
+  "newCompleteFullStillRequired": true,
+  "currentPackageAllTen": "Pending genuine subsequent completefull0; all10/6181 and boundedEU008 repair remain required. Profiled owning diagnostics cannot replace the full gate.",
+  "acceptedPilot": 0,
+  "originalPilotFirstPass": {
+    "passed": 1,
+    "total": 10,
+    "failuresRetained": 9
+  },
+  "pairedSavings": null,
+  "newBlenderOrPaidGeneration": 0,
+  "publication": "local-only; public PR description remains unchanged pending explicit approval"
+}

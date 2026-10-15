@@ -43,14 +43,27 @@ still hold before relying on them.
 
 ## Current state
 
+- **Actual full113 failure/owning118 (2026-10-15):** real8967 exits1 after
+  4984.34s; source2793/122,415,742B exact. Canvas story/calibration-pan timing
+  ratio1.251626897572802 exceeds unchanged1.25, with pixel failures0/maxDelta1.
+  Unit4594/runtime346/integration324 and browser prefix through passage authoring
+  pass; later matrix/benchmark/native-recovery suffix is not reached. Prior
+  identical fixture passes remain; timing cause is unproven. Whole owning story
+  matrix118 is prepared with existing profile/keep-going diagnostics, normal
+  repeated exports and unchanged checks; not started/passed. New completefull0
+  remains required before current archive/all10 installed/EU008 repair proof.
+  Full terminal log/receipt/actual tool result retained locally. No source or
+  threshold changes, staging substitute, new Blender asset work or paid generation.
+  [Failure/diagnostic](./mechanism-shorts-ms3-story118-results.json).
+
 - **Local gate-evidence retention117 (2026-10-15):**10 exact current-run
   copies/6,543,995B retained under ignored `benchmarks/results/ms3-final113-gate`:
   runner, source inventory, pinned toolchain, earlier prefixes, observer/wait
   records, current immutable prefix3 and a running-receipt snapshot. All2793
   held inputs match before/after. Prefix3 reaches WebGL export,65 observed script
-  headers matching116 required invocations. This is no pass/percentage; actual8967
-  remains live. Whole final logs/terminal receipts still need retention after the
-  actual result. No new renderer/Blender/paid generation or external write.
+  headers matching116 required invocations. This was a live snapshot, not a
+  pass/percentage. Actual full113 later exits1; final log/receipt/tool exit are
+  now retained under118. No new renderer/Blender/paid generation or external write.
   [Local record](./mechanism-shorts-ms3-log-retention117-results.json).
 
 - **Local portability scope115 (2026-10-15):**20 actual source/plan JSON files
@@ -59,11 +72,11 @@ still hold before relying on them.
   do not establish equivalent imported Blender models/rigs/materials/cameras.
   No asset bytes, Blender process, conversion or render used. Written original
   no-Blender runtime boundary remains until explicit human amendment; no cached
-  picture-only or smaller-cohort substitute is admitted. Specific full8967 handle
-  still returns live after a50s bounded wait; all2793 held inputs exact. This
+  picture-only or smaller-cohort substitute is admitted. Historical115/116 waits
+  confirmed8967 live; it now exits1 under118, all2793 held inputs exact. This
   local scope audit and PR-approval follow-up are not pushed.
   [Local evidence](./mechanism-shorts-ms3-portability115-results.json).
-  Latest verified wait116 at09:38UTC confirms the same8967 handle live after50s;
+  Historical verified wait116 at09:38UTC confirmed8967 live after50s;
   current61 observed script headers match the required116-invocation preorder
   prefix. This is neither a pass count nor a completion percentage.
 
@@ -74,7 +87,7 @@ still hold before relying on them.
   results retained and no fresh-pass inference. Original no-Blender-runtime
   boundary versus optional actual-first-ten Blender producer needs human
   clarification; no amendment inferred. Default Three route remains separate.
-  Full113 actual8967 remains live; units4594/runtime346/integration324 pass,
+  Full113 actual8967 now exits1 at Canvas timing; units4594/runtime346/integration324 pass,
   browser/recovery/benchmark/current archive/all10 installed gates stay open.
   All2793 held source inputs remain exact. No new render/spending or source edit.
   [Acceptance audit](./mechanism-shorts-acceptance-audit114-results.json).
@@ -103,7 +116,7 @@ still hold before relying on them.
   count0 differs from expected2. Repair110 changes only this test; focused34
   provenance/11 retry cases, real-data classifier replay and benchmark now pass.
   Current visual109 controls180 frames/4 inspected stills and compiler111 physical
-  label-state admission also pass with0 new native captures. Complete final113 now runs as8967 on1b21c86e after these focused checks;
+  label-state admission also pass with0 new native captures. Complete final113 subsequently exits1 as8967 on1b21c86e at Canvas calibration timing;
   no failed aggregate is relabeled.
   Original pilot
   first-pass1/10/nine failures/null paired tokens and accepted0 remain retained.
@@ -129,7 +142,7 @@ still hold before relying on them.
   all ten/6181 scope, isolation/cache/history and EU008 repair obligations.
   Source CLI discovery remains0/32 items. Guide/source pin comparison107 captured
   15 exact before this expected one-test follow-up; installed parity stays open.
-  [Active required complete full113](./mechanism-shorts-ms3-final113-full-gate-results.json).
+  [Retained failed complete full113](./mechanism-shorts-ms3-final113-full-gate-results.json).
   The future package wrapper additionally freezes the entire clean checkout/HEAD,
   including archived Markdown guides, until its actual terminal. Three user guides96
   now match current CLI/native QA/handoff/relocation/reuse/provenance behavior;
@@ -330,6 +343,24 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Retain actual full113 timing failure and prepare owning diagnostics118
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` after local51fa3926.
+- **Previous turn:** progress117 retained10 raw current-run copies; bounded waits
+  confirmed the same full8967 live. It subsequently reaches an actual terminal1.
+- **Failure:** full1134984.34s; Canvas story/calibration-pan1.251626897572802 >1.25.
+  Pixel failures0/maxDelta1; all2793 source inputs exact. Later groups and full
+  benchmark not reached; prior91/105/113 failures remain failed.
+- **Evidence:** actual unified8967 result and final raw log/receipt plus retainer
+  saved locally. Same fixture prior91 ratio1.0667 and MS2full70 ratio1.2304;
+  causal timing explanation remains unproven. No source/fixture/threshold repair.
+- **Next:** complete owning Canvas matrix118 using existing profile/keep-going
+  diagnostics; no selection/export skipping, assertions and repeated exports
+  retained. If qualified, another complete full remains mandatory before package.
+- **Local only:** no new asset/Blender/paid generation or public metadata write;
+  architecture choice and rejected PR-description approval still pending.
+- **Record:** [full113 failure/owning118](./mechanism-shorts-ms3-story118-results.json).
 
 ### 2026-10-15 — Preserve current full-run raw evidence locally117
 
