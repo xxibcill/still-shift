@@ -19,6 +19,17 @@ Use the requested procedural 3D explanation style at 1080×1920/30 fps. Existing
 | EU-009  | Curved tape-measure blade | Why is a tape-measure blade curved?                        | 19.84s         |
 | EU-010  | Stay-on can tab           | How does a soda-can tab open the scored panel?             | 20.88s         |
 
+## Approved pilot runtime
+
+On 2026-10-15 the owner approved: “Allow Blender for this pilot — keep using the
+existing saved models directly.” The actual EU-001–EU-010 workflow may use the
+optional Blender producer and its documented executable/runtime. Continue with
+the ten saved masters, complete existing Alden recordings at 1×, and the selected
+1080×1920/30 fps output. Current installed all-ten proofs and whole reviews remain
+required. The core/default Three workflow retains its Blender-free contract.
+See the [plan amendment](./mechanism-shorts-production-plan.md#product-outcome-and-boundaries)
+and [owner decision](./mechanism-shorts-ms3-owner-decisions120-results.json).
+
 ## Inputs and production work
 
 The selected delivery is the existing `EU001-035 Alden Eleven v4 Narration v001` package in the channel’s `03 Episodes` library. All ten WAV/MP3 hashes match its delivery manifest; all ten WAVs fully decode locally. Existing offline ASR files contain observed word times bound to those same WAV hashes; all 616 observed word intervals are inside their measured audio clocks and have ordered starts. These observations require exact-copy alignment and audiovisual cue review. EU-003 compound spelling and EU-005 inflection rechecks remain explicit. Earlier Alex timing maps apply to their original recordings only.

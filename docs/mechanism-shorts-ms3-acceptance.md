@@ -5,8 +5,9 @@ story matrix:69cases/14,086frames/14repeated export pairs. Maximum ratio1.224535
 stays under unchanged1.25; pixel failures0, maximum measured delta2.
 Calibration-pan is1.199921. All2793 inputs remain exact, no source/threshold
 changes. This neither explains historical timing nor passes full113. A new
-unmodified completefull119 is prepared, not started/passed; it may take several
-hours and remains mandatory before current archive/all10 installed proof.
+unmodified completefull119 is now live as71989 on1c9f7d14 with2793 inputs held
+and pinned preflight0. It remains unpassed, may take several hours and stays
+mandatory before current archive/all10 installed proof.
 [Owning diagnostics](./mechanism-shorts-ms3-story118-results.json),
 [required full119](./mechanism-shorts-ms3-final119-full-gate-results.json).
 
@@ -15,9 +16,9 @@ Canvas story/calibration-pan has ratio1.251626897572802 above unchanged1.25;
 pixel failures are empty/maxDelta1. All2793 held inputs match. Units4594,
 runtime346/integration324 and the browser prefix through passage authoring pass;
 story matrix stops and later groups/benchmark are not reached. Whole owning
-story118 diagnostics are prepared with existing --profile/--keep-going flags,
-all normal checks/exports and1.25 unchanged. Cause is unproven; no code/threshold
-change or pass inferred. A subsequent complete successful full is still required
+story118 subsequently passes with existing --profile/--keep-going flags,
+all normal checks/exports and1.25 unchanged. This scoped pass does not relabel
+full113; timing cause remains unproven, with no code/threshold change. A subsequent complete successful full is still required
 before current archive/all10 installed proof. Dated earlier launch descriptions
 below remain history. [Failure/diagnostic118](./mechanism-shorts-ms3-story118-results.json).
 
@@ -26,11 +27,12 @@ rows are reconciled in the [acceptance audit114](./mechanism-shorts-acceptance-a
 Fresh MS0 checks authenticate27 originals,25 ZIP payloads plus manifest and13
 original/archive pairs. Of30 selected older raw pins,24 match and6 MS1/MS1N
 temporary paths are unavailable; committed historical results remain, with no
-reconstructed bytes or fresh-pass inference. The original plan excludes a Blender
-runtime dependency; the current actual-first-ten candidate uses an optional
-Blender producer. The default Three route remains separate. A human clarification
-is pending; this audit does not amend the plan or replace all-ten editing/portability
-acceptance with a cached-picture-only claim. Original first-pass1/10, missing paired
+reconstructed bytes or fresh-pass inference. The original audit captured the plan's Blender-free
+runtime boundary. The owner has now explicitly allowed Blender for this actual
+first-ten pilot and direct use of the saved models; the plan/brief carry that
+dated exception. The core/default Three route remains Blender-free. All-ten
+editing/portability proofs and whole review remain required. See the
+[owner resolution120](./mechanism-shorts-ms3-owner-decisions120-results.json). Original first-pass1/10, missing paired
 tokens, whole reviews and reviewed-ready0 remain explicit.
 
 2026-10-14. `codex/mechanism-ms3` starts from main57967fa6 and merges exact

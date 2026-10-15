@@ -1,6 +1,6 @@
 {
   "schemaVersion": "ms3-complete-full119-preparation-1",
-  "status": "prepared-after-actual-owning-story0-not-started",
+  "status": "running-required-complete-full-not-passed",
   "runner": {
     "path": "/private/tmp/still-shift-ms3-final119-full1.py",
     "bytes": 7417,
@@ -56,5 +56,81 @@
   "expectedCost": "Prior failed113 took4984s/about83minutes; prior91 took21672s/about6h before recovery suffix. Complete current gate can take several hours; no fixed ETA.",
   "policy": "Clean starting checkout; pinned preflight; fresh isolated media cache; all2793 selected source inputs frozen until actual terminal. No competing browser/render/benchmark group. Actual0/sourcehold0 required; no staged substitute.",
   "qualification": "Owning diagnostics are not a passing full gate. Preserve all prior failures, original first-pass1/10, nine failures, null paired tokens, all10/6181 installed requirement and EU008 repair.",
-  "publication": false
+  "publication": false,
+  "actualSourceCommit": "1c9f7d1413bdeb9c78cee72ccd328c4badd46c41",
+  "actualUnifiedSession": 71989,
+  "launchObservation": {
+    "recordedUtc": "2026-10-15T10:33:06.683750+00:00",
+    "unifiedSession": 71989,
+    "actualToolState": "live-returned-by-write_stdin",
+    "sourceCommit": "1c9f7d1413bdeb9c78cee72ccd328c4badd46c41",
+    "sourceFiles": 2793,
+    "sourceBytes": 122415742,
+    "sourceInventory": {
+      "path": "/private/tmp/still-shift-ms3-final119-source-inputs1.json",
+      "bytes": 477326,
+      "sha256": "sha256:9d3a776ad25d913c64537d8a06b065ead299037ddc9b977f777e8ddcbac16a59"
+    },
+    "toolchainPreflight": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-final119-toolchain1.log",
+        "bytes": 238,
+        "sha256": "sha256:3ad3e8695b8ffa18ae57b07d1c45db12e5120b82d71ffeceb0845c7eef4c0929"
+      }
+    },
+    "sourceGuard": {
+      "path": "/private/tmp/still-shift-ms3-final119-hold.py",
+      "bytes": 1398,
+      "sha256": "sha256:e74c259aea3edc613e16c998e3364b740045aca0adc744a99018873e40d1f7de"
+    },
+    "durableSourceSelection": {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/source-selection-seed.json",
+      "bytes": 477326,
+      "sha256": "sha256:1f23134b5b2d1492f51f02865e9222639c49002a7416ec98a5a39069c843c99f"
+    },
+    "initialCacheEmpty": true,
+    "rawReceipt": "/private/tmp/still-shift-ms3-final119-full1.json",
+    "rawLog": "/private/tmp/still-shift-ms3-final119-full1.log",
+    "retainedLaunchCopies": [
+      {
+        "source": "/private/tmp/still-shift-ms3-final119-source-inputs1.json",
+        "retained": {
+          "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/source-inputs-launch1.json",
+          "bytes": 477326,
+          "sha256": "sha256:9d3a776ad25d913c64537d8a06b065ead299037ddc9b977f777e8ddcbac16a59"
+        },
+        "exact": true
+      },
+      {
+        "source": "/private/tmp/still-shift-ms3-final119-full1.json",
+        "retained": {
+          "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/running-receipt1.json",
+          "bytes": 4151,
+          "sha256": "sha256:3d3d1ce05d73d4513c131ca6b0a1d43a8d3d20b709f3cce725950d29cf5f86df"
+        },
+        "exact": true
+      },
+      {
+        "source": "/private/tmp/still-shift-ms3-final119-toolchain1.log",
+        "retained": {
+          "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/toolchain1.log",
+          "bytes": 238,
+          "sha256": "sha256:3ad3e8695b8ffa18ae57b07d1c45db12e5120b82d71ffeceb0845c7eef4c0929"
+        },
+        "exact": true
+      },
+      {
+        "source": "/private/tmp/still-shift-ms3-full119-observe.py",
+        "retained": {
+          "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/observe1.py",
+          "bytes": 2286,
+          "sha256": "sha256:a57f26bcfaf5de341b058ccb913ec12654010a33c90b2779177a246cd1309dc4"
+        },
+        "exact": true
+      }
+    ],
+    "qualification": "Actual live full; no terminal, full, benchmark, package or pilot pass inferred."
+  },
+  "freeze": "All2793 selected source/root/ROADMAP inputs plus prepared guard/selection remain immutable until actual terminal; excluded milestone evidence/dev-log may update. No competing browser/export/benchmark group."
 }

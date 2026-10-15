@@ -1063,14 +1063,22 @@
       "unavailableOlderTemporaryPaths": 6,
       "historicalRecordsRemain": true
     },
-    "architectureDecision": "pending-human-clarification; original no-Blender-runtime boundary not amended",
+    "architectureDecision": "Owner120 explicitly allows Blender for the actual first-ten pilot, with saved masters directly; core/default route remains Blender-free.",
     "actualCompleteFull": {
+      "session": 8967,
+      "status": "failed-actual-exit1",
+      "sourceCommit": "1b21c86ed957d7aa5bae3bb581040711a01eef7d",
+      "record": "./mechanism-shorts-ms3-final113-full-gate-results.json"
+    },
+    "allTenCurrentInstalledRequired": true,
+    "goalComplete": false,
+    "architectureDecisionAtCapture": "pending-human-clarification; original no-Blender-runtime boundary not amended",
+    "ownerResolution120": "./mechanism-shorts-ms3-owner-decisions120-results.json",
+    "actualCompleteFullAtCapture": {
       "session": 8967,
       "status": "live-unpassed",
       "sourceCommit": "1b21c86ed957d7aa5bae3bb581040711a01eef7d"
-    },
-    "allTenCurrentInstalledRequired": true,
-    "goalComplete": false
+    }
   },
   "latestCompleteFull": {
     "record": "./mechanism-shorts-ms3-final113-full-gate-results.json",
@@ -1100,5 +1108,15 @@
     "maximumPixelDelta": 2,
     "sourceChanges": 0,
     "scope": "Profiled complete owning matrix; no full-gate or cause-closure claim."
-  }
+  },
+  "currentActiveFull": {
+    "record": "./mechanism-shorts-ms3-final119-full-gate-results.json",
+    "session": 71989,
+    "status": "live-unpassed",
+    "sourceCommit": "1c9f7d1413bdeb9c78cee72ccd328c4badd46c41",
+    "sourceFiles": 2793,
+    "sourceBytes": 122415742,
+    "toolchainPreflight": 0
+  },
+  "currentOwnerDecisions120": "./mechanism-shorts-ms3-owner-decisions120-results.json"
 }

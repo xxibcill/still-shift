@@ -504,12 +504,14 @@
     "A cached-picture-only substitute does not prove arbitrary part/control/camera edits; no such substitute is admitted.",
     "No smaller engineering cohort, substituted original subjects or synthetic speech can satisfy the actual-first-ten requirement."
   ],
-  "humanClarificationStatus": "Pending; written original no-Blender-runtime requirement remains authoritative until explicitly amended.",
+  "humanClarificationStatus": "Resolved by explicit owner120: allow Blender for this pilot and continue using the existing saved models directly. Original read-only audit and measured scope remain historical.",
   "paidGenerationCalls": 0,
   "blenderInvocations": 0,
   "assetBytesRead": 0,
   "sourceOrPlanWrites": 0,
   "renders": 0,
   "wholeAcceptanceClaim": false,
-  "publication": "Local-only evidence; no external metadata update while public PR-description approval is pending."
+  "publication": "Local-only evidence; no external metadata update while public PR-description approval is pending.",
+  "humanClarificationStatusAtCapture": "Pending; written original no-Blender-runtime requirement remains authoritative until explicitly amended.",
+  "ownerResolution120": "./mechanism-shorts-ms3-owner-decisions120-results.json"
 }

@@ -115,6 +115,19 @@ a Blender runtime dependency. Authored meshes may come from Blender or another
 tool through the supported import subset. Complex topology may use a validated
 pre-authored mesh instead of a new geometry algorithm.
 
+**Owner amendment, 2026-10-15 — actual MS3 first-ten pilot:** “Allow Blender for
+this pilot — keep using the existing saved models directly.” For the selected
+Everyday Unlocked EU-001–EU-010 pilot, the optional `blender-native` producer may
+require a documented Blender executable and use the existing saved `.blend`
+masters directly. This pilot exception amends the runtime boundary above for
+those ten episodes. The core/default `three-native` route keeps its Blender-free
+contract, with no mandatory Blender npm dependency. All-ten editing, relocation,
+source/cache identity and installed-runtime proof obligations remain; a cached
+picture-only replay does not establish arbitrary model editing. Preserve complete
+existing narration at 1×, the selected output format and all review requirements.
+The [owner decision record](./mechanism-shorts-ms3-owner-decisions120-results.json)
+retains the exact response and scope.
+
 Narration is supplied audio with timing. This plan includes no synthesis, paid
 generation or publication. The customer's no-OpenAI-TTS requirement is retained
 for this workflow; a statement inside the brief is not treated as a new

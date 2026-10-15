@@ -554,9 +554,12 @@
   "acceptanceClauses": [
     {
       "id": "AC-BOUNDARY",
-      "requirement": "No Blender runtime dependency",
-      "status": "unresolved-plan-conformance",
-      "evidenceAndLimits": "Default three-native dispatch has no Blender call; actual-first-ten version2 dispatch requires explicit Blender executable and identity --version even for cache reuse. Human clarification pending; no plan amendment inferred."
+      "requirement": "Core/default runtime remains Blender-free; documented Blender runtime allowed for actual EU001\u2013EU010 pilot by explicit owner amendment120.",
+      "status": "owner-pilot-exception-recorded; runtime-proof-still-required",
+      "evidenceAndLimits": "Owner explicitly permits direct saved Blender masters for this pilot. Default three-native contract and no mandatory Blender npm dependency remain. This resolves the architecture question without granting current installed, arbitrary-editing or product acceptance.",
+      "historicalAuditStatus": "unresolved-plan-conformance",
+      "historicalRequirement": "No Blender runtime dependency",
+      "ownerResolution": "./mechanism-shorts-ms3-owner-decisions120-results.json"
     },
     {
       "id": "AC-ARCH",
@@ -598,7 +601,7 @@
       "id": "AC-PORTABLE",
       "requirement": "Isolated documented runtime only, originals/caches/fonts denied, relocate/edit/save/reload/export/check",
       "status": "current-all-ten-proof-pending",
-      "evidenceAndLimits": "Prepared12-root denials pass. Whole current archive and all10 current replay not executed; Blender scope decision remains open."
+      "evidenceAndLimits": "Prepared12-root denials pass. Whole current archive and all10 current replay remain unexecuted. Owner120 explicitly permits the documented Blender runtime for this pilot; all other isolation/edit/save/reload/export/check obligations remain."
     },
     {
       "id": "AC-DIAG",
@@ -1048,14 +1051,23 @@
   },
   "architectureClarification": {
     "question": "Should the final first-ten video workflow work on a computer without Blender installed? The original plan says yes; current saved-model producer needs Blender.",
-    "status": "asked-pending-human-reply",
+    "status": "resolved-by-explicit-owner-pilot-exception120",
     "allowedToInferAmendment": false,
     "defaultWrittenRequirement": "No Blender runtime dependency",
     "coreDefaultBackend": "three-native",
     "optionalPilotBackend": "blender-native",
     "packageMandatoryBlenderDependency": false,
     "actualPilotRequiresBlenderExecutableAndVersionQuery": true,
-    "cacheOnlySubstituteForArbitraryEditingAccepted": false
+    "cacheOnlySubstituteForArbitraryEditingAccepted": false,
+    "statusAtCapture": "asked-pending-human-reply",
+    "humanReply": "Allow Blender for this pilot \u2014 keep using the existing saved models directly.",
+    "ownerResolution": "./mechanism-shorts-ms3-owner-decisions120-results.json",
+    "originalCapturedPlanIdentityRetained": true,
+    "amendedPlanIdentity": {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-shorts-production-plan.md",
+      "bytes": 116039,
+      "sha256": "sha256:9b805224b4f6fe0f80c6d00329f124ca95f60d577beeccf05b146ba032846740"
+    }
   },
   "finalCompleteFull": {
     "session": 8967,
@@ -1122,5 +1134,6 @@
     "all55DocumentFiveSourceTwoDurablePinsExact": true,
     "wholeFullActualExitCode": null,
     "scope": "Documentation/value/hash/source-preservation validation only; no rendering, repeated full gate, paid generation or whole review."
-  }
+  },
+  "ownerResolution120": "./mechanism-shorts-ms3-owner-decisions120-results.json"
 }

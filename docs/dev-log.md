@@ -43,12 +43,12 @@ still hold before relying on them.
 
 ## Current state
 
-- **Required complete full119 prepared (2026-10-15):** actual owning860060
+- **Required complete full119 running (2026-10-15):** actual owning860060
   passes69cases/14,086frames/14repeated export pairs, all2793 inputs exact.
   Calibration-pan1.199921/max ratio1.224535 under unchanged1.25; pixel failures0,
   max measured delta2. No production/test/threshold change or timing-cause
-  explanation. New unmodified full119 is prepared, not started/passed. Pinned
-  preflight/fresh cache/clean start and source freeze remain; expect several hours,
+  explanation. New unmodified full119 is live as71989 on1c9f7d14,2793 held inputs,
+  pinned preflight0/fresh empty cache. Complete result remains unpassed; expect several hours,
   no fixed ETA. All prior failures stay retained. The source guard changes only
   its selection-metadata lookup to an exact durable copy; comparison control0.
   Whole current package/all10/6181/EU008 repair still follow genuine complete0.
@@ -77,37 +77,29 @@ still hold before relying on them.
   now retained under118. No new renderer/Blender/paid generation or external write.
   [Local record](./mechanism-shorts-ms3-log-retention117-results.json).
 
-- **Local portability scope115 (2026-10-15):**20 actual source/plan JSON files
-  match declared pins across all10/6,181 frames:30 used scalar controls and60
-  shot rows. Core Three production has3 registered family generators; those names
-  do not establish equivalent imported Blender models/rigs/materials/cameras.
-  No asset bytes, Blender process, conversion or render used. Written original
-  no-Blender runtime boundary remains until explicit human amendment; no cached
-  picture-only or smaller-cohort substitute is admitted. Historical115/116 waits
-  confirmed8967 live; it now exits1 under118, all2793 held inputs exact. This
-  local scope audit and PR-approval follow-up are not pushed.
-  [Local evidence](./mechanism-shorts-ms3-portability115-results.json).
-  Historical verified wait116 at09:38UTC confirmed8967 live after50s;
-  current61 observed script headers match the required116-invocation preorder
-  prefix. This is neither a pass count nor a completion percentage.
+- **Portability115 and owner resolution120 (2026-10-15):** the read-only audit
+  retains20 pinned plans/sources,10 episodes/6,181 frames,30 controls and60 shots.
+  Owner explicitly allows Blender for this pilot and direct saved-model use;
+  the plan/brief now carry that exception. Core/default Three stays Blender-free.
+  Installed all-ten and editing/relocation proof remain required. No conversion,
+  new asset/render or paid generation. [Decision](./mechanism-shorts-ms3-owner-decisions120-results.json),
+  [original scope audit](./mechanism-shorts-ms3-portability115-results.json).
 
 - **Acceptance reconciliation114 (2026-10-15):**49 deliverable scopes/26 broader
   clauses/21 traceability rows reviewed. Fresh MS0 originals27/archive payloads25
   plus manifest/source-copy pairs13 all match.24 selected retained raw pins match;
   6 older MS1/MS1N temporary paths are unavailable, with committed historical
-  results retained and no fresh-pass inference. Original no-Blender-runtime
-  boundary versus optional actual-first-ten Blender producer needs human
-  clarification; no amendment inferred. Default Three route remains separate.
+  results retained and no fresh-pass inference. Owner120 now explicitly permits Blender for
+  this pilot and direct saved-model use, recorded as a dated plan amendment.
+  Default Three route remains Blender-free.
   Full113 actual8967 now exits1 at Canvas timing; units4594/runtime346/integration324 pass,
   browser/recovery/benchmark/current archive/all10 installed gates stay open.
   All2793 held source inputs remain exact. No new render/spending or source edit.
   [Acceptance audit](./mechanism-shorts-acceptance-audit114-results.json).
-  Audit commit30f2cf00 is pushed. Public PR58 description refresh is separately
-  pending explicit owner approval after two automatic-review rejections; the
-  remote body is unchanged. Prepared exact text/local approval record are under
-  `/private/tmp/still-shift-ms3-pr58-description114.md` and
-  `/private/tmp/still-shift-ms3-pr58-approval114.json`. Do not retry or route around
-  the rejection without the human reply. This status note is local/unpushed.
+  Audit commit30f2cf00 is pushed. Owner has explicitly approved the public PR58
+  description refresh after the two retained automatic-review rejections. The
+  approved update is pending same-tool execution with accurate113/118/119 status;
+  remote body is unchanged at this recording. [Owner approval](./mechanism-shorts-ms3-owner-decisions120-results.json).
 
 - **MS3 actual first ten and final source (2026-10-15):** actual EU001–EU010
   original3df/runtime1090 lifecycle completes all13 stages and10 independent
@@ -355,6 +347,19 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-10-15 — Record owner pilot runtime and public PR approvals120
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `1c9f7d14`.
+- **Done:** exact owner replies resolve the Blender pilot question and authorize
+  public PR58 description refresh. Plan/brief carry the dated actual-ten exception;
+  original audit pins/statuses remain captured alongside the current resolution.
+- **Running:** full119 actual71989/source1c9f,2,793 held inputs, pinned preflight0;
+  launch evidence is retained locally. No full/package/product pass inferred.
+- **Open / next:** push completed documentation, update/read back PR58 accurately,
+  then retain actual full119 terminal before standard package/current all10 proof.
+- **Records:** [Owner120](./mechanism-shorts-ms3-owner-decisions120-results.json),
+  [live119](./mechanism-shorts-ms3-final119-full-gate-results.json).
+
 ### 2026-10-15 — Complete whole story diagnostics and prepare required full119
 
 - **Agent / branch:** Codex on `codex/mechanism-ms3` after localb4aa8c80.
@@ -364,6 +369,9 @@ still hold before relying on them.
 - **Scope:** existing profile/keep-going diagnostics collect all timings and keep
   failing exits; no code/limit/fixture change. No cause inferred, no failed full
   relabeled. Raw result/log/terminal/inventory/preflight/runner retained locally.
+- **Running:** actual71989/source1c9f7d14,2793 held inputs and pinned preflight0;
+  fresh cache starts empty. Guard/selection/source inventory and a dated running
+  receipt are retained locally; no complete gate/benchmark pass inferred.
 - **Next:** complete unmodified full119 with fresh cache and actual source hold;
   prior113 took83min before failure and91 about6h before its suffix. New complete
   successful full remains required; current package/all10 and EU008 repair pending.
