@@ -1,6 +1,15 @@
 # MS3 acceptance tracker
 
-Latest2026-10-15: actual owning86006 exits0 for the complete profiled Canvas
+Within live full119, the normal unmodified story group now passes69cases/
+14,086frames/14 repeated byte-identical export pairs, with pixel failures0 and
+maximum measured delta2. Maximum ratio1.240453 stays under unchanged1.25;
+calibration-pan is1.222693. The next required commerce-adapter group has started.
+All2793 held inputs match before/after; exact live-tool/log-prefix/guard records
+are retained locally. This is a completed group inside the still-unpassed full,
+with no profiled/staged substitute or timing-cause claim. Full113 remains failed.
+[Actual full-run checkpoint123](./mechanism-shorts-ms3-story123-checkpoint-results.json).
+
+Earlier owning diagnostic118 (2026-10-15): actual86006 exits0 for the profiled Canvas
 story matrix:69cases/14,086frames/14repeated export pairs. Maximum ratio1.224535
 stays under unchanged1.25; pixel failures0, maximum measured delta2.
 Calibration-pan is1.199921. All2793 inputs remain exact, no source/threshold

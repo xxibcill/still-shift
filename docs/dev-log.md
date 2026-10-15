@@ -54,6 +54,14 @@ still hold before relying on them.
   Whole current package/all10/6181/EU008 repair still follow genuine complete0.
   [Preparation](./mechanism-shorts-ms3-final119-full-gate-results.json).
 
+- **Normal full-run story checkpoint123 (2026-10-15):** within the same live71989,
+  all69 normal story cases/14,086 frames/14 repeated export pairs pass. Maximum
+  ratio1.240453/calibration-pan1.222693 remain under unchanged1.25; pixel failures0,
+  maximum measured delta2. All2793 inputs exact before/after; raw prefix/live tool/
+  guard retained. Commerce-adapter has started. Full119 remains unpassed and113
+  stays failed; no source/threshold change or timing-cause claim.
+  [Actual checkpoint](./mechanism-shorts-ms3-story123-checkpoint-results.json).
+
 - **Installed preparation121 (2026-10-15):** new direct actual full119 admission
   replaces old impossible failed91/105/107 requirements. Syntax passes; package,
   cache-copy and all-ten lifecycle guards each reject the actual live71989 result
@@ -358,6 +366,18 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Pass normal story checkpoint inside live full119
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `d413e983`.
+- **Results:** normal full-run story matrix passes69 cases/14,086 frames and14
+  repeated exports; max ratio1.240453/calibration-pan1.222693 under unchanged1.25.
+  Pixel failure cases0/max delta2. All2793 held inputs exact before/after.
+- **Retained:** exact raw log prefix, current running receipt, actual live-tool
+  observation and unchanged guard; all69 parsed rows/14 export proofs retained.
+- **Open / next:** same full71989 continues into commerce-adapter and all remaining
+  groups/benchmark. No full/package/all-ten/human pass inferred;113 stays failed.
+- **Records:** [Checkpoint123](./mechanism-shorts-ms3-story123-checkpoint-results.json).
 
 ### 2026-10-15 — Prepare directly gated all-ten installed proof121
 

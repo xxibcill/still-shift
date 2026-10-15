@@ -1116,7 +1116,10 @@
     "sourceCommit": "1c9f7d1413bdeb9c78cee72ccd328c4badd46c41",
     "sourceFiles": 2793,
     "sourceBytes": 122415742,
-    "toolchainPreflight": 0
+    "toolchainPreflight": 0,
+    "latestStoryCheckpoint": "./mechanism-shorts-ms3-story123-checkpoint-results.json",
+    "storyCasesPassed": 69,
+    "completeGatePassed": false
   },
   "currentOwnerDecisions120": "./mechanism-shorts-ms3-owner-decisions120-results.json"
 }

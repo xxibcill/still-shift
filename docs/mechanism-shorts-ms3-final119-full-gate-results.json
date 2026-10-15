@@ -132,5 +132,17 @@
     ],
     "qualification": "Actual live full; no terminal, full, benchmark, package or pilot pass inferred."
   },
-  "freeze": "All2793 selected source/root/ROADMAP inputs plus prepared guard/selection remain immutable until actual terminal; excluded milestone evidence/dev-log may update. No competing browser/export/benchmark group."
+  "freeze": "All2793 selected source/root/ROADMAP inputs plus prepared guard/selection remain immutable until actual terminal; excluded milestone evidence/dev-log may update. No competing browser/export/benchmark group.",
+  "latestCompletedStoryCheckpoint123": {
+    "record": "./mechanism-shorts-ms3-story123-checkpoint-results.json",
+    "cases": 69,
+    "frames": 14086,
+    "exportPairs": 14,
+    "pixelFailureCases": 0,
+    "maximumMeasuredDelta": 2,
+    "maximumTimingRatio": 1.2404526240834493,
+    "calibrationPanRatio": 1.2226926333624126,
+    "limitUnchanged": 1.25,
+    "fullRemainsLiveAndUnpassed": true
+  }
 }
