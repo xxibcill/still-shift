@@ -54,6 +54,14 @@ still hold before relying on them.
   Whole current package/all10/6181/EU008 repair still follow genuine complete0.
   [Preparation](./mechanism-shorts-ms3-final119-full-gate-results.json).
 
+- **Installed preparation121 (2026-10-15):** new direct actual full119 admission
+  replaces old impossible failed91/105/107 requirements. Syntax passes; package,
+  cache-copy and all-ten lifecycle guards each reject the actual live71989 result
+  before side effects. Standard package matrix, exact archive, all10/6,181,
+  full5,223-file cache closure,12-root denials/worker block and EU008 repair remain.
+  No runtime package/copy/lifecycle started; exact helpers retained locally.
+  [Preparation](./mechanism-shorts-ms3-installed121-preparation-results.json).
+
 - **Actual full113 failure/owning118 (2026-10-15):** real8967 exits1 after
   4984.34s; source2793/122,415,742B exact. Canvas story/calibration-pan timing
   ratio1.251626897572802 exceeds unchanged1.25, with pixel failures0/maxDelta1.
@@ -348,6 +356,19 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Prepare directly gated all-ten installed proof121
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `900e4516`.
+- **Done:** replace superseded impossible old-run prerequisites with observed
+  actual complete full119 success, exact source/log/guard pins, all116 scripts,
+  frozen176/36,061 baselines and measured benchmark. Scope/safety checks retained.
+- **Results:** syntax and three actual-live refusal controls pass before any new
+  package/copy/lifecycle output;2,793 source inputs remain exact. Exact12 helper/
+  preparation copies retained locally. Actual package/all10 execution not begun.
+- **Open / next:** await actual71989 terminal; retain full raw evidence, then run
+  standard package and independent all10/6,181/EU008 repair only on genuine0.
+- **Records:** [Prepared121](./mechanism-shorts-ms3-installed121-preparation-results.json).
 
 ### 2026-10-15 — Record owner pilot runtime and public PR approvals120
 

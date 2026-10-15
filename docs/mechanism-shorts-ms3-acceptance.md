@@ -11,6 +11,14 @@ mandatory before current archive/all10 installed proof.
 [Owning diagnostics](./mechanism-shorts-ms3-story118-results.json),
 [required full119](./mechanism-shorts-ms3-final119-full-gate-results.json).
 
+Current installed preparation121 now binds directly to future actual complete
+full119 success, replacing the impossible old failed-run admission requirements.
+Package, full-cache-copy and all-ten lifecycle guards each refuse the actual live
+receipt before creating destinations. Standard package/archive/source checks,
+all10/6,181 frames,12-root denials, blocked fresh-worker staging and the bounded
+EU008 two-label repair remain. No package/copy/lifecycle execution has started.
+[Prepared controls and exact retained helpers](./mechanism-shorts-ms3-installed121-preparation-results.json).
+
 Retained complete attempt113 (2026-10-15) actually exits1 as8967 after4984.34s.
 Canvas story/calibration-pan has ratio1.251626897572802 above unchanged1.25;
 pixel failures are empty/maxDelta1. All2793 held inputs match. Units4594,

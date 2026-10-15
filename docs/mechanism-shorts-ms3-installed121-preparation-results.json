@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "ms3-post-full119-package-preparation121-1",
+  "status": "syntax-and-live-refusal-controls-passed; real-package-copy-lifecycle-unexecuted",
+  "admission": {
+    "path": "/private/tmp/still-shift-ms3-complete119-admission121.py",
+    "bytes": 5042,
+    "sha256": "sha256:ea9129a13442c7682c51092cb7a70045982be5b0a51d2cc92234d7b53c641e9e"
+  },
+  "prepared": [
+    {
+      "path": "/private/tmp/still-shift-ms3-package121-run1.py",
+      "bytes": 12703,
+      "sha256": "sha256:3a7623c650b986a33a5ce6d14854130e67fb0510094ba77e02302b5396d6c35a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-postgate121-cache-copy1.py",
+      "bytes": 9095,
+      "sha256": "sha256:ac3f1e85bbb2fcddc7e84aa48dd42dc498e2c3c3b88eccfad6a5098e815756dc"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-package121-lifecycle-base1.py",
+      "bytes": 11198,
+      "sha256": "sha256:fcc766a74b96e14b88fbe791e3c31890a132707b4a0dab0624b435d0007f38ef"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-package121-lifecycle1.py",
+      "bytes": 18380,
+      "sha256": "sha256:bf1c4e0cc1e0429312548c57d73ae2b2b0951f484f7fbd10a66f7847c65830f1"
+    }
+  ],
+  "originalHelpersAndPreparedPins": [
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-prepare1.py",
+        "bytes": 12499,
+        "sha256": "sha256:197aee62c9514ba9826a29b070761dd2b4c4b85d81cdc1e79fff13ff9ec89cc1"
+      },
+      "prepared": {
+        "path": "/private/tmp/still-shift-ms3-package121-run1.py",
+        "bytes": 12703,
+        "sha256": "sha256:3a7623c650b986a33a5ce6d14854130e67fb0510094ba77e02302b5396d6c35a"
+      }
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-postgate93-cache-copy1.py",
+        "bytes": 8957,
+        "sha256": "sha256:66d7bad4799607772fcd48a21bea6aa091d752892718e828bccc76282297b55f"
+      },
+      "prepared": {
+        "path": "/private/tmp/still-shift-ms3-postgate121-cache-copy1.py",
+        "bytes": 9095,
+        "sha256": "sha256:ac3f1e85bbb2fcddc7e84aa48dd42dc498e2c3c3b88eccfad6a5098e815756dc"
+      }
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-lifecycle1.py",
+        "bytes": 11151,
+        "sha256": "sha256:4caa5af0009050d6dbb1a5c6ddd05b8241fcbf0f7283e664cf34e54997c7f66c"
+      },
+      "prepared": {
+        "path": "/private/tmp/still-shift-ms3-package121-lifecycle-base1.py",
+        "bytes": 11198,
+        "sha256": "sha256:fcc766a74b96e14b88fbe791e3c31890a132707b4a0dab0624b435d0007f38ef"
+      }
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package108-lifecycle1.py",
+        "bytes": 18464,
+        "sha256": "sha256:6c0285324dda9dfaf4be60cebaf121795865b442335e78d0a1cfeb55a74b42eb"
+      },
+      "prepared": {
+        "path": "/private/tmp/still-shift-ms3-package121-lifecycle1.py",
+        "bytes": 18380,
+        "sha256": "sha256:bf1c4e0cc1e0429312548c57d73ae2b2b0951f484f7fbd10a66f7847c65830f1"
+      }
+    }
+  ],
+  "actualLiveControl": {
+    "path": "/private/tmp/still-shift-ms3-full119-live-control121.json",
+    "bytes": 476,
+    "sha256": "sha256:44468a64cb5308d454d11656d6a20df505e8d5f2e59d3a1bd4f95e320662ab90"
+  },
+  "refusalControls": [
+    {
+      "stage": "package",
+      "status": "refused-before-terminal-and-before-side-effects",
+      "reason": "Required actual complete full119 terminal0 has not been observed"
+    },
+    {
+      "stage": "complete-copy",
+      "status": "refused-before-terminal-and-before-side-effects",
+      "reason": "Required actual complete full119 terminal0 has not been observed"
+    },
+    {
+      "stage": "all-ten-lifecycle",
+      "status": "refused-before-terminal-and-before-side-effects",
+      "reason": "Required actual complete full119 terminal0 has not been observed"
+    }
+  ],
+  "newPackageOrConsumerDestinationsCreated": false,
+  "fullStillRequired": {
+    "session": 71989,
+    "command": ["pnpm", "check:all"],
+    "actualTerminal0AndHold0": true,
+    "exactScriptHeaders": 116,
+    "frozenBaselineItems": 176,
+    "frozenBaselineFrames": 36061,
+    "measuredBenchmark": true
+  },
+  "sourceHold": {
+    "actualExitCode": 0,
+    "files": 2793,
+    "bytes": 122415742
+  },
+  "scopeRetained": {
+    "standardPackageMatrix": "pnpm test:package",
+    "extraNativeDiagnostics": 13,
+    "extraRetryControls": 4,
+    "strictPublicTypesAndDiscovery": true,
+    "allTenEpisodes": 10,
+    "wholeOutputFrames": 6181,
+    "completeNativeCacheFiles": 5223,
+    "completeNativeCacheBytes": 2076631320,
+    "completeSelectedCaptureDirectories": 34,
+    "nativeCaptureFrames": 1758,
+    "requiredCacheIndexKeys": 1571,
+    "queueCommands": 2,
+    "lifecycleCommands": 14,
+    "twoEU008CalloutTextsOnlyRepair": true,
+    "normalRunForSuccessfulRepair": true,
+    "originalTwelveRootDenialsAndWorkerStagingBlock": true,
+    "exactVerifiedArchiveNoSecondBuild": true,
+    "entireCheckoutFreezeDuringPackage": true
+  },
+  "originalPilotFirstPass": {
+    "passed": 1,
+    "denominator": 10,
+    "pairedTokens": null,
+    "reviewedReady": 0
+  },
+  "originalFailedFullOrOwningReceiptsModified": false,
+  "oldUnexecutedWrappersSuperseded": ["93", "102", "106", "108"],
+  "newRenderExportBlenderOrPaidGeneration": false,
+  "qualification": "Direct actual full119 success replaces impossible old full91/owning105/full107 prerequisites. No missing suite is accepted, no failure is relabeled and this preparation is not an installed proof.",
+  "durablePreparation": {
+    "index": {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package121-preparation/index.json",
+      "bytes": 7105,
+      "sha256": "sha256:904c73b52ad82c7c70c6de02d7d6b0649ed1264b1cc724d56b81187e104a98bd"
+    },
+    "copies": 12,
+    "bytes": 122136
+  },
+  "guardDiffInspection": "Compared93 package/copy and108 bounded-repair lifecycle: changed only direct119 admission/source guard, qualification pins and new raw log/result names. Existing standard matrix, cache hashes, isolation, source/package freeze and all-ten repair checks retained.",
+  "nextCommandsAfterActualSuccess": [
+    "python3 /private/tmp/still-shift-ms3-package121-run1.py --terminal-admission /private/tmp/still-shift-ms3-final119-terminal1.json",
+    "python3 /private/tmp/still-shift-ms3-postgate121-cache-copy1.py --copy --consumer /private/tmp/still-shift-ms3-package93-consumer --terminal-admission /private/tmp/still-shift-ms3-final119-terminal1.json",
+    "python3 /private/tmp/still-shift-ms3-package121-lifecycle1.py --terminal-admission /private/tmp/still-shift-ms3-final119-terminal1.json"
+  ]
+}
