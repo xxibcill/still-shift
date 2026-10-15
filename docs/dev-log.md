@@ -43,6 +43,17 @@ still hold before relying on them.
 
 ## Current state
 
+- **Local portability scope115 (2026-10-15):**20 actual source/plan JSON files
+  match declared pins across all10/6,181 frames:30 used scalar controls and60
+  shot rows. Core Three production has3 registered family generators; those names
+  do not establish equivalent imported Blender models/rigs/materials/cameras.
+  No asset bytes, Blender process, conversion or render used. Written original
+  no-Blender runtime boundary remains until explicit human amendment; no cached
+  picture-only or smaller-cohort substitute is admitted. Specific full8967 handle
+  still returns live after a50s bounded wait; all2793 held inputs exact. This
+  local scope audit and PR-approval follow-up are not pushed.
+  [Local evidence](./mechanism-shorts-ms3-portability115-results.json).
+
 - **Acceptance reconciliation114 (2026-10-15):**49 deliverable scopes/26 broader
   clauses/21 traceability rows reviewed. Fresh MS0 originals27/archive payloads25
   plus manifest/source-copy pairs13 all match.24 selected retained raw pins match;
@@ -54,6 +65,12 @@ still hold before relying on them.
   browser/recovery/benchmark/current archive/all10 installed gates stay open.
   All2793 held source inputs remain exact. No new render/spending or source edit.
   [Acceptance audit](./mechanism-shorts-acceptance-audit114-results.json).
+  Audit commit30f2cf00 is pushed. Public PR58 description refresh is separately
+  pending explicit owner approval after two automatic-review rejections; the
+  remote body is unchanged. Prepared exact text/local approval record are under
+  `/private/tmp/still-shift-ms3-pr58-description114.md` and
+  `/private/tmp/still-shift-ms3-pr58-approval114.json`. Do not retry or route around
+  the rejection without the human reply. This status note is local/unpushed.
 
 - **MS3 actual first ten and final source (2026-10-15):** actual EU001–EU010
   original3df/runtime1090 lifecycle completes all13 stages and10 independent
@@ -301,6 +318,23 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-10-15 — Inspect actual-ten portability scope while full gate runs115
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` after30f2cf00.
+- **Previous turn:** progress: acceptance audit114 committed/pushed; auto-review
+  rejected the public PR description update twice, now pending explicit approval.
+- **Evidence:** all20 actual source/plan pins match;10episodes/30controls/60shots/
+  6,181frames. Three native generator names do not prove equivalent actual models.
+  Static rigid import does not transfer Blender drivers, shader graphs or animation.
+- **Scope:** read-only source/plan contract audit; no asset reading/conversion,
+  Blender invocation, rendering, generation, narrowed cohort or architecture waiver.
+- **Wait:** actual8967 full113 is confirmed live now, including a50s bounded wait;
+  do not restart or launch competing browser/export/benchmark work. Package/current
+  all-ten receiving remain after genuine completefull0 and portability resolution.
+- **Local only:** public description text is prepared and approval pending; no
+  indirect external write. This audit/follow-up stays unpushed.
+- **Record:** [portability115](./mechanism-shorts-ms3-portability115-results.json).
+
 ### 2026-10-15 — Reconcile acceptance scopes and evidence availability114
 
 - **Agent / branch:** Codex on `codex/mechanism-ms3` after16f7e5ad.
@@ -315,6 +349,9 @@ still hold before relying on them.
   units4594/runtime346/integration324 pass. Immutable40-header log snapshot is
   progress only, not a pass/percentage. No competing browser/export/benchmark.
 - **Validation:** targeted formatting/diff/75-entry/62-pin audit and source hold0.
+- **PR status:** audit30f2cf00 pushed; public-description refresh rejected twice
+  by automatic review. Exact text is prepared and human approval requested; no
+  indirect write or remote-body change. This follow-up status note stays local.
 - **Next:** genuine complete terminal0, current exact archive/all10 installed
   lifecycle/EU008 repair, independent current review; architecture choice unresolved.
 - **Records:** [audit114](./mechanism-shorts-acceptance-audit114-results.json),

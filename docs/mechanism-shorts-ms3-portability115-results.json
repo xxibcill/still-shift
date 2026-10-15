@@ -1,0 +1,515 @@
+{
+  "schemaVersion": "ms3-portability-readonly-scope115-1",
+  "capturedUtc": "2026-10-15T09:29:31.726589+00:00",
+  "status": "read-only-existing-plan-scope-audited; no-architecture-choice-or-conversion",
+  "queue": {
+    "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/queue-current72.json",
+    "bytes": 32387,
+    "sha256": "sha256:f5529b40b39ab35563d26694c3a633274b9d6e89aa70d68ea438c956ee30fc35"
+  },
+  "episodes": [
+    {
+      "id": "EU-001",
+      "family": "tape-hook",
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-001/source.json",
+        "bytes": 1922,
+        "sha256": "sha256:62b5caf854bdd6ba3006fb91506f250281938797f1b406a911c5d3d0b7f1e877"
+      },
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-001/plan.json",
+        "bytes": 7801,
+        "sha256": "sha256:d2000d4249344e305fcb2ce4fe6d14082e42032d7f41cd4276d0d8dc92b0e092"
+      },
+      "controller": "control.EU-001",
+      "properties": {
+        "manual": {
+          "min": 0,
+          "max": 1
+        },
+        "measurement_mode": {
+          "min": 0,
+          "max": 1
+        },
+        "slide_fraction": {
+          "min": 0,
+          "max": 1
+        },
+        "approach": {
+          "min": 0,
+          "max": 1
+        }
+      },
+      "controlTracks": [
+        "approach",
+        "manual",
+        "measurement_mode",
+        "slide_fraction"
+      ],
+      "shotCount": 5,
+      "cameraIds": [
+        "camera.guide",
+        "camera.main",
+        "camera.recognition",
+        "camera.side"
+      ],
+      "outputFrames": 610,
+      "assetDeclaredIdentity": {
+        "path": "../../files/2e0fc8ec95445a041b10877006602cad7717006f5b0188f3e9625f4b64e8ca62.blend",
+        "bytes": 207253,
+        "sha256": "sha256:2e0fc8ec95445a041b10877006602cad7717006f5b0188f3e9625f4b64e8ca62"
+      },
+      "assetBytesReadForThisAudit": false,
+      "nativeMeshOrRigEquivalentEstablished": false
+    },
+    {
+      "id": "EU-002",
+      "family": "cable-tie",
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-002/source.json",
+        "bytes": 1781,
+        "sha256": "sha256:8ab35ffc825940d19efbb9028ff147815d24641265c4c881194fa49d06ddad81"
+      },
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-002/plan.json",
+        "bytes": 6769,
+        "sha256": "sha256:7cc810421a37725bd44cdb1e64b5a98b779a73b5ca01461a94ba2e6de2ccc73a"
+      },
+      "controller": "control.EU-002",
+      "properties": {
+        "manual": {
+          "min": 0,
+          "max": 1
+        },
+        "tighten": {
+          "min": 0,
+          "max": 1
+        },
+        "reverse": {
+          "min": 0,
+          "max": 1
+        },
+        "reveal": {
+          "min": 0,
+          "max": 1
+        },
+        "context": {
+          "min": 0,
+          "max": 1
+        }
+      },
+      "controlTracks": ["context", "manual", "reveal", "reverse", "tighten"],
+      "shotCount": 5,
+      "cameraIds": [
+        "camera.contact",
+        "camera.main",
+        "camera.passage",
+        "camera.whole_section"
+      ],
+      "outputFrames": 588,
+      "assetDeclaredIdentity": {
+        "path": "../../files/4fcbdee97d011ee9743aa9db33e40d24bfc744f1c479e71a95a5eb2e5a842765.blend",
+        "bytes": 96977540,
+        "sha256": "sha256:4fcbdee97d011ee9743aa9db33e40d24bfc744f1c479e71a95a5eb2e5a842765"
+      },
+      "assetBytesReadForThisAudit": false,
+      "nativeMeshOrRigEquivalentEstablished": false
+    },
+    {
+      "id": "EU-003",
+      "family": "clothespeg",
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-003/source.json",
+        "bytes": 2116,
+        "sha256": "sha256:fc55750150ac85d7b0d2fa63dd9466291e65b94f9dda929393dfc4256b61d727"
+      },
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-003/plan.json",
+        "bytes": 8244,
+        "sha256": "sha256:70f01fef3578957bb69e5ec9e8c3003868d1cf65eb2d717261bb529a60758d83"
+      },
+      "controller": "control.EU-003",
+      "properties": {
+        "manual": {
+          "min": 0,
+          "max": 1
+        },
+        "open": {
+          "min": 0,
+          "max": 1
+        },
+        "fabric": {
+          "min": 0,
+          "max": 1
+        },
+        "reveal": {
+          "min": 0,
+          "max": 1
+        },
+        "context": {
+          "min": 0,
+          "max": 1
+        },
+        "isolate_spring": {
+          "min": 0,
+          "max": 1
+        }
+      },
+      "controlTracks": [
+        "context",
+        "fabric",
+        "isolate_spring",
+        "manual",
+        "open",
+        "reveal"
+      ],
+      "shotCount": 7,
+      "cameraIds": [
+        "camera.jaw",
+        "camera.main",
+        "camera.side",
+        "camera.spring",
+        "camera.spring_back"
+      ],
+      "outputFrames": 588,
+      "assetDeclaredIdentity": {
+        "path": "../../files/b4882a20e21161207f1e788a6c84c55c69ddc00758f405cfa3aa4c0bdb26d362.blend",
+        "bytes": 4683848,
+        "sha256": "sha256:b4882a20e21161207f1e788a6c84c55c69ddc00758f405cfa3aa4c0bdb26d362"
+      },
+      "assetBytesReadForThisAudit": false,
+      "nativeMeshOrRigEquivalentEstablished": false
+    },
+    {
+      "id": "EU-004",
+      "family": "zipper",
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-004/source.json",
+        "bytes": 2749,
+        "sha256": "sha256:1f29fcfdef7c75b8a49bae76586b673d2fbe7b1d842838395fa0ff3e91b3ebcb"
+      },
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-004/plan.json",
+        "bytes": 7545,
+        "sha256": "sha256:95993c10af0537148ce6cbaeb27881411d3b62c6c839b870daaad5f6ba3bcb13"
+      },
+      "controller": "controls",
+      "properties": {
+        "slider.travel": {
+          "min": 0.34,
+          "max": 3.6500000000000004
+        }
+      },
+      "controlTracks": ["slider.travel"],
+      "shotCount": 5,
+      "cameraIds": [
+        "camera.cup",
+        "camera.locked.guide59",
+        "camera.locked.whole59"
+      ],
+      "outputFrames": 653,
+      "assetDeclaredIdentity": {
+        "path": "../../files/322587868049c245052635eb0c58db3a09e5dbf16ff8fe34efca6d1ffe2de593.blend",
+        "bytes": 2014123,
+        "sha256": "sha256:322587868049c245052635eb0c58db3a09e5dbf16ff8fe34efca6d1ffe2de593"
+      },
+      "assetBytesReadForThisAudit": false,
+      "nativeMeshOrRigEquivalentEstablished": false
+    },
+    {
+      "id": "EU-005",
+      "family": "keyhole-slot",
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-005/source.json",
+        "bytes": 1952,
+        "sha256": "sha256:d4cb54708ce456385f647919b9b0b560afdb908a4e93a52ddec554528055856d"
+      },
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-005/plan.json",
+        "bytes": 7118,
+        "sha256": "sha256:effb133a6c010cac1c9c4b86c899eb1f803e294f5f1bc3f8f73accf60526451a"
+      },
+      "controller": "controls",
+      "properties": {
+        "capture": {
+          "min": 0,
+          "max": 1
+        },
+        "insert": {
+          "min": 0,
+          "max": 1
+        },
+        "pull_probe": {
+          "min": 0,
+          "max": 1
+        }
+      },
+      "controlTracks": ["capture", "insert", "pull_probe"],
+      "shotCount": 5,
+      "cameraIds": ["camera.contact", "camera.main", "camera.side"],
+      "outputFrames": 598,
+      "assetDeclaredIdentity": {
+        "path": "../../files/d14bc1d7ba6a66f7fbcd3e065e79c32fe14da9d9105fde2fbd37a4336c2b7dae.blend",
+        "bytes": 138567,
+        "sha256": "sha256:d14bc1d7ba6a66f7fbcd3e065e79c32fe14da9d9105fde2fbd37a4336c2b7dae"
+      },
+      "assetBytesReadForThisAudit": false,
+      "nativeMeshOrRigEquivalentEstablished": false
+    },
+    {
+      "id": "EU-006",
+      "family": "binder-clip",
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-006/source.json",
+        "bytes": 1901,
+        "sha256": "sha256:b13e90a728bb1169ff100aae12feba612774d2438063189e8d29bd2bc3afbee8"
+      },
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-006/plan.json",
+        "bytes": 10091,
+        "sha256": "sha256:922e2891e7bb82a4f222712acc4950507b7591d7af00ca00d6d78a7a17d6aa56"
+      },
+      "controller": "controls",
+      "properties": {
+        "squeeze": {
+          "min": 0,
+          "max": 1
+        },
+        "paper_insert": {
+          "min": 0,
+          "max": 1
+        }
+      },
+      "controlTracks": ["paper_insert", "squeeze"],
+      "shotCount": 8,
+      "cameraIds": [
+        "camera.journal",
+        "camera.main",
+        "camera.operation",
+        "camera.profile"
+      ],
+      "outputFrames": 634,
+      "assetDeclaredIdentity": {
+        "path": "../../files/78baf6707008fd253ee7b2799e47e57722f73e9a72a792d345e90fb20f6764d5.blend",
+        "bytes": 1498620,
+        "sha256": "sha256:78baf6707008fd253ee7b2799e47e57722f73e9a72a792d345e90fb20f6764d5"
+      },
+      "assetBytesReadForThisAudit": false,
+      "nativeMeshOrRigEquivalentEstablished": false
+    },
+    {
+      "id": "EU-007",
+      "family": "side-release-buckle",
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-007/source.json",
+        "bytes": 2017,
+        "sha256": "sha256:a31a1da0e3c7253a038387ec974b7f5ccaa38fa6f9605e0444999c8445f452c4"
+      },
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-007/plan.json",
+        "bytes": 9643,
+        "sha256": "sha256:ad95677859ee871c3fb6b7670ee6bd89a914cbfd257d120d1ca3ed9728b52ebe"
+      },
+      "controller": "controls",
+      "properties": {
+        "plug.insert": {
+          "min": 0,
+          "max": 1
+        },
+        "actuators.squeeze": {
+          "min": 0,
+          "max": 1
+        },
+        "plug.withdraw": {
+          "min": 0,
+          "max": 1
+        },
+        "pull_probe": {
+          "min": 0,
+          "max": 1
+        }
+      },
+      "controlTracks": [
+        "actuators.squeeze",
+        "plug.insert",
+        "plug.withdraw",
+        "pull_probe"
+      ],
+      "shotCount": 7,
+      "cameraIds": [
+        "camera.actuator",
+        "camera.contact",
+        "camera.locked",
+        "camera.macro",
+        "camera.main"
+      ],
+      "outputFrames": 708,
+      "assetDeclaredIdentity": {
+        "path": "../../files/bc7ffbe4b8e629c80f5714a7b87ad679235d553d82f8b292c07da27307eb16b7.blend",
+        "bytes": 158911,
+        "sha256": "sha256:bc7ffbe4b8e629c80f5714a7b87ad679235d553d82f8b292c07da27307eb16b7"
+      },
+      "assetBytesReadForThisAudit": false,
+      "nativeMeshOrRigEquivalentEstablished": false
+    },
+    {
+      "id": "EU-008",
+      "family": "spring-latch",
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-008/source.json",
+        "bytes": 2586,
+        "sha256": "sha256:d99eaa5f9aacb5ebcfdf71ad81a0d860403609a85f0a1e779a17295d29b38593"
+      },
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-008/plan.json",
+        "bytes": 7023,
+        "sha256": "sha256:03bdfc70f4396df6e82da1a3d7161df200d307042f2196c95c4947bbd78d2204"
+      },
+      "controller": "controls",
+      "properties": {
+        "closing_travel": {
+          "min": 0,
+          "max": 1.15
+        },
+        "spring_return": {
+          "min": 0,
+          "max": 1
+        }
+      },
+      "controlTracks": ["closing_travel", "spring_return"],
+      "shotCount": 5,
+      "cameraIds": ["camera.contact", "camera.main"],
+      "outputFrames": 579,
+      "assetDeclaredIdentity": {
+        "path": "../../files/d77e09c9022cb5e26a66a1083bccf3e95048b4e9e4ae3a6c3e7def498d441079.blend",
+        "bytes": 173445,
+        "sha256": "sha256:d77e09c9022cb5e26a66a1083bccf3e95048b4e9e4ae3a6c3e7def498d441079"
+      },
+      "assetBytesReadForThisAudit": false,
+      "nativeMeshOrRigEquivalentEstablished": false
+    },
+    {
+      "id": "EU-009",
+      "family": "curved-tape-blade",
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-009/source.json",
+        "bytes": 1878,
+        "sha256": "sha256:bef3c2964d30374791260038b5ea718b22ce154d2206e01758dc834db60521f6"
+      },
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-009/plan.json",
+        "bytes": 9558,
+        "sha256": "sha256:8d11170df6508abef0bb6e45fc0b2c59c292a37e9b73376a0dd5c015589d1fa6"
+      },
+      "controller": "controls",
+      "properties": {
+        "curvature": {
+          "min": 0,
+          "max": 1
+        },
+        "feed": {
+          "min": 0,
+          "max": 1
+        }
+      },
+      "controlTracks": ["curvature", "feed"],
+      "shotCount": 7,
+      "cameraIds": ["camera.main", "camera.profile", "camera.winding"],
+      "outputFrames": 596,
+      "assetDeclaredIdentity": {
+        "path": "../../files/2b8fde570293006dcb982db13693694479de368323229f8608df41d6d0936dcc.blend",
+        "bytes": 578761,
+        "sha256": "sha256:2b8fde570293006dcb982db13693694479de368323229f8608df41d6d0936dcc"
+      },
+      "assetBytesReadForThisAudit": false,
+      "nativeMeshOrRigEquivalentEstablished": false
+    },
+    {
+      "id": "EU-010",
+      "family": "stay-on-can-tab",
+      "source": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-010/source.json",
+        "bytes": 1790,
+        "sha256": "sha256:9b53991454b45382a4e5833eee380ac56d63d09b80b60ceeef5a6d958fbc84bb"
+      },
+      "plan": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-010/plan.json",
+        "bytes": 8794,
+        "sha256": "sha256:ff96d721f4bf30d178029da19fddc35c49120c4ec00a79db8698c5710ad44968"
+      },
+      "controller": "controls",
+      "properties": {
+        "lift": {
+          "min": 0,
+          "max": 1
+        }
+      },
+      "controlTracks": ["lift"],
+      "shotCount": 6,
+      "cameraIds": [
+        "camera.hinge",
+        "camera.macro",
+        "camera.main",
+        "camera.top"
+      ],
+      "outputFrames": 627,
+      "assetDeclaredIdentity": {
+        "path": "../../files/6a7dfc3a60d84c81beb182c4fa14d606cb03ec0a54113a30d0a5ae438f47e838.blend",
+        "bytes": 3029224,
+        "sha256": "sha256:6a7dfc3a60d84c81beb182c4fa14d606cb03ec0a54113a30d0a5ae438f47e838"
+      },
+      "assetBytesReadForThisAudit": false,
+      "nativeMeshOrRigEquivalentEstablished": false
+    }
+  ],
+  "counts": {
+    "episodes": 10,
+    "controlPropertiesUsed": 30,
+    "shotRows": 60,
+    "outputFrames": 6181
+  },
+  "currentCoreFamilyRegistry": ["tape-hook", "cable-tie", "clothespeg"],
+  "boundaryEvidence": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tools/still-shift-cli/src/production-backend.ts",
+      "bytes": 2809,
+      "sha256": "sha256:519d8b69c23ec37f91b5ab85a065f8f6f848fe9f6095bcdc9ddc47d9eda2c3b3"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/blender-production-identity.ts",
+      "bytes": 1743,
+      "sha256": "sha256:2cfa7bc89e971ccca1937e814ef78db28380fc6dca9c2fda3312af87afeb495d"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/family-registry.ts",
+      "bytes": 10085,
+      "sha256": "sha256:ddb0c94be1700c2a08526e5117fd139395ba5e358468efe6e9d35ef2dcfcef80"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/blender-episode-contract.ts",
+      "bytes": 9087,
+      "sha256": "sha256:32a8a101045487ea055e5831464dff2ec140fc03e99aff6bcf30dfe378e4b9ab"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-production-capabilities.md",
+      "bytes": 10548,
+      "sha256": "sha256:abb54cc4389719b810eeab21847ce4243ec808c4cef17239f177075d58df6c43"
+    }
+  ],
+  "findings": [
+    "Actual10 source documents are Blender collection/controller contracts; version2 execution requires explicit host Blender executable and --version identity.",
+    "Default three-native path does not require a Blender executable, but these10 saved source/plan contracts are not native-family project contracts. Matching a family name does not prove model/control/material/camera equivalence.",
+    "Current rigid glTF import is a bounded static-mesh/PBR route; it does not import Blender drivers, shader graphs or animation. Static mesh import alone does not establish all30 control tracks.",
+    "Full Blender-free production, if required under the original plan, must preserve or explicitly validate actual meshes, named parts/anchors, controls, camera/edit behavior, selected design, all10 clocks/whole narration and full delivery/review lifecycle.",
+    "A cached-picture-only substitute does not prove arbitrary part/control/camera edits; no such substitute is admitted.",
+    "No smaller engineering cohort, substituted original subjects or synthetic speech can satisfy the actual-first-ten requirement."
+  ],
+  "humanClarificationStatus": "Pending; written original no-Blender-runtime requirement remains authoritative until explicitly amended.",
+  "paidGenerationCalls": 0,
+  "blenderInvocations": 0,
+  "assetBytesRead": 0,
+  "sourceOrPlanWrites": 0,
+  "renders": 0,
+  "wholeAcceptanceClaim": false,
+  "publication": "Local-only evidence; no external metadata update while public PR-description approval is pending."
+}
