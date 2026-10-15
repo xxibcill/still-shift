@@ -1,0 +1,797 @@
+{
+  "schemaVersion": "ms3-actual-ten-phone-sample-observation-1",
+  "capturedUtc": "2026-10-15T04:12:37.313336+00:00",
+  "status": "all60-existing-phone-samples-inspected-one-label-repair-prepared-whole-review-open",
+  "selectionId": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+  "sourceBeforeDocs": "9fec620a",
+  "originalProducerSource": "3df62a5598dc46e021ee2c51b173ba33a38d2af6",
+  "originalRuntime": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+  "method": "Actual saved PNGs emitted through view_image at original360x640 in this conversation. All60 files and10 evidence manifests hash-verified before inspection; images were not edited, newly captured or decoded from movies again. This is agent sampled-image review, not continuous playback/listening or human acceptance.",
+  "phonePinInventory": {
+    "path": "/private/tmp/still-shift-ms3-phone101-all-pins2.json",
+    "bytes": 35380,
+    "sha256": "sha256:48813f6f5d22ba5d4898b7d871d8d11a28abf9542acd49d660f06544028cc3f5"
+  },
+  "episodes": [
+    {
+      "id": "EU-001",
+      "originalBinding": {
+        "inputSha256": "sha256:daefc3cc7faa98699f15011508143afc79b5080d09231b264fd4bec066810878",
+        "outputSha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e",
+        "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      "evidence": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-001/1/review-evidence/evidence.json",
+        "bytes": 98972,
+        "sha256": "sha256:2b3d348df78f2990eb9628e5fde606c4853678c4debe9bcb947faa7441daf3d3"
+      },
+      "inspectedPhoneFrames": [
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-001/1/review-evidence/phone-000000.png",
+          "frame": 66,
+          "shot": "shot-00"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-001/1/review-evidence/phone-000001.png",
+          "frame": 185,
+          "shot": "shot-01"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-001/1/review-evidence/phone-000002.png",
+          "frame": 289,
+          "shot": "shot-02"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-001/1/review-evidence/phone-000003.png",
+          "frame": 420,
+          "shot": "shot-03"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-001/1/review-evidence/phone-000004.png",
+          "frame": 555,
+          "shot": "shot-04"
+        }
+      ],
+      "actualAgentObservation": "Whole tape/edge views, both named faces and slotted-flange/rivet macro were inspected. Visible labels and captions are readable at the saved360x640 size. Contact face visibility across the full movement is not established by these five stills.",
+      "sampledObservationOnly": true,
+      "wholeMechanical": "unreviewed",
+      "wholeFactual": "unreviewed",
+      "encodedGlyphAllFrames": "unreviewed",
+      "continuousMotion": "unreviewed",
+      "listening": "unreviewed",
+      "humanAcceptance": false
+    },
+    {
+      "id": "EU-002",
+      "originalBinding": {
+        "inputSha256": "sha256:9adfbd99e697423ce12ca38f5065f8658eaf83a2d9d2e28ad409bdca42d9bfcb",
+        "outputSha256": "sha256:f8c223632b6d5054727998958163e84815bfe9a8698fbb37c0b99064da6b61ab",
+        "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      "evidence": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-002/2/review-evidence/evidence.json",
+        "bytes": 80404,
+        "sha256": "sha256:3a7d67e97ab7011f96d3daf0115eb9c959c6fa2cdbc9c98e0828d2feb37a6c58"
+      },
+      "inspectedPhoneFrames": [
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-002/2/review-evidence/phone-000000.png",
+          "frame": 65,
+          "shot": "shot-00"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-002/2/review-evidence/phone-000001.png",
+          "frame": 200,
+          "shot": "shot-01"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-002/2/review-evidence/phone-000002.png",
+          "frame": 321,
+          "shot": "shot-02"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-002/2/review-evidence/phone-000003.png",
+          "frame": 424,
+          "shot": "shot-03"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-002/2/review-evidence/phone-000004.png",
+          "frame": 531,
+          "shot": "shot-04"
+        }
+      ],
+      "actualAgentObservation": "Whole tie and loop, flexible tongue, fixed root and tongue/tooth detail were inspected. The contrasting tongue and readable callouts locate the intended region. Tip/root attachment, every tooth passage and reverse load seating still require full mechanical/motion review.",
+      "sampledObservationOnly": true,
+      "wholeMechanical": "unreviewed",
+      "wholeFactual": "unreviewed",
+      "encodedGlyphAllFrames": "unreviewed",
+      "continuousMotion": "unreviewed",
+      "listening": "unreviewed",
+      "humanAcceptance": false
+    },
+    {
+      "id": "EU-003",
+      "originalBinding": {
+        "inputSha256": "sha256:5ab71f097c8d34f3b4b9eeceea2f8f67b5a4a13cb34485314ca2f7d1889a2c5c",
+        "outputSha256": "sha256:aa7039b505d2155700672a25a2f484114035352f33ccec480f673cb869d47c3b",
+        "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      "evidence": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-003/2/review-evidence/evidence.json",
+        "bytes": 93476,
+        "sha256": "sha256:a6ee054046622381b81ccdbd1e1a019c2058fd7d1f643c14b227db4a8181427b"
+      },
+      "inspectedPhoneFrames": [
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-003/2/review-evidence/phone-000000.png",
+          "frame": 54,
+          "shot": "shot-00"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-003/2/review-evidence/phone-000001.png",
+          "frame": 172,
+          "shot": "shot-01"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-003/2/review-evidence/phone-000002.png",
+          "frame": 258,
+          "shot": "shot-02"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-003/2/review-evidence/phone-000003.png",
+          "frame": 329,
+          "shot": "shot-03"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-003/2/review-evidence/phone-000004.png",
+          "frame": 408,
+          "shot": "shot-04"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-003/2/review-evidence/phone-000005.png",
+          "frame": 464,
+          "shot": "shot-05"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-003/2/review-evidence/phone-000006.png",
+          "frame": 537,
+          "shot": "shot-06"
+        }
+      ],
+      "actualAgentObservation": "Recognition, arm/handle view, spring details, cloth and return overview were inspected. Visible text is readable. Coil/leg seating and cloth contact throughout compression/release remain unreviewed.",
+      "sampledObservationOnly": true,
+      "wholeMechanical": "unreviewed",
+      "wholeFactual": "unreviewed",
+      "encodedGlyphAllFrames": "unreviewed",
+      "continuousMotion": "unreviewed",
+      "listening": "unreviewed",
+      "humanAcceptance": false
+    },
+    {
+      "id": "EU-004",
+      "originalBinding": {
+        "inputSha256": "sha256:441f8ba84677d6eca4ab400477d1631a771055c5e3e43f7c1f843a1a67ac9845",
+        "outputSha256": "sha256:f2b6b6ffb0c2077ffbe9ce7c4b50ce5e2da71b275ac6164cf625ba254cdab39d",
+        "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      "evidence": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-004/2/review-evidence/evidence.json",
+        "bytes": 85761,
+        "sha256": "sha256:ed040aa6f6b29ced7e481a2e3ee0c275c91b9ce1d0989e8d59d14a23ee8b60c6"
+      },
+      "inspectedPhoneFrames": [
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-004/2/review-evidence/phone-000000.png",
+          "frame": 117,
+          "shot": "recognition"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-004/2/review-evidence/phone-000001.png",
+          "frame": 317,
+          "shot": "guide-join"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-004/2/review-evidence/phone-000002.png",
+          "frame": 429,
+          "shot": "engaged-cups"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-004/2/review-evidence/phone-000003.png",
+          "frame": 528,
+          "shot": "guide-reverse"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-004/2/review-evidence/phone-000004.png",
+          "frame": 625,
+          "shot": "payoff"
+        }
+      ],
+      "actualAgentObservation": "Recognition/joining, divider, metal cup-element macro, separating and final whole views were inspected. Visible callouts and captions are readable. These samples do not prove mating contact or all-element collision freedom.",
+      "sampledObservationOnly": true,
+      "wholeMechanical": "unreviewed",
+      "wholeFactual": "unreviewed",
+      "encodedGlyphAllFrames": "unreviewed",
+      "continuousMotion": "unreviewed",
+      "listening": "unreviewed",
+      "humanAcceptance": false
+    },
+    {
+      "id": "EU-005",
+      "originalBinding": {
+        "inputSha256": "sha256:7b4da0ec4d3f377bba43874677259177daa08b6615406c4eb92b9b6de8b5129e",
+        "outputSha256": "sha256:887d993a18e4165d4e6cd016e2e429f0e6ea8dd80c9e82ca885a3bad5edfb3d5",
+        "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      "evidence": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-005/2/review-evidence/evidence.json",
+        "bytes": 98314,
+        "sha256": "sha256:949af0dc8392afe9e7995b278716b396889d18178992f4e282f747980718ea3e"
+      },
+      "inspectedPhoneFrames": [
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-005/2/review-evidence/phone-000000.png",
+          "frame": 68,
+          "shot": "shot-00"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-005/2/review-evidence/phone-000001.png",
+          "frame": 169,
+          "shot": "shot-01"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-005/2/review-evidence/phone-000002.png",
+          "frame": 273,
+          "shot": "shot-02"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-005/2/review-evidence/phone-000003.png",
+          "frame": 421,
+          "shot": "shot-03"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-005/2/review-evidence/phone-000004.png",
+          "frame": 547,
+          "shot": "shot-04"
+        }
+      ],
+      "actualAgentObservation": "Wide entry, slide into narrow slot, head overlap side view and release view were inspected. Text is readable. At169 the Wide entry leader ends within the occupied aperture/head footprint; check whether the opening rather than the head is clear during that interval.",
+      "sampledObservationOnly": true,
+      "wholeMechanical": "unreviewed",
+      "wholeFactual": "unreviewed",
+      "encodedGlyphAllFrames": "unreviewed",
+      "continuousMotion": "unreviewed",
+      "listening": "unreviewed",
+      "humanAcceptance": false
+    },
+    {
+      "id": "EU-006",
+      "originalBinding": {
+        "inputSha256": "sha256:4d07b63ded1bc4db81d62138b2a7e5c36ef8dcbf548f044f52877059ee4785ad",
+        "outputSha256": "sha256:6b3fbd3e784cbc68d41afd4663e1be78a45d554a2500d6c0732ebc58ac32f9e7",
+        "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      "evidence": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-006/2/review-evidence/evidence.json",
+        "bytes": 100039,
+        "sha256": "sha256:20b2123e45e8d07a174b6f28caf5226c2ce8da1301141c8cacc62145c52fac89"
+      },
+      "inspectedPhoneFrames": [
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-006/2/review-evidence/phone-000000.png",
+          "frame": 56,
+          "shot": "shot-00"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-006/2/review-evidence/phone-000001.png",
+          "frame": 136,
+          "shot": "shot-01"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-006/2/review-evidence/phone-000002.png",
+          "frame": 182,
+          "shot": "shot-02"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-006/2/review-evidence/phone-000003.png",
+          "frame": 248,
+          "shot": "shot-03"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-006/2/review-evidence/phone-000004.png",
+          "frame": 349,
+          "shot": "shot-04"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-006/2/review-evidence/phone-000005.png",
+          "frame": 416,
+          "shot": "paper-insert"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-006/2/review-evidence/phone-000006.png",
+          "frame": 483,
+          "shot": "shot-05"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-006/2/review-evidence/phone-000007.png",
+          "frame": 587,
+          "shot": "shot-06"
+        }
+      ],
+      "actualAgentObservation": "Eight whole/section/body/handle-bearing/paper/gripping-edge views were inspected. Visible text is readable and the selected section differentiates body and handle. Inspect insertion/settled-contact timing near416 before accepting the spoken paper-holds-jaws condition.",
+      "sampledObservationOnly": true,
+      "wholeMechanical": "unreviewed",
+      "wholeFactual": "unreviewed",
+      "encodedGlyphAllFrames": "unreviewed",
+      "continuousMotion": "unreviewed",
+      "listening": "unreviewed",
+      "humanAcceptance": false
+    },
+    {
+      "id": "EU-007",
+      "originalBinding": {
+        "inputSha256": "sha256:87d2ac50720a201fbaf5d18b03521d83adf00d265d44d3d5dc2f70eb3fc42cf4",
+        "outputSha256": "sha256:01a008b76eb7f357d3087d8478b43a2991908f9c80467abcf267fdd4afa61051",
+        "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      "evidence": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-007/2/review-evidence/evidence.json",
+        "bytes": 118868,
+        "sha256": "sha256:b46e7e5dbe0d2536eca4d43ea6f90397a843a1991720c3ec5aa1bc58fe87a62b"
+      },
+      "inspectedPhoneFrames": [
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-007/2/review-evidence/phone-000000.png",
+          "frame": 81,
+          "shot": "shot-00"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-007/2/review-evidence/phone-000001.png",
+          "frame": 213,
+          "shot": "shot-01"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-007/2/review-evidence/phone-000002.png",
+          "frame": 345,
+          "shot": "shot-02"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-007/2/review-evidence/phone-000003.png",
+          "frame": 464,
+          "shot": "shot-03"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-007/2/review-evidence/phone-000004.png",
+          "frame": 556,
+          "shot": "shot-04"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-007/2/review-evidence/phone-000005.png",
+          "frame": 642,
+          "shot": "shot-05"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-007/2/review-evidence/phone-000006.png",
+          "frame": 690,
+          "shot": "shot-06"
+        }
+      ],
+      "actualAgentObservation": "Seven whole/insertion/arm/stop/release views were inspected. Visible text is readable; paired colors locate the raised edge and stop at464. Inspect fixed-stop visibility and actual clearance during the release macro near642; a still does not establish disengagement.",
+      "sampledObservationOnly": true,
+      "wholeMechanical": "unreviewed",
+      "wholeFactual": "unreviewed",
+      "encodedGlyphAllFrames": "unreviewed",
+      "continuousMotion": "unreviewed",
+      "listening": "unreviewed",
+      "humanAcceptance": false
+    },
+    {
+      "id": "EU-008",
+      "originalBinding": {
+        "inputSha256": "sha256:962caf1e111620b9657cc52ec7d1840b01d9b417403d850295785634385c44a1",
+        "outputSha256": "sha256:44b89ce96140210e0677a7610ef06b76c7d4847f7cee5211e1bd5f8cec3b818e",
+        "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      "evidence": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-008/2/review-evidence/evidence.json",
+        "bytes": 88493,
+        "sha256": "sha256:fba93c1287dd2d6cb4fe123965c7d3494c7370be99867a13f9753595466fdac4"
+      },
+      "inspectedPhoneFrames": [
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-008/2/review-evidence/phone-000000.png",
+          "frame": 73,
+          "shot": "shot-00"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-008/2/review-evidence/phone-000001.png",
+          "frame": 228,
+          "shot": "shot-01"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-008/2/review-evidence/phone-000002.png",
+          "frame": 352,
+          "shot": "shot-02"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-008/2/review-evidence/phone-000003.png",
+          "frame": 413,
+          "shot": "shot-03"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-008/2/review-evidence/phone-000004.png",
+          "frame": 505,
+          "shot": "shot-04"
+        }
+      ],
+      "actualAgentObservation": "Five whole/cam-strike/spring/returned views were inspected. Visible text is readable. Bolt tail at352 and505 visually directs attention into the coil region while narration explains the spring. Captured data distinguish tail and return_spring; prepare an assembly-level label without claiming a mechanical failure.",
+      "sampledObservationOnly": true,
+      "wholeMechanical": "unreviewed",
+      "wholeFactual": "unreviewed",
+      "encodedGlyphAllFrames": "unreviewed",
+      "continuousMotion": "unreviewed",
+      "listening": "unreviewed",
+      "humanAcceptance": false
+    },
+    {
+      "id": "EU-009",
+      "originalBinding": {
+        "inputSha256": "sha256:7bdfa3183b90e3153f581b65fb2243705c5d7f9207983dc6278d8d44c0c1f217",
+        "outputSha256": "sha256:5f7f9d2a3924f194d800d2bbff61cc48d3dd7ab1577e24e44f8aa6056bf805cb",
+        "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      "evidence": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-009/2/review-evidence/evidence.json",
+        "bytes": 98776,
+        "sha256": "sha256:6f6384c19c3e875fc9366fbcb8bdd3b377f6fc09b2e4a05adf71a3822803cc62"
+      },
+      "inspectedPhoneFrames": [
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-009/2/review-evidence/phone-000000.png",
+          "frame": 51,
+          "shot": "shot-00"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-009/2/review-evidence/phone-000001.png",
+          "frame": 148,
+          "shot": "shot-01"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-009/2/review-evidence/phone-000002.png",
+          "frame": 277,
+          "shot": "shot-02"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-009/2/review-evidence/phone-000003.png",
+          "frame": 387,
+          "shot": "shot-03"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-009/2/review-evidence/phone-000004.png",
+          "frame": 439,
+          "shot": "shot-04"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-009/2/review-evidence/phone-000005.png",
+          "frame": 505,
+          "shot": "shot-05"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-009/2/review-evidence/phone-000006.png",
+          "frame": 570,
+          "shot": "shot-06"
+        }
+      ],
+      "actualAgentObservation": "Seven whole blade, curved/flat section and reel views were inspected. Section lines and visible labels/captions are readable at saved size. This supplies sampled presentation observations, not measured stiffness or winding/collision/continuous acceptance.",
+      "sampledObservationOnly": true,
+      "wholeMechanical": "unreviewed",
+      "wholeFactual": "unreviewed",
+      "encodedGlyphAllFrames": "unreviewed",
+      "continuousMotion": "unreviewed",
+      "listening": "unreviewed",
+      "humanAcceptance": false
+    },
+    {
+      "id": "EU-010",
+      "originalBinding": {
+        "inputSha256": "sha256:774a41ba70e3a3f226d3f217514cb701cb320f232ec97745ca4edfca9ed53b49",
+        "outputSha256": "sha256:d0bb64e9be3be90af9857fc5ace4d30c1c31b4f919551be60a165970bd0288bc",
+        "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      "evidence": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-010/2/review-evidence/evidence.json",
+        "bytes": 90984,
+        "sha256": "sha256:f0ecaddde3050bceb2316651b1e128a03933155477e33fc27e0f4aece93ec398"
+      },
+      "inspectedPhoneFrames": [
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-010/2/review-evidence/phone-000000.png",
+          "frame": 67,
+          "shot": "shot-00"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-010/2/review-evidence/phone-000001.png",
+          "frame": 172,
+          "shot": "shot-01"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-010/2/review-evidence/phone-000002.png",
+          "frame": 279,
+          "shot": "shot-02"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-010/2/review-evidence/phone-000003.png",
+          "frame": 396,
+          "shot": "shot-03"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-010/2/review-evidence/phone-000004.png",
+          "frame": 510,
+          "shot": "shot-04"
+        },
+        {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/items/EU-010/2/review-evidence/phone-000005.png",
+          "frame": 602,
+          "shot": "shot-05"
+        }
+      ],
+      "actualAgentObservation": "Six whole can/tab, rivet, flexing flange, scored panel and hinge views were inspected. Visible labels/captions are readable. Check panel/score contrast near396 and the retained-panel final state near602 in actual playback; these samples alone do not prove nose contact or rupture motion.",
+      "sampledObservationOnly": true,
+      "wholeMechanical": "unreviewed",
+      "wholeFactual": "unreviewed",
+      "encodedGlyphAllFrames": "unreviewed",
+      "continuousMotion": "unreviewed",
+      "listening": "unreviewed",
+      "humanAcceptance": false
+    }
+  ],
+  "repair": {
+    "id": "VIS101-EU008-assembly-label",
+    "status": "prepared-copy-clarity-repair-not-rendered",
+    "sourcePlan": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/episodes/EU-008/plan.json",
+      "bytes": 7023,
+      "sha256": "sha256:03bdfc70f4396df6e82da1a3d7161df200d307042f2196c95c4947bbd78d2204"
+    },
+    "candidatePlan": {
+      "path": "/private/tmp/still-shift-ms3-phone101/EU-008-plan-label-assembly101.json",
+      "bytes": 7029,
+      "sha256": "sha256:e1d62cc0247d592a0efb244183e3238ac817fcee8b8bf472de31bc5172e0457d"
+    },
+    "changes": [
+      {
+        "jsonPointer": "/callouts/2/text",
+        "before": "Bolt tail",
+        "after": "Spring assembly",
+        "id": "part-02",
+        "interval": [311, 394]
+      },
+      {
+        "jsonPointer": "/callouts/3/text",
+        "before": "Bolt tail",
+        "after": "Spring assembly",
+        "id": "part-03",
+        "interval": [433, 579]
+      }
+    ],
+    "capturedPartAndAnchorEvidence": [
+      {
+        "finalEpisodeFrame": 352,
+        "observation": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/blender-cache/captures/616f11a0-d96b-4839-a9c1-1b657cf90757/frames/frame-000001.json",
+          "bytes": 21394,
+          "sha256": "sha256:c4a3000a9ef333a9c7d4dabc8f5454fd834e1e2566cb4b66d2a2afd7b5e04266"
+        },
+        "tailAnchor": {
+          "kind": "evaluated-bounds-center",
+          "world": [-0.3500000238418579, 1.149999976158142, 0.0],
+          "pixel": [640.8671736717224, 727.3475646972656],
+          "depth": 15.340069770812988,
+          "inFrame": true
+        },
+        "actualParts": [
+          {
+            "name": "tail",
+            "visible": true,
+            "worldBounds": {
+              "min": [
+                -0.800000011920929, 1.090000033378601, -0.060000017285346985
+              ],
+              "max": [
+                0.09999999403953552, 1.209999918937683, 0.060000017285346985
+              ]
+            }
+          },
+          {
+            "name": "return_spring",
+            "visible": true,
+            "worldBounds": {
+              "min": [
+                -0.6398891806602478, 0.9900006055831909, -0.15999971330165863
+              ],
+              "max": [
+                -0.0505257248878479, 1.3099995851516724, 0.1599995195865631
+              ]
+            }
+          },
+          {
+            "name": "spring_reaction",
+            "visible": true,
+            "worldBounds": {
+              "min": [
+                -0.7200000286102295, 0.824999988079071, -0.18000000715255737
+              ],
+              "max": [
+                -0.6399999856948853, 1.4749999046325684, 0.18000000715255737
+              ]
+            }
+          },
+          {
+            "name": "spring_shoulder",
+            "visible": true,
+            "worldBounds": {
+              "min": [
+                -0.050000011920928955, 0.9699999690055847, -0.18000000715255737
+              ],
+              "max": [
+                0.030000001192092896, 1.3299999237060547, 0.18000000715255737
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "finalEpisodeFrame": 505,
+        "observation": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-current72/blender-cache/captures/55a782b2-27ee-4014-8df2-cfc71c5c2b8f/frames/frame-000003.json",
+          "bytes": 21352,
+          "sha256": "sha256:42128d5819ab9213cfc1e549490a374f712e68d86aa6e333a0b3708f8bded37c"
+        },
+        "tailAnchor": {
+          "kind": "evaluated-bounds-center",
+          "world": [-0.10000000894069672, 1.149999976158142, 0.0],
+          "pixel": [580.0559163093567, 672.9095077514648],
+          "depth": 15.24204158782959,
+          "inFrame": true
+        },
+        "actualParts": [
+          {
+            "name": "tail",
+            "visible": true,
+            "worldBounds": {
+              "min": [
+                -0.550000011920929, 1.090000033378601, -0.060000017285346985
+              ],
+              "max": [
+                0.3499999940395355, 1.209999918937683, 0.060000017285346985
+              ]
+            }
+          },
+          {
+            "name": "return_spring",
+            "visible": true,
+            "worldBounds": {
+              "min": [
+                -0.6391331553459167, 0.9900023341178894, -0.15999867022037506
+              ],
+              "max": [
+                0.19980382919311523, 1.3099825382232666, 0.1599792242050171
+              ]
+            }
+          },
+          {
+            "name": "spring_reaction",
+            "visible": true,
+            "worldBounds": {
+              "min": [
+                -0.7200000286102295, 0.824999988079071, -0.18000000715255737
+              ],
+              "max": [
+                -0.6399999856948853, 1.4749999046325684, 0.18000000715255737
+              ]
+            }
+          },
+          {
+            "name": "spring_shoulder",
+            "visible": true,
+            "worldBounds": {
+              "min": [
+                0.19999998807907104, 0.9699999690055847, -0.18000000715255737
+              ],
+              "max": [
+                0.2800000011920929, 1.3299999237060547, 0.18000000715255737
+              ]
+            }
+          }
+        ]
+      }
+    ],
+    "rationale": "The tail anchor is a shaft-centered point inside the surrounding spring envelope. The displayed Bolt tail label focuses the explanation on an internal part while the pictured region and narration concern the spring mechanism. Spring assembly names that whole visible region without claiming a new part or changing the rig.",
+    "sourceSupport": "US10837199B2 describes bolt spring570 between bolt550 and fixed boss572. See factual-input100.",
+    "unchanged": [
+      "all speech/caption text and timing",
+      "whole original Alden audio and source samples",
+      "source asset/control/source-frame tracks",
+      "shots/cameras/resolution/fps/native sample settings",
+      "callout IDs/parts/anchors/intervals/positions/colors/control ranges",
+      "all original production/queue/cache/review files"
+    ],
+    "expectedNativeWork": "Text-only overlay repair;0 fresh Blender captures expected, not yet measured. Prove actual keys/cache reuse and affected encoded output with the installed runtime.",
+    "targetAfterCurrentInstalledCheckpoint": "Place candidate as a sibling plan in the independent receiving EU-008 folder so unchanged ../../files paths resolve, then use the supported current revision/edit lifecycle. Do not mutate original frozen intake or relabel the original movie.",
+    "requiredBeforeClaimingFixed": [
+      "full91 actual terminal and current package/all-ten installed checkpoint",
+      "admit current plan revision through supported lifecycle",
+      "verify exact complete original narration",
+      "prove0 fresh native captures and actual encoded label appearance",
+      "verify unaffected neighbors/history and retain original1/10 first-pass metric"
+    ],
+    "substantiveRenderStarted": false,
+    "mechanicalFailureClaimed": false
+  },
+  "summary": {
+    "episodesInspected": 10,
+    "existingPhoneFramesInspected": 60,
+    "newRendersOrPaidGeneration": 0,
+    "copyClarityRepairsPrepared": 1,
+    "copyClarityRepairsExecuted": 0,
+    "wholeReviewPassesAdded": 0,
+    "reviewedReady": 0,
+    "acceptedPilot": 0
+  },
+  "remainingReviewAttention": [
+    {
+      "id": "EU-005",
+      "frame": 169,
+      "focus": "Entry leader versus occupied aperture/head footprint; clarity in motion."
+    },
+    {
+      "id": "EU-006",
+      "frame": 416,
+      "focus": "Paper insertion/settled-contact state versus spoken keep-apart condition."
+    },
+    {
+      "id": "EU-007",
+      "frame": 642,
+      "focus": "Fixed stop visibility and actual disengagement during release macro."
+    },
+    {
+      "id": "EU-010",
+      "frames": [396, 602],
+      "focus": "Score/panel contrast and retained panel final state during phone-size playback."
+    }
+  ],
+  "otherSourceConsistency": "./mechanism-shorts-ms3-factual-input100-results.json",
+  "frozenSourceOrProductModified": false,
+  "qualification": "Original3df/1090 observations only. Current final-source full/archive/installed proof and artifact-specific mechanical/factual/glyph/continuous/listening/human review remain open. Sparse readable stills do not certify all encoded glyphs, hold durations or mechanism correctness.",
+  "rawReviewAndRepairPreparation": {
+    "path": "/private/tmp/still-shift-ms3-phone101/review-and-label-preparation1.json",
+    "bytes": 53103,
+    "sha256": "sha256:ac46b2ee8373fef2f01dcce25f159fd7f7ae65a7eefad97532887686df4ccbf3"
+  },
+  "preparationHelper": {
+    "path": "/private/tmp/still-shift-ms3-phone101-prepare1.py",
+    "bytes": 9431,
+    "sha256": "sha256:3607fdab0e4cc2adce09c36b3f19a88b3f92ab93eb7de16b731184bc08b742fb"
+  },
+  "validation": {
+    "preparationActualExitCode": 0,
+    "followupCompleteDiffAndPinsActualExitCode": 0,
+    "changedJsonPointers": ["/callouts/2/text", "/callouts/3/text"],
+    "originalIntakePlanUnchanged": true,
+    "heldSourceFiles": 2793,
+    "heldSourceBytes": 122415262,
+    "heldSourceCheckActualExitCode": 0,
+    "targetedFormattingActualExitCode": 0,
+    "whitespaceCheckActualExitCode": 0,
+    "scope": "Static preparation, complete plan diff and exact pins only. No new software/render test, actual revised movie or whole review is claimed."
+  }
+}

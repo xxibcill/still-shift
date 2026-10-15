@@ -56,6 +56,18 @@ conventional tape blade and retained-flange can tab. This does not change any
 artifact-specific factual/mechanical/listening review or human acceptance.
 [Exact input/source limits](./mechanism-shorts-ms3-factual-input100-results.json).
 
+Agent phone-image inspection101 reads all60 saved360x640 phone samples across the
+actual10 episodes, with exact image/manifest pins. Visible text is readable in
+these samples; whole encoded glyphs, mechanics, factual motion/listening and human
+acceptance remain open. The latch's Bolt tail label directs attention through the
+spring region. Actual captured part/anchor data support a prepared two-label
+Spring assembly copy revision. Speech, timing, controls, cameras, anchors, colors
+and all original files stay exact; the candidate is not rendered. Prove actual
+encoded appearance/native reuse through the installed revision lifecycle after
+the current all-ten checkpoint. Four other intervals remain review attention,
+not proven mechanical failures.
+[60-frame observations and prepared copy revision](./mechanism-shorts-ms3-phone101-review-results.json).
+
 Four actual geometry fault images remain open. The owner explicitly approved
 revised total10 USD-equivalent/35 million tokens. The same ledger baseline and
 prices are retained; live conservative totals are36.328462 USD-equivalent/

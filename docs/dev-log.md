@@ -86,7 +86,11 @@ still hold before relying on them.
   checks all10 actual pinned speech/callout plans against9 fresh primary web texts
   and1 saved primary HTML; source consistency is supported within declared limits.
   Whole factual/mechanical/listening and human acceptance stay open.
-  [Source limits](./mechanism-shorts-ms3-factual-input100-results.json).
+  [Source limits](./mechanism-shorts-ms3-factual-input100-results.json). Agent phone
+  inspection101 covers60 existing samples/10 episodes; an assembly-level EU008
+  label revision is prepared but unrendered. Four additional intervals need
+  continuous/contact/leader review; no whole dimension promoted.
+  [Phone findings](./mechanism-shorts-ms3-phone101-review-results.json).
   [Preparation controls](./mechanism-shorts-ms3-installed-preparation93-results.json),
   [Current installed scope](./mechanism-shorts-ms3-current-installed-scope92-results.json). Physical fault captures stay
   budget-blocked after explicit total10/35M approval: unchanged conservative ledger
@@ -266,6 +270,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Inspect60 actual phone frames and prepare latch copy repair101
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` from9fec620a.
+- **Scope:** inspect all60 existing phone samples for actual EU001–EU010 at360x640.
+- **Results:** exact image/manifest pins; sampled visible text readable. Actual
+  EU008 part/anchor data distinguish shaft and surrounding spring. Prepared two
+  Bolt tail→Spring assembly label changes; all audio/timing/rig/camera/anchor/color
+  data and original products remain exact. No render or paid generation started.
+- **Open / next:** installed revision/encoded-label/native-reuse proof after
+  full42543/current all-ten checkpoint; keyhole169/binder416/buckle642/can396,602
+  remain review attention. Whole mechanical/factual/glyph/motion/listening and human
+  acceptance stay open; original first-pass1/10 and accepted0/10 retained.
+- **Records:** [60 actual image observations/candidate repair](./mechanism-shorts-ms3-phone101-review-results.json).
 
 ### 2026-10-15 — Check actual-ten spoken/callout inputs against primary sources100
 
