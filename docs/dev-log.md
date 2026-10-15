@@ -43,20 +43,19 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #56 review repair in progress (2026-10-15):** isolated from exact
-  `c1582058`. Both physical and actual Three mask queries now compare Float32
-  uniforms. Four red boundary checks reproduce the defect; final focused14/2
-  and fast3,935/381 pass. Both independent reviews have no findings. Retain the
-  failed legacy expectation, locator typo and unchanged rerun. Fresh GPU proof
-  and required runtime/render gates await the serial MS3 producer terminal;
-  the second located source-diagnostic finding is repaired too. Six actual
-  filesystem checks and refreshed fast3,935/381 pass. Both final review axes
-  have zero findings; long-key and raw mismatch-path review defects are retained
-  with their repairs. Locked offline isolated Python setup and pinned toolchain pass; primary
-  environment untouched. Private archive83 verifies1,956 members; offline installed
-  public diagnostics9 and strict types pass with originals denied. GPU/runtime
-  gates and safe existing-PR fast-forward remain pending. No merge or
-  acceptance. [Repair evidence](./pr-56-fix-results.json).
+- **PR #56 current review repairs qualified (2026-10-15):** source40330672
+  retains both Float32 cutout visibility and located/sanitized source diagnostics.
+  Fast3,935/381 and both independent reviews pass. Current runtime verification
+  completes in stages:191 runtime, distinct321 integration,14 Python and smoke.
+  Initial aggregate1 retains missing soundtrack runtime and3 depth timeouts;
+  offline setup/unchanged affected58 rerun plus suffix pass, with1,725 inputs exact.
+  Actual native depth14/composition5 and4 complete-RGBA mask controls pass.
+  Initial white-background probe assumption fails and stays retained; corrected
+  controls use actual uniform background. Archive83/9 installed diagnostics and
+  strict types keep their source bindings. PR56 remains open; no fresh full E01,
+  release, publication or human acceptance.
+  [Current gate evidence](./pr-56-current-runtime90-results.json),
+  [review repairs](./pr-56-fix-results.json).
 
 - **PR #56 conflicts resolved (2026-10-15):** merge `main` `b3765142` into
   native head `bf30a253`, preserving shared Three rendering, all five MS1 review
@@ -273,6 +272,19 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Qualify current native review repairs in recorded stages
+
+- **Agent / branch:** Codex on `codex/ms1n-review-fixes`, source40330672 unchanged.
+- **Results:**191 runtime, distinct321 integration,14 Python and smoke pass in
+  recorded stages. Native depth14/composition5 and4 actual GPU mask controls pass.
+- **Retained:** original aggregate1 (missing soundtrack runtime/3 unproven depth
+  timeouts); corrected offline setup/unchanged affected58 rerun and suffix0.
+  Initial white-background fixture failure and all4 PNGs remain retained too.
+- **Evidence:** all1,725 source inputs exact; actual first3 mask PNG hashes equal,
+  discarded control differs and has0 nonbackground pixels. No full E01/release
+  or human acceptance is inferred; previous full/archive proofs retain bindings.
+- **Records:** [Current verification](./pr-56-current-runtime90-results.json).
 
 ### 2026-10-15 — Verify the affected MS1N installed APIs
 

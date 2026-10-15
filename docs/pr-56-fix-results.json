@@ -297,5 +297,18 @@
       "bytes": 4293945,
       "sha256": "sha256:70a96d1f35aea915468000c1004d65f63790d4d74b236f0f56fdfd4244f5d91b"
     }
+  },
+  "currentAffectedRuntime90": {
+    "record": "./pr-56-current-runtime90-results.json",
+    "sourceCommit": "40330672db000720b551abd0f7157f4a6751736b",
+    "status": "affected-review-gates-complete-in-recorded-stages",
+    "distinctRuntime": 191,
+    "distinctIntegration": 321,
+    "depth": 14,
+    "nativeDepth": 14,
+    "nativeCompositionIntegration": 5,
+    "actualMaskBoundaryControls": 4,
+    "originalAggregateFailureRetained": true,
+    "freshFullE01OrReleaseClaimed": false
   }
 }
