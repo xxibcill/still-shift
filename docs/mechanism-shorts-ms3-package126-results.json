@@ -1,0 +1,393 @@
+{
+  "schemaVersion": "ms3-package121-actual-terminal126-1",
+  "recordedUtc": "2026-10-15T17:12:56.613646+00:00",
+  "status": "passed-standard-private-package-and-affected-installed-checks",
+  "actualSession": 52914,
+  "actualToolExitCode": 0,
+  "sourceCommit": "1dbee06a67813ad14c06315798782dcc9318e3ff",
+  "fullVerifiedSource": "1c9f7d1413bdeb9c78cee72ccd328c4badd46c41",
+  "completeFullRecord": "./mechanism-shorts-ms3-full125-terminal-results.json",
+  "actualTerminal": {
+    "path": "/private/tmp/still-shift-ms3-package121-terminal126.json",
+    "bytes": 1550,
+    "sha256": "sha256:4c9aec5b0ef91fb533bec552c767ab6bc602dde0cffd5a85074e37fc22c16db6"
+  },
+  "runtimeReceipt": {
+    "path": "/private/tmp/still-shift-ms3-package93-results1.json",
+    "bytes": 7111,
+    "sha256": "sha256:2d2a15b248df5a73ef1bd470882964f5788adef2c49cf910ba221c0920f2bfb5"
+  },
+  "stages": [
+    {
+      "stage": "standard-installed-matrix",
+      "actualExitCode": 0,
+      "seconds": 106.86041033291258,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-standard-installed-matrix1.log",
+        "bytes": 1014,
+        "sha256": "sha256:58babb9cb0f42d7d38fb062f282cac638b81447f470e9601778055c15c6c0085"
+      }
+    },
+    {
+      "stage": "offline-install",
+      "actualExitCode": 0,
+      "seconds": 1.0653843339532614,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-offline-install1.log",
+        "bytes": 235,
+        "sha256": "sha256:38951bc09640c025c5a2363d2d09ec5d3c4cb3ade57321cffd237ec7aeaf8254"
+      }
+    },
+    {
+      "stage": "offline-devtools",
+      "actualExitCode": 0,
+      "seconds": 0.5812771669588983,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-offline-devtools1.log",
+        "bytes": 278,
+        "sha256": "sha256:3fa63b78949a144567bac7d1759a6493c8c4c45eaae5a92a81071318b1773590"
+      }
+    },
+    {
+      "stage": "installed-diagnostics",
+      "actualExitCode": 0,
+      "seconds": 1.986891167005524,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-installed-diagnostics1.log",
+        "bytes": 260,
+        "sha256": "sha256:94b21a77c30f138a660c8a24573e9283e35c4c787f8fcac6e6a799c928f3c764"
+      }
+    },
+    {
+      "stage": "installed-retry-controls",
+      "actualExitCode": 0,
+      "seconds": 1.3111697919666767,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-installed-retry-controls1.log",
+        "bytes": 71,
+        "sha256": "sha256:158f70a5612b320dbc36a37ba9a91b8b0997326a893b7def92a7bb720a0df0c0"
+      }
+    },
+    {
+      "stage": "strict-public-types",
+      "actualExitCode": 0,
+      "seconds": 13.748191500082612,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-strict-public-types1.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "stage": "installed-production-discovery",
+      "actualExitCode": 0,
+      "seconds": 0.6370829159859568,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-installed-production-discovery1.log",
+        "bytes": 3293,
+        "sha256": "sha256:6c5378d45ff847bc1afc5efa2799e639269cd5854c8c859259c44616b713cbd5"
+      }
+    }
+  ],
+  "standardInstalledMatrix": {
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-package93-standard-installed1.json",
+      "bytes": 37127,
+      "sha256": "sha256:44ac5388774497b8b6b3c95ffef98b07ad71b6c490678f49cc7770cdb1acab0e"
+    },
+    "checks": 27,
+    "originalRootDenials": false,
+    "scope": "Unmodified package gate; explicit source comparisons use the source checkout. Independent all-ten validation uses the receiving sandbox separately."
+  },
+  "archive": {
+    "path": "/private/tmp/still-shift-ms3-package93/still-shift-0.1.1.tgz",
+    "bytes": 5469724,
+    "sha256": "sha256:83504d2118a18bce38336367d058a9c4b874a5b2f933478addefd42838ce20ec"
+  },
+  "durableArchive": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package93/still-shift-0.1.1.tgz",
+    "bytes": 5469724,
+    "sha256": "sha256:83504d2118a18bce38336367d058a9c4b874a5b2f933478addefd42838ce20ec"
+  },
+  "identity": {
+    "codeSha256": "sha256:cbe5e7fbf14ad62980ba3e97f9325223b054cd502bbef10b4bbdaf795291400b",
+    "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+    "profile": {
+      "backend": "blender-native",
+      "blenderExecutableSha256": "sha256:f5c1f2a0c0bca3389ec772d355242b700975ea84e66cbb3f5257a7bce8e5adeb",
+      "blenderVersion": "Blender 5.2.2 LTS\n\tbuild date: 2026-09-15\n\tbuild time: 01:49:19\n\tbuild commit date: 2026-09-14\n\tbuild commit time: 15:14\n\tbuild hash: d13f752e3b9c\n\tbuild branch: blender-v5.2-release\n\tbuild platform: Darwin\n\tbuild type: Release\n\tbuild c flags:  -Wall -Werror=implicit-function-declaration -Werror=return-type -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wstrict-prototypes -Wmissing-prototypes -Wunused-parameter -Wundef -Wundef-prefix -Werror=unguarded-availability-new  -mmacosx-version-min=11.2  -std=gnu11  -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild c++ flags:  -Wall -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wno-overloaded-virtual -Wno-sign-compare -Wno-invalid-offsetof -Wno-suggest-override -Wundef -Wundef-prefix -Wunused-parameter -Wmismatched-tags -Werror=unguarded-availability-new  -mmacosx-version-min=11.2 -ftemplate-depth=1024   -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild link flags: -fexceptions -framework CoreServices -framework Foundation -framework IOKit -framework AppKit -framework Cocoa -framework Carbon -framework AudioUnit -framework AudioToolbox -framework CoreAudio -framework Metal -framework QuartzCore -framework CoreImage -framework OpenGL -framework Accelerate -liconv -Xlinker -no_warn_duplicate_libraries\n\tbuild system: CMake",
+      "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
+      "receiverProfileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+    }
+  },
+  "installedArchiveFilesIndependentlyRehashed": 2573,
+  "correspondingSources": 1051,
+  "nativeDiagnosticControls": 13,
+  "retryCacheRealLockControls": 4,
+  "strictPublicTypes": "passed",
+  "installedProductionDiscovery": "passed",
+  "newNativeCaptures": 0,
+  "entireCheckoutHeldDuringPackage": true,
+  "postRetentionSourceHold": {
+    "actualExitCode": 0,
+    "result": {
+      "status": "passed",
+      "mode": "check",
+      "files": 2793,
+      "bytes": 122415742
+    }
+  },
+  "isolationProfile": {
+    "path": "/private/tmp/still-shift-ms3-postgate93-isolation.sb",
+    "bytes": 1299,
+    "sha256": "sha256:ea1453e7d62fd060efe830a75845dd7ac6597ca072804862fd4601e1a0758e68"
+  },
+  "isolationQualification": "Affected controls deny original roots and fresh-worker staging; documented fixed /usr/bin/ps exception retained. Standard matrix uses source comparisons and is not claimed as original-root-denied.",
+  "offlineDependencyAudit": "Network vulnerability audit is not invoked in the existing offline package mode; no new audit pass claimed.",
+  "retainedCopies": [
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package121-terminal126.json",
+        "bytes": 1550,
+        "sha256": "sha256:4c9aec5b0ef91fb533bec552c767ab6bc602dde0cffd5a85074e37fc22c16db6"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package126/still-shift-ms3-package121-terminal126.json",
+        "bytes": 1550,
+        "sha256": "sha256:4c9aec5b0ef91fb533bec552c767ab6bc602dde0cffd5a85074e37fc22c16db6"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-results1.json",
+        "bytes": 7111,
+        "sha256": "sha256:2d2a15b248df5a73ef1bd470882964f5788adef2c49cf910ba221c0920f2bfb5"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package126/still-shift-ms3-package93-results1.json",
+        "bytes": 7111,
+        "sha256": "sha256:2d2a15b248df5a73ef1bd470882964f5788adef2c49cf910ba221c0920f2bfb5"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-standard-installed1.json",
+        "bytes": 37127,
+        "sha256": "sha256:44ac5388774497b8b6b3c95ffef98b07ad71b6c490678f49cc7770cdb1acab0e"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package126/still-shift-ms3-package93-standard-installed1.json",
+        "bytes": 37127,
+        "sha256": "sha256:44ac5388774497b8b6b3c95ffef98b07ad71b6c490678f49cc7770cdb1acab0e"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-members1.json",
+        "bytes": 505376,
+        "sha256": "sha256:db1a4b4cd99f6fc0e2bf02183cd42aa0f71bb677415a5274ab73007efec2997e"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package126/still-shift-ms3-package93-members1.json",
+        "bytes": 505376,
+        "sha256": "sha256:db1a4b4cd99f6fc0e2bf02183cd42aa0f71bb677415a5274ab73007efec2997e"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-installed-diagnostics1.json",
+        "bytes": 3651,
+        "sha256": "sha256:234853057040731349dd21e5181ba085ce0de8c43a9a9539aeab586ff31a5f34"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package126/still-shift-ms3-package93-installed-diagnostics1.json",
+        "bytes": 3651,
+        "sha256": "sha256:234853057040731349dd21e5181ba085ce0de8c43a9a9539aeab586ff31a5f34"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-installed-retry2.json",
+        "bytes": 1870,
+        "sha256": "sha256:5cd3fe34f0621ce53aaea412eccc30cc7123b21ce0d73ee207ab8e96bfa90aad"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package126/still-shift-ms3-package93-installed-retry2.json",
+        "bytes": 1870,
+        "sha256": "sha256:5cd3fe34f0621ce53aaea412eccc30cc7123b21ce0d73ee207ab8e96bfa90aad"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-installed-discovery1.json",
+        "bytes": 14140,
+        "sha256": "sha256:1944bb99a6a7be0e3c76dc8f675163477118668012a2a58125b2633d1a3afc5a"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package126/still-shift-ms3-package93-installed-discovery1.json",
+        "bytes": 14140,
+        "sha256": "sha256:1944bb99a6a7be0e3c76dc8f675163477118668012a2a58125b2633d1a3afc5a"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package121-run1.py",
+        "bytes": 12703,
+        "sha256": "sha256:3a7623c650b986a33a5ce6d14854130e67fb0510094ba77e02302b5396d6c35a"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package126/still-shift-ms3-package121-run1.py",
+        "bytes": 12703,
+        "sha256": "sha256:3a7623c650b986a33a5ce6d14854130e67fb0510094ba77e02302b5396d6c35a"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-retain-package126.py",
+        "bytes": 6434,
+        "sha256": "sha256:cbef8200a9f93408b3641d122dcf08f3defb85a3526017690e9ba1cf1a5ca208"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package126/still-shift-ms3-retain-package126.py",
+        "bytes": 6434,
+        "sha256": "sha256:cbef8200a9f93408b3641d122dcf08f3defb85a3526017690e9ba1cf1a5ca208"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-standard-installed-matrix1.log",
+        "bytes": 1014,
+        "sha256": "sha256:58babb9cb0f42d7d38fb062f282cac638b81447f470e9601778055c15c6c0085"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package126/still-shift-ms3-package93-standard-installed-matrix1.log",
+        "bytes": 1014,
+        "sha256": "sha256:58babb9cb0f42d7d38fb062f282cac638b81447f470e9601778055c15c6c0085"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-offline-install1.log",
+        "bytes": 235,
+        "sha256": "sha256:38951bc09640c025c5a2363d2d09ec5d3c4cb3ade57321cffd237ec7aeaf8254"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package126/still-shift-ms3-package93-offline-install1.log",
+        "bytes": 235,
+        "sha256": "sha256:38951bc09640c025c5a2363d2d09ec5d3c4cb3ade57321cffd237ec7aeaf8254"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-offline-devtools1.log",
+        "bytes": 278,
+        "sha256": "sha256:3fa63b78949a144567bac7d1759a6493c8c4c45eaae5a92a81071318b1773590"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package126/still-shift-ms3-package93-offline-devtools1.log",
+        "bytes": 278,
+        "sha256": "sha256:3fa63b78949a144567bac7d1759a6493c8c4c45eaae5a92a81071318b1773590"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-installed-diagnostics1.log",
+        "bytes": 260,
+        "sha256": "sha256:94b21a77c30f138a660c8a24573e9283e35c4c787f8fcac6e6a799c928f3c764"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package126/still-shift-ms3-package93-installed-diagnostics1.log",
+        "bytes": 260,
+        "sha256": "sha256:94b21a77c30f138a660c8a24573e9283e35c4c787f8fcac6e6a799c928f3c764"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-installed-retry-controls1.log",
+        "bytes": 71,
+        "sha256": "sha256:158f70a5612b320dbc36a37ba9a91b8b0997326a893b7def92a7bb720a0df0c0"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package126/still-shift-ms3-package93-installed-retry-controls1.log",
+        "bytes": 71,
+        "sha256": "sha256:158f70a5612b320dbc36a37ba9a91b8b0997326a893b7def92a7bb720a0df0c0"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-strict-public-types1.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package126/still-shift-ms3-package93-strict-public-types1.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-installed-production-discovery1.log",
+        "bytes": 3293,
+        "sha256": "sha256:6c5378d45ff847bc1afc5efa2799e639269cd5854c8c859259c44616b713cbd5"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package126/still-shift-ms3-package93-installed-production-discovery1.log",
+        "bytes": 3293,
+        "sha256": "sha256:6c5378d45ff847bc1afc5efa2799e639269cd5854c8c859259c44616b713cbd5"
+      },
+      "exact": true
+    }
+  ],
+  "currentInstalledAllTenPassed": false,
+  "wholeReviewOrHumanAcceptance": false,
+  "originalPilot": {
+    "firstPassPassed": 1,
+    "denominator": 10,
+    "pairedTokens": null,
+    "accepted": 0
+  },
+  "next": "Hash/copy complete115-input/5223-native-file closure, then run independent installed all10/6181 lifecycle with EU008 label repair before final report/resume/ten handoffs.",
+  "durableIndex": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package126/index.json",
+    "bytes": 16570,
+    "sha256": "sha256:cce3ae74913094d9159272082532837af2fa7ed46f42cd9026dcf4ab9887b44f"
+  },
+  "completeIndependentClosureCopy": {
+    "actualSession": 9711,
+    "observedToolExitCode": 0,
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-postgate93-cache-copy1.json",
+      "bytes": 577,
+      "sha256": "sha256:646ce0ad5ffa1307673b92226fda5e4c717d709e01a1dff117ab3fcf54ae2bd0"
+    },
+    "durableIndex": {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-package126/closure126-index.json",
+      "bytes": 2226,
+      "sha256": "sha256:7304e9f267696b92696857bab9a73ce598801b861597543782e791f0970362fe"
+    },
+    "files": 5338,
+    "bytes": 2207274134,
+    "inputFiles": 115,
+    "nativeFiles": 5223,
+    "completeCaptureDirectories": 34,
+    "framesToProduce": 6181,
+    "binaryHashesVerified": true,
+    "newNativeRenders": 0
+  }
+}

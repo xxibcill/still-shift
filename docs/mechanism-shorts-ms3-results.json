@@ -753,7 +753,7 @@
     }
   },
   "remaining": [
-    "Run prepared standard package121 on a clean frozen checkout, retain actual terminal result, audit/install that exact archive, then independently hash/copy the complete native/input closure and run the fresh installed all10/6181/EU008 repair lifecycle. Complete required full119 now passes;19 existing WebGL timing deferrals and prior failed90/91/105/113 stay retained.",
+    "Complete current installed all10/6181/EU008 repair lifecycle56598, then independently audit the final ten packet/native/decoded picture/original narration closures. Complete full119, standard package121 and full closure copy now pass; preserve19 existing timing deferrals and all prior failures.",
     "After actual full0, run the prepared standard offline package matrix, audit/install its exact archive, copy the complete independently hashed native closure, and execute a fresh current-installed queue/run/report/resume/ten-handoff lifecycle for all10 actual episodes. Original3df products and archive85/prepared86 are historical bindings.",
     "Independently audit current ten receiving packets and complete encoded picture/original narration closure. Fresh receiving validation must not reset original first-pass1/10 or nine failed attempts, manufacture comparable paired tokens, or infer review acceptance.",
     "After the initial current all-ten installed run checkpoint, execute and inspect the prepared EU008 two-label Spring assembly copy revision through the supported CAS revision lifecycle before final report/resume/ten handoffs. Prove actual native reuse, exact complete original narration and affected encoded picture; preserve original products, neighbors, first-pass1/10 and review boundaries.",
@@ -1003,7 +1003,7 @@
     "supported": 0,
     "reviewedReady": 0,
     "accepted": 0,
-    "currentIntegratedSourceQualification": "Original products retain3df/runtime1090. Current complete full119 passes on1c9f7d14 with all2793 selected inputs exact; current standard archive/install/all-ten lifecycle and whole reviews still follow. Original1/10 first-pass/nine failures/null paired tokens/accepted0 are unchanged.",
+    "currentIntegratedSourceQualification": "Original products retain3df/runtime1090. Complete full119 and standard package121 now pass; complete5338-file copied closure hashes verify. Independent installed56598 all10/6181/EU008 lifecycle and whole reviews remain pending. Original first-pass1/10/nine failures/null paired tokens/accepted0 stay unchanged.",
     "records": [
       "./mechanism-shorts-ms3-first-ten-terminal90-results.json",
       "./mechanism-shorts-ms3-current-first-ten-recovery-results.json",
@@ -1045,7 +1045,7 @@
   ],
   "activeRequiredFullPreparation": "./mechanism-shorts-ms3-final119-full-gate-results.json",
   "verificationHistoryScope": "The verification array retains dated historical checkpoints and their exact code/artifact bindings; old pending statements are not current implementation status. ActiveRequiredFullPreparation/currentPilotProduction/current completed proof pointers state the present gates.",
-  "currentPackageGate": "Actual complete119 terminal0 and sourcehold0 admitted; standard package121, exact archive audit/install, full closure hash/copy and actual all10/6181/EU008 repair lifecycle remain next and unexecuted. Entire checkout/HEAD freezes during package. No earlier staged or failed result substitutes for this pass.",
+  "currentPackageGate": "Standard package121 actual52914 terminal0;27 checks, exact2573-member archive/1051 sources,13 diagnostics/4 retry controls/strict types/discovery pass. Complete5338-file/2207274134B copy and hashes pass. Independent all10/6181/EU008 repair lifecycle is live as56598; no terminal or whole-review pass inferred.",
   "currentFaultScenarioCoverage": "./mechanism-shorts-ms3-fault-coverage111-results.json",
   "acceptanceReconciliation114": {
     "record": "./mechanism-shorts-acceptance-audit114-results.json",
@@ -1160,5 +1160,30 @@
     "pixelFailures": 0,
     "maxDelta": 1,
     "cause": "unproven"
+  },
+  "currentPackage": {
+    "record": "./mechanism-shorts-ms3-package126-results.json",
+    "actualSession": 52914,
+    "actualExitCode": 0,
+    "sourceCommit": "1dbee06a67813ad14c06315798782dcc9318e3ff",
+    "standardChecks": 27,
+    "members": 2573,
+    "correspondingSources": 1051,
+    "nativeDiagnosticControls": 13,
+    "retryControls": 4,
+    "nativeClosureFiles": 5223,
+    "inputFiles": 115,
+    "copiedBytes": 2207274134,
+    "allCopiedHashesVerified": true
+  },
+  "currentInstalledLifecycle": {
+    "session": 56598,
+    "status": "running-unpassed",
+    "sourcePackage": "./mechanism-shorts-ms3-package126-results.json",
+    "episodes": 10,
+    "frames": 6181,
+    "nativePolicy": "copied-cache-only; original roots and fresh-worker staging denied",
+    "repair": "EU008 two callout texts, then final report/resume/ten handoffs",
+    "wholeReviewsOrPilotAcceptance": false
   }
 }

@@ -43,26 +43,33 @@ still hold before relying on them.
 
 ## Current state
 
+- **Current package/copy passed; installed all-ten live (2026-10-16):** actual
+  package52914 exits0 on1dbee06a:27 standard checks,2,573 exact installed members/
+  1,051 sources,13 diagnostics/4 retry controls/strict types/discovery pass.
+  Complete115-input/5,223-native-file closure copied/hash verified:5,338 files/
+  2,207,274,134B,34 full captures. Installed all10/6,181/EU008 repair lifecycle
+  now runs as56598 under original-root/fresh-worker denials. Its terminal and
+  independent final decode/native/packet audits remain pending. Whole reviews and
+  original first-pass1/10/nine failures/null tokens/accepted0 stay explicit.
+  [Package/copy126](./mechanism-shorts-ms3-package126-results.json).
+
 - **Required complete full119 passed (2026-10-16 local):** actual71989 exits0
   after24,311.28s on1c9f7d14; all2793 inputs/122,415,742B exact. Unit4594,
   runtime346/integration324/Python14, frozen176/36061, normal story69/14086/14
   pairs, native5products/300frames and recovery15stages/10products pass. Benchmark
   no-op1180.39Hz/591samples;19 existing WebGL timing deferrals stay open.
   All prior failed90/91/105/113 results retained; no timing-cause claim.
-  Twelve exact raw terminal files retained. Current standard package, independent
-  all10/6181/EU008 repair and whole reviews still follow. Original1/10 first-pass,
+  Twelve exact raw terminal files retained. Standard package/copy now pass; independent
+  all10/6181/EU008 repair is live and whole reviews still follow. Original1/10 first-pass,
   nine failures/null paired tokens/accepted0 unchanged.
   [Actual terminal125](./mechanism-shorts-ms3-full125-terminal-results.json).
 
-- **Installed preparation121 (2026-10-15):** new direct actual full119 admission
-  replaces old impossible failed91/105/107 requirements. Syntax passes; package,
-  cache-copy and all-ten lifecycle guards each reject the actual live71989 result
-  before side effects. Standard package matrix, exact archive, all10/6,181,
-  full5,223-file cache closure,12-root denials/worker block and EU008 repair remain.
-  Actual complete119 now passes; no runtime package/copy/lifecycle started yet. Entire clean checkout/HEAD freezes during package; exact helpers retained locally.
-  Fresh read-only122 confirms the exact complete closure metadata/sizes,115 inputs
-  and14 installed-diagnostic fixture files remain available; binary hashes/copy
-  and real execution stay pending. [Preparation/readiness](./mechanism-shorts-ms3-installed121-preparation-results.json).
+- **Installed preparation121 (2026-10-15 capture):** direct actual full119
+  admission and three actual-live refusal controls remain retained. Package and
+  complete copy have since passed; all-ten lifecycle56598 is now active. Scope
+  remains all10/6,181, complete5,223-file native closure,12-root denials/worker
+  block and EU008 repair. No whole review pass inferred.
+  [Preparation](./mechanism-shorts-ms3-installed121-preparation-results.json).
 
 - **Actual full113 failure/owning118 (2026-10-15):** real8967 exits1 after
   4984.34s; source2793/122,415,742B exact. Canvas story/calibration-pan timing
@@ -358,6 +365,19 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-16 — Pass exact package and complete closure copy126
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3`, package source1dbee06a.
+- **Done:** actual52914 exits0;27 standard checks and2,573 installed members/
+  1,051 sources verify, with13 diagnostics/4 retry controls/types/discovery.
+- **Results:** independent copy9711 exits0,5,338 files/2,207,274,134B hash exact;
+  complete115 inputs/5,223 native files/34 saved captures; zero fresh native work.
+- **Limits:** offline network audit not run; standard source comparisons and the
+  fixed system-ps exception stay explicit. Prior failures and original metrics retained.
+- **Next:** actual56598 installed all10/6,181/EU008 repair lifecycle is live;
+  final packet/full decode/native audits and whole reviews still required.
+- **Records:** [package/copy126](./mechanism-shorts-ms3-package126-results.json).
 
 ### 2026-10-16 — Complete required full119 and retain actual terminal125
 

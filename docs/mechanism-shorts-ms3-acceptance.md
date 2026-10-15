@@ -20,14 +20,25 @@ and owning105 failures retain their original results; timing cause remains
 unproven. [Actual complete terminal125](./mechanism-shorts-ms3-full125-terminal-results.json),
 [run119 history and checkpoints](./mechanism-shorts-ms3-final119-full-gate-results.json).
 
-Standard package121 is next. Its whole clean checkout/HEAD, including archived
-guides, stays frozen until the real package terminal. Exact archive audit/install,
-full115-input/5,223-native-file content hash/copy, independent all10/6,181-frame
-lifecycle, bounded EU008 two-label repair before final report/resume/ten handoffs,
-and whole reviews remain required. The prior live-refusal controls are retained;
-no receiving run has started. Original first-pass1/10, nine failures, null paired
-tokens and reviewed-ready/accepted0 remain unchanged.
-[Prepared controls and exact retained helpers](./mechanism-shorts-ms3-installed121-preparation-results.json).
+Standard package121 now actually exits 0 as52914 on committed1dbee06a.
+All27 standard checks pass. The exact2,573-member archive/1,051 corresponding
+sources match the independent installation;13 native diagnostics,4 retry/cache/
+real-lock controls, strict public types and installed discovery pass. The entire
+clean checkout/HEAD stayed frozen through the real terminal. The existing offline
+mode does not run a network vulnerability audit. Original-root denials apply to
+the additional isolated controls; the standard matrix uses source comparisons.
+The documented fixed `/usr/bin/ps` exception remains explicit.
+
+The complete115-input/5,223-native-file closure is independently copied and hash
+verified:5,338 files/2,207,274,134B across34 complete saved captures. No new native
+render or episode export occurred in the copy. The independent installed all10/
+6,181-frame lifecycle is now live as56598 with original roots and fresh-worker
+staging denied. The bounded EU008 two-label repair precedes final report/resume/
+ten handoffs. Its actual terminal and independent final audits remain required;
+no whole review or pilot acceptance is inferred. Original first-pass1/10, nine
+failures, null paired tokens and reviewed-ready/accepted0 remain unchanged.
+[Actual package and complete copy126](./mechanism-shorts-ms3-package126-results.json),
+[prepared scope and controls](./mechanism-shorts-ms3-installed121-preparation-results.json).
 
 Earlier checkpoints123/124 are dated live snapshots within the now-completed
 run. Whole owning118 is a separate profiled diagnostic; actual full113 remains
