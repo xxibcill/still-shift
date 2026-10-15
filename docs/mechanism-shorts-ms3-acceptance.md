@@ -68,6 +68,16 @@ the current all-ten checkpoint. Four other intervals remain review attention,
 not proven mechanical failures.
 [60-frame observations and prepared copy revision](./mechanism-shorts-ms3-phone101-review-results.json).
 
+Active installed orchestration preparation102 folds the prepared EU008 label
+repair between the initial all-ten run and final report/resume/ten handoffs. It
+uses an exact-CAS revised request tagged repair, preserving history and9 neighbors;
+a successful job is not sent through the failed/cancelled-only retry API. Two
+queue commands/14 lifecycle commands retain the complete final10/6,181-frame
+requirement and avoid a redundant whole handoff pass. Syntax and two pre-terminal
+admission refusals pass, including an in-memory false terminal claim rejected by
+the still-running raw full receipt. No package, receiver or render is started.
+[Active serial preparation and controls](./mechanism-shorts-ms3-installed102-preparation-results.json).
+
 Four actual geometry fault images remain open. The owner explicitly approved
 revised total10 USD-equivalent/35 million tokens. The same ledger baseline and
 prices are retained; live conservative totals are36.328462 USD-equivalent/

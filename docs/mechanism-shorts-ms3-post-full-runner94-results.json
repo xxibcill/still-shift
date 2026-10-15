@@ -109,5 +109,11 @@
     "heldInputsExact": 2793
   },
   "remaining": "Full42543 is still live; all package/lifecycle work is unexecuted. Physical fault budget and whole product/human review remain separate gates.",
-  "lastPreparedUtc": "2026-10-15T02:04:54.622321+00:00"
+  "lastPreparedUtc": "2026-10-15T02:04:54.622321+00:00",
+  "activeSerialLifecyclePreparation102": {
+    "record": "./mechanism-shorts-ms3-installed102-preparation-results.json",
+    "oldRunnerDisposition": "Unexecuted and preserved unchanged; superseded for the future all-ten execution by102.",
+    "added": "One public queue discovery and one bounded EU008 copy-repair run between the initial all-ten run and final report/resume/10handoffs. Final all-ten evidence scope remains intact.",
+    "actualExecutionStarted": false
+  }
 }

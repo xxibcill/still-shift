@@ -1,0 +1,141 @@
+{
+  "schemaVersion": "ms3-current-installed-repair-orchestration-preparation-1",
+  "capturedUtc": "2026-10-15T04:36:22.791292+00:00",
+  "status": "prepared-syntax-and-admission-controls-passed-actual-installed-batch-not-started",
+  "sourceBeforeDocs": "44c43156",
+  "heldFullSource": "3749618d64dfa35a57b2e4f34da5b6722ac9c089",
+  "unifiedFullSession": 42543,
+  "selectionId": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+  "runner": {
+    "path": "/private/tmp/still-shift-ms3-package93-lifecycle102.py",
+    "bytes": 17944,
+    "sha256": "sha256:35cd3e4c217b03be76723463a59abd581926c86a0a614448a35c184a85441987"
+  },
+  "unchangedGuardAndHelpers": {
+    "path": "/private/tmp/still-shift-ms3-package93-lifecycle1.py",
+    "bytes": 11151,
+    "sha256": "sha256:4caa5af0009050d6dbb1a5c6ddd05b8241fcbf0f7283e664cf34e54997c7f66c"
+  },
+  "controls": {
+    "path": "/private/tmp/still-shift-ms3-package93-lifecycle102-controls1.json",
+    "bytes": 1718,
+    "sha256": "sha256:bd6f3b6cddfc9139d7fba48bd1709cd9b5e7767216958e360ce74d4199422707"
+  },
+  "controlRunner": {
+    "path": "/private/tmp/still-shift-ms3-package93-lifecycle102-controls1.py",
+    "bytes": 2666,
+    "sha256": "sha256:0fc94284906051b1d2328c565ca23be38ea886c2aed3580f069bfc64f3dd76c2"
+  },
+  "controlResults": [
+    {
+      "case": "nonterminal-admission",
+      "actualExitCode": 1,
+      "expectedGuardRejection": true,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-lifecycle102-control1.log",
+        "bytes": 599,
+        "sha256": "sha256:1729c9d78229c9f26d0c8e3bb65bb816f84b533727c3909c827c014f8e95c327"
+      },
+      "noConsumerOrLifecycleReceiptCreated": true
+    },
+    {
+      "case": "in-memory-false-terminal-claim-rejected-by-running-raw-receipt",
+      "actualExitCode": 1,
+      "expectedGuardRejection": true,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package93-lifecycle102-control2.log",
+        "bytes": 579,
+        "sha256": "sha256:1a4a421ef5256df4585b8377ce5ef136dd40ad7aff314e58b62429f0c3916cf5"
+      },
+      "noConsumerOrLifecycleReceiptCreated": true
+    }
+  ],
+  "rawFullStillRunningAtControlTime": true,
+  "oldPreparationDisposition": "Earlier93 lifecycle runner remains unexecuted and unchanged. This102 runner carries the same package/copy/identity/isolation/native-cache/full-cohort obligations and adds the already prepared two-label repair before final report/resume/handoffs.",
+  "packageAndCopyRunnersUnchanged": [
+    "/private/tmp/still-shift-ms3-package93-prepare1.py",
+    "/private/tmp/still-shift-ms3-postgate93-cache-copy1.py"
+  ],
+  "order": [
+    "Observe actual specific42543 terminal0, check raw aggregate/source-hold0 and freeze bindings. Record/commit full-gate evidence before the package wrapper freezes the complete checkout.",
+    "Run unchanged standard offline package93 matrix, exact archive/install/public controls. No repository/HEAD edits while that package wrapper lives.",
+    "Copy/hash complete115 original input files and5,223 native files/34 capture closures independently with original producer data preserved.",
+    "Installed102: create initial all-ten queue and run all10 actual whole Alden takes at original1x. Check current runtime/profile/six QA dimensions/zero native captures and save the initial state/products.",
+    "Copy one sibling EU008 plan with only two callout-text edits and discover all10 dependency closures through the installed queue CLI. Require the other9 items byte-identical and target differences only cuePath/input pins; clocks, question, design, backend, audio, source/control/camera/anchor/color data remain exact.",
+    "Construct the supported next manifest revision with exact prior journal hash and kind=repair for EU008. Keep maximumAttempts3 and all prior attempts/products; use run on the changed request. The targeted retry API is for eligible failed/cancelled jobs, so it is not used on this successful initial job.",
+    "Run the repair, retaining all initial products and requiring9 neighbor rows exact/old target attempt and product retained. Then perform report, resume and10 handoffs against the final revision exactly once.",
+    "Audit final current10 packets, full picture/original narration, actual two revised label samples, complete native-cache closure and all required whole review/acceptance boundaries."
+  ],
+  "plannedWork": {
+    "queueCommands": 2,
+    "lifecycleCommands": 14,
+    "totalSerialCLICommands": 16,
+    "initialEpisodeCount": 10,
+    "finalEpisodeCount": 10,
+    "finalOutputFrames": 6181,
+    "repairedEpisode": "EU-008",
+    "calloutTextFieldsChanged": 2,
+    "freshBlenderCapturesExpected": 0,
+    "freshBlenderCapturesActuallyMeasured": null,
+    "originalAndRevisedItemsRetained": true,
+    "finalHandoffs": 10,
+    "duplicateWholeHandoffPassesScheduled": false
+  },
+  "guardScope": {
+    "actualTerminalFullPackageCopyRequired": true,
+    "allCommandsSerial": true,
+    "originalRootsDenied": 12,
+    "freshWorkerStagingDenied": true,
+    "inheritedFixedSystemPsExceptionRetained": true,
+    "scriptsIsolationReceiptsAndCandidatePinnedAroundEachCommand": true,
+    "actualInstalledBatchStarted": false,
+    "guardNegativeChildrenActualExitCode": 1,
+    "guardNegativeExpectedRefusals": 2,
+    "noReceiverOrLifecycleReceiptCreated": true,
+    "falseTerminalClaim": "Test stdin only; never a persisted admission file or actual terminal observation."
+  },
+  "metricBoundary": {
+    "originalFirstPassPassed": 1,
+    "originalDenominator": 10,
+    "originalRate": 0.1,
+    "originalTargetAchieved": false,
+    "originalFailedAttemptsRetained": 9,
+    "pairedRoutineTokens": null,
+    "acceptedPilot": 0,
+    "receivingRepairMetrics": "Report separately from the original pilot; tag actual copy repair rather than resetting the work denominator with planned-edit."
+  },
+  "sourceReviewEvidence": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-projects.ts",
+      "bytes": 6116,
+      "sha256": "sha256:3e8bf10207151a6307bf5e826fa2ab9d86d86e25668f4fdc56214eb115b69087"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-queue.ts",
+      "bytes": 22297,
+      "sha256": "sha256:639f7be674fec806a445e260cfa868503f4a910e5d90be36b311dd031738402a"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-retry.ts",
+      "bytes": 7307,
+      "sha256": "sha256:22f1a244d6d2034a5b52542179076f62dca8b6c50e5691c9ffc24072a6760c23"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-queue-contract.ts",
+      "bytes": 13797,
+      "sha256": "sha256:6b171be3f44557c5a9d98c6392249d3f00e6fddd35c9b00fad46e746760325b1"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/blender-production-executor.ts",
+      "bytes": 24645,
+      "sha256": "sha256:0c064b9c5aa7c81649937dc591cb426891bde7f3caf14fd9cc8a11a93b4cbe8b"
+    }
+  ],
+  "labelRepair": "./mechanism-shorts-ms3-phone101-review-results.json",
+  "related": [
+    "./mechanism-shorts-ms3-current-installed-scope92-results.json",
+    "./mechanism-shorts-ms3-installed-preparation93-results.json",
+    "./mechanism-shorts-ms3-post-full-runner94-results.json"
+  ],
+  "qualification": "Preparation/control evidence, not a new package/install/lifecycle/label/whole-acceptance pass. Final verification still covers all10 distinct actual episodes with current artifact bindings; the additional label repair does not narrow that requirement."
+}

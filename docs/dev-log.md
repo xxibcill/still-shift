@@ -93,7 +93,11 @@ still hold before relying on them.
   inspection101 covers60 existing samples/10 episodes; an assembly-level EU008
   label revision is prepared but unrendered. Four additional intervals need
   continuous/contact/leader review; no whole dimension promoted.
-  [Phone findings](./mechanism-shorts-ms3-phone101-review-results.json).
+  [Phone findings](./mechanism-shorts-ms3-phone101-review-results.json). Active installed102
+  preparation adds a bounded repair revision before final report/resume/10 handoffs:
+  2 queue/14 lifecycle commands, same full10/6,181 scope. Syntax/two terminal
+  refusal controls pass; receiver/package/replay remain unexecuted.
+  [Serial controls](./mechanism-shorts-ms3-installed102-preparation-results.json).
   [Preparation controls](./mechanism-shorts-ms3-installed-preparation93-results.json),
   [Current installed scope](./mechanism-shorts-ms3-current-installed-scope92-results.json). Physical fault captures stay
   budget-blocked after explicit total10/35M approval: unchanged conservative ledger
@@ -273,6 +277,22 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Prepare supported installed repair revision before final handoffs102
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` from44c43156.
+- **Scope:** carry the prepared two-label repair through actual supported queue
+  revision semantics while retaining final all-ten qualification.
+- **Results:** source confirms failed/cancelled-only targeted retry versus an
+  exact-CAS changed request tagged repair. New serial wrapper keeps original
+  package/copy/isolation/identity/cache/6QA/history obligations and9 exact neighbors;
+  2 queue/14 lifecycle commands include initial all-ten run, repair run and one final
+  report/resume/10-handoff pass. Old unexecuted93 runner retained unchanged.
+- **Controls:** syntax and2 expected pre-terminal refusals pass; a false terminal
+  claim is rejected by the running raw full receipt. No receiver or renderer starts.
+- **Open / next:** full42543 actual terminal, package/copy/installed execution,
+  actual revised-label picture/audio/native-reuse proof and whole reviews.
+- **Records:** [active serial102 preparation](./mechanism-shorts-ms3-installed102-preparation-results.json).
 
 ### 2026-10-15 — Audit completed cinematic group in live full91 prefix5
 
