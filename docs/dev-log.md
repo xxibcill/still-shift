@@ -43,15 +43,26 @@ still hold before relying on them.
 
 ## Current state
 
+- **Required complete full119 prepared (2026-10-15):** actual owning860060
+  passes69cases/14,086frames/14repeated export pairs, all2793 inputs exact.
+  Calibration-pan1.199921/max ratio1.224535 under unchanged1.25; pixel failures0,
+  max measured delta2. No production/test/threshold change or timing-cause
+  explanation. New unmodified full119 is prepared, not started/passed. Pinned
+  preflight/fresh cache/clean start and source freeze remain; expect several hours,
+  no fixed ETA. All prior failures stay retained. The source guard changes only
+  its selection-metadata lookup to an exact durable copy; comparison control0.
+  Whole current package/all10/6181/EU008 repair still follow genuine complete0.
+  [Preparation](./mechanism-shorts-ms3-final119-full-gate-results.json).
+
 - **Actual full113 failure/owning118 (2026-10-15):** real8967 exits1 after
   4984.34s; source2793/122,415,742B exact. Canvas story/calibration-pan timing
   ratio1.251626897572802 exceeds unchanged1.25, with pixel failures0/maxDelta1.
   Unit4594/runtime346/integration324 and browser prefix through passage authoring
   pass; later matrix/benchmark/native-recovery suffix is not reached. Prior
-  identical fixture passes remain; timing cause is unproven. Whole owning story
-  matrix118 is prepared with existing profile/keep-going diagnostics, normal
-  repeated exports and unchanged checks; not started/passed. New completefull0
-  remains required before current archive/all10 installed/EU008 repair proof.
+  identical fixture passes remain; timing cause is unproven. Whole owning118
+  subsequently exits0 on unchanged2793 inputs:69cases/14086frames/14export pairs,
+  ratio maximum1.224535 under unchanged1.25, pixel failures0/maxDelta2.
+  New completefull119 remains required before archive/all10 installed/EU008 proof.
   Full terminal log/receipt/actual tool result retained locally. No source or
   threshold changes, staging substitute, new Blender asset work or paid generation.
   [Failure/diagnostic](./mechanism-shorts-ms3-story118-results.json).
@@ -343,6 +354,25 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Complete whole story diagnostics and prepare required full119
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` after localb4aa8c80.
+- **Result:** actual86006 exits0 in522.83s; all69cases/14,086frames/14repeated
+  export pairs, normal pixel/seek/export/timing gates retained. Maximum ratio
+  1.224535<1.25, pixel failures0/maxDelta2; calibration-pan1.199921. Source2793 exact.
+- **Scope:** existing profile/keep-going diagnostics collect all timings and keep
+  failing exits; no code/limit/fixture change. No cause inferred, no failed full
+  relabeled. Raw result/log/terminal/inventory/preflight/runner retained locally.
+- **Next:** complete unmodified full119 with fresh cache and actual source hold;
+  prior113 took83min before failure and91 about6h before its suffix. New complete
+  successful full remains required; current package/all10 and EU008 repair pending.
+- **Guard:** identical selection copied outside temporary storage; only lookup
+  path changes, same2793-input comparison passes. No test-harness or timing edit.
+- **Local only:** no push/public-description retry, new Blender asset work or
+  paid generation. Architecture choice and explicit public-description approval pending.
+- **Records:** [owning118](./mechanism-shorts-ms3-story118-results.json),
+  [required full119](./mechanism-shorts-ms3-final119-full-gate-results.json).
 
 ### 2026-10-15 — Retain actual full113 timing failure and prepare owning diagnostics118
 

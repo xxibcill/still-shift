@@ -1042,9 +1042,9 @@
     "Complete whole factual/design, mechanical, encoded glyph/readability, normal-speed continuous motion and listening review; keep unsupported, unreviewed and human acceptance explicit. Current reviewed-ready/supported/accepted0/10.",
     "Reconcile all49 MS0-MS3 deliverables and their acceptance clauses against their exact source/evidence identities, current installed capability discovery and guides. Preserve candidate pack/finer Thai limits, prior failures and open upstream PRs; no routine merge, publishing or inferred human acceptance."
   ],
-  "activeRequiredFullPreparation": null,
+  "activeRequiredFullPreparation": "./mechanism-shorts-ms3-final119-full-gate-results.json",
   "verificationHistoryScope": "The verification array retains dated historical checkpoints and their exact code/artifact bindings; old pending statements are not current implementation status. ActiveRequiredFullPreparation/currentPilotProduction/current completed proof pointers state the present gates.",
-  "currentPackageGate": "Pending a new actual successful completefull0 after failed113. Whole owning story118 diagnostics first. Original93/102/106/108 wrappers remain unexecuted; retain all10/6181 and EU008 bounded repair.",
+  "currentPackageGate": "Pending genuine complete full1190/sourcehold0 after actual whole owning1180. Full113 remains failed. Retain all10/6181 installed scope and bounded EU008 repair; old wrappers are not current admission.",
   "currentFaultScenarioCoverage": "./mechanism-shorts-ms3-fault-coverage111-results.json",
   "acceptanceReconciliation114": {
     "record": "./mechanism-shorts-acceptance-audit114-results.json",
@@ -1086,5 +1086,19 @@
     "maxDelta": 1,
     "cause": "unproven"
   },
-  "activeOwningDiagnostic": "./mechanism-shorts-ms3-story118-results.json"
+  "activeOwningDiagnostic": null,
+  "currentOwningStory118": {
+    "record": "./mechanism-shorts-ms3-story118-results.json",
+    "actualSession": 86006,
+    "actualExitCode": 0,
+    "sourceHold": 0,
+    "cases": 69,
+    "frames": 14086,
+    "repeatedExportPairs": 14,
+    "maximumTimingRatio": 1.2245349816930802,
+    "unchangedLimit": 1.25,
+    "maximumPixelDelta": 2,
+    "sourceChanges": 0,
+    "scope": "Profiled complete owning matrix; no full-gate or cause-closure claim."
+  }
 }

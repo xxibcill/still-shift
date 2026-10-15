@@ -1,6 +1,16 @@
 # MS3 acceptance tracker
 
-Latest2026-10-15: complete final113 actually exits1 as8967 after4984.34s.
+Latest2026-10-15: actual owning86006 exits0 for the complete profiled Canvas
+story matrix:69cases/14,086frames/14repeated export pairs. Maximum ratio1.224535
+stays under unchanged1.25; pixel failures0, maximum measured delta2.
+Calibration-pan is1.199921. All2793 inputs remain exact, no source/threshold
+changes. This neither explains historical timing nor passes full113. A new
+unmodified completefull119 is prepared, not started/passed; it may take several
+hours and remains mandatory before current archive/all10 installed proof.
+[Owning diagnostics](./mechanism-shorts-ms3-story118-results.json),
+[required full119](./mechanism-shorts-ms3-final119-full-gate-results.json).
+
+Retained complete attempt113 (2026-10-15) actually exits1 as8967 after4984.34s.
 Canvas story/calibration-pan has ratio1.251626897572802 above unchanged1.25;
 pixel failures are empty/maxDelta1. All2793 held inputs match. Units4594,
 runtime346/integration324 and the browser prefix through passage authoring pass;

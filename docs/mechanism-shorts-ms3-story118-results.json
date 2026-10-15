@@ -1,6 +1,6 @@
 {
   "schemaVersion": "ms3-story-full-failure-and-owning-diagnostic118-1",
-  "status": "actual-full113-failed-whole-owning-diagnostic-prepared-not-started",
+  "status": "actual-full113-failure-retained-whole-owning118-passed-newfull-required",
   "failedFull113": {
     "schemaVersion": "ms3-full113-terminal-retention118-1",
     "capturedUtc": "2026-10-15T10:01:48.234981+00:00",
@@ -118,7 +118,7 @@
     "sha256": "sha256:1d43e7f7238478d3a50aa96390640a1eafa8dc419ab357081c389655ed8856ea"
   },
   "owningDiagnostic": {
-    "status": "prepared-not-started",
+    "status": "passed-whole-profiled-owning-matrix",
     "runner": {
       "path": "/private/tmp/still-shift-ms3-story118-diagnostic1.py",
       "bytes": 3937,
@@ -135,8 +135,23 @@
     "futureReceipt": "/private/tmp/still-shift-ms3-story118-diagnostic1.json",
     "futureLog": "/private/tmp/still-shift-ms3-story118-diagnostic1.log",
     "futureSourceInventory": "/private/tmp/still-shift-ms3-story118-source-inputs1.json",
-    "actualExitCode": null,
-    "scope": "Whole existing owning Canvas story matrix; post-measurement diagnostics plus accumulated failures. No filtering or export skipping. Existing1.25 limit and pixel/seek/repeated-export checks remain; finish exits nonzero for any failure."
+    "actualExitCode": 0,
+    "scope": "Whole existing owning Canvas story matrix; post-measurement diagnostics plus accumulated failures. No filtering or export skipping. Existing1.25 limit and pixel/seek/repeated-export checks remain; finish exits nonzero for any failure.",
+    "session": 86006,
+    "sourceHoldActualExitCode": 0,
+    "sourceInputsExact": true,
+    "sourceCommit": "b4aa8c807e356c0662daa1808b55574ca16bfb8d",
+    "seconds": 522.8255467920098,
+    "caseReports": 69,
+    "frames": 14086,
+    "repeatedExportPairs": 14,
+    "maximumTimingRatio": 1.2245349816930802,
+    "maximumPixelDelta": 2,
+    "pixelFailureCases": 0,
+    "timingFailureCases": 0,
+    "calibrationRatio": 1.1999205063561824,
+    "actualTerminal": "/private/tmp/still-shift-ms3-story118-terminal1.json",
+    "durableLocalAudit": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-story118/index.json"
   },
   "failureCause": "unproven; original113 timing ratio1.251626897572802 exceeds1.25 while pixel failure list is empty/maxDelta1. Prior identical fixture pixel results retain ratios1.0667447255172937 and1.230379751926494; no environmental cause inferred.",
   "codeChanges": 0,
@@ -151,5 +166,7 @@
   },
   "pairedSavings": null,
   "newBlenderOrPaidGeneration": 0,
-  "publication": "local-only; public PR description remains unchanged pending explicit approval"
+  "publication": "local-only; public PR description remains unchanged pending explicit approval",
+  "nextRequiredFull": "./mechanism-shorts-ms3-final119-full-gate-results.json",
+  "timingCause": "Still unproven. Complete unchanged owning diagnostics now pass69cases/14086frames/14repeated export pairs; this neither explains the historical timing result nor passes full113."
 }

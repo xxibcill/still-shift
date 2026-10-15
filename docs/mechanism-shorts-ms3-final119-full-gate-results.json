@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "ms3-complete-full119-preparation-1",
+  "status": "prepared-after-actual-owning-story0-not-started",
+  "runner": {
+    "path": "/private/tmp/still-shift-ms3-final119-full1.py",
+    "bytes": 7417,
+    "sha256": "sha256:69e068edaadc3c5fdbb22999efa9dcd3a5e9bbb634645da92edfb1d9d39d0ae9"
+  },
+  "guard": {
+    "path": "/private/tmp/still-shift-ms3-final119-hold.py",
+    "bytes": 1398,
+    "sha256": "sha256:e74c259aea3edc613e16c998e3364b740045aca0adc744a99018873e40d1f7de"
+  },
+  "guardSelectionSeed": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/source-selection-seed.json",
+    "bytes": 477326,
+    "sha256": "sha256:1f23134b5b2d1492f51f02865e9222639c49002a7416ec98a5a39069c843c99f"
+  },
+  "guardSelectionExactlyEqualToPrior": true,
+  "guardLogicChange": "Only metadata lookup path changes to byte-retained identical selection. Roots, excludes, content hashing and comparison remain identical.",
+  "guardControl": {
+    "status": "passed",
+    "mode": "check",
+    "files": 2793,
+    "bytes": 122415742
+  },
+  "sourceFiles": 2793,
+  "sourceBytes": 122415742,
+  "storyIndependentAudit": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-story118/index.json",
+    "bytes": 33466,
+    "sha256": "sha256:9b896af031118de43ec6244d4bbab39a80caa169a0f2efeded6d74de9700071b"
+  },
+  "actualOwningTerminal": {
+    "path": "/private/tmp/still-shift-ms3-story118-terminal1.json",
+    "bytes": 3642,
+    "sha256": "sha256:b0b7ce357c77534a8ff81cb8e52223280e0a026dc6e177599e7b63180256c5dc"
+  },
+  "actualFailedFull113": {
+    "path": "/private/tmp/still-shift-ms3-full113-terminal118.json",
+    "bytes": 3519,
+    "sha256": "sha256:9844cfd230ad757136425ee8bdf538c1cd1ee673cfe58c1fdded708667de01f1"
+  },
+  "launchCommand": [
+    "python3",
+    "/private/tmp/still-shift-ms3-final119-full1.py",
+    "--focused-admission",
+    "/private/tmp/still-shift-ms3-repair110-terminal1.json",
+    "--story-admission",
+    "/private/tmp/still-shift-ms3-story118-terminal1.json"
+  ],
+  "requiredFullCommand": ["pnpm", "check:all"],
+  "futureReceipt": "/private/tmp/still-shift-ms3-final119-full1.json",
+  "futureLog": "/private/tmp/still-shift-ms3-final119-full1.log",
+  "futureSourceInventory": "/private/tmp/still-shift-ms3-final119-source-inputs1.json",
+  "expectedCost": "Prior failed113 took4984s/about83minutes; prior91 took21672s/about6h before recovery suffix. Complete current gate can take several hours; no fixed ETA.",
+  "policy": "Clean starting checkout; pinned preflight; fresh isolated media cache; all2793 selected source inputs frozen until actual terminal. No competing browser/render/benchmark group. Actual0/sourcehold0 required; no staged substitute.",
+  "qualification": "Owning diagnostics are not a passing full gate. Preserve all prior failures, original first-pass1/10, nine failures, null paired tokens, all10/6181 installed requirement and EU008 repair.",
+  "publication": false
+}
