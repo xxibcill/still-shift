@@ -1,7 +1,7 @@
 {
   "schemaVersion": "ms2-current-prerequisite-repair-1",
   "capturedUtc": "2026-10-15T00:33:29.034231+00:00",
-  "status": "focused-and-fast-passed-affected-runtime-pending",
+  "status": "current-review-gates-complete-in-recorded-stages-package-open",
   "preparedIntegration": {
     "status": "prepared-unverified-ms2-upstream-and-shared-native-repair",
     "base": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
@@ -113,8 +113,158 @@
   },
   "historicalBindings": "MS2 full70/package73/installed76 retain original963d/6e3 source and archived identities. They do not qualify this merge.",
   "open": [
-    "Current affected runtime/native render/package verification before advancing existing draft PR57",
-    "Whole mechanism/material/glyph/listening/production acceptance remains open"
+    "Fresh current MS2 package/installed qualification; historical package73/installed76 remain separately bound",
+    "Whole production reviews and final integrated MS3 gates"
   ],
-  "mainMs3Source": "f0675c5e in separate checkout; original ten products retain3df/runtime1090; no simultaneous renderer group."
+  "mainMs3Source": "f0675c5e in separate checkout; original ten products retain3df/runtime1090; no simultaneous renderer group.",
+  "currentRuntime": {
+    "firstAggregate": {
+      "status": "failed-current-ms2-affected-gates",
+      "sourceCommit": "c926e467e627db61ed5ac891fbf12cedacb318e8",
+      "sourceInputFiles": 1996,
+      "stages": [
+        {
+          "stage": "setup",
+          "actualExitCode": 0,
+          "seconds": 0.36985874990932643,
+          "sourceInputsExact": true,
+          "log": {
+            "path": "/private/tmp/still-shift-ms2-review90-runtime1-setup.log",
+            "bytes": 711,
+            "sha256": "sha256:dc35b74a8d73f4b29722857f89c5722d797878996bc3703b09e1faa03129711a"
+          }
+        },
+        {
+          "stage": "runtime",
+          "actualExitCode": 1,
+          "seconds": 518.4979622920509,
+          "sourceInputsExact": true,
+          "log": {
+            "path": "/private/tmp/still-shift-ms2-review90-runtime1-runtime.log",
+            "bytes": 41768,
+            "sha256": "sha256:9c1862dbc5a8a4ff07777bacbcd4e9714f1e1f247096c40fd2a34eaed7a30b37"
+          }
+        }
+      ],
+      "scope": "Serial current MS2 runtime tier, native-depth and four Float32 actual-GPU controls. Historical full/archive evidence is separate.",
+      "actualExitCode": 1,
+      "failure": "{'stage': 'runtime', 'actualExitCode': 1, 'seconds': 518.4979622920509, 'sourceInputsExact': True, 'log': {'path': '/private/tmp/still-shift-ms2-review90-runtime1-runtime.log', 'bytes': 41768, 'sha256': 'sha256:9c1862dbc5a8a4ff07777bacbcd4e9714f1e1f247096c40fd2a34eaed7a30b37'}}"
+    },
+    "continuation": {
+      "status": "passed-current-ms2-runtime-continuation-and-native-controls",
+      "sourceCommit": "c926e467e627db61ed5ac891fbf12cedacb318e8",
+      "sourceInputFiles": 1996,
+      "priorAttempt": "/private/tmp/still-shift-ms2-review90-runtime1.json",
+      "priorFailure": "260 runtime pass; integration2 depth-protocol5000ms timeouts/320 passes. Soundtrack setup passed. Timeout cause unproven; retain original aggregate1 and rerun unchanged owning five-case file.",
+      "stages": [
+        {
+          "stage": "integration-affected",
+          "actualExitCode": 0,
+          "seconds": 2.470934708137065,
+          "sourceInputsExact": true,
+          "log": {
+            "path": "/private/tmp/still-shift-ms2-review90-runtime2-integration-affected.log",
+            "bytes": 446,
+            "sha256": "sha256:08dca0876805baada8554e239490765ac7e4da844e092a10d219cb0fdb1fadf8"
+          }
+        },
+        {
+          "stage": "depth",
+          "actualExitCode": 0,
+          "seconds": 0.6259486249182373,
+          "sourceInputsExact": true,
+          "log": {
+            "path": "/private/tmp/still-shift-ms2-review90-runtime2-depth.log",
+            "bytes": 297,
+            "sha256": "sha256:d8a672ea7bbc21b5c8f5cd9df7b86061ad4a9fac55a311775db525cb4ed38020"
+          }
+        },
+        {
+          "stage": "smoke",
+          "actualExitCode": 0,
+          "seconds": 34.182973499875516,
+          "sourceInputsExact": true,
+          "log": {
+            "path": "/private/tmp/still-shift-ms2-review90-runtime2-smoke.log",
+            "bytes": 2183,
+            "sha256": "sha256:0e330bb0adaa67f7f5c0468991e9d4b12af5c2eb7d197542c82f2cdd01d6c04a"
+          }
+        },
+        {
+          "stage": "native-depth",
+          "actualExitCode": 0,
+          "seconds": 48.98174116690643,
+          "sourceInputsExact": true,
+          "log": {
+            "path": "/private/tmp/still-shift-ms2-review90-runtime2-native-depth.log",
+            "bytes": 541,
+            "sha256": "sha256:046b0337f124fe7f1c2e9b43ab8c857ede9f198cf729ba1ea9035871378504cf"
+          }
+        },
+        {
+          "stage": "mask",
+          "actualExitCode": 0,
+          "seconds": 5.098374042194337,
+          "sourceInputsExact": true,
+          "log": {
+            "path": "/private/tmp/still-shift-ms2-review90-runtime2-mask.log",
+            "bytes": 86755,
+            "sha256": "sha256:38426537ae53935b4f53f209daa19bbc90bfe8c0090f184f6be3403c56c08c07"
+          }
+        }
+      ],
+      "scope": "Serial unchanged-source continuation; no uninterrupted aggregate pass or historical archive evidence transfer.",
+      "actualExitCode": 0
+    },
+    "distinctCounts": {
+      "runtime": 260,
+      "integration": 322,
+      "unaffectedIntegrationTests": 317,
+      "owningFileRerunTests": 5,
+      "depth": 14,
+      "smoke": "passed",
+      "nativeDepth": 14,
+      "nativeCompositionIntegration": 5,
+      "actualMaskControls": 4
+    },
+    "sourceInputsExact": 1996,
+    "mask": {
+      "result": {
+        "path": "/private/tmp/still-shift-ms2-review90-mask-browser1/result.json",
+        "bytes": 86755,
+        "sha256": "sha256:38426537ae53935b4f53f209daa19bbc90bfe8c0090f184f6be3403c56c08c07"
+      },
+      "images": [
+        {
+          "path": "/private/tmp/still-shift-ms2-review90-mask-browser1/case-0.png",
+          "bytes": 2270,
+          "sha256": "sha256:61b16446b6312e7e53422254e2156b8a12eb53a2788ba5e914231d7da6753381"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-review90-mask-browser1/case-1.png",
+          "bytes": 2270,
+          "sha256": "sha256:61b16446b6312e7e53422254e2156b8a12eb53a2788ba5e914231d7da6753381"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-review90-mask-browser1/case-2.png",
+          "bytes": 2270,
+          "sha256": "sha256:61b16446b6312e7e53422254e2156b8a12eb53a2788ba5e914231d7da6753381"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms2-review90-mask-browser1/case-3.png",
+          "bytes": 870,
+          "sha256": "sha256:a4493866515d469ed64f3452d0527fbedd547c9d90eaf7f3f2e6c10780f1903c"
+        }
+      ],
+      "visibility": ["occluded", "occluded", "occluded", "visible"],
+      "nonBackgroundPixels": [1056, 1056, 1056, 0]
+    },
+    "limits": "Original aggregate1 retains2 protocol5000ms timeouts of unproven cause. Owning file5 passes unchanged; source/code/test inputs exact. This is staged verification, not uninterrupted aggregate pass."
+  },
+  "latestNativePrerequisite": {
+    "head": "796375b79b1709c1cad30837a5603f91d33d7697",
+    "mergeAttemptExitCode": 1,
+    "conflicts": ["docs/dev-log.md"],
+    "scope": "Native delivery merge changes documentation only; all production source/tests identical to testedc926. Retain own MS2 evidence and unique native dated entry."
+  }
 }

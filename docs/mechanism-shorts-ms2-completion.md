@@ -4,7 +4,9 @@ Current review qualification (2026-10-15): the historical checkpoint below retai
 its original source/full/archive bindings. A current prerequisite repair merges
 MS1N403/current mainb376 and preserves four-format/PBR admission, Float32 mask
 visibility and located native diagnostics. Focused/fast and independent reviews
-pass; current affected runtime/package gates remain pending.
+pass. Current runtime260/distinct integration322/depth14/smoke and native
+controls complete in recorded stages, retaining2 original protocol timeouts.
+Current package/installed qualification remains open.
 [Current repair evidence](./mechanism-shorts-ms2-current-prerequisite-repair90-results.json).
 
 2026-10-13. Reusable mechanism-family and saved cue software is delivered in

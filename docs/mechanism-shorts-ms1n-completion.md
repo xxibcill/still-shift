@@ -1,5 +1,13 @@
 # MS1N implementation and completion record
 
+Current review qualification (2026-10-15): repairs at40330672 pass the affected
+runtime/native checks in recorded stages:191 runtime, distinct321 integration,
+14 Python, smoke,14 native depth cases,5 composition integration cases and4 actual
+Float32 mask controls. The failed aggregate and corrected fixture/setup/reruns are
+retained. The original full milestone/archive/E01 identities below remain fixed;
+this supplies no new full E01 or human acceptance.
+[Current repair verification](./pr-56-current-runtime90-results.json).
+
 2026-10-10. **Software complete in recorded stages; human visual/listening and creative acceptance remain pending.** The seven [plan requirements](./mechanism-shorts-production-plan.md#ms1n-native-3d-composition) map to evidence below. [Design](./mechanism-shorts-ms1n-design.md) freezes features/comparison policy; [results](./mechanism-shorts-ms1n-results.json) retain identities, commands and failed/rerun history.
 
 | Plan requirement                              | Implemented scope and observed evidence                                                                                                                                                                                                                                                                   |

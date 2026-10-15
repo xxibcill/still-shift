@@ -50,7 +50,10 @@ still hold before relying on them.
   panel/clipping/reference repairs. Five original source/test preimages match
   native repair8e11 exactly; six resulting files reuse those reviewed bytes.
   Focused73/6 and fast4381/429 pass; Standards0/Spec0. Earlier MS2 archive/full proofs
-  retain original bindings. Current affected runtime/package verification remains.
+  retain original bindings. Current runtime260/distinct integration322/depth14/smoke and native depth14/
+  composition5/mask4 complete in recorded stages. Two unproven protocol timeouts
+  remain retained; unchanged five-case rerun and suffix pass,1,996 inputs exact.
+  Current package/installed qualification remains open.
   [Repair evidence](./mechanism-shorts-ms2-current-prerequisite-repair90-results.json).
 
 - **MS2 software checkpoint delivered (2026-10-13):** `codex/mechanism-ms2`
@@ -237,6 +240,32 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Qualify current MS2 runtime and exact native prerequisite
+
+- **Agent / branch:** Codex on `codex/ms2-review-fixes`; tested sourcec926e467.
+- **Results:**260 runtime/distinct322 integration/depth14/smoke, native depth14/
+  composition5 and4 actual Float32 GPU controls complete in recorded stages.
+- **Retained:** aggregate1 with2 depth protocol5000ms timeouts of unproven cause;
+  owning five-case file passes unchanged and suffix0, all1,996 source inputs exact.
+- **Done:** carry exact delivered native PR56 head796375b7 through docs-only merge;
+  preserve MS2 source/test bytes and both dated histories. No renderer group overlaps.
+- **Open:** fresh current package/installed qualification and whole production
+  acceptance; historical full/archive proofs keep original bindings.
+- **Records:** [Current repair](./mechanism-shorts-ms2-current-prerequisite-repair90-results.json).
+
+### 2026-10-15 — Qualify current native review repairs in recorded stages
+
+- **Agent / branch:** Codex on `codex/ms1n-review-fixes`, source40330672 unchanged.
+- **Results:**191 runtime, distinct321 integration,14 Python and smoke pass in
+  recorded stages. Native depth14/composition5 and4 actual GPU mask controls pass.
+- **Retained:** original aggregate1 (missing soundtrack runtime/3 unproven depth
+  timeouts); corrected offline setup/unchanged affected58 rerun and suffix0.
+  Initial white-background fixture failure and all4 PNGs remain retained too.
+- **Evidence:** all1,725 source inputs exact; actual first3 mask PNG hashes equal,
+  discarded control differs and has0 nonbackground pixels. No full E01/release
+  or human acceptance is inferred; previous full/archive proofs retain bindings.
+- **Records:** [Current verification](./pr-56-current-runtime90-results.json).
 
 ### 2026-10-15 — Reconcile current MS2 prerequisites and native policies
 
