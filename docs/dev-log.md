@@ -72,6 +72,8 @@ still hold before relying on them.
   across34 full capture directories/1,758 stored frames. Combined12-root OS denials
   and fresh-capture staging block pass from neutral cwd; pre-terminal copy refuses
   before creating a receiver. Binary hash/copy/current replay remain open.
+  Standard offline package matrix and all-ten current lifecycle runners94 are
+  prepared with tested terminal-admission refusals; actual execution is pending.
   [Preparation controls](./mechanism-shorts-ms3-installed-preparation93-results.json),
   [Current installed scope](./mechanism-shorts-ms3-current-installed-scope92-results.json). Physical fault captures stay
   blocked by the previously requested revised Creator work budget. No audio files
@@ -248,6 +250,20 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-15 — Prepare serial final package matrix and all-ten receiving lifecycle
+
+- **Agent / branch:** Codex on `codex/mechanism-ms3` from `bcb94bcc`.
+- **Done:** audited final package scope; prepared unchanged `pnpm test:package`
+  followed by exact-archive member/source/installed API/type/discovery checks,
+  then fresh current all-ten queue/run/report/resume/ten handoffs after cache copy.
+- **Results:** Python syntax and actual nonterminal admission negatives pass;
+  no package build, receiver, production queue or renderer starts. Lifecycle
+  uses pinned copied historical clocks only as references and retains pilot metrics.
+- **Open / next:** actual42543 remains live. Run serial package/archive/copy/current
+  lifecycle only after observed terminal0 and held-input check; whole reviews remain.
+- **Records:** [runner94 scope and controls](./mechanism-shorts-ms3-post-full-runner94-results.json),
+  [complete cache/isolation preparation93](./mechanism-shorts-ms3-installed-preparation93-results.json).
 
 ### 2026-10-15 — Final all-ten native closure and combined isolation prepared
 
