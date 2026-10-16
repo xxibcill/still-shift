@@ -1,10 +1,10 @@
+import { readBoundedSourceBytes } from "../bounded-source-read.ts";
 import { canonicalMechanismJson } from "../../../renderer-core/src/mechanism/index.ts";
 export { canonicalMechanismJson };
 import { createHash, randomUUID } from "node:crypto";
 import {
   readFile,
   realpath,
-  stat,
   mkdir,
   writeFile,
   rename,
@@ -72,20 +72,47 @@ function failure(
     cause === undefined ? undefined : { cause },
   );
 }
-export async function readMechanismJson(path: string): Promise<unknown> {
+export async function readMechanismJson(
+  path: string,
+  options: { signal?: AbortSignal | undefined } = {},
+): Promise<unknown> {
+  let bytes: Buffer | undefined;
   try {
-    const info = await stat(path);
-    if (info.size > 32 * 1024 * 1024)
-      failure("mechanism-source-budget", "Source exceeds 32 MiB", path);
-    return JSON.parse(await readFile(path, "utf8")) as unknown;
+    bytes = await readBoundedSourceBytes(path, {
+      maximumBytes: 32 * 1024 * 1024,
+      signal: options.signal,
+      reject: (reason) =>
+        failure(
+          reason === "size"
+            ? "mechanism-source-budget"
+            : "mechanism-source-unreadable",
+          reason === "size"
+            ? "Source exceeds 32 MiB"
+            : reason === "type"
+              ? "Mechanism source must be a regular file"
+              : "Mechanism source changed during bounded read",
+          path,
+        ),
+    });
+    options.signal?.throwIfAborted();
+    return JSON.parse(bytes.toString("utf8")) as unknown;
   } catch (cause) {
-    if (cause instanceof AnimationEngineError) throw cause;
+    if (
+      cause instanceof AnimationEngineError ||
+      (options.signal?.aborted && cause === options.signal.reason)
+    )
+      throw cause;
     failure(
       "mechanism-source-unreadable",
       "Cannot read valid mechanism JSON",
       path,
       cause,
     );
+  } finally {
+    if (bytes?.buffer.byteLength)
+      (
+        bytes.buffer as ArrayBuffer & { transfer(bytes: number): ArrayBuffer }
+      ).transfer(0);
   }
 }
 export function parseMechanismEpisode(

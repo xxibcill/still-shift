@@ -21,9 +21,23 @@ import type { Object3D, WebGLRenderer } from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import type {
   Native3DSource,
+  Native3DSourceVersions,
+  MechanismSceneV3,
+  MechanismFrameResultV2,
   NativeSceneFrame,
 } from "@still-shift/scene-contract";
 import type { DeepReadonly } from "./types.ts";
+import type { PreparedNative3DVariantV2 } from "./types-v2.ts";
+import { createNativePbrResources } from "./pbr-resources.ts";
+import type {
+  NativePbrResources,
+  PreparedNativePbrResources,
+} from "./pbr-resources.ts";
+import type {
+  PreparedNative3DSceneV3,
+  PreparedNative3DVariantV3,
+} from "./types-v3.ts";
+import { createNativeThreeShapeOwners } from "./three-shapes.ts";
 import { createNativeThreeMaterials } from "./three-materials.ts";
 import type { NativeTextureFont } from "./three-textures.ts";
 
@@ -33,7 +47,7 @@ export function inheritedThreeVisibility(object: Object3D): boolean {
   return true;
 }
 export function createNativeThreeGeometry(
-  source: DeepReadonly<Native3DSource>,
+  source: DeepReadonly<Native3DSourceVersions>,
 ) {
   const geometries = new Map<string, BufferGeometry>();
   try {
@@ -77,7 +91,7 @@ export type NativeThreeGeometry = ReturnType<typeof createNativeThreeGeometry>;
 /** Bind the actual uploaded typed attributes to the prepared physical catalogue once.
  * Float64 authored positions are explicitly quantized to GPU Float32 here. */
 export function verifyNativeThreeGeometry(
-  source: DeepReadonly<Native3DSource>,
+  source: DeepReadonly<Native3DSourceVersions | MechanismSceneV3>,
   geometry: NativeThreeGeometry,
 ): void {
   for (const definition of source.geometry.meshes) {
@@ -90,6 +104,7 @@ export function verifyNativeThreeGeometry(
       ["position", definition.positions],
       ["normal", definition.normals],
       ["uv", definition.uvs],
+      ["tangent", "tangents" in definition ? definition.tangents : undefined],
     ] as const) {
       if (!expected) continue;
       const attribute = actual.getAttribute(name);
@@ -117,12 +132,62 @@ export function verifyNativeThreeGeometry(
 }
 
 /** Synchronous: the caller has already prepared the exact source and font. */
-export function createNativeThreeWorld(
+function disposeNativeOwners(owners: readonly (() => void)[]): void {
+  let failed = false;
+  let reason: unknown;
+  for (const dispose of owners) {
+    try {
+      dispose();
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        reason = error;
+      }
+    }
+  }
+  if (failed) throw reason;
+}
+
+/** Transfer the completed environment only after all temporary owners close. */
+function createNativeEnvironment(renderer: WebGLRenderer) {
+  const room = new RoomEnvironment();
+  let generator: PMREMGenerator | undefined;
+  let environment: ReturnType<PMREMGenerator["fromScene"]> | undefined;
+  let failed = false;
+  let reason: unknown;
+  try {
+    generator = new PMREMGenerator(renderer);
+    environment = generator.fromScene(room, 0.04);
+  } catch (error) {
+    failed = true;
+    reason = error;
+  }
+  try {
+    disposeNativeOwners([() => room.dispose(), () => generator?.dispose()]);
+  } catch (error) {
+    if (!failed) {
+      failed = true;
+      reason = error;
+    }
+  }
+  if (failed) {
+    try {
+      environment?.dispose();
+    } catch {
+      /* The setup or temporary-owner failure is authoritative. */
+    }
+    throw reason;
+  }
+  return environment!;
+}
+
+function createNativeThreeWorldForSource(
   renderer: WebGLRenderer,
-  source: DeepReadonly<Native3DSource>,
+  source: DeepReadonly<Native3DSourceVersions | MechanismSceneV3>,
   options: {
     textureFont?: NativeTextureFont;
     geometry?: NativeThreeGeometry;
+    pbrResources?: NativePbrResources;
   } = {},
 ) {
   renderer.setClearColor(
@@ -138,29 +203,28 @@ export function createNativeThreeWorld(
   world.background = source.profile.transparent
     ? null
     : new Color(source.profile.background);
-  const room = new RoomEnvironment();
-  const pmrem = new PMREMGenerator(renderer);
-  let environment: ReturnType<PMREMGenerator["fromScene"]>;
-  try {
-    environment = pmrem.fromScene(room, 0.04);
-  } finally {
-    room.dispose();
-    pmrem.dispose();
-  }
-  if (source.profile.fog)
-    world.fog = new Fog(
-      source.profile.fog.color,
-      source.profile.fog.near,
-      source.profile.fog.far,
-    );
-  world.environment = environment.texture;
-  world.environmentIntensity = source.profile.environmentIntensity;
-  world.add(new HemisphereLight("#e8f6ff", "#63716e", 1.15));
   const lights: (SpotLight | DirectionalLight)[] = [];
-  let materialSet: ReturnType<typeof createNativeThreeMaterials> | undefined;
+  let materialSet:
+    | Pick<
+        ReturnType<typeof createNativeThreeMaterials>,
+        "materials" | "dispose"
+      >
+    | undefined;
   let geometry: NativeThreeGeometry | undefined;
-  const ownsGeometry = options.geometry === undefined;
+  let environment: ReturnType<typeof createNativeEnvironment> | undefined;
+  const ownsGeometry =
+    options.geometry === undefined && options.pbrResources === undefined;
   try {
+    environment = createNativeEnvironment(renderer);
+    if (source.profile.fog)
+      world.fog = new Fog(
+        source.profile.fog.color,
+        source.profile.fog.near,
+        source.profile.fog.far,
+      );
+    world.environment = environment.texture;
+    world.environmentIntensity = source.profile.environmentIntensity;
+    world.add(new HemisphereLight("#e8f6ff", "#63716e", 1.15));
     for (const definition of source.lights) {
       const light =
         definition.type === "spot" ? new SpotLight() : new DirectionalLight();
@@ -193,7 +257,14 @@ export function createNativeThreeWorld(
       world.add(light, light.target);
     }
     const camera = new PerspectiveCamera();
-    materialSet = createNativeThreeMaterials(source, options.textureFont);
+    if (source.schemaVersion === "mechanism-scene-3") {
+      if (!options.pbrResources)
+        throw Error(
+          "comp-native3d-not-ready: source3 requires owned PBR resources",
+        );
+      materialSet = options.pbrResources;
+    } else
+      materialSet = createNativeThreeMaterials(source, options.textureFont);
     const materialIndex = new Map(
       source.geometry.materials.map((material, index) => [material.id, index]),
     );
@@ -204,7 +275,9 @@ export function createNativeThreeWorld(
       part.matrixAutoUpdate = false;
       (definition.parent ? parts.get(definition.parent)! : world).add(part);
     }
-    geometry = options.geometry ?? createNativeThreeGeometry(source);
+    if (source.schemaVersion === "mechanism-scene-3")
+      geometry = options.pbrResources!;
+    else geometry = options.geometry ?? createNativeThreeGeometry(source);
     verifyNativeThreeGeometry(source, geometry);
     const meshes: Mesh[] = [];
     for (const definition of source.geometry.meshes) {
@@ -221,7 +294,7 @@ export function createNativeThreeWorld(
       meshes.push(mesh);
     }
     function applyFrame(
-      frame: DeepReadonly<NativeSceneFrame>,
+      frame: DeepReadonly<NativeSceneFrame | MechanismFrameResultV2>,
       width: number,
       height: number,
       localVisibility?: Readonly<Record<string, boolean>>,
@@ -254,21 +327,152 @@ export function createNativeThreeWorld(
       dispose() {
         if (disposed) return;
         disposed = true;
-        if (ownsGeometry) geometry!.dispose();
-        materialSet!.dispose();
-        for (const light of lights) light.shadow.dispose();
-        environment.dispose();
-        world.clear();
-        parts.clear();
-        meshes.length = 0;
+        disposeNativeOwners([
+          () => {
+            if (ownsGeometry) geometry!.dispose();
+          },
+          () => materialSet!.dispose(),
+          ...lights.map((light) => () => light.shadow.dispose()),
+          () => environment!.dispose(),
+          () => world.clear(),
+          () => parts.clear(),
+          () => {
+            meshes.length = 0;
+          },
+        ]);
       },
     };
   } catch (error) {
-    if (ownsGeometry) geometry?.dispose();
-    materialSet?.dispose();
-    for (const light of lights) light.shadow.dispose();
-    environment.dispose();
+    try {
+      disposeNativeOwners([
+        () => {
+          if (ownsGeometry) geometry?.dispose();
+        },
+        () => materialSet?.dispose(),
+        ...lights.map((light) => () => light.shadow.dispose()),
+        () => environment?.dispose(),
+        () => world.clear(),
+      ]);
+    } catch {
+      /* Preserve the original construction failure, including null. */
+    }
     throw error;
   }
 }
+export type NativeThreeWorldOptions = {
+  textureFont?: NativeTextureFont;
+  geometry?: NativeThreeGeometry;
+};
+
+/** Original v1 world contract and default appearance are retained. */
+export function createNativeThreeWorld(
+  renderer: WebGLRenderer,
+  source: DeepReadonly<Native3DSource>,
+  options: NativeThreeWorldOptions = {},
+) {
+  const world = createNativeThreeWorldForSource(renderer, source, options);
+  return {
+    ...world,
+    source,
+    applyFrame(
+      frame: DeepReadonly<NativeSceneFrame>,
+      width: number,
+      height: number,
+      localVisibility?: Readonly<Record<string, boolean>>,
+    ) {
+      world.applyFrame(frame, width, height, localVisibility);
+    },
+  };
+}
+
+/** Prepared scene2 worlds own changing clones separately from shared rest geometry. */
+export function createNativeThreeWorldV2(
+  renderer: WebGLRenderer,
+  variant: PreparedNative3DVariantV2,
+  options: NativeThreeWorldOptions = {},
+) {
+  const source = variant.source;
+  const world = createNativeThreeWorldForSource(renderer, source, options);
+  let owners: ReturnType<typeof createNativeThreeShapeOwners>;
+  try {
+    owners = createNativeThreeShapeOwners(variant, world.meshes, renderer);
+  } catch (error) {
+    try {
+      world.dispose();
+    } catch {
+      /* Preserve the owner setup failure. */
+    }
+    throw error;
+  }
+  let disposed = false;
+  return {
+    ...world,
+    source,
+    get changingMeshOwners() {
+      return owners.ownerCount;
+    },
+    applyFrame(
+      frame: DeepReadonly<MechanismFrameResultV2>,
+      width: number,
+      height: number,
+      localVisibility?: Readonly<Record<string, boolean>>,
+    ) {
+      // Three's upload/culling list precedes object before-hooks. Apply both here.
+      owners.applyFrame(frame);
+      world.applyFrame(frame, width, height, localVisibility);
+    },
+    dispose() {
+      if (disposed) return;
+      disposed = true;
+      let failed = false,
+        reason: unknown;
+      try {
+        owners.dispose();
+      } catch (error) {
+        failed = true;
+        reason = error;
+      }
+      try {
+        world.dispose();
+      } catch (error) {
+        if (!failed) {
+          failed = true;
+          reason = error;
+        }
+      }
+      if (failed) throw reason;
+    },
+  };
+}
 export type NativeThreeWorld = ReturnType<typeof createNativeThreeWorld>;
+export type NativeThreeWorldV2 = ReturnType<typeof createNativeThreeWorldV2>;
+
+/** Uses the shared world/profile/light/camera path with explicit owned PBR resources. */
+export function createNativeThreeWorldV3(
+  renderer: WebGLRenderer,
+  prepared: PreparedNative3DSceneV3 | PreparedNative3DVariantV3,
+  resources: PreparedNativePbrResources,
+) {
+  if (resources.geometrySha256 !== prepared.geometrySha256)
+    throw Error(
+      "comp-native3d-checksum: PBR resources differ from the prepared source3",
+    );
+  const pbrResources = createNativePbrResources(resources);
+  try {
+    return {
+      ...createNativeThreeWorldForSource(renderer, prepared.source, {
+        pbrResources,
+      }),
+      source: prepared.source,
+      pbrResources,
+    };
+  } catch (error) {
+    try {
+      pbrResources.dispose();
+    } catch {
+      /* Preserve the shared-world setup failure. */
+    }
+    throw error;
+  }
+}
+export type NativeThreeWorldV3 = ReturnType<typeof createNativeThreeWorldV3>;

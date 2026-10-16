@@ -1,0 +1,756 @@
+{
+  "version": "mechanism-shorts-ms2-native-plate-export-results-1",
+  "date": "2026-10-12",
+  "branch": "codex/mechanism-ms2",
+  "baseCommit": "3d89e3e666e245e107c291c637b82b5165b93ce8",
+  "status": "completed-internal-current-cue-native-plate-export-and-measured-zero-new-native-submissions",
+  "implementation": {
+    "lifecycle": "Private renderMechanismCuePlateProject/checkMechanismCuePlateOutput lower the current compiled integer-grid overlays and audio onto independently verified original native-only plates. All native assets/controllers/bindings are removed before the ordinary shared WebGL2/raw_rgba/one-worker/cacheStaticfalse exporter runs. Existing2000-key/32MiB-source/512MiB-Node bounds remain unchanged.",
+    "identity": "Separate strict mechanism-cue-plate-export-1 receipt pins current compilation/source, independently rederived lowered source, original plate receipt/picture/sequence, actual standard scene/result/final video. Original native closure is replayed separately and observations remain original. Hash/revision/actual dependency checks run before publication and again after replay/probe.",
+    "counters": "Require actual standard worker frames, ordered delivery, aggregate/worker submission rows and structurally ordinary loaded source. Missing measurements/nonzero native counters reject. Native-depth/native3d submission calls are measured zero; originalFrames/Passes are reported separately. Counters are synchronous submission wall spans, not GPU execution time.",
+    "memoryRepair": "Successful nested CompositionNodeMemory producers transfer leases to their immediate consumer. Ending a checking child now releases its completed loads while unrelated root reservations stay active. Native plate checks accept a parent owner; preparation/parser/replay/export contend within one declared Node allowance. This does not establish whole application/RSS/lifetime/replay admission.",
+    "profileAndScope": "Engineering240x136/30fps/60-frame synthetic PCM fixtures. All five visible screen recipes per family, before and after caption/gain CAS edits. These APIs remain private modules; public root/CLI/discovery are separate work. No world/surface capture breadth, genuine narration output or pilot acceptance."
+  },
+  "attempts": [
+    {
+      "id": "render-red1",
+      "session": null,
+      "actualExitCode": 1,
+      "reason": "Missing private module before any draw.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate59-render-red1.log",
+        "bytes": 1526,
+        "sha256": "sha256:650ba56e01a3c248a12d43a345d31347f874419de332316c74f8f648886bf1b9"
+      }
+    },
+    {
+      "id": "build1",
+      "session": 30456,
+      "actualExitCode": 0,
+      "reason": "Initial production implementation compiles; the expanded browser helper arrives afterward.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate59-build1.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "build2",
+      "session": 29770,
+      "actualExitCode": 2,
+      "reason": "Browser helper optional properties, pixel array types and excessive Playwright argument inference fail.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate59-build2.log",
+        "bytes": 5830,
+        "sha256": "sha256:48636614f66e4578b336b5545246e05c4350ffa8f2527629db85594d359ddbd3"
+      }
+    },
+    {
+      "id": "render1",
+      "session": 38965,
+      "actualExitCode": 1,
+      "reason": "Actual original capture/direct tape export complete; cached preparation rejects the fixed Node quota because nested successful loads abandoned immediate-owner scope.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate59-render1.log",
+        "bytes": 1953,
+        "sha256": "sha256:d9bbbcbaa5027f00059886db8eafbccf759694e4b043c5e8f799eff225f75b40"
+      }
+    },
+    {
+      "id": "owner-red1",
+      "session": 55999,
+      "actualExitCode": 1,
+      "reason": "Two nested producer lifetime tests reproduce retained active reservations after their immediate consumer ends.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate59-owner-red1.log",
+        "bytes": 2311,
+        "sha256": "sha256:a32c5f793134c5e66c6d6bd7c1532fe1fa197da788a22f3a66f39a7904cf0002"
+      }
+    },
+    {
+      "id": "owner-focused1",
+      "session": 8342,
+      "actualExitCode": 0,
+      "reason": "12 Node ownership/JSON/source-capacity tests pass, including the two new nested lifetime controls.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate59-owner-focused1.log",
+        "bytes": 376,
+        "sha256": "sha256:a1796d2176f0519bb99ac0ac8d4ed7f6df7eecb315d27471e4705fddcbee5d7a"
+      }
+    },
+    {
+      "id": "build3",
+      "session": 79439,
+      "actualExitCode": 0,
+      "reason": "Immediate-owner transfer, source-edge and browser argument repairs compile.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate59-build3.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "runtime1",
+      "session": null,
+      "actualExitCode": 1,
+      "reason": "Nonexistent vitest.runtime.config.ts setup failure; no runtime test pass claimed.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate59-runtime1.log",
+        "bytes": 1815,
+        "sha256": "sha256:ab06f446fa44e041fa950553203910b3dd286c0789fb1fa34358179a05a04a88"
+      }
+    },
+    {
+      "id": "runtime2",
+      "session": 60453,
+      "actualExitCode": 0,
+      "reason": "Five actual descriptor/native source/copy/hash/FIFO/sparse/pre-abort tests pass.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate59-runtime2.log",
+        "bytes": 558,
+        "sha256": "sha256:7a69f0e46f6e384b9cd9df5b0a243870207ed2c24dc025e777a1f13c879dedea"
+      }
+    },
+    {
+      "id": "render2",
+      "session": 2878,
+      "actualExitCode": 1,
+      "reason": "Actual two tape cached exports publish with measured zero native submissions; browser visual check cannot fetch prepared media outside its Vite allowlist.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate59-render2.log",
+        "bytes": 1131,
+        "sha256": "sha256:ebd1686a8f043e8163c4ecf221e033d0220d139e9cfc72c10e9a049d1db9cd9d"
+      }
+    },
+    {
+      "id": "fast1",
+      "session": 94365,
+      "actualExitCode": 1,
+      "reason": "Schema/identity/boundary/format pass; lint catches an unused test readFile import before later stages.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate59-fast1.log",
+        "bytes": 1647,
+        "sha256": "sha256:e3f7fe65d27d996918646db8729c348fd1844ecbe3aa0a1769ae0c0569d53c38"
+      }
+    },
+    {
+      "id": "preview-diagnostic1",
+      "session": null,
+      "actualExitCode": 1,
+      "reason": "Scratch diagnostic .ts has CJS/top-level-await setup error before draw.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate59-preview-diagnostic1.log",
+        "bytes": 1969,
+        "sha256": "sha256:d932a5da6cd5acce9638d9c2603beb191f517a515ab770f0a0b24b0f5af9291a"
+      }
+    },
+    {
+      "id": "preview-diagnostic2",
+      "session": 93077,
+      "actualExitCode": 1,
+      "reason": "Actual60 native/cache preview pairs and120 cached seeks reach final measurement guard; statistics collection was disabled.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate59-preview-diagnostic2.log",
+        "bytes": 417,
+        "sha256": "sha256:28ba6ce965b812c9dbf6483fa8bb535cbc48c31abcf02f54a845d3bbedc3b3fb"
+      }
+    },
+    {
+      "id": "preview-diagnostic3",
+      "session": 69043,
+      "actualExitCode": 1,
+      "reason": "Visible anchor/glyph requirements reach final measurement guard; first text edit did not actually enable inline collection. No measured zero pass inferred.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate59-preview-diagnostic3.log",
+        "bytes": 417,
+        "sha256": "sha256:bb8a607dea49198ee8dce042656ac664d662e3750c805a4ae6f36082e3b591e5"
+      }
+    },
+    {
+      "id": "build4",
+      "session": 68418,
+      "actualExitCode": 2,
+      "reason": "Native observed-anchor union requires explicit visibility narrowing.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate59-build4.log",
+        "bytes": 774,
+        "sha256": "sha256:14725087f34cc4a816e77e20db6dfbccdefd93216134ad0dceb6f5763eb0047d"
+      }
+    },
+    {
+      "id": "preview-diagnostic4",
+      "session": 85375,
+      "actualExitCode": 0,
+      "reason": "Actual60 visible five-style frame pairs/120 cached seeks; enabled actual counters; fixedRGB2 holds with observed max1 on retained tape outputs.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate59-preview-diagnostic4.log",
+        "bytes": 57,
+        "sha256": "sha256:6e409b65486b64e0654e6285df52bd2c47f9b839e58afea6ef1cd1c44bd57873"
+      }
+    },
+    {
+      "id": "build5",
+      "session": 10982,
+      "actualExitCode": 0,
+      "reason": "Final preview collection/narrowing repairs compile; final producer-only gain/control additions receive fast2.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate59-build5.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "render3",
+      "session": 9172,
+      "actualExitCode": 0,
+      "reason": "Final held-source three-family actual captures/direct/current/repeated cached exports and all visible glyph/pixel/seek/audio/corruption/stale/pre-abort controls pass.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate59-render3.log",
+        "bytes": 87,
+        "sha256": "sha256:052804b12fda256cc36f64e6e543841dc3f006c3cce5e63535fe8d0fb7be8a27"
+      }
+    },
+    {
+      "id": "fast2",
+      "session": 60666,
+      "actualExitCode": 0,
+      "reason": "Full local fast tier passes schema/native identity/boundary/format/lint/build and4346 units/427 files.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate59-fast2.log",
+        "bytes": 40244,
+        "sha256": "sha256:d71c9394a78e41e56fde3853113ecb72e6362d674df3371b4221623b7a5bfa3a"
+      }
+    },
+    {
+      "id": "audit1",
+      "session": 89890,
+      "actualExitCode": 1,
+      "reason": "Independent audit reaches first capture/video decode then a scratch PCM command references an undefined sequence variable. No full audit pass inferred.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate59-audit1.log",
+        "bytes": 756,
+        "sha256": "sha256:1fa00c8444eb3f4754b32cc53f8cfcdbe7dd25f4476ea644ffa4dc44922d3919"
+      }
+    },
+    {
+      "id": "audit2",
+      "session": 67438,
+      "actualExitCode": 0,
+      "reason": "Independent57 fact files/180 original PNG+journal+decoded frames/1260 hierarchy pairs/180 camera triples/six current output and audio checks pass.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate59-audit2.log",
+        "bytes": 135,
+        "sha256": "sha256:26770a4a6e08fb426ab8a071313e6119cc40c2846e00334235a8fffc0f188a22"
+      }
+    },
+    {
+      "id": "audit3",
+      "session": 51689,
+      "actualExitCode": 0,
+      "reason": "Same complete independent audit adds bounded per-frame mean/max encoded RGB diagnostics; production inputs are unchanged.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-plate59-audit3.log",
+        "bytes": 135,
+        "sha256": "sha256:37dff2d234ed2dbe1947330e7fd400555f57213f5e94452e3c99526a449b582f"
+      }
+    }
+  ],
+  "unverifiedEarlierFormatting": {
+    "log": {
+      "path": "/private/tmp/still-shift-ms2-plate59-format2.log",
+      "bytes": 91,
+      "sha256": "sha256:6f542aff4829358b2c0eae5a7f34436c96fb94b0efa4bfed10198b30064bbc45"
+    },
+    "actualExitCode": null,
+    "qualification": "Original tool output truncated before owned terminal. Subsequent scoped formatters and actual final fast2 establish final formatting."
+  },
+  "final": {
+    "producer": {
+      "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/run.json",
+      "bytes": 1759143,
+      "sha256": "sha256:4d5f790eed7bb2bba0317e9256402cd639dae09b8ba3fc835b47abbf2c84e181"
+    },
+    "directory": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5",
+    "actualSession": 9172,
+    "actualExitCode": 0,
+    "heldInputs": {
+      "path": "/private/tmp/still-shift-ms2-plate59-inputs4.json",
+      "bytes": 447628,
+      "sha256": "sha256:fdf16ffaf8986ae2dfb53fda038cfbe725169e325f6ccf177f48a8f2e679ea4c",
+      "files": 2624,
+      "inputBytes": 120570245,
+      "unchangedThroughFinalRenderFastAndAudit": true
+    },
+    "fast": {
+      "actualSession": 60666,
+      "actualExitCode": 0,
+      "unitTests": 4346,
+      "unitFiles": 427
+    },
+    "originalCaptures": 3,
+    "originalNativeFramesAndPasses": 180,
+    "currentDirectExports": 6,
+    "currentDirectNativeExportFrames": 360,
+    "cachedExports": 12,
+    "cachedDeliveredFramesAndImageCalls": 720,
+    "freshCachedNativeSubmissionCalls": 0,
+    "beforeAfterStages": 6,
+    "actualNativeAndCachedPreviewFramePairs": 360,
+    "cachedSeekFrames": 720,
+    "cachedPreviewDraws": 1080,
+    "fixedPreviewRgbTolerance": 2,
+    "observedMaximumPreviewRgbDifference": 1,
+    "actualAllFiveStyleGlyphAndVisibleAnchorChecks": true,
+    "exactRepeatedEncodedAndDecodedVideoPairs": 6,
+    "exactCurrentDirectAndCachedDecodedAudioPairs": 6,
+    "changedBeforeAfterGainAudioPairs": 3,
+    "artifactAndCounterRejectionControls": 60,
+    "staleCueOutputRejections": 3,
+    "preAbortedCachedExportsWithoutOwnedDirectory": 3,
+    "agentViewedOriginalCachedPngs": 30,
+    "registeredFullBrowserMatrix": 99,
+    "full99PassClaimed": false,
+    "stages": [
+      {
+        "family": "tape-hook",
+        "stage": "before",
+        "firstOutput": {
+          "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/tape-hook/before-cached-first/output.mp4",
+          "bytes": 34131,
+          "sha256": "sha256:4c8fb3b6a43a1e54ce95e390ebc2b35f8476541ddee5a08041941996f1016f23"
+        },
+        "repeatOutput": {
+          "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/tape-hook/before-cached-repeat/output.mp4",
+          "bytes": 34131,
+          "sha256": "sha256:4c8fb3b6a43a1e54ce95e390ebc2b35f8476541ddee5a08041941996f1016f23"
+        },
+        "reuseReceipt": {
+          "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/tape-hook/before-cached-first/output.mp4.cue-plate-export.json",
+          "bytes": 1976,
+          "sha256": "sha256:4c50f740604ea30a412cbb83c1fd2129394224cdc001ff587790de7f2b0e7e3c"
+        },
+        "ordinaryWorkerMeasuredImageCalls": 60,
+        "measuredFreshNativeSubmissionCalls": 0,
+        "originalNativeFrames": 60,
+        "originalNativePasses": 60,
+        "reusedPlateFrames": 60,
+        "factAndCounterControls": [
+          "currentCompilation",
+          "currentSource",
+          "loweredSource",
+          "originalPlateReceipt",
+          "sceneManifest",
+          "renderResult",
+          "output",
+          "receipt-native-picture",
+          "fresh-native-counter",
+          "missing-measurements"
+        ],
+        "nodeCapacityPeakAtStandardExportResultBytes": 191394810,
+        "nodeAllowanceBytes": 536870912,
+        "maximumPreviewRgbDifference": 1,
+        "decodedAudioSha256": "sha256:d95e7ff30b5b4bdfc067ad3f70c071e59a7ce1f01e496d6bf25c9dd074fd45f6",
+        "previewSamples": [
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/tape-hook/before-cached-frame-0.png",
+            "bytes": 23508,
+            "sha256": "sha256:fcfe87b9e234a06e3c7092df19f24fe4a550203aafd139fe11b4c7653cdf8ddb"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/tape-hook/before-cached-frame-15.png",
+            "bytes": 21945,
+            "sha256": "sha256:ad3679796bbf2e3b1ad793ae904154149cf75270743e04775881b401671b6203"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/tape-hook/before-cached-frame-30.png",
+            "bytes": 22259,
+            "sha256": "sha256:6af0181e75429662ce003419b0bbfebe3811080adaa05b93657d13902431a32c"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/tape-hook/before-cached-frame-45.png",
+            "bytes": 22903,
+            "sha256": "sha256:6e41db5eb110d374f3ee9c12c926059ca825834a020efe275d0b9cdf4942a004"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/tape-hook/before-cached-frame-59.png",
+            "bytes": 22903,
+            "sha256": "sha256:6e41db5eb110d374f3ee9c12c926059ca825834a020efe275d0b9cdf4942a004"
+          }
+        ]
+      },
+      {
+        "family": "tape-hook",
+        "stage": "edited",
+        "firstOutput": {
+          "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/tape-hook/edited-cached-first/output.mp4",
+          "bytes": 33909,
+          "sha256": "sha256:d0e0a532de3992327cb689b39045f706dacf741c456d17c907b32bfed2f8bbf0"
+        },
+        "repeatOutput": {
+          "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/tape-hook/edited-cached-repeat/output.mp4",
+          "bytes": 33909,
+          "sha256": "sha256:d0e0a532de3992327cb689b39045f706dacf741c456d17c907b32bfed2f8bbf0"
+        },
+        "reuseReceipt": {
+          "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/tape-hook/edited-cached-first/output.mp4.cue-plate-export.json",
+          "bytes": 1990,
+          "sha256": "sha256:5afda8d331610b4b164bc03160c5f0201956482309d647c788b4d096bfe56a50"
+        },
+        "ordinaryWorkerMeasuredImageCalls": 60,
+        "measuredFreshNativeSubmissionCalls": 0,
+        "originalNativeFrames": 60,
+        "originalNativePasses": 60,
+        "reusedPlateFrames": 60,
+        "factAndCounterControls": [
+          "currentCompilation",
+          "currentSource",
+          "loweredSource",
+          "originalPlateReceipt",
+          "sceneManifest",
+          "renderResult",
+          "output",
+          "receipt-native-picture",
+          "fresh-native-counter",
+          "missing-measurements"
+        ],
+        "nodeCapacityPeakAtStandardExportResultBytes": 191394890,
+        "nodeAllowanceBytes": 536870912,
+        "maximumPreviewRgbDifference": 1,
+        "decodedAudioSha256": "sha256:efafba735f513d2a081bcea947e5c1cf4605672bda79ac8c69f6ba97e43d7a21",
+        "previewSamples": [
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/tape-hook/edited-cached-frame-0.png",
+            "bytes": 23508,
+            "sha256": "sha256:fcfe87b9e234a06e3c7092df19f24fe4a550203aafd139fe11b4c7653cdf8ddb"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/tape-hook/edited-cached-frame-15.png",
+            "bytes": 21807,
+            "sha256": "sha256:213b73a384ce602661b07a9dd0e95fe70675ff73fade7d56fe4205296ed28794"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/tape-hook/edited-cached-frame-30.png",
+            "bytes": 22259,
+            "sha256": "sha256:6af0181e75429662ce003419b0bbfebe3811080adaa05b93657d13902431a32c"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/tape-hook/edited-cached-frame-45.png",
+            "bytes": 22903,
+            "sha256": "sha256:6e41db5eb110d374f3ee9c12c926059ca825834a020efe275d0b9cdf4942a004"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/tape-hook/edited-cached-frame-59.png",
+            "bytes": 22903,
+            "sha256": "sha256:6e41db5eb110d374f3ee9c12c926059ca825834a020efe275d0b9cdf4942a004"
+          }
+        ]
+      },
+      {
+        "family": "cable-tie",
+        "stage": "before",
+        "firstOutput": {
+          "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/cable-tie/before-cached-first/output.mp4",
+          "bytes": 31348,
+          "sha256": "sha256:091f0cfd4161c0c24fe4239dab0f7d454857d601245533bda9c7761fe5834f3e"
+        },
+        "repeatOutput": {
+          "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/cable-tie/before-cached-repeat/output.mp4",
+          "bytes": 31348,
+          "sha256": "sha256:091f0cfd4161c0c24fe4239dab0f7d454857d601245533bda9c7761fe5834f3e"
+        },
+        "reuseReceipt": {
+          "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/cable-tie/before-cached-first/output.mp4.cue-plate-export.json",
+          "bytes": 1976,
+          "sha256": "sha256:d47bfbad299783092fdb64d8af3794815ffa83e6dfa621f49eacf07c6fd304d9"
+        },
+        "ordinaryWorkerMeasuredImageCalls": 60,
+        "measuredFreshNativeSubmissionCalls": 0,
+        "originalNativeFrames": 60,
+        "originalNativePasses": 60,
+        "reusedPlateFrames": 60,
+        "factAndCounterControls": [
+          "currentCompilation",
+          "currentSource",
+          "loweredSource",
+          "originalPlateReceipt",
+          "sceneManifest",
+          "renderResult",
+          "output",
+          "receipt-native-picture",
+          "fresh-native-counter",
+          "missing-measurements"
+        ],
+        "nodeCapacityPeakAtStandardExportResultBytes": 37901458,
+        "nodeAllowanceBytes": 536870912,
+        "maximumPreviewRgbDifference": 1,
+        "decodedAudioSha256": "sha256:d95e7ff30b5b4bdfc067ad3f70c071e59a7ce1f01e496d6bf25c9dd074fd45f6",
+        "previewSamples": [
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/cable-tie/before-cached-frame-0.png",
+            "bytes": 8748,
+            "sha256": "sha256:ec4e12f132406604154a44614d591a2c7245e32d44b08ea934f32d770dde2615"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/cable-tie/before-cached-frame-15.png",
+            "bytes": 7776,
+            "sha256": "sha256:2503380bad0353f6051b66e184cd8e6eee5911fba757b626dc9f1bfe7e43455c"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/cable-tie/before-cached-frame-30.png",
+            "bytes": 8030,
+            "sha256": "sha256:71fc4c84f60590e3a98444d5df1b81fc2f1ce20ec5826555ab20ac3feac072d4"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/cable-tie/before-cached-frame-45.png",
+            "bytes": 8325,
+            "sha256": "sha256:1e2457da64daf609c4c981c1912d538b7fd5b1e72a64a609eba6af6429598be8"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/cable-tie/before-cached-frame-59.png",
+            "bytes": 8325,
+            "sha256": "sha256:1e2457da64daf609c4c981c1912d538b7fd5b1e72a64a609eba6af6429598be8"
+          }
+        ]
+      },
+      {
+        "family": "cable-tie",
+        "stage": "edited",
+        "firstOutput": {
+          "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/cable-tie/edited-cached-first/output.mp4",
+          "bytes": 31183,
+          "sha256": "sha256:40a7c358ff502f9730c5970172357fe3e411826d2ff6e469b3ad6631a5fe706e"
+        },
+        "repeatOutput": {
+          "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/cable-tie/edited-cached-repeat/output.mp4",
+          "bytes": 31183,
+          "sha256": "sha256:40a7c358ff502f9730c5970172357fe3e411826d2ff6e469b3ad6631a5fe706e"
+        },
+        "reuseReceipt": {
+          "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/cable-tie/edited-cached-first/output.mp4.cue-plate-export.json",
+          "bytes": 1990,
+          "sha256": "sha256:ee2da447656094a8bda351115b01820fb2bd9fd67ff76c0c1cfbc7b572cf9d49"
+        },
+        "ordinaryWorkerMeasuredImageCalls": 60,
+        "measuredFreshNativeSubmissionCalls": 0,
+        "originalNativeFrames": 60,
+        "originalNativePasses": 60,
+        "reusedPlateFrames": 60,
+        "factAndCounterControls": [
+          "currentCompilation",
+          "currentSource",
+          "loweredSource",
+          "originalPlateReceipt",
+          "sceneManifest",
+          "renderResult",
+          "output",
+          "receipt-native-picture",
+          "fresh-native-counter",
+          "missing-measurements"
+        ],
+        "nodeCapacityPeakAtStandardExportResultBytes": 37901538,
+        "nodeAllowanceBytes": 536870912,
+        "maximumPreviewRgbDifference": 1,
+        "decodedAudioSha256": "sha256:efafba735f513d2a081bcea947e5c1cf4605672bda79ac8c69f6ba97e43d7a21",
+        "previewSamples": [
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/cable-tie/edited-cached-frame-0.png",
+            "bytes": 8748,
+            "sha256": "sha256:ec4e12f132406604154a44614d591a2c7245e32d44b08ea934f32d770dde2615"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/cable-tie/edited-cached-frame-15.png",
+            "bytes": 7654,
+            "sha256": "sha256:73c9ad1df57c32f3e392552a4d373e0fcc7e39008c9f5be51d93b603cb404d61"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/cable-tie/edited-cached-frame-30.png",
+            "bytes": 8030,
+            "sha256": "sha256:71fc4c84f60590e3a98444d5df1b81fc2f1ce20ec5826555ab20ac3feac072d4"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/cable-tie/edited-cached-frame-45.png",
+            "bytes": 8325,
+            "sha256": "sha256:1e2457da64daf609c4c981c1912d538b7fd5b1e72a64a609eba6af6429598be8"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/cable-tie/edited-cached-frame-59.png",
+            "bytes": 8325,
+            "sha256": "sha256:1e2457da64daf609c4c981c1912d538b7fd5b1e72a64a609eba6af6429598be8"
+          }
+        ]
+      },
+      {
+        "family": "clothespeg",
+        "stage": "before",
+        "firstOutput": {
+          "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/clothespeg/before-cached-first/output.mp4",
+          "bytes": 38181,
+          "sha256": "sha256:3ce4a74567a1410718f5681c2ccbdddf2d404f9b018416629cc6eef4fba9c75e"
+        },
+        "repeatOutput": {
+          "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/clothespeg/before-cached-repeat/output.mp4",
+          "bytes": 38181,
+          "sha256": "sha256:3ce4a74567a1410718f5681c2ccbdddf2d404f9b018416629cc6eef4fba9c75e"
+        },
+        "reuseReceipt": {
+          "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/clothespeg/before-cached-first/output.mp4.cue-plate-export.json",
+          "bytes": 1983,
+          "sha256": "sha256:b49015e47937b156402eba99d7472125982bb1f479538d34746e232b83489ea8"
+        },
+        "ordinaryWorkerMeasuredImageCalls": 60,
+        "measuredFreshNativeSubmissionCalls": 0,
+        "originalNativeFrames": 60,
+        "originalNativePasses": 60,
+        "reusedPlateFrames": 60,
+        "factAndCounterControls": [
+          "currentCompilation",
+          "currentSource",
+          "loweredSource",
+          "originalPlateReceipt",
+          "sceneManifest",
+          "renderResult",
+          "output",
+          "receipt-native-picture",
+          "fresh-native-counter",
+          "missing-measurements"
+        ],
+        "nodeCapacityPeakAtStandardExportResultBytes": 24955114,
+        "nodeAllowanceBytes": 536870912,
+        "maximumPreviewRgbDifference": 1,
+        "decodedAudioSha256": "sha256:d95e7ff30b5b4bdfc067ad3f70c071e59a7ce1f01e496d6bf25c9dd074fd45f6",
+        "previewSamples": [
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/clothespeg/before-cached-frame-0.png",
+            "bytes": 10686,
+            "sha256": "sha256:8f2c20a00efa1bb37c12cdb58fae08e3ae041e1cb4eb8fe6d5ef187617bfd60e"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/clothespeg/before-cached-frame-15.png",
+            "bytes": 10148,
+            "sha256": "sha256:a6a4df51942d81f2ac437e272592baa1d7cd951df1d7540d0be307bae0ddd63e"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/clothespeg/before-cached-frame-30.png",
+            "bytes": 10112,
+            "sha256": "sha256:537a439d81dd6917a12a98f65c8e96a45c17a5971e7ebd98c878dc9f970c3a12"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/clothespeg/before-cached-frame-45.png",
+            "bytes": 9838,
+            "sha256": "sha256:67806e7e68563808c9191d059d08297f11531c76e58413966697cb16eb701dd4"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/clothespeg/before-cached-frame-59.png",
+            "bytes": 9838,
+            "sha256": "sha256:67806e7e68563808c9191d059d08297f11531c76e58413966697cb16eb701dd4"
+          }
+        ]
+      },
+      {
+        "family": "clothespeg",
+        "stage": "edited",
+        "firstOutput": {
+          "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/clothespeg/edited-cached-first/output.mp4",
+          "bytes": 38012,
+          "sha256": "sha256:210a6bcdd5c7a5624191b6f50e997a61d9a7dd8f7915cbde31efb887d8393aaf"
+        },
+        "repeatOutput": {
+          "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/clothespeg/edited-cached-repeat/output.mp4",
+          "bytes": 38012,
+          "sha256": "sha256:210a6bcdd5c7a5624191b6f50e997a61d9a7dd8f7915cbde31efb887d8393aaf"
+        },
+        "reuseReceipt": {
+          "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/clothespeg/edited-cached-first/output.mp4.cue-plate-export.json",
+          "bytes": 1997,
+          "sha256": "sha256:f3bf335ee2cacfd3546dce3ffd13c90f51b5bf821a20913a1cad540c07d64fc0"
+        },
+        "ordinaryWorkerMeasuredImageCalls": 60,
+        "measuredFreshNativeSubmissionCalls": 0,
+        "originalNativeFrames": 60,
+        "originalNativePasses": 60,
+        "reusedPlateFrames": 60,
+        "factAndCounterControls": [
+          "currentCompilation",
+          "currentSource",
+          "loweredSource",
+          "originalPlateReceipt",
+          "sceneManifest",
+          "renderResult",
+          "output",
+          "receipt-native-picture",
+          "fresh-native-counter",
+          "missing-measurements"
+        ],
+        "nodeCapacityPeakAtStandardExportResultBytes": 24955194,
+        "nodeAllowanceBytes": 536870912,
+        "maximumPreviewRgbDifference": 1,
+        "decodedAudioSha256": "sha256:efafba735f513d2a081bcea947e5c1cf4605672bda79ac8c69f6ba97e43d7a21",
+        "previewSamples": [
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/clothespeg/edited-cached-frame-0.png",
+            "bytes": 10686,
+            "sha256": "sha256:8f2c20a00efa1bb37c12cdb58fae08e3ae041e1cb4eb8fe6d5ef187617bfd60e"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/clothespeg/edited-cached-frame-15.png",
+            "bytes": 10041,
+            "sha256": "sha256:e6ce43d5819d28db44475495c534d96909a224eae6d94e7c31766c1585aebad3"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/clothespeg/edited-cached-frame-30.png",
+            "bytes": 10112,
+            "sha256": "sha256:537a439d81dd6917a12a98f65c8e96a45c17a5971e7ebd98c878dc9f970c3a12"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/clothespeg/edited-cached-frame-45.png",
+            "bytes": 9838,
+            "sha256": "sha256:67806e7e68563808c9191d059d08297f11531c76e58413966697cb16eb701dd4"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-cue-plate-export-5ia9p5/clothespeg/edited-cached-frame-59.png",
+            "bytes": 9838,
+            "sha256": "sha256:67806e7e68563808c9191d059d08297f11531c76e58413966697cb16eb701dd4"
+          }
+        ]
+      }
+    ]
+  },
+  "independentAudit": {
+    "report": {
+      "path": "/private/tmp/still-shift-ms2-plate59-audit3.json",
+      "bytes": 104616,
+      "sha256": "sha256:eab52457ed15e274d00e215a0eb81bb6ae6129c0114cd7430565fc45e3749af0"
+    },
+    "script": {
+      "path": "/private/tmp/still-shift-ms2-plate59-audit.py",
+      "bytes": 9753,
+      "sha256": "sha256:95e9c9e8f4a9e06e90165ab34b9873cb0f5a984cfd7a255d07b4429426d5fb69"
+    },
+    "actualSession": 51689,
+    "actualExitCode": 0,
+    "factFiles": 57,
+    "originalPngBodyAnd16BitFacts": 180,
+    "originalNativeJournalFrames": 180,
+    "originalNativeDecodedFrames": 180,
+    "cachedFirstOutputDecodedFrames": 360,
+    "directComparisonDecodedFrames": 360,
+    "physicalHierarchyMatrixPairs": 1260,
+    "authoredStaticCameraTriples": 180,
+    "scope": "Independent body/metadata/actual worker count/per-frame decoder/audio and original journal hierarchy/camera checks. Source rig replay is the shared original native closure checker. Python cross-checks retained preview metadata and does not rerender previews or infer human acceptance.",
+    "encodedRgbDiagnostics": {
+      "maximumDifference": 51,
+      "maximumFrameMeanDifference": 1.3699550653594772,
+      "overallMeanDifference": 1.2247031023057375,
+      "rgbValuesAbove28": 436,
+      "totalComparedRgbValues": 35251200,
+      "qualification": "Lossy direct/native versus cached H264 outputs differ pointwise, while repeated cached bodies/decodes are exact and previews stay withinRGB2. These diagnostics are not an encoded pixel-parity or full glyph-copy/readability acceptance threshold."
+    }
+  },
+  "remaining": [
+    "Actual world/surface plate capture/reuse, encoded glyph/copy/readability and broader/continuous layout QA; no full expanded annotation criterion claimed.",
+    "Public versioned root cache API/CLI/discovery, current/stale/archive/installed consumers and in-flight edit/cancellation/resource admission.",
+    "Fresh recovered speech/sample-clock evidence is locally measured separately; genuine cue/native exports, shorter revised-copy recompilation and source/picture/semantic review remain open.",
+    "Full99/frozen176/36061/benchmark, whole application and physical resource/lifetime/replay gates, source/archive/installed final admission, validated10-question coverage/pack admission/MS2 PR before MS3.",
+    "Supported packs0; validated coverage0/10; accepted pilot0. No human acceptance, paid generation, merge, npm publication or GitHub Actions."
+  ]
+}

@@ -1,3 +1,4 @@
+import { typographyTextValues } from "./typography-text-values.ts";
 import { shapeText } from "./shaped-text.ts";
 import type { TextStyle } from "../../scene-contract/src/typography.ts";
 import { resolvedTextStyle } from "./typography-style.ts";
@@ -21,6 +22,7 @@ export function prepareTextFits<
     nodes: PreparedNode[];
     typography?: "type-1" | undefined;
     textStyles?: Record<string, TextStyle> | undefined;
+    componentData?: ComponentData | undefined;
   },
 >(
   scene: T,
@@ -42,6 +44,9 @@ export function prepareTextFits<
       throw new Error(
         "Text fitting requires loaded pinned font " + node.fontAsset,
       );
+    const texts = scene.typography
+      ? [...typographyTextValues(scene, node)]
+      : (node.states ?? [node.text]);
     let height: number | undefined;
     for (let size = fit.maxSize; size >= fit.minSize; size--) {
       ctx.font = `${font.weight} ${size}px "${font.family}"`;
@@ -50,7 +55,7 @@ export function prepareTextFits<
       try {
         const fittedStyles = { ...scene.textStyles };
         if (node.style && style) fittedStyles[node.style] = { ...style, size };
-        const heights = (node.states ?? [node.text]).map((text) => {
+        const heights = texts.map((text) => {
           if (!scene.typography) {
             const layout = measureTextLayout(ctx, {
               ...node,

@@ -1,0 +1,531 @@
+{
+  "schemaVersion": "mechanism-ms2-strict-gates-results-1",
+  "date": "2026-10-11",
+  "branch": "codex/mechanism-ms2",
+  "sourceCommitBeforeSlice": "11eda2d77f800a5d03c44df311aab1ca155cf52f",
+  "status": "current-fast-owning-node-affected-browser-pass-ms2-incomplete",
+  "scope": [
+    "Canonical scalar/dense numeric arrays avoid temporary allocations and recursive dispatch while preserving native finite number spelling, own-index sparse rejection, plain-object/cycle/depth limits.",
+    "Source1 empty override reuses the private fully parsed and checksum-verified base; edited requests still perform full validation. No source2/source3 preparation policy changed.",
+    "Gradient TEST observer captures every actual getter ID, counts all IDs, and packs only empirically verified repetitions during hash replay. Original fixture literal, assertions, cache eight-entry limit, null/fault lifecycle and five-second budget are unchanged; production gradient code matches pre-slice HEAD."
+  ],
+  "workingInputs": {
+    "manifest": {
+      "path": "/private/tmp/still-shift-ms2-resume-inputs42.json",
+      "bytes": 426986,
+      "sha256": "sha256:c998acee57caf4e71d7ec19c34b0f9dedd8e00328dbd088de3b0767d76c2e73c"
+    },
+    "files": 2503,
+    "inputBytes": 119039010,
+    "selection": {
+      "roots": [
+        "apps/",
+        "packages/",
+        "scripts/",
+        "tests/",
+        "tools/",
+        "services/",
+        "benchmarks/",
+        "examples/",
+        "assets/",
+        "catalogs/"
+      ],
+      "rootFiles": "all Git-tracked or nonignored regular root files",
+      "packageProse": [
+        "docs/npm-package-readme.md",
+        "docs/npm-third-party-notices.md"
+      ],
+      "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+    }
+  },
+  "newIndependentChecks": [
+    "Native JSON number spelling including negative zero, extreme exponents and finite boundaries; dense-array invalid members/sparse inherited holes and exact depth64/65.",
+    "Base source1 reference encoded by separate ordered native JSON + Node SHA; source/effective/geometry/mesh identities, equivalent empty request deduplication, original-input mutation isolation, frozen mesh and corrupt hash/hierarchy rejection."
+  ],
+  "frozenGradientOracles": {
+    "path": "/private/tmp/still-shift-ms2-frozen-gradient-oracle31.json",
+    "bytes": 2961,
+    "sha256": "sha256:4083adfffce8f3816260d1a21d7034edb8bd7ab7d1c383ca0f56961d7677fa15"
+  },
+  "finalVerification": {
+    "roots": [
+      {
+        "session": 7838,
+        "exitCode": 0,
+        "commands": ["fast42", "node43"],
+        "qualification": "Node43 is only a seven-test package subset."
+      },
+      {
+        "session": 83967,
+        "exitCode": 0,
+        "commands": ["node44", "observation45", "shapes46", "hold46"]
+      }
+    ],
+    "fast": {
+      "unitFiles": 407,
+      "unitTests": 4177,
+      "unitDurationSeconds": 87.28,
+      "gradientOriginalCaseMs": 2102,
+      "originalTimeoutMs": 5000,
+      "checks": [
+        "schemas",
+        "397 first-party / 79 external native identity modules",
+        "package boundaries",
+        "format",
+        "lint",
+        "TypeScript",
+        "normal four-worker units"
+      ]
+    },
+    "owningNode": {
+      "files": 4,
+      "tests": 10,
+      "workers": 2,
+      "fileParallelism": false,
+      "packageCriticalMs": {
+        "rebasing": 2975,
+        "descriptorCorruption": 3097,
+        "savedCameraRefresh": 1974
+      },
+      "originalPackageTimeoutMs": 5000
+    },
+    "source3": {
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-pbr-observation-NhpNKZ/run.json",
+        "bytes": 165923,
+        "sha256": "sha256:5192ecc1599f0e6b13b564c2339e25f5831f271073c69aba70d43686c17dc905"
+      },
+      "frames": 8,
+      "faults": 21,
+      "scope": "Owned source3 rigid color draws, Float32 attributes, actual submitted matrices, current-environment used mips, Three parts/anchors and independent expected validation; composition collection/export and complete world allocation remain separate"
+    },
+    "native2Groups": [
+      {
+        "directory": "/private/tmp/still-shift-ms2-shape-world-8YnFjp",
+        "status": "passed",
+        "frames": 5,
+        "scope": "browser-world-and-pixels-only"
+      },
+      {
+        "directory": "/private/tmp/still-shift-ms2-used-streams-g6xV1d",
+        "status": "passed",
+        "frames": 6,
+        "negatives": 11,
+        "scope": "standalone-used-color-streams-only"
+      },
+      {
+        "directory": "/private/tmp/still-shift-ms2-frame-observation-F4I0EP",
+        "status": "passed",
+        "frames": 8,
+        "negatives": 4,
+        "scope": "standalone-full-observed-frame2"
+      },
+      {
+        "directory": "/private/tmp/still-shift-ms2-composition-v2-jKu73T",
+        "status": "passed",
+        "captures": 4,
+        "negatives": 15
+      },
+      {
+        "directory": "/private/tmp/still-shift-ms2-normal-export2-3gZv2h",
+        "status": "passed",
+        "exports": 2
+      },
+      {
+        "directory": "/private/tmp/still-shift-ms2-lab2-uCmMvw",
+        "status": "passed",
+        "records": 20
+      }
+    ]
+  },
+  "history": [
+    {
+      "id": "gradient14",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-gradient14.log",
+        "bytes": 2807,
+        "sha256": "sha256:da4499cdf20371232efff6fa5598d52217faa69cace07c261c48b0e1272f302b"
+      },
+      "qualification": "Original unchanged strict timeout reproduced (7,519ms / 5,000ms)."
+    },
+    {
+      "id": "package15",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-package15.log",
+        "bytes": 4932,
+        "sha256": "sha256:b7833d915517836be6ac6ff615bab0eee58d2def82252e6b1cffff8b28e224a2"
+      },
+      "qualification": "Three strict package timeouts; subsequent cleanup ENOTEMPTY retained."
+    },
+    {
+      "id": "package17",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-package17.log",
+        "bytes": 1438,
+        "sha256": "sha256:e46b862ef1df84f74e72d40007a4cfb1950e2b0aba7000a512d28bbf66ae28c7"
+      },
+      "qualification": "Focused local result; source differed between repair attempts. No aggregate milestone completion claim."
+    },
+    {
+      "id": "gradient18",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-gradient18.log",
+        "bytes": 2808,
+        "sha256": "sha256:cd2518fcb5934467904aeb481349f03e8e1fd1735fa0ef0f222a5c7c705ff609"
+      },
+      "qualification": "Immediate Buffer getter hashing experiment rejected after timeout."
+    },
+    {
+      "id": "gradient19",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-gradient19.log",
+        "bytes": 1231,
+        "sha256": "sha256:cee0d91550cc79af2a4b227b99d05701c9a6db2fbab6d2671dad9636266a51db"
+      },
+      "qualification": "Focused local result; source differed between repair attempts. No aggregate milestone completion claim."
+    },
+    {
+      "id": "fast20",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-fast20.log",
+        "bytes": 46364,
+        "sha256": "sha256:7736df3a88b25adf9409f711b5a8aefee898730350c3874d102928092b7efc7e"
+      },
+      "qualification": "All prefix gates pass; 4,175/4,176 units pass; gradient 6,624ms timeout."
+    },
+    {
+      "id": "gradient21",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-gradient21.log",
+        "bytes": 1230,
+        "sha256": "sha256:f88c0acd283ab0af2fbe7bc6a9a27b58d23f81b4b7cb0e4d866ec712854f13a5"
+      },
+      "qualification": "Focused local result; source differed between repair attempts. No aggregate milestone completion claim."
+    },
+    {
+      "id": "fast22",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-fast22.log",
+        "bytes": 45615,
+        "sha256": "sha256:776223d44e94025ebda0bfb34a2b6a29afca102ce2cbcbfa194e3a048fb673c7"
+      },
+      "qualification": "All prefix gates pass; 4,175/4,176 units pass; gradient 5,960ms timeout."
+    },
+    {
+      "id": "gradient24",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-gradient24.log",
+        "bytes": 1683,
+        "sha256": "sha256:d7531a81961bc2378c1df9d179f23cf1d9614568d24a224d9c1a31b2110b2480"
+      },
+      "qualification": "Production gradient loop-unroll experiment; 33 tests/4 files pass but little timing margin. Production experiment reverted."
+    },
+    {
+      "id": "gradient25",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-gradient25.log",
+        "bytes": 1287,
+        "sha256": "sha256:3830d37412befee4f6346a94efca4cdb43faa20b095835eac153aa51e7bb4b2f"
+      },
+      "qualification": "Focused local result; source differed between repair attempts. No aggregate milestone completion claim."
+    },
+    {
+      "id": "build26",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-build26.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      },
+      "qualification": "Focused local result; source differed between repair attempts. No aggregate milestone completion claim."
+    },
+    {
+      "id": "units26",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-units26.log",
+        "bytes": 40769,
+        "sha256": "sha256:c41d959b099ab6dd9494d834de8f2bb1d9cc57b92253e6791a210d240f73f487"
+      },
+      "qualification": "Build pass then 4,175/4,176 units pass; gradient 5,041ms timeout."
+    },
+    {
+      "id": "gradient27",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-gradient27.log",
+        "bytes": 1288,
+        "sha256": "sha256:e7ec1d623a3c76a9934669ae35b9209757000e94fe02a98d5c37d9c42eead68d"
+      },
+      "qualification": "Deferred Buffer replay slower; rejected experiment retained as snapshot."
+    },
+    {
+      "id": "gradient28",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-gradient28.log",
+        "bytes": 1289,
+        "sha256": "sha256:12ec7a8bde1be88e9e91dc9e4276c2e02113ce57267a4996b834ae17255e4315"
+      },
+      "qualification": "Guarded edit assertion failed BEFORE writing; unchanged Buffer27 rerun passed. This is not proof for the intended string edit."
+    },
+    {
+      "id": "gradient29",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-gradient29.log",
+        "bytes": 1287,
+        "sha256": "sha256:ebe846acff205c3541bb4fa22e3fa701419308c64ff4d10a12a29207d1e75afe"
+      },
+      "qualification": "Corrected 1MiB string replay slower; rejected snapshot retained."
+    },
+    {
+      "id": "gradient30",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-gradient30.log",
+        "bytes": 1289,
+        "sha256": "sha256:af7da0b192fa11b6c4f85616f52e2c0d338c5dddf2fd633b128a782512be4d95"
+      },
+      "qualification": "Actual captured-ID repeated-block packing; 21 tests/2 files pass."
+    },
+    {
+      "id": "build31",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-build31.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      },
+      "qualification": "Focused local result; source differed between repair attempts. No aggregate milestone completion claim."
+    },
+    {
+      "id": "units31",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-units31.log",
+        "bytes": 48741,
+        "sha256": "sha256:0cdae8445415accb90b8567866f7475f6639c6a5e22b1c1ec9f2d480f275bb9a"
+      },
+      "qualification": "4,175/4,176 pass; gradient passes (4,904ms); unchanged radial metadata times out (5,690ms)."
+    },
+    {
+      "id": "owning32",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-owning32.log",
+        "bytes": 3739,
+        "sha256": "sha256:1b0b4c15dd96063338b2ce1f7926707b76bcf8289024a5ccb6b759c176fcebf9"
+      },
+      "qualification": "Normal four-worker owning unit group: 23/24 pass; gradient 5,977ms timeout."
+    },
+    {
+      "id": "owning33",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-owning33.log",
+        "bytes": 2342,
+        "sha256": "sha256:70efd1d2b7c17e4e99feae82aa00553763fb0ad14d4d830d5ff99d33aaaf8bf8"
+      },
+      "qualification": "24/24 owning units pass with explicit no-file-parallelism and unchanged original 5s budgets; not a default-parallel aggregate pass."
+    },
+    {
+      "id": "node34",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-node34.log",
+        "bytes": 4485,
+        "sha256": "sha256:849d1d7b35319ced5da2aa1cc75e551018ce5464694c8a382919d0b4d4b5ced3"
+      },
+      "qualification": "Sequential two-worker group: 8/10 pass; rebasing 5,143ms and descriptor 5,071ms timeouts; cleanup ENOTEMPTY. Planned formatting/lint/hold suffix did not run."
+    },
+    {
+      "id": "numeric36",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-numeric36.log",
+        "bytes": 1500,
+        "sha256": "sha256:7cc672948811c79a158663b7d7e2b9353dcaec142c07cf2b68b7a5e4be7dc911"
+      },
+      "qualification": "Dense numeric canonical fast path: 18 tests/2 files pass."
+    },
+    {
+      "id": "fast37",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-fast37.log",
+        "bytes": 40326,
+        "sha256": "sha256:4d52bc36615d936df3b11bb733f0cfdb19958146fa4258e3d6a73e009de7e5f5"
+      },
+      "qualification": "Normal pnpm check:fast passes all prefix checks and 4,176 units/407 files. Later Node38 failure makes combined root exit1; keep fast command exit0 separate."
+    },
+    {
+      "id": "node38",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-node38.log",
+        "bytes": 4778,
+        "sha256": "sha256:73c9ec56dc057ed9b115c2832a6199c7e58636aeb871973ae8d492d827a12474"
+      },
+      "qualification": "7/10 pass with original budgets; three package timeouts. Planned hold suffix did not run; hold38 separately verifies unchanged inputs37."
+    },
+    {
+      "id": "hold38",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-hold38.log",
+        "bytes": 192,
+        "sha256": "sha256:c8b710cf5d7b1376c55f0d2f795620e8ea4560117dd459687f68c046d3671d2e"
+      },
+      "qualification": "Focused local result; source differed between repair attempts. No aggregate milestone completion claim."
+    },
+    {
+      "id": "fast42",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-fast42.log",
+        "bytes": 38157,
+        "sha256": "sha256:da87ff8a01fcc4f6386bf6080e19943c5780ac68d79f92ba39771f239476716d"
+      },
+      "qualification": "Normal pnpm check:fast passes all prefix checks and 4,177 units/407 files; original timeout budgets retained."
+    },
+    {
+      "id": "node43",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-node43.log",
+        "bytes": 1438,
+        "sha256": "sha256:f2b7ad4b21a6f3d7ddec50948b35d71f187a56fbdcdef608bab7607b6ad31ae5"
+      },
+      "qualification": "Wrong names for three non-package files meant Vitest selected only mechanism-native-package: 7/7 pass in one file. Qualified as subset, never complete owning Node proof."
+    },
+    {
+      "id": "node44",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-node44.log",
+        "bytes": 1817,
+        "sha256": "sha256:948a0625265022a001fc06b6e864abce2a6cde70f3d98ef861ff48dd1e9d2232"
+      },
+      "qualification": "Correct four owning runtime files, maxWorkers2/no-file-parallelism: 10/10 pass."
+    },
+    {
+      "id": "observation45",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-observation45.log",
+        "bytes": 284,
+        "sha256": "sha256:6111e75b973344f901e49538e84ccc98356464bca2f04700045cf402657d3923"
+      },
+      "qualification": "Actual source3 standalone: eight frames, three queued invocations, 21 faults; composition/output3 not claimed."
+    },
+    {
+      "id": "shapes46",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-shapes46.log",
+        "bytes": 1218,
+        "sha256": "sha256:3a41615e913a7d918061dc58cb8ea255829ccce02093b47f3f28e8ab9204ec8f"
+      },
+      "qualification": "All six actual native2 browser commands exit0; shape-world, used streams, frame2, mixed composition2, two normal exports2, inspector2."
+    },
+    {
+      "id": "hold46",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-hold46.log",
+        "bytes": 192,
+        "sha256": "sha256:cb789f1f38307bca1049a56e243102d523a1e08139e60098c3d66f8d23fdfa16"
+      },
+      "qualification": "Exact inputs42 selected production/test/build bytes unchanged after final browser commands."
+    },
+    {
+      "id": "gradient-profile23",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-gradient-profile23.log",
+        "bytes": 2806,
+        "sha256": "sha256:db9a4358827d0f3fec8173f18e7a8eb46c6119464f644a3dbc8f2c51a2274d57"
+      },
+      "qualification": "Diagnostic CPU profile only, no acceptance proof; profiling overhead or varying timing does not establish sole cause."
+    },
+    {
+      "id": "package-profile16",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-package-profile16.log",
+        "bytes": 120,
+        "sha256": "sha256:491d44eefa3c01de0e1782a19bf7a6885ac8f780c648db0d7df86172825e7b0a"
+      },
+      "qualification": "Diagnostic CPU profile only, no acceptance proof; profiling overhead or varying timing does not establish sole cause."
+    },
+    {
+      "id": "package-profile40",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-package-profile40.log",
+        "bytes": 121,
+        "sha256": "sha256:b3b1bb09571ae12217693a680c8bfc9c68d24344eac1ccb7635ddd494c3528ac"
+      },
+      "qualification": "Diagnostic CPU profile only, no acceptance proof; profiling overhead or varying timing does not establish sole cause."
+    },
+    {
+      "id": "base41",
+      "exitCode": null,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-resume-base41.log",
+        "bytes": 1560,
+        "sha256": "sha256:b561d0b0feb612c9c547da5a4f75b1b2578bf7e6497b0af2e5f992a6308a3e2f"
+      },
+      "qualification": "Log reports 26/26 in three files. Tool terminal receipt lost during context truncation; no independently captured terminal exit is asserted. Final fast42/Node44 prove current behavior separately."
+    }
+  ],
+  "retainedDiagnostics": [
+    {
+      "path": "/private/tmp/CPU.20261011.140055.7378.0.001.cpuprofile",
+      "bytes": 716588,
+      "sha256": "sha256:2f0ab498d4359741bfa97f625656e566798e8e48ef07892601dc842d604a8c12"
+    },
+    {
+      "path": "/private/tmp/CPU.20261011.141808.32280.0.001.cpuprofile",
+      "bytes": 218055,
+      "sha256": "sha256:81e067ad6baf8abd21e503bc3d35cabced0105cd3c80a4741c831de9d8a8be44"
+    },
+    {
+      "path": "/private/tmp/CPU.20261011.145836.93097.0.001.cpuprofile",
+      "bytes": 943972,
+      "sha256": "sha256:36e2fbbad2eec0d42458644c3b5dd32bf7e9eef5884999eda93cddce170ae989"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-rejected-buffer27.test.ts",
+      "bytes": 48583,
+      "sha256": "sha256:c7dce2c94f998a1260e0ff39b84a613be2a4ad83b09666e27db103c684cf49e7"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-rejected-long-string29.test.ts",
+      "bytes": 48301,
+      "sha256": "sha256:29b8dd123805cb07723db8445a57fe5b88e9ae751f66bbb6ce9b76c9ca5dd5c2"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-trace30.test.ts",
+      "bytes": 48845,
+      "sha256": "sha256:a65e1f278543c729cf0aadba8d59fceaf14dd0a42432400f31822004c3cfa5ae"
+    }
+  ],
+  "qualification": "Staged repair with failed runs and rejected experiments retained. Early frozen-oracle helper regex stopped before writing and corrected helper succeeded. Guarded edit28 failed before writing; later tests ran unchanged. No changed acceptance thresholds, frozen fixtures or production gradient implementation. No sole-cause timing claim. Broader runtime/integration/full/benchmark and installed-package verification were not refreshed for this slice; supportedPacks and pilot remain zero. Source3 composition/output3/export remains rejected; no human visual/listening acceptance, MS2 PR, merge or publication.",
+  "remaining": [
+    "Explicit output3 collector/capacity and authenticated producer/sink/upload/journal/export/installed proof.",
+    "Whole world/source/body/replay budgets; retain fixed 64 passes, 1MiB packet, 32MiB shard,16 shards,512MiB total.",
+    "Remaining packs/generators/registry/rigs/events/labels/cues/typography/board criteria and full required milestone gates."
+  ]
+}

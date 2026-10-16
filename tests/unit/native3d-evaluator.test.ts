@@ -1,3 +1,5 @@
+import { createHash } from "node:crypto";
+import { Native3DSourceSchema } from "@still-shift/scene-contract";
 import { describe, expect, it } from "vitest";
 import {
   prepareNative3DScene,
@@ -28,6 +30,69 @@ const scope = {
   height: 180,
 };
 describe("native immutable catalogue and fractional physical snapshots", () => {
+  it("retains independently encoded base identity and input isolation for empty requests without admitting corrupt source", async () => {
+    const source = nativeSolidFixture();
+    const parsed = Native3DSourceSchema.parse(source);
+    const reference = Native3DSourceSchema.parse({
+      ...parsed,
+      parts: parsed.parts.map((part) => ({ ...part })),
+      geometry: {
+        ...parsed.geometry,
+        materials: parsed.geometry.materials.map((material) => ({
+          ...material,
+        })),
+      },
+    });
+    // Native JSON's numeric spelling over sorted keys is independent of the encoder.
+    const ordered = (value: unknown): unknown => {
+      if (Array.isArray(value)) return value.map(ordered);
+      if (value && typeof value === "object")
+        return Object.fromEntries(
+          Object.keys(value)
+            .sort()
+            .filter(
+              (key) => (value as Record<string, unknown>)[key] !== undefined,
+            )
+            .map((key) => [
+              key,
+              ordered((value as Record<string, unknown>)[key]),
+            ]),
+        );
+      return value;
+    };
+    const hash = (value: unknown) =>
+      "sha256:" +
+      createHash("sha256")
+        .update(JSON.stringify(ordered(value)))
+        .digest("hex");
+    const prepared = await prepareNative3DScene(source, nativeFixtureHash, {
+      variants: [{}, { partOverrides: {} }, { materialOverrides: {} }],
+    });
+    const base = prepared.variants[prepared.baseSourceKey]!;
+    expect(base.source).toEqual(reference);
+    expect(base.effectiveSceneSha256).toBe(hash(reference));
+    expect(base.geometrySha256).toBe(hash(reference.geometry));
+    expect(base.meshDataSha256).toBe(
+      hash({ meshes: reference.geometry.meshes }),
+    );
+    expect(Object.keys(prepared.variants)).toHaveLength(1);
+    source.geometry.meshes[0]!.positions[0] = -99;
+    source.geometry.materials[0]!.color = "#ffffff";
+    expect(base.source).toEqual(reference);
+    expect(Object.isFrozen(base.source.geometry.meshes[0]!.positions)).toBe(
+      true,
+    );
+    const corrupt = nativeSolidFixture();
+    corrupt.geometrySha256 = "sha256:" + "b".repeat(64);
+    await expect(
+      prepareNative3DScene(corrupt, nativeFixtureHash, { variants: [{}] }),
+    ).rejects.toThrow(/declared canonical hash/);
+    const invalid = nativeSolidFixture();
+    invalid.parts[1]!.parent = "missing";
+    await expect(
+      prepareNative3DScene(invalid, nativeFixtureHash, { variants: [{}] }),
+    ).rejects.toThrow();
+  });
   it("binds raw/effective/geometry identities independently and shares immutable mesh arrays", async () => {
     const prepared = await prepareNative3DScene(
       nativeSolidFixture(),

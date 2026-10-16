@@ -1,17 +1,22 @@
-import { createHash } from "node:crypto";
-import { setImmediate as yieldEventLoop } from "node:timers/promises";
 import {
-  NATIVE3D_OBSERVATION_LIMITS,
-  type Composition,
-  type CompositionPreparedNative3D,
-} from "@still-shift/scene-contract";
-import { canonicalMechanismJson } from "../../renderer-core/src/mechanism/canonical.ts";
+  nativeCompositionSha256,
+  nativePreparedSha256,
+} from "./native-observation-identity.ts";
+export {
+  nativeCompositionSha256,
+  nativePreparedSha256,
+} from "./native-observation-identity.ts";
+import { createNativeObservationRequestV3 } from "./native-observation-v3.ts";
+import { createNativeObservationRequestV2 } from "./native-observation-v2.ts";
+import { setImmediate as yieldEventLoop } from "node:timers/promises";
+import { NATIVE3D_OBSERVATION_LIMITS } from "@still-shift/scene-contract";
 import { compositionNativePasses } from "../../renderer-core/src/composition/render/graphs.ts";
 import { resolveNative3DVariant } from "../../renderer-core/src/native3d/prepare.ts";
+import { requireLegacyNative3DCatalogue } from "../../renderer-core/src/native3d/catalogue-versions.ts";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 import {
   admitNativeObservationCapacity,
-  type ExportRequest,
+  type NativeObservationRequestOriginal,
   type NativeObservationExecutionBinding,
   type NativeObservationExpectedPass,
 } from "@still-shift/execution-runtime/export";
@@ -20,37 +25,21 @@ import type { LoadedComposition } from "./composition-render.ts";
 export type NativeMechanismExecution = NonNullable<
   NativeObservationExecutionBinding["mechanism"]
 >;
-const sha256 = (value: unknown) =>
-  `sha256:${createHash("sha256").update(canonicalMechanismJson(value)).digest("hex")}`;
 const lexical = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
-
-/** Only declared file locators are omitted; authored recipe and metadata stay bound. */
-export function nativeCompositionSha256(composition: Composition): string {
-  return sha256({
-    ...composition,
-    assets: composition.assets.map((asset) =>
-      Object.fromEntries(
-        Object.entries(asset).filter(
-          ([key]) => key !== "path" && key !== "manifestPath",
-        ),
-      ),
-    ),
-  });
-}
-export function nativePreparedSha256(
-  transport: CompositionPreparedNative3D,
-): string {
-  return sha256(transport);
-}
-
 /** Trusted graph associations; no expected matrices substitute for actual observations. */
 export async function createNativeObservationRequest(
   loaded: LoadedComposition,
   mechanism?: NativeMechanismExecution,
   options: { signal?: AbortSignal | undefined } = {},
-): Promise<ExportRequest["nativeObservation"]> {
+): Promise<NativeObservationRequestOriginal | undefined> {
   options.signal?.throwIfAborted();
   if (!loaded.preparedNative3D) return undefined;
+  if (loaded.preparedNative3D.version !== "composition-prepared-native3d-1")
+    passageError(
+      "comp-native3d-protocol",
+      "Scene2 export requires its version2 execution ledger",
+      { path: "nativeObservations.execution" },
+    );
   if (
     !loaded.native3D ||
     !loaded.nativeAppearanceCodeSha256 ||
@@ -62,6 +51,7 @@ export async function createNativeObservationRequest(
       "Native observation requires its prepared sources and WebGL2 code identity",
       { path: "nativeObservations" },
     );
+  const native3D = requireLegacyNative3DCatalogue(loaded.native3D)!;
   const execution: NativeObservationExecutionBinding = {
     version: "native-observation-execution-1",
     compositionSourceSha256: loaded.sourceChecksum,
@@ -71,7 +61,7 @@ export async function createNativeObservationRequest(
     appearanceCodeIdentity: loaded.nativeAppearanceCodeIdentity,
     backend: "webgl2",
     profile: "native-three-aces-hdr-msaa4-1",
-    sources: Object.entries(loaded.native3D)
+    sources: Object.entries(native3D)
       .sort(([a], [b]) => lexical(a, b))
       .flatMap(([asset, source]) =>
         Object.values(source.variants)
@@ -109,7 +99,7 @@ export async function createNativeObservationRequest(
     for (const pass of compositionNativePasses(
       loaded.composition,
       outputFrame,
-      { preparedNative3D: loaded.native3D!, nativeObservationRequired: true },
+      { preparedNative3D: native3D, nativeObservationRequired: true },
     )) {
       options.signal?.throwIfAborted();
       if (passes.length >= NATIVE3D_OBSERVATION_LIMITS.passes)
@@ -119,7 +109,17 @@ export async function createNativeObservationRequest(
           { path: "nativeObservations", frame: outputFrame },
         );
       const frame = pass.frame;
-      const variant = resolveNative3DVariant(loaded.native3D, frame);
+      if (frame.version !== "native3d-frame-1")
+        passageError(
+          "comp-native3d-protocol",
+          "Original export ledger requires frame1",
+          {
+            frame: outputFrame,
+            node: frame.controller,
+            path: "nativeObservations",
+          },
+        );
+      const variant = resolveNative3DVariant(native3D, frame);
       let inventory = topology.get(variant.sourceKey);
       if (!inventory) {
         inventory = Object.freeze({
@@ -167,7 +167,7 @@ export async function createNativeObservationRequest(
   const large = -Number.MAX_VALUE,
     matrix = Array.from({ length: 16 }, () => large);
   const longestMeshId =
-    Object.values(loaded.native3D)
+    Object.values(native3D)
       .flatMap((source) => Object.values(source.variants))
       .flatMap((variant) =>
         variant.source.geometry.meshes.map((mesh) => mesh.id),
@@ -260,4 +260,15 @@ export async function createNativeObservationRequest(
   );
   options.signal?.throwIfAborted();
   return { execution, expectedPasses, maximumPacketBytes };
+}
+
+/** Explicit transport dispatch for the normal renderer; original API remains strict1. */
+export async function createNativeObservationRequestVersions(
+  ...args: Parameters<typeof createNativeObservationRequest>
+) {
+  if (args[0].preparedNative3D?.version === "composition-prepared-native3d-3")
+    return await createNativeObservationRequestV3(...args);
+  return args[0].preparedNative3D?.version === "composition-prepared-native3d-2"
+    ? await createNativeObservationRequestV2(...args)
+    : await createNativeObservationRequest(...args);
 }

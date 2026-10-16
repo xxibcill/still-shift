@@ -188,9 +188,11 @@ async function fixture(anchor = "face", indicator = false) {
       }),
     ].map((tree, sampleIndex) => {
       const snapshot = tree.layers.find(
-          (state) => state.id === controllerId,
-        )!.nativeFrame!,
-        effective = resolveNative3DVariant(table, snapshot).source;
+        (state) => state.id === controllerId,
+      )!.nativeFrame!;
+      if (snapshot.version !== "native3d-frame-1")
+        throw Error("Original overlay fixture requires frame1");
+      const effective = resolveNative3DVariant(table, snapshot).source;
       const world = new Scene(),
         parts = new Map(effective.parts.map((part) => [part.id, new Group()]));
       for (const definition of effective.parts) {

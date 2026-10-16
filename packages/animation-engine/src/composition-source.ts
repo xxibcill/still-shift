@@ -1,15 +1,13 @@
-import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
+import { readCompositionDocument } from "./composition-document-read.ts";
+import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
 import { dirname, resolve } from "node:path";
-import {
-  AnimationEngineError,
-  validateComposition,
-  type Composition,
-  type CompositionDiagnostic,
-  type CompositionPreparedMedia,
-  type CompositionPreparedAudio,
-  type CompositionPreparedNative3D,
-  type NativeAppearanceCodeIdentity,
+import type {
+  Composition,
+  CompositionDiagnostic,
+  CompositionPreparedMedia,
+  CompositionPreparedAudio,
+  CompositionPreparedNative3DVersions,
+  NativeAppearanceCodeIdentity,
 } from "@still-shift/scene-contract";
 import {
   prepareCompositionMedia,
@@ -23,9 +21,6 @@ import {
   type CompositionNative3DPreparation,
 } from "./composition-native3d.ts";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
-const hash = (bytes: Uint8Array) =>
-  `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
-
 /** Text layers drawn with a generic browser face: root ids or `precomp-id/layer-id`. */
 function systemFontLayers(composition: Composition): string[] {
   const fonts = new Set(
@@ -55,7 +50,7 @@ export type CompositionSource = {
   assetPaths: Record<string, string>;
   preparedMedia?: CompositionPreparedMedia;
   preparedAudio?: CompositionPreparedAudio;
-  preparedNative3D?: CompositionPreparedNative3D;
+  preparedNative3D?: CompositionPreparedNative3DVersions;
   native3D?: CompositionNative3DPreparation["native3D"];
   nativeAppearanceCodeIdentity?: NativeAppearanceCodeIdentity;
   nativeAppearanceCodeSha256?: string;
@@ -69,103 +64,97 @@ export async function readCompositionSource(
   compositionPath: string,
   options: CompositionMediaPreparationOptions & {
     backend?: "canvas2d" | "webgl2";
+    nodeMemory?: CompositionNodeMemory;
   } = {},
 ): Promise<CompositionSource> {
   options.signal?.throwIfAborted();
   const sourcePath = resolve(compositionPath);
-  let bytes: Buffer;
-  try {
-    bytes = await readFile(sourcePath);
-  } catch {
-    throw new AnimationEngineError(
-      "INPUT_UNREADABLE",
-      `Cannot read composition ${sourcePath}`,
-    );
-  }
-  let value: unknown;
-  try {
-    value = JSON.parse(bytes.toString("utf8"));
-  } catch {
-    throw new AnimationEngineError(
-      "SCENE_INVALID",
-      "Composition must be valid JSON",
-    );
-  }
-  const result = validateComposition(value);
-  if (!result.ok)
-    throw new AnimationEngineError(
-      "SCENE_INVALID",
-      result.diagnostics.map((d) => `${d.code} ${d.path}: ${d.message}`)[0] ??
-        "Invalid composition",
-      { diagnosticsJson: JSON.stringify(result.diagnostics) },
-    );
-  const composition = result.composition;
   if (
-    options.backend === "canvas2d" &&
-    composition.assets.some((asset) => asset.type === "native3d")
+    options.nodeMemory !== undefined &&
+    !(options.nodeMemory instanceof CompositionNodeMemory)
   )
-    passageError(
-      "comp-native3d-backend",
-      "Native composition requires WebGL2",
-      { path: "backend" },
+    throw Error("Invalid composition Node memory owner");
+  const owner = new CompositionNodeMemory(options.nodeMemory);
+  try {
+    const { result, checksum } = await readCompositionDocument(
+      sourcePath,
+      owner,
+      options.signal,
     );
-  const native = await prepareCompositionNative3D(
-    composition,
-    dirname(sourcePath),
-    options,
-  );
-  const assetPaths = await validatePreparedAssets(
-    {
-      assets: composition.assets.flatMap((a) =>
-        a.type === "image" ? [a] : [],
-      ),
-      fonts: composition.assets.flatMap((a) => (a.type === "font" ? [a] : [])),
-    },
-    dirname(sourcePath),
-  );
-  const media = await prepareCompositionMedia(
-    composition,
-    dirname(sourcePath),
-    options,
-  );
-  const audio = await prepareCompositionAudio(
-    composition,
-    dirname(sourcePath),
-    options,
-  );
-  return {
-    composition,
-    warnings: result.diagnostics,
-    systemFontLayers: systemFontLayers(composition),
-    assetPaths: {
-      ...assetPaths,
-      ...native?.assetPaths,
-      ...media?.assetPaths,
-      ...audio?.assetPaths,
-    },
-    ...(native
-      ? {
-          preparedNative3D: native.preparedNative3D,
-          native3D: native.native3D,
-          nativeAppearanceCodeIdentity: native.nativeAppearanceCodeIdentity,
-          nativeAppearanceCodeSha256: native.nativeAppearanceCodeSha256,
-        }
-      : {}),
-    ...(media
-      ? {
-          preparedMedia: media.preparedMedia,
-        }
-      : {}),
-    ...(audio ? { preparedAudio: audio.preparedAudio } : {}),
-    ...(media || audio
-      ? {
-          mediaSourcePaths: {
-            ...media?.sourceAssetPaths,
-            ...audio?.sourceAssetPaths,
-          },
-        }
-      : {}),
-    sourcePath,
-    sourceChecksum: hash(bytes),
-  };
+    const composition = result.composition;
+    if (
+      options.backend === "canvas2d" &&
+      composition.assets.some((asset) => asset.type === "native3d")
+    )
+      passageError(
+        "comp-native3d-backend",
+        "Native composition requires WebGL2",
+        { path: "backend" },
+      );
+    const native = await prepareCompositionNative3D(
+      composition,
+      dirname(sourcePath),
+      { ...options, nodeMemory: owner },
+    );
+    const assetPaths = await validatePreparedAssets(
+      {
+        assets: composition.assets.flatMap((a) =>
+          a.type === "image" ? [a] : [],
+        ),
+        fonts: composition.assets.flatMap((a) =>
+          a.type === "font" ? [a] : [],
+        ),
+      },
+      dirname(sourcePath),
+    );
+    const media = await prepareCompositionMedia(
+      composition,
+      dirname(sourcePath),
+      options,
+    );
+    const audio = await prepareCompositionAudio(
+      composition,
+      dirname(sourcePath),
+      options,
+    );
+    const source = {
+      composition,
+      warnings: result.diagnostics,
+      systemFontLayers: systemFontLayers(composition),
+      assetPaths: {
+        ...assetPaths,
+        ...native?.assetPaths,
+        ...media?.assetPaths,
+        ...audio?.assetPaths,
+      },
+      ...(native
+        ? {
+            preparedNative3D: native.preparedNative3D,
+            native3D: native.native3D,
+            nativeAppearanceCodeIdentity: native.nativeAppearanceCodeIdentity,
+            nativeAppearanceCodeSha256: native.nativeAppearanceCodeSha256,
+          }
+        : {}),
+      ...(media
+        ? {
+            preparedMedia: media.preparedMedia,
+          }
+        : {}),
+      ...(audio ? { preparedAudio: audio.preparedAudio } : {}),
+      ...(media || audio
+        ? {
+            mediaSourcePaths: {
+              ...media?.sourceAssetPaths,
+              ...audio?.sourceAssetPaths,
+            },
+          }
+        : {}),
+      sourcePath,
+      sourceChecksum: checksum,
+    };
+    owner.transfer();
+    return source;
+  } finally {
+    owner.dispose();
+  }
 }

@@ -63,7 +63,7 @@ import {
   multiplyMatrices,
 } from "../../mechanism/matrix.ts";
 import type {
-  NativeFrameSnapshot,
+  NativeFrameSnapshotVersions,
   Native3DSourceKey,
 } from "@still-shift/scene-contract";
 import type { Matrix4 } from "../evaluate/spatial-geometry.ts";
@@ -316,7 +316,7 @@ export type NativeDepthOp = {
   kind: "native-depth";
   layer: string;
   sourceKey: Native3DSourceKey;
-  frame: NativeFrameSnapshot;
+  frame: NativeFrameSnapshotVersions;
   sampleFrame: number;
   width: number;
   height: number;
@@ -924,7 +924,7 @@ class GraphBuilder {
     scope: Scope,
     state: EvaluatedLayer,
     frame: Frame,
-    snapshot: NativeFrameSnapshot,
+    snapshot: NativeFrameSnapshotVersions,
   ): NativeWorldGraphicArtwork {
     const binding = state.layer.native3D;
     if (binding?.role !== "world-graphic")

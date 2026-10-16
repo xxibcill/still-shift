@@ -677,6 +677,23 @@ CE6-P or CE8-L-F.
 
 **Outcome:** E01 becomes one consumer of reusable interfaces. Three distinct
 mechanism families establish whether the architecture transfers.
+The [finite14-row reconciliation](./mechanism-shorts-ms2-acceptance.md) maps these
+requirements to current scoped evidence and outstanding admissions. Fresh full67-1
+actually failed the ordinary Node/Lab-loading test after4353 units/242 runtime
+passes; slice67 repairs the strip-only constructor syntax and passes13 existing
+owning tests plus ordinary fast4353/428. The failed aggregate is retained;
+current full/final installed/pack and separate human gates remain open. Slice68
+now delivers actual named recognition thumbnails at their declared neutral-frame
+sizes, with six independent native observations and exact repeat/decoded PNG
+proof; [thumbnail evidence](./mechanism-shorts-ms2-pack-thumbnail-results.json)
+keeps candidate status and the failed initial dimension assumption explicit.
+Slice69 closes the located browser catalogue clone/transaction-lifetime gap before
+schema copies under unchanged worker budgets. Final4363-unit fast,26 owning
+cases/six native-PBR-family-cache groups and five public shared-parent exports
+pass in distinct stages; [admission evidence](./mechanism-shorts-ms2-native-catalogue-admission-results.json)
+retains all failures and independently pins56 frames/134 pass associations and
+Node/worker retirement. Declared peaks and measured RSS do not establish a
+physical/driver ceiling; final full/archive/installed and pack/human gates remain.
 
 - [ ] Create tape-hook slider, cable-tie ratchet/pawl and clothespeg hinge/spring
       packs by extending the accepted MS1/MS1N contracts. Each declares immutable
@@ -696,6 +713,100 @@ mechanism families establish whether the architecture transfers.
       spaces. Validate extensions and local dependencies. Reject unsupported skins,
       morphs, animations, compression or material features unless explicitly added
       with tests; never silently flatten a model's required mechanism behavior.
+      Eighteenth slice adds the named/baked rigid import IR, local dependency
+      validation and exact encoded PBR roles with current software evidence.
+      Nineteenth slice adds pinned PNG/JPEG RGBA preparation, explicit native PBR/
+      tangent resource ownership, shared pre-decode allocation admission and actual
+      indexed-draw/mip0 GPU component proof. Twentieth slice adds rigid source3
+      shared-world execution; twenty-first adds composition source/binary HTTP,
+      frame3, preview and static PBR styles. Twenty-second verifies all used GPU
+      mip storage/bytes/transfer with independent current-environment derivation,
+      sampler/LOD controls, foreign-state restoration and bounded scratch. Twenty-third
+      adds standalone strict frame3 observations: actual rigid draw coverage, GPU
+      matrices/bytes/mips, measured Three world/anchors and independent validation.
+      Twenty-fourth slice repairs current strict gates without changing original
+      budgets or frozen gradient oracles: fast42 passes 4,177 units, Node44 passes
+      ten owning checks, and fresh source3/native2 browser groups pass. Earlier
+      failures remain in the [strict-gate history](./mechanism-shorts-ms2-strict-gates-results.json).
+      Twenty-fifth slice adds the strict output3 envelope and ordered async collector
+      beside the original output2 parser. Current fast/owning Node and native2
+      composition/export checks pass; [collector evidence](./mechanism-shorts-ms2-output3-collector-results.json)
+      retains test-ownership/type failures. Source3 collection/export stays rejected.
+      Twenty-sixth slice adds incremental conservative output3 capacity and fresh
+      actual GPU receipt-to-collector bounds. All eight packets fit 28,165B admission;
+      current units/Node/browser checks finish in stages with the original failed
+      timeout retained in [capacity evidence](./mechanism-shorts-ms2-output3-capacity-results.json).
+      Twenty-seventh slice integrates asynchronous output3 composition collection
+      with independent GPU receipt validation and separately admitted world artwork
+      sharing physical depth. Current normal fast/Node, eight standalone controls,
+      six source3 seeks/two artwork controls and all six native2 groups pass on held
+      inputs; [composition evidence](./mechanism-shorts-ms2-output3-composition-results.json)
+      retains type failures and qualified lost receipts. Authenticated source3
+      export, installed and whole-world proof remain pending. Twenty-eighth slice
+      adds strict execution3 and the awaited journal/replay boundary. Two repeated
+      actual one-frame raw journals replay with five forgeries rejected under the
+      unchanged default replay quota; normal fast/Node/native2 groups pass on held
+      inputs. [Journal evidence](./mechanism-shorts-ms2-output3-journal-results.json)
+      retains type/key/quota/helper failures. Normal source3 producer/export
+      dispatch is now implemented in the twenty-ninth slice: two actual11-frame
+      authenticated source3 MP4 exports and unused-source3 output pass with current
+      fast/Node/native2/primitive regressions on held inputs. [Normal export evidence](./mechanism-shorts-ms2-output3-export-results.json)
+      retains command/type failures. Thirtieth slice adds actual mixed fractional
+      frame1/frame2/frame3 export: six output frames/54 actual passes, authenticated
+      packet/pixel bodies, independent retained-row replay and seven real endpoint
+      rejection controls. Normal fast and owning mixed proof pass on held test
+      inputs with unchanged production. [Mixed evidence](./mechanism-shorts-ms2-output3-mixed-results.json)
+      retains the invalid overlapping fixture and correction preserving the rule.
+      Thirty-first slice bounds raw source admission at the original32MiB ceiling
+      using a regular descriptor, exact backing store plus growth sentinel and
+      cancellation/final-stat cleanup. Node PBR verification hashes actual binary
+      bodies through64KiB scratch; the original retaining API stays compatible.
+      Current fast/Node and normal/mixed source3/native2 export groups pass on held
+      inputs. [Admission evidence](./mechanism-shorts-ms2-source-admission-results.json)
+      retains new build/lint failures. Aggregate parsed-source/world/body/replay
+      remain pending. Thirty-second slice verifies a fresh local archive at b4fc65ed:
+      maintained28 checks, four installed public exports/34 frames/130 passes with
+      checkout/source access denied, independent receipt replay and scoped negatives.
+      Exact audit matches928 copied Git source and2,275 total members. [Installed
+      evidence](./mechanism-shorts-ms2-installed-source3-results.json) retains harness/
+      auditor failures and pins execution to that pre-documentation source. Whole
+      quotas, remaining MS2 criteria/full gates and final archive refresh remain.
+      Thirty-third slice repairs shared world constructor/temporary/destructor
+      ownership without changing admission or render math. Six focused failure
+      controls, fast4 with4,204 units and live source3/normal/mixed/native2/depth
+      groups pass on held inputs. Two normal MP4s and six mixed raw HTTP bodies
+      exactly preserve the preceding renders. [Ownership evidence](./mechanism-shorts-ms2-world-ownership-results.json)
+      separates application-visible retirement from unproven driver internals and
+      keeps aggregate/full/installed refresh requirements open. Thirty-fourth
+      slice retires nested PBR owners/private typed backings and preserves source3
+      setup failure through cleanup, without changing source schemas/render math.
+      Focused 16 controls, fast16 with 4,208 units and six owning PBR GPU/export groups
+      pass on held inputs; normal MP4/mixed HTTP pixels exactly preserve slice33.
+      [Nested evidence](./mechanism-shorts-ms2-pbr-ownership-results.json) retains lint
+      failure. Source/preparation admission against 512 MiB Node allowance and whole
+      world/body/replay/full/final-installed acceptance remain open;
+      thirty-fifth slice bounds JSON ingestion before body/decode and JSON.parse
+      under the unchanged 512 MiB allowance, with accumulated native entries and
+      actual dense/padded/large-valid controls. Fast24 with 4,213 units and scoped
+      Node/PBR/native2 groups pass on held inputs24. [JSON ingestion evidence](./mechanism-shorts-ms2-json-source-admission-results.json)
+      retains failures and distinguishes this foundation from retained catalogue/
+      variant, source/result coexistence and full aggregate acceptance;
+      thirty-sixth slice shares native ingestion/admitted catalogue, result/RPC and
+      concurrent revalidation under one unchanged Node allowance. Six new unit/two
+      filesystem controls, fast15 with 4,219 units and current Node/PBR/native2
+      groups pass on held inputs15, preserving prior MP4/raw pixel bytes.
+      [Node owner evidence](./mechanism-shorts-ms2-node-owner-results.json) retains
+      failures and pre-publication telemetry limits. Root I/O/text/serialization,
+      remaining producers, whole world/body/replay/full/installed acceptance stay open;
+      thirty-seventh slice admits root descriptor/body/text/parser and scene JSON/
+      UTF-8 encoding under the shared Node allowance, with scoped rollback and
+      actual backing cleanup. Fast20 with 4,223 units, Node21 with 30 checks and
+      current PBR/native2 groups pass on held inputs20, preserving prior video/pixels.
+      [Root I/O evidence](./mechanism-shorts-ms2-root-io-results.json) retains actual
+      lint/unit failures. Semantic validation/report and remaining producers,
+      lifetime/whole world/body/replay/full/installed requirements stay open;
+      this criterion stays unchecked. See the [import API](./rigid-gltf-import.md) and
+      [retained results](./mechanism-shorts-ms2-results.json).
 - [ ] Implement slider hard stops, hinge/lever, deterministic spring return and
       ratchet/pawl controls. These are explanatory animation rigs, not a general
       physics solver. Keep gears, cams and flexible-strip behaviors demand-driven.
@@ -707,13 +818,27 @@ mechanism families establish whether the architecture transfers.
       failures to the rig, parts, relationship and first failing interval. Evaluate
       valid states without dependence on playback history; MS3 integrates these
       results into unified QA.
-- [ ] Add recognition, contact approach, macro, aligned comparison, controlled orbit
+      Slice38 adds a versioned authored state/transition/event contract, required
+      relationship and narrowed signed-gap contact checks with located first failure.
+      All output/event samples and requested fractional seeks use pure evaluation;
+      seven new controls cover all three candidates. Four live family dimension
+      cycles compile 96 frames and reuse controls through 40 previews/eight exports.
+      [Timeline evidence](./mechanism-shorts-ms2-pack-timeline-results.json) retains
+      build/identity failures; [API](./mechanism-pack-timelines.md) separates discrete
+      state checks from continuous-time and unified production QA. This criterion
+      remains unchecked pending the complete family/production acceptance.
+- [x] Add recognition, contact approach, macro, aligned comparison, controlled orbit
       and return recipes. Frame actual target bounds using lens/view direction and
       reserved overlay regions. Check near planes and camera intersections; retain
       authored overrides when automatic framing obscures the decisive surface.
       Declare the target relationship and motion intent. Keep cut/hold/transition
       choices independent of the camera recipe; verify endpoints and intermediate
       framing, and distinguish intentional cuts from unintended camera jumps.
+      Software scope: slice17 verifies all six recipes/three candidates/default and
+      larger sizes, every frame of the24-frame native fixtures and repeated exports.
+      Current producer refresh retains staged source12 capture/source13 replay
+      evidence; longer timelines/import/human acceptance remain separate. See
+      [MS2 results](./mechanism-shorts-ms2-results.json).
 - [ ] Support screen-pinned labels with moving leaders, world text and surface
       markings through explicit supported routes. Use deterministic layout candidates
       and tie-breaking, label-to-label exclusions, protected contact regions,
@@ -722,31 +847,293 @@ mechanism families establish whether the architecture transfers.
       failure if no valid layout exists.
       Derive temporal stabilization from the timeline or a deterministic prepass so
       hysteresis never makes random seeking depend on prior playback.
+      Slice44 adds cue-wide constant screen-label placement, authored locks,
+      priority/stable IDs and bounded backtracking, with safe/caption/label exclusions
+      and streamed integer-frame contact projections. Three families/two edited
+      stages pass 360 actually visible/font-measured frames, 1,080 forward/reverse/
+      shuffled draws and 12 exports/720 independent final native frames. Fast10
+      passes 4,270 units and 38 runtime checks; six receipts match exact snapshots.
+      [Layout evidence](./mechanism-shorts-ms2-cue-layout-results.json) retains a
+      deliberately stopped hidden-label proof and failed checks; [API](./mechanism-cue-layout.md)
+      separates conservative envelopes from encoded/continuous/broader route QA.
+      Slice55 adds an explicit part-local world-text route with bounded pinned-font
+      boxes and actual glyph overflow failures. Shared evaluator60 inherits physical
+      part/ancestor visibility; stable-ID/CAS world edits require native invalidation.
+      Final fast6 passes4,320 units/424 files. Three families/two ink stages pass360
+      previews/1,080 seeks/six native exports/360 final frames and18 hidden/omitted
+      controls. Independent retained/decode/sample-clock/control-source audits pass;
+      all12 sampled PNGs are agent-viewed. Failed color, required-shape control, type
+      and format attempts remain in [world-text evidence](./mechanism-shorts-ms2-world-annotation-results.json).
+      A world plane does not validate a mesh surface or broader world layout.
+      Slice56 adds explicit rigid indexed-triangle marking, Float32 face/basis
+      placement, guarded-box/opaque/unit-scale/precision admission and complete
+      variant CAS replacement. A real pinned Three cold/warm sorting negative
+      leads to stable physical/artwork depth ties with depth tests/writes active.
+      Final fast11 passes4,331 units/425 files. Native2/current source audit9 passes
+      depth14/six composition/cancellation/70 readbacks/30 exact pairs. Surface9
+      passes360 previews/1,080 seeks/six exports/360 native frames/18 controls;
+      independent audit2 verifies24 triangle-box quads/360 matrices and colored
+      ink in every encoded frame. Fresh default world1/audit1 preserves all360
+      preview/decoded frames and six audio/encoded bodies against slice55.
+      All24 original surface/world PNGs agent-viewed; held2,611 inputs/120,444,661B
+      unchanged. Actual font/safe-area, encoded ink,16-ULP/cold-seek and decoder
+      failures remain in [surface evidence](./mechanism-shorts-ms2-surface-marking-results.json).
+      Broader layout/encoded glyph-copy/readability and human review stay open.
+      This expanded criterion remains unchecked.
 - [ ] Add tabs, open callouts, brackets, arrows and restrained highlights with
       explicit hidden/offscreen behavior and authored locks. A true surface marking
       is part of the 3D plate and invalidates it; ordinary label edits do not.
+      Slice53 adds shared composition-native multi-anchor straight paths and
+      screen-tangent arrowheads with all-anchor visibility and early reference
+      admission. Its diagnostic controls are recorded separately from cue recipes,
+      real surface/world authoring, plate reuse and encoded/human acceptance in
+      [annotation evidence](./mechanism-shorts-ms2-annotation-results.json).
+      Slice54 wires all five screen recipes with optional bounded style/visibility
+      schemas, authored locks and identity multi-anchor groups. Exact legacy tab
+      output remains preserved. Final fast2 passes 4,313 units/423 files; native
+      depth/composition/cancellation and fresh style browser4 pass on held inputs.
+      Three families/five styles verify 180 preview frames/540 seeks and six native
+      exports/360 independently replayed final frames, with decoded video/audio,
+      dependency and retained PNG audits. The
+      centered-group, cable framing and mismatched arrow ink failures are repaired
+      and retained in [style evidence](./mechanism-shorts-ms2-annotation-style-results.json).
+      Slices55/56 cover bounded world/surface binding and actual invalidation.
+      Slice57 verifies the internal native-picture partition and integer-held
+      lowering of all five screen styles, including group/hidden semantics.
+      Final fast1 passes4,344 units/427 files; held2,615 inputs unchanged. These
+      are pure data tests; no authenticated plate or cached export is claimed.
+      [Foundation evidence](./mechanism-shorts-ms2-native-plate-reuse-results.json)
+      retains all failed attempts. Slice58 captures native-only PNG16 plates with
+      copied dependencies and original source/native closure replay. Caption/gain
+      preserve the180 frames;28 artifact/3 PNG/3 camera controls reject changes.
+      Independent hierarchy/camera/hash/decode and actual live cancellation pass;
+      final fast1 passes4,344 units/427 files on unchanged2,620 inputs. Original
+      capture observations are not relabelled as fresh reused draws.
+      [Capture evidence](./mechanism-shorts-ms2-native-plate-capture-results.json)
+      retains failures. Slice59 adds actual current-cue overlays/audio onto original
+      verified plates, a separate reuse receipt and measured zero new native submissions.
+      Render3:3 families/five styles/6 stages;6 direct/12 cached exports/720 ordinary
+      image deliveries;360 preview pairs/maxRGB1 within fixed2/720 cached seeks.
+      Repeated encoded/decoded output and current audio match;3 gain edits change PCM.
+      All60 altered fact/counter controls/3 stale/3 pre-aborts reject. Audit3 matches
+      57 pins/180 original PNG+journal/900 decoded frames/1,260 hierarchy pairs/
+      180 camera triples. All30 original sampled PNGs agent-viewed. Nested Node
+      ownership is repaired; final fast2 passes4,346 units/427 files on2,624 unchanged
+      inputs. [Export evidence](./mechanism-shorts-ms2-native-plate-export-results.json)
+      retains failed attempts and lossy encoded diagnostics. Internal modules only;
+      public API/CLI, actual world/surface cache breadth, full99/resources/installed/
+      pack admission and broader encoded/human acceptance keep this criterion unchecked.
+      Slice61 adds actual world/surface plate reuse across all three families with
+      admitted240x136/1440x816 pictures. Six retained cases verify360 preview pairs
+      within fixedRGB2/max1,720 seeks,12 native-ink invalidations and unchanged
+      RGB8/min8 preview/RGB28/min3 encoded guards;30 sampled PNGs are agent-viewed.
+      The producer reports passed but its truncated root terminal is unverified.
+      Owned independent audit1 checks114 fact pins,360 PNG16 frames recovered to
+      original native RGBA transport hashes,2,520 hierarchy/360 camera triples,
+      720 MP4 decoded frames and18 complete PCM streams. Failed ordinary fast1 and
+      isolated style timeouts are retained. Separately located family cases preserve
+      every assertion and5s per-case; tape keeps30s. Complete one-worker fast-tier2
+      passes4,348 units/427 files on held2,627 inputs/120,587,636B. No production or
+      browser change follows the owning render/audit. [World/surface cache evidence](./mechanism-shorts-ms2-world-plate-export-results.json)
+      separates artifact completion from the lost producer terminal. The registered
+      full matrix is100 and must own a fresh terminal; public API/CLI/in-flight,
+      whole resources/final installed/pack/genuine speech and broader encoded/human
+      acceptance remain required. The expanded annotation criterion stays unchecked.
+      Slice62 exposes the verified cache lifecycle at the existing public engine
+      root with strict receipt schemas/constants/types and bounded CLI/discovery.
+      Owned actual API/CLI consumer capture60/export4 verifies240 image calls and
+      zero fresh native export submissions; label/gain edits preserve original plates,
+      current checks pass and old compilation/output checks reject. Independent audit1
+      verifies33 fact pins/60 original PNG16 transport identities/660 hierarchy pairs/
+      60 camera triples/240 decoded MP4 frames/four complete PCM streams. All10 sampled
+      PNGs are agent-viewed;120 preview pairs/max1 remain within fixedRGB2. Fast-tier1
+      one-worker passes4,348 units/427 files; runtime22/three files pass on held2,631
+      unchanged inputs/120,619,011B. [Public cache evidence](./mechanism-shorts-ms2-public-cue-cache-results.json)
+      retains the root-red and audit/format qualifications. Full101, final installed
+      consumer, in-flight edits/cancellation and whole resource/lifetime gates remain
+      required alongside genuine speech/encoded readability/pack/human acceptance.
+      Slice63 shares cached render/check with the existing caller Node owner and
+      verifies real complete worker-upload-triggered cue/audio/consumed-plate changes
+      plus two live cancels. Final producer5 owns exit0 for3 rejections/246 complete
+      uploads/one60-frame recovery with measured fresh native0/four quota controls.
+      Original71 plate files and caller output remain exact; local leases retire
+      while a foreign lease survives calls and retires on root disposal. Normal
+      declared high water285,155,818B stays under unchanged512MiB; separate sampled
+      physical RSS is not that allowance. Post-settlement observed descendant waits
+      ~28ms remain under existing2s. Owned audit2 verifies90 pins/60 native PNG transport
+      identities/660 hierarchy pairs/60 cameras/60 recovery decoded frames/full PCM;
+      the proper first-upload viewing PNG matches prior preview everyRGBA byte.
+      Fast-tier1(one worker) passes4,348 units/427 files on held2,632 unchanged inputs.
+      [Lifetime evidence](./mechanism-shorts-ms2-cue-cache-lifetime-results.json)
+      retains failed observers/diagnostic/abort/view-row attempts. Whole application/
+      source/driver resource/replay admission and full102/final installed/pack/genuine
+      speech/broader encoded/human acceptance keep this criterion unchecked.
 - [ ] Compile semantic contact/release/return events from supplied narration cues
       into all picture, annotation, caption and sound tracks. Reject overfull shots,
       out-of-recording cues and insufficient reading/action time. Do not stretch
       speech or insert filler silence to satisfy a rigid shot template.
+      Slice60 separately measures four existing spoken takes at actual48k clocks
+      (938,458/1,032,081/1,027,623/1,105,642 mono frames) with complete source/RIFF/
+      PCM/normalized re-decode audits. Supplied13 visual cue endpoints fit; rounded
+      final words need15/9 sample authoring clamps and peg's final visual end+1 sample.
+      The revised-copy hook is3.483s shorter. Canonical clips stay outsideGit;
+      [sample-clock evidence](./mechanism-shorts-ms2-spoken-sample-clock-results.json)
+      does not infer genuine cue/native, listening, factual or pilot acceptance.
+      Slice39 adds the versioned supplied-PCM cue compiler for all five tracks,
+      relative motion references and unchanged narration sample count/clock. Source
+      and visible reading/action holds, including frame quantization, fail with
+      located diagnostics. All three candidates/two synthetic takes verify 12
+      repeated actual exports/900 final native frames with independent replay and
+      complete decoded video/audio comparison. [Cue evidence](./mechanism-shorts-ms2-narrated-cycle-results.json)
+      retains type/font/driver failures and intentionally stopped fast8; [API](./mechanism-narrated-cycles.md)
+      records quantization and separates engineering PCM from genuine spoken-input/
+      human acceptance. Full rendered readability and pilot acceptance remain open.
+      [Slice52 recovered inputs](./mechanism-shorts-ms2-spoken-input-results.json)
+      pins existing unpaced spoken takes and supplied timed transcripts for all
+      three families: four audio hashes and thirteen word-range/shot associations
+      match retained receipts. A tape-hook replacement is recorded 3.482993s
+      shorter with revised copy; it requires fresh caption/cue compilation.
+      Two rounded transcript endpoints slightly overrun receipt durations; actual
+      decoded sample bounds must govern authoring. No new synthesis, spending,
+      successful genuine-speech render or owner acceptance is claimed.
+      That is the historical slice52 scope. Slice64 now authors all247 supplied
+      words/20 semantic windows for four whole48k takes, including the revised-copy
+      hook at587 frames versus legacy692. Only measured final-word15/9 sample clamps
+      and peg's visual-end+1 are applied to authoring; source audio stays byte-exact.
+      Concise explanatory captions fit unchanged18 graphemes/s; original overfull
+      final hook/tie clauses and source/action/engaged reverse/product release controls
+      reject. Owned native1 verifies8 repeated exports/5,136 native frames; complete
+      bodies/decoded frames/PCM repeat. Owned audit1 verifies60 pins/41,028 hierarchy
+      pairs/5,136 cameras/decoded frames;44 viewed frame pixels match it. Ordinary
+      fast1 passes4,353 units/428 files on held2,637 inputs. The post-native32B test
+      change only removes unused import/rest-sibling names; production/authoring/media
+      remain fixed. [Genuine cue evidence](./mechanism-shorts-ms2-genuine-spoken-cue-results.json)
+      retains prototype/type/lint failures and the lost prototype2 terminal. Contact
+      labels hide under current occlusion policy; wide hook travel is subtle. Actual
+      closeups/annotation/continuous/encoded/factual/listening/portrait/pack acceptance
+      and whole resources/current full/final gates remain open; no human acceptance
+      follows from this engineering proof. The private opt-in group does not make
+      the portable full102 depend on private media.
+      Slice65 supplements frozen E06 source access with an owned official USPTO
+      22-page patent scan and visual reading of complete relevant pages1/3/10/11/12,
+      including Fig8–11 and printed columns7–9. The specific illustrated load-seating
+      embodiment supports the question; source/selection hashes still match slice50.
+      [Primary-source admission](./mechanism-shorts-ms2-e06-primary-admission-results.json)
+      retains failed full-page fetches and unavailable text extraction. It changes
+      no code or frozen board and admits no universal tie, force magnitude, factual
+      asset, new behavior, continuous native, supported pack or episode coverage.
+      Slice66 implements a bounded presentation pass on all20 genuine windows:
+      stationary named cuts/holds reserve caption/callout space; existing visible
+      anchors expose hook faces, pawl tip and peg spring seat. Native temporal
+      samples diagnose held-state interpolation opening the peg during intro;
+      public CAS moves its one-second opening to frames107–137 of its spoken cue,
+      retaining release312/stop and all whole audio/captions/word/sample windows.
+      All16 original pre-revision bodies match slice64. Preflight4 checks2568 frames
+      (2426 visible/142 intentional contact occlusions) and independent peg angles;
+      native previews80 captures/encoded first-hook19 samples are agent-viewed.
+      Ordinary fast3 passes4353 units/428 files on held2638 inputs. Owned native1
+      now exits0:8 exports/5136 native frames and complete repeated encoded/video/PCM
+      identity. Independent audit1 exits0:64 pins/41028 hierarchy pairs/5136 camera
+      and decoded frames/1286 peg angles/1064 hook matrices from compensation onset
+      (734 within compensation windows). All79 selected final-first frames are
+      agent-viewed; prior first-hook19 pixels match exactly. All2568 prior decoded
+      pictures change while complete old/new AAC PCM stays exact. Source hold3
+      remains unchanged. [Presentation evidence](./mechanism-shorts-ms2-spoken-presentation-results.json)
+      preserves clipping/EEXIST/type/format/lint failures and the superseded timing.
+      Hidden cloth/initial jaw contacts remain physically hidden; current full,
+      final archive/installed/pack/coverage/human/portrait gates stay open.
 - [ ] Expose registry-derived discovery, per-component schema/parameter help,
       small examples, asset metadata and stable revision-aware editing. Publish
       versioned JSON Schemas for the expanded contracts and retain MS1 response
       budgets, complete-report access and unsupported-version diagnostics.
-- [ ] Create the topic-to-family coverage board during family selection under the
+      Slice40 derives family discovery, help/examples and immutable asset metadata
+      from the actual three generator schemas; shared expanded CLI and published
+      schemas keep existing response limits and full-report pagination access.
+      Fast4 passes 4,249 units and 19 CLI regressions on held inputs; actual persisted
+      three-family/pagination/six schema exports pass. [Registry evidence](./mechanism-shorts-ms2-family-registry-results.json)
+      retains the test type failure and [API](./mechanism-family-registry.md) describes
+      the contract. This item remains unchecked pending saved revision-aware
+      family/cue editing and complete expanded acceptance.
+      Slice41 adds saved family authoring with pinned pack/project identities,
+      scoped generator-input edits and atomic revision/hash CAS under the existing
+      artifact lock. Fast5 passes 4,256 units and 26 filesystem/CLI checks; actual
+      three-family CLI edits/resume retain exact source bytes and stale-write
+      preservation. [Authoring evidence](./mechanism-shorts-ms2-family-authoring-results.json)
+      retains the fixture type failure; [API](./mechanism-family-authoring.md)
+      declares dependent regeneration rather than claiming it occurred. Cue editing,
+      dependency-aware render/check and complete expanded acceptance remain open.
+      Slice42 adds source-pinned saved cue editing with stable targets, revision/hash
+      CAS, media/clock invariants and full semantic recompile before atomic writes.
+      Fast7 passes 4,263 units and 33 filesystem/CLI checks; three-family actual
+      caption revisions verify 12 repeated exports/720 independently replayed native
+      frames, changed decoded video and preserved complete decoded/source audio.
+      [Cue edit evidence](./mechanism-shorts-ms2-cue-authoring-results.json) retains
+      two build failures; [API](./mechanism-cue-authoring.md) separates required cache
+      refresh from completed rerender. Dependency-aware rendering/check and complete
+      expanded acceptance remain open.
+      Slice43 adds revision-bound saved family/cue compilation, actual media loading,
+      normal native export and output checking with encoded identity/video facts and
+      independent native observation replay. Fast8 passes 4,263 units and 38 runtime
+      checks; 12 three-family exports/720 frames plus four actual CLI routes and one
+      further export/60 frames pass. [Lifecycle evidence](./mechanism-shorts-ms2-cue-lifecycle-results.json)
+      retains failed import/build/boundary runs; [API](./mechanism-cue-lifecycle.md)
+      declares whole-cycle rerender. Selective shot reuse and complete expanded
+      acceptance remain open.
+- [x] Create the topic-to-family coverage board during family selection under the
       coverage contract above. Classify all proposed pilot candidates and record
       support criteria, selected distinct-episode denominator and new-asset/new-rig
-      counts before handing the selection to MS3.
-- [ ] Expose explicit genuine-weight versus outline treatment and units, retaining
+      counts before handing the selection to MS3. Slice50 freezes ten causal
+      questions with immutable base references, views/capabilities, work and overlap:
+      five existing targets, three new-asset/existing-rig routes and two behavior
+      routes. Five episodes require assets and two require behavior extensions;
+      admitted new assets/rigs remain zero. Validated coverage is 0/10; all packs
+      are candidates. [Board](./mechanism-topic-family-coverage.md) and
+      [evidence](./mechanism-shorts-ms2-coverage-results.json) retain the failed
+      fixture/rerun, seven focused tests, independent hash/accounting audit and
+      fast1 4,293 units/421 files. Only board creation is complete; positive
+      support admission, pack validation and MS3 production remain open.
+- [x] Expose explicit genuine-weight versus outline treatment and units, retaining
       legacy automatic behavior with resolved-route diagnostics. Reuse MS1 font
       identity; generalize quantity/phrase helpers only where repeated authoring
-      friction warrants it.
+      friction warrants it. Slices45/46 provide explicit treatments, pure receipts
+      and located unavailable genuine requests. Exact MS1 variable/static/max/mixed
+      font controls preserve complete historical/current/explicit output parity;
+      positive mixed headroom/clamping, actual compiled/posed units, release/end,
+      all-frame reverse/shuffled seeks and encoded natural English gaps pass on
+      WebGL2 and Canvas2D native text. [API](./mechanism-text-weight-treatments.md),
+      [initial API evidence](./mechanism-shorts-ms2-text-weight-results.json) and
+      [native render evidence](./mechanism-shorts-ms2-text-weight-render-results.json).
+      This is scoped software/native acceptance; production human review and the
+      separate count+fit/Thai risks remain required.
 - [ ] Before adopting count+fit or finer Thai motion, run the scoped reproductions
       in the [typography risk table](./typography-motion-engine-plan.md#scoped-validation-of-source-audited-risks):
       generated two-decimal count values, all six Thai stress strings, independent
       versus intact poses, run boundaries and opt-in tracking versus zero. Record
       negative and positive results before scoping repairs. Existing numeric-binding
       fit rejection and ordinary tracking defaults remain compatible.
+      [Slice47](./mechanism-shorts-ms2-count-fit-results.json) reproduces and repairs
+      the permitted shared-fit count route: narrow 96 → 38 px fits all 63 strings,
+      with unchanged wide/no-fit controls, stable bounds, real native exports and
+      preserved 10,000-string/numeric-binding guards. Count-fit software scope is
+      closed; this combined item remains open for all Thai/production-copy probes.
+      [Slice48 preflight](./mechanism-shorts-ms2-thai-preflight-results.json) saves
+      all six strings plus production copy in 128 valid native compositions, with
+      strict font coverage, loaded layouts, 3,072 pose frames and compatible default/
+      explicit-zero controls. Native consecutive encoded/reduced inspection and
+      supported-unit findings remain required; this checkbox remains open.
+      [Slice49 native packet](./mechanism-shorts-ms2-thai-native-results.json) adds
+      all 128 cases/142 streams, complete first-clip decode, native/320/360
+      consecutive sheets and all-frame native seek proof. Seventy lossless settled
+      comparisons match exactly; seventeen sampled visual artifacts do not certify
+      all matrix cells. Remaining mark/overlap/gap disposition and supported-unit
+      findings keep this item open; active partial quantity states are not certified.
+      [Slice51 sampled review](./mechanism-shorts-ms2-thai-review-results.json)
+      inspects all114 distinct cells at frames8/18 and three sizes (42 overviews,
+      684 displayed samples). Settled copy/marks remain present in those samples.
+      Located negatives include a lone leading-vowel retype prefix, a USB-C split
+      under a size boundary, and a499/บาท split under optical tracking. Active
+      retype/opacity are not complete reading holds; finer Thai motion remains
+      unadopted pending full-cell intermediate mark/overlap/gap disposition.
 
 The cable-tie fixture may use an explicitly authored exposed teaching variant to
 show the pawl. It must identify that variant; generic section-plane/cap support

@@ -1,3 +1,7 @@
+export { compositionWorkerMemoryLimits } from "./composition-export-memory.ts";
+export { serializeCompositionNodeJson } from "./composition-node-json.ts";
+import type { CompositionNodeMemory } from "./composition-node-memory.ts";
+export { CompositionNodeMemory } from "./composition-node-memory.ts";
 import { compositionPcmBoundary } from "@still-shift/scene-contract";
 import { CompositionResultBudget } from "./composition-result-budget.ts";
 import { compositionResultSize } from "./composition-result-size.ts";
@@ -69,14 +73,28 @@ import type { BrowserExportResult } from "./export-page.ts";
 import {
   NativeObservationSink,
   admitNativeObservationCapacity,
-  admitNativeObservationManifest,
   nativeObservationOwner,
-  verifyNativeObservationClosure,
-  type NativeObservationClosure,
-  type NativeObservationExecutionBinding,
-  type NativeObservationExpectedPass,
 } from "./native-observation-sink.ts";
 export * from "./native-observation-sink.ts";
+export {
+  NativeObservationSinkV2,
+  NativeObservationExecutionV2Schema,
+  admitNativeObservationManifestV2,
+  verifyNativeObservationClosureV2,
+  type NativeObservationExecutionBindingV2,
+  type NativeObservationExpectedPassV2,
+  type NativeObservationClosureV2,
+} from "./native-observation-v2.ts";
+export * from "./native-observation-v3.ts";
+export * from "./native-observation-dispatch.ts";
+import {
+  admitNativeObservationRequestVersions,
+  createNativeObservationSinkVersions,
+  nativeObservationPacketVersion,
+  verifyNativeObservationClosureVersions,
+  type NativeObservationRequestVersions,
+  type NativeObservationClosureVersions,
+} from "./native-observation-dispatch.ts";
 export type { CompositionOutputFormat } from "./composition-output.ts";
 export {
   COMPOSITION_OUTPUT_FORMATS,
@@ -105,11 +123,9 @@ export type ExportAudioInput = {
 };
 
 export type ExportRequest = {
-  nativeObservation?: {
-    execution: NativeObservationExecutionBinding;
-    maximumPacketBytes: number;
-    expectedPasses(frame: number): readonly NativeObservationExpectedPass[];
-  };
+  /** Optional render-owned source/result capacity owner; its limit is fixed. */
+  nodeMemory?: CompositionNodeMemory;
+  nativeObservation?: NativeObservationRequestVersions;
   runtime?: BrowserRuntimeOptions;
   scene: ExportableScene;
   signal?: AbortSignal | undefined;
@@ -145,7 +161,7 @@ export type ExportRequest = {
 };
 
 export type ExportMetrics = {
-  nativeObservations?: NativeObservationClosure;
+  nativeObservations?: NativeObservationClosureVersions;
   version:
     | typeof EXPORT_WORKER_VERSION
     | typeof COMPOSITION_EXPORT_WORKER_VERSION
@@ -511,7 +527,7 @@ const assetPlugin = (
     cacheBroker(): CompositionSurfaceBroker | undefined;
   },
   native?: {
-    sink: NativeObservationSink;
+    sink: ReturnType<typeof createNativeObservationSinkVersions>;
     exportId: string;
     credential: string;
     fail(reason: unknown): void;
@@ -586,7 +602,7 @@ const assetPlugin = (
               }
               if (received !== length)
                 throw Error("Observation upload ended before its byte count");
-              native.sink.acceptPacket(0, bytes);
+              await native.sink.acceptPacket(0, bytes);
               frameState.pending = false;
               response.statusCode = 204;
               response.end();
@@ -845,9 +861,10 @@ export const exportScene = async (
       scene.timeline.frameCount,
       request.nativeObservation.maximumPacketBytes,
     );
-    admitNativeObservationManifest(
-      request.nativeObservation.execution,
+    admitNativeObservationRequestVersions(
+      request.nativeObservation,
       resolve(request.outputPath),
+      "preparedNative3D" in scene ? scene.preparedNative3D?.version : undefined,
     );
   }
   const workOptions =
@@ -1101,18 +1118,21 @@ export const exportScene = async (
   let workMetrics: ExportMetrics["work"];
   const resultBudget =
     "schemaVersion" in scene && scene.schemaVersion === "composition-scene-1"
-      ? new CompositionResultBudget(scene.timeline.frameCount)
+      ? new CompositionResultBudget(
+          scene.timeline.frameCount,
+          request.nodeMemory,
+        )
       : undefined;
   const nativeSink = request.nativeObservation
-    ? new NativeObservationSink({
+    ? createNativeObservationSinkVersions(request.nativeObservation, {
         outputPath,
         exportId,
         frameCount: scene.timeline.frameCount,
-        ...request.nativeObservation,
+        signal: request.signal,
         reserve: (bytes) => resultBudget!.reserveTransient(bytes),
       })
     : undefined;
-  let nativeObservations: NativeObservationClosure | undefined;
+  let nativeObservations: NativeObservationClosureVersions | undefined;
   const nativeRequests = new Set<IncomingMessage>();
   const nativeTransfers = new Set<Promise<unknown>>();
   const stopNativeRequests = (reason: unknown) => {
@@ -1399,6 +1419,15 @@ export const exportScene = async (
                           worker: 0 as const,
                           credential: credentials[0]!,
                           executionSha256: nativeSink.executionSha256,
+                          ...(nativeObservationPacketVersion(
+                            request.nativeObservation!,
+                          )
+                            ? {
+                                packetVersion: nativeObservationPacketVersion(
+                                  request.nativeObservation!,
+                                )!,
+                              }
+                            : {}),
                           maximumPacketBytes:
                             request.nativeObservation!.maximumPacketBytes,
                         },
@@ -1499,6 +1528,15 @@ export const exportScene = async (
                         worker: 0 as const,
                         credential: credentials[0]!,
                         executionSha256: nativeSink.executionSha256,
+                        ...(nativeObservationPacketVersion(
+                          request.nativeObservation!,
+                        )
+                          ? {
+                              packetVersion: nativeObservationPacketVersion(
+                                request.nativeObservation!,
+                              )!,
+                            }
+                          : {}),
                         maximumPacketBytes:
                           request.nativeObservation!.maximumPacketBytes,
                       },
@@ -1647,7 +1685,13 @@ export const exportScene = async (
       depthChecksum,
       scene,
     };
+    const admittedScene = resultBudget
+      ? request.sceneManifestContents === undefined
+        ? resultBudget.serializeJson(sceneManifest, 2, "\n")
+        : resultBudget.retainText(request.sceneManifestContents)
+      : undefined;
     const serializedScene =
+      admittedScene?.text ??
       request.sceneManifestContents ??
       `${JSON.stringify(sceneManifest, null, 2)}\n`;
     const sceneChecksum = contentChecksum(serializedScene);
@@ -1808,13 +1852,12 @@ export const exportScene = async (
           entry.staged,
         ]),
       );
-      await verifyNativeObservationClosure({
+      await verifyNativeObservationClosureVersions({
         closure: {
           ...nativeObservations,
           manifestPath: staged.get(basename(nativeObservations.manifestPath))!,
         },
-        execution: request.nativeObservation!.execution,
-        expectedPasses: request.nativeObservation!.expectedPasses,
+        binding: request.nativeObservation!,
         output: {
           sha256: outputChecksum,
           frameCount: scene.timeline.frameCount,

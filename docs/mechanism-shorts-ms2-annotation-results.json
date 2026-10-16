@@ -1,0 +1,717 @@
+{
+  "version": "mechanism-ms2-annotation-geometry-results-1",
+  "date": "2026-10-12",
+  "branch": "codex/mechanism-ms2",
+  "baseCommit": "19a13252",
+  "status": "composition-annotation-geometry-software-slice-complete",
+  "implementation": {
+    "compositionTargets": ["path-vertices", "path-arrow"],
+    "vertexBudget": {
+      "bindings": 32,
+      "indicesMaximum": 255,
+      "pathVertices": 256,
+      "uniqueIndices": true
+    },
+    "arrow": {
+      "headLengthPixelsMaximum": 256,
+      "headWidthPixelsMaximum": 256,
+      "linePoints": 2,
+      "headPoints": 3,
+      "lengthFractionCap": 0.45,
+      "halfWidthFractionCap": 0.25,
+      "zeroSegment": "finite coincident points"
+    },
+    "visibility": "Primary and all bound physical anchors must be shown; hidden/occluded/behind/clipped hide whole geometry. Explicit indicator clamps owning-scope pixels before inverse settled transform.",
+    "preparedReferences": "All secondary references validated before visible interval.",
+    "writerRules": "Static straight top-level paint-only geometry; reject path writers and derived path readers.",
+    "evaluatorVersion": 58,
+    "schemaGenerated": true,
+    "legacyRoutes": "Unchanged position/visibility/single leader semantics; no frozen baseline rewrite."
+  },
+  "attempts": [
+    {
+      "attempt": "red1",
+      "status": "failed",
+      "explanation": "Five new tests fail before target implementation; some geometry fixtures also omitted the required group size.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-annotations53-red1.log",
+        "bytes": 8243,
+        "sha256": "e5872ff661447af168af57e8bf74ecda4bfbfef7085bf2e4709677947e96daab"
+      }
+    },
+    {
+      "attempt": "focused1",
+      "status": "failed",
+      "explanation": "An inline patch context assertion failed before production edits; the follow-on command still ran, preserving 5 failed/9 passed.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-annotations53-focused1.log",
+        "bytes": 8047,
+        "sha256": "084b6da41af4b7773ab5fdb04350306d9f611742c0a782e6bb99fa57a674493e"
+      }
+    },
+    {
+      "attempt": "focused2",
+      "status": "failed",
+      "explanation": "4 failed/10 passed after feature implementation; transformed group fixture lacked required size.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-annotations53-focused2.log",
+        "bytes": 5339,
+        "sha256": "9f2437ee12aa9f878ffd9808d6c912d4a6cee1eb139d70c7f33ba44cd1866ac2"
+      }
+    },
+    {
+      "attempt": "focused3",
+      "status": "passed",
+      "explanation": "14 tests/2 files after correcting fixture size without relaxing schema.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-annotations53-focused3.log",
+        "bytes": 377,
+        "sha256": "f9d3e892c992578d74401099c69bf7cdd361cc2b1a93f58eff4133cac5b025d8"
+      }
+    },
+    {
+      "attempt": "focused4",
+      "status": "passed",
+      "explanation": "29 tests/3 files including secondary reference preparation, all-frame/reverse camera mapping and zero-length controls.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-annotations53-focused4.log",
+        "bytes": 440,
+        "sha256": "223a09ed430d6218b8064dea0a3e9370c66aba8f39dfa5b6ab7a30351bfcf2cf"
+      }
+    },
+    {
+      "attempt": "focused5",
+      "status": "failed",
+      "explanation": "2 failed/8 passed: inset diagnostic genuinely mislocated; competing-writer fixture used unsupported driver keys.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-annotations53-focused5.log",
+        "bytes": 3756,
+        "sha256": "bccce3dc209e3436d55356c1cfaa1f988f5ad17fb3f698bcbee05cddcf9e0bf4"
+      }
+    },
+    {
+      "attempt": "focused6",
+      "status": "passed-with-fixture-qualification",
+      "explanation": "31 tests/3 files after diagnostic/driver repair; derived-reader test still used invalid progress type and was subsequently strengthened.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-annotations53-focused6.log",
+        "bytes": 441,
+        "sha256": "2c6ae3535d80891f97747a1b0e4b0e789d84ff32b8a07cafa2da96c4d22c4fe4"
+      }
+    },
+    {
+      "attempt": "fast1",
+      "status": "failed",
+      "explanation": "Formatting gate rejects the newly added full-gate evidence JSON; no lint/build/unit completion claimed.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-annotations53-fast1.log",
+        "bytes": 1423,
+        "sha256": "e653d44eb56e400a69478d44839ebce2490b08d8c152f73bd6ae03cb72f476b4"
+      }
+    },
+    {
+      "attempt": "native-depth1",
+      "status": "failed",
+      "explanation": "Original 14 depth cases pass, but expanded integration raw readbacks exceed the original 4MiB fixture budget. Retained FXqCHN artifacts.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-annotations53-native-depth1.log",
+        "bytes": 2566,
+        "sha256": "e1cbb588cb277c2a18837a6aed2eaee761f1cc36b7b4ea8758397a7084cbd2b5"
+      }
+    },
+    {
+      "attempt": "native-depth2",
+      "status": "failed",
+      "explanation": "Expanded geometry controls execute, but owning wrapper still expects five cases instead of six. Retained bVH4oq artifacts; no group pass.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-annotations53-native-depth2.log",
+        "bytes": 1216,
+        "sha256": "3d304b6f5b3979a5b390d138e3ed4c56e1322157d05ddb19e82436dfdc184b1c"
+      }
+    },
+    {
+      "attempt": "native-depth3",
+      "status": "passed",
+      "explanation": "Actual exit0: 14 original depth cases, six composition cases including 42 annotation draws, and required real-worker cancellation proof. Held source inventory2 unchanged.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-annotations53-native-depth3.log",
+        "bytes": 538,
+        "sha256": "2088019b4a2d618a9a4e4a250b517cbcc78c3b4bfe6fe274fc641403f82b16d2"
+      }
+    },
+    {
+      "attempt": "fast2",
+      "status": "failed",
+      "exitCode": 2,
+      "explanation": "Schema/identity/boundaries/format/lint complete; build rejects callback path narrowing and broadly typed world helper spread. Unit group not reached. Subsequent type-only source changes require refreshed native source identity proof.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-annotations53-fast2.log",
+        "bytes": 4484,
+        "sha256": "8f97ed18f25bae4ae03927e111faf40e49b97d22f932f68d60e8e8cb07584962"
+      }
+    },
+    {
+      "attempt": "fast3",
+      "status": "failed",
+      "exitCode": 1,
+      "explanation": "All preceding fast gates pass; unit suite reports 4,302 passed/1 failed. Strengthened derived-reader fixture had only one signal key; the contract requires two. Located diagnostic uses formatted string paths, which the fixture expectation also corrected.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-annotations53-fast3.log",
+        "bytes": 39094,
+        "sha256": "cf8b673dae2560cddb617d910a54c1e1266d0bceb2a59f19fbdda58b51ee6811"
+      }
+    },
+    {
+      "attempt": "focused7",
+      "status": "passed",
+      "exitCode": 0,
+      "explanation": "31 tests/3 files pass with valid two-key signal and exact constraints[0].path binding diagnostic.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-annotations53-focused7.log",
+        "bytes": 441,
+        "sha256": "0de5f09fad67cc5a5d69178edbd61a9366031735791aec8acd71d3701ddfd012"
+      }
+    },
+    {
+      "attempt": "fast4",
+      "status": "passed",
+      "exitCode": 0,
+      "explanation": "Actual final fast exit0: schema/identity/boundaries/global format/lint/TypeScript plus 4,303 units/422 files. Selected 2,568 inputs/119,629,177B unchanged.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-annotations53-fast4.log",
+        "bytes": 36246,
+        "sha256": "84d5274f518cc2028d4dfd300f42fc51fd078d5c6d906441bd3bee2731a213bb"
+      }
+    },
+    {
+      "attempt": "native-depth4",
+      "status": "passed",
+      "exitCode": 0,
+      "explanation": "Refreshed on final held inventory4 after type/negative-fixture corrections: 14 native depth and six composition cases plus required cancellation, all exit0; 2,568 inputs/119,629,177B unchanged.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-annotations53-native-depth4.log",
+        "bytes": 538,
+        "sha256": "504b7fd15dda21442ca39ec927e0bdce1196d3f7d090ac6d7cfd3a0945db450c"
+      }
+    }
+  ],
+  "native": {
+    "version": "ms2-annotation-audit-1",
+    "status": "passed",
+    "directory": "/private/tmp/still-shift-ms1n-native-depth-GeHze8",
+    "allRawReadbacksHashed": 70,
+    "annotationReadbacks": 42,
+    "exactDynamicControlPairs": 30,
+    "controlFrames": 12,
+    "sameFrameReverseRandomComparisons": 18,
+    "annotationRawBytes": 2752512,
+    "existingRawBytes": 1835008,
+    "reportSha256": "b5c4be2137c65010b66799f9325a66094037359a82ed682b30174712e3addda5",
+    "requiredReportSha256": "ec7c0674f97715094a312cbe9230ea228788abde3a6885948ec125d1c9669aef",
+    "required": {
+      "status": "passed",
+      "depthCases": 14,
+      "compositionIntegrationCases": 6,
+      "cancellationDirectory": "/private/tmp/still-shift-native-export-cancel-1oreOX"
+    },
+    "frames": {
+      "annotation-dynamic-0": {
+        "frame": 0,
+        "sha256": "dc3a25bcdc56340b1370f7dfba19b3b13bd7e1cb3b8ab6fe8f3c956f9d30703b",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-0.rgba"
+      },
+      "annotation-control-0": {
+        "frame": 0,
+        "sha256": "dc3a25bcdc56340b1370f7dfba19b3b13bd7e1cb3b8ab6fe8f3c956f9d30703b",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-control-0.rgba"
+      },
+      "annotation-dynamic-1": {
+        "frame": 1,
+        "sha256": "0663019d3db3105cf5a2d478a54b8ae40bf42be6000f514a4020464502144368",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-1.rgba"
+      },
+      "annotation-control-1": {
+        "frame": 1,
+        "sha256": "0663019d3db3105cf5a2d478a54b8ae40bf42be6000f514a4020464502144368",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-control-1.rgba"
+      },
+      "annotation-dynamic-2": {
+        "frame": 2,
+        "sha256": "22640802ed176281efe0acf91ce293decd138e37a25bb72e8f475867be87240a",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-2.rgba"
+      },
+      "annotation-control-2": {
+        "frame": 2,
+        "sha256": "22640802ed176281efe0acf91ce293decd138e37a25bb72e8f475867be87240a",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-control-2.rgba"
+      },
+      "annotation-dynamic-3": {
+        "frame": 3,
+        "sha256": "ef01beaf9fb1045d5273ce9787c564a7e473851333c989933a88de55b8fcc9b7",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-3.rgba"
+      },
+      "annotation-control-3": {
+        "frame": 3,
+        "sha256": "ef01beaf9fb1045d5273ce9787c564a7e473851333c989933a88de55b8fcc9b7",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-control-3.rgba"
+      },
+      "annotation-dynamic-4": {
+        "frame": 4,
+        "sha256": "195a4c0992f2a2bd203bc98e10d6ed6a3dcbf3891ca6b6d51406da4975e3b993",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-4.rgba"
+      },
+      "annotation-control-4": {
+        "frame": 4,
+        "sha256": "195a4c0992f2a2bd203bc98e10d6ed6a3dcbf3891ca6b6d51406da4975e3b993",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-control-4.rgba"
+      },
+      "annotation-dynamic-5": {
+        "frame": 5,
+        "sha256": "92e6d129111701d74a0bb0b673e720b30eefc5e38dca3ac3c309723267b0dc84",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-5.rgba"
+      },
+      "annotation-control-5": {
+        "frame": 5,
+        "sha256": "92e6d129111701d74a0bb0b673e720b30eefc5e38dca3ac3c309723267b0dc84",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-control-5.rgba"
+      },
+      "annotation-dynamic-6": {
+        "frame": 6,
+        "sha256": "663f0606548985bc5c3b974428390fa01679b82f06ac0b557281e8364db7ece1",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-6.rgba"
+      },
+      "annotation-control-6": {
+        "frame": 6,
+        "sha256": "663f0606548985bc5c3b974428390fa01679b82f06ac0b557281e8364db7ece1",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-control-6.rgba"
+      },
+      "annotation-dynamic-7": {
+        "frame": 7,
+        "sha256": "cab0136a787d15ab1f517c00bb9a79a2c4874bd876075ae87f394bdbb935c2a4",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-7.rgba"
+      },
+      "annotation-control-7": {
+        "frame": 7,
+        "sha256": "cab0136a787d15ab1f517c00bb9a79a2c4874bd876075ae87f394bdbb935c2a4",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-control-7.rgba"
+      },
+      "annotation-dynamic-8": {
+        "frame": 8,
+        "sha256": "e128e3500f804c348c237dda3f788f2b060e2ef53991ba5d902b34291817569e",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-8.rgba"
+      },
+      "annotation-control-8": {
+        "frame": 8,
+        "sha256": "e128e3500f804c348c237dda3f788f2b060e2ef53991ba5d902b34291817569e",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-control-8.rgba"
+      },
+      "annotation-dynamic-9": {
+        "frame": 9,
+        "sha256": "d3f9f8b2eefae0cd12178e9cfddbe2a5026f304fee0de5c4d7600359a8e2c613",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-9.rgba"
+      },
+      "annotation-control-9": {
+        "frame": 9,
+        "sha256": "d3f9f8b2eefae0cd12178e9cfddbe2a5026f304fee0de5c4d7600359a8e2c613",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-control-9.rgba"
+      },
+      "annotation-dynamic-10": {
+        "frame": 10,
+        "sha256": "65250ffa3952619dc0eb5011decf94ce7e3f9310bfb5b186c77b662933bf469c",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-10.rgba"
+      },
+      "annotation-control-10": {
+        "frame": 10,
+        "sha256": "65250ffa3952619dc0eb5011decf94ce7e3f9310bfb5b186c77b662933bf469c",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-control-10.rgba"
+      },
+      "annotation-dynamic-11": {
+        "frame": 11,
+        "sha256": "1fb3412553f17359712f7ed62cff5908b80a056f77be53ae0969e8b476bba7f7",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-11.rgba"
+      },
+      "annotation-control-11": {
+        "frame": 11,
+        "sha256": "1fb3412553f17359712f7ed62cff5908b80a056f77be53ae0969e8b476bba7f7",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-control-11.rgba"
+      },
+      "annotation-dynamic-12": {
+        "frame": 11,
+        "sha256": "1fb3412553f17359712f7ed62cff5908b80a056f77be53ae0969e8b476bba7f7",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-12.rgba"
+      },
+      "annotation-dynamic-13": {
+        "frame": 10,
+        "sha256": "65250ffa3952619dc0eb5011decf94ce7e3f9310bfb5b186c77b662933bf469c",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-13.rgba"
+      },
+      "annotation-dynamic-14": {
+        "frame": 9,
+        "sha256": "d3f9f8b2eefae0cd12178e9cfddbe2a5026f304fee0de5c4d7600359a8e2c613",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-14.rgba"
+      },
+      "annotation-dynamic-15": {
+        "frame": 8,
+        "sha256": "e128e3500f804c348c237dda3f788f2b060e2ef53991ba5d902b34291817569e",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-15.rgba"
+      },
+      "annotation-dynamic-16": {
+        "frame": 7,
+        "sha256": "cab0136a787d15ab1f517c00bb9a79a2c4874bd876075ae87f394bdbb935c2a4",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-16.rgba"
+      },
+      "annotation-dynamic-17": {
+        "frame": 6,
+        "sha256": "663f0606548985bc5c3b974428390fa01679b82f06ac0b557281e8364db7ece1",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-17.rgba"
+      },
+      "annotation-dynamic-18": {
+        "frame": 5,
+        "sha256": "92e6d129111701d74a0bb0b673e720b30eefc5e38dca3ac3c309723267b0dc84",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-18.rgba"
+      },
+      "annotation-dynamic-19": {
+        "frame": 4,
+        "sha256": "195a4c0992f2a2bd203bc98e10d6ed6a3dcbf3891ca6b6d51406da4975e3b993",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-19.rgba"
+      },
+      "annotation-dynamic-20": {
+        "frame": 3,
+        "sha256": "ef01beaf9fb1045d5273ce9787c564a7e473851333c989933a88de55b8fcc9b7",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-20.rgba"
+      },
+      "annotation-dynamic-21": {
+        "frame": 2,
+        "sha256": "22640802ed176281efe0acf91ce293decd138e37a25bb72e8f475867be87240a",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-21.rgba"
+      },
+      "annotation-dynamic-22": {
+        "frame": 1,
+        "sha256": "0663019d3db3105cf5a2d478a54b8ae40bf42be6000f514a4020464502144368",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-22.rgba"
+      },
+      "annotation-dynamic-23": {
+        "frame": 0,
+        "sha256": "dc3a25bcdc56340b1370f7dfba19b3b13bd7e1cb3b8ab6fe8f3c956f9d30703b",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-23.rgba"
+      },
+      "annotation-dynamic-24": {
+        "frame": 7,
+        "sha256": "cab0136a787d15ab1f517c00bb9a79a2c4874bd876075ae87f394bdbb935c2a4",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-24.rgba"
+      },
+      "annotation-dynamic-25": {
+        "frame": 0,
+        "sha256": "dc3a25bcdc56340b1370f7dfba19b3b13bd7e1cb3b8ab6fe8f3c956f9d30703b",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-25.rgba"
+      },
+      "annotation-dynamic-26": {
+        "frame": 11,
+        "sha256": "1fb3412553f17359712f7ed62cff5908b80a056f77be53ae0969e8b476bba7f7",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-26.rgba"
+      },
+      "annotation-dynamic-27": {
+        "frame": 3,
+        "sha256": "ef01beaf9fb1045d5273ce9787c564a7e473851333c989933a88de55b8fcc9b7",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-27.rgba"
+      },
+      "annotation-dynamic-28": {
+        "frame": 7,
+        "sha256": "cab0136a787d15ab1f517c00bb9a79a2c4874bd876075ae87f394bdbb935c2a4",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-28.rgba"
+      },
+      "annotation-dynamic-29": {
+        "frame": 2,
+        "sha256": "22640802ed176281efe0acf91ce293decd138e37a25bb72e8f475867be87240a",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-GeHze8/artifacts/annotation-dynamic-29.rgba"
+      }
+    },
+    "limits": "Independent retained-file hash/pixel equality audit. GPU computation happens in the checked browser group; encoded output, speech, semantic styles and human review are outside this receipt."
+  },
+  "inputInventory": {
+    "path": "/private/tmp/still-shift-ms2-annotations53-inputs2.json",
+    "bytes": 438039,
+    "sha256": "b62260dc2d198c7692592465bdff002041dbed0653a4c2c90c7eb03050fdb197"
+  },
+  "verificationHistoryNotes": [
+    "Documentation insertion script failed at a missing heading after current-state/full-stop records had already been written; repaired by matching the actual level-two world-artwork heading.",
+    "Independent pixel audit initially assumed outputFrame for all older artifact kinds. Corrected to require it only for every new dynamic frame, preserving strict 30 exact comparisons.",
+    "Final fast4 and native-depth4 are sequential staged gates on unchanged inventory4. No fresh broad runtime/integration/frozen-baseline/benchmark/installed/full-MS2 pass is claimed."
+  ],
+  "fullGate": {
+    "priorAttempt": "full51-1",
+    "terminalExitCode": 130,
+    "status": "deliberately-stopped-before-source-feature-work",
+    "evidence": "docs/mechanism-shorts-ms2-full-gate-results.json",
+    "requiredFinalCommand": "pnpm check:all",
+    "requiredTestGroups": 94,
+    "frozenBaselineItems": 176,
+    "frozenBaselineFrames": 36061,
+    "refreshedGate": "not-run"
+  },
+  "remaining": [
+    "Cue authoring recipes for tabs/open callouts/brackets/arrows/highlights are not yet wired to these primitives.",
+    "Explicit world-text and real surface-marking routes, ordinary label-only plate reuse remain required.",
+    "Genuine recovered speech requires fresh decode/sample clocks and family semantic cue renders.",
+    "Whole resources/lifetime/replay, final archive/installed verification, pack admission and MS2 PR remain open.",
+    "Supported packs0; accepted pilot episodes0; MS3 not started. No human visual/listening acceptance or paid generation."
+  ],
+  "inputInventory3": {
+    "path": "/private/tmp/still-shift-ms2-annotations53-inputs3.json",
+    "files": 2568,
+    "bytes": 119629072,
+    "status": "held-for-final-fast-and-native-refresh"
+  },
+  "finalInputInventory": {
+    "path": "/private/tmp/still-shift-ms2-annotations53-inputs4.json",
+    "bytes": 438039,
+    "sha256": "18c48a246c1f3b6b287f6f5737cf7f14cd24a43f29fbe829bee40e4c99907b98",
+    "files": 2568,
+    "inputBytes": 119629177,
+    "sourceBaseCommit": "19a13252",
+    "qualification": "Uncommitted source/testing additions are pinned by exact per-file inventory; final slice commit follows verification.",
+    "status": "unchanged-after-final-fast-and-native"
+  },
+  "fast": {
+    "status": "passed",
+    "attempt": "fast4",
+    "exitCode": 0,
+    "unitTests": 4303,
+    "unitFiles": 422,
+    "sourceInventoryUnchanged": true
+  },
+  "earlierNative": {
+    "version": "ms2-annotation-audit-1",
+    "status": "passed",
+    "directory": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt",
+    "allRawReadbacksHashed": 70,
+    "annotationReadbacks": 42,
+    "exactDynamicControlPairs": 30,
+    "controlFrames": 12,
+    "sameFrameReverseRandomComparisons": 18,
+    "annotationRawBytes": 2752512,
+    "existingRawBytes": 1835008,
+    "reportSha256": "d8ffa7df5e0f2ca50ae6191343c801cd6a401333ba8dbe88bbecced91d0a591a",
+    "requiredReportSha256": "4c71bb6444ce088c84a06da785430429b8ebf356c0efdd93c6259dadb643520a",
+    "required": {
+      "status": "passed",
+      "depthCases": 14,
+      "compositionIntegrationCases": 6,
+      "cancellationDirectory": "/private/tmp/still-shift-native-export-cancel-54oOkX"
+    },
+    "frames": {
+      "annotation-dynamic-0": {
+        "frame": 0,
+        "sha256": "dc3a25bcdc56340b1370f7dfba19b3b13bd7e1cb3b8ab6fe8f3c956f9d30703b",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-0.rgba"
+      },
+      "annotation-control-0": {
+        "frame": 0,
+        "sha256": "dc3a25bcdc56340b1370f7dfba19b3b13bd7e1cb3b8ab6fe8f3c956f9d30703b",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-control-0.rgba"
+      },
+      "annotation-dynamic-1": {
+        "frame": 1,
+        "sha256": "0663019d3db3105cf5a2d478a54b8ae40bf42be6000f514a4020464502144368",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-1.rgba"
+      },
+      "annotation-control-1": {
+        "frame": 1,
+        "sha256": "0663019d3db3105cf5a2d478a54b8ae40bf42be6000f514a4020464502144368",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-control-1.rgba"
+      },
+      "annotation-dynamic-2": {
+        "frame": 2,
+        "sha256": "22640802ed176281efe0acf91ce293decd138e37a25bb72e8f475867be87240a",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-2.rgba"
+      },
+      "annotation-control-2": {
+        "frame": 2,
+        "sha256": "22640802ed176281efe0acf91ce293decd138e37a25bb72e8f475867be87240a",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-control-2.rgba"
+      },
+      "annotation-dynamic-3": {
+        "frame": 3,
+        "sha256": "ef01beaf9fb1045d5273ce9787c564a7e473851333c989933a88de55b8fcc9b7",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-3.rgba"
+      },
+      "annotation-control-3": {
+        "frame": 3,
+        "sha256": "ef01beaf9fb1045d5273ce9787c564a7e473851333c989933a88de55b8fcc9b7",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-control-3.rgba"
+      },
+      "annotation-dynamic-4": {
+        "frame": 4,
+        "sha256": "195a4c0992f2a2bd203bc98e10d6ed6a3dcbf3891ca6b6d51406da4975e3b993",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-4.rgba"
+      },
+      "annotation-control-4": {
+        "frame": 4,
+        "sha256": "195a4c0992f2a2bd203bc98e10d6ed6a3dcbf3891ca6b6d51406da4975e3b993",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-control-4.rgba"
+      },
+      "annotation-dynamic-5": {
+        "frame": 5,
+        "sha256": "92e6d129111701d74a0bb0b673e720b30eefc5e38dca3ac3c309723267b0dc84",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-5.rgba"
+      },
+      "annotation-control-5": {
+        "frame": 5,
+        "sha256": "92e6d129111701d74a0bb0b673e720b30eefc5e38dca3ac3c309723267b0dc84",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-control-5.rgba"
+      },
+      "annotation-dynamic-6": {
+        "frame": 6,
+        "sha256": "663f0606548985bc5c3b974428390fa01679b82f06ac0b557281e8364db7ece1",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-6.rgba"
+      },
+      "annotation-control-6": {
+        "frame": 6,
+        "sha256": "663f0606548985bc5c3b974428390fa01679b82f06ac0b557281e8364db7ece1",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-control-6.rgba"
+      },
+      "annotation-dynamic-7": {
+        "frame": 7,
+        "sha256": "cab0136a787d15ab1f517c00bb9a79a2c4874bd876075ae87f394bdbb935c2a4",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-7.rgba"
+      },
+      "annotation-control-7": {
+        "frame": 7,
+        "sha256": "cab0136a787d15ab1f517c00bb9a79a2c4874bd876075ae87f394bdbb935c2a4",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-control-7.rgba"
+      },
+      "annotation-dynamic-8": {
+        "frame": 8,
+        "sha256": "e128e3500f804c348c237dda3f788f2b060e2ef53991ba5d902b34291817569e",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-8.rgba"
+      },
+      "annotation-control-8": {
+        "frame": 8,
+        "sha256": "e128e3500f804c348c237dda3f788f2b060e2ef53991ba5d902b34291817569e",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-control-8.rgba"
+      },
+      "annotation-dynamic-9": {
+        "frame": 9,
+        "sha256": "d3f9f8b2eefae0cd12178e9cfddbe2a5026f304fee0de5c4d7600359a8e2c613",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-9.rgba"
+      },
+      "annotation-control-9": {
+        "frame": 9,
+        "sha256": "d3f9f8b2eefae0cd12178e9cfddbe2a5026f304fee0de5c4d7600359a8e2c613",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-control-9.rgba"
+      },
+      "annotation-dynamic-10": {
+        "frame": 10,
+        "sha256": "65250ffa3952619dc0eb5011decf94ce7e3f9310bfb5b186c77b662933bf469c",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-10.rgba"
+      },
+      "annotation-control-10": {
+        "frame": 10,
+        "sha256": "65250ffa3952619dc0eb5011decf94ce7e3f9310bfb5b186c77b662933bf469c",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-control-10.rgba"
+      },
+      "annotation-dynamic-11": {
+        "frame": 11,
+        "sha256": "1fb3412553f17359712f7ed62cff5908b80a056f77be53ae0969e8b476bba7f7",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-11.rgba"
+      },
+      "annotation-control-11": {
+        "frame": 11,
+        "sha256": "1fb3412553f17359712f7ed62cff5908b80a056f77be53ae0969e8b476bba7f7",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-control-11.rgba"
+      },
+      "annotation-dynamic-12": {
+        "frame": 11,
+        "sha256": "1fb3412553f17359712f7ed62cff5908b80a056f77be53ae0969e8b476bba7f7",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-12.rgba"
+      },
+      "annotation-dynamic-13": {
+        "frame": 10,
+        "sha256": "65250ffa3952619dc0eb5011decf94ce7e3f9310bfb5b186c77b662933bf469c",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-13.rgba"
+      },
+      "annotation-dynamic-14": {
+        "frame": 9,
+        "sha256": "d3f9f8b2eefae0cd12178e9cfddbe2a5026f304fee0de5c4d7600359a8e2c613",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-14.rgba"
+      },
+      "annotation-dynamic-15": {
+        "frame": 8,
+        "sha256": "e128e3500f804c348c237dda3f788f2b060e2ef53991ba5d902b34291817569e",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-15.rgba"
+      },
+      "annotation-dynamic-16": {
+        "frame": 7,
+        "sha256": "cab0136a787d15ab1f517c00bb9a79a2c4874bd876075ae87f394bdbb935c2a4",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-16.rgba"
+      },
+      "annotation-dynamic-17": {
+        "frame": 6,
+        "sha256": "663f0606548985bc5c3b974428390fa01679b82f06ac0b557281e8364db7ece1",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-17.rgba"
+      },
+      "annotation-dynamic-18": {
+        "frame": 5,
+        "sha256": "92e6d129111701d74a0bb0b673e720b30eefc5e38dca3ac3c309723267b0dc84",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-18.rgba"
+      },
+      "annotation-dynamic-19": {
+        "frame": 4,
+        "sha256": "195a4c0992f2a2bd203bc98e10d6ed6a3dcbf3891ca6b6d51406da4975e3b993",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-19.rgba"
+      },
+      "annotation-dynamic-20": {
+        "frame": 3,
+        "sha256": "ef01beaf9fb1045d5273ce9787c564a7e473851333c989933a88de55b8fcc9b7",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-20.rgba"
+      },
+      "annotation-dynamic-21": {
+        "frame": 2,
+        "sha256": "22640802ed176281efe0acf91ce293decd138e37a25bb72e8f475867be87240a",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-21.rgba"
+      },
+      "annotation-dynamic-22": {
+        "frame": 1,
+        "sha256": "0663019d3db3105cf5a2d478a54b8ae40bf42be6000f514a4020464502144368",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-22.rgba"
+      },
+      "annotation-dynamic-23": {
+        "frame": 0,
+        "sha256": "dc3a25bcdc56340b1370f7dfba19b3b13bd7e1cb3b8ab6fe8f3c956f9d30703b",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-23.rgba"
+      },
+      "annotation-dynamic-24": {
+        "frame": 7,
+        "sha256": "cab0136a787d15ab1f517c00bb9a79a2c4874bd876075ae87f394bdbb935c2a4",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-24.rgba"
+      },
+      "annotation-dynamic-25": {
+        "frame": 0,
+        "sha256": "dc3a25bcdc56340b1370f7dfba19b3b13bd7e1cb3b8ab6fe8f3c956f9d30703b",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-25.rgba"
+      },
+      "annotation-dynamic-26": {
+        "frame": 11,
+        "sha256": "1fb3412553f17359712f7ed62cff5908b80a056f77be53ae0969e8b476bba7f7",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-26.rgba"
+      },
+      "annotation-dynamic-27": {
+        "frame": 3,
+        "sha256": "ef01beaf9fb1045d5273ce9787c564a7e473851333c989933a88de55b8fcc9b7",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-27.rgba"
+      },
+      "annotation-dynamic-28": {
+        "frame": 7,
+        "sha256": "cab0136a787d15ab1f517c00bb9a79a2c4874bd876075ae87f394bdbb935c2a4",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-28.rgba"
+      },
+      "annotation-dynamic-29": {
+        "frame": 2,
+        "sha256": "22640802ed176281efe0acf91ce293decd138e37a25bb72e8f475867be87240a",
+        "path": "/private/tmp/still-shift-ms1n-native-depth-QFgCyt/artifacts/annotation-dynamic-29.rgba"
+      }
+    },
+    "limits": "Independent retained-file hash/pixel equality audit. GPU computation happens in the checked browser group; encoded output, speech, semantic styles and human review are outside this receipt.",
+    "statusAtRecordedProducer": "passed-on-inventory2-before-later-type-only-repair"
+  }
+}

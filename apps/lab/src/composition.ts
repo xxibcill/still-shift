@@ -9,11 +9,12 @@ import {
   type Composition,
   type CompositionPreparedMedia,
   type CompositionPreparedAudio,
-  type CompositionPreparedNative3D,
+  type CompositionPreparedNative3DVersions,
   type NativeAppearanceCodeIdentity,
 } from "../../../packages/scene-contract/src/index.ts";
 import {
   createCompositionPreview,
+  renderCompositionFrameAsync,
   loadCompositionResources,
   type CompositionBackend,
   type CompositionPreview,
@@ -404,7 +405,7 @@ async function load(
     let capture: {
       preparedMedia?: CompositionPreparedMedia;
       preparedAudio?: CompositionPreparedAudio;
-      preparedNative3D?: CompositionPreparedNative3D;
+      preparedNative3D?: CompositionPreparedNative3DVersions;
       nativeAppearanceCodeIdentity?: NativeAppearanceCodeIdentity;
       nativeAppearanceCodeSha256?: string;
       assets: Record<string, string>;
@@ -546,12 +547,26 @@ async function load(
         (d) => `${d.code} ${d.path}: ${d.message}`,
       ),
     };
+    const requiresAsyncNative = result.composition.assets.some(
+      (asset) =>
+        asset.type === "native3d" &&
+        (asset.format === "mechanism-scene-2" ||
+          asset.format === "mechanism-scene-3"),
+    );
     ownership.renderer(
       {
-        ...(resources.media || resources.native3D
+        ...(!requiresAsyncNative && (resources.media || resources.native3D)
           ? { prepareFrame: (frame: number) => renderer.prepareFrame(frame) }
           : {}),
         renderFrame(frame: number) {
+          if (requiresAsyncNative)
+            return (async () => {
+              await renderer.prepareFrame(frame);
+              snapshot.report = await renderCompositionFrameAsync(
+                renderer,
+                frame,
+              );
+            })();
           return (snapshot.report = renderer.renderFrame(frame));
         },
         dispose() {

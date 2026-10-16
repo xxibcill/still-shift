@@ -27,7 +27,6 @@ import {
   type MechanismRouteSelection,
 } from "@still-shift/scene-contract";
 import { acquireArtifactLock } from "@still-shift/execution-runtime/locks";
-import type { NativeObservationClosure } from "@still-shift/execution-runtime/export";
 import type { CompositionRenderResult } from "../composition-render.ts";
 import { nativeCompositionSha256 } from "../native-observation.ts";
 import {
@@ -548,9 +547,12 @@ async function writeNativeMechanismPackage(
         const render = (await readMechanismJson(
           renderPath,
         )) as CompositionRenderResult;
-        const closure: NativeObservationClosure | undefined =
-          render.metrics.nativeObservations;
-        if (!closure || !finalCheck?.closureReport)
+        const closure = render.metrics.nativeObservations;
+        if (
+          !closure ||
+          closure.version !== "native-observation-closure-1" ||
+          !finalCheck?.closureReport
+        )
           fail(
             "Native final output omits actual retained observations",
             originalFinal,

@@ -1,3 +1,33 @@
+import {
+  MECHANISM_CUE_NATIVE_PLATES_VERSION,
+  prepareMechanismCueNativePlates,
+  checkMechanismCueNativePlates,
+} from "../../../packages/animation-engine/src/mechanism/cue-native-plates.ts";
+import {
+  MECHANISM_CUE_PLATE_EXPORT_VERSION,
+  renderMechanismCuePlateProject,
+  checkMechanismCuePlateOutput,
+} from "../../../packages/animation-engine/src/mechanism/cue-plate-lifecycle.ts";
+import {
+  compileMechanismCueProject,
+  renderMechanismCueProject,
+  checkMechanismCueOutput,
+} from "../../../packages/animation-engine/src/mechanism/cue-lifecycle.ts";
+import {
+  readMechanismCueAuthoring,
+  saveMechanismCueAuthoring,
+  patchMechanismCueAuthoring,
+} from "../../../packages/animation-engine/src/mechanism/cue-authoring.ts";
+import {
+  readMechanismFamilyAuthoring,
+  saveMechanismFamilyAuthoring,
+  patchMechanismFamilyAuthoring,
+} from "../../../packages/animation-engine/src/mechanism/family-authoring.ts";
+import {
+  inspectMechanismFamilyRegistry,
+  mechanismFamilySchemas,
+  MECHANISM_FAMILY_REGISTRY_VERSION,
+} from "../../../packages/animation-engine/src/mechanism/family-registry.ts";
 import { readFile, stat } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { z } from "zod";
@@ -77,23 +107,75 @@ export interface EpisodeCliIo {
 }
 const commonFlags = ["json", "report", "offset", "limit"];
 const commandFlags: Record<MechanismCommand, readonly string[]> = {
-  discover: [],
+  discover: ["family"],
   schema: ["kind", "output"],
-  inspect: ["input", "shot", "native", "part", "anchor", "material", "rig"],
-  validate: ["input"],
+  inspect: [
+    "input",
+    "shot",
+    "native",
+    "part",
+    "anchor",
+    "material",
+    "rig",
+    "authoring",
+    "family-input",
+  ],
+  validate: ["input", "authoring", "family-input"],
   deps: ["input"],
-  save: ["input", "output", "base-revision", "base-hash"],
-  patch: ["input", "request"],
-  prepare: ["input", "output-dir", "cache-dir", "route"],
-  compile: ["input", "output-dir", "cache-dir", "route"],
+  save: [
+    "input",
+    "output",
+    "base-revision",
+    "base-hash",
+    "authoring",
+    "family-input",
+  ],
+  patch: ["input", "request", "authoring", "family-input"],
+  prepare: [
+    "input",
+    "prepared-dir",
+    "plates-dir",
+    "output-dir",
+    "cache-dir",
+    "route",
+    "authoring",
+    "family-input",
+  ],
+  compile: [
+    "input",
+    "output-dir",
+    "cache-dir",
+    "route",
+    "authoring",
+    "family-input",
+  ],
   preview: ["input", "output-dir", "cache-dir", "frame", "route"],
-  render: ["input", "output-dir", "cache-dir", "backend", "route"],
-  check: ["input", "prepared-dir", "final-output", "route"],
+  render: [
+    "input",
+    "plates-dir",
+    "output-dir",
+    "cache-dir",
+    "backend",
+    "route",
+    "authoring",
+    "family-input",
+    "prepared-dir",
+  ],
+  check: [
+    "input",
+    "plates-dir",
+    "prepared-dir",
+    "final-output",
+    "route",
+    "authoring",
+    "family-input",
+  ],
   package: ["input", "output-dir", "prepared-dir", "final-output", "route"],
   "init-tape-hook": ["output-dir", "font", "font-license", "audio", "captions"],
-  summary: ["input"],
+  summary: ["input", "authoring", "family-input"],
 };
 const episodeSchemas = {
+  ...mechanismFamilySchemas,
   geometry: MechanismGeometrySchema,
   episode: MechanismEpisodeSchema,
   scene: MechanismSceneSchema,
@@ -295,6 +377,7 @@ function resultView(
           "fontDiagnostics",
           "changedPaths",
           "affectedShots",
+          "affectedComponents",
         ].includes(key)
       )
         items.push(...value.map((item) => ({ ...row(item), kind: key })));
@@ -399,7 +482,7 @@ function resultView(
       : {}),
   };
 }
-async function readPatchRequest(path: string, io: EpisodeCliIo) {
+async function readPatchJson(path: string, io: EpisodeCliIo) {
   let bytes: string;
   if (path === "-") {
     if (io.stdin) bytes = await io.stdin();
@@ -432,6 +515,10 @@ async function readPatchRequest(path: string, io: EpisodeCliIo) {
       path,
     );
   }
+  return value;
+}
+async function readPatchRequest(path: string, io: EpisodeCliIo) {
+  const value = await readPatchJson(path, io);
   if (isRecord(value) && value.schemaVersion !== "mechanism-patch-1")
     throw cliError(
       `Unsupported patch version ${String(value.schemaVersion).slice(0, 128)}; expected mechanism-patch-1`,
@@ -440,7 +527,58 @@ async function readPatchRequest(path: string, io: EpisodeCliIo) {
     );
   return MechanismPatchRequestSchema.parse(value);
 }
-async function discover(): Promise<MechanismReceiptInput> {
+async function discover(
+  flags: Map<string, string>,
+): Promise<MechanismReceiptInput> {
+  const requested = flags.get("family");
+  const registry = inspectMechanismFamilyRegistry({
+    schemaVersion: MECHANISM_FAMILY_REGISTRY_VERSION,
+    family: requested ?? "all",
+  });
+  if (requested !== undefined)
+    return {
+      command: "discover",
+      summary: {
+        registryVersion: registry.schemaVersion,
+        families: registry.entries.length,
+        supportedPacks: registry.entries.filter(
+          (entry) => entry.status === "verified",
+        ).length,
+      },
+      items: registry.entries.flatMap((entry) => [
+        {
+          kind: "family",
+          family: entry.id,
+          status: entry.status,
+          packVersion: entry.reference.version,
+          packSha256: entry.reference.sha256,
+          variant: entry.reference.variant,
+          detail: entry.reference.detail,
+          inputSchema: entry.inputSchema,
+          parameterSchema: entry.parameterSchema,
+          parameterSchemaSha256: entry.parameterSchemaSha256,
+        },
+        ...entry.parameters.map((parameter) => ({
+          kind: "parameter",
+          family: entry.id,
+          ...parameter,
+        })),
+        ...entry.controls.map((control) => ({
+          kind: "control",
+          family: entry.id,
+          ...control,
+        })),
+        ...entry.examples.map((example) => ({
+          kind: "example",
+          family: entry.id,
+          id: example.id,
+          input: JSON.stringify(example.input),
+        })),
+      ]),
+      fullResult: registry,
+      nextAction:
+        "Export the family input schema with episode schema --kind <family>-input; use the complete report for immutable asset metadata.",
+    };
   return {
     command: "discover",
     summary: {
@@ -462,6 +600,8 @@ async function discover(): Promise<MechanismReceiptInput> {
       nativeRenderVersion: "mechanism-native-render-result-1",
       nativeCheckVersion: "mechanism-native-check-result-1",
       nativePackageVersion: "mechanism-native-project-package-1",
+      cueNativePlatesVersion: MECHANISM_CUE_NATIVE_PLATES_VERSION,
+      cuePlateExportVersion: MECHANISM_CUE_PLATE_EXPORT_VERSION,
       nativeSourceVersions: "mechanism-scene-1 solid-scene-1",
       nativeGeometryVersion: "solid-geometry-1",
       nativeObservationVersion: "native3d-observed-output-frame-1",
@@ -469,6 +609,15 @@ async function discover(): Promise<MechanismReceiptInput> {
       schemaKinds: Object.keys(episodeSchemas).join(" "),
     },
     items: [
+      ...registry.entries.map((entry) => ({
+        kind: "family",
+        family: entry.id,
+        status: entry.status,
+        packVersion: entry.reference.version,
+        packSha256: entry.reference.sha256,
+        inputSchema: entry.inputSchema,
+        parameterSchema: entry.parameterSchema,
+      })),
       ...MECHANISM_COMMANDS.map((command) => ({
         command,
         options: commandFlags[command].map((flag) => `--${flag}`).join(" "),
@@ -494,6 +643,23 @@ async function discover(): Promise<MechanismReceiptInput> {
         schema: "native-inspection-selection",
         keyRows:
           "One authored camera/control key per bounded pageable row; frames are absolute source frames",
+      },
+      {
+        kind: "cue-native-plate-cache",
+        authoring: "cue",
+        nativePlatesVersion: MECHANISM_CUE_NATIVE_PLATES_VERSION,
+        exportVersion: MECHANISM_CUE_PLATE_EXPORT_VERSION,
+        backend: "webgl2",
+        workers: 1,
+        capture:
+          "prepare --authoring cue --prepared-dir <current-compilation> --plates-dir <fresh-plates-directory>",
+        reuse:
+          "render --authoring cue --prepared-dir <current-compilation> --plates-dir <verified-plates> --output-dir <fresh-output-directory>",
+        checking:
+          "check --authoring cue --prepared-dir <current-compilation> --plates-dir <verified-plates>; add --final-output to check a cached video",
+        scope:
+          "Current native2 cue pictures with one flat physical controller and admitted world artwork. Original native observations remain original; cached output requires measured zero fresh native submissions. Packs and human/pilot acceptance remain separate.",
+        schemas: "cue-native-plates cue-plate-export",
       },
       {
         kind: "native-observation-limits",
@@ -545,7 +711,7 @@ async function execute(
   io: EpisodeCliIo,
   signal: AbortSignal,
 ): Promise<MechanismReceiptInput> {
-  if (command === "discover") return discover();
+  if (command === "discover") return discover(flags);
   if (command === "schema") return schema(flags);
   if (command === "init-tape-hook")
     return resultView(
@@ -563,6 +729,286 @@ async function execute(
       }),
     );
   const input = required(flags, "input");
+  if (flags.has("plates-dir") && flags.get("authoring") !== "cue")
+    throw cliError(
+      "--plates-dir requires --authoring cue",
+      "mechanism-authoring-option",
+      "--plates-dir",
+    );
+  if (
+    command === "prepare" &&
+    flags.has("prepared-dir") &&
+    flags.get("authoring") !== "cue"
+  )
+    throw cliError(
+      "--prepared-dir on prepare requires --authoring cue",
+      "mechanism-authoring-option",
+      "--prepared-dir",
+    );
+  if (flags.get("authoring") === "cue") {
+    if (["prepare", "compile", "render", "check"].includes(command)) {
+      const familyPath = required(flags, "family-input");
+      if (flags.has("cache-dir"))
+        throw cliError(
+          "Cue lifecycle uses the normal composition media cache; --cache-dir is not supported on this route",
+          "mechanism-authoring-option",
+          "--cache-dir",
+        );
+      if (flags.has("route") && flags.get("route") !== "native3d")
+        throw cliError(
+          "Cue lifecycle requires the native3d route",
+          "mechanism-route",
+          "--route",
+        );
+      if (flags.has("backend") && flags.get("backend") !== "webgl2")
+        throw cliError(
+          "Cue lifecycle requires webgl2",
+          "mechanism-backend",
+          "--backend",
+        );
+      const platesDirectory = flags.get("plates-dir");
+      if (command === "prepare" && platesDirectory !== undefined) {
+        if (flags.has("output-dir"))
+          throw cliError(
+            "Plate capture writes --plates-dir; omit --output-dir",
+            "mechanism-authoring-option",
+            "--output-dir",
+          );
+        return resultView(
+          command,
+          await prepareMechanismCueNativePlates(
+            familyPath,
+            input,
+            required(flags, "prepared-dir"),
+            platesDirectory,
+            { signal },
+          ),
+        );
+      }
+      if (command === "prepare" && flags.has("prepared-dir"))
+        throw cliError(
+          "--prepared-dir on cue prepare requires --plates-dir",
+          "mechanism-authoring-option",
+          "--prepared-dir",
+        );
+      if (command === "render" && platesDirectory !== undefined)
+        return resultView(
+          command,
+          await renderMechanismCuePlateProject(
+            familyPath,
+            input,
+            required(flags, "prepared-dir"),
+            platesDirectory,
+            required(flags, "output-dir"),
+            { signal },
+          ),
+        );
+      if (command === "check" && platesDirectory !== undefined)
+        return resultView(
+          command,
+          flags.has("final-output")
+            ? await checkMechanismCuePlateOutput(
+                familyPath,
+                input,
+                required(flags, "prepared-dir"),
+                platesDirectory,
+                required(flags, "final-output"),
+                { signal },
+              )
+            : await checkMechanismCueNativePlates(
+                familyPath,
+                input,
+                required(flags, "prepared-dir"),
+                platesDirectory,
+                { signal },
+              ),
+        );
+      if (command === "prepare" || command === "compile")
+        return resultView(
+          command,
+          await compileMechanismCueProject(
+            familyPath,
+            input,
+            required(flags, "output-dir"),
+            { signal },
+          ),
+        );
+      if (command === "render")
+        return resultView(
+          command,
+          await renderMechanismCueProject(
+            familyPath,
+            input,
+            required(flags, "prepared-dir"),
+            required(flags, "output-dir"),
+            { signal },
+          ),
+        );
+      return resultView(
+        command,
+        await checkMechanismCueOutput(
+          familyPath,
+          input,
+          required(flags, "prepared-dir"),
+          required(flags, "final-output"),
+          { signal },
+        ),
+      );
+    }
+
+    const family = await readMechanismFamilyAuthoring(
+      required(flags, "family-input"),
+    );
+    if (command === "patch")
+      return resultView(
+        command,
+        await patchMechanismCueAuthoring(
+          family.instance,
+          input,
+          await readPatchJson(required(flags, "request"), io),
+        ),
+      );
+    const loaded = await readMechanismCueAuthoring(family.instance, input);
+    if (command === "save") {
+      const output = required(flags, "output");
+      if (dirname(resolve(input)) !== dirname(resolve(output)))
+        throw cliError(
+          "Cue save requires the same project directory; media paths must retain their base",
+          "mechanism-save-relocation",
+        );
+      if (flags.has("base-revision") !== flags.has("base-hash"))
+        throw cliError("Save requires both --base-revision and --base-hash");
+      const base = flags.has("base-revision")
+        ? {
+            revision: integer(
+              required(flags, "base-revision"),
+              "base-revision",
+            ),
+            hash: required(flags, "base-hash"),
+          }
+        : undefined;
+      return resultView(
+        command,
+        await saveMechanismCueAuthoring(
+          family.instance,
+          loaded.document,
+          output,
+          base,
+        ),
+      );
+    }
+    for (const flag of flags.keys())
+      if (
+        ![...commonFlags, "input", "authoring", "family-input"].includes(flag)
+      )
+        throw cliError(
+          `Cue inspection does not accept --${flag}`,
+          "mechanism-authoring-option",
+          `--${flag}`,
+        );
+    return {
+      command,
+      summary: {
+        schemaVersion: loaded.document.schemaVersion,
+        id: loaded.document.id,
+        revision: loaded.document.revision,
+        projectHash: loaded.projectHash,
+        packSha256: family.document.pack.sha256,
+        sourceSha256: loaded.document.source.sha256,
+        sourceSamples: loaded.document.narration.sampleCount,
+        frameCount: loaded.compiled.recording.frameCount,
+      },
+      items: loaded.compiled.cueMap.map((item) => row(item)),
+      fullResult: {
+        document: loaded.document,
+        projectHash: loaded.projectHash,
+        compiled: loaded.compiled,
+      },
+      nextAction:
+        "Apply a cue patch with the current revision/hash, render the recompiled composition and check the final output.",
+    };
+  }
+  if (flags.has("family-input") && flags.get("authoring") !== "cue")
+    throw cliError(
+      "--family-input requires --authoring cue",
+      "mechanism-authoring-option",
+      "--family-input",
+    );
+  if (flags.has("authoring")) {
+    if (flags.get("authoring") !== "family")
+      throw cliError(
+        "--authoring requires family or cue",
+        "mechanism-authoring-kind",
+        "--authoring",
+      );
+    if (!["inspect", "validate", "summary", "save", "patch"].includes(command))
+      throw cliError(
+        `Family authoring does not support ${command}; use inspect, validate, summary, save or patch`,
+        "mechanism-authoring-command",
+        "--authoring",
+      );
+    if (command === "patch")
+      return resultView(
+        command,
+        await patchMechanismFamilyAuthoring(
+          input,
+          await readPatchJson(required(flags, "request"), io),
+        ),
+      );
+    const loaded = await readMechanismFamilyAuthoring(input);
+    if (command === "save") {
+      if (flags.has("base-revision") !== flags.has("base-hash"))
+        throw cliError("Save requires both --base-revision and --base-hash");
+      const base = flags.has("base-revision")
+        ? {
+            revision: integer(
+              required(flags, "base-revision"),
+              "base-revision",
+            ),
+            hash: required(flags, "base-hash"),
+          }
+        : undefined;
+      return resultView(
+        command,
+        await saveMechanismFamilyAuthoring(
+          loaded.document,
+          required(flags, "output"),
+          base,
+        ),
+      );
+    }
+    for (const flag of flags.keys())
+      if (![...commonFlags, "input", "authoring"].includes(flag))
+        throw cliError(
+          `Family inspection does not accept --${flag}`,
+          "mechanism-authoring-option",
+          `--${flag}`,
+        );
+    return {
+      command,
+      summary: {
+        schemaVersion: loaded.document.schemaVersion,
+        family: loaded.document.family,
+        id: loaded.document.id,
+        revision: loaded.document.revision,
+        projectHash: loaded.projectHash,
+        sourceSha256: loaded.instance.sourceSha256,
+        packVersion: loaded.document.pack.version,
+        packSha256: loaded.document.pack.sha256,
+      },
+      items: Object.entries(loaded.document.input.parameters).map(
+        ([id, value]) => ({ kind: "parameter", id, value }),
+      ),
+      fullResult: {
+        document: loaded.document,
+        projectHash: loaded.projectHash,
+        sourceSha256: loaded.instance.sourceSha256,
+        meshDataSha256: loaded.instance.meshDataSha256,
+      },
+      nextAction:
+        "Apply episode patch --authoring family with the current revision/hash; regenerate the scene asset and recompile dependent cues after editing.",
+    };
+  }
   if (command === "deps")
     return resultView(command, await mechanismDependencyReport(input));
   if (
@@ -746,7 +1192,9 @@ export async function runEpisodeCli(
     controller.signal.throwIfAborted();
     const receipt = await createMechanismCommandReceipt(result, {
       ...options,
-      ...([
+      ...(flags.has("authoring") ||
+      (command === "discover" && flags.has("family")) ||
+      [
         "schema",
         "prepare",
         "compile",

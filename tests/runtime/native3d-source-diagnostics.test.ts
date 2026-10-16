@@ -7,6 +7,10 @@ import { CompositionSchema } from "../../packages/scene-contract/src/composition
 import { prepareCompositionNative3D } from "../../packages/animation-engine/src/composition-native3d.ts";
 import { passageDiagnostics } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import { nativeSolidFixture } from "../helpers/native3d-fixture.ts";
+import { mechanismV2Fixture } from "../helpers/mechanism-v2-fixture.ts";
+import { nativePbrSceneFixture } from "../helpers/native-pbr-scene-fixture.ts";
+import { createTapeHookScene } from "../../packages/animation-engine/src/mechanism/tape-hook.ts";
+import { canonicalMechanismJson } from "../../packages/renderer-core/src/mechanism/canonical.ts";
 
 const roots: string[] = [];
 afterEach(async () => {
@@ -49,6 +53,68 @@ async function fixture(
 }
 
 describe("located native source admission", () => {
+  it.each([
+    ["mechanism-scene-1", createTapeHookScene],
+    ["mechanism-scene-2", mechanismV2Fixture],
+    ["mechanism-scene-3", nativePbrSceneFixture],
+  ] as const)(
+    "preserves selected %s admission and locates its unsupported field",
+    async (format, create) => {
+      const root = await mkdtemp(join(tmpdir(), "native-version-diagnostic-"));
+      roots.push(root);
+      const source = create();
+      // This source-admission control needs no graduation atlas or pinned font.
+      for (const material of source.geometry.materials)
+        if ("texture" in material) delete material.texture;
+      source.geometrySha256 =
+        "sha256:" +
+        createHash("sha256")
+          .update(canonicalMechanismJson(source.geometry))
+          .digest("hex");
+      const path = join(root, "version.json");
+      const bytes = JSON.stringify(source);
+      await writeFile(path, bytes);
+      const composition = CompositionSchema.parse({
+        schemaVersion: "composition-1",
+        id: "version-diagnostic",
+        width: 128,
+        height: 128,
+        fps: 30,
+        frameCount: 1,
+        assets: [
+          {
+            id: "versioned",
+            type: "native3d",
+            format,
+            path: "version.json",
+            sha256:
+              "sha256:" + createHash("sha256").update(bytes).digest("hex"),
+          },
+        ],
+        layers: [],
+      });
+      const prepared = await prepareCompositionNative3D(composition, root);
+      expect(
+        prepared?.preparedNative3D.assets.versioned?.source.schemaVersion,
+      ).toBe(format);
+      Object.assign(source, { unsupportedField: true });
+      const invalidBytes = JSON.stringify(source);
+      await writeFile(path, invalidBytes);
+      composition.assets[0]!.sha256 =
+        "sha256:" + createHash("sha256").update(invalidBytes).digest("hex");
+      const error = await prepareCompositionNative3D(composition, root).catch(
+        (error: unknown) => error,
+      );
+      expect(passageDiagnostics(error)).toEqual([
+        expect.objectContaining({
+          code: "comp-native3d-source",
+          path: "assets.versioned.unsupportedField",
+          sourcePath: path,
+        }),
+      ]);
+    },
+  );
+
   it("locates unsupported material fields in the actual source", async () => {
     const { root, path, composition } = await fixture((source) => {
       Object.assign(source.geometry.materials[0]!, { clearcoat: 1 });

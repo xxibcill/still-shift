@@ -1,0 +1,365 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "anyOf": [
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "mesh": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "ownerPart": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "topologySha256": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "landmarks": {
+          "minItems": 2,
+          "maxItems": 4,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "enum": ["root", "tip", "seat-a", "seat-b", "coil-a", "coil-b"]
+              },
+              "vertexIndices": {
+                "minItems": 1,
+                "maxItems": 16,
+                "type": "array",
+                "items": { "type": "integer", "minimum": 0, "maximum": 4095 }
+              }
+            },
+            "required": ["id", "vertexIndices"],
+            "additionalProperties": false
+          }
+        },
+        "drawEvidence": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "type": "string",
+              "const": "mechanism-shape-draw-evidence-1"
+            },
+            "requiredIntervals": {
+              "minItems": 1,
+              "maxItems": 32,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "startFrame": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 108000
+                  },
+                  "endFrameExclusive": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 108000
+                  }
+                },
+                "required": ["startFrame", "endFrameExclusive"],
+                "additionalProperties": false
+              }
+            },
+            "allowedOutsideProof": {
+              "default": [],
+              "maxItems": 2,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["authored-hidden", "outside-frustum"]
+              }
+            }
+          },
+          "required": ["version", "requiredIntervals", "allowedOutsideProof"],
+          "additionalProperties": false
+        },
+        "generator": { "type": "string", "const": "fixed-root-pawl-curve-1" },
+        "driver": {
+          "type": "object",
+          "properties": {
+            "rig": {
+              "type": "string",
+              "maxLength": 128,
+              "pattern": "^[A-Za-z][\\w.-]*$"
+            },
+            "channel": { "type": "string", "const": "pawlDeflection" }
+          },
+          "required": ["rig", "channel"],
+          "additionalProperties": false
+        },
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "length": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1000
+            },
+            "width": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1000
+            },
+            "thickness": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1000
+            },
+            "maxDeflection": { "type": "number", "minimum": 0, "maximum": 500 },
+            "longitudinalSegments": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 32
+            }
+          },
+          "required": [
+            "length",
+            "width",
+            "thickness",
+            "maxDeflection",
+            "longitudinalSegments"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "id",
+        "mesh",
+        "ownerPart",
+        "topologySha256",
+        "landmarks",
+        "generator",
+        "driver",
+        "parameters"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "mesh": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "ownerPart": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[A-Za-z][\\w.-]*$"
+        },
+        "topologySha256": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "landmarks": {
+          "minItems": 2,
+          "maxItems": 4,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "enum": ["root", "tip", "seat-a", "seat-b", "coil-a", "coil-b"]
+              },
+              "vertexIndices": {
+                "minItems": 1,
+                "maxItems": 16,
+                "type": "array",
+                "items": { "type": "integer", "minimum": 0, "maximum": 4095 }
+              }
+            },
+            "required": ["id", "vertexIndices"],
+            "additionalProperties": false
+          }
+        },
+        "drawEvidence": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "type": "string",
+              "const": "mechanism-shape-draw-evidence-1"
+            },
+            "requiredIntervals": {
+              "minItems": 1,
+              "maxItems": 32,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "startFrame": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 108000
+                  },
+                  "endFrameExclusive": {
+                    "type": "number",
+                    "exclusiveMinimum": 0,
+                    "maximum": 108000
+                  }
+                },
+                "required": ["startFrame", "endFrameExclusive"],
+                "additionalProperties": false
+              }
+            },
+            "allowedOutsideProof": {
+              "default": [],
+              "maxItems": 2,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["authored-hidden", "outside-frustum"]
+              }
+            }
+          },
+          "required": ["version", "requiredIntervals", "allowedOutsideProof"],
+          "additionalProperties": false
+        },
+        "generator": { "type": "string", "const": "seated-torsion-spring-1" },
+        "seats": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "string",
+              "maxLength": 128,
+              "pattern": "^[A-Za-z][\\w.-]*$"
+            },
+            {
+              "type": "string",
+              "maxLength": 128,
+              "pattern": "^[A-Za-z][\\w.-]*$"
+            }
+          ]
+        },
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "coilCenter": {
+              "type": "array",
+              "prefixItems": [
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+              ]
+            },
+            "axis": {
+              "type": "array",
+              "prefixItems": [
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+              ]
+            },
+            "coilRadius": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1000
+            },
+            "wireRadius": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1000
+            },
+            "turns": { "type": "number", "minimum": 0.5, "maximum": 12 },
+            "pitch": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1000
+            },
+            "coilSamples": { "type": "integer", "minimum": 8, "maximum": 96 },
+            "legSamples": { "type": "integer", "minimum": 2, "maximum": 16 },
+            "tubeSides": { "type": "integer", "minimum": 3, "maximum": 8 },
+            "terminalTangents": {
+              "type": "array",
+              "prefixItems": [
+                {
+                  "type": "array",
+                  "prefixItems": [
+                    {
+                      "type": "number",
+                      "minimum": -1000000,
+                      "maximum": 1000000
+                    },
+                    {
+                      "type": "number",
+                      "minimum": -1000000,
+                      "maximum": 1000000
+                    },
+                    {
+                      "type": "number",
+                      "minimum": -1000000,
+                      "maximum": 1000000
+                    }
+                  ]
+                },
+                {
+                  "type": "array",
+                  "prefixItems": [
+                    {
+                      "type": "number",
+                      "minimum": -1000000,
+                      "maximum": 1000000
+                    },
+                    {
+                      "type": "number",
+                      "minimum": -1000000,
+                      "maximum": 1000000
+                    },
+                    {
+                      "type": "number",
+                      "minimum": -1000000,
+                      "maximum": 1000000
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "coilCenter",
+            "axis",
+            "coilRadius",
+            "wireRadius",
+            "turns",
+            "pitch",
+            "coilSamples",
+            "legSamples",
+            "tubeSides",
+            "terminalTangents"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "id",
+        "mesh",
+        "ownerPart",
+        "topologySha256",
+        "landmarks",
+        "generator",
+        "seats",
+        "parameters"
+      ],
+      "additionalProperties": false
+    }
+  ]
+}

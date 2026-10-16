@@ -1,3 +1,4 @@
+import { sampleNativeFrameV3 } from "../../native3d/evaluate-v3.ts";
 import { ShapeGeometryBudget } from "../shapes/budget.ts";
 import { sampleShapes, clampShapes, cloneShapes } from "../shapes/sample.ts";
 import {
@@ -30,6 +31,7 @@ import {
 } from "@still-shift/scene-contract";
 import { multiplyMatrix } from "../../node-transform.ts";
 import { sampleNativeFrame } from "../../native3d/evaluate.ts";
+import { sampleNativeFrameV2 } from "../../native3d/evaluate-v2.ts";
 import { applyNativeScreenBinding } from "../../native3d/bindings.ts";
 import { passageError } from "../../passage-diagnostics.ts";
 import {
@@ -1756,8 +1758,23 @@ class Evaluation {
     }
     if (binding?.role === "world-graphic") {
       state.visible &&= nativeController?.visible === true;
-      if (nativeController?.nativeFrame)
+      if (nativeController?.nativeFrame) {
         state.nativeFrame = nativeController.nativeFrame;
+        if (binding.part !== undefined) {
+          const part = nativeController.nativeFrame.frame.parts[binding.part];
+          if (!part)
+            passageError(
+              "comp-native3d-binding",
+              `Unknown world graphic part ${binding.part}`,
+              {
+                node: layer.id,
+                path: this.bindings(ctx, layer.id) + ".native3D.part",
+                frame: this.time,
+              },
+            );
+          state.visible &&= part.visible;
+        }
+      }
       const determinant =
         state.localMatrix[0] * state.localMatrix[3] -
         state.localMatrix[1] * state.localMatrix[2];
@@ -1882,14 +1899,21 @@ class Evaluation {
             frame: this.time,
           },
         );
-      state.nativeFrame = sampleNativeFrame(prepared[layer.asset]!, layer, {
+      const source = prepared[layer.asset]!;
+      const sample = {
         scope: ctx.route.length ? ctx.route.join("/") : ctx.scope.id,
         scopeFrame: ctx.time,
         owningScopeFps: ctx.fps,
         layerTime: state.time,
         width: ctx.scope.width,
         height: ctx.scope.height,
-      });
+      };
+      state.nativeFrame =
+        source.version === "prepared-native3d-scene-3"
+          ? sampleNativeFrameV3(source, layer, sample)
+          : source.version === "prepared-native3d-scene-2"
+            ? sampleNativeFrameV2(source, layer, sample)
+            : sampleNativeFrame(source, layer, sample);
     }
     state.drawable =
       state.visible &&

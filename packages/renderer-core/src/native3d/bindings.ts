@@ -1,5 +1,5 @@
 import type {
-  NativeFrameSnapshot,
+  NativeFrameSnapshotVersions,
   NativeScreenBinding,
 } from "@still-shift/scene-contract";
 import { inverseMatrix, transformPoint } from "../node-transform.ts";
@@ -9,7 +9,7 @@ import type { NativeScreenBindingResult } from "./types.ts";
 import type { EvaluatedLayer } from "../composition/evaluate/types.ts";
 
 export function resolveNativeScreenAnchor(
-  snapshot: NativeFrameSnapshot,
+  snapshot: NativeFrameSnapshotVersions,
   binding: NativeScreenBinding,
 ): NativeScreenBindingResult {
   const location = {
@@ -65,12 +65,40 @@ export function resolveNativeScreenAnchor(
       ];
     }
   }
-  return {
+  const result: NativeScreenBindingResult = {
     pixel,
     shown: shown && pixel !== null,
     indicator: indicator && pixel !== null,
     visibility: anchor.visibility,
   };
+  if (binding.target.kind === "visibility")
+    binding.target.anchors?.forEach((secondary, index) => {
+      let point: NativeScreenBindingResult;
+      try {
+        point = resolveNativeScreenAnchor(snapshot, {
+          ...binding,
+          anchor: secondary,
+          target: { kind: "visibility" },
+        });
+      } catch (error) {
+        if (error instanceof PassageError)
+          throw new PassageError(
+            error.diagnostics.map((diagnostic) => ({
+              ...diagnostic,
+              path: (diagnostic.path ?? location.path).replace(
+                /\.anchor$/,
+                `.target.anchors.${index}`,
+              ),
+            })),
+          );
+        throw error;
+      }
+      if (!point.shown) result.visibility = point.visibility;
+      result.shown &&= point.shown;
+      result.indicator ||= point.indicator;
+    });
+  result.indicator &&= result.shown;
+  return result;
 }
 
 /** Settled parent/camera mapping is inverted exactly once for both position and leader endpoint. */
@@ -91,10 +119,160 @@ export function nativeBindingLocalPoint(
   }
 }
 
+function annotationPath(state: EvaluatedLayer, id: string, frame: number) {
+  const content = state.contents?.find((entry) => entry.id === id);
+  if (
+    content?.type !== "path" ||
+    content.path.vertices.length > 256 ||
+    content.path.inTangents?.some((point) =>
+      point.some((value) => value !== 0),
+    ) ||
+    content.path.outTangents?.some((point) =>
+      point.some((value) => value !== 0),
+    )
+  )
+    passageError(
+      "comp-native3d-binding",
+      "Native annotation requires an admitted straight path",
+      { node: state.id, path: `native3D.target.${id}`, frame },
+    );
+  return content;
+}
+function bindAnnotationVertices(
+  state: EvaluatedLayer,
+  snapshot: NativeFrameSnapshotVersions,
+  binding: NativeScreenBinding,
+) {
+  if (binding.target.kind !== "path-vertices")
+    throw Error("Expected vertex binding");
+  return binding.target.vertices.map((point, index) => {
+    try {
+      return resolveNativeScreenAnchor(snapshot, {
+        ...binding,
+        anchor: point.anchor,
+        offsetPixels: [
+          (binding.offsetPixels?.[0] ?? 0) + (point.offsetPixels?.[0] ?? 0),
+          (binding.offsetPixels?.[1] ?? 0) + (point.offsetPixels?.[1] ?? 0),
+        ],
+        target: { kind: "position" },
+      });
+    } catch (error) {
+      if (error instanceof PassageError)
+        throw new PassageError(
+          error.diagnostics.map((diagnostic) => ({
+            ...diagnostic,
+            node: state.id,
+            path: diagnostic.path?.endsWith(".anchor")
+              ? `${snapshot.scope}/${state.id}.native3D.target.vertices.${index}.anchor`
+              : `${snapshot.scope}/${state.id}.native3D.${diagnostic.path?.split(".native3D.")[1] ?? "target"}`,
+          })),
+        );
+      throw error;
+    }
+  });
+}
+function applyAnnotationVertices(
+  state: EvaluatedLayer,
+  snapshot: NativeFrameSnapshotVersions,
+  binding: NativeScreenBinding,
+  results: NativeScreenBindingResult[],
+) {
+  if (binding.target.kind !== "path-vertices")
+    throw Error("Expected vertex binding");
+  const content = annotationPath(
+    state,
+    binding.target.contentId,
+    snapshot.scopeFrame,
+  );
+  const vertices = content.path.vertices.map(
+    (point) => [...point] as [number, number],
+  );
+  binding.target.vertices.forEach((point, index) => {
+    if (point.index >= vertices.length || !results[index]?.pixel)
+      passageError(
+        "comp-native3d-binding",
+        "Native bound vertex is unavailable",
+        {
+          node: state.id,
+          path: `native3D.target.vertices.${index}`,
+          frame: snapshot.scopeFrame,
+        },
+      );
+    vertices[point.index] = nativeBindingLocalPoint(
+      results[index]!.pixel!,
+      state.screenMatrix,
+      `${snapshot.scope}/${state.id}.native3D.target.vertices.${index}`,
+      snapshot.scopeFrame,
+    );
+  });
+  content.path = { ...content.path, vertices };
+}
+function applyAnnotationArrow(
+  state: EvaluatedLayer,
+  snapshot: NativeFrameSnapshotVersions,
+  binding: NativeScreenBinding,
+  tip: [number, number],
+) {
+  if (binding.target.kind !== "path-arrow")
+    throw Error("Expected arrow binding");
+  const line = annotationPath(
+      state,
+      binding.target.contentId,
+      snapshot.scopeFrame,
+    ),
+    head = annotationPath(
+      state,
+      binding.target.headContentId,
+      snapshot.scopeFrame,
+    );
+  if (
+    line.path.closed ||
+    line.path.vertices.length !== 2 ||
+    !head.path.closed ||
+    head.path.vertices.length !== 3
+  )
+    passageError(
+      "comp-native3d-binding",
+      "Native arrow requires an open line and a closed triangle",
+      { node: state.id, path: "native3D.target", frame: snapshot.scopeFrame },
+    );
+  const start = transformPoint(state.screenMatrix, line.path.vertices[0]!);
+  const dx = tip[0] - start[0],
+    dy = tip[1] - start[1],
+    distance = Math.hypot(dx, dy);
+  const length = Math.min(binding.target.headLengthPixels, distance * 0.45),
+    halfWidth = Math.min(binding.target.headWidthPixels / 2, distance * 0.25);
+  const ux = distance > 1e-12 ? dx / distance : 0,
+    uy = distance > 1e-12 ? dy / distance : 0;
+  const points: [number, number][] = [
+    tip,
+    [
+      tip[0] - ux * length + uy * halfWidth,
+      tip[1] - uy * length - ux * halfWidth,
+    ],
+    [
+      tip[0] - ux * length - uy * halfWidth,
+      tip[1] - uy * length + ux * halfWidth,
+    ],
+  ];
+  const local = (point: [number, number]) =>
+    nativeBindingLocalPoint(
+      point,
+      state.screenMatrix,
+      `${snapshot.scope}/${state.id}.native3D.target`,
+      snapshot.scopeFrame,
+    );
+  line.path = {
+    ...line.path,
+    vertices: [[...line.path.vertices[0]!], local(tip)],
+  };
+  head.path = { ...head.path, vertices: points.map(local) };
+}
+
 /** Mutates sampled content before shape compilation; never changes authored layer data. */
 export function applyNativeScreenBinding(
   state: EvaluatedLayer,
-  snapshot: NativeFrameSnapshot,
+  snapshot: NativeFrameSnapshotVersions,
   binding: NativeScreenBinding,
   parentToScreen: Matrix,
 ): void {
@@ -112,6 +290,16 @@ export function applyNativeScreenBinding(
       );
     throw error;
   }
+  const vertexResults =
+    binding.target.kind === "path-vertices"
+      ? bindAnnotationVertices(state, snapshot, binding)
+      : [];
+  for (const point of vertexResults) {
+    if (!point.shown) result.visibility = point.visibility;
+    result.shown &&= point.shown;
+    result.indicator ||= point.indicator;
+  }
+  result.indicator &&= result.shown;
   state.nativeFrame = snapshot;
   state.nativeScreenBinding = result;
   state.visible &&=
@@ -133,6 +321,14 @@ export function applyNativeScreenBinding(
       snapshot.scopeFrame,
     );
     state.transform.position = local;
+    return;
+  }
+  if (binding.target.kind === "path-vertices") {
+    applyAnnotationVertices(state, snapshot, binding, vertexResults);
+    return;
+  }
+  if (binding.target.kind === "path-arrow") {
+    applyAnnotationArrow(state, snapshot, binding, result.pixel);
     return;
   }
   const target = binding.target;

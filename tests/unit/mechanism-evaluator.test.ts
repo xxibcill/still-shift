@@ -251,6 +251,44 @@ describe("pure tape-hook frame evaluation", () => {
     malformed.rigs.slider!.q = 0.08;
     expect(MechanismFrameResultSchema.safeParse(malformed).success).toBe(false);
   });
+  it("retains native JSON number spelling and dense-array rejection boundaries", () => {
+    const values = [
+      -0,
+      0,
+      -1,
+      1,
+      Number.MIN_VALUE,
+      Number.MAX_VALUE,
+      Number.MIN_SAFE_INTEGER,
+      Number.MAX_SAFE_INTEGER,
+      1e-7,
+      1e-6,
+      1e20,
+      1e21,
+      -1e-7,
+      -1e21,
+      0.1 + 0.2,
+    ];
+    expect(canonicalMechanismJson(values)).toBe(JSON.stringify(values));
+    for (const number of values)
+      expect(canonicalMechanismJson(number)).toBe(JSON.stringify(number));
+    expect(
+      canonicalMechanismJson([[], [1, [2]], { b: undefined, a: null }]),
+    ).toBe('[[],[1,[2]],{"a":null}]');
+    for (const number of [NaN, Infinity, -Infinity])
+      expect(() => canonicalMechanismJson([number])).toThrow(/finite/);
+    expect(() => canonicalMechanismJson([undefined])).toThrow(/finite/);
+    let nested: unknown = 0;
+    for (let depth = 0; depth < 64; depth++) nested = [nested];
+    expect(canonicalMechanismJson(nested)).toBe(JSON.stringify(nested));
+    expect(() => canonicalMechanismJson([nested])).toThrow(/64 levels/);
+    const hole = [1, 2, 3];
+    delete hole[1];
+    expect(() => canonicalMechanismJson(hole)).toThrow(/sparse/);
+    const inherited = Object.assign(Object.create(Array.prototype), { 1: 2 });
+    Object.setPrototypeOf(hole, inherited);
+    expect(() => canonicalMechanismJson(hole)).toThrow(/sparse/);
+  });
   it("canonically binds JSON key order while rejecting non-JSON and cyclic input", () => {
     expect(canonicalMechanismJson({ b: [2, 1], a: { z: false, x: 0 } })).toBe(
       '{"a":{"x":0,"z":false},"b":[2,1]}',

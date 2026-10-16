@@ -1,0 +1,123 @@
+{
+  "date": "2026-10-16",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/57",
+  "prHead": "36fc04ea76ce0cc4e731bd5204ac505a06c260f5",
+  "mergedMain": "e743320314d23e13e43933ebe2bf6b823180ab4f",
+  "strategy": "Two-parent merge of main into the existing PR branch; normal fast-forward push. No history rewrite.",
+  "conflicts": [
+    {
+      "path": "packages/execution-runtime/src/native-observation-sink.ts",
+      "resolution": "Keep the PR versioned facade. Main readObservationBytes and shared core readJournalBytes have byte-identical bodies after normalizing their names. Preserve owned nonblocking regular-file descriptors, byte limits, cancellation and finally cleanup for all journal versions."
+    },
+    {
+      "path": "tests/runtime/native-observation-file-admission.test.ts",
+      "resolution": "Retain the upstream v1 suite unchanged. Preserve the PR v2 fixture in native-observation-v2-file-admission.test.ts and apply the upstream symlink/FIFO/capacity-release cases to v2. Six cases per version pass."
+    },
+    {
+      "path": "docs/dev-log.md",
+      "resolution": "Preserve both histories and evidence; update PR56 merge and PR57 delivery state; record this resolution."
+    }
+  ],
+  "upstreamRepairs": "Retain collapsed native-scope and direct native-controller matte validation, upstream regression tests, and the MS1N design update. The native3d-contract unit suite is identical to main.",
+  "setup": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "dependencies": "Offline frozen pnpm and uv installs; separately hash-locked soundtrack runtime. Full toolchain check passes."
+  },
+  "verification": {
+    "checkFast": {
+      "exitCode": 0,
+      "unitFiles": 429,
+      "unitTests": 4395,
+      "log": "pr57-conflict-check-fast.log"
+    },
+    "runtime": {
+      "status": "Complete in recorded stages; initial aggregate remains failed.",
+      "aggregateExitCode": 1,
+      "runtimeFiles": 44,
+      "runtimeTests": 286,
+      "integrationFilesPassed": 58,
+      "integrationFilesFailed": 1,
+      "integrationPassed": 322,
+      "integrationFailed": 3,
+      "log": "pr57-conflict-check-runtime.log"
+    },
+    "protocolRerun": {
+      "exitCode": 0,
+      "files": 1,
+      "tests": 5,
+      "log": "pr57-conflict-protocol-rerun.log",
+      "limits": "Unchanged source, assertions, and original 5000ms timeouts."
+    },
+    "distinctIntegrationTests": 325,
+    "python": {
+      "exitCode": 0,
+      "tests": 14,
+      "log": "pr57-conflict-python-tests.log"
+    },
+    "browserSmoke": {
+      "exitCode": 0,
+      "log": "pr57-conflict-smoke.log"
+    },
+    "nativeDepth": {
+      "exitCode": 0,
+      "depthCases": 14,
+      "compositionCases": 6,
+      "actualExportCancellation": "passed",
+      "report": "native-depth/required-native-proof-reports.json",
+      "log": "pr57-conflict-native-depth.log"
+    },
+    "exports": {
+      "v2": {
+        "exitCode": 0,
+        "exports": 2,
+        "framesPerExport": 6,
+        "passesPerExport": 36,
+        "repeatedOutputSha256": "sha256:3e839c201f2bcc25f466fc84db62f4d722112e4bcd5a493df0efa12f8a41508d",
+        "unusedOutputFrames": 1,
+        "report": "export-v2/run.json"
+      },
+      "v3": {
+        "exitCode": 0,
+        "exports": 2,
+        "framesPerExport": 11,
+        "passesPerExport": 11,
+        "repeatedOutputSha256": "sha256:bdfa9d0aff02c19a75811ee545e23e2a20f4dfd7e1ba8e2bee5ffecaea716d38",
+        "unusedOutputFrames": 1,
+        "report": "export-v3/run.json"
+      }
+    },
+    "sourceBinding": {
+      "files": 2621,
+      "scope": "All tracked non-documentation files after conflict resolution, before verification completion",
+      "manifestSha256": "132c76d12e9fccad9fbb0d91e9146ebaadc3b0bfc4a46c9843c8170cd4c6a03c",
+      "manifest": "pr57-conflict-inputs.json",
+      "mismatches": []
+    },
+    "whitespace": "Both working and staged git diff --check pass; final documentation formatting checked separately."
+  },
+  "retainedFailures": [
+    {
+      "stage": "Initial runtime aggregate / integration",
+      "file": "tests/integration/depth-worker-protocol.test.ts",
+      "cases": [
+        "shares fake preparation and cache-hit results with both consumers",
+        "validates normalization without depth and its cache hit",
+        "preserves input failure codes for prepare"
+      ],
+      "reason": "Each timed out at the unchanged 5000ms budget; cause remains unproven. The complete unchanged five-case file passes in a separate rerun."
+    }
+  ],
+  "evidenceRoot": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/pr-57-conflict-resolution-20261016",
+  "delivery": {
+    "commit": "The merge commit containing this receipt.",
+    "target": "refs/heads/codex/mechanism-ms2",
+    "plan": "Push once after verification, then verify remote SHA, both parents, and GitHub mergeability. Final delivery state is retained in evidenceRoot/delivery.json."
+  },
+  "limits": [
+    "Fresh full render/frozen-baseline/benchmark release gate and installed-package qualification were not rerun.",
+    "Earlier release and archive records retain their original source bindings.",
+    "Owner merge and human visual/listening acceptance remain separate."
+  ]
+}

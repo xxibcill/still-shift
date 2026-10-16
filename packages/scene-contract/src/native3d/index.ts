@@ -1,5 +1,18 @@
 export * from "./geometry.ts";
 export * from "./scene.ts";
+export * from "./scene-v2.ts";
+export * from "./frame-v2.ts";
 export * from "./frame.ts";
 export * from "./observation.ts";
+export * from "./shape-observation.ts";
+export * from "./observation-v2.ts";
 export * from "./appearance.ts";
+export * from "./pbr-geometry.ts";
+
+export * from "./scene-v3.ts";
+
+export * from "./frame-v3.ts";
+
+export * from "./observation-v3.ts";
+
+export * from "./output-v3.ts";

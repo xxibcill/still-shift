@@ -134,13 +134,17 @@ export function nativeInspectorControls(area: HTMLElement, options: Options) {
     ),
     metalness = addNumber(
       "Native material metalness",
-      variant.source.geometry.materials[0]!.metalness,
+      "schemaVersion" in variant.source.geometry.materials[0]!
+        ? variant.source.geometry.materials[0]!.metallicFactor
+        : variant.source.geometry.materials[0]!.metalness,
       0,
       1,
     ),
     roughness = addNumber(
       "Native material roughness",
-      variant.source.geometry.materials[0]!.roughness,
+      "schemaVersion" in variant.source.geometry.materials[0]!
+        ? variant.source.geometry.materials[0]!.roughnessFactor
+        : variant.source.geometry.materials[0]!.roughness,
       0,
       1,
     ),
@@ -169,8 +173,16 @@ export function nativeInspectorControls(area: HTMLElement, options: Options) {
   const selectedMaterial = variant.source.geometry.materials.find(
     (value) => value.id === material.value,
   )!;
-  metalness.value = String(selectedMaterial.metalness);
-  roughness.value = String(selectedMaterial.roughness);
+  metalness.value = String(
+    "schemaVersion" in selectedMaterial
+      ? selectedMaterial.metallicFactor
+      : selectedMaterial.metalness,
+  );
+  roughness.value = String(
+    "schemaVersion" in selectedMaterial
+      ? selectedMaterial.roughnessFactor
+      : selectedMaterial.roughness,
+  );
   let frame = options.frame;
   let labelSelect: HTMLSelectElement | undefined,
     labelText: HTMLTextAreaElement | undefined,
@@ -219,6 +231,7 @@ export function nativeInspectorControls(area: HTMLElement, options: Options) {
             state.layer.type === "native3d"
           )
             snapshots.push({
+              version: state.nativeFrame.version,
               scope: state.nativeFrame.scope,
               sourceFrame: state.nativeFrame.sourceFrame,
               viewport: state.nativeFrame.viewport,
@@ -259,6 +272,7 @@ export function nativeInspectorControls(area: HTMLElement, options: Options) {
           asset: current.controller.asset,
           sourceKey: current.variant.sourceKey,
           sourceSha256: current.variant.sourceSha256,
+          sourceVersion: current.variant.source.schemaVersion,
           geometrySha256: current.variant.geometrySha256,
           sourceUnits: current.variant.source.units,
           part: current.variant.source.parts.find(
@@ -317,8 +331,12 @@ export function nativeInspectorControls(area: HTMLElement, options: Options) {
     const value = variant.source.geometry.materials.find(
       (value) => value.id === material.value,
     )!;
-    metalness.value = String(value.metalness);
-    roughness.value = String(value.roughness);
+    metalness.value = String(
+      "schemaVersion" in value ? value.metallicFactor : value.metalness,
+    );
+    roughness.value = String(
+      "schemaVersion" in value ? value.roughnessFactor : value.roughness,
+    );
     update();
   };
   anchor.onchange = () => {

@@ -17,11 +17,9 @@ import type { SampledCameraControls } from "./spatial-state.ts";
 import type { SampledLight, WorldLight } from "./lighting.ts";
 import type { SampledDepthMotion, SampledImagePlane } from "./depth-image.ts";
 import type { SampledCompositionMedia } from "./media.ts";
-import type { NativeFrameSnapshot } from "@still-shift/scene-contract";
-import type {
-  PreparedNative3DScene,
-  NativeScreenBindingResult,
-} from "../../native3d/types.ts";
+import type { NativeFrameSnapshotVersions } from "@still-shift/scene-contract";
+import type { PreparedNative3DSceneVersions } from "../../native3d/types-v2.ts";
+import type { NativeScreenBindingResult } from "../../native3d/types.ts";
 
 export type Rgba = [number, number, number, number];
 export type Bounds = {
@@ -99,7 +97,7 @@ export type EvaluatedLayer = {
   media?: SampledCompositionMedia;
   precomp?: EvaluatedLayerTree;
   /** One physical snapshot shared by the controller, graphics and screen bindings. */
-  nativeFrame?: NativeFrameSnapshot;
+  nativeFrame?: NativeFrameSnapshotVersions;
   nativeScreenBinding?: NativeScreenBindingResult;
   /** The unmixed scope used by this layer's exposure sample. */
   exposure?: { tree: EvaluatedLayerTree; rootTime: number };
@@ -134,7 +132,7 @@ export type EvaluationOptions = {
    * Each entry is indexed by discrete text state. No font measurement occurs here. */
   textBounds?: Readonly<Record<string, readonly Bounds[]>>;
   /** Immutable catalogues prepared before evaluation/text discovery. */
-  preparedNative3D?: Readonly<Record<string, PreparedNative3DScene>>;
+  preparedNative3D?: Readonly<Record<string, PreparedNative3DSceneVersions>>;
   /** Acceptance requires every contributing native pass, even when pixels are stationary. */
   nativeObservationRequired?: boolean;
 };

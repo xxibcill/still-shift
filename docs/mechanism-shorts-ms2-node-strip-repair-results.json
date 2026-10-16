@@ -1,0 +1,62 @@
+{
+  "version": "mechanism-shorts-ms2-node-strip-repair-results-1",
+  "date": "2026-10-12",
+  "branch": "codex/mechanism-ms2",
+  "baseCommit": "aa58eddf204ec1380c2e98e0aaa69e3c8451e05d",
+  "status": "scoped-repair-fast-and-owning-tests-complete",
+  "problem": "The full67-1 ordinary runtime gate reached the maintained raw Node/Lab loading test; Node22.23.1 strip-only parsing rejected a constructor parameter property in CompositionNodeMemory. Actual aggregate terminal25739 exited1;4353 units and242 other runtime tests passed on unchanged2638 inputs.",
+  "change": "Replace the constructor parameter property with a declared readonly parent field and explicit assignment. Same optional argument, assignment/validation/ledger/lease/transfer/retirement behavior; no runtime loader flag, transform bypass, schema, quota or rendering change.71 additional source bytes.",
+  "verification": [
+    {
+      "id": "existing-owning-node-and-owner1",
+      "actualSession": 60538,
+      "actualExitCode": 0,
+      "command": "pnpm exec vitest run tests/runtime/native-node-config.test.ts tests/unit/composition-node-owner.test.ts tests/unit/composition-node-json.test.ts --no-file-parallelism",
+      "tests": 13,
+      "files": 3,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-final67-node-fix1.log",
+        "bytes": 538,
+        "sha256": "sha256:70854f11445baf704678ffe1f45a0c0318bacdb980fa12f79524eb239e7aab0d"
+      }
+    },
+    {
+      "id": "ordinary-fast1",
+      "actualSession": 18398,
+      "actualExitCode": 0,
+      "command": "pnpm check:fast",
+      "unitTests": 4353,
+      "unitFiles": 428,
+      "maxWorkers": 4,
+      "unitSeconds": 61.52,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-final67-repair-fast1.log",
+        "bytes": 40314,
+        "sha256": "sha256:74d67a72f273730a085cfb7500bb419b903dc4265860cd152dd01cd41c043bf0"
+      }
+    }
+  ],
+  "sourceHold": {
+    "manifest": {
+      "path": "/private/tmp/still-shift-ms2-final67-repair-inputs1.json",
+      "bytes": 449950,
+      "sha256": "sha256:b84741436b340e60611ef4ae139c94fa9556bff18985829868f47edd480a02a8"
+    },
+    "files": 2638,
+    "bytes": 120690590,
+    "afterChecksActualExitCode": 0
+  },
+  "failedFullAttempt": "docs/mechanism-shorts-ms2-full-gate-results.json#final67-full1",
+  "remaining": [
+    "Deliver final family thumbnail inputs, then a fresh full102/frozen176/36061/benchmark and current archive/installed admission; no earlier aggregate is relabeled as pass.",
+    "Finite resource/pack disposition and MS2 PR before MS3. Human/factual/continuous/listening gates retain their actual unreviewed states."
+  ],
+  "supportedPacks": 0,
+  "validatedCoverage": {
+    "supported": 0,
+    "selected": 10
+  },
+  "acceptedPilotEpisodes": 0,
+  "paidGeneration": false,
+  "publication": false
+}

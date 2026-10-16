@@ -7,7 +7,10 @@ import {
 import { PassageError } from "../passage-diagnostics.ts";
 import { measureFrameEnergy } from "../story-continuous-quality.ts";
 import { assertCompositionQualityCapacity } from "./quality-samples.ts";
-import type { CompositionPreview } from "./render/index.ts";
+import {
+  renderCompositionFrameAsync,
+  type CompositionPreview,
+} from "./render/index.ts";
 
 /** Full-resolution grayscale changes reuse the continuous-motion 4-level / 200-pixel default gate. */
 export async function analyzeRenderedCompositionQuality(
@@ -34,7 +37,7 @@ export async function analyzeRenderedCompositionQuality(
     options.signal?.throwIfAborted();
     if (native) await preview.prepareFrame(frame);
     options.signal?.throwIfAborted();
-    const report = preview.renderFrame(frame);
+    const report = await renderCompositionFrameAsync(preview, frame);
     if (report.diagnostics.some((d) => d.severity === "error"))
       throw new PassageError(report.diagnostics);
     const rgba = preview.readPixels();

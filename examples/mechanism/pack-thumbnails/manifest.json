@@ -1,0 +1,255 @@
+{
+  "version": "mechanism-pack-thumbnails-1",
+  "date": "2026-10-12",
+  "scope": "Default neutral source frame0 through each current named recognition recipe. Actual native preview PNGs; no human/material/factual or supported-pack promotion. Reproduce under the pinned chromium-software-2 profile.",
+  "rows": [
+    {
+      "family": "tape-hook",
+      "pack": {
+        "id": "tape-hook",
+        "version": "1.0.0",
+        "sha256": "sha256:5f7fa4100db1ecbb36eb62d2c036857b3740ded49e41856870aed2769e260dd5",
+        "variant": "floating-hook",
+        "detail": "teaching"
+      },
+      "status": "candidate-preview",
+      "sourceSha256": "sha256:0a2db1877fe83eb7ee348b6c658b2396dd4a781b3a5c3ffaa413392e182245bc",
+      "thumbnailRecipe": {
+        "kind": "native-preview-recipe",
+        "cameraTarget": "recognition",
+        "sourceFrame": 0,
+        "width": 320,
+        "height": 180
+      },
+      "cameraPlan": {
+        "version": "mechanism-camera-recipe-clip-1",
+        "target": "recognition",
+        "intent": "recognition",
+        "editing": "hold",
+        "intentionalCut": false,
+        "camera": {
+          "position": [
+            14.998078271015922, 6.842539117864986, 12.92154037422288
+          ],
+          "target": [5.953000009059906, 2.319999986886978, 0],
+          "up": [0, 1, 0],
+          "fovDegrees": 35,
+          "near": 0.01640832126083618,
+          "far": 164.08321260836178
+        },
+        "endCamera": {
+          "position": [
+            14.998078271015922, 6.842539117864986, 12.92154037422288
+          ],
+          "target": [5.953000009059906, 2.319999986886978, 0],
+          "up": [0, 1, 0],
+          "fovDegrees": 35,
+          "near": 0.01640832126083618,
+          "far": 164.08321260836178
+        },
+        "cameraKeys": [
+          {
+            "frame": 0,
+            "position": [
+              14.998078271015922, 6.842539117864986, 12.92154037422288
+            ],
+            "target": [5.953000009059906, 2.319999986886978, 0],
+            "fovDegrees": 35,
+            "easing": "linear"
+          }
+        ],
+        "checks": [
+          {
+            "frame": 0,
+            "status": "passed",
+            "proofSurfaces": [
+              {
+                "id": "inner-face",
+                "mesh": "hook-front",
+                "triangle": 49,
+                "visibility": "visible"
+              }
+            ],
+            "bounds": {
+              "min": [
+                -0.1940000057220459, 0.4399999976158142, -1.4500000476837158
+              ],
+              "max": [12.100000023841858, 4.199999976158142, 1.4500000476837158]
+            }
+          }
+        ]
+      },
+      "file": "tape-hook.png",
+      "bytes": 28516,
+      "sha256": "sha256:24128707c8b1ab3c515048377752326e01816a598998ab7426864ce8ac1e0281",
+      "decodedRgbaSha256": "sha256:a70404b68eef26544021308b3cfa48e8c01a49ce92be8df64215554a542b5b77",
+      "appearanceCodeSha256": "sha256:81d81c2a27d47e4cb793ebfd0cfb4748ef0c694929b884937de110736c29ec77"
+    },
+    {
+      "family": "cable-tie",
+      "pack": {
+        "id": "cable-tie",
+        "version": "1.0.0",
+        "sha256": "sha256:c4243b4d3f4ae14561f955eff5874d1954adabf944d4daf96ca27d48b22b7a7c",
+        "variant": "outside-serrated-integral-pawl-cutaway",
+        "detail": "teaching"
+      },
+      "status": "candidate-preview",
+      "sourceSha256": "sha256:3a59ce85a880bf2f92d90b4cdbbbe9336b44d607b40c13836b8f6888f9f5af5d",
+      "thumbnailRecipe": {
+        "kind": "native-preview-recipe",
+        "cameraTarget": "recognition",
+        "sourceFrame": 0,
+        "width": 640,
+        "height": 360
+      },
+      "cameraPlan": {
+        "version": "mechanism-camera-recipe-clip-1",
+        "target": "recognition",
+        "intent": "recognition",
+        "editing": "hold",
+        "intentionalCut": false,
+        "camera": {
+          "position": [
+            2.926660326615246, 2.6078284640239566, 5.845825396348128
+          ],
+          "target": [-1.75, 0.26949830071633374, -1.1920928966180355e-8],
+          "up": [0, 1, 0],
+          "fovDegrees": 35,
+          "near": 0.007842997798491045,
+          "far": 100
+        },
+        "endCamera": {
+          "position": [
+            2.926660326615246, 2.6078284640239566, 5.845825396348128
+          ],
+          "target": [-1.75, 0.26949830071633374, -1.1920928966180355e-8],
+          "up": [0, 1, 0],
+          "fovDegrees": 35,
+          "near": 0.007842997798491045,
+          "far": 100
+        },
+        "cameraKeys": [
+          {
+            "frame": 0,
+            "position": [
+              2.926660326615246, 2.6078284640239566, 5.845825396348128
+            ],
+            "target": [-1.75, 0.26949830071633374, -1.1920928966180355e-8],
+            "fovDegrees": 35,
+            "easing": "linear"
+          }
+        ],
+        "checks": [
+          {
+            "frame": 0,
+            "status": "passed",
+            "proofSurfaces": [
+              {
+                "id": "pawl-tip",
+                "mesh": "pawl.mesh",
+                "triangle": 98,
+                "visibility": "visible"
+              }
+            ],
+            "bounds": {
+              "min": [-5.25, -0.445, -0.775],
+              "max": [1.75, 0.9839966014326675, 0.7749999761581421]
+            }
+          }
+        ]
+      },
+      "file": "cable-tie.png",
+      "bytes": 54273,
+      "sha256": "sha256:a636880cef6353bbfbd93b7678d431605f2187cfc92d4593902a560b0e6f52dd",
+      "decodedRgbaSha256": "sha256:1ea6974f0cccd70f864718140c383869745f5160ebea7ad35fa6433abc823146",
+      "appearanceCodeSha256": "sha256:81d81c2a27d47e4cb793ebfd0cfb4748ef0c694929b884937de110736c29ec77"
+    },
+    {
+      "family": "clothespeg",
+      "pack": {
+        "id": "clothespeg",
+        "version": "1.0.0",
+        "sha256": "sha256:1d6050d5ac18a16722e3766bf8da86a4f0c418012d50e3a15a6eeadd1b7ac281",
+        "variant": "wood-arms-central-spring-cloth",
+        "detail": "teaching"
+      },
+      "status": "candidate-preview",
+      "sourceSha256": "sha256:f2d265adfc6d94480063abfb7a82a4cbec36111299025bd49156e1281143939e",
+      "thumbnailRecipe": {
+        "kind": "native-preview-recipe",
+        "cameraTarget": "recognition",
+        "sourceFrame": 0,
+        "width": 640,
+        "height": 360
+      },
+      "cameraPlan": {
+        "version": "mechanism-camera-recipe-clip-1",
+        "target": "recognition",
+        "intent": "recognition",
+        "editing": "hold",
+        "intentionalCut": false,
+        "camera": {
+          "position": [
+            0.424598474977661, 0.00014466151545422523, 6.6209849881951905
+          ],
+          "target": [-0.2375000238418581, 0.00014466151545422523, 0],
+          "up": [0, 1, 0],
+          "fovDegrees": 35,
+          "near": 0.006654007562067022,
+          "far": 100
+        },
+        "endCamera": {
+          "position": [
+            0.424598474977661, 0.00014466151545422523, 6.6209849881951905
+          ],
+          "target": [-0.2375000238418581, 0.00014466151545422523, 0],
+          "up": [0, 1, 0],
+          "fovDegrees": 35,
+          "near": 0.006654007562067022,
+          "far": 100
+        },
+        "cameraKeys": [
+          {
+            "frame": 0,
+            "position": [
+              0.424598474977661, 0.00014466151545422523, 6.6209849881951905
+            ],
+            "target": [-0.2375000238418581, 0.00014466151545422523, 0],
+            "fovDegrees": 35,
+            "easing": "linear"
+          }
+        ],
+        "checks": [
+          {
+            "frame": 0,
+            "status": "passed",
+            "proofSurfaces": [
+              {
+                "id": "coil-front",
+                "mesh": "spring.mesh",
+                "triangle": 816,
+                "visibility": "visible"
+              },
+              {
+                "id": "lower-seat-exit",
+                "mesh": "spring.mesh",
+                "triangle": 993,
+                "visibility": "visible"
+              }
+            ],
+            "bounds": {
+              "min": [-3.2750000000000004, -1.0297106769690916, -0.75],
+              "max": [2.799999952316284, 1.03, 0.75]
+            }
+          }
+        ]
+      },
+      "file": "clothespeg.png",
+      "bytes": 62418,
+      "sha256": "sha256:d181a0e607b8d2388fbb81aae22eea254e38be7e07bc7ff2a92cd8852cee5391",
+      "decodedRgbaSha256": "sha256:50115a08a746cd08943ac696b9ec9d1b9d1e9873287e8c74dc6ec8cfbd789eee",
+      "appearanceCodeSha256": "sha256:81d81c2a27d47e4cb793ebfd0cfb4748ef0c694929b884937de110736c29ec77"
+    }
+  ]
+}

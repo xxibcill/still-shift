@@ -1,0 +1,249 @@
+{
+  "version": 1,
+  "date": "2026-10-13",
+  "milestone": "MS2",
+  "status": "passed-in-stages-package-archive-installed-and-independent-decoder",
+  "verifiedPackageSourceCommit": "6e3ed5ca524f39b9f5b67c4656bca6ff84e3228f",
+  "archive": {
+    "path": "/private/tmp/still-shift-ms2-final73-package-umklxwr5/still-shift-0.1.1.tgz",
+    "bytes": 5031813,
+    "sha256": "sha256:1adb9bc4f88a3de7e6be8ac91ea77efbd4f6ec7ce964f8cca495fdfcfc27d86e"
+  },
+  "packageGate": {
+    "command": "pnpm test:package",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "checks": 28,
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms2-final73-package1-receipt.json",
+      "bytes": 38180,
+      "sha256": "sha256:a67d770031b2151a9019cbb46f2851d907c143cff2cf2ea51e9a092387075ce5"
+    },
+    "log": {
+      "path": "/private/tmp/still-shift-ms2-final73-package1.log",
+      "bytes": 39039,
+      "sha256": "sha256:faa00f4163935f63d2f1c95b53407cd67a0c2626bb14762789477a3293f0619e"
+    },
+    "verification": {
+      "path": "/private/tmp/still-shift-ms2-final73-package-umklxwr5/package-verification.json",
+      "bytes": 37103,
+      "sha256": "sha256:49ee4a24f699569c4f9575992acef61aa81655a39e507d8f6a9a3314264b78be"
+    },
+    "consumerVerification": {
+      "path": "/private/tmp/still-shift-ms2-final73-package-umklxwr5/consumer-verification.json",
+      "bytes": 37543,
+      "sha256": "sha256:8179729fd76523f1ef11c993a21ed7570199c0dca1cd9424de09350ad0a1b066"
+    }
+  },
+  "archiveAudit": {
+    "status": "passed",
+    "members": 2367,
+    "correspondingSourceFiles": 970,
+    "runtimeFiles": 1397,
+    "summary": {
+      "path": "/private/tmp/still-shift-ms2-final73-archive-audit1/summary.json",
+      "bytes": 6722,
+      "sha256": "sha256:b1e0d21fcce20188fb04edff39a616ae110b8f519081db0f0467023c4d33027a"
+    },
+    "rows": {
+      "path": "/private/tmp/still-shift-ms2-final73-archive-audit1/members.json",
+      "bytes": 1403316,
+      "sha256": "sha256:7a15de6dd1f4e8155ab1d3c930de37e536294bbf872caf9fa2579dd8198cad36"
+    }
+  },
+  "attempts": [
+    {
+      "id": "consumer73-1",
+      "status": "failed",
+      "actualExitCode": 1,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms2-final73-consumer1-receipt.json",
+        "bytes": 686,
+        "sha256": "sha256:abd0b98c8082eaa9749099046aee7fdee4d7913c55a2cee3deab463ac13a889c"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-final73-consumer1.log",
+        "bytes": 1791,
+        "sha256": "sha256:13b510389b6256d12ba24f9749b0225a60861c31a6d25f2dbc605b775d70bddc"
+      },
+      "failure": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift npm consumer-1eeBu8/ms2-final-failure.json",
+        "bytes": 23876,
+        "sha256": "sha256:3d9ee626cc76859bf7fff5b1029036cadb84e0c275587b2c7208016e65f7effb"
+      },
+      "completedStageNames": [
+        "installed-registry-cli-schemas-and-diagnostics",
+        "installed-modules-denied-originals-and-thumbnails"
+      ],
+      "locatedFailure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'installed-js'\n- 'compiled-js'\n"
+    },
+    {
+      "id": "consumer74-1",
+      "status": "failed",
+      "actualExitCode": 1,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms2-final74-consumer1-receipt.json",
+        "bytes": 648,
+        "sha256": "sha256:f0794318b31ae3491c2315a8ff066d0af85c4d4286483d3ce0df77dbeb150c8e"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-final74-consumer1.log",
+        "bytes": 4641,
+        "sha256": "sha256:f0d8674020d873907ca4cc641d81e45924fff5df86a1a076693eeee6f6ed7a66"
+      },
+      "failure": {
+        "path": "/private/tmp/still-shift-ms2-installed74-5o842865/ms2-final-failure.json",
+        "bytes": 69960,
+        "sha256": "sha256:c171c056049774dc1cecabf36a07b0f95e5577e5c174d4c026f25b092a80a6c0"
+      },
+      "completedStageNames": [
+        "installed-registry-cli-schemas-and-diagnostics",
+        "installed-modules-denied-originals-and-thumbnails",
+        "normal3-a",
+        "normal3-b",
+        "mixed123-a",
+        "mixed123-b"
+      ],
+      "locatedFailure": "Error: Command failed: python3 /private/tmp/still-shift-ms2-installed74-5o842865/node_modules/still-shift/packages/execution-runtime/src/artifact-lock-helper.py --identity 93014\nTraceback (most recent call last):\n  File \"/private/tmp/still-shift-ms2-installed74-5o842865/node_modules/still-shift/packages/execution-runtime/src/artifact-lock-helper.py\", line 94, in <module>\n    identity = process_start_identity(int(sys.argv[2]))\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/private/tmp/still-shift-ms2-installed74-5o842865/node_modules/still-shift/packages/execution-runtime/src/artifact-lock-helper.py\", line 25, in process_start_identity\n    result = subprocess.run(\n             ^^^^^^^^^^^^^^^\n  File \"/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py\", line 548, in run\n    with Popen(*popenargs, **kwargs) as process:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py\", line 1026, in __init__\n    self._execute_child(args, executable, preexec_fn, close_fds,\n  File \"/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/subprocess.py\", line 1950, in _execute_child\n    raise child_exception_type(errno_num, err_msg, err_filename)\nPermissionError: [Errno 1] Operation not permitted: 'ps'\n"
+    },
+    {
+      "id": "consumer75-1",
+      "status": "failed",
+      "actualExitCode": 1,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms2-final75-consumer1-receipt.json",
+        "bytes": 790,
+        "sha256": "sha256:986f70fe834ea062f9e9d6fe705da4038873b42aa9bb3ca432cae075abefeab2"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-final75-consumer1.log",
+        "bytes": 2602,
+        "sha256": "sha256:4e9e5cea6e4d47d525fb76a4adf53bb302e6d54dd9c67e68d9b3579584af42f3"
+      },
+      "failure": {
+        "path": "/private/tmp/still-shift-ms2-installed75-63yy1osi/ms2-final-failure.json",
+        "bytes": 196952,
+        "sha256": "sha256:c591525b0907dab7576430d6fe687ab74e945ec85deffc7a8ebb207ed0de65e6"
+      },
+      "completedStageNames": [
+        "installed-registry-cli-schemas-and-diagnostics",
+        "installed-modules-denied-originals-and-thumbnails",
+        "normal3-a",
+        "normal3-b",
+        "mixed123-a",
+        "mixed123-b",
+        "tape-hook-cache-a",
+        "tape-hook-cache-b",
+        "tape-hook-caption-edit-reuse"
+      ],
+      "locatedFailure": "AnimationEngineError: Pack revision, variant or detail differs from the expected reference"
+    }
+  ],
+  "currentAttempt": {
+    "id": "consumer76-1",
+    "status": "passed",
+    "owningSession": 69359,
+    "receiptPath": "/private/tmp/still-shift-ms2-final76-consumer1-receipt.json",
+    "logPath": "/private/tmp/still-shift-ms2-final76-consumer1.log",
+    "consumer": "/private/tmp/still-shift-ms2-installed76-lctjv970",
+    "snapshot": {
+      "path": "/private/tmp/still-shift-ms2-final76-live1.json",
+      "bytes": 1160,
+      "sha256": "sha256:0cef79b2a01b204f16feccfd448b328fc08aac2669d0c4d11441142aa10d4cdb"
+    },
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-12T18:11:18.497100+00:00",
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms2-final76-consumer1-receipt.json",
+      "bytes": 790,
+      "sha256": "sha256:fbcc1a7892f88914edfa30c6a470cb6fd5db1a275d1fa9cbf06263d760dd48fb"
+    },
+    "log": {
+      "path": "/private/tmp/still-shift-ms2-final76-consumer1.log",
+      "bytes": 1612,
+      "sha256": "sha256:688a58a5589bc4d1699a16f13c91db646b56b06dd9b2e4531546c1d552f1cfe3"
+    },
+    "installedRun": {
+      "path": "/private/tmp/still-shift-ms2-installed76-lctjv970/ms2-final-run.json",
+      "bytes": 958153,
+      "sha256": "sha256:db897e0c90a6f4fdf204d3be6e03869261867acac16f93df5372aabbb7edd29e"
+    },
+    "installedConfig": {
+      "path": "/private/tmp/still-shift-ms2-installed76-lctjv970/ms2-final-config.json",
+      "bytes": 6936,
+      "sha256": "sha256:71e033d924484252e1211f051a9f07f6c43398048d20f9d35e945b381c281d9a"
+    },
+    "inputManifest": {
+      "path": "/private/tmp/still-shift-ms2-final-consumer-inputs76-x_ry7j4p/inputs.json",
+      "bytes": 7465,
+      "sha256": "sha256:e9e5c46a490cc11ddd12e7961e06721fdb2671e1b979132047d9658ceb2323cf"
+    },
+    "installedBytes": {
+      "path": "/private/tmp/still-shift-ms2-final76-installed-bytes1.json",
+      "bytes": 397,
+      "sha256": "sha256:2583d005a41bedbf81ead3da91d82624b5ddfa7cc2445601299d2ad99c469285"
+    },
+    "decodedAudit": {
+      "path": "/private/tmp/still-shift-ms2-final76-decoded-audit1.json",
+      "bytes": 64142,
+      "sha256": "sha256:b4a8fda7af6ad6f534614fa6f79ff10c960b81a9bf70e36f25c8a224696ea31a"
+    },
+    "decodedAuditor": {
+      "path": "/private/tmp/still-shift-ms2-final-consumer71-audit.py",
+      "bytes": 7056,
+      "sha256": "sha256:7caa68d3a55e245fab48e3b2558468cb8298e7edb6e4932bcb06362303a79f78"
+    },
+    "outputCount": 13,
+    "decodedFrames": 574,
+    "unchangedInputPins": 26,
+    "freshNativeSubmissionCallsForCachedExports": 0
+  },
+  "repairs": [
+    "Consumer73 wrong runtime format expectation corrected to authoritative installed-js; no product change.",
+    "Consumer74 macOS setuid ps failure: documented consumer-only exact live-libproc query, preflight versus system ps and unsupported-argument rejection. Installed bytes and file denials unchanged.",
+    "Consumer75 correctly rejected an older cable-tie pack hash. Restaged all family inputs from completed full70 lifecycle Ee9wPp, preserving each source/media pin except locator-only cue rebasing. Added all-family read/compile preflight before render."
+  ],
+  "preflight": {
+    "path": "/private/tmp/still-shift-ms2-final76-process-preflight1.json",
+    "bytes": 731,
+    "sha256": "sha256:00fb5bfc8ca73a4f67d528f8edbe3205f496330f5e0f4459c46c274e359ad454"
+  },
+  "preparedScripts": [
+    {
+      "path": "/private/tmp/still-shift-ms2-final-consumer76-template.mjs",
+      "bytes": 12990,
+      "sha256": "sha256:6f163dcb5c00bd0f7679201ec6abc388f53d5991c80535aa5e2593f0d7165fcd"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-final-consumer76-setup.py",
+      "bytes": 2739,
+      "sha256": "sha256:b936b0257bbf2644af7d1a2b7301e7ef97082b4512a2979ead27eb576f09483b"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-final76-consumer.py",
+      "bytes": 2009,
+      "sha256": "sha256:64446a2998471082bd3f48a074173a3b4ec503cd9a4770107ee1efb90b767bcf"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms2-stage-final-consumer76.py",
+      "bytes": 2989,
+      "sha256": "sha256:586d20f09c3cb9045f8bc91a839642e3acd24cff546ce730ee5344bb8a9f16e8"
+    }
+  ],
+  "sourceInputs": {
+    "files": 2644,
+    "bytes": 120862576,
+    "inventory": {
+      "path": "/private/tmp/still-shift-ms2-final73-package-inputs1.json",
+      "bytes": 450977,
+      "sha256": "sha256:fd341f94397f090868d45fe4eadedd888913332e5e6cdcffe6775a00ac62b2de"
+    },
+    "runtimeVerificationRelation": "Full70 held963d3991; three erased source type changes in6e3ed5ca emit identical JavaScript and2641 inputs stay exact. Declaration/fast/package proofs refresh types; full70 is not relabelled."
+  },
+  "qualification": "Engineering supplied PCM/input fixtures and automated public lifecycle proof; no genuine speech, whole glyph, listening, continuous mechanics, physical memory certification, supported-pack/pilot, merge or publication inference. Archive binds exact6e3ed5ca source before later evidence-only commits.",
+  "remaining": [
+    "Finite pack disposition and MS2 PR against main, then original MS3 scope.",
+    "Candidate support, whole glyph, continuous audiovisual/listening, factual/material/hardware/portrait/human acceptance and finer Thai remain unapproved; no merge/publication."
+  ]
+}

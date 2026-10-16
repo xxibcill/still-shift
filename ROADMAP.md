@@ -94,7 +94,8 @@ human visual/listening acceptance remain separate.
 MS0 and MS1 have open PRs; [MS1N software verification](./docs/mechanism-shorts-ms1n-completion.md)
 now completes in recorded stages, including all77 local groups and unchanged176
 baselines/36,061 frames. Human playback/listening and appearance remain pending.
-Open the native milestone PR before starting MS2; keep the branch/PR sequence.
+The [native PR #56](https://github.com/xxibcill/still-shift/pull/56) is open; MS2 starts
+on its separate branch with the exact prerequisite commit and current main.
 
 | Stage | Product proof                                                                       | Detailed scope                                                                                                  |
 | ----- | ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |

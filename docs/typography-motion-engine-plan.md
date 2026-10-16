@@ -483,10 +483,12 @@ without corresponding fingerprint/version and affected parity checks.
 
 ### Genuine weight versus outline emphasis
 
-**Current status: both routes implemented; semantic distinction not explicit enough.
-Classification: design-contract gap. Accept, P2, MS2 reusable authoring.**
+**Current status (2026-10-12): explicit treatments/units and resolved receipts
+implemented in MS2 slices45/46; scoped actual-font/native software acceptance verified.
+Original classification: design-contract gap, P2, MS2 reusable authoring.**
 [Event compilation](../packages/scene-contract/src/typography-events.ts) selects
-`wght` only if every targeted run has positive headroom; otherwise it outlines.
+`wght` for legacy automatic events only if every targeted run has positive headroom;
+otherwise it outlines.
 `amount` consequently switches between axis units and outline pixels. Existing
 unit/browser tests cover these implementations; they do not make the fallback a
 truthful genuine-weight recipe.
@@ -504,6 +506,17 @@ mixed-run headroom cases have explicit resolved receipts; test release/end bound
 and backward seeks. Retain actual compiled axis versus stroke values and encoded
 states, including natural English gaps. A changed raster alone is insufficient to
 prove genuine weight; legacy fallback behavior remains covered.
+
+[Slice46 evidence](./mechanism-shorts-ms2-text-weight-render-results.json) retains
+exact MS1 font facts, 34 native text cases across WebGL2/Canvas2D, five unavailable
+controls per backend and explicit 150-axis/2.52-pixel values. All 48 encoded streams,
+2,040 full decoded frames, release/end states, 6,120 forward/reverse/shuffled draws
+and 544 sampled English-gap checks pass. The real 600/850 mixed-instance control
+preserves legacy min-headroom clamping at 50 and rejects explicit 51. Cross-backend
+exactness is scoped to the tested driver. Failures/reruns and human/whole-milestone
+review boundaries remain retained. The subsequent count-fit reproduction is
+[repaired and verified](./mechanism-shorts-ms2-count-fit-results.json); Thai probes
+remain open.
 
 ### Continuous genuine font-size relayout
 
@@ -614,7 +627,7 @@ contract limitation. No blanket renderer rewrite or baseline regeneration follow
 | Finding and current code status                                                                                                                                                              | Classification, disposition, phase and dependencies                                                                                                                              | Acceptance and retained evidence; compatibility and size                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Mixed-size masks: line metrics expand for spans, but non-none masks still use base layout ascent/descent in `typography-renderer.ts`; native bounds already include more than authored boxes | Source-audited risk. Accept MS1 reproduction beside overlay checks; depend on real loaded fonts and the existing mask path                                                       | Base 36/inline 96, Latin descenders and Thai upper/lower marks; line/word masks versus unmasked control at entry, active and resolved frames, including reverse seeks. Distinguish intentional reveal clipping from unintended lost ink. Save encoded samples and independent visual recheck. Probe 0.5–1 day; if confirmed, likely 1–2 days scoped extent repair, with versioned intended pixel changes and unchanged ordinary masks                                                                                                               |
-| Generated count values in shared fitting: `prepareTextFits` uses explicit states, while `typographyTextValues` enumerates formatted counts; width reservation already exists                 | Source-audited risk. Accept MS2 reproduction before reusable count+fit use; depend on a permitted shared-fit caller, not direct native authoring                                 | Valid `1`→`2`, decimals 2, tabular pinned text in a narrow box; run fit then raster preparation and compare every generated string. Fit once for all reachable values or reject unsupported combination before claiming success. Keep 10,000-value budget, stable anchor and existing numeric-binding+fit rejection. Probe 0.5–1 day; possible 1–2 day repair sharing reachable-value collection; no new native auto-fitter                                                                                                                         |
+| Generated count values in shared fitting: historical endpoint-only fitting now shares `typographyTextValues`; width reservation already exists                                               | Confirmed and repaired in [slice47](./mechanism-shorts-ms2-count-fit-results.json), scoped software/native acceptance through a permitted shared-fit caller                      | Valid `1`→`2`, decimals 2, tabular pinned text in a narrow box; run fit then raster preparation and compare every generated string. Fit once for all reachable values or reject unsupported combination before claiming success. Keep 10,000-value budget, stable anchor and existing numeric-binding+fit rejection. Probe 0.5–1 day; possible 1–2 day repair sharing reachable-value collection; no new native auto-fitter                                                                                                                         |
 | Finer Thai segmentation: complete runs are painted, then grapheme-estimated slices receive poses; no actual browser shaping-cluster map                                                      | Source-audited risk. Accept MS2 probe; defer finer-unit support claims/architectural replacement until results. Depend on MS1 coverage and fixed Noto bytes/axes                 | Six research stress strings plus production copy; intact control versus independent translation/rotation/opacity/retype, color boundary and size/font boundary. Inspect consecutive encoded windows, marks, ink overlap and final states at native/declared reduced sizes. Record which units are supported; no blanket broken-Thai claim. Share 1–2 days with tracking; shaping-engine replacement needs a new scoped estimate                                                                                                                     |
 | Script-sensitive tracking: opt-in size-only `opticalTracking(96)` yields −25/1000 em (−2.4 px); ordinary default is zero                                                                     | Source-audited risk; source-proven policy mismatch, no observed defect in SS02. Accept MS2 paired probe and explicit script-aware authoring warning; defer global default change | Same exact Thai/mixed copy, font and size with tracking 0 versus opt-in formula. Retain resolved values and encoded mark/gap checks. Explicit authored tracking wins; existing outputs do not silently change. A new safe profile must specify script/run behavior and justify any prohibition. No universal automatic optical-spacing claim; share Thai probe effort                                                                                                                                                                               |
 | Portrait annotation anchors: vertical overrides, crop/world mapping and outside-crop rejection exist; semantic target and optical placement are authored                                     | Source-audited risk. Accept MS1 portrait test, extend existing MS2 anchor recipes; no new automatic recomposition engine                                                         | Recreate lost-label/leader negative and corrected portrait control, preserve target ID through crop/scale/rotation, caption/contact exclusions and text size changes. Check source/world endpoint analytically and intended part/clearance in encoded entry/mid/exit frames. Include named center without measured text size; require explicit geometry/offset instead of inferred ink center. Save/reload and reverse seeks; 1–2 days shared with E01 anchor tests. Existing coordinate semantics unchanged; repair only a reproduced engine fault |
@@ -668,3 +681,41 @@ This planning session runs document checks only; GitHub Actions remain prohibite
 [tfinal]: </Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/qa/final-integration-addendum.md>
 [tcache]: </Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/qa/cache-failure-independent-review.md>
 [tfont]: </Users/jjae/Documents/obsidian/ai-business/Knowledge Base/Motion Graphics/typography/assessments/2026-10-08-still-shift/fonts-and-layout.md>
+
+### Generated-count risk resolution (2026-10-12)
+
+[Slice47 evidence](./mechanism-shorts-ms2-count-fit-results.json) records the valid
+shared-fit reproduction and repair. Exact pinned tabular Plex at 96 px passed old
+endpoint fitting but rejected raster preparation for 61 generated strings. Reusing
+`typographyTextValues` in Type-1 fitting selects 38 px and prepares all 63 strings.
+Wide/no-fit controls preserve fitted nodes/styles/measurements; the 10,000-value
+budget and numeric-binding+fit rejection remain. Three native cases, repeated
+exports, all-frame seek checks, independently decoded streams and existing fit
+variants on both backends pass in stages. No new native auto-fitter is introduced.
+This resolves the count-fit row at scoped software/native level. The Thai rows,
+production-copy probes, human review and whole MS2 acceptance remain open.
+
+### Thai risk preflight (2026-10-12)
+
+[Slice48](./mechanism-shorts-ms2-thai-preflight-results.json) saves all six exact
+stress strings plus hashed SS02 production copy in 128 valid authoring/native
+compositions. Strict pinned-font coverage, loaded browser layouts, raster
+preparation and all 24 frames of poses pass; default and explicit-zero override
+geometry remain equal to zero tracking. Failed default-space and invalid UTF-16
+span authoring attempts remain retained. Alias font boundaries use identical Noto
+bytes; only X2 controls use the distinct Plex face. These are preflight findings.
+Consecutive native encoded/320/360 inspection, active retype, marks/overlap/gaps,
+complete meaning and supported-unit findings remain pending for both Thai rows.
+
+### Thai native packet (2026-10-12)
+
+[Slice49](./mechanism-shorts-ms2-thai-native-results.json) renders all 128 saved
+cases, probes all 142 streams and fully decodes 3,072 frames. Every active frame
+2–19 is retained in native and declared 320/360 bitmap sheets. Native seek proof
+covers all 24 frames forward/reverse/shuffled; 70 settled pose/alias comparisons
+and 256 saved lossless samples independently match exactly. Encoded differences
+remain recorded as diagnostic metrics rather than a shaping-failure claim.
+Seventeen sampled visual artifacts cover all seven texts and selected routes.
+Remaining full-cell mark/overlap/gap review and supported-unit findings still gate
+broader finer-Thai adoption. Partial retype/low-opacity quantity states cannot
+certify complete messages. No renderer or ordinary tracking behavior changed.

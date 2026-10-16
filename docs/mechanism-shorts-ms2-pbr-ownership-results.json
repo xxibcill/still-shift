@@ -1,0 +1,543 @@
+{
+  "version": "mechanism-ms2-pbr-ownership-results-1",
+  "date": "2026-10-11",
+  "branch": "codex/mechanism-ms2",
+  "baseSourceCommit": "215206374e731b401fa21740a1fc6079043b304d",
+  "status": "nested-pbr-resource-and-buffer-retirement-verified-in-stages",
+  "scope": [
+    "PBR resources capture each created pixel/attribute/index backing independently of mutable public collections. Close retires all geometry/material/texture owners, clears graph/texture references and private lookup, detaches only captured private buffers and clears closure collections.",
+    "Constructor failure and source3 world wrapper preserve the original cause, including null, despite nested cleanup errors. Separate immutable preparation remains reusable; caller-substituted vertex/texture buffers and original supplied pixels retain their separate ownership.",
+    "Four new actual-object controls cover normal retirement, all destructor faults/public collection mutation, partial attribute-construction failure and source3 wrapper failure. Sixteen focused tests and owning live PBR GPU/composition/export groups verify closure and rendering."
+  ],
+  "qualification": "Current fast16 passes 4,208 units/411 files on held inputs16; focused unit7 passes 16 real-object controls across two files. All six current PBR browser groups pass: components/mips, shared world, standalone observation, composition/journal/artwork, normal export and actual mixed authenticated HTTP/replay. Source3 normal MP4s and six mixed raw HTTP bodies preserve preceding slice33 bytes. Initial fast8 failed prefer-const on a private identity that also needed retirement; clear that lookup slot on disposal, then rerun. Original browser suffix behind failure was unrun. Existing quotas/source schemas/render math unchanged. No new native2/depth/Node broad/installed/full gate claim; prior native2/depth source33 and installed b4fc65ed remain separately pinned. Application-visible owned backings retire; driver internals/process RSS and aggregate source/world/body/replay admission remain separate.",
+  "workingInputs": {
+    "manifest": {
+      "path": "/private/tmp/still-shift-ms2-pbr-ownership34-inputs16.json",
+      "bytes": 430209,
+      "sha256": "sha256:ec11da8e70b08f8d14ab0be32ecee88204bc2b2d04a4345d1aab9ac60ce82b70"
+    },
+    "files": 2522,
+    "inputBytes": 119173825,
+    "selection": {
+      "roots": [
+        "apps/",
+        "packages/",
+        "scripts/",
+        "tests/",
+        "tools/",
+        "services/",
+        "benchmarks/",
+        "examples/",
+        "assets/",
+        "catalogs/"
+      ],
+      "rootFiles": "all Git-tracked or nonignored regular root files",
+      "packageProse": [
+        "docs/npm-package-readme.md",
+        "docs/npm-third-party-notices.md"
+      ],
+      "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+    }
+  },
+  "actualRootSessions": [
+    {
+      "session": 92009,
+      "exitCode": 0,
+      "commands": ["format1", "identity1", "build1"]
+    },
+    {
+      "session": 19268,
+      "exitCode": 0,
+      "commands": ["format2", "build2", "unit3"]
+    },
+    {
+      "session": 50610,
+      "exitCode": 0,
+      "commands": ["format4", "build4", "unit5"]
+    },
+    {
+      "session": 25525,
+      "exitCode": 0,
+      "commands": ["format6", "build6", "unit7"]
+    },
+    {
+      "session": 1547,
+      "exitCode": 1,
+      "commands": ["inputs8", "fast8"]
+    },
+    {
+      "session": 59545,
+      "exitCode": 0,
+      "commands": [
+        "format15",
+        "inputs16",
+        "fast16",
+        "resources17",
+        "world18",
+        "observation19",
+        "composition20",
+        "export21",
+        "mixed22",
+        "hold22"
+      ]
+    }
+  ],
+  "counts": {
+    "unitTests": 4208,
+    "unitFiles": 411,
+    "focusedTests": 16,
+    "focusedFiles": 2,
+    "newControls": 4,
+    "pbrBrowserGroups": 6,
+    "componentFrames": 3,
+    "componentFaults": 10,
+    "additionalMipCases": 5,
+    "worldFrames": 6,
+    "observedFrames": 8,
+    "observationFaults": 21,
+    "compositionFrames": 6,
+    "normalExports": 2,
+    "mixedRuns": 8,
+    "mixedRawFrames": 6,
+    "supportedPacks": 0,
+    "pilotSupportedEpisodes": 0
+  },
+  "verification": [
+    {
+      "id": "format1",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-pbr-ownership34-format1.log",
+        "bytes": 58,
+        "sha256": "sha256:36d705a9782edb68e5566e7bf13b540a8cbe2f228bfd2724fca4cc89c59fb8b1"
+      }
+    },
+    {
+      "id": "identity1",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-pbr-ownership34-identity1.log",
+        "bytes": 260,
+        "sha256": "sha256:e1588685c737f2ea8cfb7ede62f7879eea8d49a23816b935634ee84c02869a30"
+      }
+    },
+    {
+      "id": "build1",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-pbr-ownership34-build1.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "format2",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-pbr-ownership34-format2.log",
+        "bytes": 45,
+        "sha256": "sha256:121efbd2bd6b9226cd7484ffde9256a2026d697fe0e26bed933b8c316bc9f50a"
+      }
+    },
+    {
+      "id": "build2",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-pbr-ownership34-build2.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "unit3",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-pbr-ownership34-unit3.log",
+        "bytes": 378,
+        "sha256": "sha256:61d69b7899471a13c054f1223d9e444bc58220488b5ad40c9e9b29d003007d17"
+      }
+    },
+    {
+      "id": "format4",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-pbr-ownership34-format4.log",
+        "bytes": 159,
+        "sha256": "sha256:ff1eb33079c311baf0e3cadf751493e5f8de724f292f418cc37920a0d758756c"
+      }
+    },
+    {
+      "id": "build4",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-pbr-ownership34-build4.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "unit5",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-pbr-ownership34-unit5.log",
+        "bytes": 378,
+        "sha256": "sha256:cd12b419049d57e7a724ef21bc815976858f6025ac121f1d7d52a45745de65ef"
+      }
+    },
+    {
+      "id": "format6",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-pbr-ownership34-format6.log",
+        "bytes": 49,
+        "sha256": "sha256:de72f73cf347de0850154c8dbbb9ea09b57cdf38531db315ecae89c202674a47"
+      }
+    },
+    {
+      "id": "build6",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-pbr-ownership34-build6.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "unit7",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-pbr-ownership34-unit7.log",
+        "bytes": 378,
+        "sha256": "sha256:3f7741630d6de920c1678d832949b651f51627182e026c6761d1b66cc02f8817"
+      }
+    },
+    {
+      "id": "fast8",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-pbr-ownership34-fast8.log",
+        "bytes": 1659,
+        "sha256": "sha256:8d7ddb62946f771ad42e734bc0fc319cc8cb29e130f7fb97cf4c1f169a4b5c17"
+      }
+    },
+    {
+      "id": "format15",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-pbr-ownership34-format15.log",
+        "bytes": 70,
+        "sha256": "sha256:1dadc1fcdf2578a0d2b9589cd32a4d68dc648a4dbb4b02fc9afb7ced73036fc3"
+      }
+    },
+    {
+      "id": "fast16",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-pbr-ownership34-fast16.log",
+        "bytes": 34143,
+        "sha256": "sha256:7bc3a42ea8c29dcc3e4c07525ad1bfc9246afcf4d0f6fc7b10b269f28902a8d4"
+      }
+    },
+    {
+      "id": "resources17",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-pbr-ownership34-resources17.log",
+        "bytes": 346,
+        "sha256": "sha256:610cbffe48be3fe2687e30075fef110883083be81ac433b010cae144ec0bd178"
+      }
+    },
+    {
+      "id": "world18",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-pbr-ownership34-world18.log",
+        "bytes": 265,
+        "sha256": "sha256:ed9262992122645ca29f4793a7cd98e90fa08864c6d6d747cfce2b4cbf1b0662"
+      }
+    },
+    {
+      "id": "observation19",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-pbr-ownership34-observation19.log",
+        "bytes": 284,
+        "sha256": "sha256:21a19035b6dc1a2d65a39ba6067ecea498b479aa6fca12548ef73ff74edaeb7f"
+      }
+    },
+    {
+      "id": "composition20",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-pbr-ownership34-composition20.log",
+        "bytes": 833,
+        "sha256": "sha256:a7058663cc877a41a9ae8f11132fdfe02f9bfdd1144134f918bf8ad812af5c8a"
+      }
+    },
+    {
+      "id": "export21",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-pbr-ownership34-export21.log",
+        "bytes": 262,
+        "sha256": "sha256:f93d7221fc3f3276d26b039777e54ab99da43a3d86e2d5f38354308b9c3588ff"
+      }
+    },
+    {
+      "id": "mixed22",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-pbr-ownership34-mixed22.log",
+        "bytes": 270,
+        "sha256": "sha256:76b28e951fd279d042798fb3941c8f2cc5c9834d53cff8bccfaaa40f71e44ac1"
+      }
+    },
+    {
+      "id": "hold22",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-pbr-ownership34-hold22.log",
+        "bytes": 201,
+        "sha256": "sha256:d59f6f593a5c1bc1c3f9e990e461c908a63d1c2ca723e5bea44d6cbe1189bc85"
+      }
+    }
+  ],
+  "actualProofs": [
+    {
+      "command": "resources17",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-pbr-resources-XcFlBA",
+        "status": "passed",
+        "frames": 3,
+        "faults": 10,
+        "additionalMipCases": 5,
+        "minFilters": [9984, 9985, 9986, 9987, 9728, 9729]
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-pbr-resources-XcFlBA/run.json",
+        "bytes": 112964,
+        "sha256": "sha256:de6ca1f266f223ee554b77a67f4e8a497d23e6bb0caecfa52e4e64455f2feafe"
+      }
+    },
+    {
+      "command": "world18",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-pbr-world-wPrGNY",
+        "status": "passed",
+        "frames": 6,
+        "faults": 1
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-pbr-world-wPrGNY/run.json",
+        "bytes": 35485,
+        "sha256": "sha256:1ab42a64ce8879f38598809bf25402cb080b99c3a559e3bfd2eec23319a77d56"
+      }
+    },
+    {
+      "command": "observation19",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-pbr-observation-d9f7I5",
+        "status": "passed",
+        "frames": 8,
+        "faults": 21
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-pbr-observation-d9f7I5/run.json",
+        "bytes": 168668,
+        "sha256": "sha256:e559bad219d2229eaca64a5cec380386a620e5d93358b68a9170fbb39cf65641"
+      }
+    },
+    {
+      "command": "composition20",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-pbr-composition-du1ddS",
+        "captures": 6,
+        "binaryFaults": 5,
+        "protocolFaults": 4,
+        "worldArtworkCases": 2,
+        "stylePixelSha256": "sha256:eac66422fc266fad65457950f971c21fa2f1d4f43cb567e4cfb3bbf726844f12",
+        "memory": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 536870912,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 142976304,
+            "metadata": 1753176
+          },
+          "peak": {
+            "pixels": 286768822,
+            "metadata": 20833492
+          },
+          "reservations": 56
+        },
+        "cleanup": {
+          "scope": "declared-application-owned-bytes",
+          "limits": {
+            "pixels": 536870912,
+            "metadata": 67108864
+          },
+          "current": {
+            "pixels": 0,
+            "metadata": 0
+          },
+          "peak": {
+            "pixels": 286768822,
+            "metadata": 20833492
+          },
+          "reservations": 0
+        }
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-pbr-composition-du1ddS/run.json",
+        "bytes": 443834,
+        "sha256": "sha256:d9556ecd6c58220d046efeb75282ef584db19f372b777c98eb37139ddaf8de20"
+      }
+    },
+    {
+      "command": "export21",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-normal-export3-uNRM0Y",
+        "status": "passed",
+        "exports": 2
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-normal-export3-uNRM0Y/run.json",
+        "bytes": 25026,
+        "sha256": "sha256:853b35f894a10c36e7c73ad7dd9c1766737e60c1712d80c2a1d27470179ce809"
+      }
+    },
+    {
+      "command": "mixed22",
+      "result": {
+        "directory": "/private/tmp/still-shift-ms2-mixed-export3-tqj21s",
+        "status": "passed",
+        "runs": 8
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-mixed-export3-tqj21s/run.json",
+        "bytes": 15952,
+        "sha256": "sha256:fea3cd9dfe69d52a8884f46f5d5ec03b6bed08586e7d708c1511c7ec146f1910"
+      }
+    }
+  ],
+  "failedRuns": [
+    {
+      "id": "fast8",
+      "reason": "Private resource identity assigned once triggered prefer-const. Retirement also needed to drop that private identity; clear it on close. Suffix behind failed lint was not run."
+    }
+  ],
+  "remaining": [
+    "Native source/preparation admission must join the existing 512 MiB Node allowance and whole world/body/replay accounting; do not invent a larger budget.",
+    "Remaining MS2 packs/rigs/events/labels/cues/help/coverage/typography/full software/benchmark and final installed refresh before its PR, then MS3."
+  ],
+  "precedingProductionParity": {
+    "normalMP4": [
+      {
+        "previous": {
+          "path": "/private/tmp/still-shift-ms2-normal-export3-CSWQVA/normal3-a.mp4",
+          "bytes": 5862,
+          "sha256": "sha256:bdfa9d0aff02c19a75811ee545e23e2a20f4dfd7e1ba8e2bee5ffecaea716d38"
+        },
+        "current": {
+          "path": "/private/tmp/still-shift-ms2-normal-export3-uNRM0Y/normal3-a.mp4",
+          "bytes": 5862,
+          "sha256": "sha256:bdfa9d0aff02c19a75811ee545e23e2a20f4dfd7e1ba8e2bee5ffecaea716d38"
+        }
+      },
+      {
+        "previous": {
+          "path": "/private/tmp/still-shift-ms2-normal-export3-CSWQVA/normal3-b.mp4",
+          "bytes": 5862,
+          "sha256": "sha256:bdfa9d0aff02c19a75811ee545e23e2a20f4dfd7e1ba8e2bee5ffecaea716d38"
+        },
+        "current": {
+          "path": "/private/tmp/still-shift-ms2-normal-export3-uNRM0Y/normal3-b.mp4",
+          "bytes": 5862,
+          "sha256": "sha256:bdfa9d0aff02c19a75811ee545e23e2a20f4dfd7e1ba8e2bee5ffecaea716d38"
+        }
+      }
+    ],
+    "mixedRawHTTP": [
+      {
+        "frame": 0,
+        "previous": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-n3q183/http-frame-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:7e81ce13fe49f417d6feae3dbe612c698e61780a4e96577cee46e8af8a36ad4a"
+        },
+        "current": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-tqj21s/http-frame-0.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:7e81ce13fe49f417d6feae3dbe612c698e61780a4e96577cee46e8af8a36ad4a"
+        }
+      },
+      {
+        "frame": 1,
+        "previous": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-n3q183/http-frame-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:3057ce618159d91a6d5321f0ca22d6f70dbb9aa0b817b9497d18d22ac89843d2"
+        },
+        "current": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-tqj21s/http-frame-1.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:3057ce618159d91a6d5321f0ca22d6f70dbb9aa0b817b9497d18d22ac89843d2"
+        }
+      },
+      {
+        "frame": 2,
+        "previous": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-n3q183/http-frame-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:62512c6e87ded0509ff6fb8847465d524b2229c3bffbb6cb0366448f0602a096"
+        },
+        "current": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-tqj21s/http-frame-2.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:62512c6e87ded0509ff6fb8847465d524b2229c3bffbb6cb0366448f0602a096"
+        }
+      },
+      {
+        "frame": 3,
+        "previous": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-n3q183/http-frame-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:d80448ba9418a1f4de79656fc8f812168a81838462a5da03480cedc1876b3747"
+        },
+        "current": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-tqj21s/http-frame-3.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:d80448ba9418a1f4de79656fc8f812168a81838462a5da03480cedc1876b3747"
+        }
+      },
+      {
+        "frame": 4,
+        "previous": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-n3q183/http-frame-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:c7a1c4a741af722bcbe00e3c447535a9aee63b378a45cec69309176f44744d00"
+        },
+        "current": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-tqj21s/http-frame-4.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:c7a1c4a741af722bcbe00e3c447535a9aee63b378a45cec69309176f44744d00"
+        }
+      },
+      {
+        "frame": 5,
+        "previous": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-n3q183/http-frame-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:c7a1c4a741af722bcbe00e3c447535a9aee63b378a45cec69309176f44744d00"
+        },
+        "current": {
+          "path": "/private/tmp/still-shift-ms2-mixed-export3-tqj21s/http-frame-5.rgba",
+          "bytes": 230400,
+          "sha256": "sha256:c7a1c4a741af722bcbe00e3c447535a9aee63b378a45cec69309176f44744d00"
+        }
+      }
+    ]
+  }
+}

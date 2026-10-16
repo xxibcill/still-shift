@@ -1,15 +1,16 @@
 import { allocateRenderMetadata } from "../../renderer-core/src/managed-metadata.ts";
 import {
   NATIVE3D_OBSERVATION_LIMITS,
-  type NativeObservedSample,
+  type NativeObservedSampleV3,
 } from "@still-shift/scene-contract";
-import { uploadNativeObservationPacket } from "./native-observation-upload.ts";
+import { uploadNativeObservationPacketVersions } from "./native-observation-upload.ts";
 import { assertCompositionEffectVersions } from "@still-shift/renderer-core";
 import {
   createRenderCanvas,
   type ManagedMemory,
   createCompositionPreview,
   createCompositionPreviewAsync,
+  renderCompositionFrameAsync,
   createWebGLPreview,
   createIllustratedPreview,
   loadCompositionResources,
@@ -81,6 +82,9 @@ export type BrowserCompositionOutput = {
     worker: 0;
     credential: string;
     executionSha256: string;
+    packetVersion?:
+      | "native3d-observed-output-frame-2"
+      | "native3d-observed-output-frame-3";
     maximumPacketBytes: number;
   };
 };
@@ -209,6 +213,25 @@ const exportComposition = async (
           work.concurrentWorkers > work.workers)))
   )
     throw Error("Composition browser frame assignment is invalid");
+  const source2 =
+    scene.preparedNative3D?.version === "composition-prepared-native3d-2";
+  const source3 =
+    scene.preparedNative3D?.version === "composition-prepared-native3d-3";
+  const asyncNative = source2 || source3;
+  const expectedPacketVersion = source3
+    ? "native3d-observed-output-frame-3"
+    : source2
+      ? "native3d-observed-output-frame-2"
+      : undefined;
+  const packetVersion = output?.nativeObservation?.packetVersion;
+  if (
+    (packetVersion !== undefined &&
+      packetVersion !== "native3d-observed-output-frame-2" &&
+      packetVersion !== "native3d-observed-output-frame-3") ||
+    ((asyncNative || output?.nativeObservation) &&
+      expectedPacketVersion !== packetVersion)
+  )
+    throw Error("Native browser envelope and prepared source protocol differ");
   assertCompositionEffectVersions(scene);
   const resources = await loadCompositionResources(
     scene.composition,
@@ -265,10 +288,19 @@ const exportComposition = async (
   >["rootStatistics"];
   const result = await renderFrames(
     scene.timeline.frameCount,
-    resources.media || resources.native3D || output?.work?.surfaceCache
+    source2 ||
+      resources.media ||
+      resources.native3D ||
+      output?.work?.surfaceCache
       ? async (frame) => {
           await preview.prepareFrame(frame);
-          return preview.renderFrame(frame).nativeObservations;
+          return source3
+            ? (await renderCompositionFrameAsync(preview, frame))
+                .nativeObservationsV3
+            : source2
+              ? (await renderCompositionFrameAsync(preview, frame))
+                  .nativeObservationsV2
+              : preview.renderFrame(frame).nativeObservations;
         }
       : (frame) => {
           return preview.renderFrame(frame).nativeObservations;
@@ -315,8 +347,8 @@ const renderFrames = async (
     frame: number,
   ) =>
     | void
-    | readonly NativeObservedSample[]
-    | Promise<void | readonly NativeObservedSample[]>,
+    | readonly NativeObservedSampleV3[]
+    | Promise<void | readonly NativeObservedSampleV3[]>,
   dispose: () => void,
   canvas: HTMLCanvasElement,
   gl: WebGL2RenderingContext | null,
@@ -376,13 +408,15 @@ const renderFrames = async (
         if (nativeObservation) {
           if (!observations)
             throw Error("Native export omitted its actual frame observations");
-          await uploadNativeObservationPacket(
+          await uploadNativeObservationPacketVersions(
             {
               outputFrame: frameIndex,
               executionSha256: nativeObservation.executionSha256,
               passes: observations,
               maximumPacketBytes: nativeObservation.maximumPacketBytes,
             },
+            nativeObservation.packetVersion ??
+              "native3d-observed-output-frame-1",
             async (bytes) => {
               const accepted = await fetch("/_export/native-observation", {
                 method: "POST",

@@ -40,14 +40,14 @@ export const CompositionPreparedNative3DSchema = z
       ),
   })
   .strict();
-const partOverride = z
+export const NativePartOverrideSchema = z
   .object({
     transform: MechanismTransformSchema.optional(),
     visible: z.boolean().optional(),
   })
   .strict();
 const material = MechanismMaterialSchema.shape;
-const materialOverride = z
+export const NativeMaterialOverrideSchema = z
   .object({
     color: material.color.optional(),
     roughness: material.roughness.optional(),
@@ -66,14 +66,14 @@ const materialOverride = z
 export const Native3DSourceOverridesSchema = z
   .object({
     partOverrides: z
-      .record(MechanismIdSchema, partOverride)
+      .record(MechanismIdSchema, NativePartOverrideSchema)
       .refine(
         (entries) => Object.keys(entries).length <= MECHANISM_LIMITS.parts,
         "Part override budget exceeded",
       )
       .optional(),
     materialOverrides: z
-      .record(MechanismIdSchema, materialOverride)
+      .record(MechanismIdSchema, NativeMaterialOverrideSchema)
       .refine(
         (entries) => Object.keys(entries).length <= MECHANISM_LIMITS.materials,
         "Material override budget exceeded",
@@ -104,7 +104,20 @@ export const NativeScreenBindingSchema = z
     insetPixels: finite.min(0).max(4096).optional(),
     offsetPixels: MechanismPixelSchema.optional(),
     target: z.discriminatedUnion("kind", [
-      z.object({ kind: z.literal("visibility") }).strict(),
+      z
+        .object({
+          kind: z.literal("visibility"),
+          anchors: z
+            .array(MechanismIdSchema)
+            .min(1)
+            .max(31)
+            .refine(
+              (anchors) => new Set(anchors).size === anchors.length,
+              "Visibility anchors must be distinct",
+            )
+            .optional(),
+        })
+        .strict(),
       z.object({ kind: z.literal("position") }).strict(),
       z
         .object({
@@ -113,6 +126,43 @@ export const NativeScreenBindingSchema = z
           endpoint: z.literal("last"),
         })
         .strict(),
+      z
+        .object({
+          kind: z.literal("path-vertices"),
+          contentId: compositionId,
+          vertices: z
+            .array(
+              z
+                .object({
+                  index: z.number().int().min(0).max(255),
+                  anchor: MechanismIdSchema,
+                  offsetPixels: MechanismPixelSchema.optional(),
+                })
+                .strict(),
+            )
+            .min(1)
+            .max(32)
+            .refine(
+              (vertices) =>
+                new Set(vertices.map((point) => point.index)).size ===
+                vertices.length,
+              "Native vertex bindings require distinct indices",
+            ),
+        })
+        .strict(),
+      z
+        .object({
+          kind: z.literal("path-arrow"),
+          contentId: compositionId,
+          headContentId: compositionId,
+          headLengthPixels: finite.positive().max(256),
+          headWidthPixels: finite.positive().max(256),
+        })
+        .strict()
+        .refine(
+          (target) => target.contentId !== target.headContentId,
+          "Arrow line and head require distinct path IDs",
+        ),
     ]),
   })
   .strict();

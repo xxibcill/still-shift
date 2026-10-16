@@ -184,6 +184,17 @@ makes a paid provider request, and consumes account credits. The
 complete workflow. Speech generation and transcription/alignment are supplied by
 your own narration workflow.
 
+## Mechanism cue projects
+
+The candidate tape-hook, cable-tie and clothespeg workflow compiles supplied cues
+and supports native2 plate capture followed by ordinary screen-label/caption/audio
+reuse. `episode discover` reports receipt versions and CLI options; `episode
+schema --kind cue-native-plates` and `--kind cue-plate-export` export strict cache
+contracts. See the [cue lifecycle](./mechanism-cue-lifecycle.md) and
+[native plate workflow](./mechanism-cue-native-plates.md) for API and CLI examples.
+Family support, whole resource limits and visual/listening/pilot acceptance are
+tracked separately from this scoped workflow.
+
 ## TypeScript authoring
 
 ```ts

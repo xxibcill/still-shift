@@ -85,7 +85,7 @@ function project(point: readonly number[], fov = 60) {
     Math.round(SIZE / 2 - (point[1]! * focal) / (10 - point[2]!)),
   ];
 }
-function world(id = "world"): CompositionLayer {
+function world(id = "world"): Extract<CompositionLayer, { type: "native3d" }> {
   return {
     id,
     type: "native3d",
@@ -282,6 +282,274 @@ async function renderOnce(
   } finally {
     preview.dispose();
   }
+}
+
+/** Compare dynamic annotation paint with independent pinhole/affine geometry. */
+async function checkNativeAnnotationGeometry(
+  input: NativeCompositionIntegrationInput,
+  base: Source,
+  retain: Retain,
+  finish: (id: string, facts: unknown) => Promise<void>,
+) {
+  const source = await sourceVariant(
+    base,
+    (scene) => {
+      scene.anchors.push({
+        id: "second",
+        part: "root",
+        position: [0.8, 0, 0],
+        role: "proof-target",
+      });
+    },
+    "annotation",
+    retain,
+  );
+  const parent: CompositionLayer = {
+    id: "annotation-parent",
+    type: "group",
+    size: [SIZE, SIZE],
+    overlayAfter: "world",
+    transform: {
+      anchor: [0, 0],
+      position: [9, -6],
+      rotation: 18,
+      scale: [1.2, 0.85],
+    },
+  };
+  const angle = (18 * Math.PI) / 180,
+    c = Math.cos(angle),
+    s = Math.sin(angle);
+  const local = ([x, y]: readonly number[]): [number, number] => [
+    ((x! - 9) * c + (y! + 6) * s) / 1.2,
+    (-(x! - 9) * s + (y! + 6) * c) / 0.85,
+  ];
+  const screen = ([x, y]: readonly number[]): [number, number] => [
+    9 + x! * 1.2 * c - y! * 0.85 * s,
+    -6 + x! * 1.2 * s + y! * 0.85 * c,
+  ];
+  const start: [number, number] = [20, 18];
+  const binding = {
+    role: "screen-anchor" as const,
+    sceneLayer: "world",
+    anchor: "face",
+    visibilityPolicy: "hide-occluded" as const,
+  };
+  const bracket: CompositionLayer = {
+    id: "bracket",
+    type: "shape",
+    parent: parent.id,
+    overlayAfter: "world",
+    native3D: {
+      ...binding,
+      target: {
+        kind: "path-vertices",
+        contentId: "range",
+        vertices: [
+          { index: 0, anchor: "face", offsetPixels: [0, 16] },
+          { index: 1, anchor: "face", offsetPixels: [0, 24] },
+          { index: 2, anchor: "second", offsetPixels: [0, 24] },
+          { index: 3, anchor: "second", offsetPixels: [0, 16] },
+        ],
+      },
+    },
+    contents: [
+      {
+        id: "range",
+        type: "path",
+        path: {
+          closed: false,
+          vertices: [
+            [0, 0],
+            [0, 0],
+            [0, 0],
+            [0, 0],
+          ],
+        },
+      },
+      { id: "stroke", type: "stroke", color: "#ffffff", width: 2 },
+    ],
+  };
+  const arrow: CompositionLayer = {
+    id: "arrow",
+    type: "shape",
+    parent: parent.id,
+    overlayAfter: "world",
+    native3D: {
+      ...binding,
+      target: {
+        kind: "path-arrow",
+        contentId: "line",
+        headContentId: "head",
+        headLengthPixels: 12,
+        headWidthPixels: 8,
+      },
+    },
+    contents: [
+      {
+        id: "line",
+        type: "path",
+        path: { closed: false, vertices: [start, start] },
+      },
+      { id: "stroke", type: "stroke", color: "#ffffff", width: 2 },
+      {
+        id: "head",
+        type: "path",
+        path: {
+          closed: true,
+          vertices: [
+            [0, 0],
+            [0, 0],
+            [0, 0],
+          ],
+        },
+      },
+      { id: "fill", type: "fill", color: "#ffffff" },
+    ],
+  };
+  const dynamic = makeComposition(input, source, [
+    bracket,
+    arrow,
+    parent,
+    {
+      ...world(),
+      cameraKeys: [
+        {
+          frame: 0,
+          position: [0, 0, 10],
+          target: [0, 0, 0],
+          fovDegrees: 60,
+          easing: "linear",
+        },
+        {
+          frame: 11,
+          position: [0, 0, 10],
+          target: [0, 0, 0],
+          fovDegrees: 45,
+          easing: "linear",
+        },
+      ],
+    },
+  ]);
+  const preview = await renderer(input, source, dynamic, retain);
+  const seen = new Map<number, Uint8ClampedArray>();
+  const sequence = [
+    ...Array.from({ length: 12 }, (_, i) => i),
+    ...Array.from({ length: 12 }, (_, i) => 11 - i),
+    7,
+    0,
+    11,
+    3,
+    7,
+    2,
+  ];
+  let controlFrames = 0;
+  try {
+    for (const [index, frame] of sequence.entries()) {
+      const actual = await preview.render(`annotation-dynamic-${index}`, frame);
+      const previous = seen.get(frame);
+      if (previous) {
+        requireFact(
+          maximumDelta(previous, actual.rgba).maximumDelta === 0,
+          "annotation reverse/random seek pixels must repeat exactly",
+        );
+        continue;
+      }
+      const fov = 60 - (15 * frame) / 11;
+      const tip: [number, number] = [SIZE / 2, SIZE / 2];
+      const secondX =
+        SIZE / 2 + (0.8 * SIZE) / (20 * Math.tan((fov * Math.PI) / 360));
+      const range = [tip[0], secondX].flatMap((x, i) =>
+        i === 0
+          ? [
+              [x, tip[1] + 16],
+              [x, tip[1] + 24],
+            ]
+          : [
+              [x, tip[1] + 24],
+              [x, tip[1] + 16],
+            ],
+      );
+      const first = screen(start),
+        dx = tip[0] - first[0],
+        dy = tip[1] - first[1],
+        distance = Math.hypot(dx, dy);
+      const length = Math.min(12, distance * 0.45),
+        halfWidth = Math.min(4, distance * 0.25);
+      const ux = dx / distance,
+        uy = dy / distance;
+      const head = [
+        tip,
+        [
+          tip[0] - ux * length + uy * halfWidth,
+          tip[1] - uy * length - ux * halfWidth,
+        ],
+        [
+          tip[0] - ux * length - uy * halfWidth,
+          tip[1] - uy * length + ux * halfWidth,
+        ],
+      ];
+      const fixedBracket = structuredClone(bracket),
+        fixedArrow = structuredClone(arrow);
+      delete fixedBracket.native3D;
+      delete fixedArrow.native3D;
+      requireFact(
+        fixedBracket.type === "shape" && fixedArrow.type === "shape",
+        "annotation control shapes",
+      );
+      for (const content of fixedBracket.contents)
+        if (content.type === "path")
+          content.path = { closed: false, vertices: range.map(local) };
+      for (const content of fixedArrow.contents)
+        if (content.type === "path")
+          content.path = {
+            closed: content.id === "head",
+            vertices:
+              content.id === "head" ? head.map(local) : [start, local(tip)],
+          };
+      const fixed = makeComposition(input, source, [
+        fixedBracket,
+        fixedArrow,
+        parent,
+        { ...world(), camera: { ...source.source.camera, fovDegrees: fov } },
+      ]);
+      const expected = await renderOnce(
+        input,
+        source,
+        fixed,
+        retain,
+        `annotation-control-${frame}`,
+        frame,
+      );
+      const delta = maximumDelta(actual.rgba, expected.rgba);
+      requireFact(
+        delta.maximumDelta === 0,
+        `annotation GPU control differs at frame ${frame}: ${JSON.stringify(delta)}`,
+      );
+      requireFact(
+        actual.rgba.filter((value, at) => at % 4 !== 3 && value > 230).length >
+          60,
+        "annotation must paint actual bright pixels",
+      );
+      seen.set(frame, actual.rgba);
+      controlFrames++;
+    }
+    requireFact(
+      maximumDelta(seen.get(0)!, seen.get(11)!).changedChannels > 20,
+      "changed camera must move actual bracket pixels",
+    );
+  } finally {
+    preview.dispose();
+  }
+  await finish("screen-annotation-bracket-arrow-geometry", {
+    sequence,
+    controlFrames,
+    dynamicDraws: sequence.length,
+    exactPixelControls: true,
+    independentProjection:
+      "pinhole fov and explicit scalar inverse parent affine",
+    limits:
+      "Diagnostic screen geometry only; no encoded output, semantic labels or human acceptance.",
+  });
 }
 
 /** Actual graph/text/shape→cropped surfaces→shared mesh depth. No prepainted artwork upload. */
@@ -825,6 +1093,8 @@ export async function checkNativeCompositionIntegration(
     tolerance:
       "one RGBA8 code step for identical geometry/profile; Float32 shader quantization only",
   });
+
+  await checkNativeAnnotationGeometry(input, source, retain, finish);
 
   const seekComp = makeComposition(
     input,

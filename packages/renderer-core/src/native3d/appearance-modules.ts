@@ -383,6 +383,13 @@ export const native3DAppearanceModules: readonly {
     url: new URL("../composition/render/mesh-effects.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/composition/render/native-pbr-resources.ts",
+    url: new URL(
+      "../composition/render/native-pbr-resources.ts",
+      import.meta.url,
+    ),
+  },
+  {
     name: "renderer-core/src/composition/render/native-text-bounds.ts",
     url: new URL(
       "../composition/render/native-text-bounds.ts",
@@ -754,20 +761,68 @@ export const native3DAppearanceModules: readonly {
     url: new URL("../managed-resources.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/mechanism/camera-v2.ts",
+    url: new URL("../mechanism/camera-v2.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/mechanism/canonical.ts",
     url: new URL("../mechanism/canonical.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/mechanism/evaluate-v2.ts",
+    url: new URL("../mechanism/evaluate-v2.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/mechanism/evaluate.ts",
     url: new URL("../mechanism/evaluate.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/mechanism/matrix-v2.ts",
+    url: new URL("../mechanism/matrix-v2.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/mechanism/matrix.ts",
     url: new URL("../mechanism/matrix.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/mechanism/prepare-v2.ts",
+    url: new URL("../mechanism/prepare-v2.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/mechanism/projection.ts",
     url: new URL("../mechanism/projection.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/mechanism/ratchet-lift-v2.ts",
+    url: new URL("../mechanism/ratchet-lift-v2.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/mechanism/rig-tracks-v2.ts",
+    url: new URL("../mechanism/rig-tracks-v2.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/mechanism/shape-math.ts",
+    url: new URL("../mechanism/shape-math.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/mechanism/teaching-pawl.ts",
+    url: new URL("../mechanism/teaching-pawl.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/mechanism/teaching-shapes.ts",
+    url: new URL("../mechanism/teaching-shapes.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/mechanism/teaching-spring.ts",
+    url: new URL("../mechanism/teaching-spring.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/mechanism/teaching-topology.ts",
+    url: new URL("../mechanism/teaching-topology.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/mechanism/types-v2.ts",
+    url: new URL("../mechanism/types-v2.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/mechanism/types.ts",
@@ -806,12 +861,108 @@ export const native3DAppearanceModules: readonly {
     url: new URL("./browser.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/native3d/canonical-hash.ts",
+    url: new URL("./canonical-hash.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/catalogue-versions.ts",
+    url: new URL("./catalogue-versions.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/evaluate-v2.ts",
+    url: new URL("./evaluate-v2.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/evaluate-v3.ts",
+    url: new URL("./evaluate-v3.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/native3d/evaluate.ts",
     url: new URL("./evaluate.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/native3d/observation-capacity-v2.ts",
+    url: new URL("./observation-capacity-v2.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/observation-capacity-v3.ts",
+    url: new URL("./observation-capacity-v3.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/observation-capacity-versions.ts",
+    url: new URL("./observation-capacity-versions.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/observations-async.ts",
+    url: new URL("./observations-async.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/observations-v2.ts",
+    url: new URL("./observations-v2.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/observations-v3.ts",
+    url: new URL("./observations-v3.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/native3d/observations.ts",
     url: new URL("./observations.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/observed-precision-v2.ts",
+    url: new URL("./observed-precision-v2.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/observed-validation-v3.ts",
+    url: new URL("./observed-validation-v3.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/override-keys.ts",
+    url: new URL("./override-keys.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/pbr-allocations.ts",
+    url: new URL("./pbr-allocations.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/pbr-frame-matrices.ts",
+    url: new URL("./pbr-frame-matrices.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/pbr-gpu-draw.ts",
+    url: new URL("./pbr-gpu-draw.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/pbr-gpu-reference.ts",
+    url: new URL("./pbr-gpu-reference.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/pbr-gpu-texture.ts",
+    url: new URL("./pbr-gpu-texture.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/pbr-resources.ts",
+    url: new URL("./pbr-resources.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/physical-visibility.ts",
+    url: new URL("./physical-visibility.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/preparation-limits.ts",
+    url: new URL("./preparation-limits.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/preparation-storage.ts",
+    url: new URL("./preparation-storage.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/prepare-v2.ts",
+    url: new URL("./prepare-v2.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/prepare-v3.ts",
+    url: new URL("./prepare-v3.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/native3d/prepare.ts",
@@ -820,6 +971,18 @@ export const native3DAppearanceModules: readonly {
   {
     name: "renderer-core/src/native3d/resolve.ts",
     url: new URL("./resolve.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/sampling.ts",
+    url: new URL("./sampling.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/shape-associations.ts",
+    url: new URL("./shape-associations.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/three-frame-seal-v2.ts",
+    url: new URL("./three-frame-seal-v2.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/native3d/three-graphics.ts",
@@ -834,12 +997,60 @@ export const native3DAppearanceModules: readonly {
     url: new URL("./three-observation.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/native3d/three-pbr-draws.ts",
+    url: new URL("./three-pbr-draws.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/three-pbr-frame-state.ts",
+    url: new URL("./three-pbr-frame-state.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/three-pbr-material.ts",
+    url: new URL("./three-pbr-material.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/three-pbr-observation.ts",
+    url: new URL("./three-pbr-observation.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/three-shape-draws.ts",
+    url: new URL("./three-shape-draws.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/three-shape-material.ts",
+    url: new URL("./three-shape-material.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/three-shape-observation.ts",
+    url: new URL("./three-shape-observation.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/three-shapes.ts",
+    url: new URL("./three-shapes.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/native3d/three-textures.ts",
     url: new URL("./three-textures.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/native3d/three-world.ts",
     url: new URL("./three-world.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/used-indexed-streams.ts",
+    url: new URL("./used-indexed-streams.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/used-landmarks.ts",
+    url: new URL("./used-landmarks.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/used-stream-bytes.ts",
+    url: new URL("./used-stream-bytes.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/native3d/visibility-v2.ts",
+    url: new URL("./visibility-v2.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/native3d/visibility.ts",
@@ -1255,6 +1466,20 @@ export const native3DAppearanceModules: readonly {
     ),
   },
   {
+    name: "scene-contract/src/composition/native3d-v2.ts",
+    url: new URL(
+      "../../../scene-contract/src/composition/native3d-v2.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/composition/native3d-v3.ts",
+    url: new URL(
+      "../../../scene-contract/src/composition/native3d-v3.ts",
+      import.meta.url,
+    ),
+  },
+  {
     name: "scene-contract/src/composition/native3d.ts",
     url: new URL(
       "../../../scene-contract/src/composition/native3d.ts",
@@ -1432,6 +1657,13 @@ export const native3DAppearanceModules: readonly {
     ),
   },
   {
+    name: "scene-contract/src/mechanism/frame-v2.ts",
+    url: new URL(
+      "../../../scene-contract/src/mechanism/frame-v2.ts",
+      import.meta.url,
+    ),
+  },
+  {
     name: "scene-contract/src/mechanism/frame.ts",
     url: new URL(
       "../../../scene-contract/src/mechanism/frame.ts",
@@ -1453,9 +1685,58 @@ export const native3DAppearanceModules: readonly {
     ),
   },
   {
+    name: "scene-contract/src/mechanism/narrated-cycle.ts",
+    url: new URL(
+      "../../../scene-contract/src/mechanism/narrated-cycle.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/mechanism/pack-document.ts",
+    url: new URL(
+      "../../../scene-contract/src/mechanism/pack-document.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/mechanism/packs.ts",
+    url: new URL(
+      "../../../scene-contract/src/mechanism/packs.ts",
+      import.meta.url,
+    ),
+  },
+  {
     name: "scene-contract/src/mechanism/primitives.ts",
     url: new URL(
       "../../../scene-contract/src/mechanism/primitives.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/mechanism/records-v2.ts",
+    url: new URL(
+      "../../../scene-contract/src/mechanism/records-v2.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/mechanism/rigs.ts",
+    url: new URL(
+      "../../../scene-contract/src/mechanism/rigs.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/mechanism/scene-v2.ts",
+    url: new URL(
+      "../../../scene-contract/src/mechanism/scene-v2.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/mechanism/scene-validation-v2.ts",
+    url: new URL(
+      "../../../scene-contract/src/mechanism/scene-validation-v2.ts",
       import.meta.url,
     ),
   },
@@ -1470,6 +1751,20 @@ export const native3DAppearanceModules: readonly {
     name: "scene-contract/src/mechanism/sidecar.ts",
     url: new URL(
       "../../../scene-contract/src/mechanism/sidecar.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/mechanism/teaching-shapes.ts",
+    url: new URL(
+      "../../../scene-contract/src/mechanism/teaching-shapes.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/mechanism/timeline.ts",
+    url: new URL(
+      "../../../scene-contract/src/mechanism/timeline.ts",
       import.meta.url,
     ),
   },
@@ -1509,6 +1804,27 @@ export const native3DAppearanceModules: readonly {
     ),
   },
   {
+    name: "scene-contract/src/native3d/frame-rig.ts",
+    url: new URL(
+      "../../../scene-contract/src/native3d/frame-rig.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/native3d/frame-v2.ts",
+    url: new URL(
+      "../../../scene-contract/src/native3d/frame-v2.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/native3d/frame-v3.ts",
+    url: new URL(
+      "../../../scene-contract/src/native3d/frame-v3.ts",
+      import.meta.url,
+    ),
+  },
+  {
     name: "scene-contract/src/native3d/frame.ts",
     url: new URL(
       "../../../scene-contract/src/native3d/frame.ts",
@@ -1530,6 +1846,20 @@ export const native3DAppearanceModules: readonly {
     ),
   },
   {
+    name: "scene-contract/src/native3d/observation-v2.ts",
+    url: new URL(
+      "../../../scene-contract/src/native3d/observation-v2.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/native3d/observation-v3.ts",
+    url: new URL(
+      "../../../scene-contract/src/native3d/observation-v3.ts",
+      import.meta.url,
+    ),
+  },
+  {
     name: "scene-contract/src/native3d/observation.ts",
     url: new URL(
       "../../../scene-contract/src/native3d/observation.ts",
@@ -1537,9 +1867,44 @@ export const native3DAppearanceModules: readonly {
     ),
   },
   {
+    name: "scene-contract/src/native3d/output-v3.ts",
+    url: new URL(
+      "../../../scene-contract/src/native3d/output-v3.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/native3d/pbr-geometry.ts",
+    url: new URL(
+      "../../../scene-contract/src/native3d/pbr-geometry.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/native3d/scene-v2.ts",
+    url: new URL(
+      "../../../scene-contract/src/native3d/scene-v2.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/native3d/scene-v3.ts",
+    url: new URL(
+      "../../../scene-contract/src/native3d/scene-v3.ts",
+      import.meta.url,
+    ),
+  },
+  {
     name: "scene-contract/src/native3d/scene.ts",
     url: new URL(
       "../../../scene-contract/src/native3d/scene.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/native3d/shape-observation.ts",
+    url: new URL(
+      "../../../scene-contract/src/native3d/shape-observation.ts",
       import.meta.url,
     ),
   },
@@ -1653,6 +2018,13 @@ export const native3DAppearanceModules: readonly {
     name: "scene-contract/src/typography-validation.ts",
     url: new URL(
       "../../../scene-contract/src/typography-validation.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/typography-weight.ts",
+    url: new URL(
+      "../../../scene-contract/src/typography-weight.ts",
       import.meta.url,
     ),
   },

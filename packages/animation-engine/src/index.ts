@@ -86,3 +86,55 @@ export * from "./mechanism/native-preview.ts";
 export * from "./mechanism/native-package.ts";
 
 export * from "./mechanism/native-overlays.ts";
+
+export * from "./mechanism/tape-hook-pack.ts";
+
+export * from "./mechanism/primitive-mesh.ts";
+export * from "./mechanism/cable-tie-pack.ts";
+export * from "./mechanism/clothespeg-pack.ts";
+export * from "./mechanism/camera-recipes.ts";
+
+export * from "./mechanism/gltf-import.ts";
+export * from "./mechanism/gltf-file.ts";
+export * from "./mechanism/gltf-inspect.ts";
+export * from "./mechanism/gltf-types.ts";
+export {
+  RigidGltfImportError,
+  RIGID_GLTF_LIMITS,
+} from "./mechanism/gltf-document.ts";
+export * from "./mechanism/gltf-pbr.ts";
+
+export * from "./mechanism/native-pbr-files.ts";
+
+export * from "./mechanism/pack-timeline.ts";
+
+export * from "./mechanism/narrated-cycle.ts";
+
+export * from "./mechanism/family-registry.ts";
+
+export * from "./mechanism/family-authoring.ts";
+
+export * from "./mechanism/cue-authoring.ts";
+
+export * from "./mechanism/cue-lifecycle.ts";
+
+export {
+  MECHANISM_CUE_NATIVE_PLATES_VERSION,
+  MechanismCueNativePlatesSchema,
+  prepareMechanismCueNativePlates,
+  checkMechanismCueNativePlates,
+} from "./mechanism/cue-native-plates.ts";
+export type {
+  MechanismCueNativePlates,
+  MechanismCueNativePlateOptions,
+} from "./mechanism/cue-native-plates.ts";
+export {
+  MECHANISM_CUE_PLATE_EXPORT_VERSION,
+  MechanismCuePlateExportSchema,
+  renderMechanismCuePlateProject,
+  checkMechanismCuePlateOutput,
+} from "./mechanism/cue-plate-lifecycle.ts";
+export type {
+  MechanismCuePlateExport,
+  MechanismCuePlateOptions,
+} from "./mechanism/cue-plate-lifecycle.ts";

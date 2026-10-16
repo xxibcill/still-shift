@@ -14,8 +14,10 @@ import {
   MechanismPatchRequestSchema,
   MechanismCommandReceiptSchema,
 } from "../packages/animation-engine/src/mechanism/protocol.ts";
+import { mechanismFamilySchemas } from "../packages/animation-engine/src/mechanism/family-registry.ts";
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const schemas = {
+  ...mechanismFamilySchemas,
   geometry: MechanismGeometrySchema,
   scene: MechanismSceneSchema,
   episode: MechanismEpisodeSchema,

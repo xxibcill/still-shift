@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { FramebufferTexture } from "three";
+import {
+  FramebufferTexture,
+  Mesh,
+  MeshBasicMaterial,
+  BoxGeometry,
+} from "three";
+import { WebGLRenderList } from "three/src/renderers/webgl/WebGLRenderLists.js";
+import { WebGLProperties } from "three/src/renderers/webgl/WebGLProperties.js";
 import type { NativeWorldGraphicArtwork } from "../../packages/renderer-core/src/composition/render/graph.ts";
 import {
   nativeArtworkCorners,
@@ -37,6 +44,48 @@ describe("native local artwork storage/placement separation", () => {
     ]);
     value.artworkMatrix = [-1, 0, 0, 1, 0, 0];
     expect(nativeArtworkCorners(value)[0]).toBe(-0.8);
+  });
+  it("keeps physical opaque meshes before world artwork in the actual Three sort across cold and warm material creation", () => {
+    for (const graphicFirst of [true, false]) {
+      const texture = new FramebufferTexture(200, 80);
+      const makePhysical = () =>
+        new Mesh(new BoxGeometry(1, 1, 1), new MeshBasicMaterial());
+      const priorPhysical = graphicFirst ? undefined : makePhysical();
+      const graphic = createNativeThreeGraphic(artwork(), texture);
+      const physical = priorPhysical ?? makePhysical();
+      const list = new WebGLRenderList(new WebGLProperties());
+      try {
+        list.unshift(
+          graphic.mesh,
+          graphic.mesh.geometry,
+          graphic.mesh.material,
+          0,
+          0,
+          null,
+        );
+        list.unshift(
+          physical,
+          physical.geometry,
+          physical.material,
+          0,
+          0,
+          null,
+        );
+        // Pinned Three uses its default sorter when runtime arguments are omitted.
+        Reflect.apply(list.sort, list, []);
+        expect(list.opaque.map((item) => item.object)).toEqual([
+          physical,
+          graphic.mesh,
+        ]);
+        expect(graphic.mesh.material.depthTest).toBe(true);
+        expect(graphic.mesh.material.depthWrite).toBe(true);
+      } finally {
+        graphic.dispose();
+        texture.dispose();
+        physical.geometry.dispose();
+        physical.material.dispose();
+      }
+    }
   });
   it("uses the copied GPU texture directly, top-row UVs and one opacity/cutoff", () => {
     const value = artwork();

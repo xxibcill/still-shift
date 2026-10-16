@@ -1,5 +1,6 @@
 export {
   COMPOSITION_LIMITS,
+  COMPOSITION_NODE_MEMORY_ALLOWANCE,
   COMPOSITION_SCHEMA_VERSION,
 } from "./primitives.ts";
 export {
@@ -38,5 +39,8 @@ export {
 } from "./validate-media.ts";
 
 export * from "./native3d.ts";
+export * from "./native3d-v2.ts";
 
 export * from "./native3d-edit.ts";
+
+export * from "./native3d-v3.ts";

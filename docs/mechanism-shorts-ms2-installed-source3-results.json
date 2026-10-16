@@ -1,0 +1,373 @@
+{
+  "version": "mechanism-ms2-installed-source3-results-1",
+  "date": "2026-10-11",
+  "branch": "codex/mechanism-ms2",
+  "sourceCommit": "b4fc65ed39a47978a7ad74dc561b456813753cd4",
+  "status": "installed-source3-and-mixed-scoped-proof-complete-in-stages",
+  "scope": [
+    "Maintained npm package verification executes28 checks, including dependency audit, installed declarations/APIs/browser/depth/audio and corresponding-source rebuild; no publication.",
+    "Isolated ordinary Node22 public engine/runtime/schema imports resolve inside the installed consumer. macOS sandbox denies original checkout, managed worktrees and both original fixture directories with actual EPERM/EACCES witnesses before/after execution.",
+    "Four installed authenticated raw-RGBA MP4 exports: two11-frame/11-pass source3 and two6-frame/54-pass mixed source1/source2/source3. Repeated packet/pixel-row identities match, and independently reconstructed trusted execution replays actual GPU receipts.",
+    "Scoped installed producer cancellation/unbound appearance, forged frame3 key with recomputed artifact/manifest hashes and actual separate binary corruption reject; original output2 schema rejects output3. Binary corruption rejects before output publication.",
+    "Bounded read-only archive audit explicitly recognizes current guides/skills/examples and independently reproduces README relative-link normalization. All928 source members match exact committed Git/worktree/dist bytes; all2275 archive members match current build bytes."
+  ],
+  "qualification": "Archive and actual package/consumer execution belong to exact b4fc65ed source, before this evidence-documentation commit. Archive SHA7764436e... is local verification evidence, not a published release. Normal package2 passes28 maintained checks; consumer4 fails only a wrong harness runtime-format literal before export, corrected consumer5 passes. Old auditor6 rejects current source-copy grammar; adapted auditor8 rejects transformed README; auditor10 finds trailing-slash discrepancy in the independent Python transform; final self11/audit12 pass. Failed helpers and artifacts retained. Replay pixel rows are retained manifest associations rather than independent raw capture in this installed consumer; actual raw HTTP pixel capture is separate slice30/31 evidence. Read-only audit does not recompile; actual maintained package2 supplies corresponding-source rebuild separately. Current production/test selected inputs remain held; documentation copied into future archives changes with this evidence commit, so this archive is not relabeled as the future tip. Full milestone/runtime/integration/baseline/benchmark and whole world/source/body/replay quotas remain separate.",
+  "workingInputs": {
+    "manifest": {
+      "path": "/private/tmp/still-shift-ms2-installed32-inputs1.json",
+      "bytes": 430043,
+      "sha256": "sha256:a6cc8016c9b3881f46fe34f4fc9975a35197fb0b7ede871d490cafc5da0ef868"
+    },
+    "files": 2521,
+    "inputBytes": 119153775,
+    "selection": {
+      "roots": [
+        "apps/",
+        "packages/",
+        "scripts/",
+        "tests/",
+        "tools/",
+        "services/",
+        "benchmarks/",
+        "examples/",
+        "assets/",
+        "catalogs/"
+      ],
+      "rootFiles": "all Git-tracked or nonignored regular root files",
+      "packageProse": [
+        "docs/npm-package-readme.md",
+        "docs/npm-third-party-notices.md"
+      ],
+      "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+    }
+  },
+  "archive": {
+    "bytes": 4681132,
+    "decompressedStreamBytes": 30423552,
+    "directories": 0,
+    "path": "/private/tmp/still-shift-ms2-installed32-package2/still-shift-0.1.1.tgz",
+    "payloadBytes": 28665022,
+    "regularFiles": 2275,
+    "sha256": "sha256:7764436e329b52e0247618149d0a981ab3ef0b9ed2474ff57170ef83c5353767",
+    "tarMetadataCompared": false
+  },
+  "counts": {
+    "maintainedPackageChecks": 28,
+    "installedExports": 4,
+    "source3Exports": 2,
+    "mixedExports": 2,
+    "outputFrames": 34,
+    "contributingPasses": 130,
+    "scopedNegativeControls": 7,
+    "archiveMembers": 2275,
+    "copiedSourceMembers": 928,
+    "emittedRuntimeMembers": 1347,
+    "supportedPacks": 0,
+    "pilotSupportedEpisodes": 0
+  },
+  "actualRootSessions": [
+    {
+      "session": 34319,
+      "exitCode": 0,
+      "commands": ["inputs1", "retention", "package2"]
+    },
+    {
+      "session": 18640,
+      "exitCode": 1,
+      "commands": ["setup3", "consumer4"]
+    },
+    {
+      "session": 25999,
+      "exitCode": 0,
+      "commands": ["consumer5"]
+    },
+    {
+      "session": 8821,
+      "exitCode": 1,
+      "commands": ["self7", "audit8"]
+    },
+    {
+      "session": 91917,
+      "exitCode": 1,
+      "commands": ["self9", "audit10"]
+    },
+    {
+      "session": 6397,
+      "exitCode": 0,
+      "commands": ["self11", "audit12", "hold12"]
+    }
+  ],
+  "verification": [
+    {
+      "id": "package2",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-installed32-package2.log",
+        "bytes": 1040,
+        "sha256": "sha256:5701a93eb92c67c4998de26c66080092c1b4fde9aef65742a0a3022fd0770896"
+      }
+    },
+    {
+      "id": "setup3",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-installed32-setup3.log",
+        "bytes": 1953,
+        "sha256": "sha256:611a22e0f49ef80a266c89449749bdc4f47ea2b5034c83a018c370405be6913d"
+      }
+    },
+    {
+      "id": "consumer4",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-installed32-consumer4.log",
+        "bytes": 497,
+        "sha256": "sha256:542af44680327e9213f236dfde5d2e585df6c6c8e29a45543f6fb1bf4ee93b86"
+      }
+    },
+    {
+      "id": "consumer5",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-installed32-consumer5.log",
+        "bytes": 130,
+        "sha256": "sha256:a7a479497f57ee48b13ea0e9474c1f8934a5ba2910e5abc32cc91418d07a21fb"
+      }
+    },
+    {
+      "id": "audit6",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-installed32-audit6.log",
+        "bytes": 332,
+        "sha256": "sha256:b30fda13c594446767a8ebe3aa64cc0f5c4356c18ab0d786cbc8b5065cfc5d72"
+      }
+    },
+    {
+      "id": "audit-self7",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-installed32-audit-self7.log",
+        "bytes": 337,
+        "sha256": "sha256:2210106b4436bea7f1a0402d1f369a250cadca872c884eca4bebe6879811099d"
+      }
+    },
+    {
+      "id": "audit8",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-installed32-audit8.log",
+        "bytes": 338,
+        "sha256": "sha256:dad2798582c5cecbb31a37a2edb93ac82c89c37a84ad8902a62548c26c352233"
+      }
+    },
+    {
+      "id": "audit-self9",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-installed32-audit-self9.log",
+        "bytes": 337,
+        "sha256": "sha256:25f694bf2be9fd463e124b75f42800527865bb7c14486fdc8381e51816563c41"
+      }
+    },
+    {
+      "id": "audit10",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-installed32-audit10.log",
+        "bytes": 339,
+        "sha256": "sha256:9555efa2917387ada6efd7638be3b85fc450d832c8f6b979e3d63e02c543c3c8"
+      }
+    },
+    {
+      "id": "audit-self11",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-installed32-audit-self11.log",
+        "bytes": 338,
+        "sha256": "sha256:9df8ea1682d47464175939d88029fc8b5f5a3e96e82258827533e9d9ae614f99"
+      }
+    },
+    {
+      "id": "audit12",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-installed32-audit12.log",
+        "bytes": 341,
+        "sha256": "sha256:575446d355376e25c13408ee1ae843096de3359c4752ecd9f452812a58808742"
+      }
+    },
+    {
+      "id": "hold12",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-installed32-hold12.log",
+        "bytes": 196,
+        "sha256": "sha256:54017e33fa062ec34c709d61ab3347df9c88f83dc3a529ac77e20f88e0aaf64f"
+      }
+    }
+  ],
+  "proofs": {
+    "packageVerification": {
+      "path": "/private/tmp/still-shift-ms2-installed32-package2/package-verification.json",
+      "bytes": 37048,
+      "sha256": "sha256:a779674b73d915603ddf9f95adecc9b1cf74ed0f2cb2835dd867fb27dc8bef44"
+    },
+    "archive": {
+      "path": "/private/tmp/still-shift-ms2-installed32-package2/still-shift-0.1.1.tgz",
+      "bytes": 4681132,
+      "sha256": "sha256:7764436e329b52e0247618149d0a981ab3ef0b9ed2474ff57170ef83c5353767"
+    },
+    "consumer": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift npm consumer-8ExWJS/ms2-run.json",
+      "bytes": 107633,
+      "sha256": "sha256:ae396a5ac80a91871afeea69b8c77825b9dc0dae5bc7cec6bee4d16afc37133b"
+    },
+    "consumerConfiguration": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift npm consumer-8ExWJS/ms2-config.json",
+      "bytes": 2245,
+      "sha256": "sha256:95f66de9dba435694fa95940c057555570bd649a7c5527f7d65d1e03354634d6"
+    },
+    "consumerScript": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift npm consumer-8ExWJS/ms2-consumer.mjs",
+      "bytes": 6810,
+      "sha256": "sha256:ad6534a0604e86c0d922176a2f67e5000e37f33a8adb9258c025a8b25661d94a"
+    },
+    "sandboxProfile": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift npm consumer-8ExWJS/ms2-consumer.sb",
+      "bytes": 290,
+      "sha256": "sha256:2c602469756bbf6ea8cbfd601bff048db0c1fb9e8a3d96c680f95bd70fc1e8ee"
+    },
+    "audit": {
+      "path": "/private/tmp/still-shift-ms2-installed32-audit12/summary.json",
+      "bytes": 6718,
+      "sha256": "sha256:b80e5c45c7e6bef42a185cc2e01e5dbf4898b77a3fcad584b9ac711bec330143"
+    },
+    "auditMembers": {
+      "path": "/private/tmp/still-shift-ms2-installed32-audit12/members.json",
+      "bytes": 1347128,
+      "sha256": "sha256:97bb02b4cb8ad449986881751a561e6343349f72cf812c1b6a879ab04dab8348"
+    },
+    "auditor": {
+      "path": "/private/tmp/mechanism-ms2-archive-source-audit-v3.py",
+      "bytes": 46592,
+      "sha256": "sha256:878dfdeb376eaae44d636562d7a55727e3575a9ed85258dc46142348ed9a7763"
+    },
+    "failedConsumer": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift npm consumer-8ExWJS/ms2-failure-attempt4.json",
+      "bytes": 1868,
+      "sha256": "sha256:2e242b779e698bfcfdd24325fdd8c045af1dd7cd4ad3235f80f3559bcc035afc"
+    },
+    "failedConsumerScript": {
+      "path": "/private/tmp/still-shift-ms2-installed32-consumer4-original.mjs",
+      "bytes": 6809,
+      "sha256": "sha256:760c095d4e63b89646d2bdc3241931fb2446045598717e052362b6453598d620"
+    },
+    "failedAuditor8": {
+      "path": "/private/tmp/mechanism-ms2-archive-source-audit-v3-attempt8.py",
+      "bytes": 44910,
+      "sha256": "sha256:ece9374ffbb781af6dcf3d230ca31c509a09dd91c004fbea7f3652aa27f6c84d"
+    },
+    "failedAuditor10": {
+      "path": "/private/tmp/mechanism-ms2-archive-source-audit-v3-attempt10.py",
+      "bytes": 46377,
+      "sha256": "sha256:5898e9858dbc0daa0bdf862a7183c1f0e872a0739c60bc9c287019145b5a2a7a"
+    },
+    "audit6Failure": {
+      "path": "/private/tmp/still-shift-ms2-installed32-audit6/summary.json",
+      "bytes": 974,
+      "sha256": "sha256:fbab25dc35fbab40cffffea408236b3cdd61488d065a0756b0a262147503c009"
+    },
+    "audit8Failure": {
+      "path": "/private/tmp/still-shift-ms2-installed32-audit8/summary.json",
+      "bytes": 978,
+      "sha256": "sha256:5aa97acfce562595a9285d2264723e60024e024f2a10f3b5a092047025167612"
+    },
+    "audit10Failure": {
+      "path": "/private/tmp/still-shift-ms2-installed32-audit10/summary.json",
+      "bytes": 981,
+      "sha256": "sha256:ff5ff565ff517f1eae3c6ebb93308470395c07e094350eaa2c3f7f9f7222e569"
+    }
+  },
+  "remaining": [
+    "Aggregate parsed-source/world/body/replay admission and constructor-failure resource ownership.",
+    "Remaining MS2 supported pack/rig/event/label/cue/discovery/coverage/typography criteria and full software/benchmark gates before its PR, then MS3; final archive refresh after final source/documentation."
+  ],
+  "maintainedPackageChecks": [
+    "locked production dependency audit",
+    "install archive outside repository (npm)",
+    "installed feature guides, skills and self-contained puppet example",
+    "installed command help",
+    "installed command version",
+    "consumer TypeScript declarations",
+    "consumer bundler declarations",
+    "TypeScript program validation",
+    "installed browser pixel-quality analysis",
+    "legacy motion import in installed program",
+    "JSON program validation",
+    "installed API imports",
+    "opt-in browser runtime setup",
+    "opt-in depth runtime setup",
+    "installed depth worker command",
+    "installed canvas2d export",
+    "canvas2d frame count",
+    "canvas2d source comparison",
+    "installed webgl2 export",
+    "webgl2 frame count",
+    "webgl2 source comparison",
+    "installed preview page and seeking",
+    "opt-in soundtrack runtime setup",
+    "soundtrack fixture",
+    "installed soundtrack worker and API",
+    "installed soundtrack CLI",
+    "corresponding source dependencies",
+    "corresponding source rebuild"
+  ],
+  "archiveQualification": [
+    "No extraction, build, install, renderer or runtime tests performed.",
+    "Compiled/transformed members are compared with current dist/npm, not claimed as Git blobs.",
+    "Runtime byte equality does not establish compiler correctness or human review."
+  ],
+  "consumerInputs": [
+    {
+      "path": "ms2-source/normal/composition.json",
+      "bytes": 549,
+      "sha256": "sha256:0a0096364913f77f3e1c5aad6f6364a7a57354f312a5a041dece6cc32a590a39"
+    },
+    {
+      "path": "ms2-source/normal/source3.json",
+      "bytes": 2801,
+      "sha256": "sha256:e8c9987d3345bb6be8508647500d59fafb2f40485211c93baf501c4643421a0f"
+    },
+    {
+      "path": "ms2-source/normal/surface.rgba",
+      "bytes": 16,
+      "sha256": "sha256:fdfd272c41edbdc5c4e1a45c40d97e9be487f3a20d3eddaa873549a2b3f53990"
+    },
+    {
+      "path": "ms2-source/mixed/composition.json",
+      "bytes": 3955,
+      "sha256": "sha256:73e4003d8de742433b5fad71df8958b73b5fea91f0f857f2e95481db68659faa"
+    },
+    {
+      "path": "ms2-source/mixed/source3.json",
+      "bytes": 2801,
+      "sha256": "sha256:e8c9987d3345bb6be8508647500d59fafb2f40485211c93baf501c4643421a0f"
+    },
+    {
+      "path": "ms2-source/mixed/surface.rgba",
+      "bytes": 16,
+      "sha256": "sha256:fdfd272c41edbdc5c4e1a45c40d97e9be487f3a20d3eddaa873549a2b3f53990"
+    },
+    {
+      "path": "ms2-source/mixed/mechanism.json",
+      "bytes": 102592,
+      "sha256": "sha256:41412d40f65f1267468006a3846eab9eb88f06f1fea7f16815f45c776f54d834"
+    },
+    {
+      "path": "ms2-source/mixed/solid.json",
+      "bytes": 3011,
+      "sha256": "sha256:96bb059ce42e5a23ae57d21c7e04bd8613a13ccd5478348e3a95b189013bc6fc"
+    }
+  ]
+}

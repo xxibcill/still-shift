@@ -1,3 +1,6 @@
+/** Node-owned composition capacities use this fixed share of the 8 GiB application partition. */
+export const COMPOSITION_NODE_MEMORY_ALLOWANCE = 512 * 1024 ** 2;
+
 import { z } from "zod";
 
 export const COMPOSITION_SCHEMA_VERSION = "composition-1" as const;

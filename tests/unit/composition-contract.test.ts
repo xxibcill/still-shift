@@ -1,3 +1,4 @@
+import { binaryCompositionFixture } from "../helpers/native-pbr-binary-composition-fixture.ts";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -683,12 +684,26 @@ describe("composition-1 fixtures", () => {
     ) as Composition;
     expect(validateComposition(nativeMedia).ok).toBe(true);
     const nativeContract = nativeContractComposition();
+    const pbrFixture = binaryCompositionFixture(),
+      nativePbr = pbrFixture.composition;
+    const pbrController = nativePbr.layers[0]!;
+    if (pbrController.type !== "native3d")
+      throw Error("Expected native PBR fixture controller");
+    pbrController.pbrMaterialOverrides = {
+      [pbrFixture.source.geometry.materials[0]!.id]: {
+        baseColorFactor: [0.8, 0.2, 0.1, 1],
+        metallicFactor: 0.3,
+        roughnessFactor: 0.6,
+        doubleSided: true,
+      },
+    };
+    expect(validateComposition(nativePbr).ok).toBe(true);
     expect(validateComposition(nativeContract)).toMatchObject({
       ok: true,
       diagnostics: [],
     });
     expect(
-      missing(CompositionSchema, [doc, nativeMedia, nativeContract]),
+      missing(CompositionSchema, [doc, nativeMedia, nativeContract, nativePbr]),
     ).toEqual([]);
     expect(missing(PrecompSchema, doc.precomps!)).toEqual([]);
     expect(
@@ -706,6 +721,7 @@ describe("composition-1 fixtures", () => {
             ...doc.assets,
             ...nativeMedia.assets,
             ...nativeContract.assets,
+            ...nativePbr.assets,
           ].filter((a) => a.type === type),
         ),
         type,
@@ -716,7 +732,25 @@ describe("composition-1 fixtures", () => {
       ...doc.precomps!,
       nativeMedia,
       nativeContract,
+      nativePbr,
     ].flatMap((s) => s.layers);
+    // V2 writers are exclusive with v1 controls; cover the layer contract separately.
+    const nativeV2Controller = layers.Native3DLayerSchema.parse({
+      id: "native-v2-writer",
+      type: "native3d",
+      asset: "physical-scene-v2",
+      sourceStartFrame: 0,
+      sourceFps: 30,
+      rigControls: { hinge: { type: "hinge", value: 0.25 } },
+    });
+    expect(nativeV2Controller.controls).toBeUndefined();
+    expect(
+      layers.Native3DLayerSchema.safeParse({
+        ...nativeV2Controller,
+        controls: {},
+      }).success,
+    ).toBe(false);
+    allLayers.push(nativeV2Controller);
     // CE4 providers have their own fixture; keep the CE1 acceptance file unchanged.
     const providers = JSON.parse(
       readFileSync(

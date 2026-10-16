@@ -1,4 +1,4 @@
-import { readdir, readFile, realpath } from "node:fs/promises";
+import { readdir, readFile, realpath, stat } from "node:fs/promises";
 import { randomUUID } from "node:crypto";
 import { createReadStream } from "node:fs";
 import { pipeline } from "node:stream/promises";
@@ -231,16 +231,23 @@ export const compositionApi = (): Plugin => {
             const id = url.searchParams.get("id") ?? "";
             const path =
               capture?.scene === scene &&
-              (id.startsWith("__media:") || id === "__audio:mix")
+              (id.startsWith("__media:") ||
+                id === "__audio:mix" ||
+                /^native-pbr\/[a-f0-9]{64}$/.test(id))
                 ? capture.paths[id]
                 : undefined;
             if (!path)
               return send(response, 404, "Unknown captured native resource");
             response.setHeader(
               "Content-Type",
-              id === "__audio:mix" ? "audio/wav" : "image/png",
+              id.startsWith("native-pbr/")
+                ? "application/octet-stream"
+                : id === "__audio:mix"
+                  ? "audio/wav"
+                  : "image/png",
             );
             response.setHeader("Cache-Control", "no-store");
+            response.setHeader("Content-Length", (await stat(path)).size);
             await pipeline(createReadStream(path), response);
             return;
           }

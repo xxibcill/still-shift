@@ -561,6 +561,21 @@ export function createWebgl2Backend(
         device.setFrameClip();
       } else device.setFrameClip(exposure ? undefined : damage.next(root));
     },
+    async completeNativeFrame() {
+      if (
+        nativeDepth &&
+        Object.values(options.native3D ?? {}).some(
+          (source) => source.version === "prepared-native3d-scene-2",
+        ) &&
+        !nativeDepth.finalize
+      )
+        passageError(
+          "comp-native3d-protocol",
+          "Scene2 requires a finalizing native depth runtime",
+          { path: "nativeObservations" },
+        );
+      await nativeDepth?.finalize?.();
+    },
     endFrame(completed) {
       renderingFrame = false;
       device.setFrameClip();

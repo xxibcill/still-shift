@@ -28,10 +28,23 @@ import type {
 import type { WebglDevice, WebglSurface } from "./webgl-device.ts";
 import { captureNativeGlState } from "./webgl-native-state.ts";
 import { passageError } from "../../passage-diagnostics.ts";
-import { resolveNative3DVariant } from "../../native3d/prepare.ts";
+import { resolveNative3DVariantVersions } from "../../native3d/catalogue-versions.ts";
+import { createNativeThreeQueuedFrameObservationV2 } from "../../native3d/three-shape-observation.ts";
+import type {
+  NativeObservedFrameV2,
+  NativeObservedFrameV3,
+} from "@still-shift/scene-contract";
+import { createNativeThreeQueuedFrameObservationV3 } from "../../native3d/three-pbr-observation.ts";
+import { assertNativeObservedFrameV3 } from "../../native3d/observed-validation-v3.ts";
+import type { DeepReadonly } from "../../native3d/types.ts";
+import type { MemoryLease } from "../../managed-memory.ts";
 import {
   createNativeThreeGeometry,
   createNativeThreeWorld,
+  createNativeThreeWorldV2,
+  createNativeThreeWorldV3,
+  type NativeThreeWorldV3,
+  type NativeThreeWorldV2,
   type NativeThreeGeometry,
   type NativeThreeWorld,
 } from "../../native3d/three-world.ts";
@@ -43,10 +56,39 @@ import {
   releaseRenderStorage,
   renderMemory,
 } from "../../managed-memory-context.ts";
-import type { PreparedNative3DVariant } from "../../native3d/types.ts";
+import type { PreparedNative3DVariantVersions } from "../../native3d/types-v2.ts";
 
 type GeometryOwner = { value: NativeThreeGeometry | undefined };
-type WorldOwner = { value: NativeThreeWorld | undefined };
+type WorldEntry =
+  | {
+      kind: "mechanism3";
+      world: NativeThreeWorldV3;
+      observation?: ReturnType<
+        typeof createNativeThreeQueuedFrameObservationV3
+      >;
+    }
+  | { kind: "legacy"; world: NativeThreeWorld }
+  | {
+      kind: "mechanism2";
+      world: NativeThreeWorldV2;
+      observation: ReturnType<typeof createNativeThreeQueuedFrameObservationV2>;
+    };
+type WorldOwner = { value: WorldEntry | undefined };
+type PendingPass = {
+  observed: Promise<
+    DeepReadonly<NativeObservedFrameV2 | NativeObservedFrameV3>
+  >;
+  owner?: {
+    readonly receipt: DeepReadonly<
+      NativeObservedFrameV2 | NativeObservedFrameV3
+    >;
+    dispose(): void;
+  };
+  lease: MemoryLease | undefined;
+  controller: string;
+  sourceFrame: number;
+  scope: string;
+};
 type GraphicOwner = { value: ReturnType<typeof createNativeThreeGraphic> };
 type Targets = { hdr: WebGLRenderTarget; encoded: WebGLRenderTarget };
 const nativeDestructors = new WeakMap<object, (value: object) => void>();
@@ -138,7 +180,7 @@ export function validateNativeDepthSurface(
       );
   }
 }
-function geometryBytes(variant: PreparedNative3DVariant) {
+function geometryBytes(variant: PreparedNative3DVariantVersions) {
   return variant.source.geometry.meshes.reduce(
     (bytes, mesh) =>
       bytes +
@@ -151,7 +193,7 @@ function geometryBytes(variant: PreparedNative3DVariant) {
     0,
   );
 }
-function worldBytes(variant: PreparedNative3DVariant) {
+function worldBytes(variant: PreparedNative3DVariantVersions) {
   // Bound PMREM generation's environment/scratch before construction, then
   // exact authored shadow and procedural texture storage including canvas/mips.
   return (
@@ -160,16 +202,20 @@ function worldBytes(variant: PreparedNative3DVariant) {
       (n, light) => n + (light.castShadow ? light.shadowMapSize ** 2 * 16 : 0),
       0,
     ) +
-    variant.source.geometry.materials.reduce(
-      (n, material) =>
-        n +
-        (material.texture
-          ? (material.texture.kind === "tape-graduations"
-              ? 4096 * 512
-              : 1024 * 512) * 10
-          : 0),
-      0,
-    )
+    (variant.version === "prepared-native3d-variant-3"
+      ? variant.allocation.vertexBytes * 2 +
+        variant.allocation.textureCpuBytes +
+        variant.allocation.textureBytes
+      : variant.source.geometry.materials.reduce(
+          (n, material) =>
+            n +
+            (material.texture
+              ? (material.texture.kind === "tape-graduations"
+                  ? 4096 * 512
+                  : 1024 * 512) * 10
+              : 0),
+          0,
+        ))
   );
 }
 /** Browser-only Three implementation, supplied explicitly to the pure compositor. */
@@ -184,6 +230,70 @@ export function createNativeDepthRuntime(
   const geometries = new Map<string, GeometryOwner>(),
     worlds = new Map<string, WorldOwner>();
   let closed = false;
+  const pendingPasses: PendingPass[] = [];
+  function queuePass<T extends NativeObservedFrameV2 | NativeObservedFrameV3>(
+    op: NativeDepthOp,
+    capture: () => Promise<{
+      readonly receipt: DeepReadonly<T>;
+      dispose(): void;
+    }>,
+    observe:
+      | ((observed: Promise<DeepReadonly<T>>, sampleFrame: number) => void)
+      | undefined,
+  ) {
+    if (pendingPasses.length >= 4096)
+      passageError(
+        "comp-native3d-limit",
+        "Pending native validation exceeds its bounded control storage",
+        { node: op.layer },
+      );
+    const lease = renderMemory()?.reserve("metadata", 512, undefined, true);
+    let capturing: ReturnType<typeof capture>;
+    try {
+      capturing = capture();
+    } catch (error) {
+      lease?.release();
+      throw error;
+    }
+    const observed = capturing.then((owner) => {
+      pending.owner = owner;
+      return owner.receipt;
+    });
+    const pending: PendingPass = {
+      lease,
+      controller: op.frame.controller,
+      sourceFrame: op.frame.sourceFrame,
+      scope: op.frame.scope,
+      observed,
+    };
+    void observed.then(
+      () => {},
+      () => {},
+    );
+    pendingPasses.push(pending);
+    observe?.(observed, op.sampleFrame);
+  }
+  function disposeWorld(entry: WorldEntry | undefined) {
+    if (!entry) return;
+    let failed = false,
+      reason: unknown;
+    try {
+      if (entry.kind === "mechanism2" || entry.kind === "mechanism3")
+        entry.observation?.dispose();
+    } catch (error) {
+      failed = true;
+      reason = error;
+    }
+    try {
+      entry.world.dispose();
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        reason = error;
+      }
+    }
+    if (failed) throw reason;
+  }
   function createResolvePipeline() {
     let geometry: BufferGeometry | undefined,
       material: ShaderMaterial | undefined;
@@ -279,7 +389,7 @@ export function createNativeDepthRuntime(
     }
     return renderer;
   }
-  function getWorld(variant: PreparedNative3DVariant, asset: string) {
+  function getWorld(variant: PreparedNative3DVariantVersions, asset: string) {
     const textureFont = options.nativeTextureFont?.(asset);
     const worldKey = `${variant.sourceKey}:${textureFont?.family ?? ""}:${textureFont?.weight ?? ""}:${textureFont?.sha256 ?? ""}`;
     let owner = worlds.get(worldKey);
@@ -291,7 +401,7 @@ export function createNativeDepthRuntime(
         { node: asset },
       );
     let geometry = geometries.get(variant.meshDataSha256);
-    if (!geometry) {
+    if (!geometry && variant.version !== "prepared-native3d-variant-3") {
       geometry = createAccountedStorage<GeometryOwner>(
         4096 + variant.source.geometry.meshes.length * 2048,
         geometryBytes(variant),
@@ -315,13 +425,72 @@ export function createNativeDepthRuntime(
       worldBytes(variant),
       () => ({ value: undefined }),
       (owner) => {
-        owner.value = createNativeThreeWorld(getRenderer(), variant.source, {
-          geometry: geometry!.value!,
-          ...(textureFont ? { textureFont } : {}),
-        });
+        const three = getRenderer(),
+          worldOptions = {
+            ...(geometry ? { geometry: geometry.value! } : {}),
+            ...(textureFont ? { textureFont } : {}),
+          };
+        if (variant.version === "prepared-native3d-variant-3") {
+          const prepared = options.nativePbrResources?.[variant.sourceKey];
+          if (!prepared)
+            passageError(
+              "comp-native3d-not-ready",
+              "Source3 requires its verified binary resources",
+              { node: asset },
+            );
+          const world = createNativeThreeWorldV3(three, variant, prepared);
+          try {
+            owner.value = {
+              kind: "mechanism3",
+              world,
+              ...(options.observeNativeFrameV3
+                ? {
+                    observation: createNativeThreeQueuedFrameObservationV3(
+                      three,
+                      world,
+                      variant,
+                      options.nativeAppearanceCodeSha256!,
+                    ),
+                  }
+                : {}),
+            };
+          } catch (error) {
+            try {
+              world.dispose();
+            } catch {
+              /* Preserve setup failure. */
+            }
+            throw error;
+          }
+        } else if (variant.version === "prepared-native3d-variant-2") {
+          const world = createNativeThreeWorldV2(three, variant, worldOptions);
+          try {
+            owner.value = {
+              kind: "mechanism2",
+              world,
+              observation: createNativeThreeQueuedFrameObservationV2(
+                three,
+                world,
+                variant,
+                options.nativeAppearanceCodeSha256!,
+              ),
+            };
+          } catch (error) {
+            try {
+              world.dispose();
+            } catch {
+              /* Preserve setup failure. */
+            }
+            throw error;
+          }
+        } else
+          owner.value = {
+            kind: "legacy",
+            world: createNativeThreeWorld(three, variant.source, worldOptions),
+          };
       },
       (owner) => {
-        owner.value?.dispose();
+        disposeWorld(owner.value);
         owner.value = undefined;
       },
     );
@@ -455,7 +624,19 @@ export function createNativeDepthRuntime(
         "Native depth runtime is disposed",
         { node: op.layer },
       );
-    const variant = resolveNative3DVariant(options.native3D, op.frame);
+    const variant = resolveNative3DVariantVersions(options.native3D, op.frame);
+    if (
+      variant.version === "prepared-native3d-variant-3" &&
+      (options.observeNativeFrame || options.observeNativeFrameV2)
+    )
+      passageError(
+        "comp-native3d-protocol",
+        "Source3 independent observations are not ready",
+        {
+          node: op.layer,
+          path: `${op.frame.scope}/${op.frame.controller}.nativeObservations`,
+        },
+      );
     if (!/^sha256:[a-f0-9]{64}$/.test(options.nativeAppearanceCodeSha256 ?? ""))
       passageError(
         "comp-native3d-not-ready",
@@ -476,7 +657,9 @@ export function createNativeDepthRuntime(
     const font = options.nativeTextureFont?.(op.frame.asset);
     if (
       variant.source.geometry.materials.some(
-        (material) => material.texture?.kind === "tape-graduations",
+        (material) =>
+          "texture" in material &&
+          material.texture?.kind === "tape-graduations",
       ) &&
       (!font || !/^sha256:[a-f0-9]{64}$/.test(font.sha256 ?? ""))
     )
@@ -541,8 +724,13 @@ export function createNativeDepthRuntime(
       const graphics: GraphicOwner[] = [],
         textures: FramebufferTexture[] = [];
 
-      let shared: NativeThreeWorld | undefined;
+      let shared:
+        | NativeThreeWorld
+        | NativeThreeWorldV2
+        | NativeThreeWorldV3
+        | undefined;
       let background: NativeThreeWorld["world"]["background"] | undefined;
+      let artworkScene: { value: Scene } | undefined;
       let failed = false,
         first: unknown;
       try {
@@ -599,24 +787,124 @@ export function createNativeDepthRuntime(
           graphics.push(graphic);
         });
         three.resetState();
-        shared = getWorld(variant, op.frame.asset);
-        shared.applyFrame(
-          op.frame.frame,
-          op.width,
-          op.height,
-          op.frame.localVisibility,
-        );
+        const entry = getWorld(variant, op.frame.asset);
+        shared = entry.world;
+        if (op.frame.version === "native3d-frame-3") {
+          if (entry.kind !== "mechanism3")
+            passageError(
+              "comp-native3d-source",
+              "Native world/frame protocols differ",
+              { node: op.layer },
+            );
+          entry.world.applyFrame(
+            op.frame.frame,
+            op.width,
+            op.height,
+            op.frame.localVisibility,
+          );
+        } else if (op.frame.version === "native3d-frame-2") {
+          if (entry.kind !== "mechanism2")
+            passageError(
+              "comp-native3d-source",
+              "Native world/frame protocols differ",
+              { node: op.layer },
+            );
+          entry.world.applyFrame(
+            op.frame.frame,
+            op.width,
+            op.height,
+            op.frame.localVisibility,
+          );
+        } else {
+          if (entry.kind !== "legacy")
+            passageError(
+              "comp-native3d-source",
+              "Native world/frame protocols differ",
+              { node: op.layer },
+            );
+          entry.world.applyFrame(
+            op.frame.frame,
+            op.width,
+            op.height,
+            op.frame.localVisibility,
+          );
+        }
         const passTargets = getTargets(op.width, op.height, op.layer);
         background = shared.world.background;
         shared.world.background = null;
-        for (const graphic of graphics) shared.world.add(graphic.value.mesh);
+        // PBR physical capture stays closed. Compositor-owned artwork has a separate
+        // admitted Scene and shares the current HDR/depth target without a clear.
+        if (entry.kind === "mechanism3" && graphics.length) {
+          artworkScene = createAccountedStorage(
+            8192,
+            0,
+            () => ({ value: new Scene() }),
+            (owner) => {
+              owner.value.fog = shared!.world.fog;
+              for (const graphic of graphics)
+                owner.value.add(graphic.value.mesh);
+            },
+            (owner) => owner.value.clear(),
+          );
+        } else
+          for (const graphic of graphics) shared.world.add(graphic.value.mesh);
         three.setRenderTarget(passTargets.hdr);
         three.setClearColor(0, 0);
         three.clear(true, true, false);
         gl.disable(gl.SAMPLE_ALPHA_TO_COVERAGE);
         gl.disable(gl.RASTERIZER_DISCARD);
         three.info.reset();
-        three.render(shared.world, shared.camera);
+        if (entry.kind === "mechanism2") {
+          if (op.frame.version !== "native3d-frame-2")
+            passageError(
+              "comp-native3d-source",
+              "Native world/frame protocols differ",
+              { node: op.layer },
+            );
+          const reference = op.frame;
+          queuePass<NativeObservedFrameV2>(
+            op,
+            () => entry.observation.capture(reference),
+            options.observeNativeFrameV3 ?? options.observeNativeFrameV2,
+          );
+        } else if (entry.kind === "mechanism3" && entry.observation) {
+          if (
+            op.frame.version !== "native3d-frame-3" ||
+            variant.version !== "prepared-native3d-variant-3"
+          )
+            passageError(
+              "comp-native3d-source",
+              "Native world/frame protocols differ",
+              { node: op.layer },
+            );
+          const reference = op.frame,
+            observation = entry.observation;
+          queuePass<NativeObservedFrameV3>(
+            op,
+            async () => {
+              // Capture seals GL state synchronously before its asynchronous hashes.
+              const owner = await observation.capture(reference);
+              try {
+                await assertNativeObservedFrameV3(
+                  variant,
+                  reference,
+                  owner.receipt,
+                  options.nativeAppearanceCodeSha256!,
+                );
+                return owner;
+              } catch (error) {
+                try {
+                  owner.dispose();
+                } catch {
+                  /* Preserve validation failure. */
+                }
+                throw error;
+              }
+            },
+            options.observeNativeFrameV3,
+          );
+        } else three.render(shared.world, shared.camera);
+        if (artworkScene) three.render(artworkScene.value, shared.camera);
         const pass = {
           calls: three.info.render.calls,
           triangles: three.info.render.triangles,
@@ -677,16 +965,23 @@ export function createNativeDepthRuntime(
             "Native final GPU transfer failed",
             { node: op.layer },
           );
-        options.observeNativeFrame?.(
-          observeNativeThreeWorld(
-            shared,
+        if (
+          entry.kind === "legacy" &&
+          op.frame.version === "native3d-frame-1"
+        ) {
+          const observed = observeNativeThreeWorld(
+            entry.world,
             op.frame,
             options.nativeAppearanceCodeSha256!,
             pass,
-          ),
-          op.sampleFrame,
-        );
-        device.passes += 2;
+          );
+          if (options.observeNativeFrameV3)
+            options.observeNativeFrameV3(observed, op.sampleFrame);
+          else if (options.observeNativeFrameV2)
+            options.observeNativeFrameV2(observed, op.sampleFrame);
+          else options.observeNativeFrame?.(observed, op.sampleFrame);
+        }
+        device.passes += artworkScene ? 3 : 2;
       } catch (error) {
         failed = true;
         first = error;
@@ -701,6 +996,11 @@ export function createNativeDepthRuntime(
             }
           }
         };
+        if (artworkScene) {
+          const owned = artworkScene;
+          artworkScene = undefined;
+          cleanup(() => releaseOwned(owned, (owner) => owner.value.clear()));
+        }
         for (const graphic of graphics) {
           if (shared) shared.world.remove(graphic.value.mesh);
           cleanup(() =>
@@ -714,6 +1014,49 @@ export function createNativeDepthRuntime(
         if (state) cleanup(() => renderer?.resetState());
         cleanup(() => state?.restore());
         cleanup(() => scratch?.release());
+      }
+      if (failed) throw first;
+    },
+    async finalize() {
+      const assigned = pendingPasses.splice(0);
+      const settled = await Promise.allSettled(
+        assigned.map((pass) => pass.observed),
+      );
+      let failed = false,
+        first: unknown;
+      for (const [index, result] of settled.entries()) {
+        if (result.status === "rejected" && !failed) {
+          failed = true;
+          const pass = assigned[index]!;
+          try {
+            passageError(
+              "comp-native3d-observation",
+              result.reason instanceof Error
+                ? result.reason.message
+                : String(result.reason),
+              {
+                node: pass.controller,
+                frame: pass.sourceFrame,
+                path: `${pass.scope}/${pass.controller}.nativeObservations`,
+              },
+            );
+          } catch (error) {
+            first = error;
+          }
+        }
+        for (const cleanup of [
+          () => assigned[index]!.owner?.dispose(),
+          () => assigned[index]!.lease?.release(),
+        ]) {
+          try {
+            cleanup();
+          } catch (error) {
+            if (!failed) {
+              failed = true;
+              first = error;
+            }
+          }
+        }
       }
       if (failed) throw first;
     },
@@ -737,8 +1080,15 @@ export function createNativeDepthRuntime(
         state = captureNativeGlState(gl);
       });
       for (const owner of worlds.values())
-        cleanup(() => releaseOwned(owner, (value) => value.value?.dispose()));
+        cleanup(() =>
+          releaseOwned(owner, (value) => disposeWorld(value.value)),
+        );
       worlds.clear();
+      for (const pass of pendingPasses) {
+        cleanup(() => pass.owner?.dispose());
+        cleanup(() => pass.lease?.release());
+      }
+      pendingPasses.length = 0;
       for (const owner of geometries.values())
         cleanup(() => releaseOwned(owner, (value) => value.value?.dispose()));
       geometries.clear();

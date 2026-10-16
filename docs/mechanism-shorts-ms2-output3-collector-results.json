@@ -1,0 +1,255 @@
+{
+  "schemaVersion": "mechanism-ms2-output3-collector-results-1",
+  "date": "2026-10-11",
+  "branch": "codex/mechanism-ms2",
+  "baseSourceCommit": "10b50765ceaee890efae1b082faad06d0a031790",
+  "status": "standalone-output3-contract-collector-verified-composition-export-pending",
+  "scope": [
+    "Explicit strict output3/sample3 envelopes admit original source1/source2 and source3 receipts; output1/output2 parsers are unchanged and still reject source3.",
+    "Internal ordered async collector shared by V2/V3 wrappers; original V2 parser and behavior retained. Invocation ordering, earliest assigned failures, stale completion invalidation, immutable parsing and metadata lease lifecycle remain identical.",
+    "Fixed 64-pass/1MiB ceiling, admitted serialized byte limit, pre-collection metadata reservation and abort/dispose release; whole source/body/world/replay admission remains separate.",
+    "Pure public collector3 API added without integrating composition or widening authenticated producer/sink/upload/journal/export APIs. Source3 collection/export rejection remains intentional."
+  ],
+  "workingInputs": {
+    "manifest": {
+      "path": "/private/tmp/still-shift-ms2-output3-inputs4.json",
+      "bytes": 427679,
+      "sha256": "sha256:c2d2d9e8827fbf289deb190630c9354bdde510f2b0fdaf0f463383967872652f"
+    },
+    "files": 2507,
+    "inputBytes": 119052599,
+    "selection": {
+      "roots": [
+        "apps/",
+        "packages/",
+        "scripts/",
+        "tests/",
+        "tools/",
+        "services/",
+        "benchmarks/",
+        "examples/",
+        "assets/",
+        "catalogs/"
+      ],
+      "rootFiles": "all Git-tracked or nonignored regular root files",
+      "packageProse": [
+        "docs/npm-package-readme.md",
+        "docs/npm-third-party-notices.md"
+      ],
+      "excluded": "other milestone/evidence documentation; original E01 dependencies have separate actual raw-byte inventories"
+    }
+  },
+  "actualRootSessions": [
+    {
+      "session": 59505,
+      "exitCode": 0,
+      "commands": ["format1", "build1"]
+    },
+    {
+      "session": 60023,
+      "exitCode": 1,
+      "commands": ["format2", "unit2"],
+      "unrun": ["build2"]
+    },
+    {
+      "session": 75591,
+      "exitCode": 2,
+      "commands": ["format3", "identity3", "unit3", "build3"]
+    },
+    {
+      "session": 28740,
+      "exitCode": 0,
+      "commands": ["fast4", "node5", "composition6", "export7", "hold7"]
+    }
+  ],
+  "verification": [
+    {
+      "id": "format1",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-output3-format1.log",
+        "bytes": 382,
+        "sha256": "sha256:b94b1a401fb604a5f5eb199bca8a8c2c5722483cf1f3b13a260b802f094e1189"
+      }
+    },
+    {
+      "id": "build1",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-output3-build1.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      }
+    },
+    {
+      "id": "format2",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-output3-format2.log",
+        "bytes": 56,
+        "sha256": "sha256:2298404b8265c8536eaec52af51ca66ce306bb0790bda5ba1787b1d97ac1fd77"
+      }
+    },
+    {
+      "id": "unit2",
+      "exitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-output3-unit2.log",
+        "bytes": 2199,
+        "sha256": "sha256:a0340c636015ef8bd28ffe92fd8dffe4090615dcd18b4513e75085d97af8226b"
+      }
+    },
+    {
+      "id": "format3",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-output3-format3.log",
+        "bytes": 56,
+        "sha256": "sha256:0597a3ec011f4d96cb6f2d946884f80a14c643cf29612072c137eaaf9993d348"
+      }
+    },
+    {
+      "id": "identity3",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-output3-identity3.log",
+        "bytes": 260,
+        "sha256": "sha256:6870d391d3819271827a8d7703b7caf07884ad5951c7a53b00a6655f142de31b"
+      }
+    },
+    {
+      "id": "unit3",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-output3-unit3.log",
+        "bytes": 527,
+        "sha256": "sha256:dd632a9c8097825aa2101399543aea774944b64533a66cb4f3fbe8a9163ecd23"
+      }
+    },
+    {
+      "id": "build3",
+      "exitCode": 2,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-output3-build3.log",
+        "bytes": 280,
+        "sha256": "sha256:b04cee107b4c441d3941da185e215f9f7368638c84bd097f0803d7b30f85a524"
+      }
+    },
+    {
+      "id": "format4",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-output3-format4.log",
+        "bytes": 56,
+        "sha256": "sha256:81451a2b4552888d70fe8a3d64d82f9885eb42932c31e2d7ee013d8666557b14"
+      }
+    },
+    {
+      "id": "fast4",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-output3-fast4.log",
+        "bytes": 37491,
+        "sha256": "sha256:ebe1d0e0d84888d1fc07d9e094a4e2cf2fc912dcf86b9cfdb55348f9d84fc45e"
+      }
+    },
+    {
+      "id": "node5",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-output3-node5.log",
+        "bytes": 1816,
+        "sha256": "sha256:34e25a45a04142c782f75cc471ee9bac753024bb2b2f028728567b039d5ec9a4"
+      }
+    },
+    {
+      "id": "composition6",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-output3-composition6.log",
+        "bytes": 113,
+        "sha256": "sha256:adf03a9046789938d695311b5f63f23f1baf9043d92618323ba1d3f7e8e582cc"
+      }
+    },
+    {
+      "id": "export7",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-output3-export7.log",
+        "bytes": 97,
+        "sha256": "sha256:1c582d56a0c4b3a4fe6ac6c86413321da0b1c72bb20bbb1cc97e646942f48c6b"
+      }
+    },
+    {
+      "id": "hold7",
+      "exitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms2-output3-hold7.log",
+        "bytes": 192,
+        "sha256": "sha256:2d562b425e5aa2d0ca98249496c8773c013bb4953bae6a61cc66f7c59d06b0b8"
+      }
+    },
+    {
+      "id": "composition6-proof",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-composition-v2-7OcsA5",
+        "status": "passed",
+        "captures": 4,
+        "negatives": 15
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-composition-v2-7OcsA5/run.json",
+        "bytes": 94516,
+        "sha256": "sha256:d3f180570b474135d6abc6c6b62004511b05a480663b22dc25b9a1b8bcfbb0c4"
+      }
+    },
+    {
+      "id": "export7-proof",
+      "terminal": {
+        "directory": "/private/tmp/still-shift-ms2-normal-export2-Jq3RL0",
+        "status": "passed",
+        "exports": 2
+      },
+      "proof": {
+        "path": "/private/tmp/still-shift-ms2-normal-export2-Jq3RL0/run.json",
+        "bytes": 43869,
+        "sha256": "sha256:f71e3ca8f8678e3bb298c8558a445d374ef9bda3d6739d1c2fc134d0358ab05a"
+      }
+    }
+  ],
+  "counts": {
+    "unitTests": 4182,
+    "unitFiles": 408,
+    "focusedCollectorAndProtocolTests": 32,
+    "focusedFiles": 4,
+    "newCollectorTests": 5,
+    "owningNodeTests": 10,
+    "owningNodeFiles": 4,
+    "composition2Captures": 4,
+    "composition2Negatives": 15,
+    "normalExports2": 2,
+    "appearanceFirstPartyModules": 399,
+    "appearanceExternalModules": 79,
+    "source3CompositionCaptures": 0,
+    "source3Exports": 0,
+    "supportedPacks": 0,
+    "pilotSupportedEpisodes": 0
+  },
+  "failedRuns": [
+    {
+      "id": "unit2",
+      "reason": "31/32 pass; new test incorrectly assumed custom matrix validator clones arrays. Existing behavior freezes borrowed validated arrays. Updated test explicitly verifies immutable borrowed arrays and private parsed object fields; no production behavior change to satisfy this assertion."
+    },
+    {
+      "id": "build3",
+      "reason": "Focused32/32 passed; TypeScript rejects deliberate assignment to readonly matrix tuple. Replaced mutation probe with Object.defineProperty, retaining runtime TypeError check."
+    }
+  ],
+  "qualification": "All local final commands exit0 on unchanged inputs4 in a staged sequence. Synthetic empty-mesh test fixtures prove protocol/lifecycle only, never GPU drawing. Receipt matrices retain the existing validated shared-array ownership, frozen by collection; parsed object fields are private. Original thresholds and fixtures unchanged. Slice24 failed histories remain retained separately. Full runtime/integration/full/benchmark/installed were not refreshed. Source3 whole-world budget, collector capacity/renderer integration and authenticated export remain pending; no human acceptance or milestone PR.",
+  "remaining": [
+    "Conservative output3 composition capacity sizing including mesh groups/material/vertex hashes and all used mip receipts before producer/GPU allocation.",
+    "Explicit source3 async render hooks and mixed output3 collector composition proof.",
+    "Authenticated request/producer/sink/upload/journal/export/installed integration and whole source/world/body/replay admission.",
+    "Remaining MS2 family/authoring/quality/full-gate criteria before milestone PR."
+  ]
+}

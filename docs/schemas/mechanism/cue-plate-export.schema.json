@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "mechanism-cue-plate-export-1"
+    },
+    "currentCompilation": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
+        "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      },
+      "required": ["path", "bytes", "sha256"],
+      "additionalProperties": false
+    },
+    "currentSource": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
+        "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      },
+      "required": ["path", "bytes", "sha256"],
+      "additionalProperties": false
+    },
+    "loweredSource": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
+        "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      },
+      "required": ["path", "bytes", "sha256"],
+      "additionalProperties": false
+    },
+    "originalPlateReceipt": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
+        "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      },
+      "required": ["path", "bytes", "sha256"],
+      "additionalProperties": false
+    },
+    "nativePictureSha256": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "sequenceSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "sceneManifest": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
+        "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      },
+      "required": ["path", "bytes", "sha256"],
+      "additionalProperties": false
+    },
+    "renderResult": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
+        "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      },
+      "required": ["path", "bytes", "sha256"],
+      "additionalProperties": false
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
+        "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      },
+      "required": ["path", "bytes", "sha256"],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "currentCompilation",
+    "currentSource",
+    "loweredSource",
+    "originalPlateReceipt",
+    "nativePictureSha256",
+    "sequenceSha256",
+    "sceneManifest",
+    "renderResult",
+    "output"
+  ],
+  "additionalProperties": false
+}

@@ -43,6 +43,40 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #57 family lifecycle repair qualified (2026-10-16):** the P2 finding
+  was posted inline before implementation. Family authoring now rejects unsupported
+  compile/prepare/render/check requests with a located failure instead of inspection
+  success; inspect/validate/summary/save/patch stay supported. All four regressions
+  fail on the original source and pass after repair. Fast 4,395 units/429 files and
+  42 affected runtime tests pass; all 2,621 verified source inputs match. Delivery
+  uses one repair commit and one final normal push; the receipt retains actual
+  remote verification. Primary checkout edits remain preserved; owner merge and
+  separate release/human gates remain pending.
+  [Repair evidence](./pr-57-third-review-fix-results.json).
+
+- **PR #57 conflicts resolved and verified (2026-10-16):** merge `main`
+  `e7433203` into PR head `36fc04ea`, preserving both parents and histories. The
+  versioned observation facade and shared regular-file reader retain both safety
+  repairs; v1/v2 FIFO and symlink cases pass. Upstream scope/matte fixes remain.
+  Fast 4,395 units; runtime 286, distinct integration 325, Python 14 and smoke pass
+  in stages. Three initial 5s protocol timeouts remain retained with the unchanged
+  five-case passing rerun. Native depth 14/composition 6, actual cancellation and
+  repeated source2/source3 exports pass. All 2,621 verification inputs match.
+  Delivery uses one normal push to PR #57; owner merge and human acceptance remain
+  pending. Primary checkout edits are preserved.
+  [Resolution evidence](./pr-57-conflict-resolution-results.json).
+
+- **PR #57 second-round repairs delivered (2026-10-15):** all three findings
+  were posted inline before implementation. Separate commits `dec445f6` (journal
+  admission), `e9b4caea` (PBR delivery) and `36fc04ea` (source3 async dispatch)
+  were pushed together. All original regressions now pass; independent
+  Standards/Spec reviews are 0/0. Fast 4,383 units, runtime 276, distinct integration
+  325, Python 14 and smoke pass in recorded stages. Three unproven protocol
+  timeouts remain retained with the unchanged five-case passing rerun. Repeated
+  native2/native3 exports, 20 Lab inspector controls, depth 14/composition 6 and
+  actual export cancellation pass. All 2,609 verification inputs match.
+  [Repair and verification evidence](./pr-57-rereview-fix-results.json).
+
 - **PR #56 second-review fixes qualified (2026-10-15):** three inline P2
   findings have separate repair commits: reject collapsed native scopes, reject
   direct controller mattes, and admit only regular observation files through owned
@@ -51,8 +85,8 @@ still hold before relying on them.
   14 Python and smoke. Three initial 5-second depth-protocol timeouts remain
   retained; the unchanged five-case rerun passes. Native depth 14, composition 5,
   actual export cancellation and six rendered placement/matte controls pass.
-  All 2,776 verification inputs match. Batch is ready for the authorized single
-  final push; owner merge and human acceptance remain pending.
+  All 2,776 verification inputs match. PR #56 merged into `main` at `e7433203`;
+  human acceptance remains pending.
   [Fix evidence](./pr-56-second-review-fix-results.json).
 
 - **PR #56 current review repairs qualified (2026-10-15):** source40330672
@@ -64,51 +98,60 @@ still hold before relying on them.
   Actual native depth14/composition5 and4 complete-RGBA mask controls pass.
   Initial white-background probe assumption fails and stays retained; corrected
   controls use actual uniform background. Archive83/9 installed diagnostics and
-  strict types keep their source bindings. PR56 remains open; no fresh full E01,
+  strict types keep their source bindings. PR #56 is now merged at `e7433203`;
+  no fresh full E01,
   release, publication or human acceptance.
   [Current gate evidence](./pr-56-current-runtime90-results.json),
   [review repairs](./pr-56-fix-results.json).
 
-- **PR #56 conflicts resolved (2026-10-15):** merge `main` `b3765142` into
-  native head `bf30a253`, preserving shared Three rendering, all five MS1 review
-  fixes, native bindings/paint inspection and both development histories.
-  Final fast verification passes 3,929 units; runtime verification completes in
-  stages: 185 runtime, all 321 integration, 14 Python tests and browser smoke. Native depth,
-  composition and cancellation checks plus 24 encoded semantic cases pass.
-  Both runtime failures are retained: stricter no-directory test repair and an
-  unchanged five-case rerun after two Python protocol timeouts. No uninterrupted runtime aggregate pass.
-  PR #51 and #52 are merged; PR #56 remains open for owner review/merge.
-  Primary edits are preserved. No fresh full E01/release gate or human acceptance.
-  [Resolution evidence](./pr-56-conflict-resolution-results.json),
-  [PR #56](https://github.com/xxibcill/still-shift/pull/56).
+- **PR #57 first repair batch delivered (2026-10-15):** camera `up` repair
+  `ccd976ee` and bounded cue-snapshot repair `56fb5168` remain intact and both prior
+  inline threads are resolved. Their original staged checks/archive bindings remain
+  recorded in [first repair evidence](./pr-57-fix-results.json); the second-round
+  repairs and fresh source binding are recorded above.
 
-- **PR #52 second review fixes (2026-10-14):** both new P2 findings are posted
-  inline on reviewed head `15c4bd53` and repaired in separate slices. Camera-space
-  clipping is committed as `b1ebafa4`; this final slice validates every shot's rig
-  writers and hidden parts during shared read-only preflight. Fast checks pass
-  3,785 units; the complete runtime tier passes 156 runtime (including 71
-  mechanism), 318 integration and 14 Python tests plus browser smoke. Both
-  independent fix reviews have no actionable defects. Original regression and
-  offline Python setup failures are retained. One commit per finding and one
-  combined final push to PR #52; PR #52 is merged at `b3765142`; human acceptance remains pending.
-  Primary checkout edits and its Python environment are preserved.
-  [Re-review](./pr-52-rereview-results.json),
-  [fix evidence](./pr-52-rereview-fix-results.json).
+- **MS2 current prerequisite/native repairs prepared (2026-10-15):** isolated
+  repair branch starts from actual PR57 head495fb2c0, merging MS1N40330672/current
+  mainb376 ancestry. Four conflicts retain versioned four-format/PBR admission,
+  shared physical visibility and MS2 history, adding upstream displayed-copy,
+  panel/clipping/reference repairs. Five original source/test preimages match
+  native repair8e11 exactly; six resulting files reuse those reviewed bytes.
+  Focused73/6 and fast4381/429 pass; Standards0/Spec0. Earlier MS2 archive/full proofs
+  retain original bindings. Current runtime260/distinct integration322/depth14/smoke and native depth14/
+  composition5/mask4 complete in recorded stages. Two unproven protocol timeouts
+  remain retained; unchanged five-case rerun and suffix pass,1,996 inputs exact.
+  Current affected private package91/2,368 installed files/13 diagnostics, strict
+  types and discovery now pass on committede44 with original roots denied.
+  [Package proof](./mechanism-shorts-ms2-current-package91-results.json).
+  [Repair evidence](./mechanism-shorts-ms2-current-prerequisite-repair90-results.json).
 
-- **PR #52 review fixes complete (2026-10-14):** three inline P2 findings are
-  repaired in one commit each: case handling `1925af45`, panel protection/default
-  E01 layouts `1f9efb37`, and the cutout fix in the containing final slice. Fresh
-  fast verification passes all 3,785 units; all 151 runtime, 318 integration and
-  14 Python tests plus browser smoke complete in stages. The initial runtime
-  aggregate remains failed for a missing worktree soundtrack runtime; the pinned
-  existing runtime enables the retained continuation. All 66 mechanism tests are
-  refreshed after default-layout repair; four mask controls and 24 encoded
-  semantic cases pass. Fresh pinned-font measurement over all 696 retained E01
-  sidecar frames accepts layout and all seven holds. Both review agents find no
-  remaining actionable defects. The shared editable Python package is restored
-  to the primary checkout. Push follows the final slice to PR #52; PR #52 is merged at `b3765142`;
-  human visual/listening acceptance remains pending.
-  [Fix records](./pr-52-fix-results.json).
+- **MS2 software checkpoint delivered (2026-10-13):** `codex/mechanism-ms2`
+  carries exact MS1N `bf30a253` ([PR #56](https://github.com/xxibcill/still-shift/pull/56));
+  [MS2 PR #57](https://github.com/xxibcill/still-shift/pull/57) is open as a draft
+  against main and attached; MS3 actual EU001–EU010 outputs are saved on its separate branch. Full70 actual0/all102 groups on963d3991,
+  unit4363/runtime243/integration322/depth14 and frozen176/36061 in262.12s pass;
+  no-op benchmark547 samples/mean0.9149ms. Erased declaration repair6e3ed5ca
+  passes fast/declarations; three edited modules emit identical JavaScript and
+  2641 unaffected inputs stay exact. Package73 actual0/28 checks; retained archive
+  `1adb9bc4f88a3de7e6be8ac91ea77efbd4f6ec7ce964f8cca495fdfcfc27d86e`
+  binds6e3ed5ca, distinct from later evidence prose. Source audit2367 members/970
+  sources and installed76 actual0/13 exports/independent574 decoded frames pass.
+  All2367 installed files/26 immutable inputs match; caption edits change picture
+  with unchanged decoded audio and0 fresh native submissions. Failed/stopped
+  attempts, timing deferrals, consumer enum/setuid-ps/stale-fixture failures and
+  world61 missing historical terminal remain retained; live-libproc exception is
+  explicitly preflighted. Pack disposition stays candidate3/supported0,
+  validated coverage0/10/accepted pilot0. Genuine66 retains its separate binding;
+  final consumer uses engineering PCM. Whole glyph/continuous/listening/factual/
+  material/hardware/portrait/human review remains unreviewed; finer Thai unadopted.
+  The five-asset/two-behavior scope is historical; active MS3 uses actual EU001–EU010. No spending,
+  publication/merge, Actions or private-media redistribution.
+  [Completion](./mechanism-shorts-ms2-completion.md),
+  [acceptance](./mechanism-shorts-ms2-acceptance.md),
+  [final installed](./mechanism-shorts-ms2-final-installed-results.json),
+  [disposition](./mechanism-shorts-ms2-pack-disposition.json),
+  [full history](./mechanism-shorts-ms2-full-gate-results.json),
+  [ordered plan](./mechanism-shorts-production-plan.md).
 
 - **MS1N software complete in stages (2026-10-10):** held `a38754ae`,
   inventory15:2,329 inputs/117,503,155B. Original full6 retains a qualified19-group
@@ -119,14 +162,15 @@ still hold before relying on them.
   Installed consumer6/companion4 pass their scoped checks, adding two diagnostic
   frames and preserving original source342/source81 full-length render identities.
   Human playback/listening, encoded glyph and material/hardware appearance remain
-  pending; the cross-driver pixel diagnostic fails. PR #56 is open, with conflict-resolution evidence recorded here;
-  no merge/publication or customer-media redistribution is claimed.
+  pending; the cross-driver pixel diagnostic fails. [Native PR #56](https://github.com/xxibcill/still-shift/pull/56)
+  is open at `bf30a253`; MS2 carries that exact prerequisite. No milestone PR
+  merge/publication or customer-media redistribution is claimed.
   [Completion](./mechanism-shorts-ms1n-completion.md),
   [results](./mechanism-shorts-ms1n-results.json).
 
 - **MS1 software complete in stages (2026-10-10):** `codex/mechanism-ms1` carries
   exact MS0 prerequisite `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51)
-  is merged into `main` at `57967fa6` (2026-10-14). All 76 original required groups completed on unchanged
+  remains open/unmerged. All 76 original required groups completed on unchanged
   `09ce824b` production/test inputs: attempt 3 passes initial checks and 61 groups,
   then fails required Canvas timing 1.351 > 1.25 with exact pixels; the unchanged
   strict matrix and 15-command suffix actually exit 0. Final 176 baselines/36,061
@@ -136,26 +180,20 @@ still hold before relying on them.
   exports, each reusing all plates with 0 new 3D captures. Fresh 24-case typography
   controls/negatives pass; E01 remains legacy/semantically unassessed. Consumer
   libproc exception, customer-media redistribution and human review limits remain.
-  [MS1 PR #52](https://github.com/xxibcill/still-shift/pull/52) is merged into
-  `main` at `b3765142`; PR #56 carries the native milestone with interfaces frozen.
+  [MS1 PR #52](https://github.com/xxibcill/still-shift/pull/52) is open against
+  `main`; native work has started on its separate branch with interfaces frozen.
   Original checkout edits are preserved. [Completion](./mechanism-shorts-ms1-completion.md),
   [results](./mechanism-shorts-ms1-results.json), [gate history](./mechanism-shorts-ms1-full-gate-results.json).
 
 - **MS0 audit complete (2026-10-09):** `codex/mechanism-ms0` audit is committed
-  at `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51) is merged into `main` (2026-10-14).
+  at `d55908fa`; [PR #51](https://github.com/xxibcill/still-shift/pull/51) is open.
   Original E01 inputs:27 dependencies,25 ZIP identities and13 original-copy
   receipts match; actual Plex static cut/copy coverage passes. Rubric, protocol,
   boundaries and budgets are frozen. Historical Arial/GPU identities, public
   customer-media redistribution and human review remain limited.
-- **PR #51 conflicts resolved (2026-10-12):** merged `main` `3fab0162` into
-  MS0 head `d55908fa` in an isolated worktree. Retain the approved MS0 → MS1 →
-  required MS1N → MS2 → MS3 sequence and both the MS0 audit and 0.1.1 release
-  records. The roadmap now names the 0.1.1 checkpoint. Dated MS0 input/API/font
-  evidence remains unchanged; its source comparisons still refer to the original
-  `e6eb7b06` / `db28a938` audit, not a new release verification. Conflict resolution
-  changes documentation only relative to `main`; PR #51 is now integrated.
-  [PR #51](https://github.com/xxibcill/still-shift/pull/51),
-  [resolution record](#2026-10-12--resolve-ms0-pr-51-conflicts).
+  [Results](./mechanism-shorts-ms0-results.json),
+  [baseline protocol](./mechanism-shorts-ms0-baseline.md),
+  [ordered plan](./mechanism-shorts-production-plan.md).
 
 - **Documentation patch 0.1.1 published (2026-10-10):** npm `latest` is `0.1.1`.
   The public archive matches the verified archive byte for byte (SHA-256
@@ -172,19 +210,6 @@ still hold before relying on them.
   acceptance remain unchanged. Unrelated checkout edits are preserved.
   [Release records](./npm-release-results.json),
   [promotion #54](https://github.com/xxibcill/still-shift/pull/54).
-
-- **MS0 audit complete (2026-10-09):** Codex on `codex/mechanism-ms0` from
-  `main` `e6eb7b06`; milestone [PR #51](https://github.com/xxibcill/still-shift/pull/51)
-  is merged into `main` (2026-10-14). Original E01 inputs are recovered: 27 dependencies, all 25 ZIP manifest identities and 13
-  original-copy receipts match; actual Plex static cut/copy coverage passes.
-  At that audit, composition source was unchanged from release, and five stored gate
-  artifacts match their recorded hashes. Rubric, protocol, boundaries and
-  provisional budgets are frozen. Exact historical Arial/GPU identities, public
-  customer-media redistribution and human review remain limited. Original local
-  edits are preserved. Next: MS1 contract/one-frame/contact-shot bridge proof.
-  [Results](./mechanism-shorts-ms0-results.json),
-  [baseline protocol](./mechanism-shorts-ms0-baseline.md),
-  [ordered plan](./mechanism-shorts-production-plan.md).
 
 - **Development/release branches established (2026-10-09):** `production` and
   annotated `v0.1.0` are pushed at `db28a938`, containing the source for the
@@ -285,6 +310,129 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-10-16 — Fix PR #57 family lifecycle false-success dispatch
+
+- **Agent / branch:** Codex on isolated `codex/pr57-third-review-fix`, from `57a2246a`.
+- **Done:** posted the P2 finding inline, added four failing regressions, then
+  restricted family authoring to its supported commands with a located diagnostic.
+  Updated family documentation and kept positive validate/edit/save controls.
+- **Results:** fast 4,395 units/429 files; 42 affected runtime tests across five
+  suites pass. All 2,621 verification inputs remain unchanged.
+- **Retained:** original four regression failures and sandbox DNS failure; the
+  permitted remote read confirms the original PR head before delivery.
+- **Delivery / next:** one finding/one commit; one final normal push to PR #57.
+  Full release/package and human acceptance remain separate; primary edits preserved.
+- **Records:** [Repair and delivery evidence](./pr-57-third-review-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/57#discussion_r4291506496).
+
+### 2026-10-16 — Resolve PR #57 conflicts with merged native prerequisites
+
+- **Agent / branch:** Codex in isolated `codex/pr57-conflicts`, from `36fc04ea`.
+- **Done:** merge `main` `e7433203`; preserve versioned journal core and both
+  development histories. Retain upstream v1 tests and separate v2 FIFO/symlink
+  coverage, collapsed-scope rejection and direct controller-matte admission.
+- **Results:** fast 4,395 units; runtime 286, distinct integration 325, Python 14,
+  smoke, native depth 14/composition 6, cancellation and repeated native2/native3
+  exports pass in recorded stages. All 2,621 source inputs match.
+- **Retained:** initial aggregate has three unchanged 5s depth-protocol timeouts;
+  complete unchanged five-case rerun passes. No threshold or assertion changes.
+- **Delivery / next:** one merge commit and normal push to PR #57; owner merge and
+  human production acceptance remain separate. Primary checkout edits preserved.
+- **Records:** [Resolution evidence](./pr-57-conflict-resolution-results.json),
+  [PR #57](https://github.com/xxibcill/still-shift/pull/57).
+
+### 2026-10-15 — Fix PR #57 source3 Lab dispatch and verify all three repairs
+
+- **Agent / branch:** Codex on isolated `codex/pr57-rereview-fixes`, from `56fb5168`.
+- **Done:** source3 joins source2 in the serialized asynchronous Lab draw path.
+  Textured/untextured real browser regressions fail before repair, then pass through
+  motion, reverse/random/rapid seeks and material edits. Each finding has one commit;
+  journal `dec445f6` and PBR resource `e9b4caea` precede this final slice.
+- **Results:** independent reviews 0/0; fast 4,383 units and all 2,609 pinned inputs
+  match. Runtime 276, distinct integration 325, Python 14 and smoke pass in stages.
+  Both repeated native export protocols, 20 existing inspector controls, native
+  depth 14/composition 6 and actual export cancellation pass.
+- **Retained:** three original 5s protocol timeouts and passing unchanged five-case
+  rerun; all three pre-repair regression failures. No threshold/assertion changes.
+- **Open / next:** one final fast-forward push and commit-linked inline replies;
+  merge and human production acceptance remain separate. Primary edits preserved.
+- **Records:** [Repair evidence](./pr-57-rereview-fix-results.json).
+
+### 2026-10-15 — Fix PR #57 opaque PBR preview resources
+
+- **Agent / branch:** Codex on isolated `codex/pr57-rereview-fixes`.
+- **Done:** serve captured opaque PBR binaries from both original and edited CLI
+  previews, preserving revision/capture ownership and returning exact Content-Length.
+- **Results:** real HTTP regression fails with404 before repair and passes after;
+  checks exact bytes/type/length, invalid routes and capture release behavior.
+  Journal fix `dec445f6` is committed; both finding commits remain local.
+- **Open / next:** source3 async preview, required checks and one final push.
+- **Records:** [Repair evidence](./pr-57-rereview-fix-results.json).
+
+### 2026-10-15 — Fix PR #57 observation-journal file admission
+
+- **Agent / branch:** Codex on isolated `codex/pr57-rereview-fixes`, from `56fb5168`.
+- **Done:** posted all three inline findings first; repaired nonblocking regular
+  manifest/shard admission while retaining streaming limits and descriptor cleanup.
+- **Results:** both bounded FIFO probes fail before repair; 29 journal units and
+  both runtime regressions pass afterward. Child timeout cleanup is retained.
+- **Open / next:** repair both Lab findings, run required checks, and push all
+  three finding commits together. Primary checkout edits remain preserved.
+- **Records:** [Repair evidence](./pr-57-rereview-fix-results.json).
+
+### 2026-10-15 — Bound and cancel saved cue snapshot validation in PR #57
+
+- **Agent / branch:** Codex on `codex/pr57-review-fixes`, after `ccd976ee`.
+- **Done:** reuse bounded regular-file readers for saved inputs, forward abort
+  signals and the caller Node owner, and retire only local validation leases.
+- **Results:** final admission regression fails 13/14 cases before repair and
+  passes all 14 after it; related tests pass 21/3. Fast 4,383, runtime 274,
+  distinct integration 322, Python 14, smoke and both affected browser proofs pass
+  in stages; two independent final fix reviews report no findings.
+- **Retained:** missing soundtrack setup, two unproven depth-protocol timeouts,
+  initial regression instrumentation errors and shared-temp inventory failure;
+  unchanged owning reruns and isolated-temp cache proof pass. No gate weakened.
+- **Open / next:** commit this second finding and push both fixes together;
+  owner merge and human acceptance remain separate.
+- **Records:** [Fix evidence](./pr-57-fix-results.json).
+
+### 2026-10-15 — Reject unsupported cue camera roll in PR #57
+
+- **Agent / branch:** Codex on `codex/pr57-review-fixes`, from reviewed `8b7374ed`.
+- **Done:** posted both findings inline; reject incompatible cue camera `up` at
+  `cues.<index>.camera.up`, preserving the existing camera-key contract.
+- **Results:** both cut/transition regressions fail before the repair; focused
+  narrated-cycle and cue-authoring checks pass after it.
+- **Open / next:** fix snapshot admission/cancellation in a separate commit,
+  run final local gates, then push both commits once.
+- **Records:** [Fix evidence](./pr-57-fix-results.json).
+
+### 2026-10-15 — Qualify current MS2 private package after review repairs
+
+- **Agent / branch:** Codex on `codex/ms2-review-fixes`; archive sourcee44b40de.
+- **Done:** private build/pack/offline install, exact2,368 archive and installed
+  files,971 corresponding source matches,13 actual public native API controls,
+  strict declarations and CLI discovery, with original source/old consumers denied.
+- **Results:** seven stages actually exit0; retained5,037,480-byte archive SHA256
+  `06748df2364a30a2bea0c5b89d081415e6cdbf16d353b06cf0862a4bef087185`.
+- **Limits:** affected installed qualification, no fresh full installed render
+  matrix/release or whole acceptance. All earlier full/archive proofs keep bindings.
+- **Open:** final integrated MS3 gates and whole product reviews/fault-budget gate.
+- **Records:** [Current package](./mechanism-shorts-ms2-current-package91-results.json).
+
+### 2026-10-15 — Qualify current MS2 runtime and exact native prerequisite
+
+- **Agent / branch:** Codex on `codex/ms2-review-fixes`; tested sourcec926e467.
+- **Results:**260 runtime/distinct322 integration/depth14/smoke, native depth14/
+  composition5 and4 actual Float32 GPU controls complete in recorded stages.
+- **Retained:** aggregate1 with2 depth protocol5000ms timeouts of unproven cause;
+  owning five-case file passes unchanged and suffix0, all1,996 source inputs exact.
+- **Done:** carry exact delivered native PR56 head796375b7 through docs-only merge;
+  preserve MS2 source/test bytes and both dated histories. No renderer group overlaps.
+- **Open:** fresh current package/installed qualification and whole production
+  acceptance; historical full/archive proofs keep original bindings.
+- **Records:** [Current repair](./mechanism-shorts-ms2-current-prerequisite-repair90-results.json).
+
 ### 2026-10-15 — Repair PR #56 second-review findings
 
 - **Agent / branch:** Codex on isolated `codex/pr56-second-review-fixes`, from
@@ -314,6 +462,19 @@ still hold before relying on them.
   discarded control differs and has0 nonbackground pixels. No full E01/release
   or human acceptance is inferred; previous full/archive proofs retain bindings.
 - **Records:** [Current verification](./pr-56-current-runtime90-results.json).
+
+### 2026-10-15 — Reconcile current MS2 prerequisites and native policies
+
+- **Agent / branch:** Codex on `codex/ms2-review-fixes`, parents495fb2c0/40330672.
+- **Done:** four conflicts preserve MS2 four-format/PBR/version/capacity contracts;
+  current-main/MS1 fixes and reviewed Float32/located diagnostics are incorporated.
+- **Results:** focused73/6 and fast4381/429 pass with source exact;
+  Standards0/Spec0. Own locked Node/Python dependencies installed offline.
+- **Retained:** initial merge conflict exit1; previous full/archive/installed proofs
+  remain bound to original sources, with no pass transferred to this merge.
+- **Open:** fresh affected runtime/render/package qualification before PR57 update;
+  whole production reviews remain open. Other renderer groups remain serial.
+- **Records:** [Repair evidence](./mechanism-shorts-ms2-current-prerequisite-repair90-results.json).
 
 ### 2026-10-15 — Verify the affected MS1N installed APIs
 
@@ -457,6 +618,1262 @@ still hold before relying on them.
   integrated in this PR's merged `main` prerequisite; old dated evidence remains.
 - **Records:** [fix results](./pr-52-fix-results.json),
   [case comment](https://github.com/xxibcill/still-shift/pull/52#discussion_r4266537125).
+
+### 2026-10-12 — Resolve MS0 PR #51 conflicts
+
+- **Agent / branch:** Codex resolving `codex/mechanism-ms0` in an isolated worktree;
+  original checkout edits preserved.
+- **Done:** merge `main` `3fab0162` into MS0 `d55908fa`; resolve `ROADMAP.md` and
+  `docs/dev-log.md`, retaining the required MS1N stage and both dated histories.
+  Refresh current release references to 0.1.1; preserve all original MS0 audit JSON.
+- **Verification:** pinned Node 22.23.1 / pnpm 10.29.3; all 12 PR documents pass
+  Prettier and whitespace checks. No unresolved conflicts/markers; both complete
+  log histories, original MS0 JSON and release evidence are preserved. Initial
+  roadmap formatting warning repaired and the full document check rerun passed.
+- **Limits / next:** documentation-only diff against `main`; no new software,
+  release or render gate. PR integration and human acceptance remain separate.
+- **Records:** [PR #51](https://github.com/xxibcill/still-shift/pull/51),
+  [MS0 audit](./mechanism-shorts-ms0-results.json), [release record](./npm-release-results.json).
+
+### 2026-10-13 — MS2 PR opened before MS3
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`; initial PR head59119c7c.
+- **Done:** [PR #57](https://github.com/xxibcill/still-shift/pull/57) open as a draft
+  against main and attached. Required software/package/installed proofs are recorded.
+- **Next:** Separate main-based MS3 branch carrying exact MS2; original queue/QA/
+  report/ten-question scope remains, with five assets and two behaviors.
+- **Open:** Candidate/factual/human review gates retained; no merge/publication,
+  Actions or paid generation. [MS2 completion](./mechanism-shorts-ms2-completion.md).
+
+### 2026-10-13 — MS2 software checkpoint and candidate disposition
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`; package/runtime6e3ed5ca.
+- **Results:** Installed76 actual0;13 exports/574 independently decoded frames,
+  repeat identities, caption picture/audio separation,26 immutable inputs and
+  2367 installed file identities pass. Full/package history stays staged and bound.
+- **Disposition:** Three candidates retained, supported0/coverage0/10/pilot0;
+  human/factual/whole glyph/continuous/listening/portrait and finer Thai stay open.
+- **Next:** MS2 PR against main before separate MS3 original queue/QA/report/pilot
+  scope. No merge, publication, Actions or ElevenLabs spending.
+- **Records:** [Completion](./mechanism-shorts-ms2-completion.md),
+  [final installed](./mechanism-shorts-ms2-final-installed-results.json),
+  [pack disposition](./mechanism-shorts-ms2-pack-disposition.json).
+
+### 2026-10-13 — MS2 package closure and installed retry history
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`; package source `6e3ed5ca`.
+- **Results:** Fresh package73 actual0/28 checks; archive audit2367 members/970
+  copied source files passes. Exact archive retained; full70 original binding stays.
+- **Retained failures:** Consumer73 wrong enum label,74 setuid-ps restriction,
+  75 stale cable-tie fixture. No product checks weakened; fixture pins refreshed
+  from full70 and the documented live-libproc adapter independently preflighted.
+- **In flight:** Consumer76/session69359,5 projects/29 pins/ten file-denied roots;
+  registry/schema/thumbnails and all-family saved-reference preflight pass.
+- **Next:** Actual final native/cache completion, independent decoded audit,
+  finite pack disposition and MS2 PR; MS3 not started and no human acceptance.
+- **Records:** [Final installed history](./mechanism-shorts-ms2-final-installed-results.json).
+
+### 2026-10-13 — MS2 package declaration failure and scoped repair
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2` from `57d7bfbd`.
+- **Failure:** Fresh package71 exits1 before archive admission: TS7056/TS2742 in
+  six exported APIs. Original log/receipt remain retained; no package pass inferred.
+- **Repair/results:** Explicit public return types only; build/declaration build
+  and fast4363 units/429 files pass. Exactly2641 inputs unchanged; all three
+  edited modules emit byte-identical runtime JavaScript with pinned TypeScript.
+- **Verification scope:** Full70 stays tied to963d3991. The plan permits affected
+  follow-up checks where broad evidence stays valid; fresh archive/installed checks
+  still remain. No full rerun or human acceptance is claimed.
+- **Records:** [Declaration repair](./mechanism-shorts-ms2-declaration-repair-results.json),
+  [acceptance](./mechanism-shorts-ms2-acceptance.md).
+
+### 2026-10-13 — Final MS2 full gate completes
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`; implementation `963d3991`.
+- **Results:** Actual full70 exit0; independent exact102-group audit passes,
+  unit4363/runtime243/integration322/depth14, frozen176/36061 in262.12s,
+  no-op benchmark547 samples/mean0.9149ms; held2644 inputs remain exact.
+- **Retained:** Failed/stopped runs, existing timing deferrals and missing world61
+  historical terminal. No human, supported-pack or pilot acceptance is inferred.
+- **Next:** Fresh package/archive audit and isolated installed execution, then pack
+  disposition and MS2 PR. MS3 remains unstarted; no spending/publication/merge.
+- **Records:** [Full gate](./mechanism-shorts-ms2-full-gate-results.json),
+  [acceptance](./mechanism-shorts-ms2-acceptance.md).
+
+### 2026-10-13 — Final MS2 cached-export gate in flight
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, existing managed worktree; implementation `963d3991`.
+- **Done:** full70 owns a qualified99-script prefix; cached cue-plate result and following world-plate header reconcile. All2644 held inputs/120860793B stay exact.
+- **Results:** unit4363/runtime243/integration322 and frozen176 items/36061 frames/262.12s pass; prior failures and explicit WebGL timing deferrals remain retained.
+- **Open / next:** specific session32036 remains live at world-plate exports; CLI/lifetime suffix, benchmark and current archive/source audit/installed consumer/pack disposition precede MS2 PR. MS3 stays pending that boundary.
+- **Limits:** historical world61 producer terminal remains unverified; fresh owning evidence cannot invent it. Human/factual/listening/whole glyph/physical-memory/material/hardware/portrait review stays separate; no paid generation, merge or publication.
+- **Records:** [full gate](./mechanism-shorts-ms2-full-gate-results.json), [acceptance](./mechanism-shorts-ms2-acceptance.md), [all evidence](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-12 — Native catalogue admission verified in stages
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `ec700fdb`; final slice69 is committed as `963d3991` under inventory5.
+- **Done:** reproduced successful preparation under a one-byte payload budget; admission now precedes schema clones. Initial eight quota/source/cleanup controls and owning catalogues24/3 pass; superseded fast3 passes4361 units/429 files with bounded327680B scanner and407+79 source closure.
+- **Retained:** initial missing fixture clocks, genuine red quota failure, identity-stale fast1 and superseded64KiB scanner fast2. Worker128MiB metadata/8GiB application and Node512MiB policies remain fixed; payload admission is not RSS certification.
+- **Final results:** phase rollback initially retains11520 payload/577344 metadata instead of foreign1024; corrected transaction ownership passes26 cases. Partial formatted edit/undefined-retained failures are retained. Final fast5 owns0:4363/429; browser2/session4692 owns0 for six groups; parent probe1/session5759 owns0 for5 exports/56frames/134passes, audit25 pins owns0. Held2644/120860793B remains exact.
+- **Next:** committed `963d3991`; fresh full70/session32036 runs102 groups/frozen176/36061/benchmark on held2644 inputs. Current archive/installed and pack disposition precede MS2 PR; stage-specific evidence and physical/driver/human limits remain. The latest owned snapshot confirms it remains live at group99; runtime243 and integration322 pass. Five portable consumer projects/29 input pins are staged, public replay/rejection harness and independent full-decoded frame/PCM caption-edit auditor syntax pass; the package-retention wrapper is syntax-checked; execution waits for the full gate. Acceptance handoff now names the live attempt and completed Node repair. Installed registry/CLI help/schema/bounded-report controls and source-rebuild denial are prepared and syntax-checked; actual execution remains pending. Commerce127 items/28200 frames complete; cinematic15 fixtures/46 rows/5520 frames qualify with18 WebGL timing deferrals retained. Earlier partial173-row count is invalidated after anchoring actual group headers (original snapshot retained). Composition/native depth, PBR resource/world/observation/composition/normal/mixed exports and native-shapes complete on held inputs. Legacy7 fixtures/26 rows/3552 frames qualify with1 retained timing deferral; family timeline completes. Frozen176/36061 frames/262.12s independently reconcile; remaining mechanism suffix/benchmark/package still pending. Narrated/cue edits/lifecycle/count-fit/weight matrices complete; layout/cameras/five annotation recipes complete; world/surface/native-plate scripts complete; current cached cue/world/CLI/lifetime suffix and benchmark remain. No aggregate/installed completion is inferred.
+- **Records:** [Catalogue admission](./mechanism-shorts-ms2-native-catalogue-admission-results.json), [acceptance](./mechanism-shorts-ms2-acceptance.md).
+
+### 2026-10-12 — Deliver declared family thumbnail assets
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `7be3a001`.
+- **Done:** package tape320×180, tie/peg640×360 recognition PNGs at default neutral frame0, with exact immutable pack/source/recipe/image references. Existing examples copying provides the installed path; current archive confirmation remains pending.
+- **Results:** producer2/session64920 owns0;6 actual native frame2 captures independently checked, complete repeat PNG/RGBA exact. Pillow audit compares2,073,600 full decoded RGBA bytes with captured pixels; all3 images agent-viewed.
+- **Rejected:** producer1/session45838 owns1 before any thumbnail draw because the harness assumed tape640×360. Preserve its declared320×180 recipe; no upscaling or pack/reference change.
+- **Next:** final full/archive/installed, whole resource closure and pack disposition/MS2 PR. Candidates/support/pilot counts stay0; no factual/material/human approval is inferred.
+- **Records:** [Thumbnail evidence](./mechanism-shorts-ms2-pack-thumbnail-results.json), [manifest](../examples/mechanism/pack-thumbnails/manifest.json), [acceptance](./mechanism-shorts-ms2-acceptance.md).
+
+### 2026-10-12 — Repair ordinary Node loading exposed by the full gate
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `aa58eddf`.
+- **Failed:** fresh full67-1/session25739 exits1 after4353 units and242 runtime passes; one maintained raw Node/Lab import rejects a constructor parameter property.2638 held inputs stay exact; baseline/benchmark were not reached.
+- **Done:** declare the readonly parent field and assign it explicitly. Existing owning/ledger/transfer/cleanup tests13/3 pass(session60538); ordinary fast1 passes4353 units/428 files(session18398), four-worker ceiling. No loader bypass, assertion, quota or rendering change.
+- **Next:** finite14-row acceptance matrix identifies packaged family thumbnails, aggregate resource closure and final full/archive/installed/pack disposition before the MS2 PR. New assets/behaviors and positive frozen10-question coverage belong to MS3; human review remains separate.
+- **Records:** [Repair](./mechanism-shorts-ms2-node-strip-repair-results.json), [full history](./mechanism-shorts-ms2-full-gate-results.json), [acceptance matrix](./mechanism-shorts-ms2-acceptance.md).
+
+### 2026-10-12 — Finish independent spoken presentation evidence
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, continuing `46ffaa5c` in the existing managed worktree.
+- **Done:** independent audit1 owns terminal0 after native1's prior recovered0; all79 selected final-first decoded frames agent-viewed. Whole source audio/words and unchanged before/after AAC PCM remain exact.
+- **Results:**8 exports/5136 native and decoded frames;64 fact pins/41028 hierarchy pairs/5136 cameras/1286 peg frames.1064 hook matrices include734 compensation-window and330 later legacy frames. Held2638 source inputs remain exact.
+- **Limits / next:** sampled stills are not whole-clip glyph proof or normal-speed/listening/human acceptance. Fresh full67/session25739 runs the102-group full gate on held `aa58eddf`; final archive/installed/pack gates precede its PR. Keep frozen pilot questions and their MS3 extensions.
+- **Records:** [Presentation](./mechanism-shorts-ms2-spoken-presentation-results.json), [MS2](./mechanism-shorts-ms2-results.json), [ordered plan](./mechanism-shorts-production-plan.md).
+
+### 2026-10-12 — MS2 spoken presentation checkpoint and new-chat handoff
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `09e3ddff`.
+- **Done:** `75e7c23d` commits the tested presentation/timing changes.
+- **Scope:** Existing four whole takes/20 windows; named cameras and visible anchors,
+  with one diagnosed peg held-interpolation timing repair through public CAS.
+- **Results:** Exact original16 bodies; preflight4/80 native preview captures,
+  ordinary fast3 owns0 (4353/428, held2638 inputs). First-hook19 encoded samples
+  show preserved.18-unit motion/projected11.635px and exposed face labels.
+- **Rejected:** Source clip-plane mismatch, existing compiled-directory overwrite,
+  unsafe operation union and draft format/type-import lint; all retained.
+- **Handoff:** Native-export1/session20684 terminal0 recovered; run reports passed,
+  all8 exports/5136 native and decoded frames. Independent audit/encoded review
+  remain pending; the results record deliberately retains staged/in-flight status.
+  Owner requested a new chat with the same goal; resume from this checkpoint.
+- **Next:** Finish owned export/full independent audit/encoded review. Full102,
+  final installed/archive/pack/coverage/MS2 PR and human/portrait gates remain open.
+- **Records:** [Presentation](./mechanism-shorts-ms2-spoken-presentation-results.json),
+  [Plan](./mechanism-shorts-production-plan.md). No spend, Actions or publication.
+
+### 2026-10-12 — MS2 E06 official primary-source access supplement
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `8ef6d048`.
+- **Done:** Official USPTO22-page scan obtained(fetch0); complete relevant pages
+  1/3/10/11/12 and Fig8–11 visually read with the PDF skill. Specific patent's
+  withdrawal/load-seating mechanism supports the unchanged E06 question.
+- **Results:** Source/selection hashes match slice50; code and frozen board remain
+  exact. This closes scoped source access, not asset/behavior/native/coverage admission.
+- **Rejected / do not repeat:** Full web pages inaccessible; search excerpts alone
+  are insufficient. Scan has no text; missing pdftotext did not become a text pass.
+- **Open / next:** Dedicated factual asset, analytic behavior/continuous native
+  proof; genuine presentation and remaining resources/full/final MS2 gates. Packs0.
+- **Records:** [Primary-source supplement](./mechanism-shorts-ms2-e06-primary-admission-results.json).
+
+### 2026-10-12 — MS2 genuine supplied speech and native cue outputs
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `7c797dd1`.
+- **Done:** Typed private opt-in gate authors all247 words/20 windows at exact source
+  clocks, concise captions and legal family poses; shorter hook uses its own cues.
+- **Results:** Native1/audit1/ordinary fast1 own0:8 repeat exports/5,136 native and
+  decoded frames/full PCM;60 pins/41,028 hierarchy pairs/5,136 cameras;4,353 units/
+  428 files. All44 viewed frame pixels match audit. Source audio remains exact.
+- **Rejected / do not repeat:** Bad cloth anchor, lost prototype2 terminal,
+  first type assumptions, unused names; overfull18-grapheme/s clauses, source/action
+  overrun, engaged reverse and product release reject. No thresholds raised.
+- **Open / next:** Hidden contact labels/subtle hook travel, continuous/encoded and
+  human QA; E06 source supplement; whole resources/full102/frozen/benchmark/final
+  archive/installed/pack/coverage/MS2 PR. Packs/pilot0; no paid generation or Actions.
+- **Records:** [Genuine cue evidence](./mechanism-shorts-ms2-genuine-spoken-cue-results.json).
+
+### 2026-10-12 — MS2 real cached-output lifetime and shared Node owner
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `63841c81`.
+- **Done:** Cached render/check share the existing Node parent; local leases retire
+  and caller leases survive. Real complete worker uploads trigger live controls.
+- **Results:** Final producer5 passes3 source edits/2 cancels/recovery/four quota
+  controls;246 complete uploads,60 recovery frames/measured fresh native0. Original71
+  plate files/caller output preserved. Independent audit2:90 pins/60 PNG identities/
+  660 hierarchy pairs/60 cameras/60 decoded recovery frames/full PCM. Proper viewing
+  PNG matches prior preview everyRGBA byte. Fast1(one unit worker) passes4,348/427;
+  held2,632 inputs unchanged. Post-settlement cleanup waits~28ms under existing2s.
+- **Rejected / do not repeat:** Active stream listener, assumed audio/sequence
+  diagnostic messages, requiring a full later upload after abort, bottom-first PNG
+  as top-first view; type/proof-argument and scratch quoting failures retained.
+- **Open / next:** Whole application/driver/source/replay resources, genuine speech,
+  full102/frozen/benchmark/archive/installed/pack/MS2 PR. Packs/pilot0; no acceptance.
+- **Records:** [Lifetime evidence](./mechanism-shorts-ms2-cue-cache-lifetime-results.json),
+  [API/CLI](./mechanism-cue-native-plates.md). No paid generation or Actions.
+
+### 2026-10-12 — MS2 public native cue cache API and CLI
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `86258de3`.
+- **Done:** Four lifecycle methods plus strict receipt schemas/constants/types at
+  the engine root; CLI capture/reuse/current checks/discovery and package guide.
+- **Results:** Owned60-frame original capture, four actual API/CLI cached outputs,
+  zero fresh native export submissions;120 preview pairs/maxRGB1 at fixed2. Current
+  label/gain edit reuses plates; stale outputs reject. Independent33-pin/60 PNG/
+  660 hierarchy/60 camera/240 decoded-frame/four PCM audit passes;10 PNGs viewed.
+  Fast tier(one unit worker) passes4,348/427; focused runtime22/3;2,631 inputs unchanged.
+- **Rejected / do not repeat:** Missing public exports, ignored/ambiguous flags;
+  scratch prefixed/unprefixed hash mismatch. Unverified format2 retained.
+- **Open / next:** Live edits/cancellation/whole resources, genuine speech,
+  full101/frozen/benchmark/source/archive/installed/pack/MS2 PR; packs/pilot0.
+- **Records:** [Public cache evidence](./mechanism-shorts-ms2-public-cue-cache-results.json),
+  [API and CLI](./mechanism-cue-native-plates.md). No paid generation/human acceptance.
+
+### 2026-10-12 — MS2 slice61: world and surface cache breadth
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2` from `c2da9f5c`.
+- **Scope:** Real native world/surface capture, cached preview/export and ink invalidation.
+- **Results:** Six cases retain360 original frames,6 direct/12 cached exports,
+  zero new native calls,360 preview pairs/maxRGB1 and720 cached seeks. All12 stale
+  ink checks reject;30 original sampled PNGs agent-viewed. Producer reports passed;
+  truncated root terminal remains unverified rather than inferred exit0.
+- **Audit:** Owned audit1 checks114 fact pins,360 exact PNG16/native transport hashes,
+  2,520 hierarchy pairs/360 source-camera triples,720 MP4 decodes and18 PCM streams.
+- **Verification:** Ordinary fast1/two timeouts and isolated style failure retained.
+  One style test becomes3 family cases with every assertion and5s per-case intact;
+  tape retains30s. One-worker complete fast-tier2 passes4,348 units/427 files on held
+  2,627 inputs/120,587,636B; production/browser sources match the owning render/audit.
+- **Rejected:** Browser import resolution, default sRGB PNG decode assumption and
+  absent zscale filter; scalar inversion of declared BT.709 recovers original pixels.
+- **Open:** Public API/CLI/in-flight/whole resources, genuine spoken/native outputs,
+  full100/frozen/benchmark/final installed/pack/MS2 PR and broader encoded/human QA.
+- **Records:** [World/surface cache evidence](./mechanism-shorts-ms2-world-plate-export-results.json).
+
+### 2026-10-12 — MS2 slice60: fresh recovered speech sample clocks
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `8ee0e694`.
+- **Done:** bounded complete decode of four existing44.1k MP3 takes into48k mono
+  float32 WAV inputs; source/RIFF/PCM/probe and complete normalized re-decode audit.
+- **Results:** exact sample counts938,458/1,032,081/1,027,623/1,105,642;
+  4,103,804 total frames/16,415,216 PCM bytes. Supplied13 visual cue endpoints fit.
+  Two rounded word ends require15/9 sample clamps; peg final visual end needs+1
+  sample. These authoring corrections are measured proposals, not yet applied.
+  The revised-copy hook is3.483s shorter. All source bodies unchanged; customer
+  files remain outsideGit. No speed/trim/filler/loudness/synthesis change or spending.
+- **Open / next:** actual world/surface cache/public API/CLI and genuine cue/native
+  exports, full99/resources/archive/installed/pack/MS2 PR. No listening/pilot acceptance.
+- **Records:** [sample clocks](./mechanism-shorts-ms2-spoken-sample-clock-results.json),
+  [original metadata](./mechanism-shorts-ms2-spoken-input-results.json),
+  [plan](./mechanism-shorts-production-plan.md), [MS2](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-12 — MS2 slice59: current overlays on proven original native plates
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `3d89e3e6`.
+- **Done:** internal cached export/check and separate current/original/final receipt;
+  shared guarded publication and repaired nested Node reservation ownership.
+- **Results:** render3:3 families/five visible styles/6 stages;180 original frames,
+  6 direct/12 cached exports,720 measured image calls/zero new native calls;
+  360 preview pairs/maxRGB1 within fixed2/720 seeks. Repeated bodies/decodes/current
+  audio match;3 gain edits change PCM. All60 corruption/counter/3 stale/3 pre-abort
+  controls reject. Audit3:57 pins/180 original PNG+journal/900 decoded frames,
+  1,260 hierarchy pairs/180 camera triples. All30 sampled PNGs agent-viewed.
+  Fast2:4,346 units/427 files;12 focused units/5 actual runtime checks. Held2,624
+  inputs/120,570,245B unchanged. Failed attempts retained; lossy encoded deltas diagnostic.
+- **Open / next:** world/surface cache breadth/public API/CLI, genuine spoken cues,
+  full99/resources/archive/installed/pack/MS2 PR. Packs/pilot0; MS3 not started.
+- **Records:** [export](./mechanism-shorts-ms2-native-plate-export-results.json),
+  [plan](./mechanism-shorts-production-plan.md), [MS2](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-12 — MS2 slice58: original native plate capture and closed evidence
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `98d99d97`.
+- **Done:** internal shared-exporter PNG16 plates with copied dependencies, source
+  lineage, original native closure replay and current-picture compatibility checks.
+- **Results:** capture2/audit3:180 original frames/passes,180 verified PNG/decoded
+  frames,1,260 hierarchy pairs/180 source-camera triples; every body/decoded frame
+  repeats capture1. Caption/gain preserve plates;28 artifact/3 PNG/3 camera
+  controls reject. Live cancellation leaves no owned directory/observed descendants
+  within26.9ms. Fast1:4,344 units/427 files; final runtime2 tests pass. Held2,620
+  inputs/120,518,027B unchanged. Nine prior sampled PNGs viewed; finals identical.
+- **Rejected / do not repeat:** missing-module red, scratch/transfer typing,
+  unverified combined build2 subterminal and immediate process-exit oracle.
+  Failures retained; bounded existing2s cancellation policy passes.
+- **Open / next:** actual cached overlays/zero new3D draws/public API/CLI, world/
+  surface breadth, genuine speech, full98/resources/installed/pack/MS2 PR.
+  Internal capture/check only; packs/pilot0 and MS3 not started.
+- **Records:** [capture](./mechanism-shorts-ms2-native-plate-capture-results.json),
+  [plan](./mechanism-shorts-production-plan.md), [MS2](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-12 — MS2 slice57: native picture partition and overlay lowering
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `a4967b46`.
+- **Done:** internal source partition retains physical/world fonts and native motion;
+  sampled screen bindings lower to ordinary integer-held sequence overlays.
+- **Results:** fast1 passes4,344 units/427 files; focused13 tests/two files and
+  build3 pass. Five visible styles/three families preserve exact geometry/matrices
+  and effective opacity over120 forward/reverse samples, including groups/hidden
+  states and unchanged audio. Held2,615 inputs/120,472,825B unchanged.
+- **Rejected / do not repeat:** missing graduation font, all-hidden positive test,
+  crowded fixture, raw omitted-tangent equality, style lookup in hashed IDs, wrong
+  type exports and default5s exhaustive tape budget. Failed attempts retained.
+- **Open / next:** authenticated shared native plates, actual cached export and
+  zero fresh3D draw proof, invalidation/cancel/resource/full97/installed/pack/MS2 PR.
+  This slice has no public cache API or cached render. Packs/pilot0; MS3 not started.
+- **Records:** [plate foundation](./mechanism-shorts-ms2-native-plate-reuse-results.json),
+  [plan](./mechanism-shorts-production-plan.md), [MS2](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-12 — MS2 slice56: rigid surface marking and stable depth ties
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `d9272caa`.
+- **Done:** actual Float32 indexed faces, fitted guarded boxes, bounded precision,
+  full-variant CAS/native invalidation and stable physical/artwork draw order.
+- **Results:** final fast11 passes4,331 units/425 files; native2/current audit9
+  passes14/six/cancellation/70 readbacks/30 exact pairs. Surface9/audit2 passes360
+  previews/1,080 seeks/six exports/360 native frames/18 controls/24 triangle quads.
+  Default world1 preserves360 preview/decoded frames/six audio/encoded bodies.
+  All24 original PNGs viewed; held2,611 inputs/120,444,661B unchanged in stages.
+- **Rejected / do not repeat:**16-ULP ink loss, cold/warm material order, clip-sized
+  decoder store,720px encoded ink failure and unmeasured font/safe-area boxes.
+  Failed attempts retained; build10 lost terminal receipt remains unverified.
+- **Open / next:** real label-only plate reuse, genuine speech, whole resources,
+  full97/final installed/pack/PR/owner gates. Packs/pilot0; MS3 not started.
+- **Records:** [Surface evidence](./mechanism-shorts-ms2-surface-marking-results.json),
+  [API](./mechanism-narrated-cycles.md#rigid-surface-markings), [MS2 plan](./mechanism-shorts-production-plan.md).
+
+### 2026-10-12 — MS2 slice55: part-bound world text and physical visibility
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `eacb0200`.
+- **Done:** explicit bounded world-text cues use pinned-font measured mask planes;
+  evaluator60 follows physical part/ancestor visibility; stable CAS world edits
+  require native invalidation. Legacy omitted/empty output stays exact.
+- **Results:** final fast6 passes4,320 units/424 files. Native owning regression
+  remains valid; fresh browser3 passes360 previews/1,080 seeks/six exports/360
+  native frames/18 controls. Independent audit passes; all12 PNGs agent-viewed.
+  Held2,607 source/schema/test inputs120,401,922B unchanged.
+- **Rejected / do not repeat:** untone-mapped green oracle; hidden required pawl
+  without a separate control-source policy; un-narrowed versioned receipt;
+  evidence formatting during the fast formatter. Failures retained.
+- **Open / next:** true surface marking, label plate reuse, genuine speech and
+  remaining MS2/full96/final/pack/PR gates. Packs/pilot0; MS3 not started.
+- **Records:** [World text evidence](./mechanism-shorts-ms2-world-annotation-results.json),
+  [API](./mechanism-narrated-cycles.md#part-bound-world-text), [MS2 plan](./mechanism-shorts-production-plan.md).
+
+### 2026-10-12 — MS2 slice54: screen cue styles and multi-anchor visibility
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2` from `9aa77e68`.
+- **Done:** Five bounded screen cue recipes, explicit visibility/locks, identity
+  groups and selected arrow ink; omitted/explicit tab keeps exact legacy output.
+- **Results:** Final fast2: 4,313 units/423 files. Native14/six composition and
+  cancellation pass. Browser4: three families, 180 previews/540 seeks/six exports,
+  360 final native frames; decoded video/audio, dependency, PNG and raw audits pass.
+  Held 2,603 inputs/120,347,181B unchanged; final full matrix now95 groups.
+- **Rejected / do not repeat:** Shape parenting does not inherit visibility;
+  centered group defaults shift labels. Cable needs a declared camera cut for two
+  visible bracket anchors. Arrow fill must match shaft ink. All failed attempts retained.
+- **Open / next:** World/surface authoring, label-only plate reuse, genuine speech,
+  full/final installed/resource/pack/owner/MS2 PR gates. Packs/pilot0; MS3 not started.
+- **Records:** [Style evidence](./mechanism-shorts-ms2-annotation-style-results.json),
+  [API](./mechanism-narrated-cycles.md), [full gate](./mechanism-shorts-ms2-full-gate-results.json).
+
+### 2026-10-12 — MS2 shared bracket/arrow geometry and retained full-gate stop
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2` (from `19a13252`).
+- **Done:** Slice53 adds bounded multi-anchor paths and screen-tangent arrowheads,
+  early reference admission, all-anchor visibility and located writer/viewport guards.
+- **Results:** Final fast4 passes 4,303 units/422 files; native-depth4 passes14 depth,
+  six composition cases and real cancellation. Independent audit hashes 70 readbacks,
+  including 42 annotation draws and30 exact dynamic/control comparisons. Final 2,568
+  inputs/119,629,177B unchanged. Staged passes and fixture/type/budget failures retained.
+- **Full gate:** Full51 deliberately stopped for missing-feature work, actual exit130;
+  38 completed groups/interrupted39th preserved. Final complete gate remains required.
+- **Next:** Cue styles/world/surface authoring, plate reuse, genuine speech clocks,
+  resources/full/final installed/pack admission/MS2 PR. Packs/pilot0; MS3 not started.
+- **Records:** [Annotation evidence](./mechanism-shorts-ms2-annotation-results.json),
+  [full gate history](./mechanism-shorts-ms2-full-gate-results.json), [plan](./mechanism-shorts-production-plan.md).
+
+### 2026-10-12 — MS2 slice52: recover existing three-family spoken inputs
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `24736d77`.
+- **Done:** Recovered existing unpaced v003 tape-hook/cable-tie/clothespeg audio,
+  supplied timed transcripts and thirteen shot cues. Four current audio hashes,
+  transcript associations and complete word-range/cue text associations pass.
+- **Results:** A tape-hook replacement is recorded 3.482993s shorter with revised
+  copy. Initial identical-script audit failure retained; corrected association
+  audit passes. Rounded end overruns of 0.000322/0.000202s need decoded-clock bounds.
+- **Open / next:** Full51-1 remains live, owner session 79726; held software inputs
+  unchanged. Fresh speech decode/compile/export, broader annotation/world/surface
+  routes, label-only plate reuse, whole resources/final installed/pack admission
+  and MS2 PR remain open. No synthesis/spending; packs/pilot 0; MS3 not started.
+- **Records:** [Spoken input evidence](./mechanism-shorts-ms2-spoken-input-results.json),
+  [MS2 plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
+
+### 2026-10-12 — MS2 slice51: expanded Thai review; full gate running
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `5e7f49e5`.
+- **Done:** Reviewed42 retained overview sheets, all114 distinct cells at frames8/18
+  and native-contact/320/360 sizes; recorded hashes and precise active/wrap findings.
+- **Results:** Independent audit binds114 raw source/composition pairs and684 PNGs.
+  Initial raw/compact JSON hash-convention failure retained; corrected audit passes.
+  Full51-1 `pnpm check:all` is running on2,567 held inputs/119,595,348B, session79726;
+  unit4,293/runtime238/integration322 pass but there is no complete-gate result yet.
+- **Open / next:** Continue the same owner to an actual receipt. Finer Thai motion
+  unadopted; full-cell review, whole resources, genuine speech, final/installed,
+  pack admission and MS2 PR remain open. Packs/pilot0; MS3 not started.
+- **Records:** [Thai review](./mechanism-shorts-ms2-thai-review-results.json),
+  [MS2 plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
+
+### 2026-10-12 — MS2 slice50: frozen topic-to-family candidate coverage board
+
+- Ten distinct causal questions across three families are frozen before MS3,
+  including disclosed historical E01 reuse and scene/question overlap. Every row
+  binds its base pack, variant, views, capabilities, unresolved work and sources.
+- Routing: 5 existing targets, 3 new assets/existing rigs, 2 new behaviors. Five
+  episodes need assets; two proposed behavior types remain unimplemented. Actual
+  candidate statuses keep validated coverage at 0/10; accepted pilot episodes 0.
+- Read-only auditor and independent Python accounting/hash checks match the frozen
+  cohort. Version1 deliberately cannot admit support from names or scoped test receipts.
+- First duplicate fixture failed at an earlier missing-ID check; corrected fixture
+  passes all 7 tests. Fast1 actually exits 0: 4,293 units/421 files, 2,567 held
+  inputs/119,595,348B, including board; all 2,564 previous inputs unchanged.
+- Full load-pawl primary patent access failed; excerpt-only candidate remains
+  provisional. Thai cell review and broader MS2/PR/support/pilot gates remain open.
+- [Board](./mechanism-topic-family-coverage.md), [evidence](./mechanism-shorts-ms2-coverage-results.json),
+  [plan](./mechanism-shorts-production-plan.md). No media generation or spending.
+
+### 2026-10-12 — MS2 slice49: full native Thai exports and lossless seek proof
+
+- Exact saved 128-case matrix recompiles identically before 142 actual streams/
+  3,408 frames. Fourteen repeated controls and zero/default/explicit-zero identities
+  pass. Recovered the interrupted owning native1/fast1 session to actual exit 0.
+- Independent audit probes all streams and decodes 3,072 frames, saving 9,216
+  native/320/360 PNGs and 426 consecutive/overview sheets. Seventeen sampled visual
+  artifacts cover every text; full matrix visual acceptance is not inferred.
+- Encoded settled comparisons differ by up to 61 RGB levels. Added actual lossless
+  previews: all 128 cases/9,216 seek draws pass; 70 settled comparisons are exact.
+  Independent 256-PNG/pixel audit confirms the result without a renderer repair.
+- Final fast2 passes 4,286 units/420 files. Native1 inputs remain unchanged; only
+  preview harness was added before final held 2,564-input graph. Both staged gates,
+  interruption recovery and premature sheet observations retained; no rerender restart.
+- Partial retype/low-contrast quantity states remain diagnostic negatives. Remaining
+  mark/overlap/gap cell review, broader MS2/full/final/owner gates and packs/pilot 0 stay open.
+- [Evidence](./mechanism-shorts-ms2-thai-native-results.json),
+  [scope](./mechanism-thai-motion-probes.md), [plan](./mechanism-shorts-production-plan.md).
+
+### 2026-10-12 — MS2 slice48: exact Thai motion/tracking preflight matrix
+
+- Six exact stress strings plus hashed SS02 production copy produce 128 saved
+  authoring/native compositions. Real pinned Noto coverage/axes, loaded shaping,
+  raster preparation and 3,072 pose frames pass. Seven Plex-only Thai negatives
+  retain coverage diagnostics; default/explicit-zero controls preserve geometry.
+- Independently audited every source/composition/layout/pose receipt. Alias font
+  boundaries use the same bytes; only X2 Latin controls use a distinct Plex face.
+- Build/lint and sequential final fast3 pass: 4,286 units/420 files on held inputs.
+  Initial intact assertion exposed default space exclusion; UTF-16-authored spans
+  then failed the existing grapheme-index contract. Both failures retained;
+  full selection and valid grapheme spans corrected without renderer changes.
+- Native consecutive encoded windows, active retype, marks/overlap/gaps, reduced
+  samples and supported-unit findings remain pending. Thai/MS2 acceptance stays
+  open; broader coverage/resource/full/final/owner gates and packs/pilot 0 remain.
+- [Evidence](./mechanism-shorts-ms2-thai-preflight-results.json),
+  [probe scope](./mechanism-thai-motion-probes.md), [plan](./mechanism-shorts-production-plan.md).
+
+### 2026-10-12 — MS2 slice47: generated decimal count shared-fit repair
+
+- Valid old narrow fitting chose 96 px while 61 generated strings overflowed;
+  actual pinned-font raster preparation rejected the result. Shared Type-1 fitting
+  now measures the existing reachable-value collection once before trying sizes.
+- Final narrow size 38 px fits all 63 strings; wide/no-fit controls remain unchanged.
+  The 10,000-string cap, immutable input and numeric-binding+fit rejection survive.
+- Fast7 passes 4,286 units/420 files; three native cases/six repeatable exports/
+  366 frames and 549 seek-order draws pass. Independent audit verifies all six
+  streams and fully decodes 183 frames. Existing four fit variants/727 frames pass
+  on each backend. All final owning sessions exit 0 on held inputs.
+- Fixture, weak-type, strict authoring/renderer boundary and lint failures retained
+  beside intermediate passes; no uninterrupted-pass claim. Native encoded midpoint
+  inspected by agent. Thai risks and broader MS2/full/final/owner review stay open.
+- [Evidence](./mechanism-shorts-ms2-count-fit-results.json),
+  [behavior](./mechanism-generated-count-fit.md), [plan](./mechanism-shorts-production-plan.md).
+
+### 2026-10-12 — MS2 slice46: actual-font native weight treatment acceptance
+
+- Exact MS1 Noto/Plex font bytes and real cut/fvar facts feed native text through
+  the existing supported adapter; historical compiler body and unchanged draw code
+  provide the legacy control. No separate renderer or frozen vocabulary change.
+- Variable/static/max/mixed/covered-base controls retain actual axes versus stroke
+  receipts; real mixed 600/850 instances clamp legacy 150 to 50 and reject explicit 51.
+- Final fast12: 4,284 units/420 files. Two backends/34 cases: 48 exports/2,880 frames,
+  2,040 complete decoded frames, 6,120 forward/reverse/shuffled draws. Independent
+  audit validates all streams/34 receipts, complete legacy parity and 544 gap checks.
+- Type/fixture/lint failures and staged successes retained. Derived RGB is losslessly
+  compressed with original/decompression hashes; MP4s/snapshots/PNGs remain intact.
+- Four final native peak images inspected; explicit weight criterion closes at
+  software/native scope. Count+fit, six Thai/production-copy risks and broader
+  MS2/resource/full/final/owner review remain pending. Packs/pilot still 0.
+- [Evidence](./mechanism-shorts-ms2-text-weight-render-results.json),
+  [API](./mechanism-text-weight-treatments.md), [plan](./mechanism-shorts-production-plan.md).
+
+### 2026-10-11 — MS2 slice45: explicit weight and outline treatment API
+
+- Added explicit genuine/outline/automatic weight treatments to events and intents.
+  Genuine requests require complete headroom; outlines use pixels. Pure companion
+  receipts report units, font declarations, resolved route and located unavailability.
+- Automatic numeric defaults/clamping remain compatible. Explicit whole-node targets
+  inspect painted runs, including mixed fonts and fully covered unused base styles.
+- Final fast10 passed 4,283 units/420 files; runtime10 passed 30 saved-project/CLI checks/5
+  files. Thirteen new tests cover unavailable routes, receipts, intents and both
+  release/end/backward pose paths. Held 2,559 inputs/119,471,782B remained fixed. Final review refreshed gates
+  after initial-text and conservative generated-count targeting fixes.
+- Retained unit2 failure: maximum-axis fixture used a node field instead of a text
+  style. Corrected fixture passes; no rendering defect inferred from that failure.
+- Actual pinned-font raster/encoded treatment and English spacing checks remain
+  pending, alongside typography risks and broader MS2/full/final/owner acceptance.
+- [Evidence](./mechanism-shorts-ms2-text-weight-results.json),
+  [API](./mechanism-text-weight-treatments.md), [plan](./mechanism-shorts-production-plan.md).
+
+### 2026-10-11 — MS2 slice44: deterministic visible crowded cue layout
+
+- Cue-wide placement now preserves locks, chooses priority/stable-ID preferences,
+  backtracks, and excludes safe/caption/label/projected contact regions. Text,
+  backing and leader start move together; positions are history-independent.
+- Fast10: 4,270 units/420 files; 38 runtime checks/5 files. Three-family before/after
+  label/camera edits pass 360 actual-font/visible frames, 1,080 forward/reverse/shuffled
+  draws and 12 repeated exports/720 independently replayed final native frames.
+- Six layout receipts match exact saved revision hashes and snapshot semantics.
+  Added cable exterior strap anchor; verified complete geometry unchanged.
+- Retained type and CAS fixture failures. Sampled image exposed hidden labels in
+  the initial proof: deliberately stopped exit130 and strengthened actual visibility.
+- Six encoded frame20 samples inspected; full encoded readability, broader routes,
+  continuous contact and remaining MS2/full/final-installed/owner gates stay open.
+- [Evidence](./mechanism-shorts-ms2-cue-layout-results.json),
+  [API](./mechanism-cue-layout.md), [plan](./mechanism-shorts-production-plan.md).
+
+### 2026-10-11 — MS2 slice43: revision-bound cue lifecycle
+
+- Saved family/cue revisions now compile actual assets into fresh pinned snapshots,
+  render through native composition export, and check current dependencies, encoded
+  video facts and every independently replayed native observation.
+- Fast8: 4,263 units/419 files; 38 filesystem/CLI tests/5 files. Actual three-family
+  caption before/after repeats: 12 exports/720 native frames. Four child CLI routes
+  pass, adding one export/60 frames. Held 2,554 inputs remain unchanged.
+- Retained schema import, two TypeScript, boundary and media-test timeout failures;
+  refreshed passing checks in stages. Whole-cycle rerender only; supported packs/pilot remain 0.
+- Selective shot reuse, full label/coverage/typography, genuine narration and remaining
+  resource/lifetime/full/final installed gates remain open before MS2 PR/MS3.
+- [Evidence](./mechanism-shorts-ms2-cue-lifecycle-results.json),
+  [API](./mechanism-cue-lifecycle.md), [plan](./mechanism-shorts-production-plan.md).
+
+### 2026-10-11 — MS2 source-pinned saved cue edits and actual exports
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `15e9fb4f`.
+- **Done:** scoped cue/annotation/sound/rig edits, semantic recompile, saved source
+  raw/parsed identity checks, media/clock invariants, lock/CAS/atomic writes and CLI.
+- **Results:** seven new units/seven runtime checks; fast7 passes 4,263 units and
+  33 filesystem/CLI checks. Three-family actual caption revisions export before/after
+  repeats: 12 MP4s/720 independent native frames, changed decoded video and identical
+  complete decoded audio/source recording. Local synthetic PCM, not spoken narration.
+- **Retained:** build2 wrong receipt-level accessor and build4 missing truncate
+  import; runtime4 unrun. Fresh held final gates pass without contract relaxation.
+- **Next:** dependent render/check, full label/coverage/typography and MS2 acceptance.
+- **Records:** [Cue edit API](./mechanism-cue-authoring.md),
+  [Evidence](./mechanism-shorts-ms2-cue-authoring-results.json).
+
+### 2026-10-11 — MS2 saved family revisions and scoped edits
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `27444d1a`.
+- **Done:** pinned family authoring/patch schemas and public transactions;
+  stable parameter/mount/style targets, strict identity/version/bounds/conflicts,
+  saved lock/CAS/atomic publication and CLI authoring/full-report routes.
+- **Results:** seven new units/seven runtime checks; fast5 passes 4,256 units,
+  26 filesystem/CLI regressions. Actual three-family edits/resume commit six
+  revisions, reject three stale CLI writes and pin regenerated source JSON bytes.
+- **Retained:** build3 fixture union access failed; unit3/runtime3 unrun.
+  Guarded narrowing and fresh focused/held gates pass. No rendering is inferred.
+- **Next:** cue revisions/dependent render/check and remaining MS2 acceptance.
+- **Records:** [Authoring API](./mechanism-family-authoring.md),
+  [Evidence](./mechanism-shorts-ms2-family-authoring-results.json).
+
+### 2026-10-11 — MS2 family registry discovery and schema expansion
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `111f3d5c`.
+- **Done:** generator-derived family input/parameter schemas, help, examples,
+  immutable metadata and controls; CLI selection/pagination/full-report access.
+  Seven new published JSON Schemas and shared expanded CLI schema registry.
+- **Results:** six new units/four new runtime checks; fast4 passes 4,249 units,
+  19 CLI regressions, persisted actual discovery/pagination/six schema exports.
+- **Retained:** build2 test union type failure; shell root0 followed the failed
+  build with passing unit2, so the failure is recorded separately. Fresh build3/
+  held fast4/runtime4 pass; no rendering or support promotion is inferred.
+- **Next:** saved revision-aware family/cue editing and remaining MS2 acceptance.
+- **Records:** [Registry API](./mechanism-family-registry.md),
+  [Evidence](./mechanism-shorts-ms2-family-registry-results.json).
+
+### 2026-10-11 — MS2 supplied narration cue tracks
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `e0a07dad`.
+- **Done:** versioned PCM cue compiler for picture/control/camera, live annotation,
+  caption, sound and unchanged narration; bounded track IDs and located failures.
+  Source and visible reading/action time checks include integer frame quantization.
+- **Results:** 13 new units; focused14 passes 33 checks and fast15 passes 4,243 units.
+  Three families/two synthetic takes produce 12 repeated exports/900 native frames,
+  independent receipt replay and matching complete decoded video/audio per repeat.
+- **Retained:** four type failures, texture-font/driver-key live failures and sampled
+  caption contrast loss; exact GPU byte validation remains unchanged.
+  fast8 intentionally
+  SIGTERM-interrupted before browser9/hold9 to repair the visible action-window edge.
+- **Next:** full label QA/discovery/editing/coverage/typography, genuine spoken inputs,
+  supported packs and remaining whole-resource/full/installed criteria before PR/MS3.
+- **Records:** [Cue API](./mechanism-narrated-cycles.md),
+  [Cue evidence](./mechanism-shorts-ms2-narrated-cycle-results.json).
+
+### 2026-10-11 — MS2 authored mechanism state timelines
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `3e99ca1f`.
+- **Done:** versioned state/event/transition contract, generated schema, located
+  relationship/contact checks, bounded compile iterator and pure random seeking.
+  All three candidates reuse the API; native family fixtures reuse compiled controls.
+- **Results:** seven new tests; focused4 passes 32 tests, fast7 passes 4,230 units;
+  actual four dimension cycles compile 96 frames, with 40 previews/eight exports.
+- **Retained:** misplaced guard build failure (focused suffix unrun); stale native
+  source closure failure (browser suffix unrun), then regenerated identity/rerun.
+- **Next:** narration cues/all tracks and remaining MS2 criteria/full/installed;
+  no continuous-time, whole-quota, supported-pack or human acceptance claim.
+- **Records:** [Timeline API](./mechanism-pack-timelines.md),
+  [Timeline evidence](./mechanism-shorts-ms2-pack-timeline-results.json).
+
+### 2026-10-11 — MS2 root I/O and scene serialization admission
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `073be810`.
+- **Done:** regular descriptor admission before root allocation, bounded body/text/
+  parser capacity, scoped source rollback/transfer and exact JSON/UTF-8 admission.
+  Native 32 MiB remains fixed; read failures detach backing and preserve first cause.
+- **Results:** four unit/four new filesystem controls and two stronger backing
+  controls; fast20 passes 4,223 units, Node21 passes 30 checks and PBR/native2 groups
+  pass on held inputs20. Prior MP4/raw pixel bytes remain exact.
+- **Retained:** lint and inherited-array-hook unit failures; both stop attempts
+  sent no signal, so the second aggregate is an actual failure, not an interruption.
+- **Next:** semantic validation/reports and remaining producers; aggregate/lifetime,
+  remaining MS2 authoring/full gates and final installed refresh before PR/MS3.
+- **Records:** [Root I/O evidence](./mechanism-shorts-ms2-root-io-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-11 — MS2 shared native catalogue and Node result owner
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `b3e0169b`.
+- **Done:** one fixed Node allowance spans native ingestion/admitted catalogue,
+  result/RPC/replay reservations and concurrent source revalidation. Grow admission
+  without a release gap, transfer only on success and retire transient records.
+- **Results:** six new unit/two filesystem controls; fast15 passes 4,219 units,
+  Node16 passes 26 checks and current PBR/native2 groups pass on held inputs15.
+  Two normal MP4s/six mixed raw bodies preserve slice35 bytes. Shared-scope render
+  metrics are snapshots; full lifetime/RSS and root I/O/serialization remain open.
+- **Retained:** wrong test override field and type-only-import lint failures;
+  their original suffixes were unrun.
+- **Next:** remaining Node producers and aggregate/world/body/replay, remaining
+  MS2 authoring/full criteria and final installed refresh before MS2 PR/MS3.
+- **Records:** [Node owner evidence](./mechanism-shorts-ms2-node-owner-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-11 — MS2 bounded native JSON ingestion foundation
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `3f04bad3`.
+- **Done:** admit actual file backing/decode before allocation, count bounded tree
+  capacity before JSON.parse and accumulate preceding native entries under the
+  existing 512 MiB allowance, now shared through the public contract.
+- **Results:** five new unit/three filesystem controls pass; actual dense numeric
+  input never reaches JSON.parse, padded valid input loads and actual valid assets
+  accumulate admission. Fast24 passes 4,213 units; scoped Node/PBR/native2 groups
+  pass on held inputs24. Normal MP4s/six mixed raw bodies preserve prior bytes.
+- **Retained:** test type/config, private-boundary, wrong identity command and lint
+  failures; their unrun suffixes are explicit in the evidence.
+- **Next:** ingestion is a foundation. Catalogue/variants and result coexistence,
+  whole world/body/replay, remaining MS2/full gates and final installed refresh.
+- **Records:** [JSON ingestion evidence](./mechanism-shorts-ms2-json-source-admission-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-11 — MS2 nested PBR owner and private backing retirement
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `21520637`.
+- **Done:** capture private pixel/attribute/index allocations, retire all resources
+  despite destructor errors, clear private/reference collections and detach owned
+  backings. Caller substitutions and immutable preparation keep separate ownership;
+  source3 wrapper preserves its original setup failure through nested cleanup.
+- **Results:** focused 16 tests/two files and fast16 pass 4,208 units; all six PBR
+  browser groups pass on held inputs16. Two normal MP4s/six mixed raw HTTP bodies
+  exactly preserve slice33. Initial lint failure and unrun suffix retained.
+- **Next:** join native source/preparation to the existing 512 MiB Node allowance,
+  aggregate world/body/replay, remaining MS2/full gates and final archive refresh.
+  Original native2/depth and installed evidence keep their earlier source identities.
+- **Records:** [nested PBR ownership](./mechanism-shorts-ms2-pbr-ownership-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-11 — MS2 shared-world constructor and destructor ownership
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `3dc9ddc6`.
+- **Done:** room owner covers PMREM constructor failure, completed environment
+  transfers after temporary cleanup, all scene setup is inside the failure boundary,
+  and world retirement continues after destructor failure while preserving its cause.
+- **Results:** six focused real-object fault controls and fast4 pass4,204 units;
+  source3 world/composition/normal/mixed, all six native2 and depth groups pass on
+  held inputs4. Two normal MP4s/six mixed raw HTTP bodies exactly preserve slice31.
+- **Limits:** no driver-internal failed allocation/RSS claim; quotas stay fixed.
+  Prior installed proof remains at b4fc65ed. Aggregate/nested resource admission,
+  remaining MS2 criteria/full gates and final installed refresh stay open.
+- **Records:** [world ownership](./mechanism-shorts-ms2-world-ownership-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-11 — MS2 installed source3/mixed execution with checkout access denied
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `b4fc65ed`.
+- **Done:** maintained28-check package verification, exact local archive retention,
+  four public installed exports under OS checkout/source denial, repeated actual
+  packet equality, receipt replay and seven scoped negatives. Audit12 matches928
+  copied Git source and2,275 total members; archive SHA starts7764436e.
+- **Retained:** harness used wrong compiled format literal; original auditor rejects
+  current guide-copy roots, then README rewriting and trailing-slash handling.
+  Corrected consumer5 and self11/audit12 pass in stages; failed artifacts retained.
+- **Limits:** archive is verified at b4fc65ed before this copied-guide documentation
+  change. Pixel-row replay is association evidence; actual raw HTTP captures are
+  separate. Whole quotas/constructor cleanup, full gates and final refresh remain.
+- **Next:** remaining MS2 contracts/packs/full evidence before its PR and MS3.
+- **Records:** [installed evidence](./mechanism-shorts-ms2-installed-source3-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-11 — MS2 bounded source descriptor and streamed Node resource checks
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `36813631`.
+- **Done:** preserve32MiB admission with one regular descriptor, bounded reads,
+  growth/final-stat checks and cancellation cleanup; verify Node PBR binaries using
+  64KiB scratch while preserving the original loader's retained RGBA API.
+- **Results:** fast12 passes4,198 units; Node13 passes21 tests/six files, including
+  sparse/growth/FIFO/cancel and256KiB body/checksum controls. Normal source3/mixed
+  exports and all six native2 groups pass on held inputs12.
+- **Retained:** new indexed-assignment build failure with lost original terminal;
+  two new lint violations; corrected gates pass in stages, with no skipped suffix.
+- **Next:** aggregate source/world/body/replay and constructor cleanup, installed
+  proof, remaining MS2 contracts/packs/full gates; no paid ElevenLabs performed.
+- **Records:** [source admission evidence](./mechanism-shorts-ms2-source-admission-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-11 — MS2 actual mixed source3 HTTP export and rejection controls
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `d1e157de`.
+- **Done:** actual mixed frame1/frame2/frame3 fractional exposure fixture, explicit
+  output3 authenticated body capture, independent retained-row/pixel replay and
+  seven actual endpoint rejection controls; full local matrix includes this proof.
+- **Results:** fast5 passes 4,198 units/410 files; mixed browser6 passes six output
+  frames/54 actual passes and seven faults. Rejected first observations never send
+  pixels or publish output. Test/command inputs5 remain held; production unchanged.
+- **Retained:** initial invalid overlapping controller fixture; source3 moved into
+  its own precomposition and the existing overlap rule remains strict.
+- **Next:** installed source3/mixed proof, whole world/source/body/replay admission
+  and remaining MS2 pack/full criteria before its PR. No paid narration performed.
+- **Records:** [mixed evidence](./mechanism-shorts-ms2-output3-mixed-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-11 — MS2 normal authenticated source3 export dispatch
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `070b4d1c`.
+- **Done:** trusted fresh request3 producer, bounded upload3 acknowledgement and
+  page/worker/sink/replay dispatch; original protocols retain their own contracts.
+- **Results:** normal fast8 passes 4,198 units/410 files; Node9 ten/four files.
+  Source3 export11 produces two actual11-frame MP4s with11 independently verified
+  passes each; unused source3 retains protocol3 with0 passes. Composition10,
+  all six native2 groups12 and original primitive13 pass on held inputs8.
+- **Retained:** wrong generator command and two caller narrowing type failures.
+  Final helper scope-label edits alone have a fresh composition15/input14 receipt.
+- **Next:** actual mixed exposure/export/fault proof, installed source3, whole
+  world/source/body/replay admission and remaining MS2 gates before its PR.
+- **Records:** [normal export evidence](./mechanism-shorts-ms2-output3-export-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json). No paid narration performed.
+
+### 2026-10-11 — MS2 strict source3 execution and actual journal replay
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `8676aa30`.
+- **Done:** explicit execution3/sink3/row3/manifest3/closure3 with source3 key and
+  appearance identities, awaited independent actual-receipt admission and replay.
+  Original source1/source2 serializers and declarations stay strict.
+- **Results:** fast16 passes4,197 units/410 files; Node17 ten/four files. Actual
+  composition18 includes two identical one-frame raw journals, successful replay,
+  five forgeries rejected and zero scratch. Default16MiB replay quota is unchanged;
+  all six native2 groups19 pass and selected inputs16 remain held.
+- **Retained:** schema/type/read-only failures, real source-key mismatch, maximum
+  scratch quota rejection, publication getter assertion and statistics accessor fix.
+- **Next:** normal source3 request/export dispatch, mixed exports/installed and
+  whole world/source/body/replay budgets; remaining MS2 criteria before its PR.
+- **Records:** [journal evidence](./mechanism-shorts-ms2-output3-journal-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json). No paid narration performed.
+
+### 2026-10-11 — MS2 source3 async composition receipts and shared artwork depth
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `ae057bf9`.
+- **Done:** output3 collector/capacity wired into production async preview; actual
+  GPU receipts independently checked. Admitted compositor artwork renders in a
+  separate Scene sharing physical depth; foreign physical mesh rejection remains.
+- **Results:** normal fast9 passes4,186 units/409 files and all prefix checks;
+  Node10 ten/four files; observation11 eight/21; composition12 six seeks plus two
+  artwork controls, exact pixel parity and zero disposed owners. Native2 groups13
+  and legacy depth14 pass; selected inputs9 held unchanged.
+- **Retained:** two TypeScript failures; early build7/browser8 lost terminal receipt
+  qualified, fresh browser12 supplies exit0; browser6 stale stdout count corrected.
+- **Next:** authenticated source3 export/installed, world/source/body/replay budgets,
+  remaining packs/authoring/full gates. Supported packs/pilot 0; no MS2 PR yet.
+- **Records:** [composition evidence](./mechanism-shorts-ms2-output3-composition-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json). No paid narration performed.
+
+### 2026-10-11 — MS2 incremental output3 capacity and fresh GPU packet bounds
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `1210459f`.
+- **Done:** conservative output3 common/mesh/group/mip sizing with bounded scratch
+  and incremental byte rejection; original output2 protocol remains strict.
+- **Results:** fast10 prefix passes then retains one gradient 5,622ms/5,000ms timeout;
+  unchanged default units15 pass 4,186/409 files. Node16 ten tests/four files; actual GPU
+  observation17 eight frames/21 faults, all standalone packets 2,512–10,133B within
+  28,165B admission with zero owners. Composition18/export19 preserve native2 proof.
+- **Retained:** invalid overlapping controller fixtures, mistaken UV/oversize assumptions,
+  callback/result-array type failures and strict timeout. No limit relaxed or source
+  changed between final prefix/failure, unit rerun and browser suffix; inputs10 match.
+- **Next:** output3 renderer/collector integration and explicit world-artwork ownership,
+  authenticated export/installed and whole world/source/body/replay admission.
+  Source3 composition collection/export still rejected; supported packs/pilot 0.
+- **Records:** [capacity evidence](./mechanism-shorts-ms2-output3-capacity-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json). No paid narration performed.
+
+### 2026-10-11 — MS2 explicit output3 contract and ordered async collector
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `10b50765`.
+- **Done:** strict output3/sample3 contract, shared internal async collector and
+  pure V3 wrapper. Original output2 parser/rejection and ownership semantics preserved.
+- **Results:** fast4 passes 4,182 units/408 files and all prefix gates; Node5
+  ten tests/four files; composition6 four captures/15 negatives, export7 two actual native2
+  exports. Inputs4 unchanged after final commands; original limits retained.
+- **Retained:** initial matrix-cloning assumption fails; explicit frozen borrowed-array
+  assertion passes. Deliberate readonly tuple assignment fails type checking;
+  Object.defineProperty probe preserves the runtime rejection check.
+- **Next:** output3 capacity/renderer integration, authenticated transport/export,
+  world/source/body/replay admission and remaining MS2 criteria. Collection/export3
+  still rejected; supported packs/pilot 0; no full/installed refresh or milestone PR.
+- **Records:** [collector evidence](./mechanism-shorts-ms2-output3-collector-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-11 — MS2 strict-gate repair with unchanged acceptance limits
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `11eda2d7`.
+- **Done:** reduce canonical numeric-array overhead, reuse validated source1 base
+  for empty overrides, and capture/replay every gradient getter with lower observer
+  overhead. Independent hashes/input-isolation/rejection tests added; frozen
+  gradient oracles and production gradient bytes remain unchanged.
+- **Results:** fast42 passes 4,177 units/407 files and all prefix gates; Node44
+  passes 10/four files, observation45 eight frames/21 faults, shapes46 six browser
+  groups. Inputs42 unchanged afterward; original five-second budgets retained.
+- **Retained:** prior timeouts, rejected observer/loop experiments, guarded edit
+  failure and Node43 wrong-name seven-test subset; no full/installed refresh.
+- **Next:** output3 collector/capacity, authenticated export/installed and remaining
+  MS2 criteria. Supported packs/pilot 0; no milestone PR or human acceptance.
+- **Records:** [strict-gate history](./mechanism-shorts-ms2-strict-gates-results.json),
+  [MS2 results](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-11 — MS2 standalone source3 observed frames and chat handoff
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `71a067c8`.
+- **Done:** strict frame3 DTO, owned GPU draw/matrix/byte/mip evidence, closed PBR
+  material profile, synchronous world/anchors and independently validated queued receipts.
+- **Results:** observation10 passes 8 frames/3 queued/21 faults; browser13 passes
+  resource/world/composition and six native2 groups. Held source inputs match.
+- **Retained:** fast10 has 4,173 passes/2 strict timeouts; owning11 has 13 passes/1
+  timeout, resolving native mechanical. Gradient and three Node12 package timeouts
+  remain unresolved. Earlier type/recorder/harness/lint failures remain recorded.
+- **Next / handoff:** continue the same Goal in a fresh chat: resolve strict gates,
+  implement composition/output3, authenticated export/installed and remaining MS2
+  criteria before its PR, then MS3. Supported packs/pilot 0; no human acceptance.
+- **Records:** [observation evidence](./mechanism-shorts-ms2-pbr-observation-results.json),
+  [API](./native-pbr-resources.md), [MS2 results](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-11 — MS2 complete used-mip component validation
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `66559c67`.
+- **Done:** independent immutable-source mip derivation, actual storage/size/transfer
+  checks, declared sampler and LOD checks, managed scratch and GL-state restoration.
+- **Results:** final8 fast4,170/406 and owning Node10/4 pass; six filter cases render
+  18 frames with10 faults/28 restorations and zero retained verifier owners.
+  World6/1, composition6/5/2/style and six native2 groups pass. Broader7 runtime200/
+  integration322 remain separate before final sampler/storage assertions.
+- **Retained:** failed harness typing and duplicated catch-handler formatting; the
+  existing profile remains0.0001 and no budget or original timeout was relaxed.
+- **Next:** formal source3 observations/export/installed and whole MS2 gates before
+  its PR. Supported packs/pilot 0; no full-world or human acceptance inferred.
+- **Records:** [mip evidence](./mechanism-shorts-ms2-pbr-mip-results.json),
+  [API](./native-pbr-resources.md), [MS2 results](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-11 — MS2 source3 composition preview
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `4db6795f`.
+- **Done:** `5a7c9328` adds transport/frame3, immutable PBR styles, bounded separate
+  HTTP binaries, managed ownership, shared composition rendering and Lab routes.
+- **Results:** browser21 preview6/5 faults, component3/4, world6/1 and six native2
+  groups pass. Unchanged strict22 passes gradient10/package7/capture1 at original
+  limits; unique units4,169/runtime200/integration322 pass in stages.
+- **Retained:** schema/fixture/Vite/lint/purity/Node repairs, intentional143 stop,
+  lost build2/run20 terminals and failed aggregates. Load had subsided before22;
+  timeout causation remains unproven. No uninterrupted aggregate pass claimed.
+- **Next:** source3 observations/mips/export/installed and whole MS2 gates before
+  its PR; source3 export stays closed. Supported packs/pilot 0; no human review.
+- **Records:** [preview evidence](./mechanism-shorts-ms2-pbr-composition-results.json),
+  [API](./native-pbr-resources.md), [MS2 results](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-11 — MS2 rigid PBR source3 in the shared native world
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `2056656a`.
+- **Done:** explicit source3/schema, separate bounded hashed RGBA files, reused
+  slider/hinge/return kinematics and shared-world PBR ownership; no material projection.
+- **Results:** final source13 fast4,165/405, world6/1 pose fault, PBR component3/4,
+  all six native2 groups on unchanged production inputs11, and 21 current affected
+  Node runtime tests pass. Reverse part metadata is an added positive control. Actual GPU camera/pose matrices
+  are retained. Source10 full runtime/family8/camera12 exports are separate preceding evidence.
+- **Retained:** expected reds, schema/wrapper/profile/path/harness failures, wrong
+  pnpm command and unavailable source5 root terminal; no uninterrupted-pass claim.
+- **Next:** source3 composition/binary/frame3/mip/preview/export admission and owning
+  authoring/registry/world/label/event/cue/typography/coverage/full/installed gates.
+  Supported packs/pilot 0; no MS2 PR/MS3 or human appearance/listening acceptance.
+- **Records:** [source3 evidence](./mechanism-shorts-ms2-pbr-world-results.json),
+  [API](./native-pbr-resources.md), [MS2 results](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-11 — MS2 native PBR resource component
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `6097df37`.
+- **Done:** Versioned PBR/tangent resources, pinned straight-RGBA decoding, shared
+  pre-decode payload admission and owned Three resources with actual GPU checks.
+- **Results:** Source12 fast4,150/404, eight affected runtime tests and three
+  identical GPU frames/four faults pass. Source10 broad runtime190/29,
+  integration321/56, Python14, smoke and six native2 groups pass in an earlier stage.
+- **Rejected / retained:** Expected reds, build/lint failures and valid-stride
+  browser rejection remain; that browser's lost terminal is not invented as exit0.
+- **Open / next:** Source/binary composition admission, mip-data and imported
+  preview/export proof; remaining whole MS2 acceptance. Supported packs/pilot 0.
+- **Records:** [PBR API](./native-pbr-resources.md), [import API](./rigid-gltf-import.md),
+  [retained results](./mechanism-shorts-ms2-results.json). No MS2 PR/MS3 or human acceptance.
+
+### 2026-10-11 — MS2 bounded rigid glTF import foundation
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `10dc4d4e`.
+- **Done:** named hierarchy/origins, affine baked positions/normals/tangents, PBR
+  factors/encoded texture roles, canonical dependencies, immutable hashes and 32 KiB metadata.
+- **Results:** current source 8 fast 4,145/403 and 7 filesystem tests; source 6 full
+  runtime 184/28, integration 321/56, depth 14 and smoke precede final importer guards.
+- **Retained:** expected red, missing shared type/wrong PNG settings builds,
+  type-import lint and original write terminal lost after truncation; later source verified.
+- **Next:** pixel decoding/native PBR-tangent consumer/GPU proof, full MS2 registry,
+  preflight/labels/cues/typography/board/full/installed gates. Supported/pilot 0; no MS2 PR/MS3.
+- **Records:** [results](./mechanism-shorts-ms2-results.json),
+  [import API](./rigid-gltf-import.md), [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
+
+### 2026-10-11 — MS2 six bounded camera recipes and actual surface proof
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2`, from `ad079634`.
+- **Done:** six pose-aware recipes/three candidates, safe/reserved region fitting,
+  posed triangle proofs and physical camera checks; held end-camera and explicit
+  cut/transition semantics. Tape edge exposure, darker tie and peg opposing seat views.
+- **Results:** source12 fast4,102/401 + six native/all pack/primitive routes;
+  156 previews/208 surface proofs and12 repeated24-frame exports. Source13 current
+  fast +36 identical plans/156 actual packets/288 export passes replay,0 new captures.
+- **Retained:** typing/defaults, obscured neutral probe, overlap/missing font and
+  replay command-path failures; source2 root receipt unavailable after truncation.
+- **Open:** full import/registry/preflight, labels/cues/typography/topic board and
+  full/installed gates; candidates3/supported/pilot0, no MS2 PR/MS3/human acceptance.
+- **Records:** [results](./mechanism-shorts-ms2-results.json),
+  [API](./mechanism-pack-api.md), [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
+
+### 2026-10-11 — MS2 cable-tie/clothespeg candidates and bound pack metadata
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2` (from `f946e80c`).
+- **Done:** two actual primitive/teaching-shape factories; all-three default/mesh/
+  declaration metadata hashes; seated-only engagement and native non-release
+  capability; stable spring seats under a moved nonuniform mount.
+- **Results:** held source8 fast4,091/400; six native groups; two dimensions per new
+  family/40 previews/eight repeated24-frame exports; tape18 previews/four9-frame
+  exports; current runtime/integration/depth/smoke. Independent replay peaks11.3MB
+  for new families and releases all reservations. Inspected actual images.
+- **Rejected:** build union/access typing, assertion/mount-neutral failures,
+  mistyped schema command, unused-symbol lint and typed interval argument; all
+  retained. T50R inside serrations and door-hinge US5033161 are wrong references.
+- **Next:** cameras/contrast/decisive surfaces, full generator/import/registry/
+  allocation closure, labels/cues/typography/board/full/installed gates.
+  Three candidates, supported/pilot0; no whole MS2 PR or human acceptance.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json),
+  [pack API](./mechanism-pack-api.md).
+
+### 2026-10-11 — Commit bounded shared mechanism primitives
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2` from `9e1bd1ce`.
+- **Done:** Shared closed primitives with strict generated schemas, semantic
+  control/profile checks and cumulative topology/16MiB geometry admission.
+  Dirty cardinalities retain located schema errors before semantic traversal.
+- **Results:** Focused22/2 (new13/original9), final held5 fast4,079/399, seven
+  actual native examples/14 repeat captures and tape18/four9/9 MP4s pass.
+  Source inventory unchanged. Inspected hole/coil/ribbon match final pixels.
+- **Retained:** Initial schema import failure, two failed guards before writes,
+  and genuine empty-hole RED (1 failed/12 passed). Final changed source passes
+  fresh complete fast/primitive/tape checks; earlier green stage stays separate.
+- **Next:** Cable-tie/clothespeg, metadata/import/preflight and camera/label/cue/
+  typography/300-board/full/installed acceptance precede MS2 PR/MS3. Packs/pilot0;
+  primitive software proof does not infer family or human acceptance.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json),
+  [primitive API](./mechanism-primitives.md), [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
+
+### 2026-10-11 — Commit first reusable tape-hook candidate
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2` from `446b5f9f`.
+- **Done:** Strict bounded pack metadata and public tape factory reuse original
+  mesh generation. Source2 mount/reference travel derives from hook thickness;
+  blade-owned rivets and moving-reference contact invariants are checked.
+- **Results:** Two dimensions,18 actual previews, four repeated9/9 final MP4s,
+  independent GPU/frame proof and stream replay pass with all memory released.
+  Refreshed fast 4,066/398 plus six native groups pass. Prior clean Lab source
+  passes complete runtime177/27 + integration321/56 + depth/three Lab smoke groups.
+- **Retained:** Eight initial type errors, loader/failed replacement guard,
+  missing font/unavailable route, missing local start and standalone16MiB replay
+  rejection. Fixed fixture uses existing128MiB worker quota; no limits relaxed.
+- **Next:** Actual images reveal large-housing crop/push-face occlusion. Camera
+  recipes and all remaining MS2 family/authoring/import/full/installed acceptance
+  precede its PR/MS3. Candidate only; supported packs/pilot 0, human review separate.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json),
+  [pack API](./mechanism-pack-api.md), [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
+
+### 2026-10-11 — Commit native2 Lab playback and physical controls
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2` from `9419b798`.
+- **Done:** Await Source2 completion in Lab and rendered QA. Shared session gates
+  acceptance/presentation/export and serializes async drawing; original sync and
+  concurrent media preparation remain. Native controls accept exact mixed variants.
+- **Results:** Refreshed fast 4,060/397, six native browser groups, shared
+  session and original14/integration5/cancellation pass. Actual Lab2 UI20 records
+  cover seeks, edits, Save/reload, playback, QA and saved6/36 MP4; separate original
+  physical UI passes. Held source inventory stays unchanged.
+- **Retained:** Four session RED failures/unhandled rejection; three RED inspector
+  seeds had missing timing, not an inspector proof. Three TS errors and subsequent
+  timing/overlap fixture failures remain; browser RED timed out before readiness.
+- **Next:** Full preflight, three packs/import/camera/label/cue/typography/board and
+  full milestone/installed gates before MS2 PR. Packs/pilot0; human review separate.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json),
+  [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
+
+### 2026-10-11 — Commit normal authenticated native2 final exports
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2` from `d52d4952`.
+- **Done:** Normal renderer selects request/envelope2, awaits actual browser
+  completion and strict Node proof before pixels, and independently replays the
+  retained journal with final movie SHA before publication. Original1 APIs and
+  serialization stay strict1; legacy lifecycle/package consumers require closure1.
+- **Results:** Final refreshed gate2 passes 4,053 units / 396 files, five
+  maintained native suites, two normal mixed MP4s plus captured-worker export,
+  seven real HTTP faults with zero pixels/publication and unused declared2 final1/0.
+  Original14/integration5/cancellation pass; held source inventory stays unchanged.
+- **Retained:** Actual RED and seven build diagnostics. Chromium overwrote the
+  attempted forged Origin; corrected transport requires actual server403.
+- **Next:** Lab, full preflight, three packs/import/camera/label/cue/typography/
+  board and full milestone/installed gates before MS2 PR. Supported packs/pilot 0;
+  generic movie exports do not infer human visual/listening acceptance.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json),
+  [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
+
+### 2026-10-11 — Commit shared native journal and strict async journal2
+
+- **Agent / branch:** Codex on `codex/mechanism-ms2` from `44ab4b2c`.
+- **Done:** Shared durable journal preserves the original synchronous sink and
+  serialization; explicit2 binds sources/appearance/shapes, awaits strict Node
+  proof before pixels, replays bounded retained rows and retires aborted leases.
+- **Results:** Refreshed gate3 passes 4,050 tests / 395 files, all four maintained browser
+  suites, preview-only raw journal6/36 with18 faults and original14/integration5/
+  cancellation. Current code inventory unchanged through checks.
+- **Rejected / retained:** All failed builds/probes/lint remain. Actual host sine
+  differed in the last bit; deterministic scene2 lift preserves exact keys and
+  packed-byte proof. Corrected legacy-target negative; actual post-admission
+  abort RED now GREEN. First build terminal lost, so its log remains qualified.
+- **Next:** Normal authenticated movie/export/upload2 and Lab, full preflight,
+  three packs and all owning MS2 gates before its PR; supported packs/pilot 0.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json),
+  [production plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
+
+### 2026-10-11 — Commit normal native2 source routing and async core preview
+
+- **Branch / source:** `codex/mechanism-ms2`, catalogue checkpoint `996f2f7c`;
+  held inventory10:2,406 inputs / 118,289,027B stays unchanged through final checks.
+- **Done:** verified raw source2 IO, explicit mixed graph dispatch, queued used-byte
+  numeric seals, async core frame completion and ordered mixed observations;
+  prospective64/1MiB admission and unreadable pending/failed/disposed output pixels.
+  Existing E01/export1/inspector adapters explicitly retain their original protocol.
+- **Results:** focused54/5 and final fast4 passes4,036/393; four maintained actual
+  browser suites include fractional composition exposure, exact seeks, mixed1/2
+  inset, preserved cuts and collection-free preview. Original native14/integration5/cancellation pass.
+- **Failures / repairs:** three failed builds, browser scalar/cut fixture expectations, pure
+  import allowlist and original missing-preparation diagnostic; all attempts retained.
+- **Next / limits:** authenticated export2 ledger/closure, Lab consumers and full
+  world preflight; whole MS2 families/authoring acceptance remain open. Core preview
+  and packet examples are not exports, supported packs, pilot or human acceptance.
+  [Results](./mechanism-shorts-ms2-results.json). No MS2 PR/MS3 yet.
+
+### 2026-10-11 — Commit explicit native2 composition catalogue preparation
+
+- **Branch / source:** `codex/mechanism-ms2`, observed-frame checkpoint `a10d640a`;
+  held inventory6:2,400 inputs / 118,226,650B stays unchanged through final checks.
+- **Done:** explicit asset/transport2 declarations, shared mixed-source preparation,
+  declared-source version selection, full rig-track compilation with located first
+  illegal intervals, static constructor overrides and aggregate64 variant admission.
+  Original typed v1 catalogue API and serialized source/frame identities stay exact.
+- **Results:** focused31/3; final fast2 passes4,026/392 (43.87s), maintained scene2
+  world5/stream6/full-frame6 and original native14/integration5/cancellation pass.
+- **Failures / repairs:** two expanded fixture compile errors, overlapping default
+  fixture intervals and unused extracted-key type import repaired; all actual
+  failed checks retained and the overlap rule unchanged.
+- **Next / limits:** normal asset loading/render/export and authenticated observation2
+  integration; whole MS2 families/authoring acceptance still open. Core fixture
+  preparation does not count as an export, pack, pilot or human acceptance.
+  [Results](./mechanism-shorts-ms2-results.json). No MS2 PR/MS3 yet.
+
+### 2026-10-11 — Commit full native2 observed-frame sealing and replay
+
+- **Branch / source:** `codex/mechanism-ms2`, used-stream checkpoint `b23c9412`;
+  final held inventory5 records the exact checked source inputs.
+- **Done:** strict full-frame2/mixed packet contracts, GPU ring means and fresh
+  camera/part/projection/physical visibility sealed before asynchronous hashes;
+  independent source-selected pose/digest/landmark/occlusion checks retain original
+  matrix1e-8/pixel0.5px tolerances and a separate Float32 quantization bound.
+- **Results:** final fast2 passes4,014/391; maintained world5, stream6/eleven
+  negatives and full-frame6/four negatives pass. Fresh Node validates42 positioned
+  and six not-drawn anchors; later CPU pose changes cannot alter sealed A evidence.
+- **Failures / repairs:** compiler types and a stale renamed fixture reference
+  repaired; missing inherited shape ID exception reproduced/repaired. Original
+  build4/focused2/browser1 logs lack their root terminal receipt; fresh gates pass.
+- **Next / limits:** versioned composition/export integration and whole MS2
+  acceptance remain. Contract example is not authenticated export; no family,
+  pilot, human acceptance or MS2 PR yet. [Results](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-11 — Commit independent used native2 color-stream evidence
+
+- **Branch / source:** `codex/mechanism-ms2`, prior world checkpoint `2846e0a3`;
+  final held inventory9:2,387 inputs / 118,124,080B.
+- **Done:** scoped nonzero indexed draws, actual used-buffer/layout reads, sealed
+  shape/topology/template/material groups, exact intended packed-LE comparison
+  and GPU landmark means; explicit proof intervals and verified not-drawn states.
+  Managed receipt/readback owners and abort/observer/world disposal are bounded.
+- **Results:** final fast3 passes4,002 units / 390 files; maintained five world
+  frames and six GPU controls/eleven negatives pass. Fresh Node replay checks24
+  used digests/24 landmarks; stale A/CPU B and wrong A normals fail on actual draws.
+- **Failures / repairs:** type admission, refined-schema startup, zero-seed
+  diagnostic and cleanup-lint failures retained. Separate real-browser red
+  reproduced successful finalization after world disposal; repaired and verified.
+  Original missing-route red log has no retained process terminal receipt.
+- **Next / limits:** whole observed-frame2 and versioned composition/export
+  integration. Generic fixtures do not count as reusable families, pilot support
+  or human visual/listening acceptance; MS2 PR remains pending the whole milestone.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-11 — Commit bounded owned native2 browser worlds
+
+- **Branch / source:** `codex/mechanism-ms2`, data adapter checkpoint `a9760b00`.
+- **Done:** isolated changing clones; shared live mesh/stream/vertex/triangle caps;
+  atomic shape/topology admission, absolute Float32 positions/normals and upload
+  versions/bounds before rendering; seek/alias isolation and managed cleanup.
+  Original v1 public frame method type stays exact; new browser gate is maintained.
+- **Results:** focused27/build1; final sequential fast2 passes3,990 units / 389 files
+  (49.34s), five real scene2 factory frames and existing native14/integration5/
+  cancellation controls. Held source stays unchanged; identity closure345/79.
+- **Failures / repairs:** missing owned-world route is reproduced; receipt typing
+  fails build2 before browser work, and type-only test import fails fast1 lint.
+  A separate compile regression reproduces widened v1 method typing; all are
+  repaired with strict assertions retained. Earlier actual runs remain recorded.
+- **Next / limits:** independent used-GPU bytes/draw groups/landmarks and versioned
+  composition/export transport before MS2 packs and authoring/family acceptance.
+  Factory pixels are a generic fixture; no pilot, full family or human pass.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-11 — Commit native2 preparation and expected snapshots
+
+- **Branch / source:** `codex/mechanism-ms2`, posed checkpoint `ef7d2ea8`.
+- **Done:** additive source/frame versions; async geometry/topology SHA checks;
+  immutable style variants and neutral seat association; exclusive `rigControls`;
+  fractional source clocks, random seeks and expected visibility on posed vertices.
+- **Results:** focused24, build1 and full fast2 pass (3,978 tests / 388 files,
+  52.80s units). Inputs remain unchanged. Normal schema/identity generation records
+  344 first-party / 79 external modules; prior producer identities stay fixed.
+- **Failures / repairs:** missing native2 route is reproduced before implementation.
+  Fast1 passes3,977/fails1 exhaustive field fixture; a separate v2 writer admission
+  case fixes coverage without dropping assertions or changing v1 render fixtures.
+- **Next / limits:** bounded owned changing geometry, actual GPU streams/landmarks,
+  versioned composition/export transport and remaining MS2 families/authoring checks.
+  This data adapter does not claim independent rendered or pilot acceptance.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-11 — Commit posed parts and closed teaching generators
+
+- **Branch / source:** `codex/mechanism-ms2`, rig-track checkpoint `1d8ae025`.
+- **Done:** reference-frame slider/hinge poses; fixed-root pawl and seated coil/legs;
+  posed seat-local tangents, fixed topology/neutral association, immutable streams,
+  channel/pitch limits and pure expected relationship residuals.
+- **Results:** 36 focused checks, build2, bounded ID/schema probe and full fast1
+  pass (3,966 tests / 387 files, 46.89s units). Held inputs are unchanged.
+- **Failures / repairs:** prior valid-ID false writer conflict is reproduced, then
+  repaired; first posed run passes25/fails1 Zod record admission, and build1 fails
+  readonly source cloning. Both are repaired. IPC setup failure runs no assertions;
+  the same schema probe passes through the Node loader. Raw evidence is retained.
+- **Next / limits:** async native topology SHA binding, versioned transport and
+  actual GPU streams/landmarks before frame publication; then three packs and
+  remaining MS2 acceptance. No render, pilot or human acceptance is claimed here.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-11 — Commit deterministic reusable rig tracks
+
+- **Branch / source:** `codex/mechanism-ms2`, scene/frame checkpoint `f7659740`.
+- **Done:** full-track hard stops, writer conflicts, return stops/continuity,
+  illegal ratchet reverse intervals and immutable history-independent sampling.
+- **Results:** 12 focused checks, build and full fast1 pass (3,952 tests / 386 files,
+  42.36s units); held source inventory is unchanged. No track assertion was weakened.
+- **Next / limits:** apply scalars to part poses, sample closed shapes and validate
+  their fixed topology; native draw/visibility/observation integration follows.
+  Three packs and all remaining MS2 acceptance remain required before its PR.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-11 — Commit scene2 and frame2 contracts
+
+- **Branch / source:** `codex/mechanism-ms2`, first contract slice `a6c400eb`.
+- **Done:** explicit scene2/frame2, part/reference cycles, writer/shape ownership,
+  generated landmark references, aggregate geometry limits and pack references.
+- **Results:** 12 focused negatives/admission checks, build and full fast2 pass
+  (3,940 tests / 385 files, 46.99s units). Held source inputs remain unchanged.
+- **Failure / repair:** fast1 passes schema/boundaries, then fails formatting in
+  the scene validator. Formatter repair and actual rerun are retained separately.
+- **Next / limits:** deterministic full-track rig and closed-shape evaluation;
+  native dynamic observations, three packs and remaining MS2 requirements follow.
+  No rendering, pilot support or milestone completion is claimed by contracts.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json).
+
+### 2026-10-11 — Commit the reusable rig and teaching-shape contracts
+
+- **Branch / source:** `codex/mechanism-ms2`, prerequisite merge `c09e76e4`.
+- **Done:** bounded slider, hinge, return and ratchet declarations/controls; closed
+  pawl/spring declarations, fixed changing-buffer caps and located negatives.
+- **Results:** 11 focused checks and fresh `check:fast` pass (3,928 tests / 383
+  files, 40.78s units). Selected inputs remain unchanged across the gate.
+- **Failures / repairs:** fast1 stops at stale generated source membership; normal
+  regeneration adds two references. Fast2 passes through lint, then build rejects
+  optional typing; the helper annotation is repaired. Both actual failures remain.
+- **Next / limits:** scene2/frame2 ownership and references, then pure evaluation.
+  Reusable packs, dynamic draws, pilot and milestone completion remain unverified.
+- **Records:** [MS2 results](./mechanism-shorts-ms2-results.json),
+  [owning plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
+
+### 2026-10-10 — Open native PR and begin the separate MS2 branch
+
+- **Done:** native software evidence committed at `bf30a253`;
+  [PR #56](https://github.com/xxibcill/still-shift/pull/56) is open against `main`
+  and attached. All77 groups/176 frozen baselines/actual benchmark completed in
+  stages at helda387; human review and cross-driver failure remain separate.
+- **Branch / integration:** `codex/mechanism-ms2` begins from refreshed `main`
+  `3fab0162` and merges exact native prerequisite. Preserve the0.1.1 release
+  metadata/package guides and both logs; resolve only two prose conflicts.
+- **Next:** verify the merged source, then implement reusable contracts/rigs and
+  packs. No MS2 support, pilot, publication or milestone PR merge is claimed.
+- **Records:** [Native completion](./mechanism-shorts-ms1n-completion.md),
+  [MS2 plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring).
 
 ### 2026-10-10 — Native software gate completes in recorded stages
 
@@ -723,7 +2140,7 @@ still hold before relying on them.
 
 - **Agent / branch:** Codex on `codex/mechanism-ms1n`, held `1949ae2f`.
 - **Results:** ordinary fullgate1 exits1; preludes/build and381 files/3,915 units pass.
-  Runtime passes169/170 tests, then `mechanism-package.test.ts:388` expects
+  Runtime passes 169/170 tests, then `mechanism-package.test.ts:388` expects
   `AnimationEngineError` but receives `Error: Synthetic package cancellation`.
 - **Retained:** exact collector exit/run/log identities, one completed required
   group, failed runtime group and75 not-run suffix groups. Source/HEAD stay exact
@@ -1425,21 +2842,35 @@ still hold before relying on them.
 - **Records:** [MS0 PR](https://github.com/xxibcill/still-shift/pull/51),
   [production plan](./mechanism-shorts-production-plan.md).
 
-### 2026-10-12 — Resolve MS0 PR #51 conflicts
+### 2026-10-09 — Complete MS0 baseline and input audit
 
-- **Agent / branch:** Codex resolving `codex/mechanism-ms0` in an isolated worktree;
-  original checkout edits preserved.
-- **Done:** merge `main` `3fab0162` into MS0 `d55908fa`; resolve `ROADMAP.md` and
-  `docs/dev-log.md`, retaining the required MS1N stage and both dated histories.
-  Refresh current release references to 0.1.1; preserve all original MS0 audit JSON.
-- **Verification:** pinned Node 22.23.1 / pnpm 10.29.3; all 12 PR documents pass
-  Prettier and whitespace checks. No unresolved conflicts/markers; both complete
-  log histories, original MS0 JSON and release evidence are preserved. Initial
-  roadmap formatting warning repaired and the full document check rerun passed.
-- **Limits / next:** documentation-only diff against `main`; no new software,
-  release or render gate. PR integration and human acceptance remain separate.
-- **Records:** [PR #51](https://github.com/xxibcill/still-shift/pull/51),
-  [MS0 audit](./mechanism-shorts-ms0-results.json), [release record](./npm-release-results.json).
+- **Agent / branch:** Codex on `codex/mechanism-ms0` from `main` `e6eb7b06`.
+- **Done:** restore required plans in `2b72ae42`; recover/hash original E01 inputs,
+  verify font cut/cmap, freeze nine-shot/label/event map and physical contact names.
+  Publish current API/font audits, visual rubric, comparable telemetry protocol,
+  package boundaries, provisional resource limits and milestone slice estimates.
+- **Verification:** pinned toolchain/real browser startup, document formatting and
+  references; five historical gate artifacts rehashed. Source/build inputs unchanged
+  from released checkpoint. Independent review's three findings repaired and verified.
+- **Failures / limits:** initial link-check regex failed; corrected run found two
+  references, now fixed. No new software gate, episode render or human acceptance;
+  historical release remains passed in stages. Tokens/labor savings remain null.
+- **Next:** create MS0 PR, then a separate MS1 branch carrying its exact dependency.
+- **Records:** [results](./mechanism-shorts-ms0-results.json),
+  [inventory](./mechanism-shorts-ms0-inputs.json), [protocol](./mechanism-shorts-ms0-baseline.md).
+
+### 2026-10-09 — Activate ordered mechanism implementation
+
+- **Agent / branch:** Codex on `codex/mechanism-ms0`, based on `main` `e6eb7b06`.
+- **Scope:** owner-authorized MS0 audit, then MS1 → MS1N → MS2 → MS3; one branch
+  and PR for each milestone. Active goal created; isolated worktree preserves
+  unrelated original edits. Restore only the required mechanism/typography plans.
+- **Progress:** three parallel read-only audits cover original E01 inputs, current
+  composition APIs and typography/probe routes. Customer source project is found.
+- **Verification / next:** locked dependencies installed offline; record actual
+  source/input hashes, current closure evidence and baseline protocol before MS0 PR.
+- **Records:** [production plan](./mechanism-shorts-production-plan.md),
+  [feedback coverage](./mechanism-shorts-feedback-coverage-audit-2026-10-07.md).
 
 ### 2026-10-10 — Publish and verify documentation patch 0.1.1
 
@@ -1477,36 +2908,6 @@ still hold before relying on them.
 - **Limits:** no publication or human visual/listening acceptance is inferred.
 - **Records:** [refresh evidence](./usage-docs-refresh-results.json),
   [release procedure](./npm-release-plan.md).
-
-### 2026-10-09 — Complete MS0 baseline and input audit
-
-- **Agent / branch:** Codex on `codex/mechanism-ms0` from `main` `e6eb7b06`.
-- **Done:** restore required plans in `2b72ae42`; recover/hash original E01 inputs,
-  verify font cut/cmap, freeze nine-shot/label/event map and physical contact names.
-  Publish current API/font audits, visual rubric, comparable telemetry protocol,
-  package boundaries, provisional resource limits and milestone slice estimates.
-- **Verification:** pinned toolchain/real browser startup, document formatting and
-  references; five historical gate artifacts rehashed. Source/build inputs unchanged
-  from released checkpoint. Independent review's three findings repaired and verified.
-- **Failures / limits:** initial link-check regex failed; corrected run found two
-  references, now fixed. No new software gate, episode render or human acceptance;
-  historical release remains passed in stages. Tokens/labor savings remain null.
-- **Next:** create MS0 PR, then a separate MS1 branch carrying its exact dependency.
-- **Records:** [results](./mechanism-shorts-ms0-results.json),
-  [inventory](./mechanism-shorts-ms0-inputs.json), [protocol](./mechanism-shorts-ms0-baseline.md).
-
-### 2026-10-09 — Activate ordered mechanism implementation
-
-- **Agent / branch:** Codex on `codex/mechanism-ms0`, based on `main` `e6eb7b06`.
-- **Scope:** owner-authorized MS0 audit, then MS1 → MS1N → MS2 → MS3; one branch
-  and PR for each milestone. Active goal created; isolated worktree preserves
-  unrelated original edits. Restore only the required mechanism/typography plans.
-- **Progress:** three parallel read-only audits cover original E01 inputs, current
-  composition APIs and typography/probe routes. Customer source project is found.
-- **Verification / next:** locked dependencies installed offline; record actual
-  source/input hashes, current closure evidence and baseline protocol before MS0 PR.
-- **Records:** [production plan](./mechanism-shorts-production-plan.md),
-  [feedback coverage](./mechanism-shorts-feedback-coverage-audit-2026-10-07.md).
 
 ### 2026-10-09 — Adopt release branches and contribution rules
 

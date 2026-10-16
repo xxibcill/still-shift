@@ -1,0 +1,277 @@
+{
+  "version": 1,
+  "date": "2026-10-12",
+  "branch": "codex/mechanism-ms2",
+  "baseCommit": "24736d77",
+  "status": "existing-spoken-input-identity-and-cue-association-audited",
+  "scope": "Recover and pin existing customer audio and supplied word/shot timing for three families; no new synthesis, decode, compilation, render or human acceptance.",
+  "sources": {
+    "collection": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/First 10 Narration v003",
+    "generationRecord": {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/First 10 Narration v003/production.json",
+      "bytes": 14588,
+      "sha256": "3c36785a6e6e0802f7a10e76c58460073f0c893caf246c82a5d75cb96a8ad13b"
+    },
+    "shotCueRecord": {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/First 10 Narration v003/Shot Audio Cues.json",
+      "bytes": 22144,
+      "sha256": "fe49ddbcddf11021af116b4207d9d1bbc1fe629894c89b5a1dd3a615374bbb59"
+    },
+    "metadataPolicy": "Only local paths, raw-file hashes, text hashes, counts and timing are retained. Signed download URLs, generation credentials and full transcripts are excluded. Stored historical spending authorization is not reused."
+  },
+  "takes": [
+    {
+      "id": "EU-001",
+      "family": "tape-hook",
+      "role": "existing unpaced generated spoken take, local reuse only",
+      "audio": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/First 10 Narration v003/audio/EU-001-narration-v003-take01.mp3",
+        "bytes": 331057,
+        "sha256": "c109f76f4bc758d929d2c21f255ca9c7e578bc4967a2b566fd94ac12a8e244b3"
+      },
+      "transcript": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/First 10 Narration v003/transcripts/EU-001-words.json",
+        "bytes": 9630,
+        "sha256": "ce95f6bc740311a941e403f96d58b3896ea228a72d2362b258fa09bc34f4e92c"
+      },
+      "textSha256": "d6455dfb9bfccce964b95335a0c6bd204ecf5a31b3b0749b4ef2cb82cda2c866",
+      "wordCount": 61,
+      "recordedDurationSeconds": 19.551202,
+      "recordedSpokenEndSeconds": 19.55,
+      "latestWordEndSeconds": 19.551,
+      "transcriptEndMinusRecordedDurationSeconds": "-0.000202",
+      "recordAssociation": {
+        "recordedAudioSha256Matches": true,
+        "transcriptGenerationIdMatches": true,
+        "normalizedPromptTextMatches": true,
+        "orderedNonOverlappingWords": true,
+        "cueRangesCoverEveryWordExactlyOnce": true,
+        "cueCount": 4
+      },
+      "cues": [
+        {
+          "id": "EU-001-S01",
+          "wordRangeOneBasedInclusive": [1, 9],
+          "speechSeconds": [0, 2.856],
+          "provisionalVisualSeconds": [0, 3.297],
+          "narrationTextSha256": "6ec7ababf4a2066b74e2e58d29ab0d7daf1333bef405263104cb4ed26f57e176",
+          "audioSha256": "c109f76f4bc758d929d2c21f255ca9c7e578bc4967a2b566fd94ac12a8e244b3"
+        },
+        {
+          "id": "EU-001-S02",
+          "wordRangeOneBasedInclusive": [10, 33],
+          "speechSeconds": [3.297, 10.054],
+          "provisionalVisualSeconds": [3.297, 10.495],
+          "narrationTextSha256": "a6d65f017e84844fb2abef145001ca32aa620b9c1c8751ee2a64f80e7c688b08",
+          "audioSha256": "c109f76f4bc758d929d2c21f255ca9c7e578bc4967a2b566fd94ac12a8e244b3"
+        },
+        {
+          "id": "EU-001-S03",
+          "wordRangeOneBasedInclusive": [34, 43],
+          "speechSeconds": [10.495, 13.235],
+          "provisionalVisualSeconds": [10.495, 13.676],
+          "narrationTextSha256": "6fb1da5f269646165a523e08517b6e3e26bd49af666a937e1dd83c74e9004f00",
+          "audioSha256": "c109f76f4bc758d929d2c21f255ca9c7e578bc4967a2b566fd94ac12a8e244b3"
+        },
+        {
+          "id": "EU-001-S04",
+          "wordRangeOneBasedInclusive": [44, 61],
+          "speechSeconds": [13.676, 19.551],
+          "provisionalVisualSeconds": [13.676, 19.551202],
+          "narrationTextSha256": "f4468a1038991de04b94ef038390fe2a09f4380cd36e2672d5115300e3c77d7d",
+          "audioSha256": "c109f76f4bc758d929d2c21f255ca9c7e578bc4967a2b566fd94ac12a8e244b3"
+        }
+      ]
+    },
+    {
+      "id": "EU-002",
+      "family": "cable-tie",
+      "role": "existing unpaced generated spoken take, local reuse only",
+      "audio": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/First 10 Narration v003/audio/EU-002-narration-v003-take01.mp3",
+        "bytes": 362404,
+        "sha256": "595f1d3e7ce79f162b9ca80ae712dbaccd3e9ac9a6c51c16b6cc343c2ac94f64"
+      },
+      "transcript": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/First 10 Narration v003/transcripts/EU-002-words.json",
+        "bytes": 9747,
+        "sha256": "5fd556e57c0d3ff9505c85b7e41161c89067681fea807653e142a36a29b53741"
+      },
+      "textSha256": "2fa7470a3188333a6a7a1f7a11ccc6bfa9a7970ec44682a6b3adc21eaec2d1af",
+      "wordCount": 62,
+      "recordedDurationSeconds": 21.501678,
+      "recordedSpokenEndSeconds": 21.5,
+      "latestWordEndSeconds": 21.502,
+      "transcriptEndMinusRecordedDurationSeconds": "0.000322",
+      "recordAssociation": {
+        "recordedAudioSha256Matches": true,
+        "transcriptGenerationIdMatches": true,
+        "normalizedPromptTextMatches": true,
+        "orderedNonOverlappingWords": true,
+        "cueRangesCoverEveryWordExactlyOnce": true,
+        "cueCount": 4
+      },
+      "cues": [
+        {
+          "id": "EU-002-S01",
+          "wordRangeOneBasedInclusive": [1, 15],
+          "speechSeconds": [0, 4.923],
+          "provisionalVisualSeconds": [0, 5.364],
+          "narrationTextSha256": "218598ad0ce57b49fd51a6623ae6b7fe57b8d05aa8f449c3056a63028a7b959c",
+          "audioSha256": "595f1d3e7ce79f162b9ca80ae712dbaccd3e9ac9a6c51c16b6cc343c2ac94f64"
+        },
+        {
+          "id": "EU-002-S02",
+          "wordRangeOneBasedInclusive": [16, 27],
+          "speechSeconds": [5.364, 9.334],
+          "provisionalVisualSeconds": [5.364, 9.845],
+          "narrationTextSha256": "b152053a989513c7e758832056e3843576a442359692324a07e00c893dfd311a",
+          "audioSha256": "595f1d3e7ce79f162b9ca80ae712dbaccd3e9ac9a6c51c16b6cc343c2ac94f64"
+        },
+        {
+          "id": "EU-002-S03",
+          "wordRangeOneBasedInclusive": [28, 42],
+          "speechSeconds": [9.845, 14.989],
+          "provisionalVisualSeconds": [9.845, 15.372],
+          "narrationTextSha256": "60df2cfefb60b1e57bdddc8ad4d1ab9288ef3ac03c227103c108b4e87fabb255",
+          "audioSha256": "595f1d3e7ce79f162b9ca80ae712dbaccd3e9ac9a6c51c16b6cc343c2ac94f64"
+        },
+        {
+          "id": "EU-002-S04",
+          "wordRangeOneBasedInclusive": [43, 62],
+          "speechSeconds": [15.372, 21.502],
+          "provisionalVisualSeconds": [15.372, 21.501678],
+          "narrationTextSha256": "82c58914f693907ea4f1a2fff6fd68f036cd999674a591c6a7661657ee6a03f0",
+          "audioSha256": "595f1d3e7ce79f162b9ca80ae712dbaccd3e9ac9a6c51c16b6cc343c2ac94f64"
+        }
+      ]
+    },
+    {
+      "id": "EU-003",
+      "family": "clothespeg",
+      "role": "existing unpaced generated spoken take, local reuse only",
+      "audio": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/First 10 Narration v003/audio/EU-003-narration-v003-take01.mp3",
+        "bytes": 360732,
+        "sha256": "ef81bdc574bc86457ae6d3ba75c76fd389c23b13f46f4bb8b393d69f6974d9f5"
+      },
+      "transcript": {
+        "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/First 10 Narration v003/transcripts/EU-003-words.json",
+        "bytes": 9573,
+        "sha256": "429226f79a9132c4763c9ddc93be43b64a96d900b41226b5715b289218b9fec1"
+      },
+      "textSha256": "e8f5d928166e9fdd78404591837b2809c460d17d434b81eeb122fb938089f6c4",
+      "wordCount": 60,
+      "recordedDurationSeconds": 21.408798,
+      "recordedSpokenEndSeconds": 21.41,
+      "latestWordEndSeconds": 21.409,
+      "transcriptEndMinusRecordedDurationSeconds": "0.000202",
+      "recordAssociation": {
+        "recordedAudioSha256Matches": true,
+        "transcriptGenerationIdMatches": true,
+        "normalizedPromptTextMatches": true,
+        "orderedNonOverlappingWords": true,
+        "cueRangesCoverEveryWordExactlyOnce": true,
+        "cueCount": 5
+      },
+      "cues": [
+        {
+          "id": "EU-003-S01",
+          "wordRangeOneBasedInclusive": [1, 9],
+          "speechSeconds": [0, 3.181],
+          "provisionalVisualSeconds": [0, 3.564],
+          "narrationTextSha256": "48af9c0468edf09d8bb0593a89e8e71028d4ea674b79467d4379b9ff7c0c672e",
+          "audioSha256": "ef81bdc574bc86457ae6d3ba75c76fd389c23b13f46f4bb8b393d69f6974d9f5"
+        },
+        {
+          "id": "EU-003-S02",
+          "wordRangeOneBasedInclusive": [10, 27],
+          "speechSeconds": [3.564, 10.089],
+          "provisionalVisualSeconds": [3.564, 10.368],
+          "narrationTextSha256": "f2261779223b27efd4ed77948ad5c22b57fa63d0ec586924dd17e1cc598bf05a",
+          "audioSha256": "ef81bdc574bc86457ae6d3ba75c76fd389c23b13f46f4bb8b393d69f6974d9f5"
+        },
+        {
+          "id": "EU-003-S03",
+          "wordRangeOneBasedInclusive": [28, 37],
+          "speechSeconds": [10.368, 13.305],
+          "provisionalVisualSeconds": [10.368, 13.63],
+          "narrationTextSha256": "f6c729dc3a6e8120fce10f97d00f3d75003aed685c4757b7ed61f0e366231b15",
+          "audioSha256": "ef81bdc574bc86457ae6d3ba75c76fd389c23b13f46f4bb8b393d69f6974d9f5"
+        },
+        {
+          "id": "EU-003-S04",
+          "wordRangeOneBasedInclusive": [38, 52],
+          "speechSeconds": [13.63, 17.949],
+          "provisionalVisualSeconds": [13.63, 18.332],
+          "narrationTextSha256": "3e01c41b8ff0aee4faf95720ab969fdbdf04b5a027e376932ddaa60d5644c9e7",
+          "audioSha256": "ef81bdc574bc86457ae6d3ba75c76fd389c23b13f46f4bb8b393d69f6974d9f5"
+        },
+        {
+          "id": "EU-003-S05",
+          "wordRangeOneBasedInclusive": [53, 60],
+          "speechSeconds": [18.332, 21.409],
+          "provisionalVisualSeconds": [18.332, 21.408798],
+          "narrationTextSha256": "f4b43a7358034ed802339770f87faa5f9d7eacadb7f7b28232f9856d0337448d",
+          "audioSha256": "ef81bdc574bc86457ae6d3ba75c76fd389c23b13f46f4bb8b393d69f6974d9f5"
+        }
+      ]
+    }
+  ],
+  "shorterTapeHookPair": {
+    "originalSelectedTake": {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/assets/narration-take-2.mp3",
+      "bytes": 386645,
+      "sha256": "dfc4bb322f2c14a9966e72677e4ac433039ee70eed5af21c92f932e6160800dd"
+    },
+    "originalTranscript": {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E01 Tape Hook/assets/transcription.json",
+      "bytes": 6982,
+      "sha256": "a4464b86ffceb27ccf8baf690a0662044757bb5233f7dabfe0be58c09ff2ea09"
+    },
+    "originalDurationSecondsFromMS0Receipt": "23.034195",
+    "replacementId": "EU-001",
+    "replacementRecordedDurationSeconds": "19.551202",
+    "recordedReductionSeconds": "3.482993",
+    "normalizedTranscriptCopyMatches": false,
+    "originalTranscriptTextSha256": "cc97cef5546c16017ede8862ec3e3893ec6369ed059a069b8310525692fac7eb",
+    "replacementTranscriptTextSha256": "d6455dfb9bfccce964b95335a0c6bd204ecf5a31b3b0749b4ef2cb82cda2c866",
+    "copyDisposition": "The replacement uses revised wording about inside/outside faces and thickness compensation. Bind its own transcript and regenerate all dependent captions/cues; semantic/visual acceptance is still required.",
+    "scope": "Existing distinct takes with different supplied copy and timing. Fresh decoding must determine the authoritative 48kHz sample counts before cue compilation; no stretch, silence insertion or successful recompilation is claimed."
+  },
+  "familyCompatibilityReview": {
+    "tape-hook": "Recovered copy describes inside/outside contact and thickness compensation, matching the candidate floating-hook explanation; authored event/pose/visual proof remains required.",
+    "cable-tie": "Recovered copy describes an integral plastic tongue, forward tooth passage and blocked reverse. Keep the non-releasable pack guard; do not animate a product release or an illegal engaged reverse key.",
+    "clothespeg": "Recovered copy describes wooden arms, spring return and fabric arresting closure while bias remains. The existing explanatory rig is not a force/stiffness solver; genuine cue/visual/factual review remains required."
+  },
+  "verification": {
+    "independentAudit": "passed-after-retained-copy-identity-failure",
+    "auditAttempts": [
+      {
+        "attempt": 1,
+        "status": "failed-identical-transcript-assumption",
+        "cause": "Original E01 selected take and v003 use revised wording. No audio or source mutation. Exact text equality is not claimed, and valid shorter-take semantics/reading/compile still require verification."
+      },
+      {
+        "attempt": 2,
+        "status": "passed-identity-cue-associations-only"
+      }
+    ],
+    "currentAudioHashesMatched": 4,
+    "threeFamilyTranscriptAssociationsMatched": 3,
+    "wordCounts": [61, 62, 60],
+    "suppliedCuesMatched": 13,
+    "unprocessedV003TakesOnly": true,
+    "newAudioGenerations": 0,
+    "newElevenLabsSpending": 0,
+    "full51Gate": "Separate live software gate on held 5e7f49e5 inputs; these newly recovered external inputs are not consumed by that aggregate or covered by its source inventory."
+  },
+  "remaining": [
+    "Fresh bounded audio decode/probe, sample-clock and source-edge verification; compare unchanged source samples through new exports. Historical receipt durations are not a fresh codec/sample-count measurement.",
+    "Clamp only authoring cue endpoints to the actual decoded source bound where rounded supplied transcript times slightly overrun it, with the exact correction retained. Do not stretch or pad narration to fit a template.",
+    "Author and check genuine three-family cue documents, semantic order, reading/action holds and valid shorter-take recompilation. Prior synthetic PCM results do not close these checks.",
+    "Complete actual native exports, final encoded/layout/readability evidence and independent replay/audio verification for these spoken fixtures after the owning full gate completes; do not launch competing render groups now.",
+    "Broader requested annotation styles/world-text/surface routes, label-only plate reuse, whole-resource/lifetime, final installed/pack admission and MS2 PR remain open. Supported packs0; accepted pilot episodes0; MS3 not started.",
+    "Customer media stay outside Git. Existing local reuse does not establish public redistribution permission or human/factual/listening acceptance."
+  ]
+}
