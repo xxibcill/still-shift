@@ -42,6 +42,32 @@ async function run(args: string[]) {
   };
 }
 describe("saved family transactions and CLI", () => {
+  it.each(["compile", "prepare", "render", "check"])(
+    "rejects %s for family authoring instead of reporting inspection as completed lifecycle work",
+    async (command) => {
+      const { path } = await fixture(),
+        before = await readFile(path);
+      const result = await run([
+        command,
+        "--authoring",
+        "family",
+        "--input",
+        path,
+      ]);
+      expect(result.code).toBe(2);
+      expect(result.receipt).toMatchObject({
+        command,
+        status: "failed",
+        summary: {
+          code: "mechanism-authoring-command",
+          path: "--authoring",
+        },
+      });
+      expect(result.receipt.summary.message).toContain(command);
+      expect(await readFile(path)).toEqual(before);
+      expect(await readdir(join(path, ".."))).toEqual(["family.json"]);
+    },
+  );
   it("saves a fresh document, reopens its actual generated identity and preserves existing destinations", async () => {
     const { path, current } = await fixture();
     const before = await readFile(path);
@@ -176,6 +202,17 @@ describe("saved family transactions and CLI", () => {
       path,
     ]);
     expect(summary.receipt.summary.revision).toBe(1);
+    const validated = await run([
+      "validate",
+      "--authoring",
+      "family",
+      "--input",
+      path,
+    ]);
+    expect(validated.code).toBe(0);
+    expect(validated.receipt.summary.projectHash).toBe(
+      summary.receipt.summary.projectHash,
+    );
     const copy = join(dir, "copy", "family.json"),
       save = await run([
         "save",

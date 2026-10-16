@@ -5,9 +5,9 @@ import { join } from "node:path";
 import { promisify } from "node:util";
 import { afterEach, describe, expect, it } from "vitest";
 import {
-  NativeObservationSink,
-  type NativeObservationExecutionBinding,
-  verifyNativeObservationClosure,
+  NativeObservationSinkV2,
+  NativeObservationExecutionV2Schema,
+  verifyNativeObservationClosureV2,
 } from "../../packages/execution-runtime/src/export-worker.ts";
 import { canonicalMechanismJson } from "../../packages/renderer-core/src/mechanism/canonical.ts";
 
@@ -15,15 +15,15 @@ const hash = (bytes: Uint8Array | string) =>
   "sha256:" + createHash("sha256").update(bytes).digest("hex");
 const sha = "sha256:" + "a".repeat(64);
 const identity = {
-  runtimeFormat: "source-ts" as const,
+  runtimeFormat: "source-ts",
   modules: [{ name: "renderer.ts", sha256: sha }],
   threeRuntime: {
-    version: "0.186.0" as const,
+    version: "0.186.0",
     sources: [{ name: "three.module.js", sha256: sha }],
   },
 };
-const execution: NativeObservationExecutionBinding = {
-  version: "native-observation-execution-1",
+const execution = NativeObservationExecutionV2Schema.parse({
+  version: "native-observation-execution-2",
   compositionSourceSha256: sha,
   compositionSha256: sha,
   preparedNativeSha256: sha,
@@ -31,8 +31,20 @@ const execution: NativeObservationExecutionBinding = {
   appearanceCodeIdentity: identity,
   backend: "webgl2",
   profile: "native-three-aces-hdr-msaa4-1",
-  sources: [],
-};
+  sources: [
+    {
+      asset: "unused2",
+      sourceVersion: "mechanism-scene-2",
+      sourceKey: "native3d-source-1:" + "a".repeat(64) + ":" + "a".repeat(64),
+      sourceSha256: sha,
+      originalGeometrySha256: sha,
+      effectiveSceneSha256: sha,
+      geometrySha256: sha,
+      meshDataSha256: sha,
+      shapeAssociations: [],
+    },
+  ],
+});
 const roots: string[] = [];
 afterEach(async () => {
   for (const directory of roots.splice(0))
@@ -41,7 +53,7 @@ afterEach(async () => {
 async function journal() {
   const directory = await mkdtemp("/private/tmp/native-journal-admission-");
   roots.push(directory);
-  const sink = new NativeObservationSink({
+  const sink = new NativeObservationSinkV2({
     outputPath: join(directory, "empty.rgba"),
     exportId: "admission-regression",
     frameCount: 1,
@@ -55,7 +67,7 @@ async function journal() {
       0,
       new TextEncoder().encode(
         JSON.stringify({
-          version: "native3d-observed-output-frame-1",
+          version: "native3d-observed-output-frame-2",
           outputFrame: 0,
           executionSha256: sink.executionSha256,
           passes: [],
@@ -83,7 +95,7 @@ async function journal() {
       await rename(publication.staged, publication.destination);
     const input = { closure, execution, output };
     expect(
-      await verifyNativeObservationClosure({
+      await verifyNativeObservationClosureV2({
         ...input,
         expectedPasses: () => [],
       }),
@@ -105,7 +117,7 @@ async function journal() {
   }
 }
 
-describe("retained native observation files", () => {
+describe("retained native observation v2 files", () => {
   it.each(["manifest", "shard"] as const)(
     "retains regular-file symlink compatibility for the %s locator",
     async (kind) => {
@@ -115,7 +127,7 @@ describe("retained native observation files", () => {
       await rename(path, target);
       await symlink(target, path);
       expect(
-        await verifyNativeObservationClosure({
+        await verifyNativeObservationClosureV2({
           ...fixture.input,
           expectedPasses: () => [],
         }),
@@ -144,10 +156,10 @@ describe("retained native observation files", () => {
           "--input-type=module",
           "--eval",
           `import assert from "node:assert/strict";
-         import { verifyNativeObservationClosure } from "./packages/execution-runtime/src/export-worker.ts";
+         import { verifyNativeObservationClosureV2 } from "./packages/execution-runtime/src/export-worker.ts";
          const input = JSON.parse(process.argv[1]);
          let reserved = 0;
-         await assert.rejects(verifyNativeObservationClosure({
+         await assert.rejects(verifyNativeObservationClosureV2({
            ...input, expectedPasses: () => [],
            reserve(bytes) { reserved += bytes; return { release() { reserved -= bytes; } }; },
          }), /regular file/);

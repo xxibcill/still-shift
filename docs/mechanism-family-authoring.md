@@ -65,7 +65,9 @@ pnpm still-shift episode summary --authoring family --input /tmp/demo/family.jso
 pnpm still-shift episode schema --kind family-patch --output /tmp/family-patch.schema.json
 ```
 
-`save`, `validate` and `summary` also accept `--authoring family`. Saving a copy to a
+`save`, `validate` and `summary` also accept `--authoring family`. Family authoring
+supports only inspect, validate, summary, save and patch; lifecycle commands reject
+with a located `mechanism-authoring-command` diagnostic. Saving a copy to a
 fresh location is supported because the family document has no media dependency
 paths. Replacing an existing destination requires both `--base-revision` and
 `--base-hash`, with the next revision in the input document. Responses retain

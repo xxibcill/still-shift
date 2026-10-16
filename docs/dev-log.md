@@ -43,6 +43,21 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #58 conflicts resolved and verified (2026-10-16):** merge `main`
+  `cfe2bc3f` into PR head `981e7403`, preserving both parents and histories.
+  Keep one complete upstream v1/v2 observation suite each and the family command
+  allowlist. Fast 4,608 units; runtime/integration, Python 14 and smoke complete in
+  recorded stages. Three initial 5s protocol timeouts remain retained with the
+  unchanged five-case passing rerun. Final 23 focused cases pass; all 2,686 retained
+  inputs match. Normal push targets PR #58; owner merge/human acceptance remain
+  separate. Earlier full/package/pilot records retain their original source bindings.
+  [Resolution evidence](./pr-58-conflict-resolution-results.json).
+
+- **Prerequisites integrated in main:** PR #56/#57 are owner-merged through
+  `cfe2bc3f`. Their source repairs, failure history and verification records remain
+  retained below and in the linked evidence; previous open/mergeable statements
+  describe their original snapshots.
+
 - **MS0–MS3 technical implementation delivered:** current source0da1f1dd includes
   upstream PR56/57 repairs. Fast143 passes4,608 units; runtime368 and staged146
   owning5/Python14/smoke pass with original two protocol timeouts retained. Eight
@@ -67,7 +82,7 @@ still hold before relying on them.
   runtime staged completions, six older missing raw paths and19 timing deferrals
   remain explicit. Packs candidate; finer Thai unadopted. MS4 scale/diversity remains
   future. Approved PR58 body114 is already public and stays a historical snapshot.
-- **Remote delivery verified:** checkpoint276e76f6 pushed/read back exactly on
+- **Earlier remote delivery snapshot:** checkpoint276e76f6 pushed/read back exactly on
   PR58; all five milestone PRs attached. MS0/MS1 owner-merged; PR56/57/58 open and
   mergeable at capture. Actions disabled; approved historical PR58 body unchanged.
   This later receipt adds metadata only. Primary edits and ignored pilot evidence
@@ -75,6 +90,52 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-10-16 — Resolve PR #58 conflicts with integrated prerequisites
+
+- **Agent / branch:** Codex on isolated `codex/pr58-conflict-resolution`.
+- **Done:** merge main `cfe2bc3f` into PR #58 `981e7403`; preserve both histories,
+  upstream family lifecycle rejection and complete separate v1/v2 admission suites.
+  Remove the byte-identical redundant v1 fixture without losing any cases.
+- **Results:** fast 4,608 units; broad runtime 382 (376 distinct retained cases),
+  integration 327, Python 14 and smoke complete in recorded stages. Final focused
+  23 pass; all 2,686 retained inputs stay byte-exact to the verified snapshot.
+- **Retained:** initial missing workspace links and three aggregate 5s protocol
+  timeouts; offline link repair/full fast and unchanged complete five-case reruns pass.
+- **Delivery / next:** one two-parent merge and normal push to PR #58; actual
+  delivery receipt retained with evidence. Owner merge and human acceptance separate.
+- **Records:** [Resolution evidence](./pr-58-conflict-resolution-results.json).
+
+### 2026-10-16 — Fix PR #57 family lifecycle false-success dispatch
+
+- **Agent / branch:** Codex on isolated `codex/pr57-third-review-fix`, from `57a2246a`.
+- **Done:** posted the P2 finding inline, added four failing regressions, then
+  restricted family authoring to its supported commands with a located diagnostic.
+  Updated family documentation and kept positive validate/edit/save controls.
+- **Results:** fast 4,395 units/429 files; 42 affected runtime tests across five
+  suites pass. All 2,621 verification inputs remain unchanged.
+- **Retained:** original four regression failures and sandbox DNS failure; the
+  permitted remote read confirms the original PR head before delivery.
+- **Delivery / next:** one finding/one commit; one final normal push to PR #57.
+  Full release/package and human acceptance remain separate; primary edits preserved.
+- **Records:** [Repair and delivery evidence](./pr-57-third-review-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/57#discussion_r4291506496).
+
+### 2026-10-16 — Resolve PR #57 conflicts with merged native prerequisites
+
+- **Agent / branch:** Codex in isolated `codex/pr57-conflicts`, from `36fc04ea`.
+- **Done:** merge `main` `e7433203`; preserve versioned journal core and both
+  development histories. Retain upstream v1 tests and separate v2 FIFO/symlink
+  coverage, collapsed-scope rejection and direct controller-matte admission.
+- **Results:** fast 4,395 units; runtime 286, distinct integration 325, Python 14,
+  smoke, native depth 14/composition 6, cancellation and repeated native2/native3
+  exports pass in recorded stages. All 2,621 source inputs match.
+- **Retained:** initial aggregate has three unchanged 5s depth-protocol timeouts;
+  complete unchanged five-case rerun passes. No threshold or assertion changes.
+- **Delivery / next:** one merge commit and normal push to PR #57; owner merge and
+  human production acceptance remain separate. Primary checkout edits preserved.
+- **Records:** [Resolution evidence](./pr-57-conflict-resolution-results.json),
+  [PR #57](https://github.com/xxibcill/still-shift/pull/57).
 
 ### 2026-10-16 — Verify final public MS3 technical delivery165
 
@@ -309,6 +370,89 @@ still hold before relying on them.
   copy and independent all10/6181/EU008 repair lifecycle; whole review still open.
 - **Records:** [actual terminal125](./mechanism-shorts-ms3-full125-terminal-results.json),
   [run119](./mechanism-shorts-ms3-final119-full-gate-results.json).
+
+### 2026-10-15 — Fix PR #57 source3 Lab dispatch and verify all three repairs
+
+- **Agent / branch:** Codex on isolated `codex/pr57-rereview-fixes`, from `56fb5168`.
+- **Done:** source3 joins source2 in the serialized asynchronous Lab draw path.
+  Textured/untextured real browser regressions fail before repair, then pass through
+  motion, reverse/random/rapid seeks and material edits. Each finding has one commit;
+  journal `dec445f6` and PBR resource `e9b4caea` precede this final slice.
+- **Results:** independent reviews 0/0; fast 4,383 units and all 2,609 pinned inputs
+  match. Runtime 276, distinct integration 325, Python 14 and smoke pass in stages.
+  Both repeated native export protocols, 20 existing inspector controls, native
+  depth 14/composition 6 and actual export cancellation pass.
+- **Retained:** three original 5s protocol timeouts and passing unchanged five-case
+  rerun; all three pre-repair regression failures. No threshold/assertion changes.
+- **Open / next:** one final fast-forward push and commit-linked inline replies;
+  merge and human production acceptance remain separate. Primary edits preserved.
+- **Records:** [Repair evidence](./pr-57-rereview-fix-results.json).
+
+### 2026-10-15 — Fix PR #57 opaque PBR preview resources
+
+- **Agent / branch:** Codex on isolated `codex/pr57-rereview-fixes`.
+- **Done:** serve captured opaque PBR binaries from both original and edited CLI
+  previews, preserving revision/capture ownership and returning exact Content-Length.
+- **Results:** real HTTP regression fails with404 before repair and passes after;
+  checks exact bytes/type/length, invalid routes and capture release behavior.
+  Journal fix `dec445f6` is committed; both finding commits remain local.
+- **Open / next:** source3 async preview, required checks and one final push.
+- **Records:** [Repair evidence](./pr-57-rereview-fix-results.json).
+
+### 2026-10-15 — Fix PR #57 observation-journal file admission
+
+- **Agent / branch:** Codex on isolated `codex/pr57-rereview-fixes`, from `56fb5168`.
+- **Done:** posted all three inline findings first; repaired nonblocking regular
+  manifest/shard admission while retaining streaming limits and descriptor cleanup.
+- **Results:** both bounded FIFO probes fail before repair; 29 journal units and
+  both runtime regressions pass afterward. Child timeout cleanup is retained.
+- **Open / next:** repair both Lab findings, run required checks, and push all
+  three finding commits together. Primary checkout edits remain preserved.
+- **Records:** [Repair evidence](./pr-57-rereview-fix-results.json).
+
+### 2026-10-15 — Bound and cancel saved cue snapshot validation in PR #57
+
+- **Agent / branch:** Codex on `codex/pr57-review-fixes`, after `ccd976ee`.
+- **Done:** reuse bounded regular-file readers for saved inputs, forward abort
+  signals and the caller Node owner, and retire only local validation leases.
+- **Results:** final admission regression fails 13/14 cases before repair and
+  passes all 14 after it; related tests pass 21/3. Fast 4,383, runtime 274,
+  distinct integration 322, Python 14, smoke and both affected browser proofs pass
+  in stages; two independent final fix reviews report no findings.
+- **Retained:** missing soundtrack setup, two unproven depth-protocol timeouts,
+  initial regression instrumentation errors and shared-temp inventory failure;
+  unchanged owning reruns and isolated-temp cache proof pass. No gate weakened.
+- **Open / next:** commit this second finding and push both fixes together;
+  owner merge and human acceptance remain separate.
+- **Records:** [Fix evidence](./pr-57-fix-results.json).
+
+### 2026-10-15 — Reject unsupported cue camera roll in PR #57
+
+- **Agent / branch:** Codex on `codex/pr57-review-fixes`, from reviewed `8b7374ed`.
+- **Done:** posted both findings inline; reject incompatible cue camera `up` at
+  `cues.<index>.camera.up`, preserving the existing camera-key contract.
+- **Results:** both cut/transition regressions fail before the repair; focused
+  narrated-cycle and cue-authoring checks pass after it.
+- **Open / next:** fix snapshot admission/cancellation in a separate commit,
+  run final local gates, then push both commits once.
+- **Records:** [Fix evidence](./pr-57-fix-results.json).
+
+### 2026-10-15 — Repair PR #56 second-review findings
+
+- **Agent / branch:** Codex on isolated `codex/pr56-second-review-fixes`, from
+  `796375b7`; unrelated primary checkout edits preserved.
+- **Done:** posted all three findings inline before repair. Separate commits fix
+  collapsed scopes (`c04f4652`), direct controller mattes (`d9644040`) and observation
+  FIFO admission (final commit). Isolated surfaces and regular symlinks remain valid.
+- **Results:** fast 3,947/381; staged runtime 197, distinct integration 321,
+  Python 14 and smoke; native depth 14, composition 5 and actual cancellation.
+  Six real WebGL controls retain full RGBA; three invalid inputs reject.
+  Independent Standards 0 / Spec 0; all 2,776 verification inputs exact.
+- **Retained failures:** original red regressions, initial fixture syntax/type
+  errors and three unproven 5-second protocol timeouts; unchanged five-case rerun passes.
+- **Open / next:** one final push of the three repair commits; owner merge pending.
+  No refreshed release/E01 gate or human visual/listening acceptance.
+- **Records:** [Fix and verification receipt](./pr-56-second-review-fix-results.json).
 
 ### 2026-10-15 — Retain complete frozen-baseline checkpoint inside live full119
 

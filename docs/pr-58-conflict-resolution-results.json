@@ -1,0 +1,120 @@
+{
+  "date": "2026-10-16",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/58",
+  "prHead": "981e7403bfb59d8681152182b543e710fab4ba75",
+  "mergedMain": "cfe2bc3ffeca1d85cf5353c14c4d30366fd1e066",
+  "strategy": "Two-parent merge of main into the existing PR branch, followed by a normal fast-forward push. No history rewrite.",
+  "conflicts": [
+    {
+      "path": "tests/runtime/native-observation-file-admission.test.ts",
+      "resolution": "Keep main v1 suite byte-exact. Retain main separate v2 suite byte-exact, which supersets the PR v2 FIFO cases with regular-file symlink compatibility, direct and symlink FIFO rejection, and capacity-release coverage. Remove the pre-existing native-observation-v1-file-admission.test.ts copy, SHA-256 c6c019e0676f1b8a010d26bc661a1c963b1d9ccbf540dcfc835b527ee7198e58, because it is byte-identical to the retained main v1 suite. No cases are lost."
+    },
+    {
+      "path": "docs/dev-log.md",
+      "resolution": "Preserve MS3 current delivery/evidence and all distinct historical entries from both parents; retain the PR MS0 merge correction and summarize owner-merged prerequisites. Historical verification bindings remain unchanged."
+    }
+  ],
+  "productionDeltaFromPrHead": [
+    "tools/still-shift-cli/src/episode.ts: retain upstream family authoring command allowlist and located unsupported-command error"
+  ],
+  "verification": {
+    "status": "Complete in recorded stages; original runtime aggregate remains failed.",
+    "checkFast": {
+      "exitCode": 0,
+      "unitFiles": 455,
+      "unitTests": 4608,
+      "log": "check-fast.log",
+      "scope": "Before deleting a byte-identical redundant runtime suite; all retained final inputs remain byte-exact."
+    },
+    "runtimeAggregate": {
+      "exitCode": 1,
+      "runtimeFiles": 64,
+      "runtimeTests": 382,
+      "retainedDistinctRuntimeFiles": 63,
+      "retainedDistinctRuntimeTests": 376,
+      "integrationFilesPassed": 60,
+      "integrationFilesFailed": 1,
+      "integrationTestsPassed": 324,
+      "integrationTestsFailed": 3,
+      "log": "check-runtime.log"
+    },
+    "protocolRerun": {
+      "exitCode": 0,
+      "files": 1,
+      "tests": 5,
+      "log": "protocol-rerun.log",
+      "scope": "Complete unchanged file with original 5000ms budgets; no source, assertions or thresholds altered."
+    },
+    "distinctIntegrationTests": 327,
+    "finalFocusedRuntime": {
+      "exitCode": 0,
+      "files": 3,
+      "tests": 23,
+      "log": "final-regressions.log",
+      "scope": "Final consolidated v1/v2 admission and family lifecycle suites."
+    },
+    "python": {
+      "exitCode": 0,
+      "tests": 14,
+      "log": "python.log"
+    },
+    "browserSmoke": {
+      "exitCode": 0,
+      "log": "smoke.log"
+    },
+    "sourceBinding": {
+      "files": 2686,
+      "bytes": 120990632,
+      "manifest": "source-inputs.json",
+      "manifestSha256": "5321725b379bc62b5fb8cdff6653d1580098b4cd09273f9ed822b23539b268fc",
+      "mismatches": [],
+      "scope": "All final tracked non-Markdown files outside docs/. Final inputs are a byte-exact subset of the broad verified snapshot; only the redundant v1 fixture was deleted. Before/after manifests and consolidation.json retained."
+    },
+    "whitespace": "Working and staged diff checks pass; final Markdown/JSON formatting checked separately."
+  },
+  "retainedFailures": [
+    {
+      "stage": "initial fetch",
+      "reason": "Sandbox denied .git/FETCH_HEAD write; permitted fetch succeeded."
+    },
+    {
+      "stage": "initial merge-tree inspection",
+      "reason": "Incorrect option order rejected before merge; actual merge subsequently identified both conflicts."
+    },
+    {
+      "stage": "Initial fast gate",
+      "exitCode": 1,
+      "reason": "Copied root node_modules lacked workspace package links; offline frozen pnpm install repaired them and the complete fast rerun passed.",
+      "log": "check-fast-initial-setup-failure.log"
+    },
+    {
+      "stage": "Initial runtime aggregate / integration",
+      "exitCode": 1,
+      "file": "tests/integration/depth-worker-protocol.test.ts",
+      "cases": [
+        "shares fake preparation and cache-hit results with both consumers",
+        "validates normalization without depth and its cache hit",
+        "preserves input failure codes for prepare"
+      ],
+      "reason": "Three unchanged 5000ms timeouts; cause remains unproven. The complete unchanged five-case file passes separately.",
+      "log": "check-runtime.log"
+    }
+  ],
+  "evidenceRoot": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/pr-58-conflict-resolution-20261016",
+  "limits": [
+    "No fresh full render/baseline/benchmark release or installed-package gate.",
+    "Prior release, archive and all-ten pilot evidence keeps its original source binding.",
+    "Owner PR merge and human visual/listening acceptance remain separate."
+  ],
+  "setup": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "dependencies": "Isolated copy of existing dependencies, followed by offline frozen pnpm install to repair workspace links and offline frozen uv sync to rebind the editable Python package. Existing soundtrack runtime copied in isolation; uv pip check passes. Full pinned toolchain check passes."
+  },
+  "delivery": {
+    "commit": "The two-parent merge commit containing this record.",
+    "target": "refs/heads/codex/mechanism-ms3",
+    "strategy": "One normal fast-forward push after local verification; final remote SHA, parents and GitHub mergeability are recorded in evidenceRoot/delivery.json."
+  }
+}
