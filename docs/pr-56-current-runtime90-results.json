@@ -1,0 +1,191 @@
+{
+  "schemaVersion": "pr56-current-runtime-1",
+  "capturedUtc": "2026-10-15T00:36:03.186327+00:00",
+  "sourceCommit": "40330672db000720b551abd0f7157f4a6751736b",
+  "status": "affected-review-gates-complete-in-recorded-stages",
+  "sourceFilesExact": 1725,
+  "firstRuntimeAggregate": {
+    "status": "failed-current-ms1n-runtime-or-native-depth",
+    "sourceCommit": "40330672db000720b551abd0f7157f4a6751736b",
+    "sourceFiles": 1725,
+    "stages": [
+      {
+        "stage": "runtime",
+        "actualExitCode": 1,
+        "seconds": 422.10146875004284,
+        "sourceInputsExact": true,
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-review90-runtime1.log",
+          "bytes": 55656,
+          "sha256": "sha256:49ab342de4a55276321f7a6794c4d5e035eb82dfb2008984efb3dc0c713ce7a8"
+        }
+      }
+    ],
+    "scope": "Affected review repair gate, not a rerun/relabel of the original77-group full milestone gate; serial renderer groups.",
+    "actualExitCode": 1,
+    "failure": "{'stage': 'runtime', 'actualExitCode': 1, 'seconds': 422.10146875004284, 'sourceInputsExact': True, 'log': {'path': '/private/tmp/still-shift-ms1n-review90-runtime1.log', 'bytes': 55656, 'sha256': 'sha256:49ab342de4a55276321f7a6794c4d5e035eb82dfb2008984efb3dc0c713ce7a8'}}"
+  },
+  "continuation": {
+    "status": "passed-affected-ms1n-runtime-continuation-and-native-depth",
+    "sourceCommit": "40330672db000720b551abd0f7157f4a6751736b",
+    "sourceFiles": 1725,
+    "priorAttempt": "/private/tmp/still-shift-ms1n-review90-runtime1.json",
+    "priorFailure": "Runtime/toolchain prefix passed; integration39 failures/282 passes: missing isolated soundtrack environment plus3 depth protocol5000ms timeouts. Source inputs remained exact; timeout cause is unproven.",
+    "stages": [
+      {
+        "stage": "setup",
+        "actualExitCode": 0,
+        "seconds": 0.27952470793388784,
+        "sourceInputsExact": true,
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-review90-runtime2-setup.log",
+          "bytes": 713,
+          "sha256": "sha256:5721c11a6d1a1c96b33f6ebf038bd791078fcfad0ee141afcb0c445671bcc333"
+        }
+      },
+      {
+        "stage": "integration-affected",
+        "actualExitCode": 0,
+        "seconds": 84.85770487505943,
+        "sourceInputsExact": true,
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-review90-runtime2-integration-affected.log",
+          "bytes": 4746,
+          "sha256": "sha256:8db4839acc214454d0cbe25ee2ca2484ca431e027ab6560f95b3d6dba2b06d5a"
+        }
+      },
+      {
+        "stage": "depth",
+        "actualExitCode": 0,
+        "seconds": 1.394608125090599,
+        "sourceInputsExact": true,
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-review90-runtime2-depth.log",
+          "bytes": 298,
+          "sha256": "sha256:d1e8578794c60d2834be90d36f210b005d8f878ca506245a8714c8e420914241"
+        }
+      },
+      {
+        "stage": "smoke",
+        "actualExitCode": 0,
+        "seconds": 33.77982220891863,
+        "sourceInputsExact": true,
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-review90-runtime2-smoke.log",
+          "bytes": 2185,
+          "sha256": "sha256:4d8c3e6b47eb095bb9681d88ba7975de0c69d6784fc0c2242a8a2fd1fbcc2191"
+        }
+      },
+      {
+        "stage": "native-depth",
+        "actualExitCode": 0,
+        "seconds": 33.18691225000657,
+        "sourceInputsExact": true,
+        "log": {
+          "path": "/private/tmp/still-shift-ms1n-review90-runtime2-native-depth.log",
+          "bytes": 542,
+          "sha256": "sha256:a94e6d9a5da7ba3c95205b51e86e054a7f2ce05d7bffdd68cba287c622a12289"
+        }
+      }
+    ],
+    "scope": "Scoped unchanged-source continuation, not an uninterrupted runtime aggregate pass.",
+    "actualExitCode": 0
+  },
+  "distinctTestReconciliation": {
+    "runtime": 191,
+    "integration": 321,
+    "unaffectedIntegrationTestsInOriginalPassingFiles": 263,
+    "affectedIntegrationTestsRerun": 58,
+    "depth": 14,
+    "smoke": "passed",
+    "note": "Original282 integration passes include19 tests in the five failed files; count263 unaffected plus58 rerun, not282+58. Original failure remains1."
+  },
+  "nativeDepth": {
+    "directory": "/private/tmp/still-shift-ms1n-native-depth-hatCa7",
+    "required": {
+      "status": "passed",
+      "depthCases": 14,
+      "compositionIntegrationCases": 5,
+      "cancellationDirectory": "/private/tmp/still-shift-native-export-cancel-RMtaDP"
+    },
+    "reports": [
+      {
+        "path": "/private/tmp/still-shift-ms1n-native-depth-hatCa7/report.json",
+        "bytes": 56712,
+        "sha256": "sha256:c5afc124c521a74bc0f2f78b010b67d972e078fd97f617fa1085bb0866028637"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms1n-native-depth-hatCa7/composition-integration-report.json",
+        "bytes": 419656,
+        "sha256": "sha256:d9768470936c9c1fba6ec95dd29c41e578f331aba5f8dde310721751adaf3c0c"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms1n-native-depth-hatCa7/required-native-proof-reports.json",
+        "bytes": 164,
+        "sha256": "sha256:2c6e58ec04a5e054779790d2a610073c44ae3a82e15d1dbdcfbdf57dfd90cfa2"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms1n-native-depth-hatCa7/environment.json",
+        "bytes": 336,
+        "sha256": "sha256:f4c368bfa85203f814befdca0efeacea46b7dc0e076c22ec3fed3a057f760d46"
+      }
+    ]
+  },
+  "fourCaseGpuMask": {
+    "run": {
+      "path": "/private/tmp/still-shift-ms1n-review90-mask-browser2-run.json",
+      "bytes": 1006,
+      "sha256": "sha256:0bc81890c05fcba3319e093ccde1940d8056a9a475db1fc89e1fc40428f21441"
+    },
+    "result": {
+      "path": "/private/tmp/still-shift-ms1n-review90-mask-browser2/result.json",
+      "bytes": 73712,
+      "sha256": "sha256:e6c9d3821164cb9e7f9932bacdb4e9e9ac29f03a75e89009b86823b87147ffc8"
+    },
+    "images": [
+      {
+        "path": "/private/tmp/still-shift-ms1n-review90-mask-browser2/case-0.png",
+        "bytes": 2270,
+        "sha256": "sha256:61b16446b6312e7e53422254e2156b8a12eb53a2788ba5e914231d7da6753381"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms1n-review90-mask-browser2/case-1.png",
+        "bytes": 2270,
+        "sha256": "sha256:61b16446b6312e7e53422254e2156b8a12eb53a2788ba5e914231d7da6753381"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms1n-review90-mask-browser2/case-2.png",
+        "bytes": 2270,
+        "sha256": "sha256:61b16446b6312e7e53422254e2156b8a12eb53a2788ba5e914231d7da6753381"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms1n-review90-mask-browser2/case-3.png",
+        "bytes": 870,
+        "sha256": "sha256:a4493866515d469ed64f3452d0527fbedd547c9d90eaf7f3f2e6c10780f1903c"
+      }
+    ],
+    "visibility": ["occluded", "occluded", "occluded", "visible"],
+    "nonBackgroundPixels": [1056, 1056, 1056, 0],
+    "completeRgbaEqualities": [true, true, true]
+  },
+  "retainedInitialMaskFixtureFailure": {
+    "run": {
+      "path": "/private/tmp/still-shift-ms1n-review90-mask-browser1-run.json",
+      "bytes": 622,
+      "sha256": "sha256:474410d8c0b7ad933f55d3f58ba31317b382a94112759f90659b0cd9c35ae273"
+    },
+    "result": {
+      "path": "/private/tmp/still-shift-ms1n-review88-mask-browser1/result.json",
+      "bytes": 73289,
+      "sha256": "sha256:c8beaccece8c559d185b4b13198054832248953d22d8dcb578794c6caebab5a2"
+    },
+    "reason": "Test incorrectly required a white native background. Actual classification and complete-pixel relationships passed. Corrected count uses corner background; source unchanged."
+  },
+  "originalPrefixFailures": {
+    "missingSoundtrackRuntime": true,
+    "depthProtocolTimeouts": 3,
+    "timeoutCause": "unproven; unchanged affected rerun passes",
+    "runtimeAggregateExitCode": 1
+  },
+  "scope": "Current affected native review repairs only. Original77-group milestone gate, earlier E01 renders and installed83 retain their exact source bindings. No new full E01 encode, release, publication or human acceptance."
+}

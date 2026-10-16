@@ -10,6 +10,7 @@ export type DraftAsset =
   | { source: { path: string; manifestPath?: string } };
 
 export const compositionAssetTypes: Record<string, string> = {
+  ".json": "application/json",
   ".svg": "image/svg+xml",
   ".png": "image/png",
   ".jpg": "image/jpeg",

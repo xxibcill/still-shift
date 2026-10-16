@@ -11,7 +11,7 @@ import type {
   EvaluatedLayerTree,
   EvaluationOptions,
 } from "../evaluate/types.ts";
-import { buildLayerRenderGraph } from "./graph.ts";
+import { buildLayerRenderGraph, type RenderGraphOptions } from "./graph.ts";
 import { executeGraph, type RenderBackend, type Surface } from "./backend.ts";
 
 /** The existing camera-cover opacity threshold: no viewport pixel may fall below 254/255. */
@@ -43,7 +43,7 @@ export function hasRequiredCompositionCoverage(
 export function* compositionRequiredCoverageGraphs(
   comp: Composition,
   frame: number,
-  options: EvaluationOptions = {},
+  options: RenderGraphOptions = {},
   requiredRootLayers: ReadonlyMap<string, string> = new Map(),
 ) {
   const definitions = new Map(

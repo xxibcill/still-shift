@@ -60,7 +60,11 @@ describe("episode CLI authoring protocol", () => {
   it("discovers commands and emits schema artifacts with bounded receipts", async () => {
     const discovery = await run(["discover"]);
     expect(discovery.code).toBe(0);
-    expect(discovery.receipt.items).toHaveLength(15);
+    expect(
+      discovery.receipt.items.filter(
+        (item) => typeof item.command === "string",
+      ),
+    ).toHaveLength(15);
     expect(
       discovery.receipt.items.some((item) => item.command === "patch"),
     ).toBe(true);
@@ -70,6 +74,198 @@ describe("episode CLI authoring protocol", () => {
     expect(
       JSON.parse(await readFile(path, "utf8")).properties.schemaVersion.const,
     ).toBe("mechanism-episode-1");
+  });
+  it("discovers native limits and emits strict native schemas without claiming source execution", async () => {
+    const discovery = await run(["discover"]);
+    expect(discovery.receipt.summary.defaultRoute).toBe("bridge");
+    expect(discovery.receipt.summary.nativePreparedVersion).toBe(
+      "mechanism-prepared-native-episode-1",
+    );
+    expect(
+      discovery.receipt.items.find((item) => item.kind === "native-route"),
+    ).toMatchObject({
+      backend: "webgl2",
+      workers: 1,
+      canvasAllowed: false,
+      profile: "native-three-aces-hdr-msaa4-1",
+    });
+    expect(
+      discovery.receipt.items.find(
+        (item) => item.kind === "native-observation-limits",
+      ),
+    ).toMatchObject({
+      packetBytes: 1048576,
+      passes: 64,
+      shardBytes: 33554432,
+      shards: 16,
+      totalBytes: 536870912,
+    });
+    expect(Buffer.byteLength(discovery.output)).toBeLessThanOrEqual(32768);
+    for (const kind of [
+      "native-source",
+      "solid-scene",
+      "solid-geometry",
+      "native-binding",
+      "native-observed-frame",
+      "native-observed-output-frame",
+      "native-prepared-receipt",
+    ] as const) {
+      const path = join(directory, `${kind}.schema.json`);
+      const result = await run(["schema", "--kind", kind, "--output", path]);
+      expect(result.code).toBe(0);
+      expect(result.receipt.summary.kind).toBe(kind);
+      expect(Buffer.byteLength(result.output)).toBeLessThanOrEqual(32768);
+      const document = JSON.parse(await readFile(path, "utf8"));
+      if (kind !== "native-source" && kind !== "native-binding")
+        expect(document.additionalProperties).toBe(false);
+    }
+    const inspected = await run(["inspect", "--input", project]);
+    expect(inspected.receipt.summary).toMatchObject({
+      "route.sourceRoute": null,
+      "route.effectiveRoute": "bridge",
+      "route.selectionOrigin": "default",
+    });
+  });
+  it("discovers versioned native metadata selectors in the existing strict receipt", async () => {
+    const discovered = await run(["discover"]);
+    expect(discovered.receipt.schemaVersion).toBe("mechanism-command-result-1");
+    expect(discovered.receipt.summary.nativeInspectionVersion).toBe(
+      "mechanism-native-inspection-1",
+    );
+    expect(
+      discovered.receipt.items.find(
+        (item) => item.kind === "native-inspection",
+      ),
+    ).toMatchObject({
+      version: "mechanism-native-inspection-1",
+      selectors: "source parts anchors materials cameras controls all",
+      schema: "native-inspection-selection",
+    });
+    const path = join(directory, "native-inspection-selection.schema.json");
+    const schema = await run([
+      "schema",
+      "--kind",
+      "native-inspection-selection",
+      "--output",
+      path,
+    ]);
+    expect(schema.code).toBe(0);
+    const document = JSON.parse(await readFile(path, "utf8"));
+    expect(document.additionalProperties).toBe(false);
+    expect(document.properties.version.const).toBe(
+      "mechanism-native-inspection-1",
+    );
+    expect(document.properties.native.enum).toEqual([
+      "source",
+      "parts",
+      "anchors",
+      "materials",
+      "cameras",
+      "controls",
+      "all",
+    ]);
+  });
+  it("selects original physical IDs and episode camera metadata without claiming saved recipe or rendered state", async () => {
+    const loaded = await readMechanismEpisode(project),
+      before = await readFile(project, "utf8");
+    const part = await run([
+      "inspect",
+      "--input",
+      project,
+      "--native",
+      "parts",
+      "--part",
+      "hook",
+    ]);
+    expect(part.code).toBe(0);
+    expect(part.receipt.items).toHaveLength(1);
+    expect(part.receipt.items[0]).toMatchObject({
+      kind: "native-part",
+      id: "hook",
+      parent: "model",
+      scope: "original-scene",
+      scaleX: 1,
+    });
+    expect(part.receipt.summary).toMatchObject({
+      nativeSourceSha256: loaded.episode.dependencies.find(
+        (dependency) => dependency.id === loaded.episode.scene,
+      )!.sha256,
+      nativeUnits: loaded.scene.units.kind,
+      savedRecipeScope: "unassessed",
+      nativeExecution: "unassessed",
+    });
+    const shot = loaded.episode.shots[0]!;
+    const camera = await run([
+      "inspect",
+      "--input",
+      project,
+      "--native",
+      "cameras",
+      "--shot",
+      shot.id,
+    ]);
+    expect(camera.code).toBe(0);
+    expect(
+      camera.receipt.items.find((item) => item.kind === "native-shot-camera"),
+    ).toMatchObject({
+      shot: shot.id,
+      fovDegrees: (shot.camera ?? loaded.scene.camera).fovDegrees,
+      origin: "episode-shot-camera",
+    });
+    expect(
+      camera.receipt.items.filter((item) => item.kind === "native-camera-key"),
+    ).toHaveLength(shot.cameraKeys!.length);
+    expect(
+      camera.receipt.items.every(
+        (item) => item.shot === shot.id || item.id === shot.id,
+      ),
+    ).toBe(true);
+    expect(camera.output).not.toContain('"positions"');
+    expect(camera.output).not.toContain('"indices"');
+    expect(await readFile(project, "utf8")).toBe(before);
+    const legacy = await run([
+      "inspect",
+      "--input",
+      project,
+      "--shot",
+      shot.id,
+    ]);
+    expect(legacy.receipt.summary.nativeInspectionVersion).toBeUndefined();
+    expect(
+      legacy.receipt.items.some((item) => item.kind === "dependency"),
+    ).toBe(true);
+    expect(
+      legacy.receipt.items.some((item) =>
+        String(item.kind).startsWith("native-"),
+      ),
+    ).toBe(false);
+  });
+  it("locates invalid native categories, incompatible filters and missing declared IDs", async () => {
+    for (const [options, code, path] of [
+      [["--native", "renderer"], "mechanism-inspect-selection", "--native"],
+      [["--part", "hook"], "mechanism-inspect-selection", "--part"],
+      [
+        ["--native", "materials", "--part", "hook"],
+        "mechanism-inspect-selection",
+        "--part",
+      ],
+      [
+        ["--native", "parts", "--part", "missing"],
+        "mechanism-inspect-reference",
+        "--part",
+      ],
+      [
+        ["--native", "cameras", "--shot", "missing"],
+        "mechanism-shot-reference",
+        "--shot",
+      ],
+    ] as const) {
+      const result = await run(["inspect", "--input", project, ...options]);
+      expect(result.code).toBe(2);
+      expect(result.receipt.status).toBe("failed");
+      expect(result.receipt.summary).toMatchObject({ code, path });
+      expect(Buffer.byteLength(result.output)).toBeLessThanOrEqual(32769);
+    }
   });
   it("inspects current hashes and flattened labels without emitting raw geometry", async () => {
     const result = await run(["inspect", "--input", project]);

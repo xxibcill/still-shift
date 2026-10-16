@@ -52,6 +52,7 @@ export type CompiledComposition = {
   spatialScopes: Set<CompositionScope>;
   /** Local GPU image planes need preflight without allocating 3D geometry. */
   imagePlanes: boolean;
+  native3D: boolean;
   paths: Map<string, PropertyPath>;
   /** Static per-scope selections, so time-shifted evaluations stay cheap. */
   solo: Map<CompositionScope, Set<string> | null>;
@@ -121,6 +122,9 @@ export function compileComposition(comp: Composition): CompiledComposition {
           layer.type === "depth-image" ||
           (layer.type === "image" && layer.sampling === "linear-srgb"),
       ),
+    ),
+    native3D: scopes.some((scope) =>
+      scope.layers.some((layer) => layer.type === "native3d"),
     ),
     solo: new Map(),
     mattes: new Map(),

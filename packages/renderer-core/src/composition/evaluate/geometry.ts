@@ -82,7 +82,12 @@ export function localBounds(
   options: EvaluationOptions,
 ): Bounds | null {
   const layer = state.layer;
-  if (layer.type === "null" || layer.type === "audio") return null;
+  if (
+    layer.type === "null" ||
+    layer.type === "audio" ||
+    layer.type === "native3d"
+  )
+    return null;
   if (layer.type === "shape") return state.shapes?.bounds ?? null;
   if (layer.type === "provider") {
     const b = layer.bounds;

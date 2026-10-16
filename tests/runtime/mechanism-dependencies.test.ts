@@ -312,7 +312,7 @@ it.each(["rig", "part"] as const)(
     ).rejects.toMatchObject({
       context: { diagnosticCode: code, path: findingPath },
     });
-    expect(await readdir(prepared)).toEqual([]);
+    await expect(stat(prepared)).rejects.toMatchObject({ code: "ENOENT" });
     expect(await snapshot(dirname(path))).toEqual(before);
   },
 );

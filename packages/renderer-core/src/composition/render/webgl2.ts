@@ -1,3 +1,9 @@
+import type {
+  NativeDepthRuntime,
+  NativeDepthRuntimeFactory,
+  NativeDepthRuntimeOptions,
+} from "../../native3d/runtime.ts";
+import { containsNativeDepth } from "./webgl-visual-key.ts";
 import { releaseRenderPixels } from "../../managed-memory-context.ts";
 import {
   linearBlendShader,
@@ -72,17 +78,20 @@ export type Webgl2Backend = RenderBackend<WebglSurface> & {
   dispose(): void;
 };
 
-export type Webgl2BackendOptions = Canvas2dBackendOptions & {
-  preserveAlpha?: boolean;
-  nativeImageByteLimit?: number;
-  boundedCanvas?: (content: ProviderContent | TextContent) => boolean;
-  singleImage?: (content: ProviderContent | TextContent) => boolean;
-  stableImages?: (content: ProviderContent | TextContent) => boolean;
-  contentKey?: PreparedContentKey;
-  contentBounds?: (
-    content: ProviderContent | TextContent,
-  ) => Bounds | undefined;
-};
+export type Webgl2BackendOptions = Canvas2dBackendOptions &
+  NativeDepthRuntimeOptions & {
+    /** Explicitly loaded browser implementation; pure imports never load Three. */
+    nativeDepthFactory?: NativeDepthRuntimeFactory;
+    preserveAlpha?: boolean;
+    nativeImageByteLimit?: number;
+    boundedCanvas?: (content: ProviderContent | TextContent) => boolean;
+    singleImage?: (content: ProviderContent | TextContent) => boolean;
+    stableImages?: (content: ProviderContent | TextContent) => boolean;
+    contentKey?: PreparedContentKey;
+    contentBounds?: (
+      content: ProviderContent | TextContent,
+    ) => Bounds | undefined;
+  };
 
 /** Rasterize vector batches and prepared content; compose GPU surfaces in shaders. */
 export function createWebgl2Backend(
@@ -115,6 +124,8 @@ export function createWebgl2Backend(
     options.nativeImageByteLimit,
   );
   const depthImages = new WebglDepthImages(device, options.images);
+  let nativeDepth: NativeDepthRuntime | undefined;
+  let nativeFrameKey = 0;
   const pngImages = new WebglPngImages(device, raster, options.images);
   const keys = new WebglVisualKey(options.contentKey);
   const damage = new WebglDamage(keys, options.contentBounds);
@@ -532,7 +543,10 @@ export function createWebgl2Backend(
         throw error;
       }
     },
-    frameKey: (root) => keys.of(root),
+    frameKey: (root) =>
+      containsNativeDepth(root.ops)
+        ? `native-observation:${nativeFrameKey++}:${keys.of(root)}`
+        : keys.of(root),
     frameMetadataKey: (root) => keys.metadata(root),
     beginFrame(root) {
       const next = (root.colorSpace ?? options.colorSpace) === "linear-srgb";
@@ -542,7 +556,10 @@ export function createWebgl2Backend(
       }
       linear = next;
       renderingFrame = true;
-      device.setFrameClip(exposure ? undefined : damage.next(root));
+      if (containsNativeDepth(root.ops)) {
+        damage.reset();
+        device.setFrameClip();
+      } else device.setFrameClip(exposure ? undefined : damage.next(root));
     },
     endFrame(completed) {
       renderingFrame = false;
@@ -550,7 +567,29 @@ export function createWebgl2Backend(
       damage.finish();
       if (!completed) damage.reset();
     },
-    renderIsolate: (op, like, draw) => isolates.render(op, like, draw),
+    renderIsolate: (op, like, draw) =>
+      containsNativeDepth(op.ops) ? draw() : isolates.render(op, like, draw),
+    validateNativeDepth(op) {
+      if (!options.nativeDepthFactory)
+        passageError(
+          "comp-native3d-not-ready",
+          "Native browser depth runtime must be prepared before drawing",
+          { node: op.layer },
+        );
+      nativeDepth ??= options.nativeDepthFactory(device, options);
+      nativeDepth.validate(op);
+    },
+    renderNativeDepth(op, target, renderArtwork) {
+      if (!options.nativeDepthFactory)
+        passageError(
+          "comp-native3d-not-ready",
+          "Native browser depth runtime must be prepared before drawing",
+          { node: op.layer },
+        );
+      nativeDepth ??= options.nativeDepthFactory(device, options);
+      nativeDepth.render(op, target, renderArtwork);
+      bounds.full(target);
+    },
     drawVectors: (dst, ops) => {
       if (!linear) {
         vectors.draw(dst, ops, (region) => bounds.include(dst, region));
@@ -611,7 +650,9 @@ export function createWebgl2Backend(
       return images.nativeAllocated;
     },
     get allocated() {
-      return device.allocated + depthImages.allocated;
+      return (
+        device.allocated + depthImages.allocated + (nativeDepth?.allocated ?? 0)
+      );
     },
     get passes() {
       return device.passes;
@@ -1183,6 +1224,7 @@ export function createWebgl2Backend(
       isolates.close();
       vectors.dispose();
       pngImages.dispose();
+      nativeDepth?.dispose();
       depthImages.dispose();
       raster.dispose();
       bounds.dispose();

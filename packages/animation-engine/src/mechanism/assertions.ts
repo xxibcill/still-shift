@@ -1,6 +1,10 @@
 import { Euler, Matrix4, Vector3 } from "three";
-import type { MechanismScene } from "@still-shift/scene-contract";
 import type {
+  MechanismScene,
+  NativeObservedFrame,
+} from "@still-shift/scene-contract";
+import type {
+  DeepReadonly,
   MechanismFrameRequest,
   MechanismFrameResult,
 } from "@still-shift/renderer-core";
@@ -8,6 +12,11 @@ import type {
 export type MechanismEvidenceFrame = {
   shotId: string;
   frame: MechanismFrameResult;
+  request: MechanismFrameRequest;
+};
+export type NativeMechanismEvidenceFrame = {
+  shotId: string;
+  observed: DeepReadonly<NativeObservedFrame>;
   request: MechanismFrameRequest;
 };
 export type MechanismMechanicalFinding = {
@@ -26,7 +35,27 @@ export type MechanismMechanicalReport = {
   checkedFrames: number;
   findings: MechanismMechanicalFinding[];
 };
-type Rig = MechanismScene["rigs"][number];
+type AuthoredScene = DeepReadonly<MechanismScene>;
+type Rig = AuthoredScene["rigs"][number];
+type MeasuredEvidenceFrame = {
+  shotId: string;
+  request: MechanismFrameRequest;
+  frame: {
+    frame: number;
+    parts: Readonly<
+      Record<
+        string,
+        {
+          readonly parent?: string | undefined;
+          readonly localMatrix: readonly number[];
+          readonly worldMatrix: readonly number[];
+        }
+      >
+    >;
+    anchors: Readonly<Record<string, { readonly world: readonly number[] }>>;
+    rigs?: DeepReadonly<MechanismFrameResult["rigs"]>;
+  };
+};
 type ExpectedRig = {
   q: number;
   travel: number;
@@ -62,8 +91,114 @@ export function checkMechanismFrames(
   };
 }
 
+/** Actual native draw observations, without fabricated evaluator rig metadata or assertion flags. */
+export function checkNativeMechanismFrames(
+  scene: AuthoredScene,
+  rows: readonly NativeMechanismEvidenceFrame[],
+): MechanismMechanicalReport {
+  const authored = new Map(
+    scene.parts.map((part) => [part.id, authoredMatrix(part.transform)]),
+  );
+  const findings = rows.flatMap((row) => [
+    ...checkFrame(
+      scene,
+      authored,
+      {
+        shotId: row.shotId,
+        request: row.request,
+        frame: {
+          frame: row.observed.sourceFrame,
+          parts: row.observed.parts,
+          anchors: row.observed.anchors,
+        },
+      },
+      false,
+    ),
+    ...checkNativeInventory(scene, row),
+  ]);
+  const grouped = groupFindings(findings);
+  return {
+    valid: grouped.length === 0,
+    checkedFrames: rows.length,
+    findings: grouped,
+  };
+}
+
+function checkNativeInventory(
+  scene: AuthoredScene,
+  row: NativeMechanismEvidenceFrame,
+): MechanismMechanicalFinding[] {
+  const findings: MechanismMechanicalFinding[] = [];
+  const fail = (
+    code: string,
+    path: string,
+    property: string,
+    partIds: string[],
+  ) =>
+    findings.push({
+      code,
+      path,
+      property,
+      partIds,
+      shotId: row.shotId,
+      frames: [row.request.frame, row.request.frame],
+      measured: 1,
+      expected: 0,
+      tolerance: TOLERANCE,
+    });
+  const definitions = new Map(scene.parts.map((part) => [part.id, part]));
+  const hidden = new Set(row.request.hiddenParts ?? []),
+    visible = new Map<string, boolean>();
+  const inherited = (id: string): boolean => {
+    const cached = visible.get(id);
+    if (cached !== undefined) return cached;
+    const part = definitions.get(id)!;
+    const value =
+      part.visible &&
+      !hidden.has(id) &&
+      (part.parent === undefined || inherited(part.parent));
+    visible.set(id, value);
+    return value;
+  };
+  for (const part of scene.parts) {
+    const actual = row.observed.parts[part.id];
+    if (actual?.localVisible !== (part.visible && !hidden.has(part.id)))
+      fail(
+        "mechanism-part-visibility",
+        `parts.${part.id}.localVisible`,
+        "localVisible",
+        [part.id],
+      );
+    if (actual?.inheritedVisible !== inherited(part.id))
+      fail(
+        "mechanism-part-visibility",
+        `parts.${part.id}.inheritedVisible`,
+        "inheritedVisible",
+        [part.id],
+      );
+  }
+  for (const id of Object.keys(row.observed.parts))
+    if (!definitions.has(id))
+      fail("mechanism-part-inventory", `parts.${id}`, "unexpectedPart", [id]);
+  const anchors = new Map(scene.anchors.map((anchor) => [anchor.id, anchor]));
+  for (const anchor of scene.anchors)
+    if (row.observed.anchors[anchor.id]?.part !== anchor.part)
+      fail("mechanism-anchor-reference", `anchors.${anchor.id}.part`, "part", [
+        anchor.part,
+      ]);
+  for (const id of Object.keys(row.observed.anchors))
+    if (!anchors.has(id))
+      fail(
+        "mechanism-anchor-inventory",
+        `anchors.${id}`,
+        "unexpectedAnchor",
+        [],
+      );
+  return findings;
+}
+
 function authoredMatrix(
-  transform: MechanismScene["parts"][number]["transform"],
+  transform: AuthoredScene["parts"][number]["transform"],
 ): Matrix4 {
   const matrix = new Matrix4().makeTranslation(...transform.position);
   matrix.multiply(
@@ -100,7 +235,7 @@ function sampleTravel(keys: readonly TravelKey[], frame: number): number {
 }
 
 function expectedState(
-  scene: MechanismScene,
+  scene: AuthoredScene,
   authored: Map<string, Matrix4>,
   request: MechanismFrameRequest,
 ): ExpectedState {
@@ -131,7 +266,7 @@ function expectedState(
 }
 
 function composeHierarchy(
-  scene: MechanismScene,
+  scene: AuthoredScene,
   local: Map<string, Matrix4>,
 ): Map<string, Matrix4> {
   const world = new Map<string, Matrix4>();
@@ -151,9 +286,10 @@ function composeHierarchy(
 }
 
 function checkFrame(
-  scene: MechanismScene,
+  scene: AuthoredScene,
   authored: Map<string, Matrix4>,
-  row: MechanismEvidenceFrame,
+  row: MeasuredEvidenceFrame,
+  includeRigMetadata = true,
 ): MechanismMechanicalFinding[] {
   const findings: MechanismMechanicalFinding[] = [];
   function check(
@@ -237,7 +373,7 @@ function checkFrame(
       );
   }
   for (const rig of scene.rigs)
-    checkRig(scene, authored, row, expected, rig, check);
+    checkRig(scene, authored, row, expected, rig, check, includeRigMetadata);
   return findings;
 }
 
@@ -249,15 +385,16 @@ type Check = (
   partIds: string[],
 ) => void;
 function checkRig(
-  scene: MechanismScene,
+  scene: AuthoredScene,
   authored: Map<string, Matrix4>,
-  row: MechanismEvidenceFrame,
+  row: MeasuredEvidenceFrame,
   expected: ExpectedState,
   rig: Rig,
   check: Check,
+  includeRigMetadata: boolean,
 ): void {
   const intended = expected.rigs.get(rig.id)!;
-  const actual = row.frame.rigs[rig.id];
+  const actual = row.frame.rigs?.[rig.id];
   const rigPath = `rigs.${rig.id}`;
   check(
     "mechanism-travel-thickness",
@@ -269,24 +406,26 @@ function checkRig(
         Number(scene.geometry.dimensions.hookThickness),
       ),
       scalarError(rig.thickness, Number(scene.geometry.dimensions.hookTravel)),
-      scalarError(actual?.thickness, rig.thickness),
+      includeRigMetadata ? scalarError(actual?.thickness, rig.thickness) : 0,
     ),
     [rig.hookPart],
   );
-  check(
-    "mechanism-travel-control",
-    `${rigPath}.q`,
-    "q",
-    scalarError(actual?.q, intended.q),
-    [rig.hookPart],
-  );
-  check(
-    "mechanism-travel-control",
-    `${rigPath}.travel`,
-    "travel",
-    scalarError(actual?.travel, intended.travel),
-    [rig.hookPart],
-  );
+  if (includeRigMetadata)
+    check(
+      "mechanism-travel-control",
+      `${rigPath}.q`,
+      "q",
+      scalarError(actual?.q, intended.q),
+      [rig.hookPart],
+    );
+  if (includeRigMetadata)
+    check(
+      "mechanism-travel-control",
+      `${rigPath}.travel`,
+      "travel",
+      scalarError(actual?.travel, intended.travel),
+      [rig.hookPart],
+    );
   check(
     "mechanism-travel-range",
     `${rigPath}.q`,
@@ -294,26 +433,28 @@ function checkRig(
     Math.max(0, -intended.q, intended.q - rig.thickness),
     [rig.hookPart],
   );
-  check(
-    "mechanism-contact-mode",
-    `${rigPath}.contactMode`,
-    "contactMode",
-    actual?.contactMode === intended.contactMode ? 0 : 1,
-    [rig.rootPart, rig.hookPart],
-  );
+  if (includeRigMetadata)
+    check(
+      "mechanism-contact-mode",
+      `${rigPath}.contactMode`,
+      "contactMode",
+      actual?.contactMode === intended.contactMode ? 0 : 1,
+      [rig.rootPart, rig.hookPart],
+    );
   const selected =
     intended.contactMode === "pull"
       ? rig.innerFaceAnchor
       : intended.contactMode === "push"
         ? rig.outerFaceAnchor
         : null;
-  check(
-    "mechanism-contact-face",
-    `${rigPath}.selectedContactFace`,
-    "selectedContactFace",
-    actual?.selectedContactFace === selected ? 0 : 1,
-    [rig.hookPart],
-  );
+  if (includeRigMetadata)
+    check(
+      "mechanism-contact-face",
+      `${rigPath}.selectedContactFace`,
+      "selectedContactFace",
+      actual?.selectedContactFace === selected ? 0 : 1,
+      [rig.hookPart],
+    );
   const hookMatrix = actualMatrix(row.frame.parts[rig.hookPart]?.localMatrix);
   if (hookMatrix) {
     const motion = authored
@@ -348,8 +489,8 @@ function checkRig(
 }
 
 function checkRivetMounts(
-  scene: MechanismScene,
-  row: MechanismEvidenceFrame,
+  scene: AuthoredScene,
+  row: MeasuredEvidenceFrame,
   authored: Map<string, Matrix4>,
   rig: Rig,
   check: Check,
@@ -384,8 +525,8 @@ function checkRivetMounts(
 }
 
 function checkContact(
-  scene: MechanismScene,
-  row: MechanismEvidenceFrame,
+  scene: AuthoredScene,
+  row: MeasuredEvidenceFrame,
   authored: Map<string, Matrix4>,
   expected: ExpectedState,
   rig: Rig,

@@ -62,7 +62,13 @@ export async function lintCompositionFile(
   options.signal?.throwIfAborted();
   if (!options.pixels)
     return {
-      ...analyzeCompositionQuality(loaded.composition, policy),
+      ...analyzeCompositionQuality(loaded.composition, {
+        ...policy,
+        evaluation: {
+          ...policy.evaluation,
+          ...(loaded.native3D ? { preparedNative3D: loaded.native3D } : {}),
+        },
+      }),
       validationDiagnostics: loaded.warnings,
     };
   const root = options.projectRoot ?? defaultBrowserProjectRoot;
@@ -119,6 +125,8 @@ export async function lintCompositionFile(
       async ({
         json,
         preparedMedia,
+        preparedNative3D,
+        appearanceCodeIdentity,
         policyJson,
         backend,
         collectTextBounds,
@@ -137,7 +145,12 @@ export async function lintCompositionFile(
           const resources = await renderer.loadCompositionResources(
             comp,
             (id: string) => `/_lint/assets/${encodeURIComponent(id)}`,
-            preparedMedia ? { preparedMedia } : {},
+            {
+              ...(preparedMedia ? { preparedMedia } : {}),
+              ...(preparedNative3D
+                ? { preparedNative3D, appearanceCodeIdentity }
+                : {}),
+            },
           );
           preview = renderer.createCompositionPreview(
             document.createElement("canvas"),
@@ -166,6 +179,8 @@ export async function lintCompositionFile(
       {
         json: JSON.stringify(loaded.composition),
         preparedMedia: loaded.preparedMedia,
+        preparedNative3D: loaded.preparedNative3D,
+        appearanceCodeIdentity: loaded.nativeAppearanceCodeIdentity,
         policyJson: JSON.stringify(policy),
         backend,
         collectTextBounds: options.collectTextBounds ?? false,

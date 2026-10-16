@@ -1,4 +1,9 @@
 import { allocateRenderMetadata } from "../../renderer-core/src/managed-metadata.ts";
+import {
+  NATIVE3D_OBSERVATION_LIMITS,
+  type NativeObservedSample,
+} from "@still-shift/scene-contract";
+import { uploadNativeObservationPacket } from "./native-observation-upload.ts";
 import { assertCompositionEffectVersions } from "@still-shift/renderer-core";
 import {
   createRenderCanvas,
@@ -29,6 +34,7 @@ import {
 import type { CompositionWorkerStatistics } from "./composition-export-statistics.ts";
 
 export type BrowserExportResult = {
+  nativeObservationStatistics?: { outputFrames: number; passCount: number };
   compositionStatistics?: CompositionWorkerStatistics;
   memory?: {
     beforeAcknowledgement: ManagedMemory["statistics"];
@@ -70,6 +76,13 @@ export type BrowserCompositionOutput = {
   preserveAlpha: boolean;
   canonicalCapture: boolean;
   work?: BrowserFrameWork;
+  nativeObservation?: {
+    exportId: string;
+    worker: 0;
+    credential: string;
+    executionSha256: string;
+    maximumPacketBytes: number;
+  };
 };
 
 declare global {
@@ -200,7 +213,15 @@ const exportComposition = async (
   const resources = await loadCompositionResources(
     scene.composition,
     (id) => `/_export/assets/${id}`,
-    scene.preparedMedia ? { preparedMedia: scene.preparedMedia } : {},
+    {
+      ...(scene.preparedMedia ? { preparedMedia: scene.preparedMedia } : {}),
+      ...(scene.preparedNative3D
+        ? { preparedNative3D: scene.preparedNative3D }
+        : {}),
+      ...(scene.nativeAppearanceCodeIdentity
+        ? { appearanceCodeIdentity: scene.nativeAppearanceCodeIdentity }
+        : {}),
+    },
   );
   const canvas = createRenderCanvas();
   document.body.append(canvas);
@@ -211,6 +232,7 @@ const exportComposition = async (
   )(canvas, scene.composition, resources, {
     backend: scene.backend ?? "canvas2d",
     collectStatistics: true,
+    ...(output?.nativeObservation ? { collectNativeObservations: true } : {}),
     ...(output ? { preserveAlpha: output.preserveAlpha } : {}),
     ...(output?.work?.surfaceCache
       ? {
@@ -243,13 +265,13 @@ const exportComposition = async (
   >["rootStatistics"];
   const result = await renderFrames(
     scene.timeline.frameCount,
-    resources.media || output?.work?.surfaceCache
+    resources.media || resources.native3D || output?.work?.surfaceCache
       ? async (frame) => {
           await preview.prepareFrame(frame);
-          preview.renderFrame(frame);
+          return preview.renderFrame(frame).nativeObservations;
         }
       : (frame) => {
-          preview.renderFrame(frame);
+          return preview.renderFrame(frame).nativeObservations;
         },
     () => {
       cacheStatistics = preview.surfaceCacheStatistics?.();
@@ -266,6 +288,7 @@ const exportComposition = async (
       ? () => Promise.resolve(preview.readPixels().buffer as ArrayBuffer)
       : undefined,
     output?.work,
+    output?.nativeObservation,
   );
   if (!renderStatistics)
     throw Error("Composition export omitted submission statistics");
@@ -288,7 +311,12 @@ const exportComposition = async (
 
 const renderFrames = async (
   frameCount: number,
-  renderFrame: (frame: number) => void | Promise<void>,
+  renderFrame: (
+    frame: number,
+  ) =>
+    | void
+    | readonly NativeObservedSample[]
+    | Promise<void | readonly NativeObservedSample[]>,
   dispose: () => void,
   canvas: HTMLCanvasElement,
   gl: WebGL2RenderingContext | null,
@@ -296,7 +324,20 @@ const renderFrames = async (
   gpuRenderer: string,
   capture?: () => Promise<ArrayBuffer | Blob>,
   work?: BrowserFrameWork,
+  nativeObservation?: BrowserCompositionOutput["nativeObservation"],
 ): Promise<BrowserExportResult> => {
+  if (
+    nativeObservation &&
+    (nativeObservation.worker !== 0 ||
+      (work && (work.worker !== 0 || work.workers !== 1)) ||
+      !Number.isSafeInteger(nativeObservation.maximumPacketBytes) ||
+      nativeObservation.maximumPacketBytes < 1 ||
+      nativeObservation.maximumPacketBytes >
+        NATIVE3D_OBSERVATION_LIMITS.packetBytes)
+  )
+    throw Error("Native observation browser assignment is invalid");
+  let observedOutputFrames = 0,
+    observedPassCount = 0;
   const assignment = compositionFrameAssignment(
     frameCount,
     work?.workers ?? 1,
@@ -331,8 +372,36 @@ const renderFrames = async (
     ) {
       await withManagedFrame(async () => {
         const frameStart = performance.now();
-        const readiness = renderFrame(frameIndex);
-        if (readiness) await readiness;
+        const observations = await renderFrame(frameIndex);
+        if (nativeObservation) {
+          if (!observations)
+            throw Error("Native export omitted its actual frame observations");
+          await uploadNativeObservationPacket(
+            {
+              outputFrame: frameIndex,
+              executionSha256: nativeObservation.executionSha256,
+              passes: observations,
+              maximumPacketBytes: nativeObservation.maximumPacketBytes,
+            },
+            async (bytes) => {
+              const accepted = await fetch("/_export/native-observation", {
+                method: "POST",
+                headers: {
+                  "x-export-id": nativeObservation.exportId,
+                  "x-export-worker": "0",
+                  "x-export-credential": nativeObservation.credential,
+                  "x-frame-index": String(frameIndex),
+                  "content-type": "application/json",
+                },
+                body: bytes,
+              });
+              if (!accepted.ok)
+                throw Error(
+                  `Native observation ${frameIndex} rejected: ${await accepted.text()}`,
+                );
+            },
+          );
+        }
         const frameBytes = await (capture
           ? capture()
           : captureFrame(canvas, gl, transport));
@@ -342,6 +411,13 @@ const renderFrames = async (
           method: "POST",
           headers: {
             "x-frame-index": String(frameIndex),
+            ...(nativeObservation
+              ? {
+                  "x-export-id": nativeObservation.exportId,
+                  "x-export-worker": "0",
+                  "x-export-credential": nativeObservation.credential,
+                }
+              : {}),
             ...(work
               ? {
                   "x-export-worker": String(work.worker),
@@ -355,6 +431,10 @@ const renderFrames = async (
           throw new Error(
             `Frame ${frameIndex} upload failed: ${await response.text()}`,
           );
+        if (nativeObservation) {
+          observedOutputFrames++;
+          observedPassCount += observations!.length;
+        }
         uploadTimings.push(performance.now() - uploadStart);
         if (work)
           frames.push({
@@ -375,6 +455,14 @@ const renderFrames = async (
     frameUploadAverageMs: upload.averageMs,
     frameUploadP95Ms: upload.p95Ms,
     gpuRenderer,
+    ...(nativeObservation
+      ? {
+          nativeObservationStatistics: {
+            outputFrames: observedOutputFrames,
+            passCount: observedPassCount,
+          },
+        }
+      : {}),
     ...(work ? { work: { worker: work.worker, frames } } : {}),
   };
 };

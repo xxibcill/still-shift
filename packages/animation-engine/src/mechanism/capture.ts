@@ -22,6 +22,7 @@ import {
   MechanismFrameResultSchema,
   MechanismSceneSchema,
   MechanismSidecarSchema,
+  NativeAppearanceCodeIdentitySchema,
   type MechanismScene,
   type MechanismSidecar,
 } from "@still-shift/scene-contract";
@@ -44,6 +45,10 @@ import {
   tagCompositionSrgbPng,
 } from "../composition-media-color.ts";
 import { MECHANISM_BRIDGE_RENDERER_VERSION } from "./browser.ts";
+import {
+  loadNativeAppearanceCodeIdentity,
+  assertNativeAppearanceCodeIdentity,
+} from "../native3d-appearance-identity.ts";
 
 export const MECHANISM_CAPTURE_VERSION = "mechanism-plate-capture-1";
 export const MECHANISM_CAPTURE_LIMITS = {
@@ -287,6 +292,7 @@ export async function captureMechanismPlates(
         identity,
       );
       if (!previous) throw conflict(output);
+      await assertCaptureRenderingIdentity(identity);
       return captureResult(
         previous,
         output,
@@ -323,6 +329,7 @@ export async function captureMechanismPlates(
           wallSeconds: elapsed(started),
         },
       );
+      await assertCaptureRenderingIdentity(identity);
       await publishBundle(
         context.attemptDirectory,
         output,
@@ -399,14 +406,7 @@ export async function captureMechanismPlates(
         wallSeconds: elapsed(started),
       },
     });
-    if (
-      identity.browserModuleSha256 !== digest(await readFile(browserModule)) ||
-      canonicalMechanismHash(identity.threeRuntime) !==
-        canonicalMechanismHash(await threeRuntimeIdentity())
-    )
-      throw new Error(
-        "Renderer source changed during capture; rerun against one fixed source identity",
-      );
+    await assertCaptureRenderingIdentity(identity);
     await writeFile(
       join(context.attemptDirectory, RECEIPT),
       jsonBytes(receipt),
@@ -423,8 +423,10 @@ export async function captureMechanismPlates(
       receipt.stats,
     );
     await mkdir(cacheEntry);
+    await assertCaptureRenderingIdentity(identity);
     await publishBundle(cacheStage, cacheEntry, receipt, input.signal);
     await rm(cacheStage, { recursive: true, force: true });
+    await assertCaptureRenderingIdentity(identity);
     await publishBundle(
       context.attemptDirectory,
       output,
@@ -605,6 +607,21 @@ async function threeRuntimeIdentity() {
   );
   return { version: metadata.version, sources };
 }
+async function assertCaptureRenderingIdentity(
+  identity: Record<string, unknown>,
+): Promise<void> {
+  await assertNativeAppearanceCodeIdentity(
+    NativeAppearanceCodeIdentitySchema.parse(identity.appearanceCodeIdentity),
+  );
+  if (
+    identity.browserModuleSha256 !== digest(await readFile(browserModule)) ||
+    canonicalMechanismHash(identity.threeRuntime) !==
+      canonicalMechanismHash(await threeRuntimeIdentity())
+  )
+    throw new Error(
+      "Renderer source changed during capture; rerun against one fixed source identity",
+    );
+}
 async function captureIdentity(
   input: CaptureInput,
   fontSha256: string,
@@ -636,6 +653,7 @@ async function captureIdentity(
     fontWeight: input.font.weight,
     fontFamily: input.font.family,
     browserModuleSha256: digest(await readFile(browserModule)),
+    appearanceCodeIdentity: await loadNativeAppearanceCodeIdentity(),
     threeRuntime: await threeRuntimeIdentity(),
     rendererVersion: MECHANISM_BRIDGE_RENDERER_VERSION,
     evaluatorVersion: input.frames[0]!.version,

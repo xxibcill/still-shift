@@ -1,12 +1,14 @@
 # Mechanism Shorts production plan
 
-**Created:** 2026-10-07. **Status:** active; MS0 complete; MS1 software verified in stages, human review pending (2026-10-10).
+**Created:** 2026-10-07. **Status:** active; MS0 complete; MS1 software verified in stages; MS1N implementation in progress; human review pending (2026-10-10).
 **Updated:** 2026-10-10 — MS1 software verification completed in stages; the
 2026-10-08 bridge/native order and all nine feedback amendments remain incorporated.
 **Start:** after the current [composition engine plan](./composition-engine-plan.md)
 is complete under its approved scope and acceptance rules.
-**Implementation owner and branch:** Codex, `codex/mechanism-ms1` from `main`
-`e6eb7b06`, carrying exact MS0 prerequisite `d55908fa` ([PR #51](https://github.com/xxibcill/still-shift/pull/51)).
+**Implementation owner and branch:** Codex, `codex/mechanism-ms1n` from fresh
+`main` at `e6eb7b06`, carrying exact MS1 prerequisite `13b62b84`
+([PR #52](https://github.com/xxibcill/still-shift/pull/52)) and MS0
+([PR #51](https://github.com/xxibcill/still-shift/pull/51)).
 
 **Restored and reconciled:** 2026-10-09 from the historical plan backup, checked
 amendment diffs and the final recorded gate correction. The core composition
@@ -437,16 +439,16 @@ MS0 audit is complete under the owner's implementation request on 2026-10-09. MS
 MS1. MS4B remains conditional for explanation views and further native extensions,
 with its decision recorded after the pilot. Audit/code completion and product review remain separate evidence.
 
-| ID   | Deliverable                                              | Depends on                                    | Status                                            | Completion record                                   |
-| ---- | -------------------------------------------------------- | --------------------------------------------- | ------------------------------------------------- | --------------------------------------------------- |
-| MS0  | Completed-composition audit and E01 baseline             | Composition completion gate                   | `[x]`                                             | [MS0 evidence](./mechanism-shorts-ms0-results.json) |
-| MS1  | Supported bridge and portable E01                        | MS0                                           | Software verified in stages; human review pending | [Completion](./mechanism-shorts-ms1-completion.md)  |
-| MS1N | Native 3D composition using shared scene and assets      | MS1                                           | `[ ]`                                             | Pending                                             |
-| MS2  | Reusable packs, rigs, shots, labels and cue-driven edits | MS1N                                          | `[ ]`                                             | Pending                                             |
-| MS3  | Episode lifecycle and ten-episode pilot                  | MS2                                           | `[ ]`                                             | Pending                                             |
-| MS4A | Queue stress and recovery at 300 jobs                    | MS3                                           | `[ ]`                                             | Pending                                             |
-| MS4B | Required explanation views and native extensions         | MS3 and a recorded coverage need              | `[ ]` conditional                                 | Pending                                             |
-| MS4C | Diverse 30-episode cohort and capacity decision          | MS4A; MS4B when required by selected episodes | `[ ]`                                             | Pending                                             |
+| ID   | Deliverable                                              | Depends on                                    | Status                                            | Completion record                                                                            |
+| ---- | -------------------------------------------------------- | --------------------------------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| MS0  | Completed-composition audit and E01 baseline             | Composition completion gate                   | `[x]`                                             | [MS0 evidence](./mechanism-shorts-ms0-results.json)                                          |
+| MS1  | Supported bridge and portable E01                        | MS0                                           | Software verified in stages; human review pending | [Completion](./mechanism-shorts-ms1-completion.md)                                           |
+| MS1N | Native 3D composition using shared scene and assets      | MS1                                           | Implemented; acceptance checks in progress        | [Design](./mechanism-shorts-ms1n-design.md), [results](./mechanism-shorts-ms1n-results.json) |
+| MS2  | Reusable packs, rigs, shots, labels and cue-driven edits | MS1N                                          | `[ ]`                                             | Pending                                                                                      |
+| MS3  | Episode lifecycle and ten-episode pilot                  | MS2                                           | `[ ]`                                             | Pending                                                                                      |
+| MS4A | Queue stress and recovery at 300 jobs                    | MS3                                           | `[ ]`                                             | Pending                                                                                      |
+| MS4B | Required explanation views and native extensions         | MS3 and a recorded coverage need              | `[ ]` conditional                                 | Pending                                                                                      |
+| MS4C | Diverse 30-episode cohort and capacity decision          | MS4A; MS4B when required by selected episodes | `[ ]`                                             | Pending                                                                                      |
 
 ### MS0 Baseline and dependency audit
 
@@ -610,30 +612,30 @@ native integration reuses its scene and asset contracts.
 **Depends on:** accepted MS1 bridge and portable E01. Implement this stage before
 MS2 generalized packs/rigs and MS3's ten-episode pilot.
 
-- [ ] Audit the bridge contracts and define the supported native subset: bounded
+- [x] Audit the bridge contracts and define the supported native subset: bounded
       primitives and/or indexed meshes, normals, material slots, rigid hierarchy,
       units, pivots, transforms, asset hashes and topology/resource limits. Use a
       documented import subset where needed; reject unsupported data explicitly.
-- [ ] Extend `composition-1`, pure evaluation, the shared graph and WebGL2 together.
+- [x] Extend `composition-1`, pure evaluation, the shared graph and WebGL2 together.
       Reuse camera and rig evaluation across bridge/native paths. Define how a
       projected label stays screen-pinned and how an authored 3D graphic shares
       mesh depth; never infer those roles from draw order alone.
-- [ ] Specify opaque depth testing, alpha/cutout and the supported transparency
+- [x] Specify opaque depth testing, alpha/cutout and the supported transparency
       subset, camera clipping, normal transforms, color/alpha and motion-blur clocks.
       Verify only declared mixed-layer combinations; unsupported backends and
       transparency cases fail with located diagnostics rather than flattened output.
-- [ ] Reuse the established bridge material/profile subset needed by the native
+- [x] Reuse the established bridge material/profile subset needed by the native
       proof, with explicit capability and appearance checks. Map overlap with solid
       geometry and CE8-L-F in the owning plan. A bridge reflection or shadow does
       not establish full native shading acceptance or complete CE8-L-F.
-- [ ] Expose native mesh authoring, camera/material controls and inspection through
+- [x] Expose native mesh authoring, camera/material controls and inspection through
       the builder, CLI and Lab. Preserve saved projects, assets, narration, fonts,
       cache identity, scoped edits and clean-location delivery.
-- [ ] Deliver a native version of the E01 mechanism proof plus an independent mixed
+- [x] Deliver a native version of the E01 mechanism proof plus an independent mixed
       mesh/graphic occlusion fixture. Record the supported bridge/native comparison
       policy before implementation. Compare geometry, clocks, anchors and material
       appearance independently; retain differences and unsupported features.
-- [ ] Profile representative native scenes under the supported software renderer
+- [x] Profile representative native scenes under the supported software renderer
       before broad expansion. Record actual timings, memory, source edits and cache
       invalidation; preserve all existing composition baselines.
 
@@ -660,6 +662,16 @@ bridge/native scene identity, portable native E01 and occlusion fixtures, comman
 final renders, parity and mechanical reports, performance measurements, located
 limitations and review status. General CAD, simulation, flexible-body physics and
 arbitrary sectioning are separate work.
+
+**Software completion (2026-10-10):** all seven implementation requirements
+are mapped in the [completion record](./mechanism-shorts-ms1n-completion.md).
+All77 local groups, unchanged176 baselines/36,061 frames and actual benchmark
+complete in recorded stages at `a38754ae`; package/installed refresh and original
+render identities are retained in [results](./mechanism-shorts-ms1n-results.json).
+The original full6 interruption and earlier failures remain recorded. Continuous
+human playback/listening, encoded glyph and material/hardware appearance, legacy
+semantic assessment and owner readiness remain pending. This does not close
+CE6-P or CE8-L-F.
 
 ### MS2 Reusable mechanism families and authoring
 
@@ -1043,7 +1055,9 @@ portable project.
 **Implementation order:** MS0 → MS1 bridge → MS1N native 3D → MS2 → MS3, then
 conditional explanation extensions and capacity stages under the tracker.
 
-**Current next action (2026-10-10):** [MS1 PR #52](https://github.com/xxibcill/still-shift/pull/52) is open targeting `main`; create
-`codex/mechanism-ms1n` from fresh `main` carrying the exact MS1 prerequisite and
-commit the native interface freeze before implementation. Human MS1 playback and
-listening acceptance remain separate from this software-complete checkpoint.
+**Current next action (2026-10-10):** MS1 [PR #52](https://github.com/xxibcill/still-shift/pull/52)
+is open. The separate `codex/mechanism-ms1n` branch carries exact MS1 `13b62b84`
+from fresh `main`; the [native interface freeze](./mechanism-shorts-ms1n-design.md)
+now gates the joint contract, evaluation, graph, WebGL and lifecycle implementation.
+Prove independent mesh/graphic depth before full native E01. Human MS1 playback and
+listening acceptance remain separately pending.

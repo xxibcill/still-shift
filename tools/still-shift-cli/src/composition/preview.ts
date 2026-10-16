@@ -16,12 +16,15 @@ import {
   readCompositionSource,
   prepareCompositionMedia,
   prepareCompositionAudio,
+  prepareCompositionNative3D,
 } from "@still-shift/animation-engine";
 import type {
   Composition,
   CompositionDiagnostic,
   CompositionPreparedMedia,
   CompositionPreparedAudio,
+  CompositionPreparedNative3D,
+  NativeAppearanceCodeIdentity,
 } from "@still-shift/scene-contract";
 import { CompositionProgramError, programError } from "./errors.ts";
 import { loadProgram } from "./program.ts";
@@ -50,6 +53,9 @@ export type ProgramSnapshot = {
   assets: Record<string, string>;
   preparedMedia?: CompositionPreparedMedia;
   preparedAudio?: CompositionPreparedAudio;
+  preparedNative3D?: CompositionPreparedNative3D;
+  nativeAppearanceCodeIdentity?: NativeAppearanceCodeIdentity;
+  nativeAppearanceCodeSha256?: string;
   diagnostics: CompositionDiagnostic[];
 };
 type NativeSnapshotBytes = SnapshotBytes<DraftAsset> & {
@@ -187,6 +193,15 @@ export async function createProgramPreview(
           : {}),
         ...(source.preparedMedia
           ? { preparedMedia: source.preparedMedia }
+          : {}),
+        ...(source.preparedNative3D
+          ? { preparedNative3D: source.preparedNative3D }
+          : {}),
+        ...(source.nativeAppearanceCodeIdentity
+          ? {
+              nativeAppearanceCodeIdentity: source.nativeAppearanceCodeIdentity,
+              nativeAppearanceCodeSha256: source.nativeAppearanceCodeSha256!,
+            }
           : {}),
         assets: Object.fromEntries(
           Object.keys(source.assetPaths).map((id) => [
@@ -498,6 +513,11 @@ export async function createProgramPreview(
                 controller,
               };
               captures.set(capture, reservation);
+              const native = await prepareCompositionNative3D(
+                nativeDocument,
+                dirname(sourceInput),
+                { signal: controller.signal },
+              );
               const prepared = await prepareCompositionMedia(
                 nativeDocument,
                 dirname(sourceInput),
@@ -508,7 +528,11 @@ export async function createProgramPreview(
                 dirname(sourceInput),
                 { signal: controller.signal },
               );
-              const paths = { ...prepared?.assetPaths, ...audio?.assetPaths };
+              const paths = {
+                ...native?.assetPaths,
+                ...prepared?.assetPaths,
+                ...audio?.assetPaths,
+              };
               controller.signal.throwIfAborted();
               if (
                 captures.get(capture) !== reservation ||
@@ -526,6 +550,11 @@ export async function createProgramPreview(
                   capture,
                   preparedMedia: prepared?.preparedMedia,
                   preparedAudio: audio?.preparedAudio,
+                  preparedNative3D: native?.preparedNative3D,
+                  nativeAppearanceCodeIdentity:
+                    native?.nativeAppearanceCodeIdentity,
+                  nativeAppearanceCodeSha256:
+                    native?.nativeAppearanceCodeSha256,
                   assets: {
                     ...Object.fromEntries(
                       Object.entries(captured.snapshot.assets).map(

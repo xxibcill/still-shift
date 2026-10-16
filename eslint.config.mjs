@@ -69,6 +69,11 @@ export default tseslint.config(
                 "!../../motion-sampling.ts",
                 "!../../passage-diagnostics.ts",
                 "!../../motion-easing.ts",
+                "!../../native3d",
+                "../../native3d/*",
+                "!../../native3d/evaluate.ts",
+                "!../../native3d/bindings.ts",
+                "!../../native3d/types.ts",
               ],
               message:
                 "Composition evaluation may only import pure renderer helpers.",

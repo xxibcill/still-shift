@@ -16,7 +16,7 @@ import {
   type Surface,
   type SurfacePixels,
 } from "./backend.ts";
-import type { RenderGraph, SurfaceNode } from "./graph.ts";
+import { hasNativeDepth, type RenderGraph, type SurfaceNode } from "./graph.ts";
 import {
   compositionSurfaceVisualMetadata,
   type CompositionSurfaceCacheOptions,
@@ -85,6 +85,7 @@ export class CompositionRootCache<S extends Surface> {
     );
     backend.rootPrefix = (node, target, role) => {
       this.assertOpen();
+      if (hasNativeDepth(node.ops)) return 0;
       const prefix = compositionRootPrefix(backend, node, prefixLayers);
       if (prefix) {
         if (this.copy(prefix, target, role + ":prefix"))
@@ -103,6 +104,10 @@ export class CompositionRootCache<S extends Surface> {
     };
     backend.renderRoot = (node, target, draw, role) => {
       this.assertOpen();
+      if (hasNativeDepth(node.ops)) {
+        draw();
+        return;
+      }
       const identity = this.identity(node, target, role);
       try {
         if (this.copy(node, target, role)) return;
@@ -207,6 +212,7 @@ export class CompositionRootCache<S extends Surface> {
     }
   }
   async prepare(graph: RenderGraph, target: S, purpose = "frame") {
+    if (hasNativeDepth(graph.root.ops)) return;
     this.assertOpen();
     if (this.preparing)
       throw Error("Composition root preparation must be sequential");

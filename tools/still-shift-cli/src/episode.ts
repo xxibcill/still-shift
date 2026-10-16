@@ -11,7 +11,24 @@ import {
   MechanismSceneSchema,
   MechanismSidecarSchema,
   MechanismFrameResultSchema,
+  MechanismRouteSchema,
+  MechanismRouteSelectionSchema,
+  Native3DSourceSchema,
+  SolidSceneSchema,
+  SolidGeometrySchema,
+  Native3DBindingSchema,
+  NativeObservedFrameSchema,
+  NativeObservedOutputFrameSchema,
+  NativeAppearanceCodeIdentitySchema,
+  CompositionPreparedNative3DSchema,
+  NATIVE3D_VARIANT_LIMIT,
+  NATIVE3D_OBSERVATION_LIMITS,
 } from "@still-shift/scene-contract";
+import {
+  NativePreparedMechanismEpisodeSchema,
+  NATIVE_MECHANISM_PROFILE,
+} from "../../../packages/animation-engine/src/mechanism/native-lifecycle.ts";
+import { selectMechanismRoute } from "../../../packages/animation-engine/src/mechanism/route.ts";
 import {
   mechanismDependencyReport,
   patchMechanismEpisode,
@@ -45,6 +62,14 @@ import type {
   MechanismReceiptRow,
 } from "../../../packages/animation-engine/src/mechanism/protocol.ts";
 
+import {
+  EPISODE_NATIVE_INSPECTION_VERSION,
+  EPISODE_NATIVE_INSPECTION_SELECTORS,
+  EpisodeNativeInspectionSelectionSchema,
+  inspectEpisodeNativeMetadata,
+  parseEpisodeNativeInspectionSelection,
+} from "./episode-native-inspection.ts";
+
 export interface EpisodeCliIo {
   stdout: (value: string) => void;
   stderr: (value: string) => void;
@@ -54,19 +79,39 @@ const commonFlags = ["json", "report", "offset", "limit"];
 const commandFlags: Record<MechanismCommand, readonly string[]> = {
   discover: [],
   schema: ["kind", "output"],
-  inspect: ["input", "shot"],
+  inspect: ["input", "shot", "native", "part", "anchor", "material", "rig"],
   validate: ["input"],
   deps: ["input"],
   save: ["input", "output", "base-revision", "base-hash"],
   patch: ["input", "request"],
-  prepare: ["input", "output-dir", "cache-dir"],
-  compile: ["input", "output-dir", "cache-dir"],
-  preview: ["input", "output-dir", "cache-dir", "frame"],
-  render: ["input", "output-dir", "cache-dir", "backend"],
-  check: ["input", "prepared-dir", "final-output"],
-  package: ["input", "output-dir", "prepared-dir", "final-output"],
+  prepare: ["input", "output-dir", "cache-dir", "route"],
+  compile: ["input", "output-dir", "cache-dir", "route"],
+  preview: ["input", "output-dir", "cache-dir", "frame", "route"],
+  render: ["input", "output-dir", "cache-dir", "backend", "route"],
+  check: ["input", "prepared-dir", "final-output", "route"],
+  package: ["input", "output-dir", "prepared-dir", "final-output", "route"],
   "init-tape-hook": ["output-dir", "font", "font-license", "audio", "captions"],
   summary: ["input"],
+};
+const episodeSchemas = {
+  geometry: MechanismGeometrySchema,
+  episode: MechanismEpisodeSchema,
+  scene: MechanismSceneSchema,
+  sidecar: MechanismSidecarSchema,
+  frame: MechanismFrameResultSchema,
+  patch: MechanismPatchRequestSchema,
+  receipt: MechanismCommandReceiptSchema,
+  "native-source": Native3DSourceSchema,
+  "solid-scene": SolidSceneSchema,
+  "solid-geometry": SolidGeometrySchema,
+  "native-binding": Native3DBindingSchema,
+  "native-observed-frame": NativeObservedFrameSchema,
+  "native-observed-output-frame": NativeObservedOutputFrameSchema,
+  "native-prepared-receipt": NativePreparedMechanismEpisodeSchema,
+  "native-prepared-transport": CompositionPreparedNative3DSchema,
+  "native-appearance-identity": NativeAppearanceCodeIdentitySchema,
+  "route-selection": MechanismRouteSelectionSchema,
+  "native-inspection-selection": EpisodeNativeInspectionSelectionSchema,
 };
 function parseFlags(
   command: MechanismCommand,
@@ -156,6 +201,7 @@ function row(value: unknown): MechanismReceiptRow {
 }
 function summarizeLoaded(loaded: LoadedMechanismEpisode): MechanismReceiptRow {
   const { episode, scene } = loaded;
+  const route = selectMechanismRoute(episode);
   return {
     episode: episode.id,
     revision: episode.revision,
@@ -174,6 +220,9 @@ function summarizeLoaded(loaded: LoadedMechanismEpisode): MechanismReceiptRow {
     ),
     dependencies: episode.dependencies.length,
     fontDiagnostics: loaded.fontDiagnostics.length,
+    "route.sourceRoute": route.sourceRoute,
+    "route.effectiveRoute": route.effectiveRoute,
+    "route.selectionOrigin": route.selectionOrigin,
   };
 }
 function inspectItems(
@@ -280,6 +329,46 @@ function resultView(
     items.push(...(checked.items ?? []));
     artifacts.push(...(checked.artifacts ?? []));
   }
+  if (isRecord(record.routeSelection))
+    for (const key of [
+      "sourceRoute",
+      "effectiveRoute",
+      "selectionOrigin",
+    ] as const) {
+      const value = record.routeSelection[key];
+      if (value === null || typeof value === "string")
+        summary[`route.${key}`] = value;
+    }
+  const renderRecord = isRecord(record.render) ? record.render : record;
+  const metrics = isRecord(renderRecord.metrics)
+    ? renderRecord.metrics
+    : undefined;
+  const observed =
+    metrics && isRecord(metrics.nativeObservations)
+      ? metrics.nativeObservations
+      : undefined;
+  if (observed) {
+    for (const key of [
+      "outputFrames",
+      "passCount",
+      "executionSha256",
+      "manifestSha256",
+    ] as const)
+      if (
+        typeof observed[key] === "number" ||
+        typeof observed[key] === "string"
+      )
+        summary[`nativeObservations.${key}`] = observed[key];
+    if (
+      typeof observed.manifestPath === "string" &&
+      typeof observed.manifestSha256 === "string"
+    )
+      artifacts.push({
+        kind: "native-observation-manifest",
+        path: observed.manifestPath,
+        sha256: observed.manifestSha256,
+      });
+  }
   const status =
     record.status === "cancelled"
       ? "cancelled"
@@ -365,11 +454,59 @@ async function discover(): Promise<MechanismReceiptInput> {
       receiptBytes: 32768,
       receiptItems: 100,
       patchVersion: "mechanism-patch-1",
+      routes: "bridge native3d",
+      defaultRoute: "bridge",
+      routePrecedence:
+        "CLI override, authored episode route, bridge default; prepared commands assert the recorded selection",
+      nativePreparedVersion: "mechanism-prepared-native-episode-1",
+      nativeRenderVersion: "mechanism-native-render-result-1",
+      nativeCheckVersion: "mechanism-native-check-result-1",
+      nativePackageVersion: "mechanism-native-project-package-1",
+      nativeSourceVersions: "mechanism-scene-1 solid-scene-1",
+      nativeGeometryVersion: "solid-geometry-1",
+      nativeObservationVersion: "native3d-observed-output-frame-1",
+      nativeInspectionVersion: EPISODE_NATIVE_INSPECTION_VERSION,
+      schemaKinds: Object.keys(episodeSchemas).join(" "),
     },
-    items: MECHANISM_COMMANDS.map((command) => ({
-      command,
-      options: commandFlags[command].map((flag) => `--${flag}`).join(" "),
-    })),
+    items: [
+      ...MECHANISM_COMMANDS.map((command) => ({
+        command,
+        options: commandFlags[command].map((flag) => `--${flag}`).join(" "),
+      })),
+      {
+        kind: "native-route",
+        route: "native3d",
+        backend: "webgl2",
+        profile: NATIVE_MECHANISM_PROFILE,
+        workers: 1,
+        canvasAllowed: false,
+        support:
+          "Generic native compositions and E01 tape-hook mechanics; source-only packages have scoped validation and no actual execution acceptance",
+      },
+      {
+        kind: "native-inspection",
+        version: EPISODE_NATIVE_INSPECTION_VERSION,
+        selectors: EPISODE_NATIVE_INSPECTION_SELECTORS.join(" "),
+        filters:
+          "--part (parts), --anchor (anchors), --material (materials), --rig (controls); all accepts every ID filter; --shot selects cameras/controls/all",
+        scope:
+          "Original scene catalogues plus episode-shot camera/control settings with source defaults; saved composition recipes and actual execution are unassessed",
+        schema: "native-inspection-selection",
+        keyRows:
+          "One authored camera/control key per bounded pageable row; frames are absolute source frames",
+      },
+      {
+        kind: "native-observation-limits",
+        packetBytes: NATIVE3D_OBSERVATION_LIMITS.packetBytes,
+        passes: NATIVE3D_OBSERVATION_LIMITS.passes,
+        parts: NATIVE3D_OBSERVATION_LIMITS.parts,
+        anchors: NATIVE3D_OBSERVATION_LIMITS.anchors,
+        shardBytes: NATIVE3D_OBSERVATION_LIMITS.shardBytes,
+        shards: NATIVE3D_OBSERVATION_LIMITS.shards,
+        totalBytes: NATIVE3D_OBSERVATION_LIMITS.totalBytes,
+        distinctPreparedVariants: NATIVE3D_VARIANT_LIMIT,
+      },
+    ],
     nextAction:
       "episode init-tape-hook --output-dir <fresh-directory> --font <font.ttf>; episode inspect --input <episode.json>",
   };
@@ -377,21 +514,15 @@ async function discover(): Promise<MechanismReceiptInput> {
 async function schema(
   flags: Map<string, string>,
 ): Promise<MechanismReceiptInput> {
-  const schemas = {
-    geometry: MechanismGeometrySchema,
-    episode: MechanismEpisodeSchema,
-    scene: MechanismSceneSchema,
-    sidecar: MechanismSidecarSchema,
-    frame: MechanismFrameResultSchema,
-    patch: MechanismPatchRequestSchema,
-    receipt: MechanismCommandReceiptSchema,
-  };
   const kind = flags.get("kind") ?? "episode";
-  if (!Object.hasOwn(schemas, kind))
+  if (!Object.hasOwn(episodeSchemas, kind))
     throw cliError(`Unknown schema kind ${kind}`);
-  const document = z.toJSONSchema(schemas[kind as keyof typeof schemas], {
-    unrepresentable: "any",
-  });
+  const document = z.toJSONSchema(
+    episodeSchemas[kind as keyof typeof episodeSchemas],
+    {
+      unrepresentable: "any",
+    },
+  );
   const output = flags.get("output");
   if (output) await writeMechanismJson(resolve(output), document);
   return {
@@ -439,12 +570,22 @@ async function execute(
     command === "summary" ||
     command === "validate"
   ) {
+    const selection =
+      command === "inspect"
+        ? parseEpisodeNativeInspectionSelection(flags)
+        : undefined;
     const loaded = await readMechanismEpisode(input),
       summary = summarizeLoaded(loaded);
+    const native =
+      selection === undefined
+        ? undefined
+        : inspectEpisodeNativeMetadata(loaded, selection);
+    if (native) Object.assign(summary, native.summary);
     const items =
-      command !== "validate"
+      native?.items ??
+      (command !== "validate"
         ? inspectItems(loaded, flags.get("shot"))
-        : loaded.fontDiagnostics.map(row);
+        : loaded.fontDiagnostics.map(row));
     return {
       command,
       summary,
@@ -489,6 +630,16 @@ async function execute(
   const cache = flags.has("cache-dir")
     ? { cacheDirectory: required(flags, "cache-dir") }
     : {};
+  const selectedRoute = flags.has("route")
+    ? MechanismRouteSchema.safeParse(flags.get("route"))
+    : undefined;
+  if (selectedRoute && !selectedRoute.success)
+    throw cliError(
+      "--route requires bridge or native3d",
+      "mechanism-route",
+      "--route",
+    );
+  const route = selectedRoute?.success ? { route: selectedRoute.data } : {};
   const prepared = flags.has("prepared-dir")
     ? { preparedDirectory: required(flags, "prepared-dir") }
     : {};
@@ -498,7 +649,12 @@ async function execute(
   if (command === "check")
     return resultView(
       command,
-      await checkMechanismEpisode(input, { ...prepared, ...final, signal }),
+      await checkMechanismEpisode(input, {
+        ...prepared,
+        ...final,
+        ...route,
+        signal,
+      }),
     );
   if (command === "package")
     return resultView(
@@ -507,6 +663,7 @@ async function execute(
         outputDirectory: required(flags, "output-dir"),
         ...prepared,
         ...final,
+        ...route,
         signal,
       }),
     );
@@ -514,6 +671,7 @@ async function execute(
     outputDirectory: required(flags, "output-dir"),
     signal,
     ...cache,
+    ...route,
   };
   if (command === "prepare")
     return resultView(command, await prepareMechanismEpisode(input, options));
