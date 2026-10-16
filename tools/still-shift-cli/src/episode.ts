@@ -941,6 +941,12 @@ async function execute(
         "mechanism-authoring-kind",
         "--authoring",
       );
+    if (!["inspect", "validate", "summary", "save", "patch"].includes(command))
+      throw cliError(
+        `Family authoring does not support ${command}; use inspect, validate, summary, save or patch`,
+        "mechanism-authoring-command",
+        "--authoring",
+      );
     if (command === "patch")
       return resultView(
         command,

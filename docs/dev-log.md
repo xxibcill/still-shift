@@ -43,6 +43,17 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #57 family lifecycle repair qualified (2026-10-16):** the P2 finding
+  was posted inline before implementation. Family authoring now rejects unsupported
+  compile/prepare/render/check requests with a located failure instead of inspection
+  success; inspect/validate/summary/save/patch stay supported. All four regressions
+  fail on the original source and pass after repair. Fast 4,395 units/429 files and
+  42 affected runtime tests pass; all 2,621 verified source inputs match. Delivery
+  uses one repair commit and one final normal push; the receipt retains actual
+  remote verification. Primary checkout edits remain preserved; owner merge and
+  separate release/human gates remain pending.
+  [Repair evidence](./pr-57-third-review-fix-results.json).
+
 - **PR #57 conflicts resolved and verified (2026-10-16):** merge `main`
   `e7433203` into PR head `36fc04ea`, preserving both parents and histories. The
   versioned observation facade and shared regular-file reader retain both safety
@@ -298,6 +309,21 @@ still hold before relying on them.
   used read-only public npm registry access.
 
 ## Entries
+
+### 2026-10-16 — Fix PR #57 family lifecycle false-success dispatch
+
+- **Agent / branch:** Codex on isolated `codex/pr57-third-review-fix`, from `57a2246a`.
+- **Done:** posted the P2 finding inline, added four failing regressions, then
+  restricted family authoring to its supported commands with a located diagnostic.
+  Updated family documentation and kept positive validate/edit/save controls.
+- **Results:** fast 4,395 units/429 files; 42 affected runtime tests across five
+  suites pass. All 2,621 verification inputs remain unchanged.
+- **Retained:** original four regression failures and sandbox DNS failure; the
+  permitted remote read confirms the original PR head before delivery.
+- **Delivery / next:** one finding/one commit; one final normal push to PR #57.
+  Full release/package and human acceptance remain separate; primary edits preserved.
+- **Records:** [Repair and delivery evidence](./pr-57-third-review-fix-results.json),
+  [inline finding](https://github.com/xxibcill/still-shift/pull/57#discussion_r4291506496).
 
 ### 2026-10-16 — Resolve PR #57 conflicts with merged native prerequisites
 

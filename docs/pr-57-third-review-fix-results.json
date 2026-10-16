@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "pull-request-fix-1",
+  "date": "2026-10-16",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/57",
+  "parent": "57a2246ad7f38b97fa1c06a0b958f4ff023e4410",
+  "branch": "codex/pr57-third-review-fix",
+  "target": "refs/heads/codex/mechanism-ms2",
+  "finding": {
+    "priority": 2,
+    "title": "Reject unsupported family lifecycle commands before returning inspection success",
+    "commentUrl": "https://github.com/xxibcill/still-shift/pull/57#discussion_r4291506496",
+    "reviewId": 5543785989,
+    "commentId": 4291506496,
+    "threadId": "PRRT_kwDOUNeEOM6tFf9A",
+    "postedBeforeImplementation": true,
+    "reviewedPath": "tools/still-shift-cli/src/episode.ts",
+    "reviewedLines": [981, 982]
+  },
+  "change": {
+    "behavior": "Family authoring admits only inspect, validate, summary, save and patch. Unsupported lifecycle commands reject before source reading with exit 2, status failed, mechanism-authoring-command at --authoring.",
+    "files": [
+      "tools/still-shift-cli/src/episode.ts",
+      "tests/runtime/mechanism-family-authoring.test.ts",
+      "docs/mechanism-family-authoring.md"
+    ],
+    "regressions": "Four command-specific regressions retain the source bytes and leave no project artifacts. Existing inspection, summary, patch and save plus an explicit validate control pass."
+  },
+  "verification": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "python": "3.12.11",
+    "dependencies": "Local copy of previously installed locked dependencies; workspace links resolve within the isolated repair checkout.",
+    "red": {
+      "exitCode": 1,
+      "failed": 4,
+      "skipped": 7,
+      "reason": "Original code returns exit 0 for all four unsupported family lifecycle commands; new regressions require exit 2."
+    },
+    "affectedRuntime": {
+      "exitCode": 0,
+      "files": 5,
+      "tests": 42,
+      "suites": [
+        "mechanism-family-authoring",
+        "mechanism-cue-authoring",
+        "mechanism-cue-compilation",
+        "mechanism-family-registry-cli",
+        "mechanism-cli"
+      ],
+      "coverage": "Four negative routes, valid family inspection/validation/edit/save, source-pinned cue editing/compilation, registry discovery, and existing CLI including actual render receipt."
+    },
+    "checkFast": {
+      "exitCode": 0,
+      "unitFiles": 429,
+      "unitTests": 4395,
+      "gates": [
+        "schema",
+        "native appearance identity",
+        "package boundaries",
+        "format",
+        "lint",
+        "TypeScript",
+        "units"
+      ]
+    },
+    "sourceBinding": {
+      "files": 2621,
+      "mismatches": [],
+      "manifest": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/pr-57-third-review-fix-20261016/pr57-third-fix-inputs.json",
+      "sha256": "a8e74002d9ab835abace966fb137b35db2c12aebe8a02992acc34e1cb43a7ca2"
+    },
+    "repairReview": "Root inspected the guard, supported routes, error receipt and test coverage. No further issue identified; no independent repair review claimed.",
+    "logs": [
+      {
+        "path": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/pr-57-third-review-fix-20261016/pr57-third-fix-red.log",
+        "sha256": "03381985991f52cd09631961037edc4b11b8aca07f60f676a477b2b0a7c1a98c",
+        "tail": "\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[1/4]\u23af\n\n\n Test Files  1 failed (1)\n      Tests  4 failed | 7 skipped (11)\n   Start at  13:20:24\n   Duration  6.68s (transform 1.53s, setup 0ms, collect 2.80s, tests 3.73s, environment 0ms, prepare 33ms)\n"
+      },
+      {
+        "path": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/pr-57-third-review-fix-20261016/pr57-third-fix-runtime.log",
+        "sha256": "7b864b874fe4466b0076fb17b3ef7c83e66534ec53bcdeaf5df9c379f64cdce6",
+        "tail": " \u2713 tests/runtime/mechanism-family-registry-cli.test.ts (4 tests) 334ms\n   \u2713 family registry CLI > exposes family discovery with small examples and complete unabridged asset metadata  317ms\n\n Test Files  5 passed (5)\n      Tests  42 passed (42)\n   Start at  13:20:55\n   Duration  82.75s (transform 1.86s, setup 0ms, collect 6.50s, tests 75.42s, environment 0ms, prepare 192ms)\n"
+      },
+      {
+        "path": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/pr-57-third-review-fix-20261016/pr57-third-fix-check-fast.log",
+        "sha256": "ae4ec6f910edd3629503b3859bac4e122f4717d0f67fab7e52998d5ad9243fcd",
+        "tail": " \u2713 tests/unit/native3d-runtime-admission.test.ts (2 tests) 4ms\n \u2713 tests/unit/story-text-reveal.test.ts (2 tests) 2ms\n\n Test Files  429 passed (429)\n      Tests  4395 passed (4395)\n   Start at  13:23:56\n   Duration  102.09s (transform 6.17s, setup 0ms, collect 169.89s, tests 165.94s, environment 56ms, prepare 19.06s)\n"
+      }
+    ],
+    "retainedFailures": [
+      "Original four failing regressions retained.",
+      "Initial sandbox git ls-remote could not resolve github.com; permitted read confirms unchanged remote57a2246a."
+    ],
+    "limits": [
+      "Full runtime/integration/browser/render/frozen-baseline/benchmark release gate not rerun for this CLI-only guard.",
+      "Installed-package and human acceptance retain prior source bindings."
+    ]
+  },
+  "delivery": {
+    "strategy": "One finding, one repair commit containing this receipt, one final normal fast-forward push.",
+    "beforePushRemote": "57a2246ad7f38b97fa1c06a0b958f4ff023e4410",
+    "finalReceipt": "/Users/jjae/Documents/playground/still-shift/benchmarks/results/pr-57-third-review-fix-20261016/delivery.json",
+    "merge": false,
+    "elevenLabsSpending": 0
+  }
+}
