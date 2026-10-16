@@ -43,6 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
+- **0.2.0 candidate preparation (2026-10-16):** authorized release plan execution
+  on isolated `codex/release-0.2.0` from merged PR #58 `9c94101d`. Versions, release
+  notes, installed guidance and runtime lock are prepared. The final committed
+  source requires a fresh `pnpm release:check` and archive-bound installed proofs;
+  no release gate, promotion, tag or publication is claimed yet. MS3 pilot remains
+  experimental with original first-pass 10%, null token savings and accepted 0/10.
+  Primary checkout edits are preserved. [Release notes](./npm-release-0.2.0.md),
+  [execution plan](./npm-release-plan.md).
+
 - **PR #58 review findings repaired and verified (2026-10-16):** both P2
   findings were posted inline before repair. Identifier commit `a155109f` adds
   bounded logical IDs and reserved assets; the separate FPS slice shares the
@@ -103,6 +112,22 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-10-16 — Prepare the 0.2.0 release candidate
+
+- **Agent / branch:** Codex on isolated `codex/release-0.2.0` from `9c94101d`.
+- **Scope:** version metadata, runtime lock, release notes, compatibility and
+  experimental pilot scope; original primary checkout edits preserved.
+- **Setup:** initial worktree creation lacked the new merge object; fetching the
+  named remote refs resolved it. Frozen offline pnpm/uv and pinned soundtrack setup
+  pass; Actions are still disabled. Full release verification is pending.
+- **Lock decision:** regeneration proposed Rollup 4.64.7; retained that output as
+  a rejected update and preserved every existing dependency pin, changing only the
+  two package-version lock fields. Pinned toolchain preflight and the exact locked
+  production audit pass, with zero reported vulnerabilities.
+- **Open / next:** freeze the committed candidate, run `pnpm release:check`, bind
+  the archive, then present the concrete release for review and approval.
+- **Records:** [release notes](./npm-release-0.2.0.md), [plan](./npm-release-plan.md).
 
 ### 2026-10-16 — PR #58 FPS repair and final verification
 
