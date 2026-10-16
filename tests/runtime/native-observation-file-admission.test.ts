@@ -1,13 +1,13 @@
 import { createHash } from "node:crypto";
 import { execFile, execFileSync } from "node:child_process";
-import { mkdtemp, readFile, rename, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rename, rm, symlink } from "node:fs/promises";
 import { join } from "node:path";
 import { promisify } from "node:util";
 import { afterEach, describe, expect, it } from "vitest";
 import {
-  NativeObservationSinkV2,
-  NativeObservationExecutionV2Schema,
-  verifyNativeObservationClosureV2,
+  NativeObservationSink,
+  type NativeObservationExecutionBinding,
+  verifyNativeObservationClosure,
 } from "../../packages/execution-runtime/src/export-worker.ts";
 import { canonicalMechanismJson } from "../../packages/renderer-core/src/mechanism/canonical.ts";
 
@@ -15,15 +15,15 @@ const hash = (bytes: Uint8Array | string) =>
   "sha256:" + createHash("sha256").update(bytes).digest("hex");
 const sha = "sha256:" + "a".repeat(64);
 const identity = {
-  runtimeFormat: "source-ts",
+  runtimeFormat: "source-ts" as const,
   modules: [{ name: "renderer.ts", sha256: sha }],
   threeRuntime: {
-    version: "0.186.0",
+    version: "0.186.0" as const,
     sources: [{ name: "three.module.js", sha256: sha }],
   },
 };
-const execution = NativeObservationExecutionV2Schema.parse({
-  version: "native-observation-execution-2",
+const execution: NativeObservationExecutionBinding = {
+  version: "native-observation-execution-1",
   compositionSourceSha256: sha,
   compositionSha256: sha,
   preparedNativeSha256: sha,
@@ -31,20 +31,8 @@ const execution = NativeObservationExecutionV2Schema.parse({
   appearanceCodeIdentity: identity,
   backend: "webgl2",
   profile: "native-three-aces-hdr-msaa4-1",
-  sources: [
-    {
-      asset: "unused2",
-      sourceVersion: "mechanism-scene-2",
-      sourceKey: "native3d-source-1:" + "a".repeat(64) + ":" + "a".repeat(64),
-      sourceSha256: sha,
-      originalGeometrySha256: sha,
-      effectiveSceneSha256: sha,
-      geometrySha256: sha,
-      meshDataSha256: sha,
-      shapeAssociations: [],
-    },
-  ],
-});
+  sources: [],
+};
 const roots: string[] = [];
 afterEach(async () => {
   for (const directory of roots.splice(0))
@@ -53,7 +41,7 @@ afterEach(async () => {
 async function journal() {
   const directory = await mkdtemp("/private/tmp/native-journal-admission-");
   roots.push(directory);
-  const sink = new NativeObservationSinkV2({
+  const sink = new NativeObservationSink({
     outputPath: join(directory, "empty.rgba"),
     exportId: "admission-regression",
     frameCount: 1,
@@ -67,7 +55,7 @@ async function journal() {
       0,
       new TextEncoder().encode(
         JSON.stringify({
-          version: "native3d-observed-output-frame-2",
+          version: "native3d-observed-output-frame-1",
           outputFrame: 0,
           executionSha256: sink.executionSha256,
           passes: [],
@@ -95,7 +83,7 @@ async function journal() {
       await rename(publication.staged, publication.destination);
     const input = { closure, execution, output };
     expect(
-      await verifyNativeObservationClosureV2({
+      await verifyNativeObservationClosure({
         ...input,
         expectedPasses: () => [],
       }),
@@ -118,13 +106,36 @@ async function journal() {
 }
 
 describe("retained native observation files", () => {
-  it.skipIf(process.platform === "win32").each(["manifest", "shard"] as const)(
-    "rejects a %s FIFO before waiting for a writer and releases verification capacity",
+  it.each(["manifest", "shard"] as const)(
+    "retains regular-file symlink compatibility for the %s locator",
     async (kind) => {
+      const fixture = await journal();
+      const path = fixture.paths[kind],
+        target = path + ".regular";
+      await rename(path, target);
+      await symlink(target, path);
+      expect(
+        await verifyNativeObservationClosure({
+          ...fixture.input,
+          expectedPasses: () => [],
+        }),
+      ).toMatchObject({ outputFrames: 1, passCount: 0 });
+    },
+  );
+  it.skipIf(process.platform === "win32").each([
+    ["manifest", false],
+    ["shard", false],
+    ["manifest", true],
+    ["shard", true],
+  ] as const)(
+    "rejects a %s FIFO (symlink: %s) before waiting for a writer and releases verification capacity",
+    async (kind, alias) => {
       const fixture = await journal();
       const path = fixture.paths[kind];
       await rm(path);
-      execFileSync("mkfifo", [path]);
+      const fifo = alias ? path + ".fifo" : path;
+      execFileSync("mkfifo", [fifo]);
+      if (alias) await symlink(fifo, path);
       const { stdout } = await promisify(execFile)(
         process.execPath,
         [
@@ -133,10 +144,10 @@ describe("retained native observation files", () => {
           "--input-type=module",
           "--eval",
           `import assert from "node:assert/strict";
-         import { verifyNativeObservationClosureV2 } from "./packages/execution-runtime/src/export-worker.ts";
+         import { verifyNativeObservationClosure } from "./packages/execution-runtime/src/export-worker.ts";
          const input = JSON.parse(process.argv[1]);
          let reserved = 0;
-         await assert.rejects(verifyNativeObservationClosureV2({
+         await assert.rejects(verifyNativeObservationClosure({
            ...input, expectedPasses: () => [],
            reserve(bytes) { reserved += bytes; return { release() { reserved -= bytes; } }; },
          }), /regular file/);

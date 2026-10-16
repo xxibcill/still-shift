@@ -4,6 +4,7 @@ import {
   Native3DSourceSchema,
 } from "../../packages/scene-contract/src/native3d/scene.ts";
 import { CompositionSchema } from "../../packages/scene-contract/src/composition/composition.ts";
+import { validateComposition } from "../../packages/scene-contract/src/composition/index.ts";
 import { Native3DLayerSchema } from "../../packages/scene-contract/src/composition/layers.ts";
 import { Native3DSourceOverridesSchema } from "../../packages/scene-contract/src/composition/native3d.ts";
 import {
@@ -123,5 +124,158 @@ describe("native solid contracts and scoped admission", () => {
         ]),
       ).success,
     ).toBe(false);
+  });
+});
+
+describe("native precomp isolation admission", () => {
+  const scope = (id: string, layers: unknown[]) => ({
+    id,
+    width: 320,
+    height: 180,
+    fps: 30,
+    frameCount: 300,
+    layers,
+  });
+  const instance = (id: string, comp: string, collapseTransforms = true) => ({
+    id,
+    type: "precomp",
+    comp,
+    collapseTransforms,
+    transform: { anchor: [0, 0], position: [100, 20] },
+  });
+  it.each([false, true])(
+    "rejects a directly collapsed native scope, including identity placement: %s",
+    (identity) => {
+      const layer = instance("instance", "native");
+      if (identity) layer.transform.position = [0, 0];
+      const result = validateComposition({
+        ...composition([layer]),
+        precomps: [scope("native", [controller()])],
+      });
+      expect(result.ok).toBe(false);
+      expect(result.diagnostics).toContainEqual(
+        expect.objectContaining({
+          code: "comp-native3d-scope",
+          path: "layers[0].collapseTransforms",
+          severity: "error",
+        }),
+      );
+    },
+  );
+  it("locates a collapsed native scope below an isolated instance", () => {
+    const result = validateComposition({
+      ...composition([instance("outer", "wrapper", false)]),
+      precomps: [
+        scope("wrapper", [instance("inner", "native")]),
+        scope("native", [controller()]),
+      ],
+    });
+    expect(result.ok).toBe(false);
+    expect(result.diagnostics).toContainEqual(
+      expect.objectContaining({
+        code: "comp-native3d-scope",
+        path: "precomps[0].layers[0].collapseTransforms",
+      }),
+    );
+  });
+  it("preserves isolated native surfaces inside ordinary collapsed parents", () => {
+    const result = validateComposition({
+      ...composition([instance("outer", "wrapper")]),
+      precomps: [
+        scope("wrapper", [instance("inner", "native", false)]),
+        scope("native", [controller()]),
+      ],
+    });
+    expect(result.ok).toBe(true);
+  });
+  it("preserves collapsed ordinary compositions", () => {
+    const result = validateComposition({
+      ...composition([instance("outer", "ordinary")]),
+      precomps: [
+        scope("ordinary", [
+          { id: "paint", type: "solid", size: [40, 40], color: "#ffffff" },
+        ]),
+      ],
+    });
+    expect(result.ok).toBe(true);
+  });
+});
+
+describe("native controller matte-source admission", () => {
+  const paint = (layer: string, mode = "alpha") => ({
+    id: "paint",
+    type: "solid",
+    size: [320, 180],
+    color: "#ff0000",
+    trackMatte: { layer, mode },
+  });
+  it.each(["alpha", "alpha-inverted", "luma", "luma-inverted"])(
+    "rejects a direct native %s matte at the consuming reference",
+    (mode) => {
+      const result = validateComposition(
+        composition([controller(), paint("world", mode)]),
+      );
+      expect(result.ok).toBe(false);
+      expect(result.diagnostics).toContainEqual(
+        expect.objectContaining({
+          code: "comp-native3d-controller-style",
+          path: "layers[1].trackMatte.layer",
+          severity: "error",
+        }),
+      );
+    },
+  );
+  it("locates a direct native matte inside a precomp", () => {
+    const result = validateComposition({
+      ...composition([{ id: "instance", type: "precomp", comp: "inner" }]),
+      precomps: [
+        {
+          id: "inner",
+          width: 320,
+          height: 180,
+          fps: 30,
+          frameCount: 300,
+          layers: [controller(), paint("world")],
+        },
+      ],
+    });
+    expect(result.ok).toBe(false);
+    expect(result.diagnostics).toContainEqual(
+      expect.objectContaining({
+        code: "comp-native3d-controller-style",
+        path: "precomps[0].layers[1].trackMatte.layer",
+      }),
+    );
+  });
+  it("preserves ordinary matte sources alongside a native controller", () => {
+    expect(
+      validateComposition(
+        composition([
+          { id: "mask", type: "solid", size: [40, 40], color: "#ffffff" },
+          paint("mask"),
+          controller(),
+        ]),
+      ).ok,
+    ).toBe(true);
+  });
+  it("preserves finished isolated native precomps as matte surfaces", () => {
+    expect(
+      validateComposition({
+        ...composition([
+          { id: "mask", type: "precomp", comp: "inner" },
+          paint("mask"),
+        ]),
+        precomps: [
+          {
+            id: "inner",
+            width: 320,
+            height: 180,
+            fps: 30,
+            frameCount: 300,
+            layers: [controller()],
+          },
+        ],
+      }).ok,
+    ).toBe(true);
   });
 });

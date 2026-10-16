@@ -43,16 +43,55 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #57 second-round repairs verified (2026-10-15):** all three findings
+- **PR #57 conflicts resolved and verified (2026-10-16):** merge `main`
+  `e7433203` into PR head `36fc04ea`, preserving both parents and histories. The
+  versioned observation facade and shared regular-file reader retain both safety
+  repairs; v1/v2 FIFO and symlink cases pass. Upstream scope/matte fixes remain.
+  Fast 4,395 units; runtime 286, distinct integration 325, Python 14 and smoke pass
+  in stages. Three initial 5s protocol timeouts remain retained with the unchanged
+  five-case passing rerun. Native depth 14/composition 6, actual cancellation and
+  repeated source2/source3 exports pass. All 2,621 verification inputs match.
+  Delivery uses one normal push to PR #57; owner merge and human acceptance remain
+  pending. Primary checkout edits are preserved.
+  [Resolution evidence](./pr-57-conflict-resolution-results.json).
+
+- **PR #57 second-round repairs delivered (2026-10-15):** all three findings
   were posted inline before implementation. Separate commits `dec445f6` (journal
-  admission), `e9b4caea` (PBR delivery) and the final source3 async slice are ready
-  for one final fast-forward push. All original regressions now pass; independent
+  admission), `e9b4caea` (PBR delivery) and `36fc04ea` (source3 async dispatch)
+  were pushed together. All original regressions now pass; independent
   Standards/Spec reviews are 0/0. Fast 4,383 units, runtime 276, distinct integration
   325, Python 14 and smoke pass in recorded stages. Three unproven protocol
   timeouts remain retained with the unchanged five-case passing rerun. Repeated
   native2/native3 exports, 20 Lab inspector controls, depth 14/composition 6 and
   actual export cancellation pass. All 2,609 verification inputs match.
   [Repair and verification evidence](./pr-57-rereview-fix-results.json).
+
+- **PR #56 second-review fixes qualified (2026-10-15):** three inline P2
+  findings have separate repair commits: reject collapsed native scopes, reject
+  direct controller mattes, and admit only regular observation files through owned
+  nonblocking descriptors. Fast 3,947/381 and independent reviews 0/0 pass.
+  Runtime completes in recorded stages: 197 runtime, distinct 321 integration,
+  14 Python and smoke. Three initial 5-second depth-protocol timeouts remain
+  retained; the unchanged five-case rerun passes. Native depth 14, composition 5,
+  actual export cancellation and six rendered placement/matte controls pass.
+  All 2,776 verification inputs match. PR #56 merged into `main` at `e7433203`;
+  human acceptance remains pending.
+  [Fix evidence](./pr-56-second-review-fix-results.json).
+
+- **PR #56 current review repairs qualified (2026-10-15):** source40330672
+  retains both Float32 cutout visibility and located/sanitized source diagnostics.
+  Fast3,935/381 and both independent reviews pass. Current runtime verification
+  completes in stages:191 runtime, distinct321 integration,14 Python and smoke.
+  Initial aggregate1 retains missing soundtrack runtime and3 depth timeouts;
+  offline setup/unchanged affected58 rerun plus suffix pass, with1,725 inputs exact.
+  Actual native depth14/composition5 and4 complete-RGBA mask controls pass.
+  Initial white-background probe assumption fails and stays retained; corrected
+  controls use actual uniform background. Archive83/9 installed diagnostics and
+  strict types keep their source bindings. PR #56 is now merged at `e7433203`;
+  no fresh full E01,
+  release, publication or human acceptance.
+  [Current gate evidence](./pr-56-current-runtime90-results.json),
+  [review repairs](./pr-56-fix-results.json).
 
 - **PR #57 first repair batch delivered (2026-10-15):** camera `up` repair
   `ccd976ee` and bounded cue-snapshot repair `56fb5168` remain intact and both prior
@@ -260,6 +299,22 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-10-16 — Resolve PR #57 conflicts with merged native prerequisites
+
+- **Agent / branch:** Codex in isolated `codex/pr57-conflicts`, from `36fc04ea`.
+- **Done:** merge `main` `e7433203`; preserve versioned journal core and both
+  development histories. Retain upstream v1 tests and separate v2 FIFO/symlink
+  coverage, collapsed-scope rejection and direct controller-matte admission.
+- **Results:** fast 4,395 units; runtime 286, distinct integration 325, Python 14,
+  smoke, native depth 14/composition 6, cancellation and repeated native2/native3
+  exports pass in recorded stages. All 2,621 source inputs match.
+- **Retained:** initial aggregate has three unchanged 5s depth-protocol timeouts;
+  complete unchanged five-case rerun passes. No threshold or assertion changes.
+- **Delivery / next:** one merge commit and normal push to PR #57; owner merge and
+  human production acceptance remain separate. Primary checkout edits preserved.
+- **Records:** [Resolution evidence](./pr-57-conflict-resolution-results.json),
+  [PR #57](https://github.com/xxibcill/still-shift/pull/57).
+
 ### 2026-10-15 — Fix PR #57 source3 Lab dispatch and verify all three repairs
 
 - **Agent / branch:** Codex on isolated `codex/pr57-rereview-fixes`, from `56fb5168`.
@@ -351,6 +406,23 @@ still hold before relying on them.
 - **Open:** fresh current package/installed qualification and whole production
   acceptance; historical full/archive proofs keep original bindings.
 - **Records:** [Current repair](./mechanism-shorts-ms2-current-prerequisite-repair90-results.json).
+
+### 2026-10-15 — Repair PR #56 second-review findings
+
+- **Agent / branch:** Codex on isolated `codex/pr56-second-review-fixes`, from
+  `796375b7`; unrelated primary checkout edits preserved.
+- **Done:** posted all three findings inline before repair. Separate commits fix
+  collapsed scopes (`c04f4652`), direct controller mattes (`d9644040`) and observation
+  FIFO admission (final commit). Isolated surfaces and regular symlinks remain valid.
+- **Results:** fast 3,947/381; staged runtime 197, distinct integration 321,
+  Python 14 and smoke; native depth 14, composition 5 and actual cancellation.
+  Six real WebGL controls retain full RGBA; three invalid inputs reject.
+  Independent Standards 0 / Spec 0; all 2,776 verification inputs exact.
+- **Retained failures:** original red regressions, initial fixture syntax/type
+  errors and three unproven 5-second protocol timeouts; unchanged five-case rerun passes.
+- **Open / next:** one final push of the three repair commits; owner merge pending.
+  No refreshed release/E01 gate or human visual/listening acceptance.
+- **Records:** [Fix and verification receipt](./pr-56-second-review-fix-results.json).
 
 ### 2026-10-15 — Qualify current native review repairs in recorded stages
 
