@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-16",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/58",
+  "initialHead": "3c001a0c42cce52a39aeb1163d5c2a7349027c40",
+  "branch": "codex/pr-58-review-fixes",
+  "authorization": "Post each finding inline, one finding per commit, one final push after both fixes.",
+  "comments": [
+    {
+      "finding": "identifiers",
+      "id": 4291869650,
+      "thread": "PRRT_kwDOUNeEOM6tGYGO",
+      "url": "https://github.com/xxibcill/still-shift/pull/58#discussion_r4291869650"
+    },
+    {
+      "finding": "fps",
+      "id": 4291869662,
+      "thread": "PRRT_kwDOUNeEOM6tGYGV",
+      "url": "https://github.com/xxibcill/still-shift/pull/58#discussion_r4291869662"
+    }
+  ],
+  "identifierFix": {
+    "status": "source-fixed-and-scoped-verified",
+    "changes": [
+      "Validate logical episode/speech/shot/callout IDs against generated composition syntax and prefix-adjusted lengths.",
+      "Reject narration IDs reserved for generated font and native sequence assets.",
+      "Keep source object/collection/camera/control/anchor names on the existing native name contract.",
+      "Share generated asset ID constants and regenerate public native plan JSON Schema."
+    ],
+    "regressions": {
+      "tests": 11,
+      "red": "10 fail / 1 pass before production changes",
+      "green": "11 pass; 36 total focused tests across 5 files pass",
+      "initialFixtureCorrection": "Initial positive fixture used 114 callout characters; the 15-character callout-leader- prefix allows 113. Initial 9-failure log is retained; corrected independent regressions ran red again before implementation."
+    },
+    "checks": {
+      "focusedUnits": "36 passed",
+      "typescript": "passed",
+      "schemaCheck": "passed",
+      "diffWhitespace": "passed"
+    }
+  },
+  "fpsFix": {
+    "status": "pending-separate-commit"
+  },
+  "broaderVerification": {
+    "status": "pending-after-both-source-fixes"
+  },
+  "push": {
+    "status": "pending-until-final-commit"
+  },
+  "logs": "benchmarks/results/pr-58-fix-2026-10-16",
+  "limits": [
+    "No full production rerender or release qualification yet.",
+    "Historical package/pilot results retain their original source identities.",
+    "No human visual/listening acceptance inferred."
+  ]
+}

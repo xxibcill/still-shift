@@ -15,8 +15,18 @@ canonical manifest directory, including external resources.
 
 `BlenderEpisodePlanSchema` declares dimensions/FPS/samples, the whole narration,
 its original sample clock, pinned font, source-frame/control tracks, a complete
-shot partition and ordered exact-copy speech windows. Every declared native
-control has one absolute track. Keys start at zero; hold, linear and smoothstep
+shot partition and ordered exact-copy speech windows. Logical episode IDs start
+with a letter and are
+at most80 letters, digits, underscores or hyphens. Speech, shot and callout IDs
+use letters, digits, underscores or hyphens with respective limits of121,114
+and113 characters, leaving room for generated composition prefixes. Narration
+asset IDs cannot use the reserved `episode-font` or `native-episode-plates` names.
+These constraints reject incompatible documents before native capture; saved
+Blender object, collection, camera, control and anchor names retain their broader
+256-character name contract.
+
+Every declared native control has one absolute track. Keys start at zero; hold,
+linear and smoothstep
 sampling is independent of seek history. Each shot selects a saved native camera
 and optional explicit cutaway hides. Camera projection metadata and evaluated
 surface/matrix/bounds accompany the captured frames. Visibility drivers are

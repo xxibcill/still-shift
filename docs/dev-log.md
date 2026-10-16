@@ -43,6 +43,15 @@ still hold before relying on them.
 
 ## Current state
 
+- **PR #58 identifier finding fixed locally (2026-10-16):** both P2 findings
+  are posted inline on reviewed head `3c001a0c`. On `codex/pr-58-review-fixes`,
+  logical IDs now reject incompatible generated names and reserved asset IDs
+  before capture; native source names retain their existing contract. Ten
+  regressions fail before repair; all 11 and 36 focused cases pass after repair.
+  TypeScript/schema/whitespace pass. FPS repair and final broad checks/push remain
+  pending; one finding per commit, one final push. Primary edits are preserved.
+  [Review](./pr-58-review-results.json), [fix record](./pr-58-fix-results.json).
+
 - **PR #58 conflicts resolved and verified (2026-10-16):** merge `main`
   `cfe2bc3f` into PR head `981e7403`, preserving both parents and histories.
   Keep one complete upstream v1/v2 observation suite each and the family command
@@ -90,6 +99,18 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-10-16 — PR #58 identifier admission repair
+
+- **Agent / branch:** Codex on `codex/pr-58-review-fixes` from `3c001a0c`.
+- **Scope:** post both review findings inline; repair generated identifier
+  compatibility before native capture, including reserved asset IDs.
+- **Results:** original ten failing regressions become passing; 36 focused tests,
+  TypeScript and schema checks pass. The initial boundary-fixture correction and
+  failing runs remain retained. Native object/camera/anchor names stay supported.
+- **Open / next:** separate FPS commit, broad local verification, one final push.
+  No fresh full pilot/render/release gate or human visual/listening acceptance.
+- **Records:** [Findings](./pr-58-review-results.json), [fixes](./pr-58-fix-results.json).
 
 ### 2026-10-16 — Resolve PR #58 conflicts with integrated prerequisites
 

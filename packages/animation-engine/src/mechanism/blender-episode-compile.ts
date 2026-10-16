@@ -4,6 +4,7 @@ import {
   type Composition,
 } from "@still-shift/scene-contract";
 import {
+  BLENDER_EPISODE_ASSET_IDS,
   parseBlenderEpisodePlan,
   parseBlenderEpisodeSource,
   blenderEpisodeFrameCount,
@@ -188,7 +189,7 @@ export function composeBlenderEpisode(
       type: "text",
       text: cue.text,
       textRole: "body",
-      fontAsset: "episode-font",
+      fontAsset: BLENDER_EPISODE_ASSET_IDS.font,
       fontSize: layout.fontSize,
       color: "#ffffff",
       align: "center",
@@ -283,7 +284,7 @@ export function composeBlenderEpisode(
     background: plan.background,
     assets: [
       sequence,
-      { id: "episode-font", type: "font", ...plan.font },
+      { id: BLENDER_EPISODE_ASSET_IDS.font, type: "font", ...plan.font },
       plan.narration,
     ],
     layers,

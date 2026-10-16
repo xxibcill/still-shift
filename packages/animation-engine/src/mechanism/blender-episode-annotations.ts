@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { BLENDER_EPISODE_ASSET_IDS } from "./blender-episode-contract.ts";
 import {
   CompositionNodeMemory,
   compositionNodeJsonSize,
@@ -155,7 +156,7 @@ export function composeBlenderCallouts(
       type: "text",
       text: callout.text,
       textRole: "label",
-      fontAsset: "episode-font",
+      fontAsset: BLENDER_EPISODE_ASSET_IDS.font,
       fontSize,
       color: callout.color,
       align: "center",

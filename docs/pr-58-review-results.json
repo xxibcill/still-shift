@@ -1,0 +1,118 @@
+{
+  "reviewDate": "2026-10-16",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/58",
+  "base": "cfe2bc3ffeca1d85cf5353c14c4d30366fd1e066",
+  "head": "3c001a0c42cce52a39aeb1163d5c2a7349027c40",
+  "headRechecked": true,
+  "scope": {
+    "changedFiles": 376,
+    "commits": 241,
+    "snapshot": "/private/tmp/still-shift-pr58-hNOsWp",
+    "trackedFilesVerified": 3450,
+    "trackedBytesVerified": 529161802,
+    "trackedBlobMismatches": 0,
+    "method": "Independent Standards and Spec source reviews, root review of queue/retry/report/CLI and contract boundaries, focused existing tests and passive reproductions. No checkout switch or source repair."
+  },
+  "standards": {
+    "findings": [],
+    "conclusion": "No additional actionable documented-standard violations. Identifier and FPS compatibility defects are counted once each on the Spec axis."
+  },
+  "spec": {
+    "sources": [
+      "docs/mechanism-shorts-production-plan.md",
+      "docs/mechanism-shorts-ms3-acceptance.md",
+      "docs/mechanism-blender-episode.md",
+      "docs/mechanism-production-queue.md",
+      "docs/mechanism-production-qa.md",
+      "docs/mechanism-production-reports.md"
+    ],
+    "findings": [
+      {
+        "priority": 2,
+        "title": "Validate generated composition identifiers before native capture",
+        "file": "packages/animation-engine/src/mechanism/blender-episode-compile.ts",
+        "startLine": 169,
+        "endLine": 175,
+        "specification": {
+          "file": "docs/mechanism-shorts-production-plan.md",
+          "line": 1210,
+          "quote": "a reliable episode workflow"
+        },
+        "trigger": "Set an otherwise valid native plan speech ID to cue.main, or to 122 alphabetic characters.",
+        "actual": "The public native plan schema and compiler accept the ID. composeBlenderEpisode prefixes it with speech-/panel- and then CompositionSchema rejects the generated layer IDs: punctuation violates compositionId's regex and the speech prefix makes the long ID exceed its 128-character bound.",
+        "impact": "The production executor performs prepareBlenderEpisodePlates before composing the receiving document, so these admitted plans can consume a complete native capture and then deterministically fail export. Callout IDs and numeric-leading plan IDs have analogous composition-ID boundaries. A 201-character shot ID also passes compilation/composition but fails the mandatory quality-policy shot bound.",
+        "recommendation": "Use compatible contracts or deterministic bounded IDs for generated composition identifiers, preserve native object/camera/anchor names separately, and validate the receiving composition and quality-policy structure during preflight.",
+        "evidence": "benchmarks/results/pr-58-review-2026-10-16/native-identifiers.log",
+        "reproductionScript": "/private/tmp/still-shift-pr58-hNOsWp/review-native-identifiers.ts",
+        "status": "Reproduced; source remains unchanged."
+      },
+      {
+        "priority": 2,
+        "title": "Restrict native episode FPS to the receiving composition limit",
+        "file": "packages/animation-engine/src/mechanism/blender-episode-contract.ts",
+        "startLine": 73,
+        "endLine": 73,
+        "specification": {
+          "file": "docs/mechanism-shorts-production-plan.md",
+          "line": 1270,
+          "quote": "Capability discovery and generated docs must agree on import, batch and preview/export limits."
+        },
+        "trigger": "Use 120 FPS in a valid two-second native episode with 240 frames and a matching complete shot partition.",
+        "actual": "BlenderEpisodePlanSchema, compileBlenderEpisode, planBlenderProductionReview and admitBlenderProductionVisualWork pass. composeBlenderEpisode rejects fps because CompositionFpsSchema permits at most 60 FPS.",
+        "impact": "All native episode rates 61-120 are advertised and admitted despite being impossible to export through the required receiving composition. The executor reaches this rejection after native capture.",
+        "recommendation": "Bind native episode FPS to CompositionFpsSchema or reject unsupported episode export rates before capture. Raw Blender capture may retain its independent 120-FPS limit.",
+        "evidence": "benchmarks/results/pr-58-review-2026-10-16/native-fps.log",
+        "reproductionScript": "/private/tmp/still-shift-pr58-hNOsWp/review-native-fps.ts",
+        "status": "Reproduced; source remains unchanged."
+      }
+    ]
+  },
+  "verification": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "successfulRuntimePython": "3.12.11",
+    "focusedUnits": {
+      "status": "passed",
+      "files": 20,
+      "tests": 171,
+      "command": "node node_modules/vitest/vitest.mjs run tests/unit/mechanism-production*.test.ts tests/unit/blender*.test.ts tests/unit/mechanism-static-moment.test.ts tests/unit/mechanism-load-seat.test.ts tests/unit/mechanism-load-stop.test.ts tests/unit/composition-root-metadata.test.ts tests/unit/composition-quality-speech-proof.test.ts --maxWorkers=2 --no-file-parallelism",
+      "seconds": 26.21
+    },
+    "runtimeAttempts": [
+      {
+        "status": "failed",
+        "cause": "Restricted execution denied ps in artifact-lock-helper.py. The default python3 was 3.11. This attempt is retained as an environment failure, not an application regression or passing stage.",
+        "observedError": "PermissionError: [Errno 1] Operation not permitted: 'ps'"
+      },
+      {
+        "status": "passed",
+        "environment": "Process inspection permitted; PATH selects pinned Node 22.23.1 and existing Python 3.12.11 environment.",
+        "files": 5,
+        "tests": 48,
+        "seconds": 16.42,
+        "suites": [
+          "tests/runtime/mechanism-production-queue.test.ts",
+          "tests/runtime/mechanism-production-queue-recovery.test.ts",
+          "tests/runtime/mechanism-production-retry.test.ts",
+          "tests/runtime/mechanism-production-report-io.test.ts",
+          "tests/runtime/mechanism-production-failure.test.ts"
+        ],
+        "log": "benchmarks/results/pr-58-review-2026-10-16/runtime-rerun.log"
+      }
+    ],
+    "typescript": {
+      "command": "node node_modules/typescript/bin/tsc --noEmit",
+      "status": "passed",
+      "log": "benchmarks/results/pr-58-review-2026-10-16/types.log"
+    },
+    "diffWhitespace": "passed",
+    "sourceVerification": "benchmarks/results/pr-58-review-2026-10-16/source-verification.json"
+  },
+  "limits": [
+    "Focused verification only; no fresh full check:fast, check:runtime, release gate, full render matrix or all-ten installed production run.",
+    "Identifier/FPS reproductions are passive compiler/contract checks and perform no Blender capture or media generation.",
+    "No continuous playback, listening, encoded-glyph review or human/product acceptance is inferred.",
+    "Existing acceptance gaps, failed pilot targets and unavailable token measurements are explicitly disclosed by the PR and are not counted as hidden implementation defects.",
+    "No GitHub review comments, fixes, commits, pushes or merges were performed. Findings are delivered in this chat and local records."
+  ]
+}

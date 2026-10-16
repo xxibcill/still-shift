@@ -3,7 +3,7 @@
   "type": "object",
   "properties": {
     "schemaVersion": { "type": "string", "const": "blender-episode-plan-1" },
-    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$" },
+    "id": { "type": "string", "maxLength": 80, "pattern": "^[a-zA-Z][\\w-]*$" },
     "locale": { "type": "string", "enum": ["en", "th"] },
     "width": { "type": "integer", "minimum": 16, "maximum": 4096 },
     "height": { "type": "integer", "minimum": 16, "maximum": 4096 },
@@ -123,7 +123,12 @@
       "items": {
         "type": "object",
         "properties": {
-          "id": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 114,
+            "pattern": "^[\\w-]+$"
+          },
           "start": {
             "type": "integer",
             "minimum": 0,
@@ -202,9 +207,19 @@
       "items": {
         "type": "object",
         "properties": {
-          "id": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 113,
+            "pattern": "^[\\w-]+$"
+          },
           "text": { "type": "string", "minLength": 1, "maxLength": 80 },
-          "shot": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "shot": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 114,
+            "pattern": "^[\\w-]+$"
+          },
           "anchor": { "type": "string", "minLength": 1, "maxLength": 256 },
           "part": { "type": "string", "minLength": 1, "maxLength": 256 },
           "start": {
@@ -266,7 +281,12 @@
       "items": {
         "type": "object",
         "properties": {
-          "id": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 121,
+            "pattern": "^[\\w-]+$"
+          },
           "text": { "type": "string", "minLength": 1, "maxLength": 1024 },
           "startSample": {
             "type": "integer",

@@ -25,6 +25,7 @@ import {
 } from "./blender-episode-inputs.ts";
 import { readBlenderEpisodeAnchorFrames } from "./blender-episode-annotations.ts";
 import { readBlenderEpisodeProofHolds } from "./blender-episode-proof.ts";
+import { BLENDER_EPISODE_ASSET_IDS } from "./blender-episode-contract.ts";
 import { composeBlenderEpisode } from "./blender-episode-compile.ts";
 import {
   prepareBlenderEpisodePlates,
@@ -52,7 +53,7 @@ function sequence(
   compiled: Awaited<ReturnType<typeof readBlenderEpisode>>["compiled"],
 ) {
   return {
-    id: "native-episode-plates",
+    id: BLENDER_EPISODE_ASSET_IDS.plates,
     type: "sequence" as const,
     path: join(root, map.frames[0]!.image.path, "..", "frame-%06d.png"),
     manifestPath: join(root, map.sequence.path),

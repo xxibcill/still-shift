@@ -2,6 +2,7 @@ import { z } from "zod";
 import { compositionNodeJsonSize } from "@still-shift/execution-runtime/export";
 import {
   CompositionAudioAssetSchema,
+  CompositionSchema,
   MechanismHashSchema,
 } from "@still-shift/scene-contract";
 import {
@@ -23,6 +24,19 @@ export const BLENDER_EPISODE_LIMITS = Object.freeze({
   simultaneousCallouts: 4,
   calloutControlRanges: 8,
 });
+export const BLENDER_EPISODE_ASSET_IDS = Object.freeze({
+  font: "episode-font",
+  plates: "native-episode-plates",
+});
+const compositionIdSuffix = (prefix: string) =>
+  z
+    .string()
+    .min(1)
+    .max(CompositionSchema.shape.id.maxLength! - prefix.length)
+    .regex(/^[\w-]+$/);
+const shotId = compositionIdSuffix("native-plates-");
+const calloutId = compositionIdSuffix("callout-leader-");
+const speechId = compositionIdSuffix("speech-");
 const name = z
   .string()
   .min(1)
@@ -66,7 +80,7 @@ export type BlenderEpisodeSource = z.infer<typeof BlenderEpisodeSourceSchema>;
 export const BlenderEpisodePlanSchema = z
   .object({
     schemaVersion: z.literal("blender-episode-plan-1"),
-    id: z.string().regex(/^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$/),
+    id: CompositionSchema.shape.id.max(80),
     locale: z.enum(["en", "th"]),
     width: z.number().int().min(16).max(4096),
     height: z.number().int().min(16).max(4096),
@@ -93,7 +107,7 @@ export const BlenderEpisodePlanSchema = z
       .array(
         z
           .object({
-            id: name,
+            id: shotId,
             start: z.number().int().nonnegative(),
             endExclusive: z.number().int().positive(),
             camera: name,
@@ -111,9 +125,9 @@ export const BlenderEpisodePlanSchema = z
       .array(
         z
           .object({
-            id: name,
+            id: calloutId,
             text: z.string().min(1).max(80),
-            shot: name,
+            shot: shotId,
             anchor: name,
             part: name,
             start: z.number().int().nonnegative(),
@@ -143,7 +157,7 @@ export const BlenderEpisodePlanSchema = z
       .array(
         z
           .object({
-            id: name,
+            id: speechId,
             text: z.string().min(1).max(1024),
             startSample: z.number().int().nonnegative(),
             endSampleExclusive: z.number().int().positive(),
@@ -157,6 +171,17 @@ export const BlenderEpisodePlanSchema = z
   .superRefine((plan, ctx) => {
     const reject = (message: string) =>
       ctx.addIssue({ code: "custom", message });
+    if (
+      Object.values(BLENDER_EPISODE_ASSET_IDS).some(
+        (id) => id === plan.narration.id,
+      )
+    )
+      ctx.addIssue({
+        code: "custom",
+        path: ["narration", "id"],
+        message:
+          "Narration asset ID conflicts with a generated native episode asset",
+      });
     const frames = blenderEpisodeFrameCount(
       plan.narration.sampleCount,
       plan.fps,
