@@ -135,7 +135,10 @@ version-2 handoffs are implemented; see
 Their verification preserves unfinished review states.
 
 Limits are1MiB per source/plan,2,000 output frames,128 shots,256 speech cues,
-256 keys per track,64 controls,4,096px per dimension and8,388,608 pixels. Sampling
+256 keys per track,64 controls,4,096px per dimension and8,388,608 pixels.
+Episode export uses the receiving composition’s1–60 FPS contract and rejects
+higher rates before native capture. The standalone raw capture API retains its
+separate120 FPS limit. Sampling
 also has a prospective expanded-track budget. Bounded adapters contend within
 the caller's Node allowance; Blender has separate host resource use. The saved
 composition and review package retain pinned content identities. Relocated

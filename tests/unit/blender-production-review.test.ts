@@ -126,17 +126,17 @@ describe("native encoded review planning", () => {
       /sample budget/,
     );
   });
-  it("retains the native contract's 120fps source clock", () => {
+  it("retains the receiving composition's 60fps episode clock", () => {
     const plan = blenderEpisodePlan();
-    plan.fps = 120;
-    plan.shots[0]!.endExclusive = 120;
-    plan.shots[1]!.start = 120;
-    plan.shots[1]!.endExclusive = 240;
+    plan.fps = 60;
+    plan.shots[0]!.endExclusive = 60;
+    plan.shots[1]!.start = 60;
+    plan.shots[1]!.endExclusive = 120;
     expect(
       planBlenderProductionReview(
         compileBlenderEpisode(blenderEpisodeSource(), plan),
       ).fps,
-    ).toBe(120);
+    ).toBe(60);
   });
   it("keeps source-frame events when a control has the same name", () => {
     const source = blenderEpisodeSource();

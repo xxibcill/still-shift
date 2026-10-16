@@ -16,6 +16,7 @@ import { MechanismProductionFileSchema } from "./production-queue-contract.ts";
 export const BLENDER_EPISODE_LIMITS = Object.freeze({
   documentBytes: 1024 * 1024,
   frames: 2000,
+  maxFps: CompositionSchema.shape.fps.maxValue!,
   shots: 128,
   speechCues: 256,
   keysPerTrack: 256,
@@ -84,7 +85,7 @@ export const BlenderEpisodePlanSchema = z
     locale: z.enum(["en", "th"]),
     width: z.number().int().min(16).max(4096),
     height: z.number().int().min(16).max(4096),
-    fps: z.number().int().min(1).max(120),
+    fps: CompositionSchema.shape.fps,
     samples: z.number().int().min(1).max(256),
     background: z.string().regex(/^#[0-9a-fA-F]{6}$/),
     narration: CompositionAudioAssetSchema,

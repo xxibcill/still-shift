@@ -290,7 +290,8 @@ frames, ${c.nativeBlenderExecutor.captureLimits.controls} controls and
 ${c.nativeBlenderExecutor.captureLimits.pixels} pixels. Episode plans allow
 ${c.nativeBlenderExecutor.episodeLimits.shots} shots and
 ${c.nativeBlenderExecutor.episodeLimits.speechCues} speech cues in
-${c.nativeBlenderExecutor.episodeLimits.documentBytes} bytes. These are candidate
+${c.nativeBlenderExecutor.episodeLimits.documentBytes} bytes, at up to
+${c.nativeBlenderExecutor.episodeLimits.maxFps} FPS through the receiving composition. These are candidate
 technical lifecycle limits. Native annotations allow
 ${c.nativeBlenderExecutor.episodeLimits.callouts} labels,
 ${c.nativeBlenderExecutor.episodeLimits.calloutSamples} active label samples,

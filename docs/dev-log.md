@@ -43,14 +43,18 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #58 identifier finding fixed locally (2026-10-16):** both P2 findings
-  are posted inline on reviewed head `3c001a0c`. On `codex/pr-58-review-fixes`,
-  logical IDs now reject incompatible generated names and reserved asset IDs
-  before capture; native source names retain their existing contract. Ten
-  regressions fail before repair; all 11 and 36 focused cases pass after repair.
-  TypeScript/schema/whitespace pass. FPS repair and final broad checks/push remain
-  pending; one finding per commit, one final push. Primary edits are preserved.
-  [Review](./pr-58-review-results.json), [fix record](./pr-58-fix-results.json).
+- **PR #58 review findings repaired and verified (2026-10-16):** both P2
+  findings were posted inline before repair. Identifier commit `a155109f` adds
+  bounded logical IDs and reserved assets; the separate FPS slice shares the
+  receiving composition’s 60-FPS schema, keeping raw capture at 120. Fast 4,622
+  units and independent reviews 0/0 pass. Runtime completion is staged: 376 runtime,
+  327 distinct integration, 14 Python and smoke. The missing soundtrack runtime
+  and three 5s protocol timeouts remain retained; all 38 owning rerun cases pass.
+  All 3,452 held inputs match. Ten pilot plans retain exact compiled-output parity.
+  One final push delivers both commits; owner merge and human acceptance remain
+  separate. Primary edits and historical package/pilot bindings are preserved.
+  [Fixes and verification](./pr-58-fix-results.json),
+  [original review](./pr-58-review-results.json).
 
 - **PR #58 conflicts resolved and verified (2026-10-16):** merge `main`
   `cfe2bc3f` into PR head `981e7403`, preserving both parents and histories.
@@ -99,6 +103,20 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-10-16 — PR #58 FPS repair and final verification
+
+- **Agent / branch:** Codex on `codex/pr-58-review-fixes`, following `a155109f`.
+- **Scope:** repair the second posted finding with receiver-compatible FPS and
+  matching public capabilities/schema/docs; retain standalone raw capture at 120.
+- **Results:** both new FPS rejection cases reproduce red, then all three pass.
+  Fast 4,622 units/457 files pass after correcting the existing 120-FPS assertion.
+  Staged runtime passes 376 runtime, 327 distinct integration, 14 Python and smoke;
+  missing soundtrack setup and three original 5s timeouts remain with 38 passing
+  owning rerun cases. Independent reviews find 0/0; all 3,452 held inputs match.
+- **Open / next:** deliver both finding-specific commits in one final push.
+  Owner merge, separate release gates and human acceptance remain pending.
+- **Records:** [Repair and retained failures](./pr-58-fix-results.json).
 
 ### 2026-10-16 — PR #58 identifier admission repair
 

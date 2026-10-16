@@ -54,7 +54,8 @@ frames, 64 controls and
 8388608 pixels. Episode plans allow
 128 shots and
 256 speech cues in
-1048576 bytes. These are candidate
+1048576 bytes, at up to
+60 FPS through the receiving composition. These are candidate
 technical lifecycle limits. Native annotations allow
 64 labels,
 4096 active label samples,
